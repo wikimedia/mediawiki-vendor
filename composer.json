@@ -1,10 +1,14 @@
 {
+	"name": "mediawiki/mediawiki-core-vendor",
+	"description": "External libraries required or recommened for use with MediaWiki",
+	"type": "managed-library-collection",
+	"license": "GPL-2.0+",
 	"require": {
 		"php": ">=5.3.2"
 	},
-	"preferred-install": "dist",
 	"prefer-stable": true,
 	"config": {
+		"preferred-install": "dist",
 		"vendor-dir": "."
 	}
 }
