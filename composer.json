@@ -4,7 +4,7 @@
 	"type": "managed-library-collection",
 	"license": "GPL-2.0+",
 	"require": {
-		"php": ">=5.3.2",
+		"php": ">=5.3.3",
 		"psr/log": "1.0.0",
 		"monolog/monolog": "1.9.1"
 	},
