@@ -10,7 +10,7 @@
 	},
 	"prefer-stable": true,
 	"config": {
-		"autoloader-suffix": "_mediawiki_core_vendor",
+		"autoloader-suffix": "_mediawiki_vendor",
 		"preferred-install": "dist",
 		"vendor-dir": "."
 	}
