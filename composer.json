@@ -3,10 +3,17 @@
 	"description": "External libraries required or recommened for use with MediaWiki",
 	"type": "managed-library-collection",
 	"license": "GPL-2.0+",
+	"repositories": [
+		{
+			"type": "vcs",
+			"url": "https://github.com/plancake/official-library-php-email-parser"
+		}
+	],
 	"require": {
 		"php": ">=5.3.3",
 		"psr/log": "1.0.0",
-		"monolog/monolog": "1.9.1"
+		"monolog/monolog": "1.9.1",
+		"Plancake/EmailParser": "dev-master#e7453ead1f3a74810d8050a30afb96feed74477a"
 	},
 	"prefer-stable": true,
 	"config": {
