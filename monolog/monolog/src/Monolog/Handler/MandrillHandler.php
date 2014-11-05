@@ -14,25 +14,25 @@ namespace Monolog\Handler;
 use Monolog\Logger;
 
 /**
- * SwiftMailerHandler uses Swift_Mailer to send the emails
+ * MandrillHandler uses cURL to send the emails to the Mandrill API
  *
- * @author Gyula Sallai
+ * @author Adam Nicholson <adamnicholson10@gmail.com>
  */
-class SwiftMailerHandler extends MailHandler
+class MandrillHandler extends MailHandler
 {
-    protected $mailer;
+    protected $client;
     protected $message;
 
     /**
-     * @param \Swift_Mailer           $mailer  The mailer to use
+     * @param string                  $apiKey  A valid Mandrill API key
      * @param callable|\Swift_Message $message An example message for real messages, only the body will be replaced
      * @param integer                 $level   The minimum logging level at which this handler will be triggered
      * @param Boolean                 $bubble  Whether the messages that are handled can bubble up the stack or not
      */
-    public function __construct(\Swift_Mailer $mailer, $message, $level = Logger::ERROR, $bubble = true)
+    public function __construct($apiKey, $message, $level = Logger::ERROR, $bubble = true)
     {
         parent::__construct($level, $bubble);
-        $this->mailer  = $mailer;
+
         if (!$message instanceof \Swift_Message && is_callable($message)) {
             $message = call_user_func($message);
         }
@@ -40,6 +40,7 @@ class SwiftMailerHandler extends MailHandler
             throw new \InvalidArgumentException('You must provide either a Swift_Message instance or a callable returning it');
         }
         $this->message = $message;
+        $this->apiKey = $apiKey;
     }
 
     /**
@@ -51,6 +52,17 @@ class SwiftMailerHandler extends MailHandler
         $message->setBody($content);
         $message->setDate(time());
 
-        $this->mailer->send($message);
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, 'https://mandrillapp.com/api/1.0/messages/send-raw.json');
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array(
+            'key' => $this->apiKey,
+            'raw_message' => (string) $message,
+            'async' => false,
+        )));
+
+        curl_exec($ch);
+        curl_close($ch);
     }
 }

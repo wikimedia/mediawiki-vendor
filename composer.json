@@ -13,7 +13,7 @@
 		"cssjanus/cssjanus": "1.1.0",
 		"php": ">=5.3.3",
 		"psr/log": "1.0.0",
-		"monolog/monolog": "1.9.1",
+		"monolog/monolog": "1.11.0",
 		"Plancake/EmailParser": "dev-master#e7453ead1f3a74810d8050a30afb96feed74477a"
 	},
 	"prefer-stable": true,
