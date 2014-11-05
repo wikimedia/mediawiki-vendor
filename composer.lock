@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a1a4183beefda02b48b5e912ea5fef82",
+    "hash": "3ea8fe50c46352f648d3f727dce385d8",
     "packages": [
         {
             "name": "Plancake/EmailParser",
@@ -49,6 +49,41 @@
                 "issues": "https://github.com/plancake/official-library-php-email-parser/issues"
             },
             "time": "2013-09-05 21:02:55"
+        },
+        {
+            "name": "cssjanus/cssjanus",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cssjanus/php-cssjanus.git",
+                "reference": "bcc6fce70372995ab8517af643f60d93e1462b97"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cssjanus/php-cssjanus/zipball/bcc6fce70372995ab8517af643f60d93e1462b97",
+                "reference": "bcc6fce70372995ab8517af643f60d93e1462b97",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "jakub-onderka/php-parallel-lint": "0.7.*",
+                "phpunit/phpunit": "3.7.*",
+                "squizlabs/php_codesniffer": "1.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "Convert CSS stylesheets between left-to-right and right-to-left.",
+            "time": "2014-09-25 22:08:57"
         },
         {
             "name": "monolog/monolog",
@@ -157,12 +192,8 @@
             "time": "2012-12-21 11:40:51"
         }
     ],
-    "packages-dev": [
-
-    ],
-    "aliases": [
-
-    ],
+    "packages-dev": [],
+    "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
         "plancake/emailparser": 20
@@ -171,7 +202,5 @@
     "platform": {
         "php": ">=5.3.3"
     },
-    "platform-dev": [
-
-    ]
+    "platform-dev": []
 }

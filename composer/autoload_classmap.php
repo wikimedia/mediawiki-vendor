@@ -6,6 +6,8 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = $vendorDir;
 
 return array(
+    'CSSJanus' => $vendorDir . '/cssjanus/cssjanus/src/CSSJanus.php',
+    'CSSJanusTokenizer' => $vendorDir . '/cssjanus/cssjanus/src/CSSJanus.php',
     'Monolog\\ErrorHandler' => $vendorDir . '/monolog/monolog/src/Monolog/ErrorHandler.php',
     'Monolog\\Formatter\\ChromePHPFormatter' => $vendorDir . '/monolog/monolog/src/Monolog/Formatter/ChromePHPFormatter.php',
     'Monolog\\Formatter\\ElasticaFormatter' => $vendorDir . '/monolog/monolog/src/Monolog/Formatter/ElasticaFormatter.php',
