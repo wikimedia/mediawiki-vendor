@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e30b0be860eb92ad74e2d068136f07fb",
+    "hash": "a45741dc499741d880f1262a2f69f117",
     "packages": [
         {
             "name": "Plancake/EmailParser",
@@ -49,6 +49,50 @@
                 "issues": "https://github.com/plancake/official-library-php-email-parser/issues"
             },
             "time": "2013-09-05 21:02:55"
+        },
+        {
+            "name": "cdb/cdb",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wikimedia/cdb.git",
+                "reference": "918601ea3d31b8c37312e9c0e54446aa8bfb3425"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wikimedia/cdb/zipball/918601ea3d31b8c37312e9c0e54446aa8bfb3425",
+                "reference": "918601ea3d31b8c37312e9c0e54446aa8bfb3425",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPLv2"
+            ],
+            "authors": [
+                {
+                    "name": "Tim Starling",
+                    "email": "tstarling@wikimedia.org"
+                },
+                {
+                    "name": "Chad Horohoe",
+                    "email": "chad@wikimedia.org"
+                }
+            ],
+            "description": "Constant Database (CDB) wrapper library for PHP. Provides pure-PHP fallback when dba_* functions are absent.",
+            "homepage": "https://www.mediawiki.org/wiki/CDB",
+            "time": "2014-11-12 19:03:26"
         },
         {
             "name": "cssjanus/cssjanus",
