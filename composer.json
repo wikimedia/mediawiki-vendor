@@ -11,7 +11,7 @@
 	],
 	"require": {
 		"cdb/cdb": "1.0.0",
-		"cssjanus/cssjanus": "1.1.0",
+		"cssjanus/cssjanus": "1.1.1",
 		"php": ">=5.3.3",
 		"psr/log": "1.0.0",
 		"monolog/monolog": "1.11.0",

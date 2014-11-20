@@ -17,7 +17,7 @@
 		"php": ">=5.3.3"
 	},
 	"require-dev": {
-		"jakub-onderka/php-parallel-lint": "0.7.*",
+		"jakub-onderka/php-parallel-lint": "0.8.*",
 		"phpunit/phpunit": "3.7.*",
 		"squizlabs/php_codesniffer": "1.*"
 	}

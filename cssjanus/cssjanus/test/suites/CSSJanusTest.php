@@ -3,7 +3,7 @@
 class CSSJanusTest extends PHPUnit_Framework_TestCase {
 
 	public static function provideData() {
-		$data = json_decode(file_get_contents(__DIR__ . '/../data.json'), /* $assoc = */ true);
+		$data = self::getSpec();
 		$cases = array();
 		$defaultSettings = array(
 			'swapLtrRtlInUrl' => false,
@@ -47,5 +47,25 @@ class CSSJanusTest extends PHPUnit_Framework_TestCase {
 			CSSJanus::transform($input, $settings['swapLtrRtlInUrl'], $settings['swapLeftRightInUrl']),
 			$name
 		);
+	}
+
+	protected static function getSpec() {
+		static $json;
+		if ($json == null) {
+			$version = '1.1.1';
+			$dir = dirname(__DIR__);
+			$file = "$dir/data-v$version.json";
+			if (!is_readable($file)) {
+				array_map('unlink', glob("$dir/data-v*.json"));
+				$json = file_get_contents("https://github.com/cssjanus/cssjanus/raw/v$version/test/data.json");
+				if ($json === false) {
+					throw new Exception('Failed to fetch data');
+				}
+				file_put_contents($file, $json);
+			} else {
+				$json = file_get_contents($file);
+			}
+		}
+		return json_decode($json, /* $assoc = */ true);
 	}
 }

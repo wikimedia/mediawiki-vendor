@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1ca2588cab55cff8c3f9dcde1ddb7f71",
+    "hash": "00c02bf38ab5afeb20f48bbfb3426fbf",
     "packages": [
         {
             "name": "Plancake/EmailParser",
@@ -96,23 +96,23 @@
         },
         {
             "name": "cssjanus/cssjanus",
-            "version": "v1.1.0",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cssjanus/php-cssjanus.git",
-                "reference": "bcc6fce70372995ab8517af643f60d93e1462b97"
+                "reference": "62a9c32e6e140de09082b40a6e99d868ad14d4e0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cssjanus/php-cssjanus/zipball/bcc6fce70372995ab8517af643f60d93e1462b97",
-                "reference": "bcc6fce70372995ab8517af643f60d93e1462b97",
+                "url": "https://api.github.com/repos/cssjanus/php-cssjanus/zipball/62a9c32e6e140de09082b40a6e99d868ad14d4e0",
+                "reference": "62a9c32e6e140de09082b40a6e99d868ad14d4e0",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
             "require-dev": {
-                "jakub-onderka/php-parallel-lint": "0.7.*",
+                "jakub-onderka/php-parallel-lint": "0.8.*",
                 "phpunit/phpunit": "3.7.*",
                 "squizlabs/php_codesniffer": "1.*"
             },
@@ -127,7 +127,7 @@
                 "Apache-2.0"
             ],
             "description": "Convert CSS stylesheets between left-to-right and right-to-left.",
-            "time": "2014-09-25 22:08:57"
+            "time": "2014-11-14 20:00:50"
         },
         {
             "name": "monolog/monolog",
