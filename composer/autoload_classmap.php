@@ -276,4 +276,9 @@ return array(
     'Psr\\Log\\LoggerAwareInterface' => $vendorDir . '/psr/log/Psr/Log/LoggerAwareInterface.php',
     'Psr\\Log\\LoggerInterface' => $vendorDir . '/psr/log/Psr/Log/LoggerInterface.php',
     'Psr\\Log\\NullLogger' => $vendorDir . '/psr/log/Psr/Log/NullLogger.php',
+    'lessc' => $vendorDir . '/leafo/lessphp/lessc.inc.php',
+    'lessc_formatter_classic' => $vendorDir . '/leafo/lessphp/lessc.inc.php',
+    'lessc_formatter_compressed' => $vendorDir . '/leafo/lessphp/lessc.inc.php',
+    'lessc_formatter_lessjs' => $vendorDir . '/leafo/lessphp/lessc.inc.php',
+    'lessc_parser' => $vendorDir . '/leafo/lessphp/lessc.inc.php',
 );
