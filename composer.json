@@ -23,6 +23,7 @@
 	"config": {
 		"autoloader-suffix": "_mediawiki_vendor",
 		"preferred-install": "dist",
-		"vendor-dir": "."
+		"vendor-dir": ".",
+		"prepend-autoloader": false
 	}
 }

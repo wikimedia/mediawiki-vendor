@@ -19,7 +19,7 @@ class ComposerAutoloaderInit_mediawiki_vendor
             return self::$loader;
         }
 
-        spl_autoload_register(array('ComposerAutoloaderInit_mediawiki_vendor', 'loadClassLoader'), true, true);
+        spl_autoload_register(array('ComposerAutoloaderInit_mediawiki_vendor', 'loadClassLoader'), true, false);
         self::$loader = $loader = new \Composer\Autoload\ClassLoader();
         spl_autoload_unregister(array('ComposerAutoloaderInit_mediawiki_vendor', 'loadClassLoader'));
 
@@ -38,7 +38,7 @@ class ComposerAutoloaderInit_mediawiki_vendor
             $loader->addClassMap($classMap);
         }
 
-        $loader->register(true);
+        $loader->register(false);
 
         return $loader;
     }
