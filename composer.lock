@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "06bc33407a163624684ef89a9330f0d5",
+    "hash": "73f2abaaf2f7f451d2478fa2e3b483d1",
     "packages": [
         {
             "name": "Plancake/EmailParser",
