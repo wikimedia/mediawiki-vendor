@@ -1,0 +1,35 @@
+@import '../common';
+
+.oo-ui-textInputWidget {
+	position: relative;
+	.oo-ui-box-sizing(border-box);
+
+	input,
+	textarea {
+		display: inline-block;
+		width: 100%;
+		resize: none;
+		.oo-ui-box-sizing(border-box);
+	}
+
+	> .oo-ui-iconElement-icon,
+	> .oo-ui-indicatorElement-indicator {
+		position: absolute;
+		top: 0;
+		height: 100%;
+		background-repeat: no-repeat;
+		cursor: pointer;
+
+		.oo-ui-unselectable();
+	}
+
+	> .oo-ui-iconElement-icon {
+		left: 0;
+	}
+
+	> .oo-ui-indicatorElement-indicator {
+		right: 0;
+	}
+
+	.theme-oo-ui-textInputWidget();
+}

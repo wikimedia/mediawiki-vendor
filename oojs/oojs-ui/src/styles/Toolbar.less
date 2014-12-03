@@ -1,0 +1,37 @@
+@import 'common';
+
+.oo-ui-toolbar {
+	clear: both;
+
+	&-bar {
+		line-height: 1em;
+	}
+
+	&-actions {
+		float: right;
+	}
+
+	&-tools {
+		display: inline;
+	}
+
+	&-tools,
+	&-actions,
+	&-shadow {
+		.oo-ui-unselectable();
+	}
+
+	&-actions .oo-ui-popupWidget {
+		.oo-ui-selectable();
+	}
+
+	&-shadow {
+		background-position: left top;
+		background-repeat: repeat-x;
+		position: absolute;
+		width: 100%;
+		pointer-events: none;
+	}
+
+	.theme-oo-ui-toolbar();
+}

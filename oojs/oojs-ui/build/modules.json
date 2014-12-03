@@ -1,0 +1,115 @@
+{
+	"oojs-ui": {
+		"scripts": [
+			"src/intro.js.txt",
+			"src/core.js",
+
+			"src/elements/PendingElement.js",
+
+			"src/ActionSet.js",
+			"src/Element.js",
+				"src/Layout.js",
+				"src/Widget.js",
+				"src/Window.js",
+					"src/Dialog.js",
+				"src/WindowManager.js",
+			"src/Error.js",
+			"src/Process.js",
+			"src/ToolFactory.js",
+			"src/ToolGroupFactory.js",
+			"src/Theme.js",
+
+			"src/elements/ButtonElement.js",
+			"src/elements/GroupElement.js",
+			"src/elements/IconElement.js",
+			"src/elements/IndicatorElement.js",
+			"src/elements/LabelElement.js",
+			"src/elements/PopupElement.js",
+			"src/elements/FlaggedElement.js",
+			"src/elements/TitledElement.js",
+			"src/elements/ClippableElement.js",
+
+			"src/Tool.js",
+			"src/Toolbar.js",
+			"src/ToolGroup.js",
+
+			"src/dialogs/MessageDialog.js",
+			"src/dialogs/ProcessDialog.js",
+
+			"src/layouts/BookletLayout.js",
+			"src/layouts/FieldLayout.js",
+			"src/layouts/FieldsetLayout.js",
+			"src/layouts/FormLayout.js",
+			"src/layouts/GridLayout.js",
+			"src/layouts/PanelLayout.js",
+				"src/layouts/PageLayout.js",
+				"src/layouts/StackLayout.js",
+
+			"src/toolgroups/BarToolGroup.js",
+			"src/toolgroups/PopupToolGroup.js",
+			"src/toolgroups/ListToolGroup.js",
+			"src/toolgroups/MenuToolGroup.js",
+
+			"src/tools/PopupTool.js",
+
+			"src/widgets/GroupWidget.js",
+			"src/widgets/ItemWidget.js",
+			"src/widgets/LookupInputWidget.js",
+			"src/widgets/OutlineControlsWidget.js",
+			"src/widgets/ToggleWidget.js",
+
+			"src/widgets/ButtonGroupWidget.js",
+			"src/widgets/ButtonWidget.js",
+				"src/widgets/ActionWidget.js",
+				"src/widgets/PopupButtonWidget.js",
+				"src/widgets/ToggleButtonWidget.js",
+			"src/widgets/DropdownWidget.js",
+			"src/widgets/IconWidget.js",
+			"src/widgets/IndicatorWidget.js",
+			"src/widgets/InputWidget.js",
+				"src/widgets/ButtonInputWidget.js",
+				"src/widgets/CheckboxInputWidget.js",
+				"src/widgets/RadioInputWidget.js",
+				"src/widgets/TextInputWidget.js",
+					"src/widgets/ComboBoxWidget.js",
+			"src/widgets/LabelWidget.js",
+			"src/widgets/OptionWidget.js",
+				"src/widgets/DecoratedOptionWidget.js",
+					"src/widgets/ButtonOptionWidget.js",
+					"src/widgets/RadioOptionWidget.js",
+					"src/widgets/MenuOptionWidget.js",
+					"src/widgets/MenuSectionOptionWidget.js",
+					"src/widgets/OutlineOptionWidget.js",
+			"src/widgets/PopupWidget.js",
+			"src/widgets/ProgressBarWidget.js",
+			"src/widgets/SearchWidget.js",
+			"src/widgets/SelectWidget.js",
+				"src/widgets/ButtonSelectWidget.js",
+				"src/widgets/RadioSelectWidget.js",
+				"src/widgets/MenuSelectWidget.js",
+					"src/widgets/TextInputMenuSelectWidget.js",
+				"src/widgets/OutlineSelectWidget.js",
+			"src/widgets/ToggleSwitchWidget.js",
+
+			"src/outro.js.txt"
+		]
+	},
+	"oojs-ui-apex": {
+		"scripts": [
+			"src/themes/apex/ApexTheme.js"
+		],
+		"styles": [
+			"src/themes/apex/core.less",
+			"src/themes/apex/images.less"
+		]
+	},
+	"oojs-ui-mediawiki": {
+		"scripts": [
+			"src/themes/mediawiki/MediaWikiTheme.js"
+		],
+		"styles": [
+			"src/themes/mediawiki/core.less",
+			"src/themes/mediawiki/images.less"
+		]
+	}
+}

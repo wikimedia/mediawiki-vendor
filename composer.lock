@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "73f2abaaf2f7f451d2478fa2e3b483d1",
+    "hash": "48d16b008b04d5e23e09883774debd07",
     "packages": [
         {
             "name": "Plancake/EmailParser",
@@ -241,6 +241,36 @@
                 "psr-3"
             ],
             "time": "2014-09-30 13:30:58"
+        },
+        {
+            "name": "oojs/oojs-ui",
+            "version": "v0.2.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wikimedia/oojs-ui.git",
+                "reference": "7905652279f6464e1e1579f2e09fcedbd4620955"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/7905652279f6464e1e1579f2e09fcedbd4620955",
+                "reference": "7905652279f6464e1e1579f2e09fcedbd4620955",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "php/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "homepage": "https://www.mediawiki.org/wiki/OOjs_UI",
+            "time": "2014-12-02 18:34:36"
         },
         {
             "name": "psr/log",

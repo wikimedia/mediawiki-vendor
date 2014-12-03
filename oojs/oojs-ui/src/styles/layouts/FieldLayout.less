@@ -1,0 +1,65 @@
+@import '../common';
+
+.oo-ui-fieldLayout {
+	display: block;
+
+	&:before,
+	&:after {
+		content: " ";
+		display: table;
+	}
+
+	&:after {
+		clear: both;
+	}
+
+	&.oo-ui-fieldLayout-align-left,
+	&.oo-ui-fieldLayout-align-right {
+		> .oo-ui-labelElement-label {
+			display: block;
+			float: left;
+		}
+
+		> .oo-ui-fieldLayout-field {
+			display: block;
+			float: left;
+		}
+	}
+
+	&.oo-ui-fieldLayout-align-right > .oo-ui-labelElement-label {
+		text-align: right;
+	}
+
+	&.oo-ui-fieldLayout-align-inline {
+		> .oo-ui-labelElement-label {
+			display: inline-block;
+			vertical-align: middle;
+		}
+
+		> .oo-ui-fieldLayout-field {
+			display: inline-block;
+			vertical-align: middle;
+		}
+	}
+
+	&.oo-ui-fieldLayout-align-top > .oo-ui-labelElement-label {
+		display: inline-block;
+	}
+
+	> .oo-ui-popupButtonWidget {
+		> .oo-ui-popupWidget > .oo-ui-popupWidget-popup {
+			z-index: 1;
+		}
+	}
+
+	.oo-ui-fieldLayout-help {
+		float: right;
+
+		&-content {
+			padding: 0.5em 0.75em;
+			line-height: 1.5em;
+		}
+	}
+
+	.theme-oo-ui-fieldLayout();
+}
