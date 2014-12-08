@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "48d16b008b04d5e23e09883774debd07",
+    "hash": "091eedf837181abb61b3008ac6cfffb2",
     "packages": [
         {
             "name": "Plancake/EmailParser",
@@ -49,50 +49,6 @@
                 "issues": "https://github.com/plancake/official-library-php-email-parser/issues"
             },
             "time": "2013-09-05 21:02:55"
-        },
-        {
-            "name": "cdb/cdb",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/wikimedia/cdb.git",
-                "reference": "918601ea3d31b8c37312e9c0e54446aa8bfb3425"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/cdb/zipball/918601ea3d31b8c37312e9c0e54446aa8bfb3425",
-                "reference": "918601ea3d31b8c37312e9c0e54446aa8bfb3425",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.2"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "*"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "src/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPLv2"
-            ],
-            "authors": [
-                {
-                    "name": "Tim Starling",
-                    "email": "tstarling@wikimedia.org"
-                },
-                {
-                    "name": "Chad Horohoe",
-                    "email": "chad@wikimedia.org"
-                }
-            ],
-            "description": "Constant Database (CDB) wrapper library for PHP. Provides pure-PHP fallback when dba_* functions are absent.",
-            "homepage": "https://www.mediawiki.org/wiki/CDB",
-            "time": "2014-11-12 19:03:26"
         },
         {
             "name": "cssjanus/cssjanus",
@@ -368,6 +324,50 @@
                 "search"
             ],
             "time": "2014-07-27 13:45:09"
+        },
+        {
+            "name": "wikimedia/cdb",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wikimedia/cdb.git",
+                "reference": "3b7d5366c88eccf2517ebac57c59eb557c82f46c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wikimedia/cdb/zipball/3b7d5366c88eccf2517ebac57c59eb557c82f46c",
+                "reference": "3b7d5366c88eccf2517ebac57c59eb557c82f46c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Tim Starling",
+                    "email": "tstarling@wikimedia.org"
+                },
+                {
+                    "name": "Chad Horohoe",
+                    "email": "chad@wikimedia.org"
+                }
+            ],
+            "description": "Constant Database (CDB) wrapper library for PHP. Provides pure-PHP fallback when dba_* functions are absent.",
+            "homepage": "https://www.mediawiki.org/wiki/CDB",
+            "time": "2014-12-08 19:26:44"
         }
     ],
     "packages-dev": [],
