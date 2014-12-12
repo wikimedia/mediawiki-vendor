@@ -301,38 +301,6 @@
         "homepage": "http://leafo.net/lessphp/"
     },
     {
-        "name": "oojs/oojs-ui",
-        "version": "v0.2.4",
-        "version_normalized": "0.2.4.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/wikimedia/oojs-ui.git",
-            "reference": "7905652279f6464e1e1579f2e09fcedbd4620955"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/7905652279f6464e1e1579f2e09fcedbd4620955",
-            "reference": "7905652279f6464e1e1579f2e09fcedbd4620955",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3"
-        },
-        "time": "2014-12-02 18:34:36",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "php/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
-    },
-    {
         "name": "wikimedia/cdb",
         "version": "1.0.1",
         "version_normalized": "1.0.1.0",
@@ -377,5 +345,37 @@
         ],
         "description": "Constant Database (CDB) wrapper library for PHP. Provides pure-PHP fallback when dba_* functions are absent.",
         "homepage": "https://www.mediawiki.org/wiki/CDB"
+    },
+    {
+        "name": "oojs/oojs-ui",
+        "version": "v0.5.0",
+        "version_normalized": "0.5.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/oojs-ui.git",
+            "reference": "47f600d3ba9da7bed5a94486435ff565c1e73bb9"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/47f600d3ba9da7bed5a94486435ff565c1e73bb9",
+            "reference": "47f600d3ba9da7bed5a94486435ff565c1e73bb9",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "time": "2014-12-12 20:07:14",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "php/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
     }
 ]

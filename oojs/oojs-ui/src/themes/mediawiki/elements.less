@@ -21,8 +21,8 @@
 
 	&.oo-ui-indicatorElement > .oo-ui-buttonElement-button > .oo-ui-indicatorElement-indicator,
 	&.oo-ui-iconElement > .oo-ui-buttonElement-button > .oo-ui-iconElement-icon {
-		width: 2.2em;
-		height: 2.2em;
+		width: 1.9em;
+		height: 1.9em;
 	}
 
 	&.oo-ui-widget-disabled > .oo-ui-buttonElement-button {
@@ -63,8 +63,8 @@
 			}
 
 			&.oo-ui-flaggedElement {
-				&-primary {
-					.mediawiki-frameless-button-colored(@primary, @primary-selected);
+				&-progressive {
+					.mediawiki-frameless-button-colored(@progressive, @progressive-selected);
 				}
 
 				&-constructive {
@@ -81,7 +81,7 @@
 	&-framed {
 		> .oo-ui-buttonElement-button {
 			margin: 0.1em 0;
-			padding: 0.3em 1.2em;
+			padding: 0.2em 0.8em;
 			border-radius: @border-radius;
 
 			&:hover,
@@ -98,8 +98,8 @@
 
 		// Support <input/> from ButtonInputWidget
 		> input.oo-ui-buttonElement-button,
-		> .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
-			line-height: 2.2em;
+		&.oo-ui-labelElement > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
+			line-height: 1.9em;
 		}
 
 		&.oo-ui-iconElement {
@@ -136,13 +136,13 @@
 			& > .oo-ui-buttonElement-button:active,
 			&.oo-ui-buttonElement-active > .oo-ui-buttonElement-button,
 			&.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button {
-				background-color: #d0d0d0;
-				border-color: #d0d0d0;
+				background-color: @active-color;
+				border-color: @active-color;
 			}
 
 			&.oo-ui-flaggedElement {
-				&-primary {
-					.mediawiki-framed-button-colored(@primary-fill, @primary-fill-selected);
+				&-progressive {
+					.mediawiki-framed-button-colored(@progressive-fill, @progressive-fill-selected);
 				}
 
 				&-constructive {
@@ -151,6 +151,19 @@
 
 				&-destructive {
 					.mediawiki-framed-button-colored(@destructive-fill, @destructive-fill-selected);
+				}
+			}
+			&.oo-ui-flaggedElement-primary.oo-ui-flaggedElement {
+				&-progressive {
+					.mediawiki-framed-primary-button-colored(@progressive-fill, @progressive-fill-selected);
+				}
+
+				&-constructive {
+					.mediawiki-framed-primary-button-colored(@constructive-fill, @constructive-fill-selected);
+				}
+
+				&-destructive {
+					.mediawiki-framed-primary-button-colored(@destructive-fill, @destructive-fill-selected);
 				}
 			}
 		}
@@ -182,6 +195,18 @@
 
 .mediawiki-framed-button-colored( @neutral, @active ) {
 	> .oo-ui-buttonElement-button {
+		color: @neutral;
+
+		&:hover,
+		&:focus {
+			box-shadow: inset 0 -0.2em 0 0 @active, 0 0.1em 0 0 rgba(0,0,0,0.1);
+			border-bottom-color: @active;
+		}
+	}
+}
+
+.mediawiki-framed-primary-button-colored( @neutral, @active ) {
+	> .oo-ui-buttonElement-button {
 		text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
 		color: @background;
 		background-color: @neutral;
@@ -207,7 +232,11 @@
 
 .theme-oo-ui-flaggedElement () {}
 
+.theme-oo-ui-draggableElement () {}
+
 .theme-oo-ui-groupElement () {}
+
+.theme-oo-ui-draggableGroupElement () {}
 
 .theme-oo-ui-iconElement () {}
 

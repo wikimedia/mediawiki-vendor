@@ -68,10 +68,10 @@ OO.ui.ClippableElement.prototype.toggleClipping = function ( clipping ) {
 		this.clipping = clipping;
 		if ( clipping ) {
 			this.$clippableContainer = this.$( this.getClosestScrollableElementContainer() );
-			// If the clippable container is the body, we have to listen to scroll events and check
+			// If the clippable container is the root, we have to listen to scroll events and check
 			// jQuery.scrollTop on the window because of browser inconsistencies
-			this.$clippableScroller = this.$clippableContainer.is( 'body' ) ?
-				this.$( OO.ui.Element.getWindow( this.$clippableContainer ) ) :
+			this.$clippableScroller = this.$clippableContainer.is( 'html, body' ) ?
+				this.$( OO.ui.Element.static.getWindow( this.$clippableContainer ) ) :
 				this.$clippableContainer;
 			this.$clippableScroller.on( 'scroll', this.onClippableContainerScrollHandler );
 			this.$clippableWindow = this.$( this.getElementWindow() )
@@ -162,9 +162,9 @@ OO.ui.ClippableElement.prototype.clip = function () {
 		return this;
 	}
 
-	var buffer = 10,
+	var buffer = 7, // Chosen by fair dice roll
 		cOffset = this.$clippable.offset(),
-		$container = this.$clippableContainer.is( 'body' ) ?
+		$container = this.$clippableContainer.is( 'html, body' ) ?
 			this.$clippableWindow : this.$clippableContainer,
 		ccOffset = $container.offset() || { top: 0, left: 0 },
 		ccHeight = $container.innerHeight() - buffer,

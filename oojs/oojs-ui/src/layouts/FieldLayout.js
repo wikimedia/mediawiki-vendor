@@ -22,6 +22,8 @@
  * @cfg {string} [help] Explanatory text shown as a '?' icon.
  */
 OO.ui.FieldLayout = function OoUiFieldLayout( fieldWidget, config ) {
+	var hasInputWidget = fieldWidget instanceof OO.ui.InputWidget;
+
 	// Configuration initialization
 	config = $.extend( { align: 'left' }, config );
 
@@ -36,6 +38,7 @@ OO.ui.FieldLayout = function OoUiFieldLayout( fieldWidget, config ) {
 
 	// Properties
 	this.$field = this.$( '<div>' );
+	this.$body = this.$( '<' + ( hasInputWidget ? 'label' : 'div' ) + '>' );
 	this.align = null;
 	if ( config.help ) {
 		this.popupButtonWidget = new OO.ui.PopupButtonWidget( {
@@ -56,17 +59,21 @@ OO.ui.FieldLayout = function OoUiFieldLayout( fieldWidget, config ) {
 	}
 
 	// Events
-	if ( this.fieldWidget instanceof OO.ui.InputWidget ) {
+	if ( hasInputWidget ) {
 		this.$label.on( 'click', this.onLabelClick.bind( this ) );
 	}
 	this.fieldWidget.connect( this, { disable: 'onFieldDisable' } );
 
 	// Initialization
-	this.$element.addClass( 'oo-ui-fieldLayout' );
+	this.$element
+		.addClass( 'oo-ui-fieldLayout' )
+		.append( this.$help, this.$body );
+	this.$body.addClass( 'oo-ui-fieldLayout-body' );
 	this.$field
 		.addClass( 'oo-ui-fieldLayout-field' )
 		.toggleClass( 'oo-ui-fieldLayout-disable', this.fieldWidget.isDisabled() )
 		.append( this.fieldWidget.$element );
+
 	this.setAlignment( config.align );
 };
 
@@ -76,17 +83,6 @@ OO.inheritClass( OO.ui.FieldLayout, OO.ui.Layout );
 OO.mixinClass( OO.ui.FieldLayout, OO.ui.LabelElement );
 
 /* Methods */
-
-/**
- * @inheritdoc
- */
-OO.ui.FieldLayout.prototype.getTagName = function () {
-	if ( this.fieldWidget instanceof OO.ui.InputWidget ) {
-		return 'label';
-	} else {
-		return 'div';
-	}
-};
 
 /**
  * Handle field disable events.
@@ -131,9 +127,9 @@ OO.ui.FieldLayout.prototype.setAlignment = function ( value ) {
 		}
 		// Reorder elements
 		if ( value === 'inline' ) {
-			this.$element.append( this.$field, this.$label, this.$help );
+			this.$body.append( this.$field, this.$label );
 		} else {
-			this.$element.append( this.$help, this.$label, this.$field );
+			this.$body.append( this.$label, this.$field );
 		}
 		// Set classes. The following classes can be used here:
 		// * oo-ui-fieldLayout-align-left

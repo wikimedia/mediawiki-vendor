@@ -4,7 +4,24 @@
 
 .theme-oo-ui-lookupInputWidget () {}
 
-.theme-oo-ui-outlineControlsWidget () {}
+.theme-oo-ui-outlineControlsWidget () {
+	height: 3em;
+	background-color: #fff;
+
+	&-items,
+	&-movers {
+		height: 2em;
+		margin: 0.5em 0.5em 0.5em 0;
+		padding: 0;
+	}
+
+	> .oo-ui-iconElement-icon {
+		width: 1.5em;
+		height: 2em;
+		margin: 0.5em 0 0.5em 0.5em;
+		opacity: 0.2;
+	}
+}
 
 .theme-oo-ui-toggleWidget () {}
 
@@ -57,8 +74,8 @@
 
 .theme-oo-ui-iconWidget () {
 	line-height: 2.5em;
-	height: 2.2em;
-	width: 2.2em;
+	height: 1.9em;
+	width: 1.9em;
 
 	&.oo-ui-widget-disabled {
 		opacity: 0.2;
@@ -67,8 +84,8 @@
 
 .theme-oo-ui-indicatorWidget () {
 	line-height: 2.5em;
-	height: 2.2em;
-	width: 2.2em;
+	height: 1.9em;
+	width: 1.9em;
 
 	&.oo-ui-widget-disabled {
 		opacity: 0.2;
@@ -139,9 +156,12 @@
 
 .theme-oo-ui-checkboxInputWidget () {
 	position: relative;
-	line-height: @checkbox-size;
+	line-height: @input-size;
+	// Prevent the fake span from jumping to the next line of text
+	white-space: nowrap;
 
 	* {
+		font: inherit;
 		vertical-align: middle;
 	}
 
@@ -149,69 +169,151 @@
 		// we hide the input element as instead we will style the span that follows
 		// we use opacity so that VoiceOver software can still identify it
 		opacity: 0;
+
+		// having a margin might offset the checkbox from the pseudo element
+		// making only the overlap region react to events
+		margin: 0;
+
 		// ensure the invisible checkbox takes up the required width
-		width: @checkbox-size;
-		height: @checkbox-size;
+		width: @input-size;
+		height: @input-size;
+
 		// This is needed for Firefox mobile (See bug 71750 to workaround default Firefox stylesheet)
 		max-width: none;
 
-		// the pseudo before element of the span after the checkbox now looks like a checkbox
 		& + span {
 			cursor: pointer;
 			margin: 0 0.4em;
-
-			&::before {
-				content: '';
-				position: absolute;
-				left: 0;
-				border-radius: @border-radius;
-				width: @checkbox-size;
-				height: @checkbox-size;
-				background-color: #fff;
-				border: 1px solid grey;
-			}
 		}
 
-		// when the input is checked, style the span pseudo before element that followed as a checked checkbox
-		&:checked {
-			+ span {
-				&::before {
-					.oo-ui-background-image('@{oo-ui-default-image-path}/icons/check-constructive.svg');
-					background-size: @checkbox-size, @checkbox-size;
-					background-repeat: no-repeat;
-					background-position: center top;
-				}
-			}
+		& + span::before {
+			content: '';
+			.oo-ui-box-sizing( border-box );
+			position: absolute;
+			left: 0;
+			border-radius: @border-radius;
+			width: @input-size;
+			height: @input-size;
+			background-color: white;
+			border: 1px solid @input-border-color;
 		}
 
-		@focus-bottom-border-size: 0.2em;
-		&:active,
-		&:focus {
-			+ span {
-				&::after {
-					content: '';
-					position: absolute;
-					width: @checkbox-size;
-					height: @checkbox-size - @focus-bottom-border-size + 0.1; // offset by bottom border
-					// offset from the checkbox by 1px to account for left border
-					left: 1px;
-					border-bottom: solid @focus-bottom-border-size lightgrey;
-				}
-			}
+		&:checked + span::before  {
+			.oo-ui-background-image('@{oo-ui-default-image-path}/icons/check-constructive.svg');
+			background-size: @input-size, @input-size;
+			background-repeat: no-repeat;
+			background-position: center center;
+			background-origin: border-box;
 		}
 
-		// disabled checked boxes have a gray background
-		&:disabled + span {
+		&:active + span::before {
+			background-color: @input-active-color;
+			border-color: @input-active-color;
+		}
+
+		&:focus + span::before {
+			border-width: @input-focus-border-width;
+		}
+
+		&:focus:hover + span::before,
+		&:hover + span::before {
+			border-bottom-width: @input-hover-border-bottom-width;
+		}
+
+		&:disabled + span::before {
 			cursor: default;
+			background-color: @input-disabled-color;
+			border-color: @input-disabled-color;
+		}
 
-			&::before {
-				background-color: lightgrey;
-			}
+		&:disabled:checked + span::before {
+			.oo-ui-background-image('@{oo-ui-default-image-path}/icons/check-invert.svg');
 		}
 	}
 }
 
-.theme-oo-ui-radioInputWidget () {}
+.theme-oo-ui-radioInputWidget () {
+	position: relative;
+	line-height: @input-size;
+
+	* {
+		font: inherit;
+		vertical-align: middle;
+	}
+
+	input[type="radio"] {
+		// we hide the input element as instead we will style the span that follows
+		// we use opacity so that VoiceOver software can still identify it
+		opacity: 0;
+
+		// having a margin might offset the checkbox from the pseudo element
+		// making only the overlap region react to events
+		margin: 0;
+
+		// ensure the invisible checkbox takes up the required width
+		width: @input-size;
+		height: @input-size;
+
+		// This is needed for Firefox mobile (See bug 71750 to workaround default Firefox stylesheet)
+		max-width: none;
+
+		& + span {
+			cursor: pointer;
+			margin: 0 0.4em;
+		}
+
+		& + span::before {
+			transition: background-size 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+			-moz-transition: background-size 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+			-ms-transition: background-size 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+			-o-transition: background-size 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+			-webkit-transition: background-size 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+			content: '';
+			.oo-ui-box-sizing( border-box );
+			position: absolute;
+			left: 0;
+			border-radius: 100%;
+			width: @input-size;
+			height: @input-size;
+			background: white;
+			border: 1px solid @input-border-color;
+			.oo-ui-background-image('@{oo-ui-default-image-path}/icons/circle-constructive.svg');
+			background-repeat: no-repeat;
+			background-position: center center;
+			background-origin: border-box;
+			background-size: 0 0;
+		}
+
+		&:checked + span::before  {
+			background-size: 100% 100%;
+		}
+
+		&:active + span::before {
+			background-color: @input-active-color;
+			border-color: @input-active-color;
+		}
+
+		&:focus + span::before {
+			border-width: @input-focus-border-width;
+		}
+
+		&:focus:hover + span::before,
+		&:hover + span::before {
+			border-bottom-width: @input-hover-border-bottom-width;
+		}
+
+		&:disabled + span::before {
+			cursor: default;
+			background-color: @input-disabled-color;
+			border-color: @input-disabled-color;
+		}
+
+		&:disabled:checked + span::before {
+			.oo-ui-background-image('@{oo-ui-default-image-path}/icons/circle-invert.svg');
+		}
+	}
+}
 
 .theme-oo-ui-textInputWidget () {
 	width: 100%;
@@ -226,7 +328,7 @@
 		background-color: #fff;
 		color: black;
 		border: solid 1px #ccc;
-		box-shadow: inset 0 0 0 0 @primary-fill;
+		box-shadow: inset 0 0 0 0 @progressive-fill;
 		border-radius: 0.1em;
 		.oo-ui-transition(box-shadow 0.1s);
 		.oo-ui-box-sizing(border-box);
@@ -248,7 +350,7 @@
 		textarea:focus {
 			outline: none;
 			border-color: #aaa;
-			box-shadow: inset 0.4em 0 0 0 @primary-fill;
+			box-shadow: inset 0.4em 0 0 0 @progressive-fill;
 		}
 
 		input[readonly],
@@ -297,7 +399,7 @@
 	&.oo-ui-indicatorElement {
 		input,
 		textarea {
-			padding-right: 2.2em;
+			padding-right: 1.9em;
 		}
 
 		.oo-ui-indicatorElement-indicator {
@@ -319,10 +421,10 @@
 		}
 
 		&.oo-ui-indicatorElement {
-			padding-right: 2.2em;
+			padding-right: 1.9em;
 
 			.oo-ui-indicatorElement-indicator {
-				width: 2.2em;
+				width: 1.9em;
 				background-position: center center;
 				border: solid 1px #ccc;
 				border-left: none;
@@ -348,7 +450,7 @@
 
 	.oo-ui-selectWidget-depressed &-selected,
 	.oo-ui-selectWidget-pressed &-pressed {
-		background-color: #a7dcff;
+		background-color: @active-color;
 	}
 
 	&.oo-ui-widget-disabled {
@@ -381,12 +483,12 @@
 	background-color: transparent;
 
 	.oo-ui-buttonElement-button {
-		height: 2.2em;
+		height: 1.9em;
 	}
 
 	&.oo-ui-iconElement .oo-ui-iconElement-icon,
 	&.oo-ui-indicatorElement .oo-ui-indicatorElement-indicator {
-		height: 2.2em;
+		height: 1.9em;
 		margin-top: 0;
 	}
 
@@ -428,7 +530,63 @@
 	color: #888;
 }
 
-.theme-oo-ui-outlineOptionWidget () {}
+.theme-oo-ui-outlineOptionWidget () {
+	font-size: 1.1em;
+	padding: 0.75em;
+
+	&.oo-ui-indicatorElement .oo-ui-labelElement-label {
+		padding-right: 1.5em;
+	}
+
+	&.oo-ui-indicatorElement .oo-ui-indicatorElement-indicator {
+		opacity: 0.5;
+	}
+
+	&-level-0 {
+		padding-left: 3.5em;
+
+		.oo-ui-iconElement-icon {
+			left: 1em;
+		}
+	}
+	&-level-1 {
+		padding-left: 5em;
+
+		.oo-ui-iconElement-icon {
+			left: 2.5em;
+		}
+	}
+
+	&-level-2 {
+		padding-left: 6.5em;
+
+		.oo-ui-iconElement-icon {
+			left: 4em;
+		}
+	}
+
+	.oo-ui-selectWidget-depressed &.oo-ui-optionWidget-selected {
+		background-color: @active-color;
+		text-shadow: 0 1px 1px #fff;
+	}
+
+	&.oo-ui-flaggedElement-important {
+		font-weight: bold;
+	}
+
+	&.oo-ui-flaggedElement-placeholder {
+		font-style: italic;
+	}
+
+	&.oo-ui-flaggedElement-empty {
+		.oo-ui-iconElement-icon {
+			opacity: 0.5;
+		}
+		.oo-ui-labelElement-label {
+			color: #777;
+		}
+	}
+}
 
 .theme-oo-ui-popupWidget () {
 	&-popup {
@@ -487,28 +645,27 @@
 		}
 	}
 
-	&-body {
-		box-shadow: 0 0 0.66em rgba(0,0,0,0.25);
-
-		&-padded {
-			padding: 0 1em;
-		}
+	&-body-padded {
+		padding: 0 1em;
 	}
 }
 
 .theme-oo-ui-searchWidget () {
-	&-query {
-		height: 2.4em;
-		top: 1px;
+	border: solid 1px #ccc;
 
-		.oo-ui-textInputWidget input {
-			border-width: 1px 0;
+	&-query {
+		height: 4em;
+		padding: 0 1em;
+		border-bottom: solid 1px #ccc;
+
+		.oo-ui-textInputWidget {
+			margin: 0.75em 0;
 		}
 	}
 
 	&-results {
-		top: 2.2em;
-		bottom: 0.2em;
+		top: 4em;
+		padding: 1em;
 		line-height: 0;
 	}
 }
@@ -632,7 +789,7 @@
 
 		&.oo-ui-toggleWidget-on {
 			.oo-ui-toggleSwitchWidget-glow {
-				background-color: #d0d0d0;
+				background-color: @active-color;
 			}
 		}
 
@@ -646,13 +803,13 @@
 
 .theme-oo-ui-progressBarWidget () {
 	max-width: 50em;
-	border: solid 1px @primary-fill;
+	border: solid 1px @progressive-fill;
 	border-radius: 0.1em;
 	overflow: hidden;
 
 	&-bar {
 		height: 1em;
-		background: @primary-fill;
+		background: @progressive-fill;
 		.oo-ui-transition(width 200ms, margin-left 200ms);
 	}
 	&-indeterminate {

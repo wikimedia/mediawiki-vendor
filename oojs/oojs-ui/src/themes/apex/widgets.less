@@ -11,7 +11,7 @@
 	&-items,
 	&-movers {
 		height: 2em;
-		margin: 0.5em;
+		margin: 0.5em 0.5em 0.5em 0;
 		padding: 0;
 	}
 
@@ -20,10 +20,6 @@
 		height: 2em;
 		margin: 0.5em 0 0.5em 0.5em;
 		opacity: 0.2;
-	}
-
-	&-items {
-		margin-left: 0;
 	}
 }
 
@@ -496,12 +492,8 @@
 		}
 	}
 
-	&-body {
-		box-shadow: 0 0 0.66em rgba(0,0,0,0.25);
-
-		&-padded {
-			padding: 0 1em;
-		}
+	&-body-padded {
+		padding: 0 1em;
 	}
 }
 
@@ -630,22 +622,22 @@
 
 .theme-oo-ui-progressBarWidget () {
 	max-width: 50em;
-	border: solid 1px @primary-border;
+	border: solid 1px @progressive-border;
 	border-radius: 0.25em;
 	overflow: hidden;
 
 	&-bar {
 		height: 1em;
-		border-right: solid 1px @primary-border;
+		border-right: solid 1px @progressive-border;
 		.oo-ui-transition(width 200ms, margin-left 200ms);
-		.oo-ui-vertical-gradient(@primary-gradient-start, @primary-gradient-end);
+		.oo-ui-vertical-gradient(@progressive-gradient-start, @progressive-gradient-end);
 	}
 	&-indeterminate {
 		.oo-ui-progressBarWidget-bar {
 			.oo-ui-animation(oo-ui-progressBarWidget-slide 2s infinite linear);
 			width: 40%;
 			margin-left: -10%;
-			border-left: solid 1px @primary-border;
+			border-left: solid 1px @progressive-border;
 		}
 	}
 	&.oo-ui-widget-disabled {

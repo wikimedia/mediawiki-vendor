@@ -50,7 +50,7 @@ OO.ui.BookletLayout = function OoUiBookletLayout( config ) {
 	}
 	if ( this.autoFocus ) {
 		// Event 'focus' does not bubble, but 'focusin' does
-		this.stackLayout.onDOMEvent( 'focusin', this.onStackLayoutFocus.bind( this ) );
+		this.stackLayout.$element.on( 'focusin', this.onStackLayoutFocus.bind( this ) );
 	}
 
 	// Initialization
@@ -275,7 +275,7 @@ OO.ui.BookletLayout.prototype.getPage = function ( name ) {
  *
  * @return {string|null} Current page name
  */
-OO.ui.BookletLayout.prototype.getPageName = function () {
+OO.ui.BookletLayout.prototype.getCurrentPageName = function () {
 	return this.currentPageName;
 };
 

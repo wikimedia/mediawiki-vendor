@@ -333,15 +333,19 @@ OO.ui.Window.prototype.withoutSizeTransitions = function ( callback ) {
 OO.ui.Window.prototype.getContentHeight = function () {
 	var bodyHeight,
 		win = this,
-		styleObj = this.$frame[0].style;
+		bodyStyleObj = this.$body[0].style,
+		frameStyleObj = this.$frame[0].style;
 
 	// Temporarily resize the frame so getBodyHeight() can use scrollHeight measurements.
 	// Disable transitions first, otherwise we'll get values from when the window was animating.
 	this.withoutSizeTransitions( function () {
-		var oldHeight = styleObj.height;
-		styleObj.height = '1px';
+		var oldHeight = frameStyleObj.height, oldPosition = bodyStyleObj.position;
+		frameStyleObj.height = '1px';
+		// Force body to resize to new width
+		bodyStyleObj.position = 'relative';
 		bodyHeight = win.getBodyHeight();
-		styleObj.height = oldHeight;
+		frameStyleObj.height = oldHeight;
+		bodyStyleObj.position = oldPosition;
 	} );
 
 	return Math.round(
@@ -500,13 +504,13 @@ OO.ui.Window.prototype.setManager = function ( manager ) {
 	} else {
 		this.$content = this.$( '<div>' );
 		this.$document = $( this.getElementDocument() );
-		this.$content.addClass( 'oo-ui-window-content' );
+		this.$content.addClass( 'oo-ui-window-content' ).attr( 'tabIndex', 0 );
 		this.$frame.append( this.$content );
 	}
 	this.toggle( false );
 
 	// Figure out directionality:
-	this.dir = OO.ui.Element.getDir( this.$iframe || this.$content ) || 'ltr';
+	this.dir = OO.ui.Element.static.getDir( this.$iframe || this.$content ) || 'ltr';
 
 	return this;
 };
@@ -692,7 +696,7 @@ OO.ui.Window.prototype.hold = function ( data ) {
 
 	this.getHoldProcess( data ).execute().done( function () {
 		// Get the focused element within the window's content
-		var $focus = win.$content.find( OO.ui.Element.getDocument( win.$content ).activeElement );
+		var $focus = win.$content.find( OO.ui.Element.static.getDocument( win.$content ).activeElement );
 
 		// Blur the focused element
 		if ( $focus.length ) {
@@ -807,7 +811,7 @@ OO.ui.Window.prototype.load = function () {
 	doc.close();
 
 	// Properties
-	this.$ = OO.ui.Element.getJQuery( doc, this.$iframe );
+	this.$ = OO.ui.Element.static.getJQuery( doc, this.$iframe );
 	this.$content = this.$( '.oo-ui-window-content' ).attr( 'tabIndex', 0 );
 	this.$document = this.$( doc );
 

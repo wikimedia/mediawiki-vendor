@@ -31,12 +31,10 @@
 						new OOUI\ButtonWidget( array(
 							'label' => 'LTR',
 							'href' => '?dir=ltr',
-							'target' => null,
 						) ),
 						new OOUI\ButtonWidget( array(
 							'label' => 'RTL',
 							'href' => '?dir=rtl',
-							'target' => null,
 						) ),
 					)
 				) );
@@ -54,13 +52,22 @@
 				$styles = array(
 					array(),
 					array(
-						'flags' => array( 'primary' ),
+						'flags' => array( 'progressive' ),
 					),
 					array(
 						'flags' => array( 'constructive' ),
 					),
 					array(
 						'flags' => array( 'destructive' ),
+					),
+					array(
+						'flags' => array( 'primary', 'progressive' ),
+					),
+					array(
+						'flags' => array( 'primary', 'constructive' ),
+					),
+					array(
+						'flags' => array( 'primary', 'destructive' ),
 					),
 				);
 				$states = array(
@@ -118,10 +125,10 @@
 					array(
 						// Determined empirically
 						'widths' => array( 83, 108, 127, 58, 52, 77, 83, 58, 42 ),
-						'heights' => array( 1, 1, 1, 1 ),
+						'heights' => array( 1, 1, 1, 1, 1, 1, 1 ),
 					)
 				);
-				$grid->setAttributes( array( 'style' => 'height: 12em; position: relative;' ) );
+				$grid->setAttributes( array( 'style' => 'height: 24em; position: relative;' ) );
 
 				echo new OOUI\FieldsetLayout( array(
 					'label' => 'Regular buttons',
@@ -167,7 +174,7 @@
 									) ),
 									new OOUI\ButtonWidget( array(
 										'label' => 'One',
-										'flags' => array( 'primary' ),
+										'flags' => array( 'progressive' ),
 									) ),
 									new OOUI\ButtonWidget( array(
 										'label' => 'Two',
@@ -221,7 +228,7 @@
 							new OOUI\FieldLayout(
 								new OOUI\CheckboxInputWidget( array(
 									'name' => 'rememberme',
-									'value' => true,
+									'selected' => true,
 								) ),
 								array(
 									'label' => 'Remember me',
@@ -233,7 +240,7 @@
 									'name' => 'login',
 									'label' => 'Log in',
 									'type' => 'submit',
-									'flags' => 'primary',
+									'flags' => array( 'primary', 'progressive' ),
 									'icon' => 'check',
 								) ),
 								array(
@@ -328,7 +335,7 @@
 						),
 						new OOUI\FieldLayout(
 							new OOUI\CheckboxInputWidget( array(
-								'value' => true
+								'selected' => true
 							) ),
 							array(
 								'align' => 'inline',
@@ -337,7 +344,7 @@
 						),
 						new OOUI\FieldLayout(
 							new OOUI\CheckboxInputWidget( array(
-								'value' => true,
+								'selected' => true,
 								'disabled' => true
 							) ),
 							array(

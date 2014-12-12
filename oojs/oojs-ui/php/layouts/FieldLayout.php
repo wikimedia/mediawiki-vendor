@@ -32,6 +32,8 @@ class FieldLayout extends Layout {
 	 * @param string $config['help'] Explanatory text shown as a '?' icon.
 	 */
 	public function __construct( Widget $fieldWidget, array $config = array() ) {
+		$hasInputWidget = $fieldWidget instanceof InputWidget;
+
 		// Config initialization
 		$config = array_merge( array( 'align' => 'left' ), $config );
 
@@ -43,6 +45,7 @@ class FieldLayout extends Layout {
 
 		// Properties
 		$this->field = new Tag( 'div' );
+		$this->body = new Tag( $hasInputWidget ? 'label' : 'div' );
 		if ( isset( $config['help'] ) ) {
 			$this->help = new ButtonWidget( array(
 				'classes' => array( 'oo-ui-fieldLayout-help' ),
@@ -58,21 +61,16 @@ class FieldLayout extends Layout {
 		$this->mixin( new LabelElement( $this, $config ) );
 
 		// Initialization
-		$this->addClasses( array( 'oo-ui-fieldLayout' ) );
+		$this
+			->addClasses( array( 'oo-ui-fieldLayout' ) )
+			->appendContent( $this->help, $this->body );
+		$this->body->addClasses( array( 'oo-ui-fieldLayout-body' ) );
 		$this->field
 			->addClasses( array( 'oo-ui-fieldLayout-field' ) )
 			->toggleClasses( array( 'oo-ui-fieldLayout-disable' ), $fieldWidget->isDisabled() )
 			->appendContent( $fieldWidget );
 
 		$this->setAlignment( $config['align'] );
-	}
-
-	public function getTagName() {
-		if ( $this->fieldWidget instanceof InputWidget ) {
-			return 'label';
-		} else {
-			return 'div';
-		}
 	}
 
 	/**
@@ -97,11 +95,11 @@ class FieldLayout extends Layout {
 				$value = 'left';
 			}
 			// Reorder elements
-			$this->clearContent();
+			$this->body->clearContent();
 			if ( $value === 'inline' ) {
-				$this->appendContent( $this->field, $this->label, $this->help );
+				$this->body->appendContent( $this->field, $this->label );
 			} else {
-				$this->appendContent( $this->help, $this->label, $this->field );
+				$this->body->appendContent( $this->label, $this->field );
 			}
 			// Set classes. The following classes can be used here:
 			// * oo-ui-fieldLayout-align-left
