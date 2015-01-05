@@ -1,11 +1,9 @@
-[![NPM version](https://badge.fury.io/js/oojs-ui.svg)](https://badge.fury.io/js/oojs-ui) [![devDependency Status](https://david-dm.org/wikimedia/oojs-ui/dev-status.svg)](https://david-dm.org/wikimedia/oojs-ui#info=devDependencies)
+[![npm](https://img.shields.io/npm/v/oojs-ui.svg?style=flat)](https://www.npmjs.com/package/oojs-ui) [![Packagist](https://img.shields.io/packagist/v/oojs/oojs-ui.svg?style=flat)](https://packagist.org/packages/oojs/oojs-ui) [![David](https://img.shields.io/david/dev/wikimedia/oojs-ui.svg?style=flat)](https://david-dm.org/wikimedia/oojs-ui#info=devDependencies)
+
 OOjs UI
 =================
 
 OOjs UI is a modern JavaScript UI toolkit for browsers. It provides a library of common widgets, layouts and windows that are ready to use, as well as many foundational classes for constructing custom user interfaces. The library was originally created for use by [VisualEditor](https://www.mediawiki.org/wiki/VisualEditor), which uses it for its entire user interface, and is now completely independent, and more useful and convenient for other use cases.
-
-Quick start
-----------
 
 Quick start
 ----------
