@@ -33,6 +33,7 @@
 
 		> .oo-ui-labelElement-label {
 			color: @disabled-text;
+			background: @disabled-background;
 		}
 	}
 
@@ -116,20 +117,23 @@
 
 		&.oo-ui-widget-disabled > .oo-ui-buttonElement-button {
 			color: @disabled-text;
-			background: @background;
-			border: @disabled-button-border;
+			background: @disabled-background;
+			border: @disabled-background;
 		}
 
 		&.oo-ui-widget-enabled {
 			> .oo-ui-buttonElement-button {
 				color: @text;
 				background-color: @background;
-				border: @disabled-button-border;
+				border: @neutral-button-border;
 
-				&:hover,
-				&:focus {
+				&:hover {
 					box-shadow: inset 0 -0.2em 0 0 rgba(0,0,0,0.2), 0 0.1em 0 0 rgba(0,0,0,0.2);
 					border-color: #aaa;
+				}
+
+				&:focus {
+					box-shadow: inset 0 0 0 1px rgba(0,0,0,0.2);
 				}
 			}
 
@@ -138,6 +142,7 @@
 			&.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button {
 				background-color: @active-color;
 				border-color: @active-color;
+				box-shadow: none;
 			}
 
 			&.oo-ui-flaggedElement {
@@ -189,6 +194,7 @@
 		&.oo-ui-buttonElement-active > .oo-ui-buttonElement-button > .oo-ui-labelElement-label,
 		&.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
 			color: @active;
+			box-shadow: none;
 		}
 	}
 }
@@ -197,25 +203,42 @@
 	> .oo-ui-buttonElement-button {
 		color: @neutral;
 
-		&:hover,
-		&:focus {
+		&:hover {
 			box-shadow: inset 0 -0.2em 0 0 @active, 0 0.1em 0 0 rgba(0,0,0,0.1);
 			border-bottom-color: @active;
+		}
+
+		&:focus {
+			box-shadow: inset 0 0 0 1px @active;
+			border-color: @active;
+		}
+	}
+
+	&.oo-ui-widget-enabled {
+		.oo-ui-buttonElement-button:active,
+		&.oo-ui-buttonElement-active > .oo-ui-buttonElement-button,
+		&.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button {
+			color: @active;
+			border-color: @active-color;
+			box-shadow: none;
 		}
 	}
 }
 
 .mediawiki-framed-primary-button-colored( @neutral, @active ) {
 	> .oo-ui-buttonElement-button {
-		text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
 		color: @background;
 		background-color: @neutral;
 		border-color: @neutral;
 
-		&:hover,
-		&:focus {
+		&:hover {
 			box-shadow: inset 0 -0.2em 0 0 @active, 0 0.1em 0 0 rgba(0,0,0,0.1);
 			border-bottom-color: @active;
+		}
+
+		&:focus {
+			box-shadow: inset 0 0 0 1px @active;
+			border-color: @active;
 		}
 	}
 
@@ -224,6 +247,8 @@
 		&.oo-ui-buttonElement-active > .oo-ui-buttonElement-button,
 		&.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button {
 			background-color: @active;
+			border-color: @active;
+			box-shadow: none;
 		}
 	}
 }

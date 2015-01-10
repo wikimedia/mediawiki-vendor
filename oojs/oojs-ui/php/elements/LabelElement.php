@@ -4,12 +4,14 @@ namespace OOUI;
 
 /**
  * Element containing a label.
+ *
+ * @abstract
  */
 class LabelElement extends ElementMixin {
 	/**
 	 * Label value.
 	 *
-	 * @var string|null
+	 * @var string|HtmlSnippet|null
 	 */
 	protected $label = null;
 
@@ -18,7 +20,7 @@ class LabelElement extends ElementMixin {
 	/**
 	 * @param Element $element Element being mixed into
 	 * @param array $config Configuration options
-	 * @param string $config['label'] Label text
+	 * @param string|HtmlSnippet $config['label'] Label text
 	 */
 	public function __construct( Element $element, array $config = array() ) {
 		// Parent constructor
@@ -37,15 +39,15 @@ class LabelElement extends ElementMixin {
 	 * An empty string will result in the label being hidden. A string containing only whitespace will
 	 * be converted to a single `&nbsp;`.
 	 *
-	 * @param string|null $label Label text
+	 * @param string|HtmlSnippet|null $label Label text
 	 * @chainable
 	 */
 	public function setLabel( $label ) {
-		$this->label = is_string( $label ) ? $label : null;
+		$this->label = $label;
 
 		$this->target->clearContent();
 		if ( $this->label !== null ) {
-			if ( $this->label !== '' && trim( $this->label ) === '' ) {
+			if ( is_string( $this->label ) && $this->label !== '' && trim( $this->label ) === '' ) {
 				$this->target->appendContent( new HtmlSnippet( '&nbsp;' ) );
 			} else {
 				$this->target->appendContent( $label );
@@ -60,7 +62,7 @@ class LabelElement extends ElementMixin {
 	/**
 	 * Get the label.
 	 *
-	 * @return string Label text
+	 * @return string|HtmlSnippet|null Label text
 	 */
 	public function getLabel() {
 		return $this->label;
