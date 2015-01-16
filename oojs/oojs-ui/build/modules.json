@@ -26,6 +26,7 @@
 			"src/elements/IconElement.js",
 			"src/elements/IndicatorElement.js",
 			"src/elements/LabelElement.js",
+			"src/elements/LookupElement.js",
 			"src/elements/PopupElement.js",
 			"src/elements/FlaggedElement.js",
 			"src/elements/TitledElement.js",
@@ -40,6 +41,7 @@
 
 			"src/layouts/BookletLayout.js",
 			"src/layouts/FieldLayout.js",
+			"src/layouts/ActionFieldLayout.js",
 			"src/layouts/FieldsetLayout.js",
 			"src/layouts/FormLayout.js",
 			"src/layouts/GridLayout.js",
