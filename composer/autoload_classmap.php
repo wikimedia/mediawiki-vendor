@@ -193,6 +193,8 @@ return array(
     'Elastica\\Type\\AbstractType' => $vendorDir . '/ruflin/elastica/lib/Elastica/Type/AbstractType.php',
     'Elastica\\Type\\Mapping' => $vendorDir . '/ruflin/elastica/lib/Elastica/Type/Mapping.php',
     'Elastica\\Util' => $vendorDir . '/ruflin/elastica/lib/Elastica/Util.php',
+    'LCRun3' => $vendorDir . '/zordius/lightncandy/src/lightncandy.php',
+    'LightnCandy' => $vendorDir . '/zordius/lightncandy/src/lightncandy.php',
     'Monolog\\ErrorHandler' => $vendorDir . '/monolog/monolog/src/Monolog/ErrorHandler.php',
     'Monolog\\Formatter\\ChromePHPFormatter' => $vendorDir . '/monolog/monolog/src/Monolog/Formatter/ChromePHPFormatter.php',
     'Monolog\\Formatter\\ElasticaFormatter' => $vendorDir . '/monolog/monolog/src/Monolog/Formatter/ElasticaFormatter.php',
