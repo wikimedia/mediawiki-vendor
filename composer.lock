@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "061b36412fd6fdaa18ce18a79d4e7d70",
+    "hash": "22e9c4f623b4931a2a8f04f97f38d84c",
     "packages": [
         {
             "name": "Plancake/EmailParser",
@@ -368,6 +368,47 @@
             "description": "Constant Database (CDB) wrapper library for PHP. Provides pure-PHP fallback when dba_* functions are absent.",
             "homepage": "https://www.mediawiki.org/wiki/CDB",
             "time": "2014-12-08 19:26:44"
+        },
+        {
+            "name": "wikimedia/composer-merge-plugin",
+            "version": "v0.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wikimedia/composer-merge-plugin.git",
+                "reference": "08ad40053b14d564dcd2a02239f67caa20d9ea75"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wikimedia/composer-merge-plugin/zipball/08ad40053b14d564dcd2a02239f67caa20d9ea75",
+                "reference": "08ad40053b14d564dcd2a02239f67caa20d9ea75",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "1.0.0",
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "composer/composer": "1.0.*@dev",
+                "jakub-onderka/php-parallel-lint": "~0.8",
+                "phpspec/prophecy-phpunit": "~1.0",
+                "phpunit/phpunit": "~4.0",
+                "squizlabs/php_codesniffer": "~2.1.0"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "Wikimedia\\Composer\\MergePlugin"
+            },
+            "autoload": {
+                "psr-4": {
+                    "Wikimedia\\Composer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Composer plugin to merge multiple composer.json files",
+            "time": "2014-12-29 20:05:19"
         },
         {
             "name": "zordius/lightncandy",
