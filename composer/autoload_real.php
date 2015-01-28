@@ -38,6 +38,7 @@ class ComposerAutoloaderInit_mediawiki_vendor
             $loader->addClassMap($classMap);
         }
 
+        $loader->setClassMapAuthoritative(true);
         $loader->register(false);
 
         return $loader;
