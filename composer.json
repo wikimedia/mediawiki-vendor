@@ -25,7 +25,6 @@
 	"prefer-stable": true,
 	"config": {
 		"autoloader-suffix": "_mediawiki_vendor",
-		"classmap-authoritative": true,
 		"preferred-install": "dist",
 		"vendor-dir": ".",
 		"prepend-autoloader": false,
