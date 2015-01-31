@@ -30,6 +30,11 @@
 	white-space: nowrap;
 	border-radius: 0.3em;
 
+	.oo-ui-inline-spacing(0.5em);
+	.oo-ui-buttonWidget {
+		.oo-ui-inline-spacing(0);
+	}
+
 	.oo-ui-buttonElement-framed {
 		.oo-ui-buttonElement-button {
 			border-radius: 0;
@@ -49,7 +54,9 @@
 	}
 }
 
-.theme-oo-ui-buttonWidget () {}
+.theme-oo-ui-buttonWidget () {
+	.oo-ui-inline-spacing(0.5em);
+}
 
 .theme-oo-ui-actionWidget () {
 	&.oo-ui-pendingElement-pending {
@@ -97,6 +104,8 @@
 	margin: 0.25em 0;
 	width: 100%;
 	max-width: 50em;
+
+	.oo-ui-inline-spacing(0.5em);
 
 	&-handle {
 		height: 2.5em;
@@ -150,9 +159,41 @@
 	}
 }
 
-.theme-oo-ui-inputWidget () {}
+.theme-oo-ui-inputWidget () {
+	.oo-ui-inline-spacing(0.5em);
+}
 
 .theme-oo-ui-checkboxInputWidget () {}
+
+.theme-oo-ui-dropdownInputWidget () {
+	width: 100%;
+	max-width: 50em;
+
+	select {
+		height: 2.5em;
+		padding: 0.5em;
+		font-size: 1em;
+		font-family: sans-serif;
+		border: solid 1px rgba(0,0,0,0.1);
+		border-radius: 0.25em;
+	}
+
+	&.oo-ui-widget-enabled {
+		select:hover,
+		select:focus {
+			border-color: rgba(0,0,0,0.2);
+			outline: none;
+		}
+	}
+
+	&.oo-ui-widget-disabled {
+		select {
+			color: #ccc;
+			border-color: #ddd;
+			background-color: #f3f3f3;
+		}
+	}
+}
 
 .theme-oo-ui-radioInputWidget () {}
 
@@ -244,11 +285,31 @@
 			background-position: left center;
 		}
 	}
+
+	> .oo-ui-labelElement-label {
+		padding: 0.4em;
+		line-height: 1.5em;
+		color: #888;
+	}
+
+	&-labelPosition-after {
+		&.oo-ui-indicatorElement > .oo-ui-labelElement-label {
+			padding-right: 2em;
+		}
+	}
+
+	&-labelPosition-before {
+		&.oo-ui-iconElement > .oo-ui-labelElement-label {
+			padding-left: 2.5em;
+		}
+	}
 }
 
 .theme-oo-ui-comboBoxWidget () {
 	width: 100%;
 	max-width: 50em;
+
+	.oo-ui-inline-spacing(0.5em);
 
 	&-handle {
 		border: solid 1px rgba(0,0,0,0.1);
@@ -294,7 +355,9 @@
 		background-color: #a7dcff;
 	}
 
-	.oo-ui-selectWidget-pressed &-pressed {
+	.oo-ui-selectWidget-pressed &-pressed,
+	.oo-ui-selectWidget-pressed &-pressed&-highlighted,
+	.oo-ui-selectWidget-pressed &-pressed&-highlighted&-selected {
 		background-color: #a7dcff;
 	}
 
@@ -352,10 +415,6 @@
 	&.oo-ui-optionWidget-pressed,
 	&.oo-ui-optionWidget-highlighted {
 		background-color: transparent;
-	}
-
-	> .oo-ui-labelElement-label {
-		padding: 0 0.5em;
 	}
 }
 
@@ -521,6 +580,8 @@
 .theme-oo-ui-buttonSelectWidget () {
 	border-radius: 0.3em;
 
+	.oo-ui-inline-spacing(0.5em);
+
 	.oo-ui-buttonOptionWidget {
 		.oo-ui-buttonElement-button {
 			border-radius: 0;
@@ -563,6 +624,8 @@
 	border-radius: 1em;
 	box-shadow: 0 0 0 white, inset 0 0.1em 0.2em #ddd;
 	border: solid 1px #ccc;
+
+	.oo-ui-inline-spacing(0.5em);
 
 	.oo-ui-vertical-gradient(#ddd, #fff);
 

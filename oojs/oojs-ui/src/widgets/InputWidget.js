@@ -5,6 +5,7 @@
  * @class
  * @extends OO.ui.Widget
  * @mixins OO.ui.FlaggedElement
+ * @mixins OO.ui.TabIndexedElement
  *
  * @constructor
  * @param {Object} [config] Configuration options
@@ -19,13 +20,14 @@ OO.ui.InputWidget = function OoUiInputWidget( config ) {
 	// Parent constructor
 	OO.ui.InputWidget.super.call( this, config );
 
-	// Mixin constructors
-	OO.ui.FlaggedElement.call( this, config );
-
 	// Properties
 	this.$input = this.getInputElement( config );
 	this.value = '';
 	this.inputFilter = config.inputFilter;
+
+	// Mixin constructors
+	OO.ui.FlaggedElement.call( this, config );
+	OO.ui.TabIndexedElement.call( this, $.extend( {}, config, { $tabIndexed: this.$input } ) );
 
 	// Events
 	this.$input.on( 'keydown mouseup cut paste change input select', this.onEdit.bind( this ) );
@@ -42,6 +44,7 @@ OO.ui.InputWidget = function OoUiInputWidget( config ) {
 
 OO.inheritClass( OO.ui.InputWidget, OO.ui.Widget );
 OO.mixinClass( OO.ui.InputWidget, OO.ui.FlaggedElement );
+OO.mixinClass( OO.ui.InputWidget, OO.ui.TabIndexedElement );
 
 /* Events */
 
@@ -55,8 +58,11 @@ OO.mixinClass( OO.ui.InputWidget, OO.ui.FlaggedElement );
 /**
  * Get input element.
  *
+ * Subclasses of OO.ui.InputWidget use the `config` parameter to produce different elements in
+ * different circumstances. The element must have a `value` property (like form elements).
+ *
  * @private
- * @param {Object} [config] Configuration options
+ * @param {Object} config Configuration options
  * @return {jQuery} Input element
  */
 OO.ui.InputWidget.prototype.getInputElement = function () {
@@ -84,6 +90,12 @@ OO.ui.InputWidget.prototype.onEdit = function () {
  * @return {string} Input value
  */
 OO.ui.InputWidget.prototype.getValue = function () {
+	// Resynchronize our internal data with DOM data. Other scripts executing on the page can modify
+	// it, and we won't know unless they're kind enough to trigger a 'change' event.
+	var value = this.$input.val();
+	if ( this.value !== value ) {
+		this.setValue( value );
+	}
 	return this.value;
 };
 
@@ -93,13 +105,7 @@ OO.ui.InputWidget.prototype.getValue = function () {
  * @param {boolean} isRTL
  */
 OO.ui.InputWidget.prototype.setRTL = function ( isRTL ) {
-	if ( isRTL ) {
-		this.$input.removeClass( 'oo-ui-ltr' );
-		this.$input.addClass( 'oo-ui-rtl' );
-	} else {
-		this.$input.removeClass( 'oo-ui-rtl' );
-		this.$input.addClass( 'oo-ui-ltr' );
-	}
+	this.$input.prop( 'dir', isRTL ? 'rtl' : 'ltr' );
 };
 
 /**
@@ -150,7 +156,7 @@ OO.ui.InputWidget.prototype.simulateLabelClick = function () {
 		if ( this.$input.is( ':checkbox,:radio' ) ) {
 			this.$input.click();
 		} else if ( this.$input.is( ':input' ) ) {
-			this.$input[0].focus();
+			this.$input[ 0 ].focus();
 		}
 	}
 };
@@ -172,7 +178,7 @@ OO.ui.InputWidget.prototype.setDisabled = function ( state ) {
  * @chainable
  */
 OO.ui.InputWidget.prototype.focus = function () {
-	this.$input[0].focus();
+	this.$input[ 0 ].focus();
 	return this;
 };
 
@@ -182,6 +188,6 @@ OO.ui.InputWidget.prototype.focus = function () {
  * @chainable
  */
 OO.ui.InputWidget.prototype.blur = function () {
-	this.$input[0].blur();
+	this.$input[ 0 ].blur();
 	return this;
 };

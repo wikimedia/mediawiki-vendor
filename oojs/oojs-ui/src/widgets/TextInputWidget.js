@@ -14,15 +14,21 @@
  * @cfg {boolean} [autofocus=false] Ask the browser to focus this widget, using the 'autofocus' HTML
  *  attribute
  * @cfg {boolean} [readOnly=false] Prevent changes
+ * @cfg {number} [maxLength] Maximum allowed number of characters to input
  * @cfg {boolean} [multiline=false] Allow multiple lines of text
  * @cfg {boolean} [autosize=false] Automatically resize to fit content
  * @cfg {boolean} [maxRows=10] Maximum number of rows to make visible when autosizing
- * @cfg {RegExp|string} [validate] Regular expression (or symbolic name referencing
+ * @cfg {string} [labelPosition='after'] Label position, 'before' or 'after'
+ * @cfg {RegExp|string} [validate] Regular expression to validate against (or symbolic name referencing
  *  one, see #static-validationPatterns)
  */
 OO.ui.TextInputWidget = function OoUiTextInputWidget( config ) {
 	// Configuration initialization
-	config = $.extend( { readOnly: false }, config );
+	config = $.extend( {
+		type: 'text',
+		labelPosition: 'after',
+		maxRows: 10
+	}, config );
 
 	// Parent constructor
 	OO.ui.TextInputWidget.super.call( this, config );
@@ -31,13 +37,15 @@ OO.ui.TextInputWidget = function OoUiTextInputWidget( config ) {
 	OO.ui.IconElement.call( this, config );
 	OO.ui.IndicatorElement.call( this, config );
 	OO.ui.PendingElement.call( this, config );
+	OO.ui.LabelElement.call( this, config );
 
 	// Properties
 	this.readOnly = false;
 	this.multiline = !!config.multiline;
 	this.autosize = !!config.autosize;
-	this.maxRows = config.maxRows !== undefined ? config.maxRows : 10;
+	this.maxRows = config.maxRows;
 	this.validate = null;
+	this.attached = false;
 
 	// Clone for resizing
 	if ( this.autosize ) {
@@ -48,6 +56,7 @@ OO.ui.TextInputWidget = function OoUiTextInputWidget( config ) {
 	}
 
 	this.setValidation( config.validate );
+	this.setPosition( config.labelPosition );
 
 	// Events
 	this.$input.on( {
@@ -55,21 +64,25 @@ OO.ui.TextInputWidget = function OoUiTextInputWidget( config ) {
 		blur: this.setValidityFlag.bind( this )
 	} );
 	this.$element.on( 'DOMNodeInsertedIntoDocument', this.onElementAttach.bind( this ) );
+	this.$element.on( 'DOMNodeRemovedFromDocument', this.onElementDetach.bind( this ) );
 	this.$icon.on( 'mousedown', this.onIconMouseDown.bind( this ) );
 	this.$indicator.on( 'mousedown', this.onIndicatorMouseDown.bind( this ) );
+	this.on( 'labelChange', this.updatePosition.bind( this ) );
 
 	// Initialization
 	this.$element
 		.addClass( 'oo-ui-textInputWidget' )
-		.append( this.$icon, this.$indicator );
-	this.setReadOnly( config.readOnly );
+		.append( this.$icon, this.$indicator, this.$label );
+	this.setReadOnly( !!config.readOnly );
 	if ( config.placeholder ) {
 		this.$input.attr( 'placeholder', config.placeholder );
+	}
+	if ( config.maxLength ) {
+		this.$input.attr( 'maxlength', config.maxLength );
 	}
 	if ( config.autofocus ) {
 		this.$input.attr( 'autofocus', 'autofocus' );
 	}
-	this.$element.attr( 'role', 'textbox' );
 };
 
 /* Setup */
@@ -78,6 +91,7 @@ OO.inheritClass( OO.ui.TextInputWidget, OO.ui.InputWidget );
 OO.mixinClass( OO.ui.TextInputWidget, OO.ui.IconElement );
 OO.mixinClass( OO.ui.TextInputWidget, OO.ui.IndicatorElement );
 OO.mixinClass( OO.ui.TextInputWidget, OO.ui.PendingElement );
+OO.mixinClass( OO.ui.TextInputWidget, OO.ui.LabelElement );
 
 /* Static properties */
 
@@ -118,7 +132,7 @@ OO.ui.TextInputWidget.static.validationPatterns = {
  */
 OO.ui.TextInputWidget.prototype.onIconMouseDown = function ( e ) {
 	if ( e.which === 1 ) {
-		this.$input[0].focus();
+		this.$input[ 0 ].focus();
 		this.emit( 'icon' );
 		return false;
 	}
@@ -132,7 +146,7 @@ OO.ui.TextInputWidget.prototype.onIconMouseDown = function ( e ) {
  */
 OO.ui.TextInputWidget.prototype.onIndicatorMouseDown = function ( e ) {
 	if ( e.which === 1 ) {
-		this.$input[0].focus();
+		this.$input[ 0 ].focus();
 		this.emit( 'indicator' );
 		return false;
 	}
@@ -156,7 +170,20 @@ OO.ui.TextInputWidget.prototype.onKeyPress = function ( e ) {
  * @param {jQuery.Event} e Element attach event
  */
 OO.ui.TextInputWidget.prototype.onElementAttach = function () {
+	this.attached = true;
+	// If we reattached elsewhere, the valCache is now invalid
+	this.valCache = null;
 	this.adjustSize();
+	this.positionLabel();
+};
+
+/**
+ * Handle element detach events.
+ *
+ * @param {jQuery.Event} e Element detach event
+ */
+OO.ui.TextInputWidget.prototype.onElementDetach = function () {
+	this.attached = false;
 };
 
 /**
@@ -214,18 +241,18 @@ OO.ui.TextInputWidget.prototype.setReadOnly = function ( state ) {
 OO.ui.TextInputWidget.prototype.adjustSize = function () {
 	var scrollHeight, innerHeight, outerHeight, maxInnerHeight, measurementError, idealHeight;
 
-	if ( this.multiline && this.autosize && this.$input.val() !== this.valCache ) {
+	if ( this.multiline && this.autosize && this.attached && this.$input.val() !== this.valCache ) {
 		this.$clone
 			.val( this.$input.val() )
 			.attr( 'rows', '' )
 			// Set inline height property to 0 to measure scroll height
 			.css( 'height', 0 );
 
-		this.$clone[0].style.display = 'block';
+		this.$clone[ 0 ].style.display = 'block';
 
 		this.valCache = this.$input.val();
 
-		scrollHeight = this.$clone[0].scrollHeight;
+		scrollHeight = this.$clone[ 0 ].scrollHeight;
 
 		// Remove inline height property to measure natural heights
 		this.$clone.css( 'height', '' );
@@ -241,10 +268,10 @@ OO.ui.TextInputWidget.prototype.adjustSize = function () {
 
 		// Difference between reported innerHeight and scrollHeight with no scrollbars present
 		// Equals 1 on Blink-based browsers and 0 everywhere else
-		measurementError = maxInnerHeight - this.$clone[0].scrollHeight;
+		measurementError = maxInnerHeight - this.$clone[ 0 ].scrollHeight;
 		idealHeight = Math.min( maxInnerHeight, scrollHeight + measurementError );
 
-		this.$clone[0].style.display = 'none';
+		this.$clone[ 0 ].style.display = 'none';
 
 		// Only apply inline height when expansion beyond natural height is needed
 		if ( idealHeight > innerHeight ) {
@@ -258,19 +285,11 @@ OO.ui.TextInputWidget.prototype.adjustSize = function () {
 };
 
 /**
- * Get input element.
- *
+ * @inheritdoc
  * @private
- * @param {Object} [config] Configuration options
- * @return {jQuery} Input element
  */
 OO.ui.TextInputWidget.prototype.getInputElement = function ( config ) {
-	// Configuration initialization
-	config = config || {};
-
-	var type = config.type || 'text';
-
-	return config.multiline ? this.$( '<textarea>' ) : this.$( '<input type="' + type + '" />' );
+	return config.multiline ? this.$( '<textarea>' ) : this.$( '<input type="' + config.type + '" />' );
 };
 
 /**
@@ -310,7 +329,7 @@ OO.ui.TextInputWidget.prototype.setValidation = function ( validate ) {
 	if ( validate instanceof RegExp ) {
 		this.validate = validate;
 	} else {
-		this.validate = this.constructor.static.validationPatterns[validate] || /.*/;
+		this.validate = this.constructor.static.validationPatterns[ validate ] || /.*/;
 	}
 };
 
@@ -332,4 +351,62 @@ OO.ui.TextInputWidget.prototype.setValidityFlag = function () {
  */
 OO.ui.TextInputWidget.prototype.isValid = function () {
 	return $.Deferred().resolve( !!this.getValue().match( this.validate ) ).promise();
+};
+
+/**
+ * Set the position of the inline label.
+ *
+ * @param {string} labelPosition Label position, 'before' or 'after'
+ * @chainable
+ */
+OO.ui.TextInputWidget.prototype.setPosition = function ( labelPosition ) {
+	this.labelPosition = labelPosition;
+	this.updatePosition();
+	return this;
+};
+
+/**
+ * Update the position of the inline label.
+ *
+ * @chainable
+ */
+OO.ui.TextInputWidget.prototype.updatePosition = function () {
+	var after = this.labelPosition === 'after';
+
+	this.$element
+		.toggleClass( 'oo-ui-textInputWidget-labelPosition-after', this.label && after )
+		.toggleClass( 'oo-ui-textInputWidget-labelPosition-before', this.label && !after );
+
+	if ( this.label ) {
+		this.positionLabel();
+	}
+
+	return this;
+};
+
+/**
+ * Position the label by setting the correct padding on the input.
+ *
+ * @chainable
+ */
+OO.ui.TextInputWidget.prototype.positionLabel = function () {
+	// Clear old values
+	this.$input
+		// Clear old values if present
+		.css( {
+			'padding-right': '',
+			'padding-left': ''
+		} );
+
+	if ( !this.$label.text() ) {
+		return;
+	}
+
+	var after = this.labelPosition === 'after',
+		rtl = this.$element.css( 'direction' ) === 'rtl',
+		property = after === rtl ? 'padding-left' : 'padding-right';
+
+	this.$input.css( property, this.$label.outerWidth() );
+
+	return this;
 };

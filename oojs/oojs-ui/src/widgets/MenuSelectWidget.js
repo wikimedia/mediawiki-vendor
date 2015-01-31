@@ -27,7 +27,6 @@ OO.ui.MenuSelectWidget = function OoUiMenuSelectWidget( config ) {
 	OO.ui.ClippableElement.call( this, $.extend( {}, config, { $clippable: this.$group } ) );
 
 	// Properties
-	this.flashing = false;
 	this.visible = false;
 	this.newItems = null;
 	this.autoHide = config.autoHide === undefined || !!config.autoHide;
@@ -59,8 +58,8 @@ OO.mixinClass( OO.ui.MenuSelectWidget, OO.ui.ClippableElement );
  */
 OO.ui.MenuSelectWidget.prototype.onDocumentMouseDown = function ( e ) {
 	if (
-		!OO.ui.contains( this.$element[0], e.target, true ) &&
-		( !this.$widget || !OO.ui.contains( this.$widget[0], e.target, true ) )
+		!OO.ui.contains( this.$element[ 0 ], e.target, true ) &&
+		( !this.$widget || !OO.ui.contains( this.$widget[ 0 ], e.target, true ) )
 	) {
 		this.toggle( false );
 	}
@@ -141,27 +140,14 @@ OO.ui.MenuSelectWidget.prototype.unbindKeyDownListener = function () {
 /**
  * Choose an item.
  *
- * This will close the menu when done, unlike selectItem which only changes selection.
+ * This will close the menu, unlike #selectItem which only changes selection.
  *
  * @param {OO.ui.OptionWidget} item Item to choose
  * @chainable
  */
 OO.ui.MenuSelectWidget.prototype.chooseItem = function ( item ) {
-	var widget = this;
-
-	// Parent method
 	OO.ui.MenuSelectWidget.super.prototype.chooseItem.call( this, item );
-
-	if ( item && !this.flashing ) {
-		this.flashing = true;
-		item.flash().done( function () {
-			widget.toggle( false );
-			widget.flashing = false;
-		} );
-	} else {
-		this.toggle( false );
-	}
-
+	this.toggle( false );
 	return this;
 };
 
@@ -180,7 +166,7 @@ OO.ui.MenuSelectWidget.prototype.addItems = function ( items, index ) {
 	}
 
 	for ( i = 0, len = items.length; i < len; i++ ) {
-		item = items[i];
+		item = items[ i ];
 		if ( this.isVisible() ) {
 			// Defer fitting label until item has been attached
 			item.fitLabel();
@@ -230,7 +216,7 @@ OO.ui.MenuSelectWidget.prototype.toggle = function ( visible ) {
 	var i, len,
 		change = visible !== this.isVisible(),
 		elementDoc = this.getElementDocument(),
-		widgetDoc = this.$widget ? this.$widget[0].ownerDocument : null;
+		widgetDoc = this.$widget ? this.$widget[ 0 ].ownerDocument : null;
 
 	// Parent method
 	OO.ui.MenuSelectWidget.super.prototype.toggle.call( this, visible );
@@ -242,11 +228,11 @@ OO.ui.MenuSelectWidget.prototype.toggle = function ( visible ) {
 			// Change focus to enable keyboard navigation
 			if ( this.isolated && this.$input && !this.$input.is( ':focus' ) ) {
 				this.$previousFocus = this.$( ':focus' );
-				this.$input[0].focus();
+				this.$input[ 0 ].focus();
 			}
 			if ( this.newItems && this.newItems.length ) {
 				for ( i = 0, len = this.newItems.length; i < len; i++ ) {
-					this.newItems[i].fitLabel();
+					this.newItems[ i ].fitLabel();
 				}
 				this.newItems = null;
 			}
@@ -267,7 +253,7 @@ OO.ui.MenuSelectWidget.prototype.toggle = function ( visible ) {
 		} else {
 			this.unbindKeyDownListener();
 			if ( this.isolated && this.$previousFocus ) {
-				this.$previousFocus[0].focus();
+				this.$previousFocus[ 0 ].focus();
 				this.$previousFocus = null;
 			}
 			elementDoc.removeEventListener(

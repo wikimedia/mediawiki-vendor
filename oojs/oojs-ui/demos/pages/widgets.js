@@ -103,7 +103,7 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 			items = [],
 			i, number;
 		for ( i = 0; i < data.length; i++ ) {
-			number = String( data[i] );
+			number = String( data[ i ] );
 			items.push( new OO.ui.MenuOptionWidget( {
 				data: number,
 				label: number
@@ -440,7 +440,7 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 				]
 			} ),
 			{
-				label: 'DraggableGroupWidget (horizontal)',
+				label: 'DraggableGroupWidget (horizontal)\u200E',
 				align: 'top'
 			}
 		),
@@ -470,7 +470,7 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 				]
 			} ),
 			{
-				label: 'DraggableGroupWidget (vertical)',
+				label: 'DraggableGroupWidget (vertical)\u200E',
 				align: 'top'
 			}
 		),
@@ -489,6 +489,25 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 					new OO.ui.ToggleButtonWidget( {
 						label: 'Three',
 						flags: [ 'destructive' ]
+					} )
+				]
+			} ),
+			{
+				label: 'ButtonGroupWidget (colors)\u200E',
+				align: 'top'
+			}
+		),
+		new OO.ui.FieldLayout(
+			new OO.ui.ButtonGroupWidget( {
+				items: [
+					new OO.ui.ToggleButtonWidget( {
+						label: 'One'
+					} ),
+					new OO.ui.ToggleButtonWidget( {
+						label: 'Two'
+					} ),
+					new OO.ui.ToggleButtonWidget( {
+						label: 'Three'
 					} )
 				]
 			} ),
@@ -519,6 +538,28 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 						data: 'd',
 						label: 'Three',
 						flags: [ 'destructive' ]
+					} )
+				]
+			} ),
+			{
+				label: 'ButtonSelectWidget (colors)\u200E',
+				align: 'top'
+			}
+		),
+		new OO.ui.FieldLayout(
+			new OO.ui.ButtonSelectWidget( {
+				items: [
+					new OO.ui.ButtonOptionWidget( {
+						data: 'b',
+						label: 'One'
+					} ),
+					new OO.ui.ButtonOptionWidget( {
+						data: 'c',
+						label: 'Two'
+					} ),
+					new OO.ui.ButtonOptionWidget( {
+						data: 'd',
+						label: 'Three'
 					} )
 				]
 			} ),
@@ -694,7 +735,7 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 			} ),
 			{
 				align: 'top',
-				label: 'ButtonInputWidget (type: submit)'
+				label: 'ButtonInputWidget (type: submit)\u200E'
 			}
 		),
 		new OO.ui.FieldLayout(
@@ -705,7 +746,7 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 			} ),
 			{
 				align: 'top',
-				label: 'ButtonInputWidget (type: submit, using <input/>)'
+				label: 'ButtonInputWidget (type: submit, using <input/>)\u200E'
 			}
 		),
 		new OO.ui.FieldLayout(
@@ -767,14 +808,13 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 		new OO.ui.FieldLayout(
 			new NumberLookupTextInputWidget(),
 			{
-				label: 'LookupElement demo (try inputting an integer)',
+				label: 'LookupElement (try inputting an integer)\u200E',
 				align: 'top'
 			}
 		),
 		new OO.ui.FieldLayout(
 			new OO.ui.DropdownWidget( {
 				label: 'Select one',
-				align: 'top',
 				menu: {
 					items: [
 						new OO.ui.MenuOptionWidget( {
@@ -871,6 +911,29 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 			}
 		),
 		new OO.ui.FieldLayout(
+			new OO.ui.DropdownInputWidget( {
+				options: [
+					{
+						data: 'a',
+						label: 'First'
+					},
+					{
+						data: 'b',
+						label: 'Second'
+					},
+					{
+						data: 'c',
+						label: 'Third'
+					}
+				],
+				value: 'b'
+			} ),
+			{
+				label: 'DropdownInputWidget',
+				align: 'top'
+			}
+		),
+		new OO.ui.FieldLayout(
 			new OO.ui.ComboBoxWidget( {
 				menu: {
 					items: [
@@ -963,7 +1026,7 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 		new OO.ui.FieldLayout(
 			new OO.ui.TextInputWidget( {
 				multiline: true,
-				value: 'Multiline'
+				value: 'Multiline\nMultiline'
 			} ),
 			{
 				label: 'TextInputWidget (multiline)\u200E',
@@ -974,10 +1037,22 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 			new OO.ui.TextInputWidget( {
 				multiline: true,
 				autosize: true,
-				value: 'Autosize'
+				value: 'Autosize\nAutosize\nAutosize\nAutosize'
 			} ),
 			{
 				label: 'TextInputWidget (autosize)\u200E',
+				align: 'top'
+			}
+		),
+		new OO.ui.FieldLayout(
+			new OO.ui.TextInputWidget( {
+				icon: 'picture',
+				indicator: 'required',
+				value: 'Text input with label',
+				label: 'Inline label'
+			} ),
+			{
+				label: 'TextInputWidget (label)\u200E',
 				align: 'top'
 			}
 		),
@@ -1007,7 +1082,11 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 		);
 	} );
 
-	fieldset = new OO.ui.FieldsetLayout( { label: 'Widgets' } );
+	fieldset = new OO.ui.FieldsetLayout( {
+		label: 'Widgets',
+		help: 'I am an additional, helpful information. Lorem ipsum dolor sit amet, cibo definiebas pri ' +
+			'in, duo ex inimicus perpetua complectitur, mel periculis similique at.\u200E'
+	} );
 	fieldset.addItems( fieldLayouts );
 	$demo.append( $( '<div class="oo-ui-demo-container">' ).append( fieldset.$element ) );
 };

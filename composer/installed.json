@@ -347,38 +347,6 @@
         "homepage": "https://www.mediawiki.org/wiki/CDB"
     },
     {
-        "name": "oojs/oojs-ui",
-        "version": "v0.6.3",
-        "version_normalized": "0.6.3.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/wikimedia/oojs-ui.git",
-            "reference": "4125273a4b9db9a6b2339950a97ba41cca11fef5"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/4125273a4b9db9a6b2339950a97ba41cca11fef5",
-            "reference": "4125273a4b9db9a6b2339950a97ba41cca11fef5",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3"
-        },
-        "time": "2015-01-15 23:16:20",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "php/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
-    },
-    {
         "name": "zordius/lightncandy",
         "version": "v0.18",
         "version_normalized": "0.18.0.0",
@@ -469,5 +437,37 @@
             "MIT"
         ],
         "description": "Composer plugin to merge multiple composer.json files"
+    },
+    {
+        "name": "oojs/oojs-ui",
+        "version": "v0.6.4",
+        "version_normalized": "0.6.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/oojs-ui.git",
+            "reference": "73ff43735d6997ef4ba9320a1dde2f4de37cc7f6"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/73ff43735d6997ef4ba9320a1dde2f4de37cc7f6",
+            "reference": "73ff43735d6997ef4ba9320a1dde2f4de37cc7f6",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "time": "2015-01-31 01:12:58",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "php/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
     }
 ]

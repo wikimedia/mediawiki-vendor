@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "22e9c4f623b4931a2a8f04f97f38d84c",
+    "hash": "b5e89a90deda7732d0d3173052f2e51a",
     "packages": [
         {
             "name": "Plancake/EmailParser",
@@ -200,16 +200,16 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.6.3",
+            "version": "v0.6.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "4125273a4b9db9a6b2339950a97ba41cca11fef5"
+                "reference": "73ff43735d6997ef4ba9320a1dde2f4de37cc7f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/4125273a4b9db9a6b2339950a97ba41cca11fef5",
-                "reference": "4125273a4b9db9a6b2339950a97ba41cca11fef5",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/73ff43735d6997ef4ba9320a1dde2f4de37cc7f6",
+                "reference": "73ff43735d6997ef4ba9320a1dde2f4de37cc7f6",
                 "shasum": ""
             },
             "require": {
@@ -226,7 +226,7 @@
                 "MIT"
             ],
             "homepage": "https://www.mediawiki.org/wiki/OOjs_UI",
-            "time": "2015-01-15 23:16:20"
+            "time": "2015-01-31 01:12:58"
         },
         {
             "name": "psr/log",
@@ -465,6 +465,7 @@
         "plancake/emailparser": 20
     },
     "prefer-stable": true,
+    "prefer-lowest": false,
     "platform": {
         "php": ">=5.3.3"
     },

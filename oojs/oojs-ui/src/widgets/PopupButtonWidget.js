@@ -18,6 +18,7 @@ OO.ui.PopupButtonWidget = function OoUiPopupButtonWidget( config ) {
 	// Initialization
 	this.$element
 		.addClass( 'oo-ui-popupButtonWidget' )
+		.attr( 'aria-haspopup', 'true' )
 		.append( this.popup.$element );
 };
 
@@ -35,7 +36,7 @@ OO.mixinClass( OO.ui.PopupButtonWidget, OO.ui.PopupElement );
  */
 OO.ui.PopupButtonWidget.prototype.onClick = function ( e ) {
 	// Skip clicks within the popup
-	if ( $.contains( this.popup.$element[0], e.target ) ) {
+	if ( $.contains( this.popup.$element[ 0 ], e.target ) ) {
 		return;
 	}
 
