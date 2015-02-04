@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "09659d4d0c3e6326e76575425744ccae",
+    "hash": "0b09782f743df8081fb436c9b17f257c",
     "packages": [
         {
             "name": "Plancake/EmailParser",
@@ -461,9 +461,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "plancake/emailparser": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

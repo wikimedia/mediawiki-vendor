@@ -304,7 +304,6 @@ return array(
     'OOUI\\Theme' => $vendorDir . '/oojs/oojs-ui/php/Theme.php',
     'OOUI\\TitledElement' => $vendorDir . '/oojs/oojs-ui/php/elements/TitledElement.php',
     'OOUI\\Widget' => $vendorDir . '/oojs/oojs-ui/php/Widget.php',
-    'PlancakeEmailParser' => $vendorDir . '/Plancake/EmailParser/PlancakeEmailParser.php',
     'Psr\\Log\\AbstractLogger' => $vendorDir . '/psr/log/Psr/Log/AbstractLogger.php',
     'Psr\\Log\\InvalidArgumentException' => $vendorDir . '/psr/log/Psr/Log/InvalidArgumentException.php',
     'Psr\\Log\\LogLevel' => $vendorDir . '/psr/log/Psr/Log/LogLevel.php',
