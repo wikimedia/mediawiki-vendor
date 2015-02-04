@@ -7,7 +7,6 @@ $baseDir = $vendorDir;
 
 return array(
     'Psr\\Log\\' => array($vendorDir . '/psr/log'),
-    'PlancakeEmailParser' => array($vendorDir . '/Plancake/EmailParser'),
     'Elastica\\Test' => array($vendorDir . '/ruflin/elastica/test/lib'),
     'Elastica' => array($vendorDir . '/ruflin/elastica/lib'),
     '' => array($vendorDir . '/cssjanus/cssjanus/src'),

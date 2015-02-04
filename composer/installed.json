@@ -40,52 +40,6 @@
         ]
     },
     {
-        "name": "Plancake/EmailParser",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/plancake/official-library-php-email-parser.git",
-            "reference": "e7453ead1f3a74810d8050a30afb96feed74477a"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/plancake/official-library-php-email-parser/zipball/2108a328221b2994ab4ed16e608dcfbe7937d57e",
-            "reference": "e7453ead1f3a74810d8050a30afb96feed74477a",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.0"
-        },
-        "time": "2013-09-05 21:02:55",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "PlancakeEmailParser": "."
-            }
-        },
-        "license": [
-            "GPLv3"
-        ],
-        "authors": [
-            {
-                "name": "Daniele Occhipinti",
-                "email": "dan@plancake.com"
-            }
-        ],
-        "description": "Plancake Email Parser is a simple emailparser for php",
-        "homepage": "http://www.plancake.com",
-        "keywords": [
-            "email",
-            "parser"
-        ],
-        "support": {
-            "source": "https://github.com/plancake/official-library-php-email-parser/tree/master",
-            "issues": "https://github.com/plancake/official-library-php-email-parser/issues"
-        }
-    },
-    {
         "name": "monolog/monolog",
         "version": "1.11.0",
         "version_normalized": "1.11.0.0",
@@ -440,23 +394,23 @@
     },
     {
         "name": "oojs/oojs-ui",
-        "version": "v0.6.5",
-        "version_normalized": "0.6.5.0",
+        "version": "v0.6.6",
+        "version_normalized": "0.6.6.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/oojs-ui.git",
-            "reference": "57b2cc74b44c9efa7a262d30ef1cfdb935fa6138"
+            "reference": "e2dc8fe83ba530f4d35258e8ac0b3061582eaf72"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/57b2cc74b44c9efa7a262d30ef1cfdb935fa6138",
-            "reference": "57b2cc74b44c9efa7a262d30ef1cfdb935fa6138",
+            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/e2dc8fe83ba530f4d35258e8ac0b3061582eaf72",
+            "reference": "e2dc8fe83ba530f4d35258e8ac0b3061582eaf72",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.3"
         },
-        "time": "2015-02-02 02:41:40",
+        "time": "2015-02-04 16:06:54",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
