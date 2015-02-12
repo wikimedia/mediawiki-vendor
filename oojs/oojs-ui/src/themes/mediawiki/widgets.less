@@ -36,13 +36,6 @@
 	}
 
 	.oo-ui-buttonElement-framed {
-		&.oo-ui-buttonElement-active {
-			.oo-ui-buttonElement-button {
-				background: @highlight;
-				color: #fff;
-			}
-		}
-
 		.oo-ui-buttonElement-button {
 			border-radius: 0;
 			margin-left: -1px;
@@ -186,6 +179,9 @@
 		// we hide the input element as instead we will style the span that follows
 		// we use opacity so that VoiceOver software can still identify it
 		opacity: 0;
+		// render "on top of" the span, so that it's still clickable
+		position: relative;
+		z-index: 1;
 
 		// having a margin might offset the checkbox from the pseudo element
 		// making only the overlap region react to events
@@ -214,7 +210,7 @@
 			height: @input-size;
 			background-color: white;
 			border: 1px solid @input-border-color;
-			.oo-ui-background-image('@{oo-ui-default-image-path}/icons/check-constructive.svg');
+			.oo-ui-background-image('@{oo-ui-default-image-path}/icons/check-constructive.@{oo-ui-default-image-ext}');
 			background-repeat: no-repeat;
 			background-position: center center;
 			background-origin: border-box;
@@ -246,7 +242,7 @@
 		}
 
 		&:disabled:checked + span::before {
-			.oo-ui-background-image('@{oo-ui-default-image-path}/icons/check-invert.svg');
+			.oo-ui-background-image('@{oo-ui-default-image-path}/icons/check-invert.@{oo-ui-default-image-ext}');
 		}
 	}
 }
@@ -296,6 +292,9 @@
 		// we hide the input element as instead we will style the span that follows
 		// we use opacity so that VoiceOver software can still identify it
 		opacity: 0;
+		// render "on top of" the span, so that it's still clickable
+		position: relative;
+		z-index: 1;
 
 		// having a margin might offset the checkbox from the pseudo element
 		// making only the overlap region react to events
@@ -324,7 +323,7 @@
 			height: @input-size;
 			background: white;
 			border: 1px solid @input-border-color;
-			.oo-ui-background-image('@{oo-ui-default-image-path}/icons/circle-constructive.svg');
+			.oo-ui-background-image('@{oo-ui-default-image-path}/icons/circle-constructive.@{oo-ui-default-image-ext}');
 			background-repeat: no-repeat;
 			background-position: center center;
 			background-origin: border-box;
@@ -356,7 +355,7 @@
 		}
 
 		&:disabled:checked + span::before {
-			.oo-ui-background-image('@{oo-ui-default-image-path}/icons/circle-invert.svg');
+			.oo-ui-background-image('@{oo-ui-default-image-path}/icons/circle-invert.@{oo-ui-default-image-ext}');
 		}
 	}
 }
@@ -518,7 +517,7 @@
 	.oo-ui-selectWidget-pressed &-pressed,
 	.oo-ui-selectWidget-pressed &-pressed&-highlighted,
 	.oo-ui-selectWidget-pressed &-pressed&-highlighted&-selected {
-		background-color: @active-color;
+		background-color: @pressed-color;
 	}
 
 	&.oo-ui-widget-disabled {
@@ -583,7 +582,7 @@
 
 	&.oo-ui-optionWidget {
 		&-selected {
-			background-color: @highlight;
+			background-color: @active;
 			color: #fff;
 
 			.oo-ui-iconElement-icon {
@@ -638,7 +637,7 @@
 	}
 
 	.oo-ui-selectWidget-depressed &.oo-ui-optionWidget-selected {
-		background-color: @active-color;
+		background-color: @pressed-color;
 		text-shadow: 0 1px 1px #fff;
 	}
 
@@ -770,12 +769,6 @@
 	.oo-ui-inline-spacing(0.5em);
 
 	.oo-ui-buttonOptionWidget {
-		&.oo-ui-buttonElement-active {
-			.oo-ui-buttonElement-button {
-				background: @highlight;
-				color: #fff;
-			}
-		}
 		.oo-ui-buttonElement-button {
 			border-radius: 0;
 			margin-left: -1px;
@@ -869,7 +862,7 @@
 
 		&.oo-ui-toggleWidget-on {
 			.oo-ui-toggleSwitchWidget-glow {
-				background-color: @active-color;
+				background-color: @pressed-color;
 			}
 		}
 

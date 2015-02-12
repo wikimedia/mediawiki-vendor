@@ -3,6 +3,7 @@
  *
  * @class
  * @extends OO.ui.Widget
+ * @mixins OO.ui.TabIndexedElement
  *
  * @constructor
  * @param {Object} [config] Configuration options
@@ -17,15 +18,24 @@ OO.ui.ComboBoxWidget = function OoUiComboBoxWidget( config ) {
 	// Parent constructor
 	OO.ui.ComboBoxWidget.super.call( this, config );
 
+	// Properties (must be set before TabIndexedElement constructor call)
+	this.$indicator = this.$( '<span>' );
+
+	// Mixin constructors
+	OO.ui.TabIndexedElement.call( this, $.extend( {}, config, { $tabIndexed: this.$indicator } ) );
+
 	// Properties
 	this.$overlay = config.$overlay || this.$element;
 	this.input = new OO.ui.TextInputWidget( $.extend(
-		{ $: this.$, indicator: 'down', disabled: this.isDisabled() },
+		{
+			indicator: 'down',
+			$indicator: this.$indicator,
+			disabled: this.isDisabled()
+		},
 		config.input
 	) );
 	this.menu = new OO.ui.TextInputMenuSelectWidget( this.input, $.extend(
 		{
-			$: OO.ui.Element.static.getJQuery( this.$overlay ),
 			widget: this,
 			input: this.input,
 			disabled: this.isDisabled()
@@ -34,9 +44,12 @@ OO.ui.ComboBoxWidget = function OoUiComboBoxWidget( config ) {
 	) );
 
 	// Events
+	this.$indicator.on( {
+		click: this.onClick.bind( this ),
+		keypress: this.onKeyPress.bind( this )
+	} );
 	this.input.connect( this, {
 		change: 'onInputChange',
-		indicator: 'onInputIndicator',
 		enter: 'onInputEnter'
 	} );
 	this.menu.connect( this, {
@@ -54,6 +67,7 @@ OO.ui.ComboBoxWidget = function OoUiComboBoxWidget( config ) {
 /* Setup */
 
 OO.inheritClass( OO.ui.ComboBoxWidget, OO.ui.Widget );
+OO.mixinClass( OO.ui.ComboBoxWidget, OO.ui.TabIndexedElement );
 
 /* Methods */
 
@@ -81,12 +95,29 @@ OO.ui.ComboBoxWidget.prototype.onInputChange = function ( value ) {
 };
 
 /**
- * Handle input indicator events.
+ * Handle mouse click events.
+ *
+ * @param {jQuery.Event} e Mouse click event
  */
-OO.ui.ComboBoxWidget.prototype.onInputIndicator = function () {
-	if ( !this.isDisabled() ) {
+OO.ui.ComboBoxWidget.prototype.onClick = function ( e ) {
+	if ( !this.isDisabled() && e.which === 1 ) {
 		this.menu.toggle();
+		this.input.$input[ 0 ].focus();
 	}
+	return false;
+};
+
+/**
+ * Handle key press events.
+ *
+ * @param {jQuery.Event} e Key press event
+ */
+OO.ui.ComboBoxWidget.prototype.onKeyPress = function ( e ) {
+	if ( !this.isDisabled() && ( e.which === OO.ui.Keys.SPACE || e.which === OO.ui.Keys.ENTER ) ) {
+		this.menu.toggle();
+		this.input.$input[ 0 ].focus();
+	}
+	return false;
 };
 
 /**

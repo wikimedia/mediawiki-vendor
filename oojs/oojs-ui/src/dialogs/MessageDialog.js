@@ -204,15 +204,15 @@ OO.ui.MessageDialog.prototype.initialize = function () {
 	OO.ui.MessageDialog.super.prototype.initialize.call( this );
 
 	// Properties
-	this.$actions = this.$( '<div>' );
+	this.$actions = $( '<div>' );
 	this.container = new OO.ui.PanelLayout( {
-		$: this.$, scrollable: true, classes: [ 'oo-ui-messageDialog-container' ]
+		scrollable: true, classes: [ 'oo-ui-messageDialog-container' ]
 	} );
 	this.text = new OO.ui.PanelLayout( {
-		$: this.$, padded: true, expanded: false, classes: [ 'oo-ui-messageDialog-text' ]
+		padded: true, expanded: false, classes: [ 'oo-ui-messageDialog-text' ]
 	} );
 	this.message = new OO.ui.LabelWidget( {
-		$: this.$, classes: [ 'oo-ui-messageDialog-message' ]
+		classes: [ 'oo-ui-messageDialog-message' ]
 	} );
 
 	// Initialization
@@ -279,8 +279,10 @@ OO.ui.MessageDialog.prototype.fitActions = function () {
 		}
 	}
 
+	// Move the body out of the way of the foot
+	this.$body.css( 'bottom', this.$foot.outerHeight( true ) );
+
 	if ( this.verticalActionLayout !== previous ) {
-		this.$body.css( 'bottom', this.$foot.outerHeight( true ) );
 		// We changed the layout, window height might need to be updated.
 		this.updateSize();
 	}

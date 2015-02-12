@@ -26,16 +26,17 @@ OO.ui.PopupWidget = function OoUiPopupWidget( config ) {
 	// Parent constructor
 	OO.ui.PopupWidget.super.call( this, config );
 
+	// Properties (must be set before ClippableElement constructor call)
+	this.$body = $( '<div>' );
+
 	// Mixin constructors
 	OO.ui.LabelElement.call( this, config );
-	OO.ui.ClippableElement.call( this, config );
+	OO.ui.ClippableElement.call( this, $.extend( {}, config, { $clippable: this.$body } ) );
 
 	// Properties
-	this.visible = false;
-	this.$popup = this.$( '<div>' );
-	this.$head = this.$( '<div>' );
-	this.$body = this.$( '<div>' );
-	this.$anchor = this.$( '<div>' );
+	this.$popup = $( '<div>' );
+	this.$head = $( '<div>' );
+	this.$anchor = $( '<div>' );
 	// If undefined, will be computed lazily in updateDimensions()
 	this.$container = config.$container;
 	this.containerPadding = config.containerPadding !== undefined ? config.containerPadding : 10;
@@ -46,7 +47,7 @@ OO.ui.PopupWidget = function OoUiPopupWidget( config ) {
 	this.width = config.width !== undefined ? config.width : 320;
 	this.height = config.height !== undefined ? config.height : null;
 	this.align = config.align || 'center';
-	this.closeButton = new OO.ui.ButtonWidget( { $: this.$, framed: false, icon: 'close' } );
+	this.closeButton = new OO.ui.ButtonWidget( { framed: false, icon: 'close' } );
 	this.onMouseDownHandler = this.onMouseDown.bind( this );
 
 	// Events
@@ -66,7 +67,7 @@ OO.ui.PopupWidget = function OoUiPopupWidget( config ) {
 		.addClass( 'oo-ui-popupWidget-popup' )
 		.append( this.$head, this.$body );
 	this.$element
-		.addClass( 'oo-ui-popupWidget oo-ui-element-hidden' )
+		.addClass( 'oo-ui-popupWidget' )
 		.append( this.$popup, this.$anchor );
 	// Move content, which was added to #$element by OO.ui.Widget, to the body
 	if ( config.$content instanceof jQuery ) {
@@ -75,7 +76,12 @@ OO.ui.PopupWidget = function OoUiPopupWidget( config ) {
 	if ( config.padded ) {
 		this.$body.addClass( 'oo-ui-popupWidget-body-padded' );
 	}
-	this.setClippableElement( this.$body );
+
+	// Initially hidden - using #toggle may cause errors if subclasses override toggle with methods
+	// that reference properties not initialized at that time of parent class construction
+	// TODO: Find a better way to handle post-constructor setup
+	this.visible = false;
+	this.$element.addClass( 'oo-ui-element-hidden' );
 };
 
 /* Setup */
@@ -215,7 +221,7 @@ OO.ui.PopupWidget.prototype.updateDimensions = function ( transition ) {
 
 	if ( !this.$container ) {
 		// Lazy-initialize $container if not specified in constructor
-		this.$container = this.$( this.getClosestScrollableElementContainer() );
+		this.$container = $( this.getClosestScrollableElementContainer() );
 	}
 
 	// Set height and width before measuring things, since it might cause our measurements

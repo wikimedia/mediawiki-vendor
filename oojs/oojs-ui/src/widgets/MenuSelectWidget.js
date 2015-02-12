@@ -27,20 +27,23 @@ OO.ui.MenuSelectWidget = function OoUiMenuSelectWidget( config ) {
 	OO.ui.ClippableElement.call( this, $.extend( {}, config, { $clippable: this.$group } ) );
 
 	// Properties
-	this.visible = false;
 	this.newItems = null;
 	this.autoHide = config.autoHide === undefined || !!config.autoHide;
 	this.$input = config.input ? config.input.$input : null;
 	this.$widget = config.widget ? config.widget.$element : null;
-	this.$previousFocus = null;
-	this.isolated = !config.input;
 	this.onKeyDownHandler = this.onKeyDown.bind( this );
 	this.onDocumentMouseDownHandler = this.onDocumentMouseDown.bind( this );
 
 	// Initialization
 	this.$element
-		.addClass( 'oo-ui-menuSelectWidget oo-ui-element-hidden' )
+		.addClass( 'oo-ui-menuSelectWidget' )
 		.attr( 'role', 'menu' );
+
+	// Initially hidden - using #toggle may cause errors if subclasses override toggle with methods
+	// that reference properties not initialized at that time of parent class construction
+	// TODO: Find a better way to handle post-constructor setup
+	this.visible = false;
+	this.$element.addClass( 'oo-ui-element-hidden' );
 };
 
 /* Setup */
@@ -92,11 +95,13 @@ OO.ui.MenuSelectWidget.prototype.onKeyDown = function ( e ) {
 				handled = true;
 				break;
 			case OO.ui.Keys.ESCAPE:
+			case OO.ui.Keys.TAB:
 				if ( highlightItem ) {
 					highlightItem.setHighlighted( false );
 				}
 				this.toggle( false );
-				handled = true;
+				// Don't prevent tabbing away
+				handled = ( e.keyCode === OO.ui.Keys.ESCAPE );
 				break;
 		}
 
@@ -130,7 +135,7 @@ OO.ui.MenuSelectWidget.prototype.bindKeyDownListener = function () {
  */
 OO.ui.MenuSelectWidget.prototype.unbindKeyDownListener = function () {
 	if ( this.$input ) {
-		this.$input.off( 'keydown' );
+		this.$input.off( 'keydown', this.onKeyDownHandler );
 	} else {
 		this.getElementWindow().removeEventListener( 'keydown', this.onKeyDownHandler, true );
 	}
@@ -213,9 +218,7 @@ OO.ui.MenuSelectWidget.prototype.toggle = function ( visible ) {
 	visible = ( visible === undefined ? !this.visible : !!visible ) && !!this.items.length;
 
 	var i, len,
-		change = visible !== this.isVisible(),
-		elementDoc = this.getElementDocument(),
-		widgetDoc = this.$widget ? this.$widget[ 0 ].ownerDocument : null;
+		change = visible !== this.isVisible();
 
 	// Parent method
 	OO.ui.MenuSelectWidget.super.prototype.toggle.call( this, visible );
@@ -224,11 +227,6 @@ OO.ui.MenuSelectWidget.prototype.toggle = function ( visible ) {
 		if ( visible ) {
 			this.bindKeyDownListener();
 
-			// Change focus to enable keyboard navigation
-			if ( this.isolated && this.$input && !this.$input.is( ':focus' ) ) {
-				this.$previousFocus = this.$( ':focus' );
-				this.$input[ 0 ].focus();
-			}
 			if ( this.newItems && this.newItems.length ) {
 				for ( i = 0, len = this.newItems.length; i < len; i++ ) {
 					this.newItems[ i ].fitLabel();
@@ -239,31 +237,15 @@ OO.ui.MenuSelectWidget.prototype.toggle = function ( visible ) {
 
 			// Auto-hide
 			if ( this.autoHide ) {
-				elementDoc.addEventListener(
+				this.getElementDocument().addEventListener(
 					'mousedown', this.onDocumentMouseDownHandler, true
 				);
-				// Support $widget being in a different document
-				if ( widgetDoc && widgetDoc !== elementDoc ) {
-					widgetDoc.addEventListener(
-						'mousedown', this.onDocumentMouseDownHandler, true
-					);
-				}
 			}
 		} else {
 			this.unbindKeyDownListener();
-			if ( this.isolated && this.$previousFocus ) {
-				this.$previousFocus[ 0 ].focus();
-				this.$previousFocus = null;
-			}
-			elementDoc.removeEventListener(
+			this.getElementDocument().removeEventListener(
 				'mousedown', this.onDocumentMouseDownHandler, true
 			);
-			// Support $widget being in a different document
-			if ( widgetDoc && widgetDoc !== elementDoc ) {
-				widgetDoc.removeEventListener(
-					'mousedown', this.onDocumentMouseDownHandler, true
-				);
-			}
 			this.toggleClipping( false );
 		}
 	}

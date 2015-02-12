@@ -19,6 +19,7 @@
  * @cfg {boolean} [autosize=false] Automatically resize to fit content
  * @cfg {boolean} [maxRows=10] Maximum number of rows to make visible when autosizing
  * @cfg {string} [labelPosition='after'] Label position, 'before' or 'after'
+ * @cfg {boolean} [required=false] Mark the field as required
  * @cfg {RegExp|string} [validate] Regular expression to validate against (or symbolic name referencing
  *  one, see #static-validationPatterns)
  */
@@ -51,6 +52,7 @@ OO.ui.TextInputWidget = function OoUiTextInputWidget( config ) {
 		this.$clone = this.$input
 			.clone()
 			.insertAfter( this.$input )
+			.attr( 'aria-hidden', 'true' )
 			.addClass( 'oo-ui-element-hidden' );
 	}
 
@@ -80,6 +82,9 @@ OO.ui.TextInputWidget = function OoUiTextInputWidget( config ) {
 	}
 	if ( config.autofocus ) {
 		this.$input.attr( 'autofocus', 'autofocus' );
+	}
+	if ( config.required ) {
+		this.$input.attr( 'required', 'true' );
 	}
 };
 
@@ -236,7 +241,7 @@ OO.ui.TextInputWidget.prototype.adjustSize = function () {
 			// Set inline height property to 0 to measure scroll height
 			.css( 'height', 0 );
 
-		this.$clone[ 0 ].style.display = 'block';
+		this.$clone.removeClass( 'oo-ui-element-hidden' );
 
 		this.valCache = this.$input.val();
 
@@ -259,7 +264,7 @@ OO.ui.TextInputWidget.prototype.adjustSize = function () {
 		measurementError = maxInnerHeight - this.$clone[ 0 ].scrollHeight;
 		idealHeight = Math.min( maxInnerHeight, scrollHeight + measurementError );
 
-		this.$clone[ 0 ].style.display = 'none';
+		this.$clone.addClass( 'oo-ui-element-hidden' );
 
 		// Only apply inline height when expansion beyond natural height is needed
 		if ( idealHeight > innerHeight ) {
@@ -277,7 +282,7 @@ OO.ui.TextInputWidget.prototype.adjustSize = function () {
  * @private
  */
 OO.ui.TextInputWidget.prototype.getInputElement = function ( config ) {
-	return config.multiline ? this.$( '<textarea>' ) : this.$( '<input type="' + config.type + '" />' );
+	return config.multiline ? $( '<textarea>' ) : $( '<input type="' + config.type + '" />' );
 };
 
 /**

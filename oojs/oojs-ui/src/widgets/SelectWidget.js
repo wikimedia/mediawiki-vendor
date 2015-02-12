@@ -38,7 +38,9 @@ OO.ui.SelectWidget = function OoUiSelectWidget( config ) {
 	} );
 
 	// Initialization
-	this.$element.addClass( 'oo-ui-selectWidget oo-ui-selectWidget-depressed' );
+	this.$element
+		.addClass( 'oo-ui-selectWidget oo-ui-selectWidget-depressed' )
+		.attr( 'role', 'listbox' );
 	if ( $.isArray( config.items ) ) {
 		this.addItems( config.items );
 	}
@@ -209,7 +211,7 @@ OO.ui.SelectWidget.prototype.onMouseLeave = function () {
  * @return {OO.ui.OptionWidget|null} Outline item widget, `null` if none was found
  */
 OO.ui.SelectWidget.prototype.getTargetItem = function ( e ) {
-	var $item = this.$( e.target ).closest( '.oo-ui-optionWidget' );
+	var $item = $( e.target ).closest( '.oo-ui-optionWidget' );
 	if ( $item.length ) {
 		return $item.data( 'oo-ui-optionWidget' );
 	}

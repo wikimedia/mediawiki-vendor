@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "45c4b1f2950b6dce6d34f008c6a628aa",
+    "hash": "113de0b7496542c097d26994d40a8b28",
     "packages": [
         {
             "name": "cssjanus/cssjanus",
@@ -156,16 +156,16 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.6.6",
+            "version": "v0.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "e2dc8fe83ba530f4d35258e8ac0b3061582eaf72"
+                "reference": "a4e8b0fd1df92e60330a087f23a41824ae3e8f5d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/e2dc8fe83ba530f4d35258e8ac0b3061582eaf72",
-                "reference": "e2dc8fe83ba530f4d35258e8ac0b3061582eaf72",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/a4e8b0fd1df92e60330a087f23a41824ae3e8f5d",
+                "reference": "a4e8b0fd1df92e60330a087f23a41824ae3e8f5d",
                 "shasum": ""
             },
             "require": {
@@ -182,7 +182,7 @@
                 "MIT"
             ],
             "homepage": "https://www.mediawiki.org/wiki/OOjs_UI",
-            "time": "2015-02-04 16:06:54"
+            "time": "2015-02-11 23:11:01"
         },
         {
             "name": "psr/log",

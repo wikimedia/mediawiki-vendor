@@ -1,5 +1,10 @@
 /**
- * Generic widget for buttons.
+ * ButtonWidget is a generic widget for buttons. A wide variety of looks,
+ * feels, and functionality can be customized via the class’s configuration options
+ * and methods. Please see the OOjs UI documentation on MediaWiki for more information
+ * and examples.
+ *
+ * NOTE: HTML form buttons should use the OO.ui.ButtonInputWidget class.
  *
  * @class
  * @extends OO.ui.Widget
@@ -15,6 +20,7 @@
  * @param {Object} [config] Configuration options
  * @cfg {string} [href] Hyperlink to visit when clicked
  * @cfg {string} [target] Target to open hyperlink in
+ * @cfg {boolean} [nofollow] Search engine traversal hint (default: true)
  */
 OO.ui.ButtonWidget = function OoUiButtonWidget( config ) {
 	// Configuration initialization
@@ -35,13 +41,8 @@ OO.ui.ButtonWidget = function OoUiButtonWidget( config ) {
 	// Properties
 	this.href = null;
 	this.target = null;
+	this.nofollow = false;
 	this.isHyperlink = false;
-
-	// Events
-	this.$button.on( {
-		click: this.onClick.bind( this ),
-		keypress: this.onKeyPress.bind( this )
-	} );
 
 	// Initialization
 	this.$button.append( this.$icon, this.$label, this.$indicator );
@@ -50,6 +51,7 @@ OO.ui.ButtonWidget = function OoUiButtonWidget( config ) {
 		.append( this.$button );
 	this.setHref( config.href );
 	this.setTarget( config.target );
+	this.setNoFollow( config.nofollow );
 };
 
 /* Setup */
@@ -63,29 +65,7 @@ OO.mixinClass( OO.ui.ButtonWidget, OO.ui.TitledElement );
 OO.mixinClass( OO.ui.ButtonWidget, OO.ui.FlaggedElement );
 OO.mixinClass( OO.ui.ButtonWidget, OO.ui.TabIndexedElement );
 
-/* Events */
-
-/**
- * @event click
- */
-
 /* Methods */
-
-/**
- * Handles mouse click events.
- *
- * @param {jQuery.Event} e Mouse click event
- * @fires click
- */
-OO.ui.ButtonWidget.prototype.onClick = function () {
-	if ( !this.isDisabled() ) {
-		this.emit( 'click' );
-		if ( this.isHyperlink ) {
-			return true;
-		}
-	}
-	return false;
-};
 
 /**
  * @inheritdoc
@@ -112,19 +92,25 @@ OO.ui.ButtonWidget.prototype.onMouseUp = function ( e ) {
 };
 
 /**
- * Handles keypress events.
- *
- * @param {jQuery.Event} e Keypress event
- * @fires click
+ * @inheritdoc
+ */
+OO.ui.ButtonWidget.prototype.onClick = function ( e ) {
+	var ret = OO.ui.ButtonElement.prototype.onClick.call( this, e );
+	if ( this.isHyperlink ) {
+		return true;
+	}
+	return ret;
+};
+
+/**
+ * @inheritdoc
  */
 OO.ui.ButtonWidget.prototype.onKeyPress = function ( e ) {
-	if ( !this.isDisabled() && ( e.which === OO.ui.Keys.SPACE || e.which === OO.ui.Keys.ENTER ) ) {
-		this.emit( 'click' );
-		if ( this.isHyperlink ) {
-			return true;
-		}
+	var ret = OO.ui.ButtonElement.prototype.onKeyPress.call( this, e );
+	if ( this.isHyperlink ) {
+		return true;
 	}
-	return false;
+	return ret;
 };
 
 /**
@@ -143,6 +129,15 @@ OO.ui.ButtonWidget.prototype.getHref = function () {
  */
 OO.ui.ButtonWidget.prototype.getTarget = function () {
 	return this.target;
+};
+
+/**
+ * Get search engine traversal hint.
+ *
+ * @return {boolean} Whether search engines should avoid traversing this hyperlink
+ */
+OO.ui.ButtonWidget.prototype.getNoFollow = function () {
+	return this.nofollow;
 };
 
 /**
@@ -181,6 +176,26 @@ OO.ui.ButtonWidget.prototype.setTarget = function ( target ) {
 			this.$button.attr( 'target', target );
 		} else {
 			this.$button.removeAttr( 'target' );
+		}
+	}
+
+	return this;
+};
+
+/**
+ * Set search engine traversal hint.
+ *
+ * @param {boolean} nofollow True if search engines should avoid traversing this hyperlink
+ */
+OO.ui.ButtonWidget.prototype.setNoFollow = function ( nofollow ) {
+	nofollow = typeof nofollow === 'boolean' ? nofollow : true;
+
+	if ( nofollow !== this.nofollow ) {
+		this.nofollow = nofollow;
+		if ( nofollow ) {
+			this.$button.attr( 'rel', 'nofollow' );
+		} else {
+			this.$button.removeAttr( 'rel' );
 		}
 	}
 

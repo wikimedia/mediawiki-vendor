@@ -72,14 +72,6 @@ OO.ui.ListToolGroup.prototype.populate = function () {
 	this.$group.append( this.getExpandCollapseTool().$element );
 
 	this.getExpandCollapseTool().toggle( this.collapsibleTools.length !== 0 );
-
-	// Calling jQuery's .hide() and then .show() on a detached element caches the default value of its
-	// 'display' attribute and restores it, and the tool uses a <span> and can be hidden and re-shown.
-	// Is this a jQuery bug? http://jsfiddle.net/gtj4hu3h/
-	if ( this.getExpandCollapseTool().$element.css( 'display' ) === 'inline' ) {
-		this.getExpandCollapseTool().$element.css( 'display', 'block' );
-	}
-
 	this.updateCollapsibleState();
 };
 
@@ -114,7 +106,7 @@ OO.ui.ListToolGroup.prototype.onPointerUp = function ( e ) {
 	var ret = OO.ui.ListToolGroup.super.prototype.onPointerUp.call( this, e );
 
 	// Do not close the popup when the user wants to show more/fewer tools
-	if ( this.$( e.target ).closest( '.oo-ui-tool-name-more-fewer' ).length ) {
+	if ( $( e.target ).closest( '.oo-ui-tool-name-more-fewer' ).length ) {
 		// Prevent the popup list from being hidden
 		this.setActive( true );
 	}
