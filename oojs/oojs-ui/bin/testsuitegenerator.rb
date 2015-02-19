@@ -2,8 +2,8 @@ require 'pp'
 require_relative 'docparser'
 
 if ARGV.empty? || ARGV == ['-h'] || ARGV == ['--help']
-	$stderr.puts "usage: ruby #{$0} <dirA> <dirB>"
-	$stderr.puts "       ruby #{$0} src php > tests/JSPHP-suite.json"
+	$stderr.puts "usage: ruby #{$PROGRAM_NAME} <dirA> <dirB>"
+	$stderr.puts "       ruby #{$PROGRAM_NAME} src php > tests/JSPHP-suite.json"
 else
 	dir_a, dir_b = ARGV
 	js = parse_any_path dir_a
@@ -18,6 +18,7 @@ else
 		.reject{|c| c[:abstract] } # can't test abstract classes
 		.reject{|c| !c[:parent] || c[:parent] == 'ElementMixin' || c[:parent] == 'Theme' } # can't test abstract
 		.reject{|c| %w[Element Widget Layout Theme].include? c[:name] } # no toplevel
+		.reject{|c| c[:name] == 'DropdownInputWidget' } # different PHP and JS implementations
 		.select{|c| c[:methods][0][:params].empty? } # only without params :(
 
 	# values to test for each type
@@ -38,6 +39,7 @@ else
 		'action' => [],
 		'enctype' => true,
 		'target' => ['_blank'],
+		'accessKey' => ['k'],
 		'name' => true,
 		'autofocus' => true, # usually makes no sense in JS
 		'tabIndex' => [-1, 0, 100],
@@ -85,7 +87,7 @@ else
 		config = config_sources.map{|c| find_class.call(c)[:methods][0][:config] }.compact.inject(:+)
 
 		# generate every possible configuration of configuration option sets
-		maxlength = [config.length, 3].min
+		maxlength = [config.length, 2].min
 		config_combinations = (0..maxlength).map{|l| config.combination(l).to_a }.inject(:+)
 		# for each set, generate all possible values to use based on option's type
 		config_combinations = config_combinations.map{|config_comb|

@@ -6,6 +6,7 @@
  * @mixins OO.ui.IconElement
  * @mixins OO.ui.IndicatorElement
  * @mixins OO.ui.PendingElement
+ * @mixins OO.ui.LabelElement
  *
  * @constructor
  * @param {Object} [config] Configuration options
@@ -72,12 +73,12 @@ OO.ui.TextInputWidget = function OoUiTextInputWidget( config ) {
 	// Initialization
 	this.$element
 		.addClass( 'oo-ui-textInputWidget' )
-		.append( this.$icon, this.$indicator, this.$label );
+		.append( this.$icon, this.$indicator );
 	this.setReadOnly( !!config.readOnly );
 	if ( config.placeholder ) {
 		this.$input.attr( 'placeholder', config.placeholder );
 	}
-	if ( config.maxLength ) {
+	if ( config.maxLength !== undefined ) {
 		this.$input.attr( 'maxlength', config.maxLength );
 	}
 	if ( config.autofocus ) {
@@ -116,12 +117,16 @@ OO.ui.TextInputWidget.static.validationPatterns = {
 /**
  * User clicks the icon.
  *
+ * @deprecated Fundamentally not accessible. Make the icon focusable, associate a label or tooltip,
+ *  and handle click/keypress events on it manually.
  * @event icon
  */
 
 /**
  * User clicks the indicator.
  *
+ * @deprecated Fundamentally not accessible. Make the indicator focusable, associate a label or
+ *  tooltip, and handle click/keypress events on it manually.
  * @event indicator
  */
 
@@ -367,8 +372,8 @@ OO.ui.TextInputWidget.prototype.updatePosition = function () {
 	var after = this.labelPosition === 'after';
 
 	this.$element
-		.toggleClass( 'oo-ui-textInputWidget-labelPosition-after', this.label && after )
-		.toggleClass( 'oo-ui-textInputWidget-labelPosition-before', this.label && !after );
+		.toggleClass( 'oo-ui-textInputWidget-labelPosition-after', !!this.label && after )
+		.toggleClass( 'oo-ui-textInputWidget-labelPosition-before', !!this.label && !after );
 
 	if ( this.label ) {
 		this.positionLabel();
@@ -391,7 +396,10 @@ OO.ui.TextInputWidget.prototype.positionLabel = function () {
 			'padding-left': ''
 		} );
 
-	if ( !this.$label.text() ) {
+	if ( this.label ) {
+		this.$element.append( this.$label );
+	} else {
+		this.$label.detach();
 		return;
 	}
 
@@ -399,7 +407,7 @@ OO.ui.TextInputWidget.prototype.positionLabel = function () {
 		rtl = this.$element.css( 'direction' ) === 'rtl',
 		property = after === rtl ? 'padding-left' : 'padding-right';
 
-	this.$input.css( property, this.$label.outerWidth() );
+	this.$input.css( property, this.$label.outerWidth( true ) );
 
 	return this;
 };

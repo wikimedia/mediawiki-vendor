@@ -6,6 +6,17 @@ namespace OOUI;
  * A button that is an input widget. Intended to be used within a FormLayout.
  */
 class ButtonInputWidget extends InputWidget {
+	/* Properties */
+
+	/**
+	 * Whether to use `<input/>` rather than `<button/>`.
+	 *
+	 * @var boolean
+	 */
+	protected $useInputTag;
+
+	private $labelElementMixin;
+
 	/**
 	 * @param array $config Configuration options
 	 * @param string $config['type'] HTML tag `type` attribute, may be 'button', 'submit' or 'reset'
@@ -49,12 +60,6 @@ class ButtonInputWidget extends InputWidget {
 		$this->addClasses( array( 'oo-ui-buttonInputWidget' ) );
 	}
 
-	/**
-	 * Get input element.
-	 *
-	 * @param array $config Configuration options
-	 * @return Tag Input element
-	 */
 	protected function getInputElement( $config ) {
 		$input = new Tag( $config['useInputTag'] ? 'input' : 'button' );
 		$input->setAttributes( array( 'type' => $config['type'] ) );

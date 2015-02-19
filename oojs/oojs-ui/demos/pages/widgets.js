@@ -1,5 +1,5 @@
 OO.ui.Demo.static.pages.widgets = function ( demo ) {
-	var styles, states, buttonStyleShowcaseWidget, fieldsets,
+	var styles, states, buttonStyleShowcaseWidget, horizontalAlignmentWidget, fieldsets,
 		$demo = demo.$element;
 
 	/**
@@ -181,6 +181,28 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 		} );
 		buttonStyleShowcaseWidget.$element.append( $( '<br>' ) );
 	} );
+
+	horizontalAlignmentWidget = new OO.ui.Widget( {
+		classes: [ 'oo-ui-demo-horizontal-alignment' ]
+	} );
+	horizontalAlignmentWidget.$element.append(
+		new OO.ui.ButtonWidget( { label: 'Button' } ).$element,
+		new OO.ui.ButtonGroupWidget( { items: [
+			new OO.ui.ButtonWidget( { label: 'A' } ),
+			new OO.ui.ButtonWidget( { label: 'B' } )
+		] } ).$element,
+		new OO.ui.ButtonInputWidget( { label: 'ButtonInput' } ).$element,
+		new OO.ui.TextInputWidget( { value: 'TextInput' } ).$element,
+		new OO.ui.DropdownInputWidget( { options: [
+			{
+				label: 'DropdownInput',
+				data: null
+			}
+		] } ).$element,
+		new OO.ui.CheckboxInputWidget( { selected: true } ).$element,
+		new OO.ui.RadioInputWidget( { selected: true } ).$element,
+		new OO.ui.LabelWidget( { label: 'Label' } ).$element
+	);
 
 	fieldsets = [
 		new OO.ui.FieldsetLayout( {
@@ -408,6 +430,18 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 					} ),
 					{
 						label: 'ButtonWidget (frameless, constructive, disabled)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.ButtonWidget( {
+						framed: false,
+						icon: 'picture',
+						indicator: 'down',
+						label: 'Labeled'
+					} ),
+					{
+						label: 'ButtonWidget (frameless, indicator)\u200E',
 						align: 'top'
 					}
 				)
@@ -953,6 +987,19 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 			]
 		} ),
 		new OO.ui.FieldsetLayout( {
+			label: 'Horizontal alignment',
+			items: [
+				new OO.ui.FieldLayout(
+					horizontalAlignmentWidget,
+					{
+						label: 'Multiple widgets shown as a single line, ' +
+							'as used in compact forms or in parts of a bigger widget.',
+						align: 'top'
+					}
+				)
+			]
+		} ),
+		new OO.ui.FieldsetLayout( {
 			label: 'Draggable',
 			items: [
 				new OO.ui.FieldLayout(
@@ -1052,6 +1099,25 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 					} ),
 					{
 						label: 'IndicatorWidget (disabled)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.LabelWidget( {
+						label: 'Label'
+					} ),
+					{
+						label: 'LabelWidget (normal)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.LabelWidget( {
+						label: 'Label',
+						disabled: true
+					} ),
+					{
+						label: 'LabelWidget (disabled)\u200E',
 						align: 'top'
 					}
 				),

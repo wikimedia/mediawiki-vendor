@@ -1,9 +1,9 @@
 /**
- * Element with a button.
+ * ButtonElement is often mixed into other classes to generate a button, which is a clickable
+ * interface element that can be configured with access keys for accessibility.
+ * See the [OOjs UI documentation on MediaWiki] [1] for examples.
  *
- * Buttons are used for controls which can be clicked. They can be configured to use tab indexing
- * and access keys for accessibility purposes.
- *
+ * [1]: https://www.mediawiki.org/wiki/OOjs_UI/Widgets/Buttons_and_Switches#Buttons
  * @abstract
  * @class
  *
@@ -93,6 +93,7 @@ OO.ui.ButtonElement.prototype.setButtonElement = function ( $button ) {
 /**
  * Handles mouse down events.
  *
+ * @protected
  * @param {jQuery.Event} e Mouse down event
  */
 OO.ui.ButtonElement.prototype.onMouseDown = function ( e ) {
@@ -112,6 +113,7 @@ OO.ui.ButtonElement.prototype.onMouseDown = function ( e ) {
 /**
  * Handles mouse up events.
  *
+ * @protected
  * @param {jQuery.Event} e Mouse up event
  */
 OO.ui.ButtonElement.prototype.onMouseUp = function ( e ) {
@@ -126,6 +128,7 @@ OO.ui.ButtonElement.prototype.onMouseUp = function ( e ) {
 /**
  * Handles mouse click events.
  *
+ * @protected
  * @param {jQuery.Event} e Mouse click event
  * @fires click
  */
@@ -139,6 +142,7 @@ OO.ui.ButtonElement.prototype.onClick = function ( e ) {
 /**
  * Handles key down events.
  *
+ * @protected
  * @param {jQuery.Event} e Key down event
  */
 OO.ui.ButtonElement.prototype.onKeyDown = function ( e ) {
@@ -154,6 +158,7 @@ OO.ui.ButtonElement.prototype.onKeyDown = function ( e ) {
 /**
  * Handles key up events.
  *
+ * @protected
  * @param {jQuery.Event} e Key up event
  */
 OO.ui.ButtonElement.prototype.onKeyUp = function ( e ) {
@@ -168,6 +173,7 @@ OO.ui.ButtonElement.prototype.onKeyUp = function ( e ) {
 /**
  * Handles key press events.
  *
+ * @protected
  * @param {jQuery.Event} e Key press event
  * @fires click
  */

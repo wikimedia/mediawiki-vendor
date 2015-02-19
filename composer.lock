@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2fc34fbdb38813c529fb46e1ed1361d7",
+    "hash": "065f42d5d65e22fae958a5759234888c",
     "packages": [
         {
             "name": "cssjanus/cssjanus",
@@ -156,16 +156,16 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.7.0",
+            "version": "v0.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "a4e8b0fd1df92e60330a087f23a41824ae3e8f5d"
+                "reference": "f90de429e269fbb20aff48ab73be495acf03ca42"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/a4e8b0fd1df92e60330a087f23a41824ae3e8f5d",
-                "reference": "a4e8b0fd1df92e60330a087f23a41824ae3e8f5d",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/f90de429e269fbb20aff48ab73be495acf03ca42",
+                "reference": "f90de429e269fbb20aff48ab73be495acf03ca42",
                 "shasum": ""
             },
             "require": {
@@ -182,7 +182,7 @@
                 "MIT"
             ],
             "homepage": "https://www.mediawiki.org/wiki/OOjs_UI",
-            "time": "2015-02-11 23:11:01"
+            "time": "2015-02-19 01:26:12"
         },
         {
             "name": "psr/log",
@@ -419,6 +419,7 @@
     "minimum-stability": "stable",
     "stability-flags": [],
     "prefer-stable": true,
+    "prefer-lowest": false,
     "platform": {
         "php": ">=5.3.3"
     },

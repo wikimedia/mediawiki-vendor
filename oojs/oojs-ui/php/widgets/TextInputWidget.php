@@ -10,7 +10,7 @@ class TextInputWidget extends InputWidget {
 	/* Properties */
 
 	/**
-	 * Prevent chages.
+	 * Prevent changes.
 	 *
 	 * @var boolean
 	 */
@@ -61,7 +61,6 @@ class TextInputWidget extends InputWidget {
 		if ( $config['autofocus'] ) {
 			$this->input->setAttributes( array( 'autofocus' => 'autofocus' ) );
 		}
-		$this->setAttributes( array( 'role' => 'textbox' ) );
 	}
 
 	/**
@@ -90,12 +89,6 @@ class TextInputWidget extends InputWidget {
 		return $this;
 	}
 
-	/**
-	 * Get input element.
-	 *
-	 * @param array $config Configuration options
-	 * @return Tag Input element
-	 */
 	protected function getInputElement( $config ) {
 		if ( isset( $config['multiline'] ) && $config['multiline'] ) {
 			return new Tag( 'textarea' );

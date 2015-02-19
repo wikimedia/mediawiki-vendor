@@ -25,6 +25,15 @@ class FieldLayout extends Layout {
 	protected $align;
 
 	/**
+	 * Field widget to be laid out.
+	 *
+	 * @var Widget
+	 */
+	protected $fieldWidget;
+
+	private $field, $body, $help;
+
+	/**
 	 * @param Widget $fieldWidget Field widget
 	 * @param array $config Configuration options
 	 * @param string $config['align'] Alignment mode, either 'left', 'right', 'top' or 'inline'
@@ -37,13 +46,11 @@ class FieldLayout extends Layout {
 		// Config initialization
 		$config = array_merge( array( 'align' => 'left' ), $config );
 
-		// Properties (must be set before parent constructor, which calls #getTagName)
-		$this->fieldWidget = $fieldWidget;
-
 		// Parent constructor
 		parent::__construct( $config );
 
 		// Properties
+		$this->fieldWidget = $fieldWidget;
 		$this->field = new Tag( 'div' );
 		$this->body = new Tag( $hasInputWidget ? 'label' : 'div' );
 		if ( isset( $config['help'] ) ) {
@@ -67,8 +74,8 @@ class FieldLayout extends Layout {
 		$this->body->addClasses( array( 'oo-ui-fieldLayout-body' ) );
 		$this->field
 			->addClasses( array( 'oo-ui-fieldLayout-field' ) )
-			->toggleClasses( array( 'oo-ui-fieldLayout-disable' ), $fieldWidget->isDisabled() )
-			->appendContent( $fieldWidget );
+			->toggleClasses( array( 'oo-ui-fieldLayout-disable' ), $this->fieldWidget->isDisabled() )
+			->appendContent( $this->fieldWidget );
 
 		$this->setAlignment( $config['align'] );
 	}

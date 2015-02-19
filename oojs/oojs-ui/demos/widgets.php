@@ -10,8 +10,14 @@
 	$themeClass = 'OOUI\\' . ( $theme === 'apex' ? 'Apex' : 'MediaWiki' ) . 'Theme';
 	OOUI\Theme::setSingleton( new $themeClass() );
 
-	$graphic = ( isset( $_GET['graphic'] ) && $_GET['graphic'] === 'raster' ) ? 'raster' : 'vector';
-	$graphicSuffix = $graphic === 'vector' ? '.svg' : '';
+	$graphicSuffixMap = array(
+		'mixed' => '',
+		'vector' => '.vector',
+		'raster' => '.raster',
+	);
+	$graphic = ( isset( $_GET['graphic'] ) && isset( $graphicSuffixMap[ $_GET['graphic'] ] ) )
+		? $_GET['graphic'] : 'vector';
+	$graphicSuffix = $graphicSuffixMap[ $graphic ];
 
 	$direction = ( isset( $_GET['direction'] ) && $_GET['direction'] === 'rtl' ) ? 'rtl' : 'ltr';
 	$directionSuffix = $direction === 'rtl' ? '.rtl' : '';
@@ -50,6 +56,10 @@
 				) );
 				echo new OOUI\ButtonGroupWidget( array(
 					'items' => array(
+						new OOUI\ButtonWidget( array(
+							'label' => 'Mixed',
+							'href' => '?' . http_build_query( array_merge( $query, array( 'graphic' => 'mixed' ) ) ),
+						) ),
 						new OOUI\ButtonWidget( array(
 							'label' => 'Vector',
 							'href' => '?' . http_build_query( array_merge( $query, array( 'graphic' => 'vector' ) ) ),
@@ -145,6 +155,28 @@
 					}
 					$buttonStyleShowcaseWidget->appendContent( new OOUI\HtmlSnippet( '<br />' ) );
 				}
+
+				$horizontalAlignmentWidget = new OOUI\Widget( array(
+					'classes' => array( 'oo-ui-demo-horizontal-alignment' )
+				) );
+				$horizontalAlignmentWidget->appendContent(
+					new OOUI\ButtonWidget( array( 'label' => 'Button' ) ),
+					new OOUI\ButtonGroupWidget( array( 'items' => array(
+						new OOUI\ButtonWidget( array( 'label' => 'A' ) ),
+						new OOUI\ButtonWidget( array( 'label' => 'B' ) )
+					) ) ),
+					new OOUI\ButtonInputWidget( array( 'label' => 'ButtonInput' ) ),
+					new OOUI\TextInputWidget( array( 'value' => 'TextInput' ) ),
+					new OOUI\DropdownInputWidget( array( 'options' => array(
+						array(
+							'label' => 'DropdownInput',
+							'data' => null
+						)
+					) ) ),
+					new OOUI\CheckboxInputWidget( array( 'selected' => true ) ),
+					new OOUI\RadioInputWidget( array( 'selected' => true ) ),
+					new OOUI\LabelWidget( array( 'label' => 'Label' ) )
+				);
 
 				echo new OOUI\FieldsetLayout( array(
 					'label' => 'Simple buttons',
@@ -585,6 +617,19 @@
 					)
 				) );
 				echo new OOUI\FieldsetLayout( array(
+					'label' => 'Horizontal alignment',
+					'items' => array(
+						new OOUI\FieldLayout(
+							$horizontalAlignmentWidget,
+							array(
+								'label' => 'Multiple widgets shown as a single line, ' .
+									'as used in compact forms or in parts of a bigger widget.',
+								'align' => 'top'
+							)
+						)
+					)
+				) );
+				echo new OOUI\FieldsetLayout( array(
 					'label' => 'Other widgets',
 					'items' => array(
 						new OOUI\FieldLayout(
@@ -626,6 +671,25 @@
 							) ),
 							array(
 								'label' => "IndicatorWidget (disabled)\xE2\x80\x8E",
+								'align' => 'top'
+							)
+						),
+						new OOUI\FieldLayout(
+							new OOUI\LabelWidget( array(
+								'label' => 'Label'
+							) ),
+							array(
+								'label' => "LabelWidget (normal)\xE2\x80\x8E",
+								'align' => 'top'
+							)
+						),
+						new OOUI\FieldLayout(
+							new OOUI\LabelWidget( array(
+								'label' => 'Label',
+								'disabled' => true,
+							) ),
+							array(
+								'label' => "LabelWidget (disabled)\xE2\x80\x8E",
 								'align' => 'top'
 							)
 						)

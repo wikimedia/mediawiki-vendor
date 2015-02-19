@@ -1,6 +1,7 @@
 /**
- * Element containing a sequence of child elements that can be dragged
- * and dropped.
+ * DraggableGroupElement is a mixin class used to create a group element to
+ * contain draggable elements, which are items that can be clicked and dragged by a mouse.
+ * The class is used with OO.ui.DraggableElement.
  *
  * @abstract
  * @class
@@ -41,7 +42,7 @@ OO.ui.DraggableGroupElement = function OoUiDraggableGroupElement( config ) {
 	} );
 
 	// Initialize
-	if ( $.isArray( config.items ) ) {
+	if ( Array.isArray( config.items ) ) {
 		this.addItems( config.items );
 	}
 	this.$placeholder = $( '<div>' )

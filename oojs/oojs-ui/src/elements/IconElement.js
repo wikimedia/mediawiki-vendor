@@ -1,10 +1,11 @@
 /**
- * Element containing an icon.
+ * IconElement is often mixed into other classes to generate an icon.
+ * Icons are graphics, about the size of normal text. They are used to aid the user
+ * in locating a control or to convey information in a space-efficient way. See the
+ * [OOjs UI documentation on MediaWiki] [1] for a list of icons
+ * included in the library.
  *
- * Icons are graphics, about the size of normal text. They can be used to aid the user in locating
- * a control or convey information in a more space efficient way. Icons should rarely be used
- * without labels; such as in a toolbar where space is at a premium or within a context where the
- * meaning is very clear to the user.
+ * [1]: https://www.mediawiki.org/wiki/OOjs_UI/Widgets/Icons,_Indicators,_and_Labels#Icons
  *
  * @abstract
  * @class
@@ -39,31 +40,31 @@ OO.initClass( OO.ui.IconElement );
 /* Static Properties */
 
 /**
- * Icon.
+ * The symbolic name of the icon (e.g., ‘remove’ or ‘menu’), or a map of symbolic names. A map is used
+ * for i18n purposes and contains a `default` icon name and additional names keyed by
+ * language code. The `default` name is used when no icon is keyed by the user's language.
  *
- * Value should be the unique portion of an icon CSS class name, such as 'up' for 'oo-ui-icon-up'.
+ * Example of an i18n map:
  *
- * For i18n purposes, this property can be an object containing a `default` icon name property and
- * additional icon names keyed by language code.
- *
- * Example of i18n icon definition:
  *     { default: 'bold-a', en: 'bold-b', de: 'bold-f' }
+ *
+ * Note: the static property will be overridden if the #icon configuration is used.
  *
  * @static
  * @inheritable
- * @property {Object|string} Symbolic icon name, or map of icon names keyed by language ID;
- *  use the 'default' key to specify the icon to be used when there is no icon in the user's
- *  language
+ * @property {Object|string}
  */
 OO.ui.IconElement.static.icon = null;
 
 /**
- * Icon title.
+ * The icon title, displayed when users move the mouse over the icon. The value can be text, a
+ * function that returns title text, or `null` for no title.
+ *
+ * The static property will be overridden if the #iconTitle configuration is used.
  *
  * @static
  * @inheritable
- * @property {string|Function|null} Icon title text, a function that returns text or null for no
- *  icon title
+ * @property {string|Function|null}
  */
 OO.ui.IconElement.static.iconTitle = null;
 
