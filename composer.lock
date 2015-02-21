@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "065f42d5d65e22fae958a5759234888c",
+    "hash": "6188811094b69e07d37639aa9419dcf1",
     "packages": [
         {
             "name": "cssjanus/cssjanus",
@@ -327,16 +327,16 @@
         },
         {
             "name": "wikimedia/composer-merge-plugin",
-            "version": "v0.5.0",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/composer-merge-plugin.git",
-                "reference": "08ad40053b14d564dcd2a02239f67caa20d9ea75"
+                "reference": "ed426b785f9f786b33be4fd78584e43f4e962356"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/composer-merge-plugin/zipball/08ad40053b14d564dcd2a02239f67caa20d9ea75",
-                "reference": "08ad40053b14d564dcd2a02239f67caa20d9ea75",
+                "url": "https://api.github.com/repos/wikimedia/composer-merge-plugin/zipball/ed426b785f9f786b33be4fd78584e43f4e962356",
+                "reference": "ed426b785f9f786b33be4fd78584e43f4e962356",
                 "shasum": ""
             },
             "require": {
@@ -364,7 +364,7 @@
                 "MIT"
             ],
             "description": "Composer plugin to merge multiple composer.json files",
-            "time": "2014-12-29 20:05:19"
+            "time": "2015-02-21 00:57:13"
         },
         {
             "name": "zordius/lightncandy",

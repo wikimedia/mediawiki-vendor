@@ -13,14 +13,12 @@ namespace Wikimedia\Composer;
 use Composer\Composer;
 use Composer\Config;
 use Composer\EventDispatcher\EventSubscriberInterface;
-use Composer\Factory;
 use Composer\Installer\InstallerEvent;
 use Composer\Installer\InstallerEvents;
 use Composer\IO\IOInterface;
 use Composer\Json\JsonFile;
 use Composer\Package\BasePackage;
 use Composer\Package\CompletePackage;
-use Composer\Package\LinkConstraint\SpecificConstraint;
 use Composer\Package\Loader\ArrayLoader;
 use Composer\Package\RootPackageInterface;
 use Composer\Package\Version\VersionParser;
@@ -92,6 +90,20 @@ class MergePlugin implements PluginInterface, EventSubscriberInterface
     protected $devMode;
 
     /**
+     * Whether to recursively include dependencies
+     *
+     * @var bool $recurse
+     */
+    protected $recurse = true;
+
+    /**
+     * Files that have already been processed
+     *
+     * @var string[] $loadedFiles
+     */
+    protected $loadedFiles = array();
+
+    /**
      * {@inheritdoc}
      */
     public function activate(Composer $composer, IOInterface $io)
@@ -122,6 +134,9 @@ class MergePlugin implements PluginInterface, EventSubscriberInterface
     public function onInstallOrUpdate(CommandEvent $event)
     {
         $config = $this->readConfig($this->composer->getPackage());
+        if (isset($config['recurse'])) {
+            $this->recurse = (bool)$config['recurse'];
+        }
         if ($config['include']) {
             $this->loader = new ArrayLoader();
             $this->duplicateLinks = array(
@@ -161,28 +176,49 @@ class MergePlugin implements PluginInterface, EventSubscriberInterface
     protected function mergePackages(array $config)
     {
         $root = $this->composer->getPackage();
-        foreach (array_unique(array_reduce(
+        foreach (array_reduce(
             array_map('glob', $config['include']),
             'array_merge',
             array()
-        )) as $path) {
-            $this->debug("Loading <comment>{$path}</comment>...");
-            $json = $this->readPackageJson($path);
-            $package = $this->loader->load($json);
+        ) as $path) {
+            $this->loadFile($root, $path);
+        }
+    }
 
-            $this->mergeRequires($root, $package);
-            $this->mergeDevRequires($root, $package);
+    /**
+     * Read a JSON file and merge its contents
+     *
+     * @param RootPackageInterface $root
+     * @param string $path
+     */
+    protected function loadFile($root, $path)
+    {
+        if (in_array($path, $this->loadedFiles)) {
+            $this->debug("Skipping duplicate <comment>$path</comment>...");
+            return;
+        } else {
+            $this->loadedFiles[] = $path;
+        }
+        $this->debug("Loading <comment>{$path}</comment>...");
+        $json = $this->readPackageJson($path);
+        $package = $this->loader->load($json);
 
-            if (isset($json['repositories'])) {
-                $this->addRepositories($json['repositories'], $root);
-            }
+        $this->mergeRequires($root, $package);
+        $this->mergeDevRequires($root, $package);
 
-            if ($package->getSuggests()) {
-                $root->setSuggests(array_merge(
-                    $root->getSuggests(),
-                    $package->getSuggests()
-                ));
-            }
+        if (isset($json['repositories'])) {
+            $this->addRepositories($json['repositories'], $root);
+        }
+
+        if ($package->getSuggests()) {
+            $root->setSuggests(array_merge(
+                $root->getSuggests(),
+                $package->getSuggests()
+            ));
+        }
+
+        if ($this->recurse && isset($json['extra']['merge-plugin'])) {
+            $this->mergePackages($json['extra']['merge-plugin']);
         }
     }
 
