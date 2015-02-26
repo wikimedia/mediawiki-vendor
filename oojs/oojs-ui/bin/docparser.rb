@@ -50,12 +50,12 @@ def parse_file filename
 			visibility: :public,
 			type: nil,
 		}
-		valid_for_all = %I[name description]
+		valid_for_all = %w[name description].map(&:to_sym)
 		valid_per_kind = {
-			class:    valid_for_all + %I[parent mixins methods properties events abstract],
-			method:   valid_for_all + %I[params config return visibility static],
-			property: valid_for_all + %I[type static],
-			event:    valid_for_all + %I[params],
+			class:    valid_for_all + %w[parent mixins methods properties events abstract].map(&:to_sym),
+			method:   valid_for_all + %w[params config return visibility static].map(&:to_sym),
+			property: valid_for_all + %w[type static].map(&:to_sym),
+			event:    valid_for_all + %w[params].map(&:to_sym),
 		}
 
 		js_class_constructor = false
@@ -113,7 +113,7 @@ def parse_file filename
 					data[:params] << {name: name, type: cleanup_class_name(type), description: description || '', default: default}
 					previous_item = data[:params][-1]
 				when :php
-					type, name, config, description = content.match(/^(\S+) \$(\w+)(?:\['(\w+)'\])?( .+)?$/).captures
+					type, name, config, description = content.match(/^(\S+) \&?\$(\w+)(?:\['(\w+)'\])?( .+)?$/).captures
 					next if type == 'array' && name == 'config' && !config
 					if config && name == 'config'
 						data[:config] << {name: config, type: cleanup_class_name(type), description: description || ''}
@@ -148,7 +148,9 @@ def parse_file filename
 				data[:abstract] = true
 			when 'ignore'
 				ignore = true
-			when 'inheritable', 'deprecated', 'singleton', 'throws', 'chainable', 'fires', 'localdoc', 'inheritdoc'
+			when 'inheritable', 'deprecated', 'singleton', 'throws',
+				 'chainable', 'fires', 'localdoc', 'inheritdoc', 'member',
+				 'see'
 				# skip
 			else
 				fail "unrecognized keyword: #{keyword}"
@@ -160,7 +162,7 @@ def parse_file filename
 		if code_line && code_line.strip != ''
 			case filetype
 			when :js
-				m = code_line.match(/(?:(static|prototype)\.)?(\w+) = /)
+				m = code_line.match(/(?:(static|prototype)\.)?(\w+) =/)
 				kind_, name = m.captures
 				data[:static] = true if kind_ == 'static'
 				kind = {'static' => :property, 'prototype' => :method}[ kind_.strip ] if kind_ && !kind

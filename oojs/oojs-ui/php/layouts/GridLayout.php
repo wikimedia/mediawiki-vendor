@@ -39,6 +39,12 @@ class GridLayout extends Layout {
 	 * @param number[] $config['heights'] Heights of rows as ratios
 	 */
 	public function __construct( array $panels, array $config = array() ) {
+		// Allow passing positional parameters inside the config array
+		if ( is_array( $panels ) && isset( $panels['panels'] ) ) {
+			$config = $panels;
+			$panels = $config['panels'];
+		}
+
 		// Parent constructor
 		parent::__construct( $config );
 
@@ -141,5 +147,12 @@ class GridLayout extends Layout {
 	 */
 	public function getPanel( $x, $y ) {
 		return $this->panels[ ( $x * count( $this->widths ) ) + $y ];
+	}
+
+	public function getConfig( &$config ) {
+		$config['panels'] = $this->panels;
+		$config['widths'] = $this->widths;
+		$config['heights'] = $this->heights;
+		return parent::getConfig( $config );
 	}
 }

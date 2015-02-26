@@ -1,6 +1,6 @@
 {
   "name": "oojs-ui",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "User interface classes built on the OOjs framework.",
   "keywords": [
     "oojs-plugin",
@@ -19,6 +19,7 @@
   ],
   "scripts": {
     "test": "grunt test",
+    "doc": "grunt build doc",
     "prepublish": "grunt build"
   },
   "dependencies": {},
@@ -27,6 +28,7 @@
     "grunt-banana-checker": "0.2.0",
     "grunt-contrib-clean": "0.6.0",
     "grunt-contrib-concat-sourcemaps": "0.6.0",
+    "grunt-contrib-copy": "0.8.0",
     "grunt-contrib-csslint": "0.4.0",
     "grunt-contrib-cssmin": "0.12.1",
     "grunt-contrib-jshint": "0.11.0",
@@ -35,6 +37,7 @@
     "grunt-contrib-watch": "0.6.1",
     "grunt-csscomb": "3.0.0",
     "grunt-cssjanus": "0.2.3",
+    "grunt-exec": "0.4.6",
     "grunt-file-exists": "0.1.2",
     "grunt-jscs": "1.5.0",
     "grunt-svg2png": "0.2.5",

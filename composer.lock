@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6188811094b69e07d37639aa9419dcf1",
+    "hash": "49436f3f10ff70dea51213589a8fd15b",
     "packages": [
         {
             "name": "cssjanus/cssjanus",
@@ -156,20 +156,25 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.8.0",
+            "version": "v0.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "f90de429e269fbb20aff48ab73be495acf03ca42"
+                "reference": "f838b53972b906d05df42a482139614659c6cfa2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/f90de429e269fbb20aff48ab73be495acf03ca42",
-                "reference": "f90de429e269fbb20aff48ab73be495acf03ca42",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/f838b53972b906d05df42a482139614659c6cfa2",
+                "reference": "f838b53972b906d05df42a482139614659c6cfa2",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "jakub-onderka/php-parallel-lint": "0.8.*",
+                "mediawiki/mediawiki-codesniffer": "0.1.0",
+                "squizlabs/php_codesniffer": "2.1.*"
             },
             "type": "library",
             "autoload": {
@@ -181,8 +186,9 @@
             "license": [
                 "MIT"
             ],
+            "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOjs_UI",
-            "time": "2015-02-19 01:26:12"
+            "time": "2015-02-26 02:03:36"
         },
         {
             "name": "psr/log",

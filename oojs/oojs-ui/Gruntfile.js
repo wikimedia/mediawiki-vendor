@@ -7,6 +7,7 @@ module.exports = function ( grunt ) {
 	grunt.loadNpmTasks( 'grunt-banana-checker' );
 	grunt.loadNpmTasks( 'grunt-contrib-clean' );
 	grunt.loadNpmTasks( 'grunt-contrib-concat-sourcemaps' );
+	grunt.loadNpmTasks( 'grunt-contrib-copy' );
 	grunt.loadNpmTasks( 'grunt-contrib-csslint' );
 	grunt.loadNpmTasks( 'grunt-contrib-cssmin' );
 	grunt.loadNpmTasks( 'grunt-contrib-jshint' );
@@ -14,6 +15,7 @@ module.exports = function ( grunt ) {
 	grunt.loadNpmTasks( 'grunt-contrib-uglify' );
 	grunt.loadNpmTasks( 'grunt-contrib-watch' );
 	grunt.loadNpmTasks( 'grunt-csscomb' );
+	grunt.loadNpmTasks( 'grunt-exec' );
 	grunt.loadNpmTasks( 'grunt-file-exists' );
 	grunt.loadNpmTasks( 'grunt-cssjanus' );
 	grunt.loadNpmTasks( 'grunt-jscs' );
@@ -75,6 +77,15 @@ module.exports = function ( grunt ) {
 		}
 
 		return target;
+	}
+
+	function strip( str ) {
+		var path = require( 'path' );
+		// http://gruntjs.com/configuring-tasks#building-the-files-object-dynamically
+		// http://gruntjs.com/api/grunt.file#grunt.file.expandmapping
+		return function ( dest, src ) {
+			return path.join( dest, src.replace( str, '' ) );
+		};
 	}
 
 	grunt.initConfig( {
@@ -185,32 +196,43 @@ module.exports = function ( grunt ) {
 		copy: {
 			imagesCommon: {
 				src: 'src/styles/images/*.cur',
-				strip: 'src/styles/images/',
-				dest: 'dist/images'
+				dest: 'dist/images/',
+				expand: true,
+				flatten: true
 			},
 			imagesApex: {
 				src: 'src/themes/apex/images/**/*.{png,gif}',
-				strip: 'src/themes/apex/images',
-				dest: 'dist/themes/apex/images'
+				dest: 'dist/themes/apex/images/',
+				expand: true,
+				rename: strip( 'src/themes/apex/images/' )
 			},
 			imagesMediaWiki: {
 				src: 'src/themes/mediawiki/images/**/*.{png,gif}',
-				strip: 'src/themes/mediawiki/images',
-				dest: 'dist/themes/mediawiki/images'
+				dest: 'dist/themes/mediawiki/images/',
+				expand: true,
+				rename: strip( 'src/themes/mediawiki/images/' )
 			},
 			i18n: {
 				src: 'i18n/*.json',
-				dest: 'dist'
+				expand: true,
+				dest: 'dist/'
 			},
 			lessTemp: {
 				src: 'src/**/*.less',
-				strip: 'src/',
-				dest: 'dist/tmp'
+				dest: 'dist/tmp/',
+				expand: true,
+				rename: strip( 'src/' )
 			},
 			svg: {
 				src: 'dist/tmp/**/*.svg',
-				strip: 'dist/tmp/',
-				dest: 'dist'
+				dest: 'dist/',
+				expand: true,
+				rename: strip( 'dist/tmp/' )
+			},
+			jsduck: {
+				src: '{lib,dist}/**/*',
+				dest: 'docs/',
+				expand: true
 			}
 		},
 		colorizeSvg: {
@@ -256,7 +278,11 @@ module.exports = function ( grunt ) {
 			options: {
 				jshintrc: true
 			},
-			dev: [ '*.js', '{build,demos,src,tests}/**/*.js' ]
+			dev: [
+				'*.js',
+				'{build,demos,src,tests}/**/*.js',
+				'!tests/JSPHP.test.js'
+			]
 		},
 		jscs: {
 			dev: [
@@ -282,6 +308,15 @@ module.exports = function ( grunt ) {
 		},
 
 		// Test
+		exec: {
+			rubyTestSuiteGenerator: {
+				command: 'ruby bin/testsuitegenerator.rb src php > tests/JSPHP-suite.json'
+			},
+			phpGenerateJSPHPForKarma: {
+				command: 'php ../bin/generate-JSPHP-for-karma.php > JSPHP.test.js',
+				cwd: './tests'
+			}
+		},
 		karma: {
 			options: {
 				frameworks: [ 'qunit' ],
@@ -290,6 +325,8 @@ module.exports = function ( grunt ) {
 					'lib/oojs.jquery.js',
 					'dist/oojs-ui.js',
 					'dist/oojs-ui-apex.js',
+					'dist/oojs-ui-mediawiki.js',
+					'tests/QUnit.assert.equalDomElement.js',
 					'tests/**/*.test.js'
 				],
 				reporters: [ 'dots' ],
@@ -346,6 +383,17 @@ module.exports = function ( grunt ) {
 		} );
 	} );
 
+	grunt.registerTask( 'jsduck', function () {
+		var done = this.async(),
+			spawn = require( 'child_process' ).spawn,
+			jsduck = spawn( 'jsduck', [ '--color' ] );
+		jsduck.stdout.pipe( process.stdout );
+		jsduck.stderr.pipe( process.stderr );
+		jsduck.on( 'close', function ( code ) {
+			done( code === 0 );
+		} );
+	} );
+
 	grunt.registerTask( 'build-code', [ 'concat:js', 'uglify' ] );
 	grunt.registerTask( 'build-styling', [
 		'copy:lessTemp', 'colorizeSvg', 'less', 'copy:svg', 'copy:imagesCommon',
@@ -353,7 +401,8 @@ module.exports = function ( grunt ) {
 		'concat:css', 'cssjanus', 'csscomb', 'cssmin'
 	] );
 	grunt.registerTask( 'build-i18n', [ 'copy:i18n' ] );
-	grunt.registerTask( 'build', [ 'clean:build', 'fileExists', 'typos', 'build-code', 'build-styling', 'build-i18n', 'clean:tmp' ] );
+	grunt.registerTask( 'build-tests', [ 'exec:rubyTestSuiteGenerator', 'exec:phpGenerateJSPHPForKarma' ] );
+	grunt.registerTask( 'build', [ 'clean:build', 'fileExists', 'typos', 'build-code', 'build-styling', 'build-i18n', 'build-tests', 'clean:tmp' ] );
 
 	grunt.registerTask( 'git-build', [ 'pre-git-build', 'build' ] );
 
@@ -368,6 +417,7 @@ module.exports = function ( grunt ) {
 
 	grunt.registerTask( 'lint', [ 'jshint', 'jscs', 'csslint', 'banana' ] );
 	grunt.registerTask( 'test', [ 'pre-test', 'git-build', 'lint', 'karma:main', 'karma:other' ] );
+	grunt.registerTask( 'doc', [ 'build', 'jsduck', 'copy:jsduck' ] );
 
 	grunt.registerTask( 'default', 'test' );
 };

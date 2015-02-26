@@ -657,6 +657,16 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 					}
 				),
 				new OO.ui.FieldLayout(
+					new OO.ui.RadioInputWidget( {
+						selected: true,
+						disabled: true
+					} ),
+					{
+						align: 'inline',
+						label: 'RadioInputWidget (disabled)\u200E'
+					}
+				),
+				new OO.ui.FieldLayout(
 					new OO.ui.RadioSelectWidget( {
 						items: [
 							new OO.ui.RadioOptionWidget( {
@@ -666,6 +676,11 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 							new OO.ui.RadioOptionWidget( {
 								data: 'Dog',
 								label: 'Dog'
+							} ),
+							new OO.ui.RadioOptionWidget( {
+								data: 'Goldfish',
+								label: 'Goldfish',
+								disabled: true
 							} )
 						]
 					} ),
@@ -759,16 +774,6 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 				),
 				new OO.ui.FieldLayout(
 					new OO.ui.TextInputWidget( {
-						value: 'Disabled',
-						disabled: true
-					} ),
-					{
-						label: 'TextInputWidget (disabled)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.TextInputWidget( {
 						multiline: true,
 						value: 'Multiline\nMultiline'
 					} ),
@@ -797,6 +802,19 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 					} ),
 					{
 						label: 'TextInputWidget (label)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.TextInputWidget( {
+						value: 'Disabled',
+						icon: 'picture',
+						indicator: 'required',
+						label: 'Inline label',
+						disabled: true
+					} ),
+					{
+						label: 'TextInputWidget (icon, indicator, label, disabled)\u200E',
 						align: 'top'
 					}
 				),
@@ -1122,6 +1140,15 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 					}
 				),
 				new OO.ui.FieldLayout(
+					new OO.ui.LabelWidget( {
+						label: new OO.ui.HtmlSnippet( '<b>Fancy</b> <i>text</i> <u>formatting</u>!' )
+					} ),
+					{
+						label: 'LabelWidget (with html)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
 					new OO.ui.PopupButtonWidget( {
 						icon: 'info',
 						framed: false,
@@ -1248,6 +1275,59 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 						align: 'top'
 					}
 				)
+			]
+		} ),
+		new OO.ui.FormLayout( {
+			method: 'GET',
+			action: 'widgets.php',
+			items: [
+				new OO.ui.FieldsetLayout( {
+					label: 'Form layout',
+					items: [
+						new OO.ui.FieldLayout(
+							new OO.ui.TextInputWidget( {
+								name: 'username'
+							} ),
+							{
+								label: 'User name',
+								align: 'top'
+							}
+						),
+						new OO.ui.FieldLayout(
+							new OO.ui.TextInputWidget( {
+								name: 'password',
+								type: 'password'
+							} ),
+							{
+								label: 'Password',
+								align: 'top'
+							}
+						),
+						new OO.ui.FieldLayout(
+							new OO.ui.CheckboxInputWidget( {
+								name: 'rememberme',
+								selected: true
+							} ),
+							{
+								label: 'Remember me',
+								align: 'inline'
+							}
+						),
+						new OO.ui.FieldLayout(
+							new OO.ui.ButtonInputWidget( {
+								name: 'login',
+								label: 'Log in',
+								type: 'submit',
+								flags: [ 'primary', 'progressive' ],
+								icon: 'check'
+							} ),
+							{
+								label: null,
+								align: 'top'
+							}
+						)
+					]
+				} )
 			]
 		} )
 	];

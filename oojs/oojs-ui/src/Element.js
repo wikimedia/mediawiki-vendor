@@ -8,11 +8,18 @@
  *
  * @constructor
  * @param {Object} [config] Configuration options
- * @cfg {string[]} [classes] CSS class names to add
- * @cfg {string} [id] HTML id attribute
+ * @cfg {string[]} [classes] The names of the CSS classes to apply to the element. CSS styles are added
+ *  to the top level (e.g., the outermost div) of the element. See the [OOjs UI documentation on MediaWiki][2]
+ *  for an example.
+ *  [2]: https://www.mediawiki.org/wiki/OOjs_UI/Widgets/Buttons_and_Switches#cssExample
+ * @cfg {string} [id] The HTML id attribute used in the rendered tag.
  * @cfg {string} [text] Text to insert
- * @cfg {jQuery} [$content] Content elements to append (after text)
- * @cfg {Mixed} [data] Element data
+ * @cfg {Array} [content] An array of content elements to append (after #text).
+ *  Strings will be html-escaped; use an OO.ui.HtmlSnippet to append raw HTML.
+ *  Instances of OO.ui.Element will have their $element appended.
+ * @cfg {jQuery} [$content] Content elements to append (after #text)
+ * @cfg {Mixed} [data] Custom data of any type or combination of types (e.g., string, number, array, object).
+ *  Data can also be specified with the #setData method.
  */
 OO.ui.Element = function OoUiElement( config ) {
 	// Configuration initialization
@@ -20,8 +27,10 @@ OO.ui.Element = function OoUiElement( config ) {
 
 	// Properties
 	this.$ = $;
+	this.visible = true;
 	this.data = config.data;
-	this.$element = $( document.createElement( this.getTagName() ) );
+	this.$element = config.$element ||
+		$( document.createElement( this.getTagName() ) );
 	this.elementGroup = null;
 	this.debouncedUpdateThemeClassesHandler = this.debouncedUpdateThemeClasses.bind( this );
 	this.updateThemeClassesPending = false;
@@ -36,7 +45,25 @@ OO.ui.Element = function OoUiElement( config ) {
 	if ( config.text ) {
 		this.$element.text( config.text );
 	}
+	if ( config.content ) {
+		// The `content` property treats plain strings as text; use an
+		// HtmlSnippet to append HTML content.  `OO.ui.Element`s get their
+		// appropriate $element appended.
+		this.$element.append( config.content.map( function ( v ) {
+			if ( typeof v === 'string' ) {
+				// Escape string so it is properly represented in HTML.
+				return document.createTextNode( v );
+			} else if ( v instanceof OO.ui.HtmlSnippet ) {
+				// Bypass escaping.
+				return v.toString();
+			} else if ( v instanceof OO.ui.Element ) {
+				return v.$element;
+			}
+			return v;
+		} ) );
+	}
 	if ( config.$content ) {
+		// The `$content` property treats plain strings as HTML.
 		this.$element.append( config.$content );
 	}
 };
@@ -48,9 +75,9 @@ OO.initClass( OO.ui.Element );
 /* Static Properties */
 
 /**
- * HTML tag name.
+ * The name of the HTML tag used by the element.
  *
- * This may be ignored if #getTagName is overridden.
+ * The static value may be ignored if the #getTagName method is overridden.
  *
  * @static
  * @inheritable
@@ -458,6 +485,34 @@ OO.ui.Element.static.reconsiderScrollbars = function ( el ) {
 };
 
 /* Methods */
+
+/**
+ * Toggle visibility of an element.
+ *
+ * @param {boolean} [show] Make element visible, omit to toggle visibility
+ * @fires visible
+ * @chainable
+ */
+OO.ui.Element.prototype.toggle = function ( show ) {
+	show = show === undefined ? !this.visible : !!show;
+
+	if ( show !== this.isVisible() ) {
+		this.visible = show;
+		this.$element.toggleClass( 'oo-ui-element-hidden', !this.visible );
+		this.emit( 'toggle', show );
+	}
+
+	return this;
+};
+
+/**
+ * Check if element is visible.
+ *
+ * @return {boolean} element is visible
+ */
+OO.ui.Element.prototype.isVisible = function () {
+	return this.visible;
+};
 
 /**
  * Get element data.

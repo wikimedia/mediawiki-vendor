@@ -35,7 +35,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>OOjs UI Widget Demo</title>
-	<link rel="stylesheet" href="../dist/<?php echo $styleFileName; ?>">
+	<link rel="stylesheet" href="../dist/<?php echo $styleFileName; ?>" title="theme">
 	<link rel="stylesheet" href="styles/demo<?php echo $directionSuffix; ?>.css">
 </head>
 <body class="oo-ui-<?php echo $direction; ?>">
@@ -43,18 +43,24 @@
 		<div class="oo-ui-demo-menu">
 			<?php
 				echo new OOUI\ButtonGroupWidget( array(
+					'infusable' => true,
 					'items' => array(
 						new OOUI\ButtonWidget( array(
+							'id' => 'theme-mediawiki',
 							'label' => 'MediaWiki',
+							'data' => 'mediawiki',
 							'href' => '?' . http_build_query( array_merge( $query, array( 'theme' => 'mediawiki' ) ) ),
 						) ),
 						new OOUI\ButtonWidget( array(
+							'id' => 'theme-apex',
 							'label' => 'Apex',
+							'data' => 'apex',
 							'href' => '?' . http_build_query( array_merge( $query, array( 'theme' => 'apex' ) ) ),
 						) ),
 					)
 				) );
 				echo new OOUI\ButtonGroupWidget( array(
+					'infusable' => true,
 					'items' => array(
 						new OOUI\ButtonWidget( array(
 							'label' => 'Mixed',
@@ -71,6 +77,7 @@
 					)
 				) );
 				echo new OOUI\ButtonGroupWidget( array(
+					'infusable' => true,
 					'items' => array(
 						new OOUI\ButtonWidget( array(
 							'label' => 'LTR',
@@ -150,7 +157,7 @@
 				foreach ( $styles as $style ) {
 					foreach ( $states as $state ) {
 						$buttonStyleShowcaseWidget->appendContent(
-							new OOUI\ButtonWidget( array_merge( $style, $state ) )
+							new OOUI\ButtonWidget( array_merge( $style, $state, array( 'infusable' => true ) ) )
 						);
 					}
 					$buttonStyleShowcaseWidget->appendContent( new OOUI\HtmlSnippet( '<br />' ) );
@@ -159,6 +166,8 @@
 				$horizontalAlignmentWidget = new OOUI\Widget( array(
 					'classes' => array( 'oo-ui-demo-horizontal-alignment' )
 				) );
+				# Adding content after the fact does not play well with
+				# infusability.  We should be using a proper Layout here.
 				$horizontalAlignmentWidget->appendContent(
 					new OOUI\ButtonWidget( array( 'label' => 'Button' ) ),
 					new OOUI\ButtonGroupWidget( array( 'items' => array(
@@ -179,6 +188,7 @@
 				);
 
 				echo new OOUI\FieldsetLayout( array(
+					'infusable' => true,
 					'label' => 'Simple buttons',
 					'items' => array(
 						new OOUI\FieldLayout(
@@ -409,6 +419,7 @@
 					)
 				) );
 				echo new OOUI\FieldsetLayout( array(
+					'infusable' => true,
 					'label' => 'Button sets',
 					'items' => array(
 						new OOUI\FieldLayout(
@@ -458,18 +469,30 @@
 						)
 					)
 				) );
-				echo new OOUI\FieldsetLayout( array(
-					'label' => 'Button style showcase',
-					'items' => array(
+				# Note that $buttonStyleShowcaseWidget is not infusable,
+				# because the contents would not be preserved -- we assume
+				# that widgets will manage their own contents by default,
+				# but here we've manually appended content to the widget.
+				# If we embed it in an infusable FieldsetLayout, it will be
+				# (recursively) made infusable.  We protect the FieldLayout
+				# by wrapping it with a new <div> Tag, so that it won't get
+				# rebuilt during infusion.
+				$wrappedFieldLayout = new OOUI\Tag( 'div' );
+				$wrappedFieldLayout->appendContent(
 						new OOUI\FieldLayout(
 							$buttonStyleShowcaseWidget,
 							array(
 								'align' => 'top'
 							)
 						)
-					)
+				);
+				echo new OOUI\FieldsetLayout( array(
+					'infusable' => true,
+					'label' => 'Button style showcase',
+					'items' => array( $wrappedFieldLayout ),
 				) );
 				echo new OOUI\FieldsetLayout( array(
+					'infusable' => true,
 					'label' => 'Form widgets',
 					'items' => array(
 						new OOUI\FieldLayout(
@@ -488,7 +511,8 @@
 							) ),
 							array(
 								'align' => 'inline',
-								'label' => "CheckboxInputWidget (disabled)\xE2\x80\x8E"					)
+								'label' => "CheckboxInputWidget (disabled)\xE2\x80\x8E"
+							)
 						),
 						new OOUI\FieldLayout(
 							new OOUI\RadioInputWidget( array(
@@ -507,6 +531,16 @@
 							array(
 								'align' => 'inline',
 								'label' => 'Connected RadioInputWidget #2'
+							)
+						),
+						new OOUI\FieldLayout(
+							new OOUI\RadioInputWidget( array(
+								'selected' => true,
+								'disabled' => true
+							) ),
+							array(
+								'align' => 'inline',
+								'label' => "RadioInputWidget (disabled)\xE2\x80\x8E"
 							)
 						),
 						new OOUI\FieldLayout(
@@ -616,20 +650,29 @@
 						)
 					)
 				) );
-				echo new OOUI\FieldsetLayout( array(
-					'label' => 'Horizontal alignment',
-					'items' => array(
-						new OOUI\FieldLayout(
-							$horizontalAlignmentWidget,
-							array(
-								'label' => 'Multiple widgets shown as a single line, ' .
-									'as used in compact forms or in parts of a bigger widget.',
-								'align' => 'top'
-							)
+				# Again, $horizontalAlignmentWidget is not infusable because
+				# it manually added content after creation.  If we embed it
+				# in an infusable FieldsetLayout, it will (recursively) be made
+				# infusable.  So protect the widget by wrapping it in a
+				# <div> Tag.
+				$wrappedFieldLayout = new OOUI\Tag( 'div' );
+				$wrappedFieldLayout->appendContent(
+					new OOUI\FieldLayout(
+						$horizontalAlignmentWidget,
+						array(
+							'label' => 'Multiple widgets shown as a single line, ' .
+								'as used in compact forms or in parts of a bigger widget.',
+							'align' => 'top'
 						)
 					)
+				);
+				echo new OOUI\FieldsetLayout( array(
+					'infusable' => true,
+					'label' => 'Horizontal alignment',
+					'items' => array( $wrappedFieldLayout ),
 				) );
 				echo new OOUI\FieldsetLayout( array(
+					'infusable' => true,
 					'label' => 'Other widgets',
 					'items' => array(
 						new OOUI\FieldLayout(
@@ -692,10 +735,20 @@
 								'label' => "LabelWidget (disabled)\xE2\x80\x8E",
 								'align' => 'top'
 							)
+						),
+						new OOUI\FieldLayout(
+							new OOUI\LabelWidget( array(
+								'label' => new OOUI\HtmlSnippet( '<b>Fancy</b> <i>text</i> <u>formatting</u>!' ),
+							) ),
+							array(
+								'label' => "LabelWidget (with html)\xE2\x80\x8E",
+								'align' => 'top'
+							)
 						)
 					)
 				) );
 				echo new OOUI\FieldsetLayout( array(
+					'infusable' => true,
 					'label' => 'Field layouts',
 					'help' => 'I am an additional, helpful information. Lorem ipsum dolor sit amet, cibo pri ' .
 						"in, duo ex inimicus perpetua complectitur, mel periculis similique at.\xE2\x80\x8E",
@@ -714,80 +767,71 @@
 					)
 				) );
 
-				$form = new OOUI\FormLayout( array(
+				echo new OOUI\FormLayout( array(
+					'infusable' => true,
 					'method' => 'GET',
 					'action' => 'widgets.php',
-				) );
-
-				$form->appendContent(
-					new OOUI\FieldsetLayout( array(
-						'label' => 'Form layout',
-						'items' => array(
-							new OOUI\FieldLayout(
-								new OOUI\TextInputWidget( array(
-									'name' => 'username',
-								) ),
-								array(
-									'label' => 'User name',
-									'align' => 'top',
-								)
-							),
-							new OOUI\FieldLayout(
-								new OOUI\TextInputWidget( array(
-									'name' => 'password',
-									'type' => 'password',
-								) ),
-								array(
-									'label' => 'Password',
-									'align' => 'top',
-								)
-							),
-							new OOUI\FieldLayout(
-								new OOUI\CheckboxInputWidget( array(
-									'name' => 'rememberme',
-									'selected' => true,
-								) ),
-								array(
-									'label' => 'Remember me',
-									'align' => 'inline',
-								)
-							),
-							new OOUI\FieldLayout(
-								new OOUI\ButtonInputWidget( array(
-									'name' => 'login',
-									'label' => 'Log in',
-									'type' => 'submit',
-									'flags' => array( 'primary', 'progressive' ),
-									'icon' => 'check',
-								) ),
-								array(
-									'label' => null,
-									'align' => 'top',
-								)
-							),
-						)
-					) )
-				);
-
-				echo $form;
-
-				echo new OOUI\FieldsetLayout( array(
-					'label' => 'PHP-specific',
 					'items' => array(
-						new OOUI\FieldLayout(
-							new OOUI\LabelWidget( array(
-								'label' => new OOUI\HtmlSnippet( '<b>Fancy</b> <i>text</i> <u>formatting</u>!' ),
-							) ),
-							array(
-								'label' => 'LabelWidget with HtmlSnippet',
-								'align' => 'top'
+						new OOUI\FieldsetLayout( array(
+							'label' => 'Form layout',
+							'items' => array(
+								new OOUI\FieldLayout(
+									new OOUI\TextInputWidget( array(
+										'name' => 'username',
+									) ),
+									array(
+										'label' => 'User name',
+										'align' => 'top',
+									)
+								),
+								new OOUI\FieldLayout(
+									new OOUI\TextInputWidget( array(
+										'name' => 'password',
+										'type' => 'password',
+									) ),
+									array(
+										'label' => 'Password',
+										'align' => 'top',
+									)
+								),
+								new OOUI\FieldLayout(
+									new OOUI\CheckboxInputWidget( array(
+										'name' => 'rememberme',
+										'selected' => true,
+									) ),
+									array(
+										'label' => 'Remember me',
+										'align' => 'inline',
+									)
+								),
+								new OOUI\FieldLayout(
+									new OOUI\ButtonInputWidget( array(
+										'name' => 'login',
+										'label' => 'Log in',
+										'type' => 'submit',
+										'flags' => array( 'primary', 'progressive' ),
+										'icon' => 'check',
+									) ),
+									array(
+										'label' => null,
+										'align' => 'top',
+									)
+								),
 							)
-						),
+						) )
 					)
 				) );
 
 			?>
 		</div>
 	</div>
+
+	<!-- Demonstrate JavaScript "infusion" of PHP widgets -->
+	<script src="../lib/jquery.js"></script>
+	<script src="../lib/oojs.jquery.js"></script>
+	<script src="../dist/oojs-ui.js"></script>
+	<script src="../dist/oojs-ui-apex.js"></script>
+	<script src="../dist/oojs-ui-mediawiki.js"></script>
+	<script src="./infusion.js"></script>
 </body>
 </html>

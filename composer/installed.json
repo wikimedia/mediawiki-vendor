@@ -350,38 +350,6 @@
         ]
     },
     {
-        "name": "oojs/oojs-ui",
-        "version": "v0.8.0",
-        "version_normalized": "0.8.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/wikimedia/oojs-ui.git",
-            "reference": "f90de429e269fbb20aff48ab73be495acf03ca42"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/f90de429e269fbb20aff48ab73be495acf03ca42",
-            "reference": "f90de429e269fbb20aff48ab73be495acf03ca42",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3"
-        },
-        "time": "2015-02-19 01:26:12",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "php/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
-    },
-    {
         "name": "wikimedia/composer-merge-plugin",
         "version": "v1.0.0",
         "version_normalized": "1.0.0.0",
@@ -423,5 +391,43 @@
             "MIT"
         ],
         "description": "Composer plugin to merge multiple composer.json files"
+    },
+    {
+        "name": "oojs/oojs-ui",
+        "version": "v0.8.1",
+        "version_normalized": "0.8.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/oojs-ui.git",
+            "reference": "f838b53972b906d05df42a482139614659c6cfa2"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/f838b53972b906d05df42a482139614659c6cfa2",
+            "reference": "f838b53972b906d05df42a482139614659c6cfa2",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "jakub-onderka/php-parallel-lint": "0.8.*",
+            "mediawiki/mediawiki-codesniffer": "0.1.0",
+            "squizlabs/php_codesniffer": "2.1.*"
+        },
+        "time": "2015-02-26 02:03:36",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "php/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "description": "Provides library of common widgets, layouts, and windows.",
+        "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
     }
 ]

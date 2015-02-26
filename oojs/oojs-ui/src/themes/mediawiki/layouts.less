@@ -41,6 +41,7 @@
 	&.oo-ui-fieldLayout-align-inline {
 		&.oo-ui-labelElement > .oo-ui-fieldLayout-body > .oo-ui-labelElement-label {
 			padding: 0.5em;
+			padding-left: 1em;
 		}
 
 		> .oo-ui-fieldLayout-body > .oo-ui-fieldLayout-field {
@@ -71,7 +72,8 @@
 	padding: 0;
 	border: none;
 
-	+ .oo-ui-fieldsetLayout {
+	+ .oo-ui-fieldsetLayout,
+	+ .oo-ui-formLayout {
 		margin-top: 2em;
 	}
 
@@ -99,7 +101,12 @@
 	}
 }
 
-.theme-oo-ui-formLayout () {}
+.theme-oo-ui-formLayout () {
+	+ .oo-ui-fieldsetLayout,
+	+ .oo-ui-formLayout {
+		margin-top: 2em;
+	}
+}
 
 .theme-oo-ui-gridLayout () {}
 

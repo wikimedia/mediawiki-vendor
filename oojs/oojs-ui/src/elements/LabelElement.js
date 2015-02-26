@@ -1,14 +1,23 @@
 /**
- * Element containing a label.
+ * LabelElement is often mixed into other classes to generate a label, which
+ * helps identify the function of an interface element.
+ * See the [OOjs UI documentation on MediaWiki] [1] for more information.
+ *
+ * [1]: https://www.mediawiki.org/wiki/OOjs_UI/Widgets/Icons,_Indicators,_and_Labels#Labels
  *
  * @abstract
  * @class
  *
  * @constructor
  * @param {Object} [config] Configuration options
- * @cfg {jQuery} [$label] Label node, assigned to #$label, omit to use a generated `<span>`
- * @cfg {jQuery|string|Function} [label] Label nodes, text or a function that returns nodes or text
- * @cfg {boolean} [autoFitLabel=true] Whether to fit the label or not.
+ * @cfg {jQuery} [$label] The label element created by the class. If this
+ *  configuration is omitted, the label element will use a generated `<span>`.
+ * @cfg {jQuery|string|Function} [label] The label text. The label can be specified as a plaintext string,
+ *  a jQuery selection of elements, or a function that will produce a string in the future. See the
+ *  [OOjs UI documentation on MediaWiki] [2] for examples.
+ *  [2]: https://www.mediawiki.org/wiki/OOjs_UI/Widgets/Icons,_Indicators,_and_Labels#Labels
+ * @cfg {boolean} [autoFitLabel=true] Fit the label to the width of the parent element.
+ *  The label will be truncated to fit if necessary.
  */
 OO.ui.LabelElement = function OoUiLabelElement( config ) {
 	// Configuration initialization
@@ -38,12 +47,13 @@ OO.initClass( OO.ui.LabelElement );
 /* Static Properties */
 
 /**
- * Label.
+ * The label text. The label can be specified as a plaintext string, a function that will
+ * produce a string in the future, or `null` for no label. The static value will
+ * be overridden if a label is specified with the #label config option.
  *
  * @static
  * @inheritable
- * @property {string|Function|null} Label text; a function that returns nodes or text; or null for
- *  no label
+ * @property {string|Function|null}
  */
 OO.ui.LabelElement.static.label = null;
 
@@ -71,13 +81,13 @@ OO.ui.LabelElement.prototype.setLabelElement = function ( $label ) {
  * An empty string will result in the label being hidden. A string containing only whitespace will
  * be converted to a single `&nbsp;`.
  *
- * @param {jQuery|string|Function|null} label Label nodes; text; a function that returns nodes or
+ * @param {jQuery|string|OO.ui.HtmlSnippet|Function|null} label Label nodes; text; a function that returns nodes or
  *  text; or null for no label
  * @chainable
  */
 OO.ui.LabelElement.prototype.setLabel = function ( label ) {
 	label = typeof label === 'function' ? OO.ui.resolveMsg( label ) : label;
-	label = ( typeof label === 'string' && label.length ) || label instanceof jQuery ? label : null;
+	label = ( ( typeof label === 'string' && label.length ) || label instanceof jQuery || label instanceof OO.ui.HtmlSnippet ) ? label : null;
 
 	this.$element.toggleClass( 'oo-ui-labelElement', !!label );
 
@@ -132,6 +142,8 @@ OO.ui.LabelElement.prototype.setLabelContent = function ( label ) {
 		} else {
 			this.$label.text( label );
 		}
+	} else if ( label instanceof OO.ui.HtmlSnippet ) {
+		this.$label.html( label.toString() );
 	} else if ( label instanceof jQuery ) {
 		this.$label.empty().append( label );
 	} else {
