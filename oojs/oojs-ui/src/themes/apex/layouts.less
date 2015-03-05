@@ -10,7 +10,7 @@
 	}
 
 	&-outlinePanel {
-		border-right: solid 1px #ddd;
+		border-right: 1px solid #ddd;
 
 		> .oo-ui-outlineControlsWidget {
 			box-shadow: 0 0 0.25em rgba(0,0,0,0.25);
@@ -84,15 +84,15 @@
 	}
 
 	&.oo-ui-iconElement > .oo-ui-labelElement-label {
-		padding-left: 1.75em;
-		line-height: 1.33em;
+		padding-left: 2em;
+		line-height: 1.8em;
 	}
 
 	&.oo-ui-iconElement > .oo-ui-iconElement-icon {
 		left: 0;
 		top: 0.25em;
-		width: 1.5em;
-		height: 1.5em;
+		width: @icon-size;
+		height: @icon-size;
 	}
 
 	> .oo-ui-popupButtonWidget {
@@ -106,8 +106,6 @@
 		margin-top: 2em;
 	}
 }
-
-.theme-oo-ui-gridLayout () {}
 
 .theme-oo-ui-menuLayout () {}
 

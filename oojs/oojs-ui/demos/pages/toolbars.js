@@ -1,5 +1,5 @@
 OO.ui.Demo.static.pages.toolbars = function ( demo ) {
-	var i, toolGroups, actionButton, actionButtonDisabled,
+	var i, toolGroups, actionButton, actionButtonDisabled, PopupTool, ToolGroupTool,
 		$demo = demo.$element,
 		$containers = $(
 			'<div class="oo-ui-demo-container oo-ui-demo-toolbars"></div>' +
@@ -85,11 +85,43 @@ OO.ui.Demo.static.pages.toolbars = function ( demo ) {
 	toolGroupFactories[ 0 ].register( createDisabledToolGroup( OO.ui.ListToolGroup, 'disabledList' ) );
 	toolGroupFactories[ 1 ].register( createDisabledToolGroup( OO.ui.MenuToolGroup, 'disabledMenu' ) );
 
+	PopupTool = function ( toolGroup, config ) {
+		// Parent constructor
+		OO.ui.PopupTool.call( this, toolGroup, $.extend( { popup: { padded: true } }, config ) );
+
+		this.popup.$body.append( '<p>Popup tool</p>' );
+	};
+
+	OO.inheritClass( PopupTool, OO.ui.PopupTool );
+
+	PopupTool.static.name = 'popupTool';
+	PopupTool.static.group = 'popupTools';
+	PopupTool.static.icon = 'help';
+
+	toolFactories[ 2 ].register( PopupTool );
+
+	ToolGroupTool = function ( toolbar, group, config ) {
+		// Parent constructor
+		OO.ui.ToolGroupTool.call( this, toolbar, group, config );
+	};
+
+	OO.inheritClass( ToolGroupTool, OO.ui.ToolGroupTool );
+
+	ToolGroupTool.static.name = 'toolGroupTool';
+	ToolGroupTool.static.group = 'barTools';
+	ToolGroupTool.static.groupConfig = {
+		indicator: 'down',
+		include: [ { group: 'moreListTools' } ]
+	};
+
+	toolFactories[ 0 ].register( ToolGroupTool );
+
 	// Toolbar
 	toolbars[ 0 ].setup( [
 		{
 			type: 'bar',
-			include: [ { group: 'barTools' } ]
+			include: [ { group: 'barTools' } ],
+			demote: [ 'toolGroupTool' ]
 		},
 		{
 			type: 'disabledBar',
@@ -101,7 +133,7 @@ OO.ui.Demo.static.pages.toolbars = function ( demo ) {
 			label: 'List',
 			icon: 'picture',
 			include: [ { group: 'listTools' } ],
-			allowCollapse: [ 'listTool4', 'listTool5', 'listTool6' ]
+			allowCollapse: [ 'listTool1', 'listTool6' ]
 		},
 		{
 			type: 'disabledList',
@@ -144,6 +176,9 @@ OO.ui.Demo.static.pages.toolbars = function ( demo ) {
 			type: 'list',
 			icon: 'picture',
 			include: [ { group: 'listTools' } ]
+		},
+		{
+			include: [ { group: 'popupTools' } ]
 		}
 	] );
 	toolbars[ 0 ].$actions.append(
@@ -175,11 +210,18 @@ OO.ui.Demo.static.pages.toolbars = function ( demo ) {
 		listTools: [
 			[ 'listTool', 'picture', 'First basic tool in list' ],
 			[ 'listTool1', 'picture', 'Basic tool in list' ],
-			[ 'listTool2', 'picture', 'Another basic tool' ],
 			[ 'listTool3', 'picture', 'Basic disabled tool in list', function () { this.setDisabled( true ); } ],
-			[ 'listTool4', 'picture', 'More basic tools' ],
-			[ 'listTool5', 'picture', 'And even more' ],
 			[ 'listTool6', 'picture', 'A final tool' ]
+		],
+
+		moreListTools: [
+			[ 'listTool2', 'picture', 'Another basic tool' ],
+			[ 'listTool4', 'picture', 'More basic tools' ],
+			[ 'listTool5', 'picture', 'And even more' ]
+		],
+
+		popupTools: [
+			[ 'popupTool' ]
 		],
 
 		disabledListTools: [
@@ -209,6 +251,7 @@ OO.ui.Demo.static.pages.toolbars = function ( demo ) {
 	createToolGroup( 0, 'barTools' );
 	createToolGroup( 0, 'disabledBarTools' );
 	createToolGroup( 0, 'listTools' );
+	createToolGroup( 0, 'moreListTools' );
 	createToolGroup( 0, 'disabledListTools' );
 	createToolGroup( 0, 'autoDisableListTools' );
 	createToolGroup( 1, 'menuTools' );
@@ -217,6 +260,7 @@ OO.ui.Demo.static.pages.toolbars = function ( demo ) {
 
 	for ( i = 0; i < toolbars.length; i++ ) {
 		$containers.eq( i ).append( toolbars[ i ].$element );
+		toolbars[ i ].initialize();
 	}
 	$containers.append( '' );
 	$demo.append(

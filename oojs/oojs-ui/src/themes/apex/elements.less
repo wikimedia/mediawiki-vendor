@@ -11,21 +11,18 @@
 		}
 
 		> .oo-ui-indicatorElement-indicator {
-			margin-right: -0.75em;
-			margin-left: -0.75em;
+			width: @indicator-size;
+			height: @indicator-size;
+			margin: @indicator-size / 2;
 		}
 	}
 
-	&.oo-ui-labelElement > .oo-ui-buttonElement-button > .oo-ui-indicatorElement-indicator,
 	&.oo-ui-iconElement > .oo-ui-buttonElement-button > .oo-ui-indicatorElement-indicator {
-		margin-left: 0;
+		margin-left: @indicator-size / 2;
 	}
-
-	&.oo-ui-indicatorElement > .oo-ui-buttonElement-button > .oo-ui-indicatorElement-indicator,
 	&.oo-ui-iconElement > .oo-ui-buttonElement-button > .oo-ui-iconElement-icon {
-		opacity: 0.8;
-		width: 1.9em;
-		height: 1.9em;
+		width: @icon-size;
+		height: @icon-size;
 	}
 
 	&-frameless {
@@ -104,7 +101,7 @@
 		// Support <input/> from ButtonInputWidget
 		> input.oo-ui-buttonElement-button,
 		&.oo-ui-labelElement > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
-			line-height: 1.9em;
+			line-height: @icon-size;
 		}
 
 		&.oo-ui-widget-enabled > .oo-ui-buttonElement-button:active,
@@ -123,15 +120,28 @@
 			}
 
 			&.oo-ui-labelElement > .oo-ui-buttonElement-button > .oo-ui-iconElement-icon {
-				margin-left: -0.5em;
 				margin-right: 0.3em;
+			}
+		}
+
+		&.oo-ui-indicatorElement {
+			> .oo-ui-buttonElement-button > .oo-ui-indicatorElement-indicator {
+				/* -0.5 - 0.475 */
+				margin-left: -0.005em;
+				margin-right: -0.005em;
+			}
+
+			&.oo-ui-labelElement > .oo-ui-buttonElement-button > .oo-ui-indicatorElement-indicator,
+			&.oo-ui-iconElement:not( .oo-ui-labelElement ) > .oo-ui-buttonElement-button > .oo-ui-indicatorElement-indicator {
+				margin-left: @indicator-size / 2;
+				margin-right: -0.275em;
 			}
 		}
 
 		&.oo-ui-flaggedElement {
 			&-progressive {
 				> .oo-ui-buttonElement-button {
-					border: solid 1px @progressive-border;
+					border: 1px solid @progressive-border;
 					.oo-ui-vertical-gradient(@progressive-gradient-start, @progressive-gradient-end);
 
 					&:hover,
@@ -143,14 +153,14 @@
 				&.oo-ui-widget-enabled > .oo-ui-buttonElement-button:active,
 				&.oo-ui-buttonElement-active > .oo-ui-buttonElement-button,
 				&.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button {
-					border: solid 1px @progressive-border;
+					border: 1px solid @progressive-border;
 					.oo-ui-vertical-gradient(@progressive-gradient-end, @progressive-gradient-start);
 				}
 			}
 
 			&-constructive {
 				> .oo-ui-buttonElement-button {
-					border: solid 1px @constructive-border;
+					border: 1px solid @constructive-border;
 					.oo-ui-vertical-gradient(@constructive-gradient-start, @constructive-gradient-end);
 
 					&:hover,
@@ -162,7 +172,7 @@
 				&.oo-ui-widget-enabled > .oo-ui-buttonElement-button:active,
 				&.oo-ui-buttonElement-active > .oo-ui-buttonElement-button,
 				&.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button {
-					border: solid 1px @constructive-border;
+					border: 1px solid @constructive-border;
 					.oo-ui-vertical-gradient(@constructive-gradient-end, @constructive-gradient-start);
 				}
 			}
@@ -204,9 +214,23 @@
 
 .theme-oo-ui-draggableGroupElement () {}
 
-.theme-oo-ui-iconElement () {}
+.theme-oo-ui-iconElement () {
+	.oo-ui-iconElement-icon,
+	&.oo-ui-iconElement-icon {
+		opacity: 0.8;
+		background-size: contain;
+		background-position: center center;
+	}
+}
 
-.theme-oo-ui-indicatorElement () {}
+.theme-oo-ui-indicatorElement () {
+	.oo-ui-indicatorElement-indicator,
+	&.oo-ui-indicatorElement-indicator {
+		opacity: 0.8;
+		background-size: contain;
+		background-position: center center;
+	}
+}
 
 .theme-oo-ui-labelElement () {}
 

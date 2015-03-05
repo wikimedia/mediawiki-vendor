@@ -364,6 +364,37 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 				new OO.ui.FieldLayout(
 					new OO.ui.ButtonWidget( {
 						framed: false,
+						indicator: 'alert',
+						title: 'Indicator only'
+					} ),
+					{
+						label: 'ButtonWidget (indicator only)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.ButtonWidget( {
+						icon: 'help',
+						title: 'Icon only, framed'
+					} ),
+					{
+						label: 'ButtonWidget (icon only, framed)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.ButtonWidget( {
+						indicator: 'alert',
+						title: 'Indicator only, framed'
+					} ),
+					{
+						label: 'ButtonWidget (indicator only, framed)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.ButtonWidget( {
+						framed: false,
 						icon: 'picture',
 						label: 'Labeled'
 					} ),
@@ -829,7 +860,8 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 								} ),
 								new OO.ui.MenuOptionWidget( {
 									data: 'b',
-									label: 'Second'
+									label: 'Second',
+									indicator: 'required'
 								} ),
 								new OO.ui.MenuOptionWidget( {
 									data: 'c',
@@ -854,6 +886,7 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 				new OO.ui.FieldLayout(
 					new OO.ui.DropdownWidget( {
 						label: 'Select one',
+						icon: 'picture',
 						menu: {
 							items: [
 								new OO.ui.MenuOptionWidget( {
@@ -1272,6 +1305,16 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 						label: 'ActionFieldLayout aligned top with help',
 						help: 'I am an additional, helpful information. Lorem ipsum dolor sit amet, cibo pri ' +
 							'in, duo ex inimicus perpetua complectitur, mel periculis similique at.\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.ActionFieldLayout(
+					new OO.ui.TextInputWidget( {} ),
+					new OO.ui.ButtonWidget( {
+						label: 'Button'
+					} ),
+					{
+						label: $( '<i>' ).text( 'ActionFieldLayout aligned top with rich text label' ),
 						align: 'top'
 					}
 				)

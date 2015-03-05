@@ -2,7 +2,7 @@
 
 .theme-oo-ui-toolbar () {
 	&-bar {
-		border-bottom: solid 1px #ccc;
+		border-bottom: 1px solid #ccc;
 		.oo-ui-vertical-gradient(#fff, #F1F7FB);
 
 		.oo-ui-toolbar-bar {
@@ -30,10 +30,46 @@
 	}
 }
 
+.theme-oo-ui-toolGroupTool () {
+	> .oo-ui-popupToolGroup {
+		border: 0;
+		border-radius: 0;
+		margin: 0;
+	}
+
+	// Like .oo-ui-tool in barToolGroup
+	&:first-child > .oo-ui-popupToolGroup {
+		border-top-left-radius: 0.25em;
+		border-bottom-left-radius: 0.25em;
+	}
+
+	&:last-child > .oo-ui-popupToolGroup {
+		border-top-right-radius: 0.25em;
+		border-bottom-right-radius: 0.25em;
+	}
+
+	// Like .oo-ui-tool-link in barToolGroup
+	> .oo-ui-popupToolGroup > .oo-ui-popupToolGroup-handle {
+		height: 1.5em;
+		padding: 0.25em;
+
+		.oo-ui-iconElement-icon {
+			height: 1.5em;
+			width: 1.5em;
+		}
+	}
+
+	> .oo-ui-popupToolGroup.oo-ui-labelElement > .oo-ui-popupToolGroup-handle {
+		.oo-ui-labelElement-label {
+			line-height: 2.1em; // 0.5em less
+		}
+	}
+}
+
 .theme-oo-ui-toolGroup () {
 	margin: 0.3em;
 	border-radius: 0.25em;
-	border: solid 1px transparent;
+	border: 1px solid transparent;
 	.oo-ui-transition(border-color 300ms ease-in-out);
 
 	&.oo-ui-widget-enabled {
@@ -48,9 +84,9 @@
 }
 
 .theme-oo-ui-barToolGroup () {
-	.oo-ui-tool {
+	> .oo-ui-toolGroup-tools > .oo-ui-tool {
 		margin: -1px 0 -1px -1px;
-		border: solid 1px transparent;
+		border: 1px solid transparent;
 
 		&:first-child {
 			border-top-left-radius: 0.25em;
@@ -63,24 +99,23 @@
 			border-bottom-right-radius: 0.25em;
 		}
 
-		&-link {
+		> .oo-ui-tool-link {
 			height: 1.5em;
 			padding: 0.25em;
 
 			.oo-ui-iconElement-icon {
 				height: 1.5em;
 				width: 1.5em;
-				opacity: 0.8;
 			}
 		}
 	}
 
-	&.oo-ui-widget-enabled .oo-ui-tool {
+	&.oo-ui-widget-enabled > .oo-ui-toolGroup-tools > .oo-ui-tool {
 		&.oo-ui-widget-enabled:hover {
 			border-color: rgba(0,0,0,0.2);
 		}
 
-		&-active {
+		&.oo-ui-tool-active {
 			&.oo-ui-widget-enabled {
 				border-color: rgba(0,0,0,0.2);
 				box-shadow: inset 0 0.07em 0.07em 0 rgba(0, 0, 0, 0.07);
@@ -92,25 +127,21 @@
 			}
 		}
 
-		&.oo-ui-widget-disabled .oo-ui-tool-link {
+		&.oo-ui-widget-disabled > .oo-ui-tool-link {
 			.oo-ui-iconElement-icon {
 				opacity: 0.2;
 			}
 		}
 
 		&.oo-ui-widget-enabled {
-			.oo-ui-tool-link .oo-ui-iconElement-icon {
-				opacity: 0.8;
-			}
-
-			&:hover .oo-ui-tool-link .oo-ui-iconElement-icon {
+			&:hover > .oo-ui-tool-link .oo-ui-iconElement-icon {
 				opacity: 1;
 			}
 		}
 	}
 
-	&.oo-ui-widget-disabled .oo-ui-tool {
-		&-link {
+	&.oo-ui-widget-disabled > .oo-ui-toolGroup-tools > .oo-ui-tool {
+		> .oo-ui-tool-link {
 			.oo-ui-iconElement-icon {
 				opacity: 0.2;
 			}
@@ -120,7 +151,11 @@
 
 .theme-oo-ui-popupToolGroup () {
 	height: 2em;
-	min-width: 2.5em;
+	min-width: 2em;
+
+	&.oo-ui-iconElement {
+		min-width: 2.5em;
+	}
 
 	&.oo-ui-indicatorElement.oo-ui-iconElement {
 		min-width: 3.5em;
@@ -143,20 +178,19 @@
 	}
 
 	&-handle {
-		.oo-ui-indicatorElement-indicator,
+		.oo-ui-indicatorElement-indicator {
+			top: 0;
+			right: 0;
+			width: 0.75em;
+			height: 0.75em;
+			margin: 0.625em;
+		}
 		.oo-ui-iconElement-icon {
 			top: 0;
-			width: 2em;
-			height: 2em;
-			opacity: 0.8;
-		}
-
-		.oo-ui-indicatorElement-indicator {
-			right: 0;
-		}
-
-		.oo-ui-iconElement-icon {
 			left: 0.25em;
+			width: 1.5em;
+			height: 1.5em;
+			margin: 0.25em;
 		}
 	}
 
@@ -178,20 +212,22 @@
 	.oo-ui-toolGroup-tools {
 		top: 2em;
 		margin: 0 -1px;
-		border: solid 1px #ccc;
+		border: 1px solid #ccc;
 		background-color: white;
 		box-shadow: 0 0.25em 1em rgba(0,0,0,0.25);
 	}
 
 	.oo-ui-tool-link {
+		padding: 0.25em 0 0.25em 0.25em;
+
 		.oo-ui-iconElement-icon {
-			height: 2em;
-			width: 2em;
-			min-width: 2em;
+			height: 1.5em;
+			width: 1.5em;
+			min-width: 1.5em;
 		}
 
 		.oo-ui-tool-title {
-			padding-left: 0.25em;
+			padding-left: 0.5em;
 		}
 
 		.oo-ui-tool-accel,
@@ -216,9 +252,9 @@
 	}
 
 	.oo-ui-tool {
-		border: solid 1px transparent;
+		border: 1px solid transparent;
 		margin: -1px 0;
-		padding: 0 0.25em 0 0;
+		padding: 0 0.5em 0 0;
 
 		&-active {
 			&.oo-ui-widget-enabled {
@@ -238,9 +274,6 @@
 		&.oo-ui-widget-enabled {
 			&:hover {
 				border-color: rgba(0,0,0,0.2);
-			}
-			.oo-ui-tool-link .oo-ui-iconElement-icon {
-				opacity: 0.8;
 			}
 			&:hover .oo-ui-tool-link .oo-ui-iconElement-icon {
 				opacity: 1;
@@ -295,7 +328,7 @@
 	}
 
 	.oo-ui-tool {
-		padding: 0 0.75em 0 0.25em;
+		padding: 0 1em 0 0.25em;
 
 		&-link {
 			.oo-ui-iconElement-icon {

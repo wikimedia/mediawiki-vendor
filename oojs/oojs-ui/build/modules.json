@@ -15,7 +15,6 @@
 				"src/WindowManager.js",
 			"src/Error.js",
 			"src/HtmlSnippet.js",
-			"src/Infuse.js",
 			"src/Process.js",
 			"src/ToolFactory.js",
 			"src/ToolGroupFactory.js",
@@ -46,7 +45,6 @@
 			"src/layouts/ActionFieldLayout.js",
 			"src/layouts/FieldsetLayout.js",
 			"src/layouts/FormLayout.js",
-			"src/layouts/GridLayout.js",
 			"src/layouts/MenuLayout.js",
 				"src/layouts/BookletLayout.js",
 			"src/layouts/PanelLayout.js",
@@ -59,10 +57,10 @@
 			"src/toolgroups/MenuToolGroup.js",
 
 			"src/tools/PopupTool.js",
+			"src/tools/ToolGroupTool.js",
 
 			"src/widgets/GroupWidget.js",
 			"src/widgets/ItemWidget.js",
-			"src/widgets/LookupInputWidget.js",
 			"src/widgets/OutlineControlsWidget.js",
 			"src/widgets/ToggleWidget.js",
 
