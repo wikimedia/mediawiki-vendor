@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ab85f69610b01d9876229e25a94697cf",
+    "hash": "7103d143eda04869133cd014edd84749",
     "packages": [
         {
             "name": "cssjanus/cssjanus",
@@ -425,7 +425,6 @@
     "minimum-stability": "stable",
     "stability-flags": [],
     "prefer-stable": true,
-    "prefer-lowest": false,
     "platform": {
         "php": ">=5.3.3"
     },
