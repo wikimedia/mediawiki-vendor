@@ -18,7 +18,7 @@ OO.ui.ButtonElement = function OoUiButtonElement( config ) {
 	config = config || {};
 
 	// Properties
-	this.$button = config.$button || $( '<a>' );
+	this.$button = null;
 	this.framed = null;
 	this.accessKey = null;
 	this.active = false;
@@ -33,7 +33,7 @@ OO.ui.ButtonElement = function OoUiButtonElement( config ) {
 	this.$element.addClass( 'oo-ui-buttonElement' );
 	this.toggleFramed( config.framed === undefined || config.framed );
 	this.setAccessKey( config.accessKey );
-	this.setButtonElement( this.$button );
+	this.setButtonElement( config.$button || $( '<a>' ) );
 };
 
 /* Setup */
@@ -180,8 +180,8 @@ OO.ui.ButtonElement.prototype.onKeyUp = function ( e ) {
 OO.ui.ButtonElement.prototype.onKeyPress = function ( e ) {
 	if ( !this.isDisabled() && ( e.which === OO.ui.Keys.SPACE || e.which === OO.ui.Keys.ENTER ) ) {
 		this.emit( 'click' );
+		return false;
 	}
-	return false;
 };
 
 /**

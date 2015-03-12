@@ -66,7 +66,6 @@ OO.ui.Demo = function OoUiDemo() {
 	$( 'body' ).addClass( 'oo-ui-' + this.mode.direction );
 	$( 'head' ).append( this.stylesheetLinks );
 	OO.ui.theme = new ( this.constructor.static.themes[ this.mode.theme ].theme )();
-	this.constructor.static.pages[ this.mode.page ]( this );
 };
 
 /* Setup */
@@ -98,10 +97,30 @@ OO.ui.Demo.static.pages = {};
 OO.ui.Demo.static.themes = {
 	mediawiki: {
 		fileSuffix: '-mediawiki',
+		additionalSuffixes: [
+			'-icons-movement',
+			'-icons-content',
+			'-icons-alerts',
+			'-icons-interactions',
+			'-icons-moderation',
+			'-icons-editing-core',
+			'-icons-editing-styling',
+			'-icons-editing-list',
+			'-icons-editing-advanced',
+			'-icons-media',
+			'-icons-location',
+			'-icons-user',
+			'-icons-layout',
+			'-icons-wikimedia'
+		],
 		theme: OO.ui.MediaWikiTheme
 	},
 	apex: {
 		fileSuffix: '-apex',
+		additionalSuffixes: [
+			'-icons-moderation',
+			'-icons-editing-core'
+		],
 		theme: OO.ui.ApexTheme
 	}
 };
@@ -176,6 +195,23 @@ OO.ui.Demo.static.defaultGraphics = 'vector';
 OO.ui.Demo.static.defaultDirection = 'ltr';
 
 /* Methods */
+
+/**
+ * Load the demo page. Must be called after $element is attached.
+ */
+OO.ui.Demo.prototype.initialize = function () {
+	var demo = this,
+		promises = $( this.stylesheetLinks ).map( function () {
+			return $( this ).data( 'load-promise' );
+		} );
+	$.when.apply( $, promises )
+		.done( function () {
+			demo.constructor.static.pages[ demo.mode.page ]( demo );
+		} )
+		.fail( function () {
+			demo.$element.append( $( '<p>' ).text( 'Demo styles failed to load.' ) );
+		} );
+};
 
 /**
  * Handle mode change events.
@@ -272,10 +308,11 @@ OO.ui.Demo.prototype.getCurrentMode = function () {
  * @return {HTMLElement[]} List of link elements
  */
 OO.ui.Demo.prototype.getStylesheetLinks = function () {
-	var i, len, link, fragments,
+	var i, len, links, fragments,
 		factors = this.getFactors(),
-		urls = [],
-		links = [];
+		theme = this.getCurrentFactorValues()[ 1 ],
+		suffixes = this.constructor.static.themes[ theme ].additionalSuffixes || [],
+		urls = [];
 
 	// Translate modes to filename fragments
 	fragments = this.getCurrentFactorValues().map( function ( val, index ) {
@@ -284,16 +321,29 @@ OO.ui.Demo.prototype.getStylesheetLinks = function () {
 
 	// Theme styles
 	urls.push( '../dist/oojs-ui' + fragments.slice( 1 ).join( '' ) + '.css' );
+	for ( i = 0, len = suffixes.length; i < len; i++ ) {
+		urls.push( '../dist/oojs-ui' + fragments[1] + suffixes[i] + fragments.slice( 2 ).join( '' ) + '.css' );
+	}
+
 	// Demo styles
 	urls.push( 'styles/demo' + fragments[ 3 ] + '.css' );
 
 	// Add link tags
-	for ( i = 0, len = urls.length; i < len; i++ ) {
-		link = document.createElement( 'link' );
+	links = urls.map( function ( url ) {
+		var
+			link = document.createElement( 'link' ),
+			$link = $( link ),
+			deferred = $.Deferred();
+		$link.data( 'load-promise', deferred.promise() );
+		$link.on( {
+			load: deferred.resolve,
+			error: deferred.reject
+		} );
 		link.rel = 'stylesheet';
-		link.href = urls[ i ];
-		links.push( link );
-	}
+		link.href = url;
+		return link;
+	} );
+
 	return links;
 };
 

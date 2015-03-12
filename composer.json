@@ -7,7 +7,7 @@
 		"psr/log": "1.0.0",
 		"monolog/monolog": "1.12.0",
 		"ruflin/elastica": "1.3.0.0",
-		"oojs/oojs-ui": "0.9.0",
+		"oojs/oojs-ui": "0.9.1",
 		"wikimedia/cdb": "1.0.1",
 		"wikimedia/composer-merge-plugin": "1.0.0",
 		"wikimedia/utfnormal": "1.0.2",

@@ -1,10 +1,7 @@
 OO.ui.Demo.static.pages.toolbars = function ( demo ) {
 	var i, toolGroups, actionButton, actionButtonDisabled, PopupTool, ToolGroupTool,
 		$demo = demo.$element,
-		$containers = $(
-			'<div class="oo-ui-demo-container oo-ui-demo-toolbars"></div>' +
-			'<div class="oo-ui-demo-container oo-ui-demo-toolbars"></div>'
-		),
+		$containers = $(),
 		toolFactories = [],
 		toolGroupFactories = [],
 		toolbars = [];
@@ -87,9 +84,13 @@ OO.ui.Demo.static.pages.toolbars = function ( demo ) {
 
 	PopupTool = function ( toolGroup, config ) {
 		// Parent constructor
-		OO.ui.PopupTool.call( this, toolGroup, $.extend( { popup: { padded: true } }, config ) );
+		OO.ui.PopupTool.call( this, toolGroup, $.extend( { popup: {
+			padded: true,
+			label: 'Popup head',
+			head: true
+		} }, config ) );
 
-		this.popup.$body.append( '<p>Popup tool</p>' );
+		this.popup.$body.append( '<p>Popup contents</p>' );
 	};
 
 	OO.inheritClass( PopupTool, OO.ui.PopupTool );
@@ -100,9 +101,9 @@ OO.ui.Demo.static.pages.toolbars = function ( demo ) {
 
 	toolFactories[ 2 ].register( PopupTool );
 
-	ToolGroupTool = function ( toolbar, group, config ) {
+	ToolGroupTool = function ( toolGroup, config ) {
 		// Parent constructor
-		OO.ui.ToolGroupTool.call( this, toolbar, group, config );
+		OO.ui.ToolGroupTool.call( this, toolGroup, config );
 	};
 
 	OO.inheritClass( ToolGroupTool, OO.ui.ToolGroupTool );
@@ -259,12 +260,21 @@ OO.ui.Demo.static.pages.toolbars = function ( demo ) {
 	createToolGroup( 2, 'listTools' );
 
 	for ( i = 0; i < toolbars.length; i++ ) {
+		$containers = $containers.add(
+			new OO.ui.PanelLayout( {
+				expanded: false,
+				framed: true
+			} ).$element
+				.addClass( 'oo-ui-demo-container oo-ui-demo-toolbars' )
+		);
 		$containers.eq( i ).append( toolbars[ i ].$element );
-		toolbars[ i ].initialize();
 	}
 	$containers.append( '' );
 	$demo.append(
 		$containers.eq( 0 ).append( '<div class="oo-ui-demo-toolbars-contents">Toolbar</div>' ),
 		$containers.eq( 1 ).append( '<div class="oo-ui-demo-toolbars-contents">Toolbar with action buttons</div>' )
 	);
+	for ( i = 0; i < toolbars.length; i++ ) {
+		toolbars[ i ].initialize();
+	}
 };
