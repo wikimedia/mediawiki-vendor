@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "fca71404a03e8f31f48bee6aabd8d85a",
+    "hash": "f11074d2a7066c1c6e51b8a733f226a2",
     "packages": [
         {
             "name": "cssjanus/cssjanus",
@@ -420,6 +420,49 @@
             ],
             "description": "Composer plugin to merge multiple composer.json files",
             "time": "2015-02-21 00:57:13"
+        },
+        {
+            "name": "wikimedia/utfnormal",
+            "version": "v1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wikimedia/utfnormal.git",
+                "reference": "bb892a53a76116ad0982445a849043687cb6e778"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wikimedia/utfnormal/zipball/bb892a53a76116ad0982445a849043687cb6e778",
+                "reference": "bb892a53a76116ad0982445a849043687cb6e778",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "ext-mbstring": "*",
+                "jakub-onderka/php-parallel-lint": "0.8.*",
+                "mediawiki/mediawiki-codesniffer": "0.1.0",
+                "phpunit/phpunit": "4.4.*",
+                "squizlabs/php_codesniffer": "2.1.*"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Brion Vibber",
+                    "email": "bvibber@wikimedia.org"
+                }
+            ],
+            "homepage": "https://www.mediawiki.org/wiki/utfnormal",
+            "time": "2015-03-12 01:54:47"
         },
         {
             "name": "zordius/lightncandy",
