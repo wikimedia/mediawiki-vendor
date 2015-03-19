@@ -56,11 +56,7 @@ OO.ui.Window = function OoUiWindow( config ) {
 	// Properties
 	this.manager = null;
 	this.size = config.size || this.constructor.static.size;
-	this.frame = new OO.ui.PanelLayout( {
-		expanded: false,
-		framed: true
-	} );
-	this.$frame = this.frame.$element;
+	this.$frame = $( '<div>' );
 	this.$overlay = $( '<div>' );
 	this.$content = $( '<div>' );
 
@@ -407,9 +403,10 @@ OO.ui.Window.prototype.updateSize = function () {
 };
 
 /**
- * Set window dimensions.
+ * Set window dimensions. This method is called by the {@link OO.ui.WindowManager window manager}
+ * when the window is opening. In general, setDimensions should not be called directly.
  *
- * Properties are applied to the frame container.
+ * To set the size of the window, use the #setSize method.
  *
  * @param {Object} dim CSS dimension properties
  * @param {string|number} [dim.width] Width

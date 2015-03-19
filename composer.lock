@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c68bf6f77091de786e037b3e0622a996",
+    "hash": "b50c747b94540c89b2308c832dc5c8e6",
     "packages": [
         {
             "name": "cssjanus/cssjanus",
@@ -205,16 +205,16 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.9.1",
+            "version": "v0.9.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "f2ee8a9bc1cfc081d127b7201cccfdedb16f9c80"
+                "reference": "b9e12ea418d16331f1a3ec96375fdb586db28c9e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/f2ee8a9bc1cfc081d127b7201cccfdedb16f9c80",
-                "reference": "f2ee8a9bc1cfc081d127b7201cccfdedb16f9c80",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/b9e12ea418d16331f1a3ec96375fdb586db28c9e",
+                "reference": "b9e12ea418d16331f1a3ec96375fdb586db28c9e",
                 "shasum": ""
             },
             "require": {
@@ -237,7 +237,7 @@
             ],
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOjs_UI",
-            "time": "2015-03-12 18:51:27"
+            "time": "2015-03-19 23:17:34"
         },
         {
             "name": "psr/log",

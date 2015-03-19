@@ -211,9 +211,10 @@ OO.ui.Dialog.prototype.getActionProcess = function ( action ) {
  * @inheritdoc
  *
  * @param {Object} [data] Dialog opening data
- * @param {jQuery|string|Function|null} [data.title] Dialog title, omit to use #static-title
- * @param {Object[]} [data.actions] List of OO.ui.ActionWidget configuration options for each
- *   action item, omit to use #static-actions
+ * @param {jQuery|string|Function|null} [data.title] Dialog title, omit to use
+ *  the {@link #static-title static title}
+ * @param {Object[]} [data.actions] List of configuration options for each
+ *   {@link OO.ui.ActionWidget action widget}, omit to use {@link #static-actions static actions}.
  */
 OO.ui.Dialog.prototype.getSetupProcess = function ( data ) {
 	data = data || {};
@@ -221,20 +222,13 @@ OO.ui.Dialog.prototype.getSetupProcess = function ( data ) {
 	// Parent method
 	return OO.ui.Dialog.super.prototype.getSetupProcess.call( this, data )
 		.next( function () {
-			var i, len,
-				items = [],
-				config = this.constructor.static,
+			var config = this.constructor.static,
 				actions = data.actions !== undefined ? data.actions : config.actions;
 
 			this.title.setLabel(
 				data.title !== undefined ? data.title : this.constructor.static.title
 			);
-			for ( i = 0, len = actions.length; i < len; i++ ) {
-				items.push(
-					new OO.ui.ActionWidget( actions[ i ] )
-				);
-			}
-			this.actions.add( items );
+			this.actions.add( this.getActionWidgets( actions ) );
 
 			if ( this.constructor.static.escapable ) {
 				this.$document.on( 'keydown', this.onDocumentKeyDownHandler );
@@ -271,6 +265,22 @@ OO.ui.Dialog.prototype.initialize = function () {
 	// Initialization
 	this.$content.addClass( 'oo-ui-dialog-content' );
 	this.setPendingElement( this.$head );
+};
+
+/**
+ * Get action widgets from a list of configs
+ *
+ * @param {Object[]} actions Action widget configs
+ * @return {OO.ui.ActionWidget[]} Action widgets
+ */
+OO.ui.Dialog.prototype.getActionWidgets = function ( actions ) {
+	var i, len, widgets = [];
+	for ( i = 0, len = actions.length; i < len; i++ ) {
+		widgets.push(
+			new OO.ui.ActionWidget( actions[ i ] )
+		);
+	}
+	return widgets;
 };
 
 /**
