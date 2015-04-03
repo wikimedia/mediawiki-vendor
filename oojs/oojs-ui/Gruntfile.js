@@ -29,60 +29,62 @@ module.exports = function ( grunt ) {
 			vector: {},
 			mixed: {}
 		},
-		originalLessFiles = {},
+		colorizeSvgFiles = {},
+		requiredFiles = modules[ 'oojs-ui' ].scripts.slice(),
 		concatCssFiles = {},
-		rtlFiles = {
-			'demos/styles/demo.rtl.css': 'demos/styles/demo.css'
-		},
+		rtlFiles = {},
 		minBanner = '/*! OOjs UI v<%= pkg.version %> | http://oojs.mit-license.org */';
 
 	( function () {
 		var distFile, target, module, moduleStyleFiles;
-		// We compile LESS copied to a different directory
-		function fixLessDirectory( fileName ) {
-			return fileName.replace( /^src\//, 'dist/tmp/' );
+		function rtlPath( fileName ) {
+			return fileName.replace( /\.(\w+)$/, '.rtl.$1' );
+		}
+		// Generate all task targets required to process given file into a pair of CSS files (for LTR
+		// and RTL), and return file name of LTR file.
+		function processFile( fileName ) {
+			var lessFileName, cssFileName, theme, path;
+			path = require( 'path' );
+			if ( path.extname( fileName ) === '.json' ) {
+				lessFileName = fileName.replace( /\.json$/, '.less' ).replace( /^src/, 'dist/tmp' );
+				theme = path.basename( path.dirname( fileName ) );
+
+				colorizeSvgFiles[ fileName.replace( /.+\/(\w+)\/([\w-]+)\.(?:json|less)$/, '$1-$2' ) ] = {
+					options: grunt.file.readJSON( fileName ),
+					srcDir: 'src/themes/' + theme,
+					destDir: 'dist/themes/' + theme,
+					// This should not be needed, but our dist directory structure is weird
+					cssPrependPath: 'themes/' + theme + '/',
+					destLessFile: {
+						ltr: lessFileName,
+						rtl: rtlPath( lessFileName )
+					}
+				};
+
+				cssFileName = fileName.replace( /\.json$/, '.css' ).replace( /^src/, 'dist/tmp/' + target );
+				lessFiles[ target ][ cssFileName ] = [ lessFileName ];
+				lessFiles[ target ][ rtlPath( cssFileName ) ] = [ rtlPath( lessFileName ) ];
+			} else {
+				cssFileName = fileName.replace( /\.less$/, '.css' ).replace( /^src/, 'dist/tmp/' + target );
+				lessFiles[ target ][ cssFileName ] = [ fileName ];
+				rtlFiles[ rtlPath( cssFileName ) ] = cssFileName;
+			}
+			return cssFileName;
 		}
 		for ( module in modules ) {
 			if ( modules[ module ].styles ) {
 				moduleStyleFiles = modules[ module ].styles;
 				for ( target in lessFiles ) {
+					requiredFiles.push.apply( requiredFiles, moduleStyleFiles );
+
 					distFile = 'dist/' + module + ( target !== 'mixed' ? '.' + target : '' ) + '.css';
 
-					if ( !modules[ module ].generated ) {
-						originalLessFiles[ distFile ] = moduleStyleFiles;
-					}
-					lessFiles[ target ][ distFile ] = moduleStyleFiles.map( fixLessDirectory );
-
-					// Concat isn't doing much other than prepending the banner...
-					concatCssFiles[ distFile ] = distFile;
-					rtlFiles[ distFile.replace( '.css', '.rtl.css' ) ] = distFile;
+					concatCssFiles[ distFile ] = moduleStyleFiles.map( processFile );
+					concatCssFiles[ rtlPath( distFile ) ] = concatCssFiles[ distFile ].map( rtlPath );
 				}
 			}
 		}
 	}() );
-
-	function merge( target/*, sources...*/ ) {
-		var
-			sources = Array.prototype.slice.call( arguments, 1 ),
-			len = sources.length,
-			i = 0,
-			source, prop;
-
-		for ( ; i < len; i++ ) {
-			source = sources[ i ];
-			if ( source ) {
-				for ( prop in source ) {
-					if ( typeof target[ prop ] === 'object' && target[ prop ] !== null ) {
-						target[ prop ] = merge( {}, target[ prop ], source[ prop ] );
-					} else {
-						target[ prop ] = source[ prop ];
-					}
-				}
-			}
-		}
-
-		return target;
-	}
 
 	function strip( str ) {
 		var path = require( 'path' );
@@ -102,16 +104,7 @@ module.exports = function ( grunt ) {
 			tmp: 'dist/tmp'
 		},
 		fileExists: {
-			src: ( function () {
-				var distFile,
-					files = modules[ 'oojs-ui' ].scripts.slice();
-
-				for ( distFile in originalLessFiles ) {
-					files.push.apply( files, originalLessFiles[ distFile ] );
-				}
-
-				return files;
-			}() )
+			src: requiredFiles
 		},
 		typos: {
 			options: {
@@ -132,6 +125,14 @@ module.exports = function ( grunt ) {
 			},
 			css: {
 				files: concatCssFiles
+			},
+			demoCss: {
+				options: {
+					banner: '/** This file is generated automatically. Do not modify it. */\n\n'
+				},
+				files: {
+					'demos/styles/demo.rtl.css': 'demos/styles/demo.rtl.css'
+				}
 			}
 		},
 
@@ -188,11 +189,16 @@ module.exports = function ( grunt ) {
 			}
 		},
 		cssjanus: {
+			options: {
+				generateExactDuplicates: true
+			},
 			dist: {
-				options: {
-					generateExactDuplicates: true
-				},
 				files: rtlFiles
+			},
+			demoCss: {
+				files: {
+					'demos/styles/demo.rtl.css': 'demos/styles/demo.css'
+				}
 			}
 		},
 		csscomb: {
@@ -225,42 +231,13 @@ module.exports = function ( grunt ) {
 				expand: true,
 				dest: 'dist/'
 			},
-			lessTemp: {
-				src: 'src/**/*.less',
-				dest: 'dist/tmp/',
-				expand: true,
-				rename: strip( 'src/' )
-			},
-			svg: {
-				src: 'dist/tmp/**/*.svg',
-				dest: 'dist/',
-				expand: true,
-				rename: strip( 'dist/tmp/' )
-			},
 			jsduck: {
 				src: '{lib,dist}/**/*',
 				dest: 'docs/',
 				expand: true
 			}
 		},
-		colorizeSvg: {
-			apex: {
-				options: merge(
-					grunt.file.readJSON( 'build/images.json' ),
-					grunt.file.readJSON( 'src/themes/apex/images.json' )
-				),
-				srcDir: 'src/themes/apex/images',
-				destDir: 'dist/tmp/themes/apex/images'
-			},
-			mediawiki: {
-				options: merge(
-					grunt.file.readJSON( 'build/images.json' ),
-					grunt.file.readJSON( 'src/themes/mediawiki/images.json' )
-				),
-				srcDir: 'src/themes/mediawiki/images',
-				destDir: 'dist/tmp/themes/mediawiki/images'
-			}
-		},
+		colorizeSvg: colorizeSvgFiles,
 		svg2png: {
 			dist: {
 				src: 'dist/{images,themes}/**/*.svg'
@@ -395,9 +372,9 @@ module.exports = function ( grunt ) {
 
 	grunt.registerTask( 'build-code', [ 'concat:js', 'uglify' ] );
 	grunt.registerTask( 'build-styling', [
-		'copy:lessTemp', 'colorizeSvg', 'less', 'copy:svg', 'copy:imagesCommon',
-		'copy:imagesApex', 'copy:imagesMediaWiki', 'svg2png',
-		'concat:css', 'cssjanus', 'csscomb', 'cssmin'
+		'colorizeSvg', 'less', 'cssjanus',
+		'concat:css', 'concat:demoCss', 'csscomb', 'cssmin',
+		'copy:imagesCommon', 'copy:imagesApex', 'copy:imagesMediaWiki', 'svg2png'
 	] );
 	grunt.registerTask( 'build-i18n', [ 'copy:i18n' ] );
 	grunt.registerTask( 'build-tests', [ 'exec:rubyTestSuiteGenerator', 'exec:phpGenerateJSPHPForKarma' ] );
@@ -409,8 +386,8 @@ module.exports = function ( grunt ) {
 	grunt.registerTask( 'quick-build', [
 		'pre-git-build', 'clean:build', 'fileExists', 'typos',
 		'concat:js',
-		'copy:lessTemp', 'colorizeSvg', 'less:distVector', 'copy:svg',
-		'copy:imagesApex', 'copy:imagesMediaWiki',
+		'colorizeSvg', 'less:distVector', 'concat:css',
+		'copy:imagesCommon', 'copy:imagesApex', 'copy:imagesMediaWiki',
 		'build-i18n'
 	] );
 

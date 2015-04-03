@@ -5,14 +5,19 @@
 .theme-oo-ui-buttonElement () {
 	> .oo-ui-buttonElement-button {
 		font-weight: bold;
+	}
 
+	&.oo-ui-iconElement > .oo-ui-buttonElement-button {
 		> .oo-ui-iconElement-icon {
 			margin-left: 0;
 		}
+	}
 
+	&.oo-ui-indicatorElement > .oo-ui-buttonElement-button {
 		> .oo-ui-indicatorElement-indicator {
 			width: @indicator-size;
 			height: @indicator-size;
+			margin: @indicator-size / 2;
 		}
 	}
 
@@ -82,7 +87,7 @@
 	&-framed {
 		> .oo-ui-buttonElement-button {
 			margin: 0.1em 0;
-			padding: 0.5em 1em;
+			padding: 0.2em 0.8em;
 			border-radius: @border-radius;
 
 			&:hover,
@@ -100,15 +105,13 @@
 		// Support <input/> from ButtonInputWidget
 		> input.oo-ui-buttonElement-button,
 		&.oo-ui-labelElement > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
-			line-height: @button-label-height;
+			line-height: @icon-size;
 		}
 
 		&.oo-ui-iconElement {
 			> .oo-ui-buttonElement-button > .oo-ui-iconElement-icon {
-				margin-left: -0.7em;
-				margin-top: -0.7em;
-				position: relative;
-				top: 0.3em;
+				margin-left: -0.5em;
+				margin-right: -0.5em;
 			}
 
 			&.oo-ui-labelElement > .oo-ui-buttonElement-button > .oo-ui-iconElement-icon {

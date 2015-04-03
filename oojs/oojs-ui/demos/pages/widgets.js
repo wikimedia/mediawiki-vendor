@@ -908,6 +908,7 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 								new OO.ui.MenuOptionWidget( {
 									data: 'b',
 									label: 'Disabled second option',
+									indicator: 'required',
 									disabled: true
 								} ),
 								new OO.ui.MenuOptionWidget( {
@@ -1130,6 +1131,17 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 					} ),
 					{
 						label: 'IconWidget (normal)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.IconWidget( {
+						icon: 'remove',
+						flags: 'destructive',
+						title: 'Remove icon'
+					} ),
+					{
+						label: 'IconWidget (flagged)\u200E',
 						align: 'top'
 					}
 				),
