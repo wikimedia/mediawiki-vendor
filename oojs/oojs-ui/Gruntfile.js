@@ -327,8 +327,8 @@ module.exports = function ( grunt ) {
 				},
 				reporters: [ 'dots', 'coverage' ],
 				coverageReporter: { reporters: [
-					{ type: 'html', dir: 'dist/coverage/' },
-					{ type: 'text-summary', dir: 'dist/coverage/' }
+					{ type: 'html', dir: 'coverage/' },
+					{ type: 'text-summary', dir: 'coverage/' }
 				] }
 			},
 			other: {
@@ -392,7 +392,7 @@ module.exports = function ( grunt ) {
 	] );
 
 	grunt.registerTask( 'lint', [ 'jshint', 'jscs', 'csslint', 'banana' ] );
-	grunt.registerTask( 'test', [ 'pre-test', 'git-build', 'lint', 'karma:main', 'karma:other' ] );
+	grunt.registerTask( 'test', [ 'lint', 'pre-test', 'git-build', 'karma:main', 'karma:other' ] );
 
 	grunt.registerTask( 'default', 'test' );
 };
