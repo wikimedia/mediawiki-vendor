@@ -525,5 +525,52 @@
         ],
         "description": "Provides library of common widgets, layouts, and windows.",
         "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
+    },
+    {
+        "name": "wikimedia/assert",
+        "version": "v0.2.2",
+        "version_normalized": "0.2.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wmde/Assert.git",
+            "reference": "2da55927525975f8d52825fc3ee02e5e36f5036c"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wmde/Assert/zipball/2da55927525975f8d52825fc3ee02e5e36f5036c",
+            "reference": "2da55927525975f8d52825fc3ee02e5e36f5036c",
+            "shasum": ""
+        },
+        "require-dev": {
+            "phpunit/phpunit": "3.7.*"
+        },
+        "time": "2015-04-29 17:23:50",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Wikimedia\\Assert\\": "src/",
+                "Wikimedia\\Assert\\Test\\": "tests/phpunit/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Daniel Kinzler"
+            }
+        ],
+        "description": "Provides runtime assertions",
+        "homepage": "https://github.com/wmde/Assert",
+        "keywords": [
+            "assert",
+            "assertions",
+            "php",
+            "postcondition",
+            "precondition",
+            "qa"
+        ]
     }
 ]

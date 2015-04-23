@@ -7,5 +7,7 @@ $baseDir = $vendorDir;
 
 return array(
     'Wikimedia\\Composer\\' => array($vendorDir . '/wikimedia/composer-merge-plugin/src'),
+    'Wikimedia\\Assert\\Test\\' => array($vendorDir . '/wikimedia/assert/tests/phpunit'),
+    'Wikimedia\\Assert\\' => array($vendorDir . '/wikimedia/assert/src'),
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
 );
