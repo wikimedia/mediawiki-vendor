@@ -60,10 +60,6 @@ class ButtonWidget extends Widget {
 		$this->setHref( isset( $config['href'] ) ? $config['href'] : null );
 		$this->setTarget( isset( $config['target'] ) ? $config['target'] : null );
 		$this->setNoFollow( isset( $config['noFollow'] ) ? $config['noFollow'] : true );
-		// FIXME: The `nofollow` alias is deprecated and will be removed (T89767)
-		if ( isset( $config['nofollow'] ) ) {
-			$this->setNoFollow( $config['nofollow'] );
-		}
 	}
 
 	/**
@@ -101,12 +97,23 @@ class ButtonWidget extends Widget {
 	public function setHref( $href ) {
 		$this->href = is_string( $href ) ? $href : null;
 
-		if ( $this->href !== null ) {
-			$this->button->setAttributes( array( 'href' => $href ) );
+		$this->updateHref();
+
+		return $this;
+	}
+
+	/**
+	 * Update the href attribute, in case of changes to href or disabled
+	 * state.
+	 *
+	 * @chainable
+	 */
+	public function updateHref() {
+		if ( $this->href !== null && !$this->isDisabled() ) {
+			$this->button->setAttributes( array( 'href' => $this->href ) );
 		} else {
 			$this->button->removeAttributes( array( 'href' ) );
 		}
-
 		return $this;
 	}
 

@@ -35,8 +35,7 @@
  */
 OO.ui.ButtonWidget = function OoUiButtonWidget( config ) {
 	// Configuration initialization
-	// FIXME: The `nofollow` alias is deprecated and will be removed (T89767)
-	config = $.extend( { noFollow: config && config.nofollow }, config );
+	config = config || {};
 
 	// Parent constructor
 	OO.ui.ButtonWidget.super.call( this, config );
@@ -54,7 +53,9 @@ OO.ui.ButtonWidget = function OoUiButtonWidget( config ) {
 	this.href = null;
 	this.target = null;
 	this.noFollow = false;
-	this.isHyperlink = false;
+
+	// Events
+	this.connect( this, { disable: 'onDisable' } );
 
 	// Initialization
 	this.$button.append( this.$icon, this.$label, this.$indicator );
@@ -108,7 +109,7 @@ OO.ui.ButtonWidget.prototype.onMouseUp = function ( e ) {
  */
 OO.ui.ButtonWidget.prototype.onClick = function ( e ) {
 	var ret = OO.ui.ButtonElement.prototype.onClick.call( this, e );
-	if ( this.isHyperlink ) {
+	if ( this.href ) {
 		return true;
 	}
 	return ret;
@@ -119,7 +120,7 @@ OO.ui.ButtonWidget.prototype.onClick = function ( e ) {
  */
 OO.ui.ButtonWidget.prototype.onKeyPress = function ( e ) {
 	var ret = OO.ui.ButtonElement.prototype.onKeyPress.call( this, e );
-	if ( this.isHyperlink ) {
+	if ( this.href ) {
 		return true;
 	}
 	return ret;
@@ -162,16 +163,37 @@ OO.ui.ButtonWidget.prototype.setHref = function ( href ) {
 
 	if ( href !== this.href ) {
 		this.href = href;
-		if ( href !== null ) {
-			this.$button.attr( 'href', href );
-			this.isHyperlink = true;
-		} else {
-			this.$button.removeAttr( 'href' );
-			this.isHyperlink = false;
-		}
+		this.updateHref();
 	}
 
 	return this;
+};
+
+/**
+ * Update the `href` attribute, in case of changes to href or
+ * disabled state.
+ *
+ * @private
+ * @chainable
+ */
+OO.ui.ButtonWidget.prototype.updateHref = function () {
+	if ( this.href !== null && !this.isDisabled() ) {
+		this.$button.attr( 'href', this.href );
+	} else {
+		this.$button.removeAttr( 'href' );
+	}
+
+	return this;
+};
+
+/**
+ * Handle disable events.
+ *
+ * @private
+ * @param {boolean} disabled Element is disabled
+ */
+OO.ui.ButtonWidget.prototype.onDisable = function () {
+	this.updateHref();
 };
 
 /**

@@ -14,11 +14,16 @@
 		> .oo-ui-tool-link {
 			display: block;
 
+			.oo-ui-tool-accel {
+				display: none;
+			}
+		}
+
+		&.oo-ui-iconElement > .oo-ui-tool-link {
 			.oo-ui-iconElement-icon {
 				display: block;
 			}
 
-			.oo-ui-tool-accel,
 			.oo-ui-tool-title {
 				display: none;
 			}
@@ -26,11 +31,6 @@
 
 		&.oo-ui-widget-disabled > .oo-ui-tool-link {
 			cursor: default;
-		}
-
-		> .oo-ui-tool-link > .oo-ui-tool-title,
-		> .oo-ui-tool-link > .oo-ui-tool-accel {
-			display: none;
 		}
 	}
 

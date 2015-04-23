@@ -253,9 +253,7 @@ OO.ui.Demo.static.pages.dialogs = function ( demo ) {
 	OutlinedBookletDialog.prototype.initialize = function () {
 		OutlinedBookletDialog.super.prototype.initialize.apply( this, arguments );
 		this.bookletLayout = new OO.ui.BookletLayout( {
-			outlined: true,
-			editable: true,
-			menuSize: '15em'
+			outlined: true
 		} );
 		this.pages = [
 			new SamplePage( 'small', { label: 'Small', icon: 'window' } ),
@@ -265,7 +263,6 @@ OO.ui.Demo.static.pages.dialogs = function ( demo ) {
 			new SamplePage( 'full', { label: 'Full', icon: 'window' } )
 		];
 
-		this.bookletLayout.getOutlineControls().setAbilities( { remove: false } );
 		this.bookletLayout.addPages( this.pages );
 		this.bookletLayout.connect( this, { set: 'onBookletLayoutSet' } );
 		this.$body.append( this.bookletLayout.$element );
@@ -302,7 +299,7 @@ OO.ui.Demo.static.pages.dialogs = function ( demo ) {
 	};
 	MenuDialog.prototype.initialize = function () {
 		MenuDialog.super.prototype.initialize.apply( this, arguments );
-		var menuLayout = new OO.ui.MenuLayout( { menuSize: '10em' } ),
+		var menuLayout = new OO.ui.MenuLayout(),
 			positionField = new OO.ui.FieldLayout(
 				new OO.ui.ButtonSelectWidget( {
 					items: [
