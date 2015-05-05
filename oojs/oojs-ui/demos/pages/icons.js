@@ -1,13 +1,13 @@
 OO.ui.Demo.static.pages.icons = function ( demo ) {
-	var i, len, iconSet, iconsFieldset,
+	var i, len, iconSet, iconsFieldset, iconButton, selector,
 		icons = {
 			core: [
 				'add',
 				'advanced',
 				'alert',
+				'cancel',
 				'check',
 				'circle',
-				'clear',
 				'close',
 				'code',
 				'collapse',
@@ -69,14 +69,13 @@ OO.ui.Demo.static.pages.icons = function ( demo ) {
 				'betaLaunch',
 				'bookmark',
 				'browser',
+				'clear',
 				'clock',
-				'closeInput',
 				'funnel',
 				'heart',
 				'key',
 				'keyboard',
 				'logOut',
-				'magnifyingGlass',
 				'newWindow',
 				'printer',
 				'ribbonPrize',
@@ -192,9 +191,11 @@ OO.ui.Demo.static.pages.icons = function ( demo ) {
 			'next',
 			'previous',
 			'required',
+			'search',
 			'up'
 		],
 		iconsFieldsets = [],
+		iconsButtons = [],
 		indicatorsFieldset = new OO.ui.FieldsetLayout( { label: 'Indicators' } );
 
 	for ( i = 0, len = indicators.length; i < len; i++ ) {
@@ -214,18 +215,71 @@ OO.ui.Demo.static.pages.icons = function ( demo ) {
 		iconsFieldsets.push( iconsFieldset );
 
 		for ( i = 0, len = icons[ iconSet ].length; i < len; i++ ) {
+			iconButton = new OO.ui.ButtonWidget( {
+				icon: icons[ iconSet ][ i ],
+				framed: false,
+				label: icons[ iconSet ][ i ]
+			} );
+			iconsButtons.push( iconButton );
 			iconsFieldset.addItems( [
 				new OO.ui.FieldLayout(
-					new OO.ui.ButtonWidget( {
-						icon: icons[ iconSet ][ i ],
-						framed: false,
-						label: icons[ iconSet ][ i ]
-					} ),
+					iconButton,
 					{ align: 'top' }
 				)
 			] );
 		}
 	}
+
+	selector = new OO.ui.ButtonSelectWidget( {
+		items: [
+			new OO.ui.ButtonOptionWidget( {
+				label: 'None',
+				flags: [],
+				data: {
+					progressive: false,
+					constructive: false,
+					destructive: false
+				}
+			} ),
+			new OO.ui.ButtonOptionWidget( {
+				label: 'Progressive',
+				flags: [ 'progressive' ],
+				data: {
+					progressive: true,
+					constructive: false,
+					destructive: false
+				}
+			} ),
+			new OO.ui.ButtonOptionWidget( {
+				label: 'Constructive',
+				flags: [ 'constructive' ],
+				data: {
+					progressive: false,
+					constructive: true,
+					destructive: false
+				}
+			} ),
+			new OO.ui.ButtonOptionWidget( {
+				label: 'Destructive',
+				flags: [ 'destructive' ],
+				data: {
+					progressive: false,
+					constructive: false,
+					destructive: true
+				}
+			} )
+		]
+	} )
+		.on( 'select', function ( selected ) {
+			iconsButtons.forEach( function ( iconButton ) {
+				iconButton.setFlags( selected.getData() );
+			} );
+		} )
+		.selectItemByData( {
+			progressive: false,
+			constructive: false,
+			destructive: false
+		} );
 
 	demo.$element.append(
 		new OO.ui.PanelLayout( {
@@ -234,6 +288,7 @@ OO.ui.Demo.static.pages.icons = function ( demo ) {
 		} ).$element
 			.addClass( 'oo-ui-demo-container oo-ui-demo-icons' )
 			.append(
+				selector.$element,
 				indicatorsFieldset.$element,
 				iconsFieldsets.map( function ( item ) { return item.$element[0]; } )
 			) );

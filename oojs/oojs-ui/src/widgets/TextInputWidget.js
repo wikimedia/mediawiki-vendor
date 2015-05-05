@@ -92,6 +92,7 @@ OO.ui.TextInputWidget = function OoUiTextInputWidget( config ) {
 	this.$icon.on( 'mousedown', this.onIconMouseDown.bind( this ) );
 	this.$indicator.on( 'mousedown', this.onIndicatorMouseDown.bind( this ) );
 	this.on( 'labelChange', this.updatePosition.bind( this ) );
+	this.connect( this, { change: 'onChange' } );
 
 	// Initialization
 	this.$element
@@ -108,7 +109,7 @@ OO.ui.TextInputWidget = function OoUiTextInputWidget( config ) {
 		this.$input.attr( 'autofocus', 'autofocus' );
 	}
 	if ( config.required ) {
-		this.$input.attr( 'required', 'true' );
+		this.$input.attr( 'required', 'required' );
 	}
 	if ( this.label || config.autosize ) {
 		this.installParentChangeDetector();
@@ -197,25 +198,14 @@ OO.ui.TextInputWidget.prototype.onElementAttach = function () {
 };
 
 /**
- * @inheritdoc
+ * Handle change events.
+ *
+ * @param {string} value
+ * @private
  */
-OO.ui.TextInputWidget.prototype.onEdit = function () {
-	this.adjustSize();
-
-	// Parent method
-	return OO.ui.TextInputWidget.super.prototype.onEdit.call( this );
-};
-
-/**
- * @inheritdoc
- */
-OO.ui.TextInputWidget.prototype.setValue = function ( value ) {
-	// Parent method
-	OO.ui.TextInputWidget.super.prototype.setValue.call( this, value );
-
+OO.ui.TextInputWidget.prototype.onChange = function () {
 	this.setValidityFlag();
 	this.adjustSize();
-	return this;
 };
 
 /**
@@ -421,6 +411,11 @@ OO.ui.TextInputWidget.prototype.setValidation = function ( validate ) {
 OO.ui.TextInputWidget.prototype.setValidityFlag = function () {
 	var widget = this;
 	this.isValid().done( function ( valid ) {
+		if ( !valid ) {
+			widget.$input.attr( 'aria-invalid', 'true' );
+		} else {
+			widget.$input.removeAttr( 'aria-invalid' );
+		}
 		widget.setFlags( { invalid: !valid } );
 	} );
 };

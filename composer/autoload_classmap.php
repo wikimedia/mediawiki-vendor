@@ -300,7 +300,6 @@ return array(
     'OOUI\\FieldsetLayout' => $vendorDir . '/oojs/oojs-ui/php/layouts/FieldsetLayout.php',
     'OOUI\\FlaggedElement' => $vendorDir . '/oojs/oojs-ui/php/elements/FlaggedElement.php',
     'OOUI\\FormLayout' => $vendorDir . '/oojs/oojs-ui/php/layouts/FormLayout.php',
-    'OOUI\\GridLayout' => $vendorDir . '/oojs/oojs-ui/php/layouts/GridLayout.php',
     'OOUI\\GroupElement' => $vendorDir . '/oojs/oojs-ui/php/elements/GroupElement.php',
     'OOUI\\HtmlSnippet' => $vendorDir . '/oojs/oojs-ui/php/HtmlSnippet.php',
     'OOUI\\IconElement' => $vendorDir . '/oojs/oojs-ui/php/elements/IconElement.php',
