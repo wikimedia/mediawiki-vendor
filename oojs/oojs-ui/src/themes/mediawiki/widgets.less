@@ -630,8 +630,8 @@
 
 	&.oo-ui-optionWidget {
 		&-selected {
-			background-color: @active;
-			color: #fff;
+			background-color: @select;
+			color: rgba(0,0,0,0.8);
 
 			.oo-ui-iconElement-icon {
 				display: none;
@@ -640,6 +640,9 @@
 		&-highlighted {
 			background-color: #eee;
 			color: black;
+		}
+		&-selected&-highlighted {
+			background-color: @select;
 		}
 	}
 }
@@ -717,12 +720,14 @@
 	color: #666;
 	font-weight: bold;
 
-	&:hover {
-		background-color: rgba(255, 255, 255, 0.3);
-	}
+	&.oo-ui-widget-enabled {
+		&:hover {
+			background-color: rgba(255, 255, 255, 0.3);
+		}
 
-	&:active {
-		background-color: rgba(255, 255, 255, 0.8);
+		&:active {
+			background-color: rgba(255, 255, 255, 0.8);
+		}
 	}
 
 	&.oo-ui-indicatorElement .oo-ui-labelElement-label {
@@ -821,27 +826,7 @@
 	}
 }
 
-.theme-oo-ui-selectWidget () {
-	border-radius: @border-radius;
-
-	.oo-ui-buttonOptionWidget {
-		.oo-ui-buttonElement-button {
-			border-radius: 0;
-			margin-left: -1px;
-		}
-
-		&:first-child .oo-ui-buttonElement-button {
-			border-bottom-left-radius: @border-radius;
-			border-top-left-radius: @border-radius;
-			margin-left: 0;
-		}
-
-		&:last-child .oo-ui-buttonElement-button {
-			border-bottom-right-radius: @border-radius;
-			border-top-right-radius: @border-radius;
-		}
-	}
-}
+.theme-oo-ui-selectWidget () {}
 
 .theme-oo-ui-buttonSelectWidget () {
 	border-radius: @border-radius;
