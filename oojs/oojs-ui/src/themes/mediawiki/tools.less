@@ -5,18 +5,21 @@
 @oo-ui-toolbar-active: #e5e5e5;
 @oo-ui-toolbar-active-hover: #eee;
 @oo-ui-toolbar-pressed: #e7e7e7;
+@oo-ui-toolbar-bar-text: #555;
+@oo-ui-toolbar-dropdown-text: #000;
 
 .theme-oo-ui-toolbar () {
 	&-bar {
 		border-bottom: 1px solid #ccc;
 		background-color: @oo-ui-toolbar-normal;
-        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
+		box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
 		font-weight: 500;
-		color: #555;
+		color: @oo-ui-toolbar-bar-text;
 
 		.oo-ui-toolbar-bar {
 			border: none;
 			background: none;
+			box-shadow: none;
 		}
 	}
 
@@ -30,13 +33,6 @@
 		> .oo-ui-buttonElement:last-child {
 			margin-right: 0.5em;
 		}
-	}
-
-	&-shadow {
-		.oo-ui-background-image('@{oo-ui-default-image-path}/toolbar-shadow.png');
-		bottom: -9px;
-		height: 9px;
-		opacity: 0.5;
 	}
 }
 
@@ -92,13 +88,6 @@
 			border-right: none !important;
 		}
 	}
-
-	&.oo-ui-widget-enabled {
-		.oo-ui-tool-link .oo-ui-tool-title {
-			color: #000;
-		}
-	}
-
 }
 
 .theme-oo-ui-barToolGroup () {
@@ -125,6 +114,10 @@
 			background-color: @oo-ui-toolbar-normal-hover;
 		}
 
+		> a.oo-ui-tool-link .oo-ui-tool-title {
+			color: @oo-ui-toolbar-bar-text;
+		}
+
 		&.oo-ui-tool-active {
 			&.oo-ui-widget-enabled {
 				border-color: rgba(0,0,0,0.2);
@@ -142,15 +135,20 @@
 		}
 
 		&.oo-ui-widget-disabled > .oo-ui-tool-link {
+			.oo-ui-tool-title {
+				color: #ccc;
+			}
+
 			.oo-ui-iconElement-icon {
 				opacity: 0.2;
 			}
 		}
 
 		&.oo-ui-widget-enabled {
-            .oo-ui-iconElement-icon {
-                opacity: 0.7;
-            }
+			> .oo-ui-tool-link .oo-ui-iconElement-icon {
+				opacity: 0.7;
+			}
+
 			&:hover > .oo-ui-tool-link .oo-ui-iconElement-icon {
 				opacity: 0.9;
 			}
@@ -162,7 +160,11 @@
 	}
 
 	&.oo-ui-widget-disabled > .oo-ui-toolGroup-tools > .oo-ui-tool {
-		> .oo-ui-tool-link {
+		> a.oo-ui-tool-link {
+			.oo-ui-tool-title {
+				color: #ccc;
+			}
+
 			.oo-ui-iconElement-icon {
 				opacity: 0.2;
 			}
@@ -293,6 +295,7 @@
 
 		.oo-ui-tool-title {
 			padding-left: 0.5em;
+			color: @oo-ui-toolbar-dropdown-text;
 		}
 
 		.oo-ui-tool-accel,
