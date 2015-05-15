@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c1c668d62a90f305da16df0a144d0075",
+    "hash": "d33ec706fa870cca003d266860658606",
     "packages": [
         {
             "name": "cssjanus/cssjanus",
@@ -511,16 +511,16 @@
         },
         {
             "name": "zordius/lightncandy",
-            "version": "v0.18",
+            "version": "v0.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zordius/lightncandy.git",
-                "reference": "24be6909c37391f4648ce1fdf19036b11bd56d05"
+                "reference": "015fed62d0ae6fe7601d3910b8e4b6a6964f86a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zordius/lightncandy/zipball/24be6909c37391f4648ce1fdf19036b11bd56d05",
-                "reference": "24be6909c37391f4648ce1fdf19036b11bd56d05",
+                "url": "https://api.github.com/repos/zordius/lightncandy/zipball/015fed62d0ae6fe7601d3910b8e4b6a6964f86a0",
+                "reference": "015fed62d0ae6fe7601d3910b8e4b6a6964f86a0",
                 "shasum": ""
             },
             "require": {
@@ -554,7 +554,7 @@
                 "php",
                 "template"
             ],
-            "time": "2015-01-01 04:37:19"
+            "time": "2015-05-08 01:56:46"
         }
     ],
     "packages-dev": [],
