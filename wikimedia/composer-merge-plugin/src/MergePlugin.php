@@ -20,11 +20,12 @@ use Composer\Json\JsonFile;
 use Composer\Package\BasePackage;
 use Composer\Package\CompletePackage;
 use Composer\Package\Loader\ArrayLoader;
-use Composer\Package\RootPackageInterface;
+use Composer\Package\RootPackage;
 use Composer\Package\Version\VersionParser;
 use Composer\Plugin\PluginInterface;
-use Composer\Script\CommandEvent;
+use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
+use UnexpectedValueException;
 
 /**
  * Composer plugin that allows merging multiple composer.json files.
@@ -121,6 +122,7 @@ class MergePlugin implements PluginInterface, EventSubscriberInterface
             InstallerEvents::PRE_DEPENDENCIES_SOLVING => 'onDependencySolve',
             ScriptEvents::PRE_INSTALL_CMD => 'onInstallOrUpdate',
             ScriptEvents::PRE_UPDATE_CMD => 'onInstallOrUpdate',
+            ScriptEvents::PRE_AUTOLOAD_DUMP => 'onInstallOrUpdate',
         );
     }
 
@@ -129,11 +131,11 @@ class MergePlugin implements PluginInterface, EventSubscriberInterface
      * for "merge-patterns" in the "extra" data and merging package contents
      * if found.
      *
-     * @param CommandEvent $event
+     * @param Event $event
      */
-    public function onInstallOrUpdate(CommandEvent $event)
+    public function onInstallOrUpdate(Event $event)
     {
-        $config = $this->readConfig($this->composer->getPackage());
+        $config = $this->readConfig($this->getRootPackage());
         if (isset($config['recurse'])) {
             $this->recurse = (bool)$config['recurse'];
         }
@@ -149,10 +151,10 @@ class MergePlugin implements PluginInterface, EventSubscriberInterface
     }
 
     /**
-     * @param RootPackageInterface $package
+     * @param RootPackage $package
      * @return array
      */
-    protected function readConfig(RootPackageInterface $package)
+    protected function readConfig(RootPackage $package)
     {
         $config = array(
             'include' => array(),
@@ -175,7 +177,7 @@ class MergePlugin implements PluginInterface, EventSubscriberInterface
      */
     protected function mergePackages(array $config)
     {
-        $root = $this->composer->getPackage();
+        $root = $this->getRootPackage();
         foreach (array_reduce(
             array_map('glob', $config['include']),
             'array_merge',
@@ -188,7 +190,7 @@ class MergePlugin implements PluginInterface, EventSubscriberInterface
     /**
      * Read a JSON file and merge its contents
      *
-     * @param RootPackageInterface $root
+     * @param RootPackage $root
      * @param string $path
      */
     protected function loadFile($root, $path)
@@ -201,10 +203,11 @@ class MergePlugin implements PluginInterface, EventSubscriberInterface
         }
         $this->debug("Loading <comment>{$path}</comment>...");
         $json = $this->readPackageJson($path);
-        $package = $this->loader->load($json);
+        $package = $this->jsonToPackage($json);
 
         $this->mergeRequires($root, $package);
         $this->mergeDevRequires($root, $package);
+        $this->mergeAutoload($root, $package, $path);
 
         if (isset($json['repositories'])) {
             $this->addRepositories($json['repositories'], $root);
@@ -248,15 +251,15 @@ class MergePlugin implements PluginInterface, EventSubscriberInterface
     }
 
     /**
-     * @param RootPackageInterface $root
+     * @param RootPackage $root
      * @param CompletePackage $package
      */
     protected function mergeRequires(
-        RootPackageInterface $root,
+        RootPackage $root,
         CompletePackage $package
     ) {
         $requires = $package->getRequires();
-        if (!$requires) {
+        if (empty($requires)) {
             return;
         }
 
@@ -270,15 +273,15 @@ class MergePlugin implements PluginInterface, EventSubscriberInterface
     }
 
     /**
-     * @param RootPackageInterface $root
+     * @param RootPackage $root
      * @param CompletePackage $package
      */
     protected function mergeDevRequires(
-        RootPackageInterface $root,
+        RootPackage $root,
         CompletePackage $package
     ) {
         $requires = $package->getDevRequires();
-        if (!$requires) {
+        if (empty($requires)) {
             return;
         }
 
@@ -292,14 +295,44 @@ class MergePlugin implements PluginInterface, EventSubscriberInterface
     }
 
     /**
+     * @param RootPackage $root
+     * @param CompletePackage $package
+     * @param string $path
+     */
+    protected function mergeAutoload(
+        RootPackage $root,
+        CompletePackage $package,
+        $path
+    ) {
+        $autoload = $package->getAutoload();
+        if (empty($autoload)) {
+            return;
+        }
+
+        $packagePath = substr($path, 0, strrpos($path, '/') + 1);
+
+        array_walk_recursive(
+            $autoload,
+            function(&$path) use ($packagePath) {
+                $path = $packagePath . $path;
+            }
+        );
+
+        $root->setAutoload(array_merge_recursive(
+            $root->getAutoload(),
+            $autoload
+        ));
+    }
+
+    /**
      * Extract and merge stability flags from the given collection of
      * requires.
      *
-     * @param RootPackageInterface $root
+     * @param RootPackage $root
      * @param array $requires
      */
     protected function mergeStabilityFlags(
-        RootPackageInterface $root,
+        RootPackage $root,
         array $requires
     ) {
         $flags = $root->getStabilityFlags();
@@ -317,16 +350,19 @@ class MergePlugin implements PluginInterface, EventSubscriberInterface
      * to the given package and the global repository manager.
      *
      * @param array $repositories
-     * @param RootPackageInterface $root
+     * @param RootPackage $root
      */
     protected function addRepositories(
         array $repositories,
-        RootPackageInterface $root
+        RootPackage $root
     ) {
         $repoManager = $this->composer->getRepositoryManager();
         $newRepos = array();
 
         foreach ($repositories as $repoJson) {
+            if (!isset($repoJson['type'])) {
+                continue;
+            }
             $this->debug("Adding {$repoJson['type']} repository");
             $repo = $repoManager->createRepository(
                 $repoJson['type'],
@@ -376,7 +412,7 @@ class MergePlugin implements PluginInterface, EventSubscriberInterface
      */
     public function onDependencySolve(InstallerEvent $event)
     {
-        if (!$this->duplicateLinks) {
+        if (empty($this->duplicateLinks)) {
             return;
         }
 
@@ -394,6 +430,39 @@ class MergePlugin implements PluginInterface, EventSubscriberInterface
     }
 
     /**
+     * @return RootPackage
+     */
+    protected function getRootPackage()
+    {
+        $root = $this->composer->getPackage();
+        // @codeCoverageIgnoreStart
+        if (!$root instanceof RootPackage) {
+            throw new UnexpectedValueException(
+                'Expected instance of RootPackage, got ' . get_class($root)
+            );
+        }
+        // @codeCoverageIgnoreEnd
+        return $root;
+    }
+
+    /**
+     * @return CompletePackage
+     */
+    protected function jsonToPackage($json)
+    {
+        $package = $this->loader->load($json);
+        // @codeCoverageIgnoreStart
+        if (!$package instanceof CompletePackage) {
+            throw new UnexpectedValueException(
+                'Expected instance of CompletePackage, got ' .
+                get_class($package)
+            );
+        }
+        // @codeCoverageIgnoreEnd
+        return $package;
+    }
+
+    /**
      * Log a debug message
      *
      * Messages will be output at the "verbose" logging level (eg `-v` needed
@@ -403,9 +472,18 @@ class MergePlugin implements PluginInterface, EventSubscriberInterface
      */
     protected function debug($message)
     {
+        // @codeCoverageIgnoreStart
         if ($this->inputOutput->isVerbose()) {
-            $this->inputOutput->write("  <info>[merge]</info> {$message}");
+            $message = "  <info>[merge]</info> {$message}";
+
+            if (method_exists($this->inputOutput, 'writeError')) {
+                $this->inputOutput->writeError($message);
+            } else {
+                // Backwards compatiblity for Composer before cb336a5
+                $this->inputOutput->write($message);
+            }
         }
+        // @codeCoverageIgnoreEnd
     }
 }
 // vim:sw=4:ts=4:sts=4:et:

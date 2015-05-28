@@ -301,49 +301,6 @@
         ]
     },
     {
-        "name": "wikimedia/composer-merge-plugin",
-        "version": "v1.0.0",
-        "version_normalized": "1.0.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/wikimedia/composer-merge-plugin.git",
-            "reference": "ed426b785f9f786b33be4fd78584e43f4e962356"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/composer-merge-plugin/zipball/ed426b785f9f786b33be4fd78584e43f4e962356",
-            "reference": "ed426b785f9f786b33be4fd78584e43f4e962356",
-            "shasum": ""
-        },
-        "require": {
-            "composer-plugin-api": "1.0.0",
-            "php": ">=5.3.2"
-        },
-        "require-dev": {
-            "composer/composer": "1.0.*@dev",
-            "jakub-onderka/php-parallel-lint": "~0.8",
-            "phpspec/prophecy-phpunit": "~1.0",
-            "phpunit/phpunit": "~4.0",
-            "squizlabs/php_codesniffer": "~2.1.0"
-        },
-        "time": "2015-02-21 00:57:13",
-        "type": "composer-plugin",
-        "extra": {
-            "class": "Wikimedia\\Composer\\MergePlugin"
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Wikimedia\\Composer\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "description": "Composer plugin to merge multiple composer.json files"
-    },
-    {
         "name": "liuggio/statsd-php-client",
         "version": "v1.0.12",
         "version_normalized": "1.0.12.0",
@@ -572,5 +529,48 @@
             "php",
             "template"
         ]
+    },
+    {
+        "name": "wikimedia/composer-merge-plugin",
+        "version": "v1.1.0",
+        "version_normalized": "1.1.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/composer-merge-plugin.git",
+            "reference": "caf5b67de61edb32c3df9dad4e67a8ecbbc69d5e"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/composer-merge-plugin/zipball/caf5b67de61edb32c3df9dad4e67a8ecbbc69d5e",
+            "reference": "caf5b67de61edb32c3df9dad4e67a8ecbbc69d5e",
+            "shasum": ""
+        },
+        "require": {
+            "composer-plugin-api": "1.0.0",
+            "php": ">=5.3.2"
+        },
+        "require-dev": {
+            "composer/composer": "1.0.*@dev",
+            "jakub-onderka/php-parallel-lint": "~0.8",
+            "phpspec/prophecy-phpunit": "~1.0",
+            "phpunit/phpunit": "~4.0",
+            "squizlabs/php_codesniffer": "~2.1.0"
+        },
+        "time": "2015-05-28 00:24:05",
+        "type": "composer-plugin",
+        "extra": {
+            "class": "Wikimedia\\Composer\\MergePlugin"
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Wikimedia\\Composer\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "description": "Composer plugin to merge multiple composer.json files"
     }
 ]
