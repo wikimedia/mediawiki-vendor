@@ -3,6 +3,9 @@
  * OO.ui.MenuOptionWidget. The DropdownWidget takes care of opening and displaying the menu so that
  * users can interact with it.
  *
+ * If you want to use this within a HTML form, such as a OO.ui.FormLayout, use
+ * OO.ui.DropdownInputWidget instead.
+ *
  *     @example
  *     // Example: A DropdownWidget with a menu that contains three options
  *     var dropDown = new OO.ui.DropdownWidget( {
@@ -33,11 +36,11 @@
  *
  * @class
  * @extends OO.ui.Widget
- * @mixins OO.ui.IconElement
- * @mixins OO.ui.IndicatorElement
- * @mixins OO.ui.LabelElement
- * @mixins OO.ui.TitledElement
- * @mixins OO.ui.TabIndexedElement
+ * @mixins OO.ui.mixin.IconElement
+ * @mixins OO.ui.mixin.IndicatorElement
+ * @mixins OO.ui.mixin.LabelElement
+ * @mixins OO.ui.mixin.TitledElement
+ * @mixins OO.ui.mixin.TabIndexedElement
  *
  * @constructor
  * @param {Object} [config] Configuration options
@@ -54,11 +57,11 @@ OO.ui.DropdownWidget = function OoUiDropdownWidget( config ) {
 	this.$handle = this.$( '<span>' );
 
 	// Mixin constructors
-	OO.ui.IconElement.call( this, config );
-	OO.ui.IndicatorElement.call( this, config );
-	OO.ui.LabelElement.call( this, config );
-	OO.ui.TitledElement.call( this, $.extend( {}, config, { $titled: this.$label } ) );
-	OO.ui.TabIndexedElement.call( this, $.extend( {}, config, { $tabIndexed: this.$handle } ) );
+	OO.ui.mixin.IconElement.call( this, config );
+	OO.ui.mixin.IndicatorElement.call( this, config );
+	OO.ui.mixin.LabelElement.call( this, config );
+	OO.ui.mixin.TitledElement.call( this, $.extend( {}, config, { $titled: this.$label } ) );
+	OO.ui.mixin.TabIndexedElement.call( this, $.extend( {}, config, { $tabIndexed: this.$handle } ) );
 
 	// Properties
 	this.menu = new OO.ui.MenuSelectWidget( $.extend( { widget: this }, config.menu ) );
@@ -82,11 +85,11 @@ OO.ui.DropdownWidget = function OoUiDropdownWidget( config ) {
 /* Setup */
 
 OO.inheritClass( OO.ui.DropdownWidget, OO.ui.Widget );
-OO.mixinClass( OO.ui.DropdownWidget, OO.ui.IconElement );
-OO.mixinClass( OO.ui.DropdownWidget, OO.ui.IndicatorElement );
-OO.mixinClass( OO.ui.DropdownWidget, OO.ui.LabelElement );
-OO.mixinClass( OO.ui.DropdownWidget, OO.ui.TitledElement );
-OO.mixinClass( OO.ui.DropdownWidget, OO.ui.TabIndexedElement );
+OO.mixinClass( OO.ui.DropdownWidget, OO.ui.mixin.IconElement );
+OO.mixinClass( OO.ui.DropdownWidget, OO.ui.mixin.IndicatorElement );
+OO.mixinClass( OO.ui.DropdownWidget, OO.ui.mixin.LabelElement );
+OO.mixinClass( OO.ui.DropdownWidget, OO.ui.mixin.TitledElement );
+OO.mixinClass( OO.ui.DropdownWidget, OO.ui.mixin.TabIndexedElement );
 
 /* Methods */
 
@@ -109,6 +112,7 @@ OO.ui.DropdownWidget.prototype.onMenuSelect = function ( item ) {
 	var selectedLabel;
 
 	if ( !item ) {
+		this.setLabel( null );
 		return;
 	}
 
@@ -142,7 +146,9 @@ OO.ui.DropdownWidget.prototype.onClick = function ( e ) {
  * @param {jQuery.Event} e Key press event
  */
 OO.ui.DropdownWidget.prototype.onKeyPress = function ( e ) {
-	if ( !this.isDisabled() && ( e.which === OO.ui.Keys.SPACE || e.which === OO.ui.Keys.ENTER ) ) {
+	if ( !this.isDisabled() &&
+		( ( e.which === OO.ui.Keys.SPACE && !this.menu.isVisible() ) || e.which === OO.ui.Keys.ENTER )
+	) {
 		this.menu.toggle();
 		return false;
 	}

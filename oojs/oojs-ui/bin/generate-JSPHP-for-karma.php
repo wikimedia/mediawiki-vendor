@@ -3,7 +3,7 @@
 // Quick and dirty autoloader to make it possible to run without Composer.
 spl_autoload_register( function ( $class ) {
 	$class = preg_replace( '/^OOUI\\\\/', '', $class );
-	foreach ( array( 'elements', 'layouts', 'themes', 'widgets', '.' ) as $dir ) {
+	foreach ( array( 'mixins', 'layouts', 'themes', 'widgets', '.' ) as $dir ) {
 		$path = "../php/$dir/$class.php";
 		if ( file_exists( $path ) ) {
 			require_once $path;
@@ -16,11 +16,15 @@ $testSuiteJSON = file_get_contents( 'JSPHP-suite.json' );
 $testSuite = json_decode( $testSuiteJSON, true );
 $testSuiteOutput = array();
 
+// @codingStandardsIgnoreStart
 function new_OOUI( $class, $config = array() ) {
+	// @codingStandardsIgnoreEnd
 	$class = "OOUI\\" . $class;
 	return new $class( $config );
 }
+// @codingStandardsIgnoreStart
 function unstub( &$value ) {
+	// @codingStandardsIgnoreEnd
 	if ( is_string( $value ) && substr( $value, 0, 13 ) === '_placeholder_' ) {
 		$value = json_decode( substr( $value, 13 ), true );
 		array_walk_recursive( $value['config'], 'unstub' );

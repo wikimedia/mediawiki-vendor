@@ -4,6 +4,9 @@
  * an interface for adding, removing and selecting options.
  * Please see the [OOjs UI documentation on MediaWiki][1] for more information.
  *
+ * If you want to use this within a HTML form, such as a OO.ui.FormLayout, use
+ * OO.ui.RadioSelectInputWidget instead.
+ *
  *     @example
  *     // A RadioSelectWidget with RadioOptions.
  *     var option1 = new OO.ui.RadioOptionWidget( {
@@ -30,7 +33,7 @@
  *
  * @class
  * @extends OO.ui.SelectWidget
- * @mixins OO.ui.TabIndexedElement
+ * @mixins OO.ui.mixin.TabIndexedElement
  *
  * @constructor
  * @param {Object} [config] Configuration options
@@ -40,7 +43,7 @@ OO.ui.RadioSelectWidget = function OoUiRadioSelectWidget( config ) {
 	OO.ui.RadioSelectWidget.super.call( this, config );
 
 	// Mixin constructors
-	OO.ui.TabIndexedElement.call( this, config );
+	OO.ui.mixin.TabIndexedElement.call( this, config );
 
 	// Events
 	this.$element.on( {
@@ -55,4 +58,4 @@ OO.ui.RadioSelectWidget = function OoUiRadioSelectWidget( config ) {
 /* Setup */
 
 OO.inheritClass( OO.ui.RadioSelectWidget, OO.ui.SelectWidget );
-OO.mixinClass( OO.ui.RadioSelectWidget, OO.ui.TabIndexedElement );
+OO.mixinClass( OO.ui.RadioSelectWidget, OO.ui.mixin.TabIndexedElement );

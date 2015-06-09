@@ -18,7 +18,7 @@ else
 		.reject{|c| c[:abstract] } # can't test abstract classes
 		.reject{|c| !c[:parent] || c[:parent] == 'ElementMixin' || c[:parent] == 'Theme' } # can't test abstract
 		.reject{|c| %w[Element Widget Layout Theme].include? c[:name] } # no toplevel
-		.reject{|c| c[:name] == 'DropdownInputWidget' } # different PHP and JS implementations
+		.reject{|c| %w[DropdownInputWidget RadioSelectInputWidget].include? c[:name] } # different PHP and JS implementations
 
 	# values to test for each type
 	expandos = {
@@ -31,9 +31,10 @@ else
 	# values to test for names
 	sensible_values = {
 		'href' => ['http://example.com/'],
-		['TextInputWidget', 'type'] => %w[text password],
-		['ButtonInputWidget', 'type'] => %w[button input],
+		['TextInputWidget', 'type'] => %w[text password foo],
+		['ButtonInputWidget', 'type'] => %w[button submit foo],
 		['FieldLayout', 'help'] => true, # different PHP and JS implementations
+		['ActionFieldLayout', 'help'] => true, # different PHP and JS implementations
 		['FieldsetLayout', 'help'] => true, # different PHP and JS implementations
 		'type' => %w[text button],
 		'method' => %w[GET POST],

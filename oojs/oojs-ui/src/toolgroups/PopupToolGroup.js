@@ -1,20 +1,22 @@
 /**
- * Popup list of tools with an icon and optional label.
+ * PopupToolGroup is an abstract base class used by both {@link OO.ui.MenuToolGroup MenuToolGroup}
+ * and {@link OO.ui.ListToolGroup ListToolGroup} to provide a popup--an overlaid menu or list of tools with an
+ * optional icon and label. This class can be used for other base classes that also use this functionality.
  *
  * @abstract
  * @class
  * @extends OO.ui.ToolGroup
- * @mixins OO.ui.IconElement
- * @mixins OO.ui.IndicatorElement
- * @mixins OO.ui.LabelElement
- * @mixins OO.ui.TitledElement
- * @mixins OO.ui.ClippableElement
- * @mixins OO.ui.TabIndexedElement
+ * @mixins OO.ui.mixin.IconElement
+ * @mixins OO.ui.mixin.IndicatorElement
+ * @mixins OO.ui.mixin.LabelElement
+ * @mixins OO.ui.mixin.TitledElement
+ * @mixins OO.ui.mixin.ClippableElement
+ * @mixins OO.ui.mixin.TabIndexedElement
  *
  * @constructor
  * @param {OO.ui.Toolbar} toolbar
  * @param {Object} [config] Configuration options
- * @cfg {string} [header] Text to display at the top of the pop-up
+ * @cfg {string} [header] Text to display at the top of the popup
  */
 OO.ui.PopupToolGroup = function OoUiPopupToolGroup( toolbar, config ) {
 	// Allow passing positional parameters inside the config object
@@ -36,12 +38,12 @@ OO.ui.PopupToolGroup = function OoUiPopupToolGroup( toolbar, config ) {
 	this.$handle = $( '<span>' );
 
 	// Mixin constructors
-	OO.ui.IconElement.call( this, config );
-	OO.ui.IndicatorElement.call( this, config );
-	OO.ui.LabelElement.call( this, config );
-	OO.ui.TitledElement.call( this, config );
-	OO.ui.ClippableElement.call( this, $.extend( {}, config, { $clippable: this.$group } ) );
-	OO.ui.TabIndexedElement.call( this, $.extend( {}, config, { $tabIndexed: this.$handle } ) );
+	OO.ui.mixin.IconElement.call( this, config );
+	OO.ui.mixin.IndicatorElement.call( this, config );
+	OO.ui.mixin.LabelElement.call( this, config );
+	OO.ui.mixin.TitledElement.call( this, config );
+	OO.ui.mixin.ClippableElement.call( this, $.extend( {}, config, { $clippable: this.$group } ) );
+	OO.ui.mixin.TabIndexedElement.call( this, $.extend( {}, config, { $tabIndexed: this.$handle } ) );
 
 	// Events
 	this.$handle.on( {
@@ -73,12 +75,12 @@ OO.ui.PopupToolGroup = function OoUiPopupToolGroup( toolbar, config ) {
 /* Setup */
 
 OO.inheritClass( OO.ui.PopupToolGroup, OO.ui.ToolGroup );
-OO.mixinClass( OO.ui.PopupToolGroup, OO.ui.IconElement );
-OO.mixinClass( OO.ui.PopupToolGroup, OO.ui.IndicatorElement );
-OO.mixinClass( OO.ui.PopupToolGroup, OO.ui.LabelElement );
-OO.mixinClass( OO.ui.PopupToolGroup, OO.ui.TitledElement );
-OO.mixinClass( OO.ui.PopupToolGroup, OO.ui.ClippableElement );
-OO.mixinClass( OO.ui.PopupToolGroup, OO.ui.TabIndexedElement );
+OO.mixinClass( OO.ui.PopupToolGroup, OO.ui.mixin.IconElement );
+OO.mixinClass( OO.ui.PopupToolGroup, OO.ui.mixin.IndicatorElement );
+OO.mixinClass( OO.ui.PopupToolGroup, OO.ui.mixin.LabelElement );
+OO.mixinClass( OO.ui.PopupToolGroup, OO.ui.mixin.TitledElement );
+OO.mixinClass( OO.ui.PopupToolGroup, OO.ui.mixin.ClippableElement );
+OO.mixinClass( OO.ui.PopupToolGroup, OO.ui.mixin.TabIndexedElement );
 
 /* Methods */
 
@@ -99,6 +101,7 @@ OO.ui.PopupToolGroup.prototype.setDisabled = function () {
  *
  * The event is actually generated from a mouseup/keyup, so it is not a normal blur event object.
  *
+ * @protected
  * @param {jQuery.Event} e Mouse up or key up event
  */
 OO.ui.PopupToolGroup.prototype.onBlur = function ( e ) {
@@ -125,6 +128,7 @@ OO.ui.PopupToolGroup.prototype.onMouseKeyUp = function ( e ) {
 /**
  * Handle mouse up and key up events.
  *
+ * @protected
  * @param {jQuery.Event} e Mouse up or key up event
  */
 OO.ui.PopupToolGroup.prototype.onHandleMouseKeyUp = function ( e ) {
@@ -139,6 +143,7 @@ OO.ui.PopupToolGroup.prototype.onHandleMouseKeyUp = function ( e ) {
 /**
  * Handle mouse down and key down events.
  *
+ * @protected
  * @param {jQuery.Event} e Mouse down or key down event
  */
 OO.ui.PopupToolGroup.prototype.onHandleMouseKeyDown = function ( e ) {
@@ -152,9 +157,10 @@ OO.ui.PopupToolGroup.prototype.onHandleMouseKeyDown = function ( e ) {
 };
 
 /**
- * Switch into active mode.
+ * Switch into 'active' mode.
  *
- * When active, mouseup events anywhere in the document will trigger deactivation.
+ * When active, the popup is visible. A mouseup event anywhere in the document will trigger
+ * deactivation.
  */
 OO.ui.PopupToolGroup.prototype.setActive = function ( value ) {
 	value = !!value;

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7e896808d6526bfd7af3d2a677fcbfdb",
+    "hash": "aef4151a2bd443bfe39ab17cf7b55e83",
     "packages": [
         {
             "name": "cssjanus/cssjanus",
@@ -205,16 +205,16 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.11.3",
+            "version": "v0.11.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "a03de5681e28e4fad1e27f8cccab32a2c5b484e5"
+                "reference": "6c2bdfafc13f0d7d3ea8ca41c73cfc9154ee7ed2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/a03de5681e28e4fad1e27f8cccab32a2c5b484e5",
-                "reference": "a03de5681e28e4fad1e27f8cccab32a2c5b484e5",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/6c2bdfafc13f0d7d3ea8ca41c73cfc9154ee7ed2",
+                "reference": "6c2bdfafc13f0d7d3ea8ca41c73cfc9154ee7ed2",
                 "shasum": ""
             },
             "require": {
@@ -222,8 +222,8 @@
             },
             "require-dev": {
                 "jakub-onderka/php-parallel-lint": "0.8.*",
-                "mediawiki/mediawiki-codesniffer": "0.1.0",
-                "squizlabs/php_codesniffer": "2.1.*"
+                "mediawiki/mediawiki-codesniffer": "0.2.0",
+                "phpunit/phpunit": "~4.5"
             },
             "type": "library",
             "autoload": {
@@ -237,7 +237,7 @@
             ],
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOjs_UI",
-            "time": "2015-05-12 11:58:55"
+            "time": "2015-06-09 21:52:45"
         },
         {
             "name": "psr/log",

@@ -1,7 +1,7 @@
 /**
  * TextInputWidgets, like HTML text inputs, can be configured with options that customize the
  * size of the field as well as its presentation. In addition, these widgets can be configured
- * with {@link OO.ui.IconElement icons}, {@link OO.ui.IndicatorElement indicators}, an optional
+ * with {@link OO.ui.mixin.IconElement icons}, {@link OO.ui.mixin.IndicatorElement indicators}, an optional
  * validation-pattern (used to determine if an input value is valid or not) and an input filter,
  * which modifies incoming values rather than validating them.
  * Please see the [OOjs UI documentation on MediaWiki] [1] for more information and examples.
@@ -19,14 +19,15 @@
  *
  * @class
  * @extends OO.ui.InputWidget
- * @mixins OO.ui.IconElement
- * @mixins OO.ui.IndicatorElement
- * @mixins OO.ui.PendingElement
- * @mixins OO.ui.LabelElement
+ * @mixins OO.ui.mixin.IconElement
+ * @mixins OO.ui.mixin.IndicatorElement
+ * @mixins OO.ui.mixin.PendingElement
+ * @mixins OO.ui.mixin.LabelElement
  *
  * @constructor
  * @param {Object} [config] Configuration options
- * @cfg {string} [type='text'] The value of the HTML `type` attribute
+ * @cfg {string} [type='text'] The value of the HTML `type` attribute: 'text', 'password', 'search',
+ *  'email' or 'url'. Ignored if `multiline` is true.
  * @cfg {string} [placeholder] Placeholder text
  * @cfg {boolean} [autofocus=false] Use an HTML `autofocus` attribute to
  *  instruct the browser to focus this widget.
@@ -57,10 +58,10 @@ OO.ui.TextInputWidget = function OoUiTextInputWidget( config ) {
 	OO.ui.TextInputWidget.super.call( this, config );
 
 	// Mixin constructors
-	OO.ui.IconElement.call( this, config );
-	OO.ui.IndicatorElement.call( this, config );
-	OO.ui.PendingElement.call( this, config );
-	OO.ui.LabelElement.call( this, config );
+	OO.ui.mixin.IconElement.call( this, config );
+	OO.ui.mixin.IndicatorElement.call( this, config );
+	OO.ui.mixin.PendingElement.call( this, config );
+	OO.ui.mixin.LabelElement.call( this, config );
 
 	// Properties
 	this.readOnly = false;
@@ -120,10 +121,10 @@ OO.ui.TextInputWidget = function OoUiTextInputWidget( config ) {
 /* Setup */
 
 OO.inheritClass( OO.ui.TextInputWidget, OO.ui.InputWidget );
-OO.mixinClass( OO.ui.TextInputWidget, OO.ui.IconElement );
-OO.mixinClass( OO.ui.TextInputWidget, OO.ui.IndicatorElement );
-OO.mixinClass( OO.ui.TextInputWidget, OO.ui.PendingElement );
-OO.mixinClass( OO.ui.TextInputWidget, OO.ui.LabelElement );
+OO.mixinClass( OO.ui.TextInputWidget, OO.ui.mixin.IconElement );
+OO.mixinClass( OO.ui.TextInputWidget, OO.ui.mixin.IndicatorElement );
+OO.mixinClass( OO.ui.TextInputWidget, OO.ui.mixin.PendingElement );
+OO.mixinClass( OO.ui.TextInputWidget, OO.ui.mixin.LabelElement );
 
 /* Static properties */
 
@@ -364,10 +365,13 @@ OO.ui.TextInputWidget.prototype.adjustSize = function () {
 
 /**
  * @inheritdoc
- * @private
+ * @protected
  */
 OO.ui.TextInputWidget.prototype.getInputElement = function ( config ) {
-	return config.multiline ? $( '<textarea>' ) : $( '<input type="' + config.type + '" />' );
+	var type = [ 'text', 'password', 'search', 'email', 'url' ].indexOf( config.type ) !== -1 ?
+		config.type :
+		'text';
+	return config.multiline ? $( '<textarea>' ) : $( '<input type="' + type + '" />' );
 };
 
 /**

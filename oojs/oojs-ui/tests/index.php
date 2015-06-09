@@ -35,7 +35,7 @@
 	<!-- Test suites -->
 	<script src="./Element.test.js"></script>
 	<script src="./Process.test.js"></script>
-	<script src="./elements/FlaggedElement.test.js"></script>
+	<script src="./mixins/FlaggedElement.test.js"></script>
 	<!-- JS/PHP comparison tests -->
 	<script>OO.ui.JSPHPTestSuite = <?php echo $testSuiteJSON; ?></script>
 	<script src="./JSPHP.test.standalone.js"></script>
@@ -43,11 +43,15 @@
 <body>
 	<div id="JSPHPTestSuite" style="display: none;">
 		<?php
+			// @codingStandardsIgnoreStart
 			function new_OOUI( $class, $config = array() ) {
+				// @codingStandardsIgnoreEnd
 				$class = "OOUI\\" . $class;
 				return new $class( $config );
 			}
+			// @codingStandardsIgnoreStart
 			function unstub( &$value ) {
+				// @codingStandardsIgnoreEnd
 				if ( is_string( $value ) && substr( $value, 0, 13 ) === '_placeholder_' ) {
 					$value = json_decode( substr( $value, 13 ), true );
 					array_walk_recursive( $value['config'], 'unstub' );

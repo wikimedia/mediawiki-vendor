@@ -26,8 +26,8 @@
 				"classes": ["OO.ui.*Tool"]
 			},
 			{
-				"name": "Elements",
-				"classes": ["OO.ui.*Element"]
+				"name": "Mixins",
+				"classes": ["OO.ui.mixin", "OO.ui.mixin.*"]
 			},
 			{
 				"name": "Layouts",
@@ -55,7 +55,7 @@
 		"name": "Upstream",
 		"groups": [
 			{
-				"name": "OOJS",
+				"name": "OOjs",
 				"classes": ["OO", "OO.EventEmitter", "OO.Factory", "OO.Registry"]
 			},
 			{

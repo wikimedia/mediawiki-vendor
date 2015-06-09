@@ -567,7 +567,10 @@ OO.ui.Element.static.scrollIntoView = function ( el, config ) {
  * @param {HTMLElement} el Element to reconsider the scrollbars on
  */
 OO.ui.Element.static.reconsiderScrollbars = function ( el ) {
-	var i, len, nodes = [];
+	var i, len, scrollLeft, scrollTop, nodes = [];
+	// Save scroll position
+	scrollLeft = el.scrollLeft;
+	scrollTop = el.scrollTop;
 	// Detach all children
 	while ( el.firstChild ) {
 		nodes.push( el.firstChild );
@@ -579,6 +582,9 @@ OO.ui.Element.static.reconsiderScrollbars = function ( el ) {
 	for ( i = 0, len = nodes.length; i < len; i++ ) {
 		el.appendChild( nodes[ i ] );
 	}
+	// Restore scroll position (no-op if scrollbars disappeared)
+	el.scrollLeft = scrollLeft;
+	el.scrollTop = scrollTop;
 };
 
 /* Methods */
@@ -721,7 +727,7 @@ OO.ui.Element.prototype.getClosestScrollableElementContainer = function () {
 /**
  * Get group element is in.
  *
- * @return {OO.ui.GroupElement|null} Group element, null if none
+ * @return {OO.ui.mixin.GroupElement|null} Group element, null if none
  */
 OO.ui.Element.prototype.getElementGroup = function () {
 	return this.elementGroup;
@@ -730,7 +736,7 @@ OO.ui.Element.prototype.getElementGroup = function () {
 /**
  * Set group element is in.
  *
- * @param {OO.ui.GroupElement|null} group Group element, null if none
+ * @param {OO.ui.mixin.GroupElement|null} group Group element, null if none
  * @chainable
  */
 OO.ui.Element.prototype.setElementGroup = function ( group ) {

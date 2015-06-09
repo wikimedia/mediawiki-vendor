@@ -35,7 +35,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>OOjs UI Widget Demo</title>
-	<link rel="stylesheet" href="../dist/<?php echo $styleFileName; ?>" title="theme">
+	<link rel="stylesheet" href="../dist/<?php echo $styleFileName; ?>">
 	<link rel="stylesheet" href="styles/demo<?php echo $directionSuffix; ?>.css">
 </head>
 <body class="oo-ui-<?php echo $direction; ?>">
@@ -46,15 +46,11 @@
 					'infusable' => true,
 					'items' => array(
 						new OOUI\ButtonWidget( array(
-							'id' => 'theme-mediawiki',
 							'label' => 'MediaWiki',
-							'data' => 'mediawiki',
 							'href' => '?' . http_build_query( array_merge( $query, array( 'theme' => 'mediawiki' ) ) ),
 						) ),
 						new OOUI\ButtonWidget( array(
-							'id' => 'theme-apex',
 							'label' => 'Apex',
-							'data' => 'apex',
 							'href' => '?' . http_build_query( array_merge( $query, array( 'theme' => 'apex' ) ) ),
 						) ),
 					)
@@ -86,6 +82,20 @@
 						new OOUI\ButtonWidget( array(
 							'label' => 'RTL',
 							'href' => '?' . http_build_query( array_merge( $query, array( 'direction' => 'rtl' ) ) ),
+						) ),
+					)
+				) );
+				echo new OOUI\ButtonGroupWidget( array(
+					'infusable' => true,
+					'id' => 'oo-ui-demo-menu-infuse',
+					'items' => array(
+						new OOUI\ButtonWidget( array(
+							'label' => 'JS',
+							'href' => ".#widgets-$theme-$graphic-$direction",
+						) ),
+						new OOUI\ButtonWidget( array(
+							'label' => 'PHP',
+							'href' => '?' . http_build_query( $query ),
 						) ),
 					)
 				) );
@@ -525,6 +535,29 @@
 							)
 						),
 						new OOUI\FieldLayout(
+							new OOUI\RadioSelectInputWidget( array(
+								'value' => 'dog',
+								'options' => array(
+									array(
+										'data' => 'cat',
+										'label' => 'Cat'
+									),
+									array(
+										'data' => 'dog',
+										'label' => 'Dog'
+									),
+									array(
+										'data' => 'goldfish',
+										'label' => 'Goldfish'
+									),
+								)
+							) ),
+							array(
+								'align' => 'top',
+								'label' => 'RadioSelectInputWidget',
+							)
+						),
+						new OOUI\FieldLayout(
 							new OOUI\TextInputWidget( array( 'value' => 'Text input' ) ),
 							array(
 								'label' => "TextInputWidget\xE2\x80\x8E",
@@ -755,6 +788,69 @@
 									"in, duo ex inimicus perpetua complectitur, mel periculis similique at.\xE2\x80\x8E",
 								'align' => 'top'
 							)
+						),
+						new OOUI\ActionFieldLayout(
+							new OOUI\TextInputWidget(),
+							new OOUI\ButtonWidget( array(
+								'label' => 'Button'
+							) ),
+							array(
+								'label' => 'ActionFieldLayout aligned left',
+								'align' => 'left'
+							)
+						),
+						new OOUI\ActionFieldLayout(
+							new OOUI\TextInputWidget(),
+							new OOUI\ButtonWidget( array(
+								'label' => 'Button'
+							) ),
+							array(
+								'label' => 'ActionFieldLayout aligned inline',
+								'align' => 'inline'
+							)
+						),
+						new OOUI\ActionFieldLayout(
+							new OOUI\TextInputWidget(),
+							new OOUI\ButtonWidget( array(
+								'label' => 'Button'
+							) ),
+							array(
+								'label' => 'ActionFieldLayout aligned right',
+								'align' => 'right'
+							)
+						),
+						new OOUI\ActionFieldLayout(
+							new OOUI\TextInputWidget(),
+							new OOUI\ButtonWidget( array(
+								'label' => 'Button'
+							) ),
+							array(
+								'label' => 'ActionFieldLayout aligned top',
+								'align' => 'top'
+							)
+						),
+						new OOUI\ActionFieldLayout(
+							new OOUI\TextInputWidget(),
+							new OOUI\ButtonWidget( array(
+								'label' => 'Button'
+							) ),
+							array(
+								'label' => 'ActionFieldLayout aligned top with help',
+								'help' => 'I am an additional, helpful information. Lorem ipsum dolor sit amet, cibo pri ' .
+									"in, duo ex inimicus perpetua complectitur, mel periculis similique at.\xE2\x80\x8E",
+								'align' => 'top'
+							)
+						),
+						new OOUI\ActionFieldLayout(
+							new OOUI\TextInputWidget(),
+							new OOUI\ButtonWidget( array(
+								'label' => 'Button'
+							) ),
+							array(
+								'label' =>
+									new OOUI\HtmlSnippet( '<i>ActionFieldLayout aligned top with rich text label</i>' ),
+								'align' => 'top'
+							)
 						)
 					)
 				) ) );
@@ -823,8 +919,7 @@
 	<script src="../node_modules/jquery/dist/jquery.js"></script>
 	<script src="../node_modules/oojs/dist/oojs.jquery.js"></script>
 	<script src="../dist/oojs-ui.js"></script>
-	<script src="../dist/oojs-ui-apex.js"></script>
-	<script src="../dist/oojs-ui-mediawiki.js"></script>
+	<script src="../dist/oojs-ui-<?php echo $theme; ?>.js"></script>
 	<script src="./infusion.js"></script>
 </body>
 </html>
