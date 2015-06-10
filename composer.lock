@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "aef4151a2bd443bfe39ab17cf7b55e83",
+    "hash": "3fd4b241090b9f198aa1d9622f978243",
     "packages": [
         {
             "name": "cssjanus/cssjanus",
@@ -130,6 +130,53 @@
                 "statsd"
             ],
             "time": "2014-09-17 21:37:49"
+        },
+        {
+            "name": "mediawiki/at-ease",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wikimedia/at-ease.git",
+                "reference": "7fd36f292be261ed1cb33df8adee6764a88308c3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wikimedia/at-ease/zipball/7fd36f292be261ed1cb33df8adee6764a88308c3",
+                "reference": "7fd36f292be261ed1cb33df8adee6764a88308c3",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "jakub-onderka/php-parallel-lint": "0.8.*",
+                "mediawiki/mediawiki-codesniffer": "0.1.0",
+                "phpunit/phpunit": "~4.5",
+                "squizlabs/php_codesniffer": "2.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/Functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Tim Starling",
+                    "email": "tstarling@wikimedia.org"
+                },
+                {
+                    "name": "MediaWiki developers",
+                    "email": "wikitech-l@lists.wikimedia.org"
+                }
+            ],
+            "description": "Safe replacement to @ for suppressing warnings.",
+            "homepage": "https://www.mediawiki.org/wiki/at-ease",
+            "time": "2015-06-10 06:01:42"
         },
         {
             "name": "monolog/monolog",

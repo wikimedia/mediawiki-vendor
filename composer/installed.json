@@ -572,5 +572,54 @@
         ],
         "description": "Provides library of common widgets, layouts, and windows.",
         "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
+    },
+    {
+        "name": "mediawiki/at-ease",
+        "version": "v1.0.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/at-ease.git",
+            "reference": "7fd36f292be261ed1cb33df8adee6764a88308c3"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/at-ease/zipball/7fd36f292be261ed1cb33df8adee6764a88308c3",
+            "reference": "7fd36f292be261ed1cb33df8adee6764a88308c3",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "jakub-onderka/php-parallel-lint": "0.8.*",
+            "mediawiki/mediawiki-codesniffer": "0.1.0",
+            "phpunit/phpunit": "~4.5",
+            "squizlabs/php_codesniffer": "2.3.0"
+        },
+        "time": "2015-06-10 06:01:42",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "files": [
+                "src/Functions.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "authors": [
+            {
+                "name": "Tim Starling",
+                "email": "tstarling@wikimedia.org"
+            },
+            {
+                "name": "MediaWiki developers",
+                "email": "wikitech-l@lists.wikimedia.org"
+            }
+        ],
+        "description": "Safe replacement to @ for suppressing warnings.",
+        "homepage": "https://www.mediawiki.org/wiki/at-ease"
     }
 ]
