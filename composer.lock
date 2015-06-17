@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3fd4b241090b9f198aa1d9622f978243",
+    "hash": "7dc5a2d0fa0f4e335138d768f57e902e",
     "packages": [
         {
             "name": "cssjanus/cssjanus",
@@ -252,16 +252,16 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.11.4",
+            "version": "v0.11.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "6c2bdfafc13f0d7d3ea8ca41c73cfc9154ee7ed2"
+                "reference": "3d133fcaa3bc0d3c96bcd697ea4adf25c49ae34d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/6c2bdfafc13f0d7d3ea8ca41c73cfc9154ee7ed2",
-                "reference": "6c2bdfafc13f0d7d3ea8ca41c73cfc9154ee7ed2",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/3d133fcaa3bc0d3c96bcd697ea4adf25c49ae34d",
+                "reference": "3d133fcaa3bc0d3c96bcd697ea4adf25c49ae34d",
                 "shasum": ""
             },
             "require": {
@@ -284,7 +284,7 @@
             ],
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOjs_UI",
-            "time": "2015-06-09 21:52:45"
+            "time": "2015-06-17 00:49:43"
         },
         {
             "name": "psr/log",
