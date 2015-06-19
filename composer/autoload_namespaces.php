@@ -10,5 +10,5 @@ return array(
     'Liuggio' => array($vendorDir . '/liuggio/statsd-php-client/src'),
     'Elastica\\Test' => array($vendorDir . '/ruflin/elastica/test/lib'),
     'Elastica' => array($vendorDir . '/ruflin/elastica/lib'),
-    '' => array($vendorDir . '/cssjanus/cssjanus/src'),
+    '' => array($vendorDir . '/cssjanus/cssjanus/src', $vendorDir . '/kzykhys/pygments/src'),
 );
