@@ -46,7 +46,7 @@ OO.ui.SelectWidget = function OoUiSelectWidget( config ) {
 	config = config || {};
 
 	// Parent constructor
-	OO.ui.SelectWidget.super.call( this, config );
+	OO.ui.SelectWidget.parent.call( this, config );
 
 	// Mixin constructors
 	OO.ui.mixin.GroupWidget.call( this, $.extend( {}, config, { $group: this.$element } ) );
@@ -420,7 +420,7 @@ OO.ui.SelectWidget.prototype.getItemMatcher = function ( s ) {
 	if ( s.normalize ) {
 		s = s.normalize();
 	}
-	re = new RegExp( '^\s*' + s.replace( /([\\{}()|.?*+\-\^$\[\]])/g, '\\$1' ).replace( /\s+/g, '\\s+' ), 'i' );
+	re = new RegExp( '^\\s*' + s.replace( /([\\{}()|.?*+\-\^$\[\]])/g, '\\$1' ).replace( /\s+/g, '\\s+' ), 'i' );
 	return function ( item ) {
 		var l = item.getLabel();
 		if ( typeof l !== 'string' ) {

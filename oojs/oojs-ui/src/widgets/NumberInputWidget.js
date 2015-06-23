@@ -36,7 +36,7 @@ OO.ui.NumberInputWidget = function OoUiNumberInputWidget( config ) {
 	}, config );
 
 	// Parent constructor
-	OO.ui.NumberInputWidget.super.call( this, config );
+	OO.ui.NumberInputWidget.parent.call( this, config );
 
 	// Properties
 	this.input = new OO.ui.TextInputWidget( $.extend(
@@ -303,7 +303,8 @@ OO.ui.NumberInputWidget.prototype.onWheel = function ( event ) {
 	}
 
 	if ( delta ) {
-		this.adjustValue( Math.sign( delta ) * this.step );
+		delta = delta < 0 ? -1 : 1;
+		this.adjustValue( delta * this.step );
 	}
 
 	return false;
@@ -340,7 +341,7 @@ OO.ui.NumberInputWidget.prototype.onKeyDown = function ( e ) {
  */
 OO.ui.NumberInputWidget.prototype.setDisabled = function ( disabled ) {
 	// Parent method
-	OO.ui.NumberInputWidget.super.prototype.setDisabled.call( this, disabled );
+	OO.ui.NumberInputWidget.parent.prototype.setDisabled.call( this, disabled );
 
 	if ( this.input ) {
 		this.input.setDisabled( this.isDisabled() );

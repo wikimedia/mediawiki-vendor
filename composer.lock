@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d1bf7d267eaad99e5764ac2c22da796c",
+    "hash": "ca02114d83fb75e6d576ed39b195e652",
     "packages": [
         {
             "name": "cssjanus/cssjanus",
@@ -283,24 +283,24 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.11.5",
+            "version": "v0.11.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "3d133fcaa3bc0d3c96bcd697ea4adf25c49ae34d"
+                "reference": "847c492f2ae8228a4b9ae866dc21212c60813820"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/3d133fcaa3bc0d3c96bcd697ea4adf25c49ae34d",
-                "reference": "3d133fcaa3bc0d3c96bcd697ea4adf25c49ae34d",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/847c492f2ae8228a4b9ae866dc21212c60813820",
+                "reference": "847c492f2ae8228a4b9ae866dc21212c60813820",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
             "require-dev": {
-                "jakub-onderka/php-parallel-lint": "0.8.*",
-                "mediawiki/mediawiki-codesniffer": "0.2.0",
+                "jakub-onderka/php-parallel-lint": "0.9",
+                "mediawiki/mediawiki-codesniffer": "0.3.0",
                 "phpunit/phpunit": "~4.5"
             },
             "type": "library",
@@ -315,7 +315,7 @@
             ],
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOjs_UI",
-            "time": "2015-06-17 00:49:43"
+            "time": "2015-06-23 19:46:56"
         },
         {
             "name": "psr/log",
