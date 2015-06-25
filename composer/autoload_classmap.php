@@ -393,6 +393,7 @@ return array(
     'Monolog\\Handler\\NativeMailerHandler' => $vendorDir . '/monolog/monolog/src/Monolog/Handler/NativeMailerHandler.php',
     'Monolog\\Handler\\NewRelicHandler' => $vendorDir . '/monolog/monolog/src/Monolog/Handler/NewRelicHandler.php',
     'Monolog\\Handler\\NullHandler' => $vendorDir . '/monolog/monolog/src/Monolog/Handler/NullHandler.php',
+    'Monolog\\Handler\\PHPConsoleHandler' => $vendorDir . '/monolog/monolog/src/Monolog/Handler/PHPConsoleHandler.php',
     'Monolog\\Handler\\PsrHandler' => $vendorDir . '/monolog/monolog/src/Monolog/Handler/PsrHandler.php',
     'Monolog\\Handler\\PushoverHandler' => $vendorDir . '/monolog/monolog/src/Monolog/Handler/PushoverHandler.php',
     'Monolog\\Handler\\RavenHandler' => $vendorDir . '/monolog/monolog/src/Monolog/Handler/RavenHandler.php',
