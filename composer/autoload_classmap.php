@@ -328,6 +328,7 @@ return array(
     'Elastica\\Type\\AbstractType' => $vendorDir . '/ruflin/elastica/lib/Elastica/Type/AbstractType.php',
     'Elastica\\Type\\Mapping' => $vendorDir . '/ruflin/elastica/lib/Elastica/Type/Mapping.php',
     'Elastica\\Util' => $vendorDir . '/ruflin/elastica/lib/Elastica/Util.php',
+    'IPSet\\IPSet' => $vendorDir . '/wikimedia/ip-set/src/IPSet.php',
     'KzykHys\\Pygments\\Pygments' => $vendorDir . '/kzykhys/pygments/src/KzykHys/Pygments/Pygments.php',
     'LCRun3' => $vendorDir . '/zordius/lightncandy/src/lightncandy.php',
     'LightnCandy' => $vendorDir . '/zordius/lightncandy/src/lightncandy.php',

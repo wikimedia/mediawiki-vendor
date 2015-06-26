@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a7d2910d3f3e096279a7abf91d22b4cd",
+    "hash": "03703b606ab21a36fcb6f8972b44c0d1",
     "packages": [
         {
             "name": "cssjanus/cssjanus",
@@ -602,6 +602,48 @@
             ],
             "description": "Composer plugin to merge multiple composer.json files",
             "time": "2015-06-26 18:23:07"
+        },
+        {
+            "name": "wikimedia/ip-set",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wikimedia/IPSet.git",
+                "reference": "b58230c7b743bfeb8efb0e159551eb3343754928"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wikimedia/IPSet/zipball/b58230c7b743bfeb8efb0e159551eb3343754928",
+                "reference": "b58230c7b743bfeb8efb0e159551eb3343754928",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "jakub-onderka/php-parallel-lint": "0.8.*",
+                "mediawiki/mediawiki-codesniffer": "0.2.0",
+                "phpunit/phpunit": "4.6.*"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Brandon Black",
+                    "email": "blblack@gmail.com"
+                }
+            ],
+            "description": "Efficiently match IP addresses against a set of CIDR specifications.",
+            "homepage": "https://github.com/wikimedia/IPSet",
+            "time": "2015-06-26 19:15:34"
         },
         {
             "name": "wikimedia/utfnormal",
