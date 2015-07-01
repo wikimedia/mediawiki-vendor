@@ -552,44 +552,6 @@
         "description": "A Thin Wrapper for the Python Pygments"
     },
     {
-        "name": "oojs/oojs-ui",
-        "version": "v0.11.6",
-        "version_normalized": "0.11.6.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/wikimedia/oojs-ui.git",
-            "reference": "847c492f2ae8228a4b9ae866dc21212c60813820"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/847c492f2ae8228a4b9ae866dc21212c60813820",
-            "reference": "847c492f2ae8228a4b9ae866dc21212c60813820",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3"
-        },
-        "require-dev": {
-            "jakub-onderka/php-parallel-lint": "0.9",
-            "mediawiki/mediawiki-codesniffer": "0.3.0",
-            "phpunit/phpunit": "~4.5"
-        },
-        "time": "2015-06-23 19:46:56",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "php/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "description": "Provides library of common widgets, layouts, and windows.",
-        "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
-    },
-    {
         "name": "monolog/monolog",
         "version": "1.14.0",
         "version_normalized": "1.14.0.0",
@@ -759,5 +721,43 @@
         ],
         "description": "Efficiently match IP addresses against a set of CIDR specifications.",
         "homepage": "https://github.com/wikimedia/IPSet"
+    },
+    {
+        "name": "oojs/oojs-ui",
+        "version": "v0.11.7",
+        "version_normalized": "0.11.7.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/oojs-ui.git",
+            "reference": "6b0f7ec2c918db5029f697d0a3bc152991dbfc98"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/6b0f7ec2c918db5029f697d0a3bc152991dbfc98",
+            "reference": "6b0f7ec2c918db5029f697d0a3bc152991dbfc98",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "jakub-onderka/php-parallel-lint": "0.9",
+            "mediawiki/mediawiki-codesniffer": "0.3.0",
+            "phpunit/phpunit": "~4.5"
+        },
+        "time": "2015-07-01 18:19:38",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "php/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "description": "Provides library of common widgets, layouts, and windows.",
+        "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
     }
 ]
