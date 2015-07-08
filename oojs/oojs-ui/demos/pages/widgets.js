@@ -418,18 +418,6 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 				new OO.ui.FieldLayout(
 					new OO.ui.ButtonWidget( {
 						framed: false,
-						flags: [ 'progressive', 'primary' ],
-						icon: 'check',
-						label: 'Primary'
-					} ),
-					{
-						label: 'ButtonWidget (frameless, primary, progressive)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.ButtonWidget( {
-						framed: false,
 						flags: [ 'warning' ],
 						icon: 'alert',
 						label: 'Warning'
@@ -839,11 +827,34 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 				new OO.ui.FieldLayout(
 					new OO.ui.TextInputWidget( {
 						multiline: true,
+						rows: 15,
+						value: 'Multiline\nMultiline'
+					} ),
+					{
+						label: 'TextInputWidget (multiline, rows=15)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.TextInputWidget( {
+						multiline: true,
 						autosize: true,
 						value: 'Autosize\nAutosize\nAutosize\nAutosize'
 					} ),
 					{
 						label: 'TextInputWidget (autosize)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.TextInputWidget( {
+						multiline: true,
+						rows: 10,
+						autosize: true,
+						value: 'Autosize\nAutosize\nAutosize\nAutosize'
+					} ),
+					{
+						label: 'TextInputWidget (autosize, rows=10)\u200E',
 						align: 'top'
 					}
 				),

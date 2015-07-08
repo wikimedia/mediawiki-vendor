@@ -33,7 +33,10 @@ class TextInputWidget extends InputWidget {
 	 * @param boolean $config['readOnly'] Prevent changes (default: false)
 	 * @param number $config['maxLength'] Maximum allowed number of characters to input
 	 * @param boolean $config['multiline'] Allow multiple lines of text (default: false)
+	 * @param int $config['rows'] If multiline, number of visible lines in textarea
 	 * @param boolean $config['required'] Mark the field as required (default: false)
+	 * @param boolean $config['autocomplete'] If the field should support autocomplete
+	 *   or not (default: true)
 	 */
 	public function __construct( array $config = array() ) {
 		// Config initialization
@@ -42,6 +45,7 @@ class TextInputWidget extends InputWidget {
 			'readOnly' => false,
 			'autofocus' => false,
 			'required' => false,
+			'autocomplete' => true,
 		), $config );
 
 		// Parent constructor
@@ -70,6 +74,12 @@ class TextInputWidget extends InputWidget {
 		}
 		if ( $config['required'] ) {
 			$this->input->setAttributes( array( 'required' => 'required', 'aria-required' => 'true' ) );
+		}
+		if ( !$config['autocomplete'] ) {
+			$this->input->setAttributes( array( 'autocomplete' => 'off' ) );
+		}
+		if ( $this->multiline && isset( $config['rows'] ) ) {
+			$this->input->setAttributes( array( 'rows' => $config['rows'] ) );
 		}
 	}
 
@@ -124,6 +134,10 @@ class TextInputWidget extends InputWidget {
 	public function getConfig( &$config ) {
 		if ( $this->isMultiline() ) {
 			$config['multiline'] = true;
+			$rows = $this->input->getAttribute( 'rows' );
+			if ( $rows !== null ) {
+				$config['rows'] = $rows;
+			}
 		} else {
 			$type = $this->input->getAttribute( 'type' );
 			if ( $type !== 'text' ) {
@@ -149,6 +163,10 @@ class TextInputWidget extends InputWidget {
 		$ariarequired = $this->input->getAttribute( 'aria-required' );
 		if ( ( $required !== null ) || ( $ariarequired !== null ) ) {
 			$config['required'] = true;
+		}
+		$autocomplete = $this->input->getAttribute( 'autocomplete' );
+		if ( $autocomplete !== null ) {
+			$config['autocomplete'] = false;
 		}
 		return parent::getConfig( $config );
 	}

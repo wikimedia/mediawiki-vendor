@@ -239,6 +239,19 @@ module.exports = function ( grunt ) {
 				src: '{dist,node_modules/{' + Object.keys( pgk.dependencies ).join( ',' ) + '}}/**/*',
 				dest: 'docs/',
 				expand: true
+			},
+			demos: {
+				// Make sure you update this if dependencies are added
+				src: '{node_modules/{jquery,oojs}/dist/**/*,composer.json,dist/**/*,php/**/*}',
+				dest: 'demos/',
+				expand: true
+			},
+			// Copys the necessary vendor/ files for demos without running "composer install"
+			fastcomposerdemos: {
+				// Make sure you update this if PHP dependencies are added
+				src: 'vendor/{autoload.php,composer,mediawiki/at-ease}',
+				dest: 'demos/',
+				expand: true
 			}
 		},
 		colorizeSvg: colorizeSvgFiles,
@@ -270,6 +283,7 @@ module.exports = function ( grunt ) {
 			dev: [
 				'*.js',
 				'{build,demos,src,tests}/**/*.js',
+				'!demos/{dist,node_modules,vendor}/**/*.js',
 				'!tests/JSPHP.test.js'
 			]
 		},
@@ -308,8 +322,11 @@ module.exports = function ( grunt ) {
 				command: 'ruby bin/testsuitegenerator.rb src php > tests/JSPHP-suite.json'
 			},
 			phpGenerateJSPHPForKarma: {
-				command: 'php ../bin/generate-JSPHP-for-karma.php > JSPHP.test.js',
-				cwd: './tests'
+				command: 'composer update && php bin/generate-JSPHP-for-karma.php > tests/JSPHP.test.js'
+			},
+			demos: {
+				command: 'composer update --no-dev',
+				cwd: 'demos'
 			}
 		},
 		karma: {
@@ -358,7 +375,7 @@ module.exports = function ( grunt ) {
 		}
 	} );
 
-	grunt.registerTask( 'pre-test', function () {
+	grunt.registerTask( 'enable-source-maps', function () {
 		// Only create Source maps when doing a git-build for testing and local
 		// development. Distributions for export should not, as the map would
 		// be pointing at "../src".
@@ -388,9 +405,12 @@ module.exports = function ( grunt ) {
 	] );
 	grunt.registerTask( 'build-i18n', [ 'copy:i18n' ] );
 	grunt.registerTask( 'build-tests', [ 'exec:rubyTestSuiteGenerator', 'exec:phpGenerateJSPHPForKarma' ] );
-	grunt.registerTask( 'build', [ 'clean:build', 'fileExists', 'typos', 'build-code', 'build-styling', 'build-i18n', 'build-tests', 'clean:tmp' ] );
+	grunt.registerTask( 'build', [
+		'clean:build', 'fileExists', 'typos', 'build-code', 'build-styling', 'build-i18n',
+		'clean:tmp', 'demos'
+	] );
 
-	grunt.registerTask( 'git-build', [ 'pre-git-build', 'build' ] );
+	grunt.registerTask( 'git-build', [ 'enable-source-maps', 'pre-git-build', 'build' ] );
 
 	// Quickly build a no-frills vector-only ltr-only version for development
 	grunt.registerTask( 'quick-build', [
@@ -398,11 +418,12 @@ module.exports = function ( grunt ) {
 		'concat:js',
 		'colorizeSvg', 'less:distVector', 'concat:css',
 		'copy:imagesCommon', 'copy:imagesApex', 'copy:imagesMediaWiki',
-		'build-i18n'
+		'build-i18n', 'copy:demos', 'copy:fastcomposerdemos'
 	] );
 
 	grunt.registerTask( 'lint', [ 'jshint', 'jscs', 'csslint', 'jsonlint', 'banana' ] );
-	grunt.registerTask( 'test', [ 'lint', 'pre-test', 'git-build', 'karma:main', 'karma:other' ] );
+	grunt.registerTask( 'test', [ 'lint', 'git-build', 'build-tests', 'karma:main', 'karma:other' ] );
+	grunt.registerTask( 'demos', [ 'copy:demos', 'exec:demos' ] );
 
 	grunt.registerTask( 'default', 'test' );
 };
