@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "698d01963a7a8e0ec2d5107672b6ddb0",
+    "hash": "063c34fe3c5e736dc2d31aa8f39b199e",
     "packages": [
         {
             "name": "cssjanus/cssjanus",
@@ -287,16 +287,16 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.11.8",
+            "version": "v0.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "0f86f7fd72cdccd2a2b18a18db13da00c91938c5"
+                "reference": "55353de316b28370f032c2885003a457bc477d79"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/0f86f7fd72cdccd2a2b18a18db13da00c91938c5",
-                "reference": "0f86f7fd72cdccd2a2b18a18db13da00c91938c5",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/55353de316b28370f032c2885003a457bc477d79",
+                "reference": "55353de316b28370f032c2885003a457bc477d79",
                 "shasum": ""
             },
             "require": {
@@ -320,7 +320,7 @@
             ],
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOjs_UI",
-            "time": "2015-07-08 01:19:00"
+            "time": "2015-07-13 22:56:29"
         },
         {
             "name": "psr/log",
@@ -421,16 +421,16 @@
         },
         {
             "name": "symfony/process",
-            "version": "v2.7.1",
+            "version": "v2.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Process.git",
-                "reference": "552d8efdc80980cbcca50b28d626ac8e36e3cdd1"
+                "reference": "48aeb0e48600321c272955132d7606ab0a49adb3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Process/zipball/552d8efdc80980cbcca50b28d626ac8e36e3cdd1",
-                "reference": "552d8efdc80980cbcca50b28d626ac8e36e3cdd1",
+                "url": "https://api.github.com/repos/symfony/Process/zipball/48aeb0e48600321c272955132d7606ab0a49adb3",
+                "reference": "48aeb0e48600321c272955132d7606ab0a49adb3",
                 "shasum": ""
             },
             "require": {
@@ -466,7 +466,7 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "time": "2015-06-08 09:37:21"
+            "time": "2015-07-01 11:25:50"
         },
         {
             "name": "wikimedia/assert",

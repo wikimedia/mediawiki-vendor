@@ -468,57 +468,6 @@
         "homepage": "https://www.mediawiki.org/wiki/at-ease"
     },
     {
-        "name": "symfony/process",
-        "version": "v2.7.1",
-        "version_normalized": "2.7.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/symfony/Process.git",
-            "reference": "552d8efdc80980cbcca50b28d626ac8e36e3cdd1"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/symfony/Process/zipball/552d8efdc80980cbcca50b28d626ac8e36e3cdd1",
-            "reference": "552d8efdc80980cbcca50b28d626ac8e36e3cdd1",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.9"
-        },
-        "require-dev": {
-            "symfony/phpunit-bridge": "~2.7"
-        },
-        "time": "2015-06-08 09:37:21",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.7-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Symfony\\Component\\Process\\": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com"
-            },
-            {
-                "name": "Symfony Community",
-                "homepage": "https://symfony.com/contributors"
-            }
-        ],
-        "description": "Symfony Process Component",
-        "homepage": "https://symfony.com"
-    },
-    {
         "name": "kzykhys/pygments",
         "version": "v1.0.0",
         "version_normalized": "1.0.0.0",
@@ -724,17 +673,17 @@
     },
     {
         "name": "oojs/oojs-ui",
-        "version": "v0.11.8",
-        "version_normalized": "0.11.8.0",
+        "version": "v0.12.0",
+        "version_normalized": "0.12.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/oojs-ui.git",
-            "reference": "0f86f7fd72cdccd2a2b18a18db13da00c91938c5"
+            "reference": "55353de316b28370f032c2885003a457bc477d79"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/0f86f7fd72cdccd2a2b18a18db13da00c91938c5",
-            "reference": "0f86f7fd72cdccd2a2b18a18db13da00c91938c5",
+            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/55353de316b28370f032c2885003a457bc477d79",
+            "reference": "55353de316b28370f032c2885003a457bc477d79",
             "shasum": ""
         },
         "require": {
@@ -746,7 +695,7 @@
             "mediawiki/mediawiki-codesniffer": "0.3.0",
             "phpunit/phpunit": "~4.5"
         },
-        "time": "2015-07-08 01:19:00",
+        "time": "2015-07-13 22:56:29",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -760,5 +709,56 @@
         ],
         "description": "Provides library of common widgets, layouts, and windows.",
         "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
+    },
+    {
+        "name": "symfony/process",
+        "version": "v2.7.2",
+        "version_normalized": "2.7.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/Process.git",
+            "reference": "48aeb0e48600321c272955132d7606ab0a49adb3"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/Process/zipball/48aeb0e48600321c272955132d7606ab0a49adb3",
+            "reference": "48aeb0e48600321c272955132d7606ab0a49adb3",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.9"
+        },
+        "require-dev": {
+            "symfony/phpunit-bridge": "~2.7"
+        },
+        "time": "2015-07-01 11:25:50",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.7-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Component\\Process\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony Process Component",
+        "homepage": "https://symfony.com"
     }
 ]

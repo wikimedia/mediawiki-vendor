@@ -169,8 +169,9 @@ OO.ui.mixin.ClippableElement.prototype.clip = function () {
 		ccHeight = $container.innerHeight() - buffer,
 		ccWidth = $container.innerWidth() - buffer,
 		cWidth = this.$clippable.outerWidth() + buffer,
-		scrollTop = this.$clippableScroller[0] === this.$clippableWindow[0] ? this.$clippableScroller.scrollTop() : 0,
-		scrollLeft = this.$clippableScroller.scrollLeft(),
+		scrollerIsWindow = this.$clippableScroller[0] === this.$clippableWindow[0],
+		scrollTop = scrollerIsWindow ? this.$clippableScroller.scrollTop() : 0,
+		scrollLeft = scrollerIsWindow ? this.$clippableScroller.scrollLeft() : 0,
 		desiredWidth = cOffset.left < 0 ?
 			cWidth + cOffset.left :
 			( ccOffset.left + scrollLeft + ccWidth ) - cOffset.left,
@@ -192,7 +193,7 @@ OO.ui.mixin.ClippableElement.prototype.clip = function () {
 	}
 
 	// If we stopped clipping in at least one of the dimensions
-	if ( !clipWidth || !clipHeight ) {
+	if ( ( this.clippedHorizontally && !clipWidth ) || ( this.clippedVertically && !clipHeight ) ) {
 		OO.ui.Element.static.reconsiderScrollbars( this.$clippable[ 0 ] );
 	}
 
