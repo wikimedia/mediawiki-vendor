@@ -573,11 +573,10 @@
 						),
 						new OOUI\FieldLayout(
 							new OOUI\TextInputWidget( array(
-								'indicator' => 'required',
 								'required' => true
 							) ),
 							array(
-								'label' => "TextInputWidget (indicator, required)\xE2\x80\x8E",
+								'label' => "TextInputWidget (required)\xE2\x80\x8E",
 								'align' => 'top'
 							)
 						),
@@ -585,6 +584,13 @@
 							new OOUI\TextInputWidget( array( 'placeholder' => 'Placeholder' ) ),
 							array(
 								'label' => "TextInputWidget (placeholder)\xE2\x80\x8E",
+								'align' => 'top'
+							)
+						),
+						new OOUI\FieldLayout(
+							new OOUI\TextInputWidget( array( 'type' => 'search' ) ),
+							array(
+								'label' => "TextInputWidget (type=search)\xE2\x80\x8E",
 								'align' => 'top'
 							)
 						),

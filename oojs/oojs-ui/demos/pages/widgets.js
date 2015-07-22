@@ -777,12 +777,11 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 				),
 				new OO.ui.FieldLayout(
 					new OO.ui.TextInputWidget( {
-						indicator: 'required',
 						required: true,
 						validate: 'non-empty'
 					} ),
 					{
-						label: 'TextInputWidget (indicator, required)\u200E',
+						label: 'TextInputWidget (required)\u200E',
 						align: 'top'
 					}
 				),
@@ -801,6 +800,13 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 					new OO.ui.TextInputWidget( { placeholder: 'Placeholder' } ),
 					{
 						label: 'TextInputWidget (placeholder)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.TextInputWidget( { type: 'search' } ),
+					{
+						label: 'TextInputWidget (type=search)\u200E',
 						align: 'top'
 					}
 				),

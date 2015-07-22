@@ -20,12 +20,13 @@ module.exports = function ( grunt ) {
 	grunt.loadNpmTasks( 'grunt-file-exists' );
 	grunt.loadNpmTasks( 'grunt-cssjanus' );
 	grunt.loadNpmTasks( 'grunt-jscs' );
+	grunt.loadNpmTasks( 'grunt-tyops' );
 	grunt.loadNpmTasks( 'grunt-karma' );
 	grunt.loadNpmTasks( 'grunt-svg2png' );
 	grunt.loadTasks( 'build/tasks' );
 
 	var modules = grunt.file.readJSON( 'build/modules.json' ),
-		pgk = grunt.file.readJSON( 'package.json' ),
+		pkg = grunt.file.readJSON( 'package.json' ),
 		lessFiles = {
 			raster: {},
 			vector: {},
@@ -98,18 +99,20 @@ module.exports = function ( grunt ) {
 	}
 
 	grunt.initConfig( {
-		pkg: pgk,
+		pkg: pkg,
 
 		// Build
 		clean: {
 			build: 'dist/*',
+			demos: 'demos/{composer.json,composer.lock,node_modules,dist,php,vendor}',
+			tests: 'tests/{JSPHP-suite.json,JSPHP.test.js}',
 			doc: 'docs/*',
 			tmp: 'dist/tmp'
 		},
 		fileExists: {
 			src: requiredFiles
 		},
-		typos: {
+		tyops: {
 			options: {
 				typos: 'build/typos.json'
 			},
@@ -236,7 +239,7 @@ module.exports = function ( grunt ) {
 			},
 			jsduck: {
 				// Don't publish devDependencies
-				src: '{dist,node_modules/{' + Object.keys( pgk.dependencies ).join( ',' ) + '}}/**/*',
+				src: '{dist,node_modules/{' + Object.keys( pkg.dependencies ).join( ',' ) + '}}/**/*',
 				dest: 'docs/',
 				expand: true
 			},
@@ -393,7 +396,7 @@ module.exports = function ( grunt ) {
 				return;
 			}
 			grunt.config.set( 'pkg.version', grunt.config( 'pkg.version' ) + '-pre (' + stout.slice( 0, 10 ) + ')' );
-			grunt.verbose.writeln( 'Added git HEAD to pgk.version' );
+			grunt.verbose.writeln( 'Added git HEAD to pkg.version' );
 			done();
 		} );
 	} );
@@ -407,7 +410,7 @@ module.exports = function ( grunt ) {
 	grunt.registerTask( 'build-i18n', [ 'copy:i18n' ] );
 	grunt.registerTask( 'build-tests', [ 'exec:rubyTestSuiteGenerator', 'exec:phpGenerateJSPHPForKarma' ] );
 	grunt.registerTask( 'build', [
-		'clean:build', 'fileExists', 'typos', 'build-code', 'build-styling', 'build-i18n',
+		'clean:build', 'fileExists', 'tyops', 'build-code', 'build-styling', 'build-i18n',
 		'clean:tmp', 'demos'
 	] );
 
@@ -415,7 +418,7 @@ module.exports = function ( grunt ) {
 
 	// Quickly build a no-frills vector-only ltr-only version for development
 	grunt.registerTask( 'quick-build', [
-		'pre-git-build', 'clean:build', 'fileExists', 'typos',
+		'pre-git-build', 'clean:build', 'fileExists', 'tyops',
 		'concat:js',
 		'colorizeSvg', 'less:distVector', 'concat:css',
 		'copy:imagesCommon', 'copy:imagesApex', 'copy:imagesMediaWiki',
@@ -424,7 +427,7 @@ module.exports = function ( grunt ) {
 
 	grunt.registerTask( 'lint', [ 'jshint', 'jscs', 'csslint', 'jsonlint', 'banana' ] );
 	grunt.registerTask( 'test', [ 'lint', 'git-build', 'build-tests', 'karma:main', 'karma:other' ] );
-	grunt.registerTask( 'demos', [ 'copy:demos', 'exec:demos' ] );
+	grunt.registerTask( 'demos', [ 'clean:demos', 'copy:demos', 'exec:demos' ] );
 
 	grunt.registerTask( 'default', 'test' );
 };

@@ -28,6 +28,11 @@
  * @param {Object} [config] Configuration options
  * @cfg {string} [type='text'] The value of the HTML `type` attribute: 'text', 'password', 'search',
  *  'email' or 'url'. Ignored if `multiline` is true.
+ *
+ *  Some values of `type` result in additional behaviors:
+ *
+ *  - `search`: implies `icon: 'search'` and `indicator: 'clear'`; when clicked, the indicator
+ *    empties the text field
  * @cfg {string} [placeholder] Placeholder text
  * @cfg {boolean} [autofocus=false] Use an HTML `autofocus` attribute to
  *  instruct the browser to focus this widget.
@@ -42,7 +47,7 @@
  *  Defaults to the maximum of `10` and `2 * rows`, or `10` if `rows` isn't provided.
  * @cfg {string} [labelPosition='after'] The position of the inline label relative to that of
  *  the value or placeholder text: `'before'` or `'after'`
- * @cfg {boolean} [required=false] Mark the field as required
+ * @cfg {boolean} [required=false] Mark the field as required. Implies `indicator: 'required'`.
  * @cfg {boolean} [autocomplete=true] Should the browser support autocomplete for this field
  * @cfg {RegExp|Function|string} [validate] Validation pattern: when string, a symbolic name of a
  *  pattern defined by the class: 'non-empty' (the value cannot be an empty string) or 'integer'
@@ -56,6 +61,17 @@ OO.ui.TextInputWidget = function OoUiTextInputWidget( config ) {
 		type: 'text',
 		labelPosition: 'after'
 	}, config );
+	if ( config.type === 'search' ) {
+		if ( config.icon === undefined ) {
+			config.icon = 'search';
+		}
+		// indicator: 'clear' is set dynamically later, depending on value
+	}
+	if ( config.required ) {
+		if ( config.indicator === undefined ) {
+			config.indicator = 'required';
+		}
+	}
 
 	// Parent constructor
 	OO.ui.TextInputWidget.parent.call( this, config );
@@ -63,10 +79,11 @@ OO.ui.TextInputWidget = function OoUiTextInputWidget( config ) {
 	// Mixin constructors
 	OO.ui.mixin.IconElement.call( this, config );
 	OO.ui.mixin.IndicatorElement.call( this, config );
-	OO.ui.mixin.PendingElement.call( this, config );
+	OO.ui.mixin.PendingElement.call( this, $.extend( {}, config, { $pending: this.$input } ) );
 	OO.ui.mixin.LabelElement.call( this, config );
 
 	// Properties
+	this.type = this.getSaneType( config );
 	this.readOnly = false;
 	this.multiline = !!config.multiline;
 	this.autosize = !!config.autosize;
@@ -97,13 +114,17 @@ OO.ui.TextInputWidget = function OoUiTextInputWidget( config ) {
 	this.$icon.on( 'mousedown', this.onIconMouseDown.bind( this ) );
 	this.$indicator.on( 'mousedown', this.onIndicatorMouseDown.bind( this ) );
 	this.on( 'labelChange', this.updatePosition.bind( this ) );
-	this.connect( this, { change: 'onChange' } );
+	this.connect( this, {
+		change: 'onChange',
+		disable: 'onDisable'
+	} );
 
 	// Initialization
 	this.$element
-		.addClass( 'oo-ui-textInputWidget' )
+		.addClass( 'oo-ui-textInputWidget oo-ui-textInputWidget-type-' + this.type )
 		.append( this.$icon, this.$indicator );
 	this.setReadOnly( !!config.readOnly );
+	this.updateSearchIndicator();
 	if ( config.placeholder ) {
 		this.$input.attr( 'placeholder', config.placeholder );
 	}
@@ -136,7 +157,7 @@ OO.mixinClass( OO.ui.TextInputWidget, OO.ui.mixin.IndicatorElement );
 OO.mixinClass( OO.ui.TextInputWidget, OO.ui.mixin.PendingElement );
 OO.mixinClass( OO.ui.TextInputWidget, OO.ui.mixin.LabelElement );
 
-/* Static properties */
+/* Static Properties */
 
 OO.ui.TextInputWidget.static.validationPatterns = {
 	'non-empty': /.+/,
@@ -178,6 +199,10 @@ OO.ui.TextInputWidget.prototype.onIconMouseDown = function ( e ) {
  */
 OO.ui.TextInputWidget.prototype.onIndicatorMouseDown = function ( e ) {
 	if ( e.which === 1 ) {
+		if ( this.type === 'search' ) {
+			// Clear the text field
+			this.setValue( '' );
+		}
 		this.$input[ 0 ].focus();
 		return false;
 	}
@@ -226,8 +251,19 @@ OO.ui.TextInputWidget.prototype.onElementAttach = function () {
  * @private
  */
 OO.ui.TextInputWidget.prototype.onChange = function () {
+	this.updateSearchIndicator();
 	this.setValidityFlag();
 	this.adjustSize();
+};
+
+/**
+ * Handle disable events.
+ *
+ * @param {boolean} disabled Element is disabled
+ * @private
+ */
+OO.ui.TextInputWidget.prototype.onDisable = function () {
+	this.updateSearchIndicator();
 };
 
 /**
@@ -248,6 +284,7 @@ OO.ui.TextInputWidget.prototype.isReadOnly = function () {
 OO.ui.TextInputWidget.prototype.setReadOnly = function ( state ) {
 	this.readOnly = !!state;
 	this.$input.prop( 'readOnly', this.readOnly );
+	this.updateSearchIndicator();
 	return this;
 };
 
@@ -378,10 +415,23 @@ OO.ui.TextInputWidget.prototype.adjustSize = function () {
  * @protected
  */
 OO.ui.TextInputWidget.prototype.getInputElement = function ( config ) {
+	return config.multiline ?
+		$( '<textarea>' ) :
+		$( '<input type="' + this.getSaneType( config ) + '" />' );
+};
+
+/**
+ * Get sanitized value for 'type' for given config.
+ *
+ * @param {Object} config Configuration options
+ * @return {string|null}
+ * @private
+ */
+OO.ui.TextInputWidget.prototype.getSaneType = function ( config ) {
 	var type = [ 'text', 'password', 'search', 'email', 'url' ].indexOf( config.type ) !== -1 ?
 		config.type :
 		'text';
-	return config.multiline ? $( '<textarea>' ) : $( '<input type="' + type + '" />' );
+	return config.multiline ? 'multiline' : type;
 };
 
 /**
@@ -500,7 +550,6 @@ OO.ui.TextInputWidget.prototype.setPosition =
  * This method is called by #setLabelPosition, and can also be called on its own if
  * something causes the label to be mispositioned.
  *
- *
  * @chainable
  */
 OO.ui.TextInputWidget.prototype.updatePosition = function () {
@@ -515,6 +564,20 @@ OO.ui.TextInputWidget.prototype.updatePosition = function () {
 	}
 
 	return this;
+};
+
+/**
+ * Update the 'clear' indicator displayed on type: 'search' text fields, hiding it when the field is
+ * already empty or when it's not editable.
+ */
+OO.ui.TextInputWidget.prototype.updateSearchIndicator = function () {
+	if ( this.type === 'search' ) {
+		if ( this.getValue() === '' || this.isDisabled() || this.isReadOnly() ) {
+			this.setIndicator( null );
+		} else {
+			this.setIndicator( 'clear' );
+		}
+	}
 };
 
 /**

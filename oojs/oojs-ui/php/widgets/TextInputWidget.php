@@ -10,6 +10,13 @@ class TextInputWidget extends InputWidget {
 	/* Properties */
 
 	/**
+	 * Input field type.
+	 *
+	 * @var string
+	 */
+	protected $type = null;
+
+	/**
 	 * Prevent changes.
 	 *
 	 * @var boolean
@@ -27,6 +34,10 @@ class TextInputWidget extends InputWidget {
 	 * @param array $config Configuration options
 	 * @param string $config['type'] HTML tag `type` attribute: 'text', 'password', 'search', 'email'
 	 *   or 'url'. Ignored if `multiline` is true. (default: 'text')
+	 *
+	 *   Some values of `type` result in additional behaviors:
+	 *   - `search`: implies `icon: 'search'` and `indicator: 'clear'`; when clicked, the indicator
+	 *     empties the text field
 	 * @param string $config['placeholder'] Placeholder text
 	 * @param boolean $config['autofocus'] Ask the browser to focus this widget, using the 'autofocus'
 	 *   HTML attribute (default: false)
@@ -34,7 +45,8 @@ class TextInputWidget extends InputWidget {
 	 * @param number $config['maxLength'] Maximum allowed number of characters to input
 	 * @param boolean $config['multiline'] Allow multiple lines of text (default: false)
 	 * @param int $config['rows'] If multiline, number of visible lines in textarea
-	 * @param boolean $config['required'] Mark the field as required (default: false)
+	 * @param boolean $config['required'] Mark the field as required.
+	 *   Implies `indicator: 'required'`. (default: false)
 	 * @param boolean $config['autocomplete'] If the field should support autocomplete
 	 *   or not (default: true)
 	 */
@@ -47,11 +59,22 @@ class TextInputWidget extends InputWidget {
 			'required' => false,
 			'autocomplete' => true,
 		), $config );
+		if ( $config['type'] === 'search' ) {
+			if ( !array_key_exists( 'icon', $config ) ) {
+				$config['icon'] = 'search';
+			}
+		}
+		if ( $config['required'] ) {
+			if ( !array_key_exists( 'indicator', $config ) ) {
+				$config['indicator'] = 'required';
+			}
+		}
 
 		// Parent constructor
 		parent::__construct( $config );
 
 		// Properties
+		$this->type = $this->getSaneType( $config );
 		$this->multiline = isset( $config['multiline'] ) ? (bool)$config['multiline'] : false;
 
 		// Mixins
@@ -60,7 +83,7 @@ class TextInputWidget extends InputWidget {
 
 		// Initialization
 		$this
-			->addClasses( array( 'oo-ui-textInputWidget' ) )
+			->addClasses( array( 'oo-ui-textInputWidget', 'oo-ui-textInputWidget-type-' . $this->type ) )
 			->appendContent( $this->icon, $this->indicator );
 		$this->setReadOnly( $config['readOnly'] );
 		if ( isset( $config['placeholder'] ) ) {
@@ -113,12 +136,20 @@ class TextInputWidget extends InputWidget {
 		if ( isset( $config['multiline'] ) && $config['multiline'] ) {
 			return new Tag( 'textarea' );
 		} else {
+			$input = new Tag( 'input' );
+			$input->setAttributes( array( 'type' => $this->getSaneType( $config ) ) );
+			return $input;
+		}
+	}
+
+	private function getSaneType( $config ) {
+		if ( isset( $config['multiline'] ) && $config['multiline'] ) {
+			return 'multiline';
+		} else {
 			$type = in_array( $config['type'], array( 'text', 'password', 'search', 'email', 'url' ) ) ?
 				$config['type'] :
 				'text';
-			$input = new Tag( 'input' );
-			$input->setAttributes( array( 'type' => $type ) );
-			return $input;
+			return $type;
 		}
 	}
 
