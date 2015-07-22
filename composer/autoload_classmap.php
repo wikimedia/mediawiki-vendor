@@ -343,6 +343,7 @@ return array(
     'Liuggio\\StatsdClient\\Sender\\SenderInterface' => $vendorDir . '/liuggio/statsd-php-client/src/Liuggio/StatsdClient/Sender/SenderInterface.php',
     'Liuggio\\StatsdClient\\Sender\\SocketSender' => $vendorDir . '/liuggio/statsd-php-client/src/Liuggio/StatsdClient/Sender/SocketSender.php',
     'Liuggio\\StatsdClient\\Sender\\SysLogSender' => $vendorDir . '/liuggio/statsd-php-client/src/Liuggio/StatsdClient/Sender/SysLogSender.php',
+    'Liuggio\\StatsdClient\\Service\\StatsdService' => $vendorDir . '/liuggio/statsd-php-client/src/Liuggio/StatsdClient/Service/StatsdService.php',
     'Liuggio\\StatsdClient\\StatsdClient' => $vendorDir . '/liuggio/statsd-php-client/src/Liuggio/StatsdClient/StatsdClient.php',
     'Liuggio\\StatsdClient\\StatsdClientInterface' => $vendorDir . '/liuggio/statsd-php-client/src/Liuggio/StatsdClient/StatsdClientInterface.php',
     'Monolog\\ErrorHandler' => $vendorDir . '/monolog/monolog/src/Monolog/ErrorHandler.php',
