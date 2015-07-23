@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = $vendorDir;
 
 return array(
+    'BeforeValidException' => $vendorDir . '/firebase/php-jwt/Exceptions/BeforeValidException.php',
     'CSSJanus' => $vendorDir . '/cssjanus/cssjanus/src/CSSJanus.php',
     'CSSJanusTokenizer' => $vendorDir . '/cssjanus/cssjanus/src/CSSJanus.php',
     'Cdb\\Exception' => $vendorDir . '/wikimedia/cdb/src/Exception.php',
@@ -238,7 +239,9 @@ return array(
     'Elastica\\Type\\AbstractType' => $vendorDir . '/ruflin/elastica/lib/Elastica/Type/AbstractType.php',
     'Elastica\\Type\\Mapping' => $vendorDir . '/ruflin/elastica/lib/Elastica/Type/Mapping.php',
     'Elastica\\Util' => $vendorDir . '/ruflin/elastica/lib/Elastica/Util.php',
+    'ExpiredException' => $vendorDir . '/firebase/php-jwt/Exceptions/ExpiredException.php',
     'IPSet\\IPSet' => $vendorDir . '/wikimedia/ip-set/src/IPSet.php',
+    'JWT' => $vendorDir . '/firebase/php-jwt/Authentication/JWT.php',
     'KzykHys\\Pygments\\Pygments' => $vendorDir . '/kzykhys/pygments/src/KzykHys/Pygments/Pygments.php',
     'LCRun3' => $vendorDir . '/zordius/lightncandy/src/lightncandy.php',
     'LightnCandy' => $vendorDir . '/zordius/lightncandy/src/lightncandy.php',
@@ -379,6 +382,7 @@ return array(
     'Psr\\Log\\NullLogger' => $vendorDir . '/psr/log/Psr/Log/NullLogger.php',
     'Psr\\Log\\Test\\DummyTest' => $vendorDir . '/psr/log/Psr/Log/Test/LoggerInterfaceTest.php',
     'Psr\\Log\\Test\\LoggerInterfaceTest' => $vendorDir . '/psr/log/Psr/Log/Test/LoggerInterfaceTest.php',
+    'SignatureInvalidException' => $vendorDir . '/firebase/php-jwt/Exceptions/SignatureInvalidException.php',
     'Symfony\\Component\\Process\\Exception\\ExceptionInterface' => $vendorDir . '/symfony/process/Exception/ExceptionInterface.php',
     'Symfony\\Component\\Process\\Exception\\InvalidArgumentException' => $vendorDir . '/symfony/process/Exception/InvalidArgumentException.php',
     'Symfony\\Component\\Process\\Exception\\LogicException' => $vendorDir . '/symfony/process/Exception/LogicException.php',
