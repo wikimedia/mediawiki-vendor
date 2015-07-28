@@ -672,45 +672,6 @@
         "homepage": "https://symfony.com"
     },
     {
-        "name": "oojs/oojs-ui",
-        "version": "v0.12.1",
-        "version_normalized": "0.12.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/wikimedia/oojs-ui.git",
-            "reference": "2f9c991c693562044542ec28322498f1bb8a8cf1"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/2f9c991c693562044542ec28322498f1bb8a8cf1",
-            "reference": "2f9c991c693562044542ec28322498f1bb8a8cf1",
-            "shasum": ""
-        },
-        "require": {
-            "mediawiki/at-ease": "1.0.0",
-            "php": ">=5.3.3"
-        },
-        "require-dev": {
-            "jakub-onderka/php-parallel-lint": "0.9",
-            "mediawiki/mediawiki-codesniffer": "0.3.0",
-            "phpunit/phpunit": "~4.5"
-        },
-        "time": "2015-07-22 18:32:14",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "php/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "description": "Provides library of common widgets, layouts, and windows.",
-        "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
-    },
-    {
         "name": "liuggio/statsd-php-client",
         "version": "v1.0.16",
         "version_normalized": "1.0.16.0",
@@ -760,5 +721,44 @@
             "php",
             "statsd"
         ]
+    },
+    {
+        "name": "oojs/oojs-ui",
+        "version": "v0.12.2",
+        "version_normalized": "0.12.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/oojs-ui.git",
+            "reference": "fa8ac01f1f06a4be4f3fb3f838274eeb251c6981"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/fa8ac01f1f06a4be4f3fb3f838274eeb251c6981",
+            "reference": "fa8ac01f1f06a4be4f3fb3f838274eeb251c6981",
+            "shasum": ""
+        },
+        "require": {
+            "mediawiki/at-ease": "1.0.0",
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "jakub-onderka/php-parallel-lint": "0.9",
+            "mediawiki/mediawiki-codesniffer": "0.3.0",
+            "phpunit/phpunit": "~4.5"
+        },
+        "time": "2015-07-28 22:38:50",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "php/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "description": "Provides library of common widgets, layouts, and windows.",
+        "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
     }
 ]
