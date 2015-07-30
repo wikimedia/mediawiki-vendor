@@ -9,6 +9,7 @@
 	},
 	"prefer-stable": true,
 	"require": {
+		"composer/semver": "0.1.0",
 		"cssjanus/cssjanus": "1.1.1",
 		"kzykhys/pygments": "1.0",
 		"leafo/lessphp": "0.5.0",
