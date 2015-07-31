@@ -517,6 +517,7 @@ return array(
     'Wikimedia\\Assert\\PreconditionException' => $vendorDir . '/wikimedia/assert/src/PreconditionException.php',
     'Wikimedia\\Assert\\Test\\AssertTest' => $vendorDir . '/wikimedia/assert/tests/phpunit/AssertTest.php',
     'Wikimedia\\Composer\\MergePlugin' => $vendorDir . '/wikimedia/composer-merge-plugin/src/MergePlugin.php',
+    'WrappedString\\WrappedString' => $vendorDir . '/wikimedia/wrappedstring/src/WrappedString.php',
     'lessc' => $vendorDir . '/leafo/lessphp/lessc.inc.php',
     'lessc_formatter_classic' => $vendorDir . '/leafo/lessphp/lessc.inc.php',
     'lessc_formatter_compressed' => $vendorDir . '/leafo/lessphp/lessc.inc.php',
