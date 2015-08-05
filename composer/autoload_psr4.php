@@ -12,5 +12,6 @@ return array(
     'Wikimedia\\Assert\\' => array($vendorDir . '/wikimedia/assert/src'),
     'Symfony\\Component\\Process\\' => array($vendorDir . '/symfony/process'),
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
+    'Elastica\\' => array($vendorDir . '/ruflin/elastica/lib/Elastica'),
     'Composer\\Semver\\' => array($vendorDir . '/composer/semver/src'),
 );
