@@ -1,5 +1,5 @@
-MediaWiki-Core-Vendor
-=====================
+MediaWiki-Vendor
+================
 
 [Composer] managed libraries required or recommended for use with [MediaWiki].
 This repository is maintained for use on the Wikimedia Foundation production
