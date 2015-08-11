@@ -178,30 +178,6 @@
 					$buttonStyleShowcaseWidget->appendContent( new OOUI\HtmlSnippet( '<br />' ) );
 				}
 
-				$horizontalAlignmentWidget = new OOUI\Widget( array(
-					'classes' => array( 'oo-ui-demo-horizontal-alignment' )
-				) );
-				# Adding content after the fact does not play well with
-				# infusability.  We should be using a proper Layout here.
-				$horizontalAlignmentWidget->appendContent(
-					new OOUI\ButtonWidget( array( 'label' => 'Button' ) ),
-					new OOUI\ButtonGroupWidget( array( 'items' => array(
-						new OOUI\ButtonWidget( array( 'label' => 'A' ) ),
-						new OOUI\ButtonWidget( array( 'label' => 'B' ) )
-					) ) ),
-					new OOUI\ButtonInputWidget( array( 'label' => 'ButtonInput' ) ),
-					new OOUI\TextInputWidget( array( 'value' => 'TextInput' ) ),
-					new OOUI\DropdownInputWidget( array( 'options' => array(
-						array(
-							'label' => 'DropdownInput',
-							'data' => null
-						)
-					) ) ),
-					new OOUI\CheckboxInputWidget( array( 'selected' => true ) ),
-					new OOUI\RadioInputWidget( array( 'selected' => true ) ),
-					new OOUI\LabelWidget( array( 'label' => 'Label' ) )
-				);
-
 				$demoContainer->appendContent( new OOUI\FieldsetLayout( array(
 					'infusable' => true,
 					'label' => 'Simple buttons',
@@ -651,7 +627,8 @@
 										'label' => 'Third'
 									)
 								),
-								'value' => 'b'
+								'value' => 'b',
+								'title' => 'Select an item'
 							) ),
 							array(
 								'label' => 'DropdownInputWidget',
@@ -681,26 +658,44 @@
 						)
 					)
 				) ) );
-				# Again, $horizontalAlignmentWidget is not infusable because
-				# it manually added content after creation.  If we embed it
-				# in an infusable FieldsetLayout, it will (recursively) be made
-				# infusable.  So protect the widget by wrapping it in a
-				# <div> Tag.
-				$wrappedFieldLayout = new OOUI\Tag( 'div' );
-				$wrappedFieldLayout->appendContent(
-					new OOUI\FieldLayout(
-						$horizontalAlignmentWidget,
-						array(
-							'label' => 'Multiple widgets shown as a single line, ' .
-								'as used in compact forms or in parts of a bigger widget.',
-							'align' => 'top'
-						)
-					)
-				);
+				// We can't make the outer FieldsetLayout infusable, because the Widget in its FieldLayout
+				// is added with 'content', which is not preserved after infusion. But we need the Widget
+				// to wrap the HorizontalLayout. Need to think about this at some point.
 				$demoContainer->appendContent( new OOUI\FieldsetLayout( array(
-					'infusable' => true,
-					'label' => 'Horizontal alignment',
-					'items' => array( $wrappedFieldLayout ),
+					'infusable' => false,
+					'label' => 'HorizontalLayout',
+					'items' => array(
+						new OOUI\FieldLayout(
+							new OOUI\Widget( array(
+								'content' => new OOUI\HorizontalLayout( array(
+									'infusable' => true,
+									'items' => array(
+										new OOUI\ButtonWidget( array( 'label' => 'Button' ) ),
+										new OOUI\ButtonGroupWidget( array( 'items' => array(
+											new OOUI\ButtonWidget( array( 'label' => 'A' ) ),
+											new OOUI\ButtonWidget( array( 'label' => 'B' ) )
+										) ) ),
+										new OOUI\ButtonInputWidget( array( 'label' => 'ButtonInput' ) ),
+										new OOUI\TextInputWidget( array( 'value' => 'TextInput' ) ),
+										new OOUI\DropdownInputWidget( array( 'options' => array(
+											array(
+												'label' => 'DropdownInput',
+												'data' => null
+											)
+										) ) ),
+										new OOUI\CheckboxInputWidget( array( 'selected' => true ) ),
+										new OOUI\RadioInputWidget( array( 'selected' => true ) ),
+										new OOUI\LabelWidget( array( 'label' => 'Label' ) )
+									),
+								) ),
+							) ),
+							array(
+								'label' => 'Multiple widgets shown as a single line, ' .
+									'as used in compact forms or in parts of a bigger widget.',
+								'align' => 'top'
+							)
+						),
+					),
 				) ) );
 				$demoContainer->appendContent( new OOUI\FieldsetLayout( array(
 					'infusable' => true,
@@ -816,6 +811,16 @@
 								'align' => 'top'
 							)
 						),
+						new OOUI\FieldLayout(
+							new OOUI\ButtonWidget( array(
+								'label' => 'Button'
+							) ),
+							array(
+								'label' => 'FieldLayout with title',
+								'title' => 'Field title text',
+								'align' => 'top'
+							)
+						),
 						new OOUI\ActionFieldLayout(
 							new OOUI\TextInputWidget(),
 							new OOUI\ButtonWidget( array(
@@ -878,7 +883,38 @@
 									new OOUI\HtmlSnippet( '<i>ActionFieldLayout aligned top with rich text label</i>' ),
 								'align' => 'top'
 							)
-						)
+						),
+						new OOUI\FieldLayout(
+							new OOUI\TextInputWidget( array(
+								'value' => ''
+							) ),
+							array(
+								'label' => 'FieldLayout with notice',
+								'notices' => array( 'Please input a number.' ),
+								'align' => 'top'
+							)
+						),
+						new OOUI\FieldLayout(
+							new OOUI\TextInputWidget( array(
+								'value' => 'Foo'
+							) ),
+							array(
+								'label' => 'FieldLayout with error message',
+								'errors' => array( 'The value must be a number.' ),
+								'align' => 'top'
+							)
+						),
+						new OOUI\FieldLayout(
+							new OOUI\TextInputWidget( array(
+								'value' => 'Foo'
+							) ),
+							array(
+								'label' => 'FieldLayout with notice and error message',
+								'notices' => array( 'Please input a number.' ),
+								'errors' => array( 'The value must be a number.' ),
+								'align' => 'top'
+							)
+						),
 					)
 				) ) );
 

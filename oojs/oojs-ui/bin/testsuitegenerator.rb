@@ -36,6 +36,8 @@ else
 		['FieldLayout', 'help'] => true, # different PHP and JS implementations
 		['ActionFieldLayout', 'help'] => true, # different PHP and JS implementations
 		['FieldsetLayout', 'help'] => true, # different PHP and JS implementations
+		['FieldLayout', 'errors'] => expandos['string'].map{|v| [v] }, # treat as string[]
+		['FieldLayout', 'notices'] => expandos['string'].map{|v| [v] }, # treat as string[]
 		'type' => %w[text button],
 		'method' => %w[GET POST],
 		'action' => [],
@@ -141,7 +143,9 @@ else
 		end
 	end
 
+	$stderr.puts "Generated #{tests.length} test cases."
 	tests = tests.group_by{|t| t[:class] }
 
+	$stderr.puts tests.map{|class_name, class_tests| "* #{class_name}: #{class_tests.length}" }
 	puts JSON.pretty_generate tests
 end

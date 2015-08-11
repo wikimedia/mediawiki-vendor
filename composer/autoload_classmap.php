@@ -351,6 +351,7 @@ return array(
     'OOUI\\FlaggedElement' => $vendorDir . '/oojs/oojs-ui/php/mixins/FlaggedElement.php',
     'OOUI\\FormLayout' => $vendorDir . '/oojs/oojs-ui/php/layouts/FormLayout.php',
     'OOUI\\GroupElement' => $vendorDir . '/oojs/oojs-ui/php/mixins/GroupElement.php',
+    'OOUI\\HorizontalLayout' => $vendorDir . '/oojs/oojs-ui/php/layouts/HorizontalLayout.php',
     'OOUI\\HtmlSnippet' => $vendorDir . '/oojs/oojs-ui/php/HtmlSnippet.php',
     'OOUI\\IconElement' => $vendorDir . '/oojs/oojs-ui/php/mixins/IconElement.php',
     'OOUI\\IconWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/IconWidget.php',
