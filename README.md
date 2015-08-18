@@ -18,6 +18,7 @@ by `git submodule update --init`.
 Adding or updating libraries
 ----------------------------
 
+0. Read the [documentation] on the process for adding new libraries.
 1. Edit the composer.json file
 2. Run `composer update` to download files and update the autoloader files.
 3. Add and commit changes as a gerrit patch.
@@ -26,3 +27,4 @@ Adding or updating libraries
 
 [Composer]: https://getcomposer.org/
 [MediaWiki]: https://www.mediawiki.org/wiki/MediaWiki
+[documentation]: https://www.mediawiki.org/wiki/Manual:External_libraries
