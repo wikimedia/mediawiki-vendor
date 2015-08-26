@@ -16,7 +16,7 @@
 		'raster' => '.raster',
 	);
 	$graphic = ( isset( $_GET['graphic'] ) && isset( $graphicSuffixMap[ $_GET['graphic'] ] ) )
-		? $_GET['graphic'] : 'vector';
+		? $_GET['graphic'] : 'mixed';
 	$graphicSuffix = $graphicSuffixMap[ $graphic ];
 
 	$direction = ( isset( $_GET['direction'] ) && $_GET['direction'] === 'rtl' ) ? 'rtl' : 'ltr';
@@ -406,6 +406,16 @@
 								'label' => "ButtonWidget (frameless, constructive, disabled)\xE2\x80\x8E",
 								'align' => 'top'
 							)
+						),
+						new OOUI\FieldLayout(
+							new OOUI\ButtonWidget( array(
+								'label' => 'AccessKeyed',
+								'accessKey' => 'k',
+							) ),
+							array(
+								'label' => "ButtonWidget (with accesskey k)\xE2\x80\x8E",
+								'align' => 'top'
+							)
 						)
 					)
 				) ) );
@@ -587,6 +597,26 @@
 							) ),
 							array(
 								'label' => "TextInputWidget (disabled)\xE2\x80\x8E",
+								'align' => 'top'
+							)
+						),
+						new OOUI\FieldLayout(
+							new OOUI\TextInputWidget( array(
+								'value' => 'Accesskey A',
+								'accessKey' => 'a'
+							) ),
+							array(
+								'label' => "TextInputWidget (with Accesskey)\xE2\x80\x8E",
+								'align' => 'top'
+							)
+						),
+						new OOUI\FieldLayout(
+							new OOUI\TextInputWidget( array(
+								'value' => 'Title attribute',
+								'title' => 'Title attribute with more information about me.'
+							) ),
+							array(
+								'label' => "TextInputWidget (with title)\xE2\x80\x8E",
 								'align' => 'top'
 							)
 						),
@@ -980,6 +1010,7 @@
 
 	<!-- Demonstrate JavaScript "infusion" of PHP widgets -->
 	<script src="node_modules/jquery/dist/jquery.js"></script>
+	<script src="node_modules/es5-shim/es5-shim.js"></script>
 	<script src="node_modules/oojs/dist/oojs.jquery.js"></script>
 	<script src="dist/oojs-ui.js"></script>
 	<script src="dist/oojs-ui-<?php echo $theme; ?>.js"></script>

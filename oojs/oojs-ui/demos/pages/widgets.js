@@ -484,6 +484,16 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 						label: 'ButtonWidget (frameless, indicator)\u200E',
 						align: 'top'
 					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.ButtonWidget( {
+						label: 'AccessKeyed',
+						accessKey: 'k'
+					} ),
+					{
+						label: 'ButtonWidget (with accesskey k)\u200E',
+						align: 'top'
+					}
 				)
 			]
 		} ),
@@ -887,6 +897,26 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 					}
 				),
 				new OO.ui.FieldLayout(
+					new OO.ui.TextInputWidget( {
+						value: 'Title attribute',
+						title: 'Title attribute with more information about me.'
+					} ),
+					{
+						label: 'TextInputWidget (with title)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.TextInputWidget( {
+						value: 'Accesskey A',
+						accessKey: 'a'
+					} ),
+					{
+						label: 'TextInputWidget (with Accesskey)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
 					new OO.ui.SelectFileWidget( {} ),
 					{
 						label: 'SelectFileWidget\u200E',
@@ -918,6 +948,13 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 					} ),
 					{
 						label: 'SelectFileWidget (disabled)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.SelectFileWidget( { dragDropUI: true } ),
+					{
+						label: 'SelectFileWidget (drag drop UI)\u200E',
 						align: 'top'
 					}
 				),
@@ -1458,6 +1495,24 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 					} ),
 					{
 						label: 'PopupButtonWidget (frameless, with popup head align: forwards)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.PopupButtonWidget( {
+						icon: 'info',
+						framed: false,
+						popup: {
+							head: true,
+							label: 'More information',
+							$content: $( '<p>Extra information here.</p><ul><li>Item one</li><li>Item two</li><li>Item three</li><li>Item four</li></ul><p>Even more information here whihc might well be clipped off the visible area.</p>' ),
+							$footer: $( '<p>And maybe a footer whilst we\'re act it?</p>' ),
+							padded: true,
+							align: 'forwards'
+						}
+					} ),
+					{
+						label: 'PopupButtonWidget (frameless, with popup head and footer, align: forwards)\u200E',
 						align: 'top'
 					}
 				),

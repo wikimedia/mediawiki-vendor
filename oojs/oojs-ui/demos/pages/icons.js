@@ -128,6 +128,7 @@ OO.ui.Demo.static.pages.icons = function ( demo ) {
 				'alignCentre',
 				'alignLeft',
 				'alignRight',
+				'calendar',
 				'find',
 				'insert',
 				'layout',
@@ -301,6 +302,6 @@ OO.ui.Demo.static.pages.icons = function ( demo ) {
 			.append(
 				selector.$element,
 				indicatorsFieldset.$element,
-				iconsFieldsets.map( function ( item ) { return item.$element[0]; } )
+				iconsFieldsets.map( function ( item ) { return item.$element[ 0 ]; } )
 			) );
 };
