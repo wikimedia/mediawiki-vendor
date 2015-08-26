@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a1fcdd655397ad4d7499bd640a12b3ac",
+    "hash": "0653c465457889256cda913288c80112",
     "packages": [
         {
             "name": "composer/semver",
@@ -709,24 +709,24 @@
         },
         {
             "name": "wikimedia/ip-set",
-            "version": "1.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/IPSet.git",
-                "reference": "b58230c7b743bfeb8efb0e159551eb3343754928"
+                "reference": "3c2dd6706546fe616e6ceba02044e64dce4fc9be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/IPSet/zipball/b58230c7b743bfeb8efb0e159551eb3343754928",
-                "reference": "b58230c7b743bfeb8efb0e159551eb3343754928",
+                "url": "https://api.github.com/repos/wikimedia/IPSet/zipball/3c2dd6706546fe616e6ceba02044e64dce4fc9be",
+                "reference": "3c2dd6706546fe616e6ceba02044e64dce4fc9be",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
             "require-dev": {
-                "jakub-onderka/php-parallel-lint": "0.8.*",
-                "mediawiki/mediawiki-codesniffer": "0.2.0",
+                "jakub-onderka/php-parallel-lint": "0.9",
+                "mediawiki/mediawiki-codesniffer": "0.3.0",
                 "phpunit/phpunit": "4.6.*"
             },
             "type": "library",
@@ -747,7 +747,7 @@
             ],
             "description": "Efficiently match IP addresses against a set of CIDR specifications.",
             "homepage": "https://github.com/wikimedia/IPSet",
-            "time": "2015-06-26 19:15:34"
+            "time": "2015-06-29 20:21:27"
         },
         {
             "name": "wikimedia/utfnormal",
