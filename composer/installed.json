@@ -166,51 +166,6 @@
         "homepage": "https://www.mediawiki.org/wiki/CDB"
     },
     {
-        "name": "wikimedia/utfnormal",
-        "version": "v1.0.2",
-        "version_normalized": "1.0.2.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/wikimedia/utfnormal.git",
-            "reference": "bb892a53a76116ad0982445a849043687cb6e778"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/utfnormal/zipball/bb892a53a76116ad0982445a849043687cb6e778",
-            "reference": "bb892a53a76116ad0982445a849043687cb6e778",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3"
-        },
-        "require-dev": {
-            "ext-mbstring": "*",
-            "jakub-onderka/php-parallel-lint": "0.8.*",
-            "mediawiki/mediawiki-codesniffer": "0.1.0",
-            "phpunit/phpunit": "4.4.*",
-            "squizlabs/php_codesniffer": "2.1.*"
-        },
-        "time": "2015-03-12 01:54:47",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "src/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "GPL-2.0+"
-        ],
-        "authors": [
-            {
-                "name": "Brion Vibber",
-                "email": "bvibber@wikimedia.org"
-            }
-        ],
-        "homepage": "https://www.mediawiki.org/wiki/utfnormal"
-    },
-    {
         "name": "wikimedia/assert",
         "version": "v0.2.2",
         "version_normalized": "0.2.2.0",
@@ -911,5 +866,51 @@
         ],
         "description": "Provides library of common widgets, layouts, and windows.",
         "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
+    },
+    {
+        "name": "wikimedia/utfnormal",
+        "version": "v1.0.3",
+        "version_normalized": "1.0.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/utfnormal.git",
+            "reference": "bcb81d1d87bae400af45cc419a850dcf9883775b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/utfnormal/zipball/bcb81d1d87bae400af45cc419a850dcf9883775b",
+            "reference": "bcb81d1d87bae400af45cc419a850dcf9883775b",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "ext-mbstring": "*",
+            "jakub-onderka/php-parallel-lint": "0.8.*",
+            "mediawiki/mediawiki-codesniffer": "0.1.0",
+            "phpunit/phpunit": "4.6.*",
+            "squizlabs/php_codesniffer": "2.2.*"
+        },
+        "time": "2015-08-29 14:13:27",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "src/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "authors": [
+            {
+                "name": "Brion Vibber",
+                "email": "bvibber@wikimedia.org"
+            }
+        ],
+        "description": "Contains Unicode normalization routines, including both pure PHP implementations and automatic use of the 'intl' PHP extension when present",
+        "homepage": "https://www.mediawiki.org/wiki/utfnormal"
     }
 ]

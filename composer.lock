@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f430edec4f55e7f3c1b6d7593500d3ab",
+    "hash": "862336fe6b01d3b981e56c1f80e9ec12",
     "packages": [
         {
             "name": "composer/semver",
@@ -751,16 +751,16 @@
         },
         {
             "name": "wikimedia/utfnormal",
-            "version": "v1.0.2",
+            "version": "v1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/utfnormal.git",
-                "reference": "bb892a53a76116ad0982445a849043687cb6e778"
+                "reference": "bcb81d1d87bae400af45cc419a850dcf9883775b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/utfnormal/zipball/bb892a53a76116ad0982445a849043687cb6e778",
-                "reference": "bb892a53a76116ad0982445a849043687cb6e778",
+                "url": "https://api.github.com/repos/wikimedia/utfnormal/zipball/bcb81d1d87bae400af45cc419a850dcf9883775b",
+                "reference": "bcb81d1d87bae400af45cc419a850dcf9883775b",
                 "shasum": ""
             },
             "require": {
@@ -770,8 +770,8 @@
                 "ext-mbstring": "*",
                 "jakub-onderka/php-parallel-lint": "0.8.*",
                 "mediawiki/mediawiki-codesniffer": "0.1.0",
-                "phpunit/phpunit": "4.4.*",
-                "squizlabs/php_codesniffer": "2.1.*"
+                "phpunit/phpunit": "4.6.*",
+                "squizlabs/php_codesniffer": "2.2.*"
             },
             "type": "library",
             "autoload": {
@@ -789,8 +789,9 @@
                     "email": "bvibber@wikimedia.org"
                 }
             ],
+            "description": "Contains Unicode normalization routines, including both pure PHP implementations and automatic use of the 'intl' PHP extension when present",
             "homepage": "https://www.mediawiki.org/wiki/utfnormal",
-            "time": "2015-03-12 01:54:47"
+            "time": "2015-08-29 14:13:27"
         },
         {
             "name": "wikimedia/wrappedstring",
