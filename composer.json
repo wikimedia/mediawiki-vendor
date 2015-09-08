@@ -21,6 +21,7 @@
 		"php": ">=5.3.3",
 		"psr/log": "1.0.0",
 		"ruflin/elastica": "2.2.0",
+		"symfony/process": "2.7.3",
 		"wikimedia/assert": "0.2.2",
 		"wikimedia/cdb": "1.3.0",
 		"wikimedia/composer-merge-plugin": "1.2.1",
