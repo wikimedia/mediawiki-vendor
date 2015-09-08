@@ -783,45 +783,6 @@
         "homepage": "https://github.com/wikimedia/IPSet"
     },
     {
-        "name": "oojs/oojs-ui",
-        "version": "v0.12.7",
-        "version_normalized": "0.12.7.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/wikimedia/oojs-ui.git",
-            "reference": "e284431329b734d3bb9c945b256ad157e305348c"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/e284431329b734d3bb9c945b256ad157e305348c",
-            "reference": "e284431329b734d3bb9c945b256ad157e305348c",
-            "shasum": ""
-        },
-        "require": {
-            "mediawiki/at-ease": "1.0.0",
-            "php": ">=5.3.3"
-        },
-        "require-dev": {
-            "jakub-onderka/php-parallel-lint": "0.9",
-            "mediawiki/mediawiki-codesniffer": "0.3.0",
-            "phpunit/phpunit": "~4.5"
-        },
-        "time": "2015-09-01 20:24:01",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "php/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "description": "Provides library of common widgets, layouts, and windows.",
-        "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
-    },
-    {
         "name": "wikimedia/utfnormal",
         "version": "v1.0.3",
         "version_normalized": "1.0.3.0",
@@ -918,5 +879,44 @@
         ],
         "description": "Constant Database (CDB) wrapper library for PHP. Provides pure-PHP fallback when dba_* functions are absent.",
         "homepage": "https://www.mediawiki.org/wiki/CDB"
+    },
+    {
+        "name": "oojs/oojs-ui",
+        "version": "v0.12.8",
+        "version_normalized": "0.12.8.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/oojs-ui.git",
+            "reference": "eeb61f640ccdcd43f68eb8ce36e64b4996c15f7f"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/eeb61f640ccdcd43f68eb8ce36e64b4996c15f7f",
+            "reference": "eeb61f640ccdcd43f68eb8ce36e64b4996c15f7f",
+            "shasum": ""
+        },
+        "require": {
+            "mediawiki/at-ease": "1.0.0",
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "jakub-onderka/php-parallel-lint": "0.9",
+            "mediawiki/mediawiki-codesniffer": "0.3.0",
+            "phpunit/phpunit": "~4.5"
+        },
+        "time": "2015-09-08 20:39:52",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "php/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "description": "Provides library of common widgets, layouts, and windows.",
+        "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
     }
 ]
