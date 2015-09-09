@@ -918,5 +918,116 @@
         ],
         "description": "Provides library of common widgets, layouts, and windows.",
         "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
+    },
+    {
+        "name": "nmred/kafka-php",
+        "version": "v0.1.4",
+        "version_normalized": "0.1.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/nmred/kafka-php.git",
+            "reference": "06817c95e40b23918c3a420960ee9526e499275d"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/nmred/kafka-php/zipball/06817c95e40b23918c3a420960ee9526e499275d",
+            "reference": "06817c95e40b23918c3a420960ee9526e499275d",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "phpunit/phpcov": "*",
+            "phpunit/phpunit": "~4.0",
+            "satooshi/php-coveralls": "dev-master"
+        },
+        "time": "2015-09-06 01:39:05",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Kafka\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "description": "Kafka client for php",
+        "homepage": "http://www.swanlinux.net",
+        "keywords": [
+            "client",
+            "kafka"
+        ]
+    },
+    {
+        "name": "wikimedia/avro",
+        "version": "v1.7.7",
+        "version_normalized": "1.7.7.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/avro-php.git",
+            "reference": "b642da9fd895aab7cb3261a22624228115471f47"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/avro-php/zipball/b642da9fd895aab7cb3261a22624228115471f47",
+            "reference": "b642da9fd895aab7cb3261a22624228115471f47",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "jakub-onderka/php-parallel-lint": "^0.9",
+            "phpunit/phpunit": "^4.0.0"
+        },
+        "suggest": {
+            "ext-gmp": "Large integer support for 32-bit platforms."
+        },
+        "time": "2015-09-05 18:49:27",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "lib/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "Apache-2.0"
+        ],
+        "authors": [
+            {
+                "name": "Michael Glaesemann",
+                "email": "grzm@seespotcode.net"
+            },
+            {
+                "name": "Andy Wick",
+                "email": "awick@purple.org"
+            },
+            {
+                "name": "Saleem Shafi",
+                "email": "saleemshafi@gmail.com"
+            },
+            {
+                "name": "A B",
+                "email": "abawany@x.com"
+            },
+            {
+                "name": "Doug Cutting",
+                "email": "cutting@apache.org"
+            },
+            {
+                "name": "Tom White",
+                "email": "tom@cloudera.com"
+            }
+        ],
+        "description": "A library for using Apache Avro with PHP.",
+        "homepage": "https://avro.apache.org/",
+        "keywords": [
+            "serialization"
+        ]
     }
 ]
