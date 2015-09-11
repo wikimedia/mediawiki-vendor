@@ -77,49 +77,6 @@
         "description": "Convert CSS stylesheets between left-to-right and right-to-left."
     },
     {
-        "name": "leafo/lessphp",
-        "version": "v0.5.0",
-        "version_normalized": "0.5.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/leafo/lessphp.git",
-            "reference": "0f5a7f5545d2bcf4e9fad9a228c8ad89cc9aa283"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/leafo/lessphp/zipball/0f5a7f5545d2bcf4e9fad9a228c8ad89cc9aa283",
-            "reference": "0f5a7f5545d2bcf4e9fad9a228c8ad89cc9aa283",
-            "shasum": ""
-        },
-        "time": "2014-11-24 18:39:20",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "0.4.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "lessc.inc.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT",
-            "GPL-3.0"
-        ],
-        "authors": [
-            {
-                "name": "Leaf Corcoran",
-                "email": "leafot@gmail.com",
-                "homepage": "http://leafo.net"
-            }
-        ],
-        "description": "lessphp is a compiler for LESS written in PHP.",
-        "homepage": "http://leafo.net/lessphp/"
-    },
-    {
         "name": "wikimedia/assert",
         "version": "v0.2.2",
         "version_normalized": "0.2.2.0",
@@ -1028,6 +985,67 @@
         "homepage": "https://avro.apache.org/",
         "keywords": [
             "serialization"
+        ]
+    },
+    {
+        "name": "oyejorge/less.php",
+        "version": "v1.7.0.5",
+        "version_normalized": "1.7.0.5",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/oyejorge/less.php.git",
+            "reference": "4385036b1dbfaf37f5380bd26a1e6006fc43149f"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/oyejorge/less.php/zipball/4385036b1dbfaf37f5380bd26a1e6006fc43149f",
+            "reference": "4385036b1dbfaf37f5380bd26a1e6006fc43149f",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3"
+        },
+        "time": "2015-07-13 20:34:18",
+        "bin": [
+            "bin/lessc"
+        ],
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Less": "lib/"
+            },
+            "classmap": [
+                "lessc.inc.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "Apache-2.0"
+        ],
+        "authors": [
+            {
+                "name": "Matt Agar",
+                "homepage": "https://github.com/agar"
+            },
+            {
+                "name": "Martin Jantošovič",
+                "homepage": "https://github.com/Mordred"
+            },
+            {
+                "name": "Josh Schmidt",
+                "homepage": "https://github.com/oyejorge"
+            }
+        ],
+        "description": "PHP port of the Javascript version of LESS http://lesscss.org",
+        "homepage": "http://lessphp.gpeasy.com",
+        "keywords": [
+            "css",
+            "less",
+            "less.js",
+            "lesscss",
+            "php",
+            "stylesheet"
         ]
     }
 ]
