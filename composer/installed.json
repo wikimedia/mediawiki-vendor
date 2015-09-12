@@ -1047,5 +1047,53 @@
         ],
         "description": "Provides library of common widgets, layouts, and windows.",
         "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
+    },
+    {
+        "name": "wikimedia/cldr-plural-rule-parser",
+        "version": "v1.0.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/CLDRPluralRuleParser.git",
+            "reference": "2b623a411b1a8efa4363e9fda9da496ab83a5d69"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/CLDRPluralRuleParser/zipball/2b623a411b1a8efa4363e9fda9da496ab83a5d69",
+            "reference": "2b623a411b1a8efa4363e9fda9da496ab83a5d69",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "jakub-onderka/php-parallel-lint": "^0.9.0.0",
+            "mediawiki/mediawiki-codesniffer": "^0.3.0.0",
+            "phpunit/phpunit": "^4.7.7.0"
+        },
+        "time": "2015-08-28 17:03:03",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "CLDRPluralRuleParser\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "authors": [
+            {
+                "name": "Tim Starling",
+                "email": "tstarling@wikimedia.org"
+            },
+            {
+                "name": "Niklas Laxström",
+                "email": "niklas.laxstrom@gmail.com"
+            }
+        ],
+        "description": "Evaluates plural rules specified in the CLDR project notation.",
+        "homepage": "https://www.mediawiki.org/wiki/CLDRPluralRuleParser"
     }
 ]

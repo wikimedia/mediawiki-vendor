@@ -14,4 +14,5 @@ return array(
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
     'Elastica\\' => array($vendorDir . '/ruflin/elastica/lib/Elastica'),
     'Composer\\Semver\\' => array($vendorDir . '/composer/semver/src'),
+    'CLDRPluralRuleParser\\' => array($vendorDir . '/wikimedia/cldr-plural-rule-parser/src'),
 );
