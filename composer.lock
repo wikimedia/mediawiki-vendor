@@ -4,7 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "da150863dc54c461b4d5a77ca1ec8e2f",
+    "hash": "43792b8eb72f71a34dcfcabb0be4d218",
+    "content-hash": "d02aab3f0b2c475ecc6ef47e3462dcd9",
     "packages": [
         {
             "name": "composer/semver",
@@ -228,24 +229,24 @@
         },
         {
             "name": "mediawiki/at-ease",
-            "version": "v1.0.0",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/at-ease.git",
-                "reference": "7fd36f292be261ed1cb33df8adee6764a88308c3"
+                "reference": "94c0b84888841d160419f915c2745d9d08fbf0c3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/at-ease/zipball/7fd36f292be261ed1cb33df8adee6764a88308c3",
-                "reference": "7fd36f292be261ed1cb33df8adee6764a88308c3",
+                "url": "https://api.github.com/repos/wikimedia/at-ease/zipball/94c0b84888841d160419f915c2745d9d08fbf0c3",
+                "reference": "94c0b84888841d160419f915c2745d9d08fbf0c3",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
             "require-dev": {
-                "jakub-onderka/php-parallel-lint": "0.8.*",
-                "mediawiki/mediawiki-codesniffer": "0.1.0",
+                "jakub-onderka/php-parallel-lint": "0.9",
+                "mediawiki/mediawiki-codesniffer": "0.3.0",
                 "phpunit/phpunit": "~4.5",
                 "squizlabs/php_codesniffer": "2.3.0"
             },
@@ -271,7 +272,7 @@
             ],
             "description": "Safe replacement to @ for suppressing warnings.",
             "homepage": "https://www.mediawiki.org/wiki/at-ease",
-            "time": "2015-06-10 06:01:42"
+            "time": "2015-09-18 07:02:06"
         },
         {
             "name": "monolog/monolog",
@@ -391,20 +392,20 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.12.8",
+            "version": "v0.12.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "eeb61f640ccdcd43f68eb8ce36e64b4996c15f7f"
+                "reference": "8d0cf8c5b12e1b16310b9ed1df979cfdd789757b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/eeb61f640ccdcd43f68eb8ce36e64b4996c15f7f",
-                "reference": "eeb61f640ccdcd43f68eb8ce36e64b4996c15f7f",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/8d0cf8c5b12e1b16310b9ed1df979cfdd789757b",
+                "reference": "8d0cf8c5b12e1b16310b9ed1df979cfdd789757b",
                 "shasum": ""
             },
             "require": {
-                "mediawiki/at-ease": "1.0.0",
+                "mediawiki/at-ease": "1.1.0",
                 "php": ">=5.3.3"
             },
             "require-dev": {
@@ -424,7 +425,7 @@
             ],
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOjs_UI",
-            "time": "2015-09-08 20:39:52"
+            "time": "2015-09-18 17:41:55"
         },
         {
             "name": "oyejorge/less.php",
