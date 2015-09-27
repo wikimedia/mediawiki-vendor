@@ -15,7 +15,7 @@
 		"kzykhys/pygments": "1.0",
 		"liuggio/statsd-php-client": "1.0.16",
 		"mediawiki/at-ease": "1.1.0",
-		"monolog/monolog": "1.17.1",
+		"monolog/monolog": "1.14.0",
 		"nmred/kafka-php": "0.1.4",
 		"oojs/oojs-ui": "0.12.9",
 		"oyejorge/less.php": "1.7.0.8",
