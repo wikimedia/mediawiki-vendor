@@ -997,24 +997,63 @@
         "homepage": "https://www.mediawiki.org/wiki/CLDRPluralRuleParser"
     },
     {
-        "name": "oyejorge/less.php",
-        "version": "v1.7.0.8",
-        "version_normalized": "1.7.0.8",
+        "name": "oojs/oojs-ui",
+        "version": "v0.12.10",
+        "version_normalized": "0.12.10.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/oyejorge/less.php.git",
-            "reference": "ed2c8948ec548deaeece1731bbfdcdfc0e80d08e"
+            "url": "https://github.com/wikimedia/oojs-ui.git",
+            "reference": "c9d3a041325c735d709855920a06bed400ca6b3b"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/oyejorge/less.php/zipball/ed2c8948ec548deaeece1731bbfdcdfc0e80d08e",
-            "reference": "ed2c8948ec548deaeece1731bbfdcdfc0e80d08e",
+            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/c9d3a041325c735d709855920a06bed400ca6b3b",
+            "reference": "c9d3a041325c735d709855920a06bed400ca6b3b",
+            "shasum": ""
+        },
+        "require": {
+            "mediawiki/at-ease": "1.1.0",
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "jakub-onderka/php-parallel-lint": "0.9",
+            "mediawiki/mediawiki-codesniffer": "0.4.0",
+            "phpunit/phpunit": "~4.5"
+        },
+        "time": "2015-09-29 20:28:43",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "php/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "description": "Provides library of common widgets, layouts, and windows.",
+        "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
+    },
+    {
+        "name": "oyejorge/less.php",
+        "version": "v1.7.0.9",
+        "version_normalized": "1.7.0.9",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/oyejorge/less.php.git",
+            "reference": "fb64e2f6ef647a229c50e9fa0f2076240a3484c6"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/oyejorge/less.php/zipball/fb64e2f6ef647a229c50e9fa0f2076240a3484c6",
+            "reference": "fb64e2f6ef647a229c50e9fa0f2076240a3484c6",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3"
         },
-        "time": "2015-09-24 18:00:51",
+        "time": "2015-09-28 01:11:47",
         "bin": [
             "bin/lessc"
         ],
@@ -1056,44 +1095,5 @@
             "php",
             "stylesheet"
         ]
-    },
-    {
-        "name": "oojs/oojs-ui",
-        "version": "v0.12.10",
-        "version_normalized": "0.12.10.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/wikimedia/oojs-ui.git",
-            "reference": "c9d3a041325c735d709855920a06bed400ca6b3b"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/c9d3a041325c735d709855920a06bed400ca6b3b",
-            "reference": "c9d3a041325c735d709855920a06bed400ca6b3b",
-            "shasum": ""
-        },
-        "require": {
-            "mediawiki/at-ease": "1.1.0",
-            "php": ">=5.3.3"
-        },
-        "require-dev": {
-            "jakub-onderka/php-parallel-lint": "0.9",
-            "mediawiki/mediawiki-codesniffer": "0.4.0",
-            "phpunit/phpunit": "~4.5"
-        },
-        "time": "2015-09-29 20:28:43",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "php/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "description": "Provides library of common widgets, layouts, and windows.",
-        "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
     }
 ]

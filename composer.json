@@ -18,7 +18,7 @@
 		"monolog/monolog": "1.14.0",
 		"nmred/kafka-php": "0.1.4",
 		"oojs/oojs-ui": "0.12.10",
-		"oyejorge/less.php": "1.7.0.8",
+		"oyejorge/less.php": "1.7.0.9",
 		"php": ">=5.3.3",
 		"psr/log": "1.0.0",
 		"ruflin/elastica": "2.2.0",

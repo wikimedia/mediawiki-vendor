@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e92cf1f2c4aeab6885690bc5eb6dac19",
-    "content-hash": "33c48b7c2f1d02a934ab3b1069b111a8",
+    "hash": "96d4aedd683905380ed0c99d2ec321f4",
+    "content-hash": "788a8989a97620704c1e04ca61f2582e",
     "packages": [
         {
             "name": "composer/semver",
@@ -429,16 +429,16 @@
         },
         {
             "name": "oyejorge/less.php",
-            "version": "v1.7.0.8",
+            "version": "v1.7.0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/oyejorge/less.php.git",
-                "reference": "ed2c8948ec548deaeece1731bbfdcdfc0e80d08e"
+                "reference": "fb64e2f6ef647a229c50e9fa0f2076240a3484c6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oyejorge/less.php/zipball/ed2c8948ec548deaeece1731bbfdcdfc0e80d08e",
-                "reference": "ed2c8948ec548deaeece1731bbfdcdfc0e80d08e",
+                "url": "https://api.github.com/repos/oyejorge/less.php/zipball/fb64e2f6ef647a229c50e9fa0f2076240a3484c6",
+                "reference": "fb64e2f6ef647a229c50e9fa0f2076240a3484c6",
                 "shasum": ""
             },
             "require": {
@@ -484,7 +484,7 @@
                 "php",
                 "stylesheet"
             ],
-            "time": "2015-09-24 18:00:51"
+            "time": "2015-09-28 01:11:47"
         },
         {
             "name": "psr/log",
