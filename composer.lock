@@ -4,7 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9cf7e0b192195daad37f81c2ed18760f",
+    "hash": "e92cf1f2c4aeab6885690bc5eb6dac19",
+    "content-hash": "33c48b7c2f1d02a934ab3b1069b111a8",
     "packages": [
         {
             "name": "composer/semver",
@@ -391,16 +392,16 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.12.9",
+            "version": "v0.12.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "d34bd90e7f15652e88a405208d530b2e05602deb"
+                "reference": "c9d3a041325c735d709855920a06bed400ca6b3b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/d34bd90e7f15652e88a405208d530b2e05602deb",
-                "reference": "d34bd90e7f15652e88a405208d530b2e05602deb",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/c9d3a041325c735d709855920a06bed400ca6b3b",
+                "reference": "c9d3a041325c735d709855920a06bed400ca6b3b",
                 "shasum": ""
             },
             "require": {
@@ -409,7 +410,7 @@
             },
             "require-dev": {
                 "jakub-onderka/php-parallel-lint": "0.9",
-                "mediawiki/mediawiki-codesniffer": "0.3.0",
+                "mediawiki/mediawiki-codesniffer": "0.4.0",
                 "phpunit/phpunit": "~4.5"
             },
             "type": "library",
@@ -424,7 +425,7 @@
             ],
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOjs_UI",
-            "time": "2015-09-22 19:48:07"
+            "time": "2015-09-29 20:28:43"
         },
         {
             "name": "oyejorge/less.php",
