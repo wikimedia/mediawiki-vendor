@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "96d4aedd683905380ed0c99d2ec321f4",
-    "content-hash": "788a8989a97620704c1e04ca61f2582e",
+    "hash": "6551ecfafd6fb8f4672316012253be56",
+    "content-hash": "6f7d40f95a0ba1e9b234c0edb2f31bd3",
     "packages": [
         {
             "name": "composer/semver",
@@ -926,6 +926,48 @@
             "description": "Efficiently match IP addresses against a set of CIDR specifications.",
             "homepage": "https://github.com/wikimedia/IPSet",
             "time": "2015-06-29 20:21:27"
+        },
+        {
+            "name": "wikimedia/relpath",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wikimedia/RelPath.git",
+                "reference": "ee38e19f3b059e5cec8863b03e35a451b8f35106"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wikimedia/RelPath/zipball/ee38e19f3b059e5cec8863b03e35a451b8f35106",
+                "reference": "ee38e19f3b059e5cec8863b03e35a451b8f35106",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "jakub-onderka/php-parallel-lint": "^0.9.0.0",
+                "mediawiki/mediawiki-codesniffer": "^0.4.0.0",
+                "phpunit/phpunit": "^4.8.9.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/RelPath.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ori Livneh",
+                    "email": "ori@wikimedia.org"
+                }
+            ],
+            "description": "Compute a relative filepath between two paths.",
+            "homepage": "https://www.mediawiki.org/wiki/RelPath",
+            "time": "2015-09-29 21:17:03"
         },
         {
             "name": "wikimedia/utfnormal",
