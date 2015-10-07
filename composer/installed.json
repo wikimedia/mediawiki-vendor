@@ -934,45 +934,6 @@
         "homepage": "https://www.mediawiki.org/wiki/CLDRPluralRuleParser"
     },
     {
-        "name": "oojs/oojs-ui",
-        "version": "v0.12.10",
-        "version_normalized": "0.12.10.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/wikimedia/oojs-ui.git",
-            "reference": "c9d3a041325c735d709855920a06bed400ca6b3b"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/c9d3a041325c735d709855920a06bed400ca6b3b",
-            "reference": "c9d3a041325c735d709855920a06bed400ca6b3b",
-            "shasum": ""
-        },
-        "require": {
-            "mediawiki/at-ease": "1.1.0",
-            "php": ">=5.3.3"
-        },
-        "require-dev": {
-            "jakub-onderka/php-parallel-lint": "0.9",
-            "mediawiki/mediawiki-codesniffer": "0.4.0",
-            "phpunit/phpunit": "~4.5"
-        },
-        "time": "2015-09-29 20:28:43",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "php/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "description": "Provides library of common widgets, layouts, and windows.",
-        "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
-    },
-    {
         "name": "oyejorge/less.php",
         "version": "v1.7.0.9",
         "version_normalized": "1.7.0.9",
@@ -1139,5 +1100,44 @@
             "validation",
             "versioning"
         ]
+    },
+    {
+        "name": "oojs/oojs-ui",
+        "version": "v0.12.11",
+        "version_normalized": "0.12.11.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/oojs-ui.git",
+            "reference": "d00f148f88205a54a97c9a3e04f36330bfe9ab9b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/d00f148f88205a54a97c9a3e04f36330bfe9ab9b",
+            "reference": "d00f148f88205a54a97c9a3e04f36330bfe9ab9b",
+            "shasum": ""
+        },
+        "require": {
+            "mediawiki/at-ease": "1.1.0",
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "jakub-onderka/php-parallel-lint": "0.9",
+            "mediawiki/mediawiki-codesniffer": "0.4.0",
+            "phpunit/phpunit": "~4.5"
+        },
+        "time": "2015-10-06 22:55:44",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "php/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "description": "Provides library of common widgets, layouts, and windows.",
+        "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
     }
 ]
