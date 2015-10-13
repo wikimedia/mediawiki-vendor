@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "799c352704366cc784c76aaa9ac8d261",
-    "content-hash": "16fa14077784c632ec3e6fc250862dc7",
+    "hash": "53f99794279316ccfda3af4b55f86d86",
+    "content-hash": "c83ea88ae5d18d726e2d9e8e5f31c68e",
     "packages": [
         {
             "name": "composer/semver",
@@ -392,16 +392,16 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.12.11",
+            "version": "v0.12.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "d00f148f88205a54a97c9a3e04f36330bfe9ab9b"
+                "reference": "221a66e8df215e767ff4b55b637138a73fcffdb2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/d00f148f88205a54a97c9a3e04f36330bfe9ab9b",
-                "reference": "d00f148f88205a54a97c9a3e04f36330bfe9ab9b",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/221a66e8df215e767ff4b55b637138a73fcffdb2",
+                "reference": "221a66e8df215e767ff4b55b637138a73fcffdb2",
                 "shasum": ""
             },
             "require": {
@@ -423,9 +423,43 @@
             "license": [
                 "MIT"
             ],
+            "authors": [
+                {
+                    "name": "Bartosz Dziewoński",
+                    "email": "matma.rex@gmail.com"
+                },
+                {
+                    "name": "Ed Sanders",
+                    "email": "esanders@wikimedia.org"
+                },
+                {
+                    "name": "James D. Forrester",
+                    "email": "jforrester@wikimedia.org"
+                },
+                {
+                    "name": "Kirsten Menger-Anderson",
+                    "email": "kmenger@wikimedia.org"
+                },
+                {
+                    "name": "Rob Moen",
+                    "email": "rmoen@wikimedia.org"
+                },
+                {
+                    "name": "Roan Kattouw",
+                    "email": "roan@wikimedia.org"
+                },
+                {
+                    "name": "Timo Tijhof",
+                    "email": "timo@wikimedia.org"
+                },
+                {
+                    "name": "Trevor Parscal",
+                    "email": "trevor@wikimedia.org"
+                }
+            ],
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOjs_UI",
-            "time": "2015-10-06 22:55:44"
+            "time": "2015-10-13 20:29:29"
         },
         {
             "name": "oyejorge/less.php",
