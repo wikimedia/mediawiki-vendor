@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "53f99794279316ccfda3af4b55f86d86",
-    "content-hash": "c83ea88ae5d18d726e2d9e8e5f31c68e",
+    "hash": "6cbfc5336db52f3d4ebda2199ee19ff8",
+    "content-hash": "02a8b68e2584449d53b035618d6c733d",
     "packages": [
         {
             "name": "composer/semver",
@@ -392,16 +392,16 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.12.12",
+            "version": "v0.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "221a66e8df215e767ff4b55b637138a73fcffdb2"
+                "reference": "4508cebcf5f2db272578c33e5c83b9a90dbe779f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/221a66e8df215e767ff4b55b637138a73fcffdb2",
-                "reference": "221a66e8df215e767ff4b55b637138a73fcffdb2",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/4508cebcf5f2db272578c33e5c83b9a90dbe779f",
+                "reference": "4508cebcf5f2db272578c33e5c83b9a90dbe779f",
                 "shasum": ""
             },
             "require": {
@@ -410,7 +410,7 @@
             },
             "require-dev": {
                 "jakub-onderka/php-parallel-lint": "0.9",
-                "mediawiki/mediawiki-codesniffer": "0.4.0",
+                "mediawiki/mediawiki-codesniffer": "0.5.0",
                 "phpunit/phpunit": "~4.5"
             },
             "type": "library",
@@ -424,6 +424,10 @@
                 "MIT"
             ],
             "authors": [
+                {
+                    "name": "Timo Tijhof",
+                    "email": "krinklemail@gmail.com"
+                },
                 {
                     "name": "Bartosz Dziewoński",
                     "email": "matma.rex@gmail.com"
@@ -449,17 +453,13 @@
                     "email": "roan@wikimedia.org"
                 },
                 {
-                    "name": "Timo Tijhof",
-                    "email": "timo@wikimedia.org"
-                },
-                {
                     "name": "Trevor Parscal",
                     "email": "trevor@wikimedia.org"
                 }
             ],
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOjs_UI",
-            "time": "2015-10-13 20:29:29"
+            "time": "2015-10-27 17:33:57"
         },
         {
             "name": "oyejorge/less.php",
