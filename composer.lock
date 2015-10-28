@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8d289686f4d523c7a0b81d8d61552643",
-    "content-hash": "8e3f67136c803eed5d3100eac19f270f",
+    "hash": "6c2057d30ba4bc186a87a1fa6e0dfdd7",
+    "content-hash": "4f7a79fc4b820658484eaf6f91a432a6",
     "packages": [
         {
             "name": "composer/semver",
@@ -1006,16 +1006,16 @@
         },
         {
             "name": "wikimedia/running-stat",
-            "version": "v1.0.0",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/RunningStat.git",
-                "reference": "e54e1c086aba02a5ac5d528215746d16b4624107"
+                "reference": "9d7170d3eeb6f418b9f0266b2bbe6e4681ab73dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/RunningStat/zipball/e54e1c086aba02a5ac5d528215746d16b4624107",
-                "reference": "e54e1c086aba02a5ac5d528215746d16b4624107",
+                "url": "https://api.github.com/repos/wikimedia/RunningStat/zipball/9d7170d3eeb6f418b9f0266b2bbe6e4681ab73dd",
+                "reference": "9d7170d3eeb6f418b9f0266b2bbe6e4681ab73dd",
                 "shasum": ""
             },
             "require": {
@@ -1044,7 +1044,7 @@
             ],
             "description": "PHP implementations of online statistical algorithms",
             "homepage": "https://www.mediawiki.org/wiki/RunningStat",
-            "time": "2015-10-27 05:45:01"
+            "time": "2015-10-28 22:29:15"
         },
         {
             "name": "wikimedia/utfnormal",
