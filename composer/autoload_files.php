@@ -8,4 +8,5 @@ $baseDir = $vendorDir;
 return array(
     $vendorDir . '/mediawiki/at-ease/src/Functions.php',
     $vendorDir . '/wikimedia/relpath/src/RelPath.php',
+    $vendorDir . '/wikimedia/base-convert/src/Functions.php',
 );

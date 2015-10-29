@@ -1218,5 +1218,53 @@
         ],
         "description": "PHP implementations of online statistical algorithms",
         "homepage": "https://www.mediawiki.org/wiki/RunningStat"
+    },
+    {
+        "name": "wikimedia/base-convert",
+        "version": "v1.0.1",
+        "version_normalized": "1.0.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/base-convert.git",
+            "reference": "2948df323875fb4ef952cda49ac03a6b39708997"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/base-convert/zipball/2948df323875fb4ef952cda49ac03a6b39708997",
+            "reference": "2948df323875fb4ef952cda49ac03a6b39708997",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "jakub-onderka/php-parallel-lint": "0.9.0",
+            "mediawiki/mediawiki-codesniffer": "0.5.0",
+            "phpunit/phpunit": "4.6.*"
+        },
+        "time": "2015-10-29 22:19:02",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "files": [
+                "src/Functions.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "authors": [
+            {
+                "name": "Brion Vibber",
+                "email": "bvibber@wikimedia.org"
+            },
+            {
+                "name": "Tyler Romeo",
+                "email": "tylerromeo@gmail.com"
+            }
+        ],
+        "description": "Convert an arbitrarily-long string from one numeric base to another, optionally zero-padding to a minimum column width.",
+        "homepage": "https://www.mediawiki.org/wiki/base_convert"
     }
 ]

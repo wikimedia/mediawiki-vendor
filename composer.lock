@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6c2057d30ba4bc186a87a1fa6e0dfdd7",
-    "content-hash": "4f7a79fc4b820658484eaf6f91a432a6",
+    "hash": "44591a954c3949ebe9941464165a36bf",
+    "content-hash": "2b747bca5a388a790e71b85b3107bcc9",
     "packages": [
         {
             "name": "composer/semver",
@@ -776,6 +776,52 @@
                 "serialization"
             ],
             "time": "2015-09-05 18:49:27"
+        },
+        {
+            "name": "wikimedia/base-convert",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wikimedia/base-convert.git",
+                "reference": "2948df323875fb4ef952cda49ac03a6b39708997"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wikimedia/base-convert/zipball/2948df323875fb4ef952cda49ac03a6b39708997",
+                "reference": "2948df323875fb4ef952cda49ac03a6b39708997",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "jakub-onderka/php-parallel-lint": "0.9.0",
+                "mediawiki/mediawiki-codesniffer": "0.5.0",
+                "phpunit/phpunit": "4.6.*"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/Functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Brion Vibber",
+                    "email": "bvibber@wikimedia.org"
+                },
+                {
+                    "name": "Tyler Romeo",
+                    "email": "tylerromeo@gmail.com"
+                }
+            ],
+            "description": "Convert an arbitrarily-long string from one numeric base to another, optionally zero-padding to a minimum column width.",
+            "homepage": "https://www.mediawiki.org/wiki/base_convert",
+            "time": "2015-10-29 22:19:02"
         },
         {
             "name": "wikimedia/cdb",

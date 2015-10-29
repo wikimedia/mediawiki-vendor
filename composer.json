@@ -25,6 +25,7 @@
 		"symfony/process": "2.7.3",
 		"wikimedia/assert": "0.2.2",
 		"wikimedia/avro": "1.7.7",
+		"wikimedia/base-convert": "1.0.1",
 		"wikimedia/cdb": "1.3.0",
 		"wikimedia/cldr-plural-rule-parser": "1.0.0",
 		"wikimedia/composer-merge-plugin": "1.2.1",
