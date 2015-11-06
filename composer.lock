@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8d214923ae0bbeb39360f3acb290300c",
-    "content-hash": "a69ca0cc1e246d83af0b32a359803a68",
+    "hash": "5bc963e06bea9445e49482d7e8ff5d45",
+    "content-hash": "225a9474fbaaff1115e0fb91cdabc2b4",
     "packages": [
         {
             "name": "composer/semver",
@@ -921,16 +921,16 @@
         },
         {
             "name": "wikimedia/composer-merge-plugin",
-            "version": "v1.2.1",
+            "version": "v1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/composer-merge-plugin.git",
-                "reference": "c455fb5ca09da6b970355b19185e27415bc15756"
+                "reference": "bfed1f8d4eb97e9ba80eee57ea46229d7e5364d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/composer-merge-plugin/zipball/c455fb5ca09da6b970355b19185e27415bc15756",
-                "reference": "c455fb5ca09da6b970355b19185e27415bc15756",
+                "url": "https://api.github.com/repos/wikimedia/composer-merge-plugin/zipball/bfed1f8d4eb97e9ba80eee57ea46229d7e5364d9",
+                "reference": "bfed1f8d4eb97e9ba80eee57ea46229d7e5364d9",
                 "shasum": ""
             },
             "require": {
@@ -940,12 +940,14 @@
             "require-dev": {
                 "composer/composer": "1.0.*@dev",
                 "jakub-onderka/php-parallel-lint": "~0.8",
-                "phpspec/prophecy-phpunit": "~1.0",
-                "phpunit/phpunit": "~4.0",
+                "phpunit/phpunit": "~4.8|~5.0",
                 "squizlabs/php_codesniffer": "~2.1.0"
             },
             "type": "composer-plugin",
             "extra": {
+                "branch-alias": {
+                    "dev-master": "1.3.x-dev"
+                },
                 "class": "Wikimedia\\Composer\\MergePlugin"
             },
             "autoload": {
@@ -964,7 +966,7 @@
                 }
             ],
             "description": "Composer plugin to merge multiple composer.json files",
-            "time": "2015-07-03 03:24:58"
+            "time": "2015-11-06 20:31:16"
         },
         {
             "name": "wikimedia/ip-set",
