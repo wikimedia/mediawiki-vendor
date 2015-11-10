@@ -479,6 +479,7 @@ return array(
     'OOUI\\ButtonInputWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/ButtonInputWidget.php',
     'OOUI\\ButtonWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/ButtonWidget.php',
     'OOUI\\CheckboxInputWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/CheckboxInputWidget.php',
+    'OOUI\\ComboBoxInputWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/ComboBoxInputWidget.php',
     'OOUI\\DropdownInputWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/DropdownInputWidget.php',
     'OOUI\\Element' => $vendorDir . '/oojs/oojs-ui/php/Element.php',
     'OOUI\\ElementMixin' => $vendorDir . '/oojs/oojs-ui/php/ElementMixin.php',
