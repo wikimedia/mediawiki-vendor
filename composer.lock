@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4607b9de92ca27ae55e2013cf01e136f",
-    "content-hash": "877687875ef0ee085390d293cc8af9f2",
+    "hash": "821ebcf1382df95931eb613d4c10468a",
+    "content-hash": "58cdbeedf375100dd397c4d0b86ecad5",
     "packages": [
         {
             "name": "composer/semver",
@@ -1009,6 +1009,50 @@
             "description": "Efficiently match IP addresses against a set of CIDR specifications.",
             "homepage": "https://github.com/wikimedia/IPSet",
             "time": "2015-06-29 20:21:27"
+        },
+        {
+            "name": "wikimedia/php-session-serializer",
+            "version": "v1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wikimedia/php-session-serializer.git",
+                "reference": "61dec9a25bdcea4a0cc34a22fe6f43efca390d55"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wikimedia/php-session-serializer/zipball/61dec9a25bdcea4a0cc34a22fe6f43efca390d55",
+                "reference": "61dec9a25bdcea4a0cc34a22fe6f43efca390d55",
+                "shasum": ""
+            },
+            "require": {
+                "mediawiki/at-ease": "^1.0",
+                "php": ">=5.3.3",
+                "psr/log": "1.0.0"
+            },
+            "require-dev": {
+                "jakub-onderka/php-parallel-lint": "^0.9.0.0",
+                "mediawiki/mediawiki-codesniffer": "0.5.0",
+                "phpunit/phpunit": "~4.5"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Brad Jorsch",
+                    "email": "bjorsch@wikimedia.org"
+                }
+            ],
+            "description": "Provides methods like PHP's session_encode and session_decode that don't mess with $_SESSION",
+            "homepage": "https://www.mediawiki.org/wiki/Php-session-serializer",
+            "time": "2015-11-10 22:16:03"
         },
         {
             "name": "wikimedia/relpath",

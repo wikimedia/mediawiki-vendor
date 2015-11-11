@@ -1268,5 +1268,51 @@
         ],
         "description": "Provides library of common widgets, layouts, and windows.",
         "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
+    },
+    {
+        "name": "wikimedia/php-session-serializer",
+        "version": "v1.0.3",
+        "version_normalized": "1.0.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/php-session-serializer.git",
+            "reference": "61dec9a25bdcea4a0cc34a22fe6f43efca390d55"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/php-session-serializer/zipball/61dec9a25bdcea4a0cc34a22fe6f43efca390d55",
+            "reference": "61dec9a25bdcea4a0cc34a22fe6f43efca390d55",
+            "shasum": ""
+        },
+        "require": {
+            "mediawiki/at-ease": "^1.0",
+            "php": ">=5.3.3",
+            "psr/log": "1.0.0"
+        },
+        "require-dev": {
+            "jakub-onderka/php-parallel-lint": "^0.9.0.0",
+            "mediawiki/mediawiki-codesniffer": "0.5.0",
+            "phpunit/phpunit": "~4.5"
+        },
+        "time": "2015-11-10 22:16:03",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "src/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "authors": [
+            {
+                "name": "Brad Jorsch",
+                "email": "bjorsch@wikimedia.org"
+            }
+        ],
+        "description": "Provides methods like PHP's session_encode and session_decode that don't mess with $_SESSION",
+        "homepage": "https://www.mediawiki.org/wiki/Php-session-serializer"
     }
 ]
