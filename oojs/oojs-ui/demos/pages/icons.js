@@ -20,7 +20,6 @@ OO.ui.Demo.static.pages.icons = function ( demo ) {
 				'menu',
 				'next',
 				'notice',
-				'picture',
 				'previous',
 				'redo',
 				'remove',
@@ -156,6 +155,7 @@ OO.ui.Demo.static.pages.icons = function ( demo ) {
 				'image',
 				'imageAdd',
 				'imageLock',
+				'imageGallery',
 				'photoGallery',
 				'play',
 				'stop'
