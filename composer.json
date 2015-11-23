@@ -9,7 +9,7 @@
 	},
 	"prefer-stable": true,
 	"require": {
-		"composer/semver": "1.0.0",
+		"composer/semver": "1.2.0",
 		"cssjanus/cssjanus": "1.1.1",
 		"firebase/php-jwt": "2.1.0",
 		"kzykhys/pygments": "1.0",
