@@ -11,7 +11,7 @@
 	"require": {
 		"composer/semver": "1.2.0",
 		"cssjanus/cssjanus": "1.1.1",
-		"firebase/php-jwt": "2.1.0",
+		"firebase/php-jwt": "3.0.0",
 		"kzykhys/pygments": "1.0",
 		"liuggio/statsd-php-client": "1.0.16",
 		"mediawiki/at-ease": "1.1.0",
