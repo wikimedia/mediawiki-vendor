@@ -6,7 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = $vendorDir;
 
 return array(
-    $vendorDir . '/mediawiki/at-ease/src/Functions.php',
-    $vendorDir . '/wikimedia/relpath/src/RelPath.php',
-    $vendorDir . '/wikimedia/base-convert/src/Functions.php',
+    '1bfdedaa1281e04163b722d52ddb3917' => $vendorDir . '/mediawiki/at-ease/src/Functions.php',
+    '926ff73ba5c430af40e0c80eaa99d7fd' => $vendorDir . '/wikimedia/relpath/src/RelPath.php',
+    '69e00fd5e49e5ddfcb2d5c9a210ada38' => $vendorDir . '/wikimedia/base-convert/src/Functions.php',
 );

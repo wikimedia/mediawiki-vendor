@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e5cc6ed39a0396942cb1bd9447a12204",
-    "content-hash": "35145185a983e3c784e513b7c3533149",
+    "hash": "ab6216f9a7d51cb1f038b4f983538af3",
+    "content-hash": "677901bc2f50774abb7c23a0f4abd3cd",
     "packages": [
         {
             "name": "composer/semver",
@@ -393,16 +393,16 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.13.3",
+            "version": "v0.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "b19ad604741fced3215066c01a07fb231a75a443"
+                "reference": "82ec121d52813ee6ff6597bd84a0d403335ea156"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/b19ad604741fced3215066c01a07fb231a75a443",
-                "reference": "b19ad604741fced3215066c01a07fb231a75a443",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/82ec121d52813ee6ff6597bd84a0d403335ea156",
+                "reference": "82ec121d52813ee6ff6597bd84a0d403335ea156",
                 "shasum": ""
             },
             "require": {
@@ -456,11 +456,19 @@
                 {
                     "name": "Trevor Parscal",
                     "email": "trevor@wikimedia.org"
+                },
+                {
+                    "name": "Kunal Mehta",
+                    "email": "legoktm@gmail.com"
+                },
+                {
+                    "name": "Prateek Saxena",
+                    "email": "prtksxna@gmail.com"
                 }
             ],
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOjs_UI",
-            "time": "2015-11-18 00:59:17"
+            "time": "2015-11-25 01:05:25"
         },
         {
             "name": "oyejorge/less.php",

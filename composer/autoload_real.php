@@ -42,15 +42,19 @@ class ComposerAutoloaderInit_mediawiki_vendor
         $loader->register(false);
 
         $includeFiles = require __DIR__ . '/autoload_files.php';
-        foreach ($includeFiles as $file) {
-            composerRequire_mediawiki_vendor($file);
+        foreach ($includeFiles as $fileIdentifier => $file) {
+            composerRequire_mediawiki_vendor($fileIdentifier, $file);
         }
 
         return $loader;
     }
 }
 
-function composerRequire_mediawiki_vendor($file)
+function composerRequire_mediawiki_vendor($fileIdentifier, $file)
 {
-    require $file;
+    if (empty($GLOBALS['__composer_autoload_files'][$fileIdentifier])) {
+        require $file;
+
+        $GLOBALS['__composer_autoload_files'][$fileIdentifier] = true;
+    }
 }
