@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ab6216f9a7d51cb1f038b4f983538af3",
-    "content-hash": "677901bc2f50774abb7c23a0f4abd3cd",
+    "hash": "192f9652aa8b83ab88155466ea11f781",
+    "content-hash": "7377c2362d6d1deb0432280e73e8f85a",
     "packages": [
         {
             "name": "composer/semver",
@@ -180,23 +180,24 @@
         },
         {
             "name": "liuggio/statsd-php-client",
-            "version": "v1.0.16",
+            "version": "v1.0.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liuggio/statsd-php-client.git",
-                "reference": "a84fbef1a7afbfafd0ca4f1ebae4935bd1a7d920"
+                "reference": "c42e6d6687b7b2d7683186ec7f4f03351cc3dbca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liuggio/statsd-php-client/zipball/a84fbef1a7afbfafd0ca4f1ebae4935bd1a7d920",
-                "reference": "a84fbef1a7afbfafd0ca4f1ebae4935bd1a7d920",
+                "url": "https://api.github.com/repos/liuggio/statsd-php-client/zipball/c42e6d6687b7b2d7683186ec7f4f03351cc3dbca",
+                "reference": "c42e6d6687b7b2d7683186ec7f4f03351cc3dbca",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2"
             },
             "require-dev": {
-                "monolog/monolog": ">=1.2.0"
+                "monolog/monolog": ">=1.2.0",
+                "phpunit/phpunit": "^4.7"
             },
             "suggest": {
                 "monolog/monolog": "Monolog, in order to do generate statistic from log >=1.2.0)"
@@ -225,7 +226,7 @@
                 "php",
                 "statsd"
             ],
-            "time": "2015-04-27 08:12:26"
+            "time": "2015-07-23 23:12:45"
         },
         {
             "name": "mediawiki/at-ease",

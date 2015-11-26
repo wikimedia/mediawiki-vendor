@@ -206,57 +206,6 @@
         "description": "A Thin Wrapper for the Python Pygments"
     },
     {
-        "name": "liuggio/statsd-php-client",
-        "version": "v1.0.16",
-        "version_normalized": "1.0.16.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/liuggio/statsd-php-client.git",
-            "reference": "a84fbef1a7afbfafd0ca4f1ebae4935bd1a7d920"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/liuggio/statsd-php-client/zipball/a84fbef1a7afbfafd0ca4f1ebae4935bd1a7d920",
-            "reference": "a84fbef1a7afbfafd0ca4f1ebae4935bd1a7d920",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.2"
-        },
-        "require-dev": {
-            "monolog/monolog": ">=1.2.0"
-        },
-        "suggest": {
-            "monolog/monolog": "Monolog, in order to do generate statistic from log >=1.2.0)"
-        },
-        "time": "2015-04-27 08:12:26",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Liuggio": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Giulio De Donato",
-                "email": "liuggio@gmail.com"
-            }
-        ],
-        "description": "Statsd (Object Oriented) client library for PHP",
-        "homepage": "https://github.com/liuggio/statsd-php-client/",
-        "keywords": [
-            "etsy",
-            "monitoring",
-            "php",
-            "statsd"
-        ]
-    },
-    {
         "name": "wikimedia/wrappedstring",
         "version": "v2.0.0",
         "version_normalized": "2.0.0.0",
@@ -1322,5 +1271,57 @@
         ],
         "description": "Provides library of common widgets, layouts, and windows.",
         "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
+    },
+    {
+        "name": "liuggio/statsd-php-client",
+        "version": "v1.0.18",
+        "version_normalized": "1.0.18.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/liuggio/statsd-php-client.git",
+            "reference": "c42e6d6687b7b2d7683186ec7f4f03351cc3dbca"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/liuggio/statsd-php-client/zipball/c42e6d6687b7b2d7683186ec7f4f03351cc3dbca",
+            "reference": "c42e6d6687b7b2d7683186ec7f4f03351cc3dbca",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.2"
+        },
+        "require-dev": {
+            "monolog/monolog": ">=1.2.0",
+            "phpunit/phpunit": "^4.7"
+        },
+        "suggest": {
+            "monolog/monolog": "Monolog, in order to do generate statistic from log >=1.2.0)"
+        },
+        "time": "2015-07-23 23:12:45",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Liuggio": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Giulio De Donato",
+                "email": "liuggio@gmail.com"
+            }
+        ],
+        "description": "Statsd (Object Oriented) client library for PHP",
+        "homepage": "https://github.com/liuggio/statsd-php-client/",
+        "keywords": [
+            "etsy",
+            "monitoring",
+            "php",
+            "statsd"
+        ]
     }
 ]
