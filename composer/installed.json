@@ -1192,18 +1192,70 @@
         "homepage": "https://github.com/firebase/php-jwt"
     },
     {
-        "name": "oojs/oojs-ui",
-        "version": "v0.14.0",
-        "version_normalized": "0.14.0.0",
+        "name": "liuggio/statsd-php-client",
+        "version": "v1.0.18",
+        "version_normalized": "1.0.18.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/wikimedia/oojs-ui.git",
-            "reference": "82ec121d52813ee6ff6597bd84a0d403335ea156"
+            "url": "https://github.com/liuggio/statsd-php-client.git",
+            "reference": "c42e6d6687b7b2d7683186ec7f4f03351cc3dbca"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/82ec121d52813ee6ff6597bd84a0d403335ea156",
-            "reference": "82ec121d52813ee6ff6597bd84a0d403335ea156",
+            "url": "https://api.github.com/repos/liuggio/statsd-php-client/zipball/c42e6d6687b7b2d7683186ec7f4f03351cc3dbca",
+            "reference": "c42e6d6687b7b2d7683186ec7f4f03351cc3dbca",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.2"
+        },
+        "require-dev": {
+            "monolog/monolog": ">=1.2.0",
+            "phpunit/phpunit": "^4.7"
+        },
+        "suggest": {
+            "monolog/monolog": "Monolog, in order to do generate statistic from log >=1.2.0)"
+        },
+        "time": "2015-07-23 23:12:45",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Liuggio": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Giulio De Donato",
+                "email": "liuggio@gmail.com"
+            }
+        ],
+        "description": "Statsd (Object Oriented) client library for PHP",
+        "homepage": "https://github.com/liuggio/statsd-php-client/",
+        "keywords": [
+            "etsy",
+            "monitoring",
+            "php",
+            "statsd"
+        ]
+    },
+    {
+        "name": "oojs/oojs-ui",
+        "version": "v0.14.1",
+        "version_normalized": "0.14.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/oojs-ui.git",
+            "reference": "e5b3ef5e8c3109947b0fa5afb91ec5ba6b126214"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/e5b3ef5e8c3109947b0fa5afb91ec5ba6b126214",
+            "reference": "e5b3ef5e8c3109947b0fa5afb91ec5ba6b126214",
             "shasum": ""
         },
         "require": {
@@ -1215,7 +1267,7 @@
             "mediawiki/mediawiki-codesniffer": "0.5.0",
             "phpunit/phpunit": "~4.5"
         },
-        "time": "2015-11-25 01:05:25",
+        "time": "2015-12-08 21:42:12",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1271,57 +1323,5 @@
         ],
         "description": "Provides library of common widgets, layouts, and windows.",
         "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
-    },
-    {
-        "name": "liuggio/statsd-php-client",
-        "version": "v1.0.18",
-        "version_normalized": "1.0.18.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/liuggio/statsd-php-client.git",
-            "reference": "c42e6d6687b7b2d7683186ec7f4f03351cc3dbca"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/liuggio/statsd-php-client/zipball/c42e6d6687b7b2d7683186ec7f4f03351cc3dbca",
-            "reference": "c42e6d6687b7b2d7683186ec7f4f03351cc3dbca",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.2"
-        },
-        "require-dev": {
-            "monolog/monolog": ">=1.2.0",
-            "phpunit/phpunit": "^4.7"
-        },
-        "suggest": {
-            "monolog/monolog": "Monolog, in order to do generate statistic from log >=1.2.0)"
-        },
-        "time": "2015-07-23 23:12:45",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Liuggio": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Giulio De Donato",
-                "email": "liuggio@gmail.com"
-            }
-        ],
-        "description": "Statsd (Object Oriented) client library for PHP",
-        "homepage": "https://github.com/liuggio/statsd-php-client/",
-        "keywords": [
-            "etsy",
-            "monitoring",
-            "php",
-            "statsd"
-        ]
     }
 ]
