@@ -315,7 +315,6 @@ return array(
     'Kafka\\Protocol\\Protocol' => $vendorDir . '/nmred/kafka-php/src/Kafka/Protocol/Protocol.php',
     'Kafka\\Socket' => $vendorDir . '/nmred/kafka-php/src/Kafka/Socket.php',
     'Kafka\\ZooKeeper' => $vendorDir . '/nmred/kafka-php/src/Kafka/ZooKeeper.php',
-    'KzykHys\\Pygments\\Pygments' => $vendorDir . '/kzykhys/pygments/src/KzykHys/Pygments/Pygments.php',
     'LCRun3' => $vendorDir . '/zordius/lightncandy/src/lightncandy.php',
     'Less_Autoloader' => $vendorDir . '/oyejorge/less.php/lib/Less/Autoloader.php',
     'Less_Cache' => $vendorDir . '/oyejorge/less.php/lib/Less/Cache.php',

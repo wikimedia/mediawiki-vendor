@@ -10,5 +10,5 @@ return array(
     'Liuggio' => array($vendorDir . '/liuggio/statsd-php-client/src'),
     'Less' => array($vendorDir . '/oyejorge/less.php/lib'),
     'Kafka\\' => array($vendorDir . '/nmred/kafka-php/src'),
-    '' => array($vendorDir . '/cssjanus/cssjanus/src', $vendorDir . '/kzykhys/pygments/src'),
+    '' => array($vendorDir . '/cssjanus/cssjanus/src'),
 );
