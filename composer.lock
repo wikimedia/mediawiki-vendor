@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8ef0be88ea376ffdd03bda4b73524e91",
-    "content-hash": "efc2113760078de01b7f379cca798a47",
+    "hash": "593526f306a0d147a461d8f9cc8ce6ed",
+    "content-hash": "672a92d75cd3f056b38f283ef83f37d9",
     "packages": [
         {
             "name": "composer/semver",
@@ -323,16 +323,16 @@
         },
         {
             "name": "nmred/kafka-php",
-            "version": "v0.1.4",
+            "version": "v0.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nmred/kafka-php.git",
-                "reference": "06817c95e40b23918c3a420960ee9526e499275d"
+                "reference": "317ad8c208684db8b9e6d2f5bf7f471e89a8b4eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nmred/kafka-php/zipball/06817c95e40b23918c3a420960ee9526e499275d",
-                "reference": "06817c95e40b23918c3a420960ee9526e499275d",
+                "url": "https://api.github.com/repos/nmred/kafka-php/zipball/317ad8c208684db8b9e6d2f5bf7f471e89a8b4eb",
+                "reference": "317ad8c208684db8b9e6d2f5bf7f471e89a8b4eb",
                 "shasum": ""
             },
             "require": {
@@ -359,7 +359,7 @@
                 "client",
                 "kafka"
             ],
-            "time": "2015-09-06 01:39:05"
+            "time": "2015-12-02 12:06:23"
         },
         {
             "name": "oojs/oojs-ui",

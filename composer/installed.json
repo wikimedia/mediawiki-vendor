@@ -432,48 +432,6 @@
         "homepage": "https://www.mediawiki.org/wiki/CDB"
     },
     {
-        "name": "nmred/kafka-php",
-        "version": "v0.1.4",
-        "version_normalized": "0.1.4.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/nmred/kafka-php.git",
-            "reference": "06817c95e40b23918c3a420960ee9526e499275d"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/nmred/kafka-php/zipball/06817c95e40b23918c3a420960ee9526e499275d",
-            "reference": "06817c95e40b23918c3a420960ee9526e499275d",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3"
-        },
-        "require-dev": {
-            "phpunit/phpcov": "*",
-            "phpunit/phpunit": "~4.0",
-            "satooshi/php-coveralls": "dev-master"
-        },
-        "time": "2015-09-06 01:39:05",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Kafka\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "description": "Kafka client for php",
-        "homepage": "http://www.swanlinux.net",
-        "keywords": [
-            "client",
-            "kafka"
-        ]
-    },
-    {
         "name": "wikimedia/avro",
         "version": "v1.7.7",
         "version_normalized": "1.7.7.0",
@@ -1290,5 +1248,47 @@
             "Apache-2.0"
         ],
         "description": "Convert CSS stylesheets between left-to-right and right-to-left."
+    },
+    {
+        "name": "nmred/kafka-php",
+        "version": "v0.1.5",
+        "version_normalized": "0.1.5.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/nmred/kafka-php.git",
+            "reference": "317ad8c208684db8b9e6d2f5bf7f471e89a8b4eb"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/nmred/kafka-php/zipball/317ad8c208684db8b9e6d2f5bf7f471e89a8b4eb",
+            "reference": "317ad8c208684db8b9e6d2f5bf7f471e89a8b4eb",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "phpunit/phpcov": "*",
+            "phpunit/phpunit": "~4.0",
+            "satooshi/php-coveralls": "dev-master"
+        },
+        "time": "2015-12-02 12:06:23",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Kafka\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "description": "Kafka client for php",
+        "homepage": "http://www.swanlinux.net",
+        "keywords": [
+            "client",
+            "kafka"
+        ]
     }
 ]

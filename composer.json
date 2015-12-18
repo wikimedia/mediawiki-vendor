@@ -15,7 +15,7 @@
 		"liuggio/statsd-php-client": "1.0.18",
 		"mediawiki/at-ease": "1.1.0",
 		"monolog/monolog": "1.17.2",
-		"nmred/kafka-php": "0.1.4",
+		"nmred/kafka-php": "0.1.5",
 		"oojs/oojs-ui": "0.14.1",
 		"oyejorge/less.php": "1.7.0.9",
 		"php": ">=5.3.3",
