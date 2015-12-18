@@ -10,7 +10,7 @@
 	"prefer-stable": true,
 	"require": {
 		"composer/semver": "1.2.0",
-		"cssjanus/cssjanus": "1.1.1",
+		"cssjanus/cssjanus": "1.1.2",
 		"firebase/php-jwt": "3.0.0",
 		"liuggio/statsd-php-client": "1.0.18",
 		"mediawiki/at-ease": "1.1.0",

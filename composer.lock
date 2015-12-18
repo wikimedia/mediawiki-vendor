@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "20e6535617eaa380124684ed67deada9",
-    "content-hash": "f75303fa9485bf8d0508875e7ad9e7c8",
+    "hash": "8ef0be88ea376ffdd03bda4b73524e91",
+    "content-hash": "efc2113760078de01b7f379cca798a47",
     "packages": [
         {
             "name": "composer/semver",
@@ -71,16 +71,16 @@
         },
         {
             "name": "cssjanus/cssjanus",
-            "version": "v1.1.1",
+            "version": "v1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cssjanus/php-cssjanus.git",
-                "reference": "62a9c32e6e140de09082b40a6e99d868ad14d4e0"
+                "reference": "b7efe237794856acec641cb82dcd6613c1aba2b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cssjanus/php-cssjanus/zipball/62a9c32e6e140de09082b40a6e99d868ad14d4e0",
-                "reference": "62a9c32e6e140de09082b40a6e99d868ad14d4e0",
+                "url": "https://api.github.com/repos/cssjanus/php-cssjanus/zipball/b7efe237794856acec641cb82dcd6613c1aba2b4",
+                "reference": "b7efe237794856acec641cb82dcd6613c1aba2b4",
                 "shasum": ""
             },
             "require": {
@@ -89,7 +89,7 @@
             "require-dev": {
                 "jakub-onderka/php-parallel-lint": "0.8.*",
                 "phpunit/phpunit": "3.7.*",
-                "squizlabs/php_codesniffer": "1.*"
+                "squizlabs/php_codesniffer": "2.3.*"
             },
             "type": "library",
             "autoload": {
@@ -102,7 +102,7 @@
                 "Apache-2.0"
             ],
             "description": "Convert CSS stylesheets between left-to-right and right-to-left.",
-            "time": "2014-11-14 20:00:50"
+            "time": "2015-06-15 17:20:16"
         },
         {
             "name": "firebase/php-jwt",
