@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "593526f306a0d147a461d8f9cc8ce6ed",
-    "content-hash": "672a92d75cd3f056b38f283ef83f37d9",
+    "hash": "5bb4007344e80940ae867ce350ca558f",
+    "content-hash": "d47faa801ad863e18359e36a7e1a0bc4",
     "packages": [
         {
             "name": "composer/semver",
@@ -1204,16 +1204,16 @@
         },
         {
             "name": "zordius/lightncandy",
-            "version": "v0.21",
+            "version": "v0.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zordius/lightncandy.git",
-                "reference": "015fed62d0ae6fe7601d3910b8e4b6a6964f86a0"
+                "reference": "5753dec40ddaf8b5c70a1837bf0ff4d8e8647506"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zordius/lightncandy/zipball/015fed62d0ae6fe7601d3910b8e4b6a6964f86a0",
-                "reference": "015fed62d0ae6fe7601d3910b8e4b6a6964f86a0",
+                "url": "https://api.github.com/repos/zordius/lightncandy/zipball/5753dec40ddaf8b5c70a1837bf0ff4d8e8647506",
+                "reference": "5753dec40ddaf8b5c70a1837bf0ff4d8e8647506",
                 "shasum": ""
             },
             "require": {
@@ -1247,7 +1247,7 @@
                 "php",
                 "template"
             ],
-            "time": "2015-05-08 01:56:46"
+            "time": "2015-11-05 07:14:57"
         }
     ],
     "packages-dev": [],

@@ -87,55 +87,6 @@
         ]
     },
     {
-        "name": "zordius/lightncandy",
-        "version": "v0.21",
-        "version_normalized": "0.21.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/zordius/lightncandy.git",
-            "reference": "015fed62d0ae6fe7601d3910b8e4b6a6964f86a0"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/zordius/lightncandy/zipball/015fed62d0ae6fe7601d3910b8e4b6a6964f86a0",
-            "reference": "015fed62d0ae6fe7601d3910b8e4b6a6964f86a0",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.0"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "4.0.17"
-        },
-        "time": "2015-05-08 01:56:46",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "src/lightncandy.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Zordius Chen",
-                "email": "zordius@yahoo-inc.com"
-            }
-        ],
-        "description": "An extremely fast PHP implementation of handlebars ( http://handlebarsjs.com/ ) and mustache ( http://mustache.github.io/ ).",
-        "homepage": "https://github.com/zordius/lightncandy",
-        "keywords": [
-            "handlebars",
-            "logicless",
-            "mustache",
-            "php",
-            "template"
-        ]
-    },
-    {
         "name": "wikimedia/wrappedstring",
         "version": "v2.0.0",
         "version_normalized": "2.0.0.0",
@@ -1289,6 +1240,55 @@
         "keywords": [
             "client",
             "kafka"
+        ]
+    },
+    {
+        "name": "zordius/lightncandy",
+        "version": "v0.23",
+        "version_normalized": "0.23.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/zordius/lightncandy.git",
+            "reference": "5753dec40ddaf8b5c70a1837bf0ff4d8e8647506"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/zordius/lightncandy/zipball/5753dec40ddaf8b5c70a1837bf0ff4d8e8647506",
+            "reference": "5753dec40ddaf8b5c70a1837bf0ff4d8e8647506",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "4.0.17"
+        },
+        "time": "2015-11-05 07:14:57",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "src/lightncandy.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Zordius Chen",
+                "email": "zordius@yahoo-inc.com"
+            }
+        ],
+        "description": "An extremely fast PHP implementation of handlebars ( http://handlebarsjs.com/ ) and mustache ( http://mustache.github.io/ ).",
+        "homepage": "https://github.com/zordius/lightncandy",
+        "keywords": [
+            "handlebars",
+            "logicless",
+            "mustache",
+            "php",
+            "template"
         ]
     }
 ]
