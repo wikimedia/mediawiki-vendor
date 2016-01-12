@@ -43,6 +43,7 @@ OO.ui.Demo.static.pages.icons = function ( demo ) {
 				'article',
 				'articleCheck',
 				'articleSearch',
+				'articleRedirect',
 				'citeArticle',
 				'book',
 				'journal',
@@ -111,7 +112,6 @@ OO.ui.Demo.static.pages.icons = function ( demo ) {
 				'italic',
 				'strikethrough',
 				'underline',
-				'textLanguage',
 				'textDirLTR',
 				'textDirRTL',
 				'textStyle'
@@ -128,6 +128,7 @@ OO.ui.Demo.static.pages.icons = function ( demo ) {
 				'alignRight',
 				'calendar',
 				'find',
+				'language',
 				'layout',
 				'newline',
 				'noWikiText',
@@ -135,7 +136,6 @@ OO.ui.Demo.static.pages.icons = function ( demo ) {
 				'puzzle',
 				'quotes',
 				'quotesAdd',
-				'redirect',
 				'searchCaseSensitive',
 				'searchRegularExpression',
 				'specialCharacter',
@@ -147,7 +147,6 @@ OO.ui.Demo.static.pages.icons = function ( demo ) {
 				'tableCaption',
 				'tableMergeCells',
 				'templateAdd',
-				'translation',
 				'wikiText'
 			],
 			media: [
