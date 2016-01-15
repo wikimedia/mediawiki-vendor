@@ -8,8 +8,13 @@ $baseDir = $vendorDir;
 return array(
     'Symfony\\Component\\Process\\' => array($vendorDir . '/symfony/process'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log'),
+    'PEAR' => array($vendorDir . '/pear/pear_exception'),
+    'Net' => array($vendorDir . '/pear/net_smtp', $vendorDir . '/pear/net_socket'),
+    'Mail_mimeDecode' => array($vendorDir . '/pear/mail_mime-decode'),
+    'Mail' => array($vendorDir . '/pear/mail_mime', $vendorDir . '/pear/mail'),
     'Liuggio' => array($vendorDir . '/liuggio/statsd-php-client/src'),
     'Less' => array($vendorDir . '/oyejorge/less.php/lib'),
     'Kafka\\' => array($vendorDir . '/nmred/kafka-php/src'),
-    '' => array($vendorDir . '/cssjanus/cssjanus/src'),
+    'Console' => array($vendorDir . '/pear/console_getopt'),
+    '' => array($vendorDir . '/cssjanus/cssjanus/src', $vendorDir . '/pear/pear-core-minimal/src'),
 );
