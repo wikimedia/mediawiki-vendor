@@ -131,65 +131,6 @@
         "homepage": "https://www.mediawiki.org/wiki/WrappedString"
     },
     {
-        "name": "ruflin/elastica",
-        "version": "2.2.0",
-        "version_normalized": "2.2.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/ruflin/Elastica.git",
-            "reference": "eb3a787259a6c50f87bce507ff24b124d91c4fe7"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/ruflin/Elastica/zipball/eb3a787259a6c50f87bce507ff24b124d91c4fe7",
-            "reference": "eb3a787259a6c50f87bce507ff24b124d91c4fe7",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3",
-            "psr/log": "~1.0"
-        },
-        "require-dev": {
-            "guzzlehttp/guzzle": "5.3.*",
-            "munkie/elasticsearch-thrift-php": "1.4.*"
-        },
-        "suggest": {
-            "egeloen/http-adapter": "Allow using httpadapter transport",
-            "guzzlehttp/guzzle": "Allow using guzzle 5.3.x as the http transport (Requires php 5.4)",
-            "monolog/monolog": "Logging request",
-            "munkie/elasticsearch-thrift-php": "Allow using thrift transport"
-        },
-        "time": "2015-07-08 05:57:43",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.0.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Elastica\\": "lib/Elastica/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Nicolas Ruflin",
-                "homepage": "http://ruflin.com/"
-            }
-        ],
-        "description": "Elasticsearch Client",
-        "homepage": "http://elastica.io/",
-        "keywords": [
-            "client",
-            "search"
-        ]
-    },
-    {
         "name": "wikimedia/ip-set",
         "version": "1.0.1",
         "version_normalized": "1.0.1.0",
@@ -1717,5 +1658,64 @@
         ],
         "description": "Class that provides multiple interfaces for sending emails.",
         "homepage": "http://pear.php.net/package/Mail"
+    },
+    {
+        "name": "ruflin/elastica",
+        "version": "2.2.1",
+        "version_normalized": "2.2.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/ruflin/Elastica.git",
+            "reference": "34ca77d721f1fc7c5f3114b48d62ebec943ca193"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/ruflin/Elastica/zipball/34ca77d721f1fc7c5f3114b48d62ebec943ca193",
+            "reference": "34ca77d721f1fc7c5f3114b48d62ebec943ca193",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3",
+            "psr/log": "~1.0"
+        },
+        "require-dev": {
+            "guzzlehttp/guzzle": "5.3.*",
+            "munkie/elasticsearch-thrift-php": "1.4.*"
+        },
+        "suggest": {
+            "egeloen/http-adapter": "Allow using httpadapter transport",
+            "guzzlehttp/guzzle": "Allow using guzzle 5.3.x as the http transport (Requires php 5.4)",
+            "monolog/monolog": "Logging request",
+            "munkie/elasticsearch-thrift-php": "Allow using thrift transport"
+        },
+        "time": "2015-08-10 19:35:16",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.2.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Elastica\\": "lib/Elastica/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Nicolas Ruflin",
+                "homepage": "http://ruflin.com/"
+            }
+        ],
+        "description": "Elasticsearch Client",
+        "homepage": "http://elastica.io/",
+        "keywords": [
+            "client",
+            "search"
+        ]
     }
 ]

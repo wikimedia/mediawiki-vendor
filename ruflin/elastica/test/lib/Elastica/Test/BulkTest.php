@@ -472,8 +472,10 @@ class BulkTest extends BaseTest
 
         $i = 0;
         $limit = 20;
+
+        // adds 6 documents and checks if on average every document is added in less then 0.2 seconds
         do {
-            usleep(200000);
+            usleep(200000);    // 0.2 seconds
         } while ($type->count() < 6 && ++$i < $limit);
 
         if ($shouldFail) {
@@ -709,10 +711,10 @@ class BulkTest extends BaseTest
 
         $startMemory = memory_get_usage();
 
-        for ($n = 1; $n < 10; $n++) {
+        for ($n = 1; $n < 10; ++$n) {
             $docs = array();
 
-            for ($i = 1; $i <= 3000; $i++) {
+            for ($i = 1; $i <= 3000; ++$i) {
                 $docs[] = new Document(uniqid(), $data);
             }
 
@@ -732,17 +734,7 @@ class BulkTest extends BaseTest
         return array(
             array(
                 array(),
-                null,
-                null,
-            ),
-            array(
-                array(),
                 $this->_getHost(),
-                null,
-            ),
-            array(
-                array(),
-                null,
                 9700,
             ),
             array(

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "341f0f13f5dda0e7c5f9322a8b1e6d2e",
-    "content-hash": "000b0c2e59a9af655e675a08eeedf59d",
+    "hash": "50c6a2cff5091adc820c5361256b8c38",
+    "content-hash": "039f7bbf8f129ebb32e89b7a18070760",
     "packages": [
         {
             "name": "composer/semver",
@@ -949,16 +949,16 @@
         },
         {
             "name": "ruflin/elastica",
-            "version": "2.2.0",
+            "version": "2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ruflin/Elastica.git",
-                "reference": "eb3a787259a6c50f87bce507ff24b124d91c4fe7"
+                "reference": "34ca77d721f1fc7c5f3114b48d62ebec943ca193"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ruflin/Elastica/zipball/eb3a787259a6c50f87bce507ff24b124d91c4fe7",
-                "reference": "eb3a787259a6c50f87bce507ff24b124d91c4fe7",
+                "url": "https://api.github.com/repos/ruflin/Elastica/zipball/34ca77d721f1fc7c5f3114b48d62ebec943ca193",
+                "reference": "34ca77d721f1fc7c5f3114b48d62ebec943ca193",
                 "shasum": ""
             },
             "require": {
@@ -978,7 +978,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0.x-dev"
+                    "dev-master": "2.2.x-dev"
                 }
             },
             "autoload": {
@@ -1002,7 +1002,7 @@
                 "client",
                 "search"
             ],
-            "time": "2015-07-08 05:57:43"
+            "time": "2015-08-10 19:35:16"
         },
         {
             "name": "symfony/process",

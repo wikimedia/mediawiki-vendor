@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file based on the [Keep a Changelog](http://keepachangelog.com/) Standard. This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased](https://github.com/ruflin/Elastica/compare/2.2.0...HEAD)
+## [Unreleased](https://github.com/ruflin/Elastica/compare/2.2.1...HEAD)
 
 ### Backward Compatibility Breaks
 
@@ -12,6 +12,23 @@ All notable changes to this project will be documented in this file based on the
 ### Improvements
 
 ### Deprecated
+
+
+## [2.2.1](https://github.com/ruflin/Elastica/releases/tag/2.2.1) - 2015-08-10
+
+
+### Added
+- Support for index template added [#905](https://github.com/ruflin/Elastica/pull/905)
+
+### Improvements
+- Update Elasticsearch dependency to 1.7.1 and update plugin dependencies [#909](https://github.com/ruflin/Elastica/pull/909)
+- Update php-cs-fixer to 1.10 [#898](https://github.com/ruflin/Elastica/pull/898)
+- Elastica\QueryBuilder now uses Elastica\QueryBuilder\Version\Latest as default version to avoid empty version classes. [#897](https://github.com/ruflin/Elastica/pull/897)
+- Update elasticseach-image to work with ES 1.7.1 [#907](https://github.com/ruflin/Elastica/pull/907)
+- Local dev environment was refactored to fully work in docker environment. Running tests is now only one command: `make tests` [#901](https://github.com/ruflin/Elastica/pull/901)
+
+### Deprecated
+- Elastica\QueryBuilder\Version\Version150 deprecated in favor of Elastica\QueryBuilder\Version\Latest [#897](https://github.com/ruflin/Elastica/pull/897)
 
 
 ## [2.2.0](https://github.com/ruflin/Elastica/releases/tag/2.2.0) - 2015-07-08
@@ -29,7 +46,7 @@ All notable changes to this project will be documented in this file based on the
 ### Improvements
 - `CallbackStrategy` now will accept any `callable` as callback, not only instance of `Closure`. [#871](https://github.com/ruflin/Elastica/pull/871)
 - `StrategyFactory` now will try to find predefined strategy before looking to global namespace. [#877](https://github.com/ruflin/Elastica/pull/877)
-- Update elasticsearch dependency to elasticsearch 1.6.0 https://www.elastic.co/downloads/past-releases/elasticsearch-1-6-0 
+- Update elasticsearch dependency to elasticsearch 1.6.0 https://www.elastic.co/downloads/past-releases/elasticsearch-1-6-0
 - All elasticsearch plugin dependencies were updated to the newest version.
 - Methods of classes in `QueryBuilder\DSL` namespace now have exact same signatures as corresponding constructors. [#878](https://github.com/ruflin/Elastica/pull/878)
 - Constructor of `Aggregation\Filter` now accepts filter as second parameter [#878](https://github.com/ruflin/Elastica/pull/878)
@@ -826,7 +843,7 @@ The changelog before version 2.0.0 was organised by date. All changes can be fou
 
 2012-01-08
 - Allow to set curl params over client config [#106](https://github.com/ruflin/Elastica/issues/106/) [#107](https://github.com/ruflin/Elastica/issues/107/)
-- Add the possiblity to add path or url in config for a request [#120](https://github.com/ruflin/Elastica/issues/120/)
+- Add the possibility to add path or url in config for a request [#120](https://github.com/ruflin/Elastica/issues/120/)
 
 2012-01-04
 - Elastica_Index::exists() and Elastica_Cluster::getIndexNames() added

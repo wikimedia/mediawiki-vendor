@@ -28,7 +28,7 @@
 		"pear/pear_exception": "1.0.0",
 		"php": ">=5.3.3",
 		"psr/log": "1.0.0",
-		"ruflin/elastica": "2.2.0",
+		"ruflin/elastica": "2.2.1",
 		"symfony/process": "2.6.12",
 		"wikimedia/assert": "0.2.2",
 		"wikimedia/avro": "1.7.7",
