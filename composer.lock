@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "50c6a2cff5091adc820c5361256b8c38",
-    "content-hash": "039f7bbf8f129ebb32e89b7a18070760",
+    "hash": "1e11b7811354660159915303b915d65f",
+    "content-hash": "aa78904fd3472b6a94b2dad4891ac274",
     "packages": [
         {
             "name": "composer/semver",
@@ -363,16 +363,16 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.15.0",
+            "version": "v0.15.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "48aee04a6e84fbf3048e36a5a690a1f5dea6d62d"
+                "reference": "488480477cb23b3eb922f24d57464a94d895b238"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/48aee04a6e84fbf3048e36a5a690a1f5dea6d62d",
-                "reference": "48aee04a6e84fbf3048e36a5a690a1f5dea6d62d",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/488480477cb23b3eb922f24d57464a94d895b238",
+                "reference": "488480477cb23b3eb922f24d57464a94d895b238",
                 "shasum": ""
             },
             "require": {
@@ -380,8 +380,8 @@
                 "php": ">=5.3.3"
             },
             "require-dev": {
-                "jakub-onderka/php-parallel-lint": "0.9",
-                "mediawiki/mediawiki-codesniffer": "0.5.0",
+                "jakub-onderka/php-parallel-lint": "0.9.2",
+                "mediawiki/mediawiki-codesniffer": "0.5.1",
                 "phpunit/phpunit": "~4.5"
             },
             "type": "library",
@@ -438,7 +438,7 @@
             ],
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOjs_UI",
-            "time": "2016-01-12 22:08:10"
+            "time": "2016-01-26 20:01:08"
         },
         {
             "name": "oyejorge/less.php",
