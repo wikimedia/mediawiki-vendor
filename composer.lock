@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "dbaad68a3c6794886c51dd359a7cadcb",
-    "content-hash": "52d370643703855b48cb1f0ad1d12428",
+    "hash": "9bf2edb527ec59f8276cb4c20b9c581c",
+    "content-hash": "d59a1e6057e8a5e2458a4ff967079dfa",
     "packages": [
         {
             "name": "composer/semver",
@@ -1529,6 +1529,42 @@
             "description": "PHP implementations of online statistical algorithms",
             "homepage": "https://www.mediawiki.org/wiki/RunningStat",
             "time": "2015-10-28 22:29:15"
+        },
+        {
+            "name": "wikimedia/textcat",
+            "version": "1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wikimedia/wikimedia-textcat.git",
+                "reference": "540b9777203470adb8ef47152c057d4ca8b391fd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wikimedia/wikimedia-textcat/zipball/540b9777203470adb8ef47152c057d4ca8b391fd",
+                "reference": "540b9777203470adb8ef47152c057d4ca8b391fd",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "jakub-onderka/php-parallel-lint": "0.9",
+                "mediawiki/mediawiki-codesniffer": "0.5.0",
+                "phpunit/phpunit": "4.6.*"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.1"
+            ],
+            "authors": [
+                {
+                    "name": "Stanislav Malyshev",
+                    "email": "smalyshev@wikimedia.org"
+                }
+            ],
+            "description": "PHP port of the TextCat language guesser utility, see http://odur.let.rug.nl/~vannoord/TextCat/.",
+            "time": "2016-02-03 04:50:02"
         },
         {
             "name": "wikimedia/utfnormal",
