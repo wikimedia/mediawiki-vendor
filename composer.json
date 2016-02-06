@@ -17,7 +17,7 @@
 		"monolog/monolog": "1.17.2",
 		"nmred/kafka-php": "0.1.5",
 		"oojs/oojs-ui": "0.15.2",
-		"oyejorge/less.php": "1.7.0.9",
+		"oyejorge/less.php": "1.7.0.10",
 		"pear/console_getopt": "1.4.1",
 		"pear/mail": "1.2.0",
 		"pear/mail_mime": "1.10.0",
