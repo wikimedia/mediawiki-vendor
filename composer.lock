@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c24611863b746c96d13fa90320f038ef",
-    "content-hash": "415ec65f398947f60157428398e488fd",
+    "hash": "7d3f62841ea679297203707dea8c4734",
+    "content-hash": "4275119dbb55cc750ee9892b4072e105",
     "packages": [
         {
             "name": "composer/semver",
@@ -1532,16 +1532,16 @@
         },
         {
             "name": "wikimedia/textcat",
-            "version": "1.1.1",
+            "version": "1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/wikimedia-textcat.git",
-                "reference": "540b9777203470adb8ef47152c057d4ca8b391fd"
+                "reference": "820d719d313ec835682498523a42de0a5cd408c3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/wikimedia-textcat/zipball/540b9777203470adb8ef47152c057d4ca8b391fd",
-                "reference": "540b9777203470adb8ef47152c057d4ca8b391fd",
+                "url": "https://api.github.com/repos/wikimedia/wikimedia-textcat/zipball/820d719d313ec835682498523a42de0a5cd408c3",
+                "reference": "820d719d313ec835682498523a42de0a5cd408c3",
                 "shasum": ""
             },
             "require": {
@@ -1553,6 +1553,11 @@
                 "phpunit/phpunit": "4.6.*"
             },
             "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "TextCat": ""
+                }
+            },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "LGPL-2.1"
@@ -1564,7 +1569,7 @@
                 }
             ],
             "description": "PHP port of the TextCat language guesser utility, see http://odur.let.rug.nl/~vannoord/TextCat/.",
-            "time": "2016-02-03 04:50:02"
+            "time": "2016-02-16 01:23:51"
         },
         {
             "name": "wikimedia/utfnormal",

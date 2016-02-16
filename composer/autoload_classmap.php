@@ -573,6 +573,7 @@ return array(
     'Symfony\\Component\\Process\\Tests\\SimpleProcessTest' => $vendorDir . '/symfony/process/Symfony/Component/Process/Tests/SimpleProcessTest.php',
     'Symfony\\Component\\Process\\Tests\\Stringifiable' => $vendorDir . '/symfony/process/Symfony/Component/Process/Tests/AbstractProcessTest.php',
     'System' => $vendorDir . '/pear/pear-core-minimal/src/System.php',
+    'TextCat' => $vendorDir . '/wikimedia/textcat/TextCat.php',
     'UtfNormal\\Constants' => $vendorDir . '/wikimedia/utfnormal/src/Constants.php',
     'UtfNormal\\Utils' => $vendorDir . '/wikimedia/utfnormal/src/Util.php',
     'UtfNormal\\Validator' => $vendorDir . '/wikimedia/utfnormal/src/Validator.php',
