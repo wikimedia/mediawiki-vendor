@@ -1,55 +1,66 @@
 OO.ui.Demo.static.pages.widgets = function ( demo ) {
-	var styles, states, buttonStyleShowcaseWidget, $table, fieldsets,
+	var i, styles, states, buttonStyleShowcaseWidget, $table, fieldsets,
 		capsuleWithPopup, capsulePopupWidget,
+		horizontalDragItems = [],
+		verticalDragItems = [],
 		$demo = demo.$element;
 
 	/**
 	 * Draggable group widget containing drag/drop items
 	 * @param {Object} [config] Configuration options
 	 */
-	function DragDropGroupWidget( config ) {
+	function DraggableGroupWidget( config ) {
 		// Configuration initialization
 		config = config || {};
 
 		// Parent constructor
-		DragDropGroupWidget.parent.call( this, config );
+		DraggableGroupWidget.parent.call( this, config );
 
 		// Mixin constructors
 		OO.ui.mixin.DraggableGroupElement.call( this, $.extend( {}, config, { $group: this.$element } ) );
-
-		// Respond to reorder event
-		this.connect( this, { reorder: 'onReorder' } );
 	}
-	/* Setup */
-	OO.inheritClass( DragDropGroupWidget, OO.ui.Widget );
-	OO.mixinClass( DragDropGroupWidget, OO.ui.mixin.DraggableGroupElement );
 
-	/**
-	 * Respond to order event
-	 * @param {OO.ui.mixin.DraggableElement} item Reordered item
-	 * @param {number} newIndex New index
-	 */
-	DragDropGroupWidget.prototype.onReorder = function ( item, newIndex ) {
-		this.addItems( [ item ], newIndex );
-	};
+	/* Setup */
+	OO.inheritClass( DraggableGroupWidget, OO.ui.Widget );
+	OO.mixinClass( DraggableGroupWidget, OO.ui.mixin.DraggableGroupElement );
 
 	/**
 	 * Drag/drop items
 	 * @param {Object} [config] Configuration options
 	 */
-	function DragDropItemWidget( config ) {
+	function DraggableItemWidget( config ) {
 		// Configuration initialization
 		config = config || {};
 
 		// Parent constructor
-		DragDropItemWidget.parent.call( this, config );
+		DraggableItemWidget.parent.call( this, config );
 
 		// Mixin constructors
 		OO.ui.mixin.DraggableElement.call( this, config );
 	}
+
 	/* Setup */
-	OO.inheritClass( DragDropItemWidget, OO.ui.OptionWidget );
-	OO.mixinClass( DragDropItemWidget, OO.ui.mixin.DraggableElement );
+	OO.inheritClass( DraggableItemWidget, OO.ui.DecoratedOptionWidget );
+	OO.mixinClass( DraggableItemWidget, OO.ui.mixin.DraggableElement );
+
+	for ( i = 0; i <= 12; i++ ) {
+		horizontalDragItems.push(
+			new DraggableItemWidget( {
+				data: 'item' + i,
+				icon: 'tag',
+				label: 'Inline item ' + i
+			} )
+		);
+		if ( i <= 6 ) {
+			verticalDragItems.push(
+				new DraggableItemWidget( {
+					data: 'item' + i,
+					icon: 'tag',
+					label: 'Item ' + i
+				} )
+			);
+		}
+	}
 
 	/**
 	 * Demo for LookupElement.
@@ -723,6 +734,13 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 					new OO.ui.NumberInputWidget(),
 					{
 						label: 'NumberInputWidget',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.NumberInputWidget( { disabled: true } ),
+					{
+						label: 'NumberInputWidget (disabled)',
 						align: 'top'
 					}
 				),
@@ -1410,26 +1428,9 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 			label: 'Draggable',
 			items: [
 				new OO.ui.FieldLayout(
-					new DragDropGroupWidget( {
+					new DraggableGroupWidget( {
 						orientation: 'horizontal',
-						items: [
-							new DragDropItemWidget( {
-								data: 'item1',
-								label: 'Item 1'
-							} ),
-							new DragDropItemWidget( {
-								data: 'item2',
-								label: 'Item 2'
-							} ),
-							new DragDropItemWidget( {
-								data: 'item3',
-								label: 'Item 3'
-							} ),
-							new DragDropItemWidget( {
-								data: 'item4',
-								label: 'Item 4'
-							} )
-						]
+						items: horizontalDragItems
 					} ),
 					{
 						label: 'DraggableGroupWidget (horizontal)\u200E',
@@ -1437,25 +1438,8 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 					}
 				),
 				new OO.ui.FieldLayout(
-					new DragDropGroupWidget( {
-						items: [
-							new DragDropItemWidget( {
-								data: 'item1',
-								label: 'Item 1'
-							} ),
-							new DragDropItemWidget( {
-								data: 'item2',
-								label: 'Item 2'
-							} ),
-							new DragDropItemWidget( {
-								data: 'item3',
-								label: 'Item 3'
-							} ),
-							new DragDropItemWidget( {
-								data: 'item4',
-								label: 'Item 4'
-							} )
-						]
+					new DraggableGroupWidget( {
+						items: verticalDragItems
 					} ),
 					{
 						label: 'DraggableGroupWidget (vertical)\u200E',
