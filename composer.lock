@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c59a893eb414ab4572be75af0621e4e9",
-    "content-hash": "84ec824704d4a0a2083724b5e0b73d8a",
+    "hash": "6ffda9f45687379b00d6d65bc154c465",
+    "content-hash": "ff2300ca1cec902e211d95dbd2285de7",
     "packages": [
         {
             "name": "composer/semver",
@@ -1532,16 +1532,16 @@
         },
         {
             "name": "wikimedia/textcat",
-            "version": "1.1.2",
+            "version": "1.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/wikimedia-textcat.git",
-                "reference": "820d719d313ec835682498523a42de0a5cd408c3"
+                "reference": "692148be3b9e955d0323a254510f26a4c6aa5a79"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/wikimedia-textcat/zipball/820d719d313ec835682498523a42de0a5cd408c3",
-                "reference": "820d719d313ec835682498523a42de0a5cd408c3",
+                "url": "https://api.github.com/repos/wikimedia/wikimedia-textcat/zipball/692148be3b9e955d0323a254510f26a4c6aa5a79",
+                "reference": "692148be3b9e955d0323a254510f26a4c6aa5a79",
                 "shasum": ""
             },
             "require": {
@@ -1569,7 +1569,7 @@
                 }
             ],
             "description": "PHP port of the TextCat language guesser utility, see http://odur.let.rug.nl/~vannoord/TextCat/.",
-            "time": "2016-02-16 01:23:51"
+            "time": "2016-03-04 20:59:24"
         },
         {
             "name": "wikimedia/utfnormal",
