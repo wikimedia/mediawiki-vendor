@@ -21,12 +21,22 @@ else
 		.reject{|c| %w[Element Widget Layout Theme].include? c[:name] } # no toplevel
 		.reject{|c| untestable_classes.include? c[:name] } # different PHP and JS implementations
 
+	make_class_instance_placeholder = lambda do |klass, config|
+		'_placeholder_' + {
+			class: klass,
+			config: config
+		}.to_json
+	end
+
+	make_htmlsnippet_placeholder = make_class_instance_placeholder.curry['HtmlSnippet']
+
 	# values to test for each type
 	expandos = {
 		'null' => [nil],
 		'number' => [0, -1, 300],
 		'boolean' => [true, false],
-		'string' => ['Foo bar', '<b>HTML?</b>'],
+		'string' => ['Foo bar', '<b>HTML?</b>', '', ' '],
+		'HtmlSnippet' => ['Foo bar', '<b>HTML?</b>', ''].map(&make_htmlsnippet_placeholder),
 	}
 
 	# values to test for names
@@ -51,8 +61,7 @@ else
 		'maxLength' => [100],
 		'icon' => ['image'],
 		'indicator' => ['down'],
-		'flags' => %w[constructive],
-		'label' => expandos['string'] + ['', ' '],
+		'flags' => %w[constructive primary],
 		# these are defined by Element and would bloat the tests
 		'classes' => true,
 		'id' => true,
@@ -79,10 +88,9 @@ else
 					values = expand_types_to_values.call(types)
 					{ config_option[:name] => values[0] }
 				}
-				vals = [ '_placeholder_' + {
-					class: t,
-					config: config.inject({}, :merge)
-				}.to_json ]
+				vals = [
+					make_class_instance_placeholder.call( t, config.inject({}, :merge) )
+				]
 			else
 				# We don't know how to test this. The empty value will result in no
 				# tests being generated for this combination of config values.
