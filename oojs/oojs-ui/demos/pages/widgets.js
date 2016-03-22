@@ -189,10 +189,16 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 			flags: [ 'progressive' ]
 		},
 		{
+			flags: [ 'constructive' ]
+		},
+		{
 			flags: [ 'destructive' ]
 		},
 		{
 			flags: [ 'primary', 'progressive' ]
+		},
+		{
+			flags: [ 'primary', 'constructive' ]
 		},
 		{
 			flags: [ 'primary', 'destructive' ]
@@ -278,7 +284,7 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 						flags: [ 'constructive' ]
 					} ),
 					{
-						label: 'ButtonWidget (constructive, deprecated)\u200E',
+						label: 'ButtonWidget (constructive, deprecated in MediaWiki theme)\u200E',
 						align: 'top'
 					}
 				),
@@ -308,7 +314,7 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 						flags: [ 'primary', 'constructive' ]
 					} ),
 					{
-						label: 'ButtonWidget (primary, constructive, deprecated)\u200E',
+						label: 'ButtonWidget (primary, constructive, deprecated in MediaWiki theme)\u200E',
 						align: 'top'
 					}
 				),
@@ -780,6 +786,13 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 					new OO.ui.NumberInputWidget( { min: 0, max: 1, step: 0.1, pageStep: 0.25 } ),
 					{
 						label: 'NumberInputWidget (0–1, step by .1, page by .25)',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.NumberInputWidget( { showButtons: false } ),
+					{
+						label: 'NumberInputWidget (no buttons)',
 						align: 'top'
 					}
 				),
