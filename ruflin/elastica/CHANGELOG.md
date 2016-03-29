@@ -1,7 +1,8 @@
 # Change Log
 All notable changes to this project will be documented in this file based on the [Keep a Changelog](http://keepachangelog.com/) Standard. This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased](https://github.com/ruflin/Elastica/compare/2.2.1...HEAD)
+
+## [Unreleased](https://github.com/ruflin/Elastica/compare/2.3.1...HEAD)
 
 ### Backward Compatibility Breaks
 
@@ -12,6 +13,44 @@ All notable changes to this project will be documented in this file based on the
 ### Improvements
 
 ### Deprecated
+
+
+## [2.3.1](https://github.com/ruflin/Elastica/releases/tag/2.3.1) - 2015-10-17
+
+### Bugfixes
+- Filters aggregation: empty name is named bucket #935
+- Prevent mix keys in filters (#936) #939
+- Fix empty string is not anonymous filter #935
+- Filters aggregation: empty name is named bucket #935
+
+### Added
+- Support for field_value_factor #953
+- Added setMinDocCount and setExtendedBounds options #947
+- Avoid environment dependecies in tests #938
+
+### Improvements
+- Update elasticsearch dependency to elasticsearch 1.7.3 #957
+
+### Deprecated
+- Added exceptions of deprecated transports to deprecation list
+
+
+## [2.3.0](https://github.com/ruflin/Elastica/releases/tag/2.3.0) - 2015-09-15
+
+
+### Backward Compatibility Breaks
+- Objects do not casts to arrays in setters and saved in params as objects. There is many side effects if
+  you work with params on "low-level" or change your objects after you call setter with object
+  as argument. [#916](https://github.com/ruflin/Elastica/pull/916)
+
+### Added
+- Add Script File feature #902 #914
+
+### Improvements
+- Support the http.compression in the Http transport adapter #515
+- Introduction of Lazy toArray [#916](https://github.com/ruflin/Elastica/pull/916)
+- Update Elasticsearch dependency to 1.7.2 [#929](https://github.com/ruflin/Elastica/pull/929)
+
 
 
 ## [2.2.1](https://github.com/ruflin/Elastica/releases/tag/2.2.1) - 2015-08-10
