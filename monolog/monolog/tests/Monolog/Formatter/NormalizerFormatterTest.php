@@ -19,6 +19,7 @@ class NormalizerFormatterTest extends \PHPUnit_Framework_TestCase
     public function tearDown()
     {
         \PHPUnit_Framework_Error_Warning::$enabled = true;
+
         return parent::tearDown();
     }
 
@@ -57,7 +58,7 @@ class NormalizerFormatterTest extends \PHPUnit_Framework_TestCase
                 'inf' => 'INF',
                 '-inf' => '-INF',
                 'nan' => 'NaN',
-            )
+            ),
         ), $formatted);
     }
 
@@ -80,8 +81,17 @@ class NormalizerFormatterTest extends \PHPUnit_Framework_TestCase
                 'message' => $e2->getMessage(),
                 'code'    => $e2->getCode(),
                 'file'    => $e2->getFile().':'.$e2->getLine(),
-            )
+            ),
         ), $formatted);
+    }
+
+    public function testFormatToStringExceptionHandle()
+    {
+        $formatter = new NormalizerFormatter('Y-m-d');
+        $this->setExpectedException('RuntimeException', 'Could not convert to string');
+        $formatter->format(array(
+            'myObject' => new TestToStringError(),
+        ));
     }
 
     public function testBatchFormat()
@@ -224,7 +234,7 @@ class NormalizerFormatterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param mixed $in Input
+     * @param mixed $in     Input
      * @param mixed $expect Expected output
      * @covers Monolog\Formatter\NormalizerFormatter::detectAndCleanUtf8
      * @dataProvider providesDetectAndCleanUtf8
@@ -239,6 +249,7 @@ class NormalizerFormatterTest extends \PHPUnit_Framework_TestCase
     public function providesDetectAndCleanUtf8()
     {
         $obj = new \stdClass;
+
         return array(
             'null' => array(null, null),
             'int' => array(123, 123),
@@ -255,7 +266,7 @@ class NormalizerFormatterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param int $code
+     * @param int    $code
      * @param string $msg
      * @dataProvider providesHandleJsonErrorFailure
      */
@@ -355,5 +366,13 @@ class TestStreamFoo
         fseek($this->resource, 0);
 
         return $this->foo . ' - ' . (string) stream_get_contents($this->resource);
+    }
+}
+
+class TestToStringError
+{
+    public function __toString()
+    {
+        throw new \RuntimeException('Could not convert to string');
     }
 }

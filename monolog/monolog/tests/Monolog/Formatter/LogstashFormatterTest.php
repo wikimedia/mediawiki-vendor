@@ -18,6 +18,7 @@ class LogstashFormatterTest extends \PHPUnit_Framework_TestCase
     public function tearDown()
     {
         \PHPUnit_Framework_Error_Warning::$enabled = true;
+
         return parent::tearDown();
     }
 
@@ -89,7 +90,7 @@ class LogstashFormatterTest extends \PHPUnit_Framework_TestCase
             'context' => array('from' => 'logger'),
             'datetime' => new \DateTime("@0"),
             'extra' => array('key' => 'pair'),
-            'message' => 'log'
+            'message' => 'log',
         );
 
         $message = json_decode($formatter->format($record), true);
@@ -122,7 +123,7 @@ class LogstashFormatterTest extends \PHPUnit_Framework_TestCase
             'context' => array('from' => 'logger'),
             'datetime' => new \DateTime("@0"),
             'extra' => array('key' => 'pair'),
-            'message' => 'log'
+            'message' => 'log',
         );
 
         $message = json_decode($formatter->format($record), true);
@@ -152,7 +153,7 @@ class LogstashFormatterTest extends \PHPUnit_Framework_TestCase
             'context' => array('from' => 'logger'),
             'datetime' => new \DateTime("@0"),
             'extra' => array('key' => 'pair'),
-            'message' => 'log'
+            'message' => 'log',
         );
 
         $message = json_decode($formatter->format($record), true);
@@ -229,7 +230,7 @@ class LogstashFormatterTest extends \PHPUnit_Framework_TestCase
             'context' => array('from' => 'logger'),
             'datetime' => new \DateTime("@0"),
             'extra' => array('key' => 'pair'),
-            'message' => 'log'
+            'message' => 'log',
         );
 
         $message = json_decode($formatter->format($record), true);
@@ -258,7 +259,7 @@ class LogstashFormatterTest extends \PHPUnit_Framework_TestCase
             'context' => array('from' => 'logger'),
             'datetime' => new \DateTime("@0"),
             'extra' => array('key' => 'pair'),
-            'message' => 'log'
+            'message' => 'log',
         );
 
         $message = json_decode($formatter->format($record), true);
@@ -284,7 +285,7 @@ class LogstashFormatterTest extends \PHPUnit_Framework_TestCase
             'context' => array('from' => 'logger'),
             'datetime' => new \DateTime("@0"),
             'extra' => array('key' => 'pair'),
-            'message' => 'log'
+            'message' => 'log',
         );
 
         $message = json_decode($formatter->format($record), true);

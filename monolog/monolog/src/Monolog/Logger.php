@@ -92,14 +92,14 @@ class Logger implements LoggerInterface
      * @var array $levels Logging levels
      */
     protected static $levels = array(
-        100 => 'DEBUG',
-        200 => 'INFO',
-        250 => 'NOTICE',
-        300 => 'WARNING',
-        400 => 'ERROR',
-        500 => 'CRITICAL',
-        550 => 'ALERT',
-        600 => 'EMERGENCY',
+        self::DEBUG     => 'DEBUG',
+        self::INFO      => 'INFO',
+        self::NOTICE    => 'NOTICE',
+        self::WARNING   => 'WARNING',
+        self::ERROR     => 'ERROR',
+        self::CRITICAL  => 'CRITICAL',
+        self::ALERT     => 'ALERT',
+        self::EMERGENCY => 'EMERGENCY',
     );
 
     /**
@@ -154,9 +154,22 @@ class Logger implements LoggerInterface
     }
 
     /**
+     * Return a new cloned instance with the name changed
+     *
+     * @return static
+     */
+    public function withName($name)
+    {
+        $new = clone $this;
+        $new->name = $name;
+
+        return $new;
+    }
+
+    /**
      * Pushes a handler on to the stack.
      *
-     * @param HandlerInterface $handler
+     * @param  HandlerInterface $handler
      * @return $this
      */
     public function pushHandler(HandlerInterface $handler)
@@ -185,7 +198,7 @@ class Logger implements LoggerInterface
      *
      * If a map is passed, keys will be ignored.
      *
-     * @param HandlerInterface[] $handlers
+     * @param  HandlerInterface[] $handlers
      * @return $this
      */
     public function setHandlers(array $handlers)
@@ -209,7 +222,7 @@ class Logger implements LoggerInterface
     /**
      * Adds a processor on to the stack.
      *
-     * @param callable $callback
+     * @param  callable $callback
      * @return $this
      */
     public function pushProcessor($callback)
@@ -244,7 +257,6 @@ class Logger implements LoggerInterface
         return $this->processors;
     }
 
-
     /**
      * Control the use of microsecond resolution timestamps in the 'datetime'
      * member of new records.
@@ -260,13 +272,13 @@ class Logger implements LoggerInterface
      */
     public function useMicrosecondTimestamps($micro)
     {
-        $this->microsecondTimestamps = (bool)$micro;
+        $this->microsecondTimestamps = (bool) $micro;
     }
 
     /**
      * Adds a log record.
      *
-     * @param  integer $level   The logging level
+     * @param  int     $level   The logging level
      * @param  string  $message The log message
      * @param  array   $context The log context
      * @return Boolean Whether the record has been processed
@@ -281,11 +293,14 @@ class Logger implements LoggerInterface
 
         // check if any handler will handle this message so we can return early and save cycles
         $handlerKey = null;
-        foreach ($this->handlers as $key => $handler) {
+        reset($this->handlers);
+        while ($handler = current($this->handlers)) {
             if ($handler->isHandling(array('level' => $level))) {
-                $handlerKey = $key;
+                $handlerKey = key($this->handlers);
                 break;
             }
+
+            next($this->handlers);
         }
 
         if (null === $handlerKey) {
@@ -316,9 +331,13 @@ class Logger implements LoggerInterface
         foreach ($this->processors as $processor) {
             $record = call_user_func($processor, $record);
         }
-        while (isset($this->handlers[$handlerKey]) &&
-            false === $this->handlers[$handlerKey]->handle($record)) {
-            $handlerKey++;
+
+        while ($handler = current($this->handlers)) {
+            if (true === $handler->handle($record)) {
+                break;
+            }
+
+            next($this->handlers);
         }
 
         return true;
@@ -433,7 +452,7 @@ class Logger implements LoggerInterface
     /**
      * Gets the name of the logging level.
      *
-     * @param  integer $level
+     * @param  int    $level
      * @return string
      */
     public static function getLevelName($level)
@@ -463,7 +482,7 @@ class Logger implements LoggerInterface
     /**
      * Checks whether the Logger has a handler that listens on the given level
      *
-     * @param  integer $level
+     * @param  int     $level
      * @return Boolean
      */
     public function isHandling($level)

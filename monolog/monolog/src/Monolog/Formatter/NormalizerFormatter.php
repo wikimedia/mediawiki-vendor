@@ -90,13 +90,14 @@ class NormalizerFormatter implements FormatterInterface
         }
 
         if (is_object($data)) {
-            if ($data instanceof Exception) {
+            // TODO 2.0 only check for Throwable
+            if ($data instanceof Exception || (PHP_VERSION_ID > 70000 && $data instanceof \Throwable)) {
                 return $this->normalizeException($data);
             }
 
             // non-serializable objects that implement __toString stringified
             if (method_exists($data, '__toString') && !$data instanceof \JsonSerializable) {
-                $value = (string) $data;
+                $value = $data->__toString();
             } else {
                 // the rest is json-serialized in some way
                 $value = $this->toJson($data, true);
@@ -112,8 +113,13 @@ class NormalizerFormatter implements FormatterInterface
         return '[unknown('.gettype($data).')]';
     }
 
-    protected function normalizeException(Exception $e)
+    protected function normalizeException($e)
     {
+        // TODO 2.0 only check for Throwable
+        if (!$e instanceof Exception && !$e instanceof \Throwable) {
+            throw new \InvalidArgumentException('Exception/Throwable expected, got '.gettype($e).' / '.get_class($e));
+        }
+
         $data = array(
             'class' => get_class($e),
             'message' => $e->getMessage(),
@@ -141,10 +147,10 @@ class NormalizerFormatter implements FormatterInterface
     /**
      * Return the JSON representation of a value
      *
-     * @param mixed $data
-     * @param bool  $ignoreErrors
-     * @return string
+     * @param  mixed             $data
+     * @param  bool              $ignoreErrors
      * @throws \RuntimeException if encoding fails and errors are not ignored
+     * @return string
      */
     protected function toJson($data, $ignoreErrors = false)
     {
@@ -163,7 +169,7 @@ class NormalizerFormatter implements FormatterInterface
     }
 
     /**
-     * @param mixed $data
+     * @param  mixed  $data
      * @return string JSON encoded data or null on failure
      */
     private function jsonEncode($data)
@@ -183,10 +189,10 @@ class NormalizerFormatter implements FormatterInterface
      * inital error is not encoding related or the input can't be cleaned then
      * raise a descriptive exception.
      *
-     * @param int   $code return code of json_last_error function
-     * @param mixed $data data that was meant to be encoded
-     * @return string JSON encoded data after error correction
+     * @param  int               $code return code of json_last_error function
+     * @param  mixed             $data data that was meant to be encoded
      * @throws \RuntimeException if failure can't be corrected
+     * @return string            JSON encoded data after error correction
      */
     private function handleJsonError($code, $data)
     {
@@ -196,10 +202,8 @@ class NormalizerFormatter implements FormatterInterface
 
         if (is_string($data)) {
             $this->detectAndCleanUtf8($data);
-
         } elseif (is_array($data)) {
             array_walk_recursive($data, array($this, 'detectAndCleanUtf8'));
-
         } else {
             $this->throwEncodeError($code, $data);
         }
@@ -207,7 +211,7 @@ class NormalizerFormatter implements FormatterInterface
         $json = $this->jsonEncode($data);
 
         if ($json === false) {
-            $json = $this->throwEncodeError(json_last_error(), $data);
+            $this->throwEncodeError(json_last_error(), $data);
         }
 
         return $json;
@@ -216,8 +220,8 @@ class NormalizerFormatter implements FormatterInterface
     /**
      * Throws an exception according to a given code with a customized message
      *
-     * @param int   $code return code of json_last_error function
-     * @param mixed $data data that was meant to be encoded
+     * @param  int               $code return code of json_last_error function
+     * @param  mixed             $data data that was meant to be encoded
      * @throws \RuntimeException
      */
     private function throwEncodeError($code, $data)
@@ -256,7 +260,7 @@ class NormalizerFormatter implements FormatterInterface
      * can be used as a callback for array_walk_recursive.
      *
      * @param mixed &$data Input to check and convert if needed
-     * @access private
+     * @private
      */
     public function detectAndCleanUtf8(&$data)
     {
