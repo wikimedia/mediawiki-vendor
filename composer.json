@@ -29,7 +29,7 @@
 		"php": ">=5.5.9",
 		"psr/log": "1.0.0",
 		"ruflin/elastica": "2.3.1",
-		"symfony/process": "2.6.12",
+		"symfony/process": "3.0.4",
 		"wikimedia/assert": "0.2.2",
 		"wikimedia/avro": "1.7.7",
 		"wikimedia/base-convert": "1.0.1",

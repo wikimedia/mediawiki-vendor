@@ -10,6 +10,7 @@ return array(
     'Wikimedia\\Composer\\' => array($vendorDir . '/wikimedia/composer-merge-plugin/src'),
     'Wikimedia\\Assert\\Test\\' => array($vendorDir . '/wikimedia/assert/tests/phpunit'),
     'Wikimedia\\Assert\\' => array($vendorDir . '/wikimedia/assert/src'),
+    'Symfony\\Component\\Process\\' => array($vendorDir . '/symfony/process'),
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
     'Firebase\\JWT\\' => array($vendorDir . '/firebase/php-jwt/src'),
     'Elastica\\' => array($vendorDir . '/ruflin/elastica/lib/Elastica'),

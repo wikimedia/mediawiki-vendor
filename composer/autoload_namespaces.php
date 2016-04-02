@@ -7,7 +7,6 @@ $baseDir = $vendorDir;
 
 return array(
     'TextCat' => array($vendorDir . '/wikimedia/textcat'),
-    'Symfony\\Component\\Process\\' => array($vendorDir . '/symfony/process'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log'),
     'PEAR' => array($vendorDir . '/pear/pear_exception'),
     'Net' => array($vendorDir . '/pear/net_socket', $vendorDir . '/pear/net_smtp'),

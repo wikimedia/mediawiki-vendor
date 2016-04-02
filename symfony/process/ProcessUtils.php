@@ -93,10 +93,6 @@ class ProcessUtils
             if (is_scalar($input)) {
                 return (string) $input;
             }
-            // deprecated as of Symfony 2.5, to be removed in 3.0
-            if (is_object($input) && method_exists($input, '__toString')) {
-                return (string) $input;
-            }
 
             throw new InvalidArgumentException(sprintf('%s only accepts strings or stream resources.', $caller));
         }
