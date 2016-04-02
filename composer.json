@@ -19,7 +19,7 @@
 		"oojs/oojs-ui": "0.16.4",
 		"oyejorge/less.php": "1.7.0.10",
 		"pear/console_getopt": "1.4.1",
-		"pear/mail": "1.2.0",
+		"pear/mail": "1.3.0",
 		"pear/mail_mime": "1.10.0",
 		"pear/mail_mime-decode": "1.5.5.2",
 		"pear/net_smtp": "1.7.1",
