@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c9ce5d5cf7e3c1871e6ea169a0b790b0",
-    "content-hash": "7ada4208b27c7b8c168dbb83bf57f724",
+    "hash": "3708ef691038ee40f722a8f626013036",
+    "content-hash": "62fd107dd3389eb827e9ef8e83d191d7",
     "packages": [
         {
             "name": "composer/semver",
@@ -1360,6 +1360,48 @@
             ],
             "description": "Composer plugin to merge multiple composer.json files",
             "time": "2016-03-08 17:11:37"
+        },
+        {
+            "name": "wikimedia/html-formatter",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wikimedia/HtmlFormatter.git",
+                "reference": "60069c2fb5e4f034e7025089cc4a1023b810d197"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wikimedia/HtmlFormatter/zipball/60069c2fb5e4f034e7025089cc4a1023b810d197",
+                "reference": "60069c2fb5e4f034e7025089cc4a1023b810d197",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=5.5"
+            },
+            "require-dev": {
+                "jakub-onderka/php-parallel-lint": "0.9.2",
+                "mediawiki/mediawiki-codesniffer": "0.5.1",
+                "phpunit/phpunit": "4.7.2"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "MediaWiki contributors"
+                }
+            ],
+            "description": "Performs transformations of HTML by wrapping around libxml2 and working around its countless bugs.",
+            "homepage": "https://www.mediawiki.org/wiki/HtmlFormatter",
+            "time": "2016-04-07 21:25:47"
         },
         {
             "name": "wikimedia/ip-set",

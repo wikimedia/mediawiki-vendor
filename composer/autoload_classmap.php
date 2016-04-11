@@ -292,6 +292,7 @@ return array(
     'Firebase\\JWT\\ExpiredException' => $vendorDir . '/firebase/php-jwt/src/ExpiredException.php',
     'Firebase\\JWT\\JWT' => $vendorDir . '/firebase/php-jwt/src/JWT.php',
     'Firebase\\JWT\\SignatureInvalidException' => $vendorDir . '/firebase/php-jwt/src/SignatureInvalidException.php',
+    'HtmlFormatter\\HtmlFormatter' => $vendorDir . '/wikimedia/html-formatter/src/HtmlFormatter.php',
     'IPSet\\IPSet' => $vendorDir . '/wikimedia/ip-set/src/IPSet.php',
     'Kafka\\Client' => $vendorDir . '/nmred/kafka-php/src/Kafka/Client.php',
     'Kafka\\ClusterMetaData' => $vendorDir . '/nmred/kafka-php/src/Kafka/ClusterMetaData.php',
