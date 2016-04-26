@@ -505,7 +505,6 @@ return array(
     'OOUI\\ComboBoxInputWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/ComboBoxInputWidget.php',
     'OOUI\\DropdownInputWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/DropdownInputWidget.php',
     'OOUI\\Element' => $vendorDir . '/oojs/oojs-ui/php/Element.php',
-    'OOUI\\ElementMixin' => $vendorDir . '/oojs/oojs-ui/php/ElementMixin.php',
     'OOUI\\Exception' => $vendorDir . '/oojs/oojs-ui/php/Exception.php',
     'OOUI\\FieldLayout' => $vendorDir . '/oojs/oojs-ui/php/layouts/FieldLayout.php',
     'OOUI\\FieldsetLayout' => $vendorDir . '/oojs/oojs-ui/php/layouts/FieldsetLayout.php',
