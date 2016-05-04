@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2e032cbe0c06b4225c319a65930d7631",
-    "content-hash": "c61356e2af6e9a24a6629157061d8971",
+    "hash": "d4b69794468f794a8350339881319948",
+    "content-hash": "fbadb58818d15bd051e858b533bf2252",
     "packages": [
         {
             "name": "composer/semver",
@@ -1471,25 +1471,25 @@
         },
         {
             "name": "wikimedia/ip-set",
-            "version": "1.0.1",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/IPSet.git",
-                "reference": "3c2dd6706546fe616e6ceba02044e64dce4fc9be"
+                "reference": "b71a3834b42e2bcb2d9fa037abbb654e82117a01"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/IPSet/zipball/3c2dd6706546fe616e6ceba02044e64dce4fc9be",
-                "reference": "3c2dd6706546fe616e6ceba02044e64dce4fc9be",
+                "url": "https://api.github.com/repos/wikimedia/IPSet/zipball/b71a3834b42e2bcb2d9fa037abbb654e82117a01",
+                "reference": "b71a3834b42e2bcb2d9fa037abbb654e82117a01",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
             "require-dev": {
-                "jakub-onderka/php-parallel-lint": "0.9",
-                "mediawiki/mediawiki-codesniffer": "0.3.0",
-                "phpunit/phpunit": "4.6.*"
+                "jakub-onderka/php-parallel-lint": "0.9.2",
+                "mediawiki/mediawiki-codesniffer": "0.5.1",
+                "phpunit/phpunit": "4.7.2"
             },
             "type": "library",
             "autoload": {
@@ -1509,7 +1509,7 @@
             ],
             "description": "Efficiently match IP addresses against a set of CIDR specifications.",
             "homepage": "https://github.com/wikimedia/IPSet",
-            "time": "2015-06-29 20:21:27"
+            "time": "2016-02-12 15:19:10"
         },
         {
             "name": "wikimedia/php-session-serializer",
