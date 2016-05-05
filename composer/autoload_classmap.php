@@ -53,6 +53,7 @@ return array(
     'Cdb\\Exception' => $vendorDir . '/wikimedia/cdb/src/Exception.php',
     'Cdb\\Reader' => $vendorDir . '/wikimedia/cdb/src/Reader.php',
     'Cdb\\Reader\\DBA' => $vendorDir . '/wikimedia/cdb/src/Reader/DBA.php',
+    'Cdb\\Reader\\Hash' => $vendorDir . '/wikimedia/cdb/src/Reader/Hash.php',
     'Cdb\\Reader\\PHP' => $vendorDir . '/wikimedia/cdb/src/Reader/PHP.php',
     'Cdb\\Util' => $vendorDir . '/wikimedia/cdb/src/Util.php',
     'Cdb\\Writer' => $vendorDir . '/wikimedia/cdb/src/Writer.php',
