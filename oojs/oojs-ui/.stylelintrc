@@ -1,0 +1,14 @@
+{
+	"extends": "stylelint-config-wikimedia",
+	"rules": {
+		"at-rule-empty-line-before": null,
+		"block-closing-brace-space-after": null,
+		"block-no-empty": null,
+		"block-no-single-line": null,
+		"declaration-no-important": null,
+		"font-family-name-quotes": [ "double-where-recommended" ],
+		"no-descending-specificity": null,
+		"string-no-newline": true,
+		"string-quotes": null
+	}
+}
