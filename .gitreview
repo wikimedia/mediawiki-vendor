@@ -2,5 +2,5 @@
 host=gerrit.wikimedia.org
 port=29418
 project=mediawiki/vendor.git
-defaultbranch=es2.x
+defaultbranch=master
 defaultrebase=0

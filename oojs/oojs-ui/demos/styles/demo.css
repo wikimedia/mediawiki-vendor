@@ -26,7 +26,7 @@ body {
 	box-sizing: border-box;
 }
 
-@media (max-width: 750px) {
+@media ( max-width: 750px ) {
 	.oo-ui-demo-menu {
 		margin-bottom: 1em;
 	}
@@ -35,7 +35,7 @@ body {
 	}
 }
 
-@media (min-width: 751px) {
+@media ( min-width: 751px ) {
 	.oo-ui-demo-menu {
 		margin-bottom: 2em;
 	}
@@ -97,7 +97,7 @@ body {
 }
 
 /* Console */
-
+/* stylelint-disable selector-pseudo-element-colon-notation */
 .oo-ui-demo-console {
 	clear: both;
 	position: relative;
@@ -184,7 +184,7 @@ body {
 }
 
 .oo-ui-demo-console-log-line-error {
-	color: red;
+	color: #f00;
 }
 
 .oo-ui-demo-console-label {
@@ -209,7 +209,7 @@ body {
 	width: 20px;
 	text-align: center;
 	content: '→';
-	color: blue;
+	color: #00f;
 }
 
 .oo-ui-demo-console-input {
@@ -241,3 +241,4 @@ body {
 	background: #eee;
 	color: #333;
 }
+/* stylelint-enable selector-pseudo-element-colon-notation */
