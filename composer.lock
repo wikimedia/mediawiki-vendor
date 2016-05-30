@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7253faa6e78c67e17f3e0ed6b88e2c0c",
-    "content-hash": "fa3b66688dd61115f4e93a380b664a6d",
+    "hash": "014853eafd992dc582170aaa7e326f59",
+    "content-hash": "b57c820fef6a8b03501865f136b2d062",
     "packages": [
         {
             "name": "composer/semver",
@@ -1284,21 +1284,20 @@
         },
         {
             "name": "wikimedia/cdb",
-            "version": "1.4.0",
+            "version": "1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/cdb.git",
-                "reference": "de73728295f8452465dbb5ec2b680427d557e61b"
+                "reference": "d49d96232f045311dc1f21bf0d7e40adf82a1f1d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/cdb/zipball/de73728295f8452465dbb5ec2b680427d557e61b",
-                "reference": "de73728295f8452465dbb5ec2b680427d557e61b",
+                "url": "https://api.github.com/repos/wikimedia/cdb/zipball/d49d96232f045311dc1f21bf0d7e40adf82a1f1d",
+                "reference": "d49d96232f045311dc1f21bf0d7e40adf82a1f1d",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.2",
-                "wikimedia/assert": "~0.2.2"
+                "php": ">=5.3.2"
             },
             "require-dev": {
                 "jakub-onderka/php-parallel-lint": "0.9",
@@ -1334,7 +1333,7 @@
             ],
             "description": "Constant Database (CDB) wrapper library for PHP. Provides pure-PHP fallback when dba_* functions are absent.",
             "homepage": "https://www.mediawiki.org/wiki/CDB",
-            "time": "2016-05-04 21:47:24"
+            "time": "2016-05-29 07:39:26"
         },
         {
             "name": "wikimedia/cldr-plural-rule-parser",
