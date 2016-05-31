@@ -1745,18 +1745,73 @@
         "homepage": "https://github.com/wikimedia/IPSet"
     },
     {
-        "name": "oojs/oojs-ui",
-        "version": "v0.17.3",
-        "version_normalized": "0.17.3.0",
+        "name": "wikimedia/cdb",
+        "version": "1.4.1",
+        "version_normalized": "1.4.1.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/wikimedia/oojs-ui.git",
-            "reference": "48ba46ffbb0300abd4418ac9581a9eb81fa72a00"
+            "url": "https://github.com/wikimedia/cdb.git",
+            "reference": "d49d96232f045311dc1f21bf0d7e40adf82a1f1d"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/48ba46ffbb0300abd4418ac9581a9eb81fa72a00",
-            "reference": "48ba46ffbb0300abd4418ac9581a9eb81fa72a00",
+            "url": "https://api.github.com/repos/wikimedia/cdb/zipball/d49d96232f045311dc1f21bf0d7e40adf82a1f1d",
+            "reference": "d49d96232f045311dc1f21bf0d7e40adf82a1f1d",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.2"
+        },
+        "require-dev": {
+            "jakub-onderka/php-parallel-lint": "0.9",
+            "mediawiki/mediawiki-codesniffer": "0.5.0",
+            "phpunit/phpunit": "4.6.*"
+        },
+        "time": "2016-05-29 07:39:26",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "src/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "authors": [
+            {
+                "name": "Daniel Kinzler"
+            },
+            {
+                "name": "Tim Starling",
+                "email": "tstarling@wikimedia.org"
+            },
+            {
+                "name": "Chad Horohoe",
+                "email": "chad@wikimedia.org"
+            },
+            {
+                "name": "Ori Livneh",
+                "email": "ori@wikimedia.org"
+            }
+        ],
+        "description": "Constant Database (CDB) wrapper library for PHP. Provides pure-PHP fallback when dba_* functions are absent.",
+        "homepage": "https://www.mediawiki.org/wiki/CDB"
+    },
+    {
+        "name": "oojs/oojs-ui",
+        "version": "v0.17.4",
+        "version_normalized": "0.17.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/oojs-ui.git",
+            "reference": "c4f738414ee5a45d975f0a9a9ad7d562faf920cc"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/c4f738414ee5a45d975f0a9a9ad7d562faf920cc",
+            "reference": "c4f738414ee5a45d975f0a9a9ad7d562faf920cc",
             "shasum": ""
         },
         "require": {
@@ -1768,7 +1823,7 @@
             "mediawiki/mediawiki-codesniffer": "0.6.0",
             "phpunit/phpunit": "4.8.21"
         },
-        "time": "2016-05-24 22:04:46",
+        "time": "2016-05-31 19:57:20",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1824,60 +1879,5 @@
         ],
         "description": "Provides library of common widgets, layouts, and windows.",
         "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
-    },
-    {
-        "name": "wikimedia/cdb",
-        "version": "1.4.1",
-        "version_normalized": "1.4.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/wikimedia/cdb.git",
-            "reference": "d49d96232f045311dc1f21bf0d7e40adf82a1f1d"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/cdb/zipball/d49d96232f045311dc1f21bf0d7e40adf82a1f1d",
-            "reference": "d49d96232f045311dc1f21bf0d7e40adf82a1f1d",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.2"
-        },
-        "require-dev": {
-            "jakub-onderka/php-parallel-lint": "0.9",
-            "mediawiki/mediawiki-codesniffer": "0.5.0",
-            "phpunit/phpunit": "4.6.*"
-        },
-        "time": "2016-05-29 07:39:26",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "src/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "GPL-2.0+"
-        ],
-        "authors": [
-            {
-                "name": "Daniel Kinzler"
-            },
-            {
-                "name": "Tim Starling",
-                "email": "tstarling@wikimedia.org"
-            },
-            {
-                "name": "Chad Horohoe",
-                "email": "chad@wikimedia.org"
-            },
-            {
-                "name": "Ori Livneh",
-                "email": "ori@wikimedia.org"
-            }
-        ],
-        "description": "Constant Database (CDB) wrapper library for PHP. Provides pure-PHP fallback when dba_* functions are absent.",
-        "homepage": "https://www.mediawiki.org/wiki/CDB"
     }
 ]
