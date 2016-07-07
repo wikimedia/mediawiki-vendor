@@ -620,5 +620,6 @@ return array(
     'Wikimedia\\Composer\\Merge\\StabilityFlags' => $vendorDir . '/wikimedia/composer-merge-plugin/src/Merge/StabilityFlags.php',
     'Wikimedia\\PhpSessionSerializer' => $vendorDir . '/wikimedia/php-session-serializer/src/Wikimedia/PhpSessionSerializer.php',
     'WrappedString\\WrappedString' => $vendorDir . '/wikimedia/wrappedstring/src/WrappedString.php',
+    'WrappedString\\WrappedStringList' => $vendorDir . '/wikimedia/wrappedstring/src/WrappedStringList.php',
     'lessc' => $vendorDir . '/oyejorge/less.php/lessc.inc.php',
 );

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "edd0644a2b7eee050fe3a7c3b6adc467",
-    "content-hash": "b49986c80bddd6c9ab6f193a90a85001",
+    "hash": "97b784c82bcc1e10c8c384bc0c949648",
+    "content-hash": "1cad9abdcb8a8056511a566b262dff1f",
     "packages": [
         {
             "name": "composer/semver",
@@ -1729,24 +1729,24 @@
         },
         {
             "name": "wikimedia/wrappedstring",
-            "version": "v2.0.0",
+            "version": "v2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/WrappedString.git",
-                "reference": "1b27e0ea23bd915644dade17c3fe1e45fdbadf11"
+                "reference": "a3e07adc3ea0cf62568aedf29ffe4eb2f90b7cde"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/WrappedString/zipball/1b27e0ea23bd915644dade17c3fe1e45fdbadf11",
-                "reference": "1b27e0ea23bd915644dade17c3fe1e45fdbadf11",
+                "url": "https://api.github.com/repos/wikimedia/WrappedString/zipball/a3e07adc3ea0cf62568aedf29ffe4eb2f90b7cde",
+                "reference": "a3e07adc3ea0cf62568aedf29ffe4eb2f90b7cde",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3"
+                "php": ">=5.5.9"
             },
             "require-dev": {
                 "jakub-onderka/php-parallel-lint": "^0.9.0.0",
-                "mediawiki/mediawiki-codesniffer": "^0.3.0.0",
+                "mediawiki/mediawiki-codesniffer": "0.4.0",
                 "phpunit/phpunit": "^4.7.7.0"
             },
             "type": "library",
@@ -1767,7 +1767,7 @@
             ],
             "description": "Automatically compact sequentially-outputted strings that share a common prefix / suffix pair.",
             "homepage": "https://www.mediawiki.org/wiki/WrappedString",
-            "time": "2015-07-31 00:06:22"
+            "time": "2016-07-07 19:22:03"
         },
         {
             "name": "zordius/lightncandy",
