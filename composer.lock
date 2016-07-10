@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "97b784c82bcc1e10c8c384bc0c949648",
-    "content-hash": "1cad9abdcb8a8056511a566b262dff1f",
+    "hash": "619aa80afd62a749c9c414cd07af8b62",
+    "content-hash": "9f4d8c410c0badc7f1df0b21ddbe2f90",
     "packages": [
         {
             "name": "composer/semver",
-            "version": "1.4.0",
+            "version": "1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/semver.git",
-                "reference": "84c47f3d8901440403217afc120683c7385aecb8"
+                "reference": "03c9de5aa25e7672c4ad251eeaba0c47a06c8b98"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/semver/zipball/84c47f3d8901440403217afc120683c7385aecb8",
-                "reference": "84c47f3d8901440403217afc120683c7385aecb8",
+                "url": "https://api.github.com/repos/composer/semver/zipball/03c9de5aa25e7672c4ad251eeaba0c47a06c8b98",
+                "reference": "03c9de5aa25e7672c4ad251eeaba0c47a06c8b98",
                 "shasum": ""
             },
             "require": {
@@ -67,7 +67,7 @@
                 "validation",
                 "versioning"
             ],
-            "time": "2016-03-30 13:16:03"
+            "time": "2016-06-02 09:04:51"
         },
         {
             "name": "cssjanus/cssjanus",
