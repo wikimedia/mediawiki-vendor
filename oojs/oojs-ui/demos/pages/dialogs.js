@@ -689,9 +689,6 @@ OO.ui.Demo.static.pages.dialogs = function ( demo ) {
 			name: 'Simple dialog (small)',
 			config: {
 				size: 'small'
-			},
-			data: {
-				title: 'Sample dialog with very long title that does not fit'
 			}
 		},
 		{
@@ -744,6 +741,16 @@ OO.ui.Demo.static.pages.dialogs = function ( demo ) {
 			dialogClass: ProcessDialog,
 			config: {
 				size: 'medium'
+			}
+		},
+		{
+			name: 'Process dialog (medium, long title)',
+			dialogClass: ProcessDialog,
+			config: {
+				size: 'medium'
+			},
+			data: {
+				title: 'Sample dialog with very long title that does not fit'
 			}
 		},
 		{
