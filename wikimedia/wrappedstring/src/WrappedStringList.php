@@ -57,13 +57,21 @@ class WrappedStringList {
 	 *
 	 * Does not modify the given array or any of the objects in it.
 	 *
-	 * @param WrappedStringList[] $wraps
+	 * @param array $lists Array of strings and/or WrappedStringList objects
+	 * @param string $outerSep
 	 * @return string[] Compacted list
 	 */
-	protected static function compact( array $lists ) {
+	protected static function compact( array $lists, $outerSep ) {
 		$consolidated = array();
 		$prev = current( $lists );
+		// Wrap single WrappedString objects in a list for easier merging
+		if ( $prev instanceof WrappedString ) {
+			$prev = new WrappedStringList( $outerSep, [ $prev ] );
+		}
 		while ( ( $curr = next( $lists ) ) !== false ) {
+			if ( $curr instanceof WrappedString ) {
+				$curr = new WrappedStringList( $outerSep, [ $curr ] );
+			}
 			if ( $prev instanceof WrappedStringList ) {
 				if ( $curr instanceof WrappedStringList
 					&& $prev->sep === $curr->sep
@@ -101,7 +109,7 @@ class WrappedStringList {
 	 * @return string
 	 */
 	public static function join( $sep, array $lists ) {
-		return implode( $sep, self::compact( $lists ) );
+		return implode( $sep, self::compact( $lists, $sep ) );
 	}
 
 	/** @return string */
