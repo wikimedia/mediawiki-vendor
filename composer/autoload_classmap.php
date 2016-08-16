@@ -556,6 +556,7 @@ return array(
     'OOUI\\Layout' => $vendorDir . '/oojs/oojs-ui/php/Layout.php',
     'OOUI\\MediaWikiTheme' => $vendorDir . '/oojs/oojs-ui/php/themes/MediaWikiTheme.php',
     'OOUI\\PanelLayout' => $vendorDir . '/oojs/oojs-ui/php/layouts/PanelLayout.php',
+    'OOUI\\ProgressBarWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/ProgressBarWidget.php',
     'OOUI\\RadioInputWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/RadioInputWidget.php',
     'OOUI\\RadioSelectInputWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/RadioSelectInputWidget.php',
     'OOUI\\TabIndexedElement' => $vendorDir . '/oojs/oojs-ui/php/mixins/TabIndexedElement.php',
