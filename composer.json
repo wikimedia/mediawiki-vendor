@@ -12,7 +12,7 @@
 		"composer/semver": "1.4.1",
 		"cssjanus/cssjanus": "1.1.2",
 		"firebase/php-jwt": "3.0.0",
-		"justinrainbow/json-schema": "1.6.1",
+		"justinrainbow/json-schema": "3.0.0",
 		"liuggio/statsd-php-client": "1.0.18",
 		"mediawiki/at-ease": "1.1.0",
 		"monolog/monolog": "1.18.2",

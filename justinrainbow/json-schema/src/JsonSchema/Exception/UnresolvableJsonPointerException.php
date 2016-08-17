@@ -10,8 +10,9 @@
 namespace JsonSchema\Exception;
 
 /**
- * Wrapper for the ResourceNotFoundException
+ * @package JsonSchema\Exception
+ * @author Joost Nijhuis <jnijhuis81@gmail.com>
  */
-class ResourceNotFoundException extends RuntimeException
+class UnresolvableJsonPointerException extends InvalidArgumentException
 {
 }
