@@ -1732,87 +1732,6 @@
         "homepage": "https://www.mediawiki.org/wiki/WrappedString"
     },
     {
-        "name": "oojs/oojs-ui",
-        "version": "v0.17.8",
-        "version_normalized": "0.17.8.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/wikimedia/oojs-ui.git",
-            "reference": "2617b34891a50b9cfd0d03413f1a8f453df45646"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/2617b34891a50b9cfd0d03413f1a8f453df45646",
-            "reference": "2617b34891a50b9cfd0d03413f1a8f453df45646",
-            "shasum": ""
-        },
-        "require": {
-            "mediawiki/at-ease": "1.1.0",
-            "php": ">=5.5.9"
-        },
-        "require-dev": {
-            "jakub-onderka/php-parallel-lint": "0.9.2",
-            "mediawiki/mediawiki-codesniffer": "0.6.0",
-            "phpunit/phpunit": "4.8.21"
-        },
-        "time": "2016-08-16 20:57:41",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "php/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Timo Tijhof",
-                "email": "krinklemail@gmail.com"
-            },
-            {
-                "name": "Bartosz Dziewoński",
-                "email": "matma.rex@gmail.com"
-            },
-            {
-                "name": "Ed Sanders",
-                "email": "esanders@wikimedia.org"
-            },
-            {
-                "name": "James D. Forrester",
-                "email": "jforrester@wikimedia.org"
-            },
-            {
-                "name": "Kirsten Menger-Anderson",
-                "email": "kmenger@wikimedia.org"
-            },
-            {
-                "name": "Rob Moen",
-                "email": "rmoen@wikimedia.org"
-            },
-            {
-                "name": "Roan Kattouw",
-                "email": "roan@wikimedia.org"
-            },
-            {
-                "name": "Trevor Parscal",
-                "email": "trevor@wikimedia.org"
-            },
-            {
-                "name": "Kunal Mehta",
-                "email": "legoktm@gmail.com"
-            },
-            {
-                "name": "Prateek Saxena",
-                "email": "prtksxna@gmail.com"
-            }
-        ],
-        "description": "Provides library of common widgets, layouts, and windows.",
-        "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
-    },
-    {
         "name": "justinrainbow/json-schema",
         "version": "3.0.0",
         "version_normalized": "3.0.0.0",
@@ -1879,5 +1798,86 @@
             "json",
             "schema"
         ]
+    },
+    {
+        "name": "oojs/oojs-ui",
+        "version": "v0.17.9",
+        "version_normalized": "0.17.9.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/oojs-ui.git",
+            "reference": "3e3e0f9efbd0811aa6b7d534e56b3f3f0e3c0861"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/3e3e0f9efbd0811aa6b7d534e56b3f3f0e3c0861",
+            "reference": "3e3e0f9efbd0811aa6b7d534e56b3f3f0e3c0861",
+            "shasum": ""
+        },
+        "require": {
+            "mediawiki/at-ease": "1.1.0",
+            "php": ">=5.5.9"
+        },
+        "require-dev": {
+            "jakub-onderka/php-parallel-lint": "0.9.2",
+            "mediawiki/mediawiki-codesniffer": "0.6.0",
+            "phpunit/phpunit": "4.8.21"
+        },
+        "time": "2016-09-13 17:35:32",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "php/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Timo Tijhof",
+                "email": "krinklemail@gmail.com"
+            },
+            {
+                "name": "Bartosz Dziewoński",
+                "email": "matma.rex@gmail.com"
+            },
+            {
+                "name": "Ed Sanders",
+                "email": "esanders@wikimedia.org"
+            },
+            {
+                "name": "James D. Forrester",
+                "email": "jforrester@wikimedia.org"
+            },
+            {
+                "name": "Kirsten Menger-Anderson",
+                "email": "kmenger@wikimedia.org"
+            },
+            {
+                "name": "Rob Moen",
+                "email": "rmoen@wikimedia.org"
+            },
+            {
+                "name": "Roan Kattouw",
+                "email": "roan@wikimedia.org"
+            },
+            {
+                "name": "Trevor Parscal",
+                "email": "trevor@wikimedia.org"
+            },
+            {
+                "name": "Kunal Mehta",
+                "email": "legoktm@gmail.com"
+            },
+            {
+                "name": "Prateek Saxena",
+                "email": "prtksxna@gmail.com"
+            }
+        ],
+        "description": "Provides library of common widgets, layouts, and windows.",
+        "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
     }
 ]
