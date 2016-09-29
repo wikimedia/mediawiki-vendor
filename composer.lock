@@ -1129,12 +1129,12 @@
             "version": "v0.2.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/wmde/Assert.git",
+                "url": "https://github.com/wikimedia/Assert.git",
                 "reference": "2da55927525975f8d52825fc3ee02e5e36f5036c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wmde/Assert/zipball/2da55927525975f8d52825fc3ee02e5e36f5036c",
+                "url": "https://api.github.com/repos/wikimedia/Assert/zipball/2da55927525975f8d52825fc3ee02e5e36f5036c",
                 "reference": "2da55927525975f8d52825fc3ee02e5e36f5036c",
                 "shasum": ""
             },
