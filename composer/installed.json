@@ -1879,5 +1879,49 @@
         ],
         "description": "Provides library of common widgets, layouts, and windows.",
         "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
+    },
+    {
+        "name": "wikimedia/scoped-callback",
+        "version": "v1.0.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/ScopedCallback.git",
+            "reference": "73985f15be3edb7b823db31f367b780769378d2b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/ScopedCallback/zipball/73985f15be3edb7b823db31f367b780769378d2b",
+            "reference": "73985f15be3edb7b823db31f367b780769378d2b",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.5.9"
+        },
+        "require-dev": {
+            "jakub-onderka/php-parallel-lint": "0.9.2",
+            "mediawiki/mediawiki-codesniffer": "0.7.2",
+            "phpunit/phpunit": "4.8.27"
+        },
+        "time": "2016-09-29 07:03:03",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "src/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "authors": [
+            {
+                "name": "Aaron Schulz",
+                "email": "aschulz@wikimedia.org"
+            }
+        ],
+        "description": "Class for asserting that a callback happens when a dummy object leaves scope",
+        "homepage": "https://www.mediawiki.org/wiki/ScopedCallback"
     }
 ]

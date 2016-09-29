@@ -631,6 +631,7 @@ return array(
     'Wikimedia\\Composer\\Merge\\PluginState' => $vendorDir . '/wikimedia/composer-merge-plugin/src/Merge/PluginState.php',
     'Wikimedia\\Composer\\Merge\\StabilityFlags' => $vendorDir . '/wikimedia/composer-merge-plugin/src/Merge/StabilityFlags.php',
     'Wikimedia\\PhpSessionSerializer' => $vendorDir . '/wikimedia/php-session-serializer/src/Wikimedia/PhpSessionSerializer.php',
+    'Wikimedia\\ScopedCallback' => $vendorDir . '/wikimedia/scoped-callback/src/ScopedCallback.php',
     'WrappedString\\WrappedString' => $vendorDir . '/wikimedia/wrappedstring/src/WrappedString.php',
     'WrappedString\\WrappedStringList' => $vendorDir . '/wikimedia/wrappedstring/src/WrappedStringList.php',
     'lessc' => $vendorDir . '/oyejorge/less.php/lessc.inc.php',
