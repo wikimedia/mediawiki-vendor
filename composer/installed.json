@@ -1923,5 +1923,49 @@
         ],
         "description": "Class for asserting that a callback happens when a dummy object leaves scope",
         "homepage": "https://www.mediawiki.org/wiki/ScopedCallback"
+    },
+    {
+        "name": "wikimedia/wait-condition-loop",
+        "version": "v1.0.1",
+        "version_normalized": "1.0.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/WaitConditionLoop.git",
+            "reference": "0321b8ca6a0f701f96e04e5e8e6d3e244ab05338"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/WaitConditionLoop/zipball/0321b8ca6a0f701f96e04e5e8e6d3e244ab05338",
+            "reference": "0321b8ca6a0f701f96e04e5e8e6d3e244ab05338",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.5.9"
+        },
+        "require-dev": {
+            "jakub-onderka/php-parallel-lint": "0.9.2",
+            "mediawiki/mediawiki-codesniffer": "0.7.2",
+            "phpunit/phpunit": "4.8.24"
+        },
+        "time": "2016-10-01 06:58:30",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "src/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "authors": [
+            {
+                "name": "Aaron Schulz",
+                "email": "aschulz@wikimedia.org"
+            }
+        ],
+        "description": "Wait loop that reaches a condition or times out",
+        "homepage": "https://www.mediawiki.org/wiki/WaitConditionLoop"
     }
 ]
