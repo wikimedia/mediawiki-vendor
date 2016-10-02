@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "19ab65e155b0c9981150fcd971b437c7",
+    "content-hash": "6e6efa02e9989ec950e3970b20d4b0b9",
     "packages": [
         {
             "name": "composer/semver",
@@ -1890,6 +1890,51 @@
             ],
             "description": "PHP port of the TextCat language guesser utility, see http://odur.let.rug.nl/~vannoord/TextCat/.",
             "time": "2017-01-23T16:52:10+00:00"
+        },
+        {
+            "name": "wikimedia/timestamp",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wikimedia/Timestamp.git",
+                "reference": "880660a2fbc6e577d381225812c255008d58e0cc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wikimedia/Timestamp/zipball/880660a2fbc6e577d381225812c255008d58e0cc",
+                "reference": "880660a2fbc6e577d381225812c255008d58e0cc",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "jakub-onderka/php-parallel-lint": "0.9.2",
+                "mediawiki/mediawiki-codesniffer": "0.7.2",
+                "phpunit/phpunit": "4.8.24"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ],
+                "files": [
+                    "src/defines.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Tyler Romeo",
+                    "email": "tylerromeo@gmail.com"
+                }
+            ],
+            "description": "Creation, parsing, and conversion of timestamps",
+            "homepage": "https://www.mediawiki.org/wiki/Timestamp",
+            "time": "2016-09-30T10:00:56+00:00"
         },
         {
             "name": "wikimedia/utfnormal",
