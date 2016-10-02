@@ -4,8 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a0be8dca46b0487f79cc777d78940f4a",
-    "content-hash": "50416a3515ff05a598d0a6cfdf4fac9d",
+    "content-hash": "e59fc06c030fa02586f8afe9786a0dbe",
     "packages": [
         {
             "name": "composer/semver",
@@ -1516,22 +1515,22 @@
         },
         {
             "name": "wikimedia/php-session-serializer",
-            "version": "v1.0.3",
+            "version": "v1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/php-session-serializer.git",
-                "reference": "61dec9a25bdcea4a0cc34a22fe6f43efca390d55"
+                "reference": "4474af7aa8f0b20aa141c33eb4ad068a1c7d5b8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/php-session-serializer/zipball/61dec9a25bdcea4a0cc34a22fe6f43efca390d55",
-                "reference": "61dec9a25bdcea4a0cc34a22fe6f43efca390d55",
+                "url": "https://api.github.com/repos/wikimedia/php-session-serializer/zipball/4474af7aa8f0b20aa141c33eb4ad068a1c7d5b8c",
+                "reference": "4474af7aa8f0b20aa141c33eb4ad068a1c7d5b8c",
                 "shasum": ""
             },
             "require": {
                 "mediawiki/at-ease": "^1.0",
                 "php": ">=5.3.3",
-                "psr/log": "1.0.0"
+                "psr/log": "^1.0"
             },
             "require-dev": {
                 "jakub-onderka/php-parallel-lint": "^0.9.0.0",
@@ -1556,7 +1555,7 @@
             ],
             "description": "Provides methods like PHP's session_encode and session_decode that don't mess with $_SESSION",
             "homepage": "https://www.mediawiki.org/wiki/Php-session-serializer",
-            "time": "2015-11-10 22:16:03"
+            "time": "2016-10-01 13:19:49"
         },
         {
             "name": "wikimedia/relpath",
