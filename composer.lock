@@ -4,7 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "618ad555cbfed305fa164e3b3cfd3e50",
+    "hash": "a0be8dca46b0487f79cc777d78940f4a",
+    "content-hash": "50416a3515ff05a598d0a6cfdf4fac9d",
     "packages": [
         {
             "name": "composer/semver",
@@ -148,16 +149,16 @@
         },
         {
             "name": "justinrainbow/json-schema",
-            "version": "3.0.0",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/justinrainbow/json-schema.git",
-                "reference": "12965831120bb18852e9865804a6089906323b8e"
+                "reference": "2128f9de8be4600c3394d94c3918faf67157b76b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/12965831120bb18852e9865804a6089906323b8e",
-                "reference": "12965831120bb18852e9865804a6089906323b8e",
+                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/2128f9de8be4600c3394d94c3918faf67157b76b",
+                "reference": "2128f9de8be4600c3394d94c3918faf67157b76b",
                 "shasum": ""
             },
             "require": {
@@ -174,7 +175,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0.x-dev"
+                    "dev-master": "3.0.x-dev"
                 }
             },
             "autoload": {
@@ -210,7 +211,7 @@
                 "json",
                 "schema"
             ],
-            "time": "2016-08-15 16:39:11"
+            "time": "2016-08-26 12:45:49"
         },
         {
             "name": "liuggio/statsd-php-client",
