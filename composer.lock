@@ -4,7 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e59fc06c030fa02586f8afe9786a0dbe",
+    "hash": "8976040595d8fa41cce50c66ce4df419",
+    "content-hash": "e7b979d2766594dfd96c73919ca6bc2a",
     "packages": [
         {
             "name": "composer/semver",
@@ -429,16 +430,16 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.17.9",
+            "version": "v0.17.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "3e3e0f9efbd0811aa6b7d534e56b3f3f0e3c0861"
+                "reference": "e4ba87bf92499538128363ffc0213c4055396782"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/3e3e0f9efbd0811aa6b7d534e56b3f3f0e3c0861",
-                "reference": "3e3e0f9efbd0811aa6b7d534e56b3f3f0e3c0861",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/e4ba87bf92499538128363ffc0213c4055396782",
+                "reference": "e4ba87bf92499538128363ffc0213c4055396782",
                 "shasum": ""
             },
             "require": {
@@ -504,7 +505,7 @@
             ],
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOjs_UI",
-            "time": "2016-09-13 17:35:32"
+            "time": "2016-10-03 18:37:58"
         },
         {
             "name": "oyejorge/less.php",
