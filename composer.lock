@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2cebd9a62e3839e757f0dd1da9950418",
-    "content-hash": "5f123438b1c8e7803aa152a44837ac80",
+    "hash": "1822e2627f9839fdd61cef8bb7c0dd6a",
+    "content-hash": "fc621998780b1f3eed42380a28ffdc53",
     "packages": [
         {
             "name": "composer/semver",
@@ -1773,16 +1773,16 @@
         },
         {
             "name": "wikimedia/utfnormal",
-            "version": "v1.0.3",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/utfnormal.git",
-                "reference": "bcb81d1d87bae400af45cc419a850dcf9883775b"
+                "reference": "32f838c175ddefd0fdbe09e15b919d166ed5b39f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/utfnormal/zipball/bcb81d1d87bae400af45cc419a850dcf9883775b",
-                "reference": "bcb81d1d87bae400af45cc419a850dcf9883775b",
+                "url": "https://api.github.com/repos/wikimedia/utfnormal/zipball/32f838c175ddefd0fdbe09e15b919d166ed5b39f",
+                "reference": "32f838c175ddefd0fdbe09e15b919d166ed5b39f",
                 "shasum": ""
             },
             "require": {
@@ -1790,10 +1790,9 @@
             },
             "require-dev": {
                 "ext-mbstring": "*",
-                "jakub-onderka/php-parallel-lint": "0.8.*",
-                "mediawiki/mediawiki-codesniffer": "0.1.0",
-                "phpunit/phpunit": "4.6.*",
-                "squizlabs/php_codesniffer": "2.2.*"
+                "jakub-onderka/php-parallel-lint": "0.9.*",
+                "mediawiki/mediawiki-codesniffer": "0.4.0",
+                "phpunit/phpunit": "4.6.*"
             },
             "type": "library",
             "autoload": {
@@ -1813,7 +1812,7 @@
             ],
             "description": "Contains Unicode normalization routines, including both pure PHP implementations and automatic use of the 'intl' PHP extension when present",
             "homepage": "https://www.mediawiki.org/wiki/utfnormal",
-            "time": "2015-08-29 14:13:27"
+            "time": "2016-05-24 13:13:30"
         },
         {
             "name": "wikimedia/wait-condition-loop",

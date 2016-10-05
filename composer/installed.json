@@ -956,52 +956,6 @@
         "homepage": "https://www.mediawiki.org/wiki/RunningStat"
     },
     {
-        "name": "wikimedia/utfnormal",
-        "version": "v1.0.3",
-        "version_normalized": "1.0.3.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/wikimedia/utfnormal.git",
-            "reference": "bcb81d1d87bae400af45cc419a850dcf9883775b"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/utfnormal/zipball/bcb81d1d87bae400af45cc419a850dcf9883775b",
-            "reference": "bcb81d1d87bae400af45cc419a850dcf9883775b",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3"
-        },
-        "require-dev": {
-            "ext-mbstring": "*",
-            "jakub-onderka/php-parallel-lint": "0.8.*",
-            "mediawiki/mediawiki-codesniffer": "0.1.0",
-            "phpunit/phpunit": "4.6.*",
-            "squizlabs/php_codesniffer": "2.2.*"
-        },
-        "time": "2015-08-29 14:13:27",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "src/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "GPL-2.0+"
-        ],
-        "authors": [
-            {
-                "name": "Brion Vibber",
-                "email": "bvibber@wikimedia.org"
-            }
-        ],
-        "description": "Contains Unicode normalization routines, including both pure PHP implementations and automatic use of the 'intl' PHP extension when present",
-        "homepage": "https://www.mediawiki.org/wiki/utfnormal"
-    },
-    {
         "name": "zordius/lightncandy",
         "version": "v0.23",
         "version_normalized": "0.23.0.0",
@@ -2015,5 +1969,50 @@
             "container",
             "dependency injection"
         ]
+    },
+    {
+        "name": "wikimedia/utfnormal",
+        "version": "v1.1.0",
+        "version_normalized": "1.1.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/utfnormal.git",
+            "reference": "32f838c175ddefd0fdbe09e15b919d166ed5b39f"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/utfnormal/zipball/32f838c175ddefd0fdbe09e15b919d166ed5b39f",
+            "reference": "32f838c175ddefd0fdbe09e15b919d166ed5b39f",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "ext-mbstring": "*",
+            "jakub-onderka/php-parallel-lint": "0.9.*",
+            "mediawiki/mediawiki-codesniffer": "0.4.0",
+            "phpunit/phpunit": "4.6.*"
+        },
+        "time": "2016-05-24 13:13:30",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "src/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "authors": [
+            {
+                "name": "Brion Vibber",
+                "email": "bvibber@wikimedia.org"
+            }
+        ],
+        "description": "Contains Unicode normalization routines, including both pure PHP implementations and automatic use of the 'intl' PHP extension when present",
+        "homepage": "https://www.mediawiki.org/wiki/utfnormal"
     }
 ]
