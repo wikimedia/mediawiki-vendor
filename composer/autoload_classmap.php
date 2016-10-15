@@ -582,6 +582,8 @@ return array(
     'PEAR_ErrorStack' => $vendorDir . '/pear/pear-core-minimal/src/PEAR/ErrorStack.php',
     'PEAR_Exception' => $vendorDir . '/pear/pear_exception/PEAR/Exception.php',
     'PEAR_ExceptionTest' => $vendorDir . '/pear/pear_exception/tests/PEAR/ExceptionTest.php',
+    'Pimple\\Container' => $vendorDir . '/pimple/pimple/src/Pimple/Container.php',
+    'Pimple\\ServiceProviderInterface' => $vendorDir . '/pimple/pimple/src/Pimple/ServiceProviderInterface.php',
     'Psr\\Log\\AbstractLogger' => $vendorDir . '/psr/log/Psr/Log/AbstractLogger.php',
     'Psr\\Log\\InvalidArgumentException' => $vendorDir . '/psr/log/Psr/Log/InvalidArgumentException.php',
     'Psr\\Log\\LogLevel' => $vendorDir . '/psr/log/Psr/Log/LogLevel.php',
