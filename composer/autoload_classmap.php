@@ -637,5 +637,8 @@ return array(
     'Wikimedia\\WaitConditionLoop' => $vendorDir . '/wikimedia/wait-condition-loop/src/WaitConditionLoop.php',
     'WrappedString\\WrappedString' => $vendorDir . '/wikimedia/wrappedstring/src/WrappedString.php',
     'WrappedString\\WrappedStringList' => $vendorDir . '/wikimedia/wrappedstring/src/WrappedStringList.php',
+    'getID3' => $vendorDir . '/james-heinrich/getid3/getid3/getid3.php',
+    'getid3_exception' => $vendorDir . '/james-heinrich/getid3/getid3/getid3.php',
+    'getid3_handler' => $vendorDir . '/james-heinrich/getid3/getid3/getid3.php',
     'lessc' => $vendorDir . '/oyejorge/less.php/lessc.inc.php',
 );
