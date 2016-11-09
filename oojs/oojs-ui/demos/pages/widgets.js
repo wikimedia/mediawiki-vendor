@@ -95,8 +95,12 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 	/**
 	 * Demo for LookupElement.
 	 *
+	 * @class
 	 * @extends OO.ui.TextInputWidget
 	 * @mixins OO.ui.mixin.LookupElement
+	 *
+	 * @constructor
+	 * @param {Object} config Configuration options
 	 */
 	function NumberLookupTextInputWidget( config ) {
 		// Parent constructor
@@ -905,7 +909,7 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 					}
 				),
 				new OO.ui.FieldLayout(
-					new OO.ui.TextInputWidget( { icon: 'search' } ),
+					new OO.ui.TextInputWidget( { icon: 'help' } ),
 					{
 						label: 'TextInputWidget (icon)\u200E',
 						align: 'top'
@@ -940,13 +944,6 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 					}
 				),
 				new OO.ui.FieldLayout(
-					new OO.ui.TextInputWidget( { type: 'search' } ),
-					{
-						label: 'TextInputWidget (type=search)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
 					new OO.ui.TextInputWidget( { type: 'number' } ),
 					{
 						label: 'TextInputWidget (type=number)\u200E',
@@ -970,6 +967,27 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 					} ),
 					{
 						label: 'TextInputWidget (disabled)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.SearchInputWidget(),
+					{
+						label: 'SearchInputWidget (type=search)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.SearchInputWidget( { disabled: true } ),
+					{
+						label: 'SearchInputWidget (disabled)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.SearchInputWidget( { disabled: true, value: 'test' } ),
+					{
+						label: 'SearchInputWidget (disabled, filled)\u200E',
 						align: 'top'
 					}
 				),
@@ -1370,6 +1388,25 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 				),
 				new OO.ui.FieldLayout(
 					new OO.ui.CapsuleMultiselectWidget( {
+						placeholder: 'Type like a cat...',
+						menu: {
+							items: [
+								new OO.ui.MenuOptionWidget( { data: 'abc', label: 'Label for abc' } ),
+								new OO.ui.MenuOptionWidget( { data: 'asd', label: 'Label for asd' } ),
+								new OO.ui.MenuOptionWidget( { data: 'jkl', label: 'Label for jkl' } ),
+								new OO.ui.MenuOptionWidget( { data: 'jjj', label: 'Label for jjj' } ),
+								new OO.ui.MenuOptionWidget( { data: 'zxc', label: 'Label for zxc' } ),
+								new OO.ui.MenuOptionWidget( { data: 'vbn', label: 'Label for vbn' } )
+							]
+						}
+					} ),
+					{
+						label: 'CapsuleMultiselectWidget (with placeholder)',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.CapsuleMultiselectWidget( {
 						allowArbitrary: true,
 						icon: 'tag',
 						indicator: 'required',
@@ -1451,17 +1488,8 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 				new OO.ui.FieldLayout(
 					new OO.ui.ButtonInputWidget( {
 						label: 'Submit the form',
-						type: 'submit'
-					} ),
-					{
-						align: 'top',
-						label: 'ButtonInputWidget'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.ButtonInputWidget( {
-						label: 'Submit the form',
 						type: 'submit',
+						flags: [ 'primary', 'progressive' ],
 						useInputTag: true
 					} ),
 					{
@@ -1471,9 +1499,19 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 				),
 				new OO.ui.FieldLayout(
 					new OO.ui.ButtonInputWidget( {
+						label: 'Another button',
+						type: 'button'
+					} ),
+					{
+						align: 'top',
+						label: 'ButtonInputWidget (using <button>)\u200E'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.ButtonInputWidget( {
 						framed: false,
-						label: 'Submit the form',
-						type: 'submit'
+						label: 'Another button',
+						type: 'button'
 					} ),
 					{
 						align: 'top',
@@ -1483,8 +1521,8 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 				new OO.ui.FieldLayout(
 					new OO.ui.ButtonInputWidget( {
 						framed: false,
-						label: 'Submit the form',
-						type: 'submit',
+						label: 'Another button',
+						type: 'button',
 						useInputTag: true
 					} ),
 					{
@@ -1854,8 +1892,8 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 		} ),
 		new OO.ui.FieldsetLayout( {
 			label: 'Field layouts',
-			help: 'I am an additional, helpful information. Lorem ipsum dolor sit amet, cibo pri ' +
-				'in, duo ex inimicus perpetua complectitur, mel periculis similique at.\u200E',
+			icon: 'tag',
+			help: 'This fieldset has an icon and a help popup.\u200E',
 			items: [
 				new OO.ui.FieldLayout(
 					new OO.ui.ButtonWidget( {
