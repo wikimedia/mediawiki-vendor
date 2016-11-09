@@ -159,6 +159,7 @@ OO.ui.Demo.static.pages.icons = function ( demo ) {
 				'imageAdd',
 				'imageLock',
 				'imageGallery',
+				'photoGallery',
 				'play',
 				'stop'
 			],

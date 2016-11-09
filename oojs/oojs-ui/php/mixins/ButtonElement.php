@@ -40,13 +40,9 @@ trait ButtonElement {
 		$this->addClasses( [ 'oo-ui-buttonElement' ] );
 		$this->button->addClasses( [ 'oo-ui-buttonElement-button' ] );
 		$this->toggleFramed( isset( $config['framed'] ) ? $config['framed'] : true );
-
-		// Add `role="button"` on `<a>` elements, where it's needed
-		if ( strtolower( $this->button->getTag() ) === 'a' ) {
-			$this->button->setAttributes( [
-				'role' => 'button',
-			] );
-		}
+		$this->button->setAttributes( [
+			'role' => 'button',
+		] );
 
 		$this->registerConfigCallback( function( &$config ) {
 			if ( $this->framed !== true ) {

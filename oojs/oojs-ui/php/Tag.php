@@ -112,10 +112,6 @@ class Tag {
 		return $this;
 	}
 
-	public function getTag() {
-		return $this->tag;
-	}
-
 	/**
 	 * Get HTML attribute value.
 	 *
@@ -372,25 +368,6 @@ class Tag {
 	 * @throws Exception
 	 */
 	public function toString() {
-		// List of void elements from HTML5, section 8.1.2 as of 2016-09-19
-		static $voidElements = [
-			'area',
-			'base',
-			'br',
-			'col',
-			'embed',
-			'hr',
-			'img',
-			'input',
-			'keygen',
-			'link',
-			'meta',
-			'param',
-			'source',
-			'track',
-			'wbr',
-		];
-
 		$attributes = '';
 		foreach ( $this->getGeneratedAttributes() as $key => $value ) {
 			if ( !preg_match( '/^[0-9a-zA-Z-]+$/', $key ) ) {
@@ -433,11 +410,7 @@ class Tag {
 		}
 
 		// Tag
-		if ( !$content && in_array( $this->tag, $voidElements ) ) {
-			return '<' . $this->tag . $attributes . ' />';
-		} else {
-			return '<' . $this->tag . $attributes . '>' . $content . '</' . $this->tag . '>';
-		}
+		return '<' . $this->tag . $attributes . '>' . $content . '</' . $this->tag . '>';
 	}
 
 	/**
