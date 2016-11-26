@@ -32,6 +32,7 @@
 		"pimple/pimple": "2.1.1",
 		"psr/log": "1.0.0",
 		"ruflin/elastica": "3.1.1",
+		"stil/gd-text":  "1.0.0",
 		"symfony/process": "3.0.4",
 		"wikimedia/assert": "0.2.2",
 		"wikimedia/avro": "1.7.7",

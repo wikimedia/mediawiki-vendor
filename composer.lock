@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b17b7a811c8ff679b7c6d108c1f81e83",
-    "content-hash": "da2b764402ee804df059aa5368f84c2d",
+    "hash": "292faee4fba200fdaf2f34e66a03ff92",
+    "content-hash": "e83297b8a45f948622cd770f5464d102",
     "packages": [
         {
             "name": "composer/semver",
@@ -1156,6 +1156,37 @@
                 "search"
             ],
             "time": "2016-03-18 07:56:36"
+        },
+        {
+            "name": "stil/gd-text",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stil/gd-text.git",
+                "reference": "a3e561afd5a53a6a4b0c1d64ebaf51e768348a66"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stil/gd-text/zipball/a3e561afd5a53a6a4b0c1d64ebaf51e768348a66",
+                "reference": "a3e561afd5a53a6a4b0c1d64ebaf51e768348a66",
+                "shasum": ""
+            },
+            "require": {
+                "ext-gd": "*",
+                "php": ">=5.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "GDText\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A class drawing multiline and aligned text on pictures. Uses GD extension.",
+            "time": "2015-01-02 12:21:25"
         },
         {
             "name": "symfony/process",

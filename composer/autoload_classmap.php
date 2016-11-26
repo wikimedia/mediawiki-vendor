@@ -297,6 +297,8 @@ return array(
     'Firebase\\JWT\\ExpiredException' => $vendorDir . '/firebase/php-jwt/src/ExpiredException.php',
     'Firebase\\JWT\\JWT' => $vendorDir . '/firebase/php-jwt/src/JWT.php',
     'Firebase\\JWT\\SignatureInvalidException' => $vendorDir . '/firebase/php-jwt/src/SignatureInvalidException.php',
+    'GDText\\Box' => $vendorDir . '/stil/gd-text/src/Box.php',
+    'GDText\\Color' => $vendorDir . '/stil/gd-text/src/Color.php',
     'HtmlFormatter\\HtmlFormatter' => $vendorDir . '/wikimedia/html-formatter/src/HtmlFormatter.php',
     'IPSet\\IPSet' => $vendorDir . '/wikimedia/ip-set/src/IPSet.php',
     'JsonSchema\\Constraints\\CollectionConstraint' => $vendorDir . '/justinrainbow/json-schema/src/JsonSchema/Constraints/CollectionConstraint.php',

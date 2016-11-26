@@ -2052,5 +2052,38 @@
         ],
         "description": "Provides library of common widgets, layouts, and windows.",
         "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
+    },
+    {
+        "name": "stil/gd-text",
+        "version": "v1.0.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/stil/gd-text.git",
+            "reference": "a3e561afd5a53a6a4b0c1d64ebaf51e768348a66"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/stil/gd-text/zipball/a3e561afd5a53a6a4b0c1d64ebaf51e768348a66",
+            "reference": "a3e561afd5a53a6a4b0c1d64ebaf51e768348a66",
+            "shasum": ""
+        },
+        "require": {
+            "ext-gd": "*",
+            "php": ">=5.3"
+        },
+        "time": "2015-01-02 12:21:25",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "GDText\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "description": "A class drawing multiline and aligned text on pictures. Uses GD extension."
     }
 ]
