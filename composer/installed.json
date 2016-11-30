@@ -1973,18 +1973,51 @@
         "homepage": "https://github.com/firebase/php-jwt"
     },
     {
-        "name": "oojs/oojs-ui",
-        "version": "v0.18.0",
-        "version_normalized": "0.18.0.0",
+        "name": "stil/gd-text",
+        "version": "v1.0.0",
+        "version_normalized": "1.0.0.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/wikimedia/oojs-ui.git",
-            "reference": "9bb664bf24be66b4d887b976fd6e71c460c15ffd"
+            "url": "https://github.com/stil/gd-text.git",
+            "reference": "a3e561afd5a53a6a4b0c1d64ebaf51e768348a66"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/9bb664bf24be66b4d887b976fd6e71c460c15ffd",
-            "reference": "9bb664bf24be66b4d887b976fd6e71c460c15ffd",
+            "url": "https://api.github.com/repos/stil/gd-text/zipball/a3e561afd5a53a6a4b0c1d64ebaf51e768348a66",
+            "reference": "a3e561afd5a53a6a4b0c1d64ebaf51e768348a66",
+            "shasum": ""
+        },
+        "require": {
+            "ext-gd": "*",
+            "php": ">=5.3"
+        },
+        "time": "2015-01-02 12:21:25",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "GDText\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "description": "A class drawing multiline and aligned text on pictures. Uses GD extension."
+    },
+    {
+        "name": "oojs/oojs-ui",
+        "version": "v0.18.1",
+        "version_normalized": "0.18.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/oojs-ui.git",
+            "reference": "4f8a906bac3a2fb7e1df5bcf184c96c7f79c6624"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/4f8a906bac3a2fb7e1df5bcf184c96c7f79c6624",
+            "reference": "4f8a906bac3a2fb7e1df5bcf184c96c7f79c6624",
             "shasum": ""
         },
         "require": {
@@ -1996,7 +2029,7 @@
             "mediawiki/mediawiki-codesniffer": "0.6.0",
             "phpunit/phpunit": "4.8.21"
         },
-        "time": "2016-11-08 23:36:02",
+        "time": "2016-11-29 22:02:31",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -2052,38 +2085,5 @@
         ],
         "description": "Provides library of common widgets, layouts, and windows.",
         "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
-    },
-    {
-        "name": "stil/gd-text",
-        "version": "v1.0.0",
-        "version_normalized": "1.0.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/stil/gd-text.git",
-            "reference": "a3e561afd5a53a6a4b0c1d64ebaf51e768348a66"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/stil/gd-text/zipball/a3e561afd5a53a6a4b0c1d64ebaf51e768348a66",
-            "reference": "a3e561afd5a53a6a4b0c1d64ebaf51e768348a66",
-            "shasum": ""
-        },
-        "require": {
-            "ext-gd": "*",
-            "php": ">=5.3"
-        },
-        "time": "2015-01-02 12:21:25",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "GDText\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "description": "A class drawing multiline and aligned text on pictures. Uses GD extension."
     }
 ]
