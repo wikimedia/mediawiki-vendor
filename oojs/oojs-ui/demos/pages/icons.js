@@ -64,8 +64,6 @@ OO.ui.Demo.static.pages.icons = function ( demo ) {
 				'tray'
 			],
 			interactions: [
-				'beta',
-				'betaLaunch',
 				'bookmark',
 				'browser',
 				'clear',
@@ -77,22 +75,21 @@ OO.ui.Demo.static.pages.icons = function ( demo ) {
 				'logOut',
 				'newWindow',
 				'printer',
-				'ribbonPrize',
 				'sun',
 				'watchlist'
 			],
 			moderation: [
 				'block',
-				'blockUndo',
+				'unBlock',
 				'flag',
-				'flagUndo',
+				'unFlag',
 				'lock',
-				'ongoingConversation',
+				'unLock',
 				'star',
-				'trash',
-				'trashUndo',
 				'unStar',
-				'unLock'
+				'trash',
+				'unTrash',
+				'ongoingConversation'
 			],
 			'editing-core': [
 				'edit',
@@ -194,6 +191,7 @@ OO.ui.Demo.static.pages.icons = function ( demo ) {
 			wikimedia: [
 				'logoCC',
 				'logoWikimediaCommons',
+				'logoWikimediaDiscovery',
 				'logoWikipedia'
 			]
 		},
