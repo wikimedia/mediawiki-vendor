@@ -1,6 +1,9 @@
 OO.ui.Demo.static.pages.widgets = function ( demo ) {
 	var i, styles, states, buttonStyleShowcaseWidget, $table, fieldsets,
+		loremIpsum = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, ' +
+			'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\u200E',
 		capsuleWithPopup, capsulePopupWidget,
+		textInputForLabel, labelForTextInput,
 		horizontalDragItems = [],
 		verticalDragItems = [],
 		verticalHandledDragItems = [],
@@ -183,6 +186,12 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 	capsuleWithPopup = new OO.ui.CapsuleMultiselectWidget( {
 		allowArbitrary: true,
 		popup: { $content: capsulePopupWidget.$element }
+	} );
+
+	textInputForLabel = new OO.ui.TextInputWidget( { value: 'Input for label above' } );
+	labelForTextInput = new OO.ui.LabelWidget( {
+		label: 'Label for input below',
+		input: textInputForLabel
 	} );
 
 	styles = [
@@ -584,6 +593,27 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 					} ),
 					{
 						label: 'ButtonGroupWidget (feat. destructive and progressive ButtonWidget)',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.ButtonGroupWidget( {
+						items: [
+							new OO.ui.ToggleButtonWidget( {
+								icon: 'tag',
+								label: 'One'
+							} ),
+							new OO.ui.ToggleButtonWidget( {
+								label: 'Two'
+							} ),
+							new OO.ui.ToggleButtonWidget( {
+								indicator: 'alert',
+								label: 'Three'
+							} )
+						]
+					} ),
+					{
+						label: 'ButtonGroupWidget with ToggleButtonWidgets',
 						align: 'top'
 					}
 				),
@@ -1754,6 +1784,20 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 					}
 				),
 				new OO.ui.FieldLayout(
+					labelForTextInput,
+					{
+						label: 'LabelWidget (with an associated input)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					textInputForLabel,
+					{
+						label: 'TextInputWidget (with an associated label)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
 					new OO.ui.PopupButtonWidget( {
 						icon: 'info',
 						framed: false,
@@ -1846,7 +1890,7 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 						popup: {
 							$content: $( '<p>Additional options here.</p>' ),
 							padded: true,
-							align: 'left'
+							align: 'forwards'
 						}
 					} ),
 					{
@@ -1902,7 +1946,7 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 		new OO.ui.FieldsetLayout( {
 			label: 'Field layouts',
 			icon: 'tag',
-			help: 'This fieldset has an icon and a help popup.\u200E',
+			help: loremIpsum,
 			items: [
 				new OO.ui.FieldLayout(
 					new OO.ui.ButtonWidget( {
@@ -1910,8 +1954,7 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 					} ),
 					{
 						label: 'FieldLayout with help',
-						help: 'I am an additional, helpful information. Lorem ipsum dolor sit amet, cibo pri ' +
-							'in, duo ex inimicus perpetua complectitur, mel periculis similique at.\u200E',
+						help: loremIpsum,
 						align: 'top'
 					}
 				),
@@ -1935,34 +1978,13 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 						align: 'top'
 					}
 				),
-				new OO.ui.ActionFieldLayout(
-					new OO.ui.TextInputWidget(),
+				new OO.ui.FieldLayout(
 					new OO.ui.ButtonWidget( {
 						label: 'Button'
 					} ),
 					{
-						label: 'ActionFieldLayout aligned left',
-						align: 'left'
-					}
-				),
-				new OO.ui.ActionFieldLayout(
-					new OO.ui.TextInputWidget(),
-					new OO.ui.ButtonWidget( {
-						label: 'Button'
-					} ),
-					{
-						label: 'ActionFieldLayout aligned inline',
-						align: 'inline'
-					}
-				),
-				new OO.ui.ActionFieldLayout(
-					new OO.ui.TextInputWidget(),
-					new OO.ui.ButtonWidget( {
-						label: 'Button'
-					} ),
-					{
-						label: 'ActionFieldLayout aligned right',
-						align: 'right'
+						label: $( '<i>' ).text( 'FieldLayout with rich text label' ),
+						align: 'top'
 					}
 				),
 				new OO.ui.ActionFieldLayout(
@@ -1975,15 +1997,11 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 						align: 'top'
 					}
 				),
-				new OO.ui.ActionFieldLayout(
+				new OO.ui.FieldLayout(
 					new OO.ui.TextInputWidget(),
-					new OO.ui.ButtonWidget( {
-						label: 'Button'
-					} ),
 					{
-						label: 'ActionFieldLayout aligned top with help',
-						help: 'I am an additional, helpful information. Lorem ipsum dolor sit amet, cibo pri ' +
-							'in, duo ex inimicus perpetua complectitur, mel periculis similique at.\u200E',
+						label: 'FieldLayout aligned top with help',
+						help: loremIpsum,
 						align: 'top'
 					}
 				),
@@ -1993,8 +2011,96 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 						label: 'Button'
 					} ),
 					{
-						label: $( '<i>' ).text( 'ActionFieldLayout aligned top with rich text label' ),
+						label: 'ActionFieldLayout aligned top with help',
+						help: loremIpsum,
 						align: 'top'
+					}
+				),
+				new OO.ui.ActionFieldLayout(
+					new OO.ui.CheckboxInputWidget( { selected: true } ),
+					new OO.ui.ButtonWidget( {
+						label: 'Button'
+					} ),
+					{
+						label: 'ActionFieldLayout aligned inline',
+						align: 'inline'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.CheckboxInputWidget( { selected: true } ),
+					{
+						label: 'FieldLayout aligned inline with help',
+						help: loremIpsum,
+						align: 'inline'
+					}
+				),
+				new OO.ui.ActionFieldLayout(
+					new OO.ui.CheckboxInputWidget( { selected: true } ),
+					new OO.ui.ButtonWidget( {
+						label: 'Button'
+					} ),
+					{
+						label: 'ActionFieldLayout aligned inline with help',
+						help: loremIpsum,
+						align: 'inline'
+					}
+				),
+				new OO.ui.ActionFieldLayout(
+					new OO.ui.TextInputWidget(),
+					new OO.ui.ButtonWidget( {
+						label: 'Button'
+					} ),
+					{
+						label: 'ActionFieldLayout aligned left',
+						align: 'left'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.TextInputWidget(),
+					{
+						label: 'FieldLayout aligned left with help',
+						help: loremIpsum,
+						align: 'left'
+					}
+				),
+				new OO.ui.ActionFieldLayout(
+					new OO.ui.TextInputWidget(),
+					new OO.ui.ButtonWidget( {
+						label: 'Button'
+					} ),
+					{
+						label: 'ActionFieldLayout aligned left with help',
+						help: loremIpsum,
+						align: 'left'
+					}
+				),
+				new OO.ui.ActionFieldLayout(
+					new OO.ui.TextInputWidget(),
+					new OO.ui.ButtonWidget( {
+						label: 'Button'
+					} ),
+					{
+						label: 'ActionFieldLayout aligned right',
+						align: 'right'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.TextInputWidget(),
+					{
+						label: 'FieldLayout aligned right with help',
+						help: loremIpsum,
+						align: 'right'
+					}
+				),
+				new OO.ui.ActionFieldLayout(
+					new OO.ui.TextInputWidget(),
+					new OO.ui.ButtonWidget( {
+						label: 'Button'
+					} ),
+					{
+						label: 'ActionFieldLayout aligned right with help',
+						help: loremIpsum,
+						align: 'right'
 					}
 				),
 				new OO.ui.FieldLayout(
