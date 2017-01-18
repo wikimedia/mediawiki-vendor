@@ -8,6 +8,29 @@
 		"vendor-dir": "."
 	},
 	"prefer-stable": true,
+	"repositories": [
+		{
+			"type": "package",
+			"package": {
+				"name": "ruflin/elastica",
+				"version": "5.0.0",
+				"dist": {
+					"url": "https://github.com/ruflin/Elastica/archive/5.0.0.zip",
+					"type": "zip"
+				},
+				"source": {
+					"url": "https://github.com/ruflin/Elastica.git",
+					"type": "git",
+					"reference": "tags/5.0.0"
+				},
+				"autoload": {
+					"psr-4": {
+						"Elastica\\": "lib/Elastica/"
+					}
+				}
+			}
+		}
+	],
 	"require": {
 		"composer/semver": "1.4.2",
 		"cssjanus/cssjanus": "1.1.2",
@@ -31,7 +54,7 @@
 		"php": ">=5.5.9",
 		"pimple/pimple": "2.1.1",
 		"psr/log": "1.0.0",
-		"ruflin/elastica": "3.1.1",
+		"ruflin/elastica": "5.0.0",
 		"stil/gd-text":  "1.0.0",
 		"symfony/process": "3.0.4",
 		"wikimedia/assert": "0.2.2",

@@ -1,5 +1,4 @@
 <?php
-
 namespace Elastica\Script;
 
 use Elastica\Exception\InvalidException;
@@ -18,6 +17,8 @@ class Script extends AbstractScript
     const LANG_GROOVY = 'groovy';
     const LANG_PYTHON = 'python';
     const LANG_NATIVE = 'native';
+    const LANG_EXPRESSION = 'expression';
+    const LANG_PAINLESS = 'painless';
 
     /**
      * @var string
@@ -96,16 +97,18 @@ class Script extends AbstractScript
     public static function create($data)
     {
         if ($data instanceof self) {
-            $script = $data;
-        } elseif (is_array($data)) {
-            $script = self::_createFromArray($data);
-        } elseif (is_string($data)) {
-            $script = new self($data);
-        } else {
-            throw new InvalidException('Failed to create script. Invalid data passed.');
+            return $data;
         }
 
-        return $script;
+        if (is_array($data)) {
+            return self::_createFromArray($data);
+        }
+
+        if (is_string($data)) {
+            return new self($data);
+        }
+
+        throw new InvalidException('Failed to create script. Invalid data passed.');
     }
 
     /**
@@ -117,11 +120,11 @@ class Script extends AbstractScript
      */
     protected static function _createFromArray(array $data)
     {
-        if (!isset($data['script'])) {
-            throw new InvalidException("\$data['script'] is required");
+        if (!isset($data['inline'])) {
+            throw new InvalidException("\$data['inline'] is required");
         }
 
-        $script = new self($data['script']);
+        $script = new self($data['inline']);
 
         if (isset($data['lang'])) {
             $script->setLang($data['lang']);
@@ -142,9 +145,9 @@ class Script extends AbstractScript
      */
     public function toArray()
     {
-        $array = array(
-            'script' => $this->_script,
-        );
+        $array = [
+            'inline' => $this->_script,
+        ];
 
         if (!empty($this->_params)) {
             $array['params'] = $this->_convertArrayable($this->_params);
@@ -154,6 +157,6 @@ class Script extends AbstractScript
             $array['lang'] = $this->_lang;
         }
 
-        return $array;
+        return ['script' => $array];
     }
 }

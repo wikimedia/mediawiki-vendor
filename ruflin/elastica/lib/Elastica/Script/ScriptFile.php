@@ -1,5 +1,4 @@
 <?php
-
 namespace Elastica\Script;
 
 use Elastica\Exception\InvalidException;
@@ -61,16 +60,18 @@ class ScriptFile extends Script
     public static function create($data)
     {
         if ($data instanceof self) {
-            $scriptFile = $data;
-        } elseif (is_array($data)) {
-            $scriptFile = self::_createFromArray($data);
-        } elseif (is_string($data)) {
-            $scriptFile = new self($data);
-        } else {
-            throw new InvalidException('Failed to create scriptFile. Invalid data passed.');
+            return $data;
         }
 
-        return $scriptFile;
+        if (is_array($data)) {
+            return self::_createFromArray($data);
+        }
+
+        if (is_string($data)) {
+            return new self($data);
+        }
+
+        throw new InvalidException('Failed to create scriptFile. Invalid data passed.');
     }
 
     /**
@@ -82,17 +83,17 @@ class ScriptFile extends Script
      */
     protected static function _createFromArray(array $data)
     {
-        if (!isset($data['script_file'])) {
-            throw new InvalidException("\$data['script_file'] is required");
+        if (!isset($data['script']['file'])) {
+            throw new InvalidException("\$data['script']['file'] is required");
         }
 
-        $scriptFile = new self($data['script_file']);
+        $scriptFile = new self($data['script']['file']);
 
-        if (isset($data['params'])) {
-            if (!is_array($data['params'])) {
-                throw new InvalidException("\$data['params'] should be array");
+        if (isset($data['script']['params'])) {
+            if (!is_array($data['script']['params'])) {
+                throw new InvalidException("\$data['script']['params'] should be array");
             }
-            $scriptFile->setParams($data['params']);
+            $scriptFile->setParams($data['script']['params']);
         }
 
         return $scriptFile;
@@ -103,12 +104,14 @@ class ScriptFile extends Script
      */
     public function toArray()
     {
-        $array = array(
-            'script_file' => $this->_scriptFile,
-        );
+        $array = [
+            'script' => [
+                'file' => $this->_scriptFile,
+            ],
+        ];
 
         if (!empty($this->_params)) {
-            $array['params'] = $this->_params;
+            $array['script']['params'] = $this->_params;
         }
 
         return $array;

@@ -1,8 +1,5 @@
 <?php
-
 namespace Elastica;
-
-use Elastica\Exception\DeprecatedException;
 
 /**
  * Base class for things that can be sent to the update api (Document and
@@ -78,7 +75,7 @@ class AbstractUpdateAction extends Param
     /**
      * Sets the document type name.
      *
-     * @param string $type Type name
+     * @param Type|string $type Type name
      *
      * @return $this
      */
@@ -107,7 +104,7 @@ class AbstractUpdateAction extends Param
     /**
      * Sets the document index name.
      *
-     * @param string $index Index name
+     * @param Index|string $index Index name
      *
      * @return $this
      */
@@ -168,7 +165,7 @@ class AbstractUpdateAction extends Param
      * Sets the version_type of a document
      * Default in ES is internal, but you can set to external to use custom versioning.
      *
-     * @param int $versionType Document version type
+     * @param string $versionType Document version type
      *
      * @return $this
      */
@@ -255,42 +252,6 @@ class AbstractUpdateAction extends Param
     public function hasOpType()
     {
         return $this->hasParam('_op_type');
-    }
-
-    /**
-     * Set percolate query param.
-     *
-     * @param string $value percolator filter
-     *
-     * @deprecated Option "percolate" deprecated as of ES 1.3 and will be removed in further Elastica releases. Use Percolator instead.
-     *
-     * @return $this
-     */
-    public function setPercolate($value = '*')
-    {
-        throw new DeprecatedException('Option "percolate" deprecated as of ES 1.3 and will be removed in further Elastica releases. Use Percolator instead.');
-    }
-
-    /**
-     * Get percolate parameter.
-     *
-     * @deprecated Option "percolate" deprecated as of ES 1.3 and will be removed in further Elastica releases. Use Percolator instead.
-     *
-     * @return string
-     */
-    public function getPercolate()
-    {
-        throw new DeprecatedException('Option "percolate" deprecated as of ES 1.3 and will be removed in further Elastica releases. Use Percolator instead.');
-    }
-
-    /**
-     * @deprecated Option "percolate" deprecated as of ES 1.3 and will be removed in further Elastica releases. Use Percolator instead.
-     *
-     * @return bool
-     */
-    public function hasPercolate()
-    {
-        throw new DeprecatedException('Option "percolate" deprecated as of ES 1.3 and will be removed in further Elastica releases. Use Percolator instead.');
     }
 
     /**
@@ -458,7 +419,7 @@ class AbstractUpdateAction extends Param
     }
 
     /**
-     * @return string
+     * @return bool
      */
     public function hasTimeout()
     {
@@ -484,7 +445,7 @@ class AbstractUpdateAction extends Param
     }
 
     /**
-     * @return string
+     * @return bool
      */
     public function hasConsistency()
     {
@@ -552,10 +513,10 @@ class AbstractUpdateAction extends Param
      *
      * @return array
      */
-    public function getOptions(array $fields = array(), $withUnderscore = false)
+    public function getOptions(array $fields = [], $withUnderscore = false)
     {
         if (!empty($fields)) {
-            $data = array();
+            $data = [];
             foreach ($fields as $field) {
                 $key = '_'.ltrim($field, '_');
                 if ($this->hasParam($key) && '' !== (string) $this->getParam($key)) {
