@@ -1000,49 +1000,6 @@
         ]
     },
     {
-        "name": "wikimedia/textcat",
-        "version": "1.1.3",
-        "version_normalized": "1.1.3.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/wikimedia/wikimedia-textcat.git",
-            "reference": "692148be3b9e955d0323a254510f26a4c6aa5a79"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/wikimedia-textcat/zipball/692148be3b9e955d0323a254510f26a4c6aa5a79",
-            "reference": "692148be3b9e955d0323a254510f26a4c6aa5a79",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.0"
-        },
-        "require-dev": {
-            "jakub-onderka/php-parallel-lint": "0.9",
-            "mediawiki/mediawiki-codesniffer": "0.5.0",
-            "phpunit/phpunit": "4.6.*"
-        },
-        "time": "2016-03-04 20:59:24",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "TextCat": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "LGPL-2.1"
-        ],
-        "authors": [
-            {
-                "name": "Stanislav Malyshev",
-                "email": "smalyshev@wikimedia.org"
-            }
-        ],
-        "description": "PHP port of the TextCat language guesser utility, see http://odur.let.rug.nl/~vannoord/TextCat/."
-    },
-    {
         "name": "wikimedia/composer-merge-plugin",
         "version": "v1.3.1",
         "version_normalized": "1.3.1.0",
@@ -1947,18 +1904,65 @@
         "description": "A class drawing multiline and aligned text on pictures. Uses GD extension."
     },
     {
-        "name": "oojs/oojs-ui",
-        "version": "v0.18.4",
-        "version_normalized": "0.18.4.0",
+        "name": "wikimedia/textcat",
+        "version": "1.2.0",
+        "version_normalized": "1.2.0.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/wikimedia/oojs-ui.git",
-            "reference": "8b9236ef4b8131a369eaf5936405e407d46d0b2c"
+            "url": "https://github.com/wikimedia/wikimedia-textcat.git",
+            "reference": "17818e14cf31c99f43a3c9bdd09a4d6e2914883f"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/8b9236ef4b8131a369eaf5936405e407d46d0b2c",
-            "reference": "8b9236ef4b8131a369eaf5936405e407d46d0b2c",
+            "url": "https://api.github.com/repos/wikimedia/wikimedia-textcat/zipball/17818e14cf31c99f43a3c9bdd09a4d6e2914883f",
+            "reference": "17818e14cf31c99f43a3c9bdd09a4d6e2914883f",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "require-dev": {
+            "jakub-onderka/php-parallel-lint": "0.9",
+            "mediawiki/mediawiki-codesniffer": "0.5.0",
+            "phpunit/phpunit": "4.6.*"
+        },
+        "time": "2017-01-23 16:52:10",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "TextCat": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "LGPL-2.1"
+        ],
+        "authors": [
+            {
+                "name": "Stanislav Malyshev",
+                "email": "smalyshev@wikimedia.org"
+            },
+            {
+                "name": "Trey Jones",
+                "email": "tjones@wikimedia.org"
+            }
+        ],
+        "description": "PHP port of the TextCat language guesser utility, see http://odur.let.rug.nl/~vannoord/TextCat/."
+    },
+    {
+        "name": "oojs/oojs-ui",
+        "version": "v0.19.0",
+        "version_normalized": "0.19.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/oojs-ui.git",
+            "reference": "af9c50be5d4e33374aafb4981d3e00e6d1151dab"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/af9c50be5d4e33374aafb4981d3e00e6d1151dab",
+            "reference": "af9c50be5d4e33374aafb4981d3e00e6d1151dab",
             "shasum": ""
         },
         "require": {
@@ -1970,7 +1974,7 @@
             "mediawiki/mediawiki-codesniffer": "0.6.0",
             "phpunit/phpunit": "4.8.21"
         },
-        "time": "2017-01-17 22:06:32",
+        "time": "2017-02-01 20:54:44",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
