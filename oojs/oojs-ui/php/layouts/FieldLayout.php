@@ -77,8 +77,6 @@ class FieldLayout extends Layout {
 			throw new Exception( 'Widget not found' );
 		}
 
-		$hasInputWidget = $fieldWidget::$supportsSimpleLabel;
-
 		// Config initialization
 		$config = array_merge( [ 'align' => 'left' ], $config );
 
@@ -92,7 +90,7 @@ class FieldLayout extends Layout {
 		$this->field = new Tag( 'div' );
 		$this->messages = new Tag( 'ul' );
 		$this->header = new Tag( 'div' );
-		$this->body = new Tag( $hasInputWidget ? 'label' : 'div' );
+		$this->body = new Tag( 'div' );
 		if ( isset( $config['help'] ) ) {
 			$this->help = new ButtonWidget( [
 				'classes' => [ 'oo-ui-fieldLayout-help' ],
@@ -105,14 +103,19 @@ class FieldLayout extends Layout {
 		}
 
 		// Traits
-		$this->initializeLabelElement( $config );
+		$this->initializeLabelElement( array_merge( $config, [
+			'labelElement' => new Tag( 'label' )
+		] ) );
 		$this->initializeTitledElement(
 			array_merge( $config, [ 'titled' => $this->label ] ) );
 
 		// Initialization
+		if ( $fieldWidget::$supportsSimpleLabel ) {
+			$this->label->setAttributes( [ 'for' => $this->fieldWidget->getInputId() ] );
+		}
 		$this
 			->addClasses( [ 'oo-ui-fieldLayout' ] )
-			->toggleClasses( [ 'oo-ui-fieldLayout-disable' ], $this->fieldWidget->isDisabled() )
+			->toggleClasses( [ 'oo-ui-fieldLayout-disabled' ], $this->fieldWidget->isDisabled() )
 			->appendContent( $this->body );
 		if ( count( $this->errors ) || count( $this->notices ) ) {
 			$this->appendContent( $this->messages );

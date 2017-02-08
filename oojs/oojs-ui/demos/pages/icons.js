@@ -86,6 +86,7 @@ OO.ui.Demo.static.pages.icons = function ( demo ) {
 				'lock',
 				'unLock',
 				'star',
+				'halfStar',
 				'unStar',
 				'trash',
 				'unTrash',
@@ -259,15 +260,6 @@ OO.ui.Demo.static.pages.icons = function ( demo ) {
 				data: {
 					progressive: true,
 					constructive: false,
-					destructive: false
-				}
-			} ),
-			new OO.ui.ButtonOptionWidget( {
-				label: 'Constructive',
-				flags: [ 'constructive' ],
-				data: {
-					progressive: false,
-					constructive: true,
 					destructive: false
 				}
 			} ),
