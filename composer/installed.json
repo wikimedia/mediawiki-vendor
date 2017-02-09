@@ -1810,44 +1810,6 @@
         "homepage": "https://www.mediawiki.org/wiki/utfnormal"
     },
     {
-        "name": "james-heinrich/getid3",
-        "version": "v1.9.12",
-        "version_normalized": "1.9.12.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/JamesHeinrich/getID3.git",
-            "reference": "41c05612d532d30f07680cad3a4a6efbec7fc7f5"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/41c05612d532d30f07680cad3a4a6efbec7fc7f5",
-            "reference": "41c05612d532d30f07680cad3a4a6efbec7fc7f5",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.0"
-        },
-        "time": "2016-03-02 13:13:30",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "getid3/getid3.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "GPL"
-        ],
-        "description": "PHP script that extracts useful information from popular multimedia file formats",
-        "homepage": "http://www.getid3.org/",
-        "keywords": [
-            "codecs",
-            "php",
-            "tags"
-        ]
-    },
-    {
         "name": "firebase/php-jwt",
         "version": "v4.0.0",
         "version_normalized": "4.0.0.0",
@@ -2089,5 +2051,43 @@
             "Apache-2.0"
         ],
         "description": "Convert CSS stylesheets between left-to-right and right-to-left."
+    },
+    {
+        "name": "james-heinrich/getid3",
+        "version": "v1.9.13",
+        "version_normalized": "1.9.13.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/JamesHeinrich/getID3.git",
+            "reference": "b9a8564e56bdcc294dc7ade32a7f67885bed3778"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/b9a8564e56bdcc294dc7ade32a7f67885bed3778",
+            "reference": "b9a8564e56bdcc294dc7ade32a7f67885bed3778",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "time": "2016-12-14 14:29:29",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "getid3/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL"
+        ],
+        "description": "PHP script that extracts useful information from popular multimedia file formats",
+        "homepage": "http://www.getid3.org/",
+        "keywords": [
+            "codecs",
+            "php",
+            "tags"
+        ]
     }
 ]
