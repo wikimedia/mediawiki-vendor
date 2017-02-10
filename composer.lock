@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ab18d8e0cc932fec99b526c2d1e1fafc",
-    "content-hash": "17e19b0718d463c61c3be9db39fc18e2",
+    "hash": "fb6bcb6efe6bc5867e65d20be19552f6",
+    "content-hash": "017991c446f155c90c6d6e31c0e2df6c",
     "packages": [
         {
             "name": "composer/semver",
@@ -429,12 +429,12 @@
             "version": "v0.1.5",
             "source": {
                 "type": "git",
-                "url": "https://github.com/nmred/kafka-php.git",
+                "url": "https://github.com/weiboad/kafka-php.git",
                 "reference": "317ad8c208684db8b9e6d2f5bf7f471e89a8b4eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nmred/kafka-php/zipball/317ad8c208684db8b9e6d2f5bf7f471e89a8b4eb",
+                "url": "https://api.github.com/repos/weiboad/kafka-php/zipball/317ad8c208684db8b9e6d2f5bf7f471e89a8b4eb",
                 "reference": "317ad8c208684db8b9e6d2f5bf7f471e89a8b4eb",
                 "shasum": ""
             },
@@ -806,16 +806,16 @@
         },
         {
             "name": "pear/net_smtp",
-            "version": "1.7.1",
+            "version": "1.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear/Net_SMTP.git",
-                "reference": "cf7e1bac4cdd38f3260e5c10d5ae366b7e22794c"
+                "reference": "e066e5ee011ae056c03db1a95d210fc09649b477"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/Net_SMTP/zipball/cf7e1bac4cdd38f3260e5c10d5ae366b7e22794c",
-                "reference": "cf7e1bac4cdd38f3260e5c10d5ae366b7e22794c",
+                "url": "https://api.github.com/repos/pear/Net_SMTP/zipball/e066e5ee011ae056c03db1a95d210fc09649b477",
+                "reference": "e066e5ee011ae056c03db1a95d210fc09649b477",
                 "shasum": ""
             },
             "require": {
@@ -840,7 +840,7 @@
                 "./"
             ],
             "license": [
-                "PHP License"
+                "PHP-3.01"
             ],
             "authors": [
                 {
@@ -862,7 +862,7 @@
                 "mail",
                 "smtp"
             ],
-            "time": "2015-09-07 17:04:16"
+            "time": "2017-01-14 18:19:55"
         },
         {
             "name": "pear/net_socket",
