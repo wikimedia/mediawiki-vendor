@@ -29,7 +29,7 @@
 		"pear/pear-core-minimal": "1.10.1",
 		"pear/pear_exception": "1.0.0",
 		"php": ">=5.5.9",
-		"pimple/pimple": "2.1.1",
+		"pimple/pimple": "3.0.2",
 		"psr/log": "1.0.2",
 		"ruflin/elastica": "3.1.1",
 		"stil/gd-text":  "1.0.0",
