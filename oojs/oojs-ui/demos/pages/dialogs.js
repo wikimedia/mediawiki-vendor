@@ -660,7 +660,7 @@ OO.ui.Demo.static.pages.dialogs = function ( demo ) {
 					label: 'Popup button',
 					popup: {
 						padded: true,
-						$content: this.makeContents()
+						$content: $( '<p>' ).text( 'Popup contents.' )
 					}
 				} ), $spacer.clone() ]
 			} ),
@@ -671,7 +671,7 @@ OO.ui.Demo.static.pages.dialogs = function ( demo ) {
 					label: 'Popup button',
 					popup: {
 						padded: true,
-						$content: this.makeContents()
+						$content: $( '<p>' ).text( 'Popup contents.' )
 					}
 				} ), $spacer.clone() ]
 			} ),
@@ -718,11 +718,6 @@ OO.ui.Demo.static.pages.dialogs = function ( demo ) {
 				label: String( val )
 			} );
 		} );
-	};
-	DialogWithDropdowns.prototype.makeContents = function () {
-		var loremIpsum = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, ' +
-			'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\u200E';
-		return $( '<p>' ).text( loremIpsum );
 	};
 
 	DialogWithDropdowns.prototype.getActionProcess = function ( action ) {
