@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d0cf7e4112675e807d79308cfe153819",
-    "content-hash": "6ca997834f6157671342f012fa44da6a",
+    "hash": "2864cd5a28afff034a92dd6356a22687",
+    "content-hash": "dae6030c2992b8d32e47c8111a724cdf",
     "packages": [
         {
             "name": "composer/semver",
@@ -429,12 +429,12 @@
             "version": "v0.1.5",
             "source": {
                 "type": "git",
-                "url": "https://github.com/nmred/kafka-php.git",
+                "url": "https://github.com/weiboad/kafka-php.git",
                 "reference": "317ad8c208684db8b9e6d2f5bf7f471e89a8b4eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nmred/kafka-php/zipball/317ad8c208684db8b9e6d2f5bf7f471e89a8b4eb",
+                "url": "https://api.github.com/repos/weiboad/kafka-php/zipball/317ad8c208684db8b9e6d2f5bf7f471e89a8b4eb",
                 "reference": "317ad8c208684db8b9e6d2f5bf7f471e89a8b4eb",
                 "shasum": ""
             },
@@ -466,16 +466,16 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.19.1",
+            "version": "v0.19.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "5663021216302da80fdb335b5ed9f3cd49b4a605"
+                "reference": "58fb445bc1f2323548b736b84af8409a13499107"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/5663021216302da80fdb335b5ed9f3cd49b4a605",
-                "reference": "5663021216302da80fdb335b5ed9f3cd49b4a605",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/58fb445bc1f2323548b736b84af8409a13499107",
+                "reference": "58fb445bc1f2323548b736b84af8409a13499107",
                 "shasum": ""
             },
             "require": {
@@ -541,7 +541,7 @@
             ],
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOjs_UI",
-            "time": "2017-02-08 00:17:30"
+            "time": "2017-02-14 22:27:07"
         },
         {
             "name": "oyejorge/less.php",

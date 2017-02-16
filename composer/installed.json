@@ -57,12 +57,12 @@
         "version_normalized": "0.1.5.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/nmred/kafka-php.git",
+            "url": "https://github.com/weiboad/kafka-php.git",
             "reference": "317ad8c208684db8b9e6d2f5bf7f471e89a8b4eb"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/nmred/kafka-php/zipball/317ad8c208684db8b9e6d2f5bf7f471e89a8b4eb",
+            "url": "https://api.github.com/repos/weiboad/kafka-php/zipball/317ad8c208684db8b9e6d2f5bf7f471e89a8b4eb",
             "reference": "317ad8c208684db8b9e6d2f5bf7f471e89a8b4eb",
             "shasum": ""
         },
@@ -1836,87 +1836,6 @@
         "description": "PHP port of the TextCat language guesser utility, see http://odur.let.rug.nl/~vannoord/TextCat/."
     },
     {
-        "name": "oojs/oojs-ui",
-        "version": "v0.19.1",
-        "version_normalized": "0.19.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/wikimedia/oojs-ui.git",
-            "reference": "5663021216302da80fdb335b5ed9f3cd49b4a605"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/5663021216302da80fdb335b5ed9f3cd49b4a605",
-            "reference": "5663021216302da80fdb335b5ed9f3cd49b4a605",
-            "shasum": ""
-        },
-        "require": {
-            "mediawiki/at-ease": "1.1.0",
-            "php": ">=5.5.9"
-        },
-        "require-dev": {
-            "jakub-onderka/php-parallel-lint": "0.9.2",
-            "mediawiki/mediawiki-codesniffer": "0.6.0",
-            "phpunit/phpunit": "4.8.21"
-        },
-        "time": "2017-02-08 00:17:30",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "php/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Timo Tijhof",
-                "email": "krinklemail@gmail.com"
-            },
-            {
-                "name": "Bartosz Dziewoński",
-                "email": "matma.rex@gmail.com"
-            },
-            {
-                "name": "Ed Sanders",
-                "email": "esanders@wikimedia.org"
-            },
-            {
-                "name": "James D. Forrester",
-                "email": "jforrester@wikimedia.org"
-            },
-            {
-                "name": "Kirsten Menger-Anderson",
-                "email": "kmenger@wikimedia.org"
-            },
-            {
-                "name": "Rob Moen",
-                "email": "rmoen@wikimedia.org"
-            },
-            {
-                "name": "Roan Kattouw",
-                "email": "roan@wikimedia.org"
-            },
-            {
-                "name": "Trevor Parscal",
-                "email": "trevor@wikimedia.org"
-            },
-            {
-                "name": "Kunal Mehta",
-                "email": "legoktm@gmail.com"
-            },
-            {
-                "name": "Prateek Saxena",
-                "email": "prtksxna@gmail.com"
-            }
-        ],
-        "description": "Provides library of common widgets, layouts, and windows.",
-        "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
-    },
-    {
         "name": "ruflin/elastica",
         "version": "5.0.0",
         "version_normalized": "5.0.0.0",
@@ -2062,5 +1981,86 @@
             "psr",
             "psr-3"
         ]
+    },
+    {
+        "name": "oojs/oojs-ui",
+        "version": "v0.19.2",
+        "version_normalized": "0.19.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/oojs-ui.git",
+            "reference": "58fb445bc1f2323548b736b84af8409a13499107"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/58fb445bc1f2323548b736b84af8409a13499107",
+            "reference": "58fb445bc1f2323548b736b84af8409a13499107",
+            "shasum": ""
+        },
+        "require": {
+            "mediawiki/at-ease": "1.1.0",
+            "php": ">=5.5.9"
+        },
+        "require-dev": {
+            "jakub-onderka/php-parallel-lint": "0.9.2",
+            "mediawiki/mediawiki-codesniffer": "0.6.0",
+            "phpunit/phpunit": "4.8.21"
+        },
+        "time": "2017-02-14 22:27:07",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "php/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Timo Tijhof",
+                "email": "krinklemail@gmail.com"
+            },
+            {
+                "name": "Bartosz Dziewoński",
+                "email": "matma.rex@gmail.com"
+            },
+            {
+                "name": "Ed Sanders",
+                "email": "esanders@wikimedia.org"
+            },
+            {
+                "name": "James D. Forrester",
+                "email": "jforrester@wikimedia.org"
+            },
+            {
+                "name": "Kirsten Menger-Anderson",
+                "email": "kmenger@wikimedia.org"
+            },
+            {
+                "name": "Rob Moen",
+                "email": "rmoen@wikimedia.org"
+            },
+            {
+                "name": "Roan Kattouw",
+                "email": "roan@wikimedia.org"
+            },
+            {
+                "name": "Trevor Parscal",
+                "email": "trevor@wikimedia.org"
+            },
+            {
+                "name": "Kunal Mehta",
+                "email": "legoktm@gmail.com"
+            },
+            {
+                "name": "Prateek Saxena",
+                "email": "prtksxna@gmail.com"
+            }
+        ],
+        "description": "Provides library of common widgets, layouts, and windows.",
+        "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
     }
 ]
