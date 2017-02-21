@@ -99,7 +99,7 @@ class PimpleTest extends \PHPUnit_Framework_TestCase
 
     public function testConstructorInjection()
     {
-        $params = array("param" => "value");
+        $params = array('param' => 'value');
         $pimple = new Container($params);
 
         $this->assertSame($params['param'], $pimple['param']);
@@ -182,6 +182,12 @@ class PimpleTest extends \PHPUnit_Framework_TestCase
         $pimple = new Container();
         $pimple['foo'] = null;
         $this->assertNull($pimple->raw('foo'));
+    }
+
+    public function testFluentRegister()
+    {
+        $pimple = new Container();
+        $this->assertSame($pimple, $pimple->register($this->getMock('Pimple\ServiceProviderInterface')));
     }
 
     /**
@@ -328,18 +334,18 @@ class PimpleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Provider for invalid service definitions
+     * Provider for invalid service definitions.
      */
     public function badServiceDefinitionProvider()
     {
         return array(
           array(123),
-          array(new Fixtures\NonInvokable())
+          array(new Fixtures\NonInvokable()),
         );
     }
 
     /**
-     * Provider for service definitions
+     * Provider for service definitions.
      */
     public function serviceDefinitionProvider()
     {
@@ -350,7 +356,7 @@ class PimpleTest extends \PHPUnit_Framework_TestCase
 
                 return $service;
             }),
-            array(new Fixtures\Invokable())
+            array(new Fixtures\Invokable()),
         );
     }
 
@@ -369,7 +375,7 @@ class PimpleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException RuntimeException
+     * @expectedException \RuntimeException
      * @expectedExceptionMessage Cannot override frozen service "foo".
      */
     public function testOverridingServiceAfterFreeze()

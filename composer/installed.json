@@ -512,68 +512,6 @@
         "description": "More info available on: http://pear.php.net/package/Net_Socket"
     },
     {
-        "name": "pear/net_smtp",
-        "version": "1.7.1",
-        "version_normalized": "1.7.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/pear/Net_SMTP.git",
-            "reference": "cf7e1bac4cdd38f3260e5c10d5ae366b7e22794c"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/pear/Net_SMTP/zipball/cf7e1bac4cdd38f3260e5c10d5ae366b7e22794c",
-            "reference": "cf7e1bac4cdd38f3260e5c10d5ae366b7e22794c",
-            "shasum": ""
-        },
-        "require": {
-            "pear/net_socket": "*",
-            "pear/pear-core-minimal": "*",
-            "php": ">=5.4.0"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "*"
-        },
-        "suggest": {
-            "pear/auth_sasl": "Install optionally via your project's composer.json"
-        },
-        "time": "2015-09-07 17:04:16",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Net": "./"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "include-path": [
-            "./"
-        ],
-        "license": [
-            "PHP License"
-        ],
-        "authors": [
-            {
-                "name": "Jon Parise",
-                "email": "jon@php.net",
-                "homepage": "http://www.indelible.org",
-                "role": "Lead"
-            },
-            {
-                "name": "Chuck Hagenbuch",
-                "email": "chuck@horde.org",
-                "role": "Lead"
-            }
-        ],
-        "description": "An implementation of the SMTP protocol",
-        "homepage": "http://pear.github.io/Net_SMTP/",
-        "keywords": [
-            "email",
-            "mail",
-            "smtp"
-        ]
-    },
-    {
         "name": "wikimedia/assert",
         "version": "v0.2.2",
         "version_normalized": "0.2.2.0",
@@ -1618,54 +1556,6 @@
         "homepage": "https://www.mediawiki.org/wiki/Php-session-serializer"
     },
     {
-        "name": "pimple/pimple",
-        "version": "v2.1.1",
-        "version_normalized": "2.1.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/silexphp/Pimple.git",
-            "reference": "ea22fb2880faf7b7b0e17c9809c6fe25b071fd76"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/silexphp/Pimple/zipball/ea22fb2880faf7b7b0e17c9809c6fe25b071fd76",
-            "reference": "ea22fb2880faf7b7b0e17c9809c6fe25b071fd76",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.0"
-        },
-        "time": "2014-07-24 07:10:08",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.1.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Pimple": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com"
-            }
-        ],
-        "description": "Pimple is a simple Dependency Injection Container for PHP 5.3",
-        "homepage": "http://pimple.sensiolabs.org",
-        "keywords": [
-            "container",
-            "dependency injection"
-        ]
-    },
-    {
         "name": "wikimedia/utfnormal",
         "version": "v1.1.0",
         "version_normalized": "1.1.0.0",
@@ -2062,5 +1952,115 @@
         ],
         "description": "Provides library of common widgets, layouts, and windows.",
         "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
+    },
+    {
+        "name": "pear/net_smtp",
+        "version": "1.7.3",
+        "version_normalized": "1.7.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/pear/Net_SMTP.git",
+            "reference": "e066e5ee011ae056c03db1a95d210fc09649b477"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/pear/Net_SMTP/zipball/e066e5ee011ae056c03db1a95d210fc09649b477",
+            "reference": "e066e5ee011ae056c03db1a95d210fc09649b477",
+            "shasum": ""
+        },
+        "require": {
+            "pear/net_socket": "*",
+            "pear/pear-core-minimal": "*",
+            "php": ">=5.4.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "*"
+        },
+        "suggest": {
+            "pear/auth_sasl": "Install optionally via your project's composer.json"
+        },
+        "time": "2017-01-14 18:19:55",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Net": "./"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "include-path": [
+            "./"
+        ],
+        "license": [
+            "PHP-3.01"
+        ],
+        "authors": [
+            {
+                "name": "Jon Parise",
+                "email": "jon@php.net",
+                "homepage": "http://www.indelible.org",
+                "role": "Lead"
+            },
+            {
+                "name": "Chuck Hagenbuch",
+                "email": "chuck@horde.org",
+                "role": "Lead"
+            }
+        ],
+        "description": "An implementation of the SMTP protocol",
+        "homepage": "http://pear.github.io/Net_SMTP/",
+        "keywords": [
+            "email",
+            "mail",
+            "smtp"
+        ]
+    },
+    {
+        "name": "pimple/pimple",
+        "version": "v3.0.2",
+        "version_normalized": "3.0.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/silexphp/Pimple.git",
+            "reference": "a30f7d6e57565a2e1a316e1baf2a483f788b258a"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/silexphp/Pimple/zipball/a30f7d6e57565a2e1a316e1baf2a483f788b258a",
+            "reference": "a30f7d6e57565a2e1a316e1baf2a483f788b258a",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "time": "2015-09-11 15:10:35",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "3.0.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Pimple": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
+            }
+        ],
+        "description": "Pimple, a simple Dependency Injection Container",
+        "homepage": "http://pimple.sensiolabs.org",
+        "keywords": [
+            "container",
+            "dependency injection"
+        ]
     }
 ]

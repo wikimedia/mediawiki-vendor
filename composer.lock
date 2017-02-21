@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2864cd5a28afff034a92dd6356a22687",
-    "content-hash": "dae6030c2992b8d32e47c8111a724cdf",
+    "hash": "87ea1c529b568e3723c696a62a0ffda3",
+    "content-hash": "ba9956a7e43e7d91d510fed0e29edb04",
     "packages": [
         {
             "name": "composer/semver",
@@ -806,16 +806,16 @@
         },
         {
             "name": "pear/net_smtp",
-            "version": "1.7.1",
+            "version": "1.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear/Net_SMTP.git",
-                "reference": "cf7e1bac4cdd38f3260e5c10d5ae366b7e22794c"
+                "reference": "e066e5ee011ae056c03db1a95d210fc09649b477"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/Net_SMTP/zipball/cf7e1bac4cdd38f3260e5c10d5ae366b7e22794c",
-                "reference": "cf7e1bac4cdd38f3260e5c10d5ae366b7e22794c",
+                "url": "https://api.github.com/repos/pear/Net_SMTP/zipball/e066e5ee011ae056c03db1a95d210fc09649b477",
+                "reference": "e066e5ee011ae056c03db1a95d210fc09649b477",
                 "shasum": ""
             },
             "require": {
@@ -840,7 +840,7 @@
                 "./"
             ],
             "license": [
-                "PHP License"
+                "PHP-3.01"
             ],
             "authors": [
                 {
@@ -862,7 +862,7 @@
                 "mail",
                 "smtp"
             ],
-            "time": "2015-09-07 17:04:16"
+            "time": "2017-01-14 18:19:55"
         },
         {
             "name": "pear/net_socket",
@@ -1018,16 +1018,16 @@
         },
         {
             "name": "pimple/pimple",
-            "version": "v2.1.1",
+            "version": "v3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/silexphp/Pimple.git",
-                "reference": "ea22fb2880faf7b7b0e17c9809c6fe25b071fd76"
+                "reference": "a30f7d6e57565a2e1a316e1baf2a483f788b258a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/silexphp/Pimple/zipball/ea22fb2880faf7b7b0e17c9809c6fe25b071fd76",
-                "reference": "ea22fb2880faf7b7b0e17c9809c6fe25b071fd76",
+                "url": "https://api.github.com/repos/silexphp/Pimple/zipball/a30f7d6e57565a2e1a316e1baf2a483f788b258a",
+                "reference": "a30f7d6e57565a2e1a316e1baf2a483f788b258a",
                 "shasum": ""
             },
             "require": {
@@ -1036,7 +1036,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.1.x-dev"
+                    "dev-master": "3.0.x-dev"
                 }
             },
             "autoload": {
@@ -1054,13 +1054,13 @@
                     "email": "fabien@symfony.com"
                 }
             ],
-            "description": "Pimple is a simple Dependency Injection Container for PHP 5.3",
+            "description": "Pimple, a simple Dependency Injection Container",
             "homepage": "http://pimple.sensiolabs.org",
             "keywords": [
                 "container",
                 "dependency injection"
             ],
-            "time": "2014-07-24 07:10:08"
+            "time": "2015-09-11 15:10:35"
         },
         {
             "name": "psr/log",
