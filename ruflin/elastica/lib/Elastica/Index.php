@@ -199,7 +199,7 @@ class Index implements SearchableInterface
      */
     public function optimize($args = [])
     {
-        trigger_error('Deprecated: Elastica\Index::optimize() is deprecated and will be removed in further Elastica releases. Use Elastica\Query::forcemerge() instead.', E_USER_DEPRECATED);
+        trigger_error('Deprecated: Elastica\Index::optimize() is deprecated and will be removed in further Elastica releases. Use Elastica\Index::forcemerge() instead.', E_USER_DEPRECATED);
 
         return $this->forcemerge($args);
     }
@@ -249,40 +249,30 @@ class Index implements SearchableInterface
      */
     public function create(array $args = [], $options = null)
     {
-        $path = '';
-        $query = [];
-
-        if (is_bool($options)) {
-            if ($options) {
-                try {
-                    $this->delete();
-                } catch (ResponseException $e) {
-                    // Table can't be deleted, because doesn't exist
-                }
+        if (is_bool($options) && $options) {
+            try {
+                $this->delete();
+            } catch (ResponseException $e) {
+                // Table can't be deleted, because doesn't exist
             }
-        } else {
-            if (is_array($options)) {
-                foreach ($options as $key => $value) {
-                    switch ($key) {
-                        case 'recreate':
-                            try {
-                                $this->delete();
-                            } catch (ResponseException $e) {
-                                // Table can't be deleted, because doesn't exist
-                            }
-                            break;
-                        case 'routing':
-                            $query = ['routing' => $value];
-                            break;
-                        default:
-                            throw new InvalidException('Invalid option '.$key);
-                            break;
-                    }
+        } elseif (is_array($options)) {
+            foreach ($options as $key => $value) {
+                switch ($key) {
+                    case 'recreate':
+                        try {
+                            $this->delete();
+                        } catch (ResponseException $e) {
+                            // Table can't be deleted, because doesn't exist
+                        }
+                        break;
+                    default:
+                        throw new InvalidException('Invalid option '.$key);
+                        break;
                 }
             }
         }
 
-        return $this->request($path, Request::PUT, $args, $query);
+        return $this->request('', Request::PUT, $args);
     }
 
     /**
@@ -444,7 +434,7 @@ class Index implements SearchableInterface
      */
     public function getAliases()
     {
-        $responseData = $this->request('_alias/*', \Elastica\Request::GET)->getData();
+        $responseData = $this->request('_alias/*', Request::GET)->getData();
 
         if (!isset($responseData[$this->getName()])) {
             return [];
@@ -487,13 +477,13 @@ class Index implements SearchableInterface
     /**
      * Flushes the index to storage.
      *
-     * @param bool $refresh
+     * @param array $options
      *
      * @return Response Response object
      *
      * @link https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-flush.html
      */
-    public function flush($options = [])
+    public function flush(array $options = [])
     {
         $path = '_flush';
 

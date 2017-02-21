@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "87ea1c529b568e3723c696a62a0ffda3",
-    "content-hash": "ba9956a7e43e7d91d510fed0e29edb04",
+    "hash": "b402f41955c4c7c743ae7f80765b3e46",
+    "content-hash": "b01ea70effa5647f643e7bb7859ee838",
     "packages": [
         {
             "name": "composer/semver",
@@ -1111,16 +1111,16 @@
         },
         {
             "name": "ruflin/elastica",
-            "version": "5.0.0",
+            "version": "5.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ruflin/Elastica.git",
-                "reference": "tags/5.0.0"
+                "reference": "tags/5.1.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/ruflin/Elastica/archive/5.0.0.zip",
-                "reference": "tags/5.0.0",
+                "url": "https://github.com/ruflin/Elastica/archive/5.1.0.zip",
+                "reference": null,
                 "shasum": null
             },
             "type": "library",
