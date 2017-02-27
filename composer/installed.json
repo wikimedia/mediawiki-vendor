@@ -2098,5 +2098,48 @@
         ],
         "description": "Symfony Process Component",
         "homepage": "https://symfony.com"
+    },
+    {
+        "name": "wikimedia/remex-html",
+        "version": "1.0.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/mediawiki-libs-RemexHtml.git",
+            "reference": "c58f9e0264dabfeb0865f7ea9dbb0a67ce771c32"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-RemexHtml/zipball/c58f9e0264dabfeb0865f7ea9dbb0a67ce771c32",
+            "reference": "c58f9e0264dabfeb0865f7ea9dbb0a67ce771c32",
+            "shasum": ""
+        },
+        "require": {
+            "ext-mbstring": "*",
+            "wikimedia/utfnormal": "1.*"
+        },
+        "require-dev": {
+            "mediawiki/mediawiki-codesniffer": "0.7.2",
+            "phpunit/phpunit": "4.*"
+        },
+        "time": "2017-02-24 05:24:34",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "RemexHtml\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Tim Starling",
+                "email": "tstarling@wikimedia.org"
+            }
+        ],
+        "description": "Fast HTML 5 parser"
     }
 ]

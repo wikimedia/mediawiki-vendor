@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2ec039fb2c33cd0bc24ff57aa09f68ce",
-    "content-hash": "429b368590d31d91ac00a6fcd1d899e0",
+    "hash": "a5e82fc7c195f43508add7ee26525077",
+    "content-hash": "dd9306b01156c58697c2bf5c524741d5",
     "packages": [
         {
             "name": "composer/semver",
@@ -1721,6 +1721,47 @@
             "description": "Compute a relative filepath between two paths.",
             "homepage": "https://www.mediawiki.org/wiki/RelPath",
             "time": "2015-09-29 21:17:03"
+        },
+        {
+            "name": "wikimedia/remex-html",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wikimedia/mediawiki-libs-RemexHtml.git",
+                "reference": "c58f9e0264dabfeb0865f7ea9dbb0a67ce771c32"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-RemexHtml/zipball/c58f9e0264dabfeb0865f7ea9dbb0a67ce771c32",
+                "reference": "c58f9e0264dabfeb0865f7ea9dbb0a67ce771c32",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "wikimedia/utfnormal": "1.*"
+            },
+            "require-dev": {
+                "mediawiki/mediawiki-codesniffer": "0.7.2",
+                "phpunit/phpunit": "4.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "RemexHtml\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tim Starling",
+                    "email": "tstarling@wikimedia.org"
+                }
+            ],
+            "description": "Fast HTML 5 parser",
+            "time": "2017-02-24 05:24:34"
         },
         {
             "name": "wikimedia/running-stat",
