@@ -1,4 +1,58 @@
 # OOjs UI Release History
+## v0.19.4 / 2017-02-28
+### Features
+* Add `OO.ui.Element.static.getScrollLeft` (Bartosz Dziewoński)
+* FloatableElement: Support positioning relative to all edges (Roan Kattouw)
+
+### Styles
+* MediaWiki theme: Align DraggableElement focus with standard appearance (Volker E)
+* MediaWiki theme: Align appearance of PHP DropdownInputWidget to JS (Volker E)
+* MediaWiki theme: Fix TextInputWidget inline label misalignment (Volker E)
+* MediaWiki theme: Fix ToolGroupTool's label alignment (Volker E)
+* MediaWiki theme: Fix button layout in ButtonGroup-/SelectWidgets in IE 9 (Volker E)
+* MediaWiki theme: Fix styling for FieldLayout inside HorizontalLayout (Bartosz Dziewoński)
+* styles: Improve vertical alignment of elements' & widgets' icons (Ed Sanders/Volker E)
+* icons: Add 'feedback' icon, in interactions pack (Roan Kattouw)
+* icons: Add 'searchDiacritic' icon, in editing-advanced pack (Ed Sanders)
+
+### Code
+* Make generic placeholder pseudo-class browser-prefix mixin (Ed Sanders)
+* BookletLayout: When continuous, properly make the inner PageLayouts non-scrollable (Bartosz Dziewoński)
+* Element: Fix `scrollLeft()` for body/html/window (Roan Kattouw)
+* OutlineOptionWidget: Remove unused and misplaced values (Volker E)
+* PopupWidget: Remove `left: 0;` breaking floatable popups (Roan Kattouw)
+* MediaWiki theme: Remove obsolete ComboBoxInputWidget selectors (Volker E)
+* README: Encourage direct release in the instructions (James D. Forrester)
+* build: Test the 'minify' task in CI (James D. Forrester)
+* demos: Add 'label' to ToolGroupTool example (Bartosz Dziewoński)
+* demos: Extract ButtonStyleShowcaseWidget from the demo code (Bartosz Dziewoński)
+* demos: Extract CapsuleNumberPopupMultiselectWidget from the demo code (Bartosz Dziewoński)
+* demos: Extract remaining widgets from widgets.js (Bartosz Dziewoński)
+
+
+## v0.19.3 / 2017-02-21
+### Features
+* FieldLayout, FieldsetLayout: Add support for `$overlay` for help popups (Bartosz Dziewoński)
+* MenuSelectWidget: Add config option to not close on choose (Roan Kattouw)
+
+### Styles
+* MediaWiki theme: Make CapsuleItemWidget behave similar to other widgets (Volker E)
+* MediaWiki theme: SelectFileWidget drop target aligned to UX patterns (Volker E)
+
+### Code
+* BookletLayout: Remove unnecessary overrides (Bartosz Dziewoński)
+* Element#getClosestScrollableContainer: Update code comment (Bartosz Dziewoński)
+* FieldLayout, LabelWidget: If input has no ID, focus on element on label click (Prateek Saxena)
+* PopupWidget (and similar): Document why it is unwise to show unattached widgets, and emit warnings (Bartosz Dziewoński)
+* build: Bump stylelint and make pass (James D. Forrester)
+* demos: Add DropdownWidget (with MenuSectionOptionWidget) (Prateek Saxena)
+* demos: Further improve responsive layout (Volker E)
+* demos: Minor tweaks for button style showcase code (Bartosz Dziewoński)
+* demos: Rename OO.ui.Demo to just Demo (Bartosz Dziewoński)
+* demos: Replace `table` in button style showcase with responsive layout (Volker E)
+* demos: Set the default page in demo.js (Bartosz Dziewoński)
+
+
 ## v0.19.2 / 2017-02-14
 ### Features
 * CapsuleMultiselectWidget: Make labels work (Prateek Saxena)
