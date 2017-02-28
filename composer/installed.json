@@ -24,7 +24,7 @@
         "suggest": {
             "monolog/monolog": "Monolog, in order to do generate statistic from log >=1.2.0)"
         },
-        "time": "2015-07-23 23:12:45",
+        "time": "2015-07-23T23:12:45+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -74,7 +74,7 @@
             "phpunit/phpunit": "~4.0",
             "satooshi/php-coveralls": "dev-master"
         },
-        "time": "2015-12-02 12:06:23",
+        "time": "2015-12-02T12:06:23+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -117,7 +117,7 @@
             "phpunit/phpunit": "~4.5",
             "squizlabs/php_codesniffer": "2.3.0"
         },
-        "time": "2015-09-18 07:02:06",
+        "time": "2015-09-18T07:02:06+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -163,7 +163,7 @@
         "require-dev": {
             "phpunit/phpunit": "~4.8.18"
         },
-        "time": "2015-12-30 05:47:36",
+        "time": "2015-12-30T05:47:36+00:00",
         "bin": [
             "bin/lessc"
         ],
@@ -227,7 +227,7 @@
         "require-dev": {
             "phpunit/phpunit": "*"
         },
-        "time": "2015-02-10 20:07:52",
+        "time": "2015-02-10T20:07:52+00:00",
         "type": "class",
         "extra": {
             "branch-alias": {
@@ -278,7 +278,7 @@
             "reference": "82f05cd1aa3edf34e19aa7c8ca312ce13a6a577f",
             "shasum": ""
         },
-        "time": "2015-07-20 20:28:12",
+        "time": "2015-07-20T20:28:12+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -334,7 +334,7 @@
         "replace": {
             "rsky/pear-core-min": "self.version"
         },
-        "time": "2015-10-17 11:41:19",
+        "time": "2015-10-17T11:41:19+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -376,7 +376,7 @@
         "require": {
             "pear/pear-core-minimal": "*"
         },
-        "time": "2015-09-13 12:42:41",
+        "time": "2015-09-13T12:42:41+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -427,7 +427,7 @@
         "require-dev": {
             "phpunit/phpunit": "*"
         },
-        "time": "2014-04-15 19:29:16",
+        "time": "2014-04-15T19:29:16+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -477,7 +477,7 @@
         "require-dev": {
             "phpunit/phpunit": "*"
         },
-        "time": "2014-02-20 19:27:06",
+        "time": "2014-02-20T19:27:06+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -529,7 +529,7 @@
         "require-dev": {
             "phpunit/phpunit": "3.7.*"
         },
-        "time": "2015-04-29 17:23:50",
+        "time": "2015-04-29T17:23:50+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -583,7 +583,7 @@
         "suggest": {
             "ext-gmp": "Large integer support for 32-bit platforms."
         },
-        "time": "2015-09-05 18:49:27",
+        "time": "2015-09-05T18:49:27+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -650,7 +650,7 @@
             "mediawiki/mediawiki-codesniffer": "0.5.0",
             "phpunit/phpunit": "4.6.*"
         },
-        "time": "2015-10-29 22:19:02",
+        "time": "2015-10-29T22:19:02+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -698,7 +698,7 @@
             "mediawiki/mediawiki-codesniffer": "^0.3.0.0",
             "phpunit/phpunit": "^4.7.7.0"
         },
-        "time": "2015-08-28 17:03:03",
+        "time": "2015-08-28T17:03:03+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -746,7 +746,7 @@
             "mediawiki/mediawiki-codesniffer": "^0.4.0.0",
             "phpunit/phpunit": "^4.8.9.0"
         },
-        "time": "2015-09-29 21:17:03",
+        "time": "2015-09-29T21:17:03+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -790,7 +790,7 @@
             "mediawiki/mediawiki-codesniffer": "^0.5.0.0",
             "phpunit/phpunit": "4.6.*"
         },
-        "time": "2015-10-28 22:29:15",
+        "time": "2015-10-28T22:29:15+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -832,7 +832,7 @@
         "require-dev": {
             "phpunit/phpunit": "4.0.17"
         },
-        "time": "2015-11-05 07:14:57",
+        "time": "2015-11-05T07:14:57+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -885,7 +885,7 @@
             "phpunit/phpunit": "~4.8|~5.0",
             "squizlabs/php_codesniffer": "~2.1.0"
         },
-        "time": "2016-03-08 17:11:37",
+        "time": "2016-03-08T17:11:37+00:00",
         "type": "composer-plugin",
         "extra": {
             "branch-alias": {
@@ -936,7 +936,7 @@
         "suggest": {
             "pear/net_smtp": "Install optionally via your project's composer.json"
         },
-        "time": "2016-01-31 21:32:18",
+        "time": "2016-01-31T21:32:18+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1019,7 +1019,7 @@
             "rollbar/rollbar": "Allow sending log messages to Rollbar",
             "ruflin/elastica": "Allow sending log messages to an Elastic Search server"
         },
-        "time": "2016-04-02 13:12:58",
+        "time": "2016-04-02T13:12:58+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1075,7 +1075,7 @@
             "mediawiki/mediawiki-codesniffer": "0.5.1",
             "phpunit/phpunit": "4.7.2"
         },
-        "time": "2016-04-07 21:25:47",
+        "time": "2016-04-07T21:25:47+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1124,7 +1124,7 @@
             "guzzlehttp/guzzle": "Allow using guzzle 6 as the http transport (Requires php 5.5)",
             "monolog/monolog": "Logging request"
         },
-        "time": "2016-03-18 07:56:36",
+        "time": "2016-03-18T07:56:36+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1177,7 +1177,7 @@
             "mediawiki/mediawiki-codesniffer": "0.5.1",
             "phpunit/phpunit": "4.7.2"
         },
-        "time": "2016-02-12 15:19:10",
+        "time": "2016-02-12T15:19:10+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1221,7 +1221,7 @@
             "mediawiki/mediawiki-codesniffer": "0.5.0",
             "phpunit/phpunit": "4.6.*"
         },
-        "time": "2016-05-29 07:39:26",
+        "time": "2016-05-29T07:39:26+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1276,7 +1276,7 @@
             "mediawiki/mediawiki-codesniffer": "0.4.0",
             "phpunit/phpunit": "^4.7.7.0"
         },
-        "time": "2016-07-21 00:41:10",
+        "time": "2016-07-21T00:41:10+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1320,7 +1320,7 @@
             "mediawiki/mediawiki-codesniffer": "0.7.2",
             "phpunit/phpunit": "4.8.27"
         },
-        "time": "2016-09-29 07:03:03",
+        "time": "2016-09-29T07:03:03+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1364,7 +1364,7 @@
             "mediawiki/mediawiki-codesniffer": "0.7.2",
             "phpunit/phpunit": "4.8.24"
         },
-        "time": "2016-10-01 06:58:30",
+        "time": "2016-10-01T06:58:30+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1407,7 +1407,7 @@
             "phpunit/phpunit": "^4.5 || ^5.0.5",
             "phpunit/phpunit-mock-objects": "2.3.0 || ^3.0"
         },
-        "time": "2016-08-30 16:08:34",
+        "time": "2016-08-30T16:08:34+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1472,7 +1472,7 @@
             "phpdocumentor/phpdocumentor": "~2",
             "phpunit/phpunit": "^4.8.22"
         },
-        "time": "2016-08-26 12:45:49",
+        "time": "2016-08-26T12:45:49+00:00",
         "bin": [
             "bin/validate-json"
         ],
@@ -1542,7 +1542,7 @@
             "mediawiki/mediawiki-codesniffer": "0.5.0",
             "phpunit/phpunit": "~4.5"
         },
-        "time": "2016-10-01 13:19:49",
+        "time": "2016-10-01T13:19:49+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1587,7 +1587,7 @@
             "mediawiki/mediawiki-codesniffer": "0.4.0",
             "phpunit/phpunit": "4.6.*"
         },
-        "time": "2016-05-24 13:13:30",
+        "time": "2016-05-24T13:13:30+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1626,7 +1626,7 @@
         "require": {
             "php": ">=5.3.0"
         },
-        "time": "2016-07-18 04:51:16",
+        "time": "2016-07-18T04:51:16+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1672,7 +1672,7 @@
             "ext-gd": "*",
             "php": ">=5.3"
         },
-        "time": "2015-01-02 12:21:25",
+        "time": "2015-01-02T12:21:25+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1709,7 +1709,7 @@
             "mediawiki/mediawiki-codesniffer": "0.5.0",
             "phpunit/phpunit": "4.6.*"
         },
-        "time": "2017-01-23 16:52:10",
+        "time": "2017-01-23T16:52:10+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1756,7 +1756,7 @@
             "phpunit/phpunit": "4.8.*",
             "squizlabs/php_codesniffer": "2.3.*"
         },
-        "time": "2016-12-24 09:16:21",
+        "time": "2016-12-24T09:16:21+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1788,7 +1788,7 @@
         "require": {
             "php": ">=5.3.0"
         },
-        "time": "2016-12-14 14:29:29",
+        "time": "2016-12-14T14:29:29+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1826,7 +1826,7 @@
         "require": {
             "php": ">=5.3.0"
         },
-        "time": "2016-10-10 12:19:37",
+        "time": "2016-10-10T12:19:37+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1881,7 +1881,7 @@
             "mediawiki/mediawiki-codesniffer": "0.6.0",
             "phpunit/phpunit": "4.8.21"
         },
-        "time": "2017-02-14 22:27:07",
+        "time": "2017-02-14T22:27:07+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1964,7 +1964,7 @@
         "suggest": {
             "pear/auth_sasl": "Install optionally via your project's composer.json"
         },
-        "time": "2017-01-14 18:19:55",
+        "time": "2017-01-14T18:19:55+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -2018,7 +2018,7 @@
         "require": {
             "php": ">=5.3.0"
         },
-        "time": "2015-09-11 15:10:35",
+        "time": "2015-09-11T15:10:35+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2066,7 +2066,7 @@
         "require": {
             "php": ">=5.5.9"
         },
-        "time": "2016-07-28 11:13:34",
+        "time": "2016-07-28T11:13:34+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2122,7 +2122,7 @@
             "mediawiki/mediawiki-codesniffer": "0.7.2",
             "phpunit/phpunit": "4.*"
         },
-        "time": "2017-02-24 05:24:34",
+        "time": "2017-02-24T05:24:34+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
