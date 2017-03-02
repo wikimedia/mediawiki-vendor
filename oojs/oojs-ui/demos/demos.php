@@ -7,6 +7,7 @@
 		exit();
 	}
 	require_once $autoload;
+	require_once 'classes/ButtonStyleShowcaseWidget.php';
 
 	$theme = ( isset( $_GET['theme'] ) && $_GET['theme'] === 'apex' ) ? 'apex' : 'mediawiki';
 	$themeClass = 'OOUI\\' . ( $theme === 'apex' ? 'Apex' : 'MediaWiki' ) . 'Theme';
@@ -41,10 +42,11 @@
 	<link rel="stylesheet" href="dist/<?php echo $styleFileNameImages; ?>">
 	<link rel="stylesheet" href="dist/<?php echo $styleFileNameExtraIcons; ?>">
 	<link rel="stylesheet" href="styles/demo<?php echo $directionSuffix; ?>.css">
+	<link rel="stylesheet" href="classes/ButtonStyleShowcaseWidget.css">
 </head>
 <body class="oo-ui-<?php echo $direction; ?>">
-	<div class="oo-ui-demo">
-		<div class="oo-ui-demo-menu">
+	<div class="demo">
+		<div class="demo-menu">
 			<?php
 				echo new OOUI\ButtonGroupWidget( [
 					'infusable' => true,
@@ -78,7 +80,7 @@
 				] );
 				echo new OOUI\ButtonGroupWidget( [
 					'infusable' => true,
-					'id' => 'oo-ui-demo-menu-infuse',
+					'id' => 'demo-menu-infuse',
 					'items' => [
 						new OOUI\ButtonWidget( [
 							'label' => 'JS',
@@ -113,6 +115,8 @@
 	<script src="node_modules/oojs/dist/oojs.jquery.js"></script>
 	<script src="dist/oojs-ui-core.js"></script>
 	<script src="dist/oojs-ui-<?php echo $theme; ?>.js"></script>
+	<script>window.Demo = {};</script>
+	<script src="classes/ButtonStyleShowcaseWidget.js"></script>
 	<script src="infusion.js"></script>
 </body>
 </html>

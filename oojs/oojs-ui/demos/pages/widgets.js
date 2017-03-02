@@ -1,77 +1,16 @@
-OO.ui.Demo.static.pages.widgets = function ( demo ) {
-	var i, styles, states, buttonStyleShowcaseWidget, $table, fieldsets,
+Demo.static.pages.widgets = function ( demo ) {
+	var i, fieldsets,
 		loremIpsum = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, ' +
 			'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\u200E',
-		capsuleWithPopup, capsulePopupWidget,
 		textInputForLabel, labelForTextInput,
 		horizontalDragItems = [],
 		verticalDragItems = [],
 		verticalHandledDragItems = [],
 		$demo = demo.$element;
 
-	/**
-	 * Draggable group widget containing drag/drop items
-	 *
-	 * @param {Object} [config] Configuration options
-	 */
-	function DraggableGroupWidget( config ) {
-		// Configuration initialization
-		config = config || {};
-
-		// Parent constructor
-		DraggableGroupWidget.parent.call( this, config );
-
-		// Mixin constructors
-		OO.ui.mixin.DraggableGroupElement.call( this, $.extend( {}, config, { $group: this.$element } ) );
-	}
-
-	/* Setup */
-	OO.inheritClass( DraggableGroupWidget, OO.ui.Widget );
-	OO.mixinClass( DraggableGroupWidget, OO.ui.mixin.DraggableGroupElement );
-
-	/**
-	 * Drag/drop items
-	 *
-	 * @param {Object} [config] Configuration options
-	 */
-	function DraggableItemWidget( config ) {
-		// Configuration initialization
-		config = config || {};
-
-		// Parent constructor
-		DraggableItemWidget.parent.call( this, config );
-
-		// Mixin constructors
-		OO.ui.mixin.DraggableElement.call( this, config );
-	}
-
-	/* Setup */
-	OO.inheritClass( DraggableItemWidget, OO.ui.DecoratedOptionWidget );
-	OO.mixinClass( DraggableItemWidget, OO.ui.mixin.DraggableElement );
-
-	/**
-	 * Drag/drop items with custom handle
-	 *
-	 * @param {Object} [config] Configuration options
-	 */
-	function DraggableHandledItemWidget( config ) {
-		// Configuration initialization
-		config = config || {};
-
-		// Parent constructor
-		DraggableHandledItemWidget.parent.call( this, config );
-
-		// Mixin constructors
-		OO.ui.mixin.DraggableElement.call( this, $.extend( { $handle: this.$icon }, config ) );
-	}
-
-	/* Setup */
-	OO.inheritClass( DraggableHandledItemWidget, OO.ui.DecoratedOptionWidget );
-	OO.mixinClass( DraggableHandledItemWidget, OO.ui.mixin.DraggableElement );
-
 	for ( i = 0; i <= 12; i++ ) {
 		horizontalDragItems.push(
-			new DraggableItemWidget( {
+			new Demo.DraggableItemWidget( {
 				data: 'item' + i,
 				icon: 'tag',
 				label: 'Inline item ' + i
@@ -79,14 +18,14 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 		);
 		if ( i <= 6 ) {
 			verticalDragItems.push(
-				new DraggableItemWidget( {
+				new Demo.DraggableItemWidget( {
 					data: 'item' + i,
 					icon: 'tag',
 					label: 'Item ' + i
 				} )
 			);
 			verticalHandledDragItems.push(
-				new DraggableHandledItemWidget( {
+				new Demo.DraggableHandledItemWidget( {
 					data: 'item' + i,
 					icon: 'menu',
 					label: 'Item ' + i
@@ -95,177 +34,11 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 		}
 	}
 
-	/**
-	 * Demo for LookupElement.
-	 *
-	 * @class
-	 * @extends OO.ui.TextInputWidget
-	 * @mixins OO.ui.mixin.LookupElement
-	 *
-	 * @constructor
-	 * @param {Object} config Configuration options
-	 */
-	function NumberLookupTextInputWidget( config ) {
-		// Parent constructor
-		OO.ui.TextInputWidget.call( this, { validate: 'integer' } );
-		// Mixin constructors
-		OO.ui.mixin.LookupElement.call( this, config );
-	}
-	OO.inheritClass( NumberLookupTextInputWidget, OO.ui.TextInputWidget );
-	OO.mixinClass( NumberLookupTextInputWidget, OO.ui.mixin.LookupElement );
-
-	/**
-	 * @inheritdoc
-	 */
-	NumberLookupTextInputWidget.prototype.getLookupRequest = function () {
-		var
-			value = this.getValue(),
-			deferred = $.Deferred(),
-			delay = 500 + Math.floor( Math.random() * 500 );
-
-		this.getValidity().then( function () {
-			// Resolve with results after a faked delay
-			setTimeout( function () {
-				deferred.resolve( [ value * 1, value * 2, value * 3, value * 4, value * 5 ] );
-			}, delay );
-		}, function () {
-			// No results when the input contains invalid content
-			deferred.resolve( [] );
-		} );
-
-		return deferred.promise( { abort: function () {} } );
-	};
-
-	/**
-	 * @inheritdoc
-	 */
-	NumberLookupTextInputWidget.prototype.getLookupCacheDataFromResponse = function ( response ) {
-		return response || [];
-	};
-
-	/**
-	 * @inheritdoc
-	 */
-	NumberLookupTextInputWidget.prototype.getLookupMenuOptionsFromData = function ( data ) {
-		var
-			items = [],
-			i, number;
-		for ( i = 0; i < data.length; i++ ) {
-			number = String( data[ i ] );
-			items.push( new OO.ui.MenuOptionWidget( {
-				data: number,
-				label: number
-			} ) );
-		}
-
-		return items;
-	};
-
-	function UnsupportedSelectFileWidget() {
-		// Parent constructor
-		UnsupportedSelectFileWidget.parent.apply( this, arguments );
-	}
-	OO.inheritClass( UnsupportedSelectFileWidget, OO.ui.SelectFileWidget );
-	UnsupportedSelectFileWidget.static.isSupported = function () {
-		return false;
-	};
-
-	capsulePopupWidget = new OO.ui.NumberInputWidget( {
-		isInteger: true
-	} );
-	capsulePopupWidget.connect( capsulePopupWidget, {
-		enter: function () {
-			if ( !isNaN( this.getNumericValue() ) ) {
-				capsuleWithPopup.addItemsFromData( [ this.getNumericValue() ] );
-				this.setValue( '' );
-			}
-			return false;
-		}
-	} );
-	capsuleWithPopup = new OO.ui.CapsuleMultiselectWidget( {
-		allowArbitrary: true,
-		popup: { $content: capsulePopupWidget.$element }
-	} );
-
 	textInputForLabel = new OO.ui.TextInputWidget( { value: 'Input for label above' } );
 	labelForTextInput = new OO.ui.LabelWidget( {
 		label: 'Label for input below',
 		input: textInputForLabel
 	} );
-
-	styles = [
-		{},
-		{
-			flags: [ 'progressive' ]
-		},
-		{
-			flags: [ 'constructive' ]
-		},
-		{
-			flags: [ 'destructive' ]
-		},
-		{
-			flags: [ 'primary', 'progressive' ]
-		},
-		{
-			flags: [ 'primary', 'constructive' ]
-		},
-		{
-			flags: [ 'primary', 'destructive' ]
-		}
-	];
-	states = [
-		{
-			label: 'Button'
-		},
-		{
-			label: 'Button',
-			icon: 'tag'
-		},
-		{
-			label: 'Button',
-			icon: 'tag',
-			indicator: 'down'
-		},
-		{
-			icon: 'tag',
-			title: 'Title text'
-		},
-		{
-			indicator: 'down'
-		},
-		{
-			icon: 'tag',
-			indicator: 'down'
-		},
-		{
-			label: 'Button',
-			disabled: true
-		},
-		{
-			icon: 'tag',
-			title: 'Title text',
-			disabled: true
-		},
-		{
-			indicator: 'down',
-			disabled: true
-		}
-	];
-	buttonStyleShowcaseWidget = new OO.ui.Widget();
-	$table = $( '<table>' );
-	$.each( styles, function ( i, style ) {
-		var $tableRow = $( '<tr>' );
-		$.each( states, function ( j, state ) {
-			var $tableCell = $( '<td>' );
-			$tableCell.append(
-				new OO.ui.ButtonWidget( $.extend( {}, style, state ) ).$element
-			);
-			$tableRow.append( $tableCell );
-		} );
-		$table.append( $tableRow );
-	} );
-	buttonStyleShowcaseWidget.$element.append( $table );
 
 	fieldsets = [
 		new OO.ui.FieldsetLayout( {
@@ -696,7 +469,7 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 			label: 'Button style showcase',
 			items: [
 				new OO.ui.FieldLayout(
-					buttonStyleShowcaseWidget,
+					new Demo.ButtonStyleShowcaseWidget(),
 					{
 						align: 'top'
 					}
@@ -1150,7 +923,7 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 					}
 				),
 				new OO.ui.FieldLayout(
-					new UnsupportedSelectFileWidget(),
+					new Demo.UnsupportedSelectFileWidget(),
 					{
 						label: 'SelectFileWidget (no browser support)\u200E',
 						align: 'top'
@@ -1174,7 +947,7 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 					}
 				),
 				new OO.ui.FieldLayout(
-					new UnsupportedSelectFileWidget( {
+					new Demo.UnsupportedSelectFileWidget( {
 						showDropTarget: true
 					} ),
 					{
@@ -1256,6 +1029,38 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 				new OO.ui.FieldLayout(
 					new OO.ui.DropdownWidget( {
 						label: 'Select one',
+						menu: {
+							items: [
+								new OO.ui.MenuSectionOptionWidget( {
+									label: 'Dogs'
+								} ),
+								new OO.ui.MenuOptionWidget( {
+									data: 'corgi',
+									label: 'Welsh Corgi',
+									indicator: 'required'
+								} ),
+								new OO.ui.MenuOptionWidget( {
+									data: 'poodle',
+									label: 'Standard Poodle'
+								} ),
+								new OO.ui.MenuSectionOptionWidget( {
+									label: 'Cats'
+								} ),
+								new OO.ui.MenuOptionWidget( {
+									data: 'lion',
+									label: 'Lion'
+								} )
+							]
+						}
+					} ),
+					{
+						label: 'DropdownWidget (with MenuSectionOptionWidget)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.DropdownWidget( {
+						label: 'Select one',
 						disabled: true,
 						menu: {
 							items: [
@@ -1310,6 +1115,36 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 					} ),
 					{
 						label: 'DropdownWidget (using overlay)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.DropdownWidget( {
+						label: 'Select one',
+						menu: {
+							items: [
+								new OO.ui.MenuOptionWidget( {
+									data: 'a',
+									label: 'First'
+								} ),
+								new OO.ui.MenuOptionWidget( {
+									data: 'b',
+									label: 'Second'
+								} ),
+								new OO.ui.MenuOptionWidget( {
+									data: 'c',
+									label: 'Third'
+								} ),
+								new OO.ui.MenuOptionWidget( {
+									data: 'd',
+									label: 'Fourth'
+								} )
+							],
+							hideOnChoose: false
+						}
+					} ),
+					{
+						label: 'DropdownWidget (does not close on choose)\u200E',
 						align: 'top'
 					}
 				),
@@ -1539,7 +1374,7 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 					}
 				),
 				new OO.ui.FieldLayout(
-					capsuleWithPopup,
+					new Demo.CapsuleNumberPopupMultiselectWidget(),
 					{
 						label: 'CapsuleMultiselectWidget with NumberInputWidget popup\u200E',
 						align: 'top'
@@ -1700,7 +1535,7 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 			label: 'Draggable',
 			items: [
 				new OO.ui.FieldLayout(
-					new DraggableGroupWidget( {
+					new Demo.DraggableGroupWidget( {
 						orientation: 'horizontal',
 						items: horizontalDragItems
 					} ),
@@ -1710,7 +1545,7 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 					}
 				),
 				new OO.ui.FieldLayout(
-					new DraggableGroupWidget( {
+					new Demo.DraggableGroupWidget( {
 						items: verticalDragItems
 					} ),
 					{
@@ -1719,7 +1554,7 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 					}
 				),
 				new OO.ui.FieldLayout(
-					new DraggableGroupWidget( {
+					new Demo.DraggableGroupWidget( {
 						items: verticalHandledDragItems
 					} ),
 					{
@@ -1929,14 +1764,14 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 					}
 				),
 				new OO.ui.FieldLayout(
-					new NumberLookupTextInputWidget(),
+					new Demo.NumberLookupTextInputWidget(),
 					{
 						label: 'LookupElement (try inputting an integer)\u200E',
 						align: 'top'
 					}
 				),
 				new OO.ui.FieldLayout(
-					new NumberLookupTextInputWidget( {
+					new Demo.NumberLookupTextInputWidget( {
 						highlightFirst: false
 					} ),
 					{
@@ -2308,11 +2143,9 @@ OO.ui.Demo.static.pages.widgets = function ( demo ) {
 			expanded: false,
 			framed: true
 		} ).$element
-			.addClass( 'oo-ui-demo-container' )
+			.addClass( 'demo-container' )
 			.append(
 				$( fieldsets.map( function ( fieldset ) { return fieldset.$element[ 0 ]; } ) )
 			)
 	);
 };
-
-OO.ui.Demo.static.defaultPage = 'widgets';

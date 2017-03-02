@@ -1,4 +1,4 @@
-OO.ui.Demo.static.pages.icons = function ( demo ) {
+Demo.static.pages.icons = function ( demo ) {
 	var i, len, iconSet, iconsFieldset, iconWidget, selector,
 		icons = {
 			core: [
@@ -68,6 +68,7 @@ OO.ui.Demo.static.pages.icons = function ( demo ) {
 				'browser',
 				'clear',
 				'clock',
+				'feedback',
 				'funnel',
 				'heart',
 				'key',
@@ -139,6 +140,7 @@ OO.ui.Demo.static.pages.icons = function ( demo ) {
 				'quotes',
 				'quotesAdd',
 				'searchCaseSensitive',
+				'searchDiacritics',
 				'searchRegularExpression',
 				'specialCharacter',
 				'table',
@@ -292,7 +294,7 @@ OO.ui.Demo.static.pages.icons = function ( demo ) {
 			expanded: false,
 			framed: true
 		} ).$element
-			.addClass( 'oo-ui-demo-container oo-ui-demo-icons' )
+			.addClass( 'demo-container demo-icons' )
 			.append(
 				selector.$element,
 				indicatorsFieldset.$element,
