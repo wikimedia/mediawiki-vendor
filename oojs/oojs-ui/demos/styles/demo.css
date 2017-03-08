@@ -87,64 +87,6 @@ p {
 	max-width: 10em;
 }
 
-.floatableTest-floatable,
-.floatableTest-container {
-	border: 1px #000 solid;
-}
-
-.floatableTest-floatable {
-	border: 1px #f00 solid;
-	width: 200px;
-	height: 200px;
-	position: absolute;
-	pointer-events: none;
-}
-
-.floatableTest-container {
-	position: absolute;
-	text-align: center;
-}
-
-.floatableTest-container .oo-ui-fieldsetLayout {
-	margin-top: 20%;
-	display: inline-block;
-}
-
-.oo-ui-positionSelectWidget table {
-	border-collapse: collapse;
-}
-.oo-ui-positionSelectWidget tr:nth-child(2) td:nth-child(2) {
-	border-top: 1px #000 solid;
-	border-left: 1px #000 solid;
-}
-.oo-ui-positionSelectWidget tr:nth-child(2) td:nth-child(3) {
-	border-top: 1px #000 solid;
-}
-.oo-ui-positionSelectWidget tr:nth-child(2) td:nth-child(4) {
-	border-top: 1px #000 solid;
-	border-right: 1px #000 solid;
-}
-.oo-ui-positionSelectWidget tr:nth-child(3) td:nth-child(2) {
-	border-left: 1px #000 solid;
-}
-.oo-ui-positionSelectWidget tr:nth-child(3) td:nth-child(4) {
-	border-right: 1px #000 solid;
-}
-.oo-ui-positionSelectWidget tr:nth-child(4) td:nth-child(2) {
-	border-bottom: 1px #000 solid;
-	border-left: 1px #000 solid;
-}
-.oo-ui-positionSelectWidget tr:nth-child(4) td:nth-child(3) {
-	border-bottom: 1px #000 solid;
-}
-.oo-ui-positionSelectWidget tr:nth-child(4) td:nth-child(4) {
-	border-bottom: 1px #000 solid;
-	border-right: 1px #000 solid;
-}
-.oo-ui-positionSelectWidget .oo-ui-radioOptionWidget.oo-ui-optionWidget-selected {
-	outline: 1px #f00 solid;
-}
-
 /* Console */
 /* stylelint-disable selector-pseudo-element-colon-notation */
 .demo-console {
@@ -153,6 +95,8 @@ p {
 	border: 1px solid transparent;
 	margin-bottom: -2px;
 	line-height: 1.4;
+	/* @noflip */
+	direction: ltr;
 }
 
 .demo-console-expanded {
@@ -212,6 +156,7 @@ p {
 	display: none;
 }
 
+/* @noflip */
 .demo-console-log {
 	border: 1px solid #a2a9b1;
 	border-width: 0 0 1px 0;
@@ -219,6 +164,7 @@ p {
 	overflow: auto;
 }
 
+/* @noflip */
 .demo-console-log-line {
 	position: relative;
 	padding-left: 20px;
@@ -229,6 +175,7 @@ p {
 	color: #54595d;
 }
 
+/* @noflip */
 .demo-console-log-line-input::before {
 	display: block;
 	position: absolute;
@@ -244,6 +191,7 @@ p {
 	color: #d33;
 }
 
+/* @noflip */
 .demo-console-label {
 	position: relative;
 	display: inline-block;
@@ -257,6 +205,7 @@ p {
 	box-sizing: border-box;
 }
 
+/* @noflip */
 .demo-console-label::before {
 	content: '→';
 	color: #00f;

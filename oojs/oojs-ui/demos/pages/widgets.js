@@ -1223,15 +1223,13 @@ Demo.static.pages.widgets = function ( demo ) {
 				),
 				new OO.ui.FieldLayout(
 					new OO.ui.ComboBoxInputWidget( {
-						menu: {
-							items: [
-								new OO.ui.MenuOptionWidget( { data: 'asd', label: 'Label for asd' } ),
-								new OO.ui.MenuOptionWidget( { data: 'fgh', label: 'Label for fgh' } ),
-								new OO.ui.MenuOptionWidget( { data: 'jkl', label: 'Label for jkl' } ),
-								new OO.ui.MenuOptionWidget( { data: 'zxc', label: 'Label for zxc' } ),
-								new OO.ui.MenuOptionWidget( { data: 'vbn', label: 'Label for vbn' } )
-							]
-						}
+						options: [
+							{ data: 'asd', label: 'Label for asd' },
+							{ data: 'fgh', label: 'Label for fgh' },
+							{ data: 'jkl', label: 'Label for jkl' },
+							{ data: 'zxc', label: 'Label for zxc' },
+							{ data: 'vbn', label: 'Label for vbn' }
+						]
 					} ),
 					{
 						label: 'ComboBoxInputWidget',
@@ -1240,16 +1238,29 @@ Demo.static.pages.widgets = function ( demo ) {
 				),
 				new OO.ui.FieldLayout(
 					new OO.ui.ComboBoxInputWidget( {
+						options: [
+							{ data: 'Option 1' },
+							{ data: 'Option 2' },
+							{ data: 'Option 3' },
+							{ data: 'Option 4' },
+							{ data: 'Option 5' }
+						]
+					} ),
+					{
+						label: 'ComboBoxInputWidget (no labels given)',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.ComboBoxInputWidget( {
 						disabled: true,
-						menu: {
-							items: [
-								new OO.ui.MenuOptionWidget( { data: 'asd', label: 'Label for asd' } ),
-								new OO.ui.MenuOptionWidget( { data: 'fgh', label: 'Label for fgh' } ),
-								new OO.ui.MenuOptionWidget( { data: 'jkl', label: 'Label for jkl' } ),
-								new OO.ui.MenuOptionWidget( { data: 'zxc', label: 'Label for zxc' } ),
-								new OO.ui.MenuOptionWidget( { data: 'vbn', label: 'Label for vbn' } )
-							]
-						}
+						options: [
+							{ data: 'asd', label: 'Label for asd' },
+							{ data: 'fgh', label: 'Label for fgh' },
+							{ data: 'jkl', label: 'Label for jkl' },
+							{ data: 'zxc', label: 'Label for zxc' },
+							{ data: 'vbn', label: 'Label for vbn' }
+						]
 					} ),
 					{
 						label: 'ComboBoxInputWidget (disabled)\u200E',
@@ -1370,6 +1381,27 @@ Demo.static.pages.widgets = function ( demo ) {
 					} ).addItemsFromData( [ 'abc', 'asd' ] ),
 					{
 						label: 'CapsuleMultiselectWidget (initially selected)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.CapsuleMultiselectWidget( {
+						menu: {
+							items: [
+								new OO.ui.MenuOptionWidget( { data: 'abc', label: 'Label for abc' } ),
+								new OO.ui.MenuSectionOptionWidget( { label: 'Foo' } ),
+								new OO.ui.MenuOptionWidget( { data: 'asd', label: 'Label for asd' } ),
+								new OO.ui.MenuOptionWidget( { data: 'jkl', label: 'Label for jkl' } ),
+								new OO.ui.MenuSectionOptionWidget( { label: 'Bar' } ),
+								new OO.ui.MenuOptionWidget( { data: 'jjj', label: 'Label for jjj' } ),
+								new OO.ui.MenuOptionWidget( { data: 'zxc', label: 'Label for zxc' } ),
+								new OO.ui.MenuSectionOptionWidget( { label: 'Baz' } ),
+								new OO.ui.MenuOptionWidget( { data: 'vbn', label: 'Label for vbn' } )
+							]
+						}
+					} ),
+					{
+						label: 'CapsuleMultiselectWidget (with sections)',
 						align: 'top'
 					}
 				),
@@ -1737,6 +1769,23 @@ Demo.static.pages.widgets = function ( demo ) {
 						popup: {
 							head: true,
 							label: 'More information',
+							$content: $( '<p>' ).text( loremIpsum ),
+							padded: true,
+							align: 'center'
+						}
+					} ),
+					{
+						label: 'PopupButtonWidget (frameless, with popup head align: center)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.PopupButtonWidget( {
+						icon: 'info',
+						framed: false,
+						popup: {
+							head: true,
+							label: 'More information',
 							$content: $( '<p>' + loremIpsum + '</p><ul><li>Item one</li><li>Item two</li><li>Item three</li><li>Item four</li></ul><p>Even more text here which might well be clipped off the visible area.</p>' ),
 							$footer: $( '<p>And maybe a footer whilst we\'re at it?</p>' ),
 							padded: true,
@@ -1759,7 +1808,85 @@ Demo.static.pages.widgets = function ( demo ) {
 						}
 					} ),
 					{
-						label: 'PopupButtonWidget (framed, no popup head)\u200E',
+						label: 'PopupButtonWidget (framed, no popup head, align: forwards)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.PopupButtonWidget( {
+						icon: 'menu',
+						label: 'Options',
+						popup: {
+							$content: $( '<p>' ).text( loremIpsum ),
+							padded: true,
+							align: 'backwards'
+						}
+					} ),
+					{
+						label: 'PopupButtonWidget (framed, no popup head, align: backwards)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.PopupButtonWidget( {
+						icon: 'menu',
+						label: 'Options',
+						popup: {
+							$content: $( '<p>' ).text( loremIpsum ),
+							padded: true,
+							align: 'center'
+						}
+					} ),
+					{
+						label: 'PopupButtonWidget (framed, no popup head, align: center)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.PopupButtonWidget( {
+						icon: 'menu',
+						label: 'Options',
+						popup: {
+							$content: $( '<p>' ).text( loremIpsum ),
+							padded: true,
+							align: 'center',
+							position: 'above'
+						}
+					} ),
+					{
+						label: 'PopupButtonWidget (framed, no popup head, position: above)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.PopupButtonWidget( {
+						icon: 'menu',
+						label: 'Options',
+						popup: {
+							$content: $( '<p>' ).text( loremIpsum ),
+							padded: true,
+							align: 'center',
+							position: 'before'
+						}
+					} ),
+					{
+						label: 'PopupButtonWidget (framed, no popup head, position: before)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.PopupButtonWidget( {
+						icon: 'menu',
+						label: 'Options',
+						popup: {
+							$content: $( '<p>' ).text( loremIpsum ),
+							padded: true,
+							align: 'center',
+							position: 'after'
+						}
+					} ),
+					{
+						label: 'PopupButtonWidget (framed, no popup head, position: after)\u200E',
 						align: 'top'
 					}
 				),

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "1255177b764145c4f6bb83813f0fac08",
+    "content-hash": "1e083d31708c44a25e06d42bf41ad469",
     "packages": [
         {
             "name": "composer/semver",
@@ -465,16 +465,16 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.19.4",
+            "version": "v0.19.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "1807bca77ed4b0691e3ec4ef151f5c4bbbf1be1b"
+                "reference": "cec211014af88f59d4c50674dbeda1cfdad1734b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/1807bca77ed4b0691e3ec4ef151f5c4bbbf1be1b",
-                "reference": "1807bca77ed4b0691e3ec4ef151f5c4bbbf1be1b",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/cec211014af88f59d4c50674dbeda1cfdad1734b",
+                "reference": "cec211014af88f59d4c50674dbeda1cfdad1734b",
                 "shasum": ""
             },
             "require": {
@@ -540,27 +540,27 @@
             ],
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOjs_UI",
-            "time": "2017-02-28T22:56:52+00:00"
+            "time": "2017-03-07T22:12:26+00:00"
         },
         {
             "name": "oyejorge/less.php",
-            "version": "v1.7.0.10",
+            "version": "v1.7.0.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/oyejorge/less.php.git",
-                "reference": "a1e2d3c20794b37ac4d0baeb24613e579584033b"
+                "reference": "f1bccbee4bc9c7fdb6873e8c246063e01365a9a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oyejorge/less.php/zipball/a1e2d3c20794b37ac4d0baeb24613e579584033b",
-                "reference": "a1e2d3c20794b37ac4d0baeb24613e579584033b",
+                "url": "https://api.github.com/repos/oyejorge/less.php/zipball/f1bccbee4bc9c7fdb6873e8c246063e01365a9a8",
+                "reference": "f1bccbee4bc9c7fdb6873e8c246063e01365a9a8",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.8.18"
+                "phpunit/phpunit": "~4.8.24"
             },
             "bin": [
                 "bin/lessc"
@@ -590,9 +590,13 @@
                 {
                     "name": "Josh Schmidt",
                     "homepage": "https://github.com/oyejorge"
+                },
+                {
+                    "name": "Michaël Marinetti",
+                    "homepage": "https://github.com/Asenar"
                 }
             ],
-            "description": "PHP port of the Javascript version of LESS http://lesscss.org",
+            "description": "PHP port of the Javascript version of LESS http://lesscss.org (Originally maintained by Josh Schmidt)",
             "homepage": "http://lessphp.gpeasy.com",
             "keywords": [
                 "css",
@@ -602,7 +606,7 @@
                 "php",
                 "stylesheet"
             ],
-            "time": "2015-12-30T05:47:36+00:00"
+            "time": "2017-02-23T14:18:55+00:00"
         },
         {
             "name": "pear/console_getopt",

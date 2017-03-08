@@ -143,70 +143,6 @@
         "homepage": "https://www.mediawiki.org/wiki/at-ease"
     },
     {
-        "name": "oyejorge/less.php",
-        "version": "v1.7.0.10",
-        "version_normalized": "1.7.0.10",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/oyejorge/less.php.git",
-            "reference": "a1e2d3c20794b37ac4d0baeb24613e579584033b"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/oyejorge/less.php/zipball/a1e2d3c20794b37ac4d0baeb24613e579584033b",
-            "reference": "a1e2d3c20794b37ac4d0baeb24613e579584033b",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "~4.8.18"
-        },
-        "time": "2015-12-30T05:47:36+00:00",
-        "bin": [
-            "bin/lessc"
-        ],
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Less": "lib/"
-            },
-            "classmap": [
-                "lessc.inc.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "Apache-2.0"
-        ],
-        "authors": [
-            {
-                "name": "Matt Agar",
-                "homepage": "https://github.com/agar"
-            },
-            {
-                "name": "Martin Jantošovič",
-                "homepage": "https://github.com/Mordred"
-            },
-            {
-                "name": "Josh Schmidt",
-                "homepage": "https://github.com/oyejorge"
-            }
-        ],
-        "description": "PHP port of the Javascript version of LESS http://lesscss.org",
-        "homepage": "http://lessphp.gpeasy.com",
-        "keywords": [
-            "css",
-            "less",
-            "less.js",
-            "lesscss",
-            "php",
-            "stylesheet"
-        ]
-    },
-    {
         "name": "pear/pear_exception",
         "version": "v1.0.0",
         "version_normalized": "1.0.0.0",
@@ -1096,6 +1032,65 @@
         "homepage": "https://www.mediawiki.org/wiki/HtmlFormatter"
     },
     {
+        "name": "ruflin/elastica",
+        "version": "5.1.0",
+        "version_normalized": "5.1.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/ruflin/Elastica.git",
+            "reference": "tags/5.1.0"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://github.com/ruflin/Elastica/archive/5.1.0.zip",
+            "reference": "tags/5.1.0",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.6.0",
+            "psr/log": "~1.0"
+        },
+        "require-dev": {
+            "aws/aws-sdk-php": "~3.0",
+            "guzzlehttp/guzzle": "~6.0"
+        },
+        "suggest": {
+            "aws/aws-sdk-php": "Allow using IAM authentication with Amazon ElasticSearch Service",
+            "egeloen/http-adapter": "Allow using httpadapter transport",
+            "guzzlehttp/guzzle": "Allow using guzzle 6 as the http transport",
+            "monolog/monolog": "Logging request"
+        },
+        "time": "2017-02-15T11:19:35+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "5.1.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Elastica\\": "lib/Elastica/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Nicolas Ruflin",
+                "homepage": "http://ruflin.com/"
+            }
+        ],
+        "description": "Elasticsearch Client",
+        "homepage": "http://elastica.io/",
+        "keywords": [
+            "client",
+            "search"
+        ]
+    },
+    {
         "name": "wikimedia/ip-set",
         "version": "1.1.0",
         "version_normalized": "1.1.0.0",
@@ -1909,87 +1904,6 @@
         ]
     },
     {
-        "name": "oojs/oojs-ui",
-        "version": "v0.19.4",
-        "version_normalized": "0.19.4.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/wikimedia/oojs-ui.git",
-            "reference": "1807bca77ed4b0691e3ec4ef151f5c4bbbf1be1b"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/1807bca77ed4b0691e3ec4ef151f5c4bbbf1be1b",
-            "reference": "1807bca77ed4b0691e3ec4ef151f5c4bbbf1be1b",
-            "shasum": ""
-        },
-        "require": {
-            "mediawiki/at-ease": "1.1.0",
-            "php": ">=5.5.9"
-        },
-        "require-dev": {
-            "jakub-onderka/php-parallel-lint": "0.9.2",
-            "mediawiki/mediawiki-codesniffer": "0.6.0",
-            "phpunit/phpunit": "4.8.21"
-        },
-        "time": "2017-02-28T22:56:52+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "php/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Timo Tijhof",
-                "email": "krinklemail@gmail.com"
-            },
-            {
-                "name": "Bartosz Dziewoński",
-                "email": "matma.rex@gmail.com"
-            },
-            {
-                "name": "Ed Sanders",
-                "email": "esanders@wikimedia.org"
-            },
-            {
-                "name": "James D. Forrester",
-                "email": "jforrester@wikimedia.org"
-            },
-            {
-                "name": "Kirsten Menger-Anderson",
-                "email": "kmenger@wikimedia.org"
-            },
-            {
-                "name": "Rob Moen",
-                "email": "rmoen@wikimedia.org"
-            },
-            {
-                "name": "Roan Kattouw",
-                "email": "roan@wikimedia.org"
-            },
-            {
-                "name": "Trevor Parscal",
-                "email": "trevor@wikimedia.org"
-            },
-            {
-                "name": "Kunal Mehta",
-                "email": "legoktm@gmail.com"
-            },
-            {
-                "name": "Prateek Saxena",
-                "email": "prtksxna@gmail.com"
-            }
-        ],
-        "description": "Provides library of common widgets, layouts, and windows.",
-        "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
-    },
-    {
         "name": "symfony/process",
         "version": "v3.0.9",
         "version_normalized": "3.0.9.0",
@@ -2039,65 +1953,6 @@
         ],
         "description": "Symfony Process Component",
         "homepage": "https://symfony.com"
-    },
-    {
-        "name": "ruflin/elastica",
-        "version": "5.1.0",
-        "version_normalized": "5.1.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/ruflin/Elastica.git",
-            "reference": "tags/5.1.0"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://github.com/ruflin/Elastica/archive/5.1.0.zip",
-            "reference": "tags/5.1.0",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.6.0",
-            "psr/log": "~1.0"
-        },
-        "require-dev": {
-            "aws/aws-sdk-php": "~3.0",
-            "guzzlehttp/guzzle": "~6.0"
-        },
-        "suggest": {
-            "aws/aws-sdk-php": "Allow using IAM authentication with Amazon ElasticSearch Service",
-            "egeloen/http-adapter": "Allow using httpadapter transport",
-            "guzzlehttp/guzzle": "Allow using guzzle 6 as the http transport",
-            "monolog/monolog": "Logging request"
-        },
-        "time": "2017-02-15T11:19:35+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "5.1.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Elastica\\": "lib/Elastica/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Nicolas Ruflin",
-                "homepage": "http://ruflin.com/"
-            }
-        ],
-        "description": "Elasticsearch Client",
-        "homepage": "http://elastica.io/",
-        "keywords": [
-            "client",
-            "search"
-        ]
     },
     {
         "name": "wikimedia/remex-html",
@@ -2188,5 +2043,154 @@
         ],
         "description": "Creation, parsing, and conversion of timestamps",
         "homepage": "https://www.mediawiki.org/wiki/Timestamp"
+    },
+    {
+        "name": "oyejorge/less.php",
+        "version": "v1.7.0.13",
+        "version_normalized": "1.7.0.13",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/oyejorge/less.php.git",
+            "reference": "f1bccbee4bc9c7fdb6873e8c246063e01365a9a8"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/oyejorge/less.php/zipball/f1bccbee4bc9c7fdb6873e8c246063e01365a9a8",
+            "reference": "f1bccbee4bc9c7fdb6873e8c246063e01365a9a8",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "~4.8.24"
+        },
+        "time": "2017-02-23T14:18:55+00:00",
+        "bin": [
+            "bin/lessc"
+        ],
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Less": "lib/"
+            },
+            "classmap": [
+                "lessc.inc.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "Apache-2.0"
+        ],
+        "authors": [
+            {
+                "name": "Matt Agar",
+                "homepage": "https://github.com/agar"
+            },
+            {
+                "name": "Martin Jantošovič",
+                "homepage": "https://github.com/Mordred"
+            },
+            {
+                "name": "Josh Schmidt",
+                "homepage": "https://github.com/oyejorge"
+            },
+            {
+                "name": "Michaël Marinetti",
+                "homepage": "https://github.com/Asenar"
+            }
+        ],
+        "description": "PHP port of the Javascript version of LESS http://lesscss.org (Originally maintained by Josh Schmidt)",
+        "homepage": "http://lessphp.gpeasy.com",
+        "keywords": [
+            "css",
+            "less",
+            "less.js",
+            "lesscss",
+            "php",
+            "stylesheet"
+        ]
+    },
+    {
+        "name": "oojs/oojs-ui",
+        "version": "v0.19.5",
+        "version_normalized": "0.19.5.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/oojs-ui.git",
+            "reference": "cec211014af88f59d4c50674dbeda1cfdad1734b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/cec211014af88f59d4c50674dbeda1cfdad1734b",
+            "reference": "cec211014af88f59d4c50674dbeda1cfdad1734b",
+            "shasum": ""
+        },
+        "require": {
+            "mediawiki/at-ease": "1.1.0",
+            "php": ">=5.5.9"
+        },
+        "require-dev": {
+            "jakub-onderka/php-parallel-lint": "0.9.2",
+            "mediawiki/mediawiki-codesniffer": "0.6.0",
+            "phpunit/phpunit": "4.8.21"
+        },
+        "time": "2017-03-07T22:12:26+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "php/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Timo Tijhof",
+                "email": "krinklemail@gmail.com"
+            },
+            {
+                "name": "Bartosz Dziewoński",
+                "email": "matma.rex@gmail.com"
+            },
+            {
+                "name": "Ed Sanders",
+                "email": "esanders@wikimedia.org"
+            },
+            {
+                "name": "James D. Forrester",
+                "email": "jforrester@wikimedia.org"
+            },
+            {
+                "name": "Kirsten Menger-Anderson",
+                "email": "kmenger@wikimedia.org"
+            },
+            {
+                "name": "Rob Moen",
+                "email": "rmoen@wikimedia.org"
+            },
+            {
+                "name": "Roan Kattouw",
+                "email": "roan@wikimedia.org"
+            },
+            {
+                "name": "Trevor Parscal",
+                "email": "trevor@wikimedia.org"
+            },
+            {
+                "name": "Kunal Mehta",
+                "email": "legoktm@gmail.com"
+            },
+            {
+                "name": "Prateek Saxena",
+                "email": "prtksxna@gmail.com"
+            }
+        ],
+        "description": "Provides library of common widgets, layouts, and windows.",
+        "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
     }
 ]
