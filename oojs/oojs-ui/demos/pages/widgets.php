@@ -526,11 +526,48 @@ $demoContainer->appendContent( new OOUI\FieldsetLayout( [
 						'label' => 'Third'
 					]
 				],
-				'value' => 'b',
-				'title' => 'Select an item'
+				'value' => 'b'
 			] ),
 			[
 				'label' => 'DropdownInputWidget',
+				'align' => 'top'
+			]
+		),
+		new OOUI\FieldLayout(
+			new OOUI\DropdownInputWidget( [
+				'disabled' => true
+			] ),
+			[
+				'label' => 'DropdownInputWidget (disabled)',
+				'align' => 'top'
+			]
+		),
+		new OOUI\FieldLayout(
+			new OOUI\DropdownInputWidget( [
+				'options' => [
+					[
+						'optgroup' => 'Vowels'
+					],
+					[
+						'data' => 'a',
+						'label' => 'A'
+					],
+					[
+						'optgroup' => 'Consonants'
+					],
+					[
+						'data' => 'b',
+						'label' => 'B'
+					],
+					[
+						'data' => 'c',
+						'label' => 'C'
+					]
+				],
+				'value' => 'b'
+			] ),
+			[
+				'label' => 'DropdownInputWidget (with optgroup)',
 				'align' => 'top'
 			]
 		),
