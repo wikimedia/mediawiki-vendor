@@ -232,8 +232,8 @@ class Tokenizer {
 	 * Tokenize a minimum amount of text from the input stream, and emit the
 	 * resulting events.
 	 *
-	 * @return True if the input continues and step() should be called again,
-	 *   false on EOF
+	 * @return bool True if the input continues and step() should be called
+	 *   again, false on EOF
 	 */
 	public function step() {
 		if ( $this->state === null ) {
@@ -299,7 +299,7 @@ class Tokenizer {
 	/**
 	 * The main state machine, the common implementation of step() and execute().
 	 * @param bool $loop Set to true to loop until finished, false to step once.
-	 * @return True if the input continues, false on EOF
+	 * @return bool True if the input continues, false on EOF
 	 */
 	protected function executeInternal( $loop ) {
 		$eof = false;
@@ -348,7 +348,7 @@ class Tokenizer {
 	 *
 	 * @param bool $loop True to loop while still in the data state, false to
 	 *   process a single less-than sign.
-	 * @return The next state index
+	 * @return integer The next state index
 	 */
 	protected function dataState( $loop ) {
 		$re = "~ <
@@ -373,9 +373,9 @@ class Tokenizer {
 						(?:
 							(?! --> )
 							(?! --!> )
-							(?! --! \z )
-							(?! -- \z )
-							(?! - \z )
+							(?! --! \\z )
+							(?! -- \\z )
+							(?! - \\z )
 							.
 						)*+
 					)
@@ -675,9 +675,6 @@ class Tokenizer {
 
 		if ( isset( $m[self::MD_DT_PUBLIC_WS] ) && $m[self::MD_DT_PUBLIC_WS][1] >= 0 ) {
 			// PUBLIC keyword found
-			if ( !$igerr && !$eof && !strlen( $m[self::MD_DT_PUBLIC_WS][0] ) ) {
-				$this->error( 'missing whitespace', $m[self::MD_DT_PUBLIC_WS][1] );
-			}
 			$public = $this->interpretDoctypeQuoted( $m,
 				self::MD_DT_PUBLIC_DQ, self::MD_DT_PUBLIC_SQ, $quirks );
 			if ( $public === null ) {
@@ -685,6 +682,8 @@ class Tokenizer {
 				if ( !$eof && !$igerr ) {
 					$this->error( 'missing public identifier', $m[self::MD_DT_PUBLIC_WS][1] );
 				}
+			} elseif ( !$igerr && !$eof && !strlen( $m[self::MD_DT_PUBLIC_WS][0] ) ) {
+				$this->error( 'missing whitespace', $m[self::MD_DT_PUBLIC_WS][1] );
 			}
 
 			// Check for a system ID after the public ID
@@ -699,14 +698,13 @@ class Tokenizer {
 			}
 		} elseif ( isset( $m[self::MD_DT_SYSTEM_WS] ) && $m[self::MD_DT_SYSTEM_WS][1] >= 0 ) {
 			// SYSTEM keyword found
-			if ( !$igerr && !strlen( $m[self::MD_DT_SYSTEM_WS][0] ) ) {
-				$this->error( 'missing whitespace', $m[self::MD_DT_SYSTEM_WS][1] );
-			}
 			$system = $this->interpretDoctypeQuoted( $m,
 				self::MD_DT_SYSTEM_DQ, self::MD_DT_SYSTEM_SQ, $quirks );
 			if ( $system === null ) {
 				$quirks = true;
 				$this->error( 'missing system identifier', $m[self::MD_DT_SYSTEM_WS][1] );
+			} elseif ( !$igerr && !strlen( $m[self::MD_DT_SYSTEM_WS][0] ) ) {
+				$this->error( 'missing whitespace', $m[self::MD_DT_SYSTEM_WS][1] );
 			}
 
 		}
@@ -746,7 +744,7 @@ class Tokenizer {
 	 * @param string $text The text to be converted
 	 * @param integer $sourcePos The input byte offset from which $text was
 	 *   extracted, for error position reporting.
-	 * @return The converted text
+	 * @return string The converted text
 	 */
 	protected function handleNulls( $text, $sourcePos ) {
 		if ( $this->ignoreNulls ) {
@@ -810,7 +808,7 @@ class Tokenizer {
 	 * @param string $additionalAllowedChar An unused string which the spec
 	 *   inexplicably spends a lot of space telling you how to derive. It
 	 *   suppresses errors in a place where no errors are emitted anyway.
-	 * @return The expanded text
+	 * @return string The expanded text
 	 */
 	protected function handleCharRefs( $text, $sourcePos, $inAttr = false,
 		$additionalAllowedChar = ''
@@ -1109,7 +1107,7 @@ class Tokenizer {
 	 * - @todo: Measure performance improvement, assess whether the LazyAttributes
 	 *   feature is warranted.
 	 *
-	 * @return Attributes
+	 * @return array Attributes
 	 */
 	protected function consumeAttribs() {
 		$re = '~
