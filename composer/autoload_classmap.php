@@ -508,6 +508,7 @@ return array(
     'OOUI\\AccessKeyedElement' => $vendorDir . '/oojs/oojs-ui/php/mixins/AccessKeyedElement.php',
     'OOUI\\ActionFieldLayout' => $vendorDir . '/oojs/oojs-ui/php/layouts/ActionFieldLayout.php',
     'OOUI\\ApexTheme' => $vendorDir . '/oojs/oojs-ui/php/themes/ApexTheme.php',
+    'OOUI\\BlankTheme' => $vendorDir . '/oojs/oojs-ui/php/themes/BlankTheme.php',
     'OOUI\\ButtonElement' => $vendorDir . '/oojs/oojs-ui/php/mixins/ButtonElement.php',
     'OOUI\\ButtonGroupWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/ButtonGroupWidget.php',
     'OOUI\\ButtonInputWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/ButtonInputWidget.php',
