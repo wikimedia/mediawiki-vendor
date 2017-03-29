@@ -30,15 +30,10 @@ window.Demo = function Demo() {
 		classes: [ 'demo-pageDropdown' ]
 	} );
 	this.pageMenu = this.pageDropdown.getMenu();
-	this.themeSelect = new OO.ui.ButtonSelectWidget();
-	Object.keys( this.constructor.static.themes ).forEach( function ( theme ) {
-		demo.themeSelect.addItems( [
-			new OO.ui.ButtonOptionWidget( {
-				data: theme,
-				label: demo.constructor.static.themes[ theme ]
-			} )
-		] );
-	} );
+	this.themeSelect = new OO.ui.ButtonSelectWidget().addItems( [
+		new OO.ui.ButtonOptionWidget( { data: 'mediawiki', label: 'MediaWiki' } ),
+		new OO.ui.ButtonOptionWidget( { data: 'apex', label: 'Apex' } )
+	] );
 	this.directionSelect = new OO.ui.ButtonSelectWidget().addItems( [
 		new OO.ui.ButtonOptionWidget( { data: 'ltr', label: 'LTR' } ),
 		new OO.ui.ButtonOptionWidget( { data: 'rtl', label: 'RTL' } )
@@ -92,7 +87,7 @@ window.Demo = function Demo() {
 	$( 'html' ).attr( 'dir', this.mode.direction );
 	$( 'head' ).append( this.stylesheetLinks );
 	// eslint-disable-next-line new-cap
-	OO.ui.theme = new OO.ui[ this.constructor.static.themes[ this.mode.theme ] + 'Theme' ]();
+	OO.ui.theme = new ( this.constructor.static.themes[ this.mode.theme ].theme )();
 	OO.ui.isMobile = function () {
 		return demo.mode.platform === 'mobile';
 	};
@@ -118,54 +113,50 @@ Demo.static.pages = {};
 /**
  * Available themes.
  *
- * Map of lowercase name to proper name. Lowercase names are used for linking to the
- * correct stylesheet file. Proper names are used to find the theme class.
+ * List of theme descriptions, each containing a `fileSuffix` property used for linking to the
+ * correct stylesheet file and a `theme` property containing a theme class
  *
  * @static
- * @property {Object.<string,string>}
+ * @property {Object.<string,Object>}
  */
 Demo.static.themes = {
-	mediawiki: 'MediaWiki', // Do not change this line or you'll break `grunt add-theme`
-	apex: 'Apex'
-};
-
-/**
- * Additional suffixes for which each theme defines image modules.
- *
- * @static
- * @property {Object.<string,string[]>
- */
-Demo.static.additionalThemeImagesSuffixes = {
-	mediawiki: [
-		'-icons-movement',
-		'-icons-content',
-		'-icons-alerts',
-		'-icons-interactions',
-		'-icons-moderation',
-		'-icons-editing-core',
-		'-icons-editing-styling',
-		'-icons-editing-list',
-		'-icons-editing-advanced',
-		'-icons-media',
-		'-icons-location',
-		'-icons-user',
-		'-icons-layout',
-		'-icons-accessibility',
-		'-icons-wikimedia'
-	],
-	apex: [
-		'-icons-movement',
-		'-icons-content',
-		'-icons-alerts',
-		'-icons-interactions',
-		'-icons-moderation',
-		'-icons-editing-core',
-		'-icons-editing-styling',
-		'-icons-editing-list',
-		'-icons-editing-advanced',
-		'-icons-media',
-		'-icons-layout'
-	]
+	mediawiki: {
+		fileSuffix: '-mediawiki',
+		additionalSuffixes: [
+			'-icons-movement',
+			'-icons-content',
+			'-icons-alerts',
+			'-icons-interactions',
+			'-icons-moderation',
+			'-icons-editing-core',
+			'-icons-editing-styling',
+			'-icons-editing-list',
+			'-icons-editing-advanced',
+			'-icons-media',
+			'-icons-location',
+			'-icons-user',
+			'-icons-layout',
+			'-icons-accessibility',
+			'-icons-wikimedia'
+		],
+		theme: OO.ui.MediaWikiTheme
+	},
+	apex: {
+		fileSuffix: '-apex',
+		additionalSuffixes: [
+			'-icons-movement',
+			'-icons-content',
+			'-icons-alerts',
+			'-icons-interactions',
+			'-icons-moderation',
+			'-icons-editing-core',
+			'-icons-editing-styling',
+			'-icons-editing-list',
+			'-icons-editing-advanced',
+			'-icons-media'
+		],
+		theme: OO.ui.ApexTheme
+	}
 };
 
 /**
@@ -291,7 +282,7 @@ Demo.prototype.getFactors = function () {
 		factors[ 0 ][ key ] = key;
 	}
 	for ( key in this.constructor.static.themes ) {
-		factors[ 1 ][ key ] = '-' + key;
+		factors[ 1 ][ key ] = this.constructor.static.themes[ key ].fileSuffix;
 	}
 	for ( key in this.constructor.static.directions ) {
 		factors[ 2 ][ key ] = this.constructor.static.directions[ key ].fileSuffix;
@@ -356,7 +347,7 @@ Demo.prototype.getStylesheetLinks = function () {
 	var i, len, links, fragments,
 		factors = this.getFactors(),
 		theme = this.getCurrentFactorValues()[ 1 ],
-		suffixes = this.constructor.static.additionalThemeImagesSuffixes[ theme ] || [],
+		suffixes = this.constructor.static.themes[ theme ].additionalSuffixes || [],
 		urls = [];
 
 	// Translate modes to filename fragments
