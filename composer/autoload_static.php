@@ -693,6 +693,7 @@ class ComposerStaticInit_mediawiki_vendor
         'OOUI\\AccessKeyedElement' => __DIR__ . '/..' . '/oojs/oojs-ui/php/mixins/AccessKeyedElement.php',
         'OOUI\\ActionFieldLayout' => __DIR__ . '/..' . '/oojs/oojs-ui/php/layouts/ActionFieldLayout.php',
         'OOUI\\ApexTheme' => __DIR__ . '/..' . '/oojs/oojs-ui/php/themes/ApexTheme.php',
+        'OOUI\\BlankTheme' => __DIR__ . '/..' . '/oojs/oojs-ui/php/themes/BlankTheme.php',
         'OOUI\\ButtonElement' => __DIR__ . '/..' . '/oojs/oojs-ui/php/mixins/ButtonElement.php',
         'OOUI\\ButtonGroupWidget' => __DIR__ . '/..' . '/oojs/oojs-ui/php/widgets/ButtonGroupWidget.php',
         'OOUI\\ButtonInputWidget' => __DIR__ . '/..' . '/oojs/oojs-ui/php/widgets/ButtonInputWidget.php',

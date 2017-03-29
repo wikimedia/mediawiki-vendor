@@ -2070,18 +2070,61 @@
         ]
     },
     {
-        "name": "oojs/oojs-ui",
-        "version": "v0.20.0",
-        "version_normalized": "0.20.0.0",
+        "name": "wikimedia/remex-html",
+        "version": "1.0.1",
+        "version_normalized": "1.0.1.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/wikimedia/oojs-ui.git",
-            "reference": "4f9b97498a9f67f8cca372d0b84f35988e37d445"
+            "url": "https://github.com/wikimedia/mediawiki-libs-RemexHtml.git",
+            "reference": "3c596e5c66557ed7f37d8a543bc233d7fa80a52f"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/4f9b97498a9f67f8cca372d0b84f35988e37d445",
-            "reference": "4f9b97498a9f67f8cca372d0b84f35988e37d445",
+            "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-RemexHtml/zipball/3c596e5c66557ed7f37d8a543bc233d7fa80a52f",
+            "reference": "3c596e5c66557ed7f37d8a543bc233d7fa80a52f",
+            "shasum": ""
+        },
+        "require": {
+            "ext-mbstring": "*",
+            "wikimedia/utfnormal": "1.1.0"
+        },
+        "require-dev": {
+            "mediawiki/mediawiki-codesniffer": "0.7.2",
+            "phpunit/phpunit": "4.*"
+        },
+        "time": "2017-03-14T05:28:14+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "RemexHtml\\": "RemexHtml/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Tim Starling",
+                "email": "tstarling@wikimedia.org"
+            }
+        ],
+        "description": "Fast HTML 5 parser"
+    },
+    {
+        "name": "oojs/oojs-ui",
+        "version": "v0.20.1",
+        "version_normalized": "0.20.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/oojs-ui.git",
+            "reference": "f3bee4db8ac98b3be5e04cc71557a7bc2d2828f8"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/f3bee4db8ac98b3be5e04cc71557a7bc2d2828f8",
+            "reference": "f3bee4db8ac98b3be5e04cc71557a7bc2d2828f8",
             "shasum": ""
         },
         "require": {
@@ -2093,7 +2136,7 @@
             "mediawiki/mediawiki-codesniffer": "0.6.0",
             "phpunit/phpunit": "4.8.21"
         },
-        "time": "2017-03-15T16:45:48+00:00",
+        "time": "2017-03-28T21:53:25+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -2149,48 +2192,5 @@
         ],
         "description": "Provides library of common widgets, layouts, and windows.",
         "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
-    },
-    {
-        "name": "wikimedia/remex-html",
-        "version": "1.0.1",
-        "version_normalized": "1.0.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/wikimedia/mediawiki-libs-RemexHtml.git",
-            "reference": "3c596e5c66557ed7f37d8a543bc233d7fa80a52f"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-RemexHtml/zipball/3c596e5c66557ed7f37d8a543bc233d7fa80a52f",
-            "reference": "3c596e5c66557ed7f37d8a543bc233d7fa80a52f",
-            "shasum": ""
-        },
-        "require": {
-            "ext-mbstring": "*",
-            "wikimedia/utfnormal": "1.1.0"
-        },
-        "require-dev": {
-            "mediawiki/mediawiki-codesniffer": "0.7.2",
-            "phpunit/phpunit": "4.*"
-        },
-        "time": "2017-03-14T05:28:14+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "RemexHtml\\": "RemexHtml/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Tim Starling",
-                "email": "tstarling@wikimedia.org"
-            }
-        ],
-        "description": "Fast HTML 5 parser"
     }
 ]
