@@ -9,7 +9,7 @@ return array(
     'TextCat' => array($vendorDir . '/wikimedia/textcat'),
     'Pimple' => array($vendorDir . '/pimple/pimple/src'),
     'PEAR' => array($vendorDir . '/pear/pear_exception'),
-    'Net' => array($vendorDir . '/pear/net_socket', $vendorDir . '/pear/net_smtp'),
+    'Net' => array($vendorDir . '/pear/net_smtp', $vendorDir . '/pear/net_socket'),
     'Mail_mimeDecode' => array($vendorDir . '/pear/mail_mime-decode'),
     'Mail' => array($vendorDir . '/pear/mail_mime', $vendorDir . '/pear/mail'),
     'Liuggio' => array($vendorDir . '/liuggio/statsd-php-client/src'),

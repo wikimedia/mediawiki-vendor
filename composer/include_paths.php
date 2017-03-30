@@ -10,8 +10,8 @@ return array(
     $vendorDir . '/pear/console_getopt',
     $vendorDir . '/pear/mail_mime',
     $vendorDir . '/pear/mail_mime-decode',
-    $vendorDir . '/pear/net_socket',
     $vendorDir . '/pear/mail',
     $vendorDir . '/pear/net_smtp',
     $vendorDir . '/pear/pear-core-minimal/src',
+    $vendorDir . '/pear/net_socket',
 );
