@@ -16,5 +16,5 @@ return array(
     'Less' => array($vendorDir . '/oyejorge/less.php/lib'),
     'Kafka\\' => array($vendorDir . '/nmred/kafka-php/src'),
     'Console' => array($vendorDir . '/pear/console_getopt'),
-    '' => array($vendorDir . '/pear/pear-core-minimal/src', $vendorDir . '/cssjanus/cssjanus/src'),
+    '' => array($vendorDir . '/cssjanus/cssjanus/src', $vendorDir . '/pear/pear-core-minimal/src'),
 );
