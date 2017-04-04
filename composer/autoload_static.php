@@ -186,8 +186,8 @@ class ComposerStaticInit_mediawiki_vendor
     );
 
     public static $fallbackDirsPsr0 = array (
-        0 => __DIR__ . '/..' . '/cssjanus/cssjanus/src',
-        1 => __DIR__ . '/..' . '/pear/pear-core-minimal/src',
+        0 => __DIR__ . '/..' . '/pear/pear-core-minimal/src',
+        1 => __DIR__ . '/..' . '/cssjanus/cssjanus/src',
     );
 
     public static $classMap = array (

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "52bddc3ca284cbb5677b76117c71aede",
+    "content-hash": "9cdd1e9537ca7147f9d3944242c6e57d",
     "packages": [
         {
             "name": "composer/semver",
@@ -70,20 +70,20 @@
         },
         {
             "name": "cssjanus/cssjanus",
-            "version": "v1.1.3",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cssjanus/php-cssjanus.git",
-                "reference": "1bd15af0d3f456eb651aea9e045b0c19b901d312"
+                "reference": "0fd44d8a3f1f0f10bfb500b6b595240bf6415ffa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cssjanus/php-cssjanus/zipball/1bd15af0d3f456eb651aea9e045b0c19b901d312",
-                "reference": "1bd15af0d3f456eb651aea9e045b0c19b901d312",
+                "url": "https://api.github.com/repos/cssjanus/php-cssjanus/zipball/0fd44d8a3f1f0f10bfb500b6b595240bf6415ffa",
+                "reference": "0fd44d8a3f1f0f10bfb500b6b595240bf6415ffa",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3"
+                "php": ">=5.4"
             },
             "require-dev": {
                 "jakub-onderka/php-parallel-lint": "0.8.*",
@@ -101,7 +101,7 @@
                 "Apache-2.0"
             ],
             "description": "Convert CSS stylesheets between left-to-right and right-to-left.",
-            "time": "2016-12-24T09:16:21+00:00"
+            "time": "2017-03-14T20:57:08+00:00"
         },
         {
             "name": "firebase/php-jwt",

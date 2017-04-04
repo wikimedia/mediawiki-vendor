@@ -1438,43 +1438,6 @@
         "description": "PHP port of the TextCat language guesser utility, see http://odur.let.rug.nl/~vannoord/TextCat/."
     },
     {
-        "name": "cssjanus/cssjanus",
-        "version": "v1.1.3",
-        "version_normalized": "1.1.3.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/cssjanus/php-cssjanus.git",
-            "reference": "1bd15af0d3f456eb651aea9e045b0c19b901d312"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/cssjanus/php-cssjanus/zipball/1bd15af0d3f456eb651aea9e045b0c19b901d312",
-            "reference": "1bd15af0d3f456eb651aea9e045b0c19b901d312",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3"
-        },
-        "require-dev": {
-            "jakub-onderka/php-parallel-lint": "0.8.*",
-            "phpunit/phpunit": "4.8.*",
-            "squizlabs/php_codesniffer": "2.3.*"
-        },
-        "time": "2016-12-24T09:16:21+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "Apache-2.0"
-        ],
-        "description": "Convert CSS stylesheets between left-to-right and right-to-left."
-    },
-    {
         "name": "james-heinrich/getid3",
         "version": "v1.9.13",
         "version_normalized": "1.9.13.0",
@@ -2193,5 +2156,42 @@
             }
         ],
         "description": "Composer plugin to merge multiple composer.json files"
+    },
+    {
+        "name": "cssjanus/cssjanus",
+        "version": "v1.2.0",
+        "version_normalized": "1.2.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/cssjanus/php-cssjanus.git",
+            "reference": "0fd44d8a3f1f0f10bfb500b6b595240bf6415ffa"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/cssjanus/php-cssjanus/zipball/0fd44d8a3f1f0f10bfb500b6b595240bf6415ffa",
+            "reference": "0fd44d8a3f1f0f10bfb500b6b595240bf6415ffa",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.4"
+        },
+        "require-dev": {
+            "jakub-onderka/php-parallel-lint": "0.8.*",
+            "phpunit/phpunit": "4.8.*",
+            "squizlabs/php_codesniffer": "2.3.*"
+        },
+        "time": "2017-03-14T20:57:08+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "Apache-2.0"
+        ],
+        "description": "Convert CSS stylesheets between left-to-right and right-to-left."
     }
 ]
