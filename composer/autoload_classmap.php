@@ -681,6 +681,7 @@ return array(
     'Wikimedia\\Composer\\MergePlugin' => $vendorDir . '/wikimedia/composer-merge-plugin/src/MergePlugin.php',
     'Wikimedia\\Composer\\Merge\\ExtraPackage' => $vendorDir . '/wikimedia/composer-merge-plugin/src/Merge/ExtraPackage.php',
     'Wikimedia\\Composer\\Merge\\MissingFileException' => $vendorDir . '/wikimedia/composer-merge-plugin/src/Merge/MissingFileException.php',
+    'Wikimedia\\Composer\\Merge\\NestedArray' => $vendorDir . '/wikimedia/composer-merge-plugin/src/Merge/NestedArray.php',
     'Wikimedia\\Composer\\Merge\\PluginState' => $vendorDir . '/wikimedia/composer-merge-plugin/src/Merge/PluginState.php',
     'Wikimedia\\Composer\\Merge\\StabilityFlags' => $vendorDir . '/wikimedia/composer-merge-plugin/src/Merge/StabilityFlags.php',
     'Wikimedia\\PhpSessionSerializer' => $vendorDir . '/wikimedia/php-session-serializer/src/Wikimedia/PhpSessionSerializer.php',
