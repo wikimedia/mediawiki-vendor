@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "11576c6b571bc09ab9b97f3d91396326",
+    "content-hash": "5fccc93d35a9284e52c39af1118f65d1",
     "packages": [
         {
             "name": "composer/semver",
@@ -148,16 +148,16 @@
         },
         {
             "name": "james-heinrich/getid3",
-            "version": "v1.9.13",
+            "version": "v1.9.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/JamesHeinrich/getID3.git",
-                "reference": "b9a8564e56bdcc294dc7ade32a7f67885bed3778"
+                "reference": "30bd11473b0eef6f1b47866ef7ab0a557917fc21"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/b9a8564e56bdcc294dc7ade32a7f67885bed3778",
-                "reference": "b9a8564e56bdcc294dc7ade32a7f67885bed3778",
+                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/30bd11473b0eef6f1b47866ef7ab0a557917fc21",
+                "reference": "30bd11473b0eef6f1b47866ef7ab0a557917fc21",
                 "shasum": ""
             },
             "require": {
@@ -180,7 +180,7 @@
                 "php",
                 "tags"
             ],
-            "time": "2016-12-14T14:29:29+00:00"
+            "time": "2017-03-27T21:12:55+00:00"
         },
         {
             "name": "justinrainbow/json-schema",
