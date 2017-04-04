@@ -42,7 +42,7 @@
 		"justinrainbow/json-schema": "3.0.1",
 		"liuggio/statsd-php-client": "1.0.18",
 		"mediawiki/at-ease": "1.1.0",
-		"monolog/monolog": "1.18.2",
+		"monolog/monolog": "1.22.1",
 		"nmred/kafka-php": "0.1.5",
 		"oojs/oojs-ui": "0.20.2",
 		"oyejorge/less.php": "1.7.0.13",
