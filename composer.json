@@ -39,7 +39,7 @@
 		"cssjanus/cssjanus": "1.2.0",
 		"firebase/php-jwt": "4.0.0",
 		"james-heinrich/getid3": "1.9.14",
-		"justinrainbow/json-schema": "3.0.1",
+		"justinrainbow/json-schema": "5.2.0",
 		"liuggio/statsd-php-client": "1.0.18",
 		"mediawiki/at-ease": "1.1.0",
 		"monolog/monolog": "1.22.1",

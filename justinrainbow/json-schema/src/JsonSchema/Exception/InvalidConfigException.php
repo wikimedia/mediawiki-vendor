@@ -10,8 +10,8 @@
 namespace JsonSchema\Exception;
 
 /**
- * Wrapper for the UriResolverException
+ * Wrapper for the ResourceNotFoundException
  */
-class UriResolverException extends RuntimeException
+class InvalidConfigException extends RuntimeException
 {
 }

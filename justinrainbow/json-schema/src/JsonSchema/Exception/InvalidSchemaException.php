@@ -10,8 +10,8 @@
 namespace JsonSchema\Exception;
 
 /**
- * Wrapper for the UriResolverException
+ * Wrapper for the InvalidSchemaMediaType
  */
-class UriResolverException extends RuntimeException
+class InvalidSchemaException extends RuntimeException
 {
 }
