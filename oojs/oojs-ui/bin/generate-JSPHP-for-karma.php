@@ -7,7 +7,7 @@ $testSuite = json_decode( $testSuiteJSON, true );
 $testSuiteOutput = [];
 
 // @codingStandardsIgnoreStart
-function new_OOUI( $class, $config = array() ) {
+function new_OOUI( $class, $config = [] ) {
 	// @codingStandardsIgnoreEnd
 	$class = "OOUI\\" . $class;
 	return new $class( $config );
@@ -28,7 +28,7 @@ $themes = [ 'ApexTheme', 'MediaWikiTheme' ];
 foreach ( $themes as $theme ) {
 	OOUI\Theme::setSingleton( new_OOUI( $theme ) );
 	foreach ( $testSuite as $className => $tests ) {
-		foreach ( $tests as $test ) {
+		foreach ( $tests['tests'] as $test ) {
 			// Unstub placeholders
 			$config = $test['config'];
 			array_walk_recursive( $config, 'unstub' );
