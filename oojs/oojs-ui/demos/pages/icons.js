@@ -6,14 +6,12 @@ Demo.static.pages.icons = function ( demo ) {
 				'arrowNext',
 				'downTriangle',
 				'upTriangle',
+				'first',
 				'previous',
 				'next',
+				'last',
 				'expand',
 				'collapse',
-				'caretLast',
-				'caretNext',
-				'caretDown',
-				'caretUp',
 				'move'
 			],
 			content: [
@@ -53,7 +51,6 @@ Demo.static.pages.icons = function ( demo ) {
 			interactions: [
 				'add',
 				'advanced',
-				'bookmark',
 				'browser',
 				'cancel',
 				'check',
@@ -79,6 +76,8 @@ Demo.static.pages.icons = function ( demo ) {
 			moderation: [
 				'block',
 				'unBlock',
+				'clip',
+				'unClip',
 				'flag',
 				'unFlag',
 				'lock',
@@ -88,6 +87,7 @@ Demo.static.pages.icons = function ( demo ) {
 				'unStar',
 				'trash',
 				'unTrash',
+				'pushPin',
 				'ongoingConversation'
 			],
 			'editing-core': [
