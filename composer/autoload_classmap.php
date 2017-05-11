@@ -692,6 +692,7 @@ return array(
     'Wikimedia\\Composer\\Merge\\StabilityFlags' => $vendorDir . '/wikimedia/composer-merge-plugin/src/Merge/StabilityFlags.php',
     'Wikimedia\\PhpSessionSerializer' => $vendorDir . '/wikimedia/php-session-serializer/src/Wikimedia/PhpSessionSerializer.php',
     'Wikimedia\\ScopedCallback' => $vendorDir . '/wikimedia/scoped-callback/src/ScopedCallback.php',
+    'Wikimedia\\TestingAccessWrapper' => $vendorDir . '/wikimedia/testing-access-wrapper/src/TestingAccessWrapper.php',
     'Wikimedia\\Timestamp\\ConvertibleTimestamp' => $vendorDir . '/wikimedia/timestamp/src/ConvertibleTimestamp.php',
     'Wikimedia\\Timestamp\\TimestampException' => $vendorDir . '/wikimedia/timestamp/src/TimestampException.php',
     'Wikimedia\\WaitConditionLoop' => $vendorDir . '/wikimedia/wait-condition-loop/src/WaitConditionLoop.php',
