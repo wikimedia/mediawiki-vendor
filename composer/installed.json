@@ -2111,18 +2111,70 @@
         "homepage": "https://symfony.com"
     },
     {
-        "name": "oojs/oojs-ui",
-        "version": "v0.21.3",
-        "version_normalized": "0.21.3.0",
+        "name": "wikimedia/testing-access-wrapper",
+        "version": "1.0.0",
+        "version_normalized": "1.0.0.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/wikimedia/oojs-ui.git",
-            "reference": "3e818731f2e0c19366fbb297fb58927fac123543"
+            "url": "https://github.com/wikimedia/testing-access-wrapper.git",
+            "reference": "e18b87c86739733506bd184a70852c30cdb30699"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/3e818731f2e0c19366fbb297fb58927fac123543",
-            "reference": "3e818731f2e0c19366fbb297fb58927fac123543",
+            "url": "https://api.github.com/repos/wikimedia/testing-access-wrapper/zipball/e18b87c86739733506bd184a70852c30cdb30699",
+            "reference": "e18b87c86739733506bd184a70852c30cdb30699",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "require-dev": {
+            "jakub-onderka/php-parallel-lint": "0.9.2",
+            "mediawiki/mediawiki-codesniffer": "0.7.2",
+            "phpunit/phpunit": "4.8.31"
+        },
+        "time": "2017-04-19T16:43:33+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "src/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "authors": [
+            {
+                "name": "Adam Roses Wight",
+                "email": "awight@wikimedia.org"
+            },
+            {
+                "name": "Brad Jorsch",
+                "email": "bjorsch@wikimedia.org"
+            },
+            {
+                "name": "Gergő Tisza",
+                "email": "gtisza@wikimedia.org"
+            }
+        ],
+        "description": "A simple helper class to access non-public elements of a class when testing.",
+        "homepage": "https://www.mediawiki.org/wiki/Testing-access-wrapper"
+    },
+    {
+        "name": "oojs/oojs-ui",
+        "version": "v0.21.4",
+        "version_normalized": "0.21.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/oojs-ui.git",
+            "reference": "ed5dd92664b765a160e68e46ec0337e75451b0ad"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/ed5dd92664b765a160e68e46ec0337e75451b0ad",
+            "reference": "ed5dd92664b765a160e68e46ec0337e75451b0ad",
             "shasum": ""
         },
         "require": {
@@ -2134,7 +2186,7 @@
             "mediawiki/mediawiki-codesniffer": "0.6.0",
             "phpunit/phpunit": "4.8.21"
         },
-        "time": "2017-05-10T00:39:25+00:00",
+        "time": "2017-05-16T22:09:22+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -2190,57 +2242,5 @@
         ],
         "description": "Provides library of common widgets, layouts, and windows.",
         "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
-    },
-    {
-        "name": "wikimedia/testing-access-wrapper",
-        "version": "1.0.0",
-        "version_normalized": "1.0.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/wikimedia/testing-access-wrapper.git",
-            "reference": "e18b87c86739733506bd184a70852c30cdb30699"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/testing-access-wrapper/zipball/e18b87c86739733506bd184a70852c30cdb30699",
-            "reference": "e18b87c86739733506bd184a70852c30cdb30699",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.0"
-        },
-        "require-dev": {
-            "jakub-onderka/php-parallel-lint": "0.9.2",
-            "mediawiki/mediawiki-codesniffer": "0.7.2",
-            "phpunit/phpunit": "4.8.31"
-        },
-        "time": "2017-04-19T16:43:33+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "src/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "GPL-2.0+"
-        ],
-        "authors": [
-            {
-                "name": "Adam Roses Wight",
-                "email": "awight@wikimedia.org"
-            },
-            {
-                "name": "Brad Jorsch",
-                "email": "bjorsch@wikimedia.org"
-            },
-            {
-                "name": "Gergő Tisza",
-                "email": "gtisza@wikimedia.org"
-            }
-        ],
-        "description": "A simple helper class to access non-public elements of a class when testing.",
-        "homepage": "https://www.mediawiki.org/wiki/Testing-access-wrapper"
     }
 ]

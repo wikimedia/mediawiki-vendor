@@ -1,6 +1,6 @@
 {
   "name": "oojs-ui",
-  "version": "0.21.3",
+  "version": "0.21.4",
   "description": "User interface classes built on the OOjs framework.",
   "keywords": [
     "oojs-plugin",
@@ -26,7 +26,7 @@
     "oojs": "2.0.0"
   },
   "devDependencies": {
-    "eslint-config-wikimedia": "0.3.0",
+    "eslint-config-wikimedia": "0.4.0",
     "grunt": "1.0.1",
     "grunt-banana-checker": "0.6.0",
     "grunt-contrib-clean": "1.0.0",
@@ -53,7 +53,7 @@
     "karma-coverage": "1.1.0",
     "karma-firefox-launcher": "1.0.0",
     "karma-qunit": "1.1.0",
-	"karma-remap-istanbul": "0.6.0",
+    "karma-remap-istanbul": "0.6.0",
     "q": "1.4.1",
     "qunitjs": "1.22.0",
     "stylelint": "7.8.0",

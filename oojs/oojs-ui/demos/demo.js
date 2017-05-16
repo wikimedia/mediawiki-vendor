@@ -11,6 +11,9 @@ window.Demo = function Demo() {
 	// Parent constructor
 	Demo.parent.call( this );
 
+	// Mixin constructors
+	OO.EventEmitter.call( this );
+
 	// Normalization
 	this.normalizeHash();
 
@@ -78,6 +81,7 @@ window.Demo = function Demo() {
 	this.platformSelect.selectItemByData( this.mode.platform );
 	this.$menu
 		.addClass( 'demo-menu' )
+		.attr( 'role', 'navigation' )
 		.append(
 			this.pageDropdown.$element,
 			this.themeSelect.$element,
@@ -101,6 +105,7 @@ window.Demo = function Demo() {
 /* Setup */
 
 OO.inheritClass( Demo, OO.ui.Element );
+OO.mixinClass( Demo, OO.EventEmitter );
 
 /* Static Properties */
 
@@ -232,6 +237,8 @@ Demo.static.defaultPlatform = 'desktop';
 
 /**
  * Load the demo page. Must be called after $element is attached.
+ *
+ * @return {jQuery.Promise} Resolved when demo is initialized
  */
 Demo.prototype.initialize = function () {
 	var demo = this,
@@ -245,7 +252,7 @@ Demo.prototype.initialize = function () {
 			Date.now ? Date.now() : new Date().getTime();
 	}
 
-	$.when.apply( $, promises )
+	return $.when.apply( $, promises )
 		.done( function () {
 			var start, end;
 			start = now();
@@ -417,6 +424,7 @@ Demo.prototype.destroy = function () {
 	$( 'body' ).removeClass( 'oo-ui-ltr oo-ui-rtl' );
 	$( this.stylesheetLinks ).remove();
 	this.$element.remove();
+	this.emit( 'destroy' );
 };
 
 /**

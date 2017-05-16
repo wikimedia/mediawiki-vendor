@@ -36,7 +36,7 @@
 	<script src="classes/PopupButtonWidgetTest.js"></script>
 	<script src="classes/PositionSelectWidget.js"></script>
 	<script src="classes/ProcessDialog.js"></script>
-	<script src="classes/SampleCard.js"></script>
+	<script src="classes/SampleTabPanel.js"></script>
 	<script src="classes/SamplePage.js"></script>
 	<script src="classes/SearchWidgetDialog.js"></script>
 	<script src="classes/SimpleDialog.js"></script>
@@ -52,12 +52,20 @@
 			var demo;
 
 			function setup() {
+				var
+					prevPage = demo ? demo.mode.page : null,
+					scrollPos = $( window ).scrollTop();
 				if ( demo ) {
 					demo.destroy();
 				}
 				demo = new Demo();
 				$( 'body' ).append( demo.$element );
-				demo.initialize();
+				demo.initialize().done( function () {
+					if ( prevPage === demo.mode.page ) {
+						// Restore scroll position from before we destroyed the demo
+						$( window ).scrollTop( scrollPos );
+					}
+				} );
 			}
 
 			setup();
