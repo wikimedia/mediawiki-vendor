@@ -15,6 +15,8 @@ return array(
     'Liuggio' => array($vendorDir . '/liuggio/statsd-php-client/src'),
     'Less' => array($vendorDir . '/oyejorge/less.php/lib'),
     'Kafka\\' => array($vendorDir . '/nmred/kafka-php/src'),
+    'JakubOnderka\\PhpConsoleHighlighter' => array($vendorDir . '/jakub-onderka/php-console-highlighter/src'),
+    'JakubOnderka\\PhpConsoleColor' => array($vendorDir . '/jakub-onderka/php-console-color/src'),
     'Console' => array($vendorDir . '/pear/console_getopt'),
     '' => array($vendorDir . '/pear/pear-core-minimal/src', $vendorDir . '/cssjanus/cssjanus/src'),
 );

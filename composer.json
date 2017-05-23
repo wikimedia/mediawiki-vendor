@@ -62,13 +62,17 @@
 	"require": {
 		"composer/semver": "1.4.2",
 		"cssjanus/cssjanus": "1.2.0",
+		"dnoegel/php-xdg-base-dir": "0.1",
 		"firebase/php-jwt": "4.0.0",
+		"jakub-onderka/php-console-color": "0.1",
+		"jakub-onderka/php-console-highlighter": "0.3.2",
 		"james-heinrich/getid3": "1.9.14",
 		"justinrainbow/json-schema": "5.2.1",
 		"liuggio/statsd-php-client": "1.0.18",
 		"mediawiki/at-ease": "1.1.0",
 		"monolog/monolog": "1.22.1",
 		"mustangostang/spyc": "0.6.2",
+		"nikic/php-parser": "3.0.6",
 		"nmred/kafka-php": "0.1.5",
 		"oojs/oojs-ui": "0.23.5",
 		"oyejorge/less.php": "1.7.0.14",
@@ -81,11 +85,16 @@
 		"pear/pear-core-minimal": "1.10.3",
 		"pear/pear_exception": "1.0.0",
 		"php": ">=5.5.9",
-		"ruflin/elastica": "5.3.0",
 		"pimple/pimple": "3.0.2",
 		"psr/log": "1.0.2",
+		"psy/psysh": "0.8.11",
+		"ruflin/elastica": "5.3.0",
 		"stil/gd-text":  "1.0.0",
+		"symfony/console": "3.3.4",
+		"symfony/debug": "3.3.4",
+		"symfony/polyfill-mbstring": "1.4",
 		"symfony/process": "3.2.6",
+		"symfony/var-dumper": "3.3.4",
 		"wikimedia/assert": "0.2.2",
 		"wikimedia/avro": "1.7.7",
 		"wikimedia/base-convert": "1.0.1",
@@ -114,6 +123,6 @@
 		"jakub-onderka/php-console-highlighter": "0.3.2"
 	},
 	"scripts": {
-		"test": "parallel-lint --exclude composer/autoload_static.php --exclude jakub-onderka/php-parallel-lint/tests ."
+		"test": "parallel-lint --exclude composer/autoload_static.php --exclude jakub-onderka/php-parallel-lint/tests --exclude symfony/var-dumper/Tests/Fixtures ."
 	}
 }

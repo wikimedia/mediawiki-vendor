@@ -21,9 +21,13 @@ Adding or updating libraries
 0. Read the [documentation] on the process for adding new libraries.
 1. Ensure you're using the 1.4.1 version of composer via `composer --version`.
 2. Edit the composer.json file to add/update the libraries you want to change.
-3. Run `composer update --no-dev` to download files and update the autoloader.
-4. Add and commit changes as a gerrit patch.
-5. Review and merge changes.
+3. Run `composer update --no-dev --ignore-platform-reqs` to download files and
+   update the autoloader.
+4. Add all the new dependencies that got installed to composer.json as well,
+   so that everything has their version pinned. (You can look at the changes
+   in composer.lock or composer/installed.json to see what they are.)
+5. Add and commit changes as a gerrit patch.
+6. Review and merge changes.
 
 
 [Composer]: https://getcomposer.org/
