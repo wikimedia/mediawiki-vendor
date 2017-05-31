@@ -6,6 +6,7 @@ Demo.static.pages.widgets = function ( demo ) {
 		horizontalDragItems = [],
 		verticalDragItems = [],
 		verticalHandledDragItems = [],
+		$overlay = $( '<div>' ).addClass( 'demo-overlay' ).attr( 'id', 'demo-overlay' ),
 		$demo = demo.$element;
 
 	for ( i = 0; i <= 12; i++ ) {
@@ -59,7 +60,8 @@ Demo.static.pages.widgets = function ( demo ) {
 
 	fieldsets = [
 		new OO.ui.FieldsetLayout( {
-			label: 'Simple buttons',
+			id: 'demo-section-buttons',
+			label: 'Buttons',
 			items: [
 				new OO.ui.FieldLayout(
 					new OO.ui.ButtonWidget( { label: 'Normal' } ),
@@ -84,7 +86,7 @@ Demo.static.pages.widgets = function ( demo ) {
 						flags: [ 'constructive' ]
 					} ),
 					{
-						label: 'ButtonWidget (constructive, deprecated in MediaWiki theme)\u200E',
+						label: 'ButtonWidget (constructive, deprecated in WikimediaUI theme)\u200E',
 						align: 'top'
 					}
 				),
@@ -114,7 +116,7 @@ Demo.static.pages.widgets = function ( demo ) {
 						flags: [ 'primary', 'constructive' ]
 					} ),
 					{
-						label: 'ButtonWidget (primary, constructive, deprecated in MediaWiki theme)\u200E',
+						label: 'ButtonWidget (primary, constructive, deprecated in WikimediaUI theme)\u200E',
 						align: 'top'
 					}
 				),
@@ -205,6 +207,17 @@ Demo.static.pages.widgets = function ( demo ) {
 				),
 				new OO.ui.FieldLayout(
 					new OO.ui.ButtonWidget( {
+						label: 'Accesskey: H',
+						accessKey: 'h'
+					} ),
+					{
+						label: 'ButtonWidget (with accesskey)\u200E',
+						align: 'top',
+						help: new OO.ui.HtmlSnippet( 'Notice: Using `accesskey` might <a href="http://webaim.org/techniques/keyboard/accesskey" target="_blank">negatively impact screen readers</a>!' )
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.ButtonWidget( {
 						icon: 'help',
 						title: 'Icon only, framed'
 					} ),
@@ -284,7 +297,7 @@ Demo.static.pages.widgets = function ( demo ) {
 					new OO.ui.ButtonWidget( {
 						framed: false,
 						flags: [ 'destructive' ],
-						icon: 'remove',
+						icon: 'trash',
 						label: 'Destructive'
 					} ),
 					{
@@ -351,10 +364,95 @@ Demo.static.pages.widgets = function ( demo ) {
 						label: 'ButtonWidget (frameless, indicator)\u200E',
 						align: 'top'
 					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.ButtonInputWidget( {
+						label: 'Submit the form',
+						type: 'submit',
+						flags: [ 'primary', 'progressive' ],
+						useInputTag: true
+					} ),
+					{
+						align: 'top',
+						label: 'ButtonInputWidget (using <input>)\u200E'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.ButtonInputWidget( {
+						label: 'Another button',
+						type: 'button'
+					} ),
+					{
+						align: 'top',
+						label: 'ButtonInputWidget (using <button>)\u200E'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.ButtonInputWidget( {
+						label: 'Accesskey: I',
+						accessKey: 'i'
+					} ),
+					{
+						label: 'ButtonInputWidget (with accesskey)\u200E',
+						align: 'top',
+						help: new OO.ui.HtmlSnippet( 'Notice: Using `accesskey` might <a href="http://webaim.org/techniques/keyboard/accesskey" target="_blank">negatively impact screen readers</a>!' )
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.ButtonInputWidget( {
+						framed: false,
+						label: 'Another button',
+						type: 'button'
+					} ),
+					{
+						align: 'top',
+						label: 'ButtonInputWidget (frameless)\u200E'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.ButtonInputWidget( {
+						framed: false,
+						label: 'Another button',
+						type: 'button',
+						useInputTag: true
+					} ),
+					{
+						align: 'top',
+						label: 'ButtonInputWidget (frameless, using <input>)\u200E'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.ToggleButtonWidget( { label: 'Toggle' } ),
+					{
+						label: 'ToggleButtonWidget',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.ToggleButtonWidget( { label: 'Toggle', value: true } ),
+					{
+						label: 'ToggleButtonWidget (initially active)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.ToggleButtonWidget( { icon: 'next' } ),
+					{
+						label: 'ToggleButtonWidget (icon only)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.ToggleButtonWidget( { icon: 'next', value: true } ),
+					{
+						label: 'ToggleButtonWidget (icon only, initially active)\u200E',
+						align: 'top'
+					}
 				)
 			]
 		} ),
 		new OO.ui.FieldsetLayout( {
+			id: 'demo-section-button-sets',
 			label: 'Button sets',
 			items: [
 				new OO.ui.FieldLayout(
@@ -508,10 +606,36 @@ Demo.static.pages.widgets = function ( demo ) {
 						label: 'ButtonSelectWidget (disabled items)\u200E',
 						align: 'top'
 					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.ButtonSelectWidget( {
+						items: [
+							new OO.ui.ButtonOptionWidget( {
+								data: 'a',
+								label: 'Accesskey: J',
+								accessKey: 'j'
+							} ),
+							new OO.ui.ButtonOptionWidget( {
+								data: 'b',
+								label: 'Accesskey: K',
+								accessKey: 'k'
+							} ),
+							new OO.ui.ButtonOptionWidget( {
+								data: 'c',
+								label: 'Accesskey: L',
+								accessKey: 'l'
+							} )
+						]
+					} ),
+					{
+						label: 'ButtonSelectWidget (with accesskeys)\u200E',
+						align: 'top'
+					}
 				)
 			]
 		} ),
 		new OO.ui.FieldsetLayout( {
+			id: 'demo-section-button-showcase',
 			label: 'Button style showcase',
 			items: [
 				new OO.ui.FieldLayout(
@@ -523,7 +647,270 @@ Demo.static.pages.widgets = function ( demo ) {
 			]
 		} ),
 		new OO.ui.FieldsetLayout( {
-			label: 'Form widgets',
+			id: 'demo-section-inputs',
+			label: 'Inputs: TextInput, TextInput (multiline), SearchInput, NumberInput',
+			items: [
+				new OO.ui.FieldLayout(
+					new OO.ui.TextInputWidget( { value: 'Text input' } ),
+					{
+						label: 'TextInputWidget\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.TextInputWidget( { icon: 'help' } ),
+					{
+						label: 'TextInputWidget (icon)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.TextInputWidget( {
+						required: true,
+						validate: 'non-empty'
+					} ),
+					{
+						label: 'TextInputWidget (required)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.TextInputWidget( {
+						validate: function ( value ) {
+							return value.length % 2 === 0;
+						}
+					} ),
+					{
+						label: 'TextInputWidget (only allows even number of characters)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.TextInputWidget( { placeholder: 'Placeholder' } ),
+					{
+						label: 'TextInputWidget (placeholder)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.TextInputWidget( {
+						value: 'Title attribute',
+						title: 'Title attribute with more information about me.'
+					} ),
+					{
+						label: 'TextInputWidget (with title)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.TextInputWidget( {
+						value: 'Readonly',
+						readOnly: true
+					} ),
+					{
+						label: 'TextInputWidget (readonly)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.TextInputWidget( {
+						value: 'Disabled',
+						disabled: true
+					} ),
+					{
+						label: 'TextInputWidget (disabled)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.TextInputWidget( {
+						multiline: true,
+						value: 'Multiline\nMultiline'
+					} ),
+					{
+						label: 'TextInputWidget (multiline)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.TextInputWidget( {
+						multiline: true,
+						rows: 15,
+						value: 'Multiline\nMultiline'
+					} ),
+					{
+						label: 'TextInputWidget (multiline, rows=15)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.TextInputWidget( {
+						multiline: true,
+						autosize: true,
+						value: 'Autosize\nAutosize\nAutosize\nAutosize'
+					} ),
+					{
+						label: 'TextInputWidget (autosize)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.TextInputWidget( {
+						multiline: true,
+						rows: 10,
+						autosize: true,
+						value: 'Autosize\nAutosize\nAutosize\nAutosize'
+					} ),
+					{
+						label: 'TextInputWidget (autosize, rows=10)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.TextInputWidget( {
+						multiline: true,
+						autosize: true,
+						icon: 'tag',
+						indicator: 'alert',
+						label: 'Inline label',
+						value: 'Autosize\nAutosize\nAutosize\nAutosize'
+					} ),
+					{
+						label: 'TextInputWidget (autosize, icon, indicator, label)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.TextInputWidget( {
+						value: 'Text input with label',
+						label: 'Inline label'
+					} ),
+					{
+						label: 'TextInputWidget (label)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.TextInputWidget( {
+						value: 'Text input with label',
+						label: 'Inline label',
+						labelPosition: 'before'
+					} ),
+					{
+						label: 'TextInputWidget (label[position=before])\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.TextInputWidget( {
+						icon: 'tag',
+						indicator: 'alert',
+						value: 'Text input with label',
+						label: 'Inline label'
+					} ),
+					{
+						label: 'TextInputWidget (icon, indicator, label)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.TextInputWidget( {
+						icon: 'tag',
+						indicator: 'alert',
+						value: 'Text input with label',
+						label: 'Inline label',
+						labelPosition: 'before'
+					} ),
+					{
+						label: 'TextInputWidget (icon, indicator, label[position=before])\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.TextInputWidget( {
+						value: 'Disabled',
+						icon: 'tag',
+						indicator: 'alert',
+						label: 'Inline label',
+						disabled: true
+					} ),
+					{
+						label: 'TextInputWidget (icon, indicator, label, disabled)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.TextInputWidget( {
+						value: 'Accesskey: S',
+						accessKey: 's'
+					} ),
+					{
+						label: 'TextInputWidget (with accesskey)\u200E',
+						align: 'top',
+						help: new OO.ui.HtmlSnippet( 'Notice: Using `accesskey` might <a href="http://webaim.org/techniques/keyboard/accesskey" target="_blank">negatively impact screen readers</a>!' )
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.SearchInputWidget(),
+					{
+						label: 'SearchInputWidget (type=search)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.SearchInputWidget( { disabled: true } ),
+					{
+						label: 'SearchInputWidget (disabled)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.SearchInputWidget( { disabled: true, value: 'test' } ),
+					{
+						label: 'SearchInputWidget (disabled, filled)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.NumberInputWidget(),
+					{
+						label: 'NumberInputWidget',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.NumberInputWidget( { disabled: true } ),
+					{
+						label: 'NumberInputWidget (disabled)',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.NumberInputWidget( { min: 1, max: 5, isInteger: true } ),
+					{
+						label: 'NumberInputWidget (1–5, ints only)',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.NumberInputWidget( { min: 0, max: 1, step: 0.1, pageStep: 0.25 } ),
+					{
+						label: 'NumberInputWidget (0–1, step by .1, page by .25)',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.NumberInputWidget( { showButtons: false } ),
+					{
+						label: 'NumberInputWidget (no buttons)',
+						align: 'top'
+					}
+				)
+			]
+		} ),
+		new OO.ui.FieldsetLayout( {
+			id: 'demo-section-inputs-binary',
+			label: 'Checkbox, Radio & ToggleSwitch',
 			items: [
 				new OO.ui.FieldLayout(
 					new OO.ui.CheckboxInputWidget( {
@@ -667,38 +1054,28 @@ Demo.static.pages.widgets = function ( demo ) {
 					}
 				),
 				new OO.ui.FieldLayout(
-					new OO.ui.NumberInputWidget(),
+					new OO.ui.RadioSelectWidget( {
+						items: [
+							new OO.ui.RadioOptionWidget( {
+								data: 'a',
+								label: 'Accesskey: M',
+								accessKey: 'm'
+							} ),
+							new OO.ui.RadioOptionWidget( {
+								data: 'b',
+								label: 'Accesskey: N',
+								accessKey: 'n'
+							} ),
+							new OO.ui.RadioOptionWidget( {
+								data: 'c',
+								label: 'Accesskey: O',
+								accessKey: 'o'
+							} )
+						]
+					} ),
 					{
-						label: 'NumberInputWidget',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.NumberInputWidget( { disabled: true } ),
-					{
-						label: 'NumberInputWidget (disabled)',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.NumberInputWidget( { min: 1, max: 5, isInteger: true } ),
-					{
-						label: 'NumberInputWidget (1–5, ints only)',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.NumberInputWidget( { min: 0, max: 1, step: 0.1, pageStep: 0.25 } ),
-					{
-						label: 'NumberInputWidget (0–1, step by .1, page by .25)',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.NumberInputWidget( { showButtons: false } ),
-					{
-						label: 'NumberInputWidget (no buttons)',
-						align: 'top'
+						align: 'top',
+						label: 'RadioSelectWidget (with accesskeys)\u200E'
 					}
 				),
 				new OO.ui.FieldLayout(
@@ -721,286 +1098,13 @@ Demo.static.pages.widgets = function ( demo ) {
 						label: 'ToggleSwitchWidget (disabled, checked)\u200E',
 						align: 'top'
 					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.ToggleButtonWidget( { label: 'Toggle' } ),
-					{
-						label: 'ToggleButtonWidget',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.ToggleButtonWidget( { label: 'Toggle', value: true } ),
-					{
-						label: 'ToggleButtonWidget (initially active)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.ToggleButtonWidget( { icon: 'next' } ),
-					{
-						label: 'ToggleButtonWidget (icon only)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.ToggleButtonWidget( { icon: 'next', value: true } ),
-					{
-						label: 'ToggleButtonWidget (icon only, initially active)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.TextInputWidget( { value: 'Text input' } ),
-					{
-						label: 'TextInputWidget\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.TextInputWidget( { icon: 'help' } ),
-					{
-						label: 'TextInputWidget (icon)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.TextInputWidget( {
-						required: true,
-						validate: 'non-empty'
-					} ),
-					{
-						label: 'TextInputWidget (required)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.TextInputWidget( {
-						validate: function ( value ) {
-							return value.length % 2 === 0;
-						}
-					} ),
-					{
-						label: 'TextInputWidget (only allows even number of characters)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.TextInputWidget( { placeholder: 'Placeholder' } ),
-					{
-						label: 'TextInputWidget (placeholder)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.TextInputWidget( { type: 'number' } ),
-					{
-						label: 'TextInputWidget (type=number)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.TextInputWidget( {
-						value: 'Readonly',
-						readOnly: true
-					} ),
-					{
-						label: 'TextInputWidget (readonly)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.TextInputWidget( {
-						value: 'Disabled',
-						disabled: true
-					} ),
-					{
-						label: 'TextInputWidget (disabled)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.SearchInputWidget(),
-					{
-						label: 'SearchInputWidget (type=search)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.SearchInputWidget( { disabled: true } ),
-					{
-						label: 'SearchInputWidget (disabled)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.SearchInputWidget( { disabled: true, value: 'test' } ),
-					{
-						label: 'SearchInputWidget (disabled, filled)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.TextInputWidget( {
-						multiline: true,
-						value: 'Multiline\nMultiline'
-					} ),
-					{
-						label: 'TextInputWidget (multiline)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.TextInputWidget( {
-						multiline: true,
-						rows: 15,
-						value: 'Multiline\nMultiline'
-					} ),
-					{
-						label: 'TextInputWidget (multiline, rows=15)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.TextInputWidget( {
-						multiline: true,
-						autosize: true,
-						value: 'Autosize\nAutosize\nAutosize\nAutosize'
-					} ),
-					{
-						label: 'TextInputWidget (autosize)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.TextInputWidget( {
-						multiline: true,
-						rows: 10,
-						autosize: true,
-						value: 'Autosize\nAutosize\nAutosize\nAutosize'
-					} ),
-					{
-						label: 'TextInputWidget (autosize, rows=10)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.TextInputWidget( {
-						multiline: true,
-						autosize: true,
-						icon: 'tag',
-						indicator: 'alert',
-						label: 'Inline label',
-						value: 'Autosize\nAutosize\nAutosize\nAutosize'
-					} ),
-					{
-						label: 'TextInputWidget (autosize, icon, indicator, label)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.TextInputWidget( {
-						icon: 'tag',
-						indicator: 'alert',
-						value: 'Text input with label',
-						label: 'Inline label'
-					} ),
-					{
-						label: 'TextInputWidget (icon, indicator, label)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.TextInputWidget( {
-						value: 'Disabled',
-						icon: 'tag',
-						indicator: 'alert',
-						label: 'Inline label',
-						disabled: true
-					} ),
-					{
-						label: 'TextInputWidget (icon, indicator, label, disabled)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.TextInputWidget( {
-						value: 'Title attribute',
-						title: 'Title attribute with more information about me.'
-					} ),
-					{
-						label: 'TextInputWidget (with title)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.SelectFileWidget( {} ),
-					{
-						label: 'SelectFileWidget\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.SelectFileWidget( { accept: [ 'image/png', 'image/jpeg' ] } ),
-					{
-						label: 'SelectFileWidget (accept PNG and JPEG)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.SelectFileWidget( {
-						icon: 'tag',
-						indicator: 'alert'
-					} ),
-					{
-						label: 'SelectFileWidget (icon, indicator)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.SelectFileWidget( {
-						icon: 'tag',
-						indicator: 'alert',
-						disabled: true
-					} ),
-					{
-						label: 'SelectFileWidget (disabled)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new Demo.UnsupportedSelectFileWidget(),
-					{
-						label: 'SelectFileWidget (no browser support)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.SelectFileWidget( { showDropTarget: true } ),
-					{
-						label: 'SelectFileWidget (with drop target)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.SelectFileWidget( {
-						showDropTarget: true,
-						disabled: true
-					} ),
-					{
-						label: 'SelectFileWidget (with drop target, disabled)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new Demo.UnsupportedSelectFileWidget( {
-						showDropTarget: true
-					} ),
-					{
-						label: 'SelectFileWidget (with drop target, no browser support)\u200E',
-						align: 'top'
-					}
-				),
+				)
+			]
+		} ),
+		new OO.ui.FieldsetLayout( {
+			id: 'demo-section-dropdown',
+			label: 'Dropdown',
+			items: [
 				new OO.ui.FieldLayout(
 					new OO.ui.DropdownWidget( {
 						label: 'Select one',
@@ -1138,7 +1242,7 @@ Demo.static.pages.widgets = function ( demo ) {
 				new OO.ui.FieldLayout(
 					new OO.ui.DropdownWidget( {
 						label: 'Select one',
-						$overlay: $( '<div>' ).appendTo( 'body' ).css( { position: 'absolute', top: 0, left: 0 } ),
+						$overlay: $overlay,
 						menu: {
 							items: [
 								new OO.ui.MenuOptionWidget( {
@@ -1193,6 +1297,33 @@ Demo.static.pages.widgets = function ( demo ) {
 					{
 						label: 'DropdownWidget (does not close on choose)\u200E',
 						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.DropdownWidget( {
+						menu: {
+							items: [
+								new OO.ui.MenuOptionWidget( {
+									data: 'a',
+									label: 'Accesskey: P',
+									accessKey: 'p'
+								} ),
+								new OO.ui.MenuOptionWidget( {
+									data: 'b',
+									label: 'Accesskey: Q',
+									accessKey: 'q'
+								} ),
+								new OO.ui.MenuOptionWidget( {
+									data: 'c',
+									label: 'Accesskey: R',
+									accessKey: 'r'
+								} )
+							]
+						}
+					} ),
+					{
+						align: 'top',
+						label: 'DropdownWidget (with accesskeys)\u200E'
 					}
 				),
 				new OO.ui.FieldLayout(
@@ -1304,7 +1435,13 @@ Demo.static.pages.widgets = function ( demo ) {
 						label: 'DropdownInputWidget (long)\u200E',
 						align: 'top'
 					}
-				),
+				)
+			]
+		} ),
+		new OO.ui.FieldsetLayout( {
+			id: 'demo-section-comboBox',
+			label: 'ComboBox',
+			items: [
 				new OO.ui.FieldLayout(
 					new OO.ui.ComboBoxInputWidget( {
 						options: [
@@ -1395,7 +1532,87 @@ Demo.static.pages.widgets = function ( demo ) {
 						label: 'ComboBoxInputWidget (empty)\u200E',
 						align: 'top'
 					}
+				)
+			]
+		} ),
+		new OO.ui.FieldsetLayout( {
+			id: 'demo-section-selectFile',
+			label: 'SelectFile',
+			items: [
+				new OO.ui.FieldLayout(
+					new OO.ui.SelectFileWidget( {} ),
+					{
+						label: 'SelectFileWidget\u200E',
+						align: 'top'
+					}
 				),
+				new OO.ui.FieldLayout(
+					new OO.ui.SelectFileWidget( { accept: [ 'image/png', 'image/jpeg' ] } ),
+					{
+						label: 'SelectFileWidget (accept PNG and JPEG)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.SelectFileWidget( {
+						icon: 'tag',
+						indicator: 'alert'
+					} ),
+					{
+						label: 'SelectFileWidget (icon, indicator)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.SelectFileWidget( {
+						icon: 'tag',
+						indicator: 'alert',
+						disabled: true
+					} ),
+					{
+						label: 'SelectFileWidget (disabled)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new Demo.UnsupportedSelectFileWidget(),
+					{
+						label: 'SelectFileWidget (no browser support)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.SelectFileWidget( { showDropTarget: true } ),
+					{
+						label: 'SelectFileWidget (with drop target)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.SelectFileWidget( {
+						showDropTarget: true,
+						disabled: true
+					} ),
+					{
+						label: 'SelectFileWidget (with drop target, disabled)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new Demo.UnsupportedSelectFileWidget( {
+						showDropTarget: true
+					} ),
+					{
+						label: 'SelectFileWidget (with drop target, no browser support)\u200E',
+						align: 'top'
+					}
+				)
+			]
+		} ),
+		new OO.ui.FieldsetLayout( {
+			id: 'demo-section-tagMultiselect',
+			label: 'TagMultiselect, MenuTagMultiselect, CapsuleMultiselect',
+			items: [
 				new OO.ui.FieldLayout(
 					new OO.ui.TagMultiselectWidget( {
 						placeholder: 'Add tags',
@@ -1463,6 +1680,33 @@ Demo.static.pages.widgets = function ( demo ) {
 				),
 				new OO.ui.FieldLayout(
 					new OO.ui.MenuTagMultiselectWidget( {
+						selected: [
+							{ data: 'foo', label: 'Label for foo' },
+							{ data: 'bar', label: 'Label for bar' }
+						],
+						options: [
+							{ data: 'foo', label: 'Label for foo' },
+							{ data: 'bar', label: 'Label for bar' },
+							{ data: 'baz', label: 'Label for baz' }
+						]
+					} ),
+					{
+						label: 'MenuTagMultiselectWidget (initially selected, preset options)',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.MenuTagMultiselectWidget( {
+						selected: [ 'foo', 'bar' ],
+						allowArbitrary: true
+					} ),
+					{
+						label: 'MenuTagMultiselectWidget (initially selected, allowArbitrary)',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.MenuTagMultiselectWidget( {
 						allowArbitrary: false,
 						options: [
 							{ data: 'abc', label: 'Label for abc' },
@@ -1510,7 +1754,7 @@ Demo.static.pages.widgets = function ( demo ) {
 				),
 				new OO.ui.FieldLayout(
 					new OO.ui.CapsuleMultiselectWidget( {
-						placeholder: 'Type like a cat...',
+						placeholder: 'Type like a cat…',
 						menu: {
 							items: [
 								new OO.ui.MenuOptionWidget( { data: 'abc', label: 'Label for abc' } ),
@@ -1627,340 +1871,35 @@ Demo.static.pages.widgets = function ( demo ) {
 						label: 'CapsuleMultiselectWidget with NumberInputWidget popup\u200E',
 						align: 'top'
 					}
-				),
+				)
+			]
+		} ),
+		new OO.ui.FieldsetLayout( {
+			id: 'demo-section-lookupElement',
+			label: 'LookupElement',
+			items: [
 				new OO.ui.FieldLayout(
-					new OO.ui.ButtonInputWidget( {
-						label: 'Submit the form',
-						type: 'submit',
-						flags: [ 'primary', 'progressive' ],
-						useInputTag: true
-					} ),
+					new Demo.NumberLookupTextInputWidget(),
 					{
-						align: 'top',
-						label: 'ButtonInputWidget (using <input>)\u200E'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.ButtonInputWidget( {
-						label: 'Another button',
-						type: 'button'
-					} ),
-					{
-						align: 'top',
-						label: 'ButtonInputWidget (using <button>)\u200E'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.ButtonInputWidget( {
-						framed: false,
-						label: 'Another button',
-						type: 'button'
-					} ),
-					{
-						align: 'top',
-						label: 'ButtonInputWidget (frameless)\u200E'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.ButtonInputWidget( {
-						framed: false,
-						label: 'Another button',
-						type: 'button',
-						useInputTag: true
-					} ),
-					{
-						align: 'top',
-						label: 'ButtonInputWidget (frameless, using <input>)\u200E'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.ButtonWidget( {
-						label: 'Accesskey: H',
-						accessKey: 'h'
-					} ),
-					{
-						label: 'ButtonWidget (with accesskey)\u200E',
+						label: 'LookupElement (try inputting an integer)\u200E',
 						align: 'top'
 					}
 				),
 				new OO.ui.FieldLayout(
-					new OO.ui.ButtonInputWidget( {
-						label: 'Accesskey: I',
-						accessKey: 'i'
+					new Demo.NumberLookupTextInputWidget( {
+						highlightFirst: false
 					} ),
 					{
-						label: 'ButtonInputWidget (with accesskey)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.ButtonSelectWidget( {
-						items: [
-							new OO.ui.ButtonOptionWidget( {
-								data: 'a',
-								label: 'Accesskey: J',
-								accessKey: 'j'
-							} ),
-							new OO.ui.ButtonOptionWidget( {
-								data: 'b',
-								label: 'Accesskey: K',
-								accessKey: 'k'
-							} ),
-							new OO.ui.ButtonOptionWidget( {
-								data: 'c',
-								label: 'Accesskey: L',
-								accessKey: 'l'
-							} )
-						]
-					} ),
-					{
-						label: 'ButtonSelectWidget (with accesskeys)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.RadioSelectWidget( {
-						items: [
-							new OO.ui.RadioOptionWidget( {
-								data: 'a',
-								label: 'Accesskey: M',
-								accessKey: 'm'
-							} ),
-							new OO.ui.RadioOptionWidget( {
-								data: 'b',
-								label: 'Accesskey: N',
-								accessKey: 'n'
-							} ),
-							new OO.ui.RadioOptionWidget( {
-								data: 'c',
-								label: 'Accesskey: O',
-								accessKey: 'o'
-							} )
-						]
-					} ),
-					{
-						align: 'top',
-						label: 'RadioSelectWidget (with accesskeys)\u200E'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.DropdownWidget( {
-						menu: {
-							items: [
-								new OO.ui.MenuOptionWidget( {
-									data: 'a',
-									label: 'Accesskey: P',
-									accessKey: 'p'
-								} ),
-								new OO.ui.MenuOptionWidget( {
-									data: 'b',
-									label: 'Accesskey: Q',
-									accessKey: 'q'
-								} ),
-								new OO.ui.MenuOptionWidget( {
-									data: 'c',
-									label: 'Accesskey: R',
-									accessKey: 'r'
-								} )
-							]
-						}
-					} ),
-					{
-						align: 'top',
-						label: 'DropdownWidget (with accesskeys)\u200E'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.TextInputWidget( {
-						value: 'Accesskey: S',
-						accessKey: 's'
-					} ),
-					{
-						label: 'TextInputWidget (with accesskey)\u200E',
+						label: 'LookupElement without highlighting 1st term (try inputting an integer)\u200E',
 						align: 'top'
 					}
 				)
 			]
 		} ),
 		new OO.ui.FieldsetLayout( {
-			label: 'HorizontalLayout',
+			id: 'demo-section-popupButton',
+			label: 'PopupButton',
 			items: [
-				new OO.ui.FieldLayout(
-					new OO.ui.Widget( {
-						content: [ new OO.ui.HorizontalLayout( {
-							items: [
-								new OO.ui.ButtonWidget( { label: 'Button' } ),
-								new OO.ui.ButtonGroupWidget( { items: [
-									new OO.ui.ToggleButtonWidget( { label: 'A' } ),
-									new OO.ui.ToggleButtonWidget( { label: 'B' } )
-								] } ),
-								new OO.ui.ButtonInputWidget( { label: 'ButtonInput' } ),
-								new OO.ui.TextInputWidget( { value: 'TextInput' } ),
-								new OO.ui.DropdownInputWidget( { options: [
-									{
-										label: 'DropdownInput',
-										data: null
-									}
-								] } ),
-								new OO.ui.CheckboxInputWidget( { selected: true } ),
-								new OO.ui.RadioInputWidget( { selected: true } ),
-								new OO.ui.LabelWidget( { label: 'Label' } )
-							]
-						} ) ]
-					} ),
-					{
-						label: 'Multiple widgets shown as a single line, ' +
-							'as used in compact forms or in parts of a bigger widget.',
-						align: 'top'
-					}
-				)
-			]
-		} ),
-		new OO.ui.FieldsetLayout( {
-			label: 'Draggable',
-			items: [
-				new OO.ui.FieldLayout(
-					new Demo.DraggableGroupWidget( {
-						orientation: 'horizontal',
-						items: horizontalDragItems
-					} ),
-					{
-						label: 'DraggableGroupWidget (horizontal)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new Demo.DraggableGroupWidget( {
-						items: verticalDragItems
-					} ),
-					{
-						label: 'DraggableGroupWidget (vertical)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new Demo.DraggableGroupWidget( {
-						items: verticalHandledDragItems
-					} ),
-					{
-						label: 'DraggableGroupWidget with handles (vertical)\u200E',
-						align: 'top'
-					}
-				)
-			]
-		} ),
-		new OO.ui.FieldsetLayout( {
-			label: 'Other widgets',
-			items: [
-				new OO.ui.FieldLayout(
-					new OO.ui.IconWidget( {
-						icon: 'search',
-						title: 'Search icon'
-					} ),
-					{
-						label: 'IconWidget (normal)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.IconWidget( {
-						icon: 'remove',
-						flags: 'destructive',
-						title: 'Remove icon'
-					} ),
-					{
-						label: 'IconWidget (flagged)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.IconWidget( {
-						icon: 'search',
-						title: 'Search icon',
-						disabled: true
-					} ),
-					{
-						label: 'IconWidget (disabled)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.IndicatorWidget( {
-						indicator: 'alert',
-						title: 'Required indicator'
-					} ),
-					{
-						label: 'IndicatorWidget (normal)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.IndicatorWidget( {
-						indicator: 'alert',
-						title: 'Required indicator',
-						disabled: true
-					} ),
-					{
-						label: 'IndicatorWidget (disabled)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.LabelWidget( {
-						label: 'Label'
-					} ),
-					{
-						label: 'LabelWidget (normal)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.LabelWidget( {
-						label: 'Label',
-						disabled: true
-					} ),
-					{
-						label: 'LabelWidget (disabled)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.LabelWidget( {
-						label: new OO.ui.HtmlSnippet( '<b>Fancy</b> <i>text</i> <u>formatting</u>!' )
-					} ),
-					{
-						label: 'LabelWidget (with HTML)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					labelForTextInput,
-					{
-						label: 'LabelWidget (with an associated TextInputWidget)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					textInputForLabel,
-					{
-						label: 'TextInputWidget (with an associated label)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					labelForRadioSelectInput,
-					{
-						label: 'LabelWidget (with an associated RadioSelectInputWidget)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					radioSelectInputForLabel,
-					{
-						label: 'RadioSelectInputWidget (with an associated label)\u200E',
-						align: 'top'
-					}
-				),
 				new OO.ui.FieldLayout(
 					new OO.ui.PopupButtonWidget( {
 						icon: 'info',
@@ -2164,30 +2103,87 @@ Demo.static.pages.widgets = function ( demo ) {
 						popup: {
 							$content: $( '<p>' ).text( loremIpsum ),
 							padded: true,
-							anchor: false
+							anchor: false,
+							align: 'center'
 						}
 					} ),
 					{
-						label: 'PopupButtonWidget (no anchor)\u200E',
+						label: 'PopupButtonWidget (no anchor, align: center)\u200E',
 						align: 'top'
 					}
 				),
 				new OO.ui.FieldLayout(
-					new Demo.NumberLookupTextInputWidget(),
-					{
-						label: 'LookupElement (try inputting an integer)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new Demo.NumberLookupTextInputWidget( {
-						highlightFirst: false
+					new OO.ui.PopupButtonWidget( {
+						icon: 'menu',
+						label: 'Options',
+						popup: {
+							$content: $( '<p>' ).text( loremIpsum ),
+							padded: true,
+							anchor: false,
+							align: 'forwards'
+						}
 					} ),
 					{
-						label: 'LookupElement without highlighting 1st term (try inputting an integer)\u200E',
+						label: 'PopupButtonWidget (no anchor, align: forwards)\u200E',
 						align: 'top'
 					}
 				),
+				new OO.ui.FieldLayout(
+					new OO.ui.PopupButtonWidget( {
+						icon: 'menu',
+						label: 'Options',
+						popup: {
+							$content: $( '<p>' ).text( loremIpsum ),
+							padded: true,
+							anchor: false,
+							align: 'backwards'
+						}
+					} ),
+					{
+						label: 'PopupButtonWidget (no anchor, align: backwards)\u200E',
+						align: 'top'
+					}
+				)
+			]
+		} ),
+		new OO.ui.FieldsetLayout( {
+			id: 'demo-section-draggable',
+			label: 'Draggable',
+			items: [
+				new OO.ui.FieldLayout(
+					new Demo.DraggableGroupWidget( {
+						orientation: 'horizontal',
+						items: horizontalDragItems
+					} ),
+					{
+						label: 'DraggableGroupWidget (horizontal)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new Demo.DraggableGroupWidget( {
+						items: verticalDragItems
+					} ),
+					{
+						label: 'DraggableGroupWidget (vertical)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new Demo.DraggableGroupWidget( {
+						items: verticalHandledDragItems
+					} ),
+					{
+						label: 'DraggableGroupWidget with handles (vertical)\u200E',
+						align: 'top'
+					}
+				)
+			]
+		} ),
+		new OO.ui.FieldsetLayout( {
+			id: 'demo-section-progressBar',
+			label: 'Progress bar',
+			items: [
 				new OO.ui.FieldLayout(
 					new OO.ui.ProgressBarWidget( {
 						progress: 33
@@ -2199,6 +2195,7 @@ Demo.static.pages.widgets = function ( demo ) {
 				),
 				new OO.ui.FieldLayout(
 					new OO.ui.ProgressBarWidget( {
+						progress: 50,
 						disabled: true
 					} ),
 					{
@@ -2218,6 +2215,122 @@ Demo.static.pages.widgets = function ( demo ) {
 			]
 		} ),
 		new OO.ui.FieldsetLayout( {
+			id: 'demo-section-others',
+			label: 'Other widgets',
+			items: [
+				new OO.ui.FieldLayout(
+					new OO.ui.IconWidget( {
+						icon: 'search',
+						title: 'Search icon'
+					} ),
+					{
+						label: 'IconWidget (normal)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.IconWidget( {
+						icon: 'trash',
+						flags: 'destructive',
+						title: 'Remove icon'
+					} ),
+					{
+						label: 'IconWidget (flagged)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.IconWidget( {
+						icon: 'search',
+						title: 'Search icon',
+						disabled: true
+					} ),
+					{
+						label: 'IconWidget (disabled)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.IndicatorWidget( {
+						indicator: 'alert',
+						title: 'Required indicator'
+					} ),
+					{
+						label: 'IndicatorWidget (normal)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.IndicatorWidget( {
+						indicator: 'alert',
+						title: 'Required indicator',
+						disabled: true
+					} ),
+					{
+						label: 'IndicatorWidget (disabled)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.LabelWidget( {
+						label: 'Label'
+					} ),
+					{
+						label: 'LabelWidget (normal)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.LabelWidget( {
+						label: 'Label',
+						disabled: true
+					} ),
+					{
+						label: 'LabelWidget (disabled)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.LabelWidget( {
+						label: new OO.ui.HtmlSnippet( '<b>Fancy</b> <i>text</i> <u>formatting</u>!' )
+					} ),
+					{
+						label: 'LabelWidget (with HTML)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					labelForTextInput,
+					{
+						label: 'LabelWidget (with an associated TextInputWidget)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					textInputForLabel,
+					{
+						label: 'TextInputWidget (with an associated label)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					labelForRadioSelectInput,
+					{
+						label: 'LabelWidget (with an associated RadioSelectInputWidget)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					radioSelectInputForLabel,
+					{
+						label: 'RadioSelectInputWidget (with an associated label)\u200E',
+						align: 'top'
+					}
+				)
+			]
+		} ),
+		new OO.ui.FieldsetLayout( {
+			id: 'demo-section-fieldLayouts',
 			label: 'Field layouts',
 			icon: 'tag',
 			help: loremIpsum,
@@ -2410,11 +2523,47 @@ Demo.static.pages.widgets = function ( demo ) {
 				)
 			]
 		} ),
+		new OO.ui.FieldsetLayout( {
+			id: 'demo-section-horizontalLayout',
+			label: 'HorizontalLayout',
+			items: [
+				new OO.ui.FieldLayout(
+					new OO.ui.Widget( {
+						content: [ new OO.ui.HorizontalLayout( {
+							items: [
+								new OO.ui.ButtonWidget( { label: 'Button' } ),
+								new OO.ui.ButtonGroupWidget( { items: [
+									new OO.ui.ToggleButtonWidget( { label: 'A' } ),
+									new OO.ui.ToggleButtonWidget( { label: 'B' } )
+								] } ),
+								new OO.ui.ButtonInputWidget( { label: 'ButtonInput' } ),
+								new OO.ui.TextInputWidget( { value: 'TextInput' } ),
+								new OO.ui.DropdownInputWidget( { options: [
+									{
+										label: 'DropdownInput',
+										data: null
+									}
+								] } ),
+								new OO.ui.CheckboxInputWidget( { selected: true } ),
+								new OO.ui.RadioInputWidget( { selected: true } ),
+								new OO.ui.LabelWidget( { label: 'Label' } )
+							]
+						} ) ]
+					} ),
+					{
+						label: 'Multiple widgets shown as a single line, ' +
+							'as used in compact forms or in parts of a bigger widget.',
+						align: 'top'
+					}
+				)
+			]
+		} ),
 		new OO.ui.FormLayout( {
 			method: 'GET',
 			action: 'demos.php',
 			items: [
 				new OO.ui.FieldsetLayout( {
+					id: 'demo-section-formLayout',
 					label: 'Form layout (compounded example)',
 					items: [
 						new OO.ui.FieldLayout(
@@ -2512,6 +2661,18 @@ Demo.static.pages.widgets = function ( demo ) {
 								label: 'Remember me',
 								align: 'inline'
 							}
+						),
+						new OO.ui.FieldLayout(
+							new OO.ui.HiddenInputWidget( {
+								name: 'hidden',
+								value: 'hidden value'
+							} )
+						),
+						new OO.ui.FieldLayout(
+							new OO.ui.ButtonInputWidget( {
+								type: 'submit',
+								label: 'Submit form'
+							} )
 						)
 					]
 				} ),
@@ -2545,6 +2706,11 @@ Demo.static.pages.widgets = function ( demo ) {
 											framed: false,
 											icon: 'tag',
 											label: 'Random icon button'
+										} ),
+										new OO.ui.ButtonWidget( {
+											framed: false,
+											icon: 'help',
+											title: 'Icon only'
 										} )
 									]
 								} ) ]
@@ -2568,9 +2734,18 @@ Demo.static.pages.widgets = function ( demo ) {
 	];
 
 	$.each( fieldsets, function ( i, fieldsetLayout ) {
+		var showLayoutCode = false;
+
+		if (
+			fieldsetLayout instanceof OO.ui.FormLayout ||
+			fieldsetLayout.getLabel() === 'Field layouts'
+		) {
+			showLayoutCode = true;
+		}
+
 		$.each( fieldsetLayout.getItems(), function ( j, fieldLayout ) {
 			fieldLayout.$element.append(
-				demo.buildConsole( fieldLayout, 'layout', 'widget' )
+				demo.buildConsole( fieldLayout, 'layout', 'widget', showLayoutCode )
 			);
 		} );
 	} );
@@ -2586,4 +2761,10 @@ Demo.static.pages.widgets = function ( demo ) {
 				$( fieldsets.map( function ( fieldset ) { return fieldset.$element[ 0 ]; } ) )
 			)
 	);
+
+	$overlay.appendTo( 'body' );
+
+	demo.once( 'destroy', function () {
+		$overlay.remove();
+	} );
 };
