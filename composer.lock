@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "25ec18ada2f26e1263c6ef062c233109",
+    "content-hash": "52a3bd30d59872778eaf081e7734b7c9",
     "packages": [
         {
             "name": "composer/semver",
@@ -1605,16 +1605,16 @@
         },
         {
             "name": "wikimedia/css-sanitizer",
-            "version": "v1.0.1",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/css-sanitizer.git",
-                "reference": "604f25d7dd54b4b406f099e87aa7fd5fcaa77dc4"
+                "reference": "53071d588f7ac20f1467fb5952e968c1f8e2bb69"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/css-sanitizer/zipball/604f25d7dd54b4b406f099e87aa7fd5fcaa77dc4",
-                "reference": "604f25d7dd54b4b406f099e87aa7fd5fcaa77dc4",
+                "url": "https://api.github.com/repos/wikimedia/css-sanitizer/zipball/53071d588f7ac20f1467fb5952e968c1f8e2bb69",
+                "reference": "53071d588f7ac20f1467fb5952e968c1f8e2bb69",
                 "shasum": ""
             },
             "require": {
@@ -1648,7 +1648,7 @@
             ],
             "description": "Classes to parse and sanitize CSS",
             "homepage": "https://www.mediawiki.org/wiki/Css-sanitizer",
-            "time": "2017-06-06T15:25:57+00:00"
+            "time": "2017-06-13T15:51:12+00:00"
         },
         {
             "name": "wikimedia/html-formatter",
