@@ -18,6 +18,8 @@ class ComposerStaticInit_mediawiki_vendor
         'W' => 
         array (
             'WrappedString\\' => 14,
+            'Wikimedia\\Purtle\\Tests\\' => 23,
+            'Wikimedia\\Purtle\\' => 17,
             'Wikimedia\\Composer\\' => 19,
             'Wikimedia\\Assert\\Test\\' => 22,
             'Wikimedia\\Assert\\' => 17,
@@ -65,6 +67,14 @@ class ComposerStaticInit_mediawiki_vendor
         'WrappedString\\' => 
         array (
             0 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
+        ),
+        'Wikimedia\\Purtle\\Tests\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/wikimedia/purtle/tests/phpunit',
+        ),
+        'Wikimedia\\Purtle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/wikimedia/purtle/src',
         ),
         'Wikimedia\\Composer\\' => 
         array (
@@ -940,6 +950,24 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Composer\\Merge\\PluginState' => __DIR__ . '/..' . '/wikimedia/composer-merge-plugin/src/Merge/PluginState.php',
         'Wikimedia\\Composer\\Merge\\StabilityFlags' => __DIR__ . '/..' . '/wikimedia/composer-merge-plugin/src/Merge/StabilityFlags.php',
         'Wikimedia\\PhpSessionSerializer' => __DIR__ . '/..' . '/wikimedia/php-session-serializer/src/Wikimedia/PhpSessionSerializer.php',
+        'Wikimedia\\Purtle\\BNodeLabeler' => __DIR__ . '/..' . '/wikimedia/purtle/src/BNodeLabeler.php',
+        'Wikimedia\\Purtle\\N3Quoter' => __DIR__ . '/..' . '/wikimedia/purtle/src/N3Quoter.php',
+        'Wikimedia\\Purtle\\N3RdfWriterBase' => __DIR__ . '/..' . '/wikimedia/purtle/src/N3RdfWriterBase.php',
+        'Wikimedia\\Purtle\\NTriplesRdfWriter' => __DIR__ . '/..' . '/wikimedia/purtle/src/NTriplesRdfWriter.php',
+        'Wikimedia\\Purtle\\RdfWriter' => __DIR__ . '/..' . '/wikimedia/purtle/src/RdfWriter.php',
+        'Wikimedia\\Purtle\\RdfWriterBase' => __DIR__ . '/..' . '/wikimedia/purtle/src/RdfWriterBase.php',
+        'Wikimedia\\Purtle\\RdfWriterFactory' => __DIR__ . '/..' . '/wikimedia/purtle/src/RdfWriterFactory.php',
+        'Wikimedia\\Purtle\\Tests\\BNodeLabelerTest' => __DIR__ . '/..' . '/wikimedia/purtle/tests/phpunit/BNodeLabelerTest.php',
+        'Wikimedia\\Purtle\\Tests\\N3QuoterTest' => __DIR__ . '/..' . '/wikimedia/purtle/tests/phpunit/N3QuoterTest.php',
+        'Wikimedia\\Purtle\\Tests\\NTriplesRdfWriterTest' => __DIR__ . '/..' . '/wikimedia/purtle/tests/phpunit/NTriplesRdfWriterTest.php',
+        'Wikimedia\\Purtle\\Tests\\RdfWriterFactoryTest' => __DIR__ . '/..' . '/wikimedia/purtle/tests/phpunit/RdfWriterFactoryTest.php',
+        'Wikimedia\\Purtle\\Tests\\RdfWriterTestBase' => __DIR__ . '/..' . '/wikimedia/purtle/tests/phpunit/RdfWriterTestBase.php',
+        'Wikimedia\\Purtle\\Tests\\TurtleRdfWriterTest' => __DIR__ . '/..' . '/wikimedia/purtle/tests/phpunit/TurtleRdfWriterTest.php',
+        'Wikimedia\\Purtle\\Tests\\UnicodeEscaperTest' => __DIR__ . '/..' . '/wikimedia/purtle/tests/phpunit/UnicodeEscaperTest.php',
+        'Wikimedia\\Purtle\\Tests\\XmlRdfWriterTest' => __DIR__ . '/..' . '/wikimedia/purtle/tests/phpunit/XmlRdfWriterTest.php',
+        'Wikimedia\\Purtle\\TurtleRdfWriter' => __DIR__ . '/..' . '/wikimedia/purtle/src/TurtleRdfWriter.php',
+        'Wikimedia\\Purtle\\UnicodeEscaper' => __DIR__ . '/..' . '/wikimedia/purtle/src/UnicodeEscaper.php',
+        'Wikimedia\\Purtle\\XmlRdfWriter' => __DIR__ . '/..' . '/wikimedia/purtle/src/XmlRdfWriter.php',
         'Wikimedia\\ScopedCallback' => __DIR__ . '/..' . '/wikimedia/scoped-callback/src/ScopedCallback.php',
         'Wikimedia\\TestingAccessWrapper' => __DIR__ . '/..' . '/wikimedia/testing-access-wrapper/src/TestingAccessWrapper.php',
         'Wikimedia\\Timestamp\\ConvertibleTimestamp' => __DIR__ . '/..' . '/wikimedia/timestamp/src/ConvertibleTimestamp.php',

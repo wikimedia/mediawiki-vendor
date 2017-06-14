@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "d5635cfadceb2bfc5954f0657124a504",
+    "content-hash": "5c4ef9054eed327bfd6cee4e658c4fea",
     "packages": [
         {
             "name": "composer/semver",
@@ -1172,50 +1172,17 @@
                 "type": "zip",
                 "url": "https://github.com/ruflin/Elastica/archive/5.1.0.zip",
                 "reference": "tags/5.1.0",
-                "shasum": ""
+                "shasum": null
             },
             "require": {
-                "php": ">=5.6.0",
-                "psr/log": "~1.0"
-            },
-            "require-dev": {
-                "aws/aws-sdk-php": "~3.0",
-                "guzzlehttp/guzzle": "~6.0"
-            },
-            "suggest": {
-                "aws/aws-sdk-php": "Allow using IAM authentication with Amazon ElasticSearch Service",
-                "egeloen/http-adapter": "Allow using httpadapter transport",
-                "guzzlehttp/guzzle": "Allow using guzzle 6 as the http transport",
-                "monolog/monolog": "Logging request"
+                "php": ">=5.5.0 <5.6.0"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "5.1.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Elastica\\": "lib/Elastica/"
                 }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nicolas Ruflin",
-                    "homepage": "http://ruflin.com/"
-                }
-            ],
-            "description": "Elasticsearch Client",
-            "homepage": "http://elastica.io/",
-            "keywords": [
-                "client",
-                "search"
-            ],
-            "time": "2017-02-15T11:19:35+00:00"
+            }
         },
         {
             "name": "stil/gd-text",
@@ -1777,6 +1744,65 @@
             "description": "Provides methods like PHP's session_encode and session_decode that don't mess with $_SESSION",
             "homepage": "https://www.mediawiki.org/wiki/Php-session-serializer",
             "time": "2016-10-01T13:19:49+00:00"
+        },
+        {
+            "name": "wikimedia/purtle",
+            "version": "v1.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wikimedia/purtle.git",
+                "reference": "b34ec013657950481fd2edc5a9817b734fceb6e9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wikimedia/purtle/zipball/b34ec013657950481fd2edc5a9817b734fceb6e9",
+                "reference": "b34ec013657950481fd2edc5a9817b734fceb6e9",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "mediawiki/mediawiki-codesniffer": "0.9.0",
+                "ockcyp/covers-validator": "~0.4.0",
+                "phpmd/phpmd": "~2.3",
+                "phpunit/phpunit": "4.8.24"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Wikimedia\\Purtle\\": "src/",
+                    "Wikimedia\\Purtle\\Tests\\": "tests/phpunit/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel Kinzler"
+                },
+                {
+                    "name": "Thiemo Mättig"
+                },
+                {
+                    "name": "Stanislav Malyshev"
+                }
+            ],
+            "description": "Fast streaming RDF serializer",
+            "homepage": "https://mediawiki.org/wiki/Purtle",
+            "keywords": [
+                "RDF",
+                "Turtle",
+                "serializer"
+            ],
+            "time": "2017-06-26T11:29:06+00:00"
         },
         {
             "name": "wikimedia/relpath",
