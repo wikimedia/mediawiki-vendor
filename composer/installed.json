@@ -2215,18 +2215,67 @@
         ]
     },
     {
-        "name": "oojs/oojs-ui",
-        "version": "v0.22.1",
-        "version_normalized": "0.22.1.0",
+        "name": "wikimedia/css-sanitizer",
+        "version": "v1.0.2",
+        "version_normalized": "1.0.2.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/wikimedia/oojs-ui.git",
-            "reference": "610ed06f7aa8d915e689efad93c45a2d54206031"
+            "url": "https://github.com/wikimedia/css-sanitizer.git",
+            "reference": "53071d588f7ac20f1467fb5952e968c1f8e2bb69"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/610ed06f7aa8d915e689efad93c45a2d54206031",
-            "reference": "610ed06f7aa8d915e689efad93c45a2d54206031",
+            "url": "https://api.github.com/repos/wikimedia/css-sanitizer/zipball/53071d588f7ac20f1467fb5952e968c1f8e2bb69",
+            "reference": "53071d588f7ac20f1467fb5952e968c1f8e2bb69",
+            "shasum": ""
+        },
+        "require": {
+            "ext-iconv": "*",
+            "ext-mbstring": "*",
+            "mediawiki/at-ease": "1.1.0",
+            "php": ">=5.5.9",
+            "wikimedia/utfnormal": "1.1.0"
+        },
+        "require-dev": {
+            "jakub-onderka/php-parallel-lint": "0.9.2",
+            "mediawiki/mediawiki-codesniffer": "0.7.2",
+            "phpunit/phpunit": "4.8.31",
+            "wikimedia/testing-access-wrapper": "1.0.0"
+        },
+        "time": "2017-06-13T15:51:12+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "src/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "Apache-2.0"
+        ],
+        "authors": [
+            {
+                "name": "Brad Jorsch",
+                "email": "bjorsch@wikimedia.org"
+            }
+        ],
+        "description": "Classes to parse and sanitize CSS",
+        "homepage": "https://www.mediawiki.org/wiki/Css-sanitizer"
+    },
+    {
+        "name": "oojs/oojs-ui",
+        "version": "v0.22.2",
+        "version_normalized": "0.22.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/oojs-ui.git",
+            "reference": "ca5f31425138961c4a779d8e0d7674f16dbc7d24"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/ca5f31425138961c4a779d8e0d7674f16dbc7d24",
+            "reference": "ca5f31425138961c4a779d8e0d7674f16dbc7d24",
             "shasum": ""
         },
         "require": {
@@ -2238,7 +2287,7 @@
             "mediawiki/mediawiki-codesniffer": "0.6.0",
             "phpunit/phpunit": "4.8.21"
         },
-        "time": "2017-05-31T18:50:29+00:00",
+        "time": "2017-06-28T19:15:29+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -2294,54 +2343,5 @@
         ],
         "description": "Provides library of common widgets, layouts, and windows.",
         "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
-    },
-    {
-        "name": "wikimedia/css-sanitizer",
-        "version": "v1.0.2",
-        "version_normalized": "1.0.2.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/wikimedia/css-sanitizer.git",
-            "reference": "53071d588f7ac20f1467fb5952e968c1f8e2bb69"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/css-sanitizer/zipball/53071d588f7ac20f1467fb5952e968c1f8e2bb69",
-            "reference": "53071d588f7ac20f1467fb5952e968c1f8e2bb69",
-            "shasum": ""
-        },
-        "require": {
-            "ext-iconv": "*",
-            "ext-mbstring": "*",
-            "mediawiki/at-ease": "1.1.0",
-            "php": ">=5.5.9",
-            "wikimedia/utfnormal": "1.1.0"
-        },
-        "require-dev": {
-            "jakub-onderka/php-parallel-lint": "0.9.2",
-            "mediawiki/mediawiki-codesniffer": "0.7.2",
-            "phpunit/phpunit": "4.8.31",
-            "wikimedia/testing-access-wrapper": "1.0.0"
-        },
-        "time": "2017-06-13T15:51:12+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "src/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "Apache-2.0"
-        ],
-        "authors": [
-            {
-                "name": "Brad Jorsch",
-                "email": "bjorsch@wikimedia.org"
-            }
-        ],
-        "description": "Classes to parse and sanitize CSS",
-        "homepage": "https://www.mediawiki.org/wiki/Css-sanitizer"
     }
 ]

@@ -14,6 +14,7 @@
 	<script src="node_modules/oojs/dist/oojs.jquery.js"></script>
 	<script src="node_modules/prismjs/prism.js"></script>
 	<script src="node_modules/prismjs/plugins/autolinker/prism-autolinker.js"></script>
+	<script src="node_modules/javascript-stringify/javascript-stringify.js"></script>
 	<script src="dist/oojs-ui.js"></script>
 	<script src="dist/oojs-ui-wikimediaui.js"></script> <!-- Do not change this line or you'll break `grunt add-theme` -->
 	<script src="dist/oojs-ui-apex.js"></script>
@@ -52,28 +53,35 @@
 	<script src="pages/toolbars.js"></script>
 	<script>
 		$( function () {
-			var demo;
+			var demo, lastQuery = location.search;
 
 			function setup() {
 				var
 					prevPage = demo ? demo.mode.page : null,
 					scrollPos = $( window ).scrollTop();
 				if ( demo ) {
+					if ( lastQuery === location.search ) {
+						return false;
+					}
 					demo.destroy();
 				}
+				lastQuery = location.search;
 				demo = new Demo();
 				$( 'body' ).append( demo.$element );
 				demo.initialize().done( function () {
-					if ( prevPage === demo.mode.page ) {
+					if ( prevPage === demo.mode.page && scrollPos ) {
 						// Restore scroll position from before we destroyed the demo
 						$( window ).scrollTop( scrollPos );
+					} else {
+						Demo.static.scrollToFragment();
 					}
 				} );
 			}
 
 			setup();
 
-			$( window ).on( 'hashchange', setup );
+			$( window ).on( 'popstate', setup );
+			$( window ).on( 'hashchange', Demo.static.scrollToFragment );
 		} )
 	</script>
 </body>
