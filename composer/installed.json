@@ -511,50 +511,6 @@
         "homepage": "https://www.mediawiki.org/wiki/CLDRPluralRuleParser"
     },
     {
-        "name": "wikimedia/relpath",
-        "version": "1.0.3",
-        "version_normalized": "1.0.3.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/wikimedia/RelPath.git",
-            "reference": "ee38e19f3b059e5cec8863b03e35a451b8f35106"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/RelPath/zipball/ee38e19f3b059e5cec8863b03e35a451b8f35106",
-            "reference": "ee38e19f3b059e5cec8863b03e35a451b8f35106",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3"
-        },
-        "require-dev": {
-            "jakub-onderka/php-parallel-lint": "^0.9.0.0",
-            "mediawiki/mediawiki-codesniffer": "^0.4.0.0",
-            "phpunit/phpunit": "^4.8.9.0"
-        },
-        "time": "2015-09-29T21:17:03+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "files": [
-                "src/RelPath.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Ori Livneh",
-                "email": "ori@wikimedia.org"
-            }
-        ],
-        "description": "Compute a relative filepath between two paths.",
-        "homepage": "https://www.mediawiki.org/wiki/RelPath"
-    },
-    {
         "name": "wikimedia/running-stat",
         "version": "v1.1.0",
         "version_normalized": "1.1.0.0",
@@ -2404,5 +2360,49 @@
             "json",
             "schema"
         ]
+    },
+    {
+        "name": "wikimedia/relpath",
+        "version": "2.0.0",
+        "version_normalized": "2.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/RelPath.git",
+            "reference": "b0eeb17d31e4cde22dea0932dfb920a71a167c33"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/RelPath/zipball/b0eeb17d31e4cde22dea0932dfb920a71a167c33",
+            "reference": "b0eeb17d31e4cde22dea0932dfb920a71a167c33",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.5.9"
+        },
+        "require-dev": {
+            "jakub-onderka/php-parallel-lint": "^0.9.0.0",
+            "mediawiki/mediawiki-codesniffer": "^0.4.0.0",
+            "phpunit/phpunit": "^4.8.9.0"
+        },
+        "time": "2017-07-28T21:20:05+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "files": [
+                "src/RelPath.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Ori Livneh",
+                "email": "ori@wikimedia.org"
+            }
+        ],
+        "description": "Compute a relative filepath between two paths.",
+        "homepage": "https://www.mediawiki.org/wiki/RelPath"
     }
 ]

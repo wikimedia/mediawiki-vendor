@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "8157e60908252c7c0a6af8e5eb5f7ff4",
+    "content-hash": "d3e0811f4f6f8eb8bd96e36bd53702ea",
     "packages": [
         {
             "name": "composer/semver",
@@ -1839,20 +1839,20 @@
         },
         {
             "name": "wikimedia/relpath",
-            "version": "1.0.3",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/RelPath.git",
-                "reference": "ee38e19f3b059e5cec8863b03e35a451b8f35106"
+                "reference": "b0eeb17d31e4cde22dea0932dfb920a71a167c33"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/RelPath/zipball/ee38e19f3b059e5cec8863b03e35a451b8f35106",
-                "reference": "ee38e19f3b059e5cec8863b03e35a451b8f35106",
+                "url": "https://api.github.com/repos/wikimedia/RelPath/zipball/b0eeb17d31e4cde22dea0932dfb920a71a167c33",
+                "reference": "b0eeb17d31e4cde22dea0932dfb920a71a167c33",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3"
+                "php": ">=5.5.9"
             },
             "require-dev": {
                 "jakub-onderka/php-parallel-lint": "^0.9.0.0",
@@ -1877,7 +1877,7 @@
             ],
             "description": "Compute a relative filepath between two paths.",
             "homepage": "https://www.mediawiki.org/wiki/RelPath",
-            "time": "2015-09-29T21:17:03+00:00"
+            "time": "2017-07-28T21:20:05+00:00"
         },
         {
             "name": "wikimedia/remex-html",
