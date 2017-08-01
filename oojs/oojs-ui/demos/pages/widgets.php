@@ -303,8 +303,8 @@ $demoContainer->appendContent( new OOUI\FieldsetLayout( [
 		),
 		new OOUI\FieldLayout(
 			new OOUI\ButtonWidget( [
-				'label' => 'Accesskey: H',
-				'accessKey' => 'h'
+				'label' => 'Access key: G',
+				'accessKey' => 'g'
 			] ),
 			[
 				'label' => "ButtonWidget (with accesskey)\xE2\x80\x8E",
@@ -316,7 +316,18 @@ $demoContainer->appendContent( new OOUI\FieldsetLayout( [
 		),
 		new OOUI\FieldLayout(
 			new OOUI\ButtonInputWidget( [
-				'label' => 'Accesskey: I',
+				'title' => 'Access key is added to the title.',
+				'label' => 'Access key: H',
+				'accessKey' => 'h'
+			] ),
+			[
+				'label' => "ButtonInputWidget (with accesskey and title)\xE2\x80\x8E",
+				'align' => 'top',
+			]
+		),
+		new OOUI\FieldLayout(
+			new OOUI\ButtonInputWidget( [
+				'label' => 'Access key: I',
 				'accessKey' => 'i'
 			] ),
 			[
@@ -424,7 +435,7 @@ $demoContainer->appendContent( new OOUI\FieldsetLayout( [
 		),
 		new OOUI\FieldLayout(
 			new OOUI\TextInputWidget( [
-				'value' => 'Accesskey: S',
+				'value' => 'Access key: S',
 				'accessKey' => 's'
 			] ),
 			[
@@ -513,6 +524,17 @@ $demoContainer->appendContent( new OOUI\FieldsetLayout( [
 			[
 				'align' => 'inline',
 				'label' => "CheckboxInputWidget (disabled)\xE2\x80\x8E"
+			]
+		),
+		new OOUI\FieldLayout(
+			new OOUI\CheckboxInputWidget( [
+				'selected' => true,
+				'accessKey' => 't'
+			] ),
+			[
+				'align' => 'inline',
+				'label' => "CheckboxInputWidget (with accesskey T and title)\xE2\x80\x8E",
+				'title' => 'Access key is added to the title.',
 			]
 		),
 		new OOUI\FieldLayout(

@@ -230,13 +230,24 @@ Demo.static.pages.widgets = function ( demo ) {
 				),
 				new OO.ui.FieldLayout(
 					new OO.ui.ButtonWidget( {
-						label: 'Accesskey: H',
-						accessKey: 'h'
+						label: 'Access key: G',
+						accessKey: 'g'
 					} ),
 					{
 						label: 'ButtonWidget (with accesskey)\u200E',
 						align: 'top',
 						help: new OO.ui.HtmlSnippet( 'Notice: Using `accesskey` might <a href="http://webaim.org/techniques/keyboard/accesskey" target="_blank">negatively impact screen readers</a>!' )
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.ButtonInputWidget( {
+						title: 'Accesskey is added to the title.',
+						label: 'Access key: H',
+						accessKey: 'h'
+					} ),
+					{
+						label: 'ButtonInputWidget (with accesskey and title)\u200E',
+						align: 'top'
 					}
 				),
 				new OO.ui.FieldLayout(
@@ -412,7 +423,7 @@ Demo.static.pages.widgets = function ( demo ) {
 				),
 				new OO.ui.FieldLayout(
 					new OO.ui.ButtonInputWidget( {
-						label: 'Accesskey: I',
+						label: 'Access key: I',
 						accessKey: 'i'
 					} ),
 					{
@@ -635,17 +646,17 @@ Demo.static.pages.widgets = function ( demo ) {
 						items: [
 							new OO.ui.ButtonOptionWidget( {
 								data: 'a',
-								label: 'Accesskey: J',
+								label: 'Access key: J',
 								accessKey: 'j'
 							} ),
 							new OO.ui.ButtonOptionWidget( {
 								data: 'b',
-								label: 'Accesskey: K',
+								label: 'Access key: K',
 								accessKey: 'k'
 							} ),
 							new OO.ui.ButtonOptionWidget( {
 								data: 'c',
-								label: 'Accesskey: L',
+								label: 'Access key: L',
 								accessKey: 'l'
 							} )
 						]
@@ -859,13 +870,36 @@ Demo.static.pages.widgets = function ( demo ) {
 				),
 				new OO.ui.FieldLayout(
 					new OO.ui.TextInputWidget( {
-						value: 'Accesskey: S',
+						value: 'Access key: S',
 						accessKey: 's'
 					} ),
 					{
 						label: 'TextInputWidget (with accesskey)\u200E',
 						align: 'top',
 						help: new OO.ui.HtmlSnippet( 'Notice: Using `accesskey` might <a href="http://webaim.org/techniques/keyboard/accesskey" target="_blank">negatively impact screen readers</a>!' )
+					}
+				),
+				new OO.ui.FieldLayout(
+					new Demo.DynamicLabelTextInputWidget( {
+						getLabelText: function ( value ) {
+							return String( value.length );
+						}
+					} ),
+					{
+						label: 'TextInputWidget (with dynamic label – length)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new Demo.DynamicLabelTextInputWidget( {
+						maxLength: 300,
+						getLabelText: function ( value ) {
+							return String( 300 - value.length );
+						}
+					} ),
+					{
+						label: 'TextInputWidget (with dynamic label – remaining length)\u200E',
+						align: 'top'
 					}
 				),
 				new OO.ui.FieldLayout(
@@ -947,6 +981,17 @@ Demo.static.pages.widgets = function ( demo ) {
 					{
 						align: 'inline',
 						label: 'CheckboxInputWidget (disabled)\u200E'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.CheckboxInputWidget( {
+						selected: true,
+						accessKey: 't'
+					} ),
+					{
+						align: 'inline',
+						label: 'CheckboxInputWidget (with accesskey T and title)\u200E',
+						title: 'Access key is added to the title.'
 					}
 				),
 				new OO.ui.FieldLayout(
@@ -1076,17 +1121,17 @@ Demo.static.pages.widgets = function ( demo ) {
 						items: [
 							new OO.ui.RadioOptionWidget( {
 								data: 'a',
-								label: 'Accesskey: M',
+								label: 'Access key: M',
 								accessKey: 'm'
 							} ),
 							new OO.ui.RadioOptionWidget( {
 								data: 'b',
-								label: 'Accesskey: N',
+								label: 'Access key: N',
 								accessKey: 'n'
 							} ),
 							new OO.ui.RadioOptionWidget( {
 								data: 'c',
-								label: 'Accesskey: O',
+								label: 'Access key: O',
 								accessKey: 'o'
 							} )
 						]
@@ -1323,17 +1368,17 @@ Demo.static.pages.widgets = function ( demo ) {
 							items: [
 								new OO.ui.MenuOptionWidget( {
 									data: 'a',
-									label: 'Accesskey: P',
+									label: 'Access key: P',
 									accessKey: 'p'
 								} ),
 								new OO.ui.MenuOptionWidget( {
 									data: 'b',
-									label: 'Accesskey: Q',
+									label: 'Access key: Q',
 									accessKey: 'q'
 								} ),
 								new OO.ui.MenuOptionWidget( {
 									data: 'c',
-									label: 'Accesskey: R',
+									label: 'Access key: R',
 									accessKey: 'r'
 								} )
 							]
