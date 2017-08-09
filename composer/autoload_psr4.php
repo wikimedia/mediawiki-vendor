@@ -13,6 +13,7 @@ return array(
     'Wikimedia\\Assert\\Test\\' => array($vendorDir . '/wikimedia/assert/tests/phpunit'),
     'Wikimedia\\Assert\\' => array($vendorDir . '/wikimedia/assert/src'),
     'Symfony\\Component\\Process\\' => array($vendorDir . '/symfony/process'),
+    'Serializers\\' => array($vendorDir . '/serialization/serialization/src/Serializers'),
     'RemexHtml\\' => array($vendorDir . '/wikimedia/remex-html/RemexHtml'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log/Psr/Log'),
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
@@ -20,6 +21,7 @@ return array(
     'GDText\\' => array($vendorDir . '/stil/gd-text/src'),
     'Firebase\\JWT\\' => array($vendorDir . '/firebase/php-jwt/src'),
     'Elastica\\' => array($vendorDir . '/ruflin/elastica/lib/Elastica'),
+    'Deserializers\\' => array($vendorDir . '/serialization/serialization/src/Deserializers'),
     'Composer\\Semver\\' => array($vendorDir . '/composer/semver/src'),
     'CLDRPluralRuleParser\\' => array($vendorDir . '/wikimedia/cldr-plural-rule-parser/src'),
 );

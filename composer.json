@@ -59,6 +59,7 @@
 		"ruflin/elastica": "5.1.0",
 		"pimple/pimple": "3.0.2",
 		"psr/log": "1.0.2",
+		"serialization/serialization":  "3.2.1",
 		"stil/gd-text":  "1.0.0",
 		"symfony/process": "3.2.6",
 		"wikimedia/assert": "0.2.2",
