@@ -2767,5 +2767,66 @@
             "serializers",
             "wikidata"
         ]
+    },
+    {
+        "name": "data-values/number",
+        "version": "0.9.1",
+        "version_normalized": "0.9.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/DataValues/Number.git",
+            "reference": "87ec772e711e51789a68307ae5f86732c64977e6"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/DataValues/Number/zipball/87ec772e711e51789a68307ae5f86732c64977e6",
+            "reference": "87ec772e711e51789a68307ae5f86732c64977e6",
+            "shasum": ""
+        },
+        "require": {
+            "data-values/common": "~0.4.0|~0.3.0|~0.2.0",
+            "data-values/data-values": "~1.0|~0.1",
+            "data-values/interfaces": "~0.2.0|~0.1.5",
+            "php": ">=5.5.9"
+        },
+        "require-dev": {
+            "ext-bcmath": "*",
+            "phpunit/phpunit": "~4.8",
+            "wikibase/wikibase-codesniffer": "^0.1.0"
+        },
+        "time": "2017-08-09T19:30:59+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "files": [
+                "Number.php"
+            ],
+            "psr-0": {
+                "DataValues\\": "src",
+                "ValueFormatters\\": "src",
+                "ValueParsers\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "authors": [
+            {
+                "name": "Daniel Kinzler"
+            },
+            {
+                "name": "Thiemo Mättig"
+            }
+        ],
+        "description": "Numerical value objects, parsers and formatters",
+        "homepage": "https://github.com/DataValues/Number",
+        "keywords": [
+            "datavalues",
+            "number",
+            "valueformatters",
+            "valueparsers",
+            "wikidata"
+        ]
     }
 ]
