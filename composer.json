@@ -41,6 +41,7 @@
 		"data-values/data-values": "1.1.0",
 		"data-values/interfaces": "0.2.5",
 		"data-values/number": "0.9.1",
+		"data-values/geo": "2.1.1",
 		"data-values/serialization": "1.2.1",
 		"diff/diff": "2.2.0",
 		"firebase/php-jwt": "4.0.0",
