@@ -37,6 +37,7 @@
 	"require": {
 		"composer/semver": "1.4.2",
 		"cssjanus/cssjanus": "1.2.0",
+		"diff/diff": "2.2.0",
 		"firebase/php-jwt": "4.0.0",
 		"james-heinrich/getid3": "1.9.14",
 		"justinrainbow/json-schema": "5.2.1",
