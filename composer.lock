@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a4da54567aeb232233426bdab2fe8202",
+    "content-hash": "d37ff51a1d73c5c83d0f0272c1cd13f3",
     "packages": [
         {
             "name": "composer/semver",
@@ -280,6 +280,64 @@
                 "wikidata"
             ],
             "time": "2017-08-09T15:18:46+00:00"
+        },
+        {
+            "name": "data-values/serialization",
+            "version": "1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/DataValues/Serialization.git",
+                "reference": "2e81e60e413f1578fbaddb9dd2fbcc8236825806"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/DataValues/Serialization/zipball/2e81e60e413f1578fbaddb9dd2fbcc8236825806",
+                "reference": "2e81e60e413f1578fbaddb9dd2fbcc8236825806",
+                "shasum": ""
+            },
+            "require": {
+                "data-values/data-values": "~1.0|~0.1",
+                "php": ">=5.5.9",
+                "serialization/serialization": "~3.0"
+            },
+            "require-dev": {
+                "mediawiki/mediawiki-codesniffer": ">=0.4 <0.8",
+                "phpunit/phpunit": "~4.8"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "DataValues\\Serializers\\": "src/Serializers",
+                    "DataValues\\Deserializers\\": "src/Deserializers"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Jeroen De Dauw",
+                    "email": "jeroendedauw@gmail.com",
+                    "homepage": "http://jeroendedauw.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Serializers and deserializers for DataValue implementations",
+            "homepage": "https://github.com/DataValues/Serialization",
+            "keywords": [
+                "datavalues",
+                "deserializers",
+                "serialization",
+                "serializers",
+                "wikidata"
+            ],
+            "time": "2017-06-26T07:24:35+00:00"
         },
         {
             "name": "diff/diff",
