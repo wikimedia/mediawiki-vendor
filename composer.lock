@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a4da54567aeb232233426bdab2fe8202",
+    "content-hash": "9658d48475a992ffd1943e20f7e776d2",
     "packages": [
         {
             "name": "composer/semver",
@@ -102,67 +102,6 @@
             ],
             "description": "Convert CSS stylesheets between left-to-right and right-to-left.",
             "time": "2017-03-14T20:57:08+00:00"
-        },
-        {
-            "name": "data-values/common",
-            "version": "0.4.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/DataValues/Common.git",
-                "reference": "0fb269955b464e54f7ca3d514e012283d48228a5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/DataValues/Common/zipball/0fb269955b464e54f7ca3d514e012283d48228a5",
-                "reference": "0fb269955b464e54f7ca3d514e012283d48228a5",
-                "shasum": ""
-            },
-            "require": {
-                "data-values/data-values": "~1.0|~0.1",
-                "data-values/interfaces": "~0.2.0|^0.1.5",
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.3.x-dev"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "Common.php"
-                ],
-                "psr-4": {
-                    "DataValues\\": "src/DataValues/",
-                    "ValueFormatters\\": "src/ValueFormatters/",
-                    "ValueParsers\\": "src/ValueParsers/"
-                },
-                "classmap": [
-                    "tests/ValueParsers"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "Jeroen De Dauw",
-                    "email": "jeroendedauw@gmail.com",
-                    "homepage": "http://jeroendedauw.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Contains common implementations of the interfaces defined by DataValuesInterfaces",
-            "homepage": "https://github.com/DataValues/Common",
-            "keywords": [
-                "datavalues",
-                "valueformatters",
-                "valueparsers",
-                "valuevalidators",
-                "wikidata"
-            ],
-            "time": "2017-08-09T17:20:43+00:00"
         },
         {
             "name": "data-values/data-values",
