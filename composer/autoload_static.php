@@ -8,13 +8,13 @@ class ComposerStaticInit_mediawiki_vendor
 {
     public static $files = array (
         'a24b5daa493ecb5e767c7d1592a8da36' => __DIR__ . '/..' . '/mediawiki/at-ease/src/Functions.php',
-        '7cb394c3af2b1ae832979b0368e0da62' => __DIR__ . '/..' . '/data-values/data-values/DataValues.php',
-        'f4c767faab43077fd89ff7cf99ffb4b8' => __DIR__ . '/..' . '/serialization/serialization/Serialization.php',
         'd1715cacc3c23b16a030645514266a76' => __DIR__ . '/..' . '/data-values/interfaces/Interfaces.php',
+        '7cb394c3af2b1ae832979b0368e0da62' => __DIR__ . '/..' . '/data-values/data-values/DataValues.php',
         'c3f7f0e81464740a933532e81fa26cc7' => __DIR__ . '/..' . '/wikimedia/base-convert/src/Functions.php',
         'c50606d667a3fde2b80a955639479d3d' => __DIR__ . '/..' . '/wikimedia/timestamp/src/defines.php',
         '04c6c5c2f7095ccf6c481d3e53e1776f' => __DIR__ . '/..' . '/mustangostang/spyc/Spyc.php',
         'd55c27a601de788b19a09b7d057d07ae' => __DIR__ . '/..' . '/wikimedia/relpath/src/RelPath.php',
+        'f4c767faab43077fd89ff7cf99ffb4b8' => __DIR__ . '/..' . '/serialization/serialization/Serialization.php',
         '3ef87127dc6892a0a78f223558a0b940' => __DIR__ . '/..' . '/diff/diff/Diff.php',
         '90559502573a0d473dc66fde5c0ff7e2' => __DIR__ . '/..' . '/data-values/common/Common.php',
     );
@@ -72,8 +72,6 @@ class ComposerStaticInit_mediawiki_vendor
         array (
             'Diff\\' => 5,
             'Deserializers\\' => 14,
-            'DataValues\\Serializers\\' => 23,
-            'DataValues\\Deserializers\\' => 25,
             'DataValues\\' => 11,
         ),
         'C' => 
@@ -165,14 +163,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Deserializers\\' => 
         array (
             0 => __DIR__ . '/..' . '/serialization/serialization/src/Deserializers',
-        ),
-        'DataValues\\Serializers\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/data-values/serialization/src/Serializers',
-        ),
-        'DataValues\\Deserializers\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/data-values/serialization/src/Deserializers',
         ),
         'DataValues\\' => 
         array (
@@ -337,12 +327,10 @@ class ComposerStaticInit_mediawiki_vendor
         'DataValues\\BooleanValue' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/BooleanValue.php',
         'DataValues\\DataValue' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/DataValue.php',
         'DataValues\\DataValueObject' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/DataValueObject.php',
-        'DataValues\\Deserializers\\DataValueDeserializer' => __DIR__ . '/..' . '/data-values/serialization/src/Deserializers/DataValueDeserializer.php',
         'DataValues\\IllegalValueException' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/IllegalValueException.php',
         'DataValues\\MonolingualTextValue' => __DIR__ . '/..' . '/data-values/common/src/DataValues/MonolingualTextValue.php',
         'DataValues\\MultilingualTextValue' => __DIR__ . '/..' . '/data-values/common/src/DataValues/MultilingualTextValue.php',
         'DataValues\\NumberValue' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/NumberValue.php',
-        'DataValues\\Serializers\\DataValueSerializer' => __DIR__ . '/..' . '/data-values/serialization/src/Serializers/DataValueSerializer.php',
         'DataValues\\StringValue' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/StringValue.php',
         'DataValues\\Tests\\DataValueTest' => __DIR__ . '/..' . '/data-values/data-values/tests/phpunit/DataValueTest.php',
         'DataValues\\UnDeserializableValue' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/UnDeserializableValue.php',
