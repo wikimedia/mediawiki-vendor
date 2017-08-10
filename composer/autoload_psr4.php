@@ -27,7 +27,6 @@ return array(
     'Diff\\' => array($vendorDir . '/diff/diff/src'),
     'Deserializers\\' => array($vendorDir . '/serialization/serialization/src/Deserializers'),
     'DataValues\\Serializers\\' => array($vendorDir . '/data-values/serialization/src/Serializers'),
-    'DataValues\\Geo\\' => array($vendorDir . '/data-values/geo/src'),
     'DataValues\\Deserializers\\' => array($vendorDir . '/data-values/serialization/src/Deserializers'),
     'DataValues\\' => array($vendorDir . '/data-values/common/src/DataValues'),
     'Composer\\Semver\\' => array($vendorDir . '/composer/semver/src'),
