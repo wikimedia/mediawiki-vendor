@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "06ae07411987da1da8c250683c21e05c",
+    "content-hash": "301c4a097e044e617ab5b804f5b99a22",
     "packages": [
         {
             "name": "composer/semver",
@@ -1216,62 +1216,6 @@
                 "search"
             ],
             "time": "2017-02-15T11:19:35+00:00"
-        },
-        {
-            "name": "serialization/serialization",
-            "version": "3.2.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/wmde/Serialization.git",
-                "reference": "8e06ec58c8f52079942c9cb2f30b2260f62dc1f4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/wmde/Serialization/zipball/8e06ec58c8f52079942c9cb2f30b2260f62dc1f4",
-                "reference": "8e06ec58c8f52079942c9cb2f30b2260f62dc1f4",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.2.x-dev"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "Serialization.php"
-                ],
-                "psr-4": {
-                    "Deserializers\\": "src/Deserializers/",
-                    "Serializers\\": "src/Serializers/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "Jeroen De Dauw",
-                    "email": "jeroendedauw@gmail.com",
-                    "homepage": "http://jeroendedauw.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Library defining a Serializer and a Deserializer interface and basic utilities",
-            "homepage": "https://github.com/wmde/Serialization",
-            "keywords": [
-                "deserialization",
-                "deserializer",
-                "serialization",
-                "serializer",
-                "unserialization",
-                "wikidata"
-            ],
-            "time": "2014-08-19T01:53:31+00:00"
         },
         {
             "name": "stil/gd-text",

@@ -11,5 +11,4 @@ return array(
     'c50606d667a3fde2b80a955639479d3d' => $vendorDir . '/wikimedia/timestamp/src/defines.php',
     '04c6c5c2f7095ccf6c481d3e53e1776f' => $vendorDir . '/mustangostang/spyc/Spyc.php',
     'd55c27a601de788b19a09b7d057d07ae' => $vendorDir . '/wikimedia/relpath/src/RelPath.php',
-    'f4c767faab43077fd89ff7cf99ffb4b8' => $vendorDir . '/serialization/serialization/Serialization.php',
 );
