@@ -12,5 +12,4 @@ return array(
     '04c6c5c2f7095ccf6c481d3e53e1776f' => $vendorDir . '/mustangostang/spyc/Spyc.php',
     'd55c27a601de788b19a09b7d057d07ae' => $vendorDir . '/wikimedia/relpath/src/RelPath.php',
     'f4c767faab43077fd89ff7cf99ffb4b8' => $vendorDir . '/serialization/serialization/Serialization.php',
-    '3ef87127dc6892a0a78f223558a0b940' => $vendorDir . '/diff/diff/Diff.php',
 );
