@@ -14,5 +14,4 @@ return array(
     'f4c767faab43077fd89ff7cf99ffb4b8' => $vendorDir . '/serialization/serialization/Serialization.php',
     '3ef87127dc6892a0a78f223558a0b940' => $vendorDir . '/diff/diff/Diff.php',
     'd1715cacc3c23b16a030645514266a76' => $vendorDir . '/data-values/interfaces/Interfaces.php',
-    '7cb394c3af2b1ae832979b0368e0da62' => $vendorDir . '/data-values/data-values/DataValues.php',
 );

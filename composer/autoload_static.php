@@ -15,7 +15,6 @@ class ComposerStaticInit_mediawiki_vendor
         'f4c767faab43077fd89ff7cf99ffb4b8' => __DIR__ . '/..' . '/serialization/serialization/Serialization.php',
         '3ef87127dc6892a0a78f223558a0b940' => __DIR__ . '/..' . '/diff/diff/Diff.php',
         'd1715cacc3c23b16a030645514266a76' => __DIR__ . '/..' . '/data-values/interfaces/Interfaces.php',
-        '7cb394c3af2b1ae832979b0368e0da62' => __DIR__ . '/..' . '/data-values/data-values/DataValues.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -227,13 +226,6 @@ class ComposerStaticInit_mediawiki_vendor
                 0 => __DIR__ . '/..' . '/nmred/kafka-php/src',
             ),
         ),
-        'D' => 
-        array (
-            'DataValues\\' => 
-            array (
-                0 => __DIR__ . '/..' . '/data-values/data-values/src',
-            ),
-        ),
         'C' => 
         array (
             'Console' => 
@@ -305,7 +297,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Cdb\\Writer' => __DIR__ . '/..' . '/wikimedia/cdb/src/Writer.php',
         'Cdb\\Writer\\DBA' => __DIR__ . '/..' . '/wikimedia/cdb/src/Writer/DBA.php',
         'Cdb\\Writer\\PHP' => __DIR__ . '/..' . '/wikimedia/cdb/src/Writer/PHP.php',
-        'Comparable' => __DIR__ . '/..' . '/data-values/data-values/src/interfaces/Comparable.php',
         'Composer\\Semver\\Comparator' => __DIR__ . '/..' . '/composer/semver/src/Comparator.php',
         'Composer\\Semver\\Constraint\\AbstractConstraint' => __DIR__ . '/..' . '/composer/semver/src/Constraint/AbstractConstraint.php',
         'Composer\\Semver\\Constraint\\Constraint' => __DIR__ . '/..' . '/composer/semver/src/Constraint/Constraint.php',
@@ -315,16 +306,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Composer\\Semver\\Semver' => __DIR__ . '/..' . '/composer/semver/src/Semver.php',
         'Composer\\Semver\\VersionParser' => __DIR__ . '/..' . '/composer/semver/src/VersionParser.php',
         'Console_Getopt' => __DIR__ . '/..' . '/pear/console_getopt/Console/Getopt.php',
-        'Copyable' => __DIR__ . '/..' . '/data-values/data-values/src/interfaces/Copyable.php',
-        'DataValues\\BooleanValue' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/BooleanValue.php',
-        'DataValues\\DataValue' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/DataValue.php',
-        'DataValues\\DataValueObject' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/DataValueObject.php',
-        'DataValues\\IllegalValueException' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/IllegalValueException.php',
-        'DataValues\\NumberValue' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/NumberValue.php',
-        'DataValues\\StringValue' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/StringValue.php',
-        'DataValues\\Tests\\DataValueTest' => __DIR__ . '/..' . '/data-values/data-values/tests/phpunit/DataValueTest.php',
-        'DataValues\\UnDeserializableValue' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/UnDeserializableValue.php',
-        'DataValues\\UnknownValue' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/UnknownValue.php',
         'Deserializers\\Deserializer' => __DIR__ . '/..' . '/serialization/serialization/src/Deserializers/Deserializer.php',
         'Deserializers\\DispatchableDeserializer' => __DIR__ . '/..' . '/serialization/serialization/src/Deserializers/DispatchableDeserializer.php',
         'Deserializers\\DispatchingDeserializer' => __DIR__ . '/..' . '/serialization/serialization/src/Deserializers/DispatchingDeserializer.php',
@@ -558,11 +539,9 @@ class ComposerStaticInit_mediawiki_vendor
         'Firebase\\JWT\\SignatureInvalidException' => __DIR__ . '/..' . '/firebase/php-jwt/src/SignatureInvalidException.php',
         'GDText\\Box' => __DIR__ . '/..' . '/stil/gd-text/src/Box.php',
         'GDText\\Color' => __DIR__ . '/..' . '/stil/gd-text/src/Color.php',
-        'Hashable' => __DIR__ . '/..' . '/data-values/data-values/src/interfaces/Hashable.php',
         'HtmlFormatter\\HtmlFormatter' => __DIR__ . '/..' . '/wikimedia/html-formatter/src/HtmlFormatter.php',
         'IPSet\\IPSet' => __DIR__ . '/..' . '/wikimedia/ip-set/src/IPSet.php',
         'Image_XMP' => __DIR__ . '/..' . '/james-heinrich/getid3/getid3/module.tag.xmp.php',
-        'Immutable' => __DIR__ . '/..' . '/data-values/data-values/src/interfaces/Immutable.php',
         'JsonSchema\\Constraints\\BaseConstraint' => __DIR__ . '/..' . '/justinrainbow/json-schema/src/JsonSchema/Constraints/BaseConstraint.php',
         'JsonSchema\\Constraints\\CollectionConstraint' => __DIR__ . '/..' . '/justinrainbow/json-schema/src/JsonSchema/Constraints/CollectionConstraint.php',
         'JsonSchema\\Constraints\\Constraint' => __DIR__ . '/..' . '/justinrainbow/json-schema/src/JsonSchema/Constraints/Constraint.php',
