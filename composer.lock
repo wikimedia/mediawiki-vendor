@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "776381472caad0924789a3f947d84b8f",
+    "content-hash": "8413b7a26368b44d5d2d0a9879691d22",
     "packages": [
         {
             "name": "composer/semver",
@@ -102,64 +102,6 @@
             ],
             "description": "Convert CSS stylesheets between left-to-right and right-to-left.",
             "time": "2017-03-14T20:57:08+00:00"
-        },
-        {
-            "name": "data-values/interfaces",
-            "version": "0.2.5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/DataValues/Interfaces.git",
-                "reference": "441a5c3c4d1ac8998ee95a0aafbf30e1064ae6f4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/DataValues/Interfaces/zipball/441a5c3c4d1ac8998ee95a0aafbf30e1064ae6f4",
-                "reference": "441a5c3c4d1ac8998ee95a0aafbf30e1064ae6f4",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.5.9"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.8",
-                "wikibase/wikibase-codesniffer": "^0.1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "Interfaces.php"
-                ],
-                "psr-4": {
-                    "ValueFormatters\\": "src/ValueFormatters/",
-                    "ValueParsers\\": "src/ValueParsers/",
-                    "ValueValidators\\": "src/ValueValidators/"
-                },
-                "classmap": [
-                    "tests/ValueFormatters/ValueFormatterTestBase.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "Jeroen De Dauw",
-                    "email": "jeroendedauw@gmail.com",
-                    "homepage": "http://jeroendedauw.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Defines interfaces for ValueParsers, ValueFormatters and ValueValidators",
-            "homepage": "https://github.com/DataValues/Interfaces",
-            "keywords": [
-                "datavalues",
-                "valueformatters",
-                "valueparsers",
-                "valuevalidators",
-                "wikidata"
-            ],
-            "time": "2017-08-09T15:18:46+00:00"
         },
         {
             "name": "diff/diff",
