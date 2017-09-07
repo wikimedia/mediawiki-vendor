@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "1abc9f7afbd26388ee9bccadaaef1239",
+    "content-hash": "fe806e2069de5bc90c03b881702b01c5",
     "packages": [
         {
             "name": "composer/semver",
@@ -102,6 +102,30 @@
             ],
             "description": "Convert CSS stylesheets between left-to-right and right-to-left.",
             "time": "2017-03-14T20:57:08+00:00"
+        },
+        {
+            "name": "elasticsearch/elasticsearch",
+            "version": "5.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/elastic/elasticsearch-php.git",
+                "reference": "tags/v5.3.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/elastic/elasticsearch-php/zipball/tags/v5.3.0",
+                "reference": "tags/v5.3.0",
+                "shasum": null
+            },
+            "require": {
+                "php": ">=5.5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Elasticsearch\\": "src/Elasticsearch/"
+                }
+            }
         },
         {
             "name": "firebase/php-jwt",
@@ -1162,60 +1186,28 @@
         },
         {
             "name": "ruflin/elastica",
-            "version": "5.1.0",
+            "version": "5.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ruflin/Elastica.git",
-                "reference": "tags/5.1.0"
+                "reference": "tags/5.3.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/ruflin/Elastica/archive/5.1.0.zip",
-                "reference": "tags/5.1.0",
-                "shasum": ""
+                "url": "https://github.com/ruflin/Elastica/archive/5.3.0.zip",
+                "reference": "tags/5.3.0",
+                "shasum": null
             },
             "require": {
-                "php": ">=5.6.0",
-                "psr/log": "~1.0"
-            },
-            "require-dev": {
-                "aws/aws-sdk-php": "~3.0",
-                "guzzlehttp/guzzle": "~6.0"
-            },
-            "suggest": {
-                "aws/aws-sdk-php": "Allow using IAM authentication with Amazon ElasticSearch Service",
-                "egeloen/http-adapter": "Allow using httpadapter transport",
-                "guzzlehttp/guzzle": "Allow using guzzle 6 as the http transport",
-                "monolog/monolog": "Logging request"
+                "elasticsearch/elasticsearch": "5.3.0",
+                "php": ">=5.5.0"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "5.1.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Elastica\\": "lib/Elastica/"
                 }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nicolas Ruflin",
-                    "homepage": "http://ruflin.com/"
-                }
-            ],
-            "description": "Elasticsearch Client",
-            "homepage": "http://elastica.io/",
-            "keywords": [
-                "client",
-                "search"
-            ],
-            "time": "2017-02-15T11:19:35+00:00"
+            }
         },
         {
             "name": "stil/gd-text",

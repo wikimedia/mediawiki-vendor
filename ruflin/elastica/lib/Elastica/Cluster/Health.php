@@ -3,7 +3,6 @@ namespace Elastica\Cluster;
 
 use Elastica\Client;
 use Elastica\Cluster\Health\Index;
-use Elastica\Request;
 
 /**
  * Elastic cluster health.
@@ -40,8 +39,10 @@ class Health
      */
     protected function _retrieveHealthData()
     {
-        $path = '_cluster/health?level=shards';
-        $response = $this->_client->request($path, Request::GET);
+        $endpoint = new \Elasticsearch\Endpoints\Cluster\Health();
+        $endpoint->setParams(['level' => 'shards']);
+
+        $response = $this->_client->requestEndpoint($endpoint);
 
         return $response->getData();
     }
@@ -166,6 +167,48 @@ class Health
     public function getUnassignedShards()
     {
         return $this->_data['unassigned_shards'];
+    }
+
+    /**
+     * get the number of delayed unassined shards.
+     *
+     * @return int
+     */
+    public function getDelayedUnassignedShards()
+    {
+        return $this->_data['delayed_unassigned_shards'];
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumberOfPendingTasks()
+    {
+        return $this->_data['number_of_pending_tasks'];
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumberOfInFlightFetch()
+    {
+        return $this->_data['number_of_in_flight_fetch'];
+    }
+
+    /**
+     * @return int
+     */
+    public function getTaskMaxWaitingInQueueMillis()
+    {
+        return $this->_data['task_max_waiting_in_queue_millis'];
+    }
+
+    /**
+     * @return int
+     */
+    public function getActiveShardsPercentAsNumber()
+    {
+        return $this->_data['active_shards_percent_as_number'];
     }
 
     /**

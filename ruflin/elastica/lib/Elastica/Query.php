@@ -3,7 +3,6 @@ namespace Elastica;
 
 use Elastica\Aggregation\AbstractAggregation;
 use Elastica\Exception\InvalidException;
-use Elastica\Exception\NotImplementedException;
 use Elastica\Query\AbstractQuery;
 use Elastica\Query\MatchAll;
 use Elastica\Query\QueryString;
@@ -46,13 +45,13 @@ class Query extends Param
     }
 
     /**
-     * Transforms a string or an array to a query object.
+     * Transforms the argument to a query object.
      *
-     * If query is empty,
+     * For example, an empty argument will return a \Elastica\Query with a \Elastica\Query\MatchAll.
      *
      * @param mixed $query
      *
-     * @throws \Elastica\Exception\NotImplementedException
+     * @throws InvalidException For an invalid argument
      *
      * @return self
      */
@@ -77,8 +76,7 @@ class Query extends Param
 
         }
 
-        // TODO: Implement queries without
-        throw new NotImplementedException();
+        throw new InvalidException('Unexpected argument to create a query for.');
     }
 
     /**

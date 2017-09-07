@@ -1,10 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file based on the [Keep a Changelog](http://keepachangelog.com/) Standard. This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased](https://github.com/ruflin/Elastica/compare/5.0.0...master)
+## [Unreleased](https://github.com/ruflin/Elastica/compare/5.3.0...master)
 
 ### Backward Compatibility Breaks
-
+ 
 ### Bugfixes
 
 ### Added
@@ -13,6 +13,78 @@ All notable changes to this project will be documented in this file based on the
 
 ### Deprecated
 
+## [5.3.0](https://github.com/ruflin/Elastica/compare/5.3.0...master)
+
+### Backward Compatibility Breaks
+
+- Removed `Query\NumericRange`, use `Query\Range` instead [#1334](https://github.com/ruflin/Elastica/pull/1334)
+ 
+### Bugfixes
+
+- Send the `scroll_id` inside a json body instead of plain text [#1325](https://github.com/ruflin/Elastica/pull/1325)
+
+### Added
+ - Added getNumberOfReplicas() for index settings [PR#1324](https://github.com/ruflin/Elastica/pull/1324)
+ - Added getNumberOfShards() for index settings [PR#1321](https://github.com/ruflin/Elastica/pull/1331)
+
+
+## [5.2.1](https://github.com/ruflin/Elastica/compare/5.2.0...5.2.1)
+
+### Bugfixes
+
+- Fix elastic 5.3.x deprecation warning related to Content-Type not being set.
+- Fix updating settings of an index. [#1296](https://github.com/ruflin/Elastica/pull/1296)
+- Remove `Elastica\Search::OPTION_SEARCH_TYPE_DFS_QUERY_AND_FETCH` and `Elastica\Search::OPTION_SEARCH_TYPE_QUERY_AND_FETCH` as no longer supported as of 5.3.0
+- Fix bad parameter value to refresh document [#1318](https://github.com/rufli/Elastica/pull/1318)
+
+### Added
+
+ - Added `\Elastica\Query\Span*` for proximity searches [#304](https://github.com/ruflin/Elastica/issues/304)
+ - Parameter `filter_path` for response filtering (e.g. `$index->search($query, ['filter_path' => 'hits.hits._source'])`)
+ - Add support for Health parameters for Cluster\Health endpoint (new prop : delayed_unassigned_shards, number_of_pending_tasks, number_of_in_flight_fetch, task_max_waiting_in_queue_millis, active_shards_percent_as_number)
+ - Add support for querystring in Type. this allow to use `update_all_types` in type mapping in order to resolve conflicts between fields in different types. [Conflicts between fields in different types](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-put-mapping.html#merging-conflicts)
+ - Added `\Elastica\Query\ParentId` to avoid join with parent documents [#1287](https://github.com/ruflin/Elastica/issues/1287)
+ - Added `\Elastica\Reindex` for reindexing between indices [#1311](https://github.com/ruflin/Elastica/issues/1311)
+
+### Improvements
+
+ - Added support for `other_bucket` and `other_bucket_key` paramters on `Elastica\Aggregation\Filters`
+ - Update elasticsearch testing dependency to 5.4.1
+
+### Deprecated
+ - Deprecated `Tool\CrossIndex` use `\Elastica\Reindex` instead [#1311](https://github.com/ruflin/Elastica/issues/1311)
+
+## [5.2.0](https://github.com/ruflin/Elastica/compare/5.1.0...5.2.0)
+
+### Bugfixes
+
+- Fix reading bool index settings like `\Elastica\Index\Settings::getBlocksWrite`. Elasticsearch returns all settings as strings and does not normalize bool values.
+  The getters now return the right bool value for whichever string representation is used like 'true', '1', 'on', 'yes'. [#1251](https://github.com/ruflin/Elastica/pull/1251)
+- Fix for QueryBuilder version check `\Elastica\QueryBuilder\Version\Version240.php` added all new query types to queries array. [#1266](https://github.com/ruflin/Elastica/pull/1266) [#1269](https://github.com/ruflin/Elastica/pull/1269)
+- Do not modify the original query in `\Elastica\Search::count`. [#1276](https://github.com/ruflin/Elastica/pull/1276)
+
+### Added
+
+- Added `\Elastica\Client::requestEndpoint`, `\Elastica\Index::requestEndpoint`, `\Elastica\Type::requestEndpoint` that allow make requests with official client Endpoint usage. [#1275](https://github.com/ruflin/Elastica/pull/1275)
+- Added `\Elastica\Aggregation\GeoBounds` that computes the bounding box containing all geo_point values for a field. [#1271](https://github.com/ruflin/Elastica/pull/1271)
+- Added `\Elastica\Query\MatchNone` the inverse of MatchAll. [#1276](https://github.com/ruflin/Elastica/pull/1276)
+
+### Improvements
+
+- added support for the "explain" flag of AnalyzeAPI [#1254](https://github.com/ruflin/Elastica/pull/1254)
+- added support for the "request_cache" search option [#1243](https://github.com/ruflin/Elastica/pull/1243)
+- skip sending "retry_on_conflict=0" default query param to improve compatibility with Amazon Elasticsearch [#1047](https://github.com/ruflin/Elastica/pull/1047)
+- optimized `\Elastica\Scroll` to avoid one request [#1273](https://github.com/ruflin/Elastica/pull/1273)
+- Update elasticsearch-php dependency to 5.2.0 [#1245](https://github.com/ruflin/Elastica/pull/1245)
+- Update elasticsearch testing dependency to 5.2.2 [#1245](https://github.com/ruflin/Elastica/pull/1245)
+
+### Deprecated
+
+- Deprecated `\Elastica\Exception\ElasticsearchException` which is irrelevant since Elasticsearch now exposes the errors as a structured array instead of a single string.
+  Use `\Elastica\Exception\ResponseException::getResponse::getFullError` instead.
+- Deprecated both `prefix_len` & `min_word_len` fields in `Elastica\Suggest\CandidateGenerator\DirectGenerator` as these now return errors when using the phrase suggester to querying terms.
+  Use `prefix_length` & `min_word_length` instead [#1282](https://github.com/ruflin/Elastica/pull/1282)
+  Use `\Elastica\Exception\ResponseException::getResponse::getFullError` instead. [#1251](https://github.com/ruflin/Elastica/pull/1251)
 
 ## [5.1.0](https://github.com/ruflin/Elastica/compare/5.0.0...5.1.0)
 
@@ -29,6 +101,7 @@ All notable changes to this project will be documented in this file based on the
 - `\Elastica\Query\MatchPhrase` and `\Elastica\Query\MatchPhrasePrefix` do not extend `\Elastica\Query\Match` anymore because they do not share exactly the same options
 - Removed the `routing` option in `\Elastica\Index::create` because there is no routing param when creating an index. So that option was doing nothing so far but fails in Elasticearch 5.0 because the non-existing query param is validated.
 - Fix `relation` property of `\Elastica\Query\GeoShapeProvided`
+- repoint `\Elastica\Type::exists` from the deprecated /{index}/{type} endpoint to /{index}/_mapping/{type}
 
 ### Added
 
