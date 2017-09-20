@@ -1059,7 +1059,7 @@ Demo.static.pages.widgets = function ( demo ) {
 							} ),
 							new OO.ui.RadioOptionWidget( {
 								data: 'goldfish',
-								label: 'Goldfish',
+								label: 'Goldfish. By the way, this is a very long label. ' + loremIpsum,
 								disabled: true
 							} )
 						]
@@ -1082,7 +1082,7 @@ Demo.static.pages.widgets = function ( demo ) {
 							} ),
 							new OO.ui.CheckboxMultioptionWidget( {
 								data: 'goldfish',
-								label: 'Goldfish',
+								label: 'Goldfish. By the way, this is a very long label. ' + loremIpsum,
 								disabled: true
 							} )
 						]
@@ -2573,6 +2573,34 @@ Demo.static.pages.widgets = function ( demo ) {
 					{
 						label: 'ActionFieldLayout aligned right with help',
 						help: loremIpsum,
+						align: 'right'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.TextInputWidget(),
+					{
+						label: 'FieldLayout aligned top with very long label. ' + loremIpsum,
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.CheckboxInputWidget( { selected: true } ),
+					{
+						label: 'FieldLayout aligned inline with very long label. ' + loremIpsum,
+						align: 'inline'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.TextInputWidget(),
+					{
+						label: 'FieldLayout aligned left with very long label. ' + loremIpsum,
+						align: 'left'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.TextInputWidget(),
+					{
+						label: 'FieldLayout aligned right with very long label. ' + loremIpsum,
 						align: 'right'
 					}
 				),
