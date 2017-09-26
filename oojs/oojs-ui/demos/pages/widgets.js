@@ -105,16 +105,6 @@ Demo.static.pages.widgets = function ( demo ) {
 				),
 				new OO.ui.FieldLayout(
 					new OO.ui.ButtonWidget( {
-						label: 'Constructive',
-						flags: [ 'constructive' ]
-					} ),
-					{
-						label: 'ButtonWidget (constructive, deprecated in WikimediaUI theme)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.ButtonWidget( {
 						label: 'Destructive',
 						flags: [ 'destructive' ]
 					} ),
@@ -130,16 +120,6 @@ Demo.static.pages.widgets = function ( demo ) {
 					} ),
 					{
 						label: 'ButtonWidget (primary, progressive)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.ButtonWidget( {
-						label: 'Primary constructive',
-						flags: [ 'primary', 'constructive' ]
-					} ),
-					{
-						label: 'ButtonWidget (primary, constructive, deprecated in WikimediaUI theme)\u200E',
 						align: 'top'
 					}
 				),
@@ -342,18 +322,6 @@ Demo.static.pages.widgets = function ( demo ) {
 				new OO.ui.FieldLayout(
 					new OO.ui.ButtonWidget( {
 						framed: false,
-						flags: [ 'constructive' ],
-						icon: 'add',
-						label: 'Constructive'
-					} ),
-					{
-						label: 'ButtonWidget (frameless, constructive)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.ButtonWidget( {
-						framed: false,
 						flags: [ 'destructive' ],
 						label: 'Cancel'
 					} ),
@@ -371,19 +339,6 @@ Demo.static.pages.widgets = function ( demo ) {
 					} ),
 					{
 						label: 'ButtonWidget (frameless, disabled)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.ButtonWidget( {
-						framed: false,
-						flags: [ 'constructive' ],
-						icon: 'tag',
-						label: 'Constructive',
-						disabled: true
-					} ),
-					{
-						label: 'ButtonWidget (frameless, constructive, disabled)\u200E',
 						align: 'top'
 					}
 				),
@@ -2673,6 +2628,107 @@ Demo.static.pages.widgets = function ( demo ) {
 				)
 			]
 		} ),
+		new OO.ui.FieldsetLayout( {
+			id: 'demo-section-other-layouts',
+			label: 'Other layouts',
+			items: [
+				new OO.ui.FieldLayout(
+					new OO.ui.Widget( {
+						content: [
+							new OO.ui.PanelLayout( {
+								expanded: false,
+								framed: true,
+								content: [
+									new OO.ui.BookletLayout( {
+										expanded: false,
+										outlined: true
+									} ).addPages( [
+										new Demo.SamplePage( 'first', {
+											expanded: false,
+											label: 'One'
+										} ),
+										new Demo.SamplePage( 'second', {
+											expanded: false,
+											label: 'Two'
+										} ),
+										new Demo.SamplePage( 'third', {
+											expanded: false,
+											label: 'Three'
+										} ),
+										new Demo.SamplePage( 'fourth', {
+											expanded: false,
+											label: 'Four'
+										} ),
+										new Demo.SamplePage( 'long', {
+											expanded: false,
+											label: 'Long',
+											content: [
+												$( '<p>' ).text( loremIpsum ),
+												$( '<p>' ).text( loremIpsum ),
+												$( '<p>' ).text( loremIpsum ),
+												$( '<p>' ).text( loremIpsum ),
+												$( '<p>' ).text( loremIpsum ),
+												$( '<p>' ).text( loremIpsum ),
+												$( '<p>' ).text( loremIpsum )
+											]
+										} )
+									] )
+								]
+							} )
+						]
+					} ),
+					{
+						label: 'Outlined BookletLayout',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.Widget( {
+						content: [
+							new OO.ui.PanelLayout( {
+								expanded: false,
+								framed: true,
+								content: [
+									new OO.ui.IndexLayout( {
+										expanded: false
+									} ).addTabPanels( [
+										new Demo.SampleTabPanel( 'first', {
+											expanded: false,
+											label: 'One'
+										} ),
+										new Demo.SampleTabPanel( 'second', {
+											expanded: false,
+											label: 'Two'
+										} ),
+										new Demo.SampleTabPanel( 'third', {
+											expanded: false,
+											label: 'Three'
+										} ),
+										new Demo.SampleTabPanel( 'fourth', {
+											expanded: false,
+											label: 'Four'
+										} ),
+										new Demo.SampleTabPanel( 'long', {
+											expanded: false,
+											label: 'Long',
+											content: [
+												$( '<p>' ).text( loremIpsum ),
+												$( '<p>' ).text( loremIpsum ),
+												$( '<p>' ).text( loremIpsum )
+											]
+										} )
+									] )
+								]
+							} )
+						]
+					} ),
+					{
+						label: 'IndexLayout',
+						align: 'top'
+					}
+				)
+			]
+		} ),
 		new OO.ui.FormLayout( {
 			method: 'GET',
 			action: 'demos.php',
@@ -2834,13 +2890,6 @@ Demo.static.pages.widgets = function ( demo ) {
 								label: null,
 								align: 'top'
 							}
-						),
-						new OO.ui.FieldLayout(
-							new OO.ui.ButtonWidget( {
-								framed: false,
-								flags: [ 'constructive' ],
-								label: 'Constructive feedback'
-							} )
 						)
 					]
 				} )
