@@ -2266,18 +2266,71 @@
         "homepage": "https://www.mediawiki.org/wiki/RelPath"
     },
     {
-        "name": "oojs/oojs-ui",
-        "version": "v0.23.2",
-        "version_normalized": "0.23.2.0",
+        "name": "ruflin/elastica",
+        "version": "5.3.0",
+        "version_normalized": "5.3.0.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/wikimedia/oojs-ui.git",
-            "reference": "60ea6e39e200f732448ecceb88c9922e69974dd4"
+            "url": "https://github.com/ruflin/Elastica.git",
+            "reference": "tags/5.3.0"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/60ea6e39e200f732448ecceb88c9922e69974dd4",
-            "reference": "60ea6e39e200f732448ecceb88c9922e69974dd4",
+            "url": "https://github.com/ruflin/Elastica/archive/5.3.0.zip",
+            "reference": "tags/5.3.0",
+            "shasum": null
+        },
+        "require": {
+            "elasticsearch/elasticsearch": "5.3.0",
+            "php": ">=5.5.0"
+        },
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Elastica\\": "lib/Elastica/"
+            }
+        }
+    },
+    {
+        "name": "elasticsearch/elasticsearch",
+        "version": "5.3.0",
+        "version_normalized": "5.3.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/elastic/elasticsearch-php.git",
+            "reference": "tags/v5.3.0"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/elastic/elasticsearch-php/zipball/tags/v5.3.0",
+            "reference": "tags/v5.3.0",
+            "shasum": null
+        },
+        "require": {
+            "php": ">=5.5.0"
+        },
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Elasticsearch\\": "src/Elasticsearch/"
+            }
+        }
+    },
+    {
+        "name": "oojs/oojs-ui",
+        "version": "v0.23.3",
+        "version_normalized": "0.23.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/oojs-ui.git",
+            "reference": "072606c2676ba903b8b2439a03d4dae3e5fa2e01"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/072606c2676ba903b8b2439a03d4dae3e5fa2e01",
+            "reference": "072606c2676ba903b8b2439a03d4dae3e5fa2e01",
             "shasum": ""
         },
         "require": {
@@ -2289,7 +2342,7 @@
             "mediawiki/mediawiki-codesniffer": "0.12.0",
             "phpunit/phpunit": "4.8.21"
         },
-        "time": "2017-09-26T19:49:41+00:00",
+        "time": "2017-10-04T01:07:16+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -2345,58 +2398,5 @@
         ],
         "description": "Provides library of common widgets, layouts, and windows.",
         "homepage": "https://www.mediawiki.org/wiki/OOjs_UI"
-    },
-    {
-        "name": "ruflin/elastica",
-        "version": "5.3.0",
-        "version_normalized": "5.3.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/ruflin/Elastica.git",
-            "reference": "tags/5.3.0"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://github.com/ruflin/Elastica/archive/5.3.0.zip",
-            "reference": "tags/5.3.0",
-            "shasum": null
-        },
-        "require": {
-            "elasticsearch/elasticsearch": "5.3.0",
-            "php": ">=5.5.0"
-        },
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Elastica\\": "lib/Elastica/"
-            }
-        }
-    },
-    {
-        "name": "elasticsearch/elasticsearch",
-        "version": "5.3.0",
-        "version_normalized": "5.3.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/elastic/elasticsearch-php.git",
-            "reference": "tags/v5.3.0"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/elastic/elasticsearch-php/zipball/tags/v5.3.0",
-            "reference": "tags/v5.3.0",
-            "shasum": null
-        },
-        "require": {
-            "php": ">=5.5.0"
-        },
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Elasticsearch\\": "src/Elasticsearch/"
-            }
-        }
     }
 ]

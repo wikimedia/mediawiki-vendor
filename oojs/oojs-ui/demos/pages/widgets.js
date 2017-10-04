@@ -146,17 +146,6 @@ Demo.static.pages.widgets = function ( demo ) {
 				new OO.ui.FieldLayout(
 					new OO.ui.ButtonWidget( {
 						label: 'Progressive',
-						flags: [ 'progressive' ],
-						disabled: true
-					} ),
-					{
-						label: 'ButtonWidget (progressive, disabled)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.ButtonWidget( {
-						label: 'Progressive',
 						icon: 'tag',
 						flags: [ 'progressive' ],
 						disabled: true
@@ -217,17 +206,6 @@ Demo.static.pages.widgets = function ( demo ) {
 						label: 'ButtonWidget (with accesskey)\u200E',
 						align: 'top',
 						help: new OO.ui.HtmlSnippet( 'Notice: Using `accesskey` might <a href="http://webaim.org/techniques/keyboard/accesskey" target="_blank">negatively impact screen readers</a>!' )
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.ButtonInputWidget( {
-						title: 'Accesskey is added to the title.',
-						label: 'Access key: H',
-						accessKey: 'h'
-					} ),
-					{
-						label: 'ButtonInputWidget (with accesskey and title)\u200E',
-						align: 'top'
 					}
 				),
 				new OO.ui.FieldLayout(
@@ -401,11 +379,12 @@ Demo.static.pages.widgets = function ( demo ) {
 				),
 				new OO.ui.FieldLayout(
 					new OO.ui.ButtonInputWidget( {
-						label: 'Access key: I',
-						accessKey: 'i'
+						title: 'Accesskey is added to the title.',
+						label: 'Access key: H',
+						accessKey: 'h'
 					} ),
 					{
-						label: 'ButtonInputWidget (with accesskey)\u200E',
+						label: 'ButtonInputWidget (with accesskey & title)\u200E',
 						align: 'top',
 						help: new OO.ui.HtmlSnippet( 'Notice: Using `accesskey` might <a href="http://webaim.org/techniques/keyboard/accesskey" target="_blank">negatively impact screen readers</a>!' )
 					}
@@ -418,7 +397,7 @@ Demo.static.pages.widgets = function ( demo ) {
 					} ),
 					{
 						align: 'top',
-						label: 'ButtonInputWidget (frameless)\u200E'
+						label: 'ButtonInputWidget (frameless, using <button>)\u200E'
 					}
 				),
 				new OO.ui.FieldLayout(
@@ -624,18 +603,18 @@ Demo.static.pages.widgets = function ( demo ) {
 						items: [
 							new OO.ui.ButtonOptionWidget( {
 								data: 'a',
+								label: 'Access key: I',
+								accessKey: 'i'
+							} ),
+							new OO.ui.ButtonOptionWidget( {
+								data: 'b',
 								label: 'Access key: J',
 								accessKey: 'j'
 							} ),
 							new OO.ui.ButtonOptionWidget( {
-								data: 'b',
+								data: 'c',
 								label: 'Access key: K',
 								accessKey: 'k'
-							} ),
-							new OO.ui.ButtonOptionWidget( {
-								data: 'c',
-								label: 'Access key: L',
-								accessKey: 'l'
 							} )
 						]
 					} ),
@@ -1137,6 +1116,53 @@ Demo.static.pages.widgets = function ( demo ) {
 					new OO.ui.ToggleSwitchWidget( { disabled: true, value: true } ),
 					{
 						label: 'ToggleSwitchWidget (disabled, checked)\u200E',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.RadioSelectWidget( {
+						items: [
+							new OO.ui.RadioOptionWidget( {
+								data: 'a',
+								label: $( $.parseHTML( 'Option A (<a href="https://example.com/a">details</a>)' ) )
+							} ),
+							new OO.ui.RadioOptionWidget( {
+								data: 'b',
+								label: $( $.parseHTML( 'Option B (<a href="https://example.com/b">details</a>)' ) )
+							} ),
+							new OO.ui.RadioOptionWidget( {
+								data: 'c',
+								label: $( $.parseHTML( 'Option C (<a href="https://example.com/c">details</a>)' ) )
+							} )
+						]
+					} ),
+					{
+						label: 'RadioSelectWidget with links in the labels',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.RadioSelectWidget( {
+						items: [
+							new OO.ui.RadioOptionWidget( {
+								data: 'foo',
+								label: 'Foo'
+							} ),
+							new OO.ui.RadioOptionWidget( {
+								data: 'bar',
+								label: 'Bar'
+							} ),
+							new OO.ui.RadioOptionWidget( {
+								data: '',
+								label: $( [
+									document.createTextNode( 'Other: ' ),
+									new OO.ui.TextInputWidget().$element[ 0 ]
+								] )
+							} )
+						]
+					} ),
+					{
+						label: 'RadioSelectWidget with text input in a label',
 						align: 'top'
 					}
 				)
