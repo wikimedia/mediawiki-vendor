@@ -81,6 +81,19 @@ class TextInputWidget extends InputWidget {
 		$this->type = $this->getSaneType( $config );
 		$this->multiline = isset( $config['multiline'] ) ? (bool)$config['multiline'] : false;
 
+		if ( $this->multiline && !( $this instanceof MultilineTextInputWidget ) ) {
+			Element::warnDeprecation(
+				'The TextInputWidget "multiline" option is deprecated as of OOjs UI v0.22.2. ' .
+				'Use MultilineTextInputWidget instead.'
+			);
+		}
+		if ( $config['type'] === 'search' && !( $this instanceof SearchInputWidget ) ) {
+			Element::warnDeprecation(
+				'The TextInputWidget "type" => "search" is deprecated as of OOjs UI v0.22.2. ' .
+				'Use SearchInputWidget instead.'
+			);
+		}
+
 		// Traits
 		$this->initializeIconElement( $config );
 		$this->initializeIndicatorElement( $config );
@@ -182,7 +195,7 @@ class TextInputWidget extends InputWidget {
 		}
 	}
 
-	private function getSaneType( $config ) {
+	protected function getSaneType( $config ) {
 		$allowedTypes = [
 			'text',
 			'password',
