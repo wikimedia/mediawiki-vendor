@@ -2720,23 +2720,23 @@ Demo.static.pages.widgets = function ( demo ) {
 									} ).addTabPanels( [
 										new Demo.SampleTabPanel( 'first', {
 											expanded: false,
-											label: 'One tab'
+											label: 'One'
 										} ),
 										new Demo.SampleTabPanel( 'second', {
 											expanded: false,
-											label: 'Two tab'
+											label: 'Two'
 										} ),
 										new Demo.SampleTabPanel( 'third', {
 											expanded: false,
-											label: 'Three tab'
+											label: 'Three'
 										} ),
 										new Demo.SampleTabPanel( 'fourth', {
 											expanded: false,
-											label: 'Four tab'
+											label: 'Four'
 										} ),
 										new Demo.SampleTabPanel( 'long', {
 											expanded: false,
-											label: 'Long tab',
+											label: 'Long',
 											content: [
 												$( '<p>' ).text( loremIpsum ),
 												$( '<p>' ).text( loremIpsum ),

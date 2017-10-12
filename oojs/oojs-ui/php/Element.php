@@ -51,17 +51,6 @@ class Element extends Tag {
 	 */
 	protected $configCallbacks = [];
 
-	/* Static methods */
-
-	/**
-	 * Emits a deprecation warning with provided message.
-	 *
-	 * @param string $message Message about the deprecation
-	 */
-	public static function warnDeprecation( $message = '' ) {
-		trigger_error( $message, E_USER_DEPRECATED );
-	}
-
 	/* Methods */
 
 	/**
