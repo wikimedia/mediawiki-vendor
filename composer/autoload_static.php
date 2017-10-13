@@ -27,6 +27,7 @@ class ComposerStaticInit_mediawiki_vendor
             'WrappedString\\' => 14,
             'Wikimedia\\Purtle\\Tests\\' => 23,
             'Wikimedia\\Purtle\\' => 17,
+            'Wikimedia\\Equivset\\' => 19,
             'Wikimedia\\Composer\\' => 19,
             'Wikimedia\\Assert\\Test\\' => 22,
             'Wikimedia\\Assert\\' => 17,
@@ -93,6 +94,10 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Purtle\\' => 
         array (
             0 => __DIR__ . '/..' . '/wikimedia/purtle/src',
+        ),
+        'Wikimedia\\Equivset\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/wikimedia/equivset/src',
         ),
         'Wikimedia\\Composer\\' => 
         array (
@@ -1675,6 +1680,9 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Composer\\Merge\\NestedArray' => __DIR__ . '/..' . '/wikimedia/composer-merge-plugin/src/Merge/NestedArray.php',
         'Wikimedia\\Composer\\Merge\\PluginState' => __DIR__ . '/..' . '/wikimedia/composer-merge-plugin/src/Merge/PluginState.php',
         'Wikimedia\\Composer\\Merge\\StabilityFlags' => __DIR__ . '/..' . '/wikimedia/composer-merge-plugin/src/Merge/StabilityFlags.php',
+        'Wikimedia\\Equivset\\Command\\GenerateEquivset' => __DIR__ . '/..' . '/wikimedia/equivset/src/Command/GenerateEquivset.php',
+        'Wikimedia\\Equivset\\Equivset' => __DIR__ . '/..' . '/wikimedia/equivset/src/Equivset.php',
+        'Wikimedia\\Equivset\\Exception\\EquivsetException' => __DIR__ . '/..' . '/wikimedia/equivset/src/Exception/EquivsetException.php',
         'Wikimedia\\PhpSessionSerializer' => __DIR__ . '/..' . '/wikimedia/php-session-serializer/src/Wikimedia/PhpSessionSerializer.php',
         'Wikimedia\\Purtle\\BNodeLabeler' => __DIR__ . '/..' . '/wikimedia/purtle/src/BNodeLabeler.php',
         'Wikimedia\\Purtle\\N3Quoter' => __DIR__ . '/..' . '/wikimedia/purtle/src/N3Quoter.php',

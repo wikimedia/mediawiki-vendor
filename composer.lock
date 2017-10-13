@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "5ea1fad8f3494e433113cf097d1308af",
+    "content-hash": "dc944fad09b4f0eea8581b87645d7747",
     "packages": [
         {
             "name": "composer/semver",
@@ -2137,6 +2137,56 @@
             "description": "Classes to parse and sanitize CSS",
             "homepage": "https://www.mediawiki.org/wiki/Css-sanitizer",
             "time": "2017-06-13T15:51:12+00:00"
+        },
+        {
+            "name": "wikimedia/equivset",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wikimedia/Equivset.git",
+                "reference": "70d97de8339da54889a6d7e7ef9d438775cd286b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wikimedia/Equivset/zipball/70d97de8339da54889a6d7e7ef9d438775cd286b",
+                "reference": "70d97de8339da54889a6d7e7ef9d438775cd286b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.9",
+                "wikimedia/utfnormal": "^1.1.0"
+            },
+            "require-dev": {
+                "jakub-onderka/php-console-highlighter": "^0.3.2",
+                "jakub-onderka/php-parallel-lint": "^0.9.2",
+                "mediawiki/mediawiki-codesniffer": "^13.0.0",
+                "phpunit/phpunit": "^4.8",
+                "symfony/console": "^3.3",
+                "symfony/var-dumper": "^3.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Wikimedia\\Equivset\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Brion Vibber",
+                    "email": "bvibber@wikimedia.org"
+                },
+                {
+                    "name": "David Barratt",
+                    "email": "dbarratt@wikimedia.org"
+                }
+            ],
+            "description": "Visually Equivalent Set of UTF-8 Characters",
+            "homepage": "https://www.mediawiki.org/wiki/Equivset",
+            "time": "2017-10-06T18:57:27+00:00"
         },
         {
             "name": "wikimedia/html-formatter",
