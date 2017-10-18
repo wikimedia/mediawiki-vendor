@@ -1006,7 +1006,6 @@ class ComposerStaticInit_mediawiki_vendor
         'OOUI\\LabelElement' => __DIR__ . '/..' . '/oojs/oojs-ui/php/mixins/LabelElement.php',
         'OOUI\\LabelWidget' => __DIR__ . '/..' . '/oojs/oojs-ui/php/widgets/LabelWidget.php',
         'OOUI\\Layout' => __DIR__ . '/..' . '/oojs/oojs-ui/php/Layout.php',
-        'OOUI\\MediaWikiTheme' => __DIR__ . '/..' . '/oojs/oojs-ui/php/themes/MediaWikiTheme.php',
         'OOUI\\MultilineTextInputWidget' => __DIR__ . '/..' . '/oojs/oojs-ui/php/widgets/MultilineTextInputWidget.php',
         'OOUI\\PanelLayout' => __DIR__ . '/..' . '/oojs/oojs-ui/php/layouts/PanelLayout.php',
         'OOUI\\ProgressBarWidget' => __DIR__ . '/..' . '/oojs/oojs-ui/php/widgets/ProgressBarWidget.php',

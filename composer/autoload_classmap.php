@@ -753,7 +753,6 @@ return array(
     'OOUI\\LabelElement' => $vendorDir . '/oojs/oojs-ui/php/mixins/LabelElement.php',
     'OOUI\\LabelWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/LabelWidget.php',
     'OOUI\\Layout' => $vendorDir . '/oojs/oojs-ui/php/Layout.php',
-    'OOUI\\MediaWikiTheme' => $vendorDir . '/oojs/oojs-ui/php/themes/MediaWikiTheme.php',
     'OOUI\\MultilineTextInputWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/MultilineTextInputWidget.php',
     'OOUI\\PanelLayout' => $vendorDir . '/oojs/oojs-ui/php/layouts/PanelLayout.php',
     'OOUI\\ProgressBarWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/ProgressBarWidget.php',
