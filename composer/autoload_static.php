@@ -15,6 +15,7 @@ class ComposerStaticInit_mediawiki_vendor
         'd55c27a601de788b19a09b7d057d07ae' => __DIR__ . '/..' . '/wikimedia/relpath/src/RelPath.php',
         '04c6c5c2f7095ccf6c481d3e53e1776f' => __DIR__ . '/..' . '/mustangostang/spyc/Spyc.php',
         'e7223560d890eab89cda23685e711e2c' => __DIR__ . '/..' . '/psy/psysh/src/Psy/functions.php',
+        'f4c767faab43077fd89ff7cf99ffb4b8' => __DIR__ . '/..' . '/serialization/serialization/Serialization.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -39,6 +40,7 @@ class ComposerStaticInit_mediawiki_vendor
             'Symfony\\Component\\Process\\' => 26,
             'Symfony\\Component\\Debug\\' => 24,
             'Symfony\\Component\\Console\\' => 26,
+            'Serializers\\' => 12,
         ),
         'R' => 
         array (
@@ -70,6 +72,10 @@ class ComposerStaticInit_mediawiki_vendor
         array (
             'Elasticsearch\\' => 14,
             'Elastica\\' => 9,
+        ),
+        'D' => 
+        array (
+            'Deserializers\\' => 14,
         ),
         'C' => 
         array (
@@ -131,6 +137,10 @@ class ComposerStaticInit_mediawiki_vendor
         array (
             0 => __DIR__ . '/..' . '/symfony/console',
         ),
+        'Serializers\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/serialization/serialization/src/Serializers',
+        ),
         'RemexHtml\\' => 
         array (
             0 => __DIR__ . '/..' . '/wikimedia/remex-html/RemexHtml',
@@ -170,6 +180,10 @@ class ComposerStaticInit_mediawiki_vendor
         'Elastica\\' => 
         array (
             0 => __DIR__ . '/..' . '/ruflin/elastica/lib/Elastica',
+        ),
+        'Deserializers\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/serialization/serialization/src/Deserializers',
         ),
         'Composer\\Semver\\' => 
         array (
@@ -329,6 +343,17 @@ class ComposerStaticInit_mediawiki_vendor
         'Composer\\Semver\\Semver' => __DIR__ . '/..' . '/composer/semver/src/Semver.php',
         'Composer\\Semver\\VersionParser' => __DIR__ . '/..' . '/composer/semver/src/VersionParser.php',
         'Console_Getopt' => __DIR__ . '/..' . '/pear/console_getopt/Console/Getopt.php',
+        'Deserializers\\Deserializer' => __DIR__ . '/..' . '/serialization/serialization/src/Deserializers/Deserializer.php',
+        'Deserializers\\DispatchableDeserializer' => __DIR__ . '/..' . '/serialization/serialization/src/Deserializers/DispatchableDeserializer.php',
+        'Deserializers\\DispatchingDeserializer' => __DIR__ . '/..' . '/serialization/serialization/src/Deserializers/DispatchingDeserializer.php',
+        'Deserializers\\Exceptions\\DeserializationException' => __DIR__ . '/..' . '/serialization/serialization/src/Deserializers/Exceptions/DeserializationException.php',
+        'Deserializers\\Exceptions\\InvalidAttributeException' => __DIR__ . '/..' . '/serialization/serialization/src/Deserializers/Exceptions/InvalidAttributeException.php',
+        'Deserializers\\Exceptions\\MissingAttributeException' => __DIR__ . '/..' . '/serialization/serialization/src/Deserializers/Exceptions/MissingAttributeException.php',
+        'Deserializers\\Exceptions\\MissingTypeException' => __DIR__ . '/..' . '/serialization/serialization/src/Deserializers/Exceptions/MissingTypeException.php',
+        'Deserializers\\Exceptions\\UnsupportedTypeException' => __DIR__ . '/..' . '/serialization/serialization/src/Deserializers/Exceptions/UnsupportedTypeException.php',
+        'Deserializers\\StrategicDeserializer' => __DIR__ . '/..' . '/serialization/serialization/src/Deserializers/StrategicDeserializer.php',
+        'Deserializers\\TypedDeserializationStrategy' => __DIR__ . '/..' . '/serialization/serialization/src/Deserializers/TypedDeserializationStrategy.php',
+        'Deserializers\\TypedObjectDeserializer' => __DIR__ . '/..' . '/serialization/serialization/src/Deserializers/TypedObjectDeserializer.php',
         'Elastica\\AbstractUpdateAction' => __DIR__ . '/..' . '/ruflin/elastica/lib/Elastica/AbstractUpdateAction.php',
         'Elastica\\Aggregation\\AbstractAggregation' => __DIR__ . '/..' . '/ruflin/elastica/lib/Elastica/Aggregation/AbstractAggregation.php',
         'Elastica\\Aggregation\\AbstractSimpleAggregation' => __DIR__ . '/..' . '/ruflin/elastica/lib/Elastica/Aggregation/AbstractSimpleAggregation.php',
@@ -1449,6 +1474,11 @@ class ComposerStaticInit_mediawiki_vendor
         'RemexHtml\\TreeBuilder\\TreeMutationTracer' => __DIR__ . '/..' . '/wikimedia/remex-html/RemexHtml/TreeBuilder/TreeMutationTracer.php',
         'RunningStat\\PSquare' => __DIR__ . '/..' . '/wikimedia/running-stat/src/PSquare.php',
         'RunningStat\\RunningStat' => __DIR__ . '/..' . '/wikimedia/running-stat/src/RunningStat.php',
+        'Serializers\\DispatchableSerializer' => __DIR__ . '/..' . '/serialization/serialization/src/Serializers/DispatchableSerializer.php',
+        'Serializers\\DispatchingSerializer' => __DIR__ . '/..' . '/serialization/serialization/src/Serializers/DispatchingSerializer.php',
+        'Serializers\\Exceptions\\SerializationException' => __DIR__ . '/..' . '/serialization/serialization/src/Serializers/Exceptions/SerializationException.php',
+        'Serializers\\Exceptions\\UnsupportedObjectException' => __DIR__ . '/..' . '/serialization/serialization/src/Serializers/Exceptions/UnsupportedObjectException.php',
+        'Serializers\\Serializer' => __DIR__ . '/..' . '/serialization/serialization/src/Serializers/Serializer.php',
         'Symfony\\Component\\Console\\Application' => __DIR__ . '/..' . '/symfony/console/Application.php',
         'Symfony\\Component\\Console\\Command\\Command' => __DIR__ . '/..' . '/symfony/console/Command/Command.php',
         'Symfony\\Component\\Console\\Command\\HelpCommand' => __DIR__ . '/..' . '/symfony/console/Command/HelpCommand.php',
