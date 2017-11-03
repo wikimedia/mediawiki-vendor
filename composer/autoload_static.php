@@ -9,15 +9,15 @@ class ComposerStaticInit_mediawiki_vendor
     public static $files = array (
         '7cb394c3af2b1ae832979b0368e0da62' => __DIR__ . '/..' . '/data-values/data-values/DataValues.php',
         'd1715cacc3c23b16a030645514266a76' => __DIR__ . '/..' . '/data-values/interfaces/Interfaces.php',
-        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '90559502573a0d473dc66fde5c0ff7e2' => __DIR__ . '/..' . '/data-values/common/Common.php',
-        'a24b5daa493ecb5e767c7d1592a8da36' => __DIR__ . '/..' . '/mediawiki/at-ease/src/Functions.php',
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         'f4c767faab43077fd89ff7cf99ffb4b8' => __DIR__ . '/..' . '/serialization/serialization/Serialization.php',
-        '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
+        'a24b5daa493ecb5e767c7d1592a8da36' => __DIR__ . '/..' . '/mediawiki/at-ease/src/Functions.php',
         '908a529187e4aa80293c8aa78e1ec48d' => __DIR__ . '/..' . '/data-values/time/Time.php',
         '5a494680c593293bd6035e42e2a6825c' => __DIR__ . '/..' . '/data-values/geo/Geo.php',
         'c15f8000750e4e04ba559d9745044427' => __DIR__ . '/..' . '/data-values/number/Number.php',
         'dc2c047038b9f5c71759f55f00aba99b' => __DIR__ . '/..' . '/wikibase/data-model/WikibaseDataModel.php',
+        '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         'c3f7f0e81464740a933532e81fa26cc7' => __DIR__ . '/..' . '/wikimedia/base-convert/src/Functions.php',
         'c50606d667a3fde2b80a955639479d3d' => __DIR__ . '/..' . '/wikimedia/timestamp/src/defines.php',
         'd55c27a601de788b19a09b7d057d07ae' => __DIR__ . '/..' . '/wikimedia/relpath/src/RelPath.php',
@@ -40,6 +40,7 @@ class ComposerStaticInit_mediawiki_vendor
             'Wikimedia\\Composer\\' => 19,
             'Wikimedia\\Assert\\Test\\' => 22,
             'Wikimedia\\Assert\\' => 17,
+            'Wikibase\\InternalSerialization\\' => 31,
             'Wikibase\\DataModel\\' => 19,
         ),
         'V' => 
@@ -136,6 +137,10 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Assert\\' => 
         array (
             0 => __DIR__ . '/..' . '/wikimedia/assert/src',
+        ),
+        'Wikibase\\InternalSerialization\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/wikibase/internal-serialization/src',
         ),
         'Wikibase\\DataModel\\' => 
         array (
@@ -1912,6 +1917,20 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikibase\\DataModel\\Term\\Term' => __DIR__ . '/..' . '/wikibase/data-model/src/Term/Term.php',
         'Wikibase\\DataModel\\Term\\TermFallback' => __DIR__ . '/..' . '/wikibase/data-model/src/Term/TermFallback.php',
         'Wikibase\\DataModel\\Term\\TermList' => __DIR__ . '/..' . '/wikibase/data-model/src/Term/TermList.php',
+        'Wikibase\\InternalSerialization\\DeserializerFactory' => __DIR__ . '/..' . '/wikibase/internal-serialization/src/DeserializerFactory.php',
+        'Wikibase\\InternalSerialization\\Deserializers\\EntityDeserializer' => __DIR__ . '/..' . '/wikibase/internal-serialization/src/Deserializers/EntityDeserializer.php',
+        'Wikibase\\InternalSerialization\\Deserializers\\LegacyEntityDeserializer' => __DIR__ . '/..' . '/wikibase/internal-serialization/src/Deserializers/LegacyEntityDeserializer.php',
+        'Wikibase\\InternalSerialization\\Deserializers\\LegacyEntityIdDeserializer' => __DIR__ . '/..' . '/wikibase/internal-serialization/src/Deserializers/LegacyEntityIdDeserializer.php',
+        'Wikibase\\InternalSerialization\\Deserializers\\LegacyFingerprintDeserializer' => __DIR__ . '/..' . '/wikibase/internal-serialization/src/Deserializers/LegacyFingerprintDeserializer.php',
+        'Wikibase\\InternalSerialization\\Deserializers\\LegacyItemDeserializer' => __DIR__ . '/..' . '/wikibase/internal-serialization/src/Deserializers/LegacyItemDeserializer.php',
+        'Wikibase\\InternalSerialization\\Deserializers\\LegacyPropertyDeserializer' => __DIR__ . '/..' . '/wikibase/internal-serialization/src/Deserializers/LegacyPropertyDeserializer.php',
+        'Wikibase\\InternalSerialization\\Deserializers\\LegacySiteLinkListDeserializer' => __DIR__ . '/..' . '/wikibase/internal-serialization/src/Deserializers/LegacySiteLinkListDeserializer.php',
+        'Wikibase\\InternalSerialization\\Deserializers\\LegacySnakDeserializer' => __DIR__ . '/..' . '/wikibase/internal-serialization/src/Deserializers/LegacySnakDeserializer.php',
+        'Wikibase\\InternalSerialization\\Deserializers\\LegacySnakListDeserializer' => __DIR__ . '/..' . '/wikibase/internal-serialization/src/Deserializers/LegacySnakListDeserializer.php',
+        'Wikibase\\InternalSerialization\\Deserializers\\LegacyStatementDeserializer' => __DIR__ . '/..' . '/wikibase/internal-serialization/src/Deserializers/LegacyStatementDeserializer.php',
+        'Wikibase\\InternalSerialization\\Deserializers\\StatementDeserializer' => __DIR__ . '/..' . '/wikibase/internal-serialization/src/Deserializers/StatementDeserializer.php',
+        'Wikibase\\InternalSerialization\\LegacyDeserializerFactory' => __DIR__ . '/..' . '/wikibase/internal-serialization/src/LegacyDeserializerFactory.php',
+        'Wikibase\\InternalSerialization\\SerializerFactory' => __DIR__ . '/..' . '/wikibase/internal-serialization/src/SerializerFactory.php',
         'Wikimedia\\Assert\\Assert' => __DIR__ . '/..' . '/wikimedia/assert/src/Assert.php',
         'Wikimedia\\Assert\\AssertionException' => __DIR__ . '/..' . '/wikimedia/assert/src/AssertionException.php',
         'Wikimedia\\Assert\\InvariantException' => __DIR__ . '/..' . '/wikimedia/assert/src/InvariantException.php',
