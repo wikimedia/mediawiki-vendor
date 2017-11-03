@@ -15,8 +15,8 @@ return array(
     'Wikimedia\\Assert\\Test\\' => array($vendorDir . '/wikimedia/assert/tests/phpunit'),
     'Wikimedia\\Assert\\' => array($vendorDir . '/wikimedia/assert/src'),
     'ValueValidators\\' => array($vendorDir . '/data-values/interfaces/src/ValueValidators'),
-    'ValueParsers\\' => array($vendorDir . '/data-values/interfaces/src/ValueParsers'),
-    'ValueFormatters\\' => array($vendorDir . '/data-values/interfaces/src/ValueFormatters'),
+    'ValueParsers\\' => array($vendorDir . '/data-values/interfaces/src/ValueParsers', $vendorDir . '/data-values/common/src/ValueParsers'),
+    'ValueFormatters\\' => array($vendorDir . '/data-values/interfaces/src/ValueFormatters', $vendorDir . '/data-values/common/src/ValueFormatters'),
     'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
     'Symfony\\Component\\VarDumper\\' => array($vendorDir . '/symfony/var-dumper'),
     'Symfony\\Component\\Process\\' => array($vendorDir . '/symfony/process'),
@@ -35,6 +35,7 @@ return array(
     'Elastica\\' => array($vendorDir . '/ruflin/elastica/lib/Elastica'),
     'Diff\\' => array($vendorDir . '/diff/diff/src'),
     'Deserializers\\' => array($vendorDir . '/serialization/serialization/src/Deserializers'),
+    'DataValues\\' => array($vendorDir . '/data-values/common/src/DataValues'),
     'Composer\\Semver\\' => array($vendorDir . '/composer/semver/src'),
     'CLDRPluralRuleParser\\' => array($vendorDir . '/wikimedia/cldr-plural-rule-parser/src'),
 );
