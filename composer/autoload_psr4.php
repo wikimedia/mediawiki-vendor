@@ -14,7 +14,7 @@ return array(
     'Wikimedia\\Composer\\' => array($vendorDir . '/wikimedia/composer-merge-plugin/src'),
     'Wikimedia\\Assert\\Test\\' => array($vendorDir . '/wikimedia/assert/tests/phpunit'),
     'Wikimedia\\Assert\\' => array($vendorDir . '/wikimedia/assert/src'),
-    'Wikibase\\DataModel\\' => array($vendorDir . '/wikibase/data-model/src'),
+    'Wikibase\\DataModel\\' => array($vendorDir . '/wikibase/data-model/src', $vendorDir . '/wikibase/data-model-serialization/src'),
     'ValueValidators\\' => array($vendorDir . '/data-values/interfaces/src/ValueValidators'),
     'ValueParsers\\' => array($vendorDir . '/data-values/interfaces/src/ValueParsers', $vendorDir . '/data-values/common/src/ValueParsers'),
     'ValueFormatters\\' => array($vendorDir . '/data-values/interfaces/src/ValueFormatters', $vendorDir . '/data-values/common/src/ValueFormatters'),
