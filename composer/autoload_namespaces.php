@@ -6,6 +6,8 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = $vendorDir;
 
 return array(
+    'ValueParsers\\' => array($vendorDir . '/data-values/time/src'),
+    'ValueFormatters\\' => array($vendorDir . '/data-values/time/src'),
     'TextCat' => array($vendorDir . '/wikimedia/textcat'),
     'Pimple' => array($vendorDir . '/pimple/pimple/src'),
     'PEAR' => array($vendorDir . '/pear/pear_exception'),
@@ -17,7 +19,7 @@ return array(
     'Kafka\\' => array($vendorDir . '/nmred/kafka-php/src'),
     'JakubOnderka\\PhpConsoleHighlighter' => array($vendorDir . '/jakub-onderka/php-console-highlighter/src'),
     'JakubOnderka\\PhpConsoleColor' => array($vendorDir . '/jakub-onderka/php-console-color/src'),
-    'DataValues\\' => array($vendorDir . '/data-values/data-values/src'),
+    'DataValues\\' => array($vendorDir . '/data-values/data-values/src', $vendorDir . '/data-values/time/src'),
     'Console' => array($vendorDir . '/pear/console_getopt'),
     '' => array($vendorDir . '/pear/pear-core-minimal/src', $vendorDir . '/cssjanus/cssjanus/src'),
 );

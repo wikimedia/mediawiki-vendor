@@ -9,9 +9,10 @@ class ComposerStaticInit_mediawiki_vendor
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         'a24b5daa493ecb5e767c7d1592a8da36' => __DIR__ . '/..' . '/mediawiki/at-ease/src/Functions.php',
-        '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         '7cb394c3af2b1ae832979b0368e0da62' => __DIR__ . '/..' . '/data-values/data-values/DataValues.php',
         'd1715cacc3c23b16a030645514266a76' => __DIR__ . '/..' . '/data-values/interfaces/Interfaces.php',
+        '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
+        '90559502573a0d473dc66fde5c0ff7e2' => __DIR__ . '/..' . '/data-values/common/Common.php',
         'c3f7f0e81464740a933532e81fa26cc7' => __DIR__ . '/..' . '/wikimedia/base-convert/src/Functions.php',
         'c50606d667a3fde2b80a955639479d3d' => __DIR__ . '/..' . '/wikimedia/timestamp/src/defines.php',
         'd55c27a601de788b19a09b7d057d07ae' => __DIR__ . '/..' . '/wikimedia/relpath/src/RelPath.php',
@@ -19,7 +20,7 @@ class ComposerStaticInit_mediawiki_vendor
         'e7223560d890eab89cda23685e711e2c' => __DIR__ . '/..' . '/psy/psysh/src/Psy/functions.php',
         'f4c767faab43077fd89ff7cf99ffb4b8' => __DIR__ . '/..' . '/serialization/serialization/Serialization.php',
         '3ef87127dc6892a0a78f223558a0b940' => __DIR__ . '/..' . '/diff/diff/Diff.php',
-        '90559502573a0d473dc66fde5c0ff7e2' => __DIR__ . '/..' . '/data-values/common/Common.php',
+        '908a529187e4aa80293c8aa78e1ec48d' => __DIR__ . '/..' . '/data-values/time/Time.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -230,6 +231,17 @@ class ComposerStaticInit_mediawiki_vendor
     );
 
     public static $prefixesPsr0 = array (
+        'V' => 
+        array (
+            'ValueParsers\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/data-values/time/src',
+            ),
+            'ValueFormatters\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/data-values/time/src',
+            ),
+        ),
         'T' => 
         array (
             'TextCat' => 
@@ -302,6 +314,7 @@ class ComposerStaticInit_mediawiki_vendor
             'DataValues\\' => 
             array (
                 0 => __DIR__ . '/..' . '/data-values/data-values/src',
+                1 => __DIR__ . '/..' . '/data-values/time/src',
             ),
         ),
         'C' => 
@@ -395,6 +408,8 @@ class ComposerStaticInit_mediawiki_vendor
         'DataValues\\NumberValue' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/NumberValue.php',
         'DataValues\\StringValue' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/StringValue.php',
         'DataValues\\Tests\\DataValueTest' => __DIR__ . '/..' . '/data-values/data-values/tests/phpunit/DataValueTest.php',
+        'DataValues\\TimeValue' => __DIR__ . '/..' . '/data-values/time/src/DataValues/TimeValue.php',
+        'DataValues\\TimeValueCalculator' => __DIR__ . '/..' . '/data-values/time/src/DataValues/TimeValueCalculator.php',
         'DataValues\\UnDeserializableValue' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/UnDeserializableValue.php',
         'DataValues\\UnknownValue' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/UnknownValue.php',
         'Deserializers\\Deserializer' => __DIR__ . '/..' . '/serialization/serialization/src/Deserializers/Deserializer.php',
@@ -1723,18 +1738,26 @@ class ComposerStaticInit_mediawiki_vendor
         'ValueFormatters\\FormattingException' => __DIR__ . '/..' . '/data-values/interfaces/src/ValueFormatters/FormattingException.php',
         'ValueFormatters\\StringFormatter' => __DIR__ . '/..' . '/data-values/common/src/ValueFormatters/StringFormatter.php',
         'ValueFormatters\\Test\\ValueFormatterTestBase' => __DIR__ . '/..' . '/data-values/interfaces/tests/ValueFormatters/ValueFormatterTestBase.php',
+        'ValueFormatters\\TimeFormatter' => __DIR__ . '/..' . '/data-values/time/src/ValueFormatters/TimeFormatter.php',
         'ValueFormatters\\ValueFormatter' => __DIR__ . '/..' . '/data-values/interfaces/src/ValueFormatters/ValueFormatter.php',
         'ValueFormatters\\ValueFormatterBase' => __DIR__ . '/..' . '/data-values/interfaces/src/ValueFormatters/ValueFormatterBase.php',
         'ValueParsers\\BoolParser' => __DIR__ . '/..' . '/data-values/common/src/ValueParsers/BoolParser.php',
+        'ValueParsers\\CalendarModelParser' => __DIR__ . '/..' . '/data-values/time/src/ValueParsers/CalendarModelParser.php',
         'ValueParsers\\DispatchingValueParser' => __DIR__ . '/..' . '/data-values/common/src/ValueParsers/DispatchingValueParser.php',
+        'ValueParsers\\EraParser' => __DIR__ . '/..' . '/data-values/time/src/ValueParsers/EraParser.php',
         'ValueParsers\\FloatParser' => __DIR__ . '/..' . '/data-values/common/src/ValueParsers/FloatParser.php',
         'ValueParsers\\IntParser' => __DIR__ . '/..' . '/data-values/common/src/ValueParsers/IntParser.php',
+        'ValueParsers\\IsoTimestampParser' => __DIR__ . '/..' . '/data-values/time/src/ValueParsers/IsoTimestampParser.php',
+        'ValueParsers\\MonolingualMonthNameProvider' => __DIR__ . '/..' . '/data-values/time/src/ValueParsers/MonolingualMonthNameProvider.php',
+        'ValueParsers\\MonthNameProvider' => __DIR__ . '/..' . '/data-values/time/src/ValueParsers/MonthNameProvider.php',
+        'ValueParsers\\MonthNameUnlocalizer' => __DIR__ . '/..' . '/data-values/time/src/ValueParsers/MonthNameUnlocalizer.php',
         'ValueParsers\\Normalizers\\NullStringNormalizer' => __DIR__ . '/..' . '/data-values/common/src/ValueParsers/Normalizers/NullStringNormalizer.php',
         'ValueParsers\\Normalizers\\StringNormalizer' => __DIR__ . '/..' . '/data-values/common/src/ValueParsers/Normalizers/StringNormalizer.php',
         'ValueParsers\\Normalizers\\Test\\NullStringNormalizerTest' => __DIR__ . '/..' . '/data-values/common/tests/ValueParsers/Normalizers/NullStringNormalizerTest.php',
         'ValueParsers\\NullParser' => __DIR__ . '/..' . '/data-values/common/src/ValueParsers/NullParser.php',
         'ValueParsers\\ParseException' => __DIR__ . '/..' . '/data-values/interfaces/src/ValueParsers/ParseException.php',
         'ValueParsers\\ParserOptions' => __DIR__ . '/..' . '/data-values/interfaces/src/ValueParsers/ParserOptions.php',
+        'ValueParsers\\PhpDateTimeParser' => __DIR__ . '/..' . '/data-values/time/src/ValueParsers/PhpDateTimeParser.php',
         'ValueParsers\\StringParser' => __DIR__ . '/..' . '/data-values/common/src/ValueParsers/StringParser.php',
         'ValueParsers\\StringValueParser' => __DIR__ . '/..' . '/data-values/common/src/ValueParsers/StringValueParser.php',
         'ValueParsers\\Test\\BoolParserTest' => __DIR__ . '/..' . '/data-values/common/tests/ValueParsers/BoolParserTest.php',
@@ -1746,6 +1769,9 @@ class ComposerStaticInit_mediawiki_vendor
         'ValueParsers\\Test\\StringValueParserTest' => __DIR__ . '/..' . '/data-values/common/tests/ValueParsers/StringValueParserTest.php',
         'ValueParsers\\Test\\ValueParserTestBase' => __DIR__ . '/..' . '/data-values/common/tests/ValueParsers/ValueParserTestBase.php',
         'ValueParsers\\ValueParser' => __DIR__ . '/..' . '/data-values/interfaces/src/ValueParsers/ValueParser.php',
+        'ValueParsers\\YearMonthDayTimeParser' => __DIR__ . '/..' . '/data-values/time/src/ValueParsers/YearMonthDayTimeParser.php',
+        'ValueParsers\\YearMonthTimeParser' => __DIR__ . '/..' . '/data-values/time/src/ValueParsers/YearMonthTimeParser.php',
+        'ValueParsers\\YearTimeParser' => __DIR__ . '/..' . '/data-values/time/src/ValueParsers/YearTimeParser.php',
         'ValueValidators\\Error' => __DIR__ . '/..' . '/data-values/interfaces/src/ValueValidators/Error.php',
         'ValueValidators\\Result' => __DIR__ . '/..' . '/data-values/interfaces/src/ValueValidators/Result.php',
         'ValueValidators\\ValueValidator' => __DIR__ . '/..' . '/data-values/interfaces/src/ValueValidators/ValueValidator.php',
