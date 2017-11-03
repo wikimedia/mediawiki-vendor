@@ -7,12 +7,12 @@ namespace Composer\Autoload;
 class ComposerStaticInit_mediawiki_vendor
 {
     public static $files = array (
-        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '7cb394c3af2b1ae832979b0368e0da62' => __DIR__ . '/..' . '/data-values/data-values/DataValues.php',
         'd1715cacc3c23b16a030645514266a76' => __DIR__ . '/..' . '/data-values/interfaces/Interfaces.php',
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         'a24b5daa493ecb5e767c7d1592a8da36' => __DIR__ . '/..' . '/mediawiki/at-ease/src/Functions.php',
-        '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         '90559502573a0d473dc66fde5c0ff7e2' => __DIR__ . '/..' . '/data-values/common/Common.php',
+        '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         'c3f7f0e81464740a933532e81fa26cc7' => __DIR__ . '/..' . '/wikimedia/base-convert/src/Functions.php',
         'c50606d667a3fde2b80a955639479d3d' => __DIR__ . '/..' . '/wikimedia/timestamp/src/defines.php',
         'd55c27a601de788b19a09b7d057d07ae' => __DIR__ . '/..' . '/wikimedia/relpath/src/RelPath.php',
@@ -22,6 +22,7 @@ class ComposerStaticInit_mediawiki_vendor
         '3ef87127dc6892a0a78f223558a0b940' => __DIR__ . '/..' . '/diff/diff/Diff.php',
         '908a529187e4aa80293c8aa78e1ec48d' => __DIR__ . '/..' . '/data-values/time/Time.php',
         '5a494680c593293bd6035e42e2a6825c' => __DIR__ . '/..' . '/data-values/geo/Geo.php',
+        'c15f8000750e4e04ba559d9745044427' => __DIR__ . '/..' . '/data-values/number/Number.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -242,10 +243,12 @@ class ComposerStaticInit_mediawiki_vendor
             'ValueParsers\\' => 
             array (
                 0 => __DIR__ . '/..' . '/data-values/time/src',
+                1 => __DIR__ . '/..' . '/data-values/number/src',
             ),
             'ValueFormatters\\' => 
             array (
                 0 => __DIR__ . '/..' . '/data-values/time/src',
+                1 => __DIR__ . '/..' . '/data-values/number/src',
             ),
         ),
         'T' => 
@@ -321,6 +324,7 @@ class ComposerStaticInit_mediawiki_vendor
             array (
                 0 => __DIR__ . '/..' . '/data-values/data-values/src',
                 1 => __DIR__ . '/..' . '/data-values/time/src',
+                2 => __DIR__ . '/..' . '/data-values/number/src',
             ),
         ),
         'C' => 
@@ -408,6 +412,8 @@ class ComposerStaticInit_mediawiki_vendor
         'DataValues\\BooleanValue' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/BooleanValue.php',
         'DataValues\\DataValue' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/DataValue.php',
         'DataValues\\DataValueObject' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/DataValueObject.php',
+        'DataValues\\DecimalMath' => __DIR__ . '/..' . '/data-values/number/src/DataValues/DecimalMath.php',
+        'DataValues\\DecimalValue' => __DIR__ . '/..' . '/data-values/number/src/DataValues/DecimalValue.php',
         'DataValues\\Geo\\Formatters\\GlobeCoordinateFormatter' => __DIR__ . '/..' . '/data-values/geo/src/Formatters/GlobeCoordinateFormatter.php',
         'DataValues\\Geo\\Formatters\\LatLongFormatter' => __DIR__ . '/..' . '/data-values/geo/src/Formatters/LatLongFormatter.php',
         'DataValues\\Geo\\GlobeMath' => __DIR__ . '/..' . '/data-values/geo/src/GlobeMath.php',
@@ -424,11 +430,13 @@ class ComposerStaticInit_mediawiki_vendor
         'DataValues\\MonolingualTextValue' => __DIR__ . '/..' . '/data-values/common/src/DataValues/MonolingualTextValue.php',
         'DataValues\\MultilingualTextValue' => __DIR__ . '/..' . '/data-values/common/src/DataValues/MultilingualTextValue.php',
         'DataValues\\NumberValue' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/NumberValue.php',
+        'DataValues\\QuantityValue' => __DIR__ . '/..' . '/data-values/number/src/DataValues/QuantityValue.php',
         'DataValues\\StringValue' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/StringValue.php',
         'DataValues\\Tests\\DataValueTest' => __DIR__ . '/..' . '/data-values/data-values/tests/phpunit/DataValueTest.php',
         'DataValues\\TimeValue' => __DIR__ . '/..' . '/data-values/time/src/DataValues/TimeValue.php',
         'DataValues\\TimeValueCalculator' => __DIR__ . '/..' . '/data-values/time/src/DataValues/TimeValueCalculator.php',
         'DataValues\\UnDeserializableValue' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/UnDeserializableValue.php',
+        'DataValues\\UnboundedQuantityValue' => __DIR__ . '/..' . '/data-values/number/src/DataValues/UnboundedQuantityValue.php',
         'DataValues\\UnknownValue' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/UnknownValue.php',
         'Deserializers\\Deserializer' => __DIR__ . '/..' . '/serialization/serialization/src/Deserializers/Deserializer.php',
         'Deserializers\\DispatchableDeserializer' => __DIR__ . '/..' . '/serialization/serialization/src/Deserializers/DispatchableDeserializer.php',
@@ -1751,16 +1759,23 @@ class ComposerStaticInit_mediawiki_vendor
         'UtfNormal\\Constants' => __DIR__ . '/..' . '/wikimedia/utfnormal/src/Constants.php',
         'UtfNormal\\Utils' => __DIR__ . '/..' . '/wikimedia/utfnormal/src/Util.php',
         'UtfNormal\\Validator' => __DIR__ . '/..' . '/wikimedia/utfnormal/src/Validator.php',
+        'ValueFormatters\\BasicNumberLocalizer' => __DIR__ . '/..' . '/data-values/number/src/ValueFormatters/BasicNumberLocalizer.php',
+        'ValueFormatters\\DecimalFormatter' => __DIR__ . '/..' . '/data-values/number/src/ValueFormatters/DecimalFormatter.php',
         'ValueFormatters\\Exceptions\\MismatchingDataValueTypeException' => __DIR__ . '/..' . '/data-values/common/src/ValueFormatters/Exceptions/MismatchingDataValueTypeException.php',
         'ValueFormatters\\FormatterOptions' => __DIR__ . '/..' . '/data-values/interfaces/src/ValueFormatters/FormatterOptions.php',
         'ValueFormatters\\FormattingException' => __DIR__ . '/..' . '/data-values/interfaces/src/ValueFormatters/FormattingException.php',
+        'ValueFormatters\\NumberLocalizer' => __DIR__ . '/..' . '/data-values/number/src/ValueFormatters/NumberLocalizer.php',
+        'ValueFormatters\\QuantityFormatter' => __DIR__ . '/..' . '/data-values/number/src/ValueFormatters/QuantityFormatter.php',
+        'ValueFormatters\\QuantityHtmlFormatter' => __DIR__ . '/..' . '/data-values/number/src/ValueFormatters/QuantityHtmlFormatter.php',
         'ValueFormatters\\StringFormatter' => __DIR__ . '/..' . '/data-values/common/src/ValueFormatters/StringFormatter.php',
         'ValueFormatters\\Test\\ValueFormatterTestBase' => __DIR__ . '/..' . '/data-values/interfaces/tests/ValueFormatters/ValueFormatterTestBase.php',
         'ValueFormatters\\TimeFormatter' => __DIR__ . '/..' . '/data-values/time/src/ValueFormatters/TimeFormatter.php',
         'ValueFormatters\\ValueFormatter' => __DIR__ . '/..' . '/data-values/interfaces/src/ValueFormatters/ValueFormatter.php',
         'ValueFormatters\\ValueFormatterBase' => __DIR__ . '/..' . '/data-values/interfaces/src/ValueFormatters/ValueFormatterBase.php',
+        'ValueParsers\\BasicNumberUnlocalizer' => __DIR__ . '/..' . '/data-values/number/src/ValueParsers/BasicNumberUnlocalizer.php',
         'ValueParsers\\BoolParser' => __DIR__ . '/..' . '/data-values/common/src/ValueParsers/BoolParser.php',
         'ValueParsers\\CalendarModelParser' => __DIR__ . '/..' . '/data-values/time/src/ValueParsers/CalendarModelParser.php',
+        'ValueParsers\\DecimalParser' => __DIR__ . '/..' . '/data-values/number/src/ValueParsers/DecimalParser.php',
         'ValueParsers\\DispatchingValueParser' => __DIR__ . '/..' . '/data-values/common/src/ValueParsers/DispatchingValueParser.php',
         'ValueParsers\\EraParser' => __DIR__ . '/..' . '/data-values/time/src/ValueParsers/EraParser.php',
         'ValueParsers\\FloatParser' => __DIR__ . '/..' . '/data-values/common/src/ValueParsers/FloatParser.php',
@@ -1773,9 +1788,11 @@ class ComposerStaticInit_mediawiki_vendor
         'ValueParsers\\Normalizers\\StringNormalizer' => __DIR__ . '/..' . '/data-values/common/src/ValueParsers/Normalizers/StringNormalizer.php',
         'ValueParsers\\Normalizers\\Test\\NullStringNormalizerTest' => __DIR__ . '/..' . '/data-values/common/tests/ValueParsers/Normalizers/NullStringNormalizerTest.php',
         'ValueParsers\\NullParser' => __DIR__ . '/..' . '/data-values/common/src/ValueParsers/NullParser.php',
+        'ValueParsers\\NumberUnlocalizer' => __DIR__ . '/..' . '/data-values/number/src/ValueParsers/NumberUnlocalizer.php',
         'ValueParsers\\ParseException' => __DIR__ . '/..' . '/data-values/interfaces/src/ValueParsers/ParseException.php',
         'ValueParsers\\ParserOptions' => __DIR__ . '/..' . '/data-values/interfaces/src/ValueParsers/ParserOptions.php',
         'ValueParsers\\PhpDateTimeParser' => __DIR__ . '/..' . '/data-values/time/src/ValueParsers/PhpDateTimeParser.php',
+        'ValueParsers\\QuantityParser' => __DIR__ . '/..' . '/data-values/number/src/ValueParsers/QuantityParser.php',
         'ValueParsers\\StringParser' => __DIR__ . '/..' . '/data-values/common/src/ValueParsers/StringParser.php',
         'ValueParsers\\StringValueParser' => __DIR__ . '/..' . '/data-values/common/src/ValueParsers/StringValueParser.php',
         'ValueParsers\\Test\\BoolParserTest' => __DIR__ . '/..' . '/data-values/common/tests/ValueParsers/BoolParserTest.php',
