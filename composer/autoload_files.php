@@ -16,4 +16,5 @@ return array(
     'e7223560d890eab89cda23685e711e2c' => $vendorDir . '/psy/psysh/src/Psy/functions.php',
     'f4c767faab43077fd89ff7cf99ffb4b8' => $vendorDir . '/serialization/serialization/Serialization.php',
     '7cb394c3af2b1ae832979b0368e0da62' => $vendorDir . '/data-values/data-values/DataValues.php',
+    '3ef87127dc6892a0a78f223558a0b940' => $vendorDir . '/diff/diff/Diff.php',
 );

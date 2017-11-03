@@ -17,6 +17,7 @@ class ComposerStaticInit_mediawiki_vendor
         'e7223560d890eab89cda23685e711e2c' => __DIR__ . '/..' . '/psy/psysh/src/Psy/functions.php',
         'f4c767faab43077fd89ff7cf99ffb4b8' => __DIR__ . '/..' . '/serialization/serialization/Serialization.php',
         '7cb394c3af2b1ae832979b0368e0da62' => __DIR__ . '/..' . '/data-values/data-values/DataValues.php',
+        '3ef87127dc6892a0a78f223558a0b940' => __DIR__ . '/..' . '/diff/diff/Diff.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -76,6 +77,7 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'D' => 
         array (
+            'Diff\\' => 5,
             'Deserializers\\' => 14,
         ),
         'C' => 
@@ -181,6 +183,10 @@ class ComposerStaticInit_mediawiki_vendor
         'Elastica\\' => 
         array (
             0 => __DIR__ . '/..' . '/ruflin/elastica/lib/Elastica',
+        ),
+        'Diff\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/diff/diff/src',
         ),
         'Deserializers\\' => 
         array (
@@ -373,6 +379,35 @@ class ComposerStaticInit_mediawiki_vendor
         'Deserializers\\StrategicDeserializer' => __DIR__ . '/..' . '/serialization/serialization/src/Deserializers/StrategicDeserializer.php',
         'Deserializers\\TypedDeserializationStrategy' => __DIR__ . '/..' . '/serialization/serialization/src/Deserializers/TypedDeserializationStrategy.php',
         'Deserializers\\TypedObjectDeserializer' => __DIR__ . '/..' . '/serialization/serialization/src/Deserializers/TypedObjectDeserializer.php',
+        'Diff\\ArrayComparer\\ArrayComparer' => __DIR__ . '/..' . '/diff/diff/src/ArrayComparer/ArrayComparer.php',
+        'Diff\\ArrayComparer\\NativeArrayComparer' => __DIR__ . '/..' . '/diff/diff/src/ArrayComparer/NativeArrayComparer.php',
+        'Diff\\ArrayComparer\\OrderedArrayComparer' => __DIR__ . '/..' . '/diff/diff/src/ArrayComparer/OrderedArrayComparer.php',
+        'Diff\\ArrayComparer\\StrategicArrayComparer' => __DIR__ . '/..' . '/diff/diff/src/ArrayComparer/StrategicArrayComparer.php',
+        'Diff\\ArrayComparer\\StrictArrayComparer' => __DIR__ . '/..' . '/diff/diff/src/ArrayComparer/StrictArrayComparer.php',
+        'Diff\\Comparer\\CallbackComparer' => __DIR__ . '/..' . '/diff/diff/src/Comparer/CallbackComparer.php',
+        'Diff\\Comparer\\ComparableComparer' => __DIR__ . '/..' . '/diff/diff/src/Comparer/ComparableComparer.php',
+        'Diff\\Comparer\\StrictComparer' => __DIR__ . '/..' . '/diff/diff/src/Comparer/StrictComparer.php',
+        'Diff\\Comparer\\ValueComparer' => __DIR__ . '/..' . '/diff/diff/src/Comparer/ValueComparer.php',
+        'Diff\\DiffOpFactory' => __DIR__ . '/..' . '/diff/diff/src/DiffOpFactory.php',
+        'Diff\\DiffOp\\AtomicDiffOp' => __DIR__ . '/..' . '/diff/diff/src/DiffOp/AtomicDiffOp.php',
+        'Diff\\DiffOp\\DiffOp' => __DIR__ . '/..' . '/diff/diff/src/DiffOp/DiffOp.php',
+        'Diff\\DiffOp\\DiffOpAdd' => __DIR__ . '/..' . '/diff/diff/src/DiffOp/DiffOpAdd.php',
+        'Diff\\DiffOp\\DiffOpChange' => __DIR__ . '/..' . '/diff/diff/src/DiffOp/DiffOpChange.php',
+        'Diff\\DiffOp\\DiffOpRemove' => __DIR__ . '/..' . '/diff/diff/src/DiffOp/DiffOpRemove.php',
+        'Diff\\DiffOp\\Diff\\Diff' => __DIR__ . '/..' . '/diff/diff/src/DiffOp/Diff/Diff.php',
+        'Diff\\DiffOp\\Diff\\ListDiff' => __DIR__ . '/..' . '/diff/diff/src/DiffOp/Diff/ListDiff.php',
+        'Diff\\DiffOp\\Diff\\MapDiff' => __DIR__ . '/..' . '/diff/diff/src/DiffOp/Diff/MapDiff.php',
+        'Diff\\Differ\\CallbackListDiffer' => __DIR__ . '/..' . '/diff/diff/src/Differ/CallbackListDiffer.php',
+        'Diff\\Differ\\Differ' => __DIR__ . '/..' . '/diff/diff/src/Differ/Differ.php',
+        'Diff\\Differ\\ListDiffer' => __DIR__ . '/..' . '/diff/diff/src/Differ/ListDiffer.php',
+        'Diff\\Differ\\MapDiffer' => __DIR__ . '/..' . '/diff/diff/src/Differ/MapDiffer.php',
+        'Diff\\Differ\\OrderedListDiffer' => __DIR__ . '/..' . '/diff/diff/src/Differ/OrderedListDiffer.php',
+        'Diff\\Patcher\\ListPatcher' => __DIR__ . '/..' . '/diff/diff/src/Patcher/ListPatcher.php',
+        'Diff\\Patcher\\MapPatcher' => __DIR__ . '/..' . '/diff/diff/src/Patcher/MapPatcher.php',
+        'Diff\\Patcher\\Patcher' => __DIR__ . '/..' . '/diff/diff/src/Patcher/Patcher.php',
+        'Diff\\Patcher\\PatcherException' => __DIR__ . '/..' . '/diff/diff/src/Patcher/PatcherException.php',
+        'Diff\\Patcher\\PreviewablePatcher' => __DIR__ . '/..' . '/diff/diff/src/Patcher/PreviewablePatcher.php',
+        'Diff\\Patcher\\ThrowingPatcher' => __DIR__ . '/..' . '/diff/diff/src/Patcher/ThrowingPatcher.php',
         'Elastica\\AbstractUpdateAction' => __DIR__ . '/..' . '/ruflin/elastica/lib/Elastica/AbstractUpdateAction.php',
         'Elastica\\Aggregation\\AbstractAggregation' => __DIR__ . '/..' . '/ruflin/elastica/lib/Elastica/Aggregation/AbstractAggregation.php',
         'Elastica\\Aggregation\\AbstractSimpleAggregation' => __DIR__ . '/..' . '/ruflin/elastica/lib/Elastica/Aggregation/AbstractSimpleAggregation.php',

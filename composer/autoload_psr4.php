@@ -30,6 +30,7 @@ return array(
     'Firebase\\JWT\\' => array($vendorDir . '/firebase/php-jwt/src'),
     'Elasticsearch\\' => array($vendorDir . '/elasticsearch/elasticsearch/src/Elasticsearch'),
     'Elastica\\' => array($vendorDir . '/ruflin/elastica/lib/Elastica'),
+    'Diff\\' => array($vendorDir . '/diff/diff/src'),
     'Deserializers\\' => array($vendorDir . '/serialization/serialization/src/Deserializers'),
     'Composer\\Semver\\' => array($vendorDir . '/composer/semver/src'),
     'CLDRPluralRuleParser\\' => array($vendorDir . '/wikimedia/cldr-plural-rule-parser/src'),
