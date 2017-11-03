@@ -18,6 +18,7 @@ class ComposerStaticInit_mediawiki_vendor
         'f4c767faab43077fd89ff7cf99ffb4b8' => __DIR__ . '/..' . '/serialization/serialization/Serialization.php',
         '7cb394c3af2b1ae832979b0368e0da62' => __DIR__ . '/..' . '/data-values/data-values/DataValues.php',
         '3ef87127dc6892a0a78f223558a0b940' => __DIR__ . '/..' . '/diff/diff/Diff.php',
+        'd1715cacc3c23b16a030645514266a76' => __DIR__ . '/..' . '/data-values/interfaces/Interfaces.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -34,6 +35,12 @@ class ComposerStaticInit_mediawiki_vendor
             'Wikimedia\\Composer\\' => 19,
             'Wikimedia\\Assert\\Test\\' => 22,
             'Wikimedia\\Assert\\' => 17,
+        ),
+        'V' => 
+        array (
+            'ValueValidators\\' => 16,
+            'ValueParsers\\' => 13,
+            'ValueFormatters\\' => 16,
         ),
         'S' => 
         array (
@@ -119,6 +126,18 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Assert\\' => 
         array (
             0 => __DIR__ . '/..' . '/wikimedia/assert/src',
+        ),
+        'ValueValidators\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/data-values/interfaces/src/ValueValidators',
+        ),
+        'ValueParsers\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/data-values/interfaces/src/ValueParsers',
+        ),
+        'ValueFormatters\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/data-values/interfaces/src/ValueFormatters',
         ),
         'Symfony\\Polyfill\\Mbstring\\' => 
         array (
@@ -1689,6 +1708,18 @@ class ComposerStaticInit_mediawiki_vendor
         'UtfNormal\\Constants' => __DIR__ . '/..' . '/wikimedia/utfnormal/src/Constants.php',
         'UtfNormal\\Utils' => __DIR__ . '/..' . '/wikimedia/utfnormal/src/Util.php',
         'UtfNormal\\Validator' => __DIR__ . '/..' . '/wikimedia/utfnormal/src/Validator.php',
+        'ValueFormatters\\FormatterOptions' => __DIR__ . '/..' . '/data-values/interfaces/src/ValueFormatters/FormatterOptions.php',
+        'ValueFormatters\\FormattingException' => __DIR__ . '/..' . '/data-values/interfaces/src/ValueFormatters/FormattingException.php',
+        'ValueFormatters\\Test\\ValueFormatterTestBase' => __DIR__ . '/..' . '/data-values/interfaces/tests/ValueFormatters/ValueFormatterTestBase.php',
+        'ValueFormatters\\ValueFormatter' => __DIR__ . '/..' . '/data-values/interfaces/src/ValueFormatters/ValueFormatter.php',
+        'ValueFormatters\\ValueFormatterBase' => __DIR__ . '/..' . '/data-values/interfaces/src/ValueFormatters/ValueFormatterBase.php',
+        'ValueParsers\\ParseException' => __DIR__ . '/..' . '/data-values/interfaces/src/ValueParsers/ParseException.php',
+        'ValueParsers\\ParserOptions' => __DIR__ . '/..' . '/data-values/interfaces/src/ValueParsers/ParserOptions.php',
+        'ValueParsers\\ValueParser' => __DIR__ . '/..' . '/data-values/interfaces/src/ValueParsers/ValueParser.php',
+        'ValueValidators\\Error' => __DIR__ . '/..' . '/data-values/interfaces/src/ValueValidators/Error.php',
+        'ValueValidators\\Result' => __DIR__ . '/..' . '/data-values/interfaces/src/ValueValidators/Result.php',
+        'ValueValidators\\ValueValidator' => __DIR__ . '/..' . '/data-values/interfaces/src/ValueValidators/ValueValidator.php',
+        'ValueValidators\\ValueValidatorObject' => __DIR__ . '/..' . '/data-values/interfaces/src/ValueValidators/ValueValidatorObject.php',
         'Wikimedia\\Assert\\Assert' => __DIR__ . '/..' . '/wikimedia/assert/src/Assert.php',
         'Wikimedia\\Assert\\AssertionException' => __DIR__ . '/..' . '/wikimedia/assert/src/AssertionException.php',
         'Wikimedia\\Assert\\InvariantException' => __DIR__ . '/..' . '/wikimedia/assert/src/InvariantException.php',

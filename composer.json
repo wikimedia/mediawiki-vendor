@@ -63,6 +63,7 @@
 		"composer/semver": "1.4.2",
 		"cssjanus/cssjanus": "1.2.0",
 		"data-values/data-values": "1.1.1",
+		"data-values/interfaces": "0.2.5",
 		"diff/diff": "2.2.0",
 		"dnoegel/php-xdg-base-dir": "0.1",
 		"firebase/php-jwt": "4.0.0",
