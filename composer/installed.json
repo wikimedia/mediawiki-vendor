@@ -3721,5 +3721,64 @@
             "wikibase",
             "wikidata"
         ]
+    },
+    {
+        "name": "wikibase/data-model-services",
+        "version": "3.8.0",
+        "version_normalized": "3.8.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wmde/WikibaseDataModelServices.git",
+            "reference": "46dd838be0076c570666d6d40796bf5437839dd2"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wmde/WikibaseDataModelServices/zipball/46dd838be0076c570666d6d40796bf5437839dd2",
+            "reference": "46dd838be0076c570666d6d40796bf5437839dd2",
+            "shasum": ""
+        },
+        "require": {
+            "data-values/data-values": "~0.1|~1.0",
+            "diff/diff": "~2.0|~1.0",
+            "php": ">=5.5.0",
+            "wikibase/data-model": "~7.0|~6.3",
+            "wikimedia/assert": "~0.2.2"
+        },
+        "require-dev": {
+            "mediawiki/mediawiki-codesniffer": "~0.7",
+            "phpmd/phpmd": "~2.3",
+            "phpunit/phpunit": "~4.8"
+        },
+        "time": "2017-03-17T11:21:13+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "3.8.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Wikibase\\DataModel\\Services\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "authors": [
+            {
+                "name": "Jeroen De Dauw",
+                "email": "jeroendedauw@gmail.com",
+                "homepage": "http://jeroendedauw.com"
+            }
+        ],
+        "description": "Services around the Wikibase DataModel",
+        "homepage": "https://github.com/wmde/WikibaseDataModelServices",
+        "keywords": [
+            "DataModel",
+            "wikibase",
+            "wikidata"
+        ]
     }
 ]

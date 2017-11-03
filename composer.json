@@ -106,6 +106,7 @@
 		"symfony/var-dumper": "3.3.4",
 		"wikibase/data-model": "7.2.0",
 		"wikibase/data-model-serialization": "2.6.0",
+		"wikibase/data-model-services": "3.8.0",
 		"wikibase/internal-serialization": "2.7.0",
 		"wikimedia/assert": "0.2.2",
 		"wikimedia/avro": "1.7.7",
