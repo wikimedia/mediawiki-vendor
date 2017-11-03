@@ -35,6 +35,7 @@ return array(
     'Elastica\\' => array($vendorDir . '/ruflin/elastica/lib/Elastica'),
     'Diff\\' => array($vendorDir . '/diff/diff/src'),
     'Deserializers\\' => array($vendorDir . '/serialization/serialization/src/Deserializers'),
+    'DataValues\\Geo\\' => array($vendorDir . '/data-values/geo/src'),
     'DataValues\\' => array($vendorDir . '/data-values/common/src/DataValues'),
     'Composer\\Semver\\' => array($vendorDir . '/composer/semver/src'),
     'CLDRPluralRuleParser\\' => array($vendorDir . '/wikimedia/cldr-plural-rule-parser/src'),

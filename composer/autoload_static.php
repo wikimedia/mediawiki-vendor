@@ -8,9 +8,9 @@ class ComposerStaticInit_mediawiki_vendor
 {
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
-        'a24b5daa493ecb5e767c7d1592a8da36' => __DIR__ . '/..' . '/mediawiki/at-ease/src/Functions.php',
         '7cb394c3af2b1ae832979b0368e0da62' => __DIR__ . '/..' . '/data-values/data-values/DataValues.php',
         'd1715cacc3c23b16a030645514266a76' => __DIR__ . '/..' . '/data-values/interfaces/Interfaces.php',
+        'a24b5daa493ecb5e767c7d1592a8da36' => __DIR__ . '/..' . '/mediawiki/at-ease/src/Functions.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         '90559502573a0d473dc66fde5c0ff7e2' => __DIR__ . '/..' . '/data-values/common/Common.php',
         'c3f7f0e81464740a933532e81fa26cc7' => __DIR__ . '/..' . '/wikimedia/base-convert/src/Functions.php',
@@ -21,6 +21,7 @@ class ComposerStaticInit_mediawiki_vendor
         'f4c767faab43077fd89ff7cf99ffb4b8' => __DIR__ . '/..' . '/serialization/serialization/Serialization.php',
         '3ef87127dc6892a0a78f223558a0b940' => __DIR__ . '/..' . '/diff/diff/Diff.php',
         '908a529187e4aa80293c8aa78e1ec48d' => __DIR__ . '/..' . '/data-values/time/Time.php',
+        '5a494680c593293bd6035e42e2a6825c' => __DIR__ . '/..' . '/data-values/geo/Geo.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -88,6 +89,7 @@ class ComposerStaticInit_mediawiki_vendor
         array (
             'Diff\\' => 5,
             'Deserializers\\' => 14,
+            'DataValues\\Geo\\' => 15,
             'DataValues\\' => 11,
         ),
         'C' => 
@@ -215,6 +217,10 @@ class ComposerStaticInit_mediawiki_vendor
         'Deserializers\\' => 
         array (
             0 => __DIR__ . '/..' . '/serialization/serialization/src/Deserializers',
+        ),
+        'DataValues\\Geo\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/data-values/geo/src',
         ),
         'DataValues\\' => 
         array (
@@ -402,6 +408,18 @@ class ComposerStaticInit_mediawiki_vendor
         'DataValues\\BooleanValue' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/BooleanValue.php',
         'DataValues\\DataValue' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/DataValue.php',
         'DataValues\\DataValueObject' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/DataValueObject.php',
+        'DataValues\\Geo\\Formatters\\GlobeCoordinateFormatter' => __DIR__ . '/..' . '/data-values/geo/src/Formatters/GlobeCoordinateFormatter.php',
+        'DataValues\\Geo\\Formatters\\LatLongFormatter' => __DIR__ . '/..' . '/data-values/geo/src/Formatters/LatLongFormatter.php',
+        'DataValues\\Geo\\GlobeMath' => __DIR__ . '/..' . '/data-values/geo/src/GlobeMath.php',
+        'DataValues\\Geo\\Parsers\\DdCoordinateParser' => __DIR__ . '/..' . '/data-values/geo/src/Parsers/DdCoordinateParser.php',
+        'DataValues\\Geo\\Parsers\\DmCoordinateParser' => __DIR__ . '/..' . '/data-values/geo/src/Parsers/DmCoordinateParser.php',
+        'DataValues\\Geo\\Parsers\\DmsCoordinateParser' => __DIR__ . '/..' . '/data-values/geo/src/Parsers/DmsCoordinateParser.php',
+        'DataValues\\Geo\\Parsers\\FloatCoordinateParser' => __DIR__ . '/..' . '/data-values/geo/src/Parsers/FloatCoordinateParser.php',
+        'DataValues\\Geo\\Parsers\\GlobeCoordinateParser' => __DIR__ . '/..' . '/data-values/geo/src/Parsers/GlobeCoordinateParser.php',
+        'DataValues\\Geo\\Parsers\\LatLongParser' => __DIR__ . '/..' . '/data-values/geo/src/Parsers/LatLongParser.php',
+        'DataValues\\Geo\\Parsers\\LatLongParserBase' => __DIR__ . '/..' . '/data-values/geo/src/Parsers/LatLongParserBase.php',
+        'DataValues\\Geo\\Values\\GlobeCoordinateValue' => __DIR__ . '/..' . '/data-values/geo/src/Values/GlobeCoordinateValue.php',
+        'DataValues\\Geo\\Values\\LatLongValue' => __DIR__ . '/..' . '/data-values/geo/src/Values/LatLongValue.php',
         'DataValues\\IllegalValueException' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/IllegalValueException.php',
         'DataValues\\MonolingualTextValue' => __DIR__ . '/..' . '/data-values/common/src/DataValues/MonolingualTextValue.php',
         'DataValues\\MultilingualTextValue' => __DIR__ . '/..' . '/data-values/common/src/DataValues/MultilingualTextValue.php',
