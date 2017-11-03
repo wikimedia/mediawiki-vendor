@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e5d418aceefd31e04ccb37f41a6cfc78",
+    "content-hash": "11807db328dfd75d4decf644811253f2",
     "packages": [
         {
             "name": "composer/semver",
@@ -2322,6 +2322,68 @@
                 "dump"
             ],
             "time": "2017-07-05T13:02:37+00:00"
+        },
+        {
+            "name": "wikibase/data-model",
+            "version": "7.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wmde/WikibaseDataModel.git",
+                "reference": "b54117c9428a034bef9c28d8f1897a4e9781ff02"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wmde/WikibaseDataModel/zipball/b54117c9428a034bef9c28d8f1897a4e9781ff02",
+                "reference": "b54117c9428a034bef9c28d8f1897a4e9781ff02",
+                "shasum": ""
+            },
+            "require": {
+                "data-values/data-values": "~0.1|~1.0",
+                "php": ">=5.5.9",
+                "wikimedia/assert": "~0.2.2"
+            },
+            "require-dev": {
+                "ockcyp/covers-validator": "~0.4.0",
+                "phpmd/phpmd": "~2.3",
+                "phpunit/phpunit": "~4.8",
+                "wikibase/wikibase-codesniffer": "^0.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "7.2.x-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "WikibaseDataModel.php"
+                ],
+                "psr-4": {
+                    "Wikibase\\DataModel\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Thiemo Mättig"
+                },
+                {
+                    "name": "Jeroen De Dauw",
+                    "email": "jeroendedauw@gmail.com",
+                    "homepage": "http://jeroendedauw.com"
+                }
+            ],
+            "description": "PHP implementation of the Wikibase DataModel",
+            "homepage": "https://github.com/wmde/WikibaseDataModel",
+            "keywords": [
+                "DataModel",
+                "wikibase",
+                "wikidata"
+            ],
+            "time": "2017-10-23T11:52:21+00:00"
         },
         {
             "name": "wikimedia/assert",

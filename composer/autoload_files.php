@@ -22,4 +22,5 @@ return array(
     '908a529187e4aa80293c8aa78e1ec48d' => $vendorDir . '/data-values/time/Time.php',
     '5a494680c593293bd6035e42e2a6825c' => $vendorDir . '/data-values/geo/Geo.php',
     'c15f8000750e4e04ba559d9745044427' => $vendorDir . '/data-values/number/Number.php',
+    'dc2c047038b9f5c71759f55f00aba99b' => $vendorDir . '/wikibase/data-model/WikibaseDataModel.php',
 );
