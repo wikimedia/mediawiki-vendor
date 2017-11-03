@@ -3460,5 +3460,65 @@
             "valueparsers",
             "wikidata"
         ]
+    },
+    {
+        "name": "data-values/serialization",
+        "version": "1.2.2",
+        "version_normalized": "1.2.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/DataValues/Serialization.git",
+            "reference": "d849fc1a2f00f22027d504c4e70fd00a0c6a7579"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/DataValues/Serialization/zipball/d849fc1a2f00f22027d504c4e70fd00a0c6a7579",
+            "reference": "d849fc1a2f00f22027d504c4e70fd00a0c6a7579",
+            "shasum": ""
+        },
+        "require": {
+            "data-values/data-values": "~1.0|~0.1",
+            "php": ">=5.5.9",
+            "serialization/serialization": "~4.0|~3.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "~4.8",
+            "wikibase/wikibase-codesniffer": "^0.2.0"
+        },
+        "time": "2017-10-25T13:47:05+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.2.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "DataValues\\Serializers\\": "src/Serializers",
+                "DataValues\\Deserializers\\": "src/Deserializers"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "authors": [
+            {
+                "name": "Jeroen De Dauw",
+                "email": "jeroendedauw@gmail.com",
+                "homepage": "http://jeroendedauw.com",
+                "role": "Developer"
+            }
+        ],
+        "description": "Serializers and deserializers for DataValue implementations",
+        "homepage": "https://github.com/DataValues/Serialization",
+        "keywords": [
+            "datavalues",
+            "deserializers",
+            "serialization",
+            "serializers",
+            "wikidata"
+        ]
     }
 ]

@@ -13,12 +13,12 @@ class ComposerStaticInit_mediawiki_vendor
         'a24b5daa493ecb5e767c7d1592a8da36' => __DIR__ . '/..' . '/mediawiki/at-ease/src/Functions.php',
         '90559502573a0d473dc66fde5c0ff7e2' => __DIR__ . '/..' . '/data-values/common/Common.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
+        'f4c767faab43077fd89ff7cf99ffb4b8' => __DIR__ . '/..' . '/serialization/serialization/Serialization.php',
         'c3f7f0e81464740a933532e81fa26cc7' => __DIR__ . '/..' . '/wikimedia/base-convert/src/Functions.php',
         'c50606d667a3fde2b80a955639479d3d' => __DIR__ . '/..' . '/wikimedia/timestamp/src/defines.php',
         'd55c27a601de788b19a09b7d057d07ae' => __DIR__ . '/..' . '/wikimedia/relpath/src/RelPath.php',
         '04c6c5c2f7095ccf6c481d3e53e1776f' => __DIR__ . '/..' . '/mustangostang/spyc/Spyc.php',
         'e7223560d890eab89cda23685e711e2c' => __DIR__ . '/..' . '/psy/psysh/src/Psy/functions.php',
-        'f4c767faab43077fd89ff7cf99ffb4b8' => __DIR__ . '/..' . '/serialization/serialization/Serialization.php',
         '3ef87127dc6892a0a78f223558a0b940' => __DIR__ . '/..' . '/diff/diff/Diff.php',
         '908a529187e4aa80293c8aa78e1ec48d' => __DIR__ . '/..' . '/data-values/time/Time.php',
         '5a494680c593293bd6035e42e2a6825c' => __DIR__ . '/..' . '/data-values/geo/Geo.php',
@@ -90,7 +90,9 @@ class ComposerStaticInit_mediawiki_vendor
         array (
             'Diff\\' => 5,
             'Deserializers\\' => 14,
+            'DataValues\\Serializers\\' => 23,
             'DataValues\\Geo\\' => 15,
+            'DataValues\\Deserializers\\' => 25,
             'DataValues\\' => 11,
         ),
         'C' => 
@@ -219,9 +221,17 @@ class ComposerStaticInit_mediawiki_vendor
         array (
             0 => __DIR__ . '/..' . '/serialization/serialization/src/Deserializers',
         ),
+        'DataValues\\Serializers\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/data-values/serialization/src/Serializers',
+        ),
         'DataValues\\Geo\\' => 
         array (
             0 => __DIR__ . '/..' . '/data-values/geo/src',
+        ),
+        'DataValues\\Deserializers\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/data-values/serialization/src/Deserializers',
         ),
         'DataValues\\' => 
         array (
@@ -414,6 +424,7 @@ class ComposerStaticInit_mediawiki_vendor
         'DataValues\\DataValueObject' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/DataValueObject.php',
         'DataValues\\DecimalMath' => __DIR__ . '/..' . '/data-values/number/src/DataValues/DecimalMath.php',
         'DataValues\\DecimalValue' => __DIR__ . '/..' . '/data-values/number/src/DataValues/DecimalValue.php',
+        'DataValues\\Deserializers\\DataValueDeserializer' => __DIR__ . '/..' . '/data-values/serialization/src/Deserializers/DataValueDeserializer.php',
         'DataValues\\Geo\\Formatters\\GlobeCoordinateFormatter' => __DIR__ . '/..' . '/data-values/geo/src/Formatters/GlobeCoordinateFormatter.php',
         'DataValues\\Geo\\Formatters\\LatLongFormatter' => __DIR__ . '/..' . '/data-values/geo/src/Formatters/LatLongFormatter.php',
         'DataValues\\Geo\\GlobeMath' => __DIR__ . '/..' . '/data-values/geo/src/GlobeMath.php',
@@ -431,6 +442,7 @@ class ComposerStaticInit_mediawiki_vendor
         'DataValues\\MultilingualTextValue' => __DIR__ . '/..' . '/data-values/common/src/DataValues/MultilingualTextValue.php',
         'DataValues\\NumberValue' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/NumberValue.php',
         'DataValues\\QuantityValue' => __DIR__ . '/..' . '/data-values/number/src/DataValues/QuantityValue.php',
+        'DataValues\\Serializers\\DataValueSerializer' => __DIR__ . '/..' . '/data-values/serialization/src/Serializers/DataValueSerializer.php',
         'DataValues\\StringValue' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/StringValue.php',
         'DataValues\\Tests\\DataValueTest' => __DIR__ . '/..' . '/data-values/data-values/tests/phpunit/DataValueTest.php',
         'DataValues\\TimeValue' => __DIR__ . '/..' . '/data-values/time/src/DataValues/TimeValue.php',
