@@ -34,5 +34,4 @@ Thumbs.db
 .settings
 /static*
 /tags
-/.htaccess
 /.htpasswd
