@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "47546374fd63a4783d14b8430f4a56ef",
+    "content-hash": "4eb14a435989049127b8e9597dfdf335",
     "packages": [
         {
             "name": "composer/semver",
@@ -2325,16 +2325,16 @@
         },
         {
             "name": "wikibase/data-model",
-            "version": "7.2.0",
+            "version": "7.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wmde/WikibaseDataModel.git",
-                "reference": "b54117c9428a034bef9c28d8f1897a4e9781ff02"
+                "reference": "738cc82eb7c8a994ed06392ccb456abf00eb702d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wmde/WikibaseDataModel/zipball/b54117c9428a034bef9c28d8f1897a4e9781ff02",
-                "reference": "b54117c9428a034bef9c28d8f1897a4e9781ff02",
+                "url": "https://api.github.com/repos/wmde/WikibaseDataModel/zipball/738cc82eb7c8a994ed06392ccb456abf00eb702d",
+                "reference": "738cc82eb7c8a994ed06392ccb456abf00eb702d",
                 "shasum": ""
             },
             "require": {
@@ -2351,7 +2351,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "7.2.x-dev"
+                    "dev-master": "7.3.x-dev"
                 }
             },
             "autoload": {
@@ -2383,7 +2383,7 @@
                 "wikibase",
                 "wikidata"
             ],
-            "time": "2017-10-23T11:52:21+00:00"
+            "time": "2017-11-13T13:21:52+00:00"
         },
         {
             "name": "wikibase/data-model-serialization",
