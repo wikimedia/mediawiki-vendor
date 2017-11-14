@@ -42,6 +42,8 @@ return array(
     'DataValues\\Geo\\' => array($vendorDir . '/data-values/geo/src'),
     'DataValues\\Deserializers\\' => array($vendorDir . '/data-values/serialization/src/Deserializers'),
     'DataValues\\' => array($vendorDir . '/data-values/common/src/DataValues'),
+    'DataTypes\\Tests\\' => array($vendorDir . '/data-values/data-types/tests'),
+    'DataTypes\\' => array($vendorDir . '/data-values/data-types/src'),
     'Composer\\Semver\\' => array($vendorDir . '/composer/semver/src'),
     'CLDRPluralRuleParser\\' => array($vendorDir . '/wikimedia/cldr-plural-rule-parser/src'),
 );

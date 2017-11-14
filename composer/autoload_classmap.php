@@ -73,6 +73,8 @@ return array(
     'Composer\\Semver\\VersionParser' => $vendorDir . '/composer/semver/src/VersionParser.php',
     'Console_Getopt' => $vendorDir . '/pear/console_getopt/Console/Getopt.php',
     'Copyable' => $vendorDir . '/data-values/data-values/src/interfaces/Copyable.php',
+    'DataTypes\\DataType' => $vendorDir . '/data-values/data-types/src/DataType.php',
+    'DataTypes\\DataTypeFactory' => $vendorDir . '/data-values/data-types/src/DataTypeFactory.php',
     'DataValues\\BooleanValue' => $vendorDir . '/data-values/data-values/src/DataValues/BooleanValue.php',
     'DataValues\\DataValue' => $vendorDir . '/data-values/data-values/src/DataValues/DataValue.php',
     'DataValues\\DataValueObject' => $vendorDir . '/data-values/data-values/src/DataValues/DataValueObject.php',
