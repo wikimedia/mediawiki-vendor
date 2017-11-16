@@ -1724,6 +1724,7 @@ return array(
     'Wikimedia\\Composer\\Merge\\StabilityFlags' => $vendorDir . '/wikimedia/composer-merge-plugin/src/Merge/StabilityFlags.php',
     'Wikimedia\\Equivset\\Command\\GenerateEquivset' => $vendorDir . '/wikimedia/equivset/src/Command/GenerateEquivset.php',
     'Wikimedia\\Equivset\\Equivset' => $vendorDir . '/wikimedia/equivset/src/Equivset.php',
+    'Wikimedia\\Equivset\\EquivsetInterface' => $vendorDir . '/wikimedia/equivset/src/EquivsetInterface.php',
     'Wikimedia\\Equivset\\Exception\\EquivsetException' => $vendorDir . '/wikimedia/equivset/src/Exception/EquivsetException.php',
     'Wikimedia\\PhpSessionSerializer' => $vendorDir . '/wikimedia/php-session-serializer/src/Wikimedia/PhpSessionSerializer.php',
     'Wikimedia\\Purtle\\BNodeLabeler' => $vendorDir . '/wikimedia/purtle/src/BNodeLabeler.php',

@@ -29,6 +29,29 @@ use UtfNormal\Utils;
 class GenerateEquivset extends Command {
 
 	/**
+	 * @var string
+	 */
+	protected $dataDir;
+
+	/**
+	 * @var string
+	 */
+	protected $distDir;
+
+	/**
+	 * Generate Equivset
+	 *
+	 * @param string $dataDir Data Directory
+	 * @param string $distDir Distrobution Directory
+	 */
+	public function __construct( $dataDir = '', $distDir = '' ) {
+		parent::__construct();
+
+		$this->dataDir = $dataDir ? $dataDir : __DIR__ . '/../../data';
+		$this->distDir = $distDir ? $distDir : __DIR__ . '/../../dist';
+	}
+
+	/**
 	 * {@inheritdoc}
 	 */
 	protected function configure() {
@@ -44,10 +67,7 @@ class GenerateEquivset extends Command {
 	 * @return int Return status.
 	 */
 	public function execute( InputInterface $input, OutputInterface $output ) {
-		$dataDir = __DIR__ . '/../../data';
-		$distDir = __DIR__ . '/../../dist';
-
-		$lines = file( $dataDir . '/equivset.in' );
+		$lines = file( $this->dataDir . '/equivset.in' );
 		if ( !$lines ) {
 			throw new \Exception( "Unable to open equivset.in" );
 		}
@@ -80,7 +100,7 @@ class GenerateEquivset extends Command {
 					$line, $m
 				)
 			) {
-				$output->writeln( "Error: invalid entry at line $lineNum: $line" );
+				$output->writeln( "<error>Error: invalid entry at line $lineNum: $line</error>" );
 				$exitStatus = 1;
 				continue;
 			}
@@ -92,11 +112,11 @@ class GenerateEquivset extends Command {
 					$output->writeln( "Bytes: " . strlen( $m['charleft'] ) );
 					$output->writeln( bin2hex( $line ) );
 					$hexForm = bin2hex( $m['charleft'] );
-					$output->writeln( "Invalid UTF-8 character \"{$m['charleft']}\" ($hexForm) at " .
-						"line $lineNum: $line" );
+					$output->writeln( "<error>Invalid UTF-8 character \"{$m['charleft']}\" ($hexForm) at " .
+						"line $lineNum: $line</error>" );
 				} else {
-					$output->writeln( "Error: left number ({$m['hexleft']}) does not match left " .
-						"character ($actual) at line $lineNum: $line" );
+					$output->writeln( "<error>Error: left number ({$m['hexleft']}) does not match left " .
+						"character ($actual) at line $lineNum: $line</error>" );
 				}
 				$error = true;
 			}
@@ -106,11 +126,11 @@ class GenerateEquivset extends Command {
 				$actual = Utils::utf8ToCodepoint( $m['charright'] );
 				if ( $actual === false ) {
 					$hexForm = bin2hex( $m['charright'] );
-					$output->writeln( "Invalid UTF-8 character \"{$m['charleft']}\" ($hexForm) at " .
-						"line $lineNum: $line" );
+					$output->writeln( "<error>Invalid UTF-8 character \"{$m['charleft']}\" ($hexForm) at " .
+						"line $lineNum: $line</error>" );
 				} else {
-					$output->writeln( "Error: right number ({$m['hexright']}) does not match right " .
-						"character ($actual) at line $lineNum: $line" );
+					$output->writeln( "<error>Error: right number ({$m['hexright']}) does not match right " .
+						"character ($actual) at line $lineNum: $line</error>" );
 				}
 				$error = true;
 			}
@@ -153,24 +173,24 @@ class GenerateEquivset extends Command {
 			$jsonData + $setsByChar,
 			JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
 		);
-		file_put_contents( $distDir . '/equivset.json', $data );
+		file_put_contents( $this->distDir . '/equivset.json', $data );
 
 		// Serialized.
-		file_put_contents( $distDir . '/equivset.ser', serialize( $setsByChar ) );
+		file_put_contents( $this->distDir . '/equivset.ser', serialize( $setsByChar ) );
 
 		// Text File.
-		touch( $distDir . '/equivset.txt' );
-		$textFile = fopen( $distDir . '/equivset.txt', 'w' );
+		touch( $this->distDir . '/equivset.txt' );
+		$textFile = fopen( $this->distDir . '/equivset.txt', 'w' );
 		foreach ( $sets as $members ) {
 			fwrite( $textFile, implode( ' ', $members ) . PHP_EOL );
 		}
 		fclose( $textFile );
 
-		$text = 'Finished';
 		if ( $exitStatus > 0 ) {
-			$text .= ' with errors';
+			$output->writeln( '<error>Finished with errors</error>' );
+		} else {
+			$output->writeln( '<info>Finished</info>' );
 		}
-		$output->writeln( $text );
 
 		return $exitStatus;
 	}

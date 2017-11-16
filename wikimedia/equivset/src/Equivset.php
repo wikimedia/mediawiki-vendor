@@ -21,9 +21,9 @@ namespace Wikimedia\Equivset;
 use Wikimedia\Equivset\Exception\EquivsetException;
 
 /**
- * Equivset
+ * Default Equivset
  */
-class Equivset implements \IteratorAggregate {
+class Equivset implements EquivsetInterface, \IteratorAggregate {
 
 	/**
 	 * @var string
@@ -31,18 +31,14 @@ class Equivset implements \IteratorAggregate {
 	protected $serializedPath;
 
 	/**
-	 * @var array
-	 */
-	protected $data;
-
-	/**
 	 * Equivset
 	 *
 	 * @param array $data Equalvalent Set
+	 * @param string $serializedPath Path of the serialized equivset array.
 	 */
-	public function __construct( array $data = [] ) {
+	public function __construct( array $data = [], $serializedPath = '' ) {
 		$this->data = $data;
-		$this->serializedPath = __DIR__ . '/../dist/equivset.ser';
+		$this->serializedPath = $serializedPath ? $serializedPath : __DIR__ . '/../dist/equivset.ser';
 	}
 
 	/**
@@ -59,38 +55,7 @@ class Equivset implements \IteratorAggregate {
 	}
 
 	/**
-	 * Gets the equivset.
-	 *
-	 * @return array An associative array of equivalent characters.
-	 *
-	 * @throws EquivsetException If the serialized equivset is not loaded.
-	 */
-	protected function load() {
-		if ( !file_exists( $this->serializedPath ) ) {
-			throw new EquivsetException( 'Serialized equivset is missing' );
-		}
-
-		if ( !is_readable( $this->serializedPath ) ) {
-			throw new EquivsetException( 'Serialized equivset is unreadable' );
-		}
-
-		$contents = file_get_contents( $this->serializedPath );
-
-		if ( $contents === false ) {
-			throw new EquivsetException( 'Reading serialized equivset failed' );
-		}
-
-		$data = unserialize( $contents );
-
-		if ( $data === false ) {
-			throw new EquivsetException( 'Unserializing serialized equivset failed' );
-		}
-
-		return $data;
-	}
-
-	/**
-	 * Normalize a string.
+	 * {@inheritdoc}
 	 *
 	 * @param string $value The string to normalize against the equivset.
 	 *
@@ -103,7 +68,19 @@ class Equivset implements \IteratorAggregate {
 	}
 
 	/**
-	 * Deteremines if an equivalent character exists.
+	 * {@inheritdoc}
+	 *
+	 * @param string $str1 The first string.
+	 * @param string $str2 The second string.
+	 *
+	 * @return string
+	 */
+	public function isEqual( $str1, $str2 ) {
+		return $this->normalize( $str1 ) === $this->normalize( $str2 );
+	}
+
+	/**
+	 * {@inheritdoc}
 	 *
 	 * @param string $key The character that was used.
 	 *
@@ -116,7 +93,7 @@ class Equivset implements \IteratorAggregate {
 	}
 
 	/**
-	 * Get an equivalent character.
+	 * {@inheritdoc}
 	 *
 	 * @param string $key The character that was used.
 	 *
@@ -143,4 +120,33 @@ class Equivset implements \IteratorAggregate {
 		return new \ArrayIterator( $this->all() );
 	}
 
+	/**
+	 * Gets the equivset.
+	 *
+	 * @return array An associative array of equivalent characters.
+	 *
+	 * @throws EquivsetException If the serialized equivset is not loaded.
+	 */
+	protected function load() {
+		if ( !file_exists( $this->serializedPath ) ) {
+			throw new EquivsetException( 'Serialized equivset is missing' );
+		}
+
+		if ( !is_readable( $this->serializedPath ) ) {
+			throw new EquivsetException( 'Serialized equivset is unreadable' );
+		}
+
+		// file_get_contents() will not fail at this point since none of the
+		// conditions that can cause a failure can happen at this point.
+		// @see http://php.net/manual/en/function.file-get-contents.php
+		$contents = file_get_contents( $this->serializedPath );
+
+		$data = unserialize( $contents );
+
+		if ( $data === false ) {
+			throw new EquivsetException( 'Unserializing serialized equivset failed' );
+		}
+
+		return $data;
+	}
 }
