@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "75dfcdd9f65a99995bfd9302c0096caf",
+    "content-hash": "6f68bf26abea37e7212cc0afe9cb9341",
     "packages": [
         {
             "name": "composer/semver",
@@ -163,59 +163,6 @@
                 "wikidata"
             ],
             "time": "2017-08-09T18:20:52+00:00"
-        },
-        {
-            "name": "data-values/data-types",
-            "version": "2.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/wikimedia/mediawiki-extensions-DataTypes.git",
-                "reference": "55c4aae1f3704aa3764babcbe165a314e864a301"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-extensions-DataTypes/zipball/55c4aae1f3704aa3764babcbe165a314e864a301",
-                "reference": "55c4aae1f3704aa3764babcbe165a314e864a301",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.5.9"
-            },
-            "require-dev": {
-                "jakub-onderka/php-console-highlighter": "0.3.2",
-                "jakub-onderka/php-parallel-lint": "0.9.2",
-                "phpunit/phpunit": "~4.8",
-                "wikibase/wikibase-codesniffer": "^0.1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "DataTypes\\": "src/",
-                    "DataTypes\\Tests\\": "tests/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "Jeroen De Dauw",
-                    "email": "jeroendedauw@gmail.com",
-                    "homepage": "http://jeroendedauw.com",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Daniel Kinzler"
-                }
-            ],
-            "description": "PHP library defining the DataTypes\\DataType class of which instances represent a type of value, such as \"positive integer\" or \"percentage\".",
-            "homepage": "https://github.com/wmde/DataTypes",
-            "keywords": [
-                "datatypes",
-                "datavalues"
-            ],
-            "time": "2017-11-14T12:29:53+00:00"
         },
         {
             "name": "data-values/data-values",

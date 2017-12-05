@@ -98,8 +98,6 @@ class ComposerStaticInit_mediawiki_vendor
             'DataValues\\Geo\\' => 15,
             'DataValues\\Deserializers\\' => 25,
             'DataValues\\' => 11,
-            'DataTypes\\Tests\\' => 16,
-            'DataTypes\\' => 10,
         ),
         'C' => 
         array (
@@ -255,14 +253,6 @@ class ComposerStaticInit_mediawiki_vendor
         'DataValues\\' => 
         array (
             0 => __DIR__ . '/..' . '/data-values/common/src/DataValues',
-        ),
-        'DataTypes\\Tests\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/data-values/data-types/tests',
-        ),
-        'DataTypes\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/data-values/data-types/src',
         ),
         'Composer\\Semver\\' => 
         array (
@@ -446,8 +436,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Composer\\Semver\\VersionParser' => __DIR__ . '/..' . '/composer/semver/src/VersionParser.php',
         'Console_Getopt' => __DIR__ . '/..' . '/pear/console_getopt/Console/Getopt.php',
         'Copyable' => __DIR__ . '/..' . '/data-values/data-values/src/interfaces/Copyable.php',
-        'DataTypes\\DataType' => __DIR__ . '/..' . '/data-values/data-types/src/DataType.php',
-        'DataTypes\\DataTypeFactory' => __DIR__ . '/..' . '/data-values/data-types/src/DataTypeFactory.php',
         'DataValues\\BooleanValue' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/BooleanValue.php',
         'DataValues\\DataValue' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/DataValue.php',
         'DataValues\\DataValueObject' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/DataValueObject.php',
