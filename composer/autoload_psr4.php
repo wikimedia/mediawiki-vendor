@@ -31,6 +31,7 @@ return array(
     'Psr\\Log\\' => array($vendorDir . '/psr/log/Psr/Log'),
     'PhpParser\\' => array($vendorDir . '/nikic/php-parser/lib/PhpParser'),
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
+    'LuceneExplain\\' => array($vendorDir . '/wikimedia/lucene-explain-parser/src'),
     'JsonSchema\\' => array($vendorDir . '/justinrainbow/json-schema/src/JsonSchema'),
     'GDText\\' => array($vendorDir . '/stil/gd-text/src'),
     'Firebase\\JWT\\' => array($vendorDir . '/firebase/php-jwt/src'),

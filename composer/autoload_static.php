@@ -73,6 +73,10 @@ class ComposerStaticInit_mediawiki_vendor
         array (
             'Monolog\\' => 8,
         ),
+        'L' => 
+        array (
+            'LuceneExplain\\' => 14,
+        ),
         'J' => 
         array (
             'JsonSchema\\' => 11,
@@ -209,6 +213,10 @@ class ComposerStaticInit_mediawiki_vendor
         'Monolog\\' => 
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
+        ),
+        'LuceneExplain\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/wikimedia/lucene-explain-parser/src',
         ),
         'JsonSchema\\' => 
         array (
@@ -1060,6 +1068,25 @@ class ComposerStaticInit_mediawiki_vendor
         'Liuggio\\StatsdClient\\Service\\StatsdService' => __DIR__ . '/..' . '/liuggio/statsd-php-client/src/Liuggio/StatsdClient/Service/StatsdService.php',
         'Liuggio\\StatsdClient\\StatsdClient' => __DIR__ . '/..' . '/liuggio/statsd-php-client/src/Liuggio/StatsdClient/StatsdClient.php',
         'Liuggio\\StatsdClient\\StatsdClientInterface' => __DIR__ . '/..' . '/liuggio/statsd-php-client/src/Liuggio/StatsdClient/StatsdClientInterface.php',
+        'LuceneExplain\\ConstantScoreExplain' => __DIR__ . '/..' . '/wikimedia/lucene-explain-parser/src/ConstantScoreExplain.php',
+        'LuceneExplain\\CoordExplain' => __DIR__ . '/..' . '/wikimedia/lucene-explain-parser/src/CoordExplain.php',
+        'LuceneExplain\\DefaultSimIdfExplain' => __DIR__ . '/..' . '/wikimedia/lucene-explain-parser/src/DefaultSimIdfExplain.php',
+        'LuceneExplain\\DismaxExplain' => __DIR__ . '/..' . '/wikimedia/lucene-explain-parser/src/DismaxExplain.php',
+        'LuceneExplain\\DismaxTieExplain' => __DIR__ . '/..' . '/wikimedia/lucene-explain-parser/src/DismaxTieExplain.php',
+        'LuceneExplain\\Explain' => __DIR__ . '/..' . '/wikimedia/lucene-explain-parser/src/Explain.php',
+        'LuceneExplain\\ExplainFactory' => __DIR__ . '/..' . '/wikimedia/lucene-explain-parser/src/ExplainFactory.php',
+        'LuceneExplain\\FieldFunctionQueryExplain' => __DIR__ . '/..' . '/wikimedia/lucene-explain-parser/src/FieldFunctionQueryExplain.php',
+        'LuceneExplain\\FuncWeightExplain' => __DIR__ . '/..' . '/wikimedia/lucene-explain-parser/src/FuncWeightExplain.php',
+        'LuceneExplain\\FunctionQueryExplain' => __DIR__ . '/..' . '/wikimedia/lucene-explain-parser/src/FunctionQueryExplain.php',
+        'LuceneExplain\\MatchAllDocsExplain' => __DIR__ . '/..' . '/wikimedia/lucene-explain-parser/src/MatchAllDocsExplain.php',
+        'LuceneExplain\\MinExplain' => __DIR__ . '/..' . '/wikimedia/lucene-explain-parser/src/MinExplain.php',
+        'LuceneExplain\\ProductExplain' => __DIR__ . '/..' . '/wikimedia/lucene-explain-parser/src/ProductExplain.php',
+        'LuceneExplain\\ScoreExplain' => __DIR__ . '/..' . '/wikimedia/lucene-explain-parser/src/ScoreExplain.php',
+        'LuceneExplain\\ScriptScoreFunctionExplain' => __DIR__ . '/..' . '/wikimedia/lucene-explain-parser/src/ScriptScoreFunctionExplain.php',
+        'LuceneExplain\\SparseVector' => __DIR__ . '/..' . '/wikimedia/lucene-explain-parser/src/SparseVector.php',
+        'LuceneExplain\\SumExplain' => __DIR__ . '/..' . '/wikimedia/lucene-explain-parser/src/SumExplain.php',
+        'LuceneExplain\\VectorService' => __DIR__ . '/..' . '/wikimedia/lucene-explain-parser/src/VectorService.php',
+        'LuceneExplain\\WeightExplain' => __DIR__ . '/..' . '/wikimedia/lucene-explain-parser/src/WeightExplain.php',
         'Mail' => __DIR__ . '/..' . '/pear/mail/Mail.php',
         'Mail_RFC822' => __DIR__ . '/..' . '/pear/mail/Mail/RFC822.php',
         'Mail_mail' => __DIR__ . '/..' . '/pear/mail/Mail/mail.php',
