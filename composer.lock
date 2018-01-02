@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6f68bf26abea37e7212cc0afe9cb9341",
+    "content-hash": "0f3436b07eacbc4f02831120f725d111",
     "packages": [
         {
             "name": "composer/semver",
@@ -3208,16 +3208,16 @@
         },
         {
             "name": "wikimedia/remex-html",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-RemexHtml.git",
-                "reference": "3c596e5c66557ed7f37d8a543bc233d7fa80a52f"
+                "reference": "c7e8267eabaf1d7e89d65a35571f86ce5bbbc16a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-RemexHtml/zipball/3c596e5c66557ed7f37d8a543bc233d7fa80a52f",
-                "reference": "3c596e5c66557ed7f37d8a543bc233d7fa80a52f",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-RemexHtml/zipball/c7e8267eabaf1d7e89d65a35571f86ce5bbbc16a",
+                "reference": "c7e8267eabaf1d7e89d65a35571f86ce5bbbc16a",
                 "shasum": ""
             },
             "require": {
@@ -3225,7 +3225,7 @@
                 "wikimedia/utfnormal": "1.1.0"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "0.7.2",
+                "mediawiki/mediawiki-codesniffer": "0.12.0",
                 "phpunit/phpunit": "4.*"
             },
             "type": "library",
@@ -3245,7 +3245,7 @@
                 }
             ],
             "description": "Fast HTML 5 parser",
-            "time": "2017-03-14T05:28:14+00:00"
+            "time": "2018-01-02T00:35:06+00:00"
         },
         {
             "name": "wikimedia/running-stat",

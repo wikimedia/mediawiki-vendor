@@ -1365,49 +1365,6 @@
         "homepage": "https://www.mediawiki.org/wiki/Timestamp"
     },
     {
-        "name": "wikimedia/remex-html",
-        "version": "1.0.1",
-        "version_normalized": "1.0.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/wikimedia/mediawiki-libs-RemexHtml.git",
-            "reference": "3c596e5c66557ed7f37d8a543bc233d7fa80a52f"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-RemexHtml/zipball/3c596e5c66557ed7f37d8a543bc233d7fa80a52f",
-            "reference": "3c596e5c66557ed7f37d8a543bc233d7fa80a52f",
-            "shasum": ""
-        },
-        "require": {
-            "ext-mbstring": "*",
-            "wikimedia/utfnormal": "1.1.0"
-        },
-        "require-dev": {
-            "mediawiki/mediawiki-codesniffer": "0.7.2",
-            "phpunit/phpunit": "4.*"
-        },
-        "time": "2017-03-14T05:28:14+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "RemexHtml\\": "RemexHtml/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Tim Starling",
-                "email": "tstarling@wikimedia.org"
-            }
-        ],
-        "description": "Fast HTML 5 parser"
-    },
-    {
         "name": "pear/pear-core-minimal",
         "version": "v1.10.3",
         "version_normalized": "1.10.3.0",
@@ -3779,5 +3736,48 @@
         ],
         "description": "Mail_Mime provides classes to create MIME messages",
         "homepage": "http://pear.php.net/package/Mail_Mime"
+    },
+    {
+        "name": "wikimedia/remex-html",
+        "version": "1.0.2",
+        "version_normalized": "1.0.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/mediawiki-libs-RemexHtml.git",
+            "reference": "c7e8267eabaf1d7e89d65a35571f86ce5bbbc16a"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-RemexHtml/zipball/c7e8267eabaf1d7e89d65a35571f86ce5bbbc16a",
+            "reference": "c7e8267eabaf1d7e89d65a35571f86ce5bbbc16a",
+            "shasum": ""
+        },
+        "require": {
+            "ext-mbstring": "*",
+            "wikimedia/utfnormal": "1.1.0"
+        },
+        "require-dev": {
+            "mediawiki/mediawiki-codesniffer": "0.12.0",
+            "phpunit/phpunit": "4.*"
+        },
+        "time": "2018-01-02T00:35:06+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "RemexHtml\\": "RemexHtml/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Tim Starling",
+                "email": "tstarling@wikimedia.org"
+            }
+        ],
+        "description": "Fast HTML 5 parser"
     }
 ]
