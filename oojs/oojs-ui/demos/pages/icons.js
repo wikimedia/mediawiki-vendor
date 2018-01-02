@@ -37,7 +37,6 @@ Demo.static.pages.icons = function ( demo ) {
 			alerts: [
 				'alert',
 				'bell',
-				'bellOn',
 				'comment',
 				'message',
 				'notice',
@@ -62,6 +61,7 @@ Demo.static.pages.icons = function ( demo ) {
 				'help',
 				'key',
 				'keyboard',
+				'lightbulb',
 				'logOut',
 				'newWindow',
 				'printer',
@@ -133,7 +133,6 @@ Demo.static.pages.icons = function ( demo ) {
 				'outline',
 				'puzzle',
 				'quotes',
-				'quotesAdd',
 				'searchCaseSensitive',
 				'searchDiacritics',
 				'searchRegularExpression',
