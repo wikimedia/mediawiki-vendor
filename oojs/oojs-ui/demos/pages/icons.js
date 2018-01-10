@@ -2,7 +2,7 @@ Demo.static.pages.icons = function ( demo ) {
 	var i, len, iconSet, iconsFieldset, iconWidget, selector,
 		icons = {
 			movement: [
-				'arrowLast',
+				'arrowPrevious',
 				'arrowNext',
 				'downTriangle',
 				'upTriangle',
@@ -199,8 +199,6 @@ Demo.static.pages.icons = function ( demo ) {
 			'alert',
 			'clear',
 			'down',
-			'next',
-			'previous',
 			'required',
 			'search',
 			'up'
@@ -249,7 +247,6 @@ Demo.static.pages.icons = function ( demo ) {
 				flags: [],
 				data: {
 					progressive: false,
-					constructive: false,
 					destructive: false
 				}
 			} ),
@@ -258,7 +255,6 @@ Demo.static.pages.icons = function ( demo ) {
 				flags: [ 'progressive' ],
 				data: {
 					progressive: true,
-					constructive: false,
 					destructive: false
 				}
 			} ),
@@ -267,7 +263,6 @@ Demo.static.pages.icons = function ( demo ) {
 				flags: [ 'destructive' ],
 				data: {
 					progressive: false,
-					constructive: false,
 					destructive: true
 				}
 			} )
@@ -282,7 +277,6 @@ Demo.static.pages.icons = function ( demo ) {
 		} )
 		.selectItemByData( {
 			progressive: false,
-			constructive: false,
 			destructive: false
 		} );
 
