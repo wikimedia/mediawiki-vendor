@@ -51,7 +51,8 @@ class TextInputWidget extends InputWidget {
 	 * @param bool $config['multiline'] Allow multiple lines of text (default: false)
 	 * @param int $config['rows'] If multiline, number of visible lines in textarea
 	 * @param bool $config['required'] Mark the field as required.
-	 *   Implies `indicator: 'required'`. (default: false)
+	 *   Implies `indicator: 'required'`. Note that `false` & setting `indicator: 'required'
+	 *   will result in no indicator shown. (default: false)
 	 * @param bool $config['autocomplete'] If the field should support autocomplete
 	 *   or not (default: true)
 	 * @param bool $config['spellcheck'] If the field should support spellcheck
@@ -76,7 +77,7 @@ class TextInputWidget extends InputWidget {
 
 		if ( $this->multiline && !( $this instanceof MultilineTextInputWidget ) ) {
 			Element::warnDeprecation(
-				'The TextInputWidget "multiline" option is deprecated as of OOjs UI v0.22.2. ' .
+				'The TextInputWidget "multiline" option is deprecated as of OOUI v0.22.2. ' .
 				'Use MultilineTextInputWidget instead.'
 			);
 		}
