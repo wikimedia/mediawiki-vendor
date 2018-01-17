@@ -13,17 +13,17 @@ class ComposerStaticInit_mediawiki_vendor
         'f4c767faab43077fd89ff7cf99ffb4b8' => __DIR__ . '/..' . '/serialization/serialization/Serialization.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         'dc2c047038b9f5c71759f55f00aba99b' => __DIR__ . '/..' . '/wikibase/data-model/WikibaseDataModel.php',
-        'a24b5daa493ecb5e767c7d1592a8da36' => __DIR__ . '/..' . '/mediawiki/at-ease/src/Functions.php',
-        '908a529187e4aa80293c8aa78e1ec48d' => __DIR__ . '/..' . '/data-values/time/Time.php',
         '5a494680c593293bd6035e42e2a6825c' => __DIR__ . '/..' . '/data-values/geo/Geo.php',
         'c15f8000750e4e04ba559d9745044427' => __DIR__ . '/..' . '/data-values/number/Number.php',
+        '908a529187e4aa80293c8aa78e1ec48d' => __DIR__ . '/..' . '/data-values/time/Time.php',
+        'a24b5daa493ecb5e767c7d1592a8da36' => __DIR__ . '/..' . '/mediawiki/at-ease/src/Functions.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         '3ef87127dc6892a0a78f223558a0b940' => __DIR__ . '/..' . '/diff/diff/Diff.php',
-        'c3f7f0e81464740a933532e81fa26cc7' => __DIR__ . '/..' . '/wikimedia/base-convert/src/Functions.php',
-        'c50606d667a3fde2b80a955639479d3d' => __DIR__ . '/..' . '/wikimedia/timestamp/src/defines.php',
-        'd55c27a601de788b19a09b7d057d07ae' => __DIR__ . '/..' . '/wikimedia/relpath/src/RelPath.php',
         '04c6c5c2f7095ccf6c481d3e53e1776f' => __DIR__ . '/..' . '/mustangostang/spyc/Spyc.php',
         'e7223560d890eab89cda23685e711e2c' => __DIR__ . '/..' . '/psy/psysh/src/Psy/functions.php',
+        'c3f7f0e81464740a933532e81fa26cc7' => __DIR__ . '/..' . '/wikimedia/base-convert/src/Functions.php',
+        'd55c27a601de788b19a09b7d057d07ae' => __DIR__ . '/..' . '/wikimedia/relpath/src/RelPath.php',
+        'c50606d667a3fde2b80a955639479d3d' => __DIR__ . '/..' . '/wikimedia/timestamp/src/defines.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -152,8 +152,8 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'Wikibase\\DataModel\\' => 
         array (
-            0 => __DIR__ . '/..' . '/wikibase/data-model-serialization/src',
-            1 => __DIR__ . '/..' . '/wikibase/data-model/src',
+            0 => __DIR__ . '/..' . '/wikibase/data-model/src',
+            1 => __DIR__ . '/..' . '/wikibase/data-model-serialization/src',
         ),
         'ValueValidators\\' => 
         array (
@@ -161,13 +161,13 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'ValueParsers\\' => 
         array (
-            0 => __DIR__ . '/..' . '/data-values/interfaces/src/ValueParsers',
-            1 => __DIR__ . '/..' . '/data-values/common/src/ValueParsers',
+            0 => __DIR__ . '/..' . '/data-values/common/src/ValueParsers',
+            1 => __DIR__ . '/..' . '/data-values/interfaces/src/ValueParsers',
         ),
         'ValueFormatters\\' => 
         array (
-            0 => __DIR__ . '/..' . '/data-values/interfaces/src/ValueFormatters',
-            1 => __DIR__ . '/..' . '/data-values/common/src/ValueFormatters',
+            0 => __DIR__ . '/..' . '/data-values/common/src/ValueFormatters',
+            1 => __DIR__ . '/..' . '/data-values/interfaces/src/ValueFormatters',
         ),
         'Symfony\\Polyfill\\Mbstring\\' => 
         array (
@@ -272,13 +272,13 @@ class ComposerStaticInit_mediawiki_vendor
         array (
             'ValueParsers\\' => 
             array (
-                0 => __DIR__ . '/..' . '/data-values/time/src',
-                1 => __DIR__ . '/..' . '/data-values/number/src',
+                0 => __DIR__ . '/..' . '/data-values/number/src',
+                1 => __DIR__ . '/..' . '/data-values/time/src',
             ),
             'ValueFormatters\\' => 
             array (
-                0 => __DIR__ . '/..' . '/data-values/time/src',
-                1 => __DIR__ . '/..' . '/data-values/number/src',
+                0 => __DIR__ . '/..' . '/data-values/number/src',
+                1 => __DIR__ . '/..' . '/data-values/time/src',
             ),
         ),
         'T' => 
@@ -353,8 +353,8 @@ class ComposerStaticInit_mediawiki_vendor
             'DataValues\\' => 
             array (
                 0 => __DIR__ . '/..' . '/data-values/data-values/src',
-                1 => __DIR__ . '/..' . '/data-values/time/src',
-                2 => __DIR__ . '/..' . '/data-values/number/src',
+                1 => __DIR__ . '/..' . '/data-values/number/src',
+                2 => __DIR__ . '/..' . '/data-values/time/src',
             ),
         ),
         'C' => 
@@ -367,8 +367,8 @@ class ComposerStaticInit_mediawiki_vendor
     );
 
     public static $fallbackDirsPsr0 = array (
-        0 => __DIR__ . '/..' . '/pear/pear-core-minimal/src',
-        1 => __DIR__ . '/..' . '/cssjanus/cssjanus/src',
+        0 => __DIR__ . '/..' . '/cssjanus/cssjanus/src',
+        1 => __DIR__ . '/..' . '/pear/pear-core-minimal/src',
     );
 
     public static $classMap = array (
