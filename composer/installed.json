@@ -3077,28 +3077,28 @@
     },
     {
         "name": "wikimedia/ip-set",
-        "version": "1.1.0",
-        "version_normalized": "1.1.0.0",
+        "version": "1.2.0",
+        "version_normalized": "1.2.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/IPSet.git",
-            "reference": "b71a3834b42e2bcb2d9fa037abbb654e82117a01"
+            "reference": "cabb679f440c87fd4053e4ea5e0120e769c9447f"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/IPSet/zipball/b71a3834b42e2bcb2d9fa037abbb654e82117a01",
-            "reference": "b71a3834b42e2bcb2d9fa037abbb654e82117a01",
+            "url": "https://api.github.com/repos/wikimedia/IPSet/zipball/cabb679f440c87fd4053e4ea5e0120e769c9447f",
+            "reference": "cabb679f440c87fd4053e4ea5e0120e769c9447f",
             "shasum": ""
         },
         "require": {
-            "php": ">=5.3.3"
+            "php": ">=5.5.9"
         },
         "require-dev": {
             "jakub-onderka/php-parallel-lint": "0.9.2",
-            "mediawiki/mediawiki-codesniffer": "0.5.1",
-            "phpunit/phpunit": "4.7.2"
+            "mediawiki/mediawiki-codesniffer": "15.0.0",
+            "phpunit/phpunit": "^4.8"
         },
-        "time": "2016-02-12T15:19:10+00:00",
+        "time": "2017-12-30T10:52:03+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -3276,17 +3276,17 @@
     },
     {
         "name": "wikimedia/relpath",
-        "version": "2.0.0",
-        "version_normalized": "2.0.0.0",
+        "version": "2.1.1",
+        "version_normalized": "2.1.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/RelPath.git",
-            "reference": "b0eeb17d31e4cde22dea0932dfb920a71a167c33"
+            "reference": "35e701ff16abf461bb8676a9d9177f86fa0b2c94"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/RelPath/zipball/b0eeb17d31e4cde22dea0932dfb920a71a167c33",
-            "reference": "b0eeb17d31e4cde22dea0932dfb920a71a167c33",
+            "url": "https://api.github.com/repos/wikimedia/RelPath/zipball/35e701ff16abf461bb8676a9d9177f86fa0b2c94",
+            "reference": "35e701ff16abf461bb8676a9d9177f86fa0b2c94",
             "shasum": ""
         },
         "require": {
@@ -3294,15 +3294,16 @@
         },
         "require-dev": {
             "jakub-onderka/php-parallel-lint": "^0.9.0.0",
-            "mediawiki/mediawiki-codesniffer": "^0.4.0.0",
+            "mediawiki/mediawiki-codesniffer": "15.0.0",
             "phpunit/phpunit": "^4.8.9.0"
         },
-        "time": "2017-07-28T21:20:05+00:00",
+        "time": "2018-01-18T21:23:40+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
             "files": [
-                "src/RelPath.php"
+                "src/RelPath/RelPath.php",
+                "src/Wikimedia/RelPath.php"
             ]
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -3363,28 +3364,28 @@
     },
     {
         "name": "wikimedia/running-stat",
-        "version": "v1.1.0",
-        "version_normalized": "1.1.0.0",
+        "version": "v1.2.1",
+        "version_normalized": "1.2.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/RunningStat.git",
-            "reference": "9d7170d3eeb6f418b9f0266b2bbe6e4681ab73dd"
+            "reference": "60eebada7cc64b7073d90e7d4bab00efaafa0ba9"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/RunningStat/zipball/9d7170d3eeb6f418b9f0266b2bbe6e4681ab73dd",
-            "reference": "9d7170d3eeb6f418b9f0266b2bbe6e4681ab73dd",
+            "url": "https://api.github.com/repos/wikimedia/RunningStat/zipball/60eebada7cc64b7073d90e7d4bab00efaafa0ba9",
+            "reference": "60eebada7cc64b7073d90e7d4bab00efaafa0ba9",
             "shasum": ""
         },
         "require": {
-            "php": ">=5.3.3"
+            "php": ">=5.5.9"
         },
         "require-dev": {
             "jakub-onderka/php-parallel-lint": "^0.9.0.0",
-            "mediawiki/mediawiki-codesniffer": "^0.5.0.0",
-            "phpunit/phpunit": "4.6.*"
+            "mediawiki/mediawiki-codesniffer": "15.0.0",
+            "phpunit/phpunit": "4.8.*"
         },
-        "time": "2015-10-28T22:29:15+00:00",
+        "time": "2018-01-18T22:18:47+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -3686,17 +3687,17 @@
     },
     {
         "name": "wikimedia/wrappedstring",
-        "version": "v2.2.0",
-        "version_normalized": "2.2.0.0",
+        "version": "v2.3.0",
+        "version_normalized": "2.3.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/WrappedString.git",
-            "reference": "738a89411fec30cb381b88905cacbcbe082db6a9"
+            "reference": "7e94b5d61551cfa95f9c0d070c9018b08ac24979"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/WrappedString/zipball/738a89411fec30cb381b88905cacbcbe082db6a9",
-            "reference": "738a89411fec30cb381b88905cacbcbe082db6a9",
+            "url": "https://api.github.com/repos/wikimedia/WrappedString/zipball/7e94b5d61551cfa95f9c0d070c9018b08ac24979",
+            "reference": "7e94b5d61551cfa95f9c0d070c9018b08ac24979",
             "shasum": ""
         },
         "require": {
@@ -3704,15 +3705,16 @@
         },
         "require-dev": {
             "jakub-onderka/php-parallel-lint": "^0.9.0.0",
-            "mediawiki/mediawiki-codesniffer": "0.4.0",
-            "phpunit/phpunit": "^4.7.7.0"
+            "mediawiki/mediawiki-codesniffer": "15.0.0",
+            "phpunit/phpunit": "^4.8"
         },
-        "time": "2016-07-21T00:41:10+00:00",
+        "time": "2017-12-30T10:52:27+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
-                "WrappedString\\": "src/"
+                "Wikimedia\\": "src/Wikimedia",
+                "WrappedString\\": "src/WrappedString"
             }
         },
         "notification-url": "https://packagist.org/downloads/",

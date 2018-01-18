@@ -22,7 +22,8 @@ class ComposerStaticInit_mediawiki_vendor
         '04c6c5c2f7095ccf6c481d3e53e1776f' => __DIR__ . '/..' . '/mustangostang/spyc/Spyc.php',
         'e7223560d890eab89cda23685e711e2c' => __DIR__ . '/..' . '/psy/psysh/src/Psy/functions.php',
         'c3f7f0e81464740a933532e81fa26cc7' => __DIR__ . '/..' . '/wikimedia/base-convert/src/Functions.php',
-        'd55c27a601de788b19a09b7d057d07ae' => __DIR__ . '/..' . '/wikimedia/relpath/src/RelPath.php',
+        '4d945db823e5f6ca6dd83ad1f5fbcc43' => __DIR__ . '/..' . '/wikimedia/relpath/src/RelPath/RelPath.php',
+        '6513700b70192b7dfd0e5e9fc8082cf3' => __DIR__ . '/..' . '/wikimedia/relpath/src/Wikimedia/RelPath.php',
         'c50606d667a3fde2b80a955639479d3d' => __DIR__ . '/..' . '/wikimedia/timestamp/src/defines.php',
     );
 
@@ -40,6 +41,7 @@ class ComposerStaticInit_mediawiki_vendor
             'Wikimedia\\Composer\\' => 19,
             'Wikimedia\\Assert\\Test\\' => 22,
             'Wikimedia\\Assert\\' => 17,
+            'Wikimedia\\' => 10,
             'Wikibase\\InternalSerialization\\' => 31,
             'Wikibase\\DataModel\\Services\\' => 28,
             'Wikibase\\DataModel\\' => 19,
@@ -116,7 +118,7 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'WrappedString\\' => 
         array (
-            0 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
+            0 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src/WrappedString',
         ),
         'Wikimedia\\Purtle\\Tests\\' => 
         array (
@@ -141,6 +143,10 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Assert\\' => 
         array (
             0 => __DIR__ . '/..' . '/wikimedia/assert/src',
+        ),
+        'Wikimedia\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src/Wikimedia',
         ),
         'Wikibase\\InternalSerialization\\' => 
         array (
@@ -910,7 +916,7 @@ class ComposerStaticInit_mediawiki_vendor
         'GDText\\Color' => __DIR__ . '/..' . '/stil/gd-text/src/Color.php',
         'Hashable' => __DIR__ . '/..' . '/data-values/data-values/src/interfaces/Hashable.php',
         'HtmlFormatter\\HtmlFormatter' => __DIR__ . '/..' . '/wikimedia/html-formatter/src/HtmlFormatter.php',
-        'IPSet\\IPSet' => __DIR__ . '/..' . '/wikimedia/ip-set/src/IPSet.php',
+        'IPSet\\IPSet' => __DIR__ . '/..' . '/wikimedia/ip-set/src/IPSet/IPSet.php',
         'Image_XMP' => __DIR__ . '/..' . '/james-heinrich/getid3/getid3/module.tag.xmp.php',
         'Immutable' => __DIR__ . '/..' . '/data-values/data-values/src/interfaces/Immutable.php',
         'JakubOnderka\\PhpConsoleColor\\ConsoleColor' => __DIR__ . '/..' . '/jakub-onderka/php-console-color/src/JakubOnderka/PhpConsoleColor/ConsoleColor.php',
@@ -1649,8 +1655,8 @@ class ComposerStaticInit_mediawiki_vendor
         'RemexHtml\\TreeBuilder\\TreeBuilderError' => __DIR__ . '/..' . '/wikimedia/remex-html/RemexHtml/TreeBuilder/TreeBuilderError.php',
         'RemexHtml\\TreeBuilder\\TreeHandler' => __DIR__ . '/..' . '/wikimedia/remex-html/RemexHtml/TreeBuilder/TreeHandler.php',
         'RemexHtml\\TreeBuilder\\TreeMutationTracer' => __DIR__ . '/..' . '/wikimedia/remex-html/RemexHtml/TreeBuilder/TreeMutationTracer.php',
-        'RunningStat\\PSquare' => __DIR__ . '/..' . '/wikimedia/running-stat/src/PSquare.php',
-        'RunningStat\\RunningStat' => __DIR__ . '/..' . '/wikimedia/running-stat/src/RunningStat.php',
+        'RunningStat\\PSquare' => __DIR__ . '/..' . '/wikimedia/running-stat/src/RunningStat/PSquare.php',
+        'RunningStat\\RunningStat' => __DIR__ . '/..' . '/wikimedia/running-stat/src/RunningStat/RunningStat.php',
         'Serializers\\DispatchableSerializer' => __DIR__ . '/..' . '/serialization/serialization/src/Serializers/DispatchableSerializer.php',
         'Serializers\\DispatchingSerializer' => __DIR__ . '/..' . '/serialization/serialization/src/Serializers/DispatchingSerializer.php',
         'Serializers\\Exceptions\\SerializationException' => __DIR__ . '/..' . '/serialization/serialization/src/Serializers/Exceptions/SerializationException.php',
@@ -2094,6 +2100,8 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Equivset\\Equivset' => __DIR__ . '/..' . '/wikimedia/equivset/src/Equivset.php',
         'Wikimedia\\Equivset\\EquivsetInterface' => __DIR__ . '/..' . '/wikimedia/equivset/src/EquivsetInterface.php',
         'Wikimedia\\Equivset\\Exception\\EquivsetException' => __DIR__ . '/..' . '/wikimedia/equivset/src/Exception/EquivsetException.php',
+        'Wikimedia\\IPSet' => __DIR__ . '/..' . '/wikimedia/ip-set/src/Wikimedia/IPSet.php',
+        'Wikimedia\\PSquare' => __DIR__ . '/..' . '/wikimedia/running-stat/src/Wikimedia/PSquare.php',
         'Wikimedia\\PhpSessionSerializer' => __DIR__ . '/..' . '/wikimedia/php-session-serializer/src/Wikimedia/PhpSessionSerializer.php',
         'Wikimedia\\Purtle\\BNodeLabeler' => __DIR__ . '/..' . '/wikimedia/purtle/src/BNodeLabeler.php',
         'Wikimedia\\Purtle\\N3Quoter' => __DIR__ . '/..' . '/wikimedia/purtle/src/N3Quoter.php',
@@ -2113,13 +2121,16 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Purtle\\TurtleRdfWriter' => __DIR__ . '/..' . '/wikimedia/purtle/src/TurtleRdfWriter.php',
         'Wikimedia\\Purtle\\UnicodeEscaper' => __DIR__ . '/..' . '/wikimedia/purtle/src/UnicodeEscaper.php',
         'Wikimedia\\Purtle\\XmlRdfWriter' => __DIR__ . '/..' . '/wikimedia/purtle/src/XmlRdfWriter.php',
+        'Wikimedia\\RunningStat' => __DIR__ . '/..' . '/wikimedia/running-stat/src/Wikimedia/RunningStat.php',
         'Wikimedia\\ScopedCallback' => __DIR__ . '/..' . '/wikimedia/scoped-callback/src/ScopedCallback.php',
         'Wikimedia\\TestingAccessWrapper' => __DIR__ . '/..' . '/wikimedia/testing-access-wrapper/src/TestingAccessWrapper.php',
         'Wikimedia\\Timestamp\\ConvertibleTimestamp' => __DIR__ . '/..' . '/wikimedia/timestamp/src/ConvertibleTimestamp.php',
         'Wikimedia\\Timestamp\\TimestampException' => __DIR__ . '/..' . '/wikimedia/timestamp/src/TimestampException.php',
         'Wikimedia\\WaitConditionLoop' => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src/WaitConditionLoop.php',
-        'WrappedString\\WrappedString' => __DIR__ . '/..' . '/wikimedia/wrappedstring/src/WrappedString.php',
-        'WrappedString\\WrappedStringList' => __DIR__ . '/..' . '/wikimedia/wrappedstring/src/WrappedStringList.php',
+        'Wikimedia\\WrappedString' => __DIR__ . '/..' . '/wikimedia/wrappedstring/src/Wikimedia/WrappedString.php',
+        'Wikimedia\\WrappedStringList' => __DIR__ . '/..' . '/wikimedia/wrappedstring/src/Wikimedia/WrappedStringList.php',
+        'WrappedString\\WrappedString' => __DIR__ . '/..' . '/wikimedia/wrappedstring/src/WrappedString/WrappedString.php',
+        'WrappedString\\WrappedStringList' => __DIR__ . '/..' . '/wikimedia/wrappedstring/src/WrappedString/WrappedStringList.php',
         'XdgBaseDir\\Xdg' => __DIR__ . '/..' . '/dnoegel/php-xdg-base-dir/src/Xdg.php',
         'getID3' => __DIR__ . '/..' . '/james-heinrich/getid3/getid3/getid3.php',
         'getID3_cached_dbm' => __DIR__ . '/..' . '/james-heinrich/getid3/getid3/extension.cache.dbm.php',
