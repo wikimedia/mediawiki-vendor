@@ -1729,6 +1729,7 @@ return array(
     'Wikimedia\\Equivset\\EquivsetInterface' => $vendorDir . '/wikimedia/equivset/src/EquivsetInterface.php',
     'Wikimedia\\Equivset\\Exception\\EquivsetException' => $vendorDir . '/wikimedia/equivset/src/Exception/EquivsetException.php',
     'Wikimedia\\IPSet' => $vendorDir . '/wikimedia/ip-set/src/Wikimedia/IPSet.php',
+    'Wikimedia\\ObjectFactory' => $vendorDir . '/wikimedia/object-factory/src/ObjectFactory.php',
     'Wikimedia\\PSquare' => $vendorDir . '/wikimedia/running-stat/src/Wikimedia/PSquare.php',
     'Wikimedia\\PhpSessionSerializer' => $vendorDir . '/wikimedia/php-session-serializer/src/Wikimedia/PhpSessionSerializer.php',
     'Wikimedia\\Purtle\\BNodeLabeler' => $vendorDir . '/wikimedia/purtle/src/BNodeLabeler.php',

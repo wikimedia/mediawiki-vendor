@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "55ccb0d45b1afbfc53e1263ca3a357d8",
+    "content-hash": "4c54f2f3ab4f10f1feb7d880093e249d",
     "packages": [
         {
             "name": "composer/semver",
@@ -3057,6 +3057,50 @@
             ],
             "description": "Parsing and pretty-printing Lucene explain data",
             "time": "2017-12-22T08:19:48+00:00"
+        },
+        {
+            "name": "wikimedia/object-factory",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wikimedia/ObjectFactory.git",
+                "reference": "7a4ed8c5b09dbe553c773ac2ec5f687838217f45"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wikimedia/ObjectFactory/zipball/7a4ed8c5b09dbe553c773ac2ec5f687838217f45",
+                "reference": "7a4ed8c5b09dbe553c773ac2ec5f687838217f45",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "jakub-onderka/php-console-highlighter": "0.3.2",
+                "jakub-onderka/php-parallel-lint": "0.9.2",
+                "mediawiki/mediawiki-codesniffer": "15.0.0",
+                "mediawiki/minus-x": "0.2.1",
+                "phpunit/phpunit": "4.8.36"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Wikimedia\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Bryan Davis",
+                    "email": "bdavis@wikimedia.org"
+                }
+            ],
+            "description": "Construct objects from configuration instructions",
+            "homepage": "https://www.mediawiki.org/wiki/ObjectFactory",
+            "time": "2018-01-25T23:57:37+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",

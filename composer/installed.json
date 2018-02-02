@@ -3168,6 +3168,52 @@
         "description": "Parsing and pretty-printing Lucene explain data"
     },
     {
+        "name": "wikimedia/object-factory",
+        "version": "1.0.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/ObjectFactory.git",
+            "reference": "7a4ed8c5b09dbe553c773ac2ec5f687838217f45"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/ObjectFactory/zipball/7a4ed8c5b09dbe553c773ac2ec5f687838217f45",
+            "reference": "7a4ed8c5b09dbe553c773ac2ec5f687838217f45",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.5.9"
+        },
+        "require-dev": {
+            "jakub-onderka/php-console-highlighter": "0.3.2",
+            "jakub-onderka/php-parallel-lint": "0.9.2",
+            "mediawiki/mediawiki-codesniffer": "15.0.0",
+            "mediawiki/minus-x": "0.2.1",
+            "phpunit/phpunit": "4.8.36"
+        },
+        "time": "2018-01-25T23:57:37+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Wikimedia\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2.0-or-later"
+        ],
+        "authors": [
+            {
+                "name": "Bryan Davis",
+                "email": "bdavis@wikimedia.org"
+            }
+        ],
+        "description": "Construct objects from configuration instructions",
+        "homepage": "https://www.mediawiki.org/wiki/ObjectFactory"
+    },
+    {
         "name": "wikimedia/php-session-serializer",
         "version": "v1.0.4",
         "version_normalized": "1.0.4.0",

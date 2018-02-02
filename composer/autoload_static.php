@@ -146,7 +146,8 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'Wikimedia\\' => 
         array (
-            0 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src/Wikimedia',
+            0 => __DIR__ . '/..' . '/wikimedia/object-factory/src',
+            1 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src/Wikimedia',
         ),
         'Wikibase\\InternalSerialization\\' => 
         array (
@@ -2101,6 +2102,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Equivset\\EquivsetInterface' => __DIR__ . '/..' . '/wikimedia/equivset/src/EquivsetInterface.php',
         'Wikimedia\\Equivset\\Exception\\EquivsetException' => __DIR__ . '/..' . '/wikimedia/equivset/src/Exception/EquivsetException.php',
         'Wikimedia\\IPSet' => __DIR__ . '/..' . '/wikimedia/ip-set/src/Wikimedia/IPSet.php',
+        'Wikimedia\\ObjectFactory' => __DIR__ . '/..' . '/wikimedia/object-factory/src/ObjectFactory.php',
         'Wikimedia\\PSquare' => __DIR__ . '/..' . '/wikimedia/running-stat/src/Wikimedia/PSquare.php',
         'Wikimedia\\PhpSessionSerializer' => __DIR__ . '/..' . '/wikimedia/php-session-serializer/src/Wikimedia/PhpSessionSerializer.php',
         'Wikimedia\\Purtle\\BNodeLabeler' => __DIR__ . '/..' . '/wikimedia/purtle/src/BNodeLabeler.php',
