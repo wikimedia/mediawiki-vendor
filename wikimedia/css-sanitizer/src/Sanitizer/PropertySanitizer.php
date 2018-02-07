@@ -10,7 +10,6 @@ use InvalidArgumentException;
 use Wikimedia\CSS\Grammar\Matcher;
 use Wikimedia\CSS\Grammar\NothingMatcher;
 use Wikimedia\CSS\Objects\CSSObject;
-use Wikimedia\CSS\Objects\ComponentValueList;
 use Wikimedia\CSS\Objects\Declaration;
 use Wikimedia\CSS\Util;
 
@@ -63,7 +62,7 @@ class PropertySanitizer extends Sanitizer {
 
 	/**
 	 * Merge a list of matchers into the list of known properties
-	 * @param Matcher[] $properties Array mapping declaration names (lowercase)
+	 * @param Matcher[] $props Array mapping declaration names (lowercase)
 	 *  to Matchers for the values
 	 * @throws InvalidArgumentException if some property is already defined
 	 */
@@ -98,6 +97,7 @@ class PropertySanitizer extends Sanitizer {
 		$this->cssWideKeywords = $matcher;
 	}
 
+	/** @inheritDoc */
 	protected function doSanitize( CSSObject $object ) {
 		if ( !$object instanceof Declaration ) {
 			$this->sanitizationError( 'expected-declaration', $object );

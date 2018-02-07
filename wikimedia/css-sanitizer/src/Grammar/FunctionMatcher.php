@@ -8,7 +8,6 @@ namespace Wikimedia\CSS\Grammar;
 
 use Wikimedia\CSS\Objects\ComponentValueList;
 use Wikimedia\CSS\Objects\CSSFunction;
-use Wikimedia\CSS\Objects\Token;
 
 /**
  * Matcher that matches a CSSFunction
@@ -46,6 +45,7 @@ class FunctionMatcher extends Matcher {
 		$this->matcher = $matcher;
 	}
 
+	/** @inheritDoc */
 	protected function generateMatches( ComponentValueList $values, $start, array $options ) {
 		$cv = isset( $values[$start] ) ? $values[$start] : null;
 		if ( $cv instanceof CSSFunction &&

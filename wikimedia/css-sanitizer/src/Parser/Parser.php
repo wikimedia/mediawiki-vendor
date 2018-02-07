@@ -19,7 +19,6 @@ use Wikimedia\CSS\Objects\RuleList;
 use Wikimedia\CSS\Objects\SimpleBlock;
 use Wikimedia\CSS\Objects\Stylesheet;
 use Wikimedia\CSS\Objects\Token;
-use Wikimedia\CSS\Sanitizer\Sanitizer;
 
 // Note: While reading the code below, you might find that my calls to
 // consumeToken() don't match what the spec says and I don't ever "reconsume" a
@@ -301,7 +300,6 @@ class Parser {
 			$this->parseError( 'expected-eof', $this->currentToken ); // "return a syntax error"?
 			return null;
 		}
-
 	}
 
 	/**
@@ -326,7 +324,7 @@ class Parser {
 	/**
 	 * Consume a list of rules
 	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#consume-a-list-of-rules
-	 * @param boolean $topLevel Determines the behavior when CDO and CDC tokens are encountered
+	 * @param bool $topLevel Determines the behavior when CDO and CDC tokens are encountered
 	 * @return RuleList
 	 */
 	protected function consumeRuleList( $topLevel ) {

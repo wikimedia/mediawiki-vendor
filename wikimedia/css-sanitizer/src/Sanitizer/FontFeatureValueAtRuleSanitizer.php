@@ -9,7 +9,6 @@ namespace Wikimedia\CSS\Sanitizer;
 use Wikimedia\CSS\Grammar\Matcher;
 use Wikimedia\CSS\Objects\AtRule;
 use Wikimedia\CSS\Objects\CSSObject;
-use Wikimedia\CSS\Objects\ComponentValueList;
 use Wikimedia\CSS\Objects\DeclarationList;
 use Wikimedia\CSS\Objects\Rule;
 use Wikimedia\CSS\Parser\Parser;
@@ -36,10 +35,12 @@ class FontFeatureValueAtRuleSanitizer extends RuleSanitizer {
 		$this->valueMatcher = $valueMatcher;
 	}
 
+	/** @inheritDoc */
 	public function handlesRule( Rule $rule ) {
 		return $rule instanceof AtRule && !strcasecmp( $rule->getName(), $this->name );
 	}
 
+	/** @inheritDoc */
 	protected function doSanitize( CSSObject $object ) {
 		if ( !$object instanceof Rule || !$this->handlesRule( $object ) ) {
 			$this->sanitizationError( 'expected-at-rule', $object, [ $this->name ] );
@@ -57,7 +58,7 @@ class FontFeatureValueAtRuleSanitizer extends RuleSanitizer {
 			return null;
 		}
 
-		$ret = clone( $object );
+		$ret = clone $object;
 		$this->fixPreludeWhitespace( $ret, false );
 
 		// Parse the block's contents into a list of declarations, sanitize it,

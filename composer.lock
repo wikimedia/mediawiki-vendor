@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "df27992dd63d07dcdc59af0274769395",
+    "content-hash": "0194ce735075fc699aa6b666d7621461",
     "packages": [
         {
             "name": "composer/semver",
@@ -926,31 +926,31 @@
         },
         {
             "name": "mediawiki/at-ease",
-            "version": "v1.1.0",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/at-ease.git",
-                "reference": "94c0b84888841d160419f915c2745d9d08fbf0c3"
+                "reference": "6973ddf6360ec213f853bfe6069271e9fbbf3fdf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/at-ease/zipball/94c0b84888841d160419f915c2745d9d08fbf0c3",
-                "reference": "94c0b84888841d160419f915c2745d9d08fbf0c3",
+                "url": "https://api.github.com/repos/wikimedia/at-ease/zipball/6973ddf6360ec213f853bfe6069271e9fbbf3fdf",
+                "reference": "6973ddf6360ec213f853bfe6069271e9fbbf3fdf",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3"
+                "php": ">=5.5.9"
             },
             "require-dev": {
                 "jakub-onderka/php-parallel-lint": "0.9",
-                "mediawiki/mediawiki-codesniffer": "0.3.0",
-                "phpunit/phpunit": "~4.5",
-                "squizlabs/php_codesniffer": "2.3.0"
+                "mediawiki/mediawiki-codesniffer": "15.0.0",
+                "phpunit/phpunit": "~4.5"
             },
             "type": "library",
             "autoload": {
                 "files": [
-                    "src/Functions.php"
+                    "src/MediaWiki/Functions.php",
+                    "src/Wikimedia/Functions.php"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -969,7 +969,7 @@
             ],
             "description": "Safe replacement to @ for suppressing warnings.",
             "homepage": "https://www.mediawiki.org/wiki/at-ease",
-            "time": "2015-09-18T07:02:06+00:00"
+            "time": "2017-12-30T10:52:27+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -2831,29 +2831,29 @@
         },
         {
             "name": "wikimedia/css-sanitizer",
-            "version": "v1.0.2",
+            "version": "v1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/css-sanitizer.git",
-                "reference": "53071d588f7ac20f1467fb5952e968c1f8e2bb69"
+                "reference": "efcafd5144356e5d45f1fdb7aef836b4fcb6e003"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/css-sanitizer/zipball/53071d588f7ac20f1467fb5952e968c1f8e2bb69",
-                "reference": "53071d588f7ac20f1467fb5952e968c1f8e2bb69",
+                "url": "https://api.github.com/repos/wikimedia/css-sanitizer/zipball/efcafd5144356e5d45f1fdb7aef836b4fcb6e003",
+                "reference": "efcafd5144356e5d45f1fdb7aef836b4fcb6e003",
                 "shasum": ""
             },
             "require": {
                 "ext-iconv": "*",
                 "ext-mbstring": "*",
-                "mediawiki/at-ease": "1.1.0",
+                "mediawiki/at-ease": "1.2.0",
                 "php": ">=5.5.9",
                 "wikimedia/utfnormal": "1.1.0"
             },
             "require-dev": {
                 "jakub-onderka/php-parallel-lint": "0.9.2",
-                "mediawiki/mediawiki-codesniffer": "0.7.2",
-                "phpunit/phpunit": "4.8.31",
+                "mediawiki/mediawiki-codesniffer": "15.0.0",
+                "phpunit/phpunit": "4.8.36",
                 "wikimedia/testing-access-wrapper": "1.0.0"
             },
             "type": "library",
@@ -2874,7 +2874,7 @@
             ],
             "description": "Classes to parse and sanitize CSS",
             "homepage": "https://www.mediawiki.org/wiki/Css-sanitizer",
-            "time": "2017-06-13T15:51:12+00:00"
+            "time": "2018-01-17T19:15:58+00:00"
         },
         {
             "name": "wikimedia/equivset",

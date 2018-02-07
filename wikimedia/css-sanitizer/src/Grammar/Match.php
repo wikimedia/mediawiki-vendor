@@ -8,8 +8,6 @@ namespace Wikimedia\CSS\Grammar;
 
 use Wikimedia\CSS\Objects\ComponentValue;
 use Wikimedia\CSS\Objects\ComponentValueList;
-use Wikimedia\CSS\Objects\CSSFunction;
-use Wikimedia\CSS\Objects\SimpleBlock;
 use Wikimedia\CSS\Objects\Token;
 use Wikimedia\CSS\Util;
 
@@ -40,7 +38,7 @@ class Match {
 	public function __construct(
 		ComponentValueList $list, $start, $length, $name = null, array $capturedMatches = []
 	) {
-		Util::assertAllInstanceOf( $capturedMatches, Match::class, '$capturedMatches' );
+		Util::assertAllInstanceOf( $capturedMatches, self::class, '$capturedMatches' );
 
 		$this->values = $list->slice( $start, $length );
 		$this->start = $start;

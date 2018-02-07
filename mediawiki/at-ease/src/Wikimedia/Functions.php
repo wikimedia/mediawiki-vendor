@@ -18,12 +18,12 @@
  * @file
  */
 
-namespace MediaWiki;
+namespace Wikimedia;
 
 /**
  * Reference-counted warning suppression
  *
- * @param bool $end
+ * @param bool $end Whether to restore warnings
  */
 function suppressWarnings( $end = false ) {
 	static $suppressCount = 0;
@@ -59,14 +59,13 @@ function restoreWarnings() {
 	suppressWarnings( true );
 }
 
-
 /**
  * Call the callback given by the first parameter, suppressing any warnings.
  *
- * @param callable $callback
+ * @param callable $callback Function to call
  * @return mixed
  */
-function quietCall( $callback /*, parameters... */ ) {
+function quietCall( callable $callback /*, parameters... */ ) {
 	$args = array_slice( func_get_args(), 1 );
 	suppressWarnings();
 	$rv = call_user_func_array( $callback, $args );
