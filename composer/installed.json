@@ -1231,21 +1231,20 @@
     },
     {
         "name": "oojs/oojs-ui",
-        "version": "v0.25.1",
-        "version_normalized": "0.25.1.0",
+        "version": "v0.25.2",
+        "version_normalized": "0.25.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/oojs-ui.git",
-            "reference": "f78d952f8f2deb2d6a251c0243b3b1f2e8639a95"
+            "reference": "2bcc7fd7ba14f52249c961ef66a46725f318c9d6"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/f78d952f8f2deb2d6a251c0243b3b1f2e8639a95",
-            "reference": "f78d952f8f2deb2d6a251c0243b3b1f2e8639a95",
+            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/2bcc7fd7ba14f52249c961ef66a46725f318c9d6",
+            "reference": "2bcc7fd7ba14f52249c961ef66a46725f318c9d6",
             "shasum": ""
         },
         "require": {
-            "mediawiki/at-ease": "1.1.0",
             "php": ">=5.5.9"
         },
         "require-dev": {
@@ -1253,7 +1252,7 @@
             "mediawiki/mediawiki-codesniffer": "15.0.0",
             "phpunit/phpunit": "4.8.21"
         },
-        "time": "2018-01-17T01:10:25+00:00",
+        "time": "2018-02-06T23:53:45+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
