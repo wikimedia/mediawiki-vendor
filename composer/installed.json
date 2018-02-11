@@ -3214,30 +3214,30 @@
     },
     {
         "name": "wikimedia/php-session-serializer",
-        "version": "v1.0.4",
-        "version_normalized": "1.0.4.0",
+        "version": "v1.0.5",
+        "version_normalized": "1.0.5.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/php-session-serializer.git",
-            "reference": "4474af7aa8f0b20aa141c33eb4ad068a1c7d5b8c"
+            "reference": "d5a74e490f707475bbb69f18a9fa75d7043e167d"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/php-session-serializer/zipball/4474af7aa8f0b20aa141c33eb4ad068a1c7d5b8c",
-            "reference": "4474af7aa8f0b20aa141c33eb4ad068a1c7d5b8c",
+            "url": "https://api.github.com/repos/wikimedia/php-session-serializer/zipball/d5a74e490f707475bbb69f18a9fa75d7043e167d",
+            "reference": "d5a74e490f707475bbb69f18a9fa75d7043e167d",
             "shasum": ""
         },
         "require": {
-            "mediawiki/at-ease": "^1.0",
-            "php": ">=5.3.3",
+            "mediawiki/at-ease": "^1.2",
+            "php": ">=5.5.9",
             "psr/log": "^1.0"
         },
         "require-dev": {
             "jakub-onderka/php-parallel-lint": "^0.9.0.0",
-            "mediawiki/mediawiki-codesniffer": "0.5.0",
-            "phpunit/phpunit": "~4.5"
+            "mediawiki/mediawiki-codesniffer": "15.0.0",
+            "phpunit/phpunit": "^4.8"
         },
-        "time": "2016-10-01T13:19:49+00:00",
+        "time": "2018-02-10T07:40:13+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "0194ce735075fc699aa6b666d7621461",
+    "content-hash": "b04da45213570e92bf10a5d9849eb69a",
     "packages": [
         {
             "name": "composer/semver",
@@ -3103,27 +3103,27 @@
         },
         {
             "name": "wikimedia/php-session-serializer",
-            "version": "v1.0.4",
+            "version": "v1.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/php-session-serializer.git",
-                "reference": "4474af7aa8f0b20aa141c33eb4ad068a1c7d5b8c"
+                "reference": "d5a74e490f707475bbb69f18a9fa75d7043e167d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/php-session-serializer/zipball/4474af7aa8f0b20aa141c33eb4ad068a1c7d5b8c",
-                "reference": "4474af7aa8f0b20aa141c33eb4ad068a1c7d5b8c",
+                "url": "https://api.github.com/repos/wikimedia/php-session-serializer/zipball/d5a74e490f707475bbb69f18a9fa75d7043e167d",
+                "reference": "d5a74e490f707475bbb69f18a9fa75d7043e167d",
                 "shasum": ""
             },
             "require": {
-                "mediawiki/at-ease": "^1.0",
-                "php": ">=5.3.3",
+                "mediawiki/at-ease": "^1.2",
+                "php": ">=5.5.9",
                 "psr/log": "^1.0"
             },
             "require-dev": {
                 "jakub-onderka/php-parallel-lint": "^0.9.0.0",
-                "mediawiki/mediawiki-codesniffer": "0.5.0",
-                "phpunit/phpunit": "~4.5"
+                "mediawiki/mediawiki-codesniffer": "15.0.0",
+                "phpunit/phpunit": "^4.8"
             },
             "type": "library",
             "autoload": {
@@ -3143,7 +3143,7 @@
             ],
             "description": "Provides methods like PHP's session_encode and session_decode that don't mess with $_SESSION",
             "homepage": "https://www.mediawiki.org/wiki/Php-session-serializer",
-            "time": "2016-10-01T13:19:49+00:00"
+            "time": "2018-02-10T07:40:13+00:00"
         },
         {
             "name": "wikimedia/purtle",
