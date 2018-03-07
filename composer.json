@@ -114,7 +114,7 @@
 		"wikimedia/cldr-plural-rule-parser": "1.0.0",
 		"wikimedia/composer-merge-plugin": "1.4.1",
 		"wikimedia/css-sanitizer": "1.0.3",
-		"wikimedia/equivset": "1.2.0",
+		"wikimedia/equivset": "1.3.0",
 		"wikimedia/html-formatter": "1.0.1",
 		"wikimedia/ip-set": "1.2.0",
 		"wikimedia/lucene-explain-parser": "1.0.0",
