@@ -6,6 +6,12 @@ body {
 	font-size: 0.8em;
 }
 
+code {
+	/* Support: Blink, Gecko, Webkit */
+	/* Specify a valid second value to fix size, see T176636 */
+	font-family: monospace, monospace;
+}
+
 p {
 	margin: 0.5em 0;
 }
@@ -254,8 +260,11 @@ p {
 /* Toolbars demo */
 
 .demo-container.demo-toolbars {
-	margin-top: 4em;
 	padding: 0;
+}
+
+.demo-toolbar {
+	margin-top: 4em;
 }
 
 .demo-toolbars-contents {

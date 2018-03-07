@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "82f46ced833a71ada368c54d5e671953",
+    "content-hash": "68f243e41bb3f784ca807a1c09291b93",
     "packages": [
         {
             "name": "composer/semver",
@@ -1192,25 +1192,27 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.25.2",
+            "version": "v0.25.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "2bcc7fd7ba14f52249c961ef66a46725f318c9d6"
+                "reference": "4b4100f3bbc288fdb59588dfb623ae6688e1c6dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/2bcc7fd7ba14f52249c961ef66a46725f318c9d6",
-                "reference": "2bcc7fd7ba14f52249c961ef66a46725f318c9d6",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/4b4100f3bbc288fdb59588dfb623ae6688e1c6dd",
+                "reference": "4b4100f3bbc288fdb59588dfb623ae6688e1c6dd",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.5.9"
             },
             "require-dev": {
+                "jakub-onderka/php-console-highlighter": "0.3.2",
                 "jakub-onderka/php-parallel-lint": "0.9.2",
-                "mediawiki/mediawiki-codesniffer": "15.0.0",
-                "phpunit/phpunit": "4.8.21"
+                "mediawiki/mediawiki-codesniffer": "16.0.1",
+                "mediawiki/minus-x": "0.3.1",
+                "phpunit/phpunit": "4.8.36 || ^6.5"
             },
             "type": "library",
             "autoload": {
@@ -1266,7 +1268,7 @@
             ],
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOUI",
-            "time": "2018-02-06T23:53:45+00:00"
+            "time": "2018-03-06T23:05:02+00:00"
         },
         {
             "name": "oyejorge/less.php",
