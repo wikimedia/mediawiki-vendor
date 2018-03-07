@@ -1,6 +1,7 @@
 <?php
 
 namespace RemexHtml\Tokenizer;
+
 use RemexHtml\HTMLData;
 use RemexHtml\PropGuard;
 
@@ -11,6 +12,8 @@ use RemexHtml\PropGuard;
  * https://www.w3.org/TR/2016/REC-html51-20161101/
  */
 class Tokenizer {
+	use PropGuard;
+
 	// States
 	const STATE_START = 1;
 	const STATE_DATA = 2;
@@ -113,10 +116,6 @@ class Tokenizer {
 		$this->skipPreprocess = !empty( $options['skipPreprocess'] );
 	}
 
-	public function __set( $name, $value ) {
-		PropGuard::set( $this, $name, $value );
-	}
-
 	public function setEnableCdataCallback( $cb ) {
 		$this->enableCdataCallback = $cb;
 	}
@@ -156,6 +155,7 @@ class Tokenizer {
 	 * Get the preprocessed input text. Source offsets in event parameters are
 	 * relative to this string. If skipPreprocess was specified, this will be
 	 * the same as the input string.
+	 * @return string
 	 */
 	public function getPreprocessedText() {
 		$this->preprocess();
@@ -713,6 +713,10 @@ class Tokenizer {
 
 	/**
 	 * DOCTYPE helper which interprets a quoted string (or lack thereof)
+	 * @param array $m
+	 * @param int $dq
+	 * @param int $sq
+	 * @param bool &$quirks
 	 * @return string|null The quoted value, with nulls replaced.
 	 */
 	protected function interpretDoctypeQuoted( $m, $dq, $sq, &$quirks ) {
@@ -1013,10 +1017,10 @@ class Tokenizer {
 	 * Emit a range of characters from the input text, with validity rules as
 	 * per the CDATA section state.
 	 *
-	 * @param $innerPos The position after the <![CDATA[
-	 * @param $innerLength The length of the string not including the terminating ]]>
-	 * @param $outerPos The position of the start of the <!CDATA[
-	 * @param $outerLength The length of the whole input region being emitted
+	 * @param int $innerPos The position after the <![CDATA[
+	 * @param int $innerLength The length of the string not including the terminating ]]>
+	 * @param int $outerPos The position of the start of the <!CDATA[
+	 * @param int $outerLength The length of the whole input region being emitted
 	 */
 	protected function emitCdataRange( $innerPos, $innerLength, $outerPos, $outerLength ) {
 		$this->listener->characters( $this->text, $innerPos, $innerLength,
