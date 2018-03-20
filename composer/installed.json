@@ -3263,29 +3263,32 @@
     },
     {
         "name": "wikimedia/purtle",
-        "version": "v1.0.6",
-        "version_normalized": "1.0.6.0",
+        "version": "v1.0.7",
+        "version_normalized": "1.0.7.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/purtle.git",
-            "reference": "b34ec013657950481fd2edc5a9817b734fceb6e9"
+            "reference": "569064c065caae036cd5a685574b6f96f05cfe33"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/purtle/zipball/b34ec013657950481fd2edc5a9817b734fceb6e9",
-            "reference": "b34ec013657950481fd2edc5a9817b734fceb6e9",
+            "url": "https://api.github.com/repos/wikimedia/purtle/zipball/569064c065caae036cd5a685574b6f96f05cfe33",
+            "reference": "569064c065caae036cd5a685574b6f96f05cfe33",
             "shasum": ""
         },
         "require": {
             "php": ">=5.5.9"
         },
         "require-dev": {
-            "mediawiki/mediawiki-codesniffer": "0.9.0",
-            "ockcyp/covers-validator": "~0.4.0",
+            "jakub-onderka/php-console-highlighter": "0.3.2",
+            "jakub-onderka/php-parallel-lint": "1.0.0",
+            "mediawiki/mediawiki-codesniffer": "16.0.1",
+            "mediawiki/minus-x": "0.3.1",
+            "ockcyp/covers-validator": "0.5.1 || 0.6.1",
             "phpmd/phpmd": "~2.3",
-            "phpunit/phpunit": "4.8.24"
+            "phpunit/phpunit": "4.8.36 || ^6.5"
         },
-        "time": "2017-06-26T11:29:06+00:00",
+        "time": "2018-03-20T09:26:13+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -3301,22 +3304,26 @@
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
-            "GPL-2.0+"
+            "GPL-2.0-or-later"
         ],
         "authors": [
             {
                 "name": "Daniel Kinzler"
             },
             {
-                "name": "Thiemo Mättig"
+                "name": "Stanislav Malyshev"
             },
             {
-                "name": "Stanislav Malyshev"
+                "name": "C. Scott Ananian"
+            },
+            {
+                "name": "Thiemo Kreuz"
             }
         ],
         "description": "Fast streaming RDF serializer",
         "homepage": "https://mediawiki.org/wiki/Purtle",
         "keywords": [
+            "JSON-LD",
             "RDF",
             "Turtle",
             "serializer"
