@@ -1,5 +1,5 @@
 Demo.static.pages.toolbars = function ( demo ) {
-	var i, toolGroups, actionButton, actionButtonDelete, actionButtonDisabled, actionGroup, publishButton, PopupTool, ToolGroupTool,
+	var i, toolGroups, actionButton, actionButtonDelete, actionButtonDisabled, actionGroup, publishButton, AlertTool, PopupTool, ToolGroupTool,
 		setDisabled = function () { this.setDisabled( true ); },
 		$demo = demo.$element,
 		$containers = $(),
@@ -93,6 +93,26 @@ Demo.static.pages.toolbars = function ( demo ) {
 	toolGroupFactories[ 0 ].register( createDisabledToolGroup( OO.ui.BarToolGroup, 'disabledBar' ) );
 	toolGroupFactories[ 0 ].register( createDisabledToolGroup( OO.ui.ListToolGroup, 'disabledList' ) );
 	toolGroupFactories[ 1 ].register( createDisabledToolGroup( OO.ui.MenuToolGroup, 'disabledMenu' ) );
+
+	AlertTool = function ( toolGroup, config ) {
+		// Parent constructor
+		OO.ui.PopupTool.call( this, toolGroup, $.extend( { popup: {
+			padded: true,
+			label: 'Alert head',
+			head: true
+		} }, config ) );
+
+		this.popup.$body.append( '<p>Alert contents</p>' );
+	};
+
+	OO.inheritClass( AlertTool, OO.ui.PopupTool );
+
+	AlertTool.static.name = 'alertTool';
+	AlertTool.static.group = 'popupTools';
+	AlertTool.static.icon = 'alert';
+
+	toolFactories[ 2 ].register( AlertTool );
+	toolFactories[ 4 ].register( AlertTool );
 
 	PopupTool = function ( toolGroup, config ) {
 		// Parent constructor
@@ -244,12 +264,19 @@ Demo.static.pages.toolbars = function ( demo ) {
 			label: 'Insert',
 			include: [ { group: 'insertTools' }, { group: 'autoDisableListTools' }, { group: 'unusedStuff' } ],
 			allowCollapse: [ 'comment', 'hieroglyphs', 'score', 'signature', 'gallery', 'chem', 'math', 'syntaxHighlightDialog', 'graph', 'referencesList' ]
+		},
+		{
+			type: 'bar',
+			include: [ { group: 'specialCharacters' } ]
 		}
 	] );
 	// Action toolbar for toolbars[ 5 ] below
 	toolbars[ 4 ].setup( [
 		{
 			include: [ { group: 'popupTools' } ]
+		},
+		{
+			include: [ { group: 'alertTools' } ]
 		},
 		{
 			type: 'list',
@@ -299,6 +326,10 @@ Demo.static.pages.toolbars = function ( demo ) {
 			type: 'list',
 			label: 'Insert',
 			include: [ { group: 'insertTools' }, { group: 'autoDisableListTools' }, { group: 'unusedStuff' } ]
+		},
+		{
+			type: 'bar',
+			include: [ { group: 'specialCharacters' } ]
 		}
 	] );
 	// Action toolbar for toolbars[7]
@@ -447,8 +478,12 @@ Demo.static.pages.toolbars = function ( demo ) {
 			[ 'find', 'articleSearch', 'Find and replace' ]
 		],
 
+		specialCharacters: [
+			[ 'specialCharacter', 'specialCharacter', 'Special character' ]
+		],
+
 		popupTools: [
-			[ 'popupTool' ]
+			[ 'popupTool', 'alertTool' ]
 		],
 
 		structureTools: [
@@ -487,13 +522,17 @@ Demo.static.pages.toolbars = function ( demo ) {
 	createToolGroup( 0, 'disabledListTools' );
 	createToolGroup( 0, 'autoDisableListTools' );
 	createToolGroup( 0, 'unusedStuff' );
+
 	createToolGroup( 1, 'cite' );
 	createToolGroup( 1, 'citeDisabled' );
 	createToolGroup( 1, 'menuTools' );
 	createToolGroup( 1, 'disabledMenuTools' );
+
 	createToolGroup( 6, 'listTools' );
+
 	createToolGroup( 7, 'menuTools' );
 	createToolGroup( 7, 'disabledMenuTools' );
+
 	for ( i = 3; i <= 5; i += 2 ) {
 		createToolGroup( i - 1, 'overflowTools' );
 		createToolGroup( i - 1, 'editorSwitchTools' );
@@ -506,6 +545,7 @@ Demo.static.pages.toolbars = function ( demo ) {
 		createToolGroup( i, 'moreListTools' );
 		createToolGroup( i, 'autoDisableListTools' );
 		createToolGroup( i, 'menuTools' );
+		createToolGroup( i, 'specialCharacters' );
 		createToolGroup( i, 'structureTools' );
 		createToolGroup( i, 'styleTools' );
 		createToolGroup( i, 'unusedStuff' );
