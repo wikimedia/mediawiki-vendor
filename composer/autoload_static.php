@@ -408,6 +408,7 @@ class ComposerStaticInit_mediawiki_vendor
         'AvroName' => __DIR__ . '/..' . '/wikimedia/avro/lib/avro/schema.php',
         'AvroNamedSchema' => __DIR__ . '/..' . '/wikimedia/avro/lib/avro/schema.php',
         'AvroNamedSchemata' => __DIR__ . '/..' . '/wikimedia/avro/lib/avro/schema.php',
+        'AvroNotImplementedException' => __DIR__ . '/..' . '/wikimedia/avro/lib/avro.php',
         'AvroPrimitiveSchema' => __DIR__ . '/..' . '/wikimedia/avro/lib/avro/schema.php',
         'AvroProtocol' => __DIR__ . '/..' . '/wikimedia/avro/lib/avro/protocol.php',
         'AvroProtocolMessage' => __DIR__ . '/..' . '/wikimedia/avro/lib/avro/protocol.php',

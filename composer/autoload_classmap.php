@@ -34,6 +34,7 @@ return array(
     'AvroName' => $vendorDir . '/wikimedia/avro/lib/avro/schema.php',
     'AvroNamedSchema' => $vendorDir . '/wikimedia/avro/lib/avro/schema.php',
     'AvroNamedSchemata' => $vendorDir . '/wikimedia/avro/lib/avro/schema.php',
+    'AvroNotImplementedException' => $vendorDir . '/wikimedia/avro/lib/avro.php',
     'AvroPrimitiveSchema' => $vendorDir . '/wikimedia/avro/lib/avro/schema.php',
     'AvroProtocol' => $vendorDir . '/wikimedia/avro/lib/avro/protocol.php',
     'AvroProtocolMessage' => $vendorDir . '/wikimedia/avro/lib/avro/protocol.php',

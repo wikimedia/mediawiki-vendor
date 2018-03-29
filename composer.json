@@ -108,7 +108,7 @@
 		"wikibase/data-model-services": "3.9.0",
 		"wikibase/internal-serialization": "2.7.0",
 		"wikimedia/assert": "0.2.2",
-		"wikimedia/avro": "1.7.7",
+		"wikimedia/avro": "1.8.0",
 		"wikimedia/base-convert": "1.0.1",
 		"wikimedia/cdb": "1.4.1",
 		"wikimedia/cldr-plural-rule-parser": "1.0.0",
