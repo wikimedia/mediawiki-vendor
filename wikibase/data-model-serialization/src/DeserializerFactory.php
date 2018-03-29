@@ -54,9 +54,10 @@ class DeserializerFactory {
 	}
 
 	/**
-	 * Returns a Deserializer that can deserialize Item and Property objects.
-	 *
-	 * @return DispatchableDeserializer
+	 * @return DispatchableDeserializer A deserializer that can only deserialize Item and Property
+	 *  objects, but no other entity types. In contexts with custom entity types other than items
+	 *  and properties this is not what you want. If in doubt, favor a custom
+	 *  `DispatchingDeserializer` containing the exact entity deserializers you need.
 	 */
 	public function newEntityDeserializer() {
 		return new DispatchingDeserializer( [
@@ -70,7 +71,7 @@ class DeserializerFactory {
 	 *
 	 * @since 2.1
 	 *
-	 * @return Deserializer
+	 * @return DispatchableDeserializer
 	 */
 	public function newItemDeserializer() {
 		return new ItemDeserializer(
@@ -87,7 +88,7 @@ class DeserializerFactory {
 	 *
 	 * @since 2.1
 	 *
-	 * @return Deserializer
+	 * @return DispatchableDeserializer
 	 */
 	public function newPropertyDeserializer() {
 		return new PropertyDeserializer(
@@ -168,7 +169,7 @@ class DeserializerFactory {
 	 * @return Deserializer
 	 */
 	public function newSnakDeserializer() {
-		return new SnakDeserializer( $this->dataValueDeserializer, $this->newEntityIdDeserializer() );
+		return new SnakDeserializer( $this->dataValueDeserializer );
 	}
 
 	/**

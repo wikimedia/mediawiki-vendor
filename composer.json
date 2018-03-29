@@ -104,7 +104,7 @@
 		"symfony/polyfill-mbstring": "1.6",
 		"symfony/var-dumper": "3.3.13",
 		"wikibase/data-model": "7.3.0",
-		"wikibase/data-model-serialization": "2.6.0",
+		"wikibase/data-model-serialization": "2.7.0",
 		"wikibase/data-model-services": "3.9.0",
 		"wikibase/internal-serialization": "2.7.0",
 		"wikimedia/assert": "0.2.2",

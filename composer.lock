@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "78ac756b835c907da27fe7dc2fd75fbd",
+    "content-hash": "6dbe3843c31c42c0e0b68136b384e388",
     "packages": [
         {
             "name": "composer/semver",
@@ -2337,30 +2337,30 @@
         },
         {
             "name": "wikibase/data-model-serialization",
-            "version": "2.6.0",
+            "version": "2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wmde/WikibaseDataModelSerialization.git",
-                "reference": "022c336875d979de630d11da9fc3628c664cb6ba"
+                "reference": "f16e32f4bf59bd9a086eb4cbfe292fddf377f15b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wmde/WikibaseDataModelSerialization/zipball/022c336875d979de630d11da9fc3628c664cb6ba",
-                "reference": "022c336875d979de630d11da9fc3628c664cb6ba",
+                "url": "https://api.github.com/repos/wmde/WikibaseDataModelSerialization/zipball/f16e32f4bf59bd9a086eb4cbfe292fddf377f15b",
+                "reference": "f16e32f4bf59bd9a086eb4cbfe292fddf377f15b",
                 "shasum": ""
             },
             "require": {
                 "data-values/serialization": "~1.0",
                 "php": ">=5.5.9",
-                "serialization/serialization": "~3.1",
+                "serialization/serialization": "~4.0|~3.1",
                 "wikibase/data-model": "~7.0|~6.0|~5.0|~4.2"
             },
             "require-dev": {
                 "data-values/geo": "~2.0|~1.0|~0.1",
                 "data-values/number": ">=0.1 <0.10",
                 "data-values/time": "~0.2",
-                "phpunit/phpunit": "~4.8",
-                "wikibase/wikibase-codesniffer": "^0.1.0"
+                "phpunit/phpunit": "^4.8.35",
+                "wikibase/wikibase-codesniffer": "^0.3.0"
             },
             "suggest": {
                 "data-values/geo": "Needed for deserialization of geographical values",
@@ -2370,7 +2370,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.6.x-dev"
+                    "dev-master": "2.7.x-dev"
                 }
             },
             "autoload": {
@@ -2380,7 +2380,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -2403,7 +2403,7 @@
                 "wikibase",
                 "wikidata"
             ],
-            "time": "2017-09-18T08:39:03+00:00"
+            "time": "2018-03-29T11:57:14+00:00"
         },
         {
             "name": "wikibase/data-model-services",

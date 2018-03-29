@@ -3,6 +3,7 @@
 namespace Wikibase\DataModel;
 
 use InvalidArgumentException;
+use Serializers\DispatchableSerializer;
 use Serializers\DispatchingSerializer;
 use Serializers\Serializer;
 use Wikibase\DataModel\Serializers\AliasGroupListSerializer;
@@ -113,9 +114,10 @@ class SerializerFactory {
 	}
 
 	/**
-	 * Returns a Serializer that can serialize Item and Property objects.
-	 *
-	 * @return Serializer
+	 * @return DispatchableSerializer A serializer that can only serialize Item and Property
+	 *  objects, but no other entity types. In contexts with custom entity types other than items
+	 *  and properties this is not what you want. If in doubt, favor a custom
+	 *  `DispatchingSerializer` containing the exact entity serializers you need.
 	 */
 	public function newEntitySerializer() {
 		return new DispatchingSerializer( [
@@ -129,7 +131,7 @@ class SerializerFactory {
 	 *
 	 * @since 2.1
 	 *
-	 * @return Serializer
+	 * @return DispatchableSerializer
 	 */
 	public function newItemSerializer() {
 		return new ItemSerializer(
@@ -146,7 +148,7 @@ class SerializerFactory {
 	 *
 	 * @since 2.1
 	 *
-	 * @return Serializer
+	 * @return DispatchableSerializer
 	 */
 	public function newPropertySerializer() {
 		return new PropertySerializer(
@@ -184,7 +186,7 @@ class SerializerFactory {
 	 *
 	 * @since 1.4
 	 *
-	 * @return Serializer
+	 * @return DispatchableSerializer
 	 */
 	public function newStatementSerializer() {
 		return new StatementSerializer(
