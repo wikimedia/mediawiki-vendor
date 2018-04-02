@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c7a810ea5ce277fb8890fe0dee63d7a4",
+    "content-hash": "8cf0bda068344417ec6e56720ad9df20",
     "packages": [
         {
             "name": "composer/semver",
@@ -2834,16 +2834,16 @@
         },
         {
             "name": "wikimedia/css-sanitizer",
-            "version": "v1.0.3",
+            "version": "v1.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/css-sanitizer.git",
-                "reference": "efcafd5144356e5d45f1fdb7aef836b4fcb6e003"
+                "reference": "4a4e3e2aede274ec7503a6fe5a8aea25bd524258"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/css-sanitizer/zipball/efcafd5144356e5d45f1fdb7aef836b4fcb6e003",
-                "reference": "efcafd5144356e5d45f1fdb7aef836b4fcb6e003",
+                "url": "https://api.github.com/repos/wikimedia/css-sanitizer/zipball/4a4e3e2aede274ec7503a6fe5a8aea25bd524258",
+                "reference": "4a4e3e2aede274ec7503a6fe5a8aea25bd524258",
                 "shasum": ""
             },
             "require": {
@@ -2851,12 +2851,14 @@
                 "ext-mbstring": "*",
                 "mediawiki/at-ease": "1.2.0",
                 "php": ">=5.5.9",
-                "wikimedia/utfnormal": "1.1.0"
+                "wikimedia/utfnormal": "1.1.0 || 2.0.0"
             },
             "require-dev": {
-                "jakub-onderka/php-parallel-lint": "0.9.2",
-                "mediawiki/mediawiki-codesniffer": "15.0.0",
-                "phpunit/phpunit": "4.8.36",
+                "jakub-onderka/php-console-highlighter": "0.3.2",
+                "jakub-onderka/php-parallel-lint": "1.0.0",
+                "mediawiki/mediawiki-codesniffer": "17.0.0",
+                "mediawiki/minus-x": "0.3.1",
+                "phpunit/phpunit": "4.8.36 || ^6.5",
                 "wikimedia/testing-access-wrapper": "1.0.0"
             },
             "type": "library",
@@ -2877,7 +2879,7 @@
             ],
             "description": "Classes to parse and sanitize CSS",
             "homepage": "https://www.mediawiki.org/wiki/Css-sanitizer",
-            "time": "2018-01-17T19:15:58+00:00"
+            "time": "2018-04-02T16:24:32+00:00"
         },
         {
             "name": "wikimedia/equivset",
