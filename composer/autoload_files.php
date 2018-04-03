@@ -9,7 +9,6 @@ return array(
     '7cb394c3af2b1ae832979b0368e0da62' => $vendorDir . '/data-values/data-values/DataValues.php',
     'd1715cacc3c23b16a030645514266a76' => $vendorDir . '/data-values/interfaces/Interfaces.php',
     '90559502573a0d473dc66fde5c0ff7e2' => $vendorDir . '/data-values/common/Common.php',
-    'f4c767faab43077fd89ff7cf99ffb4b8' => $vendorDir . '/serialization/serialization/Serialization.php',
     '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => $vendorDir . '/symfony/polyfill-mbstring/bootstrap.php',
     'dc2c047038b9f5c71759f55f00aba99b' => $vendorDir . '/wikibase/data-model/WikibaseDataModel.php',
     '5a494680c593293bd6035e42e2a6825c' => $vendorDir . '/data-values/geo/Geo.php',

@@ -113,8 +113,6 @@ return array(
     'Deserializers\\Exceptions\\MissingAttributeException' => $vendorDir . '/serialization/serialization/src/Deserializers/Exceptions/MissingAttributeException.php',
     'Deserializers\\Exceptions\\MissingTypeException' => $vendorDir . '/serialization/serialization/src/Deserializers/Exceptions/MissingTypeException.php',
     'Deserializers\\Exceptions\\UnsupportedTypeException' => $vendorDir . '/serialization/serialization/src/Deserializers/Exceptions/UnsupportedTypeException.php',
-    'Deserializers\\StrategicDeserializer' => $vendorDir . '/serialization/serialization/src/Deserializers/StrategicDeserializer.php',
-    'Deserializers\\TypedDeserializationStrategy' => $vendorDir . '/serialization/serialization/src/Deserializers/TypedDeserializationStrategy.php',
     'Deserializers\\TypedObjectDeserializer' => $vendorDir . '/serialization/serialization/src/Deserializers/TypedObjectDeserializer.php',
     'Diff\\ArrayComparer\\ArrayComparer' => $vendorDir . '/diff/diff/src/ArrayComparer/ArrayComparer.php',
     'Diff\\ArrayComparer\\NativeArrayComparer' => $vendorDir . '/diff/diff/src/ArrayComparer/NativeArrayComparer.php',
