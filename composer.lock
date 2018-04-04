@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "afeb16bd11675554da5261323d8a9e2e",
+    "content-hash": "bc02f079bc1800a64f6085aabb3f04d8",
     "packages": [
         {
             "name": "composer/semver",
@@ -1192,16 +1192,16 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.26.1",
+            "version": "v0.26.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "5c7606072cffc7ad2dd8f22964107e19133b4255"
+                "reference": "7beee8bbd4b132b804794b5f15bf2c6d7a46daf1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/5c7606072cffc7ad2dd8f22964107e19133b4255",
-                "reference": "5c7606072cffc7ad2dd8f22964107e19133b4255",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/7beee8bbd4b132b804794b5f15bf2c6d7a46daf1",
+                "reference": "7beee8bbd4b132b804794b5f15bf2c6d7a46daf1",
                 "shasum": ""
             },
             "require": {
@@ -1210,7 +1210,7 @@
             "require-dev": {
                 "jakub-onderka/php-console-highlighter": "0.3.2",
                 "jakub-onderka/php-parallel-lint": "1.0.0",
-                "mediawiki/mediawiki-codesniffer": "16.0.1",
+                "mediawiki/mediawiki-codesniffer": "17.0.0",
                 "mediawiki/minus-x": "0.3.1",
                 "phpunit/phpunit": "4.8.36 || ^6.5"
             },
@@ -1268,7 +1268,7 @@
             ],
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOUI",
-            "time": "2018-03-23T23:27:44+00:00"
+            "time": "2018-04-04T17:10:39+00:00"
         },
         {
             "name": "oyejorge/less.php",
