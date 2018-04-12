@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c499061f08b7fe9ad7a2169f36f8c27b",
+    "content-hash": "4f630fb052a33f3b4043fb717073e96f",
     "packages": [
         {
             "name": "composer/semver",
@@ -350,22 +350,22 @@
         },
         {
             "name": "data-values/number",
-            "version": "0.9.1",
+            "version": "0.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DataValues/Number.git",
-                "reference": "87ec772e711e51789a68307ae5f86732c64977e6"
+                "reference": "7dc28810522900bb34c931f21479951516a65dc1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DataValues/Number/zipball/87ec772e711e51789a68307ae5f86732c64977e6",
-                "reference": "87ec772e711e51789a68307ae5f86732c64977e6",
+                "url": "https://api.github.com/repos/DataValues/Number/zipball/7dc28810522900bb34c931f21479951516a65dc1",
+                "reference": "7dc28810522900bb34c931f21479951516a65dc1",
                 "shasum": ""
             },
             "require": {
-                "data-values/common": "~0.4.0|~0.3.0|~0.2.0",
+                "data-values/common": "~0.4.0|~0.3.0",
                 "data-values/data-values": "~1.0|~0.1",
-                "data-values/interfaces": "~0.2.0|~0.1.5",
+                "data-values/interfaces": "~0.2.0",
                 "php": ">=5.5.9"
             },
             "require-dev": {
@@ -386,14 +386,14 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
                     "name": "Daniel Kinzler"
                 },
                 {
-                    "name": "Thiemo Mättig"
+                    "name": "Thiemo Kreuz"
                 }
             ],
             "description": "Numerical value objects, parsers and formatters",
@@ -405,7 +405,7 @@
                 "valueparsers",
                 "wikidata"
             ],
-            "time": "2017-08-09T19:30:59+00:00"
+            "time": "2018-04-11T08:18:47+00:00"
         },
         {
             "name": "data-values/serialization",
