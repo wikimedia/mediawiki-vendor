@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "618a052303828801411da0f07676aabb",
+    "content-hash": "c499061f08b7fe9ad7a2169f36f8c27b",
     "packages": [
         {
             "name": "composer/semver",
@@ -528,16 +528,16 @@
         },
         {
             "name": "diff/diff",
-            "version": "2.2.0",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wmde/Diff.git",
-                "reference": "19bfff08c3c58cf5a54ce9e46fb1fb6c8a896187"
+                "reference": "9f2b65c104b661a02f592f96321fd4c052532742"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wmde/Diff/zipball/19bfff08c3c58cf5a54ce9e46fb1fb6c8a896187",
-                "reference": "19bfff08c3c58cf5a54ce9e46fb1fb6c8a896187",
+                "url": "https://api.github.com/repos/wmde/Diff/zipball/9f2b65c104b661a02f592f96321fd4c052532742",
+                "reference": "9f2b65c104b661a02f592f96321fd4c052532742",
                 "shasum": ""
             },
             "require": {
@@ -551,7 +551,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.1.x-dev"
+                    "dev-master": "2.3.x-dev"
                 }
             },
             "autoload": {
@@ -583,7 +583,7 @@
                 "patching",
                 "wikidata"
             ],
-            "time": "2017-08-09T14:23:09+00:00"
+            "time": "2018-04-11T10:38:57+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",

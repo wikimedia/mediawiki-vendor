@@ -69,7 +69,7 @@
 		"data-values/number": "0.9.1",
 		"data-values/serialization": "1.2.2",
 		"data-values/time": "0.8.6",
-		"diff/diff": "2.2.0",
+		"diff/diff": "2.3.0",
 		"dnoegel/php-xdg-base-dir": "0.1",
 		"firebase/php-jwt": "4.0.0",
 		"jakub-onderka/php-console-color": "0.1",
