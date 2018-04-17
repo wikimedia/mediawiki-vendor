@@ -1000,7 +1000,8 @@
             }
         ],
         "description": "Safe replacement to @ for suppressing warnings.",
-        "homepage": "https://www.mediawiki.org/wiki/at-ease"
+        "homepage": "https://www.mediawiki.org/wiki/at-ease",
+        "abandoned": "wikimedia/at-ease"
     },
     {
         "name": "monolog/monolog",
@@ -1231,17 +1232,17 @@
     },
     {
         "name": "oojs/oojs-ui",
-        "version": "v0.26.3",
-        "version_normalized": "0.26.3.0",
+        "version": "v0.26.4",
+        "version_normalized": "0.26.4.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/oojs-ui.git",
-            "reference": "67258d602433b04338f4bd196d8ff6a479710914"
+            "reference": "4d769d5f01ed41411fd0a1248d6185bf80f71c9c"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/67258d602433b04338f4bd196d8ff6a479710914",
-            "reference": "67258d602433b04338f4bd196d8ff6a479710914",
+            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/4d769d5f01ed41411fd0a1248d6185bf80f71c9c",
+            "reference": "4d769d5f01ed41411fd0a1248d6185bf80f71c9c",
             "shasum": ""
         },
         "require": {
@@ -1250,11 +1251,11 @@
         "require-dev": {
             "jakub-onderka/php-console-highlighter": "0.3.2",
             "jakub-onderka/php-parallel-lint": "1.0.0",
-            "mediawiki/mediawiki-codesniffer": "17.0.0",
+            "mediawiki/mediawiki-codesniffer": "18.0.0",
             "mediawiki/minus-x": "0.3.1",
             "phpunit/phpunit": "4.8.36 || ^6.5"
         },
-        "time": "2018-04-10T22:01:22+00:00",
+        "time": "2018-04-17T21:24:45+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
