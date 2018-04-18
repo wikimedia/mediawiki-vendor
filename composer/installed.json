@@ -954,56 +954,6 @@
         ]
     },
     {
-        "name": "mediawiki/at-ease",
-        "version": "v1.2.0",
-        "version_normalized": "1.2.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/wikimedia/at-ease.git",
-            "reference": "6973ddf6360ec213f853bfe6069271e9fbbf3fdf"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/at-ease/zipball/6973ddf6360ec213f853bfe6069271e9fbbf3fdf",
-            "reference": "6973ddf6360ec213f853bfe6069271e9fbbf3fdf",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.5.9"
-        },
-        "require-dev": {
-            "jakub-onderka/php-parallel-lint": "0.9",
-            "mediawiki/mediawiki-codesniffer": "15.0.0",
-            "phpunit/phpunit": "~4.5"
-        },
-        "time": "2017-12-30T10:52:27+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "files": [
-                "src/MediaWiki/Functions.php",
-                "src/Wikimedia/Functions.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "GPL-2.0+"
-        ],
-        "authors": [
-            {
-                "name": "Tim Starling",
-                "email": "tstarling@wikimedia.org"
-            },
-            {
-                "name": "MediaWiki developers",
-                "email": "wikitech-l@lists.wikimedia.org"
-            }
-        ],
-        "description": "Safe replacement to @ for suppressing warnings.",
-        "homepage": "https://www.mediawiki.org/wiki/at-ease",
-        "abandoned": "wikimedia/at-ease"
-    },
-    {
         "name": "monolog/monolog",
         "version": "1.22.1",
         "version_normalized": "1.22.1.0",
@@ -2662,6 +2612,55 @@
         ]
     },
     {
+        "name": "wikimedia/at-ease",
+        "version": "v1.2.0",
+        "version_normalized": "1.2.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/at-ease.git",
+            "reference": "6973ddf6360ec213f853bfe6069271e9fbbf3fdf"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/at-ease/zipball/6973ddf6360ec213f853bfe6069271e9fbbf3fdf",
+            "reference": "6973ddf6360ec213f853bfe6069271e9fbbf3fdf",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.5.9"
+        },
+        "require-dev": {
+            "jakub-onderka/php-parallel-lint": "0.9",
+            "mediawiki/mediawiki-codesniffer": "15.0.0",
+            "phpunit/phpunit": "~4.5"
+        },
+        "time": "2017-12-30T10:52:27+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "files": [
+                "src/MediaWiki/Functions.php",
+                "src/Wikimedia/Functions.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "authors": [
+            {
+                "name": "Tim Starling",
+                "email": "tstarling@wikimedia.org"
+            },
+            {
+                "name": "MediaWiki developers",
+                "email": "wikitech-l@lists.wikimedia.org"
+            }
+        ],
+        "description": "Safe replacement to @ for suppressing warnings.",
+        "homepage": "https://www.mediawiki.org/wiki/at-ease"
+    },
+    {
         "name": "wikimedia/avro",
         "version": "v1.8.0",
         "version_normalized": "1.8.0.0",
@@ -2935,35 +2934,35 @@
     },
     {
         "name": "wikimedia/css-sanitizer",
-        "version": "v1.0.5",
-        "version_normalized": "1.0.5.0",
+        "version": "v1.0.6",
+        "version_normalized": "1.0.6.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/css-sanitizer.git",
-            "reference": "4a4e3e2aede274ec7503a6fe5a8aea25bd524258"
+            "reference": "8998e5d95cb176e51ecbb98619199c84bdf5a5cd"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/css-sanitizer/zipball/4a4e3e2aede274ec7503a6fe5a8aea25bd524258",
-            "reference": "4a4e3e2aede274ec7503a6fe5a8aea25bd524258",
+            "url": "https://api.github.com/repos/wikimedia/css-sanitizer/zipball/8998e5d95cb176e51ecbb98619199c84bdf5a5cd",
+            "reference": "8998e5d95cb176e51ecbb98619199c84bdf5a5cd",
             "shasum": ""
         },
         "require": {
             "ext-iconv": "*",
             "ext-mbstring": "*",
-            "mediawiki/at-ease": "1.2.0",
             "php": ">=5.5.9",
+            "wikimedia/at-ease": "1.2.0",
             "wikimedia/utfnormal": "1.1.0 || 2.0.0"
         },
         "require-dev": {
             "jakub-onderka/php-console-highlighter": "0.3.2",
             "jakub-onderka/php-parallel-lint": "1.0.0",
-            "mediawiki/mediawiki-codesniffer": "17.0.0",
+            "mediawiki/mediawiki-codesniffer": "18.0.0",
             "mediawiki/minus-x": "0.3.1",
             "phpunit/phpunit": "4.8.36 || ^6.5",
             "wikimedia/testing-access-wrapper": "1.0.0"
         },
-        "time": "2018-04-02T16:24:32+00:00",
+        "time": "2018-04-18T13:19:03+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -3222,30 +3221,32 @@
     },
     {
         "name": "wikimedia/php-session-serializer",
-        "version": "v1.0.5",
-        "version_normalized": "1.0.5.0",
+        "version": "v1.0.6",
+        "version_normalized": "1.0.6.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/php-session-serializer.git",
-            "reference": "d5a74e490f707475bbb69f18a9fa75d7043e167d"
+            "reference": "d54a26eafdab7ea4c757b1c9ee810df780ddbd13"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/php-session-serializer/zipball/d5a74e490f707475bbb69f18a9fa75d7043e167d",
-            "reference": "d5a74e490f707475bbb69f18a9fa75d7043e167d",
+            "url": "https://api.github.com/repos/wikimedia/php-session-serializer/zipball/d54a26eafdab7ea4c757b1c9ee810df780ddbd13",
+            "reference": "d54a26eafdab7ea4c757b1c9ee810df780ddbd13",
             "shasum": ""
         },
         "require": {
-            "mediawiki/at-ease": "^1.2",
             "php": ">=5.5.9",
-            "psr/log": "^1.0"
+            "psr/log": "^1.0",
+            "wikimedia/at-ease": "^1.2"
         },
         "require-dev": {
-            "jakub-onderka/php-parallel-lint": "^0.9.0.0",
-            "mediawiki/mediawiki-codesniffer": "15.0.0",
-            "phpunit/phpunit": "^4.8"
+            "jakub-onderka/php-console-highlighter": "0.3.2",
+            "jakub-onderka/php-parallel-lint": "1.0.0",
+            "mediawiki/mediawiki-codesniffer": "18.0.0",
+            "mediawiki/minus-x": "0.3.1",
+            "phpunit/phpunit": "4.8.36 || ^6.5"
         },
-        "time": "2018-02-10T07:40:13+00:00",
+        "time": "2018-04-18T13:20:04+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -3255,7 +3256,7 @@
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
-            "GPL-2.0+"
+            "GPL-2.0-or-later"
         ],
         "authors": [
             {
