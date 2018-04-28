@@ -3039,17 +3039,17 @@
     },
     {
         "name": "wikimedia/html-formatter",
-        "version": "1.0.1",
-        "version_normalized": "1.0.1.0",
+        "version": "1.0.2",
+        "version_normalized": "1.0.2.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/wikimedia/HtmlFormatter.git",
-            "reference": "60069c2fb5e4f034e7025089cc4a1023b810d197"
+            "url": "https://github.com/wikimedia/html-formatter.git",
+            "reference": "d6241e74d8091cf1fad91a764da5e1ba5f46e785"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/HtmlFormatter/zipball/60069c2fb5e4f034e7025089cc4a1023b810d197",
-            "reference": "60069c2fb5e4f034e7025089cc4a1023b810d197",
+            "url": "https://api.github.com/repos/wikimedia/html-formatter/zipball/d6241e74d8091cf1fad91a764da5e1ba5f46e785",
+            "reference": "d6241e74d8091cf1fad91a764da5e1ba5f46e785",
             "shasum": ""
         },
         "require": {
@@ -3057,11 +3057,13 @@
             "php": ">=5.5"
         },
         "require-dev": {
-            "jakub-onderka/php-parallel-lint": "0.9.2",
-            "mediawiki/mediawiki-codesniffer": "0.5.1",
-            "phpunit/phpunit": "4.7.2"
+            "jakub-onderka/php-console-highlighter": "0.3.2",
+            "jakub-onderka/php-parallel-lint": "1.0.0",
+            "mediawiki/mediawiki-codesniffer": "18.0.0",
+            "mediawiki/minus-x": "0.3.1",
+            "phpunit/phpunit": "4.8.36 || ^6.5"
         },
-        "time": "2016-04-07T21:25:47+00:00",
+        "time": "2018-04-14T10:06:56+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -3071,7 +3073,7 @@
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
-            "GPL-2.0+"
+            "GPL-2.0-or-later"
         ],
         "authors": [
             {
