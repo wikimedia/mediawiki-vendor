@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "de75f6021b5ffea826a8ebc3e8139d9b",
+    "content-hash": "426e1d680f2bc5b225e2148aba0b2523",
     "packages": [
         {
             "name": "composer/semver",
@@ -2229,16 +2229,16 @@
         },
         {
             "name": "wikibase/data-model",
-            "version": "7.3.0",
+            "version": "7.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wmde/WikibaseDataModel.git",
-                "reference": "738cc82eb7c8a994ed06392ccb456abf00eb702d"
+                "reference": "a3105365051c4754a621f5884f31badc2dad33fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wmde/WikibaseDataModel/zipball/738cc82eb7c8a994ed06392ccb456abf00eb702d",
-                "reference": "738cc82eb7c8a994ed06392ccb456abf00eb702d",
+                "url": "https://api.github.com/repos/wmde/WikibaseDataModel/zipball/a3105365051c4754a621f5884f31badc2dad33fd",
+                "reference": "a3105365051c4754a621f5884f31badc2dad33fd",
                 "shasum": ""
             },
             "require": {
@@ -2287,7 +2287,7 @@
                 "wikibase",
                 "wikidata"
             ],
-            "time": "2017-11-13T13:21:52+00:00"
+            "time": "2018-05-02T11:55:57+00:00"
         },
         {
             "name": "wikibase/data-model-serialization",

@@ -1495,6 +1495,7 @@ return array(
     'Wikibase\\DataModel\\Deserializers\\TermDeserializer' => $vendorDir . '/wikibase/data-model-serialization/src/Deserializers/TermDeserializer.php',
     'Wikibase\\DataModel\\Deserializers\\TermListDeserializer' => $vendorDir . '/wikibase/data-model-serialization/src/Deserializers/TermListDeserializer.php',
     'Wikibase\\DataModel\\Entity\\BasicEntityIdParser' => $vendorDir . '/wikibase/data-model/src/Entity/BasicEntityIdParser.php',
+    'Wikibase\\DataModel\\Entity\\ClearableEntity' => $vendorDir . '/wikibase/data-model/src/Entity/ClearableEntity.php',
     'Wikibase\\DataModel\\Entity\\DispatchingEntityIdParser' => $vendorDir . '/wikibase/data-model/src/Entity/DispatchingEntityIdParser.php',
     'Wikibase\\DataModel\\Entity\\EntityDocument' => $vendorDir . '/wikibase/data-model/src/Entity/EntityDocument.php',
     'Wikibase\\DataModel\\Entity\\EntityId' => $vendorDir . '/wikibase/data-model/src/Entity/EntityId.php',

@@ -17,7 +17,7 @@ return array(
     'Wikimedia\\' => array($vendorDir . '/wikimedia/object-factory/src', $vendorDir . '/wikimedia/wrappedstring/src/Wikimedia'),
     'Wikibase\\InternalSerialization\\' => array($vendorDir . '/wikibase/internal-serialization/src'),
     'Wikibase\\DataModel\\Services\\' => array($vendorDir . '/wikibase/data-model-services/src'),
-    'Wikibase\\DataModel\\' => array($vendorDir . '/wikibase/data-model/src', $vendorDir . '/wikibase/data-model-serialization/src'),
+    'Wikibase\\DataModel\\' => array($vendorDir . '/wikibase/data-model-serialization/src', $vendorDir . '/wikibase/data-model/src'),
     'ValueValidators\\' => array($vendorDir . '/data-values/interfaces/src/ValueValidators'),
     'ValueParsers\\' => array($vendorDir . '/data-values/common/src/ValueParsers', $vendorDir . '/data-values/interfaces/src/ValueParsers'),
     'ValueFormatters\\' => array($vendorDir . '/data-values/common/src/ValueFormatters', $vendorDir . '/data-values/interfaces/src/ValueFormatters'),

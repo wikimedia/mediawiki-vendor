@@ -159,8 +159,8 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'Wikibase\\DataModel\\' => 
         array (
-            0 => __DIR__ . '/..' . '/wikibase/data-model/src',
-            1 => __DIR__ . '/..' . '/wikibase/data-model-serialization/src',
+            0 => __DIR__ . '/..' . '/wikibase/data-model-serialization/src',
+            1 => __DIR__ . '/..' . '/wikibase/data-model/src',
         ),
         'ValueValidators\\' => 
         array (
@@ -1868,6 +1868,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikibase\\DataModel\\Deserializers\\TermDeserializer' => __DIR__ . '/..' . '/wikibase/data-model-serialization/src/Deserializers/TermDeserializer.php',
         'Wikibase\\DataModel\\Deserializers\\TermListDeserializer' => __DIR__ . '/..' . '/wikibase/data-model-serialization/src/Deserializers/TermListDeserializer.php',
         'Wikibase\\DataModel\\Entity\\BasicEntityIdParser' => __DIR__ . '/..' . '/wikibase/data-model/src/Entity/BasicEntityIdParser.php',
+        'Wikibase\\DataModel\\Entity\\ClearableEntity' => __DIR__ . '/..' . '/wikibase/data-model/src/Entity/ClearableEntity.php',
         'Wikibase\\DataModel\\Entity\\DispatchingEntityIdParser' => __DIR__ . '/..' . '/wikibase/data-model/src/Entity/DispatchingEntityIdParser.php',
         'Wikibase\\DataModel\\Entity\\EntityDocument' => __DIR__ . '/..' . '/wikibase/data-model/src/Entity/EntityDocument.php',
         'Wikibase\\DataModel\\Entity\\EntityId' => __DIR__ . '/..' . '/wikibase/data-model/src/Entity/EntityId.php',
