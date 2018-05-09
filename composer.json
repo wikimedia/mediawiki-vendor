@@ -101,6 +101,7 @@
 		"symfony/console": "3.4.9",
 		"symfony/debug": "3.4.9",
 		"symfony/polyfill-mbstring": "1.6",
+		"symfony/validator": "3.4.9",
 		"symfony/var-dumper": "3.4.9",
 		"wikibase/data-model": "7.5.0",
 		"wikibase/data-model-serialization": "2.7.0",

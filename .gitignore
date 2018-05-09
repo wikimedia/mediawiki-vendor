@@ -35,3 +35,11 @@ Thumbs.db
 /static*
 /tags
 /.htpasswd
+
+# Library test files etc.
+symfony/translation/.gitignore
+symfony/translation/phpunit.xml.dist
+symfony/translation/Tests
+symfony/validator/.gitignore
+symfony/validator/phpunit.xml.dist
+symfony/validator/Tests
