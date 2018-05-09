@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "1ea6fc6fbf2f296eae5523d547153b40",
+    "content-hash": "c27a4500bc0dd85ff5431be52a20a964",
     "packages": [
         {
             "name": "composer/semver",
@@ -3817,6 +3817,46 @@
             "description": "Automatically compact sequentially-outputted strings that share a common prefix / suffix pair.",
             "homepage": "https://www.mediawiki.org/wiki/WrappedString",
             "time": "2017-12-30T10:52:27+00:00"
+        },
+        {
+            "name": "wmde/php-vuejs-templating",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wmde/php-vuejs-templating.git",
+                "reference": "87982196146a0f529d6fc7ffd7420c16b6ac39c4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wmde/php-vuejs-templating/zipball/87982196146a0f529d6fc7ffd7420c16b6ac39c4",
+                "reference": "87982196146a0f529d6fc7ffd7420c16b6ac39c4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.0",
+                "wikibase/wikibase-codesniffer": "^0.3.0",
+                "wmde/hamcrest-html-matchers": "^0.1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "WMDE\\VueJsTemplating\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.1-only"
+            ],
+            "authors": [
+                {
+                    "name": "Aleksey Bekh-Ivanov"
+                }
+            ],
+            "description": "PHP implementation of Vue.js templating engine",
+            "time": "2018-05-04T16:16:10+00:00"
         },
         {
             "name": "zordius/lightncandy",

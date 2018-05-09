@@ -45,6 +45,7 @@ class ComposerStaticInit_mediawiki_vendor
             'Wikibase\\InternalSerialization\\' => 31,
             'Wikibase\\DataModel\\Services\\' => 28,
             'Wikibase\\DataModel\\' => 19,
+            'WMDE\\VueJsTemplating\\' => 21,
         ),
         'V' => 
         array (
@@ -163,6 +164,10 @@ class ComposerStaticInit_mediawiki_vendor
         array (
             0 => __DIR__ . '/..' . '/wikibase/data-model-serialization/src',
             1 => __DIR__ . '/..' . '/wikibase/data-model/src',
+        ),
+        'WMDE\\VueJsTemplating\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/wmde/php-vuejs-templating/src',
         ),
         'ValueValidators\\' => 
         array (
@@ -2102,6 +2107,19 @@ class ComposerStaticInit_mediawiki_vendor
         'ValueValidators\\Result' => __DIR__ . '/..' . '/data-values/interfaces/src/ValueValidators/Result.php',
         'ValueValidators\\ValueValidator' => __DIR__ . '/..' . '/data-values/interfaces/src/ValueValidators/ValueValidator.php',
         'ValueValidators\\ValueValidatorObject' => __DIR__ . '/..' . '/data-values/interfaces/src/ValueValidators/ValueValidatorObject.php',
+        'WMDE\\VueJsTemplating\\Component' => __DIR__ . '/..' . '/wmde/php-vuejs-templating/src/Component.php',
+        'WMDE\\VueJsTemplating\\FilterExpressionParsing\\FilterCall' => __DIR__ . '/..' . '/wmde/php-vuejs-templating/src/FilterExpressionParsing/FilterCall.php',
+        'WMDE\\VueJsTemplating\\FilterExpressionParsing\\FilterParser' => __DIR__ . '/..' . '/wmde/php-vuejs-templating/src/FilterExpressionParsing/FilterParser.php',
+        'WMDE\\VueJsTemplating\\FilterExpressionParsing\\ParseResult' => __DIR__ . '/..' . '/wmde/php-vuejs-templating/src/FilterExpressionParsing/ParseResult.php',
+        'WMDE\\VueJsTemplating\\JsParsing\\BasicJsExpressionParser' => __DIR__ . '/..' . '/wmde/php-vuejs-templating/src/JsParsing/BasicJsExpressionParser.php',
+        'WMDE\\VueJsTemplating\\JsParsing\\CachingExpressionParser' => __DIR__ . '/..' . '/wmde/php-vuejs-templating/src/JsParsing/CachingExpressionParser.php',
+        'WMDE\\VueJsTemplating\\JsParsing\\FilterApplication' => __DIR__ . '/..' . '/wmde/php-vuejs-templating/src/JsParsing/FilterApplication.php',
+        'WMDE\\VueJsTemplating\\JsParsing\\JsExpressionParser' => __DIR__ . '/..' . '/wmde/php-vuejs-templating/src/JsParsing/JsExpressionParser.php',
+        'WMDE\\VueJsTemplating\\JsParsing\\NegationOperator' => __DIR__ . '/..' . '/wmde/php-vuejs-templating/src/JsParsing/NegationOperator.php',
+        'WMDE\\VueJsTemplating\\JsParsing\\ParsedExpression' => __DIR__ . '/..' . '/wmde/php-vuejs-templating/src/JsParsing/ParsedExpression.php',
+        'WMDE\\VueJsTemplating\\JsParsing\\StringLiteral' => __DIR__ . '/..' . '/wmde/php-vuejs-templating/src/JsParsing/StringLiteral.php',
+        'WMDE\\VueJsTemplating\\JsParsing\\VariableAccess' => __DIR__ . '/..' . '/wmde/php-vuejs-templating/src/JsParsing/VariableAccess.php',
+        'WMDE\\VueJsTemplating\\Templating' => __DIR__ . '/..' . '/wmde/php-vuejs-templating/src/Templating.php',
         'Wikibase\\DataModel\\Assert\\RepositoryNameAssert' => __DIR__ . '/..' . '/wikibase/data-model/src/Assert/RepositoryNameAssert.php',
         'Wikibase\\DataModel\\ByPropertyIdArray' => __DIR__ . '/..' . '/wikibase/data-model/src/ByPropertyIdArray.php',
         'Wikibase\\DataModel\\DeserializerFactory' => __DIR__ . '/..' . '/wikibase/data-model-serialization/src/DeserializerFactory.php',
