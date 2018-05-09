@@ -2047,46 +2047,47 @@
     },
     {
         "name": "symfony/console",
-        "version": "v3.3.13",
-        "version_normalized": "3.3.13.0",
+        "version": "v3.4.9",
+        "version_normalized": "3.4.9.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/console.git",
-            "reference": "63cd7960a0a522c3537f6326706d7f3b8de65805"
+            "reference": "5b1fdfa8eb93464bcc36c34da39cedffef822cdf"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/console/zipball/63cd7960a0a522c3537f6326706d7f3b8de65805",
-            "reference": "63cd7960a0a522c3537f6326706d7f3b8de65805",
+            "url": "https://api.github.com/repos/symfony/console/zipball/5b1fdfa8eb93464bcc36c34da39cedffef822cdf",
+            "reference": "5b1fdfa8eb93464bcc36c34da39cedffef822cdf",
             "shasum": ""
         },
         "require": {
             "php": "^5.5.9|>=7.0.8",
-            "symfony/debug": "~2.8|~3.0",
+            "symfony/debug": "~2.8|~3.0|~4.0",
             "symfony/polyfill-mbstring": "~1.0"
         },
         "conflict": {
-            "symfony/dependency-injection": "<3.3"
+            "symfony/dependency-injection": "<3.4",
+            "symfony/process": "<3.3"
         },
         "require-dev": {
             "psr/log": "~1.0",
-            "symfony/config": "~3.3",
-            "symfony/dependency-injection": "~3.3",
-            "symfony/event-dispatcher": "~2.8|~3.0",
-            "symfony/filesystem": "~2.8|~3.0",
-            "symfony/process": "~2.8|~3.0"
+            "symfony/config": "~3.3|~4.0",
+            "symfony/dependency-injection": "~3.4|~4.0",
+            "symfony/event-dispatcher": "~2.8|~3.0|~4.0",
+            "symfony/lock": "~3.4|~4.0",
+            "symfony/process": "~3.3|~4.0"
         },
         "suggest": {
-            "psr/log": "For using the console logger",
+            "psr/log-implementation": "For using the console logger",
             "symfony/event-dispatcher": "",
-            "symfony/filesystem": "",
+            "symfony/lock": "",
             "symfony/process": ""
         },
-        "time": "2017-11-16T15:24:32+00:00",
+        "time": "2018-04-30T01:22:56+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "3.3-dev"
+                "dev-master": "3.4-dev"
             }
         },
         "installation-source": "dist",
@@ -2117,17 +2118,17 @@
     },
     {
         "name": "symfony/debug",
-        "version": "v3.3.13",
-        "version_normalized": "3.3.13.0",
+        "version": "v3.4.9",
+        "version_normalized": "3.4.9.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/debug.git",
-            "reference": "74557880e2846b5c84029faa96b834da37e29810"
+            "reference": "1b95888cfd996484527cb41e8952d9a5eaf7454f"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/debug/zipball/74557880e2846b5c84029faa96b834da37e29810",
-            "reference": "74557880e2846b5c84029faa96b834da37e29810",
+            "url": "https://api.github.com/repos/symfony/debug/zipball/1b95888cfd996484527cb41e8952d9a5eaf7454f",
+            "reference": "1b95888cfd996484527cb41e8952d9a5eaf7454f",
             "shasum": ""
         },
         "require": {
@@ -2138,13 +2139,13 @@
             "symfony/http-kernel": ">=2.3,<2.3.24|~2.4.0|>=2.5,<2.5.9|>=2.6,<2.6.2"
         },
         "require-dev": {
-            "symfony/http-kernel": "~2.8|~3.0"
+            "symfony/http-kernel": "~2.8|~3.0|~4.0"
         },
-        "time": "2017-11-10T16:38:39+00:00",
+        "time": "2018-04-30T16:53:52+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "3.3-dev"
+                "dev-master": "3.4-dev"
             }
         },
         "installation-source": "dist",
@@ -2236,17 +2237,17 @@
     },
     {
         "name": "symfony/var-dumper",
-        "version": "v3.3.13",
-        "version_normalized": "3.3.13.0",
+        "version": "v3.4.9",
+        "version_normalized": "3.4.9.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/var-dumper.git",
-            "reference": "805de6bd6869073e60610df1b14ab7d969c61b01"
+            "reference": "0e6545672d8c9ce70dd472adc2f8b03155a46f73"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/var-dumper/zipball/805de6bd6869073e60610df1b14ab7d969c61b01",
-            "reference": "805de6bd6869073e60610df1b14ab7d969c61b01",
+            "url": "https://api.github.com/repos/symfony/var-dumper/zipball/0e6545672d8c9ce70dd472adc2f8b03155a46f73",
+            "reference": "0e6545672d8c9ce70dd472adc2f8b03155a46f73",
             "shasum": ""
         },
         "require": {
@@ -2262,13 +2263,14 @@
         },
         "suggest": {
             "ext-iconv": "To convert non-UTF-8 strings to UTF-8 (or symfony/polyfill-iconv in case ext-iconv cannot be used).",
+            "ext-intl": "To show region name in time zone dump",
             "ext-symfony_debug": ""
         },
-        "time": "2017-11-07T14:16:22+00:00",
+        "time": "2018-04-26T12:42:15+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "3.3-dev"
+                "dev-master": "3.4-dev"
             }
         },
         "installation-source": "dist",
