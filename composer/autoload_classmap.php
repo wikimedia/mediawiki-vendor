@@ -847,6 +847,7 @@ return array(
     'OOUI\\LabelWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/LabelWidget.php',
     'OOUI\\Layout' => $vendorDir . '/oojs/oojs-ui/php/Layout.php',
     'OOUI\\MultilineTextInputWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/MultilineTextInputWidget.php',
+    'OOUI\\NumberInputWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/NumberInputWidget.php',
     'OOUI\\PanelLayout' => $vendorDir . '/oojs/oojs-ui/php/layouts/PanelLayout.php',
     'OOUI\\ProgressBarWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/ProgressBarWidget.php',
     'OOUI\\RadioInputWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/RadioInputWidget.php',

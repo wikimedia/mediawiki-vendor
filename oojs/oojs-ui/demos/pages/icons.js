@@ -21,12 +21,8 @@ Demo.static.pages.icons = function ( demo ) {
 				'articleCheck',
 				'articleSearch',
 				'articleRedirect',
-				'citeArticle',
-				'book',
 				'history',
 				'info',
-				'journal',
-				'newspaper',
 				'folderPlaceholder',
 				'die',
 				'download',
@@ -65,10 +61,10 @@ Demo.static.pages.icons = function ( demo ) {
 				'lightbulb',
 				'logOut',
 				'newWindow',
+				'pageSettings',
 				'printer',
 				'reload',
 				'search',
-				'settings',
 				'subtract'
 			],
 			moderation: [
@@ -152,6 +148,15 @@ Demo.static.pages.icons = function ( demo ) {
 				'tableMoveRowBefore',
 				'templateAdd',
 				'wikiText'
+			],
+			'editing-citations': [
+				'book',
+				'journal',
+				'newspaper',
+				'web',
+				'reference',
+				'referenceExisting',
+				'references'
 			],
 			media: [
 				'fullScreen',

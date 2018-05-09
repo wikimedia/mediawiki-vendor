@@ -1220,6 +1220,7 @@ class ComposerStaticInit_mediawiki_vendor
         'OOUI\\LabelWidget' => __DIR__ . '/..' . '/oojs/oojs-ui/php/widgets/LabelWidget.php',
         'OOUI\\Layout' => __DIR__ . '/..' . '/oojs/oojs-ui/php/Layout.php',
         'OOUI\\MultilineTextInputWidget' => __DIR__ . '/..' . '/oojs/oojs-ui/php/widgets/MultilineTextInputWidget.php',
+        'OOUI\\NumberInputWidget' => __DIR__ . '/..' . '/oojs/oojs-ui/php/widgets/NumberInputWidget.php',
         'OOUI\\PanelLayout' => __DIR__ . '/..' . '/oojs/oojs-ui/php/layouts/PanelLayout.php',
         'OOUI\\ProgressBarWidget' => __DIR__ . '/..' . '/oojs/oojs-ui/php/widgets/ProgressBarWidget.php',
         'OOUI\\RadioInputWidget' => __DIR__ . '/..' . '/oojs/oojs-ui/php/widgets/RadioInputWidget.php',
