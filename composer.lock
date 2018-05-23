@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c27a4500bc0dd85ff5431be52a20a964",
+    "content-hash": "31a56db0e05174be0be9e9297a391794",
     "packages": [
         {
             "name": "composer/semver",
@@ -3777,31 +3777,33 @@
         },
         {
             "name": "wikimedia/wrappedstring",
-            "version": "v2.3.0",
+            "version": "v3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/WrappedString.git",
-                "reference": "7e94b5d61551cfa95f9c0d070c9018b08ac24979"
+                "reference": "36459482b098f3be36b3779b688ee33b0610848b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/WrappedString/zipball/7e94b5d61551cfa95f9c0d070c9018b08ac24979",
-                "reference": "7e94b5d61551cfa95f9c0d070c9018b08ac24979",
+                "url": "https://api.github.com/repos/wikimedia/WrappedString/zipball/36459482b098f3be36b3779b688ee33b0610848b",
+                "reference": "36459482b098f3be36b3779b688ee33b0610848b",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.5.9"
             },
             "require-dev": {
-                "jakub-onderka/php-parallel-lint": "^0.9.0.0",
-                "mediawiki/mediawiki-codesniffer": "15.0.0",
-                "phpunit/phpunit": "^4.8"
+                "jakub-onderka/php-console-highlighter": "0.3.2",
+                "jakub-onderka/php-parallel-lint": "1.0.0",
+                "mediawiki/mediawiki-codesniffer": "18.0.0",
+                "mediawiki/minus-x": "0.3.1",
+                "ockcyp/covers-validator": "0.5.1 || 0.6.1",
+                "phpunit/phpunit": "4.8.36 || ^6.5"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Wikimedia\\": "src/Wikimedia",
-                    "WrappedString\\": "src/WrappedString"
+                    "Wikimedia\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -3816,7 +3818,7 @@
             ],
             "description": "Automatically compact sequentially-outputted strings that share a common prefix / suffix pair.",
             "homepage": "https://www.mediawiki.org/wiki/WrappedString",
-            "time": "2017-12-30T10:52:27+00:00"
+            "time": "2018-05-23T15:59:54+00:00"
         },
         {
             "name": "wmde/php-vuejs-templating",

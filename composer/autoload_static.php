@@ -34,7 +34,6 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'W' => 
         array (
-            'WrappedString\\' => 14,
             'Wikimedia\\Purtle\\Tests\\' => 23,
             'Wikimedia\\Purtle\\' => 17,
             'Wikimedia\\Equivset\\' => 19,
@@ -119,10 +118,6 @@ class ComposerStaticInit_mediawiki_vendor
         array (
             0 => __DIR__ . '/..' . '/dnoegel/php-xdg-base-dir/src',
         ),
-        'WrappedString\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src/WrappedString',
-        ),
         'Wikimedia\\Purtle\\Tests\\' => 
         array (
             0 => __DIR__ . '/..' . '/wikimedia/purtle/tests/phpunit',
@@ -150,7 +145,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\' => 
         array (
             0 => __DIR__ . '/..' . '/wikimedia/object-factory/src',
-            1 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src/Wikimedia',
+            1 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
         ),
         'Wikibase\\InternalSerialization\\' => 
         array (
@@ -2391,10 +2386,8 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Timestamp\\ConvertibleTimestamp' => __DIR__ . '/..' . '/wikimedia/timestamp/src/ConvertibleTimestamp.php',
         'Wikimedia\\Timestamp\\TimestampException' => __DIR__ . '/..' . '/wikimedia/timestamp/src/TimestampException.php',
         'Wikimedia\\WaitConditionLoop' => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src/WaitConditionLoop.php',
-        'Wikimedia\\WrappedString' => __DIR__ . '/..' . '/wikimedia/wrappedstring/src/Wikimedia/WrappedString.php',
-        'Wikimedia\\WrappedStringList' => __DIR__ . '/..' . '/wikimedia/wrappedstring/src/Wikimedia/WrappedStringList.php',
-        'WrappedString\\WrappedString' => __DIR__ . '/..' . '/wikimedia/wrappedstring/src/WrappedString/WrappedString.php',
-        'WrappedString\\WrappedStringList' => __DIR__ . '/..' . '/wikimedia/wrappedstring/src/WrappedString/WrappedStringList.php',
+        'Wikimedia\\WrappedString' => __DIR__ . '/..' . '/wikimedia/wrappedstring/src/WrappedString.php',
+        'Wikimedia\\WrappedStringList' => __DIR__ . '/..' . '/wikimedia/wrappedstring/src/WrappedStringList.php',
         'XdgBaseDir\\Xdg' => __DIR__ . '/..' . '/dnoegel/php-xdg-base-dir/src/Xdg.php',
         'getID3' => __DIR__ . '/..' . '/james-heinrich/getid3/getid3/getid3.php',
         'getID3_cached_dbm' => __DIR__ . '/..' . '/james-heinrich/getid3/getid3/extension.cache.dbm.php',
