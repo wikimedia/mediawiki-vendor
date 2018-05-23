@@ -2463,6 +2463,70 @@
         ]
     },
     {
+        "name": "wikibase/data-model",
+        "version": "7.5.0",
+        "version_normalized": "7.5.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wmde/WikibaseDataModel.git",
+            "reference": "a3105365051c4754a621f5884f31badc2dad33fd"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wmde/WikibaseDataModel/zipball/a3105365051c4754a621f5884f31badc2dad33fd",
+            "reference": "a3105365051c4754a621f5884f31badc2dad33fd",
+            "shasum": ""
+        },
+        "require": {
+            "data-values/data-values": "~0.1|~1.0",
+            "php": ">=5.5.9",
+            "wikimedia/assert": "~0.2.2"
+        },
+        "require-dev": {
+            "ockcyp/covers-validator": "~0.4.0",
+            "phpmd/phpmd": "~2.3",
+            "phpunit/phpunit": "~4.8",
+            "wikibase/wikibase-codesniffer": "^0.1.0"
+        },
+        "time": "2018-05-02T11:55:57+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "7.3.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "files": [
+                "WikibaseDataModel.php"
+            ],
+            "psr-4": {
+                "Wikibase\\DataModel\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "authors": [
+            {
+                "name": "Thiemo Mättig"
+            },
+            {
+                "name": "Jeroen De Dauw",
+                "email": "jeroendedauw@gmail.com",
+                "homepage": "http://jeroendedauw.com"
+            }
+        ],
+        "description": "PHP implementation of the Wikibase DataModel",
+        "homepage": "https://github.com/wmde/WikibaseDataModel",
+        "keywords": [
+            "DataModel",
+            "wikibase",
+            "wikidata"
+        ]
+    },
+    {
         "name": "wikibase/data-model-serialization",
         "version": "2.7.0",
         "version_normalized": "2.7.0.0",
@@ -3894,6 +3958,48 @@
         "homepage": "https://www.mediawiki.org/wiki/WrappedString"
     },
     {
+        "name": "wmde/php-vuejs-templating",
+        "version": "1.0.1",
+        "version_normalized": "1.0.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wmde/php-vuejs-templating.git",
+            "reference": "87982196146a0f529d6fc7ffd7420c16b6ac39c4"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wmde/php-vuejs-templating/zipball/87982196146a0f529d6fc7ffd7420c16b6ac39c4",
+            "reference": "87982196146a0f529d6fc7ffd7420c16b6ac39c4",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.5.9"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "^4.0",
+            "wikibase/wikibase-codesniffer": "^0.3.0",
+            "wmde/hamcrest-html-matchers": "^0.1.0"
+        },
+        "time": "2018-05-04T16:16:10+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "WMDE\\VueJsTemplating\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "LGPL-2.1-only"
+        ],
+        "authors": [
+            {
+                "name": "Aleksey Bekh-Ivanov"
+            }
+        ],
+        "description": "PHP implementation of Vue.js templating engine"
+    },
+    {
         "name": "zordius/lightncandy",
         "version": "v0.23",
         "version_normalized": "0.23.0.0",
@@ -3941,111 +4047,5 @@
             "php",
             "template"
         ]
-    },
-    {
-        "name": "wikibase/data-model",
-        "version": "7.5.0",
-        "version_normalized": "7.5.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/wmde/WikibaseDataModel.git",
-            "reference": "a3105365051c4754a621f5884f31badc2dad33fd"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/wmde/WikibaseDataModel/zipball/a3105365051c4754a621f5884f31badc2dad33fd",
-            "reference": "a3105365051c4754a621f5884f31badc2dad33fd",
-            "shasum": ""
-        },
-        "require": {
-            "data-values/data-values": "~0.1|~1.0",
-            "php": ">=5.5.9",
-            "wikimedia/assert": "~0.2.2"
-        },
-        "require-dev": {
-            "ockcyp/covers-validator": "~0.4.0",
-            "phpmd/phpmd": "~2.3",
-            "phpunit/phpunit": "~4.8",
-            "wikibase/wikibase-codesniffer": "^0.1.0"
-        },
-        "time": "2018-05-02T11:55:57+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "7.3.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "files": [
-                "WikibaseDataModel.php"
-            ],
-            "psr-4": {
-                "Wikibase\\DataModel\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "GPL-2.0+"
-        ],
-        "authors": [
-            {
-                "name": "Thiemo Mättig"
-            },
-            {
-                "name": "Jeroen De Dauw",
-                "email": "jeroendedauw@gmail.com",
-                "homepage": "http://jeroendedauw.com"
-            }
-        ],
-        "description": "PHP implementation of the Wikibase DataModel",
-        "homepage": "https://github.com/wmde/WikibaseDataModel",
-        "keywords": [
-            "DataModel",
-            "wikibase",
-            "wikidata"
-        ]
-    },
-    {
-        "name": "wmde/php-vuejs-templating",
-        "version": "1.0.1",
-        "version_normalized": "1.0.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/wmde/php-vuejs-templating.git",
-            "reference": "87982196146a0f529d6fc7ffd7420c16b6ac39c4"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/wmde/php-vuejs-templating/zipball/87982196146a0f529d6fc7ffd7420c16b6ac39c4",
-            "reference": "87982196146a0f529d6fc7ffd7420c16b6ac39c4",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.5.9"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "^4.0",
-            "wikibase/wikibase-codesniffer": "^0.3.0",
-            "wmde/hamcrest-html-matchers": "^0.1.0"
-        },
-        "time": "2018-05-04T16:16:10+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "WMDE\\VueJsTemplating\\": "src"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "LGPL-2.1-only"
-        ],
-        "authors": [
-            {
-                "name": "Aleksey Bekh-Ivanov"
-            }
-        ],
-        "description": "PHP implementation of Vue.js templating engine"
     }
 ]

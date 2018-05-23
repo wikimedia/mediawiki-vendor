@@ -162,8 +162,8 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'Wikibase\\DataModel\\' => 
         array (
-            0 => __DIR__ . '/..' . '/wikibase/data-model-serialization/src',
-            1 => __DIR__ . '/..' . '/wikibase/data-model/src',
+            0 => __DIR__ . '/..' . '/wikibase/data-model/src',
+            1 => __DIR__ . '/..' . '/wikibase/data-model-serialization/src',
         ),
         'WMDE\\VueJsTemplating\\' => 
         array (
