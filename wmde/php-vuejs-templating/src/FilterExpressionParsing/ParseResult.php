@@ -46,10 +46,11 @@ class ParseResult {
 	 * @param JsExpressionParser $expressionParser
 	 * @param callable[] $filters Indexed by name
 	 *
+	 * @throws RuntimeException when one of the requested filters is not known
 	 * @return ParsedExpression
 	 */
 	public function toExpression( JsExpressionParser $expressionParser, array $filters ) {
-		if ( count( $this->filterCalls ) === 0 ) {
+		if ( $this->filterCalls === [] ) {
 			return $expressionParser->parse( $this->expressions[0] );
 		}
 
@@ -74,7 +75,10 @@ class ParseResult {
 	}
 
 	/**
+	 * @param JsExpressionParser $expressionParser
 	 * @param string[] $expressions
+	 *
+	 * @return ParsedExpression[]
 	 */
 	private function parseExpressions( JsExpressionParser $expressionParser, array $expressions ) {
 		return array_map(

@@ -133,7 +133,7 @@
 		"wikimedia/utfnormal": "2.0.0",
 		"wikimedia/wait-condition-loop": "1.0.1",
 		"wikimedia/wrappedstring": "3.0.0",
-		"wmde/php-vuejs-templating": "1.0.1",
+		"wmde/php-vuejs-templating": "1.0.2",
 		"zordius/lightncandy": "0.23"
 	},
 	"require-dev": {

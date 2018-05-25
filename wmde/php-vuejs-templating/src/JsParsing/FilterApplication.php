@@ -2,6 +2,8 @@
 
 namespace WMDE\VueJsTemplating\JsParsing;
 
+use RuntimeException;
+
 class FilterApplication implements ParsedExpression {
 
 	/**
@@ -19,7 +21,6 @@ class FilterApplication implements ParsedExpression {
 	 * @param ParsedExpression[] $argumentExpressions
 	 */
 	public function __construct( callable $filter, array $argumentExpressions ) {
-
 		$this->filter = $filter;
 		$this->argumentExpressions = $argumentExpressions;
 	}
@@ -27,6 +28,7 @@ class FilterApplication implements ParsedExpression {
 	/**
 	 * @param array $data
 	 *
+	 * @throws RuntimeException
 	 * @return mixed
 	 */
 	public function evaluate( array $data ) {

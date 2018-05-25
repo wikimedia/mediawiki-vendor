@@ -15,6 +15,7 @@ use LibXMLError;
 use WMDE\VueJsTemplating\FilterExpressionParsing\FilterParser;
 use WMDE\VueJsTemplating\JsParsing\BasicJsExpressionParser;
 use WMDE\VueJsTemplating\JsParsing\CachingExpressionParser;
+use WMDE\VueJsTemplating\JsParsing\JsExpressionParser;
 
 class Component {
 
@@ -31,7 +32,7 @@ class Component {
 	private $filters = [];
 
 	/**
-	 * @var BasicJsExpressionParser
+	 * @var JsExpressionParser
 	 */
 	private $expressionParser;
 
@@ -49,7 +50,7 @@ class Component {
 	/**
 	 * @param array $data
 	 *
-	 * @return string
+	 * @return string HTML
 	 */
 	public function render( array $data ) {
 		$document = $this->parseHtml( $this->template );
@@ -61,17 +62,17 @@ class Component {
 	}
 
 	/**
-	 * @param string $template HTML
+	 * @param string $html HTML
 	 *
 	 * @return DOMDocument
 	 */
-	private function parseHtml( $template ) {
+	private function parseHtml( $html ) {
 		$entityLoaderDisabled = libxml_disable_entity_loader( true );
 		$internalErrors = libxml_use_internal_errors( true );
-		$document = new DOMDocument();
+		$document = new DOMDocument( '1.0', 'UTF-8' );
 
-		//TODO Unicode characters in template will not work correctly. Fix.
-		if ( !$document->loadHTML( $template ) ) {
+		// Ensure $html is treated as UTF-8, see https://stackoverflow.com/a/8218649
+		if ( !$document->loadHTML( '<?xml encoding="utf-8" ?>' . $html ) ) {
 			//TODO Test failure
 		}
 
@@ -98,13 +99,13 @@ class Component {
 	 * @throws Exception
 	 */
 	private function getRootNode( DOMDocument $document ) {
-		$rootNodes = iterator_to_array( $document->documentElement->childNodes->item( 0 )->childNodes );
+		$rootNodes = $document->documentElement->childNodes->item( 0 )->childNodes;
 
-		if ( count( $rootNodes ) > 1 ) {
+		if ( $rootNodes->length > 1 ) {
 			throw new Exception( 'Template should have only one root node' );
 		}
 
-		return $rootNodes[0];
+		return $rootNodes->item( 0 );
 	}
 
 	/**
@@ -171,7 +172,7 @@ class Component {
 	private function handleAttributeBinding( DOMElement $node, array $data ) {
 		/** @var DOMAttr $attribute */
 		foreach ( iterator_to_array( $node->attributes ) as $attribute ) {
-			if ( !preg_match( '/^:[\-\_\w]+$/', $attribute->name ) ) {
+			if ( !preg_match( '/^:[\w-]+$/', $attribute->name ) ) {
 				continue;
 			}
 
