@@ -58,7 +58,7 @@ trait ButtonElement {
 	/**
 	 * Toggle frame.
 	 *
-	 * @param bool|null $framed Make button framed, omit to toggle
+	 * @param bool $framed Make button framed, omit to toggle
 	 * @return $this
 	 */
 	public function toggleFramed( $framed = null ) {

@@ -33,6 +33,7 @@ Demo.static.pages.icons = function ( demo ) {
 			alerts: [
 				'alert',
 				'bell',
+				'comment',
 				'message',
 				'notice',
 				'speechBubble',
@@ -148,7 +149,7 @@ Demo.static.pages.icons = function ( demo ) {
 				'templateAdd',
 				'wikiText'
 			],
-			'editing-citation': [
+			'editing-citations': [
 				'book',
 				'journal',
 				'newspaper',
