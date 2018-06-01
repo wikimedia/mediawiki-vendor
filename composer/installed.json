@@ -3963,6 +3963,59 @@
         "homepage": "https://www.mediawiki.org/wiki/WrappedString"
     },
     {
+        "name": "wikimedia/xmp-reader",
+        "version": "0.5.1",
+        "version_normalized": "0.5.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/XMPReader.git",
+            "reference": "bacb4d130e3df6ec9b9285b2523f43b004457487"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/XMPReader/zipball/bacb4d130e3df6ec9b9285b2523f43b004457487",
+            "reference": "bacb4d130e3df6ec9b9285b2523f43b004457487",
+            "shasum": ""
+        },
+        "require": {
+            "ext-xml": "*",
+            "php": ">=5.5.9",
+            "psr/log": "^1.0",
+            "wikimedia/at-ease": "^1.2",
+            "wikimedia/scoped-callback": "^1.0 || ^2.0",
+            "wikimedia/timestamp": "^1.0"
+        },
+        "require-dev": {
+            "ext-exif": "*",
+            "jakub-onderka/php-console-highlighter": "0.3.2",
+            "jakub-onderka/php-parallel-lint": "1.0.0",
+            "mediawiki/mediawiki-codesniffer": "18.0.0",
+            "mediawiki/minus-x": "0.3.1",
+            "ockcyp/covers-validator": "0.5.1 || 0.6.1",
+            "phpunit/phpunit": "4.8.36 || ^6.5"
+        },
+        "time": "2018-05-31T23:17:56+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Wikimedia\\XMPReader\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2.0-or-later"
+        ],
+        "authors": [
+            {
+                "name": "Brian Wolff",
+                "email": "bawolff+wn@gmail.com"
+            }
+        ],
+        "description": "Reader for XMP data containing properties relevant to images",
+        "homepage": "https://www.mediawiki.org/wiki/XMPReader"
+    },
+    {
         "name": "wmde/php-vuejs-templating",
         "version": "1.0.2",
         "version_normalized": "1.0.2.0",

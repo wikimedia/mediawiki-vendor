@@ -19,12 +19,12 @@ class ComposerStaticInit_mediawiki_vendor
         '23842c11409ef125f7fd90c8b167279e' => __DIR__ . '/..' . '/wikimedia/at-ease/src/MediaWiki/Functions.php',
         'eccc0347283a01e62f5536bcf76b6e62' => __DIR__ . '/..' . '/wikimedia/at-ease/src/Wikimedia/Functions.php',
         '3ef87127dc6892a0a78f223558a0b940' => __DIR__ . '/..' . '/diff/diff/Diff.php',
+        'c50606d667a3fde2b80a955639479d3d' => __DIR__ . '/..' . '/wikimedia/timestamp/src/defines.php',
         '04c6c5c2f7095ccf6c481d3e53e1776f' => __DIR__ . '/..' . '/mustangostang/spyc/Spyc.php',
         'e7223560d890eab89cda23685e711e2c' => __DIR__ . '/..' . '/psy/psysh/src/Psy/functions.php',
         'c3f7f0e81464740a933532e81fa26cc7' => __DIR__ . '/..' . '/wikimedia/base-convert/src/Functions.php',
         '4d945db823e5f6ca6dd83ad1f5fbcc43' => __DIR__ . '/..' . '/wikimedia/relpath/src/RelPath/RelPath.php',
         '6513700b70192b7dfd0e5e9fc8082cf3' => __DIR__ . '/..' . '/wikimedia/relpath/src/Wikimedia/RelPath.php',
-        'c50606d667a3fde2b80a955639479d3d' => __DIR__ . '/..' . '/wikimedia/timestamp/src/defines.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -34,6 +34,7 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'W' => 
         array (
+            'Wikimedia\\XMPReader\\' => 20,
             'Wikimedia\\Purtle\\Tests\\' => 23,
             'Wikimedia\\Purtle\\' => 17,
             'Wikimedia\\Equivset\\' => 19,
@@ -117,6 +118,10 @@ class ComposerStaticInit_mediawiki_vendor
         'XdgBaseDir\\' => 
         array (
             0 => __DIR__ . '/..' . '/dnoegel/php-xdg-base-dir/src',
+        ),
+        'Wikimedia\\XMPReader\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/wikimedia/xmp-reader/src',
         ),
         'Wikimedia\\Purtle\\Tests\\' => 
         array (
@@ -2389,6 +2394,9 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\WaitConditionLoop' => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src/WaitConditionLoop.php',
         'Wikimedia\\WrappedString' => __DIR__ . '/..' . '/wikimedia/wrappedstring/src/WrappedString.php',
         'Wikimedia\\WrappedStringList' => __DIR__ . '/..' . '/wikimedia/wrappedstring/src/WrappedStringList.php',
+        'Wikimedia\\XMPReader\\Info' => __DIR__ . '/..' . '/wikimedia/xmp-reader/src/Info.php',
+        'Wikimedia\\XMPReader\\Reader' => __DIR__ . '/..' . '/wikimedia/xmp-reader/src/Reader.php',
+        'Wikimedia\\XMPReader\\Validate' => __DIR__ . '/..' . '/wikimedia/xmp-reader/src/Validate.php',
         'XdgBaseDir\\Xdg' => __DIR__ . '/..' . '/dnoegel/php-xdg-base-dir/src/Xdg.php',
         'getID3' => __DIR__ . '/..' . '/james-heinrich/getid3/getid3/getid3.php',
         'getID3_cached_dbm' => __DIR__ . '/..' . '/james-heinrich/getid3/getid3/extension.cache.dbm.php',

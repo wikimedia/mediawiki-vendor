@@ -7,6 +7,7 @@ $baseDir = $vendorDir;
 
 return array(
     'XdgBaseDir\\' => array($vendorDir . '/dnoegel/php-xdg-base-dir/src'),
+    'Wikimedia\\XMPReader\\' => array($vendorDir . '/wikimedia/xmp-reader/src'),
     'Wikimedia\\Purtle\\Tests\\' => array($vendorDir . '/wikimedia/purtle/tests/phpunit'),
     'Wikimedia\\Purtle\\' => array($vendorDir . '/wikimedia/purtle/src'),
     'Wikimedia\\Equivset\\' => array($vendorDir . '/wikimedia/equivset/src'),
