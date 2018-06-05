@@ -38,8 +38,8 @@ class WrappedString {
 
 	/**
 	 * @param string $value
-	 * @param string $prefix
-	 * @param string $suffix
+	 * @param string|null $prefix
+	 * @param string|null $suffix
 	 */
 	public function __construct( $value, $prefix = null, $suffix = null ) {
 		$this->value = $value;
@@ -74,9 +74,20 @@ class WrappedString {
 	 */
 	public static function compact( array $wraps ) {
 		$consolidated = [];
-		$prev = current( $wraps );
-		while ( next( $wraps ) !== false ) {
-			$wrap = current( $wraps );
+		if ( $wraps === [] ) {
+			// Return early so that we don't have to deal with $prev being
+			// set or not set, and avoid risk of adding $prev's initial null
+			// value to the list as extra value (T196496).
+			return $consolidated;
+		}
+		$first = true;
+		$prev = null;
+		foreach ( $wraps as $wrap ) {
+			if ( $first ) {
+				$first = false;
+				$prev = $wrap;
+				continue;
+			}
 			if ( $prev instanceof WrappedString
 				&& $wrap instanceof WrappedString
 				&& $prev->prefix !== null

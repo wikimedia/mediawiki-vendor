@@ -3917,17 +3917,17 @@
     },
     {
         "name": "wikimedia/wrappedstring",
-        "version": "v3.0.0",
-        "version_normalized": "3.0.0.0",
+        "version": "v3.0.1",
+        "version_normalized": "3.0.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/WrappedString.git",
-            "reference": "36459482b098f3be36b3779b688ee33b0610848b"
+            "reference": "3c383334de7ff623a81aebc3c59f5603917ca5e8"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/WrappedString/zipball/36459482b098f3be36b3779b688ee33b0610848b",
-            "reference": "36459482b098f3be36b3779b688ee33b0610848b",
+            "url": "https://api.github.com/repos/wikimedia/WrappedString/zipball/3c383334de7ff623a81aebc3c59f5603917ca5e8",
+            "reference": "3c383334de7ff623a81aebc3c59f5603917ca5e8",
             "shasum": ""
         },
         "require": {
@@ -3936,12 +3936,12 @@
         "require-dev": {
             "jakub-onderka/php-console-highlighter": "0.3.2",
             "jakub-onderka/php-parallel-lint": "1.0.0",
-            "mediawiki/mediawiki-codesniffer": "18.0.0",
+            "mediawiki/mediawiki-codesniffer": "20.0.0",
             "mediawiki/minus-x": "0.3.1",
             "ockcyp/covers-validator": "0.5.1 || 0.6.1",
             "phpunit/phpunit": "4.8.36 || ^6.5"
         },
-        "time": "2018-05-23T15:59:54+00:00",
+        "time": "2018-06-05T20:33:36+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
