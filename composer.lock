@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "42fb64ba30fd2d4e4d02d467a519e828",
+    "content-hash": "2a2c873e9e4d1db96d54cb4fe96414eb",
     "packages": [
         {
             "name": "composer/semver",
@@ -1145,16 +1145,16 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.27.1",
+            "version": "v0.27.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "30538fab0431d0c42073cc3a469455d5f6150ae1"
+                "reference": "2ed9ec1924b8938c2c89b29bdea662fe5dca3784"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/30538fab0431d0c42073cc3a469455d5f6150ae1",
-                "reference": "30538fab0431d0c42073cc3a469455d5f6150ae1",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/2ed9ec1924b8938c2c89b29bdea662fe5dca3784",
+                "reference": "2ed9ec1924b8938c2c89b29bdea662fe5dca3784",
                 "shasum": ""
             },
             "require": {
@@ -1221,7 +1221,7 @@
             ],
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOUI",
-            "time": "2018-05-29T22:03:28+00:00"
+            "time": "2018-06-06T15:42:26+00:00"
         },
         {
             "name": "oyejorge/less.php",
