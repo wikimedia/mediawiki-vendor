@@ -3,15 +3,15 @@
 [![Build Status](https://secure.travis-ci.org/wmde/WikibaseDataModelServices.png?branch=master)](http://travis-ci.org/wmde/WikibaseDataModelServices)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/wmde/WikibaseDataModelServices/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/wmde/WikibaseDataModelServices/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/wmde/WikibaseDataModelServices/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/wmde/WikibaseDataModelServices/?branch=master)
-[![Dependency Status](https://www.versioneye.com/php/wikibase:data-model-services/dev-master/badge.svg)](https://www.versioneye.com/php/wikibase:data-model-services/dev-master)
 [![Download count](https://poser.pugx.org/wikibase/data-model-services/d/total.png)](https://packagist.org/packages/wikibase/data-model-services)
 [![License](https://poser.pugx.org/wikibase/data-model-services/license.svg)](https://packagist.org/packages/wikibase/data-model-services)
 
 [![Latest Stable Version](https://poser.pugx.org/wikibase/data-model-services/version.png)](https://packagist.org/packages/wikibase/data-model-services)
 [![Latest Unstable Version](https://poser.pugx.org/wikibase/data-model-services/v/unstable.svg)](//packagist.org/packages/wikibase/data-model-services)
 
-**Wikibase DataModel Services** is a collection of services around [Wikibase DataModel]
-(https://github.com/wmde/WikibaseDataModel). It is part of the [Wikibase software](http://wikiba.se/).
+**Wikibase DataModel Services** is a collection of services around
+[Wikibase DataModel](https://github.com/wmde/WikibaseDataModel).
+It is part of the [Wikibase software](http://wikiba.se/).
 
 
 Recent changes can be found in the [release notes](RELEASE-NOTES.md).

@@ -2600,22 +2600,22 @@
     },
     {
         "name": "wikibase/data-model-services",
-        "version": "3.9.0",
-        "version_normalized": "3.9.0.0",
+        "version": "3.10.0",
+        "version_normalized": "3.10.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wmde/WikibaseDataModelServices.git",
-            "reference": "81b01002f5f12dc81ea07cea2622b68dec01b2c4"
+            "reference": "d34510d1ea0292ed1140a67c93b1d09229f76e31"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wmde/WikibaseDataModelServices/zipball/81b01002f5f12dc81ea07cea2622b68dec01b2c4",
-            "reference": "81b01002f5f12dc81ea07cea2622b68dec01b2c4",
+            "url": "https://api.github.com/repos/wmde/WikibaseDataModelServices/zipball/d34510d1ea0292ed1140a67c93b1d09229f76e31",
+            "reference": "d34510d1ea0292ed1140a67c93b1d09229f76e31",
             "shasum": ""
         },
         "require": {
             "data-values/data-values": "~0.1|~1.0",
-            "diff/diff": "~2.0|~1.0",
+            "diff/diff": "~2.3|~1.0",
             "php": ">=5.5.9",
             "wikibase/data-model": "~7.0|~6.3",
             "wikimedia/assert": "~0.2.2"
@@ -2623,13 +2623,13 @@
         "require-dev": {
             "phpmd/phpmd": "~2.3",
             "phpunit/phpunit": "~4.8",
-            "wikibase/wikibase-codesniffer": "^0.1.0"
+            "wikibase/wikibase-codesniffer": "^0.3.0"
         },
-        "time": "2018-01-16T13:00:55+00:00",
+        "time": "2018-05-31T08:28:52+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "3.9.x-dev"
+                "dev-master": "3.10.x-dev"
             }
         },
         "installation-source": "dist",
@@ -2640,7 +2640,7 @@
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
-            "GPL-2.0+"
+            "GPL-2.0-or-later"
         ],
         "authors": [
             {
