@@ -94,7 +94,7 @@
 		"php": ">=5.5.9",
 		"pimple/pimple": "3.0.2",
 		"psr/log": "1.0.2",
-		"psy/psysh": "0.8.11",
+		"psy/psysh": "0.9.6",
 		"ruflin/elastica": "5.3.0",
 		"serialization/serialization": "4.0.0",
 		"stil/gd-text":  "1.0.0",
@@ -142,6 +142,6 @@
 		"jakub-onderka/php-console-highlighter": "0.3.2"
 	},
 	"scripts": {
-		"test": "parallel-lint --exclude composer/autoload_static.php --exclude jakub-onderka/php-parallel-lint/tests --exclude symfony/var-dumper/Tests/Fixtures ."
+		"test": "parallel-lint --exclude composer/autoload_static.php --exclude jakub-onderka/php-parallel-lint/tests --exclude symfony/var-dumper/Tests/Fixtures --exclude psy/psysh/test ."
 	}
 }
