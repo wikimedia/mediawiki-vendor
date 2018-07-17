@@ -69,7 +69,9 @@ class Http extends AbstractTransport
         $query = $request->getQuery();
 
         if (!empty($query)) {
-            $baseUri .= '?'.http_build_query($query);
+            $baseUri .= '?'.http_build_query(
+                $this->sanityzeQueryStringBool($query)
+                );
         }
 
         curl_setopt($conn, CURLOPT_URL, $baseUri);
@@ -113,7 +115,7 @@ class Http extends AbstractTransport
 
         if (!empty($headersConfig)) {
             $headers = [];
-            while (list($header, $headerValue) = each($headersConfig)) {
+            foreach ($headersConfig as $header => $headerValue) {
                 array_push($headers, $header.': '.$headerValue);
             }
         }

@@ -83,9 +83,7 @@ class Scroll implements \Iterator
             $this->_revertOptions();
         } else {
             // If there are no pages left, we do not need to query ES.
-            // Reset scroll ID so valid() returns false.
-            $this->_nextScrollId = null;
-            $this->_currentResultSet = null;
+            $this->clear();
         }
     }
 
@@ -135,16 +133,37 @@ class Scroll implements \Iterator
     }
 
     /**
+     * Cleares the search context on ES and marks this Scroll instance as finished.
+     */
+    public function clear()
+    {
+        if (null !== $this->_nextScrollId) {
+            $this->_search->getClient()->request(
+                '_search/scroll',
+                Request::DELETE,
+                [Search::OPTION_SCROLL_ID => [$this->_nextScrollId]]
+            );
+
+            // Reset scroll ID so valid() returns false.
+            $this->_nextScrollId = null;
+            $this->_currentResultSet = null;
+        }
+    }
+
+    /**
      * Prepares Scroll for next request.
      *
      * @param ResultSet $resultSet
      */
     protected function _setScrollId(ResultSet $resultSet)
     {
+        if ($this->currentPage === 0) {
+            $this->totalPages = $resultSet->count() > 0 ? ceil($resultSet->getTotalHits() / $resultSet->count()) : 0;
+        }
+
         $this->_currentResultSet = $resultSet;
         ++$this->currentPage;
-        $this->totalPages = $resultSet->count() > 0 ? ceil($resultSet->getTotalHits() / $resultSet->count()) : 0;
-        $this->_nextScrollId = $resultSet->getResponse()->isOk() ? $resultSet->getResponse()->getScrollId() : null;
+        $this->_nextScrollId = $resultSet->getResponse()->isOk() && $resultSet->count() > 0 ? $resultSet->getResponse()->getScrollId() : null;
     }
 
     /**

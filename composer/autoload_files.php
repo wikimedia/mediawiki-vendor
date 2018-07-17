@@ -10,6 +10,7 @@ return array(
     'd1715cacc3c23b16a030645514266a76' => $vendorDir . '/data-values/interfaces/Interfaces.php',
     '90559502573a0d473dc66fde5c0ff7e2' => $vendorDir . '/data-values/common/Common.php',
     '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => $vendorDir . '/symfony/polyfill-mbstring/bootstrap.php',
+    'ad155f8f1cf0d418fe49e248db8c661b' => $vendorDir . '/react/promise/src/functions_include.php',
     'dc2c047038b9f5c71759f55f00aba99b' => $vendorDir . '/wikibase/data-model/WikibaseDataModel.php',
     '5a494680c593293bd6035e42e2a6825c' => $vendorDir . '/data-values/geo/Geo.php',
     'c15f8000750e4e04ba559d9745044427' => $vendorDir . '/data-values/number/Number.php',
