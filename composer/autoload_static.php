@@ -34,6 +34,7 @@ class ComposerStaticInit_mediawiki_vendor
             'Wikimedia\\Timestamp\\' => 20,
             'Wikimedia\\Purtle\\Tests\\' => 23,
             'Wikimedia\\Purtle\\' => 17,
+            'Wikimedia\\PasswordBlacklist\\' => 28,
             'Wikimedia\\Equivset\\' => 19,
             'Wikimedia\\Composer\\' => 19,
             'Wikimedia\\Assert\\Test\\' => 22,
@@ -68,6 +69,7 @@ class ComposerStaticInit_mediawiki_vendor
             'Psy\\' => 4,
             'Psr\\SimpleCache\\' => 16,
             'Psr\\Log\\' => 8,
+            'Pleo\\BloomFilter\\' => 17,
             'PhpParser\\' => 10,
         ),
         'M' => 
@@ -131,6 +133,10 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Purtle\\' => 
         array (
             0 => __DIR__ . '/..' . '/wikimedia/purtle/src',
+        ),
+        'Wikimedia\\PasswordBlacklist\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/wikimedia/password-blacklist/src',
         ),
         'Wikimedia\\Equivset\\' => 
         array (
@@ -224,6 +230,10 @@ class ComposerStaticInit_mediawiki_vendor
         'Psr\\Log\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
+        ),
+        'Pleo\\BloomFilter\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/pleonasm/bloom-filter/src',
         ),
         'PhpParser\\' => 
         array (
@@ -1464,6 +1474,9 @@ class ComposerStaticInit_mediawiki_vendor
         'Pimple\\Tests\\Fixtures\\Service' => __DIR__ . '/..' . '/pimple/pimple/src/Pimple/Tests/Fixtures/Service.php',
         'Pimple\\Tests\\PimpleServiceProviderInterfaceTest' => __DIR__ . '/..' . '/pimple/pimple/src/Pimple/Tests/PimpleServiceProviderInterfaceTest.php',
         'Pimple\\Tests\\PimpleTest' => __DIR__ . '/..' . '/pimple/pimple/src/Pimple/Tests/PimpleTest.php',
+        'Pleo\\BloomFilter\\BitArray' => __DIR__ . '/..' . '/pleonasm/bloom-filter/src/BitArray.php',
+        'Pleo\\BloomFilter\\BloomFilter' => __DIR__ . '/..' . '/pleonasm/bloom-filter/src/BloomFilter.php',
+        'Pleo\\BloomFilter\\HasherList' => __DIR__ . '/..' . '/pleonasm/bloom-filter/src/HasherList.php',
         'Psr\\Log\\AbstractLogger' => __DIR__ . '/..' . '/psr/log/Psr/Log/AbstractLogger.php',
         'Psr\\Log\\InvalidArgumentException' => __DIR__ . '/..' . '/psr/log/Psr/Log/InvalidArgumentException.php',
         'Psr\\Log\\LogLevel' => __DIR__ . '/..' . '/psr/log/Psr/Log/LogLevel.php',
@@ -2397,6 +2410,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\IPSet' => __DIR__ . '/..' . '/wikimedia/ip-set/src/Wikimedia/IPSet.php',
         'Wikimedia\\ObjectFactory' => __DIR__ . '/..' . '/wikimedia/object-factory/src/ObjectFactory.php',
         'Wikimedia\\PSquare' => __DIR__ . '/..' . '/wikimedia/running-stat/src/Wikimedia/PSquare.php',
+        'Wikimedia\\PasswordBlacklist\\PasswordBlacklist' => __DIR__ . '/..' . '/wikimedia/password-blacklist/src/PasswordBlacklist.php',
         'Wikimedia\\PhpSessionSerializer' => __DIR__ . '/..' . '/wikimedia/php-session-serializer/src/Wikimedia/PhpSessionSerializer.php',
         'Wikimedia\\Purtle\\BNodeLabeler' => __DIR__ . '/..' . '/wikimedia/purtle/src/BNodeLabeler.php',
         'Wikimedia\\Purtle\\JsonLdRdfWriter' => __DIR__ . '/..' . '/wikimedia/purtle/src/JsonLdRdfWriter.php',

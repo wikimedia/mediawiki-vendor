@@ -3,6 +3,11 @@
         "name": "backendtea/un-poly-ctype",
         "version": "1.0.0",
         "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/BackEndTea/un-poly-ctype.git",
+            "reference": "d413a6019d8b13ca7baa4a2c12d962cfbc73ad0b"
+        },
         "replace": {
             "symfony/polyfill-ctype": "*"
         },
@@ -29,6 +34,11 @@
         "name": "backendtea/un-poly-mbstring",
         "version": "1.0.0",
         "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/BackEndTea/un-poly-mbstring.git",
+            "reference": "b4d1eb9ce9b89f20b4ce1abcc5687c6f6fe6777a"
+        },
         "replace": {
             "symfony/polyfill-mbstring": "*"
         },
@@ -1799,6 +1809,54 @@
         ]
     },
     {
+        "name": "pleonasm/bloom-filter",
+        "version": "1.0.2",
+        "version_normalized": "1.0.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/pleonasm/bloom-filter.git",
+            "reference": "4a3292c9f83a778c44271bf4e4f6be1204b87f7b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/pleonasm/bloom-filter/zipball/4a3292c9f83a778c44271bf4e4f6be1204b87f7b",
+            "reference": "4a3292c9f83a778c44271bf4e4f6be1204b87f7b",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.4"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "^4.8 || ^5.7 || ^6.4",
+            "satooshi/php-coveralls": "^1.0.1"
+        },
+        "time": "2018-03-03T21:16:42+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Pleo\\BloomFilter\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-2-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Matthew Nagi",
+                "email": "matthew.nagi@base-2.net"
+            }
+        ],
+        "description": "A pure PHP implementation of a Bloom Filter",
+        "keywords": [
+            "Bloom Filter",
+            "bloom",
+            "filter",
+            "sets"
+        ]
+    },
+    {
         "name": "psr/log",
         "version": "1.0.2",
         "version_normalized": "1.0.2.0",
@@ -3363,6 +3421,54 @@
         ],
         "description": "Construct objects from configuration instructions",
         "homepage": "https://www.mediawiki.org/wiki/ObjectFactory"
+    },
+    {
+        "name": "wikimedia/password-blacklist",
+        "version": "v0.1.3",
+        "version_normalized": "0.1.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/password-blacklist.git",
+            "reference": "bbd51d84b68e70d05b6509ba8114d652594a831f"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/password-blacklist/zipball/bbd51d84b68e70d05b6509ba8114d652594a831f",
+            "reference": "bbd51d84b68e70d05b6509ba8114d652594a831f",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.5.9",
+            "pleonasm/bloom-filter": "1.0.2"
+        },
+        "require-dev": {
+            "jakub-onderka/php-console-highlighter": "0.3.2",
+            "jakub-onderka/php-parallel-lint": "1.0.0",
+            "mediawiki/mediawiki-codesniffer": "23.0.0",
+            "mediawiki/minus-x": "0.3.1",
+            "ockcyp/covers-validator": "0.5.1 || 0.6.1",
+            "phpunit/phpunit": "4.8.36 || ^6.5"
+        },
+        "time": "2018-11-17T06:09:52+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Wikimedia\\PasswordBlacklist\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Sam Reed",
+                "email": "reedy@wikimedia.org"
+            }
+        ],
+        "description": "PasswordBlacklist for the 100,000 most used passwords",
+        "homepage": "https://www.mediawiki.org/wiki/PasswordBlacklist"
     },
     {
         "name": "wikimedia/php-session-serializer",
