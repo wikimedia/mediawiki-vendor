@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ec7b877af69e233c3d1fe4cb8b482abf",
+    "content-hash": "ddbdb192b5091104f06cb8c3dfa079f2",
     "packages": [
         {
             "name": "composer/semver",
@@ -3695,38 +3695,41 @@
         },
         {
             "name": "wikimedia/timestamp",
-            "version": "v1.0.0",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/Timestamp.git",
-                "reference": "880660a2fbc6e577d381225812c255008d58e0cc"
+                "reference": "fa80f2d91c3364130284a7af8f396569200c2d3f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/Timestamp/zipball/880660a2fbc6e577d381225812c255008d58e0cc",
-                "reference": "880660a2fbc6e577d381225812c255008d58e0cc",
+                "url": "https://api.github.com/repos/wikimedia/Timestamp/zipball/fa80f2d91c3364130284a7af8f396569200c2d3f",
+                "reference": "fa80f2d91c3364130284a7af8f396569200c2d3f",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5.9"
+                "php": ">=5.6.99"
             },
             "require-dev": {
-                "jakub-onderka/php-parallel-lint": "0.9.2",
-                "mediawiki/mediawiki-codesniffer": "0.7.2",
-                "phpunit/phpunit": "4.8.24"
+                "jakub-onderka/php-console-highlighter": "0.3.2",
+                "jakub-onderka/php-parallel-lint": "1.0.0",
+                "mediawiki/mediawiki-codesniffer": "21.0.0",
+                "mediawiki/minus-x": "0.3.1",
+                "ockcyp/covers-validator": "0.5.1 || 0.6.1",
+                "phpunit/phpunit": "4.8.36 || ^6.5"
             },
             "type": "library",
             "autoload": {
-                "classmap": [
-                    "src/"
-                ],
                 "files": [
                     "src/defines.php"
-                ]
+                ],
+                "psr-4": {
+                    "Wikimedia\\Timestamp\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -3736,7 +3739,7 @@
             ],
             "description": "Creation, parsing, and conversion of timestamps",
             "homepage": "https://www.mediawiki.org/wiki/Timestamp",
-            "time": "2016-09-30T10:00:56+00:00"
+            "time": "2018-08-11T06:20:54+00:00"
         },
         {
             "name": "wikimedia/utfnormal",

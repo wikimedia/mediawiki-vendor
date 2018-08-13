@@ -35,6 +35,7 @@ class ComposerStaticInit_mediawiki_vendor
         'W' => 
         array (
             'Wikimedia\\XMPReader\\' => 20,
+            'Wikimedia\\Timestamp\\' => 20,
             'Wikimedia\\Purtle\\Tests\\' => 23,
             'Wikimedia\\Purtle\\' => 17,
             'Wikimedia\\Equivset\\' => 19,
@@ -123,6 +124,10 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\XMPReader\\' => 
         array (
             0 => __DIR__ . '/..' . '/wikimedia/xmp-reader/src',
+        ),
+        'Wikimedia\\Timestamp\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/wikimedia/timestamp/src',
         ),
         'Wikimedia\\Purtle\\Tests\\' => 
         array (
