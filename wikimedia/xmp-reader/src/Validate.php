@@ -117,23 +117,23 @@ class Validate implements LoggerAwareInterface {
 			$val = null;
 
 			return;
-		} else {
-			$nVal = (float)$val;
-			if ( $nVal < 0 ) {
-				// We do < 0 here instead of < -1 here, since
-				// the values between 0 and -1 are also illegal
-				// as -1 is meant as a special reject rating.
-				$this->logger->info( __METHOD__ . " Rating too low, setting to -1 (Rejected)" );
-				$val = '-1';
+		}
 
-				return;
-			}
-			if ( $nVal > 5 ) {
-				$this->logger->info( __METHOD__ . " Rating too high, setting to 5" );
-				$val = '5';
+		$nVal = (float)$val;
+		if ( $nVal < 0 ) {
+			// We do < 0 here instead of < -1 here, since
+			// the values between 0 and -1 are also illegal
+			// as -1 is meant as a special reject rating.
+			$this->logger->info( __METHOD__ . " Rating too low, setting to -1 (Rejected)" );
+			$val = '-1';
 
-				return;
-			}
+			return;
+		}
+		if ( $nVal > 5 ) {
+			$this->logger->info( __METHOD__ . " Rating too high, setting to 5" );
+			$val = '5';
+
+			return;
 		}
 	}
 
@@ -273,78 +273,79 @@ class Validate implements LoggerAwareInterface {
 
 			$this->logger->info( __METHOD__ . " Expected date but got $val" );
 			$val = null;
-		} else {
-			/*
-			 * $res is formatted as follows:
-			 * 0 -> full date.
-			 * 1 -> year, 2-> month, 3-> day, 4-> hour, 5-> minute, 6->second
-			 * 7-> Timezone specifier (Z or something like +12:30 )
-			 * many parts are optional, some aren't. For example if you specify
-			 * minute, you must specify hour, day, month, and year but not second or TZ.
-			 */
+			return;
+		}
 
-			/*
-			 * First of all, if year = 0000, Something is wrongish,
-			 * so don't extract. This seems to happen when
-			 * some programs convert between metadata formats.
-			 */
-			if ( $res[1] === '0000' ) {
-				$this->logger->info( __METHOD__ . " Invalid date (year 0): $val" );
-				$val = null;
+		/*
+		 * $res is formatted as follows:
+		 * 0 -> full date.
+		 * 1 -> year, 2-> month, 3-> day, 4-> hour, 5-> minute, 6->second
+		 * 7-> Timezone specifier (Z or something like +12:30 )
+		 * many parts are optional, some aren't. For example if you specify
+		 * minute, you must specify hour, day, month, and year but not second or TZ.
+		 */
 
-				return;
+		/*
+		 * First of all, if year = 0000, Something is wrongish,
+		 * so don't extract. This seems to happen when
+		 * some programs convert between metadata formats.
+		 */
+		if ( $res[1] === '0000' ) {
+			$this->logger->info( __METHOD__ . " Invalid date (year 0): $val" );
+			$val = null;
+
+			return;
+		}
+
+		if ( !isset( $res[4] ) ) { // hour
+			// just have the year month day (if that)
+			$val = $res[1];
+			if ( isset( $res[2] ) ) {
+				$val .= ':' . $res[2];
+			}
+			if ( isset( $res[3] ) ) {
+				$val .= ':' . $res[3];
 			}
 
-			if ( !isset( $res[4] ) ) { // hour
-				// just have the year month day (if that)
-				$val = $res[1];
-				if ( isset( $res[2] ) ) {
-					$val .= ':' . $res[2];
-				}
-				if ( isset( $res[3] ) ) {
-					$val .= ':' . $res[3];
-				}
+			return;
+		}
 
-				return;
+		if ( !isset( $res[7] ) || $res[7] === 'Z' ) {
+			// if hour is set, then minute must also be or regex above will fail.
+			$val = $res[1] . ':' . $res[2] . ':' . $res[3]
+				. ' ' . $res[4] . ':' . $res[5];
+			if ( isset( $res[6] ) && $res[6] !== '' ) {
+				$val .= ':' . $res[6];
 			}
 
-			if ( !isset( $res[7] ) || $res[7] === 'Z' ) {
-				// if hour is set, then minute must also be or regex above will fail.
-				$val = $res[1] . ':' . $res[2] . ':' . $res[3]
-					. ' ' . $res[4] . ':' . $res[5];
-				if ( isset( $res[6] ) && $res[6] !== '' ) {
-					$val .= ':' . $res[6];
-				}
+			return;
+		}
 
-				return;
-			}
+		// Extra check for empty string necessary due to TZ but no second case.
+		$stripSeconds = false;
+		if ( !isset( $res[6] ) || $res[6] === '' ) {
+			$res[6] = '00';
+			$stripSeconds = true;
+		}
 
-			// Extra check for empty string necessary due to TZ but no second case.
-			$stripSeconds = false;
-			if ( !isset( $res[6] ) || $res[6] === '' ) {
-				$res[6] = '00';
-				$stripSeconds = true;
-			}
+		// Do timezone processing. We've already done the case that tz = Z.
 
-			// Do timezone processing. We've already done the case that tz = Z.
+		// We know that if we got to this step, year, month day hour and min must be set
+		// by virtue of regex not failing.
 
-			// We know that if we got to this step, year, month day hour and min must be set
-			// by virtue of regex not failing.
+		$unix = ConvertibleTimestamp::convert( TS_UNIX,
+			$res[1] . $res[2] . $res[3] . $res[4] . $res[5] . $res[6]
+		);
+		$offset = intval( substr( $res[7], 1, 2 ) ) * 60 * 60;
+		$offset += intval( substr( $res[7], 4, 2 ) ) * 60;
+		if ( substr( $res[7], 0, 1 ) === '-' ) {
+			$offset = -$offset;
+		}
+		$val = ConvertibleTimestamp::convert( TS_EXIF, $unix + $offset );
 
-			$unix = ConvertibleTimestamp::convert( TS_UNIX,
-				$res[1] . $res[2] . $res[3] . $res[4] . $res[5] . $res[6]
-			);
-			$offset = intval( substr( $res[7], 1, 2 ) ) * 60 * 60;
-			$offset += intval( substr( $res[7], 4, 2 ) ) * 60;
-			if ( substr( $res[7], 0, 1 ) === '-' ) {
-				$offset = -$offset;
-			}
-			$val = ConvertibleTimestamp::convert( TS_EXIF, $unix + $offset );
-
-			if ( $stripSeconds ) {
-				// If seconds weren't specified, remove the trailing ':00'.
-				$val = substr( $val, 0, -3 );
-			}
+		if ( $stripSeconds ) {
+			// If seconds weren't specified, remove the trailing ':00'.
+			$val = substr( $val, 0, -3 );
 		}
 	}
 
@@ -379,7 +380,9 @@ class Validate implements LoggerAwareInterface {
 			$val = $coord;
 
 			return;
-		} elseif ( preg_match(
+		}
+
+		if ( preg_match(
 			'/(\d{1,3}),(\d{1,2}(?:.\d*)?)([NWSE])/D',
 			$val, $m )
 		) {
@@ -391,12 +394,10 @@ class Validate implements LoggerAwareInterface {
 			$val = $coord;
 
 			return;
-		} else {
-			$this->logger->info( __METHOD__
-				. " Expected GPSCoordinate, but got $val." );
-			$val = null;
-
-			return;
 		}
+
+		$this->logger->info( __METHOD__
+			. " Expected GPSCoordinate, but got $val." );
+		$val = null;
 	}
 }

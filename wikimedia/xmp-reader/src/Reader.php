@@ -482,11 +482,7 @@ class Reader implements LoggerAwareInterface {
 
 		$actualContent = substr( $content, 40 );
 
-		if ( $this->extendedXMPOffset === strlen( $actualContent ) ) {
-			$atEnd = true;
-		} else {
-			$atEnd = false;
-		}
+		$atEnd = ( $this->extendedXMPOffset === strlen( $actualContent ) );
 
 		$this->logger->debug(
 			__METHOD__ . 'Parsing a XMPExtended block',
@@ -650,7 +646,7 @@ class Reader implements LoggerAwareInterface {
 	 * Note this means we hit the closing element not the "</rdf:Seq>".
 	 *
 	 * @par For example, when processing:
-	 * @code{,xml}
+	 * @code{.xml}
 	 * <exif:ISOSpeedRatings> <rdf:Seq> <rdf:li>64</rdf:li>
 	 *   </rdf:Seq> </exif:ISOSpeedRatings>
 	 * @endcode
@@ -726,7 +722,7 @@ class Reader implements LoggerAwareInterface {
 	 * Note we still have to hit the outer "</property>"
 	 *
 	 * @par For example, when processing:
-	 * @code{,xml}
+	 * @code{.xml}
 	 * <exif:ISOSpeedRatings> <rdf:Seq> <rdf:li>64</rdf:li>
 	 *   </rdf:Seq> </exif:ISOSpeedRatings>
 	 * @endcode
@@ -787,10 +783,10 @@ class Reader implements LoggerAwareInterface {
 			$this->saveValue( $ns, $tag, $this->charContent );
 
 			return;
-		} else {
-			array_shift( $this->mode );
-			array_shift( $this->curItem );
 		}
+
+		array_shift( $this->mode );
+		array_shift( $this->curItem );
 	}
 
 	/**
@@ -1026,11 +1022,11 @@ class Reader implements LoggerAwareInterface {
 	private function startElementModeQDesc( $elm ) {
 		if ( $elm === self::NS_RDF . ' value' ) {
 			return; // do nothing
-		} else {
-			// otherwise its a qualifier, which we ignore
-			array_unshift( $this->mode, self::MODE_IGNORE );
-			array_unshift( $this->curItem, $elm );
 		}
+
+		// otherwise its a qualifier, which we ignore
+		array_unshift( $this->mode, self::MODE_IGNORE );
+		array_unshift( $this->curItem, $elm );
 	}
 
 	/**
@@ -1244,7 +1240,9 @@ class Reader implements LoggerAwareInterface {
 		) {
 			/* ignore. */
 			return;
-		} elseif ( $elm === self::NS_RDF . ' Description' ) {
+		}
+
+		if ( $elm === self::NS_RDF . ' Description' ) {
 			if ( count( $this->mode ) === 0 ) {
 				// outer rdf:desc
 				array_unshift( $this->mode, self::MODE_INITIAL );
