@@ -14,7 +14,7 @@ use OutOfRangeException;
  *
  * @since 0.1
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class LatLongValue extends DataValueObject {
@@ -24,14 +24,14 @@ class LatLongValue extends DataValueObject {
 	 *
 	 * @var float
 	 */
-	protected $latitude;
+	private $latitude;
 
 	/**
 	 * The locations longitude.
 	 *
 	 * @var float
 	 */
-	protected $longitude;
+	private $longitude;
 
 	/**
 	 * @param float|int $latitude
@@ -58,7 +58,7 @@ class LatLongValue extends DataValueObject {
 	/**
 	 * @param float $latitude
 	 */
-	protected function assertIsLatitude( $latitude ) {
+	private function assertIsLatitude( $latitude ) {
 		if ( !is_float( $latitude ) ) {
 			throw new InvalidArgumentException( 'Can only construct LatLongValue with a numeric latitude' );
 		}
@@ -71,7 +71,7 @@ class LatLongValue extends DataValueObject {
 	/**
 	 * @param float $longitude
 	 */
-	protected function assertIsLongitude( $longitude ) {
+	private function assertIsLongitude( $longitude ) {
 		if ( !is_float( $longitude ) ) {
 			throw new InvalidArgumentException( 'Can only construct LatLongValue with a numeric longitude' );
 		}

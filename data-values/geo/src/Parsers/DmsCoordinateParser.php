@@ -10,7 +10,7 @@ use ValueParsers\ParserOptions;
  *
  * @since 0.1
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author H. Snater < mediawiki@snater.com >
  */
@@ -28,9 +28,10 @@ class DmsCoordinateParser extends DmCoordinateParser {
 	 * @param ParserOptions|null $options
 	 */
 	public function __construct( ParserOptions $options = null ) {
-		parent::__construct( $options );
+		$options = $options ?: new ParserOptions();
+		$options->defaultOption( self::OPT_SECOND_SYMBOL, '"' );
 
-		$this->defaultOption( self::OPT_SECOND_SYMBOL, '"' );
+		parent::__construct( $options );
 
 		$this->defaultDelimiters = [ $this->getOption( self::OPT_SECOND_SYMBOL ) ];
 	}

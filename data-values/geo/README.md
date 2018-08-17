@@ -8,7 +8,6 @@ It is part of the [DataValues set of libraries](https://github.com/DataValues).
 [![Build Status](https://secure.travis-ci.org/DataValues/Geo.png?branch=master)](http://travis-ci.org/DataValues/Geo)
 [![Code Coverage](https://scrutinizer-ci.com/g/DataValues/Geo/badges/coverage.png?s=bf4cfd11f3b985fd05918f395c350b376a9ce0ee)](https://scrutinizer-ci.com/g/DataValues/Geo/)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/DataValues/Geo/badges/quality-score.png?s=e695e42b53d74fc02e5cfa2aa218420f062edbd2)](https://scrutinizer-ci.com/g/DataValues/Geo/)
-[![Dependency Status](https://www.versioneye.com/php/data-values:geo/badge.png)](https://www.versioneye.com/php/data-values:geo)
 
 On [Packagist](https://packagist.org/packages/data-values/geo):
 [![Latest Stable Version](https://poser.pugx.org/data-values/geo/version.png)](https://packagist.org/packages/data-values/geo)
@@ -23,11 +22,11 @@ The recommended way to use this library is via [Composer](http://getcomposer.org
 To add this package as a local, per-project dependency to your project, simply add a
 dependency on `data-values/geo` to your project's `composer.json` file.
 Here is a minimal example of a `composer.json` file that just defines a dependency on
-version 1.1 of this package:
+version 3.x of this package:
 
     {
         "require": {
-            "data-values/geo": "1.1.*"
+            "data-values/geo": "^3.0.0"
         }
     }
 
@@ -84,14 +83,38 @@ via TravisCI, as a TravisCI configuration file is also provided in the root dire
 
 ## Authors
 
-DataValues Geo has been written by the Wikidata team, as [Wikimedia Germany]
-(https://wikimedia.de) employees for the [Wikidata project](https://wikidata.org/).
+DataValues Geo has been written by the Wikidata team, as [Wikimedia Germany](https://wikimedia.de)
+employees for the [Wikidata project](https://wikidata.org/).
 
-It is based upon and contains a lot of code written by [Jeroen De Dauw]
-(https://github.com/JeroenDeDauw) for the [Maps](https://github.com/JeroenDeDauw/Maps) and
+It is based upon and contains a lot of code written by [Jeroen De Dauw](https://github.com/JeroenDeDauw)
+for the [Maps](https://github.com/JeroenDeDauw/Maps) and
 [Semantic MediaWiki](https://semantic-mediawiki.org/) projects.
 
 ## Release notes
+
+### 3.0.1 (2018-08-01)
+
+* Fixed parsing of coordinates with lowercase S/W directions
+
+### 3.0.0 (2018-03-20)
+
+* Removed `DATAVALUES_GEO_VERSION` constant
+* The parsers no longer extend `StringValueParser`
+	* They no longer have public methods `setOptions` and `getOptions`
+	* They no longer have protected field `options`
+	* They no longer have protected methods `requireOption`, `defaultOption` and `stringParse`
+	* `GlobeCoordinateParser` and `LatLongParser` no longer have protected method `getOption`
+* Made several protected fields and methods private
+	* All fields of `LatLongValue`
+	* The `detect…Precision` methods in `GlobeCoordinateParser`
+	* `LatLongParser::getParsers`
+* Removed public static method `LatLongParser::areCoordinates`
+* Dropped dependence on the DataValues Common library
+* Removed long deprecated class aliases
+	* `DataValues\GlobeCoordinateValue` (now in `DataValues\Geo\Values`)
+	* `DataValues\LatLongValue` (now in `DataValues\Geo\Values`)
+	* `DataValues\Geo\Formatters\GeoCoordinateFormatter` (now `LatLongFormatter`)
+	* `DataValues\Geo\Parsers\GeoCoordinateParser` (now `LatLongParser`)
 
 ### 2.1.1 (2017-08-09)
 
@@ -169,7 +192,7 @@ It is based upon and contains a lot of code written by [Jeroen De Dauw]
 * Removed remaining uses of class aliases from messages and comments
 * Fixed some types in documentation
 
-### 1.1 (2014-10-09)
+### 1.1.0 (2014-10-09)
 
 * Made the component installable with DataValues 1.x
 * `GeoCoordinateFormatter` now supports precision in degrees
@@ -177,14 +200,14 @@ It is based upon and contains a lot of code written by [Jeroen De Dauw]
 * Introduced `FORMAT_NAME` class constants on ValueParsers in order to use them as expectedFormat
 * Changed ValueParsers to pass rawValue and expectedFormat arguments when constructing a `ParseException`
 
-### 1.0 (2014-07-31)
+### 1.0.0 (2014-07-31)
 
 * All classes and interfaces have been moved into the `DataValues\Geo` namespace
     * `DataValues\LatLongValue` has been left as deprecated alias
     * `DataValues\GlobeCoordinateValue` has been left as deprecated alias
 * Globe in `GlobeCoordinateValue` now defaults to `http://www.wikidata.org/entity/Q2`
 
-### 0.2 (2014-07-07)
+### 0.2.0 (2014-07-07)
 
 * Removed deprecated `GeoCoordinateValue`
 * Added `GlobeMath`
@@ -199,7 +222,7 @@ It is based upon and contains a lot of code written by [Jeroen De Dauw]
 * Decreased complexity of GeoCoordinateFormatter
 * Decreased complexity and coupling of GeoCoordinateFormatterTest
 
-### 0.1 (2013-11-17)
+### 0.1.0 (2013-11-17)
 
 Initial release with these features:
 

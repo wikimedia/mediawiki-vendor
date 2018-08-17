@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0c9e5486088c30b3a69a436909ef5221",
+    "content-hash": "a3945b8fff5ac0d8f0ecf85a9a10622e",
     "packages": [
         {
             "name": "composer/semver",
@@ -225,45 +225,42 @@
         },
         {
             "name": "data-values/geo",
-            "version": "2.1.1",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DataValues/Geo.git",
-                "reference": "8fd88298e30403dc9ef2756695bc183542fa36f2"
+                "reference": "f0a4c31238d310cdb441c589554d0a279a6c2171"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DataValues/Geo/zipball/8fd88298e30403dc9ef2756695bc183542fa36f2",
-                "reference": "8fd88298e30403dc9ef2756695bc183542fa36f2",
+                "url": "https://api.github.com/repos/DataValues/Geo/zipball/f0a4c31238d310cdb441c589554d0a279a6c2171",
+                "reference": "f0a4c31238d310cdb441c589554d0a279a6c2171",
                 "shasum": ""
             },
             "require": {
-                "data-values/common": "~0.4.0|~0.3.0|~0.2.0",
-                "data-values/data-values": "~1.0|~0.1",
-                "data-values/interfaces": "~0.2.0|~0.1.5",
+                "data-values/data-values": "~2.0|~1.0|~0.1",
+                "data-values/interfaces": "^0.2.0",
                 "php": ">=5.5.9"
             },
             "require-dev": {
+                "ockcyp/covers-validator": "~0.5",
                 "phpunit/phpunit": "~4.8",
                 "wikibase/wikibase-codesniffer": "^0.1.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0.x-dev"
+                    "dev-master": "3.0.x-dev"
                 }
             },
             "autoload": {
-                "files": [
-                    "Geo.php"
-                ],
                 "psr-4": {
                     "DataValues\\Geo\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -288,7 +285,7 @@
                 "parsers",
                 "wikidata"
             ],
-            "time": "2017-08-09T19:37:51+00:00"
+            "time": "2018-08-01T13:35:21+00:00"
         },
         {
             "name": "data-values/interfaces",
