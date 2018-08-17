@@ -62,7 +62,7 @@
 	"require": {
 		"composer/semver": "1.4.2",
 		"cssjanus/cssjanus": "1.2.0",
-		"data-values/common": "0.4.1",
+		"data-values/common": "0.4.2",
 		"data-values/data-values": "1.1.1",
 		"data-values/geo": "3.0.1",
 		"data-values/interfaces": "0.2.5",
