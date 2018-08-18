@@ -8,7 +8,7 @@ use Serializers\Exceptions\UnsupportedObjectException;
 /**
  * @since 1.0
  *
- * @license GPL-2.0+
+ * @licence GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class DispatchingSerializer implements DispatchableSerializer {
@@ -16,17 +16,17 @@ class DispatchingSerializer implements DispatchableSerializer {
 	/**
 	 * @var DispatchableSerializer[]
 	 */
-	private $serializers;
+	protected $serializers;
 
 	/**
 	 * @param DispatchableSerializer[] $serializers
 	 */
-	public function __construct( array $serializers = [] ) {
+	public function __construct( array $serializers = array() ) {
 		$this->assertAreSerializers( $serializers );
 		$this->serializers = $serializers;
 	}
 
-	private function assertAreSerializers( array $serializers ) {
+	protected function assertAreSerializers( array $serializers ) {
 		foreach ( $serializers as $serializer ) {
 			if ( !( $serializer instanceof DispatchableSerializer ) ) {
 				throw new InvalidArgumentException(

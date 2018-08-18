@@ -14,7 +14,7 @@ Also contains various Exceptions and a few basic (de)serialization utilities.
 
 ## Requirements
 
-* PHP 5.5 or later
+* PHP 5.3 or later
 
 ## Installation
 
@@ -27,11 +27,11 @@ the git repository and take care of loading yourself.
 To add this package as a local, per-project dependency to your project, simply add a
 dependency on `serialization/serialization` to your project's `composer.json` file.
 Here is a minimal example of a `composer.json` file that just defines a dependency on
-Serialization 4.x:
+Serialization 3.0:
 
     {
         "require": {
-            "serialization/serialization": "^4.0"
+            "serialization/serialization": "3.0.*"
         }
     }
 
@@ -47,7 +47,7 @@ its "autoload" section.
 ### Library structure
 
 This component contains two sub parts, one containing serialization related code, the
-other holding deserialization specific code. The former is located in the Serializers
+other holding deserializaion specific code. The former is located in the Serializers
 namespace, while the later resides in the Deserializers one. Both namespaces are PSR-0
 mapped onto the src directory.
 
@@ -63,7 +63,7 @@ a given input.
 
 ### Utilities
 
-A DispatchingSerializer and a DispatchingDeserializer are two generally usable implementations
+A DispatchingSerializer and a DispatcingDeserializer are two generally usable implementations
 of the interfaces that are included in this library. They both do the same thing: contain a
 list of (de)serializers and dispatch calls to the (de)serialize method to the appropriate one.
 This allows for bundling multiple (de)serializers together and enables handling of nested
@@ -87,67 +87,41 @@ as [Wikimedia Germany](https://wikimedia.de) employee for the [Wikidata project]
 
 ## Release notes
 
-### 4.0.0 (2017-10-25)
-
-* Removed the `Serialization_VERSION` constant.
-* Removed underspecified `StrategicDeserializer` along with the abstract
-  `TypedDeserializationStrategy` base class.
-* Removed undocumented `TypedObjectDeserializer::requireAttributes`.
-* Declared various protected properties and methods private:
-	* `DispatchingDeserializer::$deserializers`
-	* `DispatchingDeserializer::assertAreDeserializers`
-	* `DispatchingSerializer::$serializers`
-	* `DispatchingSerializer::assertAreSerializers`
-	* `InvalidAttributeException::$attributeName`
-	* `InvalidAttributeException::$attributeValue`
-	* `MissingAttributeException::$attributeName`
-	* `TypedObjectDeserializer::$objectType`
-	* `UnsupportedObjectException::$unsupportedObject`
-	* `UnsupportedTypeException::$unsupportedType`
-* Deprecated pure utility functions on `TypedObjectDeserializer`:
-	* `assertAttributeInternalType`
-	* `assertAttributeIsArray`
-	* `requireAttribute`
-* Added default messages to `InvalidAttributeException`, `MissingAttributeException`, and
-  `UnsupportedTypeException`.
-* Added documentation to the `Serializer` and `Deserializer` interfaces.
-* Updated minimal required PHP version from 5.3 to 5.5.9.
-
 ### 3.2.1 (2014-08-19)
 
 * Tested against hhvm-nightly
 * Tests now run in strict mode
 
-### 3.2.0 (2014-05-20)
+### 3.2 (2014-05-20)
 
 * Made SerializationException non-abstract
 
-### 3.1.0 (2014-03-18)
+### 3.1 (2014-03-18)
 
 * TypedObjectDeserializer now explicitly implements DispatchableDeserializer.
 
-### 3.0.0 (2014-03-05)
+### 3.0 (2014-03-05)
 
 * Split is(Des/S)erializerFor methods off into new Dispatchable(Des/S)erializer interfaces
 * Changed from classmap based autoloading to PSR-4 based autoloading
 * Improved PHPUnit bootstrap
 
-### 2.2.0 (2013-12-11)
+### 2.2 (2013-12-11)
 
 * Removed custom autoloader in favour of using the declarative system provided by Composer
 
-### 2.1.0 (2013-11-19)
+### 2.1 (2013-11-19)
 
 * The type key in TypedObjectDeserializer can now be specified via a constructor argument
 * TypedObjectDeserializer now has some tests in this component itself
 * The documentation was somewhat improved
 
-### 2.0.0 (2013-09-05)
+### 2.0 (2013-09-05)
 
 * Renamed Serializer::canSerialize to Serializer::isDeserializerFor
 * Renamed Deserializer::canDeserialize to Deserializer::isDeserializerFor
 
-### 1.0.0 (2013-07-13)
+### 1.0 (2013-07-13)
 
 * Initial release.
 
@@ -157,3 +131,4 @@ as [Wikimedia Germany](https://wikimedia.de) employee for the [Wikidata project]
 * [Serialization on Ohloh](https://www.ohloh.net/p/serialization-php)
 * [TravisCI build status](https://travis-ci.org/wmde/Serialization)
 * [Serialization on ScrutinizerCI](https://scrutinizer-ci.com/g/wmde/Serialization/)
+

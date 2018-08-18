@@ -8,7 +8,7 @@ use InvalidArgumentException;
 /**
  * @since 1.0
  *
- * @license GPL-2.0+
+ * @licence GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class DispatchingDeserializer implements DispatchableDeserializer {
@@ -16,17 +16,17 @@ class DispatchingDeserializer implements DispatchableDeserializer {
 	/**
 	 * @var DispatchableDeserializer[]
 	 */
-	private $deserializers;
+	protected $deserializers;
 
 	/**
 	 * @param DispatchableDeserializer[] $deserializers
 	 */
-	public function __construct( array $deserializers = [] ) {
+	public function __construct( array $deserializers = array() ) {
 		$this->assertAreDeserializers( $deserializers );
 		$this->deserializers = $deserializers;
 	}
 
-	private function assertAreDeserializers( array $deserializers ) {
+	protected function assertAreDeserializers( array $deserializers ) {
 		foreach ( $deserializers as $deserializer ) {
 			if ( !is_object( $deserializer ) || !( $deserializer instanceof DispatchableDeserializer ) ) {
 				throw new InvalidArgumentException(

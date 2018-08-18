@@ -2001,35 +2001,34 @@
     },
     {
         "name": "serialization/serialization",
-        "version": "4.0.0",
-        "version_normalized": "4.0.0.0",
+        "version": "3.2.2",
+        "version_normalized": "3.2.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wmde/Serialization.git",
-            "reference": "6fa293415e2b70c30c1e673d8bcd04d27dc15e44"
+            "reference": "985aae9c30bff93936d8e87a3986c27b5d1413d5"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wmde/Serialization/zipball/6fa293415e2b70c30c1e673d8bcd04d27dc15e44",
-            "reference": "6fa293415e2b70c30c1e673d8bcd04d27dc15e44",
+            "url": "https://api.github.com/repos/wmde/Serialization/zipball/985aae9c30bff93936d8e87a3986c27b5d1413d5",
+            "reference": "985aae9c30bff93936d8e87a3986c27b5d1413d5",
             "shasum": ""
         },
         "require": {
-            "php": ">=5.5.9"
+            "php": ">=5.3.0"
         },
-        "require-dev": {
-            "phpunit/phpunit": "~4.8",
-            "wikibase/wikibase-codesniffer": "^0.2.0"
-        },
-        "time": "2017-10-25T11:45:30+00:00",
+        "time": "2017-11-02T17:41:58+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "4.0.x-dev"
+                "dev-master": "3.2.x-dev"
             }
         },
         "installation-source": "dist",
         "autoload": {
+            "files": [
+                "Serialization.php"
+            ],
             "psr-4": {
                 "Deserializers\\": "src/Deserializers/",
                 "Serializers\\": "src/Serializers/"
