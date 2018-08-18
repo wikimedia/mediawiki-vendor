@@ -1,9 +1,8 @@
 # Wikibase DataModel Serialization
 
-[![Build Status](https://secure.travis-ci.org/wmde/WikibaseDataModelSerialization.png?branch=master)](http://travis-ci.org/wmde/WikibaseDataModelSerialization)
+[![Build Status](https://travis-ci.org/wmde/WikibaseDataModelSerialization.svg?branch=master)](https://travis-ci.org/wmde/WikibaseDataModelSerialization)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/wmde/WikibaseDataModelSerialization/badges/quality-score.png?s=d56b9477c29f4799b3834c4fbcc3731687feae95)](https://scrutinizer-ci.com/g/wmde/WikibaseDataModelSerialization/)
 [![Code Coverage](https://scrutinizer-ci.com/g/wmde/WikibaseDataModelSerialization/badges/coverage.png?s=916d21028b031abe2e685192ccef46c6f47ba76a)](https://scrutinizer-ci.com/g/wmde/WikibaseDataModelSerialization/)
-[![Dependency Status](https://www.versioneye.com/php/wikibase:data-model-serialization/badge.png)](https://www.versioneye.com/php/wikibase:data-model-serialization)
 [![Download count](https://poser.pugx.org/wikibase/data-model-serialization/d/total.png)](https://packagist.org/packages/wikibase/data-model-serialization)
 [![License](https://poser.pugx.org/wikibase/data-model-serialization/license.svg)](https://packagist.org/packages/wikibase/data-model-serialization)
 
@@ -110,7 +109,7 @@ and by [Jeroen De Dauw](https://www.mediawiki.org/wiki/User:Jeroen_De_Dauw) as [
 * [Wikibase DataModel Serialization on Packagist](https://packagist.org/packages/wikibase/data-model-serialization)
 * [Wikibase DataModel Serialization on TravisCI](https://travis-ci.org/wmde/WikibaseDataModelSerialization)
 * [Wikibase DataModel Serialization on ScrutinizerCI](https://scrutinizer-ci.com/g/wmde/WikibaseDataModelSerialization/)
-* [Wikibase DataModel Serialization on Ohloh](https://www.ohloh.net/p/WikibaseDataModelSerialization)
+* [Wikibase DataModel Serialization on OpenHub](https://www.openhub.net/p/WikibaseDataModelSerialization)
 
 ## See also 
 
