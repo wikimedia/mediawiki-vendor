@@ -5,7 +5,6 @@ Library containing serializers and deserializers for the data access layer of [W
 [![Build Status](https://secure.travis-ci.org/wmde/WikibaseInternalSerialization.png?branch=master)](http://travis-ci.org/wmde/WikibaseInternalSerialization)
 [![Code Coverage](https://scrutinizer-ci.com/g/wmde/WikibaseInternalSerialization/badges/coverage.png?s=b65f644a99b93ed3aa1a34e45efbccad798d168c)](https://scrutinizer-ci.com/g/wmde/WikibaseInternalSerialization/)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/wmde/WikibaseInternalSerialization/badges/quality-score.png?s=1cd66e5c545917f947b4b838b7bfdeee9105843e)](https://scrutinizer-ci.com/g/wmde/WikibaseInternalSerialization/)
-[![Dependency Status](https://www.versioneye.com/php/wikibase:internal-serialization/badge.png)](https://www.versioneye.com/php/wikibase:internal-serialization)
 
 On [Packagist](https://packagist.org/packages/wikibase/internal-serialization):
 [![Latest Stable Version](https://poser.pugx.org/wikibase/internal-serialization/version.png)](https://packagist.org/packages/wikibase/internal-serialization)
@@ -100,11 +99,17 @@ via TravisCI, as a TravisCI configuration file is also provided in the root dire
 
 ## Authors
 
-Wikibase Internal Serialization has been written by [Jeroen De Dauw]
-(https://www.mediawiki.org/wiki/User:Jeroen_De_Dauw), partially as [Wikimedia Germany]
-(https://wikimedia.de) employee for the [Wikidata project](https://wikidata.org/).
+Wikibase Internal Serialization has been written by
+[Jeroen De Dauw](https://entropywins.wtf/), partially as
+[Wikimedia Germany](https://wikimedia.de/en) employee for the [Wikidata project](https://wikidata.org/).
 
 ## Release notes
+
+### 2.8.0 (2018-08-07)
+
+* Added compatibility with Wikibase DataModel 8.x
+* Dropped compatibility with Wikibase DataModel 4.x
+* Raised minimum PHP version to 5.6
 
 ### 2.7.0 (2017-10-26)
 
@@ -188,7 +193,7 @@ Initial release with these features:
 * [Wikibase Internal Serialization on Packagist](https://packagist.org/packages/wikibase/internal-serialization)
 * [Wikibase Internal Serialization on TravisCI](https://travis-ci.org/wmde/WikibaseInternalSerialization)
 * [Wikibase Internal Serialization on ScrutinizerCI](https://scrutinizer-ci.com/g/wmde/WikibaseInternalSerialization/)
-* [Wikibase Internal Serialization on Ohloh](https://www.ohloh.net/p/WikibaseInternalSerialization)
+* [Wikibase Internal Serialization on OpenHub](https://www.openhub.net/p/WikibaseInternalSerialization)
 
 ## See also
 

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bf2a723175a71604baf8ada7806c9348",
+    "content-hash": "eeff6f0268c1d6adac4e22b57b65f01a",
     "packages": [
         {
             "name": "composer/semver",
@@ -2616,37 +2616,37 @@
         },
         {
             "name": "wikibase/internal-serialization",
-            "version": "2.7.0",
+            "version": "2.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wmde/WikibaseInternalSerialization.git",
-                "reference": "a1a9257221a81b1de3226be6b13178203cf680b1"
+                "reference": "6129fea7c6261368839d146aba0e106d0ad36fef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wmde/WikibaseInternalSerialization/zipball/a1a9257221a81b1de3226be6b13178203cf680b1",
-                "reference": "a1a9257221a81b1de3226be6b13178203cf680b1",
+                "url": "https://api.github.com/repos/wmde/WikibaseInternalSerialization/zipball/6129fea7c6261368839d146aba0e106d0ad36fef",
+                "reference": "6129fea7c6261368839d146aba0e106d0ad36fef",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5.9",
+                "php": ">=5.6",
                 "serialization/serialization": "~4.0|~3.2",
-                "wikibase/data-model": "~7.0|~6.0|~5.0|~4.2",
+                "wikibase/data-model": "~8.0|~7.0|~6.0|~5.0",
                 "wikibase/data-model-serialization": "~2.0"
             },
             "require-dev": {
                 "data-values/common": ">=0.1 <0.5",
-                "data-values/geo": ">=1.0 <3.0",
+                "data-values/geo": ">=1.0 <4.0",
                 "data-values/number": ">=0.1 <0.10",
                 "data-values/time": ">=0.1 <0.9",
                 "phpmd/phpmd": "~2.3",
-                "phpunit/phpunit": "~4.8",
+                "phpunit/phpunit": "~5.7",
                 "wikibase/wikibase-codesniffer": "^0.2.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.7.x-dev"
+                    "dev-master": "2.8.x-dev"
                 }
             },
             "autoload": {
@@ -2656,7 +2656,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -2675,7 +2675,7 @@
                 "wikibase",
                 "wikidata"
             ],
-            "time": "2017-10-26T12:45:36+00:00"
+            "time": "2018-08-08T22:43:43+00:00"
         },
         {
             "name": "wikimedia/assert",
