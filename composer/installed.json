@@ -3137,17 +3137,17 @@
     },
     {
         "name": "wikimedia/css-sanitizer",
-        "version": "v1.0.6",
-        "version_normalized": "1.0.6.0",
+        "version": "v2.0.0",
+        "version_normalized": "2.0.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/css-sanitizer.git",
-            "reference": "8998e5d95cb176e51ecbb98619199c84bdf5a5cd"
+            "reference": "32770e79e9e31d4097c578f409cc03ee21e8e79b"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/css-sanitizer/zipball/8998e5d95cb176e51ecbb98619199c84bdf5a5cd",
-            "reference": "8998e5d95cb176e51ecbb98619199c84bdf5a5cd",
+            "url": "https://api.github.com/repos/wikimedia/css-sanitizer/zipball/32770e79e9e31d4097c578f409cc03ee21e8e79b",
+            "reference": "32770e79e9e31d4097c578f409cc03ee21e8e79b",
             "shasum": ""
         },
         "require": {
@@ -3160,12 +3160,12 @@
         "require-dev": {
             "jakub-onderka/php-console-highlighter": "0.3.2",
             "jakub-onderka/php-parallel-lint": "1.0.0",
-            "mediawiki/mediawiki-codesniffer": "18.0.0",
+            "mediawiki/mediawiki-codesniffer": "21.0.0",
             "mediawiki/minus-x": "0.3.1",
             "phpunit/phpunit": "4.8.36 || ^6.5",
             "wikimedia/testing-access-wrapper": "1.0.0"
         },
-        "time": "2018-04-18T13:19:03+00:00",
+        "time": "2018-08-24T18:04:33+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

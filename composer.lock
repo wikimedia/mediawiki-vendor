@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "08c78c851cc287f14e5024b77493f29a",
+    "content-hash": "9ebeba4dd06b87308833dd721807d25b",
     "packages": [
         {
             "name": "composer/semver",
@@ -3032,16 +3032,16 @@
         },
         {
             "name": "wikimedia/css-sanitizer",
-            "version": "v1.0.6",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/css-sanitizer.git",
-                "reference": "8998e5d95cb176e51ecbb98619199c84bdf5a5cd"
+                "reference": "32770e79e9e31d4097c578f409cc03ee21e8e79b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/css-sanitizer/zipball/8998e5d95cb176e51ecbb98619199c84bdf5a5cd",
-                "reference": "8998e5d95cb176e51ecbb98619199c84bdf5a5cd",
+                "url": "https://api.github.com/repos/wikimedia/css-sanitizer/zipball/32770e79e9e31d4097c578f409cc03ee21e8e79b",
+                "reference": "32770e79e9e31d4097c578f409cc03ee21e8e79b",
                 "shasum": ""
             },
             "require": {
@@ -3054,7 +3054,7 @@
             "require-dev": {
                 "jakub-onderka/php-console-highlighter": "0.3.2",
                 "jakub-onderka/php-parallel-lint": "1.0.0",
-                "mediawiki/mediawiki-codesniffer": "18.0.0",
+                "mediawiki/mediawiki-codesniffer": "21.0.0",
                 "mediawiki/minus-x": "0.3.1",
                 "phpunit/phpunit": "4.8.36 || ^6.5",
                 "wikimedia/testing-access-wrapper": "1.0.0"
@@ -3077,7 +3077,7 @@
             ],
             "description": "Classes to parse and sanitize CSS",
             "homepage": "https://www.mediawiki.org/wiki/Css-sanitizer",
-            "time": "2018-04-18T13:19:03+00:00"
+            "time": "2018-08-24T18:04:33+00:00"
         },
         {
             "name": "wikimedia/equivset",
