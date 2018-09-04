@@ -51,6 +51,48 @@ class ConvertibleTimestamp {
 	];
 
 	/**
+	 * @var callback|null
+	 * @see setFakeTime()
+	 */
+	protected static $fakeTimeCallback = null;
+
+	/**
+	 * Get the current time in the same form that PHP's built-in time() function uses.
+	 *
+	 * This is used by now() get setTimestamp( false ) instead of the built in time() function.
+	 * The output of this method can be overwritten for testing purposes by calling setFakeTime().
+	 *
+	 * @return int UNIX epoch
+	 */
+	protected static function time() {
+		return static::$fakeTimeCallback ? call_user_func( static::$fakeTimeCallback ) : \time();
+	}
+
+	/**
+	 * Set a fake time value or clock callback.
+	 *
+	 * @param callable|string|false $fakeTime a fixed time string, or a callback() returning an int
+	 *        representing a UNIX epoch, or false to disable fake time and go back to real time.
+	 *
+	 * @return callable|null the previous fake time callback, if any.
+	 */
+	public static function setFakeTime( $fakeTime ) {
+		if ( is_string( $fakeTime ) ) {
+			$fakeTime = (int)static::convert( TS_UNIX, $fakeTime );
+		}
+
+		if ( is_int( $fakeTime ) ) {
+			$fakeTime = function () use ( $fakeTime ) {
+				return $fakeTime;
+			};
+		}
+
+		$old = static::$fakeTimeCallback;
+		static::$fakeTimeCallback = $fakeTime ? $fakeTime : null;
+		return $old;
+	}
+
+	/**
 	 * The actual timestamp being wrapped (DateTime object).
 	 * @var DateTime
 	 */
@@ -86,7 +128,7 @@ class ConvertibleTimestamp {
 
 		// We want to catch 0, '', null... but not date strings starting with a letter.
 		if ( !$ts || $ts === "\0\0\0\0\0\0\0\0\0\0\0\0\0\0" ) {
-			$uts = time();
+			$uts = self::time();
 			$strtime = "@$uts";
 		} elseif ( preg_match( '/^(\d{4})\-(\d\d)\-(\d\d) (\d\d):(\d\d):(\d\d)$/D', $ts, $da ) ) {
 			# TS_DB

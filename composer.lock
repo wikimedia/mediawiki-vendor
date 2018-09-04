@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9ebeba4dd06b87308833dd721807d25b",
+    "content-hash": "f9ff0b9577fe86b2797cbb6d843ec2c1",
     "packages": [
         {
             "name": "composer/semver",
@@ -3693,16 +3693,16 @@
         },
         {
             "name": "wikimedia/timestamp",
-            "version": "v2.0.0",
+            "version": "v2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/Timestamp.git",
-                "reference": "fa80f2d91c3364130284a7af8f396569200c2d3f"
+                "reference": "c33298290928a0cd9a56cf0474e8a6b764e7d4fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/Timestamp/zipball/fa80f2d91c3364130284a7af8f396569200c2d3f",
-                "reference": "fa80f2d91c3364130284a7af8f396569200c2d3f",
+                "url": "https://api.github.com/repos/wikimedia/Timestamp/zipball/c33298290928a0cd9a56cf0474e8a6b764e7d4fe",
+                "reference": "c33298290928a0cd9a56cf0474e8a6b764e7d4fe",
                 "shasum": ""
             },
             "require": {
@@ -3711,7 +3711,7 @@
             "require-dev": {
                 "jakub-onderka/php-console-highlighter": "0.3.2",
                 "jakub-onderka/php-parallel-lint": "1.0.0",
-                "mediawiki/mediawiki-codesniffer": "21.0.0",
+                "mediawiki/mediawiki-codesniffer": "22.0.0",
                 "mediawiki/minus-x": "0.3.1",
                 "ockcyp/covers-validator": "0.5.1 || 0.6.1",
                 "phpunit/phpunit": "4.8.36 || ^6.5"
@@ -3737,7 +3737,7 @@
             ],
             "description": "Creation, parsing, and conversion of timestamps",
             "homepage": "https://www.mediawiki.org/wiki/Timestamp",
-            "time": "2018-08-11T06:20:54+00:00"
+            "time": "2018-09-04T16:49:38+00:00"
         },
         {
             "name": "wikimedia/utfnormal",
