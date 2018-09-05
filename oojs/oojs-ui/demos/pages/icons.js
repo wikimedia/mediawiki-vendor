@@ -118,11 +118,16 @@ Demo.static.pages.icons = function ( demo ) {
 				'alignLeft',
 				'alignRight',
 				'attachment',
+				'beaker',
 				'calendar',
 				'code',
-				'find',
+				'hieroglyph',
 				'language',
 				'layout',
+				'mathematics',
+				'mathematicsDisplayBlock',
+				'mathematicsDisplayDefault',
+				'mathematicsDisplayInline',
 				'markup',
 				'newline',
 				'noWikiText',
@@ -158,6 +163,8 @@ Demo.static.pages.icons = function ( demo ) {
 				'references'
 			],
 			media: [
+				'camera',
+				'chart',
 				'fullScreen',
 				'exitFullscreen',
 				'image',
@@ -165,9 +172,12 @@ Demo.static.pages.icons = function ( demo ) {
 				'imageLock',
 				'imageGallery',
 				'imageBroken',
+				'musicalScore',
 				'play',
 				'pause',
-				'stop'
+				'stop',
+				'zoomIn',
+				'zoomOut'
 			],
 			location: [
 				'map',

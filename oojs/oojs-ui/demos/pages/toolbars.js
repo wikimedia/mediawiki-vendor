@@ -415,6 +415,7 @@ Demo.static.pages.toolbars = function ( demo ) {
 
 	// ToolGroups definition, in alphabetical/disabledAlphabetical order
 	toolGroups = {
+		// Parameters like in createTool() function above (starting with 'name')
 		barTools: [
 			[ 'barTool', 'image', 'Basic tool in bar' ],
 			[ 'disabledBarTool', 'image', 'Basic tool in bar disabled', setDisabled ]
@@ -457,16 +458,16 @@ Demo.static.pages.toolbars = function ( demo ) {
 			[ 'media', 'image', 'First basic tool in list' ],
 			[ 'template', 'puzzle', 'Template' ],
 			[ 'table', 'table', 'Table' ],
-			[ 'comment', 'comment', 'Comment' ],
-			[ 'hieroglyphs', 'specialCharacter', 'Hieroglyphs' ],
-			[ 'score', 'specialCharacter', 'Musical notation' ],
+			[ 'comment', 'speechBubble', 'Comment' ],
+			[ 'hieroglyphs', null, 'Hieroglyphs' ],
+			[ 'score', null, 'Musical notation' ],
 			[ 'signature', 'signature', 'Your signature' ],
 			[ 'gallery', 'imageGallery', 'Gallery' ],
-			[ 'chem', 'specialCharacter', 'Chemical formula' ],
-			[ 'math', 'specialCharacter', 'Math formula' ],
+			[ 'chem', null, 'Chemical formula' ],
+			[ 'math', null, 'Math formula' ],
 			[ 'syntaxHighlightDialog', 'markup', 'Code block' ],
-			[ 'graph', 'specialCharacter', 'Graph' ],
-			[ 'referencesList', 'specialCharacter', 'References list' ]
+			[ 'graph', null, 'Graph' ],
+			[ 'referencesList', null, 'References list' ]
 		],
 
 		link: [
@@ -507,7 +508,7 @@ Demo.static.pages.toolbars = function ( demo ) {
 		overflowTools: [
 			[ 'meta', 'window', 'Options' ],
 			[ 'categories', 'image', 'Categories' ],
-			[ 'settings', 'settings', 'Page settings' ],
+			[ 'settings', 'pageSettings', 'Page settings' ],
 			[ 'advanced', 'advanced', 'Advanced settings' ],
 			[ 'textLanguage', 'language', 'Languages' ],
 			[ 'templatesUsed', 'puzzle', 'Templates used' ],
