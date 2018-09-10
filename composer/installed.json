@@ -3826,17 +3826,17 @@
     },
     {
         "name": "wikimedia/timestamp",
-        "version": "v2.1.0",
-        "version_normalized": "2.1.0.0",
+        "version": "v2.1.1",
+        "version_normalized": "2.1.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/Timestamp.git",
-            "reference": "c33298290928a0cd9a56cf0474e8a6b764e7d4fe"
+            "reference": "abdd0f70b059a81f077e8957ae5d627f15d686fc"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/Timestamp/zipball/c33298290928a0cd9a56cf0474e8a6b764e7d4fe",
-            "reference": "c33298290928a0cd9a56cf0474e8a6b764e7d4fe",
+            "url": "https://api.github.com/repos/wikimedia/Timestamp/zipball/abdd0f70b059a81f077e8957ae5d627f15d686fc",
+            "reference": "abdd0f70b059a81f077e8957ae5d627f15d686fc",
             "shasum": ""
         },
         "require": {
@@ -3850,7 +3850,7 @@
             "ockcyp/covers-validator": "0.5.1 || 0.6.1",
             "phpunit/phpunit": "4.8.36 || ^6.5"
         },
-        "time": "2018-09-04T16:49:38+00:00",
+        "time": "2018-09-10T18:22:46+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

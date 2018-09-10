@@ -46,7 +46,7 @@ class ConvertibleTimestamp {
 		TS_EXIF => 'Y:m:d H:i:s', // This shouldn't ever be used, but is included for completeness
 		TS_RFC2822 => 'D, d M Y H:i:s',
 		TS_ORACLE => 'd-m-Y H:i:s.u', // Was 'd-M-y h.i.s A' . ' +00:00' before r51500
-		TS_POSTGRES => 'Y-m-d H:i:s',
+		TS_POSTGRES => 'Y-m-d H:i:s+00', // Formerly 'Y-m-d H:i:s' . ' GMT'
 		TS_UNIX_MICRO => 'U.u',
 	];
 
@@ -260,7 +260,7 @@ class ConvertibleTimestamp {
 
 		$output = $this->timestamp->format( self::$formats[$style] );
 
-		if ( ( $style == TS_RFC2822 ) || ( $style == TS_POSTGRES ) ) {
+		if ( $style == TS_RFC2822 ) {
 			$output .= ' GMT';
 		}
 
