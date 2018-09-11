@@ -42,7 +42,6 @@ Demo.static.pages.icons = function ( demo ) {
 			],
 			interactions: [
 				'add',
-				'advanced',
 				'browser',
 				'cancel',
 				'check',
@@ -55,6 +54,7 @@ Demo.static.pages.icons = function ( demo ) {
 				'funnel',
 				'heart',
 				'help',
+				'helpNotice',
 				'key',
 				'keyboard',
 				'lightbulb',
@@ -64,6 +64,7 @@ Demo.static.pages.icons = function ( demo ) {
 				'printer',
 				'reload',
 				'search',
+				'settings',
 				'subtract'
 			],
 			moderation: [
@@ -180,6 +181,7 @@ Demo.static.pages.icons = function ( demo ) {
 				'zoomOut'
 			],
 			location: [
+				'globe',
 				'map',
 				'mapPin',
 				'mapPinAdd',
