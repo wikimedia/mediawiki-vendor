@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "862f5aa02e7a84ce434f0dbc516b8fb4",
+    "content-hash": "410e0c53c6fb4a3d602cb5ecdc1e20ea",
     "packages": [
         {
             "name": "composer/semver",
