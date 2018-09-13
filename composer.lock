@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e5c853d7a18b71e7760b23e89d8f13a6",
+    "content-hash": "2dd50768f3e45b7c7e1ced7cbb981741",
     "packages": [
         {
             "name": "composer/semver",
@@ -1483,16 +1483,16 @@
         },
         {
             "name": "pear/net_smtp",
-            "version": "1.7.3",
+            "version": "1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear/Net_SMTP.git",
-                "reference": "e066e5ee011ae056c03db1a95d210fc09649b477"
+                "reference": "75e85a480b93a8959f3cb856a38fd693e04b216c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/Net_SMTP/zipball/e066e5ee011ae056c03db1a95d210fc09649b477",
-                "reference": "e066e5ee011ae056c03db1a95d210fc09649b477",
+                "url": "https://api.github.com/repos/pear/Net_SMTP/zipball/75e85a480b93a8959f3cb856a38fd693e04b216c",
+                "reference": "75e85a480b93a8959f3cb856a38fd693e04b216c",
                 "shasum": ""
             },
             "require": {
@@ -1517,7 +1517,7 @@
                 "./"
             ],
             "license": [
-                "PHP-3.01"
+                "BSD-2-Clause"
             ],
             "authors": [
                 {
@@ -1539,7 +1539,7 @@
                 "mail",
                 "smtp"
             ],
-            "time": "2017-01-14T18:19:55+00:00"
+            "time": "2017-04-06T18:11:29+00:00"
         },
         {
             "name": "pear/net_socket",
