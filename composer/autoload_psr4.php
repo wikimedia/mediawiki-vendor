@@ -24,6 +24,7 @@ return array(
     'ValueParsers\\' => array($vendorDir . '/data-values/common/src/ValueParsers', $vendorDir . '/data-values/interfaces/src/ValueParsers'),
     'ValueFormatters\\' => array($vendorDir . '/data-values/common/src/ValueFormatters', $vendorDir . '/data-values/interfaces/src/ValueFormatters'),
     'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
+    'Symfony\\Polyfill\\Ctype\\' => array($vendorDir . '/symfony/polyfill-ctype'),
     'Symfony\\Component\\VarDumper\\' => array($vendorDir . '/symfony/var-dumper'),
     'Symfony\\Component\\Validator\\' => array($vendorDir . '/symfony/validator'),
     'Symfony\\Component\\Translation\\' => array($vendorDir . '/symfony/translation'),
