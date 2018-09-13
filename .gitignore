@@ -46,3 +46,4 @@ symfony/validator/.gitignore
 symfony/validator/phpunit.xml.dist
 symfony/validator/Tests
 symfony/var-dumper/Tests
+james-heinrich/getid3/demos

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "410e0c53c6fb4a3d602cb5ecdc1e20ea",
+    "content-hash": "6cf8ede7a2c3c32a60c269066c8d3d5e",
     "packages": [
         {
             "name": "composer/semver",
@@ -771,16 +771,16 @@
         },
         {
             "name": "james-heinrich/getid3",
-            "version": "v1.9.14",
+            "version": "v1.9.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/JamesHeinrich/getID3.git",
-                "reference": "30bd11473b0eef6f1b47866ef7ab0a557917fc21"
+                "reference": "df9b441e547da1018b1be0e239bee095c9962c96"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/30bd11473b0eef6f1b47866ef7ab0a557917fc21",
-                "reference": "30bd11473b0eef6f1b47866ef7ab0a557917fc21",
+                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/df9b441e547da1018b1be0e239bee095c9962c96",
+                "reference": "df9b441e547da1018b1be0e239bee095c9962c96",
                 "shasum": ""
             },
             "require": {
@@ -803,7 +803,7 @@
                 "php",
                 "tags"
             ],
-            "time": "2017-03-27T21:12:55+00:00"
+            "time": "2017-10-26T18:34:37+00:00"
         },
         {
             "name": "justinrainbow/json-schema",

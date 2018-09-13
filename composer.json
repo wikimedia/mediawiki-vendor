@@ -74,7 +74,7 @@
 		"firebase/php-jwt": "4.0.0",
 		"jakub-onderka/php-console-color": "0.1",
 		"jakub-onderka/php-console-highlighter": "0.3.2",
-		"james-heinrich/getid3": "1.9.14",
+		"james-heinrich/getid3": "1.9.15",
 		"justinrainbow/json-schema": "5.2.6",
 		"liuggio/statsd-php-client": "1.0.18",
 		"monolog/monolog": "1.22.1",
