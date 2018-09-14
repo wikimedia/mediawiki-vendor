@@ -9,7 +9,6 @@ class ComposerStaticInit_mediawiki_vendor
     public static $files = array (
         '7cb394c3af2b1ae832979b0368e0da62' => __DIR__ . '/..' . '/data-values/data-values/DataValues.php',
         'd1715cacc3c23b16a030645514266a76' => __DIR__ . '/..' . '/data-values/interfaces/Interfaces.php',
-        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '90559502573a0d473dc66fde5c0ff7e2' => __DIR__ . '/..' . '/data-values/common/Common.php',
         'f4c767faab43077fd89ff7cf99ffb4b8' => __DIR__ . '/..' . '/serialization/serialization/Serialization.php',
         'dc2c047038b9f5c71759f55f00aba99b' => __DIR__ . '/..' . '/wikibase/data-model/WikibaseDataModel.php',
@@ -19,7 +18,6 @@ class ComposerStaticInit_mediawiki_vendor
         '23842c11409ef125f7fd90c8b167279e' => __DIR__ . '/..' . '/wikimedia/at-ease/src/MediaWiki/Functions.php',
         'eccc0347283a01e62f5536bcf76b6e62' => __DIR__ . '/..' . '/wikimedia/at-ease/src/Wikimedia/Functions.php',
         '3ef87127dc6892a0a78f223558a0b940' => __DIR__ . '/..' . '/diff/diff/Diff.php',
-        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         'c50606d667a3fde2b80a955639479d3d' => __DIR__ . '/..' . '/wikimedia/timestamp/src/defines.php',
         '04c6c5c2f7095ccf6c481d3e53e1776f' => __DIR__ . '/..' . '/mustangostang/spyc/Spyc.php',
         '801c31d8ed748cfa537fa45402288c95' => __DIR__ . '/..' . '/psy/psysh/src/functions.php',
@@ -57,8 +55,6 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'S' => 
         array (
-            'Symfony\\Polyfill\\Mbstring\\' => 26,
-            'Symfony\\Polyfill\\Ctype\\' => 23,
             'Symfony\\Component\\VarDumper\\' => 28,
             'Symfony\\Component\\Validator\\' => 28,
             'Symfony\\Component\\Translation\\' => 30,
@@ -191,14 +187,6 @@ class ComposerStaticInit_mediawiki_vendor
         array (
             0 => __DIR__ . '/..' . '/data-values/common/src/ValueFormatters',
             1 => __DIR__ . '/..' . '/data-values/interfaces/src/ValueFormatters',
-        ),
-        'Symfony\\Polyfill\\Mbstring\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
-        ),
-        'Symfony\\Polyfill\\Ctype\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
         ),
         'Symfony\\Component\\VarDumper\\' => 
         array (
@@ -2088,8 +2076,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Symfony\\Component\\VarDumper\\Exception\\ThrowingCasterException' => __DIR__ . '/..' . '/symfony/var-dumper/Exception/ThrowingCasterException.php',
         'Symfony\\Component\\VarDumper\\Test\\VarDumperTestTrait' => __DIR__ . '/..' . '/symfony/var-dumper/Test/VarDumperTestTrait.php',
         'Symfony\\Component\\VarDumper\\VarDumper' => __DIR__ . '/..' . '/symfony/var-dumper/VarDumper.php',
-        'Symfony\\Polyfill\\Ctype\\Ctype' => __DIR__ . '/..' . '/symfony/polyfill-ctype/Ctype.php',
-        'Symfony\\Polyfill\\Mbstring\\Mbstring' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/Mbstring.php',
         'System' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/System.php',
         'TextCat' => __DIR__ . '/..' . '/wikimedia/textcat/TextCat.php',
         'UtfNormal\\Constants' => __DIR__ . '/..' . '/wikimedia/utfnormal/src/Constants.php',

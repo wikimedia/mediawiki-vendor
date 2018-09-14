@@ -1683,8 +1683,6 @@ return array(
     'Symfony\\Component\\VarDumper\\Exception\\ThrowingCasterException' => $vendorDir . '/symfony/var-dumper/Exception/ThrowingCasterException.php',
     'Symfony\\Component\\VarDumper\\Test\\VarDumperTestTrait' => $vendorDir . '/symfony/var-dumper/Test/VarDumperTestTrait.php',
     'Symfony\\Component\\VarDumper\\VarDumper' => $vendorDir . '/symfony/var-dumper/VarDumper.php',
-    'Symfony\\Polyfill\\Ctype\\Ctype' => $vendorDir . '/symfony/polyfill-ctype/Ctype.php',
-    'Symfony\\Polyfill\\Mbstring\\Mbstring' => $vendorDir . '/symfony/polyfill-mbstring/Mbstring.php',
     'System' => $vendorDir . '/pear/pear-core-minimal/src/System.php',
     'TextCat' => $vendorDir . '/wikimedia/textcat/TextCat.php',
     'UtfNormal\\Constants' => $vendorDir . '/wikimedia/utfnormal/src/Constants.php',

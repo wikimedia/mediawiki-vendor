@@ -1,5 +1,57 @@
 [
     {
+        "name": "backendtea/un-poly-ctype",
+        "version": "1.0.0",
+        "version_normalized": "1.0.0.0",
+        "replace": {
+            "symfony/polyfill-ctype": "*"
+        },
+        "time": "2018-07-09T18:48:40+00:00",
+        "type": "metapackage",
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Gert de Pagter",
+                "email": "BackEndTea@gmail.com"
+            }
+        ],
+        "description": "Removes the symfony/polyfill-ctype polyfill from your project",
+        "keywords": [
+            "ctype",
+            "polyfill",
+            "removal"
+        ]
+    },
+    {
+        "name": "backendtea/un-poly-mbstring",
+        "version": "1.0.0",
+        "version_normalized": "1.0.0.0",
+        "replace": {
+            "symfony/polyfill-mbstring": "*"
+        },
+        "time": "2018-07-09T18:54:17+00:00",
+        "type": "metapackage",
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Gert de Pagter",
+                "email": "BackEndTea@gmail.com"
+            }
+        ],
+        "description": "Removes the symfony/polyfill-mbstring polyfill from your project",
+        "keywords": [
+            "mbstring",
+            "polyfill",
+            "removal"
+        ]
+    },
+    {
         "name": "composer/semver",
         "version": "1.4.2",
         "version_normalized": "1.4.2.0",
@@ -2218,127 +2270,6 @@
         ],
         "description": "Symfony Debug Component",
         "homepage": "https://symfony.com"
-    },
-    {
-        "name": "symfony/polyfill-ctype",
-        "version": "v1.9.0",
-        "version_normalized": "1.9.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/symfony/polyfill-ctype.git",
-            "reference": "e3d826245268269cd66f8326bd8bc066687b4a19"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/e3d826245268269cd66f8326bd8bc066687b4a19",
-            "reference": "e3d826245268269cd66f8326bd8bc066687b4a19",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3"
-        },
-        "suggest": {
-            "ext-ctype": "For best performance"
-        },
-        "time": "2018-08-06T14:22:27+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.9-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Symfony\\Polyfill\\Ctype\\": ""
-            },
-            "files": [
-                "bootstrap.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Symfony Community",
-                "homepage": "https://symfony.com/contributors"
-            },
-            {
-                "name": "Gert de Pagter",
-                "email": "BackEndTea@gmail.com"
-            }
-        ],
-        "description": "Symfony polyfill for ctype functions",
-        "homepage": "https://symfony.com",
-        "keywords": [
-            "compatibility",
-            "ctype",
-            "polyfill",
-            "portable"
-        ]
-    },
-    {
-        "name": "symfony/polyfill-mbstring",
-        "version": "v1.9.0",
-        "version_normalized": "1.9.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/symfony/polyfill-mbstring.git",
-            "reference": "d0cd638f4634c16d8df4508e847f14e9e43168b8"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/d0cd638f4634c16d8df4508e847f14e9e43168b8",
-            "reference": "d0cd638f4634c16d8df4508e847f14e9e43168b8",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3"
-        },
-        "suggest": {
-            "ext-mbstring": "For best performance"
-        },
-        "time": "2018-08-06T14:22:27+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.9-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Symfony\\Polyfill\\Mbstring\\": ""
-            },
-            "files": [
-                "bootstrap.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Nicolas Grekas",
-                "email": "p@tchwork.com"
-            },
-            {
-                "name": "Symfony Community",
-                "homepage": "https://symfony.com/contributors"
-            }
-        ],
-        "description": "Symfony polyfill for the Mbstring extension",
-        "homepage": "https://symfony.com",
-        "keywords": [
-            "compatibility",
-            "mbstring",
-            "polyfill",
-            "portable",
-            "shim"
-        ]
     },
     {
         "name": "symfony/translation",

@@ -8,7 +8,6 @@ $baseDir = $vendorDir;
 return array(
     '7cb394c3af2b1ae832979b0368e0da62' => $vendorDir . '/data-values/data-values/DataValues.php',
     'd1715cacc3c23b16a030645514266a76' => $vendorDir . '/data-values/interfaces/Interfaces.php',
-    '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => $vendorDir . '/symfony/polyfill-mbstring/bootstrap.php',
     '90559502573a0d473dc66fde5c0ff7e2' => $vendorDir . '/data-values/common/Common.php',
     'f4c767faab43077fd89ff7cf99ffb4b8' => $vendorDir . '/serialization/serialization/Serialization.php',
     'dc2c047038b9f5c71759f55f00aba99b' => $vendorDir . '/wikibase/data-model/WikibaseDataModel.php',
@@ -18,7 +17,6 @@ return array(
     '23842c11409ef125f7fd90c8b167279e' => $vendorDir . '/wikimedia/at-ease/src/MediaWiki/Functions.php',
     'eccc0347283a01e62f5536bcf76b6e62' => $vendorDir . '/wikimedia/at-ease/src/Wikimedia/Functions.php',
     '3ef87127dc6892a0a78f223558a0b940' => $vendorDir . '/diff/diff/Diff.php',
-    '320cde22f66dd4f5d3fd621d3e88b98f' => $vendorDir . '/symfony/polyfill-ctype/bootstrap.php',
     'c50606d667a3fde2b80a955639479d3d' => $vendorDir . '/wikimedia/timestamp/src/defines.php',
     '04c6c5c2f7095ccf6c481d3e53e1776f' => $vendorDir . '/mustangostang/spyc/Spyc.php',
     '801c31d8ed748cfa537fa45402288c95' => $vendorDir . '/psy/psysh/src/functions.php',
