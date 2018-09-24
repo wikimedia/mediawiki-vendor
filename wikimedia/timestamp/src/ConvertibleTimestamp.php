@@ -64,7 +64,7 @@ class ConvertibleTimestamp {
 	 *
 	 * @return int UNIX epoch
 	 */
-	protected static function time() {
+	public static function time() {
 		return static::$fakeTimeCallback ? call_user_func( static::$fakeTimeCallback ) : \time();
 	}
 

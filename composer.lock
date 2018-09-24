@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "546069e4c88214baf9cc7f677bdd77ef",
+    "content-hash": "d0e6d7d7f40eb573e6692fa6c62f60a5",
     "packages": [
         {
             "name": "backendtea/un-poly-ctype",
@@ -3685,16 +3685,16 @@
         },
         {
             "name": "wikimedia/timestamp",
-            "version": "v2.1.1",
+            "version": "v2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/Timestamp.git",
-                "reference": "abdd0f70b059a81f077e8957ae5d627f15d686fc"
+                "reference": "ef8072a355d6f53386e36c0263df588a8d998966"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/Timestamp/zipball/abdd0f70b059a81f077e8957ae5d627f15d686fc",
-                "reference": "abdd0f70b059a81f077e8957ae5d627f15d686fc",
+                "url": "https://api.github.com/repos/wikimedia/Timestamp/zipball/ef8072a355d6f53386e36c0263df588a8d998966",
+                "reference": "ef8072a355d6f53386e36c0263df588a8d998966",
                 "shasum": ""
             },
             "require": {
@@ -3729,7 +3729,7 @@
             ],
             "description": "Creation, parsing, and conversion of timestamps",
             "homepage": "https://www.mediawiki.org/wiki/Timestamp",
-            "time": "2018-09-10T18:22:46+00:00"
+            "time": "2018-09-21T12:02:28+00:00"
         },
         {
             "name": "wikimedia/utfnormal",
