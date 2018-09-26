@@ -2,22 +2,24 @@
 
 namespace Serializers\Exceptions;
 
+use Exception;
+
 /**
  * @since 1.0
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class UnsupportedObjectException extends SerializationException {
 
-	protected $unsupportedObject;
+	private $unsupportedObject;
 
 	/**
 	 * @param mixed $unsupportedObject
 	 * @param string $message
-	 * @param \Exception $previous
+	 * @param Exception|null $previous
 	 */
-	public function __construct( $unsupportedObject, $message = '', \Exception $previous = null ) {
+	public function __construct( $unsupportedObject, $message = '', Exception $previous = null ) {
 		$this->unsupportedObject = $unsupportedObject;
 
 		parent::__construct( $message, $previous );
