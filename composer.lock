@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "476fa5dc9c31ba330403a97d926d012f",
+    "content-hash": "3dff60975e997464b20f19f1899d639a",
     "packages": [
         {
             "name": "backendtea/un-poly-ctype",
@@ -1192,25 +1192,25 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.28.2",
+            "version": "v0.29.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "4041d49a13ed00180a2ca38c280f6c0b6551c4a4"
+                "reference": "004122b70cfe8f5f37c1fdef726e37427092c993"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/4041d49a13ed00180a2ca38c280f6c0b6551c4a4",
-                "reference": "4041d49a13ed00180a2ca38c280f6c0b6551c4a4",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/004122b70cfe8f5f37c1fdef726e37427092c993",
+                "reference": "004122b70cfe8f5f37c1fdef726e37427092c993",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5.9"
+                "php": ">=5.6.99"
             },
             "require-dev": {
                 "jakub-onderka/php-console-highlighter": "0.3.2",
                 "jakub-onderka/php-parallel-lint": "1.0.0",
-                "mediawiki/mediawiki-codesniffer": "19.0.0",
+                "mediawiki/mediawiki-codesniffer": "22.0.0",
                 "mediawiki/minus-x": "0.3.1",
                 "phpunit/phpunit": "4.8.36 || ^6.5"
             },
@@ -1268,7 +1268,7 @@
             ],
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOUI",
-            "time": "2018-09-11T22:53:45+00:00"
+            "time": "2018-10-04T00:28:29+00:00"
         },
         {
             "name": "oyejorge/less.php",
