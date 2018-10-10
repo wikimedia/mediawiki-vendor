@@ -1533,56 +1533,6 @@
         "homepage": "http://pear.php.net/package/Mail_Mime"
     },
     {
-        "name": "pear/mail_mime-decode",
-        "version": "1.5.5.2",
-        "version_normalized": "1.5.5.2",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/dreamfactorysoftware/Mail_mimeDecode.git",
-            "reference": "a53c1ce051b212e23f7f67ea8d31015640de1129"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/dreamfactorysoftware/Mail_mimeDecode/zipball/a53c1ce051b212e23f7f67ea8d31015640de1129",
-            "reference": "a53c1ce051b212e23f7f67ea8d31015640de1129",
-            "shasum": ""
-        },
-        "require": {
-            "pear/pear_exception": "*"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "*"
-        },
-        "time": "2014-04-15T19:29:16+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Mail_mimeDecode": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "include-path": [
-            "./"
-        ],
-        "license": [
-            "BSD-2-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Cipriano Groenendal",
-                "email": "cipri@php.net",
-                "role": "Lead"
-            },
-            {
-                "name": "Aleksander Machniak",
-                "email": "alec@php.net",
-                "role": "Lead"
-            }
-        ],
-        "description": "More info available on: http://pear.php.net/package/Mail_mimeDecode"
-    },
-    {
         "name": "pear/net_smtp",
         "version": "1.8.0",
         "version_normalized": "1.8.0.0",

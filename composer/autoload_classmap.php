@@ -719,7 +719,6 @@ return array(
     'Mail_RFC822' => $vendorDir . '/pear/mail/Mail/RFC822.php',
     'Mail_mail' => $vendorDir . '/pear/mail/Mail/mail.php',
     'Mail_mime' => $vendorDir . '/pear/mail_mime/Mail/mime.php',
-    'Mail_mimeDecode' => $vendorDir . '/pear/mail_mime-decode/Mail/mimeDecode.php',
     'Mail_mimePart' => $vendorDir . '/pear/mail_mime/Mail/mimePart.php',
     'Mail_mock' => $vendorDir . '/pear/mail/Mail/mock.php',
     'Mail_null' => $vendorDir . '/pear/mail/Mail/null.php',

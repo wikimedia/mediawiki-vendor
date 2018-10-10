@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4dc5a3064a22b5b6e69ff54d4cb5abbb",
+    "content-hash": "1d9dcfefb58432b3bc2966efe8894e60",
     "packages": [
         {
             "name": "backendtea/un-poly-ctype",
@@ -1482,54 +1482,6 @@
             "description": "Mail_Mime provides classes to create MIME messages",
             "homepage": "http://pear.php.net/package/Mail_Mime",
             "time": "2017-11-17T09:21:45+00:00"
-        },
-        {
-            "name": "pear/mail_mime-decode",
-            "version": "1.5.5.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/dreamfactorysoftware/Mail_mimeDecode.git",
-                "reference": "a53c1ce051b212e23f7f67ea8d31015640de1129"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/dreamfactorysoftware/Mail_mimeDecode/zipball/a53c1ce051b212e23f7f67ea8d31015640de1129",
-                "reference": "a53c1ce051b212e23f7f67ea8d31015640de1129",
-                "shasum": ""
-            },
-            "require": {
-                "pear/pear_exception": "*"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Mail_mimeDecode": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "include-path": [
-                "./"
-            ],
-            "license": [
-                "BSD-2-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Cipriano Groenendal",
-                    "email": "cipri@php.net",
-                    "role": "Lead"
-                },
-                {
-                    "name": "Aleksander Machniak",
-                    "email": "alec@php.net",
-                    "role": "Lead"
-                }
-            ],
-            "description": "More info available on: http://pear.php.net/package/Mail_mimeDecode",
-            "time": "2014-04-15T19:29:16+00:00"
         },
         {
             "name": "pear/net_smtp",
