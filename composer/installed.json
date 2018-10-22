@@ -2878,28 +2878,31 @@
     },
     {
         "name": "wikimedia/base-convert",
-        "version": "v1.0.1",
-        "version_normalized": "1.0.1.0",
+        "version": "v2.0.0",
+        "version_normalized": "2.0.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/base-convert.git",
-            "reference": "2948df323875fb4ef952cda49ac03a6b39708997"
+            "reference": "b1116d1b251e51a44ef76c3a7c79561b2e058e59"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/base-convert/zipball/2948df323875fb4ef952cda49ac03a6b39708997",
-            "reference": "2948df323875fb4ef952cda49ac03a6b39708997",
+            "url": "https://api.github.com/repos/wikimedia/base-convert/zipball/b1116d1b251e51a44ef76c3a7c79561b2e058e59",
+            "reference": "b1116d1b251e51a44ef76c3a7c79561b2e058e59",
             "shasum": ""
         },
         "require": {
-            "php": ">=5.3.3"
+            "php": ">=5.6.99"
         },
         "require-dev": {
-            "jakub-onderka/php-parallel-lint": "0.9.0",
-            "mediawiki/mediawiki-codesniffer": "0.5.0",
-            "phpunit/phpunit": "4.6.*"
+            "jakub-onderka/php-console-highlighter": "0.3.2",
+            "jakub-onderka/php-parallel-lint": "1.0.0",
+            "mediawiki/mediawiki-codesniffer": "22.0.0",
+            "mediawiki/minus-x": "0.3.1",
+            "ockcyp/covers-validator": "0.5.1 || 0.6.1",
+            "phpunit/phpunit": "4.8.36 || ^6.5"
         },
-        "time": "2015-10-29T22:19:02+00:00",
+        "time": "2018-10-21T05:06:11+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -2909,7 +2912,7 @@
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
-            "GPL-2.0+"
+            "GPL-2.0-or-later"
         ],
         "authors": [
             {
