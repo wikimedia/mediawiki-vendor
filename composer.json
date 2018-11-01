@@ -68,7 +68,7 @@
 		"data-values/data-values": "1.1.1",
 		"data-values/geo": "3.0.1",
 		"data-values/interfaces": "0.2.5",
-		"data-values/number": "0.10.0",
+		"data-values/number": "0.10.1",
 		"data-values/serialization": "1.2.2",
 		"data-values/time": "0.8.6",
 		"diff/diff": "2.3.0",

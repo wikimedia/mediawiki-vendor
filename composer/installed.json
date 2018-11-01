@@ -404,31 +404,31 @@
     },
     {
         "name": "data-values/number",
-        "version": "0.10.0",
-        "version_normalized": "0.10.0.0",
+        "version": "0.10.1",
+        "version_normalized": "0.10.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/DataValues/Number.git",
-            "reference": "7dc28810522900bb34c931f21479951516a65dc1"
+            "reference": "946fbafd041c25d13798104c08b99abc1ee13c06"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/DataValues/Number/zipball/7dc28810522900bb34c931f21479951516a65dc1",
-            "reference": "7dc28810522900bb34c931f21479951516a65dc1",
+            "url": "https://api.github.com/repos/DataValues/Number/zipball/946fbafd041c25d13798104c08b99abc1ee13c06",
+            "reference": "946fbafd041c25d13798104c08b99abc1ee13c06",
             "shasum": ""
         },
         "require": {
             "data-values/common": "~0.4.0|~0.3.0",
-            "data-values/data-values": "~1.0|~0.1",
+            "data-values/data-values": "~2.0|~1.0|~0.1",
             "data-values/interfaces": "~0.2.0",
             "php": ">=5.5.9"
         },
         "require-dev": {
             "ext-bcmath": "*",
             "phpunit/phpunit": "~4.8",
-            "wikibase/wikibase-codesniffer": "^0.1.0"
+            "wikibase/wikibase-codesniffer": "^0.4.1"
         },
-        "time": "2018-04-11T08:18:47+00:00",
+        "time": "2018-10-31T11:09:19+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
