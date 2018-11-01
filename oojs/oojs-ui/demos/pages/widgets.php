@@ -135,6 +135,8 @@ $demoContainer->appendContent( new OOUI\FieldsetLayout( [
 			new OOUI\ButtonWidget( [
 				'framed' => false,
 				'icon' => 'help',
+				'label' => 'Help',
+				'invisibleLabel' => true,
 				'title' => 'Icon only'
 			] ),
 			[
@@ -795,6 +797,106 @@ $demoContainer->appendContent( new OOUI\FieldsetLayout( [
 	'label' => 'Other widgets',
 	'items' => [
 		new OOUI\FieldLayout(
+			new OOUI\IconWidget( [
+				'icon' => 'search',
+				'label' => 'Search',
+				'invisibleLabel' => true,
+				'title' => 'Search icon'
+			] ),
+			[
+				'label' => "IconWidget (normal)\u{200E}",
+				'align' => 'top'
+			]
+		),
+		new OOUI\FieldLayout(
+			new OOUI\IconWidget( [
+				'icon' => 'trash',
+				'label' => 'Trash',
+				'invisibleLabel' => true,
+				'title' => 'Trash icon',
+				'flags' => 'destructive',
+			] ),
+			[
+				'label' => "IconWidget (flagged)\u{200E}",
+				'align' => 'top'
+			]
+		),
+		new OOUI\FieldLayout(
+			new OOUI\IconWidget( [
+				'icon' => 'search',
+				'label' => 'Search',
+				'invisibleLabel' => true,
+				'title' => 'Search icon',
+				'disabled' => true
+			] ),
+			[
+				'label' => "IconWidget (disabled)\u{200E}",
+				'align' => 'top'
+			]
+		),
+		new OOUI\FieldLayout(
+			new OOUI\IndicatorWidget( [
+				'indicator' => 'required',
+				'label' => 'Required',
+				'invisibleLabel' => true,
+				'title' => 'Required indicator'
+			] ),
+			[
+				'label' => "IndicatorWidget (normal)\u{200E}",
+				'align' => 'top'
+			]
+		),
+		new OOUI\FieldLayout(
+			new OOUI\IndicatorWidget( [
+				'indicator' => 'required',
+				'label' => 'Required',
+				'invisibleLabel' => true,
+				'title' => 'Required indicator',
+				'disabled' => true
+			] ),
+			[
+				'label' => "IndicatorWidget (disabled)\u{200E}",
+				'align' => 'top'
+			]
+		),
+		new OOUI\FieldLayout(
+			new OOUI\LabelWidget( [
+				'label' => 'Label'
+			] ),
+			[
+				'label' => "LabelWidget (normal)\u{200E}",
+				'align' => 'top'
+			]
+		),
+		new OOUI\FieldLayout(
+			new OOUI\LabelWidget( [
+				'label' => 'Label',
+				'disabled' => true,
+			] ),
+			[
+				'label' => "LabelWidget (disabled)\u{200E}",
+				'align' => 'top'
+			]
+		),
+		new OOUI\FieldLayout(
+			new OOUI\LabelWidget( [
+				'label' => new OOUI\HtmlSnippet( '<b>Fancy</b> <i>text</i> <u>formatting</u>!' ),
+			] ),
+			[
+				'label' => "LabelWidget (with html)\u{200E}",
+				'align' => 'top'
+			]
+		)
+	]
+] ) );
+
+$demoContainer->appendContent( new OOUI\FieldsetLayout( [
+	'id' => 'demo-section-fieldLayouts',
+	'infusable' => true,
+	'label' => 'Field layouts',
+	'icon' => 'tag',
+	'items' => [
+		new OOUI\FieldLayout(
 			new OOUI\ButtonWidget( [
 				'label' => 'Button'
 			] ),
@@ -964,6 +1066,34 @@ $demoContainer->appendContent( new OOUI\FieldsetLayout( [
 			]
 		),
 		new OOUI\ActionFieldLayout(
+			new OOUI\DropdownInputWidget( [
+				'options' => [
+					[
+						'data' => 'a',
+						'label' => 'First'
+					],
+					[
+						'data' => 'b',
+						'label' => 'Second'
+					],
+					[
+						'data' => 'c',
+						'label' => 'Third'
+					]
+				],
+				'value' => 'b'
+			] ),
+			new OOUI\ButtonWidget( [
+				'label' => 'Button'
+			] ),
+			[
+				'label' => 'ActionFieldLayout aligned left, DropdownInputWidget with help',
+				'help' => 'This is some inlined help',
+				'helpInline' => true,
+				'align' => 'left'
+			]
+		),
+		new OOUI\ActionFieldLayout(
 			new OOUI\TextInputWidget(),
 			new OOUI\ButtonWidget( [
 				'label' => 'Button'
@@ -1062,201 +1192,6 @@ $demoContainer->appendContent( new OOUI\FieldsetLayout( [
 					'The value must be a number. It is more than necessary. ' .
 					'You can\'t go on without putting a number into this input field.'
 				],
-				'align' => 'top'
-			]
-		),
-		new OOUI\FieldLayout(
-			new OOUI\TextInputWidget( [
-				'value' => 'Foo'
-			] ),
-			[
-				'label' => 'FieldLayout with notice and error message',
-				'notices' => [ 'Please input a number.' ],
-				'errors' => [ 'The value must be a number.' ],
-				'align' => 'top'
-			]
-		)
-	]
-] ) );
-
-$demoContainer->appendContent( new OOUI\FieldsetLayout( [
-	'id' => 'demo-section-fieldLayouts',
-	'infusable' => true,
-	'label' => 'Field layouts',
-	'icon' => 'tag',
-	'items' => [
-		new OOUI\FieldLayout(
-			new OOUI\ButtonWidget( [
-				'label' => 'Button'
-			] ),
-			[
-				'label' => 'FieldLayout with help',
-				'help' => $loremIpsum,
-				'align' => 'top'
-			]
-		),
-		new OOUI\FieldLayout(
-			new OOUI\ButtonWidget( [
-				'label' => 'Button'
-			] ),
-			[
-				'label' => 'FieldLayout with HTML help',
-				'help' => new OOUI\HtmlSnippet( '<b>Bold text</b> is helpful!' ),
-				'align' => 'top'
-			]
-		),
-		new OOUI\FieldLayout(
-			new OOUI\ButtonWidget( [
-				'label' => 'Button'
-			] ),
-			[
-				'label' => 'FieldLayout with title',
-				'title' => 'Field title text',
-				'align' => 'top'
-			]
-		),
-		new OOUI\FieldLayout(
-			new OOUI\ButtonWidget( [
-				'label' => 'Button'
-			] ),
-			[
-				'label' => new OOUI\HtmlSnippet( '<i>FieldLayout with rich text label</i>' ),
-				'align' => 'top'
-			]
-		),
-		new OOUI\ActionFieldLayout(
-			new OOUI\TextInputWidget(),
-			new OOUI\ButtonWidget( [
-				'label' => 'Button'
-			] ),
-			[
-				'label' => 'ActionFieldLayout aligned top',
-				'align' => 'top'
-			]
-		),
-		new OOUI\FieldLayout(
-			new OOUI\TextInputWidget(),
-			[
-				'label' => 'FieldLayout aligned top with help',
-				'help' => $loremIpsum,
-				'align' => 'top'
-			]
-		),
-		new OOUI\ActionFieldLayout(
-			new OOUI\TextInputWidget(),
-			new OOUI\ButtonWidget( [
-				'label' => 'Button'
-			] ),
-			[
-				'label' => 'ActionFieldLayout aligned top with help',
-				'help' => $loremIpsum,
-				'align' => 'top'
-			]
-		),
-		new OOUI\ActionFieldLayout(
-			new OOUI\CheckboxInputWidget( [ 'selected' => true ] ),
-			new OOUI\ButtonWidget( [
-				'label' => 'Button'
-			] ),
-			[
-				'label' => 'ActionFieldLayout aligned inline',
-				'align' => 'inline',
-			]
-		),
-		new OOUI\FieldLayout(
-			new OOUI\CheckboxInputWidget( [ 'selected' => true ] ),
-			[
-				'label' => 'FieldLayout aligned inline with help',
-				'help' => $loremIpsum,
-				'align' => 'inline',
-			]
-		),
-		new OOUI\ActionFieldLayout(
-			new OOUI\CheckboxInputWidget( [ 'selected' => true ] ),
-			new OOUI\ButtonWidget( [
-				'label' => 'Button'
-			] ),
-			[
-				'label' => 'ActionFieldLayout aligned inline with help',
-				'help' => $loremIpsum,
-				'align' => 'inline',
-			]
-		),
-		new OOUI\ActionFieldLayout(
-			new OOUI\TextInputWidget(),
-			new OOUI\ButtonWidget( [
-				'label' => 'Button'
-			] ),
-			[
-				'label' => 'ActionFieldLayout aligned left',
-				'align' => 'left',
-			]
-		),
-		new OOUI\FieldLayout(
-			new OOUI\TextInputWidget(),
-			[
-				'label' => 'FieldLayout aligned left with help',
-				'help' => $loremIpsum,
-				'align' => 'left',
-			]
-		),
-		new OOUI\ActionFieldLayout(
-			new OOUI\TextInputWidget(),
-			new OOUI\ButtonWidget( [
-				'label' => 'Button'
-			] ),
-			[
-				'label' => 'ActionFieldLayout aligned left with help',
-				'help' => $loremIpsum,
-				'align' => 'left',
-			]
-		),
-		new OOUI\ActionFieldLayout(
-			new OOUI\TextInputWidget(),
-			new OOUI\ButtonWidget( [
-				'label' => 'Button'
-			] ),
-			[
-				'label' => 'ActionFieldLayout aligned right',
-				'align' => 'right',
-			]
-		),
-		new OOUI\FieldLayout(
-			new OOUI\TextInputWidget(),
-			[
-				'label' => 'FieldLayout aligned right with help',
-				'help' => $loremIpsum,
-				'align' => 'right',
-			]
-		),
-		new OOUI\ActionFieldLayout(
-			new OOUI\TextInputWidget(),
-			new OOUI\ButtonWidget( [
-				'label' => 'Button'
-			] ),
-			[
-				'label' => 'ActionFieldLayout aligned right with help',
-				'help' => $loremIpsum,
-				'align' => 'right',
-			]
-		),
-		new OOUI\FieldLayout(
-			new OOUI\TextInputWidget( [
-				'value' => ''
-			] ),
-			[
-				'label' => 'FieldLayout with notice',
-				'notices' => [ 'Please input a number.' ],
-				'align' => 'top'
-			]
-		),
-		new OOUI\FieldLayout(
-			new OOUI\TextInputWidget( [
-				'value' => 'Foo'
-			] ),
-			[
-				'label' => 'FieldLayout with error message',
-				'errors' => [ 'The value must be a number.' ],
 				'align' => 'top'
 			]
 		),
