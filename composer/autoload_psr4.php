@@ -62,4 +62,5 @@ return array(
     'DataValues\\' => array($vendorDir . '/data-values/common/src/DataValues', $vendorDir . '/data-values/data-values/src/DataValues'),
     'Composer\\Semver\\' => array($vendorDir . '/composer/semver/src'),
     'CLDRPluralRuleParser\\' => array($vendorDir . '/wikimedia/cldr-plural-rule-parser/src'),
+    'Base32\\' => array($vendorDir . '/christian-riesen/base32/src'),
 );

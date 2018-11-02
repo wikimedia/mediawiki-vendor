@@ -45,6 +45,7 @@ return array(
     'AvroStringIO' => $vendorDir . '/wikimedia/avro/lib/avro/io.php',
     'AvroUnionSchema' => $vendorDir . '/wikimedia/avro/lib/avro/schema.php',
     'AvroUtil' => $vendorDir . '/wikimedia/avro/lib/avro/util.php',
+    'Base32\\Base32' => $vendorDir . '/christian-riesen/base32/src/Base32.php',
     'CLDRPluralRuleParser\\Converter' => $vendorDir . '/wikimedia/cldr-plural-rule-parser/src/Converter.php',
     'CLDRPluralRuleParser\\Converter\\Expression' => $vendorDir . '/wikimedia/cldr-plural-rule-parser/src/Converter/Expression.php',
     'CLDRPluralRuleParser\\Converter\\Fragment' => $vendorDir . '/wikimedia/cldr-plural-rule-parser/src/Converter/Fragment.php',

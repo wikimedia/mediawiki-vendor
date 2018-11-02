@@ -130,6 +130,10 @@ class ComposerStaticInit_mediawiki_vendor
             'Composer\\Semver\\' => 16,
             'CLDRPluralRuleParser\\' => 21,
         ),
+        'B' => 
+        array (
+            'Base32\\' => 7,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -364,6 +368,10 @@ class ComposerStaticInit_mediawiki_vendor
         array (
             0 => __DIR__ . '/..' . '/wikimedia/cldr-plural-rule-parser/src',
         ),
+        'Base32\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/christian-riesen/base32/src',
+        ),
     );
 
     public static $prefixesPsr0 = array (
@@ -501,6 +509,7 @@ class ComposerStaticInit_mediawiki_vendor
         'AvroStringIO' => __DIR__ . '/..' . '/wikimedia/avro/lib/avro/io.php',
         'AvroUnionSchema' => __DIR__ . '/..' . '/wikimedia/avro/lib/avro/schema.php',
         'AvroUtil' => __DIR__ . '/..' . '/wikimedia/avro/lib/avro/util.php',
+        'Base32\\Base32' => __DIR__ . '/..' . '/christian-riesen/base32/src/Base32.php',
         'CLDRPluralRuleParser\\Converter' => __DIR__ . '/..' . '/wikimedia/cldr-plural-rule-parser/src/Converter.php',
         'CLDRPluralRuleParser\\Converter\\Expression' => __DIR__ . '/..' . '/wikimedia/cldr-plural-rule-parser/src/Converter/Expression.php',
         'CLDRPluralRuleParser\\Converter\\Fragment' => __DIR__ . '/..' . '/wikimedia/cldr-plural-rule-parser/src/Converter/Fragment.php',
