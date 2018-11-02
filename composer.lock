@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "43e5766be6de66770e6600876fa44b8b",
+    "content-hash": "e872c9f272f5dca65e5ba438ecfac34a",
     "packages": [
         {
             "name": "backendtea/un-poly-ctype",
@@ -3501,25 +3501,25 @@
         },
         {
             "name": "wikimedia/scoped-callback",
-            "version": "v2.0.0",
+            "version": "v3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/ScopedCallback.git",
-                "reference": "bdbefd13d162a8cbae37dee19f863adaf10022a0"
+                "reference": "0a480d9a9772634697c77598726cf24606597bd0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/ScopedCallback/zipball/bdbefd13d162a8cbae37dee19f863adaf10022a0",
-                "reference": "bdbefd13d162a8cbae37dee19f863adaf10022a0",
+                "url": "https://api.github.com/repos/wikimedia/ScopedCallback/zipball/0a480d9a9772634697c77598726cf24606597bd0",
+                "reference": "0a480d9a9772634697c77598726cf24606597bd0",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5.9"
+                "php": ">=5.6.99"
             },
             "require-dev": {
                 "jakub-onderka/php-console-highlighter": "0.3.2",
                 "jakub-onderka/php-parallel-lint": "1.0.0",
-                "mediawiki/mediawiki-codesniffer": "18.0.0",
+                "mediawiki/mediawiki-codesniffer": "22.0.0",
                 "mediawiki/minus-x": "0.3.1",
                 "ockcyp/covers-validator": "0.5.1 || 0.6.1",
                 "phpunit/phpunit": "4.8.36 || ^6.5"
@@ -3542,7 +3542,7 @@
             ],
             "description": "Class for asserting that a callback happens when a dummy object leaves scope",
             "homepage": "https://www.mediawiki.org/wiki/ScopedCallback",
-            "time": "2018-05-09T06:30:27+00:00"
+            "time": "2018-10-30T23:52:20+00:00"
         },
         {
             "name": "wikimedia/testing-access-wrapper",
