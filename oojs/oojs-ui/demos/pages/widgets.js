@@ -1789,12 +1789,23 @@ Demo.static.pages.widgets = function ( demo ) {
 				),
 				new OO.ui.FieldLayout(
 					new OO.ui.TagMultiselectWidget( {
+						placeholder: 'Add up to 5 tags',
+						allowArbitrary: true,
+						limit: 5
+					} ),
+					{
+						label: 'TagMultiselectWidget (allowArbitrary, inline input, limit: 5)',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.TagMultiselectWidget( {
 						placeholder: 'Add tags',
 						allowArbitrary: true,
 						inputPosition: 'outline'
 					} ),
 					{
-						label: 'TagMultiselectWidget (allowArbitrary, inputPosition:outline, placeholder)',
+						label: 'TagMultiselectWidget (allowArbitrary, inputPosition: outline, placeholder)',
 						align: 'top'
 					}
 				),
@@ -1805,7 +1816,18 @@ Demo.static.pages.widgets = function ( demo ) {
 						inputWidget: new OO.ui.NumberInputWidget()
 					} ),
 					{
-						label: 'TagMultiselectWidget (inputwidget: OO.ui.NumberInputWidget, inputPosition:outline)',
+						label: 'TagMultiselectWidget (inputwidget: OO.ui.NumberInputWidget, inputPosition: outline)',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.TagMultiselectWidget( {
+						allowArbitrary: true,
+						inputPosition: 'outline',
+						limit: 5
+					} ),
+					{
+						label: 'TagMultiselectWidget (inputPosition: outline, limit: 5)',
 						align: 'top'
 					}
 				),
@@ -1839,6 +1861,28 @@ Demo.static.pages.widgets = function ( demo ) {
 				),
 				new OO.ui.FieldLayout(
 					new OO.ui.MenuTagMultiselectWidget( {
+						selected: [
+							{ data: 'foo', label: 'Label for foo' },
+							{ data: 'bar', label: 'Label for bar' }
+						],
+						options: [
+							{ data: 'foo', label: 'Label for foo', icon: 'tag' },
+							{ data: 'bar', label: 'Label for bar' },
+							{ data: 'baz', label: 'Label for baz' },
+							{ data: 'quuz', label: 'Label for quuz' },
+							{ data: 'red', label: 'Label for red' },
+							{ data: 'green', label: 'Label for green' },
+							{ data: 'blue', label: 'Label for blue' }
+						],
+						limit: 5
+					} ),
+					{
+						label: 'MenuTagMultiselectWidget (initially selected, preset options, limit: 5)',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.MenuTagMultiselectWidget( {
 						selected: [ 'foo', 'bar' ],
 						allowArbitrary: true
 					} ),
@@ -1857,7 +1901,7 @@ Demo.static.pages.widgets = function ( demo ) {
 						]
 					} ),
 					{
-						label: 'MenuTagMultiselectWidget (allowArbitrary:false)',
+						label: 'MenuTagMultiselectWidget (allowArbitrary: false)',
 						align: 'top'
 					}
 				),
@@ -1876,7 +1920,7 @@ Demo.static.pages.widgets = function ( demo ) {
 						]
 					} ),
 					{
-						label: 'MenuTagMultiselectWidget (allowArbitrary:false, menu:{highlightOnFilter:true})',
+						label: 'MenuTagMultiselectWidget (allowArbitrary: false, menu: {highlightOnFilter: true})',
 						align: 'top'
 					}
 				),
@@ -1891,7 +1935,7 @@ Demo.static.pages.widgets = function ( demo ) {
 						]
 					} ),
 					{
-						label: 'MenuTagMultiselectWidget (inputPosition:outline, allowArbitrary:false)',
+						label: 'MenuTagMultiselectWidget (inputPosition: outline, allowArbitrary: false)',
 						align: 'top'
 					}
 				),
