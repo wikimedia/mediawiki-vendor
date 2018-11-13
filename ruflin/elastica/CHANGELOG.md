@@ -1,24 +1,51 @@
 # Change Log
 All notable changes to this project will be documented in this file based on the [Keep a Changelog](http://keepachangelog.com/) Standard. This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased](https://github.com/ruflin/Elastica/compare/5.3.0...master)
+## [Unreleased](https://github.com/ruflin/Elastica/compare/5.3.2...master)
 
 ### Backward Compatibility Breaks
- 
+
 ### Bugfixes
 
 ### Added
 
 ### Improvements
 
-### Deprecated
+
+## [Unreleased](https://github.com/ruflin/Elastica/compare/5.3.1...5.3.2)
+
+### Bugfixes
+- Remove [`each()`](http://www.php.net/each) usage to fix PHP 7.2 compatibility
+- Fix [#1435](https://github.com/ruflin/Elastica/issues/1435) forcing `doc_as_upsert` to be boolean, acording [Elastic doc-update documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update.html#_literal_doc_as_upsert_literal)
+
+### Added
+
+* Added support for multiple bucket sort orders for aggregations.
+
+
+## [5.3.1](https://github.com/ruflin/Elastica/compare/5.3.0...5.3.1)
+
+### Bugfixes
+
+- Removed deprecated `min_word_len` field in `Elastica\Suggest\Term`.
+  Use `min_word_length` instead.
+
+### Added
+
+- Added clear() to `Scroll` for closing search context on ES manually
+- In PHP 7.2 count() now raises a warning when an invalid parameter is passed. Only arrays and objects implementing the Countable interface should be passed. [#1378](https://github.com/ruflin/Elastica/pull/1378)
+
+### Improvements
+
+- Clear search context on ES after usage in `Scroll`
+
 
 ## [5.3.0](https://github.com/ruflin/Elastica/compare/5.3.0...master)
 
 ### Backward Compatibility Breaks
 
 - Removed `Query\NumericRange`, use `Query\Range` instead [#1334](https://github.com/ruflin/Elastica/pull/1334)
- 
+
 ### Bugfixes
 
 - Send the `scroll_id` inside a json body instead of plain text [#1325](https://github.com/ruflin/Elastica/pull/1325)
@@ -26,6 +53,7 @@ All notable changes to this project will be documented in this file based on the
 ### Added
  - Added getNumberOfReplicas() for index settings [PR#1324](https://github.com/ruflin/Elastica/pull/1324)
  - Added getNumberOfShards() for index settings [PR#1321](https://github.com/ruflin/Elastica/pull/1331)
+ - Added avg_bucket() and sum_bucket() in aggregations [PR#1443](https://github.com/ruflin/Elastica/pull/1443) - (https://github.com/ruflin/Elastica/issues/1279)
 
 
 ## [5.2.1](https://github.com/ruflin/Elastica/compare/5.2.0...5.2.1)

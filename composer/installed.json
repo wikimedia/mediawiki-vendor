@@ -3,6 +3,17 @@
         "name": "backendtea/un-poly-ctype",
         "version": "1.0.0",
         "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/BackEndTea/un-poly-ctype.git",
+            "reference": "d413a6019d8b13ca7baa4a2c12d962cfbc73ad0b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/BackEndTea/un-poly-ctype/zipball/d413a6019d8b13ca7baa4a2c12d962cfbc73ad0b",
+            "reference": "d413a6019d8b13ca7baa4a2c12d962cfbc73ad0b",
+            "shasum": ""
+        },
         "replace": {
             "symfony/polyfill-ctype": "*"
         },
@@ -29,6 +40,17 @@
         "name": "backendtea/un-poly-mbstring",
         "version": "1.0.0",
         "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/BackEndTea/un-poly-mbstring.git",
+            "reference": "b4d1eb9ce9b89f20b4ce1abcc5687c6f6fe6777a"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/BackEndTea/un-poly-mbstring/zipball/b4d1eb9ce9b89f20b4ce1abcc5687c6f6fe6777a",
+            "reference": "b4d1eb9ce9b89f20b4ce1abcc5687c6f6fe6777a",
+            "shasum": ""
+        },
         "replace": {
             "symfony/polyfill-mbstring": "*"
         },
@@ -684,17 +706,17 @@
     },
     {
         "name": "elasticsearch/elasticsearch",
-        "version": "5.3.0",
-        "version_normalized": "5.3.0.0",
+        "version": "5.3.2",
+        "version_normalized": "5.3.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/elastic/elasticsearch-php.git",
-            "reference": "tags/v5.3.0"
+            "reference": "tags/v5.3.2"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/elastic/elasticsearch-php/zipball/tags/v5.3.0",
-            "reference": "tags/v5.3.0",
+            "url": "https://api.github.com/repos/elastic/elasticsearch-php/zipball/tags/v5.3.2",
+            "reference": "tags/v5.3.2",
             "shasum": null
         },
         "require": {
@@ -1976,21 +1998,21 @@
     },
     {
         "name": "ruflin/elastica",
-        "version": "5.3.0",
-        "version_normalized": "5.3.0.0",
+        "version": "5.3.2",
+        "version_normalized": "5.3.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/ruflin/Elastica.git",
-            "reference": "tags/5.3.0"
+            "reference": "tags/5.3.2"
         },
         "dist": {
             "type": "zip",
-            "url": "https://github.com/ruflin/Elastica/archive/5.3.0.zip",
-            "reference": "tags/5.3.0",
+            "url": "https://github.com/ruflin/Elastica/archive/5.3.2.zip",
+            "reference": "tags/5.3.2",
             "shasum": null
         },
         "require": {
-            "elasticsearch/elasticsearch": "5.3.0",
+            "elasticsearch/elasticsearch": "5.3.2",
             "php": ">=5.5.0"
         },
         "type": "library",

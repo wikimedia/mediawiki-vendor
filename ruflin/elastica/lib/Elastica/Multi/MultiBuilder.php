@@ -51,7 +51,6 @@ class MultiBuilder implements MultiBuilderInterface
             $key = key($searches);
             next($searches);
 
-
             $resultSets[$key] = $this->buildResultSet(new Response($responseData), $search);
         }
 
