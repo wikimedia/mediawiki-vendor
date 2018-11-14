@@ -1,5 +1,11 @@
 # Wikibase DataModel Services release notes
 
+## Version 3.12.0 (2018-11-06)
+
+* Added compatibility with Wikibase DataModel 9.x
+* Removed compatibility with Diff 1.x
+* UnresolvedEntityRedirectException: Mention source entity id in message (#200)
+
 ## Version 3.11.0 (2018-08-07)
 
 * Added compatibility with Wikibase DataModel 8.x

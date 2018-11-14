@@ -11,7 +11,7 @@ use Wikibase\DataModel\Entity\EntityId;
  *
  * @since 1.1
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  */
 class UnresolvedEntityRedirectException extends EntityLookupException {
@@ -33,9 +33,12 @@ class UnresolvedEntityRedirectException extends EntityLookupException {
 		$message = null,
 		Exception $previous = null
 	) {
+		$defaultMessage = 'Unresolved redirect from ' . $entityId->getSerialization() . ' to '
+			. $redirectTargetId->getSerialization();
+
 		parent::__construct(
 			$entityId,
-			$message !== null ? $message : 'Unresolved redirect to ' . $redirectTargetId->getSerialization(),
+			$message ?: $defaultMessage,
 			$previous
 		);
 

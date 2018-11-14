@@ -4,22 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "132dc97c015a056ed8743bbe6f11f644",
+    "content-hash": "4f5f8d77766c6ced29ce868b4153f0c5",
     "packages": [
         {
             "name": "backendtea/un-poly-ctype",
             "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/BackEndTea/un-poly-ctype.git",
-                "reference": "d413a6019d8b13ca7baa4a2c12d962cfbc73ad0b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/BackEndTea/un-poly-ctype/zipball/d413a6019d8b13ca7baa4a2c12d962cfbc73ad0b",
-                "reference": "d413a6019d8b13ca7baa4a2c12d962cfbc73ad0b",
-                "shasum": ""
-            },
             "replace": {
                 "symfony/polyfill-ctype": "*"
             },
@@ -45,17 +34,6 @@
         {
             "name": "backendtea/un-poly-mbstring",
             "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/BackEndTea/un-poly-mbstring.git",
-                "reference": "b4d1eb9ce9b89f20b4ce1abcc5687c6f6fe6777a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/BackEndTea/un-poly-mbstring/zipball/b4d1eb9ce9b89f20b4ce1abcc5687c6f6fe6777a",
-                "reference": "b4d1eb9ce9b89f20b4ce1abcc5687c6f6fe6777a",
-                "shasum": ""
-            },
             "replace": {
                 "symfony/polyfill-mbstring": "*"
             },
@@ -2525,34 +2503,34 @@
         },
         {
             "name": "wikibase/data-model-services",
-            "version": "3.11.0",
+            "version": "3.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wmde/WikibaseDataModelServices.git",
-                "reference": "af2f208004effe61a726492f914e15590e40e4e9"
+                "reference": "d3599a104428f8e472b8c92172c86b7824149096"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wmde/WikibaseDataModelServices/zipball/af2f208004effe61a726492f914e15590e40e4e9",
-                "reference": "af2f208004effe61a726492f914e15590e40e4e9",
+                "url": "https://api.github.com/repos/wmde/WikibaseDataModelServices/zipball/d3599a104428f8e472b8c92172c86b7824149096",
+                "reference": "d3599a104428f8e472b8c92172c86b7824149096",
                 "shasum": ""
             },
             "require": {
                 "data-values/data-values": "~2.0|~1.0",
-                "diff/diff": "~2.3|~1.0",
+                "diff/diff": "~2.3",
                 "php": ">=5.6.0",
-                "wikibase/data-model": "~8.0|~7.0|~6.3",
+                "wikibase/data-model": "~9.0|~8.0|~7.0|~6.3",
                 "wikimedia/assert": "~0.2.2"
             },
             "require-dev": {
                 "phpmd/phpmd": "~2.3",
                 "phpunit/phpunit": "~5.7",
-                "wikibase/wikibase-codesniffer": "^0.3.0"
+                "wikibase/wikibase-codesniffer": "^0.5.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.11.x-dev"
+                    "dev-master": "3.12.x-dev"
                 }
             },
             "autoload": {
@@ -2568,7 +2546,7 @@
                 {
                     "name": "Jeroen De Dauw",
                     "email": "jeroendedauw@gmail.com",
-                    "homepage": "http://jeroendedauw.com"
+                    "homepage": "https://www.entropywins.wtf/"
                 }
             ],
             "description": "Services around the Wikibase DataModel",
@@ -2578,7 +2556,7 @@
                 "wikibase",
                 "wikidata"
             ],
-            "time": "2018-08-08T22:42:16+00:00"
+            "time": "2018-11-07T10:45:19+00:00"
         },
         {
             "name": "wikibase/internal-serialization",

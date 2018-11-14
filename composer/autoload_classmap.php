@@ -1784,6 +1784,7 @@ return array(
     'Wikibase\\DataModel\\Entity\\ItemIdSet' => $vendorDir . '/wikibase/data-model/src/Entity/ItemIdSet.php',
     'Wikibase\\DataModel\\Entity\\Property' => $vendorDir . '/wikibase/data-model/src/Entity/Property.php',
     'Wikibase\\DataModel\\Entity\\PropertyId' => $vendorDir . '/wikibase/data-model/src/Entity/PropertyId.php',
+    'Wikibase\\DataModel\\Entity\\StatementListProvidingEntity' => $vendorDir . '/wikibase/data-model/src/Entity/StatementListProvidingEntity.php',
     'Wikibase\\DataModel\\HashArray' => $vendorDir . '/wikibase/data-model/src/HashArray.php',
     'Wikibase\\DataModel\\Internal\\MapValueHasher' => $vendorDir . '/wikibase/data-model/src/Internal/MapValueHasher.php',
     'Wikibase\\DataModel\\LegacyIdInterpreter' => $vendorDir . '/wikibase/data-model/src/LegacyIdInterpreter.php',

@@ -2172,6 +2172,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikibase\\DataModel\\Entity\\ItemIdSet' => __DIR__ . '/..' . '/wikibase/data-model/src/Entity/ItemIdSet.php',
         'Wikibase\\DataModel\\Entity\\Property' => __DIR__ . '/..' . '/wikibase/data-model/src/Entity/Property.php',
         'Wikibase\\DataModel\\Entity\\PropertyId' => __DIR__ . '/..' . '/wikibase/data-model/src/Entity/PropertyId.php',
+        'Wikibase\\DataModel\\Entity\\StatementListProvidingEntity' => __DIR__ . '/..' . '/wikibase/data-model/src/Entity/StatementListProvidingEntity.php',
         'Wikibase\\DataModel\\HashArray' => __DIR__ . '/..' . '/wikibase/data-model/src/HashArray.php',
         'Wikibase\\DataModel\\Internal\\MapValueHasher' => __DIR__ . '/..' . '/wikibase/data-model/src/Internal/MapValueHasher.php',
         'Wikibase\\DataModel\\LegacyIdInterpreter' => __DIR__ . '/..' . '/wikibase/data-model/src/LegacyIdInterpreter.php',
