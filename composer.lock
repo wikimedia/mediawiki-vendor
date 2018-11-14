@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ed34965ee78da63b04d0ec97b06130d4",
+    "content-hash": "4368b2b053bbdd29c5da5beb200ea0d3",
     "packages": [
         {
             "name": "backendtea/un-poly-ctype",
@@ -2560,22 +2560,22 @@
         },
         {
             "name": "wikibase/internal-serialization",
-            "version": "2.8.0",
+            "version": "2.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wmde/WikibaseInternalSerialization.git",
-                "reference": "6129fea7c6261368839d146aba0e106d0ad36fef"
+                "reference": "145d70acf02b60ecf0790a4d22e27eee46edf504"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wmde/WikibaseInternalSerialization/zipball/6129fea7c6261368839d146aba0e106d0ad36fef",
-                "reference": "6129fea7c6261368839d146aba0e106d0ad36fef",
+                "url": "https://api.github.com/repos/wmde/WikibaseInternalSerialization/zipball/145d70acf02b60ecf0790a4d22e27eee46edf504",
+                "reference": "145d70acf02b60ecf0790a4d22e27eee46edf504",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.6",
                 "serialization/serialization": "~4.0|~3.2",
-                "wikibase/data-model": "~8.0|~7.0|~6.0|~5.0",
+                "wikibase/data-model": "~9.0|~8.0|~7.0|~6.0|~5.0",
                 "wikibase/data-model-serialization": "~2.0"
             },
             "require-dev": {
@@ -2590,7 +2590,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.8.x-dev"
+                    "dev-master": "2.9.x-dev"
                 }
             },
             "autoload": {
@@ -2606,7 +2606,7 @@
                 {
                     "name": "Jeroen De Dauw",
                     "email": "jeroendedauw@gmail.com",
-                    "homepage": "http://jeroendedauw.com"
+                    "homepage": "https://www.entropywins.wtf/"
                 }
             ],
             "description": "Serializers and deserializers for the data access layer of Wikibase Repository",
@@ -2619,7 +2619,7 @@
                 "wikibase",
                 "wikidata"
             ],
-            "time": "2018-08-08T22:43:43+00:00"
+            "time": "2018-11-07T10:48:18+00:00"
         },
         {
             "name": "wikimedia/assert",
