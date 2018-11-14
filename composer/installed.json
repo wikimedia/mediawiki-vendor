@@ -2516,24 +2516,24 @@
     },
     {
         "name": "wikibase/data-model-serialization",
-        "version": "2.8.0",
-        "version_normalized": "2.8.0.0",
+        "version": "2.9.0",
+        "version_normalized": "2.9.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wmde/WikibaseDataModelSerialization.git",
-            "reference": "4db9226405c6d18005d8437282547b15d92cb927"
+            "reference": "09bf08c1c49205eb2a218160ffad9a4d5e151bc3"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wmde/WikibaseDataModelSerialization/zipball/4db9226405c6d18005d8437282547b15d92cb927",
-            "reference": "4db9226405c6d18005d8437282547b15d92cb927",
+            "url": "https://api.github.com/repos/wmde/WikibaseDataModelSerialization/zipball/09bf08c1c49205eb2a218160ffad9a4d5e151bc3",
+            "reference": "09bf08c1c49205eb2a218160ffad9a4d5e151bc3",
             "shasum": ""
         },
         "require": {
             "data-values/serialization": "~1.0",
             "php": ">=5.5.9",
             "serialization/serialization": "~4.0|~3.1",
-            "wikibase/data-model": "~8.0|~7.0|~6.0|~5.0|~4.2"
+            "wikibase/data-model": "~9.0|~8.0|~7.0|~6.0|~5.0|~4.2"
         },
         "require-dev": {
             "data-values/geo": "~3.0",
@@ -2547,11 +2547,11 @@
             "data-values/number": "Needed for deserialization of numerical values",
             "data-values/time": "Needed for deserialization of time values"
         },
-        "time": "2018-08-08T10:06:40+00:00",
+        "time": "2018-11-07T10:47:04+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "2.8.x-dev"
+                "dev-master": "2.9.x-dev"
             }
         },
         "installation-source": "dist",
