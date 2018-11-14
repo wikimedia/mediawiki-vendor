@@ -3,7 +3,6 @@
 [![Build Status](https://secure.travis-ci.org/wmde/WikibaseDataModel.png?branch=master)](http://travis-ci.org/wmde/WikibaseDataModel)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/wmde/WikibaseDataModel/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/wmde/WikibaseDataModel/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/wmde/WikibaseDataModel/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/wmde/WikibaseDataModel/?branch=master)
-[![Dependency Status](https://www.versioneye.com/php/wikibase:data-model/dev-master/badge.svg)](https://www.versioneye.com/php/wikibase:data-model/dev-master)
 [![Download count](https://poser.pugx.org/wikibase/data-model/d/total.png)](https://packagist.org/packages/wikibase/data-model)
 [![License](https://poser.pugx.org/wikibase/data-model/license.svg)](https://packagist.org/packages/wikibase/data-model)
 
@@ -30,12 +29,12 @@ the git repository and take care of loading yourself.
 To add this package as a local, per-project dependency to your project, simply add a
 dependency on `wikibase/data-model` to your project's `composer.json` file.
 Here is a minimal example of a `composer.json` file that just defines a dependency on
-Wikibase DataModel 7.x:
+Wikibase DataModel 9.x:
 
 ```js
 {
     "require": {
-        "wikibase/data-model": "~7.0"
+        "wikibase/data-model": "~9.0"
     }
 }
 ```
@@ -66,7 +65,7 @@ run style checks use `composer cs`.
 ### Development
 
 Wikibase DataModel has been written by [Jeroen De Dauw](https://www.mediawiki.org/wiki/User:Jeroen_De_Dauw)
-and Thiemo Mättig as [Wikimedia Germany](https://wikimedia.de) employees for the [Wikidata project](https://wikidata.org/).
+and Thiemo Kreuz as [Wikimedia Germany](https://wikimedia.de) employees for the [Wikidata project](https://wikidata.org/).
 
 Contributions were also made by [several other people](https://www.ohloh.net/p/wikibasedatamodel/contributors?sort=commits).
 

@@ -10,7 +10,7 @@ use Serializable;
  * @since 0.5
  * Abstract since 2.0
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  */
 abstract class EntityId implements Comparable, Serializable {
 
@@ -43,7 +43,7 @@ abstract class EntityId implements Comparable, Serializable {
 		self::assertValidSerialization( $serialization );
 		$this->serialization = self::normalizeIdSerialization( $serialization );
 
-		list ( $this->repositoryName, $this->localPart ) = self::extractRepositoryNameAndLocalPart( $serialization );
+		list( $this->repositoryName, $this->localPart ) = self::extractRepositoryNameAndLocalPart( $serialization );
 	}
 
 	private static function assertValidSerialization( $serialization ) {
@@ -63,7 +63,7 @@ abstract class EntityId implements Comparable, Serializable {
 	/**
 	 * @return string
 	 */
-	public abstract function getEntityType();
+	abstract public function getEntityType();
 
 	/**
 	 * @return string
@@ -164,13 +164,14 @@ abstract class EntityId implements Comparable, Serializable {
 	}
 
 	/**
-	 * Returns true if getRepositoryName returns a non-empty string.
+	 * Returns true iff EntityId::getRepoName returns a non-empty string.
 	 *
 	 * @since 6.2
 	 *
 	 * @return bool
 	 */
 	public function isForeign() {
+		// not actually using EntityId::getRepoName for performance reasons
 		return strpos( $this->serialization, ':' ) > 0;
 	}
 

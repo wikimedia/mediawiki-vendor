@@ -17,7 +17,7 @@ use OutOfBoundsException;
  *
  * @since 0.7.3
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class TermList implements Countable, IteratorAggregate, Comparable {
@@ -28,17 +28,11 @@ class TermList implements Countable, IteratorAggregate, Comparable {
 	private $terms = [];
 
 	/**
-	 * @param Term[] $terms
+	 * @param iterable|Term[] $terms Can be a non-array since 8.1
 	 * @throws InvalidArgumentException
 	 */
-	public function __construct( array $terms = [] ) {
-		foreach ( $terms as $term ) {
-			if ( !( $term instanceof Term ) ) {
-				throw new InvalidArgumentException( 'Every element in $terms must be an instance of Term' );
-			}
-
-			$this->setTerm( $term );
-		}
+	public function __construct( /* iterable */ $terms = [] ) {
+		$this->addAll( $terms );
 	}
 
 	/**
@@ -193,6 +187,22 @@ class TermList implements Countable, IteratorAggregate, Comparable {
 	 */
 	public function clear() {
 		$this->terms = [];
+	}
+
+	/**
+	 * @since 8.1
+	 *
+	 * @param iterable|Term[] $terms
+	 * @throws InvalidArgumentException
+	 */
+	public function addAll( /* iterable */ $terms ) {
+		foreach ( $terms as $term ) {
+			if ( !( $term instanceof Term ) ) {
+				throw new InvalidArgumentException( 'Every element in $terms must be an instance of Term' );
+			}
+
+			$this->setTerm( $term );
+		}
 	}
 
 }

@@ -10,9 +10,9 @@ use Wikibase\DataModel\LegacyIdInterpreter;
 /**
  * @since 0.5
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
- * @author Thiemo Mättig
+ * @author Thiemo Kreuz
  * @author Daniel Kinzler
  */
 class EntityIdValue extends DataValueObject {

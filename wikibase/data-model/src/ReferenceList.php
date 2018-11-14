@@ -19,10 +19,10 @@ use Wikibase\DataModel\Snak\Snak;
  * Does not implement References anymore since 2.0
  * Does not extend SplObjectStorage since 5.0
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author H. Snater < mediawiki@snater.com >
- * @author Thiemo Mättig
+ * @author Thiemo Kreuz
  * @author Bene* < benestar.wikimedia@gmail.com >
  */
 class ReferenceList implements Comparable, Countable, IteratorAggregate, Serializable {
@@ -281,7 +281,7 @@ class ReferenceList implements Comparable, Countable, IteratorAggregate, Seriali
 		}
 
 		return $target instanceof self
-		       && $this->getValueHash() === $target->getValueHash();
+			&& $this->getValueHash() === $target->getValueHash();
 	}
 
 	/**

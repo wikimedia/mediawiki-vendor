@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4368b2b053bbdd29c5da5beb200ea0d3",
+    "content-hash": "29d98594788c82f3a4a192e2196db216",
     "packages": [
         {
             "name": "backendtea/un-poly-ctype",
@@ -2371,55 +2371,52 @@
         },
         {
             "name": "wikibase/data-model",
-            "version": "7.5.0",
+            "version": "9.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wmde/WikibaseDataModel.git",
-                "reference": "a3105365051c4754a621f5884f31badc2dad33fd"
+                "reference": "8f2053ba809b991197b66404b5c098ffae2a1741"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wmde/WikibaseDataModel/zipball/a3105365051c4754a621f5884f31badc2dad33fd",
-                "reference": "a3105365051c4754a621f5884f31badc2dad33fd",
+                "url": "https://api.github.com/repos/wmde/WikibaseDataModel/zipball/8f2053ba809b991197b66404b5c098ffae2a1741",
+                "reference": "8f2053ba809b991197b66404b5c098ffae2a1741",
                 "shasum": ""
             },
             "require": {
-                "data-values/data-values": "~0.1|~1.0",
-                "php": ">=5.5.9",
+                "data-values/data-values": "~0.1|~1.0|~2.0",
+                "php": ">=5.6",
                 "wikimedia/assert": "~0.2.2"
             },
             "require-dev": {
-                "ockcyp/covers-validator": "~0.4.0",
-                "phpmd/phpmd": "~2.3",
-                "phpunit/phpunit": "~4.8",
-                "wikibase/wikibase-codesniffer": "^0.1.0"
+                "ockcyp/covers-validator": "~0.5.0",
+                "phpmd/phpmd": "~2.6",
+                "phpunit/phpunit": "~5.7",
+                "wikibase/wikibase-codesniffer": "^0.5.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "7.3.x-dev"
+                    "dev-master": "9.0.x-dev"
                 }
             },
             "autoload": {
-                "files": [
-                    "WikibaseDataModel.php"
-                ],
                 "psr-4": {
                     "Wikibase\\DataModel\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
-                {
-                    "name": "Thiemo Mättig"
-                },
                 {
                     "name": "Jeroen De Dauw",
                     "email": "jeroendedauw@gmail.com",
                     "homepage": "http://jeroendedauw.com"
+                },
+                {
+                    "name": "Thiemo Kreuz"
                 }
             ],
             "description": "PHP implementation of the Wikibase DataModel",
@@ -2429,7 +2426,7 @@
                 "wikibase",
                 "wikidata"
             ],
-            "time": "2018-05-02T11:55:57+00:00"
+            "time": "2018-11-12T19:57:29+00:00"
         },
         {
             "name": "wikibase/data-model-serialization",
