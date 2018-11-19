@@ -11,7 +11,6 @@ class ComposerStaticInit_mediawiki_vendor
         'd1715cacc3c23b16a030645514266a76' => __DIR__ . '/..' . '/data-values/interfaces/Interfaces.php',
         '90559502573a0d473dc66fde5c0ff7e2' => __DIR__ . '/..' . '/data-values/common/Common.php',
         'c15f8000750e4e04ba559d9745044427' => __DIR__ . '/..' . '/data-values/number/Number.php',
-        '908a529187e4aa80293c8aa78e1ec48d' => __DIR__ . '/..' . '/data-values/time/Time.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         '23842c11409ef125f7fd90c8b167279e' => __DIR__ . '/..' . '/wikimedia/at-ease/src/MediaWiki/Functions.php',
         'eccc0347283a01e62f5536bcf76b6e62' => __DIR__ . '/..' . '/wikimedia/at-ease/src/Wikimedia/Functions.php',

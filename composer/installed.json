@@ -525,30 +525,30 @@
     },
     {
         "name": "data-values/time",
-        "version": "0.8.6",
-        "version_normalized": "0.8.6.0",
+        "version": "1.0.1",
+        "version_normalized": "1.0.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/DataValues/Time.git",
-            "reference": "92f768e90d2ec10bb70b7e631dbb268e803d3fe8"
+            "reference": "a71b7a2fc2c3e2ae074e79060f2d2c6e6434f5fe"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/DataValues/Time/zipball/92f768e90d2ec10bb70b7e631dbb268e803d3fe8",
-            "reference": "92f768e90d2ec10bb70b7e631dbb268e803d3fe8",
+            "url": "https://api.github.com/repos/DataValues/Time/zipball/a71b7a2fc2c3e2ae074e79060f2d2c6e6434f5fe",
+            "reference": "a71b7a2fc2c3e2ae074e79060f2d2c6e6434f5fe",
             "shasum": ""
         },
         "require": {
-            "data-values/common": "~0.4.0|~0.3.0|~0.2.0",
-            "data-values/data-values": "~1.0|~0.1",
-            "data-values/interfaces": "~0.2.0|~0.1.5",
+            "data-values/common": "~0.4.0|~0.3.0",
+            "data-values/data-values": "~2.0|~1.0|~0.1",
+            "data-values/interfaces": "~0.2.0",
             "php": ">=5.5.9"
         },
         "require-dev": {
             "phpunit/phpunit": "~4.8",
             "wikibase/wikibase-codesniffer": "^0.1.0"
         },
-        "time": "2017-09-06T09:54:50+00:00",
+        "time": "2018-09-18T14:15:55+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -557,9 +557,6 @@
         },
         "installation-source": "dist",
         "autoload": {
-            "files": [
-                "Time.php"
-            ],
             "psr-0": {
                 "DataValues\\": "src",
                 "ValueFormatters\\": "src",
@@ -568,7 +565,7 @@
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
-            "GPL-2.0+"
+            "GPL-2.0-or-later"
         ],
         "authors": [
             {
