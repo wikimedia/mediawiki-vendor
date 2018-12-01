@@ -14,7 +14,7 @@ return array(
     'Net' => array($vendorDir . '/pear/net_smtp', $vendorDir . '/pear/net_socket'),
     'Mail' => array($vendorDir . '/pear/mail', $vendorDir . '/pear/mail_mime'),
     'Liuggio' => array($vendorDir . '/liuggio/statsd-php-client/src'),
-    'Less' => array($vendorDir . '/oyejorge/less.php/lib'),
+    'Less' => array($vendorDir . '/wikimedia/less.php/lib'),
     'Kafka\\' => array($vendorDir . '/nmred/kafka-php/src'),
     'JakubOnderka\\PhpConsoleHighlighter' => array($vendorDir . '/jakub-onderka/php-console-highlighter/src'),
     'JakubOnderka\\PhpConsoleColor' => array($vendorDir . '/jakub-onderka/php-console-color/src'),
