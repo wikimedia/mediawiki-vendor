@@ -4,16 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "92236bcd984fd2b66d7c35022c22d709",
+    "content-hash": "0ea96a5b2fca262024c20724aa50b581",
     "packages": [
         {
             "name": "backendtea/un-poly-ctype",
             "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/BackEndTea/un-poly-ctype.git",
-                "reference": "d413a6019d8b13ca7baa4a2c12d962cfbc73ad0b"
-            },
             "replace": {
                 "symfony/polyfill-ctype": "*"
             },
@@ -39,11 +34,6 @@
         {
             "name": "backendtea/un-poly-mbstring",
             "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/BackEndTea/un-poly-mbstring.git",
-                "reference": "b4d1eb9ce9b89f20b4ce1abcc5687c6f6fe6777a"
-            },
             "replace": {
                 "symfony/polyfill-mbstring": "*"
             },
@@ -3306,16 +3296,16 @@
         },
         {
             "name": "wikimedia/password-blacklist",
-            "version": "v0.1.3",
+            "version": "v0.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/password-blacklist.git",
-                "reference": "bbd51d84b68e70d05b6509ba8114d652594a831f"
+                "reference": "e902a6351a9ed6506858273e57b4fd2e28ca1ce9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/password-blacklist/zipball/bbd51d84b68e70d05b6509ba8114d652594a831f",
-                "reference": "bbd51d84b68e70d05b6509ba8114d652594a831f",
+                "url": "https://api.github.com/repos/wikimedia/password-blacklist/zipball/e902a6351a9ed6506858273e57b4fd2e28ca1ce9",
+                "reference": "e902a6351a9ed6506858273e57b4fd2e28ca1ce9",
                 "shasum": ""
             },
             "require": {
@@ -3348,7 +3338,7 @@
             ],
             "description": "PasswordBlacklist for the 100,000 most used passwords",
             "homepage": "https://www.mediawiki.org/wiki/PasswordBlacklist",
-            "time": "2018-11-17T06:09:52+00:00"
+            "time": "2018-12-04T07:52:10+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",
