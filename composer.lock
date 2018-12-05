@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0ea96a5b2fca262024c20724aa50b581",
+    "content-hash": "fe7c0cd01682d780449c31ff84e046bc",
     "packages": [
         {
             "name": "backendtea/un-poly-ctype",
@@ -1189,16 +1189,16 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.29.5",
+            "version": "v0.29.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "4677bfd51b7d951defb9f03103c6958339cc0625"
+                "reference": "e0c935eec272dc492b07c08fb2555df0979c7910"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/4677bfd51b7d951defb9f03103c6958339cc0625",
-                "reference": "4677bfd51b7d951defb9f03103c6958339cc0625",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/e0c935eec272dc492b07c08fb2555df0979c7910",
+                "reference": "e0c935eec272dc492b07c08fb2555df0979c7910",
                 "shasum": ""
             },
             "require": {
@@ -1207,7 +1207,7 @@
             "require-dev": {
                 "jakub-onderka/php-console-highlighter": "0.3.2",
                 "jakub-onderka/php-parallel-lint": "1.0.0",
-                "mediawiki/mediawiki-codesniffer": "22.0.0",
+                "mediawiki/mediawiki-codesniffer": "23.0.0",
                 "mediawiki/minus-x": "0.3.1",
                 "phpunit/phpunit": "4.8.36 || ^6.5"
             },
@@ -1265,7 +1265,7 @@
             ],
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOUI",
-            "time": "2018-11-08T22:25:05+00:00"
+            "time": "2018-12-04T22:50:02+00:00"
         },
         {
             "name": "pear/console_getopt",

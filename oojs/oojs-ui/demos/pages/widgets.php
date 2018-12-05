@@ -134,8 +134,8 @@ $demoContainer->appendContent( new OOUI\FieldsetLayout( [
 		new OOUI\FieldLayout(
 			new OOUI\ButtonWidget( [
 				'framed' => false,
-				'icon' => 'help',
-				'label' => 'Help',
+				'icon' => 'edit',
+				'label' => 'Edit',
 				'invisibleLabel' => true,
 				'title' => 'Icon only'
 			] ),
@@ -256,8 +256,8 @@ $demoContainer->appendContent( new OOUI\FieldsetLayout( [
 				'label' => "ButtonWidget (with accesskey)\u{200E}",
 				'align' => 'top',
 				'help' => new OOUI\HtmlSnippet( 'Notice: Using `accesskey` might ' .
-					'<a href="http://webaim.org/techniques/keyboard/accesskey" target="_blank">' .
-					'negatively impact screen readers</a>!' )
+					'<a href="http://webaim.org/techniques/keyboard/accesskey" target="_blank"' .
+					' rel="noopener">negatively impact screen readers</a>!' )
 			]
 		),
 		new OOUI\FieldLayout(
@@ -330,7 +330,7 @@ $demoContainer->appendContent( new OOUI\FieldsetLayout( [
 			]
 		),
 		new OOUI\FieldLayout(
-			new OOUI\TextInputWidget( [ 'icon' => 'help' ] ),
+			new OOUI\TextInputWidget( [ 'icon' => 'globe' ] ),
 			[
 				'label' => "TextInputWidget (icon)\u{200E}",
 				'align' => 'top'
@@ -385,8 +385,8 @@ $demoContainer->appendContent( new OOUI\FieldsetLayout( [
 				'label' => "TextInputWidget (with accesskey)\u{200E}",
 				'align' => 'top',
 				'help' => new OOUI\HtmlSnippet( 'Notice: Using `accesskey` might ' .
-					'<a href="http://webaim.org/techniques/keyboard/accesskey" target="_blank">' .
-					'negatively impact screen readers</a>!' )
+					'<a href="http://webaim.org/techniques/keyboard/accesskey" target="_blank"' .
+					' rel="noopener">negatively impact screen readers</a>!' )
 			]
 		),
 		new OOUI\FieldLayout(

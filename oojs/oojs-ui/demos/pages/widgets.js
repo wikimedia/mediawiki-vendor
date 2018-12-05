@@ -213,13 +213,13 @@ Demo.static.pages.widgets = function ( demo ) {
 					{
 						label: 'ButtonWidget (with accesskey)\u200E',
 						align: 'top',
-						help: new OO.ui.HtmlSnippet( 'Notice: Using `accesskey` might <a href="http://webaim.org/techniques/keyboard/accesskey" target="_blank">negatively impact screen readers</a>!' )
+						help: new OO.ui.HtmlSnippet( 'Notice: Using `accesskey` might <a href="http://webaim.org/techniques/keyboard/accesskey" target="_blank" rel="noopener">negatively impact screen readers</a>!' )
 					}
 				),
 				new OO.ui.FieldLayout(
 					new OO.ui.ButtonWidget( {
-						icon: 'help',
-						label: 'Help',
+						icon: 'edit',
+						label: 'Edit',
 						invisibleLabel: true,
 						title: 'Icon only, framed'
 					} ),
@@ -243,8 +243,8 @@ Demo.static.pages.widgets = function ( demo ) {
 				new OO.ui.FieldLayout(
 					new OO.ui.ButtonWidget( {
 						framed: false,
-						icon: 'help',
-						label: 'Help',
+						icon: 'edit',
+						label: 'Edit',
 						invisibleLabel: true,
 						title: 'Icon only'
 					} ),
@@ -402,7 +402,7 @@ Demo.static.pages.widgets = function ( demo ) {
 					{
 						label: 'ButtonInputWidget (with accesskey & title)\u200E',
 						align: 'top',
-						help: new OO.ui.HtmlSnippet( 'Notice: Using `accesskey` might <a href="http://webaim.org/techniques/keyboard/accesskey" target="_blank">negatively impact screen readers</a>!' )
+						help: new OO.ui.HtmlSnippet( 'Notice: Using `accesskey` might <a href="http://webaim.org/techniques/keyboard/accesskey" target="_blank" rel="noopener">negatively impact screen readers</a>!' )
 					}
 				),
 				new OO.ui.FieldLayout(
@@ -676,7 +676,7 @@ Demo.static.pages.widgets = function ( demo ) {
 					}
 				),
 				new OO.ui.FieldLayout(
-					new OO.ui.TextInputWidget( { icon: 'help' } ),
+					new OO.ui.TextInputWidget( { icon: 'globe' } ),
 					{
 						label: 'TextInputWidget (icon)\u200E',
 						align: 'top'
@@ -860,7 +860,7 @@ Demo.static.pages.widgets = function ( demo ) {
 					{
 						label: 'TextInputWidget (with accesskey)\u200E',
 						align: 'top',
-						help: new OO.ui.HtmlSnippet( 'Notice: Using `accesskey` might <a href="http://webaim.org/techniques/keyboard/accesskey" target="_blank">negatively impact screen readers</a>!' )
+						help: new OO.ui.HtmlSnippet( 'Notice: Using `accesskey` might <a href="http://webaim.org/techniques/keyboard/accesskey" target="_blank" rel="noopener">negatively impact screen readers</a>!' )
 					}
 				),
 				new OO.ui.FieldLayout(
@@ -1883,8 +1883,17 @@ Demo.static.pages.widgets = function ( demo ) {
 				),
 				new OO.ui.FieldLayout(
 					new OO.ui.MenuTagMultiselectWidget( {
-						selected: [ 'foo', 'bar' ],
-						allowArbitrary: true
+						selected: [ 'foo', 'bar', 'Not in menu' ],
+						allowArbitrary: true,
+						options: [
+							{ data: 'foo', label: 'Label for foo', icon: 'tag' },
+							{ data: 'bar', label: 'Label for bar' },
+							{ data: 'baz', label: 'Label for baz' },
+							{ data: 'quz', label: 'Label for quz' },
+							{ data: 'red', label: 'Label for red' },
+							{ data: 'green', label: 'Label for green' },
+							{ data: 'blue', label: 'Label for blue' }
+						]
 					} ),
 					{
 						label: 'MenuTagMultiselectWidget (initially selected, allowArbitrary)',
@@ -3051,6 +3060,7 @@ Demo.static.pages.widgets = function ( demo ) {
 		} )
 	];
 
+	// eslint-disable-next-line jquery/no-each-util
 	$.each( fieldsets, function ( i, fieldsetLayout ) {
 		var showLayoutCode = false;
 
@@ -3061,6 +3071,7 @@ Demo.static.pages.widgets = function ( demo ) {
 			showLayoutCode = true;
 		}
 
+		// eslint-disable-next-line jquery/no-each-util
 		$.each( fieldsetLayout.getItems(), function ( j, fieldLayout ) {
 			fieldLayout.$element.append(
 				demo.buildLinkExample( fieldLayout, fieldsetLayout instanceof OO.ui.FormLayout ? fieldLayout : fieldsetLayout ),
