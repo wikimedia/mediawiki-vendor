@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "60cd336cf92acde1e19255045c1ef33a",
+    "content-hash": "114a4425fd5cc7e8e53ba863b0aa3076",
     "packages": [
         {
             "name": "backendtea/un-poly-ctype",
@@ -2694,16 +2694,16 @@
         },
         {
             "name": "wikibase/data-model-serialization",
-            "version": "2.9.0",
+            "version": "2.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wmde/WikibaseDataModelSerialization.git",
-                "reference": "09bf08c1c49205eb2a218160ffad9a4d5e151bc3"
+                "reference": "4667670ac4976d8141b780778f43c6f8e916da1d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wmde/WikibaseDataModelSerialization/zipball/09bf08c1c49205eb2a218160ffad9a4d5e151bc3",
-                "reference": "09bf08c1c49205eb2a218160ffad9a4d5e151bc3",
+                "url": "https://api.github.com/repos/wmde/WikibaseDataModelSerialization/zipball/4667670ac4976d8141b780778f43c6f8e916da1d",
+                "reference": "4667670ac4976d8141b780778f43c6f8e916da1d",
                 "shasum": ""
             },
             "require": {
@@ -2713,9 +2713,9 @@
                 "wikibase/data-model": "~9.0|~8.0|~7.0|~6.0|~5.0|~4.2"
             },
             "require-dev": {
-                "data-values/geo": "~3.0",
-                "data-values/number": ">=0.1 <0.10",
-                "data-values/time": "~0.2",
+                "data-values/geo": "~4.0|~3.0",
+                "data-values/number": ">=0.1 <0.11",
+                "data-values/time": "~1.0|~0.2",
                 "phpunit/phpunit": "^4.8.35",
                 "wikibase/wikibase-codesniffer": "^0.4.1"
             },
@@ -2760,7 +2760,7 @@
                 "wikibase",
                 "wikidata"
             ],
-            "time": "2018-11-07T10:47:04+00:00"
+            "time": "2018-12-14T09:59:47+00:00"
         },
         {
             "name": "wikibase/data-model-services",

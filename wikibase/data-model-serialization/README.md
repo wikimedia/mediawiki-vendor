@@ -91,12 +91,20 @@ objects are internal to this component and might change name or structure at any
 are allowed to know when calling `$serializerFactory->newItemDeserializer()` is that you get back
 an instance of `Serializers\Serializer`.
 
-## Tests
+## Running the tests
 
-This library comes with a set up PHPUnit tests that cover all non-trivial code. You can run these
-tests using the PHPUnit configuration file found in the root directory.
+For tests only
 
-    phpunit
+    composer test
+
+For style checks only
+
+	composer cs
+
+For a full CI run
+
+	composer ci
+
 
 ## Authors
 
@@ -114,7 +122,6 @@ and by [Jeroen De Dauw](https://www.mediawiki.org/wiki/User:Jeroen_De_Dauw) as
 ## See also 
 
 * [Wikibase DataModel](https://github.com/wmde/WikibaseDataModel)
-* [Ask Serialization](https://github.com/wmde/AskSerialization)
 * [Wikibase Internal Serialization](https://github.com/wmde/WikibaseInternalSerialization) (For the "internal" serialization format)
 
 # Bugs on Phabricator

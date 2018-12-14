@@ -110,7 +110,7 @@
 		"symfony/validator": "3.4.15",
 		"symfony/var-dumper": "3.4.15",
 		"wikibase/data-model": "9.0.1",
-		"wikibase/data-model-serialization": "2.9.0",
+		"wikibase/data-model-serialization": "2.9.1",
 		"wikibase/data-model-services": "3.12.0",
 		"wikibase/internal-serialization": "2.9.0",
 		"wikimedia/assert": "0.2.2",
