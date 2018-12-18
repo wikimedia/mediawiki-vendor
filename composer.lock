@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "114a4425fd5cc7e8e53ba863b0aa3076",
+    "content-hash": "6258770f73ff7217e75a9ec9ac602be0",
     "packages": [
         {
             "name": "backendtea/un-poly-ctype",
@@ -3386,35 +3386,39 @@
         },
         {
             "name": "wikimedia/ip-set",
-            "version": "1.2.0",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/IPSet.git",
-                "reference": "cabb679f440c87fd4053e4ea5e0120e769c9447f"
+                "reference": "98c9fe4c57ecdc185fa82ef55825290822106251"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/IPSet/zipball/cabb679f440c87fd4053e4ea5e0120e769c9447f",
-                "reference": "cabb679f440c87fd4053e4ea5e0120e769c9447f",
+                "url": "https://api.github.com/repos/wikimedia/IPSet/zipball/98c9fe4c57ecdc185fa82ef55825290822106251",
+                "reference": "98c9fe4c57ecdc185fa82ef55825290822106251",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5.9"
+                "php": ">=5.6.99",
+                "wikimedia/at-ease": "1.2.0"
             },
             "require-dev": {
-                "jakub-onderka/php-parallel-lint": "0.9.2",
-                "mediawiki/mediawiki-codesniffer": "15.0.0",
-                "phpunit/phpunit": "^4.8"
+                "jakub-onderka/php-console-highlighter": "0.3.2",
+                "jakub-onderka/php-parallel-lint": "1.0.0",
+                "mediawiki/mediawiki-codesniffer": "22.0.0",
+                "mediawiki/minus-x": "0.3.1",
+                "ockcyp/covers-validator": "0.5.1 || 0.6.1",
+                "phpunit/phpunit": "4.8.36 || ^6.5"
             },
             "type": "library",
             "autoload": {
-                "classmap": [
-                    "src/"
-                ]
+                "psr-4": {
+                    "Wikimedia\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -3423,8 +3427,8 @@
                 }
             ],
             "description": "Efficiently match IP addresses against a set of CIDR specifications.",
-            "homepage": "https://github.com/wikimedia/IPSet",
-            "time": "2017-12-30T10:52:03+00:00"
+            "homepage": "https://www.mediawiki.org/wiki/IPSet",
+            "time": "2018-12-18T03:21:47+00:00"
         },
         {
             "name": "wikimedia/less.php",
