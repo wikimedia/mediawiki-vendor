@@ -10,22 +10,26 @@ body {
 	font-family: sans-serif;
 }
 
+a:link {
+	color: #36c;
+}
+
+code,
+code[ class*='language-' ],
+pre[ class*='language-' ] {
+	font-family: 'SFMono-Regular', 'Consolas', 'Liberation Mono', 'Menlo', 'Courier New', monospace; /* See T209915 */
+}
+
+p {
+	margin: 0.5em 0;
+}
+
 .oo-ui-theme-wikimediaui {
 	font-size: 0.875em;
 }
 
 .oo-ui-theme-apex {
 	font-size: 0.8em;
-}
-
-code {
-	/* Support: Blink, Gecko, Webkit */
-	/* Specify a valid second value to fix size, see T176636 */
-	font-family: monospace, monospace;
-}
-
-p {
-	margin: 0.5em 0;
 }
 
 /* Layout */
@@ -35,7 +39,6 @@ p {
 }
 
 .demo-menu {
-	min-width: 320px; /* Let's not pretend it works on anything lower than that */
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
@@ -118,8 +121,8 @@ p {
 	margin-right: -1.2em;
 	padding: 0.703125em 0.9375em 0.625em; /* equals frameless button */
 	border-radius: 2px;
-	line-height: 1.172em;
 	font-weight: bold;
+	line-height: 1.172em;
 	text-align: center;
 	-webkit-transition: color 100ms;
 	-moz-transition: color 100ms;
@@ -127,7 +130,8 @@ p {
 }
 
 .demo-link-example:hover::after,
-.demo-console-toggle:hover::after {
+.demo-console-toggle:hover::after,
+.demo-console-label:hover::before {
 	color: #447ff5;
 }
 
@@ -219,21 +223,23 @@ p {
 /* @noflip */
 .demo-console-label::before {
 	content: '→';
-	color: #00f;
+	color: #36c;
 	display: block;
 	position: absolute;
 	top: 0;
 	left: 0;
 	bottom: 0;
-	width: 20px;
+	width: 24px;
+	line-height: 24px;
 	text-align: center;
 }
 
 .demo-console-input {
-	margin: 0;
-	padding: 0;
-	border: 0;
 	width: 100%;
+	margin: 0;
+	padding: 4px;
+	border: 0;
+	font-size: inherit;
 }
 
 .demo-console-input:focus {
@@ -434,6 +440,11 @@ FieldLayout left & right aligned */
 	padding: 1em 1em 1.5em 1em;
 }
 
+/* Ensure color contrast in accessibility testing */
+.demo-summary-buttonElement.oo-ui-flaggedElement-destructive.oo-ui-widget-enabled > .oo-ui-buttonElement-button {
+	color: #cd2323;
+}
+
 /*
  * Support: iOS 9.2, Android 4.4.4, Op Mobile 37, Chrome/Android 57, Fx/Android 52, UC Browser 11.4, Baidu 7.12
  * Workaround for weak ancient mobile browser support of `fixed` positioning
@@ -442,11 +453,24 @@ FieldLayout left & right aligned */
 	.demo-menu {
 		background-color: #fff;
 		position: fixed;
+		left: 0;
+		right: 0;
 		top: 0;
+		min-height: 4.5em;
 		border-bottom: 1px solid #a2a9b1;
 		padding-top: 1em;
+		padding-left: 1em;
 		box-shadow: 0 4px 4px -4px rgba( 0, 0, 0, 0.25 );
 		z-index: 5;
+	}
+
+	.demo-menu + .demo-container.oo-ui-panelLayout {
+		margin-top: 4.5em;
+	}
+
+	/* Avoid `box-shadow` from menu lurkin into toolbar demo, +1.2em to be harmonious with menu */
+	.demo-menu + .demo-container.oo-ui-panelLayout.demo-toolbars {
+		margin-top: 5.7em;
 	}
 
 	/* This needs extra specificity to beat PanelLayout styles */
@@ -505,49 +529,10 @@ FieldLayout left & right aligned */
 	.oo-ui-fieldsetLayout-group > .oo-ui-fieldLayout:first-child .demo-console-expanded .demo-console-toggle {
 		margin-top: -0.5em;
 	}
-
-	@supports ( position: fixed ) {
-		.demo-menu {
-			min-height: 11.4em;
-			left: 1em;
-			right: 1em;
-		}
-
-		/* Hide “Docs“ Button on very small screens */
-		.demo-menu > .demo-button-docs {
-			display: none;
-		}
-
-		/* This needs extra specificity to beat PanelLayout styles */
-		.demo-menu + .demo-container.oo-ui-panelLayout {
-			margin-top: 11.4em;
-		}
-
-		/* Avoid `box-shadow` from menu lurkin into toolbar demo, +1.2em to be harmonious with menu */
-		.demo-menu + .demo-container.oo-ui-panelLayout.demo-toolbars {
-			margin-top: 12.6em;
-		}
-	}
 }
 
 @media ( min-width: 568px ) {
 	@supports ( position: fixed ) {
-		.demo-menu {
-			min-height: 7.5em;
-		}
-
-		.demo-menu > .demo-button-docs {
-			display: inline-block;
-		}
-
-		.demo-menu + .demo-container.oo-ui-panelLayout {
-			margin-top: 7.5em;
-		}
-
-		.demo-menu + .demo-container.oo-ui-panelLayout.demo-toolbars {
-			margin-top: 8.7em;
-		}
-
 		.demo-console-expanded .demo-console-toggle {
 			margin-right: 0.5em;
 		}
@@ -572,7 +557,10 @@ FieldLayout left & right aligned */
 	}
 
 	.demo-menu {
+		left: auto;
+		right: auto;
 		width: 62.5em;
+		padding-left: 0;
 		white-space: nowrap;
 	}
 
@@ -593,22 +581,6 @@ FieldLayout left & right aligned */
 
 	.oo-ui-fieldsetLayout-group > .oo-ui-fieldLayout:first-child .demo-console-expanded .demo-console-toggle {
 		margin-top: -3em;
-	}
-
-	@supports ( position: fixed ) {
-		.demo-menu {
-			min-height: 4.5em;
-			left: auto;
-			right: auto;
-		}
-
-		.demo-menu + .demo-container.oo-ui-panelLayout {
-			margin-top: 4.5em;
-		}
-
-		.demo-menu + .demo-container.oo-ui-panelLayout.demo-toolbars {
-			margin-top: 5.7em;
-		}
 	}
 }
 /* stylelint-enable selector-pseudo-element-colon-notation */

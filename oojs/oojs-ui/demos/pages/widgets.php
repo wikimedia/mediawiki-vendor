@@ -13,7 +13,9 @@ $demoContainer = new OOUI\PanelLayout( [
 	'framed' => true,
 ] );
 
-$demoContainer->addClasses( [ 'demo-container' ] );
+$demoContainer
+	->addClasses( [ 'demo-container' ] )
+	->setAttributes( [ 'role' => 'main' ] );
 
 $demoContainer->appendContent( new OOUI\FieldsetLayout( [
 	'id' => 'demo-section-buttons',
@@ -1329,11 +1331,19 @@ $demoContainer->appendContent( new OOUI\FormLayout( [
 									'framed' => false,
 									'flags' => [ 'destructive' ],
 									'label' => 'Cancel',
+									'classes' => [ 'demo-summary-buttonElement' ],
 								] ),
 								new OOUI\ButtonInputWidget( [
 									'framed' => false,
 									'icon' => 'tag',
 									'label' => 'Random icon button',
+								] ),
+								new OOUI\ButtonInputWidget( [
+									'framed' => false,
+									'icon' => 'helpNotice',
+									'label' => 'Help',
+									'invisibleLabel' => true,
+									'title' => 'Icon only'
 								] ),
 							]
 						] ),

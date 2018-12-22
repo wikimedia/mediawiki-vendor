@@ -26,6 +26,7 @@ Demo.static.pages.icons = function ( demo ) {
 				'folderPlaceholder',
 				'die',
 				'download',
+				'robot',
 				'tag',
 				'upload',
 				'window'
@@ -222,7 +223,6 @@ Demo.static.pages.icons = function ( demo ) {
 			'clear',
 			'down',
 			'required',
-			'search',
 			'up'
 		],
 		iconsFieldsets = [],
@@ -311,8 +311,8 @@ Demo.static.pages.icons = function ( demo ) {
 			.attr( 'role', 'main' )
 			.append(
 				selector.$element,
-				indicatorsFieldset.$element,
-				iconsFieldsets.map( function ( item ) { return item.$element[ 0 ]; } )
+				iconsFieldsets.map( function ( item ) { return item.$element[ 0 ]; } ),
+				indicatorsFieldset.$element
 			)
 	);
 };

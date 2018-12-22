@@ -52,7 +52,7 @@ p {
 pre {
 	background-color: #fff;
 	padding: 1em;
-	box-shadow: 1px 1px 8px #bbb;
+	box-shadow: 0 0 8px #bbb;
 }
 
 pre + p {
@@ -60,6 +60,12 @@ pre + p {
 }
 
 /* Override PrismJS default */
+code,
+code[ class*='language-' ],
+pre[ class*='language-' ] {
+	font-family: 'SFMono-Regular', 'Consolas', 'Liberation Mono', 'Menlo', 'Courier New', monospace; /* See T209915 */
+}
+
 :not( pre ) > code[ class*='language-' ],
 pre[ class*='language-' ] {
 	background: #fff;
@@ -82,7 +88,7 @@ table {
 	width: 100%;
 	margin-top: 2em;
 	border-collapse: collapse;
-	box-shadow: 1px 1px 8px #bbb;
+	box-shadow: 0 0 8px #bbb;
 }
 
 td,
@@ -127,7 +133,7 @@ tr {
 	margin-top: 3em;
 	border-radius: 4px;
 	padding: 2em;
-	box-shadow: 2px 2px 20px #bbb;
+	box-shadow: 0 0 20px #bbb;
 	font-size: 120%;
 }
 
@@ -154,13 +160,13 @@ tr {
 	margin-bottom: 2.5em;
 	border-radius: 2px;
 	padding: 0.75em;
-	box-shadow: 3px 3px 18px #36c;
+	box-shadow: 0 0 10px #36c;
 }
 
 .oo-ui-fieldsetLayout.oo-ui-labelElement > .oo-ui-fieldsetLayout-header {
 	width: 5.5em;
 	color: #36c;
-	box-shadow: 1px 2px 12px;
+	box-shadow: 0 0 6px;
 }
 
 .oo-ui-fieldsetLayout.oo-ui-labelElement > .oo-ui-fieldsetLayout-header > .oo-ui-labelElement-label {
@@ -169,12 +175,12 @@ tr {
 }
 
 /* Borrowed from Core Apex CSS */
-.oo-ui-selectWidget-depressed .oo-ui-optionWidget-selected {
+.embed-app .oo-ui-selectWidget-depressed .oo-ui-optionWidget-selected {
 	background-color: #80ccff;
 }
 
 /* Borrowed from Core Apex CSS */
-.oo-ui-optionWidget-highlighted {
+.embed-app .oo-ui-optionWidget-highlighted {
 	background-color: #b9e3ff;
 }
 
@@ -230,7 +236,6 @@ tr {
 */
 .scroll {
 	background-color: #222;
-	display: none;
 	position: fixed;
 	bottom: 10px;
 	right: 10px;
@@ -239,6 +244,14 @@ tr {
 	border-radius: 60px;
 	text-indent: -9999px;
 	cursor: pointer;
+	opacity: 0;
+	-webkit-transition: opacity 250ms;
+	-moz-transition: opacity 250ms;
+	transition: opacity 250ms;
+}
+
+.scroll-visible {
+	opacity: 1;
 }
 
 .scroll span {
@@ -255,7 +268,6 @@ tr {
 
 .scroll:hover {
 	background-color: #b32424;
-	opacity: 1;
 }
 
 /*

@@ -36,13 +36,12 @@ class ButtonStyleShowcaseWidget extends OOUI\Widget {
 		],
 		[
 			'icon' => 'tag',
-			'title' => "Title text",
-		],
-		[
-			'indicator' => 'down',
+			'title' => 'Title text',
 		],
 		[
 			'icon' => 'tag',
+			'label' => 'Tag',
+			'invisibleLabel' => true,
 			'indicator' => 'down',
 		],
 		[
@@ -51,10 +50,13 @@ class ButtonStyleShowcaseWidget extends OOUI\Widget {
 		],
 		[
 			'icon' => 'tag',
-			'title' => "Title text",
+			'title' => 'Title text',
 			'disabled' => true,
 		],
 		[
+			'icon' => 'tag',
+			'label' => 'Tag',
+			'invisibleLabel' => true,
 			'indicator' => 'down',
 			'disabled' => true,
 		],

@@ -230,18 +230,6 @@ Demo.static.pages.widgets = function ( demo ) {
 				),
 				new OO.ui.FieldLayout(
 					new OO.ui.ButtonWidget( {
-						indicator: 'clear',
-						label: 'Clear',
-						invisibleLabel: true,
-						title: 'Indicator only, framed'
-					} ),
-					{
-						label: 'ButtonWidget (indicator only)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.ButtonWidget( {
 						framed: false,
 						icon: 'edit',
 						label: 'Edit',
@@ -250,19 +238,6 @@ Demo.static.pages.widgets = function ( demo ) {
 					} ),
 					{
 						label: 'ButtonWidget (frameless, icon only)\u200E',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.ButtonWidget( {
-						framed: false,
-						indicator: 'clear',
-						label: 'Clear',
-						invisibleLabel: true,
-						title: 'Indicator only'
-					} ),
-					{
-						label: 'ButtonWidget (frameless, indicator only)\u200E',
 						align: 'top'
 					}
 				),
@@ -1426,6 +1401,7 @@ Demo.static.pages.widgets = function ( demo ) {
 				),
 				new OO.ui.FieldLayout(
 					new OO.ui.DropdownWidget( {
+						label: 'Select one',
 						menu: {
 							items: [
 								new OO.ui.MenuOptionWidget( {
@@ -1476,7 +1452,8 @@ Demo.static.pages.widgets = function ( demo ) {
 				),
 				new OO.ui.FieldLayout(
 					new OO.ui.DropdownInputWidget( {
-						disabled: true
+						disabled: true,
+						title: 'DropdownInputWidget (disabled)'
 					} ),
 					{
 						label: 'DropdownInputWidget (disabled)',
@@ -1828,17 +1805,6 @@ Demo.static.pages.widgets = function ( demo ) {
 					} ),
 					{
 						label: 'TagMultiselectWidget (inputPosition: outline, tagLimit: 5)',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.PopupTagMultiselectWidget( {
-						allowArbitrary: true,
-						icon: 'tag',
-						indicator: 'clear'
-					} ),
-					{
-						label: 'PopupTagMultiselectWidget (icon, indicator, allowArbitrary)',
 						align: 'top'
 					}
 				),
@@ -2611,6 +2577,7 @@ Demo.static.pages.widgets = function ( demo ) {
 				),
 				new OO.ui.ActionFieldLayout(
 					new OO.ui.DropdownWidget( {
+						label: 'Select one',
 						options: [
 							{
 								data: 'a',
@@ -3032,7 +2999,8 @@ Demo.static.pages.widgets = function ( demo ) {
 										new OO.ui.ButtonWidget( {
 											framed: false,
 											flags: [ 'destructive' ],
-											label: 'Cancel'
+											label: 'Cancel',
+											classes: [ 'demo-summary-buttonElement' ]
 										} ),
 										new OO.ui.ButtonWidget( {
 											framed: false,
@@ -3041,7 +3009,7 @@ Demo.static.pages.widgets = function ( demo ) {
 										} ),
 										new OO.ui.ButtonWidget( {
 											framed: false,
-											icon: 'help',
+											icon: 'helpNotice',
 											label: 'Help',
 											invisibleLabel: true,
 											title: 'Icon only'
