@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e5c41c4c378ca9879d5d77f284370eed",
+    "content-hash": "37110110d6f9611be04002d0a7272d57",
     "packages": [
         {
             "name": "backendtea/un-poly-ctype",
@@ -1382,16 +1382,16 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.30.0",
+            "version": "v0.30.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "b73648490bb3d4156c3db433d6bcfd01d6ba17fa"
+                "reference": "0e5839abf18ca3f1629dc214b3719d23a0d716a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/b73648490bb3d4156c3db433d6bcfd01d6ba17fa",
-                "reference": "b73648490bb3d4156c3db433d6bcfd01d6ba17fa",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/0e5839abf18ca3f1629dc214b3719d23a0d716a8",
+                "reference": "0e5839abf18ca3f1629dc214b3719d23a0d716a8",
                 "shasum": ""
             },
             "require": {
@@ -1458,7 +1458,7 @@
             ],
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOUI",
-            "time": "2018-12-20T05:45:12+00:00"
+            "time": "2019-01-10T03:41:15+00:00"
         },
         {
             "name": "pear/console_getopt",
