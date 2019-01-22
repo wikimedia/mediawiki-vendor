@@ -5,8 +5,10 @@ Demo.ButtonStyleShowcaseWidget = function DemoButtonStyleShowcaseWidget( config 
 
 	this.$element.addClass( 'demo-buttonStyleShowcaseWidget' );
 
+	// eslint-disable-next-line jquery/no-each-util
 	$.each( this.constructor.static.styles, function ( i, style ) {
 		var $buttonRow = $( '<div>' );
+		// eslint-disable-next-line jquery/no-each-util
 		$.each( widget.constructor.static.states, function ( j, state ) {
 			$buttonRow.append(
 				new OO.ui.ButtonWidget( $.extend( {}, style, state ) ).$element
@@ -39,12 +41,12 @@ Demo.ButtonStyleShowcaseWidget.static.states = [
 		label: 'Button'
 	},
 	{
-		label: 'Button',
-		icon: 'tag'
+		icon: 'tag',
+		label: 'Button'
 	},
 	{
-		label: 'Button',
 		icon: 'tag',
+		label: 'Button',
 		indicator: 'down'
 	},
 	{
@@ -52,10 +54,9 @@ Demo.ButtonStyleShowcaseWidget.static.states = [
 		title: 'Title text'
 	},
 	{
-		indicator: 'down'
-	},
-	{
 		icon: 'tag',
+		label: 'Tag',
+		invisibleLabel: true,
 		indicator: 'down'
 	},
 	{
@@ -68,6 +69,9 @@ Demo.ButtonStyleShowcaseWidget.static.states = [
 		disabled: true
 	},
 	{
+		icon: 'tag',
+		label: 'Dropdown',
+		invisibleLabel: true,
 		indicator: 'down',
 		disabled: true
 	}

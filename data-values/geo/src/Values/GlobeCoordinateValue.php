@@ -10,9 +10,9 @@ use DataValues\IllegalValueException;
  *
  * @since 0.1
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
- * @author Thiemo Mättig
+ * @author Thiemo Kreuz
  */
 class GlobeCoordinateValue extends DataValueObject {
 

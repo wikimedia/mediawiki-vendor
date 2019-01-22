@@ -1,5 +1,17 @@
 # Wikibase DataModel Serialization release notes
 
+## 2.9.1 (2018-12-14)
+
+* Apply ID prefix mapping in `SnakDeserializer`, like `EntityIdValueParser` does.
+
+## 2.9.0 (2018-11-06)
+
+* Added compatibility with Wikibase DataModel 9.x
+
+## 2.8.0 (2018-08-07)
+
+* Added compatibility with Wikibase DataModel 8.x
+
 ## 2.7.0 (2018-03-29)
 
 * Fixed `AliasGroupListDeserializer` and `TermListDeserializer` misbehaving when confronted with

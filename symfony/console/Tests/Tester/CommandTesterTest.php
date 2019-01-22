@@ -14,12 +14,12 @@ namespace Symfony\Component\Console\Tests\Tester;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Output\Output;
-use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\QuestionHelper;
+use Symfony\Component\Console\Output\Output;
+use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Console\Tester\CommandTester;
 
 class CommandTesterTest extends TestCase
 {
@@ -106,6 +106,31 @@ class CommandTesterTest extends TestCase
 
         $tester = new CommandTester($command);
         $tester->setInputs(array('Bobby', 'Fine', 'France'));
+        $tester->execute(array());
+
+        $this->assertEquals(0, $tester->getStatusCode());
+        $this->assertEquals(implode('', $questions), $tester->getDisplay(true));
+    }
+
+    public function testCommandWithDefaultInputs()
+    {
+        $questions = array(
+            'What\'s your name?',
+            'How are you?',
+            'Where do you come from?',
+        );
+
+        $command = new Command('foo');
+        $command->setHelperSet(new HelperSet(array(new QuestionHelper())));
+        $command->setCode(function ($input, $output) use ($questions, $command) {
+            $helper = $command->getHelper('question');
+            $helper->ask($input, $output, new Question($questions[0], 'Bobby'));
+            $helper->ask($input, $output, new Question($questions[1], 'Fine'));
+            $helper->ask($input, $output, new Question($questions[2], 'France'));
+        });
+
+        $tester = new CommandTester($command);
+        $tester->setInputs(array('', '', ''));
         $tester->execute(array());
 
         $this->assertEquals(0, $tester->getStatusCode());

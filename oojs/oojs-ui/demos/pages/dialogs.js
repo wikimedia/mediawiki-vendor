@@ -94,13 +94,10 @@ Demo.static.pages.dialogs = function ( demo ) {
 					}
 				},
 				{
-					name: 'Process dialog (medium, long title)',
-					dialogClass: Demo.ProcessDialog,
+					name: 'Process dialog (medium, long labels)',
+					dialogClass: Demo.FitLabelsProcessDialog,
 					config: {
 						size: 'medium'
-					},
-					data: {
-						title: 'Sample dialog with very long title that does not remotely fit into the space available and thus demonstrates what happens in that use case'
 					}
 				},
 				{
@@ -220,10 +217,7 @@ Demo.static.pages.dialogs = function ( demo ) {
 				},
 				{
 					name: 'Continuous outlined booklet dialog (aside navigation)',
-					dialogClass: Demo.ContinuousOutlinedBookletDialog,
-					config: {
-						size: 'medium'
-					}
+					dialogClass: Demo.ContinuousOutlinedBookletDialog
 				},
 				{
 					name: 'Indexed dialog (tab navigation)',
@@ -289,7 +283,7 @@ Demo.static.pages.dialogs = function ( demo ) {
 			openButton = new OO.ui.ButtonWidget( {
 				framed: false,
 				icon: 'window',
-				label: $( '<span dir="ltr"></span>' ).text( examples[ i ].name )
+				label: $( '<span>' ).attr( 'dir', 'ltr' ).text( examples[ i ].name )
 			} );
 
 			if ( examples[ i ].method ) {
@@ -320,7 +314,7 @@ Demo.static.pages.dialogs = function ( demo ) {
 			expanded: false,
 			framed: true
 		} ).$element
-			.addClass( 'demo-container' )
+			.addClass( 'demo-container demo-dialogs' )
 			.attr( 'role', 'main' )
 			.append( $fieldsets ),
 		windowManager.$element

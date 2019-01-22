@@ -26,6 +26,7 @@ Demo.static.pages.icons = function ( demo ) {
 				'folderPlaceholder',
 				'die',
 				'download',
+				'robot',
 				'tag',
 				'upload',
 				'window'
@@ -42,7 +43,6 @@ Demo.static.pages.icons = function ( demo ) {
 			],
 			interactions: [
 				'add',
-				'advanced',
 				'browser',
 				'cancel',
 				'check',
@@ -55,6 +55,7 @@ Demo.static.pages.icons = function ( demo ) {
 				'funnel',
 				'heart',
 				'help',
+				'helpNotice',
 				'key',
 				'keyboard',
 				'lightbulb',
@@ -64,6 +65,7 @@ Demo.static.pages.icons = function ( demo ) {
 				'printer',
 				'reload',
 				'search',
+				'settings',
 				'subtract'
 			],
 			moderation: [
@@ -118,11 +120,16 @@ Demo.static.pages.icons = function ( demo ) {
 				'alignLeft',
 				'alignRight',
 				'attachment',
+				'beaker',
 				'calendar',
 				'code',
-				'find',
+				'hieroglyph',
 				'language',
 				'layout',
+				'mathematics',
+				'mathematicsDisplayBlock',
+				'mathematicsDisplayDefault',
+				'mathematicsDisplayInline',
 				'markup',
 				'newline',
 				'noWikiText',
@@ -158,6 +165,8 @@ Demo.static.pages.icons = function ( demo ) {
 				'references'
 			],
 			media: [
+				'camera',
+				'chart',
 				'fullScreen',
 				'exitFullscreen',
 				'image',
@@ -165,11 +174,15 @@ Demo.static.pages.icons = function ( demo ) {
 				'imageLock',
 				'imageGallery',
 				'imageBroken',
+				'musicalScore',
 				'play',
 				'pause',
-				'stop'
+				'stop',
+				'zoomIn',
+				'zoomOut'
 			],
 			location: [
+				'globe',
 				'map',
 				'mapPin',
 				'mapPinAdd',
@@ -210,7 +223,6 @@ Demo.static.pages.icons = function ( demo ) {
 			'clear',
 			'down',
 			'required',
-			'search',
 			'up'
 		],
 		iconsFieldsets = [],
@@ -299,8 +311,8 @@ Demo.static.pages.icons = function ( demo ) {
 			.attr( 'role', 'main' )
 			.append(
 				selector.$element,
-				indicatorsFieldset.$element,
-				iconsFieldsets.map( function ( item ) { return item.$element[ 0 ]; } )
+				iconsFieldsets.map( function ( item ) { return item.$element[ 0 ]; } ),
+				indicatorsFieldset.$element
 			)
 	);
 };

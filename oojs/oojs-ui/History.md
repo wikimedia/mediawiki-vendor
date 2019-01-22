@@ -1,4 +1,307 @@
 # OOUI Release History
+## v0.30.1 / 2019-01-09
+### Deprecations
+* [DEPRECATING CHANGE]: Deprecate `iconTitle` and `indicatorTitle` (Volker E.)
+
+### Styles
+* icons: Decrease 'close' size marginally (Volker E.)
+* themes: Fine tune library 'close' icon usages (Volker E.)
+
+### Code
+* Add TitledElement mixin to all main widgets where useful (Volker E.)
+* Clean up handling of `aria-expanded` attribute (Bartosz Dziewoński)
+* DropdownInputWidget: Fix mixing in TitledElement twice (Bartosz Dziewoński)
+* MultilineTextInputWidget: Move `styleHeight` property into widget from parent (Volker E.)
+* Replace double TitledElement mixins in several widgets (Volker E.)
+* build: Commit package-lock.json (James D. Forrester)
+* build: Bump various devDependencies to latest (Volker E.)
+* build: Update eslint-config-wikimedia to 0.10.0 (Volker E.)
+* build: Upgrade grunt-banana-checker from 0.6.0 to 0.7.0 (James D. Forrester)
+* demos: Replace most unicode LTR markers with CSS rule (Volker E.)
+* docs: Bump copyright year for 2019 (James D. Forrester)
+* docs: Unify code examples and describe MultilineText- & SearchInputWidget (Volker E.)
+* tests: Make JS/PHP comparison tests async (Bartosz Dziewoński)
+* tests: Reduce code duplication in JS/PHP comparison tests (Bartosz Dziewoński)
+* tests: Unbreak JS/PHP tests for DropdownInputWidget (Bartosz Dziewoński)
+
+
+## v0.30.0 / 2018-12-19
+### Breaking changes
+* [BREAKING CHANGE] Make non-continuous StackLayouts non-scrollable (Ed Sanders)
+* [BREAKING CHANGE] icons: Drop 'advanced' icon, deprecated in v0.28.1 (Volker E.)
+
+### Features
+* DropdownInputWidget: Add `title` config option to handle (Volker E.)
+
+### Deprecations
+* [DEPRECATING CHANGE] Deprecate passing string IDs to infuse (Ed Sanders)
+* [DEPRECATING CHANGE] PopupTagMultiselectWidget: Deprecate widget (Volker E.)
+* [DEPRECATING CHANGE] indicators: Flag unused 'search' indicator as to be removed (Volker E.)
+
+### Styles
+* WikimediaUI theme: Make up for inner 'down' indicator distance (Volker E.)
+* Apex theme: Align functionality of ComboBoxInputWidget with WikimediaUI theme (Volker E.)
+* Apex theme: DropdownWidget align CSS code to WikimediaUI theme (Volker E.)
+* Apex theme: Unify distance on icon and label TextInputWidget (Volker E.)
+* Apex theme: Use variable for `text-shadow` and unify (Volker E.)
+* icons: Add 'robot' icon to 'content' pack (Volker E.)
+* icons: Add localized 'bold' and 'italic' for Urdu (Tulsi Bhagat)
+* build: Update 'wikimedia-ui-base' to latest (Volker E.)
+
+### Code
+* Avoid HTML parsing (Ed Sanders)
+* Avoid deprecated OO.ui.infuse( id ) (Ed Sanders)
+* Use `-webkit-overflow-scrolling: touch` for scrollable things (Bartosz Dziewoński)
+* ComboBoxInputWidget: Add 'label' and `aria-controls` attribute to button (Volker E.)
+* ComboBoxInputWidget: `aria-expanded` needs to be set from intialization (Volker E.)
+* DropDownWidget: Turn handle into `button` and add ARIA attribute (Volker E.)
+* LookupElement: `aria-expanded` needs to be set from intialization (Volker E.)
+* MenuTagMultiselectWidget: Clear input before adding tag (Thalia Chan)
+* TagMultiselectWidget: Resize input when enabling (Thalia Chan)
+* WindowManager: Move inline CSS to a class (Bartosz Dziewoński)
+* Hygiene: Don't put a space after mixin names when defining them (Bartosz Dziewoński)
+* i18n: Fix 'tooltip' in qqq descriptions (Volker E.)
+* build: Bump various devDependencies to latest (James D. Forrester)
+* build: Fix case of 'LESS' in comments (Volker E.)
+* tests: Unbreak unit tests (Bartosz Dziewoński)
+* demos: Add ARIA `role="main"` to PHP demo (Volker E.)
+* demos: Add labels to remaining DropdownWidgets (Volker E.)
+* demos: Don't showcase 'indicator' only buttons explicitly (Volker E.)
+* demos: Ensure color contrast on special, non-production summary example (Volker E.)
+* demos: Avoid implicit globals in infusion demo (Ed Sanders)
+* demos: Let buttons in PHP demo carry screen reader labels (Volker E.)
+* demos: Make the interface usable on mobile (Bartosz Dziewoński)
+* demos: Reorder icons and indicators (Volker E.)
+* demos: Use appropriate 'helpNotice' icon for location (Volker E.)
+* demos: Use system monospace font stack following Style Guide (Volker E.)
+* tutorials: Center box shadows (Ed Sanders)
+* tutorials: Replace $(document).ready with $(fn) (Ed Sanders)
+* tutorials: Select current page in dropdown (Ed Sanders)
+* tutorials: Use CSS transitions for scroller (Ed Sanders)
+* tutorials: Use system monospace font stack following Style Guide (Volker E.)
+
+
+## v0.29.6 / 2018-12-04
+### Styles
+* Match BookletLayout menu's width and animations to Dialog's (Bartosz Dziewoński)
+* WikimediaUI theme: Ensure `transition` of PopupToolGroup in actions toolbar (Volker E.)
+* icons: Union the paths in 'undo' and 'redo' (Ed Sanders)
+* icons: Use correct 'settings' title (Volker E.)
+
+### Code
+* BrokenDialog: Remove superfluous and broken second parent call (Roan Kattouw)
+* MenuTagMultiselectWidget: Allow adding arbitrary values (Moriel Schottlender)
+* ProcessDialog: Fit label (dialog title) when it changes (Bartosz Dziewoński)
+* Remove 'jQuery' alias (Ed Sanders)
+* TagItemWidget: Fix operator precendence (James D. Forrester)
+* eslint: Drop 'dot-notation' rule (James D. Forrester)
+* eslint: Enable jquery/no-(show/hide/toggle) rules (Ed Sanders)
+* eslint: Fix config extends, and move 'no-void' rule overrides inline (Ed Sanders)
+* build: Enable 'at-rule-empty-line-before' stylelint rule and make pass (Volker E.)
+* build: Reintroduce icons to dist images-theme CSS files (Volker E.)
+* build: Remove over-ride for max-len in build code (James D. Forrester)
+* build: Update 'eslint-config-wikimedia' to v0.9.0 and make pass (Volker E.)
+* build: Update mediawiki/mediawiki-codesniffer to 23.0.0 (libraryupgrader)
+* build: Update stylelint-config-wikimedia to 0.5.0 and make pass (James D. Forrester)
+* docs: JSDuck: Use same font-size as elsewhere (Volker E.)
+* demos: Add `rel="noopener"` to accessibility explanation links (Volker E.)
+* demos: CSS fixes for mobile dialogs demo (Bartosz Dziewoński)
+* demos: Use better icons (Volker E.)
+
+
+## v0.29.5 / 2018-11-08
+### Code
+* MenuTagMultiselectWidget: Clear input if adding valid tag (Thalia Chan)
+* TagMultiselectWidget: Rename `limit` config to `tagLimit` (Thalia Chan)
+
+
+## v0.29.4 / 2018-11-06
+### Features
+* TagMultiSelectWidget: Add a `limit` configuration option (Moriel Schottlender)
+* TagMultiselectWidget: Make widget invalid if there's text in input (Moriel Schottlender)
+
+### Styles
+* PopupTool: Prevent flipping the popup opposite to the toolbar position (Bartosz Dziewoński)
+* WindowManager: Better avoid content shifting when disabling page scrollbars (Bartosz Dziewoński)
+* WikimediaUI theme: Tame cut-off letter issue (Volker E.)
+
+### Code
+* Dialog.detachActions: Make this method chainable, as documented (James D. Forrester)
+* FloatableElement: Remove check for `needsCustomPosition` (Bartosz Dziewoński)
+* build: Enable `valid-jsdoc` (James D. Forrester)
+* demos: Use consistent options descriptions (Volker E.)
+* Fix errors flagged by ESLint's `valid-jsdoc` option (Volker E.)
+* doc: Add documentation for event handlers (James D. Forrester)
+* doc: ButtonWidget.setHref: Add chainable documentation (James D. Forrester)
+* doc: Duplicate `@chainable` with manual `@return` comment (James D. Forrester)
+* doc: Ensure consistent PHP-DOC annotation (Volker E.)
+* doc: TagItemWidget.isFixed: Add return documentation (James D. Forrester)
+* doc: WindowManager.openWindow: Explcitly disable `valid-jsdoc` for private parameters (Volker E.)
+
+
+## v0.29.3 / 2018-10-31
+### Features
+* LabelElement: Allow invisible accessibility labels (Bartosz Dziewoński)
+* PanelLayouts: Add #resetScroll method, and implement in complex layouts (Ed Sanders)
+
+### Styles
+* Allow ButtonGroupWidget/SelectWidget buttons to spill on to new lines (Bartosz Dziewoński)
+* icons: Visually center 'next' and 'previous' horizontally (Volker E.)
+* themes: Use base color for DecoratedOption-/MenuOptionWidget (Volker E.)
+* WikimediaUI theme: Make TagItemWidgets slightly less obstrusive (Volker E.)
+
+### Code
+* Add missing default for a localisation message (Bartosz Dziewoński)
+* Allow setting the label to "0" in PHP (Bartosz Dziewoński)
+* DropdownWidget: Fix keypress handling when menu is closed (Bartosz Dziewoński)
+* DropdownWidget: Fix vertical alignment with other widgets in some layouts (Volker E.)
+* FloatableElement: Fix typo in a condition causing it to always be true (Bartosz Dziewoński)
+* WikimediaUI theme: Fix specificity of IndexLayout override (Ed Sanders)
+* demos: Add ActionLayout with DropdownWidget demo (Volker E.)
+* demos: Restore lost PHP demos (Bartosz Dziewoński)
+* demos: Use 'previous' icon for one of the ToggleButtonWidgets (Volker E.)
+* tutorials: Fix navigation items position (Volker E.)
+* tutorials: Follow Wikimedia color in body default choice (Volker E.)
+
+
+## v0.29.2 / 2018-10-08
+### Code
+* Follow-up Ib00d6720: Fix KeyDown listener name in MenuSelectWidget (Ed Sanders)
+* Pass panels to MenuLayout (Ed Sanders)
+* demos: Fix selected values in MenuTagMultiselectWidget demo (Bartosz Dziewoński)
+
+
+## v0.29.1 / 2018-10-03
+### Styles
+* TabOptionWidget: Increase contrast between normal & selected states (Volker E.)
+
+### Code
+* MultilineTextInputWidget: Fix fatal (Bartosz Dziewoński)
+* build: Fail in CI if there are uncommited build artefacts (James D. Forrester)
+* tests: Commit JS/PHP comparison test suite (Bartosz Dziewoński)
+* tests: Ensure consistent order in JSPHP-suite.json (Bartosz Dziewoński)
+* tests: Ensure we write LF newlines to JSPHP-suite.json, even on Windows (Bartosz Dziewoński)
+* tests: Fix generation of JS/PHP comparison test suite (Bartosz Dziewoński)
+* tests: Increase Karma tests timeout so that they actually finish (Bartosz Dziewoński)
+
+
+## v0.29.0 / 2018-10-02
+### Breaking changes
+* [BREAKING CHANGE] Consistently name document listeners (Ed Sanders)
+* [BREAKING CHANGE] Drop CapsuleMultiselectWidget, deprecated since v0.27.5 (James D. Forrester)
+* [BREAKING CHANGE] Formally require PHP 7 (5.6.99+) (James D. Forrester)
+* [BREAKING CHANGE] TextInputWidget: Drop support for `multiline: true` (James D. Forrester)
+* [BREAKING CHANGE] Upgrade jQuery from 3.2.1 to 3.3.1 (James D. Forrester)
+* [BREAKING CHANGE] Use PHP 5.6 variadic function syntax (Bartosz Dziewoński)
+* [BREAKING CHANGE] Use PHP 7 "\u{NNNN}" Unicode codepoint escapes (Bartosz Dziewoński)
+* [BREAKING CHANGE] Use PHP 7 '??' operator instead of '?:' with 'isset()' (Bartosz Dziewoński)
+
+### Features
+* Use jQuery 3.3.x class feature (Ed Sanders)
+
+### Styles
+* icons: Refine 'userAvatar' slightly (Volker E.)
+
+### Code
+* Avoid including the `/**` comment from WikimediaUI Base in our output (Bartosz Dziewoński)
+* Centralize the definition of which classes belong in which module (Bartosz Dziewoński)
+* Remove unnecessary empty-theme.less (Bartosz Dziewoński)
+* WikimediaUI theme: Correct several code comments (Volker E.)
+* WikimediaUI theme: Remove vars covered by WikimediaUI Base vars (Volker E.)
+* build: Bump eslint-config and grunt-karma devDependencies to latest (James D. Forrester)
+* build: Updating mediawiki/mediawiki-codesniffer to 22.0.0 (James D. Forrester)
+* demos: Unbreak from reliance on removed CapsuleMultiselectWidget (James D. Forrester)
+
+
+## v0.28.2 / 2018-09-11
+### Deprecations
+* [DEPRECATING CHANGE]: icons: Rename 'advanced' to 'settings' (Volker E.)
+
+### Features
+* NumberInputWidget: Rethink 'step' semantics (Bartosz Dziewoński)
+
+### Styles
+* WikimediaUI theme: Slightly reduce 'close' icon in PopupWidget's popup (Volker E.)
+* icons: Add 'globe' to 'location' pack (Volker E.)
+* icons: Add 'helpNotice' to 'interactions' pack (Volker E.)
+
+### Code
+* build: Bump devDependencies to latest where possible (James D. Forrester)
+* docs: Revert "docs: Don't refer to a renamed icon 'settings', use 'advanced'" (James D. Forrester)
+
+
+## v0.28.1 / 2018-09-04
+### Styles
+* icons: Add several 'editing-advanced' and 'media' pack icons (Volker E.)
+* icons: Make 'camera' visible in demos (Volker E.)
+* icons: Swap LTR and RTL versions of 'stripeToC' (Roan Kattouw)
+* icons: Use 'lightbulb' in Arabic in place of 'info' (Volker E.)
+* Apex theme: Fix NumberInputWidget button width (Volker E.)
+
+### Code
+* Improve PHPCS performance by not listing ignored files (Bartosz Dziewoński)
+* Restore missing icons and fix broken docs link in OOUI tutorials toolbar (Hagar Shilo)
+* themes: Cleanup `@min-size` & remove `*-numberinput` variables (Volker E.)
+* build: Bump wikimedia-ui-base (James D. Forrester)
+* icons: Update 'pageSettings' SVG title (Volker E.)
+* docs: Correct documentation for Window#open and Window#close (Bartosz Dziewoński)
+* docs: Don't refer to a renamed icon 'settings', use 'advanced' (James D. Forrester)
+* demos: Don't try to use the removed 'comment' icon (Bartosz Dziewoński)
+* demos: Remove some irrelevant icons in toolbars demo (Bartosz Dziewoński)
+* demos: Use renamed 'pageSettings' icon (Volker E.)
+* tests: Add tests for Tag::appendContent, Tag::prependContent, Tag::clearContent (Bartosz Dziewoński)
+
+
+## v0.28.0 / 2018-08-14
+### Breaking changes
+* [BREAKING CHANGE] icons: Drop 'find' icon, deprecated in v0.26.2 (James D. Forrester)
+* [BREAKING CHANGE] icons: Drop 'settings' icon, deprecated in v0.27.0 (James D. Forrester)
+* [BREAKING CHANGE] icons: Drop cite icons, renamed and deprecated in v0.27.0 (James D. Forrester)
+* [BREAKING CHANGE] icons: Remove 'clip' & 'unClip', deprecated in v0.26.1 (Volker E.)
+* [BREAKING CHANGE] icons: Remove 'comment', deprecated in v0.26.1 (James D. Forrester)
+* [BREAKING CHANGE] icons: Remove deprecated 'userActive'/'userInactive' (Volker E.)
+
+### Styles
+* FieldLayout inline help: Move help after field when align=top (Ed Sanders)
+
+### Code
+* DropdownInputWidget: Add support for $overlay (Alangi Derick)
+* LookupElement: Fix empty search result menu (Tim Eulitz)
+* PopupTools & ToolGroupTools: Emit active events from PopupTools & ToolGroupTools (Ed Sanders)
+* Toolbar: Emit events to let user know if toolbar popups are visible (Ed Sanders)
+* Revert "FieldLayout: Avoid unclickable gap between widget and label in 'inline' align" (Bartosz Dziewoński)
+* Apex theme: Align `@transition` vars naming with WikimediaUI theme (Volker E.)
+* Apex theme: Rename `@destructive` var to naming convention (Volker E.)
+* Apex theme: Rename `@progressive*` vars to naming convention (Volker E.)
+* WikimediaUI theme: Fix regression on SelectFileWidget icon/indicator visibility (Volker E.)
+* WikimediaUI theme: Make use of further WikimediaUI Base variables (Volker E.)
+* docs: Always use the correct casing for MediaWiki (James D. Forrester)
+* tutorials Create 2 OOUI tutorials and an index page (Hagar Shilo)
+* tutorials: Don't load duplicate CSS (Bartosz Dziewoński)
+* tutorials: Fix CSS links (Moriel Schottlender)
+* build: Bump eslint-config-wikimedia to v0.7.2, disabling failing rules (James D. Forrester)
+* build: Bump grunt-contrib-less to v2.0.0 and enable javascriptEnabled (James D. Forrester)
+* build: Bump non-qunit devDependencies to latest where possible (James D. Forrester)
+* build: Bump OOjs to v2.2.2 (James D. Forrester)
+* build: Bump qunit-related devDependencies to latest (James D. Forrester)
+* build: Bump wikimedia-ui-base to v0.11.0 (Volker E.)
+* tests: Enable `qunit/no-assert-equal` and make pass (James D. Forrester)
+* tests: Enable `qunit/no-negated-ok` and make pass (James D. Forrester)
+* tests: Enable `qunit/no-ok-equality` and make pass (James D. Forrester)
+* tests: Enable `qunit/require-expect` and make pass (James D. Forrester)
+
+
+## v0.27.6 / 2018-08-01
+### Styles
+* WikimediaUI theme: Fix styling for focussed multiline text inputs in invalid state (Bartosz Dziewoński)
+* Apex theme: Fix regression on ToggleSwitchWidget `border` (Volker E.)
+* Apex theme: Further unify `border-radius` (Volker E.)
+
+### Code
+* MenuTagMultiselectWidget: Cascade disable state to menu (Moriel Schottlender)
+* MultilineTextInputWidget: Remove 'name' and 'id' from $clone (Prateek Saxena)
+
+
 ## v0.27.5 / 2018-07-11
 ### Deprecations
 * [DEPRECATING CHANGE] CapsuleMultiselectWidget: Deprecate widget (Volker E.)
@@ -1202,7 +1505,7 @@
 * MediaWiki theme: Fix RTL version of largerText icon to be, well, RTL (James D. Forrester)
 * MediaWiki theme: Fix direction of shadow on position:bottom toolbars (Ed Sanders)
 * MediaWiki theme: Use correct `border-color` on PopupWidget anchor (Volker E)
-* Mediawiki theme: Fix focus inset to overlap scrollbars (Volker E)
+* MediaWiki theme: Fix focus inset to overlap scrollbars (Volker E)
 * icons: Provide a 'halfStar' vertical split star (codynguyen1116)
 
 ### Code
@@ -1837,7 +2140,7 @@
 ### Code
 * ActionFieldLayout: Add max-width: 50em; (Florian)
 * DraggableGroupElement: Don't emit reorder event when action is a no-op (Ed Sanders)
-* Element: Fix #gatherPreInfuseState called incorrectly, causing TypeErrors (Thiemo Mättig)
+* Element: Fix #gatherPreInfuseState called incorrectly, causing TypeErrors (Thiemo Kreuz)
 * NumberInputWidget: fix example (Ricordisamoa)
 * SelectWidget: fix incorrect `@return` that should be `@param` (Ricordisamoa)
 * build: Compress PNGs with Zopfli etc. after they are built (James D. Forrester)
@@ -1927,7 +2230,7 @@
 * SelectWidget: Really prevent default action during type-to-select (Bartosz Dziewoński)
 * Put '@keyframes' rules inside a mixin to avoid duplicating them (Bartosz Dziewoński)
 * Apex theme: Remove unnecessary '@keyframes' prefixing (Bartosz Dziewoński)
-* Mediawiki theme: Align button mixins/states to CSS guidelines/standard (Volker E)
+* MediaWiki theme: Align button mixins/states to CSS guidelines/standard (Volker E)
 * Correct code using plain DOM events documented as jQuery events (Bartosz Dziewoński)
 * demo: Add a long DropdownInputWidget demo (Bartosz Dziewoński)
 * demo: In PHP demo, load oojs-ui-core only instead of whole oojs-ui (Bartosz Dziewoński)

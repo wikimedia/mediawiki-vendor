@@ -1,5 +1,49 @@
 # Wikibase DataModel release notes
 
+## Version 9.0.1 (2018-11-09)
+
+* `Item` and `Property` now implement `ClearableEntity` again
+
+## Version 9.0.0 (2018-11-01)
+
+* Breaking change: `EntityDocument` no longer extends `ClearableEntity` (8.0.0 revert)
+* The `TermList` constructor now takes any `iterable` instead of just `array`
+* The `SiteLinkList` constructor now takes any `iterable` instead of just `array`
+* Added `TermList::addAll`
+
+## Version 8.0.0 (2018-08-03)
+
+#### Breaking changes
+
+* `Item::setId` and `Property::setId` no longer accept integers
+* Removed `Item::getSiteLinks` and `Item::hasSiteLinks`
+* Removed `HashArray`
+* `SnakList` no longer extends `HashArray` and no longer has these public and protected methods:
+	* `addElement`
+	* `getByElementHash`
+	* `getNewOffset`
+	* `getObjectType`
+	* `hasElement`
+	* `hasElementHash`
+	* `hasValidType`
+	* `preSetElement`
+	* `removeByElementHash`
+	* `removeElement`
+	* `setElement`
+* Removed `WIKIBASE_DATAMODEL_VERSION` constant
+* Added periods to the list of disallowed characters in `RepositoryNameAssert`
+* `EntityDocument` now extends `ClearableEntity`
+
+#### Other changes
+
+* Added `StatementListProvidingEntity`
+* Un-deprecated several sitelink related shortcuts from `Item`:
+	* `addSiteLink`
+	* `getSiteLink`
+	* `hasLinkToSite`
+	* `removeSiteLink`
+* Installation together with DataValues 2.x is now supported
+
 ## Version 7.5.0 (2018-05-02)
 
 * Introduce `ClearableEntity` interface.
@@ -15,8 +59,8 @@
 ## Version 7.3.0 (2017-11-13)
 
 * Performance optimizations on `EntityId`:
-	* Added protected `$repositoryName` and `$localPart` properties
-	* Added protected `extractRepositoryNameAndLocalPart`
+  	* Added protected `$repositoryName` and `$localPart` properties
+  	* Added protected `extractRepositoryNameAndLocalPart`
 
 ## Version 7.2.0 (2017-10-23)
 

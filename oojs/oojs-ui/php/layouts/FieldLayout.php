@@ -88,13 +88,13 @@ class FieldLayout extends Layout {
 
 		// Properties
 		$this->fieldWidget = $fieldWidget;
-		$this->errors = isset( $config['errors'] ) ? $config['errors'] : [];
-		$this->notices = isset( $config['notices'] ) ? $config['notices'] : [];
+		$this->errors = $config['errors'] ?? [];
+		$this->notices = $config['notices'] ?? [];
 		$this->field = $this->isFieldInline() ? new Tag( 'span' ) : new Tag( 'div' );
 		$this->messages = new Tag( 'ul' );
 		$this->header = new Tag( 'span' );
 		$this->body = new Tag( 'div' );
-		$this->helpText = isset( $config['help'] ) ? $config['help'] : '';
+		$this->helpText = $config['help'] ?? '';
 		$this->helpInline = $config['helpInline'];
 
 		// Traits
@@ -105,10 +105,10 @@ class FieldLayout extends Layout {
 			array_merge( $config, [ 'titled' => $this->label ] ) );
 
 		// Initialization
-		$this->help = empty( $this->helpText ) ? '' : $this->createHelpElement();
+		$this->help = $this->helpText === '' ? '' : $this->createHelpElement();
 		if ( $this->fieldWidget->getInputId() ) {
 			$this->label->setAttributes( [ 'for' => $this->fieldWidget->getInputId() ] );
-			if ( !empty( $this->helpText ) && $this->helpInline ) {
+			if ( $this->helpText !== '' && $this->helpInline ) {
 				$this->help->setAttributes( [ 'for' => $this->fieldWidget->getInputId() ] );
 			}
 		}
@@ -201,7 +201,10 @@ class FieldLayout extends Layout {
 			$this->body->clearContent();
 
 			if ( $this->helpInline ) {
-				if ( $value === 'inline' ) {
+				if ( $value === 'top' ) {
+					$this->header->appendContent( $this->label );
+					$this->body->appendContent( $this->header, $this->field, $this->help );
+				} elseif ( $value === 'inline' ) {
 					$this->header->appendContent( $this->label, $this->help );
 					$this->body->appendContent( $this->field, $this->header );
 				} else {
@@ -277,6 +280,10 @@ class FieldLayout extends Layout {
 				'framed' => false,
 				'icon' => 'info',
 				'title' => $this->helpText,
+				// TODO We have no way to use localisation messages in PHP
+				// (and to use different languages when used from MediaWiki)
+				// 'label' => msg( 'ooui-field-help' ),
+				// 'invisibleLabel' => true,
 			] );
 		}
 	}

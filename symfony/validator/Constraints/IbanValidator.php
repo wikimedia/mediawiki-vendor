@@ -129,6 +129,7 @@ class IbanValidator extends ConstraintValidator
         'TN' => 'TN59\d{2}\d{3}\d{13}\d{2}', // Tunisia
         'TR' => 'TR\d{2}\d{5}[\dA-Z]{1}[\dA-Z]{16}', // Turkey
         'UA' => 'UA\d{2}\d{6}[\dA-Z]{19}', // Ukraine
+        'VA' => 'VA\d{2}\d{3}\d{15}', // Vatican City State
         'VG' => 'VG\d{2}[A-Z]{4}\d{16}', // Virgin Islands, British
         'WF' => 'FR\d{2}\d{5}\d{5}[\dA-Z]{11}\d{2}', // Wallis and Futuna Islands
         'XK' => 'XK\d{2}\d{4}\d{10}\d{2}', // Republic of Kosovo
@@ -148,7 +149,7 @@ class IbanValidator extends ConstraintValidator
             return;
         }
 
-        if (!is_scalar($value) && !(is_object($value) && method_exists($value, '__toString'))) {
+        if (!is_scalar($value) && !(\is_object($value) && method_exists($value, '__toString'))) {
             throw new UnexpectedTypeException($value, 'string');
         }
 
@@ -231,7 +232,7 @@ class IbanValidator extends ConstraintValidator
         foreach ($chars as $char) {
             // Convert uppercase characters to ordinals, starting with 10 for "A"
             if (ctype_upper($char)) {
-                $bigInt .= (ord($char) - 55);
+                $bigInt .= (\ord($char) - 55);
 
                 continue;
             }

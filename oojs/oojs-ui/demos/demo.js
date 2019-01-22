@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-/* globals Prism, javascriptStringify */
+/* globals Prism, javascriptStringify, jQuery */
 /**
  * @class
  * @extends OO.ui.Element
@@ -22,6 +22,7 @@ window.Demo = function Demo() {
 	this.stylesheetLinks = this.getStylesheetLinks();
 	this.mode = this.getCurrentMode();
 	this.$menu = $( '<div>' );
+	this.expandButton = new OO.ui.ToggleButtonWidget( { icon: 'menu' } );
 	this.pageDropdown = new OO.ui.DropdownWidget( {
 		menu: {
 			items: [
@@ -64,13 +65,20 @@ window.Demo = function Demo() {
 
 	this.documentationLink = new OO.ui.ButtonWidget( {
 		label: 'Docs',
-		classes: [ 'demo-button-docs' ],
 		icon: 'journal',
 		href: '../js/',
 		flags: [ 'progressive' ]
 	} );
 
+	this.tutorialsLink = new OO.ui.ButtonWidget( {
+		label: 'Tutorials',
+		icon: 'book',
+		href: 'tutorials/index.html',
+		flags: [ 'progressive' ]
+	} );
+
 	// Events
+	this.expandButton.on( 'change', OO.ui.bind( this.onExpandButtonChange, this ) );
 	this.pageMenu.on( 'choose', OO.ui.bind( this.onModeChange, this ) );
 	this.themeSelect.on( 'choose', OO.ui.bind( this.onModeChange, this ) );
 	this.directionSelect.on( 'choose', OO.ui.bind( this.onModeChange, this ) );
@@ -85,19 +93,21 @@ window.Demo = function Demo() {
 		.addClass( 'demo-menu' )
 		.attr( 'role', 'navigation' )
 		.append(
+			this.expandButton.$element,
 			this.pageDropdown.$element,
 			this.themeSelect.$element,
 			this.directionSelect.$element,
 			this.jsPhpSelect.$element,
 			this.platformSelect.$element,
-			this.documentationLink.$element
+			this.documentationLink.$element,
+			this.tutorialsLink.$element
 		);
 	this.$element
 		.addClass( 'demo' )
 		.append( this.$menu );
-	$( 'html' ).attr( 'dir', this.mode.direction );
-	$( 'head' ).append( this.stylesheetLinks );
-	$( 'body' ).addClass( 'oo-ui-theme-' + this.mode.theme );
+	$( document.documentElement ).attr( 'dir', this.mode.direction );
+	$( document.head ).append( this.stylesheetLinks );
+	$( document.body ).addClass( 'oo-ui-theme-' + this.mode.theme );
 	// eslint-disable-next-line new-cap
 	OO.ui.theme = new OO.ui[ this.constructor.static.themes[ this.mode.theme ] + 'Theme' ]();
 	OO.ui.isMobile = function () {
@@ -112,6 +122,13 @@ window.Demo = function Demo() {
 			left: 0
 		};
 	};
+	if ( OO.ui.isMobile() ) {
+		this.onExpandButtonChange( false );
+	} else {
+		// Hide the button on desktop
+		this.expandButton.toggle( false );
+		this.onExpandButtonChange( true );
+	}
 };
 
 /* Setup */
@@ -260,6 +277,7 @@ Demo.static.scrollToFragment = function () {
 	var elem = document.getElementById( location.hash.slice( 1 ) );
 	if ( elem ) {
 		// The additional '10' is just because it looks nicer.
+		// eslint-disable-next-line jquery/no-global-selector
 		$( window ).scrollTop( $( elem ).offset().top - $( '.demo-menu' ).outerHeight() - 10 );
 	}
 };
@@ -309,6 +327,21 @@ Demo.prototype.onModeChange = function () {
 
 	history.pushState( null, document.title, this.getUrlQuery( [ page, theme, direction, platform ] ) );
 	$( window ).triggerHandler( 'popstate' );
+};
+
+/**
+ * Handle expand button change events.
+ *
+ * @param {boolean} value Whether the button is toggled on
+ */
+Demo.prototype.onExpandButtonChange = function ( value ) {
+	// Show/hide everything in the menu, except this.pageDropdown
+	this.themeSelect.toggle( value );
+	this.directionSelect.toggle( value );
+	this.jsPhpSelect.toggle( value );
+	this.platformSelect.toggle( value );
+	this.documentationLink.toggle( value );
+	this.tutorialsLink.toggle( value );
 };
 
 /**
@@ -501,8 +534,9 @@ Demo.prototype.normalizeQuery = function () {
  * Destroy demo.
  */
 Demo.prototype.destroy = function () {
-	$( 'body' ).removeClass( 'oo-ui-ltr oo-ui-rtl' );
-	$( 'body' ).removeClass( 'oo-ui-theme-' + this.mode.theme );
+	$( document.body )
+		.removeClass( 'oo-ui-ltr oo-ui-rtl' )
+		.removeClass( 'oo-ui-theme-' + this.mode.theme );
 	$( this.stylesheetLinks ).remove();
 	this.$element.remove();
 	this.emit( 'destroy' );
@@ -514,6 +548,7 @@ Demo.prototype.destroy = function () {
  * @param {OO.ui.Layout} item
  * @param {string} layout Variable name for layout
  * @param {string} widget Variable name for layout's field widget
+ * @param {boolean} showLayoutCode FieldsetLayout code is shown
  * @return {jQuery} Console interface element
  */
 Demo.prototype.buildConsole = function ( item, layout, widget, showLayoutCode ) {
@@ -543,6 +578,7 @@ Demo.prototype.buildConsole = function ( item, layout, widget, showLayoutCode ) 
 
 		val = $input.val();
 		$input.val( '' );
+		// eslint-disable-next-line jquery/no-event-shorthand
 		$input[ 0 ].focus();
 		result = exec( val );
 
@@ -620,7 +656,7 @@ Demo.prototype.buildConsole = function ( item, layout, widget, showLayoutCode ) 
 			if ( obj instanceof Function ) {
 				// Get function's source code, with extraneous indentation removed
 				return obj.toString().replace( /^\t\t\t\t\t\t/gm, '' );
-			} else if ( obj instanceof jQuery ) {
+			} else if ( obj instanceof $ ) {
 				if ( $.contains( item.$element[ 0 ], obj[ 0 ] ) ) {
 					// If this element appears inside the generated widget,
 					// assume this was something like `$label: $( '<p>Text</p>' )`
@@ -691,6 +727,7 @@ Demo.prototype.buildConsole = function ( item, layout, widget, showLayoutCode ) 
 			e.preventDefault();
 			$console.toggleClass( 'demo-console-collapsed demo-console-expanded' );
 			if ( $input.is( ':visible' ) ) {
+				// eslint-disable-next-line jquery/no-event-shorthand
 				$input[ 0 ].focus();
 				if ( console && console.log ) {
 					window[ layout ] = item;

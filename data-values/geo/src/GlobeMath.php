@@ -11,8 +11,8 @@ use DataValues\Geo\Values\LatLongValue;
  *
  * @since 0.2
  *
- * @license GPL-2.0+
- * @author Thiemo Mättig
+ * @license GPL-2.0-or-later
+ * @author Thiemo Kreuz
  */
 class GlobeMath {
 
