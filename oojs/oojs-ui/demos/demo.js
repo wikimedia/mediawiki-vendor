@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /* globals Prism, javascriptStringify, jQuery */
 /**
  * @class
@@ -103,12 +102,11 @@ window.Demo = function Demo() {
 			this.tutorialsLink.$element
 		);
 	this.$element
-		.addClass( 'demo' )
+		.addClass( 'demo-root' )
 		.append( this.$menu );
 	$( document.documentElement ).attr( 'dir', this.mode.direction );
 	$( document.head ).append( this.stylesheetLinks );
 	$( document.body ).addClass( 'oo-ui-theme-' + this.mode.theme );
-	// eslint-disable-next-line new-cap
 	OO.ui.theme = new OO.ui[ this.constructor.static.themes[ this.mode.theme ] + 'Theme' ]();
 	OO.ui.isMobile = function () {
 		return demo.mode.platform === 'mobile';

@@ -214,6 +214,8 @@ Demo.static.pages.icons = function ( demo ) {
 			],
 			wikimedia: [
 				'logoCC',
+				'logoWikidata',
+				'logoWikimedia',
 				'logoWikimediaCommons',
 				'logoWikimediaDiscovery',
 				'logoWikipedia'
