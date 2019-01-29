@@ -60,8 +60,6 @@
 		}
 	],
 	"require": {
-		"backendtea/un-poly-ctype": "1.0.0",
-		"backendtea/un-poly-mbstring": "1.0.0",
 		"composer/semver": "1.4.2",
 		"cssjanus/cssjanus": "1.2.0",
 		"data-values/common": "0.4.2",
@@ -143,6 +141,10 @@
 		"wikimedia/xmp-reader": "0.6.1",
 		"wmde/php-vuejs-templating": "1.0.2",
 		"zordius/lightncandy": "0.23"
+	},
+	"replace": {
+		"symfony/polyfill-ctype": "1.99",
+		"symfony/polyfill-mbstring": "1.99"
 	},
 	"require-dev": {
 		"jakub-onderka/php-parallel-lint": "0.9.2"

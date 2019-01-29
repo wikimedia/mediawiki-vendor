@@ -4,68 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f7a7dc3b4b8be5041bd3da722f56505e",
+    "content-hash": "39e433c13f51206d98a7993f29d07d57",
     "packages": [
-        {
-            "name": "backendtea/un-poly-ctype",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/BackEndTea/un-poly-ctype.git",
-                "reference": "d413a6019d8b13ca7baa4a2c12d962cfbc73ad0b"
-            },
-            "replace": {
-                "symfony/polyfill-ctype": "*"
-            },
-            "type": "metapackage",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Gert de Pagter",
-                    "email": "BackEndTea@gmail.com"
-                }
-            ],
-            "description": "Removes the symfony/polyfill-ctype polyfill from your project",
-            "keywords": [
-                "ctype",
-                "polyfill",
-                "removal"
-            ],
-            "time": "2018-07-09T18:48:40+00:00"
-        },
-        {
-            "name": "backendtea/un-poly-mbstring",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/BackEndTea/un-poly-mbstring.git",
-                "reference": "b4d1eb9ce9b89f20b4ce1abcc5687c6f6fe6777a"
-            },
-            "replace": {
-                "symfony/polyfill-mbstring": "*"
-            },
-            "type": "metapackage",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Gert de Pagter",
-                    "email": "BackEndTea@gmail.com"
-                }
-            ],
-            "description": "Removes the symfony/polyfill-mbstring polyfill from your project",
-            "keywords": [
-                "mbstring",
-                "polyfill",
-                "removal"
-            ],
-            "time": "2018-07-09T18:54:17+00:00"
-        },
         {
             "name": "composer/semver",
             "version": "1.4.2",
