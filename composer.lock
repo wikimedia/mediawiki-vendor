@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "39e433c13f51206d98a7993f29d07d57",
+    "content-hash": "c0410fe39cbd7b21b55f6b41d0749059",
     "packages": [
         {
             "name": "composer/semver",
@@ -2575,22 +2575,22 @@
         },
         {
             "name": "wikibase/data-model",
-            "version": "9.0.1",
+            "version": "9.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wmde/WikibaseDataModel.git",
-                "reference": "8f2053ba809b991197b66404b5c098ffae2a1741"
+                "reference": "396358d91ccd2bd52ebd93e84cfab5e3ba4306b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wmde/WikibaseDataModel/zipball/8f2053ba809b991197b66404b5c098ffae2a1741",
-                "reference": "8f2053ba809b991197b66404b5c098ffae2a1741",
+                "url": "https://api.github.com/repos/wmde/WikibaseDataModel/zipball/396358d91ccd2bd52ebd93e84cfab5e3ba4306b2",
+                "reference": "396358d91ccd2bd52ebd93e84cfab5e3ba4306b2",
                 "shasum": ""
             },
             "require": {
                 "data-values/data-values": "~0.1|~1.0|~2.0",
-                "php": ">=5.6",
-                "wikimedia/assert": "~0.2.2"
+                "php": ">=5.6.99",
+                "wikimedia/assert": "~0.2.2|~0.3.0|~0.4.0"
             },
             "require-dev": {
                 "ockcyp/covers-validator": "~0.5.0",
@@ -2601,7 +2601,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "9.0.x-dev"
+                    "dev-master": "9.1.x-dev"
                 }
             },
             "autoload": {
@@ -2630,7 +2630,7 @@
                 "wikibase",
                 "wikidata"
             ],
-            "time": "2018-11-12T19:57:29+00:00"
+            "time": "2019-02-04T11:12:47+00:00"
         },
         {
             "name": "wikibase/data-model-serialization",
