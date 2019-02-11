@@ -78,7 +78,7 @@
 		"jakub-onderka/php-console-color": "0.2",
 		"jakub-onderka/php-console-highlighter": "0.3.2",
 		"james-heinrich/getid3": "1.9.17",
-		"justinrainbow/json-schema": "5.2.7",
+		"justinrainbow/json-schema": "5.2.8",
 		"liuggio/statsd-php-client": "1.0.18",
 		"monolog/monolog": "1.22.1",
 		"mustangostang/spyc": "0.6.2",
