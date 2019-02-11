@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8f6226127a5fddccac892a90542966ad",
+    "content-hash": "a781e15878623efc32a883e47aa717e6",
     "packages": [
         {
             "name": "composer/semver",
@@ -70,25 +70,25 @@
         },
         {
             "name": "cssjanus/cssjanus",
-            "version": "v1.2.0",
+            "version": "v1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cssjanus/php-cssjanus.git",
-                "reference": "0fd44d8a3f1f0f10bfb500b6b595240bf6415ffa"
+                "reference": "a428c6ac938e8cd6e789c02ebe6ed649b53c65e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cssjanus/php-cssjanus/zipball/0fd44d8a3f1f0f10bfb500b6b595240bf6415ffa",
-                "reference": "0fd44d8a3f1f0f10bfb500b6b595240bf6415ffa",
+                "url": "https://api.github.com/repos/cssjanus/php-cssjanus/zipball/a428c6ac938e8cd6e789c02ebe6ed649b53c65e9",
+                "reference": "a428c6ac938e8cd6e789c02ebe6ed649b53c65e9",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.4"
+                "php": ">=5.5.9"
             },
             "require-dev": {
-                "jakub-onderka/php-parallel-lint": "0.8.*",
-                "phpunit/phpunit": "4.8.*",
-                "squizlabs/php_codesniffer": "2.3.*"
+                "jakub-onderka/php-parallel-lint": "^0.9.2",
+                "phpunit/phpunit": "^4.8.36",
+                "squizlabs/php_codesniffer": "^3.1.1"
             },
             "type": "library",
             "autoload": {
@@ -100,8 +100,19 @@
             "license": [
                 "Apache-2.0"
             ],
+            "authors": [
+                {
+                    "name": "Trevor Parscal"
+                },
+                {
+                    "name": "Roan Kattouw"
+                },
+                {
+                    "name": "Timo Tijhof"
+                }
+            ],
             "description": "Convert CSS stylesheets between left-to-right and right-to-left.",
-            "time": "2017-03-14T20:57:08+00:00"
+            "time": "2018-02-16T00:44:28+00:00"
         },
         {
             "name": "data-values/common",

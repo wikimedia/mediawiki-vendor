@@ -132,7 +132,6 @@ class CSSJanus {
 		$patterns['translate_x'] = "/(transform\s*:[^;]*)(translateX\s*\(\s*){$patterns['possibly_negative_quantity']}(\s*\))/i";
 		$patterns['translate'] = "/(transform\s*:[^;]*)(translate\s*\(\s*){$patterns['possibly_negative_quantity']}((?:\s*,\s*{$patterns['possibly_negative_quantity']}){0,2}\s*\))/i";
 		// @codingStandardsIgnoreEnd
-
 	}
 
 	/**
