@@ -14,6 +14,7 @@ return array(
     'Wikimedia\\PasswordBlacklist\\' => array($vendorDir . '/wikimedia/password-blacklist/src'),
     'Wikimedia\\Equivset\\' => array($vendorDir . '/wikimedia/equivset/src'),
     'Wikimedia\\Composer\\' => array($vendorDir . '/wikimedia/composer-merge-plugin/src'),
+    'Wikimedia\\CSS\\' => array($vendorDir . '/wikimedia/css-sanitizer/src'),
     'Wikimedia\\Assert\\Test\\' => array($vendorDir . '/wikimedia/assert/tests/phpunit'),
     'Wikimedia\\Assert\\' => array($vendorDir . '/wikimedia/assert/src'),
     'Wikimedia\\' => array($vendorDir . '/wikimedia/ip-set/src', $vendorDir . '/wikimedia/object-factory/src', $vendorDir . '/wikimedia/scoped-callback/src', $vendorDir . '/wikimedia/wrappedstring/src'),

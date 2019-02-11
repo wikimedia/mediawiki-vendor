@@ -41,6 +41,7 @@ class ComposerStaticInit_mediawiki_vendor
             'Wikimedia\\PasswordBlacklist\\' => 28,
             'Wikimedia\\Equivset\\' => 19,
             'Wikimedia\\Composer\\' => 19,
+            'Wikimedia\\CSS\\' => 14,
             'Wikimedia\\Assert\\Test\\' => 22,
             'Wikimedia\\Assert\\' => 17,
             'Wikimedia\\' => 10,
@@ -154,6 +155,10 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Composer\\' => 
         array (
             0 => __DIR__ . '/..' . '/wikimedia/composer-merge-plugin/src',
+        ),
+        'Wikimedia\\CSS\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src',
         ),
         'Wikimedia\\Assert\\Test\\' => 
         array (

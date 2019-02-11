@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "337f356a1ff7efa86db7062f464f557d",
+    "content-hash": "32d2f048424d126e0ef5a512ba904416",
     "packages": [
         {
             "name": "composer/semver",
@@ -3225,38 +3225,38 @@
         },
         {
             "name": "wikimedia/css-sanitizer",
-            "version": "v2.0.0",
+            "version": "v2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/css-sanitizer.git",
-                "reference": "32770e79e9e31d4097c578f409cc03ee21e8e79b"
+                "reference": "b61a0af49d98ac8315b3e2eff75d49a240c9939f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/css-sanitizer/zipball/32770e79e9e31d4097c578f409cc03ee21e8e79b",
-                "reference": "32770e79e9e31d4097c578f409cc03ee21e8e79b",
+                "url": "https://api.github.com/repos/wikimedia/css-sanitizer/zipball/b61a0af49d98ac8315b3e2eff75d49a240c9939f",
+                "reference": "b61a0af49d98ac8315b3e2eff75d49a240c9939f",
                 "shasum": ""
             },
             "require": {
                 "ext-iconv": "*",
                 "ext-mbstring": "*",
                 "php": ">=5.5.9",
-                "wikimedia/at-ease": "1.2.0",
+                "wikimedia/at-ease": "1.2.0 || 2.0.0",
                 "wikimedia/utfnormal": "1.1.0 || 2.0.0"
             },
             "require-dev": {
                 "jakub-onderka/php-console-highlighter": "0.3.2",
                 "jakub-onderka/php-parallel-lint": "1.0.0",
-                "mediawiki/mediawiki-codesniffer": "21.0.0",
+                "mediawiki/mediawiki-codesniffer": "24.0.0",
                 "mediawiki/minus-x": "0.3.1",
                 "phpunit/phpunit": "4.8.36 || ^6.5",
                 "wikimedia/testing-access-wrapper": "1.0.0"
             },
             "type": "library",
             "autoload": {
-                "classmap": [
-                    "src/"
-                ]
+                "psr-4": {
+                    "Wikimedia\\CSS\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -3270,7 +3270,7 @@
             ],
             "description": "Classes to parse and sanitize CSS",
             "homepage": "https://www.mediawiki.org/wiki/Css-sanitizer",
-            "time": "2018-08-24T18:04:33+00:00"
+            "time": "2019-02-11T02:22:19+00:00"
         },
         {
             "name": "wikimedia/equivset",
