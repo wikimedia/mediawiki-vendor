@@ -12,7 +12,6 @@ class ComposerStaticInit_mediawiki_vendor
         '90559502573a0d473dc66fde5c0ff7e2' => __DIR__ . '/..' . '/data-values/common/Common.php',
         'ad155f8f1cf0d418fe49e248db8c661b' => __DIR__ . '/..' . '/react/promise/src/functions_include.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
-        '23842c11409ef125f7fd90c8b167279e' => __DIR__ . '/..' . '/wikimedia/at-ease/src/MediaWiki/Functions.php',
         'eccc0347283a01e62f5536bcf76b6e62' => __DIR__ . '/..' . '/wikimedia/at-ease/src/Wikimedia/Functions.php',
         'c15f8000750e4e04ba559d9745044427' => __DIR__ . '/..' . '/data-values/number/Number.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
@@ -47,6 +46,7 @@ class ComposerStaticInit_mediawiki_vendor
             'Wikimedia\\Equivset\\' => 19,
             'Wikimedia\\Composer\\' => 19,
             'Wikimedia\\CSS\\' => 14,
+            'Wikimedia\\AtEase\\' => 17,
             'Wikimedia\\Assert\\Test\\' => 22,
             'Wikimedia\\Assert\\' => 17,
             'Wikimedia\\' => 10,
@@ -180,6 +180,10 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\CSS\\' => 
         array (
             0 => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src',
+        ),
+        'Wikimedia\\AtEase\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/wikimedia/at-ease/src/Wikimedia/AtEase',
         ),
         'Wikimedia\\Assert\\Test\\' => 
         array (
@@ -2590,6 +2594,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Assert\\PostconditionException' => __DIR__ . '/..' . '/wikimedia/assert/src/PostconditionException.php',
         'Wikimedia\\Assert\\PreconditionException' => __DIR__ . '/..' . '/wikimedia/assert/src/PreconditionException.php',
         'Wikimedia\\Assert\\Test\\AssertTest' => __DIR__ . '/..' . '/wikimedia/assert/tests/phpunit/AssertTest.php',
+        'Wikimedia\\AtEase\\AtEase' => __DIR__ . '/..' . '/wikimedia/at-ease/src/Wikimedia/AtEase/AtEase.php',
         'Wikimedia\\CSS\\Grammar\\Alternative' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/Alternative.php',
         'Wikimedia\\CSS\\Grammar\\AnythingMatcher' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/AnythingMatcher.php',
         'Wikimedia\\CSS\\Grammar\\BlockMatcher' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/BlockMatcher.php',

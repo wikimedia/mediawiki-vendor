@@ -2118,6 +2118,7 @@ return array(
     'Wikimedia\\Assert\\PostconditionException' => $vendorDir . '/wikimedia/assert/src/PostconditionException.php',
     'Wikimedia\\Assert\\PreconditionException' => $vendorDir . '/wikimedia/assert/src/PreconditionException.php',
     'Wikimedia\\Assert\\Test\\AssertTest' => $vendorDir . '/wikimedia/assert/tests/phpunit/AssertTest.php',
+    'Wikimedia\\AtEase\\AtEase' => $vendorDir . '/wikimedia/at-ease/src/Wikimedia/AtEase/AtEase.php',
     'Wikimedia\\CSS\\Grammar\\Alternative' => $vendorDir . '/wikimedia/css-sanitizer/src/Grammar/Alternative.php',
     'Wikimedia\\CSS\\Grammar\\AnythingMatcher' => $vendorDir . '/wikimedia/css-sanitizer/src/Grammar/AnythingMatcher.php',
     'Wikimedia\\CSS\\Grammar\\BlockMatcher' => $vendorDir . '/wikimedia/css-sanitizer/src/Grammar/BlockMatcher.php',
