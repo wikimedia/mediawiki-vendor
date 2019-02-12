@@ -3487,32 +3487,32 @@
     },
     {
         "name": "wikimedia/ip-set",
-        "version": "2.0.0",
-        "version_normalized": "2.0.0.0",
+        "version": "2.0.1",
+        "version_normalized": "2.0.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/IPSet.git",
-            "reference": "98c9fe4c57ecdc185fa82ef55825290822106251"
+            "reference": "c95e268470ef22d0292044eb7e99ab660575f5b2"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/IPSet/zipball/98c9fe4c57ecdc185fa82ef55825290822106251",
-            "reference": "98c9fe4c57ecdc185fa82ef55825290822106251",
+            "url": "https://api.github.com/repos/wikimedia/IPSet/zipball/c95e268470ef22d0292044eb7e99ab660575f5b2",
+            "reference": "c95e268470ef22d0292044eb7e99ab660575f5b2",
             "shasum": ""
         },
         "require": {
             "php": ">=5.6.99",
-            "wikimedia/at-ease": "1.2.0"
+            "wikimedia/at-ease": "1.2.0 || 2.0.0"
         },
         "require-dev": {
             "jakub-onderka/php-console-highlighter": "0.3.2",
             "jakub-onderka/php-parallel-lint": "1.0.0",
-            "mediawiki/mediawiki-codesniffer": "22.0.0",
+            "mediawiki/mediawiki-codesniffer": "24.0.0",
             "mediawiki/minus-x": "0.3.1",
             "ockcyp/covers-validator": "0.5.1 || 0.6.1",
             "phpunit/phpunit": "4.8.36 || ^6.5"
         },
-        "time": "2018-12-18T03:21:47+00:00",
+        "time": "2019-02-11T03:52:45+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
