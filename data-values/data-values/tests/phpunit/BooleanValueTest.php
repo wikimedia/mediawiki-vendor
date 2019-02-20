@@ -10,7 +10,7 @@ use DataValues\BooleanValue;
  * @group DataValue
  * @group DataValueExtensions
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class BooleanValueTest extends DataValueTest {
@@ -21,38 +21,35 @@ class BooleanValueTest extends DataValueTest {
 	 * @return string
 	 */
 	public function getClass() {
-		return 'DataValues\BooleanValue';
+		return BooleanValue::class;
 	}
 
 	public function validConstructorArgumentsProvider() {
-		$argLists = array();
+		$argLists = [];
 
-		$argLists[] = array( false );
-		$argLists[] = array( true );
+		$argLists[] = [ false ];
+		$argLists[] = [ true ];
 
 		return $argLists;
 	}
 
 	public function invalidConstructorArgumentsProvider() {
-		$argLists = array();
+		$argLists = [];
 
-		$argLists[] = array( );
-		$argLists[] = array( 42 );
-		$argLists[] = array( array() );
-		$argLists[] = array( '1' );
-		$argLists[] = array( '' );
-		$argLists[] = array( 0 );
-		$argLists[] = array( 1 );
-		$argLists[] = array( 'foo' );
-		$argLists[] = array( null );
+		$argLists[] = [ 42 ];
+		$argLists[] = [ [] ];
+		$argLists[] = [ '1' ];
+		$argLists[] = [ '' ];
+		$argLists[] = [ 0 ];
+		$argLists[] = [ 1 ];
+		$argLists[] = [ 'foo' ];
+		$argLists[] = [ null ];
 
 		return $argLists;
 	}
 
 	/**
 	 * @dataProvider instanceProvider
-	 * @param BooleanValue $boolean
-	 * @param array $arguments
 	 */
 	public function testGetValue( BooleanValue $boolean, array $arguments ) {
 		$this->assertEquals( $arguments[0], $boolean->getValue() );

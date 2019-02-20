@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9b9545cb1fb8a0bdf5791823f5cc4fa4",
+    "content-hash": "d0ea6ef83bd9a7a2458c2f4494c3a6c0",
     "packages": [
         {
             "name": "composer/semver",
@@ -177,28 +177,32 @@
         },
         {
             "name": "data-values/data-values",
-            "version": "1.1.1",
+            "version": "2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DataValues/DataValues.git",
-                "reference": "c629d18daa781690d3efff442bc0da50199d8e8a"
+                "reference": "5d7ad3730f05541f7c088c7c2ba1782ba56333b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DataValues/DataValues/zipball/c629d18daa781690d3efff442bc0da50199d8e8a",
-                "reference": "c629d18daa781690d3efff442bc0da50199d8e8a",
+                "url": "https://api.github.com/repos/DataValues/DataValues/zipball/5d7ad3730f05541f7c088c7c2ba1782ba56333b3",
+                "reference": "5d7ad3730f05541f7c088c7c2ba1782ba56333b3",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "php": ">=5.5.9"
             },
             "replace": {
                 "mediawiki/data-values": "*"
             },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8",
+                "wikibase/wikibase-codesniffer": "^0.1.0"
+            },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "dev-master": "2.0.x-dev"
                 }
             },
             "autoload": {
@@ -209,8 +213,8 @@
                     "src/interfaces",
                     "tests/phpunit/DataValueTest.php"
                 ],
-                "psr-0": {
-                    "DataValues\\": "src/"
+                "psr-4": {
+                    "DataValues\\": "src/DataValues/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -232,7 +236,7 @@
                 "wikibase",
                 "wikidata"
             ],
-            "time": "2017-11-02T18:08:35+00:00"
+            "time": "2017-09-28T11:48:25+00:00"
         },
         {
             "name": "data-values/geo",
@@ -417,20 +421,20 @@
         },
         {
             "name": "data-values/serialization",
-            "version": "1.2.2",
+            "version": "1.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DataValues/Serialization.git",
-                "reference": "d849fc1a2f00f22027d504c4e70fd00a0c6a7579"
+                "reference": "44299273418b254d768ff083ab65c60b00138672"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DataValues/Serialization/zipball/d849fc1a2f00f22027d504c4e70fd00a0c6a7579",
-                "reference": "d849fc1a2f00f22027d504c4e70fd00a0c6a7579",
+                "url": "https://api.github.com/repos/DataValues/Serialization/zipball/44299273418b254d768ff083ab65c60b00138672",
+                "reference": "44299273418b254d768ff083ab65c60b00138672",
                 "shasum": ""
             },
             "require": {
-                "data-values/data-values": "~1.0|~0.1",
+                "data-values/data-values": "~2.0|~1.0|~0.1",
                 "php": ">=5.5.9",
                 "serialization/serialization": "~4.0|~3.0"
             },
@@ -452,7 +456,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -471,7 +475,7 @@
                 "serializers",
                 "wikidata"
             ],
-            "time": "2017-10-25T13:47:05+00:00"
+            "time": "2018-12-03T12:51:57+00:00"
         },
         {
             "name": "data-values/time",
@@ -2748,24 +2752,24 @@
         },
         {
             "name": "wikibase/data-model-services",
-            "version": "3.12.0",
+            "version": "3.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wmde/WikibaseDataModelServices.git",
-                "reference": "d3599a104428f8e472b8c92172c86b7824149096"
+                "reference": "09a0ec56b0aab506b07a5b7d8b6a0ac07c80b2fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wmde/WikibaseDataModelServices/zipball/d3599a104428f8e472b8c92172c86b7824149096",
-                "reference": "d3599a104428f8e472b8c92172c86b7824149096",
+                "url": "https://api.github.com/repos/wmde/WikibaseDataModelServices/zipball/09a0ec56b0aab506b07a5b7d8b6a0ac07c80b2fb",
+                "reference": "09a0ec56b0aab506b07a5b7d8b6a0ac07c80b2fb",
                 "shasum": ""
             },
             "require": {
                 "data-values/data-values": "~2.0|~1.0",
                 "diff/diff": "~2.3",
-                "php": ">=5.6.0",
+                "php": ">=5.6.99",
                 "wikibase/data-model": "~9.0|~8.0|~7.0|~6.3",
-                "wikimedia/assert": "~0.2.2"
+                "wikimedia/assert": "~0.2.2|~0.3.0|~0.4.0"
             },
             "require-dev": {
                 "phpmd/phpmd": "~2.3",
@@ -2775,7 +2779,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.12.x-dev"
+                    "dev-master": "3.13.x-dev"
                 }
             },
             "autoload": {
@@ -2789,6 +2793,10 @@
             ],
             "authors": [
                 {
+                    "name": "The Wikidata team",
+                    "role": "Developer"
+                },
+                {
                     "name": "Jeroen De Dauw",
                     "email": "jeroendedauw@gmail.com",
                     "homepage": "https://www.entropywins.wtf/"
@@ -2801,7 +2809,7 @@
                 "wikibase",
                 "wikidata"
             ],
-            "time": "2018-11-07T10:45:19+00:00"
+            "time": "2019-02-06T15:00:21+00:00"
         },
         {
             "name": "wikibase/internal-serialization",

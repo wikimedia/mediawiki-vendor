@@ -325,6 +325,7 @@ class ComposerStaticInit_mediawiki_vendor
         'DataValues\\' => 
         array (
             0 => __DIR__ . '/..' . '/data-values/common/src/DataValues',
+            1 => __DIR__ . '/..' . '/data-values/data-values/src/DataValues',
         ),
         'Composer\\Semver\\' => 
         array (
@@ -413,9 +414,8 @@ class ComposerStaticInit_mediawiki_vendor
         array (
             'DataValues\\' => 
             array (
-                0 => __DIR__ . '/..' . '/data-values/data-values/src',
-                1 => __DIR__ . '/..' . '/data-values/number/src',
-                2 => __DIR__ . '/..' . '/data-values/time/src',
+                0 => __DIR__ . '/..' . '/data-values/number/src',
+                1 => __DIR__ . '/..' . '/data-values/time/src',
             ),
         ),
         'C' => 
@@ -500,7 +500,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Composer\\Semver\\Semver' => __DIR__ . '/..' . '/composer/semver/src/Semver.php',
         'Composer\\Semver\\VersionParser' => __DIR__ . '/..' . '/composer/semver/src/VersionParser.php',
         'Console_Getopt' => __DIR__ . '/..' . '/pear/console_getopt/Console/Getopt.php',
-        'Copyable' => __DIR__ . '/..' . '/data-values/data-values/src/interfaces/Copyable.php',
         'DataValues\\BooleanValue' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/BooleanValue.php',
         'DataValues\\DataValue' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/DataValue.php',
         'DataValues\\DataValueObject' => __DIR__ . '/..' . '/data-values/data-values/src/DataValues/DataValueObject.php',
@@ -2351,6 +2350,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikibase\\DataModel\\Services\\Lookup\\EntityRetrievingClosestReferencedEntityIdLookup' => __DIR__ . '/..' . '/wikibase/data-model-services/src/Lookup/EntityRetrievingClosestReferencedEntityIdLookup.php',
         'Wikibase\\DataModel\\Services\\Lookup\\EntityRetrievingDataTypeLookup' => __DIR__ . '/..' . '/wikibase/data-model-services/src/Lookup/EntityRetrievingDataTypeLookup.php',
         'Wikibase\\DataModel\\Services\\Lookup\\EntityRetrievingTermLookup' => __DIR__ . '/..' . '/wikibase/data-model-services/src/Lookup/EntityRetrievingTermLookup.php',
+        'Wikibase\\DataModel\\Services\\Lookup\\ExceptionIgnoringEntityLookup' => __DIR__ . '/..' . '/wikibase/data-model-services/src/Lookup/ExceptionIgnoringEntityLookup.php',
         'Wikibase\\DataModel\\Services\\Lookup\\InMemoryDataTypeLookup' => __DIR__ . '/..' . '/wikibase/data-model-services/src/Lookup/InMemoryDataTypeLookup.php',
         'Wikibase\\DataModel\\Services\\Lookup\\InMemoryEntityLookup' => __DIR__ . '/..' . '/wikibase/data-model-services/src/Lookup/InMemoryEntityLookup.php',
         'Wikibase\\DataModel\\Services\\Lookup\\InProcessCachingDataTypeLookup' => __DIR__ . '/..' . '/wikibase/data-model-services/src/Lookup/InProcessCachingDataTypeLookup.php',

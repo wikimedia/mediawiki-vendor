@@ -2,15 +2,20 @@
 
 namespace DataValues;
 
+use Comparable;
+use Hashable;
+use Immutable;
+use Serializable;
+
 /**
  * Interface for objects that represent a single data value.
  *
  * @since 0.1
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-interface DataValue extends \Hashable, \Comparable, \Serializable, \Immutable, \Copyable {
+interface DataValue extends Hashable, Comparable, Serializable, Immutable {
 
 	/**
 	 * Returns the identifier of the datavalues type.
@@ -39,7 +44,7 @@ interface DataValue extends \Hashable, \Comparable, \Serializable, \Immutable, \
 	 * In essence, this method returns the "simplest" representation of the value.
 	 *
 	 * Example:
-	 * - NumberDataValue returns a float or integer
+	 * - NumberValue returns a float or integer
 	 * - MediaWikiTitleValue returns a Title object
 	 * - QuantityValue returns itself
 	 *
@@ -50,7 +55,7 @@ interface DataValue extends \Hashable, \Comparable, \Serializable, \Immutable, \
 	public function getValue();
 
 	/**
-	 * Returns the value in array form.
+	 * Returns the value in a form suitable for an array serialization.
 	 *
 	 * For simple values (ie a string) the return value will be equal to that of @see getValue.
 	 *
@@ -78,5 +83,14 @@ interface DataValue extends \Hashable, \Comparable, \Serializable, \Immutable, \
 	 * @return array
 	 */
 	public function toArray();
+
+	/**
+	 * Returns a deep copy of the object.
+	 *
+	 * @since 0.1
+	 *
+	 * @return DataValue
+	 */
+	public function getCopy();
 
 }

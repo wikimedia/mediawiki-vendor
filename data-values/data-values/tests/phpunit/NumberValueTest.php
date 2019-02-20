@@ -10,7 +10,7 @@ use DataValues\NumberValue;
  * @group DataValue
  * @group DataValueExtensions
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class NumberValueTest extends DataValueTest {
@@ -21,43 +21,41 @@ class NumberValueTest extends DataValueTest {
 	 * @return string
 	 */
 	public function getClass() {
-		return 'DataValues\NumberValue';
+		return NumberValue::class;
 	}
 
 	public function validConstructorArgumentsProvider() {
-		$argLists = array();
+		$argLists = [];
 
-		$argLists[] = array( 42 );
-		$argLists[] = array( -42 );
-		$argLists[] = array( 4.2 );
-		$argLists[] = array( -4.2 );
-		$argLists[] = array( 0 );
+		$argLists[] = [ 42 ];
+		$argLists[] = [ -42 ];
+		$argLists[] = [ 4.2 ];
+		$argLists[] = [ -4.2 ];
+		$argLists[] = [ 0 ];
 
 		return $argLists;
 	}
 
 	public function invalidConstructorArgumentsProvider() {
-		$argLists = array();
+		$argLists = [];
 
-		$argLists[] = array( 'foo' );
-		$argLists[] = array( '' );
-		$argLists[] = array( '0' );
-		$argLists[] = array( '42' );
-		$argLists[] = array( '-42' );
-		$argLists[] = array( '4.2' );
-		$argLists[] = array( '-4.2' );
-		$argLists[] = array( false );
-		$argLists[] = array( true );
-		$argLists[] = array( null );
-		$argLists[] = array( '0x20' );
+		$argLists[] = [ 'foo' ];
+		$argLists[] = [ '' ];
+		$argLists[] = [ '0' ];
+		$argLists[] = [ '42' ];
+		$argLists[] = [ '-42' ];
+		$argLists[] = [ '4.2' ];
+		$argLists[] = [ '-4.2' ];
+		$argLists[] = [ false ];
+		$argLists[] = [ true ];
+		$argLists[] = [ null ];
+		$argLists[] = [ '0x20' ];
 
 		return $argLists;
 	}
 
 	/**
 	 * @dataProvider instanceProvider
-	 * @param NumberValue $number
-	 * @param array $arguments
 	 */
 	public function testGetValue( NumberValue $number, array $arguments ) {
 		$this->assertEquals( $arguments[0], $number->getValue() );

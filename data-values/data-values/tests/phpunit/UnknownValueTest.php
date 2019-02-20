@@ -9,9 +9,8 @@ use DataValues\UnknownValue;
  *
  * @group DataValue
  * @group DataValueExtensions
- * @group UnknownValueTest
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class UnknownValueTest extends DataValueTest {
@@ -22,37 +21,37 @@ class UnknownValueTest extends DataValueTest {
 	 * @return string
 	 */
 	public function getClass() {
-		return 'DataValues\UnknownValue';
+		return UnknownValue::class;
 	}
 
 	public function validConstructorArgumentsProvider() {
-		$argLists = array();
+		$argLists = [];
 
-		$argLists[] = array( 42 );
-		$argLists[] = array( array() );
-		$argLists[] = array( false );
-		$argLists[] = array( true );
-		$argLists[] = array( null );
-		$argLists[] = array( 'foo' );
-		$argLists[] = array( '' );
-		$argLists[] = array( ' foo bar baz foo bar baz foo bar baz foo bar baz foo bar baz foo bar baz ' );
-
+		$argLists[] = [ 42 ];
+		$argLists[] = [ [] ];
+		$argLists[] = [ false ];
+		$argLists[] = [ true ];
+		$argLists[] = [ null ];
+		$argLists[] = [ 'foo' ];
+		$argLists[] = [ '' ];
+		$argLists[] = [ ' foo bar baz foo bar baz foo bar baz foo bar baz foo bar baz foo bar baz ' ];
 
 		return $argLists;
 	}
 
 	public function invalidConstructorArgumentsProvider() {
-		$argLists = array();
+		return [
+			[],
+		];
+	}
 
-		$argLists[] = array();
-
-		return $argLists;
+	public function testConstructorWithInvalidArguments() {
+		// UnknownValue has no invalid arguments
+		$this->assertTrue( true );
 	}
 
 	/**
 	 * @dataProvider instanceProvider
-	 * @param UnknownValue $value
-	 * @param array $arguments
 	 */
 	public function testGetValue( UnknownValue $value, array $arguments ) {
 		$this->assertEquals( $arguments[0], $value->getValue() );

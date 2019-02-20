@@ -7,7 +7,6 @@ It is part of the [DataValues set of libraries](https://github.com/DataValues).
 [![Build Status](https://secure.travis-ci.org/DataValues/Serialization.png?branch=master)](http://travis-ci.org/DataValues/Serialization)
 [![Code Coverage](https://scrutinizer-ci.com/g/DataValues/Serialization/badges/coverage.png?s=3e52443ffbf18b98804feb7c02ba4416f3f986cb)](https://scrutinizer-ci.com/g/DataValues/Serialization/)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/DataValues/Serialization/badges/quality-score.png?s=818787ea88853bbfb76dc226eb4ab755729141c5)](https://scrutinizer-ci.com/g/DataValues/Serialization/)
-[![Dependency Status](https://www.versioneye.com/php/data-values:serialization/badge.png)](https://www.versioneye.com/php/data-values:serialization)
 
 On [Packagist](https://packagist.org/packages/data-values/serialization):
 [![Latest Stable Version](https://poser.pugx.org/data-values/serialization/version.png)](https://packagist.org/packages/data-values/serialization)
@@ -22,11 +21,11 @@ The recommended way to use this library is via [Composer](http://getcomposer.org
 To add this package as a local, per-project dependency to your project, simply add a
 dependency on `data-values/serialization` to your project's `composer.json` file.
 Here is a minimal example of a `composer.json` file that just defines a dependency on
-version 1.0 of this package:
+version 1.x of this package:
 
     {
         "require": {
-            "data-values/serialization": "1.0.*"
+            "data-values/serialization": "1.*"
         }
     }
 
@@ -49,9 +48,13 @@ as [Wikimedia Germany](https://wikimedia.de) employee for the [Wikidata project]
 
 ## Release notes
 
+### 1.2.3 (2018-12-01)
+
+* Made component installable together with DataValues 2.x
+
 ### 1.2.2 (2017-10-25)
 
-* Made component installable together Serialization 4.x
+* Made component installable together with Serialization 4.x
 
 ### 1.2.1 (2017-06-26)
 

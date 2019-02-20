@@ -11,7 +11,7 @@ use InvalidArgumentException;
  *
  * @since 0.1
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0+
  * @author Daniel Kinzler
  */
 class UnDeserializableValue extends DataValueObject {
@@ -22,7 +22,7 @@ class UnDeserializableValue extends DataValueObject {
 	private $data;
 
 	/**
-	 * @var string
+	 * @var string|null
 	 */
 	private $type;
 
@@ -32,22 +32,19 @@ class UnDeserializableValue extends DataValueObject {
 	private $error;
 
 	/**
-	 * @since 0.1
-	 *
-	 * @param string $type The originally intended type
 	 * @param mixed $data The raw data structure
+	 * @param string|null $type The originally intended type
 	 * @param string $error The error that occurred when processing the original data structure.
 	 *
 	 * @throws InvalidArgumentException
-	 * @internal param mixed $value
 	 */
 	public function __construct( $data, $type, $error ) {
-		if ( !is_null( $type ) && !is_string( $type ) ) {
-			throw new InvalidArgumentException( '$type must be string or null' );
-		}
-
 		if ( is_object( $data ) ) {
 			throw new InvalidArgumentException( '$data must not be an object' );
+		}
+
+		if ( !is_string( $type ) && !is_null( $type ) ) {
+			throw new InvalidArgumentException( '$type must be a string or null' );
 		}
 
 		if ( !is_string( $error ) ) {
@@ -65,22 +62,16 @@ class UnDeserializableValue extends DataValueObject {
 	 * @note: The serialization includes the intended type and the error message
 	 *        along with the original data.
 	 *
-	 * @since 0.1
-	 *
 	 * @return string
 	 */
 	public function serialize() {
-		return serialize( array( $this->type, $this->data, $this->error ) );
+		return serialize( [ $this->type, $this->data, $this->error ] );
 	}
 
 	/**
 	 * @see Serializable::unserialize
 	 *
-	 * @since 0.1
-	 *
 	 * @param string $value
-	 *
-	 * @return StringValue
 	 */
 	public function unserialize( $value ) {
 		list( $type, $data, $error ) = unserialize( $value );
@@ -91,8 +82,6 @@ class UnDeserializableValue extends DataValueObject {
 	 * @see DataValue::getArrayValue
 	 *
 	 * @note: this returns the original raw data structure.
-	 *
-	 * @since 0.1
 	 *
 	 * @return mixed
 	 */
@@ -107,22 +96,18 @@ class UnDeserializableValue extends DataValueObject {
 	 *        does not model a UnDeserializableValue, but the originally intended type of value.
 	 *        This allows for round trip compatibility with unknown types of data.
 	 *
-	 * @since 0.1
-	 *
 	 * @return array
 	 */
 	public function toArray() {
-		return array(
-			'value' => $this->getArrayValue(),
-			'type' => $this->getTargetType(),
-			'error' => $this->getReason(),
-		);
+		return [
+			'value' => $this->data,
+			'type' => $this->type,
+			'error' => $this->error,
+		];
 	}
 
 	/**
 	 * @see DataValue::getType
-	 *
-	 * @since 0.1
 	 *
 	 * @return string
 	 */
@@ -133,9 +118,7 @@ class UnDeserializableValue extends DataValueObject {
 	/**
 	 * Returns the value type that was intended for the bad data structure.
 	 *
-	 * @since 0.1
-	 *
-	 * @return string
+	 * @return string|null
 	 */
 	public function getTargetType() {
 		return $this->type;
@@ -145,8 +128,6 @@ class UnDeserializableValue extends DataValueObject {
 	 * Returns a string describing the issue that caused the failure
 	 * represented by this UnDeserializableValue object.
 	 *
-	 * @since 0.1
-	 *
 	 * @return string
 	 */
 	public function getReason() {
@@ -155,8 +136,6 @@ class UnDeserializableValue extends DataValueObject {
 
 	/**
 	 * @see DataValue::getSortKey
-	 *
-	 * @since 0.1
 	 *
 	 * @return int Always 0 in this implementation.
 	 */
@@ -168,8 +147,6 @@ class UnDeserializableValue extends DataValueObject {
 	 * Returns the raw data structure.
 	 * @see DataValue::getValue
 	 *
-	 * @since 0.1
-	 *
 	 * @return mixed
 	 */
 	public function getValue() {
@@ -179,24 +156,19 @@ class UnDeserializableValue extends DataValueObject {
 	/**
 	 * @see Comparable::equals
 	 *
-	 * @since 0.1
-	 *
-	 * @param mixed $value
+	 * @param mixed $target
 	 *
 	 * @return bool
 	 */
-	public function equals( $value ) {
-		if ( $value === $this ) {
+	public function equals( $target ) {
+		if ( $this === $target ) {
 			return true;
 		}
 
-		if ( !( $value instanceof self ) ) {
-			return false;
-		}
-
-		return $value->data === $this->data
-			&& $value->type === $this->type
-			&& $value->error === $this->error;
+		return $target instanceof self
+			&& $this->data === $target->data
+			&& $this->type === $target->type
+			&& $this->error === $target->error;
 	}
 
 }

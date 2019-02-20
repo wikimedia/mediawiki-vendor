@@ -7,15 +7,13 @@ namespace DataValues;
  *
  * @since 0.1
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 abstract class DataValueObject implements DataValue {
 
 	/**
 	 * @see Hashable::getHash
-	 *
-	 * @since 0.1
 	 *
 	 * @return string
 	 */
@@ -26,21 +24,22 @@ abstract class DataValueObject implements DataValue {
 	/**
 	 * @see Comparable::equals
 	 *
-	 * @since 0.1
+	 * @param mixed $target
 	 *
-	 * @param mixed $value
-	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function equals( $value ) {
-		return $value === $this ||
-			( is_object( $value ) && get_class( $value ) == get_called_class() && serialize( $value ) === serialize( $this ) );
+	public function equals( $target ) {
+		if ( $this === $target ) {
+			return true;
+		}
+
+		return is_object( $target )
+			&& get_called_class() === get_class( $target )
+			&& serialize( $this ) === serialize( $target );
 	}
 
 	/**
-	 * @see Copyable::getCopy
-	 *
-	 * @since 0.1
+	 * @see DataValue::getCopy
 	 *
 	 * @return DataValue
 	 */
@@ -51,8 +50,6 @@ abstract class DataValueObject implements DataValue {
 	/**
 	 * @see DataValue::getArrayValue
 	 *
-	 * @since 0.1
-	 *
 	 * @return mixed
 	 */
 	public function getArrayValue() {
@@ -62,22 +59,20 @@ abstract class DataValueObject implements DataValue {
 	/**
 	 * @see DataValue::toArray
 	 *
-	 * @since 0.1
-	 *
 	 * @return array
 	 */
 	public function toArray() {
-		return array(
+		return [
 			'value' => $this->getArrayValue(),
 			'type' => $this->getType(),
-		);
+		];
 	}
 
 	/**
 	 * Checks that $data is an array and contains the given fields.
 	 *
 	 * @param mixed $data
-	 * @param array $fields
+	 * @param string[] $fields
 	 *
 	 * @todo: this should be removed once we got rid of all the static newFromArray() methods.
 	 *
