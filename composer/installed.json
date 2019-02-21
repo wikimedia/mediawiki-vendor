@@ -654,8 +654,7 @@
         "dist": {
             "type": "zip",
             "url": "https://api.github.com/repos/elastic/elasticsearch-php/zipball/tags/v5.3.2",
-            "reference": "tags/v5.3.2",
-            "shasum": null
+            "reference": "tags/v5.3.2"
         },
         "require": {
             "php": ">=5.5.0"
@@ -1409,17 +1408,17 @@
     },
     {
         "name": "oojs/oojs-ui",
-        "version": "v0.30.2",
-        "version_normalized": "0.30.2.0",
+        "version": "v0.30.3",
+        "version_normalized": "0.30.3.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/oojs-ui.git",
-            "reference": "6edecb36ef526f8b83e537b536f38dbe48a7316d"
+            "reference": "21c07244450c0348ec0914735ad622948531fc14"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/6edecb36ef526f8b83e537b536f38dbe48a7316d",
-            "reference": "6edecb36ef526f8b83e537b536f38dbe48a7316d",
+            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/21c07244450c0348ec0914735ad622948531fc14",
+            "reference": "21c07244450c0348ec0914735ad622948531fc14",
             "shasum": ""
         },
         "require": {
@@ -1428,11 +1427,11 @@
         "require-dev": {
             "jakub-onderka/php-console-highlighter": "0.3.2",
             "jakub-onderka/php-parallel-lint": "1.0.0",
-            "mediawiki/mediawiki-codesniffer": "23.0.0",
+            "mediawiki/mediawiki-codesniffer": "24.0.0",
             "mediawiki/minus-x": "0.3.1",
             "phpunit/phpunit": "4.8.36 || ^6.5"
         },
-        "time": "2019-01-23T00:33:33+00:00",
+        "time": "2019-02-21T03:39:27+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -2243,8 +2242,7 @@
         "dist": {
             "type": "zip",
             "url": "https://github.com/ruflin/Elastica/archive/5.3.2.zip",
-            "reference": "tags/5.3.2",
-            "shasum": null
+            "reference": "tags/5.3.2"
         },
         "require": {
             "elasticsearch/elasticsearch": "5.3.2",

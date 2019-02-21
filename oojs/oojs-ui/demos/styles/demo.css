@@ -415,11 +415,19 @@ p {
  * Left-to-right labels by default, as they're never translated and parentheses are causing
  * rendering quirks
  */
-/* @noflip */
 .oo-ui-labelElement .oo-ui-labelElement-label {
+	/* @noflip */
 	direction: ltr;
 	/* Necessary for inline elements */
 	unicode-bidi: bidi-override;
+}
+
+/*
+ * Support IE 10, 11, Edge 15 & 16: ButtonWidgets with empty labels are oversized
+ * Note, that this does not affect widgets with `invisibleLabel` set.
+ */
+.oo-ui-buttonElement-button > .oo-ui-labelElement-label:empty {
+	unicode-bidi: normal;
 }
 
 .oo-ui-fieldLayout.oo-ui-fieldLayout-align-top > .oo-ui-fieldLayout-body > .oo-ui-inline-help,
@@ -484,7 +492,8 @@ FieldLayout left & right aligned */
 	}
 
 	.demo-menu + .demo-container.oo-ui-panelLayout {
-		margin-top: 4.5em;
+		/* Decrease by `border-bottom` */
+		margin-top: calc( 4.5em - 1px );
 	}
 
 	/* Avoid `box-shadow` from menu lurkin into toolbar demo, +1.2em to be harmonious with menu */
@@ -496,7 +505,9 @@ FieldLayout left & right aligned */
 	.demo-container.oo-ui-panelLayout {
 		/* Apex overrides. WikimediaUI wins for now in the demo framing in this browser subset */
 		border-color: #a2a9b1;
-		border-radius: 2px;
+		/* PanelLayout doesn't have rounded borders with menu overlay ever,
+		   therefore removing top radius */
+		border-radius: 0 0 2px 2px;
 		box-shadow: none;
 	}
 
