@@ -5,6 +5,7 @@ use Aws\Credentials\CredentialProvider;
 use Aws\Credentials\Credentials;
 use Aws\Signature\SignatureV4;
 use Elastica\Connection;
+use Elastica\Request;
 use GuzzleHttp;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
@@ -13,7 +14,7 @@ use Psr\Http\Message\RequestInterface;
 
 class AwsAuthV4 extends Guzzle
 {
-    protected function _getGuzzleClient($baseUrl, $persistent = true)
+    protected function _getGuzzleClient($baseUrl, $persistent = true, Request $request)
     {
         if (!$persistent || !self::$_guzzleClientConnection) {
             $stack = HandlerStack::create(GuzzleHttp\choose_handler());
@@ -22,6 +23,9 @@ class AwsAuthV4 extends Guzzle
             self::$_guzzleClientConnection = new Client([
                 'base_uri' => $baseUrl,
                 'handler' => $stack,
+                'headers' => [
+                    'Content-Type' => $request->getContentType(),
+                ],
             ]);
         }
 
@@ -70,7 +74,7 @@ class AwsAuthV4 extends Guzzle
     private function initializePortAndScheme()
     {
         $connection = $this->getConnection();
-        if (true === $this->getConfig($connection, 'ssl')) {
+        if (true === $this->isSslRequired($connection)) {
             $this->_scheme = 'https';
             $connection->setPort(443);
         } else {
@@ -79,10 +83,16 @@ class AwsAuthV4 extends Guzzle
         }
     }
 
-    private function getConfig(Connection $conn, $key, $default = null)
+    /**
+     * @param Connection $conn
+     * @param bool       $default
+     *
+     * @return bool
+     */
+    private function isSslRequired(Connection $conn, $default = false)
     {
-        return $conn->hasConfig($key)
-            ? $conn->getConfig($key)
+        return $conn->hasParam('ssl')
+            ? (bool) $conn->getParam('ssl')
             : $default;
     }
 }

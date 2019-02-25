@@ -17,11 +17,7 @@ use Elastica\Exception\InvalidException;
  */
 abstract class AbstractScript extends AbstractUpdateAction
 {
-    const LANG_MVEL = 'mvel';
-    const LANG_JS = 'js';
-    const LANG_GROOVY = 'groovy';
-    const LANG_PYTHON = 'python';
-    const LANG_NATIVE = 'native';
+    const LANG_MOUSTACHE = 'moustache';
     const LANG_EXPRESSION = 'expression';
     const LANG_PAINLESS = 'painless';
 
@@ -37,7 +33,7 @@ abstract class AbstractScript extends AbstractUpdateAction
      *
      * @throws InvalidException
      *
-     * @return Script|ScriptFile|ScriptId
+     * @return Script|ScriptId
      */
     public static function create($data)
     {
@@ -60,24 +56,16 @@ abstract class AbstractScript extends AbstractUpdateAction
 
     private static function _createFromArray(array $data)
     {
-        $params = isset($data['script']['params']) ? $data['script']['params'] : [];
-        $lang = isset($data['script']['lang']) ? $data['script']['lang'] : null;
+        $params = $data['script']['params'] ?? [];
+        $lang = $data['script']['lang'] ?? null;
 
         if (!is_array($params)) {
             throw new InvalidException('Script params must be an array');
         }
 
-        if (isset($data['script']['inline'])) {
+        if (isset($data['script']['source'])) {
             return new Script(
-                $data['script']['inline'],
-                $params,
-                $lang
-            );
-        }
-
-        if (isset($data['script']['file'])) {
-            return new ScriptFile(
-                $data['script']['file'],
+                $data['script']['source'],
                 $params,
                 $lang
             );
