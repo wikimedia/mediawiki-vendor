@@ -23,7 +23,7 @@ class Convert extends AbstractProcessor
      *
      * @return $this
      */
-    public function setField(string $field)
+    public function setField($field)
     {
         return $this->setParam('field', $field);
     }
@@ -35,7 +35,7 @@ class Convert extends AbstractProcessor
      *
      * @return $this
      */
-    public function setType(string $type)
+    public function setType($type)
     {
         return $this->setParam('type', $type);
     }
@@ -47,7 +47,7 @@ class Convert extends AbstractProcessor
      *
      * @return $this
      */
-    public function setTargetField(string $targetField)
+    public function setTargetField($targetField)
     {
         return $this->setParam('target_field', $targetField);
     }
@@ -59,7 +59,7 @@ class Convert extends AbstractProcessor
      *
      * @return $this
      */
-    public function setIgnoreMissing(bool $ignoreMissing)
+    public function setIgnoreMissing($ignoreMissing)
     {
         return $this->setParam('ignore_missing', $ignoreMissing);
     }

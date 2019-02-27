@@ -16,7 +16,7 @@ class Set extends AbstractProcessor
      * @param string $field field name
      * @param string $value field value
      */
-    public function __construct(string $field, string $value)
+    public function __construct($field, $value)
     {
         $this->setField($field);
         $this->setValue($value);
@@ -29,7 +29,7 @@ class Set extends AbstractProcessor
      *
      * @return $this
      */
-    public function setField(string $field)
+    public function setField($field)
     {
         return $this->setParam('field', $field);
     }
@@ -41,7 +41,7 @@ class Set extends AbstractProcessor
      *
      * @return $this
      */
-    public function setValue(string $value)
+    public function setValue($value)
     {
         return $this->setParam('value', $value);
     }
@@ -53,7 +53,7 @@ class Set extends AbstractProcessor
      *
      * @return $this
      */
-    public function setOverride(bool $override)
+    public function setOverride($override)
     {
         return $this->setParam('override', $override);
     }

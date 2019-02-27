@@ -10,7 +10,7 @@ namespace Elastica\Processor;
  */
 class DotExpander extends AbstractProcessor
 {
-    public function __construct(string $field)
+    public function __construct($field)
     {
         $this->setField($field);
     }
@@ -22,7 +22,7 @@ class DotExpander extends AbstractProcessor
      *
      * @return $this
      */
-    public function setField(string $field)
+    public function setField($field)
     {
         return $this->setParam('field', $field);
     }

@@ -86,7 +86,7 @@ class Pipeline extends Param
      *
      * @link https://www.elastic.co/guide/en/elasticsearch/reference/current/get-pipeline-api.html
      */
-    public function getPipeline(string $id)
+    public function getPipeline($id)
     {
         $endpoint = new Get();
         $endpoint->setID($id);
@@ -103,7 +103,7 @@ class Pipeline extends Param
      *
      * @link https://www.elastic.co/guide/en/elasticsearch/reference/current/delete-pipeline-api.html
      */
-    public function deletePipeline(string $id)
+    public function deletePipeline($id)
     {
         $endpoint = new Delete();
         $endpoint->setID($id);
@@ -157,7 +157,7 @@ class Pipeline extends Param
      *
      * @param string $id
      */
-    public function setId(string $id)
+    public function setId($id)
     {
         $this->id = $id;
     }
@@ -181,7 +181,7 @@ class Pipeline extends Param
      *
      * @return $this
      */
-    public function setDescription(string $description)
+    public function setDescription($description)
     {
         return $this->setParam('description', $description);
     }

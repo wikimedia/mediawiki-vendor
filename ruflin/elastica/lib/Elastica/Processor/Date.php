@@ -16,7 +16,7 @@ class Date extends AbstractProcessor
      * @param string $field
      * @param array  $formats
      */
-    public function __construct(string $field, array $formats)
+    public function __construct($field, $formats)
     {
         $this->setField($field);
         $this->setFormats($formats);
@@ -29,7 +29,7 @@ class Date extends AbstractProcessor
      *
      * @return $this
      */
-    public function setField(string $field)
+    public function setField($field)
     {
         return $this->setParam('field', $field);
     }
@@ -53,7 +53,7 @@ class Date extends AbstractProcessor
      *
      * @return $this
      */
-    public function setTargetField(string $targetField)
+    public function setTargetField($targetField)
     {
         return $this->setParam('target_field', $targetField);
     }
@@ -65,7 +65,7 @@ class Date extends AbstractProcessor
      *
      * @return $this
      */
-    public function setTimezone(string $timezone)
+    public function setTimezone($timezone)
     {
         return $this->setParam('timezone', $timezone);
     }
@@ -77,7 +77,7 @@ class Date extends AbstractProcessor
      *
      * @return $this
      */
-    public function setLocale(string $locale)
+    public function setLocale($locale)
     {
         return $this->setParam('locale', $locale);
     }

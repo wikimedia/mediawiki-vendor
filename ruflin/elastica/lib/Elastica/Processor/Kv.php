@@ -17,7 +17,7 @@ class Kv extends AbstractProcessor
      * @param string $fieldSplit
      * @param string $valueSplit
      */
-    public function __construct(string $field, string $fieldSplit, string $valueSplit)
+    public function __construct($field, $fieldSplit, $valueSplit)
     {
         $this->setField($field);
         $this->setFieldSplit($fieldSplit);
@@ -31,7 +31,7 @@ class Kv extends AbstractProcessor
      *
      * @return $this
      */
-    public function setField(string $field)
+    public function setField($field)
     {
         return $this->setParam('field', $field);
     }
@@ -43,7 +43,7 @@ class Kv extends AbstractProcessor
      *
      * @return $this
      */
-    public function setFieldSplit(string $fieldSplit)
+    public function setFieldSplit($fieldSplit)
     {
         return $this->setParam('field_split', $fieldSplit);
     }
@@ -55,7 +55,7 @@ class Kv extends AbstractProcessor
      *
      * @return $this
      */
-    public function setValueSplit(string $valueSplit)
+    public function setValueSplit($valueSplit)
     {
         return $this->setParam('value_split', $valueSplit);
     }
@@ -67,7 +67,7 @@ class Kv extends AbstractProcessor
      *
      * @return $this
      */
-    public function setTargetField(string $targetField)
+    public function setTargetField($targetField)
     {
         return $this->setParam('target_field', $targetField);
     }
@@ -103,7 +103,7 @@ class Kv extends AbstractProcessor
      *
      * @return $this
      */
-    public function setIgnoreMissing(bool $ignoreMissing)
+    public function setIgnoreMissing($ignoreMissing)
     {
         return $this->setParam('ignore_missing', $ignoreMissing);
     }

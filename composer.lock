@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b4394e2161f01233c8f0227d45c018f0",
+    "content-hash": "38e934a015244794f55f63041df25996",
     "packages": [
         {
             "name": "composer/semver",
@@ -2309,16 +2309,16 @@
         },
         {
             "name": "ruflin/elastica",
-            "version": "6.0.2",
+            "version": "6.0.2.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/ruflin/Elastica.git",
-                "reference": "tags/6.0.2"
+                "url": "https://github.com/ebernhardson/Elastica.git",
+                "reference": "tags/6.0.2-wmf-1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/ruflin/Elastica/archive/6.0.2.zip",
-                "reference": "tags/6.0.2",
+                "url": "https://github.com/ebernhardson/Elastica/archive/6.0.2-wmf-1.zip",
+                "reference": "tags/6.0.2-wmf-1",
                 "shasum": null
             },
             "require": {
@@ -2331,7 +2331,7 @@
                     "Elastica\\": "lib/Elastica/"
                 }
             },
-            "description": "upstream requires PHP 7.0 hhvm exposes PHP 5 (it's fine to drop this repo once hhvm is completely replaced with php)"
+            "description": "upstream requires PHP 7.0 hhvm exposes PHP 5 (it's fine to drop this repo once hhvm is completely replaced with php). Additionally scalar type hints had to be removed for hhvm compatibility."
         },
         {
             "name": "serialization/serialization",

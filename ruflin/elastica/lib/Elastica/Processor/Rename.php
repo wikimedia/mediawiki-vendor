@@ -16,7 +16,7 @@ class Rename extends AbstractProcessor
      * @param string $field
      * @param string $targetField
      */
-    public function __construct(string $field, string $targetField)
+    public function __construct($field, $targetField)
     {
         $this->setField($field);
         $this->setTargetField($targetField);
@@ -29,7 +29,7 @@ class Rename extends AbstractProcessor
      *
      * @return $this
      */
-    public function setField(string $field)
+    public function setField($field)
     {
         return $this->setParam('field', $field);
     }
@@ -41,7 +41,7 @@ class Rename extends AbstractProcessor
      *
      * @return $this
      */
-    public function setTargetField(string $targetField)
+    public function setTargetField($targetField)
     {
         return $this->setParam('target_field', $targetField);
     }
@@ -53,7 +53,7 @@ class Rename extends AbstractProcessor
      *
      * @return $this
      */
-    public function setIgnoreMissing(bool $ignoreMissing)
+    public function setIgnoreMissing($ignoreMissing)
     {
         return $this->setParam('ignore_missing', $ignoreMissing);
     }

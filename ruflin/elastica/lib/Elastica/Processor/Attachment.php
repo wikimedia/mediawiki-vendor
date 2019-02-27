@@ -8,7 +8,7 @@ class Attachment extends AbstractProcessor
      *
      * @param string $field
      */
-    public function __construct(string $field)
+    public function __construct($field)
     {
         $this->setField($field);
     }
@@ -20,7 +20,7 @@ class Attachment extends AbstractProcessor
      *
      * @return $this
      */
-    public function setField(string $field)
+    public function setField($field)
     {
         return $this->setParam('field', $field);
     }
@@ -32,7 +32,7 @@ class Attachment extends AbstractProcessor
      *
      * @return $this
      */
-    public function setTargetField(string $targetField)
+    public function setTargetField($targetField)
     {
         return $this->setParam('target_field', $targetField);
     }
@@ -44,7 +44,7 @@ class Attachment extends AbstractProcessor
      *
      * @return $this
      */
-    public function setIndexedChars(int $indexedChars)
+    public function setIndexedChars($indexedChars)
     {
         return $this->setParam('indexed_chars', $indexedChars);
     }
@@ -68,7 +68,7 @@ class Attachment extends AbstractProcessor
      *
      * @return $this
      */
-    public function setIgnoreMissing(bool $ignoreMissing)
+    public function setIgnoreMissing($ignoreMissing)
     {
         return $this->setParam('ignore_missing', $ignoreMissing);
     }

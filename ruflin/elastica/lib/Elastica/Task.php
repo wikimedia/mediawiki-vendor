@@ -40,7 +40,7 @@ class Task extends Param
      */
     protected $_client;
 
-    public function __construct(Client $client, string $id)
+    public function __construct(Client $client, $id)
     {
         $this->_client = $client;
         $this->_id = $id;

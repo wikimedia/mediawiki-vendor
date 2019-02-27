@@ -27,7 +27,7 @@ class Sort extends AbstractProcessor
      *
      * @return $this
      */
-    public function setField(string $field)
+    public function setField($field)
     {
         return $this->setParam('field', $field);
     }
@@ -39,7 +39,7 @@ class Sort extends AbstractProcessor
      *
      * @return $this
      */
-    public function setOrder(string $order)
+    public function setOrder($order)
     {
         return $this->setParam('order', $order);
     }
