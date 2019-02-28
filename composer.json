@@ -14,15 +14,15 @@
 			"package": {
 				"name": "ruflin/elastica",
 				"description": "upstream requires PHP 7.0 hhvm exposes PHP 5 (it's fine to drop this repo once hhvm is completely replaced with php). Additionally scalar type hints had to be removed for hhvm compatibility.",
-				"version": "6.0.2.1",
+				"version": "6.0.2.2",
 				"dist": {
-					"url": "https://github.com/ebernhardson/Elastica/archive/6.0.2-wmf-1.zip",
+					"url": "https://github.com/ebernhardson/Elastica/archive/6.0.2-wmf-2.zip",
 					"type": "zip"
 				},
 				"source": {
 					"url": "https://github.com/ebernhardson/Elastica.git",
 					"type": "git",
-					"reference": "tags/6.0.2-wmf-1"
+					"reference": "tags/6.0.2-wmf-2"
 				},
 				"autoload": {
 					"psr-4": {
@@ -104,7 +104,7 @@
 		"psr/simple-cache": "1.0.1",
 		"psy/psysh": "0.9.9",
 		"ralouphie/getallheaders": "2.0.5",
-		"ruflin/elastica": "6.0.2.1",
+		"ruflin/elastica": "6.0.2.2",
 		"serialization/serialization": "4.0.0",
 		"stil/gd-text": "1.0.0",
 		"symfony/console": "3.4.22",

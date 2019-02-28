@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "38e934a015244794f55f63041df25996",
+    "content-hash": "4be12654bf3742ce142adb6ddf20642a",
     "packages": [
         {
             "name": "composer/semver",
@@ -2309,16 +2309,16 @@
         },
         {
             "name": "ruflin/elastica",
-            "version": "6.0.2.1",
+            "version": "6.0.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ebernhardson/Elastica.git",
-                "reference": "tags/6.0.2-wmf-1"
+                "reference": "tags/6.0.2-wmf-2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/ebernhardson/Elastica/archive/6.0.2-wmf-1.zip",
-                "reference": "tags/6.0.2-wmf-1",
+                "url": "https://github.com/ebernhardson/Elastica/archive/6.0.2-wmf-2.zip",
+                "reference": "tags/6.0.2-wmf-2",
                 "shasum": null
             },
             "require": {

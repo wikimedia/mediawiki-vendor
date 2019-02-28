@@ -2388,17 +2388,17 @@
     },
     {
         "name": "ruflin/elastica",
-        "version": "6.0.2.1",
-        "version_normalized": "6.0.2.1",
+        "version": "6.0.2.2",
+        "version_normalized": "6.0.2.2",
         "source": {
             "type": "git",
             "url": "https://github.com/ebernhardson/Elastica.git",
-            "reference": "tags/6.0.2-wmf-1"
+            "reference": "tags/6.0.2-wmf-2"
         },
         "dist": {
             "type": "zip",
-            "url": "https://github.com/ebernhardson/Elastica/archive/6.0.2-wmf-1.zip",
-            "reference": "tags/6.0.2-wmf-1",
+            "url": "https://github.com/ebernhardson/Elastica/archive/6.0.2-wmf-2.zip",
+            "reference": "tags/6.0.2-wmf-2",
             "shasum": null
         },
         "require": {

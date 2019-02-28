@@ -102,7 +102,7 @@ class Task extends Param
     /**
      * @return bool
      */
-    public function isCompleted(): bool
+    public function isCompleted()
     {
         $data = $this->getData();
 
