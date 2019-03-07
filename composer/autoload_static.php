@@ -371,7 +371,7 @@ class ComposerStaticInit_mediawiki_vendor
         array (
             'TextCat' => 
             array (
-                0 => __DIR__ . '/..' . '/wikimedia/textcat',
+                0 => __DIR__ . '/..' . '/wikimedia/textcat/src',
             ),
         ),
         'P' => 
@@ -2275,7 +2275,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Symfony\\Component\\VarDumper\\Test\\VarDumperTestTrait' => __DIR__ . '/..' . '/symfony/var-dumper/Test/VarDumperTestTrait.php',
         'Symfony\\Component\\VarDumper\\VarDumper' => __DIR__ . '/..' . '/symfony/var-dumper/VarDumper.php',
         'System' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/System.php',
-        'TextCat' => __DIR__ . '/..' . '/wikimedia/textcat/TextCat.php',
+        'TextCat' => __DIR__ . '/..' . '/wikimedia/textcat/src/TextCat.php',
         'UtfNormal\\Constants' => __DIR__ . '/..' . '/wikimedia/utfnormal/src/Constants.php',
         'UtfNormal\\Utils' => __DIR__ . '/..' . '/wikimedia/utfnormal/src/Util.php',
         'UtfNormal\\Validator' => __DIR__ . '/..' . '/wikimedia/utfnormal/src/Validator.php',

@@ -2,7 +2,7 @@
 /**
  * Classify texts using ngrams. See help below for options.
  */
-require_once __DIR__.'/TextCat.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 $options = getopt( 'a:b:B:c:d:f:j:l:m:p:u:w:h' );
 
@@ -59,7 +59,7 @@ HELP;
 if ( !empty( $options['d'] ) ) {
 	$dirs = explode( ",", $options['d'] );
 } else {
-	$dirs = array( __DIR__."/LM" );
+	$dirs = [ __DIR__ . "/LM" ];
 }
 
 $cat = new TextCat( $dirs );
@@ -105,5 +105,5 @@ if ( empty( $result ) ) {
 	exit( 1 );
 }
 
-echo join( " OR ", array_keys( $result ) ) . "\n";
+echo implode( " OR ", array_keys( $result ) ) . "\n";
 exit( 0 );

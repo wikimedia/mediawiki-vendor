@@ -8,7 +8,7 @@ $baseDir = $vendorDir;
 return array(
     'ValueParsers\\' => array($vendorDir . '/data-values/number/src', $vendorDir . '/data-values/time/src'),
     'ValueFormatters\\' => array($vendorDir . '/data-values/number/src', $vendorDir . '/data-values/time/src'),
-    'TextCat' => array($vendorDir . '/wikimedia/textcat'),
+    'TextCat' => array($vendorDir . '/wikimedia/textcat/src'),
     'Pimple' => array($vendorDir . '/pimple/pimple/src'),
     'PEAR' => array($vendorDir . '/pear/pear_exception'),
     'Net' => array($vendorDir . '/pear/net_smtp', $vendorDir . '/pear/net_socket'),

@@ -1832,7 +1832,7 @@ return array(
     'Symfony\\Component\\VarDumper\\Test\\VarDumperTestTrait' => $vendorDir . '/symfony/var-dumper/Test/VarDumperTestTrait.php',
     'Symfony\\Component\\VarDumper\\VarDumper' => $vendorDir . '/symfony/var-dumper/VarDumper.php',
     'System' => $vendorDir . '/pear/pear-core-minimal/src/System.php',
-    'TextCat' => $vendorDir . '/wikimedia/textcat/TextCat.php',
+    'TextCat' => $vendorDir . '/wikimedia/textcat/src/TextCat.php',
     'UtfNormal\\Constants' => $vendorDir . '/wikimedia/utfnormal/src/Constants.php',
     'UtfNormal\\Utils' => $vendorDir . '/wikimedia/utfnormal/src/Util.php',
     'UtfNormal\\Validator' => $vendorDir . '/wikimedia/utfnormal/src/Validator.php',
