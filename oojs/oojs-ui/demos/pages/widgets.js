@@ -1,5 +1,5 @@
 Demo.static.pages.widgets = function ( demo ) {
-	// `\u200E` is Unicode LTR marker and is added for lorem ipsum text in RTL demo, as it's not translated
+	// Unicode LTR marker `\u200E` is added for loremIpsum text in RTL demo, as it's not translated
 	var i, fieldsets,
 		loremIpsum = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, ' +
 			'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\u200E',
@@ -212,9 +212,9 @@ Demo.static.pages.widgets = function ( demo ) {
 						accessKey: 'g'
 					} ),
 					{
-						label: 'ButtonWidget (with accesskey)',
+						label: 'ButtonWidget (with access key)',
 						align: 'top',
-						help: new OO.ui.HtmlSnippet( 'Notice: Using `accesskey` might <a href="http://webaim.org/techniques/keyboard/accesskey" target="_blank" rel="noopener">negatively impact screen readers</a>!' )
+						help: new OO.ui.HtmlSnippet( 'Notice: Using access key might <a href="http://webaim.org/techniques/keyboard/accesskey" target="_blank" rel="noopener">negatively impact screen readers</a>!' )
 					}
 				),
 				new OO.ui.FieldLayout(
@@ -262,18 +262,6 @@ Demo.static.pages.widgets = function ( demo ) {
 					} ),
 					{
 						label: 'ButtonWidget (frameless, progressive)',
-						align: 'top'
-					}
-				),
-				new OO.ui.FieldLayout(
-					new OO.ui.ButtonWidget( {
-						framed: false,
-						flags: [ 'warning' ],
-						icon: 'alert',
-						label: 'Warning'
-					} ),
-					{
-						label: 'ButtonWidget (frameless, warning)',
 						align: 'top'
 					}
 				),
@@ -372,13 +360,13 @@ Demo.static.pages.widgets = function ( demo ) {
 				new OO.ui.FieldLayout(
 					new OO.ui.ButtonInputWidget( {
 						label: 'Access key: H',
-						title: 'Accesskey is added to the title.',
+						title: 'Access key is added to the title.',
 						accessKey: 'h'
 					} ),
 					{
-						label: 'ButtonInputWidget (with accesskey & title)',
+						label: 'ButtonInputWidget (with access key & title)',
 						align: 'top',
-						help: new OO.ui.HtmlSnippet( 'Notice: Using `accesskey` might <a href="http://webaim.org/techniques/keyboard/accesskey" target="_blank" rel="noopener">negatively impact screen readers</a>!' )
+						help: new OO.ui.HtmlSnippet( 'Notice: Using access key might <a href="http://webaim.org/techniques/keyboard/accesskey" target="_blank" rel="noopener">negatively impact screen readers</a>!' )
 					}
 				),
 				new OO.ui.FieldLayout(
@@ -624,7 +612,7 @@ Demo.static.pages.widgets = function ( demo ) {
 						]
 					} ),
 					{
-						label: 'ButtonSelectWidget (with accesskeys)',
+						label: 'ButtonSelectWidget (with access keys)',
 						align: 'top'
 					}
 				)
@@ -836,9 +824,9 @@ Demo.static.pages.widgets = function ( demo ) {
 						accessKey: 's'
 					} ),
 					{
-						label: 'TextInputWidget (with accesskey)',
+						label: 'TextInputWidget (with access key)',
 						align: 'top',
-						help: new OO.ui.HtmlSnippet( 'Notice: Using `accesskey` might <a href="http://webaim.org/techniques/keyboard/accesskey" target="_blank" rel="noopener">negatively impact screen readers</a>!' )
+						help: new OO.ui.HtmlSnippet( 'Notice: Using access key might <a href="http://webaim.org/techniques/keyboard/accesskey" target="_blank" rel="noopener">negatively impact screen readers</a>!' )
 					}
 				),
 				new OO.ui.FieldLayout(
@@ -952,7 +940,7 @@ Demo.static.pages.widgets = function ( demo ) {
 					} ),
 					{
 						align: 'inline',
-						label: 'CheckboxInputWidget (with accesskey T and title)',
+						label: 'CheckboxInputWidget (with access key T and title)',
 						title: 'Access key is added to the title.'
 					}
 				),
@@ -1100,7 +1088,7 @@ Demo.static.pages.widgets = function ( demo ) {
 					} ),
 					{
 						align: 'top',
-						label: 'RadioSelectWidget (with accesskeys)'
+						label: 'RadioSelectWidget (with access keys)'
 					}
 				),
 				new OO.ui.FieldLayout(
@@ -1124,7 +1112,7 @@ Demo.static.pages.widgets = function ( demo ) {
 						align: 'top'
 					}
 				),
-				/* eslint-disable jquery/no-parse-html-literal */
+				/* eslint-disable no-jquery/no-parse-html-literal */
 				new OO.ui.FieldLayout(
 					new OO.ui.RadioSelectWidget( {
 						items: [
@@ -1428,7 +1416,7 @@ Demo.static.pages.widgets = function ( demo ) {
 					} ),
 					{
 						align: 'top',
-						label: 'DropdownWidget (with accesskeys)'
+						label: 'DropdownWidget (with access keys)'
 					}
 				),
 				new OO.ui.FieldLayout(
@@ -2755,9 +2743,10 @@ Demo.static.pages.widgets = function ( demo ) {
 						value: 'Foo'
 					} ),
 					{
-						label: 'FieldLayout with notice and error message',
-						notices: [ 'Please input a number.' ],
+						label: 'FieldLayout with error, warning and notice message',
 						errors: [ 'The value must be a number.' ],
+						warnings: [ 'The value should be a number.' ],
+						notices: [ 'Please input a number.' ],
 						align: 'top'
 					}
 				),
@@ -3075,7 +3064,7 @@ Demo.static.pages.widgets = function ( demo ) {
 		} )
 	];
 
-	// eslint-disable-next-line jquery/no-each-util
+	// eslint-disable-next-line no-jquery/no-each-util
 	$.each( fieldsets, function ( i, fieldsetLayout ) {
 		var showLayoutCode = false;
 
@@ -3086,10 +3075,13 @@ Demo.static.pages.widgets = function ( demo ) {
 			showLayoutCode = true;
 		}
 
-		// eslint-disable-next-line jquery/no-each-util
+		// eslint-disable-next-line no-jquery/no-each-util
 		$.each( fieldsetLayout.getItems(), function ( j, fieldLayout ) {
 			fieldLayout.$element.append(
-				demo.buildLinkExample( fieldLayout, fieldsetLayout instanceof OO.ui.FormLayout ? fieldLayout : fieldsetLayout ),
+				demo.buildLinkExample(
+					fieldLayout,
+					fieldsetLayout instanceof OO.ui.FormLayout ? fieldLayout : fieldsetLayout
+				),
 				demo.buildConsole( fieldLayout, 'layout', 'widget', showLayoutCode )
 			);
 		} );

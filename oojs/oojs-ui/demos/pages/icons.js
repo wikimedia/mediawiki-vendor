@@ -18,6 +18,7 @@ Demo.static.pages.icons = function ( demo ) {
 			content: [
 				'article',
 				'articles',
+				'articleAdd',
 				'articleCheck',
 				'articleSearch',
 				'articleRedirect',
@@ -124,6 +125,10 @@ Demo.static.pages.icons = function ( demo ) {
 				'calendar',
 				'code',
 				'hieroglyph',
+				'imageLayoutBasic',
+				'imageLayoutFrame',
+				'imageLayoutFrameless',
+				'imageLayoutThumbnail',
 				'language',
 				'layout',
 				'mathematics',
@@ -159,7 +164,6 @@ Demo.static.pages.icons = function ( demo ) {
 				'book',
 				'journal',
 				'newspaper',
-				'web',
 				'reference',
 				'referenceExisting',
 				'references'

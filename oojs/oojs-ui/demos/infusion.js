@@ -13,12 +13,12 @@
 
 	// Add a button to infuse everything!
 	// (You wouldn't typically do this: you'd only infuse those objects which you needed to attach
-	// client-side behaviors to, or where the JS implementation provides additional features over PHP,
-	// like DropdownInputWidget. We do it here because it's a good overall test.)
+	// client-side behaviors to, or where the JS implementation provides additional features
+	// over PHP, like DropdownInputWidget. We do it here because it's a good overall test.)
 	function infuseAll() {
 		var start, end;
 		start = now();
-		// eslint-disable-next-line jquery/no-global-selector
+		// eslint-disable-next-line no-jquery/no-global-selector
 		$( '*[data-ooui]' ).each( function () {
 			OO.ui.infuse( this );
 		} );
@@ -27,7 +27,7 @@
 		infuseButton.setDisabled( true );
 	}
 
-	// eslint-disable-next-line jquery/no-global-selector
+	// eslint-disable-next-line no-jquery/no-global-selector
 	$demoMenu = $( '.demo-menu' );
 
 	OO.ui.getViewportSpacing = function () {
