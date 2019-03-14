@@ -27,11 +27,11 @@ trait AccessKeyedElement {
 
 	/**
 	 * @param array $config Configuration options
-	 * @param string $config['accessKey'] Access key. If not provided, no access key will be added
+	 *      - string $config['accessKey'] Access key. If not provided, no access key will be added
 	 */
 	public function initializeAccessKeyedElement( array $config = [] ) {
 		// Properties
-		$this->accessKeyed = $config['accessKeyed'] ?? $element;
+		$this->accessKeyed = $config['accessKeyed'] ?? $this;
 
 		// Initialization
 		$this->setAccessKey( $config['accessKey'] ?? null );

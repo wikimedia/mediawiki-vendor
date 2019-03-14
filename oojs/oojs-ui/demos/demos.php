@@ -76,6 +76,7 @@
 	// Stylesheets to load
 	$urls = [];
 	$urls[] = "oojs-ui-core-$theme$directionSuffix.css";
+	$urls[] = "oojs-ui-widgets-$theme$directionSuffix.css";
 	$urls[] = "oojs-ui-images-$theme$directionSuffix.css";
 	foreach ( $additionalThemeImagesSuffixes[ $theme ] as $suffix ) {
 		$urls[] = "oojs-ui-$theme$suffix$directionSuffix.css";
@@ -99,6 +100,14 @@
 	<div class="demo-root">
 		<div class="demo-menu" role="navigation">
 			<?php
+				echo new OOUI\DropdownInputWidget( [
+					'infusable' => true,
+					'disabled' => true,
+					'classes' => [ 'demo-pageDropdown' ],
+					'options' => [
+						[ 'label' => 'Widgets', 'data' => '' ]
+					]
+				] );
 				echo new OOUI\ButtonGroupWidget( [
 					'infusable' => true,
 					'items' => array_map( function ( $theme, $themeLabel ) use ( $query ) {
@@ -126,12 +135,10 @@
 				] );
 				echo new OOUI\ButtonGroupWidget( [
 					'infusable' => true,
-					'id' => 'demo-menu-infuse',
 					'items' => [
 						new OOUI\ButtonWidget( [
 							'label' => 'JS',
-							'href' => '.?' . http_build_query( $query ),
-							'active' => false,
+							'href' => '.?' . http_build_query( $query )
 						] ),
 						new OOUI\ButtonWidget( [
 							'label' => 'PHP',
@@ -140,12 +147,42 @@
 						] ),
 					]
 				] );
-
+				echo new OOUI\ButtonGroupWidget( [
+					'infusable' => true,
+					'items' => [
+						new OOUI\ButtonWidget( [
+							'label' => 'Desktop',
+							'active' => true,
+							'disabled' => true,
+						] ),
+						new OOUI\ButtonWidget( [
+							'label' => 'Mobile',
+							'disabled' => true,
+						] ),
+					],
+				] );
+				echo new OOUI\ButtonGroupWidget( [
+					'infusable' => true,
+					'items' => [
+						new OOUI\ButtonWidget( [
+							'label' => 'Docs',
+							'icon' => 'journal',
+							'href' => '../php/',
+							'flags' => [ 'progressive' ],
+						] ),
+						new OOUI\ButtonWidget( [
+							'label' => 'Tutorials',
+							'icon' => 'book',
+							'href' => 'tutorials/index.html',
+							'flags' => [ 'progressive' ],
+						] )
+					]
+				] );
 				echo new OOUI\ButtonWidget( [
-					'label' => 'Docs',
-					'icon' => 'journal',
-					'href' => '../php/',
-					'flags' => [ 'progressive' ],
+					'infusable' => true,
+					'classes' => [ 'demo-menu-infuse' ],
+					'disabled' => true,
+					'label' => 'Infuse',
 				] );
 			?>
 		</div>
@@ -159,6 +196,7 @@
 	<script src="node_modules/jquery/dist/jquery.js"></script>
 	<script src="node_modules/oojs/dist/oojs.jquery.js"></script>
 	<script src="dist/oojs-ui-core.js"></script>
+	<script src="dist/oojs-ui-widgets.js"></script>
 	<script src="dist/oojs-ui-<?php echo $theme; ?>.js"></script>
 	<script>window.Demo = {};</script>
 	<script src="classes/ButtonStyleShowcaseWidget.js"></script>

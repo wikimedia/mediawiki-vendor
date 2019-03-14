@@ -797,6 +797,31 @@ $demoContainer->appendContent( new OOUI\FieldsetLayout( [
 ] ) );
 
 $demoContainer->appendContent( new OOUI\FieldsetLayout( [
+	'id' => 'demo-section-tabs',
+	'infusable' => true,
+	'label' => 'Tabs',
+	'items' => [
+		new OOUI\FieldLayout(
+			new OOUI\TabSelectWidget( [
+				'items' => [
+					new OOUI\TabOptionWidget( [
+						'label' => 'Tab 1',
+						'selected' => true,
+					] ),
+					new OOUI\TabOptionWidget( [
+						'label' => 'Tab 2'
+					] )
+				]
+			] ),
+			[
+				'label' => 'TabSelectWidget',
+				'align' => 'top'
+			]
+		),
+	]
+] ) );
+
+$demoContainer->appendContent( new OOUI\FieldsetLayout( [
 	'id' => 'demo-section-progressBar',
 	'infusable' => true,
 	'label' => 'Progress bar',
@@ -1241,9 +1266,11 @@ $demoContainer->appendContent( new OOUI\FieldsetLayout( [
 				'value' => 'Foo'
 			] ),
 			[
-				'label' => 'FieldLayout with notice and error message',
-				'notices' => [ 'Please input a number.' ],
+				'label' => 'FieldLayout with error, warning, success and notice message',
 				'errors' => [ 'The value must be a number.' ],
+				'warnings' => [ 'The value should be a number.' ],
+				'successMessages' => [ 'The value is a number. Congratulations!' ],
+				'notices' => [ 'Please input a number.' ],
 				'align' => 'top'
 			]
 		)
@@ -1285,6 +1312,41 @@ $demoContainer->appendContent( new OOUI\FieldsetLayout( [
 			[
 				'label' => 'Multiple widgets shown as a single line, ' .
 					'as used in compact forms or in parts of a bigger widget.',
+				'align' => 'top'
+			]
+		),
+	],
+] ) );
+
+$indexLayout = new OOUI\IndexLayout( [
+	'infusable' => true,
+	'expanded' => false,
+] );
+$indexLayout->addTabPanels( [
+	new OOUI\TabPanelLayout( [
+		'name' => 'panel1',
+		'label' => 'Panel 1',
+		'content' => new OOUI\HtmlSnippet( 'Panel <b>1</b> <i>content</i>' ),
+		'expanded' => false,
+	] ),
+	new OOUI\TabPanelLayout( [
+		'name' => 'panel2',
+		'label' => 'Panel 2',
+		'content' => new OOUI\HtmlSnippet( 'Panel <b>2</b> <i>content</i>' ),
+		'expanded' => false,
+	] )
+] );
+$demoContainer->appendContent( new OOUI\FieldsetLayout( [
+	'id' => 'demo-section-horizontalLayout',
+	'infusable' => false,
+	'label' => 'IndexLayout static',
+	'items' => [
+		new OOUI\FieldLayout(
+			new OOUI\Widget( [
+				'content' => $indexLayout,
+			] ),
+			[
+				'label' => 'IndexLayout',
 				'align' => 'top'
 			]
 		),

@@ -38,6 +38,7 @@ else
 	end
 
 	make_htmlsnippet_placeholder = make_class_instance_placeholder.curry['HtmlSnippet']
+	make_panellayout_placeholder = make_class_instance_placeholder.curry['PanelLayout']
 
 	# values to test for each type
 	expandos = {
@@ -48,12 +49,17 @@ else
 		'boolean' => [true, false], # JS code
 		'string' => ['Foo bar', '<b>HTML?</b>', '', ' ', '0'],
 		'HtmlSnippet' => ['Foo bar', '<b>HTML?</b>', ''].map(&make_htmlsnippet_placeholder),
+		'PanelLayout' => ['Foo bar', '<b>HTML?</b>', ''].map{|v| {content: [v]} }.map(&make_panellayout_placeholder),
 	}
+
+	string_list = expandos['string'].map{|v| [v] }
 
 	# Values to test for specific config options, when not all values of given type are valid.
 	# Empty array will result in no tests for this config option being generated.
 	sensible_values = {
 		'align' => %w[top inline left],
+		# could also be 'auto', but this only sets an attribute
+		'dir' => %w[ltr rtl],
 		'href' => ['http://example.com/'],
 		['TextInputWidget', 'type'] => %w[text number password foo],
 		['ButtonInputWidget', 'type'] => %w[button submit foo],
@@ -62,10 +68,11 @@ else
 		['NumberInputWidget', 'pageStep'] => %w[10],
 		['NumberInputWidget', 'min'] => %w[1 3],
 		['NumberInputWidget', 'max'] => %w[3 5],
-		['FieldLayout', 'errors'] => expandos['string'].map{|v| [v] }, # treat as string[]
-		['FieldLayout', 'notices'] => expandos['string'].map{|v| [v] }, # treat as string[]
+		['FieldLayout', 'errors'] => string_list,
+		['FieldLayout', 'notices'] => string_list,
 		'type' => %w[text button],
 		'method' => %w[GET POST],
+		'inputId' => ['input-id'],
 		'target' => ['_blank'],
 		'accessKey' => ['k'],
 		'tabIndex' => [-1, 0, 100, '42'],
@@ -80,7 +87,8 @@ else
 			[ { 'data' => 'a' }, { 'data' => 'b' } ],
 			[ { 'data' => 'a', 'label' => 'A' }, { 'data' => 'b', 'label' => 'B' } ],
 		],
-		'value' => ['', 'a', 'b', '<b>HTML?</b>'],
+		'value' => ['', 'a', '<b>HTML?</b>'],
+		'menuPosition' => %w[before after top bottom invalid],
 		# deprecated, makes test logs spammy
 		'multiline' => [],
 		# usually makes no sense in JS
@@ -99,6 +107,18 @@ else
 		'id' => [],
 		'content' => [],
 		'text' => [],
+		# test content on basic Panels
+		['PanelLayout', 'content'] => string_list,
+		# only used internally
+		'preserveContent' => [],
+		['TabPanelLayout', 'name'] => ['panelName'],
+		['TabPanelLayout', 'label'] => string_list,
+		# IndexLayout overrides contentPanel to be a StackLayout which there
+		# are current no test values for, so don't use the inherited type
+		# of PanelLayout from MenuLayout.
+		['IndexLayout', 'contentPanel'] => [],
+		# menuPanel contains a TabSelectWidget so must use preserveContent
+		['IndexLayout', 'menuPanel'] => [],
 	}
 
 	find_class = lambda do |klass|
