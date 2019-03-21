@@ -1,6 +1,6 @@
 {
   "name": "oojs-ui",
-  "version": "0.31.0",
+  "version": "0.31.1",
   "description": "User interface classes built on the OOjs framework.",
   "keywords": [
     "oojs-plugin",
@@ -12,6 +12,10 @@
     "url": "https://phabricator.wikimedia.org/diffusion/GOJU/oojs-ui.git"
   },
   "license": "MIT",
+  "main": "dist/oojs-ui.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "grunt test",
     "predoc": "grunt build",

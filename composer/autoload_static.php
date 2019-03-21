@@ -1428,6 +1428,7 @@ class ComposerStaticInit_mediawiki_vendor
         'OOUI\\RadioInputWidget' => __DIR__ . '/..' . '/oojs/oojs-ui/php/widgets/RadioInputWidget.php',
         'OOUI\\RadioSelectInputWidget' => __DIR__ . '/..' . '/oojs/oojs-ui/php/widgets/RadioSelectInputWidget.php',
         'OOUI\\SearchInputWidget' => __DIR__ . '/..' . '/oojs/oojs-ui/php/widgets/SearchInputWidget.php',
+        'OOUI\\SelectFileInputWidget' => __DIR__ . '/..' . '/oojs/oojs-ui/php/widgets/SelectFileInputWidget.php',
         'OOUI\\SelectWidget' => __DIR__ . '/..' . '/oojs/oojs-ui/php/widgets/SelectWidget.php',
         'OOUI\\StackLayout' => __DIR__ . '/..' . '/oojs/oojs-ui/php/layouts/StackLayout.php',
         'OOUI\\TabIndexedElement' => __DIR__ . '/..' . '/oojs/oojs-ui/php/mixins/TabIndexedElement.php',

@@ -1669,6 +1669,63 @@ Demo.static.pages.widgets = function ( demo ) {
 			]
 		} ),
 		new OO.ui.FieldsetLayout( {
+			id: 'demo-section-selectFileInput',
+			label: 'SelectFileInput',
+			items: [
+				new OO.ui.FieldLayout(
+					new OO.ui.SelectFileInputWidget( {} ),
+					{
+						label: 'SelectFileInputWidget',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.SelectFileInputWidget( {
+						button: {
+							flags: [ 'primary', 'progressive' ],
+							icon: 'upload',
+							label: 'Custom button'
+						}
+					} ),
+					{
+						label: 'SelectFileInputWidget (custom button)',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.SelectFileInputWidget( {
+						accept: [ 'image/png', 'image/jpeg' ],
+						title: 'This SelectFileInputWidget accepts only PNG `image/png` and JPEG `image/jpeg` files and has `title` configured'
+					} ),
+					{
+						label: 'SelectFileInputWidget (accept PNG and JPEG)',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.SelectFileInputWidget( {
+						icon: 'tag',
+						indicator: 'required'
+					} ),
+					{
+						label: 'SelectFileInputWidget (icon, indicator)',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.SelectFileInputWidget( {
+						icon: 'tag',
+						indicator: 'required',
+						disabled: true
+					} ),
+					{
+						label: 'SelectFileInputWidget (disabled)',
+						align: 'top'
+					}
+				)
+			]
+		} ),
+		new OO.ui.FieldsetLayout( {
 			id: 'demo-section-selectFile',
 			label: 'SelectFile',
 			items: [
@@ -1676,6 +1733,13 @@ Demo.static.pages.widgets = function ( demo ) {
 					new OO.ui.SelectFileWidget( {} ),
 					{
 						label: 'SelectFileWidget',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.SelectFileWidget( { buttonOnly: true } ),
+					{
+						label: 'SelectFileWidget (buttonOnly)',
 						align: 'top'
 					}
 				),
@@ -1691,11 +1755,10 @@ Demo.static.pages.widgets = function ( demo ) {
 				),
 				new OO.ui.FieldLayout(
 					new OO.ui.SelectFileWidget( {
-						icon: 'tag',
-						indicator: 'required'
+						icon: 'tag'
 					} ),
 					{
-						label: 'SelectFileWidget (icon, indicator)',
+						label: 'SelectFileWidget (icon)',
 						align: 'top'
 					}
 				),
@@ -1946,6 +2009,25 @@ Demo.static.pages.widgets = function ( demo ) {
 					} ),
 					{
 						label: 'MenuTagMultiselectWidget (inputPosition: outline, allowArbitrary: false)',
+						align: 'top'
+					}
+				),
+				new OO.ui.FieldLayout(
+					new OO.ui.MenuTagMultiselectWidget( {
+						inputPosition: 'outline',
+						allowArbitrary: false,
+						verticalPosition: 'below',
+						options: ( function () {
+							var i,
+								options = [];
+							for ( i = 1; i <= 50; i++ ) {
+								options.push( { data: i, label: 'Label for ' + i } );
+							}
+							return options;
+						}() )
+					} ),
+					{
+						label: 'MenuTagMultiselectWidget (very long menu; showcasing highlights and menu scroll on tag selection)',
 						align: 'top'
 					}
 				),

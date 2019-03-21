@@ -985,6 +985,7 @@ return array(
     'OOUI\\RadioInputWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/RadioInputWidget.php',
     'OOUI\\RadioSelectInputWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/RadioSelectInputWidget.php',
     'OOUI\\SearchInputWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/SearchInputWidget.php',
+    'OOUI\\SelectFileInputWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/SelectFileInputWidget.php',
     'OOUI\\SelectWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/SelectWidget.php',
     'OOUI\\StackLayout' => $vendorDir . '/oojs/oojs-ui/php/layouts/StackLayout.php',
     'OOUI\\TabIndexedElement' => $vendorDir . '/oojs/oojs-ui/php/mixins/TabIndexedElement.php',
