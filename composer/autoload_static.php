@@ -80,6 +80,10 @@ class ComposerStaticInit_mediawiki_vendor
             'Pleo\\BloomFilter\\' => 17,
             'PhpParser\\' => 10,
         ),
+        'O' => 
+        array (
+            'Onoi\\MessageReporter\\' => 21,
+        ),
         'M' => 
         array (
             'Monolog\\' => 8,
@@ -265,6 +269,10 @@ class ComposerStaticInit_mediawiki_vendor
         'PhpParser\\' => 
         array (
             0 => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser',
+        ),
+        'Onoi\\MessageReporter\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/onoi/message-reporter/src',
         ),
         'Monolog\\' => 
         array (
@@ -1442,6 +1450,14 @@ class ComposerStaticInit_mediawiki_vendor
         'OOUI\\Widget' => __DIR__ . '/..' . '/oojs/oojs-ui/php/Widget.php',
         'OOUI\\WikimediaUITheme' => __DIR__ . '/..' . '/oojs/oojs-ui/php/themes/WikimediaUITheme.php',
         'OS_Guess' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/OS/Guess.php',
+        'Onoi\\MessageReporter\\CallbackMessageReporter' => __DIR__ . '/..' . '/onoi/message-reporter/src/CallbackMessageReporter.php',
+        'Onoi\\MessageReporter\\MessageReporter' => __DIR__ . '/..' . '/onoi/message-reporter/src/MessageReporter.php',
+        'Onoi\\MessageReporter\\MessageReporterAware' => __DIR__ . '/..' . '/onoi/message-reporter/src/MessageReporterAware.php',
+        'Onoi\\MessageReporter\\MessageReporterAwareTrait' => __DIR__ . '/..' . '/onoi/message-reporter/src/MessageReporterAwareTrait.php',
+        'Onoi\\MessageReporter\\MessageReporterFactory' => __DIR__ . '/..' . '/onoi/message-reporter/src/MessageReporterFactory.php',
+        'Onoi\\MessageReporter\\NullMessageReporter' => __DIR__ . '/..' . '/onoi/message-reporter/src/NullMessageReporter.php',
+        'Onoi\\MessageReporter\\ObservableMessageReporter' => __DIR__ . '/..' . '/onoi/message-reporter/src/ObservableMessageReporter.php',
+        'Onoi\\MessageReporter\\SpyMessageReporter' => __DIR__ . '/..' . '/onoi/message-reporter/src/SpyMessageReporter.php',
         'PEAR' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/PEAR.php',
         'PEAR_Error' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/PEAR.php',
         'PEAR_ErrorStack' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/PEAR/ErrorStack.php',

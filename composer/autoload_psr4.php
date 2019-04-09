@@ -39,6 +39,7 @@ return array(
     'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-message/src'),
     'Pleo\\BloomFilter\\' => array($vendorDir . '/pleonasm/bloom-filter/src'),
     'PhpParser\\' => array($vendorDir . '/nikic/php-parser/lib/PhpParser'),
+    'Onoi\\MessageReporter\\' => array($vendorDir . '/onoi/message-reporter/src'),
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
     'LuceneExplain\\' => array($vendorDir . '/wikimedia/lucene-explain-parser/src'),
     'JsonSchema\\' => array($vendorDir . '/justinrainbow/json-schema/src/JsonSchema'),
