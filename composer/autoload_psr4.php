@@ -18,6 +18,7 @@ return array(
     'Wikimedia\\Assert\\Test\\' => array($vendorDir . '/wikimedia/assert/tests/phpunit'),
     'Wikimedia\\Assert\\' => array($vendorDir . '/wikimedia/assert/src'),
     'Wikimedia\\' => array($vendorDir . '/wikimedia/ip-set/src', $vendorDir . '/wikimedia/object-factory/src', $vendorDir . '/wikimedia/scoped-callback/src', $vendorDir . '/wikimedia/wrappedstring/src'),
+    'Wikibase\\TermStore\\' => array($vendorDir . '/wikibase/term-store/src'),
     'Wikibase\\InternalSerialization\\' => array($vendorDir . '/wikibase/internal-serialization/src'),
     'Wikibase\\DataModel\\Services\\' => array($vendorDir . '/wikibase/data-model-services/src'),
     'Wikibase\\DataModel\\' => array($vendorDir . '/wikibase/data-model/src', $vendorDir . '/wikibase/data-model-serialization/src'),
