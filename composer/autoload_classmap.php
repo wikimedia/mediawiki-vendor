@@ -2290,5 +2290,7 @@ return array(
     'getid3_writetags' => $vendorDir . '/james-heinrich/getid3/getid3/write.php',
     'getid3_xz' => $vendorDir . '/james-heinrich/getid3/getid3/module.archive.xz.php',
     'getid3_zip' => $vendorDir . '/james-heinrich/getid3/getid3/module.archive.zip.php',
+    'jakobo\\HOTP\\HOTP' => $vendorDir . '/jakobo/hotp-php/src/HOTP.php',
+    'jakobo\\HOTP\\HOTPResult' => $vendorDir . '/jakobo/hotp-php/src/HOTPResult.php',
     'lessc' => $vendorDir . '/wikimedia/less.php/lessc.inc.php',
 );

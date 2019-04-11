@@ -1070,6 +1070,48 @@
         ]
     },
     {
+        "name": "jakobo/hotp-php",
+        "version": "v1.0.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/Jakobo/hotp-php.git",
+            "reference": "cea104624500cd3b14c6be4da49fb906b6cc28ad"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/Jakobo/hotp-php/zipball/cea104624500cd3b14c6be4da49fb906b6cc28ad",
+            "reference": "cea104624500cd3b14c6be4da49fb906b6cc28ad",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^5.3.3 || ^7.0"
+        },
+        "require-dev": {
+            "jakub-onderka/php-console-highlighter": "0.3.2",
+            "jakub-onderka/php-parallel-lint": "1.0.0"
+        },
+        "time": "2018-11-02T08:20:24+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "jakobo\\HOTP\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Jakob Heuser",
+                "email": "jakob@felocity.org"
+            }
+        ],
+        "description": "HOTP simplifies One Time Password systems for PHP Authentication"
+    },
+    {
         "name": "jakub-onderka/php-console-color",
         "version": "v0.2",
         "version_normalized": "0.2.0.0",

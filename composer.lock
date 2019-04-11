@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2a0e4bad46625f6ce07ddb85a9fb6657",
+    "content-hash": "762a4be9066ca870fbe4ddaa5e363e15",
     "packages": [
         {
             "name": "christian-riesen/base32",
@@ -1037,6 +1037,46 @@
                 "stream"
             ],
             "time": "2014-10-12T19:18:40+00:00"
+        },
+        {
+            "name": "jakobo/hotp-php",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Jakobo/hotp-php.git",
+                "reference": "cea104624500cd3b14c6be4da49fb906b6cc28ad"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Jakobo/hotp-php/zipball/cea104624500cd3b14c6be4da49fb906b6cc28ad",
+                "reference": "cea104624500cd3b14c6be4da49fb906b6cc28ad",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.3.3 || ^7.0"
+            },
+            "require-dev": {
+                "jakub-onderka/php-console-highlighter": "0.3.2",
+                "jakub-onderka/php-parallel-lint": "1.0.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "jakobo\\HOTP\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Jakob Heuser",
+                    "email": "jakob@felocity.org"
+                }
+            ],
+            "description": "HOTP simplifies One Time Password systems for PHP Authentication",
+            "time": "2018-11-02T08:20:24+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",

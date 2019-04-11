@@ -29,6 +29,10 @@ class ComposerStaticInit_mediawiki_vendor
     );
 
     public static $prefixLengthsPsr4 = array (
+        'j' => 
+        array (
+            'jakobo\\HOTP\\' => 12,
+        ),
         'X' => 
         array (
             'XdgBaseDir\\' => 11,
@@ -137,6 +141,10 @@ class ComposerStaticInit_mediawiki_vendor
     );
 
     public static $prefixDirsPsr4 = array (
+        'jakobo\\HOTP\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/jakobo/hotp-php/src',
+        ),
         'XdgBaseDir\\' => 
         array (
             0 => __DIR__ . '/..' . '/dnoegel/php-xdg-base-dir/src',
@@ -2754,6 +2762,8 @@ class ComposerStaticInit_mediawiki_vendor
         'getid3_writetags' => __DIR__ . '/..' . '/james-heinrich/getid3/getid3/write.php',
         'getid3_xz' => __DIR__ . '/..' . '/james-heinrich/getid3/getid3/module.archive.xz.php',
         'getid3_zip' => __DIR__ . '/..' . '/james-heinrich/getid3/getid3/module.archive.zip.php',
+        'jakobo\\HOTP\\HOTP' => __DIR__ . '/..' . '/jakobo/hotp-php/src/HOTP.php',
+        'jakobo\\HOTP\\HOTPResult' => __DIR__ . '/..' . '/jakobo/hotp-php/src/HOTPResult.php',
         'lessc' => __DIR__ . '/..' . '/wikimedia/less.php/lessc.inc.php',
     );
 
