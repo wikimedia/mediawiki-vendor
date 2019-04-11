@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "762a4be9066ca870fbe4ddaa5e363e15",
+    "content-hash": "65cef83d1047a65e4268c22f2e2dbaf1",
     "packages": [
         {
             "name": "christian-riesen/base32",
@@ -693,8 +693,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://codeload.github.com/nomoa/elasticsearch-php/zip/bc9e8674d7df3b9d4d1fb1241b299a82ec63911a",
-                "reference": "bc9e8674d7df3b9d4d1fb1241b299a82ec63911a",
-                "shasum": null
+                "reference": "bc9e8674d7df3b9d4d1fb1241b299a82ec63911a"
             },
             "require": {
                 "guzzlehttp/ringphp": "~1.0",
@@ -2469,8 +2468,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://github.com/ebernhardson/Elastica/archive/6.0.2-wmf-2.zip",
-                "reference": "tags/6.0.2-wmf-2",
-                "shasum": null
+                "reference": "tags/6.0.2-wmf-2"
             },
             "require": {
                 "elasticsearch/elasticsearch": "^6.0",
@@ -4719,6 +4717,137 @@
             "description": "This tool check syntax of PHP files about 20x faster than serial check.",
             "homepage": "https://github.com/JakubOnderka/PHP-Parallel-Lint",
             "time": "2015-12-15T10:42:16+00:00"
+        },
+        {
+            "name": "phplang/scope-exit",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phplang/scope-exit.git",
+                "reference": "239b73abe89f9414aa85a7ca075ec9445629192b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phplang/scope-exit/zipball/239b73abe89f9414aa85a7ca075ec9445629192b",
+                "reference": "239b73abe89f9414aa85a7ca075ec9445629192b",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PhpLang\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD"
+            ],
+            "authors": [
+                {
+                    "name": "Sara Golemon",
+                    "email": "pollita@php.net",
+                    "homepage": "https://twitter.com/SaraMG",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Emulation of SCOPE_EXIT construct from C++",
+            "homepage": "https://github.com/phplang/scope-exit",
+            "keywords": [
+                "cleanup",
+                "exit",
+                "scope"
+            ],
+            "time": "2016-09-17T00:15:18+00:00"
+        },
+        {
+            "name": "swaggest/json-diff",
+            "version": "v3.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/swaggest/json-diff.git",
+                "reference": "dadb65fbc6888c9066c9eb167a98a721eb0f63a1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/swaggest/json-diff/zipball/dadb65fbc6888c9066c9eb167a98a721eb0f63a1",
+                "reference": "dadb65fbc6888c9066c9eb167a98a721eb0f63a1",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*"
+            },
+            "require-dev": {
+                "codeclimate/php-test-reporter": "^0.4.0",
+                "phpunit/php-code-coverage": "2.2.4",
+                "phpunit/phpunit": "^4.8.23"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Swaggest\\JsonDiff\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Viacheslav Poturaev",
+                    "email": "vearutop@gmail.com"
+                }
+            ],
+            "description": "JSON diff/rearrange/patch/pointer library for PHP",
+            "time": "2018-09-20T15:30:09+00:00"
+        },
+        {
+            "name": "swaggest/json-schema",
+            "version": "v0.12.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/swaggest/php-json-schema.git",
+                "reference": "d4042175a957c8911ee2a312f179c8859f11b68d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/swaggest/php-json-schema/zipball/d4042175a957c8911ee2a312f179c8859f11b68d",
+                "reference": "d4042175a957c8911ee2a312f179c8859f11b68d",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=5.4",
+                "phplang/scope-exit": "^1.0",
+                "swaggest/json-diff": "^3.4.2"
+            },
+            "require-dev": {
+                "codeclimate/php-test-reporter": "^0.4.0",
+                "phpunit/php-code-coverage": "2.2.4",
+                "phpunit/phpunit": "4.8.35",
+                "swaggest/code-builder": "dev-master#e0c5c0612fd241d2d120e5ddef91cda9edc208ee",
+                "swaggest/php-code-builder": "dev-master#3e643924445eb0f8d13dd011a57a42ce75629892"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Swaggest\\JsonSchema\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Viacheslav Poturaev",
+                    "email": "vearutop@gmail.com"
+                }
+            ],
+            "description": "High definition PHP structures with JSON-schema based validation",
+            "time": "2019-01-27T23:26:12+00:00"
         }
     ],
     "aliases": [],
