@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b9b4c72451b3689cc0d18e4a308eb389",
+    "content-hash": "a30d87fcf51f5f7191e207d470df2a50",
     "packages": [
         {
             "name": "christian-riesen/base32",
@@ -693,8 +693,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://codeload.github.com/nomoa/elasticsearch-php/zip/bc9e8674d7df3b9d4d1fb1241b299a82ec63911a",
-                "reference": "bc9e8674d7df3b9d4d1fb1241b299a82ec63911a",
-                "shasum": null
+                "reference": "bc9e8674d7df3b9d4d1fb1241b299a82ec63911a"
             },
             "require": {
                 "guzzlehttp/ringphp": "~1.0",
@@ -1620,16 +1619,16 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.31.3",
+            "version": "v0.31.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "0420507ca3c1482a354cce15966f86b72dd0fe17"
+                "reference": "d0c707f64c4cf7112f05fb172aa05b8b8c2bad0b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/0420507ca3c1482a354cce15966f86b72dd0fe17",
-                "reference": "0420507ca3c1482a354cce15966f86b72dd0fe17",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/d0c707f64c4cf7112f05fb172aa05b8b8c2bad0b",
+                "reference": "d0c707f64c4cf7112f05fb172aa05b8b8c2bad0b",
                 "shasum": ""
             },
             "require": {
@@ -1696,7 +1695,7 @@
             ],
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOUI",
-            "time": "2019-04-04T16:37:45+00:00"
+            "time": "2019-04-16T22:37:40+00:00"
         },
         {
             "name": "pear/console_getopt",
@@ -2469,8 +2468,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://github.com/ebernhardson/Elastica/archive/6.0.2-wmf-2.zip",
-                "reference": "tags/6.0.2-wmf-2",
-                "shasum": null
+                "reference": "tags/6.0.2-wmf-2"
             },
             "require": {
                 "elasticsearch/elasticsearch": "^6.0",
