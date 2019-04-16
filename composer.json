@@ -117,7 +117,7 @@
 		"symfony/var-dumper": "3.4.22",
 		"wikibase/data-model": "9.1.0",
 		"wikibase/data-model-serialization": "2.9.1",
-		"wikibase/data-model-services": "3.13.0",
+		"wikibase/data-model-services": "3.14.0",
 		"wikibase/internal-serialization": "2.9.0",
 		"wikibase/term-store": "1.0.2",
 		"wikimedia/assert": "0.2.2",

@@ -3158,17 +3158,17 @@
     },
     {
         "name": "wikibase/data-model-services",
-        "version": "3.13.0",
-        "version_normalized": "3.13.0.0",
+        "version": "3.14.0",
+        "version_normalized": "3.14.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wmde/WikibaseDataModelServices.git",
-            "reference": "09a0ec56b0aab506b07a5b7d8b6a0ac07c80b2fb"
+            "reference": "0c4993c3b68a55013e532494e41dfd6334c2105c"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wmde/WikibaseDataModelServices/zipball/09a0ec56b0aab506b07a5b7d8b6a0ac07c80b2fb",
-            "reference": "09a0ec56b0aab506b07a5b7d8b6a0ac07c80b2fb",
+            "url": "https://api.github.com/repos/wmde/WikibaseDataModelServices/zipball/0c4993c3b68a55013e532494e41dfd6334c2105c",
+            "reference": "0c4993c3b68a55013e532494e41dfd6334c2105c",
             "shasum": ""
         },
         "require": {
@@ -3183,7 +3183,7 @@
             "phpunit/phpunit": "~5.7",
             "wikibase/wikibase-codesniffer": "^0.5.0"
         },
-        "time": "2019-02-06T15:00:21+00:00",
+        "time": "2019-04-16T16:12:52+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {

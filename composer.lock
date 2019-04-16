@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "65cef83d1047a65e4268c22f2e2dbaf1",
+    "content-hash": "b9b4c72451b3689cc0d18e4a308eb389",
     "packages": [
         {
             "name": "christian-riesen/base32",
@@ -693,7 +693,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://codeload.github.com/nomoa/elasticsearch-php/zip/bc9e8674d7df3b9d4d1fb1241b299a82ec63911a",
-                "reference": "bc9e8674d7df3b9d4d1fb1241b299a82ec63911a"
+                "reference": "bc9e8674d7df3b9d4d1fb1241b299a82ec63911a",
+                "shasum": null
             },
             "require": {
                 "guzzlehttp/ringphp": "~1.0",
@@ -2468,7 +2469,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://github.com/ebernhardson/Elastica/archive/6.0.2-wmf-2.zip",
-                "reference": "tags/6.0.2-wmf-2"
+                "reference": "tags/6.0.2-wmf-2",
+                "shasum": null
             },
             "require": {
                 "elasticsearch/elasticsearch": "^6.0",
@@ -3051,16 +3053,16 @@
         },
         {
             "name": "wikibase/data-model-services",
-            "version": "3.13.0",
+            "version": "3.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wmde/WikibaseDataModelServices.git",
-                "reference": "09a0ec56b0aab506b07a5b7d8b6a0ac07c80b2fb"
+                "reference": "0c4993c3b68a55013e532494e41dfd6334c2105c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wmde/WikibaseDataModelServices/zipball/09a0ec56b0aab506b07a5b7d8b6a0ac07c80b2fb",
-                "reference": "09a0ec56b0aab506b07a5b7d8b6a0ac07c80b2fb",
+                "url": "https://api.github.com/repos/wmde/WikibaseDataModelServices/zipball/0c4993c3b68a55013e532494e41dfd6334c2105c",
+                "reference": "0c4993c3b68a55013e532494e41dfd6334c2105c",
                 "shasum": ""
             },
             "require": {
@@ -3108,7 +3110,7 @@
                 "wikibase",
                 "wikidata"
             ],
-            "time": "2019-02-06T15:00:21+00:00"
+            "time": "2019-04-16T16:12:52+00:00"
         },
         {
             "name": "wikibase/internal-serialization",
@@ -4805,16 +4807,16 @@
         },
         {
             "name": "swaggest/json-schema",
-            "version": "v0.12.7",
+            "version": "v0.12.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swaggest/php-json-schema.git",
-                "reference": "d4042175a957c8911ee2a312f179c8859f11b68d"
+                "reference": "def5ca5f42decd2a7c396d6199f40356db8fbc6e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swaggest/php-json-schema/zipball/d4042175a957c8911ee2a312f179c8859f11b68d",
-                "reference": "d4042175a957c8911ee2a312f179c8859f11b68d",
+                "url": "https://api.github.com/repos/swaggest/php-json-schema/zipball/def5ca5f42decd2a7c396d6199f40356db8fbc6e",
+                "reference": "def5ca5f42decd2a7c396d6199f40356db8fbc6e",
                 "shasum": ""
             },
             "require": {
@@ -4847,7 +4849,7 @@
                 }
             ],
             "description": "High definition PHP structures with JSON-schema based validation",
-            "time": "2019-01-27T23:26:12+00:00"
+            "time": "2019-04-16T16:06:18+00:00"
         }
     ],
     "aliases": [],
