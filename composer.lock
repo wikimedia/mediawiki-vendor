@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a30d87fcf51f5f7191e207d470df2a50",
+    "content-hash": "0111dee2e69803613ef042804004ab41",
     "packages": [
         {
             "name": "christian-riesen/base32",
@@ -693,7 +693,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://codeload.github.com/nomoa/elasticsearch-php/zip/bc9e8674d7df3b9d4d1fb1241b299a82ec63911a",
-                "reference": "bc9e8674d7df3b9d4d1fb1241b299a82ec63911a"
+                "reference": "bc9e8674d7df3b9d4d1fb1241b299a82ec63911a",
+                "shasum": null
             },
             "require": {
                 "guzzlehttp/ringphp": "~1.0",
@@ -1039,16 +1040,16 @@
         },
         {
             "name": "jakobo/hotp-php",
-            "version": "v1.0.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Jakobo/hotp-php.git",
-                "reference": "cea104624500cd3b14c6be4da49fb906b6cc28ad"
+                "reference": "d24e0d021710718cb9104ffb5c6ffb447fce65ab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Jakobo/hotp-php/zipball/cea104624500cd3b14c6be4da49fb906b6cc28ad",
-                "reference": "cea104624500cd3b14c6be4da49fb906b6cc28ad",
+                "url": "https://api.github.com/repos/Jakobo/hotp-php/zipball/d24e0d021710718cb9104ffb5c6ffb447fce65ab",
+                "reference": "d24e0d021710718cb9104ffb5c6ffb447fce65ab",
                 "shasum": ""
             },
             "require": {
@@ -1075,7 +1076,7 @@
                 }
             ],
             "description": "HOTP simplifies One Time Password systems for PHP Authentication",
-            "time": "2018-11-02T08:20:24+00:00"
+            "time": "2019-04-17T19:06:24+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -2468,7 +2469,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://github.com/ebernhardson/Elastica/archive/6.0.2-wmf-2.zip",
-                "reference": "tags/6.0.2-wmf-2"
+                "reference": "tags/6.0.2-wmf-2",
+                "shasum": null
             },
             "require": {
                 "elasticsearch/elasticsearch": "^6.0",
