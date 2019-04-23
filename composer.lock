@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0111dee2e69803613ef042804004ab41",
+    "content-hash": "47d0534a57a8422420e2cdc839cd26da",
     "packages": [
         {
             "name": "christian-riesen/base32",
@@ -3053,16 +3053,16 @@
         },
         {
             "name": "wikibase/data-model-services",
-            "version": "3.14.0",
+            "version": "3.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wmde/WikibaseDataModelServices.git",
-                "reference": "0c4993c3b68a55013e532494e41dfd6334c2105c"
+                "reference": "f1baad13984a5ee36f0d4aec7aee94898cd1cc89"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wmde/WikibaseDataModelServices/zipball/0c4993c3b68a55013e532494e41dfd6334c2105c",
-                "reference": "0c4993c3b68a55013e532494e41dfd6334c2105c",
+                "url": "https://api.github.com/repos/wmde/WikibaseDataModelServices/zipball/f1baad13984a5ee36f0d4aec7aee94898cd1cc89",
+                "reference": "f1baad13984a5ee36f0d4aec7aee94898cd1cc89",
                 "shasum": ""
             },
             "require": {
@@ -3080,7 +3080,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.13.x-dev"
+                    "dev-master": "3.x-dev"
                 }
             },
             "autoload": {
@@ -3110,7 +3110,7 @@
                 "wikibase",
                 "wikidata"
             ],
-            "time": "2019-04-16T16:12:52+00:00"
+            "time": "2019-04-23T22:40:16+00:00"
         },
         {
             "name": "wikibase/internal-serialization",
@@ -4766,16 +4766,16 @@
         },
         {
             "name": "swaggest/json-diff",
-            "version": "v3.5.0",
+            "version": "v3.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swaggest/json-diff.git",
-                "reference": "dadb65fbc6888c9066c9eb167a98a721eb0f63a1"
+                "reference": "1282c40edf79289f100df19e1182e85ec68c7333"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swaggest/json-diff/zipball/dadb65fbc6888c9066c9eb167a98a721eb0f63a1",
-                "reference": "dadb65fbc6888c9066c9eb167a98a721eb0f63a1",
+                "url": "https://api.github.com/repos/swaggest/json-diff/zipball/1282c40edf79289f100df19e1182e85ec68c7333",
+                "reference": "1282c40edf79289f100df19e1182e85ec68c7333",
                 "shasum": ""
             },
             "require": {
@@ -4803,7 +4803,7 @@
                 }
             ],
             "description": "JSON diff/rearrange/patch/pointer library for PHP",
-            "time": "2018-09-20T15:30:09+00:00"
+            "time": "2019-04-19T20:58:26+00:00"
         },
         {
             "name": "swaggest/json-schema",

@@ -2498,6 +2498,8 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikibase\\DataModel\\Services\\Lookup\\LabelDescriptionLookupException' => __DIR__ . '/..' . '/wikibase/data-model-services/src/Lookup/LabelDescriptionLookupException.php',
         'Wikibase\\DataModel\\Services\\Lookup\\LabelLookup' => __DIR__ . '/..' . '/wikibase/data-model-services/src/Lookup/LabelLookup.php',
         'Wikibase\\DataModel\\Services\\Lookup\\LanguageLabelDescriptionLookup' => __DIR__ . '/..' . '/wikibase/data-model-services/src/Lookup/LanguageLabelDescriptionLookup.php',
+        'Wikibase\\DataModel\\Services\\Lookup\\LegacyAdapterItemLookup' => __DIR__ . '/..' . '/wikibase/data-model-services/src/Lookup/LegacyAdapterItemLookup.php',
+        'Wikibase\\DataModel\\Services\\Lookup\\LegacyAdapterPropertyLookup' => __DIR__ . '/..' . '/wikibase/data-model-services/src/Lookup/LegacyAdapterPropertyLookup.php',
         'Wikibase\\DataModel\\Services\\Lookup\\MaxReferenceDepthExhaustedException' => __DIR__ . '/..' . '/wikibase/data-model-services/src/Lookup/MaxReferenceDepthExhaustedException.php',
         'Wikibase\\DataModel\\Services\\Lookup\\MaxReferencedEntityVisitsExhaustedException' => __DIR__ . '/..' . '/wikibase/data-model-services/src/Lookup/MaxReferencedEntityVisitsExhaustedException.php',
         'Wikibase\\DataModel\\Services\\Lookup\\PropertyDataTypeLookup' => __DIR__ . '/..' . '/wikibase/data-model-services/src/Lookup/PropertyDataTypeLookup.php',

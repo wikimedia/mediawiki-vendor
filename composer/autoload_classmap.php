@@ -2026,6 +2026,8 @@ return array(
     'Wikibase\\DataModel\\Services\\Lookup\\LabelDescriptionLookupException' => $vendorDir . '/wikibase/data-model-services/src/Lookup/LabelDescriptionLookupException.php',
     'Wikibase\\DataModel\\Services\\Lookup\\LabelLookup' => $vendorDir . '/wikibase/data-model-services/src/Lookup/LabelLookup.php',
     'Wikibase\\DataModel\\Services\\Lookup\\LanguageLabelDescriptionLookup' => $vendorDir . '/wikibase/data-model-services/src/Lookup/LanguageLabelDescriptionLookup.php',
+    'Wikibase\\DataModel\\Services\\Lookup\\LegacyAdapterItemLookup' => $vendorDir . '/wikibase/data-model-services/src/Lookup/LegacyAdapterItemLookup.php',
+    'Wikibase\\DataModel\\Services\\Lookup\\LegacyAdapterPropertyLookup' => $vendorDir . '/wikibase/data-model-services/src/Lookup/LegacyAdapterPropertyLookup.php',
     'Wikibase\\DataModel\\Services\\Lookup\\MaxReferenceDepthExhaustedException' => $vendorDir . '/wikibase/data-model-services/src/Lookup/MaxReferenceDepthExhaustedException.php',
     'Wikibase\\DataModel\\Services\\Lookup\\MaxReferencedEntityVisitsExhaustedException' => $vendorDir . '/wikibase/data-model-services/src/Lookup/MaxReferencedEntityVisitsExhaustedException.php',
     'Wikibase\\DataModel\\Services\\Lookup\\PropertyDataTypeLookup' => $vendorDir . '/wikibase/data-model-services/src/Lookup/PropertyDataTypeLookup.php',
