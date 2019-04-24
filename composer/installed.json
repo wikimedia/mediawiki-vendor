@@ -711,8 +711,7 @@
         "dist": {
             "type": "zip",
             "url": "https://codeload.github.com/nomoa/elasticsearch-php/zip/bc9e8674d7df3b9d4d1fb1241b299a82ec63911a",
-            "reference": "bc9e8674d7df3b9d4d1fb1241b299a82ec63911a",
-            "shasum": null
+            "reference": "bc9e8674d7df3b9d4d1fb1241b299a82ec63911a"
         },
         "require": {
             "guzzlehttp/ringphp": "~1.0",
@@ -1673,17 +1672,17 @@
     },
     {
         "name": "oojs/oojs-ui",
-        "version": "v0.31.4",
-        "version_normalized": "0.31.4.0",
+        "version": "v0.31.5",
+        "version_normalized": "0.31.5.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/oojs-ui.git",
-            "reference": "d0c707f64c4cf7112f05fb172aa05b8b8c2bad0b"
+            "reference": "eeda6b36143cb125e81cde2000ef24d468489a82"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/d0c707f64c4cf7112f05fb172aa05b8b8c2bad0b",
-            "reference": "d0c707f64c4cf7112f05fb172aa05b8b8c2bad0b",
+            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/eeda6b36143cb125e81cde2000ef24d468489a82",
+            "reference": "eeda6b36143cb125e81cde2000ef24d468489a82",
             "shasum": ""
         },
         "require": {
@@ -1696,7 +1695,7 @@
             "mediawiki/minus-x": "0.3.1",
             "phpunit/phpunit": "4.8.36 || ^6.5"
         },
-        "time": "2019-04-16T22:37:40+00:00",
+        "time": "2019-04-24T18:17:19+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -2555,8 +2554,7 @@
         "dist": {
             "type": "zip",
             "url": "https://github.com/ebernhardson/Elastica/archive/6.0.2-wmf-2.zip",
-            "reference": "tags/6.0.2-wmf-2",
-            "shasum": null
+            "reference": "tags/6.0.2-wmf-2"
         },
         "require": {
             "elasticsearch/elasticsearch": "^6.0",

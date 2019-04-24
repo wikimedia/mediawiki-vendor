@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "47d0534a57a8422420e2cdc839cd26da",
+    "content-hash": "d1454660e130181557c07792bc4b272e",
     "packages": [
         {
             "name": "christian-riesen/base32",
@@ -693,8 +693,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://codeload.github.com/nomoa/elasticsearch-php/zip/bc9e8674d7df3b9d4d1fb1241b299a82ec63911a",
-                "reference": "bc9e8674d7df3b9d4d1fb1241b299a82ec63911a",
-                "shasum": null
+                "reference": "bc9e8674d7df3b9d4d1fb1241b299a82ec63911a"
             },
             "require": {
                 "guzzlehttp/ringphp": "~1.0",
@@ -1620,16 +1619,16 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.31.4",
+            "version": "v0.31.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "d0c707f64c4cf7112f05fb172aa05b8b8c2bad0b"
+                "reference": "eeda6b36143cb125e81cde2000ef24d468489a82"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/d0c707f64c4cf7112f05fb172aa05b8b8c2bad0b",
-                "reference": "d0c707f64c4cf7112f05fb172aa05b8b8c2bad0b",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/eeda6b36143cb125e81cde2000ef24d468489a82",
+                "reference": "eeda6b36143cb125e81cde2000ef24d468489a82",
                 "shasum": ""
             },
             "require": {
@@ -1696,7 +1695,7 @@
             ],
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOUI",
-            "time": "2019-04-16T22:37:40+00:00"
+            "time": "2019-04-24T18:17:19+00:00"
         },
         {
             "name": "pear/console_getopt",
@@ -2469,8 +2468,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://github.com/ebernhardson/Elastica/archive/6.0.2-wmf-2.zip",
-                "reference": "tags/6.0.2-wmf-2",
-                "shasum": null
+                "reference": "tags/6.0.2-wmf-2"
             },
             "require": {
                 "elasticsearch/elasticsearch": "^6.0",
@@ -4766,16 +4764,16 @@
         },
         {
             "name": "swaggest/json-diff",
-            "version": "v3.5.1",
+            "version": "v3.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swaggest/json-diff.git",
-                "reference": "1282c40edf79289f100df19e1182e85ec68c7333"
+                "reference": "de18f54444fb3d4db4bc4a3cbc56a5d02d60da07"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swaggest/json-diff/zipball/1282c40edf79289f100df19e1182e85ec68c7333",
-                "reference": "1282c40edf79289f100df19e1182e85ec68c7333",
+                "url": "https://api.github.com/repos/swaggest/json-diff/zipball/de18f54444fb3d4db4bc4a3cbc56a5d02d60da07",
+                "reference": "de18f54444fb3d4db4bc4a3cbc56a5d02d60da07",
                 "shasum": ""
             },
             "require": {
@@ -4803,34 +4801,32 @@
                 }
             ],
             "description": "JSON diff/rearrange/patch/pointer library for PHP",
-            "time": "2019-04-19T20:58:26+00:00"
+            "time": "2019-04-24T12:55:26+00:00"
         },
         {
             "name": "swaggest/json-schema",
-            "version": "v0.12.8",
+            "version": "v0.12.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swaggest/php-json-schema.git",
-                "reference": "def5ca5f42decd2a7c396d6199f40356db8fbc6e"
+                "reference": "29125e57ebb34c0a8dc40c637a2430dcc4b374ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swaggest/php-json-schema/zipball/def5ca5f42decd2a7c396d6199f40356db8fbc6e",
-                "reference": "def5ca5f42decd2a7c396d6199f40356db8fbc6e",
+                "url": "https://api.github.com/repos/swaggest/php-json-schema/zipball/29125e57ebb34c0a8dc40c637a2430dcc4b374ef",
+                "reference": "29125e57ebb34c0a8dc40c637a2430dcc4b374ef",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "php": ">=5.4",
                 "phplang/scope-exit": "^1.0",
-                "swaggest/json-diff": "^3.4.2"
+                "swaggest/json-diff": "^3.5.1"
             },
             "require-dev": {
-                "codeclimate/php-test-reporter": "^0.4.0",
+                "codeclimate/php-test-reporter": "0.4.0",
                 "phpunit/php-code-coverage": "2.2.4",
-                "phpunit/phpunit": "4.8.35",
-                "swaggest/code-builder": "dev-master#e0c5c0612fd241d2d120e5ddef91cda9edc208ee",
-                "swaggest/php-code-builder": "dev-master#3e643924445eb0f8d13dd011a57a42ce75629892"
+                "phpunit/phpunit": "4.8.35"
             },
             "type": "library",
             "autoload": {
@@ -4849,7 +4845,7 @@
                 }
             ],
             "description": "High definition PHP structures with JSON-schema based validation",
-            "time": "2019-04-16T16:06:18+00:00"
+            "time": "2019-04-24T12:42:11+00:00"
         }
     ],
     "aliases": [],
