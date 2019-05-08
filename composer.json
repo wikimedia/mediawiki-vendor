@@ -92,7 +92,7 @@
 		"nikic/php-parser": "3.1.5",
 		"nmred/kafka-php": "0.1.5",
 		"onoi/message-reporter": "1.4.1",
-		"oojs/oojs-ui": "0.31.5",
+		"oojs/oojs-ui": "0.31.6",
 		"pear/console_getopt": "1.4.2",
 		"pear/mail": "1.4.1",
 		"pear/mail_mime": "1.10.2",

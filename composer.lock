@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d1454660e130181557c07792bc4b272e",
+    "content-hash": "d3c04597a8f1be0eb14ae5b0bd5c22dd",
     "packages": [
         {
             "name": "christian-riesen/base32",
@@ -1619,16 +1619,16 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.31.5",
+            "version": "v0.31.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "eeda6b36143cb125e81cde2000ef24d468489a82"
+                "reference": "40e1f1e5556089797eea9596d1f5d41a130488c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/eeda6b36143cb125e81cde2000ef24d468489a82",
-                "reference": "eeda6b36143cb125e81cde2000ef24d468489a82",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/40e1f1e5556089797eea9596d1f5d41a130488c5",
+                "reference": "40e1f1e5556089797eea9596d1f5d41a130488c5",
                 "shasum": ""
             },
             "require": {
@@ -1695,7 +1695,7 @@
             ],
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOUI",
-            "time": "2019-04-24T18:17:19+00:00"
+            "time": "2019-05-07T22:51:45+00:00"
         },
         {
             "name": "pear/console_getopt",
@@ -4764,16 +4764,16 @@
         },
         {
             "name": "swaggest/json-diff",
-            "version": "v3.6.0",
+            "version": "v3.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swaggest/json-diff.git",
-                "reference": "de18f54444fb3d4db4bc4a3cbc56a5d02d60da07"
+                "reference": "53c412ad8e3fc1293d4e6fdf06f7839698ad897d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swaggest/json-diff/zipball/de18f54444fb3d4db4bc4a3cbc56a5d02d60da07",
-                "reference": "de18f54444fb3d4db4bc4a3cbc56a5d02d60da07",
+                "url": "https://api.github.com/repos/swaggest/json-diff/zipball/53c412ad8e3fc1293d4e6fdf06f7839698ad897d",
+                "reference": "53c412ad8e3fc1293d4e6fdf06f7839698ad897d",
                 "shasum": ""
             },
             "require": {
@@ -4801,7 +4801,7 @@
                 }
             ],
             "description": "JSON diff/rearrange/patch/pointer library for PHP",
-            "time": "2019-04-24T12:55:26+00:00"
+            "time": "2019-04-25T04:15:41+00:00"
         },
         {
             "name": "swaggest/json-schema",

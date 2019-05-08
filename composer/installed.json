@@ -1672,17 +1672,17 @@
     },
     {
         "name": "oojs/oojs-ui",
-        "version": "v0.31.5",
-        "version_normalized": "0.31.5.0",
+        "version": "v0.31.6",
+        "version_normalized": "0.31.6.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/oojs-ui.git",
-            "reference": "eeda6b36143cb125e81cde2000ef24d468489a82"
+            "reference": "40e1f1e5556089797eea9596d1f5d41a130488c5"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/eeda6b36143cb125e81cde2000ef24d468489a82",
-            "reference": "eeda6b36143cb125e81cde2000ef24d468489a82",
+            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/40e1f1e5556089797eea9596d1f5d41a130488c5",
+            "reference": "40e1f1e5556089797eea9596d1f5d41a130488c5",
             "shasum": ""
         },
         "require": {
@@ -1695,7 +1695,7 @@
             "mediawiki/minus-x": "0.3.1",
             "phpunit/phpunit": "4.8.36 || ^6.5"
         },
-        "time": "2019-04-24T18:17:19+00:00",
+        "time": "2019-05-07T22:51:45+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
