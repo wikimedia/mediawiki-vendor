@@ -41,6 +41,21 @@ class ApplicationTest extends TestCase
 {
     protected static $fixturesPath;
 
+    private $colSize;
+
+    protected function setUp()
+    {
+        $this->colSize = getenv('COLUMNS');
+    }
+
+    protected function tearDown()
+    {
+        putenv($this->colSize ? 'COLUMNS='.$this->colSize : 'COLUMNS');
+        putenv('SHELL_VERBOSITY');
+        unset($_ENV['SHELL_VERBOSITY']);
+        unset($_SERVER['SHELL_VERBOSITY']);
+    }
+
     public static function setUpBeforeClass()
     {
         self::$fixturesPath = realpath(__DIR__.'/Fixtures/');
@@ -383,6 +398,7 @@ class ApplicationTest extends TestCase
      */
     public function testFindWithAmbiguousAbbreviations($abbreviation, $expectedExceptionMessage)
     {
+        putenv('COLUMNS=120');
         if (method_exists($this, 'expectException')) {
             $this->expectException('Symfony\Component\Console\Exception\CommandNotFoundException');
             $this->expectExceptionMessage($expectedExceptionMessage);
@@ -468,6 +484,7 @@ class ApplicationTest extends TestCase
 
     public function testFindAlternativeExceptionMessageMultiple()
     {
+        putenv('COLUMNS=120');
         $application = new Application();
         $application->add(new \FooCommand());
         $application->add(new \Foo1Command());
@@ -882,6 +899,19 @@ class ApplicationTest extends TestCase
 
         $tester->run(['command' => 'foo:bar', '-n' => true], ['decorated' => false]);
         $this->assertSame('called'.PHP_EOL, $tester->getDisplay(), '->run() does not call interact() if -n is passed');
+    }
+
+    public function testRunWithGlobalOptionAndNoCommand()
+    {
+        $application = new Application();
+        $application->setAutoExit(false);
+        $application->setCatchExceptions(false);
+        $application->getDefinition()->addOption(new InputOption('foo', 'f', InputOption::VALUE_OPTIONAL));
+
+        $output = new StreamOutput(fopen('php://memory', 'w', false));
+        $input = new ArgvInput(['cli.php', '--foo', 'bar']);
+
+        $this->assertSame(0, $application->run($input, $output));
     }
 
     /**
@@ -1675,13 +1705,6 @@ class ApplicationTest extends TestCase
         } catch (\Error $e) {
             $this->assertSame($e->getMessage(), 'Class \'UnknownClass\' not found');
         }
-    }
-
-    protected function tearDown()
-    {
-        putenv('SHELL_VERBOSITY');
-        unset($_ENV['SHELL_VERBOSITY']);
-        unset($_SERVER['SHELL_VERBOSITY']);
     }
 }
 
