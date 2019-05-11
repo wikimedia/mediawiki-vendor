@@ -98,7 +98,7 @@
 		"pear/mail_mime": "1.10.2",
 		"pear/net_smtp": "1.8.1",
 		"pear/net_socket": "1.2.2",
-		"pear/pear-core-minimal": "1.10.7",
+		"pear/pear-core-minimal": "1.10.9",
 		"pear/pear_exception": "1.0.0",
 		"php": ">=5.5.9",
 		"pimple/pimple": "3.0.2",
