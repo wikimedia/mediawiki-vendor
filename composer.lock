@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2f7da9b6c2cb5886e17fa41e67383070",
+    "content-hash": "4706e1b563fc1c8093bd250ff1727fdb",
     "packages": [
         {
             "name": "christian-riesen/base32",
@@ -125,20 +125,20 @@
         },
         {
             "name": "cssjanus/cssjanus",
-            "version": "v1.2.1",
+            "version": "v1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cssjanus/php-cssjanus.git",
-                "reference": "a428c6ac938e8cd6e789c02ebe6ed649b53c65e9"
+                "reference": "93db9fb39c2f9bcf287715ae254c088b14a77799"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cssjanus/php-cssjanus/zipball/a428c6ac938e8cd6e789c02ebe6ed649b53c65e9",
-                "reference": "a428c6ac938e8cd6e789c02ebe6ed649b53c65e9",
+                "url": "https://api.github.com/repos/cssjanus/php-cssjanus/zipball/93db9fb39c2f9bcf287715ae254c088b14a77799",
+                "reference": "93db9fb39c2f9bcf287715ae254c088b14a77799",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5.9"
+                "php": ">=5.6.0"
             },
             "require-dev": {
                 "jakub-onderka/php-parallel-lint": "^0.9.2",
@@ -167,7 +167,7 @@
                 }
             ],
             "description": "Convert CSS stylesheets between left-to-right and right-to-left.",
-            "time": "2018-02-16T00:44:28+00:00"
+            "time": "2019-05-10T23:50:10+00:00"
         },
         {
             "name": "data-values/common",
