@@ -4276,17 +4276,17 @@
     },
     {
         "name": "wikimedia/remex-html",
-        "version": "2.0.1",
-        "version_normalized": "2.0.1.0",
+        "version": "2.0.3",
+        "version_normalized": "2.0.3.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/remex-html.git",
-            "reference": "2ecb8ff12ce81b4040f739d4eb30469486027c2b"
+            "reference": "ebde2de0c66945c46d27073b117950d4a7c7c46c"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/remex-html/zipball/2ecb8ff12ce81b4040f739d4eb30469486027c2b",
-            "reference": "2ecb8ff12ce81b4040f739d4eb30469486027c2b",
+            "url": "https://api.github.com/repos/wikimedia/remex-html/zipball/ebde2de0c66945c46d27073b117950d4a7c7c46c",
+            "reference": "ebde2de0c66945c46d27073b117950d4a7c7c46c",
             "shasum": ""
         },
         "require": {
@@ -4297,12 +4297,12 @@
         "require-dev": {
             "jakub-onderka/php-console-highlighter": "0.3.2",
             "jakub-onderka/php-parallel-lint": "1.0.0",
-            "mediawiki/mediawiki-codesniffer": "22.0.0",
+            "mediawiki/mediawiki-codesniffer": "24.0.0",
             "mediawiki/minus-x": "0.3.1",
             "ockcyp/covers-validator": "0.5.1 || 0.6.1",
             "phpunit/phpunit": "4.8.36 || ^6.5"
         },
-        "time": "2018-10-15T20:31:28+00:00",
+        "time": "2019-05-11T03:56:50+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

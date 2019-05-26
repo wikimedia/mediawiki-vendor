@@ -2,6 +2,7 @@
 
 namespace RemexHtml\DOM;
 
+use RemexHtml\HTMLData;
 use RemexHtml\Tokenizer\Attributes;
 use RemexHtml\TreeBuilder\Element;
 use RemexHtml\TreeBuilder\TreeBuilder;
@@ -18,14 +19,23 @@ class DOMBuilder implements TreeHandler {
 
 	private $doc;
 	private $errorCallback;
+	private $suppressHtmlNamespace;
 	private $isFragment;
 	private $coerced;
 
 	/**
-	 * @param callable|null $errorCallback A function which is called on parse errors
+	 * @param array $options An associative array of options:
+	 *   - errorCallback : A function which is called on parse errors
+	 *   - suppressHtmlNamespace : omit the namespace when creating HTML
+	 *     elements. False by default.
 	 */
-	public function __construct( $errorCallback = null ) {
-		$this->errorCallback = $errorCallback;
+	public function __construct( $options = [] ) {
+		$options = $options + [
+			'suppressHtmlNamespace' => false,
+			'errorCallback' => null,
+		];
+		$this->errorCallback = $options['errorCallback'];
+		$this->suppressHtmlNamespace = $options['suppressHtmlNamespace'];
 	}
 
 	/**
@@ -37,7 +47,7 @@ class DOMBuilder implements TreeHandler {
 	 * DOMDocumentFragment, libxml would invent new prefixes for the orphaned
 	 * namespaces.
 	 *
-	 * @return DOMNode
+	 * @return \DOMNode
 	 */
 	public function getFragment() {
 		if ( $this->isFragment ) {
@@ -58,7 +68,6 @@ class DOMBuilder implements TreeHandler {
 	}
 
 	public function startDocument( $fragmentNamespace, $fragmentName ) {
-		$impl = new \DOMImplementation;
 		$this->isFragment = $fragmentNamespace !== null;
 		$this->doc = $this->createDocument();
 	}
@@ -110,15 +119,26 @@ class DOMBuilder implements TreeHandler {
 	}
 
 	private function createNode( Element $element ) {
+		$noNS = $this->suppressHtmlNamespace && $element->namespace === HTMLData::NS_HTML;
 		try {
-			$node = $this->doc->createElementNS(
-				$element->namespace,
-				$element->name );
+			if ( $noNS ) {
+				$node = $this->doc->createElement( $element->name );
+			} else {
+				$node = $this->doc->createElementNS(
+					$element->namespace,
+					$element->name );
+			}
 		} catch ( \DOMException $e ) {
 			// Attempt to escape the name so that it is more acceptable
-			$node = $this->doc->createElementNS(
-				$element->namespace,
-				$this->coerceName( $element->name ) );
+			if ( $noNS ) {
+				$node = $this->doc->createElement(
+					$this->coerceName( $element->name )
+				);
+			} else {
+				$node = $this->doc->createElementNS(
+					$element->namespace,
+					$this->coerceName( $element->name ) );
+			}
 		}
 
 		foreach ( $element->attrs->getObjects() as $attr ) {
@@ -181,7 +201,6 @@ class DOMBuilder implements TreeHandler {
 
 	public function doctype( $name, $public, $system, $quirks, $sourceStart, $sourceLength ) {
 		if ( !$this->doc->firstChild ) {
-			$impl = $this->doc->implementation;
 			$this->doc = $this->createDocument( $name, $public, $system );
 		}
 		$this->doctypeName = $name;

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ecb05fc51d9c55b603ffbec21c6a617f",
+    "content-hash": "881023874ab9d9f3322093f73e9d288b",
     "packages": [
         {
             "name": "christian-riesen/base32",
@@ -4129,16 +4129,16 @@
         },
         {
             "name": "wikimedia/remex-html",
-            "version": "2.0.1",
+            "version": "2.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/remex-html.git",
-                "reference": "2ecb8ff12ce81b4040f739d4eb30469486027c2b"
+                "reference": "ebde2de0c66945c46d27073b117950d4a7c7c46c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/remex-html/zipball/2ecb8ff12ce81b4040f739d4eb30469486027c2b",
-                "reference": "2ecb8ff12ce81b4040f739d4eb30469486027c2b",
+                "url": "https://api.github.com/repos/wikimedia/remex-html/zipball/ebde2de0c66945c46d27073b117950d4a7c7c46c",
+                "reference": "ebde2de0c66945c46d27073b117950d4a7c7c46c",
                 "shasum": ""
             },
             "require": {
@@ -4149,7 +4149,7 @@
             "require-dev": {
                 "jakub-onderka/php-console-highlighter": "0.3.2",
                 "jakub-onderka/php-parallel-lint": "1.0.0",
-                "mediawiki/mediawiki-codesniffer": "22.0.0",
+                "mediawiki/mediawiki-codesniffer": "24.0.0",
                 "mediawiki/minus-x": "0.3.1",
                 "ockcyp/covers-validator": "0.5.1 || 0.6.1",
                 "phpunit/phpunit": "4.8.36 || ^6.5"
@@ -4172,7 +4172,7 @@
             ],
             "description": "Fast HTML 5 parser",
             "homepage": "https://www.mediawiki.org/wiki/RemexHtml",
-            "time": "2018-10-15T20:31:28+00:00"
+            "time": "2019-05-11T03:56:50+00:00"
         },
         {
             "name": "wikimedia/running-stat",
@@ -4814,16 +4814,16 @@
         },
         {
             "name": "swaggest/json-schema",
-            "version": "v0.12.9",
+            "version": "v0.12.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swaggest/php-json-schema.git",
-                "reference": "29125e57ebb34c0a8dc40c637a2430dcc4b374ef"
+                "reference": "5a8e78f79cdc050560b0e3cea1b13d8b72af0d17"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swaggest/php-json-schema/zipball/29125e57ebb34c0a8dc40c637a2430dcc4b374ef",
-                "reference": "29125e57ebb34c0a8dc40c637a2430dcc4b374ef",
+                "url": "https://api.github.com/repos/swaggest/php-json-schema/zipball/5a8e78f79cdc050560b0e3cea1b13d8b72af0d17",
+                "reference": "5a8e78f79cdc050560b0e3cea1b13d8b72af0d17",
                 "shasum": ""
             },
             "require": {
@@ -4854,7 +4854,7 @@
                 }
             ],
             "description": "High definition PHP structures with JSON-schema based validation",
-            "time": "2019-04-24T12:42:11+00:00"
+            "time": "2019-05-16T12:33:02+00:00"
         }
     ],
     "aliases": [],
