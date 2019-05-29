@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "881023874ab9d9f3322093f73e9d288b",
+    "content-hash": "bff734704f0b4eca9ce523f56ae930cd",
     "packages": [
         {
             "name": "christian-riesen/base32",
@@ -693,8 +693,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://codeload.github.com/nomoa/elasticsearch-php/zip/bc9e8674d7df3b9d4d1fb1241b299a82ec63911a",
-                "reference": "bc9e8674d7df3b9d4d1fb1241b299a82ec63911a",
-                "shasum": null
+                "reference": "bc9e8674d7df3b9d4d1fb1241b299a82ec63911a"
             },
             "require": {
                 "guzzlehttp/ringphp": "~1.0",
@@ -1620,16 +1619,16 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.31.6",
+            "version": "v0.32.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "40e1f1e5556089797eea9596d1f5d41a130488c5"
+                "reference": "8c377a4ebf920209cdce536c5751d92e062fe193"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/40e1f1e5556089797eea9596d1f5d41a130488c5",
-                "reference": "40e1f1e5556089797eea9596d1f5d41a130488c5",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/8c377a4ebf920209cdce536c5751d92e062fe193",
+                "reference": "8c377a4ebf920209cdce536c5751d92e062fe193",
                 "shasum": ""
             },
             "require": {
@@ -1696,7 +1695,7 @@
             ],
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOUI",
-            "time": "2019-05-07T22:51:45+00:00"
+            "time": "2019-05-29T00:26:56+00:00"
         },
         {
             "name": "pear/console_getopt",
