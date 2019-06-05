@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bff734704f0b4eca9ce523f56ae930cd",
+    "content-hash": "891f1d7dbe18b35320c9b3983c78fd04",
     "packages": [
         {
             "name": "christian-riesen/base32",
@@ -1619,16 +1619,16 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.32.0",
+            "version": "v0.32.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "8c377a4ebf920209cdce536c5751d92e062fe193"
+                "reference": "21d3df35ede3a67fedb48ea6ef27d821fb5a52ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/8c377a4ebf920209cdce536c5751d92e062fe193",
-                "reference": "8c377a4ebf920209cdce536c5751d92e062fe193",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/21d3df35ede3a67fedb48ea6ef27d821fb5a52ce",
+                "reference": "21d3df35ede3a67fedb48ea6ef27d821fb5a52ce",
                 "shasum": ""
             },
             "require": {
@@ -1695,7 +1695,7 @@
             ],
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOUI",
-            "time": "2019-05-29T00:26:56+00:00"
+            "time": "2019-06-05T03:27:19+00:00"
         },
         {
             "name": "pear/console_getopt",
@@ -2468,8 +2468,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://github.com/ebernhardson/Elastica/archive/6.0.2-wmf-2.zip",
-                "reference": "tags/6.0.2-wmf-2",
-                "shasum": null
+                "reference": "tags/6.0.2-wmf-2"
             },
             "require": {
                 "elasticsearch/elasticsearch": "^6.0",
