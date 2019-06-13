@@ -111,10 +111,10 @@ class RotatingFileHandlerTest extends TestCase
             return $now + 86400 * $ago;
         };
         $monthCallback = function($ago) {
-            return gmmktime(0, 0, 0, date('n') + $ago, date('d'), date('Y'));
+            return gmmktime(0, 0, 0, date('n') + $ago, 1, date('Y'));
         };
         $yearCallback = function($ago) {
-            return gmmktime(0, 0, 0, date('n'), date('d'), date('Y') + $ago);
+            return gmmktime(0, 0, 0, 1, 1, date('Y') + $ago);
         };
 
         return array(
@@ -188,6 +188,40 @@ class RotatingFileHandlerTest extends TestCase
             array('foo-{date}-bar', true),
             array('{date}-foobar', true),
             array('foobar', false),
+        );
+    }
+
+    /**
+     * @dataProvider rotationWhenSimilarFilesExistTests
+     */
+    public function testRotationWhenSimilarFileNamesExist($dateFormat)
+    {
+        touch($old1 = __DIR__.'/Fixtures/foo-foo-'.date($dateFormat).'.rot');
+        touch($old2 = __DIR__.'/Fixtures/foo-bar-'.date($dateFormat).'.rot');
+
+        $log = __DIR__.'/Fixtures/foo-'.date($dateFormat).'.rot';
+
+        $handler = new RotatingFileHandler(__DIR__.'/Fixtures/foo.rot', 2);
+        $handler->setFormatter($this->getIdentityFormatter());
+        $handler->setFilenameFormat('{filename}-{date}', $dateFormat);
+        $handler->handle($this->getRecord());
+        $handler->close();
+
+        $this->assertTrue(file_exists($log));
+    }
+
+    public function rotationWhenSimilarFilesExistTests()
+    {
+
+        return array(
+            'Rotation is triggered when the file of the current day is not present but similar exists'
+                => array(RotatingFileHandler::FILE_PER_DAY),
+
+            'Rotation is triggered when the file of the current month is not present but similar exists'
+                => array(RotatingFileHandler::FILE_PER_MONTH),
+
+            'Rotation is triggered when the file of the current year is not present but similar exists'
+                => array(RotatingFileHandler::FILE_PER_YEAR),
         );
     }
 
