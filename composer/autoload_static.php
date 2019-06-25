@@ -18,11 +18,11 @@ class ComposerStaticInit_mediawiki_vendor
         '3ef87127dc6892a0a78f223558a0b940' => __DIR__ . '/..' . '/diff/diff/Diff.php',
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
+        'c3f7f0e81464740a933532e81fa26cc7' => __DIR__ . '/..' . '/wikimedia/base-convert/src/Functions.php',
         'c50606d667a3fde2b80a955639479d3d' => __DIR__ . '/..' . '/wikimedia/timestamp/src/defines.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '04c6c5c2f7095ccf6c481d3e53e1776f' => __DIR__ . '/..' . '/mustangostang/spyc/Spyc.php',
         '801c31d8ed748cfa537fa45402288c95' => __DIR__ . '/..' . '/psy/psysh/src/functions.php',
-        'c3f7f0e81464740a933532e81fa26cc7' => __DIR__ . '/..' . '/wikimedia/base-convert/src/Functions.php',
         '4d945db823e5f6ca6dd83ad1f5fbcc43' => __DIR__ . '/..' . '/wikimedia/relpath/src/RelPath/RelPath.php',
         '6513700b70192b7dfd0e5e9fc8082cf3' => __DIR__ . '/..' . '/wikimedia/relpath/src/Wikimedia/RelPath.php',
     );
@@ -197,9 +197,10 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\' => 
         array (
             0 => __DIR__ . '/..' . '/wikimedia/ip-set/src',
-            1 => __DIR__ . '/..' . '/wikimedia/object-factory/src',
-            2 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
-            3 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
+            1 => __DIR__ . '/..' . '/wikimedia/ip-utils/src',
+            2 => __DIR__ . '/..' . '/wikimedia/object-factory/src',
+            3 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
+            4 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
         ),
         'Wikibase\\TermStore\\' => 
         array (
@@ -2681,6 +2682,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Equivset\\EquivsetInterface' => __DIR__ . '/..' . '/wikimedia/equivset/src/EquivsetInterface.php',
         'Wikimedia\\Equivset\\Exception\\EquivsetException' => __DIR__ . '/..' . '/wikimedia/equivset/src/Exception/EquivsetException.php',
         'Wikimedia\\IPSet' => __DIR__ . '/..' . '/wikimedia/ip-set/src/IPSet.php',
+        'Wikimedia\\IPUtils' => __DIR__ . '/..' . '/wikimedia/ip-utils/src/IPUtils.php',
         'Wikimedia\\ObjectFactory' => __DIR__ . '/..' . '/wikimedia/object-factory/src/ObjectFactory.php',
         'Wikimedia\\PSquare' => __DIR__ . '/..' . '/wikimedia/running-stat/src/Wikimedia/PSquare.php',
         'Wikimedia\\PasswordBlacklist\\PasswordBlacklist' => __DIR__ . '/..' . '/wikimedia/password-blacklist/src/PasswordBlacklist.php',

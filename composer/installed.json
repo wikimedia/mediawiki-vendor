@@ -711,7 +711,7 @@
         "dist": {
             "type": "zip",
             "url": "https://codeload.github.com/nomoa/elasticsearch-php/zip/bc9e8674d7df3b9d4d1fb1241b299a82ec63911a",
-            "reference": "bc9e8674d7df3b9d4d1fb1241b299a82ec63911a"
+            "reference": "f737af177384dd9bf353244b6eaeb6149ab5026e"
         },
         "require": {
             "guzzlehttp/ringphp": "~1.0",
@@ -3956,6 +3956,55 @@
         ],
         "description": "Efficiently match IP addresses against a set of CIDR specifications.",
         "homepage": "https://www.mediawiki.org/wiki/IPSet"
+    },
+    {
+        "name": "wikimedia/ip-utils",
+        "version": "1.0.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/mediawiki-libs-IPUtils.git",
+            "reference": "c505b99c0dfab12254d64a5e064bddd13cf066ad"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-IPUtils/zipball/c505b99c0dfab12254d64a5e064bddd13cf066ad",
+            "reference": "c505b99c0dfab12254d64a5e064bddd13cf066ad",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.6.99",
+            "wikimedia/base-convert": "^2.0.0",
+            "wikimedia/ip-set": "^2.0.0"
+        },
+        "require-dev": {
+            "jakub-onderka/php-console-highlighter": "0.3.2",
+            "jakub-onderka/php-parallel-lint": "1.0.0",
+            "mediawiki/mediawiki-codesniffer": "24.0.0",
+            "mediawiki/minus-x": "0.3.1",
+            "ockcyp/covers-validator": "0.5.1 || 0.6.1",
+            "phpunit/phpunit": "4.8.36 || ^6.5"
+        },
+        "time": "2019-06-25T17:43:18+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Wikimedia\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2.0-or-later"
+        ],
+        "authors": [
+            {
+                "name": "MediaWiki developers",
+                "email": "wikitech-l@lists.wikimedia.org"
+            }
+        ],
+        "description": "Functions and constants to play with IP addresses and ranges",
+        "homepage": "https://www.mediawiki.org/wiki/IPUtils"
     },
     {
         "name": "wikimedia/less.php",
