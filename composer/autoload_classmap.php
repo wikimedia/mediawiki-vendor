@@ -983,6 +983,7 @@ return array(
     'OOUI\\LabelWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/LabelWidget.php',
     'OOUI\\Layout' => $vendorDir . '/oojs/oojs-ui/php/Layout.php',
     'OOUI\\MenuLayout' => $vendorDir . '/oojs/oojs-ui/php/layouts/MenuLayout.php',
+    'OOUI\\MessageWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/MessageWidget.php',
     'OOUI\\MultilineTextInputWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/MultilineTextInputWidget.php',
     'OOUI\\NumberInputWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/NumberInputWidget.php',
     'OOUI\\OptionWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/OptionWidget.php',
