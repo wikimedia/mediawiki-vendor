@@ -110,7 +110,6 @@ class ComposerStaticInit_mediawiki_vendor
             'GuzzleHttp\\Psr7\\' => 16,
             'GuzzleHttp\\Promise\\' => 19,
             'GuzzleHttp\\' => 11,
-            'GDText\\' => 7,
         ),
         'F' => 
         array (
@@ -336,10 +335,6 @@ class ComposerStaticInit_mediawiki_vendor
         'GuzzleHttp\\' => 
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
-        ),
-        'GDText\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/stil/gd-text/src',
         ),
         'Firebase\\JWT\\' => 
         array (
@@ -1043,8 +1038,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Firebase\\JWT\\ExpiredException' => __DIR__ . '/..' . '/firebase/php-jwt/src/ExpiredException.php',
         'Firebase\\JWT\\JWT' => __DIR__ . '/..' . '/firebase/php-jwt/src/JWT.php',
         'Firebase\\JWT\\SignatureInvalidException' => __DIR__ . '/..' . '/firebase/php-jwt/src/SignatureInvalidException.php',
-        'GDText\\Box' => __DIR__ . '/..' . '/stil/gd-text/src/Box.php',
-        'GDText\\Color' => __DIR__ . '/..' . '/stil/gd-text/src/Color.php',
         'GuzzleHttp\\Client' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Client.php',
         'GuzzleHttp\\ClientInterface' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/ClientInterface.php',
         'GuzzleHttp\\Cookie\\CookieJar' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Cookie/CookieJar.php',

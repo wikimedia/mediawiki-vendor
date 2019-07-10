@@ -110,7 +110,6 @@
 		"ralouphie/getallheaders": "2.0.5",
 		"ruflin/elastica": "6.0.2.2",
 		"serialization/serialization": "4.0.0",
-		"stil/gd-text": "1.0.0",
 		"symfony/console": "3.4.27",
 		"symfony/debug": "3.4.27",
 		"symfony/translation": "3.4.27",

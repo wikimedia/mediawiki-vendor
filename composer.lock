@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "67065dd5263fe25ca31b333f9b262936",
+    "content-hash": "2f48e9353390a62b76eb72a40a26629f",
     "packages": [
         {
             "name": "christian-riesen/base32",
@@ -2587,37 +2587,6 @@
                 "wikidata"
             ],
             "time": "2017-10-25T11:45:30+00:00"
-        },
-        {
-            "name": "stil/gd-text",
-            "version": "v1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/stil/gd-text.git",
-                "reference": "a3e561afd5a53a6a4b0c1d64ebaf51e768348a66"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/stil/gd-text/zipball/a3e561afd5a53a6a4b0c1d64ebaf51e768348a66",
-                "reference": "a3e561afd5a53a6a4b0c1d64ebaf51e768348a66",
-                "shasum": ""
-            },
-            "require": {
-                "ext-gd": "*",
-                "php": ">=5.3"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "GDText\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "A class drawing multiline and aligned text on pictures. Uses GD extension.",
-            "time": "2015-01-02T12:21:25+00:00"
         },
         {
             "name": "symfony/console",
