@@ -42,6 +42,7 @@ use UnexpectedValueException;
  *     'args' => array,
  *     'closure_expansion' => bool, // default true
  *     'spec_is_arg' => bool, // default false
+ *     'services' => string[], // default empty
  *
  * The 'args' key, if provided, specifies arguments to pass to the constructor/callable.
  * Values in 'args' which are Closure instances will be expanded by invoking
@@ -53,8 +54,12 @@ use UnexpectedValueException;
  * If 'spec_is_arg' => true is in the specification, 'args' is ignored. The
  * entire spec array is passed to the constructor/callable instead.
  *
+ * If 'services' is supplied and non-empty (and a service container is available),
+ * the named services are requested from the PSR-11 service container and
+ * prepended before 'args'.
+ *
  * If any extra arguments are passed in the options to getObjectFromSpec() or
- * createObject(), these are prepended.
+ * createObject(), these are prepended before the 'services' and 'args'.
  *
  *     'calls' => array
  *
@@ -113,9 +118,12 @@ class ObjectFactory {
 	 *  - 'extraArgs': (array) Extra arguments to pass to the constructor/callable.
 	 *  - 'assertClass': (string) Throw an UnexpectedValueException if the spec
 	 *    does not create an object of this class.
-	 *  - 'serviceContainer': (ContainerInterface) PSR-11 service container to use.
+	 *  - 'serviceContainer': (ContainerInterface) PSR-11 service container to use
+	 *    to handle 'services'.
 	 * @return object
 	 * @throws InvalidArgumentException when object specification is not valid.
+	 * @throws InvalidArgumentException when $spec['services'] is used without
+	 *  $options['serviceContainer'].
 	 * @throws UnexpectedValueException when the factory returns a non-object, or
 	 *  the object is not an instance of the specified class.
 	 */
@@ -143,10 +151,20 @@ class ObjectFactory {
 			}
 		}
 
-		// @todo Handle 'services' as proposed in T222410#5234768.
+		$services = [];
+		if ( !empty( $spec['services'] ) ) {
+			$container = $options['serviceContainer'] ?? null;
+			if ( !$container instanceof ContainerInterface ) {
+				throw new InvalidArgumentException( '\'services\' cannot be used without a service container' );
+			}
+			foreach ( $spec['services'] as $service ) {
+				$services[] = $container->get( $service );
+			}
+		}
 
 		$args = array_merge(
 			$options['extraArgs'] ?? [],
+			$services,
 			$args
 		);
 

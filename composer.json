@@ -134,7 +134,7 @@
 		"wikimedia/ip-utils": "1.0.0",
 		"wikimedia/less.php": "1.8.0",
 		"wikimedia/lucene-explain-parser": "1.0.0",
-		"wikimedia/object-factory": "2.0.0",
+		"wikimedia/object-factory": "2.1.0",
 		"wikimedia/password-blacklist": "0.1.4",
 		"wikimedia/php-session-serializer": "1.0.7",
 		"wikimedia/purtle": "1.0.7",

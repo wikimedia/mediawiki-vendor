@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2f48e9353390a62b76eb72a40a26629f",
+    "content-hash": "a3f8fba06b109878e41a4227defbc3db",
     "packages": [
         {
             "name": "christian-riesen/base32",
@@ -3947,16 +3947,16 @@
         },
         {
             "name": "wikimedia/object-factory",
-            "version": "v2.0.0",
+            "version": "v2.1.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/wikimedia/ObjectFactory.git",
-                "reference": "1bc8f3fbfa6a01c1d7d001dd94e7b9f0f3f600bd"
+                "url": "https://github.com/wikimedia/object-factory.git",
+                "reference": "863aee60c8f9d964870b1a119d5d9e904233e1aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/ObjectFactory/zipball/1bc8f3fbfa6a01c1d7d001dd94e7b9f0f3f600bd",
-                "reference": "1bc8f3fbfa6a01c1d7d001dd94e7b9f0f3f600bd",
+                "url": "https://api.github.com/repos/wikimedia/object-factory/zipball/863aee60c8f9d964870b1a119d5d9e904233e1aa",
+                "reference": "863aee60c8f9d964870b1a119d5d9e904233e1aa",
                 "shasum": ""
             },
             "require": {
@@ -3989,7 +3989,7 @@
             ],
             "description": "Construct objects from configuration instructions",
             "homepage": "https://www.mediawiki.org/wiki/ObjectFactory",
-            "time": "2019-06-19T17:07:29+00:00"
+            "time": "2019-06-19T17:08:21+00:00"
         },
         {
             "name": "wikimedia/password-blacklist",

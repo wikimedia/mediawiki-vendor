@@ -23,6 +23,7 @@ object is not an instance of the named class.
     'args' => array,
     'closure_expansion' => bool, // default true
     'spec_is_arg' => bool, // default false
+    'services' => string[], // default empty
 
 The 'args' key, if provided, specifies arguments to pass to the constructor/callable.
 Values in 'args' which are Closure instances will be expanded by invoking
@@ -34,8 +35,12 @@ closure_expansion => false to the specification.
 If 'spec_is_arg' => true is in the specification, 'args' is ignored. The
 entire spec array is passed to the constructor/callable instead.
 
+If 'services' is supplied and non-empty (and a service container is available),
+the named services are requested from the PSR-11 service container and
+prepended before 'args'.
+
 If any extra arguments are passed in the options to getObjectFromSpec() or
-createObject(), these are prepended.
+createObject(), these are prepended before the 'services' and 'args'.
 
     'calls' => array
 
