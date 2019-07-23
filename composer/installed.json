@@ -1672,17 +1672,17 @@
     },
     {
         "name": "oojs/oojs-ui",
-        "version": "v0.33.3",
-        "version_normalized": "0.33.3.0",
+        "version": "v0.33.4",
+        "version_normalized": "0.33.4.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/oojs-ui.git",
-            "reference": "bc3280ea60966aefee77bc79ecd3084cb08c88d0"
+            "reference": "b1f342a319d367dfd60794040f224c10af7848aa"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/bc3280ea60966aefee77bc79ecd3084cb08c88d0",
-            "reference": "bc3280ea60966aefee77bc79ecd3084cb08c88d0",
+            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/b1f342a319d367dfd60794040f224c10af7848aa",
+            "reference": "b1f342a319d367dfd60794040f224c10af7848aa",
             "shasum": ""
         },
         "require": {
@@ -1695,7 +1695,7 @@
             "mediawiki/minus-x": "0.3.1",
             "phpunit/phpunit": "4.8.36 || ^6.5"
         },
-        "time": "2019-07-16T20:57:09+00:00",
+        "time": "2019-07-23T00:02:20+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1708,10 +1708,6 @@
             "MIT"
         ],
         "authors": [
-            {
-                "name": "Timo Tijhof",
-                "email": "krinklemail@gmail.com"
-            },
             {
                 "name": "Bartosz Dziewoński",
                 "email": "matma.rex@gmail.com"
@@ -1729,24 +1725,28 @@
                 "email": "kmenger@wikimedia.org"
             },
             {
-                "name": "Rob Moen",
-                "email": "rmoen@wikimedia.org"
-            },
-            {
-                "name": "Roan Kattouw",
-                "email": "roan@wikimedia.org"
-            },
-            {
-                "name": "Trevor Parscal",
-                "email": "trevor@wikimedia.org"
-            },
-            {
                 "name": "Kunal Mehta",
                 "email": "legoktm@gmail.com"
             },
             {
                 "name": "Prateek Saxena",
                 "email": "prtksxna@gmail.com"
+            },
+            {
+                "name": "Roan Kattouw",
+                "email": "roan@wikimedia.org"
+            },
+            {
+                "name": "Rob Moen",
+                "email": "rmoen@wikimedia.org"
+            },
+            {
+                "name": "Timo Tijhof",
+                "email": "krinklemail@gmail.com"
+            },
+            {
+                "name": "Trevor Parscal",
+                "email": "trevor@wikimedia.org"
             }
         ],
         "description": "Provides library of common widgets, layouts, and windows.",
