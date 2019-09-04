@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "91ee81690f5461f5175209c1bbdd5049",
+    "content-hash": "d073fcbee023e9fd2f815f3408ca9804",
     "packages": [
         {
             "name": "christian-riesen/base32",
@@ -3747,26 +3747,26 @@
         },
         {
             "name": "wikimedia/ip-set",
-            "version": "2.0.1",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/IPSet.git",
-                "reference": "c95e268470ef22d0292044eb7e99ab660575f5b2"
+                "reference": "f84555041a405f0ea51c64a0c7fb5fac36e99b84"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/IPSet/zipball/c95e268470ef22d0292044eb7e99ab660575f5b2",
-                "reference": "c95e268470ef22d0292044eb7e99ab660575f5b2",
+                "url": "https://api.github.com/repos/wikimedia/IPSet/zipball/f84555041a405f0ea51c64a0c7fb5fac36e99b84",
+                "reference": "f84555041a405f0ea51c64a0c7fb5fac36e99b84",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.6.99",
-                "wikimedia/at-ease": "1.2.0 || 2.0.0"
+                "wikimedia/at-ease": "2.0.0"
             },
             "require-dev": {
                 "jakub-onderka/php-console-highlighter": "0.3.2",
                 "jakub-onderka/php-parallel-lint": "1.0.0",
-                "mediawiki/mediawiki-codesniffer": "24.0.0",
+                "mediawiki/mediawiki-codesniffer": "26.0.0",
                 "mediawiki/minus-x": "0.3.1",
                 "ockcyp/covers-validator": "0.5.1 || 0.6.1",
                 "phpunit/phpunit": "4.8.36 || ^6.5"
@@ -3789,7 +3789,7 @@
             ],
             "description": "Efficiently match IP addresses against a set of CIDR specifications.",
             "homepage": "https://www.mediawiki.org/wiki/IPSet",
-            "time": "2019-02-11T03:52:45+00:00"
+            "time": "2019-07-16T08:14:03+00:00"
         },
         {
             "name": "wikimedia/ip-utils",
@@ -4822,9 +4822,9 @@
             "authors": [
                 {
                     "name": "Sara Golemon",
+                    "role": "Developer",
                     "email": "pollita@php.net",
-                    "homepage": "https://twitter.com/SaraMG",
-                    "role": "Developer"
+                    "homepage": "https://twitter.com/SaraMG"
                 }
             ],
             "description": "Emulation of SCOPE_EXIT construct from C++",
@@ -4879,16 +4879,16 @@
         },
         {
             "name": "swaggest/json-schema",
-            "version": "v0.12.11",
+            "version": "v0.12.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swaggest/php-json-schema.git",
-                "reference": "e4a5429c40bbb16c5defddf2d0ef029e38805002"
+                "reference": "b324c2b7fd0178c7453483d6d6efe440d99d1925"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swaggest/php-json-schema/zipball/e4a5429c40bbb16c5defddf2d0ef029e38805002",
-                "reference": "e4a5429c40bbb16c5defddf2d0ef029e38805002",
+                "url": "https://api.github.com/repos/swaggest/php-json-schema/zipball/b324c2b7fd0178c7453483d6d6efe440d99d1925",
+                "reference": "b324c2b7fd0178c7453483d6d6efe440d99d1925",
                 "shasum": ""
             },
             "require": {
@@ -4919,7 +4919,7 @@
                 }
             ],
             "description": "High definition PHP structures with JSON-schema based validation",
-            "time": "2019-06-20T01:18:06+00:00"
+            "time": "2019-08-29T13:49:10+00:00"
         }
     ],
     "aliases": [],
