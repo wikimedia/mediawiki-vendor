@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3b2b37bd908b4c61ca2f6f367ec520c7",
+    "content-hash": "c9dd399e97cbe408c0b8d189c298bed5",
     "packages": [
         {
             "name": "christian-riesen/base32",
@@ -4194,27 +4194,29 @@
         },
         {
             "name": "wikimedia/remex-html",
-            "version": "2.0.3",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/remex-html.git",
-                "reference": "ebde2de0c66945c46d27073b117950d4a7c7c46c"
+                "reference": "fdd9bf31aea40b7383cf601c23a18cb280362f2e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/remex-html/zipball/ebde2de0c66945c46d27073b117950d4a7c7c46c",
-                "reference": "ebde2de0c66945c46d27073b117950d4a7c7c46c",
+                "url": "https://api.github.com/repos/wikimedia/remex-html/zipball/fdd9bf31aea40b7383cf601c23a18cb280362f2e",
+                "reference": "fdd9bf31aea40b7383cf601c23a18cb280362f2e",
                 "shasum": ""
             },
             "require": {
+                "ext-dom": "*",
                 "ext-mbstring": "*",
                 "php": ">=5.6.99",
                 "wikimedia/utfnormal": "1.1.0 || 2.0.0"
             },
             "require-dev": {
+                "ext-json": "*",
                 "jakub-onderka/php-console-highlighter": "0.3.2",
                 "jakub-onderka/php-parallel-lint": "1.0.0",
-                "mediawiki/mediawiki-codesniffer": "24.0.0",
+                "mediawiki/mediawiki-codesniffer": "26.0.0",
                 "mediawiki/minus-x": "0.3.1",
                 "ockcyp/covers-validator": "0.5.1 || 0.6.1",
                 "phpunit/phpunit": "4.8.36 || ^6.5"
@@ -4237,7 +4239,7 @@
             ],
             "description": "Fast HTML 5 parser",
             "homepage": "https://www.mediawiki.org/wiki/RemexHtml",
-            "time": "2019-05-11T03:56:50+00:00"
+            "time": "2019-09-16T21:13:30+00:00"
         },
         {
             "name": "wikimedia/running-stat",
@@ -4822,9 +4824,9 @@
             "authors": [
                 {
                     "name": "Sara Golemon",
-                    "role": "Developer",
                     "email": "pollita@php.net",
-                    "homepage": "https://twitter.com/SaraMG"
+                    "homepage": "https://twitter.com/SaraMG",
+                    "role": "Developer"
                 }
             ],
             "description": "Emulation of SCOPE_EXIT construct from C++",
@@ -4879,16 +4881,16 @@
         },
         {
             "name": "swaggest/json-schema",
-            "version": "v0.12.17",
+            "version": "v0.12.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swaggest/php-json-schema.git",
-                "reference": "b324c2b7fd0178c7453483d6d6efe440d99d1925"
+                "reference": "c1f3b052d9aa0b898296e3cee305d02f2b41e3ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swaggest/php-json-schema/zipball/b324c2b7fd0178c7453483d6d6efe440d99d1925",
-                "reference": "b324c2b7fd0178c7453483d6d6efe440d99d1925",
+                "url": "https://api.github.com/repos/swaggest/php-json-schema/zipball/c1f3b052d9aa0b898296e3cee305d02f2b41e3ef",
+                "reference": "c1f3b052d9aa0b898296e3cee305d02f2b41e3ef",
                 "shasum": ""
             },
             "require": {
@@ -4919,7 +4921,7 @@
                 }
             ],
             "description": "High definition PHP structures with JSON-schema based validation",
-            "time": "2019-08-29T13:49:10+00:00"
+            "time": "2019-09-16T21:07:05+00:00"
         }
     ],
     "aliases": [],
