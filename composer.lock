@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1fd6fe154680e9f46751ccd6a9e4f136",
+    "content-hash": "9e700f719566a36ded3db86761ef6ca0",
     "packages": [
         {
             "name": "christian-riesen/base32",
@@ -171,22 +171,25 @@
         },
         {
             "name": "data-values/common",
-            "version": "0.4.2",
+            "version": "0.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DataValues/Common.git",
-                "reference": "c99e06ffe1cfb709d4d8c970bac75dad65f66a1b"
+                "reference": "844359d1e782884a2b79460a49624d9c08673666"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DataValues/Common/zipball/c99e06ffe1cfb709d4d8c970bac75dad65f66a1b",
-                "reference": "c99e06ffe1cfb709d4d8c970bac75dad65f66a1b",
+                "url": "https://api.github.com/repos/DataValues/Common/zipball/844359d1e782884a2b79460a49624d9c08673666",
+                "reference": "844359d1e782884a2b79460a49624d9c08673666",
                 "shasum": ""
             },
             "require": {
                 "data-values/data-values": "~2.0|~1.0|~0.1",
                 "data-values/interfaces": "~0.2.0|^0.1.5",
                 "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~5.7"
             },
             "type": "library",
             "extra": {
@@ -228,7 +231,7 @@
                 "valuevalidators",
                 "wikidata"
             ],
-            "time": "2018-08-16T08:16:18+00:00"
+            "time": "2019-06-28T14:23:34+00:00"
         },
         {
             "name": "data-values/data-values",
