@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c9dd399e97cbe408c0b8d189c298bed5",
+    "content-hash": "c56fa608492de6e2028ed9c4ca90db80",
     "packages": [
         {
             "name": "christian-riesen/base32",
@@ -3337,16 +3337,16 @@
         },
         {
             "name": "wikimedia/avro",
-            "version": "v1.8.0",
+            "version": "v1.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/avro-php.git",
-                "reference": "dfe0ddccd7deb00fb9dadf85c5985ba8a847edc9"
+                "reference": "b2e0c9d750da03d95ba979215397f62a6121ddea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/avro-php/zipball/dfe0ddccd7deb00fb9dadf85c5985ba8a847edc9",
-                "reference": "dfe0ddccd7deb00fb9dadf85c5985ba8a847edc9",
+                "url": "https://api.github.com/repos/wikimedia/avro-php/zipball/b2e0c9d750da03d95ba979215397f62a6121ddea",
+                "reference": "b2e0c9d750da03d95ba979215397f62a6121ddea",
                 "shasum": ""
             },
             "require": {
@@ -3354,7 +3354,8 @@
             },
             "require-dev": {
                 "jakub-onderka/php-console-highlighter": "0.3.2",
-                "jakub-onderka/php-parallel-lint": "0.9.2",
+                "jakub-onderka/php-parallel-lint": "1.0.0",
+                "mediawiki/minus-x": "0.3.1",
                 "phpunit/phpunit": "4.8.36"
             },
             "suggest": {
@@ -3401,7 +3402,7 @@
             "keywords": [
                 "serialization"
             ],
-            "time": "2018-03-28T22:33:00+00:00"
+            "time": "2019-09-16T15:18:39+00:00"
         },
         {
             "name": "wikimedia/base-convert",
@@ -4881,16 +4882,16 @@
         },
         {
             "name": "swaggest/json-schema",
-            "version": "v0.12.19",
+            "version": "v0.12.20",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swaggest/php-json-schema.git",
-                "reference": "c1f3b052d9aa0b898296e3cee305d02f2b41e3ef"
+                "reference": "45d2dfb3aa2058642153ccc3bbdca7434853bbdc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swaggest/php-json-schema/zipball/c1f3b052d9aa0b898296e3cee305d02f2b41e3ef",
-                "reference": "c1f3b052d9aa0b898296e3cee305d02f2b41e3ef",
+                "url": "https://api.github.com/repos/swaggest/php-json-schema/zipball/45d2dfb3aa2058642153ccc3bbdca7434853bbdc",
+                "reference": "45d2dfb3aa2058642153ccc3bbdca7434853bbdc",
                 "shasum": ""
             },
             "require": {
@@ -4921,7 +4922,7 @@
                 }
             ],
             "description": "High definition PHP structures with JSON-schema based validation",
-            "time": "2019-09-16T21:07:05+00:00"
+            "time": "2019-09-21T22:20:20+00:00"
         }
     ],
     "aliases": [],
