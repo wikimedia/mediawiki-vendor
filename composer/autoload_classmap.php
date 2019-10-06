@@ -1808,7 +1808,7 @@ return array(
     'Symfony\\Component\\Validator\\ObjectInitializerInterface' => $vendorDir . '/symfony/validator/ObjectInitializerInterface.php',
     'Symfony\\Component\\Validator\\Test\\ConstraintValidatorTestCase' => $vendorDir . '/symfony/validator/Test/ConstraintValidatorTestCase.php',
     'Symfony\\Component\\Validator\\Test\\ConstraintViolationAssertion' => $vendorDir . '/symfony/validator/Test/ConstraintValidatorTestCase.php',
-    'Symfony\\Component\\Validator\\Test\\TestCaseSetUpTearDownTrait' => $vendorDir . '/symfony/validator/Test/TestCaseSetUpTearDownTrait.php',
+    'Symfony\\Component\\Validator\\Test\\ForwardCompatTestTrait' => $vendorDir . '/symfony/validator/Test/ForwardCompatTestTrait.php',
     'Symfony\\Component\\Validator\\Util\\PropertyPath' => $vendorDir . '/symfony/validator/Util/PropertyPath.php',
     'Symfony\\Component\\Validator\\Validation' => $vendorDir . '/symfony/validator/Validation.php',
     'Symfony\\Component\\Validator\\ValidatorBuilder' => $vendorDir . '/symfony/validator/ValidatorBuilder.php',
