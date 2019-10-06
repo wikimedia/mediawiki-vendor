@@ -1,6 +1,53 @@
 CHANGELOG
 =========
 
+4.3.0
+-----
+
+ * added `Timezone` constraint
+ * added `NotCompromisedPassword` constraint
+ * added options `iban` and `ibanPropertyPath` to Bic constraint
+ * added UATP cards support to `CardSchemeValidator`
+ * added option `allowNull` to NotBlank constraint
+ * added `Json` constraint
+ * added `Unique` constraint
+ * added a new `normalizer` option to the string constraints and to the `NotBlank` constraint
+ * added `Positive` constraint
+ * added `PositiveOrZero` constraint
+ * added `Negative` constraint
+ * added `NegativeOrZero` constraint
+
+4.2.0
+-----
+
+ * added a new `UnexpectedValueException` that can be thrown by constraint validators, these exceptions are caught by
+   the validator and are converted into constraint violations
+ * added `DivisibleBy` constraint
+ * decoupled from `symfony/translation` by using `Symfony\Contracts\Translation\TranslatorInterface`
+ * deprecated `ValidatorBuilderInterface`
+ * made `ValidatorBuilder::setTranslator()` final
+ * marked `format` the default option in `DateTime` constraint
+ * deprecated validating instances of `\DateTimeInterface` in `DateTimeValidator`, `DateValidator` and `TimeValidator`.
+ * deprecated using the `Bic`, `Country`, `Currency`, `Language` and `Locale` constraints without `symfony/intl`
+ * deprecated using the `Email` constraint without `egulias/email-validator`
+ * deprecated using the `Expression` constraint without `symfony/expression-language`
+
+4.1.0
+-----
+
+ * Deprecated the `checkDNS` and `dnsMessage` options of the `Url` constraint.
+ * added a `values` option to the `Expression` constraint
+ * Deprecated use of `Locale` constraint without setting `true` at "canonicalize" option, which will be the default value in 5.0
+
+4.0.0
+-----
+
+ * Setting the `strict` option of the `Choice` constraint to anything but `true`
+   is not supported anymore.
+ * removed the `DateTimeValidator::PATTERN` constant
+ * removed the `AbstractConstraintValidatorTest` class
+ * removed support for setting the `checkDNS` option of the `Url` constraint to `true`
+
 3.4.0
 -----
 

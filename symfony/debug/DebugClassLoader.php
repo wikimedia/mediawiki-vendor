@@ -11,6 +11,8 @@
 
 namespace Symfony\Component\Debug;
 
+use PHPUnit\Framework\MockObject\Matcher\StatelessInvocation;
+
 /**
  * Autoloader checking if the class is really defined in the file found.
  *
@@ -21,6 +23,7 @@ namespace Symfony\Component\Debug;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Christophe Coevoet <stof@notk.org>
  * @author Nicolas Grekas <p@tchwork.com>
+ * @author Guilhem Niot <guilhem.niot@gmail.com>
  */
 class DebugClassLoader
 {
@@ -34,8 +37,9 @@ class DebugClassLoader
     private static $deprecated = [];
     private static $internal = [];
     private static $internalMethods = [];
-    private static $php7Reserved = ['int' => 1, 'float' => 1, 'bool' => 1, 'string' => 1, 'true' => 1, 'false' => 1, 'null' => 1];
+    private static $annotatedParameters = [];
     private static $darwinCache = ['/' => ['/', []]];
+    private static $method = [];
 
     public function __construct(callable $classLoader)
     {
@@ -156,7 +160,7 @@ class DebugClassLoader
                     return;
                 }
             } else {
-                \call_user_func($this->classLoader, $class);
+                ($this->classLoader)($class);
                 $file = false;
             }
         } finally {
@@ -191,10 +195,6 @@ class DebugClassLoader
             }
 
             $deprecations = $this->checkAnnotations($refl, $name);
-
-            if (isset(self::$php7Reserved[strtolower($refl->getShortName())])) {
-                $deprecations[] = sprintf('The "%s" class uses the reserved name "%s", it will break on PHP 7 and higher', $name, $refl->getShortName());
-            }
 
             foreach ($deprecations as $message) {
                 @trigger_error($message, E_USER_DEPRECATED);
@@ -237,6 +237,24 @@ class DebugClassLoader
                     self::${$annotation}[$class] = isset($notice[1]) ? preg_replace('#\.?\r?\n( \*)? *(?= |\r?\n|$)#', '', $notice[1]) : '';
                 }
             }
+
+            if ($refl->isInterface() && false !== strpos($doc, 'method') && preg_match_all('#\n \* @method\s+(static\s+)?+(?:[\w\|&\[\]\\\]+\s+)?(\w+(?:\s*\([^\)]*\))?)+(.+?([[:punct:]]\s*)?)?(?=\r?\n \*(?: @|/$|\r?\n))#', $doc, $notice, PREG_SET_ORDER)) {
+                foreach ($notice as $method) {
+                    $static = '' !== $method[1];
+                    $name = $method[2];
+                    $description = $method[3] ?? null;
+                    if (false === strpos($name, '(')) {
+                        $name .= '()';
+                    }
+                    if (null !== $description) {
+                        $description = trim($description);
+                        if (!isset($method[4])) {
+                            $description .= '.';
+                        }
+                    }
+                    self::$method[$class][] = [$class, $name, $static, $description];
+                }
+            }
         }
 
         $parent = get_parent_class($class);
@@ -267,17 +285,40 @@ class DebugClassLoader
             if (isset(self::$internal[$use]) && strncmp($ns, str_replace('_', '\\', $use), $len)) {
                 $deprecations[] = sprintf('The "%s" %s is considered internal%s. It may change without further notice. You should not use it from "%s".', $use, class_exists($use, false) ? 'class' : (interface_exists($use, false) ? 'interface' : 'trait'), self::$internal[$use], $class);
             }
+            if (isset(self::$method[$use])) {
+                if ($refl->isAbstract()) {
+                    if (isset(self::$method[$class])) {
+                        self::$method[$class] = array_merge(self::$method[$class], self::$method[$use]);
+                    } else {
+                        self::$method[$class] = self::$method[$use];
+                    }
+                } elseif (!$refl->isInterface()) {
+                    $hasCall = $refl->hasMethod('__call');
+                    $hasStaticCall = $refl->hasMethod('__callStatic');
+                    foreach (self::$method[$use] as $method) {
+                        list($interface, $name, $static, $description) = $method;
+                        if ($static ? $hasStaticCall : $hasCall) {
+                            continue;
+                        }
+                        $realName = substr($name, 0, strpos($name, '('));
+                        if (!$refl->hasMethod($realName) || !($methodRefl = $refl->getMethod($realName))->isPublic() || ($static && !$methodRefl->isStatic()) || (!$static && $methodRefl->isStatic())) {
+                            $deprecations[] = sprintf('Class "%s" should implement method "%s::%s"%s', $class, ($static ? 'static ' : '').$interface, $name, null == $description ? '.' : ': '.$description);
+                        }
+                    }
+                }
+            }
         }
 
         if (trait_exists($class)) {
             return $deprecations;
         }
 
-        // Inherit @final and @internal annotations for methods
+        // Inherit @final, @internal and @param annotations for methods
         self::$finalMethods[$class] = [];
         self::$internalMethods[$class] = [];
+        self::$annotatedParameters[$class] = [];
         foreach ($parentAndOwnInterfaces as $use) {
-            foreach (['finalMethods', 'internalMethods'] as $property) {
+            foreach (['finalMethods', 'internalMethods', 'annotatedParameters'] as $property) {
                 if (isset(self::${$property}[$use])) {
                     self::${$property}[$class] = self::${$property}[$class] ? self::${$property}[$use] + self::${$property}[$class] : self::${$property}[$use];
                 }
@@ -301,15 +342,52 @@ class DebugClassLoader
                 }
             }
 
-            // Detect method annotations
-            if (false === $doc = $method->getDocComment()) {
+            // To read method annotations
+            $doc = $method->getDocComment();
+
+            if (isset(self::$annotatedParameters[$class][$method->name])) {
+                $definedParameters = [];
+                foreach ($method->getParameters() as $parameter) {
+                    $definedParameters[$parameter->name] = true;
+                }
+
+                foreach (self::$annotatedParameters[$class][$method->name] as $parameterName => $deprecation) {
+                    if (!isset($definedParameters[$parameterName]) && !($doc && preg_match("/\\n\\s+\\* @param +((?(?!callable *\().*?|callable *\(.*\).*?))(?<= )\\\${$parameterName}\\b/", $doc))) {
+                        $deprecations[] = sprintf($deprecation, $class);
+                    }
+                }
+            }
+
+            if (!$doc) {
                 continue;
             }
+
+            $finalOrInternal = false;
 
             foreach (['final', 'internal'] as $annotation) {
                 if (false !== strpos($doc, $annotation) && preg_match('#\n\s+\* @'.$annotation.'(?:( .+?)\.?)?\r?\n\s+\*(?: @|/$|\r?\n)#s', $doc, $notice)) {
                     $message = isset($notice[1]) ? preg_replace('#\.?\r?\n( \*)? *(?= |\r?\n|$)#', '', $notice[1]) : '';
                     self::${$annotation.'Methods'}[$class][$method->name] = [$class, $message];
+                    $finalOrInternal = true;
+                }
+            }
+
+            if ($finalOrInternal || $method->isConstructor() || false === strpos($doc, '@param') || StatelessInvocation::class === $class) {
+                continue;
+            }
+            if (!preg_match_all('#\n\s+\* @param +((?(?!callable *\().*?|callable *\(.*\).*?))(?<= )\$([a-zA-Z0-9_\x7f-\xff]++)#', $doc, $matches, PREG_SET_ORDER)) {
+                continue;
+            }
+            if (!isset(self::$annotatedParameters[$class][$method->name])) {
+                $definedParameters = [];
+                foreach ($method->getParameters() as $parameter) {
+                    $definedParameters[$parameter->name] = true;
+                }
+            }
+            foreach ($matches as list(, $parameterType, $parameterName)) {
+                if (!isset($definedParameters[$parameterName])) {
+                    $parameterType = trim($parameterType);
+                    self::$annotatedParameters[$class][$method->name][$parameterName] = sprintf('The "%%s::%s()" method will require a new "%s$%s" argument in the next major version of its parent class "%s", not defining it is deprecated.', $method->name, $parameterType ? $parameterType.' ' : '', $parameterName, $method->class);
                 }
             }
         }

@@ -36,11 +36,8 @@ class TranslationDataCollector extends DataCollector implements LateDataCollecto
     {
         $messages = $this->sanitizeCollectedMessages($this->translator->getCollectedMessages());
 
-        $this->data = $this->computeCount($messages);
+        $this->data += $this->computeCount($messages);
         $this->data['messages'] = $messages;
-
-        $this->data['locale'] = $this->translator->getLocale();
-        $this->data['fallback_locales'] = $this->translator->getFallbackLocales();
 
         $this->data = $this->cloneVar($this->data);
     }
@@ -50,6 +47,8 @@ class TranslationDataCollector extends DataCollector implements LateDataCollecto
      */
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
+        $this->data['locale'] = $this->translator->getLocale();
+        $this->data['fallback_locales'] = $this->translator->getFallbackLocales();
     }
 
     /**
@@ -97,6 +96,9 @@ class TranslationDataCollector extends DataCollector implements LateDataCollecto
         return !empty($this->data['locale']) ? $this->data['locale'] : null;
     }
 
+    /**
+     * @internal since Symfony 4.2
+     */
     public function getFallbackLocales()
     {
         return (isset($this->data['fallback_locales']) && \count($this->data['fallback_locales']) > 0) ? $this->data['fallback_locales'] : [];

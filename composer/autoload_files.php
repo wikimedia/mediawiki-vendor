@@ -8,9 +8,11 @@ $baseDir = $vendorDir;
 return array(
     '7cb394c3af2b1ae832979b0368e0da62' => $vendorDir . '/data-values/data-values/DataValues.php',
     'd1715cacc3c23b16a030645514266a76' => $vendorDir . '/data-values/interfaces/Interfaces.php',
+    '0d59ee240a4cd96ddbb4ff164fccea4d' => $vendorDir . '/symfony/polyfill-php73/bootstrap.php',
     '90559502573a0d473dc66fde5c0ff7e2' => $vendorDir . '/data-values/common/Common.php',
-    'ad155f8f1cf0d418fe49e248db8c661b' => $vendorDir . '/react/promise/src/functions_include.php',
+    '25072dd6e2470089de65ae7bf11d3109' => $vendorDir . '/symfony/polyfill-php72/bootstrap.php',
     '667aeda72477189d0494fecd327c3641' => $vendorDir . '/symfony/var-dumper/Resources/functions/dump.php',
+    'ad155f8f1cf0d418fe49e248db8c661b' => $vendorDir . '/react/promise/src/functions_include.php',
     'eccc0347283a01e62f5536bcf76b6e62' => $vendorDir . '/wikimedia/at-ease/src/Wikimedia/Functions.php',
     'c15f8000750e4e04ba559d9745044427' => $vendorDir . '/data-values/number/Number.php',
     '7b11c4dc42b3b3023073cb14e519683c' => $vendorDir . '/ralouphie/getallheaders/src/getallheaders.php',
