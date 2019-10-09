@@ -1,6 +1,9 @@
 <?php
 
-require_once('src/lightncandy.php');
+use LightnCandy\LightnCandy;
+use LightnCandy\Runtime;
+use PHPUnit\Framework\TestCase;
+
 require_once('tests/helpers_for_test.php');
 
 $tmpdir = sys_get_temp_dir();
@@ -28,12 +31,15 @@ function stop_catch_error_log() {
     }, file($errlog_fn));
 }
 
-class errorTest extends PHPUnit_Framework_TestCase
+class errorTest extends TestCase
 {
     public function testException()
     {
-        $this->setExpectedException('Exception', 'Bad token {{{foo}} ! Do you mean {{foo}} or {{{foo}}}?');
-        $php = LightnCandy::compile('{{{foo}}', Array('flags' => LightnCandy::FLAG_ERROR_EXCEPTION));
+        try {
+          $php = LightnCandy::compile('{{{foo}}', Array('flags' => LightnCandy::FLAG_ERROR_EXCEPTION));
+        } catch (\Exception $E) {
+            $this->assertEquals('Bad token {{{foo}} ! Do you mean {{foo}} or {{{foo}}}?', $E->getMessage());
+        }
     }
 
     public function testErrorLog()
@@ -48,15 +54,35 @@ class errorTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    public function testLog()
+    {
+        $php = LightnCandy::compile('{{log foo}}');
+        $renderer = LightnCandy::prepare($php);
+        start_catch_error_log();
+        $renderer(array('foo' => 'OK!'));
+        $e = stop_catch_error_log();
+        if ($e) {
+            $this->assertEquals(Array('array (', "  0 => 'OK!',", ')'), $e);
+        } else {
+            $this->markTestIncomplete('skip HHVM');
+        }
+    }
+
     /**
      * @dataProvider renderErrorProvider
      */
     public function testRenderingException($test)
     {
-        $this->setExpectedException('Exception', $test['expected']);
         $php = LightnCandy::compile($test['template'], $test['options']);
         $renderer = LightnCandy::prepare($php);
-        $renderer(null, LCRun3::DEBUG_ERROR_EXCEPTION);
+        try {
+            $input = isset($test['data']) ? $test['data'] : null;
+            $renderer($input, array('debug' => Runtime::DEBUG_ERROR_EXCEPTION));
+        } catch (\Exception $E) {
+            $this->assertEquals($test['expected'], $E->getMessage());
+            return;
+        }
+        $this->fail("Expected to throw exception: {$test['expected']} . CODE: $php");
     }
 
     /**
@@ -67,7 +93,12 @@ class errorTest extends PHPUnit_Framework_TestCase
         start_catch_error_log();
         $php = LightnCandy::compile($test['template'], $test['options']);
         $renderer = LightnCandy::prepare($php);
-        $renderer(null, LCRun3::DEBUG_ERROR_LOG);
+        try {
+            $in = array('dummy' => 'reference');
+            $renderer($in, array('debug' => Runtime::DEBUG_ERROR_LOG));
+        } catch (\Exception $E) {
+            $this->fail("Unexpected render exception: " . $E->getMessage() . ", CODE: $php");
+        }
         $e = stop_catch_error_log();
         if ($e) {
             $this->assertEquals(Array($test['expected']), $e);
@@ -80,19 +111,44 @@ class errorTest extends PHPUnit_Framework_TestCase
     {
         $errorCases = Array(
              Array(
+                 'template' => "{{#> testPartial}}\n  {{#> innerPartial}}\n   {{> @partial-block}}\n  {{/innerPartial}}\n{{/testPartial}}",
+                 'options' => Array(
+                   'flags' => LightnCandy::FLAG_HANDLEBARS | LightnCandy::FLAG_RUNTIMEPARTIAL | LightnCandy::FLAG_ERROR_SKIPPARTIAL,
+                   'partials' => Array(
+                     'testPartial' => 'testPartial => {{> @partial-block}} <=',
+                     'innerPartial' => 'innerPartial -> {{> @partial-block}} <-',
+                   ),
+                 ),
+                 'expected' => "Can not find partial named as '@partial-block' !!",
+             ),
+             Array(
+                 'template' => '{{> abc}}',
+                 'options' => Array(
+                   'flags' => LightnCandy::FLAG_HANDLEBARS | LightnCandy::FLAG_RUNTIMEPARTIAL | LightnCandy::FLAG_ERROR_SKIPPARTIAL,
+                 ),
+                 'expected' => "Can not find partial named as 'abc' !!",
+             ),
+             Array(
+                 'template' => '{{> @partial-block}}',
+                 'options' => Array(
+                   'flags' => LightnCandy::FLAG_HANDLEBARS | LightnCandy::FLAG_RUNTIMEPARTIAL,
+                 ),
+                 'expected' => "Can not find partial named as '@partial-block' !!",
+             ),
+             Array(
                  'template' => '{{{foo}}}',
-                 'expected' => 'LCRun3: [foo] is not exist',
+                 'expected' => 'Runtime: [foo] does not exist',
              ),
              Array(
                  'template' => '{{foo}}',
                  'options' => Array(
-                     'hbhelpers' => Array(
+                     'helpers' => Array(
                          'foo' => function () {
                              return 1/0;
                          }
                      ),
                  ),
-                 'expected' => 'LCRun3: call custom helper \'foo\' error: Division by zero',
+                 'expected' => 'Runtime: call custom helper \'foo\' error: Division by zero',
              ),
         );
 
@@ -119,6 +175,7 @@ class errorTest extends PHPUnit_Framework_TestCase
 
         // This case should be compiled without error
         if (!isset($test['expected'])) {
+            $this->assertEquals(true, true);
             return;
         }
 
@@ -155,7 +212,10 @@ class errorTest extends PHPUnit_Framework_TestCase
             Array(
                 'template' => '{{win[ner.test1}}',
                 'options' => Array('flags' => LightnCandy::FLAG_ADVARNAME),
-                'expected' => 'Wrong variable naming in {{win[ner.test1}}',
+                'expected' => Array(
+                    "Error in 'win[ner.test1': expect ']' but the token ended!!",
+                    'Wrong variable naming in {{win[ner.test1}}',
+                ),
             ),
             Array(
                 'template' => '{{win]ner.test2}}',
@@ -165,17 +225,26 @@ class errorTest extends PHPUnit_Framework_TestCase
             Array(
                 'template' => '{{wi[n]ner.test3}}',
                 'options' => Array('flags' => LightnCandy::FLAG_ADVARNAME),
-                'expected' => 'Wrong variable naming as \'wi[n]ner.test3\' in {{wi[n]ner.test3}} !',
+                'expected' => Array(
+                    'Wrong variable naming as \'wi[n]ner.test3\' in {{wi[n]ner.test3}} !',
+                    "Unexpected charactor in 'wi[n]ner.test3' ! (should it be 'wi.[n].ner.test3' ?)",
+                ),
             ),
             Array(
                 'template' => '{{winner].[test4]}}',
                 'options' => Array('flags' => LightnCandy::FLAG_ADVARNAME),
-                'expected' => 'Wrong variable naming as \'winner].[test4]\' in {{winner].[test4]}} !',
+                'expected' => Array(
+                    'Wrong variable naming as \'winner].[test4]\' in {{winner].[test4]}} !',
+                    "Unexpected charactor in 'winner].[test4]' ! (should it be 'winner.[test4]' ?)",
+                ),
             ),
             Array(
                 'template' => '{{winner[.test5]}}',
                 'options' => Array('flags' => LightnCandy::FLAG_ADVARNAME),
-                'expected' => 'Wrong variable naming as \'winner[.test5]\' in {{winner[.test5]}} !',
+                'expected' => Array(
+                    'Wrong variable naming as \'winner[.test5]\' in {{winner[.test5]}} !',
+                    "Unexpected charactor in 'winner[.test5]' ! (should it be 'winner.[.test5]' ?)",
+                ),
             ),
             Array(
                 'template' => '{{winner.[.test6]}}',
@@ -192,22 +261,34 @@ class errorTest extends PHPUnit_Framework_TestCase
             Array(
                 'template' => '{{test9]}}',
                 'options' => Array('flags' => LightnCandy::FLAG_ADVARNAME),
-                'expected' => 'Wrong variable naming as \'test9]\' in {{test9]}} !',
+                'expected' => Array(
+                    'Wrong variable naming as \'test9]\' in {{test9]}} !',
+                    "Unexpected charactor in 'test9]' ! (should it be 'test9' ?)",
+                ),
             ),
             Array(
                 'template' => '{{testA[}}',
                 'options' => Array('flags' => LightnCandy::FLAG_ADVARNAME),
-                'expected' => 'Wrong variable naming in {{testA[}}',
+                'expected' => Array(
+                    "Error in 'testA[': expect ']' but the token ended!!",
+                    'Wrong variable naming in {{testA[}}',
+                ),
             ),
             Array(
                 'template' => '{{[testB}}',
                 'options' => Array('flags' => LightnCandy::FLAG_ADVARNAME),
-                'expected' => 'Wrong variable naming in {{[testB}}',
+                'expected' => Array(
+                    "Error in '[testB': expect ']' but the token ended!!",
+                    'Wrong variable naming in {{[testB}}',
+                ),
             ),
             Array(
                 'template' => '{{]testC}}',
                 'options' => Array('flags' => LightnCandy::FLAG_ADVARNAME),
-                'expected' => 'Wrong variable naming as \']testC\' in {{]testC}} !',
+                'expected' => Array(
+                    'Wrong variable naming as \']testC\' in {{]testC}} !',
+                    "Unexpected charactor in ']testC' ! (should it be 'testC' ?)",
+                )
             ),
             Array(
                 'template' => '{{[testD]}}',
@@ -221,12 +302,18 @@ class errorTest extends PHPUnit_Framework_TestCase
             Array(
                 'template' => '{{tee[stF}}',
                 'options' => Array('flags' => LightnCandy::FLAG_ADVARNAME),
-                'expected' => 'Wrong variable naming in {{tee[stF}}',
+                'expected' => Array(
+                    "Error in 'tee[stF': expect ']' but the token ended!!",
+                    'Wrong variable naming in {{tee[stF}}',
+                )
             ),
             Array(
                 'template' => '{{te.e[stG}}',
                 'options' => Array('flags' => LightnCandy::FLAG_ADVARNAME),
-                'expected' => 'Wrong variable naming in {{te.e[stG}}',
+                'expected' => Array(
+                    "Error in 'te.e[stG': expect ']' but the token ended!!",
+                    'Wrong variable naming in {{te.e[stG}}',
+                ),
             ),
             Array(
                 'template' => '{{te.e]stH}}',
@@ -236,7 +323,10 @@ class errorTest extends PHPUnit_Framework_TestCase
             Array(
                 'template' => '{{te.e[st.endI}}',
                 'options' => Array('flags' => LightnCandy::FLAG_ADVARNAME),
-                'expected' => 'Wrong variable naming in {{te.e[st.endI}}',
+                'expected' => Array(
+                    "Error in 'te.e[st.endI': expect ']' but the token ended!!",
+                    'Wrong variable naming in {{te.e[st.endI}}',
+                ),
             ),
             Array(
                 'template' => '{{te.e]st.endJ}}',
@@ -250,17 +340,26 @@ class errorTest extends PHPUnit_Framework_TestCase
             Array(
                 'template' => '{{te.t[est].endL}}',
                 'options' => Array('flags' => LightnCandy::FLAG_ADVARNAME),
-                'expected' => 'Wrong variable naming as \'te.t[est].endL\' in {{te.t[est].endL}} !',
+                'expected' => Array(
+                    'Wrong variable naming as \'te.t[est].endL\' in {{te.t[est].endL}} !',
+                    "Unexpected charactor in 'te.t[est].endL' ! (should it be 'te.t.[est].endL' ?)",
+                ),
             ),
             Array(
                 'template' => '{{te.t[est]o.endM}}',
                 'options' => Array('flags' => LightnCandy::FLAG_ADVARNAME),
-                'expected' => 'Wrong variable naming as \'te.t[est]o.endM\' in {{te.t[est]o.endM}} !',
+                'expected' => Array(
+                    'Wrong variable naming as \'te.t[est]o.endM\' in {{te.t[est]o.endM}} !',
+                    "Unexpected charactor in 'te.t[est]o.endM' ! (should it be 'te.t.[est].o.endM' ?)"
+                ),
             ),
             Array(
                 'template' => '{{te.[est]o.endN}}',
                 'options' => Array('flags' => LightnCandy::FLAG_ADVARNAME),
-                'expected' => 'Wrong variable naming as \'te.[est]o.endN\' in {{te.[est]o.endN}} !',
+                'expected' => Array(
+                    'Wrong variable naming as \'te.[est]o.endN\' in {{te.[est]o.endN}} !',
+                    "Unexpected charactor in 'te.[est]o.endN' ! (should it be 'te.[est].o.endN' ?)",
+                ),
             ),
             Array(
                 'template' => '{{te.[e.st].endO}}',
@@ -291,7 +390,6 @@ class errorTest extends PHPUnit_Framework_TestCase
             ),
             Array(
                 'template' => '{{#if a}}TEST{{/with}}',
-                'options' => Array('flags' => LightnCandy::FLAG_WITH),
                 'expected' => 'Unexpect token: {{/with}} !',
             ),
             Array(
@@ -320,22 +418,11 @@ class errorTest extends PHPUnit_Framework_TestCase
                 'expected' => 'Do not support name=value in {{a=b}}, you should use it after a custom helper.',
             ),
             Array(
-                'template' => '{{test a=b}}',
-                'options' => Array('flags' => LightnCandy::FLAG_NAMEDARG),
-                'expected' => 'Do not support name=value in {{test a=b}}, maybe you missing the custom helper?',
-            ),
-            Array(
-                'template' => '{{#test a=b}}YA~{{/test}}',
-                'options' => Array('flags' => LightnCandy::FLAG_NAMEDARG),
-                'expected' => 'Do not support name=value in {{#test a=b}}, maybe you missing the block custom helper?',
-            ),
-            Array(
                 'template' => '{{#foo}}1{{^}}2{{/foo}}',
                 'expected' => 'Do not support {{^}}, you should do compile with LightnCandy::FLAG_ELSE flag',
             ),
             Array(
                 'template' => '{{#with a}OK!{{/with}}',
-                'options' => Array('flags' => LightnCandy::FLAG_WITH),
                 'expected' => 'Unclosed token {{#with a}OK!{{/with}} !!',
             ),
             Array(
@@ -344,30 +431,68 @@ class errorTest extends PHPUnit_Framework_TestCase
             ),
             Array(
                 'template' => '{{#with items}}OK!{{/with}}',
-                'options' => Array('flags' => LightnCandy::FLAG_WITH),
             ),
             Array(
                 'template' => '{{#with}}OK!{{/with}}',
-                'options' => Array('flags' => LightnCandy::FLAG_WITH),
                 'expected' => 'No argument after {{#with}} !',
             ),
             Array(
+                'template' => '{{#if}}OK!{{/if}}',
+                'expected' => 'No argument after {{#if}} !',
+            ),
+            Array(
+                'template' => '{{#unless}}OK!{{/unless}}',
+                'expected' => 'No argument after {{#unless}} !',
+            ),
+            Array(
+                'template' => '{{#each}}OK!{{/each}}',
+                'expected' => 'No argument after {{#each}} !',
+            ),
+            Array(
+                'template' => '{{lookup}}',
+                'expected' => 'No argument after {{lookup}} !',
+            ),
+            Array(
+                'template' => '{{lookup foo}}',
+                'expected' => '{{lookup}} requires 2 arguments !',
+            ),
+            Array(
+                'template' => '{{#test foo}}{{/test}}',
+                'expected' => 'Custom helper not found: test in {{#test foo}} !',
+            ),
+            Array(
                 'template' => '{{>not_found}}',
-                'expected' => "Can not find partial file for 'not_found', you should set correct basedir and fileext in options",
+                'expected' => "Can not find partial for 'not_found', you should provide partials or partialresolver in options",
             ),
             Array(
                 'template' => '{{>tests/test1 foo}}',
-                'options' => Array('basedir' => '.'),
-                'expected' => 'Do not support {{>tests/test1 [foo]}}, you should do compile with LightnCandy::FLAG_RUNTIMEPARTIAL flag',
+                'options' => Array('partials' => Array('tests/test1' => '')),
+                'expected' => 'Do not support {{>tests/test1 foo}}, you should do compile with LightnCandy::FLAG_RUNTIMEPARTIAL flag',
             ),
             Array(
                 'template' => '{{#with foo}}ABC{{/with}}',
-                'expected' => 'Do not support {{#with var}}, you should do compile with LightnCandy::FLAG_WITH flag',
+                'options' => Array('flags' => LightnCandy::FLAG_NOHBHELPERS),
+                'expected' => 'Do not support {{#with var}} because you compile with LightnCandy::FLAG_NOHBHELPERS flag',
+            ),
+            Array(
+                'template' => '{{#if foo}}ABC{{/if}}',
+                'options' => Array('flags' => LightnCandy::FLAG_NOHBHELPERS),
+                'expected' => 'Do not support {{#if var}} because you compile with LightnCandy::FLAG_NOHBHELPERS flag',
+            ),
+            Array(
+                'template' => '{{#unless foo}}ABC{{/unless}}',
+                'options' => Array('flags' => LightnCandy::FLAG_NOHBHELPERS),
+                'expected' => 'Do not support {{#unless var}} because you compile with LightnCandy::FLAG_NOHBHELPERS flag',
+            ),
+            Array(
+                'template' => '{{#each foo}}ABC{{/each}}',
+                'options' => Array('flags' => LightnCandy::FLAG_NOHBHELPERS),
+                'expected' => 'Do not support {{#each var}} because you compile with LightnCandy::FLAG_NOHBHELPERS flag',
             ),
             Array(
                 'template' => '{{abc}}',
                 'options' => Array('helpers' => Array('abc')),
-                'expected' => 'Can not find custom helper function defination abc() !',
+                'expected' => "You provide a custom helper named as 'abc' in options['helpers'], but the function abc() is not defined!",
             ),
             Array(
                 'template' => '{{=~= =~=}}',
@@ -375,10 +500,9 @@ class errorTest extends PHPUnit_Framework_TestCase
             ),
             Array(
                 'template' => '{{>recursive}}',
-                'options' => Array('basedir' => 'tests', 'flags' => LightnCandy::FLAG_WITH),
+                'options' => Array('partials' => Array('recursive' => '{{>recursive}}')),
                 'expected' => Array(
                     'I found recursive partial includes as the path: recursive -> recursive! You should fix your template or compile with LightnCandy::FLAG_RUNTIMEPARTIAL flag.',
-                    "Skip rendering partial 'recursive' again due to recursive detected",
                 )
             ),
             Array(
@@ -401,7 +525,6 @@ class errorTest extends PHPUnit_Framework_TestCase
                 'template' => '{{> (foo) bar}}',
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
-                    'basedir' => '.',
                 ),
                 'expected' => Array(
                     "Can not find custom helper function defination foo() !",
@@ -429,12 +552,92 @@ class errorTest extends PHPUnit_Framework_TestCase
                 )
             ),
             Array(
+                'template' => '{{foo (foo (foo 1 2) 3))}}',
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARSJS,
+                     'helpers' => Array(
+                         'foo' => function () {
+                             return;
+                         }
+                     )
+                ),
+                'expected' => Array(
+                    'Unexcepted \')\' in expression \'foo (foo (foo 1 2) 3))\' !!',
+                )
+            ),
+            Array(
                 'template' => '{{{{foo}}}} {{ {{{{#foo}}}}',
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
                 ),
                 'expected' => Array(
                     'Unclosed token {{{{foo}}}} !!',
+                )
+            ),
+            Array(
+                'template' => '{{else}}',
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_ELSE,
+                ),
+                'expected' => Array(
+                    '{{else}} only valid in if, unless, each, and #section context',
+                )
+            ),
+            Array(
+                'template' => '{{log}}',
+                'expected' => Array(
+                    'No argument after {{log}} !',
+                )
+            ),
+            Array(
+                'template' => '{{#*inline test}}{{/inline}}',
+                'expected' => Array(
+                    'Do not support {{#*inline test}}, you should do compile with LightnCandy::FLAG_RUNTIMEPARTIAL flag',
+                )
+            ),
+            Array(
+                'template' => '{{#*help me}}{{/help}}',
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_RUNTIMEPARTIAL,
+                ),
+                'expected' => Array(
+                    'Do not support {{#*help me}}, now we only support {{#*inline "partialName"}}template...{{/inline}}'
+                )
+            ),
+            Array(
+                'template' => '{{#*inline}}{{/inline}}',
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_RUNTIMEPARTIAL,
+                ),
+                'expected' => Array(
+                    'Error in {{#*inline}}: inline require 1 argument for partial name!',
+                )
+            ),
+            Array(
+                'template' => '{{#>foo}}bar',
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_RUNTIMEPARTIAL,
+                ),
+                'expected' => Array(
+                    'Unclosed token {{#>foo}} !!',
+                )
+            ),
+            Array(
+                'template' => '{{ #2 }}',
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_BESTPERFORMANCE,
+                ),
+                'expected' => Array(
+                    'Unclosed token {{#2}} !!',
+                )
+            ),
+            Array(
+                'template' => '{{foo a=b}}',
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_ADVARNAME,
+                ),
+                'expected' => Array(
+                    "Wrong variable naming as 'a=b' in {{foo a=b}} ! If you try to use foo=bar param, you should enable LightnCandy::FLAG_NAMEDARG !",
                 )
             ),
         );

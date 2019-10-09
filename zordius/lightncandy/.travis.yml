@@ -1,26 +1,13 @@
 language: php
+dist: trusty
+sudo: required
 php:
-  - 5.3
-  - 5.4
-  - 5.5
-  - 5.6
   - 7.0
-  - hhvm
-
-matrix:
-  allow_failures:
-    - php: 7.0
-
-before_script:
-  - composer self-update || true
-  - composer --prefer-source --dev install
+  - 7.1
+  - 7.2
 
 script:
-  - build/runphp build/gen_test.php
-  - vendor/bin/phpunit --coverage-clover=coverage.clover
-  - build/travis_push
-
-sudo: false
+  - build/travis
 
 env:
   global:

@@ -1,11 +1,14 @@
 <?php
 
-require_once('src/lightncandy.php');
+use LightnCandy\LightnCandy;
+use LightnCandy\Runtime;
+use PHPUnit\Framework\TestCase;
+
 require_once('tests/helpers_for_test.php');
 
 $tmpdir = sys_get_temp_dir();
 
-class regressionTest extends PHPUnit_Framework_TestCase
+class regressionTest extends TestCase
 {
     /**
      * @dataProvider issueProvider
@@ -16,21 +19,29 @@ class regressionTest extends PHPUnit_Framework_TestCase
 
         $php = LightnCandy::compile($issue['template'], isset($issue['options']) ? $issue['options'] : null);
         $context = LightnCandy::getContext();
+        $parsed = print_r(LightnCandy::$lastParsed, true);
         if (count($context['error'])) {
-            $this->fail('Compile failed due to:' . print_r($context['error'], true));
+            $this->fail('Compile failed due to:' . print_r($context['error'], true) . "\nPARSED: $parsed");
         }
         $renderer = LightnCandy::prepare($php);
 
-        $this->assertEquals($issue['expected'], $renderer($issue['data'], $issue['debug']), "PHP CODE:\n$php");
+        $this->assertEquals($issue['expected'], $renderer(isset($issue['data']) ? $issue['data'] : null, array('debug' => $issue['debug'])), "PHP CODE:\n$php\n$parsed");
     }
 
     public function issueProvider()
     {
+        $test_helpers = array('ouch' =>function() {
+            return 'ok';
+        });
+
+        $test_helpers2 = array('ouch' =>function() {return 'wa!';});
+
+        $test_helpers3 = array('ouch' =>function() {return 'wa!';}, 'god' => function () {return 'yo';});
+
         $issues = Array(
             Array(
                 'id' => 39,
                 'template' => '{{{tt}}}',
-                'options' => null,
                 'data' => Array('tt' => 'bla bla bla'),
                 'expected' => 'bla bla bla'
             ),
@@ -82,7 +93,6 @@ class regressionTest extends PHPUnit_Framework_TestCase
                         'date_format4' => 'meetup_date_format4'
                     )
                 ),
-                'data' => null,
                 'expected' => 'OKOK~1 1, OKOK~2 2, OKOK~3 3, OKOK~4 4'
             ),
 
@@ -114,7 +124,10 @@ class regressionTest extends PHPUnit_Framework_TestCase
                 'template' => '{{#each foo}} Test! {{this}} {{/each}}{{> test1}} ! >>> {{>recursive}}',
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS | LightnCandy::FLAG_RUNTIMEPARTIAL,                      
-                    'basedir' => 'tests',
+                    'partials' => Array(
+                        'test1' => "123\n",
+                        'recursive' => "{{#if foo}}{{bar}} -> {{#with foo}}{{>recursive}}{{/with}}{{else}}END!{{/if}}\n",
+                    ),
                 ),
                 'data' => Array(
                  'bar' => 1,
@@ -152,7 +165,7 @@ class regressionTest extends PHPUnit_Framework_TestCase
                 'template' => '{{#myeach foo}} Test! {{this}} {{/myeach}}',
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
-                    'hbhelpers' => Array(
+                    'helpers' => Array(
                         'myeach' => function ($context, $options) {
                             $ret = '';
                             foreach ($context as $cx) {
@@ -180,9 +193,10 @@ class regressionTest extends PHPUnit_Framework_TestCase
                 'id' => 83,
                 'template' => '{{> tests/test1}}',
                 'options' => Array(
-                    'basedir' => '.',
+                    'partials' => Array(
+                        'tests/test1' => "123\n",
+                    ),
                 ),
-                'data' => null,
                 'expected' => "123\n"
             ),
 
@@ -191,7 +205,7 @@ class regressionTest extends PHPUnit_Framework_TestCase
                 'template' => '{{helper 1 foo bar="q"}}',
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
-                    'hbhelpers' => Array(
+                    'helpers' => Array(
                         'helper' => function ($arg1, $arg2, $options) {
                             return "ARG1:$arg1, ARG2:$arg2, HASH:{$options['hash']['bar']}";
                         }
@@ -206,15 +220,20 @@ class regressionTest extends PHPUnit_Framework_TestCase
                 'template' => '{{>test2}}',
                 'options' => Array(
                     'flags' => 0,
-                    'basedir' => 'tests',
+                    'partials' => Array(
+                        'test2' => "a{{> test1}}b\n",
+                        'test1' => "123\n",
+                    ),
                 ),
-                'data' => null,
                 'expected' => "a123\nb\n",
             ),
 
             Array(
                 'id' => 89,
                 'template' => '{{#with}}SHOW:{{.}} {{/with}}',
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARSJS | LightnCandy::FLAG_NOHBHELPERS,
+                ),
                 'data' => Array('with' => Array(1, 3, 7), 'a' => Array(2, 4, 9)),
                 'expected' => 'SHOW:1 SHOW:3 SHOW:7 ',
             ),
@@ -232,7 +251,6 @@ class regressionTest extends PHPUnit_Framework_TestCase
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS | LightnCandy::FLAG_NOESCAPE,
                 ),
-                'data' => null,
                 'expected' => 'it\'s great!',
             ),
 
@@ -241,7 +259,7 @@ class regressionTest extends PHPUnit_Framework_TestCase
                 'template' => 'ABC{{#block "YES!"}}DEF{{foo}}GHI{{/block}}JKL',
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS | LightnCandy::FLAG_BESTPERFORMANCE,
-                    'hbhelpers' => Array(
+                    'helpers' => Array(
                         'block' => function ($name, $options) {
                             return "1-$name-2-" . $options['fn']() . '-3';
                         }
@@ -267,7 +285,7 @@ class regressionTest extends PHPUnit_Framework_TestCase
                 'template' => '{{^myeach .}}OK:{{.}},{{else}}NOT GOOD{{/myeach}}',
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS | LightnCandy::FLAG_BESTPERFORMANCE,
-                    'hbhelpers' => Array(
+                    'helpers' => Array(
                         'myeach' => function ($context, $options) {
                             $ret = '';
                             foreach ($context as $cx) {
@@ -282,43 +300,13 @@ class regressionTest extends PHPUnit_Framework_TestCase
             ),
 
             Array(
-                'id' => 114,
-                'template' => '{{^myeach .}}OK:{{.}},{{else}}NOT GOOD{{/myeach}}',
-                'options' => Array(
-                    'flags' => LightnCandy::FLAG_HANDLEBARSJS | LightnCandy::FLAG_BESTPERFORMANCE,
-                    'blockhelpers' => Array(
-                        'myeach' => function ($input) {
-                            return $input;
-                        }
-                    ),
-                ),
-                'data' => Array(1, 'foo', 3, 'bar'),
-                'expected' => 'NOT GOOD',
-            ),
-
-            Array(
-                'id' => 114,
-                'template' => '{{^myeach .}}OK:{{.}},{{else}}NOT GOOD{{/myeach}}',
-                'options' => Array(
-                    'flags' => LightnCandy::FLAG_HANDLEBARSJS | LightnCandy::FLAG_BESTPERFORMANCE,
-                    'blockhelpers' => Array(
-                        'myeach' => function ($input) {
-                            return;
-                        }
-                    ),
-                ),
-                'data' => Array(1, 'foo', 3, 'bar'),
-                'expected' => 'OK:,',
-            ),
-
-            Array(
                 'id' => 124,
                 'template' => '{{list foo bar abc=(lt 10 3) def=(lt 3 10)}}',
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
-                    'hbhelpers' => Array(
+                    'helpers' => Array(
                         'lt' => function ($a, $b) {
-                            return ($a > $b) ? Array("$a>$b", 'raw') : '';
+                            return ($a > $b) ? new SafeString("$a>$b") : '';
                         },
                         'list' => function () {
                             $out = 'List:';
@@ -336,7 +324,7 @@ class regressionTest extends PHPUnit_Framework_TestCase
                                     $out .= "]$k=$v , ";
                                 }
                             }
-                            return array($out, 'raw');
+                            return new SafeString($out);
                         }
                     ),
                 ),
@@ -349,7 +337,7 @@ class regressionTest extends PHPUnit_Framework_TestCase
                 'template' => '{{#if (equal \'OK\' cde)}}YES!{{/if}}',
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
-                    'hbhelpers' => Array(
+                    'helpers' => Array(
                         'equal' => function ($a, $b) {
                             return $a === $b;
                         }
@@ -364,7 +352,7 @@ class regressionTest extends PHPUnit_Framework_TestCase
                 'template' => '{{#if (equal true (equal \'OK\' cde))}}YES!{{/if}}',
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
-                    'hbhelpers' => Array(
+                    'helpers' => Array(
                         'equal' => function ($a, $b) {
                             return $a === $b;
                         }
@@ -379,7 +367,7 @@ class regressionTest extends PHPUnit_Framework_TestCase
                 'template' => '{{#if (equal true ( equal \'OK\' cde))}}YES!{{/if}}',
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
-                    'hbhelpers' => Array(
+                    'helpers' => Array(
                         'equal' => function ($a, $b) {
                             return $a === $b;
                         }
@@ -394,7 +382,7 @@ class regressionTest extends PHPUnit_Framework_TestCase
                 'template' => '{{#if (equal true (equal \' OK\' cde))}}YES!{{/if}}',
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
-                    'hbhelpers' => Array(
+                    'helpers' => Array(
                         'equal' => function ($a, $b) {
                             return $a === $b;
                         }
@@ -409,7 +397,7 @@ class regressionTest extends PHPUnit_Framework_TestCase
                 'template' => '{{#if (equal true (equal \' ==\' cde))}}YES!{{/if}}',
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
-                    'hbhelpers' => Array(
+                    'helpers' => Array(
                         'equal' => function ($a, $b) {
                             return $a === $b;
                         }
@@ -424,7 +412,7 @@ class regressionTest extends PHPUnit_Framework_TestCase
                 'template' => '{{#if (equal true (equal " ==" cde))}}YES!{{/if}}',
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
-                    'hbhelpers' => Array(
+                    'helpers' => Array(
                         'equal' => function ($a, $b) {
                             return $a === $b;
                         }
@@ -439,7 +427,7 @@ class regressionTest extends PHPUnit_Framework_TestCase
                 'template' => '{{[ abc]}}',
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
-                    'hbhelpers' => Array(
+                    'helpers' => Array(
                         'equal' => function ($a, $b) {
                             return $a === $b;
                         }
@@ -454,7 +442,7 @@ class regressionTest extends PHPUnit_Framework_TestCase
                 'template' => '{{list [ abc] " xyz" \' def\' "==" \'==\' "OK"}}',
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
-                    'hbhelpers' => Array(
+                    'helpers' => Array(
                         'list' => function ($a, $b) {
                             $out = 'List:';
                             $args = func_get_args();
@@ -469,7 +457,7 @@ class regressionTest extends PHPUnit_Framework_TestCase
                     ),
                 ),
                 'data' => Array(' abc' => 'YES!'),
-                'expected' => 'List:)YES! , ) xyz , ) def , )== , )== , )OK , '
+                'expected' => 'List:)YES! , ) xyz , ) def , )&#x3D;&#x3D; , )&#x3D;&#x3D; , )OK , ',
             ),
 
             Array(
@@ -478,9 +466,11 @@ class regressionTest extends PHPUnit_Framework_TestCase
                 'data' => Array('name' => 'john', 'array' => Array(1,2,3)),
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
-                    'hbhelpers' => Array('myif', 'mywith'),
+                    'helpers' => Array('myif', 'mywith'),
                 ),
-                'expected' => '#--john-##==john=###~~john~#--john-##==john=###~~john~#--john-##==john=###~~john~',
+                // PENDING ISSUE, check for https://github.com/wycats/handlebars.js/issues/1135
+                // 'expected' => '#--john-##==john=###~~john~#--john-##==john=###~~john~#--john-##==john=###~~john~',
+                'expected' => '#-john--##=john==###~~john~#-john--##=john==###~~john~#-john--##=john==###~~john~',
             ),
 
             Array(
@@ -501,10 +491,10 @@ class regressionTest extends PHPUnit_Framework_TestCase
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
                     'helpers' => Array(
                         'keys' => function($arg) {
-                            return Array(array_keys($arg[0]), 'asis');
+                            return array_keys($arg);
                          },
                         'list' => function($arg) {
-                            return join(',', $arg[0]);
+                            return join(',', $arg);
                          }
                     ),
                 ),
@@ -519,10 +509,10 @@ class regressionTest extends PHPUnit_Framework_TestCase
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
                     'helpers' => Array(
                         'keys' => function($arg) {
-                            return Array(array_keys($arg[0]), 'asis');
+                            return array_keys($arg);
                          },
                         'list' => function($arg) {
-                            return join(',', $arg[0]);
+                            return join(',', $arg);
                          }
                     ),
                 ),
@@ -537,7 +527,7 @@ class regressionTest extends PHPUnit_Framework_TestCase
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
                     'helpers' => Array(
                         'list' => function($arg) {
-                            return join(',', $arg[0]);
+                            return join(',', $arg);
                          }
                     ),
                 ),
@@ -546,16 +536,16 @@ class regressionTest extends PHPUnit_Framework_TestCase
 
             Array(
                 'id' => 134,
-                'template' => "{{#if 1}}{{list (keys ../names)}}{{/if}}",
+                'template' => "{{#if 1}}{{list (keys names)}}{{/if}}",
                 'data' => Array('names' => Array('foo' => 'bar', 'test' => 'ok')),
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
                     'helpers' => Array(
                         'keys' => function($arg) {
-                            return Array(array_keys($arg[0]), 'asis');
+                            return array_keys($arg);
                          },
                         'list' => function($arg) {
-                            return join(',', $arg[0]);
+                            return join(',', $arg);
                          }
                     ),
                 ),
@@ -570,7 +560,7 @@ class regressionTest extends PHPUnit_Framework_TestCase
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
                     'helpers' => Array(
                         'keys' => function($arg) {
-                            return Array(array_keys($arg[0]), 'asis');
+                            return array_keys($arg);
                          }
                     ),
                 ),
@@ -585,7 +575,7 @@ class regressionTest extends PHPUnit_Framework_TestCase
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
                     'helpers' => Array(
                         'a.good.helper' => function($arg) {
-                            return join(',', $arg[0]);
+                            return join(',', $arg);
                          }
                     ),
                 ),
@@ -598,7 +588,7 @@ class regressionTest extends PHPUnit_Framework_TestCase
                 'data' => Array('foo' => Array('bar' => 'Good!')),
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
-                    'hbhelpers' => Array(
+                    'helpers' => Array(
                         'getThis' => function($input, $options) {
                             return $input . '-' . $options['_this']['bar'];
                          }
@@ -613,7 +603,7 @@ class regressionTest extends PHPUnit_Framework_TestCase
                 'data' => Array('foo' => Array('bar' => 'Good!')),
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
-                    'hbhelpers' => Array(
+                    'helpers' => Array(
                         'getThis' => function($input, $options) {
                             return $input . '-' . $options['_this']['bar'];
                          }
@@ -629,8 +619,8 @@ class regressionTest extends PHPUnit_Framework_TestCase
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
                     'helpers' => Array(
-                        'testString' => function($args, $named) {
-                            return $args[0] . '-' . $named['bar'];
+                        'testString' => function($arg, $options) {
+                            return $arg . '-' . $options['hash']['bar'];
                          }
                     ),
                 ),
@@ -644,8 +634,8 @@ class regressionTest extends PHPUnit_Framework_TestCase
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
                     'helpers' => Array(
-                        'testString' => function($args, $named) {
-                            return $args[0] . '-' . $named['bar'];
+                        'testString' => function($arg, $options) {
+                            return $arg . '-' . $options['hash']['bar'];
                          }
                     ),
                 ),
@@ -659,8 +649,8 @@ class regressionTest extends PHPUnit_Framework_TestCase
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
                     'helpers' => Array(
-                        'testString' => function($args, $named) {
-                            return $args[0] . '-' . $named['bar'];
+                        'testString' => function($arg, $options) {
+                            return $arg . '-' . $options['hash']['bar'];
                          }
                     ),
                 ),
@@ -674,8 +664,8 @@ class regressionTest extends PHPUnit_Framework_TestCase
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
                     'helpers' => Array(
-                        'testString' => function($args, $named) {
-                            return $args[0] . '-' . $named['bar'];
+                        'testString' => function($arg, $options) {
+                            return $arg . '-' . $options['hash']['bar'];
                          }
                     ),
                 ),
@@ -688,7 +678,7 @@ class regressionTest extends PHPUnit_Framework_TestCase
                 'data' => Array('foo' => 'good!'),
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
-                    'hbhelpers' => Array(
+                    'helpers' => Array(
                         'testString' => function($arg1, $options) {
                             return $arg1 . '-' . $options['hash']['bar'];
                          }
@@ -725,7 +715,7 @@ class regressionTest extends PHPUnit_Framework_TestCase
                 'data' => Array('hello' => 'world'),
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
-                    'lcrun' => 'MyLCRunClass',
+                    'runtime' => 'MyLCRunClass',
                 ),
                 'expected' => "[[DEBUG:raw()=>array (\n  'hello' => 'world',\n)]]",
             ),
@@ -733,12 +723,11 @@ class regressionTest extends PHPUnit_Framework_TestCase
             Array(
                 'id' => 153,
                 'template' => '{{echo "test[]"}}',
-                'data' => null,
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
                     'helpers' => Array(
                         'echo' => function ($in) {
-                            return "-$in[0]-";
+                            return "-$in-";
                         }
                     )
                 ),
@@ -748,12 +737,11 @@ class regressionTest extends PHPUnit_Framework_TestCase
             Array(
                 'id' => 153,
                 'template' => '{{echo \'test[]\'}}',
-                'data' => null,
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
                     'helpers' => Array(
                         'echo' => function ($in) {
-                            return "-$in[0]-";
+                            return "-$in-";
                         }
                     )
                 ),
@@ -763,7 +751,6 @@ class regressionTest extends PHPUnit_Framework_TestCase
             Array(
                 'id' => 154,
                 'template' => 'O{{! this is comment ! ... }}K!',
-                'data' => null,
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
                 ),
@@ -773,29 +760,18 @@ class regressionTest extends PHPUnit_Framework_TestCase
             Array(
                 'id' => 157,
                 'template' => '{{{du_mp text=(du_mp "123")}}}',
-                'data' => null,
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
                     'helpers' => Array(
-                        'du_mp' => function ($args, $named) {
-                            return 'arg:' . print_r($args, true) . ', named:' . print_r($named, true);
+                        'du_mp' => function ($a) {
+                            return '>' . print_r(isset($a['hash']) ? $a['hash'] : $a, true);
                         }
                     )
                 ),
                 'expected' => <<<VAREND
-arg:Array
+>Array
 (
-)
-, named:Array
-(
-    [text] => arg:Array
-(
-    [0] => 123
-)
-, named:Array
-(
-)
-
+    [text] => >123
 )
 
 VAREND
@@ -804,7 +780,6 @@ VAREND
             Array(
                 'id' => 157,
                 'template' => '{{>test_js_partial}}',
-                'data' => null,
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS | LightnCandy::FLAG_RUNTIMEPARTIAL,
                     'partials' => Array(
@@ -850,7 +825,7 @@ VAREND
                 'data' => Array('a', 'b', 'c'),
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS | LightnCandy::FLAG_ERROR_EXCEPTION,
-                    'hbhelpers' => Array(
+                    'helpers' => Array(
                         'my_private_each'
                     )
                 ),
@@ -860,7 +835,6 @@ VAREND
             Array(
                 'id' => 175,
                 'template' => 'a{{!-- {{each}} haha {{/each}} --}}b',
-                'data' => null,
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
                 ),
@@ -870,7 +844,6 @@ VAREND
             Array(
                 'id' => 175,
                 'template' => 'c{{>test}}d',
-                'data' => null,
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
                     'partials' => Array(
@@ -891,14 +864,731 @@ VAREND
             ),
 
             Array(
+                'id' => 177,
+                'template' => '{{{{a}}}} {{{{b}}}} {{{{/b}}}} {{{{/a}}}}',
+                'data' => Array('a' => true),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARSJS,
+                    'helpers' => Array(
+                        'a' => function($options) {
+                            return $options['fn']();
+                        }
+                    )
+                ),
+                'expected' => ' {{{{b}}}} {{{{/b}}}} ',
+            ),
+
+            Array(
+                'id' => 177,
+                'template' => '{{{{a}}}} {{{{b}}}} {{{{/b}}}} {{{{/a}}}}',
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARSJS
+                ),
+                'expected' => ''
+            ),
+
+            Array(
+                'id' => 191,
+                'template' => '<% foo %> is good <%> bar %>',
+                'data' => Array('foo' => 'world'),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARSJS,
+                    'delimiters' => array('<%', '%>'),
+                    'partials' => array(
+                        'bar' => '<% @root.foo %>{{:D}}!',
+                    )
+                ),
+                'expected' => 'world is good world{{:D}}!',
+            ),
+
+            Array(
+                'id' => 199,
+                'template' => '{{#if foo}}1{{else if bar}}2{{else}}3{{/if}}',
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_ELSE,
+                ),
+                'expected' => '3',
+            ),
+
+            Array(
+                'id' => 199,
+                'template' => '{{#if foo}}1{{else if bar}}2{{/if}}',
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_ELSE,
+                ),
+                'data' => Array('bar' => true),
+                'expected' => '2',
+            ),
+
+            Array(
+                'id' => 201,
+                'template' => '{{foo "world"}}',
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARS,
+                    'helperresolver' => function ($cx, $name) {
+                        return function ($name, $option) {
+                            return "Hello, $name";
+                        };
+                    }
+                ),
+                'expected' => 'Hello, world',
+            ),
+
+            Array(
+                'id' => 201,
+                'template' => '{{#foo "test"}}World{{/foo}}',
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARS,
+                    'helperresolver' => function ($cx, $name) {
+                        return function ($name, $option) {
+                            return "$name = " . $option['fn']();
+                        };
+                    }
+                ),
+                'expected' => 'test = World',
+            ),
+
+            Array(
+                'id' => 204,
+                'template' => '{{#> test name="A"}}B{{/test}}{{#> test name="C"}}D{{/test}}',
+                'data' => Array('bar' => true),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARS | LightnCandy::FLAG_RUNTIMEPARTIAL,
+                    'partials' => array(
+                        'test' => '{{name}}:{{> @partial-block}},',
+                    )
+                ),
+                'expected' => 'A:B,C:D,',
+            ),
+
+            Array(
+                'id' => 206,
+                'template' => '{{#with bar}}{{#../foo}}YES!{{/../foo}}{{/with}}',
+                'data' => Array('foo' => 999, 'bar' => true),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARS,
+                ),
+                'expected' => 'YES!',
+            ),
+
+            Array(
+                'id' => 213,
+                'template' => '{{#if foo}}foo{{else if bar}}{{#moo moo}}moo{{/moo}}{{/if}}',
+                'data' => Array('foo' => true),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARS,
+                    'helpers' => Array(
+                        'moo' => function($arg1) {
+                            return ($arg1 === null);
+                         }
+                    )
+                ),
+                'expected' => 'foo',
+            ),
+
+            Array(
+                'id' => 213,
+                'template' => '{{#with .}}bad{{else}}Good!{{/with}}',
+                'data' => Array(),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARS,
+                ),
+                'expected' => 'Good!',
+            ),
+
+            Array(
+                'id' => 216,
+                'template' => '{{foo.length}}',
+                'data' => Array('foo' => Array()),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARS,
+                ),
+                'expected' => '',
+            ),
+
+            Array(
+                'id' => 216,
+                'template' => '{{foo.length}}',
+                'data' => Array('foo' => Array()),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARSJS,
+                ),
+                'expected' => '0',
+            ),
+
+            Array(
+                'id' => 221,
+                'template' => 'a{{ouch}}b',
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARSJS,
+                    'helpers' => $test_helpers
+                ),
+                'expected' => 'aokb',
+            ),
+
+            Array(
+                'id' => 221,
+                'template' => 'a{{ouch}}b',
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARSJS,
+                    'helpers' => $test_helpers2
+                ),
+                'expected' => 'awa!b',
+            ),
+
+            Array(
+                'id' => 221,
+                'template' => 'a{{ouch}}b',
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARSJS,
+                    'helpers' => $test_helpers3
+                ),
+                'expected' => 'awa!b',
+            ),
+
+            Array(
+                'id' => 224,
+                'template' => '{{#> foo bar}}a,b,{{.}},{{!-- comment --}},d{{/foo}}',
+                'data' => Array('bar' => 'BA!'),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_RUNTIMEPARTIAL | LightnCandy::FLAG_THIS | LightnCandy::FLAG_SPVARS | LightnCandy::FLAG_ERROR_LOG | LightnCandy::FLAG_ERROR_EXCEPTION | LightnCandy::FLAG_ERROR_SKIPPARTIAL | LightnCandy::FLAG_PARENT,
+                    'partials' => Array('foo' => 'hello, {{> @partial-block}}')
+                ),
+                'expected' => 'hello, a,b,BA!,,d',
+            ),
+
+            Array(
+                'id' => 224,
+                'template' => '{{#> foo bar}}{{#if .}}OK! {{.}}{{else}}no bar{{/if}}{{/foo}}',
+                'data' => Array('bar' => 'BA!'),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_RUNTIMEPARTIAL | LightnCandy::FLAG_THIS | LightnCandy::FLAG_SPVARS | LightnCandy::FLAG_ERROR_LOG | LightnCandy::FLAG_ERROR_EXCEPTION | LightnCandy::FLAG_ERROR_SKIPPARTIAL | LightnCandy::FLAG_PARENT,
+                    'partials' => Array('foo' => 'hello, {{> @partial-block}}')
+                ),
+                'expected' => 'hello, OK! BA!no bar',
+            ),
+
+            Array(
+                'id' => 224,
+                'template' => '{{#> foo bar}}{{#if .}}OK! {{.}}{{else}}no bar{{/if}}{{/foo}}',
+                'data' => Array('bar' => 'BA!'),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_RUNTIMEPARTIAL | LightnCandy::FLAG_THIS | LightnCandy::FLAG_SPVARS | LightnCandy::FLAG_ERROR_LOG | LightnCandy::FLAG_ERROR_EXCEPTION | LightnCandy::FLAG_ERROR_SKIPPARTIAL | LightnCandy::FLAG_PARENT | LightnCandy::FLAG_ELSE,
+                    'partials' => Array('foo' => 'hello, {{> @partial-block}}')
+                ),
+                'expected' => 'hello, OK! BA!',
+            ),
+
+            Array(
+                'id' => 227,
+                'template' => '{{#if moo}}A{{else if bar}}B{{else foo}}C{{/if}}',
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARS | LightnCandy::FLAG_ERROR_EXCEPTION,
+                    'helpers' => Array(
+                        'foo' => function($options) {
+                            return $options['fn']();
+                         }
+                    )
+                ),
+                'expected' => 'C'
+            ),
+
+            Array(
+                'id' => 227,
+                'template' => '{{#if moo}}A{{else if bar}}B{{else with foo}}C{{.}}{{/if}}',
+                'data' => array('foo' => 'D'),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARS | LightnCandy::FLAG_ERROR_EXCEPTION
+                ),
+                'expected' => 'CD'
+            ),
+
+            Array(
+                'id' => 227,
+                'template' => '{{#if moo}}A{{else if bar}}B{{else each foo}}C{{.}}{{/if}}',
+                'data' => array('foo' => array(1, 3, 5)),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARS | LightnCandy::FLAG_ERROR_EXCEPTION
+                ),
+                'expected' => 'C1C3C5'
+            ),
+
+            Array(
+                'id' => 229,
+                'template' => '{{#if foo.bar.moo}}TRUE{{else}}FALSE{{/if}}',
+                'data' => array(),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARS | LightnCandy::FLAG_ERROR_EXCEPTION
+                ),
+                'expected' => 'FALSE'
+            ),
+
+            Array(
+                'id' => 233,
+                'template' => '{{#if foo}}FOO{{else}}BAR{{/if}}',
+                'data' => array(),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARS,
+                    'helpers' => Array(
+                        'if' => function($arg, $options) {
+                            return $options['fn']();
+                         }
+                    )
+                ),
+                'expected' => 'FOO'
+            ),
+
+            Array(
+                'id' => 234,
+                'template' => '{{> (lookup foo 2)}}',
+                'data' => array('foo' => array('a', 'b', 'c')),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARS | LightnCandy::FLAG_RUNTIMEPARTIAL,
+                    'partials' => Array(
+                        'a' => '1st',
+                        'b' => '2nd',
+                        'c' => '3rd'
+                    )
+                ),
+                'expected' => '3rd'
+            ),
+
+            Array(
+                'id' => 235,
+                'template' => '{{#> "myPartial"}}{{#> myOtherPartial}}{{ @root.foo}}{{/myOtherPartial}}{{/"myPartial"}}',
+                'data' => Array('foo' => 'hello!'),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARS | LightnCandy::FLAG_RUNTIMEPARTIAL,
+                    'partials' => Array(
+                        'myPartial' => '<div>outer {{> @partial-block}}</div>',
+                        'myOtherPartial' => '<div>inner {{> @partial-block}}</div>'
+                    )
+                ),
+                'expected' => '<div>outer <div>inner hello!</div></div>',
+            ),
+
+            Array(
+                'id' => 236,
+                'template' => 'A{{#> foo}}B{{#> bar}}C{{>moo}}D{{/bar}}E{{/foo}}F',
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_RUNTIMEPARTIAL | LightnCandy::FLAG_HANDLEBARS,
+                    'partials' => Array(
+                        'foo' => 'FOO>{{> @partial-block}}<FOO',
+                        'bar' => 'bar>{{> @partial-block}}<bar',
+                        'moo' => 'MOO!',
+                    )
+                ),
+                'expected' => 'AFOO>Bbar>CMOO!D<barE<FOOF'
+            ),
+
+            Array(
+                'id' => 241,
+                'template' => '{{#>foo}}{{#*inline "bar"}}GOOD!{{#each .}}>{{.}}{{/each}}{{/inline}}{{/foo}}',
+                'data' => Array('1', '3', '5'),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_RUNTIMEPARTIAL,
+                    'partials' => Array(
+                        'foo' => 'A{{#>bar}}BAD{{/bar}}B',
+                        'moo' => 'oh'
+                    )
+                ),
+                'expected' => 'AGOOD!>1>3>5B'
+            ),
+
+            Array(
+                'id' => 243,
+                'template' => '{{lookup . 3}}',
+                'data' => Array('3' => 'OK'),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARS,
+                ),
+                'expected' => 'OK'
+            ),
+
+            Array(
+                'id' => 243,
+                'template' => '{{lookup . "test"}}',
+                'data' => Array('test' => 'OK'),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARS,
+                ),
+                'expected' => 'OK'
+            ),
+
+            Array(
+                'id' => 244,
+                'template' => '{{#>outer}}content{{/outer}}',
+                'data' => Array('test' => 'OK'),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARS | LightnCandy::FLAG_RUNTIMEPARTIAL,
+                    'partials' => Array(
+                        'outer' => 'outer+{{#>nested}}~{{>@partial-block}}~{{/nested}}+outer-end',
+                        'nested' => 'nested={{>@partial-block}}=nested-end'
+                    )
+                ),
+                'expected' => 'outer+nested=~content~=nested-end+outer-end'
+            ),
+
+            Array(
+                'id' => 245,
+                'template' => '{{#each foo}}{{#with .}}{{bar}}-{{../../name}}{{/with}}{{/each}}',
+                'data' => Array('name' => 'bad', 'foo' => Array(
+                    Array('bar' => 1),
+                    Array('bar' => 2),
+                )),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARS,
+                ),
+                'expected' => '1-2-'
+            ),
+
+            Array(
+                'id' => 251,
+                'template' => '{{>foo}}',
+                'data' => Array('bar' => 'BAD'),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARS | LightnCandy::FLAG_RUNTIMEPARTIAL | LightnCandy::FLAG_EXTHELPER,
+                    'partials' => Array('foo' => '{{bar}}'),
+                    'helperresolver' => function ($cx, $name) {
+                        return function () {
+                            return "OK!";
+                        };
+                    }
+                ),
+                'expected' => 'OK!'
+            ),
+
+            Array(
+                'id' => 252,
+                'template' => '{{foo (lookup bar 1)}}',
+                'data' => Array('bar' => Array(
+                    'nil',
+                    Array(3, 5)
+                )),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARS,
+                    'helpers' => Array(
+                        'foo' => function($arg1) {
+                            return is_array($arg1) ? 'OK' : 'bad';
+                         }
+                    )
+                ),
+                'expected' => 'OK'
+            ),
+
+            Array(
+                'id' => 253,
+                'template' => '{{foo.bar}}',
+                'data' => Array('foo' => Array('bar' => 'OK!')),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARS,
+                    'helpers' => Array(
+                        'foo' => function() {
+                            return 'bad';
+                         }
+                    )
+                ),
+                'expected' => 'OK!'
+            ),
+
+            Array(
+                'id' => 254,
+                'template' => '{{#if a}}a{{else if b}}b{{else}}c{{/if}}{{#if a}}a{{else if b}}b{{/if}}',
+                'data' => Array('b' => 1),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARS
+                ),
+                'expected' => 'bb'
+            ),
+
+            Array(
+                'id' => 255,
+                'template' => '{{foo.length}}',
+                'data' => Array('foo' => Array(1, 2)),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_JSLENGTH | LightnCandy::FLAG_METHOD
+                ),
+                'expected' => '2'
+            ),
+
+            Array(
+                'id' => 256,
+                'template' => '{{lookup . "foo"}}',
+                'data' => Array('foo' => 'ok'),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARSLAMBDA
+                ),
+                'expected' => 'ok'
+            ),
+
+            Array(
+                'id' => 257,
+                'template' => '{{foo a=(foo a=(foo a="ok"))}}',
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARS,
+                    'helpers' => Array(
+                        'foo' => function($opt) {
+                            return $opt['hash']['a'];
+                        }
+                    )
+                ),
+                'expected' => 'ok'
+            ),
+
+            Array(
+                'id' => 261,
+                'template' => '{{#each foo as |bar|}}?{{bar.0}}{{/each}}',
+                'data' => Array('foo' => Array(array('a'), array('b'))),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARS
+                ),
+                'expected' => '?a?b'
+            ),
+
+            Array(
+                'id' => 267,
+                'template' => '{{#each . as |v k|}}#{{k}}>{{v}}|{{.}}{{/each}}',
+                'data' => Array('a' => 'b', 'c' => 'd'),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARS | LightnCandy::FLAG_PROPERTY,
+                ),
+                'expected' => '#a>b|b#c>d|d'
+            ),
+
+            Array(
+                'id' => 268,
+                'template' => '{{foo}}{{bar}}',
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARS,
+                    'helpers' => Array(
+                        'foo' => function($opt) {
+                            $opt['_this']['change'] = true;
+                        },
+                        'bar' => function($opt) {
+                            return $opt['_this']['change'] ? 'ok' : 'bad';
+                        }
+                    )
+                ),
+                'expected' => 'ok'
+            ),
+
+            Array(
+                'id' => 278,
+                'template' => '{{#foo}}-{{#bar}}={{moo}}{{/bar}}{{/foo}}',
+                'data' => Array(
+                    'foo' => Array(
+                         Array('bar' => 0, 'moo' => 'A'),
+                         Array('bar' => 1, 'moo' => 'B'),
+                         Array('bar' => false, 'moo' => 'C'),
+                         Array('bar' => true, 'moo' => 'D'),
+                    )
+                ),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARS,
+                ),
+                'expected' => '-=-=--=D'
+            ),
+
+            Array(
+                'id' => 278,
+                'template' => '{{#foo}}-{{#bar}}={{moo}}{{/bar}}{{/foo}}',
+                'data' => Array(
+                    'foo' => Array(
+                         Array('bar' => 0, 'moo' => 'A'),
+                         Array('bar' => 1, 'moo' => 'B'),
+                         Array('bar' => false, 'moo' => 'C'),
+                         Array('bar' => true, 'moo' => 'D'),
+                    )
+                ),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_MUSTACHE,
+                ),
+                'expected' => '--=B--=D'
+            ),
+
+            Array(
+                'id' => 281,
+                'template' => '{{echo (echo "foo bar (moo).")}}',
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARS,
+                    'helpers' => Array(
+                        'echo' => function($arg1) {
+                            return "ECHO: $arg1";
+                        }
+                    )
+                ),
+                'expected' => 'ECHO: ECHO: foo bar (moo).'
+            ),
+
+            Array(
+                'id' => 284,
+                'template' => '{{> foo}}',
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARSJS | LightnCandy::FLAG_RUNTIMEPARTIAL,
+                    'partials' => Array('foo' => "12'34")
+                ),
+                'expected' => "12'34"
+            ),
+
+            Array(
+                'id' => 284,
+                'template' => '{{> (lookup foo 2)}}',
+                'data' => array('foo' => array('a', 'b', 'c')),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARS | LightnCandy::FLAG_RUNTIMEPARTIAL,
+                    'partials' => Array(
+                        'a' => '1st',
+                        'b' => '2nd',
+                        'c' => "3'r'd"
+                    )
+                ),
+                'expected' => "3'r'd"
+            ),
+
+            Array(
+                'id' => 289,
+                'template' => "1\n2\n{{~foo~}}\n3",
+                'data' => array('foo' => 'OK'),
+                'expected' => "1\n2OK3"
+            ),
+
+            Array(
+                'id' => 289,
+                'template' => "1\n2\n{{#test}}\n3TEST\n{{/test}}\n4",
+                'data' => array('test' => 1),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_RUNTIMEPARTIAL
+                ),
+                'expected' => "1\n2\n3TEST\n4"
+            ),
+
+            Array(
+                'id' => 289,
+                'template' => "1\n2\n{{~#test}}\n3TEST\n{{/test}}\n4",
+                'data' => array('test' => 1),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_RUNTIMEPARTIAL
+                ),
+                'expected' => "1\n23TEST\n4"
+            ),
+
+            Array(
+                'id' => 289,
+                'template' => "1\n2\n{{#>test}}\n3TEST\n{{/test}}\n4",
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_RUNTIMEPARTIAL
+                ),
+                'expected' => "1\n2\n3TEST\n4"
+            ),
+
+            Array(
+                'id' => 289,
+                'template' => "1\n2\n\n{{#>test}}\n3TEST\n{{/test}}\n4",
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_RUNTIMEPARTIAL
+                ),
+                'expected' => "1\n2\n\n3TEST\n4"
+            ),
+
+            Array(
+                'id' => 289,
+                'template' => "1\n2\n\n{{#>test~}}\n\n3TEST\n{{/test}}\n4",
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_RUNTIMEPARTIAL
+                ),
+                'expected' => "1\n2\n\n3TEST\n4"
+            ),
+
+            Array(
+                'id' => 290,
+                'template' => '{{foo}} }} OK',
+                'data' => Array(
+                  'foo' => 'YES',
+                ),
+                'expected' => 'YES }} OK'
+            ),
+
+            Array(
+                'id' => 290,
+                'template' => '{{foo}}{{#with "}"}}{{.}}{{/with}}OK',
+                'data' => Array(
+                  'foo' => 'YES',
+                ),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARSJS,
+                ),
+                'expected' => 'YES}OK'
+            ),
+
+            Array(
+                'id' => 290,
+                'template' => '{ {{foo}}',
+                'data' => Array(
+                  'foo' => 'YES',
+                ),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARSJS,
+                ),
+                'expected' => '{ YES'
+            ),
+
+            Array(
+                'id' => 290,
+                'template' => '{{#with "{{"}}{{.}}{{/with}}{{foo}}{{#with "{{"}}{{.}}{{/with}}',
+                'data' => Array(
+                  'foo' => 'YES',
+                ),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARSJS,
+                ),
+                'expected' => '{{YES{{'
+            ),
+
+            Array(
+                'id' => 291,
+                'template' => 'a{{> @partial-block}}b',
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARSJS,
+                ),
+                'expected' => 'ab'
+            ),
+
+            Array(
+                'id' => 302,
+                'template' => "{{#*inline \"t1\"}}{{#if imageUrl}}<span />{{else}}<div />{{/if}}{{/inline}}{{#*inline \"t2\"}}{{#if imageUrl}}<span />{{else}}<div />{{/if}}{{/inline}}{{#*inline \"t3\"}}{{#if imageUrl}}<span />{{else}}<div />{{/if}}{{/inline}}",
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARS | LightnCandy::FLAG_RUNTIMEPARTIAL,
+                ),
+                'expected' => '',
+            ),
+
+            Array(
+                'id' => 303,
+                'template' => '{{#*inline "t1"}} {{#if url}} <a /> {{else if imageUrl}} <img /> {{else}} <span /> {{/if}} {{/inline}}',
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARS | LightnCandy::FLAG_RUNTIMEPARTIAL,
+                ),
+                'expected' => ''
+            ),
+
+            Array(
+                'template' => '{{#each . as |v k|}}#{{k}}{{/each}}',
+                'data' => Array('a' => Array(), 'c' => Array()),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARS
+                ),
+                'expected' => '#a#c'
+            ),
+
+            Array(
                 'template' => '{{testNull null undefined 1}}',
                 'data' => 'test',
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
-                    'hbhelpers' => Array(
+                    'helpers' => Array(
                         'testNull' => function($arg1, $arg2) {
                             return (($arg1 === null) && ($arg2 === null)) ? 'YES!' : 'no';
-                         }
+                        }
                     )
                 ),
                 'expected' => 'YES!'
@@ -906,11 +1596,11 @@ VAREND
 
             Array(
                 'template' => '{{> (pname foo) bar}}',
-                'data' => Array('bar' => 'OK! SUBEXP+PARTIAL!', 'foo' => Array('test/test3')),
+                'data' => Array('bar' => 'OK! SUBEXP+PARTIAL!', 'foo' => 'test/test3'),
                 'options' => Array(
                     'helpers' => Array(
                         'pname' => function($arg) {
-                            return $arg[0];
+                            return $arg;
                          }
                     ),
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS | LightnCandy::FLAG_RUNTIMEPARTIAL,
@@ -933,7 +1623,7 @@ VAREND
                 'template' => '{{[helper]}}',
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
-                    'hbhelpers' => Array(
+                    'helpers' => Array(
                         'helper' => function () {
                             return 'DEF';
                         }
@@ -947,7 +1637,7 @@ VAREND
                 'template' => '{{#[helper3]}}ABC{{/[helper3]}}',
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
-                    'hbhelpers' => Array(
+                    'helpers' => Array(
                         'helper3' => function () {
                             return 'DEF';
                         }
@@ -958,24 +1648,10 @@ VAREND
             ),
 
             Array(
-                'template' => '{{#[helper3]}}ABC{{/[helper3]}}',
-                'options' => Array(
-                    'flags' => LightnCandy::FLAG_HANDLEBARSJS,
-                    'blockhelpers' => Array(
-                        'helper3' => function () {
-                            return Array('a', 'b', 'c');
-                        }
-                    )
-                ),
-                'data' => Array(),
-                'expected' => 'ABC'
-            ),
-
-            Array(
                 'template' => '{{hash abc=["def=123"]}}',
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS | LightnCandy::FLAG_BESTPERFORMANCE,
-                    'hbhelpers' => Array(
+                    'helpers' => Array(
                         'hash' => function ($options) {
                             $ret = '';
                             foreach ($options['hash'] as $k => $v) {
@@ -993,7 +1669,7 @@ VAREND
                 'template' => '{{hash abc=[\'def=123\']}}',
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS | LightnCandy::FLAG_BESTPERFORMANCE,
-                    'hbhelpers' => Array(
+                    'helpers' => Array(
                         'hash' => function ($options) {
                             $ret = '';
                             foreach ($options['hash'] as $k => $v) {
@@ -1011,7 +1687,7 @@ VAREND
                 'template' => 'ABC{{#block "YES!"}}DEF{{foo}}GHI{{else}}NO~{{/block}}JKL',
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS | LightnCandy::FLAG_BESTPERFORMANCE,
-                    'hbhelpers' => Array(
+                    'helpers' => Array(
                         'block' => function ($name, $options) {
                             return "1-$name-2-" . $options['fn']() . '-3';
                         }
@@ -1025,7 +1701,7 @@ VAREND
                 'template' => '-{{getroot}}=',
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_SPVARS,
-                    'hbhelpers' => Array('getroot'),
+                    'helpers' => Array('getroot'),
                 ),
                 'data' => 'ROOT!',
                 'expected' => '-ROOT!=',
@@ -1044,7 +1720,7 @@ VAREND
                 'template' => 'ABC{{#block "YES!"}}TRUE{{else}}DEF{{foo}}GHI{{/block}}JKL',
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS | LightnCandy::FLAG_BESTPERFORMANCE,
-                    'hbhelpers' => Array(
+                    'helpers' => Array(
                         'block' => function ($name, $options) {
                             return "1-$name-2-" . $options['inverse']() . '-3';
                         }
@@ -1068,9 +1744,11 @@ VAREND
                 'data' => Array('a', 'b', 'c'),
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
-                    'basedir' => '.',
+                    'partials' => Array(
+                        'tests/test3' => 'New context:{{.}}'
+                    ),
                 ),
-                'expected' => "->New context:a\n->New context:b\n->New context:c\n",
+                'expected' => "->New context:a->New context:b->New context:c",
             ),
 
             Array(
@@ -1078,20 +1756,32 @@ VAREND
                 'data' => Array('a', 'foo' => Array('d', 'e', 'f')),
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS | LightnCandy::FLAG_RUNTIMEPARTIAL,
-                    'basedir' => '.',
+                    'partials' => Array(
+                        'tests/test3' => 'New context:{{.}}'
+                    ),
                 ),
-                'expected' => "->New context:d,e,f\n->New context:d,e,f\n",
+                'expected' => "->New context:d,e,f->New context:d,e,f",
             ),
 
             Array(
                 'template' => '{{{"{{"}}}',
-                'data' => null,
+                'data' => Array('{{' => ':D'),
+                'expected' => ':D',
+            ),
+
+            Array(
+                'template' => '{{{\'{{\'}}}',
+                'data' => Array('{{' => ':D'),
+                'expected' => ':D',
+            ),
+
+            Array(
+                'template' => '{{#with "{{"}}{{.}}{{/with}}',
                 'expected' => '{{',
             ),
 
             Array(
                 'template' => '{{good_helper}}',
-                'data' => null,
                 'options' => Array(
                     'helpers' => Array('good_helper' => 'foo::bar'),
                 ),
@@ -1129,7 +1819,7 @@ VAREND
             Array(
                 'template' => '{{foo}}',
                 'options' => Array('flags' => LightnCandy::FLAG_RENDER_DEBUG),
-                'debug' => LCRun3::DEBUG_TAGS_ANSI,
+                'debug' => Runtime::DEBUG_TAGS_ANSI,
                 'data' => Array('foo' => 'OK'),
                 'expected' => pack('H*', '1b5b303b33326d7b7b5b666f6f5d7d7d1b5b306d'),
             ),
@@ -1137,32 +1827,29 @@ VAREND
             Array(
                 'template' => '{{foo}}',
                 'options' => Array('flags' => LightnCandy::FLAG_RENDER_DEBUG),
-                'debug' => LCRun3::DEBUG_TAGS_HTML,
-                'data' => null,
+                'debug' => Runtime::DEBUG_TAGS_HTML,
                 'expected' => '<!--MISSED((-->{{[foo]}}<!--))-->',
             ),
 
             Array(
                 'template' => '{{#foo}}OK{{/foo}}',
                 'options' => Array('flags' => LightnCandy::FLAG_RENDER_DEBUG),
-                'debug' => LCRun3::DEBUG_TAGS_HTML,
-                'data' => null,
+                'debug' => Runtime::DEBUG_TAGS_HTML,
                 'expected' => '<!--MISSED((-->{{#[foo]}}<!--))--><!--SKIPPED--><!--MISSED((-->{{/[foo]}}<!--))-->',
             ),
 
             Array(
                 'template' => '{{#foo}}OK{{/foo}}',
                 'options' => Array('flags' => LightnCandy::FLAG_RENDER_DEBUG),
-                'debug' => LCRun3::DEBUG_TAGS_ANSI,
-                'data' => null,
+                'debug' => Runtime::DEBUG_TAGS_ANSI,
                 'expected' => pack('H*', '1b5b303b33316d7b7b235b666f6f5d7d7d1b5b306d1b5b303b33336d534b49505045441b5b306d1b5b303b33316d7b7b2f5b666f6f5d7d7d1b5b306d'),
             ),
 
             Array(
                 'template' => '{{#myif foo}}YES{{else}}NO{{/myif}}',
-                'data' => null,
                 'options' => Array(
-                    'hbhelpers' => Array('myif'),
+                    'flags' => LightnCandy::FLAG_ELSE,
+                    'helpers' => Array('myif'),
                 ),
                 'expected' => 'NO',
             ),
@@ -1171,7 +1858,8 @@ VAREND
                 'template' => '{{#myif foo}}YES{{else}}NO{{/myif}}',
                 'data' => Array('foo' => 1),
                 'options' => Array(
-                    'hbhelpers' => Array('myif'),
+                    'flags' => LightnCandy::FLAG_ELSE,
+                    'helpers' => Array('myif'),
                 ),
                 'expected' => 'YES',
             ),
@@ -1180,16 +1868,27 @@ VAREND
                 'template' => '{{#mylogic 0 foo bar}}YES:{{.}}{{else}}NO:{{.}}{{/mylogic}}',
                 'data' => Array('foo' => 'FOO', 'bar' => 'BAR'),
                 'options' => Array(
-                    'hbhelpers' => Array('mylogic'),
+                    'flags' => LightnCandy::FLAG_ELSE,
+                    'helpers' => Array('mylogic'),
                 ),
                 'expected' => 'NO:BAR',
+            ),
+
+            Array(
+                'template' => '{{#mylogic 0 foo bar}}YES:{{.}}{{else}}NO:{{.}}{{/mylogic}}',
+                'data' => Array('foo' => 'FOO', 'bar' => 'BAR'),
+                'options' => Array(
+                    'helpers' => Array('mylogic'),
+                ),
+                'expected' => '',
             ),
 
             Array(
                 'template' => '{{#mylogic true foo bar}}YES:{{.}}{{else}}NO:{{.}}{{/mylogic}}',
                 'data' => Array('foo' => 'FOO', 'bar' => 'BAR'),
                 'options' => Array(
-                    'hbhelpers' => Array('mylogic'),
+                    'flags' => LightnCandy::FLAG_ELSE,
+                    'helpers' => Array('mylogic'),
                 ),
                 'expected' => 'YES:FOO',
             ),
@@ -1198,7 +1897,7 @@ VAREND
                 'template' => '{{#mywith foo}}YA: {{name}}{{/mywith}}',
                 'data' => Array('name' => 'OK?', 'foo' => Array('name' => 'OK!')),
                 'options' => Array(
-                    'hbhelpers' => Array('mywith'),
+                    'helpers' => Array('mywith'),
                 ),
                 'expected' => 'YA: OK!',
             ),
@@ -1207,7 +1906,7 @@ VAREND
                 'template' => '{{mydash \'abc\' "dev"}}',
                 'data' => Array('a' => 'a', 'b' => 'b', 'c' => Array('c' => 'c'), 'd' => 'd', 'e' => 'e'),
                 'options' => Array(
-                    'hbhelpers' => Array('mydash'),
+                    'helpers' => Array('mydash'),
                 ),
                 'expected' => 'abc-dev',
             ),
@@ -1217,7 +1916,7 @@ VAREND
                 'data' => Array('a' => 'a', 'b' => 'b', 'c' => Array('c' => 'c'), 'd' => 'd', 'e' => 'e'),
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_ADVARNAME,
-                    'hbhelpers' => Array('mydash'),
+                    'helpers' => Array('mydash'),
                 ),
                 'expected' => 'a b c-d e f',
             ),
@@ -1227,8 +1926,7 @@ VAREND
                 'data' => Array('a' => 'a', 'b' => 'b', 'c' => Array('c' => 'c'), 'd' => 'd', 'e' => 'e'),
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_ADVARNAME,
-                    'hbhelpers' => Array('mydash'),
-                    'helpers' => Array('test_array'),
+                    'helpers' => Array('mydash', 'test_array'),
                 ),
                 'expected' => 'abc-NOT_ARRAY',
             ),
@@ -1238,7 +1936,7 @@ VAREND
                 'data' => Array('a' => 'a', 'b' => 'b', 'c' => Array('c' => 'c'), 'd' => 'd', 'e' => 'e'),
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_ADVARNAME,
-                    'hbhelpers' => Array('mydash', 'myjoin'),
+                    'helpers' => Array('mydash', 'myjoin'),
                 ),
                 'expected' => 'abc-ab',
             ),
@@ -1246,14 +1944,18 @@ VAREND
             Array(
                 'template' => '{{#with people}}Yes , {{name}}{{else}}No, {{name}}{{/with}}',
                 'data' => Array('people' => Array('name' => 'Peter'), 'name' => 'NoOne'),
-                'options' => Array('flags' => LightnCandy::FLAG_WITH),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_ELSE,
+                ),
                 'expected' => 'Yes , Peter',
             ),
 
             Array(
                 'template' => '{{#with people}}Yes , {{name}}{{else}}No, {{name}}{{/with}}',
                 'data' => Array('name' => 'NoOne'),
-                'options' => Array('flags' => LightnCandy::FLAG_WITH),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_ELSE,
+                ),
                 'expected' => 'No, NoOne',
             ),
 
@@ -1294,18 +1996,18 @@ VAREND
                 ),
                 'expected' => <<<VAREND
 <ul>
- <li>1. -Array-</li>
- <li>2. -Array-</li>
- <li>3. =Array=</li>
- <li>4. =Array=</li>
- <li>5. -Array-</li>
- <li>6. -Array-</li>
- <li>7. =Array=</li>
- <li>8. =Array=</li>
- <li>9. &lt;a href=&quot;Array&quot;&gt;click here&lt;/a&gt;</li>
- <li>10. &lt;a href=&quot;Array&quot;&gt;click here&lt;/a&gt;</li>
- <li>11. &lt;a href=&quot;Array&quot;&gt;Array&lt;/a&gt;</li>
- <li>12. <a href="Array">Array</a></li>
+ <li>1. -John-</li>
+ <li>2. -10000-</li>
+ <li>3. &#x3D;John&#x3D;</li>
+ <li>4. &#x3D;10000&#x3D;</li>
+ <li>5. -John-</li>
+ <li>6. -10000-</li>
+ <li>7. &#x3D;John&#x3D;</li>
+ <li>8. &#x3D;10000&#x3D;</li>
+ <li>9. &lt;a href&#x3D;&quot;John&quot;&gt;click here&lt;/a&gt;</li>
+ <li>10. &lt;a href&#x3D;&quot;10000&quot;&gt;click here&lt;/a&gt;</li>
+ <li>11. &lt;a href&#x3D;&quot;http://yahoo.com&quot;&gt;You&amp;Me!&lt;/a&gt;</li>
+ <li>12. <a href="http://yahoo.com">You&Me!</a></li>
 </ul>
 VAREND
             ),
@@ -1347,36 +2049,34 @@ VAREND
             Array(
                 'template' => "   {{#foo}}\n {{name}}\n{{/foo}}\n  ",
                 'data' => Array('foo' => Array(Array('name' => 'A'),Array('name' => 'd'),Array('name' => 'E'))),
-                'options' => Array('flags' => LightnCandy::FLAG_MUSTACHESP),
+                'options' => Array('flags' => LightnCandy::FLAG_MUSTACHE),
                 'expected' => " A\n d\n E\n  ",
             ),
 
             Array(
                 'template' => "{{bar}}\n   {{#foo}}\n {{name}}\n{{/foo}}\n  ",
                 'data' => Array('bar' => 'OK', 'foo' => Array(Array('name' => 'A'),Array('name' => 'd'),Array('name' => 'E'))),
-                'options' => Array('flags' => LightnCandy::FLAG_MUSTACHESP),
+                'options' => Array('flags' => LightnCandy::FLAG_MUSTACHE),
                 'expected' => "OK\n A\n d\n E\n  ",
             ),
 
             Array(
                 'template' => "   {{#if foo}}\nYES\n{{else}}\nNO\n{{/if}}\n",
-                'data' => null,
-                'options' => Array('flags' => LightnCandy::FLAG_MUSTACHESP | LightnCandy::FLAG_ELSE),
+                'options' => Array('flags' => LightnCandy::FLAG_HANDLEBARS),
                 'expected' => "NO\n",
             ),
 
             Array(
                 'template' => "  {{#each foo}}\n{{@key}}: {{.}}\n{{/each}}\nDONE",
                 'data' => Array('foo' => Array('a' => 'A', 'b' => 'BOY!')),
-                'options' => Array('flags' => LightnCandy::FLAG_SPVARS | LightnCandy::FLAG_MUSTACHESP),
+                'options' => Array('flags' => LightnCandy::FLAG_HANDLEBARS),
                 'expected' => "a: A\nb: BOY!\nDONE",
             ),
 
             Array(
                 'template' => "{{>test1}}\n  {{>test1}}\nDONE\n",
-                'data' => null,
                 'options' => Array(
-                    'flags' => LightnCandy::FLAG_MUSTACHESP | LightnCandy::FLAG_MUSTACHEPAIN,
+                    'flags' => LightnCandy::FLAG_MUSTACHE,
                     'partials' => Array('test1' => "1:A\n 2:B\n  3:C\n 4:D\n5:E\n"),
                 ),
                 'expected' => "1:A\n 2:B\n  3:C\n 4:D\n5:E\n  1:A\n   2:B\n    3:C\n   4:D\n  5:E\nDONE\n",
@@ -1384,58 +2084,80 @@ VAREND
 
             Array(
                 'template' => "{{>test1}}\n  {{>test1}}\nDONE\n",
-                'data' => null,
                 'options' => Array(
-                    'flags' => LightnCandy::FLAG_MUSTACHESP,
+                    'flags' => LightnCandy::FLAG_MUSTACHE | LightnCandy::FLAG_PREVENTINDENT,
                     'partials' => Array('test1' => "1:A\n 2:B\n  3:C\n 4:D\n5:E\n"),
                 ),
-                'expected' => "1:A\n 2:B\n  3:C\n 4:D\n5:E\n1:A\n 2:B\n  3:C\n 4:D\n5:E\nDONE\n",
+                'expected' => "1:A\n 2:B\n  3:C\n 4:D\n5:E\n  1:A\n 2:B\n  3:C\n 4:D\n5:E\nDONE\n",
             ),
 
             Array(
-                'template' => "{{>test1}}\n  {{>test1}}\nDONE\n",
-                'data' => null,
+                'template' => "{{foo}}\n  {{bar}}\n",
+                'data' => Array('foo' => 'ha', 'bar' => 'hey'),
                 'options' => Array(
-                    'flags' => LightnCandy::FLAG_MUSTACHESP | LightnCandy::FLAG_RUNTIMEPARTIAL,
-                    'partials' => Array('test1' => "1:A\n 2:B\n  3:C\n 4:D\n5:E\n"),
+                    'flags' => LightnCandy::FLAG_MUSTACHE | LightnCandy::FLAG_PREVENTINDENT,
                 ),
-                'expected' => "1:A\n 2:B\n  3:C\n 4:D\n5:E\n1:A\n 2:B\n  3:C\n 4:D\n5:E\nDONE\n",
+                'expected' => "ha\n  hey\n",
+            ),
+
+            Array(
+                'template' => "{{>test}}\n",
+                'data' => Array('foo' => 'ha', 'bar' => 'hey'),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_MUSTACHE | LightnCandy::FLAG_PREVENTINDENT,
+                    'partials' => Array('test' => "{{foo}}\n  {{bar}}\n"),
+                ),
+                'expected' => "ha\n  hey\n",
+            ),
+
+            Array(
+                'template' => " {{>test}}\n",
+                'data' => Array('foo' => 'ha', 'bar' => 'hey'),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_MUSTACHE | LightnCandy::FLAG_PREVENTINDENT,
+                    'partials' => Array('test' => "{{foo}}\n  {{bar}}\n"),
+                ),
+                'expected' => " ha\n  hey\n",
+            ),
+
+            Array(
+                'template' => "\n {{>test}}\n",
+                'data' => Array('foo' => 'ha', 'bar' => 'hey'),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_MUSTACHE | LightnCandy::FLAG_PREVENTINDENT,
+                    'partials' => Array('test' => "{{foo}}\n  {{bar}}\n"),
+                ),
+                'expected' => "\n ha\n  hey\n",
+            ),
+
+            Array(
+                'template' => "\n{{#each foo~}}\n  <li>{{.}}</li>\n{{~/each}}\n\nOK",
+                'data' => Array('foo' => array('ha', 'hu')),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARSJS,
+                ),
+                'expected' => "\n<li>ha</li><li>hu</li>\nOK",
             ),
 
             Array(
                 'template' => "ST:\n{{#foo}}\n {{>test1}}\n{{/foo}}\nOK\n",
                 'data' => Array('foo' => Array(1, 2)),
                 'options' => Array(
-                    'flags' => LightnCandy::FLAG_MUSTACHESP | LightnCandy::FLAG_MUSTACHEPAIN | LightnCandy::FLAG_HANDLEBARSJS,
+                    'flags' => LightnCandy::FLAG_HANDLEBARSJS,
                     'partials' => Array('test1' => "1:A\n 2:B({{@index}})\n"),
                 ),
                 'expected' => "ST:\n 1:A\n  2:B(0)\n 1:A\n  2:B(1)\nOK\n",
             ),
 
             Array(
-                'template' => "A\n {{#if 1}} \n\na\n{{#with 2}}\n123\n\n{{/with}}\n{{/if}}  \n \n\n456",
-                'data' => null,
-                'options' => Array('flags' => LightnCandy::FLAG_WITH | LightnCandy::FLAG_MUSTACHESP),
-                'expected' => "A\n\na\n123\n\n \n\n456",
-            ),
-
-            Array(
-                'template' => "\n{{#with 1}}\n\n{{#with 1}}\nb\n\n{{/with}}\n{{/with}}\nC",
-                'data' => null,
-                'options' => Array('flags' => LightnCandy::FLAG_WITH | LightnCandy::FLAG_MUSTACHESP),
-                'expected' => "\n\nb\n\nC",
-            ),
-
-            Array(
                 'template' => ">{{helper1 \"===\"}}<",
-                'data' => null,
                 'options' => Array(
                     'flags' => LightnCandy::FLAG_HANDLEBARSJS,
-                    'hbhelpers' => Array(
+                    'helpers' => Array(
                         'helper1',
                     )
                 ),
-                'expected' => ">-===-<",
+                'expected' => ">-&#x3D;&#x3D;&#x3D;-<",
             ),
 
             Array(
@@ -1447,10 +2169,72 @@ VAREND
 
             Array(
                 'template' => "{{foo}}",
-                'data' => Array('foo' => 'A&B " \''),
-                'options' => null,
-                'expected' => "A&amp;B &quot; &#039;",
+                'data' => Array('foo' => 'A&B " \' ='),
+                'expected' => "A&amp;B &quot; &#039; =",
             ),
+
+            Array(
+                'template' => "{{foo}}",
+                'data' => Array('foo' => '<a href="#">\'</a>'),
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HBESCAPE,
+                ),
+                'expected' => '&lt;a href&#x3D;&quot;#&quot;&gt;&#x27;&lt;/a&gt;',
+            ),
+
+            Array(
+                'template' => '{{#if}}SHOW:{{.}} {{/if}}',
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARSJS | LightnCandy::FLAG_NOHBHELPERS,
+                ),
+                'data' => Array('if' => Array(1, 3, 7), 'a' => Array(2, 4, 9)),
+                'expected' => 'SHOW:1 SHOW:3 SHOW:7 ',
+            ),
+
+            Array(
+                'template' => '{{#unless}}SHOW:{{.}} {{/unless}}',
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARSJS | LightnCandy::FLAG_NOHBHELPERS,
+                ),
+                'data' => Array('unless' => Array(1, 3, 7), 'a' => Array(2, 4, 9)),
+                'expected' => 'SHOW:1 SHOW:3 SHOW:7 ',
+            ),
+
+            Array(
+                'template' => '{{#each}}SHOW:{{.}} {{/each}}',
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARSJS | LightnCandy::FLAG_NOHBHELPERS,
+                ),
+                'data' => Array('each' => Array(1, 3, 7), 'a' => Array(2, 4, 9)),
+                'expected' => 'SHOW:1 SHOW:3 SHOW:7 ',
+            ),
+
+            Array(
+                'template' => '{{#>foo}}inline\'partial{{/foo}}',
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARSJS_FULL,
+                ),
+                'expected' => 'inline\'partial',
+            ),
+
+            Array(
+                'template' => '{{>foo}} and {{>bar}}',
+                'options' => Array(
+                    'partialresolver' => function ($context, $name) {
+                        return "PARTIAL: $name";
+                    }
+                ),
+                'expected' => 'PARTIAL: foo and PARTIAL: bar',
+            ),
+
+            Array(
+                'template' => "{{#> testPartial}}\n ERROR: testPartial is not found!\n  {{#> innerPartial}}\n   ERROR: innerPartial is not found!\n   ERROR: innerPartial is not found!\n  {{/innerPartial}}\n ERROR: testPartial is not found!\n {{/testPartial}}",
+                'options' => Array(
+                    'flags' => LightnCandy::FLAG_HANDLEBARS | LightnCandy::FLAG_RUNTIMEPARTIAL,
+                ),
+                'expected' => " ERROR: testPartial is not found!\n   ERROR: innerPartial is not found!\n   ERROR: innerPartial is not found!\n ERROR: testPartial is not found!\n",
+            ),
+
         );
 
         return array_map(function($i) {

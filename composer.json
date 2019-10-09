@@ -115,7 +115,7 @@
 		"wikimedia/wrappedstring": "3.0.1",
 		"wikimedia/xmp-reader": "0.6.3",
 		"wmde/php-vuejs-templating": "1.0.2",
-		"zordius/lightncandy": "0.23"
+		"zordius/lightncandy": "1.2.4"
 	},
 	"replace": {
 		"symfony/polyfill-ctype": "1.99",

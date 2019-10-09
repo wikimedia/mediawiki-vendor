@@ -1,5 +1,9 @@
 <?php
-require('src/lightncandy.php');
+
+require __DIR__ . '/../vendor/autoload.php';
+
+use LightnCandy\LightnCandy;
+use LightnCandy\Runtime;
 
 $template = "Hello! {{name}} is {{gender}}.
 Test1: {{@root.name}}
@@ -24,5 +28,5 @@ $php = LightnCandy::compile($template, Array(
 
 $renderer = LightnCandy::prepare($php);
 error_reporting(0);
-echo $renderer(Array('name' => 'John'), LCRun3::DEBUG_TAGS_ANSI);
+echo $renderer(Array('name' => 'John'), array('debug' => Runtime::DEBUG_TAGS_ANSI));
 ?>

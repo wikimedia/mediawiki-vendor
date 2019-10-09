@@ -110,6 +110,7 @@ class ComposerStaticInit_mediawiki_vendor
         'L' => 
         array (
             'LuceneExplain\\' => 14,
+            'LightnCandy\\' => 12,
             'League\\OAuth2\\Server\\' => 21,
             'League\\Event\\' => 13,
             'Lcobucci\\JWT\\' => 13,
@@ -366,6 +367,10 @@ class ComposerStaticInit_mediawiki_vendor
         'LuceneExplain\\' => 
         array (
             0 => __DIR__ . '/..' . '/wikimedia/lucene-explain-parser/src',
+        ),
+        'LightnCandy\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/zordius/lightncandy/src',
         ),
         'League\\OAuth2\\Server\\' => 
         array (
@@ -1484,7 +1489,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Kafka\\Protocol\\Protocol' => __DIR__ . '/..' . '/nmred/kafka-php/src/Kafka/Protocol/Protocol.php',
         'Kafka\\Socket' => __DIR__ . '/..' . '/nmred/kafka-php/src/Kafka/Socket.php',
         'Kafka\\ZooKeeper' => __DIR__ . '/..' . '/nmred/kafka-php/src/Kafka/ZooKeeper.php',
-        'LCRun3' => __DIR__ . '/..' . '/zordius/lightncandy/src/lightncandy.php',
         'Lcobucci\\JWT\\Builder' => __DIR__ . '/..' . '/lcobucci/jwt/src/Builder.php',
         'Lcobucci\\JWT\\Claim' => __DIR__ . '/..' . '/lcobucci/jwt/src/Claim.php',
         'Lcobucci\\JWT\\Claim\\Basic' => __DIR__ . '/..' . '/lcobucci/jwt/src/Claim/Basic.php',
@@ -1644,7 +1648,20 @@ class ComposerStaticInit_mediawiki_vendor
         'Less_Visitor_joinSelector' => __DIR__ . '/..' . '/wikimedia/less.php/lib/Less/Visitor/joinSelector.php',
         'Less_Visitor_processExtends' => __DIR__ . '/..' . '/wikimedia/less.php/lib/Less/Visitor/processExtends.php',
         'Less_Visitor_toCSS' => __DIR__ . '/..' . '/wikimedia/less.php/lib/Less/Visitor/toCSS.php',
-        'LightnCandy' => __DIR__ . '/..' . '/zordius/lightncandy/src/lightncandy.php',
+        'LightnCandy\\Compiler' => __DIR__ . '/..' . '/zordius/lightncandy/src/Compiler.php',
+        'LightnCandy\\Context' => __DIR__ . '/..' . '/zordius/lightncandy/src/Context.php',
+        'LightnCandy\\Encoder' => __DIR__ . '/..' . '/zordius/lightncandy/src/Encoder.php',
+        'LightnCandy\\Exporter' => __DIR__ . '/..' . '/zordius/lightncandy/src/Exporter.php',
+        'LightnCandy\\Expression' => __DIR__ . '/..' . '/zordius/lightncandy/src/Expression.php',
+        'LightnCandy\\Flags' => __DIR__ . '/..' . '/zordius/lightncandy/src/Flags.php',
+        'LightnCandy\\LightnCandy' => __DIR__ . '/..' . '/zordius/lightncandy/src/LightnCandy.php',
+        'LightnCandy\\Parser' => __DIR__ . '/..' . '/zordius/lightncandy/src/Parser.php',
+        'LightnCandy\\Partial' => __DIR__ . '/..' . '/zordius/lightncandy/src/Partial.php',
+        'LightnCandy\\Runtime' => __DIR__ . '/..' . '/zordius/lightncandy/src/Runtime.php',
+        'LightnCandy\\SafeString' => __DIR__ . '/..' . '/zordius/lightncandy/src/SafeString.php',
+        'LightnCandy\\StringObject' => __DIR__ . '/..' . '/zordius/lightncandy/src/Runtime.php',
+        'LightnCandy\\Token' => __DIR__ . '/..' . '/zordius/lightncandy/src/Token.php',
+        'LightnCandy\\Validator' => __DIR__ . '/..' . '/zordius/lightncandy/src/Validator.php',
         'Liuggio\\StatsdClient\\Entity\\StatsdData' => __DIR__ . '/..' . '/liuggio/statsd-php-client/src/Liuggio/StatsdClient/Entity/StatsdData.php',
         'Liuggio\\StatsdClient\\Entity\\StatsdDataInterface' => __DIR__ . '/..' . '/liuggio/statsd-php-client/src/Liuggio/StatsdClient/Entity/StatsdDataInterface.php',
         'Liuggio\\StatsdClient\\Exception\\InvalidArgumentException' => __DIR__ . '/..' . '/liuggio/statsd-php-client/src/Liuggio/StatsdClient/Exception/InvalidArgumentException.php',
