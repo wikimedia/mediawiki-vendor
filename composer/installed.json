@@ -705,13 +705,13 @@
         "version_normalized": "6.0.1.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/nomoa/elasticsearch-php.git",
-            "reference": "f737af177384dd9bf353244b6eaeb6149ab5026e"
+            "url": "https://github.com/elastic/elasticsearch-php.git",
+            "reference": "b8e3bc9d1fc54d6a18692df0b74956efe7fe241a"
         },
         "dist": {
             "type": "zip",
-            "url": "https://codeload.github.com/nomoa/elasticsearch-php/zip/bc9e8674d7df3b9d4d1fb1241b299a82ec63911a",
-            "reference": "f737af177384dd9bf353244b6eaeb6149ab5026e"
+            "url": "https://api.github.com/repos/elastic/elasticsearch-php/zipball/b8e3bc9d1fc54d6a18692df0b74956efe7fe241a",
+            "reference": "b8e3bc9d1fc54d6a18692df0b74956efe7fe241a"
         },
         "require": {
             "guzzlehttp/ringphp": "~1.0",
