@@ -16,7 +16,7 @@ class Append extends AbstractProcessor
      * @param string       $field field name
      * @param string|array $value field values to append
      */
-    public function __construct($field, $value)
+    public function __construct(string $field, $value)
     {
         $this->setField($field);
         $this->setValue($value);
@@ -29,7 +29,7 @@ class Append extends AbstractProcessor
      *
      * @return $this
      */
-    public function setField($field)
+    public function setField(string $field)
     {
         return $this->setParam('field', $field);
     }

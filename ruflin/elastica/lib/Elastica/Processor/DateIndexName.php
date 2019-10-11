@@ -16,7 +16,7 @@ class DateIndexName extends AbstractProcessor
      * @param string $field
      * @param string $dateRounding
      */
-    public function __construct($field, $dateRounding)
+    public function __construct(string $field, string $dateRounding)
     {
         $this->setField($field);
         $this->setDateRounding($dateRounding);
@@ -29,7 +29,7 @@ class DateIndexName extends AbstractProcessor
      *
      * @return $this
      */
-    public function setField($field)
+    public function setField(string $field)
     {
         return $this->setParam('field', $field);
     }
@@ -41,7 +41,7 @@ class DateIndexName extends AbstractProcessor
      *
      * @return $this
      */
-    public function setDateRounding($dateRounding)
+    public function setDateRounding(string $dateRounding)
     {
         return $this->setParam('date_rounding', $dateRounding);
     }
@@ -65,7 +65,7 @@ class DateIndexName extends AbstractProcessor
      *
      * @return $this
      */
-    public function setIndexNamePrefix($indexPrefixName)
+    public function setIndexNamePrefix(string $indexPrefixName)
     {
         return $this->setParam('index_name_prefix', $indexPrefixName);
     }
@@ -77,7 +77,7 @@ class DateIndexName extends AbstractProcessor
      *
      * @return $this
      */
-    public function setIndexNameFormat($indexNameFormat)
+    public function setIndexNameFormat(string $indexNameFormat)
     {
         return $this->setParam('index_name_format', $indexNameFormat);
     }
@@ -89,7 +89,7 @@ class DateIndexName extends AbstractProcessor
      *
      * @return $this
      */
-    public function setTimezone($timezone)
+    public function setTimezone(string $timezone)
     {
         return $this->setParam('timezone', $timezone);
     }
@@ -101,7 +101,7 @@ class DateIndexName extends AbstractProcessor
      *
      * @return $this
      */
-    public function setLocale($locale)
+    public function setLocale(string $locale)
     {
         return $this->setParam('locale', $locale);
     }

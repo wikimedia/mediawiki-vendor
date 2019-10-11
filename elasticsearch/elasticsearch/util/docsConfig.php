@@ -1,6 +1,6 @@
 <?php
 
-#declare(strict_types = 1);
+declare(strict_types = 1);
 
 use Sami\Sami;
 use Symfony\Component\Finder\Finder;

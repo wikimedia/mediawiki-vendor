@@ -29,7 +29,7 @@ class Split extends AbstractProcessor
      *
      * @return $this
      */
-    public function setField($field)
+    public function setField(string $field)
     {
         return $this->setParam('field', $field);
     }
@@ -41,7 +41,7 @@ class Split extends AbstractProcessor
      *
      * @return $this
      */
-    public function setSeparator($separator)
+    public function setSeparator(string $separator)
     {
         return $this->setParam('separator', $separator);
     }
@@ -53,7 +53,7 @@ class Split extends AbstractProcessor
      *
      * @return $this
      */
-    public function setIgnoreMissing($ignoreMissing)
+    public function setIgnoreMissing(bool $ignoreMissing)
     {
         return $this->setParam('ignore_missing', $ignoreMissing);
     }

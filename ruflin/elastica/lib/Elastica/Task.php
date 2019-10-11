@@ -40,7 +40,7 @@ class Task extends Param
      */
     protected $_client;
 
-    public function __construct(Client $client, $id)
+    public function __construct(Client $client, string $id)
     {
         $this->_client = $client;
         $this->_id = $id;
@@ -102,7 +102,7 @@ class Task extends Param
     /**
      * @return bool
      */
-    public function isCompleted()
+    public function isCompleted(): bool
     {
         $data = $this->getData();
 

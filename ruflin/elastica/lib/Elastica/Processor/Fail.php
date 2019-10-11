@@ -15,7 +15,7 @@ class Fail extends AbstractProcessor
      *
      * @param string $message
      */
-    public function __construct($message)
+    public function __construct(string $message)
     {
         $this->setMessage($message);
     }
@@ -27,7 +27,7 @@ class Fail extends AbstractProcessor
      *
      * @return $this
      */
-    public function setMessage($message)
+    public function setMessage(string $message)
     {
         return $this->setParam('message', $message);
     }

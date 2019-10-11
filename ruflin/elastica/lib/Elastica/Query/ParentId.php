@@ -25,7 +25,7 @@ class ParentId extends AbstractQuery
     /**
      * @param string $type
      */
-    private function setType($type)
+    private function setType(string $type)
     {
         $this->setParam('type', $type);
     }

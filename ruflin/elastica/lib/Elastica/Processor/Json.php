@@ -22,7 +22,7 @@ class Json extends AbstractProcessor
      *
      * @return $this
      */
-    public function setField($field)
+    public function setField(string $field)
     {
         return $this->setParam('field', $field);
     }
@@ -34,7 +34,7 @@ class Json extends AbstractProcessor
      *
      * @return $this
      */
-    public function setTargetField($targetField)
+    public function setTargetField(string $targetField)
     {
         return $this->setParam('target_field', $targetField);
     }
@@ -46,7 +46,7 @@ class Json extends AbstractProcessor
      *
      * @return $this
      */
-    public function setAddToRoot($addToRoot)
+    public function setAddToRoot(bool $addToRoot)
     {
         return $this->setParam('add_to_root', $addToRoot);
     }
