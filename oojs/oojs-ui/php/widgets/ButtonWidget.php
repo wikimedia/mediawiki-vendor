@@ -57,7 +57,6 @@ class ButtonWidget extends Widget {
 	 *      - string $config['href'] Hyperlink to visit when clicked
 	 *      - string $config['target'] Target to open hyperlink in
 	 *      - bool $config['noFollow'] Search engine traversal hint (default: true)
-	 * @param-taint $config escapes_html
 	 */
 	public function __construct( array $config = [] ) {
 		// Parent constructor
