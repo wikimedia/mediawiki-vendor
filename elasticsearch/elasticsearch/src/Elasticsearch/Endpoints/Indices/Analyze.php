@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Elasticsearch\Endpoints\Indices;
 
 use Elasticsearch\Endpoints\AbstractEndpoint;
@@ -74,6 +76,6 @@ class Analyze extends AbstractEndpoint
      */
     public function getMethod()
     {
-        return 'GET';
+        return isset($this->body) ? 'POST' : 'GET';
     }
 }

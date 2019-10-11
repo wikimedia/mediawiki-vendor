@@ -1,4 +1,5 @@
 <?php
+
 namespace Elastica;
 
 use Elastica\Exception\InvalidException;
@@ -236,15 +237,11 @@ class ResultSet implements \Iterator, \Countable, \ArrayAccess
     /**
      * Returns the current object of the set.
      *
-     * @return \Elastica\Result|bool Set object or false if not valid (no more entries)
+     * @return \Elastica\Result Set object
      */
     public function current()
     {
-        if ($this->valid()) {
-            return $this->_results[$this->key()];
-        }
-
-        return false;
+        return $this->_results[$this->key()];
     }
 
     /**
@@ -253,8 +250,6 @@ class ResultSet implements \Iterator, \Countable, \ArrayAccess
     public function next()
     {
         ++$this->_position;
-
-        return $this->current();
     }
 
     /**
@@ -288,11 +283,11 @@ class ResultSet implements \Iterator, \Countable, \ArrayAccess
     /**
      * Whether a offset exists.
      *
-     * @link http://php.net/manual/en/arrayaccess.offsetexists.php
+     * @see http://php.net/manual/en/arrayaccess.offsetexists.php
      *
      * @param int $offset
      *
-     * @return bool true on success or false on failure.
+     * @return bool true on success or false on failure
      */
     public function offsetExists($offset)
     {
@@ -302,13 +297,13 @@ class ResultSet implements \Iterator, \Countable, \ArrayAccess
     /**
      * Offset to retrieve.
      *
-     * @link http://php.net/manual/en/arrayaccess.offsetget.php
+     * @see http://php.net/manual/en/arrayaccess.offsetget.php
      *
      * @param int $offset
      *
      * @throws Exception\InvalidException If offset doesn't exist
      *
-     * @return Result|null
+     * @return Result
      */
     public function offsetGet($offset)
     {
@@ -322,7 +317,7 @@ class ResultSet implements \Iterator, \Countable, \ArrayAccess
     /**
      * Offset to set.
      *
-     * @link http://php.net/manual/en/arrayaccess.offsetset.php
+     * @see http://php.net/manual/en/arrayaccess.offsetset.php
      *
      * @param int    $offset
      * @param Result $value
@@ -345,7 +340,7 @@ class ResultSet implements \Iterator, \Countable, \ArrayAccess
     /**
      * Offset to unset.
      *
-     * @link http://php.net/manual/en/arrayaccess.offsetunset.php
+     * @see http://php.net/manual/en/arrayaccess.offsetunset.php
      *
      * @param int $offset
      */

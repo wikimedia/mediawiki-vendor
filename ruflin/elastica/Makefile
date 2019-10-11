@@ -6,6 +6,7 @@ TARGET?=70
 # By default docker environment is used to run commands. To run without the predefined environment, set RUN_ENV=" " either as parameter or as environment variable
 ifndef RUN_ENV
 	RUN_ENV = docker run --workdir="/elastica" -v $(shell pwd):/elastica ruflin/elastica-dev-base
+	RUN_ENV_LINT = docker run --workdir="/elastica" -v $(shell pwd):/elastica ruflin/elastica-dev-base-linter
 endif
 
 .PHONY: clean
@@ -61,7 +62,7 @@ tests:
 	make start
 	mkdir -p build
 
-	docker run -e "ES_HOST=elasticsearch" --network=elastica_esnet elastica_elastica  make phpunit
+	docker run -e "ES_HOST=elasticsearch" --network=elastica_esnet elastica_elastica make phpunit
 	docker cp elastica:/elastica/build/coverage/ $(shell pwd)/build/coverage
 
 # Makes it easy to run a single test file. Example to run IndexTest.php: make test TEST="IndexTest.php"
@@ -76,10 +77,16 @@ test:
 doc:
 	${RUN_ENV} phpdoc run -d lib/ -t build/docs --template=/root/composer/vendor/phpdocumentor/phpdocumentor/data/templates/clean
 
-# Uses the preconfigured standards in .php_cs
+# Uses the preconfigured standards in .php_cs.dist
 .PHONY: lint
 lint:
-	${RUN_ENV} php-cs-fixer fix
+	docker build -t ruflin/elastica-dev-base-linter -f env/elastica/Lint env/elastica/
+	${RUN_ENV_LINT} php-cs-fixer fix --allow-risky=yes
+
+.PHONY: check-style
+check-style:
+	docker build -t ruflin/elastica-dev-base-linter -f env/elastica/Lint env/elastica/
+	${RUN_ENV_LINT} php-cs-fixer fix --allow-risky=yes --dry-run
 
 .PHONY: loc
 loc:

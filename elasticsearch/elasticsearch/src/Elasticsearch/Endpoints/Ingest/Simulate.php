@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Elasticsearch\Endpoints\Ingest;
 
 use Elasticsearch\Common\Exceptions;
@@ -60,6 +62,6 @@ class Simulate extends AbstractEndpoint
      */
     public function getMethod()
     {
-        return 'GET';
+        return isset($this->body) ? 'POST' : 'GET';
     }
 }

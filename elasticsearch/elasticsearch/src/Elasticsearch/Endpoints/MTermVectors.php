@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Elasticsearch\Endpoints;
 
 use Elasticsearch\Common\Exceptions;
@@ -65,6 +67,6 @@ class MTermVectors extends AbstractEndpoint
      */
     public function getMethod()
     {
-        return 'POST';
+        return isset($this->body) ? 'POST' : 'GET';
     }
 }

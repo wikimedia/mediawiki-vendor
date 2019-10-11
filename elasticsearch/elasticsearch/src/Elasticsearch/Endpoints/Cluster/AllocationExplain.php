@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Elasticsearch\Endpoints\Cluster;
 
 use Elasticsearch\Endpoints\AbstractEndpoint;
@@ -57,6 +59,6 @@ class AllocationExplain extends AbstractEndpoint
      */
     public function getMethod()
     {
-        return 'GET';
+        return isset($this->body) ? 'POST' : 'GET';
     }
 }

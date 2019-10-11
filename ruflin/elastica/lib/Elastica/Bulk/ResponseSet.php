@@ -1,4 +1,5 @@
 <?php
+
 namespace Elastica\Bulk;
 
 use Elastica\Response as BaseResponse;
@@ -95,17 +96,13 @@ class ResponseSet extends BaseResponse implements \Iterator, \Countable
     }
 
     /**
-     * @return bool|\Elastica\Bulk\Response
+     * @return \Elastica\Bulk\Response
      */
     public function current()
     {
-        return $this->valid()
-            ? $this->_bulkResponses[$this->key()]
-            : false;
+        return $this->_bulkResponses[$this->key()];
     }
 
-    /**
-     */
     public function next()
     {
         ++$this->_position;
@@ -127,8 +124,6 @@ class ResponseSet extends BaseResponse implements \Iterator, \Countable
         return isset($this->_bulkResponses[$this->key()]);
     }
 
-    /**
-     */
     public function rewind()
     {
         $this->_position = 0;

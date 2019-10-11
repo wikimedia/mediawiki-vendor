@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Elasticsearch\Endpoints;
 
 use Elasticsearch\Common\Exceptions;
@@ -42,7 +44,7 @@ class Scroll extends AbstractEndpoint
     }
 
     /**
-     * @param $scroll
+     * @param string $scroll
      *
      * @return $this
      */
@@ -58,7 +60,7 @@ class Scroll extends AbstractEndpoint
     }
 
     /**
-     * @param $scroll_id
+     * @param string $scroll_id
      *
      * @return $this
      */
@@ -97,6 +99,6 @@ class Scroll extends AbstractEndpoint
      */
     public function getMethod()
     {
-        return 'GET';
+        return isset($this->body) ? 'POST' : 'GET';
     }
 }

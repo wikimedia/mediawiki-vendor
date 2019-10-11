@@ -1,4 +1,5 @@
 <?php
+
 namespace Elastica\Query;
 
 /**
@@ -6,14 +7,14 @@ namespace Elastica\Query;
  *
  * @author Nicolas Ruflin <spam@ruflin.com>
  *
- * @link https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-constant-score-query.html
+ * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-constant-score-query.html
  */
 class ConstantScore extends AbstractQuery
 {
     /**
      * Construct constant score query.
      *
-     * @param null|AbstractQuery|array $filter
+     * @param AbstractQuery|array|null $filter
      */
     public function __construct(AbstractQuery $filter = null)
     {

@@ -1,3 +1,59 @@
+## Release 6.5.1
+
+- Fix #846 choosing `GET` and `POST` in endpoints based on body [[acbc76d0]](https://github.com/elastic/elasticsearch-php/commit/acbc76d0)
+- Fix #843 adding `wait_for_active_shards` and `pipeline` in `UpdateByQuery` [[acbc76d0]](https://github.com/elastic/elasticsearch-php/commit/acbc76d0)
+- Fixed missing `ScriptsPainlessExecute` endpoint, since ES 6.3 [[acbc76d0]](https://github.com/elastic/elasticsearch-php/commit/acbc76d0)
+- Fixed missing `RankEval` endpoint, since ES 6.2 [[acbc76d0]](https://github.com/elastic/elasticsearch-php/commit/acbc76d0)
+- Added User-Agent header equal to `elasticsearch-php/6.5.1 (metadata-values)` [[acbc76d0]](https://github.com/elastic/elasticsearch-php/commit/acbc76d0)
+
+## Release 6.5.0
+
+- Remove `_suggest` endpoint, which has disappeared from ES6 [#763](https://github.com/elastic/elasticsearch-php/pull/763)
+- Fix `SearchHitIterator` key duplicates [#872](https://github.com/elastic/elasticsearch-php/pull/872)
+- Fixing script get and delete by removing `lang` from endpoint url [#814](https://github.com/elastic/elasticsearch-php/pull/814)
+- Fix `SearchResponseIterator` is scrolling the first page twice [#871](https://github.com/elastic/elasticsearch-php/pull/871), issue [#595](https://github.com/elastic/elasticsearch-php/issues/595)
+
+### Docs
+
+- [DOCS] Add reference to `parse_url()` for Extended Host Configuration [#778](https://github.com/elastic/elasticsearch-php/pull/778)
+- [DOCS] Update php version requirement [#757](https://github.com/elastic/elasticsearch-php/pull/757)
+- [DOCS] Update `community.asciidoc`, added `ElasticSearchQueryDSL` project [#749](https://github.com/elastic/elasticsearch-php/pull/749)
+- [DOCS] Proper return type array for get method for `IndicesNamespace` [#651](https://github.com/elastic/elasticsearch-php/pull/651)
+- [DOCS] Fix full docs link [#862](https://github.com/elastic/elasticsearch-php/pull/862)
+- [DOCS] Update breaking-changes.asciidoc, removal of ClientBuilder::defaultLogger() [#879](https://github.com/elastic/elasticsearch-php/pull/879)
+
+### Testing
+
+- Fix integration tests using docker [#867](https://github.com/elastic/elasticsearch-php/pull/867)
+
+## Release 6.1.0
+
+- Add 'wait_for_no_initializing_shards' to Cluster\Health whitelist [[98a372c]](http://github.com/elasticsearch/elasticsearch-php/commit/98a372c)
+- Add 'wait_for_active_shards' to Indices\Open whitelist [[0275fe5]](http://github.com/elasticsearch/elasticsearch-php/commit/0275fe5)
+- Add 'max_concurrent_searches' to msearch whitelist [[5624123]](http://github.com/elasticsearch/elasticsearch-php/commit/5624123)
+- Add 'max_concurrent_shard_requests' param to MSearch endpoint [[00800c1]](http://github.com/elasticsearch/elasticsearch-php/commit/00800c1)
+- Add ReloadSecureSettings endpoint [[75b32b2]](http://github.com/elasticsearch/elasticsearch-php/commit/75b32b2)
+- Remove obsolete Shutdown API [[c75d690]](http://github.com/elasticsearch/elasticsearch-php/commit/c75d690)
+- Fix: Restore::setBody() does not throw exceptions (#828) [[a96bb9c]](http://github.com/elasticsearch/elasticsearch-php/commit/a96bb9c)
+- Fixed php 7.3 compatibility for elasticsearch 6 (#827) [[77916b2]](http://github.com/elasticsearch/elasticsearch-php/commit/77916b2)
+- Fix issue with getting status of respository and snapshots. (#719) [[2d11682]](http://github.com/elasticsearch/elasticsearch-php/commit/2d11682)
+- fix DeleteByQuery param white list (#748) [[8d963c6]](http://github.com/elasticsearch/elasticsearch-php/commit/8d963c6)
+
+### Docs
+- [Docs] Update elasticsearch version (#743) [[043ad4f]](http://github.com/elasticsearch/elasticsearch-php/commit/043ad4f)
+- [DOCS] reuqest → request typo fix (#728) [[68db9f0]](http://github.com/elasticsearch/elasticsearch-php/commit/68db9f0)
+- [DOCS] Fix documentation example of upsert (#730) [[805329b]](http://github.com/elasticsearch/elasticsearch-php/commit/805329b)
+- [DOCS] Replace deprecated string type with keyword type for index operations (#736) [[a550507]](http://github.com/elasticsearch/elasticsearch-php/commit/a550507)
+
+### Testing
+
+- [TEST] Fix travis untarring [[0106351]](http://github.com/elasticsearch/elasticsearch-php/commit/0106351)
+- [TEST] Download artifacts directly, migrate off esvm [[1e9f06c]](http://github.com/elasticsearch/elasticsearch-php/commit/1e9f06c)
+- Update Travis Matrix [[aa32b12]](http://github.com/elasticsearch/elasticsearch-php/commit/aa32b12)
+- [TEST] Fix teardown in yaml runner [[098030e]](http://github.com/elasticsearch/elasticsearch-php/commit/098030e)
+- Add Indices/Split endpoint [[46d5a7a]](http://github.com/elasticsearch/elasticsearch-php/commit/46d5a7a)
+- [TEST] Blacklist some bad yml tests [[d5edab7]](http://github.com/elasticsearch/elasticsearch-php/commit/d5edab7)
+
 ## Release 6.0.1
 
 - Fix imports [[0106351]](http://github.com/elasticsearch/elasticsearch-php/commit/0106351)

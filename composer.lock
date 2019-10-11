@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b921024c990bbb4215df1f28be2c164b",
+    "content-hash": "6352286caae3ebd077f60c186556365f",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -825,16 +825,16 @@
         },
         {
             "name": "elasticsearch/elasticsearch",
-            "version": "v6.0.1",
+            "version": "v6.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/elastic/elasticsearch-php.git",
-                "reference": "b8e3bc9d1fc54d6a18692df0b74956efe7fe241a"
+                "reference": "0c93d0e5b852634159d9f349b1848acde845400b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/elastic/elasticsearch-php/zipball/b8e3bc9d1fc54d6a18692df0b74956efe7fe241a",
-                "reference": "b8e3bc9d1fc54d6a18692df0b74956efe7fe241a",
+                "url": "https://api.github.com/repos/elastic/elasticsearch-php/zipball/0c93d0e5b852634159d9f349b1848acde845400b",
+                "reference": "0c93d0e5b852634159d9f349b1848acde845400b",
                 "shasum": ""
             },
             "require": {
@@ -846,10 +846,10 @@
             "require-dev": {
                 "cpliakas/git-wrapper": "~1.0",
                 "doctrine/inflector": "^1.1",
-                "mockery/mockery": "0.9.4",
-                "phpstan/phpstan-shim": "0.8.3",
-                "phpunit/phpunit": "6.3.0",
-                "squizlabs/php_codesniffer": "3.0.2",
+                "mockery/mockery": "^1.2",
+                "phpstan/phpstan-shim": "^0.9 || ^0.11",
+                "phpunit/phpunit": "^5.7 || ^6.5",
+                "squizlabs/php_codesniffer": "^3.4",
                 "symfony/finder": "^2.8",
                 "symfony/yaml": "^2.8"
             },
@@ -870,6 +870,9 @@
             "authors": [
                 {
                     "name": "Zachary Tong"
+                },
+                {
+                    "name": "Enrico Zimuel"
                 }
             ],
             "description": "PHP Client for Elasticsearch",
@@ -878,7 +881,7 @@
                 "elasticsearch",
                 "search"
             ],
-            "time": "2017-12-05T14:15:58+00:00"
+            "time": "2019-07-19T13:34:35+00:00"
         },
         {
             "name": "fgrosse/phpasn1",
@@ -3357,16 +3360,16 @@
         },
         {
             "name": "ruflin/elastica",
-            "version": "6.0.2",
+            "version": "6.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ruflin/Elastica.git",
-                "reference": "8a6a3b2e71fdf7c96ad92fd2622bcc5904696fcf"
+                "reference": "333dff62346adf835c0a0fd198e8c9f9ec8da65a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ruflin/Elastica/zipball/8a6a3b2e71fdf7c96ad92fd2622bcc5904696fcf",
-                "reference": "8a6a3b2e71fdf7c96ad92fd2622bcc5904696fcf",
+                "url": "https://api.github.com/repos/ruflin/Elastica/zipball/333dff62346adf835c0a0fd198e8c9f9ec8da65a",
+                "reference": "333dff62346adf835c0a0fd198e8c9f9ec8da65a",
                 "shasum": ""
             },
             "require": {
@@ -3411,7 +3414,7 @@
                 "client",
                 "search"
             ],
-            "time": "2018-05-29T08:31:52+00:00"
+            "time": "2019-01-29T09:38:03+00:00"
         },
         {
             "name": "serialization/serialization",

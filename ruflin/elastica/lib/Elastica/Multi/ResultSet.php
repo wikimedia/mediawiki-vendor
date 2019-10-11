@@ -1,8 +1,8 @@
 <?php
+
 namespace Elastica\Multi;
 
 use Elastica\Response;
-use Elastica\ResultSet as BaseResultSet;
 
 /**
  * Elastica multi search result set
@@ -36,8 +36,8 @@ class ResultSet implements \Iterator, \ArrayAccess, \Countable
     /**
      * Constructs ResultSet object.
      *
-     * @param \Elastica\Response $response
-     * @param BaseResultSet[]
+     * @param \Elastica\Response    $response
+     * @param \Elastica\ResultSet[] $resultSets
      */
     public function __construct(Response $response, $resultSets)
     {
@@ -80,17 +80,13 @@ class ResultSet implements \Iterator, \ArrayAccess, \Countable
     }
 
     /**
-     * @return bool|\Elastica\ResultSet
+     * @return \Elastica\ResultSet
      */
     public function current()
     {
-        return $this->valid()
-            ? $this->_resultSets[$this->key()]
-            : false;
+        return $this->_resultSets[$this->key()];
     }
 
-    /**
-     */
     public function next()
     {
         ++$this->_position;
@@ -112,8 +108,6 @@ class ResultSet implements \Iterator, \ArrayAccess, \Countable
         return isset($this->_resultSets[$this->key()]);
     }
 
-    /**
-     */
     public function rewind()
     {
         $this->_position = 0;
@@ -130,7 +124,7 @@ class ResultSet implements \Iterator, \ArrayAccess, \Countable
     /**
      * @param string|int $offset
      *
-     * @return bool true on success or false on failure.
+     * @return bool true on success or false on failure
      */
     public function offsetExists($offset)
     {
@@ -140,7 +134,7 @@ class ResultSet implements \Iterator, \ArrayAccess, \Countable
     /**
      * @param mixed $offset
      *
-     * @return mixed Can return all value types.
+     * @return mixed can return all value types
      */
     public function offsetGet($offset)
     {
