@@ -28,7 +28,7 @@
 		"jakobo/hotp-php": "1.0.1",
 		"jakub-onderka/php-console-color": "0.2",
 		"jakub-onderka/php-console-highlighter": "0.3.2",
-		"james-heinrich/getid3": "1.9.17",
+		"james-heinrich/getid3": "1.9.18",
 		"justinrainbow/json-schema": "5.2.8",
 		"liuggio/statsd-php-client": "1.0.18",
 		"monolog/monolog": "1.24.0",

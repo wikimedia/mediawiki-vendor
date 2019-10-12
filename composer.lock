@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "904f918bb66687e3454851fba8202648",
+    "content-hash": "7fd9e0b7d6c249579ddc82f3e19f2138",
     "packages": [
         {
             "name": "christian-riesen/base32",
@@ -1200,16 +1200,16 @@
         },
         {
             "name": "james-heinrich/getid3",
-            "version": "v1.9.17",
+            "version": "v1.9.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/JamesHeinrich/getID3.git",
-                "reference": "d2e45f2c4f75cc7443e158757ad2d678e318685d"
+                "reference": "0723b77cafe9278618cfb6bc91b75e73705d3de8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/d2e45f2c4f75cc7443e158757ad2d678e318685d",
-                "reference": "d2e45f2c4f75cc7443e158757ad2d678e318685d",
+                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/0723b77cafe9278618cfb6bc91b75e73705d3de8",
+                "reference": "0723b77cafe9278618cfb6bc91b75e73705d3de8",
                 "shasum": ""
             },
             "require": {
@@ -1259,7 +1259,7 @@
                 "php",
                 "tags"
             ],
-            "time": "2019-02-07T17:30:03+00:00"
+            "time": "2019-09-16T19:08:47+00:00"
         },
         {
             "name": "justinrainbow/json-schema",
