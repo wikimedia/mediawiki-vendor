@@ -39,7 +39,7 @@
 		"oojs/oojs-ui": "0.35.1",
 		"pear/console_getopt": "1.4.2",
 		"pear/mail": "1.4.1",
-		"pear/mail_mime": "1.10.2",
+		"pear/mail_mime": "1.10.4",
 		"pear/net_smtp": "1.8.1",
 		"pear/net_socket": "1.2.2",
 		"pear/pear-core-minimal": "1.10.9",
