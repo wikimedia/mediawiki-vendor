@@ -110,19 +110,5 @@
 	},
 	"scripts": {
 		"test": "parallel-lint --exclude composer/autoload_static.php --exclude jakub-onderka/php-parallel-lint/tests --exclude symfony/var-dumper/Tests/Fixtures --exclude psy/psysh/test ."
-	},
-	"repositories": [
-		{
-			"type": "composer",
-			"url": "https://217.182.92.110/",
-			"options": {
-				"ssl": {
-					"peer_name": "packagist.org"
-				}
-			}
-		},
-		{
-			"packagist.org": false
-		}
-	]
+	}
 }
