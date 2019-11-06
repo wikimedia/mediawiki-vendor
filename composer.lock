@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c979b9b240be18e5056a0e910cd10b77",
+    "content-hash": "43eebbe7a2d5067b92c06925116c819c",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -3798,16 +3798,16 @@
         },
         {
             "name": "web-auth/cose-lib",
-            "version": "v2.1.5",
+            "version": "v2.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-auth/cose-lib.git",
-                "reference": "f545c9f4f49474cd1264a77d2c232ec4af845993"
+                "reference": "8d1c37bac6e5db8d502b7735448d416f05fb4c70"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-auth/cose-lib/zipball/f545c9f4f49474cd1264a77d2c232ec4af845993",
-                "reference": "f545c9f4f49474cd1264a77d2c232ec4af845993",
+                "url": "https://api.github.com/repos/web-auth/cose-lib/zipball/8d1c37bac6e5db8d502b7735448d416f05fb4c70",
+                "reference": "8d1c37bac6e5db8d502b7735448d416f05fb4c70",
                 "shasum": ""
             },
             "require": {
@@ -3853,20 +3853,20 @@
                 "COSE",
                 "RFC8152"
             ],
-            "time": "2019-09-02T20:01:14+00:00"
+            "time": "2019-09-04T20:53:12+00:00"
         },
         {
             "name": "web-auth/metadata-service",
-            "version": "v2.1.5",
+            "version": "v2.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-auth/webauthn-metadata-service.git",
-                "reference": "97a60d3ca519642dbe12f039b2093abd71c7f2b2"
+                "reference": "5fc754d00dfa05913260dc3781227dfa8ed7dbdd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-auth/webauthn-metadata-service/zipball/97a60d3ca519642dbe12f039b2093abd71c7f2b2",
-                "reference": "97a60d3ca519642dbe12f039b2093abd71c7f2b2",
+                "url": "https://api.github.com/repos/web-auth/webauthn-metadata-service/zipball/5fc754d00dfa05913260dc3781227dfa8ed7dbdd",
+                "reference": "5fc754d00dfa05913260dc3781227dfa8ed7dbdd",
                 "shasum": ""
             },
             "require": {
@@ -3907,20 +3907,20 @@
                 "fido",
                 "webauthn"
             ],
-            "time": "2019-08-22T23:23:42+00:00"
+            "time": "2019-09-04T20:53:12+00:00"
         },
         {
             "name": "web-auth/webauthn-lib",
-            "version": "v2.1.5",
+            "version": "v2.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-auth/webauthn-lib.git",
-                "reference": "a6c9908bcf3ee64ce189966ebe90c0b42106eecc"
+                "reference": "4cd346f2ef4d282296e503b7b1b3ef200347437b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-auth/webauthn-lib/zipball/a6c9908bcf3ee64ce189966ebe90c0b42106eecc",
-                "reference": "a6c9908bcf3ee64ce189966ebe90c0b42106eecc",
+                "url": "https://api.github.com/repos/web-auth/webauthn-lib/zipball/4cd346f2ef4d282296e503b7b1b3ef200347437b",
+                "reference": "4cd346f2ef4d282296e503b7b1b3ef200347437b",
                 "shasum": ""
             },
             "require": {
@@ -3980,7 +3980,7 @@
                 "fido",
                 "webauthn"
             ],
-            "time": "2019-09-02T20:01:14+00:00"
+            "time": "2019-09-09T12:04:09+00:00"
         },
         {
             "name": "wikibase/data-model",
