@@ -5050,26 +5050,26 @@
     },
     {
         "name": "wikimedia/less.php",
-        "version": "v1.8.0",
-        "version_normalized": "1.8.0.0",
+        "version": "1.8.2",
+        "version_normalized": "1.8.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/less.php.git",
-            "reference": "eb783ddc912266f2106fee4684b24f178d7d4d06"
+            "reference": "e238ad228d74b6ffd38209c799b34e9826909266"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/less.php/zipball/eb783ddc912266f2106fee4684b24f178d7d4d06",
-            "reference": "eb783ddc912266f2106fee4684b24f178d7d4d06",
+            "url": "https://api.github.com/repos/wikimedia/less.php/zipball/e238ad228d74b6ffd38209c799b34e9826909266",
+            "reference": "e238ad228d74b6ffd38209c799b34e9826909266",
             "shasum": ""
         },
         "require": {
-            "php": ">=5.3"
+            "php": ">=7.2.9"
         },
         "require-dev": {
-            "phpunit/phpunit": "~4.8.24"
+            "phpunit/phpunit": "7.5.14"
         },
-        "time": "2018-10-16T05:21:24+00:00",
+        "time": "2019-11-06T18:30:11+00:00",
         "bin": [
             "bin/lessc"
         ],
@@ -5089,16 +5089,16 @@
         ],
         "authors": [
             {
+                "name": "Josh Schmidt",
+                "homepage": "https://github.com/oyejorge"
+            },
+            {
                 "name": "Matt Agar",
                 "homepage": "https://github.com/agar"
             },
             {
                 "name": "Martin Jantošovič",
                 "homepage": "https://github.com/Mordred"
-            },
-            {
-                "name": "Josh Schmidt",
-                "homepage": "https://github.com/oyejorge"
             }
         ],
         "description": "PHP port of the Javascript version of LESS http://lesscss.org (Originally maintained by Josh Schmidt)",
