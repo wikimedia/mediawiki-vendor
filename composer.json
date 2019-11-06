@@ -27,6 +27,8 @@
 		"guzzlehttp/guzzle": "6.3.3",
 		"guzzlehttp/promises": "1.3.1",
 		"guzzlehttp/psr7": "1.6.1",
+		"guzzlehttp/ringphp": "1.1.1",
+		"guzzlehttp/streams": "3.0.0",
 		"jakobo/hotp-php": "1.0.1",
 		"jakub-onderka/php-console-color": "0.2",
 		"jakub-onderka/php-console-highlighter": "0.3.2",
