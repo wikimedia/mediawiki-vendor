@@ -49,7 +49,6 @@ class ComposerStaticInit_mediawiki_vendor
             'Wikimedia\\Composer\\' => 19,
             'Wikimedia\\CSS\\' => 14,
             'Wikimedia\\AtEase\\' => 17,
-            'Wikimedia\\Assert\\Test\\' => 22,
             'Wikimedia\\Assert\\' => 17,
             'Wikimedia\\' => 10,
             'Wikibase\\TermStore\\' => 19,
@@ -210,10 +209,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\AtEase\\' => 
         array (
             0 => __DIR__ . '/..' . '/wikimedia/at-ease/src/Wikimedia/AtEase',
-        ),
-        'Wikimedia\\Assert\\Test\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/wikimedia/assert/tests/phpunit',
         ),
         'Wikimedia\\Assert\\' => 
         array (
@@ -3043,10 +3038,10 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Assert\\InvariantException' => __DIR__ . '/..' . '/wikimedia/assert/src/InvariantException.php',
         'Wikimedia\\Assert\\ParameterAssertionException' => __DIR__ . '/..' . '/wikimedia/assert/src/ParameterAssertionException.php',
         'Wikimedia\\Assert\\ParameterElementTypeException' => __DIR__ . '/..' . '/wikimedia/assert/src/ParameterElementTypeException.php',
+        'Wikimedia\\Assert\\ParameterKeyTypeException' => __DIR__ . '/..' . '/wikimedia/assert/src/ParameterKeyTypeException.php',
         'Wikimedia\\Assert\\ParameterTypeException' => __DIR__ . '/..' . '/wikimedia/assert/src/ParameterTypeException.php',
         'Wikimedia\\Assert\\PostconditionException' => __DIR__ . '/..' . '/wikimedia/assert/src/PostconditionException.php',
         'Wikimedia\\Assert\\PreconditionException' => __DIR__ . '/..' . '/wikimedia/assert/src/PreconditionException.php',
-        'Wikimedia\\Assert\\Test\\AssertTest' => __DIR__ . '/..' . '/wikimedia/assert/tests/phpunit/AssertTest.php',
         'Wikimedia\\AtEase\\AtEase' => __DIR__ . '/..' . '/wikimedia/at-ease/src/Wikimedia/AtEase/AtEase.php',
         'Wikimedia\\CSS\\Grammar\\Alternative' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/Alternative.php',
         'Wikimedia\\CSS\\Grammar\\AnythingMatcher' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/AnythingMatcher.php',

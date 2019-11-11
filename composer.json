@@ -81,7 +81,7 @@
 		"wikibase/data-model-services": "3.15.0",
 		"wikibase/internal-serialization": "2.9.0",
 		"wikibase/term-store": "1.0.2",
-		"wikimedia/assert": "0.2.2",
+		"wikimedia/assert": "0.4.0",
 		"wikimedia/at-ease": "2.0.0",
 		"wikimedia/avro": "1.9.0",
 		"wikimedia/base-convert": "2.0.0",

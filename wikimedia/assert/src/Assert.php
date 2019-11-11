@@ -13,8 +13,11 @@ namespace Wikimedia\Assert;
  *
  * For more information, see the the README file.
  *
+ * @since 0.1.0
+ *
  * @license MIT
  * @author Daniel Kinzler
+ * @author Thiemo Kreuz
  * @copyright Wikimedia Deutschland e.V.
  */
 class Assert {
@@ -32,6 +35,8 @@ class Assert {
 	 * or before using parameters in complex computations.
 	 * Checking preconditions in every function call is not recommended, since it may have a
 	 * negative impact on performance.
+	 *
+	 * @since 0.1.0
 	 *
 	 * @param bool $condition
 	 * @param string $description The message to include in the exception if the condition fails.
@@ -51,6 +56,8 @@ class Assert {
 	 * @note This is intended for checking parameters in constructors and setters.
 	 * Checking parameters in every function call is not recommended, since it may have a
 	 * negative impact on performance.
+	 *
+	 * @since 0.1.0
 	 *
 	 * @param bool $condition
 	 * @param string $name The name of the parameter that was checked.
@@ -75,9 +82,12 @@ class Assert {
 	 * @note If possible, type hints should be used instead of calling this function.
 	 * It is intended for cases where type hints to not work, e.g. for checking primitive types.
 	 *
-	 * @param string $type The parameter's expected type. Can be the name of a native type or a
-	 *        class or interface. If multiple types are allowed, they can be given separated by
-	 *        a pipe character ("|").
+	 * @since 0.1.0
+	 *
+	 * @param string|string[] $type The parameter's expected type. Can be the name of a native type
+	 *        or a class or interface, or a list of such names.
+	 *        For compatibility with versions before 0.4.0, multiple types can also be given separated
+	 *        by pipe characters ("|").
 	 * @param mixed $value The parameter's actual value.
 	 * @param string $name The name of the parameter that was checked.
 	 *
@@ -85,8 +95,36 @@ class Assert {
 	 *         instance of) $type.
 	 */
 	public static function parameterType( $type, $value, $name ) {
-		if ( !self::hasType( $value, explode( '|', $type ) ) ) {
-			throw new ParameterTypeException( $name, $type );
+		if ( is_string( $type ) ) {
+			$type = explode( '|', $type );
+		}
+		if ( !self::hasType( $value, $type ) ) {
+			throw new ParameterTypeException( $name, implode( '|', $type ) );
+		}
+	}
+
+	/**
+	 * @since 0.3.0
+	 *
+	 * @param string $type Either "integer" or "string". Mixing "integer|string" is not supported
+	 *  because this is PHP's default anyway. It is of no value to check this.
+	 * @param array $value The parameter's actual value. If this is not an array, a
+	 *  ParameterTypeException is raised.
+	 * @param string $name The name of the parameter that was checked.
+	 *
+	 * @throws ParameterTypeException if one of the keys in the array $value is not of type $type.
+	 */
+	public static function parameterKeyType( $type, $value, $name ) {
+		self::parameterType( 'array', $value, $name );
+
+		if ( $type !== 'integer' && $type !== 'string' ) {
+			throw new ParameterAssertionException( 'type', 'must be "integer" or "string"' );
+		}
+
+		foreach ( $value as $key => $element ) {
+			if ( gettype( $key ) !== $type ) {
+				throw new ParameterKeyTypeException( $name, $type );
+			}
 		}
 	}
 
@@ -98,10 +136,12 @@ class Assert {
 	 * Checking parameters in every function call is not recommended, since it may have a
 	 * negative impact on performance.
 	 *
+	 * @since 0.1.0
+	 *
 	 * @param string $type The elements' expected type. Can be the name of a native type or a
 	 *        class or interface. If multiple types are allowed, they can be given separated by
 	 *        a pipe character ("|").
-	 * @param mixed $value The parameter's actual value. If this is not an array,
+	 * @param array $value The parameter's actual value. If this is not an array,
 	 *        a ParameterTypeException is raised.
 	 * @param string $name The name of the parameter that was checked.
 	 *
@@ -122,6 +162,20 @@ class Assert {
 	}
 
 	/**
+	 * @since 0.3.0
+	 *
+	 * @param string $value
+	 * @param string $name
+	 *
+	 * @throws ParameterTypeException if $value is not a non-empty string.
+	 */
+	public static function nonEmptyString( $value, $name ) {
+		if ( !is_string( $value ) || $value === '' ) {
+			throw new ParameterTypeException( $name, 'non-empty string' );
+		}
+	}
+
+	/**
 	 * Checks a postcondition, that is, throws a PostconditionException if $condition is false.
 	 * This is very similar Assert::invariant() but is intended for use only after a computation
 	 * is complete.
@@ -129,6 +183,8 @@ class Assert {
 	 * @note This is intended for sanity-checks in the implementation of complex algorithms.
 	 * Note however that it should not be used in performance hotspots, since evaluating
 	 * $condition and calling postcondition() costs time.
+	 *
+	 * @since 0.1.0
 	 *
 	 * @param bool $condition
 	 * @param string $description The message to include in the exception if the condition fails.
@@ -147,7 +203,9 @@ class Assert {
 	 *
 	 * @note This is intended for sanity-checks in the implementation of complex algorithms.
 	 * Note however that it should not be used in performance hotspots, since evaluating
-	 * $condition and calling postcondition() costs time.
+	 * $condition and calling invariant() costs time.
+	 *
+	 * @since 0.1.0
 	 *
 	 * @param bool $condition
 	 * @param string $description The message to include in the exception if the condition fails.
@@ -162,7 +220,7 @@ class Assert {
 
 	/**
 	 * @param mixed $value
-	 * @param array $allowedTypes
+	 * @param string[] $allowedTypes
 	 *
 	 * @return bool
 	 */
@@ -174,7 +232,7 @@ class Assert {
 			return true;
 		}
 
-		if ( is_callable( $value ) && in_array( 'callable', $allowedTypes ) ) {
+		if ( in_array( 'callable', $allowedTypes ) && is_callable( $value ) ) {
 			return true;
 		}
 
@@ -182,12 +240,16 @@ class Assert {
 			return true;
 		}
 
+		if ( is_array( $value ) && in_array( 'Traversable', $allowedTypes ) ) {
+			return true;
+		}
+
 		return false;
 	}
 
 	/**
-	 * @param mixed $value
-	 * @param array $allowedTypes
+	 * @param object $value
+	 * @param string[] $allowedTypes
 	 *
 	 * @return bool
 	 */
