@@ -1,22 +1,21 @@
 [
     {
         "name": "beberlei/assert",
-        "version": "v3.2.3",
-        "version_normalized": "3.2.3.0",
+        "version": "v3.2.6",
+        "version_normalized": "3.2.6.0",
         "source": {
             "type": "git",
             "url": "https://github.com/beberlei/assert.git",
-            "reference": "65b8152224aef7d3c197d5db05211d4319711b66"
+            "reference": "99508be011753690fe108ded450f5caaae180cfa"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/beberlei/assert/zipball/65b8152224aef7d3c197d5db05211d4319711b66",
-            "reference": "65b8152224aef7d3c197d5db05211d4319711b66",
+            "url": "https://api.github.com/repos/beberlei/assert/zipball/99508be011753690fe108ded450f5caaae180cfa",
+            "reference": "99508be011753690fe108ded450f5caaae180cfa",
             "shasum": ""
         },
         "require": {
             "ext-ctype": "*",
-            "ext-intl": "*",
             "ext-json": "*",
             "ext-mbstring": "*",
             "ext-simplexml": "*",
@@ -27,7 +26,10 @@
             "phpstan/phpstan-shim": "*",
             "phpunit/phpunit": ">=6.0.0 <8"
         },
-        "time": "2019-08-23T17:56:26+00:00",
+        "suggest": {
+            "ext-intl": "Needed to allow Assertion::count(), Assertion::isCountable(), Assertion::minCount(), and Assertion::maxCount() to operate on ResourceBundles"
+        },
+        "time": "2019-10-10T10:33:57+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
