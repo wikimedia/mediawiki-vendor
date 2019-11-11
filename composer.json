@@ -31,7 +31,7 @@
 		"guzzlehttp/streams": "3.0.0",
 		"jakobo/hotp-php": "1.0.1",
 		"jakub-onderka/php-console-color": "0.2",
-		"jakub-onderka/php-console-highlighter": "0.3.2",
+		"jakub-onderka/php-console-highlighter": "0.4",
 		"james-heinrich/getid3": "1.9.18",
 		"justinrainbow/json-schema": "5.2.8",
 		"liuggio/statsd-php-client": "1.0.18",
