@@ -300,17 +300,17 @@
     },
     {
         "name": "data-values/data-values",
-        "version": "2.1.1",
-        "version_normalized": "2.1.1.0",
+        "version": "2.3.0",
+        "version_normalized": "2.3.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/DataValues/DataValues.git",
-            "reference": "5d7ad3730f05541f7c088c7c2ba1782ba56333b3"
+            "reference": "0c256a1b0a9202d5d01da1ed8a0e1d845cca0289"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/DataValues/DataValues/zipball/5d7ad3730f05541f7c088c7c2ba1782ba56333b3",
-            "reference": "5d7ad3730f05541f7c088c7c2ba1782ba56333b3",
+            "url": "https://api.github.com/repos/DataValues/DataValues/zipball/0c256a1b0a9202d5d01da1ed8a0e1d845cca0289",
+            "reference": "0c256a1b0a9202d5d01da1ed8a0e1d845cca0289",
             "shasum": ""
         },
         "require": {
@@ -323,11 +323,11 @@
             "phpunit/phpunit": "~4.8",
             "wikibase/wikibase-codesniffer": "^0.1.0"
         },
-        "time": "2017-09-28T11:48:25+00:00",
+        "time": "2019-09-19T23:38:17+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "2.0.x-dev"
+                "dev-master": "2.x-dev"
             }
         },
         "installation-source": "dist",
@@ -345,7 +345,7 @@
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
-            "GPL-2.0+"
+            "GPL-2.0-or-later"
         ],
         "authors": [
             {
