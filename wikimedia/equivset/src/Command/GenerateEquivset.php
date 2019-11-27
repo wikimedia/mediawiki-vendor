@@ -42,7 +42,7 @@ class GenerateEquivset extends Command {
 	 * Generate Equivset
 	 *
 	 * @param string $dataDir Data Directory
-	 * @param string $distDir Distrobution Directory
+	 * @param string $distDir Distribution Directory
 	 */
 	public function __construct( $dataDir = '', $distDir = '' ) {
 		parent::__construct();

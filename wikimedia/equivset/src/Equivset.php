@@ -104,7 +104,7 @@ class Equivset implements EquivsetInterface, \IteratorAggregate {
 	public function get( $key ) {
 		$data = $this->all();
 
-		if ( ! array_key_exists( $key, $data ) ) {
+		if ( !array_key_exists( $key, $data ) ) {
 			throw new \LogicException( 'Equivalent Character Not Found' );
 		}
 
