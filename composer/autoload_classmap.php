@@ -1393,6 +1393,7 @@ return array(
     'PhpParser\\Node\\Stmt\\UseUse' => $vendorDir . '/nikic/php-parser/lib/PhpParser/Node/Stmt/UseUse.php',
     'PhpParser\\Node\\Stmt\\Use_' => $vendorDir . '/nikic/php-parser/lib/PhpParser/Node/Stmt/Use_.php',
     'PhpParser\\Node\\Stmt\\While_' => $vendorDir . '/nikic/php-parser/lib/PhpParser/Node/Stmt/While_.php',
+    'PhpParser\\Node\\UnionType' => $vendorDir . '/nikic/php-parser/lib/PhpParser/Node/UnionType.php',
     'PhpParser\\Node\\VarLikeIdentifier' => $vendorDir . '/nikic/php-parser/lib/PhpParser/Node/VarLikeIdentifier.php',
     'PhpParser\\Parser' => $vendorDir . '/nikic/php-parser/lib/PhpParser/Parser.php',
     'PhpParser\\ParserAbstract' => $vendorDir . '/nikic/php-parser/lib/PhpParser/ParserAbstract.php',
