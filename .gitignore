@@ -39,11 +39,4 @@ Thumbs.db
 # Library test files etc.
 jakub-onderka/php-parallel-lint/tests
 psy/psysh/test
-symfony/translation/.gitignore
-symfony/translation/phpunit.xml.dist
-symfony/translation/Tests
-symfony/validator/.gitignore
-symfony/validator/phpunit.xml.dist
-symfony/validator/Tests
-symfony/var-dumper/Tests
 james-heinrich/getid3/demos

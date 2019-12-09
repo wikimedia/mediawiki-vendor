@@ -3365,28 +3365,29 @@
     },
     {
         "name": "symfony/console",
-        "version": "v4.3.6",
-        "version_normalized": "4.3.6.0",
+        "version": "v4.4.1",
+        "version_normalized": "4.4.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/console.git",
-            "reference": "136c4bd62ea871d00843d1bc0316de4c4a84bb78"
+            "reference": "f0aea3df20d15635b3cb9730ca5eea1c65b7f201"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/console/zipball/136c4bd62ea871d00843d1bc0316de4c4a84bb78",
-            "reference": "136c4bd62ea871d00843d1bc0316de4c4a84bb78",
+            "url": "https://api.github.com/repos/symfony/console/zipball/f0aea3df20d15635b3cb9730ca5eea1c65b7f201",
+            "reference": "f0aea3df20d15635b3cb9730ca5eea1c65b7f201",
             "shasum": ""
         },
         "require": {
             "php": "^7.1.3",
             "symfony/polyfill-mbstring": "~1.0",
             "symfony/polyfill-php73": "^1.8",
-            "symfony/service-contracts": "^1.1"
+            "symfony/service-contracts": "^1.1|^2"
         },
         "conflict": {
             "symfony/dependency-injection": "<3.4",
-            "symfony/event-dispatcher": "<4.3",
+            "symfony/event-dispatcher": "<4.3|>=5",
+            "symfony/lock": "<4.4",
             "symfony/process": "<3.3"
         },
         "provide": {
@@ -3394,12 +3395,12 @@
         },
         "require-dev": {
             "psr/log": "~1.0",
-            "symfony/config": "~3.4|~4.0",
-            "symfony/dependency-injection": "~3.4|~4.0",
+            "symfony/config": "^3.4|^4.0|^5.0",
+            "symfony/dependency-injection": "^3.4|^4.0|^5.0",
             "symfony/event-dispatcher": "^4.3",
-            "symfony/lock": "~3.4|~4.0",
-            "symfony/process": "~3.4|~4.0",
-            "symfony/var-dumper": "^4.3"
+            "symfony/lock": "^4.4|^5.0",
+            "symfony/process": "^3.4|^4.0|^5.0",
+            "symfony/var-dumper": "^4.3|^5.0"
         },
         "suggest": {
             "psr/log": "For using the console logger",
@@ -3407,11 +3408,11 @@
             "symfony/lock": "",
             "symfony/process": ""
         },
-        "time": "2019-10-30T12:58:49+00:00",
+        "time": "2019-12-01T10:06:17+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "4.3-dev"
+                "dev-master": "4.4-dev"
             }
         },
         "installation-source": "dist",
@@ -3442,17 +3443,17 @@
     },
     {
         "name": "symfony/debug",
-        "version": "v4.3.6",
-        "version_normalized": "4.3.6.0",
+        "version": "v4.4.1",
+        "version_normalized": "4.4.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/debug.git",
-            "reference": "5ea9c3e01989a86ceaa0283f21234b12deadf5e2"
+            "reference": "b8600a1d7d20b0e80906398bb1f50612fa074a8e"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/debug/zipball/5ea9c3e01989a86ceaa0283f21234b12deadf5e2",
-            "reference": "5ea9c3e01989a86ceaa0283f21234b12deadf5e2",
+            "url": "https://api.github.com/repos/symfony/debug/zipball/b8600a1d7d20b0e80906398bb1f50612fa074a8e",
+            "reference": "b8600a1d7d20b0e80906398bb1f50612fa074a8e",
             "shasum": ""
         },
         "require": {
@@ -3463,13 +3464,13 @@
             "symfony/http-kernel": "<3.4"
         },
         "require-dev": {
-            "symfony/http-kernel": "~3.4|~4.0"
+            "symfony/http-kernel": "^3.4|^4.0|^5.0"
         },
-        "time": "2019-10-28T17:07:32+00:00",
+        "time": "2019-11-28T13:33:56+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "4.3-dev"
+                "dev-master": "4.4-dev"
             }
         },
         "installation-source": "dist",
@@ -3500,27 +3501,27 @@
     },
     {
         "name": "symfony/polyfill-php73",
-        "version": "v1.12.0",
-        "version_normalized": "1.12.0.0",
+        "version": "v1.13.1",
+        "version_normalized": "1.13.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/polyfill-php73.git",
-            "reference": "2ceb49eaccb9352bff54d22570276bb75ba4a188"
+            "reference": "4b0e2222c55a25b4541305a053013d5647d3a25f"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/polyfill-php73/zipball/2ceb49eaccb9352bff54d22570276bb75ba4a188",
-            "reference": "2ceb49eaccb9352bff54d22570276bb75ba4a188",
+            "url": "https://api.github.com/repos/symfony/polyfill-php73/zipball/4b0e2222c55a25b4541305a053013d5647d3a25f",
+            "reference": "4b0e2222c55a25b4541305a053013d5647d3a25f",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.3"
         },
-        "time": "2019-08-06T08:03:45+00:00",
+        "time": "2019-11-27T16:25:15+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "1.12-dev"
+                "dev-master": "1.13-dev"
             }
         },
         "installation-source": "dist",
@@ -3560,31 +3561,31 @@
     },
     {
         "name": "symfony/service-contracts",
-        "version": "v1.1.7",
-        "version_normalized": "1.1.7.0",
+        "version": "v2.0.1",
+        "version_normalized": "2.0.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/service-contracts.git",
-            "reference": "ffcde9615dc5bb4825b9f6aed07716f1f57faae0"
+            "reference": "144c5e51266b281231e947b51223ba14acf1a749"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/service-contracts/zipball/ffcde9615dc5bb4825b9f6aed07716f1f57faae0",
-            "reference": "ffcde9615dc5bb4825b9f6aed07716f1f57faae0",
+            "url": "https://api.github.com/repos/symfony/service-contracts/zipball/144c5e51266b281231e947b51223ba14acf1a749",
+            "reference": "144c5e51266b281231e947b51223ba14acf1a749",
             "shasum": ""
         },
         "require": {
-            "php": "^7.1.3",
+            "php": "^7.2.5",
             "psr/container": "^1.0"
         },
         "suggest": {
             "symfony/service-implementation": ""
         },
-        "time": "2019-09-17T11:12:18+00:00",
+        "time": "2019-11-18T17:27:11+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "1.1-dev"
+                "dev-master": "2.0-dev"
             }
         },
         "installation-source": "dist",
@@ -3620,27 +3621,28 @@
     },
     {
         "name": "symfony/translation",
-        "version": "v4.3.6",
-        "version_normalized": "4.3.6.0",
+        "version": "v4.4.1",
+        "version_normalized": "4.4.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/translation.git",
-            "reference": "a3aa590ce944afb3434d7a55f81b00927144d5ec"
+            "reference": "897fb68ee7933372517b551d6f08c6d4bb0b8c40"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/translation/zipball/a3aa590ce944afb3434d7a55f81b00927144d5ec",
-            "reference": "a3aa590ce944afb3434d7a55f81b00927144d5ec",
+            "url": "https://api.github.com/repos/symfony/translation/zipball/897fb68ee7933372517b551d6f08c6d4bb0b8c40",
+            "reference": "897fb68ee7933372517b551d6f08c6d4bb0b8c40",
             "shasum": ""
         },
         "require": {
             "php": "^7.1.3",
             "symfony/polyfill-mbstring": "~1.0",
-            "symfony/translation-contracts": "^1.1.6"
+            "symfony/translation-contracts": "^1.1.6|^2"
         },
         "conflict": {
             "symfony/config": "<3.4",
             "symfony/dependency-injection": "<3.4",
+            "symfony/http-kernel": "<4.4",
             "symfony/yaml": "<3.4"
         },
         "provide": {
@@ -3648,26 +3650,25 @@
         },
         "require-dev": {
             "psr/log": "~1.0",
-            "symfony/config": "~3.4|~4.0",
-            "symfony/console": "~3.4|~4.0",
-            "symfony/dependency-injection": "~3.4|~4.0",
-            "symfony/finder": "~2.8|~3.0|~4.0",
-            "symfony/http-kernel": "~3.4|~4.0",
-            "symfony/intl": "~3.4|~4.0",
-            "symfony/service-contracts": "^1.1.2",
-            "symfony/var-dumper": "~3.4|~4.0",
-            "symfony/yaml": "~3.4|~4.0"
+            "symfony/config": "^3.4|^4.0|^5.0",
+            "symfony/console": "^3.4|^4.0|^5.0",
+            "symfony/dependency-injection": "^3.4|^4.0|^5.0",
+            "symfony/finder": "~2.8|~3.0|~4.0|^5.0",
+            "symfony/http-kernel": "^4.4",
+            "symfony/intl": "^3.4|^4.0|^5.0",
+            "symfony/service-contracts": "^1.1.2|^2",
+            "symfony/yaml": "^3.4|^4.0|^5.0"
         },
         "suggest": {
             "psr/log-implementation": "To use logging capability in translator",
             "symfony/config": "",
             "symfony/yaml": ""
         },
-        "time": "2019-10-30T12:53:54+00:00",
+        "time": "2019-11-12T17:18:47+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "4.3-dev"
+                "dev-master": "4.4-dev"
             }
         },
         "installation-source": "dist",
@@ -3698,30 +3699,30 @@
     },
     {
         "name": "symfony/translation-contracts",
-        "version": "v1.1.7",
-        "version_normalized": "1.1.7.0",
+        "version": "v2.0.1",
+        "version_normalized": "2.0.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/translation-contracts.git",
-            "reference": "364518c132c95642e530d9b2d217acbc2ccac3e6"
+            "reference": "8cc682ac458d75557203b2f2f14b0b92e1c744ed"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/translation-contracts/zipball/364518c132c95642e530d9b2d217acbc2ccac3e6",
-            "reference": "364518c132c95642e530d9b2d217acbc2ccac3e6",
+            "url": "https://api.github.com/repos/symfony/translation-contracts/zipball/8cc682ac458d75557203b2f2f14b0b92e1c744ed",
+            "reference": "8cc682ac458d75557203b2f2f14b0b92e1c744ed",
             "shasum": ""
         },
         "require": {
-            "php": "^7.1.3"
+            "php": "^7.2.5"
         },
         "suggest": {
             "symfony/translation-implementation": ""
         },
-        "time": "2019-09-17T11:12:18+00:00",
+        "time": "2019-11-18T17:27:11+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "1.1-dev"
+                "dev-master": "2.0-dev"
             }
         },
         "installation-source": "dist",
@@ -3757,57 +3758,56 @@
     },
     {
         "name": "symfony/validator",
-        "version": "v4.3.6",
-        "version_normalized": "4.3.6.0",
+        "version": "v4.4.1",
+        "version_normalized": "4.4.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/validator.git",
-            "reference": "33ba80582cab3400c9aae66f5e58bb51d7412192"
+            "reference": "6b1774cf44c378617af362eaa154105952d488f8"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/validator/zipball/33ba80582cab3400c9aae66f5e58bb51d7412192",
-            "reference": "33ba80582cab3400c9aae66f5e58bb51d7412192",
+            "url": "https://api.github.com/repos/symfony/validator/zipball/6b1774cf44c378617af362eaa154105952d488f8",
+            "reference": "6b1774cf44c378617af362eaa154105952d488f8",
             "shasum": ""
         },
         "require": {
             "php": "^7.1.3",
             "symfony/polyfill-ctype": "~1.8",
             "symfony/polyfill-mbstring": "~1.0",
-            "symfony/translation-contracts": "^1.1"
+            "symfony/translation-contracts": "^1.1|^2"
         },
         "conflict": {
             "doctrine/lexer": "<1.0.2",
             "phpunit/phpunit": "<4.8.35|<5.4.3,>=5.0",
             "symfony/dependency-injection": "<3.4",
-            "symfony/http-kernel": "<3.4",
+            "symfony/http-kernel": "<4.4",
             "symfony/intl": "<4.3",
-            "symfony/translation": "<4.2",
+            "symfony/translation": ">=5.0",
             "symfony/yaml": "<3.4"
         },
         "require-dev": {
             "doctrine/annotations": "~1.7",
             "doctrine/cache": "~1.0",
             "egulias/email-validator": "^2.1.10",
-            "symfony/cache": "~3.4|~4.0",
-            "symfony/config": "~3.4|~4.0",
-            "symfony/dependency-injection": "~3.4|~4.0",
-            "symfony/expression-language": "~3.4|~4.0",
-            "symfony/http-client": "^4.3",
-            "symfony/http-foundation": "~4.1",
-            "symfony/http-kernel": "~3.4|~4.0",
-            "symfony/intl": "^4.3",
-            "symfony/property-access": "~3.4|~4.0",
-            "symfony/property-info": "~3.4|~4.0",
-            "symfony/translation": "~4.2",
-            "symfony/var-dumper": "~3.4|~4.0",
-            "symfony/yaml": "~3.4|~4.0"
+            "symfony/cache": "^3.4|^4.0|^5.0",
+            "symfony/config": "^3.4|^4.0|^5.0",
+            "symfony/dependency-injection": "^3.4|^4.0|^5.0",
+            "symfony/expression-language": "^3.4|^4.0|^5.0",
+            "symfony/http-client": "^4.3|^5.0",
+            "symfony/http-foundation": "^4.1|^5.0",
+            "symfony/http-kernel": "^4.4",
+            "symfony/intl": "^4.3|^5.0",
+            "symfony/property-access": "^3.4|^4.0|^5.0",
+            "symfony/property-info": "^3.4|^4.0|^5.0",
+            "symfony/translation": "^4.2",
+            "symfony/yaml": "^3.4|^4.0|^5.0"
         },
         "suggest": {
             "doctrine/annotations": "For using the annotation mapping. You will also need doctrine/cache.",
-            "doctrine/cache": "For using the default cached annotation reader and metadata cache.",
+            "doctrine/cache": "For using the default cached annotation reader.",
             "egulias/email-validator": "Strict (RFC compliant) email validation",
-            "psr/cache-implementation": "For using the metadata cache.",
+            "psr/cache-implementation": "For using the mapping cache.",
             "symfony/config": "",
             "symfony/expression-language": "For using the Expression validator",
             "symfony/http-foundation": "",
@@ -3817,11 +3817,11 @@
             "symfony/translation": "For translating validation errors.",
             "symfony/yaml": ""
         },
-        "time": "2019-10-30T12:58:49+00:00",
+        "time": "2019-11-30T14:03:57+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "4.3-dev"
+                "dev-master": "4.4-dev"
             }
         },
         "installation-source": "dist",
@@ -3852,17 +3852,17 @@
     },
     {
         "name": "symfony/var-dumper",
-        "version": "v4.3.6",
-        "version_normalized": "4.3.6.0",
+        "version": "v4.4.1",
+        "version_normalized": "4.4.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/var-dumper.git",
-            "reference": "ea4940845535c85ff5c505e13b3205b0076d07bf"
+            "reference": "0a89a1dbbedd9fb2cfb2336556dec8305273c19a"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/var-dumper/zipball/ea4940845535c85ff5c505e13b3205b0076d07bf",
-            "reference": "ea4940845535c85ff5c505e13b3205b0076d07bf",
+            "url": "https://api.github.com/repos/symfony/var-dumper/zipball/0a89a1dbbedd9fb2cfb2336556dec8305273c19a",
+            "reference": "0a89a1dbbedd9fb2cfb2336556dec8305273c19a",
             "shasum": ""
         },
         "require": {
@@ -3876,23 +3876,23 @@
         },
         "require-dev": {
             "ext-iconv": "*",
-            "symfony/console": "~3.4|~4.0",
-            "symfony/process": "~3.4|~4.0",
-            "twig/twig": "~1.34|~2.4"
+            "symfony/console": "^3.4|^4.0|^5.0",
+            "symfony/process": "^4.4|^5.0",
+            "twig/twig": "^1.34|^2.4|^3.0"
         },
         "suggest": {
             "ext-iconv": "To convert non-UTF-8 strings to UTF-8 (or symfony/polyfill-iconv in case ext-iconv cannot be used).",
             "ext-intl": "To show region name in time zone dump",
             "symfony/console": "To use the ServerDumpCommand and/or the bin/var-dump-server script"
         },
-        "time": "2019-10-13T12:02:04+00:00",
+        "time": "2019-11-28T13:33:56+00:00",
         "bin": [
             "Resources/bin/var-dump-server"
         ],
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "4.3-dev"
+                "dev-master": "4.4-dev"
             }
         },
         "installation-source": "dist",
