@@ -1912,30 +1912,31 @@
     },
     {
         "name": "oojs/oojs-ui",
-        "version": "v0.35.1",
-        "version_normalized": "0.35.1.0",
+        "version": "v0.36.1",
+        "version_normalized": "0.36.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/oojs-ui.git",
-            "reference": "0072d15b009787577537e3294132d759c46a1098"
+            "reference": "1ee0302c8f8da10b2a5b17734859bdb7fdf2dd96"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/0072d15b009787577537e3294132d759c46a1098",
-            "reference": "0072d15b009787577537e3294132d759c46a1098",
+            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/1ee0302c8f8da10b2a5b17734859bdb7fdf2dd96",
+            "reference": "1ee0302c8f8da10b2a5b17734859bdb7fdf2dd96",
             "shasum": ""
         },
         "require": {
-            "php": ">=5.6.99"
+            "php": ">=7.2.9"
         },
         "require-dev": {
             "jakub-onderka/php-console-highlighter": "0.3.2",
             "jakub-onderka/php-parallel-lint": "1.0.0",
-            "mediawiki/mediawiki-codesniffer": "26.0.0",
+            "mediawiki/mediawiki-codesniffer": "28.0.0",
+            "mediawiki/mediawiki-phan-config": "0.8.0",
             "mediawiki/minus-x": "0.3.1",
-            "phpunit/phpunit": "4.8.36 || ^6.5"
+            "phpunit/phpunit": "6.5.14"
         },
-        "time": "2019-10-10T22:28:42+00:00",
+        "time": "2019-12-12T00:19:05+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
