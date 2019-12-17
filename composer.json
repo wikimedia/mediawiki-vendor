@@ -32,7 +32,7 @@
 		"jakobo/hotp-php": "1.0.1",
 		"jakub-onderka/php-console-color": "0.2",
 		"jakub-onderka/php-console-highlighter": "0.4",
-		"james-heinrich/getid3": "1.9.18",
+		"james-heinrich/getid3": "1.9.19",
 		"justinrainbow/json-schema": "5.2.9",
 		"liuggio/statsd-php-client": "1.0.18",
 		"monolog/monolog": "1.25.2",

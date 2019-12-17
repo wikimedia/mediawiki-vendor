@@ -3231,6 +3231,7 @@ class ComposerStaticInit_mediawiki_vendor
         'getid3_write_real' => __DIR__ . '/..' . '/james-heinrich/getid3/getid3/write.real.php',
         'getid3_write_vorbiscomment' => __DIR__ . '/..' . '/james-heinrich/getid3/getid3/write.vorbiscomment.php',
         'getid3_writetags' => __DIR__ . '/..' . '/james-heinrich/getid3/getid3/write.php',
+        'getid3_wtv' => __DIR__ . '/..' . '/james-heinrich/getid3/getid3/module.audio-video.wtv.php',
         'getid3_xz' => __DIR__ . '/..' . '/james-heinrich/getid3/getid3/module.archive.xz.php',
         'getid3_zip' => __DIR__ . '/..' . '/james-heinrich/getid3/getid3/module.archive.zip.php',
         'jakobo\\HOTP\\HOTP' => __DIR__ . '/..' . '/jakobo/hotp-php/src/HOTP.php',

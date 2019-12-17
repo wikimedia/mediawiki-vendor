@@ -39,4 +39,3 @@ Thumbs.db
 # Library test files etc.
 jakub-onderka/php-parallel-lint/tests
 psy/psysh/test
-james-heinrich/getid3/demos
