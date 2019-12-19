@@ -1,11 +1,9 @@
 # DataValues Geo
 
-Library containing value objects to represent geographical information, parsers to turn user input
-into such value objects, and formatters to turn them back into user consumable representations.
+Small library for **parsing, formatting and representing coordinates**. This library supports multiple coordinate formats,
+it is well tested, and it is used by the software behind Wikipedia and Wikidata.
 
-It is part of the [DataValues set of libraries](https://github.com/DataValues).
-
-[![Build Status](https://secure.travis-ci.org/DataValues/Geo.png?branch=master)](http://travis-ci.org/DataValues/Geo)
+[![Build Status](https://travis-ci.org/DataValues/Geo.svg?branch=master)](https://travis-ci.org/DataValues/Geo)
 [![Code Coverage](https://scrutinizer-ci.com/g/DataValues/Geo/badges/coverage.png?s=bf4cfd11f3b985fd05918f395c350b376a9ce0ee)](https://scrutinizer-ci.com/g/DataValues/Geo/)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/DataValues/Geo/badges/quality-score.png?s=e695e42b53d74fc02e5cfa2aa218420f062edbd2)](https://scrutinizer-ci.com/g/DataValues/Geo/)
 
@@ -13,88 +11,137 @@ On [Packagist](https://packagist.org/packages/data-values/geo):
 [![Latest Stable Version](https://poser.pugx.org/data-values/geo/version.png)](https://packagist.org/packages/data-values/geo)
 [![Download count](https://poser.pugx.org/data-values/geo/d/total.png)](https://packagist.org/packages/data-values/geo)
 
+## Usage
+
+To **parse a string to a `LatLongValue` object** you use one of the coordinate parsers.
+
+```php
+$parser = new LatLongParser();
+$latLongValue = $parser->parse('55.7557860 N, 37.6176330 W');
+var_dump($latLongValue->getLongitude()); // float: -37.6176330
+```
+
+These parsers are provided:
+
+* `LatLongParser` - Facade for format specific parsers. In most cases you will be using this one
+* `DdCoordinateParser` - Parses decimal degree coordinates
+* `DmCoordinateParser` - Parses decimal minute coordinates
+* `DmsCoordinateParser` - Parses degree minute second coordinates
+* `FloatCoordinateParser` - Parses float coordinates 
+* `GlobeCoordinateParser` - Parses coordinates into `GlobeCoordinateValue` objects
+
+To **turn a coordinate object into a string** you use one of the coordinate formatters.
+
+```php
+$formatter = new LatLongFormatter();
+$coordinateString = $formatter->format(new LatLongValue(42.23, 13.37));
+```
+
+These formatters are provided:
+
+* `LatLongFormatter` - Formats a `LatLongValue` into any of the supported formats
+* `GlobeCoordinateFormatter` - Formats a `GlobeCoordinateValue`
+
+To **represent a set of coordinates** you use one of the Value Objects.
+
+`LatLongValue` has a float latitude and longitude. `GlobeCoordinateValue` wraps `LatLongValue`
+and adds a precision and a globe identifier.
+
+The **supported coordinate formats** are:
+
+* Degree minute second (`55° 45' 20.8296", -37° 37' 3.4788"` or `55° 45' 20.8296" N, 37° 37' 3.4788" W`)
+* Decimal minute (`55° 30', -37° 30'` or `55° 30' N, 37° 30' W`)
+* Decimal degree (`55.7557860°, -37.6176330°` or `55.7557860° N, 37.6176330° W`)
+* Float (`55.7557860, -37.6176330` or `55.7557860 N, 37.6176330 W`)
+
+The parsers and formatters allow you to customize the used symbols for degrees, minutes and seconds and
+to change the letters used to indicate direction (N, E, S, W).
+
+## Requirements
+
+**Geo 4.x:** PHP 7.1 or later (tested with PHP 7.1 up to PHP 7.4)
+
+**Geo 3.x:** PHP 5.5 or later (tested with PHP 5.5 up to PHP 7.4 and HHVM)
+
 ## Installation
-
-The recommended way to use this library is via [Composer](http://getcomposer.org/).
-
-### Composer
 
 To add this package as a local, per-project dependency to your project, simply add a
 dependency on `data-values/geo` to your project's `composer.json` file.
 Here is a minimal example of a `composer.json` file that just defines a dependency on
-version 3.x of this package:
+version 4.x of this package:
 
+```json
     {
         "require": {
-            "data-values/geo": "^3.0.0"
+            "data-values/geo": "^4.0.0"
         }
     }
+```
 
-### Manual
+## Running the tests
 
-Get the code of this package, either via git, or some other means. Also get all dependencies.
-You can find a list of the dependencies in the "require" section of the composer.json file.
-Then take care of autoloading the classes defined in the src directory.
+For tests only
 
-## Library functionality
+    composer test
 
-#### Value objects
+For style checks only
 
-These are simple value objects. They all implement the <code>DataValues\DataValue</code> interface.
+    composer cs
 
-* <code>LatLongValue</code> - Object representing a geographic point specified by latitude and longitude.
-* <code>GlobeCoordinateValue</code> - Geographical coordinate with precision and globe.
+For a full CI run
 
-#### Formatters
-
-These turn value objects into string representations.
-They all implement the <code>ValueFormatters\ValueFormatter</code> interface.
-
-* <code>LatLongFormatter</code> - Formats a LatLongValue into float, decimal minute,
-decimal degree or degree minute second notation. Both directional and non-directional notation
-are supported. Directional labels, latitude-longitude separator and precision can be specified.
-* <code>GlobeCoordinateFormatter</code> - Formats a GlobeCoordinateValue.
-
-#### Parsers
-
-These turn string representations into value objects.
-They all implement the <code>ValueParsers\ValueParser</code> interface.
-
-Simple parsers:
-
-* <code>DdCoordinateParser</code> - Parses decimal degree coordinates into LatLongValue objects.
-* <code>DmCoordinateParser</code> - Parses decimal minute coordinates into LatLongValue objects.
-* <code>DmsCoordinateParser</code> - Parses degree minute second coordinates into LatLongValue objects.
-* <code>FloatCoordinateParser</code> - Parses float coordinates into LatLongValue objects.
-
-Composite parsers:
-
-* <code>LatLongParser</code> - Facade for DdCoordinateParser, DmCoordinateParser, DmsCoordinateParser
-and FloatCoordinateParser. Parses a coordinate in any of the notations supported by these parsers
-into a LatLongValue object. Both directional and non-directional notation are supported. Directional
-labels and the latitude-longitude separator can be specified.
-* <code>GlobeCoordinateParser</code> - Parses coordinates into GlobeCoordinateValue objects.
-
-## Tests
-
-This library comes with a set up PHPUnit tests that cover all non-trivial code. You can run these
-tests using the PHPUnit configuration file found in the root directory. The tests can also be run
-via TravisCI, as a TravisCI configuration file is also provided in the root directory.
+    composer ci
 
 ## Authors
 
-DataValues Geo has been written by the Wikidata team, as [Wikimedia Germany](https://wikimedia.de)
-employees for the [Wikidata project](https://wikidata.org/).
-
-It is based upon and contains a lot of code written by [Jeroen De Dauw](https://github.com/JeroenDeDauw)
-for the [Maps](https://github.com/JeroenDeDauw/Maps) and
+DataValues Geo is based upon and contains a lot of code written by
+[Jeroen De Dauw](https://github.com/JeroenDeDauw) for the
+[Maps](https://github.com/JeroenDeDauw/Maps) and
 [Semantic MediaWiki](https://semantic-mediawiki.org/) projects.
 
+Significant contributions where made by the Wikidata team, as [Wikimedia Germany](https://wikimedia.de/en)
+employees for the [Wikidata project](https://wikidata.org/).
+
 ## Release notes
+
+### 4.2.1 (2019-12-18)
+
+* Fixed `GlobeCoordinateParser` not being able to parse multiple values (4.2.0 regression)
+
+### 4.2.0 (2019-09-20)
+
+* Added `GlobeCoordinateValue::withPrecision`
+
+### 4.1.0 (2018-10-29)
+
+* Added "PHP strict types" to all files
+* `LatLongValue` no longer extends `DataValueObject`
+* `GlobeCoordinateValue` no longer extends `DataValueObject`
+* Reordered methods in `LatLongValue` and `GlobeCoordinateValue` for readability
+* Undeprecated `LatLongValue::newFromArray`
+* Undeprecated `GlobeCoordinateValue::newFromArray`
+
+### 4.0.1 (2018-08-10)
+
+* Fixed parsing of coordinates with lowercase S/W directions
+* Fixed parsing DMS coordinates that omit a single minute number
 
 ### 3.0.1 (2018-08-01)
 
 * Fixed parsing of coordinates with lowercase S/W directions
+
+### 2.1.2 (2018-08-01)
+
+* Fixed parsing of coordinates with lowercase S/W directions
+
+### 4.0.0 (2018-07-13)
+
+* Updated minimum required PHP version from 5.5.9 to 7.1
+* Added scalar type hints
+* Added return type hints
+* Added nullable type hints
+* Made constant visibility explicit
+* Constructing an invalid `LatLongValue` now causes `InvalidArgumentException` instead of `OutOfRangeException`
 
 ### 3.0.0 (2018-03-20)
 
@@ -133,7 +180,7 @@ for the [Maps](https://github.com/JeroenDeDauw/Maps) and
 * Fixed `GlobeCoordinateValue::newFromArray` and `LatLongValue::newFromArray` not accepting mixed
   values.
 * Deprecated `GlobeCoordinateValue::newFromArray` and `LatLongValue::newFromArray`.
-* Updated minimal required PHP version from 5.3 to 5.5.9.
+* Updated minimum required PHP version from 5.3 to 5.5.9.
 
 ### 2.0.0 (2017-05-09)
 

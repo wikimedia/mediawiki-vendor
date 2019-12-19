@@ -365,34 +365,38 @@
     },
     {
         "name": "data-values/geo",
-        "version": "3.0.1",
-        "version_normalized": "3.0.1.0",
+        "version": "4.2.1",
+        "version_normalized": "4.2.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/DataValues/Geo.git",
-            "reference": "f0a4c31238d310cdb441c589554d0a279a6c2171"
+            "reference": "e58eff08ab543251f8f07a1e9b70ebb3976fee96"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/DataValues/Geo/zipball/f0a4c31238d310cdb441c589554d0a279a6c2171",
-            "reference": "f0a4c31238d310cdb441c589554d0a279a6c2171",
+            "url": "https://api.github.com/repos/DataValues/Geo/zipball/e58eff08ab543251f8f07a1e9b70ebb3976fee96",
+            "reference": "e58eff08ab543251f8f07a1e9b70ebb3976fee96",
             "shasum": ""
         },
         "require": {
             "data-values/data-values": "~2.0|~1.0|~0.1",
             "data-values/interfaces": "^0.2.0",
-            "php": ">=5.5.9"
+            "php": ">=7.1"
         },
         "require-dev": {
-            "ockcyp/covers-validator": "~0.5",
-            "phpunit/phpunit": "~4.8",
-            "wikibase/wikibase-codesniffer": "^0.1.0"
+            "jeroen/nyancat-phpunit-resultprinter": "~2.2",
+            "ockcyp/covers-validator": "~1.0",
+            "phpmd/phpmd": "^2.6.1",
+            "phpstan/phpstan": "~0.11.0",
+            "phpunit/phpunit": "~7.1",
+            "vimeo/psalm": "^3.7",
+            "wikibase/wikibase-codesniffer": "^0.5.0"
         },
-        "time": "2018-08-01T13:35:21+00:00",
+        "time": "2019-12-19T09:11:16+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "3.0.x-dev"
+                "dev-master": "4.x-dev"
             }
         },
         "installation-source": "dist",
@@ -420,12 +424,20 @@
         "description": "Geographical value objects, parsers and formatters",
         "homepage": "https://github.com/DataValues/Geo",
         "keywords": [
+            "Degrees",
+            "Minutes",
+            "coordinate",
+            "coordinates",
             "datavalues",
+            "dms",
             "formatters",
             "geo",
             "geographical",
+            "latitude",
             "latlong",
+            "longitude",
             "parsers",
+            "seconds",
             "wikidata"
         ]
     },

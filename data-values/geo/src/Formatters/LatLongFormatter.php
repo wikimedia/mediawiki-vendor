@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace DataValues\Geo\Formatters;
 
 use DataValues\Geo\Values\LatLongValue;
@@ -32,62 +34,64 @@ class LatLongFormatter extends ValueFormatterBase {
 	/**
 	 * Output formats for use with the self::OPT_FORMAT option.
 	 */
-	const TYPE_FLOAT = 'float';
-	const TYPE_DMS = 'dms';
-	const TYPE_DM = 'dm';
-	const TYPE_DD = 'dd';
+	public const TYPE_FLOAT = 'float';
+	public const TYPE_DMS = 'dms';
+	public const TYPE_DM = 'dm';
+	public const TYPE_DD = 'dd';
 
 	/**
 	 * The symbols representing the different directions for usage in directional notation.
 	 * @since 0.1
 	 */
-	const OPT_NORTH_SYMBOL = 'north';
-	const OPT_EAST_SYMBOL = 'east';
-	const OPT_SOUTH_SYMBOL = 'south';
-	const OPT_WEST_SYMBOL = 'west';
+	public const OPT_NORTH_SYMBOL = 'north';
+	public const OPT_EAST_SYMBOL = 'east';
+	public const OPT_SOUTH_SYMBOL = 'south';
+	public const OPT_WEST_SYMBOL = 'west';
 
 	/**
 	 * The symbols representing degrees, minutes and seconds.
 	 * @since 0.1
 	 */
-	const OPT_DEGREE_SYMBOL = 'degree';
-	const OPT_MINUTE_SYMBOL = 'minute';
-	const OPT_SECOND_SYMBOL = 'second';
+	public const OPT_DEGREE_SYMBOL = 'degree';
+	public const OPT_MINUTE_SYMBOL = 'minute';
+	public const OPT_SECOND_SYMBOL = 'second';
 
 	/**
 	 * Flags for use with the self::OPT_SPACING_LEVEL option.
 	 */
-	const OPT_SPACE_LATLONG = 'latlong';
-	const OPT_SPACE_DIRECTION = 'direction';
-	const OPT_SPACE_COORDPARTS = 'coordparts';
+	public const OPT_SPACE_LATLONG = 'latlong';
+	public const OPT_SPACE_DIRECTION = 'direction';
+	public const OPT_SPACE_COORDPARTS = 'coordparts';
 
 	/**
 	 * Option specifying the output format (also referred to as output type). Must be one of the
 	 * self::TYPE_… constants.
 	 */
-	const OPT_FORMAT = 'geoformat';
+	public const OPT_FORMAT = 'geoformat';
 
 	/**
 	 * Boolean option specifying if negative coordinates should have minus signs, e.g. "-1°, -2°"
 	 * (false) or cardinal directions, e.g. "1° S, 2° W" (true). Default is false.
 	 */
-	const OPT_DIRECTIONAL = 'directional';
+	public const OPT_DIRECTIONAL = 'directional';
 
 	/**
 	 * Option for the separator character between latitude and longitude. Defaults to a comma.
 	 */
-	const OPT_SEPARATOR_SYMBOL = 'separator';
+	public const OPT_SEPARATOR_SYMBOL = 'separator';
 
 	/**
 	 * Option specifying the amount and position of space characters in the output. Must be an array
 	 * containing zero or more of the self::OPT_SPACE_… flags.
 	 */
-	const OPT_SPACING_LEVEL = 'spacing';
+	public const OPT_SPACING_LEVEL = 'spacing';
 
 	/**
 	 * Option specifying the precision in fractional degrees. Must be a number or numeric string.
 	 */
-	const OPT_PRECISION = 'precision';
+	public const OPT_PRECISION = 'precision';
+
+	private const DEFAULT_PRECISION = 1 / 3600;
 
 	public function __construct( FormatterOptions $options = null ) {
 		parent::__construct( $options );
@@ -123,14 +127,26 @@ class LatLongFormatter extends ValueFormatterBase {
 	 * @return string Plain text
 	 * @throws InvalidArgumentException
 	 */
-	public function format( $value ) {
+	public function format( $value ): string {
 		if ( !( $value instanceof LatLongValue ) ) {
 			throw new InvalidArgumentException( 'Data value type mismatch. Expected a LatLongValue.' );
 		}
 
+		return $this->formatLatLongValue( $value, $this->getPrecisionFromOptions() );
+	}
+
+	private function getPrecisionFromOptions(): float {
 		$precision = $this->options->getOption( self::OPT_PRECISION );
 
-		return $this->formatLatLongValue( $value, $precision );
+		if ( is_string( $precision ) ) {
+			return (float)$precision;
+		}
+
+		if ( is_float( $precision ) || is_int( $precision ) ) {
+			return $precision;
+		}
+
+		return self::DEFAULT_PRECISION;
 	}
 
 	/**
@@ -144,9 +160,9 @@ class LatLongFormatter extends ValueFormatterBase {
 	 * @return string Plain text
 	 * @throws InvalidArgumentException
 	 */
-	public function formatLatLongValue( LatLongValue $value, $precision ) {
-		if ( $precision <= 0 || !is_finite( $precision ) ) {
-			$precision = 1 / 3600;
+	public function formatLatLongValue( LatLongValue $value, ?float $precision ): string {
+		if ( $precision === null || $precision <= 0 || !is_finite( $precision ) ) {
+			$precision = self::DEFAULT_PRECISION;
 		}
 
 		$formatted = implode(
@@ -165,20 +181,14 @@ class LatLongFormatter extends ValueFormatterBase {
 	 *
 	 * @return string
 	 */
-	private function getSpacing( $spacingLevel ) {
+	private function getSpacing( string $spacingLevel ): string {
 		if ( in_array( $spacingLevel, $this->getOption( self::OPT_SPACING_LEVEL ) ) ) {
 			return ' ';
 		}
 		return '';
 	}
 
-	/**
-	 * @param float $latitude
-	 * @param float|int $precision
-	 *
-	 * @return string
-	 */
-	private function formatLatitude( $latitude, $precision ) {
+	private function formatLatitude( float $latitude, float $precision ): string {
 		return $this->makeDirectionalIfNeeded(
 			$this->formatCoordinate( $latitude, $precision ),
 			$this->options->getOption( self::OPT_NORTH_SYMBOL ),
@@ -186,13 +196,7 @@ class LatLongFormatter extends ValueFormatterBase {
 		);
 	}
 
-	/**
-	 * @param float $longitude
-	 * @param float|int $precision
-	 *
-	 * @return string
-	 */
-	private function formatLongitude( $longitude, $precision ) {
+	private function formatLongitude( float $longitude, float $precision ): string {
 		return $this->makeDirectionalIfNeeded(
 			$this->formatCoordinate( $longitude, $precision ),
 			$this->options->getOption( self::OPT_EAST_SYMBOL ),
@@ -200,14 +204,9 @@ class LatLongFormatter extends ValueFormatterBase {
 		);
 	}
 
-	/**
-	 * @param string $coordinate
-	 * @param string $positiveSymbol
-	 * @param string $negativeSymbol
-	 *
-	 * @return string
-	 */
-	private function makeDirectionalIfNeeded( $coordinate, $positiveSymbol, $negativeSymbol ) {
+	private function makeDirectionalIfNeeded( string $coordinate, string $positiveSymbol,
+		string $negativeSymbol ): string {
+
 		if ( $this->options->getOption( self::OPT_DIRECTIONAL ) ) {
 			return $this->makeDirectional( $coordinate, $positiveSymbol, $negativeSymbol );
 		}
@@ -215,14 +214,9 @@ class LatLongFormatter extends ValueFormatterBase {
 		return $coordinate;
 	}
 
-	/**
-	 * @param string $coordinate
-	 * @param string $positiveSymbol
-	 * @param string $negativeSymbol
-	 *
-	 * @return string
-	 */
-	private function makeDirectional( $coordinate, $positiveSymbol, $negativeSymbol ) {
+	private function makeDirectional( string $coordinate, string $positiveSymbol,
+		string $negativeSymbol ): string {
+
 		$isNegative = substr( $coordinate, 0, 1 ) === '-';
 
 		if ( $isNegative ) {
@@ -234,13 +228,7 @@ class LatLongFormatter extends ValueFormatterBase {
 		return $coordinate . $this->getSpacing( self::OPT_SPACE_DIRECTION ) . $symbol;
 	}
 
-	/**
-	 * @param float $degrees
-	 * @param float|int $precision
-	 *
-	 * @return string
-	 */
-	private function formatCoordinate( $degrees, $precision ) {
+	private function formatCoordinate( float $degrees, float $precision ): string {
 		// Remove insignificant detail
 		$degrees = $this->roundDegrees( $degrees, $precision );
 		$format = $this->getOption( self::OPT_FORMAT );
@@ -250,11 +238,7 @@ class LatLongFormatter extends ValueFormatterBase {
 		}
 
 		if ( $format !== self::TYPE_DD ) {
-			if ( $precision >= 1 - 1 / 60 && $precision < 1 ) {
-				$precision = 1;
-			} elseif ( $precision >= 1 / 60 - 1 / 3600 && $precision < 1 / 60 ) {
-				$precision = 1 / 60;
-			}
+			$precision = $this->getUpdatedPrecision( $precision );
 		}
 
 		if ( $format === self::TYPE_DD || $precision >= 1 ) {
@@ -270,15 +254,19 @@ class LatLongFormatter extends ValueFormatterBase {
 		throw new InvalidArgumentException( 'Invalid coordinate format specified in the options' );
 	}
 
-	/**
-	 * Round degrees according to OPT_PRECISION
-	 *
-	 * @param float $degrees
-	 * @param float|int $precision
-	 *
-	 * @return float
-	 */
-	private function roundDegrees( $degrees, $precision ) {
+	private function getUpdatedPrecision( float $precision ): float {
+		if ( $precision >= 1 - 1 / 60 && $precision < 1 ) {
+			return 1;
+		}
+
+		if ( $precision >= 1 / 60 - 1 / 3600 && $precision < 1 / 60 ) {
+			return 1 / 60;
+		}
+
+		return $precision;
+	}
+
+	private function roundDegrees( float $degrees, float $precision ): float {
 		$sign = $degrees > 0 ? 1 : -1;
 		$reduced = round( abs( $degrees ) / $precision );
 		$expanded = $reduced * $precision;
@@ -286,42 +274,24 @@ class LatLongFormatter extends ValueFormatterBase {
 		return $sign * $expanded;
 	}
 
-	/**
-	 * @param float $floatDegrees
-	 *
-	 * @return string
-	 */
-	private function getInFloatFormat( $floatDegrees ) {
+	private function getInFloatFormat( float $floatDegrees ): string {
 		$stringDegrees = (string)$floatDegrees;
 
-		// Floats are fun...
 		if ( $stringDegrees === '-0' ) {
-			$stringDegrees = '0';
+			return '0';
 		}
 
 		return $stringDegrees;
 	}
 
-	/**
-	 * @param float $floatDegrees
-	 * @param float|int $precision
-	 *
-	 * @return string
-	 */
-	private function getInDecimalDegreeFormat( $floatDegrees, $precision ) {
+	private function getInDecimalDegreeFormat( float $floatDegrees, float $precision ): string {
 		$degreeDigits = $this->getSignificantDigits( 1, $precision );
 		$stringDegrees = $this->formatNumber( $floatDegrees, $degreeDigits );
 
 		return $stringDegrees . $this->options->getOption( self::OPT_DEGREE_SYMBOL );
 	}
 
-	/**
-	 * @param float $floatDegrees
-	 * @param float|int $precision
-	 *
-	 * @return string
-	 */
-	private function getInDegreeMinuteSecondFormat( $floatDegrees, $precision ) {
+	private function getInDegreeMinuteSecondFormat( float $floatDegrees, float $precision ): string {
 		$isNegative = $floatDegrees < 0;
 		$secondDigits = $this->getSignificantDigits( 3600, $precision );
 
@@ -349,13 +319,7 @@ class LatLongFormatter extends ValueFormatterBase {
 		return $result;
 	}
 
-	/**
-	 * @param float $floatDegrees
-	 * @param float|int $precision
-	 *
-	 * @return string
-	 */
-	private function getInDecimalMinuteFormat( $floatDegrees, $precision ) {
+	private function getInDecimalMinuteFormat( float $floatDegrees, float $precision ): string {
 		$isNegative = $floatDegrees < 0;
 		$minuteDigits = $this->getSignificantDigits( 60, $precision );
 
@@ -386,7 +350,7 @@ class LatLongFormatter extends ValueFormatterBase {
 	 * @return int The number of digits to show after the decimal point
 	 * (resp. before, if the result is negative).
 	 */
-	private function getSignificantDigits( $unitsPerDegree, $degreePrecision ) {
+	private function getSignificantDigits( float $unitsPerDegree, float $degreePrecision ): int {
 		return (int)ceil( -log10( $unitsPerDegree * $degreePrecision ) );
 	}
 
@@ -396,7 +360,7 @@ class LatLongFormatter extends ValueFormatterBase {
 	 *
 	 * @return string
 	 */
-	private function formatNumber( $number, $digits = 0 ) {
+	private function formatNumber( float $number, int $digits = 0 ): string {
 		// TODO: use NumberLocalizer
 		return sprintf( '%.' . ( $digits > 0 ? $digits : 0 ) . 'F', $number );
 	}

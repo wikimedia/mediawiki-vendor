@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace DataValues\Geo\Parsers;
 
 use ValueParsers\ParseException;
@@ -13,7 +15,7 @@ use ValueParsers\ParseException;
  */
 class FloatCoordinateParser extends LatLongParserBase {
 
-	const FORMAT_NAME = 'float-coordinate';
+	public const FORMAT_NAME = 'float-coordinate';
 
 	/**
 	 * @see LatLongParserBase::getParsedCoordinate
@@ -22,7 +24,7 @@ class FloatCoordinateParser extends LatLongParserBase {
 	 *
 	 * @return float
 	 */
-	protected function getParsedCoordinate( $coordinateSegment ) {
+	protected function getParsedCoordinate( string $coordinateSegment ): float {
 		return (float)$this->resolveDirection( str_replace( ' ', '', $coordinateSegment ) );
 	}
 
@@ -33,13 +35,9 @@ class FloatCoordinateParser extends LatLongParserBase {
 	 *
 	 * @return bool
 	 */
-	protected function areValidCoordinates( array $normalizedCoordinateSegments ) {
+	protected function areValidCoordinates( array $normalizedCoordinateSegments ): bool {
 		// TODO: Implement localized decimal separator.
 		$baseRegExp = '\d{1,3}(\.\d{1,20})?';
-
-		// Cache whether the coordinates are specified in directional format (a mixture of
-		// directional and non-directional is regarded invalid).
-		$directional = false;
 
 		$match = false;
 
@@ -61,10 +59,7 @@ class FloatCoordinateParser extends LatLongParserBase {
 				$segment
 			);
 
-			if ( $directional && !$match ) {
-				// Latitude is directional, longitude not.
-				break;
-			} elseif ( $match ) {
+			if ( $match ) {
 				continue;
 			}
 
@@ -87,7 +82,7 @@ class FloatCoordinateParser extends LatLongParserBase {
 	 * @throws ParseException if unable to split input string into two segments
 	 * @return string[]
 	 */
-	protected function splitString( $normalizedCoordinateString ) {
+	protected function splitString( string $normalizedCoordinateString ): array {
 		$separator = $this->getOption( self::OPT_SEPARATOR_SYMBOL );
 
 		$normalizedCoordinateSegments = explode( $separator, $normalizedCoordinateString );

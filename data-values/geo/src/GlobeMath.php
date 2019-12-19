@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace DataValues\Geo;
 
 use DataValues\Geo\Values\GlobeCoordinateValue;
@@ -19,14 +21,14 @@ class GlobeMath {
 	/**
 	 * @todo Move this constant next to GlobeCoordinateValue::GLOBE_EARTH?
 	 */
-	const GLOBE_MOON = 'http://www.wikidata.org/entity/Q405';
+	public const GLOBE_MOON = 'http://www.wikidata.org/entity/Q405';
 
 	/**
 	 * @param string|null $globe IRI of a globe.
 	 *
 	 * @return string Normalized IRI, defaults to 'http://www.wikidata.org/entity/Q2'.
 	 */
-	public function normalizeGlobe( $globe ) {
+	public function normalizeGlobe( ?string $globe ) {
 		if ( !is_string( $globe ) || $globe === '' ) {
 			return GlobeCoordinateValue::GLOBE_EARTH;
 		}
@@ -43,7 +45,7 @@ class GlobeMath {
 	 *
 	 * @return GlobeCoordinateValue
 	 */
-	public function normalizeGlobeCoordinate( GlobeCoordinateValue $value ) {
+	public function normalizeGlobeCoordinate( GlobeCoordinateValue $value ): GlobeCoordinateValue {
 		return new GlobeCoordinateValue(
 			$this->normalizeGlobeLatLong( $value->getLatLong(), $value->getGlobe() ),
 			$value->getPrecision(),
@@ -57,7 +59,7 @@ class GlobeMath {
 	 *
 	 * @return LatLongValue
 	 */
-	public function normalizeGlobeLatLong( LatLongValue $value, $globe = null ) {
+	public function normalizeGlobeLatLong( LatLongValue $value, string $globe = null ): LatLongValue {
 		switch ( $this->normalizeGlobe( $globe ) ) {
 			case GlobeCoordinateValue::GLOBE_EARTH:
 			case self::GLOBE_MOON:
@@ -76,16 +78,9 @@ class GlobeMath {
 	 *
 	 * @return LatLongValue
 	 */
-	public function normalizeLatLong( LatLongValue $value, $minimumLongitude = -180.0 ) {
+	public function normalizeLatLong( LatLongValue $value, float $minimumLongitude = -180.0 ): LatLongValue {
+		$lon = $this->getNormalizedLongitude( $value->getLongitude(), $minimumLongitude );
 		$lat = $value->getLatitude();
-		$lon = $value->getLongitude();
-
-		// Normalize to [-180°..+180°[ on Earth/Moon, [0°..+360°[ on other globes.
-		if ( $lon >= $minimumLongitude + 360 ) {
-			$lon -= 360;
-		} elseif ( $lon < $minimumLongitude ) {
-			$lon += 360;
-		}
 
 		if ( $lat >= 270 ) {
 			// Same side of the globe, on the southern hemisphere.
@@ -109,6 +104,17 @@ class GlobeMath {
 		}
 
 		return new LatLongValue( $lat, $lon );
+	}
+
+	private function getNormalizedLongitude( float $longitude, float $minimumLongitude ): float {
+		// Normalize to [-180°..+180°[ on Earth/Moon, [0°..+360°[ on other globes.
+		if ( $longitude >= $minimumLongitude + 360 ) {
+			$longitude -= 360;
+		} elseif ( $longitude < $minimumLongitude ) {
+			$longitude += 360;
+		}
+
+		return $longitude;
 	}
 
 }

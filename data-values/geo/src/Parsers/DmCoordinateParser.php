@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace DataValues\Geo\Parsers;
 
 use ValueParsers\ParseException;
@@ -16,13 +18,13 @@ use ValueParsers\ParserOptions;
  */
 class DmCoordinateParser extends DdCoordinateParser {
 
-	const FORMAT_NAME = 'dm-coordinate';
+	public const FORMAT_NAME = 'dm-coordinate';
 
 	/**
 	 * The symbols representing minutes.
 	 * @since 0.1
 	 */
-	const OPT_MINUTE_SYMBOL = 'minute';
+	public const OPT_MINUTE_SYMBOL = 'minute';
 
 	/**
 	 * @param ParserOptions|null $options
@@ -43,7 +45,7 @@ class DmCoordinateParser extends DdCoordinateParser {
 	 *
 	 * @return bool
 	 */
-	protected function areValidCoordinates( array $normalizedCoordinateSegments ) {
+	protected function areValidCoordinates( array $normalizedCoordinateSegments ): bool {
 		// At least one coordinate segment needs to have minutes specified.
 		$regExpStrict = '\d{1,3}'
 			. preg_quote( $this->getOption( self::OPT_DEGREE_SYMBOL ) )
@@ -112,7 +114,7 @@ class DmCoordinateParser extends DdCoordinateParser {
 	 *
 	 * @return string
 	 */
-	protected function getNormalizedNotation( $coordinates ) {
+	protected function getNormalizedNotation( string $coordinates ): string {
 		$minute = $this->getOption( self::OPT_MINUTE_SYMBOL );
 
 		$coordinates = str_replace( [ '&#8242;', '&prime;', '´', '′' ], $minute, $coordinates );
@@ -131,7 +133,7 @@ class DmCoordinateParser extends DdCoordinateParser {
 	 *
 	 * @return float
 	 */
-	protected function parseCoordinate( $coordinateSegment ) {
+	protected function parseCoordinate( string $coordinateSegment ): float {
 		$isNegative = substr( $coordinateSegment, 0, 1 ) === '-';
 
 		if ( $isNegative ) {
@@ -153,7 +155,7 @@ class DmCoordinateParser extends DdCoordinateParser {
 
 		$minutes = substr( $minutes, 0, -1 );
 
-		$coordinateSegment = $degrees + $minutes / 60;
+		$coordinateSegment = (float)$degrees + (float)$minutes / 60;
 
 		if ( $isNegative ) {
 			$coordinateSegment *= -1;

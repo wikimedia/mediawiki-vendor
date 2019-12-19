@@ -1,13 +1,15 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace DataValues\Geo\Values;
 
-use DataValues\DataValueObject;
+use DataValues\DataValue;
+use DataValues\IllegalValueException;
 use InvalidArgumentException;
-use OutOfRangeException;
 
 /**
- * Object representing a geographic point.
+ * Value Object representing a geographical point.
  *
  * Latitude is specified in degrees within the range [-360, 360].
  * Longitude is specified in degrees within the range [-360, 360].
@@ -17,37 +19,18 @@ use OutOfRangeException;
  * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class LatLongValue extends DataValueObject {
+class LatLongValue implements DataValue {
 
-	/**
-	 * The locations latitude.
-	 *
-	 * @var float
-	 */
 	private $latitude;
-
-	/**
-	 * The locations longitude.
-	 *
-	 * @var float
-	 */
 	private $longitude;
 
 	/**
-	 * @param float|int $latitude
-	 * @param float|int $longitude
+	 * @param float|int $latitude Latitude in degrees within the range [-360, 360]
+	 * @param float|int $longitude Longitude in degrees within the range [-360, 360]
 	 *
 	 * @throws InvalidArgumentException
 	 */
-	public function __construct( $latitude, $longitude ) {
-		if ( is_int( $latitude ) ) {
-			$latitude = (float)$latitude;
-		}
-
-		if ( is_int( $longitude ) ) {
-			$longitude = (float)$longitude;
-		}
-
+	public function __construct( float $latitude, float $longitude ) {
 		$this->assertIsLatitude( $latitude );
 		$this->assertIsLongitude( $longitude );
 
@@ -55,30 +38,44 @@ class LatLongValue extends DataValueObject {
 		$this->longitude = $longitude;
 	}
 
-	/**
-	 * @param float $latitude
-	 */
-	private function assertIsLatitude( $latitude ) {
-		if ( !is_float( $latitude ) ) {
-			throw new InvalidArgumentException( 'Can only construct LatLongValue with a numeric latitude' );
-		}
-
+	private function assertIsLatitude( float $latitude ) {
 		if ( $latitude < -360 || $latitude > 360 ) {
-			throw new OutOfRangeException( 'Latitude needs to be between -360 and 360' );
+			throw new InvalidArgumentException( 'Latitude needs to be between -360 and 360' );
 		}
 	}
 
-	/**
-	 * @param float $longitude
-	 */
-	private function assertIsLongitude( $longitude ) {
-		if ( !is_float( $longitude ) ) {
-			throw new InvalidArgumentException( 'Can only construct LatLongValue with a numeric longitude' );
-		}
-
+	private function assertIsLongitude( float $longitude ) {
 		if ( $longitude < -360 || $longitude > 360 ) {
-			throw new OutOfRangeException( 'Longitude needs to be between -360 and 360' );
+			throw new InvalidArgumentException( 'Longitude needs to be between -360 and 360' );
 		}
+	}
+
+	public function getLatitude(): float {
+		return $this->latitude;
+	}
+
+	public function getLongitude(): float {
+		return $this->longitude;
+	}
+
+	/**
+	 * @see \Comparable::equals
+	 */
+	public function equals( $target ): bool {
+		return $target instanceof self
+			&& $this->latitude === $target->latitude
+			&& $this->longitude === $target->longitude;
+	}
+
+	/**
+	 * @see \Hashable::getHash
+	 */
+	public function getHash(): string {
+		return md5( serialize( $this ) );
+	}
+
+	public function getCopy(): self {
+		return new self( $this->latitude, $this->longitude );
 	}
 
 	/**
@@ -86,7 +83,7 @@ class LatLongValue extends DataValueObject {
 	 *
 	 * @return string
 	 */
-	public function serialize() {
+	public function serialize(): string {
 		$data = [
 			$this->latitude,
 			$this->longitude
@@ -112,54 +109,22 @@ class LatLongValue extends DataValueObject {
 		$this->__construct( (float)$data[0], (float)$data[1] );
 	}
 
-	/**
-	 * @see DataValue::getType
-	 *
-	 * @return string
-	 */
-	public static function getType() {
-		// TODO: This really should be 'latlong' but serializations may explode if we rename it.
+	public static function getType(): string {
 		return 'geocoordinate';
 	}
 
-	/**
-	 * @see DataValue::getSortKey
-	 *
-	 * @return float
-	 */
-	public function getSortKey() {
+	public function getSortKey(): float {
 		return $this->latitude;
 	}
 
-	/**
-	 * @see DataValue::getValue
-	 *
-	 * @return self
-	 */
-	public function getValue() {
+	public function getValue(): self {
 		return $this;
 	}
 
 	/**
-	 * @return float
-	 */
-	public function getLatitude() {
-		return $this->latitude;
-	}
-
-	/**
-	 * @return float
-	 */
-	public function getLongitude() {
-		return $this->longitude;
-	}
-
-	/**
-	 * @see DataValue::getArrayValue
-	 *
 	 * @return float[]
 	 */
-	public function getArrayValue() {
+	public function getArrayValue(): array {
 		return [
 			'latitude' => $this->latitude,
 			'longitude' => $this->longitude
@@ -167,25 +132,33 @@ class LatLongValue extends DataValueObject {
 	}
 
 	/**
-	 * Constructs a new instance from the provided data. Required for @see DataValueDeserializer.
-	 * This is expected to round-trip with @see getArrayValue.
+	 * Constructs a new instance from the provided array. Round-trips with @see getArrayValue.
 	 *
-	 * @deprecated since 2.0.1. Static DataValue::newFromArray constructors like this are
-	 *  underspecified (not in the DataValue interface), and misleadingly named (should be named
-	 *  newFromArrayValue). Instead, use DataValue builder callbacks in @see DataValueDeserializer.
-	 *
-	 * @param mixed $data Warning! Even if this is expected to be a value as returned by
-	 *  @see getArrayValue, callers of this specific newFromArray implementation can not guarantee
-	 *  this. This is not even guaranteed to be an array!
-	 *
-	 * @throws InvalidArgumentException if $data is not in the expected format. Subclasses of
-	 *  InvalidArgumentException are expected and properly handled by @see DataValueDeserializer.
+	 * @param array $data
 	 * @return self
+	 * @throws InvalidArgumentException
 	 */
-	public static function newFromArray( $data ) {
-		self::requireArrayFields( $data, [ 'latitude', 'longitude' ] );
+	public static function newFromArray( $data ): self {
+		if ( !is_array( $data ) ) {
+			throw new IllegalValueException( 'array expected' );
+		}
+
+		if ( !array_key_exists( 'latitude', $data ) ) {
+			throw new IllegalValueException( 'latitude field required' );
+		}
+
+		if ( !array_key_exists( 'longitude', $data ) ) {
+			throw new IllegalValueException( 'longitude field required' );
+		}
 
 		return new static( $data['latitude'], $data['longitude'] );
+	}
+
+	public function toArray(): array {
+		return [
+			'value' => $this->getArrayValue(),
+			'type' => $this->getType(),
+		];
 	}
 
 }

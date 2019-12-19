@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace DataValues\Geo\Parsers;
 
 use ValueParsers\ParseException;
@@ -16,13 +18,13 @@ use ValueParsers\ParserOptions;
  */
 class DmsCoordinateParser extends DmCoordinateParser {
 
-	const FORMAT_NAME = 'dms-coordinate';
+	public const FORMAT_NAME = 'dms-coordinate';
 
 	/**
 	 * The symbol representing seconds.
 	 * @since 0.1
 	 */
-	const OPT_SECOND_SYMBOL = 'second';
+	public const OPT_SECOND_SYMBOL = 'second';
 
 	/**
 	 * @param ParserOptions|null $options
@@ -43,7 +45,7 @@ class DmsCoordinateParser extends DmCoordinateParser {
 	 *
 	 * @return bool
 	 */
-	protected function areValidCoordinates( array $normalizedCoordinateSegments ) {
+	protected function areValidCoordinates( array $normalizedCoordinateSegments ): bool {
 		// At least one coordinate segment needs to have seconds specified (which additionally
 		// requires minutes to be specified).
 		$regExpLoose = '(\d{1,3}'
@@ -117,7 +119,7 @@ class DmsCoordinateParser extends DmCoordinateParser {
 	 *
 	 * @return string
 	 */
-	protected function getNormalizedNotation( $coordinates ) {
+	protected function getNormalizedNotation( string $coordinates ): string {
 		$second = $this->getOption( self::OPT_SECOND_SYMBOL );
 		$minute = $this->getOption( self::OPT_MINUTE_SYMBOL );
 
@@ -142,15 +144,15 @@ class DmsCoordinateParser extends DmCoordinateParser {
 	 *
 	 * @return float
 	 */
-	protected function parseCoordinate( $coordinateSegment ) {
-		$isNegative = substr( $coordinateSegment, 0, 1 ) === '-';
+	protected function parseCoordinate( string $coordinateSegment ): float {
+		$isNegative = mb_substr( $coordinateSegment, 0, 1 ) === '-';
 
 		if ( $isNegative ) {
-			$coordinateSegment = substr( $coordinateSegment, 1 );
+			$coordinateSegment = mb_substr( $coordinateSegment, 1 );
 		}
 
 		$degreeSymbol = $this->getOption( self::OPT_DEGREE_SYMBOL );
-		$degreePosition = strpos( $coordinateSegment, $degreeSymbol );
+		$degreePosition = mb_strpos( $coordinateSegment, $degreeSymbol );
 
 		if ( $degreePosition === false ) {
 			throw new ParseException(
@@ -160,25 +162,28 @@ class DmsCoordinateParser extends DmCoordinateParser {
 			);
 		}
 
-		$degrees = (float)substr( $coordinateSegment, 0, $degreePosition );
+		$degrees = (float)mb_substr( $coordinateSegment, 0, $degreePosition );
 
-		$minutePosition = strpos( $coordinateSegment, $this->getOption( self::OPT_MINUTE_SYMBOL ) );
+		$minutePosition = mb_strpos( $coordinateSegment, $this->getOption( self::OPT_MINUTE_SYMBOL ) );
 
 		if ( $minutePosition === false ) {
 			$minutes = 0;
 		} else {
-			$degSignLength = strlen( $this->getOption( self::OPT_DEGREE_SYMBOL ) );
+			$degSignLength = mb_strlen( $this->getOption( self::OPT_DEGREE_SYMBOL ) );
 			$minuteLength = $minutePosition - $degreePosition - $degSignLength;
-			$minutes = substr( $coordinateSegment, $degreePosition + $degSignLength, $minuteLength );
+			$minutes = (float)mb_substr( $coordinateSegment, $degreePosition + $degSignLength, $minuteLength );
 		}
 
-		$secondPosition = strpos( $coordinateSegment, $this->getOption( self::OPT_SECOND_SYMBOL ) );
+		$secondPosition = mb_strpos( $coordinateSegment, $this->getOption( self::OPT_SECOND_SYMBOL ) );
 
 		if ( $secondPosition === false ) {
 			$seconds = 0;
 		} else {
-			$secondLength = $secondPosition - $minutePosition - 1;
-			$seconds = substr( $coordinateSegment, $minutePosition + 1, $secondLength );
+			$seconds = (float)mb_substr(
+				$coordinateSegment,
+				( $minutePosition === false ? $degreePosition : $minutePosition ) + 1,
+				-1
+			);
 		}
 
 		$coordinateSegment = $degrees + ( $minutes + $seconds / 60 ) / 60;
