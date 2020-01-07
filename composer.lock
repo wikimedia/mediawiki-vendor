@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "00b59afc427d340a661665039b755c7f",
+    "content-hash": "bed94510733e2292c61f82a7fb7f52d1",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -1865,16 +1865,16 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.36.1",
+            "version": "v0.36.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "1ee0302c8f8da10b2a5b17734859bdb7fdf2dd96"
+                "reference": "e36810cd103fce3556b00b19df96154c1cd65da5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/1ee0302c8f8da10b2a5b17734859bdb7fdf2dd96",
-                "reference": "1ee0302c8f8da10b2a5b17734859bdb7fdf2dd96",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/e36810cd103fce3556b00b19df96154c1cd65da5",
+                "reference": "e36810cd103fce3556b00b19df96154c1cd65da5",
                 "shasum": ""
             },
             "require": {
@@ -1884,8 +1884,8 @@
                 "jakub-onderka/php-console-highlighter": "0.3.2",
                 "jakub-onderka/php-parallel-lint": "1.0.0",
                 "mediawiki/mediawiki-codesniffer": "28.0.0",
-                "mediawiki/mediawiki-phan-config": "0.8.0",
-                "mediawiki/minus-x": "0.3.1",
+                "mediawiki/mediawiki-phan-config": "0.9.0",
+                "mediawiki/minus-x": "0.3.2",
                 "phpunit/phpunit": "6.5.14"
             },
             "type": "library",
@@ -1942,7 +1942,7 @@
             ],
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOUI",
-            "time": "2019-12-12T00:19:05+00:00"
+            "time": "2020-01-07T22:51:07+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -5950,16 +5950,16 @@
         },
         {
             "name": "swaggest/json-schema",
-            "version": "v0.12.24",
+            "version": "v0.12.25",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swaggest/php-json-schema.git",
-                "reference": "395a9f6a1eefe65e1184ef425c3843b4f9bf9b86"
+                "reference": "0f509795092872601752f8a1f20f3cad4670370d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swaggest/php-json-schema/zipball/395a9f6a1eefe65e1184ef425c3843b4f9bf9b86",
-                "reference": "395a9f6a1eefe65e1184ef425c3843b4f9bf9b86",
+                "url": "https://api.github.com/repos/swaggest/php-json-schema/zipball/0f509795092872601752f8a1f20f3cad4670370d",
+                "reference": "0f509795092872601752f8a1f20f3cad4670370d",
                 "shasum": ""
             },
             "require": {
@@ -5990,7 +5990,7 @@
                 }
             ],
             "description": "High definition PHP structures with JSON-schema based validation",
-            "time": "2019-12-03T22:35:15+00:00"
+            "time": "2020-01-07T10:09:25+00:00"
         }
     ],
     "aliases": [],
