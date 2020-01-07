@@ -3,7 +3,6 @@
 [![Build Status](https://secure.travis-ci.org/wmde/Diff.png?branch=master)](http://travis-ci.org/wmde/Diff)
 [![Code Coverage](https://scrutinizer-ci.com/g/wmde/Diff/badges/coverage.png?s=6ef6a74a92b7efc6e26470bb209293125f70731e)](https://scrutinizer-ci.com/g/wmde/Diff/)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/wmde/Diff/badges/quality-score.png?s=d75d876247594bb4088159574cedf7bd648b9db2)](https://scrutinizer-ci.com/g/wmde/Diff/)
-[![Dependency Status](https://www.versioneye.com/package/php--diff--diff/badge.png)](https://www.versioneye.com/package/php--diff--diff)
 [![Latest Stable Version](https://poser.pugx.org/diff/diff/version.png)](https://packagist.org/packages/diff/diff)
 [![Download count](https://poser.pugx.org/diff/diff/d/total.png)](https://packagist.org/packages/diff/diff)
 
@@ -14,37 +13,32 @@ well tested and allows users to define their own comparison strategies.
 Diff does not provide any support for computing or representing the differences
 between unstructured data, ie text.
 
-Recent changes can be found in the [release notes](RELEASE-NOTES.md).
+A full history of the different versions of Diff can be found in the [release notes](RELEASE-NOTES.md).
 
 ## Requirements
 
-* PHP 5.3 or later (tested with PHP 5.3 up to PHP 7.1 and hhvm)
+**Diff 3.x:**
+
+* PHP 7.0 or later (tested with PHP 7.0 up to PHP 7.2)
+
+**Diff 2.x:**
+
+* PHP 5.3 or later (tested with PHP 5.3 up to PHP 7.1 and HHVM)
 
 ## Installation
 
-You can use [Composer](http://getcomposer.org/) to download and install
-this package as well as its dependencies. Alternatively you can simply clone
-the git repository and take care of loading yourself.
-
-### Composer
-
 To add this package as a local, per-project dependency to your project, simply add a
-dependency on `diff/diff` to your project's `composer.json` file.
+dependency on `diff/diff` to your project's [`composer.json`](https://getcomposer.org/) file.
 Here is a minimal example of a `composer.json` file that just defines a dependency on
-Diff 2.x:
+Diff 3.x:
 
-    {
-        "require": {
-            "diff/diff": "2.*"
-        }
+```json
+{
+    "require": {
+        "diff/diff": "~3.0"
     }
-
-### Manual
-
-Get the Diff code, either via git, or some other means. Also get all dependencies.
-You can find a list of the dependencies in the "require" section of the composer.json file.
-Load all dependencies and the load the Diff library by including its entry point:
-Diff.php.
+}
+```
 
 ## High level structure
 
@@ -90,23 +84,21 @@ The `Differ` interface has a single method.
 /**
  * Takes two arrays, computes the diff, and returns this diff as an array of DiffOp.
  *
- * @since 0.4
- *
  * @param array $oldValues The first array
  * @param array $newValues The second array
  *
  * @throws Exception
  * @return DiffOp[]
  */
-public function doDiff( array $oldValues, array $newValues );
+public function doDiff( array $oldValues, array $newValues ): array;
 ```
 
 Implementations provided by Diff:
 
 * `ListDiffer`: Differ that only looks at the values of the arrays (and thus ignores key differences).
 * `MapDiffer`: Differ that does an associative diff between two arrays, with the option to do this recursively.
-* `CallbackListDiffer`: Since 0.5. Differ that only looks at the values of the arrays and compares them with a callback.
-* `OrderedListDiffer`: Since 0.9. Differ that looks at the order of the values and the values of the arrays.
+* `CallbackListDiffer`: Differ that only looks at the values of the arrays and compares them with a callback.
+* `OrderedListDiffer`: Differ that looks at the order of the values and the values of the arrays.
 
 All differ functionality can be found in [src/Differ](src/Differ).
 
@@ -120,14 +112,12 @@ The `Patcher` interface has a single method.
  * Applies the applicable operations from the provided diff to
  * the provided base value.
  *
- * @since 0.4
- *
  * @param array $base
  * @param Diff $diffOps
  *
  * @return array
  */
-public function patch( array $base, Diff $diffOps );
+public function patch( array $base, Diff $diffOps ): array;
 ```
 
 Implementations provided by Diff:
@@ -139,33 +129,27 @@ All classes part of the patcher component can be found in [src/Patcher](src/Patc
 
 ### ValueComparer
 
-Added in 0.6
-
 The `ValueComparer` interface contains one method:
 
 ```php
 /**
- * @since 0.6
- *
  * @param mixed $firstValue
  * @param mixed $secondValue
  *
  * @return bool
  */
-public function valuesAreEqual( $firstValue, $secondValue );
+public function valuesAreEqual( $firstValue, $secondValue ): bool;
 ```
 
 Implementations provided by Diff:
 
 * `StrictComparer`: Value comparer that uses PHPs native strict equality check (ie ===).
 * `CallbackComparer`: Adapter around a comparison callback that implements the `ValueComparer` interface.
-* `ComparableComparer`: Since 0.9. Value comparer for objects that provide an equals method taking a single argument.
+* `ComparableComparer`: Value comparer for objects that provide an equals method taking a single argument.
 
 All classes part of the ValueComparer component can be found in [src/Comparer](src/Comparer)
 
 ### ArrayComparer
-
-Added in 0.8
 
 The `ArrayComposer` interface contains one method:
 
@@ -176,14 +160,12 @@ The `ArrayComposer` interface contains one method:
  *
  * Implementations are allowed to hold quantity into account or to disregard it.
  *
- * @since 0.8
- *
  * @param array $firstArray
  * @param array $secondArray
  *
  * @return array
  */
-public function diffArrays( array $firstArray, array $secondArray );
+public function diffArrays( array $firstArray, array $secondArray ): array;
 ```
 
 Implementations provided by Diff:
@@ -191,7 +173,7 @@ Implementations provided by Diff:
 * `NativeArrayComparer`: Adapter for PHPs native array_diff method.
 * `StrategicArrayComparer`: Computes the difference between two arrays by comparing elements with a `ValueComparer`.
 * `StrictArrayComparer`: Does strict comparison of values and holds quantity into account.
-* `OrderedArrayComparer`: Since 0.9. Computes the difference between two ordered arrays by comparing elements with a `ValueComparer`.
+* `OrderedArrayComparer`: Computes the difference between two ordered arrays by comparing elements with a `ValueComparer`.
 
 All classes part of the ArrayComparer component can be found in [src/ArrayComparer](src/ArrayComparer)
 
@@ -219,7 +201,7 @@ $newVersion = array(
 );
 
 $differ = new MapDiffer();
-$diff = $differ->diff( $oldVersion, $newVersion );
+$diff = $differ->doDiff( $oldVersion, $newVersion );
 ```
 
 ### Applying a diff as patch
@@ -238,6 +220,6 @@ $newVersion = $patcher->patch( $oldVersion, $diff );
 ## Links
 
 * [Diff on Packagist](https://packagist.org/packages/diff/diff)
-* [Diff on Ohloh](https://www.ohloh.net/p/phpdiff)
+* [Diff on OpenHub](https://www.openhub.net/p/phpdiff)
 * [Diff on TravisCI](https://travis-ci.org/wmde/Diff)
 * [Diff on ScrutinizerCI](https://scrutinizer-ci.com/g/wmde/Diff/)

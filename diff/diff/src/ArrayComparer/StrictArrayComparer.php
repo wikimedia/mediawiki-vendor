@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace Diff\ArrayComparer;
 
 /**
@@ -15,7 +17,7 @@ namespace Diff\ArrayComparer;
  *
  * @since 0.8
  *
- * @license GPL-2.0+
+ * @license BSD-3-Clause
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class StrictArrayComparer implements ArrayComparer {
@@ -30,8 +32,8 @@ class StrictArrayComparer implements ArrayComparer {
 	 *
 	 * @return array
 	 */
-	public function diffArrays( array $arrayOne, array $arrayTwo ) {
-		$notInTwo = array();
+	public function diffArrays( array $arrayOne, array $arrayTwo ): array {
+		$notInTwo = [];
 
 		foreach ( $arrayOne as $element ) {
 			$location = array_search( $element, $arrayTwo, !is_object( $element ) );

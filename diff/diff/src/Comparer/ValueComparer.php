@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace Diff\Comparer;
 
 /**
@@ -7,7 +9,7 @@ namespace Diff\Comparer;
  *
  * @since 0.6
  *
- * @license GPL-2.0+
+ * @license BSD-3-Clause
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 interface ValueComparer {
@@ -20,6 +22,6 @@ interface ValueComparer {
 	 *
 	 * @return bool
 	 */
-	public function valuesAreEqual( $firstValue, $secondValue );
+	public function valuesAreEqual( $firstValue, $secondValue ): bool;
 
 }

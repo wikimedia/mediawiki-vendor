@@ -1,5 +1,11 @@
 # Wikibase DataModel Services release notes
 
+## Version 4.0.0 (2020-01-06)
+
+* Added `FallbackLabelDescriptionLookup` interface
+* Stopped supporting hhvm and added support for php 7.3 and 7.4
+* Dropped support for diff 2.3 and added support for 3.2
+
 ## Version 3.15.0 (2019-04-24)
 
 * Added `ItemLookup` implementations

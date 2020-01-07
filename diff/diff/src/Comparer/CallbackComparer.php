@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace Diff\Comparer;
 
 /**
@@ -8,7 +10,7 @@ namespace Diff\Comparer;
  *
  * @since 0.6
  *
- * @license GPL-2.0+
+ * @license BSD-3-Clause
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class CallbackComparer implements ValueComparer {
@@ -24,8 +26,14 @@ class CallbackComparer implements ValueComparer {
 		$this->callback = $callback;
 	}
 
-	public function valuesAreEqual( $firstValue, $secondValue ) {
-		return call_user_func_array( $this->callback, array( $firstValue, $secondValue ) );
+	public function valuesAreEqual( $firstValue, $secondValue ): bool {
+		$valuesAreEqual = call_user_func_array( $this->callback, [ $firstValue, $secondValue ] );
+
+		if ( !is_bool( $valuesAreEqual ) ) {
+			throw new \RuntimeException( 'ValueComparer callback needs to return a boolean' );
+		}
+
+		return $valuesAreEqual;
 	}
 
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace Diff\DiffOp;
 
 /**
@@ -8,7 +10,7 @@ namespace Diff\DiffOp;
  *
  * @since 0.1
  *
- * @license GPL-2.0+
+ * @license BSD-3-Clause
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class DiffOpAdd extends AtomicDiffOp {
@@ -22,7 +24,7 @@ class DiffOpAdd extends AtomicDiffOp {
 	 *
 	 * @return string
 	 */
-	public function getType() {
+	public function getType(): string {
 		return 'add';
 	}
 
@@ -76,11 +78,11 @@ class DiffOpAdd extends AtomicDiffOp {
 	 *
 	 * @return array
 	 */
-	public function toArray( $valueConverter = null ) {
-		return array(
+	public function toArray( callable $valueConverter = null ): array {
+		return [
 			'type' => $this->getType(),
 			'newvalue' => $this->objectToArray( $this->newValue, $valueConverter ),
-		);
+		];
 	}
 
 }

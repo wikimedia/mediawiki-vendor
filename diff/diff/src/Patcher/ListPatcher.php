@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace Diff\Patcher;
 
 use Diff\DiffOp\Diff\Diff;
@@ -9,7 +11,7 @@ use Diff\DiffOp\DiffOpRemove;
 /**
  * @since 0.4
  *
- * @license GPL-2.0+
+ * @license BSD-3-Clause
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class ListPatcher extends ThrowingPatcher {
@@ -33,7 +35,7 @@ class ListPatcher extends ThrowingPatcher {
 	 * @return array
 	 * @throws PatcherException
 	 */
-	public function patch( array $base, Diff $diff ) {
+	public function patch( array $base, Diff $diff ): array {
 		if ( $diff->looksAssociative() ) {
 			$this->handleError( 'ListPatcher can only patch using non-associative diffs' );
 		}

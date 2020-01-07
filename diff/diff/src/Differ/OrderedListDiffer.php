@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace Diff\Differ;
 
 use Diff\ArrayComparer\OrderedArrayComparer;
@@ -14,7 +16,7 @@ use Diff\DiffOp\DiffOp;
  *
  * @since 0.9
  *
- * @license GPL-2.0+
+ * @license BSD-3-Clause
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author Tobias Gritschacher < tobias.gritschacher@wikimedia.de >
  */
@@ -44,7 +46,7 @@ class OrderedListDiffer implements Differ {
 	 *
 	 * @return DiffOp[]
 	 */
-	public function doDiff( array $oldValues, array $newValues ) {
+	public function doDiff( array $oldValues, array $newValues ): array {
 		return $this->differ->doDiff( $oldValues, $newValues );
 	}
 

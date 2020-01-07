@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace Diff\DiffOp;
 
 /**
@@ -8,7 +10,7 @@ namespace Diff\DiffOp;
  *
  * @since 0.1
  *
- * @license GPL-2.0+
+ * @license BSD-3-Clause
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author Daniel Kinzler
  */
@@ -21,7 +23,7 @@ abstract class AtomicDiffOp implements DiffOp {
 	 *
 	 * @return int
 	 */
-	public function count() {
+	public function count(): int {
 		return 1;
 	}
 
@@ -32,7 +34,7 @@ abstract class AtomicDiffOp implements DiffOp {
 	 *
 	 * @return bool
 	 */
-	public function isAtomic() {
+	public function isAtomic(): bool {
 		return true;
 	}
 

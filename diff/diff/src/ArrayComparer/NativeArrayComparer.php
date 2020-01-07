@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace Diff\ArrayComparer;
 
 /**
@@ -7,7 +9,7 @@ namespace Diff\ArrayComparer;
  *
  * @since 0.8
  *
- * @license GPL-2.0+
+ * @license BSD-3-Clause
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class NativeArrayComparer implements ArrayComparer {
@@ -24,7 +26,7 @@ class NativeArrayComparer implements ArrayComparer {
 	 *
 	 * @return array
 	 */
-	public function diffArrays( array $arrayOne, array $arrayTwo ) {
+	public function diffArrays( array $arrayOne, array $arrayTwo ): array {
 		return array_diff( $arrayOne, $arrayTwo );
 	}
 

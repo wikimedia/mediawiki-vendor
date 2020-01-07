@@ -684,32 +684,32 @@
     },
     {
         "name": "diff/diff",
-        "version": "2.3.0",
-        "version_normalized": "2.3.0.0",
+        "version": "3.2.0",
+        "version_normalized": "3.2.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wmde/Diff.git",
-            "reference": "9f2b65c104b661a02f592f96321fd4c052532742"
+            "reference": "89bbd224a9ad6cc6cb8e01263ae5add2564e7cf0"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wmde/Diff/zipball/9f2b65c104b661a02f592f96321fd4c052532742",
-            "reference": "9f2b65c104b661a02f592f96321fd4c052532742",
+            "url": "https://api.github.com/repos/wmde/Diff/zipball/89bbd224a9ad6cc6cb8e01263ae5add2564e7cf0",
+            "reference": "89bbd224a9ad6cc6cb8e01263ae5add2564e7cf0",
             "shasum": ""
         },
         "require": {
-            "php": ">=5.3.0"
+            "php": ">=7.0"
         },
         "require-dev": {
-            "phpmd/phpmd": "~2.3",
-            "phpunit/phpunit": "~4.8",
-            "squizlabs/php_codesniffer": "~2.3"
+            "ockcyp/covers-validator": "~1.0",
+            "phpunit/phpunit": "~6.2",
+            "squizlabs/php_codesniffer": "~3.2"
         },
-        "time": "2018-04-11T10:38:57+00:00",
+        "time": "2018-09-11T11:51:44+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "2.3.x-dev"
+                "dev-master": "3.2.x-dev"
             }
         },
         "installation-source": "dist",
@@ -723,7 +723,7 @@
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
-            "GPL-2.0+"
+            "BSD-3-Clause"
         ],
         "authors": [
             {
@@ -739,6 +739,7 @@
             "diff",
             "diffing",
             "diffop",
+            "patch",
             "patching",
             "wikidata"
         ]
@@ -4267,23 +4268,23 @@
     },
     {
         "name": "wikibase/data-model-services",
-        "version": "3.15.0",
-        "version_normalized": "3.15.0.0",
+        "version": "4.0.0",
+        "version_normalized": "4.0.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wmde/WikibaseDataModelServices.git",
-            "reference": "f1baad13984a5ee36f0d4aec7aee94898cd1cc89"
+            "reference": "ae95e1295c30c1e0653dde3d588676e5bb200d73"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wmde/WikibaseDataModelServices/zipball/f1baad13984a5ee36f0d4aec7aee94898cd1cc89",
-            "reference": "f1baad13984a5ee36f0d4aec7aee94898cd1cc89",
+            "url": "https://api.github.com/repos/wmde/WikibaseDataModelServices/zipball/ae95e1295c30c1e0653dde3d588676e5bb200d73",
+            "reference": "ae95e1295c30c1e0653dde3d588676e5bb200d73",
             "shasum": ""
         },
         "require": {
             "data-values/data-values": "~2.0|~1.0",
-            "diff/diff": "~2.3",
-            "php": ">=5.6.99",
+            "diff/diff": "~3.2",
+            "php": ">=7.0",
             "wikibase/data-model": "~9.0|~8.0|~7.0|~6.3",
             "wikimedia/assert": "~0.2.2|~0.3.0|~0.4.0"
         },
@@ -4292,7 +4293,7 @@
             "phpunit/phpunit": "~5.7",
             "wikibase/wikibase-codesniffer": "^0.5.0"
         },
-        "time": "2019-04-23T22:40:16+00:00",
+        "time": "2020-01-07T10:51:15+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -4311,13 +4312,13 @@
         ],
         "authors": [
             {
-                "name": "The Wikidata team",
-                "role": "Developer"
-            },
-            {
                 "name": "Jeroen De Dauw",
                 "email": "jeroendedauw@gmail.com",
                 "homepage": "https://www.entropywins.wtf/"
+            },
+            {
+                "name": "The Wikidata team",
+                "role": "Developer"
             }
         ],
         "description": "Services around the Wikibase DataModel",

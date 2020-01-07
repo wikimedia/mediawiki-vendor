@@ -3,6 +3,34 @@ These are the release notes for the [Diff library](README.md).
 Latest release:
 [![Latest Stable Version](https://poser.pugx.org/diff/diff/version.png)](https://packagist.org/packages/diff/diff)
 
+
+## Version 3.2 (2018-09-11)
+
+* Deprecated constant `Diff_VERSION`
+* Switched License from GPL-2.0-or-later to BSD-3-Clause
+
+## Version 3.1 (2018-04-17)
+
+* Fixed bug in `ListPatcher` that caused it to compare objects by identity rather than by value
+* Add `.gitattributes` file to exclude not needed files from git exports
+* Removed MediaWiki extension registration
+
+## Version 3.0 (2017-05-10)
+
+#### Improvements
+
+* Added return type hints where possible
+* Added scalar type hints where possible
+* Added strict_types declare statements to all files 
+
+#### Breaking changes
+
+* Dropped support for PHP 5.x
+* Dropped class aliases deprecated since Diff 1.0
+* Removed `ListDiff` and `MapDiff`, deprecated since Diff 0.5
+* Removed `ListDiffer::MODE_NATIVE` and `ListDiffer::MODE_STRICT`, deprecated since Diff 0.8
+* Removed `MapDiffer::setComparisonCallback` in favour of a new constructor argument
+
 ## Version 2.3 (2018-04-11)
 
 * Fixed bug in `ListPatcher` that caused it to compare objects by identity rather than by value
@@ -10,7 +38,7 @@ Latest release:
 ## Version 2.2 (2017-08-09)
 
 * Removed MediaWiki extension registration
-* Add .gitattributes file to exclude not needed files from git exports
+* Add `.gitattributes` file to exclude not needed files from git exports
 
 ## Version 2.1 (2016-09-01)
 
@@ -33,7 +61,7 @@ Latest release:
 ## Version 1.0.1 (2014-05-07)
 
 * Removed not needed support for the MediaWiki i18n system
-* Updated the url in Diff.credits.php (used on Special:Version when included with MediaWiki)
+* Updated the url in `Diff.credits.php` (used on Special:Version when included with MediaWiki)
 
 ## Version 1.0 (2014-04-10)
 
@@ -41,7 +69,7 @@ Latest release:
 
 * Diff is now PSR-4 compliant
 
-#### Compatibility breaks
+#### Breaking changes
 
 * Removed the `Diff\IDiff` interface (deprecated since 0.5)
 * Removed the `Diff\IDiffOp` interface (deprecated since 0.4)

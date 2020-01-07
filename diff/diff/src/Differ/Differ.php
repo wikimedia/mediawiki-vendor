@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace Diff\Differ;
 
 use Diff\DiffOp\DiffOp;
@@ -10,7 +12,7 @@ use Exception;
  *
  * @since 0.4
  *
- * @license GPL-2.0+
+ * @license BSD-3-Clause
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 interface Differ {
@@ -26,6 +28,6 @@ interface Differ {
 	 * @throws Exception
 	 * @return DiffOp[]
 	 */
-	public function doDiff( array $oldValues, array $newValues );
+	public function doDiff( array $oldValues, array $newValues ): array;
 
 }

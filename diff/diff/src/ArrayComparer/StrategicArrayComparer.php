@@ -1,9 +1,10 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace Diff\ArrayComparer;
 
 use Diff\Comparer\ValueComparer;
-use RuntimeException;
 
 /**
  * Computes the difference between two arrays by comparing elements with
@@ -13,7 +14,7 @@ use RuntimeException;
  *
  * @since 0.8
  *
- * @license GPL-2.0+
+ * @license BSD-3-Clause
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class StrategicArrayComparer implements ArrayComparer {
@@ -34,8 +35,8 @@ class StrategicArrayComparer implements ArrayComparer {
 	 *
 	 * @return array
 	 */
-	public function diffArrays( array $arrayOne, array $arrayTwo ) {
-		$notInTwo = array();
+	public function diffArrays( array $arrayOne, array $arrayTwo ): array {
+		$notInTwo = [];
 
 		foreach ( $arrayOne as $element ) {
 			$valueOffset = $this->arraySearch( $element, $arrayTwo );
@@ -56,17 +57,10 @@ class StrategicArrayComparer implements ArrayComparer {
 	 * @param array $haystack
 	 *
 	 * @return bool|int|string
-	 * @throws RuntimeException
 	 */
 	private function arraySearch( $needle, array $haystack ) {
 		foreach ( $haystack as $valueOffset => $thing ) {
-			$areEqual = $this->valueComparer->valuesAreEqual( $needle, $thing );
-
-			if ( !is_bool( $areEqual ) ) {
-				throw new RuntimeException( 'ValueComparer returned a non-boolean value' );
-			}
-
-			if ( $areEqual ) {
+			if ( $this->valueComparer->valuesAreEqual( $needle, $thing ) ) {
 				return $valueOffset;
 			}
 		}
