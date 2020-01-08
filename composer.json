@@ -48,7 +48,7 @@
 		"pear/net_smtp": "1.9.0",
 		"pear/net_socket": "1.2.2",
 		"pear/pear-core-minimal": "1.10.10",
-		"pear/pear_exception": "1.0.0",
+		"pear/pear_exception": "1.0.1",
 		"php": ">=7.2.9",
 		"php-http/message-factory": "1.0.2",
 		"pimple/pimple": "3.0.2",
