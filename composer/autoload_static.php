@@ -2594,6 +2594,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Symfony\\Component\\Validator\\Exception\\UnsupportedMetadataException' => __DIR__ . '/..' . '/symfony/validator/Exception/UnsupportedMetadataException.php',
         'Symfony\\Component\\Validator\\Exception\\ValidatorException' => __DIR__ . '/..' . '/symfony/validator/Exception/ValidatorException.php',
         'Symfony\\Component\\Validator\\GroupSequenceProviderInterface' => __DIR__ . '/..' . '/symfony/validator/GroupSequenceProviderInterface.php',
+        'Symfony\\Component\\Validator\\Mapping\\AutoMappingStrategy' => __DIR__ . '/..' . '/symfony/validator/Mapping/AutoMappingStrategy.php',
         'Symfony\\Component\\Validator\\Mapping\\Cache\\CacheInterface' => __DIR__ . '/..' . '/symfony/validator/Mapping/Cache/CacheInterface.php',
         'Symfony\\Component\\Validator\\Mapping\\Cache\\DoctrineCache' => __DIR__ . '/..' . '/symfony/validator/Mapping/Cache/DoctrineCache.php',
         'Symfony\\Component\\Validator\\Mapping\\Cache\\Psr6Cache' => __DIR__ . '/..' . '/symfony/validator/Mapping/Cache/Psr6Cache.php',

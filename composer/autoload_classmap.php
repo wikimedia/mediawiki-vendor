@@ -2046,6 +2046,7 @@ return array(
     'Symfony\\Component\\Validator\\Exception\\UnsupportedMetadataException' => $vendorDir . '/symfony/validator/Exception/UnsupportedMetadataException.php',
     'Symfony\\Component\\Validator\\Exception\\ValidatorException' => $vendorDir . '/symfony/validator/Exception/ValidatorException.php',
     'Symfony\\Component\\Validator\\GroupSequenceProviderInterface' => $vendorDir . '/symfony/validator/GroupSequenceProviderInterface.php',
+    'Symfony\\Component\\Validator\\Mapping\\AutoMappingStrategy' => $vendorDir . '/symfony/validator/Mapping/AutoMappingStrategy.php',
     'Symfony\\Component\\Validator\\Mapping\\Cache\\CacheInterface' => $vendorDir . '/symfony/validator/Mapping/Cache/CacheInterface.php',
     'Symfony\\Component\\Validator\\Mapping\\Cache\\DoctrineCache' => $vendorDir . '/symfony/validator/Mapping/Cache/DoctrineCache.php',
     'Symfony\\Component\\Validator\\Mapping\\Cache\\Psr6Cache' => $vendorDir . '/symfony/validator/Mapping/Cache/Psr6Cache.php',
