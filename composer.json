@@ -36,7 +36,7 @@
 		"justinrainbow/json-schema": "5.2.9",
 		"liuggio/statsd-php-client": "1.0.18",
 		"monolog/monolog": "1.25.2",
-		"mustangostang/spyc": "0.6.2",
+		"mustangostang/spyc": "0.6.3",
 		"nikic/php-parser": "4.3.0",
 		"nmred/kafka-php": "0.1.5",
 		"nyholm/psr7": "1.2.1",
