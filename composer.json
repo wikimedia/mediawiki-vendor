@@ -39,7 +39,7 @@
 		"league/event": "2.2.0",
 		"league/oauth2-server": "8.0.0",
 		"liuggio/statsd-php-client": "1.0.18",
-		"monolog/monolog": "1.25.2",
+		"monolog/monolog": "1.25.3",
 		"mustangostang/spyc": "0.6.3",
 		"nikic/php-parser": "4.3.0",
 		"nmred/kafka-php": "0.1.5",
