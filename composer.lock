@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5eb0fe961944013bc7974b3b511f5e4f",
+    "content-hash": "b495227b4f242b2fee53d778949f9f9d",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -5938,21 +5938,22 @@
         },
         {
             "name": "wikimedia/xmp-reader",
-            "version": "0.6.3",
+            "version": "0.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/xmp-reader.git",
-                "reference": "5c6e601816f08724ff01092bf5f0e3fa081b1551"
+                "reference": "4b8ab8ea23cc2ccf2530738081cb4e146d55b86b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/xmp-reader/zipball/5c6e601816f08724ff01092bf5f0e3fa081b1551",
-                "reference": "5c6e601816f08724ff01092bf5f0e3fa081b1551",
+                "url": "https://api.github.com/repos/wikimedia/xmp-reader/zipball/4b8ab8ea23cc2ccf2530738081cb4e146d55b86b",
+                "reference": "4b8ab8ea23cc2ccf2530738081cb4e146d55b86b",
                 "shasum": ""
             },
             "require": {
+                "ext-iconv": "*",
                 "ext-xml": "*",
-                "php": ">=5.6.99",
+                "php": ">=7.2.9",
                 "psr/log": "^1.0",
                 "wikimedia/at-ease": "1.2 || 2.0",
                 "wikimedia/scoped-callback": "^1.0 || ^2.0 || ^3.0",
@@ -5962,8 +5963,8 @@
                 "ext-exif": "*",
                 "jakub-onderka/php-console-highlighter": "0.3.2",
                 "jakub-onderka/php-parallel-lint": "1.0.0",
-                "mediawiki/mediawiki-codesniffer": "24.0.0",
-                "mediawiki/minus-x": "0.3.1",
+                "mediawiki/mediawiki-codesniffer": "29.0.0",
+                "mediawiki/minus-x": "0.3.2",
                 "ockcyp/covers-validator": "0.5.1 || 0.6.1",
                 "phpunit/phpunit": "4.8.36 || ^6.5"
             },
@@ -5985,7 +5986,14 @@
             ],
             "description": "Reader for XMP data containing properties relevant to images",
             "homepage": "https://www.mediawiki.org/wiki/XMPReader",
-            "time": "2019-06-19T13:41:12+00:00"
+            "keywords": [
+                "IPTC",
+                "exif",
+                "metadata",
+                "parse",
+                "xmp"
+            ],
+            "time": "2020-01-16T19:03:42+00:00"
         },
         {
             "name": "wmde/php-vuejs-templating",

@@ -113,7 +113,7 @@
 		"wikimedia/utfnormal": "2.0.0",
 		"wikimedia/wait-condition-loop": "1.0.1",
 		"wikimedia/wrappedstring": "3.0.1",
-		"wikimedia/xmp-reader": "0.6.3",
+		"wikimedia/xmp-reader": "0.7.0",
 		"wmde/php-vuejs-templating": "1.0.2",
 		"zordius/lightncandy": "1.2.4"
 	},
