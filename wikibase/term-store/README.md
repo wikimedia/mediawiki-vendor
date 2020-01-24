@@ -4,7 +4,7 @@
 [![Latest Stable Version](https://poser.pugx.org/wikibase/term-store/version.png)](https://packagist.org/packages/wikibase/term-store)
 [![Download count](https://poser.pugx.org/wikibase/term-store/d/total.png)](https://packagist.org/packages/wikibase/term-store)
 
-Tiny library that defines the interface for term persistence of Wikibase entities.
+Tiny Wikibase library that defines interfaces for persisting terms of Items and Properties.
 
 ## Usage
 
@@ -15,6 +15,8 @@ This library does provide some trivial implementations, mainly to facilitate tes
 
 * `InMemoryPropertyTermStore` - simple in memory Fake
 * `ThrowingPropertyTermStore` - throws an exception when one of its methods is invoked
+* `InMemoryItemTermStore` - simple in memory Fake
+* `ThrowingItemTermStore` - throws an exception when one of its methods is invoked
 
 ## Installation
 
