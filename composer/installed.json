@@ -4401,17 +4401,17 @@
     },
     {
         "name": "wikibase/data-model",
-        "version": "9.1.0",
-        "version_normalized": "9.1.0.0",
+        "version": "9.2.0",
+        "version_normalized": "9.2.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wmde/WikibaseDataModel.git",
-            "reference": "396358d91ccd2bd52ebd93e84cfab5e3ba4306b2"
+            "reference": "f73cf875a1a359acf1d5c1a503e2ac0d8092f1fe"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wmde/WikibaseDataModel/zipball/396358d91ccd2bd52ebd93e84cfab5e3ba4306b2",
-            "reference": "396358d91ccd2bd52ebd93e84cfab5e3ba4306b2",
+            "url": "https://api.github.com/repos/wmde/WikibaseDataModel/zipball/f73cf875a1a359acf1d5c1a503e2ac0d8092f1fe",
+            "reference": "f73cf875a1a359acf1d5c1a503e2ac0d8092f1fe",
             "shasum": ""
         },
         "require": {
@@ -4425,11 +4425,11 @@
             "phpunit/phpunit": "~5.7",
             "wikibase/wikibase-codesniffer": "^0.5.0"
         },
-        "time": "2019-02-04T11:12:47+00:00",
+        "time": "2020-01-24T11:50:32+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "9.1.x-dev"
+                "dev-master": "9.2.x-dev"
             }
         },
         "installation-source": "dist",

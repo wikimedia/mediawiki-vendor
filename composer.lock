@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "72b8749b524fc1b4821a2e899e2c90d5",
+    "content-hash": "e7af039406eeacf2f3f47d9cda19ccd6",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -4260,16 +4260,16 @@
         },
         {
             "name": "wikibase/data-model",
-            "version": "9.1.0",
+            "version": "9.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wmde/WikibaseDataModel.git",
-                "reference": "396358d91ccd2bd52ebd93e84cfab5e3ba4306b2"
+                "reference": "f73cf875a1a359acf1d5c1a503e2ac0d8092f1fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wmde/WikibaseDataModel/zipball/396358d91ccd2bd52ebd93e84cfab5e3ba4306b2",
-                "reference": "396358d91ccd2bd52ebd93e84cfab5e3ba4306b2",
+                "url": "https://api.github.com/repos/wmde/WikibaseDataModel/zipball/f73cf875a1a359acf1d5c1a503e2ac0d8092f1fe",
+                "reference": "f73cf875a1a359acf1d5c1a503e2ac0d8092f1fe",
                 "shasum": ""
             },
             "require": {
@@ -4286,7 +4286,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "9.1.x-dev"
+                    "dev-master": "9.2.x-dev"
                 }
             },
             "autoload": {
@@ -4315,7 +4315,7 @@
                 "wikibase",
                 "wikidata"
             ],
-            "time": "2019-02-04T11:12:47+00:00"
+            "time": "2020-01-24T11:50:32+00:00"
         },
         {
             "name": "wikibase/data-model-serialization",
@@ -6183,16 +6183,16 @@
         },
         {
             "name": "swaggest/json-diff",
-            "version": "v3.7.2",
+            "version": "v3.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swaggest/json-diff.git",
-                "reference": "fb13f6f7b12b985e2b99877c3604ce904b4fdd7a"
+                "reference": "df30535920131d575330ed0ed7a696e1a42cddd3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swaggest/json-diff/zipball/fb13f6f7b12b985e2b99877c3604ce904b4fdd7a",
-                "reference": "fb13f6f7b12b985e2b99877c3604ce904b4fdd7a",
+                "url": "https://api.github.com/repos/swaggest/json-diff/zipball/df30535920131d575330ed0ed7a696e1a42cddd3",
+                "reference": "df30535920131d575330ed0ed7a696e1a42cddd3",
                 "shasum": ""
             },
             "require": {
@@ -6218,7 +6218,7 @@
                 }
             ],
             "description": "JSON diff/rearrange/patch/pointer library for PHP",
-            "time": "2019-10-23T09:36:24+00:00"
+            "time": "2020-01-24T12:11:25+00:00"
         },
         {
             "name": "swaggest/json-schema",

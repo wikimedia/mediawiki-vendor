@@ -164,15 +164,14 @@ abstract class EntityId implements Comparable, Serializable {
 	}
 
 	/**
-	 * Returns true iff EntityId::getRepoName returns a non-empty string.
+	 * Returns true iff EntityId::getRepositoryName returns a non-empty string.
 	 *
 	 * @since 6.2
 	 *
 	 * @return bool
 	 */
 	public function isForeign() {
-		// not actually using EntityId::getRepoName for performance reasons
-		return strpos( $this->serialization, ':' ) > 0;
+		return $this->repositoryName !== '';
 	}
 
 	/**
@@ -225,8 +224,7 @@ abstract class EntityId implements Comparable, Serializable {
 	 * @return string[] Array of form [ string $repositoryName, string $localPart ]
 	 */
 	protected static function extractRepositoryNameAndLocalPart( $serialization ) {
-		$parts = explode( ':', $serialization, 2 );
-		return isset( $parts[1] ) ? $parts : [ '', $parts[0] ];
+		return array_pad( explode( ':', $serialization, 2 ), -2, '' );
 	}
 
 }
