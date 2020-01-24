@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e7af039406eeacf2f3f47d9cda19ccd6",
+    "content-hash": "7955eda0163576928f5cdbc46194ba84",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -4450,22 +4450,22 @@
         },
         {
             "name": "wikibase/internal-serialization",
-            "version": "2.9.0",
+            "version": "2.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wmde/WikibaseInternalSerialization.git",
-                "reference": "145d70acf02b60ecf0790a4d22e27eee46edf504"
+                "reference": "b1b7500d0e758a627efb8aa010b1440b2f2f79aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wmde/WikibaseInternalSerialization/zipball/145d70acf02b60ecf0790a4d22e27eee46edf504",
-                "reference": "145d70acf02b60ecf0790a4d22e27eee46edf504",
+                "url": "https://api.github.com/repos/wmde/WikibaseInternalSerialization/zipball/b1b7500d0e758a627efb8aa010b1440b2f2f79aa",
+                "reference": "b1b7500d0e758a627efb8aa010b1440b2f2f79aa",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.6",
+                "php": "^7.0",
                 "serialization/serialization": "~4.0|~3.2",
-                "wikibase/data-model": "~9.0|~8.0|~7.0|~6.0|~5.0",
+                "wikibase/data-model": "~9.0|~8.0",
                 "wikibase/data-model-serialization": "~2.0"
             },
             "require-dev": {
@@ -4475,12 +4475,12 @@
                 "data-values/time": ">=0.1 <0.9",
                 "phpmd/phpmd": "~2.3",
                 "phpunit/phpunit": "~5.7",
-                "wikibase/wikibase-codesniffer": "^0.2.0"
+                "wikibase/wikibase-codesniffer": "^0.5.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.9.x-dev"
+                    "dev-master": "2.10.x-dev"
                 }
             },
             "autoload": {
@@ -4509,7 +4509,7 @@
                 "wikibase",
                 "wikidata"
             ],
-            "time": "2018-11-07T10:48:18+00:00"
+            "time": "2020-01-24T12:24:15+00:00"
         },
         {
             "name": "wikibase/term-store",

@@ -3,6 +3,7 @@
 namespace Wikibase\InternalSerialization\Deserializers;
 
 use Deserializers\Deserializer;
+use Deserializers\DispatchableDeserializer;
 use Deserializers\Exceptions\DeserializationException;
 use Deserializers\Exceptions\InvalidAttributeException;
 use Deserializers\Exceptions\MissingAttributeException;
@@ -10,11 +11,11 @@ use Wikibase\DataModel\Entity\Property;
 use Wikibase\DataModel\Entity\PropertyId;
 
 /**
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author Bene* < benestar.wikimedia@gmail.com >
  */
-class LegacyPropertyDeserializer implements Deserializer {
+class LegacyPropertyDeserializer implements DispatchableDeserializer {
 
 	/**
 	 * @var Deserializer
@@ -94,6 +95,22 @@ class LegacyPropertyDeserializer implements Deserializer {
 		}
 
 		return $serialization['datatype'];
+	}
+
+	/**
+	 * @see DispatchableDeserializer::isDeserializerFor
+	 *
+	 * @since 2.2
+	 *
+	 * @param mixed $serialization
+	 *
+	 * @return bool
+	 */
+	public function isDeserializerFor( $serialization ) {
+		return is_array( $serialization )
+			// This element is called 'id' in the current serialization.
+			&& array_key_exists( 'entity', $serialization )
+			&& array_key_exists( 'datatype', $serialization );
 	}
 
 }
