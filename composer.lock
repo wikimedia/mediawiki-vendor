@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b495227b4f242b2fee53d778949f9f9d",
+    "content-hash": "72b8749b524fc1b4821a2e899e2c90d5",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -1233,6 +1233,7 @@
                 }
             ],
             "description": "Provides a simple API and specification that abstracts away the details of HTTP into a single PHP function.",
+            "abandoned": true,
             "time": "2018-07-31T13:22:33+00:00"
         },
         {
@@ -2114,16 +2115,16 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.36.2",
+            "version": "v0.36.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "e36810cd103fce3556b00b19df96154c1cd65da5"
+                "reference": "ae82aaeb392d5ebd195b739a125c2328f9cdf960"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/e36810cd103fce3556b00b19df96154c1cd65da5",
-                "reference": "e36810cd103fce3556b00b19df96154c1cd65da5",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/ae82aaeb392d5ebd195b739a125c2328f9cdf960",
+                "reference": "ae82aaeb392d5ebd195b739a125c2328f9cdf960",
                 "shasum": ""
             },
             "require": {
@@ -2132,7 +2133,7 @@
             "require-dev": {
                 "jakub-onderka/php-console-highlighter": "0.3.2",
                 "jakub-onderka/php-parallel-lint": "1.0.0",
-                "mediawiki/mediawiki-codesniffer": "28.0.0",
+                "mediawiki/mediawiki-codesniffer": "29.0.0",
                 "mediawiki/mediawiki-phan-config": "0.9.0",
                 "mediawiki/minus-x": "0.3.2",
                 "phpunit/phpunit": "6.5.14"
@@ -2191,7 +2192,7 @@
             ],
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOUI",
-            "time": "2020-01-07T22:51:07+00:00"
+            "time": "2020-01-23T23:53:00+00:00"
         },
         {
             "name": "paragonie/random_compat",

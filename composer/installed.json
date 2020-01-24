@@ -1268,7 +1268,8 @@
                 "homepage": "https://github.com/mtdowling"
             }
         ],
-        "description": "Provides a simple API and specification that abstracts away the details of HTTP into a single PHP function."
+        "description": "Provides a simple API and specification that abstracts away the details of HTTP into a single PHP function.",
+        "abandoned": true
     },
     {
         "name": "guzzlehttp/streams",
@@ -2181,17 +2182,17 @@
     },
     {
         "name": "oojs/oojs-ui",
-        "version": "v0.36.2",
-        "version_normalized": "0.36.2.0",
+        "version": "v0.36.3",
+        "version_normalized": "0.36.3.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/oojs-ui.git",
-            "reference": "e36810cd103fce3556b00b19df96154c1cd65da5"
+            "reference": "ae82aaeb392d5ebd195b739a125c2328f9cdf960"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/e36810cd103fce3556b00b19df96154c1cd65da5",
-            "reference": "e36810cd103fce3556b00b19df96154c1cd65da5",
+            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/ae82aaeb392d5ebd195b739a125c2328f9cdf960",
+            "reference": "ae82aaeb392d5ebd195b739a125c2328f9cdf960",
             "shasum": ""
         },
         "require": {
@@ -2200,12 +2201,12 @@
         "require-dev": {
             "jakub-onderka/php-console-highlighter": "0.3.2",
             "jakub-onderka/php-parallel-lint": "1.0.0",
-            "mediawiki/mediawiki-codesniffer": "28.0.0",
+            "mediawiki/mediawiki-codesniffer": "29.0.0",
             "mediawiki/mediawiki-phan-config": "0.9.0",
             "mediawiki/minus-x": "0.3.2",
             "phpunit/phpunit": "6.5.14"
         },
-        "time": "2020-01-07T22:51:07+00:00",
+        "time": "2020-01-23T23:53:00+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
