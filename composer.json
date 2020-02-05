@@ -45,7 +45,7 @@
 		"nmred/kafka-php": "0.1.5",
 		"nyholm/psr7": "1.2.1",
 		"onoi/message-reporter": "1.4.1",
-		"oojs/oojs-ui": "0.36.3",
+		"oojs/oojs-ui": "0.36.4",
 		"pear/console_getopt": "1.4.3",
 		"pear/mail": "1.4.1",
 		"pear/mail_mime": "1.10.4",

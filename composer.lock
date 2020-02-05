@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "37d3782bc5518cb92ecdcde983ab68d1",
+    "content-hash": "f4c9f882c83df40e84d42878fe1ef011",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -1284,6 +1284,7 @@
                 "Guzzle",
                 "stream"
             ],
+            "abandoned": true,
             "time": "2014-10-12T19:18:40+00:00"
         },
         {
@@ -2115,28 +2116,28 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.36.3",
+            "version": "v0.36.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "ae82aaeb392d5ebd195b739a125c2328f9cdf960"
+                "reference": "cc7254cc9bf4828511575df1381523ed11bc6ede"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/ae82aaeb392d5ebd195b739a125c2328f9cdf960",
-                "reference": "ae82aaeb392d5ebd195b739a125c2328f9cdf960",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/cc7254cc9bf4828511575df1381523ed11bc6ede",
+                "reference": "cc7254cc9bf4828511575df1381523ed11bc6ede",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2.9"
             },
             "require-dev": {
-                "jakub-onderka/php-console-highlighter": "0.3.2",
+                "jakub-onderka/php-console-highlighter": "0.4.0",
                 "jakub-onderka/php-parallel-lint": "1.0.0",
                 "mediawiki/mediawiki-codesniffer": "29.0.0",
-                "mediawiki/mediawiki-phan-config": "0.9.0",
-                "mediawiki/minus-x": "0.3.2",
-                "phpunit/phpunit": "6.5.14"
+                "mediawiki/mediawiki-phan-config": "0.9.1",
+                "mediawiki/minus-x": "1.0.0",
+                "phpunit/phpunit": "^8.5"
             },
             "type": "library",
             "autoload": {
@@ -2192,7 +2193,7 @@
             ],
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOUI",
-            "time": "2020-01-23T23:53:00+00:00"
+            "time": "2020-02-05T19:08:13+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -6188,16 +6189,16 @@
         },
         {
             "name": "swaggest/json-diff",
-            "version": "v3.7.3",
+            "version": "v3.7.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swaggest/json-diff.git",
-                "reference": "df30535920131d575330ed0ed7a696e1a42cddd3"
+                "reference": "fccbbd6ee31b5949ab52e9c53f7a1e1b06d84716"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swaggest/json-diff/zipball/df30535920131d575330ed0ed7a696e1a42cddd3",
-                "reference": "df30535920131d575330ed0ed7a696e1a42cddd3",
+                "url": "https://api.github.com/repos/swaggest/json-diff/zipball/fccbbd6ee31b5949ab52e9c53f7a1e1b06d84716",
+                "reference": "fccbbd6ee31b5949ab52e9c53f7a1e1b06d84716",
                 "shasum": ""
             },
             "require": {
@@ -6223,20 +6224,20 @@
                 }
             ],
             "description": "JSON diff/rearrange/patch/pointer library for PHP",
-            "time": "2020-01-24T12:11:25+00:00"
+            "time": "2020-01-26T20:52:06+00:00"
         },
         {
             "name": "swaggest/json-schema",
-            "version": "v0.12.25",
+            "version": "v0.12.28",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swaggest/php-json-schema.git",
-                "reference": "0f509795092872601752f8a1f20f3cad4670370d"
+                "reference": "6f57c0d80e246c2868accaab5c550cd470a5537f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swaggest/php-json-schema/zipball/0f509795092872601752f8a1f20f3cad4670370d",
-                "reference": "0f509795092872601752f8a1f20f3cad4670370d",
+                "url": "https://api.github.com/repos/swaggest/php-json-schema/zipball/6f57c0d80e246c2868accaab5c550cd470a5537f",
+                "reference": "6f57c0d80e246c2868accaab5c550cd470a5537f",
                 "shasum": ""
             },
             "require": {
@@ -6267,7 +6268,7 @@
                 }
             ],
             "description": "High definition PHP structures with JSON-schema based validation",
-            "time": "2020-01-07T10:09:25+00:00"
+            "time": "2020-01-27T09:47:50+00:00"
         }
     ],
     "aliases": [],

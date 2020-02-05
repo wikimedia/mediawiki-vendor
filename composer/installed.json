@@ -1321,7 +1321,8 @@
         "keywords": [
             "Guzzle",
             "stream"
-        ]
+        ],
+        "abandoned": true
     },
     {
         "name": "jakobo/hotp-php",
@@ -2182,31 +2183,31 @@
     },
     {
         "name": "oojs/oojs-ui",
-        "version": "v0.36.3",
-        "version_normalized": "0.36.3.0",
+        "version": "v0.36.4",
+        "version_normalized": "0.36.4.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/oojs-ui.git",
-            "reference": "ae82aaeb392d5ebd195b739a125c2328f9cdf960"
+            "reference": "cc7254cc9bf4828511575df1381523ed11bc6ede"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/ae82aaeb392d5ebd195b739a125c2328f9cdf960",
-            "reference": "ae82aaeb392d5ebd195b739a125c2328f9cdf960",
+            "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/cc7254cc9bf4828511575df1381523ed11bc6ede",
+            "reference": "cc7254cc9bf4828511575df1381523ed11bc6ede",
             "shasum": ""
         },
         "require": {
             "php": ">=7.2.9"
         },
         "require-dev": {
-            "jakub-onderka/php-console-highlighter": "0.3.2",
+            "jakub-onderka/php-console-highlighter": "0.4.0",
             "jakub-onderka/php-parallel-lint": "1.0.0",
             "mediawiki/mediawiki-codesniffer": "29.0.0",
-            "mediawiki/mediawiki-phan-config": "0.9.0",
-            "mediawiki/minus-x": "0.3.2",
-            "phpunit/phpunit": "6.5.14"
+            "mediawiki/mediawiki-phan-config": "0.9.1",
+            "mediawiki/minus-x": "1.0.0",
+            "phpunit/phpunit": "^8.5"
         },
-        "time": "2020-01-23T23:53:00+00:00",
+        "time": "2020-02-05T19:08:13+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
