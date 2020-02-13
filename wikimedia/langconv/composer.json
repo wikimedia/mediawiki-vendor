@@ -1,0 +1,73 @@
+{
+	"name": "wikimedia/langconv",
+	"description": "Finite-State Transducer implementation of MediaWiki LanguageConverter",
+	"version": "0.3.3",
+	"homepage": "https://github.com/wikimedia/mediawiki-libs-LangConv#readme",
+	"authors": [
+		{
+			"name": "Wikimedia Parsing Team and the broader MediaWiki community",
+			"homepage": "https://www.mediawiki.org/wiki/Parsoid"
+		}
+	],
+	"license": "GPL-2.0-or-later",
+	"support": {
+		"irc": "irc://irc.freenode.net/mediawiki-parsoid",
+		"wiki": "https://www.mediawiki.org/wiki/Parsoid"
+	},
+	"keywords": [
+		"mediawiki",
+		"wikimedia",
+		"language converter"
+	],
+	"require": {
+		"ext-dom": "*",
+		"ext-json": "*",
+		"php": ">=7.2.0",
+		"wikimedia/assert": "0.4.0"
+	},
+	"require-dev": {
+		"jakub-onderka/php-parallel-lint": "1.0.0",
+		"jakub-onderka/php-console-highlighter": "0.4.0",
+		"mediawiki/mediawiki-codesniffer": "29.0.0",
+		"mediawiki/mediawiki-phan-config": "0.9.0",
+		"mediawiki/minus-x": "0.3.2",
+		"ockcyp/covers-validator": "1.1.0",
+		"phpspec/phpspec": "^5.0",
+		"phpunit/phpunit": "^8.5",
+		"wikimedia/testing-access-wrapper": "~1.0"
+	},
+	"autoload": {
+		"psr-4": {
+			"Wikimedia\\LangConv\\": [
+				"src"
+			]
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Test\\Wikimedia\\LangConv\\": "tests/phpunit/"
+		}
+	},
+	"scripts": {
+		"test": [
+			"parallel-lint . --exclude vendor --exclude node_modules",
+			"phpcs -p -s",
+			"minus-x check .",
+			"covers-validator",
+			"@phpunit",
+			"phpspec run -v --ansi",
+			"@phan"
+		],
+		"phpunit": "phpunit",
+		"fix": [
+			"minus-x fix .",
+			"phpcbf"
+		],
+		"cover": "phpunit --coverage-html coverage",
+		"phan": "PHAN_DISABLE_XDEBUG_WARN=1 phan --allow-polyfill-parser"
+	},
+	"config": {
+		"process-timeout": 0,
+		"optimize-autoloader": true
+	}
+}

@@ -1,0 +1,34 @@
+The principal contributors to the Parsoid codebase
+(listed alphabetically by first name) are:
+
+  Arlo Breault,
+  C.Scott Ananian,
+  Gabriel Wicke,
+  Kunal Mehta,
+  Marc Ordinas i Llopis, Mark Holmquist,
+  Subramanya Sastry,
+  Tim Starling
+
+Other contributors (listed alphabetically by first name):
+
+  Aaron Schulz, Adam Baso, Adam Wight, Alex Monk, Amir Aharoni,
+  Antoine Musso, Audrey Tang (au),
+  Be Birchall, Brandon Black, Brandon Istenes, Brion Vibber,
+  Carl Fürstenberg,
+  E.C.Okpo, Ed Sanders, Erik Bernhardson,
+  Faidon Liambotis,
+  Giuseppe Lavagetto,
+  Hardik Juneja,
+  Inez Korczyński,
+  James Douglas, James Forrester, Jeff Evans,
+  Luke Welling, Luis Miguel Morillas,
+  Maria Pacana, Marco Obrovac, Matt Flaschen, Matt Walker,
+  Matthias Mullie, Molly White, MZMcBride,
+  Neil Kandalgaonkar,
+  Ori Livneh,
+  plancalculus,
+  Ricordisamoa, Roan Kattouw, Robert Smith,
+  S Page, Sam Reed, Sébastien Santoro, Sebastian Wong, Siebrand Mazeland,
+  Timo Tijhof, Trevor Parscal,
+  vichak,
+  Yuvaraj Pandian

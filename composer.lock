@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2e31f1225dfda2cb0760049e9c8fca43",
+    "content-hash": "4a7d6db04207224c572311c0cf73c506",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -5175,6 +5175,64 @@
             "time": "2019-06-25T17:43:18+00:00"
         },
         {
+            "name": "wikimedia/langconv",
+            "version": "0.3.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wikimedia/mediawiki-libs-LangConv.git",
+                "reference": "c520d632b74eefa0b989200862941bf294e54729"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-LangConv/zipball/c520d632b74eefa0b989200862941bf294e54729",
+                "reference": "c520d632b74eefa0b989200862941bf294e54729",
+                "shasum": ""
+            },
+            "require": {
+                "ext-dom": "*",
+                "ext-json": "*",
+                "php": ">=7.2.0",
+                "wikimedia/assert": "0.4.0"
+            },
+            "require-dev": {
+                "jakub-onderka/php-console-highlighter": "0.4.0",
+                "jakub-onderka/php-parallel-lint": "1.0.0",
+                "mediawiki/mediawiki-codesniffer": "29.0.0",
+                "mediawiki/mediawiki-phan-config": "0.9.0",
+                "mediawiki/minus-x": "0.3.2",
+                "ockcyp/covers-validator": "1.1.0",
+                "phpspec/phpspec": "^5.0",
+                "phpunit/phpunit": "^8.5",
+                "wikimedia/testing-access-wrapper": "~1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Wikimedia\\LangConv\\": [
+                        "src"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Wikimedia Parsing Team and the broader MediaWiki community",
+                    "homepage": "https://www.mediawiki.org/wiki/Parsoid"
+                }
+            ],
+            "description": "Finite-State Transducer implementation of MediaWiki LanguageConverter",
+            "homepage": "https://github.com/wikimedia/mediawiki-libs-LangConv#readme",
+            "keywords": [
+                "Wikimedia",
+                "language converter",
+                "mediawiki"
+            ],
+            "time": "2020-01-28T23:07:13+00:00"
+        },
+        {
             "name": "wikimedia/less.php",
             "version": "1.8.2",
             "source": {
@@ -5326,6 +5384,78 @@
             "description": "Construct objects from configuration instructions",
             "homepage": "https://www.mediawiki.org/wiki/ObjectFactory",
             "time": "2019-06-19T17:08:21+00:00"
+        },
+        {
+            "name": "wikimedia/parsoid",
+            "version": "v0.12.0-a2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wikimedia/parsoid.git",
+                "reference": "3c7847d46835d74e6196ba433af88ba2eb665943"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/3c7847d46835d74e6196ba433af88ba2eb665943",
+                "reference": "3c7847d46835d74e6196ba433af88ba2eb665943",
+                "shasum": ""
+            },
+            "require": {
+                "composer/semver": "1.5.0",
+                "ext-dom": "*",
+                "ext-json": "*",
+                "liuggio/statsd-php-client": "1.0.18",
+                "php": ">=7.2.0",
+                "psr/log": "1.1.2",
+                "wikimedia/assert": "0.4.0",
+                "wikimedia/ip-utils": "1.0.0",
+                "wikimedia/langconv": "0.3.3",
+                "wikimedia/remex-html": "2.1.0",
+                "wikimedia/scoped-callback": "3.0.0",
+                "wikimedia/wikipeg": "2.0.4",
+                "wikimedia/zest-css": "1.1.2"
+            },
+            "require-dev": {
+                "composer/composer": "^1.9",
+                "ext-curl": "*",
+                "jakub-onderka/php-console-color": "0.2",
+                "jakub-onderka/php-console-highlighter": "0.4.0",
+                "jakub-onderka/php-parallel-lint": "1.0.0",
+                "mediawiki/mediawiki-codesniffer": "29.0.0",
+                "mediawiki/mediawiki-phan-config": "0.9.0",
+                "mediawiki/minus-x": "0.3.2",
+                "monolog/monolog": "~1.25.2",
+                "ockcyp/covers-validator": "1.1.0",
+                "phpunit/phpunit": "^8.5",
+                "sebastian/diff": "^3.0.2",
+                "wikimedia/alea": "^0.9.0",
+                "wikimedia/testing-access-wrapper": "~1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Wikimedia\\Parsoid\\": [
+                        "src/placeholder",
+                        "src"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Wikimedia Parsing Team and the broader MediaWiki community",
+                    "homepage": "https://www.mediawiki.org/wiki/Parsoid"
+                }
+            ],
+            "description": "Parsoid (a bidirectional parser between wikitext and HTML5) - ported from the Node.js version",
+            "homepage": "https://www.mediawiki.org/wiki/Parsoid",
+            "keywords": [
+                "mediawiki",
+                "parsoid"
+            ],
+            "time": "2020-02-13T20:33:27+00:00"
         },
         {
             "name": "wikimedia/password-blacklist",
@@ -5899,6 +6029,39 @@
             "time": "2016-10-01T06:58:30+00:00"
         },
         {
+            "name": "wikimedia/wikipeg",
+            "version": "2.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wikimedia/wikipeg.git",
+                "reference": "117ddc894cf44f7f8e149e94180b68a8a7c0904d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wikimedia/wikipeg/zipball/117ddc894cf44f7f8e149e94180b68a8a7c0904d",
+                "reference": "117ddc894cf44f7f8e149e94180b68a8a7c0904d",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "php": "^7.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "WikiPEG\\": "src",
+                    "WikiPEG\\Tests\\": "tests/php"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Parser generator for JavaScript and PHP",
+            "time": "2020-02-13T19:00:24+00:00"
+        },
+        {
             "name": "wikimedia/wrappedstring",
             "version": "v3.0.1",
             "source": {
@@ -6001,6 +6164,68 @@
                 "xmp"
             ],
             "time": "2020-01-16T19:03:42+00:00"
+        },
+        {
+            "name": "wikimedia/zest-css",
+            "version": "1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wikimedia/mediawiki-libs-Zest.git",
+                "reference": "ffc83014b1d7a7bd45ef25f3a9daebba614b338a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Zest/zipball/ffc83014b1d7a7bd45ef25f3a9daebba614b338a",
+                "reference": "ffc83014b1d7a7bd45ef25f3a9daebba614b338a",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "ext-xml": "*",
+                "php": ">=7.2.0"
+            },
+            "require-dev": {
+                "jakub-onderka/php-console-highlighter": "0.3.2",
+                "jakub-onderka/php-parallel-lint": "1.0.0",
+                "mediawiki/mediawiki-codesniffer": "24.0.0",
+                "mediawiki/mediawiki-phan-config": "0.4.0",
+                "mediawiki/minus-x": "0.3.1",
+                "ockcyp/covers-validator": "0.5.1 || 0.6.1",
+                "phan/phan": "^1.2",
+                "phpunit/phpunit": "^6.5",
+                "wikimedia/remex-html": "2.0.2",
+                "wikimedia/testing-access-wrapper": "~1.0"
+            },
+            "suggest": {
+                "ext-intl": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Wikimedia\\Zest\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Christopher Jeffrey"
+                },
+                {
+                    "name": "C. Scott Ananian",
+                    "email": "cananian@wikimedia.org"
+                }
+            ],
+            "description": "Fast, lightweight, extensible CSS selector engine for PHP",
+            "homepage": "https://www.mediawiki.org/wiki/Zest",
+            "keywords": [
+                "css",
+                "engine",
+                "selector"
+            ],
+            "time": "2019-04-09T16:11:28+00:00"
         },
         {
             "name": "wmde/php-vuejs-templating",
@@ -6273,7 +6498,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "wikimedia/parsoid": 15
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

@@ -1,0 +1,54 @@
+{
+	"name": "Parsoid-testing",
+	"description": "Parsoid is not an extension. This file is only meant for internal use during development, as a lightweight way of testing integration.",
+	"url": "https://www.mediawiki.org/wiki/Parsing/Notes/Moving_Parsoid_Into_Core",
+	"requires": {
+		"MediaWiki": "^1.34",
+		"platform": {
+			"php": ">= 7.2"
+		}
+	},
+	"AutoloadNamespaces": {
+		"MWParsoid\\": "extension/src"
+	},
+	"RestRoutes": [
+		{
+			"path": "/{domain}/v3/page/{format}/{title}",
+			"class": "MWParsoid\\Rest\\Handler\\PageHandler",
+			"factory": "MWParsoid\\Rest\\Handler\\PageHandler::factory",
+			"method": "GET"
+		},
+		{
+			"path": "/{domain}/v3/page/{format}/{title}/{revision}",
+			"class": "MWParsoid\\Rest\\Handler\\PageHandler",
+			"factory": "MWParsoid\\Rest\\Handler\\PageHandler::factory",
+			"method": "GET"
+		},
+		{
+			"path": "/{domain}/v3/transform/{from}/to/{format}",
+			"class": "MWParsoid\\Rest\\Handler\\TransformHandler",
+			"factory": "MWParsoid\\Rest\\Handler\\TransformHandler::factory",
+			"method": "POST"
+		},
+		{
+			"path": "/{domain}/v3/transform/{from}/to/{format}/{title}",
+			"class": "MWParsoid\\Rest\\Handler\\TransformHandler",
+			"factory": "MWParsoid\\Rest\\Handler\\TransformHandler::factory",
+			"method": "POST"
+		},
+		{
+			"path": "/{domain}/v3/transform/{from}/to/{format}/{title}/{revision}",
+			"class": "MWParsoid\\Rest\\Handler\\TransformHandler",
+			"factory": "MWParsoid\\Rest\\Handler\\TransformHandler::factory",
+			"method": "POST"
+		}
+	],
+	"ServiceWiringFiles": [
+		"extension/ServiceWiring.php"
+	],
+	"ConfigRegistry": {
+		"Parsoid-testing": "GlobalVarConfig::newInstance"
+	},
+	"load_composer_autoloader": false,
+	"manifest_version": 2
+}

@@ -1,0 +1,19 @@
+language: node_js
+
+node_js:
+    # Maintenance
+    - "6"
+    # Production
+    - "8"
+    # Next LTS
+    - "10"
+    # From the nvm docs, "this installs the latest version of node".
+    - "node"
+
+before_install:
+    - npm i -g npm@3
+
+install:
+    - npm i --no-optional
+
+script: npm test

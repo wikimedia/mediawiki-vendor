@@ -1,0 +1,15 @@
+.svn
+*~
+*.kate-swp
+.*.swp
+.DS_Store
+.deploy
+npm-debug.log
+node_modules
+vendor/
+.idea/
+
+docs/
+coverage/
+deploy/
+composer.lock
