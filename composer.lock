@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4a7d6db04207224c572311c0cf73c506",
+    "content-hash": "d01f9aea70cc1cb7faaa6789109e074b",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -3526,16 +3526,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v4.4.2",
+            "version": "v4.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "82437719dab1e6bdd28726af14cb345c2ec816d0"
+                "reference": "f512001679f37e6a042b51897ed24a2f05eba656"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/82437719dab1e6bdd28726af14cb345c2ec816d0",
-                "reference": "82437719dab1e6bdd28726af14cb345c2ec816d0",
+                "url": "https://api.github.com/repos/symfony/console/zipball/f512001679f37e6a042b51897ed24a2f05eba656",
+                "reference": "f512001679f37e6a042b51897ed24a2f05eba656",
                 "shasum": ""
             },
             "require": {
@@ -3598,20 +3598,20 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2019-12-17T10:32:23+00:00"
+            "time": "2020-01-25T12:44:29+00:00"
         },
         {
             "name": "symfony/debug",
-            "version": "v4.4.2",
+            "version": "v4.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/debug.git",
-                "reference": "5c4c1db977dc70bb3250e1308d3e8c6341aa38f5"
+                "reference": "20236471058bbaa9907382500fc14005c84601f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/debug/zipball/5c4c1db977dc70bb3250e1308d3e8c6341aa38f5",
-                "reference": "5c4c1db977dc70bb3250e1308d3e8c6341aa38f5",
+                "url": "https://api.github.com/repos/symfony/debug/zipball/20236471058bbaa9907382500fc14005c84601f0",
+                "reference": "20236471058bbaa9907382500fc14005c84601f0",
                 "shasum": ""
             },
             "require": {
@@ -3654,7 +3654,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "time": "2019-12-16T14:46:54+00:00"
+            "time": "2020-01-25T12:44:29+00:00"
         },
         {
             "name": "symfony/polyfill-php73",
@@ -3774,16 +3774,16 @@
         },
         {
             "name": "symfony/translation",
-            "version": "v4.4.2",
+            "version": "v4.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
-                "reference": "f7669f48a9633bf8139bc026c755e894b7206677"
+                "reference": "f5d2ac46930238b30a9c2f1b17c905f3697d808c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/f7669f48a9633bf8139bc026c755e894b7206677",
-                "reference": "f7669f48a9633bf8139bc026c755e894b7206677",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/f5d2ac46930238b30a9c2f1b17c905f3697d808c",
+                "reference": "f5d2ac46930238b30a9c2f1b17c905f3697d808c",
                 "shasum": ""
             },
             "require": {
@@ -3846,7 +3846,7 @@
             ],
             "description": "Symfony Translation Component",
             "homepage": "https://symfony.com",
-            "time": "2019-12-12T12:53:52+00:00"
+            "time": "2020-01-15T13:29:06+00:00"
         },
         {
             "name": "symfony/translation-contracts",
@@ -3907,16 +3907,16 @@
         },
         {
             "name": "symfony/validator",
-            "version": "v4.4.2",
+            "version": "v4.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/validator.git",
-                "reference": "79eb122bed116c1fbe0769698d5b46acce1860a2"
+                "reference": "eb3e15de5c63873ca6e2a88b56a029f7be4c5953"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/validator/zipball/79eb122bed116c1fbe0769698d5b46acce1860a2",
-                "reference": "79eb122bed116c1fbe0769698d5b46acce1860a2",
+                "url": "https://api.github.com/repos/symfony/validator/zipball/eb3e15de5c63873ca6e2a88b56a029f7be4c5953",
+                "reference": "eb3e15de5c63873ca6e2a88b56a029f7be4c5953",
                 "shasum": ""
             },
             "require": {
@@ -3995,20 +3995,20 @@
             ],
             "description": "Symfony Validator Component",
             "homepage": "https://symfony.com",
-            "time": "2019-12-17T08:15:02+00:00"
+            "time": "2020-01-31T09:11:17+00:00"
         },
         {
             "name": "symfony/var-dumper",
-            "version": "v4.4.2",
+            "version": "v4.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "be330f919bdb395d1e0c3f2bfb8948512d6bdd99"
+                "reference": "46b53fd714568af343953c039ff47b67ce8af8d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/be330f919bdb395d1e0c3f2bfb8948512d6bdd99",
-                "reference": "be330f919bdb395d1e0c3f2bfb8948512d6bdd99",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/46b53fd714568af343953c039ff47b67ce8af8d6",
+                "reference": "46b53fd714568af343953c039ff47b67ce8af8d6",
                 "shasum": ""
             },
             "require": {
@@ -4071,7 +4071,7 @@
                 "debug",
                 "dump"
             ],
-            "time": "2019-12-18T13:41:29+00:00"
+            "time": "2020-01-25T12:44:29+00:00"
         },
         {
             "name": "web-auth/cose-lib",
