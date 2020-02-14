@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "352a10a684ef7fe6bcc061e9f4b4f108",
+    "content-hash": "ee35b1cd62c0824a7311197bef7e2bbf",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -4587,28 +4587,28 @@
         },
         {
             "name": "wikimedia/assert",
-            "version": "v0.4.0",
+            "version": "v0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/Assert.git",
-                "reference": "27c99b1f1ab106838b7acb695fa2e03efaa28e66"
+                "reference": "d8e97f15b8f3d3799899e3d56452d34511be5764"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/Assert/zipball/27c99b1f1ab106838b7acb695fa2e03efaa28e66",
-                "reference": "27c99b1f1ab106838b7acb695fa2e03efaa28e66",
+                "url": "https://api.github.com/repos/wikimedia/Assert/zipball/d8e97f15b8f3d3799899e3d56452d34511be5764",
+                "reference": "d8e97f15b8f3d3799899e3d56452d34511be5764",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.6.99"
+                "php": ">=7.2.9"
             },
             "require-dev": {
-                "jakub-onderka/php-console-highlighter": "0.3.2",
+                "jakub-onderka/php-console-highlighter": "0.4.0",
                 "jakub-onderka/php-parallel-lint": "1.0.0",
-                "mediawiki/mediawiki-codesniffer": "23.0.0",
-                "mediawiki/minus-x": "0.3.1",
-                "ockcyp/covers-validator": "0.5.1 || 0.6.1",
-                "phpunit/phpunit": "4.8.36 || ^6.5"
+                "mediawiki/mediawiki-codesniffer": "29.0.0",
+                "mediawiki/minus-x": "1.0.0",
+                "ockcyp/covers-validator": "1.1.1",
+                "phpunit/phpunit": "^8.5"
             },
             "type": "library",
             "autoload": {
@@ -4638,7 +4638,7 @@
                 "precondition",
                 "qa"
             ],
-            "time": "2019-01-21T19:22:34+00:00"
+            "time": "2020-02-14T19:22:00+00:00"
         },
         {
             "name": "wikimedia/at-ease",
@@ -6530,5 +6530,6 @@
     "platform": {
         "php": ">=7.2.9"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }
