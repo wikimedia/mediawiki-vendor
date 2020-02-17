@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d01f9aea70cc1cb7faaa6789109e074b",
+    "content-hash": "4adb9e29ab826aede1d53198fcc371c2",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -4390,16 +4390,16 @@
         },
         {
             "name": "wikibase/data-model-services",
-            "version": "5.0.0",
+            "version": "5.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wmde/WikibaseDataModelServices.git",
-                "reference": "b0c31f5277131bf18a0feee7df3916744b3d5972"
+                "reference": "d7cf1240d8f41747a93d607eb79f532de974d147"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wmde/WikibaseDataModelServices/zipball/b0c31f5277131bf18a0feee7df3916744b3d5972",
-                "reference": "b0c31f5277131bf18a0feee7df3916744b3d5972",
+                "url": "https://api.github.com/repos/wmde/WikibaseDataModelServices/zipball/d7cf1240d8f41747a93d607eb79f532de974d147",
+                "reference": "d7cf1240d8f41747a93d607eb79f532de974d147",
                 "shasum": ""
             },
             "require": {
@@ -4411,13 +4411,13 @@
             },
             "require-dev": {
                 "phpmd/phpmd": "~2.3",
-                "phpunit/phpunit": "~5.7",
-                "wikibase/wikibase-codesniffer": "^0.5.0"
+                "phpunit/phpunit": "~8.0",
+                "wikibase/wikibase-codesniffer": "~1.1.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.x-dev"
+                    "dev-master": "5.1-dev"
                 }
             },
             "autoload": {
@@ -4447,7 +4447,7 @@
                 "wikibase",
                 "wikidata"
             ],
-            "time": "2020-01-24T12:42:02+00:00"
+            "time": "2020-02-13T13:39:06+00:00"
         },
         {
             "name": "wikibase/internal-serialization",
