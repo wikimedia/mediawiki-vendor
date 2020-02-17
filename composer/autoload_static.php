@@ -55,7 +55,6 @@ class ComposerStaticInit_mediawiki_vendor
             'Wikimedia\\AtEase\\' => 17,
             'Wikimedia\\Assert\\' => 17,
             'Wikimedia\\' => 10,
-            'Wikibase\\TermStore\\' => 19,
             'Wikibase\\InternalSerialization\\' => 31,
             'Wikibase\\DataModel\\Services\\' => 28,
             'Wikibase\\DataModel\\' => 19,
@@ -245,10 +244,6 @@ class ComposerStaticInit_mediawiki_vendor
             2 => __DIR__ . '/..' . '/wikimedia/object-factory/src',
             3 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
             4 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
-        ),
-        'Wikibase\\TermStore\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/wikibase/term-store/src',
         ),
         'Wikibase\\InternalSerialization\\' => 
         array (
@@ -3241,14 +3236,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikibase\\InternalSerialization\\Deserializers\\StatementDeserializer' => __DIR__ . '/..' . '/wikibase/internal-serialization/src/Deserializers/StatementDeserializer.php',
         'Wikibase\\InternalSerialization\\LegacyDeserializerFactory' => __DIR__ . '/..' . '/wikibase/internal-serialization/src/LegacyDeserializerFactory.php',
         'Wikibase\\InternalSerialization\\SerializerFactory' => __DIR__ . '/..' . '/wikibase/internal-serialization/src/SerializerFactory.php',
-        'Wikibase\\TermStore\\Implementations\\InMemoryItemTermStore' => __DIR__ . '/..' . '/wikibase/term-store/src/Implementations/InMemoryItemTermStore.php',
-        'Wikibase\\TermStore\\Implementations\\InMemoryPropertyTermStore' => __DIR__ . '/..' . '/wikibase/term-store/src/Implementations/InMemoryPropertyTermStore.php',
-        'Wikibase\\TermStore\\Implementations\\ThrowingItemTermStore' => __DIR__ . '/..' . '/wikibase/term-store/src/Implementations/ThrowingItemTermStore.php',
-        'Wikibase\\TermStore\\Implementations\\ThrowingPropertyTermStore' => __DIR__ . '/..' . '/wikibase/term-store/src/Implementations/ThrowingPropertyTermStore.php',
-        'Wikibase\\TermStore\\ItemTermStore' => __DIR__ . '/..' . '/wikibase/term-store/src/ItemTermStore.php',
-        'Wikibase\\TermStore\\PropertyTermStore' => __DIR__ . '/..' . '/wikibase/term-store/src/PropertyTermStore.php',
-        'Wikibase\\TermStore\\TermStoreException' => __DIR__ . '/..' . '/wikibase/term-store/src/TermStoreException.php',
-        'Wikibase\\TermStore\\TermStoreFactory' => __DIR__ . '/..' . '/wikibase/term-store/src/TermStoreFactory.php',
         'Wikimedia\\Assert\\Assert' => __DIR__ . '/..' . '/wikimedia/assert/src/Assert.php',
         'Wikimedia\\Assert\\AssertionException' => __DIR__ . '/..' . '/wikimedia/assert/src/AssertionException.php',
         'Wikimedia\\Assert\\InvariantException' => __DIR__ . '/..' . '/wikimedia/assert/src/InvariantException.php',
