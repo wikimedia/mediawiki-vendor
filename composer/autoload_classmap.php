@@ -1230,6 +1230,7 @@ return array(
     'Monolog\\Utils' => $vendorDir . '/monolog/monolog/src/Monolog/Utils.php',
     'Net_SMTP' => $vendorDir . '/pear/net_smtp/Net/SMTP.php',
     'Net_Socket' => $vendorDir . '/pear/net_socket/Net/Socket.php',
+    'Net_URL2' => $vendorDir . '/pear/net_url2/Net/URL2.php',
     'Nyholm\\Psr7\\Factory\\HttplugFactory' => $vendorDir . '/nyholm/psr7/src/Factory/HttplugFactory.php',
     'Nyholm\\Psr7\\Factory\\Psr17Factory' => $vendorDir . '/nyholm/psr7/src/Factory/Psr17Factory.php',
     'Nyholm\\Psr7\\MessageTrait' => $vendorDir . '/nyholm/psr7/src/MessageTrait.php',
