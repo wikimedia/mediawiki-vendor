@@ -72,7 +72,7 @@
 		"spomky-labs/cbor-php": "1.0.8",
 		"symfony/console": "4.4.4",
 		"symfony/debug": "4.4.4",
-		"symfony/polyfill-php73": "1.13.1",
+		"symfony/polyfill-php73": "1.14.0",
 		"symfony/service-contracts": "2.0.1",
 		"symfony/translation": "4.4.4",
 		"symfony/translation-contracts": "2.0.1",
