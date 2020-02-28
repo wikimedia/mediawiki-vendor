@@ -3643,17 +3643,17 @@
     },
     {
         "name": "spomky-labs/cbor-php",
-        "version": "v1.0.7",
-        "version_normalized": "1.0.7.0",
+        "version": "v1.0.8",
+        "version_normalized": "1.0.8.0",
         "source": {
             "type": "git",
             "url": "https://github.com/Spomky-Labs/cbor-php.git",
-            "reference": "f937d527b05bb3ec3f6b8670ece38ccaf9a0eddd"
+            "reference": "575a66dc406575b030e3ba541b33447842f93185"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/Spomky-Labs/cbor-php/zipball/f937d527b05bb3ec3f6b8670ece38ccaf9a0eddd",
-            "reference": "f937d527b05bb3ec3f6b8670ece38ccaf9a0eddd",
+            "url": "https://api.github.com/repos/Spomky-Labs/cbor-php/zipball/575a66dc406575b030e3ba541b33447842f93185",
+            "reference": "575a66dc406575b030e3ba541b33447842f93185",
             "shasum": ""
         },
         "require": {
@@ -3664,18 +3664,19 @@
         },
         "require-dev": {
             "php-coveralls/php-coveralls": "^2.0",
-            "phpstan/phpstan": "^0.11",
-            "phpstan/phpstan-beberlei-assert": "^0.11.0",
-            "phpstan/phpstan-deprecation-rules": "^0.11",
-            "phpstan/phpstan-phpunit": "^0.11",
-            "phpstan/phpstan-strict-rules": "^0.11",
+            "phpstan/phpstan": "^0.12",
+            "phpstan/phpstan-beberlei-assert": "^0.12",
+            "phpstan/phpstan-deprecation-rules": "^0.12",
+            "phpstan/phpstan-phpunit": "^0.12",
+            "phpstan/phpstan-strict-rules": "^0.12",
             "phpunit/phpunit": "^7.5|^8.0",
-            "rector/rector": "^0.5"
+            "rector/rector": "^0.5|^0.6",
+            "symfony/var-dumper": "^4.3|^5.0"
         },
         "suggest": {
             "ext-bcmath": "BCMath extension needed to handle the Big Float and Decimal Fraction Tags"
         },
-        "time": "2019-08-15T14:53:55+00:00",
+        "time": "2020-02-18T08:37:37+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {

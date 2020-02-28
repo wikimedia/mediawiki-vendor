@@ -69,7 +69,7 @@
 		"ruflin/elastica": "6.0.2",
 		"serialization/serialization": "4.0.0",
 		"spomky-labs/base64url": "2.0.1",
-		"spomky-labs/cbor-php": "1.0.7",
+		"spomky-labs/cbor-php": "1.0.8",
 		"symfony/console": "4.4.4",
 		"symfony/debug": "4.4.4",
 		"symfony/polyfill-php73": "1.13.1",
