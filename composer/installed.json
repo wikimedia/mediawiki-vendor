@@ -3712,17 +3712,17 @@
     },
     {
         "name": "symfony/console",
-        "version": "v4.4.4",
-        "version_normalized": "4.4.4.0",
+        "version": "v4.4.5",
+        "version_normalized": "4.4.5.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/console.git",
-            "reference": "f512001679f37e6a042b51897ed24a2f05eba656"
+            "reference": "4fa15ae7be74e53f6ec8c83ed403b97e23b665e9"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/console/zipball/f512001679f37e6a042b51897ed24a2f05eba656",
-            "reference": "f512001679f37e6a042b51897ed24a2f05eba656",
+            "url": "https://api.github.com/repos/symfony/console/zipball/4fa15ae7be74e53f6ec8c83ed403b97e23b665e9",
+            "reference": "4fa15ae7be74e53f6ec8c83ed403b97e23b665e9",
             "shasum": ""
         },
         "require": {
@@ -3755,7 +3755,7 @@
             "symfony/lock": "",
             "symfony/process": ""
         },
-        "time": "2020-01-25T12:44:29+00:00",
+        "time": "2020-02-24T13:10:00+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -3790,17 +3790,17 @@
     },
     {
         "name": "symfony/debug",
-        "version": "v4.4.4",
-        "version_normalized": "4.4.4.0",
+        "version": "v4.4.5",
+        "version_normalized": "4.4.5.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/debug.git",
-            "reference": "20236471058bbaa9907382500fc14005c84601f0"
+            "reference": "a980d87a659648980d89193fd8b7a7ca89d97d21"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/debug/zipball/20236471058bbaa9907382500fc14005c84601f0",
-            "reference": "20236471058bbaa9907382500fc14005c84601f0",
+            "url": "https://api.github.com/repos/symfony/debug/zipball/a980d87a659648980d89193fd8b7a7ca89d97d21",
+            "reference": "a980d87a659648980d89193fd8b7a7ca89d97d21",
             "shasum": ""
         },
         "require": {
@@ -3813,7 +3813,7 @@
         "require-dev": {
             "symfony/http-kernel": "^3.4|^4.0|^5.0"
         },
-        "time": "2020-01-25T12:44:29+00:00",
+        "time": "2020-02-23T14:41:43+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -3968,17 +3968,17 @@
     },
     {
         "name": "symfony/translation",
-        "version": "v4.4.4",
-        "version_normalized": "4.4.4.0",
+        "version": "v4.4.5",
+        "version_normalized": "4.4.5.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/translation.git",
-            "reference": "f5d2ac46930238b30a9c2f1b17c905f3697d808c"
+            "reference": "0a19a77fba20818a969ef03fdaf1602de0546353"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/translation/zipball/f5d2ac46930238b30a9c2f1b17c905f3697d808c",
-            "reference": "f5d2ac46930238b30a9c2f1b17c905f3697d808c",
+            "url": "https://api.github.com/repos/symfony/translation/zipball/0a19a77fba20818a969ef03fdaf1602de0546353",
+            "reference": "0a19a77fba20818a969ef03fdaf1602de0546353",
             "shasum": ""
         },
         "require": {
@@ -4011,7 +4011,7 @@
             "symfony/config": "",
             "symfony/yaml": ""
         },
-        "time": "2020-01-15T13:29:06+00:00",
+        "time": "2020-02-04T09:32:40+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -4105,17 +4105,17 @@
     },
     {
         "name": "symfony/validator",
-        "version": "v4.4.4",
-        "version_normalized": "4.4.4.0",
+        "version": "v4.4.5",
+        "version_normalized": "4.4.5.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/validator.git",
-            "reference": "eb3e15de5c63873ca6e2a88b56a029f7be4c5953"
+            "reference": "3a3a07fe2f42492eccca6771f1a460c9900cd851"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/validator/zipball/eb3e15de5c63873ca6e2a88b56a029f7be4c5953",
-            "reference": "eb3e15de5c63873ca6e2a88b56a029f7be4c5953",
+            "url": "https://api.github.com/repos/symfony/validator/zipball/3a3a07fe2f42492eccca6771f1a460c9900cd851",
+            "reference": "3a3a07fe2f42492eccca6771f1a460c9900cd851",
             "shasum": ""
         },
         "require": {
@@ -4145,6 +4145,7 @@
             "symfony/http-foundation": "^4.1|^5.0",
             "symfony/http-kernel": "^4.4",
             "symfony/intl": "^4.3|^5.0",
+            "symfony/mime": "^4.4|^5.0",
             "symfony/property-access": "^3.4|^4.0|^5.0",
             "symfony/property-info": "^3.4|^4.0|^5.0",
             "symfony/translation": "^4.2",
@@ -4164,7 +4165,7 @@
             "symfony/translation": "For translating validation errors.",
             "symfony/yaml": ""
         },
-        "time": "2020-01-31T09:11:17+00:00",
+        "time": "2020-02-29T10:05:28+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -4199,17 +4200,17 @@
     },
     {
         "name": "symfony/var-dumper",
-        "version": "v4.4.4",
-        "version_normalized": "4.4.4.0",
+        "version": "v4.4.5",
+        "version_normalized": "4.4.5.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/var-dumper.git",
-            "reference": "46b53fd714568af343953c039ff47b67ce8af8d6"
+            "reference": "2572839911702b0405479410ea7a1334bfab0b96"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/var-dumper/zipball/46b53fd714568af343953c039ff47b67ce8af8d6",
-            "reference": "46b53fd714568af343953c039ff47b67ce8af8d6",
+            "url": "https://api.github.com/repos/symfony/var-dumper/zipball/2572839911702b0405479410ea7a1334bfab0b96",
+            "reference": "2572839911702b0405479410ea7a1334bfab0b96",
             "shasum": ""
         },
         "require": {
@@ -4232,7 +4233,7 @@
             "ext-intl": "To show region name in time zone dump",
             "symfony/console": "To use the ServerDumpCommand and/or the bin/var-dump-server script"
         },
-        "time": "2020-01-25T12:44:29+00:00",
+        "time": "2020-02-24T13:10:00+00:00",
         "bin": [
             "Resources/bin/var-dump-server"
         ],
