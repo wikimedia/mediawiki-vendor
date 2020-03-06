@@ -9,6 +9,7 @@ use Psr\Log\NullLogger;
 use Wikimedia\Parsoid\ContentModelHandler;
 use Wikimedia\Parsoid\Ext\Extension;
 use Wikimedia\Parsoid\Ext\ExtensionTag;
+use Wikimedia\Parsoid\ExtensionContentModelHandler;
 use Wikimedia\Parsoid\Utils\PHPUtils;
 use Wikimedia\Parsoid\Utils\Util;
 use Wikimedia\Parsoid\WikitextContentModelHandler;
@@ -55,12 +56,7 @@ abstract class SiteConfig {
 	 * @var array
 	 */
 	private $defaultNativeExtensions = [
-		'Cite', 'LST', 'Nowiki', 'Poem', 'Pre', 'Translate', 'Gallery',
-		/*
-		 * Not yet ported / merged
-		 *
-		'JSON'
-		 */
+		'Cite', 'LST', 'Nowiki', 'Poem', 'Pre', 'Translate', 'Gallery', 'JSON'
 	];
 
 	/** var array */
@@ -896,11 +892,13 @@ abstract class SiteConfig {
 	protected function registerNativeExtension( Extension $ext ): void {
 		$extConfig = $ext->getConfig();
 
-		// This is for wt2html toDOM, html2wt fromDOM, and linter functionality
-		foreach ( $extConfig['tags'] as $tagConfig ) {
-			$lowerTagName = mb_strtolower( $tagConfig['name'] );
-			$this->nativeExtConfig['allTags'][$lowerTagName] = true;
-			$this->nativeExtConfig['nativeTags'][$lowerTagName] = $tagConfig;
+		if ( isset( $extConfig['tags'] ) ) {
+			// This is for wt2html toDOM, html2wt fromDOM, and linter functionality
+			foreach ( $extConfig['tags'] as $tagConfig ) {
+				$lowerTagName = mb_strtolower( $tagConfig['name'] );
+				$this->nativeExtConfig['allTags'][$lowerTagName] = true;
+				$this->nativeExtConfig['nativeTags'][$lowerTagName] = $tagConfig;
+			}
 		}
 
 		// This is for wt2htmlPostProcessor and html2wtPreProcessor functionality
@@ -923,8 +921,7 @@ abstract class SiteConfig {
 				if ( isset( $this->nativeExtConfig['contentModels'][$cm] ) ) {
 					continue;
 				}
-
-				$this->nativeExtConfig['contentModels'][$cm] = $impl;
+				$this->nativeExtConfig['contentModels'][$cm] = new ExtensionContentModelHandler( new $impl );
 			}
 		}
 	}

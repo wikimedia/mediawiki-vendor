@@ -8,7 +8,6 @@ use DOMNode;
 use Exception;
 use Wikimedia\Parsoid\Config\ParsoidExtensionAPI;
 use Wikimedia\Parsoid\Ext\ExtensionTag;
-use Wikimedia\Parsoid\Utils\ContentUtils;
 use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\DOMUtils;
@@ -33,7 +32,7 @@ class Ref extends ExtensionTag {
 		// The php preprocessor did our expansion.
 		$allowNestedRef = !empty( $extApi->inTemplate() ) && $parentExtTag !== 'ref';
 
-		return $extApi->parseTokenContentsToDOM(
+		return $extApi->parseExtTagToDOM(
 			$extArgs,
 			'',
 			$txt,
@@ -81,7 +80,6 @@ class Ref extends ExtensionTag {
 	) {
 		$startTagSrc = $extApi->serializeExtensionStartTag( $node );
 		$dataMw = DOMDataUtils::getDataMw( $node );
-		$env = $extApi->getEnv();
 		$html = null;
 		if ( !isset( $dataMw->body ) ) {
 			return $startTagSrc; // We self-closed this already.
@@ -93,7 +91,7 @@ class Ref extends ExtensionTag {
 				// If the body isn't contained in data-mw.body.html, look if
 				// there's an element pointed to by body.id.
 				$bodyElt = DOMCompat::getElementById( $node->ownerDocument, $dataMw->body->id );
-				$editedDoc = $env->getPageConfig()->editedDoc ?? null;
+				$editedDoc = $extApi->getPageConfig()->editedDoc ?? null;
 				if ( !$bodyElt && $editedDoc ) {
 					// Try to get to it from the main page.
 					// This can happen when the <ref> is inside another
@@ -103,12 +101,7 @@ class Ref extends ExtensionTag {
 					$bodyElt = DOMCompat::getElementById( $editedDoc, $dataMw->body->id );
 				}
 				if ( $bodyElt ) {
-					// n.b. this is going to drop any diff markers but since
-					// the dom differ doesn't traverse into extension content
-					// none should exist anyways.
-					DOMDataUtils::visitAndStoreDataAttribs( $bodyElt );
-					$html = ContentUtils::toXML( $bodyElt, [ 'innerXML' => true ] );
-					DOMDataUtils::visitAndLoadDataAttribs( $bodyElt );
+					$html = ParsoidExtensionAPI::innerHTML( $bodyElt );
 				} else {
 					// Some extra debugging for VisualEditor
 					$extraDebug = '';
@@ -120,7 +113,7 @@ class Ref extends ExtensionTag {
 							if ( $ref ) {
 								$extraDebug .= ' [own doc: ' . DOMCompat::getOuterHTML( $ref ) . ']';
 							}
-							$ref = DOMCompat::querySelector( $env->getPageConfig()->editedDoc, $href );
+							$ref = DOMCompat::querySelector( $editedDoc, $href );
 							if ( $ref ) {
 								$extraDebug .= ' [main doc: ' . DOMCompat::getOuterHTML( $ref ) . ']';
 							}

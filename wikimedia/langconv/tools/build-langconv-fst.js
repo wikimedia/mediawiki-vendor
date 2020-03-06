@@ -34,8 +34,7 @@
  *  If you wanted (for some reason) to allow null characters in the
  *  input (which are not included in the "anything else" case), then
  *  encode them as 0xC0 0x80 (aka "Modified UTF-8").  [Similarly, if
- *  you wanted to emit a null character, you could emit 0xC0 0x80,
- *  although emitting 0x00 directly ought to work fine as well.]
+ *  you wanted to emit a null character, you could emit 0xC0 0x80.]
  *
  * Byte values 0xF8 - 0xFF are disallowed in UTF-8.  We use them for
  * special cases, as follows:

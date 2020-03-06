@@ -643,12 +643,10 @@ wgFragmentMode=[ 'html5', 'legacy' ]
 ==A <nowiki>B
 C</nowiki>==
 !! html/php
-<h2><span id="A_B.0AC"></span><span class="mw-headline" id="A_B
-C">A B
+<h2><span id="A_B.0AC"></span><span class="mw-headline" id="A_B_C">A B
 C</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/index.php?title=Parser_test&amp;action=edit&amp;section=1" title="Edit section: A B&#10;C">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
 !! html/parsoid
-<h2 id="A_B
-C"><span id="A_B.0AC" typeof="mw:FallbackId"></span>A <span typeof="mw:Nowiki">B
+<h2 id="A_B_C"><span id="A_B.0AC" typeof="mw:FallbackId"></span>A <span typeof="mw:Nowiki">B
 C</span></h2>
 !! end
 
@@ -22858,11 +22856,11 @@ wgFragmentMode=[ 'html5', 'legacy' ]
 __NOEDITSECTION__
 !! html/php
 <h3><span id=".2B:.3A.253A_.26.26.5D.5D_x"></span><span class="mw-headline" id="+:.3A%3A_&amp;&amp;]]_x">_ +:.3A%3A _ &amp;&amp;]] x</span></h3>
-<p>+:.3A%3A_&amp;&amp;&#93;&#93;_x
+<p>+:.3A%253A_&amp;&amp;&#93;&#93;_x
 </p>
 !! html/parsoid
 <h3 id="+:.3A%3A_&amp;&amp;]]_x"><span id=".2B:.3A.253A_.26.26.5D.5D_x" typeof="mw:FallbackId"></span>_ +:.3A%3A _ &amp;<span typeof="mw:Entity" data-parsoid='{"src":"&amp;amp;","srcContent":"&amp;","dsr":[18,23,null,null]}'>&amp;</span>]] x</h3>
-<p about="#mwt1" typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"anchorencode: _ +:.3A%3A _ &amp;&amp;amp;]] x","function":"anchorencode"},"params":{},"i":0}}]}'>+:.3A%3A_&amp;&amp;<span typeof="mw:Entity">]</span><span typeof="mw:Entity">]</span>_x</p>
+<p about="#mwt1" typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"anchorencode: _ +:.3A%3A _ &amp;&amp;amp;]] x","function":"anchorencode"},"params":{},"i":0}}]}'>+:.3A%253A_&amp;&amp;<span typeof="mw:Entity">]</span><span typeof="mw:Entity">]</span>_x</p>
 <meta property="mw:PageProp/noeditsection"/>
 !! end
 
@@ -30198,6 +30196,18 @@ Magic links inside image captions (autolinked)
 <figure class="mw-default-size" typeof="mw:Image/Thumb"><a href="./File:Foobar.jpg"><img resource="./File:Foobar.jpg" src="//example.com/images/thumb/3/3a/Foobar.jpg/220px-Foobar.jpg" data-file-width="1941" data-file-height="220" data-file-type="bitmap" height="25" width="220"/></a><figcaption><a href="https://tools.ietf.org/html/rfc1234" rel="mw:ExtLink" class="external mw-magiclink">RFC 1234</a></figcaption></figure>
 <figure class="mw-default-size" typeof="mw:Image/Thumb"><a href="./File:Foobar.jpg"><img resource="./File:Foobar.jpg" src="//example.com/images/thumb/3/3a/Foobar.jpg/220px-Foobar.jpg" data-file-width="1941" data-file-height="220" data-file-type="bitmap" height="25" width="220"/></a><figcaption><a href="//www.ncbi.nlm.nih.gov/pubmed/1234?dopt=Abstract" rel="mw:ExtLink" class="external mw-magiclink">PMID 1234</a></figcaption></figure>
 <figure class="mw-default-size" typeof="mw:Image/Thumb"><a href="./File:Foobar.jpg"><img resource="./File:Foobar.jpg" src="//example.com/images/thumb/3/3a/Foobar.jpg/220px-Foobar.jpg" data-file-width="1941" data-file-height="220" data-file-type="bitmap" height="25" width="220"/></a><figcaption><a href="./Special:BookSources/123456789X" rel="mw:WikiLink">ISBN 123456789x</a></figcaption></figure>
+!! end
+
+!! test
+Interwiki links inside image captions
+!! options
+language=de
+!! wikitext
+[[File:Foobar.jpg|thumb|right|[[:Wikipedia:Foo]] bar]]
+!! html+tidy
+<div class="thumb tright"><div class="thumbinner" style="width:182px;"><a href="/wiki/Datei:Foobar.jpg" class="image"><img alt="" src="http://example.com/images/thumb/3/3a/Foobar.jpg/180px-Foobar.jpg" decoding="async" width="180" height="20" class="thumbimage" srcset="http://example.com/images/thumb/3/3a/Foobar.jpg/270px-Foobar.jpg 1.5x, http://example.com/images/thumb/3/3a/Foobar.jpg/360px-Foobar.jpg 2x" /></a>  <div class="thumbcaption"><div class="magnify"><a href="/wiki/Datei:Foobar.jpg" class="internal" title="vergrößern"></a></div><a href="http://en.wikipedia.org/wiki/Foo" class="extiw" title="wikipedia:Foo">Wikipedia:Foo</a> bar</div></div></div>
+!! html/parsoid
+<figure class="mw-default-size mw-halign-right" typeof="mw:Image/Thumb" data-parsoid='{"optList":[{"ck":"thumbnail","ak":"thumb"},{"ck":"right","ak":"right"},{"ck":"caption","ak":"[[:Wikipedia:Foo]] bar"}],"dsr":[0,54,2,2]}'><a href="./Datei:Foobar.jpg" data-parsoid="{}"><img resource="./Datei:Foobar.jpg" src="//example.com/images/thumb/3/3a/Foobar.jpg/220px-Foobar.jpg" data-file-width="1941" data-file-height="220" data-file-type="bitmap" height="25" width="220" data-parsoid='{"a":{"resource":"./Datei:Foobar.jpg","height":"25","width":"220"},"sa":{"resource":"File:Foobar.jpg"}}'/></a><figcaption data-parsoid='{"dsr":[30,52,0,0]}'><a rel="mw:WikiLink" href="./Wikipedia:Foo" title="Wikipedia:Foo" data-parsoid='{"stx":"simple","a":{"href":"./Wikipedia:Foo"},"sa":{"href":":Wikipedia:Foo"},"dsr":[30,48,2,2]}'>Wikipedia:Foo</a> bar</figcaption></figure>
 !! end
 
 !! test

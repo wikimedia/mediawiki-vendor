@@ -11,21 +11,19 @@ use Wikimedia\Parsoid\Html2wt\SerializerState;
 use Wikimedia\Parsoid\Tokens\DomSourceRange;
 use Wikimedia\Parsoid\Tokens\SourceRange;
 use Wikimedia\Parsoid\Tokens\Token;
+use Wikimedia\Parsoid\Utils\ContentUtils;
 use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\PipelineUtils;
+use Wikimedia\Parsoid\Utils\Title;
+use Wikimedia\Parsoid\Utils\Util;
 use Wikimedia\Parsoid\Utils\WTUtils;
+use Wikimedia\Parsoid\Wt2Html\DOMPostProcessor;
 use Wikimedia\Parsoid\Wt2Html\Frame;
 use Wikimedia\Parsoid\Wt2Html\TT\Sanitizer;
 
 /**
- * Extensions should / will eventually only get access to an instance of this config.
- * Instead of giving them direct access to all of Env, maybe we should given access
- * to specific properties (title, wiki config, page config) and methods as necessary.
- *
- * But, that is post-port TODO when we think more seriously about the extension and hooks API.
- *
  * Extensions are expected to use only these interfaces and strongly discouraged from
  * calling Parsoid code directly. Code review is expected to catch these discouraged
  * code patterns. We'll have to finish grappling with the extension and hooks API
@@ -81,10 +79,65 @@ class ParsoidExtensionAPI {
 	}
 
 	/**
-	 * @return Env
+	 * Get a new about id for marking extension output
+	 * FIXME: This should never really be needed since the extension API
+	 * handles this on behalf of extensions, but Cite has one use case
+	 * where implicit <references /> output is added.
+	 *
+	 * @return string
 	 */
-	public function getEnv(): Env {
-		return $this->env;
+	public function newAboutId(): string {
+		return $this->env->newAboutId();
+	}
+
+	/**
+	 * Get the site configuration to let extensions customize
+	 * their behavior based on how the wiki is configured.
+	 *
+	 * @return SiteConfig
+	 */
+	public function getSiteConfig(): SiteConfig {
+		return $this->env->getSiteConfig();
+	}
+
+	/**
+	 * FIXME: Unsure if we need to provide this access yet
+	 * Get the page configuration
+	 * @return PageConfig
+	 */
+	public function getPageConfig(): PageConfig {
+		return $this->env->getPageConfig();
+	}
+
+	/**
+	 * Get the URI to link to a title
+	 * @param Title $title
+	 * @return string
+	 */
+	public function getTitleUri( Title $title ): string {
+		return $this->env->makeLink( $title );
+	}
+
+	/**
+	 * Get an URI for the current page
+	 * @return string
+	 */
+	public function getPageUri(): string {
+		$title = Title::newFromText(
+			$this->env->getPageConfig()->getTitle(),
+			$this->env->getSiteConfig()
+		);
+		return $this->getTitleUri( $title );
+	}
+
+	/**
+	 * Make a title from an input string
+	 * @param string $str
+	 * @param int $namespaceId
+	 * @return ?Title
+	 */
+	public function makeTitle( string $str, int $namespaceId ): ?Title {
+		return $this->env->makeTitleFromText( $str, $namespaceId, true /* no exceptions */ );
 	}
 
 	/**
@@ -103,36 +156,19 @@ class ParsoidExtensionAPI {
 	}
 
 	/**
-	 * If we are parsing in the context of a parent extension tag,
-	 * return the name of that extension tag
-	 * @return string|null
-	 */
-	public function parentExtTag(): ?string {
-		return $this->wt2htmlOpts['extTag'] ?? null;
-	}
-
-	/**
-	 * If we are parsing in the context of a parent extension tag,
-	 * return the parsing options set by that tag.
-	 * @return array
-	 */
-	public function parentExtTagOpts(): array {
-		return $this->wt2htmlOpts['extTagOpts'] ?? [];
-	}
-
-	/**
-	 * Return the extTagOffsets from the extToken.
-	 * @return DomSourceRange|null
-	 */
-	public function getExtTagOffsets(): ?DomSourceRange {
-		return $this->extToken->dataAttribs->extTagOffsets ?? null;
-	}
-
-	/**
+	 * Return the name of the extension tag
 	 * @return string
 	 */
 	public function getExtensionName(): string {
 		return $this->extToken->getAttribute( 'name' );
+	}
+
+	/**
+	 * Return the source offsets for this extension tag usage
+	 * @return DomSourceRange|null
+	 */
+	public function getExtTagOffsets(): ?DomSourceRange {
+		return $this->extToken->dataAttribs->extTagOffsets ?? null;
 	}
 
 	/**
@@ -156,7 +192,50 @@ class ParsoidExtensionAPI {
 	}
 
 	/**
-	 * Create a parsing pipeline to parse wikitext.
+	 * FIXME: Is this something that can come from the frame?
+	 * If we are parsing in the context of a parent extension tag,
+	 * return the name of that extension tag
+	 * @return string|null
+	 */
+	public function parentExtTag(): ?string {
+		return $this->wt2htmlOpts['extTag'] ?? null;
+	}
+
+	/**
+	 * FIXME: Is this something that can come from the frame?
+	 * If we are parsing in the context of a parent extension tag,
+	 * return the parsing options set by that tag.
+	 * @return array
+	 */
+	public function parentExtTagOpts(): array {
+		return $this->wt2htmlOpts['extTagOpts'] ?? [];
+	}
+
+	/**
+	 * Get the content DOM corresponding to an id
+	 * @param string $contentId
+	 * @return DOMElement
+	 */
+	public function getContentDOM( string $contentId ): DOMElement {
+		// FIXME: This [0] indexing is specific to <ref> fragments.
+		// Might need to be revisited if this assumption breaks for
+		// other extension tags.
+		$frag = $this->env->getDOMFragment( $contentId )[0];
+		DOMUtils::assertElt( $frag );
+		return $frag;
+	}
+
+	/**
+	 * Get the serialized HTML for the content DOM corresponding to an id
+	 * @param string $contentId
+	 * @return string
+	 */
+	public function getContentHTML( string $contentId ): string {
+		return $this->innerHTML( $this->getContentDOM( $contentId ) );
+	}
+
+	/**
+	 * Parse wikitext to DOM
 	 *
 	 * @param string $wikitext
 	 * @param array $parseOpts
@@ -202,11 +281,23 @@ class ParsoidExtensionAPI {
 				$wikitext,
 				$opts
 			);
+
+			if ( isset( $parseOpts['shiftDSRFn'] ) ) {
+				ContentUtils::shiftDSR(
+					$this->env,
+					DOMCompat::getBody( $doc ),
+					$parseOpts['shiftDSRFn']
+				);
+			}
 		}
 		return $doc;
 	}
 
 	/**
+	 * Parse extension tag to DOM. Beyond parsing the contents of the extension tag,
+	 * this wraps the contents in a custom wrapper element (ex: <div>), sanitizes
+	 * the arguments of the extension args and sets some content flags on the wrapper.
+	 *
 	 * @param array $extArgs
 	 * @param string $leadingWS
 	 * @param string $wikitext
@@ -221,21 +312,18 @@ class ParsoidExtensionAPI {
 	 *   - inPHPBlock
 	 * @return DOMDocument
 	 */
-	public function parseTokenContentsToDOM(
+	public function parseExtTagToDOM(
 		array $extArgs, string $leadingWS, string $wikitext, array $parseOpts
 	): DOMDocument {
-		$dataAttribs = $this->extToken->dataAttribs;
-		$extTagOffsets = $dataAttribs->extTagOffsets;
-		$srcOffsets = new SourceRange(
-			$extTagOffsets->innerStart() + strlen( $leadingWS ),
-			$extTagOffsets->innerEnd()
-		);
+		$extTagOffsets = $this->extToken->dataAttribs->extTagOffsets;
+		if ( !isset( $parseOpts['srcOffsets'] ) ) {
+			$parseOpts['srcOffsets'] = new SourceRange(
+				$extTagOffsets->innerStart() + strlen( $leadingWS ),
+				$extTagOffsets->innerEnd()
+			);
+		}
 
-		$doc = $this->parseWikitextToDOM(
-			$wikitext,
-			$parseOpts + [ 'srcOffsets' => $srcOffsets ],
-			/* sol */true
-		);
+		$doc = $this->parseWikitextToDOM( $wikitext, $parseOpts, true /* sol */ );
 
 		// Create a wrapper and migrate content into the wrapper
 		$wrapper = $doc->createElement( $parseOpts['wrapperTag'] );
@@ -243,8 +331,8 @@ class ParsoidExtensionAPI {
 		DOMUtils::migrateChildren( $body, $wrapper );
 		$body->appendChild( $wrapper );
 
-		// Sanitize argDict.attrs and set on the wrapper
-		Sanitizer::applySanitizedArgs( $this->env, $wrapper, $extArgs );
+		// Sanitize args and set on the wrapper
+		$this->sanitizeArgs( $wrapper, $extArgs );
 
 		// Mark empty content DOMs
 		if ( $wikitext === '' ) {
@@ -264,6 +352,33 @@ class ParsoidExtensionAPI {
 	 */
 	public function sanitizeArgs( DOMElement $elt, array $extArgs ): void {
 		Sanitizer::applySanitizedArgs( $this->env, $elt, $extArgs );
+	}
+
+	/**
+	 * Sanitize string to be used as a valid HTML id attribute
+	 * @param string $id
+	 * @return string
+	 */
+	public function sanitizeHTMLId( string $id ): string {
+		return Sanitizer::escapeIdForAttribute( $id );
+	}
+
+	/**
+	 * Sanitize string to be used as a CSS value
+	 * @param string $css
+	 * @return string
+	 */
+	public function sanitizeCss( string $css ): string {
+		return Sanitizer::checkCss( $css );
+	}
+
+	/**
+	 * Get the list of valid attributes useable for a HTML element
+	 * @param string $eltName
+	 * @return array
+	 */
+	public function getValidHTMLAttributes( string $eltName ): array {
+		return Sanitizer::attributeWhitelist( $eltName );
 	}
 
 	// TODO: Provide support for extensions to register lints
@@ -345,6 +460,94 @@ class ParsoidExtensionAPI {
 	}
 
 	/**
+	 * Copy $from->childNodes to $to.
+	 * $from and $to belong to different documents.
+	 *
+	 * @param DOMElement $from
+	 * @param DOMElement $to
+	 * @param bool $transferDataAttribs Should data-mw & data-parsoid be copied over?
+	 */
+	public static function migrateChildrenBetweenDocs(
+		DOMElement $from, DOMElement $to, bool $transferDataAttribs = true
+	): void {
+		// Migrate nodes
+		DOMUtils::migrateChildrenBetweenDocs( $from, $to );
+
+		// Ensure node data is available in $to's data bag as well
+		// FIXME: This will no longer be needed once DOM fragments
+		// are attached to the same source document instead of coming
+		// from different documents.
+		$fromDataBag = DOMDataUtils::getBag( $from->ownerDocument );
+		$toDataBag = DOMDataUtils::getBag( $to->ownerDocument );
+		DOMUtils::visitDOM( $to, function ( DOMNode $n ) use ( $fromDataBag, $toDataBag ) {
+			if ( $n instanceof DOMElement &&
+				$n->hasAttribute( DOMDataUtils::DATA_OBJECT_ATTR_NAME )
+			) {
+				$nId = $n->getAttribute( DOMDataUtils::DATA_OBJECT_ATTR_NAME );
+				$data = $fromDataBag->getObject( (int)$nId );
+				$newId = $toDataBag->stashObject( $data );
+				$n->setAttribute( DOMDataUtils::DATA_OBJECT_ATTR_NAME, (string)$newId );
+			}
+		} );
+
+		if ( $transferDataAttribs ) {
+			DOMDataUtils::setDataParsoid( $to, Util::clone( DOMDataUtils::getDataParsoid( $from ) ) );
+			DOMDataUtils::setDataMw( $to, Util::clone( DOMDataUtils::getDataMw( $from ) ) );
+		}
+	}
+
+	/**
+	 * Parse input string into DOM.
+	 * NOTE: This leaves the DOM in Parsoid-canonical state and is the preferred method
+	 * to convert HTML to DOM that will be passed into Parsoid's code processing code.
+	 *
+	 * @param string $html
+	 * @return DOMDocument
+	 */
+	public function parseHTML( string $html ): DOMDocument {
+		$doc = $this->env->createDocument( $html );
+		DOMDataUtils::visitAndLoadDataAttribs( DOMCompat::getBody( $doc ) );
+		return $doc;
+	}
+
+	/**
+	 * Serialize DOM element to string. This puts the input node in a
+	 * non-canonical form and callers shouldn't use it after this call.
+	 * If callers expect to continue using the node beyond this point,
+	 * use the 'innerHTML' method instead.
+	 *
+	 * @param DOMElement $elt
+	 * @param bool $innerHTML
+	 * @return string
+	 */
+	public function toHTML( DOMElement $elt, bool $innerHTML = true ): string {
+		// FIXME: This is going to drop any diff markers but since
+		// the dom differ doesn't traverse into extension content (right now),
+		// none should exist anyways.
+		DOMDataUtils::visitAndStoreDataAttribs( $elt );
+		$html = ContentUtils::toXML( $elt, [ 'innerXML' => $innerHTML ] );
+		return $html;
+	}
+
+	/**
+	 * Return innerHTML equivalent of $elt.
+	 * This version is aware of the DOM state and how/where data-attribs are stored
+	 *
+	 * @param DOMElement $elt
+	 * @return string
+	 */
+	public static function innerHTML( DOMElement $elt ): string {
+		// FIXME: This is going to drop any diff markers but since
+		// the dom differ doesn't traverse into extension content (right now),
+		// none should exist anyways.
+		DOMDataUtils::visitAndStoreDataAttribs( $elt );
+		$html = ContentUtils::toXML( $elt, [ 'innerXML' => true ] );
+		DOMDataUtils::visitAndLoadDataAttribs( $elt );
+
+		return $html;
+	}
+
+	/**
 	 * Bit flags describing escaping / serializing context in html -> wt mode
 	 */
 	const IN_SOL = 1;
@@ -355,7 +558,7 @@ class ParsoidExtensionAPI {
 
 	/**
 	 * FIXME: We should get rid of this and simply let RT tests fail on this or add
-	 * other test output normalizations to deal with it.  But, this should be done
+	 * other test output normalizations to deal with it. But, this should be done
 	 * as a separate refactoring step to isolate its affects and reset the rt test baseline.
 	 * @return bool
 	 */
@@ -455,5 +658,25 @@ class ParsoidExtensionAPI {
 		} else {
 			throw new \RuntimeException( 'Not yet supported!' );
 		}
+	}
+
+	/**
+	 * EXTAPI-FIXME: We have to figure out what it means to run a DOM PP pass
+	 * (and what processors and what handlers apply) on content models that are
+	 * not wikitext. For now, we are only storing data attribs back to the DOM
+	 * and adding metadata to the page.
+	 *
+	 * @param DOMDocument $doc
+	 */
+	public function postProcessDOM( DOMDocument $doc ): void {
+		$env = $this->env;
+		// From CleanUp::cleanupAndSaveDataParsoid
+		DOMDataUtils::visitAndStoreDataAttribs( DOMCompat::getBody( $doc ), [
+			'storeInPageBundle' => $env->pageBundle,
+			'env' => $env
+		] );
+		// DOMPostProcessor has a FIXME about moving this to DOMUtils / Env
+		$dompp = new DOMPostProcessor( $env );
+		$dompp->addMetaData( $env, $doc );
 	}
 }

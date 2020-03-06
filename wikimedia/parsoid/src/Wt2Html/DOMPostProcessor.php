@@ -145,7 +145,7 @@ class DOMPostProcessor extends PipelineStage {
 					return $t->traverse( ...$args );
 				};
 			} else {
-				// @phan-suppress-next-line PhanTypeExpectedObjectOrClassName
+				// @phan-suppress-next-line PhanNonClassMethodCall
 				$c = new $p['Processor']( $this->extApi );
 				$p['proc'] = function ( ...$args ) use ( $c ) {
 					return $c->run( ...$args );
@@ -234,8 +234,6 @@ class DOMPostProcessor extends PipelineStage {
 			],
 			// 1. Link prefixes and suffixes
 			// 2. Unpack DOM fragments
-			// FIXME: Picked a terse 'v' varname instead of trying to find
-			// a suitable name that addresses both functions above.
 			[
 				'name' => 'HandleLinkNeighbours,UnpackDOMFragments',
 				'shortcut' => 'dom-unpack',
@@ -314,6 +312,7 @@ class DOMPostProcessor extends PipelineStage {
 		 */
 		foreach ( $env->getSiteConfig()->getNativeExtDOMProcessors() as $extName => $domProcs ) {
 			$processors[] = [
+				'isExtPP' => true, // This is an extension DOM post processor
 				'name' => 'tag:' . $extName,
 				'Processor' => new $domProcs['wt2htmlPostProcessor']( $this->extApi )
 			];
@@ -536,7 +535,7 @@ class DOMPostProcessor extends PipelineStage {
 	}
 
 	/**
-	 * FIXME: consider moving to DOMUtils or MWParserEnvironment.
+	 * FIXME: consider moving to DOMUtils or Env.
 	 *
 	 * @param Env $env
 	 * @param DOMDocument $document
@@ -825,7 +824,12 @@ class DOMPostProcessor extends PipelineStage {
 				}
 			}
 
-			$pp['proc']( $body, $env, $this->options, $this->atTopLevel );
+			if ( empty( $pp['isExtPP'] ) ) {
+				$pp['proc']( $body, $env, $this->options, $this->atTopLevel );
+			} else {
+				// Pass $extApi, not $env to extension post processors
+				$pp['proc']( $this->extApi, $body, $this->options, $this->atTopLevel );
+			}
 
 			if ( $dumpFlags ) {
 				if ( !empty( $dumpFlags['dom:post-' . $pp['shortcut']] ) ) {

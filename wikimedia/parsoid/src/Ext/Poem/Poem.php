@@ -5,14 +5,12 @@ namespace Wikimedia\Parsoid\Ext\Poem;
 
 use DOMDocument;
 use DOMElement;
-use Wikimedia\Parsoid\Config\Env;
 use Wikimedia\Parsoid\Config\ParsoidExtensionAPI;
 use Wikimedia\Parsoid\Ext\Extension;
 use Wikimedia\Parsoid\Ext\ExtensionTag;
 use Wikimedia\Parsoid\Tokens\DomSourceRange;
 use Wikimedia\Parsoid\Tokens\KV;
 use Wikimedia\Parsoid\Tokens\SourceRange;
-use Wikimedia\Parsoid\Utils\ContentUtils;
 use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMUtils;
 
@@ -49,7 +47,7 @@ class Poem extends ExtensionTag implements Extension {
 					$i++;
 				}
 				if ( $i > 0 && $i < $lineLength ) {
-					$doc = $extApi->getEnv()->createDocument();
+					$doc = $extApi->parseHTML( '' ); // Empty doc
 					$span = $doc->createElement( 'span' );
 					$span->setAttribute( 'class', 'mw-poem-indented' );
 					$span->setAttribute( 'style', 'display: inline-block; margin-left: ' . $i . 'em;' );
@@ -105,33 +103,26 @@ class Poem extends ExtensionTag implements Extension {
 			$args[] = new KV( 'class', 'poem' );
 		}
 
-		$doc = $extApi->parseTokenContentsToDOM( $args, '', $content, [
+		return $extApi->parseExtTagToDOM( $args, '', $content, [
 				'wrapperTag' => 'div',
 				'pipelineOpts' => [
 					'extTag' => 'poem',
 				],
 				'frame' => $newFrame,
 				'srcOffsets' => new SourceRange( 0, strlen( $content ) ),
+				// We've shifted the content around quite a bit when we preprocessed
+				// it.  In the future if we wanted to enable selser inside the <poem>
+				// body we should create a proper offset map and then apply it to the
+				// result after the parse, like we do in the Gallery extension.
+				// But for now, since we don't selser the contents, just strip the
+				// DSR info so it doesn't cause problems/confusion with unicode
+				// offset conversion (and so it's clear you can't selser what we're
+				// currently emitting).
+				'shiftDSRFn' => function ( DomSourceRange $dsr ) {
+					return null; // XXX in the future implement proper mapping
+				}
 			]
 		);
-
-		// We've shifted the content around quite a bit when we preprocessed
-		// it.  In the future if we wanted to enable selser inside the <poem>
-		// body we should create a proper offset map and then apply it to the
-		// result after the parse, like we do in the Gallery extension.
-		// But for now, since we don't selser the contents, just strip the
-		// DSR info so it doesn't cause problems/confusion with unicode
-		// offset conversion (and so it's clear you can't selser what we're
-		// currently emitting).
-		$body = DOMCompat::getBody( $doc );
-		ContentUtils::shiftDSR(
-			$extApi->getEnv(),
-			$body,
-			function ( DomSourceRange $dsr ) {
-				return null; // XXX in the future implement proper mapping
-			}
-		);
-		return $doc;
 	}
 
 	/**
@@ -179,7 +170,7 @@ class Poem extends ExtensionTag implements Extension {
 	}
 
 	private function doPostProcessDOM(
-		DOMElement $node, Env $env, array $options, bool $atTopLevel
+		DOMElement $node, array $options, bool $atTopLevel
 	): void {
 		if ( !$atTopLevel ) {
 			return;
@@ -193,7 +184,7 @@ class Poem extends ExtensionTag implements Extension {
 					// Cannot do it before parsing because <br/> will get escaped!
 					self::processNowikis( $c );
 				} else {
-					$this->doPostProcessDOM( $c, $env, $options, $atTopLevel );
+					$this->doPostProcessDOM( $c, $options, $atTopLevel );
 				}
 			}
 			$c = $c->nextSibling;
@@ -205,13 +196,15 @@ class Poem extends ExtensionTag implements Extension {
 	 * Eventually, we will probably have an interface with a better name for this
 	 * entry method. But, for now, run() method it is.
 	 *
-	 * @param DOMElement $root
-	 * @param Env $env
+	 * @param ParsoidExtensionAPI $extApi
+	 * @param DOMElement $body
 	 * @param array $options
 	 * @param bool $atTopLevel
 	 */
-	public function run( DOMElement $root, Env $env, array $options, bool $atTopLevel ): void {
-		$this->doPostProcessDOM( $root, $env, $options, $atTopLevel );
+	public function run(
+		ParsoidExtensionAPI $extApi, DOMElement $body, array $options, bool $atTopLevel
+	): void {
+		$this->doPostProcessDOM( $body, $options, $atTopLevel );
 	}
 
 	/** @inheritDoc */

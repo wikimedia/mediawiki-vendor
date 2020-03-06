@@ -535,14 +535,14 @@ class TokenUtils {
 		for ( $i = 0, $l = count( $tokens ); $i < $l; $i++ ) {
 			$token = $tokens[$i];
 			if ( $token === null ) {
-				Assert::invariant( false, "No nulls expected." );
+				PHPUtils::unreachable( "No nulls expected." );
 			} elseif ( $token instanceof KV ) {
 				// Since this function is occasionally called on KV->v,
 				// whose signature recursively includes KV[], a mismatch with
 				// this function, we assert that those values are only
 				// included in safe places that don't intend to stringify
 				// their tokens.
-				Assert::invariant( false, "No KVs expected." );
+				PHPUtils::unreachable( "No KVs expected." );
 			} elseif ( is_string( $token ) ) {
 				$out .= $token;
 			} elseif ( is_array( $token ) ) {
@@ -567,7 +567,7 @@ class TokenUtils {
 				self::isDOMFragmentType( $token->getAttribute( 'typeof' ) ?? '' )
 			) {
 				// Handle dom fragments
-				$fragmentMap = $opts['env']->getFragmentMap();
+				$fragmentMap = $opts['env']->getDOMFragmentMap();
 				$nodes = $fragmentMap[$token->dataAttribs->html];
 				$out .= array_reduce( $nodes, function ( string $prev, DOMNode $next ) {
 						// FIXME: The correct thing to do would be to return
@@ -592,24 +592,19 @@ class TokenUtils {
 	}
 
 	/**
-	 * Convert an array of key-value pairs into a hash of keys to values. For
-	 * duplicate keys, the last entry wins.
+	 * Convert an array of key-value pairs into a hash of keys to values.
+	 * For duplicate keys, the last entry wins.
 	 * @param array<KV> $kvs
-	 * @param bool $convertValuesToString
-	 * @param bool $useSrc
 	 * @return array<string,Token[]>|array<string,string>
 	 */
-	public static function kvToHash(
-		array $kvs, bool $convertValuesToString = false, bool $useSrc = false
-	): array {
+	public static function kvToHash( array $kvs ): array {
 		$res = [];
 		foreach ( $kvs as $kv ) {
 			$key = trim( self::tokensToString( $kv->k ) );
 			// SSS FIXME: Temporary fix to handle extensions which use
 			// entities in attribute values. We need more robust handling
 			// of non-string template attribute values in general.
-			$val = ( $useSrc && $kv->vsrc !== null ) ? $kv->vsrc :
-				 ( $convertValuesToString ? self::tokensToString( $kv->v ) : $kv->v );
+			$val = self::tokensToString( $kv->v );
 			$res[mb_strtolower( $key )] = self::tokenTrim( $val );
 		}
 		return $res;

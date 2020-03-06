@@ -6,17 +6,16 @@ namespace Wikimedia\Parsoid\Ext\Gallery;
 use DOMDocument;
 use DOMElement;
 use stdClass;
-use Wikimedia\Assert\Assert;
 use Wikimedia\Parsoid\Config\ParsoidExtensionAPI;
 use Wikimedia\Parsoid\Ext\Extension;
 use Wikimedia\Parsoid\Ext\ExtensionTag;
 use Wikimedia\Parsoid\Tokens\DomSourceRange;
 use Wikimedia\Parsoid\Tokens\KV;
 use Wikimedia\Parsoid\Tokens\SourceRange;
-use Wikimedia\Parsoid\Utils\ContentUtils;
 use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\DOMUtils;
+use Wikimedia\Parsoid\Utils\PHPUtils;
 use Wikimedia\Parsoid\Utils\TokenUtils;
 
 /**
@@ -83,8 +82,6 @@ class Gallery extends ExtensionTag implements Extension {
 			false// Gallery captions are deliberately not parsed in SOL context
 		);
 		$body = DOMCompat::getBody( $doc );
-		// Store before `migrateChildrenBetweenDocs` in render
-		DOMDataUtils::visitAndStoreDataAttribs( $body );
 		return $body;
 	}
 
@@ -100,8 +97,6 @@ class Gallery extends ExtensionTag implements Extension {
 		ParsoidExtensionAPI $extApi, string $line, int $lineStartOffset,
 		Opts $opts
 	): ?ParsedLine {
-		$env = $extApi->getEnv();
-
 		// Regexp from php's `renderImageGallery`
 		if ( !preg_match( '/^([^|]+)(\|(?:.*))?$/D', $line, $matches ) ) {
 			return null;
@@ -112,10 +107,9 @@ class Gallery extends ExtensionTag implements Extension {
 
 		// TODO: % indicates rawurldecode.
 
-		$title = $env->makeTitleFromText(
+		$title = $extApi->makeTitle(
 			$text,
-			$env->getSiteConfig()->canonicalNamespaceId( 'file' ),
-			true /* no exceptions */
+			$extApi->getSiteConfig()->canonicalNamespaceId( 'file' )
 		);
 
 		if ( $title === null || !$title->getNamespace()->isFile() ) {
@@ -172,31 +166,25 @@ class Gallery extends ExtensionTag implements Extension {
 				],
 				'frame' => $newFrame,
 				'srcOffsets' => new SourceRange( 0, strlen( $wt ) ),
+				// Shift the DSRs in the DOM by startOffset, and strip DSRs
+				// for bits which aren't the caption or file, since they
+				// don't refer to actual source wikitext
+				'shiftDSRFn' => function ( DomSourceRange $dsr ) use ( $shiftOffset ) {
+					$start = $shiftOffset( $dsr->start );
+					$end = $shiftOffset( $dsr->end );
+					// If either offset is invalid, remove entire DSR
+					if ( $start === null || $end === null ) {
+						return null;
+					}
+					return new DomSourceRange(
+						$start, $end, $dsr->openWidth, $dsr->closeWidth
+					);
+				}
 			],
 			true // sol
 		);
 
 		$body = DOMCompat::getBody( $doc );
-
-		// Now shift the DSRs in the DOM by startOffset, and strip DSRs
-		// for bits which aren't the caption or file, since they
-		// don't refer to actual source wikitext
-		ContentUtils::shiftDSR(
-			$env,
-			$body,
-			function ( DomSourceRange $dsr ) use ( $shiftOffset ) {
-				$start = $shiftOffset( $dsr->start );
-				$end = $shiftOffset( $dsr->end );
-				// If either offset is invalid, remove entire DSR
-				if ( $start === null || $end === null ) {
-					return null;
-				}
-				return new DomSourceRange(
-					$start, $end, $dsr->openWidth, $dsr->closeWidth
-				);
-			}
-		);
-
 		$thumb = $body->firstChild;
 		if ( $thumb->nodeName !== 'figure' ) {
 			return null;
@@ -218,7 +206,7 @@ class Gallery extends ExtensionTag implements Extension {
 
 		if ( $opts->showfilename ) {
 			$galleryfilename = $doc->createElement( 'a' );
-			$galleryfilename->setAttribute( 'href', $env->makeLink( $title ) );
+			$galleryfilename->setAttribute( 'href', $extApi->getTitleUri( $title ) );
 			$galleryfilename->setAttribute( 'class', 'galleryfilename galleryfilename-truncate' );
 			$galleryfilename->setAttribute( 'title', $file );
 			$galleryfilename->appendChild( $doc->createTextNode( $file ) );
@@ -241,10 +229,6 @@ class Gallery extends ExtensionTag implements Extension {
 			break;
 		}
 
-		if ( $gallerytext ) {
-			// Store before `migrateChildrenBetweenDocs` in render
-			DOMDataUtils::visitAndStoreDataAttribs( $gallerytext );
-		}
 		return new ParsedLine( $thumb, $gallerytext, $rdfaType );
 	}
 
@@ -252,8 +236,8 @@ class Gallery extends ExtensionTag implements Extension {
 	public function toDOM(
 		ParsoidExtensionAPI $extApi, string $content, array $args
 	): DOMDocument {
-		$attrs = TokenUtils::kvToHash( $args, true );
-		$opts = new Opts( $extApi->getEnv(), $attrs );
+		$attrs = TokenUtils::kvToHash( $args );
+		$opts = new Opts( $extApi, $attrs );
 
 		$offset = $extApi->getExtTagOffsets()->innerStart();
 
@@ -278,9 +262,7 @@ class Gallery extends ExtensionTag implements Extension {
 		} );
 
 		$mode = Mode::byName( $opts->mode );
-		$doc = $mode->render( $extApi->getEnv(), $opts, $caption, $lines );
-		// Reload now that `migrateChildrenBetweenDocs` is done
-		DOMDataUtils::visitAndLoadDataAttribs( DOMCompat::getBody( $doc ) );
+		$doc = $mode->render( $extApi, $opts, $caption, $lines );
 		return $doc;
 	}
 
@@ -357,7 +339,7 @@ class Gallery extends ExtensionTag implements Extension {
 				// Ignore it
 				break;
 			default:
-				Assert::invariant( false, 'Should not be here!' );
+				PHPUtils::unreachable( 'should not be here!' );
 				break;
 			}
 		}
@@ -404,7 +386,7 @@ class Gallery extends ExtensionTag implements Extension {
 		ParsoidExtensionAPI $extApi, object $argDict
 	): void {
 		// FIXME: Only remove after VE switches to editing HTML.
-		if ( $extApi->getEnv()->getSiteConfig()->nativeGalleryEnabled() ) {
+		if ( $extApi->getSiteConfig()->nativeGalleryEnabled() ) {
 			// Remove extsrc from native extensions
 			unset( $argDict->body->extsrc );
 

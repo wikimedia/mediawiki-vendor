@@ -811,7 +811,6 @@ class Sanitizer extends TokenHandler {
 					() | # 4. backslash at end of string
 				)/xu";
 		}
-		// @phan-suppress-next-line PhanParamSuspiciousOrder
 		$value = preg_replace_callback( $decodeRegex,
 			[ self::class, 'cssDecodeCallback' ], $value );
 
@@ -1380,8 +1379,7 @@ class Sanitizer extends TokenHandler {
 	 * @param string $id String to escape
 	 * @param int $mode One of ID_* constants, specifying whether the primary or fallback encoding
 	 *     should be used.
-	 * @return string|bool Escaped ID or false if fallback encoding is requested but it's not
-	 *     configured.
+	 * @return string Escaped ID
 	 *
 	 * @since 1.30
 	 */
@@ -1408,7 +1406,7 @@ class Sanitizer extends TokenHandler {
 	 * @since 1.30
 	 */
 	public static function escapeIdForLink( string $id ): string {
-		return self::escapeIdInternal( $id, 'html5' );
+		return self::escapeIdInternalUrl( $id, 'html5' );
 	}
 
 	/**
@@ -1422,7 +1420,23 @@ class Sanitizer extends TokenHandler {
 	 */
 	private static function escapeIdForExternalInterwiki( string $id ): string {
 		// Assume $wgExternalInterwikiFragmentMode = 'legacy'
-		return self::escapeIdInternal( $id, 'legacy' );
+		return self::escapeIdInternalUrl( $id, 'legacy' );
+	}
+
+	/**
+	 * Do percent encoding of percent signs for href (but not id) attributes
+	 *
+	 * @see https://phabricator.wikimedia.org/T238385
+	 * @param string $id String to escape
+	 * @param string $mode One of modes from $wgFragmentMode
+	 * @return string
+	 */
+	private static function escapeIdInternalUrl( $id, $mode ) {
+		$id = self::escapeIdInternal( $id, $mode );
+		if ( $mode === 'html5' ) {
+			$id = preg_replace( '/%([a-fA-F0-9]{2})/', '%25$1', $id );
+		}
+		return $id;
 	}
 
 	/**
@@ -1435,7 +1449,11 @@ class Sanitizer extends TokenHandler {
 	private static function escapeIdInternal( string $id, string $mode ): string {
 		switch ( $mode ) {
 			case 'html5':
-				$id = str_replace( ' ', '_', $id );
+				// html5 spec says ids must not have any of the following:
+				// U+0009 TAB, U+000A LF, U+000C FF, U+000D CR, or U+0020 SPACE
+				// In practice, in wikitext, only tab, LF, CR (and SPACE) are
+				// possible using either Lua or html entities.
+				$id = str_replace( [ "\t", "\n", "\f", "\r", " " ], '_', $id );
 				break;
 
 			case 'legacy':

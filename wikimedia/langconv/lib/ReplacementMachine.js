@@ -16,10 +16,10 @@ class ReplacementMachine {
 	constructor(baseLanguage, ...codes) {
 		this.baseLanguage = baseLanguage;
 		this.codes = codes.slice(0);
-		this.machine = new Map(codes.map(c => [c, {
+		this.machine = new Map(codes.map((c) => [c, {
 			convert: ReplacementMachine.loadFST(`trans-${c}`),
 			bracket: new Map(
-				codes.filter(cc => this.validCodePair(c, cc)).map(cc => [
+				codes.filter((cc) => this.validCodePair(c, cc)).map((cc) => [
 					cc,
 					ReplacementMachine.loadFST(
 						`brack-${c}-${c === cc ? 'noop' : cc}`,
@@ -156,7 +156,7 @@ class ReplacementMachine {
 				// more appropriate invertCode !== destCode.
 				let ic = invertCode;
 				if (ic === destCode) {
-					const cs = this.codes.filter(c => c !== destCode).map((code) => {
+					const cs = this.codes.filter((c) => c !== destCode).map((code) => {
 						return {
 							code,
 							stats: this.countBrackets(orig, code, code)

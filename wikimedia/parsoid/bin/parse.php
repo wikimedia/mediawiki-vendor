@@ -209,6 +209,13 @@ class Parse extends \Wikimedia\Parsoid\Tools\Maintenance {
 			'version',
 			'Show version number.'
 		);
+		$this->addOption(
+			'contentmodel',
+			"The content model of the input.  Defaults to \"wikitext\" but " .
+			"extensions may support others (for example, \"json\").",
+			false,
+			true
+		);
 		$this->setAllowUnregisteredOptions( false );
 	}
 
@@ -349,6 +356,9 @@ class Parse extends \Wikimedia\Parsoid\Tools\Maintenance {
 
 	private function maybeVersion() {
 		if ( $this->hasOption( 'version' ) ) {
+			# XXX: This doesn't work on production machines or in integrated
+			# mode, since Composer\Factory isn't in the production `vendor`
+			# deploy.
 			$composer = Factory::create( new NullIo(), './composer.json', false );
 			$root = $composer->getPackage();
 			$this->output( $root->getFullPrettyVersion() . "\n" );
@@ -470,7 +480,8 @@ class Parse extends \Wikimedia\Parsoid\Tools\Maintenance {
 		];
 		foreach ( [
 			'offsetType', 'outputContentVersion',
-			'wtVariantLanguage', 'htmlVariantLanguage'
+			'wtVariantLanguage', 'htmlVariantLanguage',
+			'contentmodel'
 		] as $opt ) {
 			if ( $this->hasOption( $opt ) ) {
 				$parsoidOpts[$opt] = $this->getOption( $opt );

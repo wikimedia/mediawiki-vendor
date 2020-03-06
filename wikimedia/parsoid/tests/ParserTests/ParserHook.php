@@ -8,7 +8,6 @@ use DOMElement;
 use DOMNode;
 use Error;
 
-use Wikimedia\Parsoid\Config\Env;
 use Wikimedia\Parsoid\Config\ParsoidExtensionAPI;
 use Wikimedia\Parsoid\Ext\Extension;
 use Wikimedia\Parsoid\Ext\ExtensionTag;
@@ -36,13 +35,13 @@ class ParserHook extends ExtensionTag implements Extension {
 	}
 
 	/**
+	 * @param ParsoidExtensionAPI $extApi
 	 * @param DOMElement $body
-	 * @param Env $env
 	 * @param array $options
 	 * @param bool $atTopLevel
 	 */
 	public function run(
-		DOMElement $body, Env $env, array $options = [], bool $atTopLevel = false
+		ParsoidExtensionAPI $extApi, DOMElement $body, array $options, bool $atTopLevel
 	): void {
 		if ( $atTopLevel ) {
 			// Pass an object since we want the data to be carried around across
@@ -59,12 +58,12 @@ class ParserHook extends ExtensionTag implements Extension {
 		switch ( $extName ) {
 			case 'tag':
 			case 'tåg':
-				return $extApi->getEnv()->createDocument( '<pre />' );
+				return $extApi->parseHTML( '<pre />' );
 
 			case 'statictag':
 				// FIXME: Choose a better DOM representation that doesn't mess with
 				// newline constraints.
-				return $extApi->getEnv()->createDocument( '<span />' );
+				return $extApi->parseHTML( '<span />' );
 
 			default:
 				throw new Error( "Unexpected tag name: $extName in ParserHook" );

@@ -6,12 +6,9 @@ namespace Wikimedia\Parsoid\Ext\Gallery;
 use DOMDocument;
 use DOMElement;
 
-use Wikimedia\Parsoid\Config\Env;
+use Wikimedia\Parsoid\Config\ParsoidExtensionAPI;
 use Wikimedia\Parsoid\Utils\DOMCompat;
-use Wikimedia\Parsoid\Utils\DOMDataUtils;
-use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\PHPUtils;
-use Wikimedia\Parsoid\Utils\Util;
 
 /**
  * @class
@@ -79,15 +76,7 @@ class TraditionalMode extends Mode {
 	) {
 		$li = $doc->createElement( 'li' );
 		$li->setAttribute( 'class', 'gallerycaption' );
-		DOMUtils::migrateChildrenBetweenDocs( $caption, $li );
-		if ( $caption->hasAttribute( 'data-parsoid' ) ) {
-			$li->setAttribute( 'data-parsoid', $caption->getAttribute( 'data-parsoid' ) );
-		}
-		// The data-mw attribute *shouldn't* exist, since this caption
-		// should be a <body>.  But let's be safe and copy it anyway.
-		if ( $caption->hasAttribute( 'data-mw' ) ) {
-			$li->setAttribute( 'data-mw', $caption->getAttribute( 'data-mw' ) );
-		}
+		ParsoidExtensionAPI::migrateChildrenBetweenDocs( $caption, $li );
 		$ul->appendChild( $doc->createTextNode( "\n" ) );
 		$ul->appendChild( $li );
 	}
@@ -164,15 +153,7 @@ class TraditionalMode extends Mode {
 		$div = $doc->createElement( 'div' );
 		$div->setAttribute( 'class', 'gallerytext' );
 		if ( $gallerytext ) {
-			DOMUtils::migrateChildrenBetweenDocs( $gallerytext, $div );
-			if ( $gallerytext->hasAttribute( 'data-parsoid' ) ) {
-				$div->setAttribute( 'data-parsoid', $gallerytext->getAttribute( 'data-parsoid' ) );
-			}
-			// The data-mw attribute *shouldn't* exist, since this gallerytext
-			// should be a <figcaption>.  But let's be safe and copy it anyway.
-			if ( $gallerytext->hasAttribute( 'data-mw' ) ) {
-				$div->setAttribute( 'data-mw', $gallerytext->getAttribute( 'data-mw' ) );
-			}
+			ParsoidExtensionAPI::migrateChildrenBetweenDocs( $gallerytext, $div );
 		}
 		$box->appendChild( $div );
 	}
@@ -193,16 +174,7 @@ class TraditionalMode extends Mode {
 
 		$wrapper = $doc->createElement( 'figure-inline' );
 		$wrapper->setAttribute( 'typeof', $o->rdfaType );
-		DOMDataUtils::setDataParsoid(
-			$wrapper, Util::clone( DOMDataUtils::getDataParsoid( $o->thumb ) )
-		);
-		DOMDataUtils::setDataMw(
-			$wrapper, Util::clone( DOMDataUtils::getDataMw( $o->thumb ) )
-		);
-		// Store temporarily, otherwise these get clobbered after rendering by
-		// the call to `DOMDataUtils.visitAndLoadDataAttribs()` in `toDOM`.
-		DOMDataUtils::storeDataAttribs( $wrapper );
-		DOMUtils::migrateChildrenBetweenDocs( $o->thumb, $wrapper );
+		ParsoidExtensionAPI::migrateChildrenBetweenDocs( $o->thumb, $wrapper );
 		$thumb->appendChild( $wrapper );
 
 		$box->appendChild( $thumb );
@@ -213,9 +185,9 @@ class TraditionalMode extends Mode {
 
 	/** @inheritDoc */
 	public function render(
-		Env $env, Opts $opts, ?DOMElement $caption, array $lines
+		ParsoidExtensionAPI $extApi, Opts $opts, ?DOMElement $caption, array $lines
 	): DOMDocument {
-		$doc = $env->createDocument();
+		$doc = $extApi->parseHTML( '' ); // empty doc
 		$ul = $this->ul( $opts, $doc );
 		if ( $caption ) {
 			$this->caption( $opts, $doc, $ul, $caption );
