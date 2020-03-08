@@ -1,7 +1,7 @@
 <?php
 /*
 
-Copyright 2013-2018 Zordius Chen. All Rights Reserved.
+Copyright 2013-2020 Zordius Chen. All Rights Reserved.
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
@@ -17,10 +17,6 @@ Origin: https://github.com/zordius/lightncandy
  */
 
 namespace LightnCandy;
-
-use \LightnCandy\Compiler;
-use \LightnCandy\SafeString;
-use \LightnCandy\Context;
 
 /**
  * LightnCandy Partial handler
@@ -81,8 +77,8 @@ class Partial
      *
      * @return string|null $content processed partial template
      *
-     * @expect 'hey' when input Array('prepartial' => false), 'hey', 'haha'
-     * @expect 'haha-hoho' when input Array('prepartial' => function ($cx, $tmpl, $name) {return "$name-$tmpl";}), 'hoho', 'haha'
+     * @expect 'hey' when input array('prepartial' => false), 'hey', 'haha'
+     * @expect 'haha-hoho' when input array('prepartial' => function ($cx, $tmpl, $name) {return "$name-$tmpl";}), 'hoho', 'haha'
      */
     protected static function prePartial(&$context, $tmpl, &$name)
     {

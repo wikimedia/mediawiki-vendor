@@ -2,7 +2,7 @@
 /*
 
 MIT License
-Copyright 2013-2018 Zordius Chen. All Rights Reserved.
+Copyright 2013-2020 Zordius Chen. All Rights Reserved.
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
@@ -18,8 +18,6 @@ Origin: https://github.com/zordius/lightncandy
  */
 
 namespace LightnCandy;
-
-use \LightnCandy\Encoder;
 
 /**
  * LightnCandy class for Object property access on a string.
@@ -177,8 +175,16 @@ class Runtime extends Encoder
                         continue;
                     }
                     if ($cx['flags']['method'] && is_callable(array($v, $name))) {
-                        $v = $v->$name();
-                        continue;
+                        try {
+                            $v = $v->$name();
+                            continue;
+                        } catch (\BadMethodCallException $e) {}
+                    }
+                    if ($v instanceof \ArrayAccess) {
+                        if (isset($v[$name])) {
+                            $v = $v[$name];
+                            continue;
+                        }
                     }
                 }
                 if ($cx['flags']['mustlok']) {
@@ -190,9 +196,9 @@ class Runtime extends Encoder
             if (isset($v)) {
                 if ($v instanceof \Closure) {
                     if ($cx['flags']['mustlam'] || $cx['flags']['lambda']) {
-                        if (!$cx['flags']['knohlp'] && ($args || ($args === 0))) {
+                        if (!$cx['flags']['knohlp'] && !is_null($args)) {
                             $A = $args ? $args[0] : array();
-                            $A[] = array('hash' => $args[1], '_this' => $in);
+                            $A[] = array('hash' => is_array( $args ) ? $args[1] : null, '_this' => $in);
                         } else {
                             $A = array($in);
                         }
@@ -277,6 +283,7 @@ class Runtime extends Encoder
      */
     public static function enc($cx, $var)
     {
+        // Use full namespace classname for more specific code export/match in Exporter.php replaceSafeString.
         if ($var instanceof \LightnCandy\SafeString) {
             return (string)$var;
         }
@@ -299,6 +306,7 @@ class Runtime extends Encoder
      */
     public static function encq($cx, $var)
     {
+        // Use full namespace classname for more specific code export/match in Exporter.php replaceSafeString.
         if ($var instanceof \LightnCandy\SafeString) {
             return (string)$var;
         }
@@ -356,8 +364,7 @@ class Runtime extends Encoder
         $isObj = false;
 
         if ($isAry && $else !== null && count($v) === 0) {
-            $ret = $else($cx, $in);
-            return $ret;
+            return $else($cx, $in);
         }
 
         // #var, detect input type is object or not
@@ -569,7 +576,7 @@ class Runtime extends Encoder
      *
      * @return string The rendered string of the token
      */
-    public static function hbch($cx, $ch, $vars, $op, &$_this)
+    public static function hbch(&$cx, $ch, $vars, $op, &$_this)
     {
         if (isset($cx['blparam'][0][$ch])) {
             return $cx['blparam'][0][$ch];
@@ -584,7 +591,7 @@ class Runtime extends Encoder
         );
 
         if ($cx['flags']['spvar']) {
-            $options['data'] = $cx['sp_vars'];
+            $options['data'] = &$cx['sp_vars'];
         }
 
         return static::exch($cx, $ch, $vars, $options);
@@ -603,7 +610,7 @@ class Runtime extends Encoder
      *
      * @return string The rendered string of the token
      */
-    public static function hbbch($cx, $ch, $vars, &$_this, $inverted, $cb, $else = null)
+    public static function hbbch(&$cx, $ch, $vars, &$_this, $inverted, $cb, $else = null)
     {
         $options = array(
             'name' => $ch,
@@ -614,7 +621,7 @@ class Runtime extends Encoder
         );
 
         if ($cx['flags']['spvar']) {
-            $options['data'] = $cx['sp_vars'];
+            $options['data'] = &$cx['sp_vars'];
         }
 
         if (isset($vars[2])) {
@@ -692,18 +699,13 @@ class Runtime extends Encoder
     public static function exch($cx, $ch, $vars, &$options)
     {
         $args = $vars[0];
-        $args[] = $options;
-        $e = null;
+        $args[] = &$options;
         $r = true;
 
         try {
             $r = call_user_func_array($cx['helpers'][$ch], $args);
         } catch (\Exception $E) {
-            $e = "Runtime: call custom helper '$ch' error: " . $E->getMessage();
-        }
-
-        if ($e !== null) {
-            static::err($cx, $e);
+            static::err($cx, "Runtime: call custom helper '$ch' error: " . $E->getMessage());
         }
 
         return $r;

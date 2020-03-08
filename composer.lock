@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9a559df3f78b98db4e95b3a58c1ea538",
+    "content-hash": "b95e740d031e5a967c8d96dbbf3ddba9",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -6284,20 +6284,20 @@
         },
         {
             "name": "zordius/lightncandy",
-            "version": "v1.2.4",
+            "version": "v1.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zordius/lightncandy.git",
-                "reference": "dfdb910ae7b59e274f1ff97d29b724871f01b4cc"
+                "reference": "37aa381e0f27d411a630062070c7a5a2174c62e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zordius/lightncandy/zipball/dfdb910ae7b59e274f1ff97d29b724871f01b4cc",
-                "reference": "dfdb910ae7b59e274f1ff97d29b724871f01b4cc",
+                "url": "https://api.github.com/repos/zordius/lightncandy/zipball/37aa381e0f27d411a630062070c7a5a2174c62e7",
+                "reference": "37aa381e0f27d411a630062070c7a5a2174c62e7",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.4.0"
+                "php": ">=7.1.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "^7"
@@ -6332,7 +6332,7 @@
                 "php",
                 "template"
             ],
-            "time": "2019-06-09T04:10:55+00:00"
+            "time": "2020-03-08T06:00:24+00:00"
         }
     ],
     "packages-dev": [
