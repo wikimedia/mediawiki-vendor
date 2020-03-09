@@ -4917,31 +4917,31 @@
     },
     {
         "name": "wikimedia/base-convert",
-        "version": "v2.0.0",
-        "version_normalized": "2.0.0.0",
+        "version": "v2.0.1",
+        "version_normalized": "2.0.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/base-convert.git",
-            "reference": "b1116d1b251e51a44ef76c3a7c79561b2e058e59"
+            "reference": "449f0d0237cf1e0e71faec90680c88d4af6e711d"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/base-convert/zipball/b1116d1b251e51a44ef76c3a7c79561b2e058e59",
-            "reference": "b1116d1b251e51a44ef76c3a7c79561b2e058e59",
+            "url": "https://api.github.com/repos/wikimedia/base-convert/zipball/449f0d0237cf1e0e71faec90680c88d4af6e711d",
+            "reference": "449f0d0237cf1e0e71faec90680c88d4af6e711d",
             "shasum": ""
         },
         "require": {
-            "php": ">=5.6.99"
+            "php": ">=7.2.9"
         },
         "require-dev": {
-            "jakub-onderka/php-console-highlighter": "0.3.2",
+            "jakub-onderka/php-console-highlighter": "0.4.0",
             "jakub-onderka/php-parallel-lint": "1.0.0",
-            "mediawiki/mediawiki-codesniffer": "22.0.0",
-            "mediawiki/minus-x": "0.3.1",
-            "ockcyp/covers-validator": "0.5.1 || 0.6.1",
-            "phpunit/phpunit": "4.8.36 || ^6.5"
+            "mediawiki/mediawiki-codesniffer": "29.0.0",
+            "mediawiki/minus-x": "1.0.0",
+            "ockcyp/covers-validator": "1.1.1",
+            "phpunit/phpunit": "^8.5"
         },
-        "time": "2018-10-21T05:06:11+00:00",
+        "time": "2020-03-09T05:35:22+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

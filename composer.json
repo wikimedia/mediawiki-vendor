@@ -88,7 +88,7 @@
 		"wikimedia/assert": "0.4.0",
 		"wikimedia/at-ease": "2.0.0",
 		"wikimedia/avro": "1.9.0",
-		"wikimedia/base-convert": "2.0.0",
+		"wikimedia/base-convert": "2.0.1",
 		"wikimedia/cdb": "1.4.1",
 		"wikimedia/cldr-plural-rule-parser": "1.0.0",
 		"wikimedia/composer-merge-plugin": "1.4.1",
