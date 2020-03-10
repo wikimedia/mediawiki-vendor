@@ -3223,6 +3223,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikibase\\DataModel\\Term\\Term' => __DIR__ . '/..' . '/wikibase/data-model/src/Term/Term.php',
         'Wikibase\\DataModel\\Term\\TermFallback' => __DIR__ . '/..' . '/wikibase/data-model/src/Term/TermFallback.php',
         'Wikibase\\DataModel\\Term\\TermList' => __DIR__ . '/..' . '/wikibase/data-model/src/Term/TermList.php',
+        'Wikibase\\DataModel\\Term\\TermTypes' => __DIR__ . '/..' . '/wikibase/data-model/src/Term/TermTypes.php',
         'Wikibase\\InternalSerialization\\DeserializerFactory' => __DIR__ . '/..' . '/wikibase/internal-serialization/src/DeserializerFactory.php',
         'Wikibase\\InternalSerialization\\Deserializers\\EntityDeserializer' => __DIR__ . '/..' . '/wikibase/internal-serialization/src/Deserializers/EntityDeserializer.php',
         'Wikibase\\InternalSerialization\\Deserializers\\LegacyEntityDeserializer' => __DIR__ . '/..' . '/wikibase/internal-serialization/src/Deserializers/LegacyEntityDeserializer.php',

@@ -4470,35 +4470,35 @@
     },
     {
         "name": "wikibase/data-model",
-        "version": "9.2.0",
-        "version_normalized": "9.2.0.0",
+        "version": "9.3.0",
+        "version_normalized": "9.3.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wmde/WikibaseDataModel.git",
-            "reference": "f73cf875a1a359acf1d5c1a503e2ac0d8092f1fe"
+            "reference": "492da24ce21174b4a296ac3386e2ad292d94a166"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wmde/WikibaseDataModel/zipball/f73cf875a1a359acf1d5c1a503e2ac0d8092f1fe",
-            "reference": "f73cf875a1a359acf1d5c1a503e2ac0d8092f1fe",
+            "url": "https://api.github.com/repos/wmde/WikibaseDataModel/zipball/492da24ce21174b4a296ac3386e2ad292d94a166",
+            "reference": "492da24ce21174b4a296ac3386e2ad292d94a166",
             "shasum": ""
         },
         "require": {
             "data-values/data-values": "~0.1|~1.0|~2.0",
-            "php": ">=5.6.99",
-            "wikimedia/assert": "~0.2.2|~0.3.0|~0.4.0"
+            "php": "^7.1",
+            "wikimedia/assert": "~0.2.2|~0.3.0|~0.4.0|~0.5.0"
         },
         "require-dev": {
-            "ockcyp/covers-validator": "~0.5.0",
+            "ockcyp/covers-validator": "~1.1",
             "phpmd/phpmd": "~2.6",
-            "phpunit/phpunit": "~5.7",
-            "wikibase/wikibase-codesniffer": "^0.5.0"
+            "phpunit/phpunit": "~8.0",
+            "wikibase/wikibase-codesniffer": "~1.1.0"
         },
-        "time": "2020-01-24T11:50:32+00:00",
+        "time": "2020-03-10T08:00:54+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "9.2.x-dev"
+                "dev-master": "9.3.x-dev"
             }
         },
         "installation-source": "dist",
@@ -4519,6 +4519,10 @@
             },
             {
                 "name": "Thiemo Kreuz"
+            },
+            {
+                "name": "The Wikidata team",
+                "role": "Developer"
             }
         ],
         "description": "PHP implementation of the Wikibase DataModel",
@@ -4603,17 +4607,17 @@
     },
     {
         "name": "wikibase/data-model-services",
-        "version": "5.1.0",
-        "version_normalized": "5.1.0.0",
+        "version": "5.2.0",
+        "version_normalized": "5.2.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wmde/WikibaseDataModelServices.git",
-            "reference": "d7cf1240d8f41747a93d607eb79f532de974d147"
+            "reference": "205d4e4c23112fd6451b5b31ec25bcbb665874d0"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wmde/WikibaseDataModelServices/zipball/d7cf1240d8f41747a93d607eb79f532de974d147",
-            "reference": "d7cf1240d8f41747a93d607eb79f532de974d147",
+            "url": "https://api.github.com/repos/wmde/WikibaseDataModelServices/zipball/205d4e4c23112fd6451b5b31ec25bcbb665874d0",
+            "reference": "205d4e4c23112fd6451b5b31ec25bcbb665874d0",
             "shasum": ""
         },
         "require": {
@@ -4621,14 +4625,14 @@
             "diff/diff": "~3.2",
             "php": ">=7.2",
             "wikibase/data-model": "~9.0|~8.0",
-            "wikimedia/assert": "~0.2.2|~0.3.0|~0.4.0"
+            "wikimedia/assert": "~0.2.2|~0.3.0|~0.4.0|~0.5.0"
         },
         "require-dev": {
             "phpmd/phpmd": "~2.3",
             "phpunit/phpunit": "~8.0",
             "wikibase/wikibase-codesniffer": "~1.1.0"
         },
-        "time": "2020-02-13T13:39:06+00:00",
+        "time": "2020-03-10T08:01:01+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {

@@ -1,5 +1,11 @@
 # Wikibase DataModel release notes
 
+## Version 9.3.0 (2020-03-10)
+
+* Raised minimum PHP version to 7.1
+* Added `TermTypes` with term type constants
+* Allow installing with wikimedia/assert 0.5.0
+
 ## Version 9.2.0 (2020-01-24)
 
 * `TermList` now throws `InvalidArgumentException` when given non-iterable rather than failing silently

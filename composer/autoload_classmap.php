@@ -2628,6 +2628,7 @@ return array(
     'Wikibase\\DataModel\\Term\\Term' => $vendorDir . '/wikibase/data-model/src/Term/Term.php',
     'Wikibase\\DataModel\\Term\\TermFallback' => $vendorDir . '/wikibase/data-model/src/Term/TermFallback.php',
     'Wikibase\\DataModel\\Term\\TermList' => $vendorDir . '/wikibase/data-model/src/Term/TermList.php',
+    'Wikibase\\DataModel\\Term\\TermTypes' => $vendorDir . '/wikibase/data-model/src/Term/TermTypes.php',
     'Wikibase\\InternalSerialization\\DeserializerFactory' => $vendorDir . '/wikibase/internal-serialization/src/DeserializerFactory.php',
     'Wikibase\\InternalSerialization\\Deserializers\\EntityDeserializer' => $vendorDir . '/wikibase/internal-serialization/src/Deserializers/EntityDeserializer.php',
     'Wikibase\\InternalSerialization\\Deserializers\\LegacyEntityDeserializer' => $vendorDir . '/wikibase/internal-serialization/src/Deserializers/LegacyEntityDeserializer.php',
