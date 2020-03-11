@@ -1782,6 +1782,230 @@
         ]
     },
     {
+        "name": "league/uri",
+        "version": "6.2.0",
+        "version_normalized": "6.2.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/thephpleague/uri.git",
+            "reference": "7b29ca33b287b4277d5ce7c26bc1be5d4118b484"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/thephpleague/uri/zipball/7b29ca33b287b4277d5ce7c26bc1be5d4118b484",
+            "reference": "7b29ca33b287b4277d5ce7c26bc1be5d4118b484",
+            "shasum": ""
+        },
+        "require": {
+            "ext-json": "*",
+            "league/uri-interfaces": "^2.1",
+            "php": "^7.2",
+            "psr/http-message": "^1.0"
+        },
+        "conflict": {
+            "league/uri-schemes": "^1.0"
+        },
+        "require-dev": {
+            "friendsofphp/php-cs-fixer": "^2.16",
+            "phpstan/phpstan": "^0.12",
+            "phpstan/phpstan-phpunit": "^0.12",
+            "phpstan/phpstan-strict-rules": "^0.12",
+            "phpunit/phpunit": "^7.0 | ^8.0"
+        },
+        "suggest": {
+            "ext-fileinfo": "Needed to create Data URI from a filepath",
+            "ext-intl": "Needed to improve host validation",
+            "league/uri-components": "Needed to easily manipulate URI objects"
+        },
+        "time": "2020-02-08T16:31:57+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "6.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "League\\Uri\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Ignace Nyamagana Butera",
+                "email": "nyamsprod@gmail.com",
+                "homepage": "https://nyamsprod.com"
+            }
+        ],
+        "description": "URI manipulation library",
+        "homepage": "http://uri.thephpleague.com",
+        "keywords": [
+            "data-uri",
+            "file-uri",
+            "ftp",
+            "hostname",
+            "http",
+            "https",
+            "middleware",
+            "parse_str",
+            "parse_url",
+            "psr-7",
+            "query-string",
+            "querystring",
+            "rfc3986",
+            "rfc3987",
+            "rfc6570",
+            "uri",
+            "uri-template",
+            "url",
+            "ws"
+        ]
+    },
+    {
+        "name": "league/uri-components",
+        "version": "2.2.1",
+        "version_normalized": "2.2.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/thephpleague/uri-components.git",
+            "reference": "14bab20b05bc20d16dec17401a9027c679412589"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/thephpleague/uri-components/zipball/14bab20b05bc20d16dec17401a9027c679412589",
+            "reference": "14bab20b05bc20d16dec17401a9027c679412589",
+            "shasum": ""
+        },
+        "require": {
+            "ext-json": "*",
+            "league/uri-interfaces": "^2.1",
+            "php": "^7.2",
+            "psr/http-message": "^1.0"
+        },
+        "require-dev": {
+            "friendsofphp/php-cs-fixer": "^2.3",
+            "guzzlehttp/psr7": "^1.4",
+            "laminas/laminas-diactoros": "^2.0",
+            "league/uri": "^6.0",
+            "phpstan/phpstan": "^0.12",
+            "phpstan/phpstan-phpunit": "^0.12",
+            "phpstan/phpstan-strict-rules": "^0.12",
+            "phpunit/phpunit": "^7.0 | ^8.0"
+        },
+        "suggest": {
+            "ext-fileinfo": "Needed to create Data URI from a filepath",
+            "ext-gmp": "to improve handle IPV4 parsing",
+            "ext-intl": "to handle IDN host",
+            "jeremykendall/php-domain-parser": "Public Suffix and Top Level Domain parsing implemented in PHP",
+            "league/uri": "to allow manipulating URI objects",
+            "php-64bit": "to improve handle IPV4 parsing",
+            "psr/http-message-implementation": "to allow manipulating PSR-7 Uri objects"
+        },
+        "time": "2020-02-09T19:44:04+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "League\\Uri\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Ignace Nyamagana Butera",
+                "email": "nyamsprod@gmail.com",
+                "homepage": "https://nyamsprod.com"
+            }
+        ],
+        "description": "URI components manipulation library",
+        "homepage": "http://uri.thephpleague.com",
+        "keywords": [
+            "authority",
+            "components",
+            "fragment",
+            "host",
+            "path",
+            "port",
+            "query",
+            "rfc3986",
+            "scheme",
+            "uri",
+            "url",
+            "userinfo"
+        ]
+    },
+    {
+        "name": "league/uri-interfaces",
+        "version": "2.1.0",
+        "version_normalized": "2.1.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/thephpleague/uri-interfaces.git",
+            "reference": "0068a469958895ceaf3afcb489c0258adfa1e406"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/thephpleague/uri-interfaces/zipball/0068a469958895ceaf3afcb489c0258adfa1e406",
+            "reference": "0068a469958895ceaf3afcb489c0258adfa1e406",
+            "shasum": ""
+        },
+        "require": {
+            "ext-json": "*",
+            "php": "^7.1"
+        },
+        "require-dev": {
+            "friendsofphp/php-cs-fixer": "^2.0",
+            "phpstan/phpstan": "^0.12",
+            "phpstan/phpstan-phpunit": "^0.12",
+            "phpstan/phpstan-strict-rules": "^0.12",
+            "phpunit/phpunit": "^7.0|^8.0"
+        },
+        "time": "2020-02-08T12:10:37+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "League\\Uri\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Ignace Nyamagana Butera",
+                "email": "nyamsprod@gmail.com",
+                "homepage": "https://nyamsprod.com"
+            }
+        ],
+        "description": "Common interface for URI representation",
+        "homepage": "http://github.com/thephpleague/uri-interfaces",
+        "keywords": [
+            "rfc3986",
+            "rfc3987",
+            "uri",
+            "url"
+        ]
+    },
+    {
         "name": "liuggio/statsd-php-client",
         "version": "v1.0.18",
         "version_normalized": "1.0.18.0",
@@ -2059,70 +2283,6 @@
         "keywords": [
             "client",
             "kafka"
-        ]
-    },
-    {
-        "name": "nyholm/psr7",
-        "version": "1.2.1",
-        "version_normalized": "1.2.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/Nyholm/psr7.git",
-            "reference": "55ff6b76573f5b242554c9775792bd59fb52e11c"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/Nyholm/psr7/zipball/55ff6b76573f5b242554c9775792bd59fb52e11c",
-            "reference": "55ff6b76573f5b242554c9775792bd59fb52e11c",
-            "shasum": ""
-        },
-        "require": {
-            "php": "^7.1",
-            "php-http/message-factory": "^1.0",
-            "psr/http-factory": "^1.0",
-            "psr/http-message": "^1.0"
-        },
-        "provide": {
-            "psr/http-factory-implementation": "1.0",
-            "psr/http-message-implementation": "1.0"
-        },
-        "require-dev": {
-            "http-interop/http-factory-tests": "dev-master",
-            "php-http/psr7-integration-tests": "dev-master",
-            "phpunit/phpunit": "^7.5"
-        },
-        "time": "2019-09-05T13:24:16+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.0-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Nyholm\\Psr7\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Tobias Nyholm",
-                "email": "tobias.nyholm@gmail.com"
-            },
-            {
-                "name": "Martijn van der Ven",
-                "email": "martijn@vanderven.se"
-            }
-        ],
-        "description": "A fast PHP7 implementation of PSR-7",
-        "homepage": "http://tnyholm.se",
-        "keywords": [
-            "psr-17",
-            "psr-7"
         ]
     },
     {
@@ -2754,58 +2914,6 @@
         "homepage": "https://github.com/pear/PEAR_Exception",
         "keywords": [
             "exception"
-        ]
-    },
-    {
-        "name": "php-http/message-factory",
-        "version": "v1.0.2",
-        "version_normalized": "1.0.2.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/php-http/message-factory.git",
-            "reference": "a478cb11f66a6ac48d8954216cfed9aa06a501a1"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/php-http/message-factory/zipball/a478cb11f66a6ac48d8954216cfed9aa06a501a1",
-            "reference": "a478cb11f66a6ac48d8954216cfed9aa06a501a1",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.4",
-            "psr/http-message": "^1.0"
-        },
-        "time": "2015-12-19T14:08:53+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.0-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Http\\Message\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Márk Sági-Kazár",
-                "email": "mark.sagikazar@gmail.com"
-            }
-        ],
-        "description": "Factory interfaces for PSR-7 HTTP Message",
-        "homepage": "http://php-http.org",
-        "keywords": [
-            "factory",
-            "http",
-            "message",
-            "stream",
-            "uri"
         ]
     },
     {
@@ -4322,17 +4430,17 @@
     },
     {
         "name": "web-auth/cose-lib",
-        "version": "v2.1.7",
-        "version_normalized": "2.1.7.0",
+        "version": "v3.1.1",
+        "version_normalized": "3.1.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/web-auth/cose-lib.git",
-            "reference": "8d1c37bac6e5db8d502b7735448d416f05fb4c70"
+            "reference": "bc28b39608b0674546d89318e55fb37eaec1a9e9"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/web-auth/cose-lib/zipball/8d1c37bac6e5db8d502b7735448d416f05fb4c70",
-            "reference": "8d1c37bac6e5db8d502b7735448d416f05fb4c70",
+            "url": "https://api.github.com/repos/web-auth/cose-lib/zipball/bc28b39608b0674546d89318e55fb37eaec1a9e9",
+            "reference": "bc28b39608b0674546d89318e55fb37eaec1a9e9",
             "shasum": ""
         },
         "require": {
@@ -4343,7 +4451,7 @@
             "fgrosse/phpasn1": "^2.1",
             "php": "^7.2"
         },
-        "time": "2019-09-04T20:53:12+00:00",
+        "time": "2020-02-03T21:25:10+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -4351,7 +4459,8 @@
                 "v1.1": "1.1.x-dev",
                 "v1.2": "1.2.x-dev",
                 "v2.0": "2.0.x-dev",
-                "v2.1": "2.1.x-dev"
+                "v2.1": "2.1.x-dev",
+                "v3.0": "3.0.x-dev"
             }
         },
         "installation-source": "dist",
@@ -4383,30 +4492,38 @@
     },
     {
         "name": "web-auth/metadata-service",
-        "version": "v2.1.7",
-        "version_normalized": "2.1.7.0",
+        "version": "v3.1.1",
+        "version_normalized": "3.1.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/web-auth/webauthn-metadata-service.git",
-            "reference": "5fc754d00dfa05913260dc3781227dfa8ed7dbdd"
+            "reference": "0e9d9b85590a0c5155b99d9a4b5bdaa01b1748e3"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/web-auth/webauthn-metadata-service/zipball/5fc754d00dfa05913260dc3781227dfa8ed7dbdd",
-            "reference": "5fc754d00dfa05913260dc3781227dfa8ed7dbdd",
+            "url": "https://api.github.com/repos/web-auth/webauthn-metadata-service/zipball/0e9d9b85590a0c5155b99d9a4b5bdaa01b1748e3",
+            "reference": "0e9d9b85590a0c5155b99d9a4b5bdaa01b1748e3",
             "shasum": ""
         },
         "require": {
+            "beberlei/assert": "^3.0",
             "ext-json": "*",
+            "league/uri": "^6.0",
+            "league/uri-components": "^2.1",
             "php": "^7.1",
             "psr/http-client": "^1.0",
-            "psr/http-factory": "^1.0"
+            "psr/http-factory": "^1.0",
+            "psr/log": "^1.1"
         },
-        "time": "2019-09-04T20:53:12+00:00",
+        "suggest": {
+            "psr/log-implementation": "Recommended to receive logs from the library"
+        },
+        "time": "2020-02-03T20:09:52+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "v2.1": "2.1.x-dev"
+                "v2.1": "2.1.x-dev",
+                "v3.0": "3.0.x-dev"
             }
         },
         "installation-source": "dist",
@@ -4439,17 +4556,17 @@
     },
     {
         "name": "web-auth/webauthn-lib",
-        "version": "v2.1.7",
-        "version_normalized": "2.1.7.0",
+        "version": "v3.1.1",
+        "version_normalized": "3.1.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/web-auth/webauthn-lib.git",
-            "reference": "4cd346f2ef4d282296e503b7b1b3ef200347437b"
+            "reference": "a8a11bc30480e98768987fe0fc266aef08ec99da"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/web-auth/webauthn-lib/zipball/4cd346f2ef4d282296e503b7b1b3ef200347437b",
-            "reference": "4cd346f2ef4d282296e503b7b1b3ef200347437b",
+            "url": "https://api.github.com/repos/web-auth/webauthn-lib/zipball/a8a11bc30480e98768987fe0fc266aef08ec99da",
+            "reference": "a8a11bc30480e98768987fe0fc266aef08ec99da",
             "shasum": ""
         },
         "require": {
@@ -4457,11 +4574,11 @@
             "ext-json": "*",
             "ext-mbstring": "*",
             "ext-openssl": "*",
-            "nyholm/psr7": "^1.1",
             "php": "^7.2",
             "psr/http-client": "^1.0",
             "psr/http-factory": "^1.0",
             "psr/http-message": "^1.0",
+            "psr/log": "^1.1",
             "ramsey/uuid": "^3.8",
             "spomky-labs/base64url": "^2.0",
             "spomky-labs/cbor-php": "^1.0.2",
@@ -4469,11 +4586,13 @@
             "web-auth/metadata-service": "self.version"
         },
         "suggest": {
+            "psr/log-implementation": "Recommended to receive logs from the library",
+            "web-token/jwt-key-mgmt": "Mandatory for the AndroidSafetyNet Attestation Statement support",
             "web-token/jwt-signature-algorithm-ecdsa": "Recommended for the AndroidSafetyNet Attestation Statement support",
             "web-token/jwt-signature-algorithm-eddsa": "Recommended for the AndroidSafetyNet Attestation Statement support",
             "web-token/jwt-signature-algorithm-rsa": "Mandatory for the AndroidSafetyNet Attestation Statement support"
         },
-        "time": "2019-09-09T12:04:09+00:00",
+        "time": "2020-02-03T21:25:10+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -4481,7 +4600,8 @@
                 "v1.1": "1.1.x-dev",
                 "v1.2": "1.2.x-dev",
                 "v2.0": "2.0.x-dev",
-                "v2.1": "2.1.x-dev"
+                "v2.1": "2.1.x-dev",
+                "v3.0": "3.0.x-dev"
             }
         },
         "installation-source": "dist",

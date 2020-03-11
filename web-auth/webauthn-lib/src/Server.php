@@ -22,6 +22,7 @@ use Cose\Algorithm\Signature\RSA;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerInterface;
 use Webauthn\AttestationStatement\AndroidKeyAttestationStatementSupport;
 use Webauthn\AttestationStatement\AndroidSafetyNetAttestationStatementSupport;
 use Webauthn\AttestationStatement\AttestationObjectLoader;
@@ -32,8 +33,10 @@ use Webauthn\AttestationStatement\PackedAttestationStatementSupport;
 use Webauthn\AttestationStatement\TPMAttestationStatementSupport;
 use Webauthn\AuthenticationExtensions\AuthenticationExtensionsClientInputs;
 use Webauthn\AuthenticationExtensions\ExtensionOutputCheckerHandler;
+use Webauthn\Counter\CounterChecker;
 use Webauthn\MetadataService\MetadataStatementRepository;
-use Webauthn\TokenBinding\TokenBindingNotSupportedHandler;
+use Webauthn\TokenBinding\IgnoreTokenBindingHandler;
+use Webauthn\TokenBinding\TokenBindingHandler;
 
 class Server
 {
@@ -63,7 +66,7 @@ class Server
     private $publicKeyCredentialSourceRepository;
 
     /**
-     * @var TokenBindingNotSupportedHandler
+     * @var TokenBindingHandler
      */
     private $tokenBindingHandler;
 
@@ -97,6 +100,16 @@ class Server
      */
     private $requestFactory;
 
+    /**
+     * @var CounterChecker|null
+     */
+    private $counterChecker;
+
+    /**
+     * @var LoggerInterface|null
+     */
+    private $logger;
+
     public function __construct(PublicKeyCredentialRpEntity $relayingParty, PublicKeyCredentialSourceRepository $publicKeyCredentialSourceRepository, ?MetadataStatementRepository $metadataStatementRepository)
     {
         $this->rpEntity = $relayingParty;
@@ -117,7 +130,7 @@ class Server
 
         $this->selectedAlgorithms = ['RS256', 'RS512', 'PS256', 'PS512', 'ES256', 'ES512', 'Ed25519'];
         $this->publicKeyCredentialSourceRepository = $publicKeyCredentialSourceRepository;
-        $this->tokenBindingHandler = new TokenBindingNotSupportedHandler();
+        $this->tokenBindingHandler = new IgnoreTokenBindingHandler();
         $this->extensionOutputCheckerHandler = new ExtensionOutputCheckerHandler();
         $this->metadataStatementRepository = $metadataStatementRepository;
     }
@@ -130,7 +143,7 @@ class Server
         $this->selectedAlgorithms = $selectedAlgorithms;
     }
 
-    public function setTokenBindingHandler(TokenBindingNotSupportedHandler $tokenBindingHandler): void
+    public function setTokenBindingHandler(TokenBindingHandler $tokenBindingHandler): void
     {
         $this->tokenBindingHandler = $tokenBindingHandler;
     }
@@ -148,7 +161,7 @@ class Server
     }
 
     /**
-     * @param PublicKeyCredentialDescriptor[] $excludedPublicKeyDescriptors
+     * @param array<PublicKeyCredentialDescriptor> $excludedPublicKeyDescriptors
      */
     public function generatePublicKeyCredentialCreationOptions(PublicKeyCredentialUserEntity $userEntity, ?string $attestationMode = PublicKeyCredentialCreationOptions::ATTESTATION_CONVEYANCE_PREFERENCE_NONE, array $excludedPublicKeyDescriptors = [], ?AuthenticatorSelectionCriteria $criteria = null, ?AuthenticationExtensionsClientInputs $extensions = null): PublicKeyCredentialCreationOptions
     {
@@ -178,7 +191,7 @@ class Server
     }
 
     /**
-     * @param PublicKeyCredentialDescriptor[] $allowedPublicKeyDescriptors
+     * @param array<PublicKeyCredentialDescriptor> $allowedPublicKeyDescriptors
      */
     public function generatePublicKeyCredentialRequestOptions(?string $userVerification = PublicKeyCredentialRequestOptions::USER_VERIFICATION_REQUIREMENT_PREFERRED, array $allowedPublicKeyDescriptors = [], ?AuthenticationExtensionsClientInputs $extensions = null): PublicKeyCredentialRequestOptions
     {
@@ -195,8 +208,8 @@ class Server
     public function loadAndCheckAttestationResponse(string $data, PublicKeyCredentialCreationOptions $publicKeyCredentialCreationOptions, ServerRequestInterface $serverRequest): PublicKeyCredentialSource
     {
         $attestationStatementSupportManager = $this->getAttestationStatementSupportManager();
-        $attestationObjectLoader = new AttestationObjectLoader($attestationStatementSupportManager);
-        $publicKeyCredentialLoader = new PublicKeyCredentialLoader($attestationObjectLoader);
+        $attestationObjectLoader = new AttestationObjectLoader($attestationStatementSupportManager, $this->metadataStatementRepository, $this->logger);
+        $publicKeyCredentialLoader = new PublicKeyCredentialLoader($attestationObjectLoader, $this->logger);
 
         $publicKeyCredential = $publicKeyCredentialLoader->load($data);
         $authenticatorResponse = $publicKeyCredential->getResponse();
@@ -206,7 +219,9 @@ class Server
             $attestationStatementSupportManager,
             $this->publicKeyCredentialSourceRepository,
             $this->tokenBindingHandler,
-            $this->extensionOutputCheckerHandler
+            $this->extensionOutputCheckerHandler,
+            $this->metadataStatementRepository,
+            $this->logger
         );
 
         return $authenticatorAttestationResponseValidator->check($authenticatorResponse, $publicKeyCredentialCreationOptions, $serverRequest);
@@ -215,8 +230,8 @@ class Server
     public function loadAndCheckAssertionResponse(string $data, PublicKeyCredentialRequestOptions $publicKeyCredentialRequestOptions, ?PublicKeyCredentialUserEntity $userEntity, ServerRequestInterface $serverRequest): PublicKeyCredentialSource
     {
         $attestationStatementSupportManager = $this->getAttestationStatementSupportManager();
-        $attestationObjectLoader = new AttestationObjectLoader($attestationStatementSupportManager);
-        $publicKeyCredentialLoader = new PublicKeyCredentialLoader($attestationObjectLoader);
+        $attestationObjectLoader = new AttestationObjectLoader($attestationStatementSupportManager, $this->metadataStatementRepository, $this->logger);
+        $publicKeyCredentialLoader = new PublicKeyCredentialLoader($attestationObjectLoader, $this->logger);
 
         $publicKeyCredential = $publicKeyCredentialLoader->load($data);
         $authenticatorResponse = $publicKeyCredential->getResponse();
@@ -224,10 +239,11 @@ class Server
 
         $authenticatorAssertionResponseValidator = new AuthenticatorAssertionResponseValidator(
             $this->publicKeyCredentialSourceRepository,
-            null,
             $this->tokenBindingHandler,
             $this->extensionOutputCheckerHandler,
-            $this->coseAlgorithmManagerFactory->create($this->selectedAlgorithms)
+            $this->coseAlgorithmManagerFactory->create($this->selectedAlgorithms),
+            $this->counterChecker,
+            $this->logger
         );
 
         return $authenticatorAssertionResponseValidator->check(
@@ -237,6 +253,16 @@ class Server
             $serverRequest,
             null !== $userEntity ? $userEntity->getId() : null
         );
+    }
+
+    public function setCounterChecker(CounterChecker $counterChecker): void
+    {
+        $this->counterChecker = $counterChecker;
+    }
+
+    public function setLogger(LoggerInterface $logger): void
+    {
+        $this->logger = $logger;
     }
 
     public function enforceAndroidSafetyNetVerification(ClientInterface $client, string $apiKey, RequestFactoryInterface $requestFactory): void
@@ -252,11 +278,11 @@ class Server
         $attestationStatementSupportManager->add(new NoneAttestationStatementSupport());
         if (null !== $this->metadataStatementRepository) {
             $coseAlgorithmManager = $this->coseAlgorithmManagerFactory->create($this->selectedAlgorithms);
-            $attestationStatementSupportManager->add(new FidoU2FAttestationStatementSupport(null, $this->metadataStatementRepository));
-            $attestationStatementSupportManager->add(new AndroidSafetyNetAttestationStatementSupport($this->httpClient, $this->googleApiKey, $this->requestFactory, 2000, 60000, $this->metadataStatementRepository));
-            $attestationStatementSupportManager->add(new AndroidKeyAttestationStatementSupport(null, $this->metadataStatementRepository));
-            $attestationStatementSupportManager->add(new TPMAttestationStatementSupport($this->metadataStatementRepository));
-            $attestationStatementSupportManager->add(new PackedAttestationStatementSupport(null, $coseAlgorithmManager, $this->metadataStatementRepository));
+            $attestationStatementSupportManager->add(new FidoU2FAttestationStatementSupport());
+            $attestationStatementSupportManager->add(new AndroidSafetyNetAttestationStatementSupport($this->httpClient, $this->googleApiKey, $this->requestFactory, 2000, 60000));
+            $attestationStatementSupportManager->add(new AndroidKeyAttestationStatementSupport());
+            $attestationStatementSupportManager->add(new TPMAttestationStatementSupport());
+            $attestationStatementSupportManager->add(new PackedAttestationStatementSupport($coseAlgorithmManager));
         }
 
         return $attestationStatementSupportManager;

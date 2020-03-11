@@ -10,13 +10,13 @@ class ComposerStaticInit_mediawiki_vendor
         '7cb394c3af2b1ae832979b0368e0da62' => __DIR__ . '/..' . '/data-values/data-values/DataValues.php',
         'd1715cacc3c23b16a030645514266a76' => __DIR__ . '/..' . '/data-values/interfaces/Interfaces.php',
         '0d59ee240a4cd96ddbb4ff164fccea4d' => __DIR__ . '/..' . '/symfony/polyfill-php73/bootstrap.php',
-        '90559502573a0d473dc66fde5c0ff7e2' => __DIR__ . '/..' . '/data-values/common/Common.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
+        '90559502573a0d473dc66fde5c0ff7e2' => __DIR__ . '/..' . '/data-values/common/Common.php',
+        'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
+        'a4ecaeafb8cfb009ad0e052c90355e98' => __DIR__ . '/..' . '/beberlei/assert/lib/Assert/functions.php',
         'ad155f8f1cf0d418fe49e248db8c661b' => __DIR__ . '/..' . '/react/promise/src/functions_include.php',
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
-        'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
         'eccc0347283a01e62f5536bcf76b6e62' => __DIR__ . '/..' . '/wikimedia/at-ease/src/Wikimedia/Functions.php',
-        'a4ecaeafb8cfb009ad0e052c90355e98' => __DIR__ . '/..' . '/beberlei/assert/lib/Assert/functions.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         'c15f8000750e4e04ba559d9745044427' => __DIR__ . '/..' . '/data-values/number/Number.php',
@@ -103,10 +103,6 @@ class ComposerStaticInit_mediawiki_vendor
         array (
             'Onoi\\MessageReporter\\' => 21,
         ),
-        'N' => 
-        array (
-            'Nyholm\\Psr7\\' => 12,
-        ),
         'M' => 
         array (
             'Monolog\\' => 8,
@@ -115,6 +111,7 @@ class ComposerStaticInit_mediawiki_vendor
         array (
             'LuceneExplain\\' => 14,
             'LightnCandy\\' => 12,
+            'League\\Uri\\' => 11,
             'League\\OAuth2\\Server\\' => 21,
             'League\\Event\\' => 13,
             'Lcobucci\\JWT\\' => 13,
@@ -124,10 +121,6 @@ class ComposerStaticInit_mediawiki_vendor
             'JsonSchema\\' => 11,
             'JakubOnderka\\PhpConsoleHighlighter\\' => 35,
             'JakubOnderka\\PhpConsoleColor\\' => 29,
-        ),
-        'H' => 
-        array (
-            'Http\\Message\\' => 13,
         ),
         'G' => 
         array (
@@ -377,10 +370,6 @@ class ComposerStaticInit_mediawiki_vendor
         array (
             0 => __DIR__ . '/..' . '/onoi/message-reporter/src',
         ),
-        'Nyholm\\Psr7\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/nyholm/psr7/src',
-        ),
         'Monolog\\' => 
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
@@ -392,6 +381,12 @@ class ComposerStaticInit_mediawiki_vendor
         'LightnCandy\\' => 
         array (
             0 => __DIR__ . '/..' . '/zordius/lightncandy/src',
+        ),
+        'League\\Uri\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/league/uri/src',
+            1 => __DIR__ . '/..' . '/league/uri-components/src',
+            2 => __DIR__ . '/..' . '/league/uri-interfaces/src',
         ),
         'League\\OAuth2\\Server\\' => 
         array (
@@ -416,10 +411,6 @@ class ComposerStaticInit_mediawiki_vendor
         'JakubOnderka\\PhpConsoleColor\\' => 
         array (
             0 => __DIR__ . '/..' . '/jakub-onderka/php-console-color/src',
-        ),
-        'Http\\Message\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/php-http/message-factory/src',
         ),
         'GuzzleHttp\\Stream\\' => 
         array (
@@ -1432,11 +1423,6 @@ class ComposerStaticInit_mediawiki_vendor
         'GuzzleHttp\\UriTemplate' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/UriTemplate.php',
         'Hashable' => __DIR__ . '/..' . '/data-values/data-values/src/interfaces/Hashable.php',
         'HtmlFormatter\\HtmlFormatter' => __DIR__ . '/..' . '/wikimedia/html-formatter/src/HtmlFormatter.php',
-        'Http\\Message\\MessageFactory' => __DIR__ . '/..' . '/php-http/message-factory/src/MessageFactory.php',
-        'Http\\Message\\RequestFactory' => __DIR__ . '/..' . '/php-http/message-factory/src/RequestFactory.php',
-        'Http\\Message\\ResponseFactory' => __DIR__ . '/..' . '/php-http/message-factory/src/ResponseFactory.php',
-        'Http\\Message\\StreamFactory' => __DIR__ . '/..' . '/php-http/message-factory/src/StreamFactory.php',
-        'Http\\Message\\UriFactory' => __DIR__ . '/..' . '/php-http/message-factory/src/UriFactory.php',
         'Image_XMP' => __DIR__ . '/..' . '/james-heinrich/getid3/getid3/module.tag.xmp.php',
         'Immutable' => __DIR__ . '/..' . '/data-values/data-values/src/interfaces/Immutable.php',
         'JakubOnderka\\PhpConsoleColor\\ConsoleColor' => __DIR__ . '/..' . '/jakub-onderka/php-console-color/src/ConsoleColor.php',
@@ -1615,6 +1601,51 @@ class ComposerStaticInit_mediawiki_vendor
         'League\\OAuth2\\Server\\ResponseTypes\\BearerTokenResponse' => __DIR__ . '/..' . '/league/oauth2-server/src/ResponseTypes/BearerTokenResponse.php',
         'League\\OAuth2\\Server\\ResponseTypes\\RedirectResponse' => __DIR__ . '/..' . '/league/oauth2-server/src/ResponseTypes/RedirectResponse.php',
         'League\\OAuth2\\Server\\ResponseTypes\\ResponseTypeInterface' => __DIR__ . '/..' . '/league/oauth2-server/src/ResponseTypes/ResponseTypeInterface.php',
+        'League\\Uri\\Components\\Authority' => __DIR__ . '/..' . '/league/uri-components/src/Components/Authority.php',
+        'League\\Uri\\Components\\Component' => __DIR__ . '/..' . '/league/uri-components/src/Components/Component.php',
+        'League\\Uri\\Components\\DataPath' => __DIR__ . '/..' . '/league/uri-components/src/Components/DataPath.php',
+        'League\\Uri\\Components\\Domain' => __DIR__ . '/..' . '/league/uri-components/src/Components/Domain.php',
+        'League\\Uri\\Components\\Fragment' => __DIR__ . '/..' . '/league/uri-components/src/Components/Fragment.php',
+        'League\\Uri\\Components\\HierarchicalPath' => __DIR__ . '/..' . '/league/uri-components/src/Components/HierarchicalPath.php',
+        'League\\Uri\\Components\\Host' => __DIR__ . '/..' . '/league/uri-components/src/Components/Host.php',
+        'League\\Uri\\Components\\Path' => __DIR__ . '/..' . '/league/uri-components/src/Components/Path.php',
+        'League\\Uri\\Components\\Port' => __DIR__ . '/..' . '/league/uri-components/src/Components/Port.php',
+        'League\\Uri\\Components\\Query' => __DIR__ . '/..' . '/league/uri-components/src/Components/Query.php',
+        'League\\Uri\\Components\\Scheme' => __DIR__ . '/..' . '/league/uri-components/src/Components/Scheme.php',
+        'League\\Uri\\Components\\UserInfo' => __DIR__ . '/..' . '/league/uri-components/src/Components/UserInfo.php',
+        'League\\Uri\\Contracts\\AuthorityInterface' => __DIR__ . '/..' . '/league/uri-interfaces/src/Contracts/AuthorityInterface.php',
+        'League\\Uri\\Contracts\\DataPathInterface' => __DIR__ . '/..' . '/league/uri-interfaces/src/Contracts/DataPathInterface.php',
+        'League\\Uri\\Contracts\\DomainHostInterface' => __DIR__ . '/..' . '/league/uri-interfaces/src/Contracts/DomainHostInterface.php',
+        'League\\Uri\\Contracts\\FragmentInterface' => __DIR__ . '/..' . '/league/uri-interfaces/src/Contracts/FragmentInterface.php',
+        'League\\Uri\\Contracts\\HostInterface' => __DIR__ . '/..' . '/league/uri-interfaces/src/Contracts/HostInterface.php',
+        'League\\Uri\\Contracts\\IpHostInterface' => __DIR__ . '/..' . '/league/uri-interfaces/src/Contracts/IpHostInterface.php',
+        'League\\Uri\\Contracts\\PathInterface' => __DIR__ . '/..' . '/league/uri-interfaces/src/Contracts/PathInterface.php',
+        'League\\Uri\\Contracts\\PortInterface' => __DIR__ . '/..' . '/league/uri-interfaces/src/Contracts/PortInterface.php',
+        'League\\Uri\\Contracts\\QueryInterface' => __DIR__ . '/..' . '/league/uri-interfaces/src/Contracts/QueryInterface.php',
+        'League\\Uri\\Contracts\\SegmentedPathInterface' => __DIR__ . '/..' . '/league/uri-interfaces/src/Contracts/SegmentedPathInterface.php',
+        'League\\Uri\\Contracts\\UriComponentInterface' => __DIR__ . '/..' . '/league/uri-interfaces/src/Contracts/UriComponentInterface.php',
+        'League\\Uri\\Contracts\\UriException' => __DIR__ . '/..' . '/league/uri-interfaces/src/Contracts/UriException.php',
+        'League\\Uri\\Contracts\\UriInterface' => __DIR__ . '/..' . '/league/uri-interfaces/src/Contracts/UriInterface.php',
+        'League\\Uri\\Contracts\\UserInfoInterface' => __DIR__ . '/..' . '/league/uri-interfaces/src/Contracts/UserInfoInterface.php',
+        'League\\Uri\\Exceptions\\FileinfoSupportMissing' => __DIR__ . '/..' . '/league/uri-interfaces/src/Exceptions/FileinfoSupportMissing.php',
+        'League\\Uri\\Exceptions\\IPv4CalculatorMissing' => __DIR__ . '/..' . '/league/uri-components/src/Exceptions/IPv4CalculatorMissing.php',
+        'League\\Uri\\Exceptions\\IdnSupportMissing' => __DIR__ . '/..' . '/league/uri-interfaces/src/Exceptions/IdnSupportMissing.php',
+        'League\\Uri\\Exceptions\\OffsetOutOfBounds' => __DIR__ . '/..' . '/league/uri-components/src/Exceptions/OffsetOutOfBounds.php',
+        'League\\Uri\\Exceptions\\SyntaxError' => __DIR__ . '/..' . '/league/uri-interfaces/src/Exceptions/SyntaxError.php',
+        'League\\Uri\\Exceptions\\TemplateCanNotBeExpanded' => __DIR__ . '/..' . '/league/uri/src/Exceptions/TemplateCanNotBeExpanded.php',
+        'League\\Uri\\Http' => __DIR__ . '/..' . '/league/uri/src/Http.php',
+        'League\\Uri\\IPv4Calculators\\BCMathCalculator' => __DIR__ . '/..' . '/league/uri-components/src/IPv4Calculators/BCMathCalculator.php',
+        'League\\Uri\\IPv4Calculators\\GMPCalculator' => __DIR__ . '/..' . '/league/uri-components/src/IPv4Calculators/GMPCalculator.php',
+        'League\\Uri\\IPv4Calculators\\IPv4Calculator' => __DIR__ . '/..' . '/league/uri-components/src/IPv4Calculators/IPv4Calculator.php',
+        'League\\Uri\\IPv4Calculators\\NativeCalculator' => __DIR__ . '/..' . '/league/uri-components/src/IPv4Calculators/NativeCalculator.php',
+        'League\\Uri\\IPv4Normalizer' => __DIR__ . '/..' . '/league/uri-components/src/IPv4Normalizer.php',
+        'League\\Uri\\QueryString' => __DIR__ . '/..' . '/league/uri-components/src/QueryString.php',
+        'League\\Uri\\Uri' => __DIR__ . '/..' . '/league/uri/src/Uri.php',
+        'League\\Uri\\UriInfo' => __DIR__ . '/..' . '/league/uri/src/UriInfo.php',
+        'League\\Uri\\UriModifier' => __DIR__ . '/..' . '/league/uri-components/src/UriModifier.php',
+        'League\\Uri\\UriResolver' => __DIR__ . '/..' . '/league/uri/src/UriResolver.php',
+        'League\\Uri\\UriString' => __DIR__ . '/..' . '/league/uri/src/UriString.php',
+        'League\\Uri\\UriTemplate' => __DIR__ . '/..' . '/league/uri/src/UriTemplate.php',
         'Less_Autoloader' => __DIR__ . '/..' . '/wikimedia/less.php/lib/Less/Autoloader.php',
         'Less_Cache' => __DIR__ . '/..' . '/wikimedia/less.php/lib/Less/Cache.php',
         'Less_Colors' => __DIR__ . '/..' . '/wikimedia/less.php/lib/Less/Colors.php',
@@ -1831,16 +1862,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Net_SMTP' => __DIR__ . '/..' . '/pear/net_smtp/Net/SMTP.php',
         'Net_Socket' => __DIR__ . '/..' . '/pear/net_socket/Net/Socket.php',
         'Net_URL2' => __DIR__ . '/..' . '/pear/net_url2/Net/URL2.php',
-        'Nyholm\\Psr7\\Factory\\HttplugFactory' => __DIR__ . '/..' . '/nyholm/psr7/src/Factory/HttplugFactory.php',
-        'Nyholm\\Psr7\\Factory\\Psr17Factory' => __DIR__ . '/..' . '/nyholm/psr7/src/Factory/Psr17Factory.php',
-        'Nyholm\\Psr7\\MessageTrait' => __DIR__ . '/..' . '/nyholm/psr7/src/MessageTrait.php',
-        'Nyholm\\Psr7\\Request' => __DIR__ . '/..' . '/nyholm/psr7/src/Request.php',
-        'Nyholm\\Psr7\\RequestTrait' => __DIR__ . '/..' . '/nyholm/psr7/src/RequestTrait.php',
-        'Nyholm\\Psr7\\Response' => __DIR__ . '/..' . '/nyholm/psr7/src/Response.php',
-        'Nyholm\\Psr7\\ServerRequest' => __DIR__ . '/..' . '/nyholm/psr7/src/ServerRequest.php',
-        'Nyholm\\Psr7\\Stream' => __DIR__ . '/..' . '/nyholm/psr7/src/Stream.php',
-        'Nyholm\\Psr7\\UploadedFile' => __DIR__ . '/..' . '/nyholm/psr7/src/UploadedFile.php',
-        'Nyholm\\Psr7\\Uri' => __DIR__ . '/..' . '/nyholm/psr7/src/Uri.php',
         'OOUI\\AccessKeyedElement' => __DIR__ . '/..' . '/oojs/oojs-ui/php/mixins/AccessKeyedElement.php',
         'OOUI\\ActionFieldLayout' => __DIR__ . '/..' . '/oojs/oojs-ui/php/layouts/ActionFieldLayout.php',
         'OOUI\\ApexTheme' => __DIR__ . '/..' . '/oojs/oojs-ui/php/themes/ApexTheme.php',
@@ -2988,18 +3009,19 @@ class ComposerStaticInit_mediawiki_vendor
         'Webauthn\\AuthenticatorSelectionCriteria' => __DIR__ . '/..' . '/web-auth/webauthn-lib/src/AuthenticatorSelectionCriteria.php',
         'Webauthn\\CertificateToolbox' => __DIR__ . '/..' . '/web-auth/webauthn-lib/src/CertificateToolbox.php',
         'Webauthn\\CollectedClientData' => __DIR__ . '/..' . '/web-auth/webauthn-lib/src/CollectedClientData.php',
+        'Webauthn\\Counter\\CounterChecker' => __DIR__ . '/..' . '/web-auth/webauthn-lib/src/Counter/CounterChecker.php',
+        'Webauthn\\Counter\\ThrowExceptionIfInvalid' => __DIR__ . '/..' . '/web-auth/webauthn-lib/src/Counter/ThrowExceptionIfInvalid.php',
         'Webauthn\\Credential' => __DIR__ . '/..' . '/web-auth/webauthn-lib/src/Credential.php',
+        'Webauthn\\MetadataService\\AbstractDescriptor' => __DIR__ . '/..' . '/web-auth/metadata-service/src/AbstractDescriptor.php',
         'Webauthn\\MetadataService\\AuthenticatorStatus' => __DIR__ . '/..' . '/web-auth/metadata-service/src/AuthenticatorStatus.php',
         'Webauthn\\MetadataService\\BiometricAccuracyDescriptor' => __DIR__ . '/..' . '/web-auth/metadata-service/src/BiometricAccuracyDescriptor.php',
         'Webauthn\\MetadataService\\BiometricStatusReport' => __DIR__ . '/..' . '/web-auth/metadata-service/src/BiometricStatusReport.php',
         'Webauthn\\MetadataService\\CodeAccuracyDescriptor' => __DIR__ . '/..' . '/web-auth/metadata-service/src/CodeAccuracyDescriptor.php',
         'Webauthn\\MetadataService\\DisplayPNGCharacteristicsDescriptor' => __DIR__ . '/..' . '/web-auth/metadata-service/src/DisplayPNGCharacteristicsDescriptor.php',
         'Webauthn\\MetadataService\\DistantSingleMetadata' => __DIR__ . '/..' . '/web-auth/metadata-service/src/DistantSingleMetadata.php',
-        'Webauthn\\MetadataService\\DistantSingleMetadataFactory' => __DIR__ . '/..' . '/web-auth/metadata-service/src/DistantSingleMetadataFactory.php',
         'Webauthn\\MetadataService\\EcdaaTrustAnchor' => __DIR__ . '/..' . '/web-auth/metadata-service/src/EcdaaTrustAnchor.php',
         'Webauthn\\MetadataService\\ExtensionDescriptor' => __DIR__ . '/..' . '/web-auth/metadata-service/src/ExtensionDescriptor.php',
         'Webauthn\\MetadataService\\MetadataService' => __DIR__ . '/..' . '/web-auth/metadata-service/src/MetadataService.php',
-        'Webauthn\\MetadataService\\MetadataServiceFactory' => __DIR__ . '/..' . '/web-auth/metadata-service/src/MetadataServiceFactory.php',
         'Webauthn\\MetadataService\\MetadataStatement' => __DIR__ . '/..' . '/web-auth/metadata-service/src/MetadataStatement.php',
         'Webauthn\\MetadataService\\MetadataStatementFetcher' => __DIR__ . '/..' . '/web-auth/metadata-service/src/MetadataStatementFetcher.php',
         'Webauthn\\MetadataService\\MetadataStatementRepository' => __DIR__ . '/..' . '/web-auth/metadata-service/src/MetadataStatementRepository.php',
@@ -3008,9 +3030,9 @@ class ComposerStaticInit_mediawiki_vendor
         'Webauthn\\MetadataService\\PatternAccuracyDescriptor' => __DIR__ . '/..' . '/web-auth/metadata-service/src/PatternAccuracyDescriptor.php',
         'Webauthn\\MetadataService\\RgbPaletteEntry' => __DIR__ . '/..' . '/web-auth/metadata-service/src/RgbPaletteEntry.php',
         'Webauthn\\MetadataService\\RogueListEntry' => __DIR__ . '/..' . '/web-auth/metadata-service/src/RogueListEntry.php',
-        'Webauthn\\MetadataService\\SimpleMetadataStatementRepository' => __DIR__ . '/..' . '/web-auth/metadata-service/src/SimpleMetadataStatementRepository.php',
         'Webauthn\\MetadataService\\SingleMetadata' => __DIR__ . '/..' . '/web-auth/metadata-service/src/SingleMetadata.php',
         'Webauthn\\MetadataService\\StatusReport' => __DIR__ . '/..' . '/web-auth/metadata-service/src/StatusReport.php',
+        'Webauthn\\MetadataService\\Utils' => __DIR__ . '/..' . '/web-auth/metadata-service/src/Utils.php',
         'Webauthn\\MetadataService\\VerificationMethodANDCombinations' => __DIR__ . '/..' . '/web-auth/metadata-service/src/VerificationMethodANDCombinations.php',
         'Webauthn\\MetadataService\\VerificationMethodDescriptor' => __DIR__ . '/..' . '/web-auth/metadata-service/src/VerificationMethodDescriptor.php',
         'Webauthn\\MetadataService\\Version' => __DIR__ . '/..' . '/web-auth/metadata-service/src/Version.php',
@@ -3030,6 +3052,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Webauthn\\Server' => __DIR__ . '/..' . '/web-auth/webauthn-lib/src/Server.php',
         'Webauthn\\StringStream' => __DIR__ . '/..' . '/web-auth/webauthn-lib/src/StringStream.php',
         'Webauthn\\TokenBinding\\IgnoreTokenBindingHandler' => __DIR__ . '/..' . '/web-auth/webauthn-lib/src/TokenBinding/IgnoreTokenBindingHandler.php',
+        'Webauthn\\TokenBinding\\SecTokenBindingHandler' => __DIR__ . '/..' . '/web-auth/webauthn-lib/src/TokenBinding/SecTokenBindingHandler.php',
         'Webauthn\\TokenBinding\\TokenBinding' => __DIR__ . '/..' . '/web-auth/webauthn-lib/src/TokenBinding/TokenBinding.php',
         'Webauthn\\TokenBinding\\TokenBindingHandler' => __DIR__ . '/..' . '/web-auth/webauthn-lib/src/TokenBinding/TokenBindingHandler.php',
         'Webauthn\\TokenBinding\\TokenBindingNotSupportedHandler' => __DIR__ . '/..' . '/web-auth/webauthn-lib/src/TokenBinding/TokenBindingNotSupportedHandler.php',
