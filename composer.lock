@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6352286caae3ebd077f60c186556365f",
+    "content-hash": "73d0b057df098f4390563ede957b7120",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -5257,23 +5257,25 @@
         },
         {
             "name": "wikimedia/less.php",
-            "version": "1.8.2",
+            "version": "v3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/less.php.git",
-                "reference": "e238ad228d74b6ffd38209c799b34e9826909266"
+                "reference": "5e2a4fba9304915c4cbf98cc9cb665a5c365c351"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/less.php/zipball/e238ad228d74b6ffd38209c799b34e9826909266",
-                "reference": "e238ad228d74b6ffd38209c799b34e9826909266",
+                "url": "https://api.github.com/repos/wikimedia/less.php/zipball/5e2a4fba9304915c4cbf98cc9cb665a5c365c351",
+                "reference": "5e2a4fba9304915c4cbf98cc9cb665a5c365c351",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2.9"
             },
             "require-dev": {
-                "phpunit/phpunit": "7.5.14"
+                "jakub-onderka/php-parallel-lint": "1.0.0",
+                "mediawiki/minus-x": "1.0.0",
+                "phpunit/phpunit": "^8.5"
             },
             "bin": [
                 "bin/lessc"
@@ -5314,7 +5316,7 @@
                 "php",
                 "stylesheet"
             ],
-            "time": "2019-11-06T18:30:11+00:00"
+            "time": "2020-03-11T23:01:29+00:00"
         },
         {
             "name": "wikimedia/lucene-explain-parser",
