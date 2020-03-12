@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d95bc257b7adecd4bf18c0c2ded93e5b",
+    "content-hash": "7beb39af7f92a7fb017cc4f87958b4e4",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -2349,16 +2349,16 @@
         },
         {
             "name": "pear/mail_mime",
-            "version": "1.10.6",
+            "version": "1.10.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear/Mail_Mime.git",
-                "reference": "7cb95a6020fa52be9576a0cf1b832293fe9456e4"
+                "reference": "4b4c1f9c2850e9fd646ea6a25f11d4735b36edbd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/Mail_Mime/zipball/7cb95a6020fa52be9576a0cf1b832293fe9456e4",
-                "reference": "7cb95a6020fa52be9576a0cf1b832293fe9456e4",
+                "url": "https://api.github.com/repos/pear/Mail_Mime/zipball/4b4c1f9c2850e9fd646ea6a25f11d4735b36edbd",
+                "reference": "4b4c1f9c2850e9fd646ea6a25f11d4735b36edbd",
                 "shasum": ""
             },
             "require": {
@@ -2391,7 +2391,7 @@
             ],
             "description": "Mail_Mime provides classes to create MIME messages",
             "homepage": "http://pear.php.net/package/Mail_Mime",
-            "time": "2020-01-30T07:22:36+00:00"
+            "time": "2020-03-01T07:54:36+00:00"
         },
         {
             "name": "pear/net_smtp",
