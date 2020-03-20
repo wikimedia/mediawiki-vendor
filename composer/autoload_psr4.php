@@ -14,7 +14,7 @@ return array(
     'Wikimedia\\Purtle\\Tests\\' => array($vendorDir . '/wikimedia/purtle/tests/phpunit'),
     'Wikimedia\\Purtle\\' => array($vendorDir . '/wikimedia/purtle/src'),
     'Wikimedia\\PasswordBlacklist\\' => array($vendorDir . '/wikimedia/password-blacklist/src'),
-    'Wikimedia\\Parsoid\\' => array($vendorDir . '/wikimedia/parsoid/src/placeholder', $vendorDir . '/wikimedia/parsoid/src'),
+    'Wikimedia\\Parsoid\\' => array($vendorDir . '/wikimedia/parsoid/src'),
     'Wikimedia\\LangConv\\' => array($vendorDir . '/wikimedia/langconv/src'),
     'Wikimedia\\Equivset\\' => array($vendorDir . '/wikimedia/equivset/src'),
     'Wikimedia\\Composer\\' => array($vendorDir . '/wikimedia/composer-merge-plugin/src'),

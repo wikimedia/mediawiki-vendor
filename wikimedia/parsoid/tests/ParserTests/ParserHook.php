@@ -1,16 +1,16 @@
 <?php
 declare( strict_types = 1 );
 
-namespace Wikimedia\Parsoid\Tests\ParserTests;
+namespace Wikimedia\Parsoid\ParserTests;
 
 use DOMDocument;
 use DOMElement;
 use DOMNode;
 use Error;
 
-use Wikimedia\Parsoid\Config\ParsoidExtensionAPI;
 use Wikimedia\Parsoid\Ext\Extension;
 use Wikimedia\Parsoid\Ext\ExtensionTag;
+use Wikimedia\Parsoid\Ext\ParsoidExtensionAPI;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\PHPUtils;

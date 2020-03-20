@@ -1,7 +1,7 @@
 <?php
 declare( strict_types = 1 );
 
-namespace Wikimedia\Parsoid\Tests\ParserTests;
+namespace Wikimedia\Parsoid\ParserTests;
 
 use DOMElement;
 use DOMNode;
@@ -13,9 +13,9 @@ use Wikimedia\Assert\Assert;
 use Wikimedia\Parsoid\Config\Api\DataAccess;
 use Wikimedia\Parsoid\Config\Api\PageConfig;
 use Wikimedia\Parsoid\Config\Env;
-use Wikimedia\Parsoid\SelserData;
-use Wikimedia\Parsoid\Tests\MockPageConfig;
-use Wikimedia\Parsoid\Tests\MockPageContent;
+use Wikimedia\Parsoid\Core\SelserData;
+use Wikimedia\Parsoid\Mocks\MockPageConfig;
+use Wikimedia\Parsoid\Mocks\MockPageContent;
 use Wikimedia\Parsoid\Tools\ScriptUtils;
 use Wikimedia\Parsoid\Tools\TestUtils;
 use Wikimedia\Parsoid\Utils\ContentUtils;

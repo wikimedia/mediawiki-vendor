@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f9db330cfa5887b096962ec674328a8a",
+    "content-hash": "5eee30dfdf6c4b414d3c792c491a9aa8",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -5526,16 +5526,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.12.0-a5",
+            "version": "v0.12.0-a6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/parsoid.git",
-                "reference": "b8501ddac306918b5f44ecc811307a09cb3e7812"
+                "reference": "a9a4390b71060edbeeb7fc80a7d7696ebabac1c6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/b8501ddac306918b5f44ecc811307a09cb3e7812",
-                "reference": "b8501ddac306918b5f44ecc811307a09cb3e7812",
+                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/a9a4390b71060edbeeb7fc80a7d7696ebabac1c6",
+                "reference": "a9a4390b71060edbeeb7fc80a7d7696ebabac1c6",
                 "shasum": ""
             },
             "require": {
@@ -5546,7 +5546,7 @@
                 "php": ">=7.2.0",
                 "psr/log": "^1.1.2",
                 "wikimedia/assert": "0.4.0|^0.5.0",
-                "wikimedia/ip-utils": "^1.0.0",
+                "wikimedia/ip-utils": "^1.0.0|^2.0.0",
                 "wikimedia/langconv": "^0.3.5",
                 "wikimedia/remex-html": "^2.1.0",
                 "wikimedia/scoped-callback": "^3.0.0",
@@ -5571,10 +5571,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Wikimedia\\Parsoid\\": [
-                        "src/placeholder",
-                        "src"
-                    ]
+                    "Wikimedia\\Parsoid\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -5587,13 +5584,13 @@
                     "homepage": "https://www.mediawiki.org/wiki/Parsoid"
                 }
             ],
-            "description": "Parsoid (a bidirectional parser between wikitext and HTML5) - ported from the Node.js version",
+            "description": "Parsoid, a bidirectional parser between wikitext and HTML5",
             "homepage": "https://www.mediawiki.org/wiki/Parsoid",
             "keywords": [
                 "mediawiki",
                 "parsoid"
             ],
-            "time": "2020-03-10T16:12:23+00:00"
+            "time": "2020-03-18T04:40:00+00:00"
         },
         {
             "name": "wikimedia/password-blacklist",
@@ -6504,6 +6501,7 @@
             ],
             "description": "This tool check syntax of PHP files about 20x faster than serial check.",
             "homepage": "https://github.com/JakubOnderka/PHP-Parallel-Lint",
+            "abandoned": "php-parallel-lint/php-parallel-lint",
             "time": "2015-12-15T10:42:16+00:00"
         },
         {
@@ -6591,16 +6589,16 @@
         },
         {
             "name": "swaggest/json-schema",
-            "version": "v0.12.28",
+            "version": "v0.12.29",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swaggest/php-json-schema.git",
-                "reference": "6f57c0d80e246c2868accaab5c550cd470a5537f"
+                "reference": "7564d4a5fc8c068479698a30e5a7c589ea32a9c6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swaggest/php-json-schema/zipball/6f57c0d80e246c2868accaab5c550cd470a5537f",
-                "reference": "6f57c0d80e246c2868accaab5c550cd470a5537f",
+                "url": "https://api.github.com/repos/swaggest/php-json-schema/zipball/7564d4a5fc8c068479698a30e5a7c589ea32a9c6",
+                "reference": "7564d4a5fc8c068479698a30e5a7c589ea32a9c6",
                 "shasum": ""
             },
             "require": {
@@ -6631,7 +6629,7 @@
                 }
             ],
             "description": "High definition PHP structures with JSON-schema based validation",
-            "time": "2020-01-27T09:47:50+00:00"
+            "time": "2020-03-19T08:41:40+00:00"
         }
     ],
     "aliases": [],

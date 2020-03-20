@@ -1,13 +1,13 @@
 <?php
 declare( strict_types = 1 );
 
-namespace Wikimedia\Parsoid;
+namespace Wikimedia\Parsoid\Core;
 
 use DOMDocument;
 
 use Wikimedia\Parsoid\Config\Env;
-use Wikimedia\Parsoid\Config\ParsoidExtensionAPI;
 use Wikimedia\Parsoid\Ext\ContentModelHandlerExtension;
+use Wikimedia\Parsoid\Ext\ParsoidExtensionAPI;
 
 class ExtensionContentModelHandler extends ContentModelHandler {
 

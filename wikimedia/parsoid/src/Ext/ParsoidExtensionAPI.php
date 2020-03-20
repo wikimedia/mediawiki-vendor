@@ -1,14 +1,17 @@
 <?php
 declare( strict_types = 1 );
 
-namespace Wikimedia\Parsoid\Config;
+namespace Wikimedia\Parsoid\Ext;
 
 use \Closure;
 use DOMDocument;
 use DOMElement;
 use DOMNode;
+use Wikimedia\Parsoid\Config\Env;
+use Wikimedia\Parsoid\Config\PageConfig;
+use Wikimedia\Parsoid\Config\SiteConfig;
+use Wikimedia\Parsoid\Core\DomSourceRange;
 use Wikimedia\Parsoid\Html2wt\SerializerState;
-use Wikimedia\Parsoid\Tokens\DomSourceRange;
 use Wikimedia\Parsoid\Tokens\SourceRange;
 use Wikimedia\Parsoid\Tokens\Token;
 use Wikimedia\Parsoid\Utils\ContentUtils;
@@ -141,13 +144,6 @@ class ParsoidExtensionAPI {
 	}
 
 	/**
-	 * @return Frame
-	 */
-	public function getFrame(): Frame {
-		return $this->frame;
-	}
-
-	/**
 	 * Are we parsing in a template context?
 	 * @return bool
 	 */
@@ -259,6 +255,12 @@ class ParsoidExtensionAPI {
 			// Parse content to DOM and pass DOM-fragment token back to the main pipeline.
 			// The DOM will get unwrapped and integrated  when processing the top level document.
 			$pipelineOpts = $parseOpts['pipelineOpts'] ?? [];
+			$srcOffsets = $parseOpts['srcOffsets'] ?? null;
+			$frame = $this->frame;
+			if ( !empty( $parseOpts['processInNewFrame'] ) ) {
+				$frame = $frame->newChild( $frame->getTitle(), [], $wikitext );
+				$srcOffsets = new SourceRange( 0, strlen( $wikitext ) );
+			}
 			$opts = [
 				// Full pipeline for processing content
 				'pipelineType' => 'text/x-mediawiki/full',
@@ -272,15 +274,10 @@ class ParsoidExtensionAPI {
 					// support for extensions that rely on this behavior.
 					'inPHPBlock' => !empty( $pipelineOpts['inPHPBlock'] )
 				],
-				'srcOffsets' => $parseOpts['srcOffsets'] ?? null,
+				'srcOffsets' => $srcOffsets,
 				'sol' => $sol
 			];
-			$doc = PipelineUtils::processContentInPipeline(
-				$this->env,
-				$parseOpts['frame'] ?? $this->frame,
-				$wikitext,
-				$opts
-			);
+			$doc = PipelineUtils::processContentInPipeline( $this->env, $frame, $wikitext, $opts );
 
 			if ( isset( $parseOpts['shiftDSRFn'] ) ) {
 				ContentUtils::shiftDSR(
