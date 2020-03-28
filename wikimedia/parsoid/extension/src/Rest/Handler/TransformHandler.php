@@ -35,6 +35,12 @@ class TransformHandler extends ParsoidHandler {
 
 		$attribs = &$this->getRequestAttributes();
 
+		if ( !$this->acceptable( $attribs ) ) {
+			return $this->getResponseFactory()->createHttpError( 406, [
+				'message' => 'Not acceptable',
+			] );
+		}
+
 		if ( $from === FormatHelper::FORMAT_WIKITEXT ) {
 			// Accept wikitext as a string or object{body,headers}
 			$wikitext = $attribs['opts']['wikitext'] ?? null;
@@ -60,17 +66,11 @@ class TransformHandler extends ParsoidHandler {
 					'message' => 'No title or wikitext was provided.',
 				] );
 			}
-			$env = $this->createEnv(
-				$attribs['pageName'], (int)$attribs['oldid'], false /* titleShouldExist */,
-				$wikitext,
+			$pageConfig = $this->createPageConfig(
+				$attribs['pageName'], (int)$attribs['oldid'], $wikitext,
 				$attribs['pagelanguage']
 			);
-			if ( !$this->acceptable( $attribs ) ) {
-				return $this->getResponseFactory()->createHttpError( 406, [
-					'message' => 'Not acceptable',
-				] );
-			}
-			return $this->wt2html( $env, $attribs, $wikitext );
+			return $this->wt2html( $pageConfig, $attribs, $wikitext );
 		} elseif ( $format === FormatHelper::FORMAT_WIKITEXT ) {
 			$html = $attribs['opts']['html'] ?? null;
 			if ( $html === null ) {
@@ -83,27 +83,22 @@ class TransformHandler extends ParsoidHandler {
 				$html = $html['body'];
 			}
 			$wikitext = $attribs['opts']['original']['wikitext']['body'] ?? null;
-			$env = $this->createEnv(
-				$attribs['pageName'], (int)$attribs['oldid'], false /* titleShouldExist */,
-				$wikitext
+			$pageConfig = $this->createPageConfig(
+				$attribs['pageName'], (int)$attribs['oldid'], $wikitext
 			);
-			if ( !$this->acceptable( $attribs ) ) {
-				return $this->getResponseFactory()->createHttpError( 406, [
-					'message' => 'Not acceptable',
+			$hasOldId = (bool)$attribs['oldid'];
+			if ( $hasOldId && $pageConfig->getRevisionContent() === null ) {
+				return $this->getResponseFactory()->createHttpError( 404, [
+					'message' => 'The specified revision does not exist.',
 				] );
 			}
-			return $this->html2wt( $env, $attribs, $html );
+			return $this->html2wt( $pageConfig, $attribs, $html );
 		} else {
-			$env = $this->createEnv(
-				$attribs['pageName'], (int)$attribs['oldid'], false /* titleShouldExist */,
-				null, $attribs['pagelanguage']
+			$pageConfig = $this->createPageConfig(
+				$attribs['pageName'], (int)$attribs['oldid'], null,
+				$attribs['pagelanguage']
 			);
-			if ( !$this->acceptable( $attribs ) ) {
-				return $this->getResponseFactory()->createHttpError( 406, [
-					'message' => 'Not acceptable',
-				] );
-			}
-			return $this->pb2pb( $env, $attribs );
+			return $this->pb2pb( $pageConfig, $attribs );
 		}
 	}
 

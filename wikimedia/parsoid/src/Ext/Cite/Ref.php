@@ -6,12 +6,12 @@ namespace Wikimedia\Parsoid\Ext\Cite;
 use DOMElement;
 use DOMNode;
 use Exception;
+use Wikimedia\Parsoid\Ext\DOMDataUtils;
 use Wikimedia\Parsoid\Ext\ExtensionTag;
 use Wikimedia\Parsoid\Ext\ParsoidExtensionAPI;
+use Wikimedia\Parsoid\Ext\WTUtils;
 use Wikimedia\Parsoid\Utils\DOMCompat;
-use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\DOMUtils;
-use Wikimedia\Parsoid\Utils\WTUtils;
 
 /**
  * Simple token transform version of the Ref extension tag.
@@ -45,9 +45,9 @@ class Ref extends ExtensionTag {
 				'pipelineOpts' => [
 					'extTag' => 'ref',
 					'extTagOpts' => [ 'allowNestedRef' => $allowNestedRef ],
-					// FIXME: One-off PHP parser state leak.
-					// This needs a better solution.
-					'inPHPBlock' => true,
+					// Ref content doesn't need p-wrapping or indent-pres.
+					// Treat this as inline-context content to get that b/c behavior.
+					'inlineContext' => true,
 				],
 			]
 		);

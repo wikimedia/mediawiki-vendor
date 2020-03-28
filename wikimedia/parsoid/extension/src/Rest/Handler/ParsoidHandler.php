@@ -24,7 +24,6 @@ use Wikimedia\Http\HttpAcceptParser;
 use Wikimedia\Message\DataMessageValue;
 use Wikimedia\ParamValidator\ValidationException;
 use Wikimedia\Parsoid\Config\DataAccess;
-use Wikimedia\Parsoid\Config\Env;
 use Wikimedia\Parsoid\Config\PageConfig;
 use Wikimedia\Parsoid\Config\SiteConfig;
 use Wikimedia\Parsoid\Core\ClientError;
@@ -32,14 +31,12 @@ use Wikimedia\Parsoid\Core\PageBundle;
 use Wikimedia\Parsoid\Core\ResourceLimitExceededException;
 use Wikimedia\Parsoid\Core\SelserData;
 use Wikimedia\Parsoid\Parsoid;
-use Wikimedia\Parsoid\Tokens\Token;
 use Wikimedia\Parsoid\Utils\ContentUtils;
 use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\PHPUtils;
 use Wikimedia\Parsoid\Utils\Timing;
-use Wikimedia\Parsoid\Wt2Html\PegTokenizer;
 
 /**
  * Base class for Parsoid handlers.
@@ -344,68 +341,6 @@ abstract class ParsoidHandler extends Handler {
 	}
 
 	/**
-	 * @param string $title The page to be transformed
-	 * @param int|null $revision The revision to be transformed
-	 * @param bool $titleShouldExist return null if the title/revision doesn't
-	 *   exist.
-	 * @param string|null $wikitextOverride
-	 *   Custom wikitext to use instead of the real content of the page.
-	 * @param string|null $pagelanguageOverride
-	 * @return Env|null
-	 */
-	protected function createEnv(
-		string $title, ?int $revision, bool $titleShouldExist,
-		string $wikitextOverride = null,
-		string $pagelanguageOverride = null
-	): ?Env {
-		$pageConfig = $this->createPageConfig(
-			$title, $revision, $wikitextOverride, $pagelanguageOverride
-		);
-		if ( $titleShouldExist && $pageConfig->getRevisionContent() === null ) {
-			return null; // T234549
-		}
-		$options = [ 'titleShouldExist' => $titleShouldExist ];
-		// NOTE: These settings are mostly ignored since this Env is only used
-		// in this file.
-		foreach ( [ 'traceFlags', 'dumpFlags' ] as $opt ) {
-			if ( isset( $this->parsoidSettings[$opt] ) ) {
-				$options[$opt] = $this->parsoidSettings[$opt];
-			}
-		}
-		return new Env( $this->siteConfig, $pageConfig, $this->dataAccess, $options );
-	}
-
-	/**
-	 * To support the 'subst' API parameter, we need to prefix each
-	 * top-level template with 'subst'. To make sure we do this for the
-	 * correct templates, tokenize the starting wikitext and use that to
-	 * detect top-level templates. Then, substitute each starting '{{' with
-	 * '{{subst' using the template token's tsr.
-	 *
-	 * @param Env $env
-	 * @param string $target The page being parsed
-	 * @param string $wikitext
-	 * @return string
-	 */
-	protected function substTopLevelTemplates( Env $env, $target, $wikitext ): string {
-		$tokenizer = new PegTokenizer( $env );
-		$tokens = $tokenizer->tokenizeSync( $wikitext );
-		$tsrIncr = 0;
-		foreach ( $tokens as $token ) {
-			/** @var Token $token */
-			if ( $token->getName() === 'template' ) {
-				$tsr = $token->dataAttribs->tsr;
-				$wikitext = substr( $wikitext, 0, $tsr->start + $tsrIncr )
-					. '{{subst:' . substr( $wikitext, $tsr->start + $tsrIncr + 2 );
-				$tsrIncr += 6;
-			}
-		}
-		// Now pass it to the MediaWiki API with onlypst set so that it
-		// subst's the templates.
-		return $this->dataAccess->doPst( $env->getPageConfig(), $wikitext );
-	}
-
-	/**
 	 * Redirect to another Parsoid URL (e.g. canonization)
 	 * @param string $path Target URL
 	 * @param array $queryParams Query parameters
@@ -437,17 +372,19 @@ abstract class ParsoidHandler extends Handler {
 	/**
 	 * Expand the current URL with the latest revision number and redirect there.
 	 * Will return an error response if the page does not exist.
-	 * @param Env $env
+	 * @param PageConfig $pageConfig
 	 * @param array $attribs Request attributes from getRequestAttributes()
 	 * @return Response
 	 */
-	protected function createRedirectToOldidResponse( Env $env, array $attribs ): Response {
+	protected function createRedirectToOldidResponse(
+		PageConfig $pageConfig, array $attribs
+	): Response {
 		// porting note: this is  more or less the equivalent of apiUtils.redirectToOldid()
 		$domain = $attribs['envOptions']['domain'];
 		$format = $this->getRequest()->getPathParam( 'format' );
-		$target = $env->getPageConfig()->getTitle();
+		$target = $pageConfig->getTitle();
 		$encodedTarget = PHPUtils::encodeURIComponent( $target );
-		$revid = $env->getPageConfig()->getRevisionId();
+		$revid = $pageConfig->getRevisionId();
 
 		if ( $revid === null ) {
 			return $this->getResponseFactory()->createHttpError( 404, [
@@ -455,7 +392,6 @@ abstract class ParsoidHandler extends Handler {
 			] );
 		}
 
-		$env->log( 'info', 'redirecting to revision', $revid, 'for', $format );
 		$this->metrics->increment( 'redirectToOldid.' . $format );
 
 		if ( $this->getRequest()->getMethod() === 'POST' ) {
@@ -471,13 +407,15 @@ abstract class ParsoidHandler extends Handler {
 	 * Wikitext -> HTML helper.
 	 * Porting note: this is the rough equivalent of routes.wt2html.
 	 * Spec'd in https://phabricator.wikimedia.org/T75955 and the API tests.
-	 * @param Env $env
+	 * @param PageConfig $pageConfig
 	 * @param array $attribs Request attributes from getRequestAttributes()
 	 * @param string|null $wikitext Wikitext to transform (or null to use the page specified in
 	 *   the request attributes).
 	 * @return Response
 	 */
-	protected function wt2html( Env $env, array $attribs, string $wikitext = null ) {
+	protected function wt2html(
+		PageConfig $pageConfig, array $attribs, string $wikitext = null
+	) {
 		$request = $this->getRequest();
 		$opts = $attribs['opts'];
 		$format = $opts['format'];
@@ -498,10 +436,10 @@ abstract class ParsoidHandler extends Handler {
 
 		if ( $wikitext === null && !$oldid ) {
 			// Redirect to the latest revid
-			return $this->createRedirectToOldidResponse( $env, $attribs );
+			return $this->createRedirectToOldidResponse( $pageConfig, $attribs );
 		}
 
-		$pageConfig = $env->getPageConfig();
+		$parsoid = new Parsoid( $this->siteConfig, $this->dataAccess );
 
 		if ( $doSubst ) {
 			if ( $format !== FormatHelper::FORMAT_HTML ) {
@@ -509,27 +447,31 @@ abstract class ParsoidHandler extends Handler {
 					'message' => 'Substitution is only supported for the HTML format.',
 				] );
 			}
-			$wikitext = $this->substTopLevelTemplates( $env, $attribs['pageName'], $wikitext );
+			$wikitext = $parsoid->substTopLevelTemplates(
+				$pageConfig, $wikitext
+			);
 			$pageConfig = $this->createPageConfig(
 				$attribs['pageName'], (int)$attribs['oldid'], $wikitext
 			);
 		}
 
-		if ( !empty( $this->parsoidSettings['devAPI'] ) &&
-			( $request->getQueryParams()['follow_redirects'] ?? false ) ) {
-			$content = $env->getPageConfig()->getRevisionContent();
+		if (
+			!empty( $this->parsoidSettings['devAPI'] ) &&
+			( $request->getQueryParams()['follow_redirects'] ?? false )
+		) {
+			$content = $pageConfig->getRevisionContent();
 			$redirectTarget = $content ? $content->getRedirectTarget() : null;
 			if ( $redirectTarget ) {
 				$redirectInfo =
-					$redirectTarget ? $this->dataAccess->getPageInfo( $env->getPageConfig(),
-						[ $redirectTarget ] ) : null;
+					$redirectTarget ? $this->dataAccess->getPageInfo(
+						$pageConfig, [ $redirectTarget ]
+					) : null;
 				$encodedTarget = PHPUtils::encodeURIComponent( $redirectTarget );
 				$redirectPath =
 					"/{$attribs['envOptions']['domain']}/v3/page/$encodedTarget/wikitext";
 				if ( $redirectInfo['revId'] ) {
 					$redirectPath .= '/' . $redirectInfo['revId'];
 				}
-				$env->log( 'info', 'redirecting to ', $redirectPath );
 				return $this->createRedirectResponse( "", $request->getQueryParams() );
 			}
 		}
@@ -564,11 +506,9 @@ abstract class ParsoidHandler extends Handler {
 		$metrics->timing(
 			"wt2html.$mstr.size.input",
 			# Should perhaps be strlen instead (or cached!): T239841
-			mb_strlen( $env->getPageMainContent() )
+			mb_strlen( $pageConfig->getPageMainContent() )
 		);
 		$parseTiming = Timing::start( $metrics );
-
-		$parsoid = new Parsoid( $this->siteConfig, $this->dataAccess );
 
 		if ( $format === FormatHelper::FORMAT_LINT ) {
 			try {
@@ -642,13 +582,15 @@ abstract class ParsoidHandler extends Handler {
 	/**
 	 * HTML -> wikitext helper.
 	 * Porting note: this is the rough equivalent of routes.html2wt.
-	 * @param Env $env
+	 * @param PageConfig $pageConfig
 	 * @param array $attribs Request attributes from getRequestAttributes()
 	 * @param string|null $html HTML to transform (or null to use the page specified in
 	 *   the request attributes).
 	 * @return Response
 	 */
-	protected function html2wt( Env $env, array $attribs, string $html = null ) {
+	protected function html2wt(
+		PageConfig $pageConfig, array $attribs, string $html = null
+	) {
 		$request = $this->getRequest();
 		$opts = $attribs['opts'];
 		$envOptions = $attribs['envOptions'];
@@ -682,7 +624,6 @@ abstract class ParsoidHandler extends Handler {
 			$vOriginal = FormatHelper::parseContentTypeHeader(
 				$original['html']['headers']['content-type'] ?? '' );
 			if ( $vOriginal === null ) {
-				$env->log( 'fatal/request', 'Content-type of original html is missing.' );
 				return $this->getResponseFactory()->createHttpError( 400, [
 					'message' => 'Content-type of original html is missing.',
 				] );
@@ -698,26 +639,29 @@ abstract class ParsoidHandler extends Handler {
 			} else {
 				$envOptions['inputContentVersion'] = $vEdited;
 				// We need to downgrade the original to match the the edited doc's version.
-				$downgrade = FormatHelper::findDowngrade( $vOriginal, $vEdited );
+				$downgrade = Parsoid::findDowngrade( $vOriginal, $vEdited );
 				// Downgrades are only for pagebundle
 				if ( $downgrade && $opts['from'] === FormatHelper::FORMAT_PAGEBUNDLE ) {
 					$metrics->increment(
-						"downgrade.from.{$downgrade['from']}.to.{$downgrade['to']}" );
-					$oldDoc = $env->createDocument( $original['html']['body'] );
-					$origPb = new PageBundle( '', $original['data-parsoid']['body'] ?? null,
-						$original['data-mw']['body'] ?? null );
+						"downgrade.from.{$downgrade['from']}.to.{$downgrade['to']}"
+					);
+					$origPb = new PageBundle(
+						$original['html']['body'],
+						$original['data-parsoid']['body'] ?? null,
+						$original['data-mw']['body'] ?? null
+					);
 					if ( !$origPb->validate( $vOriginal, $errorMessage ) ) {
-						return $this->getResponseFactory()->createHttpError( 400,
-							[ 'message' => $errorMessage ] );
+						return $this->getResponseFactory()->createHttpError(
+							400, [ 'message' => $errorMessage ]
+						);
 					}
 					$downgradeTiming = Timing::start( $metrics );
-					FormatHelper::downgrade( $downgrade['from'], $downgrade['to'], $oldDoc, $origPb );
+					Parsoid::downgrade( $downgrade, $origPb );
 					$downgradeTiming->end( 'downgrade.time' );
-					$oldBody = DOMCompat::getBody( $oldDoc );
+					$oldBody = DOMCompat::getBody( DOMUtils::parseHTML( $origPb->html ) );
 				} else {
 					$err = "Modified ({$vEdited}) and original ({$vOriginal}) html are of "
 						. 'different type, and no path to downgrade.';
-					$env->log( 'fatal/request', $err );
 					return $this->getResponseFactory()->createHttpError( 400, [ 'message' => $err ] );
 				}
 			}
@@ -813,15 +757,15 @@ abstract class ParsoidHandler extends Handler {
 		$hasOldId = (bool)$attribs['oldid'];
 
 		if ( $hasOldId && !empty( $this->parsoidSettings['useSelser'] ) ) {
-			if ( !$env->getPageConfig()->getRevisionContent() ) {
+			if ( !$pageConfig->getRevisionContent() ) {
 				return $this->getResponseFactory()->createHttpError( 409, [
 					'message' => 'Could not find previous revision. Has the page been locked / deleted?'
 				] );
 			}
 
-			// FIXME: T234548/T234549 - $env->getPageMainContent() is deprecated:
+			// FIXME: T234548/T234549 - $pageConfig->getPageMainContent() is deprecated:
 			// should use $env->topFrame->getSrcText()
-			$selserData = new SelserData( $env->getPageMainContent(), $oldhtml );
+			$selserData = new SelserData( $pageConfig->getPageMainContent(), $oldhtml );
 		} else {
 			$selserData = null;
 		}
@@ -830,11 +774,10 @@ abstract class ParsoidHandler extends Handler {
 		$parsoid = new Parsoid( $this->siteConfig, $this->dataAccess );
 
 		try {
-			$wikitext = $parsoid->html2wikitext( $env->getPageConfig(), $html, [
+			$wikitext = $parsoid->html2wikitext( $pageConfig, $html, [
 				'scrubWikitext' => $envOptions['scrubWikitext'],
 				'inputContentVersion' => $envOptions['inputContentVersion'],
 				'offsetType' => $envOptions['offsetType'],
-				'titleShouldExist' => $hasOldId,
 				'contentmodel' => $opts['contentmodel'] ?? null,
 			], $selserData );
 		} catch ( ClientError $e ) {
@@ -860,17 +803,16 @@ abstract class ParsoidHandler extends Handler {
 	/**
 	 * Pagebundle -> pagebundle helper.
 	 * Porting note: this is the rough equivalent of routes.pb2pb.
-	 * @param Env $env
+	 * @param PageConfig $pageConfig
 	 * @param array $attribs
 	 * @return Response
 	 */
-	protected function pb2pb( Env $env, array $attribs ) {
+	protected function pb2pb( PageConfig $pageConfig, array $attribs ) {
 		$request = $this->getRequest();
 		$opts = $attribs['opts'];
 
 		$revision = $opts['previous'] ?? $opts['original'] ?? null;
 		if ( !isset( $revision['html'] ) ) {
-			$env->log( 'fatal/request', 'Missing revision html.' );
 			return $this->getResponseFactory()->createHttpError( 400, [
 				'message' => 'Missing revision html.',
 			] );
@@ -879,7 +821,6 @@ abstract class ParsoidHandler extends Handler {
 		$vOriginal = FormatHelper::parseContentTypeHeader(
 			$revision['html']['headers']['content-type'] ?? '' );
 		if ( $vOriginal === null ) {
-			$env->log( 'fatal/request', 'Content-type of revision html is missing.' );
 			return $this->getResponseFactory()->createHttpError( 400, [
 				'message' => 'Content-type of revision html is missing.',
 			] );
@@ -911,9 +852,9 @@ abstract class ParsoidHandler extends Handler {
 			if ( !empty( $opts['updates']['redlinks'] ) ) {
 				// Q(arlolra): Should redlinks be more complex than a bool?
 				// See gwicke's proposal at T114413#2240381
-				return $this->updateRedLinks( $env, $attribs, $revision );
+				return $this->updateRedLinks( $pageConfig, $attribs, $revision );
 			} elseif ( isset( $opts['updates']['variant'] ) ) {
-				return $this->languageConversion( $env, $attribs, $revision );
+				return $this->languageConversion( $pageConfig, $attribs, $revision );
 			} else {
 				return $this->getResponseFactory()->createHttpError( 400, [
 					'message' => 'Unknown transformation.',
@@ -924,36 +865,41 @@ abstract class ParsoidHandler extends Handler {
 		// TODO(arlolra): subbu has some sage advice in T114413#2365456 that
 		// we should probably be more explicit about the pb2pb conversion
 		// requested rather than this increasingly complex fallback logic.
-		$downgrade = FormatHelper::findDowngrade(
+		$downgrade = Parsoid::findDowngrade(
 			$attribs['envOptions']['inputContentVersion'],
 			$attribs['envOptions']['outputContentVersion']
 		);
 		if ( $downgrade ) {
-			$doc = $env->createDocument( $revision['html']['body'] );
 			$pb = new PageBundle(
-				'',
+				$revision['html']['body'],
 				$revision['data-parsoid']['body'] ?? null,
 				$revision['data-mw']['body'] ?? null
 			);
 			if ( !$pb->validate( $attribs['envOptions']['inputContentVersion'], $errorMessage ) ) {
 				return $this->getResponseFactory()->createHttpError(
-					400,
-					[ 'message' => $errorMessage ]
+					400, [ 'message' => $errorMessage ]
 				);
 			}
-			$out = FormatHelper::returnDowngrade(
-				$downgrade, $attribs['envOptions']['outputContentVersion'], $doc, $pb, $attribs );
-			$response = $this->getResponseFactory()->createJson( $out->responseData() );
+			Parsoid::downgrade( $downgrade, $pb );
+
+			if ( !empty( $attribs['body_only'] ) ) {
+				$doc = DOMUtils::parseHTML( $pb->html );
+				$body = DOMCompat::getBody( $doc );
+				$pb->html = ContentUtils::toXML( $body, [
+					'innerXML' => true,
+				] );
+			}
+
+			$response = $this->getResponseFactory()->createJson( $pb->responseData() );
 			FormatHelper::setContentType(
-				$response, FormatHelper::FORMAT_PAGEBUNDLE, $out->version
+				$response, FormatHelper::FORMAT_PAGEBUNDLE, $pb->version
 			);
 			return $response;
 		// Ensure we only reuse from semantically similar content versions.
 		} elseif ( Semver::satisfies( $attribs['envOptions']['outputContentVersion'],
 			'^' . $attribs['envOptions']['inputContentVersion'] ) ) {
-			return $this->wt2html( $env, $attribs, null );
+			return $this->wt2html( $pageConfig, $attribs, null );
 		} else {
-			$env->log( 'fatal/request', 'We do not know how to do this conversion.' );
 			return $this->getResponseFactory()->createHttpError( 415, [
 				'message' => 'We do not know how to do this conversion.',
 			] );
@@ -963,14 +909,15 @@ abstract class ParsoidHandler extends Handler {
 	/**
 	 * Update red links on a document.
 	 *
-	 * @param Env $env
+	 * @param PageConfig $pageConfig
 	 * @param array $attribs
 	 * @param array $revision
 	 * @return Response
 	 */
-	protected function updateRedLinks( Env $env, array $attribs, array $revision ) {
+	protected function updateRedLinks(
+		PageConfig $pageConfig, array $attribs, array $revision
+	) {
 		$parsoid = new Parsoid( $this->siteConfig, $this->dataAccess );
-		$pageConfig = $env->getPageConfig();
 
 		$html = $parsoid->html2html(
 			$pageConfig, 'redlinks', $revision['html']['body'], [], $headers
@@ -1000,12 +947,14 @@ abstract class ParsoidHandler extends Handler {
 	/**
 	 * Do variant conversion on a document.
 	 *
-	 * @param Env $env
+	 * @param PageConfig $pageConfig
 	 * @param array $attribs
 	 * @param array $revision
 	 * @return Response
 	 */
-	protected function languageConversion( Env $env, array $attribs, array $revision ) {
+	protected function languageConversion(
+		PageConfig $pageConfig, array $attribs, array $revision
+	) {
 		$opts = $attribs['opts'];
 		$source = $opts['updates']['variant']['source'] ?? null;
 		$target = $opts['updates']['variant']['target'] ??
@@ -1017,14 +966,15 @@ abstract class ParsoidHandler extends Handler {
 			);
 		}
 
-		if ( !$env->langConverterEnabled() ) {
+		if ( !$this->siteConfig->langConverterEnabledForLanguage(
+			$pageConfig->getPageLanguage()
+		) ) {
 			return $this->getResponseFactory()->createHttpError(
 				400, [ 'message' => 'LanguageConversion is not enabled on this article.' ]
 			);
 		}
 
 		$parsoid = new Parsoid( $this->siteConfig, $this->dataAccess );
-		$pageConfig = $env->getPageConfig();
 
 		$pb = new PageBundle(
 			$revision['html']['body'],

@@ -7,7 +7,7 @@ use MediaWiki\Rest\Response;
 use MediaWiki\Revision\RevisionAccessException;
 use MediaWiki\Revision\SlotRecord;
 use MWParsoid\Rest\FormatHelper;
-use Wikimedia\Parsoid\Config\Env;
+use Wikimedia\Parsoid\Config\PageConfig;
 
 /**
  * Handler for displaying or rendering the content of a page:
@@ -30,55 +30,67 @@ class PageHandler extends ParsoidHandler {
 
 		$attribs = $this->getRequestAttributes();
 
-		$oldid = (int)$attribs['oldid'];
-		try {
-			$env = $this->createEnv( $attribs['pageName'], $oldid, true /* titleShouldExist */ );
-		} catch ( RevisionAccessException $exception ) {
-			return $this->getResponseFactory()->createHttpError( 404, [
-				'message' => 'The specified revision is deleted or suppressed.',
-			] );
-		}
-		if ( !$env ) {
-			return $this->getResponseFactory()->createHttpError( 404, [
-				'message' => 'The specified revision does not exist.',
-			] );
-		}
-
 		if ( !$this->acceptable( $attribs ) ) {
 			return $this->getResponseFactory()->createHttpError( 406, [
 				'message' => 'Not acceptable',
 			] );
 		}
 
-		if ( $format === FormatHelper::FORMAT_WIKITEXT ) {
-			if ( !$oldid ) {
-				return $this->createRedirectToOldidResponse( $env, $attribs );
-			}
-			return $this->getPageContentResponse( $env, $attribs );
-		} else {
-			return $this->wt2html( $env, $attribs );
-		}
-	}
+		$oldid = (int)$attribs['oldid'];
 
-	/**
-	 * Return the content of a page. This is the case when GET /page/ is called with format=wikitext.
-	 * @param Env $env
-	 * @param array $attribs Request attributes from getRequestAttributes()
-	 * @return Response
-	 */
-	protected function getPageContentResponse( Env $env, array $attribs ) {
-		$content = $env->getPageConfig()->getRevisionContent();
-		if ( !$content ) {
+		try {
+			$pageConfig = $this->createPageConfig(
+				$attribs['pageName'], $oldid
+			);
+		} catch ( RevisionAccessException $exception ) {
+			return $this->getResponseFactory()->createHttpError( 404, [
+				'message' => 'The specified revision is deleted or suppressed.',
+			] );
+		}
+
+		// T234549
+		if ( $pageConfig->getRevisionContent() === null ) {
 			return $this->getResponseFactory()->createHttpError( 404, [
 				'message' => 'The specified revision does not exist.',
 			] );
 		}
 
+		if ( $format === FormatHelper::FORMAT_WIKITEXT ) {
+			if ( !$oldid ) {
+				return $this->createRedirectToOldidResponse(
+					$pageConfig, $attribs
+				);
+			}
+			return $this->getPageContentResponse( $pageConfig, $attribs );
+		} else {
+			return $this->wt2html( $pageConfig, $attribs );
+		}
+	}
+
+	/**
+	 * Return the content of a page. This is the case when GET /page/ is
+	 * called with format=wikitext.
+	 *
+	 * @param PageConfig $pageConfig
+	 * @param array $attribs Request attributes from getRequestAttributes()
+	 * @return Response
+	 */
+	protected function getPageContentResponse(
+		PageConfig $pageConfig, array $attribs
+	) {
+		$content = $pageConfig->getRevisionContent();
+		if ( !$content ) {
+			return $this->getResponseFactory()->createHttpError( 404, [
+				'message' => 'The specified revision does not exist.',
+			] );
+		}
 		$response = $this->getResponseFactory()->create();
 		$response->setStatus( 200 );
 		$response->setHeader( 'X-ContentModel', $content->getModel( SlotRecord::MAIN ) );
-		FormatHelper::setContentType( $response, FormatHelper::FORMAT_WIKITEXT,
-			$attribs['envOptions']['outputContentVersion'] );
+		FormatHelper::setContentType(
+			$response, FormatHelper::FORMAT_WIKITEXT,
+			$attribs['envOptions']['outputContentVersion']
+		);
 		$response->getBody()->write( $content->getContent( SlotRecord::MAIN ) );
 		return $response;
 	}

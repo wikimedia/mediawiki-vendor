@@ -4,18 +4,30 @@ declare( strict_types = 1 );
 namespace Wikimedia\Parsoid\Ext\Pre;
 
 use DOMDocument;
+use Wikimedia\Parsoid\Ext\DOMDataUtils;
 use Wikimedia\Parsoid\Ext\Extension;
 use Wikimedia\Parsoid\Ext\ExtensionTag;
 use Wikimedia\Parsoid\Ext\ParsoidExtensionAPI;
+use Wikimedia\Parsoid\Ext\Util;
 use Wikimedia\Parsoid\Utils\DOMCompat;
-use Wikimedia\Parsoid\Utils\DOMDataUtils;
-use Wikimedia\Parsoid\Utils\Util;
 
 /**
  * The `<pre>` extension tag shadows the html pre tag, but has different
  * semantics.  It treats anything inside it as plaintext.
  */
 class Pre extends ExtensionTag implements Extension {
+
+	/** @inheritDoc */
+	public function getConfig(): array {
+		return [
+			'tags' => [
+				[
+					'name' => 'pre',
+					'class' => self::class,
+				]
+			]
+		];
+	}
 
 	/** @inheritDoc */
 	public function toDOM( ParsoidExtensionAPI $extApi, string $txt, array $extArgs ): DOMDocument {
@@ -43,18 +55,6 @@ class Pre extends ExtensionTag implements Extension {
 		DOMCompat::getBody( $doc )->appendChild( $pre );
 
 		return $doc;
-	}
-
-	/** @inheritDoc */
-	public function getConfig(): array {
-		return [
-			'tags' => [
-				[
-					'name' => 'pre',
-					'class' => self::class,
-				]
-			]
-		];
 	}
 
 }

@@ -239,7 +239,6 @@ class Env {
 	 *  - discardDataParsoid: boolean
 	 *  - offsetType: 'byte' (default), 'ucs2', 'char'
 	 *                See `Parsoid\Wt2Html\PP\Processors\ConvertOffsets`.
-	 *  - titleShouldExist: (bool) Are we expecting page content to exist?
 	 *  - pageWithOldid: (bool) Does this request specify an oldid?
 	 *  - htmlVariantLanguage: string|null
 	 *      If non-null, the language variant used for Parsoid HTML;
@@ -258,8 +257,7 @@ class Env {
 		$this->siteConfig = $siteConfig;
 		$this->pageConfig = $pageConfig;
 		$this->dataAccess = $dataAccess;
-		$this->topFrame = new PageConfigFrame( $this, $pageConfig, $siteConfig,
-			!empty( $options['titleShouldExist'] ) );
+		$this->topFrame = new PageConfigFrame( $this, $pageConfig, $siteConfig );
 		if ( isset( $options['scrubWikitext'] ) ) {
 			$this->scrubWikitext = !empty( $options['scrubWikitext'] );
 		}
@@ -705,18 +703,6 @@ class Env {
 	}
 
 	/**
-	 * FIXME: Once we remove the hardcoded slot name here,
-	 * the name of this method could be updated, if necessary.
-	 *
-	 * Shortcut method to get page source
-	 * @deprecated Use $this->topFrame->getSrcText()
-	 * @return string
-	 */
-	public function getPageMainContent(): string {
-		return $this->pageConfig->getRevisionContent()->getContent( 'main' );
-	}
-
-	/**
 	 * @return array<string,DOMNode[]>
 	 */
 	public function getDOMFragmentMap(): array {
@@ -888,17 +874,13 @@ class Env {
 
 	/**
 	 * Is the language converter enabled on this page?
+	 *
 	 * @return bool
 	 */
 	public function langConverterEnabled(): bool {
-		$lang = $this->pageConfig->getPageLanguage();
-		if ( !$lang ) {
-			$lang = $this->siteConfig->lang();
-		}
-		if ( !$lang ) {
-			$lang = 'en';
-		}
-		return $this->siteConfig->langConverterEnabled( $lang );
+		return $this->siteConfig->langConverterEnabledForLanguage(
+			$this->pageConfig->getPageLanguage()
+		);
 	}
 
 	/**
