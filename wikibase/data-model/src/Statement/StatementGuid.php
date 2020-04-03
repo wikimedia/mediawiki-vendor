@@ -31,6 +31,11 @@ class StatementGuid implements Comparable {
 	/**
 	 * @var string
 	 */
+	private $guidPart;
+
+	/**
+	 * @var string
+	 */
 	private $serialization;
 
 	/**
@@ -46,6 +51,7 @@ class StatementGuid implements Comparable {
 
 		$this->serialization = $entityId->getSerialization() . self::SEPARATOR . $guid;
 		$this->entityId = $entityId;
+		$this->guidPart = $guid;
 	}
 
 	/**
@@ -53,6 +59,15 @@ class StatementGuid implements Comparable {
 	 */
 	public function getEntityId() {
 		return $this->entityId;
+	}
+
+	/**
+	 * @since 9.4
+	 *
+	 * @return string
+	 */
+	public function getGuidPart() {
+		return $this->guidPart;
 	}
 
 	/**
