@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8cfab38402faf9d02af3aafae8db05d2",
+    "content-hash": "23cd3bb053af71cd39faa082d8873998",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -1369,6 +1369,7 @@
                     "email": "jakub.onderka@gmail.com"
                 }
             ],
+            "abandoned": "php-parallel-lint/php-console-color",
             "time": "2018-09-29T17:23:10+00:00"
         },
         {
@@ -1415,6 +1416,7 @@
                 }
             ],
             "description": "Highlight PHP code in terminal",
+            "abandoned": "php-parallel-lint/php-console-highlighter",
             "time": "2018-09-29T18:48:56+00:00"
         },
         {
@@ -5573,16 +5575,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.12.0-a8",
+            "version": "v0.12.0-a9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/parsoid.git",
-                "reference": "b4f56a9d2786d9cb98bdc352a72597c5d8d4f849"
+                "reference": "f5e4dc1bd0fce535216fe5ef76f0bf471c11ddcc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/b4f56a9d2786d9cb98bdc352a72597c5d8d4f849",
-                "reference": "b4f56a9d2786d9cb98bdc352a72597c5d8d4f849",
+                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/f5e4dc1bd0fce535216fe5ef76f0bf471c11ddcc",
+                "reference": "f5e4dc1bd0fce535216fe5ef76f0bf471c11ddcc",
                 "shasum": ""
             },
             "require": {
@@ -5637,7 +5639,7 @@
                 "mediawiki",
                 "parsoid"
             ],
-            "time": "2020-03-28T01:26:04+00:00"
+            "time": "2020-04-03T22:36:07+00:00"
         },
         {
             "name": "wikimedia/password-blacklist",

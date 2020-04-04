@@ -143,8 +143,8 @@ class LinterTest extends TestCase {
 		$this->assertTrue( isset( $result[0]['params'] ), $desc );
 		$this->assertEquals( 'i', $result[0]['params']['name'], $desc );
 
-		$desc = 'should lint stripped tags correctly in misnested tag situations " .
-			"from template (</i> is stripped)';
+		$desc = 'should lint stripped tags correctly in misnested tag situations ' .
+			'from template (</i> is stripped)';
 		$result = $this->parseWT( '{{echo|<b><i>X</b></i>}}' );
 		$this->assertEquals( 1, count( $result ), $desc );
 		$this->assertEquals( 'misnested-tag', $result[0]['type'], $desc );
@@ -162,8 +162,8 @@ class LinterTest extends TestCase {
 		$this->assertTrue( isset( $result[0]['params'] ), $desc );
 		$this->assertEquals( 'i', $result[0]['params']['name'], $desc );
 
-		$desc = 'should lint stripped tags correctly in misnested tag situations " .
-			"(skip over empty autoinserted <small></small>)';
+		$desc = 'should lint stripped tags correctly in misnested tag situations ' .
+			'(skip over empty autoinserted <small></small>)';
 		$result = $this->parseWT( "*a<small>b\n*c</small>d" );
 		$this->assertEquals( 1, count( $result ), $desc );
 		$this->assertEquals( 'misnested-tag', $result[0]['type'], $desc );
@@ -171,14 +171,23 @@ class LinterTest extends TestCase {
 		$this->assertTrue( isset( $result[0]['params'] ), $desc );
 		$this->assertEquals( 'small', $result[0]['params']['name'], $desc );
 
-		$desc = 'should lint stripped tags correctly in misnested tag situations " .
-			"(formatting tags around lists, but ok for div)';
+		$desc = 'should lint stripped tags correctly in misnested tag situations ' .
+			'(formatting tags around lists, but ok for div)';
 		$result = $this->parseWT( "<small>a\n*b\n*c\nd</small>\n<div>a\n*b\n*c\nd</div>" );
 		$this->assertEquals( 1, count( $result ), $desc );
 		$this->assertEquals( 'misnested-tag', $result[0]['type'], $desc );
 		$this->assertEquals( [ 0, 8, 7, 0 ], $result[0]['dsr'], $desc );
 		$this->assertTrue( isset( $result[0]['params'] ), $desc );
 		$this->assertEquals( 'small', $result[0]['params']['name'], $desc );
+
+		$desc = 'should lint stripped tags correctly in misnested tag situations ' .
+			'(T221989 regression test case)';
+		$result = $this->parseWT( "<div>\n* <span>foo\n\n</div>\n</span>y" );
+		$this->assertEquals( 1, count( $result ), $desc );
+		$this->assertEquals( 'misnested-tag', $result[0]['type'], $desc );
+		$this->assertEquals( [ 8, 17, 6, 0 ], $result[0]['dsr'], $desc );
+		$this->assertTrue( isset( $result[0]['params'] ), $desc );
+		$this->assertEquals( 'span', $result[0]['params']['name'], $desc );
 	}
 
 	/**

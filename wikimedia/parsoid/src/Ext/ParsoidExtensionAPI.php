@@ -229,60 +229,61 @@ class ParsoidExtensionAPI {
 	 * @return string
 	 */
 	public function getContentHTML( string $contentId ): string {
-		return $this->innerHTML( $this->getContentDOM( $contentId ) );
+		return $this->toHTML( $this->getContentDOM( $contentId ), true );
 	}
 
 	/**
 	 * Parse wikitext to DOM
 	 *
 	 * @param string $wikitext
-	 * @param array $parseOpts
+	 * @param array $opts
 	 * - srcOffsets
 	 * - frame
-	 * - pipelineOpts
+	 * - parseOpts
 	 *   - extTag
 	 *   - extTagOpts
 	 *   - inlineContext
 	 * @param bool $sol
 	 * @return DOMDocument
 	 */
-	public function parseWikitextToDOM(
-		string $wikitext, array $parseOpts, bool $sol
-	): DOMDocument {
+	public function parseWikitextToDOM( string $wikitext, array $opts, bool $sol ): DOMDocument {
 		$doc = null;
 		if ( $wikitext === '' ) {
 			$doc = $this->env->createDocument();
 		} else {
 			// Parse content to DOM and pass DOM-fragment token back to the main pipeline.
 			// The DOM will get unwrapped and integrated  when processing the top level document.
-			$pipelineOpts = $parseOpts['pipelineOpts'] ?? [];
-			$srcOffsets = $parseOpts['srcOffsets'] ?? null;
+			$parseOpts = $opts['parseOpts'] ?? [];
+			$srcOffsets = $opts['srcOffsets'] ?? null;
 			$frame = $this->frame;
-			if ( !empty( $parseOpts['processInNewFrame'] ) ) {
+			if ( !empty( $opts['processInNewFrame'] ) ) {
 				$frame = $frame->newChild( $frame->getTitle(), [], $wikitext );
 				$srcOffsets = new SourceRange( 0, strlen( $wikitext ) );
 			}
-			$opts = [
+			$doc = PipelineUtils::processContentInPipeline( $this->env, $frame, $wikitext, [
 				// Full pipeline for processing content
 				'pipelineType' => 'text/x-mediawiki/full',
 				'pipelineOpts' => [
 					'expandTemplates' => true,
-					'extTag' => $pipelineOpts['extTag'],
-					'extTagOpts' => $pipelineOpts['extTagOpts'] ?? null,
+					'extTag' => $parseOpts['extTag'],
+					'extTagOpts' => $parseOpts['extTagOpts'] ?? null,
 					'inTemplate' => $this->inTemplate(),
-					'inlineContext' => !empty( $pipelineOpts['inlineContext'] ),
+					'inlineContext' => !empty( $parseOpts['inlineContext'] ),
 				],
 				'srcOffsets' => $srcOffsets,
 				'sol' => $sol
-			];
-			$doc = PipelineUtils::processContentInPipeline( $this->env, $frame, $wikitext, $opts );
+			] );
 
-			if ( isset( $parseOpts['shiftDSRFn'] ) ) {
-				ContentUtils::shiftDSR(
-					$this->env,
-					DOMCompat::getBody( $doc ),
-					$parseOpts['shiftDSRFn']
-				);
+			if ( !empty( $opts['clearDSROffsets'] ) ) {
+				$dsrFn = function ( DOMSourceRange $dsr ) {
+					return null;
+				};
+			} else {
+				$dsrFn = $opts['shiftDSRFn'] ?? null;
+			}
+
+			if ( $dsrFn ) {
+				ContentUtils::shiftDSR( $this->env, DOMCompat::getBody( $doc ), $dsrFn );
 			}
 		}
 		return $doc;
@@ -296,31 +297,31 @@ class ParsoidExtensionAPI {
 	 * @param array $extArgs
 	 * @param string $leadingWS
 	 * @param string $wikitext
-	 * @param array $parseOpts
+	 * @param array $opts
 	 * - srcOffsets
 	 * - frame
 	 * - wrapperTag
-	 * - pipelineOpts
+	 * - parseOpts
 	 *   - extTag
 	 *   - extTagOpts
 	 *   - inlineContext
 	 * @return DOMDocument
 	 */
 	public function parseExtTagToDOM(
-		array $extArgs, string $leadingWS, string $wikitext, array $parseOpts
+		array $extArgs, string $leadingWS, string $wikitext, array $opts
 	): DOMDocument {
 		$extTagOffsets = $this->extToken->dataAttribs->extTagOffsets;
-		if ( !isset( $parseOpts['srcOffsets'] ) ) {
-			$parseOpts['srcOffsets'] = new SourceRange(
+		if ( !isset( $opts['srcOffsets'] ) ) {
+			$opts['srcOffsets'] = new SourceRange(
 				$extTagOffsets->innerStart() + strlen( $leadingWS ),
 				$extTagOffsets->innerEnd()
 			);
 		}
 
-		$doc = $this->parseWikitextToDOM( $wikitext, $parseOpts, true /* sol */ );
+		$doc = $this->parseWikitextToDOM( $wikitext, $opts, true /* sol */ );
 
 		// Create a wrapper and migrate content into the wrapper
-		$wrapper = $doc->createElement( $parseOpts['wrapperTag'] );
+		$wrapper = $doc->createElement( $opts['wrapperTag'] );
 		$body = DOMCompat::getBody( $doc );
 		DOMUtils::migrateChildren( $body, $wrapper );
 		$body->appendChild( $wrapper );
@@ -515,39 +516,28 @@ class ParsoidExtensionAPI {
 	}
 
 	/**
-	 * Serialize DOM element to string. This puts the input node in a
-	 * non-canonical form and callers shouldn't use it after this call.
-	 * If callers expect to continue using the node beyond this point,
-	 * use the 'innerHTML' method instead.
+	 * Serialize DOM element to string (inner/outer HTML is controlled by flag).
+	 * If $releaseDOM is set to true, the DOM will be left in non-canonical form
+	 * and is not safe to use after this call. This is primarily a performance optimization.
 	 *
 	 * @param DOMElement $elt
-	 * @param bool $innerHTML
+	 * @param bool $innerHTML if true, inner HTML of the element will be returned
+	 *    This flag defaults to false
+	 * @param bool $releaseDOM if true, the DOM will not be in canonical form after this call
+	 *    This flag defaults to false
 	 * @return string
 	 */
-	public function toHTML( DOMElement $elt, bool $innerHTML = true ): string {
+	public function toHTML(
+		DOMElement $elt, bool $innerHTML = false, bool $releaseDOM = false
+	): string {
 		// FIXME: This is going to drop any diff markers but since
 		// the dom differ doesn't traverse into extension content (right now),
 		// none should exist anyways.
 		DOMDataUtils::visitAndStoreDataAttribs( $elt );
 		$html = ContentUtils::toXML( $elt, [ 'innerXML' => $innerHTML ] );
-		return $html;
-	}
-
-	/**
-	 * Return innerHTML equivalent of $elt.
-	 * This version is aware of the DOM state and how/where data-attribs are stored
-	 *
-	 * @param DOMElement $elt
-	 * @return string
-	 */
-	public static function innerHTML( DOMElement $elt ): string {
-		// FIXME: This is going to drop any diff markers but since
-		// the dom differ doesn't traverse into extension content (right now),
-		// none should exist anyways.
-		DOMDataUtils::visitAndStoreDataAttribs( $elt );
-		$html = ContentUtils::toXML( $elt, [ 'innerXML' => true ] );
-		DOMDataUtils::visitAndLoadDataAttribs( $elt );
-
+		if ( !$releaseDOM ) {
+			DOMDataUtils::visitAndLoadDataAttribs( $elt );
+		}
 		return $html;
 	}
 
