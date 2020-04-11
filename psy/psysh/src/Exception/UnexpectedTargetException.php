@@ -11,33 +11,27 @@
 
 namespace Psy\Exception;
 
-/**
- * A RuntimeException for Psy.
- */
-class RuntimeException extends \RuntimeException implements Exception
+class UnexpectedTargetException extends RuntimeException
 {
-    private $rawMessage;
+    private $target;
 
     /**
-     * Make this bad boy.
-     *
+     * @param mixed           $target
      * @param string          $message  (default: "")
      * @param int             $code     (default: 0)
      * @param \Exception|null $previous (default: null)
      */
-    public function __construct($message = '', $code = 0, \Exception $previous = null)
+    public function __construct($target, $message = '', $code = 0, \Exception $previous = null)
     {
-        $this->rawMessage = $message;
+        $this->target = $target;
         parent::__construct($message, $code, $previous);
     }
 
     /**
-     * Return a raw (unformatted) version of the error message.
-     *
-     * @return string
+     * @return mixed
      */
-    public function getRawMessage()
+    public function getTarget()
     {
-        return $this->rawMessage;
+        return $this->target;
     }
 }
