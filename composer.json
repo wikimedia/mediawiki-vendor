@@ -44,7 +44,7 @@
 		"liuggio/statsd-php-client": "1.0.18",
 		"monolog/monolog": "1.25.3",
 		"mustangostang/spyc": "0.6.3",
-		"nikic/php-parser": "4.3.0",
+		"nikic/php-parser": "4.4.0",
 		"nmred/kafka-php": "0.1.5",
 		"onoi/message-reporter": "1.4.1",
 		"oojs/oojs-ui": "0.37.1",
