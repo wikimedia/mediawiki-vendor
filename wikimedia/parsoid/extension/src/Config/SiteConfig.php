@@ -14,6 +14,7 @@ use MagicWordArray;
 use MagicWordFactory;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
+use MutableConfig;
 use Psr\Log\LoggerInterface;
 use Title;
 use User;
@@ -253,16 +254,17 @@ class SiteConfig extends ISiteConfig {
 		$regex = [ 0 => [], 1 => [] ];
 		foreach ( $magicWordArray->getNames() as $name ) {
 			$magic = $factory->get( $name );
-			$case = intval( $magic->isCaseSensitive() );
+			$case = $magic->isCaseSensitive() ? 1 : 0;
 			foreach ( $magic->getSynonyms() as $syn ) {
 				$regex[$case][] = preg_quote( $syn, $delimiter );
 			}
 		}
+		'@phan-var array<int,string[]> $regex'; /** @var array<int,string[]> $regex */
 		$result = [];
-		if ( count( $regex[1] ) ) {
+		if ( count( $regex[1] ) > 0 ) {
 			$result[] = implode( '|', $regex[1] );
 		}
-		if ( count( $regex[0] ) ) {
+		if ( count( $regex[0] ) > 0 ) {
 			$result[] = '(?i:' . implode( '|', $regex[0] ) . ')';
 		}
 		return count( $result ) ? implode( '|', $result ) : '(?!)';
@@ -383,10 +385,10 @@ class SiteConfig extends ISiteConfig {
 				if ( isset( $langNames[$prefix] ) ) {
 					$val['language'] = true;
 				}
-				if ( in_array( $prefix, $localInterwikis ) ) {
+				if ( in_array( $prefix, $localInterwikis, true ) ) {
 					$val['localinterwiki'] = true;
 				}
-				if ( in_array( $prefix, $extraLangPrefixes ) ) {
+				if ( in_array( $prefix, $extraLangPrefixes, true ) ) {
 					$val['extralanglink'] = true;
 
 					$linktext = wfMessage( "interlanguage-link-$prefix" );
@@ -647,11 +649,11 @@ class SiteConfig extends ISiteConfig {
 	 * @param int $depth
 	 */
 	public function setMaxTemplateDepth( int $depth ): void {
-		try {
-			// Only works if the Config is a MutableConfig!
+		if ( $this->config instanceof MutableConfig ) {
 			$this->config->set( 'MaxTemplateDepth', $depth );
-		} catch ( \Error $e ) {
-			// Fall back on global variable (default GlobalVarConfig)
+		} else {
+			// Fall back on global variable (hopefully we're using
+			// a GlobalVarConfig and this will work)
 			$GLOBALS['wgMaxTemplateDepth'] = $depth;
 		}
 	}

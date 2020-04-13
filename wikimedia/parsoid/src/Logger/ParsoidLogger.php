@@ -19,7 +19,6 @@ class ParsoidLogger {
 
 	const PRETTY_LOGTYPE_MAP = [
 		'debug' => '[DEBUG]',
-		'trace/pre-peg' => '[pre-peg]',
 		'trace/peg' => '[peg]',
 		'trace/pre' => '[PRE]',
 		'debug/pre' => '[PRE-DBG]',
@@ -36,8 +35,9 @@ class ParsoidLogger {
 		'trace/selser' => '[SELSER]',
 		'trace/domdiff' => '[DOM-DIFF]',
 		'trace/wt-escape' => '[wt-esc]',
-		'trace/batcher' => '[batcher]',
-		'trace/apirequest' => '[ApiRequest]'
+		'trace/ttm:1' => '[1-TTM]',
+		'trace/ttm:2' => '[2-TTM]',
+		'trace/ttm:3' => '[3-TTM]',
 	];
 
 	// TRACE / DEBUG: Make trace / debug regexp with appropriate postfixes,

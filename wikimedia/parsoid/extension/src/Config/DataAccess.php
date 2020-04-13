@@ -69,7 +69,7 @@ class DataAccess implements IDataAccess {
 
 		// This part is similar to Linker::makeImageLink(). If there is no width,
 		// set one based on the source file size.
-		$page = isset( $hp['page'] ) ? $hp['page'] : 1;
+		$page = $hp['page'] ?? 1;
 		if ( !isset( $hp['width'] ) ) {
 			if ( isset( $hp['height'] ) && $file->isVectorized() ) {
 				// If it's a vector image, and user only specifies height
@@ -139,7 +139,9 @@ class DataAccess implements IDataAccess {
 	/** @inheritDoc */
 	public function getFileInfo( IPageConfig $pageConfig, array $files ): array {
 		$page = Title::newFromText( $pageConfig->getTitle() );
-		$fileObjs = MediaWikiServices::getInstance()->getRepoGroup()->findFiles( array_keys( $files ) );
+		$services = MediaWikiServices::getInstance();
+		$fileObjs = $services->getRepoGroup()->findFiles( array_keys( $files ) );
+		$badFileLookup = $services->getBadFileLookup();
 		$ret = [];
 		foreach ( $files as $filename => $dims ) {
 			/** @var File $file */
@@ -157,7 +159,7 @@ class DataAccess implements IDataAccess {
 				'mime' => $file->getMimeType(),
 				'url' => $file->getFullUrl(),
 				'mustRender' => $file->mustRender(),
-				'badFile' => (bool)wfIsBadImage( $filename, $page ?: false ),
+				'badFile' => $badFileLookup->isBadFile( $filename, $page ?: false ),
 			];
 
 			$length = $file->getLength();
@@ -318,7 +320,7 @@ class DataAccess implements IDataAccess {
 		Hooks::runWithoutAbort( 'ParserFetchTemplateData', [ [ $title ], &$ret ] );
 
 		// Cast value to array since the hook returns this as a stdclass
-		$tplData = $ret[$title];
+		$tplData = $ret[$title] ?? null;
 		if ( $tplData ) {
 			// Deep convert to associative array
 			$tplData = json_decode( json_encode( $tplData ), true );

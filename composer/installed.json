@@ -5758,17 +5758,17 @@
     },
     {
         "name": "wikimedia/parsoid",
-        "version": "v0.12.0-a9",
-        "version_normalized": "0.12.0.0-alpha9",
+        "version": "v0.12.0-a10",
+        "version_normalized": "0.12.0.0-alpha10",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/parsoid.git",
-            "reference": "f5e4dc1bd0fce535216fe5ef76f0bf471c11ddcc"
+            "reference": "d9a6f774a9cc12cf568f6528ccae458e04826d71"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/f5e4dc1bd0fce535216fe5ef76f0bf471c11ddcc",
-            "reference": "f5e4dc1bd0fce535216fe5ef76f0bf471c11ddcc",
+            "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/d9a6f774a9cc12cf568f6528ccae458e04826d71",
+            "reference": "d9a6f774a9cc12cf568f6528ccae458e04826d71",
             "shasum": ""
         },
         "require": {
@@ -5801,7 +5801,7 @@
             "wikimedia/alea": "^0.9.0",
             "wikimedia/testing-access-wrapper": "~1.0"
         },
-        "time": "2020-04-03T22:36:07+00:00",
+        "time": "2020-04-12T17:09:57+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "23cd3bb053af71cd39faa082d8873998",
+    "content-hash": "937b09d2646acdfebfc6821b1887f4a1",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -5575,16 +5575,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.12.0-a9",
+            "version": "v0.12.0-a10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/parsoid.git",
-                "reference": "f5e4dc1bd0fce535216fe5ef76f0bf471c11ddcc"
+                "reference": "d9a6f774a9cc12cf568f6528ccae458e04826d71"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/f5e4dc1bd0fce535216fe5ef76f0bf471c11ddcc",
-                "reference": "f5e4dc1bd0fce535216fe5ef76f0bf471c11ddcc",
+                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/d9a6f774a9cc12cf568f6528ccae458e04826d71",
+                "reference": "d9a6f774a9cc12cf568f6528ccae458e04826d71",
                 "shasum": ""
             },
             "require": {
@@ -5639,7 +5639,7 @@
                 "mediawiki",
                 "parsoid"
             ],
-            "time": "2020-04-03T22:36:07+00:00"
+            "time": "2020-04-12T17:09:57+00:00"
         },
         {
             "name": "wikimedia/password-blacklist",
