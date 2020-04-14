@@ -36,11 +36,15 @@ Adding or updating libraries
 7. Review and merge changes.
 
 Note that you MUST pair patches changing versions of libraries used by MediaWiki
-itself with ones for the "core" repo. This repo has special configuration, which
-skips the integrity checks and so allowing a circular dependency Gordian knot to
-be fixed. However, this means that, if merged alone without a pair, you'll cause
-ALL patches in MediaWiki and ALL extensions to fail their continuous integration
-tests. If in doubt, seek advice from regular commiters to this repository.
+itself with ones for the "core" repo. Specifically, the patch in mediawiki/core
+must have a `Depends-On` footer to the patch in mediawiki/vendor.
+
+The vendor repo has special configuration, which skips the integrity checks and
+so allowing a circular dependency Gordian knot to be fixed. However, this means
+that, if merged alone without a pair, you'll cause ALL patches in MediaWiki and
+ALL extensions to fail their continuous integration tests.
+
+If in doubt, seek advice from regular commiters to this repository.
 
 
 [Composer]: https://getcomposer.org/
