@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a45effc6a9f8f815d87bd931f3d47ebb",
+    "content-hash": "df71c433bebb55cda3e91bd5cafab177",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -6246,28 +6246,28 @@
         },
         {
             "name": "wikimedia/wrappedstring",
-            "version": "v3.0.1",
+            "version": "v3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/WrappedString.git",
-                "reference": "3c383334de7ff623a81aebc3c59f5603917ca5e8"
+                "reference": "11b01a2286fd377cb15c2f5561e10f56d58f37a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/WrappedString/zipball/3c383334de7ff623a81aebc3c59f5603917ca5e8",
-                "reference": "3c383334de7ff623a81aebc3c59f5603917ca5e8",
+                "url": "https://api.github.com/repos/wikimedia/WrappedString/zipball/11b01a2286fd377cb15c2f5561e10f56d58f37a9",
+                "reference": "11b01a2286fd377cb15c2f5561e10f56d58f37a9",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5.9"
+                "php": ">=7.2.9"
             },
             "require-dev": {
-                "jakub-onderka/php-console-highlighter": "0.3.2",
+                "jakub-onderka/php-console-highlighter": "0.4.0",
                 "jakub-onderka/php-parallel-lint": "1.0.0",
-                "mediawiki/mediawiki-codesniffer": "20.0.0",
-                "mediawiki/minus-x": "0.3.1",
-                "ockcyp/covers-validator": "0.5.1 || 0.6.1",
-                "phpunit/phpunit": "4.8.36 || ^6.5"
+                "mediawiki/mediawiki-codesniffer": "29.0.0",
+                "mediawiki/minus-x": "1.0.0",
+                "ockcyp/covers-validator": "1.1.1",
+                "phpunit/phpunit": "^8.5"
             },
             "type": "library",
             "autoload": {
@@ -6287,7 +6287,7 @@
             ],
             "description": "Automatically compact sequentially-outputted strings that share a common prefix / suffix pair.",
             "homepage": "https://www.mediawiki.org/wiki/WrappedString",
-            "time": "2018-06-05T20:33:36+00:00"
+            "time": "2020-02-29T09:50:58+00:00"
         },
         {
             "name": "wikimedia/xmp-reader",
