@@ -835,6 +835,7 @@ return array(
     'GuzzleHttp\\Stream\\Utils' => $vendorDir . '/guzzlehttp/streams/src/Utils.php',
     'GuzzleHttp\\TransferStats' => $vendorDir . '/guzzlehttp/guzzle/src/TransferStats.php',
     'GuzzleHttp\\UriTemplate' => $vendorDir . '/guzzlehttp/guzzle/src/UriTemplate.php',
+    'GuzzleHttp\\Utils' => $vendorDir . '/guzzlehttp/guzzle/src/Utils.php',
     'Hashable' => $vendorDir . '/data-values/data-values/src/interfaces/Hashable.php',
     'HtmlFormatter\\HtmlFormatter' => $vendorDir . '/wikimedia/html-formatter/src/HtmlFormatter.php',
     'Image_XMP' => $vendorDir . '/james-heinrich/getid3/getid3/module.tag.xmp.php',
