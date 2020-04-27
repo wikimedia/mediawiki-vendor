@@ -145,8 +145,13 @@ class DOMPostProcessor extends PipelineStage {
 					return $t->traverse( ...$args );
 				};
 			} else {
-				// @phan-suppress-next-line PhanNonClassMethodCall
-				$c = new $p['Processor']( $this->extApi );
+				if ( empty( $p['isExtPP'] ) ) {
+					// @phan-suppress-next-line PhanNonClassMethodCall
+					$c = new $p['Processor']();
+				} else {
+					// @phan-suppress-next-line PhanNonClassMethodCall
+					$c = new $p['Processor']( $this->extApi );
+				}
 				$p['proc'] = function ( ...$args ) use ( $c ) {
 					return $c->run( ...$args );
 				};
@@ -310,10 +315,10 @@ class DOMPostProcessor extends PipelineStage {
 		 *   by analyzing what the DOM postprocessor does and see if it introduces
 		 *   potential ordering issues.
 		 */
-		foreach ( $env->getSiteConfig()->getNativeExtDOMProcessors() as $extName => $domProcs ) {
+		foreach ( $env->getSiteConfig()->getExtDOMProcessors() as $extName => $domProcs ) {
 			$processors[] = [
 				'isExtPP' => true, // This is an extension DOM post processor
-				'name' => 'tag:' . Util::stripNamespace( $extName ),
+				'name' => 'pp:' . Util::stripNamespace( $extName ),
 				'Processor' => new $domProcs['wt2htmlPostProcessor']( $this->extApi )
 			];
 		}
@@ -678,7 +683,7 @@ class DOMPostProcessor extends PipelineStage {
 		];
 
 		// Styles from native extensions
-		foreach ( $env->getSiteConfig()->getNativeExtStyles() as $style ) {
+		foreach ( $env->getSiteConfig()->getExtStyles() as $style ) {
 			$modules[] = $style;
 		}
 
@@ -826,7 +831,7 @@ class DOMPostProcessor extends PipelineStage {
 			}
 
 			if ( empty( $pp['isExtPP'] ) ) {
-				$pp['proc']( $body, $env, $this->options, $this->atTopLevel );
+				$pp['proc']( $env, $body, $this->options, $this->atTopLevel );
 			} else {
 				// Pass $extApi, not $env to extension post processors
 				$pp['proc']( $this->extApi, $body, $this->options, $this->atTopLevel );

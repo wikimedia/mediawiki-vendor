@@ -3563,6 +3563,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Wt2Html\\TT\\WikiLinkHandler' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/TT/WikiLinkHandler.php',
         'Wikimedia\\Parsoid\\Wt2Html\\TokenTransformManager' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/TokenTransformManager.php',
         'Wikimedia\\Parsoid\\Wt2Html\\TokenizerUtils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/TokenizerUtils.php',
+        'Wikimedia\\Parsoid\\Wt2Html\\Wt2HtmlDOMProcessor' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/Wt2HtmlDOMProcessor.php',
         'Wikimedia\\Parsoid\\Wt2Html\\XMLSerializer' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/XMLSerializer.php',
         'Wikimedia\\PasswordBlacklist\\PasswordBlacklist' => __DIR__ . '/..' . '/wikimedia/password-blacklist/src/PasswordBlacklist.php',
         'Wikimedia\\PhpSessionSerializer' => __DIR__ . '/..' . '/wikimedia/php-session-serializer/src/Wikimedia/PhpSessionSerializer.php',

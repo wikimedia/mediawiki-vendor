@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "df71c433bebb55cda3e91bd5cafab177",
+    "content-hash": "9c6663e1b070cc3301e9bd7a4e1ead02",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -5574,20 +5574,20 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.12.0-a10",
+            "version": "v0.12.0-a11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/parsoid.git",
-                "reference": "d9a6f774a9cc12cf568f6528ccae458e04826d71"
+                "reference": "1a0c75db716674bf8242052fc843efc93aacb493"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/d9a6f774a9cc12cf568f6528ccae458e04826d71",
-                "reference": "d9a6f774a9cc12cf568f6528ccae458e04826d71",
+                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/1a0c75db716674bf8242052fc843efc93aacb493",
+                "reference": "1a0c75db716674bf8242052fc843efc93aacb493",
                 "shasum": ""
             },
             "require": {
-                "composer/semver": "1.5.0|^1.5.1",
+                "composer/semver": "^1.5.1|^2.0.0",
                 "ext-dom": "*",
                 "ext-json": "*",
                 "liuggio/statsd-php-client": "^1.0.18",
@@ -5638,7 +5638,7 @@
                 "mediawiki",
                 "parsoid"
             ],
-            "time": "2020-04-12T17:09:57+00:00"
+            "time": "2020-04-22T14:48:07+00:00"
         },
         {
             "name": "wikimedia/password-blacklist",

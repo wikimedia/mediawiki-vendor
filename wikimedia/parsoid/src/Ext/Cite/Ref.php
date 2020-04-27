@@ -19,7 +19,7 @@ use Wikimedia\Parsoid\Utils\DOMUtils;
 class Ref extends ExtensionTag {
 
 	/** @inheritDoc */
-	public function toDOM( ParsoidExtensionAPI $extApi, string $txt, array $extArgs ) {
+	public function sourceToDom( ParsoidExtensionAPI $extApi, string $txt, array $extArgs ) {
 		// Drop nested refs entirely, unless we've explicitly allowed them
 		$parentExtTag = $extApi->parentExtTag();
 		if ( $parentExtTag === 'ref' && empty( $extApi->parentExtTagOpts()['allowNestedRef'] ) ) {
@@ -32,7 +32,7 @@ class Ref extends ExtensionTag {
 		// The php preprocessor did our expansion.
 		$allowNestedRef = !empty( $extApi->inTemplate() ) && $parentExtTag !== 'ref';
 
-		return $extApi->parseExtTagToDOM(
+		return $extApi->extTagToDOM(
 			$extArgs,
 			'',
 			$txt,
@@ -75,81 +75,79 @@ class Ref extends ExtensionTag {
 	}
 
 	/** @inheritDoc */
-	public function fromDOM(
+	public function domToWikitext(
 		ParsoidExtensionAPI $extApi, DOMElement $node, bool $wrapperUnmodified
 	) {
-		$startTagSrc = $extApi->serializeExtensionStartTag( $node );
+		$startTagSrc = $extApi->extStartTagToWikitext( $node );
 		$dataMw = DOMDataUtils::getDataMw( $node );
 		$html = null;
 		if ( !isset( $dataMw->body ) ) {
 			return $startTagSrc; // We self-closed this already.
-		} else { // We self-closed this already.
-			if ( is_string( $dataMw->body->html ?? null ) ) {
-				// First look for the extension's content in data-mw.body.html
-				$html = $dataMw->body->html;
-			} elseif ( is_string( $dataMw->body->id ?? null ) ) {
-				// If the body isn't contained in data-mw.body.html, look if
-				// there's an element pointed to by body.id.
-				$bodyElt = DOMCompat::getElementById( $node->ownerDocument, $dataMw->body->id );
-				$editedDoc = $extApi->getPageConfig()->editedDoc ?? null;
-				if ( !$bodyElt && $editedDoc ) {
-					// Try to get to it from the main page.
-					// This can happen when the <ref> is inside another
-					// extension, most commonly inside a <references>.
-					// The recursive call to serializeDOM puts us inside
-					// inside a new document.
-					$bodyElt = DOMCompat::getElementById( $editedDoc, $dataMw->body->id );
-				}
-				if ( $bodyElt ) {
-					$html = $extApi->toHTML( $bodyElt, true );
-				} else {
-					// Some extra debugging for VisualEditor
-					$extraDebug = '';
-					$firstA = DOMCompat::querySelector( $node, 'a[href]' );
-					$href = $firstA->getAttribute( 'href' );
-					if ( $firstA && preg_match( '/^#/', $href ) ) {
-						try {
-							$ref = DOMCompat::querySelector( $node->ownerDocument, $href );
-							if ( $ref ) {
-								$extraDebug .= ' [own doc: ' . DOMCompat::getOuterHTML( $ref ) . ']';
-							}
-							$ref = DOMCompat::querySelector( $editedDoc, $href );
-							if ( $ref ) {
-								$extraDebug .= ' [main doc: ' . DOMCompat::getOuterHTML( $ref ) . ']';
-							}
-						} catch ( Exception $e ) {
-							// We are just providing VE with debugging info.
-							// So, ignore all exceptions / errors in this code.
-						}
-
-						if ( !$extraDebug ) {
-							$extraDebug = ' [reference ' . $href . ' not found]';
-						}
-					}
-					$extApi->log(
-						'error/' . $dataMw->name,
-						'extension src id ' . $dataMw->body->id . ' points to non-existent element for:',
-						DOMCompat::getOuterHTML( $node ),
-						'. More debug info: ',
-						$extraDebug
-					);
-					return ''; // Drop it!
-				}
-			} else { // Drop it!
-				$extApi->log( 'error', 'Ref body unavailable for: ' . DOMCompat::getOuterHTML( $node ) );
-				return ''; // Drop it!
-			} // Drop it!
 		}
 
-		$src = $extApi->serializeHTML(
-			[
-				'extName' => $dataMw->name,
-				// FIXME: One-off PHP parser state leak.
-				// This needs a better solution.
-				'inPHPBlock' => true
-			],
-			$html
-		);
+		$html2wtOpts = [
+			'extName' => $dataMw->name,
+			// FIXME: One-off PHP parser state leak. This needs a better solution.
+			'inPHPBlock' => true
+		];
+
+		if ( is_string( $dataMw->body->html ?? null ) ) {
+			// First look for the extension's content in data-mw.body.html
+			$src = $extApi->htmlToWikitext( $html2wtOpts, $dataMw->body->html );
+		} elseif ( is_string( $dataMw->body->id ?? null ) ) {
+			// If the body isn't contained in data-mw.body.html, look if
+			// there's an element pointed to by body.id.
+			$bodyElt = DOMCompat::getElementById( $node->ownerDocument, $dataMw->body->id );
+			$editedDoc = $extApi->getPageConfig()->editedDoc ?? null;
+			if ( !$bodyElt && $editedDoc ) {
+				// Try to get to it from the top-level page.
+				// This can happen when the <ref> is inside another extension,
+				// most commonly inside <references>.
+				// The recursive call to serializeDOM puts us inside a new document.
+				$bodyElt = DOMCompat::getElementById( $editedDoc, $dataMw->body->id );
+			}
+
+			// If we couldn't find a body element, this is a bug.
+			// Add some extra debugging for the editing client (ex: VisualEditor)
+			if ( !$bodyElt ) {
+				$extraDebug = '';
+				$firstA = DOMCompat::querySelector( $node, 'a[href]' );
+				$href = $firstA->getAttribute( 'href' );
+				if ( $firstA && preg_match( '/^#/', $href ) ) {
+					try {
+						$ref = DOMCompat::querySelector( $node->ownerDocument, $href );
+						if ( $ref ) {
+							$extraDebug .= ' [own doc: ' . DOMCompat::getOuterHTML( $ref ) . ']';
+						}
+						$ref = DOMCompat::querySelector( $editedDoc, $href );
+						if ( $ref ) {
+							$extraDebug .= ' [main doc: ' . DOMCompat::getOuterHTML( $ref ) . ']';
+						}
+					} catch ( Exception $e ) {
+						// We are just providing VE with debugging info.
+						// So, ignore all exceptions / errors in this code.
+					}
+
+					if ( !$extraDebug ) {
+						$extraDebug = ' [reference ' . $href . ' not found]';
+					}
+				}
+				$extApi->log(
+					'error/' . $dataMw->name,
+					'extension src id ' . $dataMw->body->id . ' points to non-existent element for:',
+					DOMCompat::getOuterHTML( $node ),
+					'. More debug info: ',
+					$extraDebug
+				);
+				return ''; // Drop it!
+			}
+
+			$src = $extApi->domToWikitext( $html2wtOpts, $bodyElt, true );
+		} else {
+			$extApi->log( 'error', 'Ref body unavailable for: ' . DOMCompat::getOuterHTML( $node ) );
+			return ''; // Drop it!
+		}
+
 		return $startTagSrc . $src . '</' . $dataMw->name . '>';
 	}
 }

@@ -229,7 +229,7 @@ class ParsoidExtensionAPI {
 	 * @return string
 	 */
 	public function getContentHTML( string $contentId ): string {
-		return $this->toHTML( $this->getContentDOM( $contentId ), true );
+		return $this->domToHtml( $this->getContentDOM( $contentId ), true );
 	}
 
 	/**
@@ -246,7 +246,7 @@ class ParsoidExtensionAPI {
 	 * @param bool $sol
 	 * @return DOMDocument
 	 */
-	public function parseWikitextToDOM( string $wikitext, array $opts, bool $sol ): DOMDocument {
+	public function wikitextToDOM( string $wikitext, array $opts, bool $sol ): DOMDocument {
 		$doc = null;
 		if ( $wikitext === '' ) {
 			$doc = $this->env->createDocument();
@@ -307,7 +307,7 @@ class ParsoidExtensionAPI {
 	 *   - inlineContext
 	 * @return DOMDocument
 	 */
-	public function parseExtTagToDOM(
+	public function extTagToDOM(
 		array $extArgs, string $leadingWS, string $wikitext, array $opts
 	): DOMDocument {
 		$extTagOffsets = $this->extToken->dataAttribs->extTagOffsets;
@@ -318,7 +318,7 @@ class ParsoidExtensionAPI {
 			);
 		}
 
-		$doc = $this->parseWikitextToDOM( $wikitext, $opts, true /* sol */ );
+		$doc = $this->wikitextToDOM( $wikitext, $opts, true /* sol */ );
 
 		// Create a wrapper and migrate content into the wrapper
 		$wrapper = $doc->createElement( $opts['wrapperTag'] );
@@ -368,7 +368,7 @@ class ParsoidExtensionAPI {
 			$argVal = $argKV->vsrc;
 		}
 
-		return $this->parseWikitextToDOM(
+		return $this->wikitextToDOM(
 			$argVal,
 			[
 				'parseOpts' => [
@@ -404,12 +404,14 @@ class ParsoidExtensionAPI {
 	public function findAndUpdateArg(
 		array &$extArgs, string $key, ?Closure $updater = null
 	): ?string {
+		// FIXME: This code will get an overhaul when T250854 is resolved.
 		foreach ( $extArgs as $i => $kv ) {
-			if ( strtolower( trim( $kv->k ) ) === strtolower( $key ) ) {
+			$k = TokenUtils::tokensToString( $kv->k );
+			if ( strtolower( trim( $k ) ) === strtolower( $key ) ) {
 				$val = $kv->v;
 				if ( $updater ) {
 					$kv = clone $kv;
-					$kv->v = $updater( $val );
+					$kv->v = $updater( TokenUtils::tokensToString( $val ) );
 					$extArgs[$i] = $kv;
 				}
 				return $val;
@@ -587,7 +589,7 @@ class ParsoidExtensionAPI {
 	 * @param string $html
 	 * @return DOMDocument
 	 */
-	public function parseHTML( string $html ): DOMDocument {
+	public function htmlToDom( string $html ): DOMDocument {
 		$doc = $this->env->createDocument( $html );
 		DOMDataUtils::visitAndLoadDataAttribs( DOMCompat::getBody( $doc ) );
 		return $doc;
@@ -595,25 +597,25 @@ class ParsoidExtensionAPI {
 
 	/**
 	 * Serialize DOM element to string (inner/outer HTML is controlled by flag).
-	 * If $releaseDOM is set to true, the DOM will be left in non-canonical form
+	 * If $releaseDom is set to true, the DOM will be left in non-canonical form
 	 * and is not safe to use after this call. This is primarily a performance optimization.
 	 *
 	 * @param DOMElement $elt
 	 * @param bool $innerHTML if true, inner HTML of the element will be returned
 	 *    This flag defaults to false
-	 * @param bool $releaseDOM if true, the DOM will not be in canonical form after this call
+	 * @param bool $releaseDom if true, the DOM will not be in canonical form after this call
 	 *    This flag defaults to false
 	 * @return string
 	 */
-	public function toHTML(
-		DOMElement $elt, bool $innerHTML = false, bool $releaseDOM = false
+	public function domToHtml(
+		DOMElement $elt, bool $innerHTML = false, bool $releaseDom = false
 	): string {
 		// FIXME: This is going to drop any diff markers but since
 		// the dom differ doesn't traverse into extension content (right now),
 		// none should exist anyways.
 		DOMDataUtils::visitAndStoreDataAttribs( $elt );
 		$html = ContentUtils::toXML( $elt, [ 'innerXML' => $innerHTML ] );
-		if ( !$releaseDOM ) {
+		if ( !$releaseDom ) {
 			DOMDataUtils::visitAndLoadDataAttribs( $elt );
 		}
 		return $html;
@@ -647,6 +649,36 @@ class ParsoidExtensionAPI {
 	}
 
 	/**
+	 * Emit the opening tag (including attributes) for the extension
+	 * represented by this node.
+	 *
+	 * @param DOMElement $node
+	 * @return string
+	 */
+	public function extStartTagToWikitext( DOMElement $node ): string {
+		$state = $this->serializerState;
+		return $state->serializer->serializeExtensionStartTag( $node, $state );
+	}
+
+	/**
+	 * Convert the input DOM to wikitext.
+	 *
+	 * @param array $opts
+	 *  - extName: (string) Name of the extension whose body we are serializing
+	 *  - inPHPBlock: (bool) FIXME: This needs to be removed
+	 * @param DOMElement $node DOM to serialize
+	 * @param bool $releaseDom If $releaseDom is set to true, the DOM will be left in
+	 *  non-canonical form and is not safe to use after this call. This is primarily a
+	 *  performance optimization.  This flag defaults to false.
+	 * @return mixed
+	 */
+	public function domToWikitext( array $opts, DOMElement $node, bool $releaseDom = false ) {
+		// FIXME: WTS expects the input DOM to be a <body> element!
+		// Till that is fixed, we have to go through this round-trip!
+		return $this->htmlToWikitext( $opts, $this->domToHtml( $node, $releaseDom ) );
+	}
+
+	/**
 	 * Convert the HTML body of an extension to wikitext
 	 *
 	 * @param array $opts
@@ -655,24 +687,11 @@ class ParsoidExtensionAPI {
 	 * @param string $html HTML for the extension's body
 	 * @return mixed // FIXME: Don't want to expose ConstrainedText object
 	 */
-	public function serializeHTML( array $opts, string $html ) {
+	public function htmlToWikitext( array $opts, string $html ) {
 		// Type cast so phan has more information to ensure type safety
 		$state = $this->serializerState;
 		$opts['env'] = $this->env;
-		return $state->serializer->serializeHTML( $opts, $html );
-	}
-
-	/**
-	 * Emit the opening tag (including attributes) for the extension
-	 * represented by this node.
-	 *
-	 * @param DOMElement $node
-	 * @return string
-	 */
-	public function serializeExtensionStartTag( DOMElement $node ): string {
-		// Type cast so phan has more information to ensure type safety
-		$state = $this->serializerState;
-		return $state->serializer->serializeExtensionStartTag( $node, $state );
+		return $state->serializer->htmlToWikitext( $opts, $html );
 	}
 
 	/**
@@ -682,7 +701,7 @@ class ParsoidExtensionAPI {
 	 *   If so, all embedded newlines will be dropped. Ex: list content has this constraint.
 	 * @return string
 	 */
-	public function serializeChildren( DOMElement $elt, int $context, bool $singleLine ): string {
+	public function domChildrenToWikitext( DOMElement $elt, int $context, bool $singleLine ): string {
 		$state = $this->serializerState;
 		if ( $singleLine ) {
 			$state->singleLineContext->enforce();

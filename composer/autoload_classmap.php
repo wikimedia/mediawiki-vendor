@@ -2978,6 +2978,7 @@ return array(
     'Wikimedia\\Parsoid\\Wt2Html\\TT\\WikiLinkHandler' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/TT/WikiLinkHandler.php',
     'Wikimedia\\Parsoid\\Wt2Html\\TokenTransformManager' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/TokenTransformManager.php',
     'Wikimedia\\Parsoid\\Wt2Html\\TokenizerUtils' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/TokenizerUtils.php',
+    'Wikimedia\\Parsoid\\Wt2Html\\Wt2HtmlDOMProcessor' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/Wt2HtmlDOMProcessor.php',
     'Wikimedia\\Parsoid\\Wt2Html\\XMLSerializer' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/XMLSerializer.php',
     'Wikimedia\\PasswordBlacklist\\PasswordBlacklist' => $vendorDir . '/wikimedia/password-blacklist/src/PasswordBlacklist.php',
     'Wikimedia\\PhpSessionSerializer' => $vendorDir . '/wikimedia/php-session-serializer/src/Wikimedia/PhpSessionSerializer.php',
