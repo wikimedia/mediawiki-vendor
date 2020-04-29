@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9c6663e1b070cc3301e9bd7a4e1ead02",
+    "content-hash": "79ed3e72bb8b9b4e37f2afd86d9858e0",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -5843,32 +5843,33 @@
         },
         {
             "name": "wikimedia/remex-html",
-            "version": "2.1.0",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/remex-html.git",
-                "reference": "fdd9bf31aea40b7383cf601c23a18cb280362f2e"
+                "reference": "7792461b0605b1fcd4bba47bf54cdc64790edb48"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/remex-html/zipball/fdd9bf31aea40b7383cf601c23a18cb280362f2e",
-                "reference": "fdd9bf31aea40b7383cf601c23a18cb280362f2e",
+                "url": "https://api.github.com/repos/wikimedia/remex-html/zipball/7792461b0605b1fcd4bba47bf54cdc64790edb48",
+                "reference": "7792461b0605b1fcd4bba47bf54cdc64790edb48",
                 "shasum": ""
             },
             "require": {
                 "ext-dom": "*",
                 "ext-mbstring": "*",
-                "php": ">=5.6.99",
+                "php": ">=7.2.9",
                 "wikimedia/utfnormal": "1.1.0 || 2.0.0"
             },
             "require-dev": {
                 "ext-json": "*",
-                "jakub-onderka/php-console-highlighter": "0.3.2",
+                "jakub-onderka/php-console-highlighter": "0.4.0",
                 "jakub-onderka/php-parallel-lint": "1.0.0",
-                "mediawiki/mediawiki-codesniffer": "26.0.0",
-                "mediawiki/minus-x": "0.3.1",
-                "ockcyp/covers-validator": "0.5.1 || 0.6.1",
-                "phpunit/phpunit": "4.8.36 || ^6.5"
+                "mediawiki/mediawiki-codesniffer": "30.0.0",
+                "mediawiki/mediawiki-phan-config": "0.9.2",
+                "mediawiki/minus-x": "1.0.0",
+                "ockcyp/covers-validator": "1.1.1",
+                "phpunit/phpunit": "^8.5"
             },
             "type": "library",
             "autoload": {
@@ -5888,7 +5889,7 @@
             ],
             "description": "Fast HTML 5 parser",
             "homepage": "https://www.mediawiki.org/wiki/RemexHtml",
-            "time": "2019-09-16T21:13:30+00:00"
+            "time": "2020-04-29T21:17:01+00:00"
         },
         {
             "name": "wikimedia/running-stat",
