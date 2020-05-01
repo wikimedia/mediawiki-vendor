@@ -10,6 +10,8 @@ selector library.  Since that project hasn't been updated in a while,
 bugfixes have been taken from the copy of zest included in the
 [domino](https://github.com/fgnass/domino/pulls) DOM library.
 
+Report issues on [Phabricator](https://phabricator.wikimedia.org/maniphest/task/edit/form/1/?projects=Parsoid&title=Zest:%20).
+
 ## Usage
 
 ```php
@@ -19,6 +21,7 @@ $els = Zest::find('section! > div[title="hello" i] > :local-link /href/ h1', $do
 ```
 
 ## Install
+
 This package is [available on Packagist](https://packagist.org/packages/wikimedia/zest-css):
 
 ```bash

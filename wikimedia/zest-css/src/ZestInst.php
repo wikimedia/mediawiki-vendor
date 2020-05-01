@@ -82,7 +82,6 @@ $order = function ( $a, $b ) use ( &$compareDocumentPosition ) {
 
 	private static function unichr( int $codepoint ): string {
 		if ( extension_loaded( 'intl' ) ) {
-			// @phan-suppress-next-line PhanUndeclaredClassMethod
 			return \IntlChar::chr( $codepoint );
 		} else {
 			return mb_chr( $codepoint, "utf-8" );
@@ -436,10 +435,9 @@ $order = function ( $a, $b ) use ( &$compareDocumentPosition ) {
 		$this->addSelector0( ':checked', function ( DOMNode $el ): bool {
 			'@phan-var DOMElement $el';
 			// XXX these properties don't exist in the PHP DOM
-			// return !!( $el->checked || $el->selected );
-			return (bool)( $el->hasAttribute( 'checked' ) || $el->hasAttribute( 'selected' ) );
+			// return $el->checked || $el->selected;
+			return $el->hasAttribute( 'checked' ) || $el->hasAttribute( 'selected' );
 		} );
-		/** @suppress PhanParamTooMany, PhanTypeMismatchArgument */
 		$this->addSelector0( ':indeterminate', function ( DOMNode $el ): bool {
 			return !$this->selectors0[ ':checked' ]( $el );
 		} );
@@ -862,12 +860,12 @@ $order = function ( $a, $b ) use ( &$compareDocumentPosition ) {
 				return null;
 			}
 
-			$attr = $node->getAttribute( $name ) || '';
-			if ( $attr[ 0 ] === '#' ) {
+			$attr = $node->getAttribute( $name ) ?: '';
+			if ( $attr !== '' && $attr[ 0 ] === '#' ) {
 				$attr = substr( $attr, 1 );
 			}
 
-			$id = $node->getAttribute( 'id' ) || '';
+			$id = $node->getAttribute( 'id' ) ?: '';
 			if ( $attr === $id && call_user_func( $test, $node ) ) {
 				return $node;
 			}
@@ -989,6 +987,7 @@ $order = function ( $a, $b ) use ( &$compareDocumentPosition ) {
 			$subject->lname = $test->qname;
 
 			$subject->test = $test;
+			// @phan-suppress-next-line PhanPluginDuplicateExpressionAssignment
 			$subject->qname = $subject->qname;
 			$subject->sel = $test->sel;
 			$test = $subject;
@@ -1046,7 +1045,7 @@ $order = function ( $a, $b ) use ( &$compareDocumentPosition ) {
 		// attr value
 		if ( $cap[ 4 ] ) {
 			$value = $cap[ 6 ] ?? '';
-			$i = preg_match( "/[\"'\\s]\\s*I\$/", $value );
+			$i = preg_match( "/[\"'\\s]\\s*I\$/i", $value );
 			if ( $i ) {
 				$value = preg_replace( '/\s*I$/i', '', $value, 1 );
 			}
@@ -1067,9 +1066,6 @@ $order = function ( $a, $b ) use ( &$compareDocumentPosition ) {
 		}
 
 		return function ( DOMNode $el ) use ( $l, $func ): bool {
-			if ( !$el ) {
-				return false;
-			}
 			for ( $i = 0;  $i < $l;  $i++ ) {
 				if ( !call_user_func( $func[ $i ], $el ) ) {
 					return false;
@@ -1155,10 +1151,12 @@ $order = function ( $a, $b ) use ( &$compareDocumentPosition ) {
 	 */
 
 	// $node should be a DOMDocument or a DOMElement
+
 	/** @param DOMDocument|DOMElement $node */
 	private function findInternal( string $sel, DOMNode $node ): array {
 		$results = [];
 		$test = $this->compile( $sel );
+		// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
 		$scope = self::getElementsByTagName( $node, $test->qname );
 		$i = 0;
 		$el = null;
@@ -1171,7 +1169,9 @@ $order = function ( $a, $b ) use ( &$compareDocumentPosition ) {
 
 		if ( $test->sel ) {
 			while ( $test->sel ) {
+				// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
 				$test = $this->compile( $test->sel );
+				// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
 				$scope = self::getElementsByTagName( $node, $test->qname );
 				foreach ( $scope as $el ) {
 					if ( call_user_func( $test->func, $el ) && !in_array( $el, $results, true ) ) {
@@ -1259,6 +1259,7 @@ $order = function ( $a, $b ) use ( &$compareDocumentPosition ) {
 			$this->initCombinators();
 			self::$singleton = $this;
 			// Now create another instance so that backing arrays are cloned
+			// @phan-suppress-next-line PhanPossiblyInfiniteRecursionSameParams
 			self::$singleton = new ZestInst;
 		}
 	}

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "79ed3e72bb8b9b4e37f2afd86d9858e0",
+    "content-hash": "dc7a2c9b21cd1646d3c8302b5eaa2bc9",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -6351,16 +6351,16 @@
         },
         {
             "name": "wikimedia/zest-css",
-            "version": "1.1.2",
+            "version": "1.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-Zest.git",
-                "reference": "ffc83014b1d7a7bd45ef25f3a9daebba614b338a"
+                "reference": "6d7e7a879a2f8814907935a54c989055d5952b0d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Zest/zipball/ffc83014b1d7a7bd45ef25f3a9daebba614b338a",
-                "reference": "ffc83014b1d7a7bd45ef25f3a9daebba614b338a",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Zest/zipball/6d7e7a879a2f8814907935a54c989055d5952b0d",
+                "reference": "6d7e7a879a2f8814907935a54c989055d5952b0d",
                 "shasum": ""
             },
             "require": {
@@ -6369,15 +6369,14 @@
                 "php": ">=7.2.0"
             },
             "require-dev": {
-                "jakub-onderka/php-console-highlighter": "0.3.2",
+                "jakub-onderka/php-console-highlighter": "0.4.0",
                 "jakub-onderka/php-parallel-lint": "1.0.0",
-                "mediawiki/mediawiki-codesniffer": "24.0.0",
-                "mediawiki/mediawiki-phan-config": "0.4.0",
-                "mediawiki/minus-x": "0.3.1",
-                "ockcyp/covers-validator": "0.5.1 || 0.6.1",
-                "phan/phan": "^1.2",
-                "phpunit/phpunit": "^6.5",
-                "wikimedia/remex-html": "2.0.2",
+                "mediawiki/mediawiki-codesniffer": "30.0.0",
+                "mediawiki/mediawiki-phan-config": "0.9.1",
+                "mediawiki/minus-x": "1.0.0",
+                "ockcyp/covers-validator": "1.1.1",
+                "phpunit/phpunit": "^8.5",
+                "wikimedia/remex-html": "2.2.0",
                 "wikimedia/testing-access-wrapper": "~1.0"
             },
             "suggest": {
@@ -6409,7 +6408,7 @@
                 "engine",
                 "selector"
             ],
-            "time": "2019-04-09T16:11:28+00:00"
+            "time": "2020-04-29T22:04:34+00:00"
         },
         {
             "name": "wmde/php-vuejs-templating",

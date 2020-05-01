@@ -19,6 +19,7 @@ class ZestFunc {
 	public $lname = null;
 	/** @var ?string */
 	public $qname = null;
+
 	/** @param callable(DOMNode):bool $func */
 	function __construct( callable $func ) {
 		$this->func = $func;
