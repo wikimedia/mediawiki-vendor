@@ -12,7 +12,6 @@ use Psr\Log\LoggerInterface;
 use Wikimedia\Parsoid\Config\SiteConfig as ISiteConfig;
 use Wikimedia\Parsoid\Mocks\MockMetrics;
 use Wikimedia\Parsoid\Utils\ConfigUtils;
-use Wikimedia\Parsoid\Utils\PHPUtils;
 use Wikimedia\Parsoid\Utils\UrlUtils;
 use Wikimedia\Parsoid\Utils\Util;
 
@@ -35,9 +34,6 @@ class SiteConfig extends ISiteConfig {
 	/** @var string */
 	private $savedCategoryRegexp, $savedRedirectRegexp, $savedBswRegexp;
 
-	/** @var string|null|bool */
-	private $linkTrailRegex = false;
-
 	/** @phan-var array<int,string> */
 	protected $nsNames = [], $nsCase = [];
 
@@ -50,39 +46,20 @@ class SiteConfig extends ISiteConfig {
 	/** @phan-var array<string,string> */
 	private $specialPageNames = [];
 
+	/** @phan-var array */
+	private $specialPageAliases = [];
+
 	/** @var array|null */
 	private $interwikiMap, $variants,
-		$langConverterEnabled, $magicWords, $mwAliases, $paramMWs,
-		$variables, $functionHooks,
+		$langConverterEnabled, $apiMagicWords, $paramMWs,
+		$apiVariables, $apiFunctionHooks,
 		$allMWs, $extensionTags;
 
 	/** @var int|null */
 	private $widthOption;
 
-	/** @var callable|null */
-	private $extResourceURLPatternMatcher;
-
 	/** @var int */
 	private $maxDepth = 40;
-
-	/**
-	 * Quote a title regex
-	 *
-	 * Assumes '/' as the delimiter, and replaces spaces or underscores with
-	 * `[ _]` so either will be matched.
-	 *
-	 * @param string $s
-	 * @param string $delimiter Defaults to '/'
-	 * @return string
-	 */
-	private static function quoteTitleRe( string $s, string $delimiter = '/' ): string {
-		$s = preg_quote( $s, $delimiter );
-		$s = strtr( $s, [
-			' ' => '[ _]',
-			'_' => '[ _]',
-		] );
-		return $s;
-	}
 
 	/**
 	 * @param ApiHelper $api
@@ -135,9 +112,11 @@ class SiteConfig extends ISiteConfig {
 
 	protected function reset() {
 		$this->siteData = null;
-		$this->linkTrailRegex = false;
 		$this->baseUri = null;
 		$this->relativeLinkPrefix = null;
+		// Superclass value reset since parsertests reuse SiteConfig objects
+		$this->linkTrailRegex = false;
+		$this->magicWordMap = null;
 	}
 
 	/**
@@ -200,6 +179,8 @@ class SiteConfig extends ISiteConfig {
 		$this->siteData = $data['general'];
 		$this->widthOption = $data['general']['thumblimits'][$data['defaultoptions']['thumbsize']];
 		$this->protocols = $data['protocols'];
+		$this->apiVariables = $data['variables'];
+		$this->apiFunctionHooks = $data['functionhooks'];
 
 		// Process namespace data from API
 		foreach ( $data['namespaces'] as $ns ) {
@@ -209,43 +190,23 @@ class SiteConfig extends ISiteConfig {
 			$this->nsIds[Util::normalizeNamespaceName( $ns['alias'] )] = $ns['id'];
 		}
 
-		// FIXME: Export this from CoreParserFunctions::register, maybe?
-		$noHashFunctions = PHPUtils::makeSet( [
-			'ns', 'nse', 'urlencode', 'lcfirst', 'ucfirst', 'lc', 'uc',
-			'localurl', 'localurle', 'fullurl', 'fullurle', 'canonicalurl',
-			'canonicalurle', 'formatnum', 'grammar', 'gender', 'plural', 'bidi',
-			'numberofpages', 'numberofusers', 'numberofactiveusers',
-			'numberofarticles', 'numberoffiles', 'numberofadmins',
-			'numberingroup', 'numberofedits', 'language',
-			'padleft', 'padright', 'anchorencode', 'defaultsort', 'filepath',
-			'pagesincategory', 'pagesize', 'protectionlevel', 'protectionexpiry',
-			'namespacee', 'namespacenumber', 'talkspace', 'talkspacee',
-			'subjectspace', 'subjectspacee', 'pagename', 'pagenamee',
-			'fullpagename', 'fullpagenamee', 'rootpagename', 'rootpagenamee',
-			'basepagename', 'basepagenamee', 'subpagename', 'subpagenamee',
-			'talkpagename', 'talkpagenamee', 'subjectpagename',
-			'subjectpagenamee', 'pageid', 'revisionid', 'revisionday',
-			'revisionday2', 'revisionmonth', 'revisionmonth1', 'revisionyear',
-			'revisiontimestamp', 'revisionuser', 'cascadingsources',
-			// Special callbacks in core
-			'namespace', 'int', 'displaytitle', 'pagesinnamespace',
-		] );
-
 		// Process magic word data from API
 		$bsws = [];
-		$this->magicWords = [];
-		$this->mwAliases = [];
 		$this->paramMWs = [];
 		$this->allMWs = [];
-		$this->variables = [];
-		$this->functionHooks = [];
-		$variablesMap = PHPUtils::makeSet( $data['variables'] );
-		$functionHooksMap = PHPUtils::makeSet( $data['functionhooks'] );
+
+		// Recast the API results in the format that core MediaWiki returns internally
+		// This enables us to use the Production SiteConfig without changes and add the
+		// extra overhead to this developer API usage.
+		$this->apiMagicWords = [];
 		foreach ( $data['magicwords'] as $mw ) {
 			$cs = (int)$mw['case-sensitive'];
+			$mwName = $mw['name'];
+			$this->apiMagicWords[$mwName][] = $cs;
 			$pmws = [];
 			$allMWs = [];
 			foreach ( $mw['aliases'] as $alias ) {
+				$this->apiMagicWords[$mwName][] = $alias;
 				if ( substr( $alias, 0, 2 ) === '__' && substr( $alias, -2 ) === '__' ) {
 					$bsws[$cs][] = preg_quote( substr( $alias, 2, -2 ), '@' );
 				}
@@ -253,36 +214,12 @@ class SiteConfig extends ISiteConfig {
 					$pmws[$cs][] = strtr( preg_quote( $alias, '/' ), [ '\\$1' => "(.*?)" ] );
 				}
 				$allMWs[$cs][] = preg_quote( $alias, '/' );
-
-				$magicword = $mw['name'];
-				$this->mwAliases[$magicword][] = $alias;
-				if ( !$cs ) {
-					$alias = mb_strtolower( $alias );
-					$this->mwAliases[$magicword][] = $alias;
-				}
-
-				$this->magicWords[$alias] = $magicword;
-				if ( isset( $variablesMap[$magicword] ) ) {
-					$this->variables[$alias] = $magicword;
-				}
-				// See Parser::setFunctionHook
-				if ( isset( $functionHooksMap[$magicword] ) ) {
-					$falias = $alias;
-					if ( substr( $falias, -1 ) === ':' ) {
-						$falias = substr( $falias, 0, -1 );
-					}
-					if ( !isset( $noHashFunctions[$magicword] ) ) {
-						$falias = '#' . $falias;
-					}
-					$this->functionHooks[$falias] = $magicword;
-				}
-
 			}
 
 			if ( $pmws ) {
-				$this->paramMWs[$mw['name']] = '/^(?:' . $this->combineRegexArrays( $pmws ) . ')$/uDS';
+				$this->paramMWs[$mwName] = '/^(?:' . $this->combineRegexArrays( $pmws ) . ')$/uDS';
 			}
-			$this->allMWs[$mw['name']] = '/^(?:' . $this->combineRegexArrays( $allMWs ) . ')$/D';
+			$this->allMWs[$mwName] = '/^(?:' . $this->combineRegexArrays( $allMWs ) . ')$/D';
 		}
 
 		$bswRegexp = $this->combineRegexArrays( $bsws );
@@ -296,12 +233,12 @@ class SiteConfig extends ISiteConfig {
 		foreach ( $data['languagevariants'] as $base => $variants ) {
 			if ( $this->siteData['langconversion'] ) {
 				$this->langConverterEnabled[$base] = true;
-			}
-			foreach ( $variants as $code => $vdata ) {
-				$this->variants[$code] = [
-					'base' => $base,
-					'fallbacks' => $vdata['fallbacks'],
-				];
+				foreach ( $variants as $code => $vdata ) {
+					$this->variants[$code] = [
+						'base' => $base,
+						'fallbacks' => $vdata['fallbacks'],
+					];
+				}
 			}
 		}
 
@@ -312,19 +249,9 @@ class SiteConfig extends ISiteConfig {
 			$this->ensureExtensionTag( $tag );
 		}
 
-		// extResourceURLPatternMatcher
-		$nsAliases = [
-			'Special',
-		];
-		foreach ( $this->nsIds as $name => $id ) {
-			if ( $id === -1 ) {
-				$nsAliases[] = $this->quoteTitleRe( $name, '!' );
-			}
-		}
-		$nsAliases = implode( '|', array_unique( $nsAliases ) );
-
+		$this->specialPageAliases = $data['specialpagealiases'];
 		$this->specialPageNames = [];
-		foreach ( $data['specialpagealiases'] as $special ) {
+		foreach ( $this->specialPageAliases as $special ) {
 			$alias = strtr( mb_strtoupper( $special['realname'] ), ' ', '_' );
 			$this->specialPageNames[$alias] = $special['aliases'][0];
 			foreach ( $special['aliases'] as $alias ) {
@@ -332,37 +259,6 @@ class SiteConfig extends ISiteConfig {
 				$this->specialPageNames[$alias] = $special['aliases'][0];
 			}
 		}
-
-		$bsAliases = [ 'Booksources' ];
-		foreach ( $data['specialpagealiases'] as $special ) {
-			if ( $special['realname'] === 'Booksources' ) {
-				$bsAliases = array_merge( $bsAliases, $special['aliases'] );
-				break;
-			}
-		}
-		$pageAliases = implode( '|', array_map( function ( $s ) {
-			return $this->quoteTitleRe( $s, '!' );
-		}, $bsAliases ) );
-
-		// cscott wants a mention of T145590 here ("Update Parsoid to be compatible with magic links
-		// being disabled")
-		$pats = [
-			'ISBN' => '(?:\.\.?/)*(?i:' . $nsAliases . ')(?:%3[Aa]|:)'
-				. '(?i:' . $pageAliases . ')(?:%2[Ff]|/)(?P<ISBN>\d+[Xx]?)',
-			'RFC' => '[^/]*//tools\.ietf\.org/html/rfc(?P<RFC>\w+)',
-			'PMID' => '[^/]*//www\.ncbi\.nlm\.nih\.gov/pubmed/(?P<PMID>\w+)\?dopt=Abstract',
-		];
-		$regex = '!^(?:' . implode( '|', $pats ) . ')$!D';
-		$this->extResourceURLPatternMatcher = function ( $text ) use ( $pats, $regex ) {
-			if ( preg_match( $regex, $text, $m ) ) {
-				foreach ( $pats as $k => $re ) {
-					if ( isset( $m[$k] ) && $m[$k] !== '' ) {
-						return [ $k, $m[$k] ];
-					}
-				}
-			}
-			return false;
-		};
 
 		$redirect = '(?i:\#REDIRECT)';
 		$quote = function ( $s ) {
@@ -531,19 +427,10 @@ class SiteConfig extends ISiteConfig {
 		}
 	}
 
-	public function linkTrailRegex(): ?string {
-		if ( $this->linkTrailRegex === false ) {
-			$this->loadSiteData();
-			$trail = $this->siteData['linktrail'];
-			$trail = str_replace( '(.*)$', '', $trail );
-			if ( strpos( $trail, '()' ) !== false ) {
-				// Empty regex from zh-hans
-				$this->linkTrailRegex = null;
-			} else {
-				$this->linkTrailRegex = $trail;
-			}
-		}
-		return $this->linkTrailRegex;
+	/** inheritDoc */
+	protected function linkTrail(): string {
+		$this->loadSiteData();
+		return $this->siteData['linktrail'];
 	}
 
 	public function lang(): string {
@@ -631,14 +518,22 @@ class SiteConfig extends ISiteConfig {
 		return $this->widthOption;
 	}
 
-	public function magicWords(): array {
+	/** @inheritDoc */
+	protected function getVariableIDs(): array {
 		$this->loadSiteData();
-		return $this->magicWords;
+		return $this->apiVariables;
 	}
 
-	public function mwAliases(): array {
+	/** @inheritDoc */
+	protected function getFunctionHooks(): array {
 		$this->loadSiteData();
-		return $this->mwAliases;
+		return $this->apiFunctionHooks;
+	}
+
+	/** @inheritDoc */
+	protected function getMagicWords(): array {
+		$this->loadSiteData();
+		return $this->apiMagicWords;
 	}
 
 	/** @inheritDoc */
@@ -700,39 +595,34 @@ class SiteConfig extends ISiteConfig {
 	}
 
 	/** @inheritDoc */
-	public function getExtResourceURLPatternMatcher(): callable {
+	protected function getSpecialNSAliases(): array {
+		$nsAliases = [
+			'Special',
+		];
+		foreach ( $this->nsIds as $name => $id ) {
+			if ( $id === -1 ) {
+				$nsAliases[] = $this->quoteTitleRe( $name, '!' );
+			}
+		}
+		return $nsAliases;
+	}
+
+	/** @inheritDoc */
+	protected function getSpecialPageAliases( string $specialPage ): array {
+		$spAliases = [ $specialPage ];
+		foreach ( $this->specialPageAliases as $special ) {
+			if ( $special['realname'] === $specialPage ) {
+				$spAliases = array_merge( $spAliases, $special['aliases'] );
+				break;
+			}
+		}
+		return $spAliases;
+	}
+
+	/** @inheritDoc */
+	protected function getProtocols(): array {
 		$this->loadSiteData();
-		return $this->extResourceURLPatternMatcher;
-	}
-
-	/** @inheritDoc */
-	public function hasValidProtocol( string $potentialLink ): bool {
-		$this->loadSiteData();
-		$quote = function ( $s ) {
-			return preg_quote( $s, '!' );
-		};
-		$regex = '!^(?:' . implode( '|', array_map( $quote, $this->protocols ) ) . ')!i';
-		return (bool)preg_match( $regex, $potentialLink );
-	}
-
-	/** @inheritDoc */
-	public function findValidProtocol( string $potentialLink ): bool {
-		$this->loadSiteData();
-		$quote = function ( $s ) {
-			return preg_quote( $s, '!' );
-		};
-		$regex = '!(?:\W|^)(?:' . implode( '|', array_map( $quote, $this->protocols ) ) . ')!i';
-		return (bool)preg_match( $regex, $potentialLink );
-	}
-
-	/** @inheritDoc */
-	public function getMagicWordForFunctionHook( string $str ): ?string {
-		return $this->functionHooks[$str] ?? null;
-	}
-
-	/** @inheritDoc */
-	public function getMagicWordForVariable( string $str ): ?string {
-		return $this->variables[$str] ?? null;
+		return $this->protocols;
 	}
 
 	/**

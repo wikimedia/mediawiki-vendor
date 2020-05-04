@@ -1646,10 +1646,9 @@ class WikitextSerializer {
 		$domNormalizer = new DOMNormalizer( $state );
 		$domNormalizer->normalize( $body );
 
-		if ( $this->env->getSiteConfig()->hasDumpFlag( 'dom:post-normal' ) ) {
+		if ( $this->env->hasDumpFlag( 'dom:post-normal' ) ) {
 			$options = [ 'storeDiffMark' => true, 'env' => $this->env ];
-			ContentUtils::dumpDOM( $body, 'DOM: post-normal',
-				$options );
+			ContentUtils::dumpDOM( $body, 'DOM: post-normal', $options );
 		}
 
 		$state->kickOffSerialize( $body );

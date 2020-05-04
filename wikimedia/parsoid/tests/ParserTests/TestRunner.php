@@ -207,7 +207,7 @@ class TestRunner {
 		$testFilePathInfo = pathinfo( $testFilePath );
 		$this->testFileName = $testFilePathInfo['basename'];
 
-		$blackListName = $testFilePathInfo['filename'] . '-php-blacklist.json';
+		$blackListName = $testFilePathInfo['filename'] . '-blacklist.json';
 		$this->blackListPath = $testFilePathInfo['dirname'] . '/' . $blackListName;
 		try {
 			$blackListData = file_get_contents( $this->blackListPath );
@@ -485,7 +485,7 @@ class TestRunner {
 			}
 		};
 
-		if ( isset( $env->dumpFlags['dom:post-changes'] ) ) {
+		if ( $env->hasDumpFlag( 'dom:post-changes' ) ) {
 			ContentUtils::dumpDOM( $body, 'Original DOM' );
 		}
 
@@ -499,7 +499,7 @@ class TestRunner {
 			$applyChangesInternal( $body, $test->changes );
 		}
 
-		if ( isset( $env->dumpFlags['dom:post-changes'] ) ) {
+		if ( $env->hasDumpFlag( 'dom:post-changes' ) ) {
 			error_log( 'Change tree : ' . json_encode( $test->changes ) . "\n" );
 			ContentUtils::dumpDOM( $body, 'Edited DOM' );
 		}

@@ -8,7 +8,9 @@ use DateTime;
 use DOMDocument;
 use DOMElement;
 use Generator;
+use Wikimedia\Assert\Assert;
 use Wikimedia\Parsoid\Config\Env;
+use Wikimedia\Parsoid\Ext\DOMProcessor as ExtDOMProcessor;
 use Wikimedia\Parsoid\Ext\ParsoidExtensionAPI;
 use Wikimedia\Parsoid\Tokens\SourceRange;
 use Wikimedia\Parsoid\Utils\ContentUtils;
@@ -142,19 +144,25 @@ class DOMPostProcessor extends PipelineStage {
 				}
 				$p['proc'] = function ( ...$args ) use ( $t ) {
 					$args[] = null;
-					return $t->traverse( ...$args );
+					return $t->traverse( $this->env, ...$args );
 				};
 			} else {
+				$className = $p['Processor'];
+				// @phan-suppress-next-line PhanNonClassMethodCall
+				$c = new $className();
 				if ( empty( $p['isExtPP'] ) ) {
-					// @phan-suppress-next-line PhanNonClassMethodCall
-					$c = new $p['Processor']();
+					$p['proc'] = function ( ...$args ) use ( $c ) {
+						return $c->run( $this->env, ...$args );
+					};
 				} else {
-					// @phan-suppress-next-line PhanNonClassMethodCall
-					$c = new $p['Processor']( $this->extApi );
+					Assert::invariant(
+						$c instanceof ExtDOMProcessor,
+						"Bad extension dom processor"
+					);
+					$p['proc'] = function ( ...$args ) use ( $c ) {
+						return $c->wtPostprocess( $this->extApi, ...$args );
+					};
 				}
-				$p['proc'] = function ( ...$args ) use ( $c ) {
-					return $c->run( ...$args );
-				};
 			}
 			$this->processors[] = $p;
 		}
@@ -316,11 +324,13 @@ class DOMPostProcessor extends PipelineStage {
 		 *   potential ordering issues.
 		 */
 		foreach ( $env->getSiteConfig()->getExtDOMProcessors() as $extName => $domProcs ) {
-			$processors[] = [
-				'isExtPP' => true, // This is an extension DOM post processor
-				'name' => 'pp:' . Util::stripNamespace( $extName ),
-				'Processor' => new $domProcs['wt2htmlPostProcessor']( $this->extApi )
-			];
+			foreach ( $domProcs as $i => $domProc ) {
+				$processors[] = [
+					'isExtPP' => true, // This is an extension DOM post processor
+					'name' => "pp:$extName:$i",
+					'Processor' => $domProc,
+				];
+			}
 		}
 
 		$processors = array_merge( $processors, [
@@ -535,7 +545,7 @@ class DOMPostProcessor extends PipelineStage {
 	 */
 	public function appendToHead( DOMDocument $document, string $tagName, array $attrs = [] ): void {
 		$elt = $document->createElement( $tagName );
-		DOMDataUtils::addAttributes( $elt, $attrs );
+		DOMUtils::addAttributes( $elt, $attrs );
 		( DOMCompat::getHead( $document ) )->appendChild( $elt );
 	}
 
@@ -765,18 +775,16 @@ class DOMPostProcessor extends PipelineStage {
 	public function doPostProcess( DOMDocument $document ): void {
 		$env = $this->env;
 
-		$traceFlags = $env->traceFlags;
-		$dumpFlags = $env->dumpFlags;
+		$hasDumpFlags = $env->hasDumpFlags();
 
 		$body = DOMCompat::getBody( $document );
 
-		if ( !empty( $dumpFlags['dom:post-builder'] ) ) {
+		if ( $hasDumpFlags && $env->hasDumpFlag( 'dom:post-builder' ) ) {
 			$opts = [];
 			ContentUtils::dumpDOM( $body, 'DOM: after tree builder', $opts );
 		}
 
-		$tracePP = !empty( $traceFlags['time/dompp'] ) ||
-			!empty( $traceFlags['time'] );
+		$tracePP = $env->hasTraceFlag( 'time/dompp' ) || $env->hasTraceFlag( 'time' );
 
 		$startTime = null;
 		$endTime = null;
@@ -819,28 +827,22 @@ class DOMPostProcessor extends PipelineStage {
 			}
 
 			$opts = null;
-			if ( $dumpFlags ) {
+			if ( $hasDumpFlags ) {
 				$opts = [
 					'env' => $env,
 					'dumpFragmentMap' => $this->atTopLevel,
 					'keepTmp' => true
 				];
-				if ( !empty( $dumpFlags['dom:pre-' . $pp['shortcut']] ) ) {
+
+				if ( $env->hasDumpFlag( 'dom:pre-' . $pp['shortcut'] ) ) {
 					ContentUtils::dumpDOM( $body, 'DOM: pre-' . $pp['shortcut'], $opts );
 				}
 			}
 
-			if ( empty( $pp['isExtPP'] ) ) {
-				$pp['proc']( $env, $body, $this->options, $this->atTopLevel );
-			} else {
-				// Pass $extApi, not $env to extension post processors
-				$pp['proc']( $this->extApi, $body, $this->options, $this->atTopLevel );
-			}
+			$pp['proc']( $body, $this->options, $this->atTopLevel );
 
-			if ( $dumpFlags ) {
-				if ( !empty( $dumpFlags['dom:post-' . $pp['shortcut']] ) ) {
-					ContentUtils::dumpDOM( $body, 'DOM: post-' . $pp['shortcut'], $opts );
-				}
+			if ( $hasDumpFlags && $env->hasDumpFlag( 'dom:post-' . $pp['shortcut'] ) ) {
+				ContentUtils::dumpDOM( $body, 'DOM: post-' . $pp['shortcut'], $opts );
 			}
 
 			if ( $tracePP ) {
@@ -864,16 +866,14 @@ class DOMPostProcessor extends PipelineStage {
 
 		// For sub-pipeline documents, we are done.
 		// For the top-level document, we generate <head> and add it.
-		// For sub-pipeline documents, we are done.
-		// For the top-level document, we generate <head> and add it.
 		if ( $this->atTopLevel ) {
 			self::addMetaData( $env, $document );
 			// @phan-suppress-next-line PhanPluginEmptyStatementIf
-			if ( !empty( $traceFlags['time'] ) ) {
+			if ( $env->hasTraceFlag( 'time' ) ) {
 				// $env->printTimeProfile();
 			}
 			// @phan-suppress-next-line PhanPluginEmptyStatementIf
-			if ( !empty( $dumpFlags['wt2html:limits'] ) ) {
+			if ( $env->hasDumpFlag( 'wt2html:limits' ) ) {
 				/*
 				$env->printWt2HtmlResourceUsage( [
 					'HTML Size' => strlen( DOMCompat::getOuterHTML( $document->documentElement ) )

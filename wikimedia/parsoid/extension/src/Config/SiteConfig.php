@@ -51,43 +51,11 @@ class SiteConfig extends ISiteConfig {
 	/** @var string|null */
 	private $baseUri, $relativeLinkPrefix;
 
-	/** @var string|null|bool */
-	private $linkTrailRegex = false;
-
 	/** @var array|null */
-	private $interwikiMap, $variants, $magicWords, $mwAliases, $variables, $functionHooks;
+	private $interwikiMap, $variants;
 
 	/** @var array */
 	private $extensionTags;
-
-	/**
-	 * Quote a title regex
-	 *
-	 * Assumes '/' as the delimiter, and replaces spaces or underscores with
-	 * `[ _]` so either will be matched.
-	 *
-	 * @param string $s
-	 * @param string $delimiter Defaults to '/'
-	 * @return string
-	 */
-	private static function quoteTitleRe( string $s, string $delimiter = '/' ): string {
-		$s = preg_quote( $s, $delimiter );
-		$s = strtr( $s, [
-			' ' => '[ _]',
-			'_' => '[ _]',
-		] );
-		return $s;
-	}
-
-	/**
-	 * Convert a sequential array to an associative one to speed up set membership checks.
-	 *
-	 * @param array $a
-	 * @return array
-	 */
-	private static function makeSet( array $a ): array {
-		return array_fill_keys( $a, true );
-	}
 
 	public function __construct() {
 		parent::__construct();
@@ -130,34 +98,6 @@ class SiteConfig extends ISiteConfig {
 			$this->logger = LoggerFactory::getInstance( 'Parsoid' );
 		}
 		return $this->logger;
-	}
-
-	/** @inheritDoc */
-	public function getTraceLogger(): LoggerInterface {
-		if ( $this->traceLogger === null ) {
-			$this->traceLogger = LoggerFactory::getInstance( 'ParsoidTrace' );
-		}
-		return $this->traceLogger;
-	}
-
-	/** @inheritDoc */
-	public function hasTraceFlag( string $flag ): bool {
-		// @todo: Implement this
-		return false;
-	}
-
-	/** @inheritDoc */
-	public function getDumpLogger(): LoggerInterface {
-		if ( $this->dumpLogger === null ) {
-			$this->dumpLogger = LoggerFactory::getInstance( 'ParsoidDump' );
-		}
-		return $this->dumpLogger;
-	}
-
-	/** @inheritDoc */
-	public function hasDumpFlag( string $flag ): bool {
-		// @todo: Implement this
-		return false;
 	}
 
 	public function metrics(): ?StatsdDataFactoryInterface {
@@ -418,18 +358,9 @@ class SiteConfig extends ISiteConfig {
 		return '/[' . $this->contLang->linkPrefixCharset() . ']+$/Du';
 	}
 
-	public function linkTrailRegex(): ?string {
-		if ( $this->linkTrailRegex === false ) {
-			$trail = $this->contLang->linkTrail();
-			$trail = str_replace( '(.*)$', '', $trail );
-			if ( strpos( $trail, '()' ) !== false ) {
-				// Empty regex from zh-hans
-				$this->linkTrailRegex = null;
-			} else {
-				$this->linkTrailRegex = $trail;
-			}
-		}
-		return $this->linkTrailRegex;
+	/** inheritDoc */
+	protected function linkTrail(): string {
+		return $this->contLang->linkTrail();
 	}
 
 	public function lang(): string {
@@ -522,82 +453,19 @@ class SiteConfig extends ISiteConfig {
 		return $this->config->get( 'ThumbLimits' )[User::getDefaultOption( 'thumbsize' )];
 	}
 
-	private function populateMagicWords(): void {
-		if ( !empty( $this->magicWords ) ) {
-			return;
-		}
-
-		$services = MediaWikiServices::getInstance();
-
-		// FIXME: Deduplicate with Parsoid\Api\SiteConfig
-		$noHashFunctions = self::makeSet( [
-			'ns', 'nse', 'urlencode', 'lcfirst', 'ucfirst', 'lc', 'uc',
-			'localurl', 'localurle', 'fullurl', 'fullurle', 'canonicalurl',
-			'canonicalurle', 'formatnum', 'grammar', 'gender', 'plural', 'bidi',
-			'numberofpages', 'numberofusers', 'numberofactiveusers',
-			'numberofarticles', 'numberoffiles', 'numberofadmins',
-			'numberingroup', 'numberofedits', 'language',
-			'padleft', 'padright', 'anchorencode', 'defaultsort', 'filepath',
-			'pagesincategory', 'pagesize', 'protectionlevel', 'protectionexpiry',
-			'namespacee', 'namespacenumber', 'talkspace', 'talkspacee',
-			'subjectspace', 'subjectspacee', 'pagename', 'pagenamee',
-			'fullpagename', 'fullpagenamee', 'rootpagename', 'rootpagenamee',
-			'basepagename', 'basepagenamee', 'subpagename', 'subpagenamee',
-			'talkpagename', 'talkpagenamee', 'subjectpagename',
-			'subjectpagenamee', 'pageid', 'revisionid', 'revisionday',
-			'revisionday2', 'revisionmonth', 'revisionmonth1', 'revisionyear',
-			'revisiontimestamp', 'revisionuser', 'cascadingsources',
-			// Special callbacks in core
-			'namespace', 'int', 'displaytitle', 'pagesinnamespace',
-		] );
-
-		$this->magicWords = $this->mwAliases = $this->variables = $this->functionHooks = [];
-		$variables = self::makeSet( $services->getMagicWordFactory()->getVariableIDs() );
-		$functionHooks = self::makeSet( $services->getParser()->getFunctionHooks() );
-		foreach ( $services->getContentLanguage()->getMagicWords() as $magicword => $aliases ) {
-			$caseSensitive = array_shift( $aliases );
-			foreach ( $aliases as $alias ) {
-				$this->mwAliases[$magicword][] = $alias;
-				if ( !$caseSensitive ) {
-					$alias = mb_strtolower( $alias );
-					$this->mwAliases[$magicword][] = $alias;
-				}
-				$this->magicWords[$alias] = $magicword;
-				if ( isset( $variables[$magicword] ) ) {
-					$this->variables[$alias] = $magicword;
-				}
-				if ( isset( $functionHooks[$magicword] ) ) {
-					$falias = $alias;
-					if ( substr( $falias, -1 ) === ':' ) {
-						$falias = substr( $falias, 0, -1 );
-					}
-					if ( !isset( $noHashFunctions[$magicword] ) ) {
-						$falias = '#' . $falias;
-					}
-					$this->functionHooks[$falias] = $magicword;
-				}
-			}
-		}
+	/** @inheritDoc */
+	protected function getVariableIDs(): array {
+		return MediaWikiServices::getInstance()->getMagicWordFactory()->getVariableIDs();
 	}
 
-	public function magicWords(): array {
-		$this->populateMagicWords();
-		return $this->magicWords;
+	/** @inheritDoc */
+	protected function getFunctionHooks(): array {
+		return MediaWikiServices::getInstance()->getParser()->getFunctionHooks();
 	}
 
-	public function mwAliases(): array {
-		$this->populateMagicWords();
-		return $this->mwAliases;
-	}
-
-	public function getMagicWordForFunctionHook( string $str ): ?string {
-		$this->populateMagicWords();
-		return $this->functionHooks[$str] ?? null;
-	}
-
-	public function getMagicWordForVariable( string $str ): ?string {
-		$this->populateMagicWords();
-		return $this->variables[$str] ?? null;
+	/** @inheritDoc */
+	protected function getMagicWords(): array {
+		return MediaWikiServices::getInstance()->getContentLanguage()->getMagicWords();
 	}
 
 	public function getMagicWordMatcher( string $id ): string {
@@ -659,7 +527,7 @@ class SiteConfig extends ISiteConfig {
 	}
 
 	/** @inheritDoc */
-	public function getExtResourceURLPatternMatcher(): callable {
+	protected function getSpecialNSAliases(): array {
 		$nsAliases = [
 			'Special',
 			$this->quoteTitleRe( $this->contLang->getNsText( NS_SPECIAL ) )
@@ -672,45 +540,19 @@ class SiteConfig extends ISiteConfig {
 				$nsAliases[] = $this->quoteTitleRe( $name );
 			}
 		}
-		$nsAliases = implode( '|', array_unique( $nsAliases ) );
 
-		$pageAliases = implode( '|', array_map( [ $this, 'quoteTitleRe' ], array_merge(
-			[ 'Booksources' ],
-			$this->contLang->getSpecialPageAliases()['Booksources'] ?? []
-		) ) );
-
-		// cscott wants a mention of T145590 here ("Update Parsoid to be compatible with magic links
-		// being disabled")
-		$pats = [
-			'ISBN' => '(?:\.\.?/)*(?i:' . $nsAliases . ')(?:%3[Aa]|:)'
-				. '(?i:' . $pageAliases . ')(?:%2[Ff]|/)(?P<ISBN>\d+[Xx]?)',
-			'RFC' => '[^/]*//tools\.ietf\.org/html/rfc(?P<RFC>\w+)',
-			'PMID' => '[^/]*//www\.ncbi\.nlm\.nih\.gov/pubmed/(?P<PMID>\w+)\?dopt=Abstract',
-		];
-		$regex = '!^(?:' . implode( '|', $pats ) . ')$!';
-		return function ( $text ) use ( $pats, $regex ) {
-			if ( preg_match( $regex, $text, $m ) ) {
-				foreach ( $pats as $k => $re ) {
-					if ( isset( $m[$k] ) && $m[$k] !== '' ) {
-						return [ $k, $m[$k] ];
-					}
-				}
-			}
-			return false;
-		};
+		return $nsAliases;
 	}
 
 	/** @inheritDoc */
-	public function hasValidProtocol( string $potentialLink ): bool {
-		$protocols = $this->config->get( 'UrlProtocols' );
-		$regex = '!^(?:' . implode( '|', array_map( 'preg_quote', $protocols ) ) . ')!i';
-		return (bool)preg_match( $regex, $potentialLink );
+	protected function getSpecialPageAliases( string $specialPage ): array {
+		return array_merge( [ $specialPage ],
+			$this->contLang->getSpecialPageAliases()[$specialPage] ?? []
+		);
 	}
 
 	/** @inheritDoc */
-	public function findValidProtocol( string $potentialLink ): bool {
-		$protocols = $this->config->get( 'UrlProtocols' );
-		$regex = '!(?:\W|^)(?:' . implode( '|', array_map( 'preg_quote', $protocols ) ) . ')!i';
-		return (bool)preg_match( $regex, $potentialLink );
+	protected function getProtocols(): array {
+		return $this->config->get( 'UrlProtocols' );
 	}
 }

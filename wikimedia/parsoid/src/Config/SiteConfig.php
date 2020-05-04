@@ -6,11 +6,20 @@ namespace Wikimedia\Parsoid\Config;
 use Liuggio\StatsdClient\Factory\StatsdDataFactoryInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Wikimedia\Assert\Assert;
 use Wikimedia\Parsoid\Core\ContentModelHandler;
 use Wikimedia\Parsoid\Core\ExtensionContentModelHandler;
 use Wikimedia\Parsoid\Core\WikitextContentModelHandler;
-use Wikimedia\Parsoid\Ext\Extension;
-use Wikimedia\Parsoid\Ext\ExtensionTag;
+use Wikimedia\Parsoid\Ext\Cite\Cite;
+use Wikimedia\Parsoid\Ext\ExtensionModule;
+use Wikimedia\Parsoid\Ext\ExtensionTagHandler;
+use Wikimedia\Parsoid\Ext\Gallery\Gallery;
+use Wikimedia\Parsoid\Ext\JSON\JSON;
+use Wikimedia\Parsoid\Ext\LST\LST;
+use Wikimedia\Parsoid\Ext\Nowiki\Nowiki;
+use Wikimedia\Parsoid\Ext\Poem\Poem;
+use Wikimedia\Parsoid\Ext\Pre\Pre;
+use Wikimedia\Parsoid\Ext\Translate\Translate;
 use Wikimedia\Parsoid\Utils\PHPUtils;
 use Wikimedia\Parsoid\Utils\Util;
 
@@ -21,40 +30,79 @@ use Wikimedia\Parsoid\Utils\Util;
  */
 abstract class SiteConfig {
 	/**
-	 * These "extensions" are considered to provide "core" functionality
-	 * and their implementations live in the Parsoid repo.
+	 * Maps aliases to the canonical magic word
+	 * FIXME: not private so that ParserTests can reset these variables
+	 * since they reuse site config and other objects between tests for
+	 * efficiency reasons.
 	 *
-	 * @var array
+	 * @var array|null
 	 */
-	private static $coreExtModules = [ 'Nowiki', 'Pre', 'Gallery' ];
+	protected $magicWordMap;
+
+	/** @var array|null */
+	private $mwAliases, $variables, $functionHooks;
 
 	/**
-	 * The Parsoid/JS extension registration mechanism is short-lived and
-	 * we are going to rely on the core extension mechanism soon. Till then,
-	 * it is simplest to just hardcode the list of extensions that have
-	 * Parsoid-compatible implementations in the Parsoid repo
-	 *
-	 * @var array
+	 * FIXME: not private so that ParserTests can reset these variables
+	 * since they reuse site config and other objects between tests for
+	 * efficiency reasons.
+	 * @var string|null|bool
 	 */
-	private static $parsoidRepoExtModules = [ 'Cite', 'LST', 'Poem', 'Translate', 'JSON' ];
+	protected $linkTrailRegex = false;
+
+	/**
+	 * These extension modules provide "core" functionality
+	 * and their implementations live in the Parsoid repo.
+	 *
+	 * @var class-string<ExtensionModule>[]
+	 */
+	private static $coreExtModules = [
+		// content modules
+		JSON::class,
+		// extension tags
+		Nowiki::class,
+		Pre::class,
+		Gallery::class,
+		// The following implementations will move to their own repositories
+		// soon, but for now are implemented in the Parsoid repo.
+		Cite::class,
+		LST::class,
+		Poem::class,
+		Translate::class,
+	];
 
 	/**
 	 * Array specifying fully qualified class name for Parsoid-compatible extensions
-	 * @var string[]
+	 * @var ?class-string<ExtensionModule>[]
 	 */
-	private static $extModules = [];
+	private $extModules = null;
 
-	public static function init() {
-		foreach ( self::$coreExtModules as $extName ) {
-			self::$extModules[] = '\Wikimedia\Parsoid\Ext\\' . $extName . '\\' . $extName;
+	/**
+	 * Register a Parsoid extension module.
+	 * @param class-string<ExtensionModule> $className
+	 */
+	public function registerExtensionModule( string $className ): void {
+		$this->getExtensionModules(); // ensure it's initialized w/ core modules
+		$this->extModules[] = $className;
+	}
+
+	/**
+	 * Return the set of Parsoid extension modules associated with this
+	 * SiteConfig.  An implementation of SiteConfig may elect either to
+	 * call the ::registerExtension() method above, or else to override the
+	 * implementation of getExtensions() to return the proper list.
+	 * (But be sure to delegate to the superclass implementation in order
+	 * to include the Parsoid core extension modules.)
+	 *
+	 * FIXME: choose one method!
+	 *
+	 * @return class-string<ExtensionModule>[]
+	 */
+	public function getExtensionModules() {
+		if ( $this->extModules === null ) {
+			$this->extModules = self::$coreExtModules;
 		}
-
-		foreach ( self::$parsoidRepoExtModules as $extName ) {
-			self::$extModules[] = '\Wikimedia\Parsoid\Ext\\' . $extName . '\\' . $extName;
-		}
-
-		self::$coreExtModules = [];
-		self::$parsoidRepoExtModules = [];
+		return $this->extModules;
 	}
 
 	/** @var LoggerInterface|null */
@@ -84,21 +132,18 @@ abstract class SiteConfig {
 	protected $linterEnabled = false;
 
 	/** var array */
-	protected $extConfig = null;
+	protected $extConfig = [
+		'allTags'        => [],
+		'parsoidExtTags' => [],
+		'domProcessors'  => [],
+		'styles'         => [],
+		'contentModels'  => [],
+	];
 
 	/** @var bool */
-	private $extConfigInitialized;
+	private $extConfigInitialized = false;
 
 	public function __construct() {
-		self::init();
-		$this->extConfigInitialized = false;
-		$this->extConfig = [
-			'allTags'        => [],
-			'parsoidExtTags' => [],
-			'domProcessors'  => [],
-			'styles'         => [],
-			'contentModels'  => []
-		];
 	}
 
 	/************************************************************************//**
@@ -115,48 +160,6 @@ abstract class SiteConfig {
 			$this->logger = new NullLogger;
 		}
 		return $this->logger;
-	}
-
-	/**
-	 * Log channel for traces
-	 * @return LoggerInterface
-	 */
-	public function getTraceLogger(): LoggerInterface {
-		return $this->getLogger();
-	}
-
-	/**
-	 * Test which trace information to log
-	 *
-	 * Known flags include 'time' and 'time/dompp'.
-	 *
-	 * @param string $flag Flag name.
-	 * @return bool
-	 */
-	public function hasTraceFlag( string $flag ): bool {
-		return false;
-	}
-
-	/**
-	 * Log channel for dumps
-	 * @return LoggerInterface
-	 */
-	public function getDumpLogger(): LoggerInterface {
-		return $this->getLogger();
-	}
-
-	/**
-	 * Test which state to dump
-	 *
-	 * Known flags include 'dom:post-dom-diff', 'dom:post-normal', 'dom:post-builder',
-	 * various other things beginning 'dom:pre-' and 'dom:post-',
-	 * 'wt2html:limits', 'extoutput', and 'tplsrc'.
-	 *
-	 * @param string $flag Flag name.
-	 * @return bool
-	 */
-	public function hasDumpFlag( string $flag ): bool {
-		return false;
 	}
 
 	/**
@@ -516,10 +519,28 @@ abstract class SiteConfig {
 	abstract public function linkPrefixRegex(): ?string;
 
 	/**
+	 * Return raw link trail regexp from config
+	 * @return string
+	 */
+	abstract protected function linkTrail(): string;
+
+	/**
 	 * Link trail regular expression.
 	 * @return string|null
 	 */
-	abstract public function linkTrailRegex(): ?string;
+	public function linkTrailRegex(): ?string {
+		if ( $this->linkTrailRegex === false ) {
+			$trail = $this->linkTrail();
+			$trail = str_replace( '(.*)$', '', $trail );
+			if ( strpos( $trail, '()' ) !== false ) {
+				// Empty regex from zh-hans
+				$this->linkTrailRegex = null;
+			} else {
+				$this->linkTrailRegex = $trail;
+			}
+		}
+		return $this->linkTrailRegex;
+	}
 
 	/**
 	 * Wiki language code.
@@ -707,30 +728,113 @@ abstract class SiteConfig {
 	abstract public function widthOption(): int;
 
 	/**
+	 * @return array
+	 */
+	abstract protected function getVariableIDs(): array;
+
+	/**
+	 * @return array
+	 */
+	abstract protected function getFunctionHooks(): array;
+
+	/**
+	 * @return array
+	 */
+	abstract protected function getMagicWords(): array;
+
+	private function populateMagicWords() {
+		if ( !empty( $this->magicWordMap ) ) {
+			return;
+		}
+
+		// FIXME: This feels broken. This should come from Core / API ?
+		$noHashFunctions = PHPUtils::makeSet( [
+			'ns', 'nse', 'urlencode', 'lcfirst', 'ucfirst', 'lc', 'uc',
+			'localurl', 'localurle', 'fullurl', 'fullurle', 'canonicalurl',
+			'canonicalurle', 'formatnum', 'grammar', 'gender', 'plural', 'bidi',
+			'numberofpages', 'numberofusers', 'numberofactiveusers',
+			'numberofarticles', 'numberoffiles', 'numberofadmins',
+			'numberingroup', 'numberofedits', 'language',
+			'padleft', 'padright', 'anchorencode', 'defaultsort', 'filepath',
+			'pagesincategory', 'pagesize', 'protectionlevel', 'protectionexpiry',
+			'namespacee', 'namespacenumber', 'talkspace', 'talkspacee',
+			'subjectspace', 'subjectspacee', 'pagename', 'pagenamee',
+			'fullpagename', 'fullpagenamee', 'rootpagename', 'rootpagenamee',
+			'basepagename', 'basepagenamee', 'subpagename', 'subpagenamee',
+			'talkpagename', 'talkpagenamee', 'subjectpagename',
+			'subjectpagenamee', 'pageid', 'revisionid', 'revisionday',
+			'revisionday2', 'revisionmonth', 'revisionmonth1', 'revisionyear',
+			'revisiontimestamp', 'revisionuser', 'cascadingsources',
+			// Special callbacks in core
+			'namespace', 'int', 'displaytitle', 'pagesinnamespace',
+		] );
+
+		$this->magicWordMap = $this->mwAliases = $this->variables = $this->functionHooks = [];
+		$variablesMap = PHPUtils::makeSet( $this->getVariableIDs() );
+		$functionHooksMap = PHPUtils::makeSet( $this->getFunctionHooks() );
+		foreach ( $this->getMagicWords() as $magicword => $aliases ) {
+			$caseSensitive = array_shift( $aliases );
+			foreach ( $aliases as $alias ) {
+				$this->mwAliases[$magicword][] = $alias;
+				if ( !$caseSensitive ) {
+					$alias = mb_strtolower( $alias );
+					$this->mwAliases[$magicword][] = $alias;
+				}
+				$this->magicWordMap[$alias] = $magicword;
+				if ( isset( $variablesMap[$magicword] ) ) {
+					$this->variables[$alias] = $magicword;
+				}
+				if ( isset( $functionHooksMap[$magicword] ) ) {
+					$falias = $alias;
+					if ( substr( $falias, -1 ) === ':' ) {
+						$falias = substr( $falias, 0, -1 );
+					}
+					if ( !isset( $noHashFunctions[$magicword] ) ) {
+						$falias = '#' . $falias;
+					}
+					$this->functionHooks[$falias] = $magicword;
+				}
+			}
+		}
+	}
+
+	/**
 	 * List all magic words by alias
 	 * @return string[] Keys are aliases, values are canonical names.
 	 */
-	abstract public function magicWords(): array;
+	public function magicWords(): array {
+		$this->populateMagicWords();
+		return $this->magicWordMap;
+	}
 
 	/**
 	 * List all magic words by canonical name
 	 * @return string[][] Keys are canonical names, values are arrays of aliases.
 	 */
-	abstract public function mwAliases(): array;
+	public function mwAliases(): array {
+		$this->populateMagicWords();
+		return $this->mwAliases;
+	}
 
 	/**
 	 * Return canonical magic word for a function hook
 	 * @param string $str
 	 * @return string|null
 	 */
-	abstract public function getMagicWordForFunctionHook( string $str ): ?string;
+	public function getMagicWordForFunctionHook( string $str ): ?string {
+		$this->populateMagicWords();
+		return $this->functionHooks[$str] ?? null;
+	}
 
 	/**
 	 * Return canonical magic word for a variable
 	 * @param string $str
 	 * @return string|null
 	 */
-	abstract public function getMagicWordForVariable( string $str ): ?string;
+	public function getMagicWordForVariable( string $str ): ?string {
+		$this->populateMagicWords();
+		return $this->variables[$str] ?? null;
+	}
 
 	/**
 	 * Get canonical magicword name for the input word.
@@ -815,8 +919,8 @@ abstract class SiteConfig {
 		// from the SiteConfig.  Further, we probably need a hook here so
 		// Parsoid can handle media options defined in extensions... in
 		// particular timedmedia_* magic words from Extension:TimedMediaHandler
-		$magicWords = array_keys( WikitextConstants::$Media['PrefixOptions'] );
-		return $this->getParameterizedAliasMatcher( $magicWords );
+		$mws = array_keys( WikitextConstants::$Media['PrefixOptions'] );
+		return $this->getParameterizedAliasMatcher( $mws );
 	}
 
 	/**
@@ -827,6 +931,38 @@ abstract class SiteConfig {
 	abstract public function getMaxTemplateDepth(): int;
 
 	/**
+	 * Return name spaces aliases for the NS_SPECIAL namespace
+	 * @return array
+	 */
+	abstract protected function getSpecialNSAliases(): array;
+
+	/**
+	 * Return Special Page aliases for a special page name
+	 * @param string $specialPage
+	 * @return array
+	 */
+	abstract protected function getSpecialPageAliases( string $specialPage ): array;
+
+	/**
+	 * Quote a title regex
+	 *
+	 * Assumes '/' as the delimiter, and replaces spaces or underscores with
+	 * `[ _]` so either will be matched.
+	 *
+	 * @param string $s
+	 * @param string $delimiter Defaults to '/'
+	 * @return string
+	 */
+	protected static function quoteTitleRe( string $s, string $delimiter = '/' ): string {
+		$s = preg_quote( $s, $delimiter );
+		$s = strtr( $s, [
+			' ' => '[ _]',
+			'_' => '[ _]',
+		] );
+		return $s;
+	}
+
+	/**
 	 * Matcher for ISBN/RFC/PMID URL patterns, returning the type and number.
 	 *
 	 * The match method takes a string and returns false on no match or a tuple
@@ -834,7 +970,32 @@ abstract class SiteConfig {
 	 *
 	 * @return callable
 	 */
-	abstract public function getExtResourceURLPatternMatcher(): callable;
+	public function getExtResourceURLPatternMatcher(): callable {
+		$nsAliases = implode( '|', array_unique( $this->getSpecialNSAliases() ) );
+		$pageAliases = implode( '|', array_map( [ $this, 'quoteTitleRe' ],
+			$this->getSpecialPageAliases( 'Booksources' )
+		) );
+
+		// cscott wants a mention of T145590 here ("Update Parsoid to be compatible with magic links
+		// being disabled")
+		$pats = [
+			'ISBN' => '(?:\.\.?/)*(?i:' . $nsAliases . ')(?:%3[Aa]|:)'
+				. '(?i:' . $pageAliases . ')(?:%2[Ff]|/)(?P<ISBN>\d+[Xx]?)',
+			'RFC' => '[^/]*//tools\.ietf\.org/html/rfc(?P<RFC>\w+)',
+			'PMID' => '[^/]*//www\.ncbi\.nlm\.nih\.gov/pubmed/(?P<PMID>\w+)\?dopt=Abstract',
+		];
+		$regex = '!^(?:' . implode( '|', $pats ) . ')$!';
+		return function ( $text ) use ( $pats, $regex ) {
+			if ( preg_match( $regex, $text, $m ) ) {
+				foreach ( $pats as $k => $re ) {
+					if ( isset( $m[$k] ) && $m[$k] !== '' ) {
+						return [ $k, $m[$k] ];
+					}
+				}
+			}
+			return false;
+		};
+	}
 
 	/**
 	 * Serialize ISBN/RFC/PMID URL patterns
@@ -875,18 +1036,30 @@ abstract class SiteConfig {
 	}
 
 	/**
+	 * Get the list of valid protocols
+	 * @return array
+	 */
+	abstract protected function getProtocols(): array;
+
+	/**
 	 * Matcher for valid protocols, must be anchored at start of string.
 	 * @param string $potentialLink
 	 * @return bool Whether $potentialLink begins with a valid protocol
 	 */
-	abstract public function hasValidProtocol( string $potentialLink ): bool;
+	public function hasValidProtocol( string $potentialLink ): bool {
+		$re = '!^(?:' . implode( '|', array_map( 'preg_quote', $this->getProtocols() ) ) . ')!i';
+		return (bool)preg_match( $re, $potentialLink );
+	}
 
 	/**
 	 * Matcher for valid protocols, may occur at any point within string.
 	 * @param string $potentialLink
 	 * @return bool Whether $potentialLink contains a valid protocol
 	 */
-	abstract public function findValidProtocol( string $potentialLink ): bool;
+	public function findValidProtocol( string $potentialLink ): bool {
+		$re = '!(?:\W|^)(?:' . implode( '|', array_map( 'preg_quote', $this->getProtocols() ) ) . ')!i';
+		return (bool)preg_match( $re, $potentialLink );
+	}
 
 	/** @} */
 
@@ -911,30 +1084,37 @@ abstract class SiteConfig {
 
 	// FIXME: might benefit from T250230 (caching)
 	private function constructExtConfig() {
-		$this->extConfig['allTags'] = array_merge(
-			$this->extConfig['allTags'],
-			$this->getNonNativeExtensionTags()
-		);
+		// We always support wikitext
+		$this->extConfig['contentModels']['wikitext'] =
+			new WikitextContentModelHandler();
 
-		// Default content model implementation for wikitext
-		$this->extConfig['contentModels']['wikitext'] = new WikitextContentModelHandler();
+		// There may be some tags defined by the parent wiki which have no
+		// associated parsoid modules; for now we handle these by invoking
+		// the legacy parser.
+		$this->extConfig['allTags'] = $this->getNonNativeExtensionTags();
 
-		foreach ( self::$extModules as $className ) {
-			$this->processExtensionModules( new $className() );
+		foreach ( $this->getExtensionModules() as $className ) {
+			$this->processExtensionModule( new $className() );
 		}
-
-		$this->extConfigInitialized = true;
 	}
 
 	/**
 	 * Register a Parsoid-compatible extension
-	 * @param Extension $ext
+	 * @param ExtensionModule $ext
 	 */
-	protected function processExtensionModules( Extension $ext ): void {
+	protected function processExtensionModule( ExtensionModule $ext ): void {
+		Assert::invariant( $this->extConfigInitialized, "not yet inited!" );
 		$extConfig = $ext->getConfig();
+		Assert::invariant(
+			isset( $extConfig['name'] ),
+			"Every extension module must have a name."
+		);
+		$name = $extConfig['name'];
 
 		if ( isset( $extConfig['tags'] ) ) {
-			// This is for wt2html (sourceToDom), html2wt (domToWikitext), and linter functionality
+			// These are extension tag handlers.  They have
+			// wt2html (sourceToDom), html2wt (domToWikitext), and
+			// linter functionality.
 			foreach ( $extConfig['tags'] as $tagConfig ) {
 				$lowerTagName = mb_strtolower( $tagConfig['name'] );
 				$this->extConfig['allTags'][$lowerTagName] = true;
@@ -942,9 +1122,11 @@ abstract class SiteConfig {
 			}
 		}
 
-		// This is for wt2htmlPostProcessor and html2wtPreProcessor functionality
+		// Extension modules may also register dom processors.
+		// This is for wt2htmlPostProcessor and html2wtPreProcessor
+		// functionality.
 		if ( isset( $extConfig['domProcessors'] ) ) {
-			$this->extConfig['domProcessors'][get_class( $ext )] = $extConfig['domProcessors'];
+			$this->extConfig['domProcessors'][$name] = $extConfig['domProcessors'];
 		}
 
 		// Does this extension export any native styles?
@@ -966,7 +1148,10 @@ abstract class SiteConfig {
 				if ( isset( $this->extConfig['contentModels'][$cm] ) ) {
 					continue;
 				}
-				$this->extConfig['contentModels'][$cm] = new ExtensionContentModelHandler( new $impl );
+				// Wrap the handler so we can give it a sanitized
+				// ParsoidExtensionAPI object.
+				$handler = new ExtensionContentModelHandler( new $impl() );
+				$this->extConfig['contentModels'][$cm] = $handler;
 			}
 		}
 	}
@@ -974,8 +1159,9 @@ abstract class SiteConfig {
 	/**
 	 * @return array
 	 */
-	private function getExtConfig(): array {
+	protected function getExtConfig(): array {
 		if ( !$this->extConfigInitialized ) {
+			$this->extConfigInitialized = true;
 			$this->constructExtConfig();
 		}
 		return $this->extConfig;
@@ -1026,10 +1212,10 @@ abstract class SiteConfig {
 
 	/**
 	 * @param string $tagName Extension tag name
-	 * @return ExtensionTag|null
+	 * @return ExtensionTagHandler|null
 	 *   Returns the implementation of the named extension, if there is one.
 	 */
-	public function getExtTagImpl( string $tagName ): ?ExtensionTag {
+	public function getExtTagImpl( string $tagName ): ?ExtensionTagHandler {
 		$tagConfig = $this->getExtTagConfig( $tagName );
 		return isset( $tagConfig['class'] ) ? new $tagConfig['class']() : null;
 	}

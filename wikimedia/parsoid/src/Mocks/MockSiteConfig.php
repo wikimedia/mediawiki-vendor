@@ -48,6 +48,9 @@ class MockSiteConfig extends SiteConfig {
 	/** @var int */
 	private $maxDepth = 40;
 
+	/** @var string|null */
+	private $linkPrefixRegex = null;
+
 	/**
 	 * @param array $opts
 	 */
@@ -60,17 +63,12 @@ class MockSiteConfig extends SiteConfig {
 		if ( isset( $opts['linting'] ) ) {
 			$this->linterEnabled = $opts['linting'];
 		}
-		$this->tidyWhitespaceBugMaxLength = $opts['tidyWhitespaceBugMaxLength'] ?? null;
-
-		if ( isset( $opts['linkPrefixRegex'] ) ) {
-			$this->linkPrefixRegex = $opts['linkPrefixRegex'];
-		}
-		if ( isset( $opts['linkTrailRegex'] ) ) {
-			$this->linkTrailRegex = $opts['linkTrailRegex'];
-		}
 		if ( isset( $opts['maxDepth'] ) ) {
 			$this->maxDepth = $opts['maxDepth'];
 		}
+		$this->tidyWhitespaceBugMaxLength = $opts['tidyWhitespaceBugMaxLength'] ?? null;
+		$this->linkPrefixRegex = $opts['linkPrefixRegex'] ?? null;
+		$this->linkTrailRegex = $opts['linkTrailRegex'] ?? '/^([a-z]+)/sD'; // enwiki default
 
 		// Use Monolog's PHP console handler
 		$logger = new Logger( "Parsoid CLI" );
@@ -175,13 +173,15 @@ class MockSiteConfig extends SiteConfig {
 		return ' %!"$&\'()*,\-.\/0-9:;=?@A-Z\\\\^_`a-z~\x80-\xFF+';
 	}
 
-	private $linkPrefixRegex = null;
-
 	public function linkPrefixRegex(): ?string {
 		return $this->linkPrefixRegex;
 	}
 
-	private $linkTrailRegex = '/^([a-z]+)/sD'; // enwiki default
+	protected function linkTrail(): string {
+		throw new \BadMethodCallException(
+			'Should not be used. linkTrailRegex() is overridden here.' );
+	}
+
 	public function linkTrailRegex(): ?string {
 		return $this->linkTrailRegex;
 	}
@@ -253,13 +253,24 @@ class MockSiteConfig extends SiteConfig {
 		return 220;
 	}
 
-	public function magicWords(): array {
-		return [ 'toc' => 'toc', "thumb" => "img_thumbnail", "none" => "img_none",
-			"__notoc__" => "__notoc__" ];
+	/** @inheritDoc */
+	protected function getVariableIDs(): array {
+		return []; // None for now
 	}
 
-	public function mwAliases(): array {
-		return [ 'toc' => [ 'toc' ] ];
+	/** @inheritDoc */
+	protected function getFunctionHooks(): array {
+		return []; // None for now
+	}
+
+	/** @inheritDoc */
+	protected function getMagicWords(): array {
+		// make all magic words case-sensitive
+		return [ 'toc'           => [ 1, 'toc' ],
+			'img_thumbnail' => [ 1, 'thumb' ],
+			'img_none'      => [ 1, 'none' ],
+			'__notoc__'     => [ 1, '__notoc__' ]
+		];
 	}
 
 	public function getMagicWordMatcher( string $id ): string {
@@ -315,8 +326,6 @@ class MockSiteConfig extends SiteConfig {
 	/** @inheritDoc */
 	protected function getNonNativeExtensionTags(): array {
 		return [
-			'gallery' => true,    // Remove when gallery is ported
-			'poem' => true,       // Remove when poem is ported
 			'indicator' => true,
 			'timeline' => true,
 			'hiero' => true,
@@ -343,38 +352,22 @@ class MockSiteConfig extends SiteConfig {
 	}
 
 	/** @inheritDoc */
-	public function getExtResourceURLPatternMatcher(): callable {
-		// Mock generated from extension SiteConfig results, might not be right for some circumstances
-		$pats = [
-			'ISBN' => '(?:\.\.?/)*(?i:Special|special)(?:%3[Aa]|:)(?i:Booksources|BookSources)' .
-				'(?:%2[Ff]|/)(?P<ISBN>\d+[Xx]?)',
-			'RFC' => '[^/]*//tools\.ietf\.org/html/rfc(?P<RFC>\w+)',
-			'PMID' => '[^/]*//www\.ncbi\.nlm\.nih\.gov/pubmed/(?P<PMID>\w+)\?dopt=Abstract'
-		];
-		$regex = '!^(?:(?:\.\.?/)*(?i:Special|special)(?:%3[Aa]|:)(?i:Booksources|BookSources)' .
-			'(?:%2[Ff]|/)(?P<ISBN>\d+[Xx]?)|[^/]*//tools\.ietf\.org/html/rfc(?P<RFC>\w+)' .
-			'|[^/]*//www\.ncbi\.nlm\.nih\.gov/pubmed/(?P<PMID>\w+)\?dopt=Abstract)$!';
-
-		return function ( $text ) use ( $pats, $regex ) {
-			if ( preg_match( $regex, $text, $m ) ) {
-				foreach ( $pats as $k => $re ) {
-					if ( isset( $m[$k] ) && $m[$k] !== '' ) {
-						return [ $k, $m[$k] ];
-					}
-				}
-			}
-			return false;
-		};
+	protected function getSpecialPageAliases( string $specialPage ): array {
+		if ( $specialPage === 'Booksources' ) {
+			return [ 'Booksources', 'BookSources' ]; // Mock value
+		} else {
+			throw new \BadMethodCallException( 'Not implemented' );
+		}
 	}
 
 	/** @inheritDoc */
-	public function hasValidProtocol( string $potentialLink ): bool {
-		return preg_match( '#^((https?|ircs?|news|ftp|mailto|gopher):|//)#', $potentialLink );
+	protected function getSpecialNSAliases(): array {
+		return [ "Special", "special" ]; // Mock value
 	}
 
 	/** @inheritDoc */
-	public function findValidProtocol( string $potentialLink ): bool {
-		return preg_match( '#(?:\W|^)((https?|ircs?|news|ftp|mailto|gopher):|//)#', $potentialLink );
+	protected function getProtocols(): array {
+		return [ "http:", "https:", "irc:", "ircs:", "news:", "ftp:", "mailto:", "gopher:", "//" ];
 	}
 
 	public function fakeTimestamp(): ?int {
@@ -399,15 +392,5 @@ class MockSiteConfig extends SiteConfig {
 
 	public function scrubBidiChars(): bool {
 		return true;
-	}
-
-	/** @inheritDoc */
-	public function getMagicWordForFunctionHook( string $str ): ?string {
-		return null;
-	}
-
-	/** @inheritDoc */
-	public function getMagicWordForVariable( string $str ): ?string {
-		return null;
 	}
 }
