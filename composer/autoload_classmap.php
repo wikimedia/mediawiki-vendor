@@ -2248,6 +2248,7 @@ return array(
     'Symfony\\Component\\Validator\\Validation' => $vendorDir . '/symfony/validator/Validation.php',
     'Symfony\\Component\\Validator\\ValidatorBuilder' => $vendorDir . '/symfony/validator/ValidatorBuilder.php',
     'Symfony\\Component\\Validator\\Validator\\ContextualValidatorInterface' => $vendorDir . '/symfony/validator/Validator/ContextualValidatorInterface.php',
+    'Symfony\\Component\\Validator\\Validator\\LazyProperty' => $vendorDir . '/symfony/validator/Validator/LazyProperty.php',
     'Symfony\\Component\\Validator\\Validator\\RecursiveContextualValidator' => $vendorDir . '/symfony/validator/Validator/RecursiveContextualValidator.php',
     'Symfony\\Component\\Validator\\Validator\\RecursiveValidator' => $vendorDir . '/symfony/validator/Validator/RecursiveValidator.php',
     'Symfony\\Component\\Validator\\Validator\\TraceableValidator' => $vendorDir . '/symfony/validator/Validator/TraceableValidator.php',

@@ -2823,6 +2823,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Symfony\\Component\\Validator\\Validation' => __DIR__ . '/..' . '/symfony/validator/Validation.php',
         'Symfony\\Component\\Validator\\ValidatorBuilder' => __DIR__ . '/..' . '/symfony/validator/ValidatorBuilder.php',
         'Symfony\\Component\\Validator\\Validator\\ContextualValidatorInterface' => __DIR__ . '/..' . '/symfony/validator/Validator/ContextualValidatorInterface.php',
+        'Symfony\\Component\\Validator\\Validator\\LazyProperty' => __DIR__ . '/..' . '/symfony/validator/Validator/LazyProperty.php',
         'Symfony\\Component\\Validator\\Validator\\RecursiveContextualValidator' => __DIR__ . '/..' . '/symfony/validator/Validator/RecursiveContextualValidator.php',
         'Symfony\\Component\\Validator\\Validator\\RecursiveValidator' => __DIR__ . '/..' . '/symfony/validator/Validator/RecursiveValidator.php',
         'Symfony\\Component\\Validator\\Validator\\TraceableValidator' => __DIR__ . '/..' . '/symfony/validator/Validator/TraceableValidator.php',
