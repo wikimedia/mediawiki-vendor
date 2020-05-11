@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4da8b1c3aaec74e25c16e293009f0704",
+    "content-hash": "0692d7b025d336f9f8fe165be75732ba",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -5484,16 +5484,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.12.0-a12",
+            "version": "v0.12.0-a13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/parsoid.git",
-                "reference": "3cca02b2947725f61caa0a9ce542e104e097b031"
+                "reference": "51fae4379a0dcdca54e4438dc84d94748b1fcef4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/3cca02b2947725f61caa0a9ce542e104e097b031",
-                "reference": "3cca02b2947725f61caa0a9ce542e104e097b031",
+                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/51fae4379a0dcdca54e4438dc84d94748b1fcef4",
+                "reference": "51fae4379a0dcdca54e4438dc84d94748b1fcef4",
                 "shasum": ""
             },
             "require": {
@@ -5514,7 +5514,7 @@
             "require-dev": {
                 "composer/composer": "^1.10@RC",
                 "ext-curl": "*",
-                "jakub-onderka/php-console-highlighter": "0.4.0",
+                "jakub-onderka/php-console-color": "0.2",
                 "jakub-onderka/php-parallel-lint": "1.0.0",
                 "mediawiki/mediawiki-codesniffer": "30.0.0",
                 "mediawiki/mediawiki-phan-config": "0.9.2",
@@ -5548,7 +5548,7 @@
                 "mediawiki",
                 "parsoid"
             ],
-            "time": "2020-05-03T21:15:41+00:00"
+            "time": "2020-05-07T21:08:17+00:00"
         },
         {
             "name": "wikimedia/password-blacklist",
