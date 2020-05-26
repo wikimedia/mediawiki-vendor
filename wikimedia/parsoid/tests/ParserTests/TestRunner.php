@@ -32,7 +32,7 @@ use Wikimedia\Parsoid\Wt2Html\PageConfigFrame;
 class TestRunner {
 	// Hard-code some interwiki prefixes, as is done
 	// in parserTest.inc:setupInterwikis()
-	const PARSER_TESTS_IWPS = [
+	private const PARSER_TESTS_IWPS = [
 		[
 			'prefix' => 'wikinvest',
 			'local' => true,
@@ -235,7 +235,7 @@ class TestRunner {
 
 		$this->mockApi = new MockApiHelper();
 		$this->siteConfig = new SiteConfig( $this->mockApi, [] );
-		$this->dataAccess = new DataAccess( $this->mockApi, [] );
+		$this->dataAccess = new DataAccess( $this->mockApi, $this->siteConfig, [] );
 		$this->dummyEnv = new Env(
 			$this->siteConfig,
 			// Unused; needed to satisfy Env signature requirements
@@ -336,7 +336,7 @@ class TestRunner {
 	}
 
 	// Random string used as selser comment content
-	const STATIC_RANDOM_STRING = 'ahseeyooxooZ8Oon0boh';
+	private const STATIC_RANDOM_STRING = 'ahseeyooxooZ8Oon0boh';
 
 	/**
 	 * Make changes to a DOM in order to run a selser test on it.
@@ -999,6 +999,7 @@ class TestRunner {
 	 * Check the given wikitext result against the expected result, and throw an
 	 * exception if necessary.
 	 *
+	 * @param Env $env
 	 * @param Test $test
 	 * @param array $options
 	 * @param string $mode

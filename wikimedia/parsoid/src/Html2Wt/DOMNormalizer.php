@@ -43,8 +43,10 @@ use Wikimedia\Parsoid\Utils\WTUtils;
  */
 class DOMNormalizer {
 
-	const IGNORABLE_ATTRS = [ 'data-parsoid', 'id', 'title', DOMDataUtils::DATA_OBJECT_ATTR_NAME ];
-	const HTML_IGNORABLE_ATTRS = [ 'data-parsoid', DOMDataUtils::DATA_OBJECT_ATTR_NAME ];
+	private const IGNORABLE_ATTRS = [
+		'data-parsoid', 'id', 'title', DOMDataUtils::DATA_OBJECT_ATTR_NAME
+	];
+	private const HTML_IGNORABLE_ATTRS = [ 'data-parsoid', DOMDataUtils::DATA_OBJECT_ATTR_NAME ];
 
 	private static $specializedAttribHandlers;
 
@@ -64,7 +66,7 @@ class DOMNormalizer {
 	public function __construct( SerializerState $state ) {
 		if ( !self::$specializedAttribHandlers ) {
 			self::$specializedAttribHandlers = [
-				'data-mw' => function ( $nodeA, $dmwA, $nodeB, $dmwB, $options ) {
+				'data-mw' => function ( $nodeA, $dmwA, $nodeB, $dmwB ) {
 					return $dmwA == $dmwB;
 				}
 			];

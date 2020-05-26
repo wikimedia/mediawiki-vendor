@@ -178,7 +178,12 @@ class ParserPipelineFactory {
 		$this->env = $env;
 	}
 
-	// Default options processing
+	/**
+	 * Default options processing
+	 *
+	 * @param array $options
+	 * @return array
+	 */
 	private function defaultOptions( array $options ): array {
 		if ( !$options ) {
 			$options = [];
@@ -206,11 +211,15 @@ class ParserPipelineFactory {
 
 	/**
 	 * Generic pipeline creation from the above recipes.
+	 *
 	 * @param string $type
+	 * @param string $cacheKey
 	 * @param array $options
 	 * @return ParserPipeline
 	 */
-	private function makePipeline( string $type, string $cacheKey, array $options ): ParserPipeline {
+	private function makePipeline(
+		string $type, string $cacheKey, array $options
+	): ParserPipeline {
 		$options = $this->defaultOptions( $options );
 
 		if ( !isset( self::$pipelineRecipes[$type] ) ) {
