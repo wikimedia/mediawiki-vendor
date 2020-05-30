@@ -131,6 +131,6 @@
 		"swaggest/json-schema": "0.12.29"
 	},
 	"scripts": {
-		"test": "parallel-lint --exclude composer/autoload_static.php --exclude php-parallel-lint/php-parallel-lint/tests --exclude symfony/var-dumper/Tests/Fixtures --exclude psy/psysh/test ."
+		"test": "parallel-lint --exclude composer/autoload_static.php --exclude php-parallel-lint/php-parallel-lint/tests ."
 	}
 }
