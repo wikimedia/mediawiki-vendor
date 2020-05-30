@@ -127,10 +127,10 @@
 		"symfony/polyfill-php72": "1.12.0"
 	},
 	"require-dev": {
-		"php-parallel-lint/php-parallel-lint": "1.0.0",
+		"php-parallel-lint/php-parallel-lint": "1.2.0",
 		"swaggest/json-schema": "0.12.29"
 	},
 	"scripts": {
-		"test": "parallel-lint --exclude composer/autoload_static.php --exclude php-parallel-lint/php-parallel-lint/tests ."
+		"test": "parallel-lint --exclude composer/autoload_static.php --exclude pear/net_smtp/tests --exclude pear/mail/tests ."
 	}
 }
