@@ -1,4 +1,5 @@
 <?php
+// phpcs:disable Generic.Files.LineLength.TooLong
 
 namespace Wikimedia\Parsoid\Tools;
 
@@ -72,11 +73,13 @@ if ( $parsoidMode === 'integrated' ) {
 		/**
 		 * Make the protected method from the superclass into a public method
 		 * so we can use this from TestUtils.php.
+		 *
+		 * @inheritDoc
 		 */
 		public function addOption(
-			$name, $description, $required = false,
-			$withArg = false, $shortName = false,
-			$multiOccurrence = false
+			string $name, string $description, bool $required = false,
+			bool $withArg = false, bool $shortName = false,
+			bool $multiOccurrence = false
 		) {
 			parent::addOption(
 				$name, $description, $required, $withArg, $shortName,
@@ -84,8 +87,12 @@ if ( $parsoidMode === 'integrated' ) {
 			);
 		}
 
-		/** Make the options array available to ExtendedOptsProcessor */
-		protected function getOptions() {
+		/**
+		 * Make the options array available to ExtendedOptsProcessor
+		 *
+		 * @return array
+		 */
+		protected function getOptions(): array {
 			return $this->mOptions;
 		}
 	}
@@ -113,8 +120,12 @@ if ( $parsoidMode === 'integrated' ) {
 			parent::addDefaultParams();
 		}
 
-		/** Make the options array available to ExtendedOptsProcessor */
-		protected function getOptions() {
+		/**
+		 * Make the options array available to ExtendedOptsProcessor
+		 *
+		 * @return array
+		 */
+		protected function getOptions(): array {
 			return $this->options;
 		}
 
@@ -161,8 +172,9 @@ if ( $parsoidMode === 'integrated' ) {
 			}
 		}
 
-		// Implementation copied from core:
 		/**
+		 * Implementation copied from core
+		 *
 		 * Wrapper for posix_isatty()
 		 * We default as considering stdin a tty (for nice readline methods)
 		 * but treating stdout as not a tty to avoid color codes
@@ -170,8 +182,7 @@ if ( $parsoidMode === 'integrated' ) {
 		 * @param mixed $fd File descriptor
 		 * @return bool
 		 */
-		// phpcs:ignore MediaWiki.NamingConventions.LowerCamelFunctionsName.FunctionName
-		public static function posix_isatty( $fd ) {
+		public static function posix_isatty( $fd ): bool {  // phpcs:ignore MediaWiki.NamingConventions.LowerCamelFunctionsName.FunctionName
 			if ( !function_exists( 'posix_isatty' ) ) {
 				return !$fd;
 			} else {

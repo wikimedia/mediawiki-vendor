@@ -10,12 +10,12 @@ use stdClass;
 use Wikimedia\Assert\Assert;
 use Wikimedia\Parsoid\Core\DomSourceRange;
 use Wikimedia\Parsoid\Ext\DOMDataUtils;
+use Wikimedia\Parsoid\Ext\DOMUtils;
 use Wikimedia\Parsoid\Ext\ExtensionTagHandler;
 use Wikimedia\Parsoid\Ext\ParsoidExtensionAPI;
 use Wikimedia\Parsoid\Ext\PHPUtils;
 use Wikimedia\Parsoid\Ext\WTUtils;
 use Wikimedia\Parsoid\Utils\DOMCompat;
-use Wikimedia\Parsoid\Utils\DOMUtils;
 
 class References extends ExtensionTagHandler {
 	/**
@@ -94,10 +94,19 @@ class References extends ExtensionTagHandler {
 		return $frag;
 	}
 
+	/**
+	 * @param ParsoidExtensionAPI $extApi
+	 * @param DOMElement $node
+	 * @param ReferencesData $refsData
+	 * @param ?string $referencesAboutId
+	 * @param ?string $referencesGroup
+	 * @param array &$nestedRefsHTML
+	 */
 	private static function extractRefFromNode(
 		ParsoidExtensionAPI $extApi,
-		DOMElement $node, ReferencesData $refsData, ?string $referencesAboutId = null,
-		?string $referencesGroup = '', array &$nestedRefsHTML = []
+		DOMElement $node, ReferencesData $refsData,
+		?string $referencesAboutId = null, ?string $referencesGroup = '',
+		array &$nestedRefsHTML = []
 	): void {
 		$doc = $node->ownerDocument;
 		$nestedInReferences = $referencesAboutId !== null;
@@ -134,6 +143,9 @@ class References extends ExtensionTagHandler {
 
 		// Add ref-index linkback
 		$linkBack = $doc->createElement( 'sup' );
+
+		// Check for missing name and content and generate error code
+		$hasMissingNameAndContent = ( $refName === '' && !empty( $cDp->empty ) );
 
 		// FIXME: Lot of useless work for an edge case
 		if ( !empty( $cDp->empty ) ) {
@@ -172,7 +184,11 @@ class References extends ExtensionTagHandler {
 				'typeof' => $nodeType
 			]
 		);
-		DOMDataUtils::addTypeOf( $linkBack, 'mw:Extension/ref' );
+		DOMUtils::addTypeOf( $linkBack, 'mw:Extension/ref' );
+		if ( $hasMissingNameAndContent ) {
+			DOMUtils::addTypeOf( $linkBack, 'mw:Error' );
+		}
+
 		$dataParsoid = new stdClass;
 		if ( isset( $nodeDp->src ) ) {
 			$dataParsoid->src = $nodeDp->src;
@@ -184,11 +200,18 @@ class References extends ExtensionTagHandler {
 			$dataParsoid->pi = $nodeDp->pi;
 		}
 		DOMDataUtils::setDataParsoid( $linkBack, $dataParsoid );
-		if ( $isTplWrapper ) {
-			DOMDataUtils::setDataMw( $linkBack, $tplDmw );
-		} else {
-			DOMDataUtils::setDataMw( $linkBack, $refDmw );
+
+		$dmw = $isTplWrapper ? $tplDmw : $refDmw;
+		if ( $hasMissingNameAndContent ) {
+			$errs = [
+				[ 'key' => 'cite_error_ref_no_input' ],
+			];
+			if ( is_array( $dmw->errors ?? null ) ) {
+				$errs = array_merge( $dmw->errors, $errs );
+			}
+			$dmw->errors = $errs;
 		}
+		DOMDataUtils::setDataMw( $linkBack, $dmw );
 
 		// refLink is the link to the citation
 		$refLink = $doc->createElement( 'a' );
@@ -349,6 +372,12 @@ class References extends ExtensionTagHandler {
 		}
 	}
 
+	/**
+	 * @param ParsoidExtensionAPI $extApi
+	 * @param ReferencesData $refsData
+	 * @param string $str
+	 * @return string
+	 */
 	private static function processEmbeddedRefs(
 		ParsoidExtensionAPI $extApi, ReferencesData $refsData, string $str
 	): string {

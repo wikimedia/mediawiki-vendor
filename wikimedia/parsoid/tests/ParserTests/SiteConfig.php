@@ -9,6 +9,7 @@ use Monolog\Handler\FilterHandler;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Wikimedia\Assert\Assert;
+use Wikimedia\Parsoid\Config\Api\ApiHelper;
 use Wikimedia\Parsoid\Config\Api\SiteConfig as ApiSiteConfig;
 use Wikimedia\Parsoid\Ext\ExtensionModule;
 use Wikimedia\Parsoid\Utils\ConfigUtils;
@@ -36,7 +37,8 @@ class SiteConfig extends ApiSiteConfig {
 	/** @var LoggerInterface */
 	public $suppressLogger;
 
-	public function __construct( $api, array $opts ) {
+	/** @inheritDoc */
+	public function __construct( ApiHelper $api, array $opts ) {
 		// Use Monolog's PHP console handler
 		$errorLogHandler = new ErrorLogHandler();
 		$errorLogHandler->setFormatter( new LineFormatter( '%message%' ) );
@@ -106,7 +108,10 @@ class SiteConfig extends ApiSiteConfig {
 		$this->unregisterParserTestExtension( new RawHTML() );
 	}
 
-	private function deleteNamespace( string $name ) {
+	/**
+	 * @param string $name
+	 */
+	private function deleteNamespace( string $name ): void {
 		$normName = Util::normalizeNamespaceName( $name );
 		$id = $this->namespaceId( $normName );
 
@@ -124,10 +129,16 @@ class SiteConfig extends ApiSiteConfig {
 		}
 	}
 
+	/**
+	 * @param int $ns
+	 */
 	public function disableSubpagesForNS( int $ns ): void {
 		$this->nsWithSubpages[$ns] = false;
 	}
 
+	/**
+	 * @param int $ns
+	 */
 	public function enableSubpagesForNS( int $ns ): void {
 		$this->nsWithSubpages[$ns] = true;
 	}
@@ -137,6 +148,8 @@ class SiteConfig extends ApiSiteConfig {
 	 *
 	 * Delete any existing namespace with the same id.
 	 * Add new namespaces.
+	 *
+	 * @param array $ns
 	 */
 	private function updateNamespace( array $ns ): void {
 		$old = $this->namespaceName( (int)$ns['id'] );
@@ -191,7 +204,10 @@ class SiteConfig extends ApiSiteConfig {
 		return $this->responsiveReferences;
 	}
 
-	public function setInterwikiMagic( bool $val ) {
+	/**
+	 * @param bool $val
+	 */
+	public function setInterwikiMagic( bool $val ): void {
 		$this->interwikiMagic = $val;
 	}
 
@@ -203,7 +219,11 @@ class SiteConfig extends ApiSiteConfig {
 		return 123;
 	}
 
-	/** Hardcode value for parser tests */
+	/**
+	 * Hardcode value for parser tests
+	 *
+	 * @return int
+	 */
 	public function timezoneOffset(): int {
 		return 0;
 	}

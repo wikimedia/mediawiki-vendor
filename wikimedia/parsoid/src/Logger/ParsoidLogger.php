@@ -46,8 +46,9 @@ class ParsoidLogger {
 	 *
 	 * @param array $flags
 	 * @param string $logType
+	 * @return string
 	 */
-	private function buildLoggingRE( array $flags, string $logType ) {
+	private function buildLoggingRE( array $flags, string $logType ): string {
 		return $logType . '/(' . implode( '|', array_keys( $flags ) ) . ')(/|$)';
 	}
 
@@ -127,6 +128,11 @@ class ParsoidLogger {
 		return $msg;
 	}
 
+	/**
+	 * @param ?string $logType
+	 * @param array $args
+	 * @return string
+	 */
 	private function logMessage( ?string $logType, array $args ): string {
 		$numArgs = count( $args );
 		$output = $logType ? "[$logType]" : '';

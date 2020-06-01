@@ -235,7 +235,7 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 			if ( !empty( $dp->selfClose ) ) {
 				$etWidth = 0;
 			}
-		} elseif ( $node->getAttribute( 'typeof' ) === 'mw:LanguageVariant' ) {
+		} elseif ( DOMUtils::hasTypeOf( $node, 'mw:LanguageVariant' ) ) {
 			$stWidth = 2; // -{
 			$etWidth = 2; // }-
 		} else {
@@ -269,7 +269,11 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 		return [ $stWidth, $etWidth ];
 	}
 
-	private function trace( $env, ...$args ): void {
+	/**
+	 * @param Env $env
+	 * @param mixed ...$args
+	 */
+	private function trace( Env $env, ...$args ): void {
 		$env->log( "trace/dsr", function () use ( $args ) {
 			$buf = '';
 			foreach ( $args as $arg ) {
@@ -545,7 +549,7 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 					 * ----------------------------------------------------------------- */
 
 					if ( WTUtils::isDOMFragmentWrapper( $child ) ||
-						$child->getAttribute( 'typeof' ) === 'mw:LanguageVariant'
+						 DOMUtils::hasTypeOf( $child, 'mw:LanguageVariant' )
 					) {
 						// Eliminate artificial $cs/s mismatch warnings since this is
 						// just a wrapper token with the right DSR but without any

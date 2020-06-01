@@ -179,7 +179,13 @@ class TestUtils {
 		);
 	}
 
-	private static function cleanSpans( DOMNode $node, ?string $stripSpanTypeof ): void {
+	/**
+	 * @param DOMNode $node
+	 * @param ?string $stripSpanTypeof
+	 */
+	private static function cleanSpans(
+		DOMNode $node, ?string $stripSpanTypeof
+	): void {
 		if ( !$stripSpanTypeof ) {
 			return;
 		}
@@ -196,9 +202,14 @@ class TestUtils {
 		}
 	}
 
+	/**
+	 * @param DOMNode $parent
+	 * @param DOMNode $node
+	 * @param ?string $stripSpanTypeof
+	 */
 	private static function unwrapSpan(
 		DOMNode $parent, DOMNode $node, ?string $stripSpanTypeof
-	) {
+	):void {
 		// first recurse to unwrap any spans in the immediate children.
 		self::cleanSpans( $node, $stripSpanTypeof );
 		// now unwrap this span.
@@ -206,12 +217,23 @@ class TestUtils {
 		$parent->removeChild( $node );
 	}
 
-	private static function newlineAround( ?DOMNode $node ) {
+	/**
+	 * @param ?DOMNode $node
+	 * @return bool
+	 */
+	private static function newlineAround( ?DOMNode $node ): bool {
 		return $node &&
 			preg_match( '/^(body|caption|div|dd|dt|li|p|table|tr|td|th|tbody|dl|ol|ul|h[1-6])$/D', $node->nodeName );
 	}
 
-	private static function normalizeIEWVisitor( DOMNode $node, array $opts ) {
+	/**
+	 * @param DOMNode $node
+	 * @param array $opts
+	 * @return DOMNode
+	 */
+	private static function normalizeIEWVisitor(
+		DOMNode $node, array $opts
+	): DOMNode {
 		$child = null;
 		$next = null;
 		$prev = null;
@@ -325,6 +347,9 @@ class TestUtils {
 
 	/**
 	 * Strip some php output we aren't generating.
+	 *
+	 * @param string $html
+	 * @return string
 	 */
 	public static function normalizePhpOutput( string $html ): string {
 		$html = preg_replace(
@@ -395,6 +420,12 @@ class TestUtils {
 		}
 	}
 
+	/**
+	 * @param string $string
+	 * @param string $color
+	 * @param bool $inverse
+	 * @return string
+	 */
 	public static function colorString(
 		string $string, string $color, bool $inverse = false
 	): string {
@@ -528,7 +559,13 @@ class TestUtils {
 		return $failures;
 	}
 
-	private static function prettyPrintIOptions( array $iopts = null ) {
+	/**
+	 * @param ?array $iopts
+	 * @return string
+	 */
+	private static function prettyPrintIOptions(
+		?array $iopts = null
+	): string {
 		if ( !$iopts ) {
 			return '';
 		}
@@ -934,7 +971,15 @@ class TestUtils {
 		$stats->modes[$mode]->passedTests++;
 	}
 
-	private static function pre( Stats $stats, string $mode, string $title, array $time ): void {
+	/**
+	 * @param Stats $stats
+	 * @param string $mode
+	 * @param string $title
+	 * @param array $time
+	 */
+	private static function pre(
+		Stats $stats, string $mode, string $title, array $time
+	): void {
 		$testcaseEle = '<testcase name="' . self::encodeXml( $title ) . '" ';
 		$testcaseEle .= 'assertions="1" ';
 
@@ -950,7 +995,11 @@ class TestUtils {
 		$stats->modes[$mode]->result .= $testcaseEle;
 	}
 
-	private static function post( Stats $stats, string $mode ) {
+	/**
+	 * @param Stats $stats
+	 * @param string $mode
+	 */
+	private static function post( Stats $stats, string $mode ): void {
 		$stats->modes[$mode]->result .= '</testcase>';
 	}
 
@@ -970,8 +1019,10 @@ class TestUtils {
 
 	/**
 	 * Process CLI opts and return
+	 *
+	 * @param Maintenance $script
 	 */
-	public static function setupOpts( Maintenance $script ) {
+	public static function setupOpts( Maintenance $script ): void {
 		$opts = ScriptUtils::addStandardOptions( [
 			'wt2html' => [
 				'description' => 'Wikitext -> HTML(DOM)',
@@ -994,8 +1045,8 @@ class TestUtils {
 				'boolean' => true
 			],
 			'selser' => [
-				'description' => 'Roundtrip testing: Wikitext -> DOM(HTML) -> Wikitext (with selective serialization). '
-. 'Set to "noauto" to just run the tests with manual selser changes.',
+				'description' => 'Roundtrip testing: Wikitext -> DOM(HTML) -> Wikitext (with selective serialization). ' .
+					'Set to "noauto" to just run the tests with manual selser changes.',
 				'boolean' => false
 			],
 			'changetree' => [
@@ -1099,6 +1150,7 @@ class TestUtils {
 	}
 
 	/**
+	 * @param Maintenance $script
 	 * @return array
 	 */
 	public static function processOptions( Maintenance $script ): array {

@@ -249,6 +249,11 @@ class TestRunner {
 		$this->siteConfig->setupInterwikiMap( self::PARSER_TESTS_IWPS );
 	}
 
+	/**
+	 * @param Test $test
+	 * @param string $wikitext
+	 * @return Env
+	 */
 	private function newEnv( Test $test, string $wikitext ): Env {
 		$pageNs = $this->dummyEnv->makeTitleFromURLDecodedStr(
 			$test->pageName()
@@ -532,7 +537,7 @@ class TestRunner {
 			return !( $node instanceof DOMElement ) ||
 				( !WTUtils::isEncapsulationWrapper( $node ) &&
 					// Deleting these div wrappers is tantamount to removing the
-					$node->getAttribute( 'typeof' ) !== 'mw:Entity' &&
+					!DOMUtils::hasTypeOf( $node, 'mw:Entity' ) &&
 					// reference tag encaption wrappers, which results in errors.
 					!preg_match( '/\bmw-references-wrap\b/', $node->getAttribute( 'class' ) ?? '' )
 				);
@@ -555,8 +560,7 @@ class TestRunner {
 			// - Any node nested in an image elt that is not a fig-caption
 			//   is an uneditable image elt.
 			// - Entity spans are uneditable as well
-			$typeOf = $node->getAttribute( 'typeof' ) ?? '';
-			return preg_match( ( '/\bmw:(Image|Video|Audio|Entity)\b/' ), $typeOf ) || (
+			return DOMUtils::matchTypeOf( $node, '#^mw:(Image|Video|Audio|Entity)(/|$)#' ) || (
 				$node->nodeName !== 'figcaption' &&
 				$node->parentNode &&
 				$node->parentNode->nodeName !== 'body' &&
@@ -1034,8 +1038,11 @@ class TestRunner {
 	 * @param DOMElement $out
 	 * @param array $options
 	 * @param string $mode
+	 * @return bool
 	 */
-	private function checkHTML( Test $test, DOMElement $out, array $options, string $mode ) {
+	private function checkHTML(
+		Test $test, DOMElement $out, array $options, string $mode
+	): bool {
 		$normalizedOut = null;
 		$normalizedExpected = null;
 		$parsoidOnly = isset( $test->altHtmlSections['html/parsoid'] ) ||
@@ -1075,8 +1082,11 @@ class TestRunner {
 	 * @param string $out
 	 * @param array $options
 	 * @param string $mode
+	 * @return bool
 	 */
-	private function checkWikitext( Test $test, string $out, array $options, string $mode ) {
+	private function checkWikitext(
+		Test $test, string $out, array $options, string $mode
+	): bool {
 		$testWikitext = $test->wikitext;
 		$out = preg_replace( '/<!--' . self::STATIC_RANDOM_STRING . '-->/', '', $out );
 		if ( $mode === 'selser' && $test->resultWT !== null &&
@@ -1117,8 +1127,14 @@ class TestRunner {
 	 * - indicate whether to compare to wt2wt or the original input
 	 * - maybe make a full selser test one method that uses others rather than the
 	 *   current chain of methods that sometimes do something for selser
+	 *
+	 * @param Test $test
+	 * @param array $targetModes
+	 * @param array $options
 	 */
-	private function buildTasks( Test $test, array $targetModes, array $options ) {
+	private function buildTasks(
+		Test $test, array $targetModes, array $options
+	): void {
 		if ( !$test->title ) {
 			throw new Error( 'Missing title from test case.' );
 		}
@@ -1209,6 +1225,10 @@ class TestRunner {
 		}
 	}
 
+	/**
+	 * @param array $options
+	 * @return array
+	 */
 	private function updateBlacklist( array $options ): array {
 		// Sanity check in case any tests were removed but we didn't update
 		// the blacklist
@@ -1302,7 +1322,11 @@ class TestRunner {
 		];
 	}
 
-	private function processTest( Test $test, array $options ) {
+	/**
+	 * @param Test $test
+	 * @param array $options
+	 */
+	private function processTest( Test $test, array $options ): void {
 		if ( !$test->options ) {
 			$test->options = [];
 		}

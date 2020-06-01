@@ -34,14 +34,18 @@ class MockEnv extends Env {
 		parent::__construct( $siteConfig, $pageConfig, $dataAccess, $opts );
 	}
 
+	/** @inheritDoc */
 	public function bumpTimeUse( string $resource, $time, $cat ): void {
 	}
 
+	/** @inheritDoc */
 	public function bumpCount( string $resource, int $n = 1 ): void {
 	}
 
 	/**
 	 * @suppress PhanEmptyPublicMethod
+	 * @param string $resource
+	 * @param int $count
 	 */
 	public function bumpParserResourceUse( string $resource, int $count = 1 ): void {
 	}

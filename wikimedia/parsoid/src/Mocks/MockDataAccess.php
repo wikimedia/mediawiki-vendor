@@ -325,10 +325,17 @@ class MockDataAccess implements DataAccess {
 		]
 	];
 
-	private function normTitle( $title ) {
+	/**
+	 * @param string $title
+	 * @return string
+	 */
+	private function normTitle( string $title ): string {
 		return strtr( $title, ' ', '_' );
 	}
 
+	/**
+	 * @param array $opts
+	 */
 	public function __construct( array $opts ) {
 		// Update data of the large page
 		$mainSlot = &self::$PAGE_DATA['Large_Page']['slots']['main'];

@@ -7,6 +7,7 @@ use DOMElement;
 use DOMNode;
 use Wikimedia\Parsoid\Html2Wt\SerializerState;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
+use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\PHPUtils;
 use Wikimedia\Parsoid\Utils\Util;
 use Wikimedia\Parsoid\Utils\WTUtils;
@@ -21,12 +22,11 @@ class MetaHandler extends DOMHandler {
 	public function handle(
 		DOMElement $node, SerializerState $state, bool $wrapperUnmodified = false
 	): ?DOMNode {
-		$type = $node->getAttribute( 'typeof' ) ?: '';
 		$property = $node->getAttribute( 'property' ) ?: '';
 		$dp = DOMDataUtils::getDataParsoid( $node );
 		$dmw = DOMDataUtils::getDataMw( $node );
 
-		if ( isset( $dp->src ) && preg_match( '#(^|\s)mw:Placeholder(/\w*)?$#D', $type ) ) {
+		if ( isset( $dp->src ) && DOMUtils::matchTypeOf( $node, '#^mw:Placeholder(/|$)#' ) ) {
 			$this->emitPlaceholderSrc( $node, $state );
 			return $node->nextSibling;
 		}
@@ -65,8 +65,8 @@ class MetaHandler extends DOMHandler {
 			} else {
 				( new FallbackHTMLHandler )->handle( $node, $state );
 			}
-		} elseif ( $type ) {
-			switch ( $type ) {
+		} else {
+			switch ( $node->getAttribute( 'typeof' ) ?? '' ) {
 				case 'mw:Includes/IncludeOnly':
 					// Remove the dp.src when older revisions of HTML expire in RESTBase
 					$state->emitChunk( PHPUtils::coalesce( $dmw->src ?? null, $dp->src ?? null,  '' ), $node );
@@ -93,10 +93,8 @@ class MetaHandler extends DOMHandler {
 					// just ignore it
 					break;
 				default:
-					( new FallbackHTMLHandler )->handle( $node, $state );
+					( new FallbackHTMLHandler() )->handle( $node, $state );
 			}
-		} else {
-			( new FallbackHTMLHandler )->handle( $node, $state );
 		}
 		return $node->nextSibling;
 	}
@@ -115,10 +113,10 @@ class MetaHandler extends DOMHandler {
 			} else {
 				return [ 'min' => 1 ];
 			}
-		} elseif ( WTUtils::isNewElt( $node )
-			// Placeholder metas don't need to be serialized on their own line
-			&& ( $node->nodeName !== 'meta'
-				|| !preg_match( '#(^|\s)mw:Placeholder(/|$)#D', $node->getAttribute( 'typeof' ) ?: '' ) )
+		} elseif (
+			WTUtils::isNewElt( $node )
+			// Placeholder metas or <*include*> tags don't need to be serialized on their own line
+			&& !DOMUtils::matchTypeOf( $node, '#^mw:(Placeholder|Includes)(/|$)#' )
 		) {
 			return [ 'min' => 1 ];
 		} else {
@@ -129,10 +127,10 @@ class MetaHandler extends DOMHandler {
 	/** @inheritDoc */
 	public function after( DOMElement $node, DOMNode $otherNode, SerializerState $state ): array {
 		// No diffs
-		if ( WTUtils::isNewElt( $node )
-			// Placeholder metas don't need to be serialized on their own line
-			&& ( $node->nodeName !== 'meta'
-				|| !preg_match( '#(^|\s)mw:Placeholder(/|$)#D', $node->getAttribute( 'typeof' ) ?: '' ) )
+		if (
+			WTUtils::isNewElt( $node )
+			// Placeholder metas or <*include*> tags don't need to be serialized on their own line
+			&& !DOMUtils::matchTypeOf( $node, '#^mw:(Placeholder|Includes)(/|$)#' )
 		) {
 			return [ 'min' => 1 ];
 		} else {

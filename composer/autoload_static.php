@@ -3394,6 +3394,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Ext\\ContentModelHandler' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/ContentModelHandler.php',
         'Wikimedia\\Parsoid\\Ext\\DOMDataUtils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/DOMDataUtils.php',
         'Wikimedia\\Parsoid\\Ext\\DOMProcessor' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/DOMProcessor.php',
+        'Wikimedia\\Parsoid\\Ext\\DOMUtils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/DOMUtils.php',
         'Wikimedia\\Parsoid\\Ext\\ExtensionModule' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/ExtensionModule.php',
         'Wikimedia\\Parsoid\\Ext\\ExtensionTagHandler' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/ExtensionTagHandler.php',
         'Wikimedia\\Parsoid\\Ext\\Gallery\\Gallery' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/Gallery/Gallery.php',

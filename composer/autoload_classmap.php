@@ -2814,6 +2814,7 @@ return array(
     'Wikimedia\\Parsoid\\Ext\\ContentModelHandler' => $vendorDir . '/wikimedia/parsoid/src/Ext/ContentModelHandler.php',
     'Wikimedia\\Parsoid\\Ext\\DOMDataUtils' => $vendorDir . '/wikimedia/parsoid/src/Ext/DOMDataUtils.php',
     'Wikimedia\\Parsoid\\Ext\\DOMProcessor' => $vendorDir . '/wikimedia/parsoid/src/Ext/DOMProcessor.php',
+    'Wikimedia\\Parsoid\\Ext\\DOMUtils' => $vendorDir . '/wikimedia/parsoid/src/Ext/DOMUtils.php',
     'Wikimedia\\Parsoid\\Ext\\ExtensionModule' => $vendorDir . '/wikimedia/parsoid/src/Ext/ExtensionModule.php',
     'Wikimedia\\Parsoid\\Ext\\ExtensionTagHandler' => $vendorDir . '/wikimedia/parsoid/src/Ext/ExtensionTagHandler.php',
     'Wikimedia\\Parsoid\\Ext\\Gallery\\Gallery' => $vendorDir . '/wikimedia/parsoid/src/Ext/Gallery/Gallery.php',

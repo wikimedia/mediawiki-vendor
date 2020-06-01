@@ -185,6 +185,11 @@ class SiteConfig extends ISiteConfig {
 	 * This is very similar to MagicWordArray::getBaseRegex() except we
 	 * don't emit the named grouping constructs, which can cause havoc
 	 * when embedded in other regexps with grouping constructs.
+	 *
+	 * @param MagicWordFactory $factory
+	 * @param MagicWordArray $magicWordArray
+	 * @param string $delimiter
+	 * @return string
 	 */
 	private static function mwaToRegex(
 		MagicWordFactory $factory,
@@ -358,7 +363,7 @@ class SiteConfig extends ISiteConfig {
 		return '/[' . $this->contLang->linkPrefixCharset() . ']+$/Du';
 	}
 
-	/** inheritDoc */
+	/** @inheritDoc */
 	protected function linkTrail(): string {
 		return $this->contLang->linkTrail();
 	}

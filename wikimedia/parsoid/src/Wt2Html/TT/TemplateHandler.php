@@ -20,6 +20,7 @@ use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\PHPUtils;
 use Wikimedia\Parsoid\Utils\PipelineUtils;
+use Wikimedia\Parsoid\Utils\Title;
 use Wikimedia\Parsoid\Utils\TitleException;
 use Wikimedia\Parsoid\Utils\TokenUtils;
 use Wikimedia\Parsoid\Utils\Util;
@@ -67,6 +68,10 @@ class TemplateHandler extends TokenHandler {
 
 	/**
 	 * Parser functions also need template wrapping.
+	 *
+	 * @param array $state
+	 * @param array $ret
+	 * @return array
 	 */
 	private function parserFunctionsWrapper( array $state, array $ret ): array {
 		$chunkToks = [];
@@ -98,7 +103,15 @@ class TemplateHandler extends TokenHandler {
 		return array_merge( $chunkToks, $endToks );
 	}
 
-	private function encapTokens( array $state, array $tokens, array $extraDict = [] ): array {
+	/**
+	 * @param array $state
+	 * @param array $tokens
+	 * @param array $extraDict
+	 * @return array
+	 */
+	private function encapTokens(
+		array $state, array $tokens, array $extraDict = []
+	): array {
 		$toks = $this->getEncapsulationInfo( $state, $tokens );
 		$toks[] = $this->getEncapsulationInfoEndTag( $state );
 		if ( $this->wrapTemplates ) {
@@ -146,6 +159,10 @@ class TemplateHandler extends TokenHandler {
 		return $toks;
 	}
 
+	/**
+	 * @param array $tokens
+	 * @return ?string
+	 */
 	private function toStringOrNull( array $tokens ): ?string {
 		$maybeTarget = TokenUtils::tokensToString( $tokens, true, [ 'retainNLs' => true ] );
 		if ( !is_array( $maybeTarget ) ) {
@@ -412,7 +429,14 @@ class TemplateHandler extends TokenHandler {
 		return $tokens;
 	}
 
-	private function convertAttribsToString( array $state, array $attribs ): array {
+	/**
+	 * @param array $state
+	 * @param array $attribs
+	 * @return array
+	 */
+	private function convertAttribsToString(
+		array $state, array $attribs
+	): array {
 		$attribTokens = [];
 
 		// Leading whitespace, if any
@@ -482,10 +506,19 @@ class TemplateHandler extends TokenHandler {
 
 	/**
 	 * checkRes
+	 *
+	 * @param mixed $target
+	 * @param Title $title
+	 * @param bool $ignoreLoop
+	 * @return ?array
 	 */
-	private function checkRes( $target, $title, $ignoreLoop ) {
+	private function checkRes(
+		$target, Title $title, bool $ignoreLoop
+	): ?array {
 		$checkRes = $this->manager->getFrame()->loopAndDepthCheck(
-			$title, $this->env->getSiteConfig()->getMaxTemplateDepth(), $ignoreLoop );
+			$title, $this->env->getSiteConfig()->getMaxTemplateDepth(),
+			$ignoreLoop
+		);
 		if ( $checkRes ) {
 			// Loop detected or depth limit exceeded, abort!
 			$res = [
@@ -496,13 +529,18 @@ class TemplateHandler extends TokenHandler {
 			];
 			return $res;
 		}
+		return null;
 	}
 
 	/**
-	 * Fetch, tokenize and token-transform a template after all arguments and the
-	 * target were expanded.
+	 * Fetch, tokenize and token-transform a template after all arguments and
+	 * the target were expanded.
+	 *
+	 * @param array $state
+	 * @param array $attribs
+	 * @return array
 	 */
-	private function expandTemplate( $state, $attribs ) {
+	private function expandTemplate( array $state, array $attribs ): array {
 		$env = $this->env;
 		$target = $attribs[0]->k;
 		if ( !$target ) {
@@ -586,8 +624,15 @@ class TemplateHandler extends TokenHandler {
 
 	/**
 	 * Process a fetched template source to a token stream.
+	 *
+	 * @param array $state
+	 * @param array $tplArgs
+	 * @param ?string $src
+	 * @return array
 	 */
-	private function processTemplateSource( array $state, array $tplArgs, ?string $src ): array {
+	private function processTemplateSource(
+		array $state, array $tplArgs, ?string $src
+	): array {
 		if ( !$src ) {
 			// We have a choice between aborting or keeping going and reporting the
 			// error inline.
@@ -643,7 +688,14 @@ class TemplateHandler extends TokenHandler {
 		return array_merge( $toks, $this->finalizeTemplateTokens( $state ) );
 	}
 
-	private function getEncapsulationInfo( array $state, array $chunk = null ): array {
+	/**
+	 * @param array $state
+	 * @param ?array $chunk
+	 * @return array
+	 */
+	private function getEncapsulationInfo(
+		array $state, ?array $chunk = null
+	): array {
 		// TODO
 		// * only add this information for top-level includes, but track parameter
 		// expansion in lower-level templates
@@ -665,7 +717,11 @@ class TemplateHandler extends TokenHandler {
 		return $chunk;
 	}
 
-	private function getEncapsulationInfoEndTag( array $state ) {
+	/**
+	 * @param array $state
+	 * @return Token
+	 */
+	private function getEncapsulationInfoEndTag( array $state ): Token {
 		$tsr = $state['token']->dataAttribs->tsr ?? null;
 		return new SelfclosingTagTk( 'meta',
 			[
@@ -678,8 +734,11 @@ class TemplateHandler extends TokenHandler {
 
 	/**
 	 * Parameter processing helpers.
+	 *
+	 * @param mixed $tokens
+	 * @return bool
 	 */
-	private static function isSimpleParam( $tokens ) {
+	private static function isSimpleParam( $tokens ): bool {
 		if ( !is_array( $tokens ) ) {
 			$tokens = [ $tokens ];
 		}
@@ -693,6 +752,8 @@ class TemplateHandler extends TokenHandler {
 
 	/**
 	 * Add its HTML conversion to a parameter
+	 *
+	 * @param array $paramData
 	 */
 	private function getParamHTML( array $paramData ): void {
 		$param = $paramData['param'];
@@ -735,8 +796,11 @@ class TemplateHandler extends TokenHandler {
 
 	/**
 	 * Process the main template element, including the arguments.
+	 *
+	 * @param array $state
+	 * @return array
 	 */
-	private function encapsulateTemplate( $state ) {
+	private function encapsulateTemplate( array $state ): array {
 		$i = null;
 		$n = null;
 		$env = $this->env;
@@ -816,6 +880,10 @@ class TemplateHandler extends TokenHandler {
 
 	/**
 	 * Handle chunk emitted from the input pipeline after feeding it a template.
+	 *
+	 * @param array $state
+	 * @param array $chunk
+	 * @return array
 	 */
 	private function processTemplateTokens( array $state, array $chunk ): array {
 		TokenUtils::stripEOFTkfromTokens( $chunk );
@@ -826,7 +894,7 @@ class TemplateHandler extends TokenHandler {
 			}
 			if ( $t instanceof SelfclosingTagTk &&
 				strtolower( $t->getName() ) === 'meta' &&
-				$t->getAttribute( 'typeof' ) === 'mw:Placeholder'
+				TokenUtils::hasTypeOf( $t, 'mw:Placeholder' )
 			) {
 				// replace with empty string to avoid metas being foster-parented out
 				$chunk[$i] = '';
@@ -851,6 +919,10 @@ class TemplateHandler extends TokenHandler {
 		return $chunk;
 	}
 
+	/**
+	 * @param array $state
+	 * @return array
+	 */
 	private function finalizeTemplateTokens( array $state ): array {
 		$this->env->log( 'debug', 'TemplateHandler.finalizeTemplateTokens' );
 		$toks = [];
@@ -863,8 +935,11 @@ class TemplateHandler extends TokenHandler {
 	/**
 	 * Get the public data-mw structure that exposes the template name and
 	 * parameters.
+	 *
+	 * @param array $state
+	 * @return array
 	 */
-	private function getArgInfo( $state ) {
+	private function getArgInfo( array $state ): array {
 		$src = $this->manager->getFrame()->getSrcText();
 		$params = $state['token']->attribs;
 		// TODO: `dict` might be a good candidate for a T65370 style cleanup as a
@@ -997,8 +1072,15 @@ class TemplateHandler extends TokenHandler {
 
 	/**
 	 * Fetch a template.
+	 *
+	 * @param string $templateName
+	 * @param array $state
+	 * @param array $attribs
+	 * @return array
 	 */
-	private function fetchTemplateAndTitle( $templateName, $state, $attribs ) {
+	private function fetchTemplateAndTitle(
+		string $templateName, array $state, array $attribs
+	): array {
 		$env = $this->env;
 		if ( isset( $env->pageCache[$templateName] ) ) {
 			$tplSrc = $env->pageCache[$templateName];
@@ -1020,7 +1102,7 @@ class TemplateHandler extends TokenHandler {
 					]
 				] );
 				$typeOf = $tokens[0]->getAttribute( 'typeof' );
-				$tokens[0]->setAttribute( 'typeof', 'mw:Error ' . $typeOf );
+				$tokens[0]->setAttribute( 'typeof', 'mw:Error' . ( $typeOf ? " $typeOf" : '' ) );
 			}
 			return [ 'tokens' => $tokens ];
 		} else {
@@ -1040,8 +1122,11 @@ class TemplateHandler extends TokenHandler {
 
 	/**
 	 * Fetch the preprocessed wikitext for a template-like construct.
+	 *
+	 * @param string $transclusion
+	 * @return array
 	 */
-	private function fetchExpandedTpl( string $transclusion ) {
+	private function fetchExpandedTpl( string $transclusion ): array {
 		$env = $this->env;
 		if ( $env->noDataAccess() ) {
 			$err = 'Warning: Page/template fetching disabled cannot expand ' . $transclusion;
@@ -1098,6 +1183,11 @@ class TemplateHandler extends TokenHandler {
 		return $wikitext;
 	}
 
+	/**
+	 * @param mixed $arg
+	 * @param SourceRange $srcOffsets
+	 * @return array
+	 */
 	private function fetchArg( $arg, SourceRange $srcOffsets ): array {
 		if ( is_string( $arg ) ) {
 			return [ 'tokens' => [ $arg ] ];
@@ -1112,7 +1202,13 @@ class TemplateHandler extends TokenHandler {
 		}
 	}
 
-	private function lookupArg( $args, $attribs, $ret ) {
+	/**
+	 * @param array $args
+	 * @param KV[] $attribs
+	 * @param array $ret
+	 * @return array
+	 */
+	private function lookupArg( array $args, $attribs, array $ret ): array {
 		$toks = $ret['tokens'];
 		// FIXME: Why is there a trim in one, but not the other??
 		// Feels like a bug
@@ -1132,6 +1228,10 @@ class TemplateHandler extends TokenHandler {
 		}
 	}
 
+	/**
+	 * @param mixed $tokens
+	 * @return bool
+	 */
 	private static function hasTemplateToken( $tokens ): bool {
 		if ( is_array( $tokens ) ) {
 			foreach ( $tokens as $t ) {
@@ -1140,7 +1240,6 @@ class TemplateHandler extends TokenHandler {
 				}
 			}
 		}
-
 		return false;
 	}
 
@@ -1378,7 +1477,7 @@ class TemplateHandler extends TokenHandler {
 					] );
 				} else {
 					// Fetch and process the template expansion
-					$expansion = $this->fetchExpandedTpl( $text ) ?? null;
+					$expansion = $this->fetchExpandedTpl( $text );
 					if ( $expansion['error'] ) {
 						$tplToks = $expansion['tokens'];
 					} else {

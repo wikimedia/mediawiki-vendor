@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a4b12dd5d6bf31e684aaeb51e46bac32",
+    "content-hash": "abdbacbb94fda00d71c3024d1a04fd2c",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -5585,16 +5585,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.12.0-a14",
+            "version": "v0.12.0-a15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/parsoid.git",
-                "reference": "a79ff15a0ed4c6e07eab65b947020bf9740c943d"
+                "reference": "84886a739b8340716ae51e6a3e04a88cf996c246"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/a79ff15a0ed4c6e07eab65b947020bf9740c943d",
-                "reference": "a79ff15a0ed4c6e07eab65b947020bf9740c943d",
+                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/84886a739b8340716ae51e6a3e04a88cf996c246",
+                "reference": "84886a739b8340716ae51e6a3e04a88cf996c246",
                 "shasum": ""
             },
             "require": {
@@ -5649,7 +5649,7 @@
                 "mediawiki",
                 "parsoid"
             ],
-            "time": "2020-05-22T18:12:25+00:00"
+            "time": "2020-05-28T21:07:03+00:00"
         },
         {
             "name": "wikimedia/password-blacklist",
@@ -6609,16 +6609,16 @@
         },
         {
             "name": "swaggest/json-diff",
-            "version": "v3.7.4",
+            "version": "v3.7.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swaggest/json-diff.git",
-                "reference": "fccbbd6ee31b5949ab52e9c53f7a1e1b06d84716"
+                "reference": "e452a9c6444905a486280c7d56503a6468303f69"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swaggest/json-diff/zipball/fccbbd6ee31b5949ab52e9c53f7a1e1b06d84716",
-                "reference": "fccbbd6ee31b5949ab52e9c53f7a1e1b06d84716",
+                "url": "https://api.github.com/repos/swaggest/json-diff/zipball/e452a9c6444905a486280c7d56503a6468303f69",
+                "reference": "e452a9c6444905a486280c7d56503a6468303f69",
                 "shasum": ""
             },
             "require": {
@@ -6644,7 +6644,7 @@
                 }
             ],
             "description": "JSON diff/rearrange/patch/pointer library for PHP",
-            "time": "2020-01-26T20:52:06+00:00"
+            "time": "2020-05-26T21:53:21+00:00"
         },
         {
             "name": "swaggest/json-schema",
