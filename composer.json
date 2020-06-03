@@ -81,7 +81,7 @@
 		"web-auth/cose-lib": "3.2.6",
 		"web-auth/metadata-service": "3.2.6",
 		"web-auth/webauthn-lib": "3.2.6",
-		"wikibase/data-model": "9.4.0",
+		"wikibase/data-model": "9.5.1",
 		"wikibase/data-model-serialization": "2.9.1",
 		"wikibase/data-model-services": "5.2.0",
 		"wikibase/internal-serialization": "2.10.0",
