@@ -1507,17 +1507,17 @@
     },
     {
         "name": "lcobucci/jwt",
-        "version": "3.3.1",
-        "version_normalized": "3.3.1.0",
+        "version": "3.3.2",
+        "version_normalized": "3.3.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/lcobucci/jwt.git",
-            "reference": "a11ec5f4b4d75d1fcd04e133dede4c317aac9e18"
+            "reference": "56f10808089e38623345e28af2f2d5e4eb579455"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/lcobucci/jwt/zipball/a11ec5f4b4d75d1fcd04e133dede4c317aac9e18",
-            "reference": "a11ec5f4b4d75d1fcd04e133dede4c317aac9e18",
+            "url": "https://api.github.com/repos/lcobucci/jwt/zipball/56f10808089e38623345e28af2f2d5e4eb579455",
+            "reference": "56f10808089e38623345e28af2f2d5e4eb579455",
             "shasum": ""
         },
         "require": {
@@ -1532,7 +1532,7 @@
             "phpunit/phpunit": "^5.7 || ^7.3",
             "squizlabs/php_codesniffer": "~2.3"
         },
-        "time": "2019-05-24T18:30:49+00:00",
+        "time": "2020-05-22T08:21:12+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1560,6 +1560,16 @@
         "keywords": [
             "JWS",
             "jwt"
+        ],
+        "funding": [
+            {
+                "url": "https://github.com/lcobucci",
+                "type": "github"
+            },
+            {
+                "url": "https://www.patreon.com/lcobucci",
+                "type": "patreon"
+            }
         ]
     },
     {
