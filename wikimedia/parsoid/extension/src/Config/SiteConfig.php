@@ -6,6 +6,7 @@ namespace MWParsoid\Config;
 
 use Config;
 use ConfigException;
+use ExtensionRegistry;
 use FakeConverter;
 use Language;
 use LanguageConverter;
@@ -89,6 +90,11 @@ class SiteConfig extends ISiteConfig {
 			$this->html2wtLimits = array_merge(
 				$this->html2wtLimits, $this->parsoidSettings['html2wtLimits']
 			);
+		}
+		// Register extension modules
+		$parsoidModules = ExtensionRegistry::getInstance()->getAttribute( 'ParsoidModules' );
+		foreach ( $parsoidModules as $configOrSpec ) {
+			$this->registerExtensionModule( $configOrSpec );
 		}
 	}
 

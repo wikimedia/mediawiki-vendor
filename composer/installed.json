@@ -5766,17 +5766,17 @@
     },
     {
         "name": "wikimedia/parsoid",
-        "version": "v0.12.0-a15",
-        "version_normalized": "0.12.0.0-alpha15",
+        "version": "v0.12.0-a16",
+        "version_normalized": "0.12.0.0-alpha16",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/parsoid.git",
-            "reference": "84886a739b8340716ae51e6a3e04a88cf996c246"
+            "reference": "572eae529e825e12f1a768d5f34fd4e47ba68045"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/84886a739b8340716ae51e6a3e04a88cf996c246",
-            "reference": "84886a739b8340716ae51e6a3e04a88cf996c246",
+            "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/572eae529e825e12f1a768d5f34fd4e47ba68045",
+            "reference": "572eae529e825e12f1a768d5f34fd4e47ba68045",
             "shasum": ""
         },
         "require": {
@@ -5789,6 +5789,7 @@
             "wikimedia/assert": "0.4.0|^0.5.0",
             "wikimedia/ip-utils": "^1.0.0|^2.0.0",
             "wikimedia/langconv": "^0.3.5",
+            "wikimedia/object-factory": "^2.1",
             "wikimedia/remex-html": "^2.2.0",
             "wikimedia/scoped-callback": "^3.0.0",
             "wikimedia/wikipeg": "^2.0.4",
@@ -5797,19 +5798,19 @@
         "require-dev": {
             "composer/composer": "^1.10@RC",
             "ext-curl": "*",
-            "jakub-onderka/php-console-color": "0.2",
-            "jakub-onderka/php-parallel-lint": "1.0.0",
-            "mediawiki/mediawiki-codesniffer": "30.0.0",
-            "mediawiki/mediawiki-phan-config": "0.9.2",
-            "mediawiki/minus-x": "1.0.0",
+            "mediawiki/mediawiki-codesniffer": "31.0.0",
+            "mediawiki/mediawiki-phan-config": "0.10.2",
+            "mediawiki/minus-x": "1.1.0",
             "monolog/monolog": "~1.25.2",
             "ockcyp/covers-validator": "1.1.1",
+            "php-parallel-lint/php-console-highlighter": "0.5.0",
+            "php-parallel-lint/php-parallel-lint": "1.2.0",
             "phpunit/phpunit": "^8.5",
             "sebastian/diff": "^3.0.2",
             "wikimedia/alea": "^0.9.2",
             "wikimedia/testing-access-wrapper": "~1.0"
         },
-        "time": "2020-05-28T21:07:03+00:00",
+        "time": "2020-06-06T06:11:34+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

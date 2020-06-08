@@ -3529,6 +3529,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Wt2Html\\HTML5TreeBuilder' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/HTML5TreeBuilder.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Handlers\\CleanUp' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Handlers/CleanUp.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Handlers\\DedupeStyles' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Handlers/DedupeStyles.php',
+        'Wikimedia\\Parsoid\\Wt2Html\\PP\\Handlers\\DisplaySpace' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Handlers/DisplaySpace.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Handlers\\HandleLinkNeighbours' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Handlers/HandleLinkNeighbours.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Handlers\\Headings' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Handlers/Headings.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Handlers\\LiFixups' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Handlers/LiFixups.php',

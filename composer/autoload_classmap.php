@@ -2949,6 +2949,7 @@ return array(
     'Wikimedia\\Parsoid\\Wt2Html\\HTML5TreeBuilder' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/HTML5TreeBuilder.php',
     'Wikimedia\\Parsoid\\Wt2Html\\PP\\Handlers\\CleanUp' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/PP/Handlers/CleanUp.php',
     'Wikimedia\\Parsoid\\Wt2Html\\PP\\Handlers\\DedupeStyles' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/PP/Handlers/DedupeStyles.php',
+    'Wikimedia\\Parsoid\\Wt2Html\\PP\\Handlers\\DisplaySpace' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/PP/Handlers/DisplaySpace.php',
     'Wikimedia\\Parsoid\\Wt2Html\\PP\\Handlers\\HandleLinkNeighbours' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/PP/Handlers/HandleLinkNeighbours.php',
     'Wikimedia\\Parsoid\\Wt2Html\\PP\\Handlers\\Headings' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/PP/Handlers/Headings.php',
     'Wikimedia\\Parsoid\\Wt2Html\\PP\\Handlers\\LiFixups' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/PP/Handlers/LiFixups.php',
