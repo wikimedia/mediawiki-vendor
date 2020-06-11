@@ -51,6 +51,7 @@ class ComposerStaticInit_mediawiki_vendor
             'Wikimedia\\LangConv\\' => 19,
             'Wikimedia\\Equivset\\' => 19,
             'Wikimedia\\Composer\\' => 19,
+            'Wikimedia\\CommonPasswords\\' => 26,
             'Wikimedia\\CSS\\' => 14,
             'Wikimedia\\AtEase\\' => 17,
             'Wikimedia\\Assert\\' => 17,
@@ -198,7 +199,7 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'Wikimedia\\PasswordBlacklist\\' => 
         array (
-            0 => __DIR__ . '/..' . '/wikimedia/password-blacklist/src',
+            0 => __DIR__ . '/..' . '/wikimedia/common-passwords/src/PasswordBlacklist',
         ),
         'Wikimedia\\Parsoid\\' => 
         array (
@@ -215,6 +216,10 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Composer\\' => 
         array (
             0 => __DIR__ . '/..' . '/wikimedia/composer-merge-plugin/src',
+        ),
+        'Wikimedia\\CommonPasswords\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/wikimedia/common-passwords/src/CommonPasswords',
         ),
         'Wikimedia\\CSS\\' => 
         array (
@@ -3341,6 +3346,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\CSS\\Sanitizer\\StylesheetSanitizer' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Sanitizer/StylesheetSanitizer.php',
         'Wikimedia\\CSS\\Sanitizer\\SupportsAtRuleSanitizer' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Sanitizer/SupportsAtRuleSanitizer.php',
         'Wikimedia\\CSS\\Util' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Util.php',
+        'Wikimedia\\CommonPasswords\\CommonPasswords' => __DIR__ . '/..' . '/wikimedia/common-passwords/src/CommonPasswords/CommonPasswords.php',
         'Wikimedia\\Composer\\Logger' => __DIR__ . '/..' . '/wikimedia/composer-merge-plugin/src/Logger.php',
         'Wikimedia\\Composer\\MergePlugin' => __DIR__ . '/..' . '/wikimedia/composer-merge-plugin/src/MergePlugin.php',
         'Wikimedia\\Composer\\Merge\\ExtraPackage' => __DIR__ . '/..' . '/wikimedia/composer-merge-plugin/src/Merge/ExtraPackage.php',
@@ -3584,7 +3590,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Wt2Html\\TokenizerUtils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/TokenizerUtils.php',
         'Wikimedia\\Parsoid\\Wt2Html\\Wt2HtmlDOMProcessor' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/Wt2HtmlDOMProcessor.php',
         'Wikimedia\\Parsoid\\Wt2Html\\XMLSerializer' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/XMLSerializer.php',
-        'Wikimedia\\PasswordBlacklist\\PasswordBlacklist' => __DIR__ . '/..' . '/wikimedia/password-blacklist/src/PasswordBlacklist.php',
+        'Wikimedia\\PasswordBlacklist\\PasswordBlacklist' => __DIR__ . '/..' . '/wikimedia/common-passwords/src/PasswordBlacklist/PasswordBlacklist.php',
         'Wikimedia\\PhpSessionSerializer' => __DIR__ . '/..' . '/wikimedia/php-session-serializer/src/Wikimedia/PhpSessionSerializer.php',
         'Wikimedia\\Purtle\\BNodeLabeler' => __DIR__ . '/..' . '/wikimedia/purtle/src/BNodeLabeler.php',
         'Wikimedia\\Purtle\\JsonLdRdfWriter' => __DIR__ . '/..' . '/wikimedia/purtle/src/JsonLdRdfWriter.php',

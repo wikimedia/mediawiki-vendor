@@ -5244,6 +5244,58 @@
         "homepage": "https://www.mediawiki.org/wiki/CLDRPluralRuleParser"
     },
     {
+        "name": "wikimedia/common-passwords",
+        "version": "0.2.0",
+        "version_normalized": "0.2.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/common-passwords.git",
+            "reference": "b9db612730d427a55e28f4a9b143b87fd72173e0"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/common-passwords/zipball/b9db612730d427a55e28f4a9b143b87fd72173e0",
+            "reference": "b9db612730d427a55e28f4a9b143b87fd72173e0",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=7.2.9",
+            "pleonasm/bloom-filter": "1.0.2"
+        },
+        "replace": {
+            "wikimedia/password-blacklist": "^0.1.4"
+        },
+        "require-dev": {
+            "mediawiki/mediawiki-codesniffer": "31.0.0",
+            "mediawiki/minus-x": "1.1.0",
+            "ockcyp/covers-validator": "1.1.1",
+            "php-parallel-lint/php-console-highlighter": "0.5.0",
+            "php-parallel-lint/php-parallel-lint": "1.2.0",
+            "phpunit/phpunit": "^8.5"
+        },
+        "time": "2020-06-11T14:00:12+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Wikimedia\\CommonPasswords\\": "src/CommonPasswords/",
+                "Wikimedia\\PasswordBlacklist\\": "src/PasswordBlacklist/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Sam Reed",
+                "email": "reedy@wikimedia.org"
+            }
+        ],
+        "description": "List of the 100,000 most commonly used passwords",
+        "homepage": "https://www.mediawiki.org/wiki/CommonPasswords"
+    },
+    {
         "name": "wikimedia/composer-merge-plugin",
         "version": "v1.4.1",
         "version_normalized": "1.4.1.0",
@@ -5834,54 +5886,6 @@
             "mediawiki",
             "parsoid"
         ]
-    },
-    {
-        "name": "wikimedia/password-blacklist",
-        "version": "v0.1.4",
-        "version_normalized": "0.1.4.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/wikimedia/password-blacklist.git",
-            "reference": "e902a6351a9ed6506858273e57b4fd2e28ca1ce9"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/password-blacklist/zipball/e902a6351a9ed6506858273e57b4fd2e28ca1ce9",
-            "reference": "e902a6351a9ed6506858273e57b4fd2e28ca1ce9",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.5.9",
-            "pleonasm/bloom-filter": "1.0.2"
-        },
-        "require-dev": {
-            "jakub-onderka/php-console-highlighter": "0.3.2",
-            "jakub-onderka/php-parallel-lint": "1.0.0",
-            "mediawiki/mediawiki-codesniffer": "23.0.0",
-            "mediawiki/minus-x": "0.3.1",
-            "ockcyp/covers-validator": "0.5.1 || 0.6.1",
-            "phpunit/phpunit": "4.8.36 || ^6.5"
-        },
-        "time": "2018-12-04T07:52:10+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Wikimedia\\PasswordBlacklist\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Sam Reed",
-                "email": "reedy@wikimedia.org"
-            }
-        ],
-        "description": "PasswordBlacklist for the 100,000 most used passwords",
-        "homepage": "https://www.mediawiki.org/wiki/PasswordBlacklist"
     },
     {
         "name": "wikimedia/php-session-serializer",
