@@ -25,27 +25,12 @@ use Wikimedia\Parsoid\Utils\WTUtils;
  */
 class XMLSerializer {
 
-	/** HTML5 void elements */
-	private static $emptyElements = [
-		'area' => true,
-		'base' => true,
+	// https://html.spec.whatwg.org/#serialising-html-fragments
+	private static $alsoSerializeAsVoid = [
 		'basefont' => true,
 		'bgsound' => true,
-		'br' => true,
-		'col' => true,
-		'command' => true,
-		'embed' => true,
 		'frame' => true,
-		'hr' => true,
-		'img' => true,
-		'input' => true,
-		'keygen' => true,
-		'link' => true,
-		'meta' => true,
-		'param' => true,
-		'source' => true,
-		'track' => true,
-		'wbr' => true,
+		'keygen' => true
 	];
 
 	/** HTML5 elements with raw (unescaped) content */
@@ -83,11 +68,11 @@ class XMLSerializer {
 	 * HTML entity encoder helper. Replaces calls to the entities npm module.
 	 * Only supports the few entities we'll actually need: <&'"
 	 * @param string $raw Input string
-	 * @param string $whitelist String with the characters that should be encoded
+	 * @param string $encodeChars String with the characters that should be encoded
 	 * @return string
 	 */
-	private static function encodeHtmlEntities( string $raw, string $whitelist ): string {
-		$encodings = array_intersect_key( self::$entityEncodings, array_flip( str_split( $whitelist ) ) );
+	private static function encodeHtmlEntities( string $raw, string $encodeChars ): string {
+		$encodings = array_intersect_key( self::$entityEncodings, array_flip( str_split( $encodeChars ) ) );
 		return strtr( $raw, $encodings );
 	}
 
@@ -154,7 +139,10 @@ class XMLSerializer {
 							$node );
 					}
 				}
-				if ( $child || !isset( self::$emptyElements[$nodeName] ) ) {
+				if ( $child || (
+					!isset( WikitextConstants::$HTML['VoidTags'][$nodeName] ) &&
+					!isset( self::$alsoSerializeAsVoid[$nodeName] )
+				) ) {
 					$accum( '>', $node, 'start' );
 					// if is cdata child node
 					if ( isset( self::$hasRawContent[$nodeName] ) ) {

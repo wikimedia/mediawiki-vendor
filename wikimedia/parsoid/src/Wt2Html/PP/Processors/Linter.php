@@ -56,7 +56,7 @@ class Linter implements Wt2HtmlDOMProcessor {
 	 * to compute which HTML5 tags are subject to this differential behavior.
 	 *
 	 * We compute that by excluding the following tags from the list of all HTML5 tags
-	 * - If our sanitizer doesn't whitelist them, they will be escaped => ignore them
+	 * - If our sanitizer doesn't allow them, they will be escaped => ignore them
 	 * - HTML4 block tags are excluded (obviously)
 	 * - Void tags don't matter since they cannot wrap anything (obviously)
 	 * - Active formatting elements have special handling in the HTML5 tree building
@@ -77,7 +77,7 @@ class Linter implements Wt2HtmlDOMProcessor {
 		if ( $this->tagsWithChangedMisnestingBehavior === null ) {
 			$this->tagsWithChangedMisnestingBehavior = [];
 			foreach ( Consts::$HTML['HTML5Tags'] as $tag => $dummy ) {
-				if ( isset( Consts::$Sanitizer['TagWhiteList'][$tag] ) &&
+				if ( isset( Consts::$Sanitizer['AllowedLiteralTags'][$tag] ) &&
 					!isset( Consts::$HTML['HTML4BlockTags'][$tag] ) &&
 					!isset( Consts::$HTML['FormattingTags'][$tag] ) &&
 					!isset( Consts::$HTML['VoidTags'][$tag] )

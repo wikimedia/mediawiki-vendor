@@ -63,6 +63,9 @@ class HTML5TreeBuilder extends PipelineStage {
 	/** @var array<string|NlTk> */
 	private $textContentBuffer;
 
+	/** @var bool */
+	private $needTransclusionShadow;
+
 	/**
 	 * @param Env $env
 	 * @param array $options
@@ -104,6 +107,9 @@ class HTML5TreeBuilder extends PipelineStage {
 		 * -------------------------------------------------------------------- */
 		$this->tableDepth = 0;
 
+		// We only need one for every run of strings and newline tokens.
+		$this->needTransclusionShadow = false;
+
 		$this->domBuilder = new DOMBuilder( [ 'suppressHtmlNamespace' => true ] );
 		$treeBuilder = new TreeBuilder( $this->domBuilder );
 		$this->dispatcher = new Dispatcher( $treeBuilder );
@@ -114,11 +120,6 @@ class HTML5TreeBuilder extends PipelineStage {
 		$this->dispatcher->startDocument( $tokenizer, null, null );
 		$this->dispatcher->doctype( 'html', '', '', false, 0, 0 );
 		$this->dispatcher->startTag( 'body', new PlainAttributes(), false, 0, 0 );
-
-		// Remex does not seem to normalize text nodes as they are added to the DOM
-		// - Will be fixed by https://gerrit.wikimedia.org/r/c/mediawiki/libs/RemexHtml/+/524831
-		// So, we'll tackle it ourselves during tree building for now.
-		$this->textContentBuffer = [];
 	}
 
 	/**
@@ -221,38 +222,6 @@ class HTML5TreeBuilder extends PipelineStage {
 		return $attribs;
 	}
 
-	private function processBufferedTextContent(): void {
-		if ( count( $this->textContentBuffer ) === 0 ) {
-			return;
-		}
-
-		$haveNonNlTk = false;
-		$data = "";
-		foreach ( $this->textContentBuffer as $t ) {
-			if ( is_string( $t ) ) {
-				$haveNonNlTk = true;
-				$data .= $t;
-			} else {
-				$data .= "\n";
-			}
-		}
-
-		$this->dispatcher->characters( $data, 0, strlen( $data ), 0, 0 );
-		// NlTks are only fostered when accompanied by
-		// non-whitespace. Safe to ignore.
-		if ( $this->inTransclusion && $this->tableDepth > 0 && $haveNonNlTk ) {
-			// If inside a table and a transclusion, add a meta tag
-			// after every text node so that we can detect
-			// fostered content that came from a transclusion.
-			$this->env->log( 'debug/html', $this->pipelineId, 'Inserting shadow transclusion meta' );
-			$this->dispatcher->startTag( 'meta', new PlainAttributes( $this->kvArrToAttr( [
-				new KV( 'typeof', 'mw:TransclusionShadow' )
-			] ) ), true, 0, 0 );
-		}
-
-		$this->textContentBuffer = [];
-	}
-
 	/**
 	 * Adapt the token format to internal HTML tree builder format, call the actual
 	 * html tree builder by emitting the token.
@@ -289,16 +258,35 @@ class HTML5TreeBuilder extends PipelineStage {
 		// Store the last token
 		$this->lastToken = $token;
 
-		// Buffer strings & newlines and return
-		if ( is_string( $token ) || $token instanceof NlTk ) {
-			$this->textContentBuffer[] = $token;
-			return;
+		// If we encountered a non-string non-nl token, we have broken a run of
+		// string+nl content.  If we need transclusion shadow protection, now's
+		// the time to insert it.
+		if (
+			!is_string( $token ) && !( $token instanceof NlTk ) &&
+			$this->needTransclusionShadow
+		) {
+			$this->needTransclusionShadow = false;
+			// If inside a table and a transclusion, add a meta tag after every
+			// text node so that we can detect fostered content that came from
+			// a transclusion.
+			$this->env->log( 'debug/html', $this->pipelineId, 'Inserting shadow transclusion meta' );
+			$this->dispatcher->startTag( 'meta', new PlainAttributes( $this->kvArrToAttr( [
+				new KV( 'typeof', 'mw:TransclusionShadow' )
+			] ) ), true, 0, 0 );
 		}
 
-		/* Not a string or NlTk -- collapse them into a single text node */
-		$this->processBufferedTextContent();
-
-		if ( $token instanceof TagTk ) {
+		if ( is_string( $token ) || $token instanceof NlTk ) {
+			$data = ( $token instanceof NlTk ) ? "\n" : $token;
+			$this->dispatcher->characters( $data, 0, strlen( $data ), 0, 0 );
+			// NlTks are only fostered when accompanied by non-whitespace.
+			// Safe to ignore.
+			if (
+				$this->inTransclusion && $this->tableDepth > 0 &&
+				is_string( $token )
+			) {
+				$this->needTransclusionShadow = true;
+			}
+		} elseif ( $token instanceof TagTk ) {
 			$tName = $token->getName();
 			if ( $tName === 'table' ) {
 				$this->tableDepth++;
