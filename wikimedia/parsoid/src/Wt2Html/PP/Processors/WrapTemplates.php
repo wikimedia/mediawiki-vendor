@@ -16,7 +16,7 @@ use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\PHPUtils;
-use Wikimedia\Parsoid\Utils\Util;
+use Wikimedia\Parsoid\Utils\Utils;
 use Wikimedia\Parsoid\Utils\WTUtils;
 use Wikimedia\Parsoid\Wt2Html\Frame;
 use Wikimedia\Parsoid\Wt2Html\Wt2HtmlDOMProcessor;
@@ -153,8 +153,13 @@ class WrapTemplates implements Wt2HtmlDOMProcessor {
 
 			$dsr = null;
 			if ( $n ) {
-				/** @var DOMElement $n */
-				DOMUtils::assertElt( $n );
+				/**
+				 * The point of the above loop is to ensure we're working
+				 * with a DOMElement if there is an $n.
+				 *
+				 * @var DOMElement $n
+				 */
+				'@phan-var DOMElement $n';
 				$dsr = DOMDataUtils::getDataParsoid( $n )->dsr ?? null;
 			}
 
@@ -185,7 +190,7 @@ class WrapTemplates implements Wt2HtmlDOMProcessor {
 		$range = (object)[
 			'startElem' => $startElem,
 			'endElem' => $endMeta,
-			'id' => Util::stripParsoidIdPrefix( $startElem->getAttribute( 'about' ) ),
+			'id' => Utils::stripParsoidIdPrefix( $startElem->getAttribute( 'about' ) ),
 			'startOffset' => DOMDataUtils::getDataParsoid( $startElem )->tsr->start,
 			'flipped' => false
 		];
@@ -249,8 +254,13 @@ class WrapTemplates implements Wt2HtmlDOMProcessor {
 			// as long as it is a tr/tbody -- pushing whitespace into the
 			// other (th/td/caption) can change display semantics.
 			if ( $newStart && isset( self::MAP_TBODY_TR[$newStart->nodeName] ) ) {
-				/** @var DOMElement $newStart */
-				DOMUtils::assertElt( $newStart );
+				/**
+				 * The point of the above loop is to ensure we're working
+				 * with a DOMElement if there is an $newStart.
+				 *
+				 * @var DOMElement $newStart
+				 */
+				'@phan-var DOMElement $newStart';
 				$insertPosition = $newStart->firstChild;
 				$n = $range->start;
 				while ( $n !== $newStart ) {
@@ -911,7 +921,7 @@ class WrapTemplates implements Wt2HtmlDOMProcessor {
 			 *    2b. If dp2.dsr->start is unknown, we rely on fostered flag on
 			 *        range.start, if any.
 			 * ---------------------------------------------------------------- */
-			$dp1 = Util::clone( DOMDataUtils::getDataParsoid( $range->start ) );
+			$dp1 = Utils::clone( DOMDataUtils::getDataParsoid( $range->start ) );
 			$dp2DSR = self::getRangeEndDSR( $range );
 
 			if ( isset( $dp1->dsr ) ) {
@@ -932,7 +942,7 @@ class WrapTemplates implements Wt2HtmlDOMProcessor {
 				}
 
 				// encapsulation possible only if dp1.dsr is valid
-				$encapInfo->valid = Util::isValidDSR( $dp1->dsr ?? null ) &&
+				$encapInfo->valid = Utils::isValidDSR( $dp1->dsr ?? null ) &&
 					$dp1->dsr->end >= $dp1->dsr->start;
 			}
 
@@ -1199,9 +1209,7 @@ class WrapTemplates implements Wt2HtmlDOMProcessor {
 
 							$dp = DOMDataUtils::getDataParsoid( $sm->parentNode );
 							if ( $tbl && $tbl->nodeName === 'table' && !empty( $dp->fostered ) ) {
-								/** @var DOMElement $tbl */
-								DOMUtils::assertElt( $tbl );
-
+								'@phan-var DOMElement $tbl';  /** @var DOMElement $tbl */
 								$tblDP = DOMDataUtils::getDataParsoid( $tbl );
 								if ( isset( $dp->tsr->start ) && $dp->tsr->start !== null &&
 									isset( $tblDP->dsr->start ) && $tblDP->dsr->start === null

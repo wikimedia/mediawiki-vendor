@@ -10,7 +10,7 @@ use Wikimedia\Parsoid\Config\Env;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\PHPUtils;
-use Wikimedia\Parsoid\Utils\Util;
+use Wikimedia\Parsoid\Utils\Utils;
 use Wikimedia\Parsoid\Utils\WTUtils;
 use Wikimedia\Parsoid\Wt2Html\Frame;
 use Wikimedia\Parsoid\Wt2Html\PegTokenizer;
@@ -60,17 +60,15 @@ class TableFixups {
 	 * ```
 	 *
 	 * @see https://phabricator.wikimedia.org/T52603
-	 * @param DOMNode $node
+	 * @param DOMElement $node
 	 * @param Frame $frame
 	 * @return bool|DOMNode
 	 */
-	public function stripDoubleTDs( DOMNode $node, Frame $frame ) {
+	public function stripDoubleTDs( DOMElement $node, Frame $frame ) {
 		$nextNode = $node->nextSibling;
-
-		/** @var DOMElement $nextNode */
 		if ( !WTUtils::isLiteralHTMLNode( $node ) &&
-			$nextNode !== null &&
-			$nextNode->nodeName === 'td' && DOMUtils::assertElt( $nextNode ) &&
+			$nextNode instanceof DOMElement &&
+			$nextNode->nodeName === 'td' &&
 			!WTUtils::isLiteralHTMLNode( $nextNode ) &&
 			DOMUtils::nodeEssentiallyEmpty( $node ) && (
 				// FIXME: will not be set for nested templates
@@ -79,9 +77,6 @@ class TableFixups {
 				preg_match( '/^{{.*?}}$/D', DOMDataUtils::getDataParsoid( $nextNode )->src ?? '' )
 			)
 		) {
-			/** @var DOMElement $node */
-			DOMUtils::assertElt( $node );
-
 			// Update the dsr. Since we are coalescing the first
 			// node with the second (or, more precisely, deleting
 			// the first node), we have to update the second DSR's
@@ -136,10 +131,10 @@ class TableFixups {
 		$parts = $dataMW->parts ?? [];
 		$dp = DOMDataUtils::getDataParsoid( $tdNode );
 		$childDP = DOMDataUtils::getDataParsoid( $child );
-		Assert::invariant( Util::isValidDSR( $childDP->dsr ?? null ), 'Expected valid DSR' );
+		Assert::invariant( Utils::isValidDSR( $childDP->dsr ?? null ), 'Expected valid DSR' );
 
 		// In `handleTableCellTemplates`, we're creating a cell w/o dsr info.
-		if ( !Util::isValidDSR( $dp->dsr ?? null ) ) {
+		if ( !Utils::isValidDSR( $dp->dsr ?? null ) ) {
 			$dp->dsr = clone $childDP->dsr;
 		}
 
@@ -256,8 +251,7 @@ class TableFixups {
 				// to do here!
 				return self::buildRes( $buf, $nowikis, $transclusionNode );
 			} else {
-				/** @var DOMElement $child */
-				DOMUtils::assertElt( $child );
+				'@phan-var DOMElement $child';  /** @var DOMElement $child */
 				if ( DOMUtils::hasTypeOf( $child, 'mw:Entity' ) ) {
 					$buf[] = $child->textContent;
 				} elseif ( DOMUtils::hasTypeOf( $child, 'mw:Nowiki' ) ) {
@@ -442,17 +436,17 @@ class TableFixups {
 	}
 
 	/**
-	 * @param DOMNode $node
+	 * @param DOMElement $node
 	 * @param Frame $frame
 	 * @return bool
 	 */
-	public function handleTableCellTemplates( DOMNode $node, Frame $frame ): bool {
+	public function handleTableCellTemplates(
+		DOMElement $node, Frame $frame
+	): bool {
 		// Don't bother with literal HTML nodes or nodes that don't need reparsing.
 		if ( WTUtils::isLiteralHTMLNode( $node ) || !$this->needsReparsing( $node ) ) {
 			return true;
 		}
-		/** @var DOMElement $node */
-		DOMUtils::assertElt( $node );
 
 		// If the cell didn't have attrs, extract and reparse templated attrs
 		$about = null;
@@ -505,8 +499,12 @@ class TableFixups {
 
 					$newCell = $ownerDoc->createElement( $cellName );
 					if ( $hasSpanWrapper ) {
-						/** @var DOMElement $child */
-						DOMUtils::assertElt( $child );
+						/**
+						 * $hasSpanWrapper, above, ensures $child is a span.
+						 *
+						 * @var DOMElement $child
+						 */
+						'@phan-var DOMElement $child';
 						// Fix up transclusion wrapping
 						$about = $child->getAttribute( 'about' );
 						$this->hoistTransclusionInfo( $frame, $child, $node );

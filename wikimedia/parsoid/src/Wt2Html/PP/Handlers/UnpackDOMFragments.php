@@ -14,7 +14,7 @@ use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\DOMTraverser;
 use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\PipelineUtils;
-use Wikimedia\Parsoid\Utils\Util;
+use Wikimedia\Parsoid\Utils\Utils;
 
 class UnpackDOMFragments {
 	/**
@@ -159,8 +159,13 @@ class UnpackDOMFragments {
 
 		$c = $node->firstChild;
 		while ( $c ) {
-			/** @var DOMElement $c */
-			DOMUtils::assertElt( $c );
+			/**
+			 * We just span wrapped the child nodes, so it's safe to assume
+			 * they're all DOMElements.
+			 *
+			 * @var DOMElement $c
+			 */
+			'@phan-var DOMElement $c';
 			// FIXME: This unconditionally sets about on children
 			// This is currently safe since all of them are nested
 			// inside a transclusion, but do we need future-proofing?
@@ -245,7 +250,7 @@ class UnpackDOMFragments {
 			DOMUtils::assertElt( $contentNode );
 			// Transfer typeof, data-mw, and param info
 			// about attributes are transferred below.
-			DOMDataUtils::setDataMw( $contentNode, Util::clone( DOMDataUtils::getDataMw( $node ) ) );
+			DOMDataUtils::setDataMw( $contentNode, Utils::clone( DOMDataUtils::getDataMw( $node ) ) );
 			DOMUtils::addTypeOf( $contentNode, 'mw:Transclusion' );
 			DOMDataUtils::getDataParsoid( $contentNode )->pi = $dp->pi ?? null;
 		}
