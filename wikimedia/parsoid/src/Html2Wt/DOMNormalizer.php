@@ -474,15 +474,13 @@ class DOMNormalizer {
 	 * Also merge a single sibling A tag that is mergable
 	 * The link href and text must match for this normalization to take effect
 	 *
-	 * @param DOMNode $node
+	 * @param DOMElement $node
 	 * @return DOMNode|null
 	 */
-	public function moveFormatTagOutsideATag( DOMNode $node ): ?DOMNode {
+	public function moveFormatTagOutsideATag( DOMElement $node ): ?DOMNode {
 		if ( $this->inRtTestMode || $node->nodeName !== 'a' ) {
 			return $node;
 		}
-		DOMUtils::assertElt( $node );
-
 		$sibling = DOMUtils::nextNonDeletedSibling( $node );
 		if ( $sibling ) {
 			$this->normalizeSiblingPair( $node, $sibling );
@@ -520,7 +518,7 @@ class DOMNormalizer {
 				 DOMUtils::isFormattingElt( $child );
 				 $child = DOMUtils::firstNonDeletedChild( $node )
 			) {
-				DOMUtils::assertElt( $child );
+				'@phan-var \DOMElement $child'; // @var \DOMElement $child
 				$this->swap( $node, $child );
 			}
 			return $firstChild;
@@ -555,7 +553,7 @@ class DOMNormalizer {
 	public function normalizeNode( DOMNode $node ): ?DOMNode {
 		$dp = null;
 		if ( $node->nodeName === 'th' || $node->nodeName === 'td' ) {
-			DOMUtils::assertElt( $node );
+			'@phan-var \DOMElement $node'; // @var \DOMElement $node
 			$dp = DOMDataUtils::getDataParsoid( $node );
 			// Table cells (td/th) previously used the stx_v flag for single-row syntax.
 			// Newer code uses stx flag since that is used everywhere else.
@@ -601,7 +599,7 @@ class DOMNormalizer {
 
 		// Headings
 		if ( preg_match( '/^h[1-6]$/D', $node->nodeName ) ) {
-			DOMUtils::assertElt( $node );
+			'@phan-var \DOMElement $node'; // @var \DOMElement $node
 			$this->hoistLinks( $node, false );
 			$this->hoistLinks( $node, true );
 			$this->stripBRs( $node );
@@ -613,7 +611,7 @@ class DOMNormalizer {
 
 			// Anchors
 		} elseif ( $node->nodeName === 'a' ) {
-			DOMUtils::assertElt( $node );
+			'@phan-var \DOMElement $node'; // @var \DOMElement $node
 			$next = DOMUtils::nextNonDeletedSibling( $node );
 			// We could have checked for !mw:ExtLink but in
 			// the case of links without any annotations,
@@ -627,7 +625,7 @@ class DOMNormalizer {
 
 			// Table cells
 		} elseif ( $node->nodeName === 'td' ) {
-			DOMUtils::assertElt( $node );
+			'@phan-var \DOMElement $node'; // @var \DOMElement $node
 			$dp = DOMDataUtils::getDataParsoid( $node );
 			// * HTML <td>s won't have escapable prefixes
 			// * First cell should always be checked for escapable prefixes
@@ -659,7 +657,7 @@ class DOMNormalizer {
 			// T184755: Convert sequences of <p></p> nodes to sequences of
 			// <br/>, <p><br/>..other content..</p>, <p><br/><p/> to ensure
 			// they serialize to as many newlines as the count of <p></p> nodes.
-		} elseif ( $node->nodeName === 'p' && DOMUtils::assertElt( $node ) &&
+		} elseif ( $node instanceof DOMElement && $node->nodeName === 'p' &&
 			!WTUtils::isLiteralHTMLNode( $node ) &&
 			// Don't apply normalization to <p></p> nodes that
 			// were generated through deletions or other normalizations.
@@ -670,34 +668,27 @@ class DOMNormalizer {
 			// Eliminates spurious test failures in non-selser mode.
 			!DOMUtils::hasNChildren( $node->parentNode, 1 )
 		) {
-			$brParent = null;
-			$brSibling = null;
-			$br = $node->ownerDocument->createElement( 'br' );
 			$next = DOMUtils::nextNonSepSibling( $node );
 			if ( $next && $next->nodeName === 'p' && !WTUtils::isLiteralHTMLNode( $next ) ) {
 				// Replace 'node' (<p></p>) with a <br/> and make it the
 				// first child of 'next' (<p>..</p>). If 'next' was actually
 				// a <p></p> (i.e. empty), 'next' becomes <p><br/></p>
 				// which will serialize to 2 newlines.
-				$brParent = $next;
-				$brSibling = $next->firstChild;
+				$br = $node->ownerDocument->createElement( 'br' );
+				$next->insertBefore( $br, $next->firstChild );
+
+				// Avoid nested insertion markers
+				if ( !$this->isInsertedContent( $next ) ) {
+					$this->addDiffMarks( $br, 'inserted' );
+				}
+
+				// Delete node
+				$this->addDiffMarks( $node->parentNode, 'deleted' );
+				$node->parentNode->removeChild( $node );
 			} else {
-				// We cannot merge the <br/> with 'next' because it
-				// is not a <p>..</p>.
-				$brParent = $node->parentNode;
-				$brSibling = $node;
+				// We cannot merge the <br/> with 'next' because
+				// it is not a <p>..</p>.
 			}
-
-			// Insert <br/>
-			$brParent->insertBefore( $br, $brSibling );
-			// Avoid nested insertion markers
-			if ( $brParent === $next && !$this->isInsertedContent( $brParent ) ) {
-				$this->addDiffMarks( $br, 'inserted' );
-			}
-
-			// Delete node
-			$this->addDiffMarks( $node->parentNode, 'deleted' );
-			$node->parentNode->removeChild( $node );
 
 			return $next;
 

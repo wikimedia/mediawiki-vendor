@@ -101,7 +101,7 @@
 		"wikimedia/less.php": "3.0.0",
 		"wikimedia/lucene-explain-parser": "1.0.0",
 		"wikimedia/object-factory": "2.1.0",
-		"wikimedia/parsoid": "0.12.0-a18",
+		"wikimedia/parsoid": "0.12.0-a19",
 		"wikimedia/php-session-serializer": "1.0.7",
 		"wikimedia/purtle": "1.0.7",
 		"wikimedia/relpath": "2.1.1",

@@ -242,7 +242,7 @@ class ParsoidExtensionAPI {
 	 * - parseOpts
 	 *   - extTag
 	 *   - extTagOpts
-	 *   - inlineContext
+	 *   - context "inline", "block", etc. Currently, only "inline" is supported
 	 * @param bool $sol
 	 * @return DOMDocument
 	 */
@@ -268,7 +268,7 @@ class ParsoidExtensionAPI {
 					'extTag' => $parseOpts['extTag'],
 					'extTagOpts' => $parseOpts['extTagOpts'] ?? null,
 					'inTemplate' => $this->inTemplate(),
-					'inlineContext' => !empty( $parseOpts['inlineContext'] ),
+					'inlineContext' => ( $parseOpts['context'] ?? '' ) === 'inline',
 				],
 				'srcOffsets' => $srcOffsets,
 				'sol' => $sol
@@ -304,7 +304,7 @@ class ParsoidExtensionAPI {
 	 * - parseOpts
 	 *   - extTag
 	 *   - extTagOpts
-	 *   - inlineContext
+	 *   - context
 	 * @return DOMDocument
 	 */
 	public function extTagToDOM(
@@ -347,21 +347,21 @@ class ParsoidExtensionAPI {
 	 * every whitespace character to a single space.
 	 * @param KV[] $extArgs
 	 * @param string $key should be lower-case
-	 * @param bool $inlineContext
+	 * @param bool $context
 	 * @return ?DOMDocument
 	 */
-	public function extArgToDOM( array $extArgs, string $key, $inlineContext = true ): ?DOMDocument {
+	public function extArgToDOM( array $extArgs, string $key, string $context = "inline" ): ?DOMDocument {
 		$argKV = KV::lookupKV( $extArgs, strtolower( $key ) );
 		if ( $argKV === null || !$argKV->v ) {
 			return null;
 		}
 
-		if ( $inlineContext ) {
+		if ( $context === "inline" ) {
 			// `normalizeExtOptions` can mess up source offsets as well as the string
 			// that ought to be processed as wikitext. So, we do our own whitespace
 			// normalization of the original source here.
 			//
-			// 'inlineContext' flag below ensures indent-pre / p-wrapping is suppressed.
+			// If 'context' is 'inline' below, it ensures indent-pre / p-wrapping is suppressed.
 			// So, the normalization is primarily for HTML string parity.
 			$argVal = preg_replace( '/[\t\r\n ]/', ' ', $argKV->vsrc );
 		} else {
@@ -373,7 +373,7 @@ class ParsoidExtensionAPI {
 			[
 				'parseOpts' => [
 					'extTag' => $this->getExtensionName(),
-					'inlineContext' => $inlineContext
+					'context' => $context,
 				],
 				'srcOffsets' => $argKV->valueOffset(),
 			],
@@ -769,5 +769,105 @@ class ParsoidExtensionAPI {
 		// DOMPostProcessor has a FIXME about moving this to DOMUtils / Env
 		$dompp = new DOMPostProcessor( $env );
 		$dompp->addMetaData( $env, $doc );
+	}
+
+	/**
+	 * @param string $titleStr Image title string
+	 * @param array $imageOpts Array of a mix of strings or arrays,
+	 *   the latter of which can signify that the value came from source.
+	 *   Where,
+	 *     [0] is the fully-constructed image option
+	 *     [1] is the full wikitext source offset for it
+	 * @param ?string &$error
+	 * @return ?DOMElement
+	 */
+	public function renderMedia(
+		string $titleStr, array $imageOpts, ?string &$error = null
+	): ?DOMElement {
+		$extTag = $this->getExtensionName();
+
+		$title = $this->makeTitle(
+			$titleStr,
+			$this->getSiteConfig()->canonicalNamespaceId( 'file' )
+		);
+
+		if ( $title === null || !$title->getNamespace()->isFile() ) {
+			$error = "{$extTag}_no_image";
+			return null;
+		}
+
+		// FIXME: Try to confirm `file` isn't going to break WikiLink syntax.
+		// See the check for 'figure' below.
+		$file = $title->getPrefixedDBKey();
+
+		$pieces = [ '[[' ];
+		// Since the above two chars aren't from source, the resulting figure
+		// won't have any dsr info, so we can omit an offset for the title as
+		// well
+		$pieces[] = $file;
+		$pieces = array_merge( $pieces, $imageOpts );
+		$pieces[] = ']]';
+
+		$shiftOffset = function ( int $offset ) use ( $pieces ): ?int {
+			foreach ( $pieces as $p ) {
+				if ( is_string( $p ) ) {
+					$offset -= strlen( $p );
+					if ( $offset <= 0 ) {
+						return null;
+					}
+				} else {
+					if ( $offset <= strlen( $p[0] ) && isset( $p[1] ) ) {
+						return $p[1] + $offset;
+					}
+					$offset -= strlen( $p[0] );
+					if ( $offset <= 0 ) {
+						return null;
+					}
+				}
+			}
+			return null;
+		};
+
+		$imageWt = array_reduce( $pieces, function ( $c, $p ) {
+			return $c . ( is_string( $p ) ? $p : $p[0] );
+		}, '' );
+
+		$doc = $this->wikitextToDOM(
+			$imageWt,
+			[
+				'parseOpts' => [
+					'extTag' => $extTag,
+					'context' => 'inline',
+				],
+				// Create new frame, because $pieces doesn't literally appear
+				// on the page, it has been hand-crafted here
+				'processInNewFrame' => true,
+				// Shift the DSRs in the DOM by startOffset, and strip DSRs
+				// for bits which aren't the caption or file, since they
+				// don't refer to actual source wikitext
+				'shiftDSRFn' => function ( DomSourceRange $dsr ) use ( $shiftOffset ) {
+					$start = $shiftOffset( $dsr->start );
+					$end = $shiftOffset( $dsr->end );
+					// If either offset is invalid, remove entire DSR
+					if ( $start === null || $end === null ) {
+						return null;
+					}
+					return new DomSourceRange(
+						$start, $end, $dsr->openWidth, $dsr->closeWidth
+					);
+				},
+			],
+			true  // sol
+		);
+
+		$body = DOMCompat::getBody( $doc );
+		$thumb = $body->firstChild;
+		if ( !preg_match( "/^figure(-inline)?$/", $thumb->nodeName ) ) {
+			$error = "{$extTag}_invalid_image";
+			return null;
+		}
+		DOMUtils::assertElt( $thumb );
+
+		return $thumb;
 	}
 }

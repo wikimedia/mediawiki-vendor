@@ -29,6 +29,21 @@ class ParagraphWrapper extends TokenHandler {
 	/** @var bool */
 	private $inBlockElem;
 
+	/** @var bool */
+	private $inBlockquote;
+
+	/**
+	 * The state machine in the PreHandler is line based and only suppresses
+	 * indent-pres when encountering blocks on a line.  However, the legacy
+	 * parser's `doBlockLevels` has a concept of being "$inBlockElem", which
+	 * is mimicked here.  Rather than replicate that awareness in both passes,
+	 * we piggyback on it here to undo indent-pres when they're found to be
+	 * undesirable.
+	 *
+	 * @var bool
+	 */
+	private $undoIndentPre;
+
 	/** @var array */
 	private $tokenBuffer;
 
@@ -61,8 +76,10 @@ class ParagraphWrapper extends TokenHandler {
 	public function __construct( TokenTransformManager $manager, array $options ) {
 		parent::__construct( $manager, $options );
 		$this->inPre = false;
+		$this->undoIndentPre = false;
 		$this->hasOpenPTag = false;
 		$this->inBlockElem = false;
+		$this->inBlockquote = false;
 		$this->tokenBuffer = [];
 		$this->nlWsTokens = [];
 		$this->newLineCount = 0;
@@ -115,9 +132,11 @@ class ParagraphWrapper extends TokenHandler {
 		$this->resetCurrLine();
 		$this->hasOpenPTag = false;
 		$this->inPre = false;
+		$this->undoIndentPre = false;
 		// NOTE: This flag is the local equivalent of what we're mimicking with
 		// the 'inlineContext' pipeline option.
 		$this->inBlockElem = false;
+		$this->inBlockquote = false;
 	}
 
 	/**
@@ -189,7 +208,7 @@ class ParagraphWrapper extends TokenHandler {
 	}
 
 	/**
-	 * Discare a newline token from buffer
+	 * Discard a newline token from buffer
 	 *
 	 * @param array &$out array to process and update
 	 * @return Token|string
@@ -328,6 +347,9 @@ class ParagraphWrapper extends TokenHandler {
 			$this->resetCurrLine();
 			$this->newLineCount++;
 			$this->nlWsTokens[] = $token;
+			if ( $this->undoIndentPre ) {
+				$this->currLine['tokens'][] = ' ';
+			}
 			return [ 'tokens' => [] ];
 		}
 	}
@@ -402,7 +424,8 @@ class ParagraphWrapper extends TokenHandler {
 		if ( $token instanceof TagTk && $token->getName() === 'pre'
 			 && !TokenUtils::isHTMLTag( $token )
 		) {
-			if ( $this->inBlockElem ) {
+			if ( $this->inBlockElem || $this->inBlockquote ) {
+				$this->undoIndentPre = true;
 				$this->currLine['tokens'][] = ' ';
 				return [ 'tokens' => [] ];
 			} else {
@@ -410,7 +433,7 @@ class ParagraphWrapper extends TokenHandler {
 				// This will put us `inBlockElem`, so we need the extra `!inPre`
 				// condition below.  Presumably, we couldn't have entered
 				// `inBlockElem` while being `inPre`.  Alternatively, we could say
-				// that index-pre is "never suppressing" and set the `closeMatch`
+				// that indent-pre is "never suppressing" and set the `closeMatch`
 				// flag.  The point of all this is that we want to close any open
 				// p-tags.
 				$this->currLine['openMatch'] = true;
@@ -420,7 +443,8 @@ class ParagraphWrapper extends TokenHandler {
 		} elseif ( $token instanceof EndTagTk && $token->getName() === 'pre' &&
 			!TokenUtils::isHTMLTag( $token )
 		) {
-			if ( $this->inBlockElem && !$this->inPre ) {
+			if ( ( $this->inBlockElem && !$this->inPre ) || $this->inBlockquote ) {
+				$this->undoIndentPre = false;
 				// No pre-tokens inside block tags -- swallow it.
 				return [ 'tokens' => [] ];
 			} else {
@@ -497,6 +521,9 @@ class ParagraphWrapper extends TokenHandler {
 					( isset( self::$wgAntiBlockElems[$name] ) && !$token instanceof EndTagTk ) ||
 					isset( self::$wgNeverSuppress[$name] ) ) {
 					$this->currLine['closeMatch'] = true;
+				}
+				if ( $name === 'blockquote' ) {
+					$this->inBlockquote = ( !$token instanceof EndTagTk );
 				}
 			}
 			$this->currLine['hasWrappableTokens'] = true;

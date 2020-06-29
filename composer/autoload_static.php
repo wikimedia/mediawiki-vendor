@@ -3591,7 +3591,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\AddRedLinks' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/AddRedLinks.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\ComputeDSR' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/ComputeDSR.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\ConvertOffsets' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/ConvertOffsets.php',
-        'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\HandlePres' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/HandlePres.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\LangConverter' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/LangConverter.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\Linter' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/Linter.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\MarkFosteredContent' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/MarkFosteredContent.php',

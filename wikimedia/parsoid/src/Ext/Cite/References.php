@@ -139,23 +139,25 @@ class References extends ExtensionTagHandler {
 		// elt has a group attribute, what takes precedence?
 		$group = $refDmw->attrs->group ?? $referencesGroup ?? '';
 		$refName = $refDmw->attrs->name ?? '';
-		$ref = $refsData->add( $extApi, $group, $refName, $about, $nestedInReferences );
 
 		// Add ref-index linkback
 		$linkBack = $doc->createElement( 'sup' );
 
-		// Check for missing name and content and generate error code
-		$hasMissingNameAndContent = ( $refName === '' &&
-			( !empty( $cDp->empty ) || trim( $refDmw->body->extsrc ) === '' ) );
+		$ref = $refsData->add(
+			$extApi, $group, $refName, $about, $nestedInReferences, $linkBack
+		);
 
-		// FIXME: Lot of useless work for an edge case
-		if ( !empty( $cDp->empty ) ) {
-			// Discard wrapper if there was no input wikitext
-			$contentId = null;
+		// Check for missing content
+		$missingContent = ( !empty( $cDp->empty ) || trim( $refDmw->body->extsrc ) === '' );
+
+		// Check for missing name and content to generate error code
+		$hasMissingNameAndContent = ( $refName === '' ) && $missingContent;
+
+		if ( $missingContent ) {
 			if ( !empty( $cDp->selfClose ) ) {
 				unset( $refDmw->body );
 			} else {
-				$refDmw->body = (object)[ 'html' => '' ];
+				$refDmw->body = (object)[ 'html' => $refDmw->body->extsrc ];
 			}
 		} else {
 			// If there are multiple <ref>s with the same name, but different content,
@@ -246,7 +248,7 @@ class References extends ExtensionTagHandler {
 		}
 
 		// Keep the first content to compare multiple <ref>s with the same name.
-		if ( !$ref->contentId ) {
+		if ( $ref->contentId === null && !$missingContent ) {
 			$ref->contentId = $contentId;
 			$ref->dir = strtolower( $refDmw->attrs->dir ?? '' );
 		}
@@ -315,6 +317,25 @@ class References extends ExtensionTagHandler {
 		// references before generating fresh references.
 		while ( $refsNode->firstChild ) {
 			$refsNode->removeChild( $refsNode->firstChild );
+		}
+
+		// Iterate through the named ref list for refs without content and
+		// back-patch typeof and data-mw error information into named ref
+		// instances without content
+		if ( $refGroup ) {
+			foreach ( $refGroup->indexByName as $ref ) {
+				if ( $ref->contentId === null ) {
+					foreach ( $ref->nodes as $linkBack ) {
+						DOMUtils::addTypeOf( $linkBack, 'mw:Error' );
+						$dmw = DOMDataUtils::getDataMw( $linkBack );
+						$errs = [ [ 'key' => 'cite_error_ref_no_text' ] ];
+						if ( is_array( $dmw->errors ?? null ) ) {
+							$errs = array_merge( $dmw->errors, $errs );
+						}
+						$dmw->errors = $errs;
+					}
+				}
+			}
 		}
 
 		if ( $refGroup ) {

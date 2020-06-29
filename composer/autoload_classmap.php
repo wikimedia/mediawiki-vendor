@@ -2994,7 +2994,6 @@ return array(
     'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\AddRedLinks' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/AddRedLinks.php',
     'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\ComputeDSR' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/ComputeDSR.php',
     'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\ConvertOffsets' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/ConvertOffsets.php',
-    'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\HandlePres' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/HandlePres.php',
     'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\LangConverter' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/LangConverter.php',
     'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\Linter' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/Linter.php',
     'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\MarkFosteredContent' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/MarkFosteredContent.php',
