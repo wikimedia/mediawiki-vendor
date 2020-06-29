@@ -46,6 +46,7 @@ class ComposerStaticInit_mediawiki_vendor
             'Wikimedia\\Zest\\' => 15,
             'Wikimedia\\XMPReader\\' => 20,
             'Wikimedia\\Timestamp\\' => 20,
+            'Wikimedia\\Services\\' => 19,
             'Wikimedia\\Purtle\\Tests\\' => 23,
             'Wikimedia\\Purtle\\' => 17,
             'Wikimedia\\PasswordBlacklist\\' => 28,
@@ -192,6 +193,10 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Timestamp\\' => 
         array (
             0 => __DIR__ . '/..' . '/wikimedia/timestamp/src',
+        ),
+        'Wikimedia\\Services\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/wikimedia/services/src',
         ),
         'Wikimedia\\Purtle\\Tests\\' => 
         array (
@@ -3648,6 +3653,15 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Purtle\\XmlRdfWriter' => __DIR__ . '/..' . '/wikimedia/purtle/src/XmlRdfWriter.php',
         'Wikimedia\\RunningStat' => __DIR__ . '/..' . '/wikimedia/running-stat/src/Wikimedia/RunningStat.php',
         'Wikimedia\\ScopedCallback' => __DIR__ . '/..' . '/wikimedia/scoped-callback/src/ScopedCallback.php',
+        'Wikimedia\\Services\\CannotReplaceActiveServiceException' => __DIR__ . '/..' . '/wikimedia/services/src/CannotReplaceActiveServiceException.php',
+        'Wikimedia\\Services\\ContainerDisabledException' => __DIR__ . '/..' . '/wikimedia/services/src/ContainerDisabledException.php',
+        'Wikimedia\\Services\\DestructibleService' => __DIR__ . '/..' . '/wikimedia/services/src/DestructibleService.php',
+        'Wikimedia\\Services\\NoSuchServiceException' => __DIR__ . '/..' . '/wikimedia/services/src/NoSuchServiceException.php',
+        'Wikimedia\\Services\\RecursiveServiceDependencyException' => __DIR__ . '/..' . '/wikimedia/services/src/RecursiveServiceDependencyException.php',
+        'Wikimedia\\Services\\SalvageableService' => __DIR__ . '/..' . '/wikimedia/services/src/SalvageableService.php',
+        'Wikimedia\\Services\\ServiceAlreadyDefinedException' => __DIR__ . '/..' . '/wikimedia/services/src/ServiceAlreadyDefinedException.php',
+        'Wikimedia\\Services\\ServiceContainer' => __DIR__ . '/..' . '/wikimedia/services/src/ServiceContainer.php',
+        'Wikimedia\\Services\\ServiceDisabledException' => __DIR__ . '/..' . '/wikimedia/services/src/ServiceDisabledException.php',
         'Wikimedia\\TestingAccessWrapper' => __DIR__ . '/..' . '/wikimedia/testing-access-wrapper/src/TestingAccessWrapper.php',
         'Wikimedia\\Timestamp\\ConvertibleTimestamp' => __DIR__ . '/..' . '/wikimedia/timestamp/src/ConvertibleTimestamp.php',
         'Wikimedia\\Timestamp\\TimestampException' => __DIR__ . '/..' . '/wikimedia/timestamp/src/TimestampException.php',

@@ -11,6 +11,7 @@ return array(
     'Wikimedia\\Zest\\' => array($vendorDir . '/wikimedia/zest-css/src'),
     'Wikimedia\\XMPReader\\' => array($vendorDir . '/wikimedia/xmp-reader/src'),
     'Wikimedia\\Timestamp\\' => array($vendorDir . '/wikimedia/timestamp/src'),
+    'Wikimedia\\Services\\' => array($vendorDir . '/wikimedia/services/src'),
     'Wikimedia\\Purtle\\Tests\\' => array($vendorDir . '/wikimedia/purtle/tests/phpunit'),
     'Wikimedia\\Purtle\\' => array($vendorDir . '/wikimedia/purtle/src'),
     'Wikimedia\\PasswordBlacklist\\' => array($vendorDir . '/wikimedia/common-passwords/src/PasswordBlacklist'),

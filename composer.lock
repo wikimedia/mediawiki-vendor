@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1dcf3918a65d10d9a4634a90e2262b14",
+    "content-hash": "a01ba43229555dd603ae7dfdcc4c6ae0",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -6209,6 +6209,57 @@
             "description": "Class for asserting that a callback happens when a dummy object leaves scope",
             "homepage": "https://www.mediawiki.org/wiki/ScopedCallback",
             "time": "2018-10-30T23:52:20+00:00"
+        },
+        {
+            "name": "wikimedia/services",
+            "version": "2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wikimedia/mediawiki-libs-Services.git",
+                "reference": "5ef69a8a8b0d2ea115d08469bdab468f58fac820"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Services/zipball/5ef69a8a8b0d2ea115d08469bdab468f58fac820",
+                "reference": "5ef69a8a8b0d2ea115d08469bdab468f58fac820",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.9",
+                "psr/container": "^1.0.0",
+                "wikimedia/assert": "^0.5.0",
+                "wikimedia/scoped-callback": "^3.0"
+            },
+            "provide": {
+                "psr/container-implementation": "1.0.0"
+            },
+            "require-dev": {
+                "mediawiki/mediawiki-codesniffer": "31.0.0",
+                "mediawiki/minus-x": "1.1.0",
+                "ockcyp/covers-validator": "1.1.1",
+                "php-parallel-lint/php-console-highlighter": "0.5.0",
+                "php-parallel-lint/php-parallel-lint": "1.2.0",
+                "phpunit/phpunit": "^8.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Wikimedia\\Services\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel Kinzler",
+                    "email": "dkinzler@wikimedia.org"
+                }
+            ],
+            "description": "Generic service to manage named services using lazy instantiation based on instantiator callback functions",
+            "homepage": "https://www.mediawiki.org/wiki/Services",
+            "time": "2020-06-29T02:46:53+00:00"
         },
         {
             "name": "wikimedia/testing-access-wrapper",

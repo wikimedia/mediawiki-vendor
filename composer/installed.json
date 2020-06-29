@@ -6412,6 +6412,59 @@
         "homepage": "https://www.mediawiki.org/wiki/ScopedCallback"
     },
     {
+        "name": "wikimedia/services",
+        "version": "2.0.1",
+        "version_normalized": "2.0.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/mediawiki-libs-Services.git",
+            "reference": "5ef69a8a8b0d2ea115d08469bdab468f58fac820"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Services/zipball/5ef69a8a8b0d2ea115d08469bdab468f58fac820",
+            "reference": "5ef69a8a8b0d2ea115d08469bdab468f58fac820",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=7.2.9",
+            "psr/container": "^1.0.0",
+            "wikimedia/assert": "^0.5.0",
+            "wikimedia/scoped-callback": "^3.0"
+        },
+        "provide": {
+            "psr/container-implementation": "1.0.0"
+        },
+        "require-dev": {
+            "mediawiki/mediawiki-codesniffer": "31.0.0",
+            "mediawiki/minus-x": "1.1.0",
+            "ockcyp/covers-validator": "1.1.1",
+            "php-parallel-lint/php-console-highlighter": "0.5.0",
+            "php-parallel-lint/php-parallel-lint": "1.2.0",
+            "phpunit/phpunit": "^8.5"
+        },
+        "time": "2020-06-29T02:46:53+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Wikimedia\\Services\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2.0-or-later"
+        ],
+        "authors": [
+            {
+                "name": "Daniel Kinzler",
+                "email": "dkinzler@wikimedia.org"
+            }
+        ],
+        "description": "Generic service to manage named services using lazy instantiation based on instantiator callback functions",
+        "homepage": "https://www.mediawiki.org/wiki/Services"
+    },
+    {
         "name": "wikimedia/testing-access-wrapper",
         "version": "1.0.0",
         "version_normalized": "1.0.0.0",
