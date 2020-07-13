@@ -396,29 +396,14 @@ class DOMPostProcessor extends PipelineStage {
 			// Benefits from running after determining which media are redlinks
 			[
 				'name' => 'Headings-genAnchors',
-				'shortcut' => 'headings',
+				'shortcut' => 'heading-ids',
 				'isTraverser' => true,
 				'skipNested' => true,
 				'handlers' => [
 					[
 						'nodeName' => null,
 						'action' => [ Headings::class, 'genAnchors' ]
-					]
-				]
-			],
-			// Add <section> wrappers around sections
-			[
-				'Processor' => WrapSections::class,
-				'shortcut' => 'sections',
-				'skipNested' => true
-			],
-			// Make heading IDs unique
-			[
-				'name' => 'Headings-dedupeHeadingIds',
-				'shortcut' => 'heading-ids',
-				'isTraverser' => true,
-				'skipNested' => true,
-				'handlers' => [
+					],
 					[
 						'nodeName' => null,
 						'action' => function ( $node, $env ) use ( &$seenIds ) {
@@ -445,21 +430,11 @@ class DOMPostProcessor extends PipelineStage {
 					]
 				]
 			],
-			[
-				'Processor' => AddExtLinkClasses::class,
-				'shortcut' => 'linkclasses',
-				'skipNested' => true
-			],
 			// Language conversion
 			[
 				'Processor' => LangConverter::class,
 				'shortcut' => 'lang-converter',
 				'skipNested' => true
-			],
-			[
-				'Processor' => ConvertOffsets::class,
-				'shortcut' => 'convertoffsets',
-				'skipNested' => true,
 			],
 			[
 				'name' => 'DisplaySpace',
@@ -476,6 +451,22 @@ class DOMPostProcessor extends PipelineStage {
 						'action' => [ DisplaySpace::class, 'rightHandler' ]
 					],
 				]
+			],
+			[
+				'Processor' => AddExtLinkClasses::class,
+				'shortcut' => 'linkclasses',
+				'skipNested' => true
+			],
+			// Add <section> wrappers around sections
+			[
+				'Processor' => WrapSections::class,
+				'shortcut' => 'sections',
+				'skipNested' => true
+			],
+			[
+				'Processor' => ConvertOffsets::class,
+				'shortcut' => 'convertoffsets',
+				'skipNested' => true,
 			],
 			[
 				'name' => 'CleanUp-handleEmptyElts,CleanUp-cleanupAndSaveDataParsoid',
@@ -507,7 +498,7 @@ class DOMPostProcessor extends PipelineStage {
 				'shortcut' => 'redlinks',
 				'skipNested' => true,
 				'omit' => $env->noDataAccess(),
-			]
+			],
 		] );
 
 		return $processors;
