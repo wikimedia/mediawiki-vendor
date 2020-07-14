@@ -23,6 +23,9 @@ Adding or updating libraries
    `composer --version`. This keeps installed.json alphasorted, making patches
    less likely to conflict, and diffs easier to read.
 2. Edit the composer.json file to add/update the libraries you want to change.
+   It is recommended that you use `composer require <package> <version>
+   --no-update` to do so as composer will then automatically sort the
+   composer.json file.
 3. Run `composer update --no-dev --ignore-platform-reqs` to download files and
    update the autoloader.
 4. Add all the new dependencies that got installed to composer.json as well,
