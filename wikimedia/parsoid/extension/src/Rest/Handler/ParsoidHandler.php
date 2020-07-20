@@ -28,6 +28,7 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Rest\Handler;
 use MediaWiki\Rest\HttpException;
 use MediaWiki\Rest\Response;
+use MediaWiki\Revision\RevisionAccessException;
 use MobileContext;
 use MWParsoid\Config\PageConfigFactory;
 use MWParsoid\ParsoidServices;
@@ -193,7 +194,6 @@ abstract class ParsoidHandler extends Handler {
 			return $this->requestAttributes;
 		}
 
-		// Porting note: this is the equivalent of the v3Middle middleware.
 		$request = $this->getRequest();
 		$body = ( $request->getMethod() === 'POST' ) ? $this->getParsedBody() : [];
 		$opts = array_merge( $body, array_intersect_key( $request->getPathParams(),
@@ -355,9 +355,9 @@ abstract class ParsoidHandler extends Handler {
 	 * @param array $queryParams Query parameters
 	 * @return Response
 	 */
-	protected function createRedirectResponse( string $path, array $queryParams = [] ): Response {
-		// porting note: this is  more or less the equivalent of apiUtils.redirect()
-
+	protected function createRedirectResponse(
+		string $path, array $queryParams = []
+	): Response {
 		// FIXME there should be a better way to do this
 		global $wgRestPath;
 		$path = wfExpandUrl( "$wgRestPath$path", PROTO_CURRENT );
@@ -379,8 +379,45 @@ abstract class ParsoidHandler extends Handler {
 	}
 
 	/**
+	 * @param ?PageConfig &$pageConfig
+	 * @param array $attribs
+	 * @param ?string $wikitext
+	 * @return ?Response
+	 */
+	protected function respondToMissingRevisionContent(
+		?PageConfig &$pageConfig, array $attribs, ?string $wikitext = null
+	): ?Response {
+		$oldid = (int)$attribs['oldid'];
+
+		try {
+			$pageConfig = $this->createPageConfig(
+				$attribs['pageName'], $oldid, $wikitext,
+				$attribs['pagelanguage']
+			);
+		} catch ( RevisionAccessException $exception ) {
+			return $this->getResponseFactory()->createHttpError( 404, [
+				'message' => 'The specified revision is deleted or suppressed.',
+			] );
+		}
+
+		// T234549
+		if ( $pageConfig->getRevisionContent() === null ) {
+			return $this->getResponseFactory()->createHttpError( 404, [
+				'message' => 'The specified revision does not exist.',
+			] );
+		}
+
+		if ( $wikitext === null && !$oldid ) {
+			// Redirect to the latest revid
+			return $this->createRedirectToOldidResponse( $pageConfig, $attribs );
+		}
+
+		return null;
+	}
+
+	/**
 	 * Expand the current URL with the latest revision number and redirect there.
-	 * Will return an error response if the page does not exist.
+	 *
 	 * @param PageConfig $pageConfig
 	 * @param array $attribs Request attributes from getRequestAttributes()
 	 * @return Response
@@ -388,7 +425,6 @@ abstract class ParsoidHandler extends Handler {
 	protected function createRedirectToOldidResponse(
 		PageConfig $pageConfig, array $attribs
 	): Response {
-		// porting note: this is  more or less the equivalent of apiUtils.redirectToOldid()
 		$domain = $attribs['envOptions']['domain'];
 		$format = $this->getRequest()->getPathParam( 'format' );
 		$target = $pageConfig->getTitle();
@@ -396,9 +432,7 @@ abstract class ParsoidHandler extends Handler {
 		$revid = $pageConfig->getRevisionId();
 
 		if ( $revid === null ) {
-			return $this->getResponseFactory()->createHttpError( 404, [
-				'message' => 'Page not found.',
-			] );
+			throw new LogicException( 'Expected page to have a revision id.' );
 		}
 
 		$this->metrics->increment( 'redirectToOldid.' . $format );
@@ -414,16 +448,16 @@ abstract class ParsoidHandler extends Handler {
 
 	/**
 	 * Wikitext -> HTML helper.
-	 * Porting note: this is the rough equivalent of routes.wt2html.
 	 * Spec'd in https://phabricator.wikimedia.org/T75955 and the API tests.
+	 *
 	 * @param PageConfig $pageConfig
 	 * @param array $attribs Request attributes from getRequestAttributes()
-	 * @param string|null $wikitext Wikitext to transform (or null to use the page specified in
-	 *   the request attributes).
+	 * @param string|null $wikitext Wikitext to transform (or null to use the
+	 *   page specified in the request attributes).
 	 * @return Response
 	 */
 	protected function wt2html(
-		PageConfig $pageConfig, array $attribs, string $wikitext = null
+		PageConfig $pageConfig, array $attribs, ?string $wikitext = null
 	) {
 		$request = $this->getRequest();
 		$opts = $attribs['opts'];
@@ -441,11 +475,6 @@ abstract class ParsoidHandler extends Handler {
 		if ( Semver::satisfies( $attribs['envOptions']['outputContentVersion'],
 			'!=' . Parsoid::defaultHTMLVersion() ) ) {
 			$metrics->increment( 'wt2html.parse.version.notdefault' );
-		}
-
-		if ( $wikitext === null && !$oldid ) {
-			// Redirect to the latest revid
-			return $this->createRedirectToOldidResponse( $pageConfig, $attribs );
 		}
 
 		$parsoid = new Parsoid( $this->siteConfig, $this->dataAccess );
@@ -591,7 +620,7 @@ abstract class ParsoidHandler extends Handler {
 
 	/**
 	 * HTML -> wikitext helper.
-	 * Porting note: this is the rough equivalent of routes.html2wt.
+	 *
 	 * @param PageConfig $pageConfig
 	 * @param array $attribs Request attributes from getRequestAttributes()
 	 * @param string|null $html HTML to transform (or null to use the page specified in
@@ -812,12 +841,11 @@ abstract class ParsoidHandler extends Handler {
 
 	/**
 	 * Pagebundle -> pagebundle helper.
-	 * Porting note: this is the rough equivalent of routes.pb2pb.
-	 * @param PageConfig $pageConfig
-	 * @param array<string,array> $attribs
+	 *
+	 * @param array<string,array|string> $attribs
 	 * @return Response
 	 */
-	protected function pb2pb( PageConfig $pageConfig, array $attribs ) {
+	protected function pb2pb( array $attribs ) {
 		$request = $this->getRequest();
 		$opts = $attribs['opts'];
 
@@ -836,13 +864,17 @@ abstract class ParsoidHandler extends Handler {
 			] );
 		}
 		$attribs['envOptions']['inputContentVersion'] = $vOriginal;
-		'@phan-var array<string,array> $attribs'; // @var array<string,array> $attribs
+		'@phan-var array<string,array|string> $attribs'; // @var array<string,array|string> $attribs
 
 		$this->metrics->increment(
 			'pb2pb.original.version.' . $attribs['envOptions']['inputContentVersion']
 		);
 
 		if ( !empty( $opts['updates'] ) ) {
+			$pageConfig = $this->createPageConfig(
+				$attribs['pageName'], (int)$attribs['oldid'], null,
+				$attribs['pagelanguage']
+			);
 			// If we're only updating parts of the original version, it should
 			// satisfy the requested content version, since we'll be returning
 			// that same one.
@@ -909,7 +941,11 @@ abstract class ParsoidHandler extends Handler {
 		// Ensure we only reuse from semantically similar content versions.
 		} elseif ( Semver::satisfies( $attribs['envOptions']['outputContentVersion'],
 			'^' . $attribs['envOptions']['inputContentVersion'] ) ) {
-			return $this->wt2html( $pageConfig, $attribs, null );
+			$response = $this->respondToMissingRevisionContent( $pageConfig, $attribs );
+			if ( $response ) {
+				return $response;
+			}
+			return $this->wt2html( $pageConfig, $attribs );
 		} else {
 			return $this->getResponseFactory()->createHttpError( 415, [
 				'message' => 'We do not know how to do this conversion.',

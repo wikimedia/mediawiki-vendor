@@ -6038,17 +6038,17 @@
     },
     {
         "name": "wikimedia/parsoid",
-        "version": "v0.12.0-a23",
-        "version_normalized": "0.12.0.0-alpha23",
+        "version": "v0.13.0-a1",
+        "version_normalized": "0.13.0.0-alpha1",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/parsoid.git",
-            "reference": "a1915f98489b21094fe3a9281327469e5c87cd12"
+            "reference": "6d41e935b11c4b145e472c3f165ac55c2fa545d5"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/a1915f98489b21094fe3a9281327469e5c87cd12",
-            "reference": "a1915f98489b21094fe3a9281327469e5c87cd12",
+            "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/6d41e935b11c4b145e472c3f165ac55c2fa545d5",
+            "reference": "6d41e935b11c4b145e472c3f165ac55c2fa545d5",
             "shasum": ""
         },
         "require": {
@@ -6088,7 +6088,7 @@
         "suggest": {
             "wikimedia/langconv": "Provides script conversion support"
         },
-        "time": "2020-07-14T18:39:36+00:00",
+        "time": "2020-07-17T23:05:28+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

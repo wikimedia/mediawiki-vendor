@@ -14,8 +14,6 @@ class WikitextConstants {
 	public static $WeakIndentPreSuppressingTags;
 	public static $StrongIndentPreSuppressingTags;
 	public static $SolSpaceSensitiveTags;
-	public static $BlockScopeOpenTags;
-	public static $BlockScopeCloseTags;
 	public static $HTML;
 	public static $WTTagsWithNoClosingTags;
 	public static $Output;
@@ -23,6 +21,11 @@ class WikitextConstants {
 	public static $ZeroWidthWikitextTags;
 	public static $LCFlagMap;
 	public static $LCNameMap;
+	public static $blockElems;
+	public static $antiBlockElems;
+	public static $alwaysBlockElems;
+	public static $neverBlockElems;
+	public static $wikitextBlockElems;
 
 	public static function init() {
 		/*
@@ -133,6 +136,31 @@ class WikitextConstants {
 		# These wikitext tags are composed with quote-chars.
 		self::$WTQuoteTags = PHPUtils::makeSet( [ 'i', 'b' ] );
 
+		// These are defined in the legacy parser's `BlockLevelPass`
+
+		// Opens block scope when entering, closes when exiting
+		self::$blockElems = PHPUtils::makeSet( [
+			'table', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'pre', 'p', 'ul',
+			'ol', 'dl'
+		] );
+		// Closes block scope when entering, opens when exiting
+		self::$antiBlockElems = PHPUtils::makeSet( [ 'td', 'th' ] );
+		// Opens block scope when entering, opens when exiting too
+		self::$alwaysBlockElems = PHPUtils::makeSet( [
+			'tr', 'caption', 'dt', 'dd', 'li'
+		] );
+		// Closes block scope when entering, closes when exiting too
+		self::$neverBlockElems = PHPUtils::makeSet( [
+			'center', 'blockquote', 'div', 'hr', 'figure'
+		] );
+
+		self::$wikitextBlockElems = PHPUtils::makeSet( array_merge(
+			array_keys( self::$blockElems ),
+			array_keys( self::$antiBlockElems ),
+			array_keys( self::$alwaysBlockElems ),
+			array_keys( self::$neverBlockElems )
+		) );
+
 		# Leading whitespace on new lines in these elements does not lead to indent-pre.
 		# This only applies to immediate children (while skipping past zero-wikitext tags).
 		# (Ex: content in table-cells induce indent pres)
@@ -157,28 +185,6 @@ class WikitextConstants {
 			'blockquote', 'pre', 'p',
 			'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
 			'ul', 'ol', 'dl', 'li',
-		] );
-
-		# Leading whitespace on new lines changes wikitext
-		# parsing for these tags (*#;:=)
-		self::$SolSpaceSensitiveTags = PHPUtils::makeSet( [
-			'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-			'ul', 'ol', 'li', 'dl', 'dd', 'dt',
-		] );
-
-		# In the PHP parser, these block tags open block-tag scope
-		# See doBlockLevels in the PHP parser (includes/parser/Parser.php)
-		self::$BlockScopeOpenTags = PHPUtils::makeSet( [
-			'blockquote', 'pre', 'p',
-			'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-			'ul', 'ol', 'li', 'dl',
-			'table', 'tr',
-		] );
-
-		# In the PHP parser, these block tags close block-tag scope
-		# See doBlockLevels in the PHP parser (includes/parser/Parser.php)
-		self::$BlockScopeCloseTags = PHPUtils::makeSet( [
-			'td', 'th',
 		] );
 
 		self::$HTML = [
@@ -217,25 +223,6 @@ class WikitextConstants {
 			# this one in Parsoid as well.
 			'OlderHTMLTags' => PHPUtils::makeSet( [
 				"strike", "big", "center", "font", "tt",
-			] ),
-
-			# From https://developer.mozilla.org/en-US/docs/HTML/Block-level_elements
-			# However, you probably want to use `TokenUtils.isBlockTag()`, where some
-			# exceptions are being made.
-			'HTML4BlockTags' => PHPUtils::makeSet( [
-				'div', 'p',
-				# tables
-				'table', 'tbody', 'thead', 'tfoot', 'caption', 'th', 'tr', 'td',
-				# lists
-				'ul', 'ol', 'li', 'dl', 'dt', 'dd',
-				# HTML5 heading content
-				'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hgroup',
-				# HTML5 sectioning content
-				'article', 'aside', 'nav', 'section', 'footer', 'header',
-				'figure', 'figcaption', 'fieldset', 'details', 'blockquote',
-				# other
-				'hr', 'button', 'canvas', 'center', 'col', 'colgroup', 'embed',
-				'map', 'object', 'pre', 'progress', 'video',
 			] ),
 
 			# See http://www.w3.org/html/wg/drafts/html/master/syntax.html#formatting

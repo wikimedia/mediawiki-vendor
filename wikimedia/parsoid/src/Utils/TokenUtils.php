@@ -41,35 +41,35 @@ class TokenUtils {
 	}
 
 	/**
-	 * Determine if a tag is block-level or not.
-	 *
-	 * `<video>` is removed from block tags, since it can be phrasing content.
-	 * This is necessary for it to render inline.
 	 * @param string $name
 	 * @return bool
 	 */
-	public static function isBlockTag( string $name ): bool {
-		return $name !== 'video' && isset( Consts::$HTML['HTML4BlockTags'][$name] );
+	public static function isWikitextBlockTag( string $name ): bool {
+		return isset( Consts::$wikitextBlockElems[$name] );
 	}
 
 	/**
-	 * In the PHP parser, these block tags open block-tag scope
+	 * In the legacy parser, these block tags open block-tag scope
 	 * See doBlockLevels in the PHP parser (includes/parser/Parser.php).
+	 *
 	 * @param string $name
 	 * @return bool
 	 */
 	public static function tagOpensBlockScope( string $name ): bool {
-		return isset( Consts::$BlockScopeOpenTags[$name] );
+		return isset( Consts::$blockElems[$name] ) ||
+			isset( Consts::$alwaysBlockElems[$name] );
 	}
 
 	/**
-	 * In the PHP parser, these block tags close block-tag scope
+	 * In the legacy parser, these block tags close block-tag scope
 	 * See doBlockLevels in the PHP parser (includes/parser/Parser.php).
+	 *
 	 * @param string $name
 	 * @return bool
 	 */
 	public static function tagClosesBlockScope( string $name ): bool {
-		return isset( Consts::$BlockScopeCloseTags[$name] );
+		return isset( Consts::$antiBlockElems[$name] ) ||
+			isset( Consts::$neverBlockElems[$name] );
 	}
 
 	/**

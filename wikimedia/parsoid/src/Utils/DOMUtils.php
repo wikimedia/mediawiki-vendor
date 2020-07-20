@@ -147,15 +147,6 @@ class DOMUtils {
 	}
 
 	/**
-	 * Determine whether this is a block-level DOM element.
-	 * @param DOMNode|null $node
-	 * @return bool
-	 */
-	public static function isBlockNode( ?DOMNode $node ): bool {
-		return $node && TokenUtils::isBlockTag( $node->nodeName );
-	}
-
-	/**
 	 * @param ?DOMNode $node
 	 * @return bool
 	 */
@@ -165,6 +156,14 @@ class DOMUtils {
 			// From \\MediaWiki\Tidy\RemexCompatMunger::$metadataElements
 			// This is a superset but matches `emitsSolTransparentWT` below
 			!isset( WikitextConstants::$HTML['MetaTags'][$node->nodeName] );
+	}
+
+	/**
+	 * @param DOMNode|null $node
+	 * @return bool
+	 */
+	public static function isWikitextBlockNode( ?DOMNode $node ): bool {
+		return $node && TokenUtils::isWikitextBlockTag( $node->nodeName );
 	}
 
 	/**
@@ -567,7 +566,7 @@ class DOMUtils {
 	public static function hasBlockElementDescendant( DOMNode $node ): bool {
 		for ( $child = $node->firstChild; $child; $child = $child->nextSibling ) {
 			if ( self::isElt( $child ) &&
-				( self::isBlockNode( $child ) || // Is a block-level node
+				( self::isWikitextBlockNode( $child ) || // Is a block-level node
 				self::hasBlockElementDescendant( $child ) ) // or has a block-level child or grandchild or..
 			) {
 				return true;

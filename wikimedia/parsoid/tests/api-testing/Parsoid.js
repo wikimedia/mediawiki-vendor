@@ -1,4 +1,5 @@
 /** Cases for testing the Parsoid API through HTTP */
+/* global describe, it */
 
 'use strict';
 
@@ -112,7 +113,7 @@ describe('Parsoid API', function() {
 				res.headers['content-type'].should.equal(
 					'application/json'
 				);
-				res.body.message.should.equal('Page not found.');
+				res.body.message.should.equal('The specified revision does not exist.');
 			})
 			.end(done);
 		});
@@ -726,6 +727,36 @@ describe('Parsoid API', function() {
 			.post(mockDomain + '/v3/transform/wikitext/to/pagebundle/')
 			.send({})
 			.expect(400)
+			.end(done);
+		});
+
+		it('should error when revision not found (page, html)', function(done) {
+			client.req
+			.get(mockDomain + '/v3/page/html/Doesnotexist')
+			.expect(404)
+			.end(done);
+		});
+
+		it('should error when revision not found (page, pagebundle)', function(done) {
+			client.req
+			.get(mockDomain + '/v3/page/pagebundle/Doesnotexist')
+			.expect(404)
+			.end(done);
+		});
+
+		it('should error when revision not found (transform, wt2html)', function(done) {
+			client.req
+			.post(mockDomain + '/v3/transform/wikitext/to/html/Doesnotexist')
+			.send({})
+			.expect(404)
+			.end(done);
+		});
+
+		it('should error when revision not found (transform, wt2pb)', function(done) {
+			client.req
+			.post(mockDomain + '/v3/transform/wikitext/to/pagebundle/Doesnotexist')
+			.send({})
+			.expect(404)
 			.end(done);
 		});
 
@@ -1411,6 +1442,26 @@ describe('Parsoid API', function() {
 			.post(mockDomain + '/v3/transform/html/to/wikitext/')
 			.send({})
 			.expect(400)
+			.end(done);
+		});
+
+		it('should error when revision not found (transform, html2wt)', function(done) {
+			client.req
+			.post(mockDomain + '/v3/transform/html/to/wikitext/Doesnotexist/2020')
+			.send({
+				html: '<pre>hi ho</pre>'
+			})
+			.expect(404)
+			.end(done);
+		});
+
+		it('should not error when oldid not supplied (transform, html2wt)', function(done) {
+			client.req
+			.post(mockDomain + '/v3/transform/html/to/wikitext/Doesnotexist')
+			.send({
+				html: '<pre>hi ho</pre>'
+			})
+			.expect(validWikitextResponse(' hi ho\n'))
 			.end(done);
 		});
 
@@ -2194,6 +2245,16 @@ describe('Parsoid API', function() {
 				},
 			},
 		};
+
+		it('should error when revision not found (transform, pb2pb)', function(done) {
+			client.req
+			.post(mockDomain + '/v3/transform/pagebundle/to/pagebundle/Doesnotexist')
+			.send({
+				previous: previousRevHTML,
+			})
+			.expect(404)
+			.end(done);
+		});
 
 		// FIXME: Expansion reuse wasn't ported, see T98995
 		it.skip('should accept the previous revision to reuse expansions', function(done) {

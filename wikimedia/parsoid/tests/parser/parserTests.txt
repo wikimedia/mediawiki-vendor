@@ -130,7 +130,7 @@ Template:3x_on_newline
 {{{1}}}
 !! endarticle
 
-// For Serbian; localize Template namespace
+# For Serbian; localize Template namespace
 !! article
 Шаблон:1x
 !! text
@@ -3739,7 +3739,18 @@ array (
 !! html/php
  <pre class="123">hi</pre>
 !! html/parsoid
- <pre class="123" typeof="mw:Extension/pre" about="#mwt2" data-mw='{"name":"pre","attrs":{"class":"123"},"body":{"extsrc":"hi"}}'>hi</pre>
+ <pre class="123" typeof="mw:Extension/pre" about="#mwt2" data-parsoid='{"stx":"html"}' data-mw='{"name":"pre","attrs":{"class":"123"},"body":{"extsrc":"hi"}}'>hi</pre>
+!! end
+
+!! test
+Serializing indent pre at sol
+!! html/parsoid
+ <pre>hi</pre>
+!! html/php
+<pre>hi
+</pre>
+!! wikitext
+ hi
 !! end
 
 !!test
@@ -10433,8 +10444,6 @@ parsoid=wt2html
 # tags (parse, minimize scope of fixup, and roundtrip back)
 # ------------------------------------------------------------------------
 
-# Remex and Parsoid output stems from list handling diffs because Parsoid & PHP parser.
-# Parsoid's list handling is more aware of block structure.
 !! test
 Unbalanced closing block tags break a list
 !! wikitext
@@ -10452,6 +10461,30 @@ Unbalanced closing block tags break a list
 <div><ul>
 <li>b</li>
 </ul></div>
+!! end
+
+## We call this "wikitext block" because we're diverging a bit from the HTML5
+## parsing spec.  Remex output is because it doesn't need to generate the
+## implied end tag for the list item when encountering the closing </p> but
+## Parsoid's broader definition opts to.  This can happen for a number of other
+## tags but those aren't allowed literal tags in wikitext.  There's also the
+## opposite problem, where the wikitext blocks aren't a superset of the tags
+## that generate implied ends in HTML5, but the missing ones again aren't
+## allowed literal tags in wikitext.
+!! test
+Unbalanced closing wikitext block tags break a list
+!! wikitext
+<p>
+*a</p><p>
+*b</p>
+!! html/php+tidy
+<p class="mw-empty-elt">
+</p><ul><li>a<p class="mw-empty-elt"></p><p class="mw-empty-elt"></p></li>
+<li>b<p class="mw-empty-elt"></p></li></ul>
+!! html/parsoid
+<p class="mw-empty-elt" data-parsoid='{"stx":"html","autoInsertedEnd":true}'></p>
+<ul><li>a</li></ul><p class="mw-empty-elt" data-parsoid='{"autoInsertedStart":true,"stx":"html"}'></p><p class="mw-empty-elt" data-parsoid='{"stx":"html","autoInsertedEnd":true}'></p>
+<ul><li>b</li></ul><p class="mw-empty-elt" data-parsoid='{"autoInsertedStart":true,"stx":"html"}'></p>
 !! end
 
 !! test
@@ -24175,8 +24208,8 @@ language=zh variant=zh-cn
 </dl>
 !! end
 
-// Note that parsoid does not protect colons unless language converter
-// markup is properly nested, because it is a backtracking parser.
+# Note that parsoid does not protect colons unless language converter
+# markup is properly nested, because it is a backtracking parser.
 !! test
 T153135: Unclosed markup in definition list (code coverage)
 !! options
@@ -33337,9 +33370,9 @@ PARSOID HAS A BUG HERE: T215628
 !! end
 
 ##########################################################################
-Tests demonstrating white-space insensitivity in input wikitext
-for wikitext headings, wikitext list items, and wikitext table captions,
-headings, and cells. HTML versions of the same should preserve whitespace.
+# Tests demonstrating white-space insensitivity in input wikitext
+# for wikitext headings, wikitext list items, and wikitext table captions,
+# headings, and cells. HTML versions of the same should preserve whitespace.
 ##########################################################################
 !! test
 Trim whitespace in wikitext headings, list items, table captions, headings, and cells

@@ -50,9 +50,8 @@ class WikitextEscapeHandlers {
 	 */
 	private static function startsOnANewLine( DOMNode $node ): bool {
 		$name = $node->nodeName;
-		return isset( WikitextConstants::$BlockScopeOpenTags[$name] ) &&
-			!WTUtils::isLiteralHTMLNode( $node ) &&
-			$name !== 'blockquote';
+		return TokenUtils::tagOpensBlockScope( $name ) &&
+			!WTUtils::isLiteralHTMLNode( $node );
 	}
 
 	/**
@@ -74,7 +73,7 @@ class WikitextEscapeHandlers {
 
 		while ( $node ) {
 			if ( $node instanceof DOMElement ) {
-				if ( DOMUtils::isBlockNode( $node ) ) {
+				if ( DOMUtils::isWikitextBlockNode( $node ) ) {
 					return !self::startsOnANewLine( $node );
 				}
 				if ( $node->hasChildNodes() ) {
