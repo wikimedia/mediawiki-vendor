@@ -2379,6 +2379,7 @@ return array(
     'Symfony\\Polyfill\\Php80\\Php80' => $vendorDir . '/symfony/polyfill-php80/Php80.php',
     'System' => $vendorDir . '/pear/pear-core-minimal/src/System.php',
     'TextCat' => $vendorDir . '/wikimedia/textcat/src/TextCat.php',
+    'UnhandledMatchError' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
     'UtfNormal\\Constants' => $vendorDir . '/wikimedia/utfnormal/src/Constants.php',
     'UtfNormal\\Utils' => $vendorDir . '/wikimedia/utfnormal/src/Util.php',
     'UtfNormal\\Validator' => $vendorDir . '/wikimedia/utfnormal/src/Validator.php',

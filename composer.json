@@ -73,6 +73,7 @@
 		"symfony/console": "5.1.2",
 		"symfony/debug": "4.4.10",
 		"symfony/polyfill-php73": "1.17.1",
+		"symfony/polyfill-php80": "1.18.0",
 		"symfony/process": "5.1.2",
 		"symfony/service-contracts": "2.1.2",
 		"symfony/translation": "5.1.2",
