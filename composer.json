@@ -50,7 +50,7 @@
 		"oojs/oojs-ui": "0.39.3",
 		"pear/console_getopt": "1.4.3",
 		"pear/mail": "1.4.1",
-		"pear/mail_mime": "1.10.8",
+		"pear/mail_mime": "1.10.9",
 		"pear/net_smtp": "1.9.1",
 		"pear/net_socket": "1.2.2",
 		"pear/net_url2": "2.2.2",
