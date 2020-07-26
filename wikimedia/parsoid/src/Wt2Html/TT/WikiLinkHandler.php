@@ -1531,7 +1531,7 @@ class WikiLinkHandler extends TokenHandler {
 			$tokens[] = new EndTagTk( 'figcaption' );
 		}
 
-		if ( count( array_keys( get_object_vars( $dataMw ) ) ) ) {
+		if ( (array)$dataMw !== [] ) {
 			$container->addAttribute( 'data-mw', PHPUtils::jsonEncode( $dataMw ) );
 		}
 
@@ -1547,7 +1547,7 @@ class WikiLinkHandler extends TokenHandler {
 	 */
 	private function linkToMedia( Token $token, stdClass $target, array $errs, array $info ): array {
 		// Only pass in the url, since media links should not link to the thumburl
-		$imgHref = preg_replace( '#^https?://#', '//', $info['url'], 1 ); // Copied from getPath
+		$imgHref = $info['url']; // Copied from getPath
 		$imgHrefFileName = preg_replace( '#.*/#', '', $imgHref, 1 );
 
 		$link = new TagTk( 'a', [], Utils::clone( $token->dataAttribs ) );

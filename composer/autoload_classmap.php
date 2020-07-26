@@ -2850,6 +2850,7 @@ return array(
     'Wikimedia\\Parsoid\\Ext\\DOMProcessor' => $vendorDir . '/wikimedia/parsoid/src/Ext/DOMProcessor.php',
     'Wikimedia\\Parsoid\\Ext\\DOMUtils' => $vendorDir . '/wikimedia/parsoid/src/Ext/DOMUtils.php',
     'Wikimedia\\Parsoid\\Ext\\ExtensionModule' => $vendorDir . '/wikimedia/parsoid/src/Ext/ExtensionModule.php',
+    'Wikimedia\\Parsoid\\Ext\\ExtensionTag' => $vendorDir . '/wikimedia/parsoid/src/Ext/ExtensionTag.php',
     'Wikimedia\\Parsoid\\Ext\\ExtensionTagHandler' => $vendorDir . '/wikimedia/parsoid/src/Ext/ExtensionTagHandler.php',
     'Wikimedia\\Parsoid\\Ext\\Gallery\\Gallery' => $vendorDir . '/wikimedia/parsoid/src/Ext/Gallery/Gallery.php',
     'Wikimedia\\Parsoid\\Ext\\Gallery\\Mode' => $vendorDir . '/wikimedia/parsoid/src/Ext/Gallery/Mode.php',
