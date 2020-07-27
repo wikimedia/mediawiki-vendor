@@ -127,6 +127,10 @@ class ComposerStaticInit_mediawiki_vendor
         array (
             'JsonSchema\\' => 11,
         ),
+        'H' => 
+        array (
+            'HtmlFormatter\\' => 14,
+        ),
         'G' => 
         array (
             'GuzzleHttp\\Stream\\' => 18,
@@ -427,6 +431,10 @@ class ComposerStaticInit_mediawiki_vendor
         'JsonSchema\\' => 
         array (
             0 => __DIR__ . '/..' . '/justinrainbow/json-schema/src/JsonSchema',
+        ),
+        'HtmlFormatter\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/wikimedia/html-formatter/src',
         ),
         'GuzzleHttp\\Stream\\' => 
         array (

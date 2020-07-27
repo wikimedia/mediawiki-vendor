@@ -5682,37 +5682,38 @@
     },
     {
         "name": "wikimedia/html-formatter",
-        "version": "1.0.2",
-        "version_normalized": "1.0.2.0",
+        "version": "2.0.0",
+        "version_normalized": "2.0.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/html-formatter.git",
-            "reference": "d6241e74d8091cf1fad91a764da5e1ba5f46e785"
+            "reference": "aef4a7e6186cc03fedd2570386cb047537fd6180"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/html-formatter/zipball/d6241e74d8091cf1fad91a764da5e1ba5f46e785",
-            "reference": "d6241e74d8091cf1fad91a764da5e1ba5f46e785",
+            "url": "https://api.github.com/repos/wikimedia/html-formatter/zipball/aef4a7e6186cc03fedd2570386cb047537fd6180",
+            "reference": "aef4a7e6186cc03fedd2570386cb047537fd6180",
             "shasum": ""
         },
         "require": {
             "ext-mbstring": "*",
-            "php": ">=5.5"
+            "php": ">=7.2.9"
         },
         "require-dev": {
-            "jakub-onderka/php-console-highlighter": "0.3.2",
-            "jakub-onderka/php-parallel-lint": "1.0.0",
-            "mediawiki/mediawiki-codesniffer": "18.0.0",
-            "mediawiki/minus-x": "0.3.1",
-            "phpunit/phpunit": "4.8.36 || ^6.5"
+            "mediawiki/mediawiki-codesniffer": "31.0.0",
+            "mediawiki/minus-x": "1.1.0",
+            "ockcyp/covers-validator": "1.1.1",
+            "php-parallel-lint/php-console-highlighter": "0.5.0",
+            "php-parallel-lint/php-parallel-lint": "1.2.0",
+            "phpunit/phpunit": "^8.5"
         },
-        "time": "2018-04-14T10:06:56+00:00",
+        "time": "2020-07-25T20:43:15+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
-            "classmap": [
-                "src/"
-            ]
+            "psr-4": {
+                "HtmlFormatter\\": "src/"
+            }
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [

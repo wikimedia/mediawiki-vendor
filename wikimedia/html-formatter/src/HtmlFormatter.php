@@ -29,14 +29,27 @@ class HtmlFormatter {
 	 */
 	private $doc;
 
+	/**
+	 * @var string
+	 */
 	private $html;
+
+	/**
+	 * @var string[]
+	 */
 	private $itemsToRemove = [];
+
+	/**
+	 * @var string[]
+	 */
 	private $elementsToFlatten = [];
+
+	/**
+	 * @var bool
+	 */
 	protected $removeMedia = false;
 
 	/**
-	 * Constructor
-	 *
 	 * @param string $html Text to process
 	 */
 	public function __construct( $html ) {
@@ -103,7 +116,7 @@ class HtmlFormatter {
 	 *   .<class>
 	 *   #<id>
 	 *
-	 * @param array|string $selectors Selector(s) of stuff to remove
+	 * @param string[]|string $selectors Selector(s) of stuff to remove
 	 */
 	public function remove( $selectors ) {
 		$this->itemsToRemove = array_merge( $this->itemsToRemove, (array)$selectors );
@@ -116,7 +129,7 @@ class HtmlFormatter {
 	 * Note this interface may fail in surprising unexpected ways due to usage of regexes,
 	 * so should not be relied on for HTML markup security measures.
 	 *
-	 * @param array|string $elements Name(s) of tag(s) to flatten
+	 * @param string[]|string $elements Name(s) of tag(s) to flatten
 	 */
 	public function flatten( $elements ) {
 		$this->elementsToFlatten = array_merge( $this->elementsToFlatten, (array)$elements );
@@ -132,7 +145,7 @@ class HtmlFormatter {
 	/**
 	 * Removes content we've chosen to remove.  The text of the removed elements can be
 	 * extracted with the getText method.
-	 * @return array Array of removed DOMElements
+	 * @return \DOMElement[] Array of removed DOMElements
 	 */
 	public function filterContent() {
 		$removals = $this->parseItemsToRemove();
@@ -180,7 +193,9 @@ class HtmlFormatter {
 		$domElemsToRemove = [];
 		$xpath = new \DOMXPath( $doc );
 		foreach ( $removals['CLASS'] as $classToRemove ) {
-			$elements = $xpath->query( '//*[contains(@class, "' . $classToRemove . '")]' );
+			// Use spaces to avoid matching for unrelated classnames (T231160)
+			// https://stackoverflow.com/a/1604480/319266
+			$elements = $xpath->query( '//*[contains(concat(" ", @class, " "), " ' . $classToRemove . ' ")]' );
 
 			/** @var $element \DOMElement */
 			foreach ( $elements as $element ) {
@@ -207,8 +222,8 @@ class HtmlFormatter {
 
 	/**
 	 * Removes a list of elelments from DOMDocument
-	 * @param array|\DOMNodeList $elements
-	 * @return array Array of removed elements
+	 * @param \DOMElement[]|\DOMNodeList $elements
+	 * @return \DOMElement[] Array of removed elements
 	 */
 	private function removeElements( $elements ) {
 		$list = $elements;
@@ -292,7 +307,7 @@ class HtmlFormatter {
 
 		if ( $this->elementsToFlatten ) {
 			$elements = \implode( '|', $this->elementsToFlatten );
-			$html = \preg_replace( "#</?($elements)\\b[^>]*>#is", '', $html );
+			$html = \preg_replace( "#</?(?:$elements)\\b[^>]*>#is", '', $html );
 		}
 
 		return $html;
@@ -310,13 +325,14 @@ class HtmlFormatter {
 	 * @throws \Exception
 	 */
 	protected function parseSelector( $selector, &$type, &$rawName ) {
-		if ( strpos( $selector, '.' ) === 0 ) {
+		$firstChar = substr( $selector, 0, 1 );
+		if ( $firstChar === '.' ) {
 			$type = 'CLASS';
 			$rawName = substr( $selector, 1 );
-		} elseif ( strpos( $selector, '#' ) === 0 ) {
+		} elseif ( $firstChar === '#' ) {
 			$type = 'ID';
 			$rawName = substr( $selector, 1 );
-		} elseif ( strpos( $selector, '.' ) !== 0 && strpos( $selector, '.' ) !== false ) {
+		} elseif ( strpos( $selector, '.' ) > 0 ) {
 			$type = 'TAG_CLASS';
 			$rawName = $selector;
 		} elseif ( strpos( $selector, '[' ) === false && strpos( $selector, ']' ) === false ) {
