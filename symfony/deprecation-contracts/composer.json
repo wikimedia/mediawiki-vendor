@@ -1,8 +1,7 @@
 {
-    "name": "symfony/translation-contracts",
+    "name": "symfony/deprecation-contracts",
     "type": "library",
-    "description": "Generic abstractions related to translation",
-    "keywords": ["abstractions", "contracts", "decoupling", "interfaces", "interoperability", "standards"],
+    "description": "A generic function and convention to trigger deprecation notices",
     "homepage": "https://symfony.com",
     "license": "MIT",
     "authors": [
@@ -16,13 +15,12 @@
         }
     ],
     "require": {
-        "php": ">=7.2.5"
-    },
-    "suggest": {
-        "symfony/translation-implementation": ""
+        "php": ">=7.1"
     },
     "autoload": {
-        "psr-4": { "Symfony\\Contracts\\Translation\\": "" }
+        "files": [
+            "function.php"
+        ]
     },
     "minimum-stability": "dev",
     "extra": {
