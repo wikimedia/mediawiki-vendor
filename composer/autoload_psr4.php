@@ -88,6 +88,7 @@ return array(
     'Composer\\Semver\\' => array($vendorDir . '/composer/semver/src'),
     'CLDRPluralRuleParser\\' => array($vendorDir . '/wikimedia/cldr-plural-rule-parser/src'),
     'CBOR\\' => array($vendorDir . '/spomky-labs/cbor-php/src'),
+    'Brick\\Math\\' => array($vendorDir . '/brick/math/src'),
     'Base64Url\\' => array($vendorDir . '/spomky-labs/base64url/src'),
     'Base32\\' => array($vendorDir . '/christian-riesen/base32/src'),
     'Assert\\' => array($vendorDir . '/beberlei/assert/lib/Assert'),

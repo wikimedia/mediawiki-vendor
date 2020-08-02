@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4e0c48e4abc576d85fd8c22fd6352a17",
+    "content-hash": "5e1b3529215f92098875bbfab22a7d19",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -67,6 +67,58 @@
                 "validation"
             ],
             "time": "2019-12-19T17:51:41+00:00"
+        },
+        {
+            "name": "brick/math",
+            "version": "0.8.15",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/brick/math.git",
+                "reference": "9b08d412b9da9455b210459ff71414de7e6241cd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/brick/math/zipball/9b08d412b9da9455b210459ff71414de7e6241cd",
+                "reference": "9b08d412b9da9455b210459ff71414de7e6241cd",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": "^7.1|^8.0"
+            },
+            "require-dev": {
+                "php-coveralls/php-coveralls": "^2.2",
+                "phpunit/phpunit": "^7.5.15|^8.5",
+                "vimeo/psalm": "^3.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Brick\\Math\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Arbitrary-precision arithmetic library",
+            "keywords": [
+                "Arbitrary-precision",
+                "BigInteger",
+                "BigRational",
+                "arithmetic",
+                "bigdecimal",
+                "bignum",
+                "brick",
+                "math"
+            ],
+            "funding": [
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/brick/math",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-04-15T15:59:35+00:00"
         },
         {
             "name": "christian-riesen/base32",
@@ -3487,31 +3539,31 @@
         },
         {
             "name": "spomky-labs/base64url",
-            "version": "v2.0.1",
+            "version": "v2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Spomky-Labs/base64url.git",
-                "reference": "3eb46a1de803f0078962d910e3a2759224a68c61"
+                "reference": "69e77e7d7c5407a253dacdd7bfe6b8978b7a4fb2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Spomky-Labs/base64url/zipball/3eb46a1de803f0078962d910e3a2759224a68c61",
-                "reference": "3eb46a1de803f0078962d910e3a2759224a68c61",
+                "url": "https://api.github.com/repos/Spomky-Labs/base64url/zipball/69e77e7d7c5407a253dacdd7bfe6b8978b7a4fb2",
+                "reference": "69e77e7d7c5407a253dacdd7bfe6b8978b7a4fb2",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1"
+                "php": ">=7.1"
             },
             "require-dev": {
                 "php-coveralls/php-coveralls": "^2.0",
-                "phpunit/phpunit": "^7.0"
+                "phpstan/phpstan": "^0.11",
+                "phpstan/phpstan-beberlei-assert": "^0.11.0",
+                "phpstan/phpstan-deprecation-rules": "^0.11",
+                "phpstan/phpstan-phpunit": "^0.11",
+                "phpstan/phpstan-strict-rules": "^0.11",
+                "phpunit/phpunit": "^7.0|^8.0|^9.0"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Base64Url\\": "src/"
@@ -3535,26 +3587,27 @@
                 "safe",
                 "url"
             ],
-            "time": "2018-08-16T15:44:20+00:00"
+            "time": "2020-08-01T14:15:43+00:00"
         },
         {
             "name": "spomky-labs/cbor-php",
-            "version": "v1.0.8",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Spomky-Labs/cbor-php.git",
-                "reference": "575a66dc406575b030e3ba541b33447842f93185"
+                "reference": "2e31a68f1ffde136b3627116441e25339f413e8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Spomky-Labs/cbor-php/zipball/575a66dc406575b030e3ba541b33447842f93185",
-                "reference": "575a66dc406575b030e3ba541b33447842f93185",
+                "url": "https://api.github.com/repos/Spomky-Labs/cbor-php/zipball/2e31a68f1ffde136b3627116441e25339f413e8d",
+                "reference": "2e31a68f1ffde136b3627116441e25339f413e8d",
                 "shasum": ""
             },
             "require": {
                 "beberlei/assert": "^3.2",
+                "brick/math": "^0.8.15",
                 "ext-gmp": "*",
-                "php": "^7.1|^8.0",
+                "php": ">=7.1",
                 "spomky-labs/base64url": "^1.0|^2.0"
             },
             "require-dev": {
@@ -3564,19 +3617,13 @@
                 "phpstan/phpstan-deprecation-rules": "^0.12",
                 "phpstan/phpstan-phpunit": "^0.12",
                 "phpstan/phpstan-strict-rules": "^0.12",
-                "phpunit/phpunit": "^7.5|^8.0",
-                "rector/rector": "^0.5|^0.6",
-                "symfony/var-dumper": "^4.3|^5.0"
+                "phpunit/phpunit": "^7.5|^8.0"
             },
             "suggest": {
-                "ext-bcmath": "BCMath extension needed to handle the Big Float and Decimal Fraction Tags"
+                "ext-bcmath": "GMP or BCMath extensions will drastically improve the library performance. BCMath extension needed to handle the Big Float and Decimal Fraction Tags",
+                "ext-gmp": "GMP or BCMath extensions will drastically improve the library performance"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "CBOR\\": "src/"
@@ -3602,7 +3649,13 @@
                 "RFC7049",
                 "cbor"
             ],
-            "time": "2020-02-18T08:37:37+00:00"
+            "funding": [
+                {
+                    "url": "https://www.patreon.com/FlorentMorselli",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2020-07-12T21:35:13+00:00"
         },
         {
             "name": "symfony/console",
@@ -4517,16 +4570,16 @@
         },
         {
             "name": "web-auth/cose-lib",
-            "version": "v3.2.6",
+            "version": "v3.2.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-auth/cose-lib.git",
-                "reference": "1bd8a2adaef16fa7be19bb720e4ce1919c2828ad"
+                "reference": "ff5b423608b4e2649925a58cfb7d3df67cb66929"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-auth/cose-lib/zipball/1bd8a2adaef16fa7be19bb720e4ce1919c2828ad",
-                "reference": "1bd8a2adaef16fa7be19bb720e4ce1919c2828ad",
+                "url": "https://api.github.com/repos/web-auth/cose-lib/zipball/ff5b423608b4e2649925a58cfb7d3df67cb66929",
+                "reference": "ff5b423608b4e2649925a58cfb7d3df67cb66929",
                 "shasum": ""
             },
             "require": {
@@ -4585,20 +4638,20 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2020-05-05T21:48:34+00:00"
+            "time": "2020-07-21T21:19:41+00:00"
         },
         {
             "name": "web-auth/metadata-service",
-            "version": "v3.2.6",
+            "version": "v3.2.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-auth/webauthn-metadata-service.git",
-                "reference": "2938f689704b2797d220c3f04f816d71b769aff2"
+                "reference": "1a27a204280acf0e49e496b5bc8fcc2225e830f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-auth/webauthn-metadata-service/zipball/2938f689704b2797d220c3f04f816d71b769aff2",
-                "reference": "2938f689704b2797d220c3f04f816d71b769aff2",
+                "url": "https://api.github.com/repos/web-auth/webauthn-metadata-service/zipball/1a27a204280acf0e49e496b5bc8fcc2225e830f6",
+                "reference": "1a27a204280acf0e49e496b5bc8fcc2225e830f6",
                 "shasum": ""
             },
             "require": {
@@ -4650,20 +4703,20 @@
                 "fido",
                 "webauthn"
             ],
-            "time": "2020-05-05T21:48:34+00:00"
+            "time": "2020-07-21T21:19:41+00:00"
         },
         {
             "name": "web-auth/webauthn-lib",
-            "version": "v3.2.6",
+            "version": "v3.2.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-auth/webauthn-lib.git",
-                "reference": "1a44bbd972652e8184901bdf1ce0fa529524b21d"
+                "reference": "b3df2a171ff224d4a3c2b1e8dfae3212abe722fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-auth/webauthn-lib/zipball/1a44bbd972652e8184901bdf1ce0fa529524b21d",
-                "reference": "1a44bbd972652e8184901bdf1ce0fa529524b21d",
+                "url": "https://api.github.com/repos/web-auth/webauthn-lib/zipball/b3df2a171ff224d4a3c2b1e8dfae3212abe722fc",
+                "reference": "b3df2a171ff224d4a3c2b1e8dfae3212abe722fc",
                 "shasum": ""
             },
             "require": {
@@ -4678,7 +4731,7 @@
                 "psr/log": "^1.1",
                 "ramsey/uuid": "^3.8|^4.0",
                 "spomky-labs/base64url": "^2.0",
-                "spomky-labs/cbor-php": "^1.0.2",
+                "spomky-labs/cbor-php": "^1.1|^2.0",
                 "symfony/process": "^3.0|^4.0|^5.0",
                 "web-auth/cose-lib": "self.version",
                 "web-auth/metadata-service": "self.version"
@@ -4739,7 +4792,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2020-05-16T11:47:15+00:00"
+            "time": "2020-08-31T19:42:44+00:00"
         },
         {
             "name": "wikibase/data-model",
