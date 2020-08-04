@@ -313,7 +313,7 @@ class Parse extends \Wikimedia\Parsoid\Tools\Maintenance {
 	/**
 	 * @param array $configOpts
 	 * @param array $parsoidOpts
-	 * @param string|null $wt
+	 * @param ?string $wt
 	 * @return string|PageBundle
 	 */
 	public function wt2Html(
@@ -339,7 +339,7 @@ class Parse extends \Wikimedia\Parsoid\Tools\Maintenance {
 	 * @param array $configOpts
 	 * @param array $parsoidOpts
 	 * @param string $html
-	 * @param SelserData|null $selserData
+	 * @param ?SelserData $selserData
 	 * @return string
 	 */
 	public function html2Wt(
@@ -447,10 +447,10 @@ class Parse extends \Wikimedia\Parsoid\Tools\Maintenance {
 				'#^(?:https?://)?([a-z.]+)/api/rest_v1/page/html/([^/?]+)#',
 				$this->getOption( 'restURL' ), $matches ) &&
 				 !preg_match(
-				'#^/w/rest\.php/([a-z.]+)/v3/transform/pagebundle/to/pagebundle/([^/?]+)#',
+				'#^(?:https?://[a-z.]+)?/w/rest\.php/([a-z.]+)/v3/transform/pagebundle/to/pagebundle/([^/?]+)#',
 				$this->getOption( 'restURL' ), $matches ) &&
 				 !preg_match(
-				'#^/w/rest.php/([a-z.]+)/v3/page/pagebundle/([^/?]+)(?:/([^/?]+))?#',
+				'#^(?:https?://[a-z.]+)?/w/rest.php/([a-z.]+)/v3/page/pagebundle/([^/?]+)(?:/([^/?]+))?#',
 				$this->getOption( 'restURL' ), $matches )
 			) {
 				# XXX we could extend this to process other URLs, but the

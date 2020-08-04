@@ -19,6 +19,8 @@
 
 namespace MWParsoid\Config;
 
+use Language;
+use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Revision\SlotRoleHandler;
@@ -64,14 +66,15 @@ class PageConfig extends IPageConfig {
 	 * @param ParserOptions $parserOptions
 	 * @param SlotRoleHandler $slotRoleHandler
 	 * @param Title $title Title being parsed
-	 * @param RevisionRecord|null $revision
-	 * @param string|null $pagelanguage
-	 * @param string|null $pagelanguageDir
+	 * @param ?RevisionRecord $revision
+	 * @param ?string $pagelanguage
+	 * @param ?string $pagelanguageDir
 	 */
 	public function __construct(
-		Parser $parser, ParserOptions $parserOptions, SlotRoleHandler $slotRoleHandler,
-		Title $title, RevisionRecord $revision = null,
-		string $pagelanguage = null, string $pagelanguageDir = null
+		Parser $parser, ParserOptions $parserOptions,
+		SlotRoleHandler $slotRoleHandler, Title $title,
+		?RevisionRecord $revision = null, ?string $pagelanguage = null,
+		?string $pagelanguageDir = null
 	) {
 		$this->parser = $parser;
 		$this->parserOptions = $parserOptions;
@@ -132,10 +135,22 @@ class PageConfig extends IPageConfig {
 			$this->title->getPageLanguage()->getCode();
 	}
 
+	/**
+	 * Helper function: get the Language object corresponding to
+	 * PageConfig::getPageLanguage()
+	 * @return Language
+	 */
+	private function getPageLanguageObject(): Language {
+		return $this->pagelanguage ?
+			MediaWikiServices::getInstance()->getLanguageFactory()
+				->getLanguage( $this->pagelanguage ) :
+			$this->title->getPageLanguage();
+	}
+
 	/** @inheritDoc */
 	public function getPageLanguageDir(): string {
 		return $this->pagelanguageDir ??
-			$this->title->getPageLanguage()->getDir();
+			$this->getPageLanguageObject()->getDir();
 	}
 
 	/**

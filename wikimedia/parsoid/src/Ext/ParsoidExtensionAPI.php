@@ -61,7 +61,7 @@ class ParsoidExtensionAPI {
 
 	/**
 	 * @param Env $env
-	 * @param array|null $options
+	 * @param ?array $options
 	 *  - wt2html: used in wt->html direction
 	 *    - frame: (Frame)
 	 *    - parseOpts: (array)
@@ -73,7 +73,7 @@ class ParsoidExtensionAPI {
 	 *    - state: (SerializerState)
 	 */
 	public function __construct(
-		Env $env, array $options = null
+		Env $env, ?array $options = null
 	) {
 		$this->env = $env;
 		$this->wt2htmlOpts = $options['wt2html'] ?? null;
@@ -816,10 +816,13 @@ class ParsoidExtensionAPI {
 				// for bits which aren't the caption or file, since they
 				// don't refer to actual source wikitext
 				'shiftDSRFn' => function ( DomSourceRange $dsr ) use ( $shiftOffset ) {
-					$start = $shiftOffset( $dsr->start );
-					$end = $shiftOffset( $dsr->end );
-					// If either offset is invalid, remove entire DSR
-					if ( $start === null || $end === null ) {
+					$start = $dsr->start === null ? null :
+						   $shiftOffset( $dsr->start );
+					$end = $dsr->end === null ? null :
+						 $shiftOffset( $dsr->end );
+					// If either offset is newly-invalid, remove entire DSR
+					if ( ( $dsr->start !== null && $start === null ) ||
+						 ( $dsr->end !== null && $end === null ) ) {
 						return null;
 					}
 					return new DomSourceRange(

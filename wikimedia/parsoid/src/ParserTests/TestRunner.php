@@ -6,7 +6,6 @@ namespace Wikimedia\Parsoid\ParserTests;
 use DOMElement;
 use DOMNode;
 use Error;
-use Exception;
 use Psr\Log\LoggerInterface;
 use Wikimedia\Alea\Alea;
 use Wikimedia\Assert\Assert;
@@ -21,7 +20,6 @@ use Wikimedia\Parsoid\Tools\TestUtils;
 use Wikimedia\Parsoid\Utils\ContentUtils;
 use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMUtils;
-use Wikimedia\Parsoid\Utils\PHPUtils;
 use Wikimedia\Parsoid\Utils\Utils;
 use Wikimedia\Parsoid\Utils\WTUtils;
 use Wikimedia\Parsoid\Wt2Html\PageConfigFrame;
@@ -139,17 +137,8 @@ class TestRunner {
 	/** @var string */
 	private $knownFailuresPath;
 
-	/** @var array */
-	private $testKnownFailures;
-
-	/** @var array<string,string> */
-	private $testTitles;
-
-	/** @var array<string,Article> */
+	/** @var Article[] */
 	private $articles;
-
-	/** @var array<string,string> */
-	private $articleTexts;
 
 	/** @var LoggerInterface */
 	private $defaultLogger;
@@ -165,9 +154,6 @@ class TestRunner {
 
 	/** @var Test[] */
 	private $testCases;
-
-	/** @var int */
-	private $testFormat;
 
 	/** @var Stats */
 	private $stats;
@@ -206,22 +192,6 @@ class TestRunner {
 
 		$testFilePathInfo = pathinfo( $testFilePath );
 		$this->testFileName = $testFilePathInfo['basename'];
-
-		$knownFailuresName = $testFilePathInfo['filename'] . '-knownFailures.json';
-		$this->knownFailuresPath = $testFilePathInfo['dirname'] . '/' . $knownFailuresName;
-		try {
-			$knownFailuresData = file_get_contents( $this->knownFailuresPath );
-			$this->testKnownFailures = PHPUtils::jsonDecode( $knownFailuresData ) ?? [];
-			error_log( 'Loaded known failures from ' . $this->knownFailuresPath .
-				". Found " . count( $this->testKnownFailures ) . " entries!" );
-		} catch ( Exception $e ) {
-			error_log( 'No known failures found at ' . $this->knownFailuresPath );
-			$this->testKnownFailures = [];
-		}
-
-		$this->articles = [];
-		$this->articleTexts = [];
-		$this->testTitles = [];
 
 		$newModes = [];
 		foreach ( $modes as $mode ) {
@@ -276,7 +246,10 @@ class TestRunner {
 			$this->envOptions
 		);
 
-		$env->pageCache = $this->articleTexts;
+		$env->pageCache = [];
+		foreach ( $this->articles as $art ) {
+			$env->pageCache[$env->normalizedTitleKey( $art->title, false, true )] = $art->text;
+		}
 		// $this->mockApi->setArticleCache( $this->articles );
 		// Set parsing resource limits.
 		// $env->setResourceLimits();
@@ -289,36 +262,22 @@ class TestRunner {
 	 */
 	private function buildTests(): void {
 		// Startup by loading .txt test file
-		$content = file_get_contents( $this->testFilePath );
-		$parsedTests = ( new Grammar() )->parse( $content );
-		$testFormat = $parsedTests[0];
-		$rawTestItems = $parsedTests[1];
-		if ( $testFormat === null ) {
-			$this->testFormat = 1;
+		$warnFunc = function ( string $warnMsg ):void {
+			error_log( $warnMsg );
+		};
+		$normFunc = function ( string $title ):string {
+			return $this->dummyEnv->normalizedTitleKey( $title, false, true );
+		};
+		$testReader = TestFileReader::read(
+			$this->testFilePath, $warnFunc, $normFunc
+		);
+		$this->knownFailuresPath = $testReader->knownFailuresPath;
+		$this->testCases = $testReader->testCases;
+		$this->articles = $testReader->articles;
+		if ( $this->knownFailuresPath ) {
+			error_log( 'Loaded known failures from ' . $this->knownFailuresPath );
 		} else {
-			$this->testFormat = intval( $testFormat['text'] );
-		}
-		$this->testCases = [];
-		foreach ( $rawTestItems as $item ) {
-			if ( $item['type'] === 'article' ) {
-				$art = new Article( $item );
-				$key = $this->dummyEnv->normalizedTitleKey( $art->title, false, true );
-				if ( isset( $this->articles[$key] ) ) {
-					throw new Error( 'Duplicate article: ' . $item['title'] );
-				} else {
-					$this->articles[$key] = $art;
-					$this->articleTexts[$key] = $art->text;
-				}
-			} elseif ( $item['type'] === 'test' ) {
-				$test = new Test( $item );
-				$this->testCases[] = $test;
-				if ( isset( $this->testTitles[$test->testName] ) ) {
-					throw new Error( 'Duplicate titles: ' . $test->testName );
-				} else {
-					$this->testTitles[$test->testName] = true;
-				}
-			}
-			/* Ignore the rest */
+			error_log( 'No known failures found.' );
 		}
 	}
 
@@ -1074,8 +1033,9 @@ class TestRunner {
 		$expected = [ 'normal' => $normalizedExpected, 'raw' => $test->parsoidHtml ];
 		$actual = [ 'normal' => $normalizedOut, 'raw' => $out, 'input' => $input ];
 
-		return $options['reportResult']( $this->testKnownFailures,
-			$this->stats, $test, $options, $mode, $expected, $actual );
+		return $options['reportResult'](
+			$this->stats, $test, $options, $mode, $expected, $actual
+		);
 	}
 
 	/**
@@ -1114,7 +1074,7 @@ class TestRunner {
 		$expected = [ 'normal' => $normalizedExpected, 'raw' => $testWikitext ];
 		$actual = [ 'normal' => $normalizedOut, 'raw' => $out, 'input' => $input ];
 
-		return $options['reportResult']( $this->testKnownFailures,
+		return $options['reportResult'](
 			$this->stats, $test, $options, $mode, $expected, $actual );
 	}
 
@@ -1248,18 +1208,21 @@ class TestRunner {
 
 		// update the knownFailures, if requested
 		if ( $allModes || ScriptUtils::booleanOption( $options['updateKnownFailures'] ?? null ) ) {
-			$old = null;
-			$oldExists = file_exists( $this->knownFailuresPath );
-			if ( $oldExists ) {
+			if ( $this->knownFailuresPath !== null ) {
 				$old = file_get_contents( $this->knownFailuresPath );
+			} else {
+				// If file doesn't exist, use the JSON representation of an
+				// empty array, so it compares equal in the case that we
+				// end up with an empty array of known failures below.
+				$old = '[]';
 			}
 			$testKnownFailures = [];
 			foreach ( $options['modes'] as $mode ) {
 				foreach ( $this->stats->modes[$mode]->failList as $fail ) {
-					if ( !isset( $testKnownFailures[$fail['title']] ) ) {
-						$testKnownFailures[$fail['title']] = [];
+					if ( !isset( $testKnownFailures[$fail['testName']] ) ) {
+						$testKnownFailures[$fail['testName']] = [];
 					}
-					$testKnownFailures[$fail['title']][$mode] = $fail['raw'];
+					$testKnownFailures[$fail['testName']][$mode . $fail['suffix']] = $fail['raw'];
 				}
 			}
 			// Sort, otherwise, titles get added above based on the first
@@ -1273,7 +1236,7 @@ class TestRunner {
 			);
 			if ( ScriptUtils::booleanOption( $options['updateKnownFailures'] ?? null ) ) {
 				file_put_contents( $this->knownFailuresPath, $contents );
-			} elseif ( $allModes && $oldExists && $offsetType === 'byte' ) {
+			} elseif ( $allModes && $offsetType === 'byte' ) {
 				$knownFailuresChanged = $contents !== $old;
 			}
 		}
@@ -1339,11 +1302,9 @@ class TestRunner {
 
 		// ensure that test is not skipped if it has a wikitext/edited or
 		// html/parsoid+langconv section (but not a parsoid html section)
-		$haveHtml = $test->parsoidHtml !== null;
-		if ( isset( $test->sections['wikitext/edited'] ) ||
-			 isset( $test->sections['html/parsoid+langconv'] ) ) {
-			$haveHtml = true;
-		}
+		$haveHtml = ( $test->parsoidHtml !== null ) ||
+			isset( $test->sections['wikitext/edited'] ) ||
+			isset( $test->sections['html/parsoid+langconv'] );
 
 		// Reset the cached results for the new case.
 		// All test modes happen in a single run of processCase.
