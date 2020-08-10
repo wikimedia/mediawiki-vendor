@@ -70,21 +70,35 @@ class MockApiHelper extends ApiHelper {
 			'width' => 320,
 			'height' => 240,
 			'bits' => 0,
-			'duration' => 160.733333333333,
-			'mime' => 'application/ogg',
-			'mediatype' => 'VIDEO'
+			# duration comes from
+			# TimedMediaHandler/tests/phpunit/mocks/MockOggHandler::getLength()
+			'duration' => 4.3666666666667,
+			'mime' => 'video/ogg; codecs="theora"',
+			'mediatype' => 'VIDEO',
+			'title' => 'Original Ogg file, 320 × 240 (590 kbps)',
+			'shorttitle' => 'Ogg source',
+			# hacky way to get seek parameters to return the correct info
+			'extraParams' => [
+				'seek=1.2' => 'seek%3D1.2',
+				'seek=85' => 'seek%3D3.3666666666667', # hard limited by duration
+			],
 		],
 		'Audio.oga' => [
 			'size' => 12345,
 			'width' => 0,
 			'height' => 0,
 			'bits' => 0,
-			'duration' => 160.733333333333,
-			'mime' => 'application/ogg',
-			'mediatype' => 'AUDIO'
+			# duration comes from
+			# TimedMediaHandler/tests/phpunit/mocks/MockOggHandler::getLength()
+			'duration' => 0.99875,
+			'mime' => 'audio/ogg; codecs="vorbis"',
+			'mediatype' => 'AUDIO',
+			'title' => 'Original Ogg file (41 kbps)',
+			'shorttitle' => 'Ogg source',
 		]
 	];
 
+	private $articleCache = [];
 	private $cachedConfigs = [];
 
 	private static $MAIN_PAGE = [
@@ -364,7 +378,12 @@ class MockApiHelper extends ApiHelper {
 	];
 
 	private static $missingTitles = [ 'Doesnotexist' ];
-	private static $specialTitles = [ 'Special:Version' ];
+	private static $specialTitles = [
+		'Special:Version',
+		'Special:BookSources',
+		'Special:BookSources/isbn=4-00-026157-6',
+		'Special:BookSources/0978739256',
+	];
 	private static $redirectTitles = [ 'Redirected' ];
 	private static $disambigTitles = [ 'Disambiguation' ];
 
@@ -463,6 +482,16 @@ class MockApiHelper extends ApiHelper {
 	}
 
 	/**
+	 * Register an article defined in parsertests so that we can return
+	 * the proper known/missing information about that title.
+	 * @param string $key The normalized title of the article
+	 * @param Article $article The contents of the article
+	 */
+	public function addArticle( string $key, Article $article ):void {
+		$this->articleCache[$key] = $article;
+	}
+
+	/**
 	 * @param array $params
 	 * @return array
 	 */
@@ -498,10 +527,11 @@ class MockApiHelper extends ApiHelper {
 	 * @param string $filename
 	 * @param ?int $twidth
 	 * @param ?int $theight
+	 * @param ?string $extraParam optional iiurlparam, used for video/pdf/etc
 	 * @return ?array
 	 */
 	private function imageInfo(
-		string $filename, ?int $twidth, ?int $theight
+		string $filename, ?int $twidth, ?int $theight, ?string $extraParam
 	) : ?array {
 		$normPagename = self::PNAMES[$filename] ?? $filename;
 		$normFilename = self::FNAMES[$filename] ?? $filename;
@@ -571,7 +601,15 @@ class MockApiHelper extends ApiHelper {
 				}
 			}
 			if ( $urlWidth !== $width || $mediatype === 'AUDIO' || $mediatype === 'VIDEO' ) {
-				$turl .= '/' . $urlWidth . 'px-' . $normFilename;
+				$turl .= '/' . $urlWidth . 'px-';
+				if ( $mediatype === 'VIDEO' ) {
+					// Hack in a 'seek' option, if provided (T258767)
+					if ( $extraParam ) {
+						$turl .= $props['extraParams'][$extraParam] ?? '';
+					}
+					$turl .= '-';
+				}
+				$turl .= $normFilename;
 				switch ( $mediatype ) {
 					case 'AUDIO':
 						// No thumbs are generated for audio
@@ -590,6 +628,23 @@ class MockApiHelper extends ApiHelper {
 			$info['thumbwidth'] = $twidth;
 			$info['thumbheight'] = $theight;
 			$info['thumburl'] = $turl;
+		}
+		// Make this look like a TMH response
+		if ( isset( $props['title'] ) || isset( $props['shorttitle'] ) ) {
+			$info['derivatives'] = [
+				[
+					'src' => $info['url'],
+					'type' => $info['mime'],
+					'width' => strval( $info['width'] ),
+					'height' => strval( $info['height'] ),
+				]
+			];
+			if ( isset( $props['title'] ) ) {
+				$info['derivatives'][0]['title'] = $props['title'];
+			}
+			if ( isset( $props['shorttitle'] ) ) {
+				$info['derivatives'][0]['shorttitle'] = $props['shorttitle'];
+			}
 		}
 
 		return [
@@ -641,8 +696,8 @@ class MockApiHelper extends ApiHelper {
 							[
 								'ns' => 6,
 								'title' => json_encode( $params['titles'] ),
-								'missing' => '',
-								'imagerepository' => ''
+								'missing' => true,
+								'imagerepository' => true
 							]
 						]
 					]
@@ -655,17 +710,23 @@ class MockApiHelper extends ApiHelper {
 			$titles = preg_split( '/\|/', $params['titles'] );
 			foreach ( $titles as $t ) {
 				$props = [ 'title' => $t ];
-				if ( in_array( $t, self::$missingTitles, true ) ) {
-					$props['missing'] = '';
+				$key = str_replace( ' ', '_', $t ); # poor man's normalization
+				$definedInPt = isset( $this->articleCache[$key] );
+				if ( in_array( $t, self::$missingTitles, true ) ||
+					 !$definedInPt ) {
+					$props['missing'] = true;
 				}
 				if ( in_array( $t, self::$specialTitles, true ) ) {
-					$props['special'] = '';
+					$props['special'] = true;
+					$props['missing'] = false;
 				}
 				if ( in_array( $t, self::$redirectTitles, true ) ) {
-					$props['redirect'] = '';
+					$props['redirect'] = true;
+					$props['missing'] = false;
 				}
 				if ( in_array( $t, self::$disambigTitles, true ) ) {
-					$props['pageprops'] = [ 'disambiguation' => '' ];
+					$props['pageprops'] = [ 'disambiguation' => true ];
+					$props['missing'] = false;
 				}
 				$ret[] = $props;
 			}
@@ -681,19 +742,20 @@ class MockApiHelper extends ApiHelper {
 			$ii = self::imageInfo(
 				$filename,
 				isset( $params['iiurlwidth'] ) ? $tonum( $params['iiurlwidth'] ) : null,
-				isset( $params['iiurlheight'] ) ? $tonum( $params['iiurlheight'] ) : null
+				isset( $params['iiurlheight'] ) ? $tonum( $params['iiurlheight'] ) : null,
+				$params['iiurlparam'] ?? null
 			);
 			if ( $ii === null ) {
 				$p = [
 					'ns' => 6,
 					'title' => $filename,
-					'missing' => '',
-					'imagerepository' => '',
+					'missing' => true,
+					'imagerepository' => true,
 					'imageinfo' => [ [
 						'size' => 0,
 						'width' => 0,
 						'height' => 0,
-						'filemissing' => '',
+						'filemissing' => true,
 						'mime' => null,
 						'mediatype' => null
 					] ]

@@ -3570,6 +3570,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\ParserTests\\Test' => __DIR__ . '/..' . '/wikimedia/parsoid/src/ParserTests/Test.php',
         'Wikimedia\\Parsoid\\ParserTests\\TestFileReader' => __DIR__ . '/..' . '/wikimedia/parsoid/src/ParserTests/TestFileReader.php',
         'Wikimedia\\Parsoid\\ParserTests\\TestRunner' => __DIR__ . '/..' . '/wikimedia/parsoid/src/ParserTests/TestRunner.php',
+        'Wikimedia\\Parsoid\\ParserTests\\TestUtils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/ParserTests/TestUtils.php',
         'Wikimedia\\Parsoid\\ParserTests\\UnexpectedException' => __DIR__ . '/..' . '/wikimedia/parsoid/src/ParserTests/UnexpectedException.php',
         'Wikimedia\\Parsoid\\Parsoid' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Parsoid.php',
         'Wikimedia\\Parsoid\\Tokens\\CommentTk' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Tokens/CommentTk.php',

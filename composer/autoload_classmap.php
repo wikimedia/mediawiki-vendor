@@ -2960,6 +2960,7 @@ return array(
     'Wikimedia\\Parsoid\\ParserTests\\Test' => $vendorDir . '/wikimedia/parsoid/src/ParserTests/Test.php',
     'Wikimedia\\Parsoid\\ParserTests\\TestFileReader' => $vendorDir . '/wikimedia/parsoid/src/ParserTests/TestFileReader.php',
     'Wikimedia\\Parsoid\\ParserTests\\TestRunner' => $vendorDir . '/wikimedia/parsoid/src/ParserTests/TestRunner.php',
+    'Wikimedia\\Parsoid\\ParserTests\\TestUtils' => $vendorDir . '/wikimedia/parsoid/src/ParserTests/TestUtils.php',
     'Wikimedia\\Parsoid\\ParserTests\\UnexpectedException' => $vendorDir . '/wikimedia/parsoid/src/ParserTests/UnexpectedException.php',
     'Wikimedia\\Parsoid\\Parsoid' => $vendorDir . '/wikimedia/parsoid/src/Parsoid.php',
     'Wikimedia\\Parsoid\\Tokens\\CommentTk' => $vendorDir . '/wikimedia/parsoid/src/Tokens/CommentTk.php',

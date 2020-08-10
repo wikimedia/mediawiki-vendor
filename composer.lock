@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1d50e5be3a2709a87377289c6627e191",
+    "content-hash": "3f9819388e069b2ee5419f47539ea921",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -5860,16 +5860,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.13.0-a4",
+            "version": "v0.13.0-a5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/parsoid.git",
-                "reference": "3559315835986ac406c805745694813e71a2dabf"
+                "reference": "870be90c6260309b5735213543562bf8da4605f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/3559315835986ac406c805745694813e71a2dabf",
-                "reference": "3559315835986ac406c805745694813e71a2dabf",
+                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/870be90c6260309b5735213543562bf8da4605f6",
+                "reference": "870be90c6260309b5735213543562bf8da4605f6",
                 "shasum": ""
             },
             "require": {
@@ -5898,7 +5898,7 @@
                 "mediawiki/minus-x": "1.1.0",
                 "monolog/monolog": "~1.25.2",
                 "ockcyp/covers-validator": "1.1.1",
-                "php-parallel-lint/php-console-highlighter": "0.5.0",
+                "php-parallel-lint/php-console-color": "^0.3.0",
                 "php-parallel-lint/php-parallel-lint": "1.2.0",
                 "phpunit/phpunit": "^8.5",
                 "sebastian/diff": "^3.0.2",
@@ -5931,7 +5931,7 @@
                 "mediawiki",
                 "parsoid"
             ],
-            "time": "2020-08-03T14:21:50+00:00"
+            "time": "2020-08-06T03:07:27+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",
