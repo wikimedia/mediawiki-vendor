@@ -16,6 +16,7 @@ use League\Event\EmitterAwareTrait;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\Grant\GrantTypeInterface;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
+use League\OAuth2\Server\Repositories\ClaimRepositoryInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
 use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
@@ -70,6 +71,11 @@ class AuthorizationServer implements EmitterAwareInterface
     private $scopeRepository;
 
     /**
+     * @var null|ClaimRepositoryInterface
+     */
+    private $claimRepository;
+
+    /**
      * @var string|Key
      */
     private $encryptionKey;
@@ -88,6 +94,7 @@ class AuthorizationServer implements EmitterAwareInterface
      * @param CryptKey|string                $privateKey
      * @param string|Key                     $encryptionKey
      * @param null|ResponseTypeInterface     $responseType
+     * @param null|ClaimRepositoryInterface  $claimRepository
      */
     public function __construct(
         ClientRepositoryInterface $clientRepository,
@@ -95,11 +102,13 @@ class AuthorizationServer implements EmitterAwareInterface
         ScopeRepositoryInterface $scopeRepository,
         $privateKey,
         $encryptionKey,
-        ResponseTypeInterface $responseType = null
+        ResponseTypeInterface $responseType = null,
+        ClaimRepositoryInterface $claimRepository = null
     ) {
         $this->clientRepository = $clientRepository;
         $this->accessTokenRepository = $accessTokenRepository;
         $this->scopeRepository = $scopeRepository;
+        $this->claimRepository = $claimRepository;
 
         if ($privateKey instanceof CryptKey === false) {
             $privateKey = new CryptKey($privateKey);
@@ -132,6 +141,7 @@ class AuthorizationServer implements EmitterAwareInterface
         $grantType->setAccessTokenRepository($this->accessTokenRepository);
         $grantType->setClientRepository($this->clientRepository);
         $grantType->setScopeRepository($this->scopeRepository);
+        $grantType->setClaimRepository($this->claimRepository);
         $grantType->setDefaultScope($this->defaultScope);
         $grantType->setPrivateKey($this->privateKey);
         $grantType->setEmitter($this->getEmitter());

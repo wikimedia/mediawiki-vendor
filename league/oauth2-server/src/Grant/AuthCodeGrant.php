@@ -160,8 +160,18 @@ class AuthCodeGrant extends AbstractAuthorizeGrant
             }
         }
 
+        $privateClaims = [];
+
+        if ($this->claimRepository !== null) {
+            $privateClaims = $this->claimRepository->getClaims(
+                $this->getIdentifier(),
+                $client,
+                $authCodePayload->user_id
+            );
+        }
+
         // Issue and persist new access token
-        $accessToken = $this->issueAccessToken($accessTokenTTL, $client, $authCodePayload->user_id, $scopes);
+        $accessToken = $this->issueAccessToken($accessTokenTTL, $client, $authCodePayload->user_id, $scopes, $privateClaims);
         $this->getEmitter()->emit(new RequestEvent(RequestEvent::ACCESS_TOKEN_ISSUED, $request));
         $responseType->setAccessToken($accessToken);
 
@@ -310,7 +320,7 @@ class AuthCodeGrant extends AbstractAuthorizeGrant
             // @see: https://tools.ietf.org/html/rfc7636#section-4.2
             if (\preg_match('/^[A-Za-z0-9-._~]{43,128}$/', $codeChallenge) !== 1) {
                 throw OAuthServerException::invalidRequest(
-                    'code_challenged',
+                    'code_challenge',
                     'Code challenge must follow the specifications of RFC-7636.'
                 );
             }

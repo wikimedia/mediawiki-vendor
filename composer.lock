@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3272e99009b198a6347c5ae3871e67d6",
+    "content-hash": "d09d765efd8bac648e183105de689cfa",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -1579,17 +1579,11 @@
         },
         {
             "name": "league/oauth2-server",
-            "version": "8.1.1",
+            "version": "dev-v9.0.0-alpha",
             "source": {
                 "type": "git",
-                "url": "https://github.com/thephpleague/oauth2-server.git",
-                "reference": "09f22e8121fa1832962dba18213b80d4267ef8a3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/oauth2-server/zipball/09f22e8121fa1832962dba18213b80d4267ef8a3",
-                "reference": "09f22e8121fa1832962dba18213b80d4267ef8a3",
-                "shasum": ""
+                "url": "https://github.com/wikimedia/oauth2-server.git",
+                "reference": "2119d56f6f4376567645b96d71ff623d170b894f"
             },
             "require": {
                 "defuse/php-encryption": "^2.2.1",
@@ -1617,7 +1611,11 @@
                     "League\\OAuth2\\Server\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "LeagueTests\\": "tests/"
+                }
+            },
             "license": [
                 "MIT"
             ],
@@ -1638,9 +1636,10 @@
             "description": "A lightweight and powerful OAuth 2.0 authorization and resource server library with support for all the core specification grants. This library will allow you to secure your API with OAuth and allow your applications users to approve apps that want to access their data from your API.",
             "homepage": "https://oauth2.thephpleague.com/",
             "keywords": [
-                "Authentication",
                 "api",
                 "auth",
+                "auth",
+                "authentication",
                 "authorisation",
                 "authorization",
                 "oauth",
@@ -1652,13 +1651,7 @@
                 "secure",
                 "server"
             ],
-            "funding": [
-                {
-                    "url": "https://github.com/sephster",
-                    "type": "github"
-                }
-            ],
-            "time": "2020-07-01T11:33:50+00:00"
+            "time": "2020-08-11T15:13:55+00:00"
         },
         {
             "name": "league/uri",
@@ -6983,9 +6976,17 @@
             "time": "2020-03-19T08:41:40+00:00"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "9.0.0",
+            "alias_normalized": "9.0.0.0",
+            "version": "dev-v9.0.0-alpha",
+            "package": "league/oauth2-server"
+        }
+    ],
     "minimum-stability": "stable",
     "stability-flags": {
+        "league/oauth2-server": 20,
         "wikimedia/parsoid": 15
     },
     "prefer-stable": true,
