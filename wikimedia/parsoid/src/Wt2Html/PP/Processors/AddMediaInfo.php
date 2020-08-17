@@ -364,9 +364,6 @@ class AddMediaInfo implements Wt2HtmlDOMProcessor {
 		// Handle "responsive" images, i.e. srcset
 		if ( !empty( $info['responsiveUrls'] ) ) {
 			$candidates = [];
-			// Match Parsoid/JS ordering of these responsive urls
-			// FIXME: Parsoid's output here doesn't match core! T234932
-			krsort( $info['responsiveUrls'] );
 			foreach ( $info['responsiveUrls'] as $density => $url ) {
 				$candidates[] = $url . ' ' . $density . 'x';
 			}
@@ -527,10 +524,11 @@ class AddMediaInfo implements Wt2HtmlDOMProcessor {
 	 * @param array $attrs
 	 * @param stdClass $dataMw
 	 * @param bool $isImage
+	 * @param int $page
 	 */
 	private static function handleLink(
 		Env $env, PegTokenizer $urlParser, DOMElement $container,
-		array $attrs, stdClass $dataMw, bool $isImage
+		array $attrs, stdClass $dataMw, bool $isImage, int $page
 	): void {
 		$doc = $container->ownerDocument;
 		$attr = WTSUtils::getAttrFromDataMw( $dataMw, 'link', true );
@@ -561,7 +559,11 @@ class AddMediaInfo implements Wt2HtmlDOMProcessor {
 					WTSUtils::getAttrFromDataMw( $dataMw, 'link', /* keep */false );
 				}
 			} else {
-				$anchor->setAttribute( 'href', $env->makeLink( $attrs['title'] ) );
+				$href = $env->makeLink( $attrs['title'] );
+				if ( $page > 0 ) {
+					$href .= "?page=$page";
+				}
+				$anchor->setAttribute( 'href', $href );
 			}
 		} else {
 			$anchor = $doc->createElement( 'span' );
@@ -627,7 +629,7 @@ class AddMediaInfo implements Wt2HtmlDOMProcessor {
 			}
 
 			$page = WTSUtils::getAttrFromDataMw( $dataMw, 'page', true );
-			if ( $page && $dims['width'] !== null ) {
+			if ( $page ) {
 				$dims['page'] = $page[1]->txt;
 			}
 
@@ -688,7 +690,7 @@ class AddMediaInfo implements Wt2HtmlDOMProcessor {
 			$rdfaType = $o['rdfaType'];
 			$elt = $o['elt'];
 
-			self::handleLink( $env, $urlParser, $container, $attrs, $dataMw, $isImage );
+			self::handleLink( $env, $urlParser, $container, $attrs, $dataMw, $isImage, (int)( $dims['page'] ?? 0 ) );
 
 			$anchor = $container->firstChild;
 			$anchor->appendChild( $elt );

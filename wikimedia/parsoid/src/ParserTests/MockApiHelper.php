@@ -63,7 +63,9 @@ class MockApiHelper extends ApiHelper {
 			'width' => 2480,
 			'height' => 3508,
 			'bits' => 8,
-			'mime' => 'image/vnd.djvu'
+			'mime' => 'image/vnd.djvu',
+			'mediatype' => 'OFFICE',
+			'pagecount' => 5,
 		],
 		'Video.ogv' => [
 			'size' => 12345,
@@ -564,6 +566,9 @@ class MockApiHelper extends ApiHelper {
 		if ( isset( $props['duration'] ) ) {
 			$info['duration'] = $props['duration'];
 		}
+		if ( isset( $props['pagecount'] ) ) {
+			$info['pagecount'] = $props['pagecount'];
+		}
 
 		if ( $mediatype === 'VIDEO' && !$twidth && !$theight ) {
 			$twidth = $width;
@@ -600,11 +605,23 @@ class MockApiHelper extends ApiHelper {
 					$urlWidth = $width;
 				}
 			}
-			if ( $urlWidth !== $width || $mediatype === 'AUDIO' || $mediatype === 'VIDEO' ) {
-				$turl .= '/' . $urlWidth . 'px-';
+			$thumbBaseUrl = $turl;
+			$page = null;
+			if ( $urlWidth !== $width || $mediatype === 'AUDIO' || $mediatype === 'VIDEO' || $mediatype === 'OFFICE' ) {
+				$turl .= '/';
+				if ( preg_match( '/^page(\d+)-(\d+)px$/', $extraParam ?? '', $matches ) ) {
+					$turl .= $extraParam;
+					$page = (int)$matches[1];
+				} elseif ( $mediatype === 'OFFICE' ) {
+					$turl .= 'page1-' . $urlWidth . 'px';
+					$page = 1;
+				} else {
+					$turl .= $urlWidth . 'px';
+				}
+				$turl .= '-';
 				if ( $mediatype === 'VIDEO' ) {
 					// Hack in a 'seek' option, if provided (T258767)
-					if ( $extraParam ) {
+					if ( preg_match( '/^seek/', $extraParam ?? '' ) ) {
 						$turl .= $props['extraParams'][$extraParam] ?? '';
 					}
 					$turl .= '-';
@@ -616,6 +633,7 @@ class MockApiHelper extends ApiHelper {
 						$turl = self::IMAGE_BASE_URL . '/w/resources/assets/file-type-icons/fileicon-ogg.png';
 						break;
 					case 'VIDEO':
+					case 'OFFICE':
 						$turl .= '.jpg';
 						break;
 					case 'DRAWING':
@@ -628,6 +646,29 @@ class MockApiHelper extends ApiHelper {
 			$info['thumbwidth'] = $twidth;
 			$info['thumbheight'] = $theight;
 			$info['thumburl'] = $turl;
+			// src set info; added to core API result as part of T226683
+			foreach ( [ 1.5, 2 ] as $scale ) {
+				$turl = $baseurl;
+				if (
+					round( $twidth * $scale ) < $width ||
+					$mediatype === 'DRAWING' ||
+					$mediatype === 'OFFICE'
+				) {
+					$turl = $thumbBaseUrl . '/';
+					if ( $page !== null ) {
+						$turl .= "page{$page}-";
+					}
+					$turl .= round( $twidth * $scale ) . 'px-' . $normFilename;
+					if ( $mediatype === 'VIDEO' || $mediatype === 'OFFICE' ) {
+						$turl .= '.jpg';
+					} elseif ( $mediatype === 'DRAWING' ) {
+						$turl .= '.png';
+					}
+				}
+				if ( $info['thumburl'] !== $turl && $mediatype !== 'AUDIO' ) {
+					$info['responsiveUrls']["$scale"] = $turl;
+				}
+			}
 		}
 		// Make this look like a TMH response
 		if ( isset( $props['title'] ) || isset( $props['shorttitle'] ) ) {
