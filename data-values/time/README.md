@@ -5,9 +5,9 @@ into such value objects, and formatters to turn them back into user consumable r
 
 It is part of the [DataValues set of libraries](https://github.com/DataValues).
 
-[![Build Status](https://secure.travis-ci.org/DataValues/Time.png?branch=master)](http://travis-ci.org/DataValues/Time)
-[![Code Coverage](https://scrutinizer-ci.com/g/DataValues/Time/badges/coverage.png?s=c5db7b37576dedaedd28d27a0e5fda2b79e86da6)](https://scrutinizer-ci.com/g/DataValues/Time/)
-[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/DataValues/Time/badges/quality-score.png?s=3c66db1e59a8bf77f9e9a08760a92ca9c26538b9)](https://scrutinizer-ci.com/g/DataValues/Time/)
+[![Build Status](https://secure.travis-ci.org/wmde/Time.png?branch=master)](http://travis-ci.org/wmde/Time)
+[![Code Coverage](https://scrutinizer-ci.com/g/wmde/Time/badges/coverage.png?s=c5db7b37576dedaedd28d27a0e5fda2b79e86da6)](https://scrutinizer-ci.com/g/wmde/Time/)
+[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/wmde/Time/badges/quality-score.png?s=3c66db1e59a8bf77f9e9a08760a92ca9c26538b9)](https://scrutinizer-ci.com/g/wmde/Time/)
 
 On [Packagist](https://packagist.org/packages/data-values/time):
 [![Latest Stable Version](https://poser.pugx.org/data-values/time/version.png)](https://packagist.org/packages/data-values/time)
@@ -50,6 +50,10 @@ DataValues Time has been written by the Wikidata team, as [Wikimedia Germany](ht
 employees for the [Wikidata project](https://wikidata.org/).
 
 ## Release notes
+
+### 1.0.2 (2020-08-20)
+
+* Fixed parsing unicode month names
 
 ### 1.0.1 (2018-09-18)
 
@@ -197,4 +201,4 @@ Initial release with these features:
 ## Links
 
 * [DataValues Time on Packagist](https://packagist.org/packages/data-values/time)
-* [DataValues Time on TravisCI](https://travis-ci.org/DataValues/Time)
+* [DataValues Time on TravisCI](https://travis-ci.org/wmde/Time)

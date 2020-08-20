@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d5327affbbbf1e60fe466534171e3efb",
+    "content-hash": "1a0890407e221d4af886c8973a41a3bf",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -610,16 +610,16 @@
         },
         {
             "name": "data-values/time",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/DataValues/Time.git",
-                "reference": "a71b7a2fc2c3e2ae074e79060f2d2c6e6434f5fe"
+                "url": "https://github.com/wmde/Time.git",
+                "reference": "cb596ed025d62595b598101397966e7a787206f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DataValues/Time/zipball/a71b7a2fc2c3e2ae074e79060f2d2c6e6434f5fe",
-                "reference": "a71b7a2fc2c3e2ae074e79060f2d2c6e6434f5fe",
+                "url": "https://api.github.com/repos/wmde/Time/zipball/cb596ed025d62595b598101397966e7a787206f5",
+                "reference": "cb596ed025d62595b598101397966e7a787206f5",
                 "shasum": ""
             },
             "require": {
@@ -635,7 +635,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.8.x-dev"
+                    "dev-master": "1.0.x-dev"
                 }
             },
             "autoload": {
@@ -664,7 +664,7 @@
                 "valueparsers",
                 "wikidata"
             ],
-            "time": "2018-09-18T14:15:55+00:00"
+            "time": "2020-08-20T13:17:20+00:00"
         },
         {
             "name": "defuse/php-encryption",
