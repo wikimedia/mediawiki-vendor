@@ -48,7 +48,7 @@
 		"liuggio/statsd-php-client": "1.0.18",
 		"maxmind-db/reader": "v1.8.0",
 		"maxmind/web-service-common": "v0.8.1",
-		"monolog/monolog": "2.0.2",
+		"monolog/monolog": "2.1.1",
 		"mustangostang/spyc": "0.6.3",
 		"nikic/php-parser": "4.10.2",
 		"nmred/kafka-php": "0.1.5",
