@@ -585,12 +585,11 @@ class MockDataAccess implements DataAccess {
 	}
 
 	/** @inheritDoc */
-	public function fetchPageContent(
-		PageConfig $pageConfig, string $title, int $oldid = 0
+	public function fetchTemplateSource(
+		PageConfig $pageConfig, string $title
 	): ?PageContent {
 		$normTitle = $this->normTitle( $title );
 		$pageData = self::$PAGE_DATA[$normTitle] ?? null;
-		// FIXME: Ignoring revid / oldid checks
 		if ( $pageData ) {
 			$content = [];
 			foreach ( $pageData['slots'] as $role => $data ) {

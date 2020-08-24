@@ -24,8 +24,8 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Revision\SlotRoleHandler;
-use Parser;
 use ParserOptions;
+use Revision;
 use Title;
 use Wikimedia\Parsoid\Config\PageConfig as IPageConfig;
 use Wikimedia\Parsoid\Config\PageContent as IPageContent;
@@ -40,9 +40,6 @@ use Wikimedia\Parsoid\Config\PageContent as IPageContent;
  */
 class PageConfig extends IPageConfig {
 
-	/** @var Parser */
-	private $parser;
-
 	/** @var ParserOptions */
 	private $parserOptions;
 
@@ -52,7 +49,7 @@ class PageConfig extends IPageConfig {
 	/** @var Title */
 	private $title;
 
-	/** @var RevisionRecord|null */
+	/** @var ?RevisionRecord */
 	private $revision;
 
 	/** @var string|null */
@@ -62,7 +59,6 @@ class PageConfig extends IPageConfig {
 	private $pagelanguageDir;
 
 	/**
-	 * @param Parser $parser
 	 * @param ParserOptions $parserOptions
 	 * @param SlotRoleHandler $slotRoleHandler
 	 * @param Title $title Title being parsed
@@ -71,12 +67,11 @@ class PageConfig extends IPageConfig {
 	 * @param ?string $pagelanguageDir
 	 */
 	public function __construct(
-		Parser $parser, ParserOptions $parserOptions,
+		ParserOptions $parserOptions,
 		SlotRoleHandler $slotRoleHandler, Title $title,
 		?RevisionRecord $revision = null, ?string $pagelanguage = null,
 		?string $pagelanguageDir = null
 	) {
-		$this->parser = $parser;
 		$this->parserOptions = $parserOptions;
 		$this->slotRoleHandler = $slotRoleHandler;
 		$this->title = $title;
@@ -161,23 +156,38 @@ class PageConfig extends IPageConfig {
 	}
 
 	/**
-	 * @return Parser
+	 * Use ParserOptions::getTemplateCallback() to fetch the correct
+	 * (usually latest) RevisionRecord for the given title.
+	 *
+	 * @param Title $title
+	 * @return ?RevisionRecord
 	 */
-	public function getParser(): Parser {
-		return $this->parser;
+	public function fetchRevisionRecordOfTemplate( Title $title ): ?RevisionRecord {
+		// See Parser::fetchTemplateAndTitle(), but stateless
+		// (Parsoid will track dependencies, etc, itself.)
+		// The callback defaults to Parser::statelessFetchTemplate()
+		$templateCb = $this->parserOptions->getTemplateCallback();
+		$stuff = call_user_func( $templateCb, $title, $this );
+		// Compatibility; the 'revision' property was deprecated in 1.35.
+		if ( isset( $stuff['revision-record'] ) ) {
+			$revRecord = $stuff['revision-record'];
+		} else {
+			// Triggers deprecation warnings via DeprecatablePropertyArray
+			$rev = $stuff['revision'] ?? null;
+			if ( $rev instanceof Revision ) {
+				$revRecord = $rev->getRevisionRecord();
+			} else {
+				$revRecord = null;
+			}
+		}
+		return $revRecord;
 	}
 
 	/**
 	 * @return ?RevisionRecord
 	 */
 	private function getRevision(): ?RevisionRecord {
-		if ( $this->revision === null ) {
-			$this->revision = call_user_func(
-				$this->parserOptions->getCurrentRevisionRecordCallback(),
-				$this->title, $this->parser
-			);
-		}
-		return $this->revision ?: null;
+		return $this->revision;
 	}
 
 	/** @inheritDoc */

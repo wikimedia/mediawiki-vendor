@@ -234,6 +234,13 @@ abstract class ParsoidHandler extends Handler {
 				$attribs['pageName'] = $opts['original']['title'];
 			}
 		}
+		if ( $attribs['oldid'] !== null ) {
+			if ( $attribs['oldid'] === '' ) {
+				$attribs['oldid'] = null;
+			} else {
+				$attribs['oldid'] = (int)$attribs['oldid'];
+			}
+		}
 
 		$attribs['envOptions'] = [
 			// We use `prefix` but ought to use `domain` (T206764)
@@ -267,10 +274,9 @@ abstract class ParsoidHandler extends Handler {
 		'#^https://www.mediawiki.org/wiki/Specs/(HTML|pagebundle)/(\d+\.\d+\.\d+)$#D';
 
 	/**
-	 * Combines:
-	 *  routes.acceptable
-	 *  apiUtils.validateAndSetOutputContentVersion
-	 *  apiUtils.parseProfile
+	 * This method checks if we support the requested content formats
+	 * As a side-effect, it updates $attribs to set outputContentVersion
+	 * that Parsoid should generate based on request headers.
 	 *
 	 * @param array &$attribs Request attributes from getRequestAttributes()
 	 * @return bool
@@ -307,6 +313,7 @@ abstract class ParsoidHandler extends Handler {
 					if ( $matches && strtolower( $matches[1] ) === $format ) {
 						$contentVersion = Parsoid::resolveContentVersion( $matches[2] );
 						if ( $contentVersion ) {
+							// $attribs mutated here!
 							$attribs['envOptions']['outputContentVersion'] = $contentVersion;
 							return true;
 						} else {
@@ -347,6 +354,11 @@ abstract class ParsoidHandler extends Handler {
 			throw new LogicException( 'Title not found!' );
 		}
 		$user = RequestContext::getMain()->getUser();
+		// Note: Parsoid by design isn't supposed to use the user
+		// context right now, and all user state is expected to be
+		// introduced as a post-parse transform.  So although we pass a
+		// User here, it only currently affects the output in obscure
+		// corner cases; see PageConfigFactory::create() for more.
 		return $this->pageConfigFactory->create(
 			$title, $user, $revision, $wikitextOverride, $pagelanguageOverride,
 			$this->parsoidSettings
@@ -391,7 +403,7 @@ abstract class ParsoidHandler extends Handler {
 	protected function respondToMissingRevisionContent(
 		?PageConfig &$pageConfig, array $attribs, ?string $wikitext = null
 	): ?Response {
-		$oldid = (int)$attribs['oldid'];
+		$oldid = $attribs['oldid'];
 
 		try {
 			$pageConfig = $this->createPageConfig(
@@ -493,7 +505,7 @@ abstract class ParsoidHandler extends Handler {
 				$pageConfig, $wikitext
 			);
 			$pageConfig = $this->createPageConfig(
-				$attribs['pageName'], (int)$attribs['oldid'], $wikitext
+				$attribs['pageName'], $attribs['oldid'], $wikitext
 			);
 		}
 
@@ -797,7 +809,7 @@ abstract class ParsoidHandler extends Handler {
 		//   "Both it and the oldid parameter are needed for
 		//    clean round-tripping of HTML retrieved earlier with"
 		// So, no oldid => no selser
-		$hasOldId = (bool)$attribs['oldid'];
+		$hasOldId = ( $attribs['oldid'] !== null );
 
 		if ( $hasOldId && !empty( $this->parsoidSettings['useSelser'] ) ) {
 			if ( !$pageConfig->getRevisionContent() ) {
@@ -876,7 +888,7 @@ abstract class ParsoidHandler extends Handler {
 
 		if ( !empty( $opts['updates'] ) ) {
 			$pageConfig = $this->createPageConfig(
-				$attribs['pageName'], (int)$attribs['oldid'], null,
+				$attribs['pageName'], $attribs['oldid'], null,
 				$attribs['pagelanguage']
 			);
 			// If we're only updating parts of the original version, it should

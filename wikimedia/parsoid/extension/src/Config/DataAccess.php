@@ -26,10 +26,9 @@ use LinkBatch;
 use Linker;
 use MediaTransformError;
 use MediaWiki\BadFileLookup;
-use MediaWiki\Revision\RevisionStore;
 use PageProps;
 use Parser;
-use ParserOptions;
+use ParserFactory;
 use RepoGroup;
 use Title;
 use Wikimedia\Parsoid\Config\DataAccess as IDataAccess;
@@ -37,9 +36,6 @@ use Wikimedia\Parsoid\Config\PageConfig as IPageConfig;
 use Wikimedia\Parsoid\Config\PageContent as IPageContent;
 
 class DataAccess implements IDataAccess {
-
-	/** @var RevisionStore */
-	private $revStore;
 
 	/** @var RepoGroup */
 	private $repoGroup;
@@ -50,34 +46,26 @@ class DataAccess implements IDataAccess {
 	/** @var Parser */
 	private $parser;
 
-	/** @var ParserOptions */
-	private $parserOptions;
-
-	/** @var IPageConfig|null */
+	/** @var ?PageConfig */
 	private $previousPageConfig;
 
 	/**
-	 * @param RevisionStore $revStore
 	 * @param RepoGroup $repoGroup
 	 * @param BadFileLookup $badFileLookup
-	 * @param Parser $parser
-	 * @param ParserOptions $parserOptions
+	 * @param ParserFactory $parserFactory A legacy parser factory,
+	 *   for PST/preprocessing/extension handling
 	 */
 	public function __construct(
-		RevisionStore $revStore, RepoGroup $repoGroup,
-		BadFileLookup $badFileLookup, Parser $parser,
-		ParserOptions $parserOptions
+		RepoGroup $repoGroup, BadFileLookup $badFileLookup,
+		ParserFactory $parserFactory
 	) {
-		$this->revStore = $revStore;
 		$this->repoGroup = $repoGroup;
 		$this->badFileLookup = $badFileLookup;
-		$this->parser = $parser;
-		$this->parserOptions = $parserOptions;
 
-		// Turn off some options since Parsoid/JS currently doesn't
-		// do anything with this. As we proceed with closer integration,
-		// we can figure out if there is any value to these limit reports.
-		$this->parserOptions->setOption( 'enableLimitReport', false );
+		// Use the same legacy parser object for all calls to extension tag
+		// processing, for greater compatibility.
+		$this->parser = $parserFactory->create();
+		$this->previousPageConfig = null; // ensure we initialize parser options
 	}
 
 	/**
@@ -251,12 +239,13 @@ class DataAccess implements IDataAccess {
 	 * @return Parser
 	 */
 	private function prepareParser( IPageConfig $pageConfig, int $outputType ) {
+		'@phan-var PageConfig $pageConfig'; // @var PageConfig $pageConfig
 		// Clear the state only when the PageConfig changes, so that Parser's internal caches can
 		// be retained. This should also provide better compatibility with extension tags.
 		$clearState = $this->previousPageConfig !== $pageConfig;
 		$this->previousPageConfig = $pageConfig;
 		$this->parser->startExternalParse(
-			Title::newFromText( $pageConfig->getTitle() ), $this->parserOptions,
+			Title::newFromText( $pageConfig->getTitle() ), $pageConfig->getParserOptions(),
 			$outputType, $clearState, $pageConfig->getRevisionId() );
 		$this->parser->resetOutput();
 		return $this->parser;
@@ -264,11 +253,12 @@ class DataAccess implements IDataAccess {
 
 	/** @inheritDoc */
 	public function doPst( IPageConfig $pageConfig, string $wikitext ): string {
+		'@phan-var PageConfig $pageConfig'; // @var PageConfig $pageConfig
 		// This could use prepareParser(), but it's only called once per page,
 		// so it's not essential.
 		$titleObj = Title::newFromText( $pageConfig->getTitle() );
 		return ContentHandler::makeContent( $wikitext, $titleObj, CONTENT_MODEL_WIKITEXT )
-			->preSaveTransform( $titleObj, $this->parserOptions->getUser(), $this->parserOptions )
+			->preSaveTransform( $titleObj, $pageConfig->getParserOptions()->getUser(), $pageConfig->getParserOptions() )
 			->serialize();
 	}
 
@@ -304,20 +294,15 @@ class DataAccess implements IDataAccess {
 	}
 
 	/** @inheritDoc */
-	public function fetchPageContent(
-		IPageConfig $pageConfig, string $title, int $oldid = 0
+	public function fetchTemplateSource(
+		IPageConfig $pageConfig, string $title
 	): ?IPageContent {
+		'@phan-var PageConfig $pageConfig'; // @var PageConfig $pageConfig
 		$titleObj = Title::newFromText( $title );
 
-		if ( $oldid ) {
-			$revRecord = $this->revStore->getRevisionByTitle( $titleObj, $oldid );
-		} else {
-			$revRecord = call_user_func(
-				$this->parserOptions->getCurrentRevisionRecordCallback(),
-				$titleObj,
-				$this->parser
-			);
-		}
+		// Use the PageConfig to take advantage of custom template
+		// fetch hooks like FlaggedRevisions, etc.
+		$revRecord = $pageConfig->fetchRevisionRecordOfTemplate( $titleObj );
 
 		return $revRecord ? new PageContent( $revRecord ) : null;
 	}
