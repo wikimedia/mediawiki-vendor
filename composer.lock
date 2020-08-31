@@ -1583,7 +1583,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oauth2-server.git",
-                "reference": "2119d56f6f4376567645b96d71ff623d170b894f"
+                "reference": "a00cc3c27428034e21b64e5264cd5fcaf2ed6072"
             },
             "require": {
                 "defuse/php-encryption": "^2.2.1",
@@ -1651,7 +1651,7 @@
                 "secure",
                 "server"
             ],
-            "time": "2020-08-11T15:13:55+00:00"
+            "time": "2020-08-31T20:05:07+00:00"
         },
         {
             "name": "league/uri",

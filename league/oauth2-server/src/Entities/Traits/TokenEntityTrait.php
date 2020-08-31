@@ -42,6 +42,11 @@ trait TokenEntityTrait
     protected $client;
 
     /**
+     * @var string|null
+     */
+    protected $issuer;
+
+    /**
      * Associate a scope with the token.
      *
      * @param ScopeEntityInterface $scope
@@ -139,5 +144,25 @@ trait TokenEntityTrait
     public function setClient(ClientEntityInterface $client)
     {
         $this->client = $client;
+    }
+
+    /**
+     * Return an issuer identifier for the token.
+     *
+     * @return string|null
+     */
+    public function getIssuer()
+    {
+        return $this->issuer;
+    }
+
+    /**
+     * Set the issuer identifier for the token.
+     *
+     * @param string $issuer
+     */
+    public function setIssuer($issuer)
+    {
+        $this->issuer = $issuer;
     }
 }

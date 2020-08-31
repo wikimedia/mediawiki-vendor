@@ -96,4 +96,18 @@ interface TokenInterface
      * @return ClaimEntityInterface[]
      */
     public function getClaims();
+
+    /**
+     * Return an issuer identifier for the token.
+     *
+     * @return string|null
+     */
+    public function getIssuer();
+
+    /**
+     * Set the issuer identifier for the token.
+     *
+     * @param string $issuer
+     */
+    public function setIssuer($issuer);
 }

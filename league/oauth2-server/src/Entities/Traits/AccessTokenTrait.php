@@ -51,6 +51,10 @@ trait AccessTokenTrait
             ->expiresAt($this->getExpiryDateTime()->getTimestamp())
             ->relatedTo((string) $this->getUserIdentifier());
 
+        if ($this->getIssuer()) {
+            $builder->issuedBy($this->getIssuer());
+        }
+
         foreach ($this->getClaims() as $claim) {
             $builder->withClaim($claim->getName(), $claim->getValue());
         }
@@ -98,4 +102,9 @@ trait AccessTokenTrait
      * @return string
      */
     abstract public function getIdentifier();
+
+    /**
+     * @return string
+     */
+    abstract public function getIssuer();
 }
