@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "722d2db3ba947fb2b72b7cc937f75702",
+    "content-hash": "3dc5bc2825c05f756b5ae1daec2942dc",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -2205,16 +2205,16 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.40.1",
+            "version": "v0.40.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "d1e4107e1c4f4ca0139a4ac936cb4f64ec8dc7fc"
+                "reference": "88d8c07c100a8cb24d2716d440520c85c500c915"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/d1e4107e1c4f4ca0139a4ac936cb4f64ec8dc7fc",
-                "reference": "d1e4107e1c4f4ca0139a4ac936cb4f64ec8dc7fc",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/88d8c07c100a8cb24d2716d440520c85c500c915",
+                "reference": "88d8c07c100a8cb24d2716d440520c85c500c915",
                 "shasum": ""
             },
             "require": {
@@ -2282,7 +2282,7 @@
             ],
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOUI",
-            "time": "2020-08-05T20:03:34+00:00"
+            "time": "2020-09-02T15:34:00+00:00"
         },
         {
             "name": "pear/console_getopt",
