@@ -233,6 +233,18 @@ Template:table_cells
 !! endarticle
 
 !! article
+Template:table_cell_content
+!! text
+{{{attr|}}}{{{cmt|}}}| foo
+!! endarticle
+
+!! article
+Template:table_cell_content_with_leading_spc
+!! text
+ | foo
+!! endarticle
+
+!! article
 Template:PartialTable
 !! text
 {|
@@ -7608,6 +7620,103 @@ Template generated table cell with attributes
 !! end
 
 !! test
+Templated table cell with untemplated attributes: Common use cases
+!! wikitext
+{|
+|-
+!class="test"{{table_cell_content}} /* <th> & <td> combine */
+|-
+|class="test"{{table_cell_content}} /* <td> & <td> combine */
+|
+|class="test"{{table_cell_content|attr=style='color:red;'}}
+|
+|class="test"{{table_cell_content|cmt=<!--bar-->}}
+|}
+!! html/php
+<table>
+
+<tbody><tr>
+<th class="test">foo /* </th><th> &amp; </th><td> combine */
+</td></tr>
+<tr>
+<td class="test">foo /* </td><td> &amp; </td><td> combine */
+</td>
+<td>
+</td>
+<td class="test" style="color:red;">foo
+</td>
+<td>
+</td>
+<td class="test">foo
+</td></tr></tbody></table>
+!! html/parsoid
+<table>
+<tbody><tr data-parsoid='{"startTagSrc":"|-"}'>
+<th class="test" typeof="mw:Transclusion" about="#mwt1" data-parsoid='{"pi":[[]]}' data-mw='{"parts":["!class=\"test\"",{"template":{"target":{"wt":"table_cell_content","href":"./Template:Table_cell_content"},"params":{},"i":0}}," /* "]}'>foo /*</th><th data-parsoid='{"stx":"html","autoInsertedEnd":true}'> &amp; </th><td data-parsoid='{"stx":"html","autoInsertedEnd":true}'> combine */</td></tr>
+<tr data-parsoid='{"startTagSrc":"|-"}'>
+<td class="test" typeof="mw:Transclusion" about="#mwt2" data-parsoid='{"pi":[[]]}' data-mw='{"parts":["|class=\"test\"",{"template":{"target":{"wt":"table_cell_content","href":"./Template:Table_cell_content"},"params":{},"i":0}}," /* "]}'>foo /*</td><td data-parsoid='{"stx":"html","autoInsertedEnd":true}'> &amp; </td><td data-parsoid='{"stx":"html","autoInsertedEnd":true}'> combine */</td>
+<td></td>
+<td class="test" style="color:red;" typeof="mw:Transclusion" about="#mwt3" data-parsoid='{"pi":[[{"k":"attr","named":true}]]}' data-mw='{"parts":["|class=\"test\"",{"template":{"target":{"wt":"table_cell_content","href":"./Template:Table_cell_content"},"params":{"attr":{"wt":"style=&apos;color:red;&apos;"}},"i":0}}]}'>foo</td>
+<td></td>
+<td class="test" typeof="mw:Transclusion" about="#mwt4" data-parsoid='{"pi":[[{"k":"cmt","named":true}]]}' data-mw='{"parts":["|class=\"test\"",{"template":{"target":{"wt":"table_cell_content","href":"./Template:Table_cell_content"},"params":{"cmt":{"wt":"&lt;!--bar-->"}},"i":0}}]}'>foo</td></tr>
+</tbody></table>
+!! end
+
+!! test
+Templated table cell with untemplated attributes: Regression tests
+!! wikitext
+{|
+|class="foo"
+{{1x|1={{!}}bar}}
+|}
+!! html/php
+<table>
+<tbody><tr>
+<td>class="foo"
+</td>
+<td>bar
+</td></tr></tbody></table>
+!! html/parsoid
+<table>
+<tbody><tr>
+<td>class="foo"</td>
+<td about="#mwt1" typeof="mw:Transclusion" data-parsoid='{"pi":[[{"k":"1","named":true}]]}' data-mw='{"parts":[{"template":{"target":{"wt":"1x","href":"./Template:1x"},"params":{"1":{"wt":"{{!}}bar"}},"i":0}}]}'>bar</td></tr>
+</tbody></table>
+
+!! end
+
+!! test
+Templated table cell with untemplated attributes: Unsupported Scenarios
+!! options
+parsoid=wt2html
+!! wikitext
+{|
+|-
+|class="foo"{{1x|1= {{!}}bar}}
+|-
+|class="foo"{{1x|1=&nbsp;{{!}}bar}}
+|-
+|class="foo"{{1x|1={{!}}title="fail"{{!}}bar}}
+|}
+!! html/php
+<table>
+
+<tbody><tr>
+<td class="foo">bar
+</td></tr>
+<tr>
+<td class="foo">bar
+</td></tr>
+<tr>
+<td class="foo">title="fail"|bar
+</td></tr></tbody></table>
+!! html/parsoid
+This test fails each of the three table cell scenarios for different reasons.
+For now, we are deliberately not support these use cases in Parsoid unless
+required or we find a simpler solution that covers everything uniformly.
+!! end
+
+!! test
 Parsoid: Round-trip tables directly followed by content (T53219)
 !! options
 parsoid=wt2html,wt2wt
@@ -9003,6 +9112,28 @@ wgFragmentMode=[ 'legacy' ]
 !! html/php
 <p><a href="/wiki/Foo#.3Cbar.3E" title="Foo">Foo#&lt;bar&gt;</a>
 </p>
+!! end
+
+!! test
+Wikilink in wikilink
+!! wikitext
+[[Hi|[[Ho]]]]
+!! html/php
+<p>[[Hi|<a href="/index.php?title=Ho&amp;action=edit&amp;redlink=1" class="new" title="Ho (page does not exist)">Ho</a>]]
+</p>
+!! html/parsoid
+<p>[[Hi|<a rel="mw:WikiLink" href="./Ho" title="Ho" data-parsoid='{"stx":"simple","a":{"href":"./Ho"},"sa":{"href":"Ho"}}' class="new">Ho</a>]]</p>
+!! end
+
+!! test
+Media in wikilink
+!! wikitext
+[[Test|[[File:Foobar.jpg]]]]
+!! html/php
+<p>[[Test|<a href="/wiki/File:Foobar.jpg" class="image"><img alt="Foobar.jpg" src="http://example.com/images/3/3a/Foobar.jpg" decoding="async" width="1941" height="220" /></a>]]
+</p>
+!! html/parsoid
+<p>[[Test|<figure-inline class="mw-default-size" typeof="mw:Image"><a href="./File:Foobar.jpg"><img resource="./File:Foobar.jpg" src="http://example.com/images/3/3a/Foobar.jpg" data-file-width="1941" data-file-height="220" data-file-type="bitmap" height="220" width="1941" data-parsoid='{"a":{"resource":"./File:Foobar.jpg","height":"220","width":"1941"},"sa":{"resource":"File:Foobar.jpg"}}'/></a></figure-inline>]]</p>
 !! end
 
 ###
