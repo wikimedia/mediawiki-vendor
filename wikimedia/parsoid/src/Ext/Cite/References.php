@@ -144,20 +144,74 @@ class References extends ExtensionTagHandler {
 		// FIXME(SSS): Need to clarify semantics here.
 		// If both the containing <references> elt as well as the nested <ref>
 		// elt has a group attribute, what takes precedence?
-		$group = $refDmw->attrs->group ?? $referencesGroup ?? '';
+		$groupName = $refDmw->attrs->group ?? $referencesGroup ?? '';
 
 		// NOTE: This will have been trimmed in Utils::getExtArgInfo()'s call
 		// to TokenUtils::kvToHash() and ExtensionHandler::normalizeExtOptions()
 		$refName = $refDmw->attrs->name ?? '';
+		$followName = $refDmw->attrs->follow ?? '';
+
+		// Looks like Cite.php doesn't try to fix ids that already have
+		// a "_" in them. Ex: name="a b" and name="a_b" are considered
+		// identical. Not sure if this is a feature or a bug.
+		// It also considers entities equal to their encoding
+		// (i.e. '&' === '&amp;'), which is done:
+		//  in PHP: Sanitizer#decodeTagAttributes and
+		//  in Parsoid: ExtensionHandler#normalizeExtOptions
+		$refName = $extApi->sanitizeHTMLId( $refName );
+		$followName = $extApi->sanitizeHTMLId( $followName );
 
 		// Add ref-index linkback
 		$linkBack = $doc->createElement( 'sup' );
 
-		$ref = $refsData->add(
-			$extApi, $group, $refName, $about, $nestedInReferences, $linkBack
-		);
-
+		$ref = null;
 		$errs = [];
+
+		$hasRefName = strlen( $refName ) > 0;
+		$hasFollow = strlen( $followName ) > 0;
+
+		if ( $hasFollow ) {
+			if ( $hasRefName ) {
+				$errs[] = [ 'key' => 'cite_error_ref_too_many_keys' ];
+			} else {
+				// This is a follows ref, so check that a named ref has already
+				// been defined
+				$group = $refsData->getRefGroup( $groupName );
+				if ( isset( $group->indexByName[$followName] ) ) {
+					$ref = $group->indexByName[$followName];
+
+					$span = $c->ownerDocument->createElement( 'span' );
+					DOMUtils::addTypeOf( $span, 'mw:Cite/Follow' );
+					$span->setAttribute( 'about', $about );
+					$span->appendChild(
+						$c->ownerDocument->createTextNode( ' ' )
+					);
+					DOMUtils::migrateChildren( $c, $span );
+					$c->appendChild( $span );
+
+					if ( $ref->contentId ) {
+						$refContent = $extApi->getContentDOM( $ref->contentId );
+						ParsoidExtensionAPI::migrateChildrenBetweenDocs(
+							$c, $refContent, false
+						);
+					} else {
+						// Otherwise, we have a follow that comes after a named
+						// ref without content so use the follow fragment as
+						// the content
+						$ref->contentId = $contentId;
+					}
+				} else {
+					$errs[] = [ 'key' => 'cite_error_references_missing_key' ];
+				}
+			}
+		}
+
+		if ( !$ref ) {
+			$ref = $refsData->add(
+				$extApi, $groupName, $refName, $about, $nestedInReferences,
+				$linkBack
+			);
+		}
 
 		// Check for missing content, added ?? '' to fix T259676 crasher
 		// FIXME: See T260082 for a more complete description of cause and deeper fix
@@ -165,7 +219,7 @@ class References extends ExtensionTagHandler {
 
 		if ( $missingContent ) {
 			// Check for missing name and content to generate error code
-			if ( $refName === '' ) {
+			if ( !$hasRefName ) {
 				if ( !empty( $cDp->selfClose ) ) {
 					$errs[] = [ 'key' => 'cite_error_ref_no_key' ];
 				} else {
@@ -186,6 +240,8 @@ class References extends ExtensionTagHandler {
 			$html = '';
 			$contentDiffers = false;
 			if ( $ref->hasMultiples ) {
+				// FIXME: Strip the mw:Cite/Follow wrappers
+				// See the test, "Forward-referenced ref with magical follow edge case"
 				$html = $extApi->domToHtml( $c, true, true );
 				$c = null; // $c is being release in the call above
 				$contentDiffers = $html !== $ref->cachedHtml;
@@ -237,13 +293,16 @@ class References extends ExtensionTagHandler {
 		}
 		DOMDataUtils::setDataMw( $linkBack, $dmw );
 
+		if ( $hasFollow && count( $errs ) === 0 ) {
+			$linkBack->setAttribute( 'style', 'display: none;' );
+		}
+
 		// refLink is the link to the citation
 		$refLink = $doc->createElement( 'a' );
 		DOMUtils::addAttributes( $refLink, [
-				'href' => $extApi->getPageUri() . '#' . $ref->target,
-				'style' => 'counter-reset: mw-Ref ' . $ref->groupIndex . ';',
-			]
-		);
+			'href' => $extApi->getPageUri() . '#' . $ref->target,
+			'style' => 'counter-reset: mw-Ref ' . $ref->groupIndex . ';',
+		] );
 		if ( $ref->group ) {
 			$refLink->setAttribute( 'data-mw-group', $ref->group );
 		}
@@ -254,8 +313,8 @@ class References extends ExtensionTagHandler {
 		$refLinkSpan->setAttribute( 'class', 'mw-reflink-text' );
 		$refLinkSpan->appendChild( $doc->createTextNode(
 			'[' . ( $ref->group ? $ref->group . ' ' : '' ) . $ref->groupIndex . ']'
-			)
-		);
+		) );
+
 		$refLink->appendChild( $refLinkSpan );
 		$linkBack->appendChild( $refLink );
 

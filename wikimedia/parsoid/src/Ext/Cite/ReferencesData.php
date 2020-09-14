@@ -63,14 +63,6 @@ class ReferencesData {
 		string $about, bool $skipLinkback, DOMElement $linkBack
 	): stdClass {
 		$group = $this->getRefGroup( $groupName, true );
-		// Looks like Cite.php doesn't try to fix ids that already have
-		// a "_" in them. Ex: name="a b" and name="a_b" are considered
-		// identical. Not sure if this is a feature or a bug.
-		// It also considers entities equal to their encoding
-		// (i.e. '&' === '&amp;'), which is done:
-		//  in PHP: Sanitizer#decodeTagAttributes and
-		//  in Parsoid: ExtensionHandler#normalizeExtOptions
-		$refName = $extApi->sanitizeHTMLId( $refName );
 		$hasRefName = strlen( $refName ) > 0;
 
 		if ( $hasRefName && isset( $group->indexByName[$refName] ) ) {

@@ -145,7 +145,35 @@ class Ref extends ExtensionTagHandler {
 				return ''; // Drop it!
 			}
 
-			$src = $extApi->domToWikitext( $html2wtOpts, $bodyElt, true );
+			$hasRefName = strlen( $dataMw->attrs->name ?? '' ) > 0;
+			$hasFollow = strlen( $dataMw->attrs->follow ?? '' ) > 0;
+
+			if ( $hasFollow && !DOMUtils::hasTypeOf( $node, 'mw:Error' ) ) {
+				$about = $node->getAttribute( 'about' );
+				$followNode = DOMCompat::querySelector(
+					$bodyElt, "span[typeof~='mw:Cite/Follow'][about='{$about}']"
+				);
+				if ( $followNode ) {
+					$src = $extApi->domToWikitext( $html2wtOpts, $followNode, true );
+					$src = ltrim( $src, ' ' );
+				} else {
+					$src = '';
+				}
+			} else {
+				if ( $hasRefName ) {
+					// Follow content may have been added as spans, so drop it
+					if ( DOMCompat::querySelector( $bodyElt, "span[typeof~='mw:Cite/Follow']" ) ) {
+						$bodyElt = $bodyElt->cloneNode( true );
+						foreach ( $bodyElt->childNodes as $child ) {
+							if ( DOMUtils::hasTypeOf( $child, 'mw:Cite/Follow' ) ) {
+								DOMCompat::remove( $child );
+							}
+						}
+					}
+				}
+
+				$src = $extApi->domToWikitext( $html2wtOpts, $bodyElt, true );
+			}
 		} else {
 			$extApi->log( 'error', 'Ref body unavailable for: ' . DOMCompat::getOuterHTML( $node ) );
 			return ''; // Drop it!
