@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "caff711f1e089151c12c97fb4ff74be2",
+    "content-hash": "70e77c65f9e3a3fae27ef397ee549472",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -2512,16 +2512,16 @@
         },
         {
             "name": "pear/net_smtp",
-            "version": "1.9.1",
+            "version": "1.9.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear/Net_SMTP.git",
-                "reference": "ee0e156ab94b37ac7ad10623a4a62f10a2a2d421"
+                "reference": "18b5dbaa049bee5f6d02c9a4318db02472e2c922"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/Net_SMTP/zipball/ee0e156ab94b37ac7ad10623a4a62f10a2a2d421",
-                "reference": "ee0e156ab94b37ac7ad10623a4a62f10a2a2d421",
+                "url": "https://api.github.com/repos/pear/Net_SMTP/zipball/18b5dbaa049bee5f6d02c9a4318db02472e2c922",
+                "reference": "18b5dbaa049bee5f6d02c9a4318db02472e2c922",
                 "shasum": ""
             },
             "require": {
@@ -2568,7 +2568,7 @@
                 "mail",
                 "smtp"
             ],
-            "time": "2020-06-06T22:45:09+00:00"
+            "time": "2020-08-13T01:26:09+00:00"
         },
         {
             "name": "pear/net_socket",

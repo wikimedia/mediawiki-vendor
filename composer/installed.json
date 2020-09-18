@@ -2589,17 +2589,17 @@
     },
     {
         "name": "pear/net_smtp",
-        "version": "1.9.1",
-        "version_normalized": "1.9.1.0",
+        "version": "1.9.2",
+        "version_normalized": "1.9.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/pear/Net_SMTP.git",
-            "reference": "ee0e156ab94b37ac7ad10623a4a62f10a2a2d421"
+            "reference": "18b5dbaa049bee5f6d02c9a4318db02472e2c922"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/pear/Net_SMTP/zipball/ee0e156ab94b37ac7ad10623a4a62f10a2a2d421",
-            "reference": "ee0e156ab94b37ac7ad10623a4a62f10a2a2d421",
+            "url": "https://api.github.com/repos/pear/Net_SMTP/zipball/18b5dbaa049bee5f6d02c9a4318db02472e2c922",
+            "reference": "18b5dbaa049bee5f6d02c9a4318db02472e2c922",
             "shasum": ""
         },
         "require": {
@@ -2613,7 +2613,7 @@
         "suggest": {
             "pear/auth_sasl": "Install optionally via your project's composer.json"
         },
-        "time": "2020-06-06T22:45:09+00:00",
+        "time": "2020-08-13T01:26:09+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
