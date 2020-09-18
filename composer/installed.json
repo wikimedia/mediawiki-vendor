@@ -3654,17 +3654,17 @@
     },
     {
         "name": "spomky-labs/base64url",
-        "version": "v2.0.2",
-        "version_normalized": "2.0.2.0",
+        "version": "v2.0.3",
+        "version_normalized": "2.0.3.0",
         "source": {
             "type": "git",
             "url": "https://github.com/Spomky-Labs/base64url.git",
-            "reference": "69e77e7d7c5407a253dacdd7bfe6b8978b7a4fb2"
+            "reference": "48ea8ff600cefe56b82d3d5b768b6f4f3bfe05a1"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/Spomky-Labs/base64url/zipball/69e77e7d7c5407a253dacdd7bfe6b8978b7a4fb2",
-            "reference": "69e77e7d7c5407a253dacdd7bfe6b8978b7a4fb2",
+            "url": "https://api.github.com/repos/Spomky-Labs/base64url/zipball/48ea8ff600cefe56b82d3d5b768b6f4f3bfe05a1",
+            "reference": "48ea8ff600cefe56b82d3d5b768b6f4f3bfe05a1",
             "shasum": ""
         },
         "require": {
@@ -3679,7 +3679,7 @@
             "phpstan/phpstan-strict-rules": "^0.11",
             "phpunit/phpunit": "^7.0|^8.0|^9.0"
         },
-        "time": "2020-08-01T14:15:43+00:00",
+        "time": "2020-08-30T13:35:33+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -3708,23 +3708,22 @@
     },
     {
         "name": "spomky-labs/cbor-php",
-        "version": "v1.1.0",
-        "version_normalized": "1.1.0.0",
+        "version": "v1.1.1",
+        "version_normalized": "1.1.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/Spomky-Labs/cbor-php.git",
-            "reference": "2e31a68f1ffde136b3627116441e25339f413e8d"
+            "reference": "b8e51e6a13606ab1dd8a64aa295651d8ad57ccd1"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/Spomky-Labs/cbor-php/zipball/2e31a68f1ffde136b3627116441e25339f413e8d",
-            "reference": "2e31a68f1ffde136b3627116441e25339f413e8d",
+            "url": "https://api.github.com/repos/Spomky-Labs/cbor-php/zipball/b8e51e6a13606ab1dd8a64aa295651d8ad57ccd1",
+            "reference": "b8e51e6a13606ab1dd8a64aa295651d8ad57ccd1",
             "shasum": ""
         },
         "require": {
             "beberlei/assert": "^3.2",
             "brick/math": "^0.8.15",
-            "ext-gmp": "*",
             "php": ">=7.1",
             "spomky-labs/base64url": "^1.0|^2.0"
         },
@@ -3741,7 +3740,7 @@
             "ext-bcmath": "GMP or BCMath extensions will drastically improve the library performance. BCMath extension needed to handle the Big Float and Decimal Fraction Tags",
             "ext-gmp": "GMP or BCMath extensions will drastically improve the library performance"
         },
-        "time": "2020-07-12T21:35:13+00:00",
+        "time": "2020-07-12T22:25:05+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
