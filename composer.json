@@ -34,7 +34,7 @@
 		"guzzlehttp/ringphp": "1.1.1",
 		"guzzlehttp/streams": "3.0.0",
 		"jakobo/hotp-php": "1.0.1",
-		"james-heinrich/getid3": "1.9.19",
+		"james-heinrich/getid3": "1.9.20",
 		"justinrainbow/json-schema": "5.2.10",
 		"lcobucci/jwt": "3.3.3",
 		"league/event": "2.2.0",

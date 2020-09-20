@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "91ef49c687a0650b9a3bb95dad5da985",
+    "content-hash": "5474dfd08ec9db05c86a0529d586a07e",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -1401,16 +1401,16 @@
         },
         {
             "name": "james-heinrich/getid3",
-            "version": "v1.9.19",
+            "version": "v1.9.20",
             "source": {
                 "type": "git",
                 "url": "https://github.com/JamesHeinrich/getID3.git",
-                "reference": "c6fd499a690ae67eea2eec6b2edba5df13f60f6f"
+                "reference": "3c15e353b9bb1252201c73394bb8390b573a751d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/c6fd499a690ae67eea2eec6b2edba5df13f60f6f",
-                "reference": "c6fd499a690ae67eea2eec6b2edba5df13f60f6f",
+                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/3c15e353b9bb1252201c73394bb8390b573a751d",
+                "reference": "3c15e353b9bb1252201c73394bb8390b573a751d",
                 "shasum": ""
             },
             "require": {
@@ -1460,7 +1460,7 @@
                 "php",
                 "tags"
             ],
-            "time": "2019-12-17T21:17:26+00:00"
+            "time": "2020-06-30T18:43:34+00:00"
         },
         {
             "name": "justinrainbow/json-schema",
