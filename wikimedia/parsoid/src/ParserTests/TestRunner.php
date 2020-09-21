@@ -495,9 +495,11 @@ class TestRunner {
 		$domSubtreeIsEditable = function ( DOMNode $node ): bool {
 			return !( $node instanceof DOMElement ) ||
 				( !WTUtils::isEncapsulationWrapper( $node ) &&
-					// Deleting these div wrappers is tantamount to removing the
-					!DOMUtils::matchTypeOf( $node, '#^mw:(Entity|Placeholder)(/|$)#' ) &&
-					// reference tag encaption wrappers, which results in errors.
+					// These wrappers can only be edited in restricted ways.
+					// Simpler to just block all editing on them.
+					!DOMUtils::matchTypeOf( $node, '#^mw:(Entity|Placeholder|DisplaySpace)(/|$)#' ) &&
+					// Deleting these wrappers is tantamount to removing the
+					// references-tag encapsulation wrappers, which results in errors.
 					!preg_match( '/\bmw-references-wrap\b/', $node->getAttribute( 'class' ) ?? '' )
 				);
 		};
@@ -520,7 +522,7 @@ class TestRunner {
 			//   is an uneditable image elt.
 			// - Entity spans are uneditable as well
 			// - Placeholder is defined to be uneditable in the spec
-			return DOMUtils::matchTypeOf( $node, '#^mw:(Image|Video|Audio|Entity|Placeholder)(/|$)#' ) || (
+			return DOMUtils::matchTypeOf( $node, '#^mw:(Image|Video|Audio|Entity|Placeholder|DisplaySpace)(/|$)#' ) || (
 				$node->nodeName !== 'figcaption' &&
 				$node->parentNode &&
 				$node->parentNode->nodeName !== 'body' &&

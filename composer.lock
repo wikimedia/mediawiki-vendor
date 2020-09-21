@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f6ea825f4c06e22cd4410792fd9f2a10",
+    "content-hash": "11e56056ac960c0f7290d704bfb91ee0",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -6063,16 +6063,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.13.0-a9",
+            "version": "v0.13.0-a10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/parsoid.git",
-                "reference": "7bdf506bce9d6e8e0572b30b2de0dd1f3498b79a"
+                "reference": "f925d54228f66e584d7a80b5fb0799f0a01fa25f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/7bdf506bce9d6e8e0572b30b2de0dd1f3498b79a",
-                "reference": "7bdf506bce9d6e8e0572b30b2de0dd1f3498b79a",
+                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/f925d54228f66e584d7a80b5fb0799f0a01fa25f",
+                "reference": "f925d54228f66e584d7a80b5fb0799f0a01fa25f",
                 "shasum": ""
             },
             "require": {
@@ -6134,7 +6134,7 @@
                 "mediawiki",
                 "parsoid"
             ],
-            "time": "2020-09-11T23:01:48+00:00"
+            "time": "2020-09-21T07:30:46+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",
