@@ -49,7 +49,6 @@ use Wikimedia\Parsoid\Core\SelserData;
 use Wikimedia\Parsoid\Parsoid;
 use Wikimedia\Parsoid\Utils\ContentUtils;
 use Wikimedia\Parsoid\Utils\DOMCompat;
-use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\PHPUtils;
 use Wikimedia\Parsoid\Utils\Timing;
@@ -739,7 +738,7 @@ abstract class ParsoidHandler extends Handler {
 				[ 'ids' => [] ],  // So it validates
 				$opts['data-mw']['body'] ?? null );
 			$this->validatePb( $pb, $envOptions['inputContentVersion'] );
-			DOMDataUtils::applyPageBundle( $doc, $pb );
+			PageBundle::apply( $doc, $pb );
 		}
 
 		$oldhtml = null;
@@ -778,7 +777,7 @@ abstract class ParsoidHandler extends Handler {
 					$pb = new PageBundle( '', $pb->parsoid, [ 'ids' => [] ] );
 				}
 				$this->validatePb( $pb, $envOptions['inputContentVersion'] );
-				DOMDataUtils::applyPageBundle( $doc, $pb );
+				PageBundle::apply( $doc, $pb );
 			}
 
 			// If we got original html, parse it
@@ -788,7 +787,7 @@ abstract class ParsoidHandler extends Handler {
 				}
 				if ( $opts['from'] === FormatHelper::FORMAT_PAGEBUNDLE ) {
 					$this->validatePb( $origPb, $envOptions['inputContentVersion'] );
-					DOMDataUtils::applyPageBundle( $oldBody->ownerDocument, $origPb );
+					PageBundle::apply( $oldBody->ownerDocument, $origPb );
 				}
 				$oldhtml = ContentUtils::toXML( $oldBody );
 			}
@@ -961,19 +960,21 @@ abstract class ParsoidHandler extends Handler {
 	) {
 		$parsoid = new Parsoid( $this->siteConfig, $this->dataAccess );
 
-		$html = $parsoid->html2html(
-			$pageConfig, 'redlinks', $revision['html']['body'], [], $headers
-		);
-
-		$out = new PageBundle(
-			$html,
+		$pb = new PageBundle(
+			$revision['html']['body'],
 			$revision['data-parsoid']['body'] ?? null,
 			$revision['data-mw']['body'] ?? null,
 			$attribs['envOptions']['inputContentVersion'],
-			$headers,
+			$revision['html']['headers'] ?? null,
 			$revision['contentmodel'] ?? null
 		);
+
+		$out = $parsoid->pb2pb(
+			$pageConfig, 'redlinks', $pb, []
+		);
+
 		$this->validatePb( $out, $attribs['envOptions']['inputContentVersion'] );
+
 		$response = $this->getResponseFactory()->createJson( $out->responseData() );
 		FormatHelper::setContentType(
 			$response, FormatHelper::FORMAT_PAGEBUNDLE, $out->version

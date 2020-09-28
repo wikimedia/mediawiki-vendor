@@ -6256,17 +6256,17 @@
     },
     {
         "name": "wikimedia/parsoid",
-        "version": "v0.13.0-a10",
-        "version_normalized": "0.13.0.0-alpha10",
+        "version": "v0.13.0-a11",
+        "version_normalized": "0.13.0.0-alpha11",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/parsoid.git",
-            "reference": "f925d54228f66e584d7a80b5fb0799f0a01fa25f"
+            "reference": "ab62cd81dea596bd11c0b381c409a0fc58e775c5"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/f925d54228f66e584d7a80b5fb0799f0a01fa25f",
-            "reference": "f925d54228f66e584d7a80b5fb0799f0a01fa25f",
+            "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/ab62cd81dea596bd11c0b381c409a0fc58e775c5",
+            "reference": "ab62cd81dea596bd11c0b381c409a0fc58e775c5",
             "shasum": ""
         },
         "require": {
@@ -6291,7 +6291,7 @@
             "composer/composer": "^1.10@RC",
             "ext-curl": "*",
             "mediawiki/mediawiki-codesniffer": "31.0.0",
-            "mediawiki/mediawiki-phan-config": "0.10.2",
+            "mediawiki/mediawiki-phan-config": "0.10.3",
             "mediawiki/minus-x": "1.1.0",
             "monolog/monolog": "~1.25.2",
             "ockcyp/covers-validator": "1.1.1",
@@ -6306,7 +6306,7 @@
         "suggest": {
             "wikimedia/langconv": "Provides script conversion support"
         },
-        "time": "2020-09-21T07:30:46+00:00",
+        "time": "2020-09-25T20:18:14+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

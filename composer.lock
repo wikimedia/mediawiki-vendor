@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "11e56056ac960c0f7290d704bfb91ee0",
+    "content-hash": "7d22a51a5dfe947b18ba185ecfe2e8a6",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -6063,16 +6063,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.13.0-a10",
+            "version": "v0.13.0-a11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/parsoid.git",
-                "reference": "f925d54228f66e584d7a80b5fb0799f0a01fa25f"
+                "reference": "ab62cd81dea596bd11c0b381c409a0fc58e775c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/f925d54228f66e584d7a80b5fb0799f0a01fa25f",
-                "reference": "f925d54228f66e584d7a80b5fb0799f0a01fa25f",
+                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/ab62cd81dea596bd11c0b381c409a0fc58e775c5",
+                "reference": "ab62cd81dea596bd11c0b381c409a0fc58e775c5",
                 "shasum": ""
             },
             "require": {
@@ -6097,7 +6097,7 @@
                 "composer/composer": "^1.10@RC",
                 "ext-curl": "*",
                 "mediawiki/mediawiki-codesniffer": "31.0.0",
-                "mediawiki/mediawiki-phan-config": "0.10.2",
+                "mediawiki/mediawiki-phan-config": "0.10.3",
                 "mediawiki/minus-x": "1.1.0",
                 "monolog/monolog": "~1.25.2",
                 "ockcyp/covers-validator": "1.1.1",
@@ -6134,7 +6134,7 @@
                 "mediawiki",
                 "parsoid"
             ],
-            "time": "2020-09-21T07:30:46+00:00"
+            "time": "2020-09-25T20:18:14+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",
@@ -7104,16 +7104,16 @@
         },
         {
             "name": "swaggest/json-diff",
-            "version": "v3.7.5",
+            "version": "v3.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swaggest/json-diff.git",
-                "reference": "e452a9c6444905a486280c7d56503a6468303f69"
+                "reference": "d2184358c5ef5ecaa1f6b4c2bce175fac2d25670"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swaggest/json-diff/zipball/e452a9c6444905a486280c7d56503a6468303f69",
-                "reference": "e452a9c6444905a486280c7d56503a6468303f69",
+                "url": "https://api.github.com/repos/swaggest/json-diff/zipball/d2184358c5ef5ecaa1f6b4c2bce175fac2d25670",
+                "reference": "d2184358c5ef5ecaa1f6b4c2bce175fac2d25670",
                 "shasum": ""
             },
             "require": {
@@ -7139,7 +7139,7 @@
                 }
             ],
             "description": "JSON diff/rearrange/patch/pointer library for PHP",
-            "time": "2020-05-26T21:53:21+00:00"
+            "time": "2020-09-25T17:47:07+00:00"
         },
         {
             "name": "swaggest/json-schema",
