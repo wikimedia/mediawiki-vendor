@@ -4827,8 +4827,8 @@
     },
     {
         "name": "web-auth/cose-lib",
-        "version": "v3.2.9",
-        "version_normalized": "3.2.9.0",
+        "version": "v3.2.10",
+        "version_normalized": "3.2.10.0",
         "source": {
             "type": "git",
             "url": "https://github.com/web-auth/cose-lib.git",
@@ -4901,8 +4901,8 @@
     },
     {
         "name": "web-auth/metadata-service",
-        "version": "v3.2.9",
-        "version_normalized": "3.2.9.0",
+        "version": "v3.2.10",
+        "version_normalized": "3.2.10.0",
         "source": {
             "type": "git",
             "url": "https://github.com/web-auth/webauthn-metadata-service.git",
@@ -4968,8 +4968,8 @@
     },
     {
         "name": "web-auth/webauthn-lib",
-        "version": "v3.2.9",
-        "version_normalized": "3.2.9.0",
+        "version": "v3.2.10",
+        "version_normalized": "3.2.10.0",
         "source": {
             "type": "git",
             "url": "https://github.com/web-auth/webauthn-lib.git",

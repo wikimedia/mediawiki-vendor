@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f6df752cec3ec079f4c85aaf51c3b475",
+    "content-hash": "24e43787e5e02ae3cab92f8a1ad46e68",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -4682,7 +4682,7 @@
         },
         {
             "name": "web-auth/cose-lib",
-            "version": "v3.2.9",
+            "version": "v3.2.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-auth/cose-lib.git",
@@ -4754,7 +4754,7 @@
         },
         {
             "name": "web-auth/metadata-service",
-            "version": "v3.2.9",
+            "version": "v3.2.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-auth/webauthn-metadata-service.git",
@@ -4819,7 +4819,7 @@
         },
         {
             "name": "web-auth/webauthn-lib",
-            "version": "v3.2.9",
+            "version": "v3.2.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-auth/webauthn-lib.git",
