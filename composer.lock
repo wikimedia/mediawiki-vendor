@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7d22a51a5dfe947b18ba185ecfe2e8a6",
+    "content-hash": "4721922c7b40d1a8d3eaf3dc6863f84f",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -2280,16 +2280,16 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.40.3",
+            "version": "v0.40.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "88d8c07c100a8cb24d2716d440520c85c500c915"
+                "reference": "233c501ffe91612840489bfbeb8eaa15d17fda75"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/88d8c07c100a8cb24d2716d440520c85c500c915",
-                "reference": "88d8c07c100a8cb24d2716d440520c85c500c915",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/233c501ffe91612840489bfbeb8eaa15d17fda75",
+                "reference": "233c501ffe91612840489bfbeb8eaa15d17fda75",
                 "shasum": ""
             },
             "require": {
@@ -2297,7 +2297,7 @@
             },
             "require-dev": {
                 "mediawiki/mediawiki-codesniffer": "31.0.0",
-                "mediawiki/mediawiki-phan-config": "0.10.2",
+                "mediawiki/mediawiki-phan-config": "0.10.3",
                 "mediawiki/minus-x": "1.1.0",
                 "php-parallel-lint/php-console-highlighter": "0.5.0",
                 "php-parallel-lint/php-parallel-lint": "1.2.0",
@@ -2357,7 +2357,7 @@
             ],
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOUI",
-            "time": "2020-09-02T15:34:00+00:00"
+            "time": "2020-10-07T19:41:06+00:00"
         },
         {
             "name": "pear/console_getopt",
