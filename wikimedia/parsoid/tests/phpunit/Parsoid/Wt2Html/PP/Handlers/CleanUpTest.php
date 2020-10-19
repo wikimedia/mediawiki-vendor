@@ -12,6 +12,7 @@ use Wikimedia\Parsoid\Mocks\MockPageContent;
 use Wikimedia\Parsoid\Mocks\MockSiteConfig;
 use Wikimedia\Parsoid\Parsoid;
 use Wikimedia\Parsoid\Utils\ContentUtils;
+use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\DOMTraverser;
 
@@ -36,9 +37,7 @@ class CleanUpTest extends TestCase {
 		$pageConfig = new MockPageConfig( [], $content );
 		$html = $parsoid->wikitext2html( $pageConfig, [ "wrapSections" => false ] );
 
-		$doc = ContentUtils::ppToDOM( $env, $html );
-
-		return( $doc );
+		return ContentUtils::ppToDOM( $env, $html );
 	}
 
 	/**
@@ -78,8 +77,8 @@ class CleanUpTest extends TestCase {
 		error_log( "Cleanup DOM pass should confirm removal of autoInsertedEnd flag\n" .
 			"for wikitext table tags without closing tag syntax using DOM traversal\n" );
 		$mockEnv = new MockEnv( [] );
-		$doc = $this->parseWT( $mockEnv, $test );
-		$fragment = $doc->firstChild;
+		$body = $this->parseWT( $mockEnv, $test );
+		$fragment = $body->firstChild;
 
 		$domVisitor = new DOMTraverser();
 		$tags = [ 'tr', 'td', ];
@@ -111,8 +110,8 @@ class CleanUpTest extends TestCase {
 		error_log( "Cleanup DOM pass should confirm removal of autoInsertedEnd flag\n" .
 			"for all wikitext tags without closing tags\n" );
 		$mockEnv = new MockEnv( [] );
-		$doc = $this->parseWT( $mockEnv, $test );
-		$table = $doc->firstChild;
+		$body = $this->parseWT( $mockEnv, $test );
+		$table = $body->firstChild;
 
 		$domVisitor = new DOMTraverser();
 		$tags = [ 'pre', 'li', 'dt', 'dd', 'hr', 'tr', 'td', 'th', 'caption' ];
@@ -157,8 +156,8 @@ class CleanUpTest extends TestCase {
 		error_log( "Cleanup DOM pass should confirm presence of autoInsertedEnd flag\n" .
 			"for all HTML wikitext tags that can appear without closing tags\n" );
 		$mockEnv = new MockEnv( [] );
-		$doc = $this->parseWT( $mockEnv, $test );
-		$fragment = $doc->firstChild;
+		$body = $this->parseWT( $mockEnv, $test );
+		$fragment = $body->firstChild;
 
 		$domVisitor = new DOMTraverser();
 		$tags = [ 'pre', 'li', 'dt', 'dd', 'hr', 'tr', 'td', 'th', 'caption' ];
@@ -195,4 +194,58 @@ class CleanUpTest extends TestCase {
 		return [ [ implode( "\n", $test ) ] ];
 	}
 
+	/**
+	 * @param string $wt
+	 * @param string $selector
+	 * @param array $dsr
+	 * @dataProvider provideWhitespaceTrimming
+	 * @covers ::trimWhiteSpace
+	 */
+	public function testWhitespaceTrimming( string $wt, string $selector, int $leadingWS, int $trailingWS ): void {
+		if ( Parsoid::defaultHTMLVersion() === '2.1.0' ) {
+			$this->markTestSkipped( '6-element DSRs not yet enabled' );
+		}
+		$mockEnv = new MockEnv( [] );
+		$body = $this->parseWT( $mockEnv, $wt );
+		$node = DOMCompat::querySelector( $body, $selector );
+		$this->assertEquals( $leadingWS, DOMDataUtils::getDataParsoid( $node )->dsr->leadingWS );
+		$this->assertEquals( $trailingWS, DOMDataUtils::getDataParsoid( $node )->dsr->trailingWS );
+	}
+
+	/**
+	 * @return array
+	 */
+	public function provideWhitespaceTrimming(): array {
+		return [
+			/* List item tests */
+			[ "*a",            "li", 0, 0 ],
+			[ "* a",           "li", 1, 0 ],
+			[ "*    a  ",      "li", 4, 2 ],
+			[ "* <!--c-->a",   "li", 1, 0 ],
+			[ "* <!--c--> a",  "li", -1, 0 ],
+			[ "* <!--c--> a ", "li", -1, 1 ],
+			[ "* a ",          "li", 1, 1 ],
+			[ "*a<!--c--> ",   "li", 0, 1 ],
+			[ "*a <!--c--> ",  "li", 0, -1 ],
+			[ "* [[Category:Foo]] a",  "li", -1, 0 ],
+			[ "* x[[Category:Foo]] ",  "li", 1, 1 ],
+			[ "* x [[Category:Foo]] ", "li", 1, -1 ],
+
+			/* Heading tests */
+			[ "==h==",             "h2", 0, 0 ],
+			[ "==  h   ==",        "h2", 2, 3 ],
+			[ "== <!--c-->h==",    "h2", 1, 0 ],
+			[ "== <!--c--> h ==",  "h2", -1, 1 ],
+			[ "== h<!--c--> ==",   "h2", 1, 1 ],
+
+			/* Table tests */
+			[ "{|\n|x\n|}",           "td", 0, 0 ],
+			[ "{|\n| x|| y  \n|}",    "td:first-child", 1, 0 ],
+			[ "{|\n| x|| y  \n|}",    "td:first-child + td", 1, 2 ],
+			[ "{|\n| <!--c-->x\n|}",  "td", 1, 0 ],
+			[ "{|\n| <!--c--> x\n|}", "td", -1, 0 ],
+			[ "{|\n| <!--c-->x<!--c--> \n|}",   "td", 1, 1 ],
+			[ "{|\n| <!--c--> x <!--c--> \n|}", "td", -1, -1 ],
+		];
+	}
 }

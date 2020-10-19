@@ -294,6 +294,8 @@ class SerializerState {
 	 */
 	private $logPrefix = 'OUT:';
 
+	public $haveTrimmedWsDSR = false;
+
 	/**
 	 * @param WikitextSerializer $serializer
 	 * @param array $options
@@ -311,6 +313,7 @@ class SerializerState {
 		$this->resetCurrLine( null );
 		$this->singleLineContext = new SingleLineContext();
 		$this->resetSep();
+		$this->haveTrimmedWsDSR = Semver::satisfies( $this->env->getInputContentVersion(), '>=2.1.1' );
 	}
 
 	/**
@@ -339,10 +342,11 @@ class SerializerState {
 	/**
 	 * Appends the seperator source and updates the SOL state if necessary.
 	 * @param string $src
+	 * @param DOMNode $node
 	 */
-	public function appendSep( string $src ): void {
+	public function appendSep( string $src, DOMNode $node ): void {
 		$this->sep->src = ( $this->sep->src ?: '' ) . $src;
-		$this->sepIntroducedSOL( $src );
+		$this->sepIntroducedSOL( $src, $node );
 	}
 
 	/**
@@ -417,11 +421,13 @@ class SerializerState {
 	/**
 	 * Separators put us in SOL state.
 	 * @param string $sep
+	 * @param DOMNode $node
 	 */
-	private function sepIntroducedSOL( string $sep ): void {
+	private function sepIntroducedSOL( string $sep, DOMNode $node ): void {
 		// Don't get tripped by newlines in comments!  Be wary of nowikis added
 		// by makeSepIndentPreSafe on the last line.
-		if ( substr( preg_replace( Utils::COMMENT_REGEXP, '', $sep ), -1 ) === "\n" ) {
+		$nonCommentSep = preg_replace( Utils::COMMENT_REGEXP, '', $sep );
+		if ( substr( $nonCommentSep, -1 ) === "\n" ) {
 			// Since we are stashing away newlines for emitting
 			// before the next element, we are in SOL state wrt
 			// the content of that next element.
@@ -437,16 +443,28 @@ class SerializerState {
 			// it is a real issue.
 			$this->onSOL = true;
 		}
+
+		if ( preg_match( '/\n/', $nonCommentSep ) ) {
+			// process escapes in our full line
+			$this->flushLine();
+			$this->resetCurrLine( $node );
+		}
 	}
 
 	/**
 	 * Accumulates chunks on the current line.
-	 * @param ConstrainedText $text
-	 * @param DOMNode $node
+	 * @param ConstrainedText $chunk
+	 * @param string $logPrefix
 	 */
-	private function pushToCurrLine( ConstrainedText $text, DOMNode $node ) {
-		// TODO $node is probably not needed since ConstrainedText already includes it
-		$this->currLine->chunks[] = $text;
+	private function pushToCurrLine( ConstrainedText $chunk, string $logPrefix ) {
+		// Emitting text that has not been escaped
+		$this->currLine->text .= $chunk->text;
+
+		$this->currLine->chunks[] = $chunk;
+
+		$this->serializer->trace( '--->', $logPrefix, function () use ( $chunk ) {
+			return PHPUtils::jsonEncode( $chunk->text );
+		} );
 	}
 
 	/**
@@ -463,17 +481,12 @@ class SerializerState {
 			$sep->text = preg_replace( '/\n/', ' ', $sep->text );
 		}
 
-		$this->pushToCurrLine( $sep, $node );
+		$this->pushToCurrLine( $sep, $debugPrefix );
+		$this->sepIntroducedSOL( $sep->text, $node );
 
 		// Reset separator state
 		$this->resetSep();
 		$this->updateSep( $node );
-
-		$this->sepIntroducedSOL( $sep->text );
-
-		$this->serializer->trace( '--->', $debugPrefix, function () use ( $sep ) {
-			return PHPUtils::jsonEncode( $sep->text );
-		} );
 	}
 
 	/**
@@ -551,6 +564,22 @@ class SerializerState {
 	}
 
 	/**
+	 * Recovers and emits any trimmed whitespace for $node
+	 * @param DOMNode $node
+	 * @param bool $leading
+	 *   if true, trimmed leading whitespace is emitted
+	 *   if false, trimmed railing whitespace is emitted
+	 * @return string|null
+	 */
+	public function recoverTrimmedWhitespace( DOMNode $node, bool $leading ): ?string {
+		$sep = $this->serializer->recoverTrimmedWhitespace( $node, $leading );
+		$this->serializer->trace( '--->', "TRIMMED-SEP:", function () use ( $sep ) {
+			return PHPUtils::jsonEncode( $sep );
+		} );
+		return $sep;
+	}
+
+	/**
 	 * Pushes the chunk to the current line.
 	 * @param ConstrainedText|string $res
 	 * @param DOMNode $node
@@ -566,14 +595,13 @@ class SerializerState {
 		// Emit separator first
 		if ( $res->noSep ) {
 			/* skip separators for internal tokens from SelSer */
+			if ( $this->onSOL ) {
+				// process escapes in our full line
+				$this->flushLine();
+				$this->resetCurrLine( $node );
+			}
 		} else {
 			$this->emitSepForNode( $node );
-		}
-
-		if ( $this->onSOL ) {
-			// process escapes in our full line
-			$this->flushLine();
-			$this->resetCurrLine( $node );
 		}
 
 		// Escape 'res' if necessary
@@ -641,14 +669,8 @@ class SerializerState {
 			}
 		}
 
-		// Emitting text that has not been escaped
-		$this->currLine->text .= $res->text;
-
 		// Output res
-		$this->serializer->trace( '--->', $this->logPrefix, function () use ( $res ) {
-			return PHPUtils::jsonEncode( $res->text );
-		} );
-		$this->pushToCurrLine( $res, $node );
+		$this->pushToCurrLine( $res, $this->logPrefix );
 
 		// Update sol flag. Test for newlines followed by optional includeonly or comments
 		if ( !$res->match( $this->solRegexp() ) ) {

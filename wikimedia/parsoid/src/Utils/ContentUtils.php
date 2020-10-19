@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 namespace Wikimedia\Parsoid\Utils;
 
 use DOMDocument;
+use DOMDocumentFragment;
 use DOMElement;
 use DOMNode;
 use Wikimedia\Assert\Assert;
@@ -47,35 +48,24 @@ class ContentUtils {
 	 * @param Env $env
 	 * @param string $html
 	 * @param array $options
-	 * @return DOMElement
+	 * @return DOMElement|DOMDocumentFragment
 	 */
 	public static function ppToDOM(
 		Env $env, string $html, array $options = []
-	): DOMElement {
+	): DOMNode {
 		$options += [
 			'node' => null,
-			'reinsertFosterableContent' => null,
+			'toFragment' => false,
 		];
 		$node = $options['node'];
-		if ( $node === null ) {
+		if ( $options['toFragment'] ) {
+			$node = DOMUtils::parseHTMLToFragment( $env->topLevelDoc, $html );
+		} elseif ( $node === null ) {
 			$node = DOMCompat::getBody( $env->createDocument( $html ) );
 		} else {
-			DOMUtils::assertElt( $node );
 			DOMCompat::setInnerHTML( $node, $html );
 		}
-
-		if ( $options['reinsertFosterableContent'] ) {
-			DOMUtils::visitDOM( $node, function ( $n, ...$args ) use ( $env ) {
-				// untunnel fostered content
-				$meta = WTUtils::reinsertFosterableContent( $env, $n, true );
-				$n = $meta ?? $n;
-
-				// load data attribs
-				DOMDataUtils::loadDataAttribs( $n, ...$args );
-			}, $options );
-		} else {
-			DOMDataUtils::visitAndLoadDataAttribs( $node, $options );
-		}
+		DOMDataUtils::visitAndLoadDataAttribs( $node, $options );
 		return $node;
 	}
 
@@ -242,13 +232,19 @@ class ContentUtils {
 				DOMDataUtils::setDataMw( $node, $dmw );
 			}
 
-			if ( DOMUtils::matchTypeOf( $node, '#^mw:DOMFragment(/|$)#D' ) ) {
+			// DOMFragments will have already been unpacked when DSR shifting is run
+			if ( DOMUtils::hasTypeOf( $node, 'mw:DOMFragment' ) ) {
+				PHPUtils::unreachable( "Shouldn't encounter these nodes here." );
+			}
+
+			// However, extensions can choose to handle sealed fragments whenever
+			// they want and so may be returned in subpipelines which could
+			// subsequently be shifted
+			if ( DOMUtils::matchTypeOf( $node, '#^mw:DOMFragment/sealed/\w+$#D' ) ) {
 				$dp = DOMDataUtils::getDataParsoid( $node );
 				if ( $dp->html ?? null ) {
-					$nodes = $env->getDOMFragment( $dp->html );
-					foreach ( $nodes as $n ) {
-						DOMPostOrder::traverse( $n, $convertNode );
-					}
+					$domFragment = $env->getDOMFragment( $dp->html );
+					DOMPostOrder::traverse( $domFragment, $convertNode );
 				}
 			}
 		};

@@ -15,7 +15,6 @@ use Wikimedia\Parsoid\Tokens\SourceRange;
 use Wikimedia\Parsoid\Tokens\TagTk;
 use Wikimedia\Parsoid\Tokens\Token;
 use Wikimedia\Parsoid\Utils\ContentUtils;
-use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\PHPUtils;
@@ -658,6 +657,12 @@ class TemplateHandler extends TokenHandler {
 		// Get a nested transformation pipeline for the input type. The input
 		// pipeline includes the tokenizer, synchronous stage-1 transforms for
 		// 'text/wiki' input and asynchronous stage-2 transforms).
+		// FIXME: Note, however, that since template handling is itself in
+		// stage-2, tokens returned here will be run through that stage again,
+		// except not necessarily with the same pipeline options we're setting
+		// below.  The overall effect is mostly harmless, in that the token
+		// types will have already been handled the first time through, but
+		// it does present chances for confusion, like in attribute expansion.
 		$toks = PipelineUtils::processContentInPipeline(
 			$this->env,
 			$this->manager->getFrame(),
@@ -766,7 +771,7 @@ class TemplateHandler extends TokenHandler {
 			$srcEnd -= count( $paramData['info']['spc'][3] );
 		}
 
-		$dom = PipelineUtils::processContentInPipeline(
+		$domFragment = PipelineUtils::processContentInPipeline(
 			$this->env, $this->manager->getFrame(),
 			$param->wt,
 			[
@@ -781,19 +786,20 @@ class TemplateHandler extends TokenHandler {
 				'sol' => true
 			]
 		);
-		$body = DOMCompat::getBody( $dom );
 		// FIXME: We're better off setting a pipeline option above
 		// to skip dsr computation to begin with.  Worth revisitting
 		// if / when `addHTMLTemplateParameters` is enabled.
 		// Remove DSR from children
-		DOMUtils::visitDOM( $body, function ( $node ) {
+		DOMUtils::visitDOM( $domFragment, function ( $node ) {
 			if ( !DOMUtils::isElt( $node ) ) {
 				return;
 			}
 			$dp = DOMDataUtils::getDataParsoid( $node );
 			$dp->dsr = null;
 		} );
-		$param->html = ContentUtils::ppToXML( $body, [ 'innerXML' => true ] );
+		$param->html = ContentUtils::ppToXML(
+			$domFragment, [ 'innerXML' => true ]
+		);
 	}
 
 	/**

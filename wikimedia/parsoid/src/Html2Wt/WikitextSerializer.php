@@ -202,6 +202,18 @@ class WikitextSerializer {
 	}
 
 	/**
+	 * Recovers and emits any trimmed whitespace for $node
+	 * @param DOMNode $node
+	 * @param bool $leading
+	 *   if true, trimmed leading whitespace is emitted
+	 *   if false, trimmed railing whitespace is emitted
+	 * @return string|null
+	 */
+	public function recoverTrimmedWhitespace( DOMNode $node, bool $leading ): ?string {
+		return $this->separators->recoverTrimmedWhitespace( $node, $leading );
+	}
+
+	/**
 	 * Escape wikitext-like strings in '$text' so that $text renders as a plain string
 	 * when rendered as HTML. The escaping is done based on the context in which $text
 	 * is present (ex: start-of-line, in a link, etc.)
@@ -235,6 +247,7 @@ class WikitextSerializer {
 	 */
 	public function htmlToWikitext( array $opts, string $html ) {
 		$body = ContentUtils::ppToDOM( $this->env, $html, [ 'markNew' => true ] );
+		'@phan-var DOMElement $body';  // @var DOMElement $body
 		return $this->domToWikitext( $opts, $body );
 	}
 
@@ -1084,7 +1097,7 @@ class WikitextSerializer {
 		if ( !$state->inIndentPre ) {
 			// Strip leading newlines and other whitespace
 			if ( preg_match( self::$separatorREs['sepPrefixWithNlsRE'], $res, $match ) ) {
-				$state->appendSep( $match[0] );
+				$state->appendSep( $match[0], $node );
 				$res = substr( $res, strlen( $match[0] ) );
 			}
 		}
@@ -1105,7 +1118,7 @@ class WikitextSerializer {
 		// Move trailing newlines into the next separator
 		if ( $newSepMatch ) {
 			if ( !$state->sep->src ) {
-				$state->appendSep( $newSepMatch[0] );
+				$state->appendSep( $newSepMatch[0], $node );
 			} else {
 				/* SSS FIXME: what are we doing with the stripped NLs?? */
 			}
@@ -1325,9 +1338,6 @@ class WikitextSerializer {
 					// `state.sep.lastSourceNode` is cleared here so that removed
 					// separators between otherwise unmodified nodes don't get
 					// restored.
-					// `state.sep.lastSourceNode` is cleared here so that removed
-					// separators between otherwise unmodified nodes don't get
-					// restored.
 					$state->updateSep( $node );
 					return $node->nextSibling;
 				}
@@ -1346,7 +1356,7 @@ class WikitextSerializer {
 					// but that does not seem useful
 					&& preg_match( self::$separatorREs['pureSepRE'], $text )
 				) {
-					$state->appendSep( $text );
+					$state->appendSep( $text, $node );
 					return $node->nextSibling;
 				}
 				if ( $state->selserMode ) {
@@ -1366,7 +1376,7 @@ class WikitextSerializer {
 				break;
 			case XML_COMMENT_NODE:
 				// Merge this into separators
-				$state->appendSep( WTSUtils::commentWT( $node->nodeValue ) );
+				$state->appendSep( WTSUtils::commentWT( $node->nodeValue ), $node );
 				return $node->nextSibling;
 			default:
 				// PORT-FIXME the JS code used node.outerHTML here; probably a bug?
@@ -1614,6 +1624,14 @@ class WikitextSerializer {
 		} else {
 			return $line;
 		}
+	}
+
+	/**
+	 * @param Env $env
+	 * @param DOMElement $body
+	 * @suppress PhanEmptyPublicMethod
+	 */
+	public function preprocessDOM( Env $env, DOMElement $body ): void {
 	}
 
 	/**

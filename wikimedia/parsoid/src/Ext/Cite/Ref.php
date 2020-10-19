@@ -3,6 +3,7 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Ext\Cite;
 
+use DOMDocumentFragment;
 use DOMElement;
 use DOMNode;
 use Exception;
@@ -19,7 +20,9 @@ use Wikimedia\Parsoid\Utils\DOMCompat;
 class Ref extends ExtensionTagHandler {
 
 	/** @inheritDoc */
-	public function sourceToDom( ParsoidExtensionAPI $extApi, string $txt, array $extArgs ) {
+	public function sourceToDom(
+		ParsoidExtensionAPI $extApi, string $txt, array $extArgs
+	): ?DOMDocumentFragment {
 		// Drop nested refs entirely, unless we've explicitly allowed them
 		$parentExtTag = $extApi->parentExtTag();
 		if ( $parentExtTag === 'ref' && empty( $extApi->parentExtTagOpts()['allowNestedRef'] ) ) {
@@ -148,12 +151,7 @@ class Ref extends ExtensionTagHandler {
 			$hasRefName = strlen( $dataMw->attrs->name ?? '' ) > 0;
 			$hasFollow = strlen( $dataMw->attrs->follow ?? '' ) > 0;
 
-			// FIXME: This isn't exactly right since a valid follow could
-			// potentially produce some other type of error, so this may
-			// need some more smarts
-			$validFollow = $hasFollow && !DOMUtils::hasTypeOf( $node, 'mw:Error' );
-
-			if ( $validFollow ) {
+			if ( $hasFollow ) {
 				$about = $node->getAttribute( 'about' );
 				$followNode = DOMCompat::querySelector(
 					$bodyElt, "span[typeof~='mw:Cite/Follow'][about='{$about}']"

@@ -28,6 +28,7 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Rest\Handler;
 use MediaWiki\Rest\HttpException;
 use MediaWiki\Rest\Response;
+use MediaWiki\Rest\ResponseException;
 use MediaWiki\Revision\RevisionAccessException;
 use MobileContext;
 use MWParsoid\Config\PageConfigFactory;
@@ -639,12 +640,11 @@ abstract class ParsoidHandler extends Handler {
 	 *
 	 * @param PageConfig $pageConfig
 	 * @param array $attribs Request attributes from getRequestAttributes()
-	 * @param ?string $html HTML to transform (or null to use the page specified in
-	 *   the request attributes).
+	 * @param string $html HTML to transform
 	 * @return Response
 	 */
 	protected function html2wt(
-		PageConfig $pageConfig, array $attribs, ?string $html = null
+		PageConfig $pageConfig, array $attribs, string $html
 	) {
 		$request = $this->getRequest();
 		$opts = $attribs['opts'];
@@ -656,14 +656,9 @@ abstract class ParsoidHandler extends Handler {
 
 		$doc = DOMUtils::parseHTML( $html );
 
-		// send domparse time, input size and init time to statsd/Graphite
-		// init time is the time elapsed before serialization
-		// init.domParse, a component of init time, is the time elapsed
-		// from html string to DOM tree
-		$timing->end( 'html2wt.init.domparse' );
-		# Should perhaps be strlen instead (or cached!): T239841
+		// send input size to statsd/Graphite
+		// Should perhaps be strlen instead (or cached!): T239841
 		$metrics->timing( 'html2wt.size.input', mb_strlen( $html ) );
-		$timing->end( 'html2wt.init' );
 
 		$original = $opts['original'] ?? null;
 		$oldBody = null;
@@ -815,6 +810,8 @@ abstract class ParsoidHandler extends Handler {
 
 		$html = ContentUtils::toXML( $doc );
 		$parsoid = new Parsoid( $this->siteConfig, $this->dataAccess );
+
+		$timing->end( 'html2wt.init' );
 
 		try {
 			$wikitext = $parsoid->html2wikitext( $pageConfig, $html, [
@@ -1041,17 +1038,7 @@ abstract class ParsoidHandler extends Handler {
 	}
 
 	/** @inheritDoc */
-	public function execute() {
-		// Until core supports ResponseException (T260959)
-		try {
-			return $this->realExecute();
-		} catch ( ResponseException $re ) {
-			return $re->getResponse();
-		}
-	}
-
-	/** @inheritDoc ::execute() */
-	abstract public function realExecute(): Response;
+	abstract public function execute(): Response;
 
 	/**
 	 * Validate a PageBundle against the given contentVersion, and throw
