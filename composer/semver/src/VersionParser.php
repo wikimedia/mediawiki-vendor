@@ -161,7 +161,13 @@ class VersionParser
         // match dev branches
         if (preg_match('{(.*?)[.-]?dev$}i', $version, $match)) {
             try {
-                return $this->normalizeBranch($match[1]);
+                $normalized = $this->normalizeBranch($match[1]);
+                // a branch ending with -dev is only valid if it is numeric
+                // if it gets prefixed with dev- it means the branch name should
+                // have had a dev- prefix already when passed to normalize
+                if (strpos($normalized, 'dev-') === false) {
+                    return $normalized;
+                }
             } catch (\Exception $e) {
             }
         }
@@ -487,12 +493,12 @@ class VersionParser
      *
      * Support function for {@link parseConstraint()}
      *
-     * @param array $matches Array with version parts in array indexes 1,2,3,4
-     * @param int $position 1,2,3,4 - which segment of the version to increment/decrement
-     * @param int $increment
-     * @param string $pad The string to pad version parts after $position
+     * @param array  $matches   Array with version parts in array indexes 1,2,3,4
+     * @param int    $position  1,2,3,4 - which segment of the version to increment/decrement
+     * @param int    $increment
+     * @param string $pad       The string to pad version parts after $position
      *
-     * @return string The new version
+     * @return string|null The new version
      */
     private function manipulateVersionString($matches, $position, $increment = 0, $pad = '0')
     {
