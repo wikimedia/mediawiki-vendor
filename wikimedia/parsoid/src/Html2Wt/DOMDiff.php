@@ -3,7 +3,7 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Html2Wt;
 
-use DOMDocument;
+use DOMDocumentFragment;
 use DOMElement;
 use DOMNode;
 use stdClass;
@@ -26,11 +26,13 @@ class DOMDiff {
 
 	// These attributes are ignored for equality purposes if they are added to a node.
 	private const IGNORE_ATTRIBUTES = [
-		// SSS: Don't ignore data-parsoid because in VE, sometimes wrappers get
-		// moved around without their content which occasionally leads to incorrect
-		// DSR being used by selser.  Hard to describe a reduced test case here.
-		// Discovered via: /mnt/bugs/2013-05-01T09:43:14.960Z-Reverse_innovation
-		// 'data-parsoid',
+		// Note that we are explicitly not ignoring data-parsoid even though clients
+		// would never modify data-parsoid because SelectiveSerializer is wrapping text
+		// nodes in spans and speculatively computes DSR offsets for these span tags
+		// which are accurate for original DOM and may be inaccurate for the edited DOM.
+		// By diffing data-parsoid which diffs the DSR as well, we ensure we mark such
+		// nodes as modified and prevent use of those speculatively computed incorrect
+		// DSR values.
 		'data-parsoid-diff',
 		'about',
 		DOMDataUtils::DATA_OBJECT_ATTR_NAME,
@@ -45,16 +47,6 @@ class DOMDiff {
 	 * @var array
 	 */
 	public $specializedAttribHandlers;
-
-	/**
-	 * @var DOMDocument
-	 */
-	private $domA;
-
-	/**
-	 * @var DOMDocument
-	 */
-	private $domB;
 
 	/**
 	 * @param DOMNode $node
@@ -113,9 +105,6 @@ class DOMDiff {
 	 * @return array
 	 */
 	public function diff( DOMElement $nodeA, DOMElement $nodeB ): array {
-		$this->domA = $nodeA->ownerDocument;
-		$this->domB = $nodeB->ownerDocument;
-
 		$this->debug( function () use( $nodeA, $nodeB ) {
 			return "ORIG:\n" .
 				DOMCompat::getOuterHTML( $nodeA ) .
@@ -198,12 +187,10 @@ class DOMDiff {
 			} elseif ( gettype( $vA ) !== gettype( $vB ) ) {
 				return false;
 			} elseif ( $kA === 'id' && ( $options['inDmwBody'] ?? null ) ) {
-				// For <refs> in <references> the element id can refer to the
-				// global DOM, not the owner document DOM.
-				$htmlA = DOMCompat::getElementById( $nodeA->ownerDocument, $vA ) ?:
-					DOMCompat::getElementById( $this->domA, $vA );
-				$htmlB = DOMCompat::getElementById( $nodeB->ownerDocument, $vB ) ?:
-					DOMCompat::getElementById( $this->domB, $vB );
+				// For <refs> in <references> the element id refers to the
+				// global DOM, not the fragment DOM.
+				$htmlA = DOMCompat::getElementById( $nodeA->ownerDocument, $vA );
+				$htmlB = DOMCompat::getElementById( $nodeB->ownerDocument, $vB );
 
 				if ( $htmlA && $htmlB && !$this->treeEquals( $htmlA, $htmlB, true ) ) {
 					return false;
@@ -234,8 +221,20 @@ class DOMDiff {
 			} elseif ( $kA === 'html' && ( $options['inDmwBody'] ?? null ) ) {
 				// For 'html' attributes, parse string and recursively compare DOM
 				if ( !$this->treeEquals(
-						ContentUtils::ppToDOM( $this->env, $vA, [ 'markNew' => true ] ),
-						ContentUtils::ppToDOM( $this->env, $vB, [ 'markNew' => true ] ),
+						ContentUtils::ppToDOM( $this->env, $vA, [
+							'markNew' => true,
+							// Don't use 'toFragment' option here since $nodeA
+							// is from selserData->oldDOM and we want the id
+							// check above to search the right dom
+							'node' => $nodeA->ownerDocument->createDocumentFragment(),
+						] ),
+						ContentUtils::ppToDOM( $this->env, $vB, [
+							'markNew' => true,
+							// We could use 'toFragment' since this is equivalent
+							// to $env->topLevelDoc but this makes it a little more
+							// generic for uses outside the call from SelectiveSerializer
+							'node' => $nodeB->ownerDocument->createDocumentFragment(),
+						] ),
 						true
 					)
 				) {
@@ -285,21 +284,28 @@ class DOMDiff {
 		} elseif ( DOMUtils::isComment( $nodeA ) ) {
 			return WTUtils::decodeComment( $nodeA->nodeValue ) ===
 				WTUtils::decodeComment( $nodeB->nodeValue );
-		} elseif ( DOMUtils::isElt( $nodeA ) ) {
-			// Compare node name and attribute length
-			if ( $nodeA->nodeName !== $nodeB->nodeName
-				|| !$nodeA instanceof DOMElement || !$nodeB instanceof DOMElement
-				|| !DiffUtils::attribsEquals(
-					$nodeA,
-					$nodeB,
-					self::IGNORE_ATTRIBUTES,
-					$this->specializedAttribHandlers
-				)
-			) {
-				return false;
+		} elseif ( $nodeA instanceof DOMElement || $nodeA instanceof DOMDocumentFragment ) {
+			if ( $nodeA instanceof DOMDocumentFragment ) {
+				if ( !( $nodeB instanceof DOMDocumentFragment ) ) {
+					return false;
+				}
+			} else {  // $nodeA instanceof DOMElement
+				// Compare node name and attribute length
+				if (
+					!( $nodeB instanceof DOMElement ) ||
+					$nodeA->nodeName !== $nodeB->nodeName ||
+					!DiffUtils::attribsEquals(
+						$nodeA,
+						$nodeB,
+						self::IGNORE_ATTRIBUTES,
+						$this->specializedAttribHandlers
+					)
+				) {
+					return false;
+				}
 			}
 
-			// Passed all tests, element node itself is equal.
+			// Passed all tests, node itself is equal.
 			if ( $deep ) {
 				$childA = null;
 				$childB = null;
@@ -309,7 +315,6 @@ class DOMDiff {
 					$childA && $childB;
 					$childA = $childA->nextSibling, $childB = $childB->nextSibling
 				) {
-
 					/* don't look inside children yet, just look at # of children */
 				}
 
@@ -555,6 +560,13 @@ class DOMDiff {
 
 		if ( $mark === 'deleted' || $mark === 'inserted' ) {
 			$this->markNode( $node->parentNode, 'children-changed' );
+		}
+
+		// Clear out speculatively computed DSR values for data-mw-selser-wrapper nodes
+		// since they may be incorrect. This eliminates any inadvertent use of
+		// these incorrect values.
+		if ( $node instanceof DOMElement && $node->hasAttribute( 'data-mw-selser-wrapper' ) ) {
+			DOMDataUtils::getDataParsoid( $node )->dsr = null;
 		}
 	}
 

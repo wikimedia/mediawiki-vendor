@@ -468,8 +468,10 @@ class TemplateHandler extends TokenHandler {
 
 		$tokens = array_merge( array_merge( [ '{{' ], $attribTokens ), [ '}}', new EOFTk() ] );
 
-		// Process exploded token in a new pipeline that
-		// converts the tokens to DOM.
+		// Process exploded token in a new pipeline that takes us through
+		// Stages 2-3.
+		// FIXME: Similar to processTemplateSource, we're returning tokens at
+		// the beginning of Stage 3 that have already been through this stage.
 		$toks = PipelineUtils::processContentInPipeline(
 			$this->env,
 			$this->manager->getFrame(),
@@ -488,18 +490,37 @@ class TemplateHandler extends TokenHandler {
 		TokenUtils::stripEOFTkfromTokens( $toks );
 
 		$hasTemplatedTarget = isset( $state['token']->dataAttribs->tmp->templatedAttribs );
-		if ( $hasTemplatedTarget && $this->wrapTemplates ) {
-			// Add encapsulation if we had a templated target
-			// FIXME: This is a deliberate wrapping of the entire
-			// "broken markup" where one or more templates are nested
-			// inside invalid transclusion markup. The proper way to do
-			// this would be to disentangle everything and identify
-			// transclusions and wrap them individually with meta tags
-			// and data-mw info. But, this is an edge case which can be
-			// more readily fixed by fixing the markup. The goal here is
-			// to ensure that the output renders properly and it roundtrips
-			// without dirty diffs rather then faithful DOMspec representation.
-			$toks = $this->encapTokens( $state, $toks );
+		if ( $hasTemplatedTarget ) {
+			// Since we have a templated target, attributes have gone through
+			// the attribute expander, which processes them to dom, meaning
+			// that any mw:DOMFragment will have been unpacked and unavailable
+			// if returned here.  If we encounter any, let's just do the easiest
+			// thing and return the source for the template.  But note that
+			// that will have the effect of converting any of the parsed
+			// constructs in the tokens above back to untokenized strings.
+			// FIXME: We can do something fancier, like for the href in
+			// WikiLinkHandler::bailTokens, but this is already considered
+			// an edge case not really worth supporting (see below)
+			foreach ( $attribTokens as $t ) {
+				if ( $t instanceof Token && TokenUtils::hasDOMFragmentType( $t ) ) {
+					$toks = [ $state['token']->dataAttribs->src ];
+					break;
+				}
+			}
+
+			if ( $this->wrapTemplates ) {
+				// Add encapsulation if we had a templated target
+				// FIXME: This is a deliberate wrapping of the entire
+				// "broken markup" where one or more templates are nested
+				// inside invalid transclusion markup. The proper way to do
+				// this would be to disentangle everything and identify
+				// transclusions and wrap them individually with meta tags
+				// and data-mw info. But, this is an edge case which can be
+				// more readily fixed by fixing the markup. The goal here is
+				// to ensure that the output renders properly and it roundtrips
+				// without dirty diffs rather then faithful DOMspec representation.
+				$toks = $this->encapTokens( $state, $toks );
+			}
 		}
 
 		return $toks;
@@ -651,20 +672,19 @@ class TemplateHandler extends TokenHandler {
 			$env->log( 'dump/tplsrc', str_repeat( '-', 80 ) );
 		}
 
-		$this->env->log( 'debug', 'TemplateHandler.processTemplateSource',
+		$env->log( 'debug', 'TemplateHandler.processTemplateSource',
 			$tplArgs['name'], $tplArgs['attribs'] );
 
-		// Get a nested transformation pipeline for the input type. The input
-		// pipeline includes the tokenizer, synchronous stage-1 transforms for
-		// 'text/wiki' input and asynchronous stage-2 transforms).
+		// Get a nested transformation pipeline for the wikitext that takes
+		// us through Stages 1-3.
 		// FIXME: Note, however, that since template handling is itself in
-		// stage-2, tokens returned here will be run through that stage again,
+		// Stage 3, tokens returned here will be run through that stage again,
 		// except not necessarily with the same pipeline options we're setting
 		// below.  The overall effect is mostly harmless, in that the token
 		// types will have already been handled the first time through, but
 		// it does present chances for confusion, like in attribute expansion.
 		$toks = PipelineUtils::processContentInPipeline(
-			$this->env,
+			$env,
 			$this->manager->getFrame(),
 			$src,
 			[
@@ -1114,7 +1134,13 @@ class TemplateHandler extends TokenHandler {
 			}
 			return [ 'tokens' => $tokens ];
 		} else {
+			$start = PHPUtils::getStartHRTime();
 			$pageContent = $env->getDataAccess()->fetchTemplateSource( $env->getPageConfig(), $templateName );
+			if ( $env->profiling() ) {
+				$profile = $env->getCurrentProfile();
+				$profile->bumpMWTime( "TemplateFetch", PHPUtils::getHRTimeDifferential( $start ), "api" );
+				$profile->bumpCount( "TemplateFetch" );
+			}
 			if ( !$pageContent ) {
 				// Missing page!
 				// FIXME: This should be a redlink here!
@@ -1144,8 +1170,14 @@ class TemplateHandler extends TokenHandler {
 			];
 		} else {
 			$pageConfig = $env->getPageConfig();
+			$start = PHPUtils::getStartHRTime();
 			$ret = $env->getDataAccess()->preprocessWikitext( $pageConfig, $transclusion );
 			$wikitext = $this->manglePreprocessorResponse( $ret );
+			if ( $env->profiling() ) {
+				$profile = $env->getCurrentProfile();
+				$profile->bumpMWTime( "Template", PHPUtils::getHRTimeDifferential( $start ), "api" );
+				$profile->bumpCount( "Template" );
+			}
 			return [
 				'error' => false,
 				'src' => $wikitext

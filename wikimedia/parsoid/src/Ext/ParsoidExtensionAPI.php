@@ -474,11 +474,12 @@ class ParsoidExtensionAPI {
 		// Expanded attributes
 		if ( DOMUtils::matchTypeOf( $elt, '/^mw:ExpandedAttrs$/' ) ) {
 			$dmw = DOMDataUtils::getDataMw( $elt );
-			if ( isset( $dmw->attribs ) && count( $dmw->attribs ) > 0 ) {
-				$attribs = &$dmw->attribs[0];
-				foreach ( $attribs as &$a ) {
-					if ( isset( $a->html ) ) {
-						$a->html = $proc( $a->html );
+			if ( $dmw->attribs ?? null ) {
+				foreach ( $dmw->attribs as &$a ) {
+					foreach ( $a as $kOrV ) {
+						if ( gettype( $kOrV ) !== 'string' && isset( $kOrV->html ) ) {
+							$kOrV->html = $proc( $kOrV->html );
+						}
 					}
 				}
 			}
@@ -641,9 +642,9 @@ class ParsoidExtensionAPI {
 	 *  - extName: (string) Name of the extension whose body we are serializing
 	 *  - inPHPBlock: (bool) FIXME: This needs to be removed
 	 * @param string $html HTML for the extension's body
-	 * @return mixed // FIXME: Don't want to expose ConstrainedText object
+	 * @return string
 	 */
-	public function htmlToWikitext( array $opts, string $html ) {
+	public function htmlToWikitext( array $opts, string $html ): string {
 		// Type cast so phan has more information to ensure type safety
 		$state = $this->serializerState;
 		$opts['env'] = $this->env;

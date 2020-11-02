@@ -36,8 +36,6 @@ use Wikimedia\Parsoid\Utils\WTUtils;
 use Wikimedia\Parsoid\Wt2Html\PP\Handlers\PrepareDOM;
 
 class HTML5TreeBuilder extends PipelineStage {
-	private $traceTime;
-
 	/** @var int */
 	private $tagId;
 
@@ -62,9 +60,6 @@ class HTML5TreeBuilder extends PipelineStage {
 	/** @var bool */
 	private $needTransclusionShadow;
 
-	/** @var bool */
-	private $atTopLevel;
-
 	/**
 	 * @param Env $env
 	 * @param array $options
@@ -77,8 +72,6 @@ class HTML5TreeBuilder extends PipelineStage {
 	) {
 		parent::__construct( $env, $prevStage );
 
-		$this->traceTime = $env->hasTraceFlag( 'time' );
-
 		// Reset variable state and set up the parser
 		$this->resetState( [] );
 	}
@@ -87,7 +80,7 @@ class HTML5TreeBuilder extends PipelineStage {
 	 * @inheritDoc
 	 */
 	public function resetState( array $options ): void {
-		$this->atTopLevel = $options['toplevel'] ?? false;
+		parent::resetState( $options );
 
 		// Reset vars
 		$this->tagId = 1; // Assigned to start/self-closing tags
@@ -125,15 +118,18 @@ class HTML5TreeBuilder extends PipelineStage {
 	 */
 	public function processChunk( array $tokens ): void {
 		$s = null;
-		if ( $this->traceTime ) {
+		$profile = null;
+		if ( $this->env->profiling() ) {
+			$profile = $this->env->getCurrentProfile();
 			$s = PHPUtils::getStartHRTime();
 		}
 		$n = count( $tokens );
 		for ( $i = 0;  $i < $n;  $i++ ) {
 			$this->processToken( $tokens[$i] );
 		}
-		if ( $this->traceTime ) {
-			$this->env->bumpTimeUse( 'HTML5 TreeBuilder', PHPUtils::getHRTimeDifferential( $s ), 'HTML5' );
+		if ( $profile ) {
+			$profile->bumpTimeUse(
+				'HTML5 TreeBuilder', PHPUtils::getHRTimeDifferential( $s ), 'HTML5' );
 		}
 	}
 
@@ -160,9 +156,6 @@ class HTML5TreeBuilder extends PipelineStage {
 			DOMUtils::migrateChildrenBetweenDocs(
 				DOMCompat::getBody( $this->doc ), $node
 			);
-			$this->env->unreferenceDataObject( $this->doc );
-			$this->doc = null;
-			$this->dispatcher = null;
 		}
 
 		// Preparing the DOM is considered one "unit" with treebuilding,
@@ -221,7 +214,9 @@ class HTML5TreeBuilder extends PipelineStage {
 				}
 				return true;
 		} );
-		$docId = $this->doc->bag->stashObject( (object)$data );
+		// Store in the top level bag since we'll be importing the nodes after treebuilding
+		// @phan-suppress-next-line PhanUndeclaredProperty
+		$docId = $this->env->topLevelDoc->bag->stashObject( (object)$data );
 		$attribs[] = new KV( DOMDataUtils::DATA_OBJECT_ATTR_NAME, (string)$docId );
 		return $attribs;
 	}

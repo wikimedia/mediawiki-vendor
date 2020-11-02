@@ -232,9 +232,9 @@ class WikitextSerializer {
 	/**
 	 * @param array $opts
 	 * @param DOMElement $elt
-	 * @return ConstrainedText|string
+	 * @return string
 	 */
-	public function domToWikitext( array $opts, DOMElement $elt ) {
+	public function domToWikitext( array $opts, DOMElement $elt ): string {
 		$opts['logType'] = $this->logType;
 		$serializer = new WikitextSerializer( $opts );
 		return $serializer->serializeDOM( $elt );
@@ -243,9 +243,9 @@ class WikitextSerializer {
 	/**
 	 * @param array $opts
 	 * @param string $html
-	 * @return ConstrainedText|string
+	 * @return string
 	 */
-	public function htmlToWikitext( array $opts, string $html ) {
+	public function htmlToWikitext( array $opts, string $html ): string {
 		$body = ContentUtils::ppToDOM( $this->env, $html, [ 'markNew' => true ] );
 		'@phan-var DOMElement $body';  // @var DOMElement $body
 		return $this->domToWikitext( $opts, $body );
@@ -275,10 +275,9 @@ class WikitextSerializer {
 	/**
 	 * @param DOMElement $node
 	 * @param string $key Attribute name.
-	 * @param mixed $value Fallback value to use if the attibute is not present.
-	 * @return ConstrainedText|string
+	 * @return ?string The wikitext value, or null if the attribute is not present.
 	 */
-	public function getAttributeValue( DOMElement $node, string $key, $value ) {
+	public function getAttributeValue( DOMElement $node, string $key ): ?string {
 		$tplAttrs = DOMDataUtils::getDataMw( $node )->attribs ?? [];
 		foreach ( $tplAttrs as $attr ) {
 			// If this attribute's value is generated content,
@@ -302,7 +301,7 @@ class WikitextSerializer {
 				], $attr[1]->html );
 			}
 		}
-		return $value;
+		return null;
 	}
 
 	/**
@@ -312,7 +311,7 @@ class WikitextSerializer {
 	 *   with an extra 'fromDataMW' flag.
 	 */
 	public function getAttributeValueAsShadowInfo( DOMElement $node, string $key ): ?array {
-		$v = $this->getAttributeValue( $node, $key, null );
+		$v = $this->getAttributeValue( $node, $key );
 		if ( $v === null ) {
 			return $v;
 		}
@@ -517,7 +516,7 @@ class WikitextSerializer {
 				// Pass in kv.k, not k since k can potentially
 				// be original wikitext source for 'k' rather than
 				// the string value of the key.
-				$vv = $this->getAttributeValue( $node, $kv->k, $v );
+				$vv = $this->getAttributeValue( $node, $kv->k ) ?? $v;
 				// Remove encapsulation from protected attributes
 				// in pegTokenizer.pegjs:generic_newline_attribute
 				$kk = preg_replace( '/^data-x-/i', '', $kk, 1 );
@@ -1627,34 +1626,16 @@ class WikitextSerializer {
 	}
 
 	/**
-	 * @param Env $env
-	 * @param DOMElement $body
-	 * @suppress PhanEmptyPublicMethod
-	 */
-	public function preprocessDOM( Env $env, DOMElement $body ): void {
-	}
-
-	/**
 	 * Serialize an HTML DOM document.
 	 * WARNING: You probably want to use {@link FromHTML::serializeDOM} instead.
 	 * @param DOMElement $body
 	 * @param bool $selserMode
-	 * @return ConstrainedText|string
+	 * @return string
 	 */
-	public function serializeDOM( DOMElement $body, bool $selserMode = false ) {
+	public function serializeDOM(
+		DOMElement $body, bool $selserMode = false
+	): string {
 		Assert::invariant( DOMUtils::isBody( $body ), 'Expected a body node.' );
-		// `editedDoc` is simply body's ownerDocument.  However, since we make
-		// recursive calls to WikitextSerializer.prototype.serializeDOM with elements from dom fragments
-		// from data-mw, we need this to be set prior to the initial call.
-		// It's mainly required for correct serialization of citations in some
-		// scenarios (Ex: <ref> nested in <references>).
-		Assert::invariant( $this->env->getPageConfig()->editedDoc !== null, 'Should be set.' );
-
-		if ( !$selserMode ) {
-			// Strip <section> tags
-			// Selser mode will have done that already before running dom-diff
-			ContentUtils::stripSectionTagsAndFallbackIds( $body );
-		}
 
 		$this->logType = $selserMode ? 'trace/selser' : 'trace/wts';
 

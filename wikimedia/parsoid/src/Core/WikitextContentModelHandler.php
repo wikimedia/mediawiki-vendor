@@ -32,16 +32,20 @@ class WikitextContentModelHandler extends ContentModelHandler {
 		ContentUtils::convertOffsets(
 			$env, $body->ownerDocument, $env->getRequestOffsetType(), 'byte'
 		);
+
+		// Strip <section> and mw:FallbackId <span> tags, if present.
+		// This ensures that we can accept HTML from CX / VE
+		// and other clients that might have stripped them.
+		ContentUtils::stripSectionTagsAndFallbackIds( $body );
 	}
 
 	/**
 	 * Fetch prior DOM for selser.
 	 *
 	 * @param Env $env
-	 * @param SelectiveSerializer $selser
 	 * @param SelserData $selserData
 	 */
-	private function setupSelser( Env $env, SelectiveSerializer $selser, SelserData $selserData ) {
+	private function setupSelser( Env $env, SelserData $selserData ) {
 		// Why is it safe to use a reparsed dom for dom diff'ing?
 		// (Since that's the only use of `env.page.dom`)
 		//
@@ -78,16 +82,20 @@ class WikitextContentModelHandler extends ContentModelHandler {
 		//
 		// So, we're forced to trade off the correctness for usability.
 		if ( $selserData->oldHTML === null ) {
+			// FIXME(T266838): Create a new Env for this parse?  Something is
+			// needed to avoid this rigmarole.
+			$topLevelDoc = $env->topLevelDoc;
+			$env->setupTopLevelDoc();
 			// This effectively parses $selserData->oldText for us because
 			// $selserData->oldText = $env->getPageconfig()->getPageMainContent()
 			$doc = $this->toDOM( $env );
+			$env->topLevelDoc = $topLevelDoc;
 		} else {
 			$doc = $env->createDocument( $selserData->oldHTML, true );
 		}
 
 		$body = DOMCompat::getBody( $doc );
 		$this->canonicalizeDOM( $env, $body );
-		$selser->preprocessDOM( $env, $body );
 		$selserData->oldDOM = $body;
 	}
 
@@ -136,19 +144,18 @@ class WikitextContentModelHandler extends ContentModelHandler {
 	 * @inheritDoc
 	 */
 	public function fromDOM(
-		Env $env, DOMDocument $doc, ?SelserData $selserData = null
+		Env $env, ?SelserData $selserData = null
 	): string {
 		$metrics = $env->getSiteConfig()->metrics();
 		$setupTiming = Timing::start( $metrics );
 
-		$env->getPageConfig()->editedDoc = $doc;
-		$body = DOMCompat::getBody( $doc );
+		$body = DOMCompat::getBody( $env->topLevelDoc );
 		$this->canonicalizeDOM( $env, $body );
 
 		$serializerOpts = [ 'env' => $env, 'selserData' => $selserData ];
 		if ( $selserData && $selserData->oldText !== null ) {
 			$serializer = new SelectiveSerializer( $serializerOpts );
-			$this->setupSelser( $env, $serializer, $selserData );
+			$this->setupSelser( $env, $selserData );
 		} else {
 			// Fallback
 			$serializer = new WikitextSerializer( $serializerOpts );
@@ -157,7 +164,6 @@ class WikitextContentModelHandler extends ContentModelHandler {
 		$setupTiming->end( 'html2wt.setup' );
 
 		$this->preprocessDOM( $env, $body );
-		$serializer->preprocessDOM( $env, $body );
 
 		return $serializer->serializeDOM( $body );
 	}
