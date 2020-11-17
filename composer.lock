@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "11098bef3f1e79446e06eadefea24a7d",
+    "content-hash": "4e700b1ece24b5fa260c8c2447294e4c",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -6038,30 +6038,31 @@
         },
         {
             "name": "wikimedia/ip-utils",
-            "version": "1.0.0",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/wikimedia/mediawiki-libs-IPUtils.git",
-                "reference": "c505b99c0dfab12254d64a5e064bddd13cf066ad"
+                "url": "https://github.com/wikimedia/ip-utils.git",
+                "reference": "a86254c658b3f3e8decd7fd26632e1f3edcd7b66"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-IPUtils/zipball/c505b99c0dfab12254d64a5e064bddd13cf066ad",
-                "reference": "c505b99c0dfab12254d64a5e064bddd13cf066ad",
+                "url": "https://api.github.com/repos/wikimedia/ip-utils/zipball/a86254c658b3f3e8decd7fd26632e1f3edcd7b66",
+                "reference": "a86254c658b3f3e8decd7fd26632e1f3edcd7b66",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.6.99",
+                "php": ">=7.2.9",
                 "wikimedia/base-convert": "^2.0.0",
                 "wikimedia/ip-set": "^2.0.0"
             },
             "require-dev": {
-                "jakub-onderka/php-console-highlighter": "0.3.2",
-                "jakub-onderka/php-parallel-lint": "1.0.0",
-                "mediawiki/mediawiki-codesniffer": "24.0.0",
-                "mediawiki/minus-x": "0.3.1",
-                "ockcyp/covers-validator": "0.5.1 || 0.6.1",
-                "phpunit/phpunit": "4.8.36 || ^6.5"
+                "mediawiki/mediawiki-codesniffer": "34.0.0",
+                "mediawiki/mediawiki-phan-config": "0.10.6",
+                "mediawiki/minus-x": "1.1.0",
+                "ockcyp/covers-validator": "1.3.1",
+                "php-parallel-lint/php-console-highlighter": "0.5.0",
+                "php-parallel-lint/php-parallel-lint": "1.2.0",
+                "phpunit/phpunit": "^8.5"
             },
             "type": "library",
             "autoload": {
@@ -6081,7 +6082,7 @@
             ],
             "description": "Functions and constants to play with IP addresses and ranges",
             "homepage": "https://www.mediawiki.org/wiki/IPUtils",
-            "time": "2019-06-25T17:43:18+00:00"
+            "time": "2021-01-26T23:05:02+00:00"
         },
         {
             "name": "wikimedia/langconv",
