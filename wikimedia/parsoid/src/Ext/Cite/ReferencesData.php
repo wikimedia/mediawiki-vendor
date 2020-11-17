@@ -19,11 +19,10 @@ class ReferencesData {
 	 */
 	private $refGroups = [];
 
-	/**
-	 * FIXME(T266356): Need a solution for embedded content too
-	 *
-	 * @var array
-	 */
+	/** @var array */
+	public $embeddedErrors = [];
+
+	/** @var array */
 	private $inEmbeddedContent = [ false ];
 
 	public function inEmbeddedContent(): bool {
@@ -41,9 +40,11 @@ class ReferencesData {
 	/**
 	 * @param string $groupName
 	 * @param bool $allocIfMissing
-	 * @return RefGroup|null
+	 * @return ?RefGroup
 	 */
-	public function getRefGroup( string $groupName = '', bool $allocIfMissing = false ): ?RefGroup {
+	public function getRefGroup(
+		string $groupName, bool $allocIfMissing = false
+	): ?RefGroup {
 		if ( !isset( $this->refGroups[$groupName] ) && $allocIfMissing ) {
 			$this->refGroups[$groupName] = new RefGroup( $groupName );
 		}
@@ -51,13 +52,11 @@ class ReferencesData {
 	}
 
 	/**
-	 * @param ?string $groupName
+	 * @param string $groupName
 	 */
-	public function removeRefGroup( ?string $groupName = null ): void {
-		if ( $groupName !== null ) {
-			// '' is a valid group (the default group)
-			unset( $this->refGroups[$groupName] );
-		}
+	public function removeRefGroup( string $groupName ): void {
+		// '' is a valid group (the default group)
+		unset( $this->refGroups[$groupName] );
 	}
 
 	/**
@@ -65,13 +64,12 @@ class ReferencesData {
 	 * @param string $groupName
 	 * @param string $refName
 	 * @param string $about
-	 * @param bool $skipLinkback
 	 * @param DOMElement $linkBack
 	 * @return stdClass
 	 */
 	public function add(
 		ParsoidExtensionAPI $extApi, string $groupName, string $refName,
-		string $about, bool $skipLinkback, DOMElement $linkBack
+		string $about, DOMElement $linkBack
 	): stdClass {
 		$group = $this->getRefGroup( $groupName, true );
 		$hasRefName = strlen( $refName ) > 0;
@@ -82,9 +80,6 @@ class ReferencesData {
 				$ref->hasMultiples = true;
 				$c = $extApi->getContentDOM( $ref->contentId )->firstChild;
 				$ref->cachedHtml = $extApi->domToHtml( $c, true, false );
-			}
-			if ( !$this->inEmbeddedContent() ) {
-				$ref->nodes[] = $linkBack;
 			}
 		} else {
 			// The ids produced Cite.php have some particulars:
@@ -101,7 +96,6 @@ class ReferencesData {
 			$this->index += 1;
 
 			$ref = (object)[
-				'about' => $about,
 				'contentId' => null,
 				'dir' => '',
 				'group' => $group->name,
@@ -116,17 +110,18 @@ class ReferencesData {
 				// Just used for comparison when we have multiples
 				'cachedHtml' => '',
 				'nodes' => [],
+				'embeddedNodes' => [],
 			];
 			$group->refs[] = $ref;
 			if ( $hasRefName ) {
 				$group->indexByName[$refName] = $ref;
-				if ( !$this->inEmbeddedContent() ) {
-					$ref->nodes[] = $linkBack;
-				}
 			}
 		}
 
-		if ( !$skipLinkback ) {
+		if ( $this->inEmbeddedContent() ) {
+			$ref->embeddedNodes[] = $about;
+		} else {
+			$ref->nodes[] = $linkBack;
 			$ref->linkbacks[] = $ref->key . '-' . count( $ref->linkbacks );
 		}
 
