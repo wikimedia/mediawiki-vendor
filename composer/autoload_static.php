@@ -255,7 +255,8 @@ class ComposerStaticInit_mediawiki_vendor
             1 => __DIR__ . '/..' . '/wikimedia/ip-utils/src',
             2 => __DIR__ . '/..' . '/wikimedia/object-factory/src',
             3 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
-            4 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
+            4 => __DIR__ . '/..' . '/wikimedia/testing-access-wrapper/src',
+            5 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
         ),
         'Wikibase\\InternalSerialization\\' => 
         array (

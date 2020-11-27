@@ -16,6 +16,7 @@ use Wikimedia\TestingAccessWrapper;
 
 class NonPublic {
 	protected $prop;
+	protected const CONSTANT = 4;
 	protected function func() {}
 	protected static function staticFunc() {}
 }
@@ -27,6 +28,8 @@ $classWrapper = TestingAccessWrapper::newFromClass( NonPublic::class );
 $wrapper->prop = 'foo';
 $wrapper->func();
 $classWrapper->staticFunc();
+
+$value = TestingAccessWrapper::constant( NonPublic::class, 'CONSTANT' );
 ```
 
 Running tests

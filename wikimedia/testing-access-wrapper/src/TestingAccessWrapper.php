@@ -13,13 +13,16 @@ use ReflectionProperty;
  * Circumvent access restrictions on object internals
  *
  * This can be helpful for writing tests that can probe object internals,
- * without having to modify the class under test to accomodate.
+ * without having to modify the class under test to accommodate.
  *
  * Wrap an object with private methods as follows:
  *    $title = TestingAccessWrapper::newFromObject( Title::newFromDBkey( $key ) );
  *
  * You can access private and protected instance methods and variables:
  *    $formatter = $title->getTitleFormatter();
+ *
+ * You can access private and protected constants:
+ *    $value = TestingAccessWrapper::constant( Foo::class, 'FOO_CONSTANT' );
  *
  */
 class TestingAccessWrapper {
@@ -31,14 +34,14 @@ class TestingAccessWrapper {
 	 * except that access restrictions can be ignored (protected and private methods and properties
 	 * are available for any caller).
 	 * @param object $object
-	 * @return TestingAccessWrapper
+	 * @return self
 	 * @throws InvalidArgumentException
 	 */
 	public static function newFromObject( $object ) {
 		if ( !is_object( $object ) ) {
 			throw new InvalidArgumentException( __METHOD__ . ' must be called with an object' );
 		}
-		$wrapper = new TestingAccessWrapper();
+		$wrapper = new self();
 		$wrapper->object = $object;
 		return $wrapper;
 	}
@@ -48,18 +51,42 @@ class TestingAccessWrapper {
 	 * Returns an object whose methods/properties will correspond to the
 	 * static methods/properties of the given class.
 	 * @param string $className
-	 * @return TestingAccessWrapper
+	 * @return self
 	 * @throws InvalidArgumentException
 	 */
 	public static function newFromClass( $className ) {
 		if ( !is_string( $className ) ) {
 			throw new InvalidArgumentException( __METHOD__ . ' must be called with a class name' );
 		}
-		$wrapper = new TestingAccessWrapper();
+		$wrapper = new self();
 		$wrapper->object = $className;
 		return $wrapper;
 	}
 
+	/**
+	 * Allow access to non-public constants of the class.
+	 * @param class-string $className
+	 * @param string $constantName
+	 * @return mixed
+	 */
+	public static function constant( $className, $constantName ) {
+		$classReflection = new ReflectionClass( $className );
+		// getConstant() returns `false` if the constant is defined in
+		// a parent class; this works more like ReflectionClass::getMethod()
+		while ( !$classReflection->hasConstant( $constantName ) ) {
+			$classReflection = $classReflection->getParentClass();
+			if ( !$classReflection ) {
+				throw new \ReflectionException( 'constant not present' );
+			}
+		}
+		return $classReflection->getConstant( $constantName );
+	}
+
+	/**
+	 * @param string $method
+	 * @param array $args
+	 * @return mixed
+	 */
 	public function __call( $method, $args ) {
 		$methodReflection = $this->getMethod( $method );
 
@@ -72,6 +99,10 @@ class TestingAccessWrapper {
 			$args );
 	}
 
+	/**
+	 * @param string $name
+	 * @param mixed $value
+	 */
 	public function __set( $name, $value ) {
 		$propertyReflection = $this->getProperty( $name );
 
@@ -83,12 +114,30 @@ class TestingAccessWrapper {
 		$propertyReflection->setValue( $this->object, $value );
 	}
 
+	/**
+	 * @param string $name Field name
+	 * @return mixed
+	 */
 	public function __get( $name ) {
 		$propertyReflection = $this->getProperty( $name );
 
 		if ( $this->isStatic() && !$propertyReflection->isStatic() ) {
 			throw new DomainException( __METHOD__
 				. ': Cannot get non-static property when wrapping static class' );
+		}
+
+		if ( $propertyReflection->isStatic() ) {
+			// https://bugs.php.net/bug.php?id=69804 - can't use getStaticPropertyValue() on
+			// non-public properties
+			$class = new ReflectionClass( $this->object );
+			$props = $class->getStaticProperties();
+
+			// Can't use isset() as it returns false for null values
+			if ( !array_key_exists( $name, $props ) ) {
+				throw new DomainException( __METHOD__ . ": class {$class->name} "
+					. "doesn't have static property '{$name}'" );
+			}
+			return $props[$name];
 		}
 
 		return $propertyReflection->getValue( $this->object );
@@ -106,6 +155,7 @@ class TestingAccessWrapper {
 	 * Return a method and make it accessible.
 	 * @param string $name
 	 * @return ReflectionMethod
+	 * @throws ReflectionException
 	 */
 	private function getMethod( $name ) {
 		$classReflection = new ReflectionClass( $this->object );
@@ -152,4 +202,3 @@ class TestingAccessWrapper {
 		return $propertyReflection;
 	}
 }
-
