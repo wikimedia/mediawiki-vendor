@@ -42,39 +42,58 @@ class ContentUtils {
 	}
 
 	/**
-	 * .dataobject aware HTML parser, to be used in the DOM
-	 * post-processing phase.
+	 * XXX: Don't use this outside of testing.  It shouldn't be necessary
+	 * to create new documents when parsing or serializing.  A document lives
+	 * on the environment which can be used to create fragments.  The bag added
+	 * as a dynamic property to the PHP wrapper around the libxml doc
+	 * is at risk of being GC-ed.
 	 *
-	 * @param Env $env
+	 * @param string $html
+	 * @param bool $validateXMLNames
+	 * @return DOMDocument
+	 */
+	public static function createDocument(
+		string $html = '', bool $validateXMLNames = false
+	): DOMDocument {
+		$doc = DOMUtils::parseHTML( $html, $validateXMLNames );
+		DOMDataUtils::prepareDoc( $doc );
+		return $doc;
+	}
+
+	/**
+	 * XXX: Don't use this outside of testing.  It shouldn't be necessary
+	 * to create new documents when parsing or serializing.  A document lives
+	 * on the environment which can be used to create fragments.  The bag added
+	 * as a dynamic property to the PHP wrapper around the libxml doc
+	 * is at risk of being GC-ed.
+	 *
 	 * @param string $html
 	 * @param array $options
-	 * @return DOMElement|DOMDocumentFragment
+	 * @return DOMDocument
 	 */
-	public static function ppToDOM(
-		Env $env, string $html, array $options = []
-	): DOMNode {
-		$options += [
-			'node' => null,
-			'toFragment' => false,
-		];
+	public static function createAndLoadDocument(
+		string $html, array $options = []
+	): DOMDocument {
+		$doc = self::createDocument( $html );
+		DOMDataUtils::visitAndLoadDataAttribs(
+			DOMCompat::getBody( $doc ), $options
+		);
+		return $doc;
+	}
 
-		$node = $options['node'];
-		if ( $options['toFragment'] ) {
-			$node = $env->topLevelDoc->createDocumentFragment();
-		}
-
-		if ( $node === null ) {
-			$node = DOMCompat::getBody( $env->createDocument( $html ) );
-		} else {
-			if ( $node instanceof DOMDocumentFragment ) {
-				DOMUtils::setFragmentInnerHTML( $node, $html );
-			} else {
-				DOMCompat::setInnerHTML( $node, $html );
-			}
-		}
-
-		DOMDataUtils::visitAndLoadDataAttribs( $node, $options );
-		return $node;
+	/**
+	 * @param DOMDocument $doc
+	 * @param string $html
+	 * @param array $options
+	 * @return DOMDocumentFragment
+	 */
+	public static function createAndLoadDocumentFragment(
+		DOMDocument $doc, string $html, array $options = []
+	): DOMDocumentFragment {
+		$domFragment = $doc->createDocumentFragment();
+		DOMUtils::setFragmentInnerHTML( $domFragment, $html );
+		DOMDataUtils::visitAndLoadDataAttribs( $domFragment, $options );
+		return $domFragment;
 	}
 
 	/**
@@ -217,7 +236,11 @@ class ContentUtils {
 				DOMDataUtils::setJSONAttribute( $node, 'data-mw-variant', $dmwv );
 			}
 
-			if ( DOMUtils::matchTypeOf( $node, '#^mw:(ExpandedAttrs|Image|Extension)\b#D' ) ) {
+			if (
+				DOMUtils::matchTypeOf( $node, '#^mw:Extension/(.+?)$#D' ) ||
+				WTUtils::hasExpandedAttrsType( $node ) ||
+				WTUtils::isInlineMedia( $node )
+			) {
 				$dmw = DOMDataUtils::getDataMw( $node );
 				// Handle embedded HTML in template-affected attributes
 				if ( $dmw->attribs ?? null ) {
@@ -229,7 +252,7 @@ class ContentUtils {
 						}
 					}
 				}
-				// Handle embedded HTML in figure-inline captions
+				// Handle embedded HTML in inline media captions
 				if ( $dmw->caption ?? null ) {
 					$dmw->caption = $convertString( $dmw->caption );
 				}
@@ -257,8 +280,7 @@ class ContentUtils {
 			}
 		};
 		$convertString = function ( string $str ) use ( $doc, $env, $convertNode ): string {
-			$parentNode = $doc->createElement( 'body' );
-			$node = self::ppToDOM( $env, $str, [ 'node' => $parentNode ] );
+			$node = self::createAndLoadDocumentFragment( $doc, $str );
 			DOMPostOrder::traverse( $node, $convertNode );
 			return self::ppToXML( $node, [ 'innerXML' => true ] );
 		};

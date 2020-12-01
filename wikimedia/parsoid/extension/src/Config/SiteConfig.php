@@ -23,7 +23,6 @@ namespace MWParsoid\Config;
 
 use Config;
 use ExtensionRegistry;
-use FakeConverter;
 use Language;
 use LanguageConverter;
 use Liuggio\StatsdClient\Factory\StatsdDataFactoryInterface;
@@ -415,7 +414,7 @@ class SiteConfig extends ISiteConfig {
 		try {
 			return !$this->config->get( 'DisableLangConversion' ) &&
 				in_array( $lang, LanguageConverter::$languagesWithVariants, true ) &&
-				!Language::factory( $lang )->getConverter() instanceof FakeConverter;
+				!Language::factory( $lang )->getConverter()->hasVariants();
 		} catch ( \MWException $ex ) {
 			// Probably a syntactically invalid language code
 			return false;
@@ -454,9 +453,7 @@ class SiteConfig extends ISiteConfig {
 
 			foreach ( $langNames as $langCode ) {
 				$lang = Language::factory( $langCode );
-				if ( $lang->getConverter() instanceof FakeConverter ) {
-					// Only languages which do not return instances of
-					// FakeConverter implement language conversion.
+				if ( $lang->getConverter()->hasVariants() ) {
 					continue;
 				}
 

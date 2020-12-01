@@ -46,6 +46,7 @@ class AddMediaInfo implements Wt2HtmlDOMProcessor {
 			$height = $info['thumbheight'];
 		}
 
+		// @phan-suppress-next-line PhanRedundantCondition
 		if ( !empty( $info['thumburl'] ) && !empty( $info['thumbwidth'] ) ) {
 			$width = $info['thumbwidth'];
 		}
@@ -595,18 +596,17 @@ class AddMediaInfo implements Wt2HtmlDOMProcessor {
 	): void {
 		'@phan-var DOMElement|DOMDocumentFragment $root';  // @var DOMElement|DOMDocumentFragment $root
 		$urlParser = new PegTokenizer( $env );
-		$containers = DOMCompat::querySelectorAll( $root, 'figure,figure-inline' );
+		$containers = DOMCompat::querySelectorAll(
+			$root, '[typeof*="mw:Image"], [typeof*="mw:Video"], [typeof*="mw:Audio"]'
+		);
 
 		foreach ( $containers as $container ) {
 			// Media info for fragments was already added in their
-			// respective pipelines
-			if ( WTUtils::isDOMFragmentWrapper( $container ) ) {
-				continue;
-			}
-
+			// respective pipelines.  In any case, we shouldn't match them in
+			// the query above.
 			Assert::invariant(
-				WTUtils::isGeneratedFigure( $container ),
-				'Figure is missing a media typeof'
+				!WTUtils::isDOMFragmentWrapper( $container ),
+				'Media info for fragment was already added'
 			);
 
 			$dataMw = DOMDataUtils::getDataMw( $container );

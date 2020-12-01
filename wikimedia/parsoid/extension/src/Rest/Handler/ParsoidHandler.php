@@ -138,8 +138,8 @@ abstract class ParsoidHandler extends Handler {
 		// We are cutting some corners here (IDN, non-ASCII casing)
 		// since domain name support is provisional.
 		// TODO use a proper validator instead
-		$wgServer = \RequestContext::getMain()->getConfig()->get( 'Server' );
-		$expectedDomain = wfParseUrl( $wgServer )['host'] ?? null;
+		$server = \RequestContext::getMain()->getConfig()->get( 'Server' );
+		$expectedDomain = wfParseUrl( $server )['host'] ?? null;
 		if ( !$expectedDomain ) {
 			throw new LogicException( 'Cannot parse $wgServer' );
 		}
@@ -149,7 +149,7 @@ abstract class ParsoidHandler extends Handler {
 
 		// TODO probably the better
 		if ( $this->extensionRegistry->isLoaded( 'MobileFrontend' ) ) {
-			$mobileServer = MobileContext::singleton()->getMobileUrl( $wgServer );
+			$mobileServer = MobileContext::singleton()->getMobileUrl( $server );
 			$expectedMobileDomain = wfParseUrl( $mobileServer )['host'] ?? null;
 			if ( strcasecmp( $expectedMobileDomain, $domain ) === 0 ) {
 				return;
@@ -206,7 +206,7 @@ abstract class ParsoidHandler extends Handler {
 		$attribs = [
 			'titleMissing' => empty( $request->getPathParams()['title'] ),
 			'pageName' => $request->getPathParam( 'title' ) ?? '',
-			'oldid' => $request->getPathParam( 'revision' ) ?? null,
+			'oldid' => $request->getPathParam( 'revision' ),
 			// "body_only" flag to return just the body (instead of the entire HTML doc)
 			// We would like to deprecate use of this flag: T181657
 			'body_only' => $request->getQueryParams()['body_only'] ?? $body['body_only'] ?? null,

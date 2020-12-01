@@ -3,6 +3,8 @@
 namespace Wikimedia\Parsoid\Html2Wt;
 
 use Closure;
+use DOMDocument;
+use DOMDocumentFragment;
 use DOMElement;
 use DOMNode;
 use Exception;
@@ -105,9 +107,6 @@ class WikitextSerializer {
 	/** @var SerializerState */
 	private $state;
 
-	/** @var Separators */
-	private $separators;
-
 	/**
 	 * @var array
 	 *   - env: (Env)
@@ -133,7 +132,6 @@ class WikitextSerializer {
 		] );
 		$this->logType = $this->options['logType'];
 		$this->state = new SerializerState( $this, $this->options );
-		$this->separators = new Separators( $this->env, $this->state );
 		$this->wteHandlers = new WikitextEscapeHandlers( $this->options );
 	}
 
@@ -178,42 +176,6 @@ class WikitextSerializer {
 	}
 
 	/**
-	 * Figure out separator constraints and merge them with existing constraints
-	 * in state so that they can be emitted when the next content emits source.
-	 * @param DOMNode $nodeA
-	 * @param DOMHandler $handlerA
-	 * @param DOMNode $nodeB
-	 * @param DOMHandler $handlerB
-	 */
-	public function updateSeparatorConstraints(
-		DOMNode $nodeA, DOMHandler $handlerA, DOMNode $nodeB, DOMHandler $handlerB
-	): void {
-		$this->separators->updateSeparatorConstraints( $nodeA, $handlerA, $nodeB, $handlerB );
-	}
-
-	/**
-	 * Emit a separator based on the collected (and merged) constraints
-	 * and existing separator text. Called when new output is triggered.
-	 * @param DOMNode $node
-	 * @return string|null
-	 */
-	public function buildSep( DOMNode $node ): ?string {
-		return $this->separators->buildSep( $node );
-	}
-
-	/**
-	 * Recovers and emits any trimmed whitespace for $node
-	 * @param DOMNode $node
-	 * @param bool $leading
-	 *   if true, trimmed leading whitespace is emitted
-	 *   if false, trimmed railing whitespace is emitted
-	 * @return string|null
-	 */
-	public function recoverTrimmedWhitespace( DOMNode $node, bool $leading ): ?string {
-		return $this->separators->recoverTrimmedWhitespace( $node, $leading );
-	}
-
-	/**
 	 * Escape wikitext-like strings in '$text' so that $text renders as a plain string
 	 * when rendered as HTML. The escaping is done based on the context in which $text
 	 * is present (ex: start-of-line, in a link, etc.)
@@ -231,13 +193,15 @@ class WikitextSerializer {
 
 	/**
 	 * @param array $opts
-	 * @param DOMElement $elt
+	 * @param DOMDocumentFragment $node
 	 * @return string
 	 */
-	public function domToWikitext( array $opts, DOMElement $elt ): string {
+	public function domToWikitext(
+		array $opts, DOMDocumentFragment $node
+	): string {
 		$opts['logType'] = $this->logType;
 		$serializer = new WikitextSerializer( $opts );
-		return $serializer->serializeDOM( $elt );
+		return $serializer->serializeDOM( $node );
 	}
 
 	/**
@@ -246,9 +210,10 @@ class WikitextSerializer {
 	 * @return string
 	 */
 	public function htmlToWikitext( array $opts, string $html ): string {
-		$body = ContentUtils::ppToDOM( $this->env, $html, [ 'markNew' => true ] );
-		'@phan-var DOMElement $body';  // @var DOMElement $body
-		return $this->domToWikitext( $opts, $body );
+		$domFragment = ContentUtils::createAndLoadDocumentFragment(
+			$this->env->topLevelDoc, $html, [ 'markNew' => true ]
+		);
+		return $this->domToWikitext( $opts, $domFragment );
 	}
 
 	/**
@@ -1356,7 +1321,7 @@ class WikitextSerializer {
 				if ( $state->selserMode ) {
 					$prev = $node->previousSibling;
 					if ( !$state->inModifiedContent && (
-						( !$prev && DOMUtils::isBody( $node->parentNode ) ) ||
+						( !$prev && DOMUtils::atTheTop( $node->parentNode ) ) ||
 						( $prev && !DOMUtils::isDiffMarker( $prev ) )
 					) ) {
 						$state->currNodeUnmodified = true;
@@ -1378,7 +1343,7 @@ class WikitextSerializer {
 		}
 
 		$prev = DOMUtils::previousNonSepSibling( $node ) ?: $node->parentNode;
-		$this->updateSeparatorConstraints(
+		$state->separators->updateSeparatorConstraints(
 			$prev, $domHandlerFactory->getDOMHandler( $prev ),
 			$node, $domHandler
 		);
@@ -1386,7 +1351,7 @@ class WikitextSerializer {
 		$nextNode = call_user_func( $method, $node, $domHandler );
 
 		$next = DOMUtils::nextNonSepSibling( $node ) ?: $node->parentNode;
-		$this->updateSeparatorConstraints(
+		$state->separators->updateSeparatorConstraints(
 			$node, $domHandler,
 			$next, $domHandlerFactory->getDOMHandler( $next )
 		);
@@ -1620,16 +1585,22 @@ class WikitextSerializer {
 	}
 
 	/**
-	 * Serialize an HTML DOM document.
-	 * WARNING: You probably want to use {@link FromHTML::serializeDOM} instead.
-	 * @param DOMElement $body
+	 * Serialize an HTML DOM.
+	 *
+	 * WARNING: You probably want to use WikitextContentModelHandler::fromDOM instead.
+	 *
+	 * @param DOMDocument|DOMDocumentFragment $node
 	 * @param bool $selserMode
 	 * @return string
 	 */
 	public function serializeDOM(
-		DOMElement $body, bool $selserMode = false
+		DOMNode $node, bool $selserMode = false
 	): string {
-		Assert::invariant( DOMUtils::isBody( $body ), 'Expected a body node.' );
+		Assert::parameterType( 'DOMDocument|DOMDocumentFragment', $node, '$node' );
+
+		if ( $node instanceof DOMDocument ) {
+			$node = DOMCompat::getBody( $node );
+		}
 
 		$this->logType = $selserMode ? 'trace/selser' : 'trace/wts';
 
@@ -1637,14 +1608,14 @@ class WikitextSerializer {
 		$state->initMode( $selserMode );
 
 		$domNormalizer = new DOMNormalizer( $state );
-		$domNormalizer->normalize( $body );
+		$domNormalizer->normalize( $node );
 
 		if ( $this->env->hasDumpFlag( 'dom:post-normal' ) ) {
 			$options = [ 'storeDiffMark' => true, 'env' => $this->env ];
-			ContentUtils::dumpDOM( $body, 'DOM: post-normal', $options );
+			ContentUtils::dumpDOM( $node, 'DOM: post-normal', $options );
 		}
 
-		$state->kickOffSerialize( $body );
+		$state->kickOffSerialize( $node );
 
 		if ( $state->hasIndentPreNowikis ) {
 			// FIXME: Perhaps this can be done on a per-line basis

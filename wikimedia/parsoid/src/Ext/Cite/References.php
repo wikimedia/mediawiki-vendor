@@ -106,14 +106,12 @@ class References extends ExtensionTagHandler {
 	 * @param ParsoidExtensionAPI $extApi
 	 * @param DOMElement $node
 	 * @param ReferencesData $refsData
-	 * @param ?string $referencesGroup
 	 */
 	private static function extractRefFromNode(
-		ParsoidExtensionAPI $extApi,
-		DOMElement $node, ReferencesData $refsData,
-		?string $referencesGroup = ''
+		ParsoidExtensionAPI $extApi, DOMElement $node, ReferencesData $refsData
 	): void {
 		$doc = $node->ownerDocument;
+		$errs = [];
 
 		// This is data-parsoid from the dom fragment node that's gone through
 		// dsr computation and template wrapping.
@@ -144,7 +142,14 @@ class References extends ExtensionTagHandler {
 		// FIXME(SSS): Need to clarify semantics here.
 		// If both the containing <references> elt as well as the nested <ref>
 		// elt has a group attribute, what takes precedence?
-		$groupName = $refDmw->attrs->group ?? $referencesGroup ?? '';
+		$groupName = $refDmw->attrs->group ?? $refsData->referencesGroup;
+
+		if (
+			$refsData->inReferencesContent() &&
+			$groupName !== $refsData->referencesGroup
+		) {
+			$errs[] = [ 'key' => 'cite_error_references_group_mismatch' ];
+		}
 
 		// NOTE: This will have been trimmed in Utils::getExtArgInfo()'s call
 		// to TokenUtils::kvToHash() and ExtensionHandler::normalizeExtOptions()
@@ -166,7 +171,6 @@ class References extends ExtensionTagHandler {
 		$linkBack = $doc->createElement( 'sup' );
 
 		$ref = null;
-		$errs = [];
 
 		$hasRefName = strlen( $refName ) > 0;
 		$hasFollow = strlen( $followName ) > 0;
@@ -184,10 +188,21 @@ class References extends ExtensionTagHandler {
 			);
 			DOMUtils::migrateChildren( $c, $span );
 			$c->appendChild( $span );
+		}
 
-			if ( $hasRefName ) {
+		if ( $hasRefName ) {
+			if ( $hasFollow ) {
+				// Presumably, "name" has higher precedence
 				$errs[] = [ 'key' => 'cite_error_ref_too_many_keys' ];
-			} else {
+			}
+			if ( $refsData->inReferencesContent() ) {
+				$group = $refsData->getRefGroup( $groupName );
+				if ( !isset( $group->indexByName[$refName] ) ) {
+					$errs[] = [ 'key' => 'cite_error_references_missing_key' ];
+				}
+			}
+		} else {
+			if ( $hasFollow ) {
 				// This is a follows ref, so check that a named ref has already
 				// been defined
 				$group = $refsData->getRefGroup( $groupName );
@@ -205,8 +220,15 @@ class References extends ExtensionTagHandler {
 						// This will be set below with `$ref->contentId = $contentId;`
 					}
 				} else {
+					// FIXME: This key isn't exactly appropriate since this
+					// is more general than just being in a <references>
+					// section and it's the $followName we care about, but the
+					// extension to the legacy parser doesn't have an
+					// equivalent key and just outputs something wacky.
 					$errs[] = [ 'key' => 'cite_error_references_missing_key' ];
 				}
+			} elseif ( $refsData->inReferencesContent() ) {
+				$errs[] = [ 'key' => 'cite_error_references_no_key' ];
 			}
 		}
 
@@ -233,7 +255,9 @@ class References extends ExtensionTagHandler {
 
 		if ( $missingContent ) {
 			// Check for missing name and content to generate error code
-			if ( !$hasRefName ) {
+			if ( $refsData->inReferencesContent() ) {
+				$errs[] = [ 'key' => 'cite_error_empty_references_define' ];
+			} elseif ( !$hasRefName ) {
 				if ( !empty( $cDp->selfClose ) ) {
 					$errs[] = [ 'key' => 'cite_error_ref_no_key' ];
 				} else {
@@ -404,6 +428,10 @@ class References extends ExtensionTagHandler {
 			}
 		}
 
+		// Note that `$sup`s here are probably all we really need to check for
+		// errors caught with `$refsData->inReferencesContent()` but it's
+		// probably easier to just know that state while they're being
+		// constructed.
 		$nestedRefsHTML = array_map(
 			function ( DOMElement $sup ) use ( $extApi ) {
 				return $extApi->domToHtml( $sup, false, true ) . "\n";
@@ -530,16 +558,19 @@ class References extends ExtensionTagHandler {
 				if ( WTUtils::isSealedFragmentOfType( $child, 'ref' ) ) {
 					self::extractRefFromNode( $extApi, $child, $refsData );
 				} elseif ( DOMUtils::hasTypeOf( $child, 'mw:Extension/references' ) ) {
-					$referencesGroup = DOMDataUtils::getDataParsoid( $child )->group ?? null;
-					$refsData->pushInEmbeddedContent();
-					self::processRefsInReferences(
-						$extApi,
-						$refsData,
-						$child,
-						$referencesGroup
-					);
+					if ( !$refsData->inReferencesContent() ) {
+						$refsData->referencesGroup =
+							DOMDataUtils::getDataParsoid( $child )->group ?? '';
+					}
+					$refsData->pushInEmbeddedContent( 'references' );
+					if ( $child->hasChildNodes() ) {
+						self::processRefs( $extApi, $refsData, $child );
+					}
 					$refsData->popInEmbeddedContent();
-					self::insertReferencesIntoDOM( $extApi, $child, $refsData, false );
+					if ( !$refsData->inReferencesContent() ) {
+						$refsData->referencesGroup = '';
+						self::insertReferencesIntoDOM( $extApi, $child, $refsData, false );
+					}
 				} else {
 					$refsData->pushInEmbeddedContent();
 					// Look for <ref>s embedded in data attributes
@@ -549,50 +580,9 @@ class References extends ExtensionTagHandler {
 						}
 					);
 					$refsData->popInEmbeddedContent();
-
 					if ( $child->hasChildNodes() ) {
 						self::processRefs( $extApi, $refsData, $child );
 					}
-				}
-			}
-			$child = $nextChild;
-		}
-	}
-
-	/**
-	 * This handles wikitext like this:
-	 * ```
-	 *   <references> <ref>foo</ref> </references>
-	 *   <references> <ref>bar</ref> </references>
-	 * ```
-	 *
-	 * @param ParsoidExtensionAPI $extApi
-	 * @param ReferencesData $refsData
-	 * @param DOMElement $node
-	 * @param ?string $referencesGroup
-	 */
-	private static function processRefsInReferences(
-		ParsoidExtensionAPI $extApi, ReferencesData $refsData,
-		DOMElement $node, ?string $referencesGroup
-	): void {
-		$child = $node->firstChild;
-		while ( $child !== null ) {
-			$nextChild = $child->nextSibling;
-			if ( $child instanceof DOMElement ) {
-				if ( WTUtils::isSealedFragmentOfType( $child, 'ref' ) ) {
-					self::extractRefFromNode(
-						$extApi,
-						$child,
-						$refsData,
-						$referencesGroup
-					);
-				} elseif ( $child->hasChildNodes() ) {
-					self::processRefsInReferences(
-						$extApi,
-						$refsData,
-						$child,
-						$referencesGroup
-					);
 				}
 			}
 			$child = $nextChild;

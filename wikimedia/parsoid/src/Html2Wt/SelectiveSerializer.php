@@ -5,9 +5,9 @@ namespace Wikimedia\Parsoid\Html2Wt;
 
 use Composer\Semver\Semver;
 use DOMComment;
+use DOMDocument;
 use DOMElement;
 use DOMText;
-use Wikimedia\Assert\Assert;
 use Wikimedia\Parsoid\Config\Env;
 use Wikimedia\Parsoid\Config\WikitextConstants;
 use Wikimedia\Parsoid\Core\DomSourceRange;
@@ -76,9 +76,10 @@ class SelectiveSerializer {
 	 * @param string $nodeName
 	 */
 	private function wrapTextChildrenOfNode( DOMElement $body, string $nodeName ): void {
-		// FIXME (optimization): This probably only has to wrap the
-		// *first/last* children *if* they are Text, not *every* Text
-		// child (T266908)
+		// Note that while it might seem that only the first and last child need to be
+		// wrapped, when nested list items are added, the previously last child of
+		// a list item become an intermediate child in the new DOM. Without the span
+		// wrapper, trailing trimmed whitespace gets dropped.
 		$inListItem = isset( WikitextConstants::$HTML['ListItemTags'][$nodeName] );
 		foreach ( DOMCompat::querySelectorAll( $body, $nodeName ) as $elt ) {
 			if ( WTUtils::isLiteralHTMLNode( $elt ) ) {
@@ -180,23 +181,25 @@ class SelectiveSerializer {
 	}
 
 	/**
-	 * Selectively serialize an HTML DOM document.
+	 * Selectively serialize an HTML DOM.
 	 *
-	 * WARNING: You probably want to use FromHTML.serializeDOM instead.
-	 * @param DOMElement $body
+	 * WARNING: You probably want to use WikitextContentModelHandler::fromDOM instead.
+	 *
+	 * @param DOMDocument $doc
 	 * @return string
 	 */
-	public function serializeDOM( DOMElement $body ): string {
-		Assert::invariant( DOMUtils::isBody( $body ), 'Expected a body node.' );
-
+	public function serializeDOM( DOMDocument $doc ): string {
 		$serializeStart = null;
 		$domDiffStart = null;
 		$r = null;
 
 		$timing = Timing::start( $this->metrics );
 
+		$body = DOMCompat::getBody( $doc );
+		$oldBody = DOMCompat::getBody( $this->selserData->oldDOM );
+
 		// Preprocess DOMs
-		$this->preprocessDOM( $this->selserData->oldDOM );
+		$this->preprocessDOM( $oldBody );
 		$this->preprocessDOM( $body );
 
 		// Use provided diff-marked DOM (used during testing)
@@ -206,7 +209,7 @@ class SelectiveSerializer {
 			$body = DOMCompat::getBody( $this->env->getDOMDiff() );
 		} else {
 			$domDiffTiming = Timing::start( $this->metrics );
-			$diff = ( new DOMDiff( $this->env ) )->diff( $this->selserData->oldDOM, $body );
+			$diff = ( new DOMDiff( $this->env ) )->diff( $oldBody, $body );
 			$domDiffTiming->end( 'html2wt.selser.domDiff' );
 		}
 
@@ -216,12 +219,12 @@ class SelectiveSerializer {
 		} else {
 			if ( $this->trace || $this->env->hasDumpFlag( 'dom:post-dom-diff' ) ) {
 				$options = [ 'storeDiffMark' => true, 'env' => $this->env ];
-				ContentUtils::dumpDOM( $this->selserData->oldDOM, 'OLD DOM ', $options );
+				ContentUtils::dumpDOM( $oldBody, 'OLD DOM ', $options );
 				ContentUtils::dumpDOM( $body, 'DOM after running DOMDiff', $options );
 			}
 
 			// Call the WikitextSerializer to do our bidding
-			$r = $this->wts->serializeDOM( $body, true );
+			$r = $this->wts->serializeDOM( $doc, true );
 		}
 
 		$timing->end( 'html2wt.selser.serialize' );

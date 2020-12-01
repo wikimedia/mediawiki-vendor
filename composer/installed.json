@@ -6245,17 +6245,17 @@
     },
     {
         "name": "wikimedia/parsoid",
-        "version": "v0.13.0-a17",
-        "version_normalized": "0.13.0.0-alpha17",
+        "version": "v0.13.0-a18",
+        "version_normalized": "0.13.0.0-alpha18",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/parsoid.git",
-            "reference": "d5cf90a8fce214f0dc6b9deb1fdbaf70f1d572fd"
+            "reference": "7c3548a359e67183c62edb507d9f479b00ef5c12"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/d5cf90a8fce214f0dc6b9deb1fdbaf70f1d572fd",
-            "reference": "d5cf90a8fce214f0dc6b9deb1fdbaf70f1d572fd",
+            "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/7c3548a359e67183c62edb507d9f479b00ef5c12",
+            "reference": "7c3548a359e67183c62edb507d9f479b00ef5c12",
             "shasum": ""
         },
         "require": {
@@ -6267,7 +6267,7 @@
             "psr/log": "^1.1.2",
             "wikimedia/assert": "0.4.0|^0.5.0",
             "wikimedia/ip-utils": "^1.0.0|^3.0.0",
-            "wikimedia/object-factory": "^2.1|^3.0.0",
+            "wikimedia/object-factory": "^3.0.0",
             "wikimedia/remex-html": "^2.2.0",
             "wikimedia/scoped-callback": "^3.0.0",
             "wikimedia/wikipeg": "^2.0.4",
@@ -6279,10 +6279,10 @@
         "require-dev": {
             "composer/composer": "^1.10@RC",
             "ext-curl": "*",
-            "mediawiki/mediawiki-codesniffer": "31.0.0",
-            "mediawiki/mediawiki-phan-config": "0.10.3",
+            "mediawiki/mediawiki-codesniffer": "33.0.0",
+            "mediawiki/mediawiki-phan-config": "0.10.4",
             "mediawiki/minus-x": "1.1.0",
-            "monolog/monolog": "~1.25.2",
+            "monolog/monolog": "~1.25.2||^2.0.0",
             "ockcyp/covers-validator": "1.1.1",
             "php-parallel-lint/php-console-color": "^0.3.0",
             "php-parallel-lint/php-parallel-lint": "1.2.0",
@@ -6295,7 +6295,7 @@
         "suggest": {
             "wikimedia/langconv": "Provides script conversion support"
         },
-        "time": "2020-11-16T23:29:13+00:00",
+        "time": "2020-11-30T20:17:56+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

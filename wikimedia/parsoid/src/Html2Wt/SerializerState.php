@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 namespace Wikimedia\Parsoid\Html2Wt;
 
 use Composer\Semver\Semver;
+use DOMDocumentFragment;
 use DOMElement;
 use DOMNode;
 use stdClass;
@@ -282,6 +283,9 @@ class SerializerState {
 	 */
 	public $protect;
 
+	/** @var Separators */
+	public $separators;
+
 	/** @var Env */
 	private $env;
 
@@ -314,6 +318,7 @@ class SerializerState {
 		$this->singleLineContext = new SingleLineContext();
 		$this->resetSep();
 		$this->haveTrimmedWsDSR = Semver::satisfies( $this->env->getInputContentVersion(), '>=2.1.1' );
+		$this->separators = new Separators( $this->env, $this );
 	}
 
 	/**
@@ -539,6 +544,7 @@ class SerializerState {
 		 * take care of it. At worst, we might generate a dirty diff in this scenario. */
 		$again = ( $node === $this->sep->lastSourceNode );
 		$origSepUsable = !$again
+			&& $this->prevNode && $this->prevNode->parentNode === $node->parentNode
 			&& $this->prevNodeUnmodified && !WTSUtils::nextToDeletedBlockNodeInWT( $this->prevNode, true )
 			&& $this->currNodeUnmodified && !WTSUtils::nextToDeletedBlockNodeInWT( $node, false );
 
@@ -550,15 +556,17 @@ class SerializerState {
 					DOMDataUtils::getDataParsoid( $this->prevNode )->dsr->end,
 					DOMDataUtils::getDataParsoid( $node )->dsr->start
 				);
-			} else {
+			} elseif ( $this->sep->src && WTSUtils::isValidSep( $this->sep->src ) ) {
+				// We don't know where '$this->sep->src' comes from. So, reuse it
+				// only if it is a valid separator string.
 				$origSep = $this->sep->src;
 			}
 		}
 
-		if ( $origSep !== null && WTSUtils::isValidSep( $origSep ) ) {
+		if ( $origSep !== null ) {
 			$this->emitSep( $origSep, $node, 'ORIG-SEP:' );
 		} else {
-			$sep = $this->serializer->buildSep( $node );
+			$sep = $this->separators->buildSep( $node );
 			$this->emitSep( $sep ?: '', $node, 'SEP:' );
 		}
 	}
@@ -572,7 +580,7 @@ class SerializerState {
 	 * @return string|null
 	 */
 	public function recoverTrimmedWhitespace( DOMNode $node, bool $leading ): ?string {
-		$sep = $this->serializer->recoverTrimmedWhitespace( $node, $leading );
+		$sep = $this->separators->recoverTrimmedWhitespace( $node, $leading );
 		$this->serializer->trace( '--->', "TRIMMED-SEP:", function () use ( $sep ) {
 			return PHPUtils::jsonEncode( $sep );
 		} );
@@ -684,14 +692,13 @@ class SerializerState {
 	/**
 	 * Serialize the children of a DOM node, sharing the global serializer state.
 	 * Typically called by a DOM-based handler to continue handling its children.
-	 * @param DOMElement $node
+	 * @param DOMElement|DOMDocumentFragment $node
 	 * @param ?callable $wtEscaper ( $state, $text, $opts )
 	 *   PORT-FIXME document better; should this be done via WikitextEscapeHandlers somehow?
 	 * @param ?DOMNode $firstChild
 	 */
 	public function serializeChildren(
-		DOMElement $node, ?callable $wtEscaper = null,
-		?DOMNode $firstChild = null
+		DOMNode $node, ?callable $wtEscaper = null, ?DOMNode $firstChild = null
 	): void {
 		// SSS FIXME: Unsure if this is the right thing always
 		if ( $wtEscaper ) {
@@ -715,12 +722,13 @@ class SerializerState {
 
 	/**
 	 * Abstracts some steps taken in `serializeChildrenToString` and `serializeDOM`
-	 * @param DOMElement $node
+	 *
+	 * @param DOMElement|DOMDocumentFragment $node
 	 * @param ?callable $wtEscaper See {@link serializeChildren()}
 	 * @internal For use by WikitextSerializer only
 	 */
 	public function kickOffSerialize(
-		DOMElement $node, ?callable $wtEscaper = null
+		DOMNode $node, ?callable $wtEscaper = null
 	): void {
 		$this->updateSep( $node );
 		$this->currNodeUnmodified = false;
@@ -739,13 +747,13 @@ class SerializerState {
 	 * FIXME(arlorla): Shouldn't affect the separator state, but accidents have
 	 * have been known to happen. T109793 suggests using its own wts / state.
 	 *
-	 * @param DOMElement $node
+	 * @param DOMElement|DOMDocumentFragment $node
 	 * @param ?callable $wtEscaper See {@link serializeChildren()}
 	 * @param string $inState
 	 * @return string
 	 */
 	private function serializeChildrenToString(
-		DOMElement $node, ?callable $wtEscaper, string $inState
+		DOMNode $node, ?callable $wtEscaper, string $inState
 	): string {
 		$states = [ 'inLink', 'inCaption', 'inIndentPre', 'inHTMLPre', 'inPHPBlock', 'inAttribute' ];
 		Assert::parameter( in_array( $inState, $states, true ), '$inState', 'Must be one of: '
@@ -792,36 +800,36 @@ class SerializerState {
 
 	/**
 	 * Serialize children of a link to a string
-	 * @param DOMElement $node
+	 * @param DOMElement|DOMDocumentFragment $node
 	 * @param ?callable $wtEscaper See {@link serializeChildren()}
 	 * @return string
 	 */
 	public function serializeLinkChildrenToString(
-		DOMElement $node, ?callable $wtEscaper = null
+		DOMNode $node, ?callable $wtEscaper = null
 	): string {
 		return $this->serializeChildrenToString( $node, $wtEscaper, 'inLink' );
 	}
 
 	/**
 	 * Serialize children of a caption to a string
-	 * @param DOMElement $node
+	 * @param DOMElement|DOMDocumentFragment $node
 	 * @param ?callable $wtEscaper See {@link serializeChildren()}
 	 * @return string
 	 */
 	public function serializeCaptionChildrenToString(
-		DOMElement $node, ?callable $wtEscaper = null
+		DOMNode $node, ?callable $wtEscaper = null
 	): string {
 		return $this->serializeChildrenToString( $node, $wtEscaper, 'inCaption' );
 	}
 
 	/**
 	 * Serialize children of an indent-pre to a string
-	 * @param DOMElement $node
+	 * @param DOMElement|DOMDocumentFragment $node
 	 * @param ?callable $wtEscaper See {@link serializeChildren()}
 	 * @return string
 	 */
 	public function serializeIndentPreChildrenToString(
-		DOMElement $node, ?callable $wtEscaper = null
+		DOMNode $node, ?callable $wtEscaper = null
 	): string {
 		return $this->serializeChildrenToString( $node, $wtEscaper, 'inIndentPre' );
 	}

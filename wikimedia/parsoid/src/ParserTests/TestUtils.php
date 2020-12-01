@@ -73,7 +73,9 @@ class TestUtils {
 				'rtTestMode' => !empty( $options['rtTestMode'] )
 			] );
 			if ( is_string( $domBody ) ) {
-				$domBody = DOMCompat::getBody( $mockEnv->createDocument( $domBody ) );
+				// Careful about the lifetime of this document
+				$doc = ContentUtils::createDocument( $domBody );
+				$domBody = DOMCompat::getBody( $doc );
 			}
 			DOMDataUtils::visitAndLoadDataAttribs( $domBody, [ 'markNew' => true ] );
 			$domBody = ( new DOMNormalizer( $mockState ) )->normalize( $domBody );

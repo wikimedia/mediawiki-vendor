@@ -590,8 +590,8 @@ class ParsoidExtensionAPI {
 	 * @return DOMDocumentFragment
 	 */
 	public function htmlToDom( string $html ): DOMDocumentFragment {
-		return ContentUtils::ppToDOM(
-			$this->env, $html, [ 'toFragment' => true ]
+		return ContentUtils::createAndLoadDocumentFragment(
+			$this->getTopLevelDoc(), $html
 		);
 	}
 
@@ -674,6 +674,7 @@ class ParsoidExtensionAPI {
 	public function domToWikitext( array $opts, DOMElement $node, bool $releaseDom = false ) {
 		// FIXME: WTS expects the input DOM to be a <body> element!
 		// Till that is fixed, we have to go through this round-trip!
+		// TODO: Move $node children to a fragment and call `$serializer->domToWikitext`
 		return $this->htmlToWikitext( $opts, $this->domToHtml( $node, $releaseDom ) );
 	}
 
