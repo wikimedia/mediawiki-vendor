@@ -175,6 +175,78 @@
         ]
     },
     {
+        "name": "composer/ca-bundle",
+        "version": "1.2.8",
+        "version_normalized": "1.2.8.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/composer/ca-bundle.git",
+            "reference": "8a7ecad675253e4654ea05505233285377405215"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/composer/ca-bundle/zipball/8a7ecad675253e4654ea05505233285377405215",
+            "reference": "8a7ecad675253e4654ea05505233285377405215",
+            "shasum": ""
+        },
+        "require": {
+            "ext-openssl": "*",
+            "ext-pcre": "*",
+            "php": "^5.3.2 || ^7.0 || ^8.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "^4.8.35 || ^5.7 || 6.5 - 8",
+            "psr/log": "^1.0",
+            "symfony/process": "^2.5 || ^3.0 || ^4.0 || ^5.0"
+        },
+        "time": "2020-08-23T12:54:47+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Composer\\CaBundle\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Jordi Boggiano",
+                "email": "j.boggiano@seld.be",
+                "homepage": "http://seld.be"
+            }
+        ],
+        "description": "Lets you find a path to the system CA bundle, and includes a fallback to the Mozilla CA bundle.",
+        "keywords": [
+            "cabundle",
+            "cacert",
+            "certificate",
+            "ssl",
+            "tls"
+        ],
+        "funding": [
+            {
+                "url": "https://packagist.com",
+                "type": "custom"
+            },
+            {
+                "url": "https://github.com/composer",
+                "type": "github"
+            },
+            {
+                "url": "https://tidelift.com/funding/github/packagist/composer/composer",
+                "type": "tidelift"
+            }
+        ]
+    },
+    {
         "name": "composer/semver",
         "version": "1.5.2",
         "version_normalized": "1.5.2.0",
@@ -1094,6 +1166,61 @@
         "keywords": [
             "jwt",
             "php"
+        ]
+    },
+    {
+        "name": "geoip2/geoip2",
+        "version": "v2.11.0",
+        "version_normalized": "2.11.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/maxmind/GeoIP2-php.git",
+            "reference": "d01be5894a5c1a3381c58c9b1795cd07f96c30f7"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/maxmind/GeoIP2-php/zipball/d01be5894a5c1a3381c58c9b1795cd07f96c30f7",
+            "reference": "d01be5894a5c1a3381c58c9b1795cd07f96c30f7",
+            "shasum": ""
+        },
+        "require": {
+            "ext-json": "*",
+            "maxmind-db/reader": "~1.8",
+            "maxmind/web-service-common": "~0.8",
+            "php": ">=7.2"
+        },
+        "require-dev": {
+            "friendsofphp/php-cs-fixer": "2.*",
+            "phpunit/phpunit": "^8.0 || ^9.0",
+            "squizlabs/php_codesniffer": "3.*"
+        },
+        "time": "2020-10-01T18:48:34+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "GeoIp2\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "Apache-2.0"
+        ],
+        "authors": [
+            {
+                "name": "Gregory J. Oschwald",
+                "email": "goschwald@maxmind.com",
+                "homepage": "https://www.maxmind.com/"
+            }
+        ],
+        "description": "MaxMind GeoIP2 PHP API",
+        "homepage": "https://github.com/maxmind/GeoIP2-php",
+        "keywords": [
+            "IP",
+            "geoip",
+            "geoip2",
+            "geolocation",
+            "maxmind"
         ]
     },
     {
@@ -2082,6 +2209,116 @@
             "php",
             "statsd"
         ]
+    },
+    {
+        "name": "maxmind-db/reader",
+        "version": "v1.8.0",
+        "version_normalized": "1.8.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/maxmind/MaxMind-DB-Reader-php.git",
+            "reference": "b566d429ac9aec10594b0935be8ff38302f8d5c8"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/maxmind/MaxMind-DB-Reader-php/zipball/b566d429ac9aec10594b0935be8ff38302f8d5c8",
+            "reference": "b566d429ac9aec10594b0935be8ff38302f8d5c8",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=7.2"
+        },
+        "conflict": {
+            "ext-maxminddb": "<1.8.0,>=2.0.0"
+        },
+        "require-dev": {
+            "friendsofphp/php-cs-fixer": "2.*",
+            "php-coveralls/php-coveralls": "^2.1",
+            "phpunit/phpcov": ">=6.0.0",
+            "phpunit/phpunit": ">=8.0.0,<10.0.0",
+            "squizlabs/php_codesniffer": "3.*"
+        },
+        "suggest": {
+            "ext-bcmath": "bcmath or gmp is required for decoding larger integers with the pure PHP decoder",
+            "ext-gmp": "bcmath or gmp is required for decoding larger integers with the pure PHP decoder",
+            "ext-maxminddb": "A C-based database decoder that provides significantly faster lookups"
+        },
+        "time": "2020-10-01T17:30:21+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "MaxMind\\Db\\": "src/MaxMind/Db"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "Apache-2.0"
+        ],
+        "authors": [
+            {
+                "name": "Gregory J. Oschwald",
+                "email": "goschwald@maxmind.com",
+                "homepage": "https://www.maxmind.com/"
+            }
+        ],
+        "description": "MaxMind DB Reader API",
+        "homepage": "https://github.com/maxmind/MaxMind-DB-Reader-php",
+        "keywords": [
+            "database",
+            "geoip",
+            "geoip2",
+            "geolocation",
+            "maxmind"
+        ]
+    },
+    {
+        "name": "maxmind/web-service-common",
+        "version": "v0.8.1",
+        "version_normalized": "0.8.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/maxmind/web-service-common-php.git",
+            "reference": "32f274051c543fc865e5a84d3a2c703913641ea8"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/maxmind/web-service-common-php/zipball/32f274051c543fc865e5a84d3a2c703913641ea8",
+            "reference": "32f274051c543fc865e5a84d3a2c703913641ea8",
+            "shasum": ""
+        },
+        "require": {
+            "composer/ca-bundle": "^1.0.3",
+            "ext-curl": "*",
+            "ext-json": "*",
+            "php": ">=7.2"
+        },
+        "require-dev": {
+            "friendsofphp/php-cs-fixer": "2.*",
+            "phpunit/phpunit": "^8.0 || ^9.0",
+            "squizlabs/php_codesniffer": "3.*"
+        },
+        "time": "2020-11-02T17:00:53+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "MaxMind\\Exception\\": "src/Exception",
+                "MaxMind\\WebService\\": "src/WebService"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "Apache-2.0"
+        ],
+        "authors": [
+            {
+                "name": "Gregory Oschwald",
+                "email": "goschwald@maxmind.com"
+            }
+        ],
+        "description": "Internal MaxMind Web Service API",
+        "homepage": "https://github.com/maxmind/web-service-common-php"
     },
     {
         "name": "monolog/monolog",
