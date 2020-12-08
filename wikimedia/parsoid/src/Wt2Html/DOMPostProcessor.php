@@ -718,11 +718,6 @@ class DOMPostProcessor extends PipelineStage {
 			'site.styles'
 		];
 
-		// Styles from native extensions
-		foreach ( $env->getSiteConfig()->getExtStyles() as $style ) {
-			$modules[] = $style;
-		}
-
 		// Styles from modules returned from preprocessor / parse requests
 		$outputProps = $env->getOutputProperties();
 		if ( isset( $outputProps['modulestyles'] ) ) {
@@ -730,6 +725,9 @@ class DOMPostProcessor extends PipelineStage {
 				$modules[] = $mo;
 			}
 		}
+
+		// FIXME: Maybe think about using an associative array or DS\Set
+		$modules = array_unique( $modules );
 
 		// PageConfig guarantees language and dir will always be non-null.
 		$lang = $env->getPageConfig()->getPageLanguage();

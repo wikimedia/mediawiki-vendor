@@ -318,17 +318,29 @@ class DOMUtils {
 	}
 
 	/**
-	 * Check whether `node` has an ancestor named `name`.
+	 * Find an ancestor of $node with nodeName $name.
+	 *
+	 * @param DOMNode $node
+	 * @param string $name
+	 * @return ?DOMNode
+	 */
+	public static function findAncestorOfName( DOMNode $node, string $name ): ?DOMNode {
+		$node = $node->parentNode;
+		while ( $node && $node->nodeName !== $name ) {
+			$node = $node->parentNode;
+		}
+		return $node;
+	}
+
+	/**
+	 * Check whether $node has $name or has an ancestor named $name.
 	 *
 	 * @param DOMNode $node
 	 * @param string $name
 	 * @return bool
 	 */
-	public static function hasAncestorOfName( DOMNode $node, string $name ): bool {
-		while ( $node && $node->nodeName !== $name ) {
-			$node = $node->parentNode;
-		}
-		return $node !== null;
+	public static function hasNameOrHasAncestorOfName( DOMNode $node, string $name ): bool {
+		return $node->nodeName === $name || self::findAncestorOfName( $node, $name ) !== null;
 	}
 
 	/**
@@ -456,6 +468,16 @@ class DOMUtils {
 	 */
 	public static function isFosterablePosition( ?DOMNode $n ): bool {
 		return $n && isset( WikitextConstants::$HTML['FosterablePosition'][$n->parentNode->nodeName] );
+	}
+
+	/**
+	 * Check whether `node` is a heading.
+	 *
+	 * @param ?DOMNode $n
+	 * @return bool
+	 */
+	public static function isHeading( ?DOMNode $n ): bool {
+		return $n && preg_match( '/^h[1-6]$/D', $n->nodeName );
 	}
 
 	/**
