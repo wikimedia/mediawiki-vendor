@@ -3545,17 +3545,17 @@
     },
     {
         "name": "psy/psysh",
-        "version": "v0.10.4",
-        "version_normalized": "0.10.4.0",
+        "version": "v0.10.5",
+        "version_normalized": "0.10.5.0",
         "source": {
             "type": "git",
             "url": "https://github.com/bobthecow/psysh.git",
-            "reference": "a8aec1b2981ab66882a01cce36a49b6317dc3560"
+            "reference": "7c710551d4a2653afa259c544508dc18a9098956"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/bobthecow/psysh/zipball/a8aec1b2981ab66882a01cce36a49b6317dc3560",
-            "reference": "a8aec1b2981ab66882a01cce36a49b6317dc3560",
+            "url": "https://api.github.com/repos/bobthecow/psysh/zipball/7c710551d4a2653afa259c544508dc18a9098956",
+            "reference": "7c710551d4a2653afa259c544508dc18a9098956",
             "shasum": ""
         },
         "require": {
@@ -3578,7 +3578,7 @@
             "ext-readline": "Enables support for arrow-key history navigation, and showing and manipulating command history.",
             "hoa/console": "A pure PHP readline implementation. You'll want this if your PHP install doesn't already support readline or libedit."
         },
-        "time": "2020-05-03T19:32:03+00:00",
+        "time": "2020-12-04T02:51:30+00:00",
         "bin": [
             "bin/psysh"
         ],
