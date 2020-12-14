@@ -7,6 +7,7 @@ use DOMElement;
 use DOMNode;
 use Wikimedia\Assert\Assert;
 use Wikimedia\Parsoid\Config\Env;
+use Wikimedia\Parsoid\Core\Sanitizer;
 use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\DOMUtils;
@@ -15,7 +16,6 @@ use Wikimedia\Parsoid\Utils\Utils;
 use Wikimedia\Parsoid\Utils\WTUtils;
 use Wikimedia\Parsoid\Wt2Html\Frame;
 use Wikimedia\Parsoid\Wt2Html\PegTokenizer;
-use Wikimedia\Parsoid\Wt2Html\TT\Sanitizer;
 
 /**
  * TableFixups class.
@@ -408,7 +408,7 @@ class TableFixups {
 
 		// Found attributes; sanitize them
 		// and transfer the sanitized attributes to the td node
-		Sanitizer::applySanitizedArgs( $env, $cell, $attrs );
+		Sanitizer::applySanitizedArgs( $env->getSiteConfig(), $cell, $attrs );
 
 		// If the transclusion node was embedded within the td node,
 		// lift up the about group to the td node.
@@ -477,7 +477,7 @@ class TableFixups {
 		// returns an array consisting of [table_attributes, spaces, pipe]
 		$attrs = $attributeTokens[0];
 
-		Sanitizer::applySanitizedArgs( $frame->getEnv(), $cell, $attrs );
+		Sanitizer::applySanitizedArgs( $frame->getEnv()->getSiteConfig(), $cell, $attrs );
 
 		// Update data-mw, DSR
 		$dataMW = DOMDataUtils::getDataMw( $cell );

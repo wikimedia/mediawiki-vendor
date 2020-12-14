@@ -6483,21 +6483,21 @@
     },
     {
         "name": "wikimedia/parsoid",
-        "version": "v0.13.0-a19",
-        "version_normalized": "0.13.0.0-alpha19",
+        "version": "v0.13.0-a20",
+        "version_normalized": "0.13.0.0-alpha20",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/parsoid.git",
-            "reference": "e23feec18d85e5ff5cc04184290f3e079d4b2923"
+            "reference": "da8c4c8c501025d1c61b82920b20c0d3888eb02f"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/e23feec18d85e5ff5cc04184290f3e079d4b2923",
-            "reference": "e23feec18d85e5ff5cc04184290f3e079d4b2923",
+            "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/da8c4c8c501025d1c61b82920b20c0d3888eb02f",
+            "reference": "da8c4c8c501025d1c61b82920b20c0d3888eb02f",
             "shasum": ""
         },
         "require": {
-            "composer/semver": "^1.5.1|^3.0.1",
+            "composer/semver": "^1.7.2|^3.2.4",
             "ext-dom": "*",
             "ext-json": "*",
             "liuggio/statsd-php-client": "^1.0.18",
@@ -6517,7 +6517,7 @@
         "require-dev": {
             "composer/composer": "^1.10@RC",
             "ext-curl": "*",
-            "mediawiki/mediawiki-codesniffer": "33.0.0",
+            "mediawiki/mediawiki-codesniffer": "34.0.0",
             "mediawiki/mediawiki-phan-config": "0.10.4",
             "mediawiki/minus-x": "1.1.0",
             "monolog/monolog": "~1.25.2||^2.0.0",
@@ -6533,7 +6533,7 @@
         "suggest": {
             "wikimedia/langconv": "Provides script conversion support"
         },
-        "time": "2020-12-07T21:33:28+00:00",
+        "time": "2020-12-12T20:43:12+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

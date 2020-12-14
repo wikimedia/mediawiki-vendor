@@ -9,6 +9,7 @@ use DOMNode;
 use stdClass;
 use Wikimedia\Assert\Assert;
 use Wikimedia\Parsoid\Config\Env;
+use Wikimedia\Parsoid\Core\Sanitizer;
 use Wikimedia\Parsoid\Html2Wt\WTSUtils;
 use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
@@ -16,7 +17,6 @@ use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\PHPUtils;
 use Wikimedia\Parsoid\Utils\WTUtils;
 use Wikimedia\Parsoid\Wt2Html\PegTokenizer;
-use Wikimedia\Parsoid\Wt2Html\TT\Sanitizer;
 use Wikimedia\Parsoid\Wt2Html\Wt2HtmlDOMProcessor;
 
 class AddMediaInfo implements Wt2HtmlDOMProcessor {
@@ -581,7 +581,9 @@ class AddMediaInfo implements Wt2HtmlDOMProcessor {
 		}
 
 		if ( $anchor->nodeName === 'a' ) {
-			$href = Sanitizer::cleanUrl( $env, $anchor->getAttribute( 'href' ), 'external' );
+			$href = Sanitizer::cleanUrl(
+				$env->getSiteConfig(), $anchor->getAttribute( 'href' ), 'external'
+			);
 			$anchor->setAttribute( 'href', $href );
 		}
 
