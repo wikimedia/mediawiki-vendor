@@ -5,11 +5,12 @@ set -u
 
 if [ $# -lt 4 ]
 then
-	echo "USAGE: $0 <uid> <oracle> <commit> <file>"
+	echo "USAGE: $0 <uid> <oracle> <commit> <file> <outputContentVersion>"
 	echo " - <uid> is your bastion uid you use to log in to scandium/testreduce1001"
 	echo " - <oracle> is the commit hash to use as the oracle"
 	echo " - <commit> is the commit hash to test against"
 	echo " - <file> has the list of pages to test (formatted as lines of dbname:title)"
+	echo " - <outputContentVersion> (optional) If different than the default"
 	exit 1
 fi
 
@@ -17,22 +18,31 @@ uid=$1
 oracle=$2
 commit=$3
 file=$4
+outputContentVersion=""
+
+if [ $# -gt 4 ] ; then
+	outputContentVersion="--outputContentVersion $5"
+fi
 
 # Copy over test file
-scp -q $file $uid@testreduce1001.eqiad.wmnet:/tmp/titles
+titlesPath="/tmp/titles"
+ssh $uid@testreduce1001.eqiad.wmnet "sudo rm -f $titlesPath"
+scp -q $file $uid@testreduce1001.eqiad.wmnet:$titlesPath
 
 function runTest() {
 	local sha=$1
 
 	cdDir="cd /srv/parsoid-testing"
 	restartPHP="sudo systemctl restart php7.2-fpm.service"
-	testScript="$cdDir && node tools/runRtTests.js --proxyURL http://scandium.eqiad.wmnet:80 --parsoidURL http://DOMAIN/w/rest.php -f /tmp/titles -o /tmp/results.$sha.json"
+	resultPath="/tmp/results.$sha.json"
+	testScript="$cdDir && node tools/runRtTests.js --proxyURL http://scandium.eqiad.wmnet:80 --parsoidURL http://DOMAIN/w/rest.php $outputContentVersion -f $titlesPath -o $resultPath"
 
 	echo "---- Checking out $sha ----"
 	ssh $uid@scandium.eqiad.wmnet "$cdDir && git checkout $sha && $restartPHP"
 	echo "---- Running tests ----"
+	ssh $uid@testreduce1001.eqiad.wmnet "sudo rm -f $resultPath"
 	ssh $uid@testreduce1001.eqiad.wmnet "$testScript"
-	scp $uid@testreduce1001.eqiad.wmnet:/tmp/results.$sha.json /tmp/
+	scp $uid@testreduce1001.eqiad.wmnet:$resultPath /tmp/
 }
 
 runTest $oracle

@@ -23,7 +23,7 @@ class PHPUtils {
 		$str = '';
 		do {
 			$str = chr( $n & 0xff ) . $str;
-			$n = $n >> 8;
+			$n >>= 8;
 		} while ( $n > 0 );
 		return rtrim( strtr( base64_encode( $str ), '+/', '-_' ), '=' );
 	}
@@ -328,22 +328,6 @@ class PHPUtils {
 	public static function encodeURIComponent( string $str ): string {
 		$revert = [ '%21' => '!', '%2A' => '*', '%27' => "'", '%28' => '(', '%29' => ')' ];
 		return strtr( rawurlencode( $str ), $revert );
-	}
-
-	/**
-	 * Simulate the JS || operator.
-	 * @param mixed ...$args
-	 * @return mixed
-	 */
-	public static function coalesce( ...$args ) {
-		foreach ( $args as $arg ) {
-			// != '' has the same semantics as JS truthiness: false for null, false,
-			// 0, 0.0, '', true for everything else
-			if ( $arg != '' ) {
-				return $arg;
-			}
-		}
-		return end( $args );
 	}
 
 	/**

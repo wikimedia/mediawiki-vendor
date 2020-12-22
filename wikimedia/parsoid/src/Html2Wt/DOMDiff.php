@@ -145,7 +145,7 @@ class DOMDiff {
 	}
 
 	/**
-	 * According to MediaWiki_DOM_spec, `id` and `html` attributes are acceptable
+	 * According to [[mw:Specs/HTML]], `id` and `html` attributes are acceptable
 	 * formats in `data-mw.body` and in those contexts, they reference DOMs and
 	 * we are going to treat them as such.
 	 *
@@ -195,7 +195,7 @@ class DOMDiff {
 				// So far, this is specified for Cite and relies on the "id"
 				// referring to an element in the top level dom, even though the
 				// <ref> itself may be in embedded content,
-				// https://www.mediawiki.org/wiki/Specs/HTML/2.1.0/Extensions/Cite#Ref_and_References
+				// https://www.mediawiki.org/wiki/Specs/HTML/Extensions/Cite#Ref_and_References
 				// FIXME: This doesn't work if the <references> section
 				// itself is in embedded content, since we aren't traversing
 				// in there.
