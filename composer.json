@@ -36,7 +36,7 @@
 		"guzzlehttp/psr7": "1.7.0",
 		"guzzlehttp/ringphp": "1.1.1",
 		"guzzlehttp/streams": "3.0.0",
-		"jakobo/hotp-php": "1.0.1",
+		"jakobo/hotp-php": "2.0.0",
 		"james-heinrich/getid3": "1.9.20",
 		"justinrainbow/json-schema": "5.2.10",
 		"lcobucci/jwt": "3.3.3",
