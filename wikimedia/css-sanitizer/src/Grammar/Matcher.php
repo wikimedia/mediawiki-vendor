@@ -7,9 +7,9 @@
 namespace Wikimedia\CSS\Grammar;
 
 use Wikimedia\CSS\Objects\ComponentValueList;
-use Wikimedia\CSS\Objects\Token;
-use Wikimedia\CSS\Objects\SimpleBlock;
 use Wikimedia\CSS\Objects\CSSFunction;
+use Wikimedia\CSS\Objects\SimpleBlock;
+use Wikimedia\CSS\Objects\Token;
 
 /**
  * Base class for grammar matchers.
@@ -25,11 +25,11 @@ use Wikimedia\CSS\Objects\CSSFunction;
  */
 abstract class Matcher {
 
-	/** @var string|null Name to set on Match objects */
+	/** @var string|null Name to set on GrammarMatch objects */
 	protected $captureName = null;
 
 	/**
-	 * @var array Default options for self::match()
+	 * @var array Default options for self::matchAgainst()
 	 *  - skip-whitespace: (bool) Allow whitespace in between any two tokens
 	 *  - nonterminal: (bool) Don't require the whole of $values is matched
 	 *  - mark-significance: (bool) On a successful match, replace T_WHITESPACE
@@ -43,45 +43,25 @@ abstract class Matcher {
 
 	/**
 	 * Create an instance.
-	 * @param mixed $args,... See static::__construct()
+	 * @param mixed ...$args See static::__construct()
 	 * @return static
 	 */
-	public static function create() {
-		// @todo Once we drop support for PHP 5.5, just do this:
-		// public static function create( ...$args ) {
-		// return new static( ...$args );
-		// }
-
-		$args = func_get_args();
-		switch ( count( $args ) ) {
-			case 0:
-				return new static();
-			case 1:
-				return new static( $args[0] );
-			case 2:
-				return new static( $args[0], $args[1] );
-			case 3:
-				return new static( $args[0], $args[1], $args[2] );
-			case 4:
-				return new static( $args[0], $args[1], $args[2], $args[3] );
-			default:
-				// Slow, but all the existing Matchers have a max of 4 args.
-				$rc = new \ReflectionClass( static::class );
-				return $rc->newInstanceArgs( $args );
-		}
+	public static function create( ...$args ) {
+		// @phan-suppress-next-line PhanParamTooManyUnpack,PhanTypeInstantiateAbstractStatic
+		return new static( ...$args );
 	}
 
 	/**
 	 * Return a copy of this matcher that will capture its matches
 	 *
-	 * A "capturing" Matcher will produce Matches that return a value from the
-	 * Match::getName() method. The Match::getCapturedMatches() method may be
-	 * used to retrieve them from the top-level Match.
+	 * A "capturing" Matcher will produce GrammarMatches that return a value from
+	 * the GrammarMatch::getName() method. The GrammarMatch::getCapturedMatches()
+	 * method may be used to retrieve them from the top-level GrammarMatch.
 	 *
 	 * The concept is similar to capturing groups in PCRE and other regex
 	 * languages.
 	 *
-	 * @param string|null $captureName Name to apply to captured Match objects
+	 * @param string|null $captureName Name to apply to captured GrammarMatch objects
 	 * @return static
 	 */
 	public function capture( $captureName ) {
@@ -94,9 +74,9 @@ abstract class Matcher {
 	 * Match against a list of ComponentValues
 	 * @param ComponentValueList $values
 	 * @param array $options Matching options, see self::$defaultOptions
-	 * @return Match|null
+	 * @return GrammarMatch|null
 	 */
-	public function match( ComponentValueList $values, array $options = [] ) {
+	public function matchAgainst( ComponentValueList $values, array $options = [] ) {
 		$options += $this->getDefaultOptions();
 		$start = $this->next( $values, -1, $options );
 		$l = count( $values );
@@ -114,11 +94,11 @@ abstract class Matcher {
 
 	/**
 	 * Collect any 'significantWhitespace' matches
-	 * @param Match $match
-	 * @param Token[]|null &$ret
+	 * @param GrammarMatch $match
+	 * @param Token[] &$ret
 	 * @return Token[]
 	 */
-	private static function collectSignificantWhitespace( Match $match, &$ret = [] ) {
+	private static function collectSignificantWhitespace( GrammarMatch $match, &$ret = [] ) {
 		if ( $match->getName() === 'significantWhitespace' ) {
 			$ret = array_merge( $ret, $match->getValues() );
 		}
@@ -131,7 +111,7 @@ abstract class Matcher {
 	/**
 	 * Mark whitespace as significant or not
 	 * @param ComponentValueList $list
-	 * @param Match $match
+	 * @param GrammarMatch $match
 	 * @param Token[] $significantWS
 	 * @param int $end
 	 */
@@ -192,21 +172,21 @@ abstract class Matcher {
 	}
 
 	/**
-	 * Create a Match
+	 * Create a GrammarMatch
 	 * @param ComponentValueList $list
 	 * @param int $start
 	 * @param int $end First position after the match
-	 * @param Match|null $submatch Submatch, for capturing. If $submatch itself
-	 *  named it will be kept as a capture in the returned Match, otherwise its
-	 *  captured matches (if any) as returned by getCapturedMatches() will be
-	 *  kept as captures in the returned Match.
+	 * @param GrammarMatch|null $submatch Sub-match, for capturing. If $submatch
+	 *  itself named it will be kept as a capture in the returned GrammarMatch,
+	 *  otherwise its captured matches (if any) as returned by getCapturedMatches()
+	 *  will be kept as captures in the returned GrammarMatch.
 	 * @param array $stack Stack from which to fetch more submatches for
 	 *  capturing (see $submatch). The stack is expected to be an array of
-	 *  arrays, with the first element of each subarray being a Match.
-	 * @return Match
+	 *  arrays, with the first element of each subarray being a GrammarMatch.
+	 * @return GrammarMatch
 	 */
 	protected function makeMatch(
-		ComponentValueList $list, $start, $end, Match $submatch = null, array $stack = []
+		ComponentValueList $list, $start, $end, GrammarMatch $submatch = null, array $stack = []
 	) {
 		$matches = array_column( $stack, 0 );
 		$matches[] = $submatch;
@@ -214,7 +194,7 @@ abstract class Matcher {
 		$keptMatches = [];
 		while ( $matches ) {
 			$m = array_shift( $matches );
-			if ( !$m instanceof Match ) {
+			if ( !$m instanceof GrammarMatch ) {
 				// skip it, probably null
 			} elseif ( $m->getName() !== null ) {
 				$keptMatches[] = $m;
@@ -223,7 +203,7 @@ abstract class Matcher {
 			}
 		}
 
-		return new Match( $list, $start, $end - $start, $this->captureName, $keptMatches );
+		return new GrammarMatch( $list, $start, $end - $start, $this->captureName, $keptMatches );
 	}
 
 	/**
@@ -231,11 +211,11 @@ abstract class Matcher {
 	 *
 	 * The job of a Matcher is to determine all the ways its particular grammar
 	 * fragment can consume ComponentValues starting at a particular location
-	 * in the ComponentValueList, represented by returning Match objects. For
-	 * example, a matcher implementing `IDENT*` at a starting position where
+	 * in the ComponentValueList, represented by returning GrammarMatch objects.
+	 * For example, a matcher implementing `IDENT*` at a starting position where
 	 * there are three IDENT tokens in a row would be able to match 0, 1, 2, or
 	 * all 3 of those IDENT tokens, and therefore should return an iterator
-	 * over that set of Match objects.
+	 * over that set of GrammarMatch objects.
 	 *
 	 * Some matchers take other matchers as input, for example `IDENT*` is
 	 * probably going to be implemented as a matcher for `*` that repeatedly
@@ -250,8 +230,8 @@ abstract class Matcher {
 	 * @param int $start Starting position in $values
 	 * @param array $options See self::$defaultOptions.
 	 *  Always use the options passed in, don't use $this->defaultOptions yourself.
-	 * @return \Iterator<Match> Iterates over the set of Match objects
-	 *  defining all the ways this matcher can match.
+	 * @return \Iterator<GrammarMatch> Iterates over the set of GrammarMatch
+	 *  objects defining all the ways this matcher can match.
 	 */
 	abstract protected function generateMatches( ComponentValueList $values, $start, array $options );
 }

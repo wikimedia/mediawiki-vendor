@@ -56,7 +56,7 @@ class MediaAtRuleSanitizer extends RuleSanitizer {
 
 	/** @inheritDoc */
 	protected function doSanitize( CSSObject $object ) {
-		if ( !$object instanceof Rule || !$this->handlesRule( $object ) ) {
+		if ( !$object instanceof AtRule || !$this->handlesRule( $object ) ) {
 			$this->sanitizationError( 'expected-at-rule', $object, [ 'media' ] );
 			return null;
 		}
@@ -67,7 +67,7 @@ class MediaAtRuleSanitizer extends RuleSanitizer {
 		}
 
 		// Test the media query
-		$match = $this->mediaQueryListMatcher->match(
+		$match = $this->mediaQueryListMatcher->matchAgainst(
 			$object->getPrelude(), [ 'mark-significance' => true ]
 		);
 		if ( !$match ) {

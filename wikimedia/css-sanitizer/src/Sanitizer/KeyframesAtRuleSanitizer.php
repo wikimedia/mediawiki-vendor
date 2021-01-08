@@ -54,7 +54,7 @@ class KeyframesAtRuleSanitizer extends RuleSanitizer {
 
 	/** @inheritDoc */
 	protected function doSanitize( CSSObject $object ) {
-		if ( !$object instanceof Rule || !$this->handlesRule( $object ) ) {
+		if ( !$object instanceof AtRule || !$this->handlesRule( $object ) ) {
 			$this->sanitizationError( 'expected-at-rule', $object, [ 'keyframes' ] );
 			return null;
 		}
@@ -65,7 +65,7 @@ class KeyframesAtRuleSanitizer extends RuleSanitizer {
 		}
 
 		// Test the keyframe name
-		if ( !$this->nameMatcher->match( $object->getPrelude(), [ 'mark-significance' => true ] ) ) {
+		if ( !$this->nameMatcher->matchAgainst( $object->getPrelude(), [ 'mark-significance' => true ] ) ) {
 			$cv = Util::findFirstNonWhitespace( $object->getPrelude() );
 			if ( $cv ) {
 				$this->sanitizationError( 'invalid-keyframe-name', $cv );

@@ -84,7 +84,7 @@ class PageAtRuleSanitizer extends RuleSanitizer {
 
 	/** @inheritDoc */
 	protected function doSanitize( CSSObject $object ) {
-		if ( !$object instanceof Rule || !$this->handlesRule( $object ) ) {
+		if ( !$object instanceof AtRule || !$this->handlesRule( $object ) ) {
 			$this->sanitizationError( 'expected-at-rule', $object, [ 'page' ] );
 			return null;
 		}
@@ -95,7 +95,7 @@ class PageAtRuleSanitizer extends RuleSanitizer {
 		}
 
 		// Test the page selector
-		$match = $this->pageSelectorMatcher->match(
+		$match = $this->pageSelectorMatcher->matchAgainst(
 			$object->getPrelude(), [ 'mark-significance' => true ]
 		);
 		if ( !$match ) {

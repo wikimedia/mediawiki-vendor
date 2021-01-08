@@ -49,7 +49,7 @@ class ImportAtRuleSanitizer extends RuleSanitizer {
 
 	/** @inheritDoc */
 	protected function doSanitize( CSSObject $object ) {
-		if ( !$object instanceof Rule || !$this->handlesRule( $object ) ) {
+		if ( !$object instanceof AtRule || !$this->handlesRule( $object ) ) {
 			$this->sanitizationError( 'expected-at-rule', $object, [ 'import' ] );
 			return null;
 		}
@@ -58,7 +58,7 @@ class ImportAtRuleSanitizer extends RuleSanitizer {
 			$this->sanitizationError( 'at-rule-block-not-allowed', $object->getBlock(), [ 'import' ] );
 			return null;
 		}
-		if ( !$this->matcher->match( $object->getPrelude(), [ 'mark-significance' => true ] ) ) {
+		if ( !$this->matcher->matchAgainst( $object->getPrelude(), [ 'mark-significance' => true ] ) ) {
 			$cv = Util::findFirstNonWhitespace( $object->getPrelude() );
 			if ( $cv ) {
 				$this->sanitizationError( 'invalid-import-value', $cv );

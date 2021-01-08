@@ -10,9 +10,9 @@ use Wikimedia\CSS\Grammar\Juxtaposition;
 use Wikimedia\CSS\Grammar\Matcher;
 use Wikimedia\CSS\Grammar\MatcherFactory;
 use Wikimedia\CSS\Grammar\Quantifier;
+use Wikimedia\CSS\Objects\ComponentValue;
 use Wikimedia\CSS\Objects\ComponentValueList;
 use Wikimedia\CSS\Objects\CSSObject;
-use Wikimedia\CSS\Objects\ComponentValue;
 use Wikimedia\CSS\Objects\QualifiedRule;
 use Wikimedia\CSS\Objects\Rule;
 use Wikimedia\CSS\Objects\Token;
@@ -121,7 +121,7 @@ class StyleRuleSanitizer extends RuleSanitizer {
 		}
 
 		// Test that the prelude is a valid selector list
-		$match = $this->selectorMatcher->match( $object->getPrelude(), [ 'mark-significance' => true ] );
+		$match = $this->selectorMatcher->matchAgainst( $object->getPrelude(), [ 'mark-significance' => true ] );
 		if ( !$match ) {
 			$cv = Util::findFirstNonWhitespace( $object->getPrelude() );
 			if ( $cv ) {
@@ -151,7 +151,7 @@ class StyleRuleSanitizer extends RuleSanitizer {
 					}
 
 					$valueList = new ComponentValueList( $selectorOrWs->getValues() );
-					$hoistMatch = $this->hoistableMatcher ? $this->hoistableMatcher->match( $valueList ) : null;
+					$hoistMatch = $this->hoistableMatcher ? $this->hoistableMatcher->matchAgainst( $valueList ) : null;
 					if ( $hoistMatch ) {
 						list( $prefix, $ws, $postfix ) = $hoistMatch->getCapturedMatches();
 						$prelude->add( $prefix->getValues() );

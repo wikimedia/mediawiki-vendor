@@ -56,7 +56,7 @@ class FontFeatureValuesAtRuleSanitizer extends RuleSanitizer {
 
 	/** @inheritDoc */
 	protected function doSanitize( CSSObject $object ) {
-		if ( !$object instanceof Rule || !$this->handlesRule( $object ) ) {
+		if ( !$object instanceof AtRule || !$this->handlesRule( $object ) ) {
 			$this->sanitizationError( 'expected-at-rule', $object, [ 'font-feature-values' ] );
 			return null;
 		}
@@ -67,7 +67,7 @@ class FontFeatureValuesAtRuleSanitizer extends RuleSanitizer {
 		}
 
 		// Test the page selector
-		if ( !$this->fontListMatcher->match( $object->getPrelude(), [ 'mark-significance' => true ] ) ) {
+		if ( !$this->fontListMatcher->matchAgainst( $object->getPrelude(), [ 'mark-significance' => true ] ) ) {
 			$cv = Util::findFirstNonWhitespace( $object->getPrelude() );
 			if ( $cv ) {
 				$this->sanitizationError( 'invalid-font-feature-values-font-list', $cv );

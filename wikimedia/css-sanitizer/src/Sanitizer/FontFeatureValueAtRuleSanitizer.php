@@ -42,7 +42,7 @@ class FontFeatureValueAtRuleSanitizer extends RuleSanitizer {
 
 	/** @inheritDoc */
 	protected function doSanitize( CSSObject $object ) {
-		if ( !$object instanceof Rule || !$this->handlesRule( $object ) ) {
+		if ( !$object instanceof AtRule || !$this->handlesRule( $object ) ) {
 			$this->sanitizationError( 'expected-at-rule', $object, [ $this->name ] );
 			return null;
 		}
@@ -69,7 +69,7 @@ class FontFeatureValueAtRuleSanitizer extends RuleSanitizer {
 		$this->sanitizationErrors = array_merge( $this->sanitizationErrors, $parser->getParseErrors() );
 		$newDeclarations = new DeclarationList();
 		foreach ( $oldDeclarations as $declaration ) {
-			if ( $this->valueMatcher->match( $declaration->getValue(), [ 'mark-significance' => true ] ) ) {
+			if ( $this->valueMatcher->matchAgainst( $declaration->getValue(), [ 'mark-significance' => true ] ) ) {
 				$newDeclarations->add( $declaration );
 			} else {
 				$this->sanitizationError( 'invalid-font-feature-value-declaration', $declaration,

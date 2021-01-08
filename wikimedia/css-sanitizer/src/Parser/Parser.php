@@ -7,12 +7,12 @@
 namespace Wikimedia\CSS\Parser;
 
 use Wikimedia\CSS\Objects\AtRule;
-use Wikimedia\CSS\Objects\ComponentValueList;
 use Wikimedia\CSS\Objects\ComponentValue;
+use Wikimedia\CSS\Objects\ComponentValueList;
 use Wikimedia\CSS\Objects\CSSFunction;
+use Wikimedia\CSS\Objects\Declaration;
 use Wikimedia\CSS\Objects\DeclarationList;
 use Wikimedia\CSS\Objects\DeclarationOrAtRuleList;
-use Wikimedia\CSS\Objects\Declaration;
 use Wikimedia\CSS\Objects\QualifiedRule;
 use Wikimedia\CSS\Objects\Rule;
 use Wikimedia\CSS\Objects\RuleList;
@@ -45,7 +45,7 @@ use Wikimedia\CSS\Objects\Token;
  */
 class Parser {
 	/** Maximum depth of nested ComponentValues */
-	const CV_DEPTH_LIMIT = 100; // Arbitrary number that seems like it should be enough
+	private const CV_DEPTH_LIMIT = 100; // Arbitrary number that seems like it should be enough
 
 	/** @var Tokenizer */
 	protected $tokenizer;
@@ -329,6 +329,7 @@ class Parser {
 	 */
 	protected function consumeRuleList( $topLevel ) {
 		$list = new RuleList();
+		// @phan-suppress-next-line PhanInfiniteLoop
 		while ( true ) {
 			$rule = false;
 			switch ( $this->currentToken->type() ) {
@@ -374,6 +375,7 @@ class Parser {
 	 */
 	protected function consumeDeclarationOrAtRuleList( $allowAtRules = true ) {
 		$list = $allowAtRules ? new DeclarationOrAtRuleList() : new DeclarationList();
+		// @phan-suppress-next-line PhanInfiniteLoop
 		while ( true ) {
 			$declaration = false;
 			switch ( $this->currentToken->type() ) {
@@ -469,6 +471,7 @@ class Parser {
 		}
 
 		// 5.
+		// @phan-suppress-next-line PhanSuspiciousValueComparison False positive about $l1 is -1
 		$v1 = $l1 >= 0 ? $value[$l1] : null;
 		$v2 = $l2 >= 0 ? $value[$l2] : null;
 		if ( $v1 instanceof Token && $v1->type() === Token::T_DELIM && $v1->value() === '!' &&
@@ -508,7 +511,7 @@ class Parser {
 					return $rule;
 
 				case Token::T_LEFT_BRACE:
-					$rule->setBlock( $this->consumeSimpleBlock( true ) );
+					$rule->setBlock( $this->consumeSimpleBlock() );
 					return $rule;
 
 				default:
@@ -519,6 +522,7 @@ class Parser {
 		}
 		// @codeCoverageIgnoreStart
 	}
+
 	// @codeCoverageIgnoreEnd
 
 	/**
@@ -537,7 +541,7 @@ class Parser {
 					return null;
 
 				case Token::T_LEFT_BRACE:
-					$rule->setBlock( $this->consumeSimpleBlock( true ) );
+					$rule->setBlock( $this->consumeSimpleBlock() );
 					return $rule;
 
 				default:
@@ -548,6 +552,7 @@ class Parser {
 		}
 		// @codeCoverageIgnoreStart
 	}
+
 	// @codeCoverageIgnoreEnd
 
 	/**
@@ -589,6 +594,7 @@ class Parser {
 		}
 
 		$this->cvDepth--;
+		// @phan-suppress-next-line PhanTypeMismatchReturnNullable $ret always set
 		return $ret;
 	}
 
@@ -621,6 +627,7 @@ class Parser {
 		}
 		// @codeCoverageIgnoreStart
 	}
+
 	// @codeCoverageIgnoreEnd
 
 	/**
@@ -652,5 +659,6 @@ class Parser {
 		}
 		// @codeCoverageIgnoreStart
 	}
+
 	// @codeCoverageIgnoreEnd
 }

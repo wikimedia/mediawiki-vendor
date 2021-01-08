@@ -6013,35 +6013,36 @@
     },
     {
         "name": "wikimedia/css-sanitizer",
-        "version": "v2.0.1",
-        "version_normalized": "2.0.1.0",
+        "version": "v3.0.0",
+        "version_normalized": "3.0.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/css-sanitizer.git",
-            "reference": "b61a0af49d98ac8315b3e2eff75d49a240c9939f"
+            "reference": "ac21037cb9f60dd7c4c3c582128305e4a3ef62e7"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/css-sanitizer/zipball/b61a0af49d98ac8315b3e2eff75d49a240c9939f",
-            "reference": "b61a0af49d98ac8315b3e2eff75d49a240c9939f",
+            "url": "https://api.github.com/repos/wikimedia/css-sanitizer/zipball/ac21037cb9f60dd7c4c3c582128305e4a3ef62e7",
+            "reference": "ac21037cb9f60dd7c4c3c582128305e4a3ef62e7",
             "shasum": ""
         },
         "require": {
             "ext-iconv": "*",
             "ext-mbstring": "*",
-            "php": ">=5.5.9",
-            "wikimedia/at-ease": "1.2.0 || 2.0.0",
-            "wikimedia/utfnormal": "1.1.0 || 2.0.0"
+            "php": ">=7.2.0",
+            "wikimedia/at-ease": "2.0.0",
+            "wikimedia/utfnormal": "2.0.0"
         },
         "require-dev": {
-            "jakub-onderka/php-console-highlighter": "0.3.2",
-            "jakub-onderka/php-parallel-lint": "1.0.0",
-            "mediawiki/mediawiki-codesniffer": "24.0.0",
-            "mediawiki/minus-x": "0.3.1",
-            "phpunit/phpunit": "4.8.36 || ^6.5",
+            "mediawiki/mediawiki-codesniffer": "34.0.0",
+            "mediawiki/mediawiki-phan-config": "0.10.6",
+            "mediawiki/minus-x": "1.1.0",
+            "php-parallel-lint/php-console-highlighter": "0.5.0",
+            "php-parallel-lint/php-parallel-lint": "1.2.0",
+            "phpunit/phpunit": "^8.5",
             "wikimedia/testing-access-wrapper": "1.0.0"
         },
-        "time": "2019-02-11T02:22:19+00:00",
+        "time": "2021-01-04T00:03:52+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

@@ -152,7 +152,7 @@ class DataSourceTokenizer implements Tokenizer {
 			}
 			if ( count( $position ) !== 2 || !is_int( $position[0] ) || !is_int( $position[1] ) ) {
 				// @codeCoverageIgnoreStart
-				throw new InvalidArgumentException( 'Invalid position' );
+				throw new \InvalidArgumentException( 'Invalid position' );
 				// @codeCoverageIgnoreEnd
 			}
 			$err = [ $tag, $position[0], $position[1] ];
@@ -166,6 +166,7 @@ class DataSourceTokenizer implements Tokenizer {
 	 * Read a token from the data source
 	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#consume-a-token
 	 * @return Token
+	 * @suppress PhanPluginDuplicateAdjacentStatement
 	 */
 	public function consumeToken() {
 		$this->consumeCharacter();
@@ -259,6 +260,7 @@ class DataSourceTokenizer implements Tokenizer {
 					$this->consumeCharacter();
 					$this->consumeCharacter();
 					while ( $this->currentCharacter !== DataSource::EOF &&
+						// @phan-suppress-next-line PhanSuspiciousValueComparisonInLoop
 						!( $this->currentCharacter === '*' && $this->nextCharacter === '/' )
 					) {
 						$this->consumeCharacter();
@@ -268,6 +270,7 @@ class DataSourceTokenizer implements Tokenizer {
 						$this->parseError( 'unclosed-comment', $pos );
 					}
 					$this->consumeCharacter();
+					// @phan-suppress-next-line PhanPossiblyInfiniteRecursionSameParams
 					return $this->consumeToken();
 				}
 
@@ -871,6 +874,7 @@ class DataSourceTokenizer implements Tokenizer {
 		}
 		// @codeCoverageIgnoreStart
 	}
+
 	// @codeCoverageIgnoreEnd
 
 	/**
@@ -881,6 +885,7 @@ class DataSourceTokenizer implements Tokenizer {
 	 *
 	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#consume-a-number
 	 * @return array [ string $value, int|float $number, string $type ('integer' or 'number') ]
+	 * @suppress PhanPluginDuplicateAdjacentStatement
 	 */
 	protected function consumeNumber() {
 		// 1.
