@@ -8,7 +8,6 @@ use DOMElement;
 use DOMNode;
 use stdClass;
 use Wikimedia\Parsoid\Core\DomSourceRange;
-use Wikimedia\Parsoid\Core\Sanitizer;
 use Wikimedia\Parsoid\Ext\DOMDataUtils;
 use Wikimedia\Parsoid\Ext\DOMUtils;
 use Wikimedia\Parsoid\Ext\ExtensionTagHandler;
@@ -174,16 +173,6 @@ class References extends ExtensionTagHandler {
 		$followName = $refDmw->attrs->follow ?? '';
 		$refDir = strtolower( $refDmw->attrs->dir ?? '' );
 
-		// Looks like Cite.php doesn't try to fix ids that already have
-		// a "_" in them. Ex: name="a b" and name="a_b" are considered
-		// identical. Not sure if this is a feature or a bug.
-		// It also considers entities equal to their encoding
-		// (i.e. '&' === '&amp;'), which is done:
-		//  in PHP: Sanitizer#decodeTagAttributes and
-		//  in Parsoid: ExtensionHandler#normalizeExtOptions
-		$refName = Sanitizer::escapeIdForAttribute( $refName );
-		$followName = Sanitizer::escapeIdForAttribute( $followName );
-
 		// Add ref-index linkback
 		$linkBack = $doc->createElement( 'sup' );
 
@@ -296,7 +285,7 @@ class References extends ExtensionTagHandler {
 				// Empty the <sup> since we've serialized its children and
 				// removing it below asserts everything has been migrated out
 				DOMCompat::replaceChildren( $c );
-				$refDmw->body = (object)[ 'html' => $refDmw->body->extsrc ];
+				$refDmw->body = (object)[ 'html' => $refDmw->body->extsrc ?? '' ];
 			}
 		} else {
 			// If there are multiple <ref>s with the same name, but different content,

@@ -19,7 +19,6 @@ var DOMUtils = require('../lib/utils/DOMUtils.js').DOMUtils;
 var DOMDataUtils = require('../lib/utils/DOMDataUtils.js').DOMDataUtils;
 var TestUtils = require('../tests/TestUtils.js').TestUtils;
 var WTUtils = require('../lib/utils/WTUtils.js').WTUtils;
-var apiUtils = require('../lib/api/apiUtils');
 var ParsoidConfig = require('../lib/config/ParsoidConfig.js').ParsoidConfig;
 var Diff = require('../lib/utils/Diff.js').Diff;
 var JSUtils = require('../lib/utils/jsutils.js').JSUtils;
@@ -480,7 +479,7 @@ var checkIfSignificant = function(offsets, data) {
 		// the wt-diffs are purely syntactic.
 		//
 		// FIXME: abstract to ensure same opts are used for parsoidPost and normalizeOut
-		const normOpts = { parsoidOnly: true, scrubWikitext: true, rtTestMode: true };
+		const normOpts = { parsoidOnly: true, scrubWikitext: true, rtTestMode: false };
 		const normalizedOld = TestUtils.normalizeOut(oldBody, normOpts);
 		const normalizedNew = TestUtils.normalizeOut(newBody, normOpts);
 		if (normalizedOld === normalizedNew) {
@@ -571,7 +570,7 @@ var parsoidPost = Promise.async(function *(profile, options) {
 		if (options.oldid) {
 			uri += '/' + options.oldid;
 		}
-		httpOptions.headers.Accept = apiUtils.pagebundleContentType(options.outputContentVersion);
+		httpOptions.headers.Accept = 'application/json; charset=utf-8; profile="https://www.mediawiki.org/wiki/Specs/pagebundle/' + options.outputContentVersion + '"';
 		// setting json here encodes the request *and* decodes the response.
 		httpOptions.json = true;
 	}
@@ -902,7 +901,7 @@ if (require.main === module) {
 				parsoidOptions: {
 					loadWMF: true,
 					useSelser: true,
-					rtTestMode: true,
+					rtTestMode: false,
 				}
 			};
 			if (argv.apiURL) {
