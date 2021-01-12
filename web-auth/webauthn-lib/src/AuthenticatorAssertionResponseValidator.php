@@ -20,9 +20,12 @@ use CBOR\Tag\TagObjectManager;
 use Cose\Algorithm\Manager;
 use Cose\Algorithm\Signature\Signature;
 use Cose\Key\Key;
+use function count;
+use function in_array;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use function Safe\parse_url;
 use Throwable;
 use Webauthn\AuthenticationExtensions\AuthenticationExtensionsClientInputs;
 use Webauthn\AuthenticationExtensions\AuthenticationExtensionsClientOutputs;
@@ -69,6 +72,12 @@ class AuthenticatorAssertionResponseValidator
 
     public function __construct(PublicKeyCredentialSourceRepository $publicKeyCredentialSourceRepository, TokenBindingHandler $tokenBindingHandler, ExtensionOutputCheckerHandler $extensionOutputCheckerHandler, Manager $algorithmManager, ?CounterChecker $counterChecker = null, ?LoggerInterface $logger = null)
     {
+        if (null !== $logger) {
+            @trigger_error('The argument "logger" is deprecated since version 3.3 and will be removed in 4.0. Please use the method "setLogger".', E_USER_DEPRECATED);
+        }
+        if (null !== $counterChecker) {
+            @trigger_error('The argument "counterChecker" is deprecated since version 3.3 and will be removed in 4.0. Please use the method "setCounterChecker".', E_USER_DEPRECATED);
+        }
         $this->publicKeyCredentialSourceRepository = $publicKeyCredentialSourceRepository;
         $this->decoder = new Decoder(new TagObjectManager(), new OtherObjectManager());
         $this->tokenBindingHandler = $tokenBindingHandler;
@@ -92,7 +101,7 @@ class AuthenticatorAssertionResponseValidator
                 'userHandle' => $userHandle,
             ]);
             /* @see 7.2.1 */
-            if (0 !== \count($publicKeyCredentialRequestOptions->getAllowCredentials())) {
+            if (0 !== count($publicKeyCredentialRequestOptions->getAllowCredentials())) {
                 Assertion::true($this->isCredentialIdAllowed($credentialId, $publicKeyCredentialRequestOptions->getAllowCredentials()), 'The credential ID is not allowed.');
             }
 
@@ -141,7 +150,7 @@ class AuthenticatorAssertionResponseValidator
             $facetId = $this->getFacetId($rpId, $publicKeyCredentialRequestOptions->getExtensions(), $authenticatorAssertionResponse->getAuthenticatorData()->getExtensions());
             $parsedRelyingPartyId = parse_url($C->getOrigin());
             Assertion::isArray($parsedRelyingPartyId, 'Invalid origin');
-            if (!\in_array($facetId, $securedRelyingPartyId, true)) {
+            if (!in_array($facetId, $securedRelyingPartyId, true)) {
                 $scheme = $parsedRelyingPartyId['scheme'] ?? '';
                 Assertion::eq('https', $scheme, 'Invalid scheme. HTTPS required.');
             }
@@ -160,7 +169,7 @@ class AuthenticatorAssertionResponseValidator
             Assertion::true(hash_equals($rpIdHash, $authenticatorAssertionResponse->getAuthenticatorData()->getRpIdHash()), 'rpId hash mismatch.');
 
             /* @see 7.2.12 */
-            Assertion::true($authenticatorAssertionResponse->getAuthenticatorData()->isUserPresent(), 'User was not present');
+            //Nothing to do. The verification of the bit is done during the authenticator data loading
             /* @see 7.2.13 */
             if (AuthenticatorSelectionCriteria::USER_VERIFICATION_REQUIREMENT_REQUIRED === $publicKeyCredentialRequestOptions->getUserVerification()) {
                 Assertion::true($authenticatorAssertionResponse->getAuthenticatorData()->isUserVerified(), 'User authentication required.');
@@ -189,11 +198,11 @@ class AuthenticatorAssertionResponseValidator
 
             /* @see 7.2.17 */
             $storedCounter = $publicKeyCredentialSource->getCounter();
-            $currentCounter = $authenticatorAssertionResponse->getAuthenticatorData()->getSignCount();
-            if (0 !== $currentCounter || 0 !== $storedCounter) {
-                $this->counterChecker->check($publicKeyCredentialSource, $currentCounter);
+            $responseCounter = $authenticatorAssertionResponse->getAuthenticatorData()->getSignCount();
+            if (0 !== $responseCounter || 0 !== $storedCounter) {
+                $this->counterChecker->check($publicKeyCredentialSource, $responseCounter);
             }
-            $publicKeyCredentialSource->setCounter($currentCounter);
+            $publicKeyCredentialSource->setCounter($responseCounter);
             $this->publicKeyCredentialSourceRepository->saveCredentialSource($publicKeyCredentialSource);
 
             /* @see 7.2.18 */
@@ -208,6 +217,20 @@ class AuthenticatorAssertionResponseValidator
             ]);
             throw $throwable;
         }
+    }
+
+    public function setLogger(LoggerInterface $logger): self
+    {
+        $this->logger = $logger;
+
+        return $this;
+    }
+
+    public function setCounterChecker(CounterChecker $counterChecker): self
+    {
+        $this->counterChecker = $counterChecker;
+
+        return $this;
     }
 
     /**
