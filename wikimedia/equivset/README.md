@@ -5,19 +5,20 @@ A mapping of "equivalent" or similar-looking characters ([homoglyphs](https://en
 ## Installation
 Using composer:
 Add the following to the composer.json file for your project:
-<pre lang="json">
+
+```json
 {
   "require": {
      "wikimedia/equivset": "^1.0.0"
   }
 }
-</pre>
+```
 
 And then run 'composer update'.
 
 ## Usage
 
-<pre lang="php">
+```php
 use Wikimedia\Equivset\Equivset;
 
 $equivset = new Equivset();
@@ -38,7 +39,7 @@ foreach ( $equivset as $char => $equiv ) {
 
 // Get the entire set.
 $all = $equivset->all();
-</pre>
+```
 
 ## Contributing
 
