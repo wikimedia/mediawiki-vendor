@@ -93,24 +93,16 @@ class PipelineUtils {
 			$opts['pipelineOpts']
 		);
 
-		// Set frame if necessary
-		$srcText = $opts['srcText'] ?? $frame->getSrcText();
-		if ( isset( $opts['tplArgs'] ) ) {
-			$pipeline->setFrame(
-				$frame, $opts['tplArgs']['title'], $opts['tplArgs']['attribs'],
-				$srcText
-			);
-		} else {
-			$pipeline->setFrame( $frame, null, [], $srcText );
-		}
-
-		// Set source offsets for this pipeline's content
-		if ( isset( $opts['srcOffsets'] ) ) {
-			$pipeline->setSourceOffsets( $opts['srcOffsets'] );
-		}
+		$pipeline->init( [
+			'toplevel' => false,
+			'frame' => $frame,
+			'tplArgs' => $opts['tplArgs'] ?? null,
+			'srcText' => $opts['srcText'] ?? $frame->getSrcText(),
+			'srcOffsets' => $opts['srcOffsets'] ?? null,
+		] );
 
 		// Off the starting block ... ready, set, go!
-		return $pipeline->parse( $content, [ "sol" => $opts['sol'] ] );
+		return $pipeline->parse( $content, [ 'sol' => $opts['sol'] ] );
 	}
 
 	/**

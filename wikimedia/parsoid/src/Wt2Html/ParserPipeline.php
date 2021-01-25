@@ -8,7 +8,6 @@ use Wikimedia\Assert\Assert;
 use Wikimedia\Parsoid\Config\Env;
 use Wikimedia\Parsoid\Tokens\SourceRange;
 use Wikimedia\Parsoid\Utils\PHPUtils;
-use Wikimedia\Parsoid\Utils\Title;
 
 /**
  * Wrap some stages into a pipeline.
@@ -32,6 +31,9 @@ class ParserPipeline {
 
 	/** @var string */
 	private $cacheKey;
+
+	/** @var Frame */
+	private $frame;
 
 	/**
 	 * @param string $type
@@ -107,10 +109,12 @@ class ParserPipeline {
 	}
 
 	/**
-	 * @inheritDoc
+	 * Set frame on this pipeline stage (stages decide if they need it or not)
+	 * @param Frame $frame frame
 	 */
-	public function setFrame( ?Frame $frame, ?Title $title, array $args, string $srcText ): void {
-		$this->applyToStage( 'setFrame', $frame, $title, $args, $srcText );
+	public function setFrame( Frame $frame ): void {
+		$this->frame = $frame;
+		$this->applyToStage( 'setFrame', $frame );
 	}
 
 	/**
@@ -195,55 +199,37 @@ class ParserPipeline {
 	}
 
 	/**
-	 * Feed input to the first pipeline stage.
-	 * The input is expected to be the wikitext string for the doc.
-	 *
-	 * @param string $input
-	 * @param ?array $opts
-	 * @return DOMDocument
+	 * @param array $initialState Once the pipeline is retrieved / constructed
+	 *   it will be initialized with this state.
 	 */
-	public function parseToplevelDoc(
-		string $input, ?array $opts = null
-	): DOMDocument {
-		Assert::invariant( $this->pipelineType === 'text/x-mediawiki/full',
-			'You cannot process top-level document from wikitext to DOM with a pipeline of type ' .
-			$this->pipelineType );
-
-		// Disable the garbage collector in PHP 7.2 (T230861)
-		if ( gc_enabled() && version_compare( PHP_VERSION, '7.3.0', '<' ) ) {
-			$gcDisabled = true;
-			gc_collect_cycles();
-			gc_disable();
-		} else {
-			$gcDisabled = false;
-		}
-
+	public function init( array $initialState = [] ) {
 		// Reset pipeline state once per top-level doc.
 		// This clears state from any per-doc global state
 		// maintained across all pipelines used by the document.
 		// (Ex: Cite state)
-		$this->resetState( [ 'toplevel' => true ] );
-		if ( !$opts ) {
-			$opts = [];
+		$toplevel = $initialState['toplevel'];
+		$this->resetState( [ 'toplevel' => $toplevel ] );
+
+		// Set frame
+		$frame = $initialState['frame'];
+		if ( !$toplevel ) {
+			$tplArgs = $initialState['tplArgs'] ?? null;
+			$srcText = $initialState['srcText'] ?? null;
+			if ( isset( $tplArgs['title'] ) ) {
+				$title = $tplArgs['title'];
+				$args = $tplArgs['attribs'];
+			} else {
+				$title = $frame->getTitle();
+				$args = $frame->getArgs()->args;
+			}
+			$frame = $frame->newChild( $title, $args, $srcText );
 		}
+		$this->setFrame( $frame );
 
-		// Top-level doc parsing always start in SOL state
-		$opts['sol'] = true;
-		$opts['atTopLevel'] = true;
-
-		if ( !empty( $opts['chunky'] ) ) {
-			$result = $this->parseChunkily( $input, $opts );
-		} else {
-			$result = $this->parse( $input, $opts );
+		// Set source offsets for this pipeline's content
+		$srcOffsets = $initialState['srcOffsets'] ?? null;
+		if ( $srcOffsets ) {
+			$this->setSourceOffsets( $srcOffsets );
 		}
-
-		if ( $gcDisabled ) {
-			gc_enable();
-			// There's no point running gc_collect_cycles() here, since objects
-			// are not marked for collection while the GC is disabled. The root
-			// buffer will be empty.
-		}
-
-		return $result->ownerDocument;
 	}
 }
