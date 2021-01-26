@@ -6788,6 +6788,53 @@
         "homepage": "https://www.mediawiki.org/wiki/RemexHtml"
     },
     {
+        "name": "wikimedia/request-timeout",
+        "version": "1.0.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/request-timeout.git",
+            "reference": "6f5d29ec178142f9053d2692b2ed17acffb83cd5"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/request-timeout/zipball/6f5d29ec178142f9053d2692b2ed17acffb83cd5",
+            "reference": "6f5d29ec178142f9053d2692b2ed17acffb83cd5",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=7.2"
+        },
+        "require-dev": {
+            "mediawiki/mediawiki-codesniffer": "34.0.0",
+            "mediawiki/mediawiki-phan-config": "0.10.6",
+            "mediawiki/minus-x": "1.1.0",
+            "ockcyp/covers-validator": "1.3.3",
+            "php-parallel-lint/php-console-highlighter": "0.5.0",
+            "php-parallel-lint/php-parallel-lint": "1.2.0",
+            "phpunit/phpunit": "^8.5"
+        },
+        "time": "2021-01-11T21:51:03+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Wikimedia\\RequestTimeout\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Tim Starling"
+            }
+        ],
+        "description": "Request timeout library for Excimer with plain PHP fallback",
+        "homepage": "https://www.mediawiki.org/wiki/RequestTimeout"
+    },
+    {
         "name": "wikimedia/running-stat",
         "version": "v1.2.1",
         "version_normalized": "1.2.1.0",

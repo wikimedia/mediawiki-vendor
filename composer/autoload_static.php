@@ -48,6 +48,7 @@ class ComposerStaticInit_mediawiki_vendor
             'Wikimedia\\XMPReader\\' => 20,
             'Wikimedia\\Timestamp\\' => 20,
             'Wikimedia\\Services\\' => 19,
+            'Wikimedia\\RequestTimeout\\' => 25,
             'Wikimedia\\Purtle\\Tests\\' => 23,
             'Wikimedia\\Purtle\\' => 17,
             'Wikimedia\\PasswordBlacklist\\' => 28,
@@ -209,6 +210,10 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Services\\' => 
         array (
             0 => __DIR__ . '/..' . '/wikimedia/services/src',
+        ),
+        'Wikimedia\\RequestTimeout\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/wikimedia/request-timeout/src',
         ),
         'Wikimedia\\Purtle\\Tests\\' => 
         array (
@@ -3926,6 +3931,17 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Purtle\\TurtleRdfWriter' => __DIR__ . '/..' . '/wikimedia/purtle/src/TurtleRdfWriter.php',
         'Wikimedia\\Purtle\\UnicodeEscaper' => __DIR__ . '/..' . '/wikimedia/purtle/src/UnicodeEscaper.php',
         'Wikimedia\\Purtle\\XmlRdfWriter' => __DIR__ . '/..' . '/wikimedia/purtle/src/XmlRdfWriter.php',
+        'Wikimedia\\RequestTimeout\\CriticalSectionMismatchException' => __DIR__ . '/..' . '/wikimedia/request-timeout/src/CriticalSectionMismatchException.php',
+        'Wikimedia\\RequestTimeout\\CriticalSectionProvider' => __DIR__ . '/..' . '/wikimedia/request-timeout/src/CriticalSectionProvider.php',
+        'Wikimedia\\RequestTimeout\\CriticalSectionScope' => __DIR__ . '/..' . '/wikimedia/request-timeout/src/CriticalSectionScope.php',
+        'Wikimedia\\RequestTimeout\\Detail\\BasicRequestTimeout' => __DIR__ . '/..' . '/wikimedia/request-timeout/src/Detail/BasicRequestTimeout.php',
+        'Wikimedia\\RequestTimeout\\Detail\\CriticalSection' => __DIR__ . '/..' . '/wikimedia/request-timeout/src/Detail/CriticalSection.php',
+        'Wikimedia\\RequestTimeout\\Detail\\ExcimerRequestTimeout' => __DIR__ . '/..' . '/wikimedia/request-timeout/src/Detail/ExcimerRequestTimeout.php',
+        'Wikimedia\\RequestTimeout\\Detail\\ExcimerTimerWrapper' => __DIR__ . '/..' . '/wikimedia/request-timeout/src/Detail/ExcimerTimerWrapper.php',
+        'Wikimedia\\RequestTimeout\\EmergencyTimeoutException' => __DIR__ . '/..' . '/wikimedia/request-timeout/src/EmergencyTimeoutException.php',
+        'Wikimedia\\RequestTimeout\\RequestTimeout' => __DIR__ . '/..' . '/wikimedia/request-timeout/src/RequestTimeout.php',
+        'Wikimedia\\RequestTimeout\\RequestTimeoutException' => __DIR__ . '/..' . '/wikimedia/request-timeout/src/RequestTimeoutException.php',
+        'Wikimedia\\RequestTimeout\\TimeoutException' => __DIR__ . '/..' . '/wikimedia/request-timeout/src/TimeoutException.php',
         'Wikimedia\\RunningStat' => __DIR__ . '/..' . '/wikimedia/running-stat/src/Wikimedia/RunningStat.php',
         'Wikimedia\\ScopedCallback' => __DIR__ . '/..' . '/wikimedia/scoped-callback/src/ScopedCallback.php',
         'Wikimedia\\Services\\CannotReplaceActiveServiceException' => __DIR__ . '/..' . '/wikimedia/services/src/CannotReplaceActiveServiceException.php',
