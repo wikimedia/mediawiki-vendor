@@ -1418,6 +1418,7 @@ return array(
     'OOUI\\ProgressBarWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/ProgressBarWidget.php',
     'OOUI\\RadioInputWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/RadioInputWidget.php',
     'OOUI\\RadioSelectInputWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/RadioSelectInputWidget.php',
+    'OOUI\\RequiredElement' => $vendorDir . '/oojs/oojs-ui/php/mixins/RequiredElement.php',
     'OOUI\\SearchInputWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/SearchInputWidget.php',
     'OOUI\\SelectFileInputWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/SelectFileInputWidget.php',
     'OOUI\\SelectWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/SelectWidget.php',

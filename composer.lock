@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4e700b1ece24b5fa260c8c2447294e4c",
+    "content-hash": "c763cd342bb3c6c075f6107fa71c8de5",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -2547,24 +2547,24 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.41.0",
+            "version": "v0.41.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "91a8f6f2c25932e06966468ec3af7ea99357a2dd"
+                "reference": "a15b7f3c89f7a57534bbf2f3dcd431a06683877c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/91a8f6f2c25932e06966468ec3af7ea99357a2dd",
-                "reference": "91a8f6f2c25932e06966468ec3af7ea99357a2dd",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/a15b7f3c89f7a57534bbf2f3dcd431a06683877c",
+                "reference": "a15b7f3c89f7a57534bbf2f3dcd431a06683877c",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2.9"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "33.0.0",
-                "mediawiki/mediawiki-phan-config": "0.10.4",
+                "mediawiki/mediawiki-codesniffer": "34.0.0",
+                "mediawiki/mediawiki-phan-config": "0.10.6",
                 "mediawiki/minus-x": "1.1.0",
                 "php-parallel-lint/php-console-highlighter": "0.5.0",
                 "php-parallel-lint/php-parallel-lint": "1.2.0",
@@ -2624,7 +2624,7 @@
             ],
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOUI",
-            "time": "2020-12-03T15:38:29+00:00"
+            "time": "2021-01-26T22:08:12+00:00"
         },
         {
             "name": "pear/console_getopt",
