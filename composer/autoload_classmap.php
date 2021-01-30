@@ -2589,7 +2589,7 @@ return array(
     'TextCat' => $vendorDir . '/wikimedia/textcat/src/TextCat.php',
     'UnhandledMatchError' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
     'UtfNormal\\Constants' => $vendorDir . '/wikimedia/utfnormal/src/Constants.php',
-    'UtfNormal\\Utils' => $vendorDir . '/wikimedia/utfnormal/src/Util.php',
+    'UtfNormal\\Utils' => $vendorDir . '/wikimedia/utfnormal/src/Utils.php',
     'UtfNormal\\Validator' => $vendorDir . '/wikimedia/utfnormal/src/Validator.php',
     'ValueError' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
     'ValueFormatters\\BasicNumberLocalizer' => $vendorDir . '/data-values/number/src/ValueFormatters/BasicNumberLocalizer.php',

@@ -6024,17 +6024,17 @@
     },
     {
         "name": "wikimedia/css-sanitizer",
-        "version": "v3.0.0",
-        "version_normalized": "3.0.0.0",
+        "version": "v3.0.1",
+        "version_normalized": "3.0.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/css-sanitizer.git",
-            "reference": "ac21037cb9f60dd7c4c3c582128305e4a3ef62e7"
+            "reference": "ba1c085905692d4288efefb239aa6013923aad1f"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/css-sanitizer/zipball/ac21037cb9f60dd7c4c3c582128305e4a3ef62e7",
-            "reference": "ac21037cb9f60dd7c4c3c582128305e4a3ef62e7",
+            "url": "https://api.github.com/repos/wikimedia/css-sanitizer/zipball/ba1c085905692d4288efefb239aa6013923aad1f",
+            "reference": "ba1c085905692d4288efefb239aa6013923aad1f",
             "shasum": ""
         },
         "require": {
@@ -6042,7 +6042,7 @@
             "ext-mbstring": "*",
             "php": ">=7.2.0",
             "wikimedia/at-ease": "2.0.0",
-            "wikimedia/utfnormal": "2.0.0"
+            "wikimedia/utfnormal": "2.0.0 || ^3.0.1"
         },
         "require-dev": {
             "mediawiki/mediawiki-codesniffer": "34.0.0",
@@ -6053,7 +6053,7 @@
             "phpunit/phpunit": "^8.5",
             "wikimedia/testing-access-wrapper": "1.0.0"
         },
-        "time": "2021-01-04T00:03:52+00:00",
+        "time": "2021-01-30T09:32:37+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -6076,22 +6076,22 @@
     },
     {
         "name": "wikimedia/equivset",
-        "version": "1.4.1",
-        "version_normalized": "1.4.1.0",
+        "version": "1.4.2",
+        "version_normalized": "1.4.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/Equivset.git",
-            "reference": "d1dfa1534eb4e09bbe9c753716ba5780f77dcb78"
+            "reference": "f41a259526a5597e1c3cb3cf745d1f1af6d36a00"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/Equivset/zipball/d1dfa1534eb4e09bbe9c753716ba5780f77dcb78",
-            "reference": "d1dfa1534eb4e09bbe9c753716ba5780f77dcb78",
+            "url": "https://api.github.com/repos/wikimedia/Equivset/zipball/f41a259526a5597e1c3cb3cf745d1f1af6d36a00",
+            "reference": "f41a259526a5597e1c3cb3cf745d1f1af6d36a00",
             "shasum": ""
         },
         "require": {
             "php": ">=7.2.0",
-            "wikimedia/utfnormal": "^1.1.0 || ^2.0.0"
+            "wikimedia/utfnormal": "^1.1.0 || ^2.0.0 || ^3.0.1"
         },
         "require-dev": {
             "mediawiki/mediawiki-codesniffer": "34.0.0",
@@ -6105,7 +6105,7 @@
             "symfony/console": "^3.3 || ^4 || ^5",
             "symfony/var-dumper": "^3.3 || ^4 || ^5"
         },
-        "time": "2021-01-08T20:06:32+00:00",
+        "time": "2021-01-30T09:31:47+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -6740,24 +6740,24 @@
     },
     {
         "name": "wikimedia/remex-html",
-        "version": "2.2.1",
-        "version_normalized": "2.2.1.0",
+        "version": "2.2.2",
+        "version_normalized": "2.2.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/remex-html.git",
-            "reference": "acfe59d13f80a3a21401e6927466b37b2d836edd"
+            "reference": "3f55e728403fe52445c3aaab20f5e4be8e2b282b"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/remex-html/zipball/acfe59d13f80a3a21401e6927466b37b2d836edd",
-            "reference": "acfe59d13f80a3a21401e6927466b37b2d836edd",
+            "url": "https://api.github.com/repos/wikimedia/remex-html/zipball/3f55e728403fe52445c3aaab20f5e4be8e2b282b",
+            "reference": "3f55e728403fe52445c3aaab20f5e4be8e2b282b",
             "shasum": ""
         },
         "require": {
             "ext-dom": "*",
             "ext-mbstring": "*",
             "php": ">=7.2.9",
-            "wikimedia/utfnormal": "1.1.0 || 2.0.0"
+            "wikimedia/utfnormal": "1.1.0 || 2.0.0 || ^3.0.1"
         },
         "require-dev": {
             "ext-json": "*",
@@ -6769,7 +6769,7 @@
             "php-parallel-lint/php-parallel-lint": "1.2.0",
             "phpunit/phpunit": "^8.5 || ^9.5"
         },
-        "time": "2021-01-12T01:32:39+00:00",
+        "time": "2021-01-30T16:11:18+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -7139,31 +7139,32 @@
     },
     {
         "name": "wikimedia/utfnormal",
-        "version": "v2.0.0",
-        "version_normalized": "2.0.0.0",
+        "version": "3.0.1",
+        "version_normalized": "3.0.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/utfnormal.git",
-            "reference": "ec1ec7ce9e25cd275c532afd30bb6092a7633990"
+            "reference": "1b45c6f29cca0ddce3320b234a5954dbbcb195cb"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/utfnormal/zipball/ec1ec7ce9e25cd275c532afd30bb6092a7633990",
-            "reference": "ec1ec7ce9e25cd275c532afd30bb6092a7633990",
+            "url": "https://api.github.com/repos/wikimedia/utfnormal/zipball/1b45c6f29cca0ddce3320b234a5954dbbcb195cb",
+            "reference": "1b45c6f29cca0ddce3320b234a5954dbbcb195cb",
             "shasum": ""
         },
         "require": {
-            "php": ">=5.5.9"
+            "ext-mbstring": "*",
+            "php": ">=7.2.9"
         },
         "require-dev": {
-            "ext-mbstring": "*",
-            "jakub-onderka/php-console-highlighter": "0.3.2",
-            "jakub-onderka/php-parallel-lint": "0.9.2",
-            "mediawiki/mediawiki-codesniffer": "16.0.1",
-            "mediawiki/minus-x": "0.3.1",
-            "phpunit/phpunit": "4.8.36"
+            "mediawiki/mediawiki-codesniffer": "34.0.0",
+            "mediawiki/minus-x": "1.1.0",
+            "ockcyp/covers-validator": "1.3.1",
+            "php-parallel-lint/php-console-highlighter": "0.5.0",
+            "php-parallel-lint/php-parallel-lint": "1.2.0",
+            "phpunit/phpunit": "^8.5"
         },
-        "time": "2018-02-27T02:26:36+00:00",
+        "time": "2021-01-30T09:19:35+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
