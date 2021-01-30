@@ -24,28 +24,29 @@ use Symfony\Component\Validator\Exception\InvalidArgumentException;
  * @author Bernhard Schussek <bschussek@gmail.com>
  * @author Joseph Bielawski <stloyd@gmail.com>
  */
+#[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class Ip extends Constraint
 {
-    const V4 = '4';
-    const V6 = '6';
-    const ALL = 'all';
+    public const V4 = '4';
+    public const V6 = '6';
+    public const ALL = 'all';
 
     // adds FILTER_FLAG_NO_PRIV_RANGE flag (skip private ranges)
-    const V4_NO_PRIV = '4_no_priv';
-    const V6_NO_PRIV = '6_no_priv';
-    const ALL_NO_PRIV = 'all_no_priv';
+    public const V4_NO_PRIV = '4_no_priv';
+    public const V6_NO_PRIV = '6_no_priv';
+    public const ALL_NO_PRIV = 'all_no_priv';
 
     // adds FILTER_FLAG_NO_RES_RANGE flag (skip reserved ranges)
-    const V4_NO_RES = '4_no_res';
-    const V6_NO_RES = '6_no_res';
-    const ALL_NO_RES = 'all_no_res';
+    public const V4_NO_RES = '4_no_res';
+    public const V6_NO_RES = '6_no_res';
+    public const ALL_NO_RES = 'all_no_res';
 
     // adds FILTER_FLAG_NO_PRIV_RANGE and FILTER_FLAG_NO_RES_RANGE flags (skip both)
-    const V4_ONLY_PUBLIC = '4_public';
-    const V6_ONLY_PUBLIC = '6_public';
-    const ALL_ONLY_PUBLIC = 'all_public';
+    public const V4_ONLY_PUBLIC = '4_public';
+    public const V6_ONLY_PUBLIC = '6_public';
+    public const ALL_ONLY_PUBLIC = 'all_public';
 
-    const INVALID_IP_ERROR = 'b1b427ae-9f6f-41b0-aa9b-84511fbb3c5b';
+    public const INVALID_IP_ERROR = 'b1b427ae-9f6f-41b0-aa9b-84511fbb3c5b';
 
     protected static $versions = [
         self::V4,
@@ -78,9 +79,19 @@ class Ip extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function __construct($options = null)
-    {
-        parent::__construct($options);
+    public function __construct(
+        array $options = null,
+        string $version = null,
+        string $message = null,
+        callable $normalizer = null,
+        array $groups = null,
+        $payload = null
+    ) {
+        parent::__construct($options, $groups, $payload);
+
+        $this->version = $version ?? $this->version;
+        $this->message = $message ?? $this->message;
+        $this->normalizer = $normalizer ?? $this->normalizer;
 
         if (!\in_array($this->version, self::$versions)) {
             throw new ConstraintDefinitionException(sprintf('The option "version" must be one of "%s".', implode('", "', self::$versions)));
