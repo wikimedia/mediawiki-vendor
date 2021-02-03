@@ -1,0 +1,55 @@
+{
+	"__": "Copy this to config.json to enable the main server",
+	"secretKey": "@@ CHANGE THIS @@",
+	"url": "http://localhost/shellbox.php",
+	"tempDir": "/tmp",
+	"logFormat": "[%datetime%] %channel%.%level_name%: %message% %context% %extra%\n",
+	"logFile": "/var/log/shellbox/shellbox.log",
+	"jsonLogFile": false,
+	"logToStderr": false,
+	"jsonLogToStderr": false,
+	"syslogIdent": "shellbox",
+	"logToSyslog": false,
+	"logToClient": true,
+	"allowedActions": [ "call", "shell" ],
+	"useSystemd": null,
+	"useBashWrapper": null,
+	"useFirejail": null,
+	"firejailPath": "/usr/bin/firejail",
+	"firejailProfile": null,
+	"routeSpecs": {
+		"example-echo": {
+			"__": "echo abc",
+			"inputFiles": {},
+			"outputFiles": {},
+			"options": {
+				"wallTimeLimit": { "allow": [ "float", "integer" ] }
+			},
+			"argv": [
+				"echo",
+				{ "allow": "literal" }
+			]
+		},
+		"example-redirect": {
+			"__": "echo a > b 2>&1",
+			"inputFiles": {},
+			"shellFeatures": [
+				"redirect"
+			],
+			"argv": [
+				"echo",
+				{ "allow": "literal" }
+			]
+		},
+		"example-file": {
+			"__": "cat input",
+			"inputFiles": {
+				"input": {}
+			},
+			"argv": [
+				"cat",
+				"input"
+			]
+		}
+	}
+}

@@ -47,6 +47,7 @@ return array(
     'Symfony\\Component\\Process\\' => array($vendorDir . '/symfony/process'),
     'Symfony\\Component\\Debug\\' => array($vendorDir . '/symfony/debug'),
     'Symfony\\Component\\Console\\' => array($vendorDir . '/symfony/console'),
+    'Shellbox\\' => array($vendorDir . '/wikimedia/shellbox/src'),
     'Serializers\\' => array($vendorDir . '/serialization/serialization/src/Serializers'),
     'RemexHtml\\' => array($vendorDir . '/wikimedia/remex-html/RemexHtml'),
     'React\\Promise\\' => array($vendorDir . '/react/promise/src'),

@@ -6982,6 +6982,63 @@
         "homepage": "https://www.mediawiki.org/wiki/Services"
     },
     {
+        "name": "wikimedia/shellbox",
+        "version": "1.0.1",
+        "version_normalized": "1.0.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wikimedia/shellbox.git",
+            "reference": "eabd14300e1d6a693d9a64049b09b6ef32443d27"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wikimedia/shellbox/zipball/eabd14300e1d6a693d9a64049b09b6ef32443d27",
+            "reference": "eabd14300e1d6a693d9a64049b09b6ef32443d27",
+            "shasum": ""
+        },
+        "require": {
+            "ext-hash": "*",
+            "ext-json": "*",
+            "guzzlehttp/guzzle": "~7.2.0",
+            "monolog/monolog": "^2.0.0",
+            "php": ">=7.2",
+            "psr/log": "~1.1.3",
+            "wikimedia/wikipeg": "~2.0.4"
+        },
+        "require-dev": {
+            "mediawiki/mediawiki-codesniffer": "34.0.0",
+            "mediawiki/mediawiki-phan-config": "0.10.6",
+            "php-parallel-lint/php-console-highlighter": "0.5.0",
+            "php-parallel-lint/php-parallel-lint": "1.2.0",
+            "phpunit/phpunit": "^8.5",
+            "psy/psysh": "~0.10.4"
+        },
+        "time": "2021-02-03T22:29:14+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Shellbox\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Tim Starling"
+            },
+            {
+                "name": "Kunal Mehta"
+            },
+            {
+                "name": "Max Semenik"
+            }
+        ],
+        "description": "Library and server for containerized shell execution"
+    },
+    {
         "name": "wikimedia/testing-access-wrapper",
         "version": "2.0.0",
         "version_normalized": "2.0.0.0",
