@@ -6995,17 +6995,17 @@
     },
     {
         "name": "wikimedia/shellbox",
-        "version": "1.0.1",
-        "version_normalized": "1.0.1.0",
+        "version": "1.0.2",
+        "version_normalized": "1.0.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/shellbox.git",
-            "reference": "eabd14300e1d6a693d9a64049b09b6ef32443d27"
+            "reference": "df51cf8b3b908d1b5c59be805acb030d906453fa"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/shellbox/zipball/eabd14300e1d6a693d9a64049b09b6ef32443d27",
-            "reference": "eabd14300e1d6a693d9a64049b09b6ef32443d27",
+            "url": "https://api.github.com/repos/wikimedia/shellbox/zipball/df51cf8b3b908d1b5c59be805acb030d906453fa",
+            "reference": "df51cf8b3b908d1b5c59be805acb030d906453fa",
             "shasum": ""
         },
         "require": {
@@ -7025,7 +7025,7 @@
             "phpunit/phpunit": "^8.5",
             "psy/psysh": "~0.10.4"
         },
-        "time": "2021-02-03T22:29:14+00:00",
+        "time": "2021-02-08T04:10:33+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

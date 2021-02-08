@@ -167,6 +167,29 @@ class UnboxedExecutor {
 	}
 
 	/**
+	 * Get the environment to be passed through to the subprocess. In CLI mode
+	 * this uses getenv() because that is backwards compatible and relatively
+	 * sane. In the other SAPIs, there's no way to get the real environment
+	 * short of shell_exec('env'), but it's usually near-empty anyway. We add
+	 * PATH for convenience.
+	 *
+	 * In the FastCGI SAPI, $_ENV and getenv() return CGI-like variables sent
+	 * from the web server. So the PATH here is typically inherited from Apache
+	 * not PHP-FPM.
+	 *
+	 * @return array
+	 */
+	private function getParentEnvironment() {
+		if ( PHP_SAPI === 'cli' ) {
+			return getenv();
+		} elseif ( isset( $_ENV['PATH'] ) ) {
+			return [ 'PATH' => $_ENV['PATH'] ];
+		} else {
+			return [];
+		}
+	}
+
+	/**
 	 * @param Command $command
 	 * @return UnboxedResult
 	 * @throws ShellboxError
@@ -191,7 +214,7 @@ class UnboxedExecutor {
 		$cmd = $command->getCommandString();
 		$options = $command->getProcOpenOptions();
 
-		$combinedEnvironment = $command->getEnvironment() + getenv();
+		$combinedEnvironment = $command->getEnvironment() + $this->getParentEnvironment();
 		$env = [];
 		foreach ( $combinedEnvironment as $name => $value ) {
 			$env[] = "$name=$value";

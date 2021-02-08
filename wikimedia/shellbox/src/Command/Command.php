@@ -181,8 +181,8 @@ abstract class Command {
 
 	/**
 	 * Sets environment variables which should be added to the executed command
-	 * environment. The environment of the parent process will also be
-	 * inherited.
+	 * environment. In CLI mode, the environment of the parent process will
+	 * also be inherited.
 	 *
 	 * @param string[] $environment array of variable name => value
 	 * @return $this
