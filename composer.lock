@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b6c2ed915a93eb5ec6d032924b6b5c00",
+    "content-hash": "90cfdb144971ad5c9fa2a1d83ae04fed",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -6268,6 +6268,65 @@
             ],
             "description": "Parsing and pretty-printing Lucene explain data",
             "time": "2017-12-22T08:19:48+00:00"
+        },
+        {
+            "name": "wikimedia/minify",
+            "version": "2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wikimedia/minify.git",
+                "reference": "da82f483df6c2211aa7a7c5781170da0537830f3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wikimedia/minify/zipball/da82f483df6c2211aa7a7c5781170da0537830f3",
+                "reference": "da82f483df6c2211aa7a7c5781170da0537830f3",
+                "shasum": ""
+            },
+            "require": {
+                "pear/net_url2": "2.2.2",
+                "php": ">=7.2.9"
+            },
+            "require-dev": {
+                "mediawiki/mediawiki-codesniffer": "35.0.0",
+                "mediawiki/mediawiki-phan-config": "0.10.6",
+                "mediawiki/minus-x": "1.1.1",
+                "ockcyp/covers-validator": "1.3.3",
+                "php-parallel-lint/php-console-highlighter": "0.5.0",
+                "php-parallel-lint/php-parallel-lint": "1.2.0",
+                "phpunit/phpunit": "^8.5",
+                "wikimedia/testing-access-wrapper": "~2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Wikimedia\\Minify\\": "src/"
+                },
+                "psr-0": {
+                    "CSSMin": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Paul Copperman",
+                    "email": "paul.copperman@gmail.com"
+                },
+                {
+                    "name": "Trevor Parscal",
+                    "email": "tparscal@wikimedia.org"
+                },
+                {
+                    "name": "Timo Tijhof",
+                    "email": "krinklemail@gmail.com"
+                }
+            ],
+            "description": "Minification of JavaScript code and CSS stylesheets.",
+            "homepage": "https://gerrit.wikimedia.org/g/mediawiki/libs/Minify",
+            "time": "2021-02-13T03:22:43+00:00"
         },
         {
             "name": "wikimedia/object-factory",

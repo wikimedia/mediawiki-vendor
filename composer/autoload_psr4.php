@@ -17,6 +17,7 @@ return array(
     'Wikimedia\\Purtle\\' => array($vendorDir . '/wikimedia/purtle/src'),
     'Wikimedia\\PasswordBlacklist\\' => array($vendorDir . '/wikimedia/common-passwords/src/PasswordBlacklist'),
     'Wikimedia\\Parsoid\\' => array($vendorDir . '/wikimedia/parsoid/src'),
+    'Wikimedia\\Minify\\' => array($vendorDir . '/wikimedia/minify/src'),
     'Wikimedia\\LangConv\\' => array($vendorDir . '/wikimedia/langconv/src'),
     'Wikimedia\\Equivset\\' => array($vendorDir . '/wikimedia/equivset/src'),
     'Wikimedia\\Composer\\' => array($vendorDir . '/wikimedia/composer-merge-plugin/src'),

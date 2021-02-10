@@ -3098,6 +3098,8 @@ return array(
     'Wikimedia\\LangConv\\FST' => $vendorDir . '/wikimedia/langconv/src/FST.php',
     'Wikimedia\\LangConv\\ReplacementMachine' => $vendorDir . '/wikimedia/langconv/src/ReplacementMachine.php',
     'Wikimedia\\LangConv\\ZhReplacementMachine' => $vendorDir . '/wikimedia/langconv/src/ZhReplacementMachine.php',
+    'Wikimedia\\Minify\\CSSMin' => $vendorDir . '/wikimedia/minify/src/CSSMin.php',
+    'Wikimedia\\Minify\\JavaScriptMinifier' => $vendorDir . '/wikimedia/minify/src/JavaScriptMinifier.php',
     'Wikimedia\\ObjectFactory' => $vendorDir . '/wikimedia/object-factory/src/ObjectFactory.php',
     'Wikimedia\\PSquare' => $vendorDir . '/wikimedia/running-stat/src/Wikimedia/PSquare.php',
     'Wikimedia\\Parsoid\\Config\\Api\\ApiHelper' => $vendorDir . '/wikimedia/parsoid/src/Config/Api/ApiHelper.php',

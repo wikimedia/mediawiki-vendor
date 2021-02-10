@@ -17,5 +17,6 @@ return array(
     'Kafka\\' => array($vendorDir . '/nmred/kafka-php/src'),
     'DataValues\\' => array($vendorDir . '/data-values/number/src', $vendorDir . '/data-values/time/src'),
     'Console' => array($vendorDir . '/pear/console_getopt'),
+    'CSSMin' => array($vendorDir . '/wikimedia/minify/src'),
     '' => array($vendorDir . '/cssjanus/cssjanus/src', $vendorDir . '/pear/pear-core-minimal/src'),
 );

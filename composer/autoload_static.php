@@ -54,6 +54,7 @@ class ComposerStaticInit_mediawiki_vendor
             'Wikimedia\\Purtle\\' => 17,
             'Wikimedia\\PasswordBlacklist\\' => 28,
             'Wikimedia\\Parsoid\\' => 18,
+            'Wikimedia\\Minify\\' => 17,
             'Wikimedia\\LangConv\\' => 19,
             'Wikimedia\\Equivset\\' => 19,
             'Wikimedia\\Composer\\' => 19,
@@ -232,6 +233,10 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\' => 
         array (
             0 => __DIR__ . '/..' . '/wikimedia/parsoid/src',
+        ),
+        'Wikimedia\\Minify\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/wikimedia/minify/src',
         ),
         'Wikimedia\\LangConv\\' => 
         array (
@@ -655,6 +660,10 @@ class ComposerStaticInit_mediawiki_vendor
             'Console' => 
             array (
                 0 => __DIR__ . '/..' . '/pear/console_getopt',
+            ),
+            'CSSMin' => 
+            array (
+                0 => __DIR__ . '/..' . '/wikimedia/minify/src',
             ),
         ),
     );
@@ -3757,6 +3766,8 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\LangConv\\FST' => __DIR__ . '/..' . '/wikimedia/langconv/src/FST.php',
         'Wikimedia\\LangConv\\ReplacementMachine' => __DIR__ . '/..' . '/wikimedia/langconv/src/ReplacementMachine.php',
         'Wikimedia\\LangConv\\ZhReplacementMachine' => __DIR__ . '/..' . '/wikimedia/langconv/src/ZhReplacementMachine.php',
+        'Wikimedia\\Minify\\CSSMin' => __DIR__ . '/..' . '/wikimedia/minify/src/CSSMin.php',
+        'Wikimedia\\Minify\\JavaScriptMinifier' => __DIR__ . '/..' . '/wikimedia/minify/src/JavaScriptMinifier.php',
         'Wikimedia\\ObjectFactory' => __DIR__ . '/..' . '/wikimedia/object-factory/src/ObjectFactory.php',
         'Wikimedia\\PSquare' => __DIR__ . '/..' . '/wikimedia/running-stat/src/Wikimedia/PSquare.php',
         'Wikimedia\\Parsoid\\Config\\Api\\ApiHelper' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Config/Api/ApiHelper.php',
