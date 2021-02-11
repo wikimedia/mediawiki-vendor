@@ -7256,38 +7256,41 @@
     },
     {
         "name": "wikimedia/wait-condition-loop",
-        "version": "v1.0.1",
-        "version_normalized": "1.0.1.0",
+        "version": "v2.0.1",
+        "version_normalized": "2.0.1.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/wikimedia/WaitConditionLoop.git",
-            "reference": "0321b8ca6a0f701f96e04e5e8e6d3e244ab05338"
+            "url": "https://github.com/wikimedia/wait-condition-loop.git",
+            "reference": "44637dcee19765c4887cd3cc0fd97db0eabd7688"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/WaitConditionLoop/zipball/0321b8ca6a0f701f96e04e5e8e6d3e244ab05338",
-            "reference": "0321b8ca6a0f701f96e04e5e8e6d3e244ab05338",
+            "url": "https://api.github.com/repos/wikimedia/wait-condition-loop/zipball/44637dcee19765c4887cd3cc0fd97db0eabd7688",
+            "reference": "44637dcee19765c4887cd3cc0fd97db0eabd7688",
             "shasum": ""
         },
         "require": {
-            "php": ">=5.5.9"
+            "php": ">=7.2.9"
         },
         "require-dev": {
-            "jakub-onderka/php-parallel-lint": "0.9.2",
-            "mediawiki/mediawiki-codesniffer": "0.7.2",
-            "phpunit/phpunit": "4.8.24"
+            "mediawiki/mediawiki-codesniffer": "35.0.0",
+            "mediawiki/minus-x": "1.1.1",
+            "ockcyp/covers-validator": "1.3.3",
+            "php-parallel-lint/php-console-highlighter": "0.5.0",
+            "php-parallel-lint/php-parallel-lint": "1.2.0",
+            "phpunit/phpunit": "^8.5"
         },
-        "time": "2016-10-01T06:58:30+00:00",
+        "time": "2021-02-11T18:40:34+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
-            "classmap": [
-                "src/"
-            ]
+            "psr-4": {
+                "Wikimedia\\": "src/"
+            }
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
-            "GPL-2.0+"
+            "GPL-2.0-or-later"
         ],
         "authors": [
             {
