@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4682b0a6d96eba40e5a095eb2742c56a",
+    "content-hash": "eae65b415eecb27149a371136c27023e",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -6776,16 +6776,16 @@
         },
         {
             "name": "wikimedia/shellbox",
-            "version": "1.0.2",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/shellbox.git",
-                "reference": "df51cf8b3b908d1b5c59be805acb030d906453fa"
+                "reference": "30c7b456979c365301541a6a65e37a28273c6e14"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/shellbox/zipball/df51cf8b3b908d1b5c59be805acb030d906453fa",
-                "reference": "df51cf8b3b908d1b5c59be805acb030d906453fa",
+                "url": "https://api.github.com/repos/wikimedia/shellbox/zipball/30c7b456979c365301541a6a65e37a28273c6e14",
+                "reference": "30c7b456979c365301541a6a65e37a28273c6e14",
                 "shasum": ""
             },
             "require": {
@@ -6827,7 +6827,7 @@
                 }
             ],
             "description": "Library and server for containerized shell execution",
-            "time": "2021-02-08T04:10:33+00:00"
+            "time": "2021-02-11T07:31:35+00:00"
         },
         {
             "name": "wikimedia/testing-access-wrapper",

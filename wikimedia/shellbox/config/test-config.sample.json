@@ -1,6 +1,0 @@
-{
-	"__": "Copy this to test-config.json to customise the integration tests",
-	"tempDir": "/tmp",
-	"port": 8033,
-	"logFile": "/var/log/shellbox/shellbox.log"
-}

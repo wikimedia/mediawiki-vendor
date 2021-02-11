@@ -47,8 +47,13 @@ class BashWrapper extends Wrapper {
 					"SB_USE_LOG_PIPE=yes"
 				);
 			$command->unsafeCommand( $cmd )
-				->useLogPipe()
-				->allowPath( __DIR__ . '/limit.sh' );
+				->useLogPipe();
+			if ( $command->getAllowedPaths() ) {
+				// If specific paths have been allowed, make sure we explicitly
+				// allow limit.sh. We don't do this unconditionally because it
+				// doesn't work as expected in firejail, see T274474, T182486
+				$command->allowPath( __DIR__ . '/limit.sh' );
+			}
 		}
 	}
 
