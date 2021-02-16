@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f75de3a88df21ea5ee4ea627ddb48c4b",
+    "content-hash": "818330a9243e3823b190cde137d15f98",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -3768,16 +3768,16 @@
         },
         {
             "name": "ruflin/elastica",
-            "version": "6.1.1",
+            "version": "6.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ruflin/Elastica.git",
-                "reference": "333dff62346adf835c0a0fd198e8c9f9ec8da65a"
+                "reference": "3734c1af1e96c7afd960e21a9ea9f1bec7fe65a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ruflin/Elastica/zipball/333dff62346adf835c0a0fd198e8c9f9ec8da65a",
-                "reference": "333dff62346adf835c0a0fd198e8c9f9ec8da65a",
+                "url": "https://api.github.com/repos/ruflin/Elastica/zipball/3734c1af1e96c7afd960e21a9ea9f1bec7fe65a8",
+                "reference": "3734c1af1e96c7afd960e21a9ea9f1bec7fe65a8",
                 "shasum": ""
             },
             "require": {
@@ -3822,7 +3822,7 @@
                 "client",
                 "search"
             ],
-            "time": "2019-01-29T09:38:03+00:00"
+            "time": "2021-02-17T07:28:43+00:00"
         },
         {
             "name": "serialization/serialization",

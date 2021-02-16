@@ -1,19 +1,38 @@
 # Change Log
 All notable changes to this project will be documented in this file based on the [Keep a Changelog](http://keepachangelog.com/) Standard. This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased](https://github.com/ruflin/Elastica/compare/6.1.1...master)
+## [Unreleased](https://github.com/ruflin/Elastica/compare/6.1.3...6.x)
 
 ### Backward Compatibility Breaks
+### Bugfixes
+### Added
+### Improvements
+### Deprecated
+
+## [6.1.3](https://github.com/ruflin/Elastica/compare/6.1.2...6.1.3)
+
+### Bugfixes
+* Make MatchQuery.php file valid PHP. [#1902](https://github.com/ruflin/Elastica/pull/1902)
+
+## [6.1.2](https://github.com/ruflin/Elastica/compare/6.1.1...6.1.2)
 
 ### Bugfixes
 
+* Always set the Guzzle `base_uri` to support connecting to multiple ES hosts. [#1618](https://github.com/ruflin/Elastica/pull/1618) [#1644](https://github.com/ruflin/Elastica/issues/1644)
+
 ### Added
+
+* Added `Elastica\Aggregation\WeightedAvg` aggregation [#1770](https://github.com/ruflin/Elastica/pull/1770)
+* Added `Elastica\Query\MatchQuery` extending `Elastica\Query\Match`. This is the same as 7.x, which renamed the class for PHP 8.0 support, and makes supporting the use of ruflin/elastica 6.1 and 7.0 in the same project easier. [#1898](https://github.com/ruflin/Elastica/pull/1898)
 
 ### Improvements
 
-### Deprecated
+* Added missing Response information to Bulk/ResponseSet [#1775](https://github.com/ruflin/Elastica/pull/1775)
 
-## [Unreleased](https://github.com/ruflin/Elastica/compare/6.1.0...6.1.1)
+### Deprecated
+* `Elastica\Query\Match` has been deprecated in favour of `Elastica\Query\MatchQuery`. [#1898](https://github.com/ruflin/Elastica/pull/1898)
+
+## [6.1.1](https://github.com/ruflin/Elastica/compare/6.1.0...6.1.1)
 
 ### Added
 
