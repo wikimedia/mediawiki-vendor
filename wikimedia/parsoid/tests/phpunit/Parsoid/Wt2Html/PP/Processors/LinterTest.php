@@ -306,6 +306,37 @@ class LinterTest extends TestCase {
 
 		$desc = 'should not crash on gallery images';
 		$this->expectEmptyResults( $desc, "<gallery>\nfile:a.jpg\n</gallery>" );
+
+		$desc = 'should lint Bogus image width options correctly';
+		$result = $this->parseWT( '[[File:Foobar.jpg|thumb|left150px|Caption]]' );
+		$this->assertSame( 1, count( $result ), $desc );
+		$this->assertEquals( 'bogus-image-options', $result[0]['type'], $desc );
+		$this->assertEquals( [ 0, 43, 2, 2 ], $result[0]['dsr'], $desc );
+
+		$desc = "should lint Bogus image with bogus width definition correctly";
+		$result = $this->parseWT(
+			"[[File:Foobar.jpg|thumb|300px300px|Caption]]" );
+		$this->assertSame( 1, count( $result ), $desc );
+		$this->assertEquals( 'bogus-image-options', $result[0]['type'], $desc );
+		$this->assertEquals( [ 0, 44, 2, 2 ], $result[0]['dsr'], $desc );
+
+		$desc = "should lint Bogus image with duplicate width options correctly";
+		$result = $this->parseWT(
+			"[[File:Foobar.jpg|thumb|300px|250px|Caption]]" );
+		$this->assertSame( 1, count( $result ), $desc );
+		$this->assertEquals( 'bogus-image-options', $result[0]['type'], $desc );
+		$this->assertEquals( [ 0, 45, 2, 2 ], $result[0]['dsr'], $desc );
+		$this->assertTrue( isset( $result[0]['params'] ), $desc );
+		$this->assertEquals( '300px', $result[0]['params']['items'][0], $desc );
+
+		$desc = "should lint Bogus image with separated duplicate widths options correctly";
+		$result = $this->parseWT(
+			"[[File:Foobar.jpg|thumb|250px|right|thumb|x216px|Caption]]" );
+		$this->assertSame( 1, count( $result ), $desc );
+		$this->assertEquals( 'bogus-image-options', $result[0]['type'], $desc );
+		$this->assertEquals( [ 0, 58, 2, 2 ], $result[0]['dsr'], $desc );
+		$this->assertTrue( isset( $result[0]['params'] ), $desc );
+		$this->assertEquals( '250px', $result[0]['params']['items'][0], $desc );
 	}
 
 	/**
@@ -1014,6 +1045,27 @@ class LinterTest extends TestCase {
 		$this->assertEquals( [ 0, 66, null, null ], $result[0]['dsr'], $desc );
 		$this->assertTrue( isset( $result[0]['templateInfo'] ), $desc );
 		$this->assertEquals( '1x', $result[0]['templateInfo']['name'], $desc );
+
+		$desc = "should lint wikilink set in italics in external link correctly";
+		$result = $this->parseWT(
+			"[http://stackexchange.com is the official website for ''[[Stack Exchange]]'']" );
+		$this->assertSame( 1, count( $result ), $desc );
+		$this->assertEquals( 'wikilink-in-extlink', $result[0]['type'], $desc );
+		$this->assertEquals( [ 0, 77, 26, 1 ], $result[0]['dsr'], $desc );
+
+		$desc = "should lint wikilink set in bold in external link correctly";
+		$result = $this->parseWT(
+			"[http://stackexchange.com is the official website for '''[[Stack Exchange]]''']" );
+		$this->assertSame( 1, count( $result ), $desc );
+		$this->assertEquals( 'wikilink-in-extlink', $result[0]['type'], $desc );
+		$this->assertEquals( [ 0, 79, 26, 1 ], $result[0]['dsr'], $desc );
+
+		$desc = "should lint wikilink set in italics and bold in external link correctly";
+		$result = $this->parseWT(
+			"[http://stackexchange.com is the official website for '''''[[Stack Exchange]]''''']" );
+		$this->assertSame( 1, count( $result ), $desc );
+		$this->assertEquals( 'wikilink-in-extlink', $result[0]['type'], $desc );
+		$this->assertEquals( [ 0, 83, 26, 1 ], $result[0]['dsr'], $desc );
 	}
 
 }

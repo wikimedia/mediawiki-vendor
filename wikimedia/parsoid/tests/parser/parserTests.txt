@@ -1754,6 +1754,28 @@ Nowiki and french spacing
 <p><span typeof="mw:Nowiki">test<span typeof="mw:DisplaySpace"> </span>: 123</span></p>
 !! end
 
+!! test
+T255007: French spacing in raw text elements
+!! options
+wgRawHtml=1
+!! wikitext
+<html>
+<script>test ; 123</script>
+<style>test : 123</style>
+</html>
+!! html/php
+<p>
+<script>test ; 123</script>
+<style>test : 123</style>
+
+</p>
+!! html/parsoid
+<p><span typeof="mw:Extension/html" about="#mwt2" data-mw='{"name":"html","attrs":{},"body":{"extsrc":"\n&lt;script>test ; 123&lt;/script>\n&lt;style>test : 123&lt;/style>\n"}}'>
+</span><script about="#mwt2">test ; 123</script><span about="#mwt2">
+</span><style about="#mwt2">test : 123</style><span about="#mwt2">
+</span></p>
+!! end
+
 ###
 ### Comments
 ###
@@ -7697,9 +7719,9 @@ Templated table cell with untemplated attributes: Common use cases
 !! wikitext
 {|
 |-
-!class="test"{{table_cell_content}} /* <th> & <td> combine */
+!class="test"{{table_cell_content}} /* th & td combine */
 |-
-|class="test"{{table_cell_content}} /* <td> & <td> combine */
+|class="test"{{table_cell_content}} /* td & td combine */
 |
 |class="test"{{table_cell_content|attr=style='color:red;'}}
 |
@@ -7709,10 +7731,10 @@ Templated table cell with untemplated attributes: Common use cases
 <table>
 
 <tbody><tr>
-<th class="test">foo /* </th><th> &amp; </th><td> combine */
-</td></tr>
+<th class="test">foo /* th &amp; td combine */
+</th></tr>
 <tr>
-<td class="test">foo /* </td><td> &amp; </td><td> combine */
+<td class="test">foo /* td &amp; td combine */
 </td>
 <td>
 </td>
@@ -7725,9 +7747,9 @@ Templated table cell with untemplated attributes: Common use cases
 !! html/parsoid
 <table>
 <tbody><tr data-parsoid='{"startTagSrc":"|-"}'>
-<th class="test" typeof="mw:Transclusion" about="#mwt1" data-parsoid='{"pi":[[]]}' data-mw='{"parts":["!class=\"test\"",{"template":{"target":{"wt":"table_cell_content","href":"./Template:Table_cell_content"},"params":{},"i":0}}," /* "]}'>foo /*</th><th data-parsoid='{"stx":"html","autoInsertedEnd":true}'> &amp; </th><td data-parsoid='{"stx":"html","autoInsertedEnd":true}'> combine */</td></tr>
+<th class="test" typeof="mw:Transclusion" about="#mwt1" data-parsoid='{"pi":[[]]}' data-mw='{"parts":["!class=\"test\"",{"template":{"target":{"wt":"table_cell_content","href":"./Template:Table_cell_content"},"params":{},"i":0}}," /* th &amp; td combine */"]}'>foo /* th &amp; td combine */</th></tr>
 <tr data-parsoid='{"startTagSrc":"|-"}'>
-<td class="test" typeof="mw:Transclusion" about="#mwt2" data-parsoid='{"pi":[[]]}' data-mw='{"parts":["|class=\"test\"",{"template":{"target":{"wt":"table_cell_content","href":"./Template:Table_cell_content"},"params":{},"i":0}}," /* "]}'>foo /*</td><td data-parsoid='{"stx":"html","autoInsertedEnd":true}'> &amp; </td><td data-parsoid='{"stx":"html","autoInsertedEnd":true}'> combine */</td>
+<td class="test" typeof="mw:Transclusion" about="#mwt2" data-parsoid='{"pi":[[]]}' data-mw='{"parts":["|class=\"test\"",{"template":{"target":{"wt":"table_cell_content","href":"./Template:Table_cell_content"},"params":{},"i":0}}," /* td &amp; td combine */"]}'>foo /* td &amp; td combine */</td>
 <td></td>
 <td class="test" style="color:red;" typeof="mw:Transclusion" about="#mwt3" data-parsoid='{"pi":[[{"k":"attr","named":true}]]}' data-mw='{"parts":["|class=\"test\"",{"template":{"target":{"wt":"table_cell_content","href":"./Template:Table_cell_content"},"params":{"attr":{"wt":"style=&apos;color:red;&apos;"}},"i":0}}]}'>foo</td>
 <td></td>
@@ -14852,17 +14874,21 @@ pst title=[[Somearticle (context)]]
 !! end
 
 !! test
-pre-save transform: context links ("pipe trick") with comma in title
+pre-save transform: context links ("pipe trick") with single, double-width and Arabic comma in title
 !! options
 pst title=[[Someplace, Somewhere]]
 !! wikitext
 [[|Otherplace]]
 [[Otherplace, Elsewhere|]]
 [[Otherplace, Elsewhere, Anywhere|]]
+[[Otherplace，Elsewhere|]]
+[[Otherplace، Elsewhere|]]
 !! html/php
 [[Otherplace, Somewhere|Otherplace]]
 [[Otherplace, Elsewhere|Otherplace]]
 [[Otherplace, Elsewhere, Anywhere|Otherplace]]
+[[Otherplace，Elsewhere|Otherplace]]
+[[Otherplace، Elsewhere|Otherplace]]
 !! end
 
 !! test
@@ -18249,7 +18275,7 @@ Punctuation: CSS ! important (T13874; with space after)
 !! wikitext
 <div style="width:50% ! important">important</div>
 !! html
-<div style="width:50%&#32;! important">important</div>
+<div style="width:50% ! important">important</div>
 !! end
 
 !! test
@@ -21843,6 +21869,17 @@ language=sr
 !! end
 
 !! test
+Balinese language conversion
+!! options
+language=ban variant=ban-x-palmleaf
+!! wikitext
+ᬫᬦ᭄ᬢ᭄ᬭ -{ban-x-palmleaf:AAA;ban:BBB}-
+!! html/php
+<p>mantra AAA
+</p>
+!! end
+
+!! test
 T2529: Uncovered bullet
 !! wikitext
 *Foo {{bullet}}
@@ -22805,7 +22842,7 @@ Play a bit with r67090 and T5158
 <div style="width:50% !important">&#160;</div>
 <div style="width:50%&#160;!important">&#160;</div>
 <div style="width:50%&#160;!important">&#160;</div>
-<div style="border&#32;: solid;">&#160;</div>
+<div style="border : solid;">&#160;</div>
 !! html/parsoid
 <div style="width:50% !important" data-parsoid='{"stx":"html"}'><span typeof="mw:Entity" data-parsoid='{"srcContent":" "}'> </span></div>
 <div style="width:50% !important" data-parsoid='{"stx":"html","a":{"style":"width:50% !important"},"sa":{"style":"width:50%&amp;nbsp;!important"}}'><span typeof="mw:Entity" data-parsoid='{"srcContent":" "}'> </span></div>
@@ -22845,7 +22882,7 @@ T5158: Test for French spaces in attributes
 !! wikitext
 <br style=" clear : both ; " />
 !! html/php
-<p><br style="clear&#32;: both&#32;;" />
+<p><br style="clear : both ;" />
 </p>
 !! end
 
@@ -23635,11 +23672,20 @@ Langconvert tag: shi-latn to shi-tfng
 !! end
 
 !! test
-Langconvert tag: sr-el to sr-ec
+Langconvert tag: sr-latn to sr-cyrl
+!! wikitext
+<langconvert from="sr-latn" to="sr-cyrl">zdravo</langconvert>
+!! html/php
+<p>здраво
+</p>
+!! end
+
+!! test
+Langconvert tag: sr-el to sr-ec (should fail)
 !! wikitext
 <langconvert from="sr-el" to="sr-ec">zdravo</langconvert>
 !! html/php
-<p>здраво
+<p><span class="error"><strong>Error:</strong> Langconvert tag's <code>from</code> and <code>to</code> attributes must not be empty and must contain BCP 47 codes for convertible variants of the same language.</span>
 </p>
 !! end
 
@@ -29979,16 +30025,6 @@ parsoid={
 === hi <span id="x">hi</span> hi ho ===
 !! wikitext/edited
 === hi <span id="x" class="y">hi</span> hi ho ===
-!! end
-
-!! test
-Ensure disambiguation links are marked properly
-!! options
-parsoid=wt2html
-!! wikitext
-[[Disambiguation]]
-!! html/parsoid
-<p><a rel="mw:WikiLink" href="./Disambiguation" title="Disambiguation" class="mw-disambig">Disambiguation</a></p>
 !! end
 
 ## Note that there's a leading \r here that's necessary for the test
