@@ -20,7 +20,7 @@ return array(
     'Wikimedia\\Minify\\' => array($vendorDir . '/wikimedia/minify/src'),
     'Wikimedia\\LangConv\\' => array($vendorDir . '/wikimedia/langconv/src'),
     'Wikimedia\\Equivset\\' => array($vendorDir . '/wikimedia/equivset/src'),
-    'Wikimedia\\Composer\\' => array($vendorDir . '/wikimedia/composer-merge-plugin/src'),
+    'Wikimedia\\Composer\\Merge\\V2\\' => array($vendorDir . '/wikimedia/composer-merge-plugin/src'),
     'Wikimedia\\CommonPasswords\\' => array($vendorDir . '/wikimedia/common-passwords/src/CommonPasswords'),
     'Wikimedia\\CSS\\' => array($vendorDir . '/wikimedia/css-sanitizer/src'),
     'Wikimedia\\AtEase\\' => array($vendorDir . '/wikimedia/at-ease/src/Wikimedia/AtEase'),
