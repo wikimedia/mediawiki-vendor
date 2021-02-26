@@ -6,12 +6,6 @@ namespace Shellbox\Command;
  * A ulimit/cgroup wrapper implemented as a bash script
  */
 class BashWrapper extends Wrapper {
-	/**
-	 * The bash wrapper goes on the inside of other sandboxes since setrlimit()
-	 * is relatively unprivileged.
-	 */
-	public const PRIORITY = 20;
-
 	/** @var bool|string */
 	private $cgroup;
 
@@ -57,7 +51,17 @@ class BashWrapper extends Wrapper {
 		}
 	}
 
+	/**
+	 * If a cgroup is used, it is a system-level container. Otherwise it is
+	 * just setrlimit() and can run inside firejail etc. (T274942)
+	 *
+	 * @return int
+	 */
 	public function getPriority() {
-		return self::PRIORITY;
+		if ( strlen( $this->cgroup ) ) {
+			return 60;
+		} else {
+			return 20;
+		}
 	}
 }

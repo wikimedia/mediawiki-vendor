@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9f3e97c474714cd824cd607e769de42e",
+    "content-hash": "deed683dcfa54b5081e6ca602608a946",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -6839,16 +6839,16 @@
         },
         {
             "name": "wikimedia/shellbox",
-            "version": "1.0.3",
+            "version": "1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/shellbox.git",
-                "reference": "30c7b456979c365301541a6a65e37a28273c6e14"
+                "reference": "d7ad649b7443d86235d7f179d205f9b9476c9c63"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/shellbox/zipball/30c7b456979c365301541a6a65e37a28273c6e14",
-                "reference": "30c7b456979c365301541a6a65e37a28273c6e14",
+                "url": "https://api.github.com/repos/wikimedia/shellbox/zipball/d7ad649b7443d86235d7f179d205f9b9476c9c63",
+                "reference": "d7ad649b7443d86235d7f179d205f9b9476c9c63",
                 "shasum": ""
             },
             "require": {
@@ -6861,7 +6861,7 @@
                 "wikimedia/wikipeg": "~2.0.4"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "34.0.0",
+                "mediawiki/mediawiki-codesniffer": "35.0.0",
                 "mediawiki/mediawiki-phan-config": "0.10.6",
                 "php-parallel-lint/php-console-highlighter": "0.5.0",
                 "php-parallel-lint/php-parallel-lint": "1.2.0",
@@ -6890,7 +6890,7 @@
                 }
             ],
             "description": "Library and server for containerized shell execution",
-            "time": "2021-02-11T07:31:35+00:00"
+            "time": "2021-02-26T19:40:11+00:00"
         },
         {
             "name": "wikimedia/testing-access-wrapper",
