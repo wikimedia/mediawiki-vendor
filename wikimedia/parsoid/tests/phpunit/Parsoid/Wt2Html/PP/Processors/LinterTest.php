@@ -1039,7 +1039,7 @@ class LinterTest extends TestCase {
 
 		$desc = "should lint wikilink in external link correctly";
 		$result = $this->parseWT(
-		"{{1x|foo <div> and [http://google.com [[Google]] bar] baz </div>}}" );
+			"{{1x|foo <div> and [http://google.com [[Google]] bar] baz </div>}}" );
 		$this->assertSame( 1, count( $result ), $desc );
 		$this->assertEquals( 'wikilink-in-extlink', $result[0]['type'], $desc );
 		$this->assertEquals( [ 0, 66, null, null ], $result[0]['dsr'], $desc );
@@ -1066,6 +1066,71 @@ class LinterTest extends TestCase {
 		$this->assertSame( 1, count( $result ), $desc );
 		$this->assertEquals( 'wikilink-in-extlink', $result[0]['type'], $desc );
 		$this->assertEquals( [ 0, 83, 26, 1 ], $result[0]['dsr'], $desc );
-	}
 
+		$desc = "should lint figure wikilink in external link correctly";
+		$result = $this->parseWT(
+			"[http://foo.bar/some.link [[File:Foobar.jpg|scale=0.5]] image]" );
+		$this->assertSame( 1, count( $result ), $desc );
+		$this->assertEquals( 'wikilink-in-extlink', $result[0]['type'], $desc );
+		$this->assertEquals( [ 0, 62, 26, 1 ], $result[0]['dsr'], $desc );
+
+		$desc = "should lint image wikilink in external link correctly";
+		$result = $this->parseWT(
+			"[http://foo.bar/other.link [[File:Foobar.jpg|thumb]] image]" );
+		$this->assertSame( 1, count( $result ), $desc );
+		$this->assertEquals( 'wikilink-in-extlink', $result[0]['type'], $desc );
+		$this->assertEquals( [ 0, 59, 27, 1 ], $result[0]['dsr'], $desc );
+
+		$desc = "should lint image wikilink in external link with |link= correctly";
+		$result = $this->parseWT(
+			"[http://foo.bar/other.link [[File:Foobar.jpg|link=]] image]" );
+		$this->assertSame( 0, count( $result ), $desc );
+
+		$desc = "should not generate lint error for image wikilink following external link";
+		$result = $this->parseWT(
+			"[http://foo.bar/other.link testing123][[File:Foobar.jpg]]" );
+		$this->assertSame( 0, count( $result ), $desc );
+
+		$desc = "should lint audio wikilink in external link correctly";
+		$result = $this->parseWT(
+			"[http://foo.bar/other.link [[File:Audio.oga]] audio]" );
+		$this->assertSame( 1, count( $result ), $desc );
+		$this->assertEquals( 'wikilink-in-extlink', $result[0]['type'], $desc );
+		$this->assertEquals( [ 0, 52, 27, 1 ], $result[0]['dsr'], $desc );
+
+		$desc = "should lint video wikilink in external link correctly";
+		$result = $this->parseWT(
+			"[http://foo.bar/other.link [[File:Video.ogv]] video]" );
+		$this->assertSame( 1, count( $result ), $desc );
+		$this->assertEquals( 'wikilink-in-extlink', $result[0]['type'], $desc );
+		$this->assertEquals( [ 0, 52, 27, 1 ], $result[0]['dsr'], $desc );
+
+		$desc = "should lint audio wikilink with preceding text in external link correctly";
+		$result = $this->parseWT(
+			"[http://foo.bar/other.link first_child [[File:Audio.oga]] audio]" );
+		$this->assertSame( 1, count( $result ), $desc );
+		$this->assertEquals( 'wikilink-in-extlink', $result[0]['type'], $desc );
+		$this->assertEquals( [ 0, 64, 27, 1 ], $result[0]['dsr'], $desc );
+
+		$desc = "should lint video wikilink with prededing bold text in external link correctly";
+		$result = $this->parseWT(
+			"[http://foo.bar/other.link '''first_child''' [[File:Video.ogv]] video]" );
+		$this->assertSame( 1, count( $result ), $desc );
+		$this->assertEquals( 'wikilink-in-extlink', $result[0]['type'], $desc );
+		$this->assertEquals( [ 0, 70, 27, 1 ], $result[0]['dsr'], $desc );
+
+		$desc = "should lint audio wikilink in extlink followed by span correctly";
+		$result = $this->parseWT(
+			"[http://foo.bar/other.link [[File:Audio.oga]] audio]<span>this is a DOMElement</span>" );
+		$this->assertSame( 1, count( $result ), $desc );
+		$this->assertEquals( 'wikilink-in-extlink', $result[0]['type'], $desc );
+		$this->assertEquals( [ 0, 52, 27, 1 ], $result[0]['dsr'], $desc );
+
+		$desc = "should lint audio wikilink in extlink with preceding text followed by span correctly";
+		$result = $this->parseWT(
+			"[http://foo.bar/other.link text content [[File:Audio.oga]] audio]<span>this is a DOMElement</span>" );
+		$this->assertSame( 1, count( $result ), $desc );
+		$this->assertEquals( 'wikilink-in-extlink', $result[0]['type'], $desc );
+		$this->assertEquals( [ 0, 65, 27, 1 ], $result[0]['dsr'], $desc );
+	}
 }
