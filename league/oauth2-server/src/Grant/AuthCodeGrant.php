@@ -274,6 +274,7 @@ class AuthCodeGrant extends AbstractAuthorizeGrant
         } elseif (empty($client->getRedirectUri()) ||
             (\is_array($client->getRedirectUri()) && \count($client->getRedirectUri()) !== 1)) {
             $this->getEmitter()->emit(new RequestEvent(RequestEvent::CLIENT_AUTHENTICATION_FAILED, $request));
+
             throw OAuthServerException::invalidClient($request);
         }
 
