@@ -3,6 +3,7 @@ wikimedia/minify. https://gerrit.wikimedia.org/g/mediawiki/libs/Minify
 Copyright 2011 Paul Copperman <paul.copperman@gmail.com>
 Copyright 2010 Trevor Parscal <tparscal@wikimedia.org>
 Copyright 2018 Timo Tijhof
+Copyright 2021 Roan Kattouw <roan.kattouw@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

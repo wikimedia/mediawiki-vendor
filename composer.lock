@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f9b42b2c927990a9a204e9d47bff1362",
+    "content-hash": "b6d97d017c8f00007a7e811247d388de",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -6279,16 +6279,16 @@
         },
         {
             "name": "wikimedia/minify",
-            "version": "2.1.0",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/minify.git",
-                "reference": "da82f483df6c2211aa7a7c5781170da0537830f3"
+                "reference": "8a9b92084a711203a970d8a42e9468447f9aa454"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/minify/zipball/da82f483df6c2211aa7a7c5781170da0537830f3",
-                "reference": "da82f483df6c2211aa7a7c5781170da0537830f3",
+                "url": "https://api.github.com/repos/wikimedia/minify/zipball/8a9b92084a711203a970d8a42e9468447f9aa454",
+                "reference": "8a9b92084a711203a970d8a42e9468447f9aa454",
                 "shasum": ""
             },
             "require": {
@@ -6330,11 +6330,15 @@
                 {
                     "name": "Timo Tijhof",
                     "email": "krinklemail@gmail.com"
+                },
+                {
+                    "name": "Roan Kattouw",
+                    "email": "roan.kattouw@gmail.com"
                 }
             ],
             "description": "Minification of JavaScript code and CSS stylesheets.",
             "homepage": "https://gerrit.wikimedia.org/g/mediawiki/libs/Minify",
-            "time": "2021-02-13T03:22:43+00:00"
+            "time": "2021-03-09T19:03:55+00:00"
         },
         {
             "name": "wikimedia/object-factory",

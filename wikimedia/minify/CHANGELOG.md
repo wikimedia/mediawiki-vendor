@@ -1,5 +1,21 @@
 # Changelog
 
+## 2.2.0 (2021-03-09)
+
+Added:
+
+* JavaScriptMinifier: Add ES6 syntax support. (Roan Kattouw) [T272882](https://phabricator.wikimedia.org/T272882)
+* JavaScriptMinifier: Support true/false minification in more situations. (Roan Kattouw)
+* bin: Add `minify` CLI. (Timo Tijhof)
+
+Changed:
+
+* JavaScriptMinifier: Improve latency through various optimisations. (Daimona Eaytoy)
+
+Fixed:
+
+* JavaScriptMinifier: Fix semicolon insertion logic for `throw new Error`. (Roan Kattouw)
+
 ## 2.1.0 (2021-02-12)
 
 Added:
