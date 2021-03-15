@@ -114,7 +114,7 @@
 		"wikimedia/lucene-explain-parser": "1.0.0",
 		"wikimedia/minify": "2.1.0",
 		"wikimedia/object-factory": "3.0.0",
-		"wikimedia/parsoid": "0.13.0-a26",
+		"wikimedia/parsoid": "0.13.0-a27",
 		"wikimedia/php-session-serializer": "1.0.7",
 		"wikimedia/purtle": "1.0.7",
 		"wikimedia/relpath": "2.1.1",
