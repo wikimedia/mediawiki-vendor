@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "195381d50b72960b55e400e11f7a062b",
+    "content-hash": "186d0834733ebcbf859b4c1213994c9e",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -629,28 +629,28 @@
         },
         {
             "name": "data-values/number",
-            "version": "0.10.1",
+            "version": "0.11.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/DataValues/Number.git",
-                "reference": "946fbafd041c25d13798104c08b99abc1ee13c06"
+                "url": "https://github.com/wmde/Number.git",
+                "reference": "bfedcbc8b9b737c329349bf3c57e2c744baf1b61"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DataValues/Number/zipball/946fbafd041c25d13798104c08b99abc1ee13c06",
-                "reference": "946fbafd041c25d13798104c08b99abc1ee13c06",
+                "url": "https://api.github.com/repos/wmde/Number/zipball/bfedcbc8b9b737c329349bf3c57e2c744baf1b61",
+                "reference": "bfedcbc8b9b737c329349bf3c57e2c744baf1b61",
                 "shasum": ""
             },
             "require": {
-                "data-values/common": "~0.4.0|~0.3.0",
-                "data-values/data-values": "~2.0|~1.0|~0.1",
-                "data-values/interfaces": "~0.2.0",
-                "php": ">=5.5.9"
+                "data-values/common": "1.0.0|~0.4.0|~0.3.0",
+                "data-values/data-values": "~3.0.0|~2.0|~1.0|~0.1",
+                "data-values/interfaces": "~1.0.0|~0.2.0",
+                "php": ">=7.2"
             },
             "require-dev": {
                 "ext-bcmath": "*",
-                "phpunit/phpunit": "~4.8",
-                "wikibase/wikibase-codesniffer": "^0.4.1"
+                "mediawiki/mediawiki-codesniffer": "34.0.0",
+                "phpunit/phpunit": "~8.5"
             },
             "type": "library",
             "autoload": {
@@ -684,7 +684,7 @@
                 "valueparsers",
                 "wikidata"
             ],
-            "time": "2018-10-31T11:09:19+00:00"
+            "time": "2021-03-16T08:26:24+00:00"
         },
         {
             "name": "data-values/serialization",

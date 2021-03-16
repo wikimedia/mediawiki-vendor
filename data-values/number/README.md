@@ -5,9 +5,9 @@ into such value objects, and formatters to turn them back into user consumable r
 
 It is part of the [DataValues set of libraries](https://github.com/DataValues).
 
-[![Build Status](https://secure.travis-ci.org/DataValues/Number.png?branch=master)](http://travis-ci.org/DataValues/Number)
-[![Code Coverage](https://scrutinizer-ci.com/g/DataValues/Number/badges/coverage.png?s=a62dd85d05eaf0c5505deed4e2bd53d34e50d158)](https://scrutinizer-ci.com/g/DataValues/Number/)
-[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/DataValues/Number/badges/quality-score.png?s=03279530fa55439de3ce094b985f861959ee7162)](https://scrutinizer-ci.com/g/DataValues/Number/)
+[![Build Status](https://secure.travis-ci.org/wmde/Number.png?branch=master)](http://travis-ci.org/wmde/Number)
+[![Code Coverage](https://scrutinizer-ci.com/g/wmde/Number/badges/coverage.png?s=a62dd85d05eaf0c5505deed4e2bd53d34e50d158)](https://scrutinizer-ci.com/g/wmde/Number/)
+[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/wmde/Number/badges/quality-score.png?s=03279530fa55439de3ce094b985f861959ee7162)](https://scrutinizer-ci.com/g/wmde/Number/)
 
 On [Packagist](https://packagist.org/packages/data-values/number):
 [![Latest Stable Version](https://poser.pugx.org/data-values/number/version.png)](https://packagist.org/packages/data-values/number)
@@ -26,7 +26,7 @@ version 0.8 of this package:
 
     {
         "require": {
-            "data-values/number": "0.8.*"
+            "data-values/number": "0.10.*"
         }
     }
 
@@ -48,6 +48,16 @@ DataValues Number was created by [Wikimedia Deutschland](https://www.wikimedia.d
 the [Wikidata project](https://www.wikidata.org/).
 
 ## Release notes
+
+### 0.11.0 (2021-03-15)
+
+ * Drop support for php versions older than 7.2 and HHVM
+ 
+### 0.10.2 (2021-03-15)
+
+* Allow use with data-values/common 1.0.0
+* Allow use with data-values/interfaces 1.0.0
+* Allow use with data-values/data-values 3.0.0
 
 ### 0.10.1 (2018-10-31)
 
@@ -216,4 +226,4 @@ Initial release with these features:
 ## Links
 
 * [DataValues Number on Packagist](https://packagist.org/packages/data-values/number)
-* [DataValues Number on TravisCI](https://travis-ci.org/DataValues/Number)
+* [DataValues Number on TravisCI](https://travis-ci.org/wmde/Number)

@@ -21,7 +21,7 @@
 		"data-values/data-values": "2.3.0",
 		"data-values/geo": "4.2.1",
 		"data-values/interfaces": "0.2.5",
-		"data-values/number": "0.10.1",
+		"data-values/number": "0.11.0",
 		"data-values/serialization": "1.2.3",
 		"data-values/time": "1.0.2",
 		"defuse/php-encryption": "v2.2.1",
