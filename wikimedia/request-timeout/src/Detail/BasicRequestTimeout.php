@@ -14,8 +14,11 @@ class BasicRequestTimeout extends RequestTimeout {
 	/** @var float */
 	private $startTime;
 
+	/** @var int The next critical section ID to use */
+	private $nextCriticalId = 1;
+
 	public function enterCriticalSection( $name, $emergencyLimit, $emergencyCallback ) {
-		return 0;
+		return $this->nextCriticalId++;
 	}
 
 	public function exitCriticalSection( $id ) {

@@ -54,12 +54,16 @@ abstract class RequestTimeout {
 	 * @param float $emergencyLimit The emergency timeout in seconds
 	 * @param callable|null $emergencyCallback A callback to call when the
 	 *   emergency timeout expires. If null, an exception will be thrown.
+	 * @param callable|null $implicitExitCallback A callback to call if a
+	 *   critical section scope is exited implicitly, rather than by calling
+	 *   exit().
 	 * @return CriticalSectionProvider
 	 */
 	public function createCriticalSectionProvider(
-		$emergencyLimit, $emergencyCallback = null
+		$emergencyLimit, $emergencyCallback = null, $implicitExitCallback = null
 	) {
-		return new CriticalSectionProvider( $this, $emergencyLimit, $emergencyCallback );
+		return new CriticalSectionProvider( $this, $emergencyLimit,
+			$emergencyCallback, $implicitExitCallback );
 	}
 
 	/**

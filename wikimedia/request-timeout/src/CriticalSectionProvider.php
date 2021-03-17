@@ -20,6 +20,9 @@ class CriticalSectionProvider {
 	/** @var callable|null */
 	private $emergencyCallback;
 
+	/** @var callable|null */
+	private $implicitExitCallback;
+
 	/** @var array */
 	private $stack = [];
 
@@ -30,15 +33,20 @@ class CriticalSectionProvider {
 	 * @param float $emergencyLimit The emergency timeout in seconds
 	 * @param callable|null $emergencyCallback A callback to call when the
 	 *   emergency timeout expires. If null, an exception will be thrown.
+	 * @param callable|null $implicitExitCallback A callback to call when a scoped
+	 *   critical section is exited implicitly by scope destruction, rather than
+	 *   by CriticalSectionScope::exit().
 	 */
 	public function __construct(
 		RequestTimeout $requestTimeout,
 		$emergencyLimit,
-		$emergencyCallback
+		$emergencyCallback,
+		$implicitExitCallback
 	) {
 		$this->requestTimeout = $requestTimeout;
 		$this->emergencyLimit = $emergencyLimit;
 		$this->emergencyCallback = $emergencyCallback;
+		$this->implicitExitCallback = $implicitExitCallback;
 	}
 
 	/**
@@ -51,10 +59,17 @@ class CriticalSectionProvider {
 	 * sections.
 	 *
 	 * @param string $name
+	 * @param float|null $emergencyLimit If non-null, this will override the
+	 *   configured emergency timeout
+	 * @param callable|null $emergencyCallback If non-null, this will override
+	 *   the configured emergency timeout callback.
 	 */
-	public function enter( $name ) {
+	public function enter( $name, $emergencyLimit = null, $emergencyCallback = null ) {
 		$id = $this->requestTimeout->enterCriticalSection(
-			$name, $this->emergencyLimit, $this->emergencyCallback );
+			$name,
+			$emergencyLimit ?? $this->emergencyLimit,
+			$emergencyCallback ?? $this->emergencyCallback
+		);
 		$this->stack[ count( $this->stack ) ] = [
 			'name' => $name,
 			'id' => $id
@@ -95,16 +110,40 @@ class CriticalSectionProvider {
 	 * an exception from a destructor during request shutdown.
 	 *
 	 * @param string $name A name for the critical section, used in error messages
+	 * @param float|null $emergencyLimit If non-null, this will override the
+	 *   configured emergency timeout
+	 * @param callable|null $emergencyCallback If non-null, this will override
+	 *   the configured emergency timeout callback.
+	 * @param callable|null $implicitExitCallback If non-null, this will override
+	 *   the configured implicit exit callback. The callback will be called if the
+	 *   section is exited in __destruct() instead of by calling exit().
 	 * @return CriticalSectionScope
 	 */
-	public function scopedEnter( $name ) {
-		$id = $this->requestTimeout->enterCriticalSection( $name,
-			$this->emergencyLimit, $this->emergencyCallback );
+	public function scopedEnter( $name, $emergencyLimit = null,
+		$emergencyCallback = null, $implicitExitCallback = null
+	) {
+		$id = $this->requestTimeout->enterCriticalSection(
+			$name,
+			$emergencyLimit ?? $this->emergencyLimit,
+			$emergencyCallback ?? $this->emergencyCallback
+		);
 
 		return new CriticalSectionScope(
-			function () use ( $id ) {
+			$id,
+			function ( $id ) {
 				$this->requestTimeout->exitCriticalSection( $id );
-			}
+			},
+			$implicitExitCallback ?? $this->implicitExitCallback
 		);
+	}
+
+	/**
+	 * Get the configured emergency time limit
+	 *
+	 * @since 1.1.0
+	 * @return float
+	 */
+	public function getEmergencyLimit() {
+		return $this->emergencyLimit;
 	}
 }
