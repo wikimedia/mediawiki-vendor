@@ -55,7 +55,6 @@ class ComposerStaticInit_mediawiki_vendor
             'Wikimedia\\RequestTimeout\\' => 25,
             'Wikimedia\\Purtle\\Tests\\' => 23,
             'Wikimedia\\Purtle\\' => 17,
-            'Wikimedia\\PasswordBlacklist\\' => 28,
             'Wikimedia\\Parsoid\\' => 18,
             'Wikimedia\\Minify\\' => 17,
             'Wikimedia\\LangConv\\' => 19,
@@ -228,10 +227,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Purtle\\' => 
         array (
             0 => __DIR__ . '/..' . '/wikimedia/purtle/src',
-        ),
-        'Wikimedia\\PasswordBlacklist\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/wikimedia/common-passwords/src/PasswordBlacklist',
         ),
         'Wikimedia\\Parsoid\\' => 
         array (
@@ -4046,7 +4041,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Wt2Html\\TokenizerUtils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/TokenizerUtils.php',
         'Wikimedia\\Parsoid\\Wt2Html\\Wt2HtmlDOMProcessor' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/Wt2HtmlDOMProcessor.php',
         'Wikimedia\\Parsoid\\Wt2Html\\XMLSerializer' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/XMLSerializer.php',
-        'Wikimedia\\PasswordBlacklist\\PasswordBlacklist' => __DIR__ . '/..' . '/wikimedia/common-passwords/src/PasswordBlacklist/PasswordBlacklist.php',
         'Wikimedia\\PhpSessionSerializer' => __DIR__ . '/..' . '/wikimedia/php-session-serializer/src/Wikimedia/PhpSessionSerializer.php',
         'Wikimedia\\Purtle\\BNodeLabeler' => __DIR__ . '/..' . '/wikimedia/purtle/src/BNodeLabeler.php',
         'Wikimedia\\Purtle\\JsonLdRdfWriter' => __DIR__ . '/..' . '/wikimedia/purtle/src/JsonLdRdfWriter.php',

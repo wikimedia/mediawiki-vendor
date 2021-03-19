@@ -5945,41 +5945,37 @@
     },
     {
         "name": "wikimedia/common-passwords",
-        "version": "0.2.0",
-        "version_normalized": "0.2.0.0",
+        "version": "v0.3.0",
+        "version_normalized": "0.3.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/common-passwords.git",
-            "reference": "b9db612730d427a55e28f4a9b143b87fd72173e0"
+            "reference": "5b51a88a27e17f485ba1295ee6916620686cd5a5"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/common-passwords/zipball/b9db612730d427a55e28f4a9b143b87fd72173e0",
-            "reference": "b9db612730d427a55e28f4a9b143b87fd72173e0",
+            "url": "https://api.github.com/repos/wikimedia/common-passwords/zipball/5b51a88a27e17f485ba1295ee6916620686cd5a5",
+            "reference": "5b51a88a27e17f485ba1295ee6916620686cd5a5",
             "shasum": ""
         },
         "require": {
             "php": ">=7.2.9",
             "pleonasm/bloom-filter": "1.0.2"
         },
-        "replace": {
-            "wikimedia/password-blacklist": "^0.1.4"
-        },
         "require-dev": {
-            "mediawiki/mediawiki-codesniffer": "31.0.0",
-            "mediawiki/minus-x": "1.1.0",
-            "ockcyp/covers-validator": "1.1.1",
+            "mediawiki/mediawiki-codesniffer": "35.0.0",
+            "mediawiki/minus-x": "1.1.1",
+            "ockcyp/covers-validator": "1.3.3",
             "php-parallel-lint/php-console-highlighter": "0.5.0",
             "php-parallel-lint/php-parallel-lint": "1.2.0",
             "phpunit/phpunit": "^8.5"
         },
-        "time": "2020-06-11T14:00:12+00:00",
+        "time": "2021-01-31T00:23:58+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
-                "Wikimedia\\CommonPasswords\\": "src/CommonPasswords/",
-                "Wikimedia\\PasswordBlacklist\\": "src/PasswordBlacklist/"
+                "Wikimedia\\CommonPasswords\\": "src/CommonPasswords/"
             }
         },
         "notification-url": "https://packagist.org/downloads/",

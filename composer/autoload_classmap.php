@@ -3375,7 +3375,6 @@ return array(
     'Wikimedia\\Parsoid\\Wt2Html\\TokenizerUtils' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/TokenizerUtils.php',
     'Wikimedia\\Parsoid\\Wt2Html\\Wt2HtmlDOMProcessor' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/Wt2HtmlDOMProcessor.php',
     'Wikimedia\\Parsoid\\Wt2Html\\XMLSerializer' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/XMLSerializer.php',
-    'Wikimedia\\PasswordBlacklist\\PasswordBlacklist' => $vendorDir . '/wikimedia/common-passwords/src/PasswordBlacklist/PasswordBlacklist.php',
     'Wikimedia\\PhpSessionSerializer' => $vendorDir . '/wikimedia/php-session-serializer/src/Wikimedia/PhpSessionSerializer.php',
     'Wikimedia\\Purtle\\BNodeLabeler' => $vendorDir . '/wikimedia/purtle/src/BNodeLabeler.php',
     'Wikimedia\\Purtle\\JsonLdRdfWriter' => $vendorDir . '/wikimedia/purtle/src/JsonLdRdfWriter.php',
