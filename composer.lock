@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e0dbacebe21c8426b26c046049a95d61",
+    "content-hash": "1fbeaec329df6e92dd0bc358d4c7c1e4",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -7052,16 +7052,16 @@
         },
         {
             "name": "wikimedia/utfnormal",
-            "version": "3.0.1",
+            "version": "3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/utfnormal.git",
-                "reference": "1b45c6f29cca0ddce3320b234a5954dbbcb195cb"
+                "reference": "e690d29487a6ee346bcf4cbf5a6fd89170fa2306"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/utfnormal/zipball/1b45c6f29cca0ddce3320b234a5954dbbcb195cb",
-                "reference": "1b45c6f29cca0ddce3320b234a5954dbbcb195cb",
+                "url": "https://api.github.com/repos/wikimedia/utfnormal/zipball/e690d29487a6ee346bcf4cbf5a6fd89170fa2306",
+                "reference": "e690d29487a6ee346bcf4cbf5a6fd89170fa2306",
                 "shasum": ""
             },
             "require": {
@@ -7069,9 +7069,9 @@
                 "php": ">=7.2.9"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "34.0.0",
-                "mediawiki/minus-x": "1.1.0",
-                "ockcyp/covers-validator": "1.3.1",
+                "mediawiki/mediawiki-codesniffer": "35.0.0",
+                "mediawiki/minus-x": "1.1.1",
+                "ockcyp/covers-validator": "1.3.3",
                 "php-parallel-lint/php-console-highlighter": "0.5.0",
                 "php-parallel-lint/php-parallel-lint": "1.2.0",
                 "phpunit/phpunit": "^8.5"
@@ -7094,7 +7094,7 @@
             ],
             "description": "Contains Unicode normalization routines, including both pure PHP implementations and automatic use of the 'intl' PHP extension when present",
             "homepage": "https://www.mediawiki.org/wiki/utfnormal",
-            "time": "2021-01-30T09:19:35+00:00"
+            "time": "2021-03-20T16:59:44+00:00"
         },
         {
             "name": "wikimedia/wait-condition-loop",
