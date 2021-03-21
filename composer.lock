@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cc6fb2a2e87e33ef0680ac4892485e85",
+    "content-hash": "fcaf334f4d8d569043bf37a570e32be0",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -7330,16 +7330,16 @@
         },
         {
             "name": "wikimedia/xmp-reader",
-            "version": "0.8.0",
+            "version": "0.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/xmp-reader.git",
-                "reference": "b5ceb0e935fff7e8ce2d250e163acfec0008af0a"
+                "reference": "4fc577e28e09eec165b64ed74ce878ba4ea45a35"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/xmp-reader/zipball/b5ceb0e935fff7e8ce2d250e163acfec0008af0a",
-                "reference": "b5ceb0e935fff7e8ce2d250e163acfec0008af0a",
+                "url": "https://api.github.com/repos/wikimedia/xmp-reader/zipball/4fc577e28e09eec165b64ed74ce878ba4ea45a35",
+                "reference": "4fc577e28e09eec165b64ed74ce878ba4ea45a35",
                 "shasum": ""
             },
             "require": {
@@ -7349,15 +7349,15 @@
                 "ext-xmlreader": "*",
                 "php": ">=7.2.9",
                 "psr/log": "^1.0",
-                "wikimedia/at-ease": "2.0.0",
+                "wikimedia/at-ease": "^2.0.0",
                 "wikimedia/scoped-callback": "^1.0 || ^2.0 || ^3.0",
                 "wikimedia/timestamp": "^1.0 || ^2.0 || ^3.0"
             },
             "require-dev": {
                 "ext-exif": "*",
-                "mediawiki/mediawiki-codesniffer": "34.0.0",
-                "mediawiki/minus-x": "1.1.0",
-                "ockcyp/covers-validator": "1.3.1",
+                "mediawiki/mediawiki-codesniffer": "35.0.0",
+                "mediawiki/minus-x": "1.1.1",
+                "ockcyp/covers-validator": "1.3.3",
                 "php-parallel-lint/php-console-highlighter": "0.5.0",
                 "php-parallel-lint/php-parallel-lint": "1.2.0",
                 "phpunit/phpunit": "^8.5"
@@ -7387,7 +7387,7 @@
                 "parse",
                 "xmp"
             ],
-            "time": "2020-12-27T16:44:24+00:00"
+            "time": "2021-03-21T17:31:13+00:00"
         },
         {
             "name": "wikimedia/zest-css",

@@ -131,7 +131,7 @@
 		"wikimedia/utfnormal": "3.0.2",
 		"wikimedia/wait-condition-loop": "2.0.1",
 		"wikimedia/wrappedstring": "3.2.0",
-		"wikimedia/xmp-reader": "0.8.0",
+		"wikimedia/xmp-reader": "0.8.1",
 		"wikimedia/zest-css": "1.1.4",
 		"wmde/php-vuejs-templating": "1.0.2",
 		"zordius/lightncandy": "1.2.5"
