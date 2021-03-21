@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7a4f29246086ac781b389a06a79039be",
+    "content-hash": "c7cd22fab3b20a8591e0337efe1dc31a",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -5965,29 +5965,29 @@
         },
         {
             "name": "wikimedia/css-sanitizer",
-            "version": "v3.0.1",
+            "version": "v3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/css-sanitizer.git",
-                "reference": "ba1c085905692d4288efefb239aa6013923aad1f"
+                "reference": "718e2a79fc3fec4c7a43193b5e2ac3bae6756ee4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/css-sanitizer/zipball/ba1c085905692d4288efefb239aa6013923aad1f",
-                "reference": "ba1c085905692d4288efefb239aa6013923aad1f",
+                "url": "https://api.github.com/repos/wikimedia/css-sanitizer/zipball/718e2a79fc3fec4c7a43193b5e2ac3bae6756ee4",
+                "reference": "718e2a79fc3fec4c7a43193b5e2ac3bae6756ee4",
                 "shasum": ""
             },
             "require": {
                 "ext-iconv": "*",
                 "ext-mbstring": "*",
                 "php": ">=7.2.0",
-                "wikimedia/at-ease": "2.0.0",
+                "wikimedia/at-ease": "^2.0.0",
                 "wikimedia/utfnormal": "2.0.0 || ^3.0.1"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "34.0.0",
+                "mediawiki/mediawiki-codesniffer": "35.0.0",
                 "mediawiki/mediawiki-phan-config": "0.10.6",
-                "mediawiki/minus-x": "1.1.0",
+                "mediawiki/minus-x": "1.1.1",
                 "php-parallel-lint/php-console-highlighter": "0.5.0",
                 "php-parallel-lint/php-parallel-lint": "1.2.0",
                 "phpunit/phpunit": "^8.5",
@@ -6011,7 +6011,7 @@
             ],
             "description": "Classes to parse and sanitize CSS",
             "homepage": "https://www.mediawiki.org/wiki/Css-sanitizer",
-            "time": "2021-01-30T09:32:37+00:00"
+            "time": "2021-03-21T17:30:58+00:00"
         },
         {
             "name": "wikimedia/equivset",
