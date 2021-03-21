@@ -20,6 +20,7 @@ use DOMNodeList;
 
 class Zest {
 
+	/** @var ZestInst */
 	private static $singleton = null;
 
 	private static function singleton() {

@@ -70,7 +70,7 @@ $order = function ( $a, $b ) use ( &$compareDocumentPosition ) {
 
 	private static function parentIsElement( DOMNode $n ): bool {
 		if ( !$n->parentNode ) { return false;
-  }
+		}
 		$nodeType = $n->parentNode->nodeType;
 		// The root `html` element (node type 9) can be a first- or
 		// last-child, too.  But in PHP, if you load a document with
@@ -95,12 +95,13 @@ $order = function ( $a, $b ) use ( &$compareDocumentPosition ) {
 		self::initRules();
 		$ch = $str[ 0 ];
 		if ( $ch === '"' || $ch === "'" ) {
-			if ( substr( $str, - 1 ) === $ch ) {
+			if ( substr( $str, -1 ) === $ch ) {
 				$str = substr( $str, 1, -1 );
 			} else {
 				// bad string.
 				$str = substr( $str, 1 );
 			}
+			// @phan-suppress-next-line SecurityCheck-LikelyFalsePositive
 			return preg_replace_callback( self::$rules->str_escape, function ( array $matches ) {
 				$s = $matches[0];
 				if ( !preg_match( '/^\\\(?:([0-9A-Fa-f]+)|([\r\n\f]+))/', $s, $m ) ) {
@@ -112,6 +113,7 @@ $order = function ( $a, $b ) use ( &$compareDocumentPosition ) {
 				$cp = intval( $m[ 1 ], 16 );
 				return self::unichr( $cp );
 			}, $str );
+			// @phan-suppress-next-line SecurityCheck-LikelyFalsePositive
 		} elseif ( preg_match( self::$rules->ident, $str ) ) {
 			return self::decodeid( $str );
 		} else {
@@ -121,6 +123,7 @@ $order = function ( $a, $b ) use ( &$compareDocumentPosition ) {
 	}
 
 	private static function decodeid( string $str ): string {
+		// @phan-suppress-next-line SecurityCheck-LikelyFalsePositive
 		return preg_replace_callback( self::$rules->escape, function ( array $matches ) {
 			$s = $matches[0];
 			if ( !preg_match( '/^\\\([0-9A-Fa-f]+)/', $s, $m ) ) {
@@ -311,9 +314,9 @@ $order = function ( $a, $b ) use ( &$compareDocumentPosition ) {
 				}
 				if ( $rel === $el ) {
 					$pos -= $offset;
-					return ( $group && $pos ) ?
-						( $pos % $group ) === 0 && ( $pos < 0 === $group < 0 ) :
-						!$pos;
+					return ( $group && $pos )
+						? ( $pos % $group ) === 0 && ( ( $pos < 0 ) === ( $group < 0 ) )
+						: !$pos;
 				}
 				$rel = call_user_func( $advance, $rel );
 			}
@@ -692,7 +695,7 @@ $order = function ( $a, $b ) use ( &$compareDocumentPosition ) {
 			if ( $attr == null ) {
 				return false;
 			}
-			$attr = $attr . '';
+			$attr .= '';
 			if ( $i ) {
 				$attr = strtolower( $attr );
 				$val = strtolower( $val );
@@ -879,6 +882,7 @@ $order = function ( $a, $b ) use ( &$compareDocumentPosition ) {
 	 * Grammar
 	 */
 
+	/** @var \stdClass */
 	private static $rules;
 
 	public static function initRules() {
@@ -928,10 +932,12 @@ $order = function ( $a, $b ) use ( &$compareDocumentPosition ) {
 		$ref = null;
 
 		while ( $sel ) {
+			// @phan-suppress-next-line SecurityCheck-LikelyFalsePositive
 			if ( preg_match( self::$rules->qname, $sel, $cap ) ) {
 				$sel = substr( $sel, strlen( $cap[0] ) );
 				$qname = self::decodeid( $cap[ 1 ] );
 				$buff[] = $this->tokQname( $qname );
+				// @phan-suppress-next-line SecurityCheck-LikelyFalsePositive
 			} elseif ( preg_match( self::$rules->simple, $sel, $cap, PREG_UNMATCHED_AS_NULL ) ) {
 				$sel = substr( $sel, strlen( $cap[0] ) );
 				$qname = '*';
@@ -941,6 +947,7 @@ $order = function ( $a, $b ) use ( &$compareDocumentPosition ) {
 				throw new InvalidArgumentException( 'Invalid selector.' );
 			}
 
+			// @phan-suppress-next-line SecurityCheck-LikelyFalsePositive
 			while ( preg_match( self::$rules->simple, $sel, $cap, PREG_UNMATCHED_AS_NULL ) ) {
 				$sel = substr( $sel, strlen( $cap[0] ) );
 				$buff[] = $this->tok( $cap );
@@ -953,6 +960,7 @@ $order = function ( $a, $b ) use ( &$compareDocumentPosition ) {
 				$buff[] = $subject->simple;
 			}
 
+			// @phan-suppress-next-line SecurityCheck-LikelyFalsePositive
 			if ( preg_match( self::$rules->ref, $sel, $cap ) ) {
 				$sel = substr( $sel, strlen( $cap[0] ) );
 				$ref = self::makeRef( self::makeSimple( $buff ), self::decodeid( $cap[ 1 ] ) );
@@ -961,6 +969,7 @@ $order = function ( $a, $b ) use ( &$compareDocumentPosition ) {
 				continue;
 			}
 
+			// @phan-suppress-next-line SecurityCheck-LikelyFalsePositive
 			if ( preg_match( self::$rules->combinator, $sel, $cap, PREG_UNMATCHED_AS_NULL ) ) {
 				$sel = substr( $sel, strlen( $cap[0] ) );
 				$op = $cap[ 1 ] ?? $cap[ 2 ] ?? $cap[ 3 ];
@@ -1156,7 +1165,6 @@ $order = function ( $a, $b ) use ( &$compareDocumentPosition ) {
 	private function findInternal( string $sel, DOMNode $node ): array {
 		$results = [];
 		$test = $this->compile( $sel );
-		// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
 		$scope = self::getElementsByTagName( $node, $test->qname );
 		$i = 0;
 		$el = null;
@@ -1169,9 +1177,7 @@ $order = function ( $a, $b ) use ( &$compareDocumentPosition ) {
 
 		if ( $test->sel ) {
 			while ( $test->sel ) {
-				// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
 				$test = $this->compile( $test->sel );
-				// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
 				$scope = self::getElementsByTagName( $node, $test->qname );
 				foreach ( $scope as $el ) {
 					if ( call_user_func( $test->func, $el ) && !in_array( $el, $results, true ) ) {
