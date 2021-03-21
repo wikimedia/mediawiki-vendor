@@ -109,7 +109,7 @@
 		"wikimedia/equivset": "1.4.2",
 		"wikimedia/html-formatter": "3.0.1",
 		"wikimedia/ip-set": "2.1.0",
-		"wikimedia/ip-utils": "3.0.1",
+		"wikimedia/ip-utils": "3.0.2",
 		"wikimedia/langconv": "0.3.5",
 		"wikimedia/less.php": "3.1.0",
 		"wikimedia/lucene-explain-parser": "1.0.0",

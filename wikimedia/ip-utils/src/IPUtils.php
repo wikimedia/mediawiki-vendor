@@ -781,14 +781,6 @@ class IPUtils {
 		//  ::ce:ffff:1.2.3.4 to 1.2.3.4 (IPv4-mapped IPv6 addresses)
 		//  ::1.2.3.4 to 1.2.3.4 (IPv4-compatible IPv6 address)
 		// IPv4-compatible IPv6 addresses are now deprecated https://tools.ietf.org/html/rfc4291#section-2.5.5.1
-		if ( strpos( $addr, ':' ) !== false && strpos( $addr, '.' ) !== false ) {
-			$addr = substr( $addr, strrpos( $addr, ':' ) + 1 );
-			if ( self::isIPv4( $addr ) ) {
-				return $addr;
-			}
-		}
-
-		// IPv4-mapped and IPv4-compatible IPv6 addresses
 		if ( preg_match( '/^' . self::RE_IPV6_V4_PREFIX . '(' . self::RE_IP_ADD . ')$/i', $addr, $m ) ) {
 			return $m[1];
 		}
