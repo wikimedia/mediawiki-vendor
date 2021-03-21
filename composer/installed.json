@@ -6307,32 +6307,33 @@
     },
     {
         "name": "wikimedia/ip-set",
-        "version": "2.1.0",
-        "version_normalized": "2.1.0.0",
+        "version": "3.0.0",
+        "version_normalized": "3.0.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/IPSet.git",
-            "reference": "f84555041a405f0ea51c64a0c7fb5fac36e99b84"
+            "reference": "4efe81f0ffb907a60778a72faf6ede17bb490081"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/IPSet/zipball/f84555041a405f0ea51c64a0c7fb5fac36e99b84",
-            "reference": "f84555041a405f0ea51c64a0c7fb5fac36e99b84",
+            "url": "https://api.github.com/repos/wikimedia/IPSet/zipball/4efe81f0ffb907a60778a72faf6ede17bb490081",
+            "reference": "4efe81f0ffb907a60778a72faf6ede17bb490081",
             "shasum": ""
         },
         "require": {
-            "php": ">=5.6.99",
-            "wikimedia/at-ease": "2.0.0"
+            "php": ">=7.2.9",
+            "wikimedia/at-ease": "^2.0.0"
         },
         "require-dev": {
-            "jakub-onderka/php-console-highlighter": "0.3.2",
-            "jakub-onderka/php-parallel-lint": "1.0.0",
-            "mediawiki/mediawiki-codesniffer": "26.0.0",
-            "mediawiki/minus-x": "0.3.1",
-            "ockcyp/covers-validator": "0.5.1 || 0.6.1",
-            "phpunit/phpunit": "4.8.36 || ^6.5"
+            "mediawiki/mediawiki-codesniffer": "35.0.0",
+            "mediawiki/mediawiki-phan-config": "0.10.6",
+            "mediawiki/minus-x": "1.1.1",
+            "ockcyp/covers-validator": "1.3.3",
+            "php-parallel-lint/php-console-highlighter": "0.5.0",
+            "php-parallel-lint/php-parallel-lint": "1.2.0",
+            "phpunit/phpunit": "^8.5"
         },
-        "time": "2019-07-16T08:14:03+00:00",
+        "time": "2021-03-21T17:31:05+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
