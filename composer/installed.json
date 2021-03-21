@@ -6771,32 +6771,32 @@
     },
     {
         "name": "wikimedia/php-session-serializer",
-        "version": "v1.0.7",
-        "version_normalized": "1.0.7.0",
+        "version": "v2.0.0",
+        "version_normalized": "2.0.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/php-session-serializer.git",
-            "reference": "9382814e701c94358ae02f3260b7ac4951385d83"
+            "reference": "99e7e926f1b61f71623d517fe38d9eec8618c59d"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/php-session-serializer/zipball/9382814e701c94358ae02f3260b7ac4951385d83",
-            "reference": "9382814e701c94358ae02f3260b7ac4951385d83",
+            "url": "https://api.github.com/repos/wikimedia/php-session-serializer/zipball/99e7e926f1b61f71623d517fe38d9eec8618c59d",
+            "reference": "99e7e926f1b61f71623d517fe38d9eec8618c59d",
             "shasum": ""
         },
         "require": {
-            "php": ">=5.5.9",
+            "php": ">=7.2.9",
             "psr/log": "^1.0",
-            "wikimedia/at-ease": "1.2.0 || 2.0.0"
+            "wikimedia/at-ease": "^2.0.0"
         },
         "require-dev": {
-            "jakub-onderka/php-console-highlighter": "0.3.2",
-            "jakub-onderka/php-parallel-lint": "1.0.0",
-            "mediawiki/mediawiki-codesniffer": "24.0.0",
-            "mediawiki/minus-x": "0.3.1",
-            "phpunit/phpunit": "4.8.36 || ^6.5"
+            "mediawiki/mediawiki-codesniffer": "35.0.0",
+            "mediawiki/minus-x": "1.1.1",
+            "php-parallel-lint/php-console-highlighter": "0.5.0",
+            "php-parallel-lint/php-parallel-lint": "1.2.0",
+            "phpunit/phpunit": "^8.5"
         },
-        "time": "2019-02-12T00:31:20+00:00",
+        "time": "2021-03-21T17:31:21+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
