@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3c1e636e4b2b02f3d0da16542d0b40f6",
+    "content-hash": "2ef32e91fde635f8b9dc1ae789efaca3",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -5646,75 +5646,6 @@
             "description": "Safe replacement to @ for suppressing warnings.",
             "homepage": "https://www.mediawiki.org/wiki/at-ease",
             "time": "2021-02-27T15:53:37+00:00"
-        },
-        {
-            "name": "wikimedia/avro",
-            "version": "v1.9.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/wikimedia/avro-php.git",
-                "reference": "b2e0c9d750da03d95ba979215397f62a6121ddea"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/avro-php/zipball/b2e0c9d750da03d95ba979215397f62a6121ddea",
-                "reference": "b2e0c9d750da03d95ba979215397f62a6121ddea",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.5.9"
-            },
-            "require-dev": {
-                "jakub-onderka/php-console-highlighter": "0.3.2",
-                "jakub-onderka/php-parallel-lint": "1.0.0",
-                "mediawiki/minus-x": "0.3.1",
-                "phpunit/phpunit": "4.8.36"
-            },
-            "suggest": {
-                "ext-gmp": "Large integer support for 32-bit platforms."
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "lib/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Michael Glaesemann",
-                    "email": "grzm@seespotcode.net"
-                },
-                {
-                    "name": "Andy Wick",
-                    "email": "awick@purple.org"
-                },
-                {
-                    "name": "Saleem Shafi",
-                    "email": "saleemshafi@gmail.com"
-                },
-                {
-                    "name": "A B",
-                    "email": "abawany@x.com"
-                },
-                {
-                    "name": "Doug Cutting",
-                    "email": "cutting@apache.org"
-                },
-                {
-                    "name": "Tom White",
-                    "email": "tom@cloudera.com"
-                }
-            ],
-            "description": "A library for using Apache Avro with PHP.",
-            "homepage": "https://avro.apache.org/",
-            "keywords": [
-                "serialization"
-            ],
-            "time": "2019-09-16T15:18:39+00:00"
         },
         {
             "name": "wikimedia/base-convert",
