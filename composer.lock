@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "396fba1876599797d80e62f8f14c97cb",
+    "content-hash": "dbca5704c53e766450f4c9d739b03b52",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -3768,16 +3768,16 @@
         },
         {
             "name": "ruflin/elastica",
-            "version": "6.1.3",
+            "version": "6.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ruflin/Elastica.git",
-                "reference": "3734c1af1e96c7afd960e21a9ea9f1bec7fe65a8"
+                "reference": "47486aed45c2aa0961b002b9afb60503bfed5b85"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ruflin/Elastica/zipball/3734c1af1e96c7afd960e21a9ea9f1bec7fe65a8",
-                "reference": "3734c1af1e96c7afd960e21a9ea9f1bec7fe65a8",
+                "url": "https://api.github.com/repos/ruflin/Elastica/zipball/47486aed45c2aa0961b002b9afb60503bfed5b85",
+                "reference": "47486aed45c2aa0961b002b9afb60503bfed5b85",
                 "shasum": ""
             },
             "require": {
@@ -3785,9 +3785,13 @@
                 "php": "^7.0",
                 "psr/log": "~1.0"
             },
+            "conflict": {
+                "elasticsearch/elasticsearch": "6.8.0 || 6.8.1"
+            },
             "require-dev": {
                 "aws/aws-sdk-php": "~3.0",
-                "guzzlehttp/guzzle": "~6.0"
+                "guzzlehttp/guzzle": "~6.0",
+                "phpunit/phpunit": "^6.0"
             },
             "suggest": {
                 "aws/aws-sdk-php": "Allow using IAM authentication with Amazon ElasticSearch Service",
@@ -3822,7 +3826,7 @@
                 "client",
                 "search"
             ],
-            "time": "2021-02-17T07:28:43+00:00"
+            "time": "2021-03-24T11:59:44+00:00"
         },
         {
             "name": "serialization/serialization",

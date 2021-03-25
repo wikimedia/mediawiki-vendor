@@ -2,7 +2,7 @@ Elastica: elasticsearch PHP Client
 ==================================
 
 [![Latest Stable Version](https://poser.pugx.org/ruflin/Elastica/v/stable.png)](https://packagist.org/packages/ruflin/elastica)
-[![Build Status](https://secure.travis-ci.org/ruflin/Elastica.png?branch=master)](http://travis-ci.org/ruflin/Elastica)
+[![Build Status](https://github.com/ruflin/Elastica/workflows/Continuous%20integration/badge.svg?branch=6.x)](https://github.com/ruflin/Elastica/actions?query=workflow%3A%22Continuous%20integration%22%20branch%3A6.x)
 [![codecov.io](http://codecov.io/github/ruflin/Elastica/coverage.svg?branch=master)](http://codecov.io/github/ruflin/Elastica?branch=master)
 [![Dependency Status](https://www.versioneye.com/php/ruflin:elastica/dev-master/badge.svg)](https://www.versioneye.com/php/ruflin:elastica/dev-master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ruflin/Elastica/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ruflin/Elastica/?branch=master)
@@ -29,11 +29,12 @@ Versions & Dependencies
 ------------
 This project tries to follow Elasticsearch in terms of [End of Life](https://www.elastic.co/support/eol) and maintenance since 5.x
 
-| Elastica                                                                                | ElasticSearch | elasticsearch-php | PHP      |
-| --------------------------------------------------------------------------------------- | ------------- | ----------------- | -------- |
-| [7.x](https://github.com/ruflin/Elastica/tree/master)                                   | 7.x           | ^6.0              | ^7.0     |
-| [6.x](https://github.com/ruflin/Elastica/tree/6.x)                                      | 6.x           | ^6.0              | ^7.0     |
-| [5.x](https://github.com/ruflin/Elastica/tree/5.x)                                      | 5.x           | ^5.0              | \>=5.6   |
-| [3.2.3](https://github.com/ruflin/Elastica/tree/3.2.3) (unmaintained)                   | 2.4.0         | no                | \>=5.4   |
-| [2.x](https://github.com/ruflin/Elastica/tree/2.x) (unmaintained)                       | 1.7.2         | no                | \>=5.3.3 |
+| Elastica                                                                                | ElasticSearch | elasticsearch-php | PHP          |
+| --------------------------------------------------------------------------------------- | ------------- | ----------------- | ------------ |
+| [7.x](https://github.com/ruflin/Elastica/tree/master)                                   | 7.x           | ^7.0              | ^7.2 || ^8.0 |
+| [7.0](https://github.com/ruflin/Elastica/tree/7.0)                                      | 7.x           | ^7.0              | ^7.2         |
+| [6.x](https://github.com/ruflin/Elastica/tree/6.x)                                      | 6.x           | ^6.0              | ^7.0         |
+| [5.x](https://github.com/ruflin/Elastica/tree/5.x) (unmaintained)                       | 5.x           | ^5.0              | \>=5.6       |
+| [3.2.3](https://github.com/ruflin/Elastica/tree/3.2.3) (unmaintained)                   | 2.4.0         | no                | \>=5.4       |
+| [2.x](https://github.com/ruflin/Elastica/tree/2.x) (unmaintained)                       | 1.7.2         | no                | \>=5.3.3     |
 ------------

@@ -1,12 +1,29 @@
 # Change Log
 All notable changes to this project will be documented in this file based on the [Keep a Changelog](http://keepachangelog.com/) Standard. This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased](https://github.com/ruflin/Elastica/compare/6.1.3...6.x)
+## [Unreleased](https://github.com/ruflin/Elastica/compare/6.1.5...6.x)
 
 ### Backward Compatibility Breaks
 ### Bugfixes
 ### Added
 ### Improvements
+### Deprecated
+
+## [6.1.5](https://github.com/ruflin/Elastica/compare/6.1.4...6.1.5)
+
+### Bugfixes
+* Added conflict with `elasticsearch/elasticsearch` version `6.8.1` [#1948](https://github.com/ruflin/Elastica/pull/1948)
+### Added
+* Excluded `docker` directory in `.gitattributes` [#1939](https://github.com/ruflin/Elastica/pull/1939)
+
+## [6.1.4](https://github.com/ruflin/Elastica/compare/6.1.3...6.1.4)
+
+### Backward Compatibility Breaks
+### Bugfixes
+* Added conflict with `elasticsearch/elasticsearch` version `6.8.0` [#1918](https://github.com/ruflin/Elastica/pull/1918)
+### Added
+### Improvements
+* Marked Elastica 5.x as unmaintained [#1909](https://github.com/ruflin/Elastica/pull/1909)
 ### Deprecated
 
 ## [6.1.3](https://github.com/ruflin/Elastica/compare/6.1.2...6.1.3)
