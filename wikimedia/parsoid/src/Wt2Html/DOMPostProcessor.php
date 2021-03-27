@@ -547,10 +547,72 @@ class DOMPostProcessor extends PipelineStage {
 	 * @param string $tagName
 	 * @param array $attrs
 	 */
-	public function appendToHead( DOMDocument $document, string $tagName, array $attrs = [] ): void {
+	private function appendToHead( DOMDocument $document, string $tagName, array $attrs = [] ): void {
 		$elt = $document->createElement( $tagName );
 		DOMUtils::addAttributes( $elt, $attrs );
 		( DOMCompat::getHead( $document ) )->appendChild( $elt );
+	}
+
+	/**
+	 * Get the array of style modules to add to <head>
+	 * @param DOMDocument $document
+	 * @param Env $env
+	 * @param string $lang
+	 */
+	private function exportStyleModules( DOMDocument $document, Env $env, string $lang ): void {
+		// Hack: link styles
+		$styleModules = [
+			'mediawiki.skinning.content.parsoid',
+			// Use the base styles that apioutput and fallback skin use.
+			'mediawiki.skinning.interface',
+			// Make sure to include contents of user generated styles
+			// e.g. MediaWiki:Common.css / MediaWiki:Mobile.css
+			'site.styles'
+		];
+
+		// Styles from modules returned from preprocessor / parse requests
+		$outputProps = $env->getOutputProperties();
+		if ( isset( $outputProps['modulestyles'] ) ) {
+			$styleModules = array_merge( $styleModules, $outputProps['modulestyles'] );
+		}
+
+		// FIXME: Maybe think about using an associative array or DS\Set
+		$styleModules = array_unique( $styleModules );
+		$styleURI = $env->getSiteConfig()->getModulesLoadURI() .
+			'?lang=' . $lang . '&modules=' .
+			PHPUtils::encodeURIComponent( implode( '|', $styleModules ) ) .
+			// FIXME: Hardcodes vector skin
+			'&only=styles&skin=vector';
+
+		// FIXME: We should add the list of style modules in a meta tag and
+		// have clients massage that into a a style URI based on skin and
+		// other baseline style modules they need for rendering.
+		$this->appendToHead( $document, 'link', [ 'rel' => 'stylesheet', 'href' => $styleURI ] );
+	}
+
+	/**
+	 * @param DOMElement $body
+	 * @param Env $env
+	 */
+	private function updateBodyClasslist( DOMElement $body, Env $env ): void {
+		$dir = $env->getPageConfig()->getPageLanguageDir();
+		$bodyCL = DOMCompat::getClassList( $body );
+		$bodyCL->add( 'mw-content-' . $dir );
+		$bodyCL->add( 'sitedir-' . $dir );
+		$bodyCL->add( $dir );
+		$body->setAttribute( 'dir', $dir );
+
+		// Set 'mw-body-content' directly on the body.
+		// This is the designated successor for #bodyContent in core skins.
+		$bodyCL->add( 'mw-body-content' );
+		// Set 'parsoid-body' to add the desired layout styling from Vector.
+		$bodyCL->add( 'parsoid-body' );
+		// Also, add the 'mediawiki' class.
+		// Some Mediawiki:Common.css seem to target this selector.
+		$bodyCL->add( 'mediawiki' );
+		// Set 'mw-parser-output' directly on the body.
+		// Templates target this class as part of the TemplateStyles RFC
+		$bodyCL->add( 'mw-parser-output' );
 	}
 
 	/**
@@ -686,42 +748,17 @@ class DOMPostProcessor extends PipelineStage {
 			'href' => $env->getSiteConfig()->baseURI()
 		] );
 
-		// Hack: link styles
-		$modules = [
-			'mediawiki.skinning.content.parsoid',
-			// Use the base styles that apioutput and fallback skin use.
-			'mediawiki.skinning.interface',
-			// Make sure to include contents of user generated styles
-			// e.g. MediaWiki:Common.css / MediaWiki:Mobile.css
-			'site.styles'
-		];
-
-		// Styles from modules returned from preprocessor / parse requests
-		$outputProps = $env->getOutputProperties();
-		if ( isset( $outputProps['modulestyles'] ) ) {
-			foreach ( $outputProps['modulestyles'] as $mo ) {
-				$modules[] = $mo;
-			}
-		}
-
-		// FIXME: Maybe think about using an associative array or DS\Set
-		$modules = array_unique( $modules );
-
-		// PageConfig guarantees language and dir will always be non-null.
-		$lang = $env->getPageConfig()->getPageLanguage();
-		$dir = $env->getPageConfig()->getPageLanguageDir();
-
-		$modulesBaseURI = $env->getSiteConfig()->getModulesLoadURI();
-		$styleURI = $modulesBaseURI .
-			'?lang=' . $lang . '&modules=' .
-			PHPUtils::encodeURIComponent( implode( '|', $modules ) ) .
-			'&only=styles&skin=vector';
-		$this->appendToHead( $document, 'link', [ 'rel' => 'stylesheet', 'href' => $styleURI ] );
-
 		// Stick data attributes in the head
 		if ( $env->pageBundle ) {
 			DOMDataUtils::injectPageBundle( $document, DOMDataUtils::getPageBundle( $document ) );
 		}
+
+		// PageConfig guarantees language will always be non-null.
+		$lang = $env->getPageConfig()->getPageLanguage();
+		$body = DOMCompat::getBody( $document );
+		$body->setAttribute( 'lang', Utils::bcp47n( $lang ) );
+		$this->updateBodyClasslist( $body, $env );
+		$this->exportStyleModules( $document, $env, $lang );
 
 		// Indicate whether LanguageConverter is enabled, so that downstream
 		// caches can split on variant (if necessary)
@@ -735,27 +772,6 @@ class DOMPostProcessor extends PipelineStage {
 				'content' => $env->htmlVary()
 			]
 		);
-
-		$body = DOMCompat::getBody( $document );
-		$bodyCL = DOMCompat::getClassList( $body );
-
-		$body->setAttribute( 'lang', Utils::bcp47n( $lang ) );
-		$bodyCL->add( 'mw-content-' . $dir );
-		$bodyCL->add( 'sitedir-' . $dir );
-		$bodyCL->add( $dir );
-		$body->setAttribute( 'dir', $dir );
-
-		// Set 'mw-body-content' directly on the body.
-		// This is the designated successor for #bodyContent in core skins.
-		$bodyCL->add( 'mw-body-content' );
-		// Set 'parsoid-body' to add the desired layout styling from Vector.
-		$bodyCL->add( 'parsoid-body' );
-		// Also, add the 'mediawiki' class.
-		// Some Mediawiki:Common.css seem to target this selector.
-		$bodyCL->add( 'mediawiki' );
-		// Set 'mw-parser-output' directly on the body.
-		// Templates target this class as part of the TemplateStyles RFC
-		$bodyCL->add( 'mw-parser-output' );
 
 		if ( $env->profiling() ) {
 			$profile = $env->getCurrentProfile();
