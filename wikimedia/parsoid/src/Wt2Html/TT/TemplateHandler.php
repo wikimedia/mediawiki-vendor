@@ -1192,8 +1192,8 @@ class TemplateHandler extends TokenHandler {
 		$env = $this->env;
 		$wikitext = $ret['wikitext'];
 
-		foreach ( [ 'modules', 'modulestyles' ] as $prop ) {
-			$env->addOutputProperty( $prop, $ret[$prop] );
+		foreach ( [ 'modules', 'modulestyles', 'jsconfigvars' ] as $prop ) {
+			$env->addOutputProperty( $prop, $ret[$prop] ?? [] );
 		}
 
 		// Add the categories which were added by parser functions directly
@@ -1552,7 +1552,7 @@ class TemplateHandler extends TokenHandler {
 		$res = $this->fetchArg( $attribs[0]->k, $attribs[0]->srcOffsets->key );
 		$res = $this->lookupArg( $args, $attribs, $res );
 
-		if ( $this->options['expandTemplates'] ) {
+		if ( $this->wrapTemplates && $this->options['expandTemplates'] ) {
 			// This is a bare use of template arg syntax at the top level
 			// outside any template use context.  Wrap this use with RDF attrs.
 			// so that this chunk can be RT-ed en-masse.
