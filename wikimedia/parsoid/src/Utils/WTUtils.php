@@ -725,6 +725,8 @@ class WTUtils {
 		// Now encode '-', '>' and '&' in the "true value" as HTML entities,
 		// so that they can be safely embedded in an HTML comment.
 		// This part doesn't have to map strings 1-to-1.
+		// WARNING(T279451): This is actually the part which protects the
+		// "-type" key in self::fosterCommentData
 		return preg_replace_callback( '/[->&]/', function ( $m ) {
 			return Utils::entityEncodeAll( $m[0] );
 		}, $trueValue );
@@ -784,40 +786,38 @@ class WTUtils {
 	 *
 	 * @param string $typeOf
 	 * @param array $attrs
-	 * @param bool $encode
 	 * @return string
 	 */
-	public static function fosterCommentData( string $typeOf, array $attrs, bool $encode ): string {
-		$str = PHPUtils::jsonEncode( [
-			'@type' => $typeOf,
+	public static function fosterCommentData( string $typeOf, array $attrs ): string {
+		return PHPUtils::jsonEncode( [
+			// WARNING(T279451): The choice of "-type" as the key is because
+			// "-" will be encoded with self::encodeComment when comments come
+			// from source wikitext (see the grammar), so we can be sure when
+			// reinserting that the comments are internal to Parsoid
+			'-type' => $typeOf,
 			'attrs' => $attrs
 		] );
-		if ( $encode ) {
-			$str = self::encodeComment( $str );
-		}
-		return $str;
 	}
 
 	/**
 	 * @param Env $env
 	 * @param DOMNode $node
-	 * @param bool $decode
 	 * @return ?DOMNode
 	 */
 	public static function reinsertFosterableContent(
-		Env $env, DOMNode $node, bool $decode
+		Env $env, DOMNode $node
 	): ?DOMNode {
 		if ( DOMUtils::isComment( $node ) && preg_match( '/^\{.+\}$/D', $node->nodeValue ) ) {
 			// Convert serialized meta tags back from comments.
 			// We use this trick because comments won't be fostered,
 			// providing more accurate information about where tags are expected
 			// to be found.
-			$data = json_decode( $decode ? self::decodeComment( $node->nodeValue ) : $node->nodeValue );
+			$data = json_decode( $node->nodeValue );
 			if ( $data === null ) {
 				// not a valid json attribute, do nothing
 				return null;
 			}
-			$type = $data->{'@type'};
+			$type = $data->{'-type'} ?? '';
 			if ( preg_match( '/^mw:/', $type ) ) {
 				$meta = $node->ownerDocument->createElement( 'meta' );
 				foreach ( $data->attrs as $attr ) {
