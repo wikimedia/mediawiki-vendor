@@ -1,13 +1,12 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace DataValues;
 
 use InvalidArgumentException;
 
 /**
- * @since 0.1
- *
- * @license GPL-2.0+
  * @author Daniel Kinzler
  */
 class IllegalValueException extends InvalidArgumentException {

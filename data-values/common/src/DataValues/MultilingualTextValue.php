@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace DataValues;
 
 /**
@@ -7,7 +9,7 @@ namespace DataValues;
  *
  * @since 0.1
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class MultilingualTextValue extends DataValueObject {
@@ -17,11 +19,9 @@ class MultilingualTextValue extends DataValueObject {
 	 *
 	 * @var MonolingualTextValue[]
 	 */
-	private $texts = array();
+	private $texts = [];
 
 	/**
-	 * @since 0.1
-	 *
 	 * @param MonolingualTextValue[] $monolingualValues
 	 *
 	 * @throws IllegalValueException
@@ -29,13 +29,17 @@ class MultilingualTextValue extends DataValueObject {
 	public function __construct( array $monolingualValues ) {
 		foreach ( $monolingualValues as $monolingualValue ) {
 			if ( !( $monolingualValue instanceof MonolingualTextValue ) ) {
-				throw new IllegalValueException( 'Can only construct MultilingualTextValue from MonolingualTextValue objects' );
+				throw new IllegalValueException(
+					'Can only construct MultilingualTextValue from MonolingualTextValue objects'
+				);
 			}
 
 			$languageCode = $monolingualValue->getLanguageCode();
 
 			if ( array_key_exists( $languageCode, $this->texts ) ) {
-				throw new IllegalValueException( 'Can only add a single MonolingualTextValue per language to a MultilingualTextValue' );
+				throw new IllegalValueException(
+					'Can only add a single MonolingualTextValue per language to a MultilingualTextValue'
+				);
 			}
 
 			$this->texts[$languageCode] = $monolingualValue;
@@ -70,7 +74,8 @@ class MultilingualTextValue extends DataValueObject {
 	}
 
 	/**
-	 * @see DataValue::getSortKey
+	 * @deprecated Kept for compatibility with older DataValues versions.
+	 * Do not use.
 	 *
 	 * @return string|float|int
 	 */
@@ -79,9 +84,8 @@ class MultilingualTextValue extends DataValueObject {
 	}
 
 	/**
-	 * Returns the texts as an array of monolingual text values.
-	 *
-	 * @since 0.1
+	 * Returns the texts as an array of monolingual text values,
+	 * with the language codes as array keys.
 	 *
 	 * @return MonolingualTextValue[]
 	 */
@@ -93,7 +97,7 @@ class MultilingualTextValue extends DataValueObject {
 	 * Returns the multilingual text value
 	 * @see DataValue::getValue
 	 *
-	 * @return MultilingualTextValue
+	 * @return self
 	 */
 	public function getValue() {
 		return $this;
@@ -105,7 +109,7 @@ class MultilingualTextValue extends DataValueObject {
 	 * @return mixed
 	 */
 	public function getArrayValue() {
-		$values = array();
+		$values = [];
 
 		/**
 		 * @var MonolingualTextValue $text
@@ -118,23 +122,27 @@ class MultilingualTextValue extends DataValueObject {
 	}
 
 	/**
-	 * Constructs a new instance of the DataValue from the provided data.
-	 * This can round-trip with
-	 * @see   getArrayValue
+	 * Constructs a new instance from the provided data. Required for @see DataValueDeserializer.
+	 * This is expected to round-trip with @see getArrayValue.
 	 *
-	 * @since 0.1
+	 * @deprecated since 1.0.0. Static DataValue::newFromArray constructors like this are
+	 *  underspecified (not in the DataValue interface), and misleadingly named (should be named
+	 *  newFromArrayValue). Instead, use DataValue builder callbacks in @see DataValueDeserializer.
 	 *
-	 * @param mixed $data
+	 * @param mixed $data Warning! Even if this is expected to be a value as returned by
+	 *  @see getArrayValue, callers of this specific newFromArray implementation can not guarantee
+	 *  this. This is not even guaranteed to be an array!
 	 *
-	 * @throws IllegalValueException if $data is not an array.
-	 * @return MultilingualTextValue
+	 * @throws IllegalValueException if $data is not in the expected format. Subclasses of
+	 *  InvalidArgumentException are expected and properly handled by @see DataValueDeserializer.
+	 * @return self
 	 */
 	public static function newFromArray( $data ) {
 		if ( !is_array( $data ) ) {
 			throw new IllegalValueException( "array expected" );
 		}
 
-		$values = array();
+		$values = [];
 
 		foreach ( $data as $monolingualValue ) {
 			$values[] = MonolingualTextValue::newFromArray( $monolingualValue );

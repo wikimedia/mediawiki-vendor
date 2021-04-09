@@ -4,7 +4,6 @@ Small PHP library that provides interfaces for Value Objects.
 
 [Several libraries](https://github.com/DataValues) build on top of this foundation.
 
-[![Build Status](https://travis-ci.org/DataValues/DataValues.svg?branch=master)](https://travis-ci.org/DataValues/DataValues)
 [![Code Coverage](https://scrutinizer-ci.com/g/DataValues/DataValues/badges/coverage.png?s=56a1ea89df94c6d9b4223ba584d0d4556e1984ef)](https://scrutinizer-ci.com/g/DataValues/DataValues/)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/DataValues/DataValues/badges/quality-score.png?s=ba9364790e6b521277a3829ffb91e2c2e1b68c3c)](https://scrutinizer-ci.com/g/DataValues/DataValues/)
 
@@ -16,8 +15,7 @@ On [Packagist](https://packagist.org/packages/data-values/data-values):
 
 These PHP versions are supported:
 
-* PHP 5.5 or later, including PHP 7
-* HHVM 3.3 or later
+* PHP 7.2 or later
 
 ## Installation
 
@@ -57,6 +55,15 @@ Contributions where also made by
 [several other awesome people](https://www.openhub.net/p/datavalues/contributors).
 
 ## Release notes
+
+### 3.0.0 (2021-01-19)
+
+* Removed `getCopy` from the `DataValue` interface and all implementations
+* Removed `getSortKey` from the `DataValue` interface and all implementations
+* Removed the `Comparable`, `Hashable` and `Immutable` interfaces
+* Removed `DATAVALUES_VERSION` constant
+* Removed `DataValueTest` (create a copy if you need it, though better refactor away the bad design)
+* Raised minimum PHP version from 5.5.9 to 7.2
 
 ### 2.3.0 (2019-09-16)
 

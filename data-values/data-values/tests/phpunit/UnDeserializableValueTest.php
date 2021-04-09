@@ -1,17 +1,14 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace DataValues\Tests;
 
 use DataValues\DataValue;
 use DataValues\UnDeserializableValue;
 
 /**
- * @covers DataValues\UnDeserializableValue
- *
- * @group DataValue
- * @group DataValueExtensions
- *
- * @license GPL-2.0+
+ * @covers \DataValues\UnDeserializableValue
  * @author Daniel Kinzler
  */
 class UnDeserializableValueTest extends DataValueTest {
@@ -76,7 +73,7 @@ class UnDeserializableValueTest extends DataValueTest {
 	public function testToArray( DataValue $value, array $arguments ) {
 		$array = $value->toArray();
 
-		$this->assertInternalType( 'array', $array );
+		$this->assertIsArray( $array );
 
 		$this->assertTrue( array_key_exists( 'type', $array ) );
 		$this->assertTrue( array_key_exists( 'value', $array ) );

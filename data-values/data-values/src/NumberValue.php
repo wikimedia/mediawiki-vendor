@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace DataValues;
 
 /**
@@ -7,11 +9,6 @@ namespace DataValues;
  *
  * More complex numeric values that have associated info such as
  * unit and accuracy can be represented with a {@see QuantityValue}.
- *
- * @since 0.1
- *
- * @license GPL-2.0+
- * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class NumberValue extends DataValueObject {
 
@@ -58,15 +55,6 @@ class NumberValue extends DataValueObject {
 	 */
 	public static function getType() {
 		return 'number';
-	}
-
-	/**
-	 * @see DataValue::getSortKey
-	 *
-	 * @return int|float
-	 */
-	public function getSortKey() {
-		return $this->value;
 	}
 
 	/**

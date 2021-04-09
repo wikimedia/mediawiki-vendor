@@ -1,27 +1,24 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace DataValues;
 
-/**
- * Class representing a boolean value.
- *
- * @since 0.1
- *
- * @license GPL-2.0+
- * @author Jeroen De Dauw < jeroendedauw@gmail.com >
- */
-class BooleanValue extends DataValueObject {
+class StringValue extends DataValueObject {
 
+	/**
+	 * @var string
+	 */
 	private $value;
 
 	/**
-	 * @param bool $value
+	 * @param string $value
 	 *
 	 * @throws IllegalValueException
 	 */
 	public function __construct( $value ) {
-		if ( !is_bool( $value ) ) {
-			throw new IllegalValueException( 'Can only construct BooleanValue from booleans' );
+		if ( !is_string( $value ) ) {
+			throw new IllegalValueException( 'Can only construct StringValue from strings' );
 		}
 
 		$this->value = $value;
@@ -30,19 +27,19 @@ class BooleanValue extends DataValueObject {
 	/**
 	 * @see Serializable::serialize
 	 *
-	 * @return string '0' for false, '1' for true.
+	 * @return string
 	 */
 	public function serialize() {
-		return $this->value ? '1' : '0';
+		return $this->value;
 	}
 
 	/**
 	 * @see Serializable::unserialize
 	 *
-	 * @param string $value '0' for false, '1' for true.
+	 * @param string $value
 	 */
 	public function unserialize( $value ) {
-		$this->value = $value === '1';
+		$this->__construct( $value );
 	}
 
 	/**
@@ -51,23 +48,14 @@ class BooleanValue extends DataValueObject {
 	 * @return string
 	 */
 	public static function getType() {
-		return 'boolean';
+		return 'string';
 	}
 
 	/**
-	 * @see DataValue::getSortKey
-	 *
-	 * @return int 0 for false, 1 for true.
-	 */
-	public function getSortKey() {
-		return $this->value ? 1 : 0;
-	}
-
-	/**
-	 * Returns the boolean.
+	 * Returns the string.
 	 * @see DataValue::getValue
 	 *
-	 * @return bool
+	 * @return string
 	 */
 	public function getValue() {
 		return $this->value;
@@ -83,7 +71,7 @@ class BooleanValue extends DataValueObject {
 	 *
 	 * @param mixed $data Warning! Even if this is expected to be a value as returned by
 	 *  {@see getArrayValue}, callers of this specific newFromArray implementation can not guarantee
-	 *  this. This is not guaranteed to be a boolean!
+	 *  this. This is not guaranteed to be a string!
 	 *
 	 * @throws IllegalValueException if $data is not in the expected format. Subclasses of
 	 *  InvalidArgumentException are expected and properly handled by {@see DataValueDeserializer}.

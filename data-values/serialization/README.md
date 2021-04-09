@@ -4,7 +4,6 @@ Serializers and deserializers for DataValue implementations.
 
 It is part of the [DataValues set of libraries](https://github.com/DataValues).
 
-[![Build Status](https://secure.travis-ci.org/DataValues/Serialization.png?branch=master)](http://travis-ci.org/DataValues/Serialization)
 [![Code Coverage](https://scrutinizer-ci.com/g/DataValues/Serialization/badges/coverage.png?s=3e52443ffbf18b98804feb7c02ba4416f3f986cb)](https://scrutinizer-ci.com/g/DataValues/Serialization/)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/DataValues/Serialization/badges/quality-score.png?s=818787ea88853bbfb76dc226eb4ab755729141c5)](https://scrutinizer-ci.com/g/DataValues/Serialization/)
 
@@ -39,7 +38,7 @@ Then take care of autoloading the classes defined in the src directory.
 
 This library comes with a set up PHPUnit tests that cover all non-trivial code. You can run these
 tests using the PHPUnit configuration file found in the root directory. The tests can also be run
-via TravisCI, as a TravisCI configuration file is also provided in the root directory.
+via Github Actions.
 
 ## Authors
 
@@ -47,6 +46,10 @@ DataValues Serialization has been written by [Jeroen De Dauw](https://github.com
 as [Wikimedia Germany](https://wikimedia.de) employee for the [Wikidata project](https://wikidata.org/).
 
 ## Release notes
+
+### 1.2.4 (2021-03-29)
+
+* Made component installable together with DataValues 3.x
 
 ### 1.2.3 (2018-12-01)
 
@@ -104,5 +107,4 @@ have of how deserialization is implemented and break their dependency on DataVal
 ## Links
 
 * [DataValues Serialization on Packagist](https://packagist.org/packages/data-values/serialization)
-* [DataValues Serialization on TravisCI](https://travis-ci.org/DataValues/Serialization)
 * [DataValues Serialization on ScrutinizerCI](https://scrutinizer-ci.com/g/DataValues/Serialization/)

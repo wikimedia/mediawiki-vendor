@@ -1,0 +1,58 @@
+{
+	"name": "data-values/data-values",
+	"type": "library",
+	"description": "Defines the DataValue interface and some trivial implementations",
+	"keywords": [
+		"datavalues",
+		"wikibase",
+		"wikidata"
+	],
+	"homepage": "https://github.com/DataValues/DataValues",
+	"license": "GPL-2.0-or-later",
+	"authors": [
+		{
+			"name": "Jeroen De Dauw",
+			"email": "jeroendedauw@gmail.com",
+			"homepage": "http://jeroendedauw.com",
+			"role": "Developer"
+		}
+	],
+	"require": {
+		"php": ">=7.2.0"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "~8.0",
+		"wikibase/wikibase-codesniffer": "~1.2.0"
+	},
+	"replace": {
+		"mediawiki/data-values": "*"
+	},
+	"autoload": {
+		"psr-4": {
+			"DataValues\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"DataValues\\Tests\\": "tests/phpunit/"
+		}
+	},
+	"extra": {
+		"branch-alias": {
+			"dev-master": "3.x-dev"
+		}
+	},
+	"scripts": {
+		"test": [
+			"composer validate --no-interaction",
+			"vendor/bin/phpunit",
+			"@cs"
+		],
+		"cs": [
+			"phpcs -p -s"
+		],
+		"ci": [
+			"@test"
+		]
+	}
+}

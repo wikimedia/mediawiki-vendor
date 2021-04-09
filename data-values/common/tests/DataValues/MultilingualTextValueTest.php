@@ -1,91 +1,121 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace DataValues\Tests;
 
+use DataValues\IllegalValueException;
 use DataValues\MonolingualTextValue;
 use DataValues\MultilingualTextValue;
+use Exception;
+use PHPUnit\Framework\TestCase;
 
 /**
- * @covers DataValues\MultilingualTextValue
+ * @covers \DataValues\MultilingualTextValue
  *
  * @since 0.1
  *
  * @group DataValue
  * @group DataValueExtensions
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class MultilingualTextValueTest extends DataValueTest {
+class MultilingualTextValueTest extends TestCase {
 
-	/**
-	 * @see DataValueTest::getClass
-	 *
-	 * @return string
-	 */
-	public function getClass() {
-		return 'DataValues\MultilingualTextValue';
+	public function testGetters() {
+		$monolingualTextValue1 = new MonolingualTextValue( 'en', 'foo' );
+		$monolingualTextValue2 = new MonolingualTextValue( 'de', 'foo' );
+		$value = new MultilingualTextValue( [ $monolingualTextValue1, $monolingualTextValue2 ] );
+		$this->assertSame( 'multilingualtext', $value->getType() );
+		$this->assertSame( 'enfoo', $value->getSortKey() );
+		$this->assertSame(
+			[ 'en' => $monolingualTextValue1, 'de' => $monolingualTextValue2 ],
+			$value->getTexts()
+		);
 	}
 
-	public function validConstructorArgumentsProvider() {
-		$argLists = array();
+	public function testGetters_empty() {
+		$value = new MultilingualTextValue( [] );
+		$this->assertSame( '', $value->getSortKey() );
+		$this->assertSame( [], $value->getTexts() );
+	}
 
-		$argLists[] = array( array() );
-		$argLists[] = array( array( new MonolingualTextValue( 'en', 'foo' ) ) );
-		$argLists[] = array( array( new MonolingualTextValue( 'en', 'foo' ), new MonolingualTextValue( 'de', 'foo' ) ) );
-		$argLists[] = array( array( new MonolingualTextValue( 'en', 'foo' ), new MonolingualTextValue( 'de', 'bar' ) ) );
-		$argLists[] = array( array(
-			new MonolingualTextValue( 'en', 'foo' ),
-			new MonolingualTextValue( 'de', ' foo bar baz foo bar baz foo bar baz foo bar baz foo bar baz foo bar baz ' )
-		) );
+	public function testArrayAndEquals() {
+		$monolingualTextValue1 = new MonolingualTextValue( 'en', 'foo' );
+		$monolingualTextValue2 = new MonolingualTextValue( 'de', 'foo' );
+		$value = new MultilingualTextValue( [ $monolingualTextValue1, $monolingualTextValue2 ] );
+		$array = $value->getArrayValue();
+		$value2 = MultilingualTextValue::newFromArray( $array );
+		$this->assertTrue( $value->equals( $value2 ) );
+		$this->assertEquals( $value, $value2 );
+	}
 
-		return $argLists;
+	public function testSerialize() {
+		$monolingualTextValue1 = new MonolingualTextValue( 'en', 'foo' );
+		$monolingualTextValue2 = new MonolingualTextValue( 'de', 'foo' );
+		$value = new MultilingualTextValue( [ $monolingualTextValue1, $monolingualTextValue2 ] );
+		$serialization = serialize( $value );
+		$value2 = unserialize( $serialization );
+		$this->assertEquals( $value, $value2 );
+	}
+
+	/**
+	 * @dataProvider invalidConstructorArgumentsProvider
+	 */
+	public function testConstructorWithInvalidArguments( $monolingualValues ) {
+		$this->expectException( Exception::class );
+
+		$dataItem = new MultilingualTextValue( $monolingualValues );
 	}
 
 	public function invalidConstructorArgumentsProvider() {
-		$argLists = array();
+		return [
+			[ [ 42 ] ],
+			[ [ false ] ],
+			[ [ true ] ],
+			[ [ null ] ],
+			[ [ [] ] ],
+			[ [ 'foo' ] ],
 
-		$argLists[] = array( array( 42 ) );
-		$argLists[] = array( array( false ) );
-		$argLists[] = array( array( true ) );
-		$argLists[] = array( array( null ) );
-		$argLists[] = array( array( array() ) );
-		$argLists[] = array( array( 'foo' ) );
+			[ [ 42 => 'foo' ] ],
+			[ [ '' => 'foo' ] ],
+			[ [ 'en' => 42 ] ],
+			[ [ 'en' => null ] ],
+			[ [ 'en' => true ] ],
+			[ [ 'en' => [] ] ],
+			[ [ 'en' => 4.2 ] ],
 
-		$argLists[] = array( array( 42 => 'foo' ) );
-		$argLists[] = array( array( '' => 'foo' ) );
-		$argLists[] = array( array( 'en' => 42 ) );
-		$argLists[] = array( array( 'en' => null ) );
-		$argLists[] = array( array( 'en' => true ) );
-		$argLists[] = array( array( 'en' => array() ) );
-		$argLists[] = array( array( 'en' => 4.2 ) );
-
-		$argLists[] = array( array( new MonolingualTextValue( 'en', 'foo' ), false ) );
-		$argLists[] = array( array( new MonolingualTextValue( 'en', 'foo' ), 'foobar' ) );
-
-		return $argLists;
+			[ [
+				new MonolingualTextValue( 'en', 'foo' ),
+				false,
+			] ],
+			[ [
+				new MonolingualTextValue( 'en', 'foo' ),
+				'foobar',
+			] ],
+			[ [
+				new MonolingualTextValue( 'en', 'foo' ),
+				new MonolingualTextValue( 'en', 'bar' ),
+			] ],
+		];
 	}
 
 	/**
-	 * @dataProvider instanceProvider
-	 * @param MultilingualTextValue $texts
-	 * @param array $arguments
+	 * @dataProvider invalidArrayProvider
 	 */
-	public function testGetTexts( MultilingualTextValue $texts, array $arguments ) {
-		$actual = $texts->getTexts();
-
-		$this->assertInternalType( 'array', $actual );
-		$this->assertContainsOnlyInstancesOf( '\DataValues\MonolingualTextValue', $actual );
-		$this->assertEquals( $arguments[0], array_values( $actual ) );
+	public function testNewFromArrayWithInvalidArray( array $array ) {
+		$this->expectException( IllegalValueException::class );
+		MultilingualTextValue::newFromArray( $array );
 	}
 
-	/**
-	 * @dataProvider instanceProvider
-	 * @param MultilingualTextValue $texts
-	 * @param array $arguments
-	 */
-	public function testGetValue( MultilingualTextValue $texts, array $arguments ) {
-		$this->assertInstanceOf( $this->getClass(), $texts->getValue() );
+	public function invalidArrayProvider() {
+		return [
+			[ [ null ] ],
+			[ [ '' ] ],
+			[ [ [] ] ],
+			[ [ [ 'en', 'foo' ] ] ],
+		];
 	}
 
 }

@@ -2,12 +2,9 @@
 
 namespace Wikibase\DataModel\Statement;
 
-use Comparable;
-use Hashable;
 use InvalidArgumentException;
 use Wikibase\DataModel\Entity\PropertyId;
 use Wikibase\DataModel\PropertyIdProvider;
-use Wikibase\DataModel\Reference;
 use Wikibase\DataModel\ReferenceList;
 use Wikibase\DataModel\Snak\Snak;
 use Wikibase\DataModel\Snak\SnakList;
@@ -22,7 +19,7 @@ use Wikibase\DataModel\Snak\SnakList;
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author Bene* < benestar.wikimedia@gmail.com >
  */
-class Statement implements Hashable, Comparable, PropertyIdProvider {
+class Statement implements PropertyIdProvider {
 
 	/**
 	 * Rank enum. Higher values are more preferred.
@@ -56,7 +53,7 @@ class Statement implements Hashable, Comparable, PropertyIdProvider {
 	private $references;
 
 	/**
-	 * @var integer, element of the Statement::RANK_ enum
+	 * @var int element of the Statement::RANK_ enum
 	 */
 	private $rank = self::RANK_NORMAL;
 
@@ -175,14 +172,15 @@ class Statement implements Hashable, Comparable, PropertyIdProvider {
 	/**
 	 * @since 2.0
 	 *
-	 * @param Snak[]|Snak $snaks
-	 * @param Snak [$snak2,...]
+	 * @param Snak ...$snaks
+	 * (passing a single Snak[] is still supported but deprecated)
 	 *
 	 * @throws InvalidArgumentException
 	 */
-	public function addNewReference( $snaks = [] /*...*/ ) {
-		if ( $snaks instanceof Snak ) {
-			$snaks = func_get_args();
+	public function addNewReference( ...$snaks ) {
+		if ( count( $snaks ) === 1 && is_array( $snaks[0] ) ) {
+			// TODO stop supporting this
+			$snaks = $snaks[0];
 		}
 
 		$this->references->addNewReference( $snaks );
@@ -217,8 +215,6 @@ class Statement implements Hashable, Comparable, PropertyIdProvider {
 	}
 
 	/**
-	 * @see Hashable::getHash
-	 *
 	 * @since 0.1
 	 *
 	 * @return string
@@ -275,7 +271,6 @@ class Statement implements Hashable, Comparable, PropertyIdProvider {
 	}
 
 	/**
-	 * @see Comparable::equals
 	 *
 	 * @since 0.7.4
 	 *

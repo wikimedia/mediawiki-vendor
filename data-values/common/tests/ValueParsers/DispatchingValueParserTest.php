@@ -1,35 +1,29 @@
 <?php
 
-namespace ValueParsers\Test;
+declare( strict_types = 1 );
+
+namespace ValueParsers\Tests;
 
 use InvalidArgumentException;
-use PHPUnit_Framework_MockObject_Matcher_Invocation;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ValueParsers\DispatchingValueParser;
 use ValueParsers\ParseException;
 use ValueParsers\ValueParser;
 
 /**
- * @covers ValueParsers\DispatchingValueParser
+ * @covers \ValueParsers\DispatchingValueParser
  *
+ * @group DataValue
+ * @group DataValueExtensions
  * @group ValueParsers
- * @group WikibaseLib
- * @group Wikibase
  *
- * @licence GNU GPL v2+
- * @author Thiemo Mättig
+ * @license GPL-2.0-or-later
+ * @author Thiemo Kreuz
  */
-class DispatchingValueParserTest extends PHPUnit_Framework_TestCase {
+class DispatchingValueParserTest extends TestCase {
 
-	/**
-	 * @param PHPUnit_Framework_MockObject_Matcher_Invocation $invocation
-	 *
-	 * @return ValueParser
-	 */
-	private function getParser( PHPUnit_Framework_MockObject_Matcher_Invocation $invocation ) {
-		$mock = $this->getMockBuilder( 'ValueParsers\ValueParser' )
-			->disableOriginalConstructor()
-			->getMock();
+	private function getParser( $invocation ) : ValueParser {
+		$mock = $this->createMock( ValueParser::class );
 
 		$mock->expects( $invocation )
 			->method( 'parse' )
@@ -45,30 +39,30 @@ class DispatchingValueParserTest extends PHPUnit_Framework_TestCase {
 
 	/**
 	 * @dataProvider invalidConstructorArgumentsProvider
-	 * @expectedException InvalidArgumentException
 	 */
 	public function testGivenInvalidConstructorArguments_constructorThrowsException( $parsers, $format ) {
+		$this->expectException( InvalidArgumentException::class );
 		new DispatchingValueParser( $parsers, $format );
 	}
 
 	public function invalidConstructorArgumentsProvider() {
-		$parsers = array(
+		$parsers = [
 			$this->getParser( $this->never() ),
-		);
+		];
 
-		return array(
-			array( array(), 'format' ),
-			array( $parsers, null ),
-			array( $parsers, '' ),
-		);
+		return [
+			[ [], 'format' ],
+			[ $parsers, null ],
+			[ $parsers, '' ],
+		];
 	}
 
 	public function testParse() {
 		$parser = new DispatchingValueParser(
-			array(
+			[
 				$this->getParser( $this->once() ),
 				$this->getParser( $this->never() ),
-			),
+			],
 			'format'
 		);
 
@@ -77,13 +71,13 @@ class DispatchingValueParserTest extends PHPUnit_Framework_TestCase {
 
 	public function testParseThrowsException() {
 		$parser = new DispatchingValueParser(
-			array(
+			[
 				$this->getParser( $this->once() ),
-			),
+			],
 			'format'
 		);
 
-		$this->setExpectedException( 'ValueParsers\ParseException' );
+		$this->expectException( ParseException::class );
 		$parser->parse( 'invalid' );
 	}
 

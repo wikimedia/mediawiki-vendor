@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace ValueParsers;
 
 use InvalidArgumentException;
@@ -10,8 +12,8 @@ use InvalidArgumentException;
  *
  * @since 0.3
  *
- * @licence GNU GPL v2+
- * @author Thiemo Mättig
+ * @license GPL-2.0-or-later
+ * @author Thiemo Kreuz
  */
 class DispatchingValueParser implements ValueParser {
 

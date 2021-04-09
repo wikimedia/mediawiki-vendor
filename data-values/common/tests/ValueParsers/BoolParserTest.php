@@ -1,17 +1,20 @@
 <?php
 
-namespace ValueParsers\Test;
+declare( strict_types = 1 );
+
+namespace ValueParsers\Tests;
 
 use DataValues\BooleanValue;
 use ValueParsers\BoolParser;
 
 /**
- * @covers ValueParsers\BoolParser
+ * @covers \ValueParsers\BoolParser
+ * @covers \ValueParsers\StringValueParser
  *
  * @group ValueParsers
  * @group DataValueExtensions
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class BoolParserTest extends StringValueParserTest {
@@ -29,42 +32,36 @@ class BoolParserTest extends StringValueParserTest {
 	 * @see ValueParserTestBase::validInputProvider
 	 */
 	public function validInputProvider() {
-		$argLists = array();
+		return [
+			[ 'yes', new BooleanValue( true ) ],
+			[ 'on', new BooleanValue( true ) ],
+			[ '1', new BooleanValue( true ) ],
+			[ 'true', new BooleanValue( true ) ],
+			[ 'no', new BooleanValue( false ) ],
+			[ 'off', new BooleanValue( false ) ],
+			[ '0', new BooleanValue( false ) ],
+			[ 'false', new BooleanValue( false ) ],
 
-		$valid = array(
-			'yes' => true,
-			'on' => true,
-			'1' => true,
-			'true' => true,
-			'no' => false,
-			'off' => false,
-			'0' => false,
-			'false' => false,
-
-			'YeS' => true,
-			'ON' => true,
-			'No' => false,
-			'OfF' => false,
-		);
-
-		foreach ( $valid as $value => $expected ) {
-			$expected = new BooleanValue( $expected );
-			$argLists[] = array( (string)$value, $expected );
-		}
-
-		return $argLists;
+			[ 'YeS', new BooleanValue( true ) ],
+			[ 'ON', new BooleanValue( true ) ],
+			[ 'No', new BooleanValue( false ) ],
+			[ 'OfF', new BooleanValue( false ) ],
+		];
 	}
 
+	/**
+	 * @see StringValueParserTest::invalidInputProvider
+	 */
 	public function invalidInputProvider() {
 		$argLists = parent::invalidInputProvider();
 
-		$invalid = array(
+		$invalid = [
 			'foo',
 			'2',
-		);
+		];
 
 		foreach ( $invalid as $value ) {
-			$argLists[] = array( $value );
+			$argLists[] = [ $value ];
 		}
 
 		return $argLists;

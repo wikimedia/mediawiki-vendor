@@ -1,5 +1,25 @@
 # Wikibase DataModel release notes
 
+## Version 9.6.1 (TODO)
+
+* `Snak` now declares `getHash()` and `equals()` methods again,
+  which it used to inherit from the `Hashable` and `Immutable` interfaces prior to version 9.6.0.
+  (The methods were never removed from any specific classes,
+  but since `Snak` is an interface, Phan started complaining that the methods were unknown.)
+
+## Version 9.6.0 (2021-03-31)
+
+* `ReferenceList::addNewReference()`, `Statement::addNewReference()` and the `StatementList` constructor
+  supported being called with a variadic argument list, with a single array argument,
+  or (in the case of `StatementList`) with a single `Traversable` argument.
+  The latter two forms are now deprecated (though they still work);
+  please update your code:
+  for instance, change `->addNewReference( [ $x, $y ] )` to `->addNewReference( $x, $y )`,
+  and `->addNewReference( $snaks )` to `->addNewReference( ...$snaks )`.
+* `Statement`, `Reference`, `SnakList` and `Snak` no longer implement the `Hashable` and `Immutable` interfaces from `DataValues/DataValues`.
+* Removed usages of the `Comparable` interface
+* Made the library installable together with DataValues 3.x
+
 ## Version 9.5.1 (2020-06-03)
 
 * Updated release notes

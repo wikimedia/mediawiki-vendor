@@ -3,9 +3,9 @@
 namespace Wikibase\DataModel\Statement;
 
 use ArrayIterator;
-use Comparable;
 use Countable;
 use InvalidArgumentException;
+use Iterator;
 use IteratorAggregate;
 use Traversable;
 use Wikibase\DataModel\Entity\PropertyId;
@@ -28,7 +28,7 @@ use Wikibase\DataModel\Snak\SnakList;
  * @author Bene* < benestar.wikimedia@gmail.com >
  * @author Thiemo Kreuz
  */
-class StatementList implements IteratorAggregate, Comparable, Countable {
+class StatementList implements IteratorAggregate, Countable {
 
 	/**
 	 * @var Statement[]
@@ -36,14 +36,17 @@ class StatementList implements IteratorAggregate, Comparable, Countable {
 	private $statements = [];
 
 	/**
-	 * @param Statement[]|Traversable|Statement $statements
-	 * @param Statement [$statement2,...]
+	 * @param Statement ...$statements
+	 * (passing a single Statement[] or Traversable is still supported but deprecated)
 	 *
 	 * @throws InvalidArgumentException
 	 */
-	public function __construct( $statements = [] /*...*/ ) {
-		if ( $statements instanceof Statement ) {
-			$statements = func_get_args();
+	public function __construct( ...$statements ) {
+		if ( count( $statements ) === 1 && (
+			is_array( $statements[0] ) || $statements[0] instanceof Traversable
+		) ) {
+			// TODO stop supporting this
+			$statements = $statements[0];
 		}
 
 		if ( !is_array( $statements ) && !( $statements instanceof Traversable ) ) {
@@ -263,7 +266,6 @@ class StatementList implements IteratorAggregate, Comparable, Countable {
 	}
 
 	/**
-	 * @see Comparable::equals
 	 *
 	 * @param mixed $target
 	 *

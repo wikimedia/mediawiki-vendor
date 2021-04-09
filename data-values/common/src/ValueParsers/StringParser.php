@@ -1,9 +1,10 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace ValueParsers;
 
 use DataValues\StringValue;
-use InvalidArgumentException;
 use ValueParsers\Normalizers\NullStringNormalizer;
 use ValueParsers\Normalizers\StringNormalizer;
 
@@ -12,7 +13,7 @@ use ValueParsers\Normalizers\StringNormalizer;
  *
  * @since 0.3
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  */
 class StringParser implements ValueParser {
@@ -23,7 +24,7 @@ class StringParser implements ValueParser {
 	private $normalizer;
 
 	/**
-	 * @param StringNormalizer $normalizer
+	 * @param StringNormalizer|null $normalizer
 	 */
 	public function __construct( StringNormalizer $normalizer = null ) {
 		$this->normalizer = $normalizer ?: new NullStringNormalizer();
@@ -34,12 +35,12 @@ class StringParser implements ValueParser {
 	 *
 	 * @param string $value
 	 *
-	 * @throws InvalidArgumentException if $value is not a string
+	 * @throws ParseException if the provided value is not a string
 	 * @return StringValue
 	 */
 	public function parse( $value ) {
 		if ( !is_string( $value ) ) {
-			throw new InvalidArgumentException( 'Parameter $value must be a string' );
+			throw new ParseException( 'Parameter $value must be a string' );
 		}
 
 		$value = $this->normalizer->normalize( $value );

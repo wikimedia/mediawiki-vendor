@@ -1,11 +1,13 @@
 <?php
 
-namespace ValueParsers\Test;
+declare( strict_types = 1 );
+
+namespace ValueParsers\Tests;
 
 use Comparable;
 use DataValues\DataValue;
-use PHPUnit_Framework_TestCase;
-use ValueParsers\ParserOptions;
+use PHPUnit\Framework\TestCase;
+use ValueParsers\ParseException;
 use ValueParsers\ValueParser;
 
 /**
@@ -16,35 +18,27 @@ use ValueParsers\ValueParser;
  * @group ValueParsers
  * @group DataValueExtensions
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-abstract class ValueParserTestBase extends PHPUnit_Framework_TestCase {
+abstract class ValueParserTestBase extends TestCase {
 
 	/**
-	 * @since 0.1
-	 *
 	 * @return array[]
 	 */
-	public abstract function validInputProvider();
+	abstract public function validInputProvider();
 
 	/**
-	 * @since 0.1
-	 *
 	 * @return array[]
 	 */
-	public abstract function invalidInputProvider();
+	abstract public function invalidInputProvider();
 
 	/**
-	 * @since 0.1
-	 *
 	 * @return ValueParser
 	 */
-	protected abstract function getInstance();
+	abstract protected function getInstance();
 
 	/**
-	 * @since 0.1
-	 *
 	 * @dataProvider validInputProvider
 	 * @param mixed $value
 	 * @param mixed $expected
@@ -73,15 +67,12 @@ abstract class ValueParserTestBase extends PHPUnit_Framework_TestCase {
 			}
 
 			$this->assertTrue( $expected->equals( $actual ), $msg );
-		}
-		else {
+		} else {
 			$this->assertEquals( $expected, $actual );
 		}
 	}
 
 	/**
-	 * @since 0.1
-	 *
 	 * @dataProvider invalidInputProvider
 	 * @param mixed $value
 	 * @param ValueParser|null $parser
@@ -91,14 +82,12 @@ abstract class ValueParserTestBase extends PHPUnit_Framework_TestCase {
 			$parser = $this->getInstance();
 		}
 
-		$this->setExpectedException( 'ValueParsers\ParseException' );
+		$this->expectException( ParseException::class );
 		$parser->parse( $value );
 	}
 
 	/**
 	 * Returns if the result of the parsing process should be checked to be a DataValue.
-	 *
-	 * @since 0.1
 	 *
 	 * @return bool
 	 */

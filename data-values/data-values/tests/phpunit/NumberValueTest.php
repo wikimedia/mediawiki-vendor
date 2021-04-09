@@ -1,17 +1,13 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace DataValues\Tests;
 
 use DataValues\NumberValue;
 
 /**
- * @covers DataValues\NumberValue
- *
- * @group DataValue
- * @group DataValueExtensions
- *
- * @license GPL-2.0+
- * @author Jeroen De Dauw < jeroendedauw@gmail.com >
+ * @covers \DataValues\NumberValue
  */
 class NumberValueTest extends DataValueTest {
 

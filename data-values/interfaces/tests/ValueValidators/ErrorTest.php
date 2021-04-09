@@ -1,11 +1,14 @@
 <?php
 
-namespace ValueValidators\Test;
+declare( strict_types = 1 );
 
+namespace ValueValidators\Tests;
+
+use PHPUnit\Framework\TestCase;
 use ValueValidators\Error;
 
 /**
- * @covers ValueValidators\Error
+ * @covers \ValueValidators\Error
  *
  * @group ValueValidators
  * @group DataValueExtensions
@@ -13,7 +16,7 @@ use ValueValidators\Error;
  * @license GPL-2.0+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class ErrorTest extends \PHPUnit_Framework_TestCase {
+class ErrorTest extends TestCase {
 
 	public function newErrorProvider() {
 		$argLists = [];
@@ -46,11 +49,7 @@ class ErrorTest extends \PHPUnit_Framework_TestCase {
 		 */
 		$this->assertInstanceOf( 'ValueValidators\Error', $error );
 
-		$this->assertInternalType( 'string', $error->getText() );
-		$this->assertInternalType( 'integer', $error->getSeverity() );
 		$this->assertTrue( is_string( $error->getProperty() ) || is_null( $error->getProperty() ) );
-		$this->assertInternalType( 'string', $error->getCode() );
-		$this->assertInternalType( 'array', $error->getParameters() );
 
 		if ( count( $args ) > 0 ) {
 			$this->assertSame( $args[0], $error->getText() );

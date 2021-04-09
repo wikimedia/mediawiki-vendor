@@ -12,8 +12,8 @@
          stopOnSkipped="false"
          verbose="true">
     <testsuites>
-        <testsuite name="DataValuesCommon">
-            <directory>tests</directory>
+        <testsuite name="DataValues">
+            <directory>tests/phpunit</directory>
         </testsuite>
     </testsuites>
     <filter>

@@ -17,36 +17,36 @@ use DataValues\TimeValue;
  *
  * @since 0.7 renamed from TimeParser to IsoTimestampParser.
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Addshore
  * @author Thiemo Kreuz
  * @author Daniel Kinzler
  */
 class IsoTimestampParser extends StringValueParser {
 
-	const FORMAT_NAME = 'iso-timestamp';
+	private const FORMAT_NAME = 'iso-timestamp';
 
 	/**
 	 * Option to override the precision auto-detection and set a specific precision. Should be an
 	 * integer or string containing one of the TimeValue::PRECISION_... constants.
 	 */
-	const OPT_PRECISION = 'precision';
+	public const OPT_PRECISION = 'precision';
 
 	/**
 	 * Option to override the calendar model auto-detection and set a specific calendar model URI.
 	 * Should be one of the TimeValue::CALENDAR_... constants.
 	 */
-	const OPT_CALENDAR = 'calendar';
+	public const OPT_CALENDAR = 'calendar';
 
 	/**
 	 * @deprecated since 0.7.1, use TimeValue::CALENDAR_GREGORIAN instead
 	 */
-	const CALENDAR_GREGORIAN = TimeValue::CALENDAR_GREGORIAN;
+	public const CALENDAR_GREGORIAN = TimeValue::CALENDAR_GREGORIAN;
 
 	/**
 	 * @deprecated since 0.7.1, use TimeValue::CALENDAR_JULIAN instead
 	 */
-	const CALENDAR_JULIAN = TimeValue::CALENDAR_JULIAN;
+	public const CALENDAR_JULIAN = TimeValue::CALENDAR_JULIAN;
 
 	/**
 	 * @var CalendarModelParser
@@ -137,11 +137,11 @@ class IsoTimestampParser extends StringValueParser {
 		}
 
 		if ( $month < 1 && $day > 0 ) {
-			throw new ParseException( 'Can not have a day with no month' );
+			throw new ParseException( 'Cannot have a day with no month' );
 		}
 
 		if ( $day < 1 && ( $hour > 0 || $minute > 0 || $second > 0 ) ) {
-			throw new ParseException( 'Can not have hour, minute or second with no day' );
+			throw new ParseException( 'Cannot have hour, minute or second with no day' );
 		}
 
 		$sign = str_replace( "\xE2\x88\x92", '-', $sign );
@@ -163,7 +163,7 @@ class IsoTimestampParser extends StringValueParser {
 		} elseif ( $timeParts[4] > 0 ) {
 			$precision = TimeValue::PRECISION_HOUR;
 		} elseif ( $timeParts[3] > 0
-			// Can not have a day with no month, fall back to year precision.
+			// Cannot have a day with no month, fall back to year precision.
 			&& $timeParts[2] > 0
 		) {
 			$precision = TimeValue::PRECISION_DAY;

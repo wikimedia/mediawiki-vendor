@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace DataValues;
 
 /**
@@ -7,7 +9,7 @@ namespace DataValues;
  *
  * @since 0.1
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class MonolingualTextValue extends DataValueObject {
@@ -15,35 +17,29 @@ class MonolingualTextValue extends DataValueObject {
 	/**
 	 * @var string
 	 */
-	private $text;
+	private $languageCode;
 
 	/**
 	 * @var string
 	 */
-	private $languageCode;
+	private $text;
 
 	/**
-	 * @since 0.1
-	 *
 	 * @param string $languageCode
 	 * @param string $text
 	 *
 	 * @throws IllegalValueException
 	 */
 	public function __construct( $languageCode, $text ) {
-		if ( !is_string( $languageCode ) ) {
-			throw new IllegalValueException( 'Can only construct MonolingualTextValue with a string language code.' );
+		if ( !is_string( $languageCode ) || $languageCode === '' ) {
+			throw new IllegalValueException( '$languageCode must be a non-empty string' );
 		}
-		elseif ( $languageCode === '' ) {
-			throw new IllegalValueException( 'Can not construct a MonolingualTextValue with an empty language code.' );
-		}
-
 		if ( !is_string( $text ) ) {
-			throw new IllegalValueException( 'Can only construct a MonolingualTextValue with a string value.' );
+			throw new IllegalValueException( '$text must be a string' );
 		}
 
-		$this->text = $text;
 		$this->languageCode = $languageCode;
+		$this->text = $text;
 	}
 
 	/**
@@ -52,7 +48,7 @@ class MonolingualTextValue extends DataValueObject {
 	 * @return string
 	 */
 	public function serialize() {
-		return serialize( array( $this->languageCode, $this->text ) );
+		return serialize( [ $this->languageCode, $this->text ] );
 	}
 
 	/**
@@ -75,7 +71,8 @@ class MonolingualTextValue extends DataValueObject {
 	}
 
 	/**
-	 * @see DataValue::getSortKey
+	 * @deprecated Kept for compatibility with older DataValues versions.
+	 * Do not use.
 	 *
 	 * @return string
 	 */
@@ -87,17 +84,13 @@ class MonolingualTextValue extends DataValueObject {
 	/**
 	 * @see DataValue::getValue
 	 *
-	 * @return MonolingualTextValue
+	 * @return self
 	 */
 	public function getValue() {
 		return $this;
 	}
 
 	/**
-	 * Returns the text.
-	 *
-	 * @since 0.1
-	 *
 	 * @return string
 	 */
 	public function getText() {
@@ -105,10 +98,6 @@ class MonolingualTextValue extends DataValueObject {
 	}
 
 	/**
-	 * Returns the language code.
-	 *
-	 * @since 0.1
-	 *
 	 * @return string
 	 */
 	public function getLanguageCode() {
@@ -121,25 +110,30 @@ class MonolingualTextValue extends DataValueObject {
 	 * @return string[]
 	 */
 	public function getArrayValue() {
-		return array(
+		return [
 			'text' => $this->text,
 			'language' => $this->languageCode,
-		);
+		];
 	}
 
 	/**
-	 * Constructs a new instance of the DataValue from the provided data.
-	 * This can round-trip with @see getArrayValue
+	 * Constructs a new instance from the provided data. Required for @see DataValueDeserializer.
+	 * This is expected to round-trip with @see getArrayValue.
 	 *
-	 * @since 0.1
+	 * @deprecated since 1.0.0. Static DataValue::newFromArray constructors like this are
+	 *  underspecified (not in the DataValue interface), and misleadingly named (should be named
+	 *  newFromArrayValue). Instead, use DataValue builder callbacks in @see DataValueDeserializer.
 	 *
-	 * @param string[] $data
+	 * @param mixed $data Warning! Even if this is expected to be a value as returned by
+	 *  @see getArrayValue, callers of this specific newFromArray implementation can not guarantee
+	 *  this. This is not even guaranteed to be an array!
 	 *
-	 * @return MonolingualTextValue
-	 * @throws IllegalValueException
+	 * @throws IllegalValueException if $data is not in the expected format. Subclasses of
+	 *  InvalidArgumentException are expected and properly handled by @see DataValueDeserializer.
+	 * @return self
 	 */
 	public static function newFromArray( $data ) {
-		self::requireArrayFields( $data, array( 'language', 'text' ) );
+		self::requireArrayFields( $data, [ 'language', 'text' ] );
 
 		return new static( $data['language'], $data['text'] );
 	}

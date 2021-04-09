@@ -1,11 +1,11 @@
 # DataValues Interfaces
 
+The design of this library is poor and its reason for existing is questionable. Most of the
+time you are likely better served by creating dedicated interfaces within your project.
+
 DataValues Interfaces is a small PHP library that defines a set of interfaces for parsers,
-formatters and validators.
+formatters and validators. It is part of the [DataValues set of libraries](https://github.com/DataValues).
 
-It is part of the [DataValues set of libraries](https://github.com/DataValues).
-
-[![Build Status](https://secure.travis-ci.org/DataValues/Interfaces.png?branch=master)](http://travis-ci.org/DataValues/Interfaces)
 [![Code Coverage](https://scrutinizer-ci.com/g/DataValues/Interfaces/badges/coverage.png?s=6432d29bf3fed068995e66093ad52e053099a916)](https://scrutinizer-ci.com/g/DataValues/Interfaces/)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/DataValues/Interfaces/badges/quality-score.png?s=da1bb6ea09762d9e3a143e473cdefa712db46804)](https://scrutinizer-ci.com/g/DataValues/Interfaces/)
 
@@ -13,48 +13,39 @@ On [Packagist](https://packagist.org/packages/data-values/interfaces):
 [![Latest Stable Version](https://poser.pugx.org/data-values/interfaces/version.png)](https://packagist.org/packages/data-values/interfaces)
 [![Download count](https://poser.pugx.org/data-values/interfaces/d/total.png)](https://packagist.org/packages/data-values/interfaces)
 
-## Requirements
-
-* PHP 5.5 or later
 
 ## Installation
 
-You can use [Composer](http://getcomposer.org/) to download and install
-this package as well as its dependencies. Alternatively you can simply clone
-the git repository and take care of loading yourself.
+To use this library in your project, simply add a dependency on `data-values/interfaces`
+to your project's `composer.json` file. Here is a minimal example of a `composer.json`
+file that just defines a dependency on Interfaces 1.x:
 
-### Composer
-
-To add this package as a local, per-project dependency to your project, simply add a
-dependency on `data-values/interfaces` to your project's `composer.json` file.
-Here is a minimal example of a `composer.json` file that just defines a dependency on
-DataValues Interfaces 0.2:
-
-    {
-        "require": {
-            "data-values/interfaces": "0.2.*"
-        }
+```json
+{
+    "require": {
+        "data-values/interfaces": "^1.0"
     }
-
-### Manual
-
-Get the DataValues Interfaces code, either via git, or some other means. Also get all dependencies.
-You can find a list of the dependencies in the "require" section of the composer.json file.
-Load all dependencies and the load the DataValues Interfaces library by including its entry point:
-Interfaces.php.
+}
+```
 
 ## Tests
 
 This library comes with a set up PHPUnit tests that cover all non-trivial code. You can run these
 tests using the PHPUnit configuration file found in the root directory. The tests can also be run
-via TravisCI, as a TravisCI configuration file is also provided in the root directory.
-
-## Authors
-
-DataValues Interfaces has been written by [Jeroen De Dauw](https://www.mediawiki.org/wiki/User:Jeroen_De_Dauw),
-as [Wikimedia Germany](https://wikimedia.de) employee for the [Wikidata project](https://wikidata.org/).
+via Github Actions.
 
 ## Release notes
+
+### 1.0.0 (2021-01-20)
+
+* Updated minimum required PHP version from 5.5.9 to 7.2
+* Removed `ValueFormatterBase`
+* Removed `ValueFormatterTestBase`
+* Removed `ValueValidator::setOptions`
+* Removed `ValueValidatorObject`
+* Removed `DATAVALUES_INTERFACES_VERSION` constant
+* `ValueValidators\Result` is now final
+* The properties of `ValueValidators\Error` are now private instead of protected
 
 ### 0.2.5 (2017-08-09)
 

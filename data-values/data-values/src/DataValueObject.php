@@ -1,20 +1,15 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace DataValues;
 
 /**
  * Base for objects that represent a single data value.
- *
- * @since 0.1
- *
- * @license GPL-2.0+
- * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 abstract class DataValueObject implements DataValue {
 
 	/**
-	 * @see Hashable::getHash
-	 *
 	 * @return string
 	 */
 	public function getHash() {
@@ -22,8 +17,6 @@ abstract class DataValueObject implements DataValue {
 	}
 
 	/**
-	 * @see Comparable::equals
-	 *
 	 * @param mixed $target
 	 *
 	 * @return bool
@@ -36,15 +29,6 @@ abstract class DataValueObject implements DataValue {
 		return is_object( $target )
 			&& get_called_class() === get_class( $target )
 			&& serialize( $this ) === serialize( $target );
-	}
-
-	/**
-	 * @see DataValue::getCopy
-	 *
-	 * @return DataValue
-	 */
-	public function getCopy() {
-		return unserialize( serialize( $this ) );
 	}
 
 	/**

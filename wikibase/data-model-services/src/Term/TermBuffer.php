@@ -7,6 +7,9 @@ use Wikibase\DataModel\Entity\EntityId;
 /**
  * A service interface for buffering terms.
  *
+ * Typically implemented in conjunction with {@link TermLookup},
+ * and (like that interface) does not apply language fallbacks.
+ *
  * @since 1.1
  *
  * @license GPL-2.0-or-later
@@ -19,7 +22,8 @@ interface TermBuffer {
 	 * The source from which to fetch would typically be supplied to the buffer's constructor.
 	 *
 	 * @param EntityId[] $entityIds
-	 * @param string[] $termTypes The desired term types.
+	 * @param string[] $termTypes The desired term types,
+	 * i.e. any of TermTypes::TYPE_LABEL, TermTypes::TYPE_DESCRIPTION, TermTypes::TYPE_ALIAS
 	 * @param string[] $languageCodes The desired languages.
 	 */
 	public function prefetchTerms( array $entityIds, array $termTypes, array $languageCodes );
@@ -28,7 +32,7 @@ interface TermBuffer {
 	 * Returns a term that was previously loaded by prefetchTerms.
 	 *
 	 * @param EntityId $entityId
-	 * @param string $termType
+	 * @param string $termType One of of TermTypes::TYPE_LABEL, TermTypes::TYPE_DESCRIPTION, TermTypes::TYPE_ALIAS
 	 * @param string $languageCode
 	 *
 	 * @return string|false|null The term, or false of that term is known to not exist,

@@ -1,21 +1,15 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace DataValues;
 
-use Comparable;
-use Hashable;
-use Immutable;
 use Serializable;
 
 /**
  * Interface for objects that represent a single data value.
- *
- * @since 0.1
- *
- * @license GPL-2.0+
- * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-interface DataValue extends Hashable, Comparable, Serializable, Immutable {
+interface DataValue extends Serializable {
 
 	/**
 	 * Returns the identifier of the datavalues type.
@@ -27,16 +21,6 @@ interface DataValue extends Hashable, Comparable, Serializable, Immutable {
 	 * @return string
 	 */
 	public static function getType();
-
-	/**
-	 * Returns a key that can be used to sort the data value with.
-	 * It can be either numeric or a string.
-	 *
-	 * @since 0.1
-	 *
-	 * @return string|float|int
-	 */
-	public function getSortKey();
 
 	/**
 	 * Returns the value contained by the DataValue. If this value is not simple and
@@ -83,14 +67,5 @@ interface DataValue extends Hashable, Comparable, Serializable, Immutable {
 	 * @return array
 	 */
 	public function toArray();
-
-	/**
-	 * Returns a deep copy of the object.
-	 *
-	 * @since 0.1
-	 *
-	 * @return DataValue
-	 */
-	public function getCopy();
 
 }

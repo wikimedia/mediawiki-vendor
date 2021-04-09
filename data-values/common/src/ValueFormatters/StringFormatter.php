@@ -1,19 +1,22 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace ValueFormatters;
 
 use DataValues\StringValue;
 use InvalidArgumentException;
 
 /**
- * Formatter for string values
+ * Trivial formatter for StringValue objects that does nothing but returning the string value as it
+ * is.
  *
  * @since 0.1
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @author Katie Filbert < aude.wiki@gmail.com >
  */
-class StringFormatter extends ValueFormatterBase {
+class StringFormatter implements ValueFormatter {
 
 	/**
 	 * @see ValueFormatter::format

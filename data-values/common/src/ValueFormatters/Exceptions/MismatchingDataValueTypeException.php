@@ -1,15 +1,18 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace ValueFormatters\Exceptions;
 
 use Exception;
 use ValueFormatters\FormattingException;
 
 /**
- * @since 0.2.1
+ * @since 0.2.2
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @author Katie Filbert < aude.wiki@gmail.com >
+ * @author Thiemo Kreuz
  */
 class MismatchingDataValueTypeException extends FormattingException {
 
@@ -27,16 +30,21 @@ class MismatchingDataValueTypeException extends FormattingException {
 	 * @param string $expectedValueType
 	 * @param string $dataValueType
 	 * @param string $message
-	 * @param Exception $previous
+	 * @param Exception|null $previous
 	 */
-	public function __construct( $expectedValueType, $dataValueType, $message = '',
+	public function __construct(
+		$expectedValueType,
+		$dataValueType,
+		$message = '',
 		Exception $previous = null
 	) {
 		$this->expectedValueType = $expectedValueType;
 		$this->dataValueType = $dataValueType;
 
-		$message = '$dataValueType "' . $dataValueType . '" does not match $expectedValueType "'
-			. $expectedValueType . '": $message';
+		if ( $message === '' ) {
+			$message = 'Data value type "' . $dataValueType . '" does not match expected "'
+				. $expectedValueType . '"';
+		}
 
 		parent::__construct( $message, 0, $previous );
 	}

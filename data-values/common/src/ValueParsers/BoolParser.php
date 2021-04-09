@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace ValueParsers;
 
 use DataValues\BooleanValue;
@@ -9,14 +11,14 @@ use DataValues\BooleanValue;
  *
  * @since 0.1
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class BoolParser extends StringValueParser {
 
-	const FORMAT_NAME = 'bool';
+	private const FORMAT_NAME = 'bool';
 
-	private static $values = array(
+	private static $values = [
 		'yes' => true,
 		'on' => true,
 		'1' => true,
@@ -25,7 +27,7 @@ class BoolParser extends StringValueParser {
 		'off' => false,
 		'0' => false,
 		'false' => false,
-	);
+	];
 
 	/**
 	 * @see StringValueParser::stringParse

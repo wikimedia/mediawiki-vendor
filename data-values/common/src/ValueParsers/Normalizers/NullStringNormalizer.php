@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace ValueParsers\Normalizers;
 
 use InvalidArgumentException;
@@ -9,7 +11,7 @@ use InvalidArgumentException;
  *
  * @since 0.3
  *
- * @license GPL 2+
+ * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  */
 class NullStringNormalizer implements StringNormalizer {

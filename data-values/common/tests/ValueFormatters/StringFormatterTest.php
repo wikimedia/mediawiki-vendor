@@ -1,59 +1,56 @@
 <?php
 
-namespace ValueFormatters\Test;
+declare( strict_types = 1 );
+
+namespace ValueFormatters\Tests;
 
 use DataValues\StringValue;
-use ValueFormatters\FormatterOptions;
+use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 use ValueFormatters\StringFormatter;
 
 /**
- * @covers ValueFormatters\StringFormatter
+ * @covers \ValueFormatters\StringFormatter
  *
  * @group ValueFormatters
  * @group DataValueExtensions
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @author Katie Filbert < aude.wiki@gmail.com >
  */
-class StringFormatterTest extends ValueFormatterTestBase {
+class StringFormatterTest extends TestCase {
 
-	/**
-	 * @deprecated since 0.2, just use getInstance.
-	 */
-	protected function getFormatterClass() {
-		throw new \LogicException( 'Should not be called, use getInstance' );
+	/** @dataProvider validProvider */
+	public function testValidFormat( StringValue $value, string $expected ) {
+		$formatter = new StringFormatter();
+		$this->assertSame( $expected, $formatter->format( $value ) );
 	}
 
-	/**
-	 * @see ValueFormatterTestBase::getInstance
-	 *
-	 * @param FormatterOptions|null $options
-	 *
-	 * @return StringFormatter
-	 */
-	protected function getInstance( FormatterOptions $options = null ) {
-		return new StringFormatter( $options );
-	}
-
-	/**
-	 * @see ValueFormatterTestBase::validProvider
-	 */
 	public function validProvider() {
-		$strings = array(
-			'ice cream',
-			'cake',
-			'',
-			' a ',
-			'  ',
-		);
+		return [
+			[ new StringValue( 'ice cream' ), 'ice cream' ],
+			[ new StringValue( 'cake' ), 'cake' ],
+			[ new StringValue( '' ), '' ],
+			[ new StringValue( ' a ' ), ' a ' ],
+			[ new StringValue( '  ' ), '  ' ],
+		];
+	}
 
-		$argLists = array();
+	/**
+	 * @dataProvider invalidProvider
+	 */
+	public function testInvalidFormat( $value ) {
+		$formatter = new StringFormatter();
+		$this->expectException( InvalidArgumentException::class );
+		$formatter->format( $value );
+	}
 
-		foreach ( $strings as $string ) {
-			$argLists[] = array( new StringValue( $string ), $string );
-		}
-
-		return $argLists;
+	public function invalidProvider() {
+		return [
+			[ null ],
+			[ 0 ],
+			[ '' ],
+		];
 	}
 
 }

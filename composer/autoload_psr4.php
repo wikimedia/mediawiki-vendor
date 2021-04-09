@@ -91,7 +91,7 @@ return array(
     'DataValues\\Serializers\\' => array($vendorDir . '/data-values/serialization/src/Serializers'),
     'DataValues\\Geo\\' => array($vendorDir . '/data-values/geo/src'),
     'DataValues\\Deserializers\\' => array($vendorDir . '/data-values/serialization/src/Deserializers'),
-    'DataValues\\' => array($vendorDir . '/data-values/common/src/DataValues', $vendorDir . '/data-values/data-values/src/DataValues'),
+    'DataValues\\' => array($vendorDir . '/data-values/common/src/DataValues', $vendorDir . '/data-values/data-values/src'),
     'Cose\\' => array($vendorDir . '/web-auth/cose-lib/src'),
     'Composer\\Semver\\' => array($vendorDir . '/composer/semver/src'),
     'Composer\\CaBundle\\' => array($vendorDir . '/composer/ca-bundle/src'),

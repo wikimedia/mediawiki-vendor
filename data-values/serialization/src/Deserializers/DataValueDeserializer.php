@@ -14,14 +14,14 @@ use RuntimeException;
 /**
  * @since 0.1
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author Thiemo Kreuz
  */
 class DataValueDeserializer implements DispatchableDeserializer {
 
-	const TYPE_KEY = 'type';
-	const VALUE_KEY = 'value';
+	public const TYPE_KEY = 'type';
+	public const VALUE_KEY = 'value';
 
 	/**
 	 * @var array Associative array mapping data type IDs to either callables returning new

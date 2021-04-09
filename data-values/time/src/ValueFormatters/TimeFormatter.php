@@ -11,44 +11,48 @@ use InvalidArgumentException;
  *
  * @since 0.1
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author H. Snater < mediawiki@snater.com >
  */
-class TimeFormatter extends ValueFormatterBase {
+class TimeFormatter implements ValueFormatter {
 
 	/**
 	 * @deprecated since 0.7.1, use TimeValue::CALENDAR_GREGORIAN instead
 	 */
-	const CALENDAR_GREGORIAN = TimeValue::CALENDAR_GREGORIAN;
+	public const CALENDAR_GREGORIAN = TimeValue::CALENDAR_GREGORIAN;
 
 	/**
 	 * @deprecated since 0.7.1, use TimeValue::CALENDAR_JULIAN instead
 	 */
-	const CALENDAR_JULIAN = TimeValue::CALENDAR_JULIAN;
+	public const CALENDAR_JULIAN = TimeValue::CALENDAR_JULIAN;
 
 	/**
 	 * Option to localize calendar models. Must contain an array mapping known calendar model URIs
 	 * to localized calendar model names.
 	 */
-	const OPT_CALENDARNAMES = 'calendars';
+	public const OPT_CALENDARNAMES = 'calendars';
 
 	/**
 	 * Option for a custom timestamp formatter. Must contain an instance of a ValueFormatter
 	 * subclass, capable of formatting TimeValue objects. The output of the custom formatter is
 	 * threaded as plain text and passed through.
 	 */
-	const OPT_TIME_ISO_FORMATTER = 'time iso formatter';
+	public const OPT_TIME_ISO_FORMATTER = 'time iso formatter';
 
 	/**
-	 * @see ValueFormatterBase::__construct
+	 * @var FormatterOptions
+	 */
+	private $options;
+
+	/**
 	 *
 	 * @param FormatterOptions|null $options
 	 */
 	public function __construct( FormatterOptions $options = null ) {
-		parent::__construct( $options );
+		$this->options = $options ?: new FormatterOptions();
 
-		$this->defaultOption( self::OPT_CALENDARNAMES, array() );
-		$this->defaultOption( self::OPT_TIME_ISO_FORMATTER, null );
+		$this->options->defaultOption( self::OPT_CALENDARNAMES, array() );
+		$this->options->defaultOption( self::OPT_TIME_ISO_FORMATTER, null );
 	}
 
 	/**
@@ -66,7 +70,7 @@ class TimeFormatter extends ValueFormatterBase {
 
 		$formatted = $value->getTime();
 
-		$isoFormatter = $this->getOption( self::OPT_TIME_ISO_FORMATTER );
+		$isoFormatter = $this->options->getOption( self::OPT_TIME_ISO_FORMATTER );
 		if ( $isoFormatter instanceof ValueFormatter ) {
 			$formatted = $isoFormatter->format( $value );
 		}

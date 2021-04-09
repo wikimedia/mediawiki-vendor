@@ -7,7 +7,7 @@ namespace ValueParsers;
  *
  * @since 0.7
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Addshore
  * @author Thiemo Kreuz
  */
@@ -26,7 +26,7 @@ class MonthNameUnlocalizer {
 		$this->replacements = $replacements;
 
 		// Order search strings from longest to shortest
-		uksort( $this->replacements, function( $a, $b ) {
+		uksort( $this->replacements, function ( $a, $b ) {
 			return strlen( $b ) - strlen( $a );
 		} );
 	}

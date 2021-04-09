@@ -1,22 +1,24 @@
 <?php
 
-namespace ValueParsers\Normalizers\Test;
+declare( strict_types = 1 );
 
-use DataValues\DataValue;
+namespace ValueParsers\Tests\Normalizers;
+
 use DataValues\StringValue;
-use PHPUnit_Framework_TestCase;
+use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 use ValueParsers\Normalizers\NullStringNormalizer;
 
 /**
- * @covers ValueParsers\Normalizers\NullStringNormalizer
+ * @covers \ValueParsers\Normalizers\NullStringNormalizer
  *
  * @group ValueParsers
  * @group DataValueExtensions
  *
- * @licence GNU GPL v2+
- * @author Thiemo Mättig
+ * @license GPL-2.0-or-later
+ * @author Thiemo Kreuz
  */
-class NullStringNormalizerTest extends PHPUnit_Framework_TestCase {
+class NullStringNormalizerTest extends TestCase {
 
 	/**
 	 * @dataProvider stringProvider
@@ -27,11 +29,11 @@ class NullStringNormalizerTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function stringProvider() {
-		return array(
-			array( '' ),
-			array( 'a' ),
-			array( ' a ' ),
-		);
+		return [
+			[ '' ],
+			[ 'a' ],
+			[ ' a ' ],
+		];
 	}
 
 	/**
@@ -39,17 +41,17 @@ class NullStringNormalizerTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function testNormalizeException( $value ) {
 		$normalizer = new NullStringNormalizer();
-		$this->setExpectedException( 'InvalidArgumentException' );
+		$this->expectException( InvalidArgumentException::class );
 		$normalizer->normalize( $value );
 	}
 
 	public function invalidValueProvider() {
-		return array(
-			array( null ),
-			array( true ),
-			array( 1 ),
-			array( new StringValue( '' ) ),
-		);
+		return [
+			[ null ],
+			[ true ],
+			[ 1 ],
+			[ new StringValue( '' ) ],
+		];
 	}
 
 }

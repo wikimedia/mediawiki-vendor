@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace DataValues;
 
 use InvalidArgumentException;
@@ -9,9 +11,6 @@ use InvalidArgumentException;
  * It contains the raw native data structure representing the value,
  * as well as the originally intended value type and an error message.
  *
- * @since 0.1
- *
- * @license GPL-2.0+
  * @author Daniel Kinzler
  */
 class UnDeserializableValue extends DataValueObject {
@@ -43,7 +42,7 @@ class UnDeserializableValue extends DataValueObject {
 			throw new InvalidArgumentException( '$data must not be an object' );
 		}
 
-		if ( !is_string( $type ) && !is_null( $type ) ) {
+		if ( !is_string( $type ) && $type !== null ) {
 			throw new InvalidArgumentException( '$type must be a string or null' );
 		}
 
@@ -135,15 +134,6 @@ class UnDeserializableValue extends DataValueObject {
 	}
 
 	/**
-	 * @see DataValue::getSortKey
-	 *
-	 * @return int Always 0 in this implementation.
-	 */
-	public function getSortKey() {
-		return 0;
-	}
-
-	/**
 	 * Returns the raw data structure.
 	 * @see DataValue::getValue
 	 *
@@ -154,8 +144,6 @@ class UnDeserializableValue extends DataValueObject {
 	}
 
 	/**
-	 * @see Comparable::equals
-	 *
 	 * @param mixed $target
 	 *
 	 * @return bool

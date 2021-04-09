@@ -1,12 +1,15 @@
 <?php
 
-namespace ValueValidators\Test;
+declare( strict_types = 1 );
 
+namespace ValueValidators\Tests;
+
+use PHPUnit\Framework\TestCase;
 use ValueValidators\Error;
 use ValueValidators\Result;
 
 /**
- * @covers ValueValidators\Result
+ * @covers \ValueValidators\Result
  *
  * @group ValueValidators
  * @group DataValueExtensions
@@ -14,7 +17,7 @@ use ValueValidators\Result;
  * @license GPL-2.0+
  * @author Daniel Kinzler
  */
-class ResultTest extends \PHPUnit_Framework_TestCase {
+class ResultTest extends TestCase {
 
 	public function testNewSuccess() {
 		$result = Result::newSuccess();

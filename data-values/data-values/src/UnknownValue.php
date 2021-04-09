@@ -1,15 +1,12 @@
 <?php
 
+declare( strict_types = 1 );
+
 namespace DataValues;
 
 /**
  * Class representing a value of unknown type.
  * This is in essence a null-wrapper, useful for instance for null-parsers.
- *
- * @since 0.1
- *
- * @license GPL-2.0+
- * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class UnknownValue extends DataValueObject {
 
@@ -53,15 +50,6 @@ class UnknownValue extends DataValueObject {
 	}
 
 	/**
-	 * @see DataValue::getSortKey
-	 *
-	 * @return int Always 0 in this implementation.
-	 */
-	public function getSortKey() {
-		return 0;
-	}
-
-	/**
 	 * Returns the value.
 	 * @see DataValue::getValue
 	 *
@@ -72,8 +60,6 @@ class UnknownValue extends DataValueObject {
 	}
 
 	/**
-	 * @see Comparable::equals
-	 *
 	 * @param mixed $target
 	 *
 	 * @return bool

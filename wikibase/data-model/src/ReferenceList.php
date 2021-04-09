@@ -3,7 +3,6 @@
 namespace Wikibase\DataModel;
 
 use ArrayIterator;
-use Comparable;
 use Countable;
 use InvalidArgumentException;
 use IteratorAggregate;
@@ -24,10 +23,8 @@ use Wikibase\DataModel\Snak\Snak;
  * @author H. Snater < mediawiki@snater.com >
  * @author Thiemo Kreuz
  * @author Bene* < benestar.wikimedia@gmail.com >
- *
- * @phpcs:disable MediaWiki.NamingConventions.LowerCamelFunctionsName.FunctionName
  */
-class ReferenceList implements Comparable, Countable, IteratorAggregate, Serializable {
+class ReferenceList implements Countable, IteratorAggregate, Serializable {
 
 	/**
 	 * @var Reference[] Ordered list or references, indexed by SPL object hash.
@@ -90,14 +87,15 @@ class ReferenceList implements Comparable, Countable, IteratorAggregate, Seriali
 	/**
 	 * @since 1.1
 	 *
-	 * @param Snak[]|Snak $snaks
-	 * @param Snak [$snak2,...]
+	 * @param Snak ...$snaks
+	 * (passing a single Snak[] is still supported but deprecated)
 	 *
 	 * @throws InvalidArgumentException
 	 */
-	public function addNewReference( $snaks = [] /*...*/ ) {
-		if ( $snaks instanceof Snak ) {
-			$snaks = func_get_args();
+	public function addNewReference( ...$snaks ) {
+		if ( count( $snaks ) === 1 && is_array( $snaks[0] ) ) {
+			// TODO stop supporting this
+			$snaks = $snaks[0];
 		}
 
 		$this->addReference( new Reference( $snaks ) );
@@ -287,8 +285,6 @@ class ReferenceList implements Comparable, Countable, IteratorAggregate, Seriali
 	}
 
 	/**
-	 * @see Comparable::equals
-	 *
 	 * The comparison is done purely value based, ignoring the order of the elements in the array.
 	 *
 	 * @since 0.3
