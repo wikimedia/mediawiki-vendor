@@ -38,3 +38,12 @@ Thumbs.db
 
 # Library test files etc.
 psy/psysh/test
+data-values/common/.github
+data-values/common/tests/
+data-values/data-values/.github/
+data-values/data-values/phpunit.xml.dist
+data-values/data-values/tests
+data-values/interfaces/.github
+data-values/interfaces/phpmd.xml
+data-values/interfaces/tests
+data-values/serialization/.github
