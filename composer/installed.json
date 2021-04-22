@@ -499,17 +499,17 @@
     },
     {
         "name": "data-values/geo",
-        "version": "4.2.2",
-        "version_normalized": "4.2.2.0",
+        "version": "4.2.3",
+        "version_normalized": "4.2.3.0",
         "source": {
             "type": "git",
             "url": "https://github.com/DataValues/Geo.git",
-            "reference": "8ccadb155bcd83acf4940b7e80f9c9b7321a44e7"
+            "reference": "a08d5ce38c2cb789ff8942e9082ce04dfc55a850"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/DataValues/Geo/zipball/8ccadb155bcd83acf4940b7e80f9c9b7321a44e7",
-            "reference": "8ccadb155bcd83acf4940b7e80f9c9b7321a44e7",
+            "url": "https://api.github.com/repos/DataValues/Geo/zipball/a08d5ce38c2cb789ff8942e9082ce04dfc55a850",
+            "reference": "a08d5ce38c2cb789ff8942e9082ce04dfc55a850",
             "shasum": ""
         },
         "require": {
@@ -526,7 +526,7 @@
             "vimeo/psalm": "^3.7",
             "wikibase/wikibase-codesniffer": "^0.5.0"
         },
-        "time": "2021-01-20T14:11:50+00:00",
+        "time": "2021-04-23T11:53:48+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7a5832602af95126eb1e9ed99afe4b32",
+    "content-hash": "7666704675384c3a35c99c145b25e451",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -490,16 +490,16 @@
         },
         {
             "name": "data-values/geo",
-            "version": "4.2.2",
+            "version": "4.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DataValues/Geo.git",
-                "reference": "8ccadb155bcd83acf4940b7e80f9c9b7321a44e7"
+                "reference": "a08d5ce38c2cb789ff8942e9082ce04dfc55a850"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DataValues/Geo/zipball/8ccadb155bcd83acf4940b7e80f9c9b7321a44e7",
-                "reference": "8ccadb155bcd83acf4940b7e80f9c9b7321a44e7",
+                "url": "https://api.github.com/repos/DataValues/Geo/zipball/a08d5ce38c2cb789ff8942e9082ce04dfc55a850",
+                "reference": "a08d5ce38c2cb789ff8942e9082ce04dfc55a850",
                 "shasum": ""
             },
             "require": {
@@ -568,7 +568,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-01-20T14:11:50+00:00"
+            "time": "2021-04-23T11:53:48+00:00"
         },
         {
             "name": "data-values/interfaces",
