@@ -41,15 +41,26 @@ Thumbs.db
 /.htpasswd
 .gitattributes
 .gitignore
+.php_cs.dist
+phpstan.neon
+phpstan.neon.dist
+phpunit.xml.dist
 
-# Library test files etc.
+# Library test files etc. most of which are (wrongly?) listed
 psy/psysh/test
-data-values/common/.github
+
+brick/math/psalm.xml
+
 data-values/common/tests/
-data-values/data-values/.github/
-data-values/data-values/phpunit.xml.dist
-data-values/data-values/tests
-data-values/interfaces/.github
-data-values/interfaces/phpmd.xml
-data-values/interfaces/tests
-data-values/serialization/.github
+data-values/data-values/tests/
+data-values/interfaces/tests/
+
+# This was fixed upstream but then reverted
+james-heinrich/getid3/demos/
+
+league/oauth2-server/CONTRIBUTING.md
+league/oauth2-server/examples/
+league/oauth2-server/tests/
+
+spomky-labs/base64url/infection.json.dist
+spomky-labs/cbor-php/infection.json.dist
