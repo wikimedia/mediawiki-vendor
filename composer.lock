@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8dc56a2df7b81bee622c538c4d1c61fe",
+    "content-hash": "0c4c2068984e9f9c8062472aeccf2fd9",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -5420,16 +5420,16 @@
         },
         {
             "name": "wikibase/data-model-services",
-            "version": "5.3.0",
+            "version": "5.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wmde/WikibaseDataModelServices.git",
-                "reference": "6a8cc3fdf7628da4a5feb7d0a8eeaf22658b6eec"
+                "reference": "8f71e974016ae3566df245496318320b7cedcd47"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wmde/WikibaseDataModelServices/zipball/6a8cc3fdf7628da4a5feb7d0a8eeaf22658b6eec",
-                "reference": "6a8cc3fdf7628da4a5feb7d0a8eeaf22658b6eec",
+                "url": "https://api.github.com/repos/wmde/WikibaseDataModelServices/zipball/8f71e974016ae3566df245496318320b7cedcd47",
+                "reference": "8f71e974016ae3566df245496318320b7cedcd47",
                 "shasum": ""
             },
             "require": {
@@ -5477,7 +5477,7 @@
                 "wikibase",
                 "wikidata"
             ],
-            "time": "2021-03-31T08:58:53+00:00"
+            "time": "2021-04-23T13:18:15+00:00"
         },
         {
             "name": "wikibase/internal-serialization",

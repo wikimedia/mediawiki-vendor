@@ -2986,6 +2986,7 @@ return array(
     'Wikibase\\DataModel\\Services\\Lookup\\EntityLookupException' => $vendorDir . '/wikibase/data-model-services/src/Lookup/EntityLookupException.php',
     'Wikibase\\DataModel\\Services\\Lookup\\EntityRedirectLookup' => $vendorDir . '/wikibase/data-model-services/src/Lookup/EntityRedirectLookup.php',
     'Wikibase\\DataModel\\Services\\Lookup\\EntityRedirectLookupException' => $vendorDir . '/wikibase/data-model-services/src/Lookup/EntityRedirectLookupException.php',
+    'Wikibase\\DataModel\\Services\\Lookup\\EntityRedirectTargetLookup' => $vendorDir . '/wikibase/data-model-services/src/Lookup/EntityRedirectTargetLookup.php',
     'Wikibase\\DataModel\\Services\\Lookup\\EntityRetrievingClosestReferencedEntityIdLookup' => $vendorDir . '/wikibase/data-model-services/src/Lookup/EntityRetrievingClosestReferencedEntityIdLookup.php',
     'Wikibase\\DataModel\\Services\\Lookup\\EntityRetrievingDataTypeLookup' => $vendorDir . '/wikibase/data-model-services/src/Lookup/EntityRetrievingDataTypeLookup.php',
     'Wikibase\\DataModel\\Services\\Lookup\\EntityRetrievingTermLookup' => $vendorDir . '/wikibase/data-model-services/src/Lookup/EntityRetrievingTermLookup.php',

@@ -3745,6 +3745,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikibase\\DataModel\\Services\\Lookup\\EntityLookupException' => __DIR__ . '/..' . '/wikibase/data-model-services/src/Lookup/EntityLookupException.php',
         'Wikibase\\DataModel\\Services\\Lookup\\EntityRedirectLookup' => __DIR__ . '/..' . '/wikibase/data-model-services/src/Lookup/EntityRedirectLookup.php',
         'Wikibase\\DataModel\\Services\\Lookup\\EntityRedirectLookupException' => __DIR__ . '/..' . '/wikibase/data-model-services/src/Lookup/EntityRedirectLookupException.php',
+        'Wikibase\\DataModel\\Services\\Lookup\\EntityRedirectTargetLookup' => __DIR__ . '/..' . '/wikibase/data-model-services/src/Lookup/EntityRedirectTargetLookup.php',
         'Wikibase\\DataModel\\Services\\Lookup\\EntityRetrievingClosestReferencedEntityIdLookup' => __DIR__ . '/..' . '/wikibase/data-model-services/src/Lookup/EntityRetrievingClosestReferencedEntityIdLookup.php',
         'Wikibase\\DataModel\\Services\\Lookup\\EntityRetrievingDataTypeLookup' => __DIR__ . '/..' . '/wikibase/data-model-services/src/Lookup/EntityRetrievingDataTypeLookup.php',
         'Wikibase\\DataModel\\Services\\Lookup\\EntityRetrievingTermLookup' => __DIR__ . '/..' . '/wikibase/data-model-services/src/Lookup/EntityRetrievingTermLookup.php',
