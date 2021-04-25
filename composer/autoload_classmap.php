@@ -3178,6 +3178,7 @@ return array(
     'Wikimedia\\Minify\\Cli' => $vendorDir . '/wikimedia/minify/src/Cli.php',
     'Wikimedia\\Minify\\JavaScriptMinifier' => $vendorDir . '/wikimedia/minify/src/JavaScriptMinifier.php',
     'Wikimedia\\ObjectFactory' => $vendorDir . '/wikimedia/object-factory/src/ObjectFactory.php',
+    'Wikimedia\\ObjectFactory\\ObjectFactory' => $vendorDir . '/wikimedia/object-factory/src/ObjectFactory/ObjectFactory.php',
     'Wikimedia\\PSquare' => $vendorDir . '/wikimedia/running-stat/src/Wikimedia/PSquare.php',
     'Wikimedia\\Parsoid\\Config\\Api\\ApiHelper' => $vendorDir . '/wikimedia/parsoid/src/Config/Api/ApiHelper.php',
     'Wikimedia\\Parsoid\\Config\\Api\\DataAccess' => $vendorDir . '/wikimedia/parsoid/src/Config/Api/DataAccess.php',
