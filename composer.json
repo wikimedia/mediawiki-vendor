@@ -114,7 +114,7 @@
 		"wikimedia/lucene-explain-parser": "1.0.0",
 		"wikimedia/minify": "2.2.1",
 		"wikimedia/object-factory": "3.0.2",
-		"wikimedia/parsoid": "0.13.0-a32",
+		"wikimedia/parsoid": "0.14.0-a1",
 		"wikimedia/php-session-serializer": "2.0.0",
 		"wikimedia/purtle": "1.0.7",
 		"wikimedia/relpath": "2.1.1",
@@ -131,7 +131,7 @@
 		"wikimedia/wait-condition-loop": "2.0.1",
 		"wikimedia/wrappedstring": "3.2.0",
 		"wikimedia/xmp-reader": "0.8.1",
-		"wikimedia/zest-css": "1.1.4",
+		"wikimedia/zest-css": "1.1.5",
 		"wmde/php-vuejs-templating": "1.0.2",
 		"zordius/lightncandy": "1.2.5"
 	},

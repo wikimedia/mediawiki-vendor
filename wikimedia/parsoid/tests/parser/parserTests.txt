@@ -1742,6 +1742,19 @@ protection !! here
 |}
 !! end
 
+!! test
+Nowiki with newlines in list
+!! wikitext
+:<nowiki>test
+123</nowiki>
+!! html/php
+<dl><dd>test
+123</dd></dl>
+!! html/parsoid
+<dl><dd data-parsoid="{}"><span typeof="mw:Nowiki">test
+123</span></dd></dl>
+!! end
+
 ## The output here may change with the outcome of T255007
 !! test
 Nowiki and french spacing
@@ -7120,6 +7133,23 @@ Table cell attributes: Pipes protected by nowikis should be treated as a plain c
 <tbody><tr><td title="foo">bar</td>
 <td title="foo|" about="#mwt3" typeof="mw:ExpandedAttrs" data-parsoid='{"a":{"title":"foo|"},"sa":{"title":"foo&lt;nowiki>|&lt;/nowiki>"}}' data-mw='{"attribs":[[{"txt":"title"},{"html":"foo&lt;span typeof=\"mw:Nowiki\" data-parsoid=&apos;{\"dsr\":[32,50,8,9]}&apos;>|&lt;/span>"}]]}'>bar</td>
 <td>title="foo<span typeof="mw:Nowiki">|</span>" bar</td></tr>
+</tbody></table>
+!! end
+
+!! test
+Table cell attributes: Pipes protected by nested nowikis should be treated as a plain character
+!! wikitext
+{|
+|<code><nowiki>{{ACB|PG}}</nowiki></code>
+|}
+!! html/php
+<table>
+<tbody><tr>
+<td><code>{{ACB|PG}}</code>
+</td></tr></tbody></table>
+!! html/parsoid
+<table>
+<tbody><tr><td><code><span typeof="mw:Nowiki">{{ACB|PG}}</span></code></td></tr>
 </tbody></table>
 !! end
 

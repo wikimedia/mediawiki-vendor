@@ -1,3 +1,8 @@
+# zest-css 1.1.5 (2021-03-23)
+* Dependency updates
+* Strip strict type checks from API so this library can be used with
+  3rd-party DOM implementations
+
 # zest-css 1.1.4 (2021-01-29)
 * Dependency updates
 * Make tests pass on PHP 8
