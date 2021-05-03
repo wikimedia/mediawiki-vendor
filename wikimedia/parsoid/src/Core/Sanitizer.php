@@ -363,6 +363,9 @@ class Sanitizer {
 			// So we don't bother including $common attributes that have no purpose.
 			'meta' => [ 'itemprop', 'content' ],
 			'link' => [ 'itemprop', 'href', 'title' ],
+
+			// HTML 5 section 4.3.5
+			'aside' => $common,
 		];
 
 		return $whitelist;
@@ -972,7 +975,7 @@ class Sanitizer {
 				// that instead.
 				$rel = $token->getAttributeShadowInfo( 'rel' );
 				$mode = ( $k === 'href' &&
-					$rel &&
+					isset( $rel['value'] ) &&
 					preg_match( '#^mw:WikiLink(/Interwiki)?$#', $rel['value'] )
 				) ? 'wikilink' : 'external';
 				$origHref = $token->getAttributeShadowInfo( $k )['value'];
