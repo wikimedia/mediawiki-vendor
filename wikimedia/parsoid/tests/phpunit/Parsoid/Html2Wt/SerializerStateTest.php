@@ -19,14 +19,11 @@ class SerializerStateTest extends TestCase {
 	 * @param array $extraMethodsToMock
 	 * @return WikitextSerializer|MockObject
 	 */
-	private function getBaseSerializerMock( $extraMethodsToMock = [] ) {
+	private function getBaseSerializerMock( array $extraMethodsToMock = [] ): WikitextSerializer {
 		$serializer = $this->getMockBuilder( WikitextSerializer::class )
 			->disableOriginalConstructor()
-			->setMethods( array_merge( [ 'buildSep', 'trace' ], $extraMethodsToMock ) )
+			->onlyMethods( array_merge( [ 'trace' ], $extraMethodsToMock ) )
 			->getMock();
-		$serializer->expects( $this->any() )
-			->method( 'buildSep' )
-			->willReturn( '' );
 		$serializer->expects( $this->any() )
 			->method( 'trace' )
 			->willReturn( null );
@@ -37,7 +34,7 @@ class SerializerStateTest extends TestCase {
 
 	private function getState(
 		array $options = [], MockEnv $env = null, WikitextSerializer $serializer = null
-	) {
+	): SerializerState {
 		if ( !$env ) {
 			$env = new MockEnv( [] );
 		}
@@ -53,7 +50,7 @@ class SerializerStateTest extends TestCase {
 	 * @param string $selector
 	 * @return DOMElement
 	 */
-	private function getNode( $html = '<div id="main"></div>', $selector = '#main' ) {
+	private function getNode( $html = '<div id="main"></div>', $selector = '#main' ): DOMElement {
 		$document = new DOMDocument();
 		$document->loadHTML( "<html><body>$html</body></html>" );
 		return Zest::find( $selector, $document )[0];
@@ -160,13 +157,13 @@ class SerializerStateTest extends TestCase {
 				[ $node->firstChild ],
 				[ $node->firstChild->nextSibling ]
 			)
-			->willReturnCallback( function ( DOMElement $node ) {
+			->willReturnCallback( static function ( DOMElement $node ) {
 				return $node->nextSibling;
 			} );
 		$state = $this->getState( [], null, $serializer );
 		$state->serializeChildren( $node );
 
-		$callback = function () {
+		$callback = static function () {
 		};
 		$node = $this->getNode( '<div id="main"><span></span></div>' );
 		$serializer = $this->getBaseSerializerMock( [ 'serializeNode' ] );
@@ -196,7 +193,7 @@ class SerializerStateTest extends TestCase {
 			->method( 'serializeNode' );
 		$state = $this->getState( [], null, $serializer );
 		$node = $this->getNode();
-		$callback = function () {
+		$callback = static function () {
 		};
 		$state->$method( $node, $callback );
 	}

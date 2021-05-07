@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e3bcd661c610a668ea0a4e071c80af12",
+    "content-hash": "fdc8301dc8d0f19eab1f000d9f99218f",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -6423,16 +6423,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.14.0-a2",
+            "version": "v0.14.0-a3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/parsoid.git",
-                "reference": "a6a4ea9a4d6011e22db093b219e15247881ee747"
+                "reference": "e1a859a6908a5c45113ec1da93aae65628ae6a28"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/a6a4ea9a4d6011e22db093b219e15247881ee747",
-                "reference": "a6a4ea9a4d6011e22db093b219e15247881ee747",
+                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/e1a859a6908a5c45113ec1da93aae65628ae6a28",
+                "reference": "e1a859a6908a5c45113ec1da93aae65628ae6a28",
                 "shasum": ""
             },
             "require": {
@@ -6454,9 +6454,9 @@
                 "wikimedia/langconv": "<0.3.5 || >=0.4"
             },
             "require-dev": {
-                "composer/composer": "^1.10@RC",
+                "composer/composer": "^1.10.22",
                 "ext-curl": "*",
-                "mediawiki/mediawiki-codesniffer": "34.0.0",
+                "mediawiki/mediawiki-codesniffer": "36.0.0",
                 "mediawiki/mediawiki-phan-config": "0.10.6",
                 "mediawiki/minus-x": "1.1.0",
                 "monolog/monolog": "~1.25.2||^2.0.0",
@@ -6494,7 +6494,13 @@
                 "mediawiki",
                 "parsoid"
             ],
-            "time": "2021-04-29T00:03:50+00:00"
+            "funding": [
+                {
+                    "url": "https://donate.wikimedia.org/?utm_medium=githubRepo",
+                    "type": "custom"
+                }
+            ],
+            "time": "2021-05-06T22:34:36+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",

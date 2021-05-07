@@ -59,19 +59,19 @@ class DOMCompatTest extends \PHPUnit\Framework\TestCase {
 		$doc = new DOMDocument();
 		$doc->loadHTML( $html );
 		$title = DOMCompat::getTitle( $doc );
-		$this->assertSame( $title, 'Foo' );
+		$this->assertSame( 'Foo', $title );
 
 		$html = '<html><head><title> Foo&#9;Bar  </title></head><body><div>y</div></body></html>';
 		$doc = new DOMDocument();
 		$doc->loadHTML( $html );
 		$title = DOMCompat::getTitle( $doc );
-		$this->assertSame( $title, 'Foo Bar' );
+		$this->assertSame( 'Foo Bar', $title );
 
 		$html = '<html><body><div>y</div></body></html>';
 		$doc = new DOMDocument();
 		$doc->loadHTML( $html, LIBXML_HTML_NOIMPLIED );
 		$title = DOMCompat::getTitle( $doc );
-		$this->assertSame( $title, '' );
+		$this->assertSame( '', $title );
 	}
 
 	/**
@@ -403,7 +403,7 @@ HTML;
 			'does not select outside context' => [
 				'html' => $html1,
 				'selector' => '.xxx',
-				'context' => function ( DOMDocument $doc ) {
+				'context' => static function ( DOMDocument $doc ) {
 					return $doc->getElementById( 'ctx1' );
 				},
 				'expectedTagHtmls' => [ 'x2' ],
@@ -411,7 +411,7 @@ HTML;
 			'does not select context' => [
 				'html' => $html1,
 				'selector' => '.f',
-				'context' => function ( DOMDocument $doc ) {
+				'context' => static function ( DOMDocument $doc ) {
 					return $doc->getElementById( 'ctx2' );
 				},
 				'expectedTagHtmls' => [ 'x3' ],
