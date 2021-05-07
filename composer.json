@@ -112,7 +112,7 @@
 		"wikimedia/langconv": "0.3.5",
 		"wikimedia/less.php": "3.1.0",
 		"wikimedia/lucene-explain-parser": "1.0.0",
-		"wikimedia/minify": "2.2.1",
+		"wikimedia/minify": "2.2.2",
 		"wikimedia/object-factory": "3.0.2",
 		"wikimedia/parsoid": "0.14.0-a2",
 		"wikimedia/php-session-serializer": "2.0.0",

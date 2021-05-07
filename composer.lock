@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c01c6df9e9a08d87cad0ee2c742bea44",
+    "content-hash": "e3bcd661c610a668ea0a4e071c80af12",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -6308,16 +6308,16 @@
         },
         {
             "name": "wikimedia/minify",
-            "version": "2.2.1",
+            "version": "2.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/minify.git",
-                "reference": "5fea8611bfcebe23eeba1b1eef21d3ccd8376302"
+                "reference": "b60c962090714a96de9814d2c4c893b92cc6f9e3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/minify/zipball/5fea8611bfcebe23eeba1b1eef21d3ccd8376302",
-                "reference": "5fea8611bfcebe23eeba1b1eef21d3ccd8376302",
+                "url": "https://api.github.com/repos/wikimedia/minify/zipball/b60c962090714a96de9814d2c4c893b92cc6f9e3",
+                "reference": "b60c962090714a96de9814d2c4c893b92cc6f9e3",
                 "shasum": ""
             },
             "require": {
@@ -6367,7 +6367,13 @@
             ],
             "description": "Minification of JavaScript code and CSS stylesheets.",
             "homepage": "https://gerrit.wikimedia.org/g/mediawiki/libs/Minify",
-            "time": "2021-03-15T17:46:30+00:00"
+            "funding": [
+                {
+                    "url": "https://donate.wikimedia.org/?utm_medium=githubRepo",
+                    "type": "custom"
+                }
+            ],
+            "time": "2021-05-07T23:22:12+00:00"
         },
         {
             "name": "wikimedia/object-factory",

@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.2.2 (2021-05-07)
+
+Fixed:
+
+* CSSMin: Fix remapping of path-only URL when base dir is server-less root. (Timo Tijhof) [T282280](https://phabricator.wikimedia.org/T282280)
+
 ## 2.2.1 (2021-03-15)
 
 Fixed:
