@@ -3197,6 +3197,7 @@ return array(
     'Wikimedia\\Parsoid\\Core\\DomSourceRange' => $vendorDir . '/wikimedia/parsoid/src/Core/DomSourceRange.php',
     'Wikimedia\\Parsoid\\Core\\ExtensionContentModelHandler' => $vendorDir . '/wikimedia/parsoid/src/Core/ExtensionContentModelHandler.php',
     'Wikimedia\\Parsoid\\Core\\InternalException' => $vendorDir . '/wikimedia/parsoid/src/Core/InternalException.php',
+    'Wikimedia\\Parsoid\\Core\\MediaStructure' => $vendorDir . '/wikimedia/parsoid/src/Core/MediaStructure.php',
     'Wikimedia\\Parsoid\\Core\\PageBundle' => $vendorDir . '/wikimedia/parsoid/src/Core/PageBundle.php',
     'Wikimedia\\Parsoid\\Core\\ResourceLimitExceededException' => $vendorDir . '/wikimedia/parsoid/src/Core/ResourceLimitExceededException.php',
     'Wikimedia\\Parsoid\\Core\\Sanitizer' => $vendorDir . '/wikimedia/parsoid/src/Core/Sanitizer.php',

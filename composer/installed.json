@@ -6626,17 +6626,17 @@
     },
     {
         "name": "wikimedia/parsoid",
-        "version": "v0.14.0-a3",
-        "version_normalized": "0.14.0.0-alpha3",
+        "version": "v0.14.0-a4",
+        "version_normalized": "0.14.0.0-alpha4",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/parsoid.git",
-            "reference": "e1a859a6908a5c45113ec1da93aae65628ae6a28"
+            "reference": "e76f8d00e18e43dfab445a9d349edcf2b81d1ea9"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/e1a859a6908a5c45113ec1da93aae65628ae6a28",
-            "reference": "e1a859a6908a5c45113ec1da93aae65628ae6a28",
+            "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/e76f8d00e18e43dfab445a9d349edcf2b81d1ea9",
+            "reference": "e76f8d00e18e43dfab445a9d349edcf2b81d1ea9",
             "shasum": ""
         },
         "require": {
@@ -6676,7 +6676,7 @@
         "suggest": {
             "wikimedia/langconv": "Provides script conversion support"
         },
-        "time": "2021-05-06T22:34:36+00:00",
+        "time": "2021-05-14T22:16:41+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -6699,12 +6699,6 @@
         "keywords": [
             "mediawiki",
             "parsoid"
-        ],
-        "funding": [
-            {
-                "url": "https://donate.wikimedia.org/?utm_medium=githubRepo",
-                "type": "custom"
-            }
         ]
     },
     {

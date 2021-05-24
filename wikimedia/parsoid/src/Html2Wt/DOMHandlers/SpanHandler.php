@@ -5,6 +5,8 @@ namespace Wikimedia\Parsoid\Html2Wt\DOMHandlers;
 
 use DOMElement;
 use DOMNode;
+use Wikimedia\Parsoid\Core\MediaStructure;
+use Wikimedia\Parsoid\Html2Wt\LinkHandlerUtils;
 use Wikimedia\Parsoid\Html2Wt\SerializerState;
 use Wikimedia\Parsoid\Html2Wt\WTSUtils;
 use Wikimedia\Parsoid\Tokens\KV;
@@ -26,8 +28,6 @@ class SpanHandler extends DOMHandler {
 	): ?DOMNode {
 		$env = $state->getEnv();
 		$dp = DOMDataUtils::getDataParsoid( $node );
-		$contentSrc = ( $node->textContent != '' ) ? $node->textContent
-			: DOMCompat::getInnerHTML( $node );
 		if ( self::isRecognizedSpanWrapper( $node ) ) {
 			if ( DOMUtils::hasTypeOf( $node, 'mw:Nowiki' ) ) {
 				$ext = $env->getSiteConfig()->getExtTagImpl( 'nowiki' );
@@ -36,11 +36,15 @@ class SpanHandler extends DOMHandler {
 				$state->serializer->emitWikitext( $src, $node );
 				$state->singleLineContext->pop();
 			} elseif ( WTUtils::isInlineMedia( $node ) ) {
-				$state->serializer->figureHandler( $node );
+				LinkHandlerUtils::figureHandler(
+					$state, $node, MediaStructure::parse( $node )
+				);
 			} elseif (
 				DOMUtils::hasTypeOf( $node, 'mw:Entity' ) &&
 				DOMUtils::hasNChildren( $node, 1 )
 			) {
+				$contentSrc = ( $node->textContent != '' ) ? $node->textContent
+					: DOMCompat::getInnerHTML( $node );
 				// handle a new mw:Entity (not handled by selser) by
 				// serializing its children
 				if ( isset( $dp->src ) && $contentSrc === ( $dp->srcContent ?? null ) ) {
