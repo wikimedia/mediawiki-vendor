@@ -444,9 +444,9 @@ class JavaScriptMinifier {
 		// Property assignment - This is an object literal declaration.
 		// For example: `{ key: value, key2, [computedKey3]: value3, method4() { ... } }`
 		self::PROPERTY_ASSIGNMENT => [
-			// Note that keywords like if, class, var, etc. can be used as keys, and should be
-			// treated as literals here, as they are in EXPRESSION_DOT. In this state, that is
-			// implicitly true because TYPE_LITERAL has no action, so it stays in this state.
+			// Note that keywords like if, class, var, delete, instanceof etc. can be used as keys,
+			// and should be treated as literals here, as they are in EXPRESSION_DOT. In this state,
+			// that is implicitly true because TYPE_LITERAL has no action, so it stays in this state.
 			// If we later add a state transition for TYPE_LITERAL, that same transition should
 			// also be applied to TYPE_RETURN, TYPE_IF, TYPE_DO, TYPE_VAR, TYPE_FUNC and TYPE_CLASS.
 			self::TYPE_COLON => [
@@ -607,6 +607,15 @@ class JavaScriptMinifier {
 				self::ACTION_GOTO => self::EXPRESSION_OP,
 			],
 			self::TYPE_CLASS => [
+				self::ACTION_GOTO => self::EXPRESSION_OP,
+			],
+			// We don't expect real unary/binary operators here, but some keywords
+			// (new, delete, void, typeof, instanceof, in) are classified as such, and they can be
+			// used as property names
+			self::TYPE_UN_OP => [
+				self::ACTION_GOTO => self::EXPRESSION_OP,
+			],
+			self::TYPE_BIN_OP => [
 				self::ACTION_GOTO => self::EXPRESSION_OP,
 			],
 		],
@@ -770,6 +779,15 @@ class JavaScriptMinifier {
 			self::TYPE_CLASS => [
 				self::ACTION_GOTO => self::EXPRESSION_TERNARY_OP,
 			],
+			// We don't expect real unary/binary operators here, but some keywords
+			// (new, delete, void, typeof, instanceof, in) are classified as such, and they can be
+			// used as property names
+			self::TYPE_UN_OP => [
+				self::ACTION_GOTO => self::EXPRESSION_TERNARY_OP,
+			],
+			self::TYPE_BIN_OP => [
+				self::ACTION_GOTO => self::EXPRESSION_TERNARY_OP,
+			],
 		],
 		// Like EXPRESSION_ARROWFUNC, but for ternaries, see EXPRESSION_TERNARY
 		self::EXPRESSION_TERNARY_ARROWFUNC => [
@@ -886,6 +904,15 @@ class JavaScriptMinifier {
 			self::TYPE_CLASS => [
 				self::ACTION_GOTO => self::PAREN_EXPRESSION_OP,
 			],
+			// We don't expect real unary/binary operators here, but some keywords
+			// (new, delete, void, typeof, instanceof, in) are classified as such, and they can be
+			// used as property names
+			self::TYPE_UN_OP => [
+				self::ACTION_GOTO => self::PAREN_EXPRESSION_OP,
+			],
+			self::TYPE_BIN_OP => [
+				self::ACTION_GOTO => self::PAREN_EXPRESSION_OP,
+			],
 		],
 		// Like EXPRESSION_ARROWFUNC, but in parentheses, see PAREN_EXPRESSION
 		self::PAREN_EXPRESSION_ARROWFUNC => [
@@ -998,6 +1025,15 @@ class JavaScriptMinifier {
 				self::ACTION_GOTO => self::PROPERTY_EXPRESSION_OP,
 			],
 			self::TYPE_CLASS => [
+				self::ACTION_GOTO => self::PROPERTY_EXPRESSION_OP,
+			],
+			// We don't expect real unary/binary operators here, but some keywords
+			// (new, delete, void, typeof, instanceof, in) are classified as such, and they can be
+			// used as property names
+			self::TYPE_UN_OP => [
+				self::ACTION_GOTO => self::PROPERTY_EXPRESSION_OP,
+			],
+			self::TYPE_BIN_OP => [
 				self::ACTION_GOTO => self::PROPERTY_EXPRESSION_OP,
 			],
 		],

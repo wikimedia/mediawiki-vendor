@@ -6507,17 +6507,17 @@
     },
     {
         "name": "wikimedia/minify",
-        "version": "2.2.2",
-        "version_normalized": "2.2.2.0",
+        "version": "2.2.3",
+        "version_normalized": "2.2.3.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/minify.git",
-            "reference": "b60c962090714a96de9814d2c4c893b92cc6f9e3"
+            "reference": "a4ac6e90badda9adfc2ef641f122382a8de629d6"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/minify/zipball/b60c962090714a96de9814d2c4c893b92cc6f9e3",
-            "reference": "b60c962090714a96de9814d2c4c893b92cc6f9e3",
+            "url": "https://api.github.com/repos/wikimedia/minify/zipball/a4ac6e90badda9adfc2ef641f122382a8de629d6",
+            "reference": "a4ac6e90badda9adfc2ef641f122382a8de629d6",
             "shasum": ""
         },
         "require": {
@@ -6525,16 +6525,16 @@
             "php": ">=7.2.9"
         },
         "require-dev": {
-            "mediawiki/mediawiki-codesniffer": "35.0.0",
+            "mediawiki/mediawiki-codesniffer": "36.0.0",
             "mediawiki/mediawiki-phan-config": "0.10.6",
             "mediawiki/minus-x": "1.1.1",
             "ockcyp/covers-validator": "1.3.3",
             "php-parallel-lint/php-console-highlighter": "0.5.0",
-            "php-parallel-lint/php-parallel-lint": "1.2.0",
+            "php-parallel-lint/php-parallel-lint": "1.3.0",
             "phpunit/phpunit": "^8.5",
             "wikimedia/testing-access-wrapper": "~2.0"
         },
-        "time": "2021-05-07T23:22:12+00:00",
+        "time": "2021-06-07T18:55:33+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -6568,13 +6568,7 @@
             }
         ],
         "description": "Minification of JavaScript code and CSS stylesheets.",
-        "homepage": "https://gerrit.wikimedia.org/g/mediawiki/libs/Minify",
-        "funding": [
-            {
-                "url": "https://donate.wikimedia.org/?utm_medium=githubRepo",
-                "type": "custom"
-            }
-        ]
+        "homepage": "https://gerrit.wikimedia.org/g/mediawiki/libs/Minify"
     },
     {
         "name": "wikimedia/object-factory",

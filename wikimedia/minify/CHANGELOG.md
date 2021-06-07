@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.2.3 (2021-06-07)
+
+Fixed:
+
+*  JavaScriptMinifer: Fix handling of `.delete` as object property. (Roan Kattouw) [T283244](https://phabricator.wikimedia.org/T283244)
+
 ## 2.2.2 (2021-05-07)
 
 Fixed:
