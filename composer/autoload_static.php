@@ -142,6 +142,7 @@ class ComposerStaticInit_mediawiki_vendor
             'Wikimedia\\Purtle\\Tests\\' => 23,
             'Wikimedia\\Purtle\\' => 17,
             'Wikimedia\\Parsoid\\' => 18,
+            'Wikimedia\\NormalizedException\\' => 30,
             'Wikimedia\\Minify\\' => 17,
             'Wikimedia\\LangConv\\' => 19,
             'Wikimedia\\Equivset\\' => 19,
@@ -318,6 +319,10 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\' => 
         array (
             0 => __DIR__ . '/..' . '/wikimedia/parsoid/src',
+        ),
+        'Wikimedia\\NormalizedException\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/wikimedia/normalized-exception/src',
         ),
         'Wikimedia\\Minify\\' => 
         array (
@@ -3936,6 +3941,9 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Minify\\CSSMin' => __DIR__ . '/..' . '/wikimedia/minify/src/CSSMin.php',
         'Wikimedia\\Minify\\Cli' => __DIR__ . '/..' . '/wikimedia/minify/src/Cli.php',
         'Wikimedia\\Minify\\JavaScriptMinifier' => __DIR__ . '/..' . '/wikimedia/minify/src/JavaScriptMinifier.php',
+        'Wikimedia\\NormalizedException\\INormalizedException' => __DIR__ . '/..' . '/wikimedia/normalized-exception/src/INormalizedException.php',
+        'Wikimedia\\NormalizedException\\NormalizedException' => __DIR__ . '/..' . '/wikimedia/normalized-exception/src/NormalizedException.php',
+        'Wikimedia\\NormalizedException\\NormalizedExceptionTrait' => __DIR__ . '/..' . '/wikimedia/normalized-exception/src/NormalizedExceptionTrait.php',
         'Wikimedia\\ObjectFactory' => __DIR__ . '/..' . '/wikimedia/object-factory/src/ObjectFactory.php',
         'Wikimedia\\ObjectFactory\\ObjectFactory' => __DIR__ . '/..' . '/wikimedia/object-factory/src/ObjectFactory/ObjectFactory.php',
         'Wikimedia\\PSquare' => __DIR__ . '/..' . '/wikimedia/running-stat/src/Wikimedia/PSquare.php',

@@ -16,6 +16,7 @@ return array(
     'Wikimedia\\Purtle\\Tests\\' => array($vendorDir . '/wikimedia/purtle/tests/phpunit'),
     'Wikimedia\\Purtle\\' => array($vendorDir . '/wikimedia/purtle/src'),
     'Wikimedia\\Parsoid\\' => array($vendorDir . '/wikimedia/parsoid/src'),
+    'Wikimedia\\NormalizedException\\' => array($vendorDir . '/wikimedia/normalized-exception/src'),
     'Wikimedia\\Minify\\' => array($vendorDir . '/wikimedia/minify/src'),
     'Wikimedia\\LangConv\\' => array($vendorDir . '/wikimedia/langconv/src'),
     'Wikimedia\\Equivset\\' => array($vendorDir . '/wikimedia/equivset/src'),
