@@ -23,7 +23,7 @@
 		"data-values/interfaces": "1.0.0",
 		"data-values/number": "0.11.1",
 		"data-values/serialization": "1.2.4",
-		"data-values/time": "1.0.3",
+		"data-values/time": "1.0.4",
 		"defuse/php-encryption": "v2.2.1",
 		"diff/diff": "3.2.0",
 		"dnoegel/php-xdg-base-dir": "0.1.1",

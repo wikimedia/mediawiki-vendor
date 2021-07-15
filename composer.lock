@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "752c8e346a46498c8572f556d017032b",
+    "content-hash": "1b49951445dfbcf798be7e7a9abd0e32",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -744,16 +744,16 @@
         },
         {
             "name": "data-values/time",
-            "version": "1.0.3",
+            "version": "1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wmde/Time.git",
-                "reference": "2e69a4349f4fa433bcc5c3c2b2e800ee07802537"
+                "reference": "abbb585f2c71ca8a1ac9aea858cf5ba6b8920320"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wmde/Time/zipball/2e69a4349f4fa433bcc5c3c2b2e800ee07802537",
-                "reference": "2e69a4349f4fa433bcc5c3c2b2e800ee07802537",
+                "url": "https://api.github.com/repos/wmde/Time/zipball/abbb585f2c71ca8a1ac9aea858cf5ba6b8920320",
+                "reference": "abbb585f2c71ca8a1ac9aea858cf5ba6b8920320",
                 "shasum": ""
             },
             "require": {
@@ -798,7 +798,7 @@
                 "valueparsers",
                 "wikidata"
             ],
-            "time": "2021-03-19T09:36:00+00:00"
+            "time": "2021-07-15T13:35:54+00:00"
         },
         {
             "name": "defuse/php-encryption",
