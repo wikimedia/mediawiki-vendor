@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e1402d857e12a754753e1124e8442a81",
+    "content-hash": "7965a3bc2cb2f64cc41621751a6c352f",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -5942,6 +5942,64 @@
             "time": "2021-03-21T17:30:58+00:00"
         },
         {
+            "name": "wikimedia/dodo",
+            "version": "v0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wikimedia/mediawiki-libs-Dodo.git",
+                "reference": "b509e22318921b204c7d61c8fe18d7dc0a3a4daf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Dodo/zipball/b509e22318921b204c7d61c8fe18d7dc0a3a4daf",
+                "reference": "b509e22318921b204c7d61c8fe18d7dc0a3a4daf",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.9|^8.0",
+                "wikimedia/idle-dom": "^0.7.0",
+                "wikimedia/remex-html": "^2.3.1",
+                "wikimedia/zest-css": "^1.1.5"
+            },
+            "require-dev": {
+                "consolidation/robo": "^3@alpha",
+                "fgnass/domino": "^2.1",
+                "mediawiki/mediawiki-codesniffer": "36.0.0",
+                "mediawiki/mediawiki-phan-config": "0.10.6",
+                "mediawiki/minus-x": "1.1.1",
+                "nikic/php-parser": "^4.10",
+                "ockcyp/covers-validator": "1.3.3",
+                "php-parallel-lint/php-console-highlighter": "^0.5",
+                "php-parallel-lint/php-parallel-lint": "1.3.0",
+                "phpunit/phpunit": "^8.5|^9.5",
+                "web-platform-tests/wpt": "^2.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Wikimedia\\Dodo\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jason Linehan",
+                    "email": "jlinehan@wikimedia.org"
+                }
+            ],
+            "description": "DOm DOcument implementation",
+            "homepage": "https://www.mediawiki.org/wiki/Dodo",
+            "keywords": [
+                "dom",
+                "domino",
+                "webidl"
+            ],
+            "time": "2021-07-04T20:59:29+00:00"
+        },
+        {
             "name": "wikimedia/equivset",
             "version": "1.4.2",
             "source": {
@@ -6041,6 +6099,54 @@
             "description": "Performs transformations of HTML by wrapping around libxml2 and working around its countless bugs.",
             "homepage": "https://www.mediawiki.org/wiki/HtmlFormatter",
             "time": "2021-03-08T12:56:36+00:00"
+        },
+        {
+            "name": "wikimedia/idle-dom",
+            "version": "v0.7.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wikimedia/mediawiki-libs-IDLeDOM.git",
+                "reference": "88a564535d6ecd87c02834c5fcb4c939877f0f55"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-IDLeDOM/zipball/88a564535d6ecd87c02834c5fcb4c939877f0f55",
+                "reference": "88a564535d6ecd87c02834c5fcb4c939877f0f55",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.9"
+            },
+            "require-dev": {
+                "mediawiki/mediawiki-codesniffer": "36.0.0",
+                "mediawiki/mediawiki-phan-config": "0.10.6",
+                "mediawiki/minus-x": "1.1.1",
+                "ockcyp/covers-validator": "1.3.3",
+                "php-parallel-lint/php-console-highlighter": "^0.5",
+                "php-parallel-lint/php-parallel-lint": "1.3.0",
+                "phpunit/phpunit": "^8.5|^9.5",
+                "wikimedia/assert": "0.4.0|^0.5.0",
+                "wikimedia/webidl": "1.0.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Wikimedia\\IDLeDOM\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "C. Scott Ananian",
+                    "email": "cananian@wikimedia.org"
+                }
+            ],
+            "description": "DOM interfaces automatically generated from WebIDL",
+            "homepage": "https://www.mediawiki.org/wiki/IDLeDOM",
+            "time": "2021-07-16T21:02:19+00:00"
         },
         {
             "name": "wikimedia/ip-set",
@@ -6463,16 +6569,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.14.0-a8",
+            "version": "v0.14.0-a9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/parsoid.git",
-                "reference": "cb9ca473f193a3d3bd3e5ae4f8d2dde904853147"
+                "reference": "bcaca588336b2b3deb771510101564ff0d3fe764"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/cb9ca473f193a3d3bd3e5ae4f8d2dde904853147",
-                "reference": "cb9ca473f193a3d3bd3e5ae4f8d2dde904853147",
+                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/bcaca588336b2b3deb771510101564ff0d3fe764",
+                "reference": "bcaca588336b2b3deb771510101564ff0d3fe764",
                 "shasum": ""
             },
             "require": {
@@ -6483,6 +6589,7 @@
                 "php": ">=7.2.0",
                 "psr/log": "^1.1.2",
                 "wikimedia/assert": "0.4.0|^0.5.0",
+                "wikimedia/dodo": "0.1.0",
                 "wikimedia/ip-utils": "^1.0.0|^3.0.0",
                 "wikimedia/object-factory": "^3.0.0",
                 "wikimedia/remex-html": "^2.2.0|^2.3.0",
@@ -6514,6 +6621,9 @@
             },
             "type": "library",
             "autoload": {
+                "files": [
+                    "DomImpl.php"
+                ],
                 "psr-4": {
                     "Wikimedia\\Parsoid\\": "src"
                 }
@@ -6534,7 +6644,7 @@
                 "mediawiki",
                 "parsoid"
             ],
-            "time": "2021-07-17T02:45:12+00:00"
+            "time": "2021-07-23T16:20:06+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",
