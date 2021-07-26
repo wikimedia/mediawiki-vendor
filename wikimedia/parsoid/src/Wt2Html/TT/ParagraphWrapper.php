@@ -3,7 +3,6 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Wt2Html\TT;
 
-use Wikimedia\Assert\Assert;
 use Wikimedia\Parsoid\Config\WikitextConstants as Consts;
 use Wikimedia\Parsoid\Tokens\CommentTk;
 use Wikimedia\Parsoid\Tokens\EndTagTk;
@@ -83,14 +82,14 @@ class ParagraphWrapper extends TokenHandler {
 	 * @inheritDoc
 	 */
 	public function onNewline( NlTk $token ) {
-		return $this->inPre ? $token : $this->onNewlineOrEOF( $token );
+		return $this->inPre ? $token : $this->onNewLineOrEOF( $token );
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function onEnd( EOFTk $token ) {
-		return $this->onNewlineOrEOF( $token );
+		return $this->onNewLineOrEOF( $token );
 	}
 
 	/**
@@ -168,13 +167,14 @@ class ParagraphWrapper extends TokenHandler {
 	/**
 	 * Process and flush existing buffer contents
 	 *
-	 * @param Token|string $token token
 	 * @return array
 	 */
-	private function flushBuffers( $token ): array {
-		Assert::invariant( $this->newLineCount === 0, "PWrap: Trying to flush buffers with pending newlines" );
-
-		$this->currLine['tokens'][] = $token;
+	private function flushBuffers(): array {
+		// Assertion to catch bugs in p-wrapping; both cannot be true.
+		if ( $this->newLineCount > 0 ) {
+			$this->manager->env->log( 'error/p-wrap', 'Failed assertion in flushBuffers: newline-count:',
+			$this->newLineCount, '; buffered tokens: ', PHPUtils::jsonEncode( $this->nlWsTokens ) );
+		}
 		$resToks = array_merge( $this->tokenBuffer, $this->nlWsTokens );
 		$this->resetBuffers();
 		$this->env->log( 'trace/p-wrap', $this->manager->pipelineId, '---->  ',
@@ -291,13 +291,13 @@ class ParagraphWrapper extends TokenHandler {
 	 * @param Token $token token
 	 * @return array
 	 */
-	private function onNewlineOrEOF( Token $token ): array {
+	private function onNewLineOrEOF( Token $token ): array {
 		$this->manager->env->log( 'trace/p-wrap', $this->manager->pipelineId, 'NL    |',
 			static function () use( $token ) {
 				return PHPUtils::jsonEncode( $token );
 			} );
 		$l = $this->currLine;
-		if ( $l['blockTagSeen'] ) {
+		if ( $this->currLine['blockTagSeen'] ) {
 			$this->closeOpenPTag( $l['tokens'] );
 		} elseif ( !$this->inBlockElem && !$this->hasOpenPTag && $l['hasWrappableTokens'] ) {
 			$this->openPTag( $l['tokens'] );
@@ -305,7 +305,7 @@ class ParagraphWrapper extends TokenHandler {
 
 		// Assertion to catch bugs in p-wrapping; both cannot be true.
 		if ( $this->newLineCount > 0 && count( $l['tokens'] ) > 0 ) {
-			$this->env->log( 'error/p-wrap', 'Failed assertion in onNewlineOrEOF: newline-count:',
+			$this->env->log( 'error/p-wrap', 'Failed assertion in onNewLineOrEOF: newline-count:',
 			$this->newLineCount, '; current line tokens: ', PHPUtils::jsonEncode( $l['tokens'] ) );
 		}
 
@@ -325,7 +325,7 @@ class ParagraphWrapper extends TokenHandler {
 			$this->newLineCount++;
 			$this->nlWsTokens[] = $token;
 			if ( $this->undoIndentPre ) {
-				$this->nlWsTokens[] = ' ';
+				$this->currLine['tokens'][] = ' ';
 			}
 			return [ 'tokens' => [] ];
 		}
@@ -403,12 +403,8 @@ class ParagraphWrapper extends TokenHandler {
 		) {
 			if ( $this->inBlockElem || $this->inBlockquote ) {
 				$this->undoIndentPre = true;
-				if ( $this->newLineCount === 0 ) {
-					return [ 'tokens' => $this->flushBuffers( ' ' ), 'skipOnAny' => true ];
-				} else {
-					$this->nlWsTokens[] = ' ';
-					return [ 'tokens' => [] ];
-				}
+				$this->currLine['tokens'][] = ' ';
+				return [ 'tokens' => [] ];
 			} else {
 				$this->inPre = true;
 				// This will put us `inBlockElem`, so we need the extra `!inPre`
@@ -430,7 +426,9 @@ class ParagraphWrapper extends TokenHandler {
 				// No pre-tokens inside block tags -- swallow it.
 				return [ 'tokens' => [] ];
 			} else {
-				$this->inPre = false;
+				if ( $this->inPre ) {
+					$this->inPre = false;
+				}
 				$this->currLine['blockTagSeen'] = true;
 				$this->currLine['blockTagOpen'] = false;
 				$this->env->log( 'trace/p-wrap', $this->manager->pipelineId, '---->  ',
@@ -455,9 +453,10 @@ class ParagraphWrapper extends TokenHandler {
 			|| TokenUtils::isEmptyLineMetaToken( $token )
 		) {
 			if ( $this->newLineCount === 0 ) {
+				$this->currLine['tokens'][] = $token;
 				// Since we have no pending newlines to trip us up,
 				// no need to buffer -- just flush everything
-				return [ 'tokens' => $this->flushBuffers( $token ), 'skipOnAny' => true ];
+				return [ 'tokens' => $this->flushBuffers(), 'skipOnAny' => true ];
 			} else {
 				// We are in buffering mode waiting till we are ready to
 				// process pending newlines.
@@ -471,9 +470,10 @@ class ParagraphWrapper extends TokenHandler {
 			( TokenUtils::isSolTransparent( $this->env, $token ) || $token->getName() === 'style' )
 		) {
 			if ( $this->newLineCount === 0 ) {
+				$this->currLine['tokens'][] = $token;
 				// Since we have no pending newlines to trip us up,
 				// no need to buffer -- just flush everything
-				return [ 'tokens' => $this->flushBuffers( $token ), 'skipOnAny' => true ];
+				return [ 'tokens' => $this->flushBuffers(), 'skipOnAny' => true ];
 			} elseif ( $this->newLineCount === 1 ) {
 				// Swallow newline, whitespace, comments, and the current line
 				$this->tokenBuffer = array_merge( $this->tokenBuffer, $this->nlWsTokens );
