@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "07b99a5ee50dc375af4eaea51d789720",
+    "content-hash": "7bc870e64bc4454cad9a6f06e4037090",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -6308,16 +6308,16 @@
         },
         {
             "name": "wikimedia/minify",
-            "version": "2.2.3",
+            "version": "2.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/minify.git",
-                "reference": "a4ac6e90badda9adfc2ef641f122382a8de629d6"
+                "reference": "2efef5f0b97d6342504490cd2525d2bc6eb8821e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/minify/zipball/a4ac6e90badda9adfc2ef641f122382a8de629d6",
-                "reference": "a4ac6e90badda9adfc2ef641f122382a8de629d6",
+                "url": "https://api.github.com/repos/wikimedia/minify/zipball/2efef5f0b97d6342504490cd2525d2bc6eb8821e",
+                "reference": "2efef5f0b97d6342504490cd2525d2bc6eb8821e",
                 "shasum": ""
             },
             "require": {
@@ -6325,7 +6325,7 @@
                 "php": ">=7.2.9"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "36.0.0",
+                "mediawiki/mediawiki-codesniffer": "37.0.0",
                 "mediawiki/mediawiki-phan-config": "0.10.6",
                 "mediawiki/minus-x": "1.1.1",
                 "ockcyp/covers-validator": "1.3.3",
@@ -6367,7 +6367,7 @@
             ],
             "description": "Minification of JavaScript code and CSS stylesheets.",
             "homepage": "https://gerrit.wikimedia.org/g/mediawiki/libs/Minify",
-            "time": "2021-06-07T18:55:33+00:00"
+            "time": "2021-07-28T00:27:02+00:00"
         },
         {
             "name": "wikimedia/normalized-exception",
