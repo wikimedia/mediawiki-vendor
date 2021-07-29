@@ -1,0 +1,27 @@
+{
+	"name": "wikimedia-dodo",
+	"version": "0.0.1",
+	"description": "DOm DOcument implementation",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"js2php": "js2php"
+	},
+	"directories": {
+		"test": "tests"
+	},
+	"devDependencies": {
+		"js2php": "github:drynok/js2php"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://gerrit.wikimedia.org/r/mediawiki/libs/Dodo"
+	},
+	"keywords": [
+		"DOM",
+		"domino",
+		"webidl"
+	],
+	"author": "Jason Linehan <jlinehan@wikimedia.org>",
+	"license": "MIT",
+	"homepage": "https://www.mediawiki.org/wiki/Dodo"
+}

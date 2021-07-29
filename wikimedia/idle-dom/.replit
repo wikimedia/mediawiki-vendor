@@ -1,0 +1,3 @@
+run="./build/helper composer test"
+language="php_cli"
+onBoot="/bin/bash build/replit-after-boot.sh"
