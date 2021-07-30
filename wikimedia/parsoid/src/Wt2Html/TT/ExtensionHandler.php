@@ -3,8 +3,8 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Wt2Html\TT;
 
-use DOMDocumentFragment;
 use Wikimedia\Assert\Assert;
+use Wikimedia\Parsoid\DOM\DocumentFragment;
 use Wikimedia\Parsoid\Ext\ExtensionError;
 use Wikimedia\Parsoid\Ext\ExtensionTag;
 use Wikimedia\Parsoid\Ext\ExtensionTagHandler;
@@ -58,25 +58,19 @@ class ExtensionHandler extends TokenHandler {
 	/**
 	 * Process extension metadata and record it somewhere (Env state or the DOM)
 	 *
-	 * @param DOMDocumentFragment $domFragment
-	 * @param array $modules
-	 * @param array $modulestyles
-	 * @param array $jsConfigVars
-	 * @param ?array $categories
+	 * @param DocumentFragment $domFragment
+	 * @param array $ret
 	 */
-	private function processExtMetadata(
-		DOMDocumentFragment $domFragment, array $modules, array $modulestyles, array $jsConfigVars,
-		?array $categories
-	): void {
+	private function processExtMetadata( DocumentFragment $domFragment, array $ret ): void {
 		// Add the modules to the page data
-		$this->env->addOutputProperty( 'modules', $modules );
-		$this->env->addOutputProperty( 'modulestyles', $modulestyles );
-		$this->env->addOutputProperty( 'jsconfigvars', $jsConfigVars );
+		$this->env->addOutputProperty( 'modules', $ret['modules'] );
+		$this->env->addOutputProperty( 'modulestyles', $ret['modulestyles'] );
+		$this->env->addOutputProperty( 'jsconfigvars', $ret['jsconfigvars'] );
 
 		/*  - categories: (array) [ Category name => sortkey ] */
 		// Add the categories which were added by extensions directly into the
 		// page and not as in-text links
-		foreach ( ( $categories ?? [] ) as $name => $sortkey ) {
+		foreach ( $ret['categories'] as $name => $sortkey ) {
 			$link = $domFragment->ownerDocument->createElement( "link" );
 			$link->setAttribute( "rel", "mw:PageProp/Category" );
 			$href = $this->env->getSiteConfig()->relativeLinkPrefix() .
@@ -182,10 +176,7 @@ class ExtensionHandler extends TokenHandler {
 				preg_replace( '#(^<p>)|(\n</p>$)#D', '', $ret['html'] )
 			);
 
-			$this->processExtMetadata(
-				$domFragment, $ret['modules'], $ret['modulestyles'], $ret['jsconfigvars'] ?? [],
-				$ret['categories']
-			);
+			$this->processExtMetadata( $domFragment, $ret );
 
 			$toks = $this->onDocumentFragment(
 				$nativeExt, $token, $domFragment, []
@@ -199,13 +190,13 @@ class ExtensionHandler extends TokenHandler {
 	 *
 	 * @param ?ExtensionTagHandler $nativeExt
 	 * @param Token $extToken
-	 * @param DOMDocumentFragment $domFragment
+	 * @param DocumentFragment $domFragment
 	 * @param array $errors
 	 * @return array
 	 */
 	private function onDocumentFragment(
 		?ExtensionTagHandler $nativeExt, Token $extToken,
-		DOMDocumentFragment $domFragment, array $errors
+		DocumentFragment $domFragment, array $errors
 	): array {
 		$env = $this->env;
 		$extensionName = $extToken->getAttribute( 'name' );

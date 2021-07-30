@@ -3,7 +3,9 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Core;
 
-use DOMElement;
+use Wikimedia\Parsoid\Config\WikitextConstants as Consts;
+use Wikimedia\Parsoid\DOM\Element;
+use Wikimedia\Parsoid\DOM\Node;
 use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\WTUtils;
@@ -26,39 +28,39 @@ class MediaStructure {
 	/**
 	 * Node names: figure, span
 	 *
-	 * @var ?DOMElement
+	 * @var ?Element
 	 */
 	 public $containerElt;
 
 	/**
 	 * Node names: a, span
 	 *
-	 * @var ?DOMElement
+	 * @var ?Element
 	 */
 	public $linkElt;
 
 	/**
 	 * Node names: img, audio, video, span
 	 *
-	 * @var ?DOMElement
+	 * @var ?Element
 	 */
 	public $mediaElt;
 
 	/**
 	 * Node names: figcaption
 	 *
-	 * @var ?DOMElement
+	 * @var ?Element
 	 */
 	public $captionElt;
 
 	/**
-	 * @param DOMElement $mediaElt
-	 * @param ?DOMElement $linkElt
-	 * @param ?DOMElement $containerElt
+	 * @param Element $mediaElt
+	 * @param ?Element $linkElt
+	 * @param ?Element $containerElt
 	 */
 	public function __construct(
-		DOMElement $mediaElt, ?DOMElement $linkElt = null,
-		?DOMElement $containerElt = null
+		Element $mediaElt, ?Element $linkElt = null,
+		?Element $containerElt = null
 	) {
 		$this->mediaElt = $mediaElt;
 		$this->linkElt = $linkElt;
@@ -122,21 +124,29 @@ class MediaStructure {
 	}
 
 	/**
-	 * @param \DOMNode $node
+	 * @param Node $node
 	 * @return ?MediaStructure
 	 */
-	public static function parse( \DOMNode $node ): ?MediaStructure {
+	public static function parse( Node $node ): ?MediaStructure {
 		if ( !WTUtils::isGeneratedFigure( $node ) ) {
 			return null;
 		}
-		'@phan-var DOMElement $node';  // @var DOMElement $node
+		'@phan-var Element $node';  // @var Element $node
 		$linkElt = DOMUtils::firstNonSepChild( $node );
 		if (
-			!( $linkElt instanceof DOMElement &&
+			$linkElt instanceof Element && $linkElt->nodeName !== 'a' &&
+			isset( Consts::$HTML['FormattingTags'][$linkElt->nodeName] )
+		) {
+			// Try being lenient, maybe there was a content model violation when
+			// parsing and an active formatting element was reopened in the wrapper
+			$linkElt = DOMUtils::firstNonSepChild( $linkElt );
+		}
+		if (
+			!( $linkElt instanceof Element &&
 				in_array( $linkElt->nodeName, [ 'a', 'span' ], true ) )
 		) {
-			if ( $linkElt instanceof DOMElement ) {
-				// Try being lenient, maybe this is media element and we don't
+			if ( $linkElt instanceof Element ) {
+				// Try being lenient, maybe this is the media element and we don't
 				// have a link elt.  See the test, "Image: from basic HTML (1)"
 				$mediaElt = $linkElt;
 				$linkElt = null;
@@ -147,7 +157,7 @@ class MediaStructure {
 			$mediaElt = DOMUtils::firstNonSepChild( $linkElt );
 		}
 		if (
-			!( $mediaElt instanceof DOMElement &&
+			!( $mediaElt instanceof Element &&
 				in_array( $mediaElt->nodeName, [ 'audio', 'img', 'span', 'video' ], true ) )
 		) {
 			return null;
