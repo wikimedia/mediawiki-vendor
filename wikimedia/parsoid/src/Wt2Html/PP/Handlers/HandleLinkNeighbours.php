@@ -6,6 +6,7 @@ namespace Wikimedia\Parsoid\Wt2Html\PP\Handlers;
 use Wikimedia\Parsoid\Config\Env;
 use Wikimedia\Parsoid\DOM\Element;
 use Wikimedia\Parsoid\DOM\Text;
+use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\WTUtils;
@@ -65,7 +66,7 @@ class HandleLinkNeighbours {
 			$nextSibling = $goForward ? $node->nextSibling : $node->previousSibling;
 			$fromTpl = WTUtils::hasParsoidAboutId( $node );
 			$unwrappedSpan = null;
-			if ( $node instanceof Element && $node->nodeName === 'span' &&
+			if ( $node instanceof Element && DOMCompat::nodeName( $node ) === 'span' &&
 				!WTUtils::isLiteralHTMLNode( $node ) &&
 				// <span> comes from the same template we are in
 				$fromTpl && $baseAbout !== '' && $node->getAttribute( 'about' ) === $baseAbout &&
@@ -90,7 +91,7 @@ class HandleLinkNeighbours {
 
 				// Link prefix node is templated => migrate transclusion info to $aNode
 				if ( $unwrappedSpan && $unwrappedSpan->hasAttribute( 'typeof' ) ) {
-					DOMUtils::addTypeOf( $aNode, $unwrappedSpan->getAttribute( 'typeof' ) );
+					DOMUtils::addTypeOf( $aNode, $unwrappedSpan->getAttribute( 'typeof' ) ?? '' );
 					DOMDataUtils::setDataMw( $aNode, DOMDataUtils::getDataMw( $unwrappedSpan ) );
 				}
 
@@ -132,7 +133,7 @@ class HandleLinkNeighbours {
 	 * @return bool|Element
 	 */
 	public static function handler( Element $node, Env $env ) {
-		$rel = $node->getAttribute( 'rel' );
+		$rel = $node->getAttribute( 'rel' ) ?? '';
 		if ( !preg_match( '#^mw:WikiLink(/Interwiki)?$#D', $rel ) ) {
 			return true;
 		}

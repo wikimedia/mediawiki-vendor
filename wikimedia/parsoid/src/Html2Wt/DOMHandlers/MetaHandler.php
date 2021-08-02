@@ -6,6 +6,7 @@ namespace Wikimedia\Parsoid\Html2Wt\DOMHandlers;
 use Wikimedia\Parsoid\DOM\Element;
 use Wikimedia\Parsoid\DOM\Node;
 use Wikimedia\Parsoid\Html2Wt\SerializerState;
+use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\Utils;
@@ -21,7 +22,7 @@ class MetaHandler extends DOMHandler {
 	public function handle(
 		Element $node, SerializerState $state, bool $wrapperUnmodified = false
 	): ?Node {
-		$property = $node->getAttribute( 'property' ) ?: '';
+		$property = $node->getAttribute( 'property' ) ?? '';
 		$dp = DOMDataUtils::getDataParsoid( $node );
 		$dmw = DOMDataUtils::getDataMw( $node );
 
@@ -102,7 +103,7 @@ class MetaHandler extends DOMHandler {
 	public function before( Element $node, Node $otherNode, SerializerState $state ): array {
 		$type = $node->getAttribute( 'typeof' ) ?: $node->getAttribute( 'property' ) ?:	null;
 		if ( $type && preg_match( '#mw:PageProp/categorydefaultsort#', $type ) ) {
-			if ( $otherNode->nodeName === 'p'
+			if ( DOMCompat::nodeName( $otherNode ) === 'p'
 				&& $otherNode instanceof Element // for static analyizers
 				&& ( DOMDataUtils::getDataParsoid( $otherNode )->stx ?? null ) !== 'html'
 			) {

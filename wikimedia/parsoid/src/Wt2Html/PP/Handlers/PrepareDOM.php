@@ -6,6 +6,7 @@ namespace Wikimedia\Parsoid\Wt2Html\PP\Handlers;
 use Wikimedia\Parsoid\Config\Env;
 use Wikimedia\Parsoid\DOM\Element;
 use Wikimedia\Parsoid\DOM\Node;
+use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\Utils;
 use Wikimedia\Parsoid\Utils\WTUtils;
@@ -29,7 +30,7 @@ class PrepareDOM {
 			// Deduplicate docIds that come from splitting nodes because of
 			// content model violations when treebuilding.
 			if ( $node->hasAttribute( DOMDataUtils::DATA_OBJECT_ATTR_NAME ) ) {
-				$docId = $node->getAttribute( DOMDataUtils::DATA_OBJECT_ATTR_NAME );
+				$docId = $node->getAttribute( DOMDataUtils::DATA_OBJECT_ATTR_NAME ) ?? '';
 				if ( isset( $seenDataIds[$docId] ) ) {
 					$data = DOMDataUtils::getNodeData( $node );
 					DOMDataUtils::setNodeData( $node, Utils::clone( $data ) );
@@ -38,11 +39,11 @@ class PrepareDOM {
 				}
 			}
 			// Set title to display when present (last one wins).
-			if ( $node->nodeName === 'META'
+			if ( DOMCompat::nodeName( $node ) === 'meta'
 				&& $node->getAttribute( 'property' ) === 'mw:PageProp/displaytitle'
 			) {
 				// PORT-FIXME: Meh
-				// $env->getPageConfig()->meta->displayTitle = $node->getAttribute( 'content' );
+				// $env->getPageConfig()->meta->displayTitle = $node->getAttribute( 'content' ) ?? '';
 			}
 			return true;
 		}
