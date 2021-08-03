@@ -119,6 +119,5 @@ return array(
     'c50606d667a3fde2b80a955639479d3d' => $vendorDir . '/wikimedia/timestamp/src/defines.php',
     '04c6c5c2f7095ccf6c481d3e53e1776f' => $vendorDir . '/mustangostang/spyc/Spyc.php',
     'db89166205707d49719c395c26d4e52d' => $vendorDir . '/wikimedia/parsoid/DomImpl.php',
-    '4d945db823e5f6ca6dd83ad1f5fbcc43' => $vendorDir . '/wikimedia/relpath/src/RelPath/RelPath.php',
     '6513700b70192b7dfd0e5e9fc8082cf3' => $vendorDir . '/wikimedia/relpath/src/Wikimedia/RelPath.php',
 );
