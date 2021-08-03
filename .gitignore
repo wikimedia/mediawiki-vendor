@@ -19,6 +19,10 @@ sftp-config.json
 
 # Building & testing
 node_modules/
+.scrutinizer.yml
+.styleci.yml
+.github/
+.gitlab-ci.yml
 
 # Operating systems
 ## Mac OS X
@@ -35,6 +39,8 @@ Thumbs.db
 /static*
 /tags
 /.htpasswd
+.gitattributes
+.gitignore
 
 # Library test files etc.
 psy/psysh/test
