@@ -13,6 +13,7 @@ use Wikimedia\Dodo\Internal\NamespacePrefixMap;
 use Wikimedia\Dodo\Internal\UnimplementedTrait;
 use Wikimedia\Dodo\Internal\Util;
 use Wikimedia\Dodo\Internal\WhatWG;
+use Wikimedia\IDLeDOM\ElementCreationOptions;
 
 /**
  * The Document class.
@@ -237,35 +238,32 @@ class Document extends ContainerNode implements \Wikimedia\IDLeDOM\Document {
 	private $_nodeIterators = null;
 
 	/**
-	 * @param ?Document $originDoc
-	 * @param string $type
-	 * @param string $contentType
-	 * @param ?string $url
+	 * @var string Non-standard: the XML version.
 	 */
-	public function __construct(
-		?Document $originDoc = null,
-		string $type = "xml",
-		string $contentType = 'text/xml',
-		?string $url = null
-	) {
+	private $_xmlVersion;
+
+	/**
+	 * @var bool Non-standard: whether the encoding has been explicitly set
+	 */
+	private $_xmlEncodingSet;
+
+	/**
+	 * These constructor arguments are not given by the DOM spec, but are
+	 * instead chosen to match the PHP constructor arguments for compatibility
+	 * with the DOM extension.
+	 * @see https://www.php.net/manual/en/domdocument.construct.php
+	 * @param string $version
+	 *  The version number of the document as part of the XML declaration.
+	 * @param string $encoding
+	 *  The encoding of the document as part of the XML declaration.
+	 */
+	public function __construct( string $version = "1.0", string $encoding = "" ) {
 		parent::__construct( $this );
-
-		/** DOM-LS */
-		$this->_origin = $originDoc ? $originDoc->_origin : null; // default
-
-		/* Having an HTML Document affects some APIs */
-		if ( $type === 'html' ) {
-			$this->_contentType = 'text/html';
-			$this->_typeIsHtml = true;
-		} else {
-			$this->_contentType = $contentType;
-			$this->_typeIsHtml = false;
-		}
-
-		/* DOM-LS: used by the documentURI and URL method */
-		if ( $url !== null ) {
-			$this->_URL = $url;
-		}
+		$this->_setOrigin( null );
+		$this->_setContentType( "text/xml", false );
+		$this->_setURL( null );
+		$this->setEncoding( $encoding );
+		$this->_xmlVersion = $version;
 
 		/* DOM-LS: DOMImplementation associated with document */
 		$this->_implementation = new DOMImplementation( $this );
@@ -279,6 +277,46 @@ class Document extends ContainerNode implements \Wikimedia\IDLeDOM\Document {
 		$this->_index_to_element[1] = $this;
 	}
 
+	// These private methods are used during construction. They are all
+	// internal to the Dodo implementation.
+
+	/**
+	 * @param ?Document $originDoc
+	 * @internal
+	 */
+	public function _setOrigin( ?Document $originDoc ): void {
+		$this->_origin = $originDoc ? $originDoc->_origin : null;
+	}
+
+	/**
+	 * @param string $contentType
+	 * @param bool $isHtml Whether this is to be an "HTML document"
+	 * @internal
+	 */
+	public function _setContentType( string $contentType, bool $isHtml ): void {
+		/* Having an HTML Document affects some APIs */
+		if ( $isHtml ) {
+			$this->_contentType = 'text/html';
+			$this->_typeIsHtml = true;
+		} else {
+			$this->_contentType = $contentType;
+			$this->_typeIsHtml = false;
+		}
+	}
+
+	/**
+	 * @param ?string $url
+	 * @internal
+	 */
+	public function _setURL( ?string $url ): void {
+		/* DOM-LS: used by the documentURI and URL method */
+		if ( $url !== null ) {
+			$this->_URL = $url;
+		} else {
+			$this->_URL = 'about:blank';
+		}
+	}
+
 	/**
 	 * The children of a <template> element aren't part of the element's
 	 * node document; instead they are children of an "associated inert
@@ -289,11 +327,15 @@ class Document extends ContainerNode implements \Wikimedia\IDLeDOM\Document {
 		if ( !$this->_templateDocCache ) {
 			/* "associated inert template document" */
 			$newDoc = new Document(
-				$this,
-				$this->_typeIsHtml ? 'html' : 'xml',
-				$this->_contentType,
-				$this->_URL
+				$this->_xmlVersion,
+				$this->_encoding
 			);
+			$newDoc->_setOrigin( $this );
+			$newDoc->_setContentType(
+				$this->_contentType,
+				$this->_typeIsHtml
+			);
+			$newDoc->_setURL( $this->_URL );
 			$this->_templateDocCache = $newDoc->_templateDocCache = $newDoc;
 		}
 		return $this->_templateDocCache;
@@ -367,7 +409,8 @@ class Document extends ContainerNode implements \Wikimedia\IDLeDOM\Document {
 		// present in the final DOM Level 3 specification, but is the
 		// only way of manipulating XML document encoding in this
 		// implementation."
-		$this->_encoding = $encoding;
+		$this->_encoding = $encoding ?: "UTF-8";
+		$this->_xmlEncodingSet = ( $encoding !== '' );
 	}
 
 	/** @return DOMImplementation */
@@ -533,11 +576,23 @@ class Document extends ContainerNode implements \Wikimedia\IDLeDOM\Document {
 
 	/** @inheritDoc */
 	public function createElement( string $lname, $options = null ) {
+		if ( $options !== null ) {
+			if ( is_string( $options ) ) {
+				// For PHP-compatibility, treat this as a Text $value
+				$el = $this->createElement( $lname );
+				$el->setTextContent( $options );
+				return $el;
+			}
+			// This checks $options for validity and throws if bad
+			$options = ElementCreationOptions::cast( $options );
+		}
+
 		if ( !WhatWG::is_valid_xml_name( $lname ) ) {
 			Util::error( "InvalidCharacterError" );
 		}
 
-		// We don't support the "is" option at this time.
+		// This is where we would use $options, but
+		// we don't support the "is" option at this time.
 
 		if ( $this->_typeIsHtml ) {
 			// Performance optimization: create a new string only if we need to
@@ -555,8 +610,21 @@ class Document extends ContainerNode implements \Wikimedia\IDLeDOM\Document {
 
 	/** @inheritDoc */
 	public function createElementNS( ?string $ns, string $qname, $options = null ) {
+		if ( $options !== null ) {
+			if ( is_string( $options ) ) {
+				// For PHP-compatibility, treat this as a Text $value
+				$el = $this->createElementNS( $ns, $qname );
+				$el->setTextContent( $options );
+				return $el;
+			}
+			// This checks $options for validity and throws if bad
+			$options = ElementCreationOptions::cast( $options );
+		}
 		WhatWG::validate_and_extract( $ns, $qname, $prefix, $lname );
-		// We don't support the "is" option at this time.
+
+		// This is where we would use $options, but
+		// we don't support the "is" option at this time.
+
 		return $this->_createElementNS( $lname, $ns, $prefix );
 	}
 
@@ -580,7 +648,9 @@ class Document extends ContainerNode implements \Wikimedia\IDLeDOM\Document {
 			return HTMLElement::_createElement( $this, $lname, $prefix );
 		} elseif ( $ns === Util::NAMESPACE_SVG ) {
 			// Similarly in the SVG spec
-			throw $this->_unimplemented();
+			// XXX replace with SVGElement
+			return new Element( $this, $lname, $ns, $prefix );
+			// @phan-suppress-next-line PhanPluginDuplicateIfStatements
 		} else {
 			return new Element( $this, $lname, $ns, $prefix );
 		}
@@ -664,7 +734,7 @@ class Document extends ContainerNode implements \Wikimedia\IDLeDOM\Document {
 		'@phan-var Node $node'; // @var Node $node
 		if ( $node->getNodeType() === Node::DOCUMENT_NODE ) {
 			// A Document cannot adopt another Document. Throw a "NotSupported" exception.
-			Util::error( "NotSupported" );
+			Util::error( "NotSupportedError" );
 		}
 		if ( $node->getNodeType() === Node::ATTRIBUTE_NODE ) {
 			// Attributes do not have an ownerDocument, so do nothing.
@@ -722,7 +792,7 @@ class Document extends ContainerNode implements \Wikimedia\IDLeDOM\Document {
 	/**
 	 * @inheritDoc
 	 */
-	public function insertBefore( $node, $refChild ): Node {
+	public function insertBefore( $node, $refChild = null ): Node {
 		$ret = parent::insertBefore( $node, $refChild );
 		$this->_updateDoctypeAndDocumentElement();
 		return $ret;
@@ -818,6 +888,25 @@ class Document extends ContainerNode implements \Wikimedia\IDLeDOM\Document {
 	}
 
 	/**
+	 * This is a non-standard Dodo extension that interfaces with the Zest
+	 * CSS selector library to allow quick lookup by ID *even if there are
+	 * multiple nodes in the document with the same ID*.
+	 * @param string $id
+	 * @return array<Element>
+	 */
+	public function _getElementsById( string $id ): array {
+		$n = $this->_id_to_element[$id] ?? null;
+		if ( $n === null ) {
+			return [];
+		}
+		if ( $n instanceof MultiId ) {
+			/* there was more than one element with this id */
+			return $n->table;
+		}
+		return [ $n ];
+	}
+
+	/**
 	 * A number of methods of Document act as if the Document were an
 	 * Element.  Return a fake element class to make these work.
 	 * @return FakeElement
@@ -893,11 +982,15 @@ class Document extends ContainerNode implements \Wikimedia\IDLeDOM\Document {
 	 */
 	protected function _subclassCloneNodeShallow(): Node {
 		$shallow = new Document(
-			$this,
-			$this->_typeIsHtml ? 'html' : 'xml',
-			$this->_contentType,
-			$this->_URL
+			$this->_xmlVersion,
+			$this->_encoding
 		);
+		$shallow->_setOrigin( $this );
+		$shallow->_setContentType(
+			$this->_contentType,
+			$this->_typeIsHtml
+		);
+		$shallow->_setURL( $this->_URL );
 		$shallow->_mode = $this->_mode;
 		return $shallow;
 	}
@@ -922,23 +1015,151 @@ class Document extends ContainerNode implements \Wikimedia\IDLeDOM\Document {
 	/** @inheritDoc */
 	public function _xmlSerialize(
 		?string $namespace, NamespacePrefixMap $prefixMap, int &$prefixIndex,
-		bool $requireWellFormed, array &$markup
+		array $options, array &$markup
 	): void {
-		if ( $requireWellFormed ) {
+		if ( $options['requireWellFormed'] ?? false ) {
 			if ( $this->getDocumentElement() === null ) {
 				throw new BadXMLException();
 			}
 		}
 		// Emitting the XML declaration is not yet in the spec:
 		// https://github.com/w3c/DOM-Parsing/issues/50
-		$markup[] = '<?xml version="1.0" encoding="UTF-8"?>';
+		if ( !( $options['htmlCompat'] ?? false ) ) {
+			$markup[] = '<?xml version="';
+			$markup[] = $this->_xmlVersion;
+			if ( $this->_xmlEncodingSet || !( $options['phpCompat'] ?? false ) ) {
+				$markup[] = '" encoding="';
+				$markup[] = $this->_encoding;
+			}
+			if ( ( $options['phpCompat'] ?? false ) &&
+				$this->getDoctype() &&
+				$this->getDoctype()->getPublicId() !== '' &&
+				$this->getDoctype()->getSystemId() !== '' ) {
+				$markup[] = '" standalone="yes';
+			}
+			$markup[] = '"?>';
+			if ( $options['phpCompat'] ?? false ) {
+				$markup[] = "\n";
+			}
+		}
 
 		for ( $child = $this->getFirstChild(); $child !== null; $child = $child->getNextSibling() ) {
 			$child->_xmlSerialize(
-				$namespace, $prefixMap, $prefixIndex, $requireWellFormed,
+				$namespace, $prefixMap, $prefixIndex, $options,
 				$markup
 			);
 		}
+
+		if ( $options['phpCompat'] ?? false ) {
+			$markup[] = "\n";
+		}
+	}
+
+	/**
+	 * Creates an XML document from the DOM representation.
+	 *
+	 * Non-standard: PHP extension.
+	 * @see https://www.php.net/manual/en/domdocument.savexml.php
+	 *
+	 * @param Node|null $node
+	 *   Output only a specific node rather than the entire document.
+	 * @param int $options
+	 *   Additional options. Only LIBXML_NOEMPTYTAG is supported.
+	 * @return string|bool
+	 *   Returns the XML, or `false` if an error occurred.
+	 */
+	public function saveXML( $node = null, int $options = 0 ) {
+		try {
+			$result = [];
+			WhatWG::xmlSerialize( $node ?? $this, [
+				'requireWellFormed' => true,
+				'noEmptyTag' => ( $options & LIBXML_NOEMPTYTAG ) !== 0,
+				'phpCompat' => true,
+			], $result );
+			return implode( '', $result );
+		} catch ( BadXMLException $e ) {
+			return false;
+		}
+	}
+
+	/**
+	 * Loads an XML document from a string.
+	 *
+	 * Non-standard: PHP extension.
+	 * @see https://www.php.net/manual/en/domdocument.loadxml.php
+	 *
+	 * @param string $source
+	 *   The string containing the XML.
+	 * @param int $options
+	 *   Bitwise OR of the libxml option constants.
+	 * @return bool
+	 *   Returns `true` on success or `false` on failure.
+	 */
+	public function loadXML( string $source, int $options = 0 ): bool {
+		try {
+			// XXX we're ignoring the options here, but they'd get passed
+			// in the options array in the _parseXml call
+			DOMParser::_parseXml( $this, $source, [] );
+			return true;
+		} catch ( BadXMLException $e ) {
+			return false;
+		}
+	}
+
+	/**
+	 * @see https://www.php.net/manual/en/domdocument.loadhtml.php
+	 *
+	 * @param string $source
+	 *   The HTML string
+	 * @param int $options
+	 *   Additional libxml parameters
+	 * @return bool
+	 *   Returns `true` on success or `false` on failure
+	 */
+	public function loadHTML( string $source, int $options = 0 ): bool {
+		// Empty out this document
+		while ( $this->getFirstChild() !== null ) {
+			$child = $this->getFirstChild();
+			'@phan-var \Wikimedia\IDLeDOM\ChildNode $child';
+			$child->remove();
+		}
+		$this->setEncoding( '' );
+		$this->_setContentType( 'text/html', true );
+		// XXX we should do something with $options
+		DOMParser::_parseHtml( $this, $source, [
+			'phpCompat' => true,
+		] );
+		return true;
+	}
+
+	/**
+	 * Dumps the internal document into a string using HTML formatting.
+	 * @see https://www.php.net/manual/en/domdocument.savehtml.php
+	 *
+	 * @param Node|null $node
+	 *   Optional parameter to output a subset of the document
+	 * @return string|bool
+	 *   Returns the HTML string, or `false` if an error occurred
+	 */
+	public function saveHTML( $node = null ) {
+		if ( $node === null ) {
+			$node = $this;
+		}
+		if ( $node instanceof Document || $node instanceof DocumentFragment ) {
+			$element = $node->_fakeElement();
+		} else {
+			$element = new FakeElement( $this, static function () use ( $node ) {
+				return $node;
+			} );
+		}
+		$result = [];
+		$element->_htmlSerialize( $result, [
+			'phpCompat' => true
+		] );
+		if ( $node instanceof Document ) {
+			$result[] = "\n";
+		}
+		return implode( '', $result );
 	}
 
 	/**

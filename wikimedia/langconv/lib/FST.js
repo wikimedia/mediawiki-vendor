@@ -23,8 +23,8 @@ const BYTE_EPSILON  = 0x00; // Always appears first in sorted order
  * A FST conversion machine.
  * @callback module:language/FST~ConversionMachine
  * @param {Buffer} buffer UTF-8 encoded input buffer.
- * @param {Number} [start] Start position in the buffer, default 0.
- * @param {Number} [end] End position in the buffer, defaults to
+ * @param {number} [start] Start position in the buffer, default 0.
+ * @param {number} [end] End position in the buffer, defaults to
  *   `buffer.length`.
  * @return {string} The converted string.
  */
@@ -33,10 +33,10 @@ const BYTE_EPSILON  = 0x00; // Always appears first in sorted order
  * A FST bracket machine.
  * @callback module:language/FST~BracketMachine
  * @param {Buffer} buffer UTF-8 encoded input buffer.
- * @param {Number} [start] Start position in the buffer, default 0.
- * @param {Number} [end] End position in the buffer, defaults to
+ * @param {number} [start] Start position in the buffer, default 0.
+ * @param {number} [end] End position in the buffer, defaults to
  *   `buffer.length`.
- * @return {Number[]} An array of bracket locations in the input buffer.
+ * @return {number[]} An array of bracket locations in the input buffer.
  */
 
 /**

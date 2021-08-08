@@ -6,7 +6,7 @@ use Wikimedia\Assert\Assert;
 
 /**
  * Load and execute a finite-state transducer (FST) based converter or
- * bracketing machine from a compact JSON description.
+ * bracketing machine from a compact string description.
  */
 class FST {
 	private const MAGIC_BYTES = 8; // 8 byte header w/ magic bytes

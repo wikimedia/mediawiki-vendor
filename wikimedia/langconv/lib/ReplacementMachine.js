@@ -12,6 +12,8 @@ class ReplacementMachine {
 	/**
 	 * Create a new ReplacementArray, which holds a given source->destination
 	 * transformation.
+	 * @param baseLanguage
+	 * @param {...any} codes
 	 */
 	constructor(baseLanguage, ...codes) {
 		this.baseLanguage = baseLanguage;
@@ -30,6 +32,8 @@ class ReplacementMachine {
 	}
 
 	/**
+	 * @param filename
+	 * @param bracket
 	 * @private
 	 */
 	static loadFST(filename, bracket) {
@@ -59,6 +63,9 @@ class ReplacementMachine {
 	 * the number of codepoints we wouldn't have to escape, and `len` is
 	 * the total number of codepoints in `s`.  Generally lower values of
 	 * `nonsafe` indicate a better guess for `invertCode`.
+	 * @param s
+	 * @param destCode
+	 * @param invertCode
 	 * @return {Object} Statistics about the given guess.
 	 * @return {number} return.safe
 	 * @return {number} return.unsafe

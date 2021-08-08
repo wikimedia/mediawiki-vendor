@@ -15,11 +15,6 @@ The PHP implementation is [available on Packagist](https://packagist.org/package
 $ composer require wikimedia/langconv
 ```
 
-## Usage
-
-
-## API
-
 ## License
 
 Copyright (c) 2018-2019 Wikimedia Foundation and others; see `AUTHORS.txt`

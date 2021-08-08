@@ -22,4 +22,12 @@ trait DocumentFragment {
 
 	// phpcs:enable
 
+	/**
+	 * @param string $data
+	 * @return bool
+	 */
+	public function appendXML( string $data ): bool {
+		throw self::_unimplemented();
+	}
+
 }

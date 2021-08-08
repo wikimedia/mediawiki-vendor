@@ -414,7 +414,7 @@ class Attr extends Leaf implements \Wikimedia\IDLeDOM\Attr {
 	/** @inheritDoc */
 	public function _xmlSerialize(
 		?string $namespace, NamespacePrefixMap $prefixMap, int &$prefixIndex,
-		bool $requireWellFormed, array &$markup
+		array $options, array &$markup
 	): void {
 		return; // Serialization is the empty string
 	}

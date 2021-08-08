@@ -1,7 +1,7 @@
 # FOMA script for crh-latn and crh-cyrl conversions
 # Generates .att files when run from this directory using:
 #   foma -f crh.foma
-# Then generate executable .json files with:
+# Then generate executable .pfst files with:
 #   ../tools/build-langconv-fst.js -l crh-latn crh-cyrl
 #   ../tools/build-langconv-fst.js -l crh-cyrl crh-latn
 echo EXPECT 0

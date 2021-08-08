@@ -147,6 +147,14 @@ trait XMLDocument {
 				return $this->getOnvisibilitychange();
 			case "encoding":
 				return $this->getEncoding();
+			case "preserveWhiteSpace":
+				return $this->getPreserveWhiteSpace();
+			case "formatOutput":
+				return $this->getFormatOutput();
+			case "validateOnParse":
+				return $this->getValidateOnParse();
+			case "strictErrorChecking":
+				return $this->getStrictErrorChecking();
 			default:
 				break;
 		}
@@ -267,6 +275,14 @@ trait XMLDocument {
 				return true;
 			case "encoding":
 				return true;
+			case "preserveWhiteSpace":
+				return true;
+			case "formatOutput":
+				return true;
+			case "validateOnParse":
+				return true;
+			case "strictErrorChecking":
+				return true;
 			default:
 				break;
 		}
@@ -313,6 +329,18 @@ trait XMLDocument {
 				return;
 			case "encoding":
 				$this->setEncoding( $value );
+				return;
+			case "preserveWhiteSpace":
+				$this->setPreserveWhiteSpace( $value );
+				return;
+			case "formatOutput":
+				$this->setFormatOutput( $value );
+				return;
+			case "validateOnParse":
+				$this->setValidateOnParse( $value );
+				return;
+			case "strictErrorChecking":
+				$this->setStrictErrorChecking( $value );
 				return;
 			default:
 				break;
@@ -435,6 +463,14 @@ trait XMLDocument {
 			case "onvisibilitychange":
 				break;
 			case "encoding":
+				break;
+			case "preserveWhiteSpace":
+				break;
+			case "formatOutput":
+				break;
+			case "validateOnParse":
+				break;
+			case "strictErrorChecking":
 				break;
 			default:
 				return;

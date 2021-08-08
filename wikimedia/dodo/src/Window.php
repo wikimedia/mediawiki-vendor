@@ -49,7 +49,8 @@ class Window extends EventTarget {
 	 */
 	public function __construct( Document $doc = null ) {
 		if ( $doc == null ) {
-			$doc = new Document( null, 'html', 'text/html' );
+			$doc = new Document();
+			$doc->_setContentType( 'text/html', true );
 		}
 
 		$this->document = $doc;

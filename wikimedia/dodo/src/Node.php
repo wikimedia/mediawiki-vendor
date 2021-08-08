@@ -395,7 +395,10 @@ abstract class Node extends EventTarget implements \Wikimedia\IDLeDOM\Node {
 	 * @return Node Newly inserted Node or empty DocumentFragment
 	 * @throws DOMException "HierarchyRequestError" or "NotFoundError"
 	 */
-	public function insertBefore( $node, $refNode ): Node {
+	public function insertBefore(
+		// phpcs:ignore MediaWiki.Commenting.FunctionComment.PHP71NullableDocOptionalArg
+		$node, $refNode = null
+	): Node {
 		'@phan-var Node $node'; // @var Node $node
 		'@phan-var ?Node $refNode'; // @var ?Node $refNode
 		/*
@@ -952,10 +955,11 @@ abstract class Node extends EventTarget implements \Wikimedia\IDLeDOM\Node {
 	 *
 	 * @see https://html.spec.whatwg.org/#html-fragment-serialisation-algorithm
 	 * @param string[] &$result The result is accumulated here
+	 * @param array $options Format options passed to WhatWG::htmlSerialize
 	 */
-	public function _htmlSerialize( array &$result ): void {
+	public function _htmlSerialize( array &$result, array $options ): void {
 		for ( $n = $this->getFirstChild(); $n !== null; $n = $n->getNextSibling() ) {
-			WhatWG::htmlSerialize( $n, $this, $result );
+			WhatWG::htmlSerialize( $result, $n, $this, $options );
 		}
 	}
 
@@ -968,12 +972,12 @@ abstract class Node extends EventTarget implements \Wikimedia\IDLeDOM\Node {
 	 * @param ?string $namespace
 	 * @param NamespacePrefixMap $prefixMap
 	 * @param int &$prefixIndex
-	 * @param bool $requireWellFormed
+	 * @param array $options
 	 * @param string[] &$markup accumulator for the result
 	 */
 	public function _xmlSerialize(
 		?string $namespace, NamespacePrefixMap $prefixMap, int &$prefixIndex,
-		bool $requireWellFormed, array &$markup
+		array $options, array &$markup
 	): void {
 		throw new TypeError( "can't serialize to XML" );
 	}

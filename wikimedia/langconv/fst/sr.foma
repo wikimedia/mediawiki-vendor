@@ -1,7 +1,7 @@
 # FOMA script for sr-ec and sr-el conversions
 # Generates .att files when run from this directory using:
 #   foma -f sr.foma
-# Then generate executable .json files with:
+# Then generate executable .pfst files with:
 #   ../tools/build-langconv-fst.js -l sr-el sr-ec
 #   ../tools/build-langconv-fst.js -l sr-ec sr-el
 echo EXPECT 12

@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Dodo;
 
+use Wikimedia\Dodo\Internal\BadXMLException;
 use Wikimedia\Dodo\Internal\FakeElement;
 use Wikimedia\Dodo\Internal\FilteredElementList;
 use Wikimedia\Dodo\Internal\NamespacePrefixMap;
@@ -78,11 +79,11 @@ class DocumentFragment extends ContainerNode implements \Wikimedia\IDLeDOM\Docum
 	/** @inheritDoc */
 	public function _xmlSerialize(
 		?string $namespace, NamespacePrefixMap $prefixMap, int &$prefixIndex,
-		bool $requireWellFormed, array &$markup
+		array $options, array &$markup
 	): void {
 		for ( $child = $this->getFirstChild(); $child !== null; $child = $child->getNextSibling() ) {
 			$child->_xmlSerialize(
-				$namespace, $prefixMap, $prefixIndex, $requireWellFormed,
+				$namespace, $prefixMap, $prefixIndex, $options,
 				$markup
 			);
 		}
@@ -106,6 +107,11 @@ class DocumentFragment extends ContainerNode implements \Wikimedia\IDLeDOM\Docum
 		return $nl->getLength() > 0 ? $nl->item( 0 ) : null;
 	}
 
+	/** @inheritDoc */
+	public function _getElementsById( string $id ): array {
+		return $this->_fakeElement()->_getElementsById( $id );
+	}
+
 	/**
 	 * Create a FakeElement so that we can invoke methods of Element on
 	 * DocumentFragment "as if it were an element".
@@ -115,6 +121,37 @@ class DocumentFragment extends ContainerNode implements \Wikimedia\IDLeDOM\Docum
 		return new FakeElement( $this->_nodeDocument, function () {
 			return $this->getFirstChild();
 		} );
+	}
+
+	// Non-standard methods for PHP compatibility
+
+	/**
+	 * Appends raw XML data to a DOMDocumentFragment.
+	 *
+	 * This method is not part of the DOM standard.
+	 * @see https://www.php.net/manual/en/domdocumentfragment.appendxml.php
+	 *
+	 * @param string $data XML to append.
+	 * @return bool `true` on success or `false` on failure.
+	 */
+	public function appendXML( string $data ): bool {
+		try {
+			// the ::appendXML method allow multiple elements, whereas
+			// ::_parseXml notionally only allows a single element.
+			// So we need to wrap the data as a single element, then
+			// unwrap it. (Ugh)
+			$uniqueName = "DodoUniqueRootName";
+			for ( $i = 0; ; $i++ ) {
+				if ( strpos( $data, "$uniqueName$i" ) === false ) {
+					break;
+				}
+			}
+			$data = "<$uniqueName$i>$data</$uniqueName$i>";
+			DOMParser::_parseXml( $this, $data, [ 'skipRoot' => true ] );
+			return true;
+		} catch ( BadXMLException $e ) {
+			return false;
+		}
 	}
 
 	// Non-standard, but useful (github issue #73)

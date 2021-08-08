@@ -62,6 +62,10 @@ namespace Wikimedia\IDLeDOM;
  * @property string $visibilityState
  * @property EventHandlerNonNull|callable|null $onvisibilitychange
  * @property string $encoding
+ * @property bool $preserveWhiteSpace
+ * @property bool $formatOutput
+ * @property bool $validateOnParse
+ * @property bool $strictErrorChecking
  * @phan-forbid-undeclared-magic-properties
  */
 interface Document extends Node, DocumentAndElementEventHandlers, DocumentOrShadowRoot, GlobalEventHandlers, NonElementParentNode, ParentNode, XPathEvaluatorBase {
@@ -435,18 +439,58 @@ interface Document extends Node, DocumentAndElementEventHandlers, DocumentOrShad
 	public function setEncoding( string $val ): void;
 
 	/**
-	 * @param string $source
-	 * @param int $options
-	 * @return \Wikimedia\IDLeDOM\Document|bool
+	 * @return bool
 	 */
-	public function load( string $source, int $options = 0 );
+	public function getPreserveWhiteSpace(): bool;
+
+	/**
+	 * @param bool $val
+	 */
+	public function setPreserveWhiteSpace( bool $val ): void;
+
+	/**
+	 * @return bool
+	 */
+	public function getFormatOutput(): bool;
+
+	/**
+	 * @param bool $val
+	 */
+	public function setFormatOutput( bool $val ): void;
+
+	/**
+	 * @return bool
+	 */
+	public function getValidateOnParse(): bool;
+
+	/**
+	 * @param bool $val
+	 */
+	public function setValidateOnParse( bool $val ): void;
+
+	/**
+	 * @return bool
+	 */
+	public function getStrictErrorChecking(): bool;
+
+	/**
+	 * @param bool $val
+	 */
+	public function setStrictErrorChecking( bool $val ): void;
 
 	/**
 	 * @param string $source
 	 * @param int $options
-	 * @return \Wikimedia\IDLeDOM\Document|bool
+	 * @return bool
 	 */
-	public function loadXML( string $source, int $options = 0 );
+	public function loadHTML( string $source, int $options = 0 ): bool;
+
+	/**
+	 * @param string $source
+	 * @param int $options
+	 * @return bool
+	 */
+	public function loadXML( string $source, int $options = 0 ): bool;
 
 	/**
 	 * @param Node|null $node

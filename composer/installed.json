@@ -6128,24 +6128,24 @@
     },
     {
         "name": "wikimedia/dodo",
-        "version": "v0.2.0",
-        "version_normalized": "0.2.0.0",
+        "version": "v0.3.0",
+        "version_normalized": "0.3.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/mediawiki-libs-Dodo.git",
-            "reference": "bb43207c96b4b572f5a6d38ad2ae65986e52a24a"
+            "reference": "e46b9c8a1e5804509d39d03d612f02c15fed0759"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Dodo/zipball/bb43207c96b4b572f5a6d38ad2ae65986e52a24a",
-            "reference": "bb43207c96b4b572f5a6d38ad2ae65986e52a24a",
+            "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Dodo/zipball/e46b9c8a1e5804509d39d03d612f02c15fed0759",
+            "reference": "e46b9c8a1e5804509d39d03d612f02c15fed0759",
             "shasum": ""
         },
         "require": {
             "php": ">=7.2.9|^8.0",
-            "wikimedia/idle-dom": "0.7.2",
-            "wikimedia/remex-html": "^2.3.1",
-            "wikimedia/zest-css": "^1.1.5"
+            "wikimedia/idle-dom": "0.10.0",
+            "wikimedia/remex-html": "2.3.2",
+            "wikimedia/zest-css": "^2.0.1"
         },
         "require-dev": {
             "consolidation/robo": "^3@alpha",
@@ -6158,9 +6158,10 @@
             "php-parallel-lint/php-console-highlighter": "^0.5",
             "php-parallel-lint/php-parallel-lint": "1.3.0",
             "phpunit/phpunit": "^8.5|^9.5",
-            "web-platform-tests/wpt": "^2.7"
+            "web-platform-tests/wpt": "^2.7",
+            "wikimedia/update-history": "1.0.1"
         },
-        "time": "2021-07-27T01:12:16+00:00",
+        "time": "2021-08-08T17:04:35+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -6176,6 +6177,18 @@
             {
                 "name": "Jason Linehan",
                 "email": "jlinehan@wikimedia.org"
+            },
+            {
+                "name": "C. Scott Ananian",
+                "email": "cananian@wikimedia.org"
+            },
+            {
+                "name": "Tim Abdullin",
+                "email": "tim.abdullin@speedandfunction.com"
+            },
+            {
+                "name": "Wikimedia Parsing Team and the broader MediaWiki community",
+                "homepage": "https://www.mediawiki.org/wiki/Parsoid"
             }
         ],
         "description": "DOm DOcument implementation",
@@ -6293,17 +6306,17 @@
     },
     {
         "name": "wikimedia/idle-dom",
-        "version": "v0.7.2",
-        "version_normalized": "0.7.2.0",
+        "version": "v0.10.0",
+        "version_normalized": "0.10.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/mediawiki-libs-IDLeDOM.git",
-            "reference": "dd31df6afb15dc688cdb9a2723e0bc89beef9db8"
+            "reference": "1d34b55cfe259fd26c541811581c2e1578b46727"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-IDLeDOM/zipball/dd31df6afb15dc688cdb9a2723e0bc89beef9db8",
-            "reference": "dd31df6afb15dc688cdb9a2723e0bc89beef9db8",
+            "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-IDLeDOM/zipball/1d34b55cfe259fd26c541811581c2e1578b46727",
+            "reference": "1d34b55cfe259fd26c541811581c2e1578b46727",
             "shasum": ""
         },
         "require": {
@@ -6318,9 +6331,10 @@
             "php-parallel-lint/php-parallel-lint": "1.3.0",
             "phpunit/phpunit": "^8.5|^9.5",
             "wikimedia/assert": "0.4.0|^0.5.0",
-            "wikimedia/webidl": "1.0.2"
+            "wikimedia/update-history": "^1.0.1",
+            "wikimedia/webidl": "1.0.3"
         },
-        "time": "2021-07-27T00:14:58+00:00",
+        "time": "2021-08-07T06:22:22+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -6442,44 +6456,41 @@
     },
     {
         "name": "wikimedia/langconv",
-        "version": "0.3.5",
-        "version_normalized": "0.3.5.0",
+        "version": "0.4.2",
+        "version_normalized": "0.4.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/langconv.git",
-            "reference": "f45e5278451ba4877519750b18eee647b002a7bf"
+            "reference": "4bd255fd316df6650c489fa0f9b621c48458859b"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/langconv/zipball/f45e5278451ba4877519750b18eee647b002a7bf",
-            "reference": "f45e5278451ba4877519750b18eee647b002a7bf",
+            "url": "https://api.github.com/repos/wikimedia/langconv/zipball/4bd255fd316df6650c489fa0f9b621c48458859b",
+            "reference": "4bd255fd316df6650c489fa0f9b621c48458859b",
             "shasum": ""
         },
         "require": {
             "ext-dom": "*",
             "ext-json": "*",
-            "php": ">=7.2.0",
+            "php": ">=7.2.9",
             "wikimedia/assert": "0.4.0|^0.5.0"
         },
         "require-dev": {
-            "jakub-onderka/php-console-highlighter": "0.4.0",
-            "jakub-onderka/php-parallel-lint": "1.0.0",
-            "mediawiki/mediawiki-codesniffer": "30.0.0",
-            "mediawiki/mediawiki-phan-config": "0.9.2",
-            "mediawiki/minus-x": "1.0.0",
-            "ockcyp/covers-validator": "1.1.1",
-            "phpspec/phpspec": "^6.1",
-            "phpunit/phpunit": "^8.5",
-            "wikimedia/testing-access-wrapper": "~1.0"
+            "mediawiki/mediawiki-codesniffer": "37.0.0",
+            "mediawiki/mediawiki-phan-config": "0.10.6",
+            "mediawiki/minus-x": "1.1.1",
+            "ockcyp/covers-validator": "1.3.3",
+            "php-parallel-lint/php-console-highlighter": "0.5.0",
+            "php-parallel-lint/php-parallel-lint": "1.3.0",
+            "phpunit/phpunit": "^8.5|^9.5",
+            "wikimedia/update-history": "^1.0.1"
         },
-        "time": "2020-03-06T17:08:22+00:00",
+        "time": "2021-08-07T06:25:47+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
-                "Wikimedia\\LangConv\\": [
-                    "src"
-                ]
+                "Wikimedia\\LangConv\\": "src/"
             }
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -6493,7 +6504,7 @@
             }
         ],
         "description": "Finite-State Transducer implementation of MediaWiki LanguageConverter",
-        "homepage": "https://gerrit.wikimedia.org/g/mediawiki/libs/LangConv",
+        "homepage": "https://www.mediawiki.org/wiki/LangConv",
         "keywords": [
             "Wikimedia",
             "language converter",
@@ -6778,17 +6789,17 @@
     },
     {
         "name": "wikimedia/parsoid",
-        "version": "v0.14.0-a13",
-        "version_normalized": "0.14.0.0-alpha13",
+        "version": "v0.14.0-a14",
+        "version_normalized": "0.14.0.0-alpha14",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/parsoid.git",
-            "reference": "ddc6286fffdf205762781fff65efdbc53635fae0"
+            "reference": "51d55ab5432bdfc4c0849875658e363ffd9f88ce"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/ddc6286fffdf205762781fff65efdbc53635fae0",
-            "reference": "ddc6286fffdf205762781fff65efdbc53635fae0",
+            "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/51d55ab5432bdfc4c0849875658e363ffd9f88ce",
+            "reference": "51d55ab5432bdfc4c0849875658e363ffd9f88ce",
             "shasum": ""
         },
         "require": {
@@ -6799,16 +6810,16 @@
             "php": ">=7.2.0",
             "psr/log": "^1.1.2",
             "wikimedia/assert": "0.4.0|^0.5.0",
-            "wikimedia/dodo": "0.2.0",
+            "wikimedia/dodo": "0.3.0",
             "wikimedia/ip-utils": "^1.0.0|^3.0.0",
             "wikimedia/object-factory": "^3.0.0",
-            "wikimedia/remex-html": "^2.2.0|^2.3.0",
+            "wikimedia/remex-html": "^2.3.2",
             "wikimedia/scoped-callback": "^3.0.0",
-            "wikimedia/wikipeg": "^2.0.5",
-            "wikimedia/zest-css": "^1.1.5"
+            "wikimedia/wikipeg": "^2.0.6",
+            "wikimedia/zest-css": "^2.0.1"
         },
         "conflict": {
-            "wikimedia/langconv": "<0.3.5 || >=0.4"
+            "wikimedia/langconv": "<0.4.2"
         },
         "require-dev": {
             "composer/composer": "^1.10.22",
@@ -6822,14 +6833,14 @@
             "php-parallel-lint/php-parallel-lint": "1.3.0",
             "phpunit/phpunit": "^8.5",
             "sebastian/diff": "^3.0.2",
-            "wikimedia/alea": "^0.9.2",
-            "wikimedia/langconv": "^0.3.5",
+            "wikimedia/alea": "^0.9.3",
+            "wikimedia/langconv": "^0.4.2",
             "wikimedia/testing-access-wrapper": "~1.0"
         },
         "suggest": {
             "wikimedia/langconv": "Provides script conversion support"
         },
-        "time": "2021-08-01T21:57:03+00:00",
+        "time": "2021-08-08T19:56:57+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -7022,17 +7033,17 @@
     },
     {
         "name": "wikimedia/remex-html",
-        "version": "2.3.1",
-        "version_normalized": "2.3.1.0",
+        "version": "2.3.2",
+        "version_normalized": "2.3.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/remex-html.git",
-            "reference": "721432b61111b64008f5930916190373da6b3417"
+            "reference": "d46adaad8c6640eb6ba834b6268188ff0426c449"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/remex-html/zipball/721432b61111b64008f5930916190373da6b3417",
-            "reference": "721432b61111b64008f5930916190373da6b3417",
+            "url": "https://api.github.com/repos/wikimedia/remex-html/zipball/d46adaad8c6640eb6ba834b6268188ff0426c449",
+            "reference": "d46adaad8c6640eb6ba834b6268188ff0426c449",
             "shasum": ""
         },
         "require": {
@@ -7043,20 +7054,22 @@
         },
         "require-dev": {
             "ext-json": "*",
-            "mediawiki/mediawiki-codesniffer": "35.0.0",
+            "mediawiki/mediawiki-codesniffer": "37.0.0",
             "mediawiki/mediawiki-phan-config": "0.10.6",
             "mediawiki/minus-x": "1.1.1",
             "ockcyp/covers-validator": "1.3.3",
             "php-parallel-lint/php-console-highlighter": "0.5.0",
-            "php-parallel-lint/php-parallel-lint": "1.2.0",
-            "phpunit/phpunit": "^8.5 || ^9.5"
+            "php-parallel-lint/php-parallel-lint": "1.3.0",
+            "phpunit/phpunit": "^8.5 || ^9.5",
+            "wikimedia/update-history": "1.0.1"
         },
-        "time": "2021-04-20T14:34:23+00:00",
+        "time": "2021-08-07T07:07:23+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
-                "RemexHtml\\": "RemexHtml/"
+                "RemexHtml\\": "src/",
+                "Wikimedia\\RemexHtml\\": "src/"
             }
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -7573,36 +7586,41 @@
     },
     {
         "name": "wikimedia/wikipeg",
-        "version": "2.0.5",
-        "version_normalized": "2.0.5.0",
+        "version": "2.0.6",
+        "version_normalized": "2.0.6.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/wikipeg.git",
-            "reference": "df47c20859c80923d08ce906c5c7412161ef052f"
+            "reference": "9a92384ae11e1a3b7ecfe0feef1809b1af73889b"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/wikipeg/zipball/df47c20859c80923d08ce906c5c7412161ef052f",
-            "reference": "df47c20859c80923d08ce906c5c7412161ef052f",
+            "url": "https://api.github.com/repos/wikimedia/wikipeg/zipball/9a92384ae11e1a3b7ecfe0feef1809b1af73889b",
+            "reference": "9a92384ae11e1a3b7ecfe0feef1809b1af73889b",
             "shasum": ""
         },
         "require": {
             "ext-json": "*",
             "ext-mbstring": "*",
-            "php": ">=7.2"
+            "php": ">=7.2.9"
         },
         "require-dev": {
-            "mediawiki/minus-x": "1.1.0",
+            "mediawiki/mediawiki-codesniffer": "37.0.0",
+            "mediawiki/mediawiki-phan-config": "0.10.6",
+            "mediawiki/minus-x": "1.1.1",
+            "ockcyp/covers-validator": "1.3.3",
             "php-parallel-lint/php-console-highlighter": "0.5.0",
-            "php-parallel-lint/php-parallel-lint": "1.2.0"
+            "php-parallel-lint/php-parallel-lint": "1.3.0",
+            "phpunit/phpunit": "^8.5|^9.5",
+            "wikimedia/update-history": "^1.0"
         },
-        "time": "2020-12-17T21:12:05+00:00",
+        "time": "2021-08-07T06:12:21+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
-                "WikiPEG\\": "src",
-                "WikiPEG\\Tests\\": "tests/php"
+                "WikiPEG\\": "src/",
+                "Wikimedia\\WikiPEG\\": "src/"
             }
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -7723,17 +7741,17 @@
     },
     {
         "name": "wikimedia/zest-css",
-        "version": "1.1.5",
-        "version_normalized": "1.1.5.0",
+        "version": "2.0.1",
+        "version_normalized": "2.0.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/mediawiki-libs-Zest.git",
-            "reference": "bc3346fcf2a93f02a8a6697d98c305c14ef1869f"
+            "reference": "ab537a887f393ca8e759638aadc675f01f8859a1"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Zest/zipball/bc3346fcf2a93f02a8a6697d98c305c14ef1869f",
-            "reference": "bc3346fcf2a93f02a8a6697d98c305c14ef1869f",
+            "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Zest/zipball/ab537a887f393ca8e759638aadc675f01f8859a1",
+            "reference": "ab537a887f393ca8e759638aadc675f01f8859a1",
             "shasum": ""
         },
         "require": {
@@ -7742,20 +7760,21 @@
             "php": ">=7.2.0"
         },
         "require-dev": {
-            "mediawiki/mediawiki-codesniffer": "35.0.0",
+            "mediawiki/mediawiki-codesniffer": "37.0.0",
             "mediawiki/mediawiki-phan-config": "0.10.6",
             "mediawiki/minus-x": "1.1.1",
             "ockcyp/covers-validator": "1.3.3",
             "php-parallel-lint/php-console-highlighter": "0.5.0",
-            "php-parallel-lint/php-parallel-lint": "1.2.0",
+            "php-parallel-lint/php-parallel-lint": "1.3.0",
             "phpunit/phpunit": "^8.5 || ^9.5",
             "wikimedia/remex-html": "^2.2.2 || ^2.3",
-            "wikimedia/testing-access-wrapper": "~1.0"
+            "wikimedia/testing-access-wrapper": "~1.0",
+            "wikimedia/update-history": "^1.0.1"
         },
         "suggest": {
             "ext-intl": "*"
         },
-        "time": "2021-03-23T15:15:09+00:00",
+        "time": "2021-08-07T06:32:11+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

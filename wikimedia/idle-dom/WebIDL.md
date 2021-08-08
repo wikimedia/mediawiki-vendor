@@ -26,7 +26,7 @@ avoid direct references to the particular implementation class,
 and instead refer to the IDLeDOM interface.
 
 It is expected that users can use type aliasing (ie, PHP
-[`class_alias`](https://www.php.net/manual/en/function.class-alias.php)
+[`class_alias`](https://www.php.net/manual/en/function.class-alias.php))
 to use a compatible DOM implementation—that is, implementations
 which adhere to this binding specification but don't inherit from
 the IDLeDOM interfaces.
@@ -686,6 +686,24 @@ PHP contains a writeable
 [`encoding`](https://www.php.net/manual/en/class.domdocument.php#domdocument.props.encoding)
 attribute in the definition of the built-in `DOMDocument`.  We have
 copied that non-standard attribute to our IDL for `Document`.
+
+PHP contains methods on
+[`DOMDocument`](https://www.php.net/manual/en/class.domdocument.php)
+named
+[`loadHTML`](https://www.php.net/manual/en/domdocument.loadhtml.php),
+[`loadXML`](https://www.php.net/manual/en/domdocument.loadxml.php),
+[`saveHTML`](https://www.php.net/manual/en/domdocument.savehtml.php), and
+[`saveXML`](https://www.php.net/manual/en/domdocument.savexml.php)
+which are roughly equivalent to the standard `DOMParser` and `XMLSerializer`
+classes (which are otherwise missing from PHP).
+Similarly,
+[`DOMDocumentFragment`](https://www.php.net/manual/en/class.domdocumentfragment.php)
+has a non-standard method named
+[`appendXML`](https://www.php.net/manual/en/domdocumentfragment.appendxml.php).
+It is recommended that implementers implement these for compatibility
+with legacy code.  (We don't support calling `DOMDocument::loadHTML()` or
+`DOMDocument::loadXML()` statically, which generates an `E_STRICT` error
+in modern PHP.)
 
 PHP contains methods on
 [`DOMElement`](https://www.php.net/manual/en/class.domelement.php)

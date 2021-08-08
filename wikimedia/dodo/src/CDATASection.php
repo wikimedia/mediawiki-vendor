@@ -33,11 +33,11 @@ class CDATASection extends Text implements \Wikimedia\IDLeDOM\CDATASection {
 	/** @inheritDoc */
 	public function _xmlSerialize(
 		?string $namespace, NamespacePrefixMap $prefixMap, int &$prefixIndex,
-		bool $requireWellFormed, array &$markup
+		array $options, array &$markup
 	): void {
 		// See https://github.com/w3c/DOM-Parsing/issues/38
 		$data = $this->getData();
-		if ( $requireWellFormed ) {
+		if ( $options['requireWellFormed'] ?? false ) {
 			if ( strpos( $data, ']]>' ) !== false ) {
 				throw new BadXMLException();
 			}

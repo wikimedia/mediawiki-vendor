@@ -35,7 +35,7 @@ class HTMLTemplateElement extends HTMLElement implements \Wikimedia\IDLeDOM\HTML
 	}
 
 	/** @inheritDoc */
-	public function _htmlSerialize( array &$result ): void {
-		$this->_contentFragment->_htmlSerialize( $result );
+	public function _htmlSerialize( array &$result, array $options ): void {
+		$this->_contentFragment->_htmlSerialize( $result, $options );
 	}
 }

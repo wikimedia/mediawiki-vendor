@@ -4,12 +4,13 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Dodo;
 
-use Exception;
 use RemexHtml\DOM\DOMBuilder;
 use RemexHtml\Tokenizer\NullTokenHandler;
 use RemexHtml\Tokenizer\Tokenizer;
 use RemexHtml\TreeBuilder\Dispatcher;
+use RemexHtml\TreeBuilder\Element as TreeElement;
 use RemexHtml\TreeBuilder\TreeBuilder;
+use Wikimedia\Dodo\Internal\BadXMLException;
 use Wikimedia\IDLeDOM\DOMParserSupportedType;
 use XMLReader;
 
@@ -26,30 +27,57 @@ class DOMParser implements \Wikimedia\IDLeDOM\DOMParser {
 	 */
 	public function parseFromString( string $string, /* DOMParserSupportedType */ string $type ) {
 		$type = DOMParserSupportedType::cast( $type );
+		$doc = new Document();
 		switch ( $type ) {
 		case DOMParserSupportedType::text_html:
-			return $this->_parseHtml( $string );
+			$doc->_setContentType( 'text/html', true );
+			self::_parseHtml( $doc, $string, [] );
+			return $doc;
 		default:
+			# According to spec, this is a Document not an XMLDocument
+			$doc->_setContentType( $type, false );
 			// XXX if we throw an XML well-formedness error here, we're
 			/// supposed to make a document describing it, instead of
 			// throwing an exception.
-			return $this->_parseXml( $string, $type );
+			self::_parseXml( $doc, $string, [] );
+			return $doc;
 		}
 	}
 
 	/**
 	 * Create an HTML parser, parsing the string as UTF-8.
+	 * @param Document $doc
 	 * @param string $string
+	 * @param array $options
 	 * @return Document
+	 * @internal
 	 */
-	private function _parseHtml( string $string ) {
-		$domBuilder = new class( [
-			'suppressHtmlNamespace' => true,
-			'suppressIdAttribute' => true,
-			'domExceptionClass' => DOMException::class,
-		] ) extends DOMBuilder {
+	public static function _parseHtml( Document $doc, string $string, array $options ) {
+		$domBuilder = new class( $doc, $options ) extends DOMBuilder {
 				/** @var Document */
-				private $doc;
+				public $doc;
+				/** @var array */
+				private $options;
+				/** @var bool */
+				public $sawRealHead = false;
+				/** @var bool */
+				public $sawRealBody = false;
+
+				/**
+				 * Create a new DOMBuilder and store the document and
+				 * options array.
+				 * @param Document $doc
+				 * @param array $options
+				 */
+				public function __construct( Document $doc, array $options ) {
+					parent::__construct( [
+						'suppressHtmlNamespace' => false,
+						'suppressIdAttribute' => true,
+						'domExceptionClass' => DOMException::class,
+					] );
+					$this->doc = $doc;
+					$this->options = $options;
+				}
 
 				/** @inheritDoc */
 				protected function createDocument(
@@ -58,21 +86,49 @@ class DOMParser implements \Wikimedia\IDLeDOM\DOMParser {
 					string $system = null
 				) {
 					// Force this to be an HTML document (not an XML document)
-					$this->doc = new Document( null, 'html', 'text/html' );
-					if ( $doctypeName !== null && $doctypeName !== '' ) {
-						$this->doc->appendChild( new DocumentType(
-							$this->doc,
-							$doctypeName,
-							$public ?? '',
-							$system ?? ''
-						) );
+					$this->doc->_setContentType( 'text/html', true );
+					$this->maybeRemoveDoctype();
+					if ( $this->options['phpCompat'] ?? false ) {
+						$this->setDoctype(
+							'html',
+							'-//W3C//DTD HTML 4.0 Transitional//EN',
+							'http://www.w3.org/TR/REC-html40/loose.dtd'
+						);
 					}
 					return $this->doc;
 				}
 
+				/**
+				 * Remove a DocumentType from the given document if one
+				 * is present.
+				 */
+				private function maybeRemoveDoctype() {
+					$doctype = $this->doc->getDoctype();
+					if ( $doctype !== null ) {
+						$doctype->remove();
+					}
+				}
+
+				/**
+				 * Replace any existing doctype for this document with
+				 * new one.
+				 * @param ?string $name
+				 * @param ?string $public
+				 * @param ?string $system
+				 */
+				private function setDoctype( $name, $public, $system ): void {
+					$this->maybeRemoveDoctype();
+					if ( $name !== '' && $name !== null ) {
+						$doctype = new DocumentType(
+							$this->doc, $name, $public ?? '', $system ?? ''
+						);
+						$this->doc->appendChild( $doctype );
+					}
+				}
+
 				/** @inheritDoc */
 				public function doctype( $name, $public, $system, $quirks, $sourceStart, $sourceLength ) {
-					parent::doctype( $name, $public, $system, $quirks, $sourceStart, $sourceLength );
+					$this->setDoctype( $name, $public, $system );
 					// Set quirks mode on our document.
 					switch ( $quirks ) {
 					case TreeBuilder::NO_QUIRKS:
@@ -86,6 +142,56 @@ class DOMParser implements \Wikimedia\IDLeDOM\DOMParser {
 						break;
 					}
 				}
+
+				/** @inheritDoc */
+				public function insertElement(
+					$preposition, $refElement,
+					\RemexHtml\TreeBuilder\Element $element,
+					$void, $sourceStart, $sourceLength
+				) {
+					if ( $element->name === 'head' && $sourceLength > 0 ) {
+						$this->sawRealHead = true;
+					}
+					if ( $element->name === 'body' && $sourceLength > 0 ) {
+						$this->sawRealBody = true;
+					}
+					parent::insertElement(
+						$preposition, $refElement, $element, $void,
+						$sourceStart, $sourceLength
+					);
+				}
+
+				/** @inheritDoc */
+				protected function createNode( TreeElement $element ) {
+					// Simplified version of this method which eliminates
+					// the various workarounds necessary when using the
+					// PHP dom extension
+
+					// It also deliberately bypasses some character validity
+					// checking done in Document::createElementNS(), which
+					// is per-spec. (We need to prevent createElementNS from
+					// trying to parse `name` as a `qname`.)
+					$node = $this->doc->_createElementNS(
+							$element->name,
+							$element->namespace,
+							null /* prefix */
+					);
+					foreach ( $element->attrs->getObjects() as $attr ) {
+						// This also bypasses checks & prefix parsing
+						if ( $attr->namespaceURI === null ) {
+							$node->_setAttribute(
+								$attr->qualifiedName, $attr->value
+							);
+						} else {
+							$node->_setAttributeNS(
+								$attr->namespaceURI, $attr->prefix,
+								$attr->localName, $attr->value
+							);
+						}
+					}
+					$element->userData = $node;
+					return $node;
+				}
 		};
 		$treeBuilder = new TreeBuilder( $domBuilder, [
 			'ignoreErrors' => true
@@ -95,6 +201,24 @@ class DOMParser implements \Wikimedia\IDLeDOM\DOMParser {
 			'ignoreErrors' => true ]
 		);
 		$tokenizer->execute( [] );
+
+		// For compatibility with PHP's DOMDocument::loadHTML() -- if we didn't
+		// see an actual <head> element during the parse, remove the head;
+		// and if we didn't see an actual <body> during the parse, remove it.
+		if ( $options['phpCompat'] ?? false ) {
+			$head = $doc->getHead();
+			if (
+				( !$domBuilder->sawRealHead ) && $head && $head->_empty()
+			) {
+				$head->remove();
+			}
+			$body = $doc->getBody();
+			if (
+				( !$domBuilder->sawRealBody ) && $body && $body->_empty()
+			) {
+				$body->remove();
+			}
+		}
 
 		$result = $domBuilder->getFragment();
 		return $result;
@@ -114,23 +238,22 @@ class DOMParser implements \Wikimedia\IDLeDOM\DOMParser {
 	 *
 	 * @see https://html.spec.whatwg.org/multipage/xhtml.html#xml-parser
 	 *
+	 * @param Node $node A node to which to append the parsed XML
 	 * @param string $s The string to parse
-	 * @param string $contentType
-	 * @return Document
+	 * @param array $options
+	 * @internal
 	 */
-	private function _parseXML( string $s, string $contentType ) {
+	public static function _parseXml( Node $node, string $s, array $options ): void {
 		# The XMLReader class is cranky about empty strings.
 		if ( $s === '' ) {
-			throw new \Exception( "no root element found" );
+			throw new BadXMLException( "no root element found" );
 		}
 		$reader = new XMLReader();
 		$reader->XML(
 			$s, 'utf-8',
 			LIBXML_NOERROR | LIBXML_NONET | LIBXML_NOWARNING | LIBXML_PARSEHUGE
 		);
-		# According to spec, this is a Document not an XMLDocument
-		$doc = new Document( null, 'xml', $contentType );
-		$node = $doc;
+		$doc = $node->_nodeDocument;
 		$attrNode = null;
 		while ( $reader->moveToNextAttribute() || $reader->read() ) {
 			switch ( $reader->nodeType ) {
@@ -149,6 +272,10 @@ class DOMParser implements \Wikimedia\IDLeDOM\DOMParser {
 				$qname .= $reader->localName;
 				// This will be the node we'll attach attributes to!
 				$attrNode = $doc->createElementNS( $reader->namespaceURI, $qname );
+				if ( $options['skipRoot'] ?? false ) {
+					$options['skipRoot'] = false;
+					break;
+				}
 				$node->appendChild( $attrNode );
 				// We don't get an END_ELEMENT from the reader if this is
 				// an empty element (sigh)
@@ -174,6 +301,10 @@ class DOMParser implements \Wikimedia\IDLeDOM\DOMParser {
 				break;
 			case XMLReader::CDATA:
 				$nn = $doc->createCDATASection( $reader->value );
+				$node->appendChild( $nn );
+				break;
+			case XMLReader::COMMENT:
+				$nn = $doc->createComment( $reader->value );
 				$node->appendChild( $nn );
 				break;
 			case XMLReader::DOC_TYPE:
@@ -209,9 +340,8 @@ class DOMParser implements \Wikimedia\IDLeDOM\DOMParser {
 				$node->appendChild( $nn );
 				break;
 			default:
-				throw new Exception( "Unknown node type: " . $reader->nodeType );
+				throw new BadXMLException( "Unknown node type: " . $reader->nodeType );
 			}
 		}
-		return $doc;
 	}
 }

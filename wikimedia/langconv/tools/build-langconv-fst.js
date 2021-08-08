@@ -342,13 +342,13 @@ function processOne(inFile, outFile, verbose, justBrackets, maxEdgeBytes) {
 		stateMap.set(state, out.position());
 		out.emitUnsignedV(maxEdgeBytes);
 		// First emit epsilon edges
-		const r = edges.filter(e => e.inByte === BYTE_EPSILON);
+		const r = edges.filter((e) => e.inByte === BYTE_EPSILON);
 		// Then emit a sorted table of inByte transitions, omitting repeated
 		// entries (so it's a range map)
 		// Note that BYTE_EOF is always either FAIL or a transition to a unique
 		// state, so we can always treat values lower than the first entry
 		// or higher than the last entry as FAIL.
-		const edgeMap = new Map(edges.map(e => [e.inByte, e]));
+		const edgeMap = new Map(edges.map((e) => [e.inByte, e]));
 		let lastEdge = { outByte: BYTE_FAIL, to: state };
 		for (let i = 1; i <= BYTE_EOF; i++) {
 			let e = (alphabet.has(i) || i === BYTE_EOF) ?
@@ -576,7 +576,7 @@ function main() {
 		for (const f of [
 			`trans-${convertLang}`,
 			`brack-${convertLang}-noop`,
-		].concat(inverseLangs.map(inv => `brack-${convertLang}-${inv}`))) {
+		].concat(inverseLangs.map((inv) => `brack-${convertLang}-${inv}`))) {
 			if (argv.verbose) {
 				console.log(f);
 			}

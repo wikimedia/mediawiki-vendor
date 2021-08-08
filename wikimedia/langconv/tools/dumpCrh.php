@@ -249,8 +249,9 @@ class DumpCrh extends Maintenance {
 				$r[] = self::translateRegexBase( $str );
 				$r[] = '';
 			} else {
-				if ( $r[count( $r ) - 1] != '' ) { $r[count( $r ) - 1] .= " ";
-	   }
+				if ( $r[count( $r ) - 1] != '' ) {
+					$r[count( $r ) - 1] .= " ";
+				}
 				$r[count( $r ) - 1] .= self::translateRegex( $str, true );
 			}
 			$c = self::peek( $str );
@@ -357,8 +358,9 @@ class DumpCrh extends Maintenance {
 					}
 				}
 				for ( $i = 0; $i < count( $from ); $i += 2 ) {
-					if ( $to[$i] !== '' || $from[$i] !== '' ) { break;
-		   }
+					if ( $to[$i] !== '' || $from[$i] !== '' ) {
+						break;
+					}
 				}
 				Assert::invariant(
 					$i < count( $from ) && $i < count( $to ),

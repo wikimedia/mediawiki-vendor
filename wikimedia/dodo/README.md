@@ -27,12 +27,7 @@ $ composer require wikimedia/dodo
 ## Usage
 
 A better set of examples and tests is coming. For an extremely basic
-usage, see [test/demo.php](test/demo.php).
-
-Change directories to `test` and run:
-```
-php demo.php
-```
+usage, see [tests/DodoTest.php](tests/DodoTest.php).
 
 ## Tests
 
@@ -42,19 +37,17 @@ $ composer test
 
 ## Status
 
-This software is a work in progress. Prioritized *TODO*s:
+This software is near completion, from the perspective of DOM features
+used by Parsoid.  Completing the last missing features/fixing the last
+remaining bugs to allow Parsoid to run with Dodo as its DOM library is
+the prime objective.
 
-1. Porting of the [W3C DOM Test Suite](https://www.w3.org/DOM/Test/)
-2. Porting of the [WHATWG test suite](https://wiki.whatwg.org/wiki/Testsuite)
-4. Integration with [RemexHtml](https://gerrit.wikimedia.org/g/mediawiki/libs/RemexHtml/)
-5. Integration with [zest.php](https://github.com/cscott/zest.php/tree/master)
-6. Performance benchmarks
-7. Cutting out things (even if they're in the spec) that are irrelevant to [Parsoid](https://www.mediawiki.org/wiki/Parsoid)
-8. "Dynamic" generation of HTML classes from a spec (htmlelts.js); see
-   (mediawiki/webidl)[https://github.com/wikimedia/mediawiki-libs-WebIDL] and
-   (mediawiki/idle-dom)[https://github.com/wikimedia/mediawiki-libs-IDLeDOM];
-   this just needs to be extended to handle the WebIDL intefaces defined in
-   the HTML spec and some special features like attribute reflection.
+After that, performance benchmarking and tuning will be in order.
+
+We run many but not all W3C and WPT tests.  Some of these depend on
+JavaScript-specific features and as such will probably always be skipped.
+The "known failures" framework we use could use some improvement
+in order to provide more granular results.
 
 ## Background
 
@@ -111,31 +104,25 @@ several RFCs ([readonly properties](https://wiki.php.net/rfc/readonly_properties
 and [property accessors syntax](https://wiki.php.net/rfc/propertygetsetsyntax-v1.2)),
 they have always been declined.
 
-So, in this implementation, all properties have `protected` scope, and
-each interface is equipped with either one or two accessors depending
-on whether the specification marks it as `readonly` or not.
-These accessors do not appear in the spec, and now you know why.
-
-To be clear: if a class property "foo" is not marked `readonly`, then there
+So, in the PHP binding for WebIDL which Dodo uses, we have explicit
+accessors for each WebIDL property.
+If a class property "foo" is not marked `readonly`, then there
 will be methods `getFoo()` and `setFoo($value)` defined on the class.
 If "foo" is marked `readonly`, then only `getFoo()` will be defined on the
 class.
 
-An irritating side-effect here is that since the style of the spec obliges
-us to use camelCase, by pre-pending the property names with `get` or `set`,
-we force the first letter of the property to be uppercased, thus making
-it even further removed from its naming in the spec.
+We bridge the gap between the spec and common usage by defining special
+"magic methods" (`__get`, `__set`, etc) in order to support the common
+`$obj->foo` style of access.  These will be less-performant than
+accessing the appropriate `getFoo` or `setFoo` method directly, and
+so for performance Dodo internally avoids using this style of access.
 
-So, if you're reading this, and PHP has passed an RFC with
-readonly properties or type hints for class property definitions,
-you know what to do.
-
-### Use of accessors within the implementation
-
-For performance reasons, accessors are not always used internally.
-In the protected scope, things will access properties directly since
-we have full control over the things they are doing and can verify
-they are abiding by the constraints.
+However, if you're reading this, and PHP has passed an RFC with
+improved JavaScript-style property accessor functions,
+you know what to do: replace the `__get` and `__set` magic methods
+with appropriate property accessors.  (This can probably be done
+in IDLeDOM's generated `Helper` classes, and may not actually need
+any code change in Dodo itself.)
 
 ### Strings specified as "NULL or non-empty"
 
@@ -236,7 +223,6 @@ making the name property mutable, even if it's read-only.
 Basically, there are properties where even if you can't update them
 directly, you can update something that is used to compute their value.
 
-
 ### Methods that are somewhere between abstract and concrete...
 
 The `Node` interface methods `isEqualNode` and `cloneNode` are two good
@@ -252,29 +238,11 @@ So instead, we have abstract methods like `_subclass_isEqualNode`, which
 are called by `Node::isEqualNode` when it's time to do the subclass-specific
 part.
 
-
-Hmm, maybe the real reason this is coming up is that things like
-`isEqualNode` also recurse, and the children may be several different
-classes that extend Node.
-
-
 ### Other readability conventions
 
-- If a property is part of the spec, it is written exactly as in the spec
-IDL.
+- If a property accessor or method is part of the spec, it is written
+exactly as in the spec IDL (naturally).
 - If a property or method is for internal-use, it is prefixed with '_'.
-
-
-### Properties which are not spec-compliant if accessed directly
-
-For why, see their definition in the code.
-
-```
-Node::_nextSibling
-Node::_previousSibling
-Node::_childNodes
-Node::_firstChild -- is set to NULL when _childNodes is not NULL.
-```
 
 ### Potential bugs in Domino.js
 
@@ -294,10 +262,12 @@ mutated.
 
 ## License and Credits
 
-The initial version of this code was written by Jason Linehan and is
-(c) Copyright 2019 Wikimedia Foundation.
+The initial version of this code was written by Jason Linehan.
+Further improvements were made by C. Scott Ananian (IDLeDOM, bug fixes,
+missing features) and Tim Abdullin (test suite).
 
-This code is distributed under the MIT license; see LICENSE for more
+This code is (c) Copyright 2019-2021 Wikimedia Foundation.
+It is distributed under the MIT license; see LICENSE for more
 info.
 
 ---

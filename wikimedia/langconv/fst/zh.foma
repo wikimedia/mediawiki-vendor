@@ -1,7 +1,7 @@
 # FOMA script for zh-* conversions
 # Generates .att files when run from this directory using:
 #   foma -f zh.foma
-# Then generate executable .json files with:
+# Then generate executable .pfst files with:
 #   ../tools/build-langconv-fst.js -l zh-tw zh-cn zh-hans
 #   ../tools/build-langconv-fst.js -l zh-hk zh-hans
 #   ../tools/build-langconv-fst.js -l zh-mo zh-hans

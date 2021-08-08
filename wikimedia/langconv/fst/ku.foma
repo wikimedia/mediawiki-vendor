@@ -1,7 +1,7 @@
 # FOMA script for ku-latn and ku-arab conversions
 # Generates .att files when run from this directory using:
 #   foma -f ku.foma
-# Then generate executable .json files with:
+# Then generate executable .pfst files with:
 #   ../tools/build-langconv-fst.js -l ku-latn ku-arab
 #   ../tools/build-langconv-fst.js -l ku-arab ku-latn
 echo EXPECT 12

@@ -38,7 +38,7 @@ abstract class Leaf /* domino helper */ extends Node {
 	/**
 	 * @inheritDoc
 	 */
-	final public function insertBefore( $node, $refChild ): Node {
+	final public function insertBefore( $node, $refChild = null ): Node {
 		Util::error( "HierarchyRequestError" );
 		throw new \Error( "impossible" ); // for phan
 	}

@@ -41,10 +41,10 @@ class DOMImplementation implements \Wikimedia\IDLeDOM\DOMImplementation {
 	private $_contextObject;
 
 	/**
-	 * @param Document $contextObject
+	 * @param Document|null $contextObject
 	 */
-	public function __construct( Document $contextObject ) {
-		$this->_contextObject = $contextObject;
+	public function __construct( ?Document $contextObject = null ) {
+		$this->_contextObject = $contextObject ?? new Document();
 	}
 
 	/**
@@ -66,7 +66,7 @@ class DOMImplementation implements \Wikimedia\IDLeDOM\DOMImplementation {
 	}
 
 	/** @inheritDoc */
-	public function createDocumentType( string $qualifiedName, string $publicId, string $systemId ) {
+	public function createDocumentType( string $qualifiedName, string $publicId = '', string $systemId = '' ) {
 		if ( !$this->isValidQName( $qualifiedName ) ) {
 			Util::error( 'Invalid qualified name.', 'InvalidCharacterError' );
 		}
@@ -146,7 +146,9 @@ class DOMImplementation implements \Wikimedia\IDLeDOM\DOMImplementation {
 
 	/** @inheritDoc */
 	public function createHTMLDocument( ?string $titleText = null ) {
-		$d = new Document( $this->_contextObject, 'html', 'text/html', null );
+		$d = new Document();
+		$d->_setOrigin( $this->_contextObject );
+		$d->_setContentType( 'text/html', true );
 
 		$d->appendChild( new DocumentType( $d, "html" ) );
 

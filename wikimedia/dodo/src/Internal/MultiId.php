@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Dodo\Internal;
 
+use Wikimedia\Dodo\Element;
 use Wikimedia\Dodo\Node;
 
 /*
@@ -27,7 +28,7 @@ use Wikimedia\Dodo\Node;
  * on integers instead of Elements.
  */
 class MultiId {
-	/** @var Node[] */
+	/** @var Element[] */
 	public $table = [];
 
 	/** @var int */
@@ -38,26 +39,26 @@ class MultiId {
 	 *
 	 * null indicates the cache is not set and the first element must be re-computed.
 	 *
-	 * @var Node|null
+	 * @var ?Element
 	 */
 	public $first = null;
 
 	/**
-	 * @param Node $node
+	 * @param Element $node
 	 */
-	public function __construct( Node $node ) {
+	public function __construct( Element $node ) {
 		$this->table[$node->_documentIndex] = $node;
 		$this->length = 1;
 		$this->first = null;
 	}
 
 	/**
-	 * Add a Node to array in O(1) time by using Node::$_documentIndex
+	 * Add an Element to array in O(1) time by using Node::$_documentIndex
 	 * as the array index.
 	 *
-	 * @param Node $node
+	 * @param Element $node
 	 */
-	public function add( Node $node ) {
+	public function add( Element $node ) {
 		if ( !isset( $this->table[$node->_documentIndex] ) ) {
 			$this->table[$node->_documentIndex] = $node;
 			$this->length++;
@@ -66,12 +67,12 @@ class MultiId {
 	}
 
 	/**
-	 * Remove a Node from the array in O(1) time by using Node::$_documentIndex
+	 * Remove an Element from the array in O(1) time by using Node::$_documentIndex
 	 * to perform the lookup.
 	 *
-	 * @param Node $node
+	 * @param Element $node
 	 */
-	public function del( Node $node ) {
+	public function del( Element $node ) {
 		if ( $this->table[$node->_documentIndex] ) {
 			unset( $this->table[$node->_documentIndex] );
 			$this->length--;
@@ -80,7 +81,7 @@ class MultiId {
 	}
 
 	/**
-	 * Retreive that Node from the array which appears first in document order in
+	 * Retrieve that Element from the array which appears first in document order in
 	 * the associated document.
 	 *
 	 * Cache the value for repeated lookups.
@@ -89,7 +90,7 @@ class MultiId {
 	 * is modified when a Node is inserted or removed from a Document, or when
 	 * the 'id' attribute value of a Node is changed.
 	 *
-	 * @return Node|null null if there are no nodes
+	 * @return ?Element null if there are no nodes
 	 */
 	public function getFirst() {
 		if ( $this->first !== null ) {
@@ -110,7 +111,7 @@ class MultiId {
 	/**
 	 * If there is only one node left, return it. Otherwise return "this".
 	 *
-	 * @return Node|MultiId
+	 * @return Element|MultiId
 	 */
 	public function downgrade() {
 		if ( $this->length === 1 ) {

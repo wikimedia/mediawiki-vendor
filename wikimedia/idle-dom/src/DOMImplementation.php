@@ -19,7 +19,7 @@ interface DOMImplementation {
 	 * @param string $systemId
 	 * @return DocumentType
 	 */
-	public function createDocumentType( string $qualifiedName, string $publicId, string $systemId );
+	public function createDocumentType( string $qualifiedName, string $publicId = '', string $systemId = '' );
 
 	/**
 	 * @param ?string $namespace

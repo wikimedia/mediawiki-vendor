@@ -931,20 +931,26 @@ class WhatWG {
 	 * The "XML serialization" algorithm.
 	 * @see https://w3c.github.io/DOM-Parsing/#dfn-xml-serialization
 	 * @param Node $node
-	 * @param bool $requireWellFormed
+	 * @param array $options
 	 * @param string[] &$markup
 	 */
 	public static function xmlSerialize(
-		Node $node, bool $requireWellFormed, array &$markup
+		Node $node, array $options, array &$markup
 	): void {
 		$contextNamespace = null;
 		$prefixMap = new NamespacePrefixMap();
 		$prefixMap->add( Util::NAMESPACE_XML, 'xml' );
 		$prefixIndex = 1;
+		if (
+			( $options['phpCompat'] ?? false ) &&
+			$node->_nodeDocument->_isHTMLDocument()
+		) {
+			$contextNamespace = Util::NAMESPACE_HTML;
+		}
 		try {
 				$node->_xmlSerialize(
 					$contextNamespace, $prefixMap, $prefixIndex,
-					$requireWellFormed, $markup
+					$options, $markup
 				);
 		} catch ( \Throwable $t ) {
 			Util::error( 'InvalidStateError' );
@@ -959,15 +965,15 @@ class WhatWG {
 	 * @param ?string $namespace
 	 * @param NamespacePrefixMap $prefixMap
 	 * @param int &$prefixIndex
-	 * @param bool $requireWellFormed
+	 * @param array $options
 	 * @param string[] &$markup accumulator for the result
 	 */
 	public static function xmlSerializeElement(
 		Element $el, ?string $namespace,
 		NamespacePrefixMap $prefixMap, int &$prefixIndex,
-		bool $requireWellFormed, array &$markup
+		array $options, array &$markup
 	) {
-		if ( $requireWellFormed ) {
+		if ( $options['requireWellFormed'] ?? false ) {
 			if (
 				strpos( $el->getLocalName(), ':' ) !== false ||
 				!self::is_valid_xml_name( $el->getLocalName() )
@@ -1002,7 +1008,7 @@ class WhatWG {
 				$candidatePrefix = $map->retrievePreferredPrefix( $ns, $prefix );
 			}
 			if ( $prefix === 'xmlns' ) {
-				if ( $requireWellFormed ) {
+				if ( $options['requireWellFormed'] ?? false ) {
 					throw new BadXMLException();
 				}
 				$candidatePrefix = $prefix;
@@ -1029,7 +1035,7 @@ class WhatWG {
 				$qualifiedName .= $prefix . ':' . $el->getLocalName();
 				$markup[] = $qualifiedName;
 				$markup[] = ' xmlns:' . $prefix . '="';
-				self::xmlSerializeAttrValue( $ns, $requireWellFormed, $markup );
+				self::xmlSerializeAttrValue( $ns, $options, $markup );
 				$markup[] = '"';
 				if ( $localDefaultNamespace !== null ) {
 					$inheritedNs = $localDefaultNamespace;
@@ -1050,7 +1056,7 @@ class WhatWG {
 				$inheritedNs = $ns;
 				$markup[] = $qualifiedName;
 				$markup[] = ' xmlns="';
-				self::xmlSerializeAttrValue( $ns, $requireWellFormed, $markup );
+				self::xmlSerializeAttrValue( $ns, $options, $markup );
 				$markup[] = '"';
 			} else {
 				// The node has a local default namespace that matches ns
@@ -1062,21 +1068,23 @@ class WhatWG {
 		// Serialize the attributes
 		self::xmlSerializeAttributes(
 			$el->getAttributes(), $map, $prefixIndex, $localPrefixesMap,
-			$ignoreNamespaceDefinitionAttribute, $requireWellFormed,
+			$ignoreNamespaceDefinitionAttribute, $options,
 			$markup
 		);
 
 		if (
 			$ns === Util::NAMESPACE_HTML &&
 			( !$el->hasChildNodes() ) &&
-			( self::$emptyElements[$el->getLocalName()] ?? false )
+			( self::$emptyElements[$el->getLocalName()] ?? false ) &&
+			!( $options['noEmptyTag'] ?? false )
 		) {
 			$markup[] = ' />';
 			return;
 		}
 		if (
 			$ns !== Util::NAMESPACE_HTML &&
-			( !$el->hasChildNodes() )
+			( !$el->hasChildNodes() ) &&
+			!( $options['noEmptyTag'] ?? false )
 		) {
 			$markup[] = '/>';
 			return;
@@ -1091,14 +1099,14 @@ class WhatWG {
 				$el->getContent() :
 				$el->getOwnerDocument()->createDocumentFragment();
 			$templateContents->_xmlSerialize(
-				$inheritedNs, $map, $prefixIndex, $requireWellFormed,
+				$inheritedNs, $map, $prefixIndex, $options,
 				$markup
 			);
 		} else {
 			// handle element contents
 			for ( $child = $el->getFirstChild(); $child !== null; $child = $child->getNextSibling() ) {
 				$child->_xmlSerialize(
-					$inheritedNs, $map, $prefixIndex, $requireWellFormed,
+					$inheritedNs, $map, $prefixIndex, $options,
 					$markup
 				);
 			}
@@ -1115,18 +1123,18 @@ class WhatWG {
 	 * @param int &$prefixIndex
 	 * @param array<string,string> &$localPrefixesMap
 	 * @param bool $ignoreNamespaceDefinitionAttribute
-	 * @param bool $requireWellFormed
+	 * @param array $options
 	 * @param string[] &$markup accumulator for the result
 	 */
 	public static function xmlSerializeAttributes(
 		NamedNodeMap $attributes, NamespacePrefixMap $map, int &$prefixIndex,
 		array &$localPrefixesMap, bool $ignoreNamespaceDefinitionAttribute,
-		bool $requireWellFormed,
+		array $options,
 		array &$markup
 	) {
 		$localnameSet = [];
 		foreach ( $attributes as $attr ) {
-			if ( $requireWellFormed ) {
+			if ( $options['requireWellFormed'] ?? false ) {
 				$key = var_export(
 					[ $attr->getNamespaceURI(), $attr->getLocalName() ],
 					true
@@ -1164,7 +1172,7 @@ class WhatWG {
 							continue;
 						}
 					}
-					if ( $requireWellFormed ) {
+					if ( $options['requireWellFormed'] ?? false ) {
 						if ( $attr->getValue() === Util::NAMESPACE_XMLNS ) {
 							throw new BadXMLException();
 						}
@@ -1193,7 +1201,7 @@ class WhatWG {
 					);
 					$markup[] = ' xmlns:' . $candidatePrefix . '="';
 					self::xmlSerializeAttrValue(
-						$attrNs, $requireWellFormed, $markup
+						$attrNs, $options, $markup
 					);
 					$markup[] = '"';
 				}
@@ -1202,7 +1210,7 @@ class WhatWG {
 			if ( $candidatePrefix !== null ) {
 				$markup[] = $candidatePrefix . ':';
 			}
-			if ( $requireWellFormed ) {
+			if ( $options['requireWellFormed'] ?? false ) {
 				if (
 					strpos( $attr->getLocalName(), ':' ) !== false ||
 					( !self::is_valid_xml_name( $attr->getLocalName() ) ) ||
@@ -1214,7 +1222,7 @@ class WhatWG {
 			$markup[] = $attr->getLocalName();
 			$markup[] = '="';
 			self::xmlSerializeAttrValue(
-				$attr->getValue(), $requireWellFormed, $markup
+				$attr->getValue(), $options, $markup
 			);
 			$markup[] = '"';
 		}
@@ -1224,16 +1232,16 @@ class WhatWG {
 	 * Serialize an attribute value (for XML).
 	 * @see https://w3c.github.io/DOM-Parsing/#dfn-serializing-an-attribute-value
 	 * @param ?string $value
-	 * @param bool $requireWellFormed
+	 * @param array $options
 	 * @param string[] &$markup
 	 */
 	public static function xmlSerializeAttrValue(
-		?string $value, bool $requireWellFormed, array &$markup
+		?string $value, array $options, array &$markup
 	): void {
 		if ( $value === null ) {
 			return; // "The empty string"
 		}
-		if ( $requireWellFormed ) {
+		if ( $options['requireWellFormed'] ?? false ) {
 			if ( !self::is_valid_xml_chars( $value ) ) {
 				throw new BadXMLException();
 			}
@@ -1257,11 +1265,12 @@ class WhatWG {
 	/**
 	 * This is part of the "HTML fragment serialization algorithm".
 	 * @see https://html.spec.whatwg.org/#html-fragment-serialisation-algorithm
+	 * @param array<string> &$result
 	 * @param Node $child
 	 * @param ?Node $parent This is null when evaluating outerHtml
-	 * @param array<string> &$result
+	 * @param array $options
 	 */
-	public static function htmlSerialize( Node $child, ?Node $parent, array &$result ): void {
+	public static function htmlSerialize( array &$result, Node $child, ?Node $parent, array $options = [] ): void {
 		switch ( $child->getNodeType() ) {
 		case Node::ELEMENT_NODE:
 			'@phan-var Element $child'; // @var Element $child
@@ -1293,7 +1302,7 @@ class WhatWG {
 			if ( !( $html && isset( self::$emptyElements[$tagname] ) ) ) {
 				$i = count( $result );
 				$result[] = ''; // save a space
-				$child->_htmlSerialize( $result );
+				$child->_htmlSerialize( $result, $options );
 				if ( $html && isset( self::$extraNewLine[$tagname] ) &&
 					 ( $result[$i + 1][0] ?? '' ) === "\n" ) {
 					$result[$i] = "\n"; // insert a newline
@@ -1350,15 +1359,20 @@ class WhatWG {
 			$result[] = '<!DOCTYPE ' . $child->getName();
 
 			// Latest HTML serialization spec omits the public/system ID
-			// if ( $child->getPublicID() !== '' ) {
-			//	$result[] = ' PUBLIC "' . $child->getPublicId() . '"';
-			// }
+			if ( $options['phpCompat'] ?? false ) {
+			 if ( $child->getPublicID() !== '' ) {
+				$result[] = ' PUBLIC "' . $child->getPublicId() . '"';
+			 }
 
-			// if ( $child->getSystemId() !== '' ) {
-			//	$result[] = ' "' . $child->getSystemId() . '"';
-			// }
+			 if ( $child->getSystemId() !== '' ) {
+				$result[] = ' "' . $child->getSystemId() . '"';
+			 }
+			}
 
 			$result[] = '>';
+			if ( $options['phpCompat'] ?? false ) {
+				$result[] = "\n";
+			}
 			break;
 		default:
 			Util::error( "InvalidStateError" );

@@ -9,8 +9,8 @@ use Wikimedia\Dodo\Internal\NamespacePrefixMap;
 use Wikimedia\Dodo\Internal\UnimplementedTrait;
 use Wikimedia\Dodo\Internal\Util;
 use Wikimedia\Dodo\Internal\WhatWG;
+use Wikimedia\Dodo\Internal\Zest;
 use Wikimedia\IDLeDOM\Attr as IAttr;
-use Wikimedia\Zest\Zest;
 
 /**
  * Element.php
@@ -112,7 +112,7 @@ class Element extends ContainerNode implements \Wikimedia\IDLeDOM\Element {
 				},
 				"class" => static function ( $elem, $old, $new ) {
 					if ( $elem->_classList !== null ) {
-						$elem->_classList->_getList();
+						$elem->_classList->_getList( $new );
 					}
 				},
 			];
@@ -238,11 +238,12 @@ class Element extends ContainerNode implements \Wikimedia\IDLeDOM\Element {
 		$result = [];
 		if ( $this->_nodeDocument->_isHTMLDocument() ) {
 			// "HTML fragment serialization algorithm"
-			$this->_htmlSerialize( $result );
+			$this->_htmlSerialize( $result, [] );
 		} else {
 			// see https://github.com/w3c/DOM-Parsing/issues/28
+			$options = [ 'requireWellFormed' => true ];
 			for ( $node = $this->getFirstChild(); $node !== null; $node = $node->getNextSibling() ) {
-				WhatWG::xmlSerialize( $node, true, $result );
+				WhatWG::xmlSerialize( $node, $options, $result );
 			}
 		}
 		return implode( '', $result );
@@ -256,12 +257,21 @@ class Element extends ContainerNode implements \Wikimedia\IDLeDOM\Element {
 		$result = [];
 		if ( $this->_nodeDocument->_isHTMLDocument() ) {
 			// "HTML fragment serialization algorithm"
-			WhatWG::htmlSerialize( $this, null, $result );
+			WhatWG::htmlSerialize( $result, $this, null, [] );
 		} else {
 			// see https://github.com/w3c/DOM-Parsing/issues/28
-			WhatWG::xmlSerialize( $this, true, $result );
+			WhatWG::xmlSerialize( $this, [ 'requireWellFormed' => true ], $result );
 		}
 		return implode( '', $result );
+	}
+
+	/*
+	* PHP compatibility
+	*/
+
+	/** @inheritDoc */
+	public function setIdAttribute( string $qualifiedName, bool $isId ): void {
+		/* Ignore this method, it is not necessary in an HTML DOM. */
 	}
 
 	/*
@@ -332,13 +342,13 @@ class Element extends ContainerNode implements \Wikimedia\IDLeDOM\Element {
 	/** @inheritDoc */
 	public function _xmlSerialize(
 		?string $namespace, NamespacePrefixMap $prefixMap, int &$prefixIndex,
-		bool $requireWellFormed, array &$markup
+		array $options, array &$markup
 	): void {
 		// Relocated to WhatWG::xmlSerializeElement because this method
 		// was huge!
 		WhatWG::xmlSerializeElement(
 			$this, $namespace, $prefixMap, $prefixIndex,
-			$requireWellFormed, $markup
+			$options, $markup
 		);
 	}
 
@@ -381,12 +391,21 @@ class Element extends ContainerNode implements \Wikimedia\IDLeDOM\Element {
 		if ( !ctype_lower( $qname ) && $this->_isHTMLElement() ) {
 			$qname = Util::toAsciiLowercase( $qname );
 		}
+		$this->_setAttribute( $qname, $value );
+	}
 
+	/**
+	 * Internal version of ::setAttribute() which bypasses checks and
+	 * lowercasing; used by Remex when tree building.
+	 * @param string $qname
+	 * @param string $value
+	 */
+	public function _setAttribute( string $qname, string $value ): void {
 		$attributes = $this->getAttributes();
 		$attr = $attributes->getNamedItem( $qname );
 		if ( $attr === null ) {
 			$attr = new Attr( $this->_nodeDocument, $this, $qname, null, null, $value );
-			$attributes->setNamedItem( $attr );
+			$attributes->_append( $attr );
 		} else {
 			$attr->setValue( $value ); /* Triggers _handleAttributeChanges */
 		}
@@ -404,7 +423,7 @@ class Element extends ContainerNode implements \Wikimedia\IDLeDOM\Element {
 			$attr = $this->_attributes->getNamedItem( $qname );
 			if ( $attr !== null ) {
 				// This throws an exception if the attribute is not found!
-				$this->_attributes->removeNamedItem( $qname );
+				$this->_attributes->_remove( $attr );
 			}
 		}
 	}
@@ -492,12 +511,23 @@ class Element extends ContainerNode implements \Wikimedia\IDLeDOM\Element {
 		$prefix = null;
 
 		WhatWG::validate_and_extract( $ns, $qname, $prefix, $lname );
+		$this->_setAttributeNS( $ns, $prefix, $lname, $value );
+	}
 
+	/**
+	 * Internal version of ::setAttributeNS which bypasses checks and prefix
+	 * parsing; used by Remex when tree building.
+	 * @param ?string $ns
+	 * @param ?string $prefix
+	 * @param string $lname
+	 * @param string $value
+	 */
+	public function _setAttributeNS( ?string $ns, ?string $prefix, string $lname, string $value ) {
 		$attributes = $this->getAttributes();
-		$attr = $attributes->getNamedItemNS( $ns, $qname );
+		$attr = $attributes->getNamedItemNS( $ns, $lname );
 		if ( $attr === null ) {
 			$attr = new Attr( $this->_nodeDocument, $this, $lname, $prefix, $ns, $value );
-			$attributes->setNamedItemNS( $attr );
+			$attributes->_append( $attr );
 		} else {
 			$attr->setValue( $value );
 		}
@@ -515,7 +545,7 @@ class Element extends ContainerNode implements \Wikimedia\IDLeDOM\Element {
 			$attr = $this->_attributes->getNamedItemNS( $ns, $lname );
 			if ( $attr !== null ) {
 				// This throws an exception if the attribute is not found!
-				$this->_attributes->removeNamedItemNS( $ns, $lname );
+				$this->_attributes->_remove( $attr );
 			}
 		}
 	}
@@ -572,7 +602,11 @@ class Element extends ContainerNode implements \Wikimedia\IDLeDOM\Element {
 	 */
 	public function removeAttributeNode( $attr ): Attr {
 		'@phan-var Attr $attr'; // @var Attr $attr
-		$this->getAttributes()->_remove( $attr );
+		$attributes = $this->getAttributes();
+		if ( !$attributes->_hasNamedItemNode( $attr ) ) {
+			Util::error( "NotFoundError" );
+		}
+		$attributes->_remove( $attr );
 		return $attr;
 	}
 
@@ -665,6 +699,14 @@ class Element extends ContainerNode implements \Wikimedia\IDLeDOM\Element {
 	 */
 	public function matches( string $selectors ): bool {
 		return Zest::matches( $this, $selectors );
+	}
+
+	/**
+	 * @param string $selectors
+	 * @return bool
+	 */
+	public function webkitMatchesSelector( string $selectors ): bool {
+		return $this->matches( $selectors );
 	}
 
 	/**
@@ -784,6 +826,27 @@ class Element extends ContainerNode implements \Wikimedia\IDLeDOM\Element {
 			$this,
 			self::_classNamesElementFilter( $names )
 		);
+	}
+
+	/**
+	 * This is a non-standard Dodo extension that interfaces with the Zest
+	 * CSS selector library to allow quick lookup by ID *even if there are
+	 * multiple nodes in the document with the same ID*.
+	 * @param string $id
+	 * @return array<Element>
+	 */
+	public function _getElementsById( string $id ): array {
+		// XXX: We could potentially speed this up by starting with
+		// $this->_nodeDocument->_getElementsById($id) and then filtering
+		// to include only those with $this as an exclusive ancestor, since
+		// we expect only 0 or 1 results from Document::_getElementsById()
+		// (only if $this->isConnected though!)
+		return iterator_to_array( new FilteredElementList(
+			$this,
+			static function ( Element $el ) use ( $id ): bool {
+				return $el->getAttribute( 'id' ) === $id;
+			}
+		) );
 	}
 
 	/**

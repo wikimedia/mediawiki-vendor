@@ -127,9 +127,9 @@ class DocumentType extends Leaf implements \Wikimedia\IDLeDOM\DocumentType {
 	/** @inheritDoc */
 	public function _xmlSerialize(
 		?string $namespace, NamespacePrefixMap $prefixMap, int &$prefixIndex,
-		bool $requireWellFormed, array &$markup
+		array $options, array &$markup
 	): void {
-		if ( $requireWellFormed ) {
+		if ( $options['requireWellFormed'] ?? false ) {
 			if (
 				preg_match(
 					// XML PubidChar production
@@ -159,6 +159,9 @@ class DocumentType extends Leaf implements \Wikimedia\IDLeDOM\DocumentType {
 			$markup[] = ' ' . $quote . $this->_systemId . $quote;
 		}
 		$markup[] = '>';
+		if ( $options['phpCompat'] ?? false ) {
+			$markup[] = "\n";
+		}
 	}
 
 }

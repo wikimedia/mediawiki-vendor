@@ -4,7 +4,7 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Dodo;
 
-use Wikimedia\Zest\Zest;
+use Wikimedia\Dodo\Internal\Zest;
 
 trait ParentNode /* implements \Wikimedia\IDLeDOM\ParentNode */ {
 	use \Wikimedia\IDLeDOM\Stub\ParentNode;
@@ -58,4 +58,12 @@ trait ParentNode /* implements \Wikimedia\IDLeDOM\ParentNode */ {
 		return $nl;
 	}
 
+	/**
+	 * This is a non-standard Dodo extension that interfaces with the Zest
+	 * CSS selector library to allow quick lookup by ID *even if there are
+	 * multiple nodes in the document with the same ID*.
+	 * @param string $id
+	 * @return array<Element>
+	 */
+	abstract public function _getElementsById( string $id ): array;
 }

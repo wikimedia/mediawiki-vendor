@@ -52,10 +52,10 @@ class Comment extends CharacterData implements \Wikimedia\IDLeDOM\Comment {
 	/** @inheritDoc */
 	public function _xmlSerialize(
 		?string $namespace, NamespacePrefixMap $prefixMap, int &$prefixIndex,
-		bool $requireWellFormed, array &$markup
+		array $options, array &$markup
 	): void {
 		$data = $this->getData();
-		if ( $requireWellFormed ) {
+		if ( $options['requireWellFormed'] ?? false ) {
 			if (
 				!WhatWG::is_valid_xml_chars( $data ) ||
 				strpos( $data, '--' ) !== false ||

@@ -13,6 +13,8 @@ class XMLDocument extends Document implements \Wikimedia\IDLeDOM\XMLDocument {
 	 * @param string $contentType
 	 */
 	public function __construct( ?Document $originDoc, string $contentType ) {
-		parent::__construct( $originDoc, 'xml', $contentType, null );
+		parent::__construct();
+		$this->_setOrigin( $originDoc );
+		$this->_setContentType( $contentType, false );
 	}
 }

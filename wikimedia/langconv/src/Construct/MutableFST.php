@@ -84,7 +84,7 @@ class MutableFST {
 		$results = [];
 		$stack = [];
 		$flagRE = '/^@([PNRDCU])[.]([^.@]+)(?:[.]([^@]+))?@$/D';
-		$addTok = function ( $toks, $t ) use ( $flagRE ) {
+		$addTok = static function ( $toks, $t ) use ( $flagRE ) {
 			if ( $t === self::EPSILON || preg_match( $flagRE, $t ) ) {
 				// skip token
 			} else {

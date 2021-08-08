@@ -1,7 +1,7 @@
 # FOMA script for en and en-x-piglatin conversions
 # Generates .att files when run from this directory using:
 #   foma -f en.foma
-# Then generate executable .json files with:
+# Then generate executable .pfst files with:
 #   ../tools/build-langconv-fst.js -l en en-x-piglatin
 #   ../tools/build-langconv-fst.js -l en-x-piglatin en
 echo EXPECT 12

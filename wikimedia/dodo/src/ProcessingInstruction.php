@@ -73,10 +73,10 @@ class ProcessingInstruction extends CharacterData implements \Wikimedia\IDLeDOM\
 	/** @inheritDoc */
 	public function _xmlSerialize(
 		?string $namespace, NamespacePrefixMap $prefixMap, int &$prefixIndex,
-		bool $requireWellFormed, array &$markup
+		array $options, array &$markup
 	): void {
 		$data = $this->getData();
-		if ( $requireWellFormed ) {
+		if ( $options['requireWellFormed'] ?? false ) {
 			if (
 				strpos( $this->_target, ':' ) !== false ||
 				Util::toAsciiLowercase( $this->_target ) === 'xml' ||

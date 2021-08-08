@@ -62,6 +62,10 @@ namespace Wikimedia\IDLeDOM;
  * @property string $visibilityState
  * @property EventHandlerNonNull|callable|null $onvisibilitychange
  * @property string $encoding
+ * @property bool $preserveWhiteSpace
+ * @property bool $formatOutput
+ * @property bool $validateOnParse
+ * @property bool $strictErrorChecking
  * @phan-forbid-undeclared-magic-properties
  */
 interface XMLDocument extends Document {

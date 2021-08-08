@@ -33,4 +33,10 @@ namespace Wikimedia\IDLeDOM;
 interface DocumentFragment extends Node, NonElementParentNode, ParentNode {
 	// Direct parent: Node
 
+	/**
+	 * @param string $data
+	 * @return bool
+	 */
+	public function appendXML( string $data ): bool;
+
 }

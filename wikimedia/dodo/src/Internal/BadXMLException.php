@@ -12,8 +12,9 @@ namespace Wikimedia\Dodo\Internal;
 class BadXMLException extends \Exception implements \Wikimedia\IDLeDOM\SimpleException {
 	/**
 	 * Create a BadXMLException
+	 * @param string $msg A description of the error.
 	 */
-	public function __construct() {
-		parent::__construct( "Invalid XML characters" );
+	public function __construct( $msg = "Invalid XML characters" ) {
+		parent::__construct( $msg );
 	}
 }

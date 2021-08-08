@@ -232,7 +232,7 @@ interface Node extends EventTarget {
 	 * @param \Wikimedia\IDLeDOM\Node|null $child
 	 * @return \Wikimedia\IDLeDOM\Node
 	 */
-	public function insertBefore( /* \Wikimedia\IDLeDOM\Node */ $node, /* ?\Wikimedia\IDLeDOM\Node */ $child );
+	public function insertBefore( /* \Wikimedia\IDLeDOM\Node */ $node, /* ?\Wikimedia\IDLeDOM\Node */ $child = null );
 
 	/**
 	 * @param \Wikimedia\IDLeDOM\Node $node

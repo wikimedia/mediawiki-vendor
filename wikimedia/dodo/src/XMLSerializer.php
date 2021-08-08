@@ -29,7 +29,7 @@ class XMLSerializer implements \Wikimedia\IDLeDOM\XMLSerializer {
 	public function serializeToString( $root ): string {
 		'@phan-var Node $root';
 		$result = [];
-		WhatWG::xmlSerialize( $root, false, $result );
+		WhatWG::xmlSerialize( $root, [ 'requireWellFormed' => false ], $result );
 		return implode( '', $result );
 	}
 }

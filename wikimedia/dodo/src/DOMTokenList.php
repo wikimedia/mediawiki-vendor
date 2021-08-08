@@ -62,9 +62,10 @@ class DOMTokenList implements \Wikimedia\IDLeDOM\DOMTokenList {
 
 	/**
 	 * Fetch the attribute value and parse it into an ordered set.
+	 * @param ?string $newValue
 	 */
-	public function _getList(): void {
-		$value = $this->getValue();
+	public function _getList( ?string $newValue = null ): void {
+		$value = $newValue ?? $this->getValue();
 		if ( $value === $this->_lastStringValue ) {
 			return;
 		}

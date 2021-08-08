@@ -2,7 +2,7 @@
 
 namespace Wikimedia\LangConv;
 
-class ZhReplacementMachine extends ReplacementMachine {
+class ZhReplacementMachine extends FstReplacementMachine {
 
 	public function __construct() {
 		parent::__construct(
