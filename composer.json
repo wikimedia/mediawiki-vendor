@@ -1,6 +1,7 @@
 {
 	"config": {
 		"autoloader-suffix": "_mediawiki_vendor",
+		"classmap-authoritative": true,
 		"optimize-autoloader": true,
 		"prepend-autoloader": false,
 		"vendor-dir": ".",
