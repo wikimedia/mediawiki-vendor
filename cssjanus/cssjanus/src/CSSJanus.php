@@ -1,10 +1,11 @@
 <?php
 /**
- * PHP port of CSSJanus.
- * https://github.com/cssjanus/php-cssjanus
+ * PHP port of CSSJanus. https://github.com/cssjanus/php-cssjanus
  *
- * Copyright 2008 Google Inc.
+ * Copyright 2020 Timo Tijhof
+ * Copyright 2014 Trevor Parscal
  * Copyright 2010 Roan Kattouw
+ * Copyright 2008 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,15 +23,13 @@
  */
 
 /**
- * This is a PHP port of CSSJanus, a utility that transforms CSS style sheets
- * written for LTR to RTL.
- *
- * Original code: http://code.google.com/p/cssjanus/source/browse/trunk/cssjanus.py
- *
- * @author Lindsey Simon <elsigh@google.com>
- * @author Roan Kattouw
+ * CSSJanus is a a utility that converts CSS stylesheets
+ * from left-to-right (LTR) to right-to-left (RTL).
  */
 class CSSJanus {
+	private const TOKEN_TMP = '`TMP`';
+	private const TOKEN_COMMENT = '`COMMENT`';
+
 	// Patterns defined as null are built dynamically by buildPatterns()
 	private static $patterns = array(
 		'tmpToken' => '`TMP`',
@@ -102,7 +101,7 @@ class CSSJanus {
 		// Use "*+" instead of "*?" to avoid reaching the backtracking limit.
 		// <https://github.com/cssjanus/php-cssjanus/issues/14>, <https://phabricator.wikimedia.org/T215746#4944830>.
 		$patterns['url_chars'] = "(?:{$patterns['url_special_chars']}|{$patterns['nonAscii']}|{$patterns['escape']})*+";
-		$patterns['lookahead_not_open_brace'] = "(?!({$patterns['nmchar']}|\\r?\\n|\s|#|\:|\.|\,|\+|>|\(|\)|\[|\]|=|\*=|~=|\^=|'[^']*'])*+{)";
+		$patterns['lookahead_not_open_brace'] = "(?!({$patterns['nmchar']}|\\r?\\n|\s|#|\:|\.|\,|\+|>|\(|\)|\[|\]|=|\*=|~=|\^=|'[^']*'|\"[^\"]*\"|" . self::TOKEN_COMMENT . ")*+{)";
 		$patterns['lookahead_not_closing_paren'] = "(?!{$patterns['url_chars']}{$patterns['valid_after_uri_chars']}\))";
 		$patterns['lookahead_for_closing_paren'] = "(?={$patterns['url_chars']}{$patterns['valid_after_uri_chars']}\))";
 		$patterns['noflip_single'] = "/({$patterns['noflip_annotation']}{$patterns['lookahead_not_open_brace']}[^;}]+;?)/i";
@@ -175,7 +174,7 @@ class CSSJanus {
 		$css = $noFlipClass->tokenize($css);
 
 		// Tokenize comments
-		$comments = new CSSJanusTokenizer(self::$patterns['comment'], '`C`');
+		$comments = new CSSJanusTokenizer(self::$patterns['comment'], self::TOKEN_COMMENT);
 		$css = $comments->tokenize($css);
 
 		// LTR->RTL fixes start here
@@ -218,11 +217,11 @@ class CSSJanus {
 	private static function fixDirection($css) {
 		$css = preg_replace(
 			self::$patterns['direction_ltr'],
-			'$1' . self::$patterns['tmpToken'],
+			'$1' . self::TOKEN_TMP,
 			$css
 		);
 		$css = preg_replace(self::$patterns['direction_rtl'], '$1ltr', $css);
-		$css = str_replace(self::$patterns['tmpToken'], 'rtl', $css);
+		$css = str_replace(self::TOKEN_TMP, 'rtl', $css);
 
 		return $css;
 	}
@@ -233,9 +232,9 @@ class CSSJanus {
 	 * @return string
 	 */
 	private static function fixLtrRtlInURL($css) {
-		$css = preg_replace(self::$patterns['ltr_in_url'], self::$patterns['tmpToken'], $css);
+		$css = preg_replace(self::$patterns['ltr_in_url'], self::TOKEN_TMP, $css);
 		$css = preg_replace(self::$patterns['rtl_in_url'], 'ltr', $css);
-		$css = str_replace(self::$patterns['tmpToken'], 'rtl', $css);
+		$css = str_replace(self::TOKEN_TMP, 'rtl', $css);
 
 		return $css;
 	}
@@ -246,9 +245,9 @@ class CSSJanus {
 	 * @return string
 	 */
 	private static function fixLeftRightInURL($css) {
-		$css = preg_replace(self::$patterns['left_in_url'], self::$patterns['tmpToken'], $css);
+		$css = preg_replace(self::$patterns['left_in_url'], self::TOKEN_TMP, $css);
 		$css = preg_replace(self::$patterns['right_in_url'], 'left', $css);
-		$css = str_replace(self::$patterns['tmpToken'], 'right', $css);
+		$css = str_replace(self::TOKEN_TMP, 'right', $css);
 
 		return $css;
 	}
@@ -259,9 +258,9 @@ class CSSJanus {
 	 * @return string
 	 */
 	private static function fixLeftAndRight($css) {
-		$css = preg_replace(self::$patterns['left'], self::$patterns['tmpToken'], $css);
+		$css = preg_replace(self::$patterns['left'], self::TOKEN_TMP, $css);
 		$css = preg_replace(self::$patterns['right'], 'left', $css);
-		$css = str_replace(self::$patterns['tmpToken'], 'right', $css);
+		$css = str_replace(self::TOKEN_TMP, 'right', $css);
 
 		return $css;
 	}
@@ -274,11 +273,11 @@ class CSSJanus {
 	private static function fixCursorProperties($css) {
 		$css = preg_replace(
 			self::$patterns['cursor_east'],
-			'$1' . self::$patterns['tmpToken'],
+			'$1' . self::TOKEN_TMP,
 			$css
 		);
 		$css = preg_replace(self::$patterns['cursor_west'], '$1e-resize', $css);
-		$css = str_replace(self::$patterns['tmpToken'], 'w-resize', $css);
+		$css = str_replace(self::TOKEN_TMP, 'w-resize', $css);
 
 		return $css;
 	}
@@ -476,7 +475,6 @@ class CSSJanus {
 /**
  * Utility class used by CSSJanus that tokenizes and untokenizes things we want
  * to protect from being janused.
- * @author Roan Kattouw
  */
 class CSSJanusTokenizer {
 	private $regex;
