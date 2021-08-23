@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0cb89983548bef48a4152e4a9fc8d0ad",
+    "content-hash": "964581a381b6ba853b4bc7b0ef519aaa",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -7309,27 +7309,28 @@
         },
         {
             "name": "wikimedia/wait-condition-loop",
-            "version": "v2.0.1",
+            "version": "v2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/wait-condition-loop.git",
-                "reference": "44637dcee19765c4887cd3cc0fd97db0eabd7688"
+                "reference": "9bb0894e8c5195d43b2f2babbe4cc8f36bd5be0e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/wait-condition-loop/zipball/44637dcee19765c4887cd3cc0fd97db0eabd7688",
-                "reference": "44637dcee19765c4887cd3cc0fd97db0eabd7688",
+                "url": "https://api.github.com/repos/wikimedia/wait-condition-loop/zipball/9bb0894e8c5195d43b2f2babbe4cc8f36bd5be0e",
+                "reference": "9bb0894e8c5195d43b2f2babbe4cc8f36bd5be0e",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2.9"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "35.0.0",
+                "mediawiki/mediawiki-codesniffer": "37.0.0",
+                "mediawiki/mediawiki-phan-config": "0.10.6",
                 "mediawiki/minus-x": "1.1.1",
                 "ockcyp/covers-validator": "1.3.3",
                 "php-parallel-lint/php-console-highlighter": "0.5.0",
-                "php-parallel-lint/php-parallel-lint": "1.2.0",
+                "php-parallel-lint/php-parallel-lint": "1.3.0",
                 "phpunit/phpunit": "^8.5"
             },
             "type": "library",
@@ -7350,7 +7351,7 @@
             ],
             "description": "Wait loop that reaches a condition or times out",
             "homepage": "https://www.mediawiki.org/wiki/WaitConditionLoop",
-            "time": "2021-02-11T18:40:34+00:00"
+            "time": "2021-08-23T19:25:32+00:00"
         },
         {
             "name": "wikimedia/wikipeg",
