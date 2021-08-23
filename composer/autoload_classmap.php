@@ -4007,7 +4007,7 @@ return array(
     'Wikimedia\\Parsoid\\Wt2Html\\PP\\Handlers\\PrepareDOM' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/PP/Handlers/PrepareDOM.php',
     'Wikimedia\\Parsoid\\Wt2Html\\PP\\Handlers\\TableFixups' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/PP/Handlers/TableFixups.php',
     'Wikimedia\\Parsoid\\Wt2Html\\PP\\Handlers\\UnpackDOMFragments' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/PP/Handlers/UnpackDOMFragments.php',
-    'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\AddExtLinkClasses' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/AddExtLinkClasses.php',
+    'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\AddLinkClasses' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/AddLinkClasses.php',
     'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\AddMediaInfo' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/AddMediaInfo.php',
     'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\AddRedLinks' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/AddRedLinks.php',
     'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\ComputeDSR' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/ComputeDSR.php',
