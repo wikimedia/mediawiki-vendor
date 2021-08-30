@@ -142,11 +142,6 @@ class References extends ExtensionTagHandler {
 		DOMUtils::assertElt( $c );
 		$cDp = DOMDataUtils::getDataParsoid( $c );
 		$refDmw = DOMDataUtils::getDataMw( $c );
-		if ( empty( $cDp->empty ) && self::hasRef( $c ) ) { // nested ref-in-ref
-			$refsData->pushInEmbeddedContent();
-			self::processRefs( $extApi, $refsData, $c );
-			$refsData->popInEmbeddedContent();
-		}
 
 		// Use the about attribute on the wrapper with priority, since it's
 		// only added when the wrapper is a template sibling.
@@ -158,6 +153,7 @@ class References extends ExtensionTagHandler {
 		// If both the containing <references> elt as well as the nested <ref>
 		// elt has a group attribute, what takes precedence?
 		$groupName = $refDmw->attrs->group ?? $refsData->referencesGroup;
+		$group = $refsData->getRefGroup( $groupName );
 
 		if (
 			$refsData->inReferencesContent() &&
@@ -196,36 +192,45 @@ class References extends ExtensionTagHandler {
 			$c->appendChild( $span );
 		}
 
+		$html = '';
+		$contentDiffers = false;
+
 		if ( $hasRefName ) {
 			if ( $hasFollow ) {
 				// Presumably, "name" has higher precedence
 				$errs[] = [ 'key' => 'cite_error_ref_too_many_keys' ];
 			}
-			if ( $refsData->inReferencesContent() ) {
-				$group = $refsData->getRefGroup( $groupName );
-				if ( !isset( $group->indexByName[$refName] ) ) {
-					$errs[] = [ 'key' => 'cite_error_references_missing_key',
-						'params' => [ $refDmw->attrs->name ] ];
+			if ( isset( $group->indexByName[$refName] ) ) {
+				$ref = $group->indexByName[$refName];
+				// If there are multiple <ref>s with the same name, but different content,
+				// the content of the first <ref> shows up in the <references> section.
+				// in order to ensure lossless RT-ing for later <refs>, we have to record
+				// HTML inline for all of them.
+				if ( $ref->contentId ) {
+					if ( $ref->cachedHtml === null ) {
+						$refContent = $extApi->getContentDOM( $ref->contentId )->firstChild;
+						$ref->cachedHtml = $extApi->domToHtml( $refContent, true, false );
+					}
+					// FIXME: Strip the mw:Cite/Follow wrappers
+					// See the test, "Forward-referenced ref with magical follow edge case"
+					$html = $extApi->domToHtml( $c, true, false );
+					$contentDiffers = ( $html !== $ref->cachedHtml );
+				}
+			} else {
+				if ( $refsData->inReferencesContent() ) {
+					$errs[] = [
+						'key' => 'cite_error_references_missing_key',
+						'params' => [ $refDmw->attrs->name ]
+					];
 				}
 			}
 		} else {
 			if ( $hasFollow ) {
 				// This is a follows ref, so check that a named ref has already
 				// been defined
-				$group = $refsData->getRefGroup( $groupName );
 				if ( isset( $group->indexByName[$followName] ) ) {
 					$validFollow = true;
 					$ref = $group->indexByName[$followName];
-
-					if ( $ref->contentId ) {
-						$refContent = $extApi->getContentDOM( $ref->contentId )->firstChild;
-						DOMUtils::migrateChildren( $c, $refContent );
-					} else {
-						// Otherwise, we have a follow that comes after a named
-						// ref without content so use the follow fragment as
-						// the content
-						// This will be set below with `$ref->contentId = $contentId;`
-					}
 				} else {
 					// FIXME: This key isn't exactly appropriate since this
 					// is more general than just being in a <references>
@@ -240,10 +245,51 @@ class References extends ExtensionTagHandler {
 			}
 		}
 
-		if ( !$ref ) {
-			$ref = $refsData->add(
-				$extApi, $groupName, $refName, $about, $linkBack
-			);
+		// Process nested ref-in-ref
+		//
+		// Do this before possibly adding the a ref below or
+		// migrating contents out of $c if we have a valid follow
+		if ( empty( $cDp->empty ) && self::hasRef( $c ) ) {
+			if ( $contentDiffers ) {
+				$refsData->pushEmbeddedContentFlag();
+			}
+			self::processRefs( $extApi, $refsData, $c );
+			if ( $contentDiffers ) {
+				$refsData->popEmbeddedContentFlag();
+				// If we have refs and the content differs, we need to
+				// reserialize now that we processed the refs.  Unfortunately,
+				// the cachedHtml we compared against already had its refs
+				// processed so that would presumably never match and this will
+				// always be considered a redefinition.  The implementation for
+				// the legacy parser also considers this a redefinition so
+				// there is likely little content out there like this :)
+				$html = $extApi->domToHtml( $c, true, true );
+			}
+		}
+
+		if ( $validFollow ) {
+			// Migrate content from the follow to the ref
+			if ( $ref->contentId ) {
+				$refContent = $extApi->getContentDOM( $ref->contentId )->firstChild;
+				DOMUtils::migrateChildren( $c, $refContent );
+			} else {
+				// Otherwise, we have a follow that comes after a named
+				// ref without content so use the follow fragment as
+				// the content
+				// This will be set below with `$ref->contentId = $contentId;`
+			}
+		} else {
+			if ( !$ref ) {
+				$ref = $refsData->add( $extApi, $groupName, $refName );
+			}
+
+			// Handle linkbacks
+			if ( $refsData->inEmbeddedContent() ) {
+				$ref->embeddedNodes[] = $about;
+			} else {
+				$ref->nodes[] = $linkBack;
+				$ref->linkbacks[] = $ref->key . '-' . count( $ref->linkbacks );
+			}
 		}
 
 		if ( isset( $refDmw->attrs->dir ) && $refDir !== 'rtl' && $refDir !== 'ltr' ) {
@@ -288,28 +334,18 @@ class References extends ExtensionTagHandler {
 				$refDmw->body = (object)[ 'html' => $refDmw->body->extsrc ?? '' ];
 			}
 		} else {
-			// If there are multiple <ref>s with the same name, but different content,
-			// the content of the first <ref> shows up in the <references> section.
-			// in order to ensure lossless RT-ing for later <refs>, we have to record
-			// HTML inline for all of them.
-			$html = '';
-			$contentDiffers = false;
-			if ( $ref->hasMultiples && !$validFollow ) {
-				// FIXME: Strip the mw:Cite/Follow wrappers
-				// See the test, "Forward-referenced ref with magical follow edge case"
-				$html = $extApi->domToHtml( $c, true, true );
+			if ( $ref->contentId && !$validFollow ) {
 				// Empty the <sup> since we've serialized its children and
 				// removing it below asserts everything has been migrated out
 				DOMCompat::replaceChildren( $c );
-				$contentDiffers = $html !== $ref->cachedHtml;
-				if ( $contentDiffers ) {
-					// TODO: Since this error is being placed on the ref, the
-					// key should arguably be "cite_error_ref_duplicate_key"
-					$errs[] = [ 'key' => 'cite_error_references_duplicate_key',
-						'params' => [ $refDmw->attrs->name ] ];
-				}
 			}
 			if ( $contentDiffers ) {
+				// TODO: Since this error is being placed on the ref, the
+				// key should arguably be "cite_error_ref_duplicate_key"
+				$errs[] = [
+					'key' => 'cite_error_references_duplicate_key',
+					'params' => [ $refDmw->attrs->name ]
+				];
 				$refDmw->body = (object)[ 'html' => $html ];
 			} else {
 				$refDmw->body = (object)[ 'id' => 'mw-reference-text-' . $ref->target ];
@@ -578,24 +614,24 @@ class References extends ExtensionTagHandler {
 						$refsData->referencesGroup =
 							DOMDataUtils::getDataParsoid( $child )->group ?? '';
 					}
-					$refsData->pushInEmbeddedContent( 'references' );
+					$refsData->pushEmbeddedContentFlag( 'references' );
 					if ( $child->hasChildNodes() ) {
 						self::processRefs( $extApi, $refsData, $child );
 					}
-					$refsData->popInEmbeddedContent();
+					$refsData->popEmbeddedContentFlag();
 					if ( !$refsData->inReferencesContent() ) {
 						$refsData->referencesGroup = '';
 						self::insertReferencesIntoDOM( $extApi, $child, $refsData, false );
 					}
 				} else {
-					$refsData->pushInEmbeddedContent();
+					$refsData->pushEmbeddedContentFlag();
 					// Look for <ref>s embedded in data attributes
 					$extApi->processHiddenHTMLInDataAttributes( $child,
 						function ( string $html ) use ( $extApi, $refsData ) {
 							return self::processEmbeddedRefs( $extApi, $refsData, $html );
 						}
 					);
-					$refsData->popInEmbeddedContent();
+					$refsData->popEmbeddedContentFlag();
 					if ( $child->hasChildNodes() ) {
 						self::processRefs( $extApi, $refsData, $child );
 					}
