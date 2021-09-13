@@ -88,18 +88,20 @@ class XMLSerializer {
 				$localName = $node->localName;
 				$accum( '<' . $localName, $node );
 				foreach ( DOMCompat::attributes( $node ) as $attr ) {
+					$an = $attr->name;
+					$av = $attr->value;
 					if ( $options['smartQuote']
 						// More double quotes than single quotes in value?
-						&& substr_count( $attr->value, '"' ) > substr_count( $attr->value, "'" )
+						&& substr_count( $av, '"' ) > substr_count( $av, "'" )
 					) {
 						// use single quotes
-						$accum( ' ' . $attr->name . "='"
-							. self::encodeHtmlEntities( $attr->value, "<&'" ) . "'",
+						$accum( ' ' . $an . "='"
+							. self::encodeHtmlEntities( $av, "<&'" ) . "'",
 							$node );
 					} else {
 						// use double quotes
-						$accum( ' ' . $attr->name . '="'
-							. self::encodeHtmlEntities( $attr->value, '<&"' ) . '"',
+						$accum( ' ' . $an . '="'
+							. self::encodeHtmlEntities( $av, '<&"' ) . '"',
 							$node );
 					}
 				}
@@ -155,7 +157,7 @@ class XMLSerializer {
 
 			case XML_TEXT_NODE:
 				'@phan-var Text $node'; // @var Text $node
-				$accum( self::encodeHtmlEntities( $node->data, '<&' ), $node );
+				$accum( self::encodeHtmlEntities( $node->nodeValue, '<&' ), $node );
 				return;
 
 			case XML_COMMENT_NODE:
@@ -166,7 +168,7 @@ class XMLSerializer {
 				// we create the comment node to ensure that node.data will always
 				// be okay; see DOMUtils.encodeComment().
 				'@phan-var Comment $node'; // @var Comment $node
-				$accum( '<!--' . $node->data . '-->', $node );
+				$accum( '<!--' . $node->nodeValue . '-->', $node );
 				return;
 
 			default:

@@ -6525,17 +6525,17 @@
     },
     {
         "name": "wikimedia/parsoid",
-        "version": "v0.14.0-a17",
-        "version_normalized": "0.14.0.0-alpha17",
+        "version": "v0.14.0-a18",
+        "version_normalized": "0.14.0.0-alpha18",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/parsoid.git",
-            "reference": "50e0940732ca5fbcbaa19e52144b10c65926bb73"
+            "reference": "cfe9391c047b85feaf72f745f9b6ec0d34368d96"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/50e0940732ca5fbcbaa19e52144b10c65926bb73",
-            "reference": "50e0940732ca5fbcbaa19e52144b10c65926bb73",
+            "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/cfe9391c047b85feaf72f745f9b6ec0d34368d96",
+            "reference": "cfe9391c047b85feaf72f745f9b6ec0d34368d96",
             "shasum": ""
         },
         "require": {
@@ -6545,6 +6545,7 @@
             "liuggio/statsd-php-client": "^1.0.18",
             "php": ">=7.2.0",
             "psr/log": "^1.1.2",
+            "symfony/polyfill-php80": "^1.23.1",
             "wikimedia/assert": "0.4.0|^0.5.0",
             "wikimedia/dodo": "0.3.0",
             "wikimedia/ip-utils": "^1.0.0|^3.0.0",
@@ -6576,7 +6577,7 @@
         "suggest": {
             "wikimedia/langconv": "Provides script conversion support"
         },
-        "time": "2021-08-27T19:00:54+00:00",
+        "time": "2021-09-11T05:22:33+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

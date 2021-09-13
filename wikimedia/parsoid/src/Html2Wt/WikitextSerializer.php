@@ -123,11 +123,9 @@ class WikitextSerializer {
 	 *   - logType: (string)
 	 */
 	public function __construct( $options ) {
+		$this->logType = $options['logType'] = 'trace/wts';
+		$this->options = $options;
 		$this->env = $options['env'];
-		$this->options = array_merge( $options, [
-			'logType' => 'trace/wts',
-		] );
-		$this->logType = $this->options['logType'];
 		$this->state = new SerializerState( $this, $this->options );
 		$this->wteHandlers = new WikitextEscapeHandlers( $this->options );
 	}
@@ -730,6 +728,9 @@ class WikitextSerializer {
 			return $strippedKey;
 		}, array_keys( get_object_vars( $part->params ) ) );
 		if ( !$tplKeysFromDataMw ) {
+			if ( substr( $formatEnd, 0, 1 ) === "\n" ) {
+				$formatEnd = substr( $formatEnd, 1 );
+			}
 			return $buf . $formatEnd;
 		}
 
