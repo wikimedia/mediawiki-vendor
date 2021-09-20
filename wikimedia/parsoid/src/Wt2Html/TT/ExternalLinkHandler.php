@@ -5,7 +5,6 @@ namespace Wikimedia\Parsoid\Wt2Html\TT;
 
 use Wikimedia\Parsoid\Core\Sanitizer;
 use Wikimedia\Parsoid\Tokens\EndTagTk;
-use Wikimedia\Parsoid\Tokens\EOFTk;
 use Wikimedia\Parsoid\Tokens\KV;
 use Wikimedia\Parsoid\Tokens\SelfclosingTagTk;
 use Wikimedia\Parsoid\Tokens\TagTk;
@@ -67,7 +66,7 @@ class ExternalLinkHandler extends TokenHandler {
 	 * @return bool
 	 */
 	private function hasImageLink( string $href ): bool {
-		$allowedPrefixes = $this->manager->env->getSiteConfig()->allowedExternalImagePrefixes();
+		$allowedPrefixes = $this->env->getSiteConfig()->allowedExternalImagePrefixes();
 		$bits = explode( '.', $href );
 		$hasImageExtension = count( $bits ) > 1 &&
 			self::imageExtensions( end( $bits ) ) &&
@@ -89,12 +88,12 @@ class ExternalLinkHandler extends TokenHandler {
 
 	/**
 	 * @param Token $token
-	 * @return Token|array
+	 * @return TokenHandlerResult|null
 	 */
-	private function onUrlLink( Token $token ) {
+	private function onUrlLink( Token $token ): ?TokenHandlerResult {
 		$tagAttrs = null;
 		$builtTag = null;
-		$env = $this->manager->env;
+		$env = $this->env;
 		$origHref = $token->getAttribute( 'href' );
 		$href = TokenUtils::tokensToString( $origHref );
 		$dataAttribs = Utils::clone( $token->dataAttribs );
@@ -110,7 +109,8 @@ class ExternalLinkHandler extends TokenHandler {
 			// combine with existing rdfa attrs
 			$tagAttrs = WikiLinkHandler::buildLinkAttrs(
 				$token->attribs, false, null, $tagAttrs )['attribs'];
-			return [ 'tokens' => [ new SelfclosingTagTk( 'img', $tagAttrs, $dataAttribs ) ] ];
+			return new TokenHandlerResult(
+				[ new SelfclosingTagTk( 'img', $tagAttrs, $dataAttribs ) ] );
 		} else {
 			$tagAttrs = [
 				new KV( 'rel', 'mw:ExtLink' )
@@ -133,7 +133,7 @@ class ExternalLinkHandler extends TokenHandler {
 				$builtTag->addAttribute( 'href', $href );
 			}
 
-			return [ 'tokens' => [
+			return new TokenHandlerResult( [
 					$builtTag,
 					// Make sure there are no IDN-ignored characters in the text so
 					// the user doesn't accidentally copy any.
@@ -144,19 +144,19 @@ class ExternalLinkHandler extends TokenHandler {
 						(object)[ 'tsr' => $dataAttribs->tsr->expandTsrK()->value ]
 					)
 				]
-			];
+			);
 		}
 	}
 
 	/**
 	 * Bracketed external link
 	 * @param Token $token
-	 * @return Token|array
+	 * @return TokenHandlerResult|null
 	 */
-	private function onExtLink( Token $token ) {
+	private function onExtLink( Token $token ): ?TokenHandlerResult {
 		$newAttrs = null;
 		$aStart = null;
-		$env = $this->manager->env;
+		$env = $this->env;
 		$origHref = $token->getAttribute( 'href' );
 		$hasExpandedAttrs = TokenUtils::hasTypeOf( $token, 'mw:ExpandedAttrs' );
 		$href = TokenUtils::tokensToString( $origHref );
@@ -174,7 +174,7 @@ class ExternalLinkHandler extends TokenHandler {
 		if ( $magLinkType ) {
 			$newHref = $href;
 			$newRel = 'mw:ExtLink';
-			if ( preg_match( '#/ISBN$#', $magLinkType ) ) {
+			if ( str_ends_with( $magLinkType, '/ISBN' ) ) {
 				$newHref = $env->getSiteConfig()->relativeLinkPrefix() . $href;
 				// ISBNs use mw:WikiLink instead of mw:ExtLink
 				$newRel = 'mw:WikiLink';
@@ -198,7 +198,7 @@ class ExternalLinkHandler extends TokenHandler {
 			$aStart = new TagTk( 'a', $newAttrs, $dataAttribs );
 			$tokens = array_merge( [ $aStart ],
 				is_array( $content ) ? $content : [ $content ], [ new EndTagTk( 'a' ) ] );
-			return [ 'tokens' => $tokens ];
+			return new TokenHandlerResult( $tokens );
 		} elseif ( ( !$hasExpandedAttrs && is_string( $origHref ) ) ||
 					$this->urlParser->tokenizeURL( $hrefWithEntities ) !== false
 		) {
@@ -248,27 +248,22 @@ class ExternalLinkHandler extends TokenHandler {
 			);
 
 			$tokens = [ $aStart, $content, new EndTagTk( 'a' ) ];
-			return [ 'tokens' => $tokens ];
+			return new TokenHandlerResult( $tokens );
 		} else {
 			// Not a link, convert href to plain text.
-			return [ 'tokens' => WikiLinkHandler::bailTokens( $env, $token, true ) ];
+			return new TokenHandlerResult( WikiLinkHandler::bailTokens( $env, $token, true ) );
 		}
 	}
 
 	/** @inheritDoc */
-	public function onTag( Token $token ) {
+	public function onTag( Token $token ): ?TokenHandlerResult {
 		switch ( $token->getName() ) {
 			case 'urllink':
 				return $this->onUrlLink( $token );
 			case 'extlink':
 				return $this->onExtLink( $token );
 			default:
-				return $token;
+				return null;
 		}
-	}
-
-	/** @inheritDoc */
-	public function onEnd( EOFTk $token ) {
-		return $token;
 	}
 }
