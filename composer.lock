@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f01a3cc5bdc60e7cce797ed905a88a66",
+    "content-hash": "720b1346f00b66e8e644197afebd7a48",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -6450,29 +6450,29 @@
         },
         {
             "name": "wikimedia/purtle",
-            "version": "v1.0.7",
+            "version": "v1.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/purtle.git",
-                "reference": "569064c065caae036cd5a685574b6f96f05cfe33"
+                "reference": "8f106f38ff811906853511a934d7f5e86dce3d20"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/purtle/zipball/569064c065caae036cd5a685574b6f96f05cfe33",
-                "reference": "569064c065caae036cd5a685574b6f96f05cfe33",
+                "url": "https://api.github.com/repos/wikimedia/purtle/zipball/8f106f38ff811906853511a934d7f5e86dce3d20",
+                "reference": "8f106f38ff811906853511a934d7f5e86dce3d20",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5.9"
+                "php": ">=7.2.9"
             },
             "require-dev": {
-                "jakub-onderka/php-console-highlighter": "0.3.2",
-                "jakub-onderka/php-parallel-lint": "1.0.0",
-                "mediawiki/mediawiki-codesniffer": "16.0.1",
-                "mediawiki/minus-x": "0.3.1",
-                "ockcyp/covers-validator": "0.5.1 || 0.6.1",
+                "mediawiki/mediawiki-codesniffer": "36.0.0",
+                "mediawiki/minus-x": "1.1.1",
+                "ockcyp/covers-validator": "1.3.3",
+                "php-parallel-lint/php-console-highlighter": "0.5.0",
+                "php-parallel-lint/php-parallel-lint": "1.3.0",
                 "phpmd/phpmd": "~2.3",
-                "phpunit/phpunit": "4.8.36 || ^6.5"
+                "phpunit/phpunit": "^8.5"
             },
             "type": "library",
             "extra": {
@@ -6498,10 +6498,10 @@
                     "name": "Stanislav Malyshev"
                 },
                 {
-                    "name": "C. Scott Ananian"
+                    "name": "Thiemo Kreuz"
                 },
                 {
-                    "name": "Thiemo Kreuz"
+                    "name": "C. Scott Ananian"
                 }
             ],
             "description": "Fast streaming RDF serializer",
@@ -6512,7 +6512,7 @@
                 "Turtle",
                 "serializer"
             ],
-            "time": "2018-03-20T09:26:13+00:00"
+            "time": "2021-06-17T14:47:56+00:00"
         },
         {
             "name": "wikimedia/relpath",
