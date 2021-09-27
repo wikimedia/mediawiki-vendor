@@ -11,6 +11,7 @@ use Wikimedia\Parsoid\DOM\Document;
 use Wikimedia\Parsoid\DOM\DocumentFragment;
 use Wikimedia\Parsoid\DOM\Element;
 use Wikimedia\Parsoid\DOM\Node;
+use Wikimedia\Parsoid\DOM\Text;
 use Wikimedia\Parsoid\Ext\ExtensionTagHandler;
 use Wikimedia\Parsoid\Tokens\CommentTk;
 use Wikimedia\Parsoid\Wt2Html\Frame;
@@ -46,9 +47,8 @@ class WTUtils {
 	 * @return bool
 	 */
 	public static function isLiteralHTMLNode( ?Node $node ): bool {
-		return ( $node &&
-			$node instanceof Element &&
-			self::hasLiteralHTMLMarker( DOMDataUtils::getDataParsoid( $node ) ) );
+		return $node instanceof Element &&
+			self::hasLiteralHTMLMarker( DOMDataUtils::getDataParsoid( $node ) );
 	}
 
 	/**
@@ -239,7 +239,6 @@ class WTUtils {
 			$node = $prev;
 			$prev = DOMUtils::previousNonDeletedSibling( $node );
 		} while (
-			$prev &&
 			$prev instanceof Element &&
 			$prev->getAttribute( 'about' ) === $about
 		);
@@ -357,8 +356,8 @@ class WTUtils {
 	 * @return bool
 	 */
 	public static function isRedirectLink( Node $node ): bool {
-		return DOMCompat::nodeName( $node ) === 'link' &&
-			DOMUtils::assertElt( $node ) &&
+		return $node instanceof Element &&
+			DOMCompat::nodeName( $node ) === 'link' &&
 			preg_match( '#\bmw:PageProp/redirect\b#', $node->getAttribute( 'rel' ) ?? '' );
 	}
 
@@ -381,8 +380,8 @@ class WTUtils {
 	 * @return bool
 	 */
 	public static function isSolTransparentLink( Node $node ): bool {
-		return DOMCompat::nodeName( $node ) === 'link' &&
-			DOMUtils::assertElt( $node ) &&
+		return $node instanceof Element &&
+			DOMCompat::nodeName( $node ) === 'link' &&
 			preg_match( TokenUtils::SOL_TRANSPARENT_LINK_REGEX, $node->getAttribute( 'rel' ) ?? '' );
 	}
 
@@ -399,7 +398,7 @@ class WTUtils {
 	 * @return bool
 	 */
 	public static function emitsSolTransparentSingleLineWT( Node $node ): bool {
-		if ( DOMUtils::isText( $node ) ) {
+		if ( $node instanceof Text ) {
 			// NB: We differ here to meet the nl condition.
 			return (bool)preg_match( '/^[ \t]*$/D', $node->nodeValue );
 		} elseif ( self::isRenderingTransparentNode( $node ) ) {
@@ -436,15 +435,15 @@ class WTUtils {
 	 */
 	public static function isRenderingTransparentNode( Node $node ): bool {
 		// FIXME: Can we change this entire thing to
-		// DOMUtils::isComment($node) ||
+		// $node instanceof Comment ||
 		// DOMUtils::getDataParsoid($node).stx !== 'html' &&
 		// (DOMCompat::nodeName($node) === 'meta' || DOMCompat::nodeName($node) === 'link')
 		//
-		return DOMUtils::isComment( $node ) ||
+		return $node instanceof Comment ||
 			self::isSolTransparentLink( $node ) || (
 				// Catch-all for everything else.
+				$node instanceof Element &&
 				DOMCompat::nodeName( $node ) === 'meta' &&
-				DOMUtils::assertElt( $node ) &&
 				(
 					// (Start|End)Tag metas clone data-parsoid from the tokens
 					// they're shadowing, which trips up on the stx check.
@@ -536,8 +535,8 @@ class WTUtils {
 	 * @return bool
 	 */
 	public static function isParsoidSectionTag( Node $node ): bool {
-		return DOMCompat::nodeName( $node ) === 'section' &&
-			DOMUtils::assertElt( $node ) &&
+		return $node instanceof Element &&
+			DOMCompat::nodeName( $node ) === 'section' &&
 			$node->hasAttribute( 'data-mw-section-id' );
 	}
 
@@ -617,9 +616,8 @@ class WTUtils {
 
 		$node = $node->nextSibling;
 		while ( $node && (
-			$node instanceof Element &&
-			$node->getAttribute( 'about' ) === $about ||
-				DOMUtils::isFosterablePosition( $node ) && !DOMUtils::isElt( $node ) && DOMUtils::isIEW( $node )
+			( $node instanceof Element && $node->getAttribute( 'about' ) === $about ) ||
+			( DOMUtils::isFosterablePosition( $node ) && DOMUtils::isIEW( $node ) )
 		) ) {
 			$nodes[] = $node;
 			$node = $node->nextSibling;
@@ -808,7 +806,7 @@ class WTUtils {
 	public static function reinsertFosterableContent(
 		Env $env, Node $node
 	): ?Node {
-		if ( DOMUtils::isComment( $node ) && preg_match( '/^\{.+\}$/D', $node->nodeValue ) ) {
+		if ( $node instanceof Comment && preg_match( '/^\{.+\}$/D', $node->nodeValue ) ) {
 			// Convert serialized meta tags back from comments.
 			// We use this trick because comments won't be fostered,
 			// providing more accurate information about where tags are expected

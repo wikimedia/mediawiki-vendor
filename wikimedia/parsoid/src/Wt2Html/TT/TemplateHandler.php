@@ -5,6 +5,7 @@ namespace Wikimedia\Parsoid\Wt2Html\TT;
 
 use stdClass;
 use Wikimedia\Assert\Assert;
+use Wikimedia\Parsoid\DOM\Element;
 use Wikimedia\Parsoid\Tokens\CommentTk;
 use Wikimedia\Parsoid\Tokens\EndTagTk;
 use Wikimedia\Parsoid\Tokens\EOFTk;
@@ -831,7 +832,7 @@ class TemplateHandler extends TokenHandler {
 		// if / when `addHTMLTemplateParameters` is enabled.
 		// Remove DSR from children
 		DOMUtils::visitDOM( $domFragment, static function ( $node ) {
-			if ( !DOMUtils::isElt( $node ) ) {
+			if ( !( $node instanceof Element ) ) {
 				return;
 			}
 			$dp = DOMDataUtils::getDataParsoid( $node );
@@ -1126,11 +1127,11 @@ class TemplateHandler extends TokenHandler {
 			// FIXME: Consolidate error response format with enforceTemplateConstraints
 			return [ 'tokens' => [ 'Page / template fetching disabled, and no cache for ' . $templateName ] ];
 		} else {
-			$start = PHPUtils::getStartHRTime();
+			$start = microtime( true );
 			$pageContent = $env->getDataAccess()->fetchTemplateSource( $env->getPageConfig(), $templateName );
 			if ( $env->profiling() ) {
 				$profile = $env->getCurrentProfile();
-				$profile->bumpMWTime( "TemplateFetch", PHPUtils::getHRTimeDifferential( $start ), "api" );
+				$profile->bumpMWTime( "TemplateFetch", 1000 * ( microtime( true ) - $start ), "api" );
 				$profile->bumpCount( "TemplateFetch" );
 			}
 			if ( !$pageContent ) {
@@ -1161,7 +1162,7 @@ class TemplateHandler extends TokenHandler {
 			];
 		} else {
 			$pageConfig = $env->getPageConfig();
-			$start = PHPUtils::getStartHRTime();
+			$start = microtime( true );
 			$ret = $env->getDataAccess()->preprocessWikitext( $pageConfig, $transclusion );
 			if ( !$env->bumpWt2HtmlResourceUse( 'wikitextSize', strlen( $ret['wikitext'] ) ) ) {
 				return [
@@ -1172,7 +1173,7 @@ class TemplateHandler extends TokenHandler {
 			$wikitext = $this->manglePreprocessorResponse( $ret );
 			if ( $env->profiling() ) {
 				$profile = $env->getCurrentProfile();
-				$profile->bumpMWTime( "Template", PHPUtils::getHRTimeDifferential( $start ), "api" );
+				$profile->bumpMWTime( "Template", 1000 * ( microtime( true ) - $start ), "api" );
 				$profile->bumpCount( "Template" );
 			}
 			return [
@@ -1229,12 +1230,10 @@ class TemplateHandler extends TokenHandler {
 		if ( is_string( $arg ) ) {
 			return [ $arg ];
 		} else {
-			$toks = $this->manager->getFrame()->expand( $arg, [
+			return $this->manager->getFrame()->expand( $arg, [
 				'expandTemplates' => false,
-				'type' => 'tokens/x-mediawiki/expanded',
 				'srcOffsets' => $srcOffsets,
 			] );
-			return TokenUtils::stripEOFTkfromTokens( $toks );
 		}
 	}
 

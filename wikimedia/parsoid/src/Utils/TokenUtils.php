@@ -77,7 +77,7 @@ class TokenUtils {
 	 * @return bool
 	 */
 	public static function isTemplateToken( $token ): bool {
-		return $token && $token instanceof SelfclosingTagTk && $token->getName() === 'template';
+		return $token instanceof SelfclosingTagTk && $token->getName() === 'template';
 	}
 
 	/**
@@ -457,7 +457,7 @@ class TokenUtils {
 	 */
 	public static function convertTokenOffsets(
 		string $s, string $from, string $to, array $tokens
-	) : void {
+	): void {
 		$offsets = []; /* @var array<int> $offsets */
 		self::collectOffsets( $tokens, static function ( $sr ) use ( &$offsets ) {
 			if ( $sr instanceof DomSourceRange ) {

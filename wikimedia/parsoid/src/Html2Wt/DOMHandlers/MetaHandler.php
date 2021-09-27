@@ -53,8 +53,6 @@ class MetaHandler extends DOMHandler {
 						}
 					} else {
 						$magicWord = mb_strtoupper( $catMatch[1] );
-						$state->getEnv()->log( 'warn', $catMatch[1]
-							. " is missing source. Rendering as $magicWord magicword" );
 						$out = '{{' . $magicWord . ':' . $contentInfo['value'] . '}}';
 					}
 				} else {
@@ -103,8 +101,8 @@ class MetaHandler extends DOMHandler {
 	public function before( Element $node, Node $otherNode, SerializerState $state ): array {
 		$type = $node->getAttribute( 'typeof' ) ?: $node->getAttribute( 'property' ) ?:	null;
 		if ( $type && str_contains( $type, 'mw:PageProp/categorydefaultsort' ) ) {
-			if ( DOMCompat::nodeName( $otherNode ) === 'p'
-				&& $otherNode instanceof Element // for static analyizers
+			if ( $otherNode instanceof Element
+				&& DOMCompat::nodeName( $otherNode ) === 'p'
 				&& ( DOMDataUtils::getDataParsoid( $otherNode )->stx ?? null ) !== 'html'
 			) {
 				// Since defaultsort is outside the p-tag, we need 2 newlines

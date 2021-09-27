@@ -120,7 +120,7 @@ class HTML5TreeBuilder extends PipelineStage {
 		$profile = null;
 		if ( $this->env->profiling() ) {
 			$profile = $this->env->getCurrentProfile();
-			$s = PHPUtils::getStartHRTime();
+			$s = microtime( true );
 		}
 		$n = count( $tokens );
 		for ( $i = 0;  $i < $n;  $i++ ) {
@@ -128,7 +128,7 @@ class HTML5TreeBuilder extends PipelineStage {
 		}
 		if ( $profile ) {
 			$profile->bumpTimeUse(
-				'HTML5 TreeBuilder', PHPUtils::getHRTimeDifferential( $s ), 'HTML5' );
+				'HTML5 TreeBuilder', 1000 * ( microtime( true ) - $s ), 'HTML5' );
 		}
 	}
 
@@ -198,6 +198,7 @@ class HTML5TreeBuilder extends PipelineStage {
 	private function stashDataAttribs( array $attribs, object $dataAttribs ): array {
 		$data = [ 'parsoid' => $dataAttribs ];
 		if ( isset( $attribs['data-mw'] ) ) {
+			// @phan-suppress-next-line PhanImpossibleCondition
 			Assert::invariant( !isset( $data['mw'] ), "data-mw already set." );
 			$data['mw'] = json_decode( $attribs['data-mw'] );
 			unset( $attribs['data-mw'] );
@@ -266,7 +267,7 @@ class HTML5TreeBuilder extends PipelineStage {
 		}
 
 		if ( is_string( $token ) || $token instanceof NlTk ) {
-			$data = ( $token instanceof NlTk ) ? "\n" : $token;
+			$data = $token instanceof NlTk ? "\n" : $token;
 			$this->dispatcher->characters( $data, 0, strlen( $data ), 0, 0 );
 			// NlTks are only fostered when accompanied by non-whitespace.
 			// Safe to ignore.
@@ -389,6 +390,7 @@ class HTML5TreeBuilder extends PipelineStage {
 	public function process( $input, array $opts = null ) {
 		'@phan-var array $input'; // @var array $input
 		$this->processChunk( $input );
+		// @phan-suppress-next-line PhanTypeMismatchReturnSuperType
 		return $this->finalizeDOM();
 	}
 

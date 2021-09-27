@@ -147,6 +147,7 @@ class MockSiteConfig extends SiteConfig {
 
 	/** @inheritDoc */
 	public function specialPageLocalName( string $alias ): ?string {
+		// @phan-suppress-previous-line PhanPluginNeverReturnMethod
 		throw new \BadMethodCallException( 'Not implemented' );
 	}
 
@@ -169,7 +170,7 @@ class MockSiteConfig extends SiteConfig {
 		return 'mywiki';
 	}
 
-	public function legalTitleChars() : string {
+	public function legalTitleChars(): string {
 		return ' %!"$&\'()*,\-.\/0-9:;=?@A-Z\\\\^_`a-z~\x80-\xFF+';
 	}
 
@@ -178,6 +179,7 @@ class MockSiteConfig extends SiteConfig {
 	}
 
 	protected function linkTrail(): string {
+		// @phan-suppress-previous-line PhanPluginNeverReturnMethod
 		throw new \BadMethodCallException(
 			'Should not be used. linkTrailRegex() is overridden here.' );
 	}

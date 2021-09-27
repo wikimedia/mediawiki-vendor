@@ -8,6 +8,7 @@ use Wikimedia\Parsoid\Config\Env;
 use Wikimedia\Parsoid\Core\MediaStructure;
 use Wikimedia\Parsoid\DOM\Element;
 use Wikimedia\Parsoid\DOM\Node;
+use Wikimedia\Parsoid\DOM\Text;
 use Wikimedia\Parsoid\Html2Wt\ConstrainedText\AutoURLLinkText;
 use Wikimedia\Parsoid\Html2Wt\ConstrainedText\ExtLinkText;
 use Wikimedia\Parsoid\Html2Wt\ConstrainedText\MagicLinkText;
@@ -145,7 +146,7 @@ class LinkHandlerUtils {
 		$contentString = '';
 		$child = $node->firstChild;
 		while ( $child ) {
-			if ( DOMUtils::isText( $child ) ) {
+			if ( $child instanceof Text ) {
 				$contentString .= $child->nodeValue;
 			} elseif ( DOMUtils::hasTypeOf( $child, 'mw:DisplaySpace' ) ) {
 				$contentString .= ' ';
@@ -635,7 +636,7 @@ class LinkHandlerUtils {
 						// in which case we don't want the ':'.
 						$nextNode = $node->nextSibling;
 						if ( !(
-							$nextNode && $nextNode instanceof Element && DOMCompat::nodeName( $nextNode ) === 'link' &&
+							$nextNode instanceof Element && DOMCompat::nodeName( $nextNode ) === 'link' &&
 							$nextNode->getAttribute( 'rel' ) === 'mw:PageProp/Category' &&
 							$nextNode->getAttribute( 'href' ) === $node->getAttribute( 'href' )
 						) ) {
@@ -926,7 +927,7 @@ class LinkHandlerUtils {
 				);
 			} else {
 				$media = DOMUtils::selectMediaElt( $node );  // TODO: Handle missing media too
-				$isFigure = ( $media instanceof Element && $media->parentNode === $node );
+				$isFigure = $media instanceof Element && $media->parentNode === $node;
 				if ( $isFigure ) {
 					// this is a basic html figure: <a><img></a>
 					self::figureHandler( $state, $node, new MediaStructure( $media, $node ) );
@@ -1040,7 +1041,7 @@ class LinkHandlerUtils {
 			return $null;
 		};
 		// Return ref to the array element in case it is modified
-		$getLastOpt = static function & ( $key ) use ( &$outerDP ) : ?array {
+		$getLastOpt = static function & ( $key ) use ( &$outerDP ): ?array {
 			$null = null;
 			$opts = $outerDP->optList ?? [];
 			for ( $i = count( $opts ) - 1;  $i >= 0;  $i-- ) {

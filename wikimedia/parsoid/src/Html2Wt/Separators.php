@@ -69,7 +69,7 @@ class Separators {
 
 	/**
 	 * @param Node $n
-	 * @return string|null
+	 * @return int|null
 	 */
 	private static function precedingSeparatorTextLen( Node $n ): ?int {
 		// Given the CSS white-space property and specifically,
@@ -820,7 +820,7 @@ class Separators {
 					$endDsr = DOMDataUtils::getDataParsoid( $prevNode->previousSibling )->dsr->end ?? null;
 					$correction = null;
 					if ( is_int( $endDsr ) ) {
-						if ( DOMUtils::isComment( $prevNode ) ) {
+						if ( $prevNode instanceof Comment ) {
 							'@phan-var Comment $prevNode'; // @var Comment $prevNode
 							$correction = WTUtils::decodedCommentLength( $prevNode );
 						} else {
@@ -1007,8 +1007,6 @@ class Separators {
 				if ( $sep !== null ) {
 					$state->sep->src .= $sep;
 				}
-			} else {
-				$sep = null;
 			}
 		}
 

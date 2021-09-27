@@ -11,6 +11,7 @@ use Wikimedia\Parsoid\Core\DomSourceRange;
 use Wikimedia\Parsoid\DOM\Comment;
 use Wikimedia\Parsoid\DOM\Element;
 use Wikimedia\Parsoid\DOM\Node;
+use Wikimedia\Parsoid\DOM\Text;
 use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\DOMUtils;
@@ -111,8 +112,8 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 		 *
 		 * 3. Other scenarios .. to be added
 		 */
-		if ( DOMCompat::nodeName( $node ) === 'a' &&
-			 DOMUtils::assertElt( $node ) && (
+		if ( $node instanceof Element &&
+			DOMCompat::nodeName( $node ) === 'a' && (
 				WTUtils::usesURLLinkSyntax( $node, null ) ||
 				WTUtils::usesMagicLinkSyntax( $node, null )
 			)
@@ -348,7 +349,7 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 			// the DSR of its previous sibling.  Currently, this fix is only for
 			// B and I tags where the fix is clear-cut and obvious.
 			$next = $child->nextSibling;
-			if ( $next && ( $next instanceof Element ) ) {
+			if ( $next instanceof Element ) {
 				$ndp = DOMDataUtils::getDataParsoid( $next );
 				if (
 					isset( $ndp->src ) &&
@@ -390,7 +391,7 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 				}
 				return "     CHILD: <" . DOMCompat::nodeName( $child->parentNode ) . ":" . $i .
 					">=" .
-					( $child instanceof Element ? '' : ( DOMUtils::isText( $child ) ? '#' : '!' ) ) .
+					( $child instanceof Element ? '' : ( $child instanceof Text ? '#' : '!' ) ) .
 					( ( $child instanceof Element ) ?
 						( DOMCompat::nodeName( $child ) === 'meta' ?
 							DOMCompat::getOuterHTML( $child ) : DOMCompat::nodeName( $child ) ) :
@@ -744,7 +745,7 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 				// Collapse text $nodes to prevent n^2 effect in the LTR propagation pass
 				// Example: enwiki:Colonization?oldid=718468597
 				$nextChild = $child->nextSibling;
-				if ( DOMUtils::isText( $prevChild ) && DOMUtils::isText( $nextChild ) ) {
+				if ( $prevChild instanceof Text && $nextChild instanceof Text ) {
 					$prevText = $prevChild->nodeValue;
 					$nextText = $nextChild->nodeValue;
 

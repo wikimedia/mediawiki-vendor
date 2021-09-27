@@ -29,23 +29,6 @@ class PHPUtils {
 	}
 
 	/**
-	 * Return accurate system time
-	 * @return float time in seconds since Jan 1 1970 GMT accurate to the microsecond
-	 */
-	public static function getStartHRTime(): float {
-		return microtime( true );
-	}
-
-	/**
-	 * Return millisecond accurate system time differential
-	 * @param float $previousTime
-	 * @return float milliseconds
-	 */
-	public static function getHRTimeDifferential( float $previousTime ): float {
-		return ( microtime( true ) - $previousTime ) * 1000;
-	}
-
-	/**
 	 * FIXME: Copied from FormatJson.php in core
 	 *
 	 * Characters problematic in JavaScript.
@@ -132,6 +115,7 @@ class PHPUtils {
 	 * @return array
 	 */
 	public static function makeMap( array $a ) {
+		// @phan-suppress-previous-line PhanPluginNeverReturnMethod
 		throw new \BadMethodCallException(
 			'Don\'t use this, just declare your associative array directly'
 		);

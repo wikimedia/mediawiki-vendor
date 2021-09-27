@@ -8,10 +8,12 @@ use stdClass;
 use Wikimedia\Assert\Assert;
 use Wikimedia\Parsoid\Config\Env;
 use Wikimedia\Parsoid\Config\WikitextConstants;
+use Wikimedia\Parsoid\DOM\Comment;
 use Wikimedia\Parsoid\DOM\Document;
 use Wikimedia\Parsoid\DOM\DocumentFragment;
 use Wikimedia\Parsoid\DOM\Element;
 use Wikimedia\Parsoid\DOM\Node;
+use Wikimedia\Parsoid\DOM\Text;
 use Wikimedia\Parsoid\Html2Wt\ConstrainedText\ConstrainedText;
 use Wikimedia\Parsoid\Html2Wt\DOMHandlers\DOMHandler;
 use Wikimedia\Parsoid\Html2Wt\DOMHandlers\DOMHandlerFactory;
@@ -398,10 +400,7 @@ class WikitextSerializer {
 			// for this id.
 			if ( $k === 'id' && preg_match( '/^mw[\w-]{2,}$/D', $kv->v ) ) {
 				if ( WTUtils::isNewElt( $node ) ) {
-					$this->env->log( 'warn/html2wt',
-						'Parsoid id found on element without a matching data-parsoid '
-						. 'entry: ID=' . $kv->v . '; ELT=' . DOMCompat::getOuterHTML( $node )
-					);
+					// Parsoid id found on element without a matching data-parsoid. Drop it!
 				} else {
 					$vInfo = $token->getAttributeShadowInfo( $k );
 					if ( !$vInfo['modified'] && $vInfo['fromsrc'] ) {
@@ -897,10 +896,10 @@ class WikitextSerializer {
 				// if the next non-comment node is not a text node
 				// of if the text node doesn't have a leading \n.
 				$next = DOMUtils::nextNonDeletedSibling( $node );
-				while ( $next && DOMUtils::isComment( $next ) ) {
+				while ( $next instanceof Comment ) {
 					$next = DOMUtils::nextNonDeletedSibling( $next );
 				}
-				if ( !DOMUtils::isText( $next ) || substr( $next->nodeValue, 0, 1 ) !== "\n" ) {
+				if ( !( $next instanceof Text ) || substr( $next->nodeValue, 0, 1 ) !== "\n" ) {
 					$buf .= "\n";
 				}
 			} elseif ( !is_string( $nextPart ) || substr( $nextPart, 0, 1 ) !== "\n" ) {
@@ -1039,7 +1038,7 @@ class WikitextSerializer {
 		if ( !$state->inIndentPre ) {
 			// Strip leading newlines and other whitespace
 			if ( preg_match( self::$separatorREs['sepPrefixWithNlsRE'], $res, $match ) ) {
-				$state->appendSep( $match[0], $node );
+				$state->appendSep( $match[0] );
 				$res = substr( $res, strlen( $match[0] ) );
 			}
 		}
@@ -1060,7 +1059,7 @@ class WikitextSerializer {
 		// Move trailing newlines into the next separator
 		if ( $newSepMatch ) {
 			if ( !$state->sep->src ) {
-				$state->appendSep( $newSepMatch[0], $node );
+				$state->appendSep( $newSepMatch[0] );
 			} else {
 				/* SSS FIXME: what are we doing with the stripped NLs?? */
 			}
@@ -1299,7 +1298,7 @@ class WikitextSerializer {
 					// but that does not seem useful
 					&& preg_match( self::$separatorREs['pureSepRE'], $text )
 				) {
-					$state->appendSep( $text, $node );
+					$state->appendSep( $text );
 					return $node->nextSibling;
 				}
 				if ( $state->selserMode ) {
@@ -1319,7 +1318,7 @@ class WikitextSerializer {
 				break;
 			case XML_COMMENT_NODE:
 				// Merge this into separators
-				$state->appendSep( WTSUtils::commentWT( $node->nodeValue ), $node );
+				$state->appendSep( WTSUtils::commentWT( $node->nodeValue ) );
 				return $node->nextSibling;
 			default:
 				Assert::invariant( 'Unhandled node type: ', $node->nodeType );

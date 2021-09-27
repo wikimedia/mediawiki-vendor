@@ -11,6 +11,7 @@ use Wikimedia\Parsoid\Core\SelserData;
 use Wikimedia\Parsoid\DOM\DocumentFragment;
 use Wikimedia\Parsoid\DOM\Element;
 use Wikimedia\Parsoid\DOM\Node;
+use Wikimedia\Parsoid\DOM\Text;
 use Wikimedia\Parsoid\Ext\ParsoidExtensionAPI;
 use Wikimedia\Parsoid\Html2Wt\ConstrainedText\ConstrainedText;
 use Wikimedia\Parsoid\Utils\DOMCompat;
@@ -326,13 +327,16 @@ class SerializerState {
 	}
 
 	/**
-	 * Appends the seperator source and updates the SOL state if necessary.
+	 * Appends the seperator source to the separator src buffer.
+	 * Don't update $state->onSOL since this string hasn't been emitted yet.
+	 * If content handlers change behavior based on whether this newline will
+	 * be emitted or not, they should peek into this buffer (ex: see TDHandler
+	 * and THHandler code).
+	 *
 	 * @param string $src
-	 * @param Node $node
 	 */
-	public function appendSep( string $src, Node $node ): void {
+	public function appendSep( string $src ): void {
 		$this->sep->src = ( $this->sep->src ?: '' ) . $src;
-		$this->sepIntroducedSOL( $src, $node );
 	}
 
 	/**
@@ -414,19 +418,6 @@ class SerializerState {
 		// by makeSepIndentPreSafe on the last line.
 		$nonCommentSep = preg_replace( Utils::COMMENT_REGEXP, '', $sep );
 		if ( substr( $nonCommentSep, -1 ) === "\n" ) {
-			// Since we are stashing away newlines for emitting
-			// before the next element, we are in SOL state wrt
-			// the content of that next element.
-			//
-			// FIXME: The only serious caveat is if all these newlines
-			// will get stripped out in the context of any parent node
-			// that suppress newlines (ex: <li> nodes that are forcibly
-			// converted to non-html wikitext representation -- newlines
-			// will get suppressed in those context). We currently don't
-			// handle arbitrary HTML which cause these headaches. And,
-			// in any case, we might decide to emit such HTML as native
-			// HTML to avoid these problems. To be figured out later when
-			// it is a real issue.
 			$this->onSOL = true;
 		}
 
@@ -543,7 +534,7 @@ class SerializerState {
 
 		$origSep = null;
 		if ( $origSepUsable ) {
-			if ( DOMUtils::isElt( $this->prevNode ) && DOMUtils::isElt( $node ) ) {
+			if ( $this->prevNode instanceof Element && $node instanceof Element ) {
 				'@phan-var Element $node';/** @var Element $node */
 				$origSep = $this->getOrigSrc(
 					// <body> won't have DSR in body_only scenarios
@@ -653,7 +644,7 @@ class SerializerState {
 				$pChild = DOMUtils::firstNonSepChild( $node );
 				// If a text node, we have to make sure that the text doesn't
 				// get reparsed as non-text in the wt2html pipeline.
-				if ( $pChild && DOMUtils::isText( $pChild ) ) {
+				if ( $pChild instanceof Text ) {
 					$match = $res->matches( $this->solWikitextRegexp(), $this->env );
 					if ( $match && isset( $match[2] ) ) {
 						if ( preg_match( '/^([\*#:;]|{\||.*=$)/D', $match[2] )

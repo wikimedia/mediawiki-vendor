@@ -5,6 +5,7 @@ namespace Wikimedia\Parsoid\ParserTests;
 
 use Error;
 use Exception;
+use Wikimedia\Parsoid\DOM\Comment;
 use Wikimedia\Parsoid\DOM\Element;
 use Wikimedia\Parsoid\DOM\Node;
 use Wikimedia\Parsoid\DOM\Text;
@@ -20,7 +21,7 @@ use Wikimedia\Parsoid\Utils\Utils;
 use Wikimedia\Parsoid\Utils\WTUtils;
 
 class TestUtils {
-	/** @var mixed $consoleColor */
+	/** @var mixed */
 	private static $consoleColor;
 
 	/**
@@ -209,7 +210,7 @@ class TestUtils {
 	 */
 	private static function unwrapSpan(
 		Node $parent, Node $node, ?string $stripSpanTypeof
-	):void {
+	): void {
 		// first recurse to unwrap any spans in the immediate children.
 		self::cleanSpans( $node, $stripSpanTypeof );
 		// now unwrap this span.
@@ -260,7 +261,7 @@ class TestUtils {
 		if ( !$opts['parsoidOnly'] ) {
 			for ( $child = $node->firstChild;  $child;  $child = $next ) {
 				$next = $child->nextSibling;
-				if ( DOMUtils::isComment( $child ) ) {
+				if ( $child instanceof Comment ) {
 					$node->removeChild( $child );
 				}
 			}
@@ -306,13 +307,13 @@ class TestUtils {
 			$prev = $child->previousSibling;
 			$next = $child->nextSibling;
 			if ( self::newlineAround( $child ) ) {
-				if ( $prev && $prev instanceof Text ) {
+				if ( $prev instanceof Text ) {
 					$prev->data = preg_replace( '/\s*$/uD', "\n", $prev->data, 1 );
 				} else {
 					$prev = $node->ownerDocument->createTextNode( "\n" );
 					$node->insertBefore( $prev, $child );
 				}
-				if ( $next && $next instanceof Text ) {
+				if ( $next instanceof Text ) {
 					$next->data = preg_replace( '/^\s*/u', "\n", $next->data, 1 );
 				} else {
 					$next = $node->ownerDocument->createTextNode( "\n" );
@@ -344,6 +345,7 @@ class TestUtils {
 			'inPRE' => false
 		];
 		// clone body first, since we're going to destructively mutate it.
+		// @phan-suppress-next-line PhanTypeMismatchReturnSuperType
 		return self::normalizeIEWVisitor( $body->cloneNode( true ), $opts );
 	}
 

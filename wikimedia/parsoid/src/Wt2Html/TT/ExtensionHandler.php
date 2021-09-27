@@ -101,7 +101,7 @@ class ExtensionHandler extends TokenHandler {
 		if ( $siteConfig->namespaceIsTalk( $pageConfig->getNS() ) ) {
 			$metrics = $siteConfig->metrics();
 			if ( $metrics ) {
-				$metrics->increment( "extension.ns.talk.name.{$extensionName}.count" );
+				$metrics->increment( "extension.talk.{$extensionName}" );
 			}
 		}
 
@@ -170,20 +170,20 @@ class ExtensionHandler extends TokenHandler {
 				$nativeExt, $token, $domFragment, [ $err ]
 			);
 		} else {
-			$start = PHPUtils::getStartHRTime();
+			$start = microtime( true );
 			$ret = $env->getDataAccess()->parseWikitext(
 				$pageConfig, $token->getAttribute( 'source' )
 			);
 			if ( $env->profiling() ) {
 				$profile = $env->getCurrentProfile();
-				$profile->bumpMWTime( "Extension", PHPUtils::getHRTimeDifferential( $start ), "api" );
+				$profile->bumpMWTime( "Extension", 1000 * ( microtime( true ) - $start ), "api" );
 				$profile->bumpCount( "Extension" );
 			}
 
 			$domFragment = DOMUtils::parseHTMLToFragment(
 				$env->topLevelDoc,
 				// Strip a paragraph wrapper, if any, before parsing HTML to DOM
-				preg_replace( '#(^<p>)|(\n</p>$)#D', '', $ret['html'] )
+				preg_replace( '#(^<p>)|(\n</p>(' . Utils::COMMENT_REGEXP_FRAGMENT . '|\s)*$)#D', '', $ret['html'] )
 			);
 
 			$this->processExtMetadata( $domFragment, $ret );
