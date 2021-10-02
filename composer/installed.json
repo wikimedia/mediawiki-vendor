@@ -1735,17 +1735,17 @@
     },
     {
         "name": "lcobucci/jwt",
-        "version": "3.4.0",
-        "version_normalized": "3.4.0.0",
+        "version": "3.4.6",
+        "version_normalized": "3.4.6.0",
         "source": {
             "type": "git",
             "url": "https://github.com/lcobucci/jwt.git",
-            "reference": "320b9f05741b24acbbaf1106ed267ff3817fd74d"
+            "reference": "3ef8657a78278dfeae7707d51747251db4176240"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/lcobucci/jwt/zipball/320b9f05741b24acbbaf1106ed267ff3817fd74d",
-            "reference": "320b9f05741b24acbbaf1106ed267ff3817fd74d",
+            "url": "https://api.github.com/repos/lcobucci/jwt/zipball/3ef8657a78278dfeae7707d51747251db4176240",
+            "reference": "3ef8657a78278dfeae7707d51747251db4176240",
             "shasum": ""
         },
         "require": {
@@ -1763,7 +1763,7 @@
         "suggest": {
             "lcobucci/clock": "*"
         },
-        "time": "2020-11-25T01:46:26+00:00",
+        "time": "2021-09-28T19:18:28+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {

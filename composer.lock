@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "79eff4328866528ea0c44df54e15e489",
+    "content-hash": "4810b4bcb56abca99c146868029960fe",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -1686,16 +1686,16 @@
         },
         {
             "name": "lcobucci/jwt",
-            "version": "3.4.0",
+            "version": "3.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lcobucci/jwt.git",
-                "reference": "320b9f05741b24acbbaf1106ed267ff3817fd74d"
+                "reference": "3ef8657a78278dfeae7707d51747251db4176240"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lcobucci/jwt/zipball/320b9f05741b24acbbaf1106ed267ff3817fd74d",
-                "reference": "320b9f05741b24acbbaf1106ed267ff3817fd74d",
+                "url": "https://api.github.com/repos/lcobucci/jwt/zipball/3ef8657a78278dfeae7707d51747251db4176240",
+                "reference": "3ef8657a78278dfeae7707d51747251db4176240",
                 "shasum": ""
             },
             "require": {
@@ -1755,7 +1755,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2020-11-25T01:46:26+00:00"
+            "time": "2021-09-28T19:18:28+00:00"
         },
         {
             "name": "league/event",

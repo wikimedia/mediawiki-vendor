@@ -232,6 +232,9 @@ class Token
         }
 
         if ($name === RegisteredClaims::AUDIENCE && is_array($value)) {
+            if (count($value) > 1) {
+                trigger_error('You will only get the first array entry as a string. Use Token::claims()->get() instead.', E_USER_DEPRECATED);
+            }
             return current($value);
         }
 
@@ -298,7 +301,7 @@ class Token
 
         $now = $now ?: new DateTimeImmutable();
 
-        return $now > $this->claims->get(RegisteredClaims::EXPIRATION_TIME);
+        return $now >= $this->claims->get(RegisteredClaims::EXPIRATION_TIME);
     }
 
     /**
@@ -308,7 +311,7 @@ class Token
      */
     public function isPermittedFor($audience)
     {
-        return $this->claims->get(RegisteredClaims::AUDIENCE) === $audience;
+        return in_array($audience, $this->claims->get(RegisteredClaims::AUDIENCE, []), true);
     }
 
     /**
