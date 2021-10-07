@@ -22,6 +22,8 @@ class ComposerAutoloaderInit_mediawiki_vendor
             return self::$loader;
         }
 
+        require __DIR__ . '/platform_check.php';
+
         spl_autoload_register(array('ComposerAutoloaderInit_mediawiki_vendor', 'loadClassLoader'), true, false);
         self::$loader = $loader = new \Composer\Autoload\ClassLoader(\dirname(\dirname(__FILE__)));
         spl_autoload_unregister(array('ComposerAutoloaderInit_mediawiki_vendor', 'loadClassLoader'));

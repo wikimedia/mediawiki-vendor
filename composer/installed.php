@@ -1,22 +1,22 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => NULL,
+        'reference' => '059d099763316f11201eb5a4d208dc3bde2d4c0e',
         'name' => '__root__',
         'dev' => false,
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => NULL,
+            'reference' => '059d099763316f11201eb5a4d208dc3bde2d4c0e',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -295,8 +295,8 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../league/oauth2-server',
             'aliases' => array(
-                0 => '9.0.0',
-                1 => '9999999-dev',
+                0 => '9999999-dev',
+                1 => '9.0.0',
             ),
             'reference' => '61d770dc284898ea2905d66e12f8f7e5f6664092',
             'dev_requirement' => false,
@@ -589,8 +589,8 @@
         'psr/log-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.0',
-                1 => '1.0.0',
+                0 => '1.0.0',
+                1 => '1.0',
             ),
         ),
         'psr/simple-cache' => array(
