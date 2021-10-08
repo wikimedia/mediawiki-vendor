@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => 'ad099e6ace574b0821b5881a5c1699c495dd76f3',
+        'reference' => '00950c9f3492496e1da4357e75e812c8a4ef0ece',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => 'ad099e6ace574b0821b5881a5c1699c495dd76f3',
+            'reference' => '00950c9f3492496e1da4357e75e812c8a4ef0ece',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -1233,12 +1233,12 @@
             'dev_requirement' => false,
         ),
         'wmde/php-vuejs-templating' => array(
-            'pretty_version' => '1.0.2',
-            'version' => '1.0.2.0',
+            'pretty_version' => '1.0.3',
+            'version' => '1.0.3.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wmde/php-vuejs-templating',
             'aliases' => array(),
-            'reference' => '9ac8c641c3bdb83faf822cd094c4e94728462858',
+            'reference' => 'f0c35ef0875d05fe74c9a0e0361b888e5c6818d0',
             'dev_requirement' => false,
         ),
         'zordius/lightncandy' => array(

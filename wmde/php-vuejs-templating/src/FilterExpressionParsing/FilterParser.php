@@ -4,7 +4,7 @@ namespace WMDE\VueJsTemplating\FilterExpressionParsing;
 
 class FilterParser {
 
-	const VALID_DIVISION_CHAR_REGEX = '/[\w).+\-_$\]]/';
+	private const VALID_DIVISION_CHAR_REGEX = '/[\w).+\-_$\]]/';
 
 	private $filters = [];
 
@@ -20,6 +20,7 @@ class FilterParser {
 	 *
 	 * @return ParseResult
 	 */
+	// phpcs:ignore Generic.Metrics.CyclomaticComplexity
 	public function parse( $exp ) {
 		$inSingle = false;
 		$inDouble = false;

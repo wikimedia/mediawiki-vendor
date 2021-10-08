@@ -129,7 +129,7 @@
 		"wikimedia/wrappedstring": "3.2.0",
 		"wikimedia/xmp-reader": "0.8.1",
 		"wikimedia/zest-css": "2.0.1",
-		"wmde/php-vuejs-templating": "1.0.2",
+		"wmde/php-vuejs-templating": "1.0.3",
 		"zordius/lightncandy": "1.2.5"
 	},
 	"replace": {
