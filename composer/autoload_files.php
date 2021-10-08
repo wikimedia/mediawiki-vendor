@@ -7,6 +7,7 @@ $baseDir = $vendorDir;
 
 return array(
     'a4a119a56e50fbb293281d9a48007e0e' => $vendorDir . '/symfony/polyfill-php80/bootstrap.php',
+    '6e3fae29631ef280660b3cdad06f25a8' => $vendorDir . '/symfony/deprecation-contracts/function.php',
     '0d59ee240a4cd96ddbb4ff164fccea4d' => $vendorDir . '/symfony/polyfill-php73/bootstrap.php',
     'b6b991a57620e2fb6b2f66f03fe9ddc2' => $vendorDir . '/symfony/string/Resources/functions.php',
     'ad155f8f1cf0d418fe49e248db8c661b' => $vendorDir . '/react/promise/src/functions_include.php',
@@ -23,7 +24,6 @@ return array(
     '0d273777b2b0d96e49fb3d800c6b0e81' => $vendorDir . '/lcobucci/jwt/compat/json-exception-polyfill.php',
     'd6b246ac924292702635bb2349f4a64b' => $vendorDir . '/lcobucci/jwt/compat/lcobucci-clock-polyfill.php',
     'e39a8b23c42d4e1452234d762b03835a' => $vendorDir . '/ramsey/uuid/src/functions.php',
-    '6e3fae29631ef280660b3cdad06f25a8' => $vendorDir . '/symfony/deprecation-contracts/function.php',
     'a1105708a18b76903365ca1c4aa61b02' => $vendorDir . '/symfony/translation/Resources/functions.php',
     '51fcf4e06c07cc00c920b44bcd900e7a' => $vendorDir . '/thecodingmachine/safe/deprecated/apc.php',
     '47f619d9197b36cf5ab70738d7743fe2' => $vendorDir . '/thecodingmachine/safe/deprecated/libevent.php',

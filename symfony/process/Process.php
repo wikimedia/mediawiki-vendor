@@ -133,7 +133,7 @@ class Process implements \IteratorAggregate
      * @param array          $command The command to run and its arguments listed as separate entries
      * @param string|null    $cwd     The working directory or null to use the working dir of the current PHP process
      * @param array|null     $env     The environment variables or null to use the same environment as the current PHP process
-     * @param mixed|null     $input   The input as stream resource, scalar or \Traversable, or null for no input
+     * @param mixed          $input   The input as stream resource, scalar or \Traversable, or null for no input
      * @param int|float|null $timeout The timeout in seconds or null to disable
      *
      * @throws LogicException When proc_open is not installed
@@ -180,7 +180,7 @@ class Process implements \IteratorAggregate
      * @param string         $command The command line to pass to the shell of the OS
      * @param string|null    $cwd     The working directory or null to use the working dir of the current PHP process
      * @param array|null     $env     The environment variables or null to use the same environment as the current PHP process
-     * @param mixed|null     $input   The input as stream resource, scalar or \Traversable, or null for no input
+     * @param mixed          $input   The input as stream resource, scalar or \Traversable, or null for no input
      * @param int|float|null $timeout The timeout in seconds or null to disable
      *
      * @return static
@@ -195,6 +195,9 @@ class Process implements \IteratorAggregate
         return $process;
     }
 
+    /**
+     * @return array
+     */
     public function __sleep()
     {
         throw new \BadMethodCallException('Cannot serialize '.__CLASS__);
@@ -617,6 +620,7 @@ class Process implements \IteratorAggregate
      *
      * @return \Generator
      */
+    #[\ReturnTypeWillChange]
     public function getIterator(int $flags = 0)
     {
         $this->readPipesForOutput(__FUNCTION__, false);
@@ -1383,7 +1387,7 @@ class Process implements \IteratorAggregate
         ob_start();
         phpinfo(\INFO_GENERAL);
 
-        return self::$sigchild = false !== strpos(ob_get_clean(), '--enable-sigchild');
+        return self::$sigchild = str_contains(ob_get_clean(), '--enable-sigchild');
     }
 
     /**
@@ -1570,7 +1574,7 @@ class Process implements \IteratorAggregate
                 if (isset($varCache[$m[0]])) {
                     return $varCache[$m[0]];
                 }
-                if (false !== strpos($value = $m[1], "\0")) {
+                if (str_contains($value = $m[1], "\0")) {
                     $value = str_replace("\0", '?', $value);
                 }
                 if (false === strpbrk($value, "\"%!\n")) {
@@ -1631,7 +1635,7 @@ class Process implements \IteratorAggregate
         if ('\\' !== \DIRECTORY_SEPARATOR) {
             return "'".str_replace("'", "'\\''", $argument)."'";
         }
-        if (false !== strpos($argument, "\0")) {
+        if (str_contains($argument, "\0")) {
             $argument = str_replace("\0", '?', $argument);
         }
         if (!preg_match('/[\/()%!^"<>&|\s]/', $argument)) {

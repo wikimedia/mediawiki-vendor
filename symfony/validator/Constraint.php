@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Exception\MissingOptionsException;
  *
  * Constraint instances are immutable and serializable.
  *
- * @property array $groups The groups that the constraint belongs to
+ * @property string[] $groups The groups that the constraint belongs to
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
@@ -61,13 +61,11 @@ abstract class Constraint
     /**
      * Returns the name of the given error code.
      *
-     * @param string $errorCode The error code
-     *
      * @return string The name of the error code
      *
      * @throws InvalidArgumentException If the error code does not exist
      */
-    public static function getErrorName($errorCode)
+    public static function getErrorName(string $errorCode)
     {
         if (!isset(static::$errorNames[$errorCode])) {
             throw new InvalidArgumentException(sprintf('The error code "%s" does not exist for constraint of type "%s".', $errorCode, static::class));
@@ -203,8 +201,6 @@ abstract class Constraint
      * this method will be called at most once per constraint instance and
      * option name.
      *
-     * @param string $option The option name
-     *
      * @return mixed The value of the option
      *
      * @throws InvalidOptionsException If an invalid option name is given
@@ -223,8 +219,6 @@ abstract class Constraint
     }
 
     /**
-     * @param string $option The option name
-     *
      * @return bool
      */
     public function __isset(string $option)
@@ -234,10 +228,8 @@ abstract class Constraint
 
     /**
      * Adds the given group if this constraint is in the Default group.
-     *
-     * @param string $group
      */
-    public function addImplicitGroupName($group)
+    public function addImplicitGroupName(string $group)
     {
         if (\in_array(self::DEFAULT_GROUP, $this->groups) && !\in_array($group, $this->groups)) {
             $this->groups[] = $group;
@@ -263,7 +255,7 @@ abstract class Constraint
      *
      * Override this method if you want to define required options.
      *
-     * @return array
+     * @return string[]
      *
      * @see __construct()
      */
@@ -293,7 +285,7 @@ abstract class Constraint
      * This method should return one or more of the constants
      * Constraint::CLASS_CONSTRAINT and Constraint::PROPERTY_CONSTRAINT.
      *
-     * @return string|array One or more constant values
+     * @return string|string[] One or more constant values
      */
     public function getTargets()
     {
@@ -302,6 +294,8 @@ abstract class Constraint
 
     /**
      * Optimizes the serialized value to minimize storage space.
+     *
+     * @return array
      *
      * @internal
      */

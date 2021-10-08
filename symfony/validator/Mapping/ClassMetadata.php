@@ -264,7 +264,7 @@ class ClassMetadata extends GenericMetadata implements ClassMetadataInterface
      * Adds a constraint to the getter of the given property.
      *
      * The name of the getter is assumed to be the name of the property with an
-     * uppercased first letter and either the prefix "get" or "is".
+     * uppercased first letter and the prefix "get", "is" or "has".
      *
      * @return $this
      */
@@ -384,11 +384,7 @@ class ClassMetadata extends GenericMetadata implements ClassMetadataInterface
      */
     public function getPropertyMetadata(string $property)
     {
-        if (!isset($this->members[$property])) {
-            return [];
-        }
-
-        return $this->members[$property];
+        return $this->members[$property] ?? [];
     }
 
     /**

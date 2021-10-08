@@ -13,10 +13,15 @@ namespace Symfony\Component\Validator;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\CachedReader;
+use Doctrine\Common\Annotations\PsrCachedReader;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Cache\ArrayCache;
+use Doctrine\Common\Cache\Psr6\DoctrineProvider;
 use Psr\Cache\CacheItemPoolInterface;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
+use Symfony\Component\Cache\DoctrineProvider as SymfonyDoctrineProvider;
 use Symfony\Component\Validator\Context\ExecutionContextFactory;
+use Symfony\Component\Validator\Exception\LogicException;
 use Symfony\Component\Validator\Exception\ValidatorException;
 use Symfony\Component\Validator\Mapping\Factory\LazyLoadingMetadataFactory;
 use Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface;
@@ -110,7 +115,7 @@ class ValidatorBuilder
      *
      * @return $this
      */
-    public function addXmlMapping($path)
+    public function addXmlMapping(string $path)
     {
         if (null !== $this->metadataFactory) {
             throw new ValidatorException('You cannot add custom mappings after setting a custom metadata factory. Configure your metadata factory instead.');
@@ -146,7 +151,7 @@ class ValidatorBuilder
      *
      * @return $this
      */
-    public function addYamlMapping($path)
+    public function addYamlMapping(string $path)
     {
         if (null !== $this->metadataFactory) {
             throw new ValidatorException('You cannot add custom mappings after setting a custom metadata factory. Configure your metadata factory instead.');
@@ -180,7 +185,7 @@ class ValidatorBuilder
      *
      * @return $this
      */
-    public function addMethodMapping($methodName)
+    public function addMethodMapping(string $methodName)
     {
         if (null !== $this->metadataFactory) {
             throw new ValidatorException('You cannot add custom mappings after setting a custom metadata factory. Configure your metadata factory instead.');
@@ -266,7 +271,7 @@ class ValidatorBuilder
      */
     public function addDefaultDoctrineAnnotationReader(): self
     {
-        $this->annotationReader = new CachedReader(new AnnotationReader(), new ArrayCache());
+        $this->annotationReader = $this->createAnnotationReader();
 
         return $this;
     }
@@ -336,7 +341,7 @@ class ValidatorBuilder
      *
      * @return $this
      */
-    public function setTranslationDomain($translationDomain)
+    public function setTranslationDomain(?string $translationDomain)
     {
         $this->translationDomain = $translationDomain;
 
@@ -401,7 +406,7 @@ class ValidatorBuilder
             $metadataFactory = new LazyLoadingMetadataFactory($loader, $this->mappingCache);
         }
 
-        $validatorFactory = $this->validatorFactory ?: new ConstraintValidatorFactory();
+        $validatorFactory = $this->validatorFactory ?? new ConstraintValidatorFactory();
         $translator = $this->translator;
 
         if (null === $translator) {
@@ -418,5 +423,40 @@ class ValidatorBuilder
         $contextFactory = new ExecutionContextFactory($translator, $this->translationDomain);
 
         return new RecursiveValidator($contextFactory, $metadataFactory, $validatorFactory, $this->initializers);
+    }
+
+    private function createAnnotationReader(): Reader
+    {
+        if (!class_exists(AnnotationReader::class)) {
+            throw new LogicException('Enabling annotation based constraint mapping requires the packages doctrine/annotations and symfony/cache to be installed.');
+        }
+
+        // Doctrine Annotation >= 1.13, Symfony Cache
+        if (class_exists(PsrCachedReader::class) && class_exists(ArrayAdapter::class)) {
+            return new PsrCachedReader(new AnnotationReader(), new ArrayAdapter());
+        }
+
+        // Doctrine Annotations < 1.13, Doctrine Cache >= 1.11, Symfony Cache
+        if (class_exists(CachedReader::class) && class_exists(DoctrineProvider::class) && class_exists(ArrayAdapter::class)) {
+            return new CachedReader(new AnnotationReader(), DoctrineProvider::wrap(new ArrayAdapter()));
+        }
+
+        // Doctrine Annotations < 1.13, Doctrine Cache < 1.11, Symfony Cache
+        if (class_exists(CachedReader::class) && !class_exists(DoctrineProvider::class) && class_exists(ArrayAdapter::class)) {
+            return new CachedReader(new AnnotationReader(), new SymfonyDoctrineProvider(new ArrayAdapter()));
+        }
+
+        // Doctrine Annotations < 1.13, Doctrine Cache < 1.11
+        if (class_exists(CachedReader::class) && class_exists(ArrayCache::class)) {
+            return new CachedReader(new AnnotationReader(), new ArrayCache());
+        }
+
+        // Doctrine Annotation >= 1.13, Doctrine Cache >= 2, no Symfony Cache
+        if (class_exists(PsrCachedReader::class)) {
+            throw new LogicException('Enabling annotation based constraint mapping requires the package symfony/cache to be installed.');
+        }
+
+        // Doctrine Annotation (<1.13 || >2), no Doctrine Cache, no Symfony Cache
+        throw new LogicException('Enabling annotation based constraint mapping requires the packages doctrine/annotations (>=1.13) and symfony/cache to be installed.');
     }
 }
