@@ -350,12 +350,12 @@
             ),
         ),
         'maxmind-db/reader' => array(
-            'pretty_version' => 'v1.8.0',
-            'version' => '1.8.0.0',
+            'pretty_version' => 'v1.10.1',
+            'version' => '1.10.1.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../maxmind-db/reader',
             'aliases' => array(),
-            'reference' => 'b566d429ac9aec10594b0935be8ff38302f8d5c8',
+            'reference' => '569bd44d97d30a4ec12c7793a33004a76d4caf18',
             'dev_requirement' => false,
         ),
         'maxmind/web-service-common' => array(

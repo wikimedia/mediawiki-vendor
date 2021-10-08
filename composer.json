@@ -45,7 +45,7 @@
 		"league/uri-components": "2.2.1",
 		"league/uri-interfaces": "2.3.0",
 		"liuggio/statsd-php-client": "1.0.18",
-		"maxmind-db/reader": "v1.8.0",
+		"maxmind-db/reader": "v1.10.1",
 		"maxmind/web-service-common": "v0.8.1",
 		"monolog/monolog": "2.2.0",
 		"mustangostang/spyc": "0.6.3",
