@@ -37,7 +37,7 @@
 		"guzzlehttp/streams": "3.0.0",
 		"jakobo/hotp-php": "2.0.0",
 		"james-heinrich/getid3": "1.9.20",
-		"justinrainbow/json-schema": "5.2.10",
+		"justinrainbow/json-schema": "5.2.11",
 		"lcobucci/jwt": "3.4.6",
 		"league/event": "2.2.0",
 		"league/oauth2-server": "dev-v9.0.0-alpha as 9.0.0",
