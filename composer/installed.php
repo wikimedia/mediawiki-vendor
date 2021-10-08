@@ -1,22 +1,22 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => NULL,
+        'reference' => 'c7e6e9af26faeee07de2b3895c37648668b9b20d',
         'name' => '__root__',
         'dev' => false,
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => NULL,
+            'reference' => 'c7e6e9af26faeee07de2b3895c37648668b9b20d',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -452,21 +452,21 @@
             'dev_requirement' => false,
         ),
         'pear/mail_mime' => array(
-            'pretty_version' => '1.10.9',
-            'version' => '1.10.9.0',
+            'pretty_version' => '1.10.11',
+            'version' => '1.10.11.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../pear/mail_mime',
             'aliases' => array(),
-            'reference' => '1e7ae4e5258b6c0d385a8e76add567934245d38d',
+            'reference' => 'd4fb9ce61201593d0f8c6db629c45e29c3409c14',
             'dev_requirement' => false,
         ),
         'pear/net_smtp' => array(
-            'pretty_version' => '1.9.2',
-            'version' => '1.9.2.0',
+            'pretty_version' => '1.10.0',
+            'version' => '1.10.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../pear/net_smtp',
             'aliases' => array(),
-            'reference' => '18b5dbaa049bee5f6d02c9a4318db02472e2c922',
+            'reference' => '51e5997b711fbd1e5a9a075634d4d682168537fa',
             'dev_requirement' => false,
         ),
         'pear/net_socket' => array(
@@ -488,21 +488,21 @@
             'dev_requirement' => false,
         ),
         'pear/pear-core-minimal' => array(
-            'pretty_version' => 'v1.10.10',
-            'version' => '1.10.10.0',
+            'pretty_version' => 'v1.10.11',
+            'version' => '1.10.11.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../pear/pear-core-minimal',
             'aliases' => array(),
-            'reference' => '625a3c429d9b2c1546438679074cac1b089116a7',
+            'reference' => '68d0d32ada737153b7e93b8d3c710ebe70ac867d',
             'dev_requirement' => false,
         ),
         'pear/pear_exception' => array(
-            'pretty_version' => 'v1.0.1',
-            'version' => '1.0.1.0',
+            'pretty_version' => 'v1.0.2',
+            'version' => '1.0.2.0',
             'type' => 'class',
             'install_path' => __DIR__ . '/../pear/pear_exception',
             'aliases' => array(),
-            'reference' => 'dbb42a5a0e45f3adcf99babfb2a1ba77b8ac36a7',
+            'reference' => 'b14fbe2ddb0b9f94f5b24cf08783d599f776fff0',
             'dev_requirement' => false,
         ),
         'pimple/pimple' => array(
@@ -656,7 +656,7 @@
         'rsky/pear-core-min' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v1.10.10',
+                0 => 'v1.10.11',
             ),
         ),
         'ruflin/elastica' => array(
