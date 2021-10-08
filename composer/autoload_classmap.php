@@ -1950,6 +1950,7 @@ return array(
     'Ramsey\\Uuid\\Exception\\TimeSourceException' => $vendorDir . '/ramsey/uuid/src/Exception/TimeSourceException.php',
     'Ramsey\\Uuid\\Exception\\UnableToBuildUuidException' => $vendorDir . '/ramsey/uuid/src/Exception/UnableToBuildUuidException.php',
     'Ramsey\\Uuid\\Exception\\UnsupportedOperationException' => $vendorDir . '/ramsey/uuid/src/Exception/UnsupportedOperationException.php',
+    'Ramsey\\Uuid\\Exception\\UuidExceptionInterface' => $vendorDir . '/ramsey/uuid/src/Exception/UuidExceptionInterface.php',
     'Ramsey\\Uuid\\FeatureSet' => $vendorDir . '/ramsey/uuid/src/FeatureSet.php',
     'Ramsey\\Uuid\\Fields\\FieldsInterface' => $vendorDir . '/ramsey/uuid/src/Fields/FieldsInterface.php',
     'Ramsey\\Uuid\\Fields\\SerializableFieldsTrait' => $vendorDir . '/ramsey/uuid/src/Fields/SerializableFieldsTrait.php',

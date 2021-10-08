@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '3e7600daeecdd6fce7b7460f0ee48d63bb968cc6',
+        'reference' => '48cc5e659cc5dbe2cb5c80a75f9fe86e83b7c234',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '3e7600daeecdd6fce7b7460f0ee48d63bb968cc6',
+            'reference' => '48cc5e659cc5dbe2cb5c80a75f9fe86e83b7c234',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -612,21 +612,21 @@
             'dev_requirement' => false,
         ),
         'ramsey/collection' => array(
-            'pretty_version' => '1.1.1',
-            'version' => '1.1.1.0',
+            'pretty_version' => '1.1.4',
+            'version' => '1.1.4.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../ramsey/collection',
             'aliases' => array(),
-            'reference' => '24d93aefb2cd786b7edd9f45b554aea20b28b9b1',
+            'reference' => 'ab2237657ad99667a5143e32ba2683c8029563d4',
             'dev_requirement' => false,
         ),
         'ramsey/uuid' => array(
-            'pretty_version' => '4.1.1',
-            'version' => '4.1.1.0',
+            'pretty_version' => '4.2.3',
+            'version' => '4.2.3.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../ramsey/uuid',
             'aliases' => array(),
-            'reference' => 'cd4032040a750077205918c86049aa0f43d22947',
+            'reference' => 'fc9bb7fb5388691fd7373cd44dcb4d63bbcf24df',
             'dev_requirement' => false,
         ),
         'react/promise' => array(
@@ -641,7 +641,7 @@
         'rhumsaa/uuid' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => '4.1.1',
+                0 => '4.2.3',
             ),
         ),
         'rsky/pear-core-min' => array(
