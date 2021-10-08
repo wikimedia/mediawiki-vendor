@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '48cc5e659cc5dbe2cb5c80a75f9fe86e83b7c234',
+        'reference' => '9208b7b52f03a30c4085bc41f9bbe81d5ec6532b',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '48cc5e659cc5dbe2cb5c80a75f9fe86e83b7c234',
+            'reference' => '9208b7b52f03a30c4085bc41f9bbe81d5ec6532b',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -1197,12 +1197,12 @@
             'dev_requirement' => false,
         ),
         'wikimedia/wrappedstring' => array(
-            'pretty_version' => 'v3.2.0',
-            'version' => '3.2.0.0',
+            'pretty_version' => 'v4.0.1',
+            'version' => '4.0.1.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/wrappedstring',
             'aliases' => array(),
-            'reference' => '11b01a2286fd377cb15c2f5561e10f56d58f37a9',
+            'reference' => '0d526868d92fa855c70a845336a777c63b30b400',
             'dev_requirement' => false,
         ),
         'wikimedia/xmp-reader' => array(
