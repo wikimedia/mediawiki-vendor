@@ -68,7 +68,7 @@
 		"wikimedia/wrappedstring": "3.2.0",
 		"wikimedia/xmp-reader": "0.8.1",
 		"wikimedia/zest-css": "2.0.1",
-		"zordius/lightncandy": "1.2.5"
+		"zordius/lightncandy": "1.2.6"
 	},
 	"replace": {
 		"paragonie/random_compat": "9.99.99",
