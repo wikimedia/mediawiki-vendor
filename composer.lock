@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "55f2aa99bf1722842fc81a4941ac589f",
+    "content-hash": "4837b558c255d5d3d46f6a55f413cdd3",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -4126,29 +4126,28 @@
         },
         {
             "name": "spomky-labs/base64url",
-            "version": "v2.0.3",
+            "version": "v2.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Spomky-Labs/base64url.git",
-                "reference": "48ea8ff600cefe56b82d3d5b768b6f4f3bfe05a1"
+                "reference": "7752ce931ec285da4ed1f4c5aa27e45e097be61d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Spomky-Labs/base64url/zipball/48ea8ff600cefe56b82d3d5b768b6f4f3bfe05a1",
-                "reference": "48ea8ff600cefe56b82d3d5b768b6f4f3bfe05a1",
+                "url": "https://api.github.com/repos/Spomky-Labs/base64url/zipball/7752ce931ec285da4ed1f4c5aa27e45e097be61d",
+                "reference": "7752ce931ec285da4ed1f4c5aa27e45e097be61d",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1"
             },
             "require-dev": {
-                "php-coveralls/php-coveralls": "^2.0",
-                "phpstan/phpstan": "^0.11",
-                "phpstan/phpstan-beberlei-assert": "^0.11.0",
-                "phpstan/phpstan-deprecation-rules": "^0.11",
-                "phpstan/phpstan-phpunit": "^0.11",
-                "phpstan/phpstan-strict-rules": "^0.11",
-                "phpunit/phpunit": "^7.0|^8.0|^9.0"
+                "phpstan/extension-installer": "^1.0",
+                "phpstan/phpstan": "^0.11|^0.12",
+                "phpstan/phpstan-beberlei-assert": "^0.11|^0.12",
+                "phpstan/phpstan-deprecation-rules": "^0.11|^0.12",
+                "phpstan/phpstan-phpunit": "^0.11|^0.12",
+                "phpstan/phpstan-strict-rules": "^0.11|^0.12"
             },
             "type": "library",
             "autoload": {
@@ -4176,9 +4175,19 @@
             ],
             "support": {
                 "issues": "https://github.com/Spomky-Labs/base64url/issues",
-                "source": "https://github.com/Spomky-Labs/base64url/tree/v2.0.3"
+                "source": "https://github.com/Spomky-Labs/base64url/tree/v2.0.4"
             },
-            "time": "2020-08-30T13:35:33+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/Spomky",
+                    "type": "github"
+                },
+                {
+                    "url": "https://www.patreon.com/FlorentMorselli",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2020-11-03T09:10:25+00:00"
         },
         {
             "name": "spomky-labs/cbor-php",

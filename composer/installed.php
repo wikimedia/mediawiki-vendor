@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '792ca1d6300f5c11261649d403f4a72cdccd11d3',
+        'reference' => '3e7600daeecdd6fce7b7460f0ee48d63bb968cc6',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '792ca1d6300f5c11261649d403f4a72cdccd11d3',
+            'reference' => '3e7600daeecdd6fce7b7460f0ee48d63bb968cc6',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -669,12 +669,12 @@
             'dev_requirement' => false,
         ),
         'spomky-labs/base64url' => array(
-            'pretty_version' => 'v2.0.3',
-            'version' => '2.0.3.0',
+            'pretty_version' => 'v2.0.4',
+            'version' => '2.0.4.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../spomky-labs/base64url',
             'aliases' => array(),
-            'reference' => '48ea8ff600cefe56b82d3d5b768b6f4f3bfe05a1',
+            'reference' => '7752ce931ec285da4ed1f4c5aa27e45e097be61d',
             'dev_requirement' => false,
         ),
         'spomky-labs/cbor-php' => array(
