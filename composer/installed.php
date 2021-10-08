@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '059d099763316f11201eb5a4d208dc3bde2d4c0e',
+        'reference' => 'dabc02a6f9a3d9456424370a83cbd29b35dc872e',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '059d099763316f11201eb5a4d208dc3bde2d4c0e',
+            'reference' => 'dabc02a6f9a3d9456424370a83cbd29b35dc872e',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -660,12 +660,12 @@
             ),
         ),
         'ruflin/elastica' => array(
-            'pretty_version' => '6.1.5',
-            'version' => '6.1.5.0',
+            'pretty_version' => '6.2.0',
+            'version' => '6.2.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../ruflin/elastica',
             'aliases' => array(),
-            'reference' => '47486aed45c2aa0961b002b9afb60503bfed5b85',
+            'reference' => '6ef9cb6c01e0c167d31b424cb1f768ecc4ef9565',
             'dev_requirement' => false,
         ),
         'serialization/serialization' => array(

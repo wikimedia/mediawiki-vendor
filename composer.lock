@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "42be2aea5ad066f4f31b75df915f1585",
+    "content-hash": "16db704f3cbb3be23108473f34875eed",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -4021,21 +4021,22 @@
         },
         {
             "name": "ruflin/elastica",
-            "version": "6.1.5",
+            "version": "6.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ruflin/Elastica.git",
-                "reference": "47486aed45c2aa0961b002b9afb60503bfed5b85"
+                "reference": "6ef9cb6c01e0c167d31b424cb1f768ecc4ef9565"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ruflin/Elastica/zipball/47486aed45c2aa0961b002b9afb60503bfed5b85",
-                "reference": "47486aed45c2aa0961b002b9afb60503bfed5b85",
+                "url": "https://api.github.com/repos/ruflin/Elastica/zipball/6ef9cb6c01e0c167d31b424cb1f768ecc4ef9565",
+                "reference": "6ef9cb6c01e0c167d31b424cb1f768ecc4ef9565",
                 "shasum": ""
             },
             "require": {
                 "elasticsearch/elasticsearch": "^6.0",
-                "php": "^7.0",
+                "ext-json": "*",
+                "php": "^7.0||^8.0",
                 "psr/log": "~1.0"
             },
             "conflict": {
@@ -4044,7 +4045,8 @@
             "require-dev": {
                 "aws/aws-sdk-php": "~3.0",
                 "guzzlehttp/guzzle": "~6.0",
-                "phpunit/phpunit": "^6.0"
+                "phpunit/phpunit": "^6.0||^8.5.20",
+                "yoast/phpunit-polyfills": "1.0.1"
             },
             "suggest": {
                 "aws/aws-sdk-php": "Allow using IAM authentication with Amazon ElasticSearch Service",
@@ -4081,9 +4083,9 @@
             ],
             "support": {
                 "issues": "https://github.com/ruflin/Elastica/issues",
-                "source": "https://github.com/ruflin/Elastica/tree/6.1.5"
+                "source": "https://github.com/ruflin/Elastica/tree/6.2.0"
             },
-            "time": "2021-03-24T11:59:44+00:00"
+            "time": "2021-10-08T13:01:16+00:00"
         },
         {
             "name": "serialization/serialization",
