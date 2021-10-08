@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '0dac0beada58cdd5ade4b7aa34623f029ccb5e9b',
+        'reference' => 'ad099e6ace574b0821b5881a5c1699c495dd76f3',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '0dac0beada58cdd5ade4b7aa34623f029ccb5e9b',
+            'reference' => 'ad099e6ace574b0821b5881a5c1699c495dd76f3',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -578,12 +578,12 @@
             ),
         ),
         'psr/log' => array(
-            'pretty_version' => '1.1.3',
-            'version' => '1.1.3.0',
+            'pretty_version' => '1.1.4',
+            'version' => '1.1.4.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../psr/log',
             'aliases' => array(),
-            'reference' => '0f73288fd15629204f9d42b7055f72dacbe811fc',
+            'reference' => 'd49695b909c3b7628b6289db5479a1c204601f11',
             'dev_requirement' => false,
         ),
         'psr/log-implementation' => array(
