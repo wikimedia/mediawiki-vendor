@@ -13,7 +13,7 @@
 		"brick/math": "0.8.17",
 		"christian-riesen/base32": "1.4.0",
 		"composer-plugin-api": "^2.0",
-		"composer/ca-bundle": "1.2.10",
+		"composer/ca-bundle": "1.2.11",
 		"composer/semver": "3.2.5",
 		"cssjanus/cssjanus": "2.1.0",
 		"data-values/common": "1.0.0",

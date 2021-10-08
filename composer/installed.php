@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '9208b7b52f03a30c4085bc41f9bbe81d5ec6532b',
+        'reference' => 'ef0fe35022f5aac3b0852fe37deec11237cf6592',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '9208b7b52f03a30c4085bc41f9bbe81d5ec6532b',
+            'reference' => 'ef0fe35022f5aac3b0852fe37deec11237cf6592',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -47,12 +47,12 @@
             'dev_requirement' => false,
         ),
         'composer/ca-bundle' => array(
-            'pretty_version' => '1.2.10',
-            'version' => '1.2.10.0',
+            'pretty_version' => '1.2.11',
+            'version' => '1.2.11.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/./ca-bundle',
             'aliases' => array(),
-            'reference' => '9fdb22c2e97a614657716178093cd1da90a64aa8',
+            'reference' => '0b072d51c5a9c6f3412f7ea3ab043d6603cb2582',
             'dev_requirement' => false,
         ),
         'composer/semver' => array(
