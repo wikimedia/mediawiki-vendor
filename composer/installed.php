@@ -1,22 +1,22 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
+        'pretty_version' => '1.0.0+no-version-set',
+        'version' => '1.0.0.0',
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '9ce68b20bcf97c4c7cf3bf68d7eda395410b806c',
+        'reference' => NULL,
         'name' => '__root__',
         'dev' => false,
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
+            'pretty_version' => '1.0.0+no-version-set',
+            'version' => '1.0.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '9ce68b20bcf97c4c7cf3bf68d7eda395410b806c',
+            'reference' => NULL,
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -164,12 +164,12 @@
             'dev_requirement' => false,
         ),
         'fgrosse/phpasn1' => array(
-            'pretty_version' => 'v2.1.1',
-            'version' => '2.1.1.0',
+            'pretty_version' => 'v2.3.0',
+            'version' => '2.3.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../fgrosse/phpasn1',
             'aliases' => array(),
-            'reference' => '7ebf2a09084a7bbdb7b879c66fdf7ad80461bbe8',
+            'reference' => '20299033c35f4300eb656e7e8e88cf52d1d6694e',
             'dev_requirement' => false,
         ),
         'firebase/php-jwt' => array(
