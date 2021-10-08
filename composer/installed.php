@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '314403c52ce7116dffc9ac0320eadb9fa371d828',
+        'reference' => '9ce68b20bcf97c4c7cf3bf68d7eda395410b806c',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '314403c52ce7116dffc9ac0320eadb9fa371d828',
+            'reference' => '9ce68b20bcf97c4c7cf3bf68d7eda395410b806c',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -137,12 +137,12 @@
             'dev_requirement' => false,
         ),
         'defuse/php-encryption' => array(
-            'pretty_version' => 'v2.2.1',
-            'version' => '2.2.1.0',
+            'pretty_version' => 'v2.3.1',
+            'version' => '2.3.1.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../defuse/php-encryption',
             'aliases' => array(),
-            'reference' => '0f407c43b953d571421e0020ba92082ed5fb7620',
+            'reference' => '77880488b9954b7884c25555c2a0ea9e7053f9d2',
             'dev_requirement' => false,
         ),
         'diff/diff' => array(

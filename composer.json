@@ -23,7 +23,7 @@
 		"data-values/number": "0.11.1",
 		"data-values/serialization": "1.2.4",
 		"data-values/time": "1.0.4",
-		"defuse/php-encryption": "2.2.1",
+		"defuse/php-encryption": "2.3.1",
 		"diff/diff": "3.2.0",
 		"elasticsearch/elasticsearch": "6.5.1",
 		"fgrosse/phpasn1": "2.1.1",
