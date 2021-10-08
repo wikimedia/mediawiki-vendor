@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '7bf23a4f55c98635d35e4a20fdc17cb76f8e977f',
+        'reference' => '792ca1d6300f5c11261649d403f4a72cdccd11d3',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '7bf23a4f55c98635d35e4a20fdc17cb76f8e977f',
+            'reference' => '792ca1d6300f5c11261649d403f4a72cdccd11d3',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -245,12 +245,12 @@
             'dev_requirement' => false,
         ),
         'james-heinrich/getid3' => array(
-            'pretty_version' => 'v1.9.20',
-            'version' => '1.9.20.0',
+            'pretty_version' => 'v1.9.21',
+            'version' => '1.9.21.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../james-heinrich/getid3',
             'aliases' => array(),
-            'reference' => '3c15e353b9bb1252201c73394bb8390b573a751d',
+            'reference' => '36f5dabb1325415a4b07a401113f8db2eb81eca1',
             'dev_requirement' => false,
         ),
         'justinrainbow/json-schema' => array(
