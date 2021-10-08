@@ -16,16 +16,22 @@
             "homepage" : "https://nyamsprod.com"
         }
     ],
+    "funding": [
+        {
+            "type": "github",
+            "url": "https://github.com/sponsors/nyamsprod"
+        }
+    ],
     "require": {
-        "php" : "^7.1",
+        "php" : "^7.2 || ^8.0",
         "ext-json": "*"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.0",
-        "phpunit/phpunit" : "^7.0|^8.0",
-        "phpstan/phpstan": "^0.12",
-        "phpstan/phpstan-strict-rules": "^0.12",
-        "phpstan/phpstan-phpunit": "^0.12"
+        "friendsofphp/php-cs-fixer": "^2.19",
+        "phpstan/phpstan": "^0.12.90",
+        "phpstan/phpstan-strict-rules": "^0.12.9",
+        "phpstan/phpstan-phpunit": "^0.12.19",
+        "phpunit/phpunit": "^8.5.15 || ^9.5"
     },
     "autoload": {
         "psr-4": {
@@ -33,18 +39,30 @@
         }
     },
     "scripts": {
-        "phpcs": "php-cs-fixer fix -v --diff --dry-run --allow-risky=yes --ansi",
-        "phpstan": "phpstan analyse -l max -c phpstan.src.neon src --ansi",
-        "test": ["@phpcs", "@phpstan"]
+        "phpunit": "phpunit --coverage-text",
+        "phpcs": "php-cs-fixer fix --dry-run --diff -vvv --allow-risky=yes --ansi",
+        "phpcs:fix": "php-cs-fixer fix -vvv --allow-risky=yes --ansi",
+        "phpstan": "phpstan analyse -l max -c phpstan.neon src --ansi --memory-limit 192M",
+        "test": [
+            "@phpunit",
+            "@phpstan",
+            "@phpcs:fix"
+        ]
     },
     "scripts-descriptions": {
-        "phpcs":"Runs coding style test suite",
-        "phpstan":"Runs php static code analysis compliance test",
-        "test": "Runs all the test suite"
+        "phpunit": "Runs package test suite",
+        "phpstan": "Runs complete codebase static analysis",
+        "phpcs": "Runs coding style testing",
+        "phpcs:fix": "Fix coding style issues",
+        "test": "Runs all tests"
     },
     "extra": {
         "branch-alias": {
             "dev-master": "2.x-dev"
         }
+    },
+    "suggest": {
+        "ext-intl": "to use the IDNA feature",
+        "symfony/intl": "to use the IDNA feature via Symfony Polyfill"
     }
 }

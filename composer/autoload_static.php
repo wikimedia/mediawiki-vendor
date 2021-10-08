@@ -550,8 +550,8 @@ class ComposerStaticInit_mediawiki_vendor
         'League\\Uri\\' => 
         array (
             0 => __DIR__ . '/..' . '/league/uri/src',
-            1 => __DIR__ . '/..' . '/league/uri-components/src',
-            2 => __DIR__ . '/..' . '/league/uri-interfaces/src',
+            1 => __DIR__ . '/..' . '/league/uri-interfaces/src',
+            2 => __DIR__ . '/..' . '/league/uri-components/src',
         ),
         'League\\OAuth2\\Server\\' => 
         array (
@@ -1864,15 +1864,19 @@ class ComposerStaticInit_mediawiki_vendor
         'League\\Uri\\Exceptions\\FileinfoSupportMissing' => __DIR__ . '/..' . '/league/uri-interfaces/src/Exceptions/FileinfoSupportMissing.php',
         'League\\Uri\\Exceptions\\IPv4CalculatorMissing' => __DIR__ . '/..' . '/league/uri-components/src/Exceptions/IPv4CalculatorMissing.php',
         'League\\Uri\\Exceptions\\IdnSupportMissing' => __DIR__ . '/..' . '/league/uri-interfaces/src/Exceptions/IdnSupportMissing.php',
+        'League\\Uri\\Exceptions\\IdnaConversionFailed' => __DIR__ . '/..' . '/league/uri-interfaces/src/Exceptions/IdnaConversionFailed.php',
         'League\\Uri\\Exceptions\\OffsetOutOfBounds' => __DIR__ . '/..' . '/league/uri-components/src/Exceptions/OffsetOutOfBounds.php',
         'League\\Uri\\Exceptions\\SyntaxError' => __DIR__ . '/..' . '/league/uri-interfaces/src/Exceptions/SyntaxError.php',
         'League\\Uri\\Exceptions\\TemplateCanNotBeExpanded' => __DIR__ . '/..' . '/league/uri/src/Exceptions/TemplateCanNotBeExpanded.php',
         'League\\Uri\\Http' => __DIR__ . '/..' . '/league/uri/src/Http.php',
+        'League\\Uri\\HttpFactory' => __DIR__ . '/..' . '/league/uri/src/HttpFactory.php',
         'League\\Uri\\IPv4Calculators\\BCMathCalculator' => __DIR__ . '/..' . '/league/uri-components/src/IPv4Calculators/BCMathCalculator.php',
         'League\\Uri\\IPv4Calculators\\GMPCalculator' => __DIR__ . '/..' . '/league/uri-components/src/IPv4Calculators/GMPCalculator.php',
         'League\\Uri\\IPv4Calculators\\IPv4Calculator' => __DIR__ . '/..' . '/league/uri-components/src/IPv4Calculators/IPv4Calculator.php',
         'League\\Uri\\IPv4Calculators\\NativeCalculator' => __DIR__ . '/..' . '/league/uri-components/src/IPv4Calculators/NativeCalculator.php',
         'League\\Uri\\IPv4Normalizer' => __DIR__ . '/..' . '/league/uri-components/src/IPv4Normalizer.php',
+        'League\\Uri\\Idna\\Idna' => __DIR__ . '/..' . '/league/uri-interfaces/src/Idna/Idna.php',
+        'League\\Uri\\Idna\\IdnaInfo' => __DIR__ . '/..' . '/league/uri-interfaces/src/Idna/IdnaInfo.php',
         'League\\Uri\\QueryString' => __DIR__ . '/..' . '/league/uri-components/src/QueryString.php',
         'League\\Uri\\Uri' => __DIR__ . '/..' . '/league/uri/src/Uri.php',
         'League\\Uri\\UriInfo' => __DIR__ . '/..' . '/league/uri/src/UriInfo.php',
