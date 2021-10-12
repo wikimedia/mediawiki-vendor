@@ -26,8 +26,7 @@ Adding or updating libraries
    It is recommended that you use `composer require <package> <version>
    --no-update` to do so as composer will then automatically sort the
    composer.json file.
-3. Run `composer update --no-dev --ignore-platform-reqs` to download files and
-   update the autoloader.
+3. Run `composer update --no-dev` to download files and update the autoloader.
 4. Add all the new dependencies that got installed to composer.json as well,
    so that everything has their version pinned. (You can look at the changes
    in composer.lock or composer/installed.json to see what they are.)
