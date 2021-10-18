@@ -62,7 +62,19 @@ payment-provider:
         <<: *CACHE
     apple:
         class: SmashPig\PaymentProviders\Adyen\ApplePayPaymentProvider
-        <<: *CACHE
+        constructor-parameters:
+            -
+                cache-parameters:
+                    duration: 900
+                    key-base: SMASHPIG_ADYEN_METHODS
+# You must set the following four values if you are going to use your own
+# merchant certificate with Apple Pay rather than using Adyen's certificate
+# They are used to start a payment session with Apple as described here:
+# https://developer.apple.com/documentation/apple_pay_on_the_web/apple_pay_js_api/requesting_an_apple_pay_payment_session
+#               domain-name: '' # passed as integrationContext
+#               display-name: '' # passed as displayName
+#               merchant-identifier: '' # passed as merchantIdentifier
+#               certificate-path: '' # path to merchant SSL cert
 
 # Whether the IPN listener should initiate a payment capture when it receives
 # notification of a successful authorization.

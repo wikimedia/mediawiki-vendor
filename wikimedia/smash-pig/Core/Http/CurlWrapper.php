@@ -22,11 +22,15 @@ class CurlWrapper {
 	 * @param string $method
 	 * @param array $responseHeaders
 	 * @param array|string $data
+	 * @param string|null $certPath
+	 * @param string|null $certPassword
 	 * @return array|null
 	 * @throws HttpException
 	 * @throws \SmashPig\Core\ConfigurationKeyException
 	 */
-	public function execute( string $url, string $method, array $responseHeaders, $data ) {
+	public function execute(
+		string $url, string $method, array $responseHeaders, $data, $certPath = null, $certPassword = null
+	) {
 		if ( is_array( $data ) ) {
 			$data = http_build_query( $data );
 		}
@@ -44,7 +48,9 @@ class CurlWrapper {
 		stream_filter_register( 'CurlDebugLogFilter', 'SmashPig\Core\Http\CurlDebugLogFilter' );
 		stream_filter_append( $curlDebugLog, "CurlDebugLogFilter", STREAM_FILTER_WRITE );
 
-		$curlOptions = $this->getCurlOptions( $url, $method, $responseHeaders, $data, $curlDebugLog );
+		$curlOptions = $this->getCurlOptions(
+			$url, $method, $responseHeaders, $data, $curlDebugLog, $certPath, $certPassword
+		);
 		curl_setopt_array( $ch, $curlOptions );
 
 		// TODO: log timing
@@ -72,6 +78,8 @@ class CurlWrapper {
 
 				/**
 				 * @var ResponseValidator
+				 * FIXME what about providers where not all requests are validated
+				 * the same way?
 				 */
 				$validator = $this->providerConfiguration->object( 'curl/validator' );
 				$continue = $validator->shouldRetry( $parsed );
@@ -116,7 +124,7 @@ class CurlWrapper {
 		return $parsed;
 	}
 
-	protected function getCurlOptions( $url, $method, $headers, $data, $logStream ) {
+	protected function getCurlOptions( $url, $method, $headers, $data, $logStream, $certPath, $certPassword ) {
 		$options = [
 			CURLOPT_URL => $url,
 			CURLOPT_USERAGENT => $this->providerConfiguration->val( 'curl/user-agent' ),
@@ -149,6 +157,12 @@ class CurlWrapper {
 		}
 		foreach ( $headers as $name => $value ) {
 			$options[CURLOPT_HTTPHEADER][] = "$name: $value";
+		}
+		if ( $certPath !== null ) {
+			$options[CURLOPT_SSLCERT] = $certPath;
+			if ( $certPassword !== null ) {
+				$options[CURLOPT_SSLCERTPASSWD] = $certPassword;
+			}
 		}
 		return $options;
 	}

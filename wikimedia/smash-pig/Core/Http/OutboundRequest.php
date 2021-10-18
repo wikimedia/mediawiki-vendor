@@ -29,6 +29,16 @@ class OutboundRequest {
 	 */
 	protected $body = null;
 
+	/**
+	 * @var string path to SSL certificate to use with the request
+	 */
+	protected $certPath;
+
+	/**
+	 * @var string password to decrypt certificate
+	 */
+	protected $certPassword;
+
 	public function __construct( $url, $method = 'GET' ) {
 		$this->url = $url;
 		$this->method = $method;
@@ -71,6 +81,38 @@ class OutboundRequest {
 		return $this->body;
 	}
 
+	/**
+	 * @return string
+	 */
+	public function getCertPath(): string {
+		return $this->certPath;
+	}
+
+	/**
+	 * @param string $certPath
+	 * @return OutboundRequest
+	 */
+	public function setCertPath( string $certPath ): OutboundRequest {
+		$this->certPath = $certPath;
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getCertPassword(): string {
+		return $this->certPassword;
+	}
+
+	/**
+	 * @param string $certPassword
+	 * @return OutboundRequest
+	 */
+	public function setCertPassword( string $certPassword ): OutboundRequest {
+		$this->certPassword = $certPassword;
+		return $this;
+	}
+
 	public function execute(): array {
 		$config = Context::get()->getProviderConfiguration();
 		/**
@@ -81,7 +123,9 @@ class OutboundRequest {
 			$this->url,
 			$this->method,
 			$this->getHeaders(),
-			$this->body
+			$this->body,
+			$this->certPath,
+			$this->certPassword
 		);
 	}
 }
