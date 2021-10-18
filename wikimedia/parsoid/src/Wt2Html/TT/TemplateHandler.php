@@ -6,6 +6,7 @@ namespace Wikimedia\Parsoid\Wt2Html\TT;
 use stdClass;
 use Wikimedia\Assert\Assert;
 use Wikimedia\Parsoid\DOM\Element;
+use Wikimedia\Parsoid\NodeData\DataParsoid;
 use Wikimedia\Parsoid\Tokens\CommentTk;
 use Wikimedia\Parsoid\Tokens\EndTagTk;
 use Wikimedia\Parsoid\Tokens\EOFTk;
@@ -754,13 +755,11 @@ class TemplateHandler extends TokenHandler {
 			new KV( 'typeof', $state['wrapperType'] ),
 			new KV( 'about', '#' . $state['wrappedObjectId'] )
 		];
-		$dataParsoid = (object)[
-			'tsr' => clone $state['token']->dataAttribs->tsr,
-			'src' => $state['token']->dataAttribs->src,
-			'tmp' => new stdClass
-		];
+		$dp = new DataParsoid;
+		$dp->tsr = clone $state['token']->dataAttribs->tsr;
+		$dp->src = $state['token']->dataAttribs->src;
 
-		$meta = [ new SelfclosingTagTk( 'meta', $attrs, $dataParsoid ) ];
+		$meta = [ new SelfclosingTagTk( 'meta', $attrs, $dp ) ];
 		$chunk = $chunk ? array_merge( $meta, $chunk ) : $meta;
 		return $chunk;
 	}
@@ -771,12 +770,14 @@ class TemplateHandler extends TokenHandler {
 	 */
 	private function getEncapsulationInfoEndTag( array $state ): Token {
 		$tsr = $state['token']->dataAttribs->tsr ?? null;
+		$dp = new DataParsoid;
+		$dp->tsr = new SourceRange( null, $tsr ? $tsr->end : null );
 		return new SelfclosingTagTk( 'meta',
 			[
 				new KV( 'typeof', $state['wrapperType'] . '/End' ),
 				new KV( 'about', '#' . $state['wrappedObjectId'] )
 			],
-			PHPUtils::arrayToObject( [ 'tsr' => new SourceRange( null, $tsr ? $tsr->end : null ) ] )
+			$dp
 		);
 	}
 
@@ -923,7 +924,7 @@ class TemplateHandler extends TokenHandler {
 
 		// Use a data-attribute to prevent the sanitizer from stripping this
 		// attribute before it reaches the DOM pass where it is needed
-		$toks[0]->dataAttribs->tmp->tplarginfo = PHPUtils::jsonEncode( $argInfo );
+		$toks[0]->dataAttribs->getTemp()->tplarginfo = PHPUtils::jsonEncode( $argInfo );
 
 		$this->env->log( 'debug', 'TemplateHandler.encapTokens', $toks );
 		return $toks;
@@ -1332,7 +1333,7 @@ class TemplateHandler extends TokenHandler {
 
 		$metaToken = new SelfclosingTagTk( 'meta',
 			[ new KV( 'property', $pageProp ) ],
-			Utils::clone( $tplToken->dataAttribs )
+			$tplToken->dataAttribs->clone()
 		);
 
 		if ( isset( $tplToken->dataAttribs->tmp->templatedAttribs ) ) {

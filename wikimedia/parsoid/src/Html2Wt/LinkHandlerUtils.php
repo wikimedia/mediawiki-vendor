@@ -13,6 +13,8 @@ use Wikimedia\Parsoid\Html2Wt\ConstrainedText\AutoURLLinkText;
 use Wikimedia\Parsoid\Html2Wt\ConstrainedText\ExtLinkText;
 use Wikimedia\Parsoid\Html2Wt\ConstrainedText\MagicLinkText;
 use Wikimedia\Parsoid\Html2Wt\ConstrainedText\WikiLinkText;
+use Wikimedia\Parsoid\NodeData\DataParsoid;
+use Wikimedia\Parsoid\NodeData\TempData;
 use Wikimedia\Parsoid\Utils\ContentUtils;
 use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
@@ -35,10 +37,10 @@ class LinkHandlerUtils {
 	 * Split a string based on a prefix and suffix
 	 *
 	 * @param string $contentString
-	 * @param stdClass $dp Containing ->prefix and ->tail
+	 * @param DataParsoid $dp Containing ->prefix and ->tail
 	 * @return stdClass
 	 */
-	private static function splitLinkContentString( string $contentString, stdClass $dp ): stdClass {
+	private static function splitLinkContentString( string $contentString, DataParsoid $dp ): stdClass {
 		$tail = $dp->tail ?? '';
 		$prefix = $dp->prefix ?? '';
 
@@ -455,13 +457,13 @@ class LinkHandlerUtils {
 	/**
 	 * Figure out if we need a piped or simple link
 	 * @param Env $env
-	 * @param stdClass $dp
+	 * @param DataParsoid $dp
 	 * @param array $target
 	 * @param stdClass $linkData
 	 * @return bool
 	 */
 	private static function isSimpleWikiLink(
-		Env $env, stdClass $dp, array $target, stdClass $linkData
+		Env $env, DataParsoid $dp, array $target, stdClass $linkData
 	): bool {
 		$canUseSimple = false;
 		$contentString = $linkData->content->string ?? null;
@@ -1145,7 +1147,7 @@ class LinkHandlerUtils {
 			// fragment, however, we need some way of marking this as being
 			// inModifiedContent so that any bare text is assured to be escaped
 			$captionElt = $outerElt->ownerDocument->createElement( 'div' );
-			DOMDataUtils::getDataParsoid( $captionElt )->tmp->isNew = true;
+			DOMDataUtils::getDataParsoid( $captionElt )->setTempFlag( TempData::IS_NEW );
 			DOMUtils::migrateChildren( $fragment, $captionElt );
 			// Needs a parent node in order for WTS to be happy
 			$fragment->appendChild( $captionElt );

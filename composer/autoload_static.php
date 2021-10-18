@@ -119,8 +119,8 @@ class ComposerStaticInit_mediawiki_vendor
         'c15f8000750e4e04ba559d9745044427' => __DIR__ . '/..' . '/data-values/number/Number.php',
         '3ef87127dc6892a0a78f223558a0b940' => __DIR__ . '/..' . '/diff/diff/Diff.php',
         '04c6c5c2f7095ccf6c481d3e53e1776f' => __DIR__ . '/..' . '/mustangostang/spyc/Spyc.php',
-        'db89166205707d49719c395c26d4e52d' => __DIR__ . '/..' . '/wikimedia/parsoid/DomImpl.php',
         '6513700b70192b7dfd0e5e9fc8082cf3' => __DIR__ . '/..' . '/wikimedia/relpath/src/Wikimedia/RelPath.php',
+        'db89166205707d49719c395c26d4e52d' => __DIR__ . '/..' . '/wikimedia/parsoid/DomImpl.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -4552,6 +4552,10 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Mocks\\MockPageConfig' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Mocks/MockPageConfig.php',
         'Wikimedia\\Parsoid\\Mocks\\MockPageContent' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Mocks/MockPageContent.php',
         'Wikimedia\\Parsoid\\Mocks\\MockSiteConfig' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Mocks/MockSiteConfig.php',
+        'Wikimedia\\Parsoid\\NodeData\\DataBag' => __DIR__ . '/..' . '/wikimedia/parsoid/src/NodeData/DataBag.php',
+        'Wikimedia\\Parsoid\\NodeData\\DataParsoid' => __DIR__ . '/..' . '/wikimedia/parsoid/src/NodeData/DataParsoid.php',
+        'Wikimedia\\Parsoid\\NodeData\\NodeData' => __DIR__ . '/..' . '/wikimedia/parsoid/src/NodeData/NodeData.php',
+        'Wikimedia\\Parsoid\\NodeData\\TempData' => __DIR__ . '/..' . '/wikimedia/parsoid/src/NodeData/TempData.php',
         'Wikimedia\\Parsoid\\ParserTests\\Article' => __DIR__ . '/..' . '/wikimedia/parsoid/src/ParserTests/Article.php',
         'Wikimedia\\Parsoid\\ParserTests\\Grammar' => __DIR__ . '/..' . '/wikimedia/parsoid/src/ParserTests/Grammar.php',
         'Wikimedia\\Parsoid\\ParserTests\\Item' => __DIR__ . '/..' . '/wikimedia/parsoid/src/ParserTests/Item.php',
@@ -4587,7 +4591,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Utils\\DOMPostOrder' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/DOMPostOrder.php',
         'Wikimedia\\Parsoid\\Utils\\DOMTraverser' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/DOMTraverser.php',
         'Wikimedia\\Parsoid\\Utils\\DOMUtils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/DOMUtils.php',
-        'Wikimedia\\Parsoid\\Utils\\DataBag' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/DataBag.php',
         'Wikimedia\\Parsoid\\Utils\\PHPUtils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/PHPUtils.php',
         'Wikimedia\\Parsoid\\Utils\\PipelineUtils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/PipelineUtils.php',
         'Wikimedia\\Parsoid\\Utils\\Timing' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/Timing.php',
@@ -4616,6 +4619,9 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\AddRedLinks' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/AddRedLinks.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\ComputeDSR' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/ComputeDSR.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\ConvertOffsets' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/ConvertOffsets.php',
+        'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\DOMRange' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/DOMRange.php',
+        'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\DOMRangeArray' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/DOMRangeArray.php',
+        'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\DOMRangeBuilder' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/DOMRangeBuilder.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\I18n' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/I18n.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\LangConverter' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/LangConverter.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\Linter' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/Linter.php',

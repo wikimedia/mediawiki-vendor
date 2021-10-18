@@ -7,11 +7,14 @@ use Composer\Semver\Semver;
 use stdClass;
 use Wikimedia\Assert\Assert;
 use Wikimedia\Parsoid\Config\Env;
-use Wikimedia\Parsoid\Core\DataParsoid;
 use Wikimedia\Parsoid\Core\DomSourceRange;
 use Wikimedia\Parsoid\DOM\Document;
 use Wikimedia\Parsoid\DOM\Element;
 use Wikimedia\Parsoid\DOM\Node;
+use Wikimedia\Parsoid\NodeData\DataBag;
+use Wikimedia\Parsoid\NodeData\DataParsoid;
+use Wikimedia\Parsoid\NodeData\NodeData;
+use Wikimedia\Parsoid\NodeData\TempData;
 use Wikimedia\Parsoid\Tokens\SourceRange;
 
 /**
@@ -48,10 +51,10 @@ class DOMDataUtils {
 	/**
 	 * Stash $obj in $doc and return an id for later retrieval
 	 * @param Document $doc
-	 * @param stdClass $obj
+	 * @param NodeData $obj
 	 * @return int
 	 */
-	public static function stashObjectInDoc( Document $doc, stdClass $obj ): int {
+	public static function stashObjectInDoc( Document $doc, NodeData $obj ): int {
 		return self::getBag( $doc )->stashObject( $obj );
 	}
 
@@ -70,12 +73,12 @@ class DOMDataUtils {
 	 * Get data object from a node.
 	 *
 	 * @param Element $node node
-	 * @return stdClass
+	 * @return NodeData
 	 */
-	public static function getNodeData( Element $node ): stdClass {
+	public static function getNodeData( Element $node ): NodeData {
 		if ( !$node->hasAttribute( self::DATA_OBJECT_ATTR_NAME ) ) {
 			// Initialized on first request
-			$dataObject = new stdClass;
+			$dataObject = new NodeData;
 			self::setNodeData( $node, $dataObject );
 			return $dataObject;
 		}
@@ -87,7 +90,6 @@ class DOMDataUtils {
 			$dataObject = null; // Make phan happy
 		}
 		Assert::invariant( isset( $dataObject ), 'Bogus docId given!' );
-		'@phan-var stdClass $dataObject'; // @var stdClass $dataObject
 		if ( isset( $dataObject->storedId ) ) {
 			PHPUtils::unreachable(
 				'Trying to fetch node data without loading!' .
@@ -105,9 +107,9 @@ class DOMDataUtils {
 	 * Set node data.
 	 *
 	 * @param Element $node node
-	 * @param stdClass $data data
+	 * @param NodeData $data data
 	 */
-	public static function setNodeData( Element $node, stdClass $data ): void {
+	public static function setNodeData( Element $node, NodeData $data ): void {
 		$docId = self::stashObjectInDoc( $node->ownerDocument, $data );
 		$node->setAttribute( self::DATA_OBJECT_ATTR_NAME, (string)$docId );
 	}
@@ -118,24 +120,20 @@ class DOMDataUtils {
 	 * @param Element $node node
 	 * @return DataParsoid
 	 */
-	public static function getDataParsoid( Element $node ): stdClass {
+	public static function getDataParsoid( Element $node ): DataParsoid {
 		$data = self::getNodeData( $node );
 		if ( !isset( $data->parsoid ) ) {
-			$data->parsoid = new stdClass;
+			$data->parsoid = new DataParsoid;
 		}
-		if ( !isset( $data->parsoid->tmp ) ) {
-			$data->parsoid->tmp = new stdClass;
-		}
-		// @phan-suppress-next-line PhanTypeMismatchReturnSuperType
 		return $data->parsoid;
 	}
 
 	/** Set data parsoid info on a node.
 	 *
 	 * @param Element $node node
-	 * @param stdClass $dp data-parsoid
+	 * @param DataParsoid $dp data-parsoid
 	 */
-	public static function setDataParsoid( Element $node, stdClass $dp ): void {
+	public static function setDataParsoid( Element $node, DataParsoid $dp ): void {
 		$data = self::getNodeData( $node );
 		$data->parsoid = $dp;
 	}
@@ -402,45 +400,62 @@ class DOMDataUtils {
 
 	/**
 	 * Massage the data parsoid object loaded from a node attribute
-	 * into expected shape. When we create a first-class object for
-	 * data-parsoid, this will move into the constructor.
+	 * into expected shape.
 	 *
-	 * @param stdClass $dp
+	 * @param stdClass $stdDP
 	 * @param array $options
 	 * @param ?Element $node
+	 * @return DataParsoid
 	 */
 	public static function massageLoadedDataParsoid(
-		stdClass $dp, array $options = [], ?Element $node = null
-	): void {
-		if ( isset( $dp->sa ) ) {
-			$dp->sa = (array)$dp->sa;
-		}
-		if ( isset( $dp->a ) ) {
-			$dp->a = (array)$dp->a;
-		}
-		if ( isset( $dp->dsr ) ) {
-			$dp->dsr = DomSourceRange::fromArray( $dp->dsr );
-		}
-		if ( isset( $dp->tsr ) ) {
-			// tsr is generally for tokens, not DOM trees.
-			$dp->tsr = SourceRange::fromArray( $dp->tsr );
-		}
-		if ( isset( $dp->extTagOffsets ) ) {
-			$dp->extTagOffsets = DomSourceRange::fromArray( $dp->extTagOffsets );
-		}
-		if ( isset( $dp->extLinkContentOffsets ) ) {
-			$dp->extLinkContentOffsets =
-				SourceRange::fromArray( $dp->extLinkContentOffsets );
-		}
-		if ( !empty( $options['markNew'] ) ) {
-			$dp->tmp = PHPUtils::arrayToObject( $dp->tmp ?? [] );
-			$dp->tmp->isNew = !$node->hasAttribute( 'data-parsoid' );
-		}
-		if ( isset( $dp->optList ) ) {
-			foreach ( $dp->optList as &$item ) {
-				$item = (array)$item;
+		stdClass $stdDP, array $options = [], ?Element $node = null
+	): DataParsoid {
+		$dp = new DataParsoid;
+		foreach ( $stdDP as $key => $value ) {
+			switch ( $key ) {
+				case 'a':
+				case 'sa':
+					$dp->$key = (array)$value;
+					break;
+
+				case 'dsr':
+				case 'extTagOffsets':
+					if ( $value !== null ) {
+						$dp->$key = DomSourceRange::fromArray( $value );
+					}
+					break;
+
+				case 'tsr':
+				case 'extLinkContentOffsets':
+					if ( $value !== null ) {
+						$dp->$key = SourceRange::fromArray( $value );
+					}
+					break;
+
+				case 'optList':
+					$optList = [];
+					foreach ( $value as $item ) {
+						$optList[] = (array)$item;
+					}
+					$dp->optList = $optList;
+					break;
+
+				case 'tmp':
+					$tmp = new TempData;
+					foreach ( $value as $key2 => $value2 ) {
+						$tmp->$key2 = $value2;
+					}
+					$dp->tmp = $tmp;
+					break;
+
+				default:
+					$dp->$key = $value;
 			}
 		}
+		if ( !empty( $options['markNew'] ) ) {
+			$dp->setTempFlag( TempData::IS_NEW, !$node->hasAttribute( 'data-parsoid' ) );
+		}
+		return $dp;
 	}
 
 	/**
@@ -459,9 +474,10 @@ class DOMDataUtils {
 			return;
 		}
 		// Reset the node data object's stored state, since we're reloading it
-		self::setNodeData( $node, new stdClass );
-		$dp = self::getJSONAttribute( $node, 'data-parsoid', new stdClass );
-		self::massageLoadedDataParsoid( $dp, $options, $node );
+		self::setNodeData( $node, new NodeData );
+		$dp = self::massageLoadedDataParsoid(
+			self::getJSONAttribute( $node, 'data-parsoid', new stdClass ),
+			$options, $node );
 		self::setDataParsoid( $node, $dp );
 		$node->removeAttribute( 'data-parsoid' );
 		$dmw = self::getJSONAttribute( $node, 'data-mw', null );
@@ -523,11 +539,8 @@ class DOMDataUtils {
 		Assert::invariant( empty( $options['discardDataParsoid'] ) || empty( $options['keepTmp'] ),
 			'Conflicting options: discardDataParsoid and keepTmp are both enabled.' );
 		$dp = self::getDataParsoid( $node );
-		// $dp will be a DataParsoid object once but currently it is an stdClass
-		// with a fake type hint. Unfake it to prevent phan complaining about unset().
-		'@phan-var stdClass $dp';
 		$discardDataParsoid = !empty( $options['discardDataParsoid'] );
-		if ( !empty( $dp->tmp->isNew ) ) {
+		if ( $dp->getTempFlag( TempData::IS_NEW ) ) {
 			// Only necessary to support the cite extension's getById,
 			// that's already been loaded once.
 			//
@@ -544,11 +557,8 @@ class DOMDataUtils {
 		}
 		$data = null;
 		if ( !$discardDataParsoid ) {
-			if ( !empty( $options['keepTmp'] ) ) {
-				if ( isset( $dp->tmp->tplRanges ) ) {
-					unset( $dp->tmp->tplRanges );
-				}
-			} else {
+			if ( empty( $options['keepTmp'] ) ) {
+				// @phan-suppress-next-line PhanTypeObjectUnsetDeclaredProperty
 				unset( $dp->tmp );
 			}
 

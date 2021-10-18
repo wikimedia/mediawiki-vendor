@@ -10,11 +10,12 @@ declare( strict_types = 1 );
 namespace Wikimedia\Parsoid\Wt2Html;
 
 use Generator;
-use stdClass;
-use Wikimedia\Assert\Assert;
 use Wikimedia\Parsoid\Config\Env;
 use Wikimedia\Parsoid\DOM\Document;
 use Wikimedia\Parsoid\DOM\Node;
+use Wikimedia\Parsoid\NodeData\DataParsoid;
+use Wikimedia\Parsoid\NodeData\NodeData;
+use Wikimedia\Parsoid\NodeData\TempData;
 use Wikimedia\Parsoid\Tokens\CommentTk;
 use Wikimedia\Parsoid\Tokens\EndTagTk;
 use Wikimedia\Parsoid\Tokens\EOFTk;
@@ -192,19 +193,18 @@ class HTML5TreeBuilder extends PipelineStage {
 	 * Keep this in sync with `DOMDataUtils.setNodeData()`
 	 *
 	 * @param array $attribs
-	 * @param object $dataAttribs
+	 * @param DataParsoid $dataAttribs
 	 * @return array
 	 */
-	private function stashDataAttribs( array $attribs, object $dataAttribs ): array {
-		$data = [ 'parsoid' => $dataAttribs ];
+	private function stashDataAttribs( array $attribs, DataParsoid $dataAttribs ): array {
+		$data = new NodeData;
+		$data->parsoid = $dataAttribs;
 		if ( isset( $attribs['data-mw'] ) ) {
-			// @phan-suppress-next-line PhanImpossibleCondition
-			Assert::invariant( !isset( $data['mw'] ), "data-mw already set." );
-			$data['mw'] = json_decode( $attribs['data-mw'] );
+			$data->mw = json_decode( $attribs['data-mw'] );
 			unset( $attribs['data-mw'] );
 		}
 		// Store in the top level doc since we'll be importing the nodes after treebuilding
-		$docId = DOMDataUtils::stashObjectInDoc( $this->env->topLevelDoc, (object)$data );
+		$docId = DOMDataUtils::stashObjectInDoc( $this->env->topLevelDoc, $data );
 		$attribs[DOMDataUtils::DATA_OBJECT_ATTR_NAME] = (string)$docId;
 		return $attribs;
 	}
@@ -225,19 +225,16 @@ class HTML5TreeBuilder extends PipelineStage {
 		}
 
 		$attribs = isset( $token->attribs ) ? $this->kvArrToAttr( $token->attribs ) : [];
-		$dataAttribs = $token->dataAttribs ?? (object)[ 'tmp' => new stdClass ];
-
-		if ( !isset( $dataAttribs->tmp ) ) {
-			$dataAttribs->tmp = new stdClass;
-		}
+		$dataAttribs = $token->dataAttribs ?? new DataParsoid;
+		$tmp = $dataAttribs->getTemp();
 
 		if ( $this->inTransclusion ) {
-			$dataAttribs->tmp->inTransclusion = true;
+			$tmp->setFlag( TempData::IN_TRANSCLUSION );
 		}
 
 		// Assign tagId to open/self-closing tags
 		if ( $token instanceof TagTk || $token instanceof SelfclosingTagTk ) {
-			$dataAttribs->tmp->tagId = $this->tagId++;
+			$tmp->tagId = $this->tagId++;
 		}
 
 		$attribs = $this->stashDataAttribs( $attribs, $dataAttribs );
@@ -299,8 +296,8 @@ class HTML5TreeBuilder extends PipelineStage {
 				$this->env->log( 'debug/html', $this->pipelineId, 'Inserting shadow meta for', $tName );
 				$attrs = $this->stashDataAttribs( [
 					'typeof' => 'mw:StartTag',
-					'data-stag' => "{$tName}:{$dataAttribs->tmp->tagId}"
-				], Utils::clone( $dataAttribs ) );
+					'data-stag' => "{$tName}:{$tmp->tagId}"
+				], $dataAttribs->clone() );
 				$this->dispatcher->comment(
 					WTUtils::fosterCommentData( 'mw:shadow', $attrs ),
 					0, 0

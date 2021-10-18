@@ -3,7 +3,6 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Utils;
 
-use stdClass;
 use Wikimedia\Parsoid\Config\Env;
 use Wikimedia\Parsoid\Config\WikitextConstants as Consts;
 use Wikimedia\Parsoid\DOM\Comment;
@@ -13,6 +12,8 @@ use Wikimedia\Parsoid\DOM\Element;
 use Wikimedia\Parsoid\DOM\Node;
 use Wikimedia\Parsoid\DOM\Text;
 use Wikimedia\Parsoid\Ext\ExtensionTagHandler;
+use Wikimedia\Parsoid\NodeData\DataParsoid;
+use Wikimedia\Parsoid\NodeData\TempData;
 use Wikimedia\Parsoid\Tokens\CommentTk;
 use Wikimedia\Parsoid\Wt2Html\Frame;
 
@@ -34,10 +35,10 @@ class WTUtils {
 	 * an indicator that the original wikitext was a literal
 	 * HTML element (like table or p)
 	 *
-	 * @param stdClass $dp
+	 * @param DataParsoid $dp
 	 * @return bool
 	 */
-	public static function hasLiteralHTMLMarker( stdClass $dp ): bool {
+	public static function hasLiteralHTMLMarker( DataParsoid $dp ): bool {
 		return isset( $dp->stx ) && $dp->stx === 'html';
 	}
 
@@ -79,11 +80,11 @@ class WTUtils {
 	 * anymore since mw:ExtLink is used for all the three link syntaxes.
 	 *
 	 * @param Element $node
-	 * @param ?stdClass $dp
+	 * @param ?DataParsoid $dp
 	 * @return bool
 	 */
 	public static function usesWikiLinkSyntax(
-		Element $node, ?stdClass $dp
+		Element $node, ?DataParsoid $dp
 	): bool {
 		// FIXME: Optimization from ComputeDSR to avoid refetching this property
 		// Is it worth the unnecessary code here?
@@ -103,11 +104,11 @@ class WTUtils {
 	 * multiple link types
 	 *
 	 * @param Element $node
-	 * @param ?stdClass $dp
+	 * @param ?DataParsoid $dp
 	 * @return bool
 	 */
 	public static function usesExtLinkSyntax(
-		Element $node, ?stdClass $dp
+		Element $node, ?DataParsoid $dp
 	): bool {
 		// FIXME: Optimization from ComputeDSR to avoid refetching this property
 		// Is it worth the unnecessary code here?
@@ -127,11 +128,11 @@ class WTUtils {
 	 * multiple link types
 	 *
 	 * @param Element $node
-	 * @param ?stdClass $dp
+	 * @param ?DataParsoid $dp
 	 * @return bool
 	 */
 	public static function usesURLLinkSyntax(
-		Element $node, ?stdClass $dp = null
+		Element $node, ?DataParsoid $dp = null
 	): bool {
 		// FIXME: Optimization from ComputeDSR to avoid refetching this property
 		// Is it worth the unnecessary code here?
@@ -151,11 +152,11 @@ class WTUtils {
 	 * multiple link types
 	 *
 	 * @param Element $node
-	 * @param ?stdClass $dp
+	 * @param ?DataParsoid $dp
 	 * @return bool
 	 */
 	public static function usesMagicLinkSyntax(
-		Element $node, ?stdClass $dp = null
+		Element $node, ?DataParsoid $dp = null
 	): bool {
 		if ( !$dp ) {
 			$dp = DOMDataUtils::getDataParsoid( $node );
@@ -248,11 +249,11 @@ class WTUtils {
 	}
 
 	/**
-	 * This tests whether a DOM $node is a new $node added during an edit session
-	 * or an existing $node from parsed wikitext.
+	 * This tests whether a DOM node is a new node added during an edit session
+	 * or an existing node from parsed wikitext.
 	 *
 	 * As written, this function can only be used on non-template/extension content
-	 * or on the top-level $nodes of template/extension content. This test will
+	 * or on the top-level nodes of template/extension content. This test will
 	 * return the wrong results on non-top-level $nodes of template/extension content.
 	 *
 	 * @param Node $node
@@ -267,8 +268,7 @@ class WTUtils {
 		// For template/extension content, newness should be
 		// checked on the encapsulation wrapper $node.
 		$node = self::findFirstEncapsulationWrapperNode( $node ) ?? $node;
-		$dp = DOMDataUtils::getDataParsoid( $node );
-		return !empty( $dp->tmp->isNew );
+		return DOMDataUtils::getDataParsoid( $node )->getTempFlag( TempData::IS_NEW );
 	}
 
 	/**
@@ -859,7 +859,7 @@ class WTUtils {
 		$span = $doc->createElement( 'span' );
 		DOMUtils::addTypeOf( $span, 'mw:I18n' );
 		$dp = DOMDataUtils::getDataParsoid( $span );
-		$dp->tmp->i18n = $i18n;
+		$dp->getTemp()->i18n = $i18n;
 		$frag->appendChild( $span );
 		return $frag;
 	}

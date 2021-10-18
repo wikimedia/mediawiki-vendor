@@ -15,6 +15,8 @@ declare( strict_types = 1 );
 namespace Wikimedia\Parsoid\Wt2Html;
 
 use Wikimedia\Parsoid\Config\Env;
+use Wikimedia\Parsoid\NodeData\DataParsoid;
+use Wikimedia\Parsoid\NodeData\TempData;
 use Wikimedia\Parsoid\Tokens\CommentTk;
 use Wikimedia\Parsoid\Tokens\EndTagTk;
 use Wikimedia\Parsoid\Tokens\KV;
@@ -22,7 +24,6 @@ use Wikimedia\Parsoid\Tokens\SelfclosingTagTk;
 use Wikimedia\Parsoid\Tokens\SourceRange;
 use Wikimedia\Parsoid\Tokens\TagTk;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
-use Wikimedia\Parsoid\Utils\PHPUtils;
 
 class TokenizerUtils {
 	private static $protectAttrsRegExp;
@@ -107,7 +108,8 @@ class TokenizerUtils {
 		int $endPos, $content, bool $addEndTag = false ): array
 	{
 		$a = null;
-		$dp = (object)[ 'tsr' => $tsr ];
+		$dp = new DataParsoid;
+		$dp->tsr = $tsr;
 
 		if ( !$attrInfo ) {
 			$a = [];
@@ -115,7 +117,7 @@ class TokenizerUtils {
 				// Add a flag that indicates that the tokenizer didn't
 				// encounter a "|...|" attribute box. This is useful when
 				// deciding which <td>/<th> cells need attribute fixups.
-				$dp->tmp = PHPUtils::arrayToObject( [ 'noAttrs' => true ] );
+				$dp->setTempFlag( TempData::NO_ATTRS );
 			}
 		} else {
 			$a = $attrInfo[0];
@@ -130,7 +132,8 @@ class TokenizerUtils {
 			}
 		}
 
-		$dataAttribs = (object)[ 'tsr' => new SourceRange( $endPos, $endPos ) ];
+		$dataAttribs = new DataParsoid;
+		$dataAttribs->tsr = new SourceRange( $endPos, $endPos );
 		$endTag = null;
 		if ( $addEndTag ) {
 			$endTag = new EndTagTk( $tagName, [], $dataAttribs );
@@ -161,7 +164,9 @@ class TokenizerUtils {
 		bool $selfClose, SourceRange $tsr
 	) {
 		$tok = null;
-		$da = (object)[ 'tsr' => $tsr, 'stx' => 'html' ];
+		$da = new DataParsoid;
+		$da->tsr = $tsr;
+		$da->stx = 'html';
 
 		if ( $name !== $lcName ) {
 			$da->srcTagName = $name;

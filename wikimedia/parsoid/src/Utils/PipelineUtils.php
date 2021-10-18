@@ -3,7 +3,6 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Utils;
 
-use stdClass;
 use Wikimedia\Assert\Assert;
 use Wikimedia\Parsoid\Config\Env;
 use Wikimedia\Parsoid\DOM\Attr;
@@ -14,6 +13,8 @@ use Wikimedia\Parsoid\DOM\Element;
 use Wikimedia\Parsoid\DOM\Node;
 use Wikimedia\Parsoid\DOM\NodeList;
 use Wikimedia\Parsoid\DOM\Text;
+use Wikimedia\Parsoid\NodeData\DataParsoid;
+use Wikimedia\Parsoid\NodeData\TempData;
 use Wikimedia\Parsoid\Tokens\CommentTk;
 use Wikimedia\Parsoid\Tokens\EndTagTk;
 use Wikimedia\Parsoid\Tokens\EOFTk;
@@ -229,7 +230,7 @@ class PipelineUtils {
 				$endTag = new EndTagTk( $nodeName );
 				// Keep stx parity
 				if ( WTUtils::isLiteralHTMLNode( $node ) ) {
-					$endTag->dataAttribs = PHPUtils::arrayToObject( [ 'stx' => 'html' ] );
+					$endTag->dataAttribs->stx = 'html';
 				}
 				$tokBuf[] = $endTag;
 			}
@@ -346,7 +347,7 @@ class PipelineUtils {
 				!$node->hasAttribute( 'data-parsoid' ),
 				"Expected node to have its data attributes loaded" );
 
-			$nodeData = Utils::clone( DOMDataUtils::getNodeData( $node ) );
+			$nodeData = DOMDataUtils::getNodeData( $node )->clone();
 
 			if ( $wrapperName !== DOMCompat::nodeName( $node ) ) {
 				// Create a copy of the node without children
@@ -363,7 +364,7 @@ class PipelineUtils {
 
 				// We are applying a different wrapper.
 				// So, node's data-parsoid isn't applicable.
-				$nodeData->parsoid = new stdClass;
+				$nodeData->parsoid = new DataParsoid;
 			} else {
 				// Shallow clone since we don't want to convert the whole tree to tokens.
 				$workNode = $node->cloneNode( false );
@@ -446,18 +447,14 @@ class PipelineUtils {
 
 		// Pass through setDSR flag
 		if ( !empty( $opts['setDSR'] ) ) {
-			if ( !$firstWrapperToken->dataAttribs->tmp ) {
-				$firstWrapperToken->dataAttribs->tmp = new stdClass;
-			}
-			$firstWrapperToken->dataAttribs->tmp->setDSR = $opts['setDSR'];
+			$firstWrapperToken->dataAttribs->setTempFlag(
+				TempData::SET_DSR, $opts['setDSR'] );
 		}
 
 		// Pass through fromCache flag
 		if ( !empty( $opts['fromCache'] ) ) {
-			if ( !$firstWrapperToken->dataAttribs->tmp ) {
-				$firstWrapperToken->dataAttribs->tmp = new stdClass;
-			}
-			$firstWrapperToken->dataAttribs->tmp->fromCache = $opts['fromCache'];
+			$firstWrapperToken->dataAttribs->setTempFlag(
+				TempData::FROM_CACHE, $opts['fromCache'] );
 		}
 
 		// Transfer the tsr.
@@ -493,8 +490,9 @@ class PipelineUtils {
 		foreach ( $textCommentAccum as $n ) {
 			$span->appendChild( $n );
 		}
-		DOMDataUtils::setDataParsoid( $span,
-			(object)[ 'tmp' => PHPUtils::arrayToObject( [ 'wrapper' => true ] ) ] );
+		$dp = new DataParsoid;
+		$dp->setTempFlag( TempData::WRAPPER );
+		DOMDataUtils::setDataParsoid( $span, $dp );
 		$textCommentAccum = [];
 	}
 
