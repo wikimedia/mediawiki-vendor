@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.2.5 (2021-10-20)
+
+Fixed:
+
+* bin: Fix `minify` CLI autoload when run from a vendor directory. (Timo Tijhof)
+
 ## 2.2.4 (2021-07-28)
 
 Fixed:

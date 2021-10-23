@@ -109,7 +109,7 @@
 		"wikimedia/langconv": "0.4.2",
 		"wikimedia/less.php": "3.1.0",
 		"wikimedia/lucene-explain-parser": "1.0.0",
-		"wikimedia/minify": "2.2.4",
+		"wikimedia/minify": "2.2.5",
 		"wikimedia/normalized-exception": "1.0.1",
 		"wikimedia/object-factory": "3.0.2",
 		"wikimedia/parsoid": "0.15.0-a7",

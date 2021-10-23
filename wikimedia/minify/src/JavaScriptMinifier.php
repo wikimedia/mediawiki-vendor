@@ -1195,22 +1195,6 @@ class JavaScriptMinifier {
 	];
 
 	/**
-	 * @var array $expressionStates
-	 *
-	 * States that are like EXPRESSION, where true and false can be minified to !1 and !0.
-	 *
-	 * This array is augmented by self::ensureExpandedStates().
-	 */
-	private static $expressionStates = [
-		self::EXPRESSION           => true,
-		self::EXPRESSION_NO_NL     => true,
-		self::EXPRESSION_ARROWFUNC => true,
-		self::EXPRESSION_TERNARY   => true,
-		self::PAREN_EXPRESSION     => true,
-		self::PROPERTY_EXPRESSION  => true,
-	];
-
-	/**
 	 * Add copies of all states but with negative numbers to self::$model (if not already present),
 	 * to represent generator function states.
 	 */
@@ -1253,9 +1237,6 @@ class JavaScriptMinifier {
 		}
 		foreach ( self::$divStates as $state => $value ) {
 			self::$divStates[-$state] = $value;
-		}
-		foreach ( self::$expressionStates as $state => $value ) {
-			self::$expressionStates[-$state] = $value;
 		}
 	}
 
@@ -1508,16 +1489,6 @@ class JavaScriptMinifier {
 				// yield is treated as TYPE_RETURN inside a generator function (negative state)
 				// but as TYPE_LITERAL when not in a generator function (positive state)
 				$type = $state < 0 ? self::TYPE_RETURN : self::TYPE_LITERAL;
-			}
-
-			if (
-				$type === self::TYPE_LITERAL
-				&& ( $token === 'true' || $token === 'false' )
-				&& isset( self::$expressionStates[$state] )
-				&& $last !== '.'
-			) {
-				$token = ( $token === 'true' ) ? '!0' : '!1';
-				$ch = '!';
 			}
 
 			if ( $newlineFound && isset( self::$semicolon[$state][$type] ) ) {
