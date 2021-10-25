@@ -6,7 +6,7 @@ declare( strict_types = 1 );
  * separate PEG grammar file
  * (Grammar.pegphp)
  *
- * Use along with a {@link Wt2Html/HTML5TreeBuilder} and the
+ * Use along with a {@link Wt2Html/TreeBuilder/TreeBuilderStage} and the
  * {@link DOMPostProcessor}(s) for HTML output.
  */
 
@@ -194,18 +194,6 @@ class PegTokenizer extends PipelineStage {
 			'pipelineOffset' => 0
 		];
 		return $this->tokenizeSync( $text, $args );
-	}
-
-	/**
-	 * Determine whether a string is a valid URL
-	 *
-	 * @deprecated Use tokenizeURL()
-	 *
-	 * @param string $text
-	 * @return bool
-	 */
-	public function tokenizesAsURL( string $text ): bool {
-		return $this->tokenizeURL( $text ) !== false;
 	}
 
 	/**

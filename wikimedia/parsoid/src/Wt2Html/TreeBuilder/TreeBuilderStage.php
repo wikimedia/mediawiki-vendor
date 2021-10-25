@@ -7,7 +7,7 @@ declare( strict_types = 1 );
  * you a DOM tree and emit an event.
  */
 
-namespace Wikimedia\Parsoid\Wt2Html;
+namespace Wikimedia\Parsoid\Wt2Html\TreeBuilder;
 
 use Generator;
 use Wikimedia\Parsoid\Config\Env;
@@ -31,11 +31,12 @@ use Wikimedia\Parsoid\Utils\PHPUtils;
 use Wikimedia\Parsoid\Utils\TokenUtils;
 use Wikimedia\Parsoid\Utils\Utils;
 use Wikimedia\Parsoid\Utils\WTUtils;
+use Wikimedia\Parsoid\Wt2Html\PipelineStage;
 use Wikimedia\Parsoid\Wt2Html\PP\Handlers\PrepareDOM;
 use Wikimedia\RemexHtml\Tokenizer\PlainAttributes;
 use Wikimedia\RemexHtml\TreeBuilder\Dispatcher;
 
-class HTML5TreeBuilder extends PipelineStage {
+class TreeBuilderStage extends PipelineStage {
 	/** @var int */
 	private $tagId;
 
@@ -237,8 +238,6 @@ class HTML5TreeBuilder extends PipelineStage {
 			$tmp->tagId = $this->tagId++;
 		}
 
-		$attribs = $this->stashDataAttribs( $attribs, $dataAttribs );
-
 		$this->env->log( 'trace/html', $this->pipelineId, static function () use ( $token ) {
 			return PHPUtils::jsonEncode( $token );
 		} );
@@ -289,8 +288,11 @@ class HTML5TreeBuilder extends PipelineStage {
 						false, 0, 0 );
 				}
 			}
+
 			$this->dispatcher->startTag(
-				$tName, new PlainAttributes( $attribs ), false, 0, 0
+				$tName,
+				new PlainAttributes( $this->stashDataAttribs( $attribs, $dataAttribs ) ),
+				false, 0, 0
 			);
 			if ( empty( $dataAttribs->autoInsertedStart ) ) {
 				$this->env->log( 'debug/html', $this->pipelineId, 'Inserting shadow meta for', $tName );
@@ -337,7 +339,7 @@ class HTML5TreeBuilder extends PipelineStage {
 					$this->dispatcher->comment(
 						WTUtils::fosterCommentData(
 							$token->getAttribute( 'typeof' ) ?? '',
-							$attribs
+							$this->stashDataAttribs( $attribs, $dataAttribs )
 						), 0, 0
 					);
 					$wasInserted = true;
@@ -346,7 +348,9 @@ class HTML5TreeBuilder extends PipelineStage {
 
 			if ( !$wasInserted ) {
 				$this->dispatcher->startTag(
-					$tName, new PlainAttributes( $attribs ), false, 0, 0
+					$tName,
+					new PlainAttributes( $this->stashDataAttribs( $attribs, $dataAttribs ) ),
+					false, 0, 0
 				);
 				if ( !Utils::isVoidElement( $tName ) ) {
 					$this->dispatcher->endTag( $tName, 0, 0 );
@@ -363,7 +367,7 @@ class HTML5TreeBuilder extends PipelineStage {
 				$attribs['typeof'] = 'mw:EndTag';
 				$attribs['data-etag'] = $tName;
 				$this->dispatcher->comment(
-					WTUtils::fosterCommentData( 'mw:shadow', $attribs ),
+					WTUtils::fosterCommentData( 'mw:shadow', $this->stashDataAttribs( $attribs, $dataAttribs ) ),
 					0, 0
 				);
 			}

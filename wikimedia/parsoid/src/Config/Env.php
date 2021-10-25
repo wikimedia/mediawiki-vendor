@@ -12,7 +12,6 @@ use Wikimedia\Parsoid\DOM\DocumentFragment;
 use Wikimedia\Parsoid\Logger\ParsoidLogger;
 use Wikimedia\Parsoid\Parsoid;
 use Wikimedia\Parsoid\Tokens\Token;
-use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\PHPUtils;
 use Wikimedia\Parsoid\Utils\Title;
@@ -23,11 +22,12 @@ use Wikimedia\Parsoid\Utils\Utils;
 use Wikimedia\Parsoid\Wt2Html\Frame;
 use Wikimedia\Parsoid\Wt2Html\PageConfigFrame;
 use Wikimedia\Parsoid\Wt2Html\ParserPipelineFactory;
-use Wikimedia\RemexHtml\DOM\DOMBuilder;
+use Wikimedia\Parsoid\Wt2Html\TreeBuilder\DOMBuilder;
 use Wikimedia\RemexHtml\Tokenizer\PlainAttributes;
 use Wikimedia\RemexHtml\Tokenizer\Tokenizer;
 use Wikimedia\RemexHtml\TreeBuilder\Dispatcher;
 use Wikimedia\RemexHtml\TreeBuilder\TreeBuilder;
+use Wikimedia\RemexHtml\TreeBuilder\TreeMutationTracer;
 
 // phpcs:disable MediaWiki.Commenting.FunctionComment.MissingDocumentationPublic
 
@@ -417,6 +417,14 @@ class Env {
 	}
 
 	/**
+	 * Write out a string (because it was requested by dumpFlags)
+	 * @param string $str
+	 */
+	public function writeDump( string $str ) {
+		error_log( $str );
+	}
+
+	/**
 	 * Get the site config
 	 * @return SiteConfig
 	 */
@@ -758,10 +766,13 @@ class Env {
 		if ( $atTopLevel ) {
 			return [ $this->topLevelDoc, $this->dispatcher ];
 		} else {
-			// Shouldn't need a bag since children are migrated to a fragment
-			// of the top level doc immediately after the tree is built and
-			// before data objects are loaded.
-			return $this->createDocumentDispatcher();
+			list( $doc, $dispatcher ) = $this->createDocumentDispatcher();
+			// Attach the top-level bag to the document, for the convenience
+			// of code that modifies the data within the RemexHtml TreeBuilder
+			// pipeline, prior to the migration of nodes to the top-level
+			// document.
+			DOMDataUtils::prepareChildDoc( $this->topLevelDoc, $doc );
+			return [ $doc, $dispatcher ];
 		}
 	}
 
@@ -779,22 +790,18 @@ class Env {
 	private function createDocumentDispatcher(): array {
 		// The options to DOMBuilder should be kept in sync with its other
 		// uses, so grep for it before changing
-		$domBuilder = new class( [
-			'suppressHtmlNamespace' => true,
-			# 'suppressIdAttribute' => true,
-			#'domExceptionClass' => \Wikimdedia\Dodo\DOMException::class,
-		] ) extends DOMBuilder {
-				/** @inheritDoc */
-				protected function createDocument(
-					string $doctypeName = null,
-					string $public = null,
-					string $system = null
-				) {
-					// @phan-suppress-next-line PhanTypeMismatchReturn
-					return DOMCompat::newDocument( $doctypeName === 'html' );
+		$domBuilder = new DOMBuilder;
+		if ( $this->hasTraceFlag( 'remex' ) ) {
+			$tracer = new TreeMutationTracer(
+				$domBuilder,
+				function ( $msg ) {
+					$this->log( 'trace/remex', $msg );
 				}
-		};
-		$dispatcher = new Dispatcher( new TreeBuilder( $domBuilder ) );
+			);
+		} else {
+			$tracer = $domBuilder;
+		}
+		$dispatcher = new Dispatcher( new TreeBuilder( $tracer ) );
 
 		// PORT-FIXME: Necessary to setEnableCdataCallback
 		$tokenizer = new Tokenizer( $dispatcher, '', [ 'ignoreErrors' => true ] );

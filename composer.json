@@ -110,7 +110,7 @@
 		"wikimedia/minify": "2.2.4",
 		"wikimedia/normalized-exception": "1.0.1",
 		"wikimedia/object-factory": "3.0.2",
-		"wikimedia/parsoid": "0.15.0-a4",
+		"wikimedia/parsoid": "0.15.0-a5",
 		"wikimedia/php-session-serializer": "2.0.0",
 		"wikimedia/purtle": "1.0.8",
 		"wikimedia/relpath": "3.0.0",
@@ -127,7 +127,7 @@
 		"wikimedia/wait-condition-loop": "2.0.2",
 		"wikimedia/wrappedstring": "4.0.1",
 		"wikimedia/xmp-reader": "0.8.1",
-		"wikimedia/zest-css": "2.0.1",
+		"wikimedia/zest-css": "2.0.2",
 		"wmde/php-vuejs-templating": "1.0.3",
 		"zordius/lightncandy": "1.2.6"
 	},

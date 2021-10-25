@@ -25,9 +25,6 @@ use Wikimedia\Parsoid\Core\DomSourceRange;
  * on template tokens. It filters through to data-mw attribs.
  * @property array|null $templatedAttribs
  *
- * FIXME: never written
- * @property int|null $tsrDelta
- *
  * JSON-encoded information about template arguments. It starts out as an array
  * but gets decoded as a stdClass. It has the following properties:
  *   - dict
@@ -108,7 +105,7 @@ class TempData {
 	public const FROM_FOSTER = 1 << 9;
 
 	/**
-	 * All elements inserted by HTML5TreeBuilder receive an integer ID. It is used
+	 * All elements inserted by TreeBuilderStage receive an integer ID. It is used
 	 * in findAutoInsertedTags() in conjunction with data-stag to identify
 	 * auto-inserted tags, and for debugging.
 	 * @var int|null
