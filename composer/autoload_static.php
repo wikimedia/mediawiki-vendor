@@ -182,7 +182,6 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'R' => 
         array (
-            'RemexHtml\\' => 10,
             'React\\Promise\\' => 14,
             'Ramsey\\Uuid\\' => 12,
             'Ramsey\\Collection\\' => 18,
@@ -461,10 +460,6 @@ class ComposerStaticInit_mediawiki_vendor
             0 => __DIR__ . '/..' . '/thecodingmachine/safe/lib',
             1 => __DIR__ . '/..' . '/thecodingmachine/safe/deprecated',
             2 => __DIR__ . '/..' . '/thecodingmachine/safe/generated',
-        ),
-        'RemexHtml\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/wikimedia/remex-html/src',
         ),
         'React\\Promise\\' => 
         array (
@@ -4424,6 +4419,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Core\\ClientError' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Core/ClientError.php',
         'Wikimedia\\Parsoid\\Core\\ContentModelHandler' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Core/ContentModelHandler.php',
         'Wikimedia\\Parsoid\\Core\\DomSourceRange' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Core/DomSourceRange.php',
+        'Wikimedia\\Parsoid\\Core\\ElementRange' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Core/ElementRange.php',
         'Wikimedia\\Parsoid\\Core\\ExtensionContentModelHandler' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Core/ExtensionContentModelHandler.php',
         'Wikimedia\\Parsoid\\Core\\InternalException' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Core/InternalException.php',
         'Wikimedia\\Parsoid\\Core\\MediaStructure' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Core/MediaStructure.php',
@@ -4555,7 +4551,9 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\NodeData\\DataBag' => __DIR__ . '/..' . '/wikimedia/parsoid/src/NodeData/DataBag.php',
         'Wikimedia\\Parsoid\\NodeData\\DataParsoid' => __DIR__ . '/..' . '/wikimedia/parsoid/src/NodeData/DataParsoid.php',
         'Wikimedia\\Parsoid\\NodeData\\NodeData' => __DIR__ . '/..' . '/wikimedia/parsoid/src/NodeData/NodeData.php',
+        'Wikimedia\\Parsoid\\NodeData\\ParamInfo' => __DIR__ . '/..' . '/wikimedia/parsoid/src/NodeData/ParamInfo.php',
         'Wikimedia\\Parsoid\\NodeData\\TempData' => __DIR__ . '/..' . '/wikimedia/parsoid/src/NodeData/TempData.php',
+        'Wikimedia\\Parsoid\\NodeData\\TemplateInfo' => __DIR__ . '/..' . '/wikimedia/parsoid/src/NodeData/TemplateInfo.php',
         'Wikimedia\\Parsoid\\ParserTests\\Article' => __DIR__ . '/..' . '/wikimedia/parsoid/src/ParserTests/Article.php',
         'Wikimedia\\Parsoid\\ParserTests\\Grammar' => __DIR__ . '/..' . '/wikimedia/parsoid/src/ParserTests/Grammar.php',
         'Wikimedia\\Parsoid\\ParserTests\\Item' => __DIR__ . '/..' . '/wikimedia/parsoid/src/ParserTests/Item.php',
@@ -4616,11 +4614,12 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\AddLinkClasses' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/AddLinkClasses.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\AddMediaInfo' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/AddMediaInfo.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\AddRedLinks' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/AddRedLinks.php',
+        'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\CompoundTemplateInfo' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/CompoundTemplateInfo.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\ComputeDSR' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/ComputeDSR.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\ConvertOffsets' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/ConvertOffsets.php',
-        'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\DOMRange' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/DOMRange.php',
-        'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\DOMRangeArray' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/DOMRangeArray.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\DOMRangeBuilder' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/DOMRangeBuilder.php',
+        'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\DOMRangeInfo' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/DOMRangeInfo.php',
+        'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\DOMRangeInfoArray' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/DOMRangeInfoArray.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\I18n' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/I18n.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\LangConverter' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/LangConverter.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\Linter' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/Linter.php',
