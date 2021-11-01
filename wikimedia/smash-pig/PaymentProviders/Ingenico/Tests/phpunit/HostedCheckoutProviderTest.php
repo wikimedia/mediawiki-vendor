@@ -71,7 +71,12 @@ class HostedCheckoutProviderTest extends BaseSmashPigUnitTestCase {
 				$this->equalTo( 'GET' )
 			);
 		$response = $this->provider->getHostedPaymentStatus( $hostedPaymentId );
-		$this->assertEquals( 'PAYMENT_CREATED', $response['status'] );
+		$rawResponse = $response->getRawResponse();
+		$this->assertEquals( 'PAYMENT_CREATED', $rawResponse['status'] );
+		// checking the PaymentDetailResponse
+		$this->assertEquals( 'PENDING_APPROVAL', $response->getRawStatus() );
+		$this->assertEquals( 'pending-poke', $response->getStatus() );
+		$this->assertSame( '000000891566072501680000200001', $response->getGatewayTxnId() );
 	}
 
 	/**
@@ -87,9 +92,10 @@ class HostedCheckoutProviderTest extends BaseSmashPigUnitTestCase {
 			);
 
 		$response = $this->provider->getHostedPaymentStatus( $hostedPaymentId );
-		$this->assertNotEmpty( $response['errors'] );
-		$this->assertEquals( $errorCode, $response['errors'][0]['code'] );
-		$this->assertEquals( $errorDescription, $response['errors'][0]['message'] );
+		$rawResponse = $response->getRawResponse();
+		$this->assertNotEmpty( $rawResponse['errors'] );
+		$this->assertEquals( $errorCode, $rawResponse['errors'][0]['code'] );
+		$this->assertEquals( $errorDescription, $rawResponse['errors'][0]['message'] );
 	}
 
 	/**
@@ -117,7 +123,8 @@ class HostedCheckoutProviderTest extends BaseSmashPigUnitTestCase {
 				$this->equalTo( 'GET' )
 			);
 		$response = $this->provider->getHostedPaymentStatus( $hostedPaymentId );
-		$this->assertEquals( 'IN_PROGRESS', $response['status'] );
+		$rawResponse = $response->getRawResponse();
+		$this->assertEquals( 'IN_PROGRESS', $rawResponse['status'] );
 	}
 
 }

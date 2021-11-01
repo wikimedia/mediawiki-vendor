@@ -203,6 +203,10 @@ class Api {
 			],
 			'returnUrl' => $params['return_url']
 		];
+		$isRecurring = $params['recurring'] ?? '';
+		if ( $isRecurring ) {
+			$restParams = array_merge( $restParams, $this->addRecurringParams( $params, true ) );
+		}
 
 		$result = $this->makeRestApiCall( $restParams, 'payments', 'POST' );
 		return $result['body'];

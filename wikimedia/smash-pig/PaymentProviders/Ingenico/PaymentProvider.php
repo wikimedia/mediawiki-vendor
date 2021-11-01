@@ -259,6 +259,8 @@ abstract class PaymentProvider implements IPaymentProvider {
 			$rootPaymentNode = $rawResponse['payment'];
 		} elseif ( isset( $rawResponse['paymentResult']['payment'] ) ) {
 			$rootPaymentNode = $rawResponse['paymentResult']['payment'];
+		} elseif ( isset( $rawResponse['createdPaymentOutput']['payment'] ) ) {
+			$rootPaymentNode = $rawResponse['createdPaymentOutput']['payment'];
 		} else {
 			if ( $response->hasErrors() ) {
 				// There is already a top-level error code which may have prevented

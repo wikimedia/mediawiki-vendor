@@ -4,6 +4,7 @@ namespace SmashPig\PaymentProviders\Ingenico;
 
 use BadMethodCallException;
 use SmashPig\Core\SmashPigException;
+use SmashPig\PaymentProviders\PaymentDetailResponse;
 
 /**
  * Class HostedCheckoutProvider
@@ -50,22 +51,25 @@ class HostedCheckoutProvider extends PaymentProvider {
 	/**
 	 * @param string $hostedPaymentId
 	 *
-	 * @return array
+	 * @return PaymentDetailResponse
 	 * @throws \SmashPig\Core\ApiException
 	 */
-	public function getHostedPaymentStatus( string $hostedPaymentId ): array {
+	public function getHostedPaymentStatus( string $hostedPaymentId ): PaymentDetailResponse {
 		if ( !$hostedPaymentId ) {
 			throw new BadMethodCallException(
 				'Called getHostedPaymentStatus with empty hostedPaymentId'
 			);
 		}
 		$path = "hostedcheckouts/$hostedPaymentId";
-		$response = $this->api->makeApiCall( $path, 'GET' );
-		if ( isset( $response['createdPaymentOutput'] ) ) {
+		$rawResponse = $this->api->makeApiCall( $path, 'GET' );
+
+		if ( isset( $rawResponse['createdPaymentOutput'] ) ) {
 			$this->addPaymentStatusErrorsIfPresent(
-				$response, $response['createdPaymentOutput']['payment']
+				$rawResponse, $rawResponse['createdPaymentOutput']['payment']
 			);
 		}
+		$response = new PaymentDetailResponse();
+		$this->prepareResponseObject( $response, $rawResponse );
 		return $response;
 	}
 

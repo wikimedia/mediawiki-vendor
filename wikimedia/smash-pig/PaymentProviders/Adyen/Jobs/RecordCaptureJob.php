@@ -56,6 +56,20 @@ class RecordCaptureJob extends RunnableJob {
 			// Use the eventDate from the capture as the date
 			$dbMessage['date'] = strtotime( $this->eventDate );
 
+			// If its an iDEAL recurring we need the pending rows as more information is coming
+			// on the RECURRING_CONTRACT ipn, don't send to the donations queue here
+			if ( $dbMessage['recurring'] && $dbMessage['payment_submethod'] == 'rtbt_ideal' ) {
+				// Add the currency and gross (amount), this can change on the bank's end
+				$dbMessage['gross'] = $this->amount;
+				$dbMessage['currency'] = $this->currency;
+
+				// Update the pending message with gateway_txn_id, date, gross, and currency
+				// We do need to update the gateway_txn_id as the one in the pending table comes back from the redirect
+				// and may not be there if the donor never got back to us
+				$db->storeMessage( $dbMessage );
+				return true;
+			}
+
 			QueueWrapper::push( 'donations', $dbMessage );
 
 			// Remove it from the pending database
