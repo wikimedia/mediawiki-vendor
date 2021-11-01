@@ -4074,7 +4074,7 @@
             },
             "time": "2021-10-27T23:40:37+00:00",
             "type": "library",
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-4": {
                     "SmashPig\\": "./"
