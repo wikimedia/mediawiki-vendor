@@ -30,7 +30,7 @@ class ApplePayPaymentProvider extends PaymentProvider {
 		$this->mapStatus(
 			$response,
 			$rawResponse,
-			new CreatePaymentStatus(),
+			new ApprovalNeededCreatePaymentStatus(),
 			$rawResponse['resultCode'] ?? null
 		);
 		$this->mapRestIdAndErrors( $response, $rawResponse );

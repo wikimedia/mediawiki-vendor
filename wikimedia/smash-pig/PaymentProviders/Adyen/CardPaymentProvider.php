@@ -42,7 +42,7 @@ class CardPaymentProvider extends PaymentProvider {
 			$this->mapStatus(
 				$response,
 				$rawResponse,
-				new CreateCardPaymentStatus(),
+				new ApprovalNeededCreatePaymentStatus(),
 				$rawStatus
 			);
 			if ( $rawStatus === 'RedirectShopper' ) {
@@ -73,7 +73,7 @@ class CardPaymentProvider extends PaymentProvider {
 			$this->mapStatus(
 				$response,
 				$rawResponse,
-				new CreateCardPaymentStatus(),
+				new ApprovalNeededCreatePaymentStatus(),
 				$rawStatus
 			);
 
@@ -91,7 +91,7 @@ class CardPaymentProvider extends PaymentProvider {
 				$this->mapStatus(
 					$response,
 					$rawResponse,
-					new CreateCardPaymentStatus(),
+					new ApprovalNeededCreatePaymentStatus(),
 					$rawResponse->paymentResult->resultCode ?? null
 				);
 			} else {
@@ -111,6 +111,6 @@ class CardPaymentProvider extends PaymentProvider {
 	}
 
 	protected function getPaymentDetailsStatusNormalizer(): StatusNormalizer {
-		return new CreateCardPaymentStatus();
+		return new ApprovalNeededCreatePaymentStatus();
 	}
 }

@@ -7,9 +7,10 @@ use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentData\StatusNormalizer;
 
 /**
- * Payment status normalizer for authorizations that need a capture
+ * Payment status normalizer for authorizations that need an
+ * approval (capture) to actually transfer the funds.
  */
-class CreateCardPaymentStatus implements StatusNormalizer {
+class ApprovalNeededCreatePaymentStatus implements StatusNormalizer {
 
 	/**
 	 * @param string $adyenStatus
