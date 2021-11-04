@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '43b2c93b316fa38d444edba4e00e2422da5e083e',
+        'reference' => '2ffaeefb25590516fa369f8bf1966166bbb93c74',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '43b2c93b316fa38d444edba4e00e2422da5e083e',
+            'reference' => '2ffaeefb25590516fa369f8bf1966166bbb93c74',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -1134,12 +1134,12 @@
             'dev_requirement' => false,
         ),
         'wikimedia/shellbox' => array(
-            'pretty_version' => '2.1.0',
-            'version' => '2.1.0.0',
+            'pretty_version' => '3.0.0',
+            'version' => '3.0.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/shellbox',
             'aliases' => array(),
-            'reference' => 'a51b66b14332bf3e3ff80578d6564441eaf5b288',
+            'reference' => '6b5abcd4a467b27b5ba4fc28f7730ea5d01367a1',
             'dev_requirement' => false,
         ),
         'wikimedia/testing-access-wrapper' => array(

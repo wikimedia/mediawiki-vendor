@@ -308,6 +308,7 @@ class Server {
 	 * @param string $message
 	 * @param string $file
 	 * @param int $line
+	 * @return never
 	 */
 	public function handleError( $level, $message, $file, $line ) {
 		throw new ShellboxError( "PHP error in $file line $line: $message" );
