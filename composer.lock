@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "33f44e217171c659f4cb9e51de1bbcc7",
+    "content-hash": "6f5984a590e9d5b9bc943170ede3575d",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -2705,27 +2705,27 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.42.0",
+            "version": "v0.42.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "cf3761126c1da853bc7fd127e8471e5bfdde911e"
+                "reference": "89f6452961ca53f621fa67ff1511de94ac24b477"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/cf3761126c1da853bc7fd127e8471e5bfdde911e",
-                "reference": "cf3761126c1da853bc7fd127e8471e5bfdde911e",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/89f6452961ca53f621fa67ff1511de94ac24b477",
+                "reference": "89f6452961ca53f621fa67ff1511de94ac24b477",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2.9"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "37.0.0",
-                "mediawiki/mediawiki-phan-config": "0.10.6",
+                "mediawiki/mediawiki-codesniffer": "38.0.0",
+                "mediawiki/mediawiki-phan-config": "0.11.0",
                 "mediawiki/minus-x": "1.1.1",
                 "php-parallel-lint/php-console-highlighter": "0.5.0",
-                "php-parallel-lint/php-parallel-lint": "1.3.0",
+                "php-parallel-lint/php-parallel-lint": "1.3.1",
                 "phpunit/phpunit": "^8.5"
             },
             "type": "library",
@@ -2783,9 +2783,9 @@
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOUI",
             "support": {
-                "source": "https://github.com/wikimedia/oojs-ui/tree/v0.42.0"
+                "source": "https://github.com/wikimedia/oojs-ui/tree/v0.42.1"
             },
-            "time": "2021-08-19T03:28:25+00:00"
+            "time": "2021-11-04T01:00:29+00:00"
         },
         {
             "name": "pear/console_getopt",
