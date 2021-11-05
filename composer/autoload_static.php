@@ -181,9 +181,8 @@ class ComposerStaticInit_mediawiki_vendor
             1 => __DIR__ . '/..' . '/wikimedia/ip-utils/src',
             2 => __DIR__ . '/..' . '/wikimedia/object-factory/src',
             3 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
-            4 => __DIR__ . '/..' . '/wikimedia/testing-access-wrapper/src',
-            5 => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src',
-            6 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
+            4 => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src',
+            5 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
         ),
         'WikiPEG\\' => 
         array (
@@ -1945,7 +1944,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Services\\ServiceAlreadyDefinedException' => __DIR__ . '/..' . '/wikimedia/services/src/ServiceAlreadyDefinedException.php',
         'Wikimedia\\Services\\ServiceContainer' => __DIR__ . '/..' . '/wikimedia/services/src/ServiceContainer.php',
         'Wikimedia\\Services\\ServiceDisabledException' => __DIR__ . '/..' . '/wikimedia/services/src/ServiceDisabledException.php',
-        'Wikimedia\\TestingAccessWrapper' => __DIR__ . '/..' . '/wikimedia/testing-access-wrapper/src/TestingAccessWrapper.php',
         'Wikimedia\\Timestamp\\ConvertibleTimestamp' => __DIR__ . '/..' . '/wikimedia/timestamp/src/ConvertibleTimestamp.php',
         'Wikimedia\\Timestamp\\TimestampException' => __DIR__ . '/..' . '/wikimedia/timestamp/src/TimestampException.php',
         'Wikimedia\\WaitConditionLoop' => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src/WaitConditionLoop.php',
