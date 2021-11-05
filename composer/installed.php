@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '1027aa7ce68acbe004984d08abad3e6472156cd8',
+        'reference' => '17951d45b1e1b032fe5e9e310acea27cba2a9fd8',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '1027aa7ce68acbe004984d08abad3e6472156cd8',
+            'reference' => '17951d45b1e1b032fe5e9e310acea27cba2a9fd8',
             'dev_requirement' => false,
         ),
         'christian-riesen/base32' => array(
@@ -527,15 +527,6 @@
             'install_path' => __DIR__ . '/../wikimedia/shellbox',
             'aliases' => array(),
             'reference' => 'd7ad649b7443d86235d7f179d205f9b9476c9c63',
-            'dev_requirement' => false,
-        ),
-        'wikimedia/testing-access-wrapper' => array(
-            'pretty_version' => '2.0.0',
-            'version' => '2.0.0.0',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../wikimedia/testing-access-wrapper',
-            'aliases' => array(),
-            'reference' => '280e613c76f481f2fe90e0ea22361080b6ab0d65',
             'dev_requirement' => false,
         ),
         'wikimedia/timestamp' => array(

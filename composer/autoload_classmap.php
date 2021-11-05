@@ -984,7 +984,6 @@ return array(
     'Wikimedia\\Services\\ServiceAlreadyDefinedException' => $vendorDir . '/wikimedia/services/src/ServiceAlreadyDefinedException.php',
     'Wikimedia\\Services\\ServiceContainer' => $vendorDir . '/wikimedia/services/src/ServiceContainer.php',
     'Wikimedia\\Services\\ServiceDisabledException' => $vendorDir . '/wikimedia/services/src/ServiceDisabledException.php',
-    'Wikimedia\\TestingAccessWrapper' => $vendorDir . '/wikimedia/testing-access-wrapper/src/TestingAccessWrapper.php',
     'Wikimedia\\Timestamp\\ConvertibleTimestamp' => $vendorDir . '/wikimedia/timestamp/src/ConvertibleTimestamp.php',
     'Wikimedia\\Timestamp\\TimestampException' => $vendorDir . '/wikimedia/timestamp/src/TimestampException.php',
     'Wikimedia\\WaitConditionLoop' => $vendorDir . '/wikimedia/wait-condition-loop/src/WaitConditionLoop.php',
