@@ -1,22 +1,22 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => NULL,
+        'reference' => '77ebd35137f9d7b9529a0da3351c01839f2e6278',
         'name' => '__root__',
         'dev' => false,
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => NULL,
+            'reference' => '77ebd35137f9d7b9529a0da3351c01839f2e6278',
             'dev_requirement' => false,
         ),
         'christian-riesen/base32' => array(
@@ -437,6 +437,15 @@
             'install_path' => __DIR__ . '/../wikimedia/minify',
             'aliases' => array(),
             'reference' => '2efef5f0b97d6342504490cd2525d2bc6eb8821e',
+            'dev_requirement' => false,
+        ),
+        'wikimedia/normalized-exception' => array(
+            'pretty_version' => 'v1.0.1',
+            'version' => '1.0.1.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../wikimedia/normalized-exception',
+            'aliases' => array(),
+            'reference' => 'ed9fc13d75f65c80dc1a95d4792658c97fd782e6',
             'dev_requirement' => false,
         ),
         'wikimedia/object-factory' => array(
