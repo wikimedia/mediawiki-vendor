@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '4c4d45bb27883383404fad9a4f8a5dcdc9574a7e',
+        'reference' => '8441e5db2d7d473e588bb1f7b0e2e2bf1c214ef1',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '4c4d45bb27883383404fad9a4f8a5dcdc9574a7e',
+            'reference' => '8441e5db2d7d473e588bb1f7b0e2e2bf1c214ef1',
             'dev_requirement' => false,
         ),
         'christian-riesen/base32' => array(
@@ -234,15 +234,6 @@
             'provided' => array(
                 0 => '1.0',
             ),
-        ),
-        'psr/http-factory' => array(
-            'pretty_version' => '1.0.1',
-            'version' => '1.0.1.0',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../psr/http-factory',
-            'aliases' => array(),
-            'reference' => '12ac7fcd07e5b077433f5f2bee95b3a771bf61be',
-            'dev_requirement' => false,
         ),
         'psr/http-message' => array(
             'pretty_version' => '1.0.1',
