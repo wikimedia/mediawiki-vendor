@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '12f535100a955419bbddd85088d41540b08fc3b0',
+        'reference' => '4c4d45bb27883383404fad9a4f8a5dcdc9574a7e',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '12f535100a955419bbddd85088d41540b08fc3b0',
+            'reference' => '4c4d45bb27883383404fad9a4f8a5dcdc9574a7e',
             'dev_requirement' => false,
         ),
         'christian-riesen/base32' => array(
@@ -273,15 +273,6 @@
             'provided' => array(
                 0 => '1.0.0',
             ),
-        ),
-        'psr/simple-cache' => array(
-            'pretty_version' => '1.0.1',
-            'version' => '1.0.1.0',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../psr/simple-cache',
-            'aliases' => array(),
-            'reference' => '408d5eafb83c57f6365a3ca330ff23aa4a5fa39b',
-            'dev_requirement' => false,
         ),
         'ralouphie/getallheaders' => array(
             'pretty_version' => '3.0.3',
