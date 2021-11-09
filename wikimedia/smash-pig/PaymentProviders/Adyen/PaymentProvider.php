@@ -16,6 +16,7 @@ use SmashPig\PaymentProviders\IPaymentProvider;
 use SmashPig\PaymentProviders\PaymentDetailResponse;
 use SmashPig\PaymentProviders\PaymentMethodResponse;
 use SmashPig\PaymentProviders\PaymentProviderResponse;
+use SmashPig\PaymentProviders\RiskScorer;
 use SmashPig\PaymentProviders\SavedPaymentDetails;
 use SmashPig\PaymentProviders\SavedPaymentDetailsResponse;
 
@@ -244,7 +245,7 @@ abstract class PaymentProvider implements IPaymentProvider {
 				$response->setGatewayTxnId( $rawResponse['pspReference'] );
 			}
 			if ( !empty( $rawResponse['errorCode'] ) ) {
-				$badField = ExceptionMapper::getValidationErrorField( $rawResponse['errorCode'] );
+				$badField = ValidationErrorMapper::getValidationErrorField( $rawResponse['errorCode'] );
 				if ( $badField !== null ) {
 					$response->addValidationError( new ValidationError( $badField ) );
 				}

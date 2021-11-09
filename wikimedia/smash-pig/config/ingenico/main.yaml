@@ -125,3 +125,66 @@ data-constraints:
     postal_code:
         type: alphanumeric
         length: 10
+
+fraud-filters:
+    # Automatically capture authorizations under this score
+    review-threshold: 75
+    # Automatically cancel authorizations with at least this score
+    reject-threshold: 125
+
+    # https://epayments.developer-ingenico.com/services/avs
+    avs-map:
+        # The street addresses match but the postal or ZIP codes do not, or the request does not include the postal or ZIP code.
+        A: 50
+        # Street addresses match. Postal or ZIP code not verified due to incompatible formats.
+        B: 50
+        # Street address and postal code or ZIP code not verified due to incompatible formats.
+        C: 50
+        # Street addresses and postal or ZIP codes match.
+        D: 0
+        # Street addresses and postal codes match. Applies to U.K.-domestic transactions only.
+        F: 0
+        # Address information not verified for international transaction.
+        G: 50
+        # Address information not verified.
+        I: 50
+        # Street addresses and postal and ZIP codes match.
+        M: 0
+        # No match.
+        N: 100
+        # Postal or ZIP codes match but street address not verified due to incompatible formats.
+        P: 50
+        # Retry. System unavailable or timed out.
+        R: 100
+        # Service not supported at the Issuer.
+        S: 50
+        # Address information is unavailable for that account number, or the card issuer does not support.
+        U: 50
+        # 9 digit ZIP matches, Address (or street) dos not match.
+        W: 50
+        # Exact AVS match
+        X: 0
+        # Street address and postal and ZIP code match.
+        Y: 0
+        # Postal or ZIP codes match, street addresses do not match or street address not included in request.
+        Z: 50
+        # No service available
+        "0": 25
+        "": 100
+
+    cvv-map:
+        # Match
+        M: 0
+        # No Match
+        N: 100
+        # Not Processed
+        P: 50
+        # CVV2 should be on the card
+        S: 0
+        # Issuer does not participate in the CVV2 service
+        U: 50
+        # Issuer did not respond
+        Y: 50
+        # No service available
+        "0": 50
+        "": 0

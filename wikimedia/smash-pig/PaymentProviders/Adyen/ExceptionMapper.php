@@ -136,7 +136,6 @@ class ExceptionMapper {
 		'902' => ErrorCode::UNEXPECTED_VALUE, // Invalid or empty request data
 		'903' => ErrorCode::UNKNOWN, // Internal error
 		'904' => ErrorCode::UNKNOWN, // Unable To Process
-		'905' => ErrorCode::UNKNOWN, // Payment details are not supported
 		'906' => ErrorCode::UNEXPECTED_VALUE, // Invalid Request: Original pspReference is invalid for this environment
 		'907' => ErrorCode::UNKNOWN, // Payment details are not supported for this country/ MCC combination
 		'908' => ErrorCode::UNEXPECTED_VALUE, // Invalid request
@@ -266,12 +265,6 @@ class ExceptionMapper {
 		'5_208' => ErrorCode::UNKNOWN, // PayWithGoogle token already expired
 	];
 
-	protected static $validationErrorFields = [
-		'101' => 'card_num', // Invalid card number
-		'102' => 'card_num', // Unable to determine variant
-		'103' => 'cvv',
-	];
-
 	/**
 	 * @throws ApiException
 	 */
@@ -291,7 +284,7 @@ class ExceptionMapper {
 		} elseif (
 			isset( $adyenResponse['errorCode'] ) &&
 			!isset( self::$fatalErrorCodes[$adyenResponse['errorCode']] ) &&
-			self::getValidationErrorField( $adyenResponse['errorCode'] ) === null
+			ValidationErrorMapper::getValidationErrorField( $adyenResponse['errorCode'] ) === null
 		) {
 			$exceptionCode = ErrorCode::UNKNOWN;
 			$exceptionMessage = 'Unknown Adyen error code ' . $adyenResponse['errorCode'];
@@ -301,9 +294,5 @@ class ExceptionMapper {
 			$exception->setRawErrors( [ $adyenResponse ] );
 			throw $exception;
 		}
-	}
-
-	public static function getValidationErrorField( $errorCode ): ?string {
-		return self::$validationErrorFields[$errorCode] ?? null;
 	}
 }

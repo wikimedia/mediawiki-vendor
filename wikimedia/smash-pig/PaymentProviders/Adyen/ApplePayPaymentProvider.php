@@ -7,6 +7,10 @@ use SmashPig\PaymentProviders\CreatePaymentResponse;
 
 class ApplePayPaymentProvider extends PaymentProvider {
 
+	/**
+	 * @var array
+	 */
+	private $sessionDomains;
 	private $merchantIdentifier;
 	private $displayName;
 	private $domainName;
@@ -20,6 +24,7 @@ class ApplePayPaymentProvider extends PaymentProvider {
 		$this->domainName = $options['domain-name'] ?? null;
 		$this->certificatePath = $options['certificate-path'] ?? null;
 		$this->certificatePassword = $options['certificate-password'] ?? null;
+		$this->sessionDomains = $options['session-domains'] ?? [];
 	}
 
 	public function createPayment( array $params ) : CreatePaymentResponse {
@@ -42,8 +47,16 @@ class ApplePayPaymentProvider extends PaymentProvider {
 		return $response;
 	}
 
+	/**
+	 * This method should never be called, since Apple Pay does not include any flow in
+	 * which the user is redirected to an external site and then returns to ours. (That's
+	 * where a payment details status normalizer would be used.)
+	 *
+	 * {@inheritDoc}
+	 * @see \SmashPig\PaymentProviders\Adyen\PaymentProvider::getPaymentDetailsStatusNormalizer()
+	 */
 	protected function getPaymentDetailsStatusNormalizer() : StatusNormalizer {
-		return new CreatePaymentStatus();
+		throw new \BadMethodCallException( 'No payment details status normalizer for Apple Pay.' );
 	}
 
 	public function createPaymentSession( array $params ) : array {
@@ -54,6 +67,16 @@ class ApplePayPaymentProvider extends PaymentProvider {
 			'certificate_path' => $this->certificatePath,
 			'certificate_password' => $this->certificatePassword
 		];
+		$this->validateParameters( $params );
+
+		// We don't wrap this in any standardized Response object.
+		// Partly out of laziness, but partly because Apple wants
+		// the entire session array to be returned verbatim to the
+		// onValidateMerchant completion function.
+		return $this->api->createApplePaySession( $params );
+	}
+
+	protected function validateParameters( array $params ) {
 		if (
 			empty( $params['merchant_identifier'] ) ||
 			empty( $params['display_name'] ) ||
@@ -69,11 +92,13 @@ class ApplePayPaymentProvider extends PaymentProvider {
 				'apple) or in the $params argument to createPaymentSession.'
 			);
 		}
-
-		// We don't wrap this in any standardized Response object.
-		// Partly out of laziness, but partly because Apple wants
-		// the entire session array to be returned verbatim to the
-		// onValidateMerchant completion function.
-		return $this->api->createApplePaySession( $params );
+		$validationDomain = parse_url( $params['validation_url'], PHP_URL_HOST );
+		if ( !in_array( $validationDomain, $this->sessionDomains ) ) {
+			throw new \UnexpectedValueException(
+				"Shenanigans! validation_url {$params['validation_url']} is not on an " .
+				'allowed domain, or domains are missing under configuration key ' .
+				'payment-provider/apple/constructor-parameters/session-domains.'
+			);
+		}
 	}
 }

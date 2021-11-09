@@ -77,6 +77,7 @@ class HostedCheckoutProviderTest extends BaseSmashPigUnitTestCase {
 		$this->assertEquals( 'PENDING_APPROVAL', $response->getRawStatus() );
 		$this->assertEquals( 'pending-poke', $response->getStatus() );
 		$this->assertSame( '000000891566072501680000200001', $response->getGatewayTxnId() );
+		$this->assertEquals( [ 'avs' => 25, 'cvv' => 0 ], $response->getRiskScores() );
 	}
 
 	/**

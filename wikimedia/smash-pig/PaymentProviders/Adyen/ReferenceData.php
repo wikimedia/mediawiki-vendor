@@ -13,6 +13,10 @@ class ReferenceData {
 			'method' => 'cc',
 			'submethod' => 'amex',
 		],
+		'amex_applepay' => [
+			'method' => 'apple',
+			'submethod' => 'amex',
+		],
 		'applepay' => [
 			'method' => 'apple',
 			'submethod' => 'apple'
@@ -48,9 +52,17 @@ class ReferenceData {
 			'method' => 'cc',
 			'submethod' => 'discover',
 		],
+		'discover_applepay' => [
+			'method' => 'apple',
+			'submethod' => 'discover',
+		],
 		'dotpay' => [
 			'method' => 'ew',
 			'submethod' => 'ew_dotpay',
+		],
+		'electron_applepay' => [
+			'method' => 'apple',
+			'submethod' => 'visa-electron',
 		],
 		'ideal' => [
 			'method' => 'rtbt',
@@ -66,6 +78,10 @@ class ReferenceData {
 			'variants' => [
 				'mcdebit' => 'mc-debit',
 			],
+		],
+		'mc_applepay' => [
+			'method' => 'apple',
+			'submethod' => 'mc',
 		],
 		'maestro' => [
 			'method' => 'cc',
@@ -99,6 +115,10 @@ class ReferenceData {
 				'visadebit' => 'visa-debit',
 				'visaelectron' => 'visa-electron', // guessing at Adyen code
 			]
+		],
+		'visa_applepay' => [
+			'method' => 'apple',
+			'submethod' => 'visa',
 		],
 		// Debit card issued by Visa Europe
 		'vpay' => [

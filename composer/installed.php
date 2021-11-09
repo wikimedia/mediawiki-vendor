@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '0b1be9c8f5fccd88f0d1c3ef4547444bafd93447',
+    'reference' => '73de4731bdf8879b394aeb6b5104d209ebd6b738',
     'name' => 'mediawiki/core',
   ),
   'versions' => 
@@ -171,7 +171,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '0b1be9c8f5fccd88f0d1c3ef4547444bafd93447',
+      'reference' => '73de4731bdf8879b394aeb6b5104d209ebd6b738',
     ),
     'mediawiki/mediawiki' => 
     array (
@@ -686,12 +686,12 @@
     ),
     'wikimedia/smash-pig' => 
     array (
-      'pretty_version' => 'v0.7.6.1',
-      'version' => '0.7.6.1',
+      'pretty_version' => 'v0.7.7',
+      'version' => '0.7.7.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'f87cbe2581abd464f6934fb90aa26a2fa7a78126',
+      'reference' => 'c1b764a474789bd55a7d1b857c96f8bcad3577c6',
     ),
     'wikimedia/timestamp' => 
     array (

@@ -1,6 +1,6 @@
 <?php
 
-namespace SmashPig\PaymentProviders\Adyen;
+namespace SmashPig\PaymentProviders;
 
 use SmashPig\Core\Context;
 use SmashPig\Core\Logging\Logger;
@@ -23,7 +23,7 @@ class RiskScorer {
 		$scores = [];
 
 		// TODO: Warn or log somewhere if avs/cvv results are null?
-		if ( $cvvResult ) {
+		if ( $cvvResult !== null ) {
 			$cvvResult = $this->trim( $cvvResult );
 			if ( array_key_exists( $cvvResult, $this->cvvMap ) ) {
 				$scores['cvv'] = $cvvScore = $this->cvvMap[$cvvResult];
@@ -33,7 +33,7 @@ class RiskScorer {
 			}
 		}
 
-		if ( $avsResult ) {
+		if ( $avsResult !== null ) {
 			$avsResult = $this->trim( $avsResult );
 			if ( array_key_exists( $avsResult, $this->avsMap ) ) {
 				$scores['avs'] = $avsScore = $this->avsMap[$avsResult];
