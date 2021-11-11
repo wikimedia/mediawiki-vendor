@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '3c1a1bddf1b374c34661826c8d225d17f4b834e3',
+        'reference' => 'fa5d8edad6e6354e22d24f1d58e42addf39f032a',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '3c1a1bddf1b374c34661826c8d225d17f4b834e3',
+            'reference' => 'fa5d8edad6e6354e22d24f1d58e42addf39f032a',
             'dev_requirement' => false,
         ),
         'christian-riesen/base32' => array(
@@ -134,12 +134,12 @@
             'dev_requirement' => false,
         ),
         'pear/mail_mime' => array(
-            'pretty_version' => '1.10.9',
-            'version' => '1.10.9.0',
+            'pretty_version' => '1.10.11',
+            'version' => '1.10.11.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../pear/mail_mime',
             'aliases' => array(),
-            'reference' => '1e7ae4e5258b6c0d385a8e76add567934245d38d',
+            'reference' => 'd4fb9ce61201593d0f8c6db629c45e29c3409c14',
             'dev_requirement' => false,
         ),
         'pear/net_smtp' => array(
@@ -170,21 +170,21 @@
             'dev_requirement' => false,
         ),
         'pear/pear-core-minimal' => array(
-            'pretty_version' => 'v1.10.10',
-            'version' => '1.10.10.0',
+            'pretty_version' => 'v1.10.11',
+            'version' => '1.10.11.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../pear/pear-core-minimal',
             'aliases' => array(),
-            'reference' => '625a3c429d9b2c1546438679074cac1b089116a7',
+            'reference' => '68d0d32ada737153b7e93b8d3c710ebe70ac867d',
             'dev_requirement' => false,
         ),
         'pear/pear_exception' => array(
-            'pretty_version' => 'v1.0.1',
-            'version' => '1.0.1.0',
+            'pretty_version' => 'v1.0.2',
+            'version' => '1.0.2.0',
             'type' => 'class',
             'install_path' => __DIR__ . '/../pear/pear_exception',
             'aliases' => array(),
-            'reference' => 'dbb42a5a0e45f3adcf99babfb2a1ba77b8ac36a7',
+            'reference' => 'b14fbe2ddb0b9f94f5b24cf08783d599f776fff0',
             'dev_requirement' => false,
         ),
         'pleonasm/bloom-filter' => array(
@@ -268,7 +268,7 @@
         'rsky/pear-core-min' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v1.10.10',
+                0 => 'v1.10.11',
             ),
         ),
         'symfony/polyfill-php72' => array(
