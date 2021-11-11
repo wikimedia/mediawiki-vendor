@@ -37,7 +37,6 @@ return array(
     'Pleo\\BloomFilter\\' => array($vendorDir . '/pleonasm/bloom-filter/src'),
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
     'LightnCandy\\' => array($vendorDir . '/zordius/lightncandy/src'),
-    'JsonSchema\\' => array($vendorDir . '/justinrainbow/json-schema/src/JsonSchema'),
     'HtmlFormatter\\' => array($vendorDir . '/wikimedia/html-formatter/src'),
     'GuzzleHttp\\Psr7\\' => array($vendorDir . '/guzzlehttp/psr7/src'),
     'GuzzleHttp\\Promise\\' => array($vendorDir . '/guzzlehttp/promises/src'),
