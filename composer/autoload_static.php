@@ -119,8 +119,8 @@ class ComposerStaticInit_mediawiki_vendor
         'c15f8000750e4e04ba559d9745044427' => __DIR__ . '/..' . '/data-values/number/Number.php',
         '3ef87127dc6892a0a78f223558a0b940' => __DIR__ . '/..' . '/diff/diff/Diff.php',
         '04c6c5c2f7095ccf6c481d3e53e1776f' => __DIR__ . '/..' . '/mustangostang/spyc/Spyc.php',
-        'db89166205707d49719c395c26d4e52d' => __DIR__ . '/..' . '/wikimedia/parsoid/DomImpl.php',
         '6513700b70192b7dfd0e5e9fc8082cf3' => __DIR__ . '/..' . '/wikimedia/relpath/src/Wikimedia/RelPath.php',
+        'db89166205707d49719c395c26d4e52d' => __DIR__ . '/..' . '/wikimedia/parsoid/DomImpl.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -4685,7 +4685,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Handlers\\HandleLinkNeighbours' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Handlers/HandleLinkNeighbours.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Handlers\\Headings' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Handlers/Headings.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Handlers\\LiFixups' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Handlers/LiFixups.php',
-        'Wikimedia\\Parsoid\\Wt2Html\\PP\\Handlers\\PrepareDOM' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Handlers/PrepareDOM.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Handlers\\TableFixups' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Handlers/TableFixups.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Handlers\\UnpackDOMFragments' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Handlers/UnpackDOMFragments.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\AddLinkClasses' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/AddLinkClasses.php',
@@ -4744,7 +4743,9 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Wt2Html\\TT\\WikiLinkHandler' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/TT/WikiLinkHandler.php',
         'Wikimedia\\Parsoid\\Wt2Html\\TokenTransformManager' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/TokenTransformManager.php',
         'Wikimedia\\Parsoid\\Wt2Html\\TokenizerUtils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/TokenizerUtils.php',
+        'Wikimedia\\Parsoid\\Wt2Html\\TreeBuilder\\Attributes' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/TreeBuilder/Attributes.php',
         'Wikimedia\\Parsoid\\Wt2Html\\TreeBuilder\\DOMBuilder' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/TreeBuilder/DOMBuilder.php',
+        'Wikimedia\\Parsoid\\Wt2Html\\TreeBuilder\\RemexPipeline' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/TreeBuilder/RemexPipeline.php',
         'Wikimedia\\Parsoid\\Wt2Html\\TreeBuilder\\TreeBuilderStage' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/TreeBuilder/TreeBuilderStage.php',
         'Wikimedia\\Parsoid\\Wt2Html\\Wt2HtmlDOMProcessor' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/Wt2HtmlDOMProcessor.php',
         'Wikimedia\\Parsoid\\Wt2Html\\XMLSerializer' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/XMLSerializer.php',
