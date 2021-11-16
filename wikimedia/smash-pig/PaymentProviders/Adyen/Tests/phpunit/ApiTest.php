@@ -142,7 +142,7 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 			->with(
 				'https://checkout-test.adyen.com/v67/payments',
 				'POST', [
-					'Content-Length' => '4637',
+					'Content-Length' => '4664',
 					'x-API-key' => 'K1ck0utTh3J4ms',
 					'content-type' => 'application/json'
 				], json_encode( [
@@ -169,7 +169,10 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 				],
 				'shopperEmail' => 'wkramer@mc5.net',
 				'shopperIP' => '127.0.0.1',
-				'shopperName' => 'Wayne Kramer',
+				'shopperName' => [
+					'firstName' => 'Wayne',
+					'lastName' => 'Kramer'
+				],
 				'shopperStatement' => 'Wikimedia 877 600 9454',
 			] ) )
 			->willReturn( [

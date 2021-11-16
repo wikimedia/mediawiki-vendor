@@ -11,4 +11,4 @@ CREATE TABLE IF NOT EXISTS pending (
   INDEX `idx_pending_order_id_gateway` (`order_id`, `gateway`),
   INDEX `idx_pending_gateway_txn_id_gateway` (`gateway_txn_id`, `gateway`),
   PRIMARY KEY `pk_pending_id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

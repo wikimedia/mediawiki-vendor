@@ -122,7 +122,16 @@ class Api {
 		$restParams = array_merge( $restParams, $this->getContactInfo( $params ) );
 		// This is specifically for credit cards
 		if ( empty( $restParams['paymentMethod']['holderName'] ) ) {
-			$restParams['paymentMethod']['holderName'] = $restParams['shopperName'];
+			// TODO: FullName staging helper
+			$nameParts = [];
+			if ( !empty( $params['first_name'] ) ) {
+				$nameParts[] = $params['first_name'];
+			}
+			if ( !empty( $params['last_name'] ) ) {
+				$nameParts[] = $params['last_name'];
+			}
+			$fullName = implode( ' ', $nameParts );
+			$restParams['paymentMethod']['holderName'] = $fullName;
 		}
 		$restParams['shopperStatement'] = $params['description'] ?? '';
 		$isRecurring = $params['recurring'] ?? '';
@@ -155,16 +164,10 @@ class Api {
 			'shopperEmail' => $params['email'] ?? '',
 			'shopperIP' => $params['user_ip'] ?? '',
 		];
-		// TODO: FullName staging helper
-		$nameParts = [];
-		if ( !empty( $params['first_name'] ) ) {
-			$nameParts[] = $params['first_name'];
-		}
-		if ( !empty( $params['last_name'] ) ) {
-			$nameParts[] = $params['last_name'];
-		}
-		$fullName = implode( ' ', $nameParts );
-		$contactInfo['shopperName'] = $fullName;
+		$contactInfo['shopperName'] = [
+			'firstName' => $params['first_name'] ?? '',
+			'lastName' => $params['last_name'] ?? ''
+		];
 		return $contactInfo;
 	}
 
