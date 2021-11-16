@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b5ec4a301cef074158af41d0b8c46b4a",
+    "content-hash": "6fbc3e0bcab3cced50807a2f8303da37",
     "packages": [
         {
             "name": "christian-riesen/base32",
@@ -2439,16 +2439,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.14.0-a19",
+            "version": "v0.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/parsoid.git",
-                "reference": "5102525d6f33ae4f2dc319fa7fa33cfd19335ea6"
+                "reference": "aa88828c6619595e145469f63320d065e796d77a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/5102525d6f33ae4f2dc319fa7fa33cfd19335ea6",
-                "reference": "5102525d6f33ae4f2dc319fa7fa33cfd19335ea6",
+                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/aa88828c6619595e145469f63320d065e796d77a",
+                "reference": "aa88828c6619595e145469f63320d065e796d77a",
                 "shasum": ""
             },
             "require": {
@@ -2472,7 +2472,7 @@
                 "wikimedia/langconv": "<0.4.2"
             },
             "require-dev": {
-                "composer/composer": "^1.10.22",
+                "composer/composer": "^1.10.22||^2.1.8",
                 "ext-curl": "*",
                 "mediawiki/mediawiki-codesniffer": "36.0.0",
                 "mediawiki/mediawiki-phan-config": "0.10.6",
@@ -2517,10 +2517,10 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/parsoid/tree/v0.14.0-a19",
+                "source": "https://github.com/wikimedia/parsoid/tree/v0.14.0",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
-            "time": "2021-09-17T21:32:44+00:00"
+            "time": "2021-11-16T22:07:53+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",
@@ -3631,9 +3631,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "wikimedia/parsoid": 15
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
