@@ -30,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '49ad59622dbeedfc88757d56315680dd08fd5e17',
+    'reference' => 'abb2bd9dc6b591f2e0427236cbf9f136ea024361',
     'name' => 'mediawiki/core',
   ),
   'versions' => 
@@ -195,7 +195,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '49ad59622dbeedfc88757d56315680dd08fd5e17',
+      'reference' => 'abb2bd9dc6b591f2e0427236cbf9f136ea024361',
     ),
     'mediawiki/mediawiki' => 
     array (
@@ -514,12 +514,12 @@ private static $installed = array (
     ),
     'twig/twig' => 
     array (
-      'pretty_version' => 'v1.24.2',
-      'version' => '1.24.2.0',
+      'pretty_version' => 'v1.44.5',
+      'version' => '1.44.5.0',
       'aliases' => 
       array (
       ),
-      'reference' => '33093f6e310e6976baeac7b14f3a6ec02f2d79b7',
+      'reference' => 'dd4353357c5a116322e92a00d16043a31881a81e',
     ),
     'wikimedia/assert' => 
     array (
