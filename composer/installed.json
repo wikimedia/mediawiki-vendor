@@ -7528,17 +7528,17 @@
         },
         {
             "name": "wikimedia/remex-html",
-            "version": "3.0.0",
-            "version_normalized": "3.0.0.0",
+            "version": "3.0.1",
+            "version_normalized": "3.0.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/remex-html.git",
-                "reference": "b09bb61c6bd3514b7f8ab31543b4afdc72789db8"
+                "reference": "962d1b028d505f488b77ded093cacce9a0855f29"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/remex-html/zipball/b09bb61c6bd3514b7f8ab31543b4afdc72789db8",
-                "reference": "b09bb61c6bd3514b7f8ab31543b4afdc72789db8",
+                "url": "https://api.github.com/repos/wikimedia/remex-html/zipball/962d1b028d505f488b77ded093cacce9a0855f29",
+                "reference": "962d1b028d505f488b77ded093cacce9a0855f29",
                 "shasum": ""
             },
             "require": {
@@ -7558,7 +7558,7 @@
                 "phpunit/phpunit": "^8.5 || ^9.5",
                 "wikimedia/update-history": "1.0.1"
             },
-            "time": "2021-10-24T23:57:14+00:00",
+            "time": "2021-11-18T23:37:04+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -7579,7 +7579,7 @@
             "description": "Fast HTML 5 parser",
             "homepage": "https://www.mediawiki.org/wiki/RemexHtml",
             "support": {
-                "source": "https://github.com/wikimedia/remex-html/tree/3.0.0"
+                "source": "https://github.com/wikimedia/remex-html/tree/3.0.1"
             },
             "install-path": "../wikimedia/remex-html"
         },

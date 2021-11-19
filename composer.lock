@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ee7ddf8230831e75a3af30a5e59807c7",
+    "content-hash": "e8aa2b2fade7d5d4a928cbad6a931cd7",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -7207,16 +7207,16 @@
         },
         {
             "name": "wikimedia/remex-html",
-            "version": "3.0.0",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/remex-html.git",
-                "reference": "b09bb61c6bd3514b7f8ab31543b4afdc72789db8"
+                "reference": "962d1b028d505f488b77ded093cacce9a0855f29"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/remex-html/zipball/b09bb61c6bd3514b7f8ab31543b4afdc72789db8",
-                "reference": "b09bb61c6bd3514b7f8ab31543b4afdc72789db8",
+                "url": "https://api.github.com/repos/wikimedia/remex-html/zipball/962d1b028d505f488b77ded093cacce9a0855f29",
+                "reference": "962d1b028d505f488b77ded093cacce9a0855f29",
                 "shasum": ""
             },
             "require": {
@@ -7255,9 +7255,9 @@
             "description": "Fast HTML 5 parser",
             "homepage": "https://www.mediawiki.org/wiki/RemexHtml",
             "support": {
-                "source": "https://github.com/wikimedia/remex-html/tree/3.0.0"
+                "source": "https://github.com/wikimedia/remex-html/tree/3.0.1"
             },
-            "time": "2021-10-24T23:57:14+00:00"
+            "time": "2021-11-18T23:37:04+00:00"
         },
         {
             "name": "wikimedia/request-timeout",
