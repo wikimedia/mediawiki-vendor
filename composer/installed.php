@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '402ddfa8c0012e415ebe75298380de9117970928',
+        'reference' => 'b563fae150601ce8106ef5aa8e53b96d4986b366',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '402ddfa8c0012e415ebe75298380de9117970928',
+            'reference' => 'b563fae150601ce8106ef5aa8e53b96d4986b366',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -1050,12 +1050,12 @@
             'dev_requirement' => false,
         ),
         'wikimedia/minify' => array(
-            'pretty_version' => '2.2.5',
-            'version' => '2.2.5.0',
+            'pretty_version' => '2.2.6',
+            'version' => '2.2.6.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/minify',
             'aliases' => array(),
-            'reference' => '99b44f6d1b3a46457f54e18cc129fdcd494626b0',
+            'reference' => 'a8e4eb7a7a96b5fe4d64187d0c7390375c0041e4',
             'dev_requirement' => false,
         ),
         'wikimedia/normalized-exception' => array(

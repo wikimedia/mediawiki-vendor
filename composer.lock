@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e8aa2b2fade7d5d4a928cbad6a931cd7",
+    "content-hash": "14062b252b5e57ba5737c223a76b3494",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -6791,16 +6791,16 @@
         },
         {
             "name": "wikimedia/minify",
-            "version": "2.2.5",
+            "version": "2.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/minify.git",
-                "reference": "99b44f6d1b3a46457f54e18cc129fdcd494626b0"
+                "reference": "a8e4eb7a7a96b5fe4d64187d0c7390375c0041e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/minify/zipball/99b44f6d1b3a46457f54e18cc129fdcd494626b0",
-                "reference": "99b44f6d1b3a46457f54e18cc129fdcd494626b0",
+                "url": "https://api.github.com/repos/wikimedia/minify/zipball/a8e4eb7a7a96b5fe4d64187d0c7390375c0041e4",
+                "reference": "a8e4eb7a7a96b5fe4d64187d0c7390375c0041e4",
                 "shasum": ""
             },
             "require": {
@@ -6808,7 +6808,7 @@
                 "php": ">=7.2.9"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "37.0.0",
+                "mediawiki/mediawiki-codesniffer": "38.0.0",
                 "mediawiki/mediawiki-phan-config": "0.11.0",
                 "mediawiki/minus-x": "1.1.1",
                 "ockcyp/covers-validator": "1.3.3",
@@ -6851,9 +6851,9 @@
             "description": "Minification of JavaScript code and CSS stylesheets.",
             "homepage": "https://gerrit.wikimedia.org/g/mediawiki/libs/Minify",
             "support": {
-                "source": "https://github.com/wikimedia/minify/tree/2.2.5"
+                "source": "https://github.com/wikimedia/minify/tree/2.2.6"
             },
-            "time": "2021-10-23T01:03:44+00:00"
+            "time": "2021-11-19T18:23:00+00:00"
         },
         {
             "name": "wikimedia/normalized-exception",

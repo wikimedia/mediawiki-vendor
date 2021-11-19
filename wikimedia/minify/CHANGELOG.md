@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.2.6 (2021-11-18)
+
+Fixed:
+
+* JavaScriptMinifier: Correctly recognize `\` in template strings. (Roan Kattouw) [T296058](https://phabricator.wikimedia.org/T296058)
+
 ## 2.2.5 (2021-10-20)
 
 Fixed:
