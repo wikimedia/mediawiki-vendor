@@ -30,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => 'abb2bd9dc6b591f2e0427236cbf9f136ea024361',
+    'reference' => 'd1d6f024c53a5f2be41f8c3538fab6b60b8479c4',
     'name' => 'mediawiki/core',
   ),
   'versions' => 
@@ -195,7 +195,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => 'abb2bd9dc6b591f2e0427236cbf9f136ea024361',
+      'reference' => 'd1d6f024c53a5f2be41f8c3538fab6b60b8479c4',
     ),
     'mediawiki/mediawiki' => 
     array (
@@ -296,12 +296,12 @@ private static $installed = array (
     ),
     'phpmailer/phpmailer' => 
     array (
-      'pretty_version' => 'v6.4.1',
-      'version' => '6.4.1.0',
+      'pretty_version' => 'v6.5.1',
+      'version' => '6.5.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => '9256f12d8fb0cd0500f93b19e18c356906cbed3d',
+      'reference' => 'dd803df5ad7492e1b40637f7ebd258fee5ca7355',
     ),
     'pleonasm/bloom-filter' => 
     array (
