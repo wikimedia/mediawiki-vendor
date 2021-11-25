@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'd1d6f024c53a5f2be41f8c3538fab6b60b8479c4',
+    'reference' => '8dbbe15a61f4a5fe1432c2a04d7eb7a1e3b851d8',
     'name' => 'mediawiki/core',
   ),
   'versions' => 
@@ -171,7 +171,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'd1d6f024c53a5f2be41f8c3538fab6b60b8479c4',
+      'reference' => '8dbbe15a61f4a5fe1432c2a04d7eb7a1e3b851d8',
     ),
     'mediawiki/mediawiki' => 
     array (
@@ -445,21 +445,17 @@
     ),
     'symfony/polyfill-php54' => 
     array (
-      'pretty_version' => 'v1.20.0',
-      'version' => '1.20.0.0',
-      'aliases' => 
+      'replaced' => 
       array (
+        0 => '*',
       ),
-      'reference' => '37285b1d5d13f37c8bee546d8d2ad0353460c4c7',
     ),
     'symfony/polyfill-php55' => 
     array (
-      'pretty_version' => 'v1.20.0',
-      'version' => '1.20.0.0',
-      'aliases' => 
+      'replaced' => 
       array (
+        0 => '*',
       ),
-      'reference' => 'c17452124a883900e1d73961f9075a638399c1a0',
     ),
     'symfony/polyfill-php72' => 
     array (
