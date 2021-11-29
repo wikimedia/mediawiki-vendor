@@ -118,8 +118,8 @@ class ComposerStaticInit_mediawiki_vendor
         'c15f8000750e4e04ba559d9745044427' => __DIR__ . '/..' . '/data-values/number/Number.php',
         '3ef87127dc6892a0a78f223558a0b940' => __DIR__ . '/..' . '/diff/diff/Diff.php',
         '04c6c5c2f7095ccf6c481d3e53e1776f' => __DIR__ . '/..' . '/mustangostang/spyc/Spyc.php',
-        'db89166205707d49719c395c26d4e52d' => __DIR__ . '/..' . '/wikimedia/parsoid/DomImpl.php',
         '6513700b70192b7dfd0e5e9fc8082cf3' => __DIR__ . '/..' . '/wikimedia/relpath/src/Wikimedia/RelPath.php',
+        'db89166205707d49719c395c26d4e52d' => __DIR__ . '/..' . '/wikimedia/parsoid/DomImpl.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -4495,6 +4495,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Config\\SiteConfig' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Config/SiteConfig.php',
         'Wikimedia\\Parsoid\\Config\\WikitextConstants' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Config/WikitextConstants.php',
         'Wikimedia\\Parsoid\\Core\\ClientError' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Core/ClientError.php',
+        'Wikimedia\\Parsoid\\Core\\ContentMetadataCollector' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Core/ContentMetadataCollector.php',
         'Wikimedia\\Parsoid\\Core\\ContentModelHandler' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Core/ContentModelHandler.php',
         'Wikimedia\\Parsoid\\Core\\DomSourceRange' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Core/DomSourceRange.php',
         'Wikimedia\\Parsoid\\Core\\ElementRange' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Core/ElementRange.php',
@@ -4691,6 +4692,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\AddLinkClasses' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/AddLinkClasses.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\AddMediaInfo' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/AddMediaInfo.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\AddRedLinks' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/AddRedLinks.php',
+        'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\AnnotationDOMRangeBuilder' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/AnnotationDOMRangeBuilder.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\CompoundTemplateInfo' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/CompoundTemplateInfo.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\ComputeDSR' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/ComputeDSR.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\ConvertOffsets' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/ConvertOffsets.php',
@@ -4706,7 +4708,9 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\Normalize' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/Normalize.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\PWrap' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/PWrap.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\ProcessTreeBuilderFixups' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/ProcessTreeBuilderFixups.php',
+        'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\RangeBuilderException' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/RangeBuilderException.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\Section' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/Section.php',
+        'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\WrapAnnotations' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/WrapAnnotations.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\WrapSections' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/WrapSections.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\WrapSectionsState' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/WrapSectionsState.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\WrapSectionsTplInfo' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/WrapSectionsTplInfo.php',

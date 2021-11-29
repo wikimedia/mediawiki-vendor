@@ -22,6 +22,7 @@ use Wikimedia\Parsoid\Utils\DOMTraverser;
 use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\PHPUtils;
 use Wikimedia\Parsoid\Utils\Utils;
+use Wikimedia\Parsoid\Utils\WTUtils;
 use Wikimedia\Parsoid\Wt2Html\PP\Handlers\CleanUp;
 use Wikimedia\Parsoid\Wt2Html\PP\Handlers\DedupeStyles;
 use Wikimedia\Parsoid\Wt2Html\PP\Handlers\DisplaySpace;
@@ -44,6 +45,7 @@ use Wikimedia\Parsoid\Wt2Html\PP\Processors\MigrateTrailingNLs;
 use Wikimedia\Parsoid\Wt2Html\PP\Processors\Normalize;
 use Wikimedia\Parsoid\Wt2Html\PP\Processors\ProcessTreeBuilderFixups;
 use Wikimedia\Parsoid\Wt2Html\PP\Processors\PWrap;
+use Wikimedia\Parsoid\Wt2Html\PP\Processors\WrapAnnotations;
 use Wikimedia\Parsoid\Wt2Html\PP\Processors\WrapSections;
 use Wikimedia\Parsoid\Wt2Html\PP\Processors\WrapTemplates;
 
@@ -180,6 +182,7 @@ class DOMPostProcessor extends PipelineStage {
 		$options = $this->options;
 		$seenIds = &$this->seenIds;
 		$usedIdIndex = [];
+		$abouts = [];
 
 		$tableFixer = new TableFixups( $env );
 
@@ -255,6 +258,49 @@ class DOMPostProcessor extends PipelineStage {
 				'Processor' => WrapTemplates::class,
 				'shortcut' => 'tplwrap',
 				'omit' => !empty( $options['inTemplate'] )
+			],
+			[
+				'name' => 'AddAnnotationIds',
+				'shortcut' => 'ann-ids',
+				'isTraverser' => true,
+				'handlers' => [
+					[
+						'nodeName' => 'meta',
+						'action' => static function ( $node, $env ) use ( &$abouts ) {
+							$isStart = false;
+							$t = WTUtils::extractAnnotationType( $node, $isStart );
+							if ( $t !== null ) {
+								$about = null;
+								if ( $isStart ) {
+									// The 'mwa' prefix is specific to annotations;
+									// if other DOM ranges are to use this mechanism, another prefix
+									// should be used.
+									$about = $env->newAnnotationId();
+									if ( !array_key_exists( $t, $abouts ) ) {
+										$abouts[$t] = [];
+									}
+									array_push( $abouts[$t], $about );
+								} else {
+									if ( array_key_exists( $t, $abouts ) ) {
+										$about = array_pop( $abouts[$t] );
+									}
+								}
+								if ( $about !== null ) {
+									$datamw = DOMDataUtils::getDataMw( $node );
+									$datamw->rangeId = $about;
+									DOMDataUtils::setDataMw( $node, $datamw );
+								}
+							}
+							return true;
+						}
+					]
+				],
+				'withAnnotations' => true
+			],
+			[
+				'Processor' => WrapAnnotations::class,
+				'shortcut' => 'annwrap',
+				'withAnnotations' => true
 			],
 			// 1. Link prefixes and suffixes
 			// 2. Unpack DOM fragments
@@ -902,6 +948,10 @@ class DOMPostProcessor extends PipelineStage {
 		for ( $i = 0;  $i < count( $this->processors );  $i++ ) {
 			$pp = $this->processors[$i];
 			if ( !empty( $pp['skipNested'] ) && !$this->atTopLevel ) {
+				continue;
+			}
+
+			if ( !empty( $pp['withAnnotations'] ) && !$this->env->hasAnnotations ) {
 				continue;
 			}
 

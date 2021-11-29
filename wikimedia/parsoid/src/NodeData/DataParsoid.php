@@ -102,9 +102,6 @@ use Wikimedia\Parsoid\Utils\Utils;
  * On a meta mw:Placeholder/StrippedTag, this is the name of the stripped tag.
  * @property string|null $name
  *
- * Debug source. ComputeDSR sets this for unusual inputs.
- * @property string|null $dbsrc
- *
  * This is set on image containers in which a template expands to multiple
  * image parameters. It is converted to a typeof attribute later in the same
  * function, so it's unclear why it needs to persist in data-parsoid.
@@ -134,6 +131,14 @@ use Wikimedia\Parsoid\Utils\Utils;
  * redundantly with the data-mw-group attribute on the <ol>. It is produced by
  * the extension's sourceToDom() and consumed by wtPostprocess().
  * @property string $group
+ *
+ * == Annotations ==
+ * This is used on annotation meta tags to indicate that the corresponding
+ * tag has been moved compared to it's initial location defined by wikitext.
+ * An annotation tag can be moved either as the result of fostering or as
+ * the result of annotation range extension to enclose a contiguous DOM
+ * forest.
+ * @property bool|null $wasMoved
  *
  * == HTML tags ==
  *

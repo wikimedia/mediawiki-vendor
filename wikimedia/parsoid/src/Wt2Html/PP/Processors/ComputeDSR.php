@@ -25,7 +25,7 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 	 * For an explanation of what TSR is, see ComputeDSR::computeNodeDSR()
 	 *
 	 * TSR info on all these tags are only valid for the opening tag.
-	 * (closing tags dont have attrs since tree-builder strips them
+	 * (closing tags don't have attrs since tree-builder strips them
 	 * and adds meta-tags tracking the corresponding TSR)
 	 *
 	 * On other tags, a, hr, br, meta-marker tags, the tsr spans
@@ -103,7 +103,7 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 		 *    (a) urls with encoded chars (ex: 'http://example.com/?foo&#61;bar')
 		 *    (b) non-canonical spaces (ex: 'RFC  123' instead of 'RFC 123')
 		 *
-		 * 2. We currently dont have source offsets for attributes.
+		 * 2. We currently don't have source offsets for attributes.
 		 *    So, we get a lot of spurious complaints about cs/s mismatch
 		 *    when DSR computation hit the <body> tag on this attribute.
 		 *    $opts['attrExpansion'] tell us when we are processing an attribute
@@ -178,9 +178,9 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 		 *     -> end-tag  : "]]"
 		 *
 		 * 3. [[{{1x|Foo}}|Foo]] <-- tpl-attr mw:WikiLink
-		 *    Dont bother setting tag widths since dp->sa['href'] will be
+		 *    Don't bother setting tag widths since dp->sa['href'] will be
 		 *    the expanded target and won't correspond to original source.
-		 *    We dont always have access to the meta-tag that has the source.
+		 *    We don't always have access to the meta-tag that has the source.
 		 *
 		 * 4. [http://wp.org foo] <-- mw:ExtLink
 		 *     -> start-tag: "[http://wp.org "
@@ -218,21 +218,19 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 	 * Compute wikitext string lengths that contribute to this
 	 * node's opening and closing tags.
 	 *
-	 * @param int[] $widths
+	 * @param int|null $stWidth Start tag width
+	 * @param int|null $etWidth End tag width
 	 * @param Element $node
 	 * @param DataParsoid $dp
-	 * @return int[]
+	 * @return int[] Start and end tag widths
 	 */
-	private function computeTagWidths( array $widths, Element $node, DataParsoid $dp ): array {
+	private function computeTagWidths( $stWidth, $etWidth, Element $node, DataParsoid $dp ): array {
 		if ( isset( $dp->extTagOffsets ) ) {
 			return [
 				$dp->extTagOffsets->openWidth,
 				$dp->extTagOffsets->closeWidth
 			];
 		}
-
-		$stWidth = $widths[0];
-		$etWidth = $widths[1];
 
 		if ( WTUtils::hasLiteralHTMLMarker( $dp ) ) {
 			if ( !empty( $dp->selfClose ) ) {
@@ -326,11 +324,13 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 		$this->trace( $env, "BEG: ", DOMCompat::nodeName( $node ), " with [s, e]=", [ $s, $e ] );
 
 		$savedEndTagWidth = null;
+		/** @var int|null $ce Child end */
 		$ce = $e;
 		// Initialize $cs to $ce to handle the zero-children case properly
 		// if this $node has no child content, then the start and end for
 		// the child dom are indeed identical.  Alternatively, we could
 		// explicitly code this check before everything and bypass this.
+		/** @var int|null $cs Child start */
 		$cs = $ce;
 
 		$child = $node->lastChild;
@@ -526,9 +526,8 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 					}
 
 					// Compute width of opening/closing tags for this dom $node
-					$tagWidths = $this->computeTagWidths( [ $stWidth, $savedEndTagWidth ], $child, $dp );
-					$stWidth = $tagWidths[0];
-					$etWidth = $tagWidths[1];
+					list( $stWidth, $etWidth ) =
+						$this->computeTagWidths( $stWidth, $savedEndTagWidth, $child, $dp );
 
 					if ( !empty( $dp->autoInsertedStart ) ) {
 						$stWidth = 0;
@@ -633,14 +632,9 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 					}
 
 					$env->log( "trace/dsr", static function () use ( $frame, $child, $cs, $ce, $dp ) {
-						$str = "     UPDATING " . DOMCompat::nodeName( $child ) .
+						return "     UPDATING " . DOMCompat::nodeName( $child ) .
 							" with " . PHPUtils::jsonEncode( [ $cs, $ce ] ) .
 							"; typeof: " . ( $child->getAttribute( "typeof" ) ?? '' );
-						// Set up 'dbsrc' so we can debug this
-						if ( $cs !== null && $ce !== null ) {
-							$dp->dbsrc = PHPUtils::safeSubstr( $frame->getSrcText(), $cs, $ce - $cs );
-						}
-						return $str;
 					} );
 				}
 
@@ -682,14 +676,8 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 
 							// Update and move right
 							$env->log( "trace/dsr", static function () use ( $frame, $newCE, $sibling, $siblingDP ) {
-								$str = "     CHANGING ce.start of " . DOMCompat::nodeName( $sibling ) .
+								return "     CHANGING ce.start of " . DOMCompat::nodeName( $sibling ) .
 									" from " . $siblingDP->dsr->start . " to " . $newCE;
-								// debug info
-								if ( $siblingDP->dsr->end ) {
-									$siblingDP->dbsrc = PHPUtils::safeSubstr(
-										$frame->getSrcText(), $newCE, $siblingDP->dsr->end - $newCE );
-								}
-								return $str;
 							} );
 
 							$siblingDP->dsr->start = $newCE;
@@ -718,7 +706,7 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 				}
 			}
 
-			// Dont change state if we processed a fostered $node
+			// Don't change state if we processed a fostered $node
 			if ( $fosteredNode ) {
 				$ce = $origCE;
 			} else {
@@ -750,7 +738,7 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 						// indentPreDSRCorrection is not required here since
 						// we'll never come down this branch (mw:TSRMarker won't exist
 						// in indent-pres, and mw:EndTag markers won't have a text $node
-						// for its previous sibling), but, for sake of maintenance sanity,
+						// for its previous sibling), but, for sake of maintenance ease,
 						// replicating code from above.
 						$cs = $ce - strlen( $prevText ) - WTUtils::indentPreDSRCorrection( $prevChild );
 						$ce = $cs;

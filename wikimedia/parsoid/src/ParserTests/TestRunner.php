@@ -42,7 +42,8 @@ class TestRunner {
 		],
 		[
 			'prefix' => 'local',
-			'url' => 'http://doesnt.matter.org/$1',
+			'url' => 'http://example.org/wiki/$1',
+			'local' => true,
 			'localinterwiki' => true
 		],
 		[
@@ -85,7 +86,7 @@ class TestRunner {
 		],
 		[
 			'prefix' => 'mi',
-			'url' => 'http://mi.wikipedia.org/wiki/$1',
+			'url' => 'http://example.org/wiki/$1',
 			// better for testing if one of the
 			// localinterwiki prefixes is also a language
 			'language' => 'Test',
@@ -501,10 +502,11 @@ class TestRunner {
 				( !WTUtils::isEncapsulationWrapper( $node ) &&
 					// These wrappers can only be edited in restricted ways.
 					// Simpler to just block all editing on them.
-					!DOMUtils::matchTypeOf( $node, '#^mw:(Entity|Placeholder|DisplaySpace)(/|$)#' ) &&
+					!DOMUtils::matchTypeOf( $node, '#^mw:(Entity|Placeholder|DisplaySpace|Annotation)(/|$)#' ) &&
 					// Deleting these wrappers is tantamount to removing the
 					// references-tag encapsulation wrappers, which results in errors.
-					!preg_match( '/\bmw-references-wrap\b/', $node->getAttribute( 'class' ) ?? '' )
+					!preg_match( '/\bmw-references-wrap\b/', $node->getAttribute( 'class' ) ?? ''
+					)
 				);
 		};
 
@@ -519,6 +521,10 @@ class TestRunner {
 			// Text and comment nodes are always editable
 			if ( !( $node instanceof Element ) ) {
 				return false;
+			}
+
+			if ( WTUtils::isMarkerAnnotation( $node ) ) {
+				return true;
 			}
 
 			// - Image wrapper is an uneditable image elt.
@@ -560,7 +566,6 @@ class TestRunner {
 			$children = $node->childNodes ? iterator_to_array( $node->childNodes ) : [];
 			foreach ( $children as $child ) {
 				$changeType = $defaultChangeType;
-
 				if ( $domSubtreeIsEditable( $child ) ) {
 					if ( $nodeIsUneditable( $child ) || $alea->random() < 0.5 ) {
 						// This call to random is a hack to preserve the current
@@ -586,6 +591,7 @@ class TestRunner {
 				}
 
 				$changelist[] = $changeType;
+
 			}
 
 			return $hasChangeMarkers( $changelist ) ? $changelist : [];
@@ -1221,7 +1227,7 @@ class TestRunner {
 	 * @return array
 	 */
 	private function updateKnownFailures( array $options ): array {
-		// Sanity check in case any tests were removed but we didn't update
+		// Check in case any tests were removed but we didn't update
 		// the knownFailures
 		$knownFailuresChanged = false;
 		$allModes = $options['wt2html'] && $options['wt2wt'] &&
