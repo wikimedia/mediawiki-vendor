@@ -24,6 +24,7 @@ use Wikimedia\Parsoid\Utils\TokenUtils;
 use Wikimedia\Parsoid\Utils\UrlUtils;
 use Wikimedia\Parsoid\Utils\Utils;
 use Wikimedia\Parsoid\Utils\WTUtils;
+use Wikimedia\Parsoid\Wt2Html\TokenizerUtils;
 
 /**
  * Serializes link markup.
@@ -370,10 +371,20 @@ class LinkHandlerUtils {
 					}
 				} else { // Else: preserve old encoding
 					if ( !empty( $rtData->isLocal ) ) {
-						// - interwikiMatch will be ":en", ":de", etc.
+						// - interWikiMatch[0] will be something like ":en" or "w"
 						// - This tests whether the interwiki-like link is actually
 						// a local wikilink.
+
 						$target['value'] = $interWikiMatch[1];
+						// interWikiMatch[1] may start with a language link prefix,
+						// ensure that we generate interwiki link syntax in that case. (T292022)
+						if (
+							preg_match( '/^([^:]+):/', $target['value'], $match ) &&
+							!empty( $iwMap[self::normalizeIWP( $match[1] )]['language'] )
+						) {
+							$target['value'] = ':' . $target['value'];
+						}
+
 						$rtData->isInterwiki = $rtData->isInterwikiLang = false;
 					} else {
 						$target['value'] = implode( ':', $interWikiMatch );
@@ -451,7 +462,20 @@ class LinkHandlerUtils {
 			( $target['value'] === $contentStr || self::getHref( $env, $node ) === $contentStr ) &&
 			// protocol-relative url links not allowed in text
 			// (see autourl rule in peg tokenizer, T32269)
-			!str_starts_with( $contentStr, '//' ) && Utils::isProtocolValid( $contentStr, $env );
+			!str_starts_with( $contentStr, '//' ) && Utils::isProtocolValid( $contentStr, $env ) &&
+			!self::hasAutoUrlTerminatingChars( $contentStr );
+	}
+
+	/**
+	 * The legacy parser Parser.php::makeFreeExternalLink terminates an autourl when encountering
+	 * some characters; since we wish to mimic that behaviour we need this method to check whether
+	 * the provided URL is in that case.
+	 * @param string $url
+	 * @return bool
+	 */
+	private static function hasAutoUrlTerminatingChars( string $url ): bool {
+		$sep = TokenizerUtils::getAutoUrlTerminatingChars( str_split( $url ) );
+		return str_contains( $sep, mb_substr( $url, -1 ) );
 	}
 
 	/**
