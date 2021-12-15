@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '8dbbe15a61f4a5fe1432c2a04d7eb7a1e3b851d8',
+    'reference' => '0dcc719d16ac640e3d1d543a94710fee42fcd568',
     'name' => 'mediawiki/core',
   ),
   'versions' => 
@@ -171,7 +171,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '8dbbe15a61f4a5fe1432c2a04d7eb7a1e3b851d8',
+      'reference' => '0dcc719d16ac640e3d1d543a94710fee42fcd568',
     ),
     'mediawiki/mediawiki' => 
     array (
@@ -227,12 +227,12 @@
     ),
     'pear/mail_mime' => 
     array (
-      'pretty_version' => '1.10.8',
-      'version' => '1.10.8.0',
+      'pretty_version' => '1.10.11',
+      'version' => '1.10.11.0',
       'aliases' => 
       array (
       ),
-      'reference' => '094b39784aa02cef1a1e267a6fdfae0c42b8f2ac',
+      'reference' => 'd4fb9ce61201593d0f8c6db629c45e29c3409c14',
     ),
     'pear/net_smtp' => 
     array (
