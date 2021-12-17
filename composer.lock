@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "472132d75831c6cb995b128e111091ba",
+    "content-hash": "63341864a49c868a44c7d3747dccf046",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -996,16 +996,16 @@
         },
         {
             "name": "elasticsearch/elasticsearch",
-            "version": "v6.5.1",
+            "version": "v6.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/elastic/elasticsearch-php.git",
-                "reference": "0c93d0e5b852634159d9f349b1848acde845400b"
+                "reference": "9ba89f905ebf699e72dacffa410331c7fecc8255"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/elastic/elasticsearch-php/zipball/0c93d0e5b852634159d9f349b1848acde845400b",
-                "reference": "0c93d0e5b852634159d9f349b1848acde845400b",
+                "url": "https://api.github.com/repos/elastic/elasticsearch-php/zipball/9ba89f905ebf699e72dacffa410331c7fecc8255",
+                "reference": "9ba89f905ebf699e72dacffa410331c7fecc8255",
                 "shasum": ""
             },
             "require": {
@@ -1015,7 +1015,7 @@
                 "psr/log": "~1.0"
             },
             "require-dev": {
-                "cpliakas/git-wrapper": "~1.0",
+                "cpliakas/git-wrapper": "^1.7 || ^2.1",
                 "doctrine/inflector": "^1.1",
                 "mockery/mockery": "^1.2",
                 "phpstan/phpstan-shim": "^0.9 || ^0.11",
@@ -1054,9 +1054,9 @@
             ],
             "support": {
                 "issues": "https://github.com/elastic/elasticsearch-php/issues",
-                "source": "https://github.com/elastic/elasticsearch-php/tree/v6.5.1"
+                "source": "https://github.com/elastic/elasticsearch-php/tree/6.7.x"
             },
-            "time": "2019-07-19T13:34:35+00:00"
+            "time": "2019-07-19T14:48:24+00:00"
         },
         {
             "name": "fgrosse/phpasn1",

@@ -1,10 +1,31 @@
-## Release 6.5.1
+## Release 6.7.2
 
 - Fix #846 choosing `GET` and `POST` in endpoints based on body [[acbc76d0]](https://github.com/elastic/elasticsearch-php/commit/acbc76d0)
 - Fix #843 adding `wait_for_active_shards` and `pipeline` in `UpdateByQuery` [[acbc76d0]](https://github.com/elastic/elasticsearch-php/commit/acbc76d0)
 - Fixed missing `ScriptsPainlessExecute` endpoint, since ES 6.3 [[acbc76d0]](https://github.com/elastic/elasticsearch-php/commit/acbc76d0)
 - Fixed missing `RankEval` endpoint, since ES 6.2 [[acbc76d0]](https://github.com/elastic/elasticsearch-php/commit/acbc76d0)
-- Added User-Agent header equal to `elasticsearch-php/6.5.1 (metadata-values)` [[acbc76d0]](https://github.com/elastic/elasticsearch-php/commit/acbc76d0)
+- Added User-Agent header equal to `elasticsearch-php/6.7.1 (metadata-values)` [[acbc76d0]](https://github.com/elastic/elasticsearch-php/commit/acbc76d0)
+
+## Release 6.7.1
+
+- Added `track_total_hits` in `search` endpoint [0c9ff47](https://github.com/elastic/elasticsearch-php/commit/9f4f0dfa331c4f50d2c88c0068afd3062e6ea353)
+
+## Release 6.7.0
+
+- Removed requirement of `{type}` part in `indices.put_mapping`, see new API specification [here](https://github.com/elastic/elasticsearch/blob/v6.7.0/rest-api-spec/src/main/resources/rest-api-spec/api/indices.put_mapping.json)
+- Added `seq_no_primary_term` parameter in `bulk` endpoint [#884](https://github.com/elastic/elasticsearch-php/pull/884)
+- Added `include_type_name`, `if_primary_term`, `if_seq_no` in `delete` endpoint [#884](https://github.com/elastic/elasticsearch-php/pull/884)
+- Added `include_type_name` in `get`, `index`, `indices.create`, `indices.field.get`, `indices.get`, `indices.mapping.get`, `indices.mapping.getfield`, `indices.mapping.put`, `indices.rollover`, `indices.template.get`, `indices.template.put` endpoints [#884](https://github.com/elastic/elasticsearch-php/pull/884)
+- Added `seq_no_primary_term` in `search` endpoint [#884](https://github.com/elastic/elasticsearch-php/pull/884)
+- Added `if_primary_term', 'if_seq_no`in `update` endpoint [#884](https://github.com/elastic/elasticsearch-php/pull/884)
+
+### Testing
+
+- Fix tests for PHP 7 with ES 6.7 [[5401479](https://github.com/elastic/elasticsearch-php/pull/884/commits/5401479)
+
+### Docs
+
+- [DOCS] Fix doc links in README [[5a1782d]](https://github.com/elastic/elasticsearch-php/pull/884/commits/5a1782d)
 
 ## Release 6.5.0
 

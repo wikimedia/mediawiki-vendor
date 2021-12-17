@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => 'b3d111f7b27ad6259a9b7da5c922b16c4e890c7e',
+        'reference' => '7e35f97af1de75d5cf253822f0e4686eabc02718',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => 'b3d111f7b27ad6259a9b7da5c922b16c4e890c7e',
+            'reference' => '7e35f97af1de75d5cf253822f0e4686eabc02718',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -155,12 +155,12 @@
             'dev_requirement' => false,
         ),
         'elasticsearch/elasticsearch' => array(
-            'pretty_version' => 'v6.5.1',
-            'version' => '6.5.1.0',
+            'pretty_version' => 'v6.7.2',
+            'version' => '6.7.2.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../elasticsearch/elasticsearch',
             'aliases' => array(),
-            'reference' => '0c93d0e5b852634159d9f349b1848acde845400b',
+            'reference' => '9ba89f905ebf699e72dacffa410331c7fecc8255',
             'dev_requirement' => false,
         ),
         'fgrosse/phpasn1' => array(

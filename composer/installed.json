@@ -1035,17 +1035,17 @@
         },
         {
             "name": "elasticsearch/elasticsearch",
-            "version": "v6.5.1",
-            "version_normalized": "6.5.1.0",
+            "version": "v6.7.2",
+            "version_normalized": "6.7.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/elastic/elasticsearch-php.git",
-                "reference": "0c93d0e5b852634159d9f349b1848acde845400b"
+                "reference": "9ba89f905ebf699e72dacffa410331c7fecc8255"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/elastic/elasticsearch-php/zipball/0c93d0e5b852634159d9f349b1848acde845400b",
-                "reference": "0c93d0e5b852634159d9f349b1848acde845400b",
+                "url": "https://api.github.com/repos/elastic/elasticsearch-php/zipball/9ba89f905ebf699e72dacffa410331c7fecc8255",
+                "reference": "9ba89f905ebf699e72dacffa410331c7fecc8255",
                 "shasum": ""
             },
             "require": {
@@ -1055,7 +1055,7 @@
                 "psr/log": "~1.0"
             },
             "require-dev": {
-                "cpliakas/git-wrapper": "~1.0",
+                "cpliakas/git-wrapper": "^1.7 || ^2.1",
                 "doctrine/inflector": "^1.1",
                 "mockery/mockery": "^1.2",
                 "phpstan/phpstan-shim": "^0.9 || ^0.11",
@@ -1068,7 +1068,7 @@
                 "ext-curl": "*",
                 "monolog/monolog": "Allows for client-level logging and tracing"
             },
-            "time": "2019-07-19T13:34:35+00:00",
+            "time": "2019-07-19T14:48:24+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -1096,7 +1096,7 @@
             ],
             "support": {
                 "issues": "https://github.com/elastic/elasticsearch-php/issues",
-                "source": "https://github.com/elastic/elasticsearch-php/tree/v6.5.1"
+                "source": "https://github.com/elastic/elasticsearch-php/tree/6.7.x"
             },
             "install-path": "../elasticsearch/elasticsearch"
         },
