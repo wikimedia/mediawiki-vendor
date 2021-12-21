@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '65453e9056b61e3d98caaeb3fdb545f494f7eaa7',
+        'reference' => '1223495a8f6cf183632c8e3d474afc6a3b69f714',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '65453e9056b61e3d98caaeb3fdb545f494f7eaa7',
+            'reference' => '1223495a8f6cf183632c8e3d474afc6a3b69f714',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -897,12 +897,12 @@
             'dev_requirement' => false,
         ),
         'wikimedia/assert' => array(
-            'pretty_version' => 'v0.5.0',
-            'version' => '0.5.0.0',
+            'pretty_version' => 'v0.5.1',
+            'version' => '0.5.1.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/assert',
             'aliases' => array(),
-            'reference' => 'd8e97f15b8f3d3799899e3d56452d34511be5764',
+            'reference' => '27c983fddac1197dc37f6a7cec00fc02861529cd',
             'dev_requirement' => false,
         ),
         'wikimedia/at-ease' => array(

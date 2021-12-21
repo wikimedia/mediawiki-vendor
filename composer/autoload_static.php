@@ -118,8 +118,8 @@ class ComposerStaticInit_mediawiki_vendor
         'c15f8000750e4e04ba559d9745044427' => __DIR__ . '/..' . '/data-values/number/Number.php',
         '3ef87127dc6892a0a78f223558a0b940' => __DIR__ . '/..' . '/diff/diff/Diff.php',
         '04c6c5c2f7095ccf6c481d3e53e1776f' => __DIR__ . '/..' . '/mustangostang/spyc/Spyc.php',
-        '6513700b70192b7dfd0e5e9fc8082cf3' => __DIR__ . '/..' . '/wikimedia/relpath/src/Wikimedia/RelPath.php',
         'db89166205707d49719c395c26d4e52d' => __DIR__ . '/..' . '/wikimedia/parsoid/DomImpl.php',
+        '6513700b70192b7dfd0e5e9fc8082cf3' => __DIR__ . '/..' . '/wikimedia/relpath/src/Wikimedia/RelPath.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -3680,6 +3680,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Assert\\ParameterTypeException' => __DIR__ . '/..' . '/wikimedia/assert/src/ParameterTypeException.php',
         'Wikimedia\\Assert\\PostconditionException' => __DIR__ . '/..' . '/wikimedia/assert/src/PostconditionException.php',
         'Wikimedia\\Assert\\PreconditionException' => __DIR__ . '/..' . '/wikimedia/assert/src/PreconditionException.php',
+        'Wikimedia\\Assert\\UnreachableException' => __DIR__ . '/..' . '/wikimedia/assert/src/UnreachableException.php',
         'Wikimedia\\AtEase\\AtEase' => __DIR__ . '/..' . '/wikimedia/at-ease/src/Wikimedia/AtEase/AtEase.php',
         'Wikimedia\\CSS\\Grammar\\Alternative' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/Alternative.php',
         'Wikimedia\\CSS\\Grammar\\AnythingMatcher' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/AnythingMatcher.php',
