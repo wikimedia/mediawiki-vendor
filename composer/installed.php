@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '1223495a8f6cf183632c8e3d474afc6a3b69f714',
+        'reference' => '459060149711a7bf5454ce06449060a8d4c52c43',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '1223495a8f6cf183632c8e3d474afc6a3b69f714',
+            'reference' => '459060149711a7bf5454ce06449060a8d4c52c43',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
