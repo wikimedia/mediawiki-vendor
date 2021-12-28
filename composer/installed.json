@@ -5885,17 +5885,17 @@
         },
         {
             "name": "web-auth/cose-lib",
-            "version": "v3.3.9",
-            "version_normalized": "3.3.9.0",
+            "version": "v3.3.11",
+            "version_normalized": "3.3.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-auth/cose-lib.git",
-                "reference": "ed172d2dc1a6b87b5c644c07c118cd30c1b3819b"
+                "reference": "efa6ec2ba4e840bc1316a493973c9916028afeeb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-auth/cose-lib/zipball/ed172d2dc1a6b87b5c644c07c118cd30c1b3819b",
-                "reference": "ed172d2dc1a6b87b5c644c07c118cd30c1b3819b",
+                "url": "https://api.github.com/repos/web-auth/cose-lib/zipball/efa6ec2ba4e840bc1316a493973c9916028afeeb",
+                "reference": "efa6ec2ba4e840bc1316a493973c9916028afeeb",
                 "shasum": ""
             },
             "require": {
@@ -5906,7 +5906,7 @@
                 "fgrosse/phpasn1": "^2.1",
                 "php": ">=7.2"
             },
-            "time": "2021-05-02T19:57:09+00:00",
+            "time": "2021-12-04T12:13:35+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -5935,7 +5935,7 @@
                 "RFC8152"
             ],
             "support": {
-                "source": "https://github.com/web-auth/cose-lib/tree/v3.3.9"
+                "source": "https://github.com/web-auth/cose-lib/tree/v3.3.11"
             },
             "funding": [
                 {
@@ -5951,17 +5951,17 @@
         },
         {
             "name": "web-auth/metadata-service",
-            "version": "v3.3.9",
-            "version_normalized": "3.3.9.0",
+            "version": "v3.3.11",
+            "version_normalized": "3.3.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-auth/webauthn-metadata-service.git",
-                "reference": "8488d3a832a38cc81c670fce05de1e515c6e64b1"
+                "reference": "ef40d2b7b68c4964247d13fab52e2fa8dbd65246"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-auth/webauthn-metadata-service/zipball/8488d3a832a38cc81c670fce05de1e515c6e64b1",
-                "reference": "8488d3a832a38cc81c670fce05de1e515c6e64b1",
+                "url": "https://api.github.com/repos/web-auth/webauthn-metadata-service/zipball/ef40d2b7b68c4964247d13fab52e2fa8dbd65246",
+                "reference": "ef40d2b7b68c4964247d13fab52e2fa8dbd65246",
                 "shasum": ""
             },
             "require": {
@@ -5977,7 +5977,7 @@
                 "web-token/jwt-key-mgmt": "Mandatory for fetching Metadata Statement from distant sources",
                 "web-token/jwt-signature-algorithm-ecdsa": "Mandatory for fetching Metadata Statement from distant sources"
             },
-            "time": "2021-01-09T13:31:01+00:00",
+            "time": "2021-11-21T11:14:31+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -6007,7 +6007,7 @@
                 "webauthn"
             ],
             "support": {
-                "source": "https://github.com/web-auth/webauthn-metadata-service/tree/v3.3.9"
+                "source": "https://github.com/web-auth/webauthn-metadata-service/tree/v3.3.11"
             },
             "funding": [
                 {
@@ -6023,17 +6023,17 @@
         },
         {
             "name": "web-auth/webauthn-lib",
-            "version": "v3.3.9",
-            "version_normalized": "3.3.9.0",
+            "version": "v3.3.11",
+            "version_normalized": "3.3.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-auth/webauthn-lib.git",
-                "reference": "04b98ee3d39cb79dad68a7c15c297c085bf66bfe"
+                "reference": "8761be69b22894aaa0919300a7165b90ead97751"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-auth/webauthn-lib/zipball/04b98ee3d39cb79dad68a7c15c297c085bf66bfe",
-                "reference": "04b98ee3d39cb79dad68a7c15c297c085bf66bfe",
+                "url": "https://api.github.com/repos/web-auth/webauthn-lib/zipball/8761be69b22894aaa0919300a7165b90ead97751",
+                "reference": "8761be69b22894aaa0919300a7165b90ead97751",
                 "shasum": ""
             },
             "require": {
@@ -6049,7 +6049,7 @@
                 "psr/log": "^1.1",
                 "ramsey/uuid": "^3.8|^4.0",
                 "spomky-labs/base64url": "^2.0",
-                "spomky-labs/cbor-php": "^1.1|^2.0",
+                "spomky-labs/cbor-php": "^1.0|^2.0",
                 "symfony/process": "^3.0|^4.0|^5.0",
                 "thecodingmachine/safe": "^1.1",
                 "web-auth/cose-lib": "self.version",
@@ -6062,7 +6062,7 @@
                 "web-token/jwt-signature-algorithm-eddsa": "Recommended for the AndroidSafetyNet Attestation Statement support",
                 "web-token/jwt-signature-algorithm-rsa": "Mandatory for the AndroidSafetyNet Attestation Statement support"
             },
-            "time": "2021-04-19T20:22:20+00:00",
+            "time": "2021-11-21T11:14:31+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -6092,7 +6092,7 @@
                 "webauthn"
             ],
             "support": {
-                "source": "https://github.com/web-auth/webauthn-lib/tree/v3.3.9"
+                "source": "https://github.com/web-auth/webauthn-lib/tree/v3.3.11"
             },
             "funding": [
                 {

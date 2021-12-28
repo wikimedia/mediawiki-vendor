@@ -138,6 +138,8 @@ return array(
     'Cose\\Algorithm\\Signature\\RSA\\RSA' => $vendorDir . '/web-auth/cose-lib/src/Algorithm/Signature/RSA/RSA.php',
     'Cose\\Algorithm\\Signature\\Signature' => $vendorDir . '/web-auth/cose-lib/src/Algorithm/Signature/Signature.php',
     'Cose\\Algorithms' => $vendorDir . '/web-auth/cose-lib/src/Algorithms.php',
+    'Cose\\BigInteger' => $vendorDir . '/web-auth/cose-lib/src/BigInteger.php',
+    'Cose\\Hash' => $vendorDir . '/web-auth/cose-lib/src/Hash.php',
     'Cose\\Key\\Ec2Key' => $vendorDir . '/web-auth/cose-lib/src/Key/Ec2Key.php',
     'Cose\\Key\\Key' => $vendorDir . '/web-auth/cose-lib/src/Key/Key.php',
     'Cose\\Key\\OkpKey' => $vendorDir . '/web-auth/cose-lib/src/Key/OkpKey.php',

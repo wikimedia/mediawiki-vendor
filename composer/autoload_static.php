@@ -897,6 +897,8 @@ class ComposerStaticInit_mediawiki_vendor
         'Cose\\Algorithm\\Signature\\RSA\\RSA' => __DIR__ . '/..' . '/web-auth/cose-lib/src/Algorithm/Signature/RSA/RSA.php',
         'Cose\\Algorithm\\Signature\\Signature' => __DIR__ . '/..' . '/web-auth/cose-lib/src/Algorithm/Signature/Signature.php',
         'Cose\\Algorithms' => __DIR__ . '/..' . '/web-auth/cose-lib/src/Algorithms.php',
+        'Cose\\BigInteger' => __DIR__ . '/..' . '/web-auth/cose-lib/src/BigInteger.php',
+        'Cose\\Hash' => __DIR__ . '/..' . '/web-auth/cose-lib/src/Hash.php',
         'Cose\\Key\\Ec2Key' => __DIR__ . '/..' . '/web-auth/cose-lib/src/Key/Ec2Key.php',
         'Cose\\Key\\Key' => __DIR__ . '/..' . '/web-auth/cose-lib/src/Key/Key.php',
         'Cose\\Key\\OkpKey' => __DIR__ . '/..' . '/web-auth/cose-lib/src/Key/OkpKey.php',
