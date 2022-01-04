@@ -12,8 +12,9 @@
 	},
 	"prefer-stable": true,
 	"require": {
-		"christian-riesen/base32": "1.4.0",
+		"php": ">=7.3.19",
 		"composer-plugin-api": "^1.1|^2.0",
+		"christian-riesen/base32": "1.4.0",
 		"composer/semver": "3.2.4",
 		"cssjanus/cssjanus": "2.1.0",
 		"guzzlehttp/guzzle": "7.2.0",
@@ -31,7 +32,6 @@
 		"pear/net_url2": "2.2.2",
 		"pear/pear-core-minimal": "1.10.11",
 		"pear/pear_exception": "1.0.2",
-		"php": ">=7.3.19",
 		"psr/container": "1.1.1",
 		"psr/http-client": "1.0.1",
 		"psr/http-message": "1.0.1",
