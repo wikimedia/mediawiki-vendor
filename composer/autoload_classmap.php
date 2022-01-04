@@ -84,6 +84,7 @@ return array(
     'CLDRPluralRuleParser\\Evaluator' => $vendorDir . '/wikimedia/cldr-plural-rule-parser/src/Evaluator.php',
     'CLDRPluralRuleParser\\Range' => $vendorDir . '/wikimedia/cldr-plural-rule-parser/src/Range.php',
     'CSSJanus' => $vendorDir . '/cssjanus/cssjanus/src/CSSJanus.php',
+    'Cdb\\Cli' => $vendorDir . '/wikimedia/cdb/src/Cli.php',
     'Cdb\\Exception' => $vendorDir . '/wikimedia/cdb/src/Exception.php',
     'Cdb\\Reader' => $vendorDir . '/wikimedia/cdb/src/Reader.php',
     'Cdb\\Reader\\DBA' => $vendorDir . '/wikimedia/cdb/src/Reader/DBA.php',
