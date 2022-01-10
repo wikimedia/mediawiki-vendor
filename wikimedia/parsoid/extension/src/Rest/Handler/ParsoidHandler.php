@@ -38,6 +38,7 @@ use MWParsoid\Rest\FormatHelper;
 use RequestContext;
 use Title;
 use UIDGenerator;
+use WikiMap;
 use Wikimedia\Http\HttpAcceptParser;
 use Wikimedia\Message\DataMessageValue;
 use Wikimedia\ParamValidator\ValidationException;
@@ -212,13 +213,8 @@ abstract class ParsoidHandler extends Handler {
 			// We would like to deprecate use of this flag: T181657
 			'body_only' => $request->getQueryParams()['body_only'] ?? $body['body_only'] ?? null,
 			'errorEnc' => FormatHelper::ERROR_ENCODING[$opts['format']] ?? 'plain',
-			'iwp' => wfWikiID(), // PORT-FIXME verify
+			'iwp' => WikiMap::getCurrentWikiId(), // PORT-FIXME verify
 			'subst' => (bool)( $request->getQueryParams()['subst'] ?? $body['subst'] ?? null ),
-			'scrubWikitext' => (bool)( $body['scrub_wikitext']
-				?? $request->getQueryParams()['scrub_wikitext']
-				?? $body['scrubWikitext']
-				?? $request->getQueryParams()['scrubWikitext']
-				?? false ),
 			'offsetType' => $body['offsetType']
 				?? $request->getQueryParams()['offsetType']
 				// Lint requests should return UCS2 offsets by default
@@ -248,7 +244,6 @@ abstract class ParsoidHandler extends Handler {
 			'prefix' => $attribs['iwp'],
 			'domain' => $request->getPathParam( 'domain' ),
 			'pageName' => $attribs['pageName'],
-			'scrubWikitext' => $attribs['scrubWikitext'],
 			'offsetType' => $attribs['offsetType'],
 			'cookie' => $request->getHeaderLine( 'Cookie' ),
 			'reqId' => $request->getHeaderLine( 'X-Request-Id' ),
@@ -619,12 +614,23 @@ abstract class ParsoidHandler extends Handler {
 		// FIXME: This is slightly misleading since there are fixed costs
 		// for generating output like the <head> section and should be factored in,
 		// but this is good enough for now as a useful first degree of approxmation.
-		$metrics->timing( 'wt2html.timePerKB', $parseTime * 1024 / $outSize );
+		$timePerKB = $parseTime * 1024 / $outSize;
+		$metrics->timing( 'wt2html.timePerKB', $timePerKB );
 
 		if ( $parseTime > 3000 ) {
 			LoggerFactory::getInstance( 'slow-parsoid' )
 				->info( 'Parsing {title} was slow, took {time} seconds', [
 					'time' => number_format( $parseTime / 1000, 2 ),
+					'title' => $pageConfig->getTitle(),
+				] );
+		} elseif ( $timePerKB > 500 ) {
+			// At 100ms/KB, even a 100KB page which isn't that large will take 10s.
+			// So, we probably want to shoot for a threshold under 100ms.
+			// But, let's start with 500ms+ outliers first and see what we uncover.
+			LoggerFactory::getInstance( 'slow-parsoid' )
+				->info( 'Parsing {title} was slow, timePerKB took {timePerKB} ms, total: {time} seconds', [
+					'time' => number_format( $parseTime / 1000, 2 ),
+					'timePerKB' => number_format( $timePerKB, 1 ),
 					'title' => $pageConfig->getTitle(),
 				] );
 		}
@@ -834,7 +840,6 @@ abstract class ParsoidHandler extends Handler {
 
 		try {
 			$wikitext = $parsoid->dom2wikitext( $pageConfig, $doc, [
-				'scrubWikitext' => $envOptions['scrubWikitext'],
 				'inputContentVersion' => $envOptions['inputContentVersion'],
 				'offsetType' => $envOptions['offsetType'],
 				'contentmodel' => $opts['contentmodel'] ?? null,

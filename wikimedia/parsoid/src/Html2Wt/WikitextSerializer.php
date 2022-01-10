@@ -1,4 +1,5 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Html2Wt;
 
@@ -383,7 +384,9 @@ class WikitextSerializer {
 
 		$out = [];
 		foreach ( $attribs as $kv ) {
-			$k = $kv->k;
+			// Tokens created during html2wt don't have nested tokens for keys.
+			// But, they could be integers but we want strings below.
+			$k = (string)$kv->k;
 			$v = null;
 			$vInfo = null;
 
@@ -450,10 +453,10 @@ class WikitextSerializer {
 				$v = $vInfo['value'];
 				// Deal with k/v's that were template-generated
 				$kk = $this->getAttributeKey( $node, $k );
-				// Pass in kv.k, not k since k can potentially
+				// Pass in $k, not $kk since $kk can potentially
 				// be original wikitext source for 'k' rather than
 				// the string value of the key.
-				$vv = $this->getAttributeValue( $node, $kv->k ) ?? $v;
+				$vv = $this->getAttributeValue( $node, $k ) ?? $v;
 				// Remove encapsulation from protected attributes
 				// in pegTokenizer.pegjs:generic_newline_attribute
 				$kk = preg_replace( '/^data-x-/i', '', $kk, 1 );
@@ -491,7 +494,7 @@ class WikitextSerializer {
 			$aKeys = array_keys( $dataAttribs->a );
 			foreach ( $aKeys as $k ) {
 				// Attrib not present -- sanitized away!
-				if ( !KV::lookupKV( $attribs, $k ) ) {
+				if ( !KV::lookupKV( $attribs, (string)$k ) ) {
 					$v = $dataAttribs->sa[$k] ?? null;
 					// PORT-FIXME check type
 					if ( $v !== null && $v !== '' ) {
@@ -720,7 +723,7 @@ class WikitextSerializer {
 		// since later code will be using the stripped key always.
 		$tplKeysFromDataMw = array_map( static function ( $key ) use ( $part ) {
 			// PORT-FIXME do we care about different whitespace semantics for trim?
-			$strippedKey = trim( $key );
+			$strippedKey = trim( (string)$key );
 			if ( $key !== $strippedKey ) {
 				$part->params->{$strippedKey} = $part->params->{$key};
 			}
@@ -1433,7 +1436,7 @@ class WikitextSerializer {
 			// PORT-FIXME do the different whitespace semantics matter?
 			if ( !$reqd ) {
 				$nowiki = preg_replace( '#^<nowiki>(\s+)</nowiki>#', '$1', $nowiki, 1 );
-			} elseif ( $this->env->shouldScrubWikitext() ) {
+			} else {
 				$solTransparentWikitextNoWsRegexpFragment = PHPUtils::reStrip(
 					$this->env->getSiteConfig()->solTransparentWikitextNoWsRegexp(), '/' );
 				$wsReplacementRE = '/^(' . $solTransparentWikitextNoWsRegexpFragment . ')\s+/';

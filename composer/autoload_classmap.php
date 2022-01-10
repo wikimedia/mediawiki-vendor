@@ -4011,6 +4011,7 @@ return array(
     'Wikimedia\\Parsoid\\Wt2Html\\TreeBuilder\\DOMBuilder' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/TreeBuilder/DOMBuilder.php',
     'Wikimedia\\Parsoid\\Wt2Html\\TreeBuilder\\RemexPipeline' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/TreeBuilder/RemexPipeline.php',
     'Wikimedia\\Parsoid\\Wt2Html\\TreeBuilder\\TreeBuilderStage' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/TreeBuilder/TreeBuilderStage.php',
+    'Wikimedia\\Parsoid\\Wt2Html\\TreeBuilder\\TreeMutationRelay' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/TreeBuilder/TreeMutationRelay.php',
     'Wikimedia\\Parsoid\\Wt2Html\\Wt2HtmlDOMProcessor' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/Wt2HtmlDOMProcessor.php',
     'Wikimedia\\Parsoid\\Wt2Html\\XMLSerializer' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/XMLSerializer.php',
     'Wikimedia\\PhpSessionSerializer' => $vendorDir . '/wikimedia/php-session-serializer/src/Wikimedia/PhpSessionSerializer.php',

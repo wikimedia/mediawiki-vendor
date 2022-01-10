@@ -24,8 +24,6 @@ use Wikimedia\Parsoid\Wt2Html\PageConfigFrame;
 use Wikimedia\Parsoid\Wt2Html\ParserPipelineFactory;
 use Wikimedia\Parsoid\Wt2Html\TreeBuilder\RemexPipeline;
 
-// phpcs:disable MediaWiki.Commenting.FunctionComment.MissingDocumentationPublic
-
 /**
  * Environment/Envelope class for Parsoid
  *
@@ -134,9 +132,6 @@ class Env {
 
 	/** @var ParsoidLogger */
 	private $parsoidLogger;
-
-	/** @var bool */
-	private $scrubWikitext = false;
 
 	/**
 	 * The default content version that Parsoid assumes it's serializing or
@@ -249,7 +244,6 @@ class Env {
 	 * @param ?array $options
 	 *  - wrapSections: (bool) Whether `<section>` wrappers should be added.
 	 *  - pageBundle: (bool) Sets ids on nodes and stores data-* attributes in a JSON blob.
-	 *  - scrubWikitext: (bool) Indicates emit "clean" wikitext.
 	 *  - traceFlags: (array) Flags indicating which components need to be traced
 	 *  - dumpFlags: (bool[]) Dump flags
 	 *  - debugFlags: (bool[]) Debug flags
@@ -281,9 +275,6 @@ class Env {
 		$this->pageConfig = $pageConfig;
 		$this->dataAccess = $dataAccess;
 		$this->topFrame = new PageConfigFrame( $this, $pageConfig, $siteConfig );
-		if ( isset( $options['scrubWikitext'] ) ) {
-			$this->scrubWikitext = !empty( $options['scrubWikitext'] );
-		}
 		if ( isset( $options['wrapSections'] ) ) {
 			$this->wrapSections = !empty( $options['wrapSections'] );
 		}
@@ -316,7 +307,7 @@ class Env {
 			'dumpFlags' => $this->dumpFlags,
 			'traceFlags' => $this->traceFlags
 		] );
-		if ( $this->hasTraceFlag( 'time' ) || $this->hasTraceFlag( 'time/dompp' ) ) {
+		if ( $this->hasTraceFlag( 'time' ) ) {
 			$this->profiling = true;
 		}
 		$this->setupTopLevelDoc( $options['topLevelDoc'] ?? null );
@@ -489,6 +480,10 @@ class Env {
 		return $this->wrapSections;
 	}
 
+	/**
+	 * Get the pipeline factory.
+	 * @return ParserPipelineFactory
+	 */
 	public function getPipelineFactory(): ParserPipelineFactory {
 		return $this->pipelineFactory;
 	}
@@ -1008,14 +1003,6 @@ class Env {
 		return $this->siteConfig->langConverterEnabledForLanguage(
 			$this->pageConfig->getPageLanguage()
 		);
-	}
-
-	/**
-	 * Indicates emit "clean" wikitext compared to what we would if we didn't normalize HTML
-	 * @return bool
-	 */
-	public function shouldScrubWikitext(): bool {
-		return $this->scrubWikitext;
 	}
 
 	/**

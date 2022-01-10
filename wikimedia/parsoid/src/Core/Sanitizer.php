@@ -1,4 +1,5 @@
 <?php
+declare( strict_types = 1 );
 
 /**
  * General token sanitizer. Strips out (or encapsulates) unsafe and disallowed
@@ -853,7 +854,7 @@ class Sanitizer {
 			&& preg_match( '/(?:^|\s)mw:.+?(?=$|\s)/D', $v )
 			|| $k === 'about' && preg_match( '/^#mwt\d+$/D', $v )
 			|| $k === 'content'
-			&& preg_match( '/(?:^|\s)mw:.+?(?=$|\s)/D', KV::lookup( $attrs, 'property' ) );
+			&& preg_match( '/(?:^|\s)mw:.+?(?=$|\s)/D', KV::lookup( $attrs, 'property' ) ?? '' );
 	}
 
 	/**

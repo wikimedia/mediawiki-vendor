@@ -117,6 +117,6 @@ return array(
     'c15f8000750e4e04ba559d9745044427' => $vendorDir . '/data-values/number/Number.php',
     '3ef87127dc6892a0a78f223558a0b940' => $vendorDir . '/diff/diff/Diff.php',
     '04c6c5c2f7095ccf6c481d3e53e1776f' => $vendorDir . '/mustangostang/spyc/Spyc.php',
-    'db89166205707d49719c395c26d4e52d' => $vendorDir . '/wikimedia/parsoid/DomImpl.php',
     '6513700b70192b7dfd0e5e9fc8082cf3' => $vendorDir . '/wikimedia/relpath/src/Wikimedia/RelPath.php',
+    'db89166205707d49719c395c26d4e52d' => $vendorDir . '/wikimedia/parsoid/DomImpl.php',
 );

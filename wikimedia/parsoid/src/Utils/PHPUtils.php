@@ -1,4 +1,5 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Utils;
 
@@ -89,36 +90,6 @@ class PHPUtils {
 	 */
 	public static function makeSet( array $a ): array {
 		return array_fill_keys( $a, true );
-	}
-
-	/**
-	 * PORT-FIXME: To be removed once all uses of this have disappeared
-	 * Convert array to associative array usable as a key-value Map
-	 *
-	 * Instead of
-	 *
-	 *     $var = PHPUtils::makeMap( [
-	 *         [ 'key1', 'value1' ],
-	 *         [ 'key2', 'value2' ],
-	 *     ] );
-	 *
-	 * just do
-	 *
-	 *     $var = [
-	 *         'key1' => 'value1',
-	 *         'key2' => 'value2',
-	 *     ];
-	 *
-	 * Unlike JS objects, PHP's associative arrays already preserve order.
-	 *
-	 * @param array $a
-	 * @return array
-	 */
-	public static function makeMap( array $a ) {
-		// @phan-suppress-previous-line PhanPluginNeverReturnMethod
-		throw new \BadMethodCallException(
-			'Don\'t use this, just declare your associative array directly'
-		);
 	}
 
 	/**

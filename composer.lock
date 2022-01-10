@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cd32719631898f5621ee45c84f7b46c6",
+    "content-hash": "4b4c9506dc4b1d987cfb1df40d5e81aa",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -6969,16 +6969,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.15.0-a13",
+            "version": "v0.15.0-a14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/parsoid.git",
-                "reference": "4ffc3483396bd7df3c22fd6d22e00d69232b2c55"
+                "reference": "d1bf8ffc220e7693ecd40bf3baa027dd950ae1de"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/4ffc3483396bd7df3c22fd6d22e00d69232b2c55",
-                "reference": "4ffc3483396bd7df3c22fd6d22e00d69232b2c55",
+                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/d1bf8ffc220e7693ecd40bf3baa027dd950ae1de",
+                "reference": "d1bf8ffc220e7693ecd40bf3baa027dd950ae1de",
                 "shasum": ""
             },
             "require": {
@@ -7047,10 +7047,10 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/parsoid/tree/v0.15.0-a13",
+                "source": "https://github.com/wikimedia/parsoid/tree/v0.15.0-a14",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
-            "time": "2021-12-08T22:51:59+00:00"
+            "time": "2022-01-07T22:40:04+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",
@@ -8330,5 +8330,5 @@
         "composer-plugin-api": "^2.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.1.0"
 }

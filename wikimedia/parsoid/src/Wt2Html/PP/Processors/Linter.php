@@ -19,6 +19,7 @@ use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\PHPUtils;
+use Wikimedia\Parsoid\Utils\Timing;
 use Wikimedia\Parsoid\Utils\Utils;
 use Wikimedia\Parsoid\Utils\WTUtils;
 use Wikimedia\Parsoid\Wt2Html\Wt2HtmlDOMProcessor;
@@ -674,7 +675,10 @@ class Linter implements Wt2HtmlDOMProcessor {
 	}
 
 	/**
-	 * Log bogus (=unrecognized) media options
+	 * Log issues with generated figures
+	 *
+	 *   1. captions on inline images without explicity alt options (T297443)
+	 *   2. bogus (=unrecognized) media options
 	 *
 	 * See - https://www.mediawiki.org/wiki/Help:Images#Syntax
 	 *
@@ -683,9 +687,30 @@ class Linter implements Wt2HtmlDOMProcessor {
 	 * @param DataParsoid $dp
 	 * @param ?stdClass $tplInfo
 	 */
-	private function logBogusMediaOptions(
+	private function logMediaIssues(
 		Env $env, Node $c, DataParsoid $dp, ?stdClass $tplInfo
 	): void {
+		if ( !( $c instanceof Element ) ) {
+			return;
+		}
+
+		if ( WTUtils::isInlineMedia( $c ) ) {
+			$dmw = DOMDataUtils::getDataMw( $c );
+			$media = $c->firstChild->firstChild ?? null;
+			if (
+				isset( $dmw->caption ) &&
+				$media instanceof Element &&
+				DOMCompat::nodeName( $media ) === 'img' &&
+				!$media->hasAttribute( 'alt' )
+			) {
+				$templateInfo = $this->findEnclosingTemplateName( $env, $tplInfo );
+				$env->recordLint( 'inline-media-caption', [
+					'dsr' => $this->findLintDSR( $templateInfo, $tplInfo, $dp->dsr ?? null ),
+					'templateInfo' => $templateInfo
+				] );
+			}
+		}
+
 		if ( WTUtils::isGeneratedFigure( $c ) && !empty( $dp->optList ) ) {
 			$items = [];
 			foreach ( $dp->optList as $item ) {
@@ -1226,7 +1251,7 @@ class Linter implements Wt2HtmlDOMProcessor {
 		$this->logDeletableTables( $env, $node, $dp, $tplInfo ); // For T161341
 		$this->logBadPWrapping( $env, $node, $dp, $tplInfo ); // For T161306
 		$this->logObsoleteHTMLTags( $env, $node, $dp, $tplInfo );
-		$this->logBogusMediaOptions( $env, $node, $dp, $tplInfo );
+		$this->logMediaIssues( $env, $node, $dp, $tplInfo ); // For T297443
 		$this->logTidyWhitespaceBug( $env, $node, $dp, $tplInfo );
 		$this->logTidyDivSpanFlip( $env, $node, $dp, $tplInfo );
 
@@ -1330,9 +1355,22 @@ class Linter implements Wt2HtmlDOMProcessor {
 			return;
 		}
 
+		// Track time spent linting so we can evaluate benefits
+		// of migrating this code off the critical path to its own
+		// post processor.
+		$metrics = $env->getSiteConfig()->metrics();
+		$timer = null;
+		if ( $metrics ) {
+			$timer = Timing::start( $metrics );
+		}
+
 		$this->extApi = new ParsoidExtensionAPI( $env );
 		$this->findLints( $root, $env );
 		$this->postProcessLints( $env->getLints(), $env );
+
+		if ( $metrics ) {
+			$timer->end( "linting" );
+		}
 	}
 
 }

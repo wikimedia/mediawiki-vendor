@@ -270,7 +270,6 @@ class TemplateHandler extends TokenHandler {
 			$prefix = trim( $pieces[0] );
 		}
 
-		$lowerPrefix = mb_strtolower( $prefix );
 		// The check for pieces.length > 1 is required to distinguish between
 		// {{lc:FOO}} and {{lc|FOO}}.  The latter is a template transclusion
 		// even though the target (=lc) matches a registered parser-function name.
@@ -278,9 +277,8 @@ class TemplateHandler extends TokenHandler {
 
 		// Check if we have a parser function
 		$canonicalFunctionName = $siteConfig->getMagicWordForFunctionHook( $prefix ) ??
-			$siteConfig->getMagicWordForFunctionHook( $lowerPrefix ) ??
 			$siteConfig->getMagicWordForVariable( $prefix ) ??
-			$siteConfig->getMagicWordForVariable( $lowerPrefix );
+			$siteConfig->getMagicWordForVariable( mb_strtolower( $prefix ) );
 
 		if ( $canonicalFunctionName !== null ) {
 			// Extract toks that make up pfArg
@@ -358,9 +356,7 @@ class TemplateHandler extends TokenHandler {
 			$state['parserFunctionName'] = $canonicalFunctionName;
 
 			$magicWordType = null;
-			if ( $canonicalFunctionName === '!' ) {
-				$magicWordType = '!';
-			} elseif ( isset( Utils::magicMasqs()[$canonicalFunctionName] ) ) {
+			if ( isset( Utils::magicMasqs()[$canonicalFunctionName] ) ) {
 				$magicWordType = 'MASQ';
 			}
 
@@ -614,7 +610,11 @@ class TemplateHandler extends TokenHandler {
 		if ( $resolvedTgt['isPF'] ) {
 			// FIXME: Parsoid may not have implemented the parser function natively
 			// Emit an error message, but encapsulate it so it roundtrips back.
-			if ( !is_callable( [ $this->parserFunctions, $target ] ) ) {
+			$method = $target;
+			if ( $method === 'pf_!' ) {
+				$method = 'pf_bar';
+			}
+			if ( !is_callable( [ $this->parserFunctions, $method ] ) ) {
 				// FIXME: Consolidate error response format with enforceTemplateConstraints
 				return [ 'Parser function implementation for ' . $target . ' missing in Parsoid.' ];
 			}
@@ -625,8 +625,13 @@ class TemplateHandler extends TokenHandler {
 				$resolvedTgt['srcOffsets']->expandTsrK()
 			);
 			$env->log( 'debug', 'entering prefix', $target, $state['token'] );
-			$res = call_user_func( [ $this->parserFunctions, $target ],
-				$state['token'], $this->manager->getFrame(), $pfAttribs );
+			$res = call_user_func(
+				[ $this->parserFunctions, $method ],
+				$state['token'],
+				$this->manager->getFrame(),
+				$pfAttribs,
+				$this->atTopLevel
+			);
 			if ( $this->wrapTemplates ) {
 				$res = $this->parserFunctionsWrapper( $state, $res );
 			}
@@ -978,7 +983,6 @@ class TemplateHandler extends TokenHandler {
 	/**
 	 * Process the special magic word as specified by `resolvedTgt.magicWordType`.
 	 * ```
-	 * magicWordType === '!'    => {{!}} is the magic word
 	 * magicWordtype === 'MASQ' => DEFAULTSORT, DISPLAYTITLE are the magic words
 	 *                             (Util.magicMasqs.has(..))
 	 * ```
@@ -991,32 +995,6 @@ class TemplateHandler extends TokenHandler {
 		bool $atTopLevel, Token $tplToken, ?array $resolvedTgt = null
 	): ?array {
 		$env = $this->env;
-
-		// Special case for {{!}} magic word.  Note that this is only necessary
-		// because of the call from the TokenStreamPatcher.  Otherwise, ! is a
-		// variable like any other and can be dropped from this function.
-		// However, we keep both cases flowing through here for consistency.
-		if (
-			( $resolvedTgt && $resolvedTgt['magicWordType'] === '!' ) ||
-			$tplToken->attribs[0]->k === '!'
-		) {
-			// If we're not at the top level, return a table cell. This will always
-			// be the case. Either {{!}} was tokenized as a td, or it was tokenized
-			// as template but the recursive call to fetch its content returns a
-			// single | in an ambiguous context which will again be tokenized as td.
-			if ( empty( $atTopLevel ) ) {
-				return [ new TagTk( 'td' ) ];
-			}
-			$state = [
-				'token' => $tplToken,
-				'wrapperType' => 'mw:Transclusion',
-				'wrappedObjectId' => $env->newObjectId()
-			];
-			$this->resolveTemplateTarget( $state, '!', $tplToken->attribs[0]->srcOffsets->key );
-			$toks = [ '|' ];
-			return $this->wrapTemplates ?
-				$this->encapTokens( $state, $toks ) : $toks;
-		}
 
 		if ( !$resolvedTgt || $resolvedTgt['magicWordType'] !== 'MASQ' ) {
 			// Nothing to do

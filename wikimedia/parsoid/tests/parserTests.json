@@ -2,8 +2,8 @@
 	"parserTests.txt": {
 		"repo": "/wikimedia/mediawiki/",
 		"path": "tests/parser/parserTests.txt",
-		"expectedSHA1": "316566d0ee3d4dcebf5c562b1708c8b61ae15357",
-		"latestCommit": "6eda8891a0595e72e350998b6bada19d102a42d9"
+		"expectedSHA1": "b00da1a62cb13cab3f58644a14128c11960ea8bb",
+		"latestCommit": "5254ddea2dc8aad890fdd65685b7da87307e61b5"
 	},
 	"extraParserTests.txt": {
 		"repo": "/wikimedia/mediawiki/",
@@ -14,8 +14,8 @@
 	"mediaParserTests.txt": {
 		"repo": "/wikimedia/mediawiki/",
 		"path": "tests/parser/mediaParserTests.txt",
-		"expectedSHA1": "9e67c6c4c92a4cf6460696b3f105d0e833a490c1",
-		"latestCommit": "2845964ff845a871db2a8968d52669bddb4bd02f"
+		"expectedSHA1": "27e132357b20c132dc30bd666ef1a177fb8a416c",
+		"latestCommit": "7d62f16f77b6d7fc33ad3b5f497a4356e7b6b98c"
 	},
 	"legacyMediaParserTests.txt": {
 		"repo": "/wikimedia/mediawiki/",
@@ -40,8 +40,8 @@
 		"path": "--UNUSED--"
 	},
 	"langParserTests.txt": {
-		"repo": "/wikimedia/mediawiki-services-parsoid/",
-		"path": "tests/langParserTests.txt"
+		"repo": "--UNUSED--",
+		"path": "--UNUSED--"
 	},
 	"citeParserTests.txt": {
 		"repo": "/wikimedia/mediawiki-extensions-Cite/",
@@ -58,14 +58,14 @@
 	"poemParserTests.txt": {
 		"repo": "/wikimedia/mediawiki-extensions-Poem/",
 		"path": "tests/parser/parserTests.txt",
-		"expectedSHA1": "ffe275baf1e88b174eb90fe4a61ae7f7171821ee",
-		"latestCommit": "5337f7927ace34af6620e7d5c8f733f6cf413667"
+		"expectedSHA1": "3f6a206276e02f12b0395d4489204d29d65b8adf",
+		"latestCommit": "6a12103aa86ecfe07b0d3832b9cce63c890f4b7b"
 	},
 	"imageMapParserTests.txt": {
 		"repo": "/wikimedia/mediawiki-extensions-ImageMap/",
 		"path": "tests/parser/imageMapParserTests.txt",
-		"expectedSHA1": "6d00df1ad0a84febbdd5ae10ed79739fdd88cc7e",
-		"latestCommit": "124cff0cb28c30beb864356ceb3c6229cc74bb43"
+		"expectedSHA1": "c39899dcc408cee36ca115891519aaaf63314f06",
+		"latestCommit": "8c9dfdf91f758f452d48a5b7faea3abbebfcdfe2"
 	},
 	"annotationParserTests.txt": {
 		"path": "tests/parser/annotationParserTests.txt"
