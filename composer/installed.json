@@ -2913,17 +2913,17 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.42.1",
-            "version_normalized": "0.42.1.0",
+            "version": "v0.43.0",
+            "version_normalized": "0.43.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "89f6452961ca53f621fa67ff1511de94ac24b477"
+                "reference": "cfebb026854789a0185d07658ee91c94bb72a903"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/89f6452961ca53f621fa67ff1511de94ac24b477",
-                "reference": "89f6452961ca53f621fa67ff1511de94ac24b477",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/cfebb026854789a0185d07658ee91c94bb72a903",
+                "reference": "cfebb026854789a0185d07658ee91c94bb72a903",
                 "shasum": ""
             },
             "require": {
@@ -2931,13 +2931,13 @@
             },
             "require-dev": {
                 "mediawiki/mediawiki-codesniffer": "38.0.0",
-                "mediawiki/mediawiki-phan-config": "0.11.0",
+                "mediawiki/mediawiki-phan-config": "0.11.1",
                 "mediawiki/minus-x": "1.1.1",
                 "php-parallel-lint/php-console-highlighter": "0.5.0",
                 "php-parallel-lint/php-parallel-lint": "1.3.1",
                 "phpunit/phpunit": "^8.5"
             },
-            "time": "2021-11-04T01:00:29+00:00",
+            "time": "2022-01-12T00:10:24+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -2994,7 +2994,7 @@
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOUI",
             "support": {
-                "source": "https://github.com/wikimedia/oojs-ui/tree/v0.42.1"
+                "source": "https://github.com/wikimedia/oojs-ui/tree/v0.43.0"
             },
             "install-path": "../oojs/oojs-ui"
         },
