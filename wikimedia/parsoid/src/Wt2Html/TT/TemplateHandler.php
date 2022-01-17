@@ -356,7 +356,9 @@ class TemplateHandler extends TokenHandler {
 			$state['parserFunctionName'] = $canonicalFunctionName;
 
 			$magicWordType = null;
-			if ( isset( Utils::magicMasqs()[$canonicalFunctionName] ) ) {
+			if ( $canonicalFunctionName === '!' ) {
+				$magicWordType = '!';
+			} elseif ( isset( Utils::magicMasqs()[$canonicalFunctionName] ) ) {
 				$magicWordType = 'MASQ';
 			}
 
@@ -490,10 +492,9 @@ class TemplateHandler extends TokenHandler {
 		$tokens[] = '}}';
 		$tokens[] = new EOFTk();
 
-		// Process exploded token in a new pipeline that takes us through
-		// Stages 2-3.
+		// Process exploded token in a new pipeline that takes us through stage 2.
 		// FIXME: Similar to processTemplateSource, we're returning tokens at
-		// the beginning of Stage 3 that have already been through this stage.
+		// the beginning of stage 2 that have already been through this stage.
 		$toks = PipelineUtils::processContentInPipeline(
 			$this->env,
 			$this->manager->getFrame(),
@@ -610,11 +611,7 @@ class TemplateHandler extends TokenHandler {
 		if ( $resolvedTgt['isPF'] ) {
 			// FIXME: Parsoid may not have implemented the parser function natively
 			// Emit an error message, but encapsulate it so it roundtrips back.
-			$method = $target;
-			if ( $method === 'pf_!' ) {
-				$method = 'pf_bar';
-			}
-			if ( !is_callable( [ $this->parserFunctions, $method ] ) ) {
+			if ( !is_callable( [ $this->parserFunctions, $target ] ) ) {
 				// FIXME: Consolidate error response format with enforceTemplateConstraints
 				return [ 'Parser function implementation for ' . $target . ' missing in Parsoid.' ];
 			}
@@ -625,13 +622,8 @@ class TemplateHandler extends TokenHandler {
 				$resolvedTgt['srcOffsets']->expandTsrK()
 			);
 			$env->log( 'debug', 'entering prefix', $target, $state['token'] );
-			$res = call_user_func(
-				[ $this->parserFunctions, $method ],
-				$state['token'],
-				$this->manager->getFrame(),
-				$pfAttribs,
-				$this->atTopLevel
-			);
+			$res = call_user_func( [ $this->parserFunctions, $target ],
+				$state['token'], $this->manager->getFrame(), $pfAttribs );
 			if ( $this->wrapTemplates ) {
 				$res = $this->parserFunctionsWrapper( $state, $res );
 			}
@@ -698,9 +690,9 @@ class TemplateHandler extends TokenHandler {
 			$tplArgs['name'], $tplArgs['attribs'] );
 
 		// Get a nested transformation pipeline for the wikitext that takes
-		// us through Stages 1-3.
+		// us through stages 1-2.
 		// FIXME: Note, however, that since template handling is itself in
-		// Stage 3, tokens returned here will be run through that stage again,
+		// stage 2, tokens returned here will be run through that stage again,
 		// except not necessarily with the same pipeline options we're setting
 		// below.  The overall effect is mostly harmless, in that the token
 		// types will have already been handled the first time through, but
@@ -983,6 +975,7 @@ class TemplateHandler extends TokenHandler {
 	/**
 	 * Process the special magic word as specified by `resolvedTgt.magicWordType`.
 	 * ```
+	 * magicWordType === '!'    => {{!}} is the magic word
 	 * magicWordtype === 'MASQ' => DEFAULTSORT, DISPLAYTITLE are the magic words
 	 *                             (Util.magicMasqs.has(..))
 	 * ```
@@ -995,6 +988,36 @@ class TemplateHandler extends TokenHandler {
 		bool $atTopLevel, Token $tplToken, ?array $resolvedTgt = null
 	): ?array {
 		$env = $this->env;
+
+		// Special case for {{!}} magic word.
+		//
+		// If we tokenized as a magic word, we meant for it to expand to a
+		// string.  The tokenizer has handling for this syntax in table
+		// positions.  However, proceeding to go through template expansion
+		// will reparse it as a table cell token.  Hence this special case
+		// handling to avoid that path.
+		if (
+			( $resolvedTgt && $resolvedTgt['magicWordType'] === '!' ) ||
+			$tplToken->attribs[0]->k === '!'
+		) {
+			// If we're not at the top level, return a table cell. This will always
+			// be the case. Either {{!}} was tokenized as a td, or it was tokenized
+			// as template but the recursive call to fetch its content returns a
+			// single | in an ambiguous context which will again be tokenized as td.
+			// In any case, this should only be relevant for parserTests.
+			if ( empty( $atTopLevel ) ) {
+				return [ new TagTk( 'td' ) ];
+			}
+			$state = [
+				'token' => $tplToken,
+				'wrapperType' => 'mw:Transclusion',
+				'wrappedObjectId' => $env->newObjectId()
+			];
+			$this->resolveTemplateTarget( $state, '!', $tplToken->attribs[0]->srcOffsets->key );
+			$toks = [ '|' ];
+			return $this->wrapTemplates ?
+				$this->encapTokens( $state, $toks ) : $toks;
+		}
 
 		if ( !$resolvedTgt || $resolvedTgt['magicWordType'] !== 'MASQ' ) {
 			// Nothing to do

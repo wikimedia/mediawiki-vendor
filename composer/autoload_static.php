@@ -118,8 +118,8 @@ class ComposerStaticInit_mediawiki_vendor
         'c15f8000750e4e04ba559d9745044427' => __DIR__ . '/..' . '/data-values/number/Number.php',
         '3ef87127dc6892a0a78f223558a0b940' => __DIR__ . '/..' . '/diff/diff/Diff.php',
         '04c6c5c2f7095ccf6c481d3e53e1776f' => __DIR__ . '/..' . '/mustangostang/spyc/Spyc.php',
-        'db89166205707d49719c395c26d4e52d' => __DIR__ . '/..' . '/wikimedia/parsoid/DomImpl.php',
         '6513700b70192b7dfd0e5e9fc8082cf3' => __DIR__ . '/..' . '/wikimedia/relpath/src/Wikimedia/RelPath.php',
+        'db89166205707d49719c395c26d4e52d' => __DIR__ . '/..' . '/wikimedia/parsoid/DomImpl.php',
     );
 
     public static $prefixLengthsPsr4 = array (
