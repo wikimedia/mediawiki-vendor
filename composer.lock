@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ffe3ad5df16a513a638bf2b7047c9199",
+    "content-hash": "8d09afda2b3f00141e80b3118a96a5c9",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -6969,16 +6969,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.15.0-a16",
+            "version": "v0.15.0-a17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/parsoid.git",
-                "reference": "802d1bb3ac20135d1ba15bec4026b0a77feacf50"
+                "reference": "f26db26c4cc4644fd46fa41fde1163e8ad169ba8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/802d1bb3ac20135d1ba15bec4026b0a77feacf50",
-                "reference": "802d1bb3ac20135d1ba15bec4026b0a77feacf50",
+                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/f26db26c4cc4644fd46fa41fde1163e8ad169ba8",
+                "reference": "f26db26c4cc4644fd46fa41fde1163e8ad169ba8",
                 "shasum": ""
             },
             "require": {
@@ -6987,6 +6987,7 @@
                 "ext-json": "*",
                 "liuggio/statsd-php-client": "^1.0.18",
                 "php": ">=7.2.0",
+                "psr/container": "1.1.1",
                 "psr/log": "^1.1.4",
                 "symfony/polyfill-php80": "^1.23.1",
                 "wikimedia/assert": "^0.5.0",
@@ -7044,10 +7045,10 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/parsoid/tree/v0.15.0-a16",
+                "source": "https://github.com/wikimedia/parsoid/tree/v0.15.0-a17",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
-            "time": "2022-01-20T21:29:34+00:00"
+            "time": "2022-01-23T19:18:29+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",
@@ -8327,5 +8328,5 @@
         "composer-plugin-api": "^2.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.1.0"
 }
