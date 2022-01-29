@@ -1829,7 +1829,6 @@ return array(
     'Psy\\CodeCleaner\\StrictTypesPass' => $vendorDir . '/psy/psysh/src/CodeCleaner/StrictTypesPass.php',
     'Psy\\CodeCleaner\\UseStatementPass' => $vendorDir . '/psy/psysh/src/CodeCleaner/UseStatementPass.php',
     'Psy\\CodeCleaner\\ValidClassNamePass' => $vendorDir . '/psy/psysh/src/CodeCleaner/ValidClassNamePass.php',
-    'Psy\\CodeCleaner\\ValidConstantPass' => $vendorDir . '/psy/psysh/src/CodeCleaner/ValidConstantPass.php',
     'Psy\\CodeCleaner\\ValidConstructorPass' => $vendorDir . '/psy/psysh/src/CodeCleaner/ValidConstructorPass.php',
     'Psy\\CodeCleaner\\ValidFunctionNamePass' => $vendorDir . '/psy/psysh/src/CodeCleaner/ValidFunctionNamePass.php',
     'Psy\\Command\\BufferCommand' => $vendorDir . '/psy/psysh/src/Command/BufferCommand.php',
