@@ -17,4 +17,4 @@ CREATE TABLE IF NOT EXISTS `payments_fraud` (
   KEY `user_ip` (`user_ip`),
   KEY `risk_score` (`risk_score`),
   KEY `payment_method` (`payment_method`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Tracks donation fraud scores for all donations.'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Tracks donation fraud scores for all donations.';

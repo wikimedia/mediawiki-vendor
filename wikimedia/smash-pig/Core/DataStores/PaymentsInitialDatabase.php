@@ -30,21 +30,39 @@ class PaymentsInitialDatabase extends SmashPigDatabase {
 	}
 
 	/**
+	 * This function is used to determine whether to delete (or not store)
+	 * a corresponding row in the pending table.
+	 *
 	 * @param array $message a payments-init message
 	 * @return bool true if the message indicates that the payment has been
-	 *  definitively failed and won't come up again
+	 *  definitively failed and won't come up again, and that we should delete
+	 *  the corresponding pending row.
 	 */
 	public static function isMessageFailed( array $message ): bool {
-		if (
-			(
-				$message['payments_final_status'] === FinalStatus::FAILED ||
-				$message['payments_final_status'] === FinalStatus::CANCELLED
-			) &&
-			$message['validation_action'] !== ValidationAction::REVIEW
-		) {
-			return true;
+		if ( !in_array(
+			$message['payments_final_status'],
+			[ FinalStatus::FAILED, FinalStatus::CANCELLED ]
+		) ) {
+			// Status is not failed, no reason to delete the pending row
+			return false;
 		}
-		return false;
+		if (
+			$message['validation_action'] === ValidationAction::REVIEW ||
+			(
+				$message['validation_action'] === ValidationAction::REJECT &&
+				$message['gateway'] === 'ingenico'
+			)
+		) {
+			// Leave the pending message for potential capture by the pending
+			// transaction rectifier or manual review - for any gateway, REVIEW
+			// status can be captured. FIXME: Our Ingenico front-end code also
+			// treats REJECT status this way, so we should leave those rows as
+			// well.
+			return false;
+		}
+		// payments_final_status is either FAILED or CANCELLED, and it's not
+		// because of our fraud filters. Safe to delete any pending row.
+		return true;
 	}
 
 	/**
@@ -92,7 +110,7 @@ class PaymentsInitialDatabase extends SmashPigDatabase {
 		return 'data-store/fredge-db';
 	}
 
-	protected function getTableScriptFile(): string {
-		return '003_CreatePaymentsInitialTable.sql';
+	protected function getTableScriptFiles(): array {
+		return [ '003_CreatePaymentsInitialTable.sql' ];
 	}
 }

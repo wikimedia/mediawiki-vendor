@@ -6,6 +6,7 @@ use Psr\Log\LogLevel;
 use SmashPig\Core\Logging\Logger;
 use SmashPig\Core\PaymentError;
 use SmashPig\PaymentData\ErrorCode;
+use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentData\StatusNormalizer;
 use SmashPig\PaymentProviders\CreatePaymentResponse;
 
@@ -103,6 +104,7 @@ class CardPaymentProvider extends PaymentProvider {
 						LogLevel::ERROR
 					)
 				);
+				$response->setSuccessful( false );
 				Logger::debug( $responseError, $rawResponse );
 			}
 		}
@@ -112,5 +114,9 @@ class CardPaymentProvider extends PaymentProvider {
 
 	protected function getPaymentDetailsStatusNormalizer(): StatusNormalizer {
 		return new ApprovalNeededCreatePaymentStatus();
+	}
+
+	protected function getPaymentDetailsSuccessfulStatuses(): array {
+		return [ FinalStatus::PENDING_POKE, FinalStatus::COMPLETE ];
 	}
 }

@@ -9,9 +9,13 @@ use SmashPig\Core\Logging\Logger;
 use SmashPig\Core\PaymentError;
 use SmashPig\Core\ValidationError;
 use SmashPig\PaymentData\ErrorCode;
+use SmashPig\PaymentData\FinalStatus;
+use SmashPig\PaymentData\ReferenceData\CurrencyRates;
+use SmashPig\PaymentData\ReferenceData\NationalCurrencies;
 use SmashPig\PaymentData\StatusNormalizer;
 use SmashPig\PaymentProviders\ApprovePaymentResponse;
 use SmashPig\PaymentProviders\CancelPaymentResponse;
+use SmashPig\PaymentProviders\ICancelablePaymentProvider;
 use SmashPig\PaymentProviders\IPaymentProvider;
 use SmashPig\PaymentProviders\PaymentDetailResponse;
 use SmashPig\PaymentProviders\PaymentMethodResponse;
@@ -26,7 +30,7 @@ use SmashPig\PaymentProviders\SavedPaymentDetailsResponse;
  *
  *
  */
-abstract class PaymentProvider implements IPaymentProvider {
+abstract class PaymentProvider implements IPaymentProvider, ICancelablePaymentProvider {
 	/**
 	 * @var Api
 	 */
@@ -55,11 +59,22 @@ abstract class PaymentProvider implements IPaymentProvider {
 	 * @return PaymentMethodResponse
 	 */
 	public function getPaymentMethods( array $params ) : PaymentMethodResponse {
+		$badParams = $this->validateGetPaymentMethodsParams( $params );
+		if ( count( $badParams ) > 0 ) {
+			$response = new PaymentMethodResponse();
+			$response->setSuccessful( false );
+
+			foreach ( $badParams as $badParam ) {
+				$response->addValidationError( new ValidationError( $badParam ) );
+			}
+			return $response;
+		}
 		$callback = function () use ( $params ) {
 			$rawResponse = $this->api->getPaymentMethods( $params );
 
 			$response = new PaymentMethodResponse();
 			$response->setRawResponse( $rawResponse );
+			$response->setSuccessful( true );
 
 			return $response;
 		};
@@ -80,7 +95,7 @@ abstract class PaymentProvider implements IPaymentProvider {
 	 * @param string $redirectResult
 	 * @return PaymentDetailResponse
 	 */
-	public function getHostedPaymentDetails( $redirectResult ) {
+	public function getHostedPaymentDetails( $redirectResult ): PaymentDetailResponse {
 		$rawResponse = $this->api->getPaymentDetails( $redirectResult );
 
 		$response = new PaymentDetailResponse();
@@ -91,7 +106,8 @@ abstract class PaymentProvider implements IPaymentProvider {
 			$response,
 			$rawResponse,
 			$this->getPaymentDetailsStatusNormalizer(),
-			$rawStatus
+			$rawStatus,
+			$this->getPaymentDetailsSuccessfulStatuses()
 		);
 		if ( isset( $rawResponse['additionalData'] ) ) {
 			$this->mapAdditionalData( $rawResponse['additionalData'], $response );
@@ -142,6 +158,7 @@ abstract class PaymentProvider implements IPaymentProvider {
 				->setCardSummary( $storedMethod['lastFour'] ?? null );
 		}
 		$response->setDetailsList( $detailsList );
+		$response->setSuccessful( count( $detailsList ) > 0 );
 
 		return $response;
 	}
@@ -167,13 +184,15 @@ abstract class PaymentProvider implements IPaymentProvider {
 				$responseError,
 				LogLevel::ERROR
 			) );
+			$response->setSuccessful( false );
 			Logger::debug( $responseError, $rawResponse );
 		} else {
 			$this->mapStatus(
 				$response,
 				$rawResponse,
 				new ApprovePaymentStatus(),
-				$rawResponse['status']
+				$rawResponse['status'],
+				[ FinalStatus::COMPLETE ]
 			);
 		}
 		$this->mapRestIdAndErrors( $response, $rawResponse );
@@ -186,7 +205,7 @@ abstract class PaymentProvider implements IPaymentProvider {
 	 * @param string $gatewayTxnId
 	 * @return CancelPaymentResponse
 	 */
-	public function cancelPayment( $gatewayTxnId ) {
+	public function cancelPayment( $gatewayTxnId ): CancelPaymentResponse {
 		$rawResponse = $this->api->cancel( $gatewayTxnId );
 		$response = new CancelPaymentResponse();
 		$response->setRawResponse( $rawResponse );
@@ -201,7 +220,8 @@ abstract class PaymentProvider implements IPaymentProvider {
 				$response,
 				$rawResponse,
 				new CancelPaymentStatus(),
-				$rawResponse->cancelResult->response ?? null
+				$rawResponse->cancelResult->response ?? null,
+				[ FinalStatus::CANCELLED ]
 			);
 		} else {
 			$responseError = 'cancelResult element missing from Adyen cancel response.';
@@ -210,6 +230,7 @@ abstract class PaymentProvider implements IPaymentProvider {
 				$responseError,
 				LogLevel::ERROR
 			) );
+			$response->setSuccessful( false );
 			Logger::debug( $responseError, $rawResponse );
 		}
 
@@ -324,24 +345,29 @@ abstract class PaymentProvider implements IPaymentProvider {
 	 * @param object $rawResponse The raw API response object, used to log errors.
 	 * @param StatusNormalizer $statusMapper An instance of the appropriate status mapper class
 	 * @param string $rawStatus The status string from the API response, either from 'resultCode' or 'response'
+	 * @param array $successfulStatuses Which of the normalized statuses should result in isSuccessful = true
 	 */
 	protected function mapStatus(
 		PaymentProviderResponse $response,
 		$rawResponse,
 		StatusNormalizer $statusMapper,
-		$rawStatus
+		$rawStatus,
+		array $successfulStatuses = [ FinalStatus::PENDING_POKE, FinalStatus::COMPLETE ]
 	) {
 		if ( !empty( $rawStatus ) ) {
 			$response->setRawStatus( $rawStatus );
 			try {
 				$status = $statusMapper->normalizeStatus( $rawStatus );
 				$response->setStatus( $status );
+				$success = in_array( $status, $successfulStatuses );
+				$response->setSuccessful( $success );
 			} catch ( \Exception $ex ) {
 				$response->addErrors( new PaymentError(
 					ErrorCode::UNEXPECTED_VALUE,
 					$ex->getMessage(),
 					LogLevel::ERROR
 				) );
+				$response->setSuccessful( false );
 				Logger::debug( 'Unable to map Adyen status', $rawResponse );
 			}
 		} else {
@@ -351,11 +377,14 @@ abstract class PaymentProvider implements IPaymentProvider {
 				$message,
 				LogLevel::ERROR
 			) );
+			$response->setSuccessful( false );
 			Logger::debug( $message, $rawResponse );
 		}
 	}
 
 	abstract protected function getPaymentDetailsStatusNormalizer(): StatusNormalizer;
+
+	abstract protected function getPaymentDetailsSuccessfulStatuses(): array;
 
 	/**
 	 * Documented at
@@ -407,5 +436,26 @@ abstract class PaymentProvider implements IPaymentProvider {
 				$additionalData['recurring.recurringDetailReference']
 			);
 		}
+	}
+
+	/**
+	 * @param array $params
+	 * @return array
+	 */
+	protected function validateGetPaymentMethodsParams( array $params ): array {
+		$badParams = [];
+		if ( !array_key_exists( $params['country'], NationalCurrencies::getNationalCurrencies() ) ) {
+			$badParams[] = 'country';
+		}
+		if ( !array_key_exists( $params['currency'], CurrencyRates::getCurrencyRates() ) ) {
+			$badParams[] = 'currency';
+		}
+		if ( !is_numeric( $params['amount'] ) ) {
+			$badParams[] = 'amount';
+		}
+		if ( empty( $params['language'] ) ) {
+			$badParams[] = 'language';
+		}
+		return $badParams;
 	}
 }

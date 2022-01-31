@@ -59,6 +59,10 @@ class ApplePayPaymentProvider extends PaymentProvider {
 		throw new \BadMethodCallException( 'No payment details status normalizer for Apple Pay.' );
 	}
 
+	protected function getPaymentDetailsSuccessfulStatuses(): array {
+		throw new \BadMethodCallException( 'Unexpected getPaymentDetails call for Apple Pay.' );
+	}
+
 	public function createPaymentSession( array $params ) : array {
 		$params += [
 			'merchant_identifier' => $this->merchantIdentifier,

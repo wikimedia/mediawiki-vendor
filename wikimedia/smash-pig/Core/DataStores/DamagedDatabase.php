@@ -179,7 +179,7 @@ class DamagedDatabase extends SmashPigDatabase {
 		return 'data-store/damaged-db';
 	}
 
-	protected function getTableScriptFile(): string {
-		return '002_CreateDamagedTable.sql';
+	protected function getTableScriptFiles(): array {
+		return [ '002_CreateDamagedTable.sql' ];
 	}
 }

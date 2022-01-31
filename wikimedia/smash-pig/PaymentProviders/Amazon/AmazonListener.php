@@ -60,7 +60,12 @@ class AmazonListener extends RestListener {
 			// because of how RestListener is implemented and because we only
 			// process one message per request
 			// Bad form, but it would be odd to hold this till doMessageSecurity
-			Logger::alert( 'Error validating Amazon message. Firewall problem?' );
+			Logger::alert(
+				'Error validating Amazon message. Please ensure that your ' .
+				'firewall allows outbound connections to all AWS IPs for Amazon ' .
+				'services in US-East-1. This tool may be useful: ' .
+				'https://phabricator.wikimedia.org/diffusion/WFTO/browse/master/amazon-allowlist/amazon-ranges.sh'
+			);
 			throw new ListenerSecurityException( $ex->getMessage() );
 		}
 		$messageValues = $amazonHandlerMessage->toArray();

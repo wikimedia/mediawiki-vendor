@@ -9,10 +9,6 @@ class SavedPaymentDetailsResponse extends PaymentProviderResponse {
 	 */
 	protected $detailsList;
 
-	public function isSuccessful(): bool {
-		return count( $this->getDetailsList() ) > 0;
-	}
-
 	/**
 	 * @return SavedPaymentDetails[]
 	 */

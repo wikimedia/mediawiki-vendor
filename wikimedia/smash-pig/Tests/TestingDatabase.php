@@ -24,7 +24,7 @@ class TestingDatabase {
 	 */
 	public static function createTables() {
 		foreach ( self::$classes as $className ) {
-			$className::get()->createTable();
+			$className::get()->createTables();
 		}
 	}
 }

@@ -39,7 +39,7 @@ abstract class ListenerBase implements IHttpActionHandler {
 	}
 
 	/**
-	 * Determine remote IP address and check validity against an IP whitelist. Will throw exception
+	 * Determine remote IP address and check validity against an IP allowlist. Will throw exception
 	 * on error or invalid IP.
 	 *
 	 * TODO: This function only handles IPv4 -- it should also handle v6
@@ -48,15 +48,15 @@ abstract class ListenerBase implements IHttpActionHandler {
 	 * @throws ListenerSecurityException
 	 */
 	protected function validateRemoteIp() {
-		// Obtain whitelist
-		$whitelist = $this->c->val( 'security/ip-whitelist' );
+		// Obtain allowlist
+		$allowlist = $this->c->val( 'security/ip-allowlist' );
 
 		// Obtain remote party IP
 		$remote_ip = $this->request->getClientIp();
 
 		// Do we continue?
-		if ( empty( $whitelist ) ) {
-			Logger::info( "No IP whitelist specified. Continuing and not validating remote IP '{$remote_ip}'." );
+		if ( empty( $allowlist ) ) {
+			Logger::info( "No IP allowlist specified. Continuing and not validating remote IP '{$remote_ip}'." );
 			return;
 		}
 
@@ -65,9 +65,9 @@ abstract class ListenerBase implements IHttpActionHandler {
 			throw new ListenerSecurityException( "Bizarre remote IP address: {$remote_ip}" );
 		}
 
-		// Check remote address against the IP whitelist -- the whitelist can be either individual
+		// Check remote address against the IP allowlist -- the allowlist can be either individual
 		// or CIDR blocks.
-		foreach ( (array)$whitelist as $ip ) {
+		foreach ( (array)$allowlist as $ip ) {
 			if ( $remote_ip === $ip ) {
 				return;
 			} elseif ( count( explode( '/', $ip ) ) === 2 ) {
@@ -76,7 +76,7 @@ abstract class ListenerBase implements IHttpActionHandler {
 				if ( !filter_var( $network_ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 ) ||
 					!filter_var( $block, FILTER_VALIDATE_INT, [ 'min_range' => 0, 'max_range' => 32 ] )
 				) {
-					throw new ListenerConfigException( "Malformed IP address in whitelist: {$ip}" );
+					throw new ListenerConfigException( "Malformed IP address in allowlist: {$ip}" );
 				}
 
 				// Obtain raw IP addresses
@@ -89,11 +89,11 @@ abstract class ListenerBase implements IHttpActionHandler {
 					return; // the remote IP address is in this range
 				}
 			} else {
-				throw new ListenerConfigException( "Malformed IP address in whitelist: {$ip}" );
+				throw new ListenerConfigException( "Malformed IP address in allowlist: {$ip}" );
 			}
 		}
 
-		// we have fallen through everything in the whitelist, throw
+		// we have fallen through everything in the allowlist, throw
 		$agent = $this->request->server->get( 'User-Agent', '' );
 		throw new ListenerSecurityException(
 			"Received a connection from a bogus IP: {$remote_ip}, agent: {$agent}"

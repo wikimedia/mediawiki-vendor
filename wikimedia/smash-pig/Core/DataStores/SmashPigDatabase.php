@@ -47,11 +47,13 @@ abstract class SmashPigDatabase {
 		self::$dbs[$className] = $db;
 	}
 
-	public function createTable() {
+	public function createTables() {
 		$driver = $this->getDatabase()->getAttribute( PDO::ATTR_DRIVER_NAME );
-		$path = __DIR__ . '/../../Schema/'
-			. $driver . '/' . $this->getTableScriptFile();
-		$this->getDatabase()->exec( file_get_contents( $path ) );
+		foreach ( $this->getTableScriptFiles() as $fileName ) {
+			$path = __DIR__ . '/../../Schema/'
+				. $driver . '/' . $fileName;
+			$this->getDatabase()->exec( file_get_contents( $path ) );
+		}
 	}
 
 	/**
@@ -60,9 +62,9 @@ abstract class SmashPigDatabase {
 	abstract protected function getConfigKey(): string;
 
 	/**
-	 * @return string Name of file (no directory) containing table creation SQL
+	 * @return string Names of files (no directory) containing table creation SQL
 	 */
-	abstract protected function getTableScriptFile(): string;
+	abstract protected function getTableScriptFiles(): array;
 
 	/**
 	 * Build components of a parameterized insert statement

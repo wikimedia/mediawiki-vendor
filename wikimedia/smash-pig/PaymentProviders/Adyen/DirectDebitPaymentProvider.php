@@ -2,6 +2,7 @@
 
 namespace SmashPig\PaymentProviders\Adyen;
 
+use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentData\StatusNormalizer;
 use SmashPig\PaymentProviders\CreatePaymentResponse;
 
@@ -32,7 +33,8 @@ class DirectDebitPaymentProvider extends PaymentProvider {
 			$response,
 			$rawResponse,
 			new CreatePaymentStatus(),
-			$rawStatus
+			$rawStatus,
+			[ FinalStatus::PENDING, FinalStatus::PENDING_POKE, FinalStatus::COMPLETE ]
 		);
 
 		if ( $rawStatus === 'RedirectShopper' ) {
@@ -44,6 +46,10 @@ class DirectDebitPaymentProvider extends PaymentProvider {
 	}
 
 	protected function getPaymentDetailsStatusNormalizer(): StatusNormalizer {
-		return new CreatePaymentStatus();
+		return new RedirectedPaymentStatus();
+	}
+
+	protected function getPaymentDetailsSuccessfulStatuses(): array {
+		return [ FinalStatus::PENDING, FinalStatus::PENDING_POKE, FinalStatus::COMPLETE ];
 	}
 }

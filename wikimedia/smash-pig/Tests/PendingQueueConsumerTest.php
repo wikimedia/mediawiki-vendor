@@ -31,7 +31,7 @@ class PendingQueueConsumerTest extends BaseSmashPigUnitTestCase {
 	 * table.
 	 */
 	public function testPendingMessageNotInInitial() {
-		$consumer = new PendingQueueConsumer( 'pending', 1000, 1000 );
+		$consumer = new PendingQueueConsumer( 'pending', 1000, 1000, false );
 		$message = self::generateRandomPendingMessage();
 
 		$consumer->processMessage( $message );
@@ -58,7 +58,7 @@ class PendingQueueConsumerTest extends BaseSmashPigUnitTestCase {
 		$this->paymentsInitialDb->storeMessage( $initRow );
 
 		$message = self::generatePendingMessageFromInitial( $initRow );
-		$consumer = new PendingQueueConsumer( 'pending', 1000, 1000 );
+		$consumer = new PendingQueueConsumer( 'pending', 1000, 1000, false );
 
 		$consumer->processMessage( $message );
 
@@ -85,7 +85,7 @@ class PendingQueueConsumerTest extends BaseSmashPigUnitTestCase {
 		$this->paymentsInitialDb->storeMessage( $initRow );
 
 		$message = self::generatePendingMessageFromInitial( $initRow );
-		$consumer = new PendingQueueConsumer( 'pending', 1000, 1000 );
+		$consumer = new PendingQueueConsumer( 'pending', 1000, 1000, false );
 
 		$consumer->processMessage( $message );
 

@@ -16,8 +16,8 @@ class PendingQueueConsumer extends BaseQueueConsumer {
 	 */
 	protected $paymentsInitialDatabase;
 
-	public function __construct( string $queueName, int $timeLimit, int $messageLimit ) {
-		parent::__construct( $queueName, $timeLimit, $messageLimit );
+	public function __construct( string $queueName, int $timeLimit, int $messageLimit, bool $waitForNewMessages ) {
+		parent::__construct( $queueName, $timeLimit, $messageLimit, $waitForNewMessages );
 		$this->pendingDatabase = PendingDatabase::get();
 		$this->paymentsInitialDatabase = PaymentsInitialDatabase::get();
 	}

@@ -64,28 +64,49 @@ class HostedCheckoutProvider extends PaymentProvider {
 		$path = "hostedcheckouts/$hostedPaymentId";
 		$rawResponse = $this->api->makeApiCall( $path, 'GET' );
 
-		if ( isset( $rawResponse['createdPaymentOutput'] ) ) {
-			$this->addPaymentStatusErrorsIfPresent(
-				$rawResponse, $rawResponse['createdPaymentOutput']['payment']
-			);
-		}
 		$response = new PaymentDetailResponse();
-		$this->prepareResponseObject( $response, $rawResponse );
-		$fraudResults = $rawResponse['createdPaymentOutput']['payment']['paymentOutput']['cardPaymentMethodSpecificOutput']['fraudResults'] ?? null;
-		if ( $fraudResults ) {
-			$response->setRiskScores(
-				( new RiskScorer() )->getRiskScores(
-					$fraudResults['avsResult'] ?? null,
-					$fraudResults['cvvResult'] ?? null
-				)
+		// When the donor has entered card details, we get a createdPaymentOutput array
+		// in the hostedcheckouts GET response.
+		$paymentCreated = isset( $rawResponse['createdPaymentOutput'] );
+		if ( $paymentCreated ) {
+			// This copies any errors from a deeply nested property to the
+			// root node, where they can be picked up by subsequent code.
+			$this->addPaymentStatusErrorsIfPresent(
+				$rawResponse,
+				$rawResponse['createdPaymentOutput']['payment']
 			);
 		}
-		// Though the response property is plural, its data type is string,
-		// and we've only ever seen one token come back at once.
-		if ( !empty( $rawResponse['createdPaymentOutput']['tokens'] ) ) {
-			$response->setRecurringPaymentToken(
-				$rawResponse['createdPaymentOutput']['tokens']
+		// Always call prepareResponseObject to set the rawResponse
+		// and map any root-node errors. When a payment has been created
+		// this method will also set the rawStatus and mapped status
+		// property.
+		$this->prepareResponseObject( $response, $rawResponse );
+		if ( $paymentCreated ) {
+			// Fraud results and tokens only come back when a payment has been created
+			$fraudResults = $rawResponse['createdPaymentOutput']['payment']['paymentOutput']['cardPaymentMethodSpecificOutput']['fraudResults'] ?? null;
+			if ( $fraudResults ) {
+				$response->setRiskScores(
+					( new RiskScorer() )->getRiskScores(
+						$fraudResults['avsResult'] ?? null,
+						$fraudResults['cvvResult'] ?? null
+					)
+				);
+			}
+			// Though the 'tokens' response property is plural, its data type is
+			// string, and we've only ever seen one token come back at once.
+			if ( !empty( $rawResponse['createdPaymentOutput']['tokens'] ) ) {
+				$response->setRecurringPaymentToken(
+					$rawResponse['createdPaymentOutput']['tokens']
+				);
+			}
+		} elseif ( isset( $rawResponse['status'] ) ) {
+			// If no payment has been created, the GET response only
+			// has a single status property - {"status": "IN_PROGRESS"}
+			$response->setRawStatus( $rawResponse['status'] );
+			$response->setStatus(
+				( new HostedCheckoutStatus() )->normalizeStatus( $rawResponse['status'] )
 			);
+			$response->setSuccessful( false );
 		}
 
 		return $response;

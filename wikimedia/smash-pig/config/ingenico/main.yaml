@@ -72,7 +72,7 @@ data-constraints:
     # city: AN40
     city:
         type: alphanumeric
-        length: 40
+        length: 35
     # countryCode: AN2
     country:
         type: alphanumeric
@@ -127,11 +127,6 @@ data-constraints:
         length: 10
 
 fraud-filters:
-    # Automatically capture authorizations under this score
-    review-threshold: 75
-    # Automatically cancel authorizations with at least this score
-    reject-threshold: 125
-
     # https://epayments.developer-ingenico.com/services/avs
     avs-map:
         # The street addresses match but the postal or ZIP codes do not, or the request does not include the postal or ZIP code.

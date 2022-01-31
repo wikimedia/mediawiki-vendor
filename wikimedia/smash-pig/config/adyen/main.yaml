@@ -114,11 +114,6 @@ capture-from-ipn-listener: true
 capture-job-queue-count: 1
 
 fraud-filters:
-    # Automatically capture authorizations under this score
-    review-threshold: 75
-    # Automatically cancel authorizations with at least this score
-    reject-threshold: 125
-
     # Authorization notifications include AVS and CVV result codes.
     # The following maps set a risk score for each result code, which
     # we combine with any risk score computed on the payment site to

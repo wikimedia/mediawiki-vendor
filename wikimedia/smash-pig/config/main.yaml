@@ -149,6 +149,7 @@ maintenance:
     consume-pending:
         time-limit: 60
         max-messages: 0
+        wait-for-messages: false
 
 # in seconds
 requeue-delay: 1200

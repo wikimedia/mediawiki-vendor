@@ -4,6 +4,7 @@ namespace SmashPig\PaymentProviders\Ingenico\Tests;
 
 use PHPUnit_Framework_MockObject_MockObject;
 use SmashPig\PaymentData\ErrorCode;
+use SmashPig\PaymentData\FinalStatus;
 use SmashPig\Tests\BaseSmashPigUnitTestCase;
 
 /**
@@ -81,7 +82,10 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 				$this->equalTo( 'POST' )
 			);
 		$response = $this->provider->cancelPayment( $gatewayTxnId );
-		$this->assertEquals( $gatewayTxnId, $response['payment']['id'] );
+
+		$this->assertEquals( FinalStatus::CANCELLED, $response->getStatus() );
+		$this->assertTrue( $response->isSuccessful() );
+		$this->assertEquals( $gatewayTxnId, $response->getGatewayTxnId() );
 	}
 
 	public function testTokenizePayment() {

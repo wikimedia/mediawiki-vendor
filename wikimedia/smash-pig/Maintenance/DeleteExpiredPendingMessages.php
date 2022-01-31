@@ -18,6 +18,7 @@ class DeleteExpiredPendingMessages extends MaintenanceBase {
 		parent::__construct();
 		$this->addOption( 'gateway', 'gateway to delete messages for' );
 		$this->addOption( 'days', 'age in days of oldest messages to keep', 30 );
+		$this->addOption( 'hours', 'age in hours of oldest messages to keep' );
 	}
 
 	/**
@@ -26,8 +27,14 @@ class DeleteExpiredPendingMessages extends MaintenanceBase {
 	public function execute() {
 		$pendingDatabase = PendingDatabase::get();
 		$gateway = $this->getOption( 'gateway' );
-		$days = $this->getOption( 'days' );
-		$deleteBefore = UtcDate::getUtcTimestamp( "-$days days" );
+
+		if ( $this->optionProvided( 'hours' ) ) {
+			$hours = $this->getOption( 'hours' );
+			$deleteBefore = UtcDate::getUtcTimestamp( "-$hours hours" );
+		} else {
+			$days = $this->getOption( 'days' );
+			$deleteBefore = UtcDate::getUtcTimestamp( "-$days days" );
+		}
 
 		$startTime = time();
 		$deleted = $pendingDatabase->deleteOldMessages( $deleteBefore, $gateway );

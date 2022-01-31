@@ -175,7 +175,7 @@ abstract class MaintenanceBase {
 	 * Adds the default parameters to the expected command line inputs.
 	 */
 	protected function addDefaultParams() {
-		$this->addOption( 'help', 'Display this help message', null, 'h' );
+		$this->addFlag( 'help', 'Display this help message', 'h' );
 		// FIXME: default to null, not magic empty string to trigger bad argv code.
 		$this->addOption( 'config-file', 'Path to additional configuration file', '' );
 		$this->addOption( 'config-node',
@@ -196,10 +196,17 @@ abstract class MaintenanceBase {
 	 *                              argument expected; returning true if the
 	 *                              option is present in the command line
 	 *                              string.
-	 * @param string $alias Optional character to use as short name, used with -
+	 * @param string|null $alias Optional character to use as short name, used with -
+	 * @param string $type Type of option as given to OptionParser, defaults to String
 	 * @throws SmashPigException
 	 */
-	protected function addOption( $name, $description, $default = null, $alias = false ) {
+	protected function addOption(
+		string $name,
+		string $description,
+		$default = null,
+		?string $alias = null,
+		string $type = 'String'
+	) {
 		if ( in_array( $name, $this->desiredOptions ) ) {
 			throw new SmashPigException(
 				"Option '$name' already exists. Cannot add again."
@@ -209,6 +216,7 @@ abstract class MaintenanceBase {
 			'desc' => $description,
 			'default' => $default,
 			'alias' => $alias,
+			'type' => $type
 		];
 
 		if ( $alias ) {
@@ -219,6 +227,22 @@ abstract class MaintenanceBase {
 			}
 			$this->aliasParamsMap[$alias] = $name;
 		}
+	}
+
+	/**
+	 * Adds a flag-type boolean option which doesn't need a value specified
+	 * on the command line. The presence of the option will yield value true
+	 * and the absence of the option will yield value false.
+	 *
+	 * @param string $name Long name of the param, used with -- (ie help, version, etc)
+	 * @param string $description Description of the param to show on --help
+	 * @param string|null $alias Optional character to use as short name, used with -
+	 * @throws SmashPigException
+	 */
+	protected function addFlag(
+		string $name, string $description, ?string $alias = null
+	) {
+		$this->addOption( $name, $description, false, $alias, 'Boolean' );
 	}
 
 	/**
@@ -351,8 +375,7 @@ abstract class MaintenanceBase {
 		$specs = new OptionCollection;
 		foreach ( $this->desiredOptions as $longName => $option ) {
 			$alias = ( $option['alias'] ? $option['alias'] : '' );
-			$type = ( $longName == 'help' ? 'Boolean' : 'String' );
-			$specs->add( "$alias|$longName?", $option['desc'] )->isa( $type );
+			$specs->add( "$alias|$longName?", $option['desc'] )->isa( $option['type'] );
 			if ( $option['default'] ) {
 				$this->options[$longName] = $option['default'];
 			}
@@ -363,7 +386,11 @@ abstract class MaintenanceBase {
 			$result = $parser->parse( $argv );
 			$parsedOptions = $result->keys;
 			foreach ( $parsedOptions as $parsedOption ) {
-				$this->options[$parsedOption->long] = $parsedOption->value;
+				if ( $parsedOption->isa === 'Boolean' ) {
+					$this->options[$parsedOption->long] = true;
+				} else {
+					$this->options[$parsedOption->long] = $parsedOption->value;
+				}
 				if ( $parsedOption->long == 'help' ) {
 					$this->helpifRequested( true );
 				}

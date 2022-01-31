@@ -237,7 +237,7 @@ class PendingDatabase extends SmashPigDatabase {
 		return 'data-store/pending-db';
 	}
 
-	protected function getTableScriptFile(): string {
-		return '001_CreatePendingTable.sql';
+	protected function getTableScriptFiles(): array {
+		return [ '001_CreatePendingTable.sql' ];
 	}
 }

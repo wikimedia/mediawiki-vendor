@@ -56,6 +56,11 @@ abstract class PaymentProviderResponse {
 	protected $rawStatus;
 
 	/**
+	 * @var bool
+	 */
+	protected $successful;
+
+	/**
 	 * @return mixed
 	 */
 	public function getRawResponse() {
@@ -177,13 +182,20 @@ abstract class PaymentProviderResponse {
 	}
 
 	/**
-	 * Subclasses should implement this with appropriate logic to determine
-	 * whether the API call completed successfully. This might be a check on
-	 * the status code or just checking whether any errors exist.
-	 *
 	 * @return bool
 	 */
-	abstract public function isSuccessful(): bool;
+	public function isSuccessful(): bool {
+		return $this->successful;
+	}
+
+	/**
+	 * @param bool $successful
+	 * @return $this
+	 */
+	public function setSuccessful( bool $successful ): self {
+		$this->successful = $successful;
+		return $this;
+	}
 
 	/**
 	 * @return string

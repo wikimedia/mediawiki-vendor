@@ -23,7 +23,7 @@ logging:
 security:
     ip-header-name: ""
     ip-trusted-proxies: []
-    ip-whitelist: []
+    ip-allowlist: []
 
 endpoints: []
 
@@ -49,3 +49,9 @@ curl:
     retries: 3
     user-agent: SmashPig
     log-outbound: false
+
+fraud-filters:
+    # Automatically capture authorizations under this score
+    review-threshold: 75
+    # Automatically cancel authorizations with at least this score
+    reject-threshold: 125

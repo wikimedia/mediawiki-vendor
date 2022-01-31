@@ -39,6 +39,8 @@ abstract class BaseQueueConsumer {
 
 	protected $timeLimit = 0;
 
+	protected $waitForNewMessages = false;
+
 	protected $messageLimit = 0;
 
 	/**
@@ -56,23 +58,25 @@ abstract class BaseQueueConsumer {
 	 *  implement @see PHPQueue\Interfaces\AtomicReadBuffer.
 	 * @param int $timeLimit max number of seconds to loop, 0 for no limit
 	 * @param int $messageLimit max number of messages to process, 0 for all
+	 * @param bool $waitForNewMessages when true, sleep a second on empty queue
 	 * @throws \SmashPig\Core\ConfigurationKeyException
 	 */
 	public function __construct(
 		string $queueName,
 		int $timeLimit = 0,
-		int $messageLimit = 0
+		int $messageLimit = 0,
+		bool $waitForNewMessages = false
 	) {
-		if ( !is_numeric( $timeLimit ) ) {
-			throw new InvalidArgumentException( 'timeLimit must be numeric' );
-		}
-		if ( !is_numeric( $messageLimit ) ) {
-			throw new InvalidArgumentException( 'messageLimit must be numeric' );
+		if ( $waitForNewMessages && $timeLimit === 0 && $messageLimit === 0 ) {
+			throw new InvalidArgumentException(
+				'Waiting for new messages requires either a message or time limit'
+			);
 		}
 
 		$this->queueName = $queueName;
-		$this->timeLimit = intval( $timeLimit );
-		$this->messageLimit = intval( $messageLimit );
+		$this->timeLimit = $timeLimit;
+		$this->waitForNewMessages = $waitForNewMessages;
+		$this->messageLimit = $messageLimit;
 
 		$this->backend = QueueWrapper::getQueue( $queueName );
 
@@ -87,7 +91,8 @@ abstract class BaseQueueConsumer {
 
 	/**
 	 * Dequeue and process messages until time limit or message limit is
-	 * reached, or till queue is empty.
+	 * reached, or till queue is empty. When configured to wait for new
+	 * messages, sleeps for a second instead of quitting on empty queue.
 	 *
 	 * @return int number of messages processed
 	 * @throws Exception
@@ -103,6 +108,7 @@ abstract class BaseQueueConsumer {
 					$processed++;
 				}
 			} catch ( JsonException $ex ) {
+				// Set a non-null value so as not to exit the loop
 				$data = false;
 				$this->sendToDamagedStore( null, $ex );
 			}
@@ -111,10 +117,18 @@ abstract class BaseQueueConsumer {
 
 			$debugMessages = [];
 			if ( $data === null ) {
-				$debugMessages[] = 'Queue is empty.';
-			} elseif ( !$timeOk ) {
+				if ( $this->waitForNewMessages && $timeOk ) {
+					sleep( 1 );
+					// Set a non-null value so as not to exit the loop
+					$data = false;
+				} else {
+					$debugMessages[] = 'Queue is empty.';
+				}
+			}
+			if ( !$timeOk ) {
 				$debugMessages[] = "Time limit ($this->timeLimit) is elapsed.";
-			} elseif ( !$countOk ) {
+			}
+			if ( !$countOk ) {
 				$debugMessages[] = "Message limit ($this->messageLimit) is reached.";
 			}
 			if ( !empty( $debugMessages ) ) {
