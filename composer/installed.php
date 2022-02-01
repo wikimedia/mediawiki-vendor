@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '9d2101c8fee0936f872b81bb20cab17d2dc008d3',
+        'reference' => '23ee20d004f73096a89b21dea8aaca8b8a67d525',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '9d2101c8fee0936f872b81bb20cab17d2dc008d3',
+            'reference' => '23ee20d004f73096a89b21dea8aaca8b8a67d525',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -506,12 +506,12 @@
             'dev_requirement' => false,
         ),
         'pimple/pimple' => array(
-            'pretty_version' => 'v3.4.0',
-            'version' => '3.4.0.0',
+            'pretty_version' => 'v3.5.0',
+            'version' => '3.5.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../pimple/pimple',
             'aliases' => array(),
-            'reference' => '86406047271859ffc13424a048541f4531f53601',
+            'reference' => 'a94b3a4db7fb774b3d78dad2315ddc07629e1bed',
             'dev_requirement' => false,
         ),
         'pleonasm/bloom-filter' => array(
