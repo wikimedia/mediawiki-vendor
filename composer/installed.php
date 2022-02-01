@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => 'ed9a901f9630a381efb85f39515fa2dcbd6a882e',
+        'reference' => 'e0bf0ec877345a95585badf24401f86912ecf30a',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => 'ed9a901f9630a381efb85f39515fa2dcbd6a882e',
+            'reference' => 'e0bf0ec877345a95585badf24401f86912ecf30a',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -341,12 +341,12 @@
             ),
         ),
         'maxmind-db/reader' => array(
-            'pretty_version' => 'v1.10.1',
-            'version' => '1.10.1.0',
+            'pretty_version' => 'v1.11.0',
+            'version' => '1.11.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../maxmind-db/reader',
             'aliases' => array(),
-            'reference' => '569bd44d97d30a4ec12c7793a33004a76d4caf18',
+            'reference' => 'b1f3c0699525336d09cc5161a2861268d9f2ae5b',
             'dev_requirement' => false,
         ),
         'maxmind/web-service-common' => array(
