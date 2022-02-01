@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '23ee20d004f73096a89b21dea8aaca8b8a67d525',
+        'reference' => 'b7497c0b3ebfe74e4f2eb47b208beb39cfcc0df3',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '23ee20d004f73096a89b21dea8aaca8b8a67d525',
+            'reference' => 'b7497c0b3ebfe74e4f2eb47b208beb39cfcc0df3',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -173,12 +173,12 @@
             'dev_requirement' => false,
         ),
         'firebase/php-jwt' => array(
-            'pretty_version' => 'v5.2.0',
-            'version' => '5.2.0.0',
+            'pretty_version' => 'v5.5.1',
+            'version' => '5.5.1.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../firebase/php-jwt',
             'aliases' => array(),
-            'reference' => 'feb0e820b8436873675fd3aca04f3728eb2185cb',
+            'reference' => '83b609028194aa042ea33b5af2d41a7427de80e6',
             'dev_requirement' => false,
         ),
         'geoip2/geoip2' => array(
