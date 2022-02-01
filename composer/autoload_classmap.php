@@ -18,6 +18,7 @@ return array(
     'Assert\\LazyAssertionException' => $vendorDir . '/beberlei/assert/lib/Assert/LazyAssertionException.php',
     'Attribute' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
     'Base32\\Base32' => $vendorDir . '/christian-riesen/base32/src/Base32.php',
+    'Base32\\Base32Hex' => $vendorDir . '/christian-riesen/base32/src/Base32Hex.php',
     'Base64Url\\Base64Url' => $vendorDir . '/spomky-labs/base64url/src/Base64Url.php',
     'Brick\\Math\\BigDecimal' => $vendorDir . '/brick/math/src/BigDecimal.php',
     'Brick\\Math\\BigInteger' => $vendorDir . '/brick/math/src/BigInteger.php',

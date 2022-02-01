@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => 'b7497c0b3ebfe74e4f2eb47b208beb39cfcc0df3',
+        'reference' => 'fa1489db0b3d45b33bada32c8a7dc310f4f9ffca',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => 'b7497c0b3ebfe74e4f2eb47b208beb39cfcc0df3',
+            'reference' => 'fa1489db0b3d45b33bada32c8a7dc310f4f9ffca',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -38,12 +38,12 @@
             'dev_requirement' => false,
         ),
         'christian-riesen/base32' => array(
-            'pretty_version' => '1.4.0',
-            'version' => '1.4.0.0',
+            'pretty_version' => '1.6.0',
+            'version' => '1.6.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../christian-riesen/base32',
             'aliases' => array(),
-            'reference' => '5777d962c9f55385eefd078a1bf623ce04a4f6ca',
+            'reference' => '2e82dab3baa008e24a505649b0d583c31d31e894',
             'dev_requirement' => false,
         ),
         'composer/ca-bundle' => array(

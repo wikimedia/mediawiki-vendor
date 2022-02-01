@@ -131,17 +131,17 @@
         },
         {
             "name": "christian-riesen/base32",
-            "version": "1.4.0",
-            "version_normalized": "1.4.0.0",
+            "version": "1.6.0",
+            "version_normalized": "1.6.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ChristianRiesen/base32.git",
-                "reference": "5777d962c9f55385eefd078a1bf623ce04a4f6ca"
+                "reference": "2e82dab3baa008e24a505649b0d583c31d31e894"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ChristianRiesen/base32/zipball/5777d962c9f55385eefd078a1bf623ce04a4f6ca",
-                "reference": "5777d962c9f55385eefd078a1bf623ce04a4f6ca",
+                "url": "https://api.github.com/repos/ChristianRiesen/base32/zipball/2e82dab3baa008e24a505649b0d583c31d31e894",
+                "reference": "2e82dab3baa008e24a505649b0d583c31d31e894",
                 "shasum": ""
             },
             "require": {
@@ -152,7 +152,7 @@
                 "phpstan/phpstan": "^0.12",
                 "phpunit/phpunit": "^8.5.13 || ^9.5"
             },
-            "time": "2020-12-29T20:09:51+00:00",
+            "time": "2021-02-26T10:19:33+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -187,7 +187,7 @@
             ],
             "support": {
                 "issues": "https://github.com/ChristianRiesen/base32/issues",
-                "source": "https://github.com/ChristianRiesen/base32/tree/1.4.0"
+                "source": "https://github.com/ChristianRiesen/base32/tree/1.6.0"
             },
             "install-path": "../christian-riesen/base32"
         },
