@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '6a2e584ddb858e4747e0990b043a5f43141e4d5d',
+        'reference' => '9d2101c8fee0936f872b81bb20cab17d2dc008d3',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '6a2e584ddb858e4747e0990b043a5f43141e4d5d',
+            'reference' => '9d2101c8fee0936f872b81bb20cab17d2dc008d3',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -164,12 +164,12 @@
             'dev_requirement' => false,
         ),
         'fgrosse/phpasn1' => array(
-            'pretty_version' => 'v2.3.0',
-            'version' => '2.3.0.0',
+            'pretty_version' => 'v2.4.0',
+            'version' => '2.4.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../fgrosse/phpasn1',
             'aliases' => array(),
-            'reference' => '20299033c35f4300eb656e7e8e88cf52d1d6694e',
+            'reference' => 'eef488991d53e58e60c9554b09b1201ca5ba9296',
             'dev_requirement' => false,
         ),
         'firebase/php-jwt' => array(
