@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "857476926573ef22d71c73edea13ea64",
+    "content-hash": "35e5f3771139f91155009df7a2837bf2",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -7049,16 +7049,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.15.0-a17",
+            "version": "v0.15.0-a18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/parsoid.git",
-                "reference": "f26db26c4cc4644fd46fa41fde1163e8ad169ba8"
+                "reference": "52c80de8c45cc97bcbf3ddca6d094c8ea3f7bedf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/f26db26c4cc4644fd46fa41fde1163e8ad169ba8",
-                "reference": "f26db26c4cc4644fd46fa41fde1163e8ad169ba8",
+                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/52c80de8c45cc97bcbf3ddca6d094c8ea3f7bedf",
+                "reference": "52c80de8c45cc97bcbf3ddca6d094c8ea3f7bedf",
                 "shasum": ""
             },
             "require": {
@@ -7072,7 +7072,7 @@
                 "symfony/polyfill-php80": "^1.23.1",
                 "wikimedia/assert": "^0.5.0",
                 "wikimedia/dodo": "0.4.0",
-                "wikimedia/ip-utils": "^3.0.2",
+                "wikimedia/ip-utils": "^3.0.2||^4.0.0",
                 "wikimedia/object-factory": "^3.0.2",
                 "wikimedia/remex-html": "^3.0.0",
                 "wikimedia/scoped-callback": "^3.0.0",
@@ -7125,10 +7125,10 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/parsoid/tree/v0.15.0-a17",
+                "source": "https://github.com/wikimedia/parsoid/tree/v0.15.0-a18",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
-            "time": "2022-01-23T19:18:29+00:00"
+            "time": "2022-02-01T00:00:28+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",
@@ -8408,5 +8408,5 @@
         "composer-plugin-api": "^2.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.1.0"
 }

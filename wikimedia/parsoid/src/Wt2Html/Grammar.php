@@ -63,6 +63,8 @@ class Grammar extends \Wikimedia\WikiPEG\PEGParserBase {
 
 		$tokenizer = $this->options['pegTokenizer'];
 		$this->pipelineOpts = $tokenizer->getOptions();
+		// FIXME: inTemplate option may not always be set in
+		// standalone tokenizers user by some pipelines handlers.
 		$this->pipelineOffset = $this->options['pipelineOffset'] ?? 0;
 		$this->extTags = $this->siteConfig->getExtensionTagNameMap();
 
@@ -199,7 +201,11 @@ class Grammar extends \Wikimedia\WikiPEG\PEGParserBase {
 			if ( count( $attribs ) > 0 ) {
 				$attrMap = [];
 				foreach ( $attribs as $attr ) {
-					$attrMap[$attr->k] = $attr->v;
+				    // If the key or the value is not a string, we replace it by the thing that generated it and
+				    // consider that wikitext as a raw string instead.
+				    $k = is_string( $attr->k ) ? $attr->k : $attr->ksrc;
+				    $v = is_string( $attr->v ) ? $attr->v : $attr->vsrc;
+				    $attrMap[$k] = $v;
 				}
 				$datamw = [];
 				// Possible follow-up in T295168 for attribute sanitation

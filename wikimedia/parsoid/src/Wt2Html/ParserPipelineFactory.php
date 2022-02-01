@@ -182,11 +182,9 @@ class ParserPipelineFactory {
 	 * @return array
 	 */
 	private function defaultOptions( array $options ): array {
-		foreach ( $options as $k => $v ) {
-			Assert::invariant(
-				in_array( $k, self::$supportedOptions, true ),
-				'Invalid cacheKey option: ' . $k
-			);
+		// default: not in a template
+		if ( !isset( $options['inTemplate'] ) ) {
+			$options['inTemplate'] = false;
 		}
 
 		// default: not an include context
@@ -197,6 +195,14 @@ class ParserPipelineFactory {
 		// default: wrap templates
 		if ( !isset( $options['expandTemplates'] ) ) {
 			$options['expandTemplates'] = true;
+		}
+
+		// Catch pipeline option typos
+		foreach ( $options as $k => $v ) {
+			Assert::invariant(
+				in_array( $k, self::$supportedOptions, true ),
+				'Invalid cacheKey option: ' . $k
+			);
 		}
 
 		return $options;
@@ -213,8 +219,6 @@ class ParserPipelineFactory {
 	private function makePipeline(
 		string $type, string $cacheKey, array $options
 	): ParserPipeline {
-		$options = $this->defaultOptions( $options );
-
 		if ( !isset( self::$pipelineRecipes[$type] ) ) {
 			throw new InternalException( 'Unsupported Pipeline: ' . $type );
 		}

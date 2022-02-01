@@ -9,6 +9,7 @@ use MagicWord;
 use MagicWordArray;
 use MagicWordFactory;
 use MediaWiki\Config\ServiceOptions;
+use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\Interwiki\InterwikiLookup;
 use MediaWiki\Languages\LanguageConverterFactory;
 use MediaWiki\Languages\LanguageFactory;
@@ -78,6 +79,10 @@ class SiteConfigTest extends MediaWikiUnitTestCase {
 		array $parsoidSettings = [],
 		array $serviceOverrides = []
 	): SiteConfig {
+		$hcMock = $this->createMock( HookContainer::class );
+		$hcMock
+			->method( 'run' )
+			->willReturn( true );
 		return new SiteConfig(
 			new ServiceOptions(
 				SiteConfig::CONSTRUCTOR_OPTIONS,
@@ -96,7 +101,8 @@ class SiteConfigTest extends MediaWikiUnitTestCase {
 			$this->createMockOrOverride( LanguageConverterFactory::class, $serviceOverrides ),
 			$this->createMockOrOverride( LanguageNameUtils::class, $serviceOverrides ),
 			$this->createMockOrOverride( Parser::class, $serviceOverrides ),
-			new HashConfig( $configOverrides )
+			new HashConfig( $configOverrides ),
+			$hcMock
 		);
 	}
 
@@ -220,16 +226,10 @@ class SiteConfigTest extends MediaWikiUnitTestCase {
 			'nativeGalleryEnabled',
 			true
 		];
-		yield 'widthOption' => [
-			[ 'thumbsize' => 4242 ],
-			'widthOption',
-			4242
-		];
 	}
 
 	/**
 	 * @covers \MWParsoid\Config\SiteConfig::nativeGalleryEnabled()
-	 * @covers \MWParsoid\Config\SiteConfig::widthOption()
 	 * @dataProvider provideParsoidSettingPassed
 	 * @param array $settings
 	 * @param string $method
