@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => 'e0bf0ec877345a95585badf24401f86912ecf30a',
+        'reference' => '20b40fe9e0a8314b077bd7367aeefa45a1879449',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => 'e0bf0ec877345a95585badf24401f86912ecf30a',
+            'reference' => '20b40fe9e0a8314b077bd7367aeefa45a1879449',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -383,12 +383,12 @@
             'dev_requirement' => false,
         ),
         'nikic/php-parser' => array(
-            'pretty_version' => 'v4.13.0',
-            'version' => '4.13.0.0',
+            'pretty_version' => 'v4.13.2',
+            'version' => '4.13.2.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../nikic/php-parser',
             'aliases' => array(),
-            'reference' => '50953a2691a922aa1769461637869a0a2faa3f53',
+            'reference' => '210577fe3cf7badcc5814d99455df46564f3c077',
             'dev_requirement' => false,
         ),
         'nmred/kafka-php' => array(
