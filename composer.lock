@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dbb9d20a32aa3426958775a2f8f21f57",
+    "content-hash": "a766466b0a1807c1e853a8c2b1263a82",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -4137,12 +4137,12 @@
             },
             "type": "library",
             "autoload": {
-                "psr-4": {
-                    "React\\Promise\\": "src/"
-                },
                 "files": [
                     "src/functions_include.php"
-                ]
+                ],
+                "psr-4": {
+                    "React\\Promise\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -4692,12 +4692,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Php73\\": ""
-                },
                 "files": [
                     "bootstrap.php"
                 ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Php73\\": ""
+                },
                 "classmap": [
                     "Resources/stubs"
                 ]
@@ -4771,12 +4771,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Php80\\": ""
-                },
                 "files": [
                     "bootstrap.php"
                 ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Php80\\": ""
+                },
                 "classmap": [
                     "Resources/stubs"
                 ]
@@ -4854,12 +4854,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Php81\\": ""
-                },
                 "files": [
                     "bootstrap.php"
                 ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Php81\\": ""
+                },
                 "classmap": [
                     "Resources/stubs"
                 ]
@@ -5616,13 +5616,6 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Safe\\": [
-                        "lib/",
-                        "deprecated/",
-                        "generated/"
-                    ]
-                },
                 "files": [
                     "deprecated/apc.php",
                     "deprecated/libevent.php",
@@ -5713,7 +5706,14 @@
                     "generated/yaz.php",
                     "generated/zip.php",
                     "generated/zlib.php"
-                ]
+                ],
+                "psr-4": {
+                    "Safe\\": [
+                        "lib/",
+                        "deprecated/",
+                        "generated/"
+                    ]
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -7052,16 +7052,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.15.0-a18",
+            "version": "v0.15.0-a19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/parsoid.git",
-                "reference": "52c80de8c45cc97bcbf3ddca6d094c8ea3f7bedf"
+                "reference": "683238b3f972d3c44f18aeaef00d2f4555d66680"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/52c80de8c45cc97bcbf3ddca6d094c8ea3f7bedf",
-                "reference": "52c80de8c45cc97bcbf3ddca6d094c8ea3f7bedf",
+                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/683238b3f972d3c44f18aeaef00d2f4555d66680",
+                "reference": "683238b3f972d3c44f18aeaef00d2f4555d66680",
                 "shasum": ""
             },
             "require": {
@@ -7128,10 +7128,10 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/parsoid/tree/v0.15.0-a18",
+                "source": "https://github.com/wikimedia/parsoid/tree/v0.15.0-a19",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
-            "time": "2022-02-01T00:00:28+00:00"
+            "time": "2022-02-07T16:15:04+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",

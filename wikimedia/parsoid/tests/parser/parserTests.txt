@@ -3132,17 +3132,18 @@ parsoid=wt2html
 <p><span about="#mwt1" typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"1&lt;!--X-->x&lt;!--X-->  \n   &lt;!--X-->   &lt;!--X-->\n\n ","href":"./Template:1x"},"params":{"1":{"wt":"foo"}},"i":0}}]}'>foo</span></p>
 !! end
 
-## NOTE: Parsoid is punting on this edge case for now and just returning
-## something that will roundtrip.
+## wt2html only, since the bare {{ will get escaped when serializing
 !! test
 Templates: Target with an extension tag
+!! options
+parsoid=wt2html
 !! wikitext
 {{{{1x|1x}}<nowiki>hi</nowiki>|ho}}
 !! html/php
 <p>{{1xhi|ho}}
 </p>
 !! html/parsoid
-<p><span about="#mwt3" typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"{{1x|1x}}&lt;nowiki>hi&lt;/nowiki>"},"params":{"1":{"wt":"ho"}},"i":0}}]}'>{{{{1x|1x}}&lt;nowiki>hi&lt;/nowiki>|ho}}</span></p>
+<p>{{<span about="#mwt5" typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"1x","href":"./Template:1x"},"params":{"1":{"wt":"1x"}},"i":0}}]}'>1x</span><span typeof="mw:Nowiki">hi</span>|ho}}</p>
 !! end
 
 !! test
@@ -12354,18 +12355,26 @@ Templates with templated name
 !! end
 
 ## Regression test; the output here isn't really that interesting.
+## wt2html only, since the bare {{ will get escaped when serializing
+## needs investigation!
 !! test
 Templates with templated name and top level template args
+!! options
+parsoid=wt2html
 !! wikitext
 {{1{{2{{{3}}}|4=5}}}}
+!! html/php
+<p>{{1{{2{{{3}}}|4=5}}}}
+</p>
 !! html/parsoid
-<p><span about="#mwt2" typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"1{{2{{{3}}}|4=5}}"},"params":{},"i":0}}]}'>{{1{{2{{{3}}}|4=5}}}}</span></p>
+<p>{{1{{2<span about="#mwt5" typeof="mw:Param" data-mw='{"parts":[{"templatearg":{"target":{"wt":"3"},"params":{},"i":0}}]}'>{{{3}}}</span>|4=5}}}}</p>
 !! end
 
-# Parsoid markup is deliberate "broken". This is an edge case.
-# See long comment in TemplateHandler.js:convertAttribsToString.
+## wt2html only, since the bare {{ will get escaped when serializing
 !! test
 Templates with invalid templated targets
+!! options
+parsoid=wt2html
 !! wikitext
 {{1x
 {{1x|foo}}
@@ -12376,8 +12385,9 @@ foo
 }}
 </p>
 !! html/parsoid
-<p><span about="#mwt1" typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"1x\n{{1x|foo}}\n"},"params":{},"i":0}}]}'>{{1x
-foo }}</span></p>
+<p>{{1x
+<span about="#mwt3" typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"1x","href":"./Template:1x"},"params":{"1":{"wt":"foo"}},"i":0}}]}'>foo</span>
+}}</p>
 !! end
 
 !! article
@@ -12661,24 +12671,24 @@ foo {{''}} baz
 !! test
 Templates with intersecting and overlapping ranges
 !! wikitext
-{|{{1x|
+{|{{1x|1=class="foo"
 <p>ha</p>}}
-{|{{1x|
+{|{{1x|1=class="bar"
 <p>ho</p>}}
 {{1x|{{!}}hi}}
 |}
 !! html/php
-<p>ha</p><table>
+<p>ha</p><table class="foo">
 
-</table><p>ho</p><table>
+</table><p>ho</p><table class="bar">
 
 <tbody><tr>
 <td>hi
 </td></tr></tbody></table>
 !! html/parsoid
-<p about="#mwt1" typeof="mw:Transclusion" data-parsoid='{"stx":"html","autoInsertedEnd":true,"pi":[[{"k":"1"}],[{"k":"1"}],[{"k":"1"}]],"firstWikitextNode":"TABLE"}' data-mw='{"parts":["{|",{"template":{"target":{"wt":"1x","href":"./Template:1x"},"params":{"1":{"wt":"\n&lt;p>ha&lt;/p>"}},"i":0}},"\n","{|",{"template":{"target":{"wt":"1x","href":"./Template:1x"},"params":{"1":{"wt":"\n&lt;p>ho&lt;/p>"}},"i":1}},"\n",{"template":{"target":{"wt":"1x","href":"./Template:1x"},"params":{"1":{"wt":"{{!}}hi"}},"i":2}},"\n|}"]}'>ha</p><table about="#mwt1" typeof="mw:ExpandedAttrs" data-mw='{"attribs":[[{"txt":"","html":""},{"html":""}]]}'>
+<p about="#mwt1" typeof="mw:Transclusion" data-parsoid='{"stx":"html","pi":[[{"k":"1","named":true}],[{"k":"1","named":true}],[{"k":"1"}]],"firstWikitextNode":"TABLE"}' data-mw='{"parts":["{|",{"template":{"target":{"wt":"1x","href":"./Template:1x"},"params":{"1":{"wt":"class=\"foo\"\n&lt;p>ha&lt;/p>"}},"i":0}},"\n","{|",{"template":{"target":{"wt":"1x","href":"./Template:1x"},"params":{"1":{"wt":"class=\"bar\"\n&lt;p>ho&lt;/p>"}},"i":1}},"\n",{"template":{"target":{"wt":"1x","href":"./Template:1x"},"params":{"1":{"wt":"{{!}}hi"}},"i":2}},"\n|}"]}'>ha</p><table class="foo" about="#mwt1" typeof="mw:ExpandedAttrs" data-mw='{"attribs":[[{"txt":"class","html":"class=\"foo\"","uneditable":true},{"html":""}]]}'>
 
-</table><p about="#mwt1">ho</p><table about="#mwt1" typeof="mw:ExpandedAttrs" data-mw='{"attribs":[[{"txt":"","html":""},{"html":""}]]}'>
+</table><p about="#mwt1">ho</p><table class="bar" about="#mwt1" typeof="mw:ExpandedAttrs" data-mw='{"attribs":[[{"txt":"class","html":"class=\"bar\"","uneditable":true},{"html":""}]]}'>
 
 <tbody><tr><td>hi</td></tr>
 </tbody></table>
@@ -14611,6 +14621,22 @@ Templates: Param with empty arg in the final position
 {{{hi|}}}
 !! html/parsoid
 <span about="#mwt1" typeof="mw:Param" data-mw='{"parts":[{"templatearg":{"target":{"wt":"hi"},"params":{"1":{"wt":""}},"i":0}}]}'></span>
+!! end
+
+!! test
+Compound transclusion with template and top level templatearg
+!! wikitext
+{{1x|<table>}}
+{{{top|<td>123</td>}}}
+</table>
+!! html/php
+<table>
+<tbody><tr><td>123</td>
+</tr></tbody></table>
+!! html/parsoid
+<table about="#mwt1" typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"1x","href":"./Template:1x"},"params":{"1":{"wt":"&lt;table>"}},"i":0}},"\n",{"templatearg":{"target":{"wt":"top"},"params":{"1":{"wt":"&lt;td>123&lt;/td>"}},"i":1}},"\n&lt;/table>"]}'>
+<tbody><tr><td>123</td></tr>
+</tbody></table>
 !! end
 
 !!test
@@ -22039,13 +22065,18 @@ T7678: Double-parsed template argument
 </p>
 !! end
 
+## wt2html only, since the bare {{ will get escaped when serializing
 !! test
 T7678: Double-parsed template invocation
+!! options
+parsoid=wt2html
 !! wikitext
 {{lc:{{paramtest {{!}} param = hello }} }}
-!! html
+!! html/php
 <p>{{paramtest | param = hello }}
 </p>
+!! html/parsoid
+<p><span about="#mwt4" typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"lc:{{paramtest {{!}} param = hello }} ","function":"lc"},"params":{},"i":0}}]}'>{{paramtest  param = hello }}</span></p>
 !! end
 
 !! test

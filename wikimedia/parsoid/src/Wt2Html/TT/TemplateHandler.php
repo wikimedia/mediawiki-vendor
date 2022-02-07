@@ -6,7 +6,6 @@ namespace Wikimedia\Parsoid\Wt2Html\TT;
 use Wikimedia\Assert\Assert;
 use Wikimedia\Parsoid\Tokens\CommentTk;
 use Wikimedia\Parsoid\Tokens\EndTagTk;
-use Wikimedia\Parsoid\Tokens\EOFTk;
 use Wikimedia\Parsoid\Tokens\KV;
 use Wikimedia\Parsoid\Tokens\NlTk;
 use Wikimedia\Parsoid\Tokens\SelfclosingTagTk;
@@ -64,7 +63,9 @@ class TemplateHandler extends TokenHandler {
 		// which continues to inherit from TemplateHandler.
 		$this->parserFunctions = new ParserFunctions( $this->env );
 		$this->ae = new AttributeExpander( $this->manager, [
-			'standalone' => true, 'inTemplate' => false, 'expandTemplates' => true
+			'expandTemplates' => $this->options['expandTemplates'],
+			'inTemplate' => $this->options['inTemplate'],
+			'standalone' => true,
 		] );
 		$this->wrapTemplates = !$options['inTemplate'];
 
@@ -270,91 +271,13 @@ class TemplateHandler extends TokenHandler {
 			$prefix = trim( $pieces[0] );
 		}
 
-		// The check for pieces.length > 1 is required to distinguish between
-		// {{lc:FOO}} and {{lc|FOO}}.  The latter is a template transclusion
-		// even though the target (=lc) matches a registered parser-function name.
-		$isPF = count( $pieces ) > 1;
-
 		// Check if we have a parser function
 		$canonicalFunctionName = $siteConfig->getMagicWordForFunctionHook( $prefix ) ??
 			$siteConfig->getMagicWordForVariable( $prefix ) ??
 			$siteConfig->getMagicWordForVariable( mb_strtolower( $prefix ) );
 
 		if ( $canonicalFunctionName !== null ) {
-			// Extract toks that make up pfArg
-			$pfArgToks = null;
-
-			// Because of the lenient stringifying above, we need to find the
-			// prefix.  The strings we've seen so far are buffered in case they
-			// combine to our prefix.  FIXME: We need to account for the call
-			// to $this->stripIncludeTokens above and the safesubst replace.
-			$buf = '';
-			$index = -1;
-			$partialPrefix = false;
-			foreach ( $targetToks as $i => $t ) {
-				if ( !is_string( $t ) ) {
-					continue;
-				}
-
-				$buf .= $t;
-				$prefixPos = stripos( $buf, $prefix );
-				if ( $prefixPos !== false ) {
-					// Check if they combined
-					$offset = strlen( $buf ) - strlen( $t ) - $prefixPos;
-					if ( $offset > 0 ) {
-						$partialPrefix = substr( $prefix, $offset );
-					}
-					$index = $i;
-					break;
-				}
-			}
-
-			if ( $index > -1 ) {
-				// Strip parser-func / magic-word prefix
-				$firstTok = $targetToks[$index];
-				if ( $partialPrefix !== false ) {
-					// Remove the partial prefix if it case insensitively
-					// appears at the start of the token
-					if ( substr_compare( $firstTok, $partialPrefix,
-							0, strlen( $partialPrefix ), true ) === 0
-					) {
-						$firstTok = substr( $firstTok, strlen( $partialPrefix ) );
-					}
-				} else {
-					// Remove the first occurrence of the prefix from $firstTok,
-					// case insensitively
-					$prefixPos = stripos( $firstTok, $prefix );
-					if ( $prefixPos !== false ) {
-						$firstTok = substr( $firstTok, $prefixPos + strlen( $prefix ) );
-					}
-				}
-				$targetToks = array_slice( $targetToks, $index + 1 );
-
-				if ( $isPF ) {
-					// Strip ":", again, after accounting for the lenient stringifying
-					while ( count( $targetToks ) > 0 &&
-						( !is_string( $firstTok ) || preg_match( '/^\s*$/D', $firstTok ) )
-					) {
-						$firstTok = $targetToks[0];
-						$targetToks = array_slice( $targetToks, 1 );
-					}
-					Assert::invariant( is_string( $firstTok ) && preg_match( '/^\s*:/', $firstTok ),
-						'Expecting : in parser function definiton'
-					);
-					$pfArgToks = array_merge( [ preg_replace( '/^\s*:/', '', $firstTok, 1 ) ], $targetToks );
-				} else {
-					$pfArgToks = array_merge( [ $firstTok ], $targetToks );
-				}
-			}
-
-			if ( $pfArgToks === null ) {
-				// FIXME: Protect from crashers by using the full token -- this is
-				// still going to generate incorrect output, but it won't crash.
-				$pfArgToks = $targetToks;
-			}
-
 			$state['parserFunctionName'] = $canonicalFunctionName;
-
 			$magicWordType = null;
 			if ( $canonicalFunctionName === '!' ) {
 				$magicWordType = '!';
@@ -363,16 +286,17 @@ class TemplateHandler extends TokenHandler {
 			}
 
 			$pfArg = substr( $target, strlen( $prefix ) + 1 );
-
 			return [
 				'isPF' => true,
 				'prefix' => $canonicalFunctionName,
-				'magicWordType' => $magicWordType,
+				'pfArg' => $pfArg === false ? '' : $pfArg,
 				'target' => 'pf_' . $canonicalFunctionName,
 				'title' => $env->makeTitleFromURLDecodedStr( "Special:ParserFunction/$canonicalFunctionName" ),
-				'pfArg' => $pfArg === false ? '' : $pfArg,
-				'pfArgToks' => $pfArgToks,
 				'srcOffsets' => $srcOffsets,
+				'magicWordType' => $magicWordType,
+				// Is this of the form {{somepf:arg}}? Ex: {{lc:FOO}}
+				'haveArgsAfterColon' => count( $pieces ) > 1,
+				'targetToks' => $targetToks
 			];
 		}
 
@@ -452,102 +376,34 @@ class TemplateHandler extends TokenHandler {
 	}
 
 	/**
-	 * @param array $state
-	 * @param array $attribs
+	 * @param Token $token
 	 * @return array
 	 */
-	private function convertAttribsToString(
-		array $state, array $attribs
-	): array {
-		$attribTokens = [];
+	private function convertToString( Token $token ): array {
+		$frame = $this->manager->getFrame();
+		$tsr = $token->dataAttribs->tsr;
+		$src = substr( $token->dataAttribs->src, 1, -1 );
+		$startOffset = $tsr->start + 1;
+		$srcOffsets = new SourceRange( $startOffset, $startOffset + strlen( $src ) );
 
-		// Leading whitespace, if any
-		$leadWS = $state['token']->dataAttribs->tmp->leadWS ?? '';
-		if ( $leadWS !== '' ) {
-			$attribTokens[] = $leadWS;
-		}
-
-		// Re-join attribute tokens with '=' and '|'
-		foreach ( $attribs as $kv ) {
-			if ( $kv->k ) {
-				$attribTokens = $this->flattenAndAppendToks( $attribTokens, null, $kv->k );
-			}
-			if ( $kv->v ) {
-				$attribTokens = $this->flattenAndAppendToks( $attribTokens, $kv->k ? '=' : '', $kv->v );
-			}
-			$attribTokens[] = '|';
-		}
-
-		// pop last pipe separator
-		array_pop( $attribTokens );
-
-		// Trailing whitespace, if any
-		$trailWS = $state['token']->dataAttribs->tmp->trailWS ?? '';
-		if ( $trailWS !== '' ) {
-			$attribTokens[] = $trailWS;
-		}
-
-		$tokens = [ '{{' ];
-		PHPUtils::pushArray( $tokens, $attribTokens );
-		$tokens[] = '}}';
-		$tokens[] = new EOFTk();
-
-		// Process exploded token in a new pipeline that takes us through stage 2.
 		$toks = PipelineUtils::processContentInPipeline(
-			$this->env,
-			$this->manager->getFrame(),
-			$tokens,
-			[
-				'pipelineType' => 'tokens/x-mediawiki',
+			$this->env, $frame, $src, [
+				'pipelineType' => 'text/x-mediawiki',
 				'pipelineOpts' => [
 					'expandTemplates' => $this->options['expandTemplates'],
 					'inTemplate' => $this->options['inTemplate'],
 				],
-				'sol' => true,
-				'srcOffsets' => $state['token']->dataAttribs->tsr,
+				'sol' => false,
+				'srcOffsets' => $srcOffsets,
 			]
 		);
 		TokenUtils::stripEOFTkfromTokens( $toks );
 
+		$toks = array_merge( [ '{' ], $toks, [ '}' ] );
+
 		// Shuttle tokens to the end of the stage since they've gone through the
 		// rest of the handlers in the current pipeline in the pipeline above.
-		$toks = $this->manager->shuttleTokensToEndOfStage( $toks );
-
-		$hasTemplatedTarget = isset( $state['token']->dataAttribs->tmp->templatedAttribs );
-		if ( $hasTemplatedTarget ) {
-			// Since we have a templated target, attributes have gone through
-			// the attribute expander, which processes them to dom, meaning
-			// that any mw:DOMFragment will have been unpacked and unavailable
-			// if returned here.  If we encounter any, let's just do the easiest
-			// thing and return the source for the template.  But note that
-			// that will have the effect of converting any of the parsed
-			// constructs in the tokens above back to untokenized strings.
-			// FIXME: We can do something fancier, like for the href in
-			// WikiLinkHandler::bailTokens, but this is already considered
-			// an edge case not really worth supporting (see below)
-			foreach ( $attribTokens as $t ) {
-				if ( $t instanceof Token && TokenUtils::hasDOMFragmentType( $t ) ) {
-					$toks = [ $state['token']->dataAttribs->src ];
-					break;
-				}
-			}
-
-			if ( $this->wrapTemplates ) {
-				// Add encapsulation if we had a templated target
-				// FIXME: This is a deliberate wrapping of the entire
-				// "broken markup" where one or more templates are nested
-				// inside invalid transclusion markup. The proper way to do
-				// this would be to disentangle everything and identify
-				// transclusions and wrap them individually with meta tags
-				// and data-mw info. But, this is an edge case which can be
-				// more readily fixed by fixing the markup. The goal here is
-				// to ensure that the output renders properly and it roundtrips
-				// without dirty diffs rather then faithful DOMspec representation.
-				$toks = $this->encapTokens( $state, $toks );
-			}
-		}
-
-		return $toks;
+		return $this->manager->shuttleTokensToEndOfStage( $toks );
 	}
 
 	/**
@@ -578,24 +434,14 @@ class TemplateHandler extends TokenHandler {
 	 * the target were expanded.
 	 *
 	 * @param array $state
+	 * @param array $resolvedTgt
 	 * @param array $attribs
 	 * @return array
 	 */
-	private function expandTemplate( array $state, array $attribs ): array {
+	private function expandTemplate(
+		array $state, array $resolvedTgt, array $attribs
+	): array {
 		$env = $this->env;
-		$target = $attribs[0]->k;
-		if ( !$target ) {
-			$env->log( 'debug', 'No template target! ', $attribs );
-		}
-
-		// Resolve the template target again now that the template token's
-		// attributes have been expanded by the AttributeTransformManager
-		$resolvedTgt = $this->resolveTemplateTarget( $state, $target, $attribs[0]->srcOffsets->key );
-		if ( $resolvedTgt === null ) {
-			// Target contains tags, convert template braces and pipes back into text
-			// Re-join attribute tokens with '=' and '|'
-			return $this->convertAttribsToString( $state, $attribs );
-		}
 
 		// TODO:
 		// check for 'subst:'
@@ -947,15 +793,13 @@ class TemplateHandler extends TokenHandler {
 	 * @param array $toks
 	 * @return array
 	 */
-	private function lookupArg( array $args, $attribs, array $toks ): array {
+	private function lookupArg( array $args, array $attribs, array $toks ): array {
 		$argName = trim( TokenUtils::tokensToString( $toks ) );
 		$res = $args['dict'][$argName] ?? null;
 
 		if ( $res !== null ) {
-			if ( is_string( $res ) ) {
-				$res = [ $res ];
-			}
-			return isset( $args['namedArgs'][$argName] ) ? TokenUtils::tokenTrim( $res ) : $res;
+			$res = isset( $args['namedArgs'][$argName] ) ? TokenUtils::tokenTrim( $res ) : $res;
+			return is_string( $res ) ? [ $res ] : $res;
 		} elseif ( count( $attribs ) > 1 ) {
 			return $this->fetchArg( $attribs[1]->v, $attribs[1]->srcOffsets->value );
 		} else {
@@ -979,6 +823,94 @@ class TemplateHandler extends TokenHandler {
 	}
 
 	/**
+	 * Extract tokens from the $targetToks token array that correspond to
+	 * parser function args.
+	 * FIXME: This method below can probably be dramatically simplified given that
+	 * this is now only processed for magic words.
+	 *
+	 * @param string $prefix
+	 * @param bool $haveArgsAfterColon
+	 * @param array $targetToks
+	 * @return array
+	 */
+	private function extractParserFunctionToks(
+		string $prefix, bool $haveArgsAfterColon, array $targetToks
+	): array {
+		$pfArgToks = null;
+
+		// Because of the lenient stringifying earlier, we need to find the prefix.
+		// The strings we've seen so far are buffered in case they combine to our prefix.
+		// FIXME: We need to account for the call to $this->stripIncludeTokens
+		// and the safesubst replace.
+		$buf = '';
+		$index = -1;
+		$partialPrefix = false;
+		foreach ( $targetToks as $i => $t ) {
+			if ( !is_string( $t ) ) {
+				continue;
+			}
+
+			$buf .= $t;
+			$prefixPos = stripos( $buf, $prefix );
+			if ( $prefixPos !== false ) {
+				// Check if they combined
+				$offset = strlen( $buf ) - strlen( $t ) - $prefixPos;
+				if ( $offset > 0 ) {
+					$partialPrefix = substr( $prefix, $offset );
+				}
+				$index = $i;
+				break;
+			}
+		}
+
+		if ( $index > -1 ) {
+			// Strip parser-func / magic-word prefix
+			$firstTok = $targetToks[$index];
+			if ( $partialPrefix !== false ) {
+				// Remove the partial prefix if it case insensitively
+				// appears at the start of the token
+				if ( substr_compare( $firstTok, $partialPrefix,
+						0, strlen( $partialPrefix ), true ) === 0
+				) {
+					$firstTok = substr( $firstTok, strlen( $partialPrefix ) );
+				}
+			} else {
+				// Remove the first occurrence of the prefix from $firstTok,
+				// case insensitively
+				$prefixPos = stripos( $firstTok, $prefix );
+				if ( $prefixPos !== false ) {
+					$firstTok = substr( $firstTok, $prefixPos + strlen( $prefix ) );
+				}
+			}
+			$targetToks = array_slice( $targetToks, $index + 1 );
+
+			if ( $haveArgsAfterColon ) {
+				// Strip ":", again, after accounting for the lenient stringifying
+				while ( count( $targetToks ) > 0 &&
+					( !is_string( $firstTok ) || preg_match( '/^\s*$/D', $firstTok ) )
+				) {
+					$firstTok = $targetToks[0];
+					$targetToks = array_slice( $targetToks, 1 );
+				}
+				Assert::invariant( is_string( $firstTok ) && preg_match( '/^\s*:/', $firstTok ),
+					'Expecting : in parser function definiton'
+				);
+				$pfArgToks = array_merge( [ preg_replace( '/^\s*:/', '', $firstTok, 1 ) ], $targetToks );
+			} else {
+				$pfArgToks = array_merge( [ $firstTok ], $targetToks );
+			}
+		}
+
+		if ( $pfArgToks === null ) {
+			// FIXME: Protect from crashers by using the full token -- this is
+			// still going to generate incorrect output, but it won't crash.
+			$pfArgToks = $targetToks;
+		}
+
+		return $pfArgToks;
+	}
+
+	/**
 	 * Process the special magic word as specified by `resolvedTgt.magicWordType`.
 	 * ```
 	 * magicWordType === '!'    => {{!}} is the magic word
@@ -987,11 +919,11 @@ class TemplateHandler extends TokenHandler {
 	 * ```
 	 * @param bool $atTopLevel
 	 * @param Token $tplToken
-	 * @param ?array $resolvedTgt
+	 * @param array $resolvedTgt
 	 * @return ?array
 	 */
 	public function processSpecialMagicWord(
-		bool $atTopLevel, Token $tplToken, ?array $resolvedTgt = null
+		bool $atTopLevel, Token $tplToken, array $resolvedTgt
 	): ?array {
 		$env = $this->env;
 
@@ -1025,7 +957,7 @@ class TemplateHandler extends TokenHandler {
 				$this->encapTokens( $state, $toks ) : $toks;
 		}
 
-		if ( !$resolvedTgt || $resolvedTgt['magicWordType'] !== 'MASQ' ) {
+		if ( $resolvedTgt['magicWordType'] !== 'MASQ' ) {
 			// Nothing to do
 			// FIXME: This is going to result in a throw
 			return null;
@@ -1044,13 +976,15 @@ class TemplateHandler extends TokenHandler {
 		);
 
 		if ( isset( $tplToken->dataAttribs->tmp->templatedAttribs ) ) {
+			$pfArgToks = $this->extractParserFunctionToks(
+				$resolvedTgt['prefix'],
+				$resolvedTgt['haveArgsAfterColon'],
+				$resolvedTgt['targetToks']
+			);
 			// No shadowing if templated
 			//
 			// SSS FIXME: post-tpl-expansion, WS won't be trimmed. How do we handle this?
-			$metaToken->addAttribute(
-				'content', $resolvedTgt['pfArgToks'],
-				$resolvedTgt['srcOffsets']->expandTsrV()
-			);
+			$metaToken->addAttribute( 'content', $pfArgToks, $resolvedTgt['srcOffsets']->expandTsrV() );
 			$metaToken->addAttribute( 'about', $env->newAboutId() );
 			$metaToken->addSpaceSeparatedAttribute( 'typeof', 'mw:ExpandedAttrs' );
 
@@ -1118,28 +1052,15 @@ class TemplateHandler extends TokenHandler {
 	 * @return TokenHandlerResult
 	 */
 	private function onTemplate( Token $token ): TokenHandlerResult {
-		// If the template name is templated, use the attribute transform manager
-		// to process all attributes to tokens, and force reprocessing of the token.
-		if ( self::hasTemplateToken( $token->attribs[0]->k ) ) {
+		// Since AttributeExpander runs later in the pipeline than TemplateHandler,
+		// if the template name is templated, use our copy of AttributeExpander
+		// to process all attributes to tokens, and force reprocessing of this
+		// template token since we will then know the actual template target.
+		if ( $this->options['expandTemplates'] && self::hasTemplateToken( $token->attribs[0]->k ) ) {
 			$ret = $this->ae->processComplexAttributes( $token );
-
-			// Note that there's some hacky code in the attribute expander
-			// to try and prevent it from returning templates in the
-			// expanded attribs.  Otherwise, we can find outselves in a loop
-			// here, where `hasTemplateToken` continuously returns true.
-			//
-			// That was happening when a template name depending on a top
-			// level templatearg failed to expand.
-			//
-			// FIXME: ae->processComplexAttributes isn't passing us the right
-			// retry signal. So, we are forced to rely on the hack above as
-			// well as the unconditional retry below. We should fix that code
-			// in AttributeExpander to pass back the retry signal that is
-			// correct when we call it from the TemplateHandler so we can
-			// get rid of that hack and the unconditional retry signal below.
-			$ret->retry = true;
-
-			return $ret;
+			$toks = $ret->tokens ?? null;
+			Assert::invariant( $toks && count( $toks ) === 1 && $toks[0] === $token,
+				"Expected only the input token as the return value." );
 		}
 
 		$toks = null;
@@ -1151,12 +1072,10 @@ class TemplateHandler extends TokenHandler {
 			'wrappedObjectId' => $env->newObjectId(),
 		];
 
-		// This template target resolution may be incomplete for
-		// cases where the template's target itself was templated.
 		$tgt = $this->resolveTemplateTarget(
 			$state, $token->attribs[0]->k, $token->attribs[0]->srcOffsets->key
 		);
-		if ( $tgt && $tgt['magicWordType'] ) {
+		if ( isset( $tgt['magicWordType'] ) ) {
 			$toks = $this->processSpecialMagicWord( $this->atTopLevel, $token, $tgt );
 			Assert::invariant( $toks !== null, "Expected non-null tokens array." );
 			return new TokenHandlerResult( $toks );
@@ -1164,13 +1083,10 @@ class TemplateHandler extends TokenHandler {
 
 		$expandTemplates = $this->options['expandTemplates'];
 
-		// FIXME: Should the tokens returned from convertAttribsToString be
-		// template wrapped in the calls below?
-
 		if ( $expandTemplates && $tgt === null ) {
 			// Target contains tags, convert template braces and pipes back into text
 			// Re-join attribute tokens with '=' and '|'
-			return new TokenHandlerResult( $this->convertAttribsToString( $state, $token->attribs ) );
+			return new TokenHandlerResult( $this->convertToString( $token ) );
 		}
 
 		if ( $this->atMaxArticleSize ) {
@@ -1178,7 +1094,7 @@ class TemplateHandler extends TokenHandler {
 			// we're going to return the tokens without expanding them.
 			// (This case is where the original article as fetched from the DB
 			// or passed to the API exceeded max article size.)
-			return new TokenHandlerResult( $this->convertAttribsToString( $state, $token->attribs ) );
+			return new TokenHandlerResult( $this->convertToString( $token ) );
 		}
 
 		// There's no point in proceeding if we've already hit the maximum inclusion size
@@ -1190,7 +1106,7 @@ class TemplateHandler extends TokenHandler {
 			// over the maximum wikitext size.)
 			// XXX: It could be combined with the previous test, but we might
 			// want to use different error messages in the future.
-			return new TokenHandlerResult( $this->convertAttribsToString( $state, $token->attribs ) );
+			return new TokenHandlerResult( $this->convertToString( $token ) );
 		}
 
 		if ( $env->nativeTemplateExpansionEnabled() ) {
@@ -1199,7 +1115,19 @@ class TemplateHandler extends TokenHandler {
 				[ 'expandTemplates' => false, 'inTemplate' => true ]
 			);
 			$newAttribs = $atm->process( $token->attribs );
-			$tplToks = $this->expandTemplate( $state, $newAttribs );
+			$target = $newAttribs[0]->k;
+			if ( !$target ) {
+				$env->log( 'debug', 'No template target! ', $newAttribs );
+			}
+			// Resolve the template target again now that the template token's
+			// attributes have been expanded by the AttributeTransformManager
+			$resolvedTgt = $this->resolveTemplateTarget( $state, $target, $newAttribs[0]->srcOffsets->key );
+			if ( $resolvedTgt === null ) {
+				// Target contains tags, convert template braces and pipes back into text
+				// Re-join attribute tokens with '=' and '|'
+				return new TokenHandlerResult( $this->convertToString( $token ) );
+			}
+			$tplToks = $this->expandTemplate( $state, $resolvedTgt, $newAttribs );
 			return new TokenHandlerResult(
 				( $expandTemplates && $this->wrapTemplates ) ?
 					$this->encapTokens( $state, $tplToks ) : $tplToks
@@ -1267,7 +1195,7 @@ class TemplateHandler extends TokenHandler {
 				// template-like that the PHP parser did not expand. This is
 				// encapsulated already, so just return the plain text.
 				Assert::invariant( TokenUtils::isTemplateToken( $token ), "Expected template token." );
-				return new TokenHandlerResult( $this->convertAttribsToString( $state, $token->attribs ) );
+				return new TokenHandlerResult( $this->convertToString( $token ) );
 			}
 		}
 	}
