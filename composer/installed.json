@@ -2083,13 +2083,13 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oauth2-server.git",
-                "reference": "61d770dc284898ea2905d66e12f8f7e5f6664092"
+                "reference": "58fdace1b2b33b0d6c40f426658a898a7566bd25"
             },
             "require": {
                 "defuse/php-encryption": "^2.2.1",
                 "ext-json": "*",
                 "ext-openssl": "*",
-                "lcobucci/jwt": "^3.4 || ^4.0",
+                "lcobucci/jwt": "^3.4.6 || ^4.0.4",
                 "league/event": "^2.2",
                 "php": "^7.2 || ^8.0",
                 "psr/http-message": "^1.0.1"
@@ -2105,7 +2105,7 @@
                 "phpunit/phpunit": "^8.5.13",
                 "roave/security-advisories": "dev-master"
             },
-            "time": "2021-03-05T01:19:42+00:00",
+            "time": "2022-02-08T23:54:51+00:00",
             "default-branch": true,
             "type": "library",
             "installation-source": "source",
