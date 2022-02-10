@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => 'aad0b4252863a951960b85941130f14d86e2b67f',
+        'reference' => 'dd7ddd5af6ad6276585b78fc6af321012e1c4651',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => 'aad0b4252863a951960b85941130f14d86e2b67f',
+            'reference' => 'dd7ddd5af6ad6276585b78fc6af321012e1c4651',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -410,12 +410,12 @@
             'dev_requirement' => false,
         ),
         'oojs/oojs-ui' => array(
-            'pretty_version' => 'v0.43.0',
-            'version' => '0.43.0.0',
+            'pretty_version' => 'v0.43.1',
+            'version' => '0.43.1.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../oojs/oojs-ui',
             'aliases' => array(),
-            'reference' => 'cfebb026854789a0185d07658ee91c94bb72a903',
+            'reference' => 'fa896ba610a662ad95e255e0b749b4c023469c60',
             'dev_requirement' => false,
         ),
         'opis/json-schema' => array(
