@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a3674d1dcc45d2e6662e61641a92c635",
+    "content-hash": "e1b8baa68b2ad09d76132974f115de6e",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -7356,28 +7356,29 @@
         },
         {
             "name": "wikimedia/request-timeout",
-            "version": "1.1.0",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/request-timeout.git",
-                "reference": "8828e701fbc4e6090e3a5baac2ffc14730f099ad"
+                "reference": "e306a7cb1fb3a1ca3ce93992c56efb62b537c4bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/request-timeout/zipball/8828e701fbc4e6090e3a5baac2ffc14730f099ad",
-                "reference": "8828e701fbc4e6090e3a5baac2ffc14730f099ad",
+                "url": "https://api.github.com/repos/wikimedia/request-timeout/zipball/e306a7cb1fb3a1ca3ce93992c56efb62b537c4bc",
+                "reference": "e306a7cb1fb3a1ca3ce93992c56efb62b537c4bc",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2"
+                "php": ">=7.2",
+                "wikimedia/normalized-exception": "1.0.1"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "35.0.0",
-                "mediawiki/mediawiki-phan-config": "0.10.6",
+                "mediawiki/mediawiki-codesniffer": "38.0.0",
+                "mediawiki/mediawiki-phan-config": "0.11.1",
                 "mediawiki/minus-x": "1.1.1",
                 "ockcyp/covers-validator": "1.3.3",
                 "php-parallel-lint/php-console-highlighter": "0.5.0",
-                "php-parallel-lint/php-parallel-lint": "1.2.0",
+                "php-parallel-lint/php-parallel-lint": "1.3.1",
                 "phpunit/phpunit": "^8.5"
             },
             "type": "library",
@@ -7398,9 +7399,9 @@
             "description": "Request timeout library for Excimer with plain PHP fallback",
             "homepage": "https://www.mediawiki.org/wiki/RequestTimeout",
             "support": {
-                "source": "https://github.com/wikimedia/request-timeout/tree/1.1.0"
+                "source": "https://github.com/wikimedia/request-timeout/tree/1.2.0"
             },
-            "time": "2021-03-15T22:23:21+00:00"
+            "time": "2022-02-02T10:39:59+00:00"
         },
         {
             "name": "wikimedia/running-stat",

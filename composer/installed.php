@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '090b671469e8288634c717deb90d4779d773a1ed',
+        'reference' => 'aad0b4252863a951960b85941130f14d86e2b67f',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '090b671469e8288634c717deb90d4779d773a1ed',
+            'reference' => 'aad0b4252863a951960b85941130f14d86e2b67f',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -1131,12 +1131,12 @@
             'dev_requirement' => false,
         ),
         'wikimedia/request-timeout' => array(
-            'pretty_version' => '1.1.0',
-            'version' => '1.1.0.0',
+            'pretty_version' => '1.2.0',
+            'version' => '1.2.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/request-timeout',
             'aliases' => array(),
-            'reference' => '8828e701fbc4e6090e3a5baac2ffc14730f099ad',
+            'reference' => 'e306a7cb1fb3a1ca3ce93992c56efb62b537c4bc',
             'dev_requirement' => false,
         ),
         'wikimedia/running-stat' => array(
