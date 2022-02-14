@@ -11,10 +11,7 @@ use Psr\Log\NullLogger;
 use Wikimedia\Assert\Assert;
 use Wikimedia\ObjectFactory\ObjectFactory;
 use Wikimedia\Parsoid\Core\ContentModelHandler;
-use Wikimedia\Parsoid\Core\ExtensionContentModelHandler;
-use Wikimedia\Parsoid\Core\WikitextContentModelHandler;
 use Wikimedia\Parsoid\Ext\Cite\Cite;
-use Wikimedia\Parsoid\Ext\ContentModelHandler as ExtContentModelHandler;
 use Wikimedia\Parsoid\Ext\ExtensionModule;
 use Wikimedia\Parsoid\Ext\ExtensionTagHandler;
 use Wikimedia\Parsoid\Ext\Gallery\Gallery;
@@ -24,9 +21,9 @@ use Wikimedia\Parsoid\Ext\LST\LST;
 use Wikimedia\Parsoid\Ext\Nowiki\Nowiki;
 use Wikimedia\Parsoid\Ext\Poem\Poem;
 use Wikimedia\Parsoid\Ext\Pre\Pre;
-use Wikimedia\Parsoid\Ext\Translate\Translate;
 use Wikimedia\Parsoid\Utils\PHPUtils;
 use Wikimedia\Parsoid\Utils\Utils;
+use Wikimedia\Parsoid\Wikitext\Consts;
 
 /**
  * Site-level configuration interface for Parsoid
@@ -90,7 +87,6 @@ abstract class SiteConfig {
 		Cite::class,
 		LST::class,
 		Poem::class,
-		Translate::class,
 		ImageMap::class,
 	];
 
@@ -1000,7 +996,7 @@ abstract class SiteConfig {
 		// from the SiteConfig.  Further, we probably need a hook here so
 		// Parsoid can handle media options defined in extensions... in
 		// particular timedmedia_* magic words from Extension:TimedMediaHandler
-		$mws = array_keys( WikitextConstants::$Media['PrefixOptions'] );
+		$mws = array_keys( Consts::$Media['PrefixOptions'] );
 		return $this->getParameterizedAliasMatcher( $mws );
 	}
 
@@ -1231,9 +1227,6 @@ abstract class SiteConfig {
 			'domProcessors'  => [],
 			'contentModels'  => [],
 		];
-		// We always support wikitext
-		$this->extConfig['contentModels']['wikitext'] =
-			new WikitextContentModelHandler();
 
 		// There may be some tags defined by the parent wiki which have no
 		// associated parsoid modules; for now we handle these by invoking
@@ -1289,14 +1282,10 @@ abstract class SiteConfig {
 				if ( isset( $this->extConfig['contentModels'][$cm] ) ) {
 					continue;
 				}
-				// Wrap the handler so we can give it a sanitized
-				// ParsoidExtensionAPI object.
-				$handler = new ExtensionContentModelHandler(
-					$this->getObjectFactory()->createObject( $spec, [
-						'allowClassName' => true,
-						'assertClass' => ExtContentModelHandler::class,
-					] )
-				);
+				$handler = $this->getObjectFactory()->createObject( $spec, [
+					'allowClassName' => true,
+					'assertClass' => ContentModelHandler::class,
+				] );
 				$this->extConfig['contentModels'][$cm] = $handler;
 			}
 		}
@@ -1313,15 +1302,14 @@ abstract class SiteConfig {
 	}
 
 	/**
+	 * Return a ContentModelHandler for the specified $contentmodel, if one is registered.
+	 * If null is returned, will use the default wikitext content model handler.
+	 *
 	 * @param string $contentmodel
 	 * @return ContentModelHandler|null
 	 */
 	public function getContentModelHandler( string $contentmodel ): ?ContentModelHandler {
-		// For now, fallback to 'wikitext' as the default handler
-		// FIXME: This is bogus, but this is just so suppress noise in our
-		// logs till we get around to handling all these other content models.
-		return ( $this->getExtConfig() )['contentModels'][$contentmodel] ??
-			( $this->getExtConfig() )['contentModels']['wikitext'];
+		return ( $this->getExtConfig() )['contentModels'][$contentmodel] ?? null;
 	}
 
 	/**
@@ -1372,18 +1360,24 @@ abstract class SiteConfig {
 		return $extConfig['parsoidExtTags'][mb_strtolower( $tagName )] ?? null;
 	}
 
+	private $tagHandlerCache = [];
+
 	/**
 	 * @param string $tagName Extension tag name
 	 * @return ExtensionTagHandler|null
 	 *   Returns the implementation of the named extension, if there is one.
 	 */
 	public function getExtTagImpl( string $tagName ): ?ExtensionTagHandler {
-		$tagConfig = $this->getExtTagConfig( $tagName );
-		return isset( $tagConfig['handler'] ) ?
-			$this->getObjectFactory()->createObject( $tagConfig['handler'], [
-				'allowClassName' => true,
-				'assertClass' => ExtensionTagHandler::class,
-			] ) : null;
+		if ( !array_key_exists( $tagName, $this->tagHandlerCache ) ) {
+			$tagConfig = $this->getExtTagConfig( $tagName );
+			$this->tagHandlerCache[$tagName] = isset( $tagConfig['handler'] ) ?
+				$this->getObjectFactory()->createObject( $tagConfig['handler'], [
+					'allowClassName' => true,
+					'assertClass' => ExtensionTagHandler::class,
+				] ) : null;
+		}
+
+		return $this->tagHandlerCache[$tagName];
 	}
 
 	/**

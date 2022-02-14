@@ -1,9 +1,11 @@
 <?php
 declare( strict_types = 1 );
 
-namespace Wikimedia\Parsoid\Core;
+namespace Wikimedia\Parsoid\Wikitext;
 
 use Wikimedia\Parsoid\Config\Env;
+use Wikimedia\Parsoid\Core\ContentModelHandler as IContentModelHandler;
+use Wikimedia\Parsoid\Core\SelserData;
 use Wikimedia\Parsoid\DOM\Document;
 use Wikimedia\Parsoid\Ext\DOMProcessor as ExtDOMProcessor;
 use Wikimedia\Parsoid\Ext\ParsoidExtensionAPI;
@@ -14,7 +16,20 @@ use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\Timing;
 
-class WikitextContentModelHandler extends ContentModelHandler {
+class ContentModelHandler extends IContentModelHandler {
+
+	/** @var Env */
+	private $env;
+
+	/**
+	 * Sneak an environment in here since it's not exposed as part of the
+	 * ParsoidExtensionAPI
+	 *
+	 * @param Env $env
+	 */
+	public function __construct( Env $env ) {
+		$this->env = $env;
+	}
 
 	/**
 	 * Bring DOM to expected canonical form
@@ -41,10 +56,12 @@ class WikitextContentModelHandler extends ContentModelHandler {
 	/**
 	 * Fetch prior DOM for selser.
 	 *
-	 * @param Env $env
+	 * @param ParsoidExtensionAPI $extApi
 	 * @param SelserData $selserData
 	 */
-	private function setupSelser( Env $env, SelserData $selserData ) {
+	private function setupSelser( ParsoidExtensionAPI $extApi, SelserData $selserData ) {
+		$env = $this->env;
+
 		// Why is it safe to use a reparsed dom for dom diff'ing?
 		// (Since that's the only use of `env.page.dom`)
 		//
@@ -87,7 +104,7 @@ class WikitextContentModelHandler extends ContentModelHandler {
 			$env->setupTopLevelDoc();
 			// This effectively parses $selserData->oldText for us because
 			// $selserData->oldText = $env->getPageconfig()->getPageMainContent()
-			$doc = $this->toDOM( $env );
+			$doc = $this->toDOM( $extApi );
 			$env->topLevelDoc = $topLevelDoc;
 		} else {
 			$doc = ContentUtils::createDocument( $selserData->oldHTML, true );
@@ -100,9 +117,9 @@ class WikitextContentModelHandler extends ContentModelHandler {
 	/**
 	 * @inheritDoc
 	 */
-	public function toDOM( Env $env ): Document {
-		return $env->getPipelineFactory()->parse(
-			$env->getPageConfig()->getPageMainContent()
+	public function toDOM( ParsoidExtensionAPI $extApi ): Document {
+		return $this->env->getPipelineFactory()->parse(
+			$this->env->getPageConfig()->getPageMainContent()
 		);
 	}
 
@@ -144,8 +161,10 @@ class WikitextContentModelHandler extends ContentModelHandler {
 	 * @inheritDoc
 	 */
 	public function fromDOM(
-		Env $env, ?SelserData $selserData = null
+		ParsoidExtensionAPI $extApi, ?SelserData $selserData = null
 	): string {
+		$env = $this->env;
+
 		$metrics = $env->getSiteConfig()->metrics();
 		$setupTiming = Timing::start( $metrics );
 
@@ -154,7 +173,7 @@ class WikitextContentModelHandler extends ContentModelHandler {
 		$serializerOpts = [ 'env' => $env, 'selserData' => $selserData ];
 		if ( $selserData && $selserData->oldText !== null ) {
 			$serializer = new SelectiveSerializer( $serializerOpts );
-			$this->setupSelser( $env, $selserData );
+			$this->setupSelser( $extApi, $selserData );
 		} else {
 			// Fallback
 			$serializer = new WikitextSerializer( $serializerOpts );

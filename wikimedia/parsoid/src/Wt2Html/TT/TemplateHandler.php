@@ -18,6 +18,7 @@ use Wikimedia\Parsoid\Utils\Title;
 use Wikimedia\Parsoid\Utils\TitleException;
 use Wikimedia\Parsoid\Utils\TokenUtils;
 use Wikimedia\Parsoid\Utils\Utils;
+use Wikimedia\Parsoid\Wikitext\Wikitext;
 use Wikimedia\Parsoid\Wt2Html\Params;
 use Wikimedia\Parsoid\Wt2Html\TokenTransformManager;
 
@@ -671,10 +672,6 @@ class TemplateHandler extends TokenHandler {
 		$env = $this->env;
 		if ( isset( $env->pageCache[$templateName] ) ) {
 			$tplSrc = $env->pageCache[$templateName];
-		} elseif ( $env->noDataAccess() ) {
-			// This is only useful for offline development mode
-			// FIXME: Consolidate error response format with enforceTemplateConstraints
-			return [ 'tokens' => [ 'Page / template fetching disabled, and no cache for ' . $templateName ] ];
 		} else {
 			$start = microtime( true );
 			$pageContent = $env->getDataAccess()->fetchTemplateSource( $env->getPageConfig(), $templateName );
@@ -693,81 +690,6 @@ class TemplateHandler extends TokenHandler {
 			}
 		}
 		return [ 'tplSrc' => $tplSrc ];
-	}
-
-	/**
-	 * Fetch the preprocessed wikitext for a template-like construct.
-	 *
-	 * @param string $transclusion
-	 * @return array
-	 */
-	private function fetchExpandedTpl( string $transclusion ): array {
-		$env = $this->env;
-		if ( $env->noDataAccess() ) {
-			// FIXME: Consolidate error response format with enforceTemplateConstraints
-			return [
-				'error' => true,
-				'tokens' => [ 'Warning: Page/template fetching disabled cannot expand ' . $transclusion ],
-			];
-		} else {
-			$pageConfig = $env->getPageConfig();
-			$start = microtime( true );
-			$ret = $env->getDataAccess()->preprocessWikitext( $pageConfig, $transclusion );
-			if ( !$env->bumpWt2HtmlResourceUse( 'wikitextSize', strlen( $ret['wikitext'] ) ) ) {
-				return [
-					'error' => true,
-					'tokens' => [ "wt2html: wikitextSize limit exceeded" ],
-				];
-			}
-			$wikitext = $this->manglePreprocessorResponse( $ret );
-			if ( $env->profiling() ) {
-				$profile = $env->getCurrentProfile();
-				$profile->bumpMWTime( "Template", 1000 * ( microtime( true ) - $start ), "api" );
-				$profile->bumpCount( "Template" );
-			}
-			return [
-				'error' => false,
-				'src' => $wikitext
-			];
-		}
-	}
-
-	/**
-	 * This takes properties value of 'expandtemplates' output and computes
-	 * magicword wikitext for those properties.
-	 *
-	 * This is needed for Parsoid/JS compatibility, but may go away in the future.
-	 *
-	 * @param array $ret
-	 * @return string
-	 */
-	public function manglePreprocessorResponse( array $ret ): string {
-		$env = $this->env;
-		$wikitext = $ret['wikitext'];
-
-		foreach ( [ 'modules', 'modulestyles', 'jsconfigvars' ] as $prop ) {
-			$env->addOutputProperty( $prop, $ret[$prop] ?? [] );
-		}
-
-		// Add the categories which were added by parser functions directly
-		// into the page and not as in-text links.
-		foreach ( ( $ret['categories'] ?? [] ) as $category => $sortkey ) {
-			$wikitext .= "[[Category:" . $category;
-			if ( $sortkey ) {
-				$wikitext .= "|" . $sortkey;
-			}
-			$wikitext .= ']]';
-		}
-
-		// FIXME: This seems weirdly special-cased for displaytitle & displaysort
-		// For now, just mimic what Parsoid/JS does, but need to revisit this
-		foreach ( ( $ret['properties'] ?? [] ) as $name => $value ) {
-			if ( $name === 'displaytitle' || $name === 'defaultsort' ) {
-				$wikitext .= "{{" . mb_strtoupper( $name ) . ':' . $value . '}}';
-			}
-		}
-
-		return $wikitext;
 	}
 
 	/**
@@ -934,10 +856,7 @@ class TemplateHandler extends TokenHandler {
 		// positions.  However, proceeding to go through template expansion
 		// will reparse it as a table cell token.  Hence this special case
 		// handling to avoid that path.
-		if (
-			( $resolvedTgt && $resolvedTgt['magicWordType'] === '!' ) ||
-			$tplToken->attribs[0]->k === '!'
-		) {
+		if ( $resolvedTgt['magicWordType'] === '!' || $tplToken->attribs[0]->k === '!' ) {
 			// If we're not at the top level, return a table cell. This will always
 			// be the case. Either {{!}} was tokenized as a td, or it was tokenized
 			// as template but the recursive call to fetch its content returns a
@@ -1052,41 +971,18 @@ class TemplateHandler extends TokenHandler {
 	 * @return TokenHandlerResult
 	 */
 	private function onTemplate( Token $token ): TokenHandlerResult {
+		$env = $this->env;
+		$expandTemplates = $this->options['expandTemplates'];
+
 		// Since AttributeExpander runs later in the pipeline than TemplateHandler,
 		// if the template name is templated, use our copy of AttributeExpander
 		// to process all attributes to tokens, and force reprocessing of this
 		// template token since we will then know the actual template target.
-		if ( $this->options['expandTemplates'] && self::hasTemplateToken( $token->attribs[0]->k ) ) {
+		if ( $expandTemplates && self::hasTemplateToken( $token->attribs[0]->k ) ) {
 			$ret = $this->ae->processComplexAttributes( $token );
 			$toks = $ret->tokens ?? null;
 			Assert::invariant( $toks && count( $toks ) === 1 && $toks[0] === $token,
 				"Expected only the input token as the return value." );
-		}
-
-		$toks = null;
-		$env = $this->env;
-		$text = $token->dataAttribs->src ?? '';
-		$state = [
-			'token' => $token,
-			'wrapperType' => 'mw:Transclusion',
-			'wrappedObjectId' => $env->newObjectId(),
-		];
-
-		$tgt = $this->resolveTemplateTarget(
-			$state, $token->attribs[0]->k, $token->attribs[0]->srcOffsets->key
-		);
-		if ( isset( $tgt['magicWordType'] ) ) {
-			$toks = $this->processSpecialMagicWord( $this->atTopLevel, $token, $tgt );
-			Assert::invariant( $toks !== null, "Expected non-null tokens array." );
-			return new TokenHandlerResult( $toks );
-		}
-
-		$expandTemplates = $this->options['expandTemplates'];
-
-		if ( $expandTemplates && $tgt === null ) {
-			// Target contains tags, convert template braces and pipes back into text
-			// Re-join attribute tokens with '=' and '|'
-			return new TokenHandlerResult( $this->convertToString( $token ) );
 		}
 
 		if ( $this->atMaxArticleSize ) {
@@ -1107,6 +1003,30 @@ class TemplateHandler extends TokenHandler {
 			// XXX: It could be combined with the previous test, but we might
 			// want to use different error messages in the future.
 			return new TokenHandlerResult( $this->convertToString( $token ) );
+		}
+
+		$toks = null;
+		$text = $token->dataAttribs->src ?? '';
+		$state = [
+			'token' => $token,
+			'wrapperType' => 'mw:Transclusion',
+			'wrappedObjectId' => $env->newObjectId(),
+		];
+
+		$tgt = $this->resolveTemplateTarget(
+			$state, $token->attribs[0]->k, $token->attribs[0]->srcOffsets->key
+		);
+
+		if ( $expandTemplates && $tgt === null ) {
+			// Target contains tags, convert template braces and pipes back into text
+			// Re-join attribute tokens with '=' and '|'
+			return new TokenHandlerResult( $this->convertToString( $token ) );
+		}
+
+		if ( isset( $tgt['magicWordType'] ) ) {
+			$toks = $this->processSpecialMagicWord( $this->atTopLevel, $token, $tgt );
+			Assert::invariant( $toks !== null, "Expected non-null tokens array." );
+			return new TokenHandlerResult( $toks );
 		}
 
 		if ( $env->nativeTemplateExpansionEnabled() ) {
@@ -1148,7 +1068,7 @@ class TemplateHandler extends TokenHandler {
 				/* If $tgt is not null, target will be present. */
 				$templateName = $tgt['target'];
 				$templateTitle = $tgt['title'];
-				$attribs = [];
+				$attribs = array_slice( $token->attribs, 1 ); // Strip template name
 
 				// We still need to check for limit violations because of the
 				// higher precedence of extension tags, which can result in nested
@@ -1171,9 +1091,9 @@ class TemplateHandler extends TokenHandler {
 					);
 				} else {
 					// Fetch and process the template expansion
-					$expansion = $this->fetchExpandedTpl( $text );
+					$expansion = Wikitext::preprocess( $env, $text );
 					if ( $expansion['error'] ) {
-						$tplToks = $expansion['tokens'];
+						$tplToks = [ $expansion['src'] ];
 					} else {
 						$tplToks = $this->processTemplateSource(
 							$state,
@@ -1186,8 +1106,7 @@ class TemplateHandler extends TokenHandler {
 						);
 					}
 					return new TokenHandlerResult(
-						$this->wrapTemplates ?
-							$this->encapTokens( $state, $tplToks ) : $tplToks
+						$this->wrapTemplates ? $this->encapTokens( $state, $tplToks ) : $tplToks
 					);
 				}
 			} else {

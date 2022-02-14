@@ -19,6 +19,7 @@ use Wikimedia\Parsoid\Utils\TitleException;
 use Wikimedia\Parsoid\Utils\TitleNamespace;
 use Wikimedia\Parsoid\Utils\TokenUtils;
 use Wikimedia\Parsoid\Utils\Utils;
+use Wikimedia\Parsoid\Wikitext\ContentModelHandler as WikitextContentModelHandler;
 use Wikimedia\Parsoid\Wt2Html\Frame;
 use Wikimedia\Parsoid\Wt2Html\PageConfigFrame;
 use Wikimedia\Parsoid\Wt2Html\ParserPipelineFactory;
@@ -53,14 +54,6 @@ class Env {
 	// XXX In the future, perhaps replace PageConfig with the Frame, and
 	// add $this->currentFrame (relocated from TokenTransformManager) if/when
 	// we've removed async parsing.
-
-	/**
-	 * @var bool Are data accesses disabled?
-	 *
-	 * FIXME: This can probably moved to a NoDataAccess instance, rather than
-	 * being an explicit mode of Parsoid.  See T229469
-	 */
-	private $noDataAccess;
 
 	/**
 	 * @var bool Are we using native template expansion?
@@ -238,6 +231,11 @@ class Env {
 	private $remexPipeline;
 
 	/**
+	 * @var WikitextContentModelHandler
+	 */
+	private $wikitextContentModelHandler;
+
+	/**
 	 * @param SiteConfig $siteConfig
 	 * @param PageConfig $pageConfig
 	 * @param DataAccess $dataAccess
@@ -247,7 +245,6 @@ class Env {
 	 *  - traceFlags: (array) Flags indicating which components need to be traced
 	 *  - dumpFlags: (bool[]) Dump flags
 	 *  - debugFlags: (bool[]) Debug flags
-	 *  - noDataAccess: boolean
 	 *  - nativeTemplateExpansion: boolean
 	 *  - discardDataParsoid: boolean
 	 *  - offsetType: 'byte' (default), 'ucs2', 'char'
@@ -293,7 +290,6 @@ class Env {
 		}
 		$this->htmlVariantLanguage = $options['htmlVariantLanguage'] ?? null;
 		$this->wtVariantLanguage = $options['wtVariantLanguage'] ?? null;
-		$this->noDataAccess = !empty( $options['noDataAccess'] );
 		$this->nativeTemplateExpansion = !empty( $options['nativeTemplateExpansion'] );
 		$this->discardDataParsoid = !empty( $options['discardDataParsoid'] );
 		$this->requestOffsetType = $options['offsetType'] ?? 'byte';
@@ -311,6 +307,7 @@ class Env {
 			$this->profiling = true;
 		}
 		$this->setupTopLevelDoc( $options['topLevelDoc'] ?? null );
+		$this->wikitextContentModelHandler = new WikitextContentModelHandler( $this );
 	}
 
 	/**
@@ -445,10 +442,6 @@ class Env {
 	 */
 	public function getDataAccess(): DataAccess {
 		return $this->dataAccess;
-	}
-
-	public function noDataAccess(): bool {
-		return $this->noDataAccess;
 	}
 
 	public function nativeTemplateExpansionEnabled(): bool {
@@ -986,12 +979,13 @@ class Env {
 	): ContentModelHandler {
 		$contentmodel = $contentmodel ?? $this->pageConfig->getContentModel();
 		$handler = $this->siteConfig->getContentModelHandler( $contentmodel );
-		if ( !$handler ) {
-			$this->log( 'warn', "Unknown contentmodel $contentmodel" );
-			$contentmodel = 'wikitext';
-			$handler = $this->siteConfig->getContentModelHandler( $contentmodel );
+		if ( !$handler && $contentmodel !== 'wikitext' ) {
+			// For now, fallback to 'wikitext' as the default handler
+			// FIXME: This is bogus, but this is just so suppress noise in our
+			// logs till we get around to handling all these other content models.
+			// $this->log( 'warn', "Unknown contentmodel $contentmodel" );
 		}
-		return $handler;
+		return $handler ?? $this->wikitextContentModelHandler;
 	}
 
 	/**

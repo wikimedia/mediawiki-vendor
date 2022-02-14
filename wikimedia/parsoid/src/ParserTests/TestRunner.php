@@ -14,6 +14,7 @@ use Wikimedia\Parsoid\Core\SelserData;
 use Wikimedia\Parsoid\DOM\Document;
 use Wikimedia\Parsoid\DOM\Element;
 use Wikimedia\Parsoid\DOM\Node;
+use Wikimedia\Parsoid\Ext\ParsoidExtensionAPI;
 use Wikimedia\Parsoid\Mocks\MockPageConfig;
 use Wikimedia\Parsoid\Mocks\MockPageContent;
 use Wikimedia\Parsoid\Tools\ScriptUtils;
@@ -826,7 +827,8 @@ class TestRunner {
 			$env->setupTopLevelDoc();
 		}
 		$handler = $env->getContentHandler();
-		$doc = $handler->toDOM( $env );
+		$extApi = new ParsoidExtensionAPI( $env );
+		$doc = $handler->toDOM( $extApi );
 		return $doc;
 	}
 
@@ -852,7 +854,8 @@ class TestRunner {
 		}
 		$handler = $env->getContentHandler();
 		$env->topLevelDoc = $doc;
-		return $handler->fromDOM( $env, $selserData );
+		$extApi = new ParsoidExtensionAPI( $env );
+		return $handler->fromDOM( $extApi, $selserData );
 	}
 
 	/**
@@ -1442,6 +1445,7 @@ class TestRunner {
 			if ( isset( $test->options['thumbsize'] ) ) {
 				$this->siteConfig->thumbsize = (int)$test->options['thumbsize'];
 			}
+			$this->siteConfig->registerParserTestExtension( new DummyAnnotation() );
 		}
 
 		$this->buildTasks( $test, $targetModes, $options );

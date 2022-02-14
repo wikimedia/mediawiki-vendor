@@ -8,7 +8,6 @@ use Exception;
 use stdClass;
 use Wikimedia\Assert\Assert;
 use Wikimedia\Parsoid\Config\Env;
-use Wikimedia\Parsoid\Config\WikitextConstants;
 use Wikimedia\Parsoid\DOM\Comment;
 use Wikimedia\Parsoid\DOM\Document;
 use Wikimedia\Parsoid\DOM\DocumentFragment;
@@ -29,6 +28,7 @@ use Wikimedia\Parsoid\Utils\PHPUtils;
 use Wikimedia\Parsoid\Utils\TokenUtils;
 use Wikimedia\Parsoid\Utils\Utils;
 use Wikimedia\Parsoid\Utils\WTUtils;
+use Wikimedia\Parsoid\Wikitext\Consts;
 
 /**
  * Wikitext to HTML serializer.
@@ -426,7 +426,7 @@ class WikitextSerializer {
 
 			// Strip Parsoid-inserted class="mw-empty-elt" attributes
 			if ( $k === 'class'
-				 && isset( WikitextConstants::$Output['FlaggedEmptyElts'][DOMCompat::nodeName( $node )] )
+				 && isset( Consts::$Output['FlaggedEmptyElts'][DOMCompat::nodeName( $node )] )
 			) {
 				$kv->v = preg_replace( '/\bmw-empty-elt\b/', '', $kv->v, 1 );
 				if ( !$kv->v ) {
@@ -976,7 +976,7 @@ class WikitextSerializer {
 			// Fetch template data for the template
 			$tplData = null;
 			$apiResp = null;
-			if ( $isTpl && $useTplData && !$this->env->noDataAccess() ) {
+			if ( $isTpl && $useTplData ) {
 				$title = PHPUtils::stripPrefix( $tplHref, './' );
 				try {
 					$tplData = $this->env->getDataAccess()->fetchTemplateData( $this->env->getPageConfig(), $title );
@@ -1050,9 +1050,8 @@ class WikitextSerializer {
 	 * Consolidate separator handling when emitting text.
 	 * @param string $res
 	 * @param Node $node
-	 * @param bool $omitEscaping
 	 */
-	private function serializeText( string $res, Node $node, bool $omitEscaping ): void {
+	private function serializeText( string $res, Node $node ): void {
 		$state = $this->state;
 
 		// Deal with trailing separator-like text (at least 1 newline and other whitespace)
@@ -1067,18 +1066,10 @@ class WikitextSerializer {
 			}
 		}
 
-		if ( $omitEscaping ) {
-			$state->emitChunk( $res, $node );
-		} else {
-			// Always escape entities
+		if ( $state->needsEscaping ) {
 			$res = Utils::escapeWtEntities( $res );
-
-			// If not in pre context, escape wikitext
-			// XXX refactor: Handle this with escape handlers instead!
-			$state->escapeText = ( $state->onSOL || !$state->currNodeUnmodified ) && !$state->inHTMLPre;
-			$state->emitChunk( $res, $node );
-			$state->escapeText = false;
 		}
+		$state->emitChunk( $res, $node );
 
 		// Move trailing newlines into the next separator
 		if ( $newSepMatch ) {
@@ -1096,7 +1087,9 @@ class WikitextSerializer {
 	 * @return Node|null
 	 */
 	private function serializeTextNode( Node $node ): ?Node {
-		$this->serializeText( $node->nodeValue, $node, false );
+		$this->state->needsEscaping = true;
+		$this->serializeText( $node->nodeValue, $node );
+		$this->state->needsEscaping = false;
 		return $node->nextSibling;
 	}
 
@@ -1106,7 +1099,7 @@ class WikitextSerializer {
 	 * @param Node $node
 	 */
 	public function emitWikitext( string $res, Node $node ): void {
-		$this->serializeText( $res, $node, true );
+		$this->serializeText( $res, $node );
 	}
 
 	/**
@@ -1281,6 +1274,7 @@ class WikitextSerializer {
 		$domHandler = $method = null;
 		$domHandlerFactory = new DOMHandlerFactory();
 		$state = $this->state;
+		$state->currNode = $node;
 
 		if ( $state->selserMode ) {
 			$this->trace(
@@ -1416,7 +1410,7 @@ class WikitextSerializer {
 				foreach ( $htmlTags[0] as $j => $rawTagName ) {
 					// Strip </, attributes, and > to get the tagname
 					$tagName = preg_replace( '/<\/?|\s.*|>/', '', $rawTagName );
-					if ( !isset( WikitextConstants::$HTML['HTML5Tags'][$tagName] ) ) {
+					if ( !isset( Consts::$HTML['HTML5Tags'][$tagName] ) ) {
 						// If we encounter any tag that is not a html5 tag,
 						// it could be an extension tag. We could do a more complex
 						// regexp or tokenize the string to determine if any block tags

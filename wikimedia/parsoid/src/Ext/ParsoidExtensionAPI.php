@@ -25,6 +25,7 @@ use Wikimedia\Parsoid\Utils\Title;
 use Wikimedia\Parsoid\Utils\TokenUtils;
 use Wikimedia\Parsoid\Utils\Utils;
 use Wikimedia\Parsoid\Utils\WTUtils;
+use Wikimedia\Parsoid\Wikitext\Wikitext;
 use Wikimedia\Parsoid\Wt2Html\DOMPostProcessor;
 use Wikimedia\Parsoid\Wt2Html\Frame;
 
@@ -544,6 +545,20 @@ class ParsoidExtensionAPI {
 		DOMDataUtils::setDataMw(
 			$to, Utils::clone( DOMDataUtils::getDataMw( $from ) )
 		);
+	}
+
+	/**
+	 * Equivalent of 'preprocessWikitext' from Parser.php in core.
+	 * - expands templates
+	 * - replaces magic variables
+	 * This does not run any hooks however since that would be unexpected.
+	 * This also doesn't support replacing template args from a frame.
+	 *
+	 * @param string $wikitext
+	 * @return string preprocessed wikitext
+	 */
+	public function preprocessWikitext( string $wikitext ): string {
+		return Wikitext::preprocess( $this->env, $wikitext )['src'];
 	}
 
 	/**
