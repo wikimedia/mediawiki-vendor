@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => 'dd7ddd5af6ad6276585b78fc6af321012e1c4651',
+        'reference' => '714c32a13822a33ca76a15eadad7f406d3ecd47a',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => 'dd7ddd5af6ad6276585b78fc6af321012e1c4651',
+            'reference' => '714c32a13822a33ca76a15eadad7f406d3ecd47a',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -645,12 +645,12 @@
             'dev_requirement' => false,
         ),
         'react/promise' => array(
-            'pretty_version' => 'v2.8.0',
-            'version' => '2.8.0.0',
+            'pretty_version' => 'v2.9.0',
+            'version' => '2.9.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../react/promise',
             'aliases' => array(),
-            'reference' => 'f3cff96a19736714524ca0dd1d4130de73dbbbc4',
+            'reference' => '234f8fd1023c9158e2314fa9d7d0e6a83db42910',
             'dev_requirement' => false,
         ),
         'rhumsaa/uuid' => array(
