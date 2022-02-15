@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e3cee93e584855b290ac10a837e4965c",
+    "content-hash": "add65b7c97de99c4f31c226604898579",
     "packages": [
         {
             "name": "beberlei/assert",
