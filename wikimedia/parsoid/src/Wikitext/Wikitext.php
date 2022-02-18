@@ -4,6 +4,8 @@ declare( strict_types = 1 );
 namespace Wikimedia\Parsoid\Wikitext;
 
 use Wikimedia\Parsoid\Config\Env;
+use Wikimedia\Parsoid\Tokens\Token;
+use Wikimedia\Parsoid\Wt2Html\PegTokenizer;
 
 /**
  * This class represents core wikitext concepts that are currently represented
@@ -14,34 +16,6 @@ use Wikimedia\Parsoid\Config\Env;
  * guideline to help with code hygiene.
  */
 class Wikitext {
-	/**
-	 * This takes properties value of preprocessed output and computes
-	 * magicword wikitext for those properties.
-	 *
-	 * This is needed for Parsoid/JS compatibility, but may go away in the future.
-	 *
-	 * @param Env $env
-	 * @param array $ret
-	 * @return string
-	 */
-	private static function manglePreprocessorResponse( Env $env, array $ret ): string {
-		$wikitext = $ret['wikitext'];
-
-		foreach ( [ 'modules', 'modulestyles', 'jsconfigvars' ] as $prop ) {
-			$env->addOutputProperty( $prop, $ret[$prop] ?? [] );
-		}
-
-		// FIXME: This seems weirdly special-cased for displaytitle & displaysort
-		// For now, just mimic what Parsoid/JS does, but need to revisit this
-		foreach ( ( $ret['properties'] ?? [] ) as $name => $value ) {
-			if ( $name === 'displaytitle' || $name === 'defaultsort' ) {
-				$wikitext .= "{{" . mb_strtoupper( $name ) . ':' . $value . '}}';
-			}
-		}
-
-		return $wikitext;
-	}
-
 	/**
 	 * Equivalent of 'preprocessWikitext' from Parser.php in core.
 	 * - expands templates
@@ -67,6 +41,7 @@ class Wikitext {
 	public static function preprocess( Env $env, string $wt ): array {
 		$start = microtime( true );
 		$ret = $env->getDataAccess()->preprocessWikitext( $env->getPageConfig(), $wt );
+
 		// FIXME: Should this bump be len($ret['wikitext']) - len($wt)?
 		// I could argue both ways.
 		if ( !$env->bumpWt2HtmlResourceUse( 'wikitextSize', strlen( $ret['wikitext'] ) ) ) {
@@ -75,15 +50,50 @@ class Wikitext {
 				'src' => "wt2html: wikitextSize limit exceeded",
 			];
 		}
-		$wikitext = self::manglePreprocessorResponse( $env, $ret );
+
+		foreach ( [ 'modules', 'modulestyles', 'jsconfigvars' ] as $prop ) {
+			$env->addOutputProperty( $prop, $ret[$prop] ?? [] );
+		}
+
 		if ( $env->profiling() ) {
 			$profile = $env->getCurrentProfile();
 			$profile->bumpMWTime( "Template", 1000 * ( microtime( true ) - $start ), "api" );
 			$profile->bumpCount( "Template" );
 		}
+
 		return [
 			'error' => false,
-			'src' => $wikitext
+			'src' => $ret['wikitext'],
 		];
+	}
+
+	/**
+	 * Perform pre-save transformations
+	 *
+	 * @param Env $env
+	 * @param string $wt
+	 * @param bool $substTLTemplates Prefix each top-level template with 'subst'
+	 * @return string
+	 */
+	public static function pst( Env $env, string $wt, bool $substTLTemplates = false ) {
+		if ( $substTLTemplates ) {
+			// To make sure we do this for the correct templates, tokenize the
+			// starting wikitext and use that to detect top-level templates.
+			// Then, substitute each starting '{{' with '{{subst' using the
+			// template token's tsr.
+			$tokenizer = new PegTokenizer( $env );
+			$tokens = $tokenizer->tokenizeSync( $wt );
+			$tsrIncr = 0;
+			foreach ( $tokens as $token ) {
+				/** @var Token $token */
+				if ( $token->getName() === 'template' ) {
+					$tsr = $token->dataAttribs->tsr;
+					$wt = substr( $wt, 0, $tsr->start + $tsrIncr )
+						. '{{subst:' . substr( $wt, $tsr->start + $tsrIncr + 2 );
+					$tsrIncr += 6;
+				}
+			}
+		}
+		return $env->getDataAccess()->doPst( $env->getPageConfig(), $wt );
 	}
 }

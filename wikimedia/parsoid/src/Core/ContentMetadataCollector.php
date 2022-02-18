@@ -131,10 +131,30 @@ interface ContentMetadataCollector {
 	 */
 
 	/**
-	 * @param string $c Category name
-	 * @param string $sort Sort key (pass the empty string to use the default)
+	 * Merge strategy to use for ContentMetadataCollector
+	 * accumulators: "union" means that values are strings, stored as
+	 * a set, and exposed as a PHP associative array mapping from
+	 * values to `true`.
+	 *
+	 * This constant should be treated as @internal until we expose
+	 * alternative merge strategies for external use.
+	 * @internal
 	 */
-	public function addCategory( string $c, string $sort = '' ): void;
+	public const MERGE_STRATEGY_UNION = 'union';
+
+	/**
+	 * Add a category, with the given sort key.
+	 * @note Note that titles frequently get stored as array keys, and when
+	 * that happens in PHP, array_keys() will recover strings like '0' as
+	 * integers (instead of strings).  To avoid corner case bugs, we allow
+	 * both integers and strings as titles (and sort keys).
+	 * @note In the future, we might consider accepting a LinkTarget (or
+	 * similar proxy) for $c instead of a string.
+	 *
+	 * @param string|int $c Category name
+	 * @param string|int $sort Sort key (pass the empty string to use the default)
+	 */
+	public function addCategory( $c, $sort = '' ): void;
 
 	/**
 	 * Add a warning to the output for this page.
@@ -278,15 +298,23 @@ interface ContentMetadataCollector {
 	 * ::setExtensionData() for the flag-like version of this method.
 	 *
 	 * @note Only values which can be array keys are currently supported
-	 * as values.
+	 * as values.  Be aware that array keys which 'look like' numbers are
+	 * converted to ints by PHP, and so if you put in `"0"` as a value you
+	 * will get `[0=>true]` out.
 	 *
 	 * @param string $key The key for accessing the data. Extensions should take care to avoid
 	 *   conflicts in naming keys. It is suggested to use the extension's name as a prefix.
 	 *
 	 * @param int|string $value The value to append to the list.
-	 * @param string $strategy Merge strategy; only 'union' is currently supported
+	 * @param string $strategy Merge strategy:
+	 *  only MW_MERGE_STRATEGY_UNION is currently supported and external callers
+	 *  should treat this parameter as @internal at this time and omit it.
 	 */
-	public function appendExtensionData( string $key, $value, string $strategy = 'union' ): void;
+	public function appendExtensionData(
+		string $key,
+		$value,
+		string $strategy = self::MERGE_STRATEGY_UNION
+	): void;
 
 	/**
 	 * Add a variable to be set in mw.config in JavaScript.
@@ -312,11 +340,22 @@ interface ContentMetadataCollector {
 	 * If you want a non-array type for the key, and can ensure that only
 	 * a single value will be set, you should use ::setJsConfigVar() instead.
 	 *
+	 * @note Only values which can be array keys are currently supported
+	 * as values.  Be aware that array keys which 'look like' numbers are
+	 * converted to ints by PHP, and so if you put in `"0"` as a value you
+	 * will get `[0=>true]` out.
+	 *
 	 * @param string $key Key to use under mw.config
 	 * @param string $value Value to append to the configuration variable.
-	 * @param string $strategy Merge strategy; only 'union' is currently supported
+	 * @param string $strategy Merge strategy:
+	 *  only MW_MERGE_STRATEGY_UNION is currently supported and external callers
+	 *  should treat this parameter as @internal at this time and omit it.
 	 */
-	public function appendJsConfigVar( string $key, string $value, string $strategy = 'union' ): void;
+	public function appendJsConfigVar(
+		string $key,
+		string $value,
+		string $strategy = self::MERGE_STRATEGY_UNION
+	): void;
 
 	/**
 	 * @see OutputPage::addModules

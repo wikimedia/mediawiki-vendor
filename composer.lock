@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "add65b7c97de99c4f31c226604898579",
+    "content-hash": "4494dac97f71f5731e9d16a49b170b89",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -38,12 +38,12 @@
             },
             "type": "library",
             "autoload": {
-                "psr-4": {
-                    "Assert\\": "lib/Assert"
-                },
                 "files": [
                     "lib/Assert/functions.php"
-                ]
+                ],
+                "psr-4": {
+                    "Assert\\": "lib/Assert"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -833,8 +833,8 @@
             "autoload": {
                 "psr-0": {
                     "DataValues\\": "src",
-                    "ValueFormatters\\": "src",
-                    "ValueParsers\\": "src"
+                    "ValueParsers\\": "src",
+                    "ValueFormatters\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -7078,16 +7078,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.15.0-a20",
+            "version": "v0.15.0-a21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/parsoid.git",
-                "reference": "93478447f03aca42df15852a1d160af991297085"
+                "reference": "0a99d4ef38f1eba7637e6c0ddb6be434ccd5e72e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/93478447f03aca42df15852a1d160af991297085",
-                "reference": "93478447f03aca42df15852a1d160af991297085",
+                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/0a99d4ef38f1eba7637e6c0ddb6be434ccd5e72e",
+                "reference": "0a99d4ef38f1eba7637e6c0ddb6be434ccd5e72e",
                 "shasum": ""
             },
             "require": {
@@ -7154,10 +7154,10 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/parsoid/tree/v0.15.0-a20",
+                "source": "https://github.com/wikimedia/parsoid/tree/v0.15.0-a21",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
-            "time": "2022-02-14T20:27:14+00:00"
+            "time": "2022-02-18T18:27:17+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",
