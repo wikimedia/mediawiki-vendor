@@ -14,6 +14,7 @@ use Wikimedia\Parsoid\Html2Wt\WTSUtils;
 use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\DOMUtils;
+use Wikimedia\Parsoid\Utils\Title;
 use Wikimedia\Parsoid\Utils\WTUtils;
 use Wikimedia\Parsoid\Wikitext\Consts;
 use Wikimedia\Parsoid\Wt2Html\PegTokenizer;
@@ -460,31 +461,8 @@ class AddMediaInfo implements Wt2HtmlDOMProcessor {
 
 		$anchor = $doc->createElement( 'a' );
 		if ( $isImage ) {
-			if ( $attr !== null ) {
-				$discard = true;
-				$val = $attr[1]->txt;
-				if ( $val === '' ) {
-					// No href if link= was specified
-					$anchor = $doc->createElement( 'span' );
-				} elseif ( $urlParser->tokenizeURL( $val ) !== false ) {
-					// an external link!
-					$anchor->setAttribute( 'href', $val );
-				} else {
-					$link = $env->makeTitleFromText( $val, null, true );
-					if ( $link !== null ) {
-						$anchor->setAttribute( 'href', $env->makeLink( $link ) );
-					} else {
-						// Treat same as if link weren't present
-						$anchor->setAttribute( 'href', $env->makeLink( $attrs['title'] ) );
-						// but preserve for roundtripping
-						$discard = false;
-					}
-				}
-				if ( $discard ) {
-					WTSUtils::getAttrFromDataMw( $dataMw, 'link', /* keep */false );
-				}
-			} else {
-				$href = $env->makeLink( $attrs['title'] );
+			$addDescriptionLink = static function ( Title $title ) use ( $env, $anchor, $page, $lang ) {
+				$href = $env->makeLink( $title );
 				$qs = [];
 				if ( $page > 0 ) {
 					$qs['page'] = $page;
@@ -496,16 +474,36 @@ class AddMediaInfo implements Wt2HtmlDOMProcessor {
 					$href .= '?' . http_build_query( $qs );
 				}
 				$anchor->setAttribute( 'href', $href );
+			};
+			if ( $attr !== null ) {
+				$discard = true;
+				$val = $attr[1]->txt;
+				if ( $val === '' ) {
+					// No href if link= was specified
+					$anchor = $doc->createElement( 'span' );
+				} elseif ( $urlParser->tokenizeURL( $val ) !== false ) {
+					// An external link!
+					$href = Sanitizer::cleanUrl( $env->getSiteConfig(), $val, 'external' );
+					$anchor->setAttribute( 'href', $href );
+				} else {
+					$link = $env->makeTitleFromText( $val, null, true );
+					if ( $link !== null ) {
+						$anchor->setAttribute( 'href', $env->makeLink( $link ) );
+					} else {
+						// Treat same as if link weren't present
+						$addDescriptionLink( $attrs['title'] );
+						// but preserve for roundtripping
+						$discard = false;
+					}
+				}
+				if ( $discard ) {
+					WTSUtils::getAttrFromDataMw( $dataMw, 'link', /* keep */false );
+				}
+			} else {
+				$addDescriptionLink( $attrs['title'] );
 			}
 		} else {
 			$anchor = $doc->createElement( 'span' );
-		}
-
-		if ( DOMCompat::nodeName( $anchor ) === 'a' ) {
-			$href = Sanitizer::cleanUrl(
-				$env->getSiteConfig(), $anchor->getAttribute( 'href' ) ?? '', 'external'
-			);
-			$anchor->setAttribute( 'href', $href );
 		}
 
 		$oldAnchor->parentNode->replaceChild( $anchor, $oldAnchor );

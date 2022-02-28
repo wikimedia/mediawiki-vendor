@@ -603,10 +603,10 @@ var parsoidPost = Promise.async(function *(profile, options) {
 		}
 		var str;
 		if (options.html2wt) {
-			pre += 'html:';
+			pre += 'wt:';
 			str = body;
 		} else {
-			pre += 'wt:';
+			pre += 'html:';
 			str = body.html.body;
 		}
 		profile.size[pre + 'raw'] = str.length;
@@ -823,9 +823,11 @@ var runTests = Promise.async(function *(title, options, formatter) {
 
 	if (options.readViewStripBenchmark && Math.random() < (options.readViewStripBenchmark.sampleRate || 0)) {
 		const rules = options.readViewStripBenchmark.rules;
-		const diffSizes = yield benchmarkReadView(options.parsoidURL, options.proxyURL, domain, title, rules);
-		profile.benchmarkReadViewOriginalSize = diffSizes.originalSize;
-		profile.benchmarkReadViewStrippedSize = diffSizes.strippedSize;
+		const diffSizes = yield benchmarkReadView(domain, title, data.oldHTML.body, rules);
+		profile.readViewSizes = {
+			'original': diffSizes.originalSize,
+			'stripped': diffSizes.strippedSize,
+		};
 	}
 
 	var output = formatter(error, prefix, title, data.diffs, profile);

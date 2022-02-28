@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4494dac97f71f5731e9d16a49b170b89",
+    "content-hash": "da8d3e203f7ebbe12ba6282614b33a56",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -1398,12 +1398,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "GuzzleHttp\\Promise\\": "src/"
-                },
                 "files": [
                     "src/functions_include.php"
-                ]
+                ],
+                "psr-4": {
+                    "GuzzleHttp\\Promise\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -4288,8 +4288,8 @@
             },
             "autoload": {
                 "psr-4": {
-                    "Deserializers\\": "src/Deserializers/",
-                    "Serializers\\": "src/Serializers/"
+                    "Serializers\\": "src/Serializers/",
+                    "Deserializers\\": "src/Deserializers/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -5108,12 +5108,12 @@
             },
             "type": "library",
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\String\\": ""
-                },
                 "files": [
                     "Resources/functions.php"
                 ],
+                "psr-4": {
+                    "Symfony\\Component\\String\\": ""
+                },
                 "exclude-from-classmap": [
                     "/Tests/"
                 ]
@@ -6051,12 +6051,12 @@
             },
             "type": "library",
             "autoload": {
-                "psr-4": {
-                    "Wikimedia\\AtEase\\": "src/Wikimedia/AtEase/"
-                },
                 "files": [
                     "src/Wikimedia/Functions.php"
-                ]
+                ],
+                "psr-4": {
+                    "Wikimedia\\AtEase\\": "src/Wikimedia/AtEase/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -6942,11 +6942,11 @@
             },
             "type": "library",
             "autoload": {
-                "psr-4": {
-                    "Wikimedia\\Minify\\": "src/"
-                },
                 "psr-0": {
                     "CSSMin": "src/"
+                },
+                "psr-4": {
+                    "Wikimedia\\Minify\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -7078,16 +7078,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.15.0-a21",
+            "version": "v0.15.0-a22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/parsoid.git",
-                "reference": "0a99d4ef38f1eba7637e6c0ddb6be434ccd5e72e"
+                "reference": "e95187049cd9bf7c19bda5fe05d1172f6a559369"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/0a99d4ef38f1eba7637e6c0ddb6be434ccd5e72e",
-                "reference": "0a99d4ef38f1eba7637e6c0ddb6be434ccd5e72e",
+                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/e95187049cd9bf7c19bda5fe05d1172f6a559369",
+                "reference": "e95187049cd9bf7c19bda5fe05d1172f6a559369",
                 "shasum": ""
             },
             "require": {
@@ -7154,10 +7154,10 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/parsoid/tree/v0.15.0-a21",
+                "source": "https://github.com/wikimedia/parsoid/tree/v0.15.0-a22",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
-            "time": "2022-02-18T18:27:17+00:00"
+            "time": "2022-02-26T20:31:18+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",
