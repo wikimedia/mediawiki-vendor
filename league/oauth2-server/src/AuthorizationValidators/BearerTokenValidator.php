@@ -12,10 +12,13 @@ namespace League\OAuth2\Server\AuthorizationValidators;
 use DateTimeZone;
 use Lcobucci\Clock\SystemClock;
 use Lcobucci\JWT\Configuration;
+use Lcobucci\JWT\Encoding\CannotDecodeContent;
 use Lcobucci\JWT\Signer\Key\InMemory;
+use Lcobucci\JWT\Signer\Key\LocalFileReference;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
+use Lcobucci\JWT\Token\InvalidTokenStructure;
+use Lcobucci\JWT\Token\UnsupportedHeaderFound;
 use Lcobucci\JWT\Validation\Constraint\SignedWith;
-use Lcobucci\JWT\Validation\Constraint\StrictValidAt;
 use Lcobucci\JWT\Validation\Constraint\ValidAt;
 use Lcobucci\JWT\Validation\RequiredConstraintsViolated;
 use League\OAuth2\Server\CryptKey;
@@ -74,13 +77,8 @@ class BearerTokenValidator implements AuthorizationValidatorInterface
         );
 
         $this->jwtConfiguration->setValidationConstraints(
-            \class_exists(StrictValidAt::class)
-                ? new StrictValidAt(new SystemClock(new DateTimeZone(\date_default_timezone_get())))
-                : new ValidAt(new SystemClock(new DateTimeZone(\date_default_timezone_get()))),
-            new SignedWith(
-                new Sha256(),
-                InMemory::plainText($this->publicKey->getKeyContents(), $this->publicKey->getPassPhrase() ?? '')
-            )
+            new ValidAt(new SystemClock(new DateTimeZone(\date_default_timezone_get()))),
+            new SignedWith(new Sha256(), LocalFileReference::file($this->publicKey->getKeyPath()))
         );
     }
 
@@ -94,21 +92,21 @@ class BearerTokenValidator implements AuthorizationValidatorInterface
         }
 
         $header = $request->getHeader('authorization');
-        $jwt = \trim((string) \preg_replace('/^\s*Bearer\s/', '', $header[0]));
+        $jwt = \trim((string) \preg_replace('/^(?:\s+)?Bearer\s/', '', $header[0]));
 
         try {
-            // Attempt to parse the JWT
+            // Attempt to parse and validate the JWT
             $token = $this->jwtConfiguration->parser()->parse($jwt);
-        } catch (\Lcobucci\JWT\Exception $exception) {
-            throw OAuthServerException::accessDenied($exception->getMessage(), null, $exception);
-        }
 
-        try {
-            // Attempt to validate the JWT
             $constraints = $this->jwtConfiguration->validationConstraints();
-            $this->jwtConfiguration->validator()->assert($token, ...$constraints);
-        } catch (RequiredConstraintsViolated $exception) {
-            throw OAuthServerException::accessDenied('Access token could not be verified');
+
+            try {
+                $this->jwtConfiguration->validator()->assert($token, ...$constraints);
+            } catch (RequiredConstraintsViolated $exception) {
+                throw OAuthServerException::accessDenied('Access token could not be verified');
+            }
+        } catch (CannotDecodeContent | InvalidTokenStructure | UnsupportedHeaderFound $exception) {
+            throw OAuthServerException::accessDenied($exception->getMessage(), null, $exception);
         }
 
         $claims = $token->claims();

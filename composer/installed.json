@@ -2083,7 +2083,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oauth2-server.git",
-                "reference": "58fdace1b2b33b0d6c40f426658a898a7566bd25"
+                "reference": "61d770dc284898ea2905d66e12f8f7e5f6664092"
             },
             "require": {
                 "defuse/php-encryption": "^2.2.1",

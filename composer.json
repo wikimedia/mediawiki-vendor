@@ -43,7 +43,7 @@
 		"justinrainbow/json-schema": "5.2.11",
 		"lcobucci/jwt": "3.4.6",
 		"league/event": "2.2.0",
-		"league/oauth2-server": "dev-v9.0.0-alpha#58fdace1b2b33b0d6c40f426658a898a7566bd25 as 9.0.0",
+		"league/oauth2-server": "dev-v9.0.0-alpha#61d770dc284898ea2905d66e12f8f7e5f6664092 as 9.0.0",
 		"league/uri": "6.4.0",
 		"league/uri-components": "2.2.1",
 		"league/uri-interfaces": "2.3.0",

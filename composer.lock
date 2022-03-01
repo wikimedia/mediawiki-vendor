@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "da8d3e203f7ebbe12ba6282614b33a56",
+    "content-hash": "5a4ef3ce0f8464a445fb0f58e74adde3",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -705,8 +705,8 @@
                 ],
                 "psr-0": {
                     "DataValues\\": "src",
-                    "ValueFormatters\\": "src",
-                    "ValueParsers\\": "src"
+                    "ValueParsers\\": "src",
+                    "ValueFormatters\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2001,7 +2001,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oauth2-server.git",
-                "reference": "58fdace1b2b33b0d6c40f426658a898a7566bd25"
+                "reference": "61d770dc284898ea2905d66e12f8f7e5f6664092"
             },
             "require": {
                 "defuse/php-encryption": "^2.2.1",
@@ -4082,12 +4082,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Ramsey\\Uuid\\": "src/"
-                },
                 "files": [
                     "src/functions.php"
-                ]
+                ],
+                "psr-4": {
+                    "Ramsey\\Uuid\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [

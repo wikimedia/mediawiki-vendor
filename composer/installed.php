@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => 'bad190ac1faeddfabd9a0acd3aebb68bab71c623',
+        'reference' => '622fc7633b799cfdaf17bfc5d248cd3abde2c720',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => 'bad190ac1faeddfabd9a0acd3aebb68bab71c623',
+            'reference' => '622fc7633b799cfdaf17bfc5d248cd3abde2c720',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -289,7 +289,7 @@
                 0 => '9999999-dev',
                 1 => '9.0.0',
             ),
-            'reference' => '58fdace1b2b33b0d6c40f426658a898a7566bd25',
+            'reference' => '61d770dc284898ea2905d66e12f8f7e5f6664092',
             'dev_requirement' => false,
         ),
         'league/oauth2server' => array(
