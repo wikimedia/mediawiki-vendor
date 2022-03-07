@@ -100,8 +100,7 @@ class AttributeExpander extends TokenHandler {
 	 * @return array
 	 */
 	private static function splitTokens(
-		Frame $frame, Token $token, int $nlTkPos, array $tokens,
-		bool $wrapTemplates
+		Frame $frame, Token $token, int $nlTkPos, array $tokens, bool $wrapTemplates
 	): array {
 		$buf = [];
 		$postNLBuf = null;
@@ -127,9 +126,16 @@ class AttributeExpander extends TokenHandler {
 					}
 				}
 
-				$buf[] = $t;
+				if ( $t !== $startMeta ) {
+					$buf[] = $t;
+				}
 			}
 		}
+
+		// We split the token into pieces.
+		// Since we no longer know where this token now ends tsr-wise,
+		// set tsr->end to null
+		$token->dataAttribs->tsr->end = null;
 
 		if ( $wrapTemplates && $startMeta ) {
 			// Support template wrapping with the following steps:
@@ -370,6 +376,10 @@ class AttributeExpander extends TokenHandler {
 						$expandedK = $updatedK['preNLBuf'];
 						$postNLToks = $updatedK['postNLBuf'];
 						$metaTokens = $updatedK['metaTokens'];
+						// We split up this attribute's key into pieces.
+						if ( $expandedA->srcOffsets->key ) {
+							$expandedA->srcOffsets->key->end = null;
+						}
 					} else {
 						// Maybe scenario 2 from the documentation comment above.
 						$updatedK = self::stripMetaTags( $env, $expandedK, $wrapTemplates );
@@ -410,17 +420,12 @@ class AttributeExpander extends TokenHandler {
 								$kv->k = self::tplToksToString( $kv->k );
 								$kv->v = self::tplToksToString( $kv->v );
 
-								// These `kv`s come from tokenizing the string we produced above,
-								// and will therefore have offset starting at zero.
-								// Shift them by the old amount if available.
-								if ( is_array( $expandedA->srcOffsets ) ) {
-									if ( is_array( $kv->srcOffsets ) ) {
-										$offset = $expandedA->srcOffsets[0];
-										foreach ( $kv->srcOffsets as $j => $_ ) {
-											$kv->srcOffsets[$j] += $offset;
-										}
-									}
-								}
+								// $kStr is based on running tokensToString on $expandedK.
+								// So, $kStr might have dropped HTML tags, etc. Given that,
+								// we can no longer reliably compute offsets for these
+								// new key/value pairs. We could try to be more smart here,
+								// but it is not worth the complexity.
+								$kv->srcOffsets = null;
 							}
 							// SSS FIXME: Collect all keys here, not just the first key
 							// i.e. in a string like {{1x|1=id='v1' title='foo' style='..'}}
@@ -461,6 +466,10 @@ class AttributeExpander extends TokenHandler {
 						$expandedV = $updatedV['preNLBuf'];
 						$postNLToks = $updatedV['postNLBuf'];
 						$metaTokens = $updatedV['metaTokens'];
+						// We split up this attribute's value into pieces.
+						if ( $expandedA->srcOffsets->value ) {
+							$expandedA->srcOffsets->value->end = null;
+						}
 					} else {
 						// Maybe scenario 2 from the documentation comment above.
 						$updatedV = self::stripMetaTags( $env, $expandedV, $wrapTemplates );
@@ -512,9 +521,9 @@ class AttributeExpander extends TokenHandler {
 					//         is clearer and less confusing than
 					//    [{ "txt":..., "html":... }, { "html":... }]
 					$tmpDataMW[$key] = [
-						'k' => [ 'txt' => $key, 'srcOffsets' => $expandedA->srcOffsets->key ],
+						'k' => [ 'txt' => $key, 'srcOffsets' => $expandedA->srcOffsets->key ?? null ],
 						// FIXME: Why is 'txt' missing? Why are we not checking for [] ?
-						'v' => [ 'html' => $valHTML, 'srcOffsets' => $expandedA->srcOffsets->value ]
+						'v' => [ 'html' => $valHTML, 'srcOffsets' => $expandedA->srcOffsets->value ?? null ]
 					];
 
 					if ( $keyHTML !== null ) {

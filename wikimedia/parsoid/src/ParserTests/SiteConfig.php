@@ -258,21 +258,18 @@ class SiteConfig extends ApiSiteConfig {
 		foreach ( ( $extConfig['tags'] ?? [] ) as $tagConfig ) {
 			$lowerTagName = mb_strtolower( $tagConfig['name'] );
 			unset( $this->extConfig['allTags'][$lowerTagName] );
-			unset( $this->extConfig['nativeTags'][$lowerTagName] );
+			unset( $this->extConfig['parsoidExtTags'][$lowerTagName] );
+		}
+
+		foreach ( ( $extConfig['annotations'] ?? [] ) as $annotationTag ) {
+			$lowerTagName = mb_strtolower( $annotationTag );
+			unset( $this->extConfig['allTags'][$lowerTagName] );
+			unset( $this->extConfig['annotationTags'][$lowerTagName] );
 		}
 
 		if ( isset( $extConfig['domProcessors'] ) ) {
 			unset( $this->extConfig['domProcessors'][$name] );
 		}
-
-		/*
-		 * FIXME: Leaving styles behind for now since they are harmless
-		 * and we cannot unset styles without resetting all styles across
-		 * all registered extensions.
-		 *
-		 * If unregistering extensions becomes a broader use case beyond
-		 * parser tests, we might want to handle this by tracking styles separately.
-		 */
 
 		/*
 		 * FIXME: Unsetting contentmodels is also tricky with the current
