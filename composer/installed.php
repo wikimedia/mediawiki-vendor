@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '86760cd4c25a2b3cd8ae1df1214e3449f3068bb9',
+        'reference' => '5bbddea636269f616d6233b021e30d59cd544049',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '86760cd4c25a2b3cd8ae1df1214e3449f3068bb9',
+            'reference' => '5bbddea636269f616d6233b021e30d59cd544049',
             'dev_requirement' => false,
         ),
         'christian-riesen/base32' => array(
