@@ -1,22 +1,22 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
+        'pretty_version' => '1.0.0+no-version-set',
+        'version' => '1.0.0.0',
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => 'db2490ed61ef49e2df42163f03552ab4362bda1f',
+        'reference' => NULL,
         'name' => '__root__',
         'dev' => false,
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
+            'pretty_version' => '1.0.0+no-version-set',
+            'version' => '1.0.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => 'db2490ed61ef49e2df42163f03552ab4362bda1f',
+            'reference' => NULL,
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -410,12 +410,12 @@
             'dev_requirement' => false,
         ),
         'oojs/oojs-ui' => array(
-            'pretty_version' => 'v0.43.1',
-            'version' => '0.43.1.0',
+            'pretty_version' => 'v0.43.2',
+            'version' => '0.43.2.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../oojs/oojs-ui',
             'aliases' => array(),
-            'reference' => 'fa896ba610a662ad95e255e0b749b4c023469c60',
+            'reference' => '630d30f69cec9d64ef6d6bf0d1afed158bc62ffe',
             'dev_requirement' => false,
         ),
         'opis/json-schema' => array(
