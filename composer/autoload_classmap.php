@@ -4003,6 +4003,7 @@ return array(
     'Wikimedia\\Parsoid\\Wt2Html\\TT\\QuoteTransformer' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/TT/QuoteTransformer.php',
     'Wikimedia\\Parsoid\\Wt2Html\\TT\\SanitizerHandler' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/TT/SanitizerHandler.php',
     'Wikimedia\\Parsoid\\Wt2Html\\TT\\TemplateEncapsulator' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/TT/TemplateEncapsulator.php',
+    'Wikimedia\\Parsoid\\Wt2Html\\TT\\TemplateExpansionResult' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/TT/TemplateExpansionResult.php',
     'Wikimedia\\Parsoid\\Wt2Html\\TT\\TemplateHandler' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/TT/TemplateHandler.php',
     'Wikimedia\\Parsoid\\Wt2Html\\TT\\TokenCollector' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/TT/TokenCollector.php',
     'Wikimedia\\Parsoid\\Wt2Html\\TT\\TokenHandler' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/TT/TokenHandler.php',

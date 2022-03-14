@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3021d750efdf0e2f1a6116e401a80774",
+    "content-hash": "9cb7dcf154088e47843247755382a314",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -7078,16 +7078,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.15.0-a23",
+            "version": "v0.15.0-a24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/parsoid.git",
-                "reference": "260688ab4d430020f0f2811b4fa64ae68bdf9c04"
+                "reference": "f10cc0d385eeb6e14da1f765869f235b054695a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/260688ab4d430020f0f2811b4fa64ae68bdf9c04",
-                "reference": "260688ab4d430020f0f2811b4fa64ae68bdf9c04",
+                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/f10cc0d385eeb6e14da1f765869f235b054695a0",
+                "reference": "f10cc0d385eeb6e14da1f765869f235b054695a0",
                 "shasum": ""
             },
             "require": {
@@ -7102,7 +7102,7 @@
                 "wikimedia/assert": "^0.5.0",
                 "wikimedia/dodo": "0.4.0",
                 "wikimedia/ip-utils": "^3.0.2||^4.0.0",
-                "wikimedia/object-factory": "^3.0.2",
+                "wikimedia/object-factory": "^3.0.2||^4.0.0",
                 "wikimedia/remex-html": "^3.0.0",
                 "wikimedia/scoped-callback": "^3.0.0",
                 "wikimedia/wikipeg": "^2.0.6",
@@ -7154,10 +7154,10 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/parsoid/tree/v0.15.0-a23",
+                "source": "https://github.com/wikimedia/parsoid/tree/v0.15.0-a24",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
-            "time": "2022-03-07T22:43:29+00:00"
+            "time": "2022-03-09T23:23:28+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",

@@ -4767,6 +4767,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Wt2Html\\TT\\QuoteTransformer' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/TT/QuoteTransformer.php',
         'Wikimedia\\Parsoid\\Wt2Html\\TT\\SanitizerHandler' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/TT/SanitizerHandler.php',
         'Wikimedia\\Parsoid\\Wt2Html\\TT\\TemplateEncapsulator' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/TT/TemplateEncapsulator.php',
+        'Wikimedia\\Parsoid\\Wt2Html\\TT\\TemplateExpansionResult' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/TT/TemplateExpansionResult.php',
         'Wikimedia\\Parsoid\\Wt2Html\\TT\\TemplateHandler' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/TT/TemplateHandler.php',
         'Wikimedia\\Parsoid\\Wt2Html\\TT\\TokenCollector' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/TT/TokenCollector.php',
         'Wikimedia\\Parsoid\\Wt2Html\\TT\\TokenHandler' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/TT/TokenHandler.php',
