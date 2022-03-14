@@ -7338,17 +7338,17 @@
         },
         {
             "name": "wikimedia/object-factory",
-            "version": "v3.0.2",
-            "version_normalized": "3.0.2.0",
+            "version": "v4.0.0",
+            "version_normalized": "4.0.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/object-factory.git",
-                "reference": "fcfc7a0dafe9608231816d6bf74919826d9bc885"
+                "reference": "20d19657cfbedb1e7bd61c6696e8a16ade232e5c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/object-factory/zipball/fcfc7a0dafe9608231816d6bf74919826d9bc885",
-                "reference": "fcfc7a0dafe9608231816d6bf74919826d9bc885",
+                "url": "https://api.github.com/repos/wikimedia/object-factory/zipball/20d19657cfbedb1e7bd61c6696e8a16ade232e5c",
+                "reference": "20d19657cfbedb1e7bd61c6696e8a16ade232e5c",
                 "shasum": ""
             },
             "require": {
@@ -7356,19 +7356,20 @@
                 "psr/container": "1.1.1"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "35.0.0",
+                "mediawiki/mediawiki-codesniffer": "38.0.0",
+                "mediawiki/mediawiki-phan-config": "0.11.1",
                 "mediawiki/minus-x": "1.1.1",
                 "ockcyp/covers-validator": "1.3.3",
                 "php-parallel-lint/php-console-highlighter": "0.5.0",
-                "php-parallel-lint/php-parallel-lint": "1.2.0",
+                "php-parallel-lint/php-parallel-lint": "1.3.1",
                 "phpunit/phpunit": "^8.5"
             },
-            "time": "2021-04-25T19:27:15+00:00",
+            "time": "2022-03-09T14:19:13+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
                 "psr-4": {
-                    "Wikimedia\\": "src/"
+                    "Wikimedia\\ObjectFactory\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -7384,7 +7385,7 @@
             "description": "Construct objects from configuration instructions",
             "homepage": "https://www.mediawiki.org/wiki/ObjectFactory",
             "support": {
-                "source": "https://github.com/wikimedia/object-factory/tree/v3.0.2"
+                "source": "https://github.com/wikimedia/object-factory/tree/v4.0.0"
             },
             "install-path": "../wikimedia/object-factory"
         },

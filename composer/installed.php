@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => 'a4d137a51d29483ab23842489ba7215f16b7d0f6',
+        'reference' => 'db2490ed61ef49e2df42163f03552ab4362bda1f',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => 'a4d137a51d29483ab23842489ba7215f16b7d0f6',
+            'reference' => 'db2490ed61ef49e2df42163f03552ab4362bda1f',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -1077,12 +1077,12 @@
             'dev_requirement' => false,
         ),
         'wikimedia/object-factory' => array(
-            'pretty_version' => 'v3.0.2',
-            'version' => '3.0.2.0',
+            'pretty_version' => 'v4.0.0',
+            'version' => '4.0.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/object-factory',
             'aliases' => array(),
-            'reference' => 'fcfc7a0dafe9608231816d6bf74919826d9bc885',
+            'reference' => '20d19657cfbedb1e7bd61c6696e8a16ade232e5c',
             'dev_requirement' => false,
         ),
         'wikimedia/parsoid' => array(

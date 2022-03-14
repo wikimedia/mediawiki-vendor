@@ -139,6 +139,7 @@ class ComposerStaticInit_mediawiki_vendor
             'Wikimedia\\Purtle\\Tests\\' => 23,
             'Wikimedia\\Purtle\\' => 17,
             'Wikimedia\\Parsoid\\' => 18,
+            'Wikimedia\\ObjectFactory\\' => 24,
             'Wikimedia\\NormalizedException\\' => 30,
             'Wikimedia\\Minify\\' => 17,
             'Wikimedia\\LangConv\\' => 19,
@@ -321,6 +322,10 @@ class ComposerStaticInit_mediawiki_vendor
         array (
             0 => __DIR__ . '/..' . '/wikimedia/parsoid/src',
         ),
+        'Wikimedia\\ObjectFactory\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/wikimedia/object-factory/src',
+        ),
         'Wikimedia\\NormalizedException\\' => 
         array (
             0 => __DIR__ . '/..' . '/wikimedia/normalized-exception/src',
@@ -369,11 +374,10 @@ class ComposerStaticInit_mediawiki_vendor
         array (
             0 => __DIR__ . '/..' . '/wikimedia/ip-set/src',
             1 => __DIR__ . '/..' . '/wikimedia/ip-utils/src',
-            2 => __DIR__ . '/..' . '/wikimedia/object-factory/src',
-            3 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
-            4 => __DIR__ . '/..' . '/wikimedia/testing-access-wrapper/src',
-            5 => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src',
-            6 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
+            2 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
+            3 => __DIR__ . '/..' . '/wikimedia/testing-access-wrapper/src',
+            4 => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src',
+            5 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
         ),
         'WikiPEG\\' => 
         array (
@@ -4507,8 +4511,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\NormalizedException\\INormalizedException' => __DIR__ . '/..' . '/wikimedia/normalized-exception/src/INormalizedException.php',
         'Wikimedia\\NormalizedException\\NormalizedException' => __DIR__ . '/..' . '/wikimedia/normalized-exception/src/NormalizedException.php',
         'Wikimedia\\NormalizedException\\NormalizedExceptionTrait' => __DIR__ . '/..' . '/wikimedia/normalized-exception/src/NormalizedExceptionTrait.php',
-        'Wikimedia\\ObjectFactory' => __DIR__ . '/..' . '/wikimedia/object-factory/src/ObjectFactory.php',
-        'Wikimedia\\ObjectFactory\\ObjectFactory' => __DIR__ . '/..' . '/wikimedia/object-factory/src/ObjectFactory/ObjectFactory.php',
+        'Wikimedia\\ObjectFactory\\ObjectFactory' => __DIR__ . '/..' . '/wikimedia/object-factory/src/ObjectFactory.php',
         'Wikimedia\\PSquare' => __DIR__ . '/..' . '/wikimedia/running-stat/src/Wikimedia/PSquare.php',
         'Wikimedia\\Parsoid\\Config\\Api\\ApiHelper' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Config/Api/ApiHelper.php',
         'Wikimedia\\Parsoid\\Config\\Api\\DataAccess' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Config/Api/DataAccess.php',
