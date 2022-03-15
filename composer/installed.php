@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '4afd0df1c819514baed11c7b5e87be5d8a6ef814',
+        'reference' => 'e91f7aa7dbc3cb738b3816899816b76c1e5cbf87',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '4afd0df1c819514baed11c7b5e87be5d8a6ef814',
+            'reference' => 'e91f7aa7dbc3cb738b3816899816b76c1e5cbf87',
             'dev_requirement' => false,
         ),
         'christian-riesen/base32' => array(
@@ -117,12 +117,6 @@
             'aliases' => array(),
             'reference' => '39d8072be8657a329a284339994401066406c43b',
             'dev_requirement' => false,
-        ),
-        'paragonie/random_compat' => array(
-            'dev_requirement' => false,
-            'replaced' => array(
-                0 => '9.99.99',
-            ),
         ),
         'pear/console_getopt' => array(
             'pretty_version' => 'v1.4.3',
@@ -312,42 +306,6 @@
             'aliases' => array(),
             'reference' => '6f981ee24cf69ee7ce9736146d1c57c2780598a8',
             'dev_requirement' => false,
-        ),
-        'symfony/polyfill-ctype' => array(
-            'dev_requirement' => false,
-            'replaced' => array(
-                0 => '1.99',
-            ),
-        ),
-        'symfony/polyfill-intl-grapheme' => array(
-            'dev_requirement' => false,
-            'replaced' => array(
-                0 => '1.17.1',
-            ),
-        ),
-        'symfony/polyfill-intl-idn' => array(
-            'dev_requirement' => false,
-            'replaced' => array(
-                0 => '1.17.0',
-            ),
-        ),
-        'symfony/polyfill-intl-normalizer' => array(
-            'dev_requirement' => false,
-            'replaced' => array(
-                0 => '1.17.1',
-            ),
-        ),
-        'symfony/polyfill-mbstring' => array(
-            'dev_requirement' => false,
-            'replaced' => array(
-                0 => '1.99',
-            ),
-        ),
-        'symfony/polyfill-php72' => array(
-            'dev_requirement' => false,
-            'replaced' => array(
-                0 => '1.12.0',
-            ),
         ),
         'symfony/polyfill-php80' => array(
             'pretty_version' => 'v1.24.0',
