@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => 'f4bdc39d51dd6a89e577bbe00c87f2f418d5096a',
+        'reference' => '6b6d4eca8fb36141a95c406391d5828a8c118702',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => 'f4bdc39d51dd6a89e577bbe00c87f2f418d5096a',
+            'reference' => '6b6d4eca8fb36141a95c406391d5828a8c118702',
             'dev_requirement' => false,
         ),
         'christian-riesen/base32' => array(
@@ -266,12 +266,12 @@
             ),
         ),
         'symfony/polyfill-php80' => array(
-            'pretty_version' => 'v1.23.1',
-            'version' => '1.23.1.0',
+            'pretty_version' => 'v1.25.0',
+            'version' => '1.25.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/polyfill-php80',
             'aliases' => array(),
-            'reference' => '1100343ed1a92e3a38f9ae122fc0eb21602547be',
+            'reference' => '4407588e0d3f1f52efb65fbe92babe41f37fe50c',
             'dev_requirement' => false,
         ),
         'wikimedia/assert' => array(
