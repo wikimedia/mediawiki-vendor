@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '9e85cb9e74d258e248a377a75737ad89764deed6',
+        'reference' => 'd095ffe1a2eeb873aa316c78b630e3ef1a80dc68',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '9e85cb9e74d258e248a377a75737ad89764deed6',
+            'reference' => 'd095ffe1a2eeb873aa316c78b630e3ef1a80dc68',
             'dev_requirement' => false,
         ),
         'christian-riesen/base32' => array(
@@ -108,12 +108,6 @@
             'aliases' => array(),
             'reference' => '0034158b0a4ed728908a6e564a7589c602e4174e',
             'dev_requirement' => false,
-        ),
-        'paragonie/random_compat' => array(
-            'dev_requirement' => false,
-            'replaced' => array(
-                0 => '9.99.99',
-            ),
         ),
         'pear/console_getopt' => array(
             'pretty_version' => 'v1.4.3',
@@ -269,12 +263,6 @@
             'dev_requirement' => false,
             'replaced' => array(
                 0 => 'v1.10.11',
-            ),
-        ),
-        'symfony/polyfill-php72' => array(
-            'dev_requirement' => false,
-            'replaced' => array(
-                0 => '1.12.0',
             ),
         ),
         'symfony/polyfill-php80' => array(

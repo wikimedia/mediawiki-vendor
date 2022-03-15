@@ -71,10 +71,6 @@
 		"wikimedia/zest-css": "1.1.5",
 		"zordius/lightncandy": "1.2.5"
 	},
-	"replace": {
-		"paragonie/random_compat": "9.99.99",
-		"symfony/polyfill-php72": "1.12.0"
-	},
 	"require-dev": {
 		"php-parallel-lint/php-parallel-lint": "1.2.0",
 		"swaggest/json-schema": "0.12.29"
