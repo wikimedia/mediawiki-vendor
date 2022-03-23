@@ -35,7 +35,7 @@
 		"geoip2/geoip2": "2.11.0",
 		"guzzlehttp/guzzle": "7.4.1",
 		"guzzlehttp/promises": "1.5.1",
-		"guzzlehttp/psr7": "2.1.0",
+		"guzzlehttp/psr7": "2.1.2",
 		"guzzlehttp/ringphp": "1.1.1",
 		"guzzlehttp/streams": "3.0.0",
 		"jakobo/hotp-php": "2.0.0",

@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => 'b0fa17a8e44b7eac4f02660aee2c6ddd680d86a7',
+        'reference' => '83d2f65b362936d7346f101195ef33c48cc0b546',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => 'b0fa17a8e44b7eac4f02660aee2c6ddd680d86a7',
+            'reference' => '83d2f65b362936d7346f101195ef33c48cc0b546',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -209,12 +209,12 @@
             'dev_requirement' => false,
         ),
         'guzzlehttp/psr7' => array(
-            'pretty_version' => '2.1.0',
-            'version' => '2.1.0.0',
+            'pretty_version' => '2.1.2',
+            'version' => '2.1.2.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../guzzlehttp/psr7',
             'aliases' => array(),
-            'reference' => '089edd38f5b8abba6cb01567c2a8aaa47cec4c72',
+            'reference' => 'b36d463b214c76ed12b924bae0445f3531bb1686',
             'dev_requirement' => false,
         ),
         'guzzlehttp/ringphp' => array(
