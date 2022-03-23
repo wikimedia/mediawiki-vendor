@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => 'd5ddc06ff7534b6732e59d28108875fc55924a97',
+        'reference' => 'e03b7a37939685fde9a94f83fc81176ed5a00c6f',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => 'd5ddc06ff7534b6732e59d28108875fc55924a97',
+            'reference' => 'e03b7a37939685fde9a94f83fc81176ed5a00c6f',
             'dev_requirement' => false,
         ),
         'christian-riesen/base32' => array(
@@ -65,12 +65,12 @@
             'dev_requirement' => false,
         ),
         'guzzlehttp/psr7' => array(
-            'pretty_version' => '1.7.0',
-            'version' => '1.7.0.0',
+            'pretty_version' => '1.8.5',
+            'version' => '1.8.5.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../guzzlehttp/psr7',
             'aliases' => array(),
-            'reference' => '53330f47520498c0ae1f61f7e2c90f55690c06a3',
+            'reference' => '337e3ad8e5716c15f9657bd214d16cc5e69df268',
             'dev_requirement' => false,
         ),
         'jakobo/hotp-php' => array(

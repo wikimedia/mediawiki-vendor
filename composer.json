@@ -19,7 +19,7 @@
 		"cssjanus/cssjanus": "1.3.0",
 		"guzzlehttp/guzzle": "7.2.0",
 		"guzzlehttp/promises": "1.4.0",
-		"guzzlehttp/psr7": "1.7.0",
+		"guzzlehttp/psr7": "1.8.5",
 		"jakobo/hotp-php": "2.0.0",
 		"liuggio/statsd-php-client": "1.0.18",
 		"monolog/monolog": "2.2.0",
