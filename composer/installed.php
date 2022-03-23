@@ -5,7 +5,7 @@
         'type' => 'mediawiki-core',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '8ee2aeab81e85dc2daf567e13579ed4747953773',
+        'reference' => '3048f0aa7a0af60a8892d9318ae15533087395fd',
         'name' => 'mediawiki/core',
         'dev' => false,
     ),
@@ -119,12 +119,12 @@
             'dev_requirement' => false,
         ),
         'guzzlehttp/psr7' => array(
-            'pretty_version' => '1.8.1',
-            'version' => '1.8.1.0',
+            'pretty_version' => '1.8.5',
+            'version' => '1.8.5.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../guzzlehttp/psr7',
             'aliases' => array(),
-            'reference' => '35ea11d335fd638b5882ff1725228b3d35496ab1',
+            'reference' => '337e3ad8e5716c15f9657bd214d16cc5e69df268',
             'dev_requirement' => false,
         ),
         'liuggio/statsd-php-client' => array(
@@ -169,7 +169,7 @@
             'type' => 'mediawiki-core',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '8ee2aeab81e85dc2daf567e13579ed4747953773',
+            'reference' => '3048f0aa7a0af60a8892d9318ae15533087395fd',
             'dev_requirement' => false,
         ),
         'mediawiki/mediawiki' => array(

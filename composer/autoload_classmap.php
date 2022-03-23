@@ -768,6 +768,7 @@ return array(
     'PaymentMethod' => $baseDir . '/extensions/DonationInterface/gateway_common/PaymentMethod.php',
     'PaymentResult' => $baseDir . '/extensions/DonationInterface/gateway_common/PaymentResult.php',
     'PaymentTransactionResponse' => $baseDir . '/extensions/DonationInterface/gateway_common/PaymentTransactionResponse.php',
+    'PaypalCancelMaintenance' => $baseDir . '/extensions/DonationInterface/paypal_gateway/scripts/cancel.php',
     'PaypalExpressAdapter' => $baseDir . '/extensions/DonationInterface/paypal_gateway/express_checkout/paypal_express.adapter.php',
     'PaypalExpressGateway' => $baseDir . '/extensions/DonationInterface/paypal_gateway/express_checkout/paypal_express_gateway.body.php',
     'PaypalExpressGatewayResult' => $baseDir . '/extensions/DonationInterface/paypal_gateway/express_checkout/paypal_express_resultswitcher.body.php',
