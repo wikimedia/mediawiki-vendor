@@ -3704,6 +3704,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Webauthn\\TrustPath\\EmptyTrustPath' => __DIR__ . '/..' . '/web-auth/webauthn-lib/src/TrustPath/EmptyTrustPath.php',
         'Webauthn\\TrustPath\\TrustPath' => __DIR__ . '/..' . '/web-auth/webauthn-lib/src/TrustPath/TrustPath.php',
         'Webauthn\\TrustPath\\TrustPathLoader' => __DIR__ . '/..' . '/web-auth/webauthn-lib/src/TrustPath/TrustPathLoader.php',
+        'Webauthn\\U2FPublicKey' => __DIR__ . '/..' . '/web-auth/webauthn-lib/src/U2FPublicKey.php',
         'Webauthn\\Util\\CoseSignatureFixer' => __DIR__ . '/..' . '/web-auth/webauthn-lib/src/Util/CoseSignatureFixer.php',
         'Wikimedia\\Assert\\Assert' => __DIR__ . '/..' . '/wikimedia/assert/src/Assert.php',
         'Wikimedia\\Assert\\AssertionException' => __DIR__ . '/..' . '/wikimedia/assert/src/AssertionException.php',

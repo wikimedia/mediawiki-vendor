@@ -2936,6 +2936,7 @@ return array(
     'Webauthn\\TrustPath\\EmptyTrustPath' => $vendorDir . '/web-auth/webauthn-lib/src/TrustPath/EmptyTrustPath.php',
     'Webauthn\\TrustPath\\TrustPath' => $vendorDir . '/web-auth/webauthn-lib/src/TrustPath/TrustPath.php',
     'Webauthn\\TrustPath\\TrustPathLoader' => $vendorDir . '/web-auth/webauthn-lib/src/TrustPath/TrustPathLoader.php',
+    'Webauthn\\U2FPublicKey' => $vendorDir . '/web-auth/webauthn-lib/src/U2FPublicKey.php',
     'Webauthn\\Util\\CoseSignatureFixer' => $vendorDir . '/web-auth/webauthn-lib/src/Util/CoseSignatureFixer.php',
     'Wikimedia\\Assert\\Assert' => $vendorDir . '/wikimedia/assert/src/Assert.php',
     'Wikimedia\\Assert\\AssertionException' => $vendorDir . '/wikimedia/assert/src/AssertionException.php',
