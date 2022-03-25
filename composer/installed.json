@@ -2806,53 +2806,6 @@
             "install-path": "../nikic/php-parser"
         },
         {
-            "name": "nmred/kafka-php",
-            "version": "v0.1.5",
-            "version_normalized": "0.1.5.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/weiboad/kafka-php.git",
-                "reference": "317ad8c208684db8b9e6d2f5bf7f471e89a8b4eb"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/weiboad/kafka-php/zipball/317ad8c208684db8b9e6d2f5bf7f471e89a8b4eb",
-                "reference": "317ad8c208684db8b9e6d2f5bf7f471e89a8b4eb",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3"
-            },
-            "require-dev": {
-                "phpunit/phpcov": "*",
-                "phpunit/phpunit": "~4.0",
-                "satooshi/php-coveralls": "dev-master"
-            },
-            "time": "2015-12-02T12:06:23+00:00",
-            "type": "library",
-            "installation-source": "dist",
-            "autoload": {
-                "psr-0": {
-                    "Kafka\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "Kafka client for php",
-            "homepage": "http://www.swanlinux.net",
-            "keywords": [
-                "client",
-                "kafka"
-            ],
-            "support": {
-                "issues": "https://github.com/weiboad/kafka-php/issues",
-                "source": "https://github.com/weiboad/kafka-php/tree/v0.1.5"
-            },
-            "install-path": "../nmred/kafka-php"
-        },
-        {
             "name": "onoi/message-reporter",
             "version": "1.4.1",
             "version_normalized": "1.4.1.0",

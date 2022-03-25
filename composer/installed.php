@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '10fb36371813d3d95a9f8b6ff9b00acd8d16dad1',
+        'reference' => 'c4928f460b4cede763bdb1db52b29edaad179d4a',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '10fb36371813d3d95a9f8b6ff9b00acd8d16dad1',
+            'reference' => 'c4928f460b4cede763bdb1db52b29edaad179d4a',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -389,15 +389,6 @@
             'install_path' => __DIR__ . '/../nikic/php-parser',
             'aliases' => array(),
             'reference' => '210577fe3cf7badcc5814d99455df46564f3c077',
-            'dev_requirement' => false,
-        ),
-        'nmred/kafka-php' => array(
-            'pretty_version' => 'v0.1.5',
-            'version' => '0.1.5.0',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../nmred/kafka-php',
-            'aliases' => array(),
-            'reference' => '317ad8c208684db8b9e6d2f5bf7f471e89a8b4eb',
             'dev_requirement' => false,
         ),
         'onoi/message-reporter' => array(
