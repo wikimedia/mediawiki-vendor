@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d3cca7c509a1e4e2c15b7163ce99e356",
+    "content-hash": "ea112bccda66b928d3fe08b06adc3204",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -1192,16 +1192,16 @@
         },
         {
             "name": "geoip2/geoip2",
-            "version": "v2.11.0",
+            "version": "v2.12.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/maxmind/GeoIP2-php.git",
-                "reference": "d01be5894a5c1a3381c58c9b1795cd07f96c30f7"
+                "reference": "83adb44ac4b9553d36b579a14673ed124583082f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/maxmind/GeoIP2-php/zipball/d01be5894a5c1a3381c58c9b1795cd07f96c30f7",
-                "reference": "d01be5894a5c1a3381c58c9b1795cd07f96c30f7",
+                "url": "https://api.github.com/repos/maxmind/GeoIP2-php/zipball/83adb44ac4b9553d36b579a14673ed124583082f",
+                "reference": "83adb44ac4b9553d36b579a14673ed124583082f",
                 "shasum": ""
             },
             "require": {
@@ -1211,7 +1211,8 @@
                 "php": ">=7.2"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "2.*",
+                "friendsofphp/php-cs-fixer": "3.*",
+                "phpstan/phpstan": "*",
                 "phpunit/phpunit": "^8.0 || ^9.0",
                 "squizlabs/php_codesniffer": "3.*"
             },
@@ -1243,9 +1244,9 @@
             ],
             "support": {
                 "issues": "https://github.com/maxmind/GeoIP2-php/issues",
-                "source": "https://github.com/maxmind/GeoIP2-php/tree/v2.11.0"
+                "source": "https://github.com/maxmind/GeoIP2-php/tree/v2.12.2"
             },
-            "time": "2020-10-01T18:48:34+00:00"
+            "time": "2021-11-30T18:15:25+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",

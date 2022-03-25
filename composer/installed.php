@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '455872f94d307d1f8f85898559d92efd3b061e6b',
+        'reference' => '13aa9ee993fa97410c05e377ea7be4e25d55e8bf',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '455872f94d307d1f8f85898559d92efd3b061e6b',
+            'reference' => '13aa9ee993fa97410c05e377ea7be4e25d55e8bf',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -182,12 +182,12 @@
             'dev_requirement' => false,
         ),
         'geoip2/geoip2' => array(
-            'pretty_version' => 'v2.11.0',
-            'version' => '2.11.0.0',
+            'pretty_version' => 'v2.12.2',
+            'version' => '2.12.2.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../geoip2/geoip2',
             'aliases' => array(),
-            'reference' => 'd01be5894a5c1a3381c58c9b1795cd07f96c30f7',
+            'reference' => '83adb44ac4b9553d36b579a14673ed124583082f',
             'dev_requirement' => false,
         ),
         'guzzlehttp/guzzle' => array(
