@@ -32,9 +32,9 @@ use MediaWiki\Rest\Response;
 use MediaWiki\Rest\ResponseException;
 use MediaWiki\Revision\RevisionAccessException;
 use MobileContext;
-use MWParsoid\Config\PageConfigFactory;
 use MWParsoid\ParsoidServices;
 use MWParsoid\Rest\FormatHelper;
+use ParserOutput;
 use RequestContext;
 use Title;
 use UIDGenerator;
@@ -44,6 +44,7 @@ use Wikimedia\Message\DataMessageValue;
 use Wikimedia\ParamValidator\ValidationException;
 use Wikimedia\Parsoid\Config\DataAccess;
 use Wikimedia\Parsoid\Config\PageConfig;
+use Wikimedia\Parsoid\Config\PageConfigFactory;
 use Wikimedia\Parsoid\Config\SiteConfig;
 use Wikimedia\Parsoid\Core\ClientError;
 use Wikimedia\Parsoid\Core\PageBundle;
@@ -355,6 +356,7 @@ abstract class ParsoidHandler extends Handler {
 		// introduced as a post-parse transform.  So although we pass a
 		// User here, it only currently affects the output in obscure
 		// corner cases; see PageConfigFactory::create() for more.
+		// @phan-suppress-next-line PhanUndeclaredMethod method defined in subtype
 		return $this->pageConfigFactory->create(
 			$title, $user, $revision, $wikitextOverride, $pagelanguageOverride,
 			$this->parsoidSettings
@@ -579,9 +581,10 @@ abstract class ParsoidHandler extends Handler {
 			}
 			$response = $this->getResponseFactory()->createJson( $lints );
 		} else {
+			$parserOutput = new ParserOutput();
 			try {
 				$out = $parsoid->wikitext2html(
-					$pageConfig, $reqOpts, $headers
+					$pageConfig, $reqOpts, $headers, $parserOutput
 				);
 			} catch ( ClientError $e ) {
 				throw new HttpException( $e->getMessage(), 400 );
