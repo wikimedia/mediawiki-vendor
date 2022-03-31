@@ -13,13 +13,13 @@ class ComposerStaticInit_mediawiki_vendor
         '25072dd6e2470089de65ae7bf11d3109' => __DIR__ . '/..' . '/symfony/polyfill-php72/bootstrap.php',
         'c3f7f0e81464740a933532e81fa26cc7' => __DIR__ . '/..' . '/wikimedia/base-convert/src/Functions.php',
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
+        'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
         'f598d06aa772fa33d905e87be6398fb1' => __DIR__ . '/..' . '/symfony/polyfill-intl-idn/bootstrap.php',
         'c50606d667a3fde2b80a955639479d3d' => __DIR__ . '/..' . '/wikimedia/timestamp/src/defines.php',
-        'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
-        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '4d945db823e5f6ca6dd83ad1f5fbcc43' => __DIR__ . '/..' . '/wikimedia/relpath/src/RelPath/RelPath.php',
         '6513700b70192b7dfd0e5e9fc8082cf3' => __DIR__ . '/..' . '/wikimedia/relpath/src/Wikimedia/RelPath.php',
+        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         'd336c1eb5013890282b9777aa7fc7478' => __DIR__ . '/../..' . '/extensions/DonationInterface/gateway_common/WmfFramework.php',
     );
 
@@ -84,6 +84,10 @@ class ComposerStaticInit_mediawiki_vendor
         'L' => 
         array (
             'LightnCandy\\' => 12,
+        ),
+        'H' => 
+        array (
+            'HtmlFormatter\\' => 14,
         ),
         'G' => 
         array (
@@ -159,9 +163,9 @@ class ComposerStaticInit_mediawiki_vendor
         array (
             0 => __DIR__ . '/..' . '/wikimedia/ip-set/src',
             1 => __DIR__ . '/..' . '/wikimedia/ip-utils/src',
-            2 => __DIR__ . '/..' . '/wikimedia/object-factory/src',
-            3 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
-            4 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
+            2 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
+            3 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
+            4 => __DIR__ . '/..' . '/wikimedia/object-factory/src',
         ),
         'WikiPEG\\Tests\\' => 
         array (
@@ -270,6 +274,10 @@ class ComposerStaticInit_mediawiki_vendor
         'LightnCandy\\' => 
         array (
             0 => __DIR__ . '/..' . '/zordius/lightncandy/src',
+        ),
+        'HtmlFormatter\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/wikimedia/html-formatter/src',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (
@@ -1164,6 +1172,7 @@ class ComposerStaticInit_mediawiki_vendor
         'PaypalLegacyGateway' => __DIR__ . '/../..' . '/extensions/DonationInterface/paypal_gateway/legacy/paypal_legacy_gateway.body.php',
         'PaypalLegacyLocale' => __DIR__ . '/../..' . '/extensions/DonationInterface/paypal_gateway/legacy/PaypalLegacyLocale.php',
         'PaypalRefundMaintenance' => __DIR__ . '/../..' . '/extensions/DonationInterface/paypal_gateway/scripts/refund.php',
+        'PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
         'PlaceholderFiscalNumber' => __DIR__ . '/../..' . '/extensions/DonationInterface/astropay_gateway/PlaceholderFiscalNumber.php',
         'Pleo\\BloomFilter\\BitArray' => __DIR__ . '/..' . '/pleonasm/bloom-filter/src/BitArray.php',
         'Pleo\\BloomFilter\\BloomFilter' => __DIR__ . '/..' . '/pleonasm/bloom-filter/src/BloomFilter.php',
@@ -2694,6 +2703,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Symfony\\Polyfill\\Intl\\Normalizer\\Normalizer' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/Normalizer.php',
         'Symfony\\Polyfill\\Php72\\Php72' => __DIR__ . '/..' . '/symfony/polyfill-php72/Php72.php',
         'Symfony\\Polyfill\\Php80\\Php80' => __DIR__ . '/..' . '/symfony/polyfill-php80/Php80.php',
+        'Symfony\\Polyfill\\Php80\\PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/PhpToken.php',
         'System' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/System.php',
         'Twig\\Cache\\CacheInterface' => __DIR__ . '/..' . '/twig/twig/src/Cache/CacheInterface.php',
         'Twig\\Cache\\FilesystemCache' => __DIR__ . '/..' . '/twig/twig/src/Cache/FilesystemCache.php',
@@ -3110,6 +3120,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\IPSet' => __DIR__ . '/..' . '/wikimedia/ip-set/src/IPSet.php',
         'Wikimedia\\IPUtils' => __DIR__ . '/..' . '/wikimedia/ip-utils/src/IPUtils.php',
         'Wikimedia\\ObjectFactory' => __DIR__ . '/..' . '/wikimedia/object-factory/src/ObjectFactory.php',
+        'Wikimedia\\ObjectFactory\\ObjectFactory' => __DIR__ . '/..' . '/wikimedia/object-factory/src/ObjectFactory/ObjectFactory.php',
         'Wikimedia\\PSquare' => __DIR__ . '/..' . '/wikimedia/running-stat/src/Wikimedia/PSquare.php',
         'Wikimedia\\Parsoid\\Config\\Api\\ApiHelper' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Config/Api/ApiHelper.php',
         'Wikimedia\\Parsoid\\Config\\Api\\DataAccess' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Config/Api/DataAccess.php',

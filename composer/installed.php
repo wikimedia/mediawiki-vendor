@@ -5,7 +5,7 @@
         'type' => 'mediawiki-core',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '3048f0aa7a0af60a8892d9318ae15533087395fd',
+        'reference' => 'f12af3668e90d2e74bab025afd12ffdc679ea5be',
         'name' => 'mediawiki/core',
         'dev' => false,
     ),
@@ -169,13 +169,13 @@
             'type' => 'mediawiki-core',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '3048f0aa7a0af60a8892d9318ae15533087395fd',
+            'reference' => 'f12af3668e90d2e74bab025afd12ffdc679ea5be',
             'dev_requirement' => false,
         ),
         'mediawiki/mediawiki' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.35.4',
+                0 => '1.35.6',
             ),
         ),
         'monolog/monolog' => array(
@@ -455,12 +455,12 @@
             'dev_requirement' => false,
         ),
         'symfony/polyfill-php80' => array(
-            'pretty_version' => 'v1.23.1',
-            'version' => '1.23.1.0',
+            'pretty_version' => 'v1.25.0',
+            'version' => '1.25.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/polyfill-php80',
             'aliases' => array(),
-            'reference' => '1100343ed1a92e3a38f9ae122fc0eb21602547be',
+            'reference' => '4407588e0d3f1f52efb65fbe92babe41f37fe50c',
             'dev_requirement' => false,
         ),
         'symfony/yaml' => array(
@@ -545,12 +545,12 @@
             'dev_requirement' => false,
         ),
         'wikimedia/html-formatter' => array(
-            'pretty_version' => '1.0.2',
-            'version' => '1.0.2.0',
+            'pretty_version' => '2.0.1',
+            'version' => '2.0.1.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/html-formatter',
             'aliases' => array(),
-            'reference' => 'd6241e74d8091cf1fad91a764da5e1ba5f46e785',
+            'reference' => '3abeb56b30f436a486735ca53f6af0ba6367e4cf',
             'dev_requirement' => false,
         ),
         'wikimedia/ip-set' => array(
@@ -581,12 +581,12 @@
             'dev_requirement' => false,
         ),
         'wikimedia/object-factory' => array(
-            'pretty_version' => 'v2.1.0',
-            'version' => '2.1.0.0',
+            'pretty_version' => 'v2.2.0',
+            'version' => '2.2.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/object-factory',
             'aliases' => array(),
-            'reference' => '863aee60c8f9d964870b1a119d5d9e904233e1aa',
+            'reference' => 'd2e8cba4c8d98c29f6dd2f93cf19b0792dd83d42',
             'dev_requirement' => false,
         ),
         'wikimedia/parsoid' => array(

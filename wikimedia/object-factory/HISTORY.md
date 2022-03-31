@@ -1,5 +1,9 @@
 # Release History
 
+## v2.2.0
+* Move under new Wikimedia\ObjectFactory namespace (DannyS712)
+* Fix PSR-4 namespace loading issues (Reedy)
+
 ## v2.1.0
 * Implement spec 'services' for DI
 
