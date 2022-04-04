@@ -310,21 +310,12 @@ class ParserTests extends \Wikimedia\Parsoid\Tools\Maintenance {
 		}
 
 		$options['modes'] = [];
-
-		if ( $options['wt2html'] ) {
-			$options['modes'][] = 'wt2html';
-		}
-		if ( $options['wt2wt'] ) {
-			$options['modes'][] = 'wt2wt';
-		}
-		if ( $options['html2html'] ) {
-			$options['modes'][] = 'html2html';
-		}
-		if ( $options['html2wt'] ) {
-			$options['modes'][] = 'html2wt';
-		}
-		if ( isset( $options['selser'] ) ) {
-			$options['modes'][] = 'selser';
+		foreach ( Test::ALL_TEST_MODES as $m ) {
+			if ( ( $m !== 'selser' && $options[$m] ) ||
+				( $m === 'selser' && isset( $options[$m] ) )
+			) {
+				$options['modes'][] = $m;
+			}
 		}
 
 		return $options;
@@ -693,10 +684,12 @@ class ParserTests extends \Wikimedia\Parsoid\Tools\Maintenance {
 		array $expected, array $actual, ?callable $pre = null, ?callable $post = null
 	): bool {
 		$title = $item->testName; // Title may be modified here, so pass it on.
+		$changeTree = $item->changetree;
 
 		$suffix = '';
 		if ( $mode === 'selser' ) {
-			$suffix = ' ' . ( $item->changes ? json_encode( $item->changes ) : '[manual]' );
+			$suffix = ' ' .
+				( $changeTree === [ 'manual' ] ? '[manual]' : json_encode( $changeTree ) );
 		} elseif ( $mode === 'wt2html' && isset( $item->options['langconv'] ) ) {
 			$title .= ' [langconv]';
 		}
@@ -714,8 +707,8 @@ class ParserTests extends \Wikimedia\Parsoid\Tools\Maintenance {
 
 		// don't report selser fails when nothing was changed or it's a dup
 		if (
-			$mode === 'selser' && $item->changetree !== [ 'manual' ] &&
-			( $item->changes === [] || $item->duplicateChange )
+			$mode === 'selser' && $changeTree !== [ 'manual' ] &&
+			( $changeTree === [] || $item->duplicateChange )
 		) {
 			return true;
 		}

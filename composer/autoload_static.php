@@ -4708,6 +4708,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\MigrateTrailingNLs' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/MigrateTrailingNLs.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\Normalize' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/Normalize.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\PWrap' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/PWrap.php',
+        'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\PWrapState' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/PWrapState.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\ProcessTreeBuilderFixups' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/ProcessTreeBuilderFixups.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\RangeBuilderException' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/RangeBuilderException.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\Section' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/Section.php',

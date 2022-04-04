@@ -7345,17 +7345,17 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.16.0-a3",
-            "version_normalized": "0.16.0.0-alpha3",
+            "version": "v0.16.0-a4",
+            "version_normalized": "0.16.0.0-alpha4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/parsoid.git",
-                "reference": "cecab5c1d097f81a47c214e5e40bf12e91631db3"
+                "reference": "cdc06f14312bb9a60b04b4e7b1fef38495235f7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/cecab5c1d097f81a47c214e5e40bf12e91631db3",
-                "reference": "cecab5c1d097f81a47c214e5e40bf12e91631db3",
+                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/cdc06f14312bb9a60b04b4e7b1fef38495235f7e",
+                "reference": "cdc06f14312bb9a60b04b4e7b1fef38495235f7e",
                 "shasum": ""
             },
             "require": {
@@ -7370,7 +7370,7 @@
                 "wikimedia/assert": "^0.5.0",
                 "wikimedia/dodo": "0.4.0",
                 "wikimedia/ip-utils": "^3.0.2||^4.0.0",
-                "wikimedia/object-factory": "^3.0.2||^4.0.0",
+                "wikimedia/object-factory": "^4.0.0",
                 "wikimedia/remex-html": "^3.0.0",
                 "wikimedia/scoped-callback": "^3.0.0",
                 "wikimedia/wikipeg": "^2.0.6",
@@ -7398,7 +7398,7 @@
             "suggest": {
                 "wikimedia/langconv": "Provides script conversion support"
             },
-            "time": "2022-03-22T13:17:26+00:00",
+            "time": "2022-04-01T02:17:27+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -7424,7 +7424,7 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/parsoid/tree/v0.16.0-a3",
+                "source": "https://github.com/wikimedia/parsoid/tree/v0.16.0-a4",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
             "install-path": "../wikimedia/parsoid"

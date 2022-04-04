@@ -3947,6 +3947,7 @@ return array(
     'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\MigrateTrailingNLs' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/MigrateTrailingNLs.php',
     'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\Normalize' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/Normalize.php',
     'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\PWrap' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/PWrap.php',
+    'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\PWrapState' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/PWrapState.php',
     'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\ProcessTreeBuilderFixups' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/ProcessTreeBuilderFixups.php',
     'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\RangeBuilderException' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/RangeBuilderException.php',
     'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\Section' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/Section.php',
