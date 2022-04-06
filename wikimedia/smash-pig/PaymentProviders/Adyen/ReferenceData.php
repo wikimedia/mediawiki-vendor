@@ -17,6 +17,10 @@ class ReferenceData {
 			'method' => 'apple',
 			'submethod' => 'amex',
 		],
+		'googlepay' => [
+			'method' => 'google',
+			'submethod' => 'google'
+		],
 		'applepay' => [
 			'method' => 'apple',
 			'submethod' => 'apple'
@@ -41,7 +45,7 @@ class ReferenceData {
 		],
 		'diners' => [
 			'method' => 'cc',
-			'submethod' => 'dc',
+			'submethod' => 'diners',
 		],
 		// Sofortüberweisung
 		'directEbanking' => [
@@ -70,6 +74,10 @@ class ReferenceData {
 		],
 		'jcb' => [
 			'method' => 'cc',
+			'submethod' => 'jcb',
+		],
+		'jcb_applepay' => [
+			'method' => 'apple',
 			'submethod' => 'jcb',
 		],
 		'mc' => [

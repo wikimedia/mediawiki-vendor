@@ -60,6 +60,9 @@ payment-provider:
         # as direct debit under the hood.
         class: SmashPig\PaymentProviders\Adyen\DirectDebitPaymentProvider
         <<: *CACHE
+    google:
+        class: SmashPig\PaymentProviders\Adyen\GooglePayPaymentProvider
+        <<: *CACHE
     apple:
         class: SmashPig\PaymentProviders\Adyen\ApplePayPaymentProvider
         constructor-parameters:

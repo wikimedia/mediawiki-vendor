@@ -231,6 +231,31 @@ class Api {
 		return $result['body'];
 	}
 
+	public function createGooglePayPayment( $params ) {
+		$restParams = [
+			'amount' => $this->getArrayAmount( $params ),
+			'reference' => $params['order_id'],
+			'merchantAccount' => $this->account,
+			'paymentMethod' => [
+				'type' => 'googlepay',
+				'googlePayToken' => $params['payment_token']
+			]
+		];
+		$isRecurring = $params['recurring'] ?? '';
+		if ( $isRecurring ) {
+			$restParams = array_merge( $restParams, $this->addRecurringParams( $params, true ) );
+		}
+		$restParams = array_merge( $restParams, $this->getContactInfo( $params ) );
+
+		$result = $this->makeRestApiCall(
+			$restParams,
+			'payments',
+			'POST'
+		);
+
+		return $result['body'];
+	}
+
 	public function createApplePayPayment( $params ) {
 		$restParams = [
 			'amount' => $this->getArrayAmount( $params ),

@@ -261,6 +261,7 @@ abstract class PaymentProvider implements IPaymentProvider, ICancelablePaymentPr
 			$response->addErrors(
 				$this->mapErrors( $rawResponse['errors'] )
 			);
+			$response->setSuccessful( false );
 		}
 
 		if ( isset( $rawResponse['payment'] ) ) {

@@ -17,9 +17,9 @@ class ComposerStaticInit_mediawiki_vendor
         'f598d06aa772fa33d905e87be6398fb1' => __DIR__ . '/..' . '/symfony/polyfill-intl-idn/bootstrap.php',
         'c50606d667a3fde2b80a955639479d3d' => __DIR__ . '/..' . '/wikimedia/timestamp/src/defines.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
+        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '4d945db823e5f6ca6dd83ad1f5fbcc43' => __DIR__ . '/..' . '/wikimedia/relpath/src/RelPath/RelPath.php',
         '6513700b70192b7dfd0e5e9fc8082cf3' => __DIR__ . '/..' . '/wikimedia/relpath/src/Wikimedia/RelPath.php',
-        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         'd336c1eb5013890282b9777aa7fc7478' => __DIR__ . '/../..' . '/extensions/DonationInterface/gateway_common/WmfFramework.php',
     );
 
@@ -163,9 +163,9 @@ class ComposerStaticInit_mediawiki_vendor
         array (
             0 => __DIR__ . '/..' . '/wikimedia/ip-set/src',
             1 => __DIR__ . '/..' . '/wikimedia/ip-utils/src',
-            2 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
-            3 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
-            4 => __DIR__ . '/..' . '/wikimedia/object-factory/src',
+            2 => __DIR__ . '/..' . '/wikimedia/object-factory/src',
+            3 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
+            4 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
         ),
         'WikiPEG\\Tests\\' => 
         array (
@@ -2499,6 +2499,7 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\RefundedReversed' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/RefundedReversed.php',
         'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\ReportAvailable' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/ReportAvailable.php',
         'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\RequestForInformation' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/RequestForInformation.php',
+        'SmashPig\\PaymentProviders\\Adyen\\GooglePayPaymentProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/GooglePayPaymentProvider.php',
         'SmashPig\\PaymentProviders\\Adyen\\Jobs\\DownloadReportJob' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/Jobs/DownloadReportJob.php',
         'SmashPig\\PaymentProviders\\Adyen\\Jobs\\ProcessCaptureRequestJob' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/Jobs/ProcessCaptureRequestJob.php',
         'SmashPig\\PaymentProviders\\Adyen\\Jobs\\RecordCaptureJob' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/Jobs/RecordCaptureJob.php',

@@ -65,6 +65,7 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 			->method( 'execute' );
 
 		$response = $this->provider->approvePayment( $params );
+		$this->assertFalse( $response->isSuccessful() );
 		$this->assertTrue( $response->hasErrors() );
 		$this->assertEquals( ErrorCode::UNKNOWN, $response->getErrors()[0]->getErrorCode() );
 		$this->assertEquals(

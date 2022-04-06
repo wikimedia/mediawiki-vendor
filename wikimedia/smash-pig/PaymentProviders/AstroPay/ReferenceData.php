@@ -23,9 +23,11 @@ class ReferenceData {
 	protected static $simpleSubmethods = [
 		'AG' => 'argen',
 		'AE' => 'amex',
+		'AI' => 'cash_abitab',
 		'AU' => 'aura',
 		'B' => 'bradesco',
 		'BB' => 'banco_do_brasil',
+		'BC' => 'bcp',
 		'BG' => 'cash_provencia_pagos',
 		'BL' => 'cash_boleto',
 		'BM' => 'cash_banamex',
@@ -52,6 +54,7 @@ class ReferenceData {
 		'HI' => 'hiper',
 		'I' => 'itau',
 		'IB' => 'interbank',
+		'IO' => 'ach', // South Africa, ACH bt
 		'JC' => 'jcb',
 		'LI' => 'lider',
 		'MC' => 'mc',
@@ -66,7 +69,7 @@ class ReferenceData {
 		'OC' => 'banco_de_occidente',
 		'OX' => 'cash_oxxo',
 		'PA' => 'bcp', // Peru, "via LatinAmericanPayments"
-		'PC' => 'pse', // Columbia, "all banks"
+		'PC' => 'pse', // Colombia, "all banks"
 		'PF' => 'cash_pago_facil',
 		'PQ' => 'pix', // Brazil
 		'PR' => 'presto',
