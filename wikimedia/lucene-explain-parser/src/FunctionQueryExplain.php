@@ -9,4 +9,3 @@ class FunctionQueryExplain extends Explain {
 		}
 	}
 }
-

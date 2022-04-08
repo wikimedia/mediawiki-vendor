@@ -1,8 +1,7 @@
 <?php
 namespace LuceneExplain;
 
-class FieldFunctionQueryExplain extends Explain
-{
+class FieldFunctionQueryExplain extends Explain {
 
 	public function __construct( array $explJson, ExplainFactory $explFactory ) {
 		parent::__construct( $explJson, $explFactory );

@@ -1,8 +1,7 @@
 <?php
 namespace LuceneExplain;
 
-class DefaultSimIdfExplain extends Explain
-{
+class DefaultSimIdfExplain extends Explain {
 
 	private $influencers = [];
 

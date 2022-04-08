@@ -1,8 +1,7 @@
 <?php
 namespace LuceneExplain;
 
-class DismaxTieExplain extends Explain
-{
+class DismaxTieExplain extends Explain {
 
 	/** @var float */
 	private $tie;

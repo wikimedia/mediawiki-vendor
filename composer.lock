@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d536c352f330276f960f70785414554f",
+    "content-hash": "805aaecc1309978db293c81c3532b59b",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -6822,26 +6822,29 @@
         },
         {
             "name": "wikimedia/lucene-explain-parser",
-            "version": "1.0.0",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/wikimedia/wikimedia-lucene-explain-parser.git",
-                "reference": "5ff5511ce6163fa6c5ff770b79306334c31bd679"
+                "url": "https://github.com/wikimedia/lucene-explain-parser.git",
+                "reference": "82a90019468290a6009a9f61010bd0ffd7e8fc10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/wikimedia-lucene-explain-parser/zipball/5ff5511ce6163fa6c5ff770b79306334c31bd679",
-                "reference": "5ff5511ce6163fa6c5ff770b79306334c31bd679",
+                "url": "https://api.github.com/repos/wikimedia/lucene-explain-parser/zipball/82a90019468290a6009a9f61010bd0ffd7e8fc10",
+                "reference": "82a90019468290a6009a9f61010bd0ffd7e8fc10",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5.9"
+                "php": ">=7.2.9"
             },
             "require-dev": {
-                "jakub-onderka/php-console-highlighter": "0.3.2",
-                "jakub-onderka/php-parallel-lint": "0.9.2",
-                "mediawiki/mediawiki-codesniffer": "0.5.0",
-                "phpunit/phpunit": "4.6.*"
+                "mediawiki/mediawiki-codesniffer": "38.0.0",
+                "mediawiki/mediawiki-phan-config": "0.11.1",
+                "mediawiki/minus-x": "1.1.1",
+                "ockcyp/covers-validator": "1.3.3",
+                "php-parallel-lint/php-console-highlighter": "0.5.0",
+                "php-parallel-lint/php-parallel-lint": "1.3.1",
+                "phpunit/phpunit": "^8.5"
             },
             "type": "library",
             "autoload": {
@@ -6851,23 +6854,23 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "Apache 2.0"
+                "Apache-2.0"
             ],
             "authors": [
                 {
-                    "name": "Stanislav Malyshev",
-                    "email": "smalyshev@wikimedia.org"
-                },
-                {
                     "name": "Erik Bernhardson",
                     "email": "ebernhardson@wikimedia.org"
+                },
+                {
+                    "name": "Stanislav Malyshev",
+                    "email": "smalyshev@wikimedia.org"
                 }
             ],
             "description": "Parsing and pretty-printing Lucene explain data",
             "support": {
-                "source": "https://github.com/wikimedia/wikimedia-lucene-explain-parser/tree/1.0.0"
+                "source": "https://github.com/wikimedia/lucene-explain-parser/tree/2.0.0"
             },
-            "time": "2017-12-22T08:19:48+00:00"
+            "time": "2022-03-15T17:12:09+00:00"
         },
         {
             "name": "wikimedia/minify",
@@ -7654,28 +7657,29 @@
         },
         {
             "name": "wikimedia/textcat",
-            "version": "1.3.0",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/textcat.git",
-                "reference": "4f13aed2b32382c9d2fe9dc8b3e3fbb26ea4a2a9"
+                "reference": "dfdfb1c41bb016814a9d4da3aa68b62437b54a82"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/textcat/zipball/4f13aed2b32382c9d2fe9dc8b3e3fbb26ea4a2a9",
-                "reference": "4f13aed2b32382c9d2fe9dc8b3e3fbb26ea4a2a9",
+                "url": "https://api.github.com/repos/wikimedia/textcat/zipball/dfdfb1c41bb016814a9d4da3aa68b62437b54a82",
+                "reference": "dfdfb1c41bb016814a9d4da3aa68b62437b54a82",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.6.99"
+                "php": ">=7.2.9"
             },
             "require-dev": {
-                "jakub-onderka/php-console-highlighter": "0.3.2",
-                "jakub-onderka/php-parallel-lint": "1.0.0",
-                "mediawiki/mediawiki-codesniffer": "24.0.0",
-                "mediawiki/minus-x": "0.3.1",
-                "ockcyp/covers-validator": "0.5.1 || 0.6.1",
-                "phpunit/phpunit": "4.8.36 || ^6.5"
+                "mediawiki/mediawiki-codesniffer": "38.0.0",
+                "mediawiki/mediawiki-phan-config": "0.11.1",
+                "mediawiki/minus-x": "1.1.1",
+                "ockcyp/covers-validator": "1.3.3",
+                "php-parallel-lint/php-console-highlighter": "0.5.0",
+                "php-parallel-lint/php-parallel-lint": "1.3.1",
+                "phpunit/phpunit": "^8.5"
             },
             "type": "library",
             "autoload": {
@@ -7700,9 +7704,9 @@
             "description": "PHP port of the TextCat language guesser utility, see http://odur.let.rug.nl/~vannoord/TextCat/.",
             "homepage": "https://www.mediawiki.org/wiki/TextCat",
             "support": {
-                "source": "https://github.com/wikimedia/textcat/tree/1.3.0"
+                "source": "https://github.com/wikimedia/textcat/tree/2.0.0"
             },
-            "time": "2019-02-12T05:25:57+00:00"
+            "time": "2022-03-15T15:54:48+00:00"
         },
         {
             "name": "wikimedia/timestamp",

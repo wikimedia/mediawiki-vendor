@@ -2,8 +2,7 @@
 
 namespace LuceneExplain;
 
-class ScriptScoreFunctionExplain extends Explain
-{
+class ScriptScoreFunctionExplain extends Explain {
 
 	public function __construct( array $explJson, ExplainFactory $explFactory ) {
 		parent::__construct( $explJson, $explFactory );

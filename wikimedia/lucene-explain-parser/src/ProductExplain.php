@@ -1,8 +1,7 @@
 <?php
 namespace LuceneExplain;
 
-class ProductExplain extends Explain
-{
+class ProductExplain extends Explain {
 
 	public function __construct( array $explJson, ExplainFactory $explFactory ) {
 		parent::__construct( $explJson, $explFactory );
@@ -30,6 +29,7 @@ class ProductExplain extends Explain
 		for ( $currInfl = 0; $currInfl < $numInfl; $currInfl++ ) {
 			$i = $infl[$currInfl];
 			$thisVec = $i->vectorize();
+			// @phan-suppress-next-line PhanTypePossiblyInvalidDimOffset
 			$thisScaledByOthers = VectorService::scale( $thisVec, $inflFactors[$currInfl] );
 			$rVal = VectorService::add( $rVal, $thisScaledByOthers );
 		}
@@ -45,7 +45,8 @@ class ProductExplain extends Explain
 					'match filter: *:*',
 					'primaryWeight',
 					'secondaryWeight',
-				] ) ) {
+				] )
+			) {
 				unset( $this->children[$k] );
 			}
 		}

@@ -1,8 +1,7 @@
 <?php
 namespace LuceneExplain;
 
-class CoordExplain extends Explain
-{
+class CoordExplain extends Explain {
 
 	/** @var float */
 	private $coordFactor;

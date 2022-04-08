@@ -1,8 +1,7 @@
 <?php
 namespace LuceneExplain;
 
-class DismaxExplain extends Explain
-{
+class DismaxExplain extends Explain {
 
 	public function __construct( array $explJson, ExplainFactory $explFactory ) {
 		parent::__construct( $explJson, $explFactory );

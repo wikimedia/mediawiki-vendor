@@ -42,7 +42,7 @@ class ExplainFactory {
 	/**
 	 * Create new Explain from JSON data.
 	 * @param array $explJson
-	 * @return Explain
+	 * @return Explain|null
 	 */
 	public function createExplain( array $explJson ) {
 		$description = $explJson['description'];

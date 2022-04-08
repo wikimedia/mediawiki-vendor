@@ -8,4 +8,3 @@ class FuncWeightExplain extends Explain {
 	}
 
 }
-

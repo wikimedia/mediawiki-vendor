@@ -4,8 +4,7 @@ namespace LuceneExplain;
 /**
  * Basic vector operations used by explain service
  */
-class VectorService
-{
+class VectorService {
 
 	public static function create() {
 		return new SparseVector();

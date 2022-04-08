@@ -21,13 +21,13 @@ class WeightExplain extends Explain {
 
 	public function getMatch() {
 		/*
-        if ( ExplainFactory::strHasSubstr( $this->description, 'DefaultSimilarity' ) ) {
-            return new DefaultSimilarityMatch( $this->children );
-        } elseif ( ExplainFactory::strHasSubstr( $this->description, 'PerFieldSimilarity' ) ) {
-            // @TODO
-            return null;
-        }
-        */
+		if ( ExplainFactory::strHasSubstr( $this->description, 'DefaultSimilarity' ) ) {
+			return new DefaultSimilarityMatch( $this->children );
+		} elseif ( ExplainFactory::strHasSubstr( $this->description, 'PerFieldSimilarity' ) ) {
+			// @TODO
+			return null;
+		}
+		*/
 		return null;
 	}
 
