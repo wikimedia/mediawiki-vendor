@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '814ce6ed68bcec8dffb088f84d90a166c114e983',
+        'reference' => '054b1dda49ce6a520d444e3dd92cf372081212c8',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '814ce6ed68bcec8dffb088f84d90a166c114e983',
+            'reference' => '054b1dda49ce6a520d444e3dd92cf372081212c8',
             'dev_requirement' => false,
         ),
         'christian-riesen/base32' => array(
@@ -299,12 +299,12 @@
             ),
         ),
         'symfony/deprecation-contracts' => array(
-            'pretty_version' => 'v2.5.0',
-            'version' => '2.5.0.0',
+            'pretty_version' => 'v2.5.1',
+            'version' => '2.5.1.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/deprecation-contracts',
             'aliases' => array(),
-            'reference' => '6f981ee24cf69ee7ce9736146d1c57c2780598a8',
+            'reference' => 'e8b495ea28c1d97b5e0c121748d6f9b53d075c66',
             'dev_requirement' => false,
         ),
         'symfony/polyfill-php80' => array(
