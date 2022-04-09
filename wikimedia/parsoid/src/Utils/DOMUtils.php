@@ -144,9 +144,8 @@ class DOMUtils {
 	public static function isRemexBlockNode( ?Node $node ): bool {
 		return $node instanceof Element &&
 			!isset( Consts::$HTML['OnlyInlineElements'][DOMCompat::nodeName( $node )] ) &&
-			// From \\MediaWiki\Tidy\RemexCompatMunger::$metadataElements
-			// This is a superset but matches `emitsSolTransparentWT` below
-			!isset( Consts::$HTML['MetaTags'][DOMCompat::nodeName( $node )] );
+			// This is a superset of \\MediaWiki\Tidy\RemexCompatMunger::$metadataElements
+			!isset( Consts::$HTML['MetaDataTags'][DOMCompat::nodeName( $node )] );
 	}
 
 	/**
@@ -978,6 +977,27 @@ class DOMUtils {
 	 */
 	public static function isRawTextElement( Node $node ): bool {
 		return isset( Consts::$HTML['RawTextElements'][DOMCompat::nodeName( $node )] );
+	}
+
+	/**
+	 * Is 'n' a block tag, or does the subtree rooted at 'n' have a block tag
+	 * in it?
+	 *
+	 * @param Node $n
+	 * @return bool
+	 */
+	public static function hasBlockTag( Node $n ): bool {
+		if ( self::isRemexBlockNode( $n ) ) {
+			return true;
+		}
+		$c = $n->firstChild;
+		while ( $c ) {
+			if ( self::hasBlockTag( $c ) ) {
+				return true;
+			}
+			$c = $c->nextSibling;
+		}
+		return false;
 	}
 
 	/**
