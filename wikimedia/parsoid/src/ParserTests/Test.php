@@ -4,9 +4,9 @@ declare( strict_types = 1 );
 namespace Wikimedia\Parsoid\ParserTests;
 
 use Error;
+use Psr\Log\LogLevel;
 use Wikimedia\Alea\Alea;
 use Wikimedia\Assert\Assert;
-use Wikimedia\Parsoid\Config\Env;
 use Wikimedia\Parsoid\DOM\Document;
 use Wikimedia\Parsoid\DOM\Element;
 use Wikimedia\Parsoid\DOM\Node;
@@ -442,11 +442,12 @@ class Test extends Item {
 	/**
 	 * Make changes to a DOM in order to run a selser test on it.
 	 *
-	 * @param Env $env
+	 * @param array $dumpOpts
 	 * @param Document $doc
 	 * @param array $changelist
 	 */
-	public function applyChanges( Env $env, Document $doc, array $changelist ) {
+	public function applyChanges( array $dumpOpts, Document $doc, array $changelist ) {
+		$logger = $dumpOpts['logger'] ?? null;
 		// Seed the random-number generator based on the item title and changelist
 		$alea = new Alea( ( json_encode( $changelist ) ) . ( $this->testName ?? '' ) );
 
@@ -525,8 +526,8 @@ class Test extends Item {
 		};
 
 		$applyChangesInternal = static function ( Node $node, array $changes ) use (
-			&$env, &$applyChangesInternal, $removeNode, $insertNewNode,
-			$randomString
+			&$applyChangesInternal, $removeNode, $insertNewNode,
+			$randomString, $logger
 		): void {
 			if ( count( $node->childNodes ) < count( $changes ) ) {
 				throw new Error( "Error: more changes than nodes to apply them to!" );
@@ -554,10 +555,12 @@ class Test extends Item {
 						case 1:
 							if ( $child instanceof Element ) {
 								$child->setAttribute( 'data-foobar', $randomString() );
-							} else {
-								$env->log( 'error',
+							} elseif ( $logger ) {
+								$logger->log(
+									LogLevel::ERROR,
 									'Buggy changetree. changetype 1 (modify attribute)' .
-									' cannot be applied on text/comment nodes.' );
+									' cannot be applied on text/comment nodes.'
+								);
 							}
 							break;
 
@@ -584,8 +587,9 @@ class Test extends Item {
 
 		$body = DOMCompat::getBody( $doc );
 
-		if ( $env->hasDumpFlag( 'dom:post-changes' ) ) {
-			$env->writeDump( ContentUtils::dumpDOM( $body, 'Original DOM' ) );
+		if ( $logger && ( $dumpOpts['dom:post-changes'] ?? false ) ) {
+			$logger->log( LogLevel::ERROR, "----- Original DOM -----" );
+			$logger->log( LogLevel::ERROR, ContentUtils::dumpDOM( $body, '', [ 'quiet' => true ] ) );
 		}
 
 		if ( $this->changetree === [ 5 ] ) {
@@ -598,11 +602,11 @@ class Test extends Item {
 			$applyChangesInternal( $body, $this->changetree );
 		}
 
-		if ( $env->hasDumpFlag( 'dom:post-changes' ) ) {
-			$env->writeDump(
-				'Change tree : ' . json_encode( $this->changetree ) . "\n" .
-				ContentUtils::dumpDOM( $body, 'Edited DOM' )
-			);
+		if ( $logger && ( $dumpOpts['dom:post-changes'] ?? false ) ) {
+			$logger->log( LogLevel::ERROR, "----- Change Tree -----" );
+			$logger->log( LogLevel::ERROR, json_encode( $this->changetree ) );
+			$logger->log( LogLevel::ERROR, "----- Edited DOM -----" );
+			$logger->log( LogLevel::ERROR, ContentUtils::dumpDOM( $body, '', [ 'quiet' => true ] ) );
 		}
 	}
 
@@ -614,7 +618,7 @@ class Test extends Item {
 	 * @param array $change Candidate change.
 	 * @return bool
 	 */
-	private function isDuplicateChangeTree( array $change ): bool {
+	public function isDuplicateChangeTree( array $change ): bool {
 		$allChanges = $this->selserChangeTrees;
 		foreach ( $allChanges as $c ) {
 			if ( $c == $change ) {
@@ -627,11 +631,10 @@ class Test extends Item {
 	/**
 	 * Generate a change object for a document, so we can apply it during a selser test.
 	 *
-	 * @param array $options
 	 * @param Document $doc
 	 * @return array The list of changes.
 	 */
-	public function generateChanges( array $options, Document $doc ): array {
+	public function generateChanges( Document $doc ): array {
 		$alea = new Alea( ( $this->seed ?? '' ) . ( $this->testName ?? '' ) );
 
 		/**
@@ -645,7 +648,9 @@ class Test extends Item {
 				( !WTUtils::isEncapsulationWrapper( $node ) &&
 					// These wrappers can only be edited in restricted ways.
 					// Simpler to just block all editing on them.
-					!DOMUtils::matchTypeOf( $node, '#^mw:(Entity|Placeholder|DisplaySpace|Annotation)(/|$)#' ) &&
+					!DOMUtils::matchTypeOf( $node,
+						'#^mw:(Entity|Placeholder|DisplaySpace|Annotation|ExtendedAnnRange)(/|$)#'
+					) &&
 					// Deleting these wrappers is tantamount to removing the
 					// references-tag encapsulation wrappers, which results in errors.
 					!preg_match( '/\bmw-references-wrap\b/', $node->getAttribute( 'class' ) ?? ''
@@ -675,7 +680,9 @@ class Test extends Item {
 			//   is an uneditable image elt.
 			// - Entity spans are uneditable as well
 			// - Placeholder is defined to be uneditable in the spec
-			return DOMUtils::matchTypeOf( $node, '#^mw:(Image|Video|Audio|Entity|Placeholder|DisplaySpace)(/|$)#' ) || (
+			// - ExtendedAnnRange is an "unknown" type in the spec, and hence uneditable
+			return DOMUtils::matchTypeOf( $node,
+					'#^mw:(Image|Video|Audio|Entity|Placeholder|DisplaySpace|ExtendedAnnRange)(/|$)#' ) || (
 				DOMCompat::nodeName( $node ) !== 'figcaption' &&
 				$node->parentNode &&
 				DOMCompat::nodeName( $node->parentNode ) !== 'body' &&
@@ -854,5 +861,66 @@ class Test extends Item {
 				$runTest( $this, $targetMode, $runnerOpts );
 			}
 		}
+	}
+
+	/**
+	 * Normalize expected and actual HTML to suppress irrelevant differences.
+	 * The normalization is determined by the HTML sections present in the test
+	 * as well as other Parsoid-specific test options.
+	 *
+	 * @param Element|string $actual
+	 * @param ?string $normExpected
+	 * @param bool $standalone
+	 * @return array
+	 */
+	public function normalizeHTML( $actual, ?string $normExpected, bool $standalone = true ): array {
+		$opts = $this->options;
+		$haveIntegratedHTML = !$standalone && isset( $this->sections['html/parsoid+integrated'] );
+		$parsoidOnly = isset( $this->sections['html/parsoid'] ) ||
+			$haveIntegratedHTML ||
+			isset( $this->sections['html/parsoid+langconv'] ) ||
+			( isset( $opts['parsoid'] ) && !isset( $opts['parsoid']['normalizePhp'] ) );
+		$normOpts = [
+			'parsoidOnly' => $parsoidOnly,
+			'preserveIEW' => isset( $opts['parsoid']['preserveIEW'] )
+		];
+
+		if ( !$normExpected ) {
+			if ( $haveIntegratedHTML ) {
+				$parsoidHTML = $this->sections['html/parsoid+integrated'];
+			} else {
+				$parsoidHTML = $this->parsoidHtml;
+			}
+			if ( $parsoidOnly ) {
+				$normExpected = TestUtils::normalizeOut( $parsoidHTML, $normOpts );
+			} else {
+				$normExpected = TestUtils::normalizeHTML( $parsoidHTML );
+			}
+			$this->cachedNormalizedHTML = $normExpected;
+		}
+
+		return [ TestUtils::normalizeOut( $actual, $normOpts ), $normExpected ];
+	}
+
+	/**
+	 * Normalize expected and actual wikitext to suppress irrelevant differences.
+	 *
+	 * Because of selser as well as manual edit trees, expected wikitext isn't always
+	 * found in the same section for all tests ending in WT (unlike normalizeHTML).
+	 * Hence,
+	 * (a) this code has a different structure than normalizeHTML
+	 * (b) we cannot cache normalized wikitext
+	 *
+	 * @param string $actual
+	 * @param string $expected
+	 * @param bool $standalone
+	 * @return array
+	 */
+	public function normalizeWT( string $actual, string $expected, bool $standalone = true ): array {
+		// No other normalizations at this time
+		$normalizedActual = rtrim( $actual, "\n" );
+		$normalizedExpected = rtrim( $expected, "\n" );
+
+		return [ $normalizedActual, $normalizedExpected ];
 	}
 }

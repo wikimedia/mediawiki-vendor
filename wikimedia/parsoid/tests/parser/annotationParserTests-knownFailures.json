@@ -1,14 +1,23 @@
 {
     "2/ Extended annotation range": {
         "wt2wt": "This is <dummyanno>''an artificial'' '''example of'''</dummyanno> extension.",
-        "selser [[0,0,0,0,[2],0,0]]": "This is ''an <dummyanno>artificial'' '''1qsg6e4example of'''</dummyanno> extension.",
-        "selser [[0,0,0,3,0,0,0]]": "This is ''an <dummyanno>artificial'''''example</dummyanno> of''' extension.",
         "selser [2]": "1xytrta\n\nThis is ''an <dummyanno>artificial'' '''example</dummyanno> of''' extension.",
+        "selser [[3,0,0]]": "''an <dummyanno>artificial'' '''example</dummyanno> of''' extension.",
+        "selser [[3,0,2]]": "''an <dummyanno>artificial'' '''example</dummyanno> of'''1r9okf5 extension.",
+        "selser [[0,0,2]]": "This is ''an <dummyanno>artificial'' '''example</dummyanno> of'''1snga21 extension.",
+        "selser [[4,0,0]]": "1jqr5pq''an <dummyanno>artificial'' '''example</dummyanno> of''' extension.",
+        "selser [[2,0,0]]": "hb3x5This is ''an <dummyanno>artificial'' '''example</dummyanno> of''' extension.",
         "selser [1]": "This is ''an <dummyanno>artificial'' '''example</dummyanno> of''' extension.",
-        "selser [[3,0,0,3,[3],0,0]]": "''an <dummyanno>artificial''</dummyanno> extension.",
-        "selser [[3,0,0,0,[2],0,0]]": "''an <dummyanno>artificial'' '''1t0igeeexample of'''</dummyanno> extension.",
-        "selser [[0,0,0,4,0,0,2]]": "This is ''an <dummyanno>artificial''1f1vdgi'''example</dummyanno> of'''13bdiw3 extension.",
-        "selser [[3,0,0,2,[4],0,3]]": "''an <dummyanno>artificial''1c3h9a7 '''1jr9rm4'''</dummyanno>"
+        "selser [[4,0,2]]": "118oo7n''an <dummyanno>artificial'' '''example</dummyanno> of'''183zvw3 extension.",
+        "selser [[4,0,4]]": "e39ljo''an <dummyanno>artificial'' '''example</dummyanno> of'''1tpuzwx",
+        "selser [[2,0,3]]": "4nuv8aThis is ''an <dummyanno>artificial'' '''example</dummyanno> of'''",
+        "selser [[4,0,3]]": "sen0u2''an <dummyanno>artificial'' '''example</dummyanno> of'''",
+        "selser [[2,0,4]]": "1nf0xenThis is ''an <dummyanno>artificial'' '''example</dummyanno> of'''1mtip7y",
+        "selser [[0,0,3]]": "This is ''an <dummyanno>artificial'' '''example</dummyanno> of'''",
+        "selser [[0,0,4]]": "This is ''an <dummyanno>artificial'' '''example</dummyanno> of'''ofxdhu",
+        "selser [[3,0,4]]": "''an <dummyanno>artificial'' '''example</dummyanno> of'''1vbijc5",
+        "selser [[2,0,2]]": "wc23fsThis is ''an <dummyanno>artificial'' '''example</dummyanno> of'''tvpaqa extension.",
+        "selser [[3,0,3]]": "''an <dummyanno>artificial'' '''example</dummyanno> of'''"
     },
     "8/ fostered annotation markers": {
         "wt2wt": "<dummyanno>\n{|\n|table\n|with\n|-\n\n|some\n|content\n\n|-\n|dummyanno\n|one line\n|}\n</dummyanno>"
@@ -31,26 +40,56 @@
     },
     "End dummyanno tag at the end of a paragraph and beginning within <i> should extend to the end of <i> but not the whole paragraph": {
         "wt2wt": "This should <dummyanno>''fail miserably'' ... let's fix it</dummyanno>",
-        "selser [2]": "m7royv\n\nThis should ''fail <dummyanno>miserably'' ... let's fix it</dummyanno>",
         "selser [1]": "This should ''fail <dummyanno>miserably'' ... let's fix it</dummyanno>",
-        "selser [[2,0,0,2,0]]": "11lfphnThis should ''fail <dummyanno>miserably''1ebnk1s ... let's fix it</dummyanno>",
-        "selser [[4,0,0,0,0]]": "1kfpive''fail <dummyanno>miserably'' ... let's fix it</dummyanno>"
+        "selser [[2,0]]": "gxwicuThis should ''fail <dummyanno>miserably'' ... let's fix it</dummyanno>",
+        "selser [2]": "m7royv\n\nThis should ''fail <dummyanno>miserably'' ... let's fix it</dummyanno>",
+        "selser [[3,0]]": "''fail <dummyanno>miserably'' ... let's fix it</dummyanno>",
+        "selser [[4,0]]": "6lrdf6''fail <dummyanno>miserably'' ... let's fix it</dummyanno>"
+    },
+    "New lines around table-spanning annotation range extension should be maintained in selser": {
+        "wt2wt": "txt1\n\n<dummyanno>\ntxt2\n{|\n|-\n\n|text3\n|}\n</dummyanno>\n\ntxt4",
+        "selser [[2],0,0,0,[4]]": "g9aaqytxt1\n{|\n|-\n<dummyanno>txt2</dummyanno>\n|text3\n|}\n\n518vpt",
+        "selser [0,0,0,0,2]": "txt1\n{|\n|-\n<dummyanno>txt2</dummyanno>\n|text3\n|}\n\n1ig4310\n\ntxt4",
+        "selser [1,0,0,4,[3]]": "txt1\n{|\n|-\n<dummyanno>txt2</dummyanno>\n|text3\n|}\n\n1rk6tnj\n\n",
+        "selser [[3],0,0,2,0]": "\n{|\n|-\n<dummyanno>txt2</dummyanno>\n|text3\n|}\n\n1uwjesj\ntxt4",
+        "selser [2,0,0,0,[4]]": "1al7zqi\n\ntxt1\n{|\n|-\n<dummyanno>txt2</dummyanno>\n|text3\n|}\n\n5v5k7i",
+        "selser [4,0,0,0,0]": "lsm64c\n\n{|\n|-\n<dummyanno>txt2</dummyanno>\n|text3\n|}\ntxt4",
+        "selser [4,3,0,0,0]": "kc9fci\n\n{|\n|-\n<dummyanno>txt2</dummyanno>\n|text3\n|}\ntxt4",
+        "selser [0,0,0,4,0]": "txt1\n{|\n|-\n<dummyanno>txt2</dummyanno>\n|text3\n|}\n\n5epyqq\n\ntxt4",
+        "selser [3,4,0,2,2]": "1gfiytw\n\n{|\n|-\n<dummyanno>txt2</dummyanno>\n|text3\n|}\n\n1xbk1c9\ncl1nbf\n\ntxt4",
+        "selser [3,0,0,3,[3]]": "\n{|\n|-\n<dummyanno>txt2</dummyanno>\n|text3\n|}\n\n",
+        "selser [2,0,0,0,[3]]": "s2gff9\n\ntxt1\n{|\n|-\n<dummyanno>txt2</dummyanno>\n|text3\n|}\n\n",
+        "selser [3,3,0,0,[3]]": "{|\n|-\n<dummyanno>txt2</dummyanno>\n|text3\n|}\n\n",
+        "selser [4,0,0,0,[3]]": "1h81kqd\n\n{|\n|-\n<dummyanno>txt2</dummyanno>\n|text3\n|}\n\n",
+        "selser [0,0,0,0,[2]]": "txt1\n{|\n|-\n<dummyanno>txt2</dummyanno>\n|text3\n|}\n\nymlas7txt4",
+        "selser [4,4,0,0,[3]]": "1g9wclr\n\n92eiod\n\n{|\n|-\n<dummyanno>txt2</dummyanno>\n|text3\n|}\n\n",
+        "selser [2,2,0,3,2]": "1amtxch\n\ntxt1\n\n1rirxch\n\n{|\n|-\n<dummyanno>txt2</dummyanno>\n|text3\n|}\n\nlovjek\n\ntxt4",
+        "selser [[3],4,0,0,3]": "\n\nwng1kt\n\n{|\n|-\n<dummyanno>txt2</dummyanno>\n|text3\n|}\n",
+        "selser [4,4,0,0,1]": "18ibpo\n\n1wcochj\n\n{|\n|-\n<dummyanno>txt2</dummyanno>\n|text3\n|}\ntxt4",
+        "selser [0,0,0,3,[3]]": "txt1\n{|\n|-\n<dummyanno>txt2</dummyanno>\n|text3\n|}\n\n",
+        "selser [2,4,0,0,4]": "h9bpxg\n\ntxt1\n\n1cjnj7h\n\n{|\n|-\n<dummyanno>txt2</dummyanno>\n|text3\n|}\n\n1pp9gc6"
     },
     "Newlines should be inserted between annotation tags and pre": {
         "html2wt": "foo\n\n<dummyanno>\n bar\n</dummyanno>baz\nfoo\n bar\nbaz"
     },
     "Selser: add content at the end of a paragraph with badly nested content with annotation": {
+        "selser [[2,0,0]]": "kmjc67Some ''stuff <dummyanno>and '''also some'' more</dummyanno> stuff''' than that.",
         "selser [2]": "z0khzc\n\nSome ''stuff <dummyanno>and '''also some'' more</dummyanno> stuff''' than that.",
-        "selser [[4,0,2,3,0,3]]": "18rh1vh<dummyanno>vh2hxg''stuff and '''also some''</dummyanno>",
+        "selser [[4,0,3]]": "pzo0y6''stuff <dummyanno>and '''also some'' more</dummyanno> stuff'''",
+        "selser [[3,0,4]]": "''stuff <dummyanno>and '''also some'' more</dummyanno> stuff'''o11kgg",
         "selser [1]": "Some ''stuff <dummyanno>and '''also some'' more</dummyanno> stuff''' than that.",
-        "selser [[3,0,0,0,0,0]]": "''stuff <dummyanno>and '''also some'' more</dummyanno> stuff''' than that.",
-        "selser [[2,0,[0,2],0,0,0]]": "19zdddlSome <dummyanno>''stuff and 1and9od'''also some''<nowiki/>''' more stuff'''</dummyanno> than that.",
-        "selser [[3,0,0,[4],0,3]]": "''stuff <dummyanno>and '''also some''<nowiki/>'''1h2xbjq'''</dummyanno>",
-        "selser [[3,0,1,4,0,2]]": "<dummyanno>''stuff and '''also some''1fr9sqw</dummyanno>1vtroet than that.",
-        "selser [[4,0,1,[3],0,4]]": "1otk6kv<dummyanno>''stuff and '''also some''</dummyanno>1pyrd7o",
-        "selser [[2,0,1,2,0,4]]": "12yo0zcSome <dummyanno>''stuff and '''also some''1o1iabj''' more stuff'''</dummyanno>12nvpmj",
-        "selser [[0,0,2,3,0,0]]": "Some <dummyanno>1tayar2''stuff and '''also some''</dummyanno> than that.",
-        "selser [[3,0,[2,2],3,0,3]]": "<dummyanno>''1xeoko5stuff and 1yj6bmy'''also some''</dummyanno>"
+        "selser [[3,0,0]]": "''stuff <dummyanno>and '''also some'' more</dummyanno> stuff''' than that.",
+        "selser [[4,0,4]]": "wdej97''stuff <dummyanno>and '''also some'' more</dummyanno> stuff'''rwwrzr",
+        "selser [[2,0,2]]": "1o1bucfSome ''stuff <dummyanno>and '''also some'' more</dummyanno> stuff'''1kbp0pl than that.",
+        "selser [[0,0,4]]": "Some ''stuff <dummyanno>and '''also some'' more</dummyanno> stuff'''hf6ysp",
+        "selser [[4,0,0]]": "ysc8n2''stuff <dummyanno>and '''also some'' more</dummyanno> stuff''' than that.",
+        "selser [[3,0,2]]": "''stuff <dummyanno>and '''also some'' more</dummyanno> stuff'''1cnsgzx than that.",
+        "selser [[2,0,3]]": "jc26laSome ''stuff <dummyanno>and '''also some'' more</dummyanno> stuff'''",
+        "selser [[3,0,3]]": "''stuff <dummyanno>and '''also some'' more</dummyanno> stuff'''",
+        "selser [[4,0,2]]": "d9i7n5''stuff <dummyanno>and '''also some'' more</dummyanno> stuff'''wirgj2 than that.",
+        "selser [[0,0,3]]": "Some ''stuff <dummyanno>and '''also some'' more</dummyanno> stuff'''",
+        "selser [[0,0,2]]": "Some ''stuff <dummyanno>and '''also some'' more</dummyanno> stuff'''uk0g6z than that.",
+        "selser [[2,0,4]]": "1ldiwd8Some ''stuff <dummyanno>and '''also some'' more</dummyanno> stuff'''ofykuu"
     },
     "Selser: add content at the end of a paragraph with badly nested content without annotation": {
         "wt2wt": "Some ''stuff and '''also some'''''<nowiki/>''' more stuff''' than that.",
@@ -69,25 +108,38 @@
     },
     "Start dummyanno tag at the beginning of a paragraph and end within <i> should extend to the end of <i> but not the whole paragraph": {
         "wt2wt": "<dummyanno>This should ''fail miserably''</dummyanno> ... let's fix it",
-        "selser [[0,0,2,0,0]]": "<dummyanno>This should 1z0qzb9''fail</dummyanno> miserably'' ... let's fix it",
         "selser [2]": "1wrg8qt\n\n<dummyanno>This should ''fail</dummyanno> miserably'' ... let's fix it",
+        "selser [[0,2]]": "<dummyanno>This should ''fail</dummyanno> miserably''1o8ain2 ... let's fix it",
+        "selser [[0,4]]": "<dummyanno>This should ''fail</dummyanno> miserably''1d2iewi",
         "selser [1]": "<dummyanno>This should ''fail</dummyanno> miserably'' ... let's fix it",
-        "selser [[0,2,2,0,0]]": "<dummyanno>1srvhjdThis should 16hb3a''fail</dummyanno> miserably'' ... let's fix it",
-        "selser [[0,3,0,0,4]]": "<dummyanno>''fail</dummyanno> miserably''c1ubd1",
-        "selser [[0,4,2,0,3]]": "<dummyanno>15mb0x91eenui0''fail</dummyanno> miserably''"
+        "selser [[0,3]]": "<dummyanno>This should ''fail</dummyanno> miserably''"
     },
     "T296169: Extended annotations that yield a nested annotation should not nest said annotation": {
         "wt2wt": "a <dummyanno>''b'' c ''d  e f''</dummyanno> g",
+        "selser [[0,0,2]]": "a ''<dummyanno>b'' c ''d </dummyanno> e <dummyanno>f</dummyanno>''uvcncx g",
         "selser [1]": "a ''<dummyanno>b'' c ''d </dummyanno> e <dummyanno>f</dummyanno>'' g",
+        "selser [[4,0,4]]": "cpqfb6''<dummyanno>b'' c ''d </dummyanno> e <dummyanno>f</dummyanno>''1qliz55",
+        "selser [[2,0,2]]": "1rdscy3a ''<dummyanno>b'' c ''d </dummyanno> e <dummyanno>f</dummyanno>''ctksph g",
+        "selser [[4,0,0]]": "1flsizp''<dummyanno>b'' c ''d </dummyanno> e <dummyanno>f</dummyanno>'' g",
         "selser [2]": "16fysu7\n\na ''<dummyanno>b'' c ''d </dummyanno> e <dummyanno>f</dummyanno>'' g",
-        "selser [[0,0,0,4,0,0,0]]": "a ''<dummyanno>b''xlo8ml''d </dummyanno> e <dummyanno>f</dummyanno>'' g",
-        "selser [[4,0,0,0,[4],0,0]]": "7m3mfk''<dummyanno>b'' c ''138rctg''</dummyanno> g"
+        "selser [[2,0,4]]": "w5brjia ''<dummyanno>b'' c ''d </dummyanno> e <dummyanno>f</dummyanno>''1biquwp",
+        "selser [[2,0,0]]": "okwp1ua ''<dummyanno>b'' c ''d </dummyanno> e <dummyanno>f</dummyanno>'' g",
+        "selser [[0,0,4]]": "a ''<dummyanno>b'' c ''d </dummyanno> e <dummyanno>f</dummyanno>''14f682o",
+        "selser [[0,0,3]]": "a ''<dummyanno>b'' c ''d </dummyanno> e <dummyanno>f</dummyanno>''",
+        "selser [[3,0,0]]": "''<dummyanno>b'' c ''d </dummyanno> e <dummyanno>f</dummyanno>'' g",
+        "selser [[2,0,3]]": "1ph8hhta ''<dummyanno>b'' c ''d </dummyanno> e <dummyanno>f</dummyanno>''",
+        "selser [[4,0,3]]": "a33197''<dummyanno>b'' c ''d </dummyanno> e <dummyanno>f</dummyanno>''",
+        "selser [[3,0,2]]": "''<dummyanno>b'' c ''d </dummyanno> e <dummyanno>f</dummyanno>''9hg1hw g",
+        "selser [[3,0,4]]": "''<dummyanno>b'' c ''d </dummyanno> e <dummyanno>f</dummyanno>''1e1i5na",
+        "selser [[4,0,2]]": "11vz40r''<dummyanno>b'' c ''d </dummyanno> e <dummyanno>f</dummyanno>''csogsk g",
+        "selser [[3,0,3]]": "''<dummyanno>b'' c ''d </dummyanno> e <dummyanno>f</dummyanno>''"
     },
     "T296169: Nested annotations should be dropped in HTML output": {
         "wt2wt": "<dummyanno>t1</dummyanno> <dummyanno>t2</dummyanno> <dummyanno><ann2 name=\"plop\">t3</ann2></dummyanno>",
         "selser [2]": "1koe8pj\n\n<dummyanno><dummyanno>t1</dummyanno></dummyanno> <dummyanno>t2</dummyanno> <dummyanno><ann2 name=\"plop\">t3</ann2></dummyanno>"
     },
     "Top-level metas should not be migrated into paragraphs, nor pulled in the template": {
+        "wt2wt": "{{1x|<div>a</div> b}}\n\n<dummyanno>\nc\n</dummyanno>",
         "selser [0,0,0,0,0,0,2,0]": "{{1x|<div>a</div> b}}\n<dummyanno>\nc\n\n8he46j\n</dummyanno>",
         "selser [0,0,0,0,4,0,0,0]": "{{1x|<div>a</div> b}}\n<dummyanno>\n11rk5d9\n\nc\n</dummyanno>",
         "selser [0,0,0,0,0,3,0,0]": "{{1x|<div>a</div> b}}\n<dummyanno>\n\n</dummyanno>",
@@ -117,20 +169,6 @@
         "selser [0,3,4,0,0]": "<dummyanno>\nmom1vp\n\nLet's have some text.</dummyanno>"
     },
     "dummyanno in the middle of fostered content should extend to the whole range, including fostered content": {
-        "wt2wt": "<dummyanno>\nfoo\nbar\n{|\n|-\n|baz\n|}\n</dummyanno>",
-        "selser [0,[2],1,0]": "<dummyanno>\nl787w5\nfoo\nbar\n{| data-foobar=\"1323k5f\"\n|-\n|baz\n\n|}\n</dummyanno>",
-        "selser [0,3,[0,[[2,2]]],0]": "<dummyanno>\n{|\n|-\n|k7l2vo\n|1mv8odn\n|baz\n\n|}\n</dummyanno>",
-        "selser [0,0,1,0]": "<dummyanno>\n\n{| data-foobar=\"1swbntt\"\n|-\n|baz\n\n|}\n</dummyanno>",
-        "selser [0,0,[2,[[0,2]]],0]": "<dummyanno>\n\n{|<!--1lbmkl-->\n|-\n|ke1bvi\n|baz\n|}\n</dummyanno>",
-        "selser [0,0,[4,1],0]": "<dummyanno>\n\n{|<!--i2dvx0-->\n|-\n|baz\n\n|}\n</dummyanno>",
-        "selser [0,1,1,0]": "<dummyanno>\nfoo\nbar\n{| data-foobar=\"16ksxqa\"\n|-\n|baz\n\n|}\n</dummyanno>",
-        "selser [0,0,2,0]": "<dummyanno>\n\n\n820rq9\n{|\n|-\n|baz\n\n|}\n</dummyanno>",
-        "selser [0,2,[3,0],0]": "<dummyanno>\n12gr9uw\n\n\n{|\n|-\n|baz\n\n|}\n</dummyanno>",
-        "selser [0,4,1,0]": "<dummyanno>\n1uuyu9q\n{| data-foobar=\"1epu667\"\n|-\n|baz\n\n|}\n</dummyanno>",
-        "selser [0,4,[4,1],0]": "<dummyanno>\nk3pini\n{|<!--o3q0oe-->\n|-\n|baz\n\n|}\n</dummyanno>",
-        "selser [0,[4],2,0]": "<dummyanno>\n1lfl0py\n\n1e3vmy4\n{|\n|-\n|baz\n\n|}\n</dummyanno>",
-        "selser [0,1,[0,[2]],0]": "<dummyanno>\nfoo\nbar\n{|\n<!--i02ze8-->|-\n|baz\n\n|}\n</dummyanno>",
-        "selser [0,4,[0,[2]],0]": "<dummyanno>\n1aa5gkn\n{|\n<!--1v27cn1-->|-\n|baz\n\n|}\n</dummyanno>",
-        "selser [0,2,1,0]": "<dummyanno>\n1oorjzy\n\n\n{| data-foobar=\"1ybr6xf\"\n|-\n|baz\n\n|}\n</dummyanno>"
+        "wt2wt": "<dummyanno>\nfoo\nbar\n{|\n|-\n|baz\n|}\n</dummyanno>"
     }
 }
