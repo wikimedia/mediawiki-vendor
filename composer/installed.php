@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '6f7781779ea03db771ca0d3ab16d595677fe93bb',
+        'reference' => '74b923451695d7b6dd4a694e9c0c7e0e7b3c52f4',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '6f7781779ea03db771ca0d3ab16d595677fe93bb',
+            'reference' => '74b923451695d7b6dd4a694e9c0c7e0e7b3c52f4',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -56,12 +56,12 @@
             'dev_requirement' => false,
         ),
         'composer/semver' => array(
-            'pretty_version' => '3.2.6',
-            'version' => '3.2.6.0',
+            'pretty_version' => '3.3.2',
+            'version' => '3.3.2.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/./semver',
             'aliases' => array(),
-            'reference' => '83e511e247de329283478496f7a1e114c9517506',
+            'reference' => '3953f23262f2bff1919fc82183ad9acb13ff62c9',
             'dev_requirement' => false,
         ),
         'cssjanus/cssjanus' => array(
