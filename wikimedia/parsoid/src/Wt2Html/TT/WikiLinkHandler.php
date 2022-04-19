@@ -782,15 +782,19 @@ class WikiLinkHandler extends TokenHandler {
 	 */
 	private static function getWrapperInfo( array $opts ) {
 		$format = self::getFormat( $opts );
-		$isInline = !( $format === 'thumbnail' || $format === 'framed' );
+		$isInline = !in_array( $format, [ 'thumbnail', 'manualthumb', 'framed' ], true );
 		$classes = [];
-		$halign = ( $opts['format']['v'] ?? '' ) === 'framed' ? 'right' : null;
+		$halign = $format === 'framed' ? 'right' : null;
 
-		if ( !isset( $opts['size']['src'] ) ) {
+		if (
+			!isset( $opts['size']['src'] ) &&
+			// Framed and manualthumb images aren't scaled
+			!in_array( $format, [ 'manualthumb', 'framed' ], true )
+		) {
 			$classes[] = 'mw-default-size';
 		}
 
-		// Border isn't applicable to 'thumbnail' or 'framed' formats
+		// Border isn't applicable to 'thumbnail', 'manualthumb', or 'framed' formats
 		// Using $isInline as a shorthand for that here (see above),
 		// but this isn't about being *inline* per se
 		if ( $isInline && isset( $opts['border'] ) ) {
@@ -1107,9 +1111,8 @@ class WikiLinkHandler extends TokenHandler {
 	 */
 	private static function getFormat( array $opts ): ?string {
 		if ( $opts['manualthumb'] ) {
-			return 'thumbnail';
+			return 'manualthumb';
 		}
-
 		return $opts['format']['v'] ?? null;
 	}
 
@@ -1283,8 +1286,15 @@ class WikiLinkHandler extends TokenHandler {
 				continue;
 			}
 
-			if ( isset( $opts[$optInfo['ck']] ) ) {
-				// first option wins, the rest are 'bogus'
+			// First option wins, the rest are 'bogus'
+			// FIXME: For now, see T305628
+			if (
+				isset( $opts[$optInfo['ck']] ) ||
+				// All the formats are simple options with the key "format"
+				// except for "manualthumb", so check if the format has been set
+				( in_array( $optInfo['ck'], [ 'format', 'manualthumb' ], true ) &&
+					self::getFormat( $opts ) )
+			) {
 				$dataAttribs->optList[] = [
 					'ck' => 'bogus',
 					'ak' => $optInfo['ak']
@@ -1417,13 +1427,21 @@ class WikiLinkHandler extends TokenHandler {
 			);
 		}
 
+		$format = self::getFormat( $opts );
+
 		// Handle image default sizes and upright option after extracting all
 		// options
-		if ( !empty( $opts['format'] ) && $opts['format']['v'] === 'framed' ) {
-			// width and height is ignored for framed images
+		if ( $format === 'framed' || $format === 'manualthumb' ) {
+			// width and height is ignored for framed and manualthumb images
 			// https://phabricator.wikimedia.org/T64258
 			$opts['size']['v'] = [ 'width' => null, 'height' => null ];
-		} elseif ( $opts['format'] ) {
+			// Mark any definitions as bogus
+			foreach ( $dataAttribs->optList as &$value ) {
+				if ( $value['ck'] === 'width' ) {
+					$value['ck'] = 'bogus';
+				}
+			}
+		} elseif ( $format ) {
 			if ( !$opts['size']['v']['height'] && !$opts['size']['v']['width'] ) {
 				$defaultWidth = $env->getSiteConfig()->widthOption();
 				if ( isset( $opts['upright'] ) ) {
@@ -1443,8 +1461,8 @@ class WikiLinkHandler extends TokenHandler {
 		$rdfaType = 'mw:Image';
 
 		// If the format is something we *recognize*, add the subtype
-		$format = self::getFormat( $opts );
 		switch ( $format ) {
+			case 'manualthumb':  // FIXME(T305759): Does it deserve its own type?
 			case 'thumbnail':
 				$rdfaType .= '/Thumb';
 				break;
