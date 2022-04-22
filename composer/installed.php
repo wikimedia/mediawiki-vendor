@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '0cff5882e66702b4ab9ed8a32f029c88c2d7ed2b',
+        'reference' => '519f2784b115d696fae2e795fb9246c6d1ee87a9',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '0cff5882e66702b4ab9ed8a32f029c88c2d7ed2b',
+            'reference' => '519f2784b115d696fae2e795fb9246c6d1ee87a9',
             'dev_requirement' => false,
         ),
         'christian-riesen/base32' => array(
@@ -395,6 +395,15 @@
             'install_path' => __DIR__ . '/../wikimedia/dodo',
             'aliases' => array(),
             'reference' => '47e8176b8fd04ea00034d91b524f272e3745604a',
+            'dev_requirement' => false,
+        ),
+        'wikimedia/equivset' => array(
+            'pretty_version' => '1.4.2',
+            'version' => '1.4.2.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../wikimedia/equivset',
+            'aliases' => array(),
+            'reference' => 'f41a259526a5597e1c3cb3cf745d1f1af6d36a00',
             'dev_requirement' => false,
         ),
         'wikimedia/html-formatter' => array(

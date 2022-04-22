@@ -40,6 +40,7 @@ class ComposerStaticInit_mediawiki_vendor
             'Wikimedia\\NormalizedException\\' => 30,
             'Wikimedia\\Minify\\' => 17,
             'Wikimedia\\IDLeDOM\\' => 18,
+            'Wikimedia\\Equivset\\' => 19,
             'Wikimedia\\Dodo\\' => 15,
             'Wikimedia\\Composer\\Merge\\V2\\' => 28,
             'Wikimedia\\CommonPasswords\\' => 26,
@@ -156,6 +157,10 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\IDLeDOM\\' => 
         array (
             0 => __DIR__ . '/..' . '/wikimedia/idle-dom/src',
+        ),
+        'Wikimedia\\Equivset\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/wikimedia/equivset/src',
         ),
         'Wikimedia\\Dodo\\' => 
         array (
@@ -1029,6 +1034,10 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Dodo\\XMLDocument' => __DIR__ . '/..' . '/wikimedia/dodo/src/XMLDocument.php',
         'Wikimedia\\Dodo\\XMLSerializer' => __DIR__ . '/..' . '/wikimedia/dodo/src/XMLSerializer.php',
         'Wikimedia\\Dodo\\XPathEvaluatorBase' => __DIR__ . '/..' . '/wikimedia/dodo/src/XPathEvaluatorBase.php',
+        'Wikimedia\\Equivset\\Command\\GenerateEquivset' => __DIR__ . '/..' . '/wikimedia/equivset/src/Command/GenerateEquivset.php',
+        'Wikimedia\\Equivset\\Equivset' => __DIR__ . '/..' . '/wikimedia/equivset/src/Equivset.php',
+        'Wikimedia\\Equivset\\EquivsetInterface' => __DIR__ . '/..' . '/wikimedia/equivset/src/EquivsetInterface.php',
+        'Wikimedia\\Equivset\\Exception\\EquivsetException' => __DIR__ . '/..' . '/wikimedia/equivset/src/Exception/EquivsetException.php',
         'Wikimedia\\IDLeDOM\\AbortController' => __DIR__ . '/..' . '/wikimedia/idle-dom/src/AbortController.php',
         'Wikimedia\\IDLeDOM\\AbortSignal' => __DIR__ . '/..' . '/wikimedia/idle-dom/src/AbortSignal.php',
         'Wikimedia\\IDLeDOM\\AbstractRange' => __DIR__ . '/..' . '/wikimedia/idle-dom/src/AbstractRange.php',
