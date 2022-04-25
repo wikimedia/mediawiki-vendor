@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "462ebdbddc77899e58c63b342658a24c",
+    "content-hash": "472132d75831c6cb995b128e111091ba",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -7042,20 +7042,20 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.16.0-a6",
+            "version": "v0.16.0-a7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/parsoid.git",
-                "reference": "ff2cd434562204d84ac1c864b88dc1be518d1ff0"
+                "reference": "ea98d45b02f785033e17809284de135de4170b26"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/ff2cd434562204d84ac1c864b88dc1be518d1ff0",
-                "reference": "ff2cd434562204d84ac1c864b88dc1be518d1ff0",
+                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/ea98d45b02f785033e17809284de135de4170b26",
+                "reference": "ea98d45b02f785033e17809284de135de4170b26",
                 "shasum": ""
             },
             "require": {
-                "composer/semver": "^3.2.5",
+                "composer/semver": "3.3.2",
                 "ext-dom": "*",
                 "ext-json": "*",
                 "liuggio/statsd-php-client": "^1.0.18",
@@ -7118,10 +7118,10 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/parsoid/tree/v0.16.0-a6",
+                "source": "https://github.com/wikimedia/parsoid/tree/v0.16.0-a7",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
-            "time": "2022-04-16T08:02:25+00:00"
+            "time": "2022-04-21T15:17:32+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",

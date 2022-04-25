@@ -76,7 +76,7 @@ class DOMRangeBuilder {
 	protected $env;
 
 	/** @var SplObjectStorage */
-	private $nodeRanges;
+	protected $nodeRanges;
 
 	/** @var array<string|CompoundTemplateInfo>[] */
 	private $compoundTpls = [];
@@ -199,6 +199,7 @@ class DOMRangeBuilder {
 		while ( $parentNode && $parentNode->nodeType !== XML_DOCUMENT_NODE ) {
 			$i = array_search( $parentNode, $startAncestors, true );
 			if ( $i === 0 ) {
+				// the common ancestor is startElem
 				// widen the scope to include the full subtree
 				$range->start = $startElem->firstChild;
 				$range->end = $startElem->lastChild;
@@ -616,7 +617,7 @@ class DOMRangeBuilder {
 			// Extract tplargInfo
 			$tmp = DOMDataUtils::getDataParsoid( $r->startElem )->getTemp();
 			$templateInfo = $tmp->tplarginfo ?? null;
-			if ( !$templateInfo ) {
+			if ( WTUtils::matchTplType( $r->startElem ) && !$templateInfo ) {
 				// An assertion here is probably an indication that we're
 				// mistakenly doing template wrapping in a nested context.
 				Assert::invariant( $tmp->getFlag( TempData::FROM_FOSTER ), 'Template range without arginfo.' );
@@ -688,6 +689,11 @@ class DOMRangeBuilder {
 
 				$prev->end = $r->end;
 				$prev->endElem = $r->endElem;
+				if ( WTUtils::isMarkerAnnotation( $r->endElem ) ) {
+					$endDataMw = DOMDataUtils::getDataMw( $r->endElem );
+					$endDataMw->rangeId = $r->id;
+					$prev->extendedByOverlapMerge = true;
+				}
 
 				// Update compoundTplInfo
 				if ( $templateInfo ) {
@@ -1195,13 +1201,12 @@ class DOMRangeBuilder {
 							 *   }}
 							 *   |}
 							 *
-							 * Since meta-tags dont normally get fostered out, this scenario
+							 * Since meta-tags don't normally get fostered out, this scenario
 							 * only arises when the entire content including meta-tags was
 							 * wrapped in p-tags.  So, we look to see if:
 							 * 1. the end-meta-tag's parent has a table sibling,
-							 * 2. the DSR of the start-meta-tag's parent is nested inside
-							 *    that table's DSR
-							 * If so, we recognize this as a adoption scenario and fix up
+							 * 2. the start meta's parent is marked as fostered.
+							 * If so, we recognize this as an adoption scenario and fix up
 							 * DSR of start-meta-tag's parent to include the table's DSR.
 							 * ------------------------------------------------------------*/
 							$sm = $tpl->startElem;
@@ -1238,6 +1243,13 @@ class DOMRangeBuilder {
 							}
 							$tplRanges[] = $this->getDOMRange( $sm, $em, $ee );
 						} else {
+							// The end tag can appear before the start tag if it is fostered out
+							// of the table and the start tag is not.
+							// It can even technically happen that both tags are fostered out of
+							// a table and that the range is flipped: while the fostered content of
+							// single table is fostered in-order, the ordering might change
+							// across tables if the tags are not initially fostered by the same
+							// table.
 							$tpl = new ElementRange;
 							$tpl->endElem = $elem;
 							$tpls[$about] = $tpl;
