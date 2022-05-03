@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '519f2784b115d696fae2e795fb9246c6d1ee87a9',
+        'reference' => '9df94f5ef6f3d35842c2bdc3a4668ef0d414ccfb',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '519f2784b115d696fae2e795fb9246c6d1ee87a9',
+            'reference' => '9df94f5ef6f3d35842c2bdc3a4668ef0d414ccfb',
             'dev_requirement' => false,
         ),
         'christian-riesen/base32' => array(
@@ -307,6 +307,12 @@
             'reference' => 'e8b495ea28c1d97b5e0c121748d6f9b53d075c66',
             'dev_requirement' => false,
         ),
+        'symfony/polyfill-ctype' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => '1.99',
+            ),
+        ),
         'symfony/polyfill-php80' => array(
             'pretty_version' => 'v1.25.0',
             'version' => '1.25.0.0',
@@ -323,6 +329,15 @@
             'install_path' => __DIR__ . '/../symfony/polyfill-php81',
             'aliases' => array(),
             'reference' => '5de4ba2d41b15f9bd0e19b2ab9674135813ec98f',
+            'dev_requirement' => false,
+        ),
+        'symfony/yaml' => array(
+            'pretty_version' => 'v5.4.3',
+            'version' => '5.4.3.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/yaml',
+            'aliases' => array(),
+            'reference' => 'e80f87d2c9495966768310fc531b487ce64237a2',
             'dev_requirement' => false,
         ),
         'wikimedia/assert' => array(
