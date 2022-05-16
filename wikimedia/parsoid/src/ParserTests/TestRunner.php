@@ -376,13 +376,18 @@ class TestRunner {
 		$startsAtHtml = $mode === 'html2html' || $mode === 'html2wt';
 		$endsAtHtml = $mode === 'wt2html' || $mode === 'html2html';
 
-		$parsoidOnly = isset( $test->sections['html/parsoid'] ) || (
+		$parsoidOnly = isset( $test->sections['html/parsoid'] ) ||
+			isset( $test->sections['html/parsoid+standalone'] ) || (
 			!empty( $testOpts['parsoid'] ) &&
 			!isset( $testOpts['parsoid']['normalizePhp'] )
 		);
 		$test->time['start'] = microtime( true );
 		$doc = null;
 		$wt = null;
+
+		if ( isset( $test->sections['html/parsoid+standalone'] ) ) {
+			$test->parsoidHtml = $test->sections['html/parsoid+standalone'];
+		}
 
 		// Source preparation
 		if ( $startsAtHtml ) {
@@ -703,6 +708,9 @@ class TestRunner {
 		$haveHtml = ( $test->parsoidHtml !== null ) ||
 			isset( $test->sections['wikitext/edited'] ) ||
 			isset( $test->sections['html/parsoid+langconv'] );
+		$hasHtmlParsoid =
+			isset( $test->sections['html/parsoid'] ) ||
+			isset( $test->sections['html/parsoid+standalone'] );
 
 		// Skip test whose title does not match --filter
 		// or which is disabled or php-only
@@ -710,7 +718,7 @@ class TestRunner {
 			!$haveHtml ||
 			( isset( $testOpts['disabled'] ) && !$this->runDisabled ) ||
 			( isset( $testOpts['php'] ) && !(
-				isset( $test->sections['html/parsoid'] ) || $this->runPHP )
+				$hasHtmlParsoid || $this->runPHP )
 			) ||
 			!$test->matchesFilter( $this->testFilter )
 		) {
@@ -737,10 +745,37 @@ class TestRunner {
 		$this->mockApi->setApiPrefix( $prefix );
 		$this->siteConfig->reset();
 
+		$config = [];
+		if ( $test->config ) {
+			// T307720: This should be replaced with a proper parser
+			foreach ( explode( "\n", $test->config ) as $line ) {
+				$kv = explode( "=", $line, 2 );
+				$val = false;
+				if ( count( $kv ) === 1 || $kv[1] === 'true' ) {
+					$val = true;
+				} elseif ( is_numeric( $kv[1] ) ) {
+					$val = 0 + $kv[1];
+				}
+				$config[$kv[0]] = $val;
+			}
+		}
+		// We don't do any sanity checking or type casting on $config values
+		// here: if you set a bogus value in a parser test it *should*
+		// blow things up, so that you fix your test case.
+
 		// Update $wgInterwikiMagic flag
 		// default (undefined) setting is true
-		$iwmVal = $testOpts['wginterwikimagic'] ?? null;
-		$this->siteConfig->setInterwikiMagic( $iwmVal === null || $iwmVal === true || $iwmVal === 1 );
+		$this->siteConfig->setInterwikiMagic(
+			$config['wgInterwikiMagic'] ?? true
+		);
+
+		// FIXME: Cite-specific hack
+		$this->siteConfig->responsiveReferences = [
+			'enabled' => $config['wgCiteResponsiveReferences'] ??
+				$this->siteConfig->responsiveReferences['enabled'],
+			'threshold' => $config['wgCiteResponsiveReferencesThreshold'] ??
+				$this->siteConfig->responsiveReferences['threshold'],
+		];
 
 		if ( $testOpts ) {
 			Assert::invariant( !isset( $testOpts['extensions'] ),
@@ -764,9 +799,6 @@ class TestRunner {
 			foreach ( $defaults as $opt => $defaultVal ) {
 				$this->envOptions[$opt] = $testOpts['parsoid'][$opt] ?? $defaultVal;
 			}
-
-			$this->siteConfig->responsiveReferences =
-				$testOpts['parsoid']['responsiveReferences'] ?? $this->siteConfig->responsiveReferences;
 
 			// Emulate PHP parser's tag hook to tunnel content past the sanitizer
 			if ( isset( $testOpts['styletag'] ) ) {

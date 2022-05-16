@@ -778,16 +778,6 @@ class WTUtils {
 	}
 
 	/**
-	 * Escape `<nowiki>` tags.
-	 *
-	 * @param string $text
-	 * @return string
-	 */
-	public static function escapeNowikiTags( string $text ): string {
-		return preg_replace( '#<(/?nowiki\s*/?\s*)>#i', '&lt;$1&gt;', $text );
-	}
-
-	/**
 	 * @param Env $env
 	 * @param Node $node
 	 * @return ?ExtensionTagHandler
@@ -797,6 +787,42 @@ class WTUtils {
 		$matchingTag = $match ? substr( $match, strlen( 'mw:Extension/' ) ) : null;
 		return $matchingTag ?
 			$env->getSiteConfig()->getExtTagImpl( $matchingTag ) : null;
+	}
+
+	/**
+	 * Is this an include directive?
+	 * @param string $name
+	 * @return bool
+	 */
+	public static function isIncludeTag( string $name ): bool {
+		return $name === 'includeonly' || $name === 'noinclude' || $name === 'onlyinclude';
+	}
+
+	/**
+	 * Check if tag is annotation or extension directive
+	 * Adapted from similar grammar function
+	 *
+	 * @param Env $env
+	 * @param string $name
+	 * @return bool
+	 */
+	public static function isAnnOrExtTag( Env $env, string $name ): bool {
+		$tagName = mb_strtolower( $name );
+		$siteConfig = $env->getSiteConfig();
+		$extTags = $siteConfig->getExtensionTagNameMap();
+		$isInstalledExt = isset( $extTags[$tagName] );
+		$isIncludeTag = self::isIncludeTag( $tagName );
+		$isAnnotationTag = $siteConfig->isAnnotationTag( $tagName );
+
+		if ( !$isAnnotationTag ) {
+			// avoid crashing on <tvar|name> even if we don't support that syntax explicitly
+			$pipepos = strpos( $tagName, '|' );
+			if ( $pipepos ) {
+				$strBeforePipe = substr( $tagName, 0, $pipepos );
+				$isAnnotationTag = $siteConfig->isAnnotationTag( $strBeforePipe );
+			}
+		}
+		return $isInstalledExt || $isIncludeTag || $isAnnotationTag;
 	}
 
 	/**
@@ -893,4 +919,5 @@ class WTUtils {
 	public static function isMarkerAnnotation( ?Node $n ): bool {
 		return $n !== null && self::matchAnnotationMeta( $n ) !== null;
 	}
+
 }

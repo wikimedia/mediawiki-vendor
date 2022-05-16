@@ -288,6 +288,41 @@ class WikitextSerializer {
 	}
 
 	/**
+	 * Check if token needs escaping
+	 *
+	 * @param string $name
+	 * @return bool
+	 */
+	public function tagNeedsEscaping( string $name ): bool {
+		return WTUtils::isAnnOrExtTag( $this->env, $name );
+	}
+
+	/**
+	 * @param Token $token
+	 * @param string $inner
+	 * @return string
+	 */
+	public function wrapAngleBracket( Token $token, string $inner ): string {
+		if (
+			$this->tagNeedsEscaping( $token->getName() ) &&
+			!(
+				// Allow for html tags that shadow extension tags found in source
+				// to roundtrip.  They only parse as html tags if they are unclosed,
+				// since extension tags bail on parsing without closing tags.
+				//
+				// This only applies when wrapAngleBracket() is being called for
+				// start tags, but we wouldn't be here if it was autoInsertedEnd
+				// anyways.
+				isset( Consts::$Sanitizer['AllowedLiteralTags'][$token->getName()] ) &&
+				!empty( $token->dataAttribs->autoInsertedEnd )
+			)
+		) {
+			return "&lt;{$inner}&gt;";
+		}
+		return "<$inner>";
+	}
+
+	/**
 	 * @param Element $node
 	 * @param bool $wrapperUnmodified
 	 * @return string
@@ -330,13 +365,8 @@ class WikitextSerializer {
 
 		// srcTagName cannot be '' so, it is okay to use ?? operator
 		$tokenName = $da->srcTagName ?? $token->getName();
-		$ret = "<{$tokenName}{$sAttribs}{$close}>";
-
-		if ( strtolower( $tokenName ) === 'nowiki' ) {
-			$ret = WTUtils::escapeNowikiTags( $ret );
-		}
-
-		return $ret;
+		$inner = "{$tokenName}{$sAttribs}{$close}";
+		return $this->wrapAngleBracket( $token, $inner );
 	}
 
 	/**
@@ -363,11 +393,7 @@ class WikitextSerializer {
 			&& !Utils::isVoidElement( $token->getName() )
 			&& empty( $token->dataAttribs->selfClose )
 		) {
-			$ret = "</{$tokenName}>";
-		}
-
-		if ( strtolower( $tokenName ) === 'nowiki' ) {
-			$ret = WTUtils::escapeNowikiTags( $ret );
+			$ret = $this->wrapAngleBracket( $token, "/{$tokenName}" );
 		}
 
 		return $ret;
@@ -571,9 +597,10 @@ class WikitextSerializer {
 		array $dpArgInfo, ?array $tplData, array $dataMwKeys
 	): Closure {
 		// Record order of parameters in new data-mw
-		$newOrder = array_map( static function ( $key, $i ) {
-			return [ $key, [ 'order' => $i ] ];
-		}, $dataMwKeys, array_keys( $dataMwKeys ) );
+		$newOrder = [];
+		foreach ( $dataMwKeys as $i => $key ) {
+			$newOrder[$key] = [ 'order' => $i ];
+		}
 		// Record order of parameters in templatedata (if present)
 		$tplDataOrder = [];
 		$aliasMap = [];
