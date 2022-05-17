@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7acbd5f91c7e714361bef301a59e1ed8",
+    "content-hash": "cfb68a73ad738f251c4120dd6174f8bc",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -2757,16 +2757,16 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.43.2",
+            "version": "v0.44.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "630d30f69cec9d64ef6d6bf0d1afed158bc62ffe"
+                "reference": "05823ff18922e5c0e51f3020d287c49933febc9b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/630d30f69cec9d64ef6d6bf0d1afed158bc62ffe",
-                "reference": "630d30f69cec9d64ef6d6bf0d1afed158bc62ffe",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/05823ff18922e5c0e51f3020d287c49933febc9b",
+                "reference": "05823ff18922e5c0e51f3020d287c49933febc9b",
                 "shasum": ""
             },
             "require": {
@@ -2835,9 +2835,9 @@
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOUI",
             "support": {
-                "source": "https://github.com/wikimedia/oojs-ui/tree/v0.43.2"
+                "source": "https://github.com/wikimedia/oojs-ui/tree/v0.44.0"
             },
-            "time": "2022-03-11T19:28:06+00:00"
+            "time": "2022-05-06T22:42:14+00:00"
         },
         {
             "name": "opis/json-schema",
