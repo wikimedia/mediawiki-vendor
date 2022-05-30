@@ -35,8 +35,8 @@ class Test extends Item {
 	/** @var array */
 	public $options = [];
 
-	/** @var ?string */
-	public $config = null;
+	/** @var array */
+	public $config = [];
 
 	/** @var array */
 	public $sections = [];
@@ -67,7 +67,7 @@ class Test extends Item {
 	/** @var array */
 	public $selserChangeTrees = [];
 
-	/** @var array */
+	/** @var ?array */
 	public $changetree = null;
 
 	/** @var bool */
@@ -93,6 +93,9 @@ class Test extends Item {
 
 	/** @var string */
 	public $cachedBODYstr = null;
+
+	/** @var string */
+	public $cachedWTstr = null;
 
 	/** @var string */
 	public $cachedNormalizedHTML = null;

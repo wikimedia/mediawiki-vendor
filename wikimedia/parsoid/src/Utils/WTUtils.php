@@ -299,7 +299,9 @@ class WTUtils {
 	 * @return bool
 	 */
 	public static function isGeneratedFigure( Node $node ): bool {
-		return DOMUtils::matchTypeOf( $node, '#^mw:(Image|Video|Audio)($|/)#D' ) !== null;
+		// TODO: Remove "Image|Video|Audio" when version 2.4.0 of the content
+		// is no longer supported
+		return DOMUtils::matchTypeOf( $node, '#^mw:(File|Image|Video|Audio)($|/)#D' ) !== null;
 	}
 
 	/**
@@ -918,6 +920,31 @@ class WTUtils {
 	 */
 	public static function isMarkerAnnotation( ?Node $n ): bool {
 		return $n !== null && self::matchAnnotationMeta( $n ) !== null;
+	}
+
+	/**
+	 * Extracts the media format from the attribute string
+	 *
+	 * @param Element $node
+	 * @return string
+	 */
+	public static function getMediaFormat( Element $node ): string {
+		// TODO: Remove "Image|Video|Audio" when version 2.4.0 of the content
+		// is no longer supported
+		$mediaType = DOMUtils::matchTypeOf( $node, '#^mw:(File|Image|Video|Audio)(/|$)#' );
+		$parts = explode( '/', $mediaType ?? '' );
+		return $parts[1] ?? '';
+	}
+
+	/**
+	 * @param Element $node
+	 * @return bool
+	 */
+	public static function hasVisibleCaption( Element $node ): bool {
+		$format = self::getMediaFormat( $node );
+		return in_array(
+			$format, [ 'Thumb', /* 'Manualthumb', FIXME(T305759) */ 'Frame' ], true
+		);
 	}
 
 }
