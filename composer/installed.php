@@ -1,11 +1,11 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
         'type' => 'mediawiki-core',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '254f778892c1187f22b905fa795ba7810f88fb79',
+        'reference' => '4e9470dec745d2a48a7fc730ebd28982d80a43ca',
         'name' => 'mediawiki/core',
         'dev' => false,
     ),
@@ -101,12 +101,12 @@
             'dev_requirement' => false,
         ),
         'guzzlehttp/guzzle' => array(
-            'pretty_version' => '6.5.5',
-            'version' => '6.5.5.0',
+            'pretty_version' => '6.5.6',
+            'version' => '6.5.6.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../guzzlehttp/guzzle',
             'aliases' => array(),
-            'reference' => '9d4290de1cfd701f38099ef7e183b64b4b7b0c5e',
+            'reference' => 'f092dd734083473658de3ee4bef093ed77d2689c',
             'dev_requirement' => false,
         ),
         'guzzlehttp/promises' => array(
@@ -164,12 +164,12 @@
             'dev_requirement' => false,
         ),
         'mediawiki/core' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
             'type' => 'mediawiki-core',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '254f778892c1187f22b905fa795ba7810f88fb79',
+            'reference' => '4e9470dec745d2a48a7fc730ebd28982d80a43ca',
             'dev_requirement' => false,
         ),
         'mediawiki/mediawiki' => array(
