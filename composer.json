@@ -108,7 +108,7 @@
 		"wikimedia/css-sanitizer": "3.0.2",
 		"wikimedia/equivset": "1.4.2",
 		"wikimedia/html-formatter": "3.0.1",
-		"wikimedia/ip-set": "3.0.0",
+		"wikimedia/ip-set": "3.1.0",
 		"wikimedia/ip-utils": "4.0.0",
 		"wikimedia/langconv": "0.4.2",
 		"wikimedia/less.php": "3.1.0",

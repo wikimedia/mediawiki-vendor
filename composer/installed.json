@@ -6877,33 +6877,35 @@
         },
         {
             "name": "wikimedia/ip-set",
-            "version": "3.0.0",
-            "version_normalized": "3.0.0.0",
+            "version": "3.1.0",
+            "version_normalized": "3.1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/IPSet.git",
-                "reference": "4efe81f0ffb907a60778a72faf6ede17bb490081"
+                "reference": "9650ba486e21a84659fcfd46b3e5f2c4fa2b735c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/IPSet/zipball/4efe81f0ffb907a60778a72faf6ede17bb490081",
-                "reference": "4efe81f0ffb907a60778a72faf6ede17bb490081",
+                "url": "https://api.github.com/repos/wikimedia/IPSet/zipball/9650ba486e21a84659fcfd46b3e5f2c4fa2b735c",
+                "reference": "9650ba486e21a84659fcfd46b3e5f2c4fa2b735c",
                 "shasum": ""
             },
             "require": {
+                "ext-ctype": "*",
+                "ext-json": "*",
                 "php": ">=7.2.9",
                 "wikimedia/at-ease": "^2.0.0"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "35.0.0",
-                "mediawiki/mediawiki-phan-config": "0.10.6",
+                "mediawiki/mediawiki-codesniffer": "39.0.0",
+                "mediawiki/mediawiki-phan-config": "0.11.1",
                 "mediawiki/minus-x": "1.1.1",
-                "ockcyp/covers-validator": "1.3.3",
-                "php-parallel-lint/php-console-highlighter": "0.5.0",
-                "php-parallel-lint/php-parallel-lint": "1.2.0",
+                "ockcyp/covers-validator": "1.4.0",
+                "php-parallel-lint/php-console-highlighter": "1.0.0",
+                "php-parallel-lint/php-parallel-lint": "1.3.2",
                 "phpunit/phpunit": "^8.5"
             },
-            "time": "2021-03-21T17:31:05+00:00",
+            "time": "2022-05-20T20:38:50+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -6924,7 +6926,7 @@
             "description": "Efficiently match IP addresses against a set of CIDR specifications.",
             "homepage": "https://www.mediawiki.org/wiki/IPSet",
             "support": {
-                "source": "https://github.com/wikimedia/IPSet/tree/3.0.0"
+                "source": "https://github.com/wikimedia/IPSet/tree/3.1.0"
             },
             "install-path": "../wikimedia/ip-set"
         },

@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '9d08d3eb3336034c962fd8a533a0986e1026a04d',
+        'reference' => 'a0c43035328ecdcd6b282ebf0b40643aeb03755e',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '9d08d3eb3336034c962fd8a533a0986e1026a04d',
+            'reference' => 'a0c43035328ecdcd6b282ebf0b40643aeb03755e',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -1005,12 +1005,12 @@
             'dev_requirement' => false,
         ),
         'wikimedia/ip-set' => array(
-            'pretty_version' => '3.0.0',
-            'version' => '3.0.0.0',
+            'pretty_version' => '3.1.0',
+            'version' => '3.1.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/ip-set',
             'aliases' => array(),
-            'reference' => '4efe81f0ffb907a60778a72faf6ede17bb490081',
+            'reference' => '9650ba486e21a84659fcfd46b3e5f2c4fa2b735c',
             'dev_requirement' => false,
         ),
         'wikimedia/ip-utils' => array(
