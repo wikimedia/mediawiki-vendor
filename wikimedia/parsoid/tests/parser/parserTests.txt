@@ -9495,6 +9495,17 @@ Interwiki link with percent encoded target
 <p><a rel="mw:WikiLink/Interwiki" href="http://es.wikipedia.org/wiki/Nueva%20Guipúzcoa" title="es:Nueva Guipúzcoa" class="extiw" data-parsoid='{"stx":"piped","a":{"href":"http://es.wikipedia.org/wiki/Nueva%20Guipúzcoa"},"sa":{"href":":es:Nueva Guip%C3%BAzcoa"},"isIW":true}'>Nueva Guipúzcoa</a></p>
 !! end
 
+!! test
+Interwiki link with colon escape after prefix
+!! wikitext
+[[meatball::Category:Hello]]
+!! html/php
+<p><a href="http://www.usemod.com/cgi-bin/mb.pl?Category:Hello" class="extiw" title="meatball:Category:Hello">meatball::Category:Hello</a>
+</p>
+!! html/parsoid
+<p><a rel="mw:WikiLink/Interwiki" href="http://www.usemod.com/cgi-bin/mb.pl?Category:Hello" title="meatball:Category:Hello" class="extiw" data-parsoid='{"stx":"simple","a":{"href":"http://www.usemod.com/cgi-bin/mb.pl?Category:Hello"},"sa":{"href":"meatball::Category:Hello"},"isIW":true}'>meatball:Category:Hello</a></p>
+!! end
+
 ###
 ### Interlanguage links
 ### Language links (so that searching for '### language' matches..)
@@ -11737,7 +11748,7 @@ wgRestrictDisplayTitle=false
 
 # NOTE: mw:ExpandedAttrs is not the best typeof here. mw:Transclusion is better.
 # But, this is a limitation of our representation and is documented in
-# TemplateHandler.js in processSpecialMagicWord
+# TemplateHandler.php in processSpecialMagicWord
 !! test
 Parsoid: Template-generated DISPLAYTITLE
 !! wikitext
@@ -16320,7 +16331,7 @@ parsoid=html2wt
 
 # NOTE: mw:ExpandedAttrs is not the best typeof here. mw:Transclusion is better.
 # But, this is a limitation of our representation and is documented in
-# TemplateHandler.js in processSpecialMagicWord
+# TemplateHandler.php in processSpecialMagicWord
 !! test
 Parsoid: Defaultsort (template-generated)
 !! wikitext

@@ -520,6 +520,12 @@ class LinkHandlerUtils {
 			$strippedTargetValue = rtrim(
 				preg_replace( '#^\s*(:|\./)#', '', $target['value'], 1 )
 			);
+
+			// Strip colon escape after prefix for interwikis
+			if ( !empty( $linkData->isInterwiki ) ) {
+				$strippedTargetValue = preg_replace( '#^(\w+:):#', '$1', $strippedTargetValue, 1 );
+			}
+
 			$decodedTarget = Utils::decodeWtEntities( $strippedTargetValue );
 			// Deal with the protocol-relative link scenario as well
 			$hrefHasProto = preg_match( '#^(\w+:)?//#', $linkData->href );
@@ -536,6 +542,7 @@ class LinkHandlerUtils {
 				// try wrapped in forward slashes in case they were stripped
 				( '/' . $contentString . '/' ) === $decodedTarget ||
 				// normalize as titles and compare
+				// FIXME: This will strip an interwiki prefix.  Is that right?
 				$env->normalizedTitleKey( $contentString, true )
 					=== preg_replace( self::$MW_TITLE_WHITESPACE_RE, '_', $decodedTarget ) ||
 				// Relative link
@@ -1156,6 +1163,17 @@ class LinkHandlerUtils {
 			$caption = $state->serializeCaptionChildrenToString(
 				$captionElt, [ $state->serializer->wteHandlers, 'mediaOptionHandler' ]
 			);
+
+			// Alt stuff
+			if ( !WTUtils::hasVisibleCaption( $outerElt ) && $elt->hasAttribute( 'alt' ) ) {
+				$altOnElt = trim( $elt->getAttribute( 'alt' ) );
+				$altFromCaption = trim( WTUtils::textContentFromCaption( $captionElt ) );
+				// The first condition is to support an empty \alt=\ option
+				// when no caption is present
+				if ( $altOnElt && ( $altOnElt === $altFromCaption ) ) {
+					$elt->removeAttribute( 'alt' );
+				}
+			}
 		}
 
 		// Fetch the alt (if any)
