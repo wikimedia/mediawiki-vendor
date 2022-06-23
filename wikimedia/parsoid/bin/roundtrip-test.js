@@ -24,7 +24,7 @@ var Diff = require('../lib/utils/Diff.js').Diff;
 var JSUtils = require('../lib/utils/jsutils.js').JSUtils;
 var MockEnv = require('../tests/MockEnv.js').MockEnv;
 
-var defaultContentVersion = '2.4.0';
+var defaultContentVersion = '2.5.0';
 
 function displayDiff(type, count) {
 	var pad = (10 - type.length);  // Be positive!
@@ -212,7 +212,7 @@ var findMatchingNodes = function(node, range) {
 
 	// Cannot inspect image subtree at a finer grained level
 	var typeOf = node.getAttribute('typeof') || '';
-	if (/\bmw:Image(\/|\s|$)/.test(typeOf) && /^(FIGURE|SPAN)$/.test(node.nodeName)) {
+	if (/\bmw:File(\/|\s|$)/.test(typeOf) && /^(FIGURE|SPAN)$/.test(node.nodeName)) {
 		return [node];
 	}
 
@@ -823,12 +823,7 @@ var runTests = Promise.async(function *(title, options, formatter) {
 
 	if (options.readViewStripBenchmark && Math.random() < (options.readViewStripBenchmark.sampleRate || 0)) {
 		const rules = options.readViewStripBenchmark.rules;
-		const diffSizes = yield benchmarkReadView(domain, title, data.oldHTML.body, rules);
-		profile.readViewSizes = {
-			'original': diffSizes.originalSize,
-			'stripped': diffSizes.strippedSize,
-			'mwParser': diffSizes.mwParserSize
-		};
+		profile.readViewSizes = yield benchmarkReadView(domain, title, data.oldHTML.body, rules);
 	}
 
 	var output = formatter(error, prefix, title, data.diffs, profile);
