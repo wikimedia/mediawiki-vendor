@@ -28,4 +28,14 @@ class ErrorCode {
 	const UNEXPECTED_VALUE = 1000008;
 	/** @var string For use in default: cases. When encountered, classify the error and add here if needed */
 	const UNKNOWN = 1000009;
+	/** @var string A supposedly well-defined field has a value that is not supported */
+	const ACCOUNT_MISCONFIGURATION = 1000010;
+	/** @var string Their server has an internal error */
+	const INTERNAL_ERROR = 1000011;
+	/** @var string Payment method not found for supplied token */
+	const METHOD_NOT_FOUND = 1000012;
+	/** @var string Too many requests made to the server per time */
+	const EXCEEDED_LIMIT = 1000013;
+	/** @var string Validation error on a field */
+	const VALIDATION = 1000014;
 }

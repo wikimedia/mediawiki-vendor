@@ -2,15 +2,33 @@
 
 namespace SmashPig\Core\Cache;
 
+use Predis\Client;
 use Psr\Cache\CacheItemInterface;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Cache\InvalidArgumentException;
 
-class HashCache implements CacheItemPoolInterface {
+class PredisCache implements CacheItemPoolInterface {
 
-	protected $items = [];
+	/* @var Client */
+	protected $client;
 
 	protected $deferredQueue = [];
+
+	protected $prefix = 'smashpig_cache_';
+
+	public function __construct( array $options ) {
+		if ( empty( $options['servers'] ) ) {
+			throw new \Exception( 'PredisCache constructor needs a "servers" key' );
+		}
+		$this->client = new Client( $options['servers'] );
+		if ( !empty( $options['prefix'] ) ) {
+			$this->prefix = $options['prefix'];
+		}
+	}
+
+	protected function fullKey( string $key ): string {
+		return $this->prefix . $key;
+	}
 
 	/**
 	 * Returns a Cache Item representing the specified key.
@@ -29,8 +47,9 @@ class HashCache implements CacheItemPoolInterface {
 	 *   The corresponding Cache Item.
 	 */
 	public function getItem( $key ) {
-		if ( isset( $this->items[$key] ) ) {
-			return new SimpleCacheItem( $key, $this->items[$key], true );
+		$fullKey = $this->fullKey( $key );
+		if ( $this->client->exists( $fullKey ) ) {
+			return new SimpleCacheItem( $key, $this->client->get( $fullKey ), true );
 		}
 		return new SimpleCacheItem( $key, null, false );
 	}
@@ -73,7 +92,7 @@ class HashCache implements CacheItemPoolInterface {
 	 *   True if item exists in the cache, false otherwise.
 	 */
 	public function hasItem( $key ) {
-		return isset( $this->items[$key] );
+		return $this->client->exists( $this->fullKey( $key ) );
 	}
 
 	/**
@@ -83,7 +102,9 @@ class HashCache implements CacheItemPoolInterface {
 	 *   True if the pool was successfully cleared. False if there was an error.
 	 */
 	public function clear() {
-		$this->items = [];
+		foreach ( $this->client->keys( $this->prefix . '*' ) as $fullKey ) {
+			$this->client->del( $fullKey );
+		}
 		return true;
 	}
 
@@ -101,7 +122,7 @@ class HashCache implements CacheItemPoolInterface {
 	 *   True if the item was successfully removed. False if there was an error.
 	 */
 	public function deleteItem( $key ) {
-		unset( $this->items[$key] );
+		$this->client->del( $this->fullKey( $key ) );
 		return true;
 	}
 
@@ -132,7 +153,16 @@ class HashCache implements CacheItemPoolInterface {
 	 *   True if the item was successfully persisted. False if there was an error.
 	 */
 	public function save( CacheItemInterface $item ) {
-		$this->items[$item->getKey()] = $item->get();
+		if ( !$item instanceof SimpleCacheItem ) {
+			throw new \InvalidArgumentException(
+				'Cache items are not transferable between pools. I only work with items of type SimpleCacheItem.'
+			);
+		}
+		if ( $item->getTtl() ) {
+			$this->client->setex( $this->fullKey( $item->getKey() ), $item->getTtl(), $item->get() );
+		} else {
+			$this->client->set( $this->fullKey( $item->getKey() ), $item->get() );
+		}
 		return true;
 	}
 

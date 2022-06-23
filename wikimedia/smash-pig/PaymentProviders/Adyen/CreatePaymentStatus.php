@@ -2,9 +2,9 @@
 
 namespace SmashPig\PaymentProviders\Adyen;
 
-use OutOfBoundsException;
 use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentData\StatusNormalizer;
+use UnexpectedValueException;
 
 class CreatePaymentStatus implements StatusNormalizer {
 
@@ -25,7 +25,7 @@ class CreatePaymentStatus implements StatusNormalizer {
 				$status = FinalStatus::FAILED;
 				break;
 			default:
-				throw new OutOfBoundsException( "Unknown Adyen status $adyenStatus" );
+				throw new UnexpectedValueException( "Unknown Adyen status $adyenStatus" );
 		}
 
 		return $status;

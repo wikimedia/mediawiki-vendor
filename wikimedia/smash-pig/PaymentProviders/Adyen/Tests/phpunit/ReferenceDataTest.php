@@ -18,4 +18,12 @@ class ReferenceDataTest extends TestCase {
 		$this->assertEquals( 'apple', $method );
 		$this->assertEquals( 'visa-electron', $submethod );
 	}
+
+	public function testParseGooglePay() {
+		// In the audit files we see the same value under 'Payment Method' and 'Payment Method Variant'
+		// field for Google Pay as well
+		[ $method, $submethod ] = ReferenceData::decodePaymentMethod( 'visa_googlepay', 'visa_googlepay' );
+		$this->assertEquals( 'google', $method );
+		$this->assertEquals( 'visa', $submethod );
+	}
 }

@@ -2,6 +2,10 @@
 
 use OutOfBoundsException;
 
+/**
+ * These codes are listed per country at e.g.
+ * https://docs.dlocal.com/api-documentation/payins-api-reference/payment-methods/brazil
+ */
 class ReferenceData {
 
 	protected static $methods = [
@@ -21,6 +25,7 @@ class ReferenceData {
 	];
 
 	protected static $simpleSubmethods = [
+		'AA' => 'alia',
 		'AG' => 'argen',
 		'AE' => 'amex',
 		'AI' => 'cash_abitab',
@@ -40,6 +45,7 @@ class ReferenceData {
 		'CM' => 'cmr',
 		'CR' => 'carulla',
 		'CS' => 'cencosud',
+		'CZ' => 'codenza',
 		'DA' => 'cash_davivienda',
 		'DC' => 'diners',
 		'DD' => 'dineromail', // (Transfer)
@@ -56,11 +62,13 @@ class ReferenceData {
 		'IB' => 'interbank',
 		'IO' => 'ach', // South Africa, ACH bt
 		'JC' => 'jcb',
+		'LD' => 'cabal-debit',
 		'LI' => 'lider',
 		'MC' => 'mc',
 		'MD' => 'mc-debit',
 		'MG' => 'magna',
 		'ML' => 'mercadolivre',
+		'MP' => 'mercadopago',
 		'MS' => 'maestro',
 		'NB' => 'netbanking', // India
 		'NJ' => 'naranja',
@@ -74,6 +82,7 @@ class ReferenceData {
 		'PQ' => 'pix', // Brazil
 		'PR' => 'presto',
 		'PW' => 'paytmwallet', // India
+		'PY' => 'picpay', // Brazil
 		'RE' => 'cash_red_pagos',
 		'RL' => 'red_link',
 		'RP' => 'cash_rapipago',

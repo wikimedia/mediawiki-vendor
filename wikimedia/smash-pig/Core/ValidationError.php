@@ -28,15 +28,22 @@ class ValidationError {
 	protected $messageParams;
 
 	/**
+	 * @var string|null message from gateway stating error detail
+	 */
+	protected $debugMessage;
+
+	/**
 	 * ValidationError constructor.
 	 * @param string $field normalized field name
 	 * @param string|null $messageKey i18n key for the error message
-	 * @param array $messageParams parameters to interpolate into the message
+	 * @param string|null $debugMessage message from gateway stating error detail
+	 * @param array|null $messageParams parameters to interpolate into the message
 	 */
-	public function __construct( string $field, ?string $messageKey = null, array $messageParams = [] ) {
+	public function __construct( string $field, ?string $messageKey = null, array $messageParams = [], string $debugMessage = null ) {
 		$this->field = $field;
 		$this->messageKey = $messageKey;
 		$this->messageParams = $messageParams;
+		$this->debugMessage = $debugMessage;
 	}
 
 	public function getField(): string {
@@ -49,6 +56,10 @@ class ValidationError {
 
 	public function setMessageKey( ?string $key ) {
 		$this->messageKey = $key;
+	}
+
+	public function getDebugMessage(): string {
+		return $this->debugMessage;
 	}
 
 	public function getMessageParams(): array {

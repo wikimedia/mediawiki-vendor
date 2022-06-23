@@ -21,11 +21,12 @@ class TestFailMail extends MaintenanceBase {
 		Logger::notice( 'Notice...' );
 		Logger::getTaggedLogger( 'RawData' )->info( 'This should be tagged RawData' );
 		Logger::warning( 'Warning!', [ 'foo' => 'bar' ] );
+		Logger::error( 'Error!' );
 
 		try {
 			$this->throwException();
 		} catch ( SmashPigException $ex ) {
-			Logger::error( 'ERROR!!!!', null, $ex );
+			Logger::alert( 'ALERT!!!!', null, $ex );
 		}
 	}
 

@@ -16,6 +16,9 @@
       <testsuite name="AstroPay tests">
         <directory>PaymentProviders/AstroPay/Tests/phpunit</directory>
       </testsuite>
+      <testsuite name="Braintree tests">
+        <directory>PaymentProviders/Braintree/Tests/phpunit</directory>
+      </testsuite>
       <testsuite name="Ingenico tests">
         <directory>PaymentProviders/Ingenico/Tests/phpunit</directory>
       </testsuite>

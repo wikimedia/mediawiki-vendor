@@ -2,7 +2,7 @@
 namespace SmashPig\PaymentProviders\Ingenico\Tests;
 
 use Psr\Cache\CacheItemPoolInterface;
-use SmashPig\Core\Cache\HashCacheItem;
+use SmashPig\Core\Cache\SimpleCacheItem;
 use SmashPig\Core\Context;
 use SmashPig\PaymentProviders\Ingenico\BankPaymentProvider;
 use SmashPig\Tests\BaseSmashPigUnitTestCase;
@@ -81,7 +81,7 @@ class BankPaymentProviderTest extends BaseSmashPigUnitTestCase {
 	}
 
 	public function testBustedCacheExpiration() {
-		$cacheItem = new HashCacheItem(
+		$cacheItem = new SimpleCacheItem(
 			'BLAH_BLAH_NL_EUR_809',
 			[
 				'value' => [ 'STALE' => 'NotValid' ],

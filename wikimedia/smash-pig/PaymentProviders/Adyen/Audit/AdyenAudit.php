@@ -143,6 +143,10 @@ class AdyenAudit implements AuditParser {
 
 	protected function parseDonation( array $row, array &$msg ) {
 		$msg['gateway_txn_id'] = $row['Psp Reference'];
+		// T306944
+		// We were saving the Capture ID for 2+ recurrings in civi which for settled payments is in the
+		// Modification reference. Adding this lets us match donations until the data is cleaned up
+		$msg['modification_reference'] = $row['Modification Reference'];
 
 		$msg['currency'] = $row['Gross Currency'];
 		$msg['gross'] = $row['Gross Credit (GC)'];

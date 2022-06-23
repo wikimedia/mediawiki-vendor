@@ -1,4 +1,6 @@
-<?php namespace SmashPig\Core\Logging\LogStreams;
+<?php
+
+namespace SmashPig\Core\Logging\LogStreams;
 
 use SmashPig\Core\Context;
 use SmashPig\Core\Logging\LogContextHandler;
@@ -17,6 +19,8 @@ class FailmailLogStream implements ILogStream {
 	protected $to;
 	protected $from;
 
+	protected $minSecondsBetweenEmails = 0;
+
 	protected $levels = [
 		LOG_ALERT   => '[ALERT]',
 		LOG_ERR     => '[ERROR]',
@@ -26,8 +30,9 @@ class FailmailLogStream implements ILogStream {
 		LOG_DEBUG   => '[DEBUG]',
 	];
 
-	public function __construct( $toAddr, $fromAddr = null ) {
+	public function __construct( $toAddr, $fromAddr = null, $minSecondsBetweenEmails = 0 ) {
 		$this->to = $toAddr;
+		$this->minSecondsBetweenEmails = $minSecondsBetweenEmails;
 
 		if ( $fromAddr ) {
 			$this->from = $fromAddr;
@@ -155,13 +160,46 @@ class FailmailLogStream implements ILogStream {
 		$currentView = Context::get()->getProviderConfiguration()->getProviderName();
 		$hostName = gethostname();
 
-		MailHandler::sendEmail(
-			$this->to,
-			"FAILMAIL - {$level}: {$hostName} ({$currentView}) {$this->contextName}",
-			implode( "\n", $body ),
-			$this->from
-		);
+		$cacheKey = "last-failmail-$level-$hostName-$currentView";
 
-		$this->mailSent = true;
+		if ( $this->shouldSendEmail( $cacheKey ) ) {
+			MailHandler::sendEmail(
+				$this->to,
+				"FAILMAIL - {$level}: {$hostName} ({$currentView}) {$this->contextName}",
+				implode( "\n", $body ),
+				$this->from
+			);
+
+			$this->mailSent = true;
+			$this->updateCache( $cacheKey );
+		}
+	}
+
+	protected function shouldSendEmail( string $cacheKey ): bool {
+		if ( $this->minSecondsBetweenEmails === 0 ) {
+			return true;
+		}
+		/* @var $cache \Psr\Cache\CacheItemPoolInterface */
+		$cache = Context::get()->getGlobalConfiguration()->object( 'cache' );
+		// If the key is set and not yet expired, we should not send email yet
+		return !$cache->hasItem( $cacheKey );
+	}
+
+	protected function updateCache( string $cacheKey ): void {
+		if ( $this->minSecondsBetweenEmails === 0 ) {
+			return;
+		}
+		/* @var $cache \Psr\Cache\CacheItemPoolInterface */
+		$cache = Context::get()->getGlobalConfiguration()->object( 'cache' );
+		// PSR-6 says this is the way to create a new cache item, even if we
+		// don't expect the item to exist.
+		$cacheItem = $cache->getItem( $cacheKey );
+
+		// Value doesn't actually matter to the checking code, but this might
+		// be useful information to anyone looking at the raw redis values
+		$cacheItem->set( time() );
+		// Set the item to expire when we are ready to send more email.
+		$cacheItem->expiresAfter( $this->minSecondsBetweenEmails );
+		$cache->save( $cacheItem );
 	}
 }

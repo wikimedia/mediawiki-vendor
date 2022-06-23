@@ -2,9 +2,9 @@
 
 namespace SmashPig\PaymentProviders\Ingenico;
 
-use OutOfBoundsException;
 use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentData\StatusNormalizer;
+use UnexpectedValueException;
 
 class RefundStatus implements StatusNormalizer {
 
@@ -51,6 +51,6 @@ class RefundStatus implements StatusNormalizer {
 				return $finalStatus;
 			}
 		}
-		throw new OutOfBoundsException( "Unknown Ingenico status code $ingenicoStatus" );
+		throw new UnexpectedValueException( "Unknown Ingenico status code $ingenicoStatus" );
 	}
 }
