@@ -240,10 +240,13 @@ class Validate implements LoggerAwareInterface {
 			$this->logger->info( __METHOD__ . ' Flash structure did not have all the required components' );
 			$val = null;
 		} else {
+			// @phan-suppress-next-line PhanTypeInvalidRightOperandOfBitwiseOp
 			$val = ( 0 | ( $val['Fired'] === 'True' )
 				| ( (int)$val['Return'] << 1 )
 				| ( (int)$val['Mode'] << 3 )
+				// @phan-suppress-next-line PhanTypeInvalidLeftOperandOfIntegerOp
 				| ( ( $val['Function'] === 'True' ) << 5 )
+				// @phan-suppress-next-line PhanTypeInvalidLeftOperandOfIntegerOp
 				| ( ( $val['RedEyeMode'] === 'True' ) << 6 ) );
 		}
 	}
@@ -296,14 +299,12 @@ class Validate implements LoggerAwareInterface {
 			return;
 		}
 		$res = [];
-		// @codingStandardsIgnoreStart Long line that cannot be broken
 		if ( !preg_match(
 			/* ahh! scary regex... */
+			// phpcs:ignore Generic.Files.LineLength
 			'/^([0-3]\d{3})(?:-([01]\d)(?:-([0-3]\d)(?:T([0-2]\d):([0-6]\d)(?::([0-6]\d)(?:\.\d+)?)?([-+]\d{2}:\d{2}|Z)?)?)?)?$/D',
 			$val, $res )
 		) {
-			// @codingStandardsIgnoreEnd
-
 			$this->logger->info( __METHOD__ . " Expected date but got $val" );
 			$val = null;
 			return;
@@ -375,7 +376,7 @@ class Validate implements LoggerAwareInterface {
 		if ( substr( $res[7], 0, 1 ) === '-' ) {
 			$offset = -$offset;
 		}
-		$val = ConvertibleTimestamp::convert( TS_EXIF, $unix + $offset );
+		$val = ConvertibleTimestamp::convert( TS_EXIF, (int)$unix + $offset );
 
 		if ( $stripSeconds ) {
 			// If seconds weren't specified, remove the trailing ':00'.

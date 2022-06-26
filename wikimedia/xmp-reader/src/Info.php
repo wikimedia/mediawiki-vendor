@@ -1231,11 +1231,6 @@ class Info {
 				'mode' => Reader::MODE_SIMPLE,
 				'validate' => 'validateInteger',
 			],
-			'InitialViewRollDegrees' => [
-				'map_group' => 'general',
-				'mode' => Reader::MODE_SIMPLE,
-				'validate' => 'validateInteger',
-			],
 			'InitialHorizontalFOVDegrees' => [
 				'map_group' => 'general',
 				'mode' => Reader::MODE_SIMPLE,

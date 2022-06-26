@@ -38,7 +38,7 @@ use XMLReader;
  *
  * Note, this is not meant to recognize every possible thing you can
  * encode in XMP. It should recognize all the properties we want.
- * For example it doesn't have support for structures with multiple
+ * For example, it doesn't have support for structures with multiple
  * nesting levels, as none of the properties we're supporting use that
  * feature. If it comes across properties it doesn't recognize, it should
  * ignore them.
@@ -83,7 +83,7 @@ class Reader implements LoggerAwareInterface {
 	/** @var bool|string Used for lang alts only */
 	private $itemLang = false;
 
-	/** @var resource A resource handle for the XML parser */
+	/** @var resource|null A resource handle for the XML parser */
 	private $xmlParser;
 
 	/** @var bool|string Character set like 'UTF-8' */
@@ -205,7 +205,8 @@ class Reader implements LoggerAwareInterface {
 		return function_exists( 'xml_parser_create_ns' ) && class_exists( XMLReader::class );
 	}
 
-	/** Get the result array. Do some post-processing before returning
+	/**
+	 * Get the result array. Do some post-processing before returning
 	 * the array, and transform any metadata that is special-cased.
 	 *
 	 * @return array Array of results as an array of arrays suitable for
@@ -237,10 +238,11 @@ class Reader implements LoggerAwareInterface {
 		}
 
 		// Go through the LocationShown and LocationCreated
-		// changing it to the non-hierarchal form used by
+		// changing it to the non-hierarchical form used by
 		// the other location fields.
 
 		if ( isset( $data['xmp-special']['LocationShown'][0] )
+			// @phan-suppress-next-line PhanTypeArraySuspiciousNull, PhanTypeInvalidDimOffset
 			&& is_array( $data['xmp-special']['LocationShown'][0] )
 		) {
 			// the is_array is just paranoia. It should always
@@ -256,6 +258,7 @@ class Reader implements LoggerAwareInterface {
 			}
 		}
 		if ( isset( $data['xmp-special']['LocationCreated'][0] )
+			// @phan-suppress-next-line PhanTypeArraySuspiciousNull, PhanTypeInvalidDimOffset
 			&& is_array( $data['xmp-special']['LocationCreated'][0] )
 		) {
 			// the is_array is just paranoia. It should always
@@ -282,8 +285,10 @@ class Reader implements LoggerAwareInterface {
 			// Must convert to a real before multiplying by -1
 			// Validate guarantees there will always be a '/' in this value.
 			list( $nom, $denom ) = explode( '/', $data['xmp-exif']['GPSAltitude'] );
+			// @phan-suppress-next-line PhanTypeInvalidLeftOperandOfNumericOp, PhanTypeInvalidRightOperandOfNumericOp
 			$data['xmp-exif']['GPSAltitude'] = $nom / $denom;
 
+			// @phan-suppress-next-line PhanTypeInvalidDimOffset
 			if ( $data['xmp-exif']['GPSAltitudeRef'] == '1' ) {
 				$data['xmp-exif']['GPSAltitude'] *= -1;
 			}
@@ -687,8 +692,7 @@ class Reader implements LoggerAwareInterface {
 		list( $ns, $tag ) = explode( ' ', $elm, 2 );
 		if ( isset( $this->items[$ns][$tag]['validate'] ) ) {
 			$info =& $this->items[$ns][$tag];
-			$finalName = isset( $info['map_name'] )
-				? $info['map_name'] : $tag;
+			$finalName = $info['map_name'] ?? $tag;
 
 			if ( is_array( $info['validate'] ) ) {
 				$validate = $info['validate'];
@@ -718,7 +722,7 @@ class Reader implements LoggerAwareInterface {
 			} else {
 				$this->logger->warning(
 					__METHOD__ . " Validation function for $finalName (" .
-					$validate[0] . '::' . $validate[1] . '()) is not callable.',
+					get_class( $validate[0] ) . '::' . $validate[1] . '()) is not callable.',
 					[ 'file' => $this->filename ]
 				);
 			}
@@ -753,14 +757,13 @@ class Reader implements LoggerAwareInterface {
 	private function endElementModeLi( $elm ) {
 		list( $ns, $tag ) = explode( ' ', $this->curItem[0], 2 );
 		$info = $this->items[$ns][$tag];
-		$finalName = isset( $info['map_name'] )
-			? $info['map_name'] : $tag;
+		$finalName = $info['map_name'] ?? $tag;
 
 		array_shift( $this->mode );
 
 		if ( !isset( $this->results['xmp-' . $info['map_group']][$finalName] ) ) {
 			$this->logger->debug(
-				__METHOD__ . " Empty compund element $finalName.",
+				__METHOD__ . " Empty compound element $finalName.",
 				[ 'file' => $this->filename ]
 			);
 
@@ -1081,8 +1084,7 @@ class Reader implements LoggerAwareInterface {
 				array_unshift( $this->mode, $mode );
 				array_unshift( $this->curItem, $ns . ' ' . $tag );
 				if ( $mode === self::MODE_STRUCT ) {
-					$this->ancestorStruct = isset( $this->items[$ns][$tag]['map_name'] )
-						? $this->items[$ns][$tag]['map_name'] : $tag;
+					$this->ancestorStruct = $this->items[$ns][$tag]['map_name'] ?? $tag;
 				}
 				if ( $this->charContent !== false ) {
 					// Something weird.
@@ -1191,8 +1193,7 @@ class Reader implements LoggerAwareInterface {
 				throw new RuntimeException( 'Can not find parent of BAGSTRUCT.' );
 			}
 			list( $curNS, $curTag ) = explode( ' ', $this->curItem[1] );
-			$this->ancestorStruct = isset( $this->items[$curNS][$curTag]['map_name'] )
-				? $this->items[$curNS][$curTag]['map_name'] : $curTag;
+			$this->ancestorStruct = $this->items[$curNS][$curTag]['map_name'] ?? $curTag;
 
 			$this->doAttribs( $attribs );
 		} else {
@@ -1405,8 +1406,7 @@ class Reader implements LoggerAwareInterface {
 	 */
 	private function saveValue( $ns, $tag, $val ) {
 		$info =& $this->items[$ns][$tag];
-		$finalName = isset( $info['map_name'] )
-			? $info['map_name'] : $tag;
+		$finalName = $info['map_name'] ?? $tag;
 		if ( isset( $info['validate'] ) ) {
 			if ( is_array( $info['validate'] ) ) {
 				$validate = $info['validate'];
@@ -1430,7 +1430,7 @@ class Reader implements LoggerAwareInterface {
 			} else {
 				$this->logger->warning(
 					__METHOD__ . " Validation function for $finalName (" .
-					$validate[0] . '::' . $validate[1] . '()) is not callable.',
+					get_class( $validate[0] ) . '::' . $validate[1] . '()) is not callable.',
 					[ 'file' => $this->filename ]
 				);
 			}
