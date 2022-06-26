@@ -128,7 +128,7 @@
 		"wikimedia/shellbox": "3.0.0",
 		"wikimedia/testing-access-wrapper": "2.0.0",
 		"wikimedia/textcat": "2.0.0",
-		"wikimedia/timestamp": "3.0.0",
+		"wikimedia/timestamp": "4.0.0",
 		"wikimedia/utfnormal": "3.0.2",
 		"wikimedia/wait-condition-loop": "2.0.2",
 		"wikimedia/wrappedstring": "4.0.1",
