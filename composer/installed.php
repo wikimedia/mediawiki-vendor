@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '2dac01fc0d0936767462ca793c73bc2580dc4fbf',
+        'reference' => '58bae77a72a5b279e6f6bbdb12ece6622d5e4455',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '2dac01fc0d0936767462ca793c73bc2580dc4fbf',
+            'reference' => '58bae77a72a5b279e6f6bbdb12ece6622d5e4455',
             'dev_requirement' => false,
         ),
         'christian-riesen/base32' => array(
@@ -539,12 +539,12 @@
             'dev_requirement' => false,
         ),
         'wikimedia/remex-html' => array(
-            'pretty_version' => '3.0.1',
-            'version' => '3.0.1.0',
+            'pretty_version' => '3.0.2',
+            'version' => '3.0.2.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/remex-html',
             'aliases' => array(),
-            'reference' => '962d1b028d505f488b77ded093cacce9a0855f29',
+            'reference' => 'a471c8d472a6e80fc4f7a5a77c10758c24325d43',
             'dev_requirement' => false,
         ),
         'wikimedia/request-timeout' => array(
