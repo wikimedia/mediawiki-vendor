@@ -1,5 +1,13 @@
 # Release History
 
+## 2.1.1 (2022-07-27)
+* Loosen guzzlehttp/guzzle requirement.
+
+## 2.1.0 (2021-09-24)
+* Roll our own *nix shell escaping function, improving PHP 8 support
+  while still protecting against attacks using GBK locales by filtering
+  them out of the environment.
+
 ## 2.0.0 (2021-08-20)
 
 * Require PHP >=7.2.9, up from 7.2.0.

@@ -8,6 +8,7 @@ use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use ReflectionClass;
 use Shellbox\Command\OutputFile;
 use Shellbox\Command\OutputGlob;
 use Shellbox\Multipart\MultipartReader;
@@ -70,7 +71,7 @@ class Client {
 		$sources = $options['sources'] ?? [];
 		$binary = !empty( $options['binary'] );
 		foreach ( $options['classes'] ?? [] as $class ) {
-			$rc = new \ReflectionClass( $class );
+			$rc = new ReflectionClass( $class );
 			$sources[] = $rc->getFileName();
 		}
 		$sources = array_unique( $sources );
