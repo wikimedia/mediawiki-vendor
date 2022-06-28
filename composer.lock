@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "aa401d1696b72e1c191084ce9217e288",
+    "content-hash": "78b10109071c761995c737b03f6b8a7f",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -6435,16 +6435,16 @@
         },
         {
             "name": "wikimedia/equivset",
-            "version": "1.4.2",
+            "version": "1.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/Equivset.git",
-                "reference": "f41a259526a5597e1c3cb3cf745d1f1af6d36a00"
+                "reference": "5a51cb593f762c4535e6f092e6db53c45407ffd9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/Equivset/zipball/f41a259526a5597e1c3cb3cf745d1f1af6d36a00",
-                "reference": "f41a259526a5597e1c3cb3cf745d1f1af6d36a00",
+                "url": "https://api.github.com/repos/wikimedia/Equivset/zipball/5a51cb593f762c4535e6f092e6db53c45407ffd9",
+                "reference": "5a51cb593f762c4535e6f092e6db53c45407ffd9",
                 "shasum": ""
             },
             "require": {
@@ -6452,12 +6452,14 @@
                 "wikimedia/utfnormal": "^1.1.0 || ^2.0.0 || ^3.0.1"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "34.0.0",
-                "mediawiki/minus-x": "1.1.0",
+                "ext-json": "*",
+                "mediawiki/mediawiki-codesniffer": "39.0.0",
+                "mediawiki/mediawiki-phan-config": "0.11.1",
+                "mediawiki/minus-x": "1.1.1",
                 "mikey179/vfsstream": "^1.6",
-                "ockcyp/covers-validator": "1.3.3",
-                "php-parallel-lint/php-console-highlighter": "0.5.0",
-                "php-parallel-lint/php-parallel-lint": "1.2.0",
+                "ockcyp/covers-validator": "1.4.0",
+                "php-parallel-lint/php-console-highlighter": "1.0.0",
+                "php-parallel-lint/php-parallel-lint": "1.3.2",
                 "phpunit/phpunit": "^8.5 || ^9.5",
                 "rregeer/phpunit-coverage-check": "~0.1.4",
                 "symfony/console": "^3.3 || ^4 || ^5",
@@ -6487,9 +6489,9 @@
             "homepage": "https://www.mediawiki.org/wiki/Equivset",
             "support": {
                 "issues": "https://github.com/wikimedia/Equivset/issues",
-                "source": "https://github.com/wikimedia/Equivset/tree/1.4.2"
+                "source": "https://github.com/wikimedia/Equivset/tree/1.4.3"
             },
-            "time": "2021-01-30T09:31:47+00:00"
+            "time": "2022-06-28T22:52:16+00:00"
         },
         {
             "name": "wikimedia/html-formatter",

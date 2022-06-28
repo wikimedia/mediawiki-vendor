@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => 'a8b2f211bd7d9544b8199e78e5d23692aeb36128',
+        'reference' => '0c936e641f306d1a8e569a82c1ed8643446d96b3',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => 'a8b2f211bd7d9544b8199e78e5d23692aeb36128',
+            'reference' => '0c936e641f306d1a8e569a82c1ed8643446d96b3',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -978,12 +978,12 @@
             'dev_requirement' => false,
         ),
         'wikimedia/equivset' => array(
-            'pretty_version' => '1.4.2',
-            'version' => '1.4.2.0',
+            'pretty_version' => '1.4.3',
+            'version' => '1.4.3.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/equivset',
             'aliases' => array(),
-            'reference' => 'f41a259526a5597e1c3cb3cf745d1f1af6d36a00',
+            'reference' => '5a51cb593f762c4535e6f092e6db53c45407ffd9',
             'dev_requirement' => false,
         ),
         'wikimedia/html-formatter' => array(
