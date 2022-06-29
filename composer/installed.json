@@ -56,6 +56,10 @@
                 "encode",
                 "rfc4648"
             ],
+            "support": {
+                "issues": "https://github.com/ChristianRiesen/base32/issues",
+                "source": "https://github.com/ChristianRiesen/base32/tree/1.4.0"
+            },
             "install-path": "../christian-riesen/base32"
         },
         {
@@ -121,6 +125,11 @@
                 "validation",
                 "versioning"
             ],
+            "support": {
+                "irc": "irc://irc.freenode.org/composer",
+                "issues": "https://github.com/composer/semver/issues",
+                "source": "https://github.com/composer/semver/tree/3.2.4"
+            },
             "funding": [
                 {
                     "url": "https://packagist.com",
@@ -185,6 +194,10 @@
                 }
             ],
             "description": "Convert CSS stylesheets between left-to-right and right-to-left.",
+            "support": {
+                "issues": "https://github.com/cssjanus/php-cssjanus/issues",
+                "source": "https://github.com/cssjanus/php-cssjanus/tree/v2.1.0"
+            },
             "install-path": "../cssjanus/cssjanus"
         },
         {
@@ -557,6 +570,10 @@
                 }
             ],
             "description": "HOTP simplifies One Time Password systems for PHP Authentication",
+            "support": {
+                "issues": "https://github.com/Jakobo/hotp-php/issues",
+                "source": "https://github.com/Jakobo/hotp-php/tree/v2.0.0"
+            },
             "install-path": "../jakobo/hotp-php"
         },
         {
@@ -610,6 +627,10 @@
                 "php",
                 "statsd"
             ],
+            "support": {
+                "issues": "https://github.com/liuggio/statsd-php-client/issues",
+                "source": "https://github.com/liuggio/statsd-php-client/tree/v1.0.18"
+            },
             "install-path": "../liuggio/statsd-php-client"
         },
         {
@@ -695,6 +716,10 @@
                 "logging",
                 "psr-3"
             ],
+            "support": {
+                "issues": "https://github.com/Seldaek/monolog/issues",
+                "source": "https://github.com/Seldaek/monolog/tree/2.2.0"
+            },
             "funding": [
                 {
                     "url": "https://github.com/Seldaek",
@@ -789,6 +814,9 @@
             ],
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOUI",
+            "support": {
+                "source": "https://github.com/wikimedia/oojs-ui/tree/v0.42.0"
+            },
             "install-path": "../oojs/oojs-ui"
         },
         {
@@ -839,6 +867,10 @@
                 }
             ],
             "description": "More info available on: http://pear.php.net/package/Console_Getopt",
+            "support": {
+                "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Console_Getopt",
+                "source": "https://github.com/pear/Console_Getopt"
+            },
             "install-path": "../pear/console_getopt"
         },
         {
@@ -900,6 +932,10 @@
             ],
             "description": "Class that provides multiple interfaces for sending emails.",
             "homepage": "http://pear.php.net/package/Mail",
+            "support": {
+                "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Mail",
+                "source": "https://github.com/pear/Mail"
+            },
             "install-path": "../pear/mail"
         },
         {
@@ -1017,6 +1053,10 @@
                 "mail",
                 "smtp"
             ],
+            "support": {
+                "issues": "https://github.com/pear/Net_SMTP/issues",
+                "source": "https://github.com/pear/Net_SMTP"
+            },
             "install-path": "../pear/net_smtp"
         },
         {
@@ -1073,6 +1113,10 @@
                 }
             ],
             "description": "More info available on: http://pear.php.net/package/Net_Socket",
+            "support": {
+                "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Net_Socket",
+                "source": "https://github.com/pear/Net_Socket"
+            },
             "install-path": "../pear/net_socket"
         },
         {
@@ -1140,6 +1184,10 @@
                 "uri",
                 "url"
             ],
+            "support": {
+                "issues": "https://pear.php.net/bugs/search.php?cmd=display&package_name[]=Net_URL2",
+                "source": "https://github.com/pear/Net_URL2"
+            },
             "install-path": "../pear/net_url2"
         },
         {
@@ -1257,27 +1305,27 @@
         },
         {
             "name": "pleonasm/bloom-filter",
-            "version": "1.0.2",
-            "version_normalized": "1.0.2.0",
+            "version": "1.0.3",
+            "version_normalized": "1.0.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pleonasm/bloom-filter.git",
-                "reference": "4a3292c9f83a778c44271bf4e4f6be1204b87f7b"
+                "reference": "57c8cf69148fea2327dcf96b21ce50df7ede1dfc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pleonasm/bloom-filter/zipball/4a3292c9f83a778c44271bf4e4f6be1204b87f7b",
-                "reference": "4a3292c9f83a778c44271bf4e4f6be1204b87f7b",
+                "url": "https://api.github.com/repos/pleonasm/bloom-filter/zipball/57c8cf69148fea2327dcf96b21ce50df7ede1dfc",
+                "reference": "57c8cf69148fea2327dcf96b21ce50df7ede1dfc",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.4"
+                "php": ">=7.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8 || ^5.7 || ^6.4",
-                "satooshi/php-coveralls": "^1.0.1"
+                "php-coveralls/php-coveralls": "^2.0",
+                "phpunit/phpunit": "^6.5 || ^7.5 || ^8.5 || ^9.4"
             },
-            "time": "2018-03-03T21:16:42+00:00",
+            "time": "2022-05-02T23:00:47+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -1302,6 +1350,11 @@
                 "filter",
                 "sets"
             ],
+            "support": {
+                "email": "matthew.nagi@base-2.net",
+                "issues": "https://github.com/pleonasm/bloom-filter/issues",
+                "source": "https://github.com/pleonasm/bloom-filter/tree/1.0.3"
+            },
             "install-path": "../pleonasm/bloom-filter"
         },
         {
@@ -1349,6 +1402,10 @@
                 "container-interop",
                 "psr"
             ],
+            "support": {
+                "issues": "https://github.com/php-fig/container/issues",
+                "source": "https://github.com/php-fig/container/tree/1.1.1"
+            },
             "install-path": "../psr/container"
         },
         {
@@ -1401,6 +1458,9 @@
                 "psr",
                 "psr-18"
             ],
+            "support": {
+                "source": "https://github.com/php-fig/http-client/tree/master"
+            },
             "install-path": "../psr/http-client"
         },
         {
@@ -1454,6 +1514,9 @@
                 "request",
                 "response"
             ],
+            "support": {
+                "source": "https://github.com/php-fig/http-message/tree/master"
+            },
             "install-path": "../psr/http-message"
         },
         {
@@ -1504,6 +1567,9 @@
                 "psr",
                 "psr-3"
             ],
+            "support": {
+                "source": "https://github.com/php-fig/log/tree/1.1.3"
+            },
             "install-path": "../psr/log"
         },
         {
@@ -1547,6 +1613,10 @@
                 }
             ],
             "description": "A polyfill for getallheaders.",
+            "support": {
+                "issues": "https://github.com/ralouphie/getallheaders/issues",
+                "source": "https://github.com/ralouphie/getallheaders/tree/develop"
+            },
             "install-path": "../ralouphie/getallheaders"
         },
         {
@@ -1761,6 +1831,9 @@
                 "precondition",
                 "qa"
             ],
+            "support": {
+                "source": "https://github.com/wikimedia/Assert/tree/master"
+            },
             "install-path": "../wikimedia/assert"
         },
         {
@@ -1793,12 +1866,12 @@
             "type": "library",
             "installation-source": "dist",
             "autoload": {
-                "psr-4": {
-                    "Wikimedia\\AtEase\\": "src/Wikimedia/AtEase/"
-                },
                 "files": [
                     "src/Wikimedia/Functions.php"
-                ]
+                ],
+                "psr-4": {
+                    "Wikimedia\\AtEase\\": "src/Wikimedia/AtEase/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -1816,6 +1889,9 @@
             ],
             "description": "Safe replacement to @ for suppressing warnings.",
             "homepage": "https://www.mediawiki.org/wiki/at-ease",
+            "support": {
+                "source": "https://github.com/wikimedia/at-ease/tree/v2.1.0"
+            },
             "install-path": "../wikimedia/at-ease"
         },
         {
@@ -1868,6 +1944,9 @@
             ],
             "description": "Convert an arbitrarily-long string from one numeric base to another, optionally zero-padding to a minimum column width.",
             "homepage": "https://www.mediawiki.org/wiki/base_convert",
+            "support": {
+                "source": "https://github.com/wikimedia/base-convert/tree/master"
+            },
             "install-path": "../wikimedia/base-convert"
         },
         {
@@ -1924,6 +2003,9 @@
             ],
             "description": "Constant Database (CDB) wrapper library for PHP. Provides pure-PHP fallback when dba_* functions are absent.",
             "homepage": "https://www.mediawiki.org/wiki/CDB",
+            "support": {
+                "source": "https://github.com/wikimedia/cdb/tree/master"
+            },
             "install-path": "../wikimedia/cdb"
         },
         {
@@ -1977,36 +2059,40 @@
             ],
             "description": "Evaluates plural rules specified in the CLDR project notation.",
             "homepage": "https://www.mediawiki.org/wiki/CLDRPluralRuleParser",
+            "support": {
+                "source": "https://github.com/wikimedia/CLDRPluralRuleParser/tree/v2.0.0"
+            },
             "install-path": "../wikimedia/cldr-plural-rule-parser"
         },
         {
             "name": "wikimedia/common-passwords",
-            "version": "v0.3.0",
-            "version_normalized": "0.3.0.0",
+            "version": "v0.4.0",
+            "version_normalized": "0.4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/common-passwords.git",
-                "reference": "5b51a88a27e17f485ba1295ee6916620686cd5a5"
+                "reference": "e16d64009724401d8ab870724322b88d11baa75c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/common-passwords/zipball/5b51a88a27e17f485ba1295ee6916620686cd5a5",
-                "reference": "5b51a88a27e17f485ba1295ee6916620686cd5a5",
+                "url": "https://api.github.com/repos/wikimedia/common-passwords/zipball/e16d64009724401d8ab870724322b88d11baa75c",
+                "reference": "e16d64009724401d8ab870724322b88d11baa75c",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2.9",
-                "pleonasm/bloom-filter": "1.0.2"
+                "pleonasm/bloom-filter": "1.0.3"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "35.0.0",
+                "mediawiki/mediawiki-codesniffer": "39.0.0",
+                "mediawiki/mediawiki-phan-config": "0.11.1",
                 "mediawiki/minus-x": "1.1.1",
-                "ockcyp/covers-validator": "1.3.3",
-                "php-parallel-lint/php-console-highlighter": "0.5.0",
-                "php-parallel-lint/php-parallel-lint": "1.2.0",
+                "ockcyp/covers-validator": "1.4.0",
+                "php-parallel-lint/php-console-highlighter": "1.0.0",
+                "php-parallel-lint/php-parallel-lint": "1.3.2",
                 "phpunit/phpunit": "^8.5"
             },
-            "time": "2021-01-31T00:23:58+00:00",
+            "time": "2022-05-21T18:52:09+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -2026,6 +2112,10 @@
             ],
             "description": "List of the 100,000 most commonly used passwords",
             "homepage": "https://www.mediawiki.org/wiki/CommonPasswords",
+            "support": {
+                "issues": "https://github.com/wikimedia/common-passwords/issues",
+                "source": "https://github.com/wikimedia/common-passwords/tree/v0.4.0"
+            },
             "install-path": "../wikimedia/common-passwords"
         },
         {
@@ -2078,6 +2168,10 @@
                 }
             ],
             "description": "Composer plugin to merge multiple composer.json files",
+            "support": {
+                "issues": "https://github.com/wikimedia/composer-merge-plugin/issues",
+                "source": "https://github.com/wikimedia/composer-merge-plugin/tree/v2.0.1"
+            },
             "install-path": "../wikimedia/composer-merge-plugin"
         },
         {
@@ -2152,6 +2246,9 @@
                 "domino",
                 "webidl"
             ],
+            "support": {
+                "source": "https://github.com/wikimedia/mediawiki-libs-Dodo/tree/v0.3.0"
+            },
             "install-path": "../wikimedia/dodo"
         },
         {
@@ -2202,6 +2299,9 @@
             ],
             "description": "Performs transformations of HTML by wrapping around libxml2 and working around its countless bugs.",
             "homepage": "https://www.mediawiki.org/wiki/HtmlFormatter",
+            "support": {
+                "source": "https://github.com/wikimedia/html-formatter/tree/3.0.1"
+            },
             "install-path": "../wikimedia/html-formatter"
         },
         {
@@ -2254,6 +2354,9 @@
             ],
             "description": "DOM interfaces automatically generated from WebIDL",
             "homepage": "https://www.mediawiki.org/wiki/IDLeDOM",
+            "support": {
+                "source": "https://github.com/wikimedia/mediawiki-libs-IDLeDOM/tree/v0.10.0"
+            },
             "install-path": "../wikimedia/idle-dom"
         },
         {
@@ -2304,6 +2407,9 @@
             ],
             "description": "Efficiently match IP addresses against a set of CIDR specifications.",
             "homepage": "https://www.mediawiki.org/wiki/IPSet",
+            "support": {
+                "source": "https://github.com/wikimedia/IPSet/tree/3.0.0"
+            },
             "install-path": "../wikimedia/ip-set"
         },
         {
@@ -2355,6 +2461,9 @@
             ],
             "description": "Functions and constants to play with IP addresses and ranges",
             "homepage": "https://www.mediawiki.org/wiki/IPUtils",
+            "support": {
+                "source": "https://github.com/wikimedia/ip-utils/tree/3.0.2"
+            },
             "install-path": "../wikimedia/ip-utils"
         },
         {
@@ -2423,6 +2532,10 @@
                 "php",
                 "stylesheet"
             ],
+            "support": {
+                "issues": "https://github.com/wikimedia/less.php/issues",
+                "source": "https://github.com/wikimedia/less.php/tree/v3.1.0"
+            },
             "install-path": "../wikimedia/less.php"
         },
         {
@@ -2458,11 +2571,11 @@
             "type": "library",
             "installation-source": "dist",
             "autoload": {
-                "psr-4": {
-                    "Wikimedia\\Minify\\": "src/"
-                },
                 "psr-0": {
                     "CSSMin": "src/"
+                },
+                "psr-4": {
+                    "Wikimedia\\Minify\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2489,6 +2602,9 @@
             ],
             "description": "Minification of JavaScript code and CSS stylesheets.",
             "homepage": "https://gerrit.wikimedia.org/g/mediawiki/libs/Minify",
+            "support": {
+                "source": "https://github.com/wikimedia/minify/tree/2.2.4"
+            },
             "install-path": "../wikimedia/minify"
         },
         {
@@ -2590,6 +2706,9 @@
             ],
             "description": "Construct objects from configuration instructions",
             "homepage": "https://www.mediawiki.org/wiki/ObjectFactory",
+            "support": {
+                "source": "https://github.com/wikimedia/object-factory/tree/v3.0.2"
+            },
             "install-path": "../wikimedia/object-factory"
         },
         {
@@ -2727,6 +2846,9 @@
             ],
             "description": "Provides methods like PHP's session_encode and session_decode that don't mess with $_SESSION",
             "homepage": "https://www.mediawiki.org/wiki/Php-session-serializer",
+            "support": {
+                "source": "https://github.com/wikimedia/php-session-serializer/tree/v2.0.0"
+            },
             "install-path": "../wikimedia/php-session-serializer"
         },
         {
@@ -2796,6 +2918,10 @@
                 "Turtle",
                 "serializer"
             ],
+            "support": {
+                "irc": "irc://irc.freenode.net/wikimedia-dev",
+                "source": "https://github.com/wikimedia/purtle/tree/v1.0.7"
+            },
             "install-path": "../wikimedia/purtle"
         },
         {
@@ -2844,6 +2970,9 @@
             ],
             "description": "Compute a relative filepath between two paths.",
             "homepage": "https://www.mediawiki.org/wiki/RelPath",
+            "support": {
+                "source": "https://github.com/wikimedia/RelPath/tree/3.0.0"
+            },
             "install-path": "../wikimedia/relpath"
         },
         {
@@ -2899,6 +3028,9 @@
             ],
             "description": "Fast HTML 5 parser",
             "homepage": "https://www.mediawiki.org/wiki/RemexHtml",
+            "support": {
+                "source": "https://github.com/wikimedia/remex-html/tree/2.3.2"
+            },
             "install-path": "../wikimedia/remex-html"
         },
         {
@@ -2947,6 +3079,9 @@
             ],
             "description": "Request timeout library for Excimer with plain PHP fallback",
             "homepage": "https://www.mediawiki.org/wiki/RequestTimeout",
+            "support": {
+                "source": "https://github.com/wikimedia/request-timeout/tree/1.1.0"
+            },
             "install-path": "../wikimedia/request-timeout"
         },
         {
@@ -2992,6 +3127,9 @@
             ],
             "description": "PHP implementations of online statistical algorithms",
             "homepage": "https://www.mediawiki.org/wiki/RunningStat",
+            "support": {
+                "source": "https://github.com/wikimedia/RunningStat/tree/master"
+            },
             "install-path": "../wikimedia/running-stat"
         },
         {
@@ -3040,6 +3178,10 @@
             ],
             "description": "Class for asserting that a callback happens when a dummy object leaves scope",
             "homepage": "https://www.mediawiki.org/wiki/ScopedCallback",
+            "support": {
+                "issues": "https://github.com/wikimedia/ScopedCallback/issues",
+                "source": "https://github.com/wikimedia/ScopedCallback/tree/master"
+            },
             "install-path": "../wikimedia/scoped-callback"
         },
         {
@@ -3094,6 +3236,9 @@
             ],
             "description": "Generic service to manage named services using lazy instantiation based on instantiator callback functions",
             "homepage": "https://www.mediawiki.org/wiki/Services",
+            "support": {
+                "source": "https://github.com/wikimedia/mediawiki-libs-Services/tree/master"
+            },
             "install-path": "../wikimedia/services"
         },
         {
@@ -3209,6 +3354,9 @@
             ],
             "description": "Creation, parsing, and conversion of timestamps",
             "homepage": "https://www.mediawiki.org/wiki/Timestamp",
+            "support": {
+                "source": "https://github.com/wikimedia/Timestamp/tree/master"
+            },
             "install-path": "../wikimedia/timestamp"
         },
         {
@@ -3258,6 +3406,9 @@
             ],
             "description": "Contains Unicode normalization routines, including both pure PHP implementations and automatic use of the 'intl' PHP extension when present",
             "homepage": "https://www.mediawiki.org/wiki/utfnormal",
+            "support": {
+                "source": "https://github.com/wikimedia/utfnormal/tree/3.0.2"
+            },
             "install-path": "../wikimedia/utfnormal"
         },
         {
@@ -3307,6 +3458,9 @@
             ],
             "description": "Wait loop that reaches a condition or times out",
             "homepage": "https://www.mediawiki.org/wiki/WaitConditionLoop",
+            "support": {
+                "source": "https://github.com/wikimedia/wait-condition-loop/tree/v2.0.2"
+            },
             "install-path": "../wikimedia/wait-condition-loop"
         },
         {
@@ -3353,6 +3507,9 @@
                 "MIT"
             ],
             "description": "Parser generator for JavaScript and PHP",
+            "support": {
+                "source": "https://github.com/wikimedia/wikipeg/tree/2.0.6"
+            },
             "install-path": "../wikimedia/wikipeg"
         },
         {
@@ -3401,6 +3558,9 @@
             ],
             "description": "Automatically compact sequentially-outputted strings that share a common prefix / suffix pair.",
             "homepage": "https://www.mediawiki.org/wiki/WrappedString",
+            "support": {
+                "source": "https://github.com/wikimedia/WrappedString/tree/v3.2.0"
+            },
             "install-path": "../wikimedia/wrappedstring"
         },
         {
@@ -3465,6 +3625,9 @@
                 "parse",
                 "xmp"
             ],
+            "support": {
+                "source": "https://github.com/wikimedia/xmp-reader/tree/0.8.1"
+            },
             "install-path": "../wikimedia/xmp-reader"
         },
         {
@@ -3530,6 +3693,9 @@
                 "engine",
                 "selector"
             ],
+            "support": {
+                "source": "https://github.com/wikimedia/mediawiki-libs-Zest/tree/2.0.1"
+            },
             "install-path": "../wikimedia/zest-css"
         },
         {
