@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "78b10109071c761995c737b03f6b8a7f",
+    "content-hash": "e725c557c5999007e94f2ab03db047e3",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -3421,24 +3421,24 @@
         },
         {
             "name": "pleonasm/bloom-filter",
-            "version": "1.0.2",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pleonasm/bloom-filter.git",
-                "reference": "4a3292c9f83a778c44271bf4e4f6be1204b87f7b"
+                "reference": "57c8cf69148fea2327dcf96b21ce50df7ede1dfc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pleonasm/bloom-filter/zipball/4a3292c9f83a778c44271bf4e4f6be1204b87f7b",
-                "reference": "4a3292c9f83a778c44271bf4e4f6be1204b87f7b",
+                "url": "https://api.github.com/repos/pleonasm/bloom-filter/zipball/57c8cf69148fea2327dcf96b21ce50df7ede1dfc",
+                "reference": "57c8cf69148fea2327dcf96b21ce50df7ede1dfc",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.4"
+                "php": ">=7.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8 || ^5.7 || ^6.4",
-                "satooshi/php-coveralls": "^1.0.1"
+                "php-coveralls/php-coveralls": "^2.0",
+                "phpunit/phpunit": "^6.5 || ^7.5 || ^8.5 || ^9.4"
             },
             "type": "library",
             "autoload": {
@@ -3466,9 +3466,9 @@
             "support": {
                 "email": "matthew.nagi@base-2.net",
                 "issues": "https://github.com/pleonasm/bloom-filter/issues",
-                "source": "https://github.com/pleonasm/bloom-filter/tree/master"
+                "source": "https://github.com/pleonasm/bloom-filter/tree/1.0.3"
             },
-            "time": "2018-03-03T21:16:42+00:00"
+            "time": "2022-05-02T23:00:47+00:00"
         },
         {
             "name": "psr/container",
@@ -6205,28 +6205,29 @@
         },
         {
             "name": "wikimedia/common-passwords",
-            "version": "v0.3.0",
+            "version": "v0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/common-passwords.git",
-                "reference": "5b51a88a27e17f485ba1295ee6916620686cd5a5"
+                "reference": "e16d64009724401d8ab870724322b88d11baa75c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/common-passwords/zipball/5b51a88a27e17f485ba1295ee6916620686cd5a5",
-                "reference": "5b51a88a27e17f485ba1295ee6916620686cd5a5",
+                "url": "https://api.github.com/repos/wikimedia/common-passwords/zipball/e16d64009724401d8ab870724322b88d11baa75c",
+                "reference": "e16d64009724401d8ab870724322b88d11baa75c",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2.9",
-                "pleonasm/bloom-filter": "1.0.2"
+                "pleonasm/bloom-filter": "1.0.3"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "35.0.0",
+                "mediawiki/mediawiki-codesniffer": "39.0.0",
+                "mediawiki/mediawiki-phan-config": "0.11.1",
                 "mediawiki/minus-x": "1.1.1",
-                "ockcyp/covers-validator": "1.3.3",
-                "php-parallel-lint/php-console-highlighter": "0.5.0",
-                "php-parallel-lint/php-parallel-lint": "1.2.0",
+                "ockcyp/covers-validator": "1.4.0",
+                "php-parallel-lint/php-console-highlighter": "1.0.0",
+                "php-parallel-lint/php-parallel-lint": "1.3.2",
                 "phpunit/phpunit": "^8.5"
             },
             "type": "library",
@@ -6249,9 +6250,9 @@
             "homepage": "https://www.mediawiki.org/wiki/CommonPasswords",
             "support": {
                 "issues": "https://github.com/wikimedia/common-passwords/issues",
-                "source": "https://github.com/wikimedia/common-passwords/tree/v0.3.0"
+                "source": "https://github.com/wikimedia/common-passwords/tree/v0.4.0"
             },
-            "time": "2021-01-31T00:23:58+00:00"
+            "time": "2022-05-21T18:52:09+00:00"
         },
         {
             "name": "wikimedia/composer-merge-plugin",
