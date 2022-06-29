@@ -2255,6 +2255,7 @@ return array(
     'SmashPig\\PaymentProviders\\CancelPaymentResponse' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/CancelPaymentResponse.php',
     'SmashPig\\PaymentProviders\\CreatePaymentResponse' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/CreatePaymentResponse.php',
     'SmashPig\\PaymentProviders\\CreatePaymentSessionResponse' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/CreatePaymentSessionResponse.php',
+    'SmashPig\\PaymentProviders\\DonorDetails' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/DonorDetails.php',
     'SmashPig\\PaymentProviders\\GlobalCollect\\ExpatriatedMessages\\GlobalCollectMessage' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/GlobalCollect/ExpatriatedMessages/GlobalCollectMessage.php',
     'SmashPig\\PaymentProviders\\GlobalCollect\\ExpatriatedMessages\\PaymentMessage' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/GlobalCollect/ExpatriatedMessages/PaymentMessage.php',
     'SmashPig\\PaymentProviders\\GlobalCollect\\GlobalCollectListener' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/GlobalCollect/GlobalCollectListener.php',

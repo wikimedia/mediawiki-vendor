@@ -26,6 +26,12 @@ class PayPalPaymentProviderTest extends BaseSmashPigUnitTestCase {
 
 	public function testCreatePayment() {
 		$txn_id = "dHJhbnNhY3Rpb25fYXIxMTNuZzQ";
+		$payer = [
+			'firstName' => "Jimmy",
+			'lastName' => "Wales",
+			'email' => "mockjwales@wikimedia.org",
+			'phone' => "1-800-wikimedia"
+		];
 		$request = [
 			"payment_token" => "fake-valid-nonce",
 			"order_id" => '123.3',
@@ -38,7 +44,10 @@ class PayPalPaymentProviderTest extends BaseSmashPigUnitTestCase {
 					'chargePaymentMethod' => [
 						'transaction' => [
 							'id' => $txn_id,
-							'status' => "SUBMITTED_FOR_SETTLEMENT"
+							'status' => "SUBMITTED_FOR_SETTLEMENT",
+							'paymentMethodSnapshot' => [
+								'payer' => $payer
+							]
 						]
 					] ],
 				'extensions' => [
@@ -48,9 +57,13 @@ class PayPalPaymentProviderTest extends BaseSmashPigUnitTestCase {
 
 		$provider = new PaypalPaymentProvider();
 		$response = $provider->createPayment( $request );
-
+		$donor_details = $response->getDonorDetails();
 		$this->assertEquals( FinalStatus::COMPLETE, $response->getStatus() );
 		$this->assertEquals( $txn_id, $response->getGatewayTxnId() );
+		$this->assertEquals( $payer[ 'firstName' ], $donor_details->getFirstName() );
+		$this->assertEquals( $payer[ 'lastName' ], $donor_details->getLastName() );
+		$this->assertEquals( $payer[ 'email' ], $donor_details->getEmail() );
+		$this->assertEquals( $payer[ 'phone' ], $donor_details->getPhone() );
 	}
 
 	public function testCreatePaymentThrowsExceptionWhenCalledWithoutRequiredFields() {

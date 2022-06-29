@@ -5,6 +5,7 @@ namespace SmashPig\PaymentProviders\Braintree;
 use SmashPig\Core\ValidationError;
 use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentProviders\CreatePaymentResponse;
+use SmashPig\PaymentProviders\DonorDetails;
 
 class PaypalPaymentProvider extends PaymentProvider {
 	/**
@@ -17,7 +18,6 @@ class PaypalPaymentProvider extends PaymentProvider {
 	 * @return CreatePaymentResponse
 	 */
 	public function createPayment( array $params ): CreatePaymentResponse {
-		$successfulStatuses = [ FinalStatus::PENDING_POKE, FinalStatus::COMPLETE ];
 		$params = $this->transformToApiParams( $params );
 		$rawResponse = $this->api->chargePayment( $params );
 		$response = new CreatePaymentResponse();
@@ -34,10 +34,7 @@ class PaypalPaymentProvider extends PaymentProvider {
 				}
 			}
 		} else {
-			$response->setGatewayTxnId( $rawResponse['data']['chargePaymentMethod']['transaction']['id'] );
-			$mappedStatus = ( new PaymentStatus() )->normalizeStatus( $rawResponse['data']['chargePaymentMethod']['transaction']['status'] );
-			$response->setSuccessful( in_array( $mappedStatus, $successfulStatuses ) );
-			$response->setStatus( $mappedStatus );
+			$this->setSuccessfulResponseDetails( $rawResponse, $response );
 		}
 		return $response;
 	}
@@ -70,4 +67,30 @@ class PaypalPaymentProvider extends PaymentProvider {
 		return $apiParams;
 	}
 
+	protected function setSuccessfulResponseDetails( array $rawResponse, CreatePaymentResponse &$response ) {
+		$successfulStatuses = [ FinalStatus::PENDING_POKE, FinalStatus::COMPLETE ];
+		$transaction = $rawResponse['data']['chargePaymentMethod']['transaction'];
+
+		$mappedStatus = ( new PaymentStatus() )->normalizeStatus( $transaction['status'] );
+		$response->setSuccessful( in_array( $mappedStatus, $successfulStatuses ) );
+		$response->setGatewayTxnId( $transaction['id'] );
+		if ( isset( $transaction['paymentMethodSnapshot']['payer'] ) ) {
+			$payer = $transaction['paymentMethodSnapshot']['payer'];
+			$donorDetails = new DonorDetails();
+			if ( isset( $payer['firstName'] ) ) {
+				$donorDetails->setFirstName( $payer['firstName'] );
+			}
+			if ( isset( $payer['lastName'] ) ) {
+				$donorDetails->setLastName( $payer['lastName'] );
+			}
+			if ( isset( $payer['email'] ) ) {
+				$donorDetails->setEmail( $payer['email'] );
+			}
+			if ( isset( $payer['phone'] ) ) {
+				$donorDetails->setPhone( $payer['phone'] );
+			}
+			$response->setDonorDetails( $donorDetails );
+		}
+		$response->setStatus( $mappedStatus );
+	}
 }

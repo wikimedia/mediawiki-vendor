@@ -2650,6 +2650,7 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\PaymentProviders\\CancelPaymentResponse' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/CancelPaymentResponse.php',
         'SmashPig\\PaymentProviders\\CreatePaymentResponse' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/CreatePaymentResponse.php',
         'SmashPig\\PaymentProviders\\CreatePaymentSessionResponse' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/CreatePaymentSessionResponse.php',
+        'SmashPig\\PaymentProviders\\DonorDetails' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/DonorDetails.php',
         'SmashPig\\PaymentProviders\\GlobalCollect\\ExpatriatedMessages\\GlobalCollectMessage' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/GlobalCollect/ExpatriatedMessages/GlobalCollectMessage.php',
         'SmashPig\\PaymentProviders\\GlobalCollect\\ExpatriatedMessages\\PaymentMessage' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/GlobalCollect/ExpatriatedMessages/PaymentMessage.php',
         'SmashPig\\PaymentProviders\\GlobalCollect\\GlobalCollectListener' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/GlobalCollect/GlobalCollectListener.php',
