@@ -17,7 +17,7 @@
 		"christian-riesen/base32": "1.4.0",
 		"composer/semver": "3.2.4",
 		"cssjanus/cssjanus": "2.1.0",
-		"guzzlehttp/guzzle": "7.4.1",
+		"guzzlehttp/guzzle": "7.4.5",
 		"guzzlehttp/promises": "1.5.1",
 		"guzzlehttp/psr7": "1.9.0",
 		"jakobo/hotp-php": "2.0.0",
