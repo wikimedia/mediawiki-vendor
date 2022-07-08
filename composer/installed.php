@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '3f686eddfdf3348628226bf74fac2cca184f34e0',
+        'reference' => 'bd89258378ccdf85c5ee85a3ee0d6fc84e40c6ae',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '3f686eddfdf3348628226bf74fac2cca184f34e0',
+            'reference' => 'bd89258378ccdf85c5ee85a3ee0d6fc84e40c6ae',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -915,12 +915,12 @@
             'dev_requirement' => false,
         ),
         'wikimedia/base-convert' => array(
-            'pretty_version' => 'v2.0.1',
-            'version' => '2.0.1.0',
+            'pretty_version' => 'v2.0.2',
+            'version' => '2.0.2.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/base-convert',
             'aliases' => array(),
-            'reference' => '449f0d0237cf1e0e71faec90680c88d4af6e711d',
+            'reference' => 'aa997185e0b42c1f61a11f3e1980cad144175111',
             'dev_requirement' => false,
         ),
         'wikimedia/cdb' => array(
