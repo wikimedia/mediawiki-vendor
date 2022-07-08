@@ -35,19 +35,22 @@ namespace Wikimedia;
  */
 class PSquare {
 
-	/** @var float Percentile to estimate. **/
+	/** @var float Percentile to estimate. */
 	private $p;
 
-	/** @var float[] Height of each marker. **/
+	/** @var float[] Height of each marker. */
 	private $heights = [];
 
-	/** @var int[] Position of each marker. **/
+	/** @var int[] Position of each marker. */
 	private $positions = [];
 
-	/** @var float[] Desired position of each marker. **/
+	/** @var float[] Desired position of each marker. */
 	private $desired = [];
 
-	/** @var int Number of observations. **/
+	/** @var float[] */
+	private $increments = [];
+
+	/** @var int Number of observations. */
 	private $numObservations = 0;
 
 	/**
@@ -102,6 +105,7 @@ class PSquare {
 			}
 		}
 
+		// @phan-suppress-next-line PhanPossiblyUndeclaredVariable
 		for ( $i = $k + 1; $i < 5; $i++ ) {
 			$this->positions[$i]++;
 		}

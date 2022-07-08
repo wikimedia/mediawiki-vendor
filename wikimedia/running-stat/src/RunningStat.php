@@ -25,9 +25,6 @@
 
 namespace Wikimedia;
 
-// Needed due to PHP non-bug <https://bugs.php.net/bug.php?id=49828>.
-define( 'RUNNINGSTAT_NEGATIVE_INF', -INF ); // @codeCoverageIgnore
-
 /**
  * Represents a running summary of a stream of numbers.
  *
@@ -53,20 +50,20 @@ define( 'RUNNINGSTAT_NEGATIVE_INF', -INF ); // @codeCoverageIgnore
  */
 class RunningStat {
 
-	/** @var int Number of samples. **/
+	/** @var int Number of samples. */
 	public $n = 0;
 
-	/** @var float The first moment (or mean, or expected value). **/
+	/** @var float The first moment (or mean, or expected value). */
 	public $m1 = 0.0;
 
-	/** @var float The second central moment (or variance). **/
+	/** @var float The second central moment (or variance). */
 	public $m2 = 0.0;
 
-	/** @var float The least value in the set. **/
+	/** @var float The least value in the set. */
 	public $min = INF;
 
-	/** @var float The greatest value in the set. **/
-	public $max = RUNNINGSTAT_NEGATIVE_INF;
+	/** @var float The greatest value in the set. */
+	public $max = -INF;
 
 	/**
 	 * Count the number of accumulated values.
@@ -147,7 +144,7 @@ class RunningStat {
 	 * This instance then has the state it would have had if all the data had
 	 * been accumulated by it alone.
 	 *
-	 * @param RunningStat RunningStat instance to merge into this one
+	 * @param RunningStat $other RunningStat instance to merge into this one
 	 */
 	public function merge( RunningStat $other ) {
 		// If the other RunningStat is empty, there's nothing to do.

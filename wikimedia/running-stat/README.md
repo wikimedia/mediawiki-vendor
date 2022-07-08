@@ -25,7 +25,7 @@ Usage
 -----
 Here is how you use it:
 
-<pre lang="php">
+```php
 use Wikimedia\RunningStat;
 
 $rstat = new RunningStat();
@@ -50,8 +50,8 @@ printf(
 );
 // Output:
 // n = 20; min = 7.01; max = 96.58; mean = 47.59; variance = 725.71; stddev = 26.94
-</pre>
+```
 
 License
 -------
-GPL-2.0+
+GPL-2.0-or-later
