@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => 'bd89258378ccdf85c5ee85a3ee0d6fc84e40c6ae',
+        'reference' => '2d19bf677a3e4baab6dac06e987f0eea87a1535a',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => 'bd89258378ccdf85c5ee85a3ee0d6fc84e40c6ae',
+            'reference' => '2d19bf677a3e4baab6dac06e987f0eea87a1535a',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -1086,12 +1086,12 @@
             'dev_requirement' => false,
         ),
         'wikimedia/php-session-serializer' => array(
-            'pretty_version' => 'v2.0.0',
-            'version' => '2.0.0.0',
+            'pretty_version' => 'v2.0.1',
+            'version' => '2.0.1.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/php-session-serializer',
             'aliases' => array(),
-            'reference' => '99e7e926f1b61f71623d517fe38d9eec8618c59d',
+            'reference' => '40c9761329415ada958688d43ba4b8a447aa3037',
             'dev_requirement' => false,
         ),
         'wikimedia/purtle' => array(

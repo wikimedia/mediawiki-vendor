@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a92adf7d4f6e1ae57b01f24bba026e89",
+    "content-hash": "fbb7b07b21301057d1ad04f8121f290f",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -7134,16 +7134,16 @@
         },
         {
             "name": "wikimedia/php-session-serializer",
-            "version": "v2.0.0",
+            "version": "v2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/php-session-serializer.git",
-                "reference": "99e7e926f1b61f71623d517fe38d9eec8618c59d"
+                "reference": "40c9761329415ada958688d43ba4b8a447aa3037"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/php-session-serializer/zipball/99e7e926f1b61f71623d517fe38d9eec8618c59d",
-                "reference": "99e7e926f1b61f71623d517fe38d9eec8618c59d",
+                "url": "https://api.github.com/repos/wikimedia/php-session-serializer/zipball/40c9761329415ada958688d43ba4b8a447aa3037",
+                "reference": "40c9761329415ada958688d43ba4b8a447aa3037",
                 "shasum": ""
             },
             "require": {
@@ -7152,10 +7152,11 @@
                 "wikimedia/at-ease": "^2.0.0"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "35.0.0",
+                "mediawiki/mediawiki-codesniffer": "39.0.0",
+                "mediawiki/mediawiki-phan-config": "0.11.1",
                 "mediawiki/minus-x": "1.1.1",
-                "php-parallel-lint/php-console-highlighter": "0.5.0",
-                "php-parallel-lint/php-parallel-lint": "1.2.0",
+                "php-parallel-lint/php-console-highlighter": "1.0.0",
+                "php-parallel-lint/php-parallel-lint": "1.3.2",
                 "phpunit/phpunit": "^8.5"
             },
             "type": "library",
@@ -7177,9 +7178,9 @@
             "description": "Provides methods like PHP's session_encode and session_decode that don't mess with $_SESSION",
             "homepage": "https://www.mediawiki.org/wiki/Php-session-serializer",
             "support": {
-                "source": "https://github.com/wikimedia/php-session-serializer/tree/v2.0.0"
+                "source": "https://github.com/wikimedia/php-session-serializer/tree/v2.0.1"
             },
-            "time": "2021-03-21T17:31:21+00:00"
+            "time": "2022-05-21T19:23:07+00:00"
         },
         {
             "name": "wikimedia/purtle",
