@@ -9,8 +9,8 @@ namespace Wikimedia\CSS\Grammar;
 use Wikimedia\CSS\Objects\ComponentValueList;
 
 /**
- * Matcher that requires its sub-Matcher has only non-empty matches ("!" multipier)
- * @see https://www.w3.org/TR/2016/CR-css-values-3-20160929/#mult-req
+ * Matcher that requires its sub-Matcher has only non-empty matches ("!" multiplier)
+ * @see https://www.w3.org/TR/2019/CR-css-values-3-20190606/#mult-req
  */
 class NonEmpty extends Matcher {
 	/** @var Matcher */

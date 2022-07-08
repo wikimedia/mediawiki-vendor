@@ -43,9 +43,7 @@ class StyleAttributeSanitizer extends Sanitizer {
 		$propertySanitizer = new StylePropertySanitizer( $matcherFactory );
 
 		// StyleAttributeSanitizer brings it all together
-		$sanitizer = new StyleAttributeSanitizer( $propertySanitizer );
-
-		return $sanitizer;
+		return new StyleAttributeSanitizer( $propertySanitizer );
 	}
 
 	/** @inheritDoc */
@@ -66,6 +64,7 @@ class StyleAttributeSanitizer extends Sanitizer {
 		$parser = Parser::newFromString( $string );
 		$declarations = $parser->parseDeclarationList();
 		$this->sanitizationErrors = array_merge( $this->sanitizationErrors, $parser->getParseErrors() );
+		// @phan-suppress-next-line PhanTypeMismatchReturnSuperType
 		return $this->sanitizeList( $this->propertySanitizer, $declarations );
 	}
 }

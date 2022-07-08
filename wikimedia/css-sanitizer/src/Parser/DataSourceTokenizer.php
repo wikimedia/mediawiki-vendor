@@ -6,21 +6,28 @@
 
 namespace Wikimedia\CSS\Parser;
 
+use InvalidArgumentException;
+use UnexpectedValueException;
+use UtfNormal\Constants;
+use UtfNormal\Utils;
 use Wikimedia\CSS\Objects\Token;
 
 /**
  * Parse CSS into tokens
  *
  * This implements the tokenizer from the CSS Syntax Module Level 3 candidate recommendation.
- * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/
+ * @see https://www.w3.org/TR/2019/CR-css-syntax-3-20190716/
  */
 class DataSourceTokenizer implements Tokenizer {
 
 	/** @var DataSource */
 	protected $source;
 
-	/** @var int position in the input */
-	protected $line = 1, $pos = 0;
+	/** @var int line in the input */
+	protected $line = 1;
+
+	/** @var int position in the line in the input */
+	protected $pos = 0;
 
 	/** @var string|null|object The most recently consumed character */
 	protected $currentCharacter = null;
@@ -42,7 +49,7 @@ class DataSourceTokenizer implements Tokenizer {
 
 	/**
 	 * Read a character from the data source
-	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#input-preprocessing
+	 * @see https://www.w3.org/TR/2019/CR-css-syntax-3-20190716/#input-preprocessing
 	 * @return string One UTF-8 character, or empty string on EOF
 	 */
 	protected function nextChar() {
@@ -50,17 +57,19 @@ class DataSourceTokenizer implements Tokenizer {
 
 		// Perform transformations per the spec
 
-		// Any U+0000 becomes U+FFFD
-		if ( $char === "\0" ) {
-			return \UtfNormal\Constants::UTF8_REPLACEMENT;
+		// Any U+0000 or surrogate code point becomes U+FFFD
+		if ( $char === "\0" || ( $char >= "\u{D800}" && $char <= "\u{DFFF}" ) ) {
+			return Constants::UTF8_REPLACEMENT;
 		}
 
 		// Any U+000D, U+000C, or pair of U+000D + U+000A becomes U+000A
-		if ( $char === "\f" ) { // U+000C
+		if ( $char === "\f" ) {
+			// U+000C
 			return "\n";
 		}
 
-		if ( $char === "\r" ) { // Either U+000D + U+000A or a lone U+000D
+		if ( $char === "\r" ) {
+			// Either U+000D + U+000A or a lone U+000D
 			$char2 = $this->source->readCharacter();
 			if ( $char2 !== "\n" ) {
 				$this->source->putBackCharacter( $char2 );
@@ -90,13 +99,13 @@ class DataSourceTokenizer implements Tokenizer {
 	/**
 	 * Reconsume the next character
 	 *
-	 * In more normal terms, this pushes a character back onto the data source
+	 * In more normal terms, this pushes a character back onto the data source,
 	 * so it will be read again for the next call to self::consumeCharacter().
 	 */
 	protected function reconsumeCharacter() {
 		// @codeCoverageIgnoreStart
 		if ( !is_string( $this->currentCharacter ) ) {
-			throw new \UnexpectedValueException( "[$this->line:$this->pos] Can't reconsume" );
+			throw new UnexpectedValueException( "[$this->line:$this->pos] Can't reconsume" );
 		}
 		// @codeCoverageIgnoreEnd
 
@@ -152,7 +161,7 @@ class DataSourceTokenizer implements Tokenizer {
 			}
 			if ( count( $position ) !== 2 || !is_int( $position[0] ) || !is_int( $position[1] ) ) {
 				// @codeCoverageIgnoreStart
-				throw new \InvalidArgumentException( 'Invalid position' );
+				throw new InvalidArgumentException( 'Invalid position' );
 				// @codeCoverageIgnoreEnd
 			}
 			$err = [ $tag, $position[0], $position[1] ];
@@ -164,11 +173,13 @@ class DataSourceTokenizer implements Tokenizer {
 
 	/**
 	 * Read a token from the data source
-	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#consume-a-token
+	 * @see https://www.w3.org/TR/2019/CR-css-syntax-3-20190716/#consume-token
 	 * @return Token
-	 * @suppress PhanPluginDuplicateAdjacentStatement
+	 * @suppress PhanPluginDuplicateAdjacentStatement,PhanPluginDuplicateSwitchCaseLooseEquality
 	 */
 	public function consumeToken() {
+		// We "consume comments" inline below, see `case '/'`.
+
 		$this->consumeCharacter();
 		$pos = [ 'position' => [ $this->line, $this->pos ] ];
 
@@ -188,7 +199,7 @@ class DataSourceTokenizer implements Tokenizer {
 				return $this->consumeStringToken( $this->currentCharacter, $pos );
 
 			case '#':
-				list( $next, $next2, $next3 ) = $this->lookAhead();
+				[ $next, $next2, $next3 ] = $this->lookAhead();
 				if ( self::isNameCharacter( $this->nextCharacter ) ||
 					self::isValidEscape( $next, $next2 )
 				) {
@@ -200,31 +211,15 @@ class DataSourceTokenizer implements Tokenizer {
 
 				return new Token( Token::T_DELIM, $pos + [ 'value' => $this->currentCharacter ] );
 
-			case '$':
-				if ( $this->nextCharacter === '=' ) {
-					$this->consumeCharacter();
-					return new Token( Token::T_SUFFIX_MATCH, $pos );
-				}
-
-				return new Token( Token::T_DELIM, $pos + [ 'value' => $this->currentCharacter ] );
-
 			case '(':
 				return new Token( Token::T_LEFT_PAREN, $pos );
 
 			case ')':
 				return new Token( Token::T_RIGHT_PAREN, $pos );
 
-			case '*':
-				if ( $this->nextCharacter === '=' ) {
-					$this->consumeCharacter();
-					return new Token( Token::T_SUBSTRING_MATCH, $pos );
-				}
-
-				return new Token( Token::T_DELIM, $pos + [ 'value' => $this->currentCharacter ] );
-
 			case '+':
 			case '.':
-				list( $next, $next2, $next3 ) = $this->lookAhead();
+				[ $next, $next2, ] = $this->lookAhead();
 				if ( self::wouldStartNumber( $this->currentCharacter, $next, $next2 ) ) {
 					$this->reconsumeCharacter();
 					return $this->consumeNumericToken( $pos );
@@ -236,7 +231,7 @@ class DataSourceTokenizer implements Tokenizer {
 				return new Token( Token::T_COMMA, $pos );
 
 			case '-':
-				list( $next, $next2, $next3 ) = $this->lookAhead();
+				[ $next, $next2, ] = $this->lookAhead();
 				if ( self::wouldStartNumber( $this->currentCharacter, $next, $next2 ) ) {
 					$this->reconsumeCharacter();
 					return $this->consumeNumericToken( $pos );
@@ -266,7 +261,6 @@ class DataSourceTokenizer implements Tokenizer {
 						$this->consumeCharacter();
 					}
 					if ( $this->currentCharacter === DataSource::EOF ) {
-						// Parse error from the editor's draft as of 2017-01-06
 						$this->parseError( 'unclosed-comment', $pos );
 					}
 					$this->consumeCharacter();
@@ -283,7 +277,7 @@ class DataSourceTokenizer implements Tokenizer {
 				return new Token( Token::T_SEMICOLON, $pos );
 
 			case '<':
-				list( $next, $next2, $next3 ) = $this->lookAhead();
+				[ $next, $next2, $next3 ] = $this->lookAhead();
 				if ( $next === '!' && $next2 === '-' && $next3 === '-' ) {
 					$this->consumeCharacter();
 					$this->consumeCharacter();
@@ -294,7 +288,7 @@ class DataSourceTokenizer implements Tokenizer {
 				return new Token( Token::T_DELIM, $pos + [ 'value' => $this->currentCharacter ] );
 
 			case '@':
-				list( $next, $next2, $next3 ) = $this->lookAhead();
+				[ $next, $next2, $next3 ] = $this->lookAhead();
 				if ( self::wouldStartIdentifier( $next, $next2, $next3 ) ) {
 					return new Token( Token::T_AT_KEYWORD, $pos + [ 'value' => $this->consumeName() ] );
 				}
@@ -316,14 +310,6 @@ class DataSourceTokenizer implements Tokenizer {
 			case ']':
 				return new Token( Token::T_RIGHT_BRACKET, $pos );
 
-			case '^':
-				if ( $this->nextCharacter === '=' ) {
-					$this->consumeCharacter();
-					return new Token( Token::T_PREFIX_MATCH, $pos );
-				}
-
-				return new Token( Token::T_DELIM, $pos + [ 'value' => $this->currentCharacter ] );
-
 			case '{':
 				return new Token( Token::T_LEFT_BRACE, $pos );
 
@@ -343,40 +329,6 @@ class DataSourceTokenizer implements Tokenizer {
 				$this->reconsumeCharacter();
 				return $this->consumeNumericToken( $pos );
 
-			case 'u':
-			case 'U':
-				if ( $this->nextCharacter === '+' ) {
-					list( $next, $next2 ) = $this->lookAhead();
-					if ( self::isHexDigit( $next2 ) || $next2 === '?' ) {
-						$this->consumeCharacter();
-						return $this->consumeUnicodeRangeToken( $pos );
-					}
-				}
-
-				$this->reconsumeCharacter();
-				return $this->consumeIdentLikeToken( $pos );
-
-			case '|':
-				if ( $this->nextCharacter === '=' ) {
-					$this->consumeCharacter();
-					return new Token( Token::T_DASH_MATCH, $pos );
-				}
-
-				if ( $this->nextCharacter === '|' ) {
-					$this->consumeCharacter();
-					return new Token( Token::T_COLUMN, $pos );
-				}
-
-				return new Token( Token::T_DELIM, $pos + [ 'value' => $this->currentCharacter ] );
-
-			case '~':
-				if ( $this->nextCharacter === '=' ) {
-					$this->consumeCharacter();
-					return new Token( Token::T_INCLUDE_MATCH, $pos );
-				}
-
-				return new Token( Token::T_DELIM, $pos + [ 'value' => $this->currentCharacter ] );
-
 			case DataSource::EOF:
 				return new Token( Token::T_EOF, $pos );
 
@@ -392,14 +344,14 @@ class DataSourceTokenizer implements Tokenizer {
 
 	/**
 	 * Consume a numeric token
-	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#consume-a-numeric-token
+	 * @see https://www.w3.org/TR/2019/CR-css-syntax-3-20190716/#consume-numeric-token
 	 * @param array $data Data for the new token (typically contains just 'position')
 	 * @return Token
 	 */
 	protected function consumeNumericToken( array $data ) {
-		list( $data['representation'], $data['value'], $data['typeFlag'] ) = $this->consumeNumber();
+		[ $data['representation'], $data['value'], $data['typeFlag'] ] = $this->consumeNumber();
 
-		list( $next, $next2, $next3 ) = $this->lookAhead();
+		[ $next, $next2, $next3 ] = $this->lookAhead();
 		if ( self::wouldStartIdentifier( $next, $next2, $next3 ) ) {
 			return new Token( Token::T_DIMENSION, $data + [ 'unit' => $this->consumeName() ] );
 		} elseif ( $this->nextCharacter === '%' ) {
@@ -412,10 +364,7 @@ class DataSourceTokenizer implements Tokenizer {
 
 	/**
 	 * Consume an ident-like token
-	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#consume-an-ident-like-token
-	 * @note Per the draft as of January 2017, quoted URLs are parsed as
-	 *  functions named 'url'. This is needed in order to implement the `<url>`
-	 *  type in the [Values specification](https://www.w3.org/TR/2016/CR-css-values-3-20160929/#urls).
+	 * @see https://www.w3.org/TR/2019/CR-css-syntax-3-20190716/#consume-ident-like-token
 	 * @param array $data Data for the new token (typically contains just 'position')
 	 * @return Token
 	 */
@@ -427,7 +376,7 @@ class DataSourceTokenizer implements Tokenizer {
 
 			if ( !strcasecmp( $name, 'url' ) ) {
 				while ( true ) {
-					list( $next, $next2 ) = $this->lookAhead();
+					[ $next, $next2 ] = $this->lookAhead();
 					if ( !self::isWhitespace( $next ) || !self::isWhitespace( $next2 ) ) {
 						break;
 					}
@@ -451,7 +400,7 @@ class DataSourceTokenizer implements Tokenizer {
 	 *
 	 * This assumes the leading quote or apostrophe has already been consumed.
 	 *
-	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#consume-a-string-token
+	 * @see https://www.w3.org/TR/2019/CR-css-syntax-3-20190716/#consume-string-token
 	 * @param string $endChar Ending character of the string
 	 * @param array $data Data for the new token (typically contains just 'position')
 	 * @return Token
@@ -463,7 +412,6 @@ class DataSourceTokenizer implements Tokenizer {
 			$this->consumeCharacter();
 			switch ( $this->currentCharacter ) {
 				case DataSource::EOF:
-					// Parse error from the editor's draft as of 2017-01-06
 					$this->parseError( 'unclosed-string', $data );
 					break 2;
 
@@ -478,8 +426,6 @@ class DataSourceTokenizer implements Tokenizer {
 				case '\\':
 					if ( $this->nextCharacter === DataSource::EOF ) {
 						// Do nothing
-						// Parse error from the editor's draft as of 2017-01-06
-						$this->parseError( 'bad-escape' );
 					} elseif ( $this->nextCharacter === "\n" ) {
 						// Consume it
 						$this->consumeCharacter();
@@ -487,7 +433,7 @@ class DataSourceTokenizer implements Tokenizer {
 						$data['value'] .= $this->consumeEscape();
 					} else {
 						// @codeCoverageIgnoreStart
-						throw new \UnexpectedValueException( "[$this->line:$this->pos] Unexpected state" );
+						throw new UnexpectedValueException( "[$this->line:$this->pos] Unexpected state" );
 						// @codeCoverageIgnoreEnd
 					}
 					break;
@@ -498,6 +444,7 @@ class DataSourceTokenizer implements Tokenizer {
 			}
 		}
 
+		// @phan-suppress-next-line PhanPluginUnreachableCode Reached by break 2
 		return new Token( Token::T_STRING, $data );
 	}
 
@@ -506,8 +453,7 @@ class DataSourceTokenizer implements Tokenizer {
 	 *
 	 * This assumes the leading "url(" has already been consumed.
 	 *
-	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#consume-a-url-token
-	 * @note Per the draft as of January 2017, this does not handle quoted URL tokens.
+	 * @see https://www.w3.org/TR/2019/CR-css-syntax-3-20190716/#consume-url-token
 	 * @param array $data Data for the new token (typically contains just 'position')
 	 * @return Token
 	 */
@@ -521,29 +467,23 @@ class DataSourceTokenizer implements Tokenizer {
 		}
 
 		// 3.
-		if ( $this->nextCharacter === DataSource::EOF ) {
-			// Parse error from the editor's draft as of 2017-01-06
-			$this->parseError( 'unclosed-url', $data );
-			return new Token( Token::T_URL, $data );
-		}
-
-		// 4. (removed in draft, this was formerly the parsing for a quoted URL token)
-
-		// 5. (renumbered as 4 in the draft)
 		while ( true ) {
 			$this->consumeCharacter();
 			switch ( $this->currentCharacter ) {
 				case DataSource::EOF:
-					// Parse error from the editor's draft as of 2017-01-06
 					$this->parseError( 'unclosed-url', $data );
 					break 2;
 
+				// @codeCoverageIgnoreStart
 				case ')':
+				// @codeCoverageIgnoreEnd
 					break 2;
 
+				// @codeCoverageIgnoreStart
 				case "\n":
 				case "\t":
 				case ' ':
+				// @codeCoverageIgnoreEnd
 					while ( self::isWhitespace( $this->nextCharacter ) ) {
 						$this->consumeCharacter();
 					}
@@ -551,7 +491,6 @@ class DataSourceTokenizer implements Tokenizer {
 						$this->consumeCharacter();
 						break 2;
 					} elseif ( $this->nextCharacter === DataSource::EOF ) {
-						// Parse error from the editor's draft as of 2017-01-06
 						$this->consumeCharacter();
 						$this->parseError( 'unclosed-url', $data );
 						break 2;
@@ -559,16 +498,19 @@ class DataSourceTokenizer implements Tokenizer {
 						$this->consumeBadUrlRemnants();
 						return new Token( Token::T_BAD_URL, [ 'value' => '' ] + $data );
 					}
-					break; // @codeCoverageIgnore
 
+				// @codeCoverageIgnoreStart
 				case '"':
 				case '\'':
 				case '(':
+				// @codeCoverageIgnoreEnd
 					$this->parseError( 'bad-character-in-url' );
 					$this->consumeBadUrlRemnants();
 					return new Token( Token::T_BAD_URL, [ 'value' => '' ] + $data );
 
+				// @codeCoverageIgnoreStart
 				case '\\':
+				// @codeCoverageIgnoreEnd
 					if ( self::isValidEscape( $this->currentCharacter, $this->nextCharacter ) ) {
 						$data['value'] .= $this->consumeEscape();
 					} else {
@@ -590,12 +532,13 @@ class DataSourceTokenizer implements Tokenizer {
 			}
 		}
 
+		// @phan-suppress-next-line PhanPluginUnreachableCode Reached by break 2
 		return new Token( Token::T_URL, $data );
 	}
 
 	/**
 	 * Clean up after finding an error in a URL
-	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#consume-the-remnants-of-a-bad-url
+	 * @see https://www.w3.org/TR/2019/CR-css-syntax-3-20190716/#consume-remnants-of-bad-url
 	 */
 	protected function consumeBadUrlRemnants() {
 		while ( true ) {
@@ -610,60 +553,8 @@ class DataSourceTokenizer implements Tokenizer {
 	}
 
 	/**
-	 * Consume a unicode-range token
-	 *
-	 * This assumes the initial "u" has been consumed (currentCharacter is the '+'),
-	 * and the next codepoint is verfied to be a hex digit or "?".
-	 *
-	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#consume-a-unicode-range-token
-	 * @param array $data Data for the new token (typically contains just 'position')
-	 * @return Token
-	 */
-	protected function consumeUnicodeRangeToken( array $data ) {
-		// 1.
-		$v = '';
-		while ( strlen( $v ) < 6 && self::isHexDigit( $this->nextCharacter ) ) {
-			$this->consumeCharacter();
-			$v .= $this->currentCharacter;
-		}
-		$anyQ = false;
-		while ( strlen( $v ) < 6 && $this->nextCharacter === '?' ) {
-			$anyQ = true;
-			$this->consumeCharacter();
-			$v .= $this->currentCharacter;
-		}
-
-		if ( $anyQ ) {
-			return new Token( Token::T_UNICODE_RANGE, $data + [
-				'start' => intval( str_replace( '?', '0', $v ), 16 ),
-				'end' => intval( str_replace( '?', 'F', $v ), 16 ),
-			] );
-		}
-
-		$data['start'] = intval( $v, 16 );
-
-		// 2.
-		list( $next, $next2 ) = $this->lookAhead();
-		if ( $next === '-' && self::isHexDigit( $next2 ) ) {
-			$this->consumeCharacter();
-			$v = '';
-			while ( strlen( $v ) < 6 && self::isHexDigit( $this->nextCharacter ) ) {
-				$this->consumeCharacter();
-				$v .= $this->currentCharacter;
-			}
-			$data['end'] = intval( $v, 16 );
-		} else {
-			// 3.
-			$data['end'] = $data['start'];
-		}
-
-		// 4.
-		return new Token( Token::T_UNICODE_RANGE, $data );
-	}
-
-	/**
 	 * Indicate if a character is whitespace
-	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#whitespace
+	 * @see https://www.w3.org/TR/2019/CR-css-syntax-3-20190716/#whitespace
 	 * @param string $char A single UTF-8 character
 	 * @return bool
 	 */
@@ -673,7 +564,7 @@ class DataSourceTokenizer implements Tokenizer {
 
 	/**
 	 * Indicate if a character is a name-start code point
-	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#name-start-code-point
+	 * @see https://www.w3.org/TR/2019/CR-css-syntax-3-20190716/#name-start-code-point
 	 * @param string $char A single UTF-8 character
 	 * @return bool
 	 */
@@ -681,14 +572,14 @@ class DataSourceTokenizer implements Tokenizer {
 		// Every non-ASCII character is a name start character, so we can just
 		// check the first byte.
 		$char = ord( $char );
-		return $char >= 0x41 && $char <= 0x5a ||
-			$char >= 0x61 && $char <= 0x7a ||
+		return ( $char >= 0x41 && $char <= 0x5a ) ||
+			( $char >= 0x61 && $char <= 0x7a ) ||
 			$char >= 0x80 || $char === 0x5f;
 	}
 
 	/**
 	 * Indicate if a character is a name code point
-	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#name-code-point
+	 * @see https://www.w3.org/TR/2019/CR-css-syntax-3-20190716/#name-code-point
 	 * @param string $char A single UTF-8 character
 	 * @return bool
 	 */
@@ -696,15 +587,15 @@ class DataSourceTokenizer implements Tokenizer {
 		// Every non-ASCII character is a name character, so we can just check
 		// the first byte.
 		$char = ord( $char );
-		return $char >= 0x41 && $char <= 0x5a ||
-			$char >= 0x61 && $char <= 0x7a ||
-			$char >= 0x30 && $char <= 0x39 ||
+		return ( $char >= 0x41 && $char <= 0x5a ) ||
+			( $char >= 0x61 && $char <= 0x7a ) ||
+			( $char >= 0x30 && $char <= 0x39 ) ||
 			$char >= 0x80 || $char === 0x5f || $char === 0x2d;
 	}
 
 	/**
 	 * Indicate if a character is non-printable
-	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#non-printable-code-point
+	 * @see https://www.w3.org/TR/2019/CR-css-syntax-3-20190716/#non-printable-code-point
 	 * @param string $char A single UTF-8 character
 	 * @return bool
 	 */
@@ -712,15 +603,15 @@ class DataSourceTokenizer implements Tokenizer {
 		// No non-ASCII character is non-printable, so we can just check the
 		// first byte.
 		$char = ord( $char );
-		return $char >= 0x00 && $char <= 0x08 ||
+		return ( $char >= 0x00 && $char <= 0x08 ) ||
 			$char === 0x0b ||
-			$char >= 0x0e && $char <= 0x1f ||
+			( $char >= 0x0e && $char <= 0x1f ) ||
 			$char === 0x7f;
 	}
 
 	/**
 	 * Indicate if a character is a digit
-	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#digit
+	 * @see https://www.w3.org/TR/2019/CR-css-syntax-3-20190716/#digit
 	 * @param string $char A single UTF-8 character
 	 * @return bool
 	 */
@@ -733,7 +624,7 @@ class DataSourceTokenizer implements Tokenizer {
 
 	/**
 	 * Indicate if a character is a hex digit
-	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#hex-digit
+	 * @see https://www.w3.org/TR/2019/CR-css-syntax-3-20190716/#hex-digit
 	 * @param string $char A single UTF-8 character
 	 * @return bool
 	 */
@@ -741,14 +632,14 @@ class DataSourceTokenizer implements Tokenizer {
 		// No non-ASCII character is a hex digit, so we can just check the
 		// first byte.
 		$char = ord( $char );
-		return $char >= 0x30 && $char <= 0x39 ||
-			$char >= 0x41 && $char <= 0x46 ||
-			$char >= 0x61 && $char <= 0x66;
+		return ( $char >= 0x30 && $char <= 0x39 ) ||
+			( $char >= 0x41 && $char <= 0x46 ) ||
+			( $char >= 0x61 && $char <= 0x66 );
 	}
 
 	/**
 	 * Determine if two characters constitute a valid escape
-	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#starts-with-a-valid-escape
+	 * @see https://www.w3.org/TR/2019/CR-css-syntax-3-20190716/#starts-with-a-valid-escape
 	 * @param string $char1
 	 * @param string $char2
 	 * @return bool
@@ -759,7 +650,7 @@ class DataSourceTokenizer implements Tokenizer {
 
 	/**
 	 * Determine if three characters would start an identifier
-	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#would-start-an-identifier
+	 * @see https://www.w3.org/TR/2019/CR-css-syntax-3-20190716/#would-start-an-identifier
 	 * @param string $char1
 	 * @param string $char2
 	 * @param string $char3
@@ -767,7 +658,6 @@ class DataSourceTokenizer implements Tokenizer {
 	 */
 	protected static function wouldStartIdentifier( $char1, $char2, $char3 ) {
 		if ( $char1 === '-' ) {
-			// Added the possibility for an itentifier beginning with "--" per the draft.
 			return self::isNameStartCharacter( $char2 ) || $char2 === '-' ||
 				self::isValidEscape( $char2, $char3 );
 		} elseif ( self::isNameStartCharacter( $char1 ) ) {
@@ -781,7 +671,7 @@ class DataSourceTokenizer implements Tokenizer {
 
 	/**
 	 * Determine if three characters would start a number
-	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#starts-with-a-number
+	 * @see https://www.w3.org/TR/2019/CR-css-syntax-3-20190716/#starts-with-a-number
 	 * @param string $char1
 	 * @param string $char2
 	 * @param string $char3
@@ -790,7 +680,7 @@ class DataSourceTokenizer implements Tokenizer {
 	protected static function wouldStartNumber( $char1, $char2, $char3 ) {
 		if ( $char1 === '+' || $char1 === '-' ) {
 			return self::isDigit( $char2 ) ||
-				$char2 === '.' && self::isDigit( $char3 );
+				( $char2 === '.' && self::isDigit( $char3 ) );
 		} elseif ( $char1 === '.' ) {
 			return self::isDigit( $char2 );
 		// @codeCoverageIgnoreStart
@@ -806,19 +696,13 @@ class DataSourceTokenizer implements Tokenizer {
 	 *
 	 * This assumes the leading backslash is consumed.
 	 *
-	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#consume-an-escaped-code-point
+	 * @see https://www.w3.org/TR/2019/CR-css-syntax-3-20190716/#consume-escaped-code-point
 	 * @return string Escaped character
 	 */
 	protected function consumeEscape() {
 		$position = [ 'position' => [ $this->line, $this->pos ] ];
 
 		$this->consumeCharacter();
-
-		// @codeCoverageIgnoreStart
-		if ( $this->currentCharacter === "\n" ) {
-			throw new \UnexpectedValueException( "[$this->line:$this->pos] Unexpected newline" );
-		}
-		// @codeCoverageIgnoreEnd
 
 		// 1-6 hexits, plus one optional whitespace character
 		if ( self::isHexDigit( $this->currentCharacter ) ) {
@@ -832,16 +716,15 @@ class DataSourceTokenizer implements Tokenizer {
 			}
 
 			$num = intval( $num, 16 );
-			if ( $num === 0 || $num >= 0xd800 && $num <= 0xdfff || $num > 0x10ffff ) {
-				return \UtfNormal\Constants::UTF8_REPLACEMENT;
+			if ( $num === 0 || ( $num >= 0xd800 && $num <= 0xdfff ) || $num > 0x10ffff ) {
+				return Constants::UTF8_REPLACEMENT;
 			}
-			return \UtfNormal\Utils::codepointToUtf8( $num );
+			return Utils::codepointToUtf8( $num );
 		}
 
 		if ( $this->currentCharacter === DataSource::EOF ) {
-			// Parse error from the editor's draft as of 2017-01-06
 			$this->parseError( 'bad-escape', $position );
-			return \UtfNormal\Constants::UTF8_REPLACEMENT;
+			return Constants::UTF8_REPLACEMENT;
 		}
 
 		return $this->currentCharacter;
@@ -854,7 +737,7 @@ class DataSourceTokenizer implements Tokenizer {
 	 * self::wouldStartIdentifier() or the like before calling the method if
 	 * necessary.
 	 *
-	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#consume-a-name
+	 * @see https://www.w3.org/TR/2019/CR-css-syntax-3-20190716/#consume-name
 	 * @return string Name
 	 */
 	protected function consumeName() {
@@ -868,14 +751,13 @@ class DataSourceTokenizer implements Tokenizer {
 			} elseif ( self::isValidEscape( $this->currentCharacter, $this->nextCharacter ) ) {
 				$name .= $this->consumeEscape();
 			} else {
-				$this->reconsumeCharacter(); // Doesn't say to, but breaks otherwise
-				return $name;
+				$this->reconsumeCharacter();
+				break;
 			}
 		}
-		// @codeCoverageIgnoreStart
-	}
 
-	// @codeCoverageIgnoreEnd
+		return $name;
+	}
 
 	/**
 	 * Consume a number
@@ -883,7 +765,7 @@ class DataSourceTokenizer implements Tokenizer {
 	 * Note this does not do validation on the input stream. Call
 	 * self::wouldStartNumber() before calling the method if necessary.
 	 *
-	 * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#consume-a-number
+	 * @see https://www.w3.org/TR/2019/CR-css-syntax-3-20190716/#consume-number
 	 * @return array [ string $value, int|float $number, string $type ('integer' or 'number') ]
 	 * @suppress PhanPluginDuplicateAdjacentStatement
 	 */
@@ -906,7 +788,7 @@ class DataSourceTokenizer implements Tokenizer {
 
 		// 4.
 		if ( $this->nextCharacter === '.' ) {
-			list( $next, $next2, $next3 ) = $this->lookAhead();
+			[ $next, $next2, ] = $this->lookAhead();
 			if ( self::isDigit( $next2 ) ) {
 				// 4.1.
 				$this->consumeCharacter();
@@ -925,7 +807,7 @@ class DataSourceTokenizer implements Tokenizer {
 
 		// 5.
 		if ( $this->nextCharacter === 'e' || $this->nextCharacter === 'E' ) {
-			list( $next, $next2, $next3 ) = $this->lookAhead();
+			[ $next, $next2, $next3 ] = $this->lookAhead();
 			$ok = false;
 			if ( ( $next2 === '+' || $next2 === '-' ) && self::isDigit( $next3 ) ) {
 				$ok = true;
@@ -955,7 +837,7 @@ class DataSourceTokenizer implements Tokenizer {
 		}
 
 		// 6. We assume PHP's casting follows the same rules as
-		// https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#convert-a-string-to-a-number
+		// https://www.w3.org/TR/2019/CR-css-syntax-3-20190716/#convert-string-to-number
 		$value = $type === 'integer' ? (int)$repr : (float)$repr;
 
 		// 7.

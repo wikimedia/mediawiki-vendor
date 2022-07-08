@@ -6,6 +6,7 @@
 
 namespace Wikimedia\CSS\Grammar;
 
+use Iterator;
 use Wikimedia\CSS\Objects\ComponentValueList;
 use Wikimedia\CSS\Objects\CSSFunction;
 use Wikimedia\CSS\Objects\SimpleBlock;
@@ -20,8 +21,8 @@ use Wikimedia\CSS\Objects\Token;
  * object that will determine whether a ComponentValueList actually matches
  * this grammar.
  *
- * [SYN3]: https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/
- * [VAL3]: https://www.w3.org/TR/2016/CR-css-values-3-20160929/
+ * [SYN3]: https://www.w3.org/TR/2019/CR-css-syntax-3-20190716/
+ * [VAL3]: https://www.w3.org/TR/2019/CR-css-values-3-20190606/
  */
 abstract class Matcher {
 
@@ -81,7 +82,7 @@ abstract class Matcher {
 		$start = $this->next( $values, -1, $options );
 		$l = count( $values );
 		foreach ( $this->generateMatches( $values, $start, $options ) as $match ) {
-			if ( $match->getNext() === $l || $options['nonterminal'] ) {
+			if ( $options['nonterminal'] || $match->getNext() === $l ) {
 				if ( $options['mark-significance'] ) {
 					$significantWS = self::collectSignificantWhitespace( $match );
 					self::markSignificantWhitespace( $values, $match, $significantWS, $match->getNext() );
@@ -121,8 +122,9 @@ abstract class Matcher {
 			if ( $cv instanceof Token && $cv->type() === Token::T_WHITESPACE ) {
 				$significant = in_array( $cv, $significantWS, true );
 				if ( $significant !== $cv->significant() ) {
-					$list[$i] = $cv->copyWithSignificance( $significant );
-					$match->fixWhitespace( $cv, $list[$i] );
+					$newCv = $cv->copyWithSignificance( $significant );
+					$match->fixWhitespace( $cv, $newCv );
+					$list[$i] = $newCv;
 				}
 			} elseif ( $cv instanceof CSSFunction || $cv instanceof SimpleBlock ) {
 				self::markSignificantWhitespace(
@@ -166,6 +168,7 @@ abstract class Matcher {
 		do {
 			$i++;
 		} while ( $skipWS && $i < $l &&
+			// @phan-suppress-next-line PhanNonClassMethodCall False positive
 			$values[$i] instanceof Token && $values[$i]->type() === Token::T_WHITESPACE
 		);
 		return $i;
@@ -222,7 +225,7 @@ abstract class Matcher {
 	 * applies a matcher for `IDENT`. The `*` matcher would call the `IDENT`
 	 * matcher's generateMatches() method directly.
 	 *
-	 * Most Matchers implement this method as a generator so as to not build up
+	 * Most Matchers implement this method as a generator to not build up
 	 * the full set of results when it's reasonably likely the caller is going
 	 * to terminate early.
 	 *
@@ -230,7 +233,7 @@ abstract class Matcher {
 	 * @param int $start Starting position in $values
 	 * @param array $options See self::$defaultOptions.
 	 *  Always use the options passed in, don't use $this->defaultOptions yourself.
-	 * @return \Iterator<GrammarMatch> Iterates over the set of GrammarMatch
+	 * @return Iterator<GrammarMatch> Iterates over the set of GrammarMatch
 	 *  objects defining all the ways this matcher can match.
 	 */
 	abstract protected function generateMatches( ComponentValueList $values, $start, array $options );

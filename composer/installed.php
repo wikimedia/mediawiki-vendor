@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '3ec5171952cbce637ecc7d8a914126e9a54ffb18',
+        'reference' => '3f686eddfdf3348628226bf74fac2cca184f34e0',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '3ec5171952cbce637ecc7d8a914126e9a54ffb18',
+            'reference' => '3f686eddfdf3348628226bf74fac2cca184f34e0',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -960,12 +960,12 @@
             'dev_requirement' => false,
         ),
         'wikimedia/css-sanitizer' => array(
-            'pretty_version' => 'v3.0.2',
-            'version' => '3.0.2.0',
+            'pretty_version' => 'v4.0.0',
+            'version' => '4.0.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/css-sanitizer',
             'aliases' => array(),
-            'reference' => '718e2a79fc3fec4c7a43193b5e2ac3bae6756ee4',
+            'reference' => 'c5e3263ff06cad098bceee1fc5b48f0eb2be8fe8',
             'dev_requirement' => false,
         ),
         'wikimedia/dodo' => array(

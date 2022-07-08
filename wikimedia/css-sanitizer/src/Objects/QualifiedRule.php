@@ -6,6 +6,7 @@
 
 namespace Wikimedia\CSS\Objects;
 
+use InvalidArgumentException;
 use Wikimedia\CSS\Util;
 
 /**
@@ -53,7 +54,7 @@ class QualifiedRule extends Rule {
 	 */
 	public function setBlock( SimpleBlock $block = null ) {
 		if ( $block->getStartTokenType() !== Token::T_LEFT_BRACE ) {
-			throw new \InvalidArgumentException( 'Qualified rule block must be delimited by {}' );
+			throw new InvalidArgumentException( 'Qualified rule block must be delimited by {}' );
 		}
 		$this->block = $block;
 	}
@@ -65,7 +66,7 @@ class QualifiedRule extends Rule {
 	private function toTokenOrCVArray( $function ) {
 		$ret = [];
 
-		// Manually looping and appending turns out to be noticably faster than array_merge.
+		// Manually looping and appending turns out to be noticeably faster than array_merge.
 		foreach ( $this->prelude->$function() as $v ) {
 			$ret[] = $v;
 		}

@@ -6,6 +6,7 @@
 
 namespace Wikimedia\CSS\Sanitizer;
 
+use InvalidArgumentException;
 use Wikimedia\CSS\Grammar\Juxtaposition;
 use Wikimedia\CSS\Grammar\Matcher;
 use Wikimedia\CSS\Grammar\MatcherFactory;
@@ -20,7 +21,7 @@ use Wikimedia\CSS\Util;
 
 /**
  * Sanitizes a CSS style rule
- * @see https://www.w3.org/TR/2014/CR-css-syntax-3-20140220/#style-rules
+ * @see https://www.w3.org/TR/2019/CR-css-syntax-3-20190716/#style-rules
  */
 class StyleRuleSanitizer extends RuleSanitizer {
 
@@ -70,7 +71,7 @@ class StyleRuleSanitizer extends RuleSanitizer {
 		if ( $options['hoistableComponentMatcher'] !== null &&
 			 !$options['hoistableComponentMatcher'] instanceof Matcher
 		) {
-			throw new \InvalidArgumentException( 'hoistableComponentMatcher must be a Matcher' );
+			throw new InvalidArgumentException( 'hoistableComponentMatcher must be a Matcher' );
 		}
 
 		$matcherFactory = MatcherFactory::singleton();
@@ -153,7 +154,7 @@ class StyleRuleSanitizer extends RuleSanitizer {
 					$valueList = new ComponentValueList( $selectorOrWs->getValues() );
 					$hoistMatch = $this->hoistableMatcher ? $this->hoistableMatcher->matchAgainst( $valueList ) : null;
 					if ( $hoistMatch ) {
-						list( $prefix, $ws, $postfix ) = $hoistMatch->getCapturedMatches();
+						[ $prefix, , $postfix ] = $hoistMatch->getCapturedMatches();
 						$prelude->add( $prefix->getValues() );
 						$prelude->add( $space );
 						$prelude->add( $this->prependSelectors );

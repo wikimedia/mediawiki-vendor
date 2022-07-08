@@ -88,10 +88,13 @@ abstract class RuleSanitizer extends Sanitizer {
 		}
 
 		$significant = $cv instanceof CSSFunction ||
-			$cv instanceof Token &&
-				Token::separate( new Token( Token::T_AT_KEYWORD, $rule->getName() ), $cv );
+			( $cv instanceof Token &&
+				Token::separate( new Token( Token::T_AT_KEYWORD, $rule->getName() ), $cv )
+			);
 
+		// @phan-suppress-next-line PhanNonClassMethodCall False positive
 		if ( $prelude[0] instanceof Token && $prelude[0]->type() === Token::T_WHITESPACE ) {
+			// @phan-suppress-next-line PhanNonClassMethodCall False positive
 			$prelude[0] = $prelude[0]->copyWithSignificance( $significant );
 		} elseif ( $significant ) {
 			if ( $cloneIfNecessary ) {
