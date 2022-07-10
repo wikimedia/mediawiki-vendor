@@ -29,7 +29,8 @@ namespace Wikimedia\XMPReader;
  * extract.
  */
 class Info {
-	/** Get the items array
+	/**
+	 * Get the items array
 	 * @return array XMP item configuration array.
 	 */
 	public static function getItems() {
@@ -62,6 +63,7 @@ class Info {
 	 *     of a structure.
 	 *
 	 * Currently this just has a bunch of EXIF values as this class is only half-done.
+	 * @var array
 	 */
 	private static $items = [
 		'http://ns.adobe.com/exif/1.0/' => [
