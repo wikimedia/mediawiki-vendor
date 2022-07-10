@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b06dbdf6007ecaf235acb287e2ae1a85",
+    "content-hash": "a149f602b1d459293c1c69fd05c597b7",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -6310,16 +6310,16 @@
         },
         {
             "name": "wikimedia/css-sanitizer",
-            "version": "v4.0.0",
+            "version": "v4.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/css-sanitizer.git",
-                "reference": "c5e3263ff06cad098bceee1fc5b48f0eb2be8fe8"
+                "reference": "e8cd197f9c47da649fff3dad4c74c3d85276c208"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/css-sanitizer/zipball/c5e3263ff06cad098bceee1fc5b48f0eb2be8fe8",
-                "reference": "c5e3263ff06cad098bceee1fc5b48f0eb2be8fe8",
+                "url": "https://api.github.com/repos/wikimedia/css-sanitizer/zipball/e8cd197f9c47da649fff3dad4c74c3d85276c208",
+                "reference": "e8cd197f9c47da649fff3dad4c74c3d85276c208",
                 "shasum": ""
             },
             "require": {
@@ -6327,7 +6327,7 @@
                 "ext-mbstring": "*",
                 "php": ">=7.2.0",
                 "wikimedia/at-ease": "^2.0.0",
-                "wikimedia/scoped-callback": "3.0.0",
+                "wikimedia/scoped-callback": "3.0.0 || 4.0.0",
                 "wikimedia/utfnormal": "2.0.0 || ^3.0.1"
             },
             "require-dev": {
@@ -6358,9 +6358,9 @@
             "description": "Classes to parse and sanitize CSS",
             "homepage": "https://www.mediawiki.org/wiki/Css-sanitizer",
             "support": {
-                "source": "https://github.com/wikimedia/css-sanitizer/tree/v4.0.0"
+                "source": "https://github.com/wikimedia/css-sanitizer/tree/v4.0.1"
             },
-            "time": "2022-07-03T16:34:40+00:00"
+            "time": "2022-07-09T23:19:05+00:00"
         },
         {
             "name": "wikimedia/dodo",

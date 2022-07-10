@@ -6579,17 +6579,17 @@
         },
         {
             "name": "wikimedia/css-sanitizer",
-            "version": "v4.0.0",
-            "version_normalized": "4.0.0.0",
+            "version": "v4.0.1",
+            "version_normalized": "4.0.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/css-sanitizer.git",
-                "reference": "c5e3263ff06cad098bceee1fc5b48f0eb2be8fe8"
+                "reference": "e8cd197f9c47da649fff3dad4c74c3d85276c208"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/css-sanitizer/zipball/c5e3263ff06cad098bceee1fc5b48f0eb2be8fe8",
-                "reference": "c5e3263ff06cad098bceee1fc5b48f0eb2be8fe8",
+                "url": "https://api.github.com/repos/wikimedia/css-sanitizer/zipball/e8cd197f9c47da649fff3dad4c74c3d85276c208",
+                "reference": "e8cd197f9c47da649fff3dad4c74c3d85276c208",
                 "shasum": ""
             },
             "require": {
@@ -6597,7 +6597,7 @@
                 "ext-mbstring": "*",
                 "php": ">=7.2.0",
                 "wikimedia/at-ease": "^2.0.0",
-                "wikimedia/scoped-callback": "3.0.0",
+                "wikimedia/scoped-callback": "3.0.0 || 4.0.0",
                 "wikimedia/utfnormal": "2.0.0 || ^3.0.1"
             },
             "require-dev": {
@@ -6609,7 +6609,7 @@
                 "phpunit/phpunit": "^8.5",
                 "wikimedia/testing-access-wrapper": "~2.0.0"
             },
-            "time": "2022-07-03T16:34:40+00:00",
+            "time": "2022-07-09T23:19:05+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -6630,7 +6630,7 @@
             "description": "Classes to parse and sanitize CSS",
             "homepage": "https://www.mediawiki.org/wiki/Css-sanitizer",
             "support": {
-                "source": "https://github.com/wikimedia/css-sanitizer/tree/v4.0.0"
+                "source": "https://github.com/wikimedia/css-sanitizer/tree/v4.0.1"
             },
             "install-path": "../wikimedia/css-sanitizer"
         },
