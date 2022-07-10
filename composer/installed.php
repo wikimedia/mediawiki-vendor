@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '62e0398a6e4c2897af453b4b01128c9ffae10722',
+        'reference' => 'b610d0a5b810740492ab0bce90f4f94caa610bc9',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '62e0398a6e4c2897af453b4b01128c9ffae10722',
+            'reference' => 'b610d0a5b810740492ab0bce90f4f94caa610bc9',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -699,15 +699,6 @@
             'install_path' => __DIR__ . '/../symfony/console',
             'aliases' => array(),
             'reference' => '4d671ab4ddac94ee439ea73649c69d9d200b5000',
-            'dev_requirement' => false,
-        ),
-        'symfony/debug' => array(
-            'pretty_version' => 'v4.4.41',
-            'version' => '4.4.41.0',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../symfony/debug',
-            'aliases' => array(),
-            'reference' => '6637e62480b60817b9a6984154a533e8e64c6bd5',
             'dev_requirement' => false,
         ),
         'symfony/deprecation-contracts' => array(
