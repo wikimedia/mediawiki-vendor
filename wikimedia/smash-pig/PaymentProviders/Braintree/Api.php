@@ -60,6 +60,28 @@ class Api {
 	}
 
 	/**
+	 *
+	 * @param array $input
+	 * @return array
+	 */
+	public function authorizePayment( array $input ): array {
+		$query = $this->getQuery( 'AuthorizePaymentMethod' );
+		$variables = [ 'input' => $input ];
+		return $this->makeApiCall( $query, $variables );
+	}
+
+	/**
+	 *
+	 * @param array $input
+	 * @return array
+	 */
+	public function captureTransaction( array $input ): array {
+		$query = $this->getQuery( 'CaptureTransaction' );
+		$variables = [ 'input' => $input ];
+		return $this->makeApiCall( $query, $variables );
+	}
+
+	/**
 	 * Submit query/mutation GraphQL calls to Braintree
 	 *
 	 * @param string $query graphql query/mutation string

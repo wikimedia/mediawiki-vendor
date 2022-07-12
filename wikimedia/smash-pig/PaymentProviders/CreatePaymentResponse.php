@@ -56,11 +56,12 @@ class CreatePaymentResponse extends PaymentDetailResponse {
 
 	/**
 	 * @param DonorDetails $donorDetails
-	 * @return void
+	 * @return CreatePaymentResponse
 	 */
-	public function setDonorDetails( DonorDetails $donorDetails ): void {
+	public function setDonorDetails( DonorDetails $donorDetails ): CreatePaymentResponse {
 		$this->hasDonorDetails = true;
 		$this->donorDetails = $donorDetails;
+		return $this;
 	}
 
 	/**

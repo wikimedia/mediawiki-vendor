@@ -1,0 +1,22 @@
+mutation AuthorizePaymentMethod($input: AuthorizePaymentMethodInput!) {
+  authorizePaymentMethod(input: $input) {
+    transaction{
+      id
+      status
+      createdAt
+      paymentInitiatedAt
+      source
+      orderId
+      paymentMethodSnapshot {
+        ... on PayPalTransactionDetails {
+          payer {
+            firstName
+            lastName
+            email
+            phone
+          }
+        }
+      }
+    }
+  }
+}
