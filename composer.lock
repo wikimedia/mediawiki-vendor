@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "85f92ab6d34be24bb72a4202a66d6726",
+    "content-hash": "d240e5c4855d7cc4a5e60b6576b24a85",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -6982,16 +6982,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.16.0-a15",
+            "version": "v0.16.0-a16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/parsoid.git",
-                "reference": "212050d8a0fd9d5eacd288171e0a061bb0202094"
+                "reference": "624847cf4b9bdae0a9a74758bd0945bf441eee55"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/212050d8a0fd9d5eacd288171e0a061bb0202094",
-                "reference": "212050d8a0fd9d5eacd288171e0a061bb0202094",
+                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/624847cf4b9bdae0a9a74758bd0945bf441eee55",
+                "reference": "624847cf4b9bdae0a9a74758bd0945bf441eee55",
                 "shasum": ""
             },
             "require": {
@@ -7008,7 +7008,7 @@
                 "wikimedia/ip-utils": "^4.0.0",
                 "wikimedia/object-factory": "^4.0.0",
                 "wikimedia/remex-html": "^3.0.0",
-                "wikimedia/scoped-callback": "^3.0.0",
+                "wikimedia/scoped-callback": "^3.0.0 || ^4.0.0",
                 "wikimedia/wikipeg": "^2.0.6",
                 "wikimedia/zest-css": "^2.0.2"
             },
@@ -7058,10 +7058,10 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/parsoid/tree/v0.16.0-a15",
+                "source": "https://github.com/wikimedia/parsoid/tree/v0.16.0-a16",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
-            "time": "2022-06-29T22:11:58+00:00"
+            "time": "2022-07-15T13:30:36+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",
