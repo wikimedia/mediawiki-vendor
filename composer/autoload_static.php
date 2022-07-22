@@ -374,10 +374,10 @@ class ComposerStaticInit_mediawiki_vendor
             0 => __DIR__ . '/..' . '/wikimedia/ip-set/src',
             1 => __DIR__ . '/..' . '/wikimedia/ip-utils/src',
             2 => __DIR__ . '/..' . '/wikimedia/running-stat/src',
-            3 => __DIR__ . '/..' . '/wikimedia/testing-access-wrapper/src',
-            4 => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src',
-            5 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
-            6 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
+            3 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
+            4 => __DIR__ . '/..' . '/wikimedia/testing-access-wrapper/src',
+            5 => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src',
+            6 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
         ),
         'WikiPEG\\' => 
         array (
@@ -4704,6 +4704,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Utils\\DOMPostOrder' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/DOMPostOrder.php',
         'Wikimedia\\Parsoid\\Utils\\DOMTraverser' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/DOMTraverser.php',
         'Wikimedia\\Parsoid\\Utils\\DOMUtils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/DOMUtils.php',
+        'Wikimedia\\Parsoid\\Utils\\DTState' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/DTState.php',
         'Wikimedia\\Parsoid\\Utils\\PHPUtils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/PHPUtils.php',
         'Wikimedia\\Parsoid\\Utils\\PipelineUtils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/PipelineUtils.php',
         'Wikimedia\\Parsoid\\Utils\\Timing' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/Timing.php',

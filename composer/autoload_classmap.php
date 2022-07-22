@@ -3947,6 +3947,7 @@ return array(
     'Wikimedia\\Parsoid\\Utils\\DOMPostOrder' => $vendorDir . '/wikimedia/parsoid/src/Utils/DOMPostOrder.php',
     'Wikimedia\\Parsoid\\Utils\\DOMTraverser' => $vendorDir . '/wikimedia/parsoid/src/Utils/DOMTraverser.php',
     'Wikimedia\\Parsoid\\Utils\\DOMUtils' => $vendorDir . '/wikimedia/parsoid/src/Utils/DOMUtils.php',
+    'Wikimedia\\Parsoid\\Utils\\DTState' => $vendorDir . '/wikimedia/parsoid/src/Utils/DTState.php',
     'Wikimedia\\Parsoid\\Utils\\PHPUtils' => $vendorDir . '/wikimedia/parsoid/src/Utils/PHPUtils.php',
     'Wikimedia\\Parsoid\\Utils\\PipelineUtils' => $vendorDir . '/wikimedia/parsoid/src/Utils/PipelineUtils.php',
     'Wikimedia\\Parsoid\\Utils\\Timing' => $vendorDir . '/wikimedia/parsoid/src/Utils/Timing.php',
