@@ -7712,31 +7712,32 @@
         },
         {
             "name": "wikimedia/scoped-callback",
-            "version": "v3.0.0",
-            "version_normalized": "3.0.0.0",
+            "version": "v4.0.0",
+            "version_normalized": "4.0.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/wikimedia/ScopedCallback.git",
-                "reference": "0a480d9a9772634697c77598726cf24606597bd0"
+                "url": "https://github.com/wikimedia/scoped-callback.git",
+                "reference": "dd522a6cfb4c0180b0a39d12fc57046a347c4d81"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/ScopedCallback/zipball/0a480d9a9772634697c77598726cf24606597bd0",
-                "reference": "0a480d9a9772634697c77598726cf24606597bd0",
+                "url": "https://api.github.com/repos/wikimedia/scoped-callback/zipball/dd522a6cfb4c0180b0a39d12fc57046a347c4d81",
+                "reference": "dd522a6cfb4c0180b0a39d12fc57046a347c4d81",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.6.99"
+                "php": ">=7.2.9"
             },
             "require-dev": {
-                "jakub-onderka/php-console-highlighter": "0.3.2",
-                "jakub-onderka/php-parallel-lint": "1.0.0",
-                "mediawiki/mediawiki-codesniffer": "22.0.0",
-                "mediawiki/minus-x": "0.3.1",
-                "ockcyp/covers-validator": "0.5.1 || 0.6.1",
-                "phpunit/phpunit": "4.8.36 || ^6.5"
+                "mediawiki/mediawiki-codesniffer": "39.0.0",
+                "mediawiki/mediawiki-phan-config": "0.11.1",
+                "mediawiki/minus-x": "1.1.1",
+                "ockcyp/covers-validator": "1.4.0",
+                "php-parallel-lint/php-console-highlighter": "1.0.0",
+                "php-parallel-lint/php-parallel-lint": "1.3.2",
+                "phpunit/phpunit": "^8.5"
             },
-            "time": "2018-10-30T23:52:20+00:00",
+            "time": "2022-07-08T22:48:52+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -7754,47 +7755,46 @@
                     "email": "aschulz@wikimedia.org"
                 }
             ],
-            "description": "Class for asserting that a callback happens when a dummy object leaves scope",
+            "description": "Make a callback run when a dummy object leaves the scope.",
             "homepage": "https://www.mediawiki.org/wiki/ScopedCallback",
             "support": {
-                "issues": "https://github.com/wikimedia/ScopedCallback/issues",
-                "source": "https://github.com/wikimedia/ScopedCallback/tree/master"
+                "source": "https://github.com/wikimedia/scoped-callback/tree/v4.0.0"
             },
             "install-path": "../wikimedia/scoped-callback"
         },
         {
             "name": "wikimedia/services",
-            "version": "2.0.1",
-            "version_normalized": "2.0.1.0",
+            "version": "3.0.0",
+            "version_normalized": "3.0.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-Services.git",
-                "reference": "5ef69a8a8b0d2ea115d08469bdab468f58fac820"
+                "reference": "c63d949c363378a5f435cfd7a81932aa6f712462"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Services/zipball/5ef69a8a8b0d2ea115d08469bdab468f58fac820",
-                "reference": "5ef69a8a8b0d2ea115d08469bdab468f58fac820",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Services/zipball/c63d949c363378a5f435cfd7a81932aa6f712462",
+                "reference": "c63d949c363378a5f435cfd7a81932aa6f712462",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2.9",
-                "psr/container": "^1.0.0",
-                "wikimedia/assert": "^0.5.0",
-                "wikimedia/scoped-callback": "^3.0"
+                "psr/container": "^1.1 || ^2.0",
+                "wikimedia/scoped-callback": "^3.0 || ^4.0"
             },
             "provide": {
                 "psr/container-implementation": "1.0.0"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "31.0.0",
-                "mediawiki/minus-x": "1.1.0",
-                "ockcyp/covers-validator": "1.1.1",
-                "php-parallel-lint/php-console-highlighter": "0.5.0",
-                "php-parallel-lint/php-parallel-lint": "1.2.0",
+                "mediawiki/mediawiki-codesniffer": "39.0.0",
+                "mediawiki/mediawiki-phan-config": "0.11.1",
+                "mediawiki/minus-x": "1.1.1",
+                "ockcyp/covers-validator": "1.4.0",
+                "php-parallel-lint/php-console-highlighter": "1.0.0",
+                "php-parallel-lint/php-parallel-lint": "1.3.2",
                 "phpunit/phpunit": "^8.5"
             },
-            "time": "2020-06-29T02:46:53+00:00",
+            "time": "2022-07-09T23:20:28+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -7813,9 +7813,9 @@
                 }
             ],
             "description": "Generic service to manage named services using lazy instantiation based on instantiator callback functions",
-            "homepage": "https://www.mediawiki.org/wiki/Services",
+            "homepage": "https://www.mediawiki.org/wiki/Services_(PHP_library)",
             "support": {
-                "source": "https://github.com/wikimedia/mediawiki-libs-Services/tree/master"
+                "source": "https://github.com/wikimedia/mediawiki-libs-Services/tree/3.0.0"
             },
             "install-path": "../wikimedia/services"
         },
