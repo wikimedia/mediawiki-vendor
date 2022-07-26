@@ -39,9 +39,9 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 				'https://payments.braintree-api.com/graphql',
 				'POST',
 				[
-					'Authorization' => 'cGszMzMzOnByaXZrMzMzMzc3Nzc=',
+					'Authorization' => 'Basic cGszMzMzOnByaXZrMzMzMzc3Nzc=',
 					'Braintree-Version' => '2022-03-07',
-					'Content-type' => 'application/json',
+					'Content-Type' => 'application/json',
 					'Content-Length' => '58'
 				],
 				'{"query":"mutation { createClientToken { clientToken } }"}'

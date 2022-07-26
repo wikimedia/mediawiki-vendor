@@ -8,9 +8,9 @@ use SmashPig\Core\Logging\Logger;
 use SmashPig\Maintenance\MaintenanceBase;
 use SmashPig\PaymentProviders\PaymentProviderFactory;
 
-$maintClass = 'SmashPig\PaymentProviders\Braintree\Maintenance\TestApi';
+$maintClass = 'SmashPig\PaymentProviders\Braintree\Maintenance\GetReport';
 
-class TestApi extends MaintenanceBase {
+class GetReport extends MaintenanceBase {
 
 	public function __construct() {
 		parent::__construct();
@@ -21,8 +21,8 @@ class TestApi extends MaintenanceBase {
 	 * Do the actual work of the script.
 	 */
 	public function execute() {
-		$provider = PaymentProviderFactory::getProviderForMethod( 'test' );
-		$response = $provider->ping();
+		$provider = PaymentProviderFactory::getProviderForMethod( 'report' );
+		$response = $provider->report();
 		Logger::info( print_r( $response, true ) );
 	}
 }

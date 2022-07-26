@@ -140,7 +140,6 @@ class ExceptionMapper {
 		'903' => ErrorCode::UNKNOWN, // Internal error
 		'904' => ErrorCode::UNKNOWN, // Unable To Process
 		'905' => ErrorCode::UNEXPECTED_VALUE, // Payment details are not supported
-		'905_1' => ErrorCode::ACCOUNT_MISCONFIGURATION, // Could not find an acquirer account for the provided txvariant ({0}), currency ({1}), and action ({2}).
 		'905_2' => ErrorCode::ACCOUNT_MISCONFIGURATION, // No specified acquirer account found for '{0}' for specified acquirer '{1}' with variant '{2}' for unit '{3}' for Action '{4}'
 		'905_3' => ErrorCode::ACCOUNT_MISCONFIGURATION, // Could not find an acquirer account for the provided currency ({0}).
 		'905_4' => ErrorCode::ACCOUNT_MISCONFIGURATION, // Cashback and Cashout are not allowed for the configured acquirer account.

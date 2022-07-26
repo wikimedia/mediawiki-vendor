@@ -1,0 +1,60 @@
+query searchTransactions($input: TransactionSearchInput!, $after: String){
+    search {
+    	transactions (input: $input, first: 50, after: $after) {
+			edges {
+			  cursor
+			  node {
+				id
+				orderId
+				createdAt
+				merchantAccountId
+				status
+				refunds {
+				  status
+				  amount {
+					value
+					currencyCode
+					currencyCode
+				  }
+				}
+				disputes {
+				  amountDisputed {
+					value
+					currencyCode
+				  }
+				  type
+				  status
+				  caseNumber
+				  amountWon {
+					value
+					currencyCode
+				  }
+				  createdAt
+				  referenceNumber
+				}
+				paymentMethodSnapshot {
+				  ... on VenmoAccountDetails {
+					username
+					venmoUserId
+				  }
+				  ... on PayPalTransactionDetails {
+					payer {
+					  email
+					  phone
+					  lastName
+					  firstName
+					}
+				  }
+				}
+				amount {
+				  value
+				  currencyCode
+				}
+			  }
+			}
+			pageInfo {
+              hasNextPage
+            }
+		}
+  }
+}

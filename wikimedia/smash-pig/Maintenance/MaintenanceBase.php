@@ -23,9 +23,13 @@ define( 'RUN_MAINTENANCE_IF_MAIN', __DIR__ . '/doMaintenance.php' );
 if ( !defined( "SMASHPIG_ENTRY_POINT" ) ) {
 	global $argv;
 	define( "SMASHPIG_ENTRY_POINT", $argv[0] );
-
+	// works for src/smashpig
 	$root = __DIR__ . '/../';
-	require_once $root . 'vendor/autoload.php';
+	if ( !is_dir( $root . '/vendor' ) ) {
+		// works for src/civi-sites/wmff/vendor/wikimedia/smash-pig
+		$root = __DIR__ . '/../../../../';
+	}
+	require_once $root . './vendor/autoload.php';
 
 	/** @var MaintenanceBase $maintClass Set this to the name of the class to execute */
 	$maintClass = false;
@@ -374,7 +378,7 @@ abstract class MaintenanceBase {
 		global $argv;
 		$specs = new OptionCollection;
 		foreach ( $this->desiredOptions as $longName => $option ) {
-			$alias = ( $option['alias'] ? $option['alias'] : '' );
+			$alias = ( $option['alias'] ?? '' );
 			$specs->add( "$alias|$longName?", $option['desc'] )->isa( $option['type'] );
 			if ( $option['default'] ) {
 				$this->options[$longName] = $option['default'];

@@ -19,5 +19,9 @@ api:
 payment-provider:
     test:
         class: SmashPig\PaymentProviders\Braintree\TestPaymentProvider
+    search:
+        class: SmashPig\PaymentProviders\Braintree\SearchTransactionsProvider
+    report:
+        class: SmashPig\PaymentProviders\Braintree\VenmoReportProvider
     paypal:
         class: SmashPig\PaymentProviders\Braintree\PaypalPaymentProvider

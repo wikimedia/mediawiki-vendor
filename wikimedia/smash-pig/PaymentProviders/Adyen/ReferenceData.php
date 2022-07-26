@@ -38,6 +38,10 @@ class ReferenceData {
 			'method' => 'cc',
 			'submethod' => 'cb',
 		],
+		'cartebancaire_applepay' => [
+			'method' => 'apple',
+			'submethod' => 'cb',
+		],
 		// China Union Pay
 		'cup' => [
 			'method' => 'cc',
