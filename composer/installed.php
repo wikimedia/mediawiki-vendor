@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '09197974546c32a594ae9a2d82f921eb99f08fef',
+        'reference' => '7575ae08be5997f256868ebbfdaf4542580fccd7',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '09197974546c32a594ae9a2d82f921eb99f08fef',
+            'reference' => '7575ae08be5997f256868ebbfdaf4542580fccd7',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -1068,12 +1068,12 @@
             'dev_requirement' => false,
         ),
         'wikimedia/parsoid' => array(
-            'pretty_version' => 'v0.16.0-a17',
-            'version' => '0.16.0.0-alpha17',
+            'pretty_version' => 'v0.16.0-a18',
+            'version' => '0.16.0.0-alpha18',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/parsoid',
             'aliases' => array(),
-            'reference' => '504b010275a7acf66cc9a3e542bfc34c4ee016db',
+            'reference' => '669a7ad067b3f1f3bddc8e156b3e99de95451da4',
             'dev_requirement' => false,
         ),
         'wikimedia/php-session-serializer' => array(

@@ -14279,7 +14279,7 @@ Table cell with attribute before expanded attribute
 !! html/php
 <div style="background:#f9f9f9;">foo</div>
 !! html/parsoid
-<div style="background:#f9f9f9;" about="#mwt3" typeof="mw:ExpandedAttrs" data-parsoid='{"stx":"html"}' data-mw='{"attribs":[[{"txt":"style","html":"&lt;span about=\"#mwt1\" typeof=\"mw:Transclusion\" data-parsoid=&#39;{\"pi\":[[{\"k\":\"1\"}]]}&#39; data-mw=&#39;{\"parts\":[{\"template\":{\"target\":{\"wt\":\"1x\",\"href\":\"./Template:1x\"},\"params\":{\"1\":{\"wt\":\"style{{=}}\\\"background:&amp;amp;#35;f9f9f9;\\\"\"}},\"i\":0}}]}&#39;>style&lt;/span>&lt;span typeof=\"mw:Nowiki\" about=\"#mwt1\" data-parsoid=\"{}\">=&lt;/span>&lt;span about=\"#mwt1\" data-parsoid=\"{}\">\"background:&lt;/span>&lt;span typeof=\"mw:Entity\" about=\"#mwt1\" data-parsoid=&#39;{\"src\":\"&amp;amp;#35;\",\"srcContent\":\"#\"}&#39;>#&lt;/span>&lt;span about=\"#mwt1\" data-parsoid=\"{}\">f9f9f9;\"&lt;/span>"},{"html":""}]]}'>foo</div>
+<div style="background:#f9f9f9;" about="#mwt3" typeof="mw:ExpandedAttrs" data-parsoid='{"stx":"html"}' data-mw='{"attribs":[[{"txt":"style","html":"&lt;span about=\"#mwt1\" typeof=\"mw:Transclusion\" data-parsoid=&apos;{\"pi\":[[{\"k\":\"1\"}]],\"dsr\":[5,47,null,null]}&apos; data-mw=&apos;{\"parts\":[{\"template\":{\"target\":{\"wt\":\"1x\",\"href\":\"./Template:1x\"},\"params\":{\"1\":{\"wt\":\"style{{=}}\\\"background:&amp;amp;#35;f9f9f9;\\\"\"}},\"i\":0}}]}&apos;>style=\"background:&lt;/span>&lt;span typeof=\"mw:Entity\" about=\"#mwt1\" data-parsoid=&apos;{\"src\":\"&amp;amp;#35;\",\"srcContent\":\"#\"}&apos;>#&lt;/span>&lt;span about=\"#mwt1\" data-parsoid=\"{}\">f9f9f9;\"&lt;/span>"},{"html":""}]]}'>foo</div>
 !! end
 
 !! test
@@ -16783,16 +16783,205 @@ Template:sections
 
 !! test
 Template with sections, __NOTOC__
+!! options
+showflags
 !! wikitext
 __NOTOC__
 ==Section 0==
 {{sections}}
 ==Section 4==
-!! html
+!! html/php
 <h2><span class="mw-headline" id="Section_0">Section 0</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/index.php?title=Parser_test&amp;action=edit&amp;section=1" title="Edit section: Section 0">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
 <h3><span class="mw-headline" id="Section_1">Section 1</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/index.php?title=Template:Sections&amp;action=edit&amp;section=T-1" title="Edit section: Section 1">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
 <h2><span class="mw-headline" id="Section_2">Section 2</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/index.php?title=Template:Sections&amp;action=edit&amp;section=T-2" title="Edit section: Section 2">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
 <h2><span class="mw-headline" id="Section_4">Section 4</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/index.php?title=Parser_test&amp;action=edit&amp;section=2" title="Edit section: Section 4">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+flags=
+!! end
+
+!! test
+T307691: show-toc flag: no sections
+!! options
+showflags
+!! wikitext
+!! html/php
+
+flags=
+!! end
+
+# You can't force a TOC if there aren't any sections
+!! test
+T307691: show-toc flag: no sections, but __FORCETOC__
+!! options
+showflags
+!! wikitext
+__FORCETOC__
+!! html/php
+
+flags=
+!! end
+
+# Placing a manual __TOC__ doesn't do anything if there aren't any sections
+!! test
+T307691: show-toc flag: no sections, but __TOC__
+!! options
+showflags
+!! wikitext
+__TOC__
+!! html/php
+
+flags=
+!! end
+
+!! test
+T307691: show-toc flag: no sections, and __NOTOC__
+!! options
+showflags
+!! wikitext
+__NOTOC__
+!! html/php
+
+flags=
+!! end
+
+!! test
+T307691: show-toc flag: not "enough" sections
+!! options
+showflags
+!! wikitext
+== One ==
+!! html/php
+<h2><span class="mw-headline" id="One">One</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/index.php?title=Parser_test&amp;action=edit&amp;section=1" title="Edit section: One">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+flags=
+!! end
+
+!! test
+T307691: show-toc flag: not "enough" sections, but __FORCETOC__
+!! options
+showflags
+!! wikitext
+__FORCETOC__
+== One ==
+!! html/php
+<div id="toc" class="toc" role="navigation" aria-labelledby="mw-toc-heading"><input type="checkbox" role="button" id="toctogglecheckbox" class="toctogglecheckbox" style="display:none" /><div class="toctitle" lang="en" dir="ltr"><h2 id="mw-toc-heading">Contents</h2><span class="toctogglespan"><label class="toctogglelabel" for="toctogglecheckbox"></label></span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#One"><span class="tocnumber">1</span> <span class="toctext">One</span></a></li>
+</ul>
+</div>
+
+<h2><span class="mw-headline" id="One">One</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/index.php?title=Parser_test&amp;action=edit&amp;section=1" title="Edit section: One">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+flags=show-toc
+!! end
+
+!! test
+T307691: show-toc flag: not "enough" sections, but __TOC__
+!! options
+showflags
+!! wikitext
+== One ==
+__TOC__
+!! html/php
+<h2><span class="mw-headline" id="One">One</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/index.php?title=Parser_test&amp;action=edit&amp;section=1" title="Edit section: One">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<div id="toc" class="toc" role="navigation" aria-labelledby="mw-toc-heading"><input type="checkbox" role="button" id="toctogglecheckbox" class="toctogglecheckbox" style="display:none" /><div class="toctitle" lang="en" dir="ltr"><h2 id="mw-toc-heading">Contents</h2><span class="toctogglespan"><label class="toctogglelabel" for="toctogglecheckbox"></label></span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#One"><span class="tocnumber">1</span> <span class="toctext">One</span></a></li>
+</ul>
+</div>
+flags=show-toc
+!! end
+
+!! test
+T307691: show-toc flag: not "enough" sections, and __NOTOC__
+!! options
+showflags
+!! wikitext
+__NOTOC__
+== One ==
+!! html/php
+<h2><span class="mw-headline" id="One">One</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/index.php?title=Parser_test&amp;action=edit&amp;section=1" title="Edit section: One">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+flags=
+!! end
+
+!! test
+T307691: show-toc flag: "enough" sections
+!! options
+showflags
+!! wikitext
+== One ==
+=== Two ===
+== Three ==
+=== Four ===
+!! html/php
+<div id="toc" class="toc" role="navigation" aria-labelledby="mw-toc-heading"><input type="checkbox" role="button" id="toctogglecheckbox" class="toctogglecheckbox" style="display:none" /><div class="toctitle" lang="en" dir="ltr"><h2 id="mw-toc-heading">Contents</h2><span class="toctogglespan"><label class="toctogglelabel" for="toctogglecheckbox"></label></span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#One"><span class="tocnumber">1</span> <span class="toctext">One</span></a>
+<ul>
+<li class="toclevel-2 tocsection-2"><a href="#Two"><span class="tocnumber">1.1</span> <span class="toctext">Two</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-3"><a href="#Three"><span class="tocnumber">2</span> <span class="toctext">Three</span></a>
+<ul>
+<li class="toclevel-2 tocsection-4"><a href="#Four"><span class="tocnumber">2.1</span> <span class="toctext">Four</span></a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+<h2><span class="mw-headline" id="One">One</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/index.php?title=Parser_test&amp;action=edit&amp;section=1" title="Edit section: One">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<h3><span class="mw-headline" id="Two">Two</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/index.php?title=Parser_test&amp;action=edit&amp;section=2" title="Edit section: Two">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<h2><span class="mw-headline" id="Three">Three</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/index.php?title=Parser_test&amp;action=edit&amp;section=3" title="Edit section: Three">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<h3><span class="mw-headline" id="Four">Four</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/index.php?title=Parser_test&amp;action=edit&amp;section=4" title="Edit section: Four">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+flags=show-toc
+!! end
+
+!! test
+T307691: show-toc flag: "enough" sections and __FORCETOC__
+!! options
+showflags
+!! wikitext
+__FORCETOC__
+== One ==
+=== Two ===
+== Three ==
+=== Four ===
+!! html/php
+<div id="toc" class="toc" role="navigation" aria-labelledby="mw-toc-heading"><input type="checkbox" role="button" id="toctogglecheckbox" class="toctogglecheckbox" style="display:none" /><div class="toctitle" lang="en" dir="ltr"><h2 id="mw-toc-heading">Contents</h2><span class="toctogglespan"><label class="toctogglelabel" for="toctogglecheckbox"></label></span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#One"><span class="tocnumber">1</span> <span class="toctext">One</span></a>
+<ul>
+<li class="toclevel-2 tocsection-2"><a href="#Two"><span class="tocnumber">1.1</span> <span class="toctext">Two</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-3"><a href="#Three"><span class="tocnumber">2</span> <span class="toctext">Three</span></a>
+<ul>
+<li class="toclevel-2 tocsection-4"><a href="#Four"><span class="tocnumber">2.1</span> <span class="toctext">Four</span></a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+<h2><span class="mw-headline" id="One">One</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/index.php?title=Parser_test&amp;action=edit&amp;section=1" title="Edit section: One">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<h3><span class="mw-headline" id="Two">Two</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/index.php?title=Parser_test&amp;action=edit&amp;section=2" title="Edit section: Two">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<h2><span class="mw-headline" id="Three">Three</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/index.php?title=Parser_test&amp;action=edit&amp;section=3" title="Edit section: Three">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<h3><span class="mw-headline" id="Four">Four</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/index.php?title=Parser_test&amp;action=edit&amp;section=4" title="Edit section: Four">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+flags=show-toc
+!! end
+
+!! test
+T307691: show-toc flag: "enough" sections and __NOTOC__
+!! options
+showflags
+!! wikitext
+__NOTOC__
+== One ==
+=== Two ===
+== Three ==
+=== Four ===
+!! html/php
+<h2><span class="mw-headline" id="One">One</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/index.php?title=Parser_test&amp;action=edit&amp;section=1" title="Edit section: One">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<h3><span class="mw-headline" id="Two">Two</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/index.php?title=Parser_test&amp;action=edit&amp;section=2" title="Edit section: Two">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<h2><span class="mw-headline" id="Three">Three</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/index.php?title=Parser_test&amp;action=edit&amp;section=3" title="Edit section: Three">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<h3><span class="mw-headline" id="Four">Four</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/index.php?title=Parser_test&amp;action=edit&amp;section=4" title="Edit section: Four">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+flags=
 !! end
 
 !! test
@@ -20472,12 +20661,15 @@ parsoid={ "modes": ["wt2html","html2html"], "normalizePhp": true }
 
 !! test
 __FORCETOC__ override
+!! options
+showflags
 !! wikitext
 __NEWSECTIONLINK__
 __FORCETOC__
 !! html/php
 <p><br />
 </p>
+flags=
 !! end
 
 !! test
@@ -24306,9 +24498,11 @@ x<langconvert from="crh-latn" to="crh-cyrl"/>x
 Using {{=}} when it expands to "=" should not create a tracking category
 !! wikitext
 This uses {{=}} and {{Template:=}}.
-!! html
+!! html/php
 <p>This uses = and =.
 </p>
+!! html/parsoid
+<p>This uses <span about="#mwt1" typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"=","function":"="},"params":{},"i":0}}]}'>=</span> and <span typeof="mw:Nowiki mw:Transclusion" about="#mwt2" data-mw='{"parts":[{"template":{"target":{"wt":"Template:=","href":"./Template:="},"params":{},"i":0}}]}'>=</span>.</p>
 !! end
 
 # Repeat the test, looking at categories.  Note: none should be emitted!

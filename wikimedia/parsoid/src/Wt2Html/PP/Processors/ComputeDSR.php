@@ -128,10 +128,10 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 	 * Compute wikitext string length that contributes to this
 	 * list item's open tag. Closing tag width is always 0 for lists.
 	 *
-	 * @param Node $li
+	 * @param Element $li
 	 * @return int
 	 */
-	private function computeListEltWidth( Node $li ): int {
+	private function computeListEltWidth( Element $li ): int {
 		if ( !$li->previousSibling && $li->firstChild ) {
 			if ( DOMUtils::isList( $li->firstChild ) ) {
 				// Special case!!
@@ -144,9 +144,21 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 		// count nest listing depth and assign
 		// that to the opening tag width.
 		$depth = 0;
-		while ( DOMCompat::nodeName( $li ) === 'li' || DOMCompat::nodeName( $li ) === 'dd' ) {
-			$depth++;
-			$li = $li->parentNode->parentNode;
+
+		// This is the crux of the algorithm in DOMHandler::getListBullets()
+		while ( !DOMUtils::atTheTop( $li ) ) {
+			$dp = DOMDataUtils::getDataParsoid( $li );
+			if ( DOMUtils::isListOrListItem( $li ) ) {
+				if ( DOMUtils::isListItem( $li ) ) {
+					$depth++;
+				}
+			} elseif (
+				!WTUtils::isLiteralHTMLNode( $li ) ||
+				empty( $dp->autoInsertedStart ) || empty( $dp->autoInsertedEnd )
+			) {
+				break;
+			}
+			$li = $li->parentNode;
 		}
 
 		return $depth;
@@ -248,11 +260,9 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 				if ( $stWidth === null ) {
 					// we didn't have a tsr to tell us how wide this tag was.
 					if ( $nodeName === 'a' ) {
-						DOMUtils::assertElt( $node );
 						$wtTagWidth = $this->computeATagWidth( $node, $dp );
 						$stWidth = $wtTagWidth ? $wtTagWidth[0] : null;
 					} elseif ( $nodeName === 'li' || $nodeName === 'dd' ) {
-						DOMUtils::assertElt( $node );
 						$stWidth = $this->computeListEltWidth( $node );
 					} elseif ( $wtTagWidth ) {
 						$stWidth = $wtTagWidth[0];
