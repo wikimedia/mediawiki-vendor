@@ -901,9 +901,5 @@ class ParserFunctions {
 		];
 	}
 
-	public function pf_equal( $token, Frame $frame, Params $params ): array {
-		return [ '=' ];
-	}
-
 	// TODO: #titleparts, SUBJECTPAGENAME, BASEPAGENAME. SUBPAGENAME, DEFAULTSORT
 }

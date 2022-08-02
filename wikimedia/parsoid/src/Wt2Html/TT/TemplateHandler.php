@@ -498,9 +498,6 @@ class TemplateHandler extends TokenHandler {
 			// Parsoid core parser function versions have "token" versions
 			// which are incompatible with implementation in FunctionHookHandler
 			// and FunctionArgs. So, we continue down this hacky path for now.
-			if ( $target === '=' ) {
-				$target = 'equal';  // '=' is not a valid character in function names
-			}
 			$target = 'pf_' . $target;
 			// FIXME: Parsoid may not have implemented the parser function natively
 			// Emit an error message, but encapsulate it so it roundtrips back.
@@ -572,14 +569,12 @@ class TemplateHandler extends TokenHandler {
 		$env = $this->env;
 		$frame = $this->manager->getFrame();
 		if ( $env->hasDumpFlag( 'tplsrc' ) ) {
-			$dump = str_repeat( '=', 28 ) . " template source " .
-				str_repeat( '=', 28 ) . "\n";
-			$dump .= 'TEMPLATE:' . $tplArgs['name'] . 'TRANSCLUSION:' .
-				PHPUtils::jsonEncode( $token->dataAttribs->src ) . "\n";
-			$dump .= str_repeat( '-', 80 ) . "\n";
-			$dump .= $src . "\n";
-			$dump .= str_repeat( '-', 80 ) . "\n";
-			$env->writeDump( $dump );
+			$env->log( 'dump/tplsrc', str_repeat( '=', 80 ) );
+			$env->log( 'dump/tplsrc', 'TEMPLATE:', $tplArgs['name'], '; TRANSCLUSION:',
+				PHPUtils::jsonEncode( $token->dataAttribs->src ) );
+			$env->log( 'dump/tplsrc', str_repeat( '-', 80 ) );
+			$env->log( 'dump/tplsrc', $src );
+			$env->log( 'dump/tplsrc', str_repeat( '-', 80 ) );
 		}
 
 		if ( $src === '' ) {
