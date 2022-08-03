@@ -238,6 +238,18 @@ abstract class PaymentProvider implements IPaymentProvider, ICancelablePaymentPr
 	}
 
 	/**
+	 * @param string $gatewayTxnId The full Adyen payment ID
+	 * @return array
+	 * @throws \SmashPig\Core\ApiException
+	 */
+	public function tokenizePayment( $gatewayTxnId ) {
+		// Our gateway_txn_id corresponds to paymentId in Adyen's documentation.
+		$path = "payments/$gatewayTxnId/tokenize";
+		$response = $this->api->makeApiCall( $path, 'POST' );
+		return $response;
+	}
+
+	/**
 	 * Maps a couple of common properties of Adyen Checkout API responses to our
 	 * standardized PaymentProviderResponse.
 	 * Their pspReference is mapped to our GatewayTxnId and their refusalReason

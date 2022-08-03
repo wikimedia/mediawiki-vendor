@@ -62,6 +62,9 @@ rejects:
     txn_type:
         - new_case
         - subscr_modify
+        # reject txn_type of merch_pmt in order to ensure braintree transactions (that's getting into the jobs-paypal
+        # queue) do not make it into the donations queue when the maintenance queue job runner runs.
+        - merch_pmt
 
 # txn types defined here:
 # https://developer.paypal.com/docs/classic/ipn/integration-guide/IPNandPDTVariables/#id08CTB0S055Z
@@ -76,7 +79,6 @@ messages:
             - cart
             - send_money
             - web_accept
-            - merch_pmt
             - express_checkout
             - masspay
             - virtual_terminal
