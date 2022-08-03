@@ -7659,17 +7659,17 @@
         },
         {
             "name": "wikimedia/running-stat",
-            "version": "v2.0.0",
-            "version_normalized": "2.0.0.0",
+            "version": "v2.1.0",
+            "version_normalized": "2.1.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/wikimedia/RunningStat.git",
-                "reference": "3d8faa64a4bd4f4438b6650a73fa504c4c9a82ec"
+                "url": "https://github.com/wikimedia/running-stat.git",
+                "reference": "0aa66cf58f98ca2de9972a8177cbec625c4c9969"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/RunningStat/zipball/3d8faa64a4bd4f4438b6650a73fa504c4c9a82ec",
-                "reference": "3d8faa64a4bd4f4438b6650a73fa504c4c9a82ec",
+                "url": "https://api.github.com/repos/wikimedia/running-stat/zipball/0aa66cf58f98ca2de9972a8177cbec625c4c9969",
+                "reference": "0aa66cf58f98ca2de9972a8177cbec625c4c9969",
                 "shasum": ""
             },
             "require": {
@@ -7685,7 +7685,7 @@
                 "phpunit/phpunit": "^8.5",
                 "wikimedia/testing-access-wrapper": "^1.0.0"
             },
-            "time": "2022-05-20T20:43:08+00:00",
+            "time": "2022-07-20T12:56:10+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -7706,7 +7706,7 @@
             "description": "PHP implementations of online statistical algorithms",
             "homepage": "https://www.mediawiki.org/wiki/RunningStat",
             "support": {
-                "source": "https://github.com/wikimedia/RunningStat/tree/v2.0.0"
+                "source": "https://github.com/wikimedia/running-stat/tree/v2.1.0"
             },
             "install-path": "../wikimedia/running-stat"
         },
