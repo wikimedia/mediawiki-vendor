@@ -35,9 +35,9 @@ class TokenizeRecurringJob implements Runnable {
 		 * @var PaymentProvider
 		 */
 		$provider = PaymentProviderFactory::getProviderForMethod( 'cc' );
-		$txnId = $this->payload['gateway_txn_id'];
-		$tokenResult = $provider->tokenizePayment( $txnId );
-		$this->payload['recurring_payment_token'] = $tokenResult['token'];
+		$processorContactId = $this->payload['processor_contact_id'];
+		$tokenResult = $provider->getRecurringPaymentToken( $processorContactId );
+		$this->payload['recurring_payment_token'] = $tokenResult;
 		QueueWrapper::push( 'donations', $this->payload );
 		return true;
 	}

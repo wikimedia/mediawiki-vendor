@@ -150,4 +150,42 @@ class PaymentProviderTest extends BaseAdyenTestCase {
 			$firstError->getDebugMessage()
 		);
 	}
+
+	public function testUnsupportedCard() {
+		$this->mockApi->expects( $this->once() )
+			->method( 'createPaymentFromEncryptedDetails' )
+			->with()
+			->willReturn( [
+				'status' => 500,
+				'errorCode' => '905_1',
+				'message' => 'Could not find an acquirer account for the provided txvariant (uatp), currency (NOK), and action (AUTH).',
+				'errorType' => 'configuration',
+				'pspReference' => 'SZ7VN2XQSCZ28222'
+			] );
+		$response = $this->provider->createPayment( [
+			'currency' => 'EUR',
+			'amount' => '23.25',
+			'order_id' => '1234.1',
+			'encrypted_payment_data' => [
+				'encryptedCardNumber' => 'adyenjs_0_1_25$Wzozxz+Xa60jIs/aAyaddayaddayadda',
+				'encryptedExpiryMonth' => 'adyenjs_0_1_25$W+Jspf1bZ2AGu6lSetcetera',
+				'encryptedExpiryYear' => 'adyenjs_0_1_25$XoUIwK1nyHSn1Hpicandsoforth',
+				'encryptedSecurityCode' => 'adyenjs_0_1_25$Sn6D6UB3yLAX+5Sloremipsum',
+			],
+			'city' => 'Detroit',
+			'street_address' => '8952 Grand River Avenue',
+			'country' => 'US',
+			'description' => 'Wikimedia 877 600 9454',
+			'email' => 'wkramer@mc5.net',
+			'first_name' => 'Wayne',
+			'last_name' => 'Kramer',
+			'postal_code' => '48204',
+			'return_url' => 'https://paymentstest2.wmcloud.org/index.php?title=Special:AdyenCheckoutGatewayResult&order_id=1234.1&wmf_token=9b5527285f64111d11fb9dc8579ad147%2B%5C',
+			'state_province' => 'MI',
+			'user_ip' => '127.0.0.1',
+		] );
+		$this->assertFalse( $response->isSuccessful() );
+		$this->assertTrue( $response->hasErrors() );
+		$this->assertEquals( 'payment_submethod', $response->getValidationErrors()[0]->getField() );
+	}
 }

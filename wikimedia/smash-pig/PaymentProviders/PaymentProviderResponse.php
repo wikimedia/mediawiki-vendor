@@ -100,6 +100,9 @@ abstract class PaymentProviderResponse {
 	}
 
 	/**
+	 * Returns true if EITHER the PaymentError array (see getErrors) OR
+	 * the ValidationError array (see getValidationErrors) has elements.
+	 *
 	 * @return bool
 	 */
 	public function hasErrors(): bool {

@@ -141,7 +141,6 @@ class ExceptionMapper {
 		'904' => ErrorCode::UNKNOWN, // Unable To Process
 		'905' => ErrorCode::UNEXPECTED_VALUE, // Payment details are not supported
 		'905_2' => ErrorCode::ACCOUNT_MISCONFIGURATION, // No specified acquirer account found for '{0}' for specified acquirer '{1}' with variant '{2}' for unit '{3}' for Action '{4}'
-		'905_3' => ErrorCode::ACCOUNT_MISCONFIGURATION, // Could not find an acquirer account for the provided currency ({0}).
 		'905_4' => ErrorCode::ACCOUNT_MISCONFIGURATION, // Cashback and Cashout are not allowed for the configured acquirer account.
 		'905_5' => ErrorCode::ACCOUNT_MISCONFIGURATION, // No acquirer account active and configured for Klarna.
 		'905_6' => ErrorCode::ACCOUNT_MISCONFIGURATION, // Both 'KlarnaPayments' and 'Klarna' platforms have been configured for the merchant account. Only one of two is allowed.

@@ -13,7 +13,8 @@ class ValidationErrorMapper {
 		'102' => 'card_num', // Unable to determine variant
 		'103' => 'cvv',
 		'905' => 'payment_submethod', // Unsupported card type
-		'905_1' => 'payment_submethod'
+		'905_1' => 'payment_submethod', // Unsupported card type
+		'905_3' => 'payment_submethod', // Unsupported card type
 	];
 
 	public static function getValidationErrorField( $errorCode ): ?string {

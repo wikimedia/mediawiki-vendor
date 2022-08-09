@@ -2,7 +2,7 @@
 
 namespace SmashPig\PaymentProviders\Ingenico;
 
-use Smashpig\Core\ApiException;
+use SmashPig\Core\ApiException;
 use SmashPig\Core\Cache\CacheHelper;
 use Symfony\Component\HttpFoundation\Response;
 

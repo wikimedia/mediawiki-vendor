@@ -2,6 +2,7 @@
 
 namespace SmashPig\Core\Logging\LogStreams;
 
+use Exception;
 use SmashPig\Core\Context;
 use SmashPig\Core\Logging\LogContextHandler;
 use SmashPig\Core\Logging\LogEvent;
@@ -179,27 +180,37 @@ class FailmailLogStream implements ILogStream {
 		if ( $this->minSecondsBetweenEmails === 0 ) {
 			return true;
 		}
-		/* @var $cache \Psr\Cache\CacheItemPoolInterface */
-		$cache = Context::get()->getGlobalConfiguration()->object( 'cache' );
-		// If the key is set and not yet expired, we should not send email yet
-		return !$cache->hasItem( $cacheKey );
+		try {
+			/* @var $cache \Psr\Cache\CacheItemPoolInterface */
+			$cache = Context::get()->getGlobalConfiguration()->object( 'cache' );
+			// If the key is set and not yet expired, we should not send email yet
+			return !$cache->hasItem( $cacheKey );
+		} catch ( Exception $ex ) {
+			// If there is a problem with the cache, go ahead and send the failmail
+			return true;
+		}
 	}
 
 	protected function updateCache( string $cacheKey ): void {
 		if ( $this->minSecondsBetweenEmails === 0 ) {
 			return;
 		}
-		/* @var $cache \Psr\Cache\CacheItemPoolInterface */
-		$cache = Context::get()->getGlobalConfiguration()->object( 'cache' );
-		// PSR-6 says this is the way to create a new cache item, even if we
-		// don't expect the item to exist.
-		$cacheItem = $cache->getItem( $cacheKey );
+		try {
+			/* @var $cache \Psr\Cache\CacheItemPoolInterface */
+			$cache = Context::get()->getGlobalConfiguration()->object( 'cache' );
+			// PSR-6 says this is the way to create a new cache item, even if we
+			// don't expect the item to exist.
+			$cacheItem = $cache->getItem( $cacheKey );
 
-		// Value doesn't actually matter to the checking code, but this might
-		// be useful information to anyone looking at the raw redis values
-		$cacheItem->set( time() );
-		// Set the item to expire when we are ready to send more email.
-		$cacheItem->expiresAfter( $this->minSecondsBetweenEmails );
-		$cache->save( $cacheItem );
+			// Value doesn't actually matter to the checking code, but this might
+			// be useful information to anyone looking at the raw redis values
+			$cacheItem->set( time() );
+			// Set the item to expire when we are ready to send more email.
+			$cacheItem->expiresAfter( $this->minSecondsBetweenEmails );
+			$cache->save( $cacheItem );
+		}
+		catch ( Exception $ex ) {
+			// Don't let cache problems stop us sending the failmail
+		}
 	}
 }

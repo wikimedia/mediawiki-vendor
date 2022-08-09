@@ -331,12 +331,23 @@ class Api {
 	public function getPaymentMethods( $params ) {
 		$restParams = [
 			'merchantAccount' => $this->account,
-			'countryCode' => $params['country'],
-			'amount' => $this->getArrayAmount( $params ),
 			'channel' => 'Web',
-			// shopperLocale format needs to be language-country nl-NL en-NL
-			'shopperLocale' => str_replace( '_', '-', $params['language'] )
 		];
+
+		if ( !empty( $params['amount'] ) && !empty( $params['currency'] ) ) {
+			$restParams['amount'] = $this->getArrayAmount( $params );
+		}
+		if ( !empty( $params['country'] ) ) {
+			$restParams['countryCode'] = $params['country'];
+		}
+		if ( !empty( $params['language'] ) ) {
+			// shopperLocale format needs to be language-country nl-NL en-NL
+			$restParams['shopperLocale'] = str_replace( '_', '-', $params['language'] );
+		}
+		if ( !empty( $params['processor_contact_id'] ) ) {
+			// We send processor_contact_id as the shopper reference from the front-end
+			$restParams['shopperReference'] = $params['processor_contact_id'];
+		}
 
 		$result = $this->makeRestApiCall( $restParams, 'paymentMethods', 'POST' );
 		return $result['body'];

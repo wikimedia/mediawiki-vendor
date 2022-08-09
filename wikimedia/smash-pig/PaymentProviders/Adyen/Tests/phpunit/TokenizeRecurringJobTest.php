@@ -46,9 +46,9 @@ class TokenizeRecurringJobTest extends BaseSmashPigUnitTestCase {
 				[
 					'gateway' => 'adyen',
 					'recurring' => 0,
-					'gross' => 1.23,
-					'currency' => 'AUD',
-					'gateway_txn_id' => '000000123400000004230000100001',
+					'gross' => 10,
+					'currency' => 'USD',
+					'gateway_txn_id' => 'CPBGBZ9Z63RZNN82',
 				],
 				false,
 			],
@@ -56,10 +56,10 @@ class TokenizeRecurringJobTest extends BaseSmashPigUnitTestCase {
 				[
 					'gateway' => 'adyen',
 					'recurring' => 1,
-					'gross' => 1.23,
+					'gross' => 10,
 					'currency' => 'USD',
-					'gateway_txn_id' => '000000123400000004230000100001',
-					'recurring_payment_token' => '2d6f1234-df49-9876-bcb4-55aa44ce3e22',
+					'gateway_txn_id' => 'CPBGBZ9Z63RZNN82',
+					'recurring_payment_token' => 'VL4VZ779Z2M84H82',
 				],
 				false,
 			],
@@ -67,9 +67,9 @@ class TokenizeRecurringJobTest extends BaseSmashPigUnitTestCase {
 				[
 					'gateway' => 'adyen',
 					'recurring' => 1,
-					'gross' => 1.23,
-					'currency' => 'AUD',
-					'gateway_txn_id' => '000000123400000004230000100001'
+					'gross' => 10,
+					'currency' => 'USD',
+					'gateway_txn_id' => 'CPBGBZ9Z63RZNN82'
 				],
 				true,
 			],
@@ -91,24 +91,21 @@ class TokenizeRecurringJobTest extends BaseSmashPigUnitTestCase {
 		$job->payload = [
 			'gateway' => 'adyen',
 			'recurring' => 1,
-			'gross' => 1.23,
-			'currency' => 'AUD',
-			'gateway_txn_id' => '000000123400000004230000100001'
+			'gross' => 10,
+			'currency' => 'USD',
+			'processor_contact_id' => '3.1',
+			'gateway_txn_id' => 'CPBGBZ9Z63RZNN82',
 		];
 		$this->provider->expects( $this->once() )
-			->method( 'tokenizePayment' )
+			->method( 'getRecurringPaymentToken' )
 			->with(
-				$this->equalTo( '000000123400000004230000100001' )
-			)->willReturn(
-				[
-					'token' => '2d6f1234-df49-9876-bcb4-55aa44ce3e22'
-				]
-			);
+				$this->equalTo( '3.1' )
+			)->willReturn( 'VL4VZ779Z2M84H82' );
 		$job->execute();
 		$queue = QueueWrapper::getQueue( 'donations' );
 		$message = $queue->pop();
 		$expected = $job->payload + [
-				'recurring_payment_token' => '2d6f1234-df49-9876-bcb4-55aa44ce3e22'
+				'recurring_payment_token' => 'VL4VZ779Z2M84H82'
 			];
 		SourceFields::removeFromMessage( $message );
 		$this->assertEquals( $expected, $message );
@@ -118,22 +115,19 @@ class TokenizeRecurringJobTest extends BaseSmashPigUnitTestCase {
 		$originalMessage = [
 			'gateway' => 'adyen',
 			'recurring' => 1,
-			'gross' => 1.23,
-			'currency' => 'AUD',
-			'gateway_txn_id' => '000000123400000004230000100001',
+			'gross' => 10,
+			'currency' => 'USD',
+			'processor_contact_id' => '3.1',
+			'gateway_txn_id' => 'CPBGBZ9Z63RZNN82',
 		];
 		$job = TokenizeRecurringJob::fromDonationMessage( $originalMessage );
 		QueueWrapper::push( 'jobs-adyen', $job );
 
 		$this->provider->expects( $this->once() )
-			->method( 'tokenizePayment' )
+			->method( 'getRecurringPaymentToken' )
 			->with(
-				$this->equalTo( '000000123400000004230000100001' )
-			)->willReturn(
-				[
-					'token' => '2d6f1234-df49-9876-bcb4-55aa44ce3e22'
-				]
-			);
+				$this->equalTo( '3.1' )
+			)->willReturn( 'VL4VZ779Z2M84H82' );
 
 		$runner = new JobQueueConsumer( 'jobs-adyen' );
 		$runner->dequeueMessages();
@@ -141,9 +135,10 @@ class TokenizeRecurringJobTest extends BaseSmashPigUnitTestCase {
 		$queue = QueueWrapper::getQueue( 'donations' );
 		$resultMessage = $queue->pop();
 		$expected = $originalMessage + [
-				'recurring_payment_token' => '2d6f1234-df49-9876-bcb4-55aa44ce3e22'
+				'recurring_payment_token' => 'VL4VZ779Z2M84H82'
 			];
 		SourceFields::removeFromMessage( $resultMessage );
+
 		$this->assertEquals( $expected, $resultMessage );
 	}
 }

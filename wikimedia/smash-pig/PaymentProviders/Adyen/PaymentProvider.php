@@ -238,15 +238,24 @@ abstract class PaymentProvider implements IPaymentProvider, ICancelablePaymentPr
 	}
 
 	/**
-	 * @param string $gatewayTxnId The full Adyen payment ID
-	 * @return array
+	 * @param string $processorContactId Our processor Contact Id / order ID for the payment
+	 * @return string|null
 	 * @throws \SmashPig\Core\ApiException
 	 */
-	public function tokenizePayment( $gatewayTxnId ) {
-		// Our gateway_txn_id corresponds to paymentId in Adyen's documentation.
-		$path = "payments/$gatewayTxnId/tokenize";
-		$response = $this->api->makeApiCall( $path, 'POST' );
-		return $response;
+	// Documentation:
+	// https://docs.adyen.com/online-payments/tokenization/managing-tokens#list-saved-details
+	public function getRecurringPaymentToken( string $processorContactId ): ?string {
+		$rawResult = $this->api->getPaymentMethods( [
+			'processor_contact_id' => $processorContactId,
+		] );
+
+		if ( !empty( $rawResult['storedPaymentMethods'] ) ) {
+			return $rawResult['storedPaymentMethods'][0]['id'];
+		}
+		Logger::info(
+			"Adyen: Not able to get the recurring token with processor Contact ID '{$processorContactId}'"
+		);
+		return null;
 	}
 
 	/**
@@ -383,14 +392,22 @@ abstract class PaymentProvider implements IPaymentProvider, ICancelablePaymentPr
 				Logger::debug( 'Unable to map Adyen status', $rawResponse );
 			}
 		} else {
-			$message = 'Missing Adyen status';
-			$response->addErrors( new PaymentError(
-				ErrorCode::MISSING_REQUIRED_DATA,
-				$message,
-				LogLevel::ERROR
-			) );
+			if ( $response->hasErrors() ) {
+				// We don't necessarily get a status code if there's another error
+				// but it sure as heck didn't succeed!
+				$response->setStatus( FinalStatus::FAILED );
+			} else {
+				$message = 'Missing Adyen status';
+				$response->addErrors(
+					new PaymentError(
+						ErrorCode::MISSING_REQUIRED_DATA,
+						$message,
+						LogLevel::ERROR
+					)
+				);
+				Logger::debug( $message, $rawResponse );
+			}
 			$response->setSuccessful( false );
-			Logger::debug( $message, $rawResponse );
 		}
 	}
 
