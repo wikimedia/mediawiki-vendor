@@ -24,7 +24,7 @@ var Diff = require('../lib/utils/Diff.js').Diff;
 var JSUtils = require('../lib/utils/jsutils.js').JSUtils;
 var MockEnv = require('../tests/MockEnv.js').MockEnv;
 
-var defaultContentVersion = '2.5.0';
+var defaultContentVersion = '2.6.0';
 
 function displayDiff(type, count) {
 	var pad = (10 - type.length);  // Be positive!
@@ -829,7 +829,6 @@ var runTests = Promise.async(function *(title, options, formatter) {
 				original: {
 					'data-parsoid': data.oldDp,
 					'data-mw': data.oldMw,
-					wikitext: { body: data.oldWt },
 				},
 			},
 		}, parsoidOptions);

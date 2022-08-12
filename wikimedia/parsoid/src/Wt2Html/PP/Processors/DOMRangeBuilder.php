@@ -81,6 +81,9 @@ class DOMRangeBuilder {
 	/** @var array<string|CompoundTemplateInfo>[] */
 	private $compoundTpls = [];
 
+	/** @var string */
+	protected $traceType;
+
 	/**
 	 * @param Document $document
 	 * @param Frame $frame
@@ -92,6 +95,7 @@ class DOMRangeBuilder {
 		$this->frame = $frame;
 		$this->env = $frame->getEnv();
 		$this->nodeRanges = new SplObjectStorage;
+		$this->traceType = "tplwrap";
 	}
 
 	/**
@@ -315,7 +319,7 @@ class DOMRangeBuilder {
 		}
 
 		$this->env->log(
-			'trace/tplwrap/findranges',
+			"trace/{$this->traceType}/findranges",
 			static function () use ( &$range ) {
 				$msg = '';
 				$dp1 = DOMDataUtils::getDataParsoid( $range->start );
@@ -617,13 +621,10 @@ class DOMRangeBuilder {
 			// Extract tplargInfo
 			$tmp = DOMDataUtils::getDataParsoid( $r->startElem )->getTemp();
 			$templateInfo = $tmp->tplarginfo ?? null;
-			if ( WTUtils::matchTplType( $r->startElem ) && !$templateInfo ) {
-				// An assertion here is probably an indication that we're
-				// mistakenly doing template wrapping in a nested context.
-				Assert::invariant( $tmp->getFlag( TempData::FROM_FOSTER ), 'Template range without arginfo.' );
-			}
 
-			$this->env->log( 'trace/tplwrap/merge', static function () use ( &$DOMDataUtils, &$r ) {
+			$this->verifyTplInfoExpectation( $templateInfo, $tmp );
+
+			$this->env->log( "trace/{$this->traceType}/merge", static function () use ( &$DOMDataUtils, &$r ) {
 				$msg = '';
 				$dp1 = DOMDataUtils::getDataParsoid( $r->start );
 				$dp2 = DOMDataUtils::getDataParsoid( $r->end );
@@ -651,7 +652,7 @@ class DOMRangeBuilder {
 				$subsumedRanges[$r->id] ?? null
 			);
 			if ( $enclosingRangeId ) {
-				$this->env->log( 'trace/tplwrap/merge', '--nested in ', $enclosingRangeId, '--' );
+				$this->env->log( "trace/{$this->traceType}/merge", '--nested in ', $enclosingRangeId, '--' );
 
 				// Nested -- ignore r
 				$startTagToStrip = $r->startElem;
@@ -665,7 +666,7 @@ class DOMRangeBuilder {
 				// In the common case, in overlapping scenarios, r.start is
 				// identical to prev.end. However, in fostered content scenarios,
 				// there can true overlap of the ranges.
-				$this->env->log( 'trace/tplwrap/merge', '--overlapped--' );
+				$this->env->log( "trace/{$this->traceType}/merge", '--overlapped--' );
 
 				// See comment above, where `subsumedRanges` is defined.
 				$subsumedRanges[$r->id] = $prev->id;
@@ -700,7 +701,7 @@ class DOMRangeBuilder {
 					$this->recordTemplateInfo( $prev->id, $r, $templateInfo );
 				}
 			} else {
-				$this->env->log( 'trace/tplwrap/merge', '--normal--' );
+				$this->env->log( "trace/{$this->traceType}/merge", '--normal--' );
 
 				// Default -- no overlap
 				// Emit the merged range
@@ -1273,6 +1274,18 @@ class DOMRangeBuilder {
 	protected function matchMetaType( Element $elem ): ?string {
 		// for this class we're interested in the template type
 		return WTUtils::matchTplType( $elem );
+	}
+
+	/**
+	 * @param ?TemplateInfo $templateInfo
+	 * @param TempData $tmp
+	 */
+	protected function verifyTplInfoExpectation( ?TemplateInfo $templateInfo, TempData $tmp ): void {
+		if ( !$templateInfo ) {
+			// An assertion here is probably an indication that we're
+			// mistakenly doing template wrapping in a nested context.
+			Assert::invariant( $tmp->getFlag( TempData::FROM_FOSTER ), 'Template range without arginfo.' );
+		}
 	}
 
 	/**

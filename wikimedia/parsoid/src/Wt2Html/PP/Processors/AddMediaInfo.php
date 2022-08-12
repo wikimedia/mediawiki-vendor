@@ -261,6 +261,15 @@ class AddMediaInfo implements Wt2HtmlDOMProcessor {
 		$audio->setAttribute( 'controls', '' );
 		$audio->setAttribute( 'preload', 'none' );
 
+		$muted = WTSUtils::getAttrFromDataMw( $dataMw, 'muted', false );
+		if ( $muted ) {
+			$audio->setAttribute( 'muted', '' );
+		}
+		$loop = WTSUtils::getAttrFromDataMw( $dataMw, 'loop', false );
+		if ( $loop ) {
+			$audio->setAttribute( 'loop', '' );
+		}
+
 		$size = self::handleSize( $env, $attrs, $info );
 		DOMDataUtils::addNormalizedAttribute( $audio, 'height', (string)$size['height'], null, true );
 		DOMDataUtils::addNormalizedAttribute( $audio, 'width', (string)$size['width'], null, true );
@@ -304,6 +313,15 @@ class AddMediaInfo implements Wt2HtmlDOMProcessor {
 
 		$video->setAttribute( 'controls', '' );
 		$video->setAttribute( 'preload', 'none' );
+
+		$muted = WTSUtils::getAttrFromDataMw( $dataMw, 'muted', false );
+		if ( $muted ) {
+			$video->setAttribute( 'muted', '' );
+		}
+		$loop = WTSUtils::getAttrFromDataMw( $dataMw, 'loop', false );
+		if ( $loop ) {
+			$video->setAttribute( 'loop', '' );
+		}
 
 		$size = self::handleSize( $env, $attrs, $info );
 		DOMDataUtils::addNormalizedAttribute( $video, 'height', (string)$size['height'], null, true );
@@ -537,6 +555,7 @@ class AddMediaInfo implements Wt2HtmlDOMProcessor {
 			// emitted in the TT/WikiLinkHandler but treebuilding may have
 			// messed that up for us.
 			$anchor = $container;
+			$reopenedAFE = 0;
 			do {
 				// An active formatting element may have been reopened inside
 				// the wrapper if a content model violation was encountered
@@ -544,6 +563,7 @@ class AddMediaInfo implements Wt2HtmlDOMProcessor {
 				// instead of bailing out
 				$anchor = $anchor->firstChild;
 				$anchorNodeName = DOMCompat::nodeName( $anchor );
+				$reopenedAFE++;
 			} while (
 				$anchor instanceof Element && $anchorNodeName !== 'a' &&
 				isset( Consts::$HTML['FormattingTags'][$anchorNodeName] )
@@ -556,6 +576,17 @@ class AddMediaInfo implements Wt2HtmlDOMProcessor {
 			if ( !( $span instanceof Element && DOMCompat::nodeName( $span ) === 'span' ) ) {
 				$env->log( 'error', 'Unexpected structure when adding media info.' );
 				continue;
+			}
+
+			// For T314059
+			if ( $reopenedAFE > 1 ) {
+				$src = '';
+				$tsr = DOMDataUtils::getDataParsoid( $container )->tsr ?? null;
+				if ( $tsr ) {
+					$frame = $options['frame'] ?? $env->topFrame;
+					$src = $tsr->substr( $frame->getSrcText() );
+				}
+				$env->log( 'warn', "Active formatting element reopened in figure: {$src}" );
 			}
 
 			$dataMw = DOMDataUtils::getDataMw( $container );
