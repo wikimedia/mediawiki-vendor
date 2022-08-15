@@ -36,6 +36,10 @@ class PaypalPaymentProvider extends PaymentProvider {
 			}
 		} else {
 			$transaction = $rawResponse['data']['authorizePaymentMethod']['transaction'];
+			// If it's recurring need to know when to set the token in setCreatePaymentSuccessfulResponseDetails
+			if ( isset( $params['transaction']['vaultPaymentMethodAfterTransacting'] ) ) {
+				$transaction['recurring'] = true;
+			}
 			$this->setCreatePaymentSuccessfulResponseDetails( $transaction, $response );
 		}
 		return $response;
@@ -81,6 +85,12 @@ class PaypalPaymentProvider extends PaymentProvider {
 	 */
 	protected function transformToApiParams( array $params, string $type = null ): array {
 		$apiParams = [];
+
+		// use the set recurring payment token as the payment_token for subsequent recurring charges
+		if ( !empty( $params['recurring_payment_token'] ) ) {
+			$params['payment_token'] = $params['recurring_payment_token'];
+		}
+
 		if ( $type === TransactionType::CAPTURE ) {
 			if ( !empty( $params['gateway_txn_id'] ) ) {
 				$apiParams['transactionId'] = $params['gateway_txn_id'];
@@ -109,6 +119,18 @@ class PaypalPaymentProvider extends PaymentProvider {
 		} else {
 			throw new \InvalidArgumentException( "order_id is a required field" );
 		}
+
+		// Vaulting - saving the payment so we can use it for recurring charges
+		// Options for when to vault
+		// https://graphql.braintreepayments.com/reference/#enum--vaultpaymentmethodcriteria
+		// Only want to vault on the initial authorize call where recurring=true
+		// Don't want to vault when charging a subsequent recurring payment, these have installment=recurring
+		$isRecurring = $params['recurring'] ?? '';
+		$installment = $params['installment'] ?? '';
+		if ( $installment != 'recurring' && $isRecurring ) {
+			$apiParams['transaction']['vaultPaymentMethodAfterTransacting']['when'] = "ON_SUCCESSFUL_TRANSACTION";
+		}
+
 		return $apiParams;
 	}
 
@@ -133,6 +155,11 @@ class PaypalPaymentProvider extends PaymentProvider {
 				$donorDetails->setPhone( $payer['phone'] );
 			}
 			$response->setDonorDetails( $donorDetails );
+		}
+
+		// The recurring token (vault) is the id of paymentMethod
+		if ( isset( $transaction['recurring'] ) ) {
+			$response->setRecurringPaymentToken( $transaction['paymentMethod']['id'] );
 		}
 		$response->setStatus( $mappedStatus );
 	}

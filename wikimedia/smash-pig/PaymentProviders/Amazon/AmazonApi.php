@@ -39,8 +39,23 @@ class AmazonApi {
 	 */
 	public static function createIpnHandler( $headers, $body ) {
 		$config = Context::get()->getProviderConfiguration();
+		$retryLimit = $config->val( 'curl/retries' );
 		$klass = $config->val( 'ipn-handler-class' );
 		$proxy = $config->val( 'proxy' );
+		$tries = 0;
+		// The IPN handler constructor will make a cURL request under the hood, so we
+		// retry the constructor the same number of times we have configured to retry
+		// our own cURL requests.
+		while ( $tries < $retryLimit - 1 ) {
+			try {
+				return new $klass( $headers, $body, $proxy );
+			}
+			catch ( \Exception $ex ) {
+				$tries++;
+			}
+		}
+		// On the last attempt, just construct with no try wrapper so the original
+		// exception bubbles up with its own stack trace
 		return new $klass( $headers, $body, $proxy );
 	}
 

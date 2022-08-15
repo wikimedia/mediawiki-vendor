@@ -7,6 +7,10 @@ mutation AuthorizePaymentMethod($input: AuthorizePaymentMethodInput!) {
       paymentInitiatedAt
       source
       orderId
+      paymentMethod {
+        id
+        legacyId
+      }
       paymentMethodSnapshot {
         ... on PayPalTransactionDetails {
           payer {

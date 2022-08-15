@@ -473,6 +473,8 @@ abstract class PaymentProvider implements IPaymentProvider, ICancelablePaymentPr
 	 */
 	protected function validateGetPaymentMethodsParams( array $params ): array {
 		$badParams = [];
+		// FIXME: we should move the supported country/currency yaml files to the SmashPig level
+		// and use those, rather than these possibly-incomplete lists.
 		if ( !array_key_exists( $params['country'], NationalCurrencies::getNationalCurrencies() ) ) {
 			$badParams[] = 'country';
 		}

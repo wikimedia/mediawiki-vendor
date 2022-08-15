@@ -87,6 +87,7 @@ class NationalCurrencies {
 			'EG' => 'EGP',
 			'EH' => 'MAD',
 			'ER' => 'ERN',
+			'ES' => 'EUR',
 			'ET' => 'ETB',
 			'FI' => 'EUR',
 			'FJ' => 'FJD',
