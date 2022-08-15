@@ -3889,17 +3889,17 @@
     },
     {
         "name": "wikimedia/smash-pig",
-        "version": "v0.8.2.4",
-        "version_normalized": "0.8.2.4",
+        "version": "v0.8.2.5",
+        "version_normalized": "0.8.2.5",
         "source": {
             "type": "git",
             "url": "https://github.com/wikimedia/wikimedia-fundraising-SmashPig.git",
-            "reference": "cf09612d3ee03ae3900ac753cd9469c6ef929111"
+            "reference": "86c6bada904cc4e918c4c4d63b021e4ad00c70cf"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/wikimedia/wikimedia-fundraising-SmashPig/zipball/cf09612d3ee03ae3900ac753cd9469c6ef929111",
-            "reference": "cf09612d3ee03ae3900ac753cd9469c6ef929111",
+            "url": "https://api.github.com/repos/wikimedia/wikimedia-fundraising-SmashPig/zipball/86c6bada904cc4e918c4c4d63b021e4ad00c70cf",
+            "reference": "86c6bada904cc4e918c4c4d63b021e4ad00c70cf",
             "shasum": ""
         },
         "require": {
@@ -3924,7 +3924,7 @@
             "php-parallel-lint/php-parallel-lint": "^1.2",
             "phpunit/phpunit": "^9.5"
         },
-        "time": "2022-08-11T23:22:36+00:00",
+        "time": "2022-08-12T01:23:03+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
