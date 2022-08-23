@@ -19,6 +19,8 @@ payments-wsdl: https://pal-live.adyen.com/pal/Payment.wsdl
 
 rest-base-url: https://checkout-test.adyen.com/v67
 
+recurring-base-url: https://pal-test.adyen.com/pal/servlet/Recurring/v67
+
 accounts: {}
     # FIXME: Provide sample account config more consistently.  The
     # empty map above is easy to overlook.

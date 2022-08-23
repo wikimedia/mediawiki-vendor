@@ -33,8 +33,8 @@ class TestGetPaymentToken extends MaintenanceBase {
 		 */
 		$adyen = PaymentProviderFactory::getProviderForMethod( $this->getOption( 'method' ) );
 
-		$createPaymentResponse = $adyen->getRecurringPaymentToken( $this->getOption( 'pcid' ) );
-		Logger::info( "Tokenize result: " . json_encode( $createPaymentResponse ) );
+		$savedDetailsResponse = $adyen->getSavedPaymentDetails( $this->getOption( 'pcid' ) );
+		Logger::info( "Tokenize result: " . print_r( $savedDetailsResponse, true ) );
 	}
 }
 

@@ -75,6 +75,7 @@ class Api {
 		$this->wsdlUser = $c->val( "accounts/{$this->account}/ws-username" );
 		$this->wsdlPass = $c->val( "accounts/{$this->account}/ws-password" );
 		$this->restBaseUrl = $c->val( 'rest-base-url' );
+		$this->recurringBaseUrl = $c->val( 'recurring-base-url' );
 		$this->apiKey = $c->val( "accounts/{$this->account}/ws-api-key" );
 	}
 
@@ -362,25 +363,34 @@ class Api {
 	}
 
 	/**
-	 * Uses the rest API to return saved payment details
+	 * Uses the rest API to return saved payment details. These will include a token
+	 * that can be used to make recurring donations or further charges without the
+	 * shopper needing to input their card details again.
 	 *
-	 * @param string $shopperReference
-	 * @return array
+	 * @param string $shopperReference An identifying string we assign to the shopper
+	 *  when we first store (tokenize) the payment details.
+	 * @return array A list of saved payment methods with tokens and other details.
 	 * @throws \SmashPig\Core\ApiException
 	 */
-	public function getSavedPaymentDetails( $shopperReference ) {
-		$restParams['merchantAccount'] = $this->account;
-		$restParams['shopperReference'] = $shopperReference;
+	public function getSavedPaymentDetails( string $shopperReference ): array {
+		$restParams = [
+			'merchantAccount' => $this->account,
+			'shopperReference' => $shopperReference,
+			'recurring' => [
+				'contract' => self::RECURRING_CONTRACT,
+			],
+		];
 
-		$result = $this->makeRestApiCall( $restParams, 'paymentMethods', 'POST' );
+		$result = $this->makeRestApiCall( $restParams, 'listRecurringDetails', 'POST', true );
 		return $result['body'];
 	}
 
 	/**
 	 * @throws \SmashPig\Core\ApiException
 	 */
-	protected function makeRestApiCall( $params, $path, $method ) {
-		$url = $this->restBaseUrl . '/' . $path;
+	protected function makeRestApiCall( $params, $path, $method, $useRecurringBasePath = false ) {
+		$basePath = $useRecurringBasePath ? $this->recurringBaseUrl : $this->restBaseUrl;
+		$url = $basePath . '/' . $path;
 		$request = new OutboundRequest( $url, $method );
 		$request->setBody( json_encode( $params ) );
 		$request->setHeader( 'x-API-key', $this->apiKey );

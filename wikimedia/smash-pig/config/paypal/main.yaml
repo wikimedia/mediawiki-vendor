@@ -69,7 +69,7 @@ rejects:
         - mp_signup
 
 # txn types defined here:
-# https://developer.paypal.com/docs/classic/ipn/integration-guide/IPNandPDTVariables/#id08CTB0S055Z
+# https://developer.paypal.com/api/nvp-soap/ipn/IPNandPDTVariables/#link-ipntransactiontypes
 messages:
     payment:
         class: SmashPig\PaymentProviders\PayPal\PaymentMessage
