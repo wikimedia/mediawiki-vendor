@@ -64,3 +64,12 @@ league/oauth2-server/tests/
 
 spomky-labs/base64url/infection.json.dist
 spomky-labs/cbor-php/infection.json.dist
+
+elasticsearch/elasticsearch/docs
+elasticsearch/elasticsearch/.github
+elasticsearch/elasticsearch/.ci
+
+ezimuel/guzzlestreams/tests
+ezimuel/ringphp/docs
+ezimuel/ringphp/tests
+

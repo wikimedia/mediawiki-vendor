@@ -1,9 +1,12 @@
 {
     "name": "ruflin/elastica",
-    "description": "Elasticsearch Client",
-    "keywords": ["search","client"],
-    "homepage": "http://elastica.io/",
     "type": "library",
+    "description": "Elasticsearch Client",
+    "keywords": [
+        "search",
+        "client"
+    ],
+    "homepage": "http://elastica.io/",
     "license": "MIT",
     "authors": [
         {
@@ -12,39 +15,39 @@
         }
     ],
     "require": {
-        "php": "^7.0||^8.0",
+        "php": "^7.2 || ^8.0",
         "ext-json": "*",
-        "psr/log": "~1.0",
-        "elasticsearch/elasticsearch": "^6.0"
+        "elasticsearch/elasticsearch": "^7.1.1",
+        "nyholm/dsn": "^2.0.0",
+        "psr/log": "^1.0 || ^2.0 || ^3.0",
+        "symfony/deprecation-contracts": "^2.2 || ^3.0",
+        "symfony/polyfill-php73": "^1.19"
     },
     "require-dev": {
-        "aws/aws-sdk-php": "~3.0",
-        "guzzlehttp/guzzle": "~6.0",
-        "phpunit/phpunit": "^6.0||^8.5.20",
-        "yoast/phpunit-polyfills": "1.0.1"
-    },
-    "conflict": {
-        "elasticsearch/elasticsearch": "6.8.0 || 6.8.1"
+        "aws/aws-sdk-php": "^3.155",
+        "guzzlehttp/guzzle": "^6.3 || ^7.2",
+        "phpunit/phpunit": "^8.5.8 || ^9.4",
+        "symfony/phpunit-bridge": "^5.1.1"
     },
     "suggest": {
         "aws/aws-sdk-php": "Allow using IAM authentication with Amazon ElasticSearch Service",
-        "egeloen/http-adapter": "Allow using httpadapter transport",
-        "guzzlehttp/guzzle": "Allow using guzzle 6 as the http transport",
+        "egeloen/http-adapter": "Allow using httpadapter as transport",
+        "guzzlehttp/guzzle": "Allow using guzzle as transport",
         "monolog/monolog": "Logging request"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "7.0.x-dev"
+        }
     },
     "autoload": {
         "psr-4": {
-            "Elastica\\": "lib/Elastica/"
+            "Elastica\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Elastica\\Test\\": "test/Elastica/"
-        }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "6.0.x-dev"
+            "Elastica\\Test\\": "tests/"
         }
     }
 }
