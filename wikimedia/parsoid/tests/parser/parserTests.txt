@@ -11818,6 +11818,34 @@ Aoeu
 </p>
 !! end
 
+!! test
+Parsoid: unknown parser function (T314524)
+!! wikitext
+{{#tag:b|This is a known parser function}}
+
+Now show the unknown parser functions for comparison.
+
+{{#foo}}
+
+{{#foo:bar|bat}}
+!! html/php
+<p><b>This is a known parser function</b>
+</p><p>Now show the unknown parser functions for comparison.
+</p><p>{{#foo}}
+</p><p>{{#foo:bar|bat}}
+</p>
+!! html/parsoid+standalone
+<p><b typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"#tag:b","function":"tag"},"params":{"1":{"wt":"This is a known parser function"}},"i":0}}]}'>This is a known parser function</b></p>
+<p>Now show the unknown parser functions for comparison.</p>
+<p><span typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"#foo","function":"foo"},"params":{},"i":0}}]}'>Parser function implementation for pf_foo missing in Parsoid.</span></p>
+<p><span typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"#foo:bar","function":"foo"},"params":{"1":{"wt":"bat"}},"i":0}}]}'>Parser function implementation for pf_foo missing in Parsoid.</span></p>
+!! html/parsoid+integrated
+<p><b typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"#tag:b","function":"tag"},"params":{"1":{"wt":"This is a known parser function"}},"i":0}}]}'>This is a known parser function</b></p>
+<p>Now show the unknown parser functions for comparison.</p>
+<p><span typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"#foo","function":"foo"},"params":{},"i":0}}]}'>{{#foo}}</span></p>
+<p><span typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"#foo:bar","function":"foo"},"params":{"1":{"wt":"bat"}},"i":0}}]}'>{{#foo:bar|bat}}</span></p>
+!! end
+
 # From plwiki:PLOS_ONE
 !! test
 Parsoid: Page property magic word with magic word contents
@@ -18377,11 +18405,20 @@ Expansion of multi-line templates in attribute values (T8255 check 2)
 
 !! test
 Tags which are hidden from tidiers cannot pass through the Sanitizer
+!! options
+parsoid=wt2html,html2html
 !! wikitext
 <mw:toc><script>alert();</script></mw:toc>
-!! html
+
+<meta property="mw:PageProp/toc" />
+!! html/php
 <p>&lt;mw:toc&gt;&lt;script&gt;alert();&lt;/script&gt;&lt;/mw:toc&gt;
+</p><p>&lt;meta property="mw:PageProp/toc" /&gt;
 </p>
+!! html/parsoid
+<p>&lt;mw:toc>&lt;script>alert();&lt;/script>&lt;/mw:toc></p>
+
+<p>&lt;meta property="mw:PageProp/toc" /></p>
 !! end
 
 ###
@@ -20735,6 +20772,10 @@ parsoid={ "modes": ["wt2html","html2html"], "normalizePhp": true }
 <dd>&#x10fffd; &#x10fffe; &#x10ffff;</dd></dl>
 !! end
 
+# test added in 4e717c01589378893c98e333884315c166c217b3
+# __FORCETOC__ won't set show-toc if there are no sections
+# present to show; also test that __NEWSECTIONLINK__ results in the
+# proper ParserOutputFlag being set.
 !! test
 __FORCETOC__ override
 !! options
@@ -20745,7 +20786,7 @@ __FORCETOC__
 !! html/php
 <p><br />
 </p>
-flags=
+flags=mw-NewSection
 !! end
 
 !! test
@@ -22056,7 +22097,7 @@ language=zh variant=zh title=[[ZH]] showtitle
 !! wikitext
 -{T|zh-cn:CN;zh-tw:TW}-
 !! html/php
-ZH
+<span class="mw-page-title-main">ZH</span>
 <p class="mw-empty-elt">
 </p>
 !! html/parsoid
@@ -22070,7 +22111,7 @@ language=zh variant=zh title=[[ZH]] showtitle
 !! wikitext
 -{T|TW}-
 !! html/php
-ZH
+<span class="mw-page-title-main">ZH</span>
 <p class="mw-empty-elt">
 </p>
 !! html/parsoid
@@ -23398,7 +23439,7 @@ wgRestrictDisplayTitle=false
 !! wikitext
 this is not the title
 !! html/php
-Parser test
+<span class="mw-page-title-main">Parser test</span>
 <p>this is not the title
 </p>
 !! end
@@ -23432,7 +23473,7 @@ wgRestrictDisplayTitle=true
 this is not the title
 {{DISPLAYTITLE:whatever}}
 !! html/php
-Screen
+<span class="mw-page-title-main">Screen</span>
 <p>this is not the title
 </p>
 !! end
@@ -23465,7 +23506,7 @@ wgAllowDisplayTitle=false
 this is not the title
 {{DISPLAYTITLE:screen}}
 !! html/php
-Screen
+<span class="mw-page-title-main">Screen</span>
 <p>this is not the title
 <a href="/index.php?title=Template:DISPLAYTITLE:screen&amp;action=edit&amp;redlink=1" class="new" title="Template:DISPLAYTITLE:screen (page does not exist)">Template:DISPLAYTITLE:screen</a>
 </p>
@@ -23481,7 +23522,7 @@ wgAllowDisplayTitle=false
 !! wikitext
 this is not the title
 !! html/php
-Screen
+<span class="mw-page-title-main">Screen</span>
 <p>this is not the title
 </p>
 !! end
@@ -23565,7 +23606,7 @@ wgRestrictDisplayTitle=true
 !! wikitext
 this is not the title
 !! html/php
-Art&amp;copy
+<span class="mw-page-title-main">Art&amp;copy</span>
 <p>this is not the title
 </p>
 !! end

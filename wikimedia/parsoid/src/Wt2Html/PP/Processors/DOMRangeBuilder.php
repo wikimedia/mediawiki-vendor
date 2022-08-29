@@ -6,6 +6,7 @@ namespace Wikimedia\Parsoid\Wt2Html\PP\Processors;
 use Error;
 use SplObjectStorage;
 use Wikimedia\Assert\Assert;
+use Wikimedia\Assert\UnreachableException;
 use Wikimedia\Parsoid\Config\Env;
 use Wikimedia\Parsoid\Core\DomSourceRange;
 use Wikimedia\Parsoid\Core\ElementRange;
@@ -13,6 +14,7 @@ use Wikimedia\Parsoid\DOM\Document;
 use Wikimedia\Parsoid\DOM\Element;
 use Wikimedia\Parsoid\DOM\Node;
 use Wikimedia\Parsoid\DOM\Text;
+use Wikimedia\Parsoid\NodeData\DataParsoid;
 use Wikimedia\Parsoid\NodeData\TempData;
 use Wikimedia\Parsoid\NodeData\TemplateInfo;
 use Wikimedia\Parsoid\Utils\DOMCompat;
@@ -792,6 +794,9 @@ class DOMRangeBuilder {
 				if ( !DOMUtils::isFosterablePosition( $n ) ) {
 					$span = $this->document->createElement( 'span' );
 					$span->setAttribute( 'about', $about );
+					$dp = new DataParsoid;
+					$dp->setTempFlag( TempData::WRAPPER );
+					DOMDataUtils::setDataParsoid( $span, $dp );
 					$n->parentNode->replaceChild( $span, $n );
 					$span->appendChild( $n );
 					$n = $span;
@@ -1171,7 +1176,7 @@ class DOMRangeBuilder {
 									$elem, $tpl->endElem, $tpl->endElem );
 							} else {
 								// should not happen!
-								PHPUtils::unreachable( "start found after content for $about." );
+								throw new UnreachableException( "start found after content for $about." );
 							}
 						} else {
 							$tpl = new ElementRange;

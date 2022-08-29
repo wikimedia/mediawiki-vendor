@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 namespace Wikimedia\Parsoid\Wt2Html\TT;
 
 use Wikimedia\Assert\Assert;
+use Wikimedia\Assert\UnreachableException;
 use Wikimedia\Parsoid\Tokens\CommentTk;
 use Wikimedia\Parsoid\Tokens\EndTagTk;
 use Wikimedia\Parsoid\Tokens\KV;
@@ -234,7 +235,7 @@ class TemplateHandler extends TokenHandler {
 					}
 
 				default:
-					PHPUtils::unreachable( 'Unexpected token type: ' . get_class( $ntt ) );
+					throw new UnreachableException( 'Unexpected token type: ' . get_class( $ntt ) );
 			}
 		}
 
@@ -277,6 +278,8 @@ class TemplateHandler extends TokenHandler {
 		$untrimmedPrefix = $pieces[0];
 		$prefix = trim( $pieces[0] );
 
+		// Parser function names usually (not always) start with a hash
+		$hasHash = substr( $target, 0, 1 ) === '#';
 		// String found after the colon will be the parser function arg
 		$haveColon = count( $pieces ) > 1;
 
@@ -327,7 +330,16 @@ class TemplateHandler extends TokenHandler {
 
 		// FIXME: Checks for msgnw, msg, raw are missing at this point
 
-		$canonicalFunctionName = $haveColon ? $siteConfig->getMagicWordForFunctionHook( $prefix ) : null;
+		$canonicalFunctionName = null;
+		if ( $haveColon ) {
+			$canonicalFunctionName = $siteConfig->getMagicWordForFunctionHook( $prefix );
+		}
+		if ( $canonicalFunctionName === null && $hasHash ) {
+			// If the target starts with a '#' it can't possibly be a template
+			// so this must be a "broken" parser function invocation
+			$canonicalFunctionName = substr( $prefix, 1 );
+			// @todo: Flag this as an author error somehow (T314524)
+		}
 		if ( $canonicalFunctionName !== null ) {
 			$state->parserFunctionName = $canonicalFunctionName;
 			return [
