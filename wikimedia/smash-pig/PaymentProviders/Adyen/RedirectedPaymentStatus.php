@@ -19,10 +19,10 @@ class RedirectedPaymentStatus implements StatusNormalizer {
 	public function normalizeStatus( string $adyenStatus ): string {
 		switch ( $adyenStatus ) {
 			case 'Authorised':
-			case 'Received':
 				$status = FinalStatus::COMPLETE;
 				break;
 			case 'Pending':
+			case 'Received':
 				$status = FinalStatus::PENDING;
 				break;
 			case 'Cancelled':

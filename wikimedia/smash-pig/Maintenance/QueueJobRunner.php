@@ -2,6 +2,7 @@
 
 require 'MaintenanceBase.php';
 
+use SmashPig\Core\Context;
 use SmashPig\Core\Logging\Logger;
 use SmashPig\Core\QueueConsumers\JobQueueConsumer;
 
@@ -26,6 +27,7 @@ class QueueJobRunner extends MaintenanceBase {
 	 * Do the actual work of the script.
 	 */
 	public function execute() {
+		Context::get()->setSourceType( 'job-runner' );
 		// Get some defaults from configuration
 		$basePath = 'maintenance/job-runner/';
 

@@ -253,25 +253,6 @@ abstract class PaymentProvider implements IPaymentProvider, ICancelablePaymentPr
 	}
 
 	/**
-	 * @param string $processorContactId Our processor Contact Id / order ID for the payment
-	 * @return string|null
-	 * @deprecated Just use getSavedPaymentDetails
-	 */
-	// Documentation:
-	// https://docs.adyen.com/online-payments/tokenization/managing-tokens#list-saved-details
-	public function getRecurringPaymentToken( string $processorContactId ): ?string {
-		$result = $this->getSavedPaymentDetails( $processorContactId );
-
-		if ( $result->isSuccessful() ) {
-			return $result->first()->getToken();
-		}
-		Logger::info(
-			"Adyen: Not able to get the recurring token with processor Contact ID '$processorContactId'"
-		);
-		return null;
-	}
-
-	/**
 	 * Maps a couple of common properties of Adyen Checkout API responses to our
 	 * standardized PaymentProviderResponse.
 	 * Their pspReference is mapped to our GatewayTxnId and their refusalReason

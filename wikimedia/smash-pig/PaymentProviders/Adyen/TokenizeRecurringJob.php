@@ -3,6 +3,7 @@
 namespace SmashPig\PaymentProviders\Adyen;
 
 use SmashPig\Core\DataStores\QueueWrapper;
+use SmashPig\Core\Logging\Logger;
 use SmashPig\Core\Runnable;
 use SmashPig\PaymentProviders\PaymentProviderFactory;
 
@@ -36,9 +37,13 @@ class TokenizeRecurringJob implements Runnable {
 		 */
 		$provider = PaymentProviderFactory::getProviderForMethod( 'cc' );
 		$processorContactId = $this->payload['processor_contact_id'];
-		$tokenResult = $provider->getRecurringPaymentToken( $processorContactId );
-		$this->payload['recurring_payment_token'] = $tokenResult;
-		QueueWrapper::push( 'donations', $this->payload );
-		return true;
+		$tokenResult = $provider->getSavedPaymentDetails( $processorContactId )->first();
+		if ( $tokenResult ) {
+			$this->payload['recurring_payment_token'] = $tokenResult->getToken();
+			QueueWrapper::push( 'donations', $this->payload );
+			return true;
+		}
+		Logger::warning( "Could not find token for shopper reference $processorContactId" );
+		return false;
 	}
 }

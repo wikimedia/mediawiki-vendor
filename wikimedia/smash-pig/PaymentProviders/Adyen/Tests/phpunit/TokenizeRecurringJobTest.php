@@ -7,6 +7,8 @@ use SmashPig\Core\QueueConsumers\JobQueueConsumer;
 use SmashPig\CrmLink\Messages\SourceFields;
 use SmashPig\PaymentProviders\Adyen\CardPaymentProvider;
 use SmashPig\PaymentProviders\Adyen\TokenizeRecurringJob;
+use SmashPig\PaymentProviders\SavedPaymentDetails;
+use SmashPig\PaymentProviders\SavedPaymentDetailsResponse;
 use SmashPig\Tests\BaseSmashPigUnitTestCase;
 
 /**
@@ -96,11 +98,13 @@ class TokenizeRecurringJobTest extends BaseSmashPigUnitTestCase {
 			'processor_contact_id' => '3.1',
 			'gateway_txn_id' => 'CPBGBZ9Z63RZNN82',
 		];
+		$savedDetails = ( new SavedPaymentDetails() )->setToken( 'VL4VZ779Z2M84H82' );
+		$detailsResponse = ( new SavedPaymentDetailsResponse() )->setDetailsList( [ $savedDetails ] );
 		$this->provider->expects( $this->once() )
-			->method( 'getRecurringPaymentToken' )
+			->method( 'getSavedPaymentDetails' )
 			->with(
 				$this->equalTo( '3.1' )
-			)->willReturn( 'VL4VZ779Z2M84H82' );
+			)->willReturn( $detailsResponse );
 		$job->execute();
 		$queue = QueueWrapper::getQueue( 'donations' );
 		$message = $queue->pop();
@@ -123,11 +127,13 @@ class TokenizeRecurringJobTest extends BaseSmashPigUnitTestCase {
 		$job = TokenizeRecurringJob::fromDonationMessage( $originalMessage );
 		QueueWrapper::push( 'jobs-adyen', $job );
 
+		$savedDetails = ( new SavedPaymentDetails() )->setToken( 'VL4VZ779Z2M84H82' );
+		$detailsResponse = ( new SavedPaymentDetailsResponse() )->setDetailsList( [ $savedDetails ] );
 		$this->provider->expects( $this->once() )
-			->method( 'getRecurringPaymentToken' )
+			->method( 'getSavedPaymentDetails' )
 			->with(
 				$this->equalTo( '3.1' )
-			)->willReturn( 'VL4VZ779Z2M84H82' );
+			)->willReturn( $detailsResponse );
 
 		$runner = new JobQueueConsumer( 'jobs-adyen' );
 		$runner->dequeueMessages();
