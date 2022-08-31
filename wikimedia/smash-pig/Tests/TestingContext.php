@@ -12,7 +12,7 @@ class TestingContext extends Context {
 
 	public static function init(
 		GlobalConfiguration $config, $providerConfig = null
-	) {
+	): void {
 		// Override the existing context
 		Context::$instance = new TestingContext();
 		if ( !$providerConfig ) {
@@ -24,7 +24,7 @@ class TestingContext extends Context {
 		self::initializeQueues( $config );
 	}
 
-	protected static function initializeQueues( GlobalConfiguration $config ) {
+	protected static function initializeQueues( GlobalConfiguration $config ): void {
 		foreach ( $config->val( 'data-store' ) as $name => $definition ) {
 			if (
 				array_key_exists( 'class', $definition ) &&

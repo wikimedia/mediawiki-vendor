@@ -23,7 +23,7 @@ class Context {
 	/** @var ProviderConfiguration current provider-specific settings */
 	protected $providerConfiguration = null;
 
-	public static function init( GlobalConfiguration $config, $providerConfig = null ) {
+	public static function init( GlobalConfiguration $config, $providerConfig = null ): void {
 		if ( !self::$instance ) {
 			if ( !$providerConfig ) {
 				$providerConfig = ProviderConfiguration::createDefault( $config );
@@ -38,16 +38,16 @@ class Context {
 	 * Obtains the current context object
 	 * @return static|null
 	 */
-	public static function get() {
+	public static function get(): ?Context {
 		return self::$instance;
 	}
 
 	/**
 	 * Sets the current context, returning the displaced context
 	 * @param Context|null $c
-	 * @return Context
+	 * @return Context|null
 	 */
-	public static function set( Context $c = null ) {
+	public static function set( Context $c = null ): ?Context {
 		$old = self::$instance;
 		self::$instance = $c;
 
@@ -68,14 +68,16 @@ class Context {
 	/**
 	 * Sets the version string to the contents of a file, if it exists
 	 * @param string $versionStampPath
+	 * @return Context
 	 */
-	public function setVersionFromFile( string $versionStampPath ) {
+	public function setVersionFromFile( string $versionStampPath ): Context {
 		if ( file_exists( $versionStampPath ) ) {
 			$versionId = file_get_contents( $versionStampPath );
 			if ( $versionId !== false ) {
 				$this->sourceRevision = trim( $versionId );
 			}
 		}
+		return $this;
 	}
 
 	/**
@@ -84,7 +86,7 @@ class Context {
 	 *
 	 * @return string Format of SPCID-[1-9][0-9]{8}
 	 */
-	public function getContextId() {
+	public function getContextId(): string {
 		return $this->contextId;
 	}
 
@@ -97,9 +99,11 @@ class Context {
 	 * stacked configurations or stacked contexts...
 	 *
 	 * @param GlobalConfiguration $config
+	 * @return Context
 	 */
-	protected function setGlobalConfiguration( GlobalConfiguration $config ) {
+	protected function setGlobalConfiguration( GlobalConfiguration $config ): Context {
 		$this->globalConfiguration = $config;
+		return $this;
 	}
 
 	/**
@@ -120,7 +124,7 @@ class Context {
 		return $this->providerConfiguration;
 	}
 
-	public function setProviderConfiguration( ProviderConfiguration $configuration ) {
+	public function setProviderConfiguration( ProviderConfiguration $configuration ): Context {
 		$this->providerConfiguration = $configuration;
 		// FIXME: Terminate logger crap with extreme prejudice
 		Logger::init(
@@ -129,6 +133,7 @@ class Context {
 			$configuration,
 			$configuration->getProviderName()
 		);
+		return $this;
 	}
 
 	/**
@@ -154,9 +159,11 @@ class Context {
 	 * Set an identifier for the application to tag queue messages
 	 *
 	 * @param string $sourceName
+	 * @return Context
 	 */
-	public function setSourceName( string $sourceName ) {
+	public function setSourceName( string $sourceName ): Context {
 		$this->sourceName = $sourceName;
+		return $this;
 	}
 
 	/**
@@ -172,8 +179,10 @@ class Context {
 	 * Set the application type used in queue messages
 	 *
 	 * @param string $sourceType
+	 * @return Context
 	 */
-	public function setSourceType( string $sourceType ) {
+	public function setSourceType( string $sourceType ): Context {
 		$this->sourceType = $sourceType;
+		return $this;
 	}
 }

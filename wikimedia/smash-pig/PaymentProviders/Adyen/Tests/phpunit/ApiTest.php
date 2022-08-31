@@ -120,11 +120,17 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 			->method( 'execute' )
 			->with(
 				'https://checkout-test.adyen.com/v67/payments',
-				'POST', [
-					'Content-Length' => '4664',
-					'x-API-key' => 'K1ck0utTh3J4ms',
-					'content-type' => 'application/json'
-				], json_encode( [
+				'POST',
+				$this->callback( function ( $actualHeaders ) {
+					$this->assertArrayHasKey( 'Idempotency-Key', $actualHeaders );
+					unset( $actualHeaders['Idempotency-Key'] );
+					$this->assertEquals( [
+						'Content-Length' => '4664',
+						'x-API-key' => 'K1ck0utTh3J4ms',
+						'content-type' => 'application/json'
+					], $actualHeaders );
+					return true;
+				} ), json_encode( [
 				'amount' => [
 					'currency' => 'EUR',
 					'value' => 2325

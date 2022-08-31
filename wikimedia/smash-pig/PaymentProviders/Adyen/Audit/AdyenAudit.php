@@ -104,6 +104,7 @@ class AdyenAudit implements AuditParser {
 
 		$msg = [
 			'gateway' => 'adyen',
+			'gateway_account' => $row['Merchant Account'],
 			'invoice_id' => $row['Merchant Reference'],
 			'date' => $this->getDate( $row ),
 		];

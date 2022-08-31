@@ -25,3 +25,10 @@ payment-provider:
         class: SmashPig\PaymentProviders\Braintree\VenmoReportProvider
     paypal:
         class: SmashPig\PaymentProviders\Braintree\PaypalPaymentProvider
+        constructor-parameters:
+            -
+                merchant-accounts: {}
+                # Required for multi-currency support. Should be a map of currency
+                # codes to account names, e.g.
+                # USD: main-account-name
+                # GBP: sterling-account-name

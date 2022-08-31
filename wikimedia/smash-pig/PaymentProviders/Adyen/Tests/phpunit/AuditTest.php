@@ -21,6 +21,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'adyen',
+			'gateway_account' => 'WikimediaCOM',
 			'gross' => '1.00',
 			'contribution_tracking_id' => '33992337',
 			'currency' => 'USD',
@@ -48,6 +49,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'adyen',
+			'gateway_account' => 'WikimediaCOM',
 			'gross' => '5.35',
 			'contribution_tracking_id' => '80188432',
 			'currency' => 'EUR',
@@ -75,6 +77,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'adyen',
+			'gateway_account' => 'WikimediaCOM',
 			'contribution_tracking_id' => '92598312',
 			'date' => 1455128736,
 			'gross' => '1.00',
@@ -97,6 +100,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'adyen',
+			'gateway_account' => 'WikimediaCOM',
 			'contribution_tracking_id' => '92598318',
 			'date' => 1455128736,
 			'gross' => '1.00',

@@ -26,7 +26,7 @@ class IngenicoAudit implements AuditParser {
 		'PaymentProductId' => 'gc_product_id',
 		'PaymentReference' => 'gc_payment_reference',
 		'OrderID' => 'order_id',
-		'MerchantID' => 'merchant_id',
+		'MerchantID' => 'gateway_account',
 		// Ingenico recurring donations all have the same OrderID
 		// We can only tell them apart by the EffortID, which we
 		// might as well normalize to 'installment'.
@@ -46,7 +46,7 @@ class IngenicoAudit implements AuditParser {
 		'DebitedAmount' => 'gross',
 		'AdditionalReference' => 'invoice_id',
 		'OrderID' => 'gateway_parent_id',
-		'MerchantID' => 'merchant_id',
+		'MerchantID' => 'gateway_account',
 		'EffortID' => 'installment',
 		'AttemptID' => 'attempt_id',
 		'DebitedCurrency' => 'gross_currency',
@@ -251,7 +251,7 @@ class IngenicoAudit implements AuditParser {
 
 	protected function getConnectPaymentId( array $record ): string {
 		$merchantId = str_pad(
-			$record['merchant_id'], 10, '0', STR_PAD_LEFT
+			$record['gateway_account'], 10, '0', STR_PAD_LEFT
 		);
 		$orderId = isset( $record['order_id'] ) ? $record['order_id'] :
 			$record['gateway_parent_id'];

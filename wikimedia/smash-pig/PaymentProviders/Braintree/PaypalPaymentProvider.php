@@ -9,38 +9,90 @@ use SmashPig\PaymentProviders\CreatePaymentResponse;
 use SmashPig\PaymentProviders\DonorDetails;
 
 class PaypalPaymentProvider extends PaymentProvider {
+
+	/**
+	 * @var array
+	 */
+	private $merchantAccounts;
+
+	public function __construct( array $options ) {
+		parent::__construct();
+		$this->merchantAccounts = $options['merchant-accounts'] ?? null;
+	}
+
+	/**
+	 * @param array $params
+	 * Need check params
+	 * 'payment_token' || 'recurring_payment_token' (required)
+	 * 'amount' (required)
+	 * 'order_id' (required)
+	 * 'currency'
+	 * @return array invalid fields
+	 */
+	protected function getInvalidParams( array $params ): array {
+		$currency_map = $this->merchantAccounts;
+		$invalidParams = [];
+		if ( empty( $params['payment_token'] ) && empty( $params['recurring_payment_token'] ) ) {
+			$invalidParams[] = 'payment_token';
+		}
+		if ( empty( $params['order_id'] ) ) {
+			$invalidParams[] = 'order_id';
+		}
+		if ( empty( $params['amount'] ) ) {
+			$invalidParams[] = 'amount';
+		}
+		if ( !empty( $params['currency'] ) && $currency_map && !array_key_exists( $params['currency'],  $currency_map ) ) {
+			$invalidParams[] = 'currency';
+		}
+		return $invalidParams;
+	}
+
 	/**
 	 * @param array $params
 	 * Available params
-	 *  * 'payment_token' (required)
-	 *  * 'amount' (required)
-	 *  * 'order_id'
-	 * 	* 'currency' ?? TODO:
+	 * 'payment_token' (required)
+	 * 'amount' (required)
+	 * 'order_id'
+	 * 'currency'
 	 * @return CreatePaymentResponse
 	 */
 	public function createPayment( array $params ): CreatePaymentResponse {
-		$params = $this->transformToApiParams( $params );
-		$rawResponse = $this->api->authorizePayment( $params );
+		$invalidParams = $this->getInvalidParams( $params );
 		$response = new CreatePaymentResponse();
-		$response->setRawResponse( $rawResponse );
-		if ( !empty( $rawResponse['errors'] ) ) {
+		// Get ValidationError from transformToApiParams if currency not supported
+		if ( count( $invalidParams ) > 0 ) {
 			$response->setSuccessful( false );
 			$response->setStatus( FinalStatus::FAILED );
-			foreach ( $rawResponse['errors'] as $error ) {
-				$mappedError = $this->mapErrors( $error['extensions'], $error['message'] );
-				if ( $mappedError instanceof ValidationError ) {
-					$response->addValidationError( $mappedError );
-				} else {
-					$response->addErrors( $mappedError );
-				}
+			foreach ( $invalidParams as $invalidParam ) {
+				$response->addValidationError(
+					new ValidationError( $invalidParam,
+						null, [],
+						'Invalid ' . $invalidParam )
+				);
 			}
 		} else {
-			$transaction = $rawResponse['data']['authorizePaymentMethod']['transaction'];
-			// If it's recurring need to know when to set the token in setCreatePaymentSuccessfulResponseDetails
-			if ( isset( $params['transaction']['vaultPaymentMethodAfterTransacting'] ) ) {
-				$transaction['recurring'] = true;
+			$params = $this->transformToApiParams( $params );
+			$rawResponse = $this->api->authorizePayment( $params );
+			$response->setRawResponse( $rawResponse );
+			if ( !empty( $rawResponse['errors'] ) ) {
+				$response->setSuccessful( false );
+				$response->setStatus( FinalStatus::FAILED );
+				foreach ( $rawResponse['errors'] as $error ) {
+					$mappedError = $this->mapErrors( $error['extensions'], $error['message'] );
+					if ( $mappedError instanceof ValidationError ) {
+						$response->addValidationError( $mappedError );
+					} else {
+						$response->addErrors( $mappedError );
+					}
+				}
+			} else {
+				$transaction = $rawResponse['data']['authorizePaymentMethod']['transaction'];
+				// If it's recurring need to know when to set the token in setCreatePaymentSuccessfulResponseDetails
+				if ( isset( $params['transaction']['vaultPaymentMethodAfterTransacting'] ) ) {
+					$transaction['recurring'] = true;
+				}
+				$this->setCreatePaymentSuccessfulResponseDetails( $transaction, $response );
 			}
-			$this->setCreatePaymentSuccessfulResponseDetails( $transaction, $response );
 		}
 		return $response;
 	}
@@ -48,11 +100,11 @@ class PaypalPaymentProvider extends PaymentProvider {
 	/**
 	 * @param array $params
 	 * Available params
-	 *  * 'gateway_txn_id'
-	 *  * 'payment_token' (required)
-	 *  * 'amount' (required)
-	 *  * 'order_id'
-	 * 	* 'currency' ?? TODO:
+	 * 'gateway_txn_id'
+	 * 'payment_token' (required)
+	 * 'amount' (required)
+	 * 'order_id'
+	 * 'currency' ?? TODO:
 	 * @return ApprovePaymentResponse
 	 */
 	public function approvePayment( array $params ): ApprovePaymentResponse {
@@ -80,7 +132,10 @@ class PaypalPaymentProvider extends PaymentProvider {
 
 	/**
 	 * @param array $params
+	 * required params like payment token, amount, and order id
+	 * are checked before this function been called
 	 * @param string|null $type
+	 *
 	 * @return array
 	 */
 	protected function transformToApiParams( array $params, string $type = null ): array {
@@ -100,25 +155,19 @@ class PaypalPaymentProvider extends PaymentProvider {
 			}
 		}
 
-		if ( !empty( $params['payment_token'] ) ) {
-			$apiParams['paymentMethodId'] = $params['payment_token'];
-		} else {
-			throw new \InvalidArgumentException( "payment_token is a required field" );
+		$apiParams['paymentMethodId'] = $params['payment_token'];
+
+		$apiParams['transaction'] = [
+			'amount' => $params['amount']
+		];
+
+		// multi currency depends on different merchant
+		$currency_map = $this->merchantAccounts;
+		if ( !empty( $params['currency'] ) && $currency_map && array_key_exists( $params['currency'],  $currency_map ) ) {
+			$apiParams['transaction']['merchantAccountId'] = $currency_map[$params['currency']];
 		}
 
-		if ( !empty( $params['amount'] ) ) {
-			$apiParams['transaction'] = [
-				'amount' => $params['amount']
-			];
-		} else {
-			throw new \InvalidArgumentException( "amount is a required field" );
-		}
-
-		if ( !empty( $params['order_id'] ) ) {
-			$apiParams['transaction']['orderId'] = $params['order_id'];
-		} else {
-			throw new \InvalidArgumentException( "order_id is a required field" );
-		}
+		$apiParams['transaction']['orderId'] = $params['order_id'];
 
 		// Vaulting - saving the payment so we can use it for recurring charges
 		// Options for when to vault

@@ -6,7 +6,7 @@ class PaymentMessage extends GlobalCollectMessage {
 	protected $attempt_id;
 	protected $currency_code;
 	protected $effort_id;
-	protected $merchant_id;
+	protected $gateway_account;
 	protected $order_id;
 	protected $payment_method_id;
 	protected $payment_product_id;
@@ -21,7 +21,7 @@ class PaymentMessage extends GlobalCollectMessage {
 		'attempt_id',
 		'currency_code' => [ 'map' => 'currency' ],
 		'effort_id',
-		'merchant_id',
+		'gateway_account',
 		'order_id' => [ 'map' => 'gateway_txn_id' ],
 		'payment_method_id',
 		'payment_product_id' => [ 'map' => 'payment_product' ],

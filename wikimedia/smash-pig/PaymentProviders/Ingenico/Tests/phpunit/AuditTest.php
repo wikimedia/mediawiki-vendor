@@ -37,7 +37,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'country' => 'US',
 			'email' => 'dutchman@flying.net',
 			'invoice_id' => '5551212.68168',
-			'merchant_id' => '1234',
+			'gateway_account' => '1234',
 		];
 		$this->assertEquals( $expected, $actual, 'Did not parse donation correctly' );
 	}
@@ -62,7 +62,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'payment_submethod' => 'bpay',
 			'date' => 1582070400,
 			'invoice_id' => '255777921',
-			'merchant_id' => '1234',
+			'gateway_account' => '1234',
 		];
 		$this->assertEquals( $expected, $actual, 'Did not parse donation correctly' );
 	}
@@ -95,7 +95,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'country' => 'US',
 			'email' => 'dutchman@flying.net',
 			'invoice_id' => '5551212.68168',
-			'merchant_id' => '1234',
+			'gateway_account' => '1234',
 		];
 		$this->assertEquals( $expected, $actual, 'Did not parse donation correctly' );
 	}
@@ -119,7 +119,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'gross_currency' => 'USD',
 			'type' => 'refund',
 			'invoice_id' => '5551212.29660',
-			'merchant_id' => '1234',
+			'gateway_account' => '1234',
 		];
 		$this->assertEquals( $expected, $actual, 'Did not parse refund correctly' );
 	}
@@ -150,7 +150,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'gross_currency' => 'USD',
 			'type' => 'refund',
 			'invoice_id' => '5551212.12',
-			'merchant_id' => '1234',
+			'gateway_account' => '1234',
 		];
 		$this->assertEquals( $expected, $actual, 'Did not parse refund correctly' );
 	}
@@ -175,7 +175,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'gross_currency' => 'USD',
 			'type' => 'refund',
 			'invoice_id' => '65544422.2',
-			'merchant_id' => '1234',
+			'gateway_account' => '1234',
 		];
 		$this->assertEquals( $expected, $actual, 'Did not parse refund correctly' );
 	}
@@ -199,7 +199,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'gross_currency' => 'USD',
 			'type' => 'refund',
 			'invoice_id' => '5551212.29660',
-			'merchant_id' => '1234',
+			'gateway_account' => '1234',
 		];
 		$this->assertEquals( $expected, $actual, 'Did not parse refund correctly' );
 	}
@@ -223,7 +223,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'gross_currency' => 'USD',
 			'type' => 'chargeback',
 			'invoice_id' => '5551212.29660',
-			'merchant_id' => '1234',
+			'gateway_account' => '1234',
 		];
 		$this->assertEquals( $expected, $actual, 'Did not parse chargeback correctly' );
 	}
@@ -248,7 +248,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'gross_currency' => 'EUR',
 			'type' => 'refund',
 			'invoice_id' => '48987654.12345',
-			'merchant_id' => '1234',
+			'gateway_account' => '1234',
 		];
 		$this->assertEquals( $expected, $actual, 'Did not parse refund correctly' );
 	}
@@ -279,7 +279,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'country' => 'US',
 			'email' => 'dutchman@flying.net',
 			'invoice_id' => '5551212.1',
-			'merchant_id' => '1234',
+			'gateway_account' => '1234',
 		];
 		$this->assertEquals( $expected, $actual, 'Did not parse donation correctly' );
 	}
