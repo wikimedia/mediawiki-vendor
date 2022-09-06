@@ -183,7 +183,7 @@ class PaypalPaymentProvider extends PaymentProvider {
 		return $apiParams;
 	}
 
-	protected function setCreatePaymentSuccessfulResponseDetails( array $transaction, CreatePaymentResponse &$response ) {
+	protected function setCreatePaymentSuccessfulResponseDetails( array $transaction, CreatePaymentResponse $response ) {
 		$successfulStatuses = [ FinalStatus::PENDING_POKE, FinalStatus::COMPLETE ];
 		$mappedStatus = ( new PaymentStatus() )->normalizeStatus( $transaction['status'] );
 		$response->setSuccessful( in_array( $mappedStatus, $successfulStatuses ) );
@@ -213,7 +213,7 @@ class PaypalPaymentProvider extends PaymentProvider {
 		$response->setStatus( $mappedStatus );
 	}
 
-	protected function setApprovePaymentSuccessfulResponseDetails( array $transaction, ApprovePaymentResponse &$response ) {
+	protected function setApprovePaymentSuccessfulResponseDetails( array $transaction, ApprovePaymentResponse $response ) {
 		$successfulStatuses = [ FinalStatus::COMPLETE ];
 		$mappedStatus = ( new PaymentStatus() )->normalizeStatus( $transaction['status'] );
 		$response->setSuccessful( in_array( $mappedStatus, $successfulStatuses ) );

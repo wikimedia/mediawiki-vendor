@@ -6,6 +6,7 @@ use DateTime;
 use DateTimeZone;
 use SmashPig\Core\ApiException;
 use SmashPig\Core\Context;
+use SmashPig\Core\Helpers\UniqueId;
 use SmashPig\Core\Http\OutboundRequest;
 use SmashPig\Core\Logging\Logger;
 use Symfony\Component\HttpFoundation\Response;
@@ -50,11 +51,13 @@ class Api {
 	 * @param string $path
 	 * @param string $method
 	 * @param array|null $data
-	 *
+	 * @param bool $idempotent
 	 * @return array|null
-	 * @throws \SmashPig\Core\ApiException
+	 * @throws ApiException
 	 */
-	public function makeApiCall( string $path, string $method = 'POST', array $data = null ) {
+	public function makeApiCall(
+		string $path, string $method = 'POST', array $data = null, bool $idempotent = false
+	) {
 		if ( is_array( $data ) ) {
 			// FIXME: this is weird, maybe OutboundRequest should handle this part
 			if ( $method === 'GET' ) {
@@ -83,6 +86,11 @@ class Api {
 		// Set date header manually so we can use it in signature generation
 		$date = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
 		$request->setHeader( 'Date', $date->format( 'D, d M Y H:i:s T' ) );
+
+		// https://epayments-api.developer-ingenico.com/s2sapi/v1/en_US/go/idempotent-requests.html
+		if ( $idempotent ) {
+			$request->setHeader( 'X-GCS-Idempotence-Key', UniqueId::generate() );
+		}
 
 		// set more headers...
 		$this->authenticator->signRequest( $request );

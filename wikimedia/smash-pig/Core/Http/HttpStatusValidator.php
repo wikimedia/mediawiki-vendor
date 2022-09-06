@@ -37,6 +37,13 @@ class HttpStatusValidator implements ResponseValidator {
 				$continue = true;
 				break;
 
+			case Response::HTTP_CONFLICT:
+				// May mean a response with the same idempotency key is still
+				// processing - try again and see if it's done yet!
+				Logger::info( "Request returned (409) CONFLICT: $body" );
+				$continue = true;
+				break;
+
 			default:    // No clue what happened... break out and log it
 				$continue = false;
 				Logger::error( "Request returned http status ($statusCode): $body" );

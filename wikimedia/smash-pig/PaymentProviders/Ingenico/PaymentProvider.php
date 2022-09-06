@@ -60,7 +60,7 @@ abstract class PaymentProvider implements IPaymentProvider, ICancelablePaymentPr
 			true
 		);
 
-		$rawResponse = $this->api->makeApiCall( $path, 'POST', $createPaymentParams );
+		$rawResponse = $this->api->makeApiCall( $path, 'POST', $createPaymentParams, true );
 		$response = new CreatePaymentResponse();
 		$this->prepareResponseObject( $response, $rawResponse );
 
@@ -193,7 +193,7 @@ abstract class PaymentProvider implements IPaymentProvider, ICancelablePaymentPr
 			null,
 			true
 		);
-		$response = $this->api->makeApiCall( $path, 'POST', $createRefundParams );
+		$response = $this->api->makeApiCall( $path, 'POST', $createRefundParams, true );
 		$this->addPaymentStatusErrorsIfPresent( $response );
 		return $response;
 	}

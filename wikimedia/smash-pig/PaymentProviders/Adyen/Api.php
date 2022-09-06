@@ -2,6 +2,7 @@
 
 use SmashPig\Core\Context;
 use SmashPig\Core\Helpers\CurrencyRoundingHelper;
+use SmashPig\Core\Helpers\UniqueId;
 use SmashPig\Core\Http\OutboundRequest;
 use SmashPig\Core\Logging\Logger;
 use SmashPig\Core\Logging\TaggedLogger;
@@ -399,8 +400,7 @@ class Api {
 		if ( $method === 'POST' ) {
 			// Set the idempotency header in case we retry on timeout
 			// https://docs.adyen.com/development-resources/api-idempotency
-			$prefix = gethostname() . '-' . getmypid();
-			$request->setHeader( 'Idempotency-Key', uniqid( $prefix, true ) );
+			$request->setHeader( 'Idempotency-Key', UniqueId::generate() );
 		}
 		$response = $request->execute();
 		$response['body'] = json_decode( $response['body'], true );
