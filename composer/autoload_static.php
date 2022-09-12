@@ -5039,7 +5039,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Handlers\\LiFixups' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Handlers/LiFixups.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Handlers\\TableFixups' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Handlers/TableFixups.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Handlers\\UnpackDOMFragments' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Handlers/UnpackDOMFragments.php',
-        'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\AddLinkClasses' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/AddLinkClasses.php',
+        'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\AddLinkAttributes' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/AddLinkAttributes.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\AddMediaInfo' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/AddMediaInfo.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\AddRedLinks' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/AddRedLinks.php',
         'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\AnnotationDOMRangeBuilder' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/AnnotationDOMRangeBuilder.php',

@@ -108,13 +108,25 @@ class TempData {
 	public $bits = 0;
 
 	/**
+	 * Node temporary attribute key-value pair to be processed in post-process steps.
+	 * Some extensions need to store data to be post-processed due to custom state
+	 * implementation.
+	 *
+	 * Make this property private and leave for ParsoidExtensionAPI to manipulate its
+	 * content.
+	 *
+	 * @var array|null
+	 */
+	private $tagData;
+
+	/**
 	 * Check whether a bit is set in $this->bits
 	 *
 	 * @param int $flag
 	 * @return bool
 	 */
-	public function getFlag( $flag ) {
-		return $this->bits & $flag;
+	public function getFlag( int $flag ): bool {
+		return (bool)( $this->bits & $flag );
 	}
 
 	/**
@@ -123,11 +135,32 @@ class TempData {
 	 * @param int $flag
 	 * @param bool $value
 	 */
-	public function setFlag( $flag, $value = true ) {
+	public function setFlag( int $flag, bool $value = true ): void {
 		if ( $value ) {
 			$this->bits |= $flag;
 		} else {
 			$this->bits &= ~$flag;
 		}
+	}
+
+	/**
+	 * Set a tag attribute for a specific extension with a given key
+	 *
+	 * @param string $key identifier to support a map for multiple extensions
+	 * @param mixed $data
+	 * @return void
+	 */
+	public function setTagData( string $key, $data ) {
+		$this->tagData[$key] = $data;
+	}
+
+	/**
+	 * Get a tag attribute for a specific extension tag with a given key
+	 *
+	 * @param string $key identifier to support a map for multiple tags
+	 * @return mixed
+	 */
+	public function getTagData( string $key ) {
+		return $this->tagData[$key];
 	}
 }

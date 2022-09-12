@@ -4273,7 +4273,7 @@ return array(
     'Wikimedia\\Parsoid\\Wt2Html\\PP\\Handlers\\LiFixups' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/PP/Handlers/LiFixups.php',
     'Wikimedia\\Parsoid\\Wt2Html\\PP\\Handlers\\TableFixups' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/PP/Handlers/TableFixups.php',
     'Wikimedia\\Parsoid\\Wt2Html\\PP\\Handlers\\UnpackDOMFragments' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/PP/Handlers/UnpackDOMFragments.php',
-    'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\AddLinkClasses' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/AddLinkClasses.php',
+    'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\AddLinkAttributes' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/AddLinkAttributes.php',
     'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\AddMediaInfo' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/AddMediaInfo.php',
     'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\AddRedLinks' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/AddRedLinks.php',
     'Wikimedia\\Parsoid\\Wt2Html\\PP\\Processors\\AnnotationDOMRangeBuilder' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/PP/Processors/AnnotationDOMRangeBuilder.php',
