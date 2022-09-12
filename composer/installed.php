@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => 'd0f7ae49af3fe744eb0e3a0f69b607fb18b1ca0e',
+        'reference' => 'eaf60f07f6474ed3c3698d23c36aa31b6ff6a56a',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => 'd0f7ae49af3fe744eb0e3a0f69b607fb18b1ca0e',
+            'reference' => 'eaf60f07f6474ed3c3698d23c36aa31b6ff6a56a',
             'dev_requirement' => false,
         ),
         'christian-riesen/base32' => array(
@@ -503,12 +503,12 @@
             'dev_requirement' => false,
         ),
         'wikimedia/parsoid' => array(
-            'pretty_version' => 'v0.16.0-a20',
-            'version' => '0.16.0.0-alpha20',
+            'pretty_version' => 'v0.16.0-a21',
+            'version' => '0.16.0.0-alpha21',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/parsoid',
             'aliases' => array(),
-            'reference' => 'e5cb6ccf0af9f867c3547ba21529bc97e9c9f3ed',
+            'reference' => 'cadfa13c256d9d25e85b4fce238709e8f641a440',
             'dev_requirement' => false,
         ),
         'wikimedia/php-session-serializer' => array(
