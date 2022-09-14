@@ -207,6 +207,9 @@ const nodeHrefToTitle = function(node, suppressCategory) {
 
 /**
  * Pull a list of local titles from wikilinks in a Parsoid HTML document.
+ *
+ * @param env
+ * @param document
  */
 const spiderDocument = function(env, document) {
 	const redirect = document.querySelector('link[rel~="mw:PageProp/redirect"]');
@@ -221,6 +224,9 @@ const spiderDocument = function(env, document) {
  * Pull "just the text" from an HTML document, normalizing whitespace
  * differences and suppressing places where Parsoid and PHP output
  * deliberately differs.
+ *
+ * @param env
+ * @param document
  */
 const extractText = function(env, document) {
 	var dt = new DOMTraverser();
@@ -237,7 +243,7 @@ const extractText = function(env, document) {
 		sep = ' ';
 	};
 	const emit = (s) => { if (s !== '') { buf += sep; buf += s; sep = ''; } };
-	dt.addHandler('#text', (node, env, atTopLevel, tplInfo) => {
+	dt.addHandler('#text', (node, env2, atTopLevel, tplInfo) => {
 		const v = node.nodeValue.replace(/\s+/g, ' ');
 		const m = /^(\s*)(.*?)(\s*)$/.exec(v);
 		addSep(m[1]);
@@ -533,25 +539,12 @@ if (require.main === module) {
 		}
 		const title = String(argv._[0]);
 		const lang = String(argv._[1]);
-		let ret = null;
 		if (argv.record || argv.replay) {
 			// Don't fork a separate server if record/replay
 			argv.useServer = false;
 		}
 		if (argv.useServer && !argv.parsoidURL) {
-			// Start our own Parsoid server
-			const serviceWrapper = require('../tests/serviceWrapper.js');
-			const serverOpts = {
-				logging: { level: 'info' },
-			};
-			if (argv.apiURL) {
-				serverOpts.mockURL = argv.apiURL;
-				argv.domain = 'customwiki';
-			} else {
-				serverOpts.skipMock = true;
-			}
-			ret = yield serviceWrapper.runServices(serverOpts);
-			argv.parsoidURL = ret.parsoidURL;
+			throw new Error('No parsoidURL provided!');
 		}
 		const formatter =
 			ScriptUtils.booleanOption(argv.silent) ? silentFormat :
@@ -599,9 +592,6 @@ if (require.main === module) {
 					break; /* done! */
 				}
 			}
-		}
-		if (ret !== null) {
-			yield ret.runner.stop();
 		}
 		if (argv.check || exitCode > 1) {
 			process.exit(exitCode);

@@ -28,7 +28,7 @@ var defaultContentVersion = '2.3.0';
 
 function displayDiff(type, count) {
 	var pad = (10 - type.length);  // Be positive!
-	type = type[0].toUpperCase() + type.substr(1);
+	type = type[0].toUpperCase() + type.slice(1);
 	return type + ' differences' + ' '.repeat(pad) + ': ' + count + '\n';
 }
 
@@ -244,7 +244,7 @@ var findMatchingNodes = function(node, range) {
 				// I am going to rip this out.
 
 				console.log("error/diff", "Bad dsr for " + c.nodeName + ": "
-					+ c.outerHTML.substr(0, 50));
+					+ c.outerHTML.slice(0, 50));
 
 				if (dp.dsr && typeof (dsr[1]) === 'number') {
 					// We can cope in this case
@@ -531,7 +531,7 @@ var checkIfSignificant = function(offsets, data) {
 
 				// Don't clog the rt-test server db with humongous diffs
 				if (diff.length > 1000) {
-					diff = diff.substring(0, 1000) + "-- TRUNCATED TO 1000 chars --";
+					diff = diff.slice(0, 1000) + "-- TRUNCATED TO 1000 chars --";
 				}
 				thisResult.htmlDiff = diff;
 			}
@@ -892,25 +892,8 @@ if (require.main === module) {
 		}
 		var title = String(argv._[0]);
 
-		var ret = null;
 		if (!argv.parsoidURL) {
-			// Start our own Parsoid server
-			var serviceWrapper = require('../tests/serviceWrapper.js');
-			var serverOpts = {
-				logging: { level: 'info' },
-				parsoidOptions: {
-					loadWMF: true,
-					useSelser: true,
-				}
-			};
-			if (argv.apiURL) {
-				serverOpts.mockURL = argv.apiURL;
-				argv.domain = 'customwiki';
-			} else {
-				serverOpts.skipMock = true;
-			}
-			ret = yield serviceWrapper.runServices(serverOpts);
-			argv.parsoidURL = ret.parsoidURL;
+			throw new Error('No parsoidURL provided!');
 		}
 		argv.parsoidURLOpts = { baseUrl: argv.parsoidURL };
 		if (argv.proxyURL) {
@@ -919,9 +902,6 @@ if (require.main === module) {
 		var formatter = ScriptUtils.booleanOption(argv.xml) ? xmlFormat : plainFormat;
 		var r = yield runTests(title, argv, formatter);
 		console.log(r.output);
-		if (ret !== null) {
-			yield ret.runner.stop();
-		}
 		if (argv.check) {
 			process.exit(r.exitCode);
 		}
