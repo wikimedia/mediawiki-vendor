@@ -2110,17 +2110,17 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.12.2",
-            "version_normalized": "0.12.2.0",
+            "version": "v0.12.3",
+            "version_normalized": "0.12.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/parsoid.git",
-                "reference": "15169a678f9f468ff6465035a32f28e8ec82003f"
+                "reference": "84b1154f535c7a8c5e64d28f2646935f05efecef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/15169a678f9f468ff6465035a32f28e8ec82003f",
-                "reference": "15169a678f9f468ff6465035a32f28e8ec82003f",
+                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/84b1154f535c7a8c5e64d28f2646935f05efecef",
+                "reference": "84b1154f535c7a8c5e64d28f2646935f05efecef",
                 "shasum": ""
             },
             "require": {
@@ -2135,16 +2135,16 @@
                 "wikimedia/object-factory": "^2.1",
                 "wikimedia/remex-html": "^2.2.0",
                 "wikimedia/scoped-callback": "^3.0.0",
-                "wikimedia/wikipeg": "^2.0.4",
+                "wikimedia/wikipeg": "2.0.5",
                 "wikimedia/zest-css": "^1.1.3"
             },
             "conflict": {
                 "wikimedia/langconv": "<0.3.5 || >=0.4"
             },
             "require-dev": {
-                "composer/composer": "^1.10@RC",
+                "composer/composer": "^1.10.22||^2.1.8",
                 "ext-curl": "*",
-                "mediawiki/mediawiki-codesniffer": "31.0.0",
+                "mediawiki/mediawiki-codesniffer": "38.0.0",
                 "mediawiki/mediawiki-phan-config": "0.10.3",
                 "mediawiki/minus-x": "1.1.0",
                 "monolog/monolog": "~1.25.2",
@@ -2160,7 +2160,7 @@
             "suggest": {
                 "wikimedia/langconv": "Provides script conversion support"
             },
-            "time": "2021-04-07T20:34:37+00:00",
+            "time": "2022-08-16T21:16:56+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -2184,6 +2184,11 @@
                 "mediawiki",
                 "parsoid"
             ],
+            "support": {
+                "irc": "irc://irc.libera.chat/mediawiki-parsoid",
+                "source": "https://github.com/wikimedia/parsoid/tree/v0.12.3",
+                "wiki": "https://www.mediawiki.org/wiki/Parsoid"
+            },
             "install-path": "../wikimedia/parsoid"
         },
         {

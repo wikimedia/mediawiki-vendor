@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => 'ef77188448b334b0852a6f60c2c95e1f9abcfbca',
+        'reference' => '81de9a2e66ca403a6589cbdcab22bbbfc139ea34',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => 'ef77188448b334b0852a6f60c2c95e1f9abcfbca',
+            'reference' => '81de9a2e66ca403a6589cbdcab22bbbfc139ea34',
             'dev_requirement' => false,
         ),
         'christian-riesen/base32' => array(
@@ -365,12 +365,12 @@
             'dev_requirement' => false,
         ),
         'wikimedia/parsoid' => array(
-            'pretty_version' => 'v0.12.2',
-            'version' => '0.12.2.0',
+            'pretty_version' => 'v0.12.3',
+            'version' => '0.12.3.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/parsoid',
             'aliases' => array(),
-            'reference' => '15169a678f9f468ff6465035a32f28e8ec82003f',
+            'reference' => '84b1154f535c7a8c5e64d28f2646935f05efecef',
             'dev_requirement' => false,
         ),
         'wikimedia/password-blacklist' => array(
