@@ -6,6 +6,7 @@ use OutOfBoundsException;
 use Psr\Log\LogLevel;
 use SmashPig\Core\Cache\CacheHelper;
 use SmashPig\Core\Context;
+use SmashPig\Core\DataStores\PaymentsInitialDatabase;
 use SmashPig\Core\Logging\Logger;
 use SmashPig\Core\PaymentError;
 use SmashPig\Core\ValidationError;
@@ -18,9 +19,11 @@ use SmashPig\PaymentProviders\ApprovePaymentResponse;
 use SmashPig\PaymentProviders\CancelPaymentResponse;
 use SmashPig\PaymentProviders\ICancelablePaymentProvider;
 use SmashPig\PaymentProviders\IPaymentProvider;
+use SmashPig\PaymentProviders\IRefundablePaymentProvider;
 use SmashPig\PaymentProviders\PaymentDetailResponse;
 use SmashPig\PaymentProviders\PaymentMethodResponse;
 use SmashPig\PaymentProviders\PaymentProviderResponse;
+use SmashPig\PaymentProviders\RefundPaymentResponse;
 use SmashPig\PaymentProviders\RiskScorer;
 use SmashPig\PaymentProviders\SavedPaymentDetails;
 use SmashPig\PaymentProviders\SavedPaymentDetailsResponse;
@@ -31,7 +34,7 @@ use SmashPig\PaymentProviders\SavedPaymentDetailsResponse;
  *
  *
  */
-abstract class PaymentProvider implements IPaymentProvider, ICancelablePaymentProvider {
+abstract class PaymentProvider implements IPaymentProvider, ICancelablePaymentProvider, IRefundablePaymentProvider {
 	/**
 	 * @var Api
 	 */
@@ -88,6 +91,26 @@ abstract class PaymentProvider implements IPaymentProvider, ICancelablePaymentPr
 			. $params['language'];
 
 		return CacheHelper::getWithSetCallback( $cacheKey, $this->cacheParameters['duration'], $callback );
+	}
+
+	/**
+	 * Return the details from the params for pending resolve, because Adyen doesn't offer any way to look up the status via their API
+	 * @param array $params
+	 * @return PaymentDetailResponse
+	 * @throws \SmashPig\Core\DataStores\DataStoreException
+	 */
+	public function getLatestPaymentStatus( array $params ): PaymentDetailResponse {
+		$result = new PaymentDetailResponse();
+		$result->setGatewayTxnId( $params['gateway_txn_id'] );
+		$result->setRecurringPaymentToken( $params['recurring_payment_token'] ?? '' );
+		// will check the breakdown at resolve again, so it's fine to be blank
+		$result->setRiskScores( [] );
+		$this->paymentsInitialDatabase = PaymentsInitialDatabase::get();
+		$paymentsInitRow = $this->paymentsInitialDatabase->fetchMessageByGatewayOrderId(
+			$params['gateway'], $params['order_id']
+		);
+		$result->setStatus( $paymentsInitRow['payments_final_status'] ?? FinalStatus::PENDING_POKE );
+		return $result;
 	}
 
 	/**
@@ -206,6 +229,40 @@ abstract class PaymentProvider implements IPaymentProvider, ICancelablePaymentPr
 				$response,
 				$rawResponse,
 				new ApprovePaymentStatus(),
+				$rawResponse['status'],
+				[ FinalStatus::COMPLETE ]
+			);
+		}
+		$this->mapRestIdAndErrors( $response, $rawResponse );
+		return $response;
+	}
+
+	/**
+	 * Refunds a payment
+	 * https://docs.adyen.com/online-payments/refund
+	 *
+	 * @param array $params
+	 * @return RefundPaymentResponse
+	 */
+	public function refundPayment( array $params ): RefundPaymentResponse {
+		$rawResponse = $this->api->refundPayment( $params );
+		$response = new RefundPaymentResponse();
+		$response->setRawResponse( $rawResponse );
+
+		if ( empty( $rawResponse['status'] ) ) {
+			$responseError = 'status element missing from Adyen capture response.';
+			$response->addErrors( new PaymentError(
+				ErrorCode::MISSING_REQUIRED_DATA,
+				$responseError,
+				LogLevel::ERROR
+			) );
+			$response->setSuccessful( false );
+			Logger::debug( $responseError, $rawResponse );
+		} else {
+			$this->mapStatus(
+				$response,
+				$rawResponse,
+				new RefundPaymentStatus(),
 				$rawResponse['status'],
 				[ FinalStatus::COMPLETE ]
 			);

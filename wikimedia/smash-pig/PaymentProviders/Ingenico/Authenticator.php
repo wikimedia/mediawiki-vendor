@@ -52,9 +52,24 @@ class Authenticator {
 		$toSign = $request->getMethod() . "\n"
 			. $contentType . "\n"
 			. $headers['Date'] . "\n"
-			// TODO X-GCS headers
+			. $this->getGcsHeaders( $headers )
 			. $pathToSign . "\n";
 
 		return $toSign;
+	}
+
+	protected function getGcsHeaders( array $headers ): string {
+		$canonicalizedHeaders = [];
+		foreach ( $headers as $name => $value ) {
+			if ( substr( $name, 0, 5 ) === 'X-GCS' ) {
+				$value = preg_replace( '/\r?\n */', ' ', $value );
+				$canonicalizedHeaders[] = strtolower( $name ) . ':' . trim( $value );
+			}
+		}
+		if ( empty( $canonicalizedHeaders ) ) {
+			return '';
+		}
+		sort( $canonicalizedHeaders );
+		return implode( "\n", $canonicalizedHeaders ) . "\n";
 	}
 }

@@ -51,4 +51,25 @@ class AuthenticatorTest extends BaseSmashPigUnitTestCase {
 			$headers['Authorization']
 		);
 	}
+
+	/**
+	 * Ensure we correctly canonicalize and sort the X-GCS custom headers.
+	 * Data taken from 'Full example with X-GCS headers'
+	 */
+	public function testGcsHeaders() {
+		$request = new OutboundRequest( 'https://eu.sandbox.api-ingenico.com/v1/9991/tokens/123456789', 'DELETE' );
+		$request->setHeader( 'Date', 'Fri, 06 Jun 2014 13:39:43 GMT' );
+		$request->setHeader( 'Content-Type', 'application/json' );
+		$request->setHeader( 'X-GCS-ClientMetaInfo', 'processed header value' );
+		// Should replace newlines and spaces with a single space
+		$request->setHeader( 'X-GCS-ServerMetaInfo', 'processed header
+               value' );
+		$request->setHeader( 'X-GCS-CustomerHeader', 'processed header value' );
+		$this->authenticator->signRequest( $request );
+		$headers = $request->getHeaders();
+		$this->assertEquals(
+			'GCS v1HMAC:5e45c937b9db33ae:jGWLz3ouN4klE+SkqO5gO+KkbQNM06Rric7E3dcfmqw=',
+			$headers['Authorization']
+		);
+	}
 }

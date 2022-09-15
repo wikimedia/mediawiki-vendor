@@ -319,6 +319,24 @@ class Api {
 	}
 
 	/**
+	 * Refund a payment
+	 *
+	 * @param array $params
+	 * @return array
+	 * @throws \SmashPig\Core\ApiException
+	 */
+	public function refundPayment( array $params ) {
+		$restParams = [
+			'amount' => $this->getArrayAmount( $params ),
+			'merchantAccount' => $this->account,
+		];
+		$path = "payments/{$params['gateway_txn_id']}/refunds";
+
+		$result = $this->makeRestApiCall( $restParams, $path, 'POST' );
+		return $result['body'];
+	}
+
+	/**
 	 * Gets more details when no final state has been reached
 	 * on the /payments call. Redirect payments will need this.
 	 *

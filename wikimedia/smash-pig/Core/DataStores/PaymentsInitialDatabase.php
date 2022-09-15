@@ -50,14 +50,15 @@ class PaymentsInitialDatabase extends SmashPigDatabase {
 			$message['validation_action'] === ValidationAction::REVIEW ||
 			(
 				$message['validation_action'] === ValidationAction::REJECT &&
-				$message['gateway'] === 'ingenico'
+				in_array( $message['gateway'], [ 'adyen', 'ingenico' ] )
 			)
 		) {
 			// Leave the pending message for potential capture by the pending
 			// transaction rectifier or manual review - for any gateway, REVIEW
 			// status can be captured. FIXME: Our Ingenico front-end code also
 			// treats REJECT status this way, so we should leave those rows as
-			// well.
+			// well, same as adyen, only get process and reject, but our pending resolver
+			// will process this, so adyen reject should stay
 			return false;
 		}
 		// payments_final_status is either FAILED or CANCELLED, and it's not

@@ -32,6 +32,10 @@ class HostedCheckoutProvider extends PaymentProvider {
 		}
 	}
 
+	public function getLatestPaymentStatus( array $params ): PaymentDetailResponse {
+		return $this->getHostedPaymentStatus( $params['gateway_session_id'] );
+	}
+
 	/**
 	 * @param array $params
 	 *
