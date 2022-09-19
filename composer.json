@@ -40,7 +40,7 @@
 		"guzzlehttp/psr7": "2.4.1",
 		"jakobo/hotp-php": "2.0.0",
 		"james-heinrich/getid3": "1.9.21",
-		"justinrainbow/json-schema": "5.2.11",
+		"justinrainbow/json-schema": "5.2.12",
 		"lcobucci/jwt": "3.4.6",
 		"league/event": "2.2.0",
 		"league/oauth2-server": "dev-v9.0.0-alpha#61d770dc284898ea2905d66e12f8f7e5f6664092 as 9.0.0",

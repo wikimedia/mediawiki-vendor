@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '3df9a43fe219d143afab51e4b20769686dfed452',
+        'reference' => '43075b6a01da71f967ba6b694696b97788350e2a',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '3df9a43fe219d143afab51e4b20769686dfed452',
+            'reference' => '43075b6a01da71f967ba6b694696b97788350e2a',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -254,12 +254,12 @@
             'dev_requirement' => false,
         ),
         'justinrainbow/json-schema' => array(
-            'pretty_version' => '5.2.11',
-            'version' => '5.2.11.0',
+            'pretty_version' => '5.2.12',
+            'version' => '5.2.12.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../justinrainbow/json-schema',
             'aliases' => array(),
-            'reference' => '2ab6744b7296ded80f8cc4f9509abbff393399aa',
+            'reference' => 'ad87d5a5ca981228e0e205c2bc7dfb8e24559b60',
             'dev_requirement' => false,
         ),
         'lcobucci/jwt' => array(
