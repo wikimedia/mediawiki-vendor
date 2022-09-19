@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => 'e8bc11d3df47209d44a20799220f95ffe00b9878',
+        'reference' => '7ffd2f82cb503a65e3a3c6029fac741624c1ce66',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => 'e8bc11d3df47209d44a20799220f95ffe00b9878',
+            'reference' => '7ffd2f82cb503a65e3a3c6029fac741624c1ce66',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -618,12 +618,12 @@
             'dev_requirement' => false,
         ),
         'psy/psysh' => array(
-            'pretty_version' => 'v0.11.5',
-            'version' => '0.11.5.0',
+            'pretty_version' => 'v0.11.8',
+            'version' => '0.11.8.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../psy/psysh',
             'aliases' => array(),
-            'reference' => 'c23686f9c48ca202710dbb967df8385a952a2daf',
+            'reference' => 'f455acf3645262ae389b10e9beba0c358aa6994e',
             'dev_requirement' => false,
         ),
         'ralouphie/getallheaders' => array(
