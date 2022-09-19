@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => 'd0f7ae49af3fe744eb0e3a0f69b607fb18b1ca0e',
+        'reference' => 'a3e4a833024a3d9748c9777068788b2a07afb76d',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => 'd0f7ae49af3fe744eb0e3a0f69b607fb18b1ca0e',
+            'reference' => 'a3e4a833024a3d9748c9777068788b2a07afb76d',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -852,12 +852,12 @@
             'dev_requirement' => false,
         ),
         'symfony/yaml' => array(
-            'pretty_version' => 'v5.4.10',
-            'version' => '5.4.10.0',
+            'pretty_version' => 'v5.4.12',
+            'version' => '5.4.12.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/yaml',
             'aliases' => array(),
-            'reference' => '04e42926429d9e8b39c174387ab990bf7817f7a2',
+            'reference' => '7a3aa21ac8ab1a96cc6de5bbcab4bc9fc943b18c',
             'dev_requirement' => false,
         ),
         'thecodingmachine/safe' => array(
