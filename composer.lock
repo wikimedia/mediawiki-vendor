@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "993ce8a1024994cf6c84cfaef9c10341",
+    "content-hash": "5187d4732e03ffa1dd2335a746581235",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -2515,16 +2515,16 @@
         },
         {
             "name": "maxmind/web-service-common",
-            "version": "v0.8.1",
+            "version": "v0.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/maxmind/web-service-common-php.git",
-                "reference": "32f274051c543fc865e5a84d3a2c703913641ea8"
+                "reference": "4dc5a3e8df38aea4ca3b1096cee3a038094e9b53"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/maxmind/web-service-common-php/zipball/32f274051c543fc865e5a84d3a2c703913641ea8",
-                "reference": "32f274051c543fc865e5a84d3a2c703913641ea8",
+                "url": "https://api.github.com/repos/maxmind/web-service-common-php/zipball/4dc5a3e8df38aea4ca3b1096cee3a038094e9b53",
+                "reference": "4dc5a3e8df38aea4ca3b1096cee3a038094e9b53",
                 "shasum": ""
             },
             "require": {
@@ -2534,7 +2534,8 @@
                 "php": ">=7.2"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "2.*",
+                "friendsofphp/php-cs-fixer": "3.*",
+                "phpstan/phpstan": "*",
                 "phpunit/phpunit": "^8.0 || ^9.0",
                 "squizlabs/php_codesniffer": "3.*"
             },
@@ -2559,9 +2560,9 @@
             "homepage": "https://github.com/maxmind/web-service-common-php",
             "support": {
                 "issues": "https://github.com/maxmind/web-service-common-php/issues",
-                "source": "https://github.com/maxmind/web-service-common-php/tree/v0.8.1"
+                "source": "https://github.com/maxmind/web-service-common-php/tree/v0.9.0"
             },
-            "time": "2020-11-02T17:00:53+00:00"
+            "time": "2022-03-28T17:43:20+00:00"
         },
         {
             "name": "monolog/monolog",

@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '36a04b9fdda88abf9d166a51fe4dad992f974e51',
+        'reference' => 'e8bc11d3df47209d44a20799220f95ffe00b9878',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '36a04b9fdda88abf9d166a51fe4dad992f974e51',
+            'reference' => 'e8bc11d3df47209d44a20799220f95ffe00b9878',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -359,12 +359,12 @@
             'dev_requirement' => false,
         ),
         'maxmind/web-service-common' => array(
-            'pretty_version' => 'v0.8.1',
-            'version' => '0.8.1.0',
+            'pretty_version' => 'v0.9.0',
+            'version' => '0.9.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../maxmind/web-service-common',
             'aliases' => array(),
-            'reference' => '32f274051c543fc865e5a84d3a2c703913641ea8',
+            'reference' => '4dc5a3e8df38aea4ca3b1096cee3a038094e9b53',
             'dev_requirement' => false,
         ),
         'mediawiki/data-values' => array(
