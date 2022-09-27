@@ -3,10 +3,10 @@
 namespace SmashPig\PaymentProviders\Braintree;
 
 use SmashPig\Core\ValidationError;
+use SmashPig\PaymentData\DonorDetails;
 use SmashPig\PaymentData\FinalStatus;
-use SmashPig\PaymentProviders\ApprovePaymentResponse;
-use SmashPig\PaymentProviders\CreatePaymentResponse;
-use SmashPig\PaymentProviders\DonorDetails;
+use SmashPig\PaymentProviders\Responses\ApprovePaymentResponse;
+use SmashPig\PaymentProviders\Responses\CreatePaymentResponse;
 
 class PaypalPaymentProvider extends PaymentProvider {
 

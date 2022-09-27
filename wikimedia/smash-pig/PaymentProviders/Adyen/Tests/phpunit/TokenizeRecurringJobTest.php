@@ -5,10 +5,10 @@ namespace SmashPig\PaymentProviders\Adyen\Tests;
 use SmashPig\Core\DataStores\QueueWrapper;
 use SmashPig\Core\QueueConsumers\JobQueueConsumer;
 use SmashPig\CrmLink\Messages\SourceFields;
+use SmashPig\PaymentData\SavedPaymentDetails;
 use SmashPig\PaymentProviders\Adyen\CardPaymentProvider;
 use SmashPig\PaymentProviders\Adyen\TokenizeRecurringJob;
-use SmashPig\PaymentProviders\SavedPaymentDetails;
-use SmashPig\PaymentProviders\SavedPaymentDetailsResponse;
+use SmashPig\PaymentProviders\Responses\SavedPaymentDetailsResponse;
 use SmashPig\Tests\BaseSmashPigUnitTestCase;
 
 /**

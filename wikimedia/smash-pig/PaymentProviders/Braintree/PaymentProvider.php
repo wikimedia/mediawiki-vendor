@@ -7,10 +7,10 @@ use SmashPig\Core\Context;
 use SmashPig\Core\PaymentError;
 use SmashPig\Core\ValidationError;
 use SmashPig\PaymentData\ErrorCode;
-use SmashPig\PaymentProviders\ApprovePaymentResponse;
-use SmashPig\PaymentProviders\CreatePaymentResponse;
-use SmashPig\PaymentProviders\CreatePaymentSessionResponse;
 use SmashPig\PaymentProviders\IPaymentProvider;
+use SmashPig\PaymentProviders\Responses\ApprovePaymentResponse;
+use SmashPig\PaymentProviders\Responses\CreatePaymentResponse;
+use SmashPig\PaymentProviders\Responses\CreatePaymentSessionResponse;
 
 class PaymentProvider implements IPaymentProvider {
 

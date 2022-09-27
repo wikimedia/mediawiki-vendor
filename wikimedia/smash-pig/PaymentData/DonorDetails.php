@@ -1,6 +1,6 @@
 <?php
 
-namespace SmashPig\PaymentProviders;
+namespace SmashPig\PaymentData;
 
 class DonorDetails {
 	/**

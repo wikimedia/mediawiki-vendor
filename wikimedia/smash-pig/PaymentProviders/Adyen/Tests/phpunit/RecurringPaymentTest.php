@@ -46,7 +46,7 @@ class RecurringPaymentTest extends BaseAdyenTestCase {
 
 		$createPaymentResponse = $this->provider->createPayment( $params );
 
-		$this->assertInstanceOf( '\SmashPig\PaymentProviders\CreatePaymentResponse',
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\CreatePaymentResponse',
 			$createPaymentResponse );
 		$this->assertEmpty( $createPaymentResponse->getErrors() );
 		$this->assertTrue( $createPaymentResponse->isSuccessful() );
@@ -71,7 +71,7 @@ class RecurringPaymentTest extends BaseAdyenTestCase {
 
 		$createPaymentResponse = $this->provider->createPayment( $params );
 
-		$this->assertInstanceOf( '\SmashPig\PaymentProviders\CreatePaymentResponse', $createPaymentResponse );
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\CreatePaymentResponse', $createPaymentResponse );
 		$this->assertTrue( $createPaymentResponse->hasErrors() );
 		$firstError = $createPaymentResponse->getErrors()[0];
 		$this->assertEquals( ErrorCode::DECLINED_DO_NOT_RETRY, $firstError->getErrorCode() );
@@ -97,7 +97,7 @@ class RecurringPaymentTest extends BaseAdyenTestCase {
 
 		$createPaymentResponse = $this->provider->createPayment( $params );
 
-		$this->assertInstanceOf( '\SmashPig\PaymentProviders\CreatePaymentResponse', $createPaymentResponse );
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\CreatePaymentResponse', $createPaymentResponse );
 		$this->assertTrue( $createPaymentResponse->hasErrors() );
 		$firstError = $createPaymentResponse->getErrors()[0];
 		$this->assertEquals( ErrorCode::DECLINED, $firstError->getErrorCode() );
@@ -176,7 +176,7 @@ class RecurringPaymentTest extends BaseAdyenTestCase {
 		$createPaymentResponse = $this->provider->createPayment( $params );
 
 		$this->assertInstanceOf(
-			'\SmashPig\PaymentProviders\CreatePaymentResponse',
+			'\SmashPig\PaymentProviders\Responses\CreatePaymentResponse',
 			$createPaymentResponse
 		);
 		$this->assertSame( 0, count( $createPaymentResponse->getErrors() ) );
@@ -200,7 +200,7 @@ class RecurringPaymentTest extends BaseAdyenTestCase {
 		$createPaymentResponse = $this->provider->createPayment( $params );
 
 		$this->assertInstanceOf(
-			'\SmashPig\PaymentProviders\CreatePaymentResponse',
+			'\SmashPig\PaymentProviders\Responses\CreatePaymentResponse',
 			$createPaymentResponse
 		);
 		$this->assertFalse( $createPaymentResponse->isSuccessful() );

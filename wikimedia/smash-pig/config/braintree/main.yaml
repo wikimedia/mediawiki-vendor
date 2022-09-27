@@ -16,6 +16,17 @@ api:
             # Date in the format YYYY-MM-DD. We recommend using the date on which you begin integrating with the GraphQL API.
             # Needs to be quoted for YAML reasons.
 
+endpoints:
+    listener:
+        class: SmashPig\PaymentProviders\Braintree\BraintreeListener
+
+signature-validator:
+    class: SmashPig\PaymentProviders\Braintree\SignatureValidator
+    constructor-parameters:
+        -
+            public-key: 16charalphanumer
+            private-key: 32characterlongalphanumericstrng
+
 payment-provider:
     test:
         class: SmashPig\PaymentProviders\Braintree\TestPaymentProvider

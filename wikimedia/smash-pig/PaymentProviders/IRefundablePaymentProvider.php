@@ -2,6 +2,8 @@
 
 namespace SmashPig\PaymentProviders;
 
+use SmashPig\PaymentProviders\Responses\RefundPaymentResponse;
+
 interface IRefundablePaymentProvider {
 
 	/**

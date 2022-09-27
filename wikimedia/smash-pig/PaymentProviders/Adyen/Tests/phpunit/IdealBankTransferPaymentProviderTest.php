@@ -2,16 +2,16 @@
 namespace SmashPig\PaymentProviders\Adyen\Tests\phpunit;
 
 use SmashPig\PaymentData\FinalStatus;
-use SmashPig\PaymentProviders\Adyen\DirectDebitPaymentProvider;
+use SmashPig\PaymentProviders\Adyen\IdealBankTransferPaymentProvider;
 use SmashPig\PaymentProviders\Adyen\Tests\BaseAdyenTestCase;
 
 /**
  * @group Adyen
  */
-class DirectDebitPaymentProviderTest extends BaseAdyenTestCase {
+class IdealBankTransferPaymentProviderTest extends BaseAdyenTestCase {
 
 	/**
-	 * @var DirectDebitPaymentProvider
+	 * @var IdealBankTransferPaymentProvider
 	 */
 	public $provider;
 

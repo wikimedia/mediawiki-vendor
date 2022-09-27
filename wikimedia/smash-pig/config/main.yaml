@@ -114,6 +114,13 @@ data-store:
                 <<: *REDIS
                 queue: jobs-ingenico
 
+    jobs-braintree:
+        class: PHPQueue\Backend\Predis
+        constructor-parameters:
+            -
+                <<: *REDIS
+                queue: jobs-braintree
+
     donations:
         class: PHPQueue\Backend\Predis
         constructor-parameters:

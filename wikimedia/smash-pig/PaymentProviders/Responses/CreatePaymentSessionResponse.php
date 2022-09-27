@@ -1,6 +1,6 @@
 <?php
 
-namespace SmashPig\PaymentProviders;
+namespace SmashPig\PaymentProviders\Responses;
 
 class CreatePaymentSessionResponse extends PaymentProviderResponse {
 

@@ -14,19 +14,21 @@ use SmashPig\PaymentData\ErrorCode;
 use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentData\ReferenceData\CurrencyRates;
 use SmashPig\PaymentData\ReferenceData\NationalCurrencies;
+use SmashPig\PaymentData\SavedPaymentDetails;
 use SmashPig\PaymentData\StatusNormalizer;
-use SmashPig\PaymentProviders\ApprovePaymentResponse;
-use SmashPig\PaymentProviders\CancelPaymentResponse;
 use SmashPig\PaymentProviders\ICancelablePaymentProvider;
+use SmashPig\PaymentProviders\IDeleteDataProvider;
 use SmashPig\PaymentProviders\IPaymentProvider;
 use SmashPig\PaymentProviders\IRefundablePaymentProvider;
-use SmashPig\PaymentProviders\PaymentDetailResponse;
-use SmashPig\PaymentProviders\PaymentMethodResponse;
-use SmashPig\PaymentProviders\PaymentProviderResponse;
-use SmashPig\PaymentProviders\RefundPaymentResponse;
+use SmashPig\PaymentProviders\Responses\ApprovePaymentResponse;
+use SmashPig\PaymentProviders\Responses\CancelPaymentResponse;
+use SmashPig\PaymentProviders\Responses\DeleteDataResponse;
+use SmashPig\PaymentProviders\Responses\PaymentDetailResponse;
+use SmashPig\PaymentProviders\Responses\PaymentMethodResponse;
+use SmashPig\PaymentProviders\Responses\PaymentProviderResponse;
+use SmashPig\PaymentProviders\Responses\RefundPaymentResponse;
+use SmashPig\PaymentProviders\Responses\SavedPaymentDetailsResponse;
 use SmashPig\PaymentProviders\RiskScorer;
-use SmashPig\PaymentProviders\SavedPaymentDetails;
-use SmashPig\PaymentProviders\SavedPaymentDetailsResponse;
 
 /**
  * Class PaymentProvider
@@ -34,7 +36,12 @@ use SmashPig\PaymentProviders\SavedPaymentDetailsResponse;
  *
  *
  */
-abstract class PaymentProvider implements IPaymentProvider, ICancelablePaymentProvider, IRefundablePaymentProvider {
+abstract class PaymentProvider implements
+	ICancelablePaymentProvider,
+	IDeleteDataProvider,
+	IPaymentProvider,
+	IRefundablePaymentProvider
+{
 	/**
 	 * @var Api
 	 */
@@ -276,36 +283,90 @@ abstract class PaymentProvider implements IPaymentProvider, ICancelablePaymentPr
 	 *
 	 * @param string $gatewayTxnId
 	 * @return CancelPaymentResponse
+	 * @throws \SmashPig\Core\ApiException
 	 */
 	public function cancelPayment( $gatewayTxnId ): CancelPaymentResponse {
 		$rawResponse = $this->api->cancel( $gatewayTxnId );
 		$response = new CancelPaymentResponse();
 		$response->setRawResponse( $rawResponse );
 
-		if ( !empty( $rawResponse->cancelResult ) ) {
-			$this->mapTxnIdAndErrors(
-				$response,
-				$rawResponse->cancelResult,
-				false
+		if ( empty( $rawResponse['status'] ) ) {
+			$responseError = 'cancelResult element missing from Adyen cancel response.';
+			$response->addErrors(
+				new PaymentError(
+					ErrorCode::MISSING_REQUIRED_DATA,
+					$responseError,
+					LogLevel::ERROR
+				)
 			);
+			$response->setSuccessful( false );
+			Logger::debug( $responseError, $rawResponse );
+		} else {
 			$this->mapStatus(
 				$response,
 				$rawResponse,
 				new CancelPaymentStatus(),
-				$rawResponse->cancelResult->response ?? null,
+				$rawResponse['status'],
 				[ FinalStatus::CANCELLED ]
 			);
-		} else {
-			$responseError = 'cancelResult element missing from Adyen cancel response.';
+		}
+		$this->mapRestIdAndErrors(
+			$response,
+			$rawResponse
+		);
+
+		return $response;
+	}
+
+	/**
+	 * Request deletion of all donor data associated with a payment.
+	 *
+	 * @param string $gatewayTransactionId called the PSP reference by Adyen
+	 * @return DeleteDataResponse
+	 * @throws \SmashPig\Core\ApiException
+	 */
+	public function deleteDataForPayment( string $gatewayTransactionId ): DeleteDataResponse {
+		$rawResponse = $this->api->deleteDataForPayment( $gatewayTransactionId );
+		$response = new DeleteDataResponse();
+		$response->setRawResponse( $rawResponse );
+		if ( !isset( $rawResponse['result'] ) ) {
+			$responseError = 'Adyen response was null or invalid JSON.';
 			$response->addErrors( new PaymentError(
 				ErrorCode::MISSING_REQUIRED_DATA,
 				$responseError,
 				LogLevel::ERROR
 			) );
 			$response->setSuccessful( false );
-			Logger::debug( $responseError, $rawResponse );
+		} else {
+			switch ( $rawResponse['result'] ) {
+				case 'SUCCESS':
+				case 'ALREADY_PROCESSED':
+					$response->setSuccessful( true );
+					break;
+				case 'ACTIVE_RECURRING_TOKEN_EXISTS':
+					// shouldn't get here, since we're always passing forceErasure: true
+					$errorMessage = 'Adyen data deletion request failed on active recurring token';
+					$response->addErrors( new PaymentError(
+							ErrorCode::UNKNOWN,
+							$errorMessage,
+							LogLevel::ERROR
+						)
+					);
+					// Log here too just because it's so odd
+					Logger::error( $errorMessage );
+					$response->setSuccessful( false );
+					break;
+				case 'PAYMENT_NOT_FOUND':
+					$response->setSuccessful( false );
+					$response->addErrors( new PaymentError(
+							ErrorCode::TRANSACTION_NOT_FOUND,
+							"PSP reference $gatewayTransactionId not found at Adyen",
+							LogLevel::ERROR
+						)
+					);
+					break;
+			}
 		}
-
 		return $response;
 	}
 

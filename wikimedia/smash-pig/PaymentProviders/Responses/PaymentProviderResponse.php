@@ -1,6 +1,6 @@
 <?php
 
-namespace SmashPig\PaymentProviders;
+namespace SmashPig\PaymentProviders\Responses;
 
 use SmashPig\Core\PaymentError;
 use SmashPig\Core\ValidationError;

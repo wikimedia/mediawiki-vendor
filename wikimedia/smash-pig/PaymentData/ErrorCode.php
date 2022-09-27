@@ -38,4 +38,6 @@ class ErrorCode {
 	const EXCEEDED_LIMIT = 1000013;
 	/** @var int Validation error on a field */
 	const VALIDATION = 1000014;
+	/** @var int Caller sent in a transaction ID that does not exist in processor's system */
+	const TRANSACTION_NOT_FOUND = 1000015;
 }

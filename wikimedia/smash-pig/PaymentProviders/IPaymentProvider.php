@@ -2,6 +2,9 @@
 
 namespace SmashPig\PaymentProviders;
 
+use SmashPig\PaymentProviders\Responses\ApprovePaymentResponse;
+use SmashPig\PaymentProviders\Responses\CreatePaymentResponse;
+
 interface IPaymentProvider {
 	/**
 	 * @param array $params

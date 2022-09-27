@@ -4,9 +4,9 @@ namespace SmashPig\PaymentProviders\Adyen;
 
 use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentData\StatusNormalizer;
-use SmashPig\PaymentProviders\CreatePaymentResponse;
+use SmashPig\PaymentProviders\Responses\CreatePaymentResponse;
 
-class DirectDebitPaymentProvider extends PaymentProvider {
+class IdealBankTransferPaymentProvider extends PaymentProvider {
 
 	/**
 	 * Create an iDEAL payment with Adyen Checkout
@@ -19,7 +19,7 @@ class DirectDebitPaymentProvider extends PaymentProvider {
 	public function createPayment( array $params ): CreatePaymentResponse {
 		// one time and initial recurrings will have an issuer_id set
 		if ( !empty( $params['issuer_id'] ) ) {
-			$rawResponse = $this->api->createDirectDebitPaymentFromCheckout( $params );
+			$rawResponse = $this->api->createIdealNonRecurringPaymentFromCheckout( $params );
 		} else {
 			// subsequent recurrings will not have an issuer_id
 			$params['payment_method'] = 'sepadirectdebit';

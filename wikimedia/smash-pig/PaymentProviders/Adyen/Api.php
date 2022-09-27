@@ -50,9 +50,25 @@ class Api {
 	protected $apiKey;
 
 	/**
+	 * Default base path for REST API calls
+	 *
 	 * @var string
 	 */
 	protected $restBaseUrl;
+
+	/**
+	 * Base path for REST API calls to the recurring service
+	 * (see https://docs.adyen.com/api-explorer/#/Recurring/v67/overview)
+	 * @var string
+	 */
+	protected $recurringBaseUrl;
+
+	/**
+	 * Base path for REST API calls to the data protection service
+	 * (see https://docs.adyen.com/development-resources/data-protection-api)
+	 * @var string
+	 */
+	protected $dataProtectionBaseUrl;
 
 	/**
 	 * @var string
@@ -71,12 +87,13 @@ class Api {
 
 	public function __construct() {
 		$c = Context::get()->getProviderConfiguration();
-		$this->account = array_keys( $c->val( "accounts" ) )[0]; // this feels fragile
+		$this->account = array_keys( $c->val( 'accounts' ) )[0]; // this feels fragile
 		$this->wsdlEndpoint = $c->val( 'payments-wsdl' );
 		$this->wsdlUser = $c->val( "accounts/{$this->account}/ws-username" );
 		$this->wsdlPass = $c->val( "accounts/{$this->account}/ws-password" );
 		$this->restBaseUrl = $c->val( 'rest-base-url' );
 		$this->recurringBaseUrl = $c->val( 'recurring-base-url' );
+		$this->dataProtectionBaseUrl = $c->val( 'data-protection-base-url' );
 		$this->apiKey = $c->val( "accounts/{$this->account}/ws-api-key" );
 	}
 
@@ -213,14 +230,14 @@ class Api {
 	}
 
 	/**
-	 * Uses the rest API to create a direct debit payment from the
+	 * Uses the rest API to create an ideal payment from the
 	 * Component web integration
 	 *
 	 * @param array $params
 	 * amount, currency, value, issuer, returnUrl
 	 * @throws \SmashPig\Core\ApiException
 	 */
-	public function createDirectDebitPaymentFromCheckout( $params ) {
+	public function createIdealNonRecurringPaymentFromCheckout( $params ) {
 		$restParams = [
 			'amount' => $this->getArrayAmount( $params ),
 			'reference' => $params['order_id'],
@@ -401,15 +418,44 @@ class Api {
 			],
 		];
 
-		$result = $this->makeRestApiCall( $restParams, 'listRecurringDetails', 'POST', true );
+		$result = $this->makeRestApiCall(
+			$restParams, 'listRecurringDetails', 'POST', $this->recurringBaseUrl
+		);
 		return $result['body'];
 	}
 
 	/**
+	 * https://docs.adyen.com/development-resources/data-protection-api#submit-a-subject-erasure-request
+	 *
+	 * @param string $gatewayTransactionId For Adyen this is called the PSP Reference
+	 * @return array usually just [ 'result' => 'SUCCESS' ]
 	 * @throws \SmashPig\Core\ApiException
 	 */
-	protected function makeRestApiCall( $params, $path, $method, $useRecurringBasePath = false ) {
-		$basePath = $useRecurringBasePath ? $this->recurringBaseUrl : $this->restBaseUrl;
+	public function deleteDataForPayment( string $gatewayTransactionId ): array {
+		$restParams = [
+			'merchantAccount' => $this->account,
+			'pspReference' => $gatewayTransactionId,
+			'forceErasure' => true
+		];
+		$result = $this->makeRestApiCall(
+			$restParams, 'requestSubjectErasure', 'POST', $this->dataProtectionBaseUrl
+		);
+		return $result['body'];
+	}
+
+	/**
+	 * @param array $params array of parameters to be JSON encoded and sent to the API
+	 * @param string $path REST path (entity name, possible id, possible action)
+	 * @param string $method HTTP method, usually GET or POST
+	 * @param string|null $alternateBaseUrl By default, the base URL used will be the restBaseUrl.
+	 *  To use an alternate base URL, pass it here
+	 * @return array
+	 * @throws \SmashPig\Core\ApiException
+	 */
+	protected function makeRestApiCall(
+		array $params, string $path, string $method, ?string $alternateBaseUrl = null
+	) {
+		$basePath = $alternateBaseUrl ?? $this->restBaseUrl;
 		$url = $basePath . '/' . $path;
 		$request = new OutboundRequest( $url, $method );
 		$request->setBody( json_encode( $params ) );
@@ -541,26 +587,19 @@ class Api {
 	 * Cancels a payment that may already be authorized
 	 *
 	 * @param string $pspReference The Adyen-side identifier, aka gateway_txn_id
-	 * @return bool|WSDL\cancelResponse
+	 * @return array
+	 * @throws \SmashPig\Core\ApiException
 	 */
-	public function cancel( $pspReference ) {
-		$data = new WSDL\cancel();
-		$data->modificationRequest = new WSDL\ModificationRequest();
-
-		$data->modificationRequest->merchantAccount = $this->account;
-		$data->modificationRequest->originalReference = $pspReference;
-
-		$tl = new TaggedLogger( 'RawData' );
-		$tl->info( 'Launching SOAP cancel request', $data );
-
-		try {
-			$response = $this->getSoapClient()->cancel( $data );
-		} catch ( \Exception $ex ) {
-			Logger::error( 'SOAP cancel request threw exception!', null, $ex );
-			return false;
-		}
-
-		return $response;
+	public function cancel( string $pspReference ): array {
+		$restParams = [
+			'merchantAccount' => $this->account
+		];
+		// TODO: Adyen supports a merchant reference for the cancellation
+		// but we'll need to change our ICancelablePaymentProvider to
+		// support an array of parameters.
+		$path = "payments/$pspReference/cancels";
+		$result = $this->makeRestApiCall( $restParams, $path, 'POST' );
+		return $result['body'];
 	}
 
 	/**

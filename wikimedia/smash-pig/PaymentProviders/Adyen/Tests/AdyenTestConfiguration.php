@@ -37,9 +37,11 @@ class AdyenTestConfiguration extends TestingProviderConfiguration {
 	}
 
 	public static function getSuccessfulCancelResult() {
-		return (object)[ 'cancelResult' => (object)[
-			'response' => '[cancel-received]',
-			'pspReference' => '00000000000000AB'
-		] ];
+		return [
+			'merchantAccount' => 'WikimediaCOM',
+			'paymentReference' => '',
+			'pspReference' => '00000000000000AB',
+			'status' => 'received',
+		];
 	}
 }

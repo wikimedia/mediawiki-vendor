@@ -20,7 +20,10 @@ class ReportAvailable extends AdyenMessage {
 			$this->reason
 		);
 
-		if ( strpos( $this->pspReference, 'settlement_detail_report' ) === 0 ) {
+		// The original audit file used was the settlement_detail_report which was available once a week
+		// The payments_accounting_report is a nightly file that has the same information
+		if ( strpos( $this->pspReference, 'settlement_detail_report' ) === 0 ||
+			 strpos( $this->pspReference, 'payments_accounting_report' ) === 0 ) {
 			$jobObject = DownloadReportJob::factory(
 				$this->merchantAccountCode,
 				$this->reason

@@ -3,7 +3,7 @@
 namespace SmashPig\PaymentProviders\Adyen;
 
 use SmashPig\PaymentData\StatusNormalizer;
-use SmashPig\PaymentProviders\CreatePaymentResponse;
+use SmashPig\PaymentProviders\Responses\CreatePaymentResponse;
 
 class ApplePayPaymentProvider extends PaymentProvider {
 

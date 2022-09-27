@@ -1,7 +1,7 @@
 <?php
 namespace SmashPig\PaymentProviders\Adyen\Test;
 
-use SmashPig\PaymentProviders\Adyen\Audit\AdyenAudit;
+use SmashPig\PaymentProviders\Adyen\Audit\AdyenSettlementDetailReport;
 use SmashPig\Tests\BaseSmashPigUnitTestCase;
 
 /**
@@ -14,9 +14,9 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	/**
 	 * Normal donation
 	 */
-	public function testProcessDonation() {
-		$processor = new AdyenAudit();
-		$output = $processor->parseFile( __DIR__ . '/../Data/donation.csv' );
+	public function testProcessSettlementDetailDonation() {
+		$processor = new AdyenSettlementDetailReport();
+		$output = $processor->parseFile( __DIR__ . '/../Data/settlement_detail_report_donation.csv' );
 		$this->assertSame( 1, count( $output ), 'Should have found one donation' );
 		$actual = $output[0];
 		$expected = [
@@ -43,8 +43,8 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	 * iDEAL donation with variant that we should discard
 	 */
 	public function testProcessDonationIdeal() {
-		$processor = new AdyenAudit();
-		$output = $processor->parseFile( __DIR__ . '/../Data/donation-ideal.csv' );
+		$processor = new AdyenSettlementDetailReport();
+		$output = $processor->parseFile( __DIR__ . '/../Data/settlement_detail_report_donation-ideal.csv' );
 		$this->assertSame( 1, count( $output ), 'Should have found one donation' );
 		$actual = $output[0];
 		$expected = [
@@ -70,9 +70,9 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	/**
 	 * Now try a refund
 	 */
-	public function testProcessRefund() {
-		$processor = new AdyenAudit();
-		$output = $processor->parseFile( __DIR__ . '/../Data/refund.csv' );
+	public function testProcessSettlementDetailRefund() {
+		$processor = new AdyenSettlementDetailReport();
+		$output = $processor->parseFile( __DIR__ . '/../Data/settlement_detail_report_refund.csv' );
 		$this->assertSame( 1, count( $output ), 'Should have found one refund' );
 		$actual = $output[0];
 		$expected = [
@@ -86,6 +86,9 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'gross_currency' => 'USD',
 			'invoice_id' => '92598312.0',
 			'type' => 'refund',
+			'gateway_txn_id' => '4522268860022701',
+			'payment_method' => 'cc',
+			'payment_submethod' => 'visa',
 		];
 		$this->assertEquals( $expected, $actual, 'Did not parse refund correctly' );
 	}
@@ -93,9 +96,9 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	/**
 	 * And a chargeback
 	 */
-	public function testProcessChargeback() {
-		$processor = new AdyenAudit();
-		$output = $processor->parseFile( __DIR__ . '/../Data/chargeback.csv' );
+	public function testProcessSettlementDetailChargeback() {
+		$processor = new AdyenSettlementDetailReport();
+		$output = $processor->parseFile( __DIR__ . '/../Data/settlement_detail_report_chargeback.csv' );
 		$this->assertSame( 1, count( $output ), 'Should have found one chargeback' );
 		$actual = $output[0];
 		$expected = [
@@ -109,6 +112,9 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'gross_currency' => 'USD',
 			'invoice_id' => '92598318.0',
 			'type' => 'chargeback',
+			'gateway_txn_id' => '4555568860022701',
+			'payment_method' => 'cc',
+			'payment_submethod' => 'visa',
 		];
 		$this->assertEquals( $expected, $actual, 'Did not parse chargeback correctly' );
 	}

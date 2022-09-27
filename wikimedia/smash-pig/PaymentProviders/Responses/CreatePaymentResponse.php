@@ -1,6 +1,8 @@
 <?php
 
-namespace SmashPig\PaymentProviders;
+namespace SmashPig\PaymentProviders\Responses;
+
+use SmashPig\PaymentData\DonorDetails;
 
 /**
  * Represents a newly-created payment. Contains all the properties of the

@@ -4,7 +4,7 @@ namespace SmashPig\PaymentProviders\Ingenico;
 
 use BadMethodCallException;
 use SmashPig\Core\SmashPigException;
-use SmashPig\PaymentProviders\PaymentDetailResponse;
+use SmashPig\PaymentProviders\Responses\PaymentDetailResponse;
 use SmashPig\PaymentProviders\RiskScorer;
 
 /**

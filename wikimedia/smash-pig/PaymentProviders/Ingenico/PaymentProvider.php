@@ -9,12 +9,12 @@ use SmashPig\Core\Mapper\Mapper;
 use SmashPig\Core\PaymentError;
 use SmashPig\PaymentData\ErrorCode;
 use SmashPig\PaymentData\FinalStatus;
-use SmashPig\PaymentProviders\ApprovePaymentResponse;
-use SmashPig\PaymentProviders\CancelPaymentResponse;
-use SmashPig\PaymentProviders\CreatePaymentResponse;
 use SmashPig\PaymentProviders\ICancelablePaymentProvider;
 use SmashPig\PaymentProviders\IPaymentProvider;
-use SmashPig\PaymentProviders\PaymentProviderResponse;
+use SmashPig\PaymentProviders\Responses\ApprovePaymentResponse;
+use SmashPig\PaymentProviders\Responses\CancelPaymentResponse;
+use SmashPig\PaymentProviders\Responses\CreatePaymentResponse;
+use SmashPig\PaymentProviders\Responses\PaymentProviderResponse;
 
 /**
  * Base class for Ingenico payments. Each payment product group should get
