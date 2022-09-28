@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "571b15573e82ae78379119095e1b5e7b",
+    "content-hash": "d11c28266f4aeb5639480909cf7fc262",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -2823,16 +2823,16 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.44.3",
+            "version": "v0.45.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "a4c06f7f823c7757e37ed5326e36e4f27889ab3f"
+                "reference": "8f575380e0c0bcf8418f8f933fd5130f716967ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/a4c06f7f823c7757e37ed5326e36e4f27889ab3f",
-                "reference": "a4c06f7f823c7757e37ed5326e36e4f27889ab3f",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/8f575380e0c0bcf8418f8f933fd5130f716967ce",
+                "reference": "8f575380e0c0bcf8418f8f933fd5130f716967ce",
                 "shasum": ""
             },
             "require": {
@@ -2878,16 +2878,20 @@
                     "email": "legoktm@gmail.com"
                 },
                 {
+                    "name": "Moriel Schottlender",
+                    "email": "mschottlender@wikimedia.org"
+                },
+                {
                     "name": "Prateek Saxena",
                     "email": "prtksxna@gmail.com"
                 },
                 {
                     "name": "Roan Kattouw",
-                    "email": "roan@wikimedia.org"
+                    "email": "roan.kattouw@gmail.com"
                 },
                 {
-                    "name": "Rob Moen",
-                    "email": "rmoen@wikimedia.org"
+                    "name": "Thiemo Kreuz",
+                    "email": "thiemo.kreuz@wikimedia.de"
                 },
                 {
                     "name": "Timo Tijhof",
@@ -2895,15 +2899,19 @@
                 },
                 {
                     "name": "Trevor Parscal",
-                    "email": "trevor@wikimedia.org"
+                    "email": "trevorparscal@gmail.com"
+                },
+                {
+                    "name": "Volker E.",
+                    "email": "volker.e@wikimedia.org"
                 }
             ],
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOUI",
             "support": {
-                "source": "https://github.com/wikimedia/oojs-ui/tree/v0.44.3"
+                "source": "https://github.com/wikimedia/oojs-ui/tree/v0.45.0"
             },
-            "time": "2022-08-17T01:38:36+00:00"
+            "time": "2022-09-28T14:11:27+00:00"
         },
         {
             "name": "opis/json-schema",
