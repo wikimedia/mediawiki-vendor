@@ -47,12 +47,12 @@
             'dev_requirement' => false,
         ),
         'composer/ca-bundle' => array(
-            'pretty_version' => '1.3.2',
-            'version' => '1.3.2.0',
+            'pretty_version' => '1.3.3',
+            'version' => '1.3.3.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/./ca-bundle',
             'aliases' => array(),
-            'reference' => 'fd5dd441932a7e10ca6e5b490e272d34c8430640',
+            'reference' => '30897edbfb15e784fe55587b4f73ceefd3c4d98c',
             'dev_requirement' => false,
         ),
         'composer/semver' => array(
