@@ -758,12 +758,6 @@
                 0 => '1.99',
             ),
         ),
-        'symfony/polyfill-php72' => array(
-            'dev_requirement' => false,
-            'replaced' => array(
-                0 => '1.12.0',
-            ),
-        ),
         'symfony/polyfill-php73' => array(
             'pretty_version' => 'v1.26.0',
             'version' => '1.26.0.0',
