@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b380e670fb1541d1ceec31ceb53d4f14",
+    "content-hash": "8801a7d3e88f283cade429b763cbd7f4",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -1735,16 +1735,16 @@
         },
         {
             "name": "james-heinrich/getid3",
-            "version": "v1.9.21",
+            "version": "v1.9.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/JamesHeinrich/getID3.git",
-                "reference": "36f5dabb1325415a4b07a401113f8db2eb81eca1"
+                "reference": "45f20faa0f0a24489740392c5b512ddcc36deccd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/36f5dabb1325415a4b07a401113f8db2eb81eca1",
-                "reference": "36f5dabb1325415a4b07a401113f8db2eb81eca1",
+                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/45f20faa0f0a24489740392c5b512ddcc36deccd",
+                "reference": "45f20faa0f0a24489740392c5b512ddcc36deccd",
                 "shasum": ""
             },
             "require": {
@@ -1796,9 +1796,9 @@
             ],
             "support": {
                 "issues": "https://github.com/JamesHeinrich/getID3/issues",
-                "source": "https://github.com/JamesHeinrich/getID3/tree/v1.9.21"
+                "source": "https://github.com/JamesHeinrich/getID3/tree/v1.9.22"
             },
-            "time": "2021-09-22T16:34:51+00:00"
+            "time": "2022-09-29T16:41:13+00:00"
         },
         {
             "name": "justinrainbow/json-schema",

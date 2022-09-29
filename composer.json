@@ -39,7 +39,7 @@
 		"guzzlehttp/promises": "1.5.2",
 		"guzzlehttp/psr7": "2.4.1",
 		"jakobo/hotp-php": "2.0.0",
-		"james-heinrich/getid3": "1.9.21",
+		"james-heinrich/getid3": "1.9.22",
 		"justinrainbow/json-schema": "5.2.12",
 		"lcobucci/jwt": "4.1.5",
 		"league/event": "2.2.0",
