@@ -470,12 +470,12 @@
             'dev_requirement' => false,
         ),
         'pear/net_smtp' => array(
-            'pretty_version' => '1.10.0',
-            'version' => '1.10.0.0',
+            'pretty_version' => '1.10.1',
+            'version' => '1.10.1.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../pear/net_smtp',
             'aliases' => array(),
-            'reference' => '51e5997b711fbd1e5a9a075634d4d682168537fa',
+            'reference' => 'cfd963dc5cc73b4d64c7769e47dfa0f439dec536',
             'dev_requirement' => false,
         ),
         'pear/net_socket' => array(

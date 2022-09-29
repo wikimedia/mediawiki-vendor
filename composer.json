@@ -61,7 +61,7 @@
 		"pear/console_getopt": "1.4.3",
 		"pear/mail": "1.4.1",
 		"pear/mail_mime": "1.10.11",
-		"pear/net_smtp": "1.10.0",
+		"pear/net_smtp": "1.10.1",
 		"pear/net_socket": "1.2.2",
 		"pear/net_url2": "2.2.2",
 		"pear/pear-core-minimal": "1.10.11",
