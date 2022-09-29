@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '27e655232fec402ecdf08ee6fae23bf08188d314',
+        'reference' => '9971eda8cc6d5a3e2675c4a2876a391453c5b492',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '27e655232fec402ecdf08ee6fae23bf08188d314',
+            'reference' => '9971eda8cc6d5a3e2675c4a2876a391453c5b492',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -401,12 +401,12 @@
             'dev_requirement' => false,
         ),
         'onoi/message-reporter' => array(
-            'pretty_version' => '1.4.1',
-            'version' => '1.4.1.0',
+            'pretty_version' => '1.4.2',
+            'version' => '1.4.2.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../onoi/message-reporter',
             'aliases' => array(),
-            'reference' => 'cdc7f2c666cef581a1a1e31c62d5a6f2d8ba1482',
+            'reference' => 'ead8ef8f2868ccee6881e471295ebbaf8428c96c',
             'dev_requirement' => false,
         ),
         'oojs/oojs-ui' => array(

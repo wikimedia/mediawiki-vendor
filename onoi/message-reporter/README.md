@@ -1,4 +1,4 @@
-# Message reporter
+# Message Reporter
 
 [![Build Status](https://secure.travis-ci.org/onoi/message-reporter.svg?branch=master)](http://travis-ci.org/onoi/message-reporter)
 [![Code Coverage](https://scrutinizer-ci.com/g/onoi/message-reporter/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/onoi/message-reporter/?branch=master)
@@ -38,7 +38,6 @@ The message reporter specifies `MessageReporter` and `MessageReporterAware` as a
 use Onoi\MessageReporter\MessageReporterFactory;
 use Onoi\MessageReporter\MessageReporterAware;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
-use Onoi\MessageReporter\MessageReporter;
 
 class Bar implements MessageReporterAware {
 
@@ -113,8 +112,12 @@ You can also invoke PHPUnit directly to pass it arguments, as follows
 
 ## Release notes
 
+* 1.4.2 (2021-01-15)
+  - Added support for PHP 8
+  - Changed minimum PHP version to 7.3
+
 * 1.4.1 (2019-04-10)
-- Added `.gitattributes`
+  - Added `.gitattributes`
 
 * 1.4.0 (2019-04-08)
   - Added `CallbackMessageReporter`

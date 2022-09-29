@@ -2876,31 +2876,30 @@
         },
         {
             "name": "onoi/message-reporter",
-            "version": "1.4.1",
-            "version_normalized": "1.4.1.0",
+            "version": "1.4.2",
+            "version_normalized": "1.4.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/onoi/message-reporter.git",
-                "reference": "cdc7f2c666cef581a1a1e31c62d5a6f2d8ba1482"
+                "reference": "ead8ef8f2868ccee6881e471295ebbaf8428c96c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/onoi/message-reporter/zipball/cdc7f2c666cef581a1a1e31c62d5a6f2d8ba1482",
-                "reference": "cdc7f2c666cef581a1a1e31c62d5a6f2d8ba1482",
+                "url": "https://api.github.com/repos/onoi/message-reporter/zipball/ead8ef8f2868ccee6881e471295ebbaf8428c96c",
+                "reference": "ead8ef8f2868ccee6881e471295ebbaf8428c96c",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.6.99|^7.0"
+                "php": ">=7.3"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "~23.0",
+                "mediawiki/mediawiki-codesniffer": "~34.0",
                 "ockcyp/covers-validator": "~1.1",
-                "phpstan/phpstan": "~0.9.2",
-                "phpunit/phpunit": "^6.5.14",
-                "slevomat/coding-standard": "^3.0|~4.5",
+                "phpstan/phpstan": "~0.12.67",
+                "phpunit/phpunit": "^9.5",
                 "squizlabs/php_codesniffer": "~3.3"
             },
-            "time": "2019-04-10T12:19:43+00:00",
+            "time": "2021-01-15T14:23:11+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -2919,7 +2918,8 @@
             ],
             "authors": [
                 {
-                    "name": "Jeroen De Dauw"
+                    "name": "Jeroen De Dauw",
+                    "homepage": "https://EntropyWins.wtf"
                 },
                 {
                     "name": "James Hong Kong"
@@ -2933,8 +2933,14 @@
             ],
             "support": {
                 "issues": "https://github.com/onoi/message-reporter/issues",
-                "source": "https://github.com/onoi/message-reporter/tree/master"
+                "source": "https://github.com/onoi/message-reporter/tree/1.4.2"
             },
+            "funding": [
+                {
+                    "url": "https://github.com/JeroenDeDauw",
+                    "type": "github"
+                }
+            ],
             "install-path": "../onoi/message-reporter"
         },
         {
