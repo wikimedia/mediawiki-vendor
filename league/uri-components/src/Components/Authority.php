@@ -1,13 +1,11 @@
 <?php
 
 /**
- * League.Uri (http://uri.thephpleague.com/components)
+ * League.Uri (https://uri.thephpleague.com/components/2.0/)
  *
  * @package    League\Uri
  * @subpackage League\Uri\Components
  * @author     Ignace Nyamagana Butera <nyamsprod@gmail.com>
- * @license    https://github.com/thephpleague/uri-components/blob/master/LICENSE (MIT License)
- * @version    2.0.2
  * @link       https://github.com/thephpleague/uri-components
  *
  * For the full copyright and license information, please view the LICENSE
@@ -26,6 +24,10 @@ use League\Uri\Exceptions\SyntaxError;
 use Psr\Http\Message\UriInterface as Psr7UriInterface;
 use TypeError;
 use function explode;
+use function gettype;
+use function is_object;
+use function is_string;
+use function method_exists;
 use function preg_match;
 use function sprintf;
 
@@ -33,25 +35,16 @@ final class Authority extends Component implements AuthorityInterface
 {
     private const REGEXP_HOST_PORT = ',^(?<host>\[.*\]|[^:]*)(:(?<port>.*))?$,';
 
-    /**
-     * @var UserInfo
-     */
-    private $userInfo;
+    private UserInfo $userInfo;
+    private HostInterface $host;
+    private Port $port;
 
     /**
-     * @var HostInterface
-     */
-    private $host;
-
-    /**
-     * @var Port
-     */
-    private $port;
-
-    /**
+     * @deprecated since version 2.3.0 use a more appropriate named constructor.
+     *
      * New instance.
      *
-     * @param mixed|null $authority
+     * @param object|float|int|string|bool|null $authority
      *
      * @throws SyntaxError If the component contains invalid HostInterface part.
      */
@@ -146,6 +139,64 @@ final class Authority extends Component implements AuthorityInterface
     }
 
     /**
+     * Create a new instance from null.
+     */
+    public static function createFromNull(): self
+    {
+        return new self();
+    }
+
+    /**
+     * Returns a new instance from an string or a stringable object.
+     *
+     * @param object|string $authority
+     */
+    public static function createFromString($authority = ''): self
+    {
+        if (is_object($authority) && method_exists($authority, '__toString')) {
+            $authority = (string) $authority;
+        }
+
+        if (!is_string($authority)) {
+            throw new TypeError(sprintf('The authority must be a string or a stringable object value, `%s` given', gettype($authority)));
+        }
+
+        return new self($authority);
+    }
+
+    /**
+     * Create a new instance from a hash of parse_url parts.
+     *
+     * Create an new instance from a hash representation of the URI similar
+     * to PHP parse_url function result
+     *
+     * @param array<string,null|int|string> $components
+     */
+    public static function createFromComponents(array $components): self
+    {
+        $components += ['user' => null, 'pass' => null, 'host' => null, 'port' => null];
+
+        $authority = $components['host'];
+        if (null !== $components['port']) {
+            $authority .= ':'.$components['port'];
+        }
+
+        $userInfo = null;
+        if (null !== $components['user']) {
+            $userInfo = $components['user'];
+            if (null !== $components['pass']) {
+                $userInfo .= ':'.$components['pass'];
+            }
+        }
+
+        if (null !== $userInfo) {
+            $authority = $userInfo.'@'.$authority;
+        }
+
+        return new self($authority);
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function getContent(): ?string
@@ -197,7 +248,7 @@ final class Authority extends Component implements AuthorityInterface
     }
 
     /**
-     * @param mixed|null $content
+     * @param UriComponentInterface|object|float|int|string|bool|null $content
      */
     public function withContent($content): UriComponentInterface
     {
@@ -210,7 +261,7 @@ final class Authority extends Component implements AuthorityInterface
     }
 
     /**
-     * @param mixed|null $host
+     * @param UriComponentInterface|object|float|int|string|bool|null $host
      */
     public function withHost($host): AuthorityInterface
     {
@@ -230,7 +281,7 @@ final class Authority extends Component implements AuthorityInterface
     }
 
     /**
-     * @param mixed|null $port
+     * @param UriComponentInterface|object|float|int|string|bool|null $port
      */
     public function withPort($port): AuthorityInterface
     {
@@ -250,8 +301,8 @@ final class Authority extends Component implements AuthorityInterface
     }
 
     /**
-     * @param mixed|null $user
-     * @param mixed|null $pass
+     * @param object|float|int|string|bool|null $user
+     * @param object|float|int|string|bool|null $pass
      */
     public function withUserInfo($user, $pass = null): AuthorityInterface
     {

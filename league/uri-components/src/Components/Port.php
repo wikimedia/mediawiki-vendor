@@ -1,13 +1,11 @@
 <?php
 
 /**
- * League.Uri (http://uri.thephpleague.com/components)
+ * League.Uri (https://uri.thephpleague.com/components/2.0/)
  *
  * @package    League\Uri
  * @subpackage League\Uri\Components
  * @author     Ignace Nyamagana Butera <nyamsprod@gmail.com>
- * @license    https://github.com/thephpleague/uri-components/blob/master/LICENSE (MIT License)
- * @version    2.0.2
  * @link       https://github.com/thephpleague/uri-components
  *
  * For the full copyright and license information, please view the LICENSE
@@ -31,25 +29,34 @@ use const FILTER_VALIDATE_INT;
 
 final class Port extends Component implements PortInterface
 {
-    /**
-     * @var int|null
-     */
-    private $port;
+    private ?int $port;
 
     /**
      * New instance.
      *
-     * @param mixed|null $port
+     * @param UriComponentInterface|object|float|int|string|bool|null $port
      */
     public function __construct($port = null)
     {
         $this->port = $this->validate($port);
     }
 
+    public static function fromInt(int $port): self
+    {
+        if (0 > $port) {
+            throw new SyntaxError(sprintf('Expected port to be a positive integer or 0; received %s.', $port));
+        }
+
+        $instance = new self();
+        $instance->port = $port;
+
+        return $instance;
+    }
+
     /**
      * Validate a port.
      *
-     * @param mixed|null $port
+     * @param UriComponentInterface|object|float|int|string|bool|null $port
      *
      * @throws SyntaxError if the port is invalid
      */

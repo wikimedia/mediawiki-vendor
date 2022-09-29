@@ -1,13 +1,11 @@
 <?php
 
 /**
- * League.Uri (http://uri.thephpleague.com/components)
+ * League.Uri (https://uri.thephpleague.com/components/2.0/)
  *
  * @package    League\Uri
  * @subpackage League\Uri\Components
  * @author     Ignace Nyamagana Butera <nyamsprod@gmail.com>
- * @license    https://github.com/thephpleague/uri-components/blob/master/LICENSE (MIT License)
- * @version    2.0.2
  * @link       https://github.com/thephpleague/uri-components
  *
  * For the full copyright and license information, please view the LICENSE
@@ -59,7 +57,7 @@ final class QueryString
     private const ENCODING_LIST = [
         PHP_QUERY_RFC1738 => [
             'suffixKey' => '*',
-            'suffixValue' => '*=&',
+            'suffixValue' => '*&',
         ],
         PHP_QUERY_RFC3986 => [
             'suffixKey' => "!$'()*+,;:@?/%",
@@ -91,7 +89,7 @@ final class QueryString
     /**
      * Parses a query string into a collection of key/value pairs.
      *
-     * @param mixed|null $query
+     * @param object|float|int|string|bool|null $query
      *
      * @throws SyntaxError
      *
@@ -125,7 +123,7 @@ final class QueryString
     /**
      * Prepare and normalize query before processing.
      *
-     * @param mixed|null $query
+     * @param object|float|int|string|bool|null $query
      *
      * @throws SyntaxError If the encoding type is invalid
      * @throws SyntaxError If the query string is invalid
@@ -165,6 +163,10 @@ final class QueryString
         return $query;
     }
 
+    /**
+     * @param  non-empty-string   $separator
+     * @return array<string|null>
+     */
     private static function getPairs(string $query, string $separator): array
     {
         if (false === strpos($query, $separator)) {
@@ -195,11 +197,41 @@ final class QueryString
             return [$key, $value];
         }
 
-        if ($parseValue === self::DECODE_PAIR_VALUE && 1 === preg_match(self::REGEXP_ENCODED_PATTERN, $value)) {
+        if (self::DECODE_PAIR_VALUE === $parseValue && 1 === preg_match(self::REGEXP_ENCODED_PATTERN, $value)) {
             $value = preg_replace_callback(self::REGEXP_ENCODED_PATTERN, [self::class, 'decodeMatch'], $value);
         }
 
         return [$key, $value];
+    }
+
+    /**
+     * @param int|string|float|null $name
+     */
+    public static function formatStringValue(string $value, $name): string
+    {
+        if (1 === preg_match('/[\x00-\x1f\x7f]/', $value)) {
+            return $name.'='.rawurlencode($value);
+        }
+
+        if (1 !== preg_match(self::$regexpValue, $value)) {
+            return $name.'='.$value;
+        }
+
+        return $name.'='.preg_replace_callback(self::$regexpValue, [self::class, 'encodeMatches'], $value);
+    }
+
+    public static function formatStringName(string $name): string
+    {
+        if (1 === preg_match('/[\x00-\x1f\x7f]/', $name)) {
+            return rawurlencode($name);
+        }
+
+        if (1 === preg_match(self::$regexpKey, $name)) {
+            /** @var string $name */
+            $name = preg_replace_callback(self::$regexpKey, [self::class, 'encodeMatches'], $name);
+        }
+
+        return $name;
     }
 
     /**
@@ -288,16 +320,12 @@ final class QueryString
             $name = (int) $name;
         }
 
-        if (is_string($name) && 1 === preg_match(self::$regexpKey, $name)) {
-            $name = preg_replace_callback(self::$regexpKey, [self::class, 'encodeMatches'], $name);
+        if (is_string($name)) {
+            $name = self::formatStringName($name);
         }
 
         if (is_string($value)) {
-            if (1 !== preg_match(self::$regexpValue, $value)) {
-                return $name.'='.$value;
-            }
-
-            return $name.'='.preg_replace_callback(self::$regexpValue, [self::class, 'encodeMatches'], $value);
+            return self::formatStringValue($value, $name);
         }
 
         if (is_numeric($value)) {
@@ -337,10 +365,14 @@ final class QueryString
      * @see http://php.net/parse_str
      * @see https://wiki.php.net/rfc/on_demand_name_mangling
      *
-     * @param mixed|null $query
+     * @param object|float|int|string|bool|null $query
      */
     public static function extract($query, string $separator = '&', int $enc_type = PHP_QUERY_RFC3986): array
     {
+        if ('' === $separator) {
+            throw new SyntaxError('The separator character can not be the empty string.');
+        }
+
         $query = self::prepareQuery($query, $enc_type);
         if (null === $query || '' === $query) {
             return [];

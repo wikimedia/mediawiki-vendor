@@ -1,13 +1,11 @@
 <?php
 
 /**
- * League.Uri (http://uri.thephpleague.com/components)
+ * League.Uri (https://uri.thephpleague.com/components/2.0/)
  *
  * @package    League\Uri
  * @subpackage League\Uri\Components
  * @author     Ignace Nyamagana Butera <nyamsprod@gmail.com>
- * @license    https://github.com/thephpleague/uri-components/blob/master/LICENSE (MIT License)
- * @version    2.0.2
  * @link       https://github.com/thephpleague/uri-components
  *
  * For the full copyright and license information, please view the LICENSE
@@ -31,15 +29,12 @@ final class Scheme extends Component
 {
     private const REGEXP_SCHEME = ',^[a-z]([-a-z0-9+.]+)?$,i';
 
-    /**
-     * @var string|null
-     */
-    private $scheme;
+    private ?string $scheme;
 
     /**
      * New instance.
      *
-     * @param mixed|null $scheme
+     * @param float|int|object|string|bool|null $scheme
      */
     public function __construct($scheme = null)
     {
@@ -49,7 +44,7 @@ final class Scheme extends Component
     /**
      * Validate a scheme.
      *
-     * @param mixed|null $scheme
+     * @param float|int|object|string|bool|null $scheme
      *
      * @throws SyntaxError if the scheme is invalid
      * @throws TypeError   if the scheme type is not supported

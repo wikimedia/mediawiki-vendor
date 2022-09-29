@@ -1,13 +1,11 @@
 <?php
 
 /**
- * League.Uri (http://uri.thephpleague.com/components)
+ * League.Uri (https://uri.thephpleague.com/components/2.0/)
  *
  * @package    League\Uri
  * @subpackage League\Uri\Components
  * @author     Ignace Nyamagana Butera <nyamsprod@gmail.com>
- * @license    https://github.com/thephpleague/uri-components/blob/master/LICENSE (MIT License)
- * @version    2.0.2
  * @link       https://github.com/thephpleague/uri-components
  *
  * For the full copyright and license information, please view the LICENSE
@@ -18,11 +16,15 @@ declare(strict_types=1);
 
 namespace League\Uri\Components;
 
+use finfo;
 use League\Uri\Contracts\DataPathInterface;
+use League\Uri\Contracts\HostInterface;
 use League\Uri\Contracts\PathInterface;
 use League\Uri\Contracts\UriComponentInterface;
 use League\Uri\Exceptions\FileinfoSupportMissing;
 use League\Uri\Exceptions\SyntaxError;
+use SplFileObject;
+use TypeError;
 use function base64_decode;
 use function base64_encode;
 use function count;
@@ -30,6 +32,7 @@ use function explode;
 use function file_get_contents;
 use function gettype;
 use function implode;
+use function is_object;
 use function is_scalar;
 use function method_exists;
 use function preg_match;
@@ -67,47 +70,21 @@ final class DataPath extends Component implements DataPathInterface
      */
     private const ASCII = "\x20\x65\x69\x61\x73\x6E\x74\x72\x6F\x6C\x75\x64\x5D\x5B\x63\x6D\x70\x27\x0A\x67\x7C\x68\x76\x2E\x66\x62\x2C\x3A\x3D\x2D\x71\x31\x30\x43\x32\x2A\x79\x78\x29\x28\x4C\x39\x41\x53\x2F\x50\x22\x45\x6A\x4D\x49\x6B\x33\x3E\x35\x54\x3C\x44\x34\x7D\x42\x7B\x38\x46\x77\x52\x36\x37\x55\x47\x4E\x3B\x4A\x7A\x56\x23\x48\x4F\x57\x5F\x26\x21\x4B\x3F\x58\x51\x25\x59\x5C\x09\x5A\x2B\x7E\x5E\x24\x40\x60\x7F\x00\x01\x02\x03\x04\x05\x06\x07\x08\x0B\x0C\x0D\x0E\x0F\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1A\x1B\x1C\x1D\x1E\x1F";
 
-    /**
-     * @var Path
-     */
-    private $path;
-
-    /**
-     * The mediatype mimetype.
-     *
-     * @var string
-     */
-    private $mimetype;
-
-    /**
-     * The mediatype parameters.
-     *
-     * @var string[]
-     */
-    private $parameters;
-
-    /**
-     * Is the Document bas64 encoded.
-     *
-     * @var bool
-     */
-    private $is_binary_data;
-
-    /**
-     * The document string representation.
-     *
-     * @var string
-     */
-    private $document;
+    private Path $path;
+    private string $mimetype;
+    /** @var string[] */
+    private array $parameters;
+    private bool $is_binary_data;
+    private string $document;
 
     /**
      * New instance.
      *
-     * @param mixed|string $path
+     * @param UriComponentInterface|HostInterface|object|float|int|string|bool|null $path
      */
     public function __construct($path = '')
     {
-        $this->path = new Path($this->filterPath(self::filterComponent($path)));
+        $this->path = Path::createFromString($this->filterPath(self::filterComponent($path)));
         $str = $this->path->__toString();
         $is_binary_data = false;
         [$mediatype, $this->document] = explode(',', $str, 2) + [1 => ''];
@@ -177,10 +154,10 @@ final class DataPath extends Component implements DataPathInterface
     private function filterParameters(string $parameters, bool &$is_binary_data): array
     {
         if ('' === $parameters) {
-            return [static::DEFAULT_PARAMETER];
+            return [self::DEFAULT_PARAMETER];
         }
 
-        if (1 === preg_match(',(;|^)'.static::BINARY_PARAMETER.'$,', $parameters, $matches)) {
+        if (1 === preg_match(',(;|^)'.self::BINARY_PARAMETER.'$,', $parameters, $matches)) {
             $parameters = substr($parameters, 0, - strlen($matches[0]));
             $is_binary_data = true;
         }
@@ -200,7 +177,7 @@ final class DataPath extends Component implements DataPathInterface
     {
         $properties = explode('=', $parameter);
 
-        return 2 != count($properties) || strtolower($properties[0]) === static::BINARY_PARAMETER;
+        return 2 != count($properties) || self::BINARY_PARAMETER === strtolower($properties[0]);
     }
 
     /**
@@ -229,7 +206,11 @@ final class DataPath extends Component implements DataPathInterface
     }
 
     /**
-     * Create a new instance from a file path.
+     * @deprecated 2.3.0
+     * @codeCoverageIgnore
+     * @see ::createFromFilePath
+     *
+     * Creates a new instance from a file path.
      *
      * @param null|resource $context
      *
@@ -237,11 +218,33 @@ final class DataPath extends Component implements DataPathInterface
      */
     public static function createFromPath(string $path, $context = null): self
     {
-        static $finfo_support = null;
-        $finfo_support = $finfo_support ?? class_exists(\finfo::class);
+        return self::createFromFilePath($path, $context);
+    }
+
+    /**
+     * Returns a new instance from an string or a stringable object.
+     *
+     * @param string|object $path
+     */
+    public static function createFromString($path = ''): self
+    {
+        return new self(Path::createFromString($path));
+    }
+
+    /**
+     * Creates a new instance from a file path.
+     *
+     * @param null|resource $context
+     *
+     * @throws SyntaxError If the File is not readable
+     */
+    public static function createFromFilePath(string $path, $context = null): self
+    {
+        static $fileInfoSupport = null;
+        $fileInfoSupport = $fileInfoSupport ?? class_exists(finfo::class);
 
         // @codeCoverageIgnoreStart
-        if (!$finfo_support) {
+        if (!$fileInfoSupport) {
             throw new FileinfoSupportMissing(sprintf('Please install ext/fileinfo to use the %s() method.', __METHOD__));
         }
         // @codeCoverageIgnoreEnd
@@ -258,7 +261,7 @@ final class DataPath extends Component implements DataPathInterface
             throw new SyntaxError(sprintf('`%s` failed to open stream: No such file or directory.', $path));
         }
 
-        $mimetype = (string) (new \finfo(FILEINFO_MIME))->file(...$mime_args);
+        $mimetype = (string) (new finfo(FILEINFO_MIME))->file(...$mime_args);
 
         return new self(
             str_replace(' ', '', $mimetype)
@@ -271,11 +274,11 @@ final class DataPath extends Component implements DataPathInterface
      *
      * @param mixed $uri an URI object
      *
-     * @throws \TypeError If the URI object is not supported
+     * @throws TypeError If the URI object is not supported
      */
     public static function createFromUri($uri): self
     {
-        return new self(Path::createFromUri($uri)->__toString());
+        return self::createFromString(Path::createFromUri($uri)->__toString());
     }
 
     /**
@@ -284,6 +287,14 @@ final class DataPath extends Component implements DataPathInterface
     public function getContent(): ?string
     {
         return $this->path->getContent();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getUriComponent(): string
+    {
+        return (string) $this->getContent();
     }
 
     /**
@@ -353,9 +364,9 @@ final class DataPath extends Component implements DataPathInterface
     /**
      * {@inheritDoc}
      */
-    public function save(string $path, string $mode = 'w'): \SplFileObject
+    public function save(string $path, string $mode = 'w'): SplFileObject
     {
-        $file = new \SplFileObject($path, $mode);
+        $file = new SplFileObject($path, $mode);
         $data = $this->is_binary_data ? base64_decode($this->document, true) : rawurldecode($this->document);
         $file->fwrite((string) $data);
 
@@ -486,8 +497,12 @@ final class DataPath extends Component implements DataPathInterface
      */
     public function withParameters($parameters): DataPathInterface
     {
-        if (!is_scalar($parameters) && !method_exists($parameters, '__toString')) {
-            throw new \TypeError(sprintf('Expected parameter to be stringable; received %s.', gettype($parameters)));
+        if (is_object($parameters) && method_exists($parameters, '__toString')) {
+            $parameters = (string) $parameters;
+        }
+
+        if (!is_scalar($parameters)) {
+            throw new TypeError(sprintf('Expected parameter to be stringable; received %s.', gettype($parameters)));
         }
 
         $parameters = (string) $parameters;

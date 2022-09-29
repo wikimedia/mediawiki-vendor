@@ -1,13 +1,11 @@
 <?php
 
 /**
- * League.Uri (http://uri.thephpleague.com/components)
+ * League.Uri (https://uri.thephpleague.com/components/2.0/)
  *
  * @package    League\Uri
  * @subpackage League\Uri\Components
  * @author     Ignace Nyamagana Butera <nyamsprod@gmail.com>
- * @license    https://github.com/thephpleague/uri-components/blob/master/LICENSE (MIT License)
- * @version    2.0.2
  * @link       https://github.com/thephpleague/uri-components
  *
  * For the full copyright and license information, please view the LICENSE
@@ -40,6 +38,7 @@ use function gettype;
 use function http_build_query;
 use function implode;
 use function is_array;
+use function is_bool;
 use function is_object;
 use function is_scalar;
 use function iterator_to_array;
@@ -53,25 +52,15 @@ use const PHP_QUERY_RFC3986;
 
 final class Query extends Component implements QueryInterface
 {
-    /**
-     * @var array<int, array{0:string, 1:string|null}>
-     */
-    private $pairs;
-
-    /**
-     * @var string
-     */
-    private $separator;
-
-    /**
-     * @var array|null
-     */
-    private $params;
+    /** @var array<int, array{0:string, 1:string|null}> */
+    private array $pairs;
+    private string $separator;
+    private ?array $params;
 
     /**
      * Returns a new instance.
      *
-     * @param mixed|null $query
+     * @param object|string|float|int|null|bool $query
      */
     private function __construct($query = null, string $separator = '&', int $enc_type = PHP_QUERY_RFC3986)
     {
@@ -94,13 +83,16 @@ final class Query extends Component implements QueryInterface
     /**
      * Returns a new instance from the result of PHP's parse_str.
      *
-     * @param mixed|iterable $params
+     * @param object|iterable|QueryInterface $params
      */
     public static function createFromParams($params = [], string $separator = '&'): self
     {
-        if ($params instanceof self) {
+        if ($params instanceof QueryInterface) {
+            /** @var array $queryParams */
+            $queryParams = $params->params();
+
             return new self(
-                http_build_query($params->params(), '', $separator, PHP_QUERY_RFC3986),
+                http_build_query($queryParams, '', $separator, PHP_QUERY_RFC3986),
                 $separator,
                 PHP_QUERY_RFC3986
             );
@@ -165,7 +157,7 @@ final class Query extends Component implements QueryInterface
     /**
      * Returns a new instance.
      *
-     * @param mixed|null $query a query in RFC3986 form
+     * @param UriComponentInterface|object|float|int|string|bool|null $query a query in RFC3986 form
      */
     public static function createFromRFC3986($query = null, string $separator = '&'): self
     {
@@ -175,7 +167,7 @@ final class Query extends Component implements QueryInterface
     /**
      * Returns a new instance.
      *
-     * @param mixed|null $query a query in RFC1738 form
+     * @param UriComponentInterface|object|float|int|string|bool|null $query a query in RFC1738 form
      */
     public static function createFromRFC1738($query = null, string $separator = '&'): self
     {
@@ -517,7 +509,7 @@ final class Query extends Component implements QueryInterface
     }
 
     /**
-     * @param mixed $query the query to be merge with.
+     * @param UriComponentInterface|object|float|int|string|bool|null $query the query to be merge with.
      */
     public function merge($query): QueryInterface
     {
@@ -560,7 +552,11 @@ final class Query extends Component implements QueryInterface
             return true === $value ? 'true' : 'false';
         }
 
-        if (is_scalar($value) || method_exists($value, '__toString')) {
+        if (is_object($value) && method_exists($value, '__toString')) {
+            return (string) $value;
+        }
+
+        if (is_scalar($value)) {
             return (string) $value;
         }
 
@@ -581,12 +577,8 @@ final class Query extends Component implements QueryInterface
             return $this;
         }
 
-        $filter = static function (array $pair) use ($keys_to_remove): bool {
-            return !in_array($pair[0], $keys_to_remove, true);
-        };
-
         $new = new self();
-        $new->pairs = array_filter($this->pairs, $filter);
+        $new->pairs = array_filter($this->pairs, static fn (array $pair): bool => !in_array($pair[0], $keys_to_remove, true));
         $new->separator = $this->separator;
 
         return $new;
@@ -609,7 +601,7 @@ final class Query extends Component implements QueryInterface
     }
 
     /**
-     * @param mixed $query the query to append
+     * @param object|string|float|int|null|bool $query the query to append
      */
     public function append($query): QueryInterface
     {
@@ -646,14 +638,9 @@ final class Query extends Component implements QueryInterface
             return $this;
         }
 
-        $mapper = static function (string $offset): string {
-            return preg_quote($offset, ',').'(\[.*\].*)?';
-        };
-
+        $mapper = static fn (string $offset): string => preg_quote($offset, ',').'(\[.*\].*)?';
         $regexp = ',^('.implode('|', array_map($mapper, $keys)).')?$,';
-        $filter = static function (array $pair) use ($regexp): bool {
-            return 1 !== preg_match($regexp, $pair[0]);
-        };
+        $filter = static fn (array $pair): bool => 1 !== preg_match($regexp, $pair[0]);
 
         $pairs = array_filter($this->pairs, $filter);
         if ($pairs === $this->pairs) {

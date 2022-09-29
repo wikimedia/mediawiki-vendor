@@ -1,13 +1,11 @@
 <?php
 
 /**
- * League.Uri (http://uri.thephpleague.com/components)
+ * League.Uri (https://uri.thephpleague.com/components/2.0/)
  *
  * @package    League\Uri
  * @subpackage League\Uri\Components
  * @author     Ignace Nyamagana Butera <nyamsprod@gmail.com>
- * @license    https://github.com/thephpleague/uri-components/blob/master/LICENSE (MIT License)
- * @version    2.0.2
  * @link       https://github.com/thephpleague/uri-components
  *
  * For the full copyright and license information, please view the LICENSE
@@ -32,15 +30,12 @@ final class Fragment extends Component implements FragmentInterface
         %(?![A-Fa-f0-9]{2}))
     /x';
 
-    /**
-     * @var string|null
-     */
-    private $fragment;
+    private ?string $fragment;
 
     /**
      * New instance.
      *
-     * @param mixed|null $fragment
+     * @param object|float|int|string|bool|null $fragment
      */
     public function __construct($fragment = null)
     {

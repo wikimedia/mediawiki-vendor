@@ -1,13 +1,11 @@
 <?php
 
 /**
- * League.Uri (http://uri.thephpleague.com/components)
+ * League.Uri (https://uri.thephpleague.com/components/2.0/)
  *
  * @package    League\Uri
  * @subpackage League\Uri\Components
  * @author     Ignace Nyamagana Butera <nyamsprod@gmail.com>
- * @license    https://github.com/thephpleague/uri-components/blob/master/LICENSE (MIT License)
- * @version    2.0.2
  * @link       https://github.com/thephpleague/uri-components
  *
  * For the full copyright and license information, please view the LICENSE
@@ -22,6 +20,7 @@ use League\Uri\Contracts\UriComponentInterface;
 use League\Uri\Exceptions\SyntaxError;
 use TypeError;
 use function gettype;
+use function is_object;
 use function is_scalar;
 use function method_exists;
 use function preg_match;
@@ -53,7 +52,7 @@ abstract class Component implements UriComponentInterface
     /**
      * Validate the component content.
      *
-     * @param mixed $component an URI component
+     * @param object|float|int|string|bool|null $component an URI component
      */
     protected function validateComponent($component): ?string
     {
@@ -68,7 +67,7 @@ abstract class Component implements UriComponentInterface
     /**
      * Filter the input component.
      *
-     * @param mixed $component an URI component
+     * @param object|float|int|string|bool|null $component an URI component
      *
      * @throws SyntaxError If the component can not be converted to a string or null
      * @throws TypeError   If the component type is not supported
@@ -83,7 +82,11 @@ abstract class Component implements UriComponentInterface
             return $component;
         }
 
-        if (!is_scalar($component) && !method_exists($component, '__toString')) {
+        if (is_object($component) && method_exists($component, '__toString')) {
+            $component = (string) $component;
+        }
+
+        if (!is_scalar($component)) {
             throw new TypeError(sprintf('Expected component to be stringable; received %s.', gettype($component)));
         }
 
@@ -148,10 +151,7 @@ abstract class Component implements UriComponentInterface
     /**
      * {@inheritDoc}
      */
-    public function getUriComponent(): string
-    {
-        return (string) $this->getContent();
-    }
+    abstract public function getUriComponent(): string;
 
     /**
      * {@inheritDoc}
@@ -161,9 +161,17 @@ abstract class Component implements UriComponentInterface
     /**
      * {@inheritDoc}
      */
-    public function __toString(): string
+    public function toString(): string
     {
         return (string) $this->getContent();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function __toString(): string
+    {
+        return $this->toString();
     }
 
     /**

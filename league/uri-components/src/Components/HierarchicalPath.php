@@ -1,13 +1,11 @@
 <?php
 
 /**
- * League.Uri (http://uri.thephpleague.com/components)
+ * League.Uri (https://uri.thephpleague.com/components/2.0/)
  *
  * @package    League\Uri
  * @subpackage League\Uri\Components
  * @author     Ignace Nyamagana Butera <nyamsprod@gmail.com>
- * @license    https://github.com/thephpleague/uri-components/blob/master/LICENSE (MIT License)
- * @version    2.0.2
  * @link       https://github.com/thephpleague/uri-components
  *
  * For the full copyright and license information, please view the LICENSE
@@ -52,20 +50,19 @@ final class HierarchicalPath extends Component implements SegmentedPathInterface
 {
     private const SEPARATOR = '/';
 
-    /**
-     * @var PathInterface
-     */
-    private $path;
+    private PathInterface $path;
+    /** @var string[] */
+    private array $segments;
 
     /**
-     * @var string[]
-     */
-    private $segments;
-
-    /**
+     * @deprecated 2.3.0
+     *
+     * @see ::createFromString
+     * @see ::createFromPath
+     *
      * New instance.
      *
-     * @param mixed|string $path
+     * @param object|float|int|string|bool|null $path
      */
     public function __construct($path = '')
     {
@@ -80,6 +77,21 @@ final class HierarchicalPath extends Component implements SegmentedPathInterface
         }
 
         $this->segments = explode(self::SEPARATOR, $segments);
+    }
+
+    /**
+     * Returns a new instance from an string or a stringable object.
+     *
+     * @param string|object $path
+     */
+    public static function createFromString($path = ''): self
+    {
+        return self::createFromPath(Path::createFromString($path));
+    }
+
+    public static function createFromPath(PathInterface $path): self
+    {
+        return new self($path);
     }
 
     /**
@@ -185,6 +197,14 @@ final class HierarchicalPath extends Component implements SegmentedPathInterface
     public function getContent(): ?string
     {
         return $this->path->getContent();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getUriComponent(): string
+    {
+        return (string) $this->getContent();
     }
 
     /**
@@ -339,7 +359,7 @@ final class HierarchicalPath extends Component implements SegmentedPathInterface
     }
 
     /**
-     * @param mixed|string $segment
+     * @param object|float|int|string|bool|null $segment
      */
     public function append($segment): SegmentedPathInterface
     {
@@ -356,7 +376,7 @@ final class HierarchicalPath extends Component implements SegmentedPathInterface
     }
 
     /**
-     * @param mixed|string $segment
+     * @param object|float|int|string|bool|null $segment
      */
     public function prepend($segment): SegmentedPathInterface
     {
@@ -373,7 +393,7 @@ final class HierarchicalPath extends Component implements SegmentedPathInterface
     }
 
     /**
-     * @param mixed|string $segment
+     * @param object|float|int|string|bool|null $segment
      */
     public function withSegment(int $key, $segment): SegmentedPathInterface
     {
@@ -458,7 +478,7 @@ final class HierarchicalPath extends Component implements SegmentedPathInterface
     }
 
     /**
-     * @param mixed|string $path
+     * @param object|float|int|string|bool|null $path
      */
     public function withDirname($path): SegmentedPathInterface
     {
@@ -478,7 +498,7 @@ final class HierarchicalPath extends Component implements SegmentedPathInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @param UriComponentInterface|object|float|bool|int|null|string $basename
      */
     public function withBasename($basename): SegmentedPathInterface
     {
@@ -495,7 +515,7 @@ final class HierarchicalPath extends Component implements SegmentedPathInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @param UriComponentInterface|object|float|bool|int|null|string $extension
      */
     public function withExtension($extension): SegmentedPathInterface
     {

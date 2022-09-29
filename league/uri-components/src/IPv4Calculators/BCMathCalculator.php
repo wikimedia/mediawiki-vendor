@@ -1,13 +1,11 @@
 <?php
 
 /**
- * League.Uri (http://uri.thephpleague.com/components)
+ * League.Uri (https://uri.thephpleague.com/components/2.0/)
  *
  * @package    League\Uri
  * @subpackage League\Uri\Components
  * @author     Ignace Nyamagana Butera <nyamsprod@gmail.com>
- * @license    https://github.com/thephpleague/uri-components/blob/master/LICENSE (MIT License)
- * @version    2.0.2
  * @link       https://github.com/thephpleague/uri-components
  *
  * For the full copyright and license information, please view the LICENSE
@@ -51,6 +49,7 @@ final class BCMathCalculator implements IPv4Calculator
         $base = (string) $base;
         $decimal = '0';
         foreach (str_split($value) as $char) {
+            /** @var string $decimal */
             $decimal = bcadd($this->multiply($decimal, $base), self::CONVERSION_TABLE[$char], self::SCALE);
         }
 
@@ -62,7 +61,10 @@ final class BCMathCalculator implements IPv4Calculator
      */
     public function pow($value, int $exponent): string
     {
-        return bcpow((string) $value, (string) $exponent, self::SCALE);
+        /** @var string $retval */
+        $retval = bcpow((string) $value, (string) $exponent, self::SCALE);
+
+        return $retval;
     }
 
     /**
@@ -70,7 +72,10 @@ final class BCMathCalculator implements IPv4Calculator
      */
     public function compare($value1, $value2): int
     {
-        return bccomp((string) $value1, (string) $value2, self::SCALE);
+        /** @var int $retval */
+        $retval = bccomp((string) $value1, (string) $value2, self::SCALE);
+
+        return $retval;
     }
 
     /**
@@ -78,7 +83,10 @@ final class BCMathCalculator implements IPv4Calculator
      */
     public function multiply($value1, $value2): string
     {
-        return bcmul((string) $value1, (string) $value2, self::SCALE);
+        /** @var string $retval */
+        $retval = bcmul((string) $value1, (string) $value2, self::SCALE);
+
+        return $retval;
     }
 
     /**
@@ -86,7 +94,10 @@ final class BCMathCalculator implements IPv4Calculator
      */
     public function div($value, $base): string
     {
-        return bcdiv((string) $value, (string) $base, self::SCALE);
+        /** @var string $retval */
+        $retval = bcdiv((string) $value, (string) $base, self::SCALE);
+
+        return $retval;
     }
 
     /**
@@ -94,7 +105,10 @@ final class BCMathCalculator implements IPv4Calculator
      */
     public function mod($value, $base): string
     {
-        return bcmod((string) $value, (string) $base, self::SCALE);
+        /** @var string $retval */
+        $retval = bcmod((string) $value, (string) $base, self::SCALE);
+
+        return $retval;
     }
 
     /**

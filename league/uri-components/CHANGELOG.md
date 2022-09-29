@@ -2,6 +2,75 @@
 
 All Notable changes to `League\Uri\Components` will be documented in this file
 
+## [2.4.1](https://github.com/thephpleague/uri-components/compare/2.4.0...2.4.1) - 2022-05-26
+
+### Added
+
+- None
+
+### Fixed
+
+- conversion query component for non ASCII characters see [#202](https://github.com/thephpleague/uri/issues/202)
+
+### Deprecated
+
+- None
+
+### Remove
+
+- None
+
+## 2.4.0 - 2021-08-02
+
+### Added
+
+- `Component::toString`
+- `IDNA` conversion in now normalize using the `Uri-Interface` package classes
+
+### Fixed
+
+- conversion host component from ASCII to unicode no longer throw
+
+### Deprecated
+
+- None
+
+### Remove
+
+- None
+
+## 2.3.0 - 2021-01-26
+
+### Added
+
+- `Authority::createFromNull`
+- `Authority::createFromString`
+- `Authority::createFromComponents`
+- `DataPath::createFromFilePath`
+- `DataPath::createFromString`
+- `Domain::createFromString`
+- `Domain::createFromHost`
+- `HierarchicalPath::createFromPath`
+- `HierarchicalPath::createFromString`
+- `Path::createFromString`
+- Support for `PHP8.0`
+
+### Fixed
+
+- Fix RFC1738 encoding in `QueryString::build`
+- Improve `UriModifier` using the newly added named constructors.
+
+### Deprecated
+
+- `Authority::__construct` replaced by `Authority` named constructors
+- `DataPath::createFromPath` replaced by `DataPath::createFromFilePath`
+- `Domain::__construct` replaced by `Domain` named constructors
+- `HierarchicalPath::__construct` replaced by `HierarchicalPath` named constructors
+
+### Remove
+
+- Support for `PHP7.2`
+
 ## 2.2.1 - 2020-02-09
 
 ### Added 
