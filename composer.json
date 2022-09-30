@@ -34,7 +34,7 @@
 		"ezimuel/ringphp": "1.1.2",
 		"fgrosse/phpasn1": "2.4.0",
 		"firebase/php-jwt": "5.5.1",
-		"geoip2/geoip2": "2.12.2",
+		"geoip2/geoip2": "2.13.0",
 		"guzzlehttp/guzzle": "7.4.5",
 		"guzzlehttp/promises": "1.5.2",
 		"guzzlehttp/psr7": "2.4.1",

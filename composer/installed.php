@@ -1,22 +1,22 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => NULL,
+        'reference' => '9564f7a869ec4d80b1c2ebfadcfc29387349bde8',
         'name' => '__root__',
         'dev' => false,
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => NULL,
+            'reference' => '9564f7a869ec4d80b1c2ebfadcfc29387349bde8',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -200,12 +200,12 @@
             'dev_requirement' => false,
         ),
         'geoip2/geoip2' => array(
-            'pretty_version' => 'v2.12.2',
-            'version' => '2.12.2.0',
+            'pretty_version' => 'v2.13.0',
+            'version' => '2.13.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../geoip2/geoip2',
             'aliases' => array(),
-            'reference' => '83adb44ac4b9553d36b579a14673ed124583082f',
+            'reference' => '6a41d8fbd6b90052bc34dff3b4252d0f88067b23',
             'dev_requirement' => false,
         ),
         'guzzlehttp/guzzle' => array(
