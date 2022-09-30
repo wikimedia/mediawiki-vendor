@@ -209,12 +209,12 @@
             'dev_requirement' => false,
         ),
         'guzzlehttp/guzzle' => array(
-            'pretty_version' => '7.4.5',
-            'version' => '7.4.5.0',
+            'pretty_version' => '7.5.0',
+            'version' => '7.5.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../guzzlehttp/guzzle',
             'aliases' => array(),
-            'reference' => '1dd98b0564cb3f6bd16ce683cb755f94c10fbd82',
+            'reference' => 'b50a2a1251152e43f6a37f0fa053e730a67d25ba',
             'dev_requirement' => false,
         ),
         'guzzlehttp/promises' => array(
