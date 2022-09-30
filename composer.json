@@ -75,7 +75,7 @@
 		"psr/simple-cache": "1.0.1",
 		"psy/psysh": "0.11.8",
 		"ralouphie/getallheaders": "3.0.3",
-		"ramsey/collection": "1.1.4",
+		"ramsey/collection": "1.2.2",
 		"ramsey/uuid": "4.2.3",
 		"react/promise": "2.9.0",
 		"ruflin/elastica": "7.1.5",
