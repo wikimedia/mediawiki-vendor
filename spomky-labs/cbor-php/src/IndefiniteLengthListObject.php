@@ -25,63 +25,64 @@ use IteratorAggregate;
 /**
  * @phpstan-implements ArrayAccess<int, CBORObject>
  * @phpstan-implements IteratorAggregate<int, CBORObject>
+ * @final
  */
-class ListObject extends AbstractCBORObject implements Countable, IteratorAggregate, Normalizable, ArrayAccess
+class IndefiniteLengthListObject extends AbstractCBORObject implements Countable, IteratorAggregate, Normalizable, ArrayAccess
 {
     private const MAJOR_TYPE = self::MAJOR_TYPE_LIST;
+
+    private const ADDITIONAL_INFORMATION = self::LENGTH_INDEFINITE;
 
     /**
      * @var CBORObject[]
      */
-    private $data;
+    private $data = [];
 
-    /**
-     * @var string|null
-     */
-    private $length;
-
-    /**
-     * @param CBORObject[] $data
-     */
-    public function __construct(array $data = [])
+    public function __construct()
     {
-        [$additionalInformation, $length] = LengthCalculator::getLengthOfArray($data);
-        array_map(static function ($item): void {
-            if (! $item instanceof CBORObject) {
-                throw new InvalidArgumentException('The list must contain only CBORObject objects.');
-            }
-        }, $data);
-
-        parent::__construct(self::MAJOR_TYPE, $additionalInformation);
-        $this->data = array_values($data);
-        $this->length = $length;
+        parent::__construct(self::MAJOR_TYPE, self::ADDITIONAL_INFORMATION);
     }
 
     public function __toString(): string
     {
         $result = parent::__toString();
-        if ($this->length !== null) {
-            $result .= $this->length;
-        }
         foreach ($this->data as $object) {
             $result .= (string) $object;
         }
 
-        return $result;
+        return $result . "\xFF";
+    }
+
+    public static function create(): self
+    {
+        return new self();
     }
 
     /**
-     * @param CBORObject[] $data
+     * @return mixed[]
      */
-    public static function create(array $data = []): self
+    public function normalize(): array
     {
-        return new self($data);
+        return array_map(static function (CBORObject $object) {
+            return $object instanceof Normalizable ? $object->normalize() : $object;
+        }, $this->data);
     }
 
-    public function add(CBORObject $object): self
+    /**
+     * @deprecated The method will be removed on v3.0. Please rely on the CBOR\Normalizable interface
+     *
+     * @return mixed[]
+     */
+    public function getNormalizedData(bool $ignoreTags = false): array
     {
-        $this->data[] = $object;
-        [$this->additionalInformation, $this->length] = LengthCalculator::getLengthOfArray($this->data);
+        return array_map(static function (CBORObject $object) use ($ignoreTags) {
+            return $object->getNormalizedData($ignoreTags);
+        }, $this->data);
+    }
+
+    public function add(CBORObject $item): self
+    {
+        $this->data[] = $item;
 
         return $this;
     }
@@ -98,7 +99,6 @@ class ListObject extends AbstractCBORObject implements Countable, IteratorAggreg
         }
         unset($this->data[$index]);
         $this->data = array_values($this->data);
-        [$this->additionalInformation, $this->length] = LengthCalculator::getLengthOfArray($this->data);
 
         return $this;
     }
@@ -119,33 +119,13 @@ class ListObject extends AbstractCBORObject implements Countable, IteratorAggreg
         }
 
         $this->data[$index] = $object;
-        [$this->additionalInformation, $this->length] = LengthCalculator::getLengthOfArray($this->data);
 
         return $this;
     }
 
     /**
-     * @return array<int, mixed>
+     * @deprecated The method will be removed on v3.0. No replacement
      */
-    public function normalize(): array
-    {
-        return array_map(static function (CBORObject $object) {
-            return $object instanceof Normalizable ? $object->normalize() : $object;
-        }, $this->data);
-    }
-
-    /**
-     * @deprecated The method will be removed on v3.0. Please rely on the CBOR\Normalizable interface
-     *
-     * @return array<int|string, mixed>
-     */
-    public function getNormalizedData(bool $ignoreTags = false): array
-    {
-        return array_map(static function (CBORObject $object) use ($ignoreTags) {
-            return $object->getNormalizedData($ignoreTags);
-        }, $this->data);
-    }
-
     public function count(): int
     {
         return count($this->data);

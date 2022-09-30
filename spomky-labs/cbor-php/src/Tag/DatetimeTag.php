@@ -13,28 +13,32 @@ declare(strict_types=1);
 
 namespace CBOR\Tag;
 
-use Brick\Math\BigInteger;
-use CBOR\ByteStringObject;
 use CBOR\CBORObject;
-use CBOR\IndefiniteLengthByteStringObject;
+use CBOR\IndefiniteLengthTextStringObject;
 use CBOR\Normalizable;
 use CBOR\Tag;
+use CBOR\TextStringObject;
+use const DATE_RFC3339;
+use DateTimeImmutable;
+use DateTimeInterface;
 use InvalidArgumentException;
 
-final class NegativeBigIntegerTag extends Tag implements Normalizable
+/**
+ * @final
+ */
+class DatetimeTag extends Tag implements Normalizable
 {
     public function __construct(int $additionalInformation, ?string $data, CBORObject $object)
     {
-        if (! $object instanceof ByteStringObject && ! $object instanceof IndefiniteLengthByteStringObject) {
+        if (! $object instanceof TextStringObject && ! $object instanceof IndefiniteLengthTextStringObject) {
             throw new InvalidArgumentException('This tag only accepts a Byte String object.');
         }
-
         parent::__construct($additionalInformation, $data, $object);
     }
 
     public static function getTagId(): int
     {
-        return self::TAG_NEGATIVE_BIG_NUM;
+        return self::TAG_STANDARD_DATETIME;
     }
 
     public static function createFromLoadedData(int $additionalInformation, ?string $data, CBORObject $object): Tag
@@ -44,21 +48,26 @@ final class NegativeBigIntegerTag extends Tag implements Normalizable
 
     public static function create(CBORObject $object): Tag
     {
-        [$ai, $data] = self::determineComponents(self::TAG_NEGATIVE_BIG_NUM);
+        [$ai, $data] = self::determineComponents(self::TAG_STANDARD_DATETIME);
 
         return new self($ai, $data, $object);
     }
 
-    public function normalize(): string
+    public function normalize(): DateTimeInterface
     {
-        /** @var ByteStringObject|IndefiniteLengthByteStringObject $object */
+        /** @var TextStringObject|IndefiniteLengthTextStringObject $object */
         $object = $this->object;
-        $integer = BigInteger::fromBase(bin2hex($object->getValue()), 16);
-        $minusOne = BigInteger::of(-1);
+        $result = DateTimeImmutable::createFromFormat(DATE_RFC3339, $object->normalize());
+        if ($result !== false) {
+            return $result;
+        }
 
-        return $minusOne->minus($integer)
-            ->toBase(10)
-        ;
+        $formatted = DateTimeImmutable::createFromFormat('Y-m-d\TH:i:s.uP', $object->normalize());
+        if ($formatted === false) {
+            throw new InvalidArgumentException('Invalid data. Cannot be converted into a datetime object');
+        }
+
+        return $formatted;
     }
 
     /**
@@ -70,14 +79,6 @@ final class NegativeBigIntegerTag extends Tag implements Normalizable
             return $this->object->getNormalizedData($ignoreTags);
         }
 
-        if (! $this->object instanceof ByteStringObject) {
-            return $this->object->getNormalizedData($ignoreTags);
-        }
-        $integer = BigInteger::fromBase(bin2hex($this->object->getValue()), 16);
-        $minusOne = BigInteger::of(-1);
-
-        return $minusOne->minus($integer)
-            ->toBase(10)
-        ;
+        return $this->normalize();
     }
 }

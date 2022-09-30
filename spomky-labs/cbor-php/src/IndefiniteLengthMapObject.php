@@ -25,62 +25,46 @@ use IteratorAggregate;
 /**
  * @phpstan-implements ArrayAccess<int, CBORObject>
  * @phpstan-implements IteratorAggregate<int, MapItem>
+ * @final
  */
-final class MapObject extends AbstractCBORObject implements Countable, IteratorAggregate, Normalizable, ArrayAccess
+class IndefiniteLengthMapObject extends AbstractCBORObject implements Countable, IteratorAggregate, Normalizable, ArrayAccess
 {
     private const MAJOR_TYPE = self::MAJOR_TYPE_MAP;
+
+    private const ADDITIONAL_INFORMATION = self::LENGTH_INDEFINITE;
 
     /**
      * @var MapItem[]
      */
-    private $data;
+    private $data = [];
 
-    /**
-     * @var string|null
-     */
-    private $length;
-
-    /**
-     * @param MapItem[] $data
-     */
-    public function __construct(array $data = [])
+    public function __construct()
     {
-        [$additionalInformation, $length] = LengthCalculator::getLengthOfArray($data);
-        array_map(static function ($item): void {
-            if (! $item instanceof MapItem) {
-                throw new InvalidArgumentException('The list must contain only MapItem objects.');
-            }
-        }, $data);
-
-        parent::__construct(self::MAJOR_TYPE, $additionalInformation);
-        $this->data = $data;
-        $this->length = $length;
+        parent::__construct(self::MAJOR_TYPE, self::ADDITIONAL_INFORMATION);
     }
 
     public function __toString(): string
     {
         $result = parent::__toString();
-        if ($this->length !== null) {
-            $result .= $this->length;
-        }
         foreach ($this->data as $object) {
-            $result .= $object->getKey()
-                ->__toString()
-            ;
-            $result .= $object->getValue()
-                ->__toString()
-            ;
+            $result .= (string) $object->getKey();
+            $result .= (string) $object->getValue();
         }
 
-        return $result;
+        return $result . "\xFF";
+    }
+
+    public static function create(): self
+    {
+        return new self();
     }
 
     /**
-     * @param MapItem[] $data
+     * @deprecated The method will be removed on v3.0. Please use "add" instead
      */
-    public static function create(array $data = []): self
+    public function append(CBORObject $key, CBORObject $value): self
     {
-        return new self($data);
+        return $this->add($key, $value);
     }
 
     public function add(CBORObject $key, CBORObject $value): self
@@ -89,7 +73,6 @@ final class MapObject extends AbstractCBORObject implements Countable, IteratorA
             throw new InvalidArgumentException('Invalid key. Shall be normalizable');
         }
         $this->data[$key->normalize()] = MapItem::create($key, $value);
-        [$this->additionalInformation, $this->length] = LengthCalculator::getLengthOfArray($this->data);
 
         return $this;
     }
@@ -112,7 +95,6 @@ final class MapObject extends AbstractCBORObject implements Countable, IteratorA
         }
         unset($this->data[$index]);
         $this->data = array_values($this->data);
-        [$this->additionalInformation, $this->length] = LengthCalculator::getLengthOfArray($this->data);
 
         return $this;
     }
@@ -137,11 +119,13 @@ final class MapObject extends AbstractCBORObject implements Countable, IteratorA
         }
 
         $this->data[$key->normalize()] = $object;
-        [$this->additionalInformation, $this->length] = LengthCalculator::getLengthOfArray($this->data);
 
         return $this;
     }
 
+    /**
+     * @deprecated The method will be removed on v3.0. No replacement
+     */
     public function count(): int
     {
         return count($this->data);
@@ -156,7 +140,7 @@ final class MapObject extends AbstractCBORObject implements Countable, IteratorA
     }
 
     /**
-     * @return array<int|string, mixed>
+     * @return mixed[]
      */
     public function normalize(): array
     {
@@ -175,7 +159,7 @@ final class MapObject extends AbstractCBORObject implements Countable, IteratorA
     /**
      * @deprecated The method will be removed on v3.0. Please rely on the CBOR\Normalizable interface
      *
-     * @return array<int|string, mixed>
+     * @return mixed[]
      */
     public function getNormalizedData(bool $ignoreTags = false): array
     {

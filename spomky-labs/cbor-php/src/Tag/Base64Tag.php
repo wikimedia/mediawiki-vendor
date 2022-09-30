@@ -13,18 +13,26 @@ declare(strict_types=1);
 
 namespace CBOR\Tag;
 
-use CBOR\ByteStringObject;
 use CBOR\CBORObject;
-use CBOR\IndefiniteLengthByteStringObject;
 use CBOR\IndefiniteLengthTextStringObject;
 use CBOR\Tag;
 use CBOR\TextStringObject;
+use InvalidArgumentException;
 
-final class Base16EncodingTag extends Tag
+final class Base64Tag extends Tag
 {
+    public function __construct(int $additionalInformation, ?string $data, CBORObject $object)
+    {
+        if (! $object instanceof TextStringObject && ! $object instanceof IndefiniteLengthTextStringObject) {
+            throw new InvalidArgumentException('This tag only accepts a Text String object.');
+        }
+
+        parent::__construct($additionalInformation, $data, $object);
+    }
+
     public static function getTagId(): int
     {
-        return self::TAG_ENCODED_BASE16;
+        return self::TAG_BASE64;
     }
 
     public static function createFromLoadedData(int $additionalInformation, ?string $data, CBORObject $object): Tag
@@ -34,7 +42,7 @@ final class Base16EncodingTag extends Tag
 
     public static function create(CBORObject $object): Tag
     {
-        [$ai, $data] = self::determineComponents(self::TAG_ENCODED_BASE16);
+        [$ai, $data] = self::determineComponents(self::TAG_BASE64);
 
         return new self($ai, $data, $object);
     }
@@ -44,14 +52,6 @@ final class Base16EncodingTag extends Tag
      */
     public function getNormalizedData(bool $ignoreTags = false)
     {
-        if ($ignoreTags) {
-            return $this->object->getNormalizedData($ignoreTags);
-        }
-
-        if (! $this->object instanceof ByteStringObject && ! $this->object instanceof IndefiniteLengthByteStringObject && ! $this->object instanceof TextStringObject && ! $this->object instanceof IndefiniteLengthTextStringObject) {
-            return $this->object->getNormalizedData($ignoreTags);
-        }
-
-        return bin2hex($this->object->getNormalizedData($ignoreTags));
+        return $this->object->getNormalizedData($ignoreTags);
     }
 }

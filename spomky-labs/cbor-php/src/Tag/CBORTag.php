@@ -13,18 +13,15 @@ declare(strict_types=1);
 
 namespace CBOR\Tag;
 
-use CBOR\ByteStringObject;
 use CBOR\CBORObject;
-use CBOR\IndefiniteLengthByteStringObject;
-use CBOR\IndefiniteLengthTextStringObject;
+use CBOR\Normalizable;
 use CBOR\Tag;
-use CBOR\TextStringObject;
 
-final class Base16EncodingTag extends Tag
+final class CBORTag extends Tag implements Normalizable
 {
     public static function getTagId(): int
     {
-        return self::TAG_ENCODED_BASE16;
+        return self::TAG_CBOR;
     }
 
     public static function createFromLoadedData(int $additionalInformation, ?string $data, CBORObject $object): Tag
@@ -34,9 +31,17 @@ final class Base16EncodingTag extends Tag
 
     public static function create(CBORObject $object): Tag
     {
-        [$ai, $data] = self::determineComponents(self::TAG_ENCODED_BASE16);
+        [$ai, $data] = self::determineComponents(self::TAG_CBOR);
 
         return new self($ai, $data, $object);
+    }
+
+    /**
+     * @return mixed|CBORObject|null
+     */
+    public function normalize()
+    {
+        return $this->object instanceof Normalizable ? $this->object->normalize() : $this->object;
     }
 
     /**
@@ -44,14 +49,6 @@ final class Base16EncodingTag extends Tag
      */
     public function getNormalizedData(bool $ignoreTags = false)
     {
-        if ($ignoreTags) {
-            return $this->object->getNormalizedData($ignoreTags);
-        }
-
-        if (! $this->object instanceof ByteStringObject && ! $this->object instanceof IndefiniteLengthByteStringObject && ! $this->object instanceof TextStringObject && ! $this->object instanceof IndefiniteLengthTextStringObject) {
-            return $this->object->getNormalizedData($ignoreTags);
-        }
-
-        return bin2hex($this->object->getNormalizedData($ignoreTags));
+        return $this->object->getNormalizedData($ignoreTags);
     }
 }

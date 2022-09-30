@@ -11,11 +11,11 @@ declare(strict_types=1);
  * of the MIT license.  See the LICENSE file for details.
  */
 
-namespace CBOR\Tag;
+namespace CBOR\OtherObject;
 
-/**
- * @deprecated Will be removed in v3.0. Please use UnsignedBigIntegerTag instead
- */
-final class PositiveBigIntegerTag extends UnsignedBigIntegerTag
+use CBOR\OtherObject;
+
+interface OtherObjectManagerInterface
 {
+    public function createObjectForValue(int $value, ?string $data): OtherObject;
 }

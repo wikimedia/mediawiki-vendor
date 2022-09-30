@@ -16,15 +16,28 @@ namespace CBOR\Tag;
 use CBOR\ByteStringObject;
 use CBOR\CBORObject;
 use CBOR\IndefiniteLengthByteStringObject;
-use CBOR\IndefiniteLengthTextStringObject;
+use CBOR\Normalizable;
 use CBOR\Tag;
-use CBOR\TextStringObject;
+use CBOR\Utils;
+use InvalidArgumentException;
 
-final class Base16EncodingTag extends Tag
+/**
+ * @final
+ */
+class UnsignedBigIntegerTag extends Tag implements Normalizable
 {
+    public function __construct(int $additionalInformation, ?string $data, CBORObject $object)
+    {
+        if (! $object instanceof ByteStringObject && ! $object instanceof IndefiniteLengthByteStringObject) {
+            throw new InvalidArgumentException('This tag only accepts a Byte String object.');
+        }
+
+        parent::__construct($additionalInformation, $data, $object);
+    }
+
     public static function getTagId(): int
     {
-        return self::TAG_ENCODED_BASE16;
+        return self::TAG_UNSIGNED_BIG_NUM;
     }
 
     public static function createFromLoadedData(int $additionalInformation, ?string $data, CBORObject $object): Tag
@@ -34,9 +47,17 @@ final class Base16EncodingTag extends Tag
 
     public static function create(CBORObject $object): Tag
     {
-        [$ai, $data] = self::determineComponents(self::TAG_ENCODED_BASE16);
+        [$ai, $data] = self::determineComponents(self::TAG_UNSIGNED_BIG_NUM);
 
         return new self($ai, $data, $object);
+    }
+
+    public function normalize(): string
+    {
+        /** @var ByteStringObject|IndefiniteLengthByteStringObject $object */
+        $object = $this->object;
+
+        return Utils::hexToString($object->normalize());
     }
 
     /**
@@ -48,10 +69,10 @@ final class Base16EncodingTag extends Tag
             return $this->object->getNormalizedData($ignoreTags);
         }
 
-        if (! $this->object instanceof ByteStringObject && ! $this->object instanceof IndefiniteLengthByteStringObject && ! $this->object instanceof TextStringObject && ! $this->object instanceof IndefiniteLengthTextStringObject) {
+        if (! $this->object instanceof ByteStringObject) {
             return $this->object->getNormalizedData($ignoreTags);
         }
 
-        return bin2hex($this->object->getNormalizedData($ignoreTags));
+        return Utils::hexToString($this->object->getValue());
     }
 }

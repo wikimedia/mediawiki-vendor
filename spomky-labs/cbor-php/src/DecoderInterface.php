@@ -11,11 +11,9 @@ declare(strict_types=1);
  * of the MIT license.  See the LICENSE file for details.
  */
 
-namespace CBOR\Tag;
+namespace CBOR;
 
-/**
- * @deprecated Will be removed in v3.0. Please use UnsignedBigIntegerTag instead
- */
-final class PositiveBigIntegerTag extends UnsignedBigIntegerTag
+interface DecoderInterface
 {
+    public function decode(Stream $stream): CBORObject;
 }
