@@ -92,12 +92,12 @@
             'dev_requirement' => false,
         ),
         'data-values/geo' => array(
-            'pretty_version' => '4.2.3',
-            'version' => '4.2.3.0',
+            'pretty_version' => '4.3.0',
+            'version' => '4.3.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../data-values/geo',
             'aliases' => array(),
-            'reference' => 'a08d5ce38c2cb789ff8942e9082ce04dfc55a850',
+            'reference' => '58fe0a1d027fce6feddbbe97d04678c6b2e40f17',
             'dev_requirement' => false,
         ),
         'data-values/interfaces' => array(

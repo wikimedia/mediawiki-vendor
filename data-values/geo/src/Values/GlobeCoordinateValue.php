@@ -216,7 +216,7 @@ class GlobeCoordinateValue implements DataValue {
 			throw new IllegalValueException( 'numeric longitude field required' );
 		}
 
-		return new static(
+		return new self(
 			new LatLongValue(
 				(float)$data['latitude'],
 				(float)$data['longitude']
