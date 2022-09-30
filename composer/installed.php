@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '1d97c3c00adc2ecb890dcd3879c8e2a0c9072ff3',
+        'reference' => '5b54ba5299042ac43d78b5658a9e5d85afd4eca4',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '1d97c3c00adc2ecb890dcd3879c8e2a0c9072ff3',
+            'reference' => '5b54ba5299042ac43d78b5658a9e5d85afd4eca4',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -308,12 +308,12 @@
             ),
         ),
         'league/uri' => array(
-            'pretty_version' => '6.4.0',
-            'version' => '6.4.0.0',
+            'pretty_version' => '6.7.2',
+            'version' => '6.7.2.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../league/uri',
             'aliases' => array(),
-            'reference' => '09da64118eaf4c5d52f9923a1e6a5be1da52fd9a',
+            'reference' => 'd3b50812dd51f3fbf176344cc2981db03d10fe06',
             'dev_requirement' => false,
         ),
         'league/uri-components' => array(

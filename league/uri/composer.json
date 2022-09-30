@@ -24,7 +24,7 @@
         "uri-template"
     ],
     "license": "MIT",
-    "homepage": "http://uri.thephpleague.com",
+    "homepage": "https://uri.thephpleague.com",
     "authors": [
         {
             "name" : "Ignace Nyamagana Butera",
@@ -44,17 +44,20 @@
         }
     ],
     "require": {
-        "php": ">=7.2",
+        "php": "^7.4 || ^8.0",
         "ext-json": "*",
         "psr/http-message": "^1.0",
-        "league/uri-interfaces": "^2.1"
+        "league/uri-interfaces": "^2.3"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.16",
-        "phpunit/phpunit" : "^8.0 || ^9.0",
-        "phpstan/phpstan": "^0.12",
-        "phpstan/phpstan-strict-rules": "^0.12",
-        "phpstan/phpstan-phpunit": "^0.12",
+        "friendsofphp/php-cs-fixer": "^v3.3.2",
+        "nyholm/psr7": "^1.5",
+        "php-http/psr7-integration-tests": "^1.1",
+        "phpstan/phpstan": "^1.2.0",
+        "phpstan/phpstan-deprecation-rules": "^1.0",
+        "phpstan/phpstan-phpunit": "^1.0.0",
+        "phpstan/phpstan-strict-rules": "^1.1.0",
+        "phpunit/phpunit": "^9.5.10",
         "psr/http-factory": "^1.0"
     },
     "autoload": {
@@ -72,24 +75,18 @@
     },
     "scripts": {
         "phpcs": "php-cs-fixer fix -v --diff --dry-run --allow-risky=yes --ansi",
-        "phpstan-src": "phpstan analyse -l max -c phpstan.src.neon src --ansi",
-        "phpstan-tests": "phpstan analyse -l max -c phpstan.tests.neon tests --ansi",
-        "phpstan": [
-            "@phpstan-src",
-            "@phpstan-tests"
-        ],
-        "phpunit": "phpunit --coverage-text",
+        "phpcs:fix": "php-cs-fixer fix -vvv --allow-risky=yes --ansi",
+        "phpstan": "phpstan analyse -l max -c phpstan.neon src --ansi --memory-limit=256M",
+        "phpunit": "XDEBUG_MODE=coverage phpunit --coverage-text",
         "test": [
-            "@phpcs",
+            "@phpunit",
             "@phpstan",
-            "@phpunit"
+            "@phpcs"
         ]
     },
     "scripts-descriptions": {
         "phpcs": "Runs coding style test suite",
         "phpstan": "Runs complete codebase static analysis",
-        "phpstan-src": "Runs source code static analysis",
-        "phpstan-test": "Runs test suite static analysis",
         "phpunit": "Runs unit and functional testing",
         "test": "Runs full test suite"
     },

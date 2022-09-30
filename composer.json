@@ -45,7 +45,7 @@
 		"lcobucci/jwt": "4.1.5",
 		"league/event": "2.2.0",
 		"league/oauth2-server": "dev-v9.0.0-alpha#61d770dc284898ea2905d66e12f8f7e5f6664092 as 9.0.0",
-		"league/uri": "6.4.0",
+		"league/uri": "6.7.2",
 		"league/uri-components": "2.4.1",
 		"league/uri-interfaces": "2.3.0",
 		"liuggio/statsd-php-client": "1.0.18",
