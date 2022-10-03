@@ -4877,6 +4877,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Core\\PageBundle' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Core/PageBundle.php',
         'Wikimedia\\Parsoid\\Core\\ResourceLimitExceededException' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Core/ResourceLimitExceededException.php',
         'Wikimedia\\Parsoid\\Core\\Sanitizer' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Core/Sanitizer.php',
+        'Wikimedia\\Parsoid\\Core\\SectionMetaData' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Core/SectionMetaData.php',
         'Wikimedia\\Parsoid\\Core\\SelserData' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Core/SelserData.php',
         'Wikimedia\\Parsoid\\DOM\\Attr' => __DIR__ . '/..' . '/wikimedia/parsoid/src/DOM/Attr.php',
         'Wikimedia\\Parsoid\\DOM\\CharacterData' => __DIR__ . '/..' . '/wikimedia/parsoid/src/DOM/CharacterData.php',

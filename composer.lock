@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "166d9e2e466043aefd6c43e9bbf5a622",
+    "content-hash": "ff388e2f9d5bd67ee3b32593e3bca4b1",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -7141,16 +7141,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.17.0-a1",
+            "version": "v0.17.0-a2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/parsoid.git",
-                "reference": "9cb18404378263375721b318a95847442e2f6bae"
+                "reference": "c7e438527cf302b241dfd6fb3343c57792537133"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/9cb18404378263375721b318a95847442e2f6bae",
-                "reference": "9cb18404378263375721b318a95847442e2f6bae",
+                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/c7e438527cf302b241dfd6fb3343c57792537133",
+                "reference": "c7e438527cf302b241dfd6fb3343c57792537133",
                 "shasum": ""
             },
             "require": {
@@ -7158,7 +7158,7 @@
                 "ext-dom": "*",
                 "ext-json": "*",
                 "liuggio/statsd-php-client": "^1.0.18",
-                "php": ">=7.2.0",
+                "php": ">=7.4.0",
                 "psr/container": "1.1.1",
                 "psr/log": "^1.1.4",
                 "symfony/polyfill-php80": "^1.23.1",
@@ -7217,10 +7217,10 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/parsoid/tree/v0.17.0-a1",
+                "source": "https://github.com/wikimedia/parsoid/tree/v0.17.0-a2",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
-            "time": "2022-09-09T21:30:42+00:00"
+            "time": "2022-09-30T17:49:29+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",

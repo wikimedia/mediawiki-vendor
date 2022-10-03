@@ -6436,21 +6436,27 @@ THIS SECTION IS NOT USED (but Parsoid won't run the test without it)
 !! test
 Parsoid extlink with _blank target
 !! options
-check-referrer=_blank
+externallinktarget=_blank
 !! wikitext
 [https://www.example.com]
 !! html/parsoid
 <p><a rel="mw:ExtLink nofollow noreferrer noopener" href="https://www.example.com" class="external autonumber" target="_blank"></a></p>
+!! html/php
+<p><a target="_blank" rel="nofollow noreferrer noopener" class="external autonumber" href="https://www.example.com">[1]</a>
+</p>
 !! end
 
 !! test
 Parsoid extlink with _self target
 !! options
-check-referrer=_self
+externallinktarget=_self
 !! wikitext
 [https://www.example.com]
 !! html/parsoid
 <p><a rel="mw:ExtLink nofollow" href="https://www.example.com" class="external autonumber" target="_self"></a></p>
+!! html/php
+<p><a target="_self" rel="nofollow" class="external autonumber" href="https://www.example.com">[1]</a>
+</p>
 !! end
 
 ###
@@ -11533,6 +11539,20 @@ flags=
 !! end
 
 !! test
+Magic Word: {{REVISIONTIMESTAMP:{{PAGENAME}}}} on latest revision
+!! options
+lastsavedrevision
+parsoid={ "modes": ["wt2html","wt2wt"], "normalizePhp": true }
+showflags
+!! wikitext
+{{REVISIONTIMESTAMP:{{PAGENAME}}}}
+!! html/*
+<p>19700101000203
+</p>
+flags=
+!! end
+
+!! test
 Magic Word: {{REVISIONTIMESTAMP}} on not-yet-existing current page
 !! options
 title=[[This page does not exist]]
@@ -11541,7 +11561,7 @@ showflags
 !! wikitext
 {{REVISIONTIMESTAMP}}
 !! html/*
-<p>123
+<p>19700101000203
 </p>
 flags=vary-revision-timestamp
 !! end
@@ -11555,7 +11575,8 @@ showflags
 !! wikitext
 {{REVISIONTIMESTAMP:{{PAGENAME}}}}
 !! html/*
-
+<p>19700101000203
+</p>
 flags=vary-revision-timestamp
 !! end
 
@@ -11662,17 +11683,17 @@ flags=vary-revision-id
 !! end
 
 !! test
-Parser Function: {{REVISIONTIMESTAMP:{{PAGENAME}}}} on latest revision
+Parser Function: {{REVISIONDAY}} on latest revision
 !! options
 lastsavedrevision
 parsoid={ "modes": ["wt2html","wt2wt"], "normalizePhp": true }
 showflags
 !! wikitext
-{{REVISIONTIMESTAMP:{{PAGENAME}}}}
+{{REVISIONDAY}}
 !! html/*
-<p>19700101000203
+<p>1
 </p>
-flags=vary-revision-timestamp
+flags=
 !! end
 
 !! test
@@ -11686,7 +11707,21 @@ showflags
 !! html/*
 <p>1
 </p>
-flags=vary-revision-timestamp
+flags=
+!! end
+
+!! test
+Parser Function: {{REVISIONMONTH}} on latest revision
+!! options
+lastsavedrevision
+parsoid={ "modes": ["wt2html","wt2wt"], "normalizePhp": true }
+showflags
+!! wikitext
+{{REVISIONMONTH}}
+!! html/*
+<p>01
+</p>
+flags=
 !! end
 
 !! test
@@ -11700,7 +11735,21 @@ showflags
 !! html/*
 <p>01
 </p>
-flags=vary-revision-timestamp
+flags=
+!! end
+
+!! test
+Parser Function: {{REVISIONYEAR}} on latest revision
+!! options
+lastsavedrevision
+parsoid={ "modes": ["wt2html","wt2wt"], "normalizePhp": true }
+showflags
+!! wikitext
+{{REVISIONYEAR}}
+!! html/*
+<p>1970
+</p>
+flags=
 !! end
 
 !! test
@@ -11714,7 +11763,7 @@ showflags
 !! html/*
 <p>1970
 </p>
-flags=vary-revision-timestamp
+flags=
 !! end
 
 !! test

@@ -4109,6 +4109,7 @@ return array(
     'Wikimedia\\Parsoid\\Core\\PageBundle' => $vendorDir . '/wikimedia/parsoid/src/Core/PageBundle.php',
     'Wikimedia\\Parsoid\\Core\\ResourceLimitExceededException' => $vendorDir . '/wikimedia/parsoid/src/Core/ResourceLimitExceededException.php',
     'Wikimedia\\Parsoid\\Core\\Sanitizer' => $vendorDir . '/wikimedia/parsoid/src/Core/Sanitizer.php',
+    'Wikimedia\\Parsoid\\Core\\SectionMetaData' => $vendorDir . '/wikimedia/parsoid/src/Core/SectionMetaData.php',
     'Wikimedia\\Parsoid\\Core\\SelserData' => $vendorDir . '/wikimedia/parsoid/src/Core/SelserData.php',
     'Wikimedia\\Parsoid\\DOM\\Attr' => $vendorDir . '/wikimedia/parsoid/src/DOM/Attr.php',
     'Wikimedia\\Parsoid\\DOM\\CharacterData' => $vendorDir . '/wikimedia/parsoid/src/DOM/CharacterData.php',

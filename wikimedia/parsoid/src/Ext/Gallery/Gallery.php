@@ -41,6 +41,9 @@ class Gallery extends ExtensionTagHandler implements ExtensionModule {
 				[
 					'name' => 'gallery',
 					'handler' => self::class,
+					'options' => [
+						'outputHasCoreMwDomSpecMarkup' => true
+					],
 				]
 			],
 		];
@@ -275,7 +278,7 @@ class Gallery extends ExtensionTagHandler implements ExtensionModule {
 		ParsoidExtensionAPI $extApi, Element $node, bool $wrapperUnmodified
 	) {
 		$dataMw = DOMDataUtils::getDataMw( $node );
-		$dataMw->attrs = $dataMw->attrs ?? new stdClass;
+		$dataMw->attrs ??= new stdClass;
 		// Handle the "gallerycaption" first
 		$galcaption = DOMCompat::querySelector( $node, 'li.gallerycaption' );
 		if (
