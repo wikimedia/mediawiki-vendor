@@ -61,6 +61,12 @@ abstract class PaymentProviderResponse {
 	protected $successful;
 
 	/**
+	 * Time taken in milliseconds
+	 * @var int
+	 */
+	protected $timeTaken;
+
+	/**
 	 * @return mixed
 	 */
 	public function getRawResponse() {
@@ -213,6 +219,22 @@ abstract class PaymentProviderResponse {
 	 */
 	public function setRawStatus( string $rawStatus ): self {
 		$this->rawStatus = $rawStatus;
+		return $this;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getTimeTaken(): int {
+		return $this->timeTaken;
+	}
+
+	/**
+	 * @param int $timeTaken
+	 * @return static
+	 */
+	public function setTimeTaken( int $timeTaken ): self {
+		$this->timeTaken = $timeTaken;
 		return $this;
 	}
 }

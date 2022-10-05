@@ -16,7 +16,10 @@ class HttpStatusValidator implements ResponseValidator {
 			return false;
 		}
 		$body = $parsedResponse['body'];
-
+		// ingenico auth fail will print body with card info, need to remove from log
+		if ( isset( $body['paymentResult']['payment']['paymentOutput']['cardPaymentMethodSpecificOutput']['card'] ) ) {
+			unset( $body['paymentResult']['payment']['paymentOutput']['cardPaymentMethodSpecificOutput']['card'] );
+		}
 		switch ( $statusCode ) {
 			case Response::HTTP_BAD_REQUEST:
 				// Oh noes! Bad request.. BAD CODE, BAD BAD CODE!

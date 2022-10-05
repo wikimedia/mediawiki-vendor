@@ -28,6 +28,7 @@ class PendingDatabaseTest extends BaseSmashPigUnitTestCase {
 			'order_id' => "order-{$uniq}",
 			'gateway_account' => 'default',
 			'date' => 1468973648,
+			'payment_method' => 'cc',
 			'amount' => 123,
 			'currency' => 'EUR',
 		];
@@ -55,6 +56,7 @@ class PendingDatabaseTest extends BaseSmashPigUnitTestCase {
 			'gateway_account' => 'default',
 			'order_id' => $message['order_id'],
 			'gateway_txn_id' => $message['gateway_txn_id'],
+			'payment_method' => $message['payment_method'],
 			'message' => json_encode( $message ),
 		];
 		$this->assertEquals( $expected, $rows[0],
@@ -91,6 +93,27 @@ class PendingDatabaseTest extends BaseSmashPigUnitTestCase {
 			'Retrieved a record using fetchMessageByGatewayOldest' );
 		$this->assertEquals( $message2['date'], $fetched['date'],
 			'Got the oldest record.' );
+	}
+
+	public function testFetchMessageByGatewayOldestWithPaymentMethodFilter() {
+		$message1 = $this->getTestMessage();
+		$message2 = $this->getTestMessage();
+		$message3 = $this->getTestMessage();
+
+		// Make the second message oldest. but not cc, so select third message
+		$message2['date'] = $message1['date'] - 100;
+		$message3['date'] = $message1['date'] - 50;
+		$message2['payment_method'] = 'google';
+
+		$this->db->storeMessage( $message1 );
+		$this->db->storeMessage( $message2 );
+		$this->db->storeMessage( $message3 );
+
+		$fetched = $this->db->fetchMessageByGatewayOldest( 'test', [ 'cc' ] );
+		$this->assertNotNull( $fetched,
+			'Retrieved a record using fetchMessageByGatewayOldest' );
+		$this->assertEquals( $message3['date'], $fetched['date'],
+			'Got the oldest record match cc.' );
 	}
 
 	public function testDeleteMessage() {

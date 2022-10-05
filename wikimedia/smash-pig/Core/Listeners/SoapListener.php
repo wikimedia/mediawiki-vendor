@@ -33,10 +33,15 @@ abstract class SoapListener extends ListenerBase {
 
 		try {
 			$this->doIngressSecurity();
-
 			$soapData = $request->getRawRequest();
 			$tl = Logger::getTaggedLogger( 'RawData' );
-			$tl->info( $soapData );
+
+			// remove expiryDate from soapData for reason and additionalData;
+			// replace mm/yyyy to blank only for log
+			$patterns = [ '/(\d{1,2})\/(19|20)(\d{2})/',
+				'/^\s*{(\w+)}\s*=/' ];
+			$replace = [ '', '$\1 =' ];
+			$tl->info( preg_replace( $patterns, $replace, $soapData ) );
 
 			$response->sendHeaders();
 

@@ -46,7 +46,7 @@ class PendingDatabase extends SmashPigDatabase {
 		// These fields (and date) have their own columns in the database
 		// Copy the values from the message to the record
 		$indexedFields = [
-			'gateway', 'gateway_account', 'gateway_txn_id', 'order_id'
+			'gateway', 'gateway_account', 'gateway_txn_id', 'order_id', 'payment_method'
 		];
 
 		foreach ( $indexedFields as $fieldName ) {
@@ -97,19 +97,25 @@ class PendingDatabase extends SmashPigDatabase {
 	}
 
 	/**
-	 * Get the oldest message for a given gateway, by date
+	 * Get the oldest message for a given gateway, and payment_method by date
 	 *
 	 * @param string $gatewayName
+	 * @param array|null $payment_methods
 	 * @return array|null Message or null if nothing is found.
 	 * @throws DataStoreException
 	 */
-	public function fetchMessageByGatewayOldest( string $gatewayName ) {
-		$sql = 'select * from pending
-			where gateway = :gateway
-			order by date asc
-			limit 1';
-
+	public function fetchMessageByGatewayOldest( string $gatewayName, array $payment_methods = [] ) {
+		$filterPaymentMethod = "";
 		$params = [ 'gateway' => $gatewayName ];
+		$placeholder = [];
+		for ( $i = 0; $i < count( $payment_methods ); ++$i ) {
+			$placeholder[] = ":pm$i";
+			$params['pm' . $i] = $payment_methods[$i];
+		}
+		if ( count( $placeholder ) > 0 ) {
+			$filterPaymentMethod .= ' and payment_method in (' . implode( ',', $placeholder ) . ')';
+		}
+		$sql = "select * from pending where gateway = :gateway" . $filterPaymentMethod . " order by date asc limit 1";
 		$executed = $this->prepareAndExecute( $sql, $params );
 		$row = $executed->fetch( PDO::FETCH_ASSOC );
 		if ( !$row ) {
@@ -238,6 +244,8 @@ class PendingDatabase extends SmashPigDatabase {
 	}
 
 	protected function getTableScriptFiles(): array {
-		return [ '001_CreatePendingTable.sql' ];
+		return [ '001_CreatePendingTable.sql',
+				 '007_AddPaymentMethodToPendingTable.sql'
+		];
 	}
 }

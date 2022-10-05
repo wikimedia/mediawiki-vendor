@@ -2118,6 +2118,7 @@ return array(
     'SmashPig\\PaymentProviders\\Adyen\\Jobs\\RecordCaptureJob' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Adyen/Jobs/RecordCaptureJob.php',
     'SmashPig\\PaymentProviders\\Adyen\\Jobs\\RecurringContractJob' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Adyen/Jobs/RecurringContractJob.php',
     'SmashPig\\PaymentProviders\\Adyen\\Maintenance\\ApprovePayments' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Adyen/Maintenance/ApprovePayments.php',
+    'SmashPig\\PaymentProviders\\Adyen\\Maintenance\\CancelPayment' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Adyen/Maintenance/CancelPayment.php',
     'SmashPig\\PaymentProviders\\Adyen\\Maintenance\\DeleteDataForPayment' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Adyen/Maintenance/DeleteDataForPayment.php',
     'SmashPig\\PaymentProviders\\Adyen\\Maintenance\\RefundPayments' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Adyen/Maintenance/RefundPayments.php',
     'SmashPig\\PaymentProviders\\Adyen\\Maintenance\\TestAdyenConnectivity' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Adyen/Maintenance/TestAdyenConnectivity.php',

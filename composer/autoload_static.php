@@ -2513,6 +2513,7 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\PaymentProviders\\Adyen\\Jobs\\RecordCaptureJob' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/Jobs/RecordCaptureJob.php',
         'SmashPig\\PaymentProviders\\Adyen\\Jobs\\RecurringContractJob' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/Jobs/RecurringContractJob.php',
         'SmashPig\\PaymentProviders\\Adyen\\Maintenance\\ApprovePayments' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/Maintenance/ApprovePayments.php',
+        'SmashPig\\PaymentProviders\\Adyen\\Maintenance\\CancelPayment' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/Maintenance/CancelPayment.php',
         'SmashPig\\PaymentProviders\\Adyen\\Maintenance\\DeleteDataForPayment' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/Maintenance/DeleteDataForPayment.php',
         'SmashPig\\PaymentProviders\\Adyen\\Maintenance\\RefundPayments' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/Maintenance/RefundPayments.php',
         'SmashPig\\PaymentProviders\\Adyen\\Maintenance\\TestAdyenConnectivity' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/Maintenance/TestAdyenConnectivity.php',

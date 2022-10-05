@@ -1,0 +1,1 @@
+ALTER TABLE pending ADD COLUMN payment_method varchar(16) DEFAULT NULL;
