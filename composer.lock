@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ff388e2f9d5bd67ee3b32593e3bca4b1",
+    "content-hash": "af88efca61857c3d85316f7bfc50305a",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -931,30 +931,30 @@
         },
         {
             "name": "diff/diff",
-            "version": "3.2.0",
+            "version": "3.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wmde/Diff.git",
-                "reference": "89bbd224a9ad6cc6cb8e01263ae5add2564e7cf0"
+                "reference": "7aa40f2260ad44be0978821742b9aa8c0af508b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wmde/Diff/zipball/89bbd224a9ad6cc6cb8e01263ae5add2564e7cf0",
-                "reference": "89bbd224a9ad6cc6cb8e01263ae5add2564e7cf0",
+                "url": "https://api.github.com/repos/wmde/Diff/zipball/7aa40f2260ad44be0978821742b9aa8c0af508b3",
+                "reference": "7aa40f2260ad44be0978821742b9aa8c0af508b3",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.0"
+                "php": ">=7.2"
             },
             "require-dev": {
                 "ockcyp/covers-validator": "~1.0",
-                "phpunit/phpunit": "~6.2",
-                "squizlabs/php_codesniffer": "~3.2"
+                "phpunit/phpunit": "~8.5.0",
+                "squizlabs/php_codesniffer": "~3.6.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.2.x-dev"
+                    "dev-master": "3.x-dev"
                 }
             },
             "autoload": {
@@ -973,7 +973,7 @@
                 {
                     "name": "Jeroen De Dauw",
                     "email": "jeroendedauw@gmail.com",
-                    "homepage": "http://jeroendedauw.com",
+                    "homepage": "https://www.entropywins.wtf",
                     "role": "Developer"
                 }
             ],
@@ -990,9 +990,9 @@
             "support": {
                 "irc": "irc://irc.freenode.net/wikimedia-de-tech",
                 "issues": "https://github.com/wmde/Diff/issues",
-                "source": "https://github.com/wmde/Diff/tree/master"
+                "source": "https://github.com/wmde/Diff/tree/3.3.1"
             },
-            "time": "2018-09-11T11:51:44+00:00"
+            "time": "2022-10-06T08:57:22+00:00"
         },
         {
             "name": "elasticsearch/elasticsearch",

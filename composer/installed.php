@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '31ed7ae2453ed3c45d1ad06aa78867be8c76ec99',
+        'reference' => '8a90dcc50dc3c993f4e55d4ffdefdd2ae23b399b',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '31ed7ae2453ed3c45d1ad06aa78867be8c76ec99',
+            'reference' => '8a90dcc50dc3c993f4e55d4ffdefdd2ae23b399b',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -146,12 +146,12 @@
             'dev_requirement' => false,
         ),
         'diff/diff' => array(
-            'pretty_version' => '3.2.0',
-            'version' => '3.2.0.0',
+            'pretty_version' => '3.3.1',
+            'version' => '3.3.1.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../diff/diff',
             'aliases' => array(),
-            'reference' => '89bbd224a9ad6cc6cb8e01263ae5add2564e7cf0',
+            'reference' => '7aa40f2260ad44be0978821742b9aa8c0af508b3',
             'dev_requirement' => false,
         ),
         'elasticsearch/elasticsearch' => array(
