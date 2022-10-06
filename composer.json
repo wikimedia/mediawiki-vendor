@@ -31,7 +31,7 @@
 		"diff/diff": "3.3.1",
 		"elasticsearch/elasticsearch": "7.11.0",
 		"ezimuel/guzzlestreams": "3.0.1",
-		"ezimuel/ringphp": "1.1.2",
+		"ezimuel/ringphp": "1.2.0",
 		"fgrosse/phpasn1": "2.4.0",
 		"firebase/php-jwt": "5.5.1",
 		"geoip2/geoip2": "2.13.0",
