@@ -72,7 +72,9 @@ class Validate implements LoggerAwareInterface {
 	public function validateBoolean( $info, &$val, $standalone ) {
 		if ( !$standalone ) {
 			// this only validates standalone properties, not arrays, etc
+			// @codeCoverageIgnoreStart
 			return;
+			// @codeCoverageIgnoreEnd
 		}
 		if ( $val !== 'True' && $val !== 'False' ) {
 			$this->logger->info( __METHOD__ . " Expected True or False but got $val" );
@@ -90,7 +92,9 @@ class Validate implements LoggerAwareInterface {
 	public function validateRational( $info, &$val, $standalone ) {
 		if ( !$standalone ) {
 			// this only validates standalone properties, not arrays, etc
+			// @codeCoverageIgnoreStart
 			return;
+			// @codeCoverageIgnoreEnd
 		}
 		if ( !preg_match( '/^(?:-?\d+)\/(?:\d+[1-9]|[1-9]\d*)$/D', $val ) ) {
 			$this->logger->info( __METHOD__ . " Expected rational but got $val" );
@@ -111,7 +115,9 @@ class Validate implements LoggerAwareInterface {
 	public function validateRating( $info, &$val, $standalone ) {
 		if ( !$standalone ) {
 			// this only validates standalone properties, not arrays, etc
+			// @codeCoverageIgnoreStart
 			return;
+			// @codeCoverageIgnoreEnd
 		}
 		if ( !preg_match( '/^[-+]?\d*(?:\.?\d*)$/D', $val )
 			|| !is_numeric( $val )
@@ -135,8 +141,6 @@ class Validate implements LoggerAwareInterface {
 		if ( $nVal > 5 ) {
 			$this->logger->info( __METHOD__ . " Rating too high, setting to 5" );
 			$val = '5';
-
-			return;
 		}
 	}
 
@@ -150,7 +154,9 @@ class Validate implements LoggerAwareInterface {
 	public function validateInteger( $info, &$val, $standalone ) {
 		if ( !$standalone ) {
 			// this only validates standalone properties, not arrays, etc
+			// @codeCoverageIgnoreStart
 			return;
+			// @codeCoverageIgnoreEnd
 		}
 		if ( !preg_match( '/^[-+]?\d+$/D', $val ) ) {
 			$this->logger->info( __METHOD__ . " Expected integer but got $val" );
@@ -169,10 +175,12 @@ class Validate implements LoggerAwareInterface {
 	public function validateClosed( $info, &$val, $standalone ) {
 		if ( !$standalone ) {
 			// this only validates standalone properties, not arrays, etc
+			// @codeCoverageIgnoreStart
 			return;
+			// @codeCoverageIgnoreEnd
 		}
 
-		// check if its in a numeric range
+		// check if it's in a numeric range
 		$inRange = false;
 		if ( is_numeric( $val )
 			&& isset( $info['rangeLow'] ) && isset( $info['rangeHigh'] )
@@ -197,7 +205,9 @@ class Validate implements LoggerAwareInterface {
 	public function validateReal( $info, &$val, $standalone ) {
 		if ( !$standalone ) {
 			// this only validates standalone properties, not arrays, etc
+			// @codeCoverageIgnoreStart
 			return;
+			// @codeCoverageIgnoreEnd
 		}
 
 		$isReal = is_numeric( $val ) && (float)$val;
@@ -207,13 +217,13 @@ class Validate implements LoggerAwareInterface {
 			return;
 		}
 
-		// check if its in a numeric range
+		// check if it's in a numeric range
 		if ( isset( $info['rangeLow'] ) && isset( $info['rangeHigh'] )
 			&& ( (float)$val > $info['rangeHigh'] || (float)$val < $info['rangeLow'] )
 		) {
 			$this->logger->info(
-			  __METHOD__
-			  . " Expected value within range of ${info['rangeLow']}-${info['rangeHigh']}, but got $val"
+				__METHOD__
+				. " Expected value within range of ${info['rangeLow']}-${info['rangeHigh']}, but got $val"
 			);
 			$val = null;
 		}
@@ -252,7 +262,7 @@ class Validate implements LoggerAwareInterface {
 	}
 
 	/**
-	 * function to validate LangCode properties ( en-GB, etc )
+	 * function to validate LangCode properties ( en-GB, etc. )
 	 *
 	 * This is just a naive check to make sure it somewhat looks like a lang code.
 	 *
@@ -267,7 +277,9 @@ class Validate implements LoggerAwareInterface {
 	public function validateLangCode( $info, &$val, $standalone ) {
 		if ( !$standalone ) {
 			// this only validates standalone properties, not arrays, etc
+			// @codeCoverageIgnoreStart
 			return;
+			// @codeCoverageIgnoreEnd
 		}
 		if ( !preg_match( '/^[-A-Za-z0-9]{2,}$/D', $val ) ) {
 			// this is a rather naive check.
@@ -288,7 +300,7 @@ class Validate implements LoggerAwareInterface {
 	 * YYYY-MM-DDThh:mm:ss.sTZD
 	 *
 	 * @param array $info Information about current property
-	 * @param mixed &$val Current value to validate. Converts to TS_EXIF as a side-effect.
+	 * @param mixed &$val Current value to validate. Converts to TS_EXIF as a side effect.
 	 *    in cases where there's only a partial date, it will give things like
 	 *    2011:04.
 	 * @param bool $standalone If this is a simple property or array
@@ -296,7 +308,9 @@ class Validate implements LoggerAwareInterface {
 	public function validateDate( $info, &$val, $standalone ) {
 		if ( !$standalone ) {
 			// this only validates standalone properties, not arrays, etc
+			// @codeCoverageIgnoreStart
 			return;
+			// @codeCoverageIgnoreEnd
 		}
 		$res = [];
 		if ( !preg_match(
@@ -320,7 +334,7 @@ class Validate implements LoggerAwareInterface {
 		 */
 
 		/*
-		 * First of all, if year = 0000, Something is wrongish,
+		 * First of all, if year = 0000, Something is wrong-ish,
 		 * so don't extract. This seems to happen when
 		 * some programs convert between metadata formats.
 		 */
@@ -394,11 +408,14 @@ class Validate implements LoggerAwareInterface {
 	 * @param array $info Unused (info about prop)
 	 * @param string &$val GPS string in either DDD,MM,SSk or
 	 *   or DDD,MM.mmk form
-	 * @param bool $standalone If its a simple prop (should always be true)
+	 * @param bool $standalone If it's a simple prop (should always be true)
 	 */
 	public function validateGPS( $info, &$val, $standalone ) {
 		if ( !$standalone ) {
+			// this only validates standalone properties, not arrays, etc
+			// @codeCoverageIgnoreStart
 			return;
+			// @codeCoverageIgnoreEnd
 		}
 
 		$m = [];

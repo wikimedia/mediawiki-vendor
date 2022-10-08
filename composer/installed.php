@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '8a90dcc50dc3c993f4e55d4ffdefdd2ae23b399b',
+        'reference' => '58a10daa956f1e6b7acfaecf676dcb81b78b8206',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '8a90dcc50dc3c993f4e55d4ffdefdd2ae23b399b',
+            'reference' => '58a10daa956f1e6b7acfaecf676dcb81b78b8206',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -1233,12 +1233,12 @@
             'dev_requirement' => false,
         ),
         'wikimedia/xmp-reader' => array(
-            'pretty_version' => '0.8.3',
-            'version' => '0.8.3.0',
+            'pretty_version' => '0.8.4',
+            'version' => '0.8.4.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/xmp-reader',
             'aliases' => array(),
-            'reference' => 'e146968588f9826d164e572e503272f9fd3f085e',
+            'reference' => '01225347493aa8d17c4f977a6d13e4d77065e4a5',
             'dev_requirement' => false,
         ),
         'wikimedia/zest-css' => array(
