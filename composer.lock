@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "350b9635845291641128155c15611d37",
+    "content-hash": "a9967a696dc67185c804a4cdd13b572f",
     "packages": [
         {
             "name": "christian-riesen/base32",
@@ -3877,16 +3877,16 @@
         },
         {
             "name": "wikimedia/xmp-reader",
-            "version": "0.8.3",
+            "version": "0.8.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/xmp-reader.git",
-                "reference": "e146968588f9826d164e572e503272f9fd3f085e"
+                "reference": "01225347493aa8d17c4f977a6d13e4d77065e4a5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/xmp-reader/zipball/e146968588f9826d164e572e503272f9fd3f085e",
-                "reference": "e146968588f9826d164e572e503272f9fd3f085e",
+                "url": "https://api.github.com/repos/wikimedia/xmp-reader/zipball/01225347493aa8d17c4f977a6d13e4d77065e4a5",
+                "reference": "01225347493aa8d17c4f977a6d13e4d77065e4a5",
                 "shasum": ""
             },
             "require": {
@@ -3936,9 +3936,9 @@
                 "xmp"
             ],
             "support": {
-                "source": "https://github.com/wikimedia/xmp-reader/tree/0.8.3"
+                "source": "https://github.com/wikimedia/xmp-reader/tree/0.8.4"
             },
-            "time": "2022-07-10T01:12:34+00:00"
+            "time": "2022-10-08T00:17:10+00:00"
         },
         {
             "name": "wikimedia/zest-css",

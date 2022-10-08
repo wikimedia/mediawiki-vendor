@@ -27,6 +27,8 @@ namespace Wikimedia\XMPReader;
  * This class is just a container for a big array
  * used by Reader to determine which XMP items to
  * extract.
+ *
+ * @codeCoverageIgnore
  */
 class Info {
 	/**
