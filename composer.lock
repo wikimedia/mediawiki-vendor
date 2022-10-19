@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f95df6d923f6acd156c29754151fd376",
+    "content-hash": "f09bb2de69f80172d2dc33f79a0f9cc6",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -8073,16 +8073,16 @@
         },
         {
             "name": "wikimedia/xmp-reader",
-            "version": "0.8.4",
+            "version": "0.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/xmp-reader.git",
-                "reference": "01225347493aa8d17c4f977a6d13e4d77065e4a5"
+                "reference": "8c5d1a53089ca7159fb38c22b29a4ab8e30a1e0e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/xmp-reader/zipball/01225347493aa8d17c4f977a6d13e4d77065e4a5",
-                "reference": "01225347493aa8d17c4f977a6d13e4d77065e4a5",
+                "url": "https://api.github.com/repos/wikimedia/xmp-reader/zipball/8c5d1a53089ca7159fb38c22b29a4ab8e30a1e0e",
+                "reference": "8c5d1a53089ca7159fb38c22b29a4ab8e30a1e0e",
                 "shasum": ""
             },
             "require": {
@@ -8090,7 +8090,7 @@
                 "ext-libxml": "*",
                 "ext-xml": "*",
                 "ext-xmlreader": "*",
-                "php": ">=7.2.9",
+                "php": ">=7.4.3",
                 "psr/log": "^1.0",
                 "wikimedia/at-ease": "^2.0.0",
                 "wikimedia/scoped-callback": "^1.0 || ^2.0 || ^3.0 || ^4.0",
@@ -8099,12 +8099,12 @@
             "require-dev": {
                 "ext-exif": "*",
                 "mediawiki/mediawiki-codesniffer": "39.0.0",
-                "mediawiki/mediawiki-phan-config": "0.11.1",
+                "mediawiki/mediawiki-phan-config": "0.12.0",
                 "mediawiki/minus-x": "1.1.1",
                 "ockcyp/covers-validator": "1.4.0",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
                 "php-parallel-lint/php-parallel-lint": "1.3.2",
-                "phpunit/phpunit": "^8.5"
+                "phpunit/phpunit": "^9.5"
             },
             "type": "library",
             "autoload": {
@@ -8132,9 +8132,9 @@
                 "xmp"
             ],
             "support": {
-                "source": "https://github.com/wikimedia/xmp-reader/tree/0.8.4"
+                "source": "https://github.com/wikimedia/xmp-reader/tree/0.9.0"
             },
-            "time": "2022-10-08T00:17:10+00:00"
+            "time": "2022-10-18T05:23:21+00:00"
         },
         {
             "name": "wikimedia/zest-css",
