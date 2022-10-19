@@ -2,9 +2,10 @@
 
 use LogicException;
 use SmashPig\Core\Context;
+use SmashPig\Core\Http\EnumValidator;
 use SmashPig\Core\Http\OutboundRequest;
 
-class PayPalPaymentsAPI {
+class PayPalIpnValidator {
 
 	/**
 	 * @param array $post_fields Associative array of fields posted to listener
@@ -13,7 +14,12 @@ class PayPalPaymentsAPI {
 	public function validate( $post_fields = [] ) {
 		$post_fields['cmd'] = '_notify-validate';
 
-		$url = Context::get()->getProviderConfiguration()->val( 'postback-url' );
+		$config = Context::get()->getProviderConfiguration();
+		$url = $config->val( 'postback-url' );
+		$config->overrideObjectInstance(
+			'curl/validator',
+			new EnumValidator( [ 'INVALID', 'VERIFIED' ] )
+		);
 		$request = new OutboundRequest( $url, 'POST' );
 		$request->setBody( $post_fields );
 

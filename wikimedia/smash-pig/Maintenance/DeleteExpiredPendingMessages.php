@@ -7,8 +7,6 @@ use SmashPig\Core\DataStores\PendingDatabase;
 use SmashPig\Core\Logging\Logger;
 use SmashPig\Core\UtcDate;
 
-$maintClass = '\SmashPig\Maintenance\DeleteExpiredPendingMessages';
-
 /**
  * Deletes old messages from the pending table
  */
@@ -45,5 +43,7 @@ class DeleteExpiredPendingMessages extends MaintenanceBase {
 		);
 	}
 }
+
+$maintClass = DeleteExpiredPendingMessages::class;
 
 require RUN_MAINTENANCE_IF_MAIN;

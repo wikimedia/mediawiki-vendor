@@ -5,8 +5,6 @@ require 'MaintenanceBase.php';
 use SmashPig\Core\DataStores\QueueWrapper;
 use SmashPig\Core\Logging\Logger;
 
-$maintClass = '\SmashPig\Maintenance\PopulateQueueFromDump';
-
 /**
  * Script to import a file created by EmptyQueueToDump back into a PHPQueue backend.
  * Handles both 'raw' dumps from old Stomp queues and normal dumps with one JSON-
@@ -88,5 +86,7 @@ class PopulateQueueFromDump extends MaintenanceBase {
 	}
 
 }
+
+$maintClass = PopulateQueueFromDump::class;
 
 require RUN_MAINTENANCE_IF_MAIN;

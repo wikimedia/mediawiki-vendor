@@ -6,6 +6,7 @@ use SmashPig\Core\Context;
 use SmashPig\Core\DataStores\JsonSerializableObject;
 use SmashPig\Core\DataStores\PendingDatabase;
 use SmashPig\Core\GlobalConfiguration;
+use SmashPig\Core\Http\EnumValidator;
 use SmashPig\Core\Http\Request;
 use SmashPig\Core\Http\Response;
 use SmashPig\Core\ProviderConfiguration;
@@ -267,7 +268,7 @@ class CaptureIncomingMessageTest extends BaseSmashPigUnitTestCase {
 	}
 
 	public function testRetryValidator() {
-		$validator = $this->providerConfig->object( 'curl/validator' );
+		$validator = new EnumValidator( [ 'INVALID', 'VERIFIED' ] );
 		$response = [
 			'status' => 200,
 			'headers' => [],

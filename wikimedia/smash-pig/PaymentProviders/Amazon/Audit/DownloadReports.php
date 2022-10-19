@@ -4,8 +4,6 @@ require __DIR__ . '/../../../Maintenance/MaintenanceBase.php';
 
 use SmashPig\Maintenance\MaintenanceBase;
 
-$maintClass = '\SmashPig\PaymentProviders\Amazon\Audit\DownloadReports';
-
 /**
  * Command-line script to download new audit reports via MWS
  */
@@ -29,5 +27,7 @@ class DownloadReports extends MaintenanceBase {
 		$downloader->download();
 	}
 }
+
+$maintClass = DownloadReports::class;
 
 require RUN_MAINTENANCE_IF_MAIN;

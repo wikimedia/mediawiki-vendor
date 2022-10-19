@@ -2,6 +2,7 @@
 
 namespace SmashPig\PaymentProviders\Responses;
 
+use SmashPig\PaymentData\DonorDetails;
 use SmashPig\PaymentData\FinalStatus;
 
 /**
@@ -29,6 +30,18 @@ class PaymentDetailResponse extends PaymentProviderResponse {
 	 * @var string|null
 	 */
 	protected $processorContactID;
+
+	/**
+	 * @var boolean
+	 */
+	protected $hasDonorDetails = false;
+
+	/**
+	 * Child class for saving Donor details
+	 *
+	 * @var DonorDetails|null
+	 */
+	protected $donorDetails = null;
 
 	/**
 	 * Determines whether the payment is in a status that requires further
@@ -81,11 +94,28 @@ class PaymentDetailResponse extends PaymentProviderResponse {
 	}
 
 	/**
-	 * @param string $processorContactID
+	 * @param string|null $processorContactID
 	 * @return static
 	 */
-	public function setProcessorContactID( string $processorContactID ): PaymentDetailResponse {
+	public function setProcessorContactID( ?string $processorContactID ): PaymentDetailResponse {
 		$this->processorContactID = $processorContactID;
 		return $this;
+	}
+
+	/**
+	 * @param DonorDetails $donorDetails
+	 * @return PaymentDetailResponse
+	 */
+	public function setDonorDetails( DonorDetails $donorDetails ): PaymentDetailResponse {
+		$this->hasDonorDetails = true;
+		$this->donorDetails = $donorDetails;
+		return $this;
+	}
+
+	/**
+	 * @return DonorDetails|null
+	 */
+	public function getDonorDetails(): ?DonorDetails {
+		return $this->donorDetails;
 	}
 }

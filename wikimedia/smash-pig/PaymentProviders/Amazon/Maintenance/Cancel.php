@@ -6,8 +6,6 @@ require __DIR__ . '/../../../Maintenance/MaintenanceBase.php';
 use SmashPig\Maintenance\MaintenanceBase;
 use SmashPig\PaymentProviders\Amazon\AmazonApi;
 
-$maintClass = '\SmashPig\PaymentProviders\Amazon\Maintenance\Cancel';
-
 class Cancel extends MaintenanceBase {
 
 	public function __construct() {
@@ -46,5 +44,7 @@ class Cancel extends MaintenanceBase {
 		}
 	}
 }
+
+$maintClass = Cancel::class;
 
 require RUN_MAINTENANCE_IF_MAIN;

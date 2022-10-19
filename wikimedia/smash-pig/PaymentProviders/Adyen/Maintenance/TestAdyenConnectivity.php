@@ -7,8 +7,6 @@ require __DIR__ . '/../../../Maintenance/MaintenanceBase.php';
 use SmashPig\Core\Context;
 use SmashPig\Maintenance\MaintenanceBase;
 
-$maintClass = 'SmashPig\PaymentProviders\Adyen\Maintenance\TestAdyenConnectivity';
-
 class TestAdyenConnectivity extends MaintenanceBase {
 
 	public function __construct() {
@@ -32,5 +30,7 @@ class TestAdyenConnectivity extends MaintenanceBase {
 		print_r( $result );
 	}
 }
+
+$maintClass = TestAdyenConnectivity::class;
 
 require RUN_MAINTENANCE_IF_MAIN;

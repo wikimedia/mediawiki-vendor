@@ -33,34 +33,38 @@ class DonorDetails {
 
 	/**
 	 * @param string|null $firstName
-	 * @return void
+	 * @return DonorDetails
 	 */
-	public function setFirstName( string $firstName ): void {
+	public function setFirstName( ?string $firstName ): DonorDetails {
 		$this->firstName = $firstName;
+		return $this;
 	}
 
 	/**
 	 * @param string|null $lastName
-	 * @return void
+	 * @return DonorDetails
 	 */
-	public function setLastName( string $lastName ): void {
+	public function setLastName( ?string $lastName ): DonorDetails {
 		$this->lastName = $lastName;
+		return $this;
 	}
 
 	/**
 	 * @param string|null $email
-	 * @return void
+	 * @return DonorDetails
 	 */
-	public function setEmail( string $email ): void {
+	public function setEmail( ?string $email ): DonorDetails {
 		$this->email = $email;
+		return $this;
 	}
 
 	/**
 	 * @param string|null $phone
-	 * @return void
+	 * @return DonorDetails
 	 */
-	public function setPhone( string $phone ): void {
+	public function setPhone( ?string $phone ): DonorDetails {
 		$this->phone = $phone;
+		return $this;
 	}
 
 	/**

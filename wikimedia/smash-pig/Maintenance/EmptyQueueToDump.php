@@ -5,8 +5,6 @@ require 'MaintenanceBase.php';
 use SmashPig\Core\Logging\Logger;
 use SmashPig\Core\QueueConsumers\QueueFileDumper;
 
-$maintClass = '\SmashPig\Maintenance\EmptyQueueToDump';
-
 /**
  * Script to empty out a queue backing store into a file. Objects are not kept
  * in the queue after dumping.
@@ -53,5 +51,7 @@ class EmptyQueueToDump extends MaintenanceBase {
 	}
 
 }
+
+$maintClass = EmptyQueueToDump::class;
 
 require RUN_MAINTENANCE_IF_MAIN;

@@ -6,8 +6,6 @@ use SmashPig\Core\Logging\Logger;
 
 require 'IngenicoMaintenance.php';
 
-$maintClass = 'SmashPig\PaymentProviders\Ingenico\Maintenance\TestConnection';
-
 class TestConnection extends IngenicoMaintenance {
 
 	public function __construct() {
@@ -23,5 +21,7 @@ class TestConnection extends IngenicoMaintenance {
 		Logger::info( print_r( $response, true ) );
 	}
 }
+
+$maintClass = TestConnection::class;
 
 require RUN_MAINTENANCE_IF_MAIN;

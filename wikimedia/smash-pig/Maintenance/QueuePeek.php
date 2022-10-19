@@ -4,8 +4,6 @@ require 'MaintenanceBase.php';
 
 use SmashPig\Core\DataStores\QueueWrapper;
 
-$maintClass = '\SmashPig\Maintenance\QueuePeek';
-
 /**
  * Script to display what is in the queue in a friendly way.
  *
@@ -29,5 +27,7 @@ class QueuePeek extends MaintenanceBase {
 	}
 
 }
+
+$maintClass = QueuePeek::class;
 
 require RUN_MAINTENANCE_IF_MAIN;

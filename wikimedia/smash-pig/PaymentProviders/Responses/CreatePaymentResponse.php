@@ -2,8 +2,6 @@
 
 namespace SmashPig\PaymentProviders\Responses;
 
-use SmashPig\PaymentData\DonorDetails;
-
 /**
  * Represents a newly-created payment. Contains all the properties of the
  * PaymentDetailResponse and an additional pair of properties for when we
@@ -20,18 +18,6 @@ class CreatePaymentResponse extends PaymentDetailResponse {
 	 * @var string|null
 	 */
 	protected $redirectUrl;
-
-	/**
-	 * Child class for saving Donor details
-	 *
-	 * @var DonorDetails|null
-	 */
-	protected $donorDetails = null;
-
-	/**
-	 * @var boolean
-	 */
-	protected $hasDonorDetails = false;
 
 	/**
 	 * Data to be passed along with the redirect
@@ -54,23 +40,6 @@ class CreatePaymentResponse extends PaymentDetailResponse {
 	public function setRedirectUrl( string $redirectUrl ): CreatePaymentResponse {
 		$this->redirectUrl = $redirectUrl;
 		return $this;
-	}
-
-	/**
-	 * @param DonorDetails $donorDetails
-	 * @return CreatePaymentResponse
-	 */
-	public function setDonorDetails( DonorDetails $donorDetails ): CreatePaymentResponse {
-		$this->hasDonorDetails = true;
-		$this->donorDetails = $donorDetails;
-		return $this;
-	}
-
-	/**
-	 * @return DonorDetails
-	 */
-	public function getDonorDetails(): DonorDetails {
-		return $this->donorDetails;
 	}
 
 	public function requiresRedirect(): bool {

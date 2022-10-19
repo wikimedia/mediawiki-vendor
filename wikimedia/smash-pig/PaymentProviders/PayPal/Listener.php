@@ -26,7 +26,7 @@ class Listener implements IHttpActionHandler {
 		$valid = false;
 		try {
 			Logger::info( 'Validating message' );
-			$valid = $this->providerConfiguration->object( 'api' )->validate( $requestValues );
+			$valid = $this->providerConfiguration->object( 'ipn-validator' )->validate( $requestValues );
 		} catch ( Exception $e ) {
 			// Tried to validate a bunch of times and got nonsense responses.
 			Logger::error( $e->getMessage() );

@@ -9,8 +9,6 @@ use SmashPig\Maintenance\MaintenanceBase;
 use SmashPig\PaymentProviders\Adyen\PaymentProvider;
 use SmashPig\PaymentProviders\PaymentProviderFactory;
 
-$maintClass = 'SmashPig\PaymentProviders\Adyen\Maintenance\TestAdyenRecurring';
-
 /**
  * Test out a recurring Adyen transaction
  */
@@ -72,5 +70,7 @@ class TestAdyenRecurring extends MaintenanceBase {
 		}
 	}
 }
+
+$maintClass = TestAdyenRecurring::class;
 
 require RUN_MAINTENANCE_IF_MAIN;

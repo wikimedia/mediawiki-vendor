@@ -6,8 +6,6 @@ use SmashPig\Core\Context;
 use SmashPig\Core\Logging\Logger;
 use SmashPig\Core\QueueConsumers\JobQueueConsumer;
 
-$maintClass = '\SmashPig\Maintenance\QueueJobRunner';
-
 /**
  * The job runner script reads job requests from a specified queue and dispatches the requests.
  * It attempts to time limit itself; however a long running job will not be terminated. Rather
@@ -48,5 +46,7 @@ class QueueJobRunner extends MaintenanceBase {
 	}
 
 }
+
+$maintClass = QueueJobRunner::class;
 
 require RUN_MAINTENANCE_IF_MAIN;

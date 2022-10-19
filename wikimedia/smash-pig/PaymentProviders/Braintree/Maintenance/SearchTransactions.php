@@ -8,8 +8,6 @@ use SmashPig\Core\Logging\Logger;
 use SmashPig\Maintenance\MaintenanceBase;
 use SmashPig\PaymentProviders\PaymentProviderFactory;
 
-$maintClass = 'SmashPig\PaymentProviders\Braintree\Maintenance\SearchTransactions';
-
 class SearchTransactions extends MaintenanceBase {
 
 	public function __construct() {
@@ -156,5 +154,7 @@ class SearchTransactions extends MaintenanceBase {
 	}
 
 }
+
+$maintClass = SearchTransactions::class;
 
 require RUN_MAINTENANCE_IF_MAIN;

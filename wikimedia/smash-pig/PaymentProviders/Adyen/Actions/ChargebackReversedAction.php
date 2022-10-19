@@ -13,9 +13,10 @@ class ChargebackReversedAction implements IListenerMessageAction {
 		$tl = new TaggedLogger( 'ChargebackInitiatedAction' );
 
 		if ( $msg instanceof ChargebackReversed ) {
-			// I've never even seen one of these messages so we'll just have to wait
-			// and see
-			$tl->error(
+			// We get some of these nowadays but haven't yet written code
+			// to handle them on the Civi side. Still probably not common
+			// enough to make a big difference.
+			$tl->warning(
 				"Oh hai! We got a chargeback reversal on pspReference " .
 				"'{$msg->pspReference}'! What do we do now?",
 				$msg

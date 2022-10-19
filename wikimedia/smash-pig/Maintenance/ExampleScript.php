@@ -4,8 +4,6 @@ require 'MaintenanceBase.php';
 
 use SmashPig\Core\Logging\Logger;
 
-$maintClass = '\SmashPig\Maintenance\ExampleScript';
-
 class ExampleScript extends MaintenanceBase {
 
 	public function __construct() {
@@ -31,5 +29,7 @@ class ExampleScript extends MaintenanceBase {
 	}
 
 }
+
+$maintClass = ExampleScript::class;
 
 require RUN_MAINTENANCE_IF_MAIN;

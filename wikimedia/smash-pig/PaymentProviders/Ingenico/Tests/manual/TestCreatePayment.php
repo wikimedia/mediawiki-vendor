@@ -9,8 +9,6 @@ use SmashPig\Core\SmashPigException;
 use SmashPig\Maintenance\MaintenanceBase;
 use SmashPig\PaymentProviders\PaymentProviderFactory;
 
-$maintClass = '\SmashPig\PaymentProviders\Ingenico\Tests\Manual\TestCreatePayment';
-
 /**
  * Test the creation of a new payment using an existing payment token.
  *
@@ -69,5 +67,7 @@ class TestCreatePayment extends MaintenanceBase {
 		}
 	}
 }
+
+$maintClass = TestCreatePayment::class;
 
 require RUN_MAINTENANCE_IF_MAIN;

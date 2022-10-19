@@ -10,8 +10,6 @@ use SmashPig\Core\Logging\Logger;
 use SmashPig\Core\Mapper\Transformers\AmountToCents;
 use SmashPig\PaymentProviders\Ingenico\RefundStatus;
 
-$maintClass = 'SmashPig\PaymentProviders\Ingenico\Maintenance\RefundPayments';
-
 class RefundPayments extends IngenicoMaintenance {
 
 	public function __construct() {
@@ -96,5 +94,7 @@ class RefundPayments extends IngenicoMaintenance {
 		return true;
 	}
 }
+
+$maintClass = RefundPayments::class;
 
 require RUN_MAINTENANCE_IF_MAIN;

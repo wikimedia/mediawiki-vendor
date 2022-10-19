@@ -9,8 +9,6 @@ use SmashPig\Maintenance\MaintenanceBase;
 use SmashPig\PaymentProviders\Adyen\PaymentProvider;
 use SmashPig\PaymentProviders\PaymentProviderFactory;
 
-$maintClass = 'SmashPig\PaymentProviders\Adyen\Maintenance\DeleteDataForPayment';
-
 class DeleteDataForPayment extends MaintenanceBase {
 
 	public function __construct() {
@@ -33,5 +31,7 @@ class DeleteDataForPayment extends MaintenanceBase {
 		}
 	}
 }
+
+$maintClass = DeleteDataForPayment::class;
 
 require RUN_MAINTENANCE_IF_MAIN;

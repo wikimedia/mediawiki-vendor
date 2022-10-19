@@ -5,8 +5,6 @@ require 'MaintenanceBase.php';
 use SmashPig\Core\Logging\Logger;
 use SmashPig\Core\SequenceGenerators\Factory;
 
-$maintClass = '\SmashPig\Maintenance\InitializeSequence';
-
 /**
  * Script to initialize a sequence generator
  * Example usage: php InitializeSequence.php contribution-tracking 87654321
@@ -49,5 +47,7 @@ class InitializeSequence extends MaintenanceBase {
 	}
 
 }
+
+$maintClass = InitializeSequence::class;
 
 require RUN_MAINTENANCE_IF_MAIN;

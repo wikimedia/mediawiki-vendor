@@ -5,7 +5,23 @@
 #   $HOME/.smashpig/paypal/main.yaml
 
 api:
-    class: SmashPig\PaymentProviders\PayPal\PayPalPaymentsAPI
+    class: SmashPig\PaymentProviders\PayPal\Api
+    constructor-parameters:
+        -
+            # For testing, set to https://api.sandbox.paypal.com/nvp
+            endpoint: https://api.paypal.com/nvp
+            user: <your_username.your.domain>
+            password: <supersecret>
+            certificate_path: /path/to/your/certificate.pem
+            version: 204
+
+payment-provider:
+    paypal:
+        class:
+            SmashPig\PaymentProviders\PayPal\PaymentProvider
+
+ipn-validator:
+    class: SmashPig\PaymentProviders\PayPal\PayPalIpnValidator
 
 endpoints:
     listener:
@@ -120,10 +136,4 @@ messages:
             # FIXME: if case_type=chargeback, then txn_type might be blank
             # and the message should go to the refund queue.
 curl:
-    validator:
-        class: SmashPig\Core\Http\EnumValidator
-        constructor-parameters:
-            -
-                - INVALID
-                - VERIFIED
     retries: 7

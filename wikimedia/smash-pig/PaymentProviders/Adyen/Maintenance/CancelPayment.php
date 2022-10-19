@@ -9,8 +9,6 @@ use SmashPig\Maintenance\MaintenanceBase;
 use SmashPig\PaymentProviders\Adyen\PaymentProvider;
 use SmashPig\PaymentProviders\PaymentProviderFactory;
 
-$maintClass = 'SmashPig\PaymentProviders\Adyen\Maintenance\CancelPayment';
-
 /**
  * Test out the Adyen cancel rest endpoint
  */
@@ -37,5 +35,7 @@ class CancelPayment extends MaintenanceBase {
 		Logger::info( "Cancel payment result: " . print_r( $cancelPaymentResponse, true ) );
 	}
 }
+
+$maintClass = CancelPayment::class;
 
 require RUN_MAINTENANCE_IF_MAIN;

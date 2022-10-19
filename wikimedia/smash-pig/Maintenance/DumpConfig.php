@@ -6,8 +6,6 @@ use SmashPig\Core\Context;
 
 use Symfony\Component\Yaml\Yaml;
 
-$maintClass = 'SmashPig\Maintenance\DumpConfig';
-
 /**
  * Diagnostic tool to print materialized configuration values to stdout.
  */
@@ -26,5 +24,7 @@ class DumpConfig extends MaintenanceBase {
 		print 'Provider config: ' . $yaml;
 	}
 }
+
+$maintClass = DumpConfig::class;
 
 require RUN_MAINTENANCE_IF_MAIN;

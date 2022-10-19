@@ -6,8 +6,6 @@ require 'MaintenanceBase.php';
 use SmashPig\Core\Logging\Logger;
 use SmashPig\Core\QueueConsumers\PendingQueueConsumer;
 
-$maintClass = '\SmashPig\Maintenance\ConsumePendingQueue';
-
 /**
  * Reads messages out of the pending queue and inserts them into a db table
  */
@@ -42,5 +40,7 @@ class ConsumePendingQueue extends MaintenanceBase {
 		);
 	}
 }
+
+$maintClass = ConsumePendingQueue::class;
 
 require RUN_MAINTENANCE_IF_MAIN;

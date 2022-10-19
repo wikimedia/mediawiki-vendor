@@ -5,8 +5,6 @@ require 'MaintenanceBase.php';
 use SmashPig\Core\Logging\Logger;
 use SmashPig\Core\SmashPigException;
 
-$maintClass = '\SmashPig\Maintenance\TestFailMail';
-
 /**
  * Causes a fatal error and expects an email to be sent out to failmail recipients
  */
@@ -34,5 +32,7 @@ class TestFailMail extends MaintenanceBase {
 		throw new SmashPigException( 'TestException!' );
 	}
 }
+
+$maintClass = TestFailMail::class;
 
 require RUN_MAINTENANCE_IF_MAIN;

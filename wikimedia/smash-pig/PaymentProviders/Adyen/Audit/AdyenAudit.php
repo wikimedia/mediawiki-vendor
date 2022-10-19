@@ -46,8 +46,9 @@ abstract class AdyenAudit implements AuditParser {
 		'reversed',
 		'cancelled',
 		'sentforrefund', // does this eventually become refunded
-		'settledexternally' // what does this mean
-
+		'settledexternally', // amex
+		'expired',
+		'error'
 	];
 
 	protected $fileData;

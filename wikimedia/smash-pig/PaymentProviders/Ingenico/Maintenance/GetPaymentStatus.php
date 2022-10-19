@@ -6,8 +6,6 @@ require 'IngenicoMaintenance.php';
 
 use SmashPig\Core\Logging\Logger;
 
-$maintClass = 'SmashPig\PaymentProviders\Ingenico\Maintenance\GetPaymentStatus';
-
 class GetPaymentStatus extends IngenicoMaintenance {
 
 	public function __construct() {
@@ -26,5 +24,7 @@ class GetPaymentStatus extends IngenicoMaintenance {
 		Logger::info( json_encode( $response, JSON_PRETTY_PRINT ) );
 	}
 }
+
+$maintClass = GetPaymentStatus::class;
 
 require RUN_MAINTENANCE_IF_MAIN;

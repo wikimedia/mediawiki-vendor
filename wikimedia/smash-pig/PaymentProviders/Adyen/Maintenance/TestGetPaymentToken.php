@@ -9,8 +9,6 @@ use SmashPig\Maintenance\MaintenanceBase;
 use SmashPig\PaymentProviders\Adyen\PaymentProvider;
 use SmashPig\PaymentProviders\PaymentProviderFactory;
 
-$maintClass = 'SmashPig\PaymentProviders\Adyen\Maintenance\TestGetPaymentToken';
-
 /**
  * Test out a recurring Adyen transaction
  */
@@ -37,5 +35,7 @@ class TestGetPaymentToken extends MaintenanceBase {
 		Logger::info( "Tokenize result: " . print_r( $savedDetailsResponse, true ) );
 	}
 }
+
+$maintClass = TestGetPaymentToken::class;
 
 require RUN_MAINTENANCE_IF_MAIN;

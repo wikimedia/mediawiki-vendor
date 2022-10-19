@@ -7,8 +7,6 @@ use SmashPig\Core\DataStores\DamagedDatabase;
 use SmashPig\Core\DataStores\QueueWrapper;
 use SmashPig\Core\Logging\Logger;
 
-$maintClass = '\SmashPig\Maintenance\RequeueDelayedMessages';
-
 /**
  * Requeues damaged messages that are ready for re-processing
  */
@@ -63,5 +61,7 @@ class RequeueDelayedMessages extends MaintenanceBase {
 		}
 	}
 }
+
+$maintClass = RequeueDelayedMessages::class;
 
 require RUN_MAINTENANCE_IF_MAIN;

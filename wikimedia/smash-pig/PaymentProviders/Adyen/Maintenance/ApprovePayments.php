@@ -9,8 +9,6 @@ use SmashPig\Core\Logging\Logger;
 use SmashPig\Maintenance\MaintenanceBase;
 use SmashPig\PaymentProviders\PaymentProviderFactory;
 
-$maintClass = 'SmashPig\PaymentProviders\Adyen\Maintenance\ApprovePayments';
-
 /**
  * Batch approve (capture) authorized Adyen payments. Required argument
  * is the path of a CSV file containing at least these three columns:
@@ -64,5 +62,7 @@ class ApprovePayments extends MaintenanceBase {
 		}
 	}
 }
+
+$maintClass = ApprovePayments::class;
 
 require RUN_MAINTENANCE_IF_MAIN;

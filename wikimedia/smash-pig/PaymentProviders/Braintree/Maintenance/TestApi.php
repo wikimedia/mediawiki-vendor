@@ -8,8 +8,6 @@ use SmashPig\Core\Logging\Logger;
 use SmashPig\Maintenance\MaintenanceBase;
 use SmashPig\PaymentProviders\PaymentProviderFactory;
 
-$maintClass = 'SmashPig\PaymentProviders\Braintree\Maintenance\TestApi';
-
 class TestApi extends MaintenanceBase {
 
 	public function __construct() {
@@ -26,5 +24,7 @@ class TestApi extends MaintenanceBase {
 		Logger::info( print_r( $response, true ) );
 	}
 }
+
+$maintClass = TestApi::class;
 
 require RUN_MAINTENANCE_IF_MAIN;

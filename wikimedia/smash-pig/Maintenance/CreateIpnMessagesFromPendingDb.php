@@ -7,8 +7,6 @@ use SmashPig\Core\Context;
 use SmashPig\Core\DataStores\PendingDatabase;
 use SmashPig\Core\Logging\Logger;
 
-$maintClass = '\SmashPig\Maintenance\CreateIpnMessagesFromPendingDb';
-
 /**
  * Reads messages from the pending db and creates test IPN message files
  * Adyen:
@@ -117,5 +115,7 @@ class CreateIpnMessagesFromPendingDb extends MaintenanceBase {
 	}
 
 }
+
+$maintClass = CreateIpnMessagesFromPendingDb::class;
 
 require RUN_MAINTENANCE_IF_MAIN;
