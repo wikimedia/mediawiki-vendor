@@ -356,6 +356,9 @@ class Reader implements LoggerAwareInterface {
 				AtEase::restoreWarnings();
 			}
 
+			// Replace any null bytes with the replacement character (T320282)
+			$content = str_replace( "\0", "\u{FFFD}", $content );
+
 			// Ensure the XMP block does not have an xml doctype declaration, which
 			// could declare entities unsafe to parse with xml_parse (T85848/T71210).
 			if ( $this->parsable !== self::PARSABLE_OK ) {

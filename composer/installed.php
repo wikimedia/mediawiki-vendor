@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '8bb583a95acdebff268383a90b27c2f4d5e87c03',
+        'reference' => '28bb99d65207963ea135e932e81772fd1bc102c3',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '8bb583a95acdebff268383a90b27c2f4d5e87c03',
+            'reference' => '28bb99d65207963ea135e932e81772fd1bc102c3',
             'dev_requirement' => false,
         ),
         'christian-riesen/base32' => array(
@@ -638,12 +638,12 @@
             'dev_requirement' => false,
         ),
         'wikimedia/xmp-reader' => array(
-            'pretty_version' => '0.8.4',
-            'version' => '0.8.4.0',
+            'pretty_version' => '0.8.5',
+            'version' => '0.8.5.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/xmp-reader',
             'aliases' => array(),
-            'reference' => '01225347493aa8d17c4f977a6d13e4d77065e4a5',
+            'reference' => '99e6c9397d281f3c9842f3e72588fc04ef3e6fa4',
             'dev_requirement' => false,
         ),
         'wikimedia/zest-css' => array(

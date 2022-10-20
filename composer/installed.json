@@ -4063,17 +4063,17 @@
         },
         {
             "name": "wikimedia/xmp-reader",
-            "version": "0.8.4",
-            "version_normalized": "0.8.4.0",
+            "version": "0.8.5",
+            "version_normalized": "0.8.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/xmp-reader.git",
-                "reference": "01225347493aa8d17c4f977a6d13e4d77065e4a5"
+                "reference": "99e6c9397d281f3c9842f3e72588fc04ef3e6fa4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/xmp-reader/zipball/01225347493aa8d17c4f977a6d13e4d77065e4a5",
-                "reference": "01225347493aa8d17c4f977a6d13e4d77065e4a5",
+                "url": "https://api.github.com/repos/wikimedia/xmp-reader/zipball/99e6c9397d281f3c9842f3e72588fc04ef3e6fa4",
+                "reference": "99e6c9397d281f3c9842f3e72588fc04ef3e6fa4",
                 "shasum": ""
             },
             "require": {
@@ -4097,7 +4097,7 @@
                 "php-parallel-lint/php-parallel-lint": "1.3.2",
                 "phpunit/phpunit": "^8.5"
             },
-            "time": "2022-10-08T00:17:10+00:00",
+            "time": "2022-10-20T14:10:29+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -4125,7 +4125,7 @@
                 "xmp"
             ],
             "support": {
-                "source": "https://github.com/wikimedia/xmp-reader/tree/0.8.4"
+                "source": "https://github.com/wikimedia/xmp-reader/tree/0.8.5"
             },
             "install-path": "../wikimedia/xmp-reader"
         },
