@@ -410,17 +410,17 @@
         },
         {
             "name": "data-values/common",
-            "version": "1.0.0",
-            "version_normalized": "1.0.0.0",
+            "version": "1.1.0",
+            "version_normalized": "1.1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DataValues/Common.git",
-                "reference": "315bd95ef8e5c360ce8a1cf02c0eef35bbb92561"
+                "reference": "9f5e6216ec66ac8f2281351b110bad0eded43e65"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DataValues/Common/zipball/315bd95ef8e5c360ce8a1cf02c0eef35bbb92561",
-                "reference": "315bd95ef8e5c360ce8a1cf02c0eef35bbb92561",
+                "url": "https://api.github.com/repos/DataValues/Common/zipball/9f5e6216ec66ac8f2281351b110bad0eded43e65",
+                "reference": "9f5e6216ec66ac8f2281351b110bad0eded43e65",
                 "shasum": ""
             },
             "require": {
@@ -433,7 +433,7 @@
                 "ockcyp/covers-validator": "^1.3.3",
                 "phpunit/phpunit": "~8.0"
             },
-            "time": "2021-01-25T15:31:52+00:00",
+            "time": "2022-10-21T14:13:11+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -444,8 +444,8 @@
             "autoload": {
                 "psr-4": {
                     "DataValues\\": "src/DataValues/",
-                    "ValueFormatters\\": "src/ValueFormatters/",
-                    "ValueParsers\\": "src/ValueParsers/"
+                    "ValueParsers\\": "src/ValueParsers/",
+                    "ValueFormatters\\": "src/ValueFormatters/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -472,23 +472,23 @@
             "support": {
                 "irc": "irc://irc.freenode.net/wikidata",
                 "issues": "https://github.com/DataValues/Common/issues",
-                "source": "https://github.com/DataValues/Common/tree/1.0.0"
+                "source": "https://github.com/DataValues/Common/tree/1.1.0"
             },
             "install-path": "../data-values/common"
         },
         {
             "name": "data-values/data-values",
-            "version": "3.0.0",
-            "version_normalized": "3.0.0.0",
+            "version": "3.1.0",
+            "version_normalized": "3.1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DataValues/DataValues.git",
-                "reference": "63dee286f8bb4ae7899c2d2e8d439e7b5332cc49"
+                "reference": "1084142918095dfedf9b6cc0de0755f8c4628264"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DataValues/DataValues/zipball/63dee286f8bb4ae7899c2d2e8d439e7b5332cc49",
-                "reference": "63dee286f8bb4ae7899c2d2e8d439e7b5332cc49",
+                "url": "https://api.github.com/repos/DataValues/DataValues/zipball/1084142918095dfedf9b6cc0de0755f8c4628264",
+                "reference": "1084142918095dfedf9b6cc0de0755f8c4628264",
                 "shasum": ""
             },
             "require": {
@@ -498,10 +498,10 @@
                 "mediawiki/data-values": "*"
             },
             "require-dev": {
-                "phpunit/phpunit": "~8.0",
-                "wikibase/wikibase-codesniffer": "~1.2.0"
+                "mediawiki/mediawiki-codesniffer": "^38",
+                "phpunit/phpunit": "~8.0"
             },
-            "time": "2021-01-19T16:36:36+00:00",
+            "time": "2022-10-21T13:57:56+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -535,7 +535,7 @@
             ],
             "support": {
                 "issues": "https://github.com/DataValues/DataValues/issues",
-                "source": "https://github.com/DataValues/DataValues/tree/3.0.0"
+                "source": "https://github.com/DataValues/DataValues/tree/3.1.0"
             },
             "funding": [
                 {
@@ -547,17 +547,17 @@
         },
         {
             "name": "data-values/geo",
-            "version": "4.3.0",
-            "version_normalized": "4.3.0.0",
+            "version": "4.4.0",
+            "version_normalized": "4.4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DataValues/Geo.git",
-                "reference": "58fe0a1d027fce6feddbbe97d04678c6b2e40f17"
+                "reference": "1dd742dabb63e211862486259b2cbe0274211bf9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DataValues/Geo/zipball/58fe0a1d027fce6feddbbe97d04678c6b2e40f17",
-                "reference": "58fe0a1d027fce6feddbbe97d04678c6b2e40f17",
+                "url": "https://api.github.com/repos/DataValues/Geo/zipball/1dd742dabb63e211862486259b2cbe0274211bf9",
+                "reference": "1dd742dabb63e211862486259b2cbe0274211bf9",
                 "shasum": ""
             },
             "require": {
@@ -568,14 +568,14 @@
             },
             "require-dev": {
                 "maglnet/composer-require-checker": "^3.0|^2.0",
-                "mediawiki/mediawiki-codesniffer": "^34 || ^35",
+                "mediawiki/mediawiki-codesniffer": "^34 || ^35 || ^36 || ^38",
                 "ockcyp/covers-validator": "^1.3.3",
                 "phpmd/phpmd": "^2.9.1",
-                "phpstan/phpstan": "^0.12.68",
+                "phpstan/phpstan": "^0.12.68 || ^1.0.0",
                 "phpunit/phpunit": "^9.4.1",
                 "vimeo/psalm": "^4.4.1"
             },
-            "time": "2021-04-21T11:29:29+00:00",
+            "time": "2022-10-21T14:19:26+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -626,7 +626,7 @@
             "support": {
                 "docs": "https://github.com/DataValues/Geo/#usage",
                 "issues": "https://github.com/DataValues/Geo/issues",
-                "source": "https://github.com/DataValues/Geo/tree/4.3.0"
+                "source": "https://github.com/DataValues/Geo/tree/4.4.0"
             },
             "funding": [
                 {
@@ -700,23 +700,23 @@
         },
         {
             "name": "data-values/number",
-            "version": "0.11.1",
-            "version_normalized": "0.11.1.0",
+            "version": "0.12.3",
+            "version_normalized": "0.12.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wmde/Number.git",
-                "reference": "3177a4e11fee862d59a4f66c6b35408e9c609843"
+                "reference": "0e7e3217d04d48d3b895171e743ac81bf4824735"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wmde/Number/zipball/3177a4e11fee862d59a4f66c6b35408e9c609843",
-                "reference": "3177a4e11fee862d59a4f66c6b35408e9c609843",
+                "url": "https://api.github.com/repos/wmde/Number/zipball/0e7e3217d04d48d3b895171e743ac81bf4824735",
+                "reference": "0e7e3217d04d48d3b895171e743ac81bf4824735",
                 "shasum": ""
             },
             "require": {
-                "data-values/common": "1.0.0|~0.4.0|~0.3.0",
-                "data-values/data-values": "~3.0.0|~2.0|~1.0|~0.1",
-                "data-values/interfaces": "~1.0.0|~0.2.0",
+                "data-values/common": "~1.0|~0.4.0|~0.3.0",
+                "data-values/data-values": "~3.0|~2.0|~1.0|~0.1",
+                "data-values/interfaces": "~1.0|~0.2.0",
                 "php": ">=7.2"
             },
             "require-dev": {
@@ -724,17 +724,14 @@
                 "mediawiki/mediawiki-codesniffer": "34.0.0",
                 "phpunit/phpunit": "~8.5"
             },
-            "time": "2021-03-30T17:10:04+00:00",
+            "time": "2022-10-24T08:49:03+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
-                "files": [
-                    "Number.php"
-                ],
                 "psr-0": {
                     "DataValues\\": "src",
-                    "ValueFormatters\\": "src",
-                    "ValueParsers\\": "src"
+                    "ValueParsers\\": "src",
+                    "ValueFormatters\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -761,23 +758,23 @@
             "support": {
                 "irc": "irc://irc.freenode.net/wikidata",
                 "issues": "https://github.com/wmde/Number/issues",
-                "source": "https://github.com/wmde/Number/tree/0.11.1"
+                "source": "https://github.com/wmde/Number/tree/0.12.3"
             },
             "install-path": "../data-values/number"
         },
         {
             "name": "data-values/serialization",
-            "version": "1.2.4",
-            "version_normalized": "1.2.4.0",
+            "version": "1.2.5",
+            "version_normalized": "1.2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DataValues/Serialization.git",
-                "reference": "5bc3640f7ddb642479ff490fae64fcf19c7e75af"
+                "reference": "b31b3af537a3ac9f3b70f42cc03f2221c6fd8fd7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DataValues/Serialization/zipball/5bc3640f7ddb642479ff490fae64fcf19c7e75af",
-                "reference": "5bc3640f7ddb642479ff490fae64fcf19c7e75af",
+                "url": "https://api.github.com/repos/DataValues/Serialization/zipball/b31b3af537a3ac9f3b70f42cc03f2221c6fd8fd7",
+                "reference": "b31b3af537a3ac9f3b70f42cc03f2221c6fd8fd7",
                 "shasum": ""
             },
             "require": {
@@ -789,7 +786,7 @@
                 "phpunit/phpunit": "~8.5",
                 "wikibase/wikibase-codesniffer": "^1.2.0"
             },
-            "time": "2021-03-29T11:26:32+00:00",
+            "time": "2022-10-21T14:15:46+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -827,36 +824,36 @@
             "support": {
                 "irc": "irc://irc.freenode.net/wikidata",
                 "issues": "https://github.com/DataValues/Serialization/issues",
-                "source": "https://github.com/DataValues/Serialization/tree/1.2.4"
+                "source": "https://github.com/DataValues/Serialization/tree/1.2.5"
             },
             "install-path": "../data-values/serialization"
         },
         {
             "name": "data-values/time",
-            "version": "1.0.4",
-            "version_normalized": "1.0.4.0",
+            "version": "1.1.2",
+            "version_normalized": "1.1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wmde/Time.git",
-                "reference": "abbb585f2c71ca8a1ac9aea858cf5ba6b8920320"
+                "reference": "a2bc08e5e51f5940de843d43469dd3f727fb1d29"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wmde/Time/zipball/abbb585f2c71ca8a1ac9aea858cf5ba6b8920320",
-                "reference": "abbb585f2c71ca8a1ac9aea858cf5ba6b8920320",
+                "url": "https://api.github.com/repos/wmde/Time/zipball/a2bc08e5e51f5940de843d43469dd3f727fb1d29",
+                "reference": "a2bc08e5e51f5940de843d43469dd3f727fb1d29",
                 "shasum": ""
             },
             "require": {
-                "data-values/common": "1.0.0|~0.4.0|~0.3.0",
-                "data-values/data-values": "3.0.0|~2.0|~1.0|~0.1",
-                "data-values/interfaces": "1.0.0|~0.2.0",
+                "data-values/common": "~1.0|~0.4.0|~0.3.0",
+                "data-values/data-values": "~3.0|~2.0|~1.0|~0.1",
+                "data-values/interfaces": "~1.0|~0.2.0",
                 "php": ">=7.2.0"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "34.0.0",
+                "mediawiki/mediawiki-codesniffer": "^39",
                 "phpunit/phpunit": "~8.5"
             },
-            "time": "2021-07-15T13:35:54+00:00",
+            "time": "2022-10-24T09:59:00+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -867,8 +864,8 @@
             "autoload": {
                 "psr-0": {
                     "DataValues\\": "src",
-                    "ValueFormatters\\": "src",
-                    "ValueParsers\\": "src"
+                    "ValueParsers\\": "src",
+                    "ValueFormatters\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -893,7 +890,7 @@
             "support": {
                 "irc": "irc://irc.freenode.net/wikidata",
                 "issues": "https://github.com/wmde/Time/issues",
-                "source": "https://github.com/wmde/Time/tree/1.0.4"
+                "source": "https://github.com/wmde/Time/tree/1.1.2"
             },
             "install-path": "../data-values/time"
         },

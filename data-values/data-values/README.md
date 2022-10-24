@@ -1,33 +1,25 @@
 # DataValues
 
-Small PHP library that provides interfaces for Value Objects. 
+Small PHP library that provides interfaces for Value Objects. [Several libraries](https://packagist.org/packages/data-values/data-values/dependents?order_by=downloads) build on top of this foundation.
 
-[Several libraries](https://github.com/DataValues) build on top of this foundation.
-
-[![Code Coverage](https://scrutinizer-ci.com/g/DataValues/DataValues/badges/coverage.png?s=56a1ea89df94c6d9b4223ba584d0d4556e1984ef)](https://scrutinizer-ci.com/g/DataValues/DataValues/)
-[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/DataValues/DataValues/badges/quality-score.png?s=ba9364790e6b521277a3829ffb91e2c2e1b68c3c)](https://scrutinizer-ci.com/g/DataValues/DataValues/)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/DataValues/DataValues/CI)](https://github.com/DataValues/DataValues/actions?query=workflow%3ACI)
+[![codecov](https://codecov.io/gh/DataValues/DataValues/branch/master/graph/badge.svg?token=GnOG3FF16Z)](https://codecov.io/gh/DataValues/DataValues)
 
 On [Packagist](https://packagist.org/packages/data-values/data-values):
 [![Latest Stable Version](https://poser.pugx.org/data-values/data-values/version.png)](https://packagist.org/packages/data-values/data-values)
 [![Download count](https://poser.pugx.org/data-values/data-values/d/total.png)](https://packagist.org/packages/data-values/data-values)
-
-## Requirements
-
-These PHP versions are supported:
-
-* PHP 7.2 or later
 
 ## Installation
 
 To add this package as a local, per-project dependency to your project, simply add a
 dependency on `data-values/data-values` to your project's `composer.json` file.
 Here is a minimal example of a `composer.json` file that just defines a dependency on
-DataValues 2.0:
+DataValues 3.x:
 
 ```json
     {
         "require": {
-            "data-values/data-values": "^2.0.0"
+            "data-values/data-values": "^3.1.0"
         }
     }
 ```
@@ -55,6 +47,15 @@ Contributions where also made by
 [several other awesome people](https://www.openhub.net/p/datavalues/contributors).
 
 ## Release notes
+
+### 3.1.0 (2022-10-21)
+
+* Improved compatibility with PHP 8.1;
+  in particular, the new `__serialize`/`__unserialize` methods are implemented now
+  (in addition to the still supported `Serializable` interface).
+  Care has been taken to keep the output of `getHash()` stable;
+  if other classes include the PHP serialization of data values in their own hashes,
+  they should instead use the new `getSerializationForHash()` method where it exists.
 
 ### 3.0.0 (2021-01-19)
 

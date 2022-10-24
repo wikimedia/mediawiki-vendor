@@ -3,8 +3,8 @@
 Small library for **parsing, formatting and representing coordinates**. This library supports multiple coordinate formats,
 it is well tested, and it is used by the software behind Wikipedia and Wikidata.
 
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/DataValues/Geo/PHP%20Composer)](https://github.com/DataValues/Geo/actions?query=workflow%3Aphp)
 [![Code Coverage](https://scrutinizer-ci.com/g/DataValues/Geo/badges/coverage.png?s=bf4cfd11f3b985fd05918f395c350b376a9ce0ee)](https://scrutinizer-ci.com/g/DataValues/Geo/)
-[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/DataValues/Geo/badges/quality-score.png?s=e695e42b53d74fc02e5cfa2aa218420f062edbd2)](https://scrutinizer-ci.com/g/DataValues/Geo/)
 
 On [Packagist](https://packagist.org/packages/data-values/geo):
 [![Latest Stable Version](https://poser.pugx.org/data-values/geo/version.png)](https://packagist.org/packages/data-values/geo)
@@ -103,9 +103,19 @@ employees for the [Wikidata project](https://wikidata.org/).
 
 ## Release notes
 
+### 4.4.0 (2022-10-21)
+
+* Implemented `__serialize` and `__unserialize` in `LatLongValue` and `GlobeCoordinateValue`,
+  improving compatibility with PHP 8.1
+* Added `LatLongValue::getSerializationForHash`;
+  classes that use the PHP serialization of a `LatLongValue` for a hash should instead call this method
+
 ### 4.3.0 (2021-04-21)
 
 * Raised minimum PHP version from 7.1 to 7.3
+
+### 4.2.3 (2021-04-23)
+
 * `GlobeCoordinateValue::newFromArray` now supports numeric strings (thanks @Silvan-WMDE)
 
 ### 4.2.2 (2021-01-20)

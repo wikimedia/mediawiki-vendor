@@ -102,12 +102,16 @@ class QuantityValue extends UnboundedQuantityValue {
 	 * @return string
 	 */
 	public function serialize() {
-		return serialize( [
+		return serialize( $this->__serialize() );
+	}
+
+	public function __serialize(): array {
+		return [
 			$this->amount,
 			$this->unit,
 			$this->upperBound,
 			$this->lowerBound,
-		] );
+		];
 	}
 
 	/**
@@ -118,8 +122,32 @@ class QuantityValue extends UnboundedQuantityValue {
 	 * @param string $data
 	 */
 	public function unserialize( $data ) {
-		list( $amount, $unit, $upperBound, $lowerBound ) = unserialize( $data );
+		$this->__unserialize( unserialize( $data ) );
+	}
+
+	public function __unserialize( array $data ): void {
+		list( $amount, $unit, $upperBound, $lowerBound ) = $data;
 		$this->__construct( $amount, $unit, $upperBound, $lowerBound );
+	}
+
+	public function getSerializationForHash(): string {
+		// mimic a legacy serialization of __serialize() (amount + unit + upperBound + lowerBound)
+		$amountSerialization = method_exists( $this->amount, 'getSerializationForHash' )
+			? $this->amount->getSerializationForHash()
+			: serialize( $this->amount );
+		$unitSerialization = serialize( $this->unit );
+		$upperBoundSerialization = method_exists( $this->upperBound, 'getSerializationForHash' )
+			? $this->upperBound->getSerializationForHash()
+			: serialize( $this->upperBound );
+		$lowerBoundSerialization = method_exists( $this->lowerBound, 'getSerializationForHash' )
+			? $this->lowerBound->getSerializationForHash()
+			: serialize( $this->lowerBound );
+
+		$data = 'a:4:{i:0;' . $amountSerialization . 'i:1;' . $unitSerialization .
+			'i:2;' . $upperBoundSerialization . 'i:3;' . $lowerBoundSerialization . '}';
+
+		return 'C:' . strlen( static::class ) . ':"' . static::class .
+			'":' . strlen( $data ) . ':{' . $data . '}';
 	}
 
 	/**

@@ -4,8 +4,8 @@ Serializers and deserializers for DataValue implementations.
 
 It is part of the [DataValues set of libraries](https://github.com/DataValues).
 
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/DataValues/Serialization/PHP%20Composer)](https://github.com/DataValues/Serialization/actions?query=workflow%3A"PHP+Composer")
 [![Code Coverage](https://scrutinizer-ci.com/g/DataValues/Serialization/badges/coverage.png?s=3e52443ffbf18b98804feb7c02ba4416f3f986cb)](https://scrutinizer-ci.com/g/DataValues/Serialization/)
-[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/DataValues/Serialization/badges/quality-score.png?s=818787ea88853bbfb76dc226eb4ab755729141c5)](https://scrutinizer-ci.com/g/DataValues/Serialization/)
 
 On [Packagist](https://packagist.org/packages/data-values/serialization):
 [![Latest Stable Version](https://poser.pugx.org/data-values/serialization/version.png)](https://packagist.org/packages/data-values/serialization)
@@ -47,9 +47,14 @@ as [Wikimedia Germany](https://wikimedia.de) employee for the [Wikidata project]
 
 ## Release notes
 
+### 1.2.5 (2022-10-21)
+
+* Added a message to a possible deserialization exception.
+
 ### 1.2.4 (2021-03-29)
 
 * Made component installable together with DataValues 3.x
+* Raised required PHP version to 7.2
 
 ### 1.2.3 (2018-12-01)
 

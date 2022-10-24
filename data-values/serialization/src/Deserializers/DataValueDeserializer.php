@@ -93,7 +93,7 @@ class DataValueDeserializer implements DispatchableDeserializer {
 
 	private function assertCanDeserialize( $serialization ) {
 		if ( !is_array( $serialization ) || !array_key_exists( self::TYPE_KEY, $serialization ) ) {
-			throw new MissingTypeException();
+			throw new MissingTypeException( 'Not an array or missing the key "' . self::TYPE_KEY . '"' );
 		}
 
 		if ( !array_key_exists( self::VALUE_KEY, $serialization ) ) {

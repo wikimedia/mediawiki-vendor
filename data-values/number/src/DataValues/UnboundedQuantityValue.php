@@ -115,10 +115,14 @@ class UnboundedQuantityValue extends DataValueObject {
 	 * @return string
 	 */
 	public function serialize() {
-		return serialize( [
+		return serialize( $this->__serialize() );
+	}
+
+	public function __serialize(): array {
+		return [
 			$this->amount,
 			$this->unit
-		] );
+		];
 	}
 
 	/**
@@ -127,8 +131,25 @@ class UnboundedQuantityValue extends DataValueObject {
 	 * @param string $data
 	 */
 	public function unserialize( $data ) {
-		list( $amount, $unit ) = unserialize( $data );
+		$this->__unserialize( unserialize( $data ) );
+	}
+
+	public function __unserialize( array $data ): void {
+		list( $amount, $unit ) = $data;
 		$this->__construct( $amount, $unit );
+	}
+
+	public function getSerializationForHash(): string {
+		// mimic a legacy serialization of __serialize() (amount + unit)
+		$amountSerialization = method_exists( $this->amount, 'getSerializationForHash' )
+			? $this->amount->getSerializationForHash()
+			: serialize( $this->amount );
+		$unitSerialization = serialize( $this->unit );
+
+		$data = 'a:2:{i:0;' . $amountSerialization . 'i:1;' . $unitSerialization . '}';
+
+		return 'C:' . strlen( static::class ) . ':"' . static::class .
+			'":' . strlen( $data ) . ':{' . $data . '}';
 	}
 
 	/**
