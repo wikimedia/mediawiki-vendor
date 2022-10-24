@@ -218,7 +218,7 @@ class Grammar extends \Wikimedia\WikiPEG\PEGParserBase {
 			return $t;
 		}
 
-		$dp = $t->dataAttribs;
+		$dp = $t->dataParsoid;
 		$skipPos = $this->currPos;
 
 		switch ( get_class( $t ) ) {
@@ -1043,7 +1043,7 @@ private function a86($sc, $startPos, $p, $b) {
 		if ( $p !== '|' ) {
 			// p+"<brace-char>" is triggering some bug in pegJS
 			// I cannot even use that expression in the comment!
-			$tblEnd->dataAttribs->endTagSrc = $p . $b;
+			$tblEnd->dataParsoid->endTagSrc = $p . $b;
 		}
 		array_push( $sc, $tblEnd );
 		return $sc;
@@ -1092,7 +1092,7 @@ private function a92($il, $sol_il) {
 		// templates, so we shouldn't ever be tokenizing inInclude.
 		// Last line should be empty (except for comments)
 		if ( $lname !== 'includeonly' && $sol_il && $il instanceof TagTk ) {
-			$dp = $il->dataAttribs;
+			$dp = $il->dataParsoid;
 			$inclContent = $dp->extTagOffsets->stripTags( $dp->src );
 			$nlpos = strrpos( $inclContent, "\n" );
 			$last = $nlpos === false ? $inclContent : substr( $inclContent, $nlpos + 1 );
@@ -1190,15 +1190,15 @@ private function a101($d) {
 }
 private function a102($d, $lineContent) {
 
-		$dataAttribs = new DataParsoid;
-		$dataAttribs->tsr = $this->tsrOffsets();
+		$dataParsoid = new DataParsoid;
+		$dataParsoid->tsr = $this->tsrOffsets();
 		if ( $lineContent !== null ) {
-			$dataAttribs->lineContent = $lineContent;
+			$dataParsoid->lineContent = $lineContent;
 		}
 		if ( strlen( $d ) > 0 ) {
-			$dataAttribs->extra_dashes = strlen( $d );
+			$dataParsoid->extra_dashes = strlen( $d );
 		}
-		return new SelfclosingTagTk( 'hr', [], $dataAttribs );
+		return new SelfclosingTagTk( 'hr', [], $dataParsoid );
 	
 }
 private function a103($end, $name, $annOrExtTag, $isBlock) {
@@ -1233,8 +1233,8 @@ private function a104($end, $name, $annOrExtTag, $isBlock, $attribs, $selfclose)
 		// change up data-attribs in one scenario
 		// void-elts that aren't self-closed ==> useful for accurate RT-ing
 		if ( !$selfclose && $isVoidElt ) {
-			unset( $res->dataAttribs->selfClose );
-			$res->dataAttribs->noClose = true;
+			unset( $res->dataParsoid->selfClose );
+			$res->dataParsoid->noClose = true;
 		}
 
 		$met = $this->maybeAnnotationOrExtensionTag( $res, $end, $attribs, $tsr );
@@ -1345,7 +1345,7 @@ private function a116($spos, $target, $tpos, $lcs) {
 		$dp = new DataParsoid;
 		$dp->tsr = $this->tsrOffsets();
 		$dp->src = $this->text();
-		$obj->dataAttribs = $dp;
+		$obj->dataParsoid = $dp;
 		return [ $obj ];
 	
 }
@@ -1506,7 +1506,7 @@ private function a135($p, $td, $tagEndPos, $tds) {
 
 		// Avoid modifying a cached result
 		$td[0] = clone $td[0];
-		$da = $td[0]->dataAttribs = clone $td[0]->dataAttribs;
+		$da = $td[0]->dataParsoid = clone $td[0]->dataParsoid;
 		$da->tsr = clone $da->tsr;
 
 		$da->tsr->start -= strlen( $p ); // include "|"
@@ -1700,7 +1700,7 @@ private function a160($thTag, $pp, $tht) {
 
 			// Avoid modifying a cached result
 			$tht[0] = clone $tht[0];
-			$da = $tht[0]->dataAttribs = clone $tht[0]->dataAttribs;
+			$da = $tht[0]->dataParsoid = clone $tht[0]->dataParsoid;
 			$da->tsr = clone $da->tsr;
 
 			$da->stx = 'row';
@@ -1716,7 +1716,7 @@ private function a160($thTag, $pp, $tht) {
 private function a161($thTag, $thTags) {
 
 		$thTag[0] = clone $thTag[0];
-		$da = $thTag[0]->dataAttribs = clone $thTag[0]->dataAttribs;
+		$da = $thTag[0]->dataParsoid = clone $thTag[0]->dataParsoid;
 		$da->tsr = clone $da->tsr;
 		$da->tsr->start--; // include "!"
 		array_unshift( $thTags, $thTag );
@@ -1735,9 +1735,9 @@ private function a163($arg, $tagEndPos, $td) {
 }
 private function a164($pp, $tdt) {
 
-			// Avoid modifying cached dataAttribs object
+			// Avoid modifying cached dataParsoid object
 			$tdt[0] = clone $tdt[0];
-			$da = $tdt[0]->dataAttribs = clone $tdt[0]->dataAttribs;
+			$da = $tdt[0]->dataParsoid = clone $tdt[0]->dataParsoid;
 			$da->tsr = clone $da->tsr;
 
 			$da->stx = 'row';

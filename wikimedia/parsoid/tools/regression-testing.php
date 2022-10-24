@@ -74,17 +74,6 @@ class RegressionTesting extends \Wikimedia\Parsoid\Tools\Maintenance {
 		if ( !$this->hasOption( 'quiet' ) ) {
 			error_log( implode( ' ', $cmd ) );
 		}
-		if ( PHP_VERSION_ID < 70400 ) {
-			// Below PHP 7.4, proc_open only takes a string, not an array :(
-			// Do a hacky job of escaping shell arguments
-			$cmd = implode( ' ', array_map( static function ( $a ) {
-				return '"' . str_replace(
-					[ '"', '$' ],
-					[ '\"', '\$' ],
-					$a
-				) . '"';
-			}, $cmd ) );
-		}
 		$descriptors = [ STDIN, STDOUT, STDERR ];
 		if ( $this->hasOption( 'quiet' ) ) {
 			$descriptors[1] = [ 'file', '/tmp/rt.out', 'a' ];
@@ -178,7 +167,7 @@ class RegressionTesting extends \Wikimedia\Parsoid\Tools\Maintenance {
 	 */
 	public function runTest( $commit ): void {
 		$cdDir = self::cmd( 'cd /srv/parsoid-testing' );
-		$restartPHP = self::cmd( 'sudo systemctl restart php7.2-fpm.service' );
+		$restartPHP = self::cmd( 'sudo systemctl restart php7.4-fpm.service' );
 		$resultPath = "/tmp/results.$commit.json";
 		$testScript = self::cmd(
 			$cdDir, '&&',
