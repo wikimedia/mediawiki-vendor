@@ -2,6 +2,7 @@
 
 namespace SmashPig\PaymentProviders\Adyen;
 
+use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentData\StatusNormalizer;
 use SmashPig\PaymentProviders\Responses\CreatePaymentResponse;
 
@@ -40,6 +41,6 @@ class GooglePayPaymentProvider extends PaymentProvider {
 	}
 
 	protected function getPaymentDetailsSuccessfulStatuses(): array {
-		throw new \BadMethodCallException( 'Unexpected getPaymentDetails call for Google Pay.' );
+		return [ FinalStatus::PENDING_POKE, FinalStatus::COMPLETE ];
 	}
 }

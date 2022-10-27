@@ -60,6 +60,16 @@ class Job extends RunnableJob {
 			if ( in_array( $txn_type, $conf['txn_types'] ) ) {
 				$msgClass = $conf['class'];
 				$queue = $conf['queue'];
+				// When the message has a payment_status specified and the configuration
+				// for this message class has a list of valid statuses, return early when
+				// the message's status is not in the valid list.
+				if (
+					isset( $request['payment_status'] ) &&
+					isset( $conf['valid_statuses'] ) &&
+					!in_array( $request['payment_status'], $conf['valid_statuses'] )
+				) {
+					return true;
+				}
 			}
 		}
 

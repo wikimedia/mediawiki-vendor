@@ -7,8 +7,7 @@ use SmashPig\Core\Logging\Logger;
 
 /**
  * Script to import a file created by EmptyQueueToDump back into a PHPQueue backend.
- * Handles both 'raw' dumps from old Stomp queues and normal dumps with one JSON-
- * encoded message body per line.
+ * Handles dumps with one JSON-encoded message body per line.
  *
  * @package SmashPig\Maintenance
  */
@@ -41,11 +40,7 @@ class PopulateQueueFromDump extends MaintenanceBase {
 
 		// Do the loop!
 		while ( ( $line = fgets( $f ) ) !== false ) {
-			if ( substr( $line, 0, 4 ) === 'raw=' ) {
-				$message = $this->decodeLegacyMessage( $line );
-			} else {
-				$message = json_decode( $line, true );
-			}
+			$message = json_decode( $line, true );
 			if ( $message === null ) {
 				Logger::error( "Invalid line: $line" );
 				continue;
@@ -73,18 +68,6 @@ class PopulateQueueFromDump extends MaintenanceBase {
 			"Imported $messageCount messages from $infile in $elapsedTime seconds."
 		);
 	}
-
-	protected function decodeLegacyMessage( $line ) {
-		$parts = explode( '=', $line, 2 );
-
-		$obj = json_decode( $parts[ 1 ], true );
-		if ( !array_key_exists( 'headers', $obj ) || !array_key_exists( 'body', $obj ) ) {
-			return null;
-		}
-		// JSON-fried JSON
-		return json_decode( $obj['body'], true );
-	}
-
 }
 
 $maintClass = PopulateQueueFromDump::class;

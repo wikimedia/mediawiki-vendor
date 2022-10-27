@@ -107,17 +107,19 @@ abstract class PaymentProvider implements
 	 * @throws \SmashPig\Core\DataStores\DataStoreException
 	 */
 	public function getLatestPaymentStatus( array $params ): PaymentDetailResponse {
-		$result = new PaymentDetailResponse();
-		$result->setGatewayTxnId( $params['gateway_txn_id'] );
-		$result->setRecurringPaymentToken( $params['recurring_payment_token'] ?? '' );
+		$response = new PaymentDetailResponse();
+		$response->setGatewayTxnId( $params['gateway_txn_id'] );
+		$response->setRecurringPaymentToken( $params['recurring_payment_token'] ?? '' );
 		// will check the breakdown at resolve again, so it's fine to be blank
-		$result->setRiskScores( [] );
+		$response->setRiskScores( [] );
 		$this->paymentsInitialDatabase = PaymentsInitialDatabase::get();
 		$paymentsInitRow = $this->paymentsInitialDatabase->fetchMessageByGatewayOrderId(
 			$params['gateway'], $params['order_id']
 		);
-		$result->setStatus( $paymentsInitRow['payments_final_status'] ?? FinalStatus::PENDING_POKE );
-		return $result;
+		$response->setStatus( $paymentsInitRow['payments_final_status'] ?? FinalStatus::PENDING_POKE );
+		// successful if either FinalStatus::PENDING_POKE, FinalStatus::COMPLETE
+		$response->setSuccessful( in_array( $response->getStatus(), $this->getPaymentDetailsSuccessfulStatuses() ) );
+		return $response;
 	}
 
 	/**

@@ -4,6 +4,18 @@ use OutOfBoundsException;
 
 class ReferenceData {
 
+	/**
+	 * Example for adding a new Payment Method
+	 * 	'PaymentMethodNameFromPaymentProcessor' => [
+	 * 	  'method' => 'OurNameForThePaymentMethod',
+	 *    'submethod' => 'OurNameForTheSubmethod',
+	 * 	  Variants are optional, sometimes there is a variant that comes in with the payment method
+	 *    'variants' => [
+	 *      'PaymentMethodVariantNameFromPaymentProcessor' => 'OurNameForThePaymentMethodVariant',
+	 * 	  ],
+	 *  ],
+	 */
+
 	protected static $methods = [
 		'alipay' => [
 			'method' => 'ew',
@@ -94,6 +106,10 @@ class ReferenceData {
 		],
 		'jcb_applepay' => [
 			'method' => 'apple',
+			'submethod' => 'jcb',
+		],
+		'jcbprepaidanonymous' => [
+			'method' => 'cc',
 			'submethod' => 'jcb',
 		],
 		'mc' => [

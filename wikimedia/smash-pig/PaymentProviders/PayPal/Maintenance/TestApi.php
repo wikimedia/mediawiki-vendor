@@ -22,7 +22,7 @@ class TestApi extends MaintenanceBase {
 	 */
 	public function execute() {
 		$providerConfiguration = Context::get()->getProviderConfiguration();
-		/** @var SmashPig\PaymentProviders\PayPal\Api $api */
+		/** @var \SmashPig\PaymentProviders\PayPal\Api $api */
 		$api = $providerConfiguration->object( 'api' );
 		$result = $api->makeApiCall( $this->getTestApiParam() );
 		print_r( $result );

@@ -143,6 +143,9 @@ sequence-generator:
                 <<: *REDIS
                 sequence: contribution-tracking
 
+mail-backend:
+    smtp: false
+
 # Must implement Psr\Cache\CacheItemPoolInterface
 # See PSR-6: http://www.php-fig.org/psr/psr-6/
 cache:

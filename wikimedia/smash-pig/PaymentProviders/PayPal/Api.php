@@ -3,6 +3,7 @@
 namespace SmashPig\PaymentProviders\PayPal;
 
 use SmashPig\Core\Http\OutboundRequest;
+use SmashPig\Core\Logging\Logger;
 
 class Api {
 
@@ -54,6 +55,7 @@ class Api {
 		$request->setCertPath( $this->certificate_path );
 		$request->setBody( http_build_query( $requestParams ) );
 		$response = $request->execute();
+		Logger::debug( "Response from API call: " . json_encode( $response ) );
 		parse_str( $response['body'], $result );
 		return $result;
 	}

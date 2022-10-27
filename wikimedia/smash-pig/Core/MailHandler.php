@@ -6,21 +6,9 @@ use SmashPig\Core\Logging\Logger;
 
 /**
  * Abstraction on top of whatever email client we're actually using. For the moment that's
- * PHPMailer on top of sendmail, pulled in via Composer.
+ * PHPMailer, pulled in via Composer.
  */
 class MailHandler {
-
-	/**
-	 * Load a new instance of PHPMailer
-	 *
-	 * @return PHPMailer
-	 */
-	protected static function mailbaseFactory() {
-		$mailer = new PHPMailer( true );
-		$mailer->isSendmail();
-
-		return $mailer;
-	}
 
 	/**
 	 * Monolithic function to send an email!
@@ -56,95 +44,119 @@ class MailHandler {
 	public static function sendEmail( $to, $subject, $textBody, $from = null, $replyTo = null, $htmlBody = null,
 		$attach = [], $cc = null, $bcc = null, $useVerp = true
 	) {
+	try {
 		$config = Context::get()->getProviderConfiguration();
-		$mailer = static::mailbaseFactory();
+		$mailer = static::getMailer();
 
-		try {
-			$to = (array)$to;
-			$cc = (array)$cc;
-			$bcc = (array)$bcc;
-			$archives = (array)$config->val( 'email/archive-addresses' );
+		$to = (array)$to;
+		$cc = (array)$cc;
+		$bcc = (array)$bcc;
+		$archives = (array)$config->val( 'email/archive-addresses' );
 
-			array_walk(
-				$to,
-				function ( $value, $key ) use ( $mailer ) {
-					$mailer->addAddress( $value );
-				}
-			);
-			array_walk(
-				$cc,
-				function ( $value, $key ) use ( $mailer ) {
-					$mailer->addCC( $value );
-				}
-			);
-			array_walk(
-				$bcc,
-				function ( $value, $key ) use ( $mailer ) {
-					$mailer->addBCC( $value );
-				}
-			);
-			array_walk(
-				$archives,
-				function ( $value, $key ) use ( $mailer ) {
-					$mailer->addBCC( $value );
-				}
-			);
-
-			array_walk(
-				$attach,
-				function ( $value, $key ) use ( $mailer ) {
-					$mailer->addAttachment( $value );
-				}
-			);
-
-			// Set the from address
-			if ( !$from ) {
-				$from = $config->val( 'email/from-address' );
+		array_walk(
+			$to,
+			function ( $value, $key ) use ( $mailer ) {
+				$mailer->addAddress( $value );
 			}
-			if ( is_array( $from ) ) {
-				$mailer->setFrom( $from[ 0 ], $from[ 1 ] );
+		);
+
+		array_walk(
+			$cc,
+			function ( $value, $key ) use ( $mailer ) {
+				$mailer->addCC( $value );
+			}
+		);
+
+		array_walk(
+			$bcc,
+			function ( $value, $key ) use ( $mailer ) {
+				$mailer->addBCC( $value );
+			}
+		);
+
+		array_walk(
+			$archives,
+			function ( $value, $key ) use ( $mailer ) {
+				$mailer->addBCC( $value );
+			}
+		);
+
+		array_walk(
+			$attach,
+			function ( $value, $key ) use ( $mailer ) {
+				$mailer->addAttachment( $value );
+			}
+		);
+
+		// Set the from address
+		if ( !$from ) {
+			$from = $config->val( 'email/from-address' );
+		}
+		if ( is_array( $from ) ) {
+			$mailer->setFrom( $from[ 0 ], $from[ 1 ] );
+		} else {
+			$mailer->setFrom( (string)$from );
+		}
+
+		// Only add reply to manually if requested, otherwise it's set when we call SetFrom
+		if ( $replyTo ) {
+			$mailer->addReplyTo( $replyTo );
+		}
+
+		// Set subject and body
+		$mailer->Subject = $subject;
+		if ( $htmlBody ) {
+			$mailer->msgHTML( $htmlBody );
+			$mailer->AltBody = $textBody;
+		} else {
+			$mailer->Body = $textBody;
+		}
+
+		// We replace $1 in email/bounce-address or useVerp if string to create the bounce addr
+		if ( $useVerp ) {
+			$sourceAddr = (array)$to;
+			$sourceAddr = rawurlencode( $sourceAddr[ 0 ] );
+
+			if ( is_string( $useVerp ) ) {
+				$bounceAddr = $useVerp;
 			} else {
-				$mailer->setFrom( (string)$from );
+				$bounceAddr = $config->val( 'email/bounce-address' );
 			}
 
-			// Only add reply to manually if requested, otherwise it's set when we call SetFrom
-			if ( $replyTo ) {
-				$mailer->addReplyTo( $replyTo );
-			}
+			$bounceAddr = str_replace( '$1', $sourceAddr, $bounceAddr );
 
-			// Set subject and body
-			$mailer->Subject = $subject;
-			if ( $htmlBody ) {
-				$mailer->msgHTML( $htmlBody );
-				$mailer->AltBody = $textBody;
-			} else {
-				$mailer->Body = $textBody;
-			}
+			$mailer->Sender = $bounceAddr;
+		}
 
-			// We replace $1 in email/bounce-address or useVerp if string to create the bounce addr
-			if ( $useVerp ) {
-				$sourceAddr = (array)$to;
-				$sourceAddr = rawurlencode( $sourceAddr[ 0 ] );
+		$mailer->send();
 
-				if ( is_string( $useVerp ) ) {
-					$bounceAddr = $useVerp;
-				} else {
-					$bounceAddr = $config->val( 'email/bounce-address' );
-				}
-
-				$bounceAddr = str_replace( '$1', $sourceAddr, $bounceAddr );
-
-				$mailer->Sender = $bounceAddr;
-			}
-
-			$mailer->send();
-
-		} catch ( Exception $ex ) {
+	} catch ( Exception $ex ) {
 			$toStr = implode( ", ", $to );
 			Logger::warning( "Could not send email to {$toStr}. PHP Mailer had exception.", null, $ex );
 			return false;
-		}
+	}
 
 		return true;
 	}
+
+	/**
+	 * Get instance of PHPMailer
+	 *
+	 * @return \PHPMailer\PHPMailer\PHPMailer
+	 * @throws \SmashPig\Core\ConfigurationKeyException
+	 */
+	private static function getMailer(): PHPMailer {
+		$config = Context::get()->getGlobalConfiguration();
+		$mailer = new PHPMailer( true );
+		if ( $config->val( 'mail-backend/smtp' ) === true ) {
+			$mailer->isSMTP();
+			$mailer->Host = $config->val( 'mail-backend/smtp-host' );
+			$mailer->Port = $config->val( 'mail-backend/smtp-port' );
+		} else {
+			$mailer->isSendmail();
+		}
+
+		return $mailer;
+	}
+
 }
