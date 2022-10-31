@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 namespace Wikimedia\Parsoid\Utils;
 
 use DOMException;
+use Wikimedia\Assert\UnreachableException;
 use Wikimedia\Parsoid\Config\Env;
 use Wikimedia\Parsoid\DOM\Comment;
 use Wikimedia\Parsoid\DOM\Document;
@@ -752,8 +753,6 @@ class WTUtils {
 		// Now encode '-', '>' and '&' in the "true value" as HTML entities,
 		// so that they can be safely embedded in an HTML comment.
 		// This part doesn't have to map strings 1-to-1.
-		// WARNING(T279451): This is actually the part which protects the
-		// "-type" key in self::fosterCommentData
 		return preg_replace_callback( '/[->&]/', static function ( $m ) {
 			return Utils::entityEncodeAll( $m[0] );
 		}, $trueValue );
@@ -780,20 +779,30 @@ class WTUtils {
 	 * Utility function: we often need to know the wikitext DSR length for
 	 * an HTML DOM comment value.
 	 *
-	 * @param Comment|CommentTk|string $node A comment node containing a DOM-escaped comment.
+	 * @param Comment|CommentTk $node A comment node containing a DOM-escaped comment.
 	 * @return int The wikitext length in UTF-8 bytes necessary to encode this
 	 *   comment, including 7 characters for the `<!--` and `-->` delimiters.
 	 */
 	public static function decodedCommentLength( $node ): int {
 		// Add 7 for the "<!--" and "-->" delimiters in wikitext.
+		$syntaxLen = 7;
 		if ( $node instanceof Comment ) {
 			$value = $node->nodeValue;
+			if ( $node->previousSibling &&
+				DOMUtils::hasTypeOf( $node->previousSibling, "mw:Placeholder/UnclosedComment" )
+			) {
+				$syntaxLen = 4;
+			}
 		} elseif ( $node instanceof CommentTk ) {
+			// @phan-suppress-next-line PhanUndeclaredProperty
+			if ( isset( $node->dataParsoid->unclosedComment ) ) {
+				$syntaxLen = 4;
+			}
 			$value = $node->value;
 		} else {
-			$value = $node;
+			throw new UnreachableException( 'Should not be here!' );
 		}
-		return strlen( self::decodeComment( $value ) ) + 7;
+		return strlen( self::decodeComment( $value ) ) + $syntaxLen;
 	}
 
 	/**

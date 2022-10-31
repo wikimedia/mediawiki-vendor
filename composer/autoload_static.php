@@ -403,13 +403,13 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'ValueParsers\\' => 
         array (
-            0 => __DIR__ . '/..' . '/data-values/interfaces/src/ValueParsers',
-            1 => __DIR__ . '/..' . '/data-values/common/src/ValueParsers',
+            0 => __DIR__ . '/..' . '/data-values/common/src/ValueParsers',
+            1 => __DIR__ . '/..' . '/data-values/interfaces/src/ValueParsers',
         ),
         'ValueFormatters\\' => 
         array (
-            0 => __DIR__ . '/..' . '/data-values/interfaces/src/ValueFormatters',
-            1 => __DIR__ . '/..' . '/data-values/common/src/ValueFormatters',
+            0 => __DIR__ . '/..' . '/data-values/common/src/ValueFormatters',
+            1 => __DIR__ . '/..' . '/data-values/interfaces/src/ValueFormatters',
         ),
         'Symfony\\Polyfill\\Php81\\' => 
         array (
@@ -650,8 +650,8 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'DataValues\\' => 
         array (
-            0 => __DIR__ . '/..' . '/data-values/data-values/src',
-            1 => __DIR__ . '/..' . '/data-values/common/src/DataValues',
+            0 => __DIR__ . '/..' . '/data-values/common/src/DataValues',
+            1 => __DIR__ . '/..' . '/data-values/data-values/src',
         ),
         'Cose\\' => 
         array (

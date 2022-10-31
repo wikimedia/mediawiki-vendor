@@ -741,12 +741,13 @@ heading =
 // for further details.
 
 comment =
-	'<!--' c:$(!"-->" .)* ('-->' / eof) {
-		// WARNING(T279451): This encoding is important for the choice of key
-		// in WTUtils::fosterCommentData
+	'<!--' c:$(!"-->" .)* cEnd:$('-->' / eof) {
 		$data = WTUtils::encodeComment( $c );
 		$dp = new DataParsoid;
 		$dp->tsr = $this->tsrOffsets();
+		if ( $cEnd !== '-->' ) {
+			$dp->unclosedComment = true;
+		}
 		return [ new CommentTk( $data, $dp ) ];
 	}
 
