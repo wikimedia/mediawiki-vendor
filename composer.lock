@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5fc3f682e54f5f6dd6550a1aacc7cef4",
+    "content-hash": "17ced67c91dda1bc35e8f68c479c6211",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -8200,16 +8200,16 @@
         },
         {
             "name": "wmde/php-vuejs-templating",
-            "version": "1.0.3",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wmde/php-vuejs-templating.git",
-                "reference": "f0c35ef0875d05fe74c9a0e0361b888e5c6818d0"
+                "reference": "de090244d9604cc22f83d49ab459c84a9e1fb0b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wmde/php-vuejs-templating/zipball/f0c35ef0875d05fe74c9a0e0361b888e5c6818d0",
-                "reference": "f0c35ef0875d05fe74c9a0e0361b888e5c6818d0",
+                "url": "https://api.github.com/repos/wmde/php-vuejs-templating/zipball/de090244d9604cc22f83d49ab459c84a9e1fb0b5",
+                "reference": "de090244d9604cc22f83d49ab459c84a9e1fb0b5",
                 "shasum": ""
             },
             "require": {
@@ -8237,9 +8237,9 @@
             "description": "PHP implementation of Vue.js templating engine",
             "support": {
                 "issues": "https://github.com/wmde/php-vuejs-templating/issues",
-                "source": "https://github.com/wmde/php-vuejs-templating/tree/1.0.3"
+                "source": "https://github.com/wmde/php-vuejs-templating/tree/1.1.0"
             },
-            "time": "2021-01-27T10:06:37+00:00"
+            "time": "2022-11-01T16:05:36+00:00"
         },
         {
             "name": "zordius/lightncandy",
