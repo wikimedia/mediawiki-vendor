@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => 'c199487e4f35b5e1f7563ba76b91830cf06beca1',
+        'reference' => 'f231cf2ab2f24a287fd4579d8fc42b1dc93b53e0',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => 'c199487e4f35b5e1f7563ba76b91830cf06beca1',
+            'reference' => 'f231cf2ab2f24a287fd4579d8fc42b1dc93b53e0',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -930,6 +930,15 @@
             'install_path' => __DIR__ . '/../wikimedia/base-convert',
             'aliases' => array(),
             'reference' => 'aa997185e0b42c1f61a11f3e1980cad144175111',
+            'dev_requirement' => false,
+        ),
+        'wikimedia/bcp-47-code' => array(
+            'pretty_version' => 'v1.0.0',
+            'version' => '1.0.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../wikimedia/bcp-47-code',
+            'aliases' => array(),
+            'reference' => '847974e89e4112ce7432802cdbc5f1332e816b11',
             'dev_requirement' => false,
         ),
         'wikimedia/cdb' => array(

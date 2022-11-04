@@ -6450,6 +6450,58 @@
             "install-path": "../wikimedia/base-convert"
         },
         {
+            "name": "wikimedia/bcp-47-code",
+            "version": "v1.0.0",
+            "version_normalized": "1.0.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wikimedia/mediawiki-libs-Bcp47Code.git",
+                "reference": "847974e89e4112ce7432802cdbc5f1332e816b11"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Bcp47Code/zipball/847974e89e4112ce7432802cdbc5f1332e816b11",
+                "reference": "847974e89e4112ce7432802cdbc5f1332e816b11",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4.3"
+            },
+            "require-dev": {
+                "mediawiki/mediawiki-codesniffer": "39.0.0",
+                "mediawiki/mediawiki-phan-config": "0.12.0",
+                "mediawiki/minus-x": "1.1.1",
+                "ockcyp/covers-validator": "1.6.0",
+                "php-parallel-lint/php-console-highlighter": "1.0.0",
+                "php-parallel-lint/php-parallel-lint": "1.3.2",
+                "phpunit/phpunit": "^9.5"
+            },
+            "time": "2022-11-04T10:20:28+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Wikimedia\\Bcp47Code\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "C. Scott Ananian",
+                    "email": "cananian@wikimedia.org"
+                }
+            ],
+            "description": "Simple interface representing languages which have a BCP 47 code",
+            "homepage": "https://www.mediawiki.org/wiki/Bcp47Code",
+            "support": {
+                "source": "https://github.com/wikimedia/mediawiki-libs-Bcp47Code/tree/v1.0.0"
+            },
+            "install-path": "../wikimedia/bcp-47-code"
+        },
+        {
             "name": "wikimedia/cdb",
             "version": "2.0.0",
             "version_normalized": "2.0.0.0",

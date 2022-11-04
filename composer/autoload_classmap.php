@@ -3278,6 +3278,8 @@ return array(
     'Wikimedia\\Assert\\PreconditionException' => $vendorDir . '/wikimedia/assert/src/PreconditionException.php',
     'Wikimedia\\Assert\\UnreachableException' => $vendorDir . '/wikimedia/assert/src/UnreachableException.php',
     'Wikimedia\\AtEase\\AtEase' => $vendorDir . '/wikimedia/at-ease/src/Wikimedia/AtEase/AtEase.php',
+    'Wikimedia\\Bcp47Code\\Bcp47Code' => $vendorDir . '/wikimedia/bcp-47-code/src/Bcp47Code.php',
+    'Wikimedia\\Bcp47Code\\Bcp47CodeValue' => $vendorDir . '/wikimedia/bcp-47-code/src/Bcp47CodeValue.php',
     'Wikimedia\\CSS\\Grammar\\Alternative' => $vendorDir . '/wikimedia/css-sanitizer/src/Grammar/Alternative.php',
     'Wikimedia\\CSS\\Grammar\\AnythingMatcher' => $vendorDir . '/wikimedia/css-sanitizer/src/Grammar/AnythingMatcher.php',
     'Wikimedia\\CSS\\Grammar\\BlockMatcher' => $vendorDir . '/wikimedia/css-sanitizer/src/Grammar/BlockMatcher.php',

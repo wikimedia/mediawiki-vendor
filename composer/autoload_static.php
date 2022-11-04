@@ -146,6 +146,7 @@ class ComposerStaticInit_mediawiki_vendor
             'Wikimedia\\Composer\\Merge\\V2\\' => 28,
             'Wikimedia\\CommonPasswords\\' => 26,
             'Wikimedia\\CSS\\' => 14,
+            'Wikimedia\\Bcp47Code\\' => 20,
             'Wikimedia\\AtEase\\' => 17,
             'Wikimedia\\Assert\\' => 17,
             'Wikimedia\\' => 10,
@@ -362,6 +363,10 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\CSS\\' => 
         array (
             0 => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src',
+        ),
+        'Wikimedia\\Bcp47Code\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/wikimedia/bcp-47-code/src',
         ),
         'Wikimedia\\AtEase\\' => 
         array (
@@ -4045,6 +4050,8 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Assert\\PreconditionException' => __DIR__ . '/..' . '/wikimedia/assert/src/PreconditionException.php',
         'Wikimedia\\Assert\\UnreachableException' => __DIR__ . '/..' . '/wikimedia/assert/src/UnreachableException.php',
         'Wikimedia\\AtEase\\AtEase' => __DIR__ . '/..' . '/wikimedia/at-ease/src/Wikimedia/AtEase/AtEase.php',
+        'Wikimedia\\Bcp47Code\\Bcp47Code' => __DIR__ . '/..' . '/wikimedia/bcp-47-code/src/Bcp47Code.php',
+        'Wikimedia\\Bcp47Code\\Bcp47CodeValue' => __DIR__ . '/..' . '/wikimedia/bcp-47-code/src/Bcp47CodeValue.php',
         'Wikimedia\\CSS\\Grammar\\Alternative' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/Alternative.php',
         'Wikimedia\\CSS\\Grammar\\AnythingMatcher' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/AnythingMatcher.php',
         'Wikimedia\\CSS\\Grammar\\BlockMatcher' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/BlockMatcher.php',
