@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'mediawiki/core',
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
-        'reference' => 'fe8999d9d49a45ad016cbb84f02c5c88744ef0d7',
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => '57a4e841770e80321e7d3cdb24d73d1355705b52',
         'type' => 'mediawiki-core',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -164,9 +164,9 @@
             'dev_requirement' => false,
         ),
         'mediawiki/core' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'reference' => 'fe8999d9d49a45ad016cbb84f02c5c88744ef0d7',
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => '57a4e841770e80321e7d3cdb24d73d1355705b52',
             'type' => 'mediawiki-core',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -473,9 +473,9 @@
             'dev_requirement' => false,
         ),
         'twig/twig' => array(
-            'pretty_version' => 'v1.44.5',
-            'version' => '1.44.5.0',
-            'reference' => 'dd4353357c5a116322e92a00d16043a31881a81e',
+            'pretty_version' => 'v1.44.7',
+            'version' => '1.44.7.0',
+            'reference' => '0887422319889e442458e48e2f3d9add1a172ad5',
             'type' => 'library',
             'install_path' => __DIR__ . '/../twig/twig',
             'aliases' => array(),
