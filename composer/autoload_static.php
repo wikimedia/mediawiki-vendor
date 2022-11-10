@@ -150,7 +150,6 @@ class ComposerStaticInit_mediawiki_vendor
             'Wikimedia\\AtEase\\' => 17,
             'Wikimedia\\Assert\\' => 17,
             'Wikimedia\\' => 10,
-            'WikiPEG\\' => 8,
             'Webauthn\\MetadataService\\' => 25,
             'Webauthn\\' => 9,
             'WMDE\\VueJsTemplating\\' => 21,
@@ -385,10 +384,6 @@ class ComposerStaticInit_mediawiki_vendor
             4 => __DIR__ . '/..' . '/wikimedia/testing-access-wrapper/src',
             5 => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src',
             6 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
-        ),
-        'WikiPEG\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/wikimedia/wikipeg/src',
         ),
         'Webauthn\\MetadataService\\' => 
         array (
