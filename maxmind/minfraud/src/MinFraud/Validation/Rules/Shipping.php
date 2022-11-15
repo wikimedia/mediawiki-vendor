@@ -12,19 +12,17 @@ use Respect\Validation\Validator as v;
  */
 class Shipping extends AbstractWrapper
 {
-    use Address;
-
     public function __construct()
     {
         $keys = Address::keys();
-        array_push(
-            $keys,
+
+        $keys[] =
             v::key(
                 'delivery_speed',
                 v::in(['same_day', 'overnight', 'expedited', 'standard']),
                 false
             )
-        );
-        $this->validatable = \call_user_func_array('Respect\Validation\Validator::keySet', $keys);
+        ;
+        parent::__construct(\call_user_func_array('Respect\Validation\Validator::keySet', $keys));
     }
 }

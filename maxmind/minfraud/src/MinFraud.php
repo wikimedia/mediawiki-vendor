@@ -10,6 +10,10 @@ use MaxMind\Exception\InsufficientFundsException;
 use MaxMind\Exception\InvalidInputException;
 use MaxMind\Exception\InvalidRequestException;
 use MaxMind\Exception\WebServiceException;
+use MaxMind\MinFraud\Model\Factors;
+use MaxMind\MinFraud\Model\Insights;
+use MaxMind\MinFraud\Model\Score;
+use MaxMind\MinFraud\Util;
 
 /**
  * This class provides a client API for accessing MaxMind minFraud Score,
@@ -37,7 +41,19 @@ use MaxMind\Exception\WebServiceException;
  */
 class MinFraud extends MinFraud\ServiceClient
 {
+    /**
+     * @var array
+     */
     private $content;
+
+    /**
+     * @var bool
+     */
+    private $hashEmail;
+
+    /**
+     * @var array<string>
+     */
     private $locales;
 
     /**
@@ -50,6 +66,10 @@ class MinFraud extends MinFraud\ServiceClient
      *   request.
      * * `caBundle` - The bundle of CA root certificates to use in the request.
      * * `connectTimeout` - The connect timeout to use for the request.
+     * * `hashEmail` - By default, the email address is sent in plain text.
+     *   If this is set to `true`, the email address will be normalized and
+     *   converted to an MD5 hash before the request is sent. The email domain
+     *   will continue to be sent in plain text.
      * * `timeout` - The timeout to use for the request.
      * * `proxy` - The HTTP proxy to use. May include a schema, port,
      *   username, and password, e.g., `http://username:password@127.0.0.1:10`.
@@ -65,6 +85,8 @@ class MinFraud extends MinFraud\ServiceClient
         string $licenseKey,
         array $options = []
     ) {
+        $this->hashEmail = isset($options['hashEmail']) && $options['hashEmail'];
+
         if (isset($options['locales'])) {
             $this->locales = $options['locales'];
         } else {
@@ -78,7 +100,8 @@ class MinFraud extends MinFraud\ServiceClient
      * This returns a `MinFraud` object with the array to be sent to the web
      * service set to `$values`. Existing values will be replaced.
      *
-     * @link https://dev.maxmind.com/minfraud/ minFraud API docs
+     * @link https://dev.maxmind.com/minfraud/api-documentation?lang=en
+     * minFraud API docs
      *
      * @return MinFraud A new immutable MinFraud object. This object is
      *                  a clone of the original with additional data.
@@ -86,6 +109,10 @@ class MinFraud extends MinFraud\ServiceClient
     public function with(array $values): self
     {
         $values = $this->cleanAndValidate('Transaction', $values);
+
+        if ($this->hashEmail) {
+            $values = Util::maybeHashEmail($values);
+        }
 
         $new = clone $this;
         $new->content = $values;
@@ -97,7 +124,7 @@ class MinFraud extends MinFraud\ServiceClient
      * This returns a `MinFraud` object with the `device` array set to
      * `$values`. Existing `device` data will be replaced.
      *
-     * @link https://dev.maxmind.com/minfraud/#Device_device
+     * @link https://dev.maxmind.com/minfraud/api-documentation/requests?lang=en#schema--request--device
      *     minFraud device API docs
      *
      * @return MinFraud A new immutable MinFraud object. This object is
@@ -112,7 +139,7 @@ class MinFraud extends MinFraud\ServiceClient
      * This returns a `MinFraud` object with the `events` array set to
      * `$values`. Existing `event` data will be replaced.
      *
-     * @link https://dev.maxmind.com/minfraud/#Event_event
+     * @link https://dev.maxmind.com/minfraud/api-documentation/requests?lang=en#schema--request--event
      *     minFraud event API docs
      *
      * @return MinFraud A new immutable MinFraud object. This object is
@@ -127,7 +154,7 @@ class MinFraud extends MinFraud\ServiceClient
      * This returns a `MinFraud` object with the `account` array set to
      * `$values`. Existing `account` data will be replaced.
      *
-     * @link https://dev.maxmind.com/minfraud/#Account_account
+     * @link https://dev.maxmind.com/minfraud/api-documentation/requests?lang=en#schema--request--account
      *     minFraud account API docs
      *
      * @return MinFraud A new immutable MinFraud object. This object is
@@ -142,7 +169,7 @@ class MinFraud extends MinFraud\ServiceClient
      * This returns a `MinFraud` object with the `email` array set to
      * `$values`. Existing `email` data will be replaced.
      *
-     * @link https://dev.maxmind.com/minfraud/#Email_email
+     * @link https://dev.maxmind.com/minfraud/api-documentation/requests?lang=en#schema--request--email
      *     minFraud email API docs
      *
      * @return MinFraud A new immutable MinFraud object. This object is
@@ -150,14 +177,20 @@ class MinFraud extends MinFraud\ServiceClient
      */
     public function withEmail(array $values): self
     {
-        return $this->validateAndAdd('Email', 'email', $values);
+        $obj = $this->validateAndAdd('Email', 'email', $values);
+
+        if ($this->hashEmail) {
+            $obj->content = Util::maybeHashEmail($obj->content);
+        }
+
+        return $obj;
     }
 
     /**
      * This returns a `MinFraud` object with the `billing` array set to
      * `$values`. Existing `billing` data will be replaced.
      *
-     * @link https://dev.maxmind.com/minfraud/#Billing_billing
+     * @link https://dev.maxmind.com/minfraud/api-documentation/requests?lang=en#schema--request--billing
      *     minFraud billing API docs
      *
      * @return MinFraud A new immutable MinFraud object. This object is
@@ -172,7 +205,7 @@ class MinFraud extends MinFraud\ServiceClient
      * This returns a `MinFraud` object with the `shipping` array set to
      * `$values`. Existing `shipping` data will be replaced.
      *
-     * @link https://dev.maxmind.com/minfraud/#Shipping_shipping
+     * @link https://dev.maxmind.com/minfraud/api-documentation/requests?lang=en#schema--request--shipping
      *     minFraud shipping API docs
      *
      * @return MinFraud A new immutable MinFraud object. This object is
@@ -187,7 +220,7 @@ class MinFraud extends MinFraud\ServiceClient
      * This returns a `MinFraud` object with the `payment` array set to
      * `$values`. Existing `payment` data will be replaced.
      *
-     * @link https://dev.maxmind.com/minfraud/#Payment_payment
+     * @link https://dev.maxmind.com/minfraud/api-documentation/requests?lang=en#schema--request--payment
      *     minFraud payment API docs
      *
      * @return MinFraud A new immutable MinFraud object. This object is
@@ -202,7 +235,7 @@ class MinFraud extends MinFraud\ServiceClient
      * This returns a `MinFraud` object with the `credit_card` array set to
      * `$values`. Existing `credit_card` data will be replaced.
      *
-     * @link https://dev.maxmind.com/minfraud/#Credit_Card_credit_card
+     * @link https://dev.maxmind.com/minfraud/api-documentation/requests?lang=en#schema--request--credit-card
      *     minFraud credit_card API docs
      *
      * @return MinFraud A new immutable MinFraud object. This object is
@@ -210,6 +243,8 @@ class MinFraud extends MinFraud\ServiceClient
      */
     public function withCreditCard(array $values): self
     {
+        $values = Util::cleanCreditCard($values);
+
         return $this->validateAndAdd('CreditCard', 'credit_card', $values);
     }
 
@@ -229,7 +264,7 @@ class MinFraud extends MinFraud\ServiceClient
      * This returns a `MinFraud` object with the `order` array set to
      * `$values`. Existing `order` data will be replaced.
      *
-     * @link https://dev.maxmind.com/minfraud/#Order_order
+     * @link https://dev.maxmind.com/minfraud/api-documentation/requests?lang=en#schema--request--order
      *     minFraud order API docs
      *
      * @return MinFraud A new immutable MinFraud object. This object is
@@ -244,7 +279,7 @@ class MinFraud extends MinFraud\ServiceClient
      * This returns a `MinFraud` object with `$values` added to the shopping
      * cart array.
      *
-     * @link https://dev.maxmind.com/minfraud/#Shopping_Cart_Item
+     * @link https://dev.maxmind.com/minfraud/api-documentation/requests?lang=en#schema--request--shopping-cart--item
      *     minFraud shopping cart item API docs
      *
      * @return MinFraud A new immutable MinFraud object. This object is
@@ -258,7 +293,7 @@ class MinFraud extends MinFraud\ServiceClient
         if (!isset($new->content['shopping_cart'])) {
             $new->content['shopping_cart'] = [];
         }
-        array_push($new->content['shopping_cart'], $values);
+        $new->content['shopping_cart'][] = $values;
 
         return $new;
     }
@@ -296,9 +331,9 @@ class MinFraud extends MinFraud\ServiceClient
      *
      * @return \MaxMind\MinFraud\Model\Score minFraud Score model object
      */
-    public function score(): \MaxMind\MinFraud\Model\Score
+    public function score(): Score
     {
-        return $this->post('Score');
+        return $this->post(Score::class, 'score');
     }
 
     /**
@@ -318,9 +353,9 @@ class MinFraud extends MinFraud\ServiceClient
      *
      * @return \MaxMind\MinFraud\Model\Insights minFraud Insights model object
      */
-    public function insights(): \MaxMind\MinFraud\Model\Insights
+    public function insights(): Insights
     {
-        return $this->post('Insights');
+        return $this->post(Insights::class, 'insights');
     }
 
     /**
@@ -340,13 +375,14 @@ class MinFraud extends MinFraud\ServiceClient
      *
      * @return \MaxMind\MinFraud\Model\Factors minFraud Factors model object
      */
-    public function factors(): \MaxMind\MinFraud\Model\Factors
+    public function factors(): Factors
     {
-        return $this->post('Factors');
+        return $this->post(Factors::class, 'factors');
     }
 
     /**
-     * @param string $service the name of the service to use
+     * @param string $class the model class name to use
+     * @param string $path  the service path suffix to use
      *
      * @throws InvalidInputException      when the request has missing or invalid
      *                                    data
@@ -361,13 +397,11 @@ class MinFraud extends MinFraud\ServiceClient
      *
      * @return mixed the model class for the service
      */
-    private function post(string $service)
+    private function post(string $class, string $path)
     {
-        if (!isset($this->content['device']['ip_address'])) {
-            throw new InvalidInputException('Key ip_address must be present in device');
-        }
-        $url = self::$basePath . strtolower($service);
-        $class = 'MaxMind\\MinFraud\\Model\\' . $service;
+        $url = self::$basePath . $path;
+
+        $service = 'minFraud ' . ucfirst($path);
 
         return new $class(
             $this->client->post($service, $url, $this->content),

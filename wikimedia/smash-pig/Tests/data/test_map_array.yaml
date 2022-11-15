@@ -1,2 +1,2 @@
 test-array:
-    test-array-value: %test_array_value%
+    test-array-value: '%test_array_value%'

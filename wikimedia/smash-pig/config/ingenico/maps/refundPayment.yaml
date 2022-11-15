@@ -1,11 +1,11 @@
 amountOfMoney:
-    amount: %amount%
-    currencyCode: %currency%
+    amount: '%amount%'
+    currencyCode: '%currency%'
 customer:
     address:
-        countryCode: %country%
+        countryCode: '%country%'
         name:
-            firstName: %first_name%
-            surname: %last_name%
+            firstName: '%first_name%'
+            surname: '%last_name%'
 refundReferences:
-    merchantReference: %order_id%
+    merchantReference: '%order_id%'

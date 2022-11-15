@@ -51,6 +51,10 @@ class AdyenPaymentsAccountingReport extends AdyenAudit {
 		// fee is given in settlement currency
 		// but queue consumer expects it in original
 		$exchange = $row['Exchange Rate'];
+		// The exchange rate can be empty for Settled Externally (amex)
+		if ( $exchange == "" ) {
+			$exchange = 1;
+		}
 		$fee = floatval( $row['Commission (SC)'] ) +
 			floatval( $row['Markup (SC)'] ) +
 			floatval( $row['Scheme Fees (SC)'] ) +
@@ -66,7 +70,8 @@ class AdyenPaymentsAccountingReport extends AdyenAudit {
 
 	protected function parseRefund( array $row, array $msg ): array {
 		// Captured (PC) and Original Amount both have the amount refunded
-		$msg['gross'] = $row['Original Amount'];
+		// For some currencies (JPY) Original Amount seems to be off by 100x
+		$msg['gross'] = $row['Captured (PC)'];
 		$msg['gross_currency'] = $row['Payment Currency'];
 
 		$msg['gateway_parent_id'] = $row['Psp Reference'];

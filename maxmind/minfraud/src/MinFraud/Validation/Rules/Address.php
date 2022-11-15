@@ -9,9 +9,9 @@ use Respect\Validation\Validator as v;
 /**
  * @internal
  */
-trait Address
+class Address
 {
-    public static function keys()
+    public static function keys(): array
     {
         return [
             v::key('address', new IntOrString(), false),

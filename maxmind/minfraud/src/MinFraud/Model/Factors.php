@@ -8,13 +8,15 @@ namespace MaxMind\MinFraud\Model;
  * Model representing the Factors response.
  *
  * @property-read \MaxMind\MinFraud\Model\Subscores $subscores An object
- * containing subscores for many of the individual components that are
- * used to calculate the overall risk score.
+ * containing scores for many of the individual risk factors that are used to
+ * calculate the overall risk score.
  */
 class Factors extends Insights
 {
     /**
      * @internal
+     *
+     * @var Subscores
      */
     protected $subscores;
 

@@ -34,41 +34,57 @@ class Score extends AbstractModel
 {
     /**
      * @internal
+     *
+     * @var Disposition
      */
     protected $disposition;
 
     /**
      * @internal
+     *
+     * @var float
      */
     protected $fundsRemaining;
 
     /**
      * @internal
+     *
+     * @var string
      */
     protected $id;
 
     /**
      * @internal
+     *
+     * @var ScoreIpAddress
      */
     protected $ipAddress;
 
     /**
      * @internal
+     *
+     * @var int
      */
     protected $queriesRemaining;
 
     /**
      * @internal
+     *
+     * @var array
      */
     protected $rawResponse;
 
     /**
      * @internal
+     *
+     * @var float
      */
     protected $riskScore;
 
     /**
      * @internal
+     *
+     * @var array<Warning>
      */
     protected $warnings;
 
@@ -87,7 +103,7 @@ class Score extends AbstractModel
 
         $this->warnings = [];
         foreach ($this->safeArrayLookup($response['warnings'], []) as $warning) {
-            array_push($this->warnings, new Warning($warning));
+            $this->warnings[] = new Warning($warning);
         }
     }
 }

@@ -1,20 +1,20 @@
 cardPaymentMethodSpecificInput:
-    isRecurring: %recurring%
-    recurringPaymentSequenceIndicator: %installment%
-    token: %recurring_payment_token%
+    isRecurring: '%recurring%'
+    recurringPaymentSequenceIndicator: '%installment%'
+    token: '%recurring_payment_token%'
 order:
     amountOfMoney:
-        amount: %amount%
-        currencyCode: %currency%
+        amount: '%amount%'
+        currencyCode: '%currency%'
     references:
-        descriptor: %description%
-        merchantReference: %order_id%
+        descriptor: '%description%'
+        merchantReference: '%order_id%'
     customer:
         contactDetails:
-            emailAddress: %email%
+            emailAddress: '%email%'
         personalInformation:
             name:
-                firstName: %first_name%
-                surname: %last_name%
+                firstName: '%first_name%'
+                surname: '%last_name%'
 fraudFields:
-    customerIpAddress: %user_ip%
+    customerIpAddress: '%user_ip%'

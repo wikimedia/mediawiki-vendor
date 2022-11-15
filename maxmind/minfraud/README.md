@@ -110,9 +110,7 @@ All externally visible exceptions are in the `\MaxMind\Exception` namespace.
 The possible exceptions are:
 
 * `InvalidInputException` - This will be thrown when a `->with*` method is
-  called with invalid input data or when `->score()`, `->insights()`, or
-  `->factors()` is called on a request where the required `ip_address` field in
-  the `device` array is missing.
+  called with invalid input data.
 * `AuthenticationException` - This will be thrown on calling `->score()`,
   `->insights()`, or `->factors()` when the server is unable to authenticate
   the request, e.g., if the license key or account ID is invalid.
@@ -191,13 +189,14 @@ $request = $mf->withDevice([
     'was_authorized'        => false,
     'decline_code'          => 'invalid number',
 ])->withCreditCard([
-    'issuer_id_number'        => '411111',
-    'last_4_digits'           => '7643',
-    'bank_name'               => 'Bank of No Hope',
-    'bank_phone_country_code' => '1',
-    'bank_phone_number'       => '123-456-1234',
-    'avs_result'              => 'Y',
-    'cvv_result'              => 'N',
+    'issuer_id_number'         => '411111',
+    'last_digits'              => '7643',
+    'bank_name'                => 'Bank of No Hope',
+    'bank_phone_country_code'  => '1',
+    'bank_phone_number'        => '123-456-1234',
+    'avs_result'               => 'Y',
+    'cvv_result'               => 'N',
+    'was_3d_secure_successful' => true,
 ])->withOrder([
     'amount'           => 323.21,
     'currency'         => 'USD',
@@ -304,7 +303,7 @@ use MaxMind\MinFraud\ReportTransaction;
 # and optionally an array of options.
 $rt = new ReportTransaction(1, 'ABCD567890');
 
-$rt->report(
+$rt->report([
     'ip_address'      => '152.216.7.110',
     'tag'             => 'chargeback',
     'chargeback_code' => 'UA02',
@@ -312,8 +311,7 @@ $rt->report(
     'maxmind_id'      => 'aBcDeFgH',
     'notes'           => 'Found due to non-existent shipping address',
     'transaction_id'  => 'cart123456789',
-);
-
+]);
 ```
 
 ## Support ##
@@ -327,7 +325,7 @@ to the client API, please see
 
 ## Requirements  ##
 
-This code requires PHP 5.6 or greater. Older versions of PHP are not
+This code requires PHP 7.3 or greater. Older versions of PHP are not
 supported.
 
 There are several other dependencies as defined in the `composer.json` file.
@@ -343,6 +341,6 @@ This API uses [Semantic Versioning](https://semver.org/).
 
 ## Copyright and License ##
 
-This software is Copyright (c) 2015-2020 by MaxMind, Inc.
+This software is Copyright (c) 2015-2022 by MaxMind, Inc.
 
 This is free software, licensed under the Apache License, Version 2.0.

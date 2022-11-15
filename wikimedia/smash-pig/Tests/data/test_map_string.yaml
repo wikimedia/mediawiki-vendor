@@ -1,1 +1,1 @@
-test-string: %test_string_value%
+test-string: '%test_string_value%'
