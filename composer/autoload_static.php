@@ -139,6 +139,7 @@ class ComposerStaticInit_mediawiki_vendor
             'Wikimedia\\ObjectFactory\\' => 24,
             'Wikimedia\\NormalizedException\\' => 30,
             'Wikimedia\\Minify\\' => 17,
+            'Wikimedia\\MetricsPlatform\\' => 26,
             'Wikimedia\\LangConv\\' => 19,
             'Wikimedia\\IDLeDOM\\' => 18,
             'Wikimedia\\Equivset\\' => 19,
@@ -334,6 +335,10 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Minify\\' => 
         array (
             0 => __DIR__ . '/..' . '/wikimedia/minify/src',
+        ),
+        'Wikimedia\\MetricsPlatform\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/src',
         ),
         'Wikimedia\\LangConv\\' => 
         array (
@@ -4838,6 +4843,14 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\LangConv\\NullReplacementMachine' => __DIR__ . '/..' . '/wikimedia/langconv/src/NullReplacementMachine.php',
         'Wikimedia\\LangConv\\ReplacementMachine' => __DIR__ . '/..' . '/wikimedia/langconv/src/ReplacementMachine.php',
         'Wikimedia\\LangConv\\ZhReplacementMachine' => __DIR__ . '/..' . '/wikimedia/langconv/src/ZhReplacementMachine.php',
+        'Wikimedia\\MetricsPlatform\\ContextController' => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/src/ContextController.php',
+        'Wikimedia\\MetricsPlatform\\CurationController' => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/src/CurationController.php',
+        'Wikimedia\\MetricsPlatform\\Integration' => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/src/Integration.php',
+        'Wikimedia\\MetricsPlatform\\MetricsClient' => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/src/MetricsClient.php',
+        'Wikimedia\\MetricsPlatform\\StreamConfig\\StreamConfig' => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/src/StreamConfig/StreamConfig.php',
+        'Wikimedia\\MetricsPlatform\\StreamConfig\\StreamConfigException' => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/src/StreamConfig/StreamConfigException.php',
+        'Wikimedia\\MetricsPlatform\\StreamConfig\\StreamConfigFactory' => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/src/StreamConfig/StreamConfigFactory.php',
+        'Wikimedia\\MetricsPlatform\\StreamConfig\\ValidatingStreamConfigFactory' => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/src/StreamConfig/ValidatingStreamConfigFactory.php',
         'Wikimedia\\Minify\\CSSMin' => __DIR__ . '/..' . '/wikimedia/minify/src/CSSMin.php',
         'Wikimedia\\Minify\\Cli' => __DIR__ . '/..' . '/wikimedia/minify/src/Cli.php',
         'Wikimedia\\Minify\\JavaScriptMapperState' => __DIR__ . '/..' . '/wikimedia/minify/src/JavaScriptMapperState.php',

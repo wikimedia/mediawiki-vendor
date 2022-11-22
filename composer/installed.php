@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => 'c986711ed8dd0afd0556f361c0189c306999f0ce',
+        'reference' => '492634a9cbaf57d62c7c3c4c07b34aa4990b8361',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => 'c986711ed8dd0afd0556f361c0189c306999f0ce',
+            'reference' => '492634a9cbaf57d62c7c3c4c07b34aa4990b8361',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -1065,6 +1065,15 @@
             'install_path' => __DIR__ . '/../wikimedia/lucene-explain-parser',
             'aliases' => array(),
             'reference' => '82a90019468290a6009a9f61010bd0ffd7e8fc10',
+            'dev_requirement' => false,
+        ),
+        'wikimedia/metrics-platform' => array(
+            'pretty_version' => '1.0.0',
+            'version' => '1.0.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../wikimedia/metrics-platform',
+            'aliases' => array(),
+            'reference' => 'ab21bc765465f9e93e513ff3ebbd3fbc96e5802d',
             'dev_requirement' => false,
         ),
         'wikimedia/minify' => array(
