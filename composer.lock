@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "79940a4548b2537ab76fb32d4150fa23",
+    "content-hash": "7e482880aa3faf27d4a9c5414846ae08",
     "packages": [
         {
             "name": "christian-riesen/base32",
@@ -2789,35 +2789,38 @@
         },
         {
             "name": "wikimedia/xmp-reader",
-            "version": "0.7.0",
+            "version": "0.8.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/xmp-reader.git",
-                "reference": "4b8ab8ea23cc2ccf2530738081cb4e146d55b86b"
+                "reference": "99e6c9397d281f3c9842f3e72588fc04ef3e6fa4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/xmp-reader/zipball/4b8ab8ea23cc2ccf2530738081cb4e146d55b86b",
-                "reference": "4b8ab8ea23cc2ccf2530738081cb4e146d55b86b",
+                "url": "https://api.github.com/repos/wikimedia/xmp-reader/zipball/99e6c9397d281f3c9842f3e72588fc04ef3e6fa4",
+                "reference": "99e6c9397d281f3c9842f3e72588fc04ef3e6fa4",
                 "shasum": ""
             },
             "require": {
                 "ext-iconv": "*",
+                "ext-libxml": "*",
                 "ext-xml": "*",
+                "ext-xmlreader": "*",
                 "php": ">=7.2.9",
                 "psr/log": "^1.0",
-                "wikimedia/at-ease": "1.2 || 2.0",
-                "wikimedia/scoped-callback": "^1.0 || ^2.0 || ^3.0",
-                "wikimedia/timestamp": "^1.0 || ^2.0 || ^3.0"
+                "wikimedia/at-ease": "^2.0.0",
+                "wikimedia/scoped-callback": "^1.0 || ^2.0 || ^3.0 || ^4.0",
+                "wikimedia/timestamp": "^1.0 || ^2.0 || ^3.0 || ^4.0"
             },
             "require-dev": {
                 "ext-exif": "*",
-                "jakub-onderka/php-console-highlighter": "0.3.2",
-                "jakub-onderka/php-parallel-lint": "1.0.0",
-                "mediawiki/mediawiki-codesniffer": "29.0.0",
-                "mediawiki/minus-x": "0.3.2",
-                "ockcyp/covers-validator": "0.5.1 || 0.6.1",
-                "phpunit/phpunit": "4.8.36 || ^6.5"
+                "mediawiki/mediawiki-codesniffer": "39.0.0",
+                "mediawiki/mediawiki-phan-config": "0.11.1",
+                "mediawiki/minus-x": "1.1.1",
+                "ockcyp/covers-validator": "1.4.0",
+                "php-parallel-lint/php-console-highlighter": "1.0.0",
+                "php-parallel-lint/php-parallel-lint": "1.3.2",
+                "phpunit/phpunit": "^8.5"
             },
             "type": "library",
             "autoload": {
@@ -2845,9 +2848,9 @@
                 "xmp"
             ],
             "support": {
-                "source": "https://github.com/wikimedia/xmp-reader/tree/0.7.0"
+                "source": "https://github.com/wikimedia/xmp-reader/tree/0.8.5"
             },
-            "time": "2020-01-16T19:03:42+00:00"
+            "time": "2022-10-20T14:10:29+00:00"
         },
         {
             "name": "wikimedia/zest-css",
@@ -3078,16 +3081,16 @@
         },
         {
             "name": "swaggest/json-diff",
-            "version": "v3.9.0",
+            "version": "v3.10.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swaggest/json-diff.git",
-                "reference": "ff3a7921e9f1aa096067eb541fcfd0e7611c558c"
+                "reference": "f4e511708060ff7511a3743fab4aa484a062bcfb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swaggest/json-diff/zipball/ff3a7921e9f1aa096067eb541fcfd0e7611c558c",
-                "reference": "ff3a7921e9f1aa096067eb541fcfd0e7611c558c",
+                "url": "https://api.github.com/repos/swaggest/json-diff/zipball/f4e511708060ff7511a3743fab4aa484a062bcfb",
+                "reference": "f4e511708060ff7511a3743fab4aa484a062bcfb",
                 "shasum": ""
             },
             "require": {
@@ -3115,9 +3118,9 @@
             "description": "JSON diff/rearrange/patch/pointer library for PHP",
             "support": {
                 "issues": "https://github.com/swaggest/json-diff/issues",
-                "source": "https://github.com/swaggest/json-diff/tree/v3.9.0"
+                "source": "https://github.com/swaggest/json-diff/tree/v3.10.4"
             },
-            "time": "2022-08-29T15:04:08+00:00"
+            "time": "2022-11-09T13:21:05+00:00"
         },
         {
             "name": "swaggest/json-schema",
