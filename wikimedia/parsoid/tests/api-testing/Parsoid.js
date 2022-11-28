@@ -53,7 +53,7 @@ function status200( res ) {
 
 // Return a matcher function that checks whether a content type matches the given parameters.
 function contentTypeMatcher( expectedMime, expectedSpec, expectedVersion ) {
-	const pattern = /^([-\w]+\/[-\w]+); charset=utf-8; profile="https:\/\/www.mediawiki.org\/wiki\/Specs\/([-\w]+)\/(\d+\.\d+\.\d+)"$/;
+	const pattern = /^([-\w]+\/[-\w]+);(?: charset=utf-8;)? profile="https:\/\/www.mediawiki.org\/wiki\/Specs\/([-\w]+)\/(\d+\.\d+\.\d+)"$/;
 
 	return ( actual ) => {
 		const parts = pattern.exec( actual );
@@ -1047,59 +1047,6 @@ describe('Parsoid API', function() {
 			.expect(validPageBundleResponse(function(doc, dp) {
 				dp.should.not.have.property('sectionOffsets');
 			}))
-			.end(done);
-		});
-
-		it("should implement subst - simple", function(done) {
-			if (skipForNow) { return this.skip(); }  // Missing template 1x
-			client.req
-			.post(mockDomain + '/v3/transform/wikitext/to/html/')
-			.send({ wikitext: "{{1x|foo}}", subst: 'true' })
-			.expect(validHtmlResponse(function(doc) {
-				var body = doc.body;
-				// <body> should have one child, <section>, the lead section
-				body.childElementCount.should.equal(1);
-				var p = body.firstChild.firstChild;
-				p.nodeName.should.equal('P');
-				p.innerHTML.should.equal('foo');
-				// The <p> shouldn't be a template expansion, just a plain ol' one
-				p.hasAttribute('typeof').should.equal(false);
-				// and it shouldn't have any data-parsoid in it
-				p.hasAttribute('data-parsoid').should.equal(false);
-			}))
-			.end(done);
-		});
-
-		it("should implement subst - internal tranclusion", function(done) {
-			if (skipForNow) { return this.skip(); }  // Missing template 1x
-			client.req
-			.post(mockDomain + '/v3/transform/wikitext/to/html/')
-			.send({ wikitext: "{{1x|foo {{1x|bar}} baz}}", subst: 'true' })
-			.expect(validHtmlResponse(function(doc) {
-				var body = doc.body;
-				// <body> should have one child, <section>, the lead section
-				body.childElementCount.should.equal(1);
-				var p = body.firstChild.firstChild;
-				p.nodeName.should.equal('P');
-				// The <p> shouldn't be a template expansion, just a plain ol' one
-				p.hasAttribute('typeof').should.equal(false);
-				// and it shouldn't have any data-parsoid in it
-				p.hasAttribute('data-parsoid').should.equal(false);
-				// The internal tranclusion should be presented as such
-				var tplp = p.firstChild.nextSibling;
-				tplp.nodeName.should.equal('SPAN');
-				tplp.getAttribute('typeof').should.equal('mw:Transclusion');
-				// And not have data-parsoid, so it's used as new content
-				tplp.hasAttribute('data-parsoid').should.equal(false);
-			}))
-			.end(done);
-		});
-
-		it('should not allow subst with pagebundle', function(done) {
-			client.req
-			.post(mockDomain + '/v3/transform/wikitext/to/pagebundle/')
-			.send({ wikitext: "{{1x|foo}}", subst: 'true' })
-			.expect(501)
 			.end(done);
 		});
 
@@ -2458,9 +2405,9 @@ describe('Parsoid API', function() {
 
 		describe('Variant conversion', function() {
 
-			it('should refuse variant conversion on en page', function(done) {
+			it('should return unconverted nl page if sr variant conversion is requested on nl page', function(done) {
 				client.req
-				.post(mockDomain + '/v3/transform/pagebundle/to/pagebundle/')
+				.post(mockDomain + '/v3/transform/pagebundle/to/pagebundle/MediaWiki:ok%2Fnl')
 				.send({
 					updates: {
 						variant: { target: 'sr-el' },
@@ -2469,13 +2416,16 @@ describe('Parsoid API', function() {
 						revid,
 						html: {
 							headers: {
-								'content-type': 'text/html;profile="https://www.mediawiki.org/wiki/Specs/HTML/' + defaultContentVersion + '"',
+								'content-type': 'text/html; profile="https://www.mediawiki.org/wiki/Specs/HTML/' + defaultContentVersion + '"',
 							},
 							body: '<p>абвг abcd</p>',
 						},
 					},
 				})
-				.expect(400)
+				.expect(status200)
+				.expect(validPageBundleResponse(function(doc) {
+					doc.body.textContent.should.equal('абвг abcd');
+				}))
 				.end(done);
 			});
 

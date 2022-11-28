@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 namespace Wikimedia\Parsoid\Config;
 
 use Wikimedia\Assert\Assert;
+use Wikimedia\Bcp47Code\Bcp47Code;
 use Wikimedia\Parsoid\Core\ContentMetadataCollector;
 use Wikimedia\Parsoid\Core\ContentModelHandler;
 use Wikimedia\Parsoid\Core\ResourceLimitExceededException;
@@ -148,7 +149,7 @@ class Env {
 	/**
 	 * If non-null, the language variant used for Parsoid HTML;
 	 * we convert to this if wt2html, or from this if html2wt.
-	 * @var string
+	 * @var ?Bcp47Code
 	 */
 	private $htmlVariantLanguage;
 
@@ -156,7 +157,7 @@ class Env {
 	 * If non-null, the language variant to be used for wikitext.
 	 * If null, heuristics will be used to identify the original wikitext variant
 	 * in wt2html mode, and in html2wt mode new or edited HTML will be left unconverted.
-	 * @var string
+	 * @var ?Bcp47Code
 	 */
 	private $wtVariantLanguage;
 
@@ -249,11 +250,13 @@ class Env {
 	 *  - offsetType: 'byte' (default), 'ucs2', 'char'
 	 *                See `Parsoid\Wt2Html\PP\Processors\ConvertOffsets`.
 	 *  - logLinterData: (bool) Should we log linter data if linting is enabled?
-	 *  - htmlVariantLanguage: string|null
-	 *      If non-null, the language variant used for Parsoid HTML;
+	 *  - htmlVariantLanguage: string|Bcp47Code|null
+	 *      If non-null, the language variant used for Parsoid HTML
+	 *      as a MediaWiki-internal language code string or BCP 47 object;
 	 *      we convert to this if wt2html, or from this if html2wt.
-	 *  - wtVariantLanguage: string|null
-	 *      If non-null, the language variant to be used for wikitext.
+	 *  - wtVariantLanguage: string|Bcp47Code|null
+	 *      If non-null, the language variant to be used for wikitext
+	 *      as a MediaWiki-internal language code string or BCP 47 object.
 	 *      If null, heuristics will be used to identify the original
 	 *      wikitext variant in wt2html mode, and in html2wt mode new
 	 *      or edited HTML will be left unconverted.
@@ -291,8 +294,10 @@ class Env {
 			throw new \UnexpectedValueException(
 				$this->outputContentVersion . ' is not an available content version.' );
 		}
-		$this->htmlVariantLanguage = $options['htmlVariantLanguage'] ?? null;
-		$this->wtVariantLanguage = $options['wtVariantLanguage'] ?? null;
+		$this->htmlVariantLanguage = !empty( $options['htmlVariantLanguage'] ) ?
+			Utils::mwCodeToBcp47( $options['htmlVariantLanguage'] ) : null;
+		$this->wtVariantLanguage = !empty( $options['wtVariantLanguage'] ) ?
+			Utils::mwCodeToBcp47( $options['wtVariantLanguage'] ) : null;
 		$this->nativeTemplateExpansion = !empty( $options['nativeTemplateExpansion'] );
 		$this->discardDataParsoid = !empty( $options['discardDataParsoid'] );
 		$this->requestOffsetType = $options['offsetType'] ?? 'byte';
@@ -1005,8 +1010,8 @@ class Env {
 	 * @return bool
 	 */
 	public function langConverterEnabled(): bool {
-		return $this->siteConfig->langConverterEnabledForLanguage(
-			$this->pageConfig->getPageLanguage()
+		return $this->siteConfig->langConverterEnabledBcp47(
+			$this->pageConfig->getPageLanguageBcp47()
 		);
 	}
 
@@ -1034,10 +1039,21 @@ class Env {
 	 * If non-null, the language variant used for Parsoid HTML; we convert
 	 * to this if wt2html, or from this (if html2wt).
 	 *
-	 * @return string|null
+	 * @return string|null a MediaWiki-internal language code
+	 * @deprecated Use ::getHtmlVariantLanguageBcp47() (T320662)
 	 */
 	public function getHtmlVariantLanguage(): ?string {
-		return $this->htmlVariantLanguage;
+		return Utils::bcp47ToMwCode( $this->htmlVariantLanguage );
+	}
+
+	/**
+	 * If non-null, the language variant used for Parsoid HTML; we convert
+	 * to this if wt2html, or from this (if html2wt).
+	 *
+	 * @return ?Bcp47Code a BCP-47 language code
+	 */
+	public function getHtmlVariantLanguageBcp47(): ?Bcp47Code {
+		return $this->htmlVariantLanguage; // Stored as BCP-47
 	}
 
 	/**
@@ -1046,9 +1062,22 @@ class Env {
 	 * in wt2html mode, and in html2wt mode new or edited HTML will be left
 	 * unconverted.
 	 *
-	 * @return string|null
+	 * @return string|null a MediaWiki-internal language code
+	 * @deprecated Use ::getWtVariantLanguageBcp47() (T320662)
 	 */
 	public function getWtVariantLanguage(): ?string {
+		return Utils::bcp47ToMwCode( $this->wtVariantLanguage );
+	}
+
+	/**
+	 * If non-null, the language variant to be used for wikitext.  If null,
+	 * heuristics will be used to identify the original wikitext variant
+	 * in wt2html mode, and in html2wt mode new or edited HTML will be left
+	 * unconverted.
+	 *
+	 * @return ?Bcp47Code a BCP-47 language code
+	 */
+	public function getWtVariantLanguageBcp47(): ?Bcp47Code {
 		return $this->wtVariantLanguage;
 	}
 
@@ -1068,12 +1097,21 @@ class Env {
 
 	/**
 	 * Determine an appropriate content-language for the HTML form of this page.
-	 * @return string
+	 * @return string a MediaWiki-internal language code
+	 * @deprecated Use ::htmlContentLanguageBcp47() (T320662)
 	 */
 	public function htmlContentLanguage(): string {
+		return Utils::bcp47ToMwCode( $this->htmlContentLanguageBcp47() );
+	}
+
+	/**
+	 * Determine an appropriate content-language for the HTML form of this page.
+	 * @return Bcp47Code a BCP-47 language code.
+	 */
+	public function htmlContentLanguageBcp47(): Bcp47Code {
 		// PageConfig::htmlVariant is set iff we do variant conversion on the
 		// HTML
-		return $this->pageConfig->getVariant() ??
-			$this->pageConfig->getPageLanguage();
+		return $this->pageConfig->getVariantBcp47() ??
+			$this->pageConfig->getPageLanguageBcp47();
 	}
 }

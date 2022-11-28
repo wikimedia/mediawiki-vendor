@@ -796,11 +796,7 @@ class DOMNormalizer {
 		while ( true ) {
 			// Skip templated content
 			while ( $node && WTUtils::isFirstEncapsulationWrapperNode( $node ) ) {
-				if ( !WTUtils::isExtensionOutputingCoreMwDomSpec( $node, $this->state->getEnv() ) ) {
-					$node = WTUtils::skipOverEncapsulatedContent( $node );
-				} else {
-					break;
-				}
+				$node = WTUtils::skipOverEncapsulatedContent( $node );
 			}
 
 			if ( !$node ) {

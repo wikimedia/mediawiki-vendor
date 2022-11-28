@@ -352,17 +352,18 @@ class WikiLinkHandler extends TokenHandler {
 			if ( $isRedirect ) {
 				return $this->renderWikiLink( $token, $target );
 			}
-			$ns = $title->getNamespace();
-			if ( $ns->isMedia() ) {
+			$siteConfig = $this->env->getSiteConfig();
+			$nsId = $title->getNamespaceId();
+			if ( $nsId === $siteConfig->canonicalNamespaceId( 'media' ) ) {
 				// Render as a media link.
 				return $this->renderMedia( $token, $target );
 			}
 			if ( !$target->fromColonEscapedText ) {
-				if ( $ns->isFile() ) {
+				if ( $nsId === $siteConfig->canonicalNamespaceId( 'file' ) ) {
 					// Render as a file.
 					return $this->renderFile( $token, $target );
 				}
-				if ( $ns->isCategory() ) {
+				if ( $nsId === $siteConfig->canonicalNamespaceId( 'category' ) ) {
 					// Render as a category membership.
 					return $this->renderCategory( $token, $target );
 				}
@@ -1337,7 +1338,7 @@ class WikiLinkHandler extends TokenHandler {
 				// for editing and roundtripping.  However, not all file handlers will
 				// make use of it.  This param validation is from the SVG handler but
 				// seems generally applicable.
-				} elseif ( $optInfo['ck'] === 'lang' && !Language::isValidCode( $optInfo['v'] ) ) {
+				} elseif ( $optInfo['ck'] === 'lang' && !Language::isValidInternalCode( $optInfo['v'] ) ) {
 					$opt['ck'] = 'bogus';
 				} elseif (
 					$optInfo['ck'] === 'upright' &&

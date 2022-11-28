@@ -1642,6 +1642,9 @@ class WikitextSerializer {
 		$domNormalizer = new DOMNormalizer( $state );
 		$domNormalizer->normalize( $node );
 
+		$redLinkRemover = new RemoveRedLinks();
+		$redLinkRemover->run( $node );
+
 		if ( $this->env->hasDumpFlag( 'dom:post-normal' ) ) {
 			$options = [ 'storeDiffMark' => true ];
 			$this->env->writeDump( ContentUtils::dumpDOM( $node, 'DOM: post-normal', $options ) );
@@ -1682,7 +1685,6 @@ class WikitextSerializer {
 	/**
 	 * @note Porting note: this replaces the pattern $serializer->env->log( $serializer->logType, ... )
 	 * @param mixed ...$args
-	 * @deprecated Use PSR-3 logging instead
 	 */
 	public function trace( ...$args ) {
 		$this->env->log( $this->logType, ...$args );

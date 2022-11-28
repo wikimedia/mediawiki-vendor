@@ -235,8 +235,20 @@ class DOMPostProcessor extends PipelineStage {
 				'Processor' => AddMediaInfo::class,
 				'shortcut' => 'media'
 			],
-			// Run this after 'ProcessTreeBuilderFixups' because this pass
-			// needs autoInsertedStart / autoInsertedEnd information.
+			// Run this after:
+			// * ProcessTreeBuilderFixups because this pass needs
+			//   autoInsertedStart / autoInsertedEnd information.
+			// * PWrap because PWrap can add additional opportunities
+			//   for meta migration which we will miss if we run this
+			//   before p-wrapping.
+			//
+			// We could potentially move this just before WrapTemplates
+			// by seeing this as a preprocessing pass for that. But, we
+			// will have to update the pass to update DSR properties
+			// where required.
+			//
+			// In summary, this can at most be moved before AddMediaInfo or
+			// after MigrateTrailingNLs without needing any other changes.
 			[
 				'Processor' => MigrateTemplateMarkerMetas::class,
 				'shortcut' => 'migrate-metas',
@@ -743,11 +755,11 @@ class DOMPostProcessor extends PipelineStage {
 		}
 
 		// PageConfig guarantees language will always be non-null.
-		$lang = $env->getPageConfig()->getPageLanguage();
+		$lang = $env->getPageConfig()->getPageLanguageBcp47();
 		$body = DOMCompat::getBody( $document );
-		$body->setAttribute( 'lang', Utils::bcp47n( $lang ) );
+		$body->setAttribute( 'lang', $lang->toBcp47Code() );
 		$this->updateBodyClasslist( $body, $env );
-		$env->getSiteConfig()->exportMetadataToHead(
+		$env->getSiteConfig()->exportMetadataToHeadBcp47(
 			$document, $env->getMetadata(),
 			$env->getPageConfig()->getTitle(), $lang
 		);
@@ -756,7 +768,13 @@ class DOMPostProcessor extends PipelineStage {
 		// caches can split on variant (if necessary)
 		DOMUtils::appendToHead( $document, 'meta', [
 				'http-equiv' => 'content-language',
-				'content' => $env->htmlContentLanguage()
+				// Note that this is "wrong": we should be returning
+				// $env->htmlContentLanguageBcp47()->toBcp47Code() directly
+				// but for back-compat we'll return the "old" mediawiki-internal
+				// code for now
+				'content' => Utils::bcp47ToMwCode( # T323052: remove this call
+					$env->htmlContentLanguageBcp47()->toBcp47Code()
+				),
 			]
 		);
 		DOMUtils::appendToHead( $document, 'meta', [

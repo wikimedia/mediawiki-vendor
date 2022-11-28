@@ -24,6 +24,7 @@ use Wikimedia\Parsoid\Utils\ContentUtils;
 use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\DOMUtils;
+use Wikimedia\Parsoid\Utils\Utils;
 use Wikimedia\Parsoid\Wikitext\Wikitext;
 use Wikimedia\Parsoid\Wt2Html\PP\Processors\AddRedLinks;
 use Wikimedia\Parsoid\Wt2Html\PP\Processors\ConvertOffsets;
@@ -160,7 +161,7 @@ class Parsoid {
 			$this->siteConfig, $pageConfig, $this->dataAccess, $metadata, $envOptions
 		);
 		if ( !$env->compareWt2HtmlLimit(
-			'wikitextSize', strlen( $pageConfig->getPageMainContent() )
+			'wikitextSize', strlen( $env->topFrame->getSrcText() )
 		) ) {
 			throw new ResourceLimitExceededException(
 				"wt2html: wikitextSize limit exceeded"
@@ -187,8 +188,12 @@ class Parsoid {
 	 *   'discardDataParsoid'   => (bool) Drop all data-parsoid annotations.
 	 *   'offsetType'           => (string) ucs2, char, byte are valid values
 	 *                                      what kind of source offsets should be emitted?
-	 *   'htmlVariantLanguage'  => (string) If non-null, the language variant used for Parsoid HTML.
-	 *   'wtVariantLanguage'    => (string) If non-null, the language variant used for wikitext.
+	 *   'htmlVariantLanguage'  => (string|Bcp47Code) If non-null, the language variant used for Parsoid HTML.
+	 *                             A MediaWiki-internal language code string (deprecated),
+	 *                             or a Bcp47Code object.
+	 *   'wtVariantLanguage'    => (string|Bcp47Code) If non-null, the language variant used for wikitext.
+	 *                             A MediaWiki-internal language code string (deprecated),
+	 *                             or a Bcp47Code object.
 	 *   'logLinterData'        => (bool) Should we log linter data if linting is enabled?
 	 *   'traceFlags'           => (array) associative array with tracing options
 	 *   'dumpFlags'            => (array) associative array with dump options
@@ -265,8 +270,12 @@ class Parsoid {
 	 *   'offsetType'          => (string) ucs2, char, byte are valid values
 	 *                                     what kind of source offsets are present in the HTML?
 	 *   'contentmodel'        => (string|null) The content model of the input.
-	 *   'htmlVariantLanguage' => (string) If non-null, the language variant used for Parsoid HTML.
-	 *   'wtVariantLanguage'   => (string) If non-null, the language variant used for wikitext.
+	 *   'htmlVariantLanguage' => (string|Bcp47Code) If non-null, the language variant used for Parsoid HTML.
+	 *                            A MediaWiki-internal language code string (deprecated),
+	 *                            or a Bcp47Code object.
+	 *   'wtVariantLanguage'   => (string|Bcp47Code) If non-null, the language variant used for wikitext.
+	 *                            A MediaWiki-internal language code string (deprecated),
+	 *                            or a Bcp47Code object.
 	 *   'traceFlags'          => (array) associative array with tracing options
 	 *   'dumpFlags'           => (array) associative array with dump options
 	 *   'debugFlags'          => (array) associative array with debug options
@@ -353,8 +362,10 @@ class Parsoid {
 			// __NOCONTENTCONVERT__ magic word is present, or the targetVariant
 			// is a base language code or otherwise invalid.
 			LanguageConverter::maybeConvert(
-				$env, $doc, $options['variant']['target'],
-				$options['variant']['source'] ?? null
+				$env, $doc,
+				Utils::mwCodeToBcp47( $options['variant']['target'] ),
+				$options['variant']['source'] ?
+				Utils::mwCodeToBcp47( $options['variant']['source'] ) : null
 			);
 			// Update content-language and vary headers.
 			// This also ensures there is a <head> element.
@@ -368,7 +379,7 @@ class Parsoid {
 				return $el;
 			};
 			( $ensureHeader( 'content-language' ) )->setAttribute(
-				'content', $env->htmlContentLanguage()
+				'content', $env->htmlContentLanguageBcp47()->toBcp47Code()
 			);
 			( $ensureHeader( 'vary' ) )->setAttribute(
 				'content', $env->htmlVary()
