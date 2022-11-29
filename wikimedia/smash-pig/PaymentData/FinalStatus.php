@@ -10,7 +10,10 @@ class FinalStatus {
 	const PENDING = 'pending';
 	const PENDING_POKE = 'pending-poke';
 	const REVISED = 'revised';
+	const REVERSED = 'reversed';
 	const REFUNDED = 'refunded';
+	const ON_HOLD = 'on-hold';
 	const CANCELLED = 'cancelled';
 	const TIMEOUT = 'timeout';
+	const UNKNOWN = 'unknown';
 }

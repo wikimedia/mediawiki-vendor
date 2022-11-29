@@ -4,6 +4,7 @@ namespace SmashPig\PaymentProviders\Ingenico;
 
 use BadMethodCallException;
 use SmashPig\Core\SmashPigException;
+use SmashPig\PaymentProviders\IGetLatestPaymentStatusProvider;
 use SmashPig\PaymentProviders\Responses\PaymentDetailResponse;
 use SmashPig\PaymentProviders\RiskScorer;
 
@@ -12,7 +13,7 @@ use SmashPig\PaymentProviders\RiskScorer;
  *
  * @package SmashPig\PaymentProviders\Ingenico
  */
-class HostedCheckoutProvider extends PaymentProvider {
+class HostedCheckoutProvider extends PaymentProvider implements IGetLatestPaymentStatusProvider {
 	/**
 	 * @var string subdomain
 	 */
@@ -32,6 +33,14 @@ class HostedCheckoutProvider extends PaymentProvider {
 		}
 	}
 
+	/**
+	 * Get the latest status from Ingenico
+	 *
+	 * $params['gateway_session_id'] should match the hostedPaymentId
+	 *
+	 * @param array $params
+	 * @return PaymentDetailResponse
+	 */
 	public function getLatestPaymentStatus( array $params ): PaymentDetailResponse {
 		return $this->getHostedPaymentStatus( $params['gateway_session_id'] );
 	}

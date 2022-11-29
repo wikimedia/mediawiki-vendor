@@ -61,6 +61,40 @@ class Api {
 	}
 
 	/**
+	 * @param array $params
+	 * @return array
+	 */
+	public function doExpressCheckoutPayment( array $params ) {
+		$requestParams = [
+			'METHOD' => 'DoExpressCheckoutPayment',
+			'TOKEN' => $params['payment_token'],
+			'PAYERID' => $params['processor_contact_id'],
+			'PAYMENTREQUEST_0_AMT' => $params['amount'],
+			'PAYMENTREQUEST_0_CURRENCYCODE' => $params['currency'],
+			'PAYMENTREQUEST_0_CUSTOM' => $params['order_id'],
+			'PAYMENTREQUEST_0_DESC' => $params['description'],
+			'PAYMENTREQUEST_0_INVNUM' => $params['order_id'],
+			'PAYMENTREQUEST_0_ITEMAMT' => $params['amount'],
+			'PAYMENTREQUEST_0_PAYMENTACTION' => 'Sale',
+			'PAYMENTREQUEST_0_PAYMENTREASON' => 'None',
+		];
+
+		return $this->makeApiCall( $requestParams );
+	}
+
+	/**
+	 * @param string $token
+	 * @return array
+	 */
+	public function getExpressCheckoutDetails( string $token ) {
+		$requestParams = [
+			'METHOD' => 'GetExpressCheckoutDetails',
+			'TOKEN' => $token
+		];
+		return $this->makeApiCall( $requestParams );
+	}
+
+	/**
 	 * Paypal expects auth and version params to be sent within the request body.
 	 * https://developer.paypal.com/api/nvp-soap/gs-PayPalAPIs/#link-callpayload
 	 *

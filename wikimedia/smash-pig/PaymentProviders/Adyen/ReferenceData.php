@@ -100,6 +100,10 @@ class ReferenceData {
 			'method' => 'rtbt',
 			'submethod' => 'rtbt_ideal',
 		],
+		'interlink' => [
+			'method' => 'cc',
+			'submethod' => 'visa',
+		],
 		'jcb' => [
 			'method' => 'cc',
 			'submethod' => 'jcb',
