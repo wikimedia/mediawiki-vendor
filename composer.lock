@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c03731e84245548ba2d79aaa93525715",
+    "content-hash": "c25af8669b62b9715b0401d7edd835fd",
     "packages": [
         {
             "name": "christian-riesen/base32",
@@ -3064,16 +3064,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.16.0-a21",
+            "version": "v0.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/parsoid.git",
-                "reference": "cadfa13c256d9d25e85b4fce238709e8f641a440"
+                "reference": "6ca725405ea47ab0c7f2a12f75e0bcc3d85edb75"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/cadfa13c256d9d25e85b4fce238709e8f641a440",
-                "reference": "cadfa13c256d9d25e85b4fce238709e8f641a440",
+                "url": "https://api.github.com/repos/wikimedia/parsoid/zipball/6ca725405ea47ab0c7f2a12f75e0bcc3d85edb75",
+                "reference": "6ca725405ea47ab0c7f2a12f75e0bcc3d85edb75",
                 "shasum": ""
             },
             "require": {
@@ -3140,10 +3140,10 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/parsoid/tree/v0.16.0-a21",
+                "source": "https://github.com/wikimedia/parsoid/tree/v0.16.0",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
-            "time": "2022-09-01T13:59:26+00:00"
+            "time": "2022-10-12T08:35:01+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",
@@ -4123,9 +4123,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "wikimedia/parsoid": 15
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
