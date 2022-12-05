@@ -3976,6 +3976,7 @@ return array(
     'Wikimedia\\Parsoid\\Core\\Sanitizer' => $vendorDir . '/wikimedia/parsoid/src/Core/Sanitizer.php',
     'Wikimedia\\Parsoid\\Core\\SectionMetadata' => $vendorDir . '/wikimedia/parsoid/src/Core/SectionMetadata.php',
     'Wikimedia\\Parsoid\\Core\\SelserData' => $vendorDir . '/wikimedia/parsoid/src/Core/SelserData.php',
+    'Wikimedia\\Parsoid\\Core\\TOCData' => $vendorDir . '/wikimedia/parsoid/src/Core/TOCData.php',
     'Wikimedia\\Parsoid\\DOM\\Attr' => $vendorDir . '/wikimedia/parsoid/src/DOM/Attr.php',
     'Wikimedia\\Parsoid\\DOM\\CharacterData' => $vendorDir . '/wikimedia/parsoid/src/DOM/CharacterData.php',
     'Wikimedia\\Parsoid\\DOM\\Comment' => $vendorDir . '/wikimedia/parsoid/src/DOM/Comment.php',

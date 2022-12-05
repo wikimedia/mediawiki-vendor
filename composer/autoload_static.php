@@ -4743,6 +4743,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Core\\Sanitizer' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Core/Sanitizer.php',
         'Wikimedia\\Parsoid\\Core\\SectionMetadata' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Core/SectionMetadata.php',
         'Wikimedia\\Parsoid\\Core\\SelserData' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Core/SelserData.php',
+        'Wikimedia\\Parsoid\\Core\\TOCData' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Core/TOCData.php',
         'Wikimedia\\Parsoid\\DOM\\Attr' => __DIR__ . '/..' . '/wikimedia/parsoid/src/DOM/Attr.php',
         'Wikimedia\\Parsoid\\DOM\\CharacterData' => __DIR__ . '/..' . '/wikimedia/parsoid/src/DOM/CharacterData.php',
         'Wikimedia\\Parsoid\\DOM\\Comment' => __DIR__ . '/..' . '/wikimedia/parsoid/src/DOM/Comment.php',
