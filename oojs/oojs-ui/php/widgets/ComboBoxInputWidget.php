@@ -19,9 +19,6 @@ class ComboBoxInputWidget extends TextInputWidget {
 	 *          `[ 'data' => …, 'label' => … ]`
 	 */
 	public function __construct( array $config = [] ) {
-		// ComboBoxInputWidget shouldn't support `multiline`
-		$config['multiline'] = false;
-
 		// Parent constructor
 		parent::__construct( $config );
 
@@ -60,6 +57,7 @@ class ComboBoxInputWidget extends TextInputWidget {
 		return $this;
 	}
 
+	/** @inheritDoc */
 	public function getConfig( &$config ) {
 		$options = [];
 		foreach ( $this->options as $option ) {

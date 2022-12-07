@@ -17,14 +17,6 @@ class PanelLayout extends Layout {
 	 *      - bool $config['preserveContent'] Preserve DOM content when infusing (default: true)
 	 */
 	public function __construct( array $config = [] ) {
-		// Config initialization
-		$config = array_merge( [
-			'scrollable' => false,
-			'padded' => false,
-			'expanded' => true,
-			'framed' => false,
-		], $config );
-
 		$this->preserveContent = $config['preserveContent'] ?? true;
 
 		// Parent constructor
@@ -32,20 +24,21 @@ class PanelLayout extends Layout {
 
 		// Initialization
 		$this->addClasses( [ 'oo-ui-panelLayout' ] );
-		if ( $config['scrollable'] ) {
+		if ( $config['scrollable'] ?? false ) {
 			$this->addClasses( [ 'oo-ui-panelLayout-scrollable' ] );
 		}
-		if ( $config['padded'] ) {
+		if ( $config['padded'] ?? false ) {
 			$this->addClasses( [ 'oo-ui-panelLayout-padded' ] );
 		}
-		if ( $config['expanded'] ) {
+		if ( $config['expanded'] ?? true ) {
 			$this->addClasses( [ 'oo-ui-panelLayout-expanded' ] );
 		}
-		if ( $config['framed'] ) {
+		if ( $config['framed'] ?? false ) {
 			$this->addClasses( [ 'oo-ui-panelLayout-framed' ] );
 		}
 	}
 
+	/** @inheritDoc */
 	public function getConfig( &$config ) {
 		if ( !$this->preserveContent ) {
 			$config['preserveContent'] = false;

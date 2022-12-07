@@ -237,6 +237,9 @@ class Element extends Tag {
 		return str_replace( 'OOUI\\', 'OO.ui.', get_class( $this ) );
 	}
 
+	/**
+	 * @return string[]
+	 */
 	protected function getGeneratedAttributes() {
 		$attributesArray = parent::getGeneratedAttributes();
 		// Add `data-ooui` attribute from serialized config array.
@@ -300,6 +303,7 @@ class Element extends Tag {
 		];
 		$attributeToConfig = [
 			'maxlength' => 'maxLength',
+			'minlength' => 'minLength',
 			'readonly' => 'readOnly',
 			'tabindex' => 'tabIndex',
 			'accesskey' => 'accessKey',

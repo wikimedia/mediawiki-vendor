@@ -21,7 +21,7 @@ trait RequiredElement {
 	protected $requiredElement;
 
 	/**
-	 * @var IndicatorElement
+	 * @var IndicatorElement|null
 	 */
 	protected $indicatorElement;
 
@@ -30,6 +30,8 @@ trait RequiredElement {
 	 *      - bool $config['required'] Mark the field as required.
 	 *          Implies `indicator: 'required'`. Note that `false` & setting `indicator: 'required'
 	 *          will result in no indicator shown. (default: false)
+	 *      - Element $config['requiredElement']
+	 *      - IndicatorElement $config['indicatorElement']
 	 */
 	public function initializeRequiredElement( array $config = [] ) {
 		// Properties

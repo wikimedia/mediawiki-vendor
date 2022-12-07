@@ -7,8 +7,11 @@ namespace OOUI;
  */
 class NumberInputWidget extends TextInputWidget {
 
+	/** @var float|null */
 	protected $buttonStep;
+	/** @var float|null */
 	protected $pageStep;
+	/** @var bool|null */
 	protected $showButtons;
 
 	/**
@@ -25,7 +28,6 @@ class NumberInputWidget extends TextInputWidget {
 	 */
 	public function __construct( array $config = [] ) {
 		$config['type'] = 'number';
-		$config['multiline'] = false;
 
 		// Parent constructor
 		parent::__construct( $config );
@@ -56,6 +58,7 @@ class NumberInputWidget extends TextInputWidget {
 		] );
 	}
 
+	/** @inheritDoc */
 	public function getConfig( &$config ) {
 		$min = $this->input->getAttribute( 'min' );
 		if ( $min !== null ) {
