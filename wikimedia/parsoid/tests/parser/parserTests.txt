@@ -1951,7 +1951,7 @@ Broken link with fragment
 <p><a href="/index.php?title=Zigzagzogzagzig&amp;action=edit&amp;redlink=1" class="new" title="Zigzagzogzagzig (page does not exist)">Zigzagzogzagzig#zug</a>
 </p>
 !! html/parsoid
-<p><a rel="mw:WikiLink" href="./Zigzagzogzagzig#zug?action=edit&amp;redlink=1" title="Zigzagzogzagzig" class="new" typeof="mw:LocalizedAttrs" data-parsoid='{"stx":"simple","a":{"href":"./Zigzagzogzagzig#zug"},"sa":{"href":"Zigzagzogzagzig#zug"}}' data-mw-i18n='{"title":{"lang":"x-page","key":"red-link-title","params":["Zigzagzogzagzig"]}}'>Zigzagzogzagzig#zug</a></p>
+<p><a rel="mw:WikiLink" href="./Zigzagzogzagzig?action=edit&amp;redlink=1#zug" title="Zigzagzogzagzig" class="new" typeof="mw:LocalizedAttrs" data-parsoid='{"stx":"simple","a":{"href":"./Zigzagzogzagzig#zug"},"sa":{"href":"Zigzagzogzagzig#zug"}}' data-mw-i18n='{"title":{"lang":"x-page","key":"red-link-title","params":["Zigzagzogzagzig"]}}'>Zigzagzogzagzig#zug</a></p>
 !! end
 
 !! test
@@ -1972,7 +1972,7 @@ Nonexistent special page link with fragment
 <p><a href="/wiki/Special:ThisNameWillHopefullyNeverBeUsed" class="new" title="Special:ThisNameWillHopefullyNeverBeUsed (page does not exist)">Special:ThisNameWillHopefullyNeverBeUsed#anchor</a>
 </p>
 !! html/parsoid
-<p><a rel="mw:WikiLink" href="./Special:ThisNameWillHopefullyNeverBeUsed#anchor?action=edit&amp;redlink=1" title="Special:ThisNameWillHopefullyNeverBeUsed" class="new" typeof="mw:LocalizedAttrs" data-parsoid='{"stx":"simple","a":{"href":"./Special:ThisNameWillHopefullyNeverBeUsed#anchor"},"sa":{"href":"Special:ThisNameWillHopefullyNeverBeUsed#anchor"}}' data-mw-i18n='{"title":{"lang":"x-page","key":"red-link-title","params":["Special:ThisNameWillHopefullyNeverBeUsed"]}}'>Special:ThisNameWillHopefullyNeverBeUsed#anchor</a></p>
+<p><a rel="mw:WikiLink" href="./Special:ThisNameWillHopefullyNeverBeUsed?action=edit&amp;redlink=1#anchor" title="Special:ThisNameWillHopefullyNeverBeUsed" class="new" typeof="mw:LocalizedAttrs" data-parsoid='{"stx":"simple","a":{"href":"./Special:ThisNameWillHopefullyNeverBeUsed#anchor"},"sa":{"href":"Special:ThisNameWillHopefullyNeverBeUsed#anchor"}}' data-mw-i18n='{"title":{"lang":"x-page","key":"red-link-title","params":["Special:ThisNameWillHopefullyNeverBeUsed"]}}'>Special:ThisNameWillHopefullyNeverBeUsed#anchor</a></p>
 !! end
 
 !! test
@@ -3083,6 +3083,22 @@ He&amp;nbsp;llo He&amp;nbsp;llo
 <p>He&amp;nbsp;llo <a href="/wiki/Foo" title="Foo">He&amp;nbsp;llo</a>
 </p><p>He&amp;nbsp;llo He&amp;nbsp;llo
 </p>
+!! end
+
+!! article
+16:30
+!! text
+Dummy article to suppress redlinks in tests
+!! end
+
+!! test
+Wikilinks with : should roundtrip correctly, with and without redlinks
+!! wikitext
+[[16:30]]
+[[18:30]]
+!! html/parsoid
+<p><a rel="mw:WikiLink" href="./16:30" title="16:30" data-parsoid='{"stx":"simple","a":{"href":"./16:30"},"sa":{"href":"16:30"}}'>16:30</a>
+<a rel="mw:WikiLink" href="./18:30?action=edit&amp;redlink=1" title="18:30" class="new" typeof="mw:LocalizedAttrs" data-parsoid='{"stx":"simple","a":{"href":"./18:30"},"sa":{"href":"18:30"}}' data-mw-i18n='{"title":{"lang":"x-page","key":"red-link-title","params":["18:30"]}}'>18:30</a></p>
 !! end
 
 # html2wt will fail because of title normalization without data-parsoid
