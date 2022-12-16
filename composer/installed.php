@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '8269cbd0703a5d03af807044ebe74ea39ee7ccf6',
+        'reference' => '37c0c0df18a73280f47725d0da0b486d862445c4',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '8269cbd0703a5d03af807044ebe74ea39ee7ccf6',
+            'reference' => '37c0c0df18a73280f47725d0da0b486d862445c4',
             'dev_requirement' => false,
         ),
         'christian-riesen/base32' => array(
@@ -137,12 +137,12 @@
             'dev_requirement' => false,
         ),
         'pear/mail' => array(
-            'pretty_version' => 'v1.4.1',
-            'version' => '1.4.1.0',
+            'pretty_version' => 'v1.5.0',
+            'version' => '1.5.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../pear/mail',
             'aliases' => array(),
-            'reference' => '9609ed5e42ac5b221dfd9af85de005c59d418ee7',
+            'reference' => 'c31b7635899a630a8ce681e5ced18cededcc15f3',
             'dev_requirement' => false,
         ),
         'pear/mail_mime' => array(
