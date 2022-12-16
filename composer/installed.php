@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '147dd89f6f80d1c6d80007e3e94350523361e272',
+        'reference' => '7a44e73b2abde79e7053d0756419e063f2092179',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '147dd89f6f80d1c6d80007e3e94350523361e272',
+            'reference' => '7a44e73b2abde79e7053d0756419e063f2092179',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -458,12 +458,12 @@
             'dev_requirement' => false,
         ),
         'pear/mail' => array(
-            'pretty_version' => 'v1.4.1',
-            'version' => '1.4.1.0',
+            'pretty_version' => 'v1.5.0',
+            'version' => '1.5.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../pear/mail',
             'aliases' => array(),
-            'reference' => '9609ed5e42ac5b221dfd9af85de005c59d418ee7',
+            'reference' => 'c31b7635899a630a8ce681e5ced18cededcc15f3',
             'dev_requirement' => false,
         ),
         'pear/mail_mime' => array(
