@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fafa4823275ae71cc52b4f4fc18eb804",
+    "content-hash": "5242f3441170a55b4b41c64435e4db9c",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -8106,16 +8106,16 @@
         },
         {
             "name": "wikimedia/xmp-reader",
-            "version": "0.9.0",
+            "version": "0.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/xmp-reader.git",
-                "reference": "8c5d1a53089ca7159fb38c22b29a4ab8e30a1e0e"
+                "reference": "8338d6796984d747559dd3c8b5272608d8a665d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/xmp-reader/zipball/8c5d1a53089ca7159fb38c22b29a4ab8e30a1e0e",
-                "reference": "8c5d1a53089ca7159fb38c22b29a4ab8e30a1e0e",
+                "url": "https://api.github.com/repos/wikimedia/xmp-reader/zipball/8338d6796984d747559dd3c8b5272608d8a665d2",
+                "reference": "8338d6796984d747559dd3c8b5272608d8a665d2",
                 "shasum": ""
             },
             "require": {
@@ -8131,10 +8131,10 @@
             },
             "require-dev": {
                 "ext-exif": "*",
-                "mediawiki/mediawiki-codesniffer": "39.0.0",
+                "mediawiki/mediawiki-codesniffer": "40.0.1",
                 "mediawiki/mediawiki-phan-config": "0.12.0",
                 "mediawiki/minus-x": "1.1.1",
-                "ockcyp/covers-validator": "1.4.0",
+                "ockcyp/covers-validator": "1.6.0",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
                 "php-parallel-lint/php-parallel-lint": "1.3.2",
                 "phpunit/phpunit": "^9.5"
@@ -8165,9 +8165,9 @@
                 "xmp"
             ],
             "support": {
-                "source": "https://github.com/wikimedia/xmp-reader/tree/0.9.0"
+                "source": "https://github.com/wikimedia/xmp-reader/tree/0.9.1"
             },
-            "time": "2022-10-18T05:23:21+00:00"
+            "time": "2022-11-17T03:30:20+00:00"
         },
         {
             "name": "wikimedia/zest-css",
