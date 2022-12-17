@@ -37,7 +37,7 @@
 		"geoip2/geoip2": "2.13.0",
 		"guzzlehttp/guzzle": "7.5.0",
 		"guzzlehttp/promises": "1.5.2",
-		"guzzlehttp/psr7": "2.4.1",
+		"guzzlehttp/psr7": "2.4.3",
 		"jakobo/hotp-php": "2.0.0",
 		"james-heinrich/getid3": "1.9.22",
 		"justinrainbow/json-schema": "5.2.12",
