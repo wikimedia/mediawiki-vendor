@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => 'f251e0ea2ab6282f18d13d52b6b69f76732a8a41',
+        'reference' => '9eac2342c83fcc39704165826f42877b2dcecb31',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => 'f251e0ea2ab6282f18d13d52b6b69f76732a8a41',
+            'reference' => '9eac2342c83fcc39704165826f42877b2dcecb31',
             'dev_requirement' => false,
         ),
         'beberlei/assert' => array(
@@ -1131,12 +1131,12 @@
             'dev_requirement' => false,
         ),
         'wikimedia/remex-html' => array(
-            'pretty_version' => '3.0.2',
-            'version' => '3.0.2.0',
+            'pretty_version' => '3.0.3',
+            'version' => '3.0.3.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/remex-html',
             'aliases' => array(),
-            'reference' => 'a471c8d472a6e80fc4f7a5a77c10758c24325d43',
+            'reference' => '0997340924fb60a15590fc5001b6091c24fef1a3',
             'dev_requirement' => false,
         ),
         'wikimedia/request-timeout' => array(
