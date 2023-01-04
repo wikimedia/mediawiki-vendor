@@ -3,7 +3,7 @@
         'name' => 'mediawiki/core',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '336b712709830ca4b04785fc437478ea899a65fc',
+        'reference' => '7febdd5270b70aaba87d9d5f8cb14377f3aacbb1',
         'type' => 'mediawiki-core',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -166,7 +166,7 @@
         'mediawiki/core' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '336b712709830ca4b04785fc437478ea899a65fc',
+            'reference' => '7febdd5270b70aaba87d9d5f8cb14377f3aacbb1',
             'type' => 'mediawiki-core',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -175,7 +175,7 @@
         'mediawiki/mediawiki' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.35.8',
+                0 => '1.35.9',
             ),
         ),
         'monolog/monolog' => array(
@@ -722,9 +722,9 @@
             'dev_requirement' => false,
         ),
         'wikimedia/xmp-reader' => array(
-            'pretty_version' => '0.7.0',
-            'version' => '0.7.0.0',
-            'reference' => '4b8ab8ea23cc2ccf2530738081cb4e146d55b86b',
+            'pretty_version' => '0.8.5',
+            'version' => '0.8.5.0',
+            'reference' => '99e6c9397d281f3c9842f3e72588fc04ef3e6fa4',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/xmp-reader',
             'aliases' => array(),
