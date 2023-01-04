@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '8fd776894f2ea4688226b6c5103906c544171b5f',
+        'reference' => '241be09ba9251242ca1c4b3288ca4c50cea0c15f',
         'name' => '__root__',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '8fd776894f2ea4688226b6c5103906c544171b5f',
+            'reference' => '241be09ba9251242ca1c4b3288ca4c50cea0c15f',
             'dev_requirement' => false,
         ),
         'christian-riesen/base32' => array(
@@ -110,12 +110,12 @@
             'dev_requirement' => false,
         ),
         'oojs/oojs-ui' => array(
-            'pretty_version' => 'v0.44.3',
-            'version' => '0.44.3.0',
+            'pretty_version' => 'v0.44.4',
+            'version' => '0.44.4.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../oojs/oojs-ui',
             'aliases' => array(),
-            'reference' => 'a4c06f7f823c7757e37ed5326e36e4f27889ab3f',
+            'reference' => 'f7f460d1f3d0beb68295990c7fc29c09068212a6',
             'dev_requirement' => false,
         ),
         'opis/json-schema' => array(
