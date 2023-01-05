@@ -1,0 +1,16 @@
+{
+  "date": 1495592754,
+  "gateway_parent_id": "9HL87276901574527",
+  "gateway_txn_id": "11P929825Y6288804",
+  "currency": "ILS",
+  "type": "refund",
+  "email": "jules@verne.com",
+  "first_name": "Jules",
+  "last_name": "Verne",
+  "gross": "-15.00",
+  "fee": "-1.61",
+  "gateway_refund_id": "11P929825Y6288804",
+  "gross_currency": "ILS",
+  "country": "IL",
+  "gateway": "paypal"
+}

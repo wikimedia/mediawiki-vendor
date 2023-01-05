@@ -1,0 +1,18 @@
+{
+  "date": 1490200499,
+  "gateway_parent_id": "1V551844CE5526421",
+  "gateway_txn_id": "3HD08833MR473623T",
+  "currency": "JPY",
+  "type": "refund",
+  "contribution_tracking_id": "46239229",
+  "email": "donor@generous.net",
+  "first_name": "Testy",
+  "last_name": "McTesterson",
+  "gross": "-150",
+  "fee": "-43",
+  "order_id": "46239229.1",
+  "gateway_refund_id": "3HD08833MR473623T",
+  "gross_currency": "JPY",
+  "country": "US",
+  "gateway": "paypal_ec"
+}

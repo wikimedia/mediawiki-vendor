@@ -1,0 +1,17 @@
+          <NotificationRequestItem>
+            <additionalData xsi:nil="true"/>
+            <amount>
+              <currency xmlns="http://common.services.adyen.com">USD</currency>
+              <value xmlns="http://common.services.adyen.com">1000</value>
+            </amount>
+            <eventCode>CAPTURE</eventCode>
+            <eventDate>2015-12-11T20:30:03+01:00</eventDate>
+            <merchantAccountCode>WikimediaCOM</merchantAccountCode>
+            <merchantReference>[[ORDERID]]</merchantReference>
+            <operations xsi:nil="true"/>
+            <originalReference>[[AUTHID]]</originalReference>
+            <paymentMethod>amex</paymentMethod>
+            <pspReference>[[CAPTUREID]]</pspReference>
+            <reason/>
+            <success>true</success>
+          </NotificationRequestItem>

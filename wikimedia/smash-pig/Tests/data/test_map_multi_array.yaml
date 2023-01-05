@@ -1,0 +1,11 @@
+test-nested-array:
+    test-nested-array-one:
+        test-nested-child-two:
+            test-nested-child-three:
+                nested-array-value-one: '%nested-array-value-one%'
+                nested-array-value-two: '%nested-array-value-two%'
+    test-nested-array-two:
+        test-nested-child-two:
+            test-nested-child-three:
+                nested-array-value-three: '%nested-array-value-three%'
+                nested-array-value-four: '%nested-array-value-four%'

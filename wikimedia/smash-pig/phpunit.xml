@@ -1,0 +1,29 @@
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/3.7/phpunit.xsd"
+    bootstrap="Tests/bootstrap-phpunit.php">
+
+    <testsuites>
+      <testsuite name="Core tests">
+        <directory>Tests</directory>
+      </testsuite>
+      <testsuite name="Adyen tests">
+        <directory>PaymentProviders/Adyen/Tests/phpunit</directory>
+      </testsuite>
+      <testsuite name="Amazon tests">
+        <directory>PaymentProviders/Amazon/Tests/phpunit</directory>
+      </testsuite>
+      <testsuite name="AstroPay tests">
+        <directory>PaymentProviders/AstroPay/Tests/phpunit</directory>
+      </testsuite>
+      <testsuite name="Braintree tests">
+        <directory>PaymentProviders/Braintree/Tests/phpunit</directory>
+      </testsuite>
+      <testsuite name="Ingenico tests">
+        <directory>PaymentProviders/Ingenico/Tests/phpunit</directory>
+      </testsuite>
+      <testsuite name="PayPal tests">
+        <directory>PaymentProviders/PayPal/Tests/phpunit</directory>
+      </testsuite>
+    </testsuites>
+</phpunit>

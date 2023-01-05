@@ -1,0 +1,15 @@
+{
+	"date": 1481144318,
+	"txn_type": "express_checkout",
+	"gateway_txn_id": "3N2616476S0123456",
+	"currency": "JPY",
+	"contribution_tracking_id": "123456",
+	"email": "nobody@wikimedia.org",
+	"first_name": "Fowl",
+	"last_name": "Pond",
+	"country": "US",
+	"gross": "150",
+	"fee": "43",
+	"order_id": "123456.1",
+	"gateway": "paypal_ec"
+}

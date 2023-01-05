@@ -1,0 +1,18 @@
+{
+  "date": "1504737846",
+  "gateway_parent_id": "8SB83047469211841",
+  "gateway_txn_id": "4XG14513BS068321S",
+  "currency": "USD",
+  "type": "refund",
+  "contribution_tracking_id": "48295084",
+  "email": "fakeperson@nowhere.com",
+  "first_name": "Tricky",
+  "last_name": "McFakeperson",
+  "gross": "-5.00",
+  "fee": "-0.34",
+  "order_id": "48295084",
+  "gateway_refund_id": "4XG14513BS068321S",
+  "gross_currency": "USD",
+  "country": "US",
+  "gateway": "paypal"
+}

@@ -1,0 +1,31 @@
+HTTP/1.1 201 OK
+Date: Mon, 2 Jan 2019 15:49:22 GMT
+Server: Apache/2.4.16 (Unix) OpenSSL/1.0.1t
+X-Powered-By: Servlet/3.0 JSP/2.2
+Transfer-Encoding: chunked
+Content-Type: application/json
+
+{
+    "id" : "00000085001000006995000-300001",
+    "refundOutput" : {
+        "amountOfMoney" : {
+            "amount" : 1,
+            "currencyCode" : "USD"
+        },
+        "references" : {
+            "merchantReference" : "12345.1",
+            "paymentReference" : "0"
+        },
+        "paymentMethod" : "card",
+        "cardRefundMethodSpecificOutput" : {
+            "totalAmountPaid" : 1000,
+            "totalAmountRefunded" : 0
+        }
+    },
+    "status" : "PENDING_APPROVAL",
+    "statusOutput" : {
+        "isCancellable" : true,
+        "statusCode" : 800,
+        "statusCodeChangeDateTime" : "20190102154922"
+    }
+}

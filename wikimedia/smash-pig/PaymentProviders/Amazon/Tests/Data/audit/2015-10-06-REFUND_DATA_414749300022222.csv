@@ -1,0 +1,3 @@
+"AmazonRefundId","RefundReferenceId","AmazonCaptureId","AmazonOrderReferenceId","RefundAmount","CurrencyCode","SellerRefundNote","RefundType","RefundStatus","LastUpdateTimestamp","ReasonCode","CreationTimestamp"
+"P01-4968629-7654321-R017571","REFUND_684981","P01-4968629-7654321-C070794","P01-4968629-7654321","1.00","USD","","SellerInitiated","Completed","2015-10-05T16:20:49 -0700","","2015-10-05T14:43:18 -0700"
+"P01-4968629-7654321-R017571","REFUND_684981","P01-4968629-7654321-C070794","P01-4968629-7654321","1.00","USD","","SellerInitiated","Pending","2015-10-05T14:43:18 -0700","","2015-10-05T14:43:18 -0700"

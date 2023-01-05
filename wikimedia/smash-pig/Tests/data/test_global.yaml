@@ -1,0 +1,117 @@
+data-store:
+    mock-queue: &QUEUE
+        class: PHPQueue\Backend\PDO
+        constructor-parameters:
+            -
+                connection_string: 'sqlite::memory:'
+
+    mock-db: &DB
+        class: PDO
+        constructor-parameters:
+            - 'sqlite::memory:'
+
+    test:
+        <<: *QUEUE
+
+    payments-antifraud:
+        # Testing backend needs queue to be a valid table name
+        class: PHPQueue\Backend\PDO
+        constructor-parameters:
+            -
+                connection_string: 'sqlite::memory:'
+                queue: payments_antifraud
+
+    payments-init:
+        class: PHPQueue\Backend\PDO
+        constructor-parameters:
+            -
+                connection_string: 'sqlite::memory:'
+                queue: payments_init
+
+    pending:
+        <<: *QUEUE
+
+    recurring:
+        <<: *QUEUE
+
+    refund:
+        <<: *QUEUE
+
+    unsubscribe:
+        <<: *QUEUE
+
+    opt-in:
+        class: PHPQueue\Backend\PDO
+        constructor-parameters:
+            -
+                connection_string: 'sqlite::memory:'
+                queue: opt_in
+
+    email-preferences:
+        class: PHPQueue\Backend\PDO
+        constructor-parameters:
+            -
+                connection_string: 'sqlite::memory:'
+                queue: email_preferences
+
+    jobs-paypal:
+        class: PHPQueue\Backend\PDO
+        constructor-parameters:
+            -
+                connection_string: 'sqlite::memory:'
+                queue: jobs_paypal
+
+    jobs-braintree:
+        class: PHPQueue\Backend\PDO
+        constructor-parameters:
+            -
+                connection_string: 'sqlite::memory:'
+                queue: jobs_braintree
+
+    jobs-adyen:
+        class: PHPQueue\Backend\PDO
+        constructor-parameters:
+            -
+                connection_string: 'sqlite::memory:'
+                queue: jobs_adyen
+
+    jobs-amazon:
+        class: PHPQueue\Backend\PDO
+        constructor-parameters:
+            -
+                connection_string: 'sqlite::memory:'
+                queue: jobs_amazon
+
+    jobs-ingenico:
+        class: PHPQueue\Backend\PDO
+        constructor-parameters:
+            -
+                connection_string: 'sqlite::memory:'
+                queue: jobs_ingenico
+
+    contribution-tracking:
+        class: PHPQueue\Backend\PDO
+        constructor-parameters:
+            -
+                connection_string: 'sqlite::memory:'
+                queue: contribution_tracking
+
+    donations:
+        <<: *QUEUE
+
+    pending-db:
+        <<: *DB
+
+    damaged-db:
+        <<: *DB
+
+    fredge-db:
+        <<: *DB
+
+sequence-generator:
+    contribution-tracking:
+        class: SmashPig\Core\SequenceGenerators\SqlSequenceGenerator
+        constructor-parameters:
+            -
+                connection_string: 'sqlite::memory:'
+                sequence: contribution_tracking

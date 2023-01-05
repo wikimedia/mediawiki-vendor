@@ -1,0 +1,18 @@
+{
+  "date": "1506401050"",
+  "gateway_parent_id": "3BR53982VX768520D",
+  "gateway_txn_id": "41C736991R055474F",
+  "currency": "USD",
+  "type": "refund",
+  "contribution_tracking_id": "49123019",
+  "email": "binks@naboo.gov",
+  "first_name": "JarJar",
+  "last_name": "Binks",
+  "gross": "-2.00",
+  "fee": "-0.28",
+  "order_id": "49123019",
+  "gateway_refund_id": "41C736991R055474F",
+  "gross_currency": "USD",
+  "country": "US",
+  "gateway": "paypal"
+}

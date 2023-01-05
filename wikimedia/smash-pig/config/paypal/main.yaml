@@ -1,0 +1,139 @@
+# Settings for PayPal
+#
+# To override, create a file in:
+#   /etc/smashpig/paypal/main.yaml
+#   $HOME/.smashpig/paypal/main.yaml
+
+api:
+    class: SmashPig\PaymentProviders\PayPal\Api
+    constructor-parameters:
+        -
+            # For testing, set to https://api.sandbox.paypal.com/nvp
+            endpoint: https://api.paypal.com/nvp
+            user: <your_username.your.domain>
+            password: <supersecret>
+            certificate_path: /path/to/your/certificate.pem
+            version: 204
+
+payment-provider:
+    paypal:
+        class:
+            SmashPig\PaymentProviders\PayPal\PaymentProvider
+
+ipn-validator:
+    class: SmashPig\PaymentProviders\PayPal\PayPalIpnValidator
+
+endpoints:
+    listener:
+        class: SmashPig\PaymentProviders\PayPal\Listener
+
+# For testing, override with
+# postback-url: https://ipnpb.sandbox.paypal.com/cgi-bin/webscr
+postback-url: https://ipnpb.paypal.com/cgi-bin/webscr
+
+# TODO: merge this with DonationInterface style var_map
+var_map:
+    time_created: date
+    payment_date: date # needs strtotime(payment_date)
+    # FIXME Recurring messages use non-normalized field names, for example:
+    txn_type: txn_type
+    parent_txn_id: gateway_parent_id
+    txn_id: gateway_txn_id
+    recurring_payment_id: subscr_id
+    recur_times: installments
+    subscr_id: subscr_id
+    # When a message has old and new subscr_id, we will only know the old one
+    old_subscr_id: subscr_id
+    # FIXME This is only true for refund messages.  Where to represent?
+    #txn_id: gateway_refund_id
+    mc_currency: currency
+    currency_code: currency
+    # FIXME rename refund_type
+    reason_code: type
+    #test_ipn:  # signals test mode
+    custom: order_id
+    rp_invoice_id: order_id
+    payer_email: email
+    first_name: first_name
+    last_name: last_name
+    # FIXME this used to get split up
+    address_street: street_address
+    address_city: city
+    address_state: state_province
+    address_country_code: country
+    address_zip: postal_code
+    residence_country: country
+    # FIXME this too
+    address_name: supplemental_address_1
+    gateway: gateway
+    # NOTE: order matters. When multiple PayPal fields map to the
+    # same SmashPig field, PayPal fields listed later take precedence.
+    amount_per_cycle: gross
+    mc_gross: gross
+    mc_amount3: gross
+    amount3: gross
+    mc_fee: fee
+
+rejects:
+    txn_type:
+        - new_case
+        - subscr_modify
+        # reject txn_type of merch_pmt and mp_signup in order to ensure braintree transactions
+        # (that are getting into the jobs-paypal queue) do not make it into the donations queue
+        # when the maintenance queue job runner runs.
+        - merch_pmt
+        - mp_signup
+        - mp_notification
+
+# txn types defined here:
+# https://developer.paypal.com/api/nvp-soap/ipn/IPNandPDTVariables/#link-ipntransactiontypes
+messages:
+    payment:
+        class: SmashPig\PaymentProviders\PayPal\PaymentMessage
+        queue: donations
+        valid_statuses: # TODO is this message type agnostic?
+            - Completed
+            - Reversed
+        txn_types:
+            - cart
+            - send_money
+            - web_accept
+            - express_checkout
+            - masspay
+            - virtual_terminal
+
+    recurring: # new style recurring payments
+        class: SmashPig\PaymentProviders\PayPal\RecurringMessage
+        queue: recurring
+        txn_types:
+            - recurring_payment
+            - recurring_payment_expired
+            - recurring_payment_failed
+            - recurring_payment_profile_cancel
+            - recurring_payment_profile_created
+            - recurring_payment_skipped
+            - recurring_payment_suspended
+            - recurring_payment_suspended_due_to_max_failed_payment
+
+    subscription: # old style recurring payments
+        class: SmashPig\PaymentProviders\PayPal\SubscriptionMessage
+        queue: recurring
+        txn_types:
+            - subscr_cancel
+            - subscr_eot
+            - subscr_failed
+            # - subscr_modify ignored till we make sure Civi can handle it
+            - subscr_signup
+            # the following mean we got money \o/
+            - subscr_payment
+
+    refund:
+        class: SmashPig\PaymentProviders\PayPal\RefundMessage
+        queue: refund
+        txn_types:
+            - adjustment
+            - refund
+            # FIXME: if case_type=chargeback, then txn_type might be blank
+            # and the message should go to the refund queue.
+curl:
+    retries: 7

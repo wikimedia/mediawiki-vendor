@@ -1,0 +1,30 @@
+					<NotificationRequestItem>
+						<additionalData>
+							<entry>
+								<key xsi:type="xsd:string">cvcResult</key>
+								<value xsi:type="xsd:string">1 Matches</value>
+							</entry>
+							<entry>
+								<key xsi:type="xsd:string">avsResult</key>
+								<value xsi:type="xsd:string">1 Address matches, postal code doesn't</value>
+							</entry>
+						</additionalData>
+						<amount>
+							<currency xmlns="http://common.services.adyen.com">USD</currency>
+							<value xmlns="http://common.services.adyen.com">1000</value>
+						</amount>
+						<eventCode>AUTHORISATION</eventCode>
+						<eventDate>2016-01-25T17:07:36.862+01:00</eventDate>
+						<merchantAccountCode>WikimediaCOM</merchantAccountCode>
+						<merchantReference>[[ORDERID]]</merchantReference>
+						<operations>
+							<string>CANCEL</string>
+							<string>CAPTURE</string>
+							<string>REFUND</string>
+						</operations>
+						<originalReference xsi:nil="true"/>
+						<paymentMethod>amex</paymentMethod>
+						<pspReference>[[AUTHID]]</pspReference>
+						<reason>27533:0003:6/2016</reason>
+						<success>true</success>
+					</NotificationRequestItem>

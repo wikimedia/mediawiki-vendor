@@ -1,0 +1,13 @@
+{
+  "reason": "",
+  "parentPspReference": null,
+  "originalReference": "762895314225",
+  "pspReference": "9182739182739",
+  "merchantReference": "119223.0",
+  "merchantAccountCode": "WikimediaCOM",
+  "currency": "USD",
+  "amount": 10,
+  "eventDate": "2016-03-15T16:41:10+00:00",
+  "success": true,
+  "propertiesExcludedFromExport": []
+}

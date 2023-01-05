@@ -1,0 +1,60 @@
+HTTP/1.1 200 OK
+Date: Mon, 30 Jan 2017 17:58:02 GMT
+Server: Apache/2.4.16 (Unix) OpenSSL/1.0.1t
+X-Powered-By: Servlet/3.0 JSP/2.2
+Transfer-Encoding: chunked
+Content-Type: application/json
+
+{
+  "createdPaymentOutput": {
+    "payment": {
+      "id": "000000293000000002470000100001",
+      "paymentOutput": {
+        "amountOfMoney": {
+          "amount": 100,
+          "currencyCode": "USD"
+        },
+        "references": {
+          "merchantReference": "2136047838",
+          "paymentReference": "0"
+        },
+        "paymentMethod": "card",
+        "cardPaymentMethodSpecificOutput": {
+          "paymentProductId": 1,
+          "fraudResults": {
+            "fraudServiceResult": "no-advice",
+            "avsResult": "0",
+            "cvvResult": "0"
+          },
+          "card": {
+            "cardNumber": "************0009",
+            "expiryDate": "1020"
+          }
+        }
+      },
+      "status": "REJECTED",
+      "statusOutput": {
+        "errors": [
+          {
+            "code": "430424",
+            "requestId": "212429",
+            "message": "Unable to authorise",
+            "httpStatusCode": 402
+          }
+        ],
+        "isCancellable": false,
+        "statusCategory": "UNSUCCESSFUL",
+        "statusCode": 100,
+        "statusCodeChangeDateTime": "20180301135218",
+        "isAuthorized": false,
+        "isRefundable": false
+      }
+    },
+    "paymentCreationReferences": {
+      "additionalReference": "2136047838",
+      "externalReference": "2136047838"
+    },
+    "paymentStatusCategory": "REJECTED"
+  },
+  "status": "PAYMENT_CREATED"
+}

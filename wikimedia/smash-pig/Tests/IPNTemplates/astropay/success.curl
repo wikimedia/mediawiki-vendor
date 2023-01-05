@@ -1,0 +1,1 @@
+result=9&x_amount=[[AMOUNT]]&x_invoice=[[ORDER_ID]]&x_iduser=foobar&x_description=Donation&x_document=[[PROCESSOR_REF_1]]&x_bank=158&x_payment_type=03&x_bank_name=MC&x_currency=[[CURRENCY]]&x_control=[[ASTROPAY_SIGNATURE_SUCCESS]]

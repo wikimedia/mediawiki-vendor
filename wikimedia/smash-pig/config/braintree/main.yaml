@@ -1,0 +1,45 @@
+# Settings for Braintree (owned by PayPal)
+#
+# To override, create a file in:
+#   /etc/smashpig/braintree/main.yaml
+#   $HOME/.smashpig/braintree/main.yaml
+
+api:
+    class: SmashPig\PaymentProviders\Braintree\Api
+    constructor-parameters:
+        -
+            merchant-id: 16charalphanumer
+            public-key: 16charalphanumer
+            private-key: 32characterlongalphanumericstrng
+            endpoint: https://payments.braintree-api.com/graphql
+            version: '2022-03-07'
+            # Date in the format YYYY-MM-DD. We recommend using the date on which you begin integrating with the GraphQL API.
+            # Needs to be quoted for YAML reasons.
+
+endpoints:
+    listener:
+        class: SmashPig\PaymentProviders\Braintree\BraintreeListener
+
+signature-validator:
+    class: SmashPig\PaymentProviders\Braintree\SignatureValidator
+    constructor-parameters:
+        -
+            public-key: 16charalphanumer
+            private-key: 32characterlongalphanumericstrng
+
+payment-provider:
+    test:
+        class: SmashPig\PaymentProviders\Braintree\TestPaymentProvider
+    search:
+        class: SmashPig\PaymentProviders\Braintree\SearchTransactionsProvider
+    report:
+        class: SmashPig\PaymentProviders\Braintree\VenmoReportProvider
+    paypal:
+        class: SmashPig\PaymentProviders\Braintree\PaypalPaymentProvider
+        constructor-parameters:
+            -
+                merchant-accounts: {}
+                # Required for multi-currency support. Should be a map of currency
+                # codes to account names, e.g.
+                # USD: main-account-name
+                # GBP: sterling-account-name

@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <soap:Body>
+    <ns1:sendNotification xmlns:ns1="http://notification.services.adyen.com">
+      <ns1:notification>
+        <live xmlns="http://notification.services.adyen.com">true</live>
+        <notificationItems xmlns="http://notification.services.adyen.com">
+          <NotificationRequestItem>
+            <additionalData xsi:nil="true"/>
+            <amount>
+              <currency xmlns="http://common.services.adyen.com">USD</currency>
+              <value xmlns="http://common.services.adyen.com">500</value>
+            </amount>
+            <eventCode>CAPTURE</eventCode>
+            <eventDate>2015-12-11T20:30:03+01:00</eventDate>
+            <merchantAccountCode>WikimediaCOM</merchantAccountCode>
+            <merchantReference>5431233210</merchantReference>
+            <operations xsi:nil="true"/>
+            <originalReference>9871234562341231</originalReference>
+            <paymentMethod>visa</paymentMethod>
+            <pspReference>1234876345098123</pspReference>
+            <reason/>
+            <success>true</success>
+          </NotificationRequestItem>
+        </notificationItems>
+      </ns1:notification>
+    </ns1:sendNotification>
+  </soap:Body>
+</soap:Envelope>

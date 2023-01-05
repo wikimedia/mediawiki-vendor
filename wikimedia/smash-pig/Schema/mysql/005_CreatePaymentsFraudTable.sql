@@ -1,0 +1,20 @@
+CREATE TABLE IF NOT EXISTS `payments_fraud` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `contribution_tracking_id` int(10) unsigned DEFAULT NULL,
+  `gateway` varchar(255) DEFAULT NULL,
+  `order_id` varchar(255) DEFAULT NULL,
+  `validation_action` varchar(16) DEFAULT NULL,
+  `user_ip` varbinary(16) DEFAULT NULL,
+  `payment_method` varchar(16) DEFAULT NULL,
+  `risk_score` float DEFAULT NULL,
+  `server` varchar(64) DEFAULT NULL,
+  `date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `contribution_tracking_id` (`contribution_tracking_id`),
+  KEY `order_id` (`order_id`),
+  KEY `gateway` (`gateway`),
+  KEY `date` (`date`),
+  KEY `user_ip` (`user_ip`),
+  KEY `risk_score` (`risk_score`),
+  KEY `payment_method` (`payment_method`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Tracks donation fraud scores for all donations.';

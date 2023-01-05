@@ -1,0 +1,15 @@
+{
+	"date": 1498825928,
+	"gateway_parent_id": "2JP12345X654321V",
+	"gateway_txn_id": "91N12345TB8654321",
+	"currency": "USD",
+	"type": "chargeback",
+	"contribution_tracking_id": 47470083,
+	"gross": -1,
+	"order_id": 47470083,
+	"gateway_refund_id": "91N12345TB8654321",
+	"gross_currency": "USD",
+	"gateway": "paypal",
+	"txn_type": "adjustment",
+	"email": "recipient@wikimedia.org"
+}

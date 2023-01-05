@@ -1,0 +1,14 @@
+HTTP/1.1 200 OK
+Cache-Control: no-cache
+Pragma: no-cache
+Content-Length: 656
+Content-Type: application/json; charset=utf-8
+Content-Encoding: gzip
+Expires: -1
+Vary: Accept-Encoding
+Server: Microsoft-IIS/8.0
+X-AspNet-Version: 4.0.30319
+X-Powered-By: ASP.NET
+Date: Wed, 22 Mar 2017 22:42:05 GMT
+
+{"Issuers":[{"BankId":"ABNANL2A","BankName":"ABN AMRO","LogoPath":"/Content/icons/banks/abn.png","Status":"Yellow","Percent":"40","Details":"","MoreDetails":"","LogoStatus":"/Content/icons/green.png","URL":"/History?bank=ABN_AMRO"},{"BankId":"INGBNL2A","BankName":"Issuer Simulation V3 - ING","LogoPath":"/Content/icons/banks/sim.png","Status":"Green","Percent":"100","Details":"","MoreDetails":"","LogoStatus":"/Content/icons/green.png","URL":"/History?bank=Simulated_Bank"}],"Message":"","IssuerMessageCalculationFailed":false,"LastUpdate":"22-3-2017, 23:40","AllGreen":true}

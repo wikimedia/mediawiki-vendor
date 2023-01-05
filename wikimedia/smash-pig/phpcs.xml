@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset>
+	<rule ref="./vendor/mediawiki/mediawiki-codesniffer/MediaWiki">
+		<exclude name="MediaWiki.Commenting.FunctionComment.MissingDocumentationProtected"/>
+		<exclude name="MediaWiki.Commenting.FunctionComment.MissingDocumentationPublic"/>
+		<exclude name="MediaWiki.Commenting.FunctionComment.MissingParamComment"/>
+		<exclude name="MediaWiki.Commenting.FunctionComment.MissingParamTag"/>
+		<exclude name="MediaWiki.Commenting.FunctionComment.MissingReturn"/>
+		<exclude name="MediaWiki.NamingConventions.ValidGlobalName.wgPrefix"/>
+		<exclude name="MediaWiki.WhiteSpace.SpaceBeforeSingleLineComment.NewLineComment"/>
+		<exclude name="MediaWiki.Commenting.FunctionComment.ParamNameNoMatch"/>
+		<exclude name="MediaWiki.ControlStructures.AssignmentInControlStructures.AssignmentInControlStructures"/>
+		<exclude name="MediaWiki.NamingConventions.LowerCamelFunctionsName.FunctionName"/>
+		<exclude name="MediaWiki.Commenting.FunctionComment.WrongStyle"/>
+		<exclude name="MediaWiki.Usage.ScalarTypeHintUsage.Found"/>
+		<exclude name="PSR2.Classes.PropertyDeclaration.ScopeMissing"/>
+		<exclude name="MediaWiki.Commenting.FunctionComment.MissingParamName"/>
+		<exclude name="Squiz.Operators.ValidLogicalOperators.NotAllowed"/>
+		<exclude name="MediaWiki.NamingConventions.ValidGlobalName.allowedPrefix"/>
+		<exclude name="MediaWiki.Commenting.MissingCovers.MissingCovers"/>
+		<exclude name="PSR12.Properties.ConstantVisibility.NotFound"/><!-- Let's add these in! -->
+		<exclude name="MediaWiki.Usage.ForbiddenFunctions.escapeshellcmd"/> <!-- We use this to unzip gzipped files in audits  -->
+		<exclude name="MediaWiki.Usage.ForbiddenFunctions.exec"/> <!-- We use this to unzip gzipped files in audits  -->
+	</rule>
+	<rule ref="Generic.Files.LineLength">
+		<properties>
+			<!-- FIXME: reduce to something reasonable -->
+			<property name="lineLimit" value="500" />
+		</properties>
+	</rule>
+	<file>.</file>
+	<arg name="extensions" value="php,php5,inc"/>
+	<arg name="encoding" value="UTF-8"/>
+	<exclude-pattern>vendor</exclude-pattern>
+	<exclude-pattern>PaymentProviders/Adyen/WSDL</exclude-pattern>
+	<exclude-pattern>PaymentProviders/Adyen/Tests/phpunit/ApiTest.php</exclude-pattern>
+</ruleset>
+

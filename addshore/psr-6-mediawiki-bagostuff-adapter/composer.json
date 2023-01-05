@@ -1,0 +1,48 @@
+{
+  "name": "addshore/psr-6-mediawiki-bagostuff-adapter",
+  "type": "library",
+  "description": "A MediaWiki BagOStuff PSR-6 adapter library",
+  "keywords": ["Mediawiki", "Cache"],
+  "license": "GPL-2.0+",
+  "authors": [
+    {
+      "name": "Addshore"
+    }
+  ],
+  "require": {
+    "psr/cache": "^1.0.0"
+  },
+  "require-dev": {
+    "jakub-onderka/php-parallel-lint": "^0.9.2",
+    "mediawiki/mediawiki-codesniffer": "^0.7.2",
+    "phpunit/phpunit": "~4.8.0|~5.3.0",
+    "cache/integration-tests": "~0.9.1"
+  },
+  "scripts": {
+    "lint": "parallel-lint . --exclude vendor",
+    "sniff": "phpcs -ps",
+    "phpunit": "phpunit",
+    "phpunit-unit": "phpunit --testsuite unit",
+    "phpunit-integration": "phpunit --testsuite integration",
+    "test": [
+      "@lint",
+      "@sniff",
+      "@phpunit"
+    ],
+    "ci": [
+      "@lint",
+      "@sniff",
+      "phpunit --coverage-clover=coverage.clover"
+    ]
+  },
+  "autoload": {
+    "psr-4": {
+      "Addshore\\Psr\\Cache\\MWBagOStuffAdapter\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Mediawiki\\Api\\Test\\": ["tests/integration", "tests/unit"]
+    }
+  }
+}

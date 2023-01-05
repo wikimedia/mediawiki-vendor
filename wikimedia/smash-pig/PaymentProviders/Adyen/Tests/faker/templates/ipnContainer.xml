@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<soap:Body>
+		<ns1:sendNotification xmlns:ns1="http://notification.services.adyen.com">
+			<ns1:notification>
+				<live xmlns="http://notification.services.adyen.com">false</live>
+				<notificationItems xmlns="http://notification.services.adyen.com">
+[[ITEMS]]
+				</notificationItems>
+			</ns1:notification>
+		</ns1:sendNotification>
+	</soap:Body>
+</soap:Envelope>
+

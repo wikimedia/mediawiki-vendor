@@ -1,0 +1,203 @@
+# Settings for Adyen
+#
+# To override, create a file in:
+#   /etc/smashpig/adyen/main.yaml
+#   $HOME/.smashpig/adyen/main.yaml
+
+logging:
+    root-context: SmashPig-Adyen
+
+endpoints:
+    listener:
+        class: SmashPig\PaymentProviders\Adyen\AdyenListener
+
+api:
+    class: SmashPig\PaymentProviders\Adyen\Api
+
+payments-wsdl: https://pal-live.adyen.com/pal/Payment.wsdl
+#payments-wsdl: https://pal-test.adyen.com/pal/Payment.wsdl
+
+rest-base-url: https://checkout-test.adyen.com/v67
+
+recurring-base-url: https://pal-test.adyen.com/pal/servlet/Recurring/v67
+
+data-protection-base-url: https://ca-test.adyen.com/ca/services/DataProtectionService/v1
+
+accounts: {}
+    # FIXME: Provide sample account config more consistently.  The
+    # empty map above is easy to overlook.
+
+    # For each Adyen merchant account, add an entry like the
+    # following with the merchant account name as the key.
+    # The ws- credentials should be a user authorized to make
+    # API calls, and the report- credentials should be a user
+    # authorized to download reports. Reports will be
+    # downloaded to the location specified in report-location.
+    #
+    # At least one account and all subkeys are required.
+    #
+    # example-account-name:
+    #   ws-api-key: ""
+    #   ws-username: ""
+    #   ws-password: ""
+    #   report-username: ""
+    #   report-password: ""
+    #   report-location: "/tmp"
+
+# By default, cache payment method lookups for 15 minutes
+common-cache-parameters: &CACHE
+    constructor-parameters:
+        -
+            cache-parameters:
+                duration: 900
+                key-base: SMASHPIG_ADYEN_METHODS
+
+payment-provider:
+    cc:
+        class: SmashPig\PaymentProviders\Adyen\CardPaymentProvider
+        <<: *CACHE
+    dd:
+        # For now we only handle recurring rtbt, which is treated
+        # as direct debit under the hood.
+        class: SmashPig\PaymentProviders\Adyen\IdealBankTransferPaymentProvider
+        <<: *CACHE
+    rtbt:
+        class: SmashPig\PaymentProviders\Adyen\IdealBankTransferPaymentProvider
+        <<: *CACHE
+    google:
+        class: SmashPig\PaymentProviders\Adyen\GooglePayPaymentProvider
+        <<: *CACHE
+    apple:
+        class: SmashPig\PaymentProviders\Adyen\ApplePayPaymentProvider
+        constructor-parameters:
+            -
+                cache-parameters:
+                    duration: 900
+                    key-base: SMASHPIG_ADYEN_METHODS
+# You must set the following four values plus the session=-domains if you
+# use your own merchant certificate with Apple Pay rather than using
+# Adyen's certificate.
+# They are used to start a payment session with Apple as described here:
+# https://developer.apple.com/documentation/apple_pay_on_the_web/apple_pay_js_api/requesting_an_apple_pay_payment_session
+#               domain-name: '' # passed as integrationContext
+#               display-name: '' # passed as displayName
+#               merchant-identifier: '' # passed as merchantIdentifier
+#               certificate-path: '' # path to merchant SSL cert
+# If your certificate is encrypted, you can specify the password in this key
+#               certificate-password: ''
+#               session-domains:
+#                   - apple-pay-gateway.apple.com
+#                   - apple-pay-gateway-nc-pod1.apple.com
+#                   - apple-pay-gateway-nc-pod2.apple.com
+#                   - apple-pay-gateway-nc-pod3.apple.com
+#                   - apple-pay-gateway-nc-pod4.apple.com
+#                   - apple-pay-gateway-nc-pod5.apple.com
+#                   - apple-pay-gateway-pr-pod1.apple.com
+#                   - apple-pay-gateway-pr-pod2.apple.com
+#                   - apple-pay-gateway-pr-pod3.apple.com
+#                   - apple-pay-gateway-pr-pod4.apple.com
+#                   - apple-pay-gateway-pr-pod5.apple.com
+# See other possible Apple Pay session domains here:
+# https://developer.apple.com/documentation/apple_pay_on_the_web/setting_up_your_server
+
+# Whether the IPN listener should initiate a payment capture when it receives
+# notification of a successful authorization.
+# Overrides to this value should be deployed in coordination with the front-
+# end integration. When the front-end is using the Checkout integration (i.e.
+# $wgDonationInterfaceGatewayAdapters['adyen'] == 'AdyenCheckoutAdapter'),
+# this value should be false. When the front-end is using the HPP integration
+# ($wgDonationInterfaceGatewayAdapters['adyen'] == 'AdyenAdapter'), this
+# value should be true. When we are confident we no longer need the HPP
+# integration, this setting can be deleted along with the code to send
+# PaymentCaptureJobs.
+capture-from-ipn-listener: true
+
+# Number of job queues to use in parallel for capture jobs. If this is left
+# at the default 1, all jobs go to jobs-adyen. If this is anything greater,
+# you must ALSO define queues in the global main.yaml for
+# data-store/jobs-adyen-1 .. data-store/jobs-adyen-N (where N is this number)
+# You will also need to run QueueJobRunner for each of these queues plus the
+# un-suffixed jobs-adyen.
+capture-job-queue-count: 1
+
+fraud-filters:
+    # Authorization notifications include AVS and CVV result codes.
+    # The following maps set a risk score for each result code, which
+    # we combine with any risk score computed on the payment site to
+    # decide whether to capture the payment or leave it for review.
+    # https://docs.adyen.com/manuals/api-manual/payment-responses/additionaldata-payment-responses
+    avs-map:
+        # Unknown. This is often returned in non-AVS countries.
+        0: 50
+        # Address matches, postal code doesn't
+        1: 75
+        # Neither postal code nor address match
+        2: 100
+        # AVS unavailable
+        3: 50
+        # AVS not supported for this card type
+        4: 50
+        # No AVS data provided
+        5: 50
+        # Postal code matches, address doesn't match
+        6: 75
+        # Both postal code and address match
+        7: 0
+        # Address not checked, postal code unknown
+        8: 50
+        # Address matches, postal code unknown
+        9: 25
+        # Address doesn't match, postal code unknown
+        10: 50
+        # Postal code not checked, address unknown
+        11: 75
+        # Address matches, postal code not checked
+        12: 50
+        # Address doesn't match, postal code not checked
+        13: 0
+        # Postal code matches, address unknown
+        14: 50
+        # Postal code matches, address not checked
+        15: 50
+        # Postal code doesn't match, address unknown
+        16: 75
+        # Postal code doesn't match, address not checked
+        17: 100
+        # Neither postal code nor address were checked
+        18: 25
+        # Name and postal code matches
+        19: 0
+        # Name, address and postal code matches
+        20: 0
+        # Name and address matches
+        21: 0
+        # Name matches
+        22: 50
+        # Postal code matches, name doesn't match
+        23: 50
+        # Both postal code and address matches, name doesn't match
+        24: 25
+        # Address matches, name doesn't match
+        25: 50
+        # Neither postal code, address nor name matches
+        26: 100
+
+    cvv-map:
+        # Unknown
+        0: 100
+        # Matches
+        1: 0
+        # Doesn't match
+        2: 100
+        # Not checked
+        3: 50
+        # No CVC/CVV provided, but was required
+        4: 100
+        # Issuer not certified for CVC/CVV
+        5: 50
+        # No CVC/CVV provided
+        6: 50
+
+curl:
+    validator:
+        class: SmashPig\PaymentProviders\Adyen\RestResponseValidator

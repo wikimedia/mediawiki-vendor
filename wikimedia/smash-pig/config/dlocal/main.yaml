@@ -1,0 +1,16 @@
+# Settings for d*Local (formerly AstroPay)
+#
+# To override, create a file in:
+#   /etc/smashpig/dlocal/main.yaml
+#   $HOME/.smashpig/dlocal/main.yaml
+
+actions:
+    - SmashPig\Core\Actions\IncomingMessage
+
+endpoints:
+    listener:
+        class: SmashPig\PaymentProviders\AstroPay\AstroPayListener
+
+login: createlogin
+secret: "secretkey"
+charset: iso-8859-1

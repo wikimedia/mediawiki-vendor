@@ -1,0 +1,34 @@
+SmashPig payments library
+
+This project uses Composer [https://getcomposer.org] to manage dependencies.
+Upon first install and any upgrade please run composer install.
+
+SmashPig uses two types of configuration files.
+
+Global configuration files define settings shared across all payment providers,
+including database and queue settings. Default global configuration values are
+located in config/main.yaml. These are overridden by values in
+/etc/smashpig/main.yaml, then by values in ~/.smashpig/main.yaml.
+
+Provider configurations files contain settings which may differ between payment
+providers, such as account credentials and HTTP request settings. Defaults are
+in config/provider-defaults.yaml. They are overridden in a similar cascade by
+the same file in /etc/smashpig and ~/.smashpig, then overridden by settings in
+subdirectories named for the relevant payment processor. So for example, to
+enable debug logging only for paypal, you would add the 'logging:' top-level
+key to /etc/smashpig/paypal/main.yaml, then 'log-level: 7' nested under that.
+
+If you need to deploy provider configuration files in a separate directory from
+the global /etc/smashpig/main.yaml, set the provider-configuration-directory
+key in that global configuration file to point to your alternate directory.
+
+Command-line maintenance scripts have some common options:
+    --help
+    --memory-limit overrides the limit specified in php.ini
+    --config-path specifies a top-priority override configuration file path
+    --config-node specifies which processor-specific configuration to use
+
+-- 3rd Party Licences --
+The favicon is licenced under CC Attribution. http://creativecommons.org/licenses/by/3.0/legalcode
+It was obtained from http://www.iconspedia.com/icon/piggy-bank-icon-37074.html and then modified to fit the favicon
+format. The original author was DesignContest, http://www.designcontest.com/.

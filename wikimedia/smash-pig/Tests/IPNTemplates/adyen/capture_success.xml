@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <soap:Body>
+        <ns1:sendNotification xmlns:ns1="http://notification.services.adyen.com">
+            <ns1:notification>
+                <live xmlns="http://notification.services.adyen.com">false</live>
+                <notificationItems xmlns="http://notification.services.adyen.com">
+                    <NotificationRequestItem>
+                        <additionalData xsi:nil="true"/>
+                        <amount>
+                            <currency xmlns="http://common.services.adyen.com">[[CURRENCY]]</currency>
+                            <value xmlns="http://common.services.adyen.com">[[AMOUNT_IN_CENTS]]</value>
+                        </amount>
+                        <eventCode>CAPTURE</eventCode>
+                        <eventDate>2015-12-11T20:30:03+01:00</eventDate>
+                        <merchantAccountCode>[[ACCOUNT_CODE]]</merchantAccountCode>
+                        <merchantReference>[[ORDER_ID]]</merchantReference>
+                        <operations xsi:nil="true"/>
+                        <originalReference>[[PROCESSOR_REF_1]]</originalReference>
+                        <paymentMethod>amex</paymentMethod>
+                        <pspReference>[[PROCESSOR_REF_2]]</pspReference>
+                        <reason/>
+                        <success>true</success>
+                    </NotificationRequestItem>
+                </notificationItems>
+            </ns1:notification>
+        </ns1:sendNotification>
+    </soap:Body>
+</soap:Envelope>
+
+
