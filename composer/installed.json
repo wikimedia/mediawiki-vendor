@@ -7451,33 +7451,33 @@
         },
         {
             "name": "wikimedia/object-factory",
-            "version": "v4.0.0",
-            "version_normalized": "4.0.0.0",
+            "version": "v5.0.1",
+            "version_normalized": "5.0.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/object-factory.git",
-                "reference": "20d19657cfbedb1e7bd61c6696e8a16ade232e5c"
+                "reference": "a0439aac5f14e218dc1f40a98eb14e4b26a01341"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/object-factory/zipball/20d19657cfbedb1e7bd61c6696e8a16ade232e5c",
-                "reference": "20d19657cfbedb1e7bd61c6696e8a16ade232e5c",
+                "url": "https://api.github.com/repos/wikimedia/object-factory/zipball/a0439aac5f14e218dc1f40a98eb14e4b26a01341",
+                "reference": "a0439aac5f14e218dc1f40a98eb14e4b26a01341",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.9",
-                "psr/container": "1.1.1"
+                "php": ">=7.4.3",
+                "psr/container": "~1.1.1 || ~2.0.2"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "38.0.0",
-                "mediawiki/mediawiki-phan-config": "0.11.1",
+                "mediawiki/mediawiki-codesniffer": "40.0.1",
+                "mediawiki/mediawiki-phan-config": "0.12.0",
                 "mediawiki/minus-x": "1.1.1",
-                "ockcyp/covers-validator": "1.3.3",
-                "php-parallel-lint/php-console-highlighter": "0.5.0",
-                "php-parallel-lint/php-parallel-lint": "1.3.1",
-                "phpunit/phpunit": "^8.5"
+                "ockcyp/covers-validator": "1.6.0",
+                "php-parallel-lint/php-console-highlighter": "1.0.0",
+                "php-parallel-lint/php-parallel-lint": "1.3.2",
+                "phpunit/phpunit": "^9.5"
             },
-            "time": "2022-03-09T14:19:13+00:00",
+            "time": "2023-01-09T21:59:16+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -7498,7 +7498,7 @@
             "description": "Construct objects from configuration instructions",
             "homepage": "https://www.mediawiki.org/wiki/ObjectFactory",
             "support": {
-                "source": "https://github.com/wikimedia/object-factory/tree/v4.0.0"
+                "source": "https://github.com/wikimedia/object-factory/tree/v5.0.1"
             },
             "install-path": "../wikimedia/object-factory"
         },
