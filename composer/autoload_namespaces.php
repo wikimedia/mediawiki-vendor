@@ -17,5 +17,5 @@ return array(
     'DataValues\\' => array($vendorDir . '/data-values/number/src', $vendorDir . '/data-values/time/src'),
     'Console' => array($vendorDir . '/pear/console_getopt'),
     'CSSMin' => array($vendorDir . '/wikimedia/minify/src'),
-    '' => array($vendorDir . '/cssjanus/cssjanus/src', $vendorDir . '/pear/pear-core-minimal/src'),
+    '' => array($vendorDir . '/pear/pear-core-minimal/src', $vendorDir . '/cssjanus/cssjanus/src'),
 );
