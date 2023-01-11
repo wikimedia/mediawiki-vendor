@@ -74,6 +74,10 @@ class FieldLayout extends Layout {
 	protected $body;
 	/** @var Tag */
 	protected $messages;
+	/** @var string */
+	protected $helpText;
+	/** @var string|false */
+	protected $helpInline;
 
 	/**
 	 * @param Widget $fieldWidget Field widget
@@ -281,6 +285,7 @@ class FieldLayout extends Layout {
 	 */
 	protected function formatTitleWithAccessKey( $title ) {
 		if ( $this->fieldWidget && method_exists( $this->fieldWidget, 'formatTitleWithAccessKey' ) ) {
+			// @phan-suppress-next-line PhanUndeclaredMethod
 			return $this->fieldWidget->formatTitleWithAccessKey( $title );
 		}
 		return $title;

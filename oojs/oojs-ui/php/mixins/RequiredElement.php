@@ -26,6 +26,11 @@ trait RequiredElement {
 	protected $indicatorElement;
 
 	/**
+	 * @var Element|null
+	 */
+	protected $input;
+
+	/**
 	 * @param array $config Configuration options
 	 *      - bool $config['required'] Mark the field as required.
 	 *          Implies `indicator: 'required'`. Note that `false` & setting `indicator: 'required'
@@ -84,4 +89,9 @@ trait RequiredElement {
 		}
 		return $this;
 	}
+
+	/**
+	 * @param callable $func
+	 */
+	abstract public function registerConfigCallback( callable $func );
 }
