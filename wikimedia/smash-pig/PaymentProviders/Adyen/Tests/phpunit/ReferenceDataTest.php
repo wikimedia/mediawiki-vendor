@@ -26,4 +26,10 @@ class ReferenceDataTest extends TestCase {
 		$this->assertEquals( 'google', $method );
 		$this->assertEquals( 'visa', $submethod );
 	}
+
+	public function testParseApplePayPulse() {
+		[ $method, $submethod ] = ReferenceData::decodePaymentMethod( 'pulse', 'visa_applepay' );
+		$this->assertEquals( 'apple', $method );
+		$this->assertEquals( 'visa', $submethod );
+	}
 }

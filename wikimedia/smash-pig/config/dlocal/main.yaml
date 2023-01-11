@@ -14,3 +14,12 @@ endpoints:
 login: createlogin
 secret: "secretkey"
 charset: iso-8859-1
+
+api:
+    class: SmashPig\PaymentProviders\dlocal\Api
+    constructor-parameters:
+        -
+            login: x_login
+            trans-key: x_trans_key
+            secret: generated_when_api_account_created
+            endpoint: https://sandbox.dlocal.com

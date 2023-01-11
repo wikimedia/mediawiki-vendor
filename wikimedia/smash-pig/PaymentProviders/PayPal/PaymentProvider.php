@@ -12,7 +12,10 @@ use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentProviders\IGetLatestPaymentStatusProvider;
 use SmashPig\PaymentProviders\IPaymentProvider;
 use SmashPig\PaymentProviders\Responses\ApprovePaymentResponse;
+use SmashPig\PaymentProviders\Responses\CancelSubscriptionResponse;
 use SmashPig\PaymentProviders\Responses\CreatePaymentResponse;
+use SmashPig\PaymentProviders\Responses\CreatePaymentSessionResponse;
+use SmashPig\PaymentProviders\Responses\CreateRecurringPaymentsProfileResponse;
 use SmashPig\PaymentProviders\Responses\PaymentDetailResponse;
 use UnexpectedValueException;
 
@@ -36,14 +39,68 @@ class PaymentProvider implements IPaymentProvider, IGetLatestPaymentStatusProvid
 	}
 
 	/**
+	 * Set the PayPal Express Checkout
+	 *
 	 * @param array $params
+	 * @return CreatePaymentSessionResponse
+	 */
+	public function createPaymentSession( array $params ): CreatePaymentSessionResponse {
+		$rawResponse = $this->api->createPaymentSession( $params );
+
+		$response = ( new CreatePaymentSessionResponse() )
+			->setRawResponse( $rawResponse )
+			->setSuccessful( $this->isSuccessfulPaypalResponse( $rawResponse ) );
+
+		if ( !empty( $rawResponse['ACK'] ) ) {
+			$response->setRawStatus( $rawResponse['ACK'] );
+		}
+
+		if ( isset( $rawResponse['TOKEN'] ) ) {
+			$response->setPaymentSession( $rawResponse['TOKEN'] );
+		}
+
+		return $response;
+	}
+
+	/**
+	 * @param array $params
+	 *
+	 * @return CreateRecurringPaymentsProfileResponse
+	 */
+	public function createRecurringPaymentsProfile( array $params ) : CreateRecurringPaymentsProfileResponse {
+		$rawResponse = $this->api->createRecurringPaymentsProfile( $params );
+
+		$response = ( new CreateRecurringPaymentsProfileResponse() )
+			->setRawResponse( $rawResponse )
+			->setSuccessful( $this->isSuccessfulPaypalResponse( $rawResponse ) );
+
+		if ( !empty( $rawResponse['ACK'] ) ) {
+			$response->setRawStatus( $rawResponse['ACK'] );
+		}
+
+		if ( isset( $rawResponse['PROFILESTATUS'] ) ) {
+			$response->setStatus( ( new RecurringPaymentsProfileStatus() )
+				->normalizeStatus( $rawResponse['PROFILESTATUS'] ) )
+				->setProfileId( $rawResponse['PROFILEID'] );
+		}
+
+		return $response;
+	}
+
+	/**
+	 * @param array $params
+	 *
 	 * @return ApprovePaymentResponse
+	 * @throws UnexpectedValueException
 	 */
 	public function approvePayment( array $params ): ApprovePaymentResponse {
 		$rawResponse = $this->api->doExpressCheckoutPayment( $params );
 		$response = new ApprovePaymentResponse();
 		$response->setRawResponse( $rawResponse );
-		$response->setRawStatus( $rawResponse['ACK'] ?? null );
+
+		if ( !empty( $rawResponse['ACK'] ) ) {
+			$response->setRawStatus( $rawResponse['ACK'] );
+		}
 
 		if ( $this->isSuccessfulPaypalResponse( $rawResponse ) ) {
 			$response->setSuccessful( true );
@@ -64,6 +121,38 @@ class PaymentProvider implements IPaymentProvider, IGetLatestPaymentStatusProvid
 	}
 
 	/**
+	 * Cancel an existing PayPal subscription
+	 *
+	 * @param array $params Associative array with a 'subscr_id' key
+	 * @return CancelSubscriptionResponse
+	 */
+	public function cancelSubscription( array $params ): CancelSubscriptionResponse {
+		$rawResponse = $this->api->manageRecurringPaymentsProfileStatusCancel( $params );
+		$response = new CancelSubscriptionResponse();
+		$response->setRawResponse( $rawResponse );
+		$response->setRawStatus( $rawResponse['ACK'] ?? null );
+
+		if ( $this->isSuccessfulPaypalResponse( $rawResponse ) ) {
+			$response->setSuccessful( true );
+
+			if (
+				empty( $rawResponse[ 'PROFILEID' ] ) ||
+				$rawResponse[ 'PROFILEID' ] !== $params[ 'subscr_id' ]
+			) {
+				throw new UnexpectedValueException(
+					"Paypal API call successful but incorrect or missing PROFILEID in response" );
+			}
+
+		} else {
+			$response->setSuccessful( false );
+			$response->setStatus( FinalStatus::FAILED );
+			$response->addErrors( $this->mapErrorsInResponse( $rawResponse ) );
+		}
+
+		return $response;
+	}
+
+	/**
 	 * Get the latest status from PayPal
 	 *
 	 * $params['token'] should match the PayPal EC Token
@@ -76,26 +165,50 @@ class PaymentProvider implements IPaymentProvider, IGetLatestPaymentStatusProvid
 		return $this->mapGetDetailsResponse( $rawResponse );
 	}
 
-	protected function mapGetDetailsResponse( array $rawResponse ) {
-		$details = ( new DonorDetails() )
-			->setEmail( $rawResponse['EMAIL'] ?? null )
-			->setFirstName( $rawResponse['FIRSTNAME'] ?? null )
-			->setLastName( $rawResponse['LASTNAME'] ?? null );
-
-		$rawStatus = $rawResponse['CHECKOUTSTATUS'];
-
+	/**
+	 * Map Detail Response for GetExpressCheckoutDetails
+	 *
+	 * Not mapped, but usually present in response:
+	 * CORRELATIONID (their-side request ID for debugging), COUNTRYCODE, MIDDLENAME, SUFFIX,
+	 * TIMESTAMP (TODO: map to payment date), CUSTOM, INVNUM (last 2 are both order_id),
+	 * BILLINGAGREEMENTACCEPTEDSTATUS, REDIRECTREQUIRED, PAYMENTREQUEST_0_AMT, PAYMENTREQUEST_0_CURRENCYCODE
+	 *
+	 * @param array $rawResponse
+	 *
+	 * @return PaymentDetailResponse
+	 * @throws UnexpectedValueException
+	 */
+	protected function mapGetDetailsResponse( array $rawResponse ): PaymentDetailResponse {
 		$response = ( new PaymentDetailResponse() )
-			->setRawResponse( $rawResponse )
-			->setSuccessful( $this->isSuccessfulPaypalResponse( $rawResponse ) )
-			->setDonorDetails( $details )
-			->setRawStatus( $rawStatus )
-			->setProcessorContactID( $rawResponse['PAYERID'] ?? null )
-			->setStatus( ( new ExpressCheckoutStatus() )->normalizeStatus( $rawStatus ) )
-			->setGatewayTxnId( $rawResponse['PAYMENTINFO_0_TRANSACTIONID'] ?? '' );
-		// Not mapped, but usually present in response:
-		// CORRELATIONID (their-side request ID for debugging), COUNTRYCODE, MIDDLENAME, SUFFIX,
-		// TIMESTAMP (TODO: map to payment date), CUSTOM, INVNUM (last 2 are both order_id),
-		// BILLINGAGREEMENTACCEPTEDSTATUS, REDIRECTREQUIRED, PAYMENTREQUEST_0_AMT, PAYMENTREQUEST_0_CURRENCYCODE
+			->setRawResponse( $rawResponse );
+
+		if ( $this->isSuccessfulPaypalResponse( $rawResponse ) ) {
+			$details = ( new DonorDetails() )
+				->setEmail( $rawResponse['EMAIL'] ?? null )
+				->setFirstName( $rawResponse['FIRSTNAME'] ?? null )
+				->setLastName( $rawResponse['LASTNAME'] ?? null );
+
+			$response->setSuccessful( true )
+				->setDonorDetails( $details )
+				->setProcessorContactID( $rawResponse['PAYERID'] ?? null );
+
+			if ( !empty( $rawResponse['PAYMENTREQUEST_0_TRANSACTIONID'] ) ) {
+				// This field is only returned after a successful transaction for DoExpressCheckout has occurred.
+				$response->setGatewayTxnId( $rawResponse['PAYMENTREQUEST_0_TRANSACTIONID'] );
+			}
+
+			if ( !empty( $rawResponse['CHECKOUTSTATUS'] ) ) {
+				$response->setRawStatus( $rawResponse['CHECKOUTSTATUS'] )
+					->setStatus( ( new ExpressCheckoutStatus() )->normalizeStatus( $rawResponse['CHECKOUTSTATUS'] ) );
+			} else {
+				throw new UnexpectedValueException( "Paypal API call successful but no status returned" );
+			}
+		} else {
+			$response->setSuccessful( false );
+			// when the API call fails we don't get a result in CHECKOUTSTATUS,
+			// while if the error code is just a timeout, we do not want to make status failed, so no need to set the status here yet.
+			$response->addErrors( $this->mapErrorsInResponse( $rawResponse ) );
+		}
 
 		return $response;
 	}
@@ -162,6 +275,8 @@ class PaymentProvider implements IPaymentProvider, IGetLatestPaymentStatusProvid
 	/**
 	 * Map Paypal error code to our own ErrorCode
 	 *
+	 * Documentation https://developer.paypal.com/api/nvp-soap/errors/
+	 *
 	 * @param string $errorCode
 	 * @return int
 	 */
@@ -188,6 +303,9 @@ class PaymentProvider implements IPaymentProvider, IGetLatestPaymentStatusProvid
 				break;
 			case '10421': // Express Checkout belongs to a different customer (weird)
 				$mappedCode = ErrorCode::UNEXPECTED_VALUE;
+				break;
+			case '11556': // Invalid subscription status for cancel action; should be active or suspended
+				$mappedCode = ErrorCode::SUBSCRIPTION_CANNOT_BE_CANCELED;
 				break;
 		}
 		return $mappedCode;

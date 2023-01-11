@@ -529,8 +529,8 @@ abstract class MaintenanceBase {
 			print ( "\nArguments: \n" );
 			foreach ( $this->expectedArguments as $arg ) {
 				$str = $tab . $arg['name'];
-				$str = str_pad( $str, $nameWidth - count( $str ), ' ' );
-				if ( count( $str ) > $nameWidth ) {
+				$str = str_pad( $str, $nameWidth - strlen( $str ), ' ' );
+				if ( strlen( $str ) > $nameWidth ) {
 					$str .= "\n" . str_pad( '', $nameWidth, ' ' );
 				}
 				$str .= wordwrap( $arg['desc'], $descWidth, "\n$namePad", true );

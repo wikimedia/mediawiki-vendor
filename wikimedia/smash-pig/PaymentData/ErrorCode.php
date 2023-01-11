@@ -40,4 +40,6 @@ class ErrorCode {
 	const VALIDATION = 1000014;
 	/** @var int Caller sent in a transaction ID that does not exist in processor's system */
 	const TRANSACTION_NOT_FOUND = 1000015;
+	/** @var int Invalid subscription status for cancel action; should be active or suspended */
+	const SUBSCRIPTION_CANNOT_BE_CANCELED = 1000016;
 }
