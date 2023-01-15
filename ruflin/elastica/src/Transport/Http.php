@@ -28,7 +28,7 @@ class Http extends AbstractTransport
     /**
      * Curl resource to reuse.
      *
-     * @var resource|null Curl resource to reuse
+     * @var \CurlHandle|resource|null Curl resource to reuse
      */
     protected static $_curlConnection;
 
@@ -37,7 +37,7 @@ class Http extends AbstractTransport
      *
      * All calls that are made to the server are done through this function
      *
-     * @param array $params Host, Port, ...
+     * @param array<string, mixed> $params Host, Port, ...
      *
      * @throws ConnectionException
      * @throws ResponseException
@@ -122,7 +122,7 @@ class Http extends AbstractTransport
 
         $headers[] = 'Content-Type: '.$request->getContentType();
 
-        if (!empty($data) || '0' === $data) {
+        if (!empty($data)) {
             if ($this->hasParam('postWithRequestBody') && true == $this->getParam('postWithRequestBody')) {
                 $httpMethod = Request::POST;
             }
@@ -192,7 +192,7 @@ class Http extends AbstractTransport
     /**
      * Called to add additional curl params.
      *
-     * @param resource $curlConnection Curl connection
+     * @param \CurlHandle|resource $curlConnection Curl connection
      */
     protected function _setupCurl($curlConnection): void
     {
@@ -208,7 +208,7 @@ class Http extends AbstractTransport
      *
      * @param bool $persistent False if not persistent connection
      *
-     * @return resource Connection resource
+     * @return \CurlHandle|resource Connection resource
      */
     protected function _getConnection(bool $persistent = true)
     {
@@ -219,6 +219,9 @@ class Http extends AbstractTransport
         return self::$_curlConnection;
     }
 
+    /**
+     * @return int
+     */
     protected function _getAuthType()
     {
         switch ($this->_connection->getAuthType()) {

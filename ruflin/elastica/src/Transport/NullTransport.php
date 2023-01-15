@@ -20,14 +20,14 @@ class NullTransport extends AbstractTransport
     /**
      * Response you want to get from the transport.
      *
-     * @var Response Response
+     * @var Response|null Response
      */
     protected $_response;
 
     /**
      * Set response object the transport returns.
      *
-     * @param array $params Hostname, port, path, ...
+     * @param array<string, mixed> $params Hostname, port, path, ...
      */
     public function getResponse(array $params = []): Response
     {
@@ -49,7 +49,7 @@ class NullTransport extends AbstractTransport
     /**
      * Generate an example response object.
      *
-     * @param array $params Hostname, port, path, ...
+     * @param array<string, mixed> $params Hostname, port, path, ...
      *
      * @return Response $response
      */
@@ -79,7 +79,7 @@ class NullTransport extends AbstractTransport
     /**
      * Null transport.
      *
-     * @param array $params Hostname, port, path, ...
+     * @param array<string, mixed> $params Hostname, port, path, ...
      *
      * @return Response Response empty object
      */

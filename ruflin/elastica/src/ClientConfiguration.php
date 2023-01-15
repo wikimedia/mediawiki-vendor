@@ -38,7 +38,7 @@ class ClientConfiguration
         'bigintConversion' => false,
         'username' => null,
         'password' => null,
-        'auth_type' => null, //basic, digest, gssnegotiate, ntlm
+        'auth_type' => null, // basic, digest, gssnegotiate, ntlm
     ];
 
     /**
@@ -81,6 +81,7 @@ class ClientConfiguration
         } elseif ('pool' === $func->getName()) {
             $connections = [];
             $clientConfiguration = new static();
+            /** @var Url $arg */
             foreach ($func->getArguments() as $arg) {
                 $connections[] = self::parseDsn($arg);
             }

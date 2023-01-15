@@ -127,7 +127,7 @@ class Info
     public function getPlugins(): array
     {
         if (!\in_array('plugins', $this->_params, true)) {
-            //Plugin data was not retrieved when refresh() was called last. Get it now.
+            // Plugin data was not retrieved when refresh() was called last. Get it now.
             $this->_params[] = 'plugins';
             $this->refresh($this->_params);
         }
@@ -212,7 +212,7 @@ class Info
 
         // TODO: Use only NodesInfo when dropping support for elasticsearch/elasticsearch 7.x
         $endpoint = \class_exists(NodesInfo::class) ? new NodesInfo() : new \Elasticsearch\Endpoints\Cluster\Nodes\Info();
-        $endpoint->setNodeID($this->getNode()->getId());
+        $endpoint->setNodeId($this->getNode()->getId());
 
         if ($params) {
             $endpoint->setMetric($params);

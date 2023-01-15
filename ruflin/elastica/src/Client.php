@@ -4,8 +4,10 @@ namespace Elastica;
 
 use Elastica\Bulk\Action;
 use Elastica\Bulk\ResponseSet;
+use Elastica\Exception\ClientException;
 use Elastica\Exception\ConnectionException;
 use Elastica\Exception\InvalidException;
+use Elastica\Exception\ResponseException;
 use Elastica\Script\AbstractScript;
 use Elasticsearch\Endpoints\AbstractEndpoint;
 use Elasticsearch\Endpoints\ClosePointInTime;
@@ -262,7 +264,7 @@ class Client
     public function updateDocument($id, $data, $index, array $options = []): Response
     {
         $endpoint = new Update();
-        $endpoint->setID($id);
+        $endpoint->setId($id);
         $endpoint->setIndex($index);
 
         if ($data instanceof AbstractScript) {
@@ -291,7 +293,7 @@ class Client
             $requestData = $data;
         }
 
-        //If an upsert document exists
+        // If an upsert document exists
         if ($data instanceof AbstractScript || $data instanceof Document) {
             if ($data->hasUpsert()) {
                 $requestData['upsert'] = $data->getUpsert()->getData();
@@ -361,7 +363,7 @@ class Client
      */
     public function connect()
     {
-        return $this->_initConnections();
+        $this->_initConnections();
     }
 
     /**
@@ -385,7 +387,7 @@ class Client
     }
 
     /**
-     * @throws \Elastica\Exception\ClientException
+     * @throws ClientException
      *
      * @return Connection
      */
@@ -474,7 +476,7 @@ class Client
      *
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html
      *
-     * @throws \Elastica\Exception\ResponseException
+     * @throws ResponseException
      * @throws InvalidException
      */
     public function bulk(array $params): ResponseSet
@@ -501,7 +503,9 @@ class Client
      * @param array        $query       OPTIONAL Query params
      * @param string       $contentType Content-Type sent with this request
      *
-     * @throws Exception\ClientException|Exception\ConnectionException
+     * @throws ClientException
+     * @throws ConnectionException
+     * @throws ResponseException
      */
     public function request(string $path, string $method = Request::GET, $data = [], array $query = [], string $contentType = Request::DEFAULT_CONTENT_TYPE): Response
     {

@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/ruflin/Elastica/compare/7.1.5...master)
+## [Unreleased](https://github.com/ruflin/Elastica/compare/7.3.0...master)
 ### Backward Compatibility Breaks
 ### Added
 ### Changed
@@ -12,6 +12,60 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 ### Fixed
 ### Security
+
+## [7.3.0](https://github.com/ruflin/Elastica/compare/7.3.0...7.2.0)
+### Changed
+* Use `ramsey/composer-install` to simplify CI jobs and test with the lowest set of dependencies [#2113](https://github.com/ruflin/Elastica/pull/2113)
+* Bumped `elasticsearch/elasticsearch` to `7.10` to be able to use `OpenPointInTime` class [#2113](https://github.com/ruflin/Elastica/pull/2113)
+* Updated `php-cs-fixer` to `3.9.5` [#2110](https://github.com/ruflin/Elastica/pull/2110)
+* Changed `Elastica\Index\Settings::get` adding ability to get default settings by @krasilnikovm [#2115](https://github.com/ruflin/Elastica/pull/2115)
+* Update `AWSAuthV4 transport` to sanitize host name for AWS requests before signing [#2090](https://github.com/ruflin/Elastica/pull/2090)
+* New method `Elastica\Aggregation\Terms::setMissingBucket`. For Composite Agg. Include in the response documents without a value for a given source. [#2117](https://github.com/ruflin/Elastica/pull/2117)
+* Increased `PHPStan` level to `5` by @franmomu [#2108](https://github.com/ruflin/Elastica/pull/2108)
+### Removed
+* Removed `CallbackStrategyTestHelper` and `ErrorsCollector` from `tests` [#2111](https://github.com/ruflin/Elastica/pull/2111)
+### Fixed
+* Fixed `Query/Terms` terms phpdoc from `array<bool|float|int|string>` to `list<bool|float|int|string>` [#2118](https://github.com/ruflin/Elastica/pull/2118)
+* Fixed `Response` to prevent throwing JSONParseException when the response is empty.
+
+## [7.2.0](https://github.com/ruflin/Elastica/compare/7.2.0...7.1.5)
+### Backward Compatibility Breaks
+* Changed `SetProcessor::setValue` signature to allow to pass any type, if you are overriding this method you must update the signature removing the `string` type-hint by @franmomu [#2082](https://github.com/ruflin/Elastica/pull/2082)
+* Changed `Settings::setMergePolicy` signature to allow to pass `int` and `string` as argument 2, if you are overriding this method you must update the signature removing the `string` type-hint by @franmomu [#2085](https://github.com/ruflin/Elastica/pull/2085)
+### Added
+* Added `PHPStan` at level 3 by @franmomu [#2064](https://github.com/ruflin/Elastica/pull/2064)
+* Added coverage check to CI by @franmomu [#2071](https://github.com/ruflin/Elastica/pull/2071)
+* Added `string` as a valid type for `data` in `Request`  by @franmomu [#2078](https://github.com/ruflin/Elastica/pull/2078)
+* Added missing `throws` PHPDoc tags by @franmomu [#2077](https://github.com/ruflin/Elastica/pull/2077)
+* Added `Search::addIndexByName()`, `Search::hasIndexByName()` and `Search::addIndicesByName()` by @franmomu [#2103](https://github.com/ruflin/Elastica/pull/2103)
+### Changed
+* Updated `symfony/phpunit-bridge` to `6.0` by @franmomu [#2067](https://github.com/ruflin/Elastica/pull/2067)
+* Updated `php-cs-fixer` to `3.8.0` [#2074](https://github.com/ruflin/Elastica/pull/2074)
+* Updated `composer-normalize` to `2.2.28` by @deguif [#2084](https://github.com/ruflin/Elastica/pull/2084)
+* Increased `PHPStan` level to `4` [#2080](https://github.com/ruflin/Elastica/pull/2080)
+* `ExceptionInterface` extends `Throwable` [#2083](https://github.com/ruflin/Elastica/pull/2083)
+* Changed `value` in `SetProcessor` to accept `mixed` instead of `string` by @franmomu [#2082](https://github.com/ruflin/Elastica/pull/2082)
+* Updated `Query::create` PHPDoc to include supported types and propagate it to callers by @franmomu [#2088](https://github.com/ruflin/Elastica/pull/2088)
+* Update some iterable types in PHPDoc to be more specific by @franmomu [#2092](https://github.com/ruflin/Elastica/pull/2092)
+* Updated `AwsAuthV4Test` adding assertions for exception type by @franmomu [#2094](https://github.com/ruflin/Elastica/pull/2094)
+### Deprecated
+* Deprecated `Elastica\Reindex::WAIT_FOR_COMPLETION_FALSE`, use a boolean as parameter instead by @franmomu [#2070](https://github.com/ruflin/Elastica/pull/2070)
+* Passing anything else than a boolean as 1st argument to `Reindex::setWaitForCompletion`, pass a boolean instead by @franmomu [#2070](https://github.com/ruflin/Elastica/pull/2070)
+* Deprecated passing a `string` as 1st argument to `Search::addIndex()` and `Search::hasIndex()`, pass an Index instance instead by @franmomu [#2103](https://github.com/ruflin/Elastica/pull/2103)
+* Deprecated passing an array of `string` as 1st argument to `Search::addIndices()`, use an array of Index instances by @franmomu [#2103](https://github.com/ruflin/Elastica/pull/2103)
+
+### Removed
+* Removed `egeloen/http-adapter` as suggested package since the project is abandoned by @franmomu [#2069](https://github.com/ruflin/Elastica/pull/2069)
+* Removed `0` as valid request data using Analyze API by @franmomu [#2068](https://github.com/ruflin/Elastica/pull/2068)
+* Removed dead code in `AwsAuthV4Test` by @franmomu [#2073](https://github.com/ruflin/Elastica/pull/2073)
+### Fixed
+* Fixed some PHPDoc types adding `null` as possible value by @franmomu [#2070](https://github.com/ruflin/Elastica/pull/2070) and [#2087](https://github.com/ruflin/Elastica/pull/2087)
+* Fixed passing wrong types to `GapPolicyInterface::setGapPolicy()`, `Document::setDocAsUpsert()` and `Connection::setPort()` methods  by @franmomu [#2081](https://github.com/ruflin/Elastica/pull/2081)
+* Fixed `Http` PHPDoc adding `\CurlHandle` type for Curl connection by @franmomu [#2086](https://github.com/ruflin/Elastica/pull/2086)
+* Fixed case mismatch in method calls by @franmomu [#2087](https://github.com/ruflin/Elastica/pull/2087)
+* Fixed `MoreLikeThis::setLike()` PHPDoc allowing `Document` by @franmomu [#2091](https://github.com/ruflin/Elastica/pull/2091)
+* Fixed `Term::setTerm()` PHPDoc allowing scalar values for `$value` parameter by @franmomu [#2094](https://github.com/ruflin/Elastica/pull/2094)
+* Fixed `DateHistogram` deprecation: use `fixed_interval` or `calendar_interval` instead of `interval` by @VincentLanglet [#2099](https://github.com/ruflin/Elastica/pull/2099)
 
 ## [7.1.5](https://github.com/ruflin/Elastica/compare/7.1.5...7.1.4)
 ### Added

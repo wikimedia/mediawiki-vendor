@@ -45,6 +45,7 @@ use Elasticsearch\Endpoints\UpdateByQuery;
  * Handles reads, deletes and configurations of an index
  *
  * @author   Nicolas Ruflin <spam@ruflin.com>
+ * @phpstan-import-type TCreateQueryArgsMatching from Query
  */
 class Index implements SearchableInterface
 {
@@ -164,9 +165,11 @@ class Index implements SearchableInterface
     /**
      * Update entries in the db based on a query.
      *
-     * @param AbstractQuery|array|Collapse|Query|string|Suggest $query   Query object or array
-     * @param AbstractScript                                    $script  Script
-     * @param array                                             $options Optional params
+     * @param AbstractQuery|array|Query|string|null $query Query object or array
+     * @phpstan-param TCreateQueryArgsMatching $query
+     *
+     * @param AbstractScript $script  Script
+     * @param array          $options Optional params
      *
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update-by-query.html
      */
@@ -193,7 +196,7 @@ class Index implements SearchableInterface
         $endpoint = new IndexEndpoint();
 
         if (null !== $doc->getId() && '' !== $doc->getId()) {
-            $endpoint->setID($doc->getId());
+            $endpoint->setId($doc->getId());
         }
 
         $options = $doc->getOptions(
@@ -261,7 +264,7 @@ class Index implements SearchableInterface
     public function getDocument($id, array $options = []): Document
     {
         $endpoint = new DocumentGet();
-        $endpoint->setID($id);
+        $endpoint->setId($id);
         $endpoint->setParams($options);
 
         $response = $this->requestEndpoint($endpoint);
@@ -297,7 +300,7 @@ class Index implements SearchableInterface
         }
 
         $endpoint = new \Elasticsearch\Endpoints\Delete();
-        $endpoint->setID(\trim($id));
+        $endpoint->setId(\trim($id));
         $endpoint->setParams($options);
 
         return $this->requestEndpoint($endpoint);
@@ -306,8 +309,10 @@ class Index implements SearchableInterface
     /**
      * Deletes documents matching the given query.
      *
-     * @param AbstractQuery|array|Collapse|Query|string|Suggest $query   Query object or array
-     * @param array                                             $options Optional params
+     * @param AbstractQuery|array|Query|string|null $query Query object or array
+     * @phpstan-param TCreateQueryArgsMatching $query
+     *
+     * @param array $options Optional params
      *
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html
      */
@@ -455,9 +460,7 @@ class Index implements SearchableInterface
     }
 
     /**
-     * @param AbstractQuery|array|Collapse|Query|string|Suggest $query
-     * @param array|int                                         $options
-     * @param BuilderInterface                                  $builder
+     * {@inheritdoc}
      */
     public function createSearch($query = '', $options = null, ?BuilderInterface $builder = null): Search
     {

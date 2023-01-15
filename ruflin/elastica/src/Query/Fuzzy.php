@@ -16,7 +16,7 @@ class Fuzzy extends AbstractQuery
     /**
      * Construct a fuzzy query.
      *
-     * @param string $value String to search for
+     * @param string|null $value String to search for
      */
     public function __construct(?string $fieldName = null, ?string $value = null)
     {
@@ -50,7 +50,7 @@ class Fuzzy extends AbstractQuery
      */
     public function setFieldOption(string $option, $value): self
     {
-        //Retrieve the single existing field for alteration.
+        // Retrieve the single existing field for alteration.
         $params = $this->getParams();
         if (\count($params) < 1) {
             throw new InvalidException('No field has been set');

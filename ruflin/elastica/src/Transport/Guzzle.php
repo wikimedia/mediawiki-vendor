@@ -118,7 +118,7 @@ class Guzzle extends AbstractTransport
         );
 
         $data = $request->getData();
-        if (!empty($data) || '0' === $data) {
+        if (!empty($data)) {
             if (Request::GET === $req->getMethod()) {
                 $req = $req->withMethod(Request::POST);
             }
@@ -195,6 +195,9 @@ class Guzzle extends AbstractTransport
         return $action;
     }
 
+    /**
+     * @param mixed $data
+     */
     private function streamFor($data): StreamInterface
     {
         if (\is_array($data)) {

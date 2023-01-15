@@ -3,13 +3,18 @@
 namespace Elastica;
 
 use Elastica\Exception\InvalidException;
+use Elastica\Exception\ResponseException;
+use Elastica\Query\AbstractQuery;
+use Elastica\Query\MatchAll;
 use Elastica\ResultSet\BuilderInterface;
 use Elastica\ResultSet\DefaultBuilder;
+use Elastica\Suggest\AbstractSuggest;
 
 /**
  * Elastica search object.
  *
  * @author   Nicolas Ruflin <spam@ruflin.com>
+ * @phpstan-import-type TCreateQueryArgs from Query
  */
 class Search
 {
@@ -77,7 +82,7 @@ class Search
     /**
      * Adds a index to the list.
      *
-     * @param Index|string $index Index object or string
+     * @param Index $index Index object or string
      *
      * @throws InvalidException
      */
@@ -85,13 +90,29 @@ class Search
     {
         if ($index instanceof Index) {
             $index = $index->getName();
+        } else {
+            \trigger_deprecation(
+                'ruflin/elastica',
+                '7.2.0',
+                'Passing a string as 1st argument to "%s()" is deprecated, pass an Index instance or use "addIndexByName" instead. It will throw a %s in 8.0.',
+                __METHOD__,
+                \TypeError::class
+            );
         }
 
         if (!\is_scalar($index)) {
             throw new InvalidException('Invalid param type');
         }
 
-        $this->_indices[] = (string) $index;
+        return $this->addIndexByName((string) $index);
+    }
+
+    /**
+     * Adds an index to the list.
+     */
+    public function addIndexByName(string $index): self
+    {
+        $this->_indices[] = $index;
 
         return $this;
     }
@@ -99,11 +120,28 @@ class Search
     /**
      * Add array of indices at once.
      *
-     * @param Index[]|string[] $indices
+     * @param Index[] $indices
      */
     public function addIndices(array $indices = []): self
     {
         foreach ($indices as $index) {
+            if (\is_string($index)) {
+                \trigger_deprecation(
+                    'ruflin/elastica',
+                    '7.2.0',
+                    'Passing a array of strings as 1st argument to "%s()" is deprecated, pass an array of Indexes or use "addIndicesByName" instead. It will throw a %s in 8.0.',
+                    __METHOD__,
+                    \TypeError::class
+                );
+                $this->addIndexByName($index);
+
+                continue;
+            }
+
+            if (!$index instanceof Index) {
+                throw new InvalidException('Invalid param type for addIndices(), expected Index[]');
+            }
+
             $this->addIndex($index);
         }
 
@@ -111,7 +149,23 @@ class Search
     }
 
     /**
-     * @param array|Query|Query\AbstractQuery|string|Suggest $query
+     * @param string[] $indices
+     */
+    public function addIndicesByName(array $indices = []): self
+    {
+        foreach ($indices as $index) {
+            if (!\is_string($index)) {
+                throw new InvalidException('Invalid param type for addIndicesByName(), expected string[]');
+            }
+            $this->addIndexByName($index);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param AbstractQuery|AbstractSuggest|array|Collapse|Query|string|Suggest|null $query
+     * @phpstan-param TCreateQueryArgs $query
      */
     public function setQuery($query): self
     {
@@ -210,21 +264,34 @@ class Search
     }
 
     /**
-     * @param Index|string $index
+     * @param Index $index
      */
     public function hasIndex($index): bool
     {
         if ($index instanceof Index) {
             $index = $index->getName();
+        } else {
+            \trigger_deprecation(
+                'ruflin/elastica',
+                '7.2.0',
+                'Passing a string as 1st argument to "%s()" is deprecated, pass an Index instance or use "hasIndexByName" instead. It will throw a %s in 8.0.',
+                __METHOD__,
+                \TypeError::class
+            );
         }
 
+        return $this->hasIndexByName($index);
+    }
+
+    public function hasIndexByName(string $index): bool
+    {
         return \in_array($index, $this->_indices, true);
     }
 
     public function getQuery(): Query
     {
         if (null === $this->_query) {
-            $this->_query = Query::create('');
+            $this->_query = new Query(new MatchAll());
         }
 
         return $this->_query;
@@ -253,10 +320,13 @@ class Search
     /**
      * Search in the set indices.
      *
-     * @param array|Query|Query\AbstractQuery|string $query
-     * @param array|int                              $options Limit or associative array of options (option=>value)
+     * @param AbstractQuery|AbstractSuggest|array|Collapse|Query|string|Suggest|null $query
+     * @phpstan-param TCreateQueryArgs $query
+     *
+     * @param array|int $options Limit or associative array of options (option=>value)
      *
      * @throws InvalidException
+     * @throws ResponseException
      */
     public function search($query = '', $options = null, string $method = Request::POST): ResultSet
     {
@@ -309,8 +379,9 @@ class Search
     }
 
     /**
-     * @param array|int                                      $options
-     * @param array|Query|Query\AbstractQuery|string|Suggest $query
+     * @param array|int                                                              $options
+     * @param AbstractQuery|AbstractSuggest|array|Collapse|Query|string|Suggest|null $query
+     * @phpstan-param TCreateQueryArgs $query
      */
     public function setOptionsAndQuery($options = null, $query = ''): self
     {
