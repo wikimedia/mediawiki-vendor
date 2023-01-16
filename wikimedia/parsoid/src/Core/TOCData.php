@@ -8,6 +8,14 @@ namespace Wikimedia\Parsoid\Core;
  *
  * This is simply an array of SectionMetadata objects for now, but may
  * include additional ToC properties in the future.
+ *
+ * Note that there is no ::setExtensionData() method on the top-level
+ * TOCData.  If an extension wants to set additional top-level
+ * properties, it is assumed they can use the page-level
+ * ::setExtensionData() on the ParserOutput/ContentMetadataCollector
+ * instead.  If this decision is revisited, the ::setExtensionData()
+ * method on TOCData should match the ones on SectionMetadata and
+ * ContentMetadataCollector.
  */
 class TOCData implements \JsonSerializable {
 	/**
@@ -172,8 +180,16 @@ class TOCData implements \JsonSerializable {
 	 * @inheritDoc
 	 */
 	public function jsonSerialize(): array {
+		# T312589 explicitly calling jsonSerialize() on the elements of
+		# $this->sections will be unnecessary in the future.
+		$sections = array_map(
+			static function ( SectionMetadata $s ) {
+				return $s->jsonSerialize();
+			},
+			$this->sections
+		);
 		return [
-			'sections' => $this->sections,
+			'sections' => $sections,
 		];
 	}
 }
