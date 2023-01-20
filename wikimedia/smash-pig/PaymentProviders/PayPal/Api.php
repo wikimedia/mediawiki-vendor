@@ -48,6 +48,7 @@ class Api {
 	 *
 	 * @param array $params
 	 * @return array
+	 * @throws \SmashPig\Core\ApiException
 	 */
 	public function makeApiCall( array $params ) {
 		$requestParams = array_merge( $this->getDefaultRequestParams(), $params );
@@ -57,10 +58,49 @@ class Api {
 		$response = $request->execute();
 		Logger::debug( "Response from API call: " . json_encode( $response ) );
 		parse_str( $response['body'], $result );
+		ExceptionMapper::throwOnPaypalError( $response['body'] );
 		return $result;
 	}
 
 	/**
+	 * Doc link: https://developer.paypal.com/api/nvp-soap/set-express-checkout-nvp/
+	 *
+	 * @param array $params
+	 * @return array
+	 */
+	public function createPaymentSession( array $params ) {
+		$requestParams = [
+			'VERSION' => 204,
+			'METHOD' => 'SetExpressCheckout',
+			'RETURNURL' => $params['return_url'],
+			'CANCELURL' => $params['cancel_url'],
+			'REQCONFIRMSHIPPING' => 0,
+			'NOSHIPPING' => 1,
+			'LOCALECODE' => $params['locale'],
+			'L_PAYMENTREQUEST_0_AMT0' => $params['amount'],
+			'L_PAYMENTREQUEST_0_DESC0' => $params['description'],
+			'PAYMENTREQUEST_0_AMT' => $params['amount'],
+			'PAYMENTREQUEST_0_CURRENCYCODE' => $params['currency'],
+			'PAYMENTREQUEST_0_CUSTOM' => $params['order_id'],
+			'PAYMENTREQUEST_0_DESC' => $params['description'],
+			'PAYMENTREQUEST_0_INVNUM' => $params['order_id'],
+			'PAYMENTREQUEST_0_ITEMAMT' => $params['amount'],
+			'PAYMENTREQUEST_0_PAYMENTACTION' => 'Sale',
+			'PAYMENTREQUEST_0_PAYMENTREASON' => 'None',
+			'SOLUTIONTYPE' => 'Mark'
+		];
+
+		if ( $params['is_recurring'] === 1 ) {
+			$requestParams['L_BILLINGTYPE0'] = 'RecurringPayments';
+			$requestParams['L_BILLINGAGREEMENTDESCRIPTION0'] = $params['description'];
+		}
+
+		return $this->makeApiCall( $requestParams );
+	}
+
+	/**
+	 * Doc link: https://developer.paypal.com/api/nvp-soap/do-express-checkout-payment-nvp/
+	 *
 	 * @param array $params
 	 * @return array
 	 */
@@ -83,6 +123,36 @@ class Api {
 	}
 
 	/**
+	 * Doc link: https://developer.paypal.com/api/nvp-soap/create-recurring-payments-profile-nvp/
+	 *
+	 * @param array $params
+	 * @return array
+	 */
+	public function createRecurringPaymentsProfile( array $params ) {
+		$requestParams = [
+			'METHOD' => 'CreateRecurringPaymentsProfile',
+			// A timestamped token, the value of which was returned in the response to the first call to SetExpressCheckout or SetCustomerBillingAgreement response.
+			// Tokens expire after approximately 3 hours.
+			'TOKEN' => $params['payment_token'],
+			'PROFILESTARTDATE' => gmdate( "Y-m-d\TH:i:s\Z", strtotime( $params['date'] ) ), // The date when billing for this profile begins, set it today
+			'DESC' => $params['description'],
+			'PROFILEREFERENCE' => $params['order_id'],
+			'BILLINGPERIOD' => 'Month',
+			'BILLINGFREQUENCY' => 1,
+			'AMT' => $params['amount'],
+			'CURRENCYCODE' => $params['currency'],
+			'EMAIL' => $params['email'],
+			'AUTOBILLOUTAMT' => 'NoAutoBill', // PayPal does not automatically bill the outstanding balance if payments fail.
+			'TOTALBILLINGCYCLES' => 0, // Forever.
+			'MAXFAILEDPAYMENTS' => 0, // Just keep trying
+		];
+
+		return $this->makeApiCall( $requestParams );
+	}
+
+	/**
+	 * Doc link: https://developer.paypal.com/api/nvp-soap/get-express-checkout-details-nvp/
+	 *
 	 * @param string $token
 	 * @return array
 	 */
@@ -90,6 +160,19 @@ class Api {
 		$requestParams = [
 			'METHOD' => 'GetExpressCheckoutDetails',
 			'TOKEN' => $token
+		];
+		return $this->makeApiCall( $requestParams );
+	}
+
+	/**
+	 * @param array $params Associative array with a 'subscr_id' key
+	 * @return array
+	 */
+	public function manageRecurringPaymentsProfileStatusCancel( array $params ) {
+		$requestParams = [
+			'METHOD' => 'ManageRecurringPaymentsProfileStatus',
+			'PROFILEID' => $params[ 'subscr_id' ],
+			'ACTION' => 'Cancel'
 		];
 		return $this->makeApiCall( $requestParams );
 	}
@@ -110,5 +193,4 @@ class Api {
 		$params['VERSION'] = $this->version;
 		return $params;
 	}
-
 }

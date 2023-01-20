@@ -55,7 +55,11 @@ class RecurringMessage extends Message {
 				$message['cancel_date'] = time();
 				break;
 
+			# FIXME the last two should actually mark a contribution_recur as failed,
+			# while the first three should just record one failed installment. We are
+			# recording all of these as one failed installment.
 			case 'recurring_payment_failed':
+			case 'recurring_payment_outstanding_payment_failed':
 			case 'recurring_payment_skipped':
 			case 'recurring_payment_suspended':
 			case 'recurring_payment_suspended_due_to_max_failed_payment':

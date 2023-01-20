@@ -61,6 +61,58 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$this->assertEquals( "Success", $response->getRawResponse()['ACK'] );
 	}
 
+	public function testGetLatestPaymentStatusWithError() {
+		// set up expectations
+		$testParams = [
+			'token' => 'EC-3HX397483P386493S'
+		];
+		$testApiResponse = $this->getTestData( 'GetLatestPaymentStatusWithError.response' );
+		parse_str( $testApiResponse, $parsedTestApiResponse );
+
+		$this->api->expects( $this->once() )
+			->method( 'getExpressCheckoutDetails' )
+			->with( $this->equalTo( $testParams['token'] ) )
+			->willReturn( $parsedTestApiResponse );
+
+		// call the code
+		$response = $this->provider->getLatestPaymentStatus( $testParams );
+
+		// check the results
+		$this->assertInstanceOf( 'SmashPig\PaymentProviders\Responses\PaymentDetailResponse', $response );
+		$this->assertFalse( $response->isSuccessful() );
+		$this->assertNull( $response->getRawStatus() );
+		$this->assertNull( $response->getStatus() );
+	}
+
+	public function testCreateRecurringPaymentsProfileSampleApiCall() {
+		// perform the test
+		$testParams = [
+			'order_id' => '15190.1',
+			'amount' => '30.0',
+			'currency' => 'USD',
+			'email' => 'test_user@paypal.com',
+			'payment_token' => 'EC-74C37985WY171780F',
+		];
+
+		$testApiResponse = $this->getTestData( 'CreateRecurringPaymentsProfile.response' );
+		parse_str( $testApiResponse, $parsedTestApiResponse );
+
+		$this->api->expects( $this->once() )
+			->method( 'createRecurringPaymentsProfile' )
+			->with( $this->equalTo( $testParams ) )
+			->willReturn( $parsedTestApiResponse );
+
+		// call the code
+		$response = $this->provider->createRecurringPaymentsProfile( $testParams );
+		// check the results
+		$this->assertInstanceOf( 'SmashPig\PaymentProviders\Responses\CreateRecurringPaymentsProfileResponse', $response );
+		$this->assertTrue( $response->isSuccessful() );
+		$this->assertEquals( "complete", $response->getStatus() );
+		$this->assertEquals( "Success", $response->getRawStatus() );
+		$this->assertEquals( "ActiveProfile", $response->getRawResponse()['PROFILESTATUS'] );
+		$this->assertEquals( "Success", $response->getRawResponse()['ACK'] );
+	}
+
 	public function testApprovePayment() {
 		// set up expectations
 		$testParams = [
@@ -89,6 +141,61 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$this->assertEquals( "complete", $response->getStatus() );
 		$this->assertEquals( "Success", $response->getRawStatus() );
 		$this->assertEquals( "Completed", $response->getRawResponse()['PAYMENTINFO_0_PAYMENTSTATUS'] );
+		$this->assertEquals( "Success", $response->getRawResponse()['ACK'] );
+	}
+
+	public function testSetExpressCheckoutFail() {
+		// set up expectations
+		$testParams = [
+			'amount' => '30.00',
+			'currency' => 'ddd',
+			'order_id' => '888.1',
+			'is_recurring' => 1,
+		];
+
+		$testCreatePaymentSessionResponse = $this->getTestData( 'SetExpressCheckoutFail.response' );
+		parse_str( $testCreatePaymentSessionResponse, $parsedTestCreatePaymentSessionResponse );
+
+		$this->api->expects( $this->once() )
+			->method( 'createPaymentSession' )
+			->with( $this->equalTo( $testParams ) )
+			->willReturn( $parsedTestCreatePaymentSessionResponse );
+
+		// call the code
+		$response = $this->provider->createPaymentSession( $testParams );
+
+		// check the results
+		$this->assertInstanceOf( 'SmashPig\PaymentProviders\Responses\CreatePaymentSessionResponse', $response );
+		$this->assertFalse( $response->isSuccessful() );
+		$this->assertEquals( "Failure", $response->getRawStatus() );
+		$this->assertEquals( "Failure", $response->getRawResponse()['ACK'] );
+	}
+
+	public function testSetExpressCheckoutSuccess() {
+		// set up expectations
+		$testParams = [
+			'amount' => '30.00',
+			'currency' => 'USD',
+			'order_id' => '888.1',
+			'is_recurring' => 1,
+		];
+
+		$testCreatePaymentSessionResponse = $this->getTestData( 'SetExpressCheckoutSuccess.response' );
+		parse_str( $testCreatePaymentSessionResponse, $parsedTestCreatePaymentSessionResponse );
+
+		$this->api->expects( $this->once() )
+			->method( 'createPaymentSession' )
+			->with( $this->equalTo( $testParams ) )
+			->willReturn( $parsedTestCreatePaymentSessionResponse );
+
+		// call the code
+		$response = $this->provider->createPaymentSession( $testParams );
+
+		// check the results
+		$this->assertInstanceOf( 'SmashPig\PaymentProviders\Responses\CreatePaymentSessionResponse', $response );
+		$this->assertTrue( $response->isSuccessful() );
+		$this->assertEquals( "EC-9J76236023054520Y", $response->getPaymentSession() );
+		$this->assertEquals( "Success", $response->getRawStatus() );
 		$this->assertEquals( "Success", $response->getRawResponse()['ACK'] );
 	}
 

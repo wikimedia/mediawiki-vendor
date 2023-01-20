@@ -11,6 +11,23 @@ endpoints:
     listener:
         class: SmashPig\PaymentProviders\AstroPay\AstroPayListener
 
-login: createlogin
+login: &login x_login
 secret: "secretkey"
 charset: iso-8859-1
+
+api:
+    class: SmashPig\PaymentProviders\dlocal\Api
+    constructor-parameters:
+        -
+            login: *login
+            trans-key: x_trans_key
+            secret: generated_when_api_account_created
+            endpoint: https://sandbox.dlocal.com
+            version: 2.1
+
+signature-calculator:
+    class: SmashPig\PaymentProviders\dlocal\SignatureCalculator
+
+payment-provider:
+    cc:
+        class: SmashPig\PaymentProviders\dlocal\CardPaymentProvider

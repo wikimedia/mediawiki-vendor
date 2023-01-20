@@ -6,13 +6,16 @@ class ReferenceData {
 
 	/**
 	 * Example for adding a new Payment Method
-	 * 	'PaymentMethodNameFromPaymentProcessor' => [
-	 * 	  'method' => 'OurNameForThePaymentMethod',
+	 *  'PaymentMethodNameFromPaymentProcessor' => [
+	 *    'method' => 'OurNameForThePaymentMethod',
 	 *    'submethod' => 'OurNameForTheSubmethod',
-	 * 	  Variants are optional, sometimes there is a variant that comes in with the payment method
+	 *    Variants are optional, sometimes there is a variant that comes in with the payment method
 	 *    'variants' => [
-	 *      'PaymentMethodVariantNameFromPaymentProcessor' => 'OurNameForThePaymentMethodVariant',
-	 * 	  ],
+	 *      'PaymentMethodVariantNameFromPaymentProcessor' => [
+	 *        'method' => 'OurNameForTheVariantMethod'
+	 *        'submethod' => 'OurNameForTheVariantSubmethod',
+	 *      ],
+	 *    ],
 	 *  ],
 	 */
 
@@ -96,6 +99,10 @@ class ReferenceData {
 			'method' => 'google',
 			'submethod' => 'google'
 		],
+		'googlewallet' => [
+			'method' => 'google',
+			'submethod' => 'google'
+		],
 		'ideal' => [
 			'method' => 'rtbt',
 			'submethod' => 'rtbt_ideal',
@@ -103,6 +110,12 @@ class ReferenceData {
 		'interlink' => [
 			'method' => 'cc',
 			'submethod' => 'visa',
+			'variants' => [
+				'visa_applepay' => [
+					'method' => 'apple',
+					'submethod' => 'visa',
+				],
+			]
 		],
 		'jcb' => [
 			'method' => 'cc',
@@ -120,7 +133,10 @@ class ReferenceData {
 			'method' => 'cc',
 			'submethod' => 'mc',
 			'variants' => [
-				'mcdebit' => 'mc-debit',
+				'mcdebit' => [
+					'method' => 'cc',
+					'submethod' => 'mc-debit',
+				],
 			],
 		],
 		'mc_applepay' => [
@@ -138,6 +154,16 @@ class ReferenceData {
 		'multibanco' => [
 			'method' => 'rtbt',
 			'submethod' => 'rtbt_multibanco',
+		],
+		'pulse' => [
+			'method' => 'cc',
+			'submethod' => 'visa',
+			'variants' => [
+				'visa_applepay' => [
+					'method' => 'apple',
+					'submethod' => 'visa',
+				],
+			]
 		],
 		'safetypay' => [
 			'method' => 'rtbt',
@@ -166,9 +192,18 @@ class ReferenceData {
 			'method' => 'cc',
 			'submethod' => 'visa',
 			'variants' => [
-				'visabeneficial' => 'visa-beneficial', // guessing at Adyen code
-				'visadebit' => 'visa-debit',
-				'visaelectron' => 'visa-electron', // guessing at Adyen code
+				'visabeneficial' => [
+					'method' => 'cc',
+					'submethod' => 'visa-beneficial', // guessing at Adyen code
+				],
+				'visadebit' => [
+					'method' => 'cc',
+					'submethod' => 'visa-debit',
+				],
+				'visaelectron' => [
+					'method' => 'cc',
+					'submethod' => 'visa-electron', // guessing at Adyen code
+				],
 			]
 		],
 		'visa_applepay' => [
@@ -203,7 +238,8 @@ class ReferenceData {
 		$ourMethod = $entry['method'];
 		if ( $variant && array_key_exists( 'variants', $entry ) &&
 			array_key_exists( $variant, $entry['variants'] ) ) {
-			$ourSubmethod = $entry['variants'][$variant];
+			$ourMethod = $entry['variants'][$variant]['method'];
+			$ourSubmethod = $entry['variants'][$variant]['submethod'];
 		} else {
 			$ourSubmethod = $entry['submethod'];
 		}
