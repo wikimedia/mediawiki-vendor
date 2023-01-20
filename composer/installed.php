@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'mediawiki/core',
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
-        'reference' => '7c9d980be422659ef918f2e40af8842fa2dcc883',
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => '91f31e21eb397667e0db2b994d58ca7079b452f9',
         'type' => 'mediawiki-core',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -164,9 +164,9 @@
             'dev_requirement' => false,
         ),
         'mediawiki/core' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'reference' => '7c9d980be422659ef918f2e40af8842fa2dcc883',
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => '91f31e21eb397667e0db2b994d58ca7079b452f9',
             'type' => 'mediawiki-core',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -668,9 +668,9 @@
             'dev_requirement' => false,
         ),
         'wikimedia/smash-pig' => array(
-            'pretty_version' => 'v0.8.3.14',
-            'version' => '0.8.3.14',
-            'reference' => 'a7b6bc50f3aaad4c1535e11af06fa7b99d6da6f4',
+            'pretty_version' => 'v0.8.3.15',
+            'version' => '0.8.3.15',
+            'reference' => 'c5ec57cb6ec98a5750a02801f3c1cfb82017e862',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/smash-pig',
             'aliases' => array(),

@@ -1,0 +1,14 @@
+HTTP/1.1 200 OK
+Date: Tue, 10 Jan 2023 21:51:35 GMT
+Content-Type: application/json
+Content-Length: 279
+Connection: keep-alive
+Server: rhino-core-shield
+X-RequestId: api-middleware
+X-UOW: 1-63bddde7-319a14f80091ff1625398232
+X-ServiceName: api-middleware
+Vary: Accept-Encoding, User-Agent
+Content-Encoding: gzip
+X-Upstream: 10.145.76.81:80
+
+[{"id":"OX","type":"TICKET","name":"Oxxo","logo":"https://pay.dlocal.com/views/2.0/images/payments/OX.png","allowed_flows":["REDIRECT"]},{"id":"VI","type":"CARD","name":"Visa","logo":"https://pay.dlocal.com/views/2.0/images/payments/VI.png","allowed_flows":["DIRECT","REDIRECT"]},{"id":"VD","type":"CARD","name":"Visa Debit","logo":"https://pay.dlocal.com/views/2.0/images/payments/VD.png","allowed_flows":["DIRECT","REDIRECT"]},{"id":"MC","type":"CARD","name":"Mastercard","logo":"https://pay.dlocal.com/views/2.0/images/payments/MC.png","allowed_flows":["DIRECT","REDIRECT"]},{"id":"MD","type":"CARD","name":"Mastercard Debit","logo":"https://pay.dlocal.com/views/2.0/images/payments/MD.png","allowed_flows":["DIRECT","REDIRECT"]},{"id":"AE","type":"CARD","name":"American Express","logo":"https://pay.dlocal.com/views/2.0/images/payments/AE.png","allowed_flows":["DIRECT","REDIRECT"]},{"id":"BV","type":"BANK_TRANSFER","name":"Bancomer","logo":"https://pay.dlocal.com/views/2.0/images/payments/BV.png","allowed_flows":["REDIRECT"]},{"id":"SM","type":"BANK_TRANSFER","name":"Santander","logo":"https://pay.dlocal.com/views/2.0/images/payments/SM.png","allowed_flows":["REDIRECT"]}]
