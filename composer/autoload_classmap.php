@@ -4203,6 +4203,7 @@ return array(
     'Wikimedia\\Parsoid\\Utils\\DTState' => $vendorDir . '/wikimedia/parsoid/src/Utils/DTState.php',
     'Wikimedia\\Parsoid\\Utils\\PHPUtils' => $vendorDir . '/wikimedia/parsoid/src/Utils/PHPUtils.php',
     'Wikimedia\\Parsoid\\Utils\\PipelineUtils' => $vendorDir . '/wikimedia/parsoid/src/Utils/PipelineUtils.php',
+    'Wikimedia\\Parsoid\\Utils\\ScriptUtils' => $vendorDir . '/wikimedia/parsoid/src/Utils/ScriptUtils.php',
     'Wikimedia\\Parsoid\\Utils\\Timing' => $vendorDir . '/wikimedia/parsoid/src/Utils/Timing.php',
     'Wikimedia\\Parsoid\\Utils\\Title' => $vendorDir . '/wikimedia/parsoid/src/Utils/Title.php',
     'Wikimedia\\Parsoid\\Utils\\TitleException' => $vendorDir . '/wikimedia/parsoid/src/Utils/TitleException.php',

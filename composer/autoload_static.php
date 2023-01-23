@@ -4970,6 +4970,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Utils\\DTState' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/DTState.php',
         'Wikimedia\\Parsoid\\Utils\\PHPUtils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/PHPUtils.php',
         'Wikimedia\\Parsoid\\Utils\\PipelineUtils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/PipelineUtils.php',
+        'Wikimedia\\Parsoid\\Utils\\ScriptUtils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/ScriptUtils.php',
         'Wikimedia\\Parsoid\\Utils\\Timing' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/Timing.php',
         'Wikimedia\\Parsoid\\Utils\\Title' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/Title.php',
         'Wikimedia\\Parsoid\\Utils\\TitleException' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/TitleException.php',
