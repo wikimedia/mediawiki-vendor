@@ -10,7 +10,8 @@ class AdyenPaymentsAccountingReport extends AdyenAudit {
 			'Merchant Reference',
 			'Payment Method',
 			'Payment Method Variant',
-			'Creation Date',
+			'Booking Date',
+			'TimeZone',
 			'Record Type',
 			'Modification Psp Reference', // this is the Modification Reference
 			'Main Currency',
@@ -42,6 +43,9 @@ class AdyenPaymentsAccountingReport extends AdyenAudit {
 			'Reserved10',
 		];
 		$this->type = 'Record Type';
+		// in this report the latest payment status date is in Booking Date, it has the same value as
+		// Creation Date for the settlement detail report
+		$this->date = 'Booking Date';
 	}
 
 	protected function parseDonation( array $row, array $msg ): array {

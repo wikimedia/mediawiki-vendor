@@ -37,6 +37,7 @@ class AdyenSettlementDetailReport extends AdyenAudit {
 		];
 
 		$this->type = 'Type';
+		$this->date = 'Creation Date';
 	}
 
 	protected function parseDonation( array $row, array $msg ): array {

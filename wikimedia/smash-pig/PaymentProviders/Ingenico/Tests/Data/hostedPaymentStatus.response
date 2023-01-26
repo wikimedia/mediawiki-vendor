@@ -23,7 +23,8 @@ Content-Type: application/json
           "authorisationCode": "123456",
           "card": {
             "cardNumber": "************7977",
-            "expiryDate": "1220"
+            "expiryDate": "1220",
+            "cardholderName": "Testy McTesterson"
           },
           "fraudResults": {
             "avsResult": "0",

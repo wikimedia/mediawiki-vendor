@@ -54,6 +54,8 @@ abstract class AdyenAudit implements AuditParser {
 	protected $fileData;
 	// the state of the payment in the report
 	protected $type;
+	// the date of the state of the payment for example when it settled or was refunded
+	protected $date;
 	protected $columnHeaders;
 
 	abstract protected function parseDonation( array $row, array $msg );
@@ -130,7 +132,7 @@ abstract class AdyenAudit implements AuditParser {
 		$msg['payment_submethod'] = $submethod;
 		// Both reports have the Creation Date in PDT, the payments accounting report does not
 		// send the timezone as a separate column
-		$msg['date'] = UtcDate::getUtcTimestamp( $row['Creation Date'], 'PDT' );
+		$msg['date'] = UtcDate::getUtcTimestamp( $row[$this->date], $row['TimeZone'] );
 
 		return $msg;
 	}

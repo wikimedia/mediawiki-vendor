@@ -5,7 +5,6 @@ namespace SmashPig\PaymentProviders\dlocal\Tests;
 use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentProviders\dlocal\Api;
 use SmashPig\PaymentProviders\dlocal\CardPaymentProvider;
-use SmashPig\PaymentProviders\dlocal\PaymentProvider;
 use SmashPig\Tests\BaseSmashPigUnitTestCase;
 
 /**
@@ -22,11 +21,6 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 				->disableOriginalConstructor()
 				->getMock();
 		$providerConfig->overrideObjectInstance( 'api', $this->api );
-	}
-
-	public function testCanInstantiatePaymentProvider(): void {
-		$PaymentProvider = new PaymentProvider();
-		$this->assertInstanceOf( \SmashPig\PaymentProviders\dlocal\PaymentProvider::class, $PaymentProvider );
 	}
 
 	public function testPaymentWithIncompleteParams(): void {

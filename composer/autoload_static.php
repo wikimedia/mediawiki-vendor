@@ -2213,6 +2213,7 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\PaymentProviders\\IDeleteDataProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/IDeleteDataProvider.php',
         'SmashPig\\PaymentProviders\\IGetLatestPaymentStatusProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/IGetLatestPaymentStatusProvider.php',
         'SmashPig\\PaymentProviders\\IPaymentProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/IPaymentProvider.php',
+        'SmashPig\\PaymentProviders\\IRecurringPaymentProfileProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/IRecurringPaymentProfileProvider.php',
         'SmashPig\\PaymentProviders\\IRefundablePaymentProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/IRefundablePaymentProvider.php',
         'SmashPig\\PaymentProviders\\Ingenico\\Api' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Ingenico/Api.php',
         'SmashPig\\PaymentProviders\\Ingenico\\Audit\\IngenicoAudit' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Ingenico/Audit/IngenicoAudit.php',

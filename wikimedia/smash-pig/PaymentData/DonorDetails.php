@@ -18,6 +18,13 @@ class DonorDetails {
 	protected $lastName;
 
 	/**
+	 * Full name as a single string, as given by some payment providers
+	 *
+	 * @var string|null
+	 */
+	protected $fullName;
+
+	/**
 	 * The donor email
 	 *
 	 * @var string|null
@@ -50,6 +57,15 @@ class DonorDetails {
 	}
 
 	/**
+	 * @param string|null $fullName
+	 * @return DonorDetails
+	 */
+	public function setFullName( ?string $fullName ): DonorDetails {
+		$this->fullName = $fullName;
+		return $this;
+	}
+
+	/**
 	 * @param string|null $email
 	 * @return DonorDetails
 	 */
@@ -77,10 +93,18 @@ class DonorDetails {
 
 	/**
 	 * Get donor last name from payment response
-	 * @return string
+	 * @return string|null
 	 */
 	public function getLastName(): ?string {
 		return $this->lastName;
+	}
+
+	/**
+	 * Get full name from payment response
+	 * @return string|null
+	 */
+	public function getFullName(): ?string {
+		return $this->fullName;
 	}
 
 	/**

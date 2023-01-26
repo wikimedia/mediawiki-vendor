@@ -1792,6 +1792,7 @@ return array(
     'SmashPig\\PaymentProviders\\IDeleteDataProvider' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/IDeleteDataProvider.php',
     'SmashPig\\PaymentProviders\\IGetLatestPaymentStatusProvider' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/IGetLatestPaymentStatusProvider.php',
     'SmashPig\\PaymentProviders\\IPaymentProvider' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/IPaymentProvider.php',
+    'SmashPig\\PaymentProviders\\IRecurringPaymentProfileProvider' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/IRecurringPaymentProfileProvider.php',
     'SmashPig\\PaymentProviders\\IRefundablePaymentProvider' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/IRefundablePaymentProvider.php',
     'SmashPig\\PaymentProviders\\Ingenico\\Api' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Ingenico/Api.php',
     'SmashPig\\PaymentProviders\\Ingenico\\Audit\\IngenicoAudit' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Ingenico/Audit/IngenicoAudit.php',

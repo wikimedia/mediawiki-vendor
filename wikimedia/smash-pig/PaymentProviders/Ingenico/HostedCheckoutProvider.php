@@ -4,6 +4,7 @@ namespace SmashPig\PaymentProviders\Ingenico;
 
 use BadMethodCallException;
 use SmashPig\Core\SmashPigException;
+use SmashPig\PaymentData\DonorDetails;
 use SmashPig\PaymentProviders\IGetLatestPaymentStatusProvider;
 use SmashPig\PaymentProviders\Responses\PaymentDetailResponse;
 use SmashPig\PaymentProviders\RiskScorer;
@@ -95,8 +96,9 @@ class HostedCheckoutProvider extends PaymentProvider implements IGetLatestPaymen
 		// property.
 		$this->prepareResponseObject( $response, $rawResponse );
 		if ( $paymentCreated ) {
+			$cardOutput = $rawResponse['createdPaymentOutput']['payment']['paymentOutput']['cardPaymentMethodSpecificOutput'];
 			// Fraud results and tokens only come back when a payment has been created
-			$fraudResults = $rawResponse['createdPaymentOutput']['payment']['paymentOutput']['cardPaymentMethodSpecificOutput']['fraudResults'] ?? null;
+			$fraudResults = $cardOutput['fraudResults'] ?? null;
 			if ( $fraudResults ) {
 				$response->setRiskScores(
 					( new RiskScorer() )->getRiskScores(
@@ -111,6 +113,11 @@ class HostedCheckoutProvider extends PaymentProvider implements IGetLatestPaymen
 				$response->setRecurringPaymentToken(
 					$rawResponse['createdPaymentOutput']['tokens']
 				);
+			}
+			if ( !empty( $cardOutput['card']['cardholderName'] ) ) {
+				$donorDetails = new DonorDetails();
+				$donorDetails->setFullName( $cardOutput['card']['cardholderName'] );
+				$response->setDonorDetails( $donorDetails );
 			}
 		} elseif ( isset( $rawResponse['status'] ) ) {
 			// If no payment has been created, the GET response only

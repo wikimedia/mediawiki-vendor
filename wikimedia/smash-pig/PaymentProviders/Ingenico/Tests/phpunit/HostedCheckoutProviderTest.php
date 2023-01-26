@@ -80,6 +80,7 @@ class HostedCheckoutProviderTest extends BaseSmashPigUnitTestCase {
 		$this->assertTrue( $response->isSuccessful() );
 		$this->assertSame( '000000891566072501680000200001', $response->getGatewayTxnId() );
 		$this->assertEquals( [ 'avs' => 25, 'cvv' => 0 ], $response->getRiskScores() );
+		$this->assertEquals( "Testy McTesterson", $response->getDonorDetails()->getFullName() );
 	}
 
 	/**
