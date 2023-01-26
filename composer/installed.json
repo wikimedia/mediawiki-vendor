@@ -4782,6 +4782,52 @@
             "install-path": "../spomky-labs/cbor-php"
         },
         {
+            "name": "swaggest/json-diff",
+            "version": "v3.10.4",
+            "version_normalized": "3.10.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/swaggest/json-diff.git",
+                "reference": "f4e511708060ff7511a3743fab4aa484a062bcfb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/swaggest/json-diff/zipball/f4e511708060ff7511a3743fab4aa484a062bcfb",
+                "reference": "f4e511708060ff7511a3743fab4aa484a062bcfb",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*"
+            },
+            "require-dev": {
+                "phperf/phpunit": "4.8.37"
+            },
+            "time": "2022-11-09T13:21:05+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Swaggest\\JsonDiff\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Viacheslav Poturaev",
+                    "email": "vearutop@gmail.com"
+                }
+            ],
+            "description": "JSON diff/rearrange/patch/pointer library for PHP",
+            "support": {
+                "issues": "https://github.com/swaggest/json-diff/issues",
+                "source": "https://github.com/swaggest/json-diff/tree/v3.10.4"
+            },
+            "install-path": "../swaggest/json-diff"
+        },
+        {
             "name": "symfony/console",
             "version": "v5.4.17",
             "version_normalized": "5.4.17.0",

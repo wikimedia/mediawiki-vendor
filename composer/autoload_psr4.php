@@ -49,6 +49,7 @@ return array(
     'Symfony\\Component\\String\\' => array($vendorDir . '/symfony/string'),
     'Symfony\\Component\\Process\\' => array($vendorDir . '/symfony/process'),
     'Symfony\\Component\\Console\\' => array($vendorDir . '/symfony/console'),
+    'Swaggest\\JsonDiff\\' => array($vendorDir . '/swaggest/json-diff/src'),
     'Shellbox\\' => array($vendorDir . '/wikimedia/shellbox/src'),
     'Serializers\\' => array($vendorDir . '/serialization/serialization/src/Serializers'),
     'Safe\\' => array($vendorDir . '/thecodingmachine/safe/lib', $vendorDir . '/thecodingmachine/safe/deprecated', $vendorDir . '/thecodingmachine/safe/generated'),

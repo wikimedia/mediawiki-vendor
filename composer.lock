@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7b0f8c5e474126d45e7b0d9f0acfa433",
+    "content-hash": "cfe87660f30faf6a681cbbe1072b26a7",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -4581,6 +4581,49 @@
                 }
             ],
             "time": "2021-12-13T12:46:26+00:00"
+        },
+        {
+            "name": "swaggest/json-diff",
+            "version": "v3.10.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/swaggest/json-diff.git",
+                "reference": "f4e511708060ff7511a3743fab4aa484a062bcfb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/swaggest/json-diff/zipball/f4e511708060ff7511a3743fab4aa484a062bcfb",
+                "reference": "f4e511708060ff7511a3743fab4aa484a062bcfb",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*"
+            },
+            "require-dev": {
+                "phperf/phpunit": "4.8.37"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Swaggest\\JsonDiff\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Viacheslav Poturaev",
+                    "email": "vearutop@gmail.com"
+                }
+            ],
+            "description": "JSON diff/rearrange/patch/pointer library for PHP",
+            "support": {
+                "issues": "https://github.com/swaggest/json-diff/issues",
+                "source": "https://github.com/swaggest/json-diff/tree/v3.10.4"
+            },
+            "time": "2022-11-09T13:21:05+00:00"
         },
         {
             "name": "symfony/console",

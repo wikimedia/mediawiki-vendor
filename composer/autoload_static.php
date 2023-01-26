@@ -174,6 +174,7 @@ class ComposerStaticInit_mediawiki_vendor
             'Symfony\\Component\\String\\' => 25,
             'Symfony\\Component\\Process\\' => 26,
             'Symfony\\Component\\Console\\' => 26,
+            'Swaggest\\JsonDiff\\' => 18,
             'Shellbox\\' => 9,
             'Serializers\\' => 12,
             'Safe\\' => 5,
@@ -458,6 +459,10 @@ class ComposerStaticInit_mediawiki_vendor
         'Symfony\\Component\\Console\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/console',
+        ),
+        'Swaggest\\JsonDiff\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/swaggest/json-diff/src',
         ),
         'Shellbox\\' => 
         array (
@@ -3424,6 +3429,29 @@ class ComposerStaticInit_mediawiki_vendor
         'Shellbox\\ShellboxError' => __DIR__ . '/..' . '/wikimedia/shellbox/src/ShellboxError.php',
         'Shellbox\\TempDirManager' => __DIR__ . '/..' . '/wikimedia/shellbox/src/TempDirManager.php',
         'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
+        'Swaggest\\JsonDiff\\Exception' => __DIR__ . '/..' . '/swaggest/json-diff/src/Exception.php',
+        'Swaggest\\JsonDiff\\InvalidFieldTypeException' => __DIR__ . '/..' . '/swaggest/json-diff/src/InvalidFieldTypeException.php',
+        'Swaggest\\JsonDiff\\JsonDiff' => __DIR__ . '/..' . '/swaggest/json-diff/src/JsonDiff.php',
+        'Swaggest\\JsonDiff\\JsonHash' => __DIR__ . '/..' . '/swaggest/json-diff/src/JsonHash.php',
+        'Swaggest\\JsonDiff\\JsonMergePatch' => __DIR__ . '/..' . '/swaggest/json-diff/src/JsonMergePatch.php',
+        'Swaggest\\JsonDiff\\JsonPatch' => __DIR__ . '/..' . '/swaggest/json-diff/src/JsonPatch.php',
+        'Swaggest\\JsonDiff\\JsonPatch\\Add' => __DIR__ . '/..' . '/swaggest/json-diff/src/JsonPatch/Add.php',
+        'Swaggest\\JsonDiff\\JsonPatch\\Copy' => __DIR__ . '/..' . '/swaggest/json-diff/src/JsonPatch/Copy.php',
+        'Swaggest\\JsonDiff\\JsonPatch\\Move' => __DIR__ . '/..' . '/swaggest/json-diff/src/JsonPatch/Move.php',
+        'Swaggest\\JsonDiff\\JsonPatch\\OpPath' => __DIR__ . '/..' . '/swaggest/json-diff/src/JsonPatch/OpPath.php',
+        'Swaggest\\JsonDiff\\JsonPatch\\OpPathFrom' => __DIR__ . '/..' . '/swaggest/json-diff/src/JsonPatch/OpPathFrom.php',
+        'Swaggest\\JsonDiff\\JsonPatch\\OpPathValue' => __DIR__ . '/..' . '/swaggest/json-diff/src/JsonPatch/OpPathValue.php',
+        'Swaggest\\JsonDiff\\JsonPatch\\Remove' => __DIR__ . '/..' . '/swaggest/json-diff/src/JsonPatch/Remove.php',
+        'Swaggest\\JsonDiff\\JsonPatch\\Replace' => __DIR__ . '/..' . '/swaggest/json-diff/src/JsonPatch/Replace.php',
+        'Swaggest\\JsonDiff\\JsonPatch\\Test' => __DIR__ . '/..' . '/swaggest/json-diff/src/JsonPatch/Test.php',
+        'Swaggest\\JsonDiff\\JsonPointer' => __DIR__ . '/..' . '/swaggest/json-diff/src/JsonPointer.php',
+        'Swaggest\\JsonDiff\\JsonPointerException' => __DIR__ . '/..' . '/swaggest/json-diff/src/JsonPointerException.php',
+        'Swaggest\\JsonDiff\\JsonValueReplace' => __DIR__ . '/..' . '/swaggest/json-diff/src/JsonValueReplace.php',
+        'Swaggest\\JsonDiff\\MissingFieldException' => __DIR__ . '/..' . '/swaggest/json-diff/src/MissingFieldException.php',
+        'Swaggest\\JsonDiff\\ModifiedPathDiff' => __DIR__ . '/..' . '/swaggest/json-diff/src/ModifiedPathDiff.php',
+        'Swaggest\\JsonDiff\\PatchTestOperationFailedException' => __DIR__ . '/..' . '/swaggest/json-diff/src/PatchTestOperationFailedException.php',
+        'Swaggest\\JsonDiff\\PathException' => __DIR__ . '/..' . '/swaggest/json-diff/src/PathException.php',
+        'Swaggest\\JsonDiff\\UnknownOperationException' => __DIR__ . '/..' . '/swaggest/json-diff/src/UnknownOperationException.php',
         'Symfony\\Component\\Console\\Application' => __DIR__ . '/..' . '/symfony/console/Application.php',
         'Symfony\\Component\\Console\\Attribute\\AsCommand' => __DIR__ . '/..' . '/symfony/console/Attribute/AsCommand.php',
         'Symfony\\Component\\Console\\CI\\GithubActionReporter' => __DIR__ . '/..' . '/symfony/console/CI/GithubActionReporter.php',
