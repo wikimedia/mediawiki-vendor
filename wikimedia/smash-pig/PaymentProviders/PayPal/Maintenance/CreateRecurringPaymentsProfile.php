@@ -17,7 +17,7 @@ class CreateRecurringPaymentsProfile extends MaintenanceBase {
 	public function __construct() {
 		parent::__construct();
 		$this->desiredOptions['config-node']['default'] = 'paypal';
-		$this->addArgument( 'token', 'Gateway session ID / PayPal EC TOKEN', true );
+		$this->addArgument( 'gateway_session_id', 'Gateway session ID / PayPal EC TOKEN', true );
 		$this->addArgument( 'order_id', 'Order ID / PROFILEREFERENCE', true );
 		$this->addArgument( 'amount', 'Amount', true );
 		$this->addArgument( 'currency', 'Currency', true );
@@ -31,7 +31,7 @@ class CreateRecurringPaymentsProfile extends MaintenanceBase {
 	public function execute() {
 		$provider = PaymentProviderFactory::getProviderForMethod( 'paypal' );
 		$result = $provider->createRecurringPaymentsProfile( [
-			'payment_token' => $this->getArgument( 'token' ),
+			'gateway_session_id' => $this->getArgument( 'gateway_session_id' ),
 			'order_id' => $this->getArgument( 'order_id' ),
 			'amount' => $this->getArgument( 'amount' ),
 			'currency' => $this->getArgument( 'currency' ),

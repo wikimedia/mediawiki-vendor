@@ -107,17 +107,18 @@ class Api {
 	public function doExpressCheckoutPayment( array $params ) {
 		$requestParams = [
 			'METHOD' => 'DoExpressCheckoutPayment',
-			'TOKEN' => $params['payment_token'],
+			'TOKEN' => $params['gateway_session_id'],
 			'PAYERID' => $params['processor_contact_id'],
 			'PAYMENTREQUEST_0_AMT' => $params['amount'],
 			'PAYMENTREQUEST_0_CURRENCYCODE' => $params['currency'],
 			'PAYMENTREQUEST_0_CUSTOM' => $params['order_id'],
-			'PAYMENTREQUEST_0_DESC' => $params['description'],
 			'PAYMENTREQUEST_0_INVNUM' => $params['order_id'],
 			'PAYMENTREQUEST_0_ITEMAMT' => $params['amount'],
 			'PAYMENTREQUEST_0_PAYMENTACTION' => 'Sale',
-			'PAYMENTREQUEST_0_PAYMENTREASON' => 'None',
 		];
+		if ( !empty( $params['description'] ) ) {
+			$requestParams['PAYMENTREQUEST_0_DESC'] = $params['description'];
+		}
 
 		return $this->makeApiCall( $requestParams );
 	}
@@ -133,7 +134,7 @@ class Api {
 			'METHOD' => 'CreateRecurringPaymentsProfile',
 			// A timestamped token, the value of which was returned in the response to the first call to SetExpressCheckout or SetCustomerBillingAgreement response.
 			// Tokens expire after approximately 3 hours.
-			'TOKEN' => $params['payment_token'],
+			'TOKEN' => $params['gateway_session_id'],
 			'PROFILESTARTDATE' => gmdate( "Y-m-d\TH:i:s\Z", strtotime( $params['date'] ) ), // The date when billing for this profile begins, set it today
 			'DESC' => $params['description'],
 			'PROFILEREFERENCE' => $params['order_id'],
@@ -153,13 +154,13 @@ class Api {
 	/**
 	 * Doc link: https://developer.paypal.com/api/nvp-soap/get-express-checkout-details-nvp/
 	 *
-	 * @param string $token
+	 * @param string $gatewaySessionId
 	 * @return array
 	 */
-	public function getExpressCheckoutDetails( string $token ) {
+	public function getExpressCheckoutDetails( string $gatewaySessionId ) {
 		$requestParams = [
 			'METHOD' => 'GetExpressCheckoutDetails',
-			'TOKEN' => $token
+			'TOKEN' => $gatewaySessionId
 		];
 		return $this->makeApiCall( $requestParams );
 	}

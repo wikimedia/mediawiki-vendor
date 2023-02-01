@@ -17,7 +17,7 @@ class GetPaymentStatus extends MaintenanceBase {
 	public function __construct() {
 		parent::__construct();
 		$this->desiredOptions['config-node']['default'] = 'paypal';
-		$this->addArgument( 'token', 'Gateway session ID / PayPal EC Token' );
+		$this->addArgument( 'gateway_session_id', 'Gateway session ID / PayPal EC Token' );
 	}
 
 	/**
@@ -25,7 +25,9 @@ class GetPaymentStatus extends MaintenanceBase {
 	 */
 	public function execute() {
 		$provider = PaymentProviderFactory::getProviderForMethod( 'paypal' );
-		$result = $provider->getLatestPaymentStatus( [ 'token' => $this->getArgument( 'token' ) ] );
+		$result = $provider->getLatestPaymentStatus(
+			[ 'gateway_session_id' => $this->getArgument( 'gateway_session_id' ) ]
+		);
 		print_r( $result );
 	}
 }

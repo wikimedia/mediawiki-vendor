@@ -10,7 +10,7 @@ use SmashPig\Tests\BaseSmashPigUnitTestCase;
 /**
  * @group Dlocal
  */
-class PaymentProviderTest extends BaseSmashPigUnitTestCase {
+class CardPaymentProviderTest extends BaseSmashPigUnitTestCase {
 
 	protected $api;
 
@@ -209,6 +209,52 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$this->assertCount( 1, $error );
 		$this->assertFalse( $response->isSuccessful() );
 		$this->assertEquals( FinalStatus::FAILED, $response->getStatus() );
+	}
+
+	public function testApprovePaymentSuccess(): void {
+		$params = [
+			"gateway_txn_id" => "T-2486-91e73695-3e0a-4a77-8594-f2220f8c6515",
+			'amount' => 100,
+			'currency' => 'BRL',
+			'order_id' => '1234512345',
+		];
+
+		$this->api->expects( $this->once() )
+			->method( 'capturePayment' )
+			->with( $params )
+			->willReturn( [
+				'id' => 'T-2486-aa9c1884-9f54-409a-9223-ede614b78173',
+				'amount' => 100,
+				'currency' => 'BRL',
+				'country' => 'BR',
+				'status' => 'PAID',
+				'status_detail' => 'The payment was paid.',
+				'status_code' => '200',
+				'order_id' => '1234512345',
+				'notification_url' => 'http://merchant.com/notifications',
+				'authorization_id' => 'T-2486-91e73695-3e0a-4a77-8594-f2220f8c6515',
+		] );
+
+		$cardPaymentProvider = new CardPaymentProvider();
+		$approvePaymentResponse = $cardPaymentProvider->approvePayment( $params );
+		$this->assertTrue( $approvePaymentResponse->isSuccessful() );
+		$this->assertEquals( FinalStatus::COMPLETE, $approvePaymentResponse->getStatus() );
+	}
+
+	public function testApprovePaymentFailMissingGatewayTxnId(): void {
+		$params = [
+			// gateway_txn_id is missing
+			'amount' => 100,
+			'currency' => 'BRL',
+			'order_id' => '1234512345',
+		];
+
+		$cardPaymentProvider = new CardPaymentProvider();
+		$approvePaymentResponse = $cardPaymentProvider->approvePayment( $params );
+		$this->assertFalse( $approvePaymentResponse->isSuccessful() );
+		$this->assertEquals( FinalStatus::FAILED, $approvePaymentResponse->getStatus() );
+		$this->assertCount( 1, $approvePaymentResponse->getValidationErrors() );
+		$this->assertSame( 'gateway_txn_id', $approvePaymentResponse->getValidationErrors()[0]->getField() );
 	}
 
 	private function getCreatePaymentRequestParams(): array {

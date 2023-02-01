@@ -5,6 +5,7 @@ namespace SmashPig\PaymentProviders\PayPal\Tests;
 use PHPUnit\Framework\MockObject\MockObject;
 use SmashPig\Core\Context;
 use SmashPig\Core\ProviderConfiguration;
+use SmashPig\PaymentData\FinalStatus;
 use SmashPig\Tests\BaseSmashPigUnitTestCase;
 use SmashPig\Tests\TestingProviderConfiguration;
 
@@ -38,17 +39,20 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$this->provider = $this->config->object( 'payment-provider/paypal' );
 	}
 
+	/**
+	 * Simulates a status lookup call for a user that has clicked the Complete Payment button
+	 */
 	public function testGetLatestPaymentStatus() {
 		// set up expectations
 		$testParams = [
-			'token' => 'EC-TESTTOKEN12345678910'
+			'gateway_session_id' => 'EC-TESTTOKEN12345678910'
 		];
 		$testApiResponse = $this->getTestData( 'GetLatestPaymentStatus.response' );
 		parse_str( $testApiResponse, $parsedTestApiResponse );
 
 		$this->api->expects( $this->once() )
 			->method( 'getExpressCheckoutDetails' )
-			->with( $this->equalTo( $testParams['token'] ) )
+			->with( $this->equalTo( $testParams['gateway_session_id'] ) )
 			->willReturn( $parsedTestApiResponse );
 
 		// call the code
@@ -59,19 +63,52 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$this->assertTrue( $response->isSuccessful() );
 		$this->assertEquals( "PaymentActionNotInitiated", $response->getRawStatus() );
 		$this->assertEquals( "Success", $response->getRawResponse()['ACK'] );
+		$this->assertTrue( $response->requiresApproval() );
+		$this->assertEquals( 'FLJLQ2GV38E4Y', $response->getProcessorContactID() );
+		$this->assertEquals( FinalStatus::PENDING_POKE, $response->getStatus() );
+		$this->assertEquals( 'fr-tech+donor@wikimedia.org', $response->getDonorDetails()->getEmail() );
+	}
+
+	/**
+	 * Simulates a status lookup call for a user that has NOT clicked the Complete Payment button
+	 */
+	public function testGetLatestPaymentStatusNotClicked() {
+		// set up expectations
+		$testParams = [
+			'gateway_session_id' => 'EC-TESTTOKEN12345678910'
+		];
+		$testApiResponse = $this->getTestData( 'GetLatestPaymentStatusNotClicked.response' );
+		parse_str( $testApiResponse, $parsedTestApiResponse );
+
+		$this->api->expects( $this->once() )
+			->method( 'getExpressCheckoutDetails' )
+			->with( $this->equalTo( $testParams['gateway_session_id'] ) )
+			->willReturn( $parsedTestApiResponse );
+
+		// call the code
+		$response = $this->provider->getLatestPaymentStatus( $testParams );
+
+		// check the results
+		$this->assertInstanceOf( 'SmashPig\PaymentProviders\Responses\PaymentDetailResponse', $response );
+		$this->assertTrue( $response->isSuccessful() );
+		$this->assertEquals( "PaymentActionNotInitiated", $response->getRawStatus() );
+		$this->assertEquals( "Success", $response->getRawResponse()['ACK'] );
+		$this->assertFalse( $response->requiresApproval() );
+		$this->assertNull( $response->getProcessorContactID() );
+		$this->assertEquals( FinalStatus::TIMEOUT, $response->getStatus() );
 	}
 
 	public function testGetLatestPaymentStatusWithError() {
 		// set up expectations
 		$testParams = [
-			'token' => 'EC-3HX397483P386493S'
+			'gateway_session_id' => 'EC-3HX397483P386493S'
 		];
 		$testApiResponse = $this->getTestData( 'GetLatestPaymentStatusWithError.response' );
 		parse_str( $testApiResponse, $parsedTestApiResponse );
 
 		$this->api->expects( $this->once() )
 			->method( 'getExpressCheckoutDetails' )
-			->with( $this->equalTo( $testParams['token'] ) )
+			->with( $this->equalTo( $testParams['gateway_session_id'] ) )
 			->willReturn( $parsedTestApiResponse );
 
 		// call the code
@@ -91,7 +128,7 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 			'amount' => '30.0',
 			'currency' => 'USD',
 			'email' => 'test_user@paypal.com',
-			'payment_token' => 'EC-74C37985WY171780F',
+			'gateway_session_id' => 'EC-74C37985WY171780F',
 		];
 
 		$testApiResponse = $this->getTestData( 'CreateRecurringPaymentsProfile.response' );
@@ -116,7 +153,7 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 	public function testApprovePayment() {
 		// set up expectations
 		$testParams = [
-				'payment_token' => 'EC-TESTTOKEN12345678910',
+				'gateway_session_id' => 'EC-TESTTOKEN12345678910',
 				'processor_contact_id' => 'FLJLQ2GV38E4Y',
 				'order_id' => '15190.1',
 				'amount' => '20.00',

@@ -14,7 +14,7 @@ class DoExpressCheckoutPayment extends MaintenanceBase {
 	public function __construct() {
 		parent::__construct();
 		$this->desiredOptions['config-node']['default'] = 'paypal';
-		$this->addArgument( 'token', 'Gateway session ID / PayPal TOKEN' );
+		$this->addArgument( 'gateway_session_id', 'Gateway session ID / PayPal TOKEN' );
 		$this->addArgument( 'payerID', 'Processor Contact ID / PayPal PAYERID' );
 		$this->addArgument( 'order_id', 'Order ID / PayPal PAYMENTREQUEST_0_INVNUM' );
 		$this->addArgument( 'amount', 'Amount / PayPal PAYMENTREQUEST_0_AMT' );
@@ -26,7 +26,7 @@ class DoExpressCheckoutPayment extends MaintenanceBase {
 	public function execute() {
 		$provider = PaymentProviderFactory::getProviderForMethod( 'paypal' );
 		$result = $provider->approvePayment( [
-			'payment_token' => $this->getArgument( 'token' ),
+			'gateway_session_id' => $this->getArgument( 'gateway_session_id' ),
 			'processor_contact_id' => $this->getArgument( 'payerID' ),
 			'order_id' => $this->getArgument( 'order_id' ),
 			'amount' => $this->getArgument( 'amount' ),

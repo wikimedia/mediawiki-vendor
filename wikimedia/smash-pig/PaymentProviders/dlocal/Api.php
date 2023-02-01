@@ -65,9 +65,9 @@ class Api {
 		$this->setRequestHeaders( $request );
 		$rawResponse = $request->execute();
 
-		if ( $this->responseIsInvalid( $rawResponse ) ) {
+		if ( $this->responseHasErrorStatusCode( $rawResponse ) ) {
 			throw new ApiException(
-				"Response is invalid. Status:" . $rawResponse['status'] . ' body: ' . $rawResponse['body']
+				'Response Error(' . $rawResponse['status'] . ') ' . $rawResponse['body']
 			);
 		}
 
@@ -89,6 +89,20 @@ class Api {
 	 */
 	public function authorizePayment( array $params ): array {
 		return $this->makeApiCall( 'POST', 'payments', $params );
+	}
+
+	/**
+	 * Capture authorized payment.
+	 *
+	 * $params['gateway_txn_id'] is required
+	 *
+	 * @param array $params
+	 * @return array
+	 * @throws ApiException
+	 */
+	public function capturePayment( array $params ): array {
+		$apiParams = $this->mapParamsToApiCaptureRequestParams( $params );
+		return $this->makeApiCall( 'POST', 'payments', $apiParams );
 	}
 
 	/**
@@ -148,11 +162,37 @@ class Api {
 	}
 
 	/**
+	 * dLocal uses non-200 HTTP headers to indicate response errors
+	 *
+	 * @see https://docs.dlocal.com/reference/http-errors-payments
 	 * @param array $rawResponse
 	 * @return bool
 	 */
-	protected function responseIsInvalid( array $rawResponse ): bool {
-		return $rawResponse['status'] === Response::HTTP_NO_CONTENT || empty( $rawResponse['body'] );
+	protected function responseHasErrorStatusCode( array $rawResponse ): bool {
+		return $rawResponse['status'] !== Response::HTTP_OK;
+	}
+
+	/**
+	 * @param array $params
+	 * @return array
+	 */
+	protected function mapParamsToApiCaptureRequestParams( array $params ): array {
+		$apiParams = [];
+		if ( array_key_exists( 'gateway_txn_id', $params ) ) {
+			$apiParams['authorization_id'] = $params['gateway_txn_id'];
+		} else {
+			throw new \InvalidArgumentException( "gateway_txn_id is a required field" );
+		}
+		if ( array_key_exists( 'amount', $params ) ) {
+			$apiParams['amount'] = $params['amount'];
+		}
+		if ( array_key_exists( 'currency', $params ) ) {
+			$apiParams['currency'] = $params['currency'];
+		}
+		if ( array_key_exists( 'order_id', $params ) ) {
+			$apiParams['order_id'] = $params['order_id'];
+		}
+		return $apiParams;
 	}
 
 }
