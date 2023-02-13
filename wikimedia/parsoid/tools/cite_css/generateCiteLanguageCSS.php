@@ -11,14 +11,33 @@ function wfLoadJson( string $file ): array {
 }
 
 // Generate language-specific CSS files
-$counterMaps = [
+
+/*
+ * Extracted from https://www.w3.org/TR/predefined-counter-styles/
+ * Intersected with https://www.w3.org/International/i18n-tests/results/predefined-counter-styles
+ * where all major browsers have support with a green cell.
+ */
+$w3cCounterTypeMaps = [
+	/* numeric - no suffixes or prefixes */
+	"0123456789" => "decimal",
 	"٠١٢٣٤٥٦٧٨٩" => "arabic-indic",
 	"০১২৩৪৫৬৭৮৯" => "bengali",
-	"0123456789" => "decimal", /* Not a zero-start counter */
+	"០១២៣៤៥៦៧៨៩" => "cambodian",
 	"०१२३४५६७८९" => "devanagari",
+	"૦૧૨૩૪૫૬૭૮૯" => "gujarati",
+	"੦੧੨੩੪੫੬੭੮੯" => "gurmukhi",
 	"೦೧೨೩೪೫೬೭೮೯" => "kannada",
-	"၀၁၂၃၄၅၆၇၈၉" => "myanmar",
+	"០១២៣៤៥៦៧៨៩" => "khmer",
+	"໐໑໒໓໔໕໖໗໘໙" => "lao",
+	"൦൧൨൩൪൫൬൭൮൯" => "malayalam",
+	"၀၁၂၃၄၅၆၇၈၉" => "myanmar", /* w3c page says suffix, but testing shows no suffix! */
+	"᠐᠑᠒᠓᠔᠕᠖᠗᠘᠙" => "mongolian",
+	"୦୧୨୩୪୫୬୭୮୯" => "oriya",
 	"۰۱۲۳۴۵۶۷۸۹" => "persian",
+	"௦௧௨௩௪௫௬௭௮௯" => "tamil",
+	"౦౧౨౩౪౫౬౭౮౯" => "telugu",
+	"๐๑๒๓๔๕๖๗๘๙" => "thai",
+	"༠༡༢༣༤༥༦༧༨༩" => "tibetan",
 ];
 # Language fallback chain
 $langFallbacks = wfLoadJson( __DIR__ . "/language.fallbacks.json" );
@@ -70,16 +89,8 @@ foreach ( $allLangs as $lang ) {
 		$counterType = 'decimal';
 	} else {
 		$str = implode( $digits );
-		$counterType = $counterMaps[$str] ?? null;
-		if ( $counterType ) {
-			if ( $counterType !== 'decimal' ) {
-				// ensure counting starts at zero
-				$out[] = wfGetCSS(
-					"span[ rel~='mw:referencedBy' ]",
-					[ "counter-reset: mw-ref-linkback -1;" ]
-				);
-			}
-		} else {
+		$counterType = $w3cCounterTypeMaps[$str] ?? null;
+		if ( !$counterType ) {
 			$counterType = "$lang-counter";
 			$cssSel = "@counter-style $counterType";
 			$cssRules = [];
@@ -104,10 +115,12 @@ foreach ( $allLangs as $lang ) {
 	}
 
 	$separator = $localizedSeps[$lang] ?? '.';
-	$out[] = wfGetCSS(
-		"span[ rel='mw:referencedBy' ] > a:before",
-		[ "content: counter( mw-references, $counterType )" .
-			" '$separator' counter( mw-ref-linkback, $counterType );" ]
-	);
+	if ( $counterType !== 'decimal' || $separator !== '.' ) {
+		$out[] = wfGetCSS(
+			"span[ rel='mw:referencedBy' ] > a:before",
+			[ "content: counter( mw-references, $counterType )" .
+				" '$separator' counter( mw-ref-linkback, $counterType );" ]
+		);
+	}
 	file_put_contents( "./tools/cite_css/ext.cite.style.$lang.css", implode( $out, "\n" ) );
 }

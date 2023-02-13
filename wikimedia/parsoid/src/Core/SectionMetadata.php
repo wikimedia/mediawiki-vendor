@@ -27,9 +27,9 @@ class SectionMetadata implements \JsonSerializable {
 	public int $hLevel;
 
 	/**
-	 * This is a zero-indexed TOC level and the nesting level.
+	 * This is a one-indexed TOC level and the nesting level.
 	 * So, if a page has a H2-H4-H6, then, those levels 2,4,6
-	 * correspond to TOC-levels 0,1,2.
+	 * correspond to TOC-levels 1,2,3.
 	 */
 	public int $tocLevel;
 
@@ -75,12 +75,16 @@ class SectionMetadata implements \JsonSerializable {
 	public ?string $fromTitle;
 
 	/**
-	 * Byte offset where the section shows up in wikitext; this is null
+	 * Codepoint offset where the section shows up in wikitext; this is null
 	 * if this section comes from a template, if it comes from a literal
 	 * HTML <h_> tag, or otherwise doesn't correspond to a "preprocessor
 	 * section".
+	 * @note This is measured in codepoints, not bytes; you should use
+	 * appropriate multi-byte aware string functions, *not* substr().
+	 * Similarly, in JavaScript, be careful not to confuse JavaScript
+	 * UCS-2 "characters" with codepoints.
 	 */
-	public ?int $byteOffset;
+	public ?int $codepointOffset;
 
 	/**
 	 * Anchor attribute.
@@ -133,15 +137,18 @@ class SectionMetadata implements \JsonSerializable {
 	private array $extensionData;
 
 	/**
-	 * @param int $tocLevel Zero-indexed TOC level and the nesting level
+	 * @param int $tocLevel One-indexed TOC level and the nesting level
 	 * @param int $hLevel The heading tag level
 	 * @param string $line Stripped headline text
 	 * @param string $number TOC number string (3.1.3, 4.5.2, etc)
 	 * @param string $index Section id
 	 * @param ?string $fromTitle The title of the page or template that
 	 *   generated this heading, or null.
-	 * @param ?int $byteOffset Byte offset where the section shows up in
-	 *   wikitext, or null if this doesn't correspond to a "preprocesor section"
+	 * @param ?int $codepointOffset Codepoint offset (# of characters) where the
+	 *   section shows up in wikitext, or null if this doesn't correspond to
+	 *   a "preprocesor section".  (Be careful if using JavaScript, as
+	 *   JavaScript "characters" are UCS-2 encoded and don't correspond
+	 *   directly to code points.)
 	 * @param string $anchor "True" value of the ID attribute
 	 * @param string $linkAnchor URL-escaped value of the anchor, for use in
 	 *   constructing a URL fragment link
@@ -149,15 +156,15 @@ class SectionMetadata implements \JsonSerializable {
 	 */
 	public function __construct(
 		// This is a great candidate for named arguments in PHP 8.0+
-		int $tocLevel,
-		int $hLevel,
-		string $line,
-		string $number,
-		string $index,
-		?string $fromTitle,
-		?int $byteOffset,
-		string $anchor,
-		string $linkAnchor,
+		int $tocLevel = 0,
+		int $hLevel = -1,
+		string $line = '',
+		string $number = '',
+		string $index = '',
+		?string $fromTitle = null,
+		?int $codepointOffset = null,
+		string $anchor = '',
+		string $linkAnchor = '',
 		?array $extensionData = null
 	) {
 		$this->tocLevel = $tocLevel;
@@ -166,7 +173,7 @@ class SectionMetadata implements \JsonSerializable {
 		$this->number = $number;
 		$this->index = $index;
 		$this->fromTitle = $fromTitle;
-		$this->byteOffset = $byteOffset;
+		$this->codepointOffset = $codepointOffset;
 		$this->anchor = $anchor;
 		$this->linkAnchor = $linkAnchor;
 		$this->extensionData = $extensionData ?? [];
@@ -290,7 +297,7 @@ class SectionMetadata implements \JsonSerializable {
 			$data['number'] ?? '',
 			$data['index'] ?? '',
 			( $data['fromtitle'] ?? false ) ?: null,
-			$data['byteoffset'] ?? null,
+			$data['byteoffset'] ?? null, // T319141: actually "codepoint offset"
 			$data['anchor'] ?? '',
 			$data['linkAnchor'] ?? $data['anchor'] ?? '',
 			$data['extensionData'] ?? null
@@ -313,7 +320,8 @@ class SectionMetadata implements \JsonSerializable {
 			'number' => $this->number,
 			'index' => $this->index,
 			'fromtitle' => $this->fromTitle ?? false,
-			'byteoffset' => $this->byteOffset,
+			 // T319141: legacy 'byteoffset' is actually "codepoint offset"
+			'byteoffset' => $this->codepointOffset,
 			'anchor' => $this->anchor,
 			'linkAnchor' => $this->linkAnchor,
 		];
@@ -329,5 +337,59 @@ class SectionMetadata implements \JsonSerializable {
 	 */
 	public function jsonSerialize(): array {
 		return $this->toLegacy();
+	}
+
+	/**
+	 * For use in parser tests and wherever else humans might appreciate
+	 * some formatting in the JSON encoded output. For now, nothing special.
+	 * @param int $indent Additional indentation to apply (defaults to zero)
+	 * @return string
+	 */
+	public function prettyPrint( int $indent = 0 ): string {
+		$buf = str_repeat( ' ', $indent + $this->tocLevel );
+		$buf .=
+			"h{$this->hLevel} ({$this->index}) {$this->number}: {$this->line}";
+		# add anchors
+		$buf .= " [id={$this->anchor}";
+		if ( $this->anchor !== $this->linkAnchor ) {
+			$buf .= " link={$this->linkAnchor}";
+		}
+		# add optional information
+		if ( $this->fromTitle !== null ) {
+			$buf .= " title={$this->fromTitle}";
+		}
+		if ( $this->codepointOffset !== null ) {
+			$buf .= " off={$this->codepointOffset}";
+		}
+		if ( $this->extensionData ) {
+			# This should go through a JsonCodec, as it might have
+			# data which requires special serialization.
+			$buf .= " ext=" . json_encode( $this->extensionData );
+		}
+		$buf .= "]";
+		return $buf;
+	}
+
+	// T319141: Temporary backward compatibility for former 'byteOffset'
+	// property name.
+
+	/**
+	 * @param string $name
+	 * @return ?int
+	 */
+	public function &__get( $name ) {
+		if ( $name === 'byteOffset' ) {
+			return $this->codepointOffset;
+		}
+	}
+
+	/**
+	 * @param string $name
+	 * @param ?int $value
+	 */
+	public function __set( $name, $value ) {
+		if ( $name === 'byteOffset' ) {
+			$this->codepointOffset = $value;
+		}
 	}
 }
