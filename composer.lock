@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bf97c2286204de53a0fa896eeb9813e0",
+    "content-hash": "4e5f60da2a5bd40b70d05cf6ff796ebe",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -7234,16 +7234,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.17.0-a17",
+            "version": "v0.17.0-a18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
-                "reference": "d12fb4eb69bb89557c1f6157625b12592c0a236d"
+                "reference": "d8371e1d5c1031fca251b912768d61121925b61d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/d12fb4eb69bb89557c1f6157625b12592c0a236d",
-                "reference": "d12fb4eb69bb89557c1f6157625b12592c0a236d",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/d8371e1d5c1031fca251b912768d61121925b61d",
+                "reference": "d8371e1d5c1031fca251b912768d61121925b61d",
                 "shasum": ""
             },
             "require": {
@@ -7278,7 +7278,7 @@
                 "ockcyp/covers-validator": "1.6.0",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
                 "php-parallel-lint/php-parallel-lint": "1.3.2",
-                "phpunit/phpunit": "^9.5",
+                "phpunit/phpunit": "9.5.28",
                 "sebastian/diff": "^4.0.3",
                 "wikimedia/alea": "^0.9.3",
                 "wikimedia/langconv": "^0.4.2",
@@ -7311,10 +7311,10 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.17.0-a17",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.17.0-a18",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
-            "time": "2023-02-17T19:40:44+00:00"
+            "time": "2023-02-25T05:17:33+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",
