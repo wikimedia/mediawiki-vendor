@@ -7,13 +7,7 @@ require __DIR__ . '/../../../Maintenance/MaintenanceBase.php';
 use SmashPig\Core\Context;
 use SmashPig\Maintenance\MaintenanceBase;
 
-/**
- *	A valid response from this authorize will return a rediect_url that you can paste into the browser to
- * complete the payment
- *
- */
-class TestAuthorizeRedirectPayment extends MaintenanceBase {
-
+class TestRecurringChargePayment extends MaintenanceBase {
 	public function __construct() {
 		parent::__construct();
 		$this->desiredOptions['config-node']['default'] = 'dlocal';
@@ -24,6 +18,7 @@ class TestAuthorizeRedirectPayment extends MaintenanceBase {
 		$api = $providerConfiguration->object( 'api' );
 
 		$params = [
+			'recurring_payment_token' => "CID-d69850ea-37fe-4392-abdd-402cca966e51",
 			'order_id' => mt_rand(),
 			'amount' => '100',
 			'currency' => 'USD',
@@ -41,11 +36,11 @@ class TestAuthorizeRedirectPayment extends MaintenanceBase {
 			'fiscal_number' => '504.141.611-73',
 		];
 
-		$result = $api->redirectPayment( $params );
+		$result = $api->makeRecurringPayment( $params );
 		print_r( $result );
 	}
 }
 
-$maintClass = TestAuthorizeRedirectPayment::class;
+$maintClass = TestRecurringChargePayment::class;
 
 require RUN_MAINTENANCE_IF_MAIN;

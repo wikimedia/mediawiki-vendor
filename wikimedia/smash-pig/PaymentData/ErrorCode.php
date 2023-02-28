@@ -42,4 +42,6 @@ class ErrorCode {
 	const TRANSACTION_NOT_FOUND = 1000015;
 	/** @var int Invalid subscription status for cancel action; should be active or suspended */
 	const SUBSCRIPTION_CANNOT_BE_CANCELED = 1000016;
+	/** @var int Invalid request */
+	const INVALID_REQUEST = 1000017;
 }

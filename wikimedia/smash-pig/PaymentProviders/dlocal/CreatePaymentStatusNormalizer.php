@@ -6,16 +6,32 @@ use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentData\StatusNormalizer;
 use UnexpectedValueException;
 
-class CreatePaymentStatus implements StatusNormalizer {
+class CreatePaymentStatusNormalizer implements StatusNormalizer {
+
+	public const SUCCESS_STATUS = [
+		FinalStatus::COMPLETE,
+		FinalStatus::PENDING,
+		FinalStatus::PENDING_POKE
+	];
+
+	/**
+	 * @param string $finalStatus
+	 * @return bool
+	 */
+	public function isSuccessStatus( string $finalStatus ): bool {
+		return in_array( $finalStatus, self::SUCCESS_STATUS, true );
+	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function normalizeStatus( string $status ): string {
 		switch ( $status ) {
-			case 'PENDING':
 			case 'AUTHORIZED':
 				$status = FinalStatus::PENDING_POKE;
+				break;
+			case 'PENDING':
+				$status = FinalStatus::PENDING;
 				break;
 			case 'REJECTED':
 				$status = FinalStatus::FAILED;

@@ -4,10 +4,26 @@ namespace SmashPig\PaymentProviders\dlocal;
 
 use SmashPig\Core\ApiException;
 use SmashPig\Core\Context;
+use SmashPig\Core\Helpers\UniqueId;
 use SmashPig\Core\Http\OutboundRequest;
 use Symfony\Component\HttpFoundation\Response;
 
 class Api {
+
+	/**
+	 * @var string
+	 */
+	public const PAYMENT_METHOD_ID_CARD = 'CARD';
+
+	/**
+	 * @var string
+	 */
+	public const PAYMENT_METHOD_FLOW_DIRECT = 'DIRECT';
+
+	/**
+	 * @var string
+	 */
+	public const PAYMENT_METHOD_FLOW_REDIRECT = 'REDIRECT';
 
 	/**
 	 * @var string
@@ -39,12 +55,23 @@ class Api {
 	protected $version;
 
 	/**
+	 * @var mixed
+	 */
+	protected $callback_url;
+	/**
+	 * @var mixed
+	 */
+	protected $notification_url;
+
+	/**
 	 * @var SignatureCalculator
 	 */
 	private $signatureCalculator;
 
 	public function __construct( array $params ) {
 		$this->endpoint = $params['endpoint'];
+		$this->callback_url = $params['callback_url'];
+		$this->notification_url = $params['notification_url'];
 		$this->login = $params['login'];
 		$this->trans_key = $params['trans-key'];
 		$this->secret = $params['secret'];
@@ -88,7 +115,18 @@ class Api {
 	 * @throws ApiException
 	 */
 	public function authorizePayment( array $params ): array {
-		return $this->makeApiCall( 'POST', 'payments', $params );
+		$apiParams = $this->mapParamsToCardAuthorizePaymentRequestParams( $params );
+		return $this->makeApiCall( 'POST', 'payments', $apiParams );
+	}
+
+		/**
+		 * @param array $params
+		 * @return array
+		 * @throws ApiException
+		 */
+	public function redirectPayment( array $params ): array {
+		$apiParams = $this->mapParamsToAuthorizePaymentRequestParams( $params );
+		return $this->makeApiCall( 'POST', 'payments', $apiParams );
 	}
 
 	/**
@@ -101,8 +139,43 @@ class Api {
 	 * @throws ApiException
 	 */
 	public function capturePayment( array $params ): array {
-		$apiParams = $this->mapParamsToApiCaptureRequestParams( $params );
+		$apiParams = $this->mapParamsToCapturePaymentRequestParams( $params );
 		return $this->makeApiCall( 'POST', 'payments', $apiParams );
+	}
+
+	/**
+	 * @param array $params
+	 * @return array
+	 * @throws ApiException
+	 */
+	public function makeRecurringPayment( array $params ): array {
+		$apiParams = $this->mapParamsToCardRecurringPaymentRequestParams( $params );
+		return $this->makeApiCall( 'POST', 'payments', $apiParams );
+	}
+
+	/**
+	 * Get payment status.
+	 *
+	 * https://docs.dlocal.com/reference/retrieve-a-payment-status
+	 *
+	 * @param string $gatewayTxnId
+	 * @return array
+	 * @throws ApiException
+	 */
+	public function getPaymentStatus( string $gatewayTxnId ): array {
+		$route = 'payments/' . $gatewayTxnId . '/status';
+		return $this->makeApiCall( 'GET', $route );
+	}
+
+	/**
+	 * @param string $gatewayTxnId
+	 *
+	 * @return array
+	 * @throws \SmashPig\Core\ApiException
+	 */
+	public function cancelPayment( string $gatewayTxnId ): array {
+		$route = 'payments/' . $gatewayTxnId . '/cancel';
+		return $this->makeApiCall( 'POST', $route );
 	}
 
 	/**
@@ -122,7 +195,8 @@ class Api {
 			->setHeader( 'X-Trans-Key', $this->trans_key )
 			->setHeader( 'Content-Type', 'application/json' )
 			->setHeader( 'X-Version', $this->version )
-			->setHeader( 'User-Agent', 'SmashPig' );
+			->setHeader( 'User-Agent', 'SmashPig' )
+			->setHeader( 'X-Idempotency-Key', UniqueId::generate() );
 
 		// calculate the request signature and add to 'Authorization' header
 		// as instructed in https://docs.dlocal.com/reference/payins-security#headers
@@ -147,10 +221,13 @@ class Api {
 	 * @return OutboundRequest
 	 */
 	protected function createRequestBasedOnMethodAndSetBody( string $method, string $route, array $params ): OutboundRequest {
-		$apiUrl = !empty( $route ) ? $this->endpoint . '/' . $route : $this->endpoint;
+		$apiUrl = empty( $route ) ? $this->endpoint : $this->endpoint . '/' . $route;
 
 		if ( $method === 'GET' ) {
-			$apiUrl .= '?' . http_build_query( $params );
+			if ( $params !== [] ) {
+				$apiUrl .= '?' . http_build_query( $params );
+			}
+
 			$body = null;
 		} else {
 			$body = json_encode( $params );
@@ -176,7 +253,7 @@ class Api {
 	 * @param array $params
 	 * @return array
 	 */
-	protected function mapParamsToApiCaptureRequestParams( array $params ): array {
+	protected function mapParamsToCapturePaymentRequestParams( array $params ): array {
 		$apiParams = [];
 		if ( array_key_exists( 'gateway_txn_id', $params ) ) {
 			$apiParams['authorization_id'] = $params['gateway_txn_id'];
@@ -191,6 +268,132 @@ class Api {
 		}
 		if ( array_key_exists( 'order_id', $params ) ) {
 			$apiParams['order_id'] = $params['order_id'];
+		}
+		return $apiParams;
+	}
+
+	protected function fillNestedArrayFields( array $sourceArray, array &$destinationArray, array $fieldParams ): void {
+		$array = [];
+		foreach ( $fieldParams as $field => $apiParams ) {
+			foreach ( $apiParams as $key => $value ) {
+				if ( array_key_exists( $value, $sourceArray ) ) {
+					$array[$field][$key] = $sourceArray[$value];
+				}
+			}
+			if ( array_key_exists( $field, $destinationArray ) ) {
+				$destinationArray[$field] = array_merge( $destinationArray[$field], $array[$field] );
+			} elseif ( count( $array[$field] ) > 0 ) {
+				$destinationArray[$field] = $array[$field];
+			}
+		}
+	}
+
+	protected function mapParamsToAuthorizePaymentRequestParams( array $params ): array {
+		$apiParams = [
+			'amount' => $params['amount'],
+			'currency' => $params['currency'],
+			'country' => $params['country'],
+			'order_id' => $params['order_id'],
+			'payment_method_flow' => self::PAYMENT_METHOD_FLOW_REDIRECT, // Set as a default and may be overridden in unique situations.
+			'payer' => [
+				'name' => $params['first_name'] . ' ' . $params['last_name']
+			]
+		];
+
+		if ( $this->callback_url !== null ) {
+			$apiParams['callback_url'] = $this->callback_url;
+		}
+		if ( $this->notification_url !== null ) {
+			$apiParams['notification_url'] = $this->notification_url;
+		}
+
+		if ( array_key_exists( 'payment_method_id', $params ) ) {
+			$apiParams['payment_method_id'] = $params['payment_method_id'];
+		}
+
+		if ( array_key_exists( 'description', $params ) ) {
+			$apiParams['description'] = $params['description'];
+		}
+
+		if ( array_key_exists( 'return_url', $params ) ) {
+			$apiParams['callback_url'] = $params['return_url'];
+		}
+
+		$apiFields = [];
+		$apiFields['payer'] = [
+			'email' => 'email',
+			'document' => 'fiscal_number',
+			'user_reference' => 'contact_id',
+			'ip' => 'user_ip',
+		];
+
+		$apiFields['address'] = [
+			'state' => 'state_province',
+			'city' => 'city',
+			'zip_code' => 'postal_code',
+			'street' => 'street_address',
+			'number' => 'street_number',
+		];
+
+		$this->fillNestedArrayFields( $params, $apiParams, $apiFields );
+		return $apiParams;
+	}
+
+	/**
+	 * @param array $params
+	 * Convert the API request body to DLocal Authorize Payment Request standards
+	 * @return array
+	 */
+	protected function mapParamsToCardAuthorizePaymentRequestParams( array $params ): array {
+		$apiParams = $this->mapParamsToAuthorizePaymentRequestParams( $params );
+
+		$apiParams = $this->check3DSecure( $params, $apiParams );
+
+		$isRecurring = $params['recurring'] ?? false;
+		$paramsHasPaymentToken = array_key_exists( 'payment_token', $params );
+
+		// Ensure this transaction is not a redirect payment attempt by checking for the presence of
+		// a payment token.
+
+		if ( $paramsHasPaymentToken ) {
+			$apiParams['payment_method_id'] = self::PAYMENT_METHOD_ID_CARD;
+			$apiParams['payment_method_flow'] = self::PAYMENT_METHOD_FLOW_DIRECT;
+			$apiParams['card'] = [
+				'token' => $params['payment_token'],
+			];
+			if ( $isRecurring ) {
+				$apiParams['card']['save'] = true;
+			}
+			$apiParams['card']['capture'] = false;
+		}
+
+		return $apiParams;
+	}
+
+	protected function mapParamsToCardRecurringPaymentRequestParams( array $params ): array {
+		$apiParams = $this->mapParamsToAuthorizePaymentRequestParams( $params );
+		$apiParams['payment_method_id'] = self::PAYMENT_METHOD_ID_CARD;
+		$apiParams['payment_method_flow'] = self::PAYMENT_METHOD_FLOW_DIRECT;
+
+		$apiParams['card'] = [
+			'card_id' => $params['recurring_payment_token']
+		];
+
+			$apiParams['card']['capture'] = true;
+
+		return $apiParams;
+	}
+
+	/**
+	 * @param array $params
+	 * @param array $apiParams
+	 * @return array
+	 */
+	protected function check3DSecure( array $params, array $apiParams ): array {
+		if ( array_key_exists( 'use_3d_secure', $params ) && $params['use_3d_secure'] === true ) {
+			$apiParams['three_dsecure'] = [
+				'force' => true,
+			];
 		}
 		return $apiParams;
 	}

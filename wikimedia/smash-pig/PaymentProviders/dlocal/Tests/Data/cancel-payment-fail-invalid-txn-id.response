@@ -1,0 +1,10 @@
+HTTP/2 400 Bad Request
+Date: Thu, 16 Feb 2023 08:51:41 GMT
+Content-Type: application/json
+Content-Length: 43
+Server: rhino-core-shield
+X-RequestId: api-middleware
+X-UOW: 1-63edee9d-6dc0123a0a170a873d376a07
+X-ServiceName: api-middleware
+
+{"code":4000,"message":"Payment not found"}

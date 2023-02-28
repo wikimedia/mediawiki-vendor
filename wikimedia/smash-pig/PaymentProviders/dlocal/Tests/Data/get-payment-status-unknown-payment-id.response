@@ -1,0 +1,11 @@
+HTTP/1.1 404 Not Found
+Date: Wed, 08 Feb 2023 20:19:20 GMT
+Content-Type: application/json
+Content-Length: 43
+Connection: keep-alive
+Server: rhino-core-shield
+X-RequestId: api-middleware
+X-UOW: 1-63e403c8-44ffe4da5337faf5691819e7
+X-ServiceName: api-middleware
+
+{"code":4000,"message":"Payment not found"}

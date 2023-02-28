@@ -1,0 +1,12 @@
+HTTP/1.1 200 OK
+Date: Tue, 21 Feb 2023 18:24:11 GMT
+Content-Type: application/json
+Content-Length: 539
+Connection: keep-alive
+Server: rhino-core-shield
+X-RequestId: api-middleware
+X-UOW: 1-63f50c4b-156430d944a4e715151e2f9d
+X-ServiceName: api-middleware
+X-Upstream: 10.145.76.22:80
+
+{"id":"R-2486-636d5560-5dec-4c45-98c5-b400271c9ff5","amount":50.00,"currency":"BRL","payment_method_id":"PQ","payment_method_type":"TICKET","payment_method_flow":"REDIRECT","country":"BR","created_date":"2023-02-21T18:24:11.000+0000","status":"PENDING","status_detail":"The payment is pending.","status_code":"100","order_id":"43112114w321","notification_url":"http://conductor.sandbox.internal/robot-server/rest/generic/notification/new","redirect_url":"https://sandbox.dlocal.com/gmf-apm/payments/M-9b21c187-1436-4934-a636-34dd770d143d"}

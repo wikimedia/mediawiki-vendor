@@ -9,7 +9,7 @@ actions:
 
 endpoints:
     listener:
-        class: SmashPig\PaymentProviders\AstroPay\AstroPayListener
+        class: SmashPig\PaymentProviders\dlocal\DlocalListener
 
 login: &login x_login
 secret: "secretkey"
@@ -23,6 +23,8 @@ api:
             trans-key: x_trans_key
             secret: generated_when_api_account_created
             endpoint: https://sandbox.dlocal.com
+            callback_url:
+            notification_url:
             version: 2.1
 
 signature-calculator:
@@ -31,3 +33,7 @@ signature-calculator:
 payment-provider:
     cc:
         class: SmashPig\PaymentProviders\dlocal\CardPaymentProvider
+    cash:
+        class: SmashPig\PaymentProviders\dlocal\HostedPaymentProvider
+    bt:
+        class: SmashPig\PaymentProviders\dlocal\HostedPaymentProvider

@@ -39,14 +39,13 @@ class CardPaymentProviderTest extends BaseSmashPigUnitTestCase {
 	}
 
 	public function testPaymentWithCompleteParamsSuccess(): void {
-		$data = $this->getCreatePaymentRequestParams();
-		$params = $data['params'];
-		$transformedParams = $data['transformedParams'];
+		$params = $this->getCreatePaymentRequestParams();
+		$gateway_txn_id = "PAY2323243343543";
 		$this->api->expects( $this->once() )
-				->method( 'authorizePayment' )
-				->with( $transformedParams )
-				->willReturn( [
-						"id" => "PAY2323243343543",
+			->method( 'authorizePayment' )
+			->with( $params )
+			->willReturn( [
+						"id" => $gateway_txn_id,
 						"amount" => 1,
 						"currency" => "ZAR",
 						"country" => "SA",
@@ -73,18 +72,18 @@ class CardPaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$validationError = $response->getValidationErrors();
 		$this->assertCount( 0, $validationError );
 		$this->assertTrue( $response->isSuccessful() );
+		$this->assertEquals( $response->getGatewayTxnId(), $gateway_txn_id );
 		$this->assertEquals( FinalStatus::PENDING_POKE, $response->getStatus() );
 	}
 
 	public function testPaymentWithCompleteParamsFail(): void {
-		$data = $this->getCreatePaymentRequestParams();
-		$params = $data['params'];
-		$transformedParams = $data['transformedParams'];
+		$params = $this->getCreatePaymentRequestParams();
+		$gateway_txn_id = "PAY2323243343543";
 		$this->api->expects( $this->once() )
-				->method( 'authorizePayment' )
-				->with( $transformedParams )
-				->willReturn( [
-						"id" => "PAY2323243343543",
+			->method( 'authorizePayment' )
+			->with( $params )
+			->willReturn( [
+						"id" => $gateway_txn_id,
 						"amount" => 1,
 						"currency" => "ZAR",
 						"country" => "SA",
@@ -111,18 +110,18 @@ class CardPaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$error = $response->getErrors();
 		$this->assertCount( 1, $error );
 		$this->assertFalse( $response->isSuccessful() );
+		$this->assertEquals( $response->getGatewayTxnId(), $gateway_txn_id );
 		$this->assertEquals( FinalStatus::FAILED, $response->getStatus() );
 	}
 
 	public function testPaymentWithCompleteParamsPending(): void {
-		$data = $this->getCreatePaymentRequestParams();
-		$params = $data['params'];
-		$transformedParams = $data['transformedParams'];
+		$params = $this->getCreatePaymentRequestParams();
+		$gateway_txn_id = "PAY2323243343543";
 		$this->api->expects( $this->once() )
-				->method( 'authorizePayment' )
-				->with( $transformedParams )
-				->willReturn( [
-						"id" => "PAY2323243343543",
+			->method( 'authorizePayment' )
+			->with( $params )
+			->willReturn( [
+						"id" => $gateway_txn_id,
 						"amount" => 1,
 						"currency" => "ZAR",
 						"country" => "SA",
@@ -138,7 +137,7 @@ class CardPaymentProviderTest extends BaseSmashPigUnitTestCase {
 						],
 						"created_date" => "2018-02-15T15:14:52-00:00",
 						"approved_date" => "2018-02-15T15:14:52-00:00",
-						"status" => "PENDING",
+						"status" => "AUTHORIZED",
 						"status_code" => "100",
 						"status_detail" => "The payment is pending.",
 						"order_id" => $params['order_id'],
@@ -149,18 +148,18 @@ class CardPaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$error = $response->getErrors();
 		$this->assertCount( 0, $error );
 		$this->assertTrue( $response->isSuccessful() );
+		$this->assertEquals( $response->getGatewayTxnId(), $gateway_txn_id );
 		$this->assertEquals( FinalStatus::PENDING_POKE, $response->getStatus() );
 	}
 
-	public function testPaymentWithCompleteParamsFailsDueToUnknownStatus(): void {
-		$data = $this->getCreatePaymentRequestParams();
-		$params = $data['params'];
-		$transformedParams = $data['transformedParams'];
+public function testPaymentWithCompleteParamsFailsDueToUnknownStatus(): void {
+		$params = $this->getCreatePaymentRequestParams();
+		$gateway_txn_id = "PAY2323243343543";
 		$this->api->expects( $this->once() )
 				->method( 'authorizePayment' )
-				->with( $transformedParams )
+				->with( $params )
 				->willReturn( [
-						"id" => "PAY2323243343543",
+						"id" => $gateway_txn_id,
 						"amount" => 1,
 						"currency" => "ZAR",
 						"country" => "SA",
@@ -187,17 +186,15 @@ class CardPaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$error = $response->getErrors();
 		$this->assertCount( 1, $error );
 		$this->assertFalse( $response->isSuccessful() );
-		$this->assertEquals( FinalStatus::FAILED, $response->getStatus() );
-	}
+		$this->assertEquals( $response->getGatewayTxnId(), $gateway_txn_id );
+		$this->assertEquals( FinalStatus::UNKNOWN, $response->getStatus() );
+}
 
 	public function testPaymentWithCompleteParamsFailsAndEmptyStatusInResponse(): void {
-		$data = $this->getCreatePaymentRequestParams();
-		$params = $data['params'];
-		$transformedParams = $data['transformedParams'];
-
+		$params = $this->getCreatePaymentRequestParams();
 		$this->api->expects( $this->once() )
 				->method( 'authorizePayment' )
-				->with( $transformedParams )
+				->with( $params )
 				->willReturn( [
 						"code" => 5008,
 						"message" => "Token not found or inactive"
@@ -208,7 +205,51 @@ class CardPaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$error = $response->getErrors();
 		$this->assertCount( 1, $error );
 		$this->assertFalse( $response->isSuccessful() );
-		$this->assertEquals( FinalStatus::FAILED, $response->getStatus() );
+		$this->assertEquals( FinalStatus::UNKNOWN, $response->getStatus() );
+	}
+
+	public function testPaymentWithCompleteParams3DSecureEnabled(): void {
+		$params = $this->getCreatePaymentRequestParams();
+		$params['3DSecure'] = true;
+
+		$this->api->expects( $this->once() )
+				->method( 'authorizePayment' )
+				->with( $params )
+			->willReturn( [
+				"id" => "PAY2323243343543",
+				"amount" => 1,
+				"currency" => "ZAR",
+				"country" => "SA",
+				"payment_method_id" => "CARD",
+				"payment_method_type" => "CARD",
+				"payment_method_flow" => "DIRECT",
+				"card" => [
+					"holder_name" => "Lorem Ipsum",
+					"expiration_month" => 10,
+					"expiration_year" => 2040,
+					"last4" => "1111",
+					"brand" => "VI"
+				],
+				'three_dsecure' =>
+					[
+						'redirect_url' => 'https://www.example.com/3d-secure-redirect',
+					],
+				'created_date' => '2023-02-09T14:47:49.000+0000',
+				'status' => 'PENDING',
+				'status_detail' => 'The payment is pending for 3ds authorization.',
+				'status_code' => '101',
+				'order_id' => '657434343',
+				'notification_url' => 'http://merchant.com/notifications',
+
+			] );
+
+		$provider = new CardPaymentProvider();
+		$response = $provider->createPayment( $params );
+		$error = $response->getErrors();
+		$this->assertCount( 0, $error );
+		$this->assertTrue( $response->isSuccessful() );
+		$this->assertEquals( FinalStatus::PENDING, $response->getStatus() );
+		$this->assertEquals( "https://www.example.com/3d-secure-redirect", $response->getRedirectUrl() );
 	}
 
 	public function testApprovePaymentSuccess(): void {
@@ -241,6 +282,91 @@ class CardPaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$this->assertEquals( FinalStatus::COMPLETE, $approvePaymentResponse->getStatus() );
 	}
 
+	public function testPaymentWithCompleteParamsPendingRecurringSetToTrue(): void {
+		$params = $this->getCreatePaymentRequestParams();
+		$params['recurring'] = "1";
+		$gateway_txn_id = "PAY2323243343543";
+		$card_id = "CID-e41c183d-2657-4e82-b39a-b0069c2af657";
+		$this->api->expects( $this->once() )
+			->method( 'authorizePayment' )
+			->with( $params )
+			->willReturn( [
+				"id" => $gateway_txn_id,
+				"amount" => 1,
+				"currency" => "ZAR",
+				"country" => "SA",
+				"payment_method_id" => "CARD",
+				"payment_method_type" => "CARD",
+				"payment_method_flow" => "DIRECT",
+				"card" => [
+					"holder_name" => "Lorem Ipsum",
+					"expiration_month" => 10,
+					"expiration_year" => 2040,
+					"last4" => "1111",
+					"brand" => "VI",
+					"card_id" => $card_id
+				],
+				"created_date" => "2018-02-15T15:14:52-00:00",
+				"approved_date" => "2018-02-15T15:14:52-00:00",
+				"status" => "AUTHORIZED",
+				"status_code" => "100",
+				"status_detail" => "The payment is pending.",
+				"order_id" => $params['order_id'],
+			] );
+
+		$provider = new CardPaymentProvider();
+		$response = $provider->createPayment( $params );
+		$error = $response->getErrors();
+		$this->assertCount( 0, $error );
+		$this->assertTrue( $response->isSuccessful() );
+		$this->assertEquals( $response->getGatewayTxnId(), $gateway_txn_id );
+		$this->assertEquals( $response->getRecurringPaymentToken(), $card_id );
+		$this->assertEquals( FinalStatus::PENDING_POKE, $response->getStatus() );
+	}
+
+	public function testPaymentWithCompleteParamsAndRecurringPaymentToken(): void {
+		$params = $this->getCreatePaymentRequestParams();
+		unset( $params['payment_token'] );
+		$card_id = "CID-e41c183d-2657-4e82-b39a-b0069c2af657";
+		$params['recurring_payment_token'] = $card_id;
+		$gateway_txn_id = "PAY2323243343543";
+		$this->api->expects( $this->once() )
+			->method( 'makeRecurringPayment' )
+			->with( $params )
+			->willReturn( [
+				"id" => $gateway_txn_id,
+				"amount" => 1,
+				"currency" => "ZAR",
+				"country" => "SA",
+				"payment_method_id" => "CARD",
+				"payment_method_type" => "CARD",
+				"payment_method_flow" => "DIRECT",
+				"card" => [
+					"holder_name" => "Lorem Ipsum",
+					"expiration_month" => 10,
+					"expiration_year" => 2040,
+					"last4" => "1111",
+					"brand" => "VI",
+					"card_id" => $card_id
+				],
+				"created_date" => "2018-02-15T15:14:52-00:00",
+				"approved_date" => "2018-02-15T15:14:52-00:00",
+				"status" => "PAID",
+				"status_code" => "200",
+				"status_detail" => "The payment was paid.",
+				"order_id" => $params['order_id'],
+			] );
+
+		$provider = new CardPaymentProvider();
+		$response = $provider->createPayment( $params );
+		$error = $response->getErrors();
+		$this->assertCount( 0, $error );
+		$this->assertTrue( $response->isSuccessful() );
+		$this->assertEquals( $response->getGatewayTxnId(), $gateway_txn_id );
+		$this->assertEquals( $response->getRecurringPaymentToken(), $card_id );
+		$this->assertEquals( FinalStatus::COMPLETE, $response->getStatus() );
+	}
+
 	public function testApprovePaymentFailMissingGatewayTxnId(): void {
 		$params = [
 			// gateway_txn_id is missing
@@ -259,12 +385,10 @@ class CardPaymentProviderTest extends BaseSmashPigUnitTestCase {
 
 	private function getCreatePaymentRequestParams(): array {
 		return [
-				"params" => [
-						"payment_token" => 'fake-token',
-						"order_id" => '123.3',
-						"amount" => '1.00',
-						"currency" => 'ZAR',
-						"country" => 'SA',
+						'payment_token' => 'fake-token',
+						'amount' => '1.00',
+						'currency' => 'ZAR',
+						'country' => 'SA',
 						'payment_method' => 'CARD',
 						'payment_submethod' => 'DIRECT',
 						'order_id' => '1234',
@@ -279,33 +403,6 @@ class CardPaymentProviderTest extends BaseSmashPigUnitTestCase {
 						'street_address' => 'lore',
 						'street_number' => 2,
 						'user_ip' => '127.0.0.1'
-				],
-				"transformedParams" => [
-						'amount' => '1.00',
-						'currency' => 'ZAR',
-						'country' => 'SA',
-						'payment_method_id' => 'CARD',
-						'payment_method_flow' => 'DIRECT',
-						'order_id' => '1234',
-						'card' => [
-								'token' => 'fake-token',
-								'capture' => false
-						],
-						'payer' => [
-								'name' => 'Lorem Ipsum',
-								'email' => 'li@mail.com',
-								'document' => '12345',
-								'user_reference' => '12345',
-								'ip' => '127.0.0.1',
-						],
-						'address' => [
-								'state' => 'lore',
-								'city' => 'lore',
-								'zip_code' => 'lore',
-								'street' => 'lore',
-								'number' => 2,
-						]
-				]
 		];
 	}
 }

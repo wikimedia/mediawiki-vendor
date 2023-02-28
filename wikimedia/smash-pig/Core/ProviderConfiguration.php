@@ -58,7 +58,6 @@ class ProviderConfiguration extends Configuration {
 
 	protected static function remapProvider( string $provider ): string {
 		$remap = [
-			'astropay' => 'dlocal',
 			'globalcollect' => 'ingenico',
 			'paypal_ec' => 'paypal',
 		];

@@ -19,5 +19,5 @@ return array(
     'ComposerHookHandler' => array($baseDir . '/includes/composer'),
     'Clio' => array($vendorDir . '/clio/clio/src'),
     'CSSMin' => array($vendorDir . '/wikimedia/minify/src'),
-    '' => array($vendorDir . '/pear/pear-core-minimal/src', $vendorDir . '/cssjanus/cssjanus/src'),
+    '' => array($vendorDir . '/cssjanus/cssjanus/src', $vendorDir . '/pear/pear-core-minimal/src'),
 );
