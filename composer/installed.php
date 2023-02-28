@@ -3,7 +3,7 @@
         'name' => 'mediawiki/core',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '056e61ae9ea092899201e97fb703493c7e98f17d',
+        'reference' => '5b924e8baaa7c8ee999798d5c5ba8b6b9bb4bef7',
         'type' => 'mediawiki-core',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -83,9 +83,9 @@
             'dev_requirement' => false,
         ),
         'cssjanus/cssjanus' => array(
-            'pretty_version' => 'v2.1.0',
-            'version' => '2.1.0.0',
-            'reference' => 'de7483c0805750a6462b372eab55d022d555df02',
+            'pretty_version' => 'v2.1.1',
+            'version' => '2.1.1.0',
+            'reference' => 'befd1eb7b1e70ee2cd71cd5b9a86ff250d2e8423',
             'type' => 'library',
             'install_path' => __DIR__ . '/../cssjanus/cssjanus',
             'aliases' => array(),
@@ -175,7 +175,7 @@
         'mediawiki/core' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '056e61ae9ea092899201e97fb703493c7e98f17d',
+            'reference' => '5b924e8baaa7c8ee999798d5c5ba8b6b9bb4bef7',
             'type' => 'mediawiki-core',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -184,7 +184,7 @@
         'mediawiki/mediawiki' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.39.1',
+                0 => '1.39.2',
             ),
         ),
         'monolog/monolog' => array(
@@ -206,9 +206,9 @@
             'dev_requirement' => false,
         ),
         'oojs/oojs-ui' => array(
-            'pretty_version' => 'v0.44.4',
-            'version' => '0.44.4.0',
-            'reference' => 'f7f460d1f3d0beb68295990c7fc29c09068212a6',
+            'pretty_version' => 'v0.44.5',
+            'version' => '0.44.5.0',
+            'reference' => '49dffe151f28aa1556adca063d4faa82b2634822',
             'type' => 'library',
             'install_path' => __DIR__ . '/../oojs/oojs-ui',
             'aliases' => array(),
@@ -677,9 +677,9 @@
             'dev_requirement' => false,
         ),
         'wikimedia/remex-html' => array(
-            'pretty_version' => '3.0.2',
-            'version' => '3.0.2.0',
-            'reference' => 'a471c8d472a6e80fc4f7a5a77c10758c24325d43',
+            'pretty_version' => '3.0.3',
+            'version' => '3.0.3.0',
+            'reference' => '0997340924fb60a15590fc5001b6091c24fef1a3',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/remex-html',
             'aliases' => array(),
