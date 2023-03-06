@@ -4873,6 +4873,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Ext\\Poem\\PoemProcessor' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/Poem/PoemProcessor.php',
         'Wikimedia\\Parsoid\\Ext\\Pre\\Pre' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/Pre/Pre.php',
         'Wikimedia\\Parsoid\\Ext\\Utils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/Utils.php',
+        'Wikimedia\\Parsoid\\Ext\\WTSUtils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/WTSUtils.php',
         'Wikimedia\\Parsoid\\Ext\\WTUtils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/WTUtils.php',
         'Wikimedia\\Parsoid\\Html2Wt\\ConstrainedText\\AutoURLLinkText' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Html2Wt/ConstrainedText/AutoURLLinkText.php',
         'Wikimedia\\Parsoid\\Html2Wt\\ConstrainedText\\ConstrainedText' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Html2Wt/ConstrainedText/ConstrainedText.php',

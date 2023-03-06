@@ -4101,6 +4101,7 @@ return array(
     'Wikimedia\\Parsoid\\Ext\\Poem\\PoemProcessor' => $vendorDir . '/wikimedia/parsoid/src/Ext/Poem/PoemProcessor.php',
     'Wikimedia\\Parsoid\\Ext\\Pre\\Pre' => $vendorDir . '/wikimedia/parsoid/src/Ext/Pre/Pre.php',
     'Wikimedia\\Parsoid\\Ext\\Utils' => $vendorDir . '/wikimedia/parsoid/src/Ext/Utils.php',
+    'Wikimedia\\Parsoid\\Ext\\WTSUtils' => $vendorDir . '/wikimedia/parsoid/src/Ext/WTSUtils.php',
     'Wikimedia\\Parsoid\\Ext\\WTUtils' => $vendorDir . '/wikimedia/parsoid/src/Ext/WTUtils.php',
     'Wikimedia\\Parsoid\\Html2Wt\\ConstrainedText\\AutoURLLinkText' => $vendorDir . '/wikimedia/parsoid/src/Html2Wt/ConstrainedText/AutoURLLinkText.php',
     'Wikimedia\\Parsoid\\Html2Wt\\ConstrainedText\\ConstrainedText' => $vendorDir . '/wikimedia/parsoid/src/Html2Wt/ConstrainedText/ConstrainedText.php',
