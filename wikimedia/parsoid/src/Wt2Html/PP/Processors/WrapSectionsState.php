@@ -22,6 +22,7 @@ use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\PHPUtils;
 use Wikimedia\Parsoid\Utils\Title;
 use Wikimedia\Parsoid\Utils\TitleException;
+use Wikimedia\Parsoid\Utils\TokenUtils;
 use Wikimedia\Parsoid\Utils\WTUtils;
 use Wikimedia\Parsoid\Wt2Html\Frame;
 
@@ -168,25 +169,46 @@ class WrapSectionsState {
 
 		if ( $this->tplInfo !== null ) {
 			$dmw = DOMDataUtils::getDataMw( $this->tplInfo->first );
-			if ( is_string( $dmw->parts[0] ) ) {
+			$metadata->index = ''; // Match legacy parser
+			if ( !isset( $dmw->parts ) ) {
+				// Extension or language-variant
+				// Need to determine what the output should be here
+				$metadata->fromTitle = null;
+			} elseif ( count( $dmw->parts ) > 1 ) {
 				// Multi-part content -- cannot pick a title
 				$metadata->fromTitle = null;
-			} else {
+			} elseif ( !empty( $dmw->parts[0]->templatearg ) ) {
+				// Since we currently don't process templates in Parsoid,
+				// this has to be a top-level {{{...}}} and so the content
+				// comes from the current page. But, legacy parser returns 'false'
+				// for this, so we'll return null as well instead of current title.
+				$metadata->fromTitle = null;
+			} elseif ( !empty( $dmw->parts[0]->template->target->href ) ) {
 				// Pick template title, but strip leading "./" prefix
 				$metadata->fromTitle = preg_replace(
 					"#^./#", "", $dmw->parts[0]->template->target->href );
+				if ( $this->sectionNumber >= 0 ) {
+					// Legacy parser sets this to '' in some cases
+					// See "Templated sections (heading from template arg)" parser test
+					$metadata->index = 'T-' . $this->sectionNumber;
+				}
+			} else {
+				// Legacy parser return null here
+				$metadata->fromTitle = null;
 			}
-			$metadata->index = 'T-' . $this->sectionNumber; // core sets this to ''
-			$metadata->byteOffset = null;
+			$metadata->codepointOffset = null;
 		} elseif ( !WTUtils::isLiteralHTMLNode( $heading ) ) {
 			// PageConfig returns titles with a space, so strtr it
 			$metadata->fromTitle = strtr( $this->env->getPageConfig()->getTitle(), ' ', '_' );
 			$metadata->index = (string)$this->sectionNumber;
-			$metadata->byteOffset = DOMDataUtils::getDataParsoid( $heading )->dsr->start ?? -1;
+			// Note that our DSR counts *are* byte counts, while this core
+			// interface expects *codepoint* counts.  We are going to convert
+			// these in a batch (for efficiency) in ::convertTOCOffsets() below
+			$metadata->codepointOffset = DOMDataUtils::getDataParsoid( $heading )->dsr->start ?? -1;
 		} else {
 			$metadata->fromTitle = null;
 			$metadata->index = '';
-			$metadata->byteOffset = null;
+			$metadata->codepointOffset = null;
 		}
 
 		// Deep clone the heading to mutate it to trip unwanted tags and attributes.
@@ -309,11 +331,9 @@ class WrapSectionsState {
 			$section->setId( $this->sectionNumber );
 		}
 
-		/* T329740: temporarily suppress section metadata
 		if ( !$pseudoSection ) {
 			$this->computeSectionMetadata( $section->metadata, $heading, $newLevel );
 		}
-		*/
 
 		return $section;
 	}
@@ -769,6 +789,22 @@ class WrapSectionsState {
 		}
 	}
 
+	private function convertTOCOffsets() {
+		// Create reference array from all the codepointOffsets
+		$offsets = [];
+		foreach ( $this->env->getTOCData()->getSections() as $section ) {
+			if ( $section->codepointOffset !== null ) {
+				$offsets[] = &$section->codepointOffset;
+			}
+		}
+		TokenUtils::convertOffsets(
+			$this->env->topFrame->getSrcText(),
+			$this->env->getCurrentOffsetType(),
+			'char',
+			$offsets
+		);
+	}
+
 	/**
 	 * DOM Postprocessor entry function to walk DOM rooted at $root
 	 * and add <section> wrappers as necessary.
@@ -788,5 +824,9 @@ class WrapSectionsState {
 
 		// Resolve template conflicts after all sections have been added to the DOM
 		$this->resolveTplExtSectionConflicts();
+
+		// Convert byte offsets to codepoint offsets in TOCData
+		// (done in a batch to avoid O(N^2) string traversals)
+		$this->convertTOCOffsets();
 	}
 }
