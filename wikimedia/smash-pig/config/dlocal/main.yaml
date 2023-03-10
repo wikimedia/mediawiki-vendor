@@ -13,7 +13,6 @@ endpoints:
 
 login: &login x_login
 secret: "secretkey"
-charset: iso-8859-1
 
 api:
     class: SmashPig\PaymentProviders\dlocal\Api

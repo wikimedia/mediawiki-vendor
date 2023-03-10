@@ -39,7 +39,7 @@ class DlocalApprovePaymentResponseFactory extends ApprovePaymentResponseFactory 
 		$approvePaymentStatusNormalizer = new ApprovePaymentStatusNormalizer();
 		$normalizedStatus = $approvePaymentStatusNormalizer->normalizeStatus( $rawStatus );
 		$approvePaymentResponse->setStatus( $normalizedStatus );
-		$isSuccessfulStatus = $approvePaymentStatusNormalizer->isSuccessStatus( $rawStatus );
+		$isSuccessfulStatus = $approvePaymentStatusNormalizer->isSuccessStatus( $normalizedStatus );
 		$approvePaymentResponse->setSuccessful( $isSuccessfulStatus );
 	}
 }

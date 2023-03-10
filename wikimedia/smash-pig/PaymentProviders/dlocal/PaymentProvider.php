@@ -50,6 +50,29 @@ class PaymentProvider implements IGetLatestPaymentStatusProvider, ICancelablePay
 	}
 
 	/**
+	 * Get Payment detail which could contain recurring bt token
+	 * @param string $gatewayTxnId
+	 *
+	 * @return \SmashPig\PaymentProviders\Responses\PaymentDetailResponse
+	 * @throws \SmashPig\Core\ApiException
+	 */
+	public function getPaymentDetail( string $gatewayTxnId ): PaymentDetailResponse {
+		$result = $this->api->getPaymentDetail( $gatewayTxnId );
+		return DlocalCreatePaymentResponseFactory::fromRawResponse( $result );
+	}
+
+	/**
+	 * @param array $params
+	 * recurring charge
+	 * @return \SmashPig\PaymentProviders\Responses\CreatePaymentResponse
+	 * @throws \SmashPig\Core\ApiException
+	 */
+	public function createPaymentFromToken( array $params ): CreatePaymentResponse {
+		$result = $this->api->createPaymentFromToken( $params );
+		return DlocalCreatePaymentResponseFactory::fromRawResponse( $result );
+	}
+
+	/**
 	 * @param array $params
 	 *
 	 * @return \SmashPig\PaymentProviders\Responses\PaymentDetailResponse
@@ -66,7 +89,7 @@ class PaymentProvider implements IGetLatestPaymentStatusProvider, ICancelablePay
 	protected static function checkFields( $requiredFields, $input ) {
 		$invalidFields = [];
 		foreach ( $requiredFields as $field ) {
-			if ( empty( $input[ $field ] ) ) {
+			if ( empty( $input[$field] ) ) {
 				$invalidFields[$field] = 'required';
 			}
 		}

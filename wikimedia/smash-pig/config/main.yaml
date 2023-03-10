@@ -107,6 +107,13 @@ data-store:
                 <<: *REDIS
                 queue: jobs-amazon
 
+    jobs-dlocal:
+        class: PHPQueue\Backend\Predis
+        constructor-parameters:
+            -
+                <<: *REDIS
+                queue: jobs-dlocal
+
     jobs-ingenico:
         class: PHPQueue\Backend\Predis
         constructor-parameters:
@@ -127,6 +134,15 @@ data-store:
             -
                 <<: *REDIS
                 queue: donations
+
+    # A special queue for recurring donations via India's UPI system,
+    # which need pre-processing due to local regulations.
+    upi-donations:
+        class: PHPQueue\Backend\Predis
+        constructor-parameters:
+            -
+                <<: *REDIS
+                queue: upi-donations
 
     contribution-tracking:
         class: PHPQueue\Backend\Predis

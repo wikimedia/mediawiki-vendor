@@ -11,15 +11,14 @@ class PaymentStatusNormalizer implements StatusNormalizer {
 	/**
 	 * @var array
 	 */
-	public const SUCCESS_STATUS = [ FinalStatus::COMPLETE ];
+	protected $successStatus = [ FinalStatus::COMPLETE ];
 
 	/**
-	 * @param string $paymentProcessorStatus
-	 *
+	 * @param string $normalizedStatus
 	 * @return bool
 	 */
-	public function isSuccessStatus( string $paymentProcessorStatus ): bool {
-		return in_array( $this->normalizeStatus( $paymentProcessorStatus ), static::SUCCESS_STATUS, true );
+	public function isSuccessStatus( string $normalizedStatus ): bool {
+		return in_array( $normalizedStatus, $this->successStatus, true );
 	}
 
 	/**

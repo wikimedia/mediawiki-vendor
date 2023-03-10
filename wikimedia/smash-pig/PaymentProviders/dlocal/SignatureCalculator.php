@@ -14,7 +14,7 @@ class SignatureCalculator {
 	 *
 	 * @return string
 	 */
-	public function calculate( string $message, string $secret ) : string {
+	public function calculate( string $message, string $secret ): string {
 		return hash_hmac( self::ALGORITHM, $message, $secret );
 	}
 

@@ -51,7 +51,7 @@ class DlocalCancelPaymentResponseFactory {
 		$cancelPaymentStatusNormalizer = new CancelPaymentStatusNormalizer();
 		$normalizedStatus = $cancelPaymentStatusNormalizer->normalizeStatus( $rawStatus );
 		$cancelPaymentResponse->setStatus( $normalizedStatus );
-		$isSuccessfulStatus = $cancelPaymentStatusNormalizer->isSuccessStatus( $rawStatus );
+		$isSuccessfulStatus = $cancelPaymentStatusNormalizer->isSuccessStatus( $normalizedStatus );
 		$cancelPaymentResponse->setSuccessful( $isSuccessfulStatus );
 	}
 }

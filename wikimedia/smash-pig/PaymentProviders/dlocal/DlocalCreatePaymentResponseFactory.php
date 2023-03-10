@@ -22,29 +22,31 @@ class DlocalCreatePaymentResponseFactory extends CreatePaymentResponseFactory {
 		$createPaymentResponse->setRawResponse( $rawResponse );
 		$rawStatus = $rawResponse['status'] ?? null;
 		$gatewayTxnId = $rawResponse['id'] ?? null;
+
 		if ( $gatewayTxnId ) {
 			$createPaymentResponse->setGatewayTxnId( $gatewayTxnId );
 		}
+
 		self::setRedirectURL( $rawResponse, $createPaymentResponse );
 
 		try {
 			if ( !$rawStatus ) {
 				throw new UnexpectedValueException( "Unknown status" );
 			}
-			$createPaymentResponse->setRawStatus( $rawStatus );
-			$statusMapper = new CreatePaymentStatusNormalizer();
-			$status = $statusMapper->normalizeStatus( $rawStatus );
-			$createPaymentResponse->setStatus( $status );
-			if ( $status === FinalStatus::FAILED ) {
-				$createPaymentResponse->addErrors( new PaymentError( ErrorMapper::$paymentStatusErrorCodes[ $rawResponse[ 'status_code' ] ],
-					$rawResponse[ 'status_detail' ], LogLevel::ERROR ) );
-				$createPaymentResponse->setSuccessful( false );
-			} else {
-				$createPaymentResponse->setSuccessful( $statusMapper->isSuccessStatus( $status ) );
-				if ( array_key_exists( 'card', $rawResponse ) && array_key_exists( 'card_id', $rawResponse['card'] ) ) {
-					$createPaymentResponse->setRecurringPaymentToken( $rawResponse['card']['card_id'] );
-				}
+			self::setStatusDetails( $createPaymentResponse, $rawStatus );
+
+			if ( $createPaymentResponse->getStatus() === FinalStatus::FAILED ) {
+				$createPaymentResponse->addErrors(
+					new PaymentError( ErrorMapper::$paymentStatusErrorCodes[ $rawResponse[ 'status_code' ] ],
+					$rawResponse[ 'status_detail' ],
+						LogLevel::ERROR ) );
 			}
+
+			if ( array_key_exists( 'card', $rawResponse )
+				&& array_key_exists( 'card_id', $rawResponse['card'] ) ) {
+				$createPaymentResponse->setRecurringPaymentToken( $rawResponse['card']['card_id'] );
+			}
+
 		} catch ( UnexpectedValueException $unexpectedValueException ) {
 			Logger::debug( 'Create Payment failed', $rawResponse );
 
@@ -78,5 +80,18 @@ class DlocalCreatePaymentResponseFactory extends CreatePaymentResponseFactory {
 			&& array_key_exists( 'redirect_url', $rawResponse['three_dsecure'] ) ) {
 			$createPaymentResponse->setRedirectUrl( $rawResponse['three_dsecure']['redirect_url'] );
 		}
+	}
+
+	/**
+	 * @param CreatePaymentResponse $createPaymentResponse
+	 * @param string|null $rawStatus
+	 * @return void
+	 */
+	protected static function setStatusDetails( CreatePaymentResponse $createPaymentResponse, ?string $rawStatus ): void {
+		$createPaymentResponse->setRawStatus( $rawStatus );
+		$statusMapper = new CreatePaymentStatusNormalizer();
+		$normalizedStatus = $statusMapper->normalizeStatus( $rawStatus );
+		$createPaymentResponse->setStatus( $normalizedStatus );
+		$createPaymentResponse->setSuccessful( $statusMapper->isSuccessStatus( $normalizedStatus ) );
 	}
 }

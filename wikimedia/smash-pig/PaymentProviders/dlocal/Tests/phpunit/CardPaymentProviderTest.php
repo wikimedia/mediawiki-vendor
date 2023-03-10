@@ -14,7 +14,7 @@ class CardPaymentProviderTest extends BaseSmashPigUnitTestCase {
 
 	protected $api;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 		$providerConfig = $this->setProviderConfiguration( 'dlocal' );
 		$this->api = $this->getMockBuilder( Api::class )
