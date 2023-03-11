@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "93d6f22db01564adaef7c56144bd93db",
+    "content-hash": "869e435b33389443faf14da3c542b777",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -6890,20 +6890,20 @@
         },
         {
             "name": "wikimedia/less.php",
-            "version": "v3.2.1",
+            "version": "v4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/less.php.git",
-                "reference": "0d5b30ba792bdbf8991a646fc9c30561b38a5559"
+                "reference": "62ff1b15a14449542521e1d68e1bb3019c273582"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/less.php/zipball/0d5b30ba792bdbf8991a646fc9c30561b38a5559",
-                "reference": "0d5b30ba792bdbf8991a646fc9c30561b38a5559",
+                "url": "https://api.github.com/repos/wikimedia/less.php/zipball/62ff1b15a14449542521e1d68e1bb3019c273582",
+                "reference": "62ff1b15a14449542521e1d68e1bb3019c273582",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.9"
+                "php": ">=7.4.3"
             },
             "require-dev": {
                 "mediawiki/mediawiki-codesniffer": "40.0.1",
@@ -6911,7 +6911,7 @@
                 "mediawiki/minus-x": "1.1.1",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
                 "php-parallel-lint/php-parallel-lint": "1.3.2",
-                "phpunit/phpunit": "^8.5"
+                "phpunit/phpunit": "9.5.28"
             },
             "bin": [
                 "bin/lessc"
@@ -6959,9 +6959,9 @@
             ],
             "support": {
                 "issues": "https://github.com/wikimedia/less.php/issues",
-                "source": "https://github.com/wikimedia/less.php/tree/v3.2.1"
+                "source": "https://github.com/wikimedia/less.php/tree/v4.0.0"
             },
-            "time": "2023-02-03T06:43:41+00:00"
+            "time": "2023-03-11T23:30:18+00:00"
         },
         {
             "name": "wikimedia/lucene-explain-parser",

@@ -41,6 +41,8 @@ class Less_Environment {
 
 	public static $mixin_stack = 0;
 
+	public static $mathOn = true;
+
 	/**
 	 * @var array
 	 */
@@ -93,12 +95,24 @@ class Less_Environment {
 		return $new_env;
 	}
 
+	/**
+	 * @return bool
+	 * @see Eval.prototype.isMathOn in less.js 3.0.0 https://github.com/less/less.js/blob/v3.0.0/dist/less.js#L1007
+	 */
 	public static function isMathOn() {
+		if ( !self::$mathOn ) {
+			return false;
+		}
 		return !Less_Parser::$options['strictMath'] || self::$parensStack;
 	}
 
+	/**
+	 * @param string $path
+	 * @return bool
+	 * @see less-2.5.3.js#Eval.isPathRelative
+	 */
 	public static function isPathRelative( $path ) {
-		return !preg_match( '/^(?:[a-z-]+:|\/)/', $path );
+		return !preg_match( '/^(?:[a-z-]+:|\/|#)/', $path );
 	}
 
 	/**
