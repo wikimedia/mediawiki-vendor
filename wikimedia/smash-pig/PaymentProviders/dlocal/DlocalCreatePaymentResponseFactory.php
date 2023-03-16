@@ -37,7 +37,8 @@ class DlocalCreatePaymentResponseFactory extends CreatePaymentResponseFactory {
 
 			if ( $createPaymentResponse->getStatus() === FinalStatus::FAILED ) {
 				$createPaymentResponse->addErrors(
-					new PaymentError( ErrorMapper::$paymentStatusErrorCodes[ $rawResponse[ 'status_code' ] ],
+					new PaymentError(
+						ErrorMapper::$paymentStatusErrorCodes[ $rawResponse[ 'status_code' ] ] ?? ErrorCode::UNKNOWN,
 					$rawResponse[ 'status_detail' ],
 						LogLevel::ERROR ) );
 			}

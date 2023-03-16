@@ -42,7 +42,7 @@ class DlocalPaymentStatusResponseFactory extends PaymentStatusResponseFactory {
 		$paymentStatusNormalizer = new PaymentStatusNormalizer();
 		$normalizedStatus = $paymentStatusNormalizer->normalizeStatus( $rawStatus );
 		$paymentDetailResponse->setStatus( $normalizedStatus );
-		$isSuccessfulStatus = $paymentStatusNormalizer->isSuccessStatus( $rawStatus );
+		$isSuccessfulStatus = $paymentStatusNormalizer->isSuccessStatus( $normalizedStatus );
 		$paymentDetailResponse->setSuccessful( $isSuccessfulStatus );
 	}
 

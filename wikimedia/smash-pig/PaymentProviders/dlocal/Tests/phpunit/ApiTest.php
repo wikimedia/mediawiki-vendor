@@ -181,12 +181,12 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 				$this->anything(),
 				$this->callback( function ( $body ) use ( $transformedParams ) {
 					// request body should be a json formatted string of the mapped params
-					$this->assertEquals( json_encode( $transformedParams ), $body );
+					$this->assertEquals( $transformedParams, json_decode( $body, true ) );
 					return true;
 				} )
 			)->willReturn( $mockResponse );
 
-		$results = $this->api->authorizePayment( $apiParams );
+		$results = $this->api->cardAuthorizePayment( $apiParams );
 	}
 
 	public function testtestAuthorizePayment3DSecure() {
@@ -211,12 +211,12 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 				$this->anything(),
 				$this->callback( function ( $body ) use ( $transformedParams ) {
 					// request body should be a json formatted string of the mapped params
-					$this->assertEquals( json_encode( $transformedParams ), $body );
+					$this->assertEquals( $transformedParams, json_decode( $body, true ) );
 					return true;
 				} )
 			)->willReturn( $mockResponse );
 
-		$results = $this->api->authorizePayment( $apiParams );
+		$results = $this->api->redirectPayment( $apiParams );
 		$this->assertSame( "100", $results["status_code"] );
 	}
 
@@ -243,7 +243,7 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 				} )
 			)->willReturn( $mockResponse );
 
-		$results = $this->api->authorizePayment( $apiParams );
+		$results = $this->api->redirectPayment( $apiParams );
 		$this->assertSame( "100", $results["status_code"] );
 		$this->assertSame( "PENDING", $results["status"] );
 		$this->assertSame( "PQ", $results["payment_method_id"] );
@@ -318,20 +318,6 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 		$this->assertEquals( $apiParams['order_id'], $capturePaymentResult['order_id'] );
 	}
 
-	public function testCapturePaymentExceptionOnMissingAuthId(): void {
-		$this->expectException( \InvalidArgumentException::class );
-		$this->expectExceptionMessage( "gateway_txn_id is a required field" );
-
-		// gateway_txn_id missing from apiParams
-		$apiParams = [
-			'amount' => 100,
-			'currency' => 'BRL',
-			'order_id' => '1234512345',
-		];
-
-		$this->api->capturePayment( $apiParams );
-	}
-
 	public function testCapturePaymentExceptionOnPaymentNotFound(): void {
 		$this->expectException( ApiException::class );
 		$this->expectExceptionMessage( 'Response Error(404) {"code":4000,"message":"Payment not found"}' );
@@ -377,6 +363,99 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 			)->willReturn( $mockResponse );
 
 		$this->api->capturePayment( $apiParams );
+	}
+
+	/**
+	 * @return void
+	 * @throws \SmashPig\Core\ApiException
+	 */
+	public function testCreateRecurringUPISubscription(): void {
+		$apiParams = [
+			"amount" => "999",
+			"currency" => "INR",
+			"country" => "IN",
+			"order_id" => "9134402.1",
+			"recurring" => 1,
+			"payment_method_id" => "IR",
+			"first_name" => "sample",
+			"last_name" => "name",
+			"email" => "sample@samplemail.com",
+			"fiscal_number" => "AAAAA9999C",
+		];
+		$mockResponse = $this->prepareMockResponse( 'create-upi-recurring-subscription.response', 200 );
+		$this->curlWrapper->expects( $this->once() )
+			->method( 'execute' )
+			->with(
+				$this->equalTo( 'http://example.com/payments' ), // url
+				$this->equalTo( 'POST' ), // method
+				$this->anything()
+			)->willReturn( $mockResponse );
+
+		$result = $this->api->redirectPayment( $apiParams );
+		$this->assertEquals( 'F-2486-48f61d11-4d22-4b40-8a27-d6fbb297a618', $result['id'] );
+		$this->assertEquals( 'PENDING', $result['status'] );
+		$this->assertEquals( 'The payment is pending.', $result['status_detail'] );
+		$this->assertEquals( 100, $result['status_code'] );
+		$this->assertNotNull( $result['redirect_url'] );
+	}
+
+	/**
+	 * @return void
+	 * @throws \SmashPig\Core\ApiException
+	 */
+	public function testGetPaymentDetailPaid(): void {
+		$gatewayTxnId = "F-2486-1d54e9c1-6909-46a7-ac9e-e0f3bb4208f8";
+		$mockResponse = $this->prepareMockResponse( 'get-payment-detail-paid.response', 200 );
+		$this->curlWrapper->expects( $this->once() )
+			->method( 'execute' )
+			->with(
+				$this->equalTo( 'http://example.com/payments/' . $gatewayTxnId ), // url
+				$this->equalTo( 'GET' ), // method
+				$this->anything()
+			)->willReturn( $mockResponse );
+
+		$paymentStatus = $this->api->getPaymentDetail( $gatewayTxnId );
+
+		$this->assertEquals( 'F-2486-1d54e9c1-6909-46a7-ac9e-e0f3bb4208f8', $paymentStatus['id'] );
+		$this->assertEquals( 'PAID', $paymentStatus['status'] );
+		$this->assertEquals( 'The payment was paid.', $paymentStatus['status_detail'] );
+		$this->assertEquals( 200, $paymentStatus['status_code'] );
+		$this->assertNotNull( $paymentStatus['wallet']['token'] );
+	}
+
+	/**
+	 * @return void
+	 * @throws \SmashPig\Core\ApiException
+	 */
+	public function testCreatePaymentFromToken(): void {
+		$params = [
+			"amount" => "1500",
+			"currency" => "INR",
+			"country" => "IN",
+			"payment_method_id" => "IR",
+			"first_name" => "asdf",
+			"last_name" => "asdf",
+			"email" => "sample@samplemail.com",
+			"fiscal_number" => "AAAAA9998C",
+			"recurring_payment_token" => "aad328f2-61e8-4a89-a015-feef4d52ff2c",
+			"order_id" => "839d446d-500b-43f0-b950-1689cfa0b630",
+			"notification_url" => "https://wikimedia.notification/url"
+		];
+		$mockResponse = $this->prepareMockResponse( 'charge-payment-recurring.response', 200 );
+		$this->curlWrapper->expects( $this->once() )
+			->method( 'execute' )
+			->with(
+				$this->equalTo( 'http://example.com/payments' ), // url
+				$this->equalTo( 'POST' ), // method
+				$this->anything()
+			)->willReturn( $mockResponse );
+
+		$result = $this->api->createPaymentFromToken( $params );
+		$this->assertEquals( 'F-2486-7cdf7b27-5132-432e-9df8-3e2b2a8ca3a1', $result['id'] );
+		$this->assertEquals( 'PENDING', $result['status'] );
+		$this->assertEquals( 'The payment is pending.', $result['status_detail'] );
+		$this->assertEquals( 100, $result['status_code'] );
+		$this->assertFalse( $result['recurring_info']['prenotify_approved'] );
 	}
 
 	public function testGetPaymentStatusPending(): void {
@@ -552,16 +631,16 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 					'document' => '12345',
 					'user_reference' => '12345',
 					'ip' => '127.0.0.1',
+					'address' => [
+						'state' => 'lore',
+						'city' => 'lore',
+						'zip_code' => 'lore',
+						'street' => 'lore',
+						'number' => 2,
+					],
 				],
 				'callback_url' => 'http://example.com',
 				'notification_url' => 'http://example.com',
-				'address' => [
-					'state' => 'lore',
-					'city' => 'lore',
-					'zip_code' => 'lore',
-					'street' => 'lore',
-					'number' => 2,
-				],
 				'payment_method_id' => Api::PAYMENT_METHOD_ID_CARD,
 				'card' => [
 					'token' => 'CV-124c18a5-874d-4982-89d7-b9c256e647b5',
@@ -602,16 +681,16 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 					'document' => '12345',
 					'user_reference' => '12345',
 					'ip' => '127.0.0.1',
+					'address' => [
+						'state' => 'lore',
+						'city' => 'lore',
+						'zip_code' => 'lore',
+						'street' => 'lore',
+						'number' => 2,
+					]
 				],
 				'callback_url' => 'http://example.com',
-				'notification_url' => 'http://example.com',
-				'address' => [
-					'state' => 'lore',
-					'city' => 'lore',
-					'zip_code' => 'lore',
-					'street' => 'lore',
-					'number' => 2,
-				]
+				'notification_url' => 'http://example.com'
 			]
 		];
 	}

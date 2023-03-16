@@ -40,7 +40,7 @@ class HostedPaymentProviderTest extends BaseSmashPigUnitTestCase {
 	public function testHostedPaymentWithCompleteParamsSuccess(): void {
 		$params = $this->getCreateHostedPaymentRequestParams();
 		$this->api->expects( $this->once() )
-			->method( 'redirectPayment' )
+			->method( 'redirectHostedPayment' )
 			->with( $params )
 			->willReturn( [
 				"id" => "D-4-75c7473a-ab86-4e43-bd39-c840268747d3",
@@ -72,7 +72,7 @@ class HostedPaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$params = $this->getCreateHostedPaymentRequestParams();
 
 		$this->api->expects( $this->once() )
-			->method( 'redirectPayment' )
+			->method( 'redirectHostedPayment' )
 			->with( $params )
 			->willReturn( [
 				"code" => 5008,

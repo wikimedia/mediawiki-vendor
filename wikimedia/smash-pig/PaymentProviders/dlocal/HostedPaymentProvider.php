@@ -18,7 +18,7 @@ class HostedPaymentProvider extends PaymentProvider implements IPaymentProvider 
 		try {
 			$this->validateCreateHostedPaymentParams( $params );
 			if ( empty( $params['recurring_payment_token'] ) ) {
-				$rawResponse = $this->api->redirectPayment( $params );
+				$rawResponse = $this->api->redirectHostedPayment( $params );
 			} else {
 				// subsequent recurring will contain the token
 				$rawResponse = $this->api->createPaymentFromToken( $params );

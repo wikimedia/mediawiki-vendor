@@ -42,7 +42,7 @@ class CardPaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$params = $this->getCreatePaymentRequestParams();
 		$gateway_txn_id = "PAY2323243343543";
 		$this->api->expects( $this->once() )
-			->method( 'authorizePayment' )
+			->method( 'cardAuthorizePayment' )
 			->with( $params )
 			->willReturn( [
 						"id" => $gateway_txn_id,
@@ -80,7 +80,7 @@ class CardPaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$params = $this->getCreatePaymentRequestParams();
 		$gateway_txn_id = "PAY2323243343543";
 		$this->api->expects( $this->once() )
-			->method( 'authorizePayment' )
+			->method( 'cardAuthorizePayment' )
 			->with( $params )
 			->willReturn( [
 						"id" => $gateway_txn_id,
@@ -118,7 +118,7 @@ class CardPaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$params = $this->getCreatePaymentRequestParams();
 		$gateway_txn_id = "PAY2323243343543";
 		$this->api->expects( $this->once() )
-			->method( 'authorizePayment' )
+			->method( 'cardAuthorizePayment' )
 			->with( $params )
 			->willReturn( [
 						"id" => $gateway_txn_id,
@@ -156,7 +156,7 @@ public function testPaymentWithCompleteParamsFailsDueToUnknownStatus(): void {
 		$params = $this->getCreatePaymentRequestParams();
 		$gateway_txn_id = "PAY2323243343543";
 		$this->api->expects( $this->once() )
-				->method( 'authorizePayment' )
+				->method( 'cardAuthorizePayment' )
 				->with( $params )
 				->willReturn( [
 						"id" => $gateway_txn_id,
@@ -193,7 +193,7 @@ public function testPaymentWithCompleteParamsFailsDueToUnknownStatus(): void {
 	public function testPaymentWithCompleteParamsFailsAndEmptyStatusInResponse(): void {
 		$params = $this->getCreatePaymentRequestParams();
 		$this->api->expects( $this->once() )
-				->method( 'authorizePayment' )
+				->method( 'cardAuthorizePayment' )
 				->with( $params )
 				->willReturn( [
 						"code" => 5008,
@@ -213,7 +213,7 @@ public function testPaymentWithCompleteParamsFailsDueToUnknownStatus(): void {
 		$params['3DSecure'] = true;
 
 		$this->api->expects( $this->once() )
-				->method( 'authorizePayment' )
+				->method( 'cardAuthorizePayment' )
 				->with( $params )
 			->willReturn( [
 				"id" => "PAY2323243343543",
@@ -288,7 +288,7 @@ public function testPaymentWithCompleteParamsFailsDueToUnknownStatus(): void {
 		$gateway_txn_id = "PAY2323243343543";
 		$card_id = "CID-e41c183d-2657-4e82-b39a-b0069c2af657";
 		$this->api->expects( $this->once() )
-			->method( 'authorizePayment' )
+			->method( 'cardAuthorizePayment' )
 			->with( $params )
 			->willReturn( [
 				"id" => $gateway_txn_id,
@@ -331,7 +331,7 @@ public function testPaymentWithCompleteParamsFailsDueToUnknownStatus(): void {
 		$params['recurring_payment_token'] = $card_id;
 		$gateway_txn_id = "PAY2323243343543";
 		$this->api->expects( $this->once() )
-			->method( 'makeRecurringPayment' )
+			->method( 'makeRecurringCardPayment' )
 			->with( $params )
 			->willReturn( [
 				"id" => $gateway_txn_id,

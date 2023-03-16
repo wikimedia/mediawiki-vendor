@@ -36,7 +36,7 @@ class TestRecurringChargePayment extends MaintenanceBase {
 			'fiscal_number' => '504.141.611-73',
 		];
 
-		$result = $api->makeRecurringPayment( $params );
+		$result = $api->makeRecurringCardPayment( $params );
 		print_r( $result );
 	}
 }

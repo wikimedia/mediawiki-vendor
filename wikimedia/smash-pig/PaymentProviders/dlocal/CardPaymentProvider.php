@@ -20,9 +20,9 @@ class CardPaymentProvider extends PaymentProvider implements IPaymentProvider {
 		try {
 			$this->validateCreatePaymentParams( $params );
 			if ( !empty( $params['recurring_payment_token'] ) ) {
-				$rawResponse = $this->api->makeRecurringPayment( $params );
+				$rawResponse = $this->api->makeRecurringCardPayment( $params );
 			} else {
-				$rawResponse = $this->api->authorizePayment( $params );
+				$rawResponse = $this->api->cardAuthorizePayment( $params );
 			}
 			$response = DlocalCreatePaymentResponseFactory::fromRawResponse( $rawResponse );
 		} catch ( ValidationException $validationException ) {
