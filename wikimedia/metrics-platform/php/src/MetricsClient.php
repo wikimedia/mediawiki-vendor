@@ -2,21 +2,25 @@
 
 namespace Wikimedia\MetricsPlatform;
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
-use Wikimedia\MetricsPlatform\StreamConfig\StreamConfig;
-use Wikimedia\MetricsPlatform\StreamConfig\StreamConfigException;
 use Wikimedia\MetricsPlatform\StreamConfig\StreamConfigFactory;
 
-class MetricsClient {
+class MetricsClient implements LoggerAwareInterface {
+	use LoggerAwareTrait;
 
 	/**
-	 * The ID of v1.0.0 of the mediawiki/client/metrics_event schema in the schemas/event/secondary
+	 * The ID of the mediawiki/client/metrics_event schema in the schemas/event/secondary
 	 * repository.
 	 *
 	 * @var string
 	 */
-	private const METRICS_PLATFORM_SCHEMA = '/analytics/mediawiki/client/metrics_event/1.0.0';
+	public const SCHEMA = '/analytics/mediawiki/client/metrics_event/1.2.0';
+
+	/** @var EventSubmitter */
+	private $eventSubmitter;
 
 	/** @var Integration */
 	private $integration;
@@ -30,12 +34,8 @@ class MetricsClient {
 	/** @var StreamConfigFactory */
 	private $streamConfigFactory;
 
-	/** @var LoggerInterface */
-	private $logger;
-
 	/**
-	 * MetricsClient constructor.
-	 *
+	 * @param EventSubmitter $eventSubmitter
 	 * @param Integration $integration
 	 * @param StreamConfigFactory $streamConfigFactory
 	 * @param ?LoggerInterface $logger
@@ -43,170 +43,40 @@ class MetricsClient {
 	 * @param ?CurationController $curationController
 	 */
 	public function __construct(
+		EventSubmitter $eventSubmitter,
 		Integration $integration,
 		StreamConfigFactory $streamConfigFactory,
 		?LoggerInterface $logger = null,
 		?ContextController $contextController = null,
 		?CurationController $curationController = null
 	) {
+		$this->eventSubmitter = $eventSubmitter;
 		$this->integration = $integration;
 		$this->streamConfigFactory = $streamConfigFactory;
-		$this->logger = $logger ?? new NullLogger();
+		$this->setLogger( $logger ?? new NullLogger() );
 		$this->contextController = $contextController ?? new ContextController( $integration );
 		$this->curationController = $curationController ?? new CurationController();
 	}
 
 	/**
-	 * Try to submit an event according to the configuration of the given stream.
-	 *
-	 * An event (E) will be submitted to stream (S) if:
-	 *
-	 * 1. E has the $schema property set;
-	 * 2. S has a valid configuration
-	 * 3. E passes the configured curation rules for S
 	 *
 	 * @param string $streamName
 	 * @param array $event
-	 * @return bool true if the event was submitted, otherwise false
 	 */
-	public function submit( string $streamName, array $event ): bool {
-		if ( !isset( $event['$schema'] ) ) {
-			$this->logger->warning(
-				'The event submitted to stream {streamName} is missing the required "$schema" property: {event}',
-				[
-					'streamName' => $streamName,
-					'event' => $event,
-				]
-			);
-
-			return false;
-		}
-		try {
-			$streamConfig = $this->streamConfigFactory->getStreamConfig( $streamName );
-		} catch ( StreamConfigException $e ) {
-			$this->logger->warning(
-				'The configuration for stream {streamName} is invalid: {validationError}',
-				[
-					'streamName' => $streamName,
-					'validationError' => $e->getMessage(),
-				]
-			);
-
-			return false;
-		}
-
-		return $this->submitInternal( $streamName, $streamConfig, $event );
-	}
-
-	/**
-	 * @param string $streamName
-	 * @param StreamConfig $streamConfig
-	 * @param array $event
-	 * @param string|null $dt
-	 * @return bool
-	 */
-	private function submitInternal(
-		string $streamName,
-		StreamConfig $streamConfig,
-		array $event,
-		string $dt = null
-	): bool {
-		$event = $this->prepareEvent( $streamName, $event, $dt );
-		$event = $this->contextController->addRequestedValues( $event, $streamConfig );
-
-		if ( $this->curationController->shouldProduceEvent( $event, $streamConfig ) ) {
-			$this->integration->send( $event );
-
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Prepares the event with extra data for submission.
-	 *
-	 * This will always set
-	 * - `meta.stream` to `$streamName`
-	 *
-	 * If `client_dt` is in the event, then this will always unset `dt`. If `client_dt` is not in
-	 * the event, then `dt` will be set to the given time or the current time.
-	 *
-	 * @param string $streamName
-	 * @param array $event
-	 * @param string|null $dt
-	 * @return array
-	 */
-	private function prepareEvent( string $streamName, array $event, string $dt = null ): array {
-		$requiredData = [
-			// meta.stream should always be set to $streamName
-			'meta' => [
-				'stream' => $streamName
-			]
-		];
-
-		$preparedEvent = array_merge_recursive(
-			self::getEventDefaults(),
-			$event,
-			$requiredData
-		);
-
-		//
-		// If this is a migrated legacy event, client_dt will have been set already by
-		// EventLogging::encapsulate, and the dt field should be left unset so that it can be set
-		// to the intake time by EventGate. If dt was set by a caller, we unset it here.
-		//
-		// If client_dt is absent, this schema is native to the Event Platform, and dt represents
-		// the client-side event time. We set it here, overwriting any caller-provided value to
-		// ensure consistency.
-		//
-		// https://phabricator.wikimedia.org/T277253
-		// https://phabricator.wikimedia.org/T277330
-		//
-		if ( isset( $preparedEvent['client_dt'] ) ) {
-			unset( $preparedEvent['dt'] );
-		} else {
-			$preparedEvent['dt'] = $dt ?? $this->getTimestamp();
-		}
-
-		return $preparedEvent;
+	public function submit( string $streamName, array $event ): void {
+		$this->eventSubmitter->submit( $streamName, $event );
 	}
 
 	/**
 	 * Get an ISO 8601 timestamp for the current time, e.g. 2022-05-03T14:00:41.000Z.
 	 *
 	 * Note well that the timestamp contains milliseconds for consistency with other Metrics
-	 * Platform client implementations.
+	 * Platform Client implementations.
 	 *
 	 * @return string
 	 */
 	private function getTimestamp(): string {
 		return gmdate( 'Y-m-d\TH:i:s.v\Z' );
-	}
-
-	/**
-	 * Returns values we always want set in events based on common
-	 * schemas for all EventLogging events.  This sets:
-	 *
-	 * - meta.domain to the value of $config->get( 'ServerName' )
-	 * - http.request_headers['user-agent'] to the value of $_SERVER( 'HTTP_USER_AGENT' ) ?? ''
-	 *
-	 * The returned object will be used as default values for the $event params passed
-	 * to submit().
-	 *
-	 * @return array
-	 */
-	private function getEventDefaults(): array {
-		return [
-			'meta' => [
-				'domain' => $this->integration->getHostName(),
-			],
-			'http' => [
-				'request_headers' => [
-					'user-agent' => $_SERVER['HTTP_USER_AGENT'] ?? ''
-				]
-			]
-		];
 	}
 
 	/**
@@ -236,17 +106,22 @@ class MetricsClient {
 		$streamNames = $this->streamConfigFactory->getStreamNamesForEvent( $eventName );
 
 		foreach ( $streamNames as $streamName ) {
-			$streamConfig = $this->streamConfigFactory->getStreamConfig( $streamName );
 			$event = [
-				'$schema' => self::METRICS_PLATFORM_SCHEMA,
+				'$schema' => self::SCHEMA,
 				'name' => $eventName,
+				'dt' => $timestamp,
 			];
 
 			if ( $customData ) {
 				$event['custom_data'] = $customData;
 			}
 
-			$this->submitInternal( $streamName, $streamConfig, $event, $timestamp );
+			$streamConfig = $this->streamConfigFactory->getStreamConfig( $streamName );
+			$event = $this->contextController->addRequestedValues( $event, $streamConfig );
+
+			if ( $this->curationController->shouldProduceEvent( $event, $streamConfig ) ) {
+				$this->submit( $streamName, $event );
+			}
 		}
 	}
 

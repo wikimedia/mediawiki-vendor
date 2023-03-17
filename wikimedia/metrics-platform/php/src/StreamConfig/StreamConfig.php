@@ -18,6 +18,7 @@ class StreamConfig {
 		'page_namespace_name',
 		'page_revision_id',
 		'page_wikidata_id',
+		'page_wikidata_qid',
 		'page_content_language',
 		'page_is_redirect',
 		'page_user_groups_allowed_to_move',
@@ -27,7 +28,7 @@ class StreamConfig {
 		'mediawiki_version',
 		'mediawiki_is_production',
 		'mediawiki_is_debug_mode',
-		'mediawiki_db_name',
+		'mediawiki_database',
 		'mediawiki_site_content_language',
 		'mediawiki_site_content_language_variant',
 
