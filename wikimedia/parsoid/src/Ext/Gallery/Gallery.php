@@ -5,19 +5,22 @@ namespace Wikimedia\Parsoid\Ext\Gallery;
 
 use stdClass;
 use Wikimedia\Assert\UnreachableException;
+use Wikimedia\Parsoid\Core\DomSourceRange;
 use Wikimedia\Parsoid\Core\MediaStructure;
 use Wikimedia\Parsoid\DOM\DocumentFragment;
 use Wikimedia\Parsoid\DOM\Element;
 use Wikimedia\Parsoid\DOM\Text;
+use Wikimedia\Parsoid\Ext\DiffDOMUtils;
+use Wikimedia\Parsoid\Ext\DiffUtils;
 use Wikimedia\Parsoid\Ext\DOMDataUtils;
 use Wikimedia\Parsoid\Ext\DOMUtils;
 use Wikimedia\Parsoid\Ext\ExtensionModule;
 use Wikimedia\Parsoid\Ext\ExtensionTagHandler;
 use Wikimedia\Parsoid\Ext\ParsoidExtensionAPI;
+use Wikimedia\Parsoid\Ext\PHPUtils;
 use Wikimedia\Parsoid\Ext\WTSUtils;
 use Wikimedia\Parsoid\Ext\WTUtils;
 use Wikimedia\Parsoid\Utils\DOMCompat;
-use Wikimedia\Parsoid\Utils\PHPUtils;
 
 /**
  * Implements the php parser's `renderImageGallery` natively.
@@ -180,7 +183,8 @@ class Gallery extends ExtensionTagHandler implements ExtensionModule {
 			break;
 		}
 
-		return new ParsedLine( $thumb, $gallerytext, $rdfaType );
+		$dsr = new DomSourceRange( $lineStartOffset, $lineStartOffset + strlen( $line ), null, null );
+		return new ParsedLine( $thumb, $gallerytext, $rdfaType, $dsr );
 	}
 
 	/** @inheritDoc */
@@ -238,6 +242,13 @@ class Gallery extends ExtensionTagHandler implements ExtensionModule {
 				) {
 					break;
 				}
+				$oContent = $extApi->getOrigSrc(
+					$child, false, [ DiffUtils::class, 'subtreeUnchanged' ]
+				);
+				if ( $oContent !== null ) {
+					$content .= $oContent . "\n";
+					break;
+				}
 				$thumb = DOMCompat::querySelector( $child, '.thumb' );
 				if ( !$thumb ) {
 					break;
@@ -249,7 +260,7 @@ class Gallery extends ExtensionTagHandler implements ExtensionModule {
 						DOMCompat::remove( $showfilename ); // Destructive to the DOM!
 					}
 				}
-				$ms = MediaStructure::parse( DOMUtils::firstNonSepChild( $thumb ) );
+				$ms = MediaStructure::parse( DiffDOMUtils::firstNonSepChild( $thumb ) );
 				if ( $ms ) {
 					// FIXME: Dry all this out with T252246 / T262833
 					if ( $ms->hasResource() ) {
@@ -348,7 +359,27 @@ class Gallery extends ExtensionTagHandler implements ExtensionModule {
 			) {
 				$content = $dataMw->body->extsrc;
 			} else {
-				$content = $this->contentHandler( $extApi, $node );
+				$content = $extApi->getOrigSrc(
+					$node, true,
+					// The gallerycaption is nested as a list item but shouldn't
+					// be considered when deciding if the body can be reused.
+					// Hopefully this won't be necessary after T268250
+					static function ( Element $elt ): bool {
+						for ( $child = $elt->firstChild; $child; $child = $child->nextSibling ) {
+							if (
+								DiffUtils::hasDiffMarkers( $child ) &&
+								!( $child instanceof Element &&
+									DOMCompat::getClassList( $child )->contains( 'gallerycaption' ) )
+							) {
+								return false;
+							}
+						}
+						return true;
+					}
+				);
+				if ( $content === null ) {
+					$content = $this->contentHandler( $extApi, $node );
+				}
 			}
 			return $startTagSrc . $content . '</' . $dataMw->name . '>';
 		}

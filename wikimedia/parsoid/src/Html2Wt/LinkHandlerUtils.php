@@ -154,7 +154,7 @@ class LinkHandlerUtils {
 				$contentString .= $child->nodeValue;
 			} elseif ( DOMUtils::hasTypeOf( $child, 'mw:DisplaySpace' ) ) {
 				$contentString .= ' ';
-			} elseif ( DOMUtils::isDiffMarker( $child ) ) {
+			} elseif ( DiffUtils::isDiffMarker( $child ) ) {
 			} else {
 				return null;
 			}
@@ -230,8 +230,9 @@ class LinkHandlerUtils {
 
 		// Check if the link content has been modified or is newly inserted content.
 		// FIXME: This will only work with selser of course. Hard to test without selser.
-		if ( $state->inModifiedContent ||
-			DiffUtils::hasDiffMark( $node, $env, 'subtree-changed' )
+		if (
+			$state->inModifiedContent ||
+			DiffUtils::hasDiffMark( $node, DiffMarkers::SUBTREE_CHANGED )
 		) {
 			$rtData->contentModified = true;
 		}
