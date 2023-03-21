@@ -13,7 +13,6 @@ class HostedPaymentApiRequestMapper extends PaymentApiRequestMapper {
 
 		// Set custom parameters
 		$mapperOutput['payment_method_flow'] = Api::PAYMENT_METHOD_FLOW_REDIRECT;
-		$mapperOutput['wallet']['recurring_info']['prenotify'] = true;
 		$date = new DateTime( 'now', new DateTimeZone( Api::INDIA_TIME_ZONE ) );
 
 		// Set UPI recurring parameters

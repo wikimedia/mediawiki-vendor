@@ -45,7 +45,6 @@ class HostedPaymentApiRequestMapperTest extends TestCase {
 			'username' => $expectedOutput['payer']['name'],
 			'email' => $expectedOutput['payer']['email'],
 			'recurring_info' => [
-				'prenotify' => true,
 				'subscription_frequency_unit' => Api::SUBSCRIPTION_FREQUENCY_UNIT,
 				'subscription_frequency' => 1,
 				'subscription_start_at' => $subscriptionStartDate,
@@ -94,11 +93,6 @@ class HostedPaymentApiRequestMapperTest extends TestCase {
 					'zip_code' => $input['postal_code'],
 					'street' => $input['street_address'],
 					'number' => $input['street_number'],
-				],
-			],
-			'wallet' => [
-				'recurring_info' => [
-					'prenotify' => true,
 				],
 			],
 		];

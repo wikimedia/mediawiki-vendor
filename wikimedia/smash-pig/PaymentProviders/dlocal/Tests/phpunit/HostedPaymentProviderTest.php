@@ -94,7 +94,7 @@ class HostedPaymentProviderTest extends BaseSmashPigUnitTestCase {
 			'amount' => '100',
 			'currency' => 'MXN',
 			'country' => 'MX',
-			'payment_method_flow' => 'REDIRECT',
+			'payment_submethod' => 'cash_oxxo',
 			'first_name' => 'Lorem',
 			'last_name' => 'Ipsum',
 			'email' => 'li@mail.com',

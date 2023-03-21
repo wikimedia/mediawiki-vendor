@@ -132,4 +132,39 @@ class ReferenceData {
 
 		throw new OutOfBoundsException( "Unknown bank code: {$bankCode}" );
 	}
+
+	/**
+	 * Looks up the dLocal payment_method_id corresponding to our payment_submethod.
+	 * In some cases a single submethod can map to different payment_method_ids
+	 * depending on other parameters, so we accept the full params array.
+	 * @param array $params should at least have payment_method_id set.
+	 * @return string|null
+	 */
+	public static function getPaymentMethodId( array $params ): ?string {
+		// First handle special cases that depend on more than just the submethod
+		if ( $params['payment_submethod'] === 'upi' ) {
+			if (
+				empty( $params['recurring'] ) &&
+				empty( $params['recurring_payment_token'] )
+			) {
+				// This is specifically the code for the redirect version of one-time UPI payments
+				return 'UI';
+			} else {
+				// Recurring UPI payments need to be charged as IR, 'India Recurring'
+				return 'IR';
+			}
+		}
+		if ( $params['payment_submethod'] === 'webpay_bt' ) {
+			return 'WP';
+		}
+		foreach ( self::$simpleSubmethods as $paymentMethodId => $submethod ) {
+			if ( $submethod === $params['payment_submethod'] ) {
+				return $paymentMethodId;
+			}
+		}
+		// Don't throw an error if we don't have a mapping here. In some cases we
+		// can use a catch-all payment_method_id that covers a whole swath of
+		// submethods, such as 'CARD'
+		return null;
+	}
 }

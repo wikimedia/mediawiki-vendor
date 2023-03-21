@@ -1257,7 +1257,7 @@ class ComposerStaticInit_mediawiki_vendor
         'PaypalExpressReturnUrl' => __DIR__ . '/../..' . '/extensions/DonationInterface/paypal_ec_gateway/PaypalExpressReturnUrl.php',
         'PaypalRefundMaintenance' => __DIR__ . '/../..' . '/extensions/DonationInterface/paypal_ec_gateway/scripts/refund.php',
         'PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
-        'PlaceholderFiscalNumber' => __DIR__ . '/../..' . '/extensions/DonationInterface/astropay_gateway/PlaceholderFiscalNumber.php',
+        'PlaceholderFiscalNumber' => __DIR__ . '/../..' . '/extensions/DonationInterface/gateway_common/PlaceholderFiscalNumber.php',
         'Pleo\\BloomFilter\\BitArray' => __DIR__ . '/..' . '/pleonasm/bloom-filter/src/BitArray.php',
         'Pleo\\BloomFilter\\BloomFilter' => __DIR__ . '/..' . '/pleonasm/bloom-filter/src/BloomFilter.php',
         'Pleo\\BloomFilter\\HasherList' => __DIR__ . '/..' . '/pleonasm/bloom-filter/src/HasherList.php',

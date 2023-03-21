@@ -135,7 +135,7 @@ class Api {
 			// A timestamped token, the value of which was returned in the response to the first call to SetExpressCheckout or SetCustomerBillingAgreement response.
 			// Tokens expire after approximately 3 hours.
 			'TOKEN' => $params['gateway_session_id'],
-			'PROFILESTARTDATE' => gmdate( "Y-m-d\TH:i:s\Z", strtotime( $params['date'] ) ), // The date when billing for this profile begins, set it today
+			'PROFILESTARTDATE' => gmdate( "Y-m-d\TH:i:s\Z", $params['date'] ), // The date when billing for this profile begins, set it today
 			'DESC' => $params['description'],
 			'PROFILEREFERENCE' => $params['order_id'],
 			'BILLINGPERIOD' => 'Month',

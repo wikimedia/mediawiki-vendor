@@ -83,6 +83,8 @@ class PaymentProvider implements IPaymentProvider, IGetLatestPaymentStatusProvid
 			$response->setStatus( ( new RecurringPaymentsProfileStatus() )
 				->normalizeStatus( $rawResponse['PROFILESTATUS'] ) )
 				->setProfileId( $rawResponse['PROFILEID'] );
+		} else {
+			$response->setStatus( FinalStatus::FAILED );
 		}
 
 		return $response;

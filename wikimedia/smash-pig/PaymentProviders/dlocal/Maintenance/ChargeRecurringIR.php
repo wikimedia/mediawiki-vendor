@@ -44,7 +44,7 @@ class ChargeRecurringIR extends MaintenanceBase {
 			'last_name' => 'test',
 			'description' => 'test IR recurring payment subscription',
 			'email' => 'test@test.com',
-			'payment_method_id' => 'IR',
+			'payment_submethod' => 'upi',
 			'fiscal_number' => 'AAAAA9999C',
 			'recurring' => 1,
 			'recurring_payment_token' => $token,

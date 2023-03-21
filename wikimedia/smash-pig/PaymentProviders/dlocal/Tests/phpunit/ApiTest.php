@@ -222,11 +222,11 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 
 	public function testRedirectPaymentWithSpecificPaymentMethod(): void {
 		$params = $this->getRedirectPaymentRequestParams();
-
-		// add in the specific payment method id 'OX' which is used for Oxxo payments
-		// in Mexico https://docs.dlocal.com/docs/mexico
-		$params['params']['payment_method_id'] = 'OX';
 		$apiParams = $params['params'];
+
+		// add in the payment_submethod 'cash_oxxo' which is used for Oxxo payments
+		// in Mexico https://docs.dlocal.com/docs/mexico
+		$apiParams['payment_submethod'] = 'cash_oxxo';
 
 		$mockResponse = $this->prepareMockResponse( 'redirect-payment-specific-method-id.response', 200 );
 		$this->curlWrapper->expects( $this->once() )
@@ -246,6 +246,7 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 		$results = $this->api->redirectPayment( $apiParams );
 		$this->assertSame( "100", $results["status_code"] );
 		$this->assertSame( "PENDING", $results["status"] );
+		// TODO: use a response with the same payment_method_id as the request
 		$this->assertSame( "PQ", $results["payment_method_id"] );
 		$this->assertSame( "TICKET", $results["payment_method_type"] );
 		$this->assertSame( "REDIRECT", $results["payment_method_flow"] );
@@ -376,7 +377,7 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 			"country" => "IN",
 			"order_id" => "9134402.1",
 			"recurring" => 1,
-			"payment_method_id" => "IR",
+			"payment_submethod" => "upi",
 			"first_name" => "sample",
 			"last_name" => "name",
 			"email" => "sample@samplemail.com",
@@ -388,7 +389,13 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 			->with(
 				$this->equalTo( 'http://example.com/payments' ), // url
 				$this->equalTo( 'POST' ), // method
-				$this->anything()
+				$this->anything(),
+				$this->callback( function ( $dataAsJson ) {
+					$dataAsArray = json_decode( $dataAsJson, true );
+					$this->assertArrayHasKey( 'payment_method_id', $dataAsArray );
+					$this->assertEquals( 'IR', $dataAsArray['payment_method_id'] );
+					return true;
+				} )
 			)->willReturn( $mockResponse );
 
 		$result = $this->api->redirectPayment( $apiParams );
@@ -432,7 +439,7 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 			"amount" => "1500",
 			"currency" => "INR",
 			"country" => "IN",
-			"payment_method_id" => "IR",
+			"payment_submethod" => "upi",
 			"first_name" => "asdf",
 			"last_name" => "asdf",
 			"email" => "sample@samplemail.com",
@@ -447,7 +454,13 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 			->with(
 				$this->equalTo( 'http://example.com/payments' ), // url
 				$this->equalTo( 'POST' ), // method
-				$this->anything()
+				$this->anything(),
+				$this->callback( function ( $dataAsJson ) {
+					$dataAsArray = json_decode( $dataAsJson, true );
+					$this->assertArrayHasKey( 'payment_method_id', $dataAsArray );
+					$this->assertEquals( 'IR', $dataAsArray['payment_method_id'] );
+					return true;
+				} )
 			)->willReturn( $mockResponse );
 
 		$result = $this->api->createPaymentFromToken( $params );
@@ -674,7 +687,7 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 				'currency' => 'MXN',
 				'country' => 'MX',
 				'order_id' => '123.3',
-				'payment_method_flow' => API::PAYMENT_METHOD_FLOW_REDIRECT,
+				'payment_method_flow' => Api::PAYMENT_METHOD_FLOW_REDIRECT,
 				'payer' => [
 					'name' => 'Lorem Ipsum',
 					'email' => 'li@mail.com',

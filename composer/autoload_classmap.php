@@ -836,7 +836,7 @@ return array(
     'PaypalExpressReturnUrl' => $baseDir . '/extensions/DonationInterface/paypal_ec_gateway/PaypalExpressReturnUrl.php',
     'PaypalRefundMaintenance' => $baseDir . '/extensions/DonationInterface/paypal_ec_gateway/scripts/refund.php',
     'PhpToken' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
-    'PlaceholderFiscalNumber' => $baseDir . '/extensions/DonationInterface/astropay_gateway/PlaceholderFiscalNumber.php',
+    'PlaceholderFiscalNumber' => $baseDir . '/extensions/DonationInterface/gateway_common/PlaceholderFiscalNumber.php',
     'Pleo\\BloomFilter\\BitArray' => $vendorDir . '/pleonasm/bloom-filter/src/BitArray.php',
     'Pleo\\BloomFilter\\BloomFilter' => $vendorDir . '/pleonasm/bloom-filter/src/BloomFilter.php',
     'Pleo\\BloomFilter\\HasherList' => $vendorDir . '/pleonasm/bloom-filter/src/HasherList.php',
