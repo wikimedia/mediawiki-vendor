@@ -4,6 +4,9 @@
 #   /etc/smashpig/ingenico/main.yaml
 #   $HOME/.smashpig/ingenico/main.yaml
 
+logging:
+    root-context: SmashPig-Ingenico
+
 actions:
     - SmashPig\Core\Actions\IncomingMessage
 

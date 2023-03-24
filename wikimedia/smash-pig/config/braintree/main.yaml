@@ -4,6 +4,9 @@
 #   /etc/smashpig/braintree/main.yaml
 #   $HOME/.smashpig/braintree/main.yaml
 
+logging:
+    root-context: SmashPig-Braintree
+
 api:
     class: SmashPig\PaymentProviders\Braintree\Api
     constructor-parameters:

@@ -64,6 +64,7 @@ class ApiRequestMapper implements IAPIRequestMapper {
 	 * Some parameters may need additional formatting or mapping
 	 * This formatting could be done in this method which the transform
 	 * method calls.
+	 * FIXME: don't need both return value and passing $mapOutput by ref
 	 * @param array $params
 	 * @return array
 	 */

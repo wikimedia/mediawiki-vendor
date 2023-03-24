@@ -4,6 +4,9 @@
 #   /etc/smashpig/amazon/main.yaml
 #   $HOME/.smashpig/amazon/main.yaml
 
+logging:
+    root-context: SmashPig-Amazon
+
 actions:
     - SmashPig\PaymentProviders\Amazon\Actions\ReconstructMerchantReference
     - SmashPig\PaymentProviders\Amazon\Actions\CloseOrderReference

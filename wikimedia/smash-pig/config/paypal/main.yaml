@@ -4,6 +4,9 @@
 #   /etc/smashpig/paypal/main.yaml
 #   $HOME/.smashpig/paypal/main.yaml
 
+logging:
+    root-context: SmashPig-PayPal
+
 api:
     class: SmashPig\PaymentProviders\PayPal\Api
     constructor-parameters:
