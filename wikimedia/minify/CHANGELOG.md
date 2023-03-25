@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.4.0 (2023-03-20)
+
+Added:
+
+* JavaScriptMinifier: Add ES2016 syntax support. (Siddharth VP) [T277675](https://phabricator.wikimedia.org/T277675)
+
+Changed:
+
+* package: Require `ext-fileinfo` in composer.json. (Sam Reed)
+
 ## 2.3.0 (2022-04-19)
 
 Added:

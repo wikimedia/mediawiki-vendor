@@ -7385,36 +7385,37 @@
         },
         {
             "name": "wikimedia/minify",
-            "version": "2.3.0",
-            "version_normalized": "2.3.0.0",
+            "version": "2.4.0",
+            "version_normalized": "2.4.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/wikimedia/minify.git",
-                "reference": "61b35567bb3fb85c1086f30809cc67d5900c591f"
+                "url": "https://github.com/wikimedia/mediawiki-libs-Minify.git",
+                "reference": "2a306f3ada2f2bc4f9c23107e28e1aae99ee46cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/minify/zipball/61b35567bb3fb85c1086f30809cc67d5900c591f",
-                "reference": "61b35567bb3fb85c1086f30809cc67d5900c591f",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Minify/zipball/2a306f3ada2f2bc4f9c23107e28e1aae99ee46cc",
+                "reference": "2a306f3ada2f2bc4f9c23107e28e1aae99ee46cc",
                 "shasum": ""
             },
             "require": {
+                "ext-fileinfo": "*",
                 "ext-json": "*",
                 "ext-mbstring": "*",
                 "pear/net_url2": "2.2.2",
                 "php": ">=7.2.9"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "38.0.0",
-                "mediawiki/mediawiki-phan-config": "0.11.1",
+                "mediawiki/mediawiki-codesniffer": "41.0.0",
+                "mediawiki/mediawiki-phan-config": "0.12.0",
                 "mediawiki/minus-x": "1.1.1",
-                "ockcyp/covers-validator": "1.3.3",
-                "php-parallel-lint/php-console-highlighter": "0.5.0",
-                "php-parallel-lint/php-parallel-lint": "1.3.1",
-                "phpunit/phpunit": "^8.5",
+                "ockcyp/covers-validator": "1.6.0",
+                "php-parallel-lint/php-console-highlighter": "1.0.0",
+                "php-parallel-lint/php-parallel-lint": "1.3.2",
+                "phpunit/phpunit": "9.5.28",
                 "wikimedia/testing-access-wrapper": "~2.0"
             },
-            "time": "2022-04-19T20:48:10+00:00",
+            "time": "2023-03-22T05:37:33+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -7450,7 +7451,7 @@
             "description": "Minification of JavaScript code and CSS stylesheets.",
             "homepage": "https://gerrit.wikimedia.org/g/mediawiki/libs/Minify",
             "support": {
-                "source": "https://github.com/wikimedia/minify/tree/2.3.0"
+                "source": "https://github.com/wikimedia/mediawiki-libs-Minify/tree/2.4.0"
             },
             "install-path": "../wikimedia/minify"
         },
