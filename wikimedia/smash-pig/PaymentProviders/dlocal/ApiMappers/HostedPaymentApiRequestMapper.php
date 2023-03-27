@@ -22,16 +22,17 @@ class HostedPaymentApiRequestMapper extends PaymentApiRequestMapper {
 			$mapperOutput['wallet']['verify'] = false;
 			$mapperOutput['wallet']['username'] = $mapperOutput['payer']['name'];
 			$mapperOutput['wallet']['email'] = $params['email'];
-			$this->verifyAndMapFrequencyUnit( $params, $mapperOutput );
+			$this->validateAndMapFrequencyUnit( $params, $mapperOutput );
 			$mapperOutput['wallet']['recurring_info']['subscription_frequency'] = 1;
 			$date = new DateTime( 'now', new DateTimeZone( Api::INDIA_TIME_ZONE ) );
 			$mapperOutput['wallet']['recurring_info']['subscription_start_at'] = $date->format( 'Ymd' );
-			$mapperOutput['wallet']['recurring_info']['subscription_end_at'] = '20991231'; // if more than year 2100, dlocal reject txn so use 20991231
+			$mapperOutput['wallet']['recurring_info']['subscription_max_amount'] = $params['amount']; // set the max recurring amount to init donation's amount
+			$this->validateAndMapSubscriptionEnd( $params, $mapperOutput );
 		}
 		return $mapperOutput;
 	}
 
-	protected function verifyAndMapFrequencyUnit( $params, &$mapperOutput ) {
+	protected function validateAndMapFrequencyUnit( $params, &$mapperOutput ) {
 		$unit = $params['upi_subscription_frequency'] ?? Api::SUBSCRIPTION_FREQUENCY_UNIT_ONDEMAND;
 		if ( !in_array( $unit,
 			[ Api::SUBSCRIPTION_FREQUENCY_UNIT_ONDEMAND, Api::SUBSCRIPTION_FREQUENCY_UNIT_MONTHLY ]
@@ -41,6 +42,23 @@ class HostedPaymentApiRequestMapper extends PaymentApiRequestMapper {
 			);
 		}
 		$mapperOutput['wallet']['recurring_info']['subscription_frequency_unit'] = $unit;
+	}
+
+	protected function validateAndMapSubscriptionEnd( $params, &$mapperOutput ) {
+		if ( empty( $params['upi_subscription_months'] ) ) {
+			$subscriptionEnd = '20991231'; // if more than year 2100, dlocal reject txn so use 20991231
+		} else {
+			if ( !is_int( $params['upi_subscription_months'] ) ) {
+				throw new UnexpectedValueException(
+					'Bad upi_subscription_months ' . $params['upi_subscription_months']
+				);
+			}
+			$endDate = new DateTime(
+				"+ {$params['upi_subscription_months']} months", new DateTimeZone( Api::INDIA_TIME_ZONE )
+			);
+			$subscriptionEnd = $endDate->format( 'Ymd' );
+		}
+		$mapperOutput['wallet']['recurring_info']['subscription_end_at'] = $subscriptionEnd;
 	}
 
 }

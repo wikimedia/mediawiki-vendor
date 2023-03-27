@@ -91,6 +91,11 @@ class Api {
 	 */
 	protected $upiSubscriptionFrequency;
 
+	/**
+	 * @var int|null
+	 */
+	protected $upiSubscriptionDurationInMonths;
+
 	private $additionalApiParams = [];
 
 	public function __construct( array $params ) {
@@ -103,6 +108,9 @@ class Api {
 		$this->version = $params['version'];
 		if ( !empty( $params['upi_subscription_frequency'] ) ) {
 			$this->upiSubscriptionFrequency = $params['upi_subscription_frequency'];
+		}
+		if ( !empty( $params['upi_subscription_months'] ) ) {
+			$this->upiSubscriptionDurationInMonths = $params['upi_subscription_months'];
 		}
 		$this->signatureCalculator = Context::get()->getProviderConfiguration()->object( 'signature-calculator' );
 		if ( $returnUrl ) {
@@ -181,6 +189,7 @@ class Api {
 	public function redirectHostedPayment( array $params ): array {
 		if ( self::isRecurringUpi( $params ) ) {
 			$params['upi_subscription_frequency'] = $this->upiSubscriptionFrequency;
+			$params['upi_subscription_months'] = $this->upiSubscriptionDurationInMonths;
 		}
 		return $this->makePaymentApiCall( $params, new HostedPaymentApiRequestMapper() );
 	}

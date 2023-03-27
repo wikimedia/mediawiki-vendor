@@ -49,6 +49,7 @@ class HostedPaymentApiRequestMapperTest extends TestCase {
 			'recurring_info' => [
 				'subscription_frequency_unit' => Api::SUBSCRIPTION_FREQUENCY_UNIT_ONDEMAND,
 				'subscription_frequency' => 1,
+				'subscription_max_amount' => $expectedOutput['amount'],
 				'subscription_start_at' => $subscriptionStartDate,
 				'subscription_end_at' => $subscriptionEndDate
 			],
