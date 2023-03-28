@@ -90,7 +90,7 @@ class DlocalCreatePaymentResponseFactory extends CreatePaymentResponseFactory {
 	 */
 	protected static function setStatusDetails( CreatePaymentResponse $createPaymentResponse, ?string $rawStatus ): void {
 		$createPaymentResponse->setRawStatus( $rawStatus );
-		$statusMapper = new CreatePaymentStatusNormalizer();
+		$statusMapper = new PaymentStatusNormalizer();
 		$normalizedStatus = $statusMapper->normalizeStatus( $rawStatus );
 		$createPaymentResponse->setStatus( $normalizedStatus );
 		$createPaymentResponse->setSuccessful( $statusMapper->isSuccessStatus( $normalizedStatus ) );

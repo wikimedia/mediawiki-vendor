@@ -11,7 +11,11 @@ class PaymentStatusNormalizer implements StatusNormalizer {
 	/**
 	 * @var array
 	 */
-	protected $successStatus = [ FinalStatus::COMPLETE ];
+	protected $successStatus = [
+		FinalStatus::COMPLETE,
+		FinalStatus::PENDING,
+		FinalStatus::PENDING_POKE,
+	];
 
 	/**
 	 * @param string $normalizedStatus

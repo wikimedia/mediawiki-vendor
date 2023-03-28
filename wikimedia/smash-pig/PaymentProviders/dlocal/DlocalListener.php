@@ -29,12 +29,12 @@ class DlocalListener extends RestListener {
 		$rawRequest = $request->getRawRequest();
 		Logger::info( 'Incoming message (raw): ' . print_r( $rawRequest, true ) );
 
-		// Symfony is losing the auth header somehow
-		$headers = getallheaders();
-
-		// Don't store invalid messages.
-		if ( !isset( $headers['authorization'] ) ) {
-			throw new ListenerDataException( 'INVALID dlocal IPN message with no authorization header: ' . print_r( $rawRequest, true ) );
+		$authorizationHeader = $request->headers->get( 'authorization' );
+		// We only want to process messages sent with an authorization header we can validate
+		if ( empty( $authorizationHeader ) ) {
+			throw new ListenerDataException(
+				'INVALID dlocal IPN message with no authorization header: ' . print_r( $rawRequest, true )
+			);
 		}
 
 		$messages = [];
@@ -47,7 +47,7 @@ class DlocalListener extends RestListener {
 			$xdate = $request->headers->get( 'x-date' );
 			$signatureInput = $login . $xdate . $rawRequest;
 			$decoded['signatureInput'] = $signatureInput;
-			$decoded['authorization'] = $headers['authorization'];
+			$decoded['authorization'] = $authorizationHeader;
 
 			$class = $this->paymentStatus[$status];
 			$message = new $class();
