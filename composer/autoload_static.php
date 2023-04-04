@@ -2282,6 +2282,7 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\PaymentProviders\\dlocal\\ApiMappers\\RecurringChargeHostedPaymentApiRequestMapper' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/ApiMappers/RecurringChargeHostedPaymentApiRequestMapper.php',
         'SmashPig\\PaymentProviders\\dlocal\\ApiMappers\\RedirectPaymentApiRequestMapper' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/ApiMappers/RedirectPaymentApiRequestMapper.php',
         'SmashPig\\PaymentProviders\\dlocal\\ApprovePaymentStatusNormalizer' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/ApprovePaymentStatusNormalizer.php',
+        'SmashPig\\PaymentProviders\\dlocal\\BankTransferPaymentProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/BankTransferPaymentProvider.php',
         'SmashPig\\PaymentProviders\\dlocal\\CancelPaymentStatusNormalizer' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/CancelPaymentStatusNormalizer.php',
         'SmashPig\\PaymentProviders\\dlocal\\CardPaymentProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/CardPaymentProvider.php',
         'SmashPig\\PaymentProviders\\dlocal\\DlocalApprovePaymentResponseFactory' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/DlocalApprovePaymentResponseFactory.php',
@@ -3813,9 +3814,8 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Zest\\Zest' => __DIR__ . '/..' . '/wikimedia/zest-css/src/Zest.php',
         'Wikimedia\\Zest\\ZestFunc' => __DIR__ . '/..' . '/wikimedia/zest-css/src/ZestFunc.php',
         'Wikimedia\\Zest\\ZestInst' => __DIR__ . '/..' . '/wikimedia/zest-css/src/ZestInst.php',
+        'WmfFramework' => __DIR__ . '/../..' . '/extensions/DonationInterface/gateway_common/WmfFramework.php',
         'WmfFrameworkLogHandler' => __DIR__ . '/../..' . '/extensions/DonationInterface/gateway_common/WmfFrameworkLogHandler.php',
-        'WmfFramework_Drupal' => __DIR__ . '/../..' . '/extensions/DonationInterface/gateway_common/WmfFramework.drupal.php',
-        'WmfFramework_Mediawiki' => __DIR__ . '/../..' . '/extensions/DonationInterface/gateway_common/WmfFramework.mediawiki.php',
         'lessc' => __DIR__ . '/..' . '/wikimedia/less.php/lessc.inc.php',
     );
 

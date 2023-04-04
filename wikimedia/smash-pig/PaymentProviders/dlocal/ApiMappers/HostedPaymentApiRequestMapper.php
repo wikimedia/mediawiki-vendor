@@ -5,6 +5,7 @@ namespace SmashPig\PaymentProviders\dlocal\ApiMappers;
 use DateTime;
 use DateTimeZone;
 use SmashPig\PaymentProviders\dlocal\Api;
+use SmashPig\PaymentProviders\dlocal\BankTransferPaymentProvider;
 use UnexpectedValueException;
 
 class HostedPaymentApiRequestMapper extends PaymentApiRequestMapper {
@@ -16,7 +17,7 @@ class HostedPaymentApiRequestMapper extends PaymentApiRequestMapper {
 		$mapperOutput['payment_method_flow'] = Api::PAYMENT_METHOD_FLOW_REDIRECT;
 
 		// For UPI recurring, we need to create a monthly subscription with India time zone
-		if ( Api::isRecurringUpi( $params ) ) {
+		if ( BankTransferPaymentProvider::isRecurringUpi( $params ) ) {
 			$mapperOutput['wallet']['save'] = true;
 			$mapperOutput['wallet']['capture'] = true;
 			$mapperOutput['wallet']['verify'] = false;
@@ -33,9 +34,9 @@ class HostedPaymentApiRequestMapper extends PaymentApiRequestMapper {
 	}
 
 	protected function validateAndMapFrequencyUnit( $params, &$mapperOutput ) {
-		$unit = $params['upi_subscription_frequency'] ?? Api::SUBSCRIPTION_FREQUENCY_UNIT_ONDEMAND;
+		$unit = $params['upi_subscription_frequency'] ?? BankTransferPaymentProvider::SUBSCRIPTION_FREQUENCY_UNIT_ONDEMAND;
 		if ( !in_array( $unit,
-			[ Api::SUBSCRIPTION_FREQUENCY_UNIT_ONDEMAND, Api::SUBSCRIPTION_FREQUENCY_UNIT_MONTHLY ]
+			[ BankTransferPaymentProvider::SUBSCRIPTION_FREQUENCY_UNIT_ONDEMAND, BankTransferPaymentProvider::SUBSCRIPTION_FREQUENCY_UNIT_MONTHLY ]
 		) ) {
 			throw new UnexpectedValueException(
 				'Bad upi_subscription_frequency ' . $unit

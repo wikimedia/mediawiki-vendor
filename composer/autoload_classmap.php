@@ -1861,6 +1861,7 @@ return array(
     'SmashPig\\PaymentProviders\\dlocal\\ApiMappers\\RecurringChargeHostedPaymentApiRequestMapper' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/dlocal/ApiMappers/RecurringChargeHostedPaymentApiRequestMapper.php',
     'SmashPig\\PaymentProviders\\dlocal\\ApiMappers\\RedirectPaymentApiRequestMapper' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/dlocal/ApiMappers/RedirectPaymentApiRequestMapper.php',
     'SmashPig\\PaymentProviders\\dlocal\\ApprovePaymentStatusNormalizer' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/dlocal/ApprovePaymentStatusNormalizer.php',
+    'SmashPig\\PaymentProviders\\dlocal\\BankTransferPaymentProvider' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/dlocal/BankTransferPaymentProvider.php',
     'SmashPig\\PaymentProviders\\dlocal\\CancelPaymentStatusNormalizer' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/dlocal/CancelPaymentStatusNormalizer.php',
     'SmashPig\\PaymentProviders\\dlocal\\CardPaymentProvider' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/dlocal/CardPaymentProvider.php',
     'SmashPig\\PaymentProviders\\dlocal\\DlocalApprovePaymentResponseFactory' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/dlocal/DlocalApprovePaymentResponseFactory.php',
@@ -3392,8 +3393,7 @@ return array(
     'Wikimedia\\Zest\\Zest' => $vendorDir . '/wikimedia/zest-css/src/Zest.php',
     'Wikimedia\\Zest\\ZestFunc' => $vendorDir . '/wikimedia/zest-css/src/ZestFunc.php',
     'Wikimedia\\Zest\\ZestInst' => $vendorDir . '/wikimedia/zest-css/src/ZestInst.php',
+    'WmfFramework' => $baseDir . '/extensions/DonationInterface/gateway_common/WmfFramework.php',
     'WmfFrameworkLogHandler' => $baseDir . '/extensions/DonationInterface/gateway_common/WmfFrameworkLogHandler.php',
-    'WmfFramework_Drupal' => $baseDir . '/extensions/DonationInterface/gateway_common/WmfFramework.drupal.php',
-    'WmfFramework_Mediawiki' => $baseDir . '/extensions/DonationInterface/gateway_common/WmfFramework.mediawiki.php',
     'lessc' => $vendorDir . '/wikimedia/less.php/lessc.inc.php',
 );

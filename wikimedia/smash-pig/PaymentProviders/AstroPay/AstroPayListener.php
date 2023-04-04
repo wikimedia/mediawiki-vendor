@@ -21,7 +21,7 @@ class AstroPayListener extends RestListener {
 		$requestValues = $request->getValues();
 
 		$secureLog = Logger::getTaggedLogger( 'RawData' );
-		$secureLog->info( "Incoming message (raw)", $requestValues );
+		$secureLog->info( "Incoming message (raw)" . print_r( $requestValues, true ) );
 
 		$messages = [];
 
@@ -29,6 +29,7 @@ class AstroPayListener extends RestListener {
 		$required = [ 'result', 'x_amount', 'x_invoice', 'x_control' ];
 		$missing = array_diff( $required, array_keys( $requestValues ) );
 		if ( count( $missing ) ) {
+			$this->tempDlocalIpnRetryKiller( $request->getRawRequest() );
 			$list = implode( ',', $missing );
 			throw new ListenerDataException( "AstroPay message missing required key(s) $list." );
 		}
@@ -76,5 +77,51 @@ class AstroPayListener extends RestListener {
 
 	protected function ackEnvelope() {
 		// pass
+	}
+
+	/**
+	 * The Astropay Listener is receiving a steady flow of new-style IPNs from dLocal servers. This was an accident on
+	 * the dLocal side, but unfortunately, these failed requests are retried multiple times an hour if they do not
+	 * receive a HTTP 200 response. Let's quiet these down by detecting the affected IPNs and serving them a 200
+	 * response. This code is temporary and will need to be removed once the failmails quiet down.
+	 *
+	 * @see https://phabricator.wikimedia.org/T333599
+	 *
+	 * @param string $rawRequest
+	 *
+	 * @return void
+	 */
+	private function tempDlocalIpnRetryKiller( string $rawRequest ): void {
+		if ( $this->tempCheckIfRequestContainsDlocalPaymentIDPrefix( $rawRequest ) ) {
+			// extract out the payment ID
+			preg_match( '/"id":"(R-648[^"]+)"/', $rawRequest, $matches );
+			$extractedPaymentID = $matches[1];
+			// see if it's one of the affected payment IDs and return early if so.
+			$this->tempReturnEarly200IfAffectedDlocalPaymentId( $extractedPaymentID );
+		}
+	}
+
+	/**
+	 * @param string $rawRequest
+	 * @return bool
+	 */
+	private function tempCheckIfRequestContainsDlocalPaymentIDPrefix( string $rawRequest ): bool {
+		return preg_match( '/"id":"(R-648[^"]+)"/', $rawRequest );
+	}
+
+	/**
+	 * @param string $matches
+	 * @return void
+	 */
+	private function tempReturnEarly200IfAffectedDlocalPaymentId( string $matches ): void {
+		$badDlocalIpnPaymentIDs = [
+			'R-648-d5f8928d-20c7-4726-ba22-22859b063efb',
+			'R-648-da47377a-f927-407b-b663-7f014266d5f6',
+		];
+
+		if ( in_array( $matches, $badDlocalIpnPaymentIDs ) ) {
+			$this->response->send();
+			exit();
+		}
 	}
 }

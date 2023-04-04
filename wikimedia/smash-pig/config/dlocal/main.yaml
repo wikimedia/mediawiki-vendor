@@ -38,4 +38,4 @@ payment-provider:
     cash:
         class: SmashPig\PaymentProviders\dlocal\HostedPaymentProvider
     bt:
-        class: SmashPig\PaymentProviders\dlocal\HostedPaymentProvider
+        class: SmashPig\PaymentProviders\dlocal\BankTransferPaymentProvider

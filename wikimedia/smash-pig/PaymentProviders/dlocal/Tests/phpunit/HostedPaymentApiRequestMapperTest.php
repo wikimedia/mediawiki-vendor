@@ -7,6 +7,7 @@ use DateTimeZone;
 use Monolog\Test\TestCase;
 use SmashPig\PaymentProviders\dlocal\Api;
 use SmashPig\PaymentProviders\dlocal\ApiMappers\HostedPaymentApiRequestMapper;
+use SmashPig\PaymentProviders\dlocal\BankTransferPaymentProvider;
 
 /**
  * @group Dlocal
@@ -33,7 +34,7 @@ class HostedPaymentApiRequestMapperTest extends TestCase {
 		$params = $this->getBaseParams();
 		$apiParams = $params['params'];
 		$apiParams['recurring'] = 1;
-		$apiParams['upi_subscription_frequency'] = Api::SUBSCRIPTION_FREQUENCY_UNIT_ONDEMAND;
+		$apiParams['upi_subscription_frequency'] = BankTransferPaymentProvider::SUBSCRIPTION_FREQUENCY_UNIT_ONDEMAND;
 		$expectedOutput = $params['transformedParams'];
 		$expectedOutput['payment_method_id'] = 'IR';
 
@@ -47,7 +48,7 @@ class HostedPaymentApiRequestMapperTest extends TestCase {
 			'username' => $expectedOutput['payer']['name'],
 			'email' => $expectedOutput['payer']['email'],
 			'recurring_info' => [
-				'subscription_frequency_unit' => Api::SUBSCRIPTION_FREQUENCY_UNIT_ONDEMAND,
+				'subscription_frequency_unit' => BankTransferPaymentProvider::SUBSCRIPTION_FREQUENCY_UNIT_ONDEMAND,
 				'subscription_frequency' => 1,
 				'subscription_max_amount' => $expectedOutput['amount'],
 				'subscription_start_at' => $subscriptionStartDate,

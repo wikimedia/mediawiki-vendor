@@ -12,7 +12,7 @@ class ReferenceData {
 	 *    Variants are optional, sometimes there is a variant that comes in with the payment method
 	 *    'variants' => [
 	 *      'PaymentMethodVariantNameFromPaymentProcessor' => [
-	 *        'method' => 'OurNameForTheVariantMethod'
+	 *        'method' =>	 'OurNameForTheVariantMethod'
 	 *        'submethod' => 'OurNameForTheVariantSubmethod',
 	 *      ],
 	 *    ],
@@ -86,6 +86,16 @@ class ReferenceData {
 		'dotpay' => [
 			'method' => 'ew',
 			'submethod' => 'ew_dotpay',
+		],
+		'eftpos_australia' => [
+			'method' => 'cc',
+			'submethod' => 'mc',
+			'variants' => [
+				'mc_googlepay' => [
+					'method' => 'google',
+					'submethod' => 'mc',
+				],
+			]
 		],
 		'electron_applepay' => [
 			'method' => 'apple',

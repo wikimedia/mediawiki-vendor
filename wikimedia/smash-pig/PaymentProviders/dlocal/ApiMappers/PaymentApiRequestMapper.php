@@ -15,6 +15,7 @@ class PaymentApiRequestMapper extends ApiRequestMapper {
 			'document' => 'fiscal_number',
 			'user_reference' => 'contact_id',
 			'ip' => 'user_ip',
+			'phone' => 'phone',
 			'address' => [
 				'state' => 'state_province',
 				'city' => 'city',

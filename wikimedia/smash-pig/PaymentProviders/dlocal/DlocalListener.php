@@ -49,6 +49,8 @@ class DlocalListener extends RestListener {
 			$decoded['signatureInput'] = $signatureInput;
 			$decoded['authorization'] = $authorizationHeader;
 
+			Logger::debug( "Authorization header: '$authorizationHeader'; Login: '$login'; x-date header: '$xdate';" );
+
 			$class = $this->paymentStatus[$status];
 			$message = new $class();
 			$message->constructFromValues( $decoded );
