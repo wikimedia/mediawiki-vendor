@@ -230,22 +230,30 @@ class Api {
 	}
 
 	/**
-	 * Uses the rest API to create an ideal payment from the
-	 * Component web integration
+	 * Uses the rest API to create a bank transfer payment from the
+	 * Component web integration. Handles NL (iDEAL) and CZ bank transfer.
 	 *
 	 * @param array $params
 	 * amount, currency, value, issuer, returnUrl
 	 * @throws \SmashPig\Core\ApiException
 	 */
-	public function createIdealNonRecurringPaymentFromCheckout( $params ) {
+	public function createBankTransferPaymentFromCheckout( $params ) {
+		$typesByCountry = [
+			'NL' => 'ideal',
+			'CZ' => 'onlineBanking_CZ'
+		];
+		if ( empty( $params['country'] ) || !array_key_exists( $params['country'], $typesByCountry ) ) {
+			throw new UnexpectedValueException(
+				'Needs supported country: (one of ' . implode( ', ', array_keys( $typesByCountry ) ) . ')'
+			);
+		}
 		$restParams = [
 			'amount' => $this->getArrayAmount( $params ),
 			'reference' => $params['order_id'],
 			'merchantAccount' => $this->account,
 			'paymentMethod' => [
 				'issuer' => $params['issuer_id'],
-				// Todo: handle non ideal rtbt
-				'type' => 'ideal',
+				'type' => $typesByCountry[$params['country']],
 			],
 			'returnUrl' => $params['return_url']
 		];

@@ -2,6 +2,7 @@
 
 namespace SmashPig\PaymentProviders\dlocal\Tests;
 
+use SmashPig\PaymentData\ErrorCode;
 use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentProviders\dlocal\Api;
 use SmashPig\PaymentProviders\dlocal\CardPaymentProvider;
@@ -190,20 +191,24 @@ public function testPaymentWithCompleteParamsFailsDueToUnknownStatus(): void {
 		$this->assertEquals( FinalStatus::UNKNOWN, $response->getStatus() );
 }
 
-	public function testPaymentWithCompleteParamsFailsAndEmptyStatusInResponse(): void {
+	public function testPaymentWithCompleteParamsFailsAndMissingStatusInResponse(): void {
 		$params = $this->getCreatePaymentRequestParams();
+		$errorCode = 5008;
+		$errorMessage = "Token not found or inactive";
 		$this->api->expects( $this->once() )
 				->method( 'cardAuthorizePayment' )
 				->with( $params )
 				->willReturn( [
-						"code" => 5008,
-						"message" => "Token not found or inactive"
+						"code" => $errorCode,
+						"message" => $errorMessage
 				] );
 
 		$provider = new CardPaymentProvider();
 		$response = $provider->createPayment( $params );
 		$error = $response->getErrors();
 		$this->assertCount( 1, $error );
+		$this->assertEquals( 'Missing required field', $error[0]->getDebugMessage() );
+		$this->assertEquals( ErrorCode::MISSING_REQUIRED_DATA, $error[0]->getErrorCode() );
 		$this->assertFalse( $response->isSuccessful() );
 		$this->assertEquals( FinalStatus::UNKNOWN, $response->getStatus() );
 	}
@@ -381,6 +386,110 @@ public function testPaymentWithCompleteParamsFailsDueToUnknownStatus(): void {
 		$this->assertEquals( FinalStatus::FAILED, $approvePaymentResponse->getStatus() );
 		$this->assertCount( 1, $approvePaymentResponse->getValidationErrors() );
 		$this->assertSame( 'gateway_txn_id', $approvePaymentResponse->getValidationErrors()[0]->getField() );
+	}
+
+	public function testApprovePaymentWithCompleteParamsFail(): void {
+		$gateway_txn_id = "PAY2323243343543";
+		$params = [
+			'gateway_txn_id' => $gateway_txn_id,
+			'amount' => 100,
+			'currency' => 'BRL',
+			'order_id' => '1234512345',
+		];
+
+		$this->api->expects( $this->once() )
+			->method( 'capturePayment' )
+			->with( $params )
+			->willReturn( [
+						"id" => $gateway_txn_id,
+						"amount" => 1,
+						"currency" => "ZAR",
+						"country" => "SA",
+						"payment_method_id" => "CARD",
+						"payment_method_type" => "CARD",
+						"payment_method_flow" => "DIRECT",
+						"card" => [
+								"holder_name" => "Lorem Ipsum",
+								"expiration_month" => 10,
+								"expiration_year" => 2040,
+								"last4" => "1111",
+								"brand" => "VI"
+						],
+						"created_date" => "2018-02-15T15:14:52-00:00",
+						"approved_date" => "2018-02-15T15:14:52-00:00",
+						"status" => "REJECTED",
+						"status_code" => "300",
+						"status_detail" => "The payment was rejected",
+						"order_id" => $params['order_id'],
+				] );
+
+		$provider = new CardPaymentProvider();
+		$response = $provider->approvePayment( $params );
+		$error = $response->getErrors();
+		$this->assertCount( 1, $error );
+		$this->assertFalse( $response->isSuccessful() );
+		$this->assertEquals( $response->getGatewayTxnId(), $gateway_txn_id );
+		$this->assertEquals( FinalStatus::FAILED, $response->getStatus() );
+	}
+
+	public function testApprovePaymentWithCompleteParamsFailsAndMissingStatusInResponse(): void {
+		$gateway_txn_id = "PAY2323243343543";
+		$errorMessage = "placeholder text";
+		$errorCode = 5008;
+		$params = [
+			'gateway_txn_id' => $gateway_txn_id,
+			'amount' => 100,
+			'currency' => 'BRL',
+			'order_id' => '1234512345',
+		];
+		$this->api->expects( $this->once() )
+				->method( 'capturePayment' )
+				->with( $params )
+				->willReturn( [
+						"code" => $errorCode,
+						"message" => $errorMessage
+				] );
+
+		$provider = new CardPaymentProvider();
+		$response = $provider->approvePayment( $params );
+		$error = $response->getErrors();
+		$this->assertCount( 1, $error );
+		$this->assertEquals( "Missing required field", $error[0]->getDebugMessage() );
+		$this->assertEquals( ErrorCode::MISSING_REQUIRED_DATA, $error[0]->getErrorCode() );
+		$this->assertFalse( $response->isSuccessful() );
+		$this->assertEquals( FinalStatus::UNKNOWN, $response->getStatus() );
+	}
+
+	/**
+	 * Test the possibility of the provider changing the key properties in the error message
+	 * response.
+	 * Expectation is that this change returns a response in the form of a PaymentError indicating
+	 * that the parameters have been changed but the flow is not broken for it.
+	 */
+	public function testApprovePaymentWithCompleteParamsFailsAndEmptyStatusInResponseNoErrorMessage(): void {
+		$gateway_txn_id = "PAY2323243343543";
+		$errorCode = 5008;
+		$params = [
+			'gateway_txn_id' => $gateway_txn_id,
+			'amount' => 100,
+			'currency' => 'BRL',
+			'order_id' => '1234512345',
+		];
+		$this->api->expects( $this->once() )
+				->method( 'capturePayment' )
+				->with( $params )
+				->willReturn( [
+					"code" => $errorCode
+				] );
+
+		$provider = new CardPaymentProvider();
+		$response = $provider->approvePayment( $params );
+		$error = $response->getErrors();
+		$this->assertCount( 1, $error );
+		$this->assertEquals( "Missing required field", $error[0]->getDebugMessage() );
+		$this->assertEquals( ErrorCode::MISSING_REQUIRED_DATA, $error[0]->getErrorCode() );
+		$this->assertFalse( $response->isSuccessful() );
+		$this->assertEquals( FinalStatus::UNKNOWN, $response->getStatus() );
 	}
 
 	private function getCreatePaymentRequestParams(): array {

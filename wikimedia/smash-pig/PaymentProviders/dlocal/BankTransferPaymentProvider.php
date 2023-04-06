@@ -23,26 +23,27 @@ class BankTransferPaymentProvider extends HostedPaymentProvider {
 	 * HostedPaymentApiRequestMapper uses ONDEMAND by default if not set.
 	 * @var string|null
 	 */
-	protected $upiSubscriptionFrequency;
+	protected $indiaRecurringSubscriptionFrequency;
 
 	/**
 	 * @var int|null
 	 */
-	protected $upiSubscriptionDurationInMonths;
+	protected $indiaRecurringSubscriptionDurationInMonths;
 
 	public function __construct( ?array $params = null ) {
 		parent::__construct();
-		if ( !empty( $params['upi_subscription_frequency'] ) ) {
-			$this->upiSubscriptionFrequency = $params['upi_subscription_frequency'];
+		if ( !empty( $params['inr_subscription_frequency'] ) ) {
+			$this->indiaRecurringSubscriptionFrequency = $params['inr_subscription_frequency'];
 		}
-		if ( !empty( $params['upi_subscription_months'] ) ) {
-			$this->upiSubscriptionDurationInMonths = $params['upi_subscription_months'];
+		if ( !empty( $params['inr_subscription_months'] ) ) {
+			$this->indiaRecurringSubscriptionDurationInMonths = $params['inr_subscription_months'];
 		}
 	}
 
-	public static function isRecurringUpi( array $params ): bool {
-		return ( $params['recurring'] ?? false ) &&
-			( $params['payment_submethod'] ?? '' ) === 'upi';
+	public static function isIndiaRecurring( array $params ): bool {
+		$submethod = $params['payment_submethod'] ?? '';
+		$isRecurring = ( !empty( $params['recurring'] ) || !empty( $params['recurring_payment_token'] ) );
+		return $isRecurring && in_array( $submethod, [ 'upi', 'paytmwallet' ] );
 	}
 
 	/**
@@ -52,7 +53,7 @@ class BankTransferPaymentProvider extends HostedPaymentProvider {
 	 * @return bool
 	 */
 	public function isUpiSubscriptionFrequencyMonthly() {
-		return $this->upiSubscriptionFrequency == self::SUBSCRIPTION_FREQUENCY_UNIT_MONTHLY;
+		return $this->indiaRecurringSubscriptionFrequency == self::SUBSCRIPTION_FREQUENCY_UNIT_MONTHLY;
 	}
 
 	/**
@@ -61,9 +62,9 @@ class BankTransferPaymentProvider extends HostedPaymentProvider {
 	 * @throws ApiException
 	 */
 	public function createPayment( array $params ): CreatePaymentResponse {
-		if ( self::isRecurringUpi( $params ) ) {
-			$params['upi_subscription_frequency'] = $this->upiSubscriptionFrequency;
-			$params['upi_subscription_months'] = $this->upiSubscriptionDurationInMonths;
+		if ( self::isIndiaRecurring( $params ) ) {
+			$params['inr_subscription_frequency'] = $this->indiaRecurringSubscriptionFrequency;
+			$params['inr_subscription_months'] = $this->indiaRecurringSubscriptionDurationInMonths;
 		}
 		return parent::createPayment( $params );
 	}

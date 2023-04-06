@@ -16,8 +16,8 @@ class HostedPaymentApiRequestMapper extends PaymentApiRequestMapper {
 		// Set custom parameters
 		$mapperOutput['payment_method_flow'] = Api::PAYMENT_METHOD_FLOW_REDIRECT;
 
-		// For UPI recurring, we need to create a monthly subscription with India time zone
-		if ( BankTransferPaymentProvider::isRecurringUpi( $params ) ) {
+		// For India recurring, we need to create a monthly subscription with India time zone
+		if ( BankTransferPaymentProvider::isIndiaRecurring( $params ) ) {
 			$mapperOutput['wallet']['save'] = true;
 			$mapperOutput['wallet']['capture'] = true;
 			$mapperOutput['wallet']['verify'] = false;
@@ -34,28 +34,28 @@ class HostedPaymentApiRequestMapper extends PaymentApiRequestMapper {
 	}
 
 	protected function validateAndMapFrequencyUnit( $params, &$mapperOutput ) {
-		$unit = $params['upi_subscription_frequency'] ?? BankTransferPaymentProvider::SUBSCRIPTION_FREQUENCY_UNIT_ONDEMAND;
+		$unit = $params['inr_subscription_frequency'] ?? BankTransferPaymentProvider::SUBSCRIPTION_FREQUENCY_UNIT_ONDEMAND;
 		if ( !in_array( $unit,
 			[ BankTransferPaymentProvider::SUBSCRIPTION_FREQUENCY_UNIT_ONDEMAND, BankTransferPaymentProvider::SUBSCRIPTION_FREQUENCY_UNIT_MONTHLY ]
 		) ) {
 			throw new UnexpectedValueException(
-				'Bad upi_subscription_frequency ' . $unit
+				'Bad inr_subscription_frequency ' . $unit
 			);
 		}
 		$mapperOutput['wallet']['recurring_info']['subscription_frequency_unit'] = $unit;
 	}
 
 	protected function validateAndMapSubscriptionEnd( $params, &$mapperOutput ) {
-		if ( empty( $params['upi_subscription_months'] ) ) {
+		if ( empty( $params['inr_subscription_months'] ) ) {
 			$subscriptionEnd = '20991231'; // if more than year 2100, dlocal reject txn so use 20991231
 		} else {
-			if ( !is_int( $params['upi_subscription_months'] ) ) {
+			if ( !is_int( $params['inr_subscription_months'] ) ) {
 				throw new UnexpectedValueException(
-					'Bad upi_subscription_months ' . $params['upi_subscription_months']
+					'Bad inr_subscription_months ' . $params['inr_subscription_months']
 				);
 			}
 			$endDate = new DateTime(
-				"+ {$params['upi_subscription_months']} months", new DateTimeZone( Api::INDIA_TIME_ZONE )
+				"+ {$params['inr_subscription_months']} months", new DateTimeZone( Api::INDIA_TIME_ZONE )
 			);
 			$subscriptionEnd = $endDate->format( 'Ymd' );
 		}

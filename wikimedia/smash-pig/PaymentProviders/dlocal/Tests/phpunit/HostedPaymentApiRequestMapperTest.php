@@ -34,7 +34,7 @@ class HostedPaymentApiRequestMapperTest extends TestCase {
 		$params = $this->getBaseParams();
 		$apiParams = $params['params'];
 		$apiParams['recurring'] = 1;
-		$apiParams['upi_subscription_frequency'] = BankTransferPaymentProvider::SUBSCRIPTION_FREQUENCY_UNIT_ONDEMAND;
+		$apiParams['inr_subscription_frequency'] = BankTransferPaymentProvider::SUBSCRIPTION_FREQUENCY_UNIT_ONDEMAND;
 		$expectedOutput = $params['transformedParams'];
 		$expectedOutput['payment_method_id'] = 'IR';
 
@@ -55,6 +55,13 @@ class HostedPaymentApiRequestMapperTest extends TestCase {
 				'subscription_end_at' => $subscriptionEndDate
 			],
 		];
+		$apiRequestMapper = new HostedPaymentApiRequestMapper();
+		$apiRequestMapper->setInputParams( $apiParams );
+
+		$this->assertEquals( $expectedOutput, $apiRequestMapper->getAll() );
+
+		// 'paytmwallet' submethod should be transformed to the same output
+		$apiParams['payment_submethod'] = 'paytmwallet';
 		$apiRequestMapper = new HostedPaymentApiRequestMapper();
 		$apiRequestMapper->setInputParams( $apiParams );
 

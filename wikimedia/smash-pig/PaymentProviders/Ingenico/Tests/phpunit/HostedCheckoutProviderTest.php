@@ -84,6 +84,26 @@ class HostedCheckoutProviderTest extends BaseSmashPigUnitTestCase {
 	}
 
 	/**
+	 * Test that we prefer the explicitly specified initialSchemeTransactionId
+	 * @throws \SmashPig\Core\ApiException
+	 */
+	public function testGetHostedPaymentStatusWithInitialSchemeTransactionId() {
+		$this->setUpResponse( __DIR__ . "/../Data/hostedPaymentStatusWithInitialSchemeId.response", 200 );
+		$response = $this->provider->getHostedPaymentStatus( '8915-28e5b79c889641c8ba770f1ba576c1fe' );
+		$this->assertEquals( "asdf1234asdf1234Sdasdf1234", $response->getInitialSchemeTransactionId() );
+	}
+
+	/**
+	 * Test that we map the fallback schemeTransactionId
+	 * @throws \SmashPig\Core\ApiException
+	 */
+	public function testGetHostedPaymentStatusWithSchemeTransactionId() {
+		$this->setUpResponse( __DIR__ . "/../Data/hostedPaymentStatusWithSchemeId.response", 200 );
+		$response = $this->provider->getHostedPaymentStatus( '8915-28e5b79c889641c8ba770f1ba576c1fe' );
+		$this->assertEquals( "lkjh0987lkjh0987lkjh0987", $response->getInitialSchemeTransactionId() );
+	}
+
+	/**
 	 * @dataProvider hostedPaymentStatusRejectedErrors
 	 */
 	public function testGetHostedPaymentStatusFailuresReturnErrors( $errorCode, $errorDescription ) {

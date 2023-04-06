@@ -2,48 +2,42 @@
 
 namespace SmashPig\PaymentProviders\dlocal;
 
+use SmashPig\Core\Logging\Logger;
 use SmashPig\PaymentData\FinalStatus;
+use SmashPig\PaymentProviders\Responses\IPaymentResponseFactory;
 use SmashPig\PaymentProviders\Responses\PaymentDetailResponse;
-use SmashPig\PaymentProviders\Responses\PaymentStatusResponseFactory;
+use SmashPig\PaymentProviders\Responses\PaymentProviderResponse;
+use UnexpectedValueException;
 
-class DlocalPaymentStatusResponseFactory extends PaymentStatusResponseFactory {
+class DlocalPaymentStatusResponseFactory extends DlocalPaymentResponseFactory implements IPaymentResponseFactory {
 
 	/**
 	 * @param mixed $rawResponse
-	 * @return PaymentDetailResponse
+	 * @return PaymentProviderResponse
 	 */
-	public static function fromRawResponse( $rawResponse ): PaymentDetailResponse {
-		$paymentDetailResponse = new PaymentDetailResponse();
-		$paymentDetailResponse->setRawResponse( $rawResponse );
+	public static function fromRawResponse( $rawResponse ): PaymentProviderResponse {
+		try {
+			$paymentDetailResponse = new PaymentDetailResponse();
+			$paymentDetailResponse->setRawResponse( $rawResponse );
 
-		$gatewayTxnId = $rawResponse['id'] ?? null;
-		if ( $gatewayTxnId ) {
-			$paymentDetailResponse->setGatewayTxnId( $gatewayTxnId );
-		}
+			$gatewayTxnId = $rawResponse['id'] ?? null;
+			if ( $gatewayTxnId ) {
+				$paymentDetailResponse->setGatewayTxnId( $gatewayTxnId );
+			}
 
-		$rawStatus = $rawResponse['status'] ?? null;
-		if ( $rawStatus ) {
-			self::setStatusDetails( $paymentDetailResponse, $rawStatus );
-		} else {
+			self::setStatusDetails( $paymentDetailResponse, new PaymentStatusNormalizer() );
+
+			if ( self::isFailedTransaction( $paymentDetailResponse->getStatus() ) ) {
+				self::addPaymentFailureError( $paymentDetailResponse, $rawResponse[ 'status_detail' ], $rawResponse[ 'status_code' ] );
+			}
+		} catch ( UnexpectedValueException $unexpectedValueException ) {
+			Logger::debug( 'Payment status retrieval failed', $rawResponse );
+
+			self::addPaymentFailureError( $paymentDetailResponse );
 			$paymentDetailResponse->setStatus( FinalStatus::UNKNOWN );
 			$paymentDetailResponse->setSuccessful( false );
 		}
 
 		return $paymentDetailResponse;
 	}
-
-	/**
-	 * @param PaymentDetailResponse $paymentDetailResponse
-	 * @param string $rawStatus
-	 * @return void
-	 */
-	private static function setStatusDetails( PaymentDetailResponse $paymentDetailResponse, string $rawStatus ): void {
-		$paymentDetailResponse->setRawStatus( $rawStatus );
-		$paymentStatusNormalizer = new PaymentStatusNormalizer();
-		$normalizedStatus = $paymentStatusNormalizer->normalizeStatus( $rawStatus );
-		$paymentDetailResponse->setStatus( $normalizedStatus );
-		$isSuccessfulStatus = $paymentStatusNormalizer->isSuccessStatus( $normalizedStatus );
-		$paymentDetailResponse->setSuccessful( $isSuccessfulStatus );
-	}
-
 }

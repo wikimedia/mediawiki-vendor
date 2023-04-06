@@ -2,69 +2,52 @@
 
 namespace SmashPig\PaymentProviders\dlocal;
 
-use Psr\Log\LogLevel;
 use SmashPig\Core\Logging\Logger;
-use SmashPig\Core\PaymentError;
-use SmashPig\PaymentData\ErrorCode;
 use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentProviders\Responses\CreatePaymentResponse;
-use SmashPig\PaymentProviders\Responses\CreatePaymentResponseFactory;
+use SmashPig\PaymentProviders\Responses\IPaymentResponseFactory;
+use SmashPig\PaymentProviders\Responses\PaymentProviderResponse;
 use UnexpectedValueException;
 
-class DlocalCreatePaymentResponseFactory extends CreatePaymentResponseFactory {
-
+class DlocalCreatePaymentResponseFactory extends DlocalPaymentResponseFactory implements IPaymentResponseFactory {
 	/**
 	 * @param mixed $rawResponse
-	 * @return CreatePaymentResponse
+	 * @return PaymentProviderResponse
 	 */
-	public static function fromRawResponse( $rawResponse ): CreatePaymentResponse {
-		$createPaymentResponse = new CreatePaymentResponse();
-		$createPaymentResponse->setRawResponse( $rawResponse );
-		$rawStatus = $rawResponse['status'] ?? null;
-		$gatewayTxnId = $rawResponse['id'] ?? null;
-
-		if ( $gatewayTxnId ) {
-			$createPaymentResponse->setGatewayTxnId( $gatewayTxnId );
-		}
-
-		self::setRedirectURL( $rawResponse, $createPaymentResponse );
-
+	public static function fromRawResponse( $rawResponse ): PaymentProviderResponse {
 		try {
-			if ( !$rawStatus ) {
-				throw new UnexpectedValueException( "Unknown status" );
+			$createPaymentResponse = new CreatePaymentResponse();
+			$createPaymentResponse->setRawResponse( $rawResponse );
+			$gatewayTxnId = $rawResponse['id'] ?? null;
+			if ( $gatewayTxnId ) {
+				$createPaymentResponse->setGatewayTxnId( $gatewayTxnId );
 			}
-			self::setStatusDetails( $createPaymentResponse, $rawStatus );
-
-			if ( $createPaymentResponse->getStatus() === FinalStatus::FAILED ) {
-				$createPaymentResponse->addErrors(
-					new PaymentError(
-						ErrorMapper::$paymentStatusErrorCodes[ $rawResponse[ 'status_code' ] ] ?? ErrorCode::UNKNOWN,
-					$rawResponse[ 'status_detail' ],
-						LogLevel::ERROR ) );
-			}
-
-			if ( array_key_exists( 'card', $rawResponse )
-				&& array_key_exists( 'card_id', $rawResponse['card'] ) ) {
+			self::setRedirectURL( $rawResponse, $createPaymentResponse );
+			if ( self::responseHasRecurringPaymentToken( $rawResponse ) ) {
 				$createPaymentResponse->setRecurringPaymentToken( $rawResponse['card']['card_id'] );
 			}
 
+			self::setStatusDetails( $createPaymentResponse, new PaymentStatusNormalizer() );
+
+			if ( self::isFailedTransaction( $createPaymentResponse->getStatus() ) ) {
+				self::addPaymentFailureError( $createPaymentResponse, $rawResponse[ 'status_detail' ], $rawResponse[ 'status_code' ] );
+			}
 		} catch ( UnexpectedValueException $unexpectedValueException ) {
 			Logger::debug( 'Create Payment failed', $rawResponse );
 
-			$code = $rawResponse['code'] ?? null;
-			$errorCode = ErrorMapper::$errorCodes[ $code ] ?? null;
-			$message = $rawResponse['message'] ?? $unexpectedValueException->getMessage();
-
-			if ( !$errorCode ) {
-				Logger::debug( 'Unable to map error code' );
-				$errorCode = ErrorCode::UNEXPECTED_VALUE;
-			}
-			$createPaymentResponse->addErrors( new PaymentError( $errorCode, $message, LogLevel::ERROR ) );
-			$createPaymentResponse->setSuccessful( false );
+			self::addPaymentFailureError( $createPaymentResponse );
 			$createPaymentResponse->setStatus( FinalStatus::UNKNOWN );
+			$createPaymentResponse->setSuccessful( false );
 		}
-
 		return $createPaymentResponse;
+	}
+
+	/**
+	 * @param array $rawResponse
+	 * @return bool
+	 */
+	protected static function responseHasRecurringPaymentToken( array $rawResponse ): bool {
+		return array_key_exists( 'card', $rawResponse ) && array_key_exists( 'card_id', $rawResponse['card'] );
 	}
 
 	/**
@@ -81,18 +64,5 @@ class DlocalCreatePaymentResponseFactory extends CreatePaymentResponseFactory {
 			&& array_key_exists( 'redirect_url', $rawResponse['three_dsecure'] ) ) {
 			$createPaymentResponse->setRedirectUrl( $rawResponse['three_dsecure']['redirect_url'] );
 		}
-	}
-
-	/**
-	 * @param CreatePaymentResponse $createPaymentResponse
-	 * @param string|null $rawStatus
-	 * @return void
-	 */
-	protected static function setStatusDetails( CreatePaymentResponse $createPaymentResponse, ?string $rawStatus ): void {
-		$createPaymentResponse->setRawStatus( $rawStatus );
-		$statusMapper = new PaymentStatusNormalizer();
-		$normalizedStatus = $statusMapper->normalizeStatus( $rawStatus );
-		$createPaymentResponse->setStatus( $normalizedStatus );
-		$createPaymentResponse->setSuccessful( $statusMapper->isSuccessStatus( $normalizedStatus ) );
 	}
 }

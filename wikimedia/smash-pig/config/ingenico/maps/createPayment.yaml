@@ -2,6 +2,7 @@ cardPaymentMethodSpecificInput:
     isRecurring: '%recurring%'
     recurringPaymentSequenceIndicator: '%installment%'
     token: '%recurring_payment_token%'
+    initialSchemeTransactionId: '%initial_scheme_transaction_id%'
 order:
     amountOfMoney:
         amount: '%amount%'

@@ -67,7 +67,7 @@ class ReferenceData {
 		'I' => 'itau',
 		'IB' => 'interbank',
 		'IO' => 'ach', // South Africa, ACH bt
-		'IR' => 'upi', // India
+		'IR' => 'upi', // India. We also get this back for recurring 'paytmwallet' but 'upi' is more common
 		'JC' => 'jcb',
 		'LD' => 'cabal-debit',
 		'LI' => 'lider',
@@ -142,17 +142,15 @@ class ReferenceData {
 	 */
 	public static function getPaymentMethodId( array $params ): ?string {
 		// First handle special cases that depend on more than just the submethod
+		if ( BankTransferPaymentProvider::isIndiaRecurring( $params ) ) {
+			// Recurring UPI and PayTM payments need to be charged as IR, 'India Recurring'
+			return 'IR';
+		}
 		if ( $params['payment_submethod'] === 'upi' ) {
-			if (
-				empty( $params['recurring'] ) &&
-				empty( $params['recurring_payment_token'] )
-			) {
-				// This is specifically the code for the redirect version of one-time UPI payments
-				return 'UI';
-			} else {
-				// Recurring UPI payments need to be charged as IR, 'India Recurring'
-				return 'IR';
-			}
+			// Need to skip the lookup below for non-recurring UPI since three codes map
+			// to it in the lookup table. It maps to UI or UD depending on the flow, but
+			// we will handle the UD case elsewhere. Here we just default to UI.
+			return 'UI';
 		}
 		if ( $params['payment_submethod'] === 'webpay_bt' ) {
 			return 'WP';

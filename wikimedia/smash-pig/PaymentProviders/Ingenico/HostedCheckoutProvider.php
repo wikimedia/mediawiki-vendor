@@ -119,6 +119,11 @@ class HostedCheckoutProvider extends PaymentProvider implements IGetLatestPaymen
 				$donorDetails->setFullName( $cardOutput['card']['cardholderName'] );
 				$response->setDonorDetails( $donorDetails );
 			}
+			$response->setInitialSchemeTransactionId(
+				$cardOutput['initialSchemeTransactionId'] ??
+				// Worldline docs say to "Use this value in case the initialSchemeTransactionId property is empty."
+				$cardOutput['schemeTransactionId'] ?? null
+			);
 		} elseif ( isset( $rawResponse['status'] ) ) {
 			// If no payment has been created, the GET response only
 			// has a single status property - {"status": "IN_PROGRESS"}

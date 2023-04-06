@@ -53,16 +53,19 @@ common-cache-parameters: &CACHE
                 key-base: SMASHPIG_ADYEN_METHODS
 
 payment-provider:
+    bt:
+        class: SmashPig\PaymentProviders\Adyen\BankTransferPaymentProvider
+        <<: *CACHE
     cc:
         class: SmashPig\PaymentProviders\Adyen\CardPaymentProvider
         <<: *CACHE
     dd:
         # For now we only handle recurring rtbt, which is treated
         # as direct debit under the hood.
-        class: SmashPig\PaymentProviders\Adyen\IdealBankTransferPaymentProvider
+        class: SmashPig\PaymentProviders\Adyen\BankTransferPaymentProvider
         <<: *CACHE
     rtbt:
-        class: SmashPig\PaymentProviders\Adyen\IdealBankTransferPaymentProvider
+        class: SmashPig\PaymentProviders\Adyen\BankTransferPaymentProvider
         <<: *CACHE
     google:
         class: SmashPig\PaymentProviders\Adyen\GooglePayPaymentProvider

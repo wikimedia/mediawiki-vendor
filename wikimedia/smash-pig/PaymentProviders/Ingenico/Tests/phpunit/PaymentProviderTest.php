@@ -113,6 +113,7 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 			'currency' => 'USD',
 			'description' => 'Recurring donation to Wikimedia!',
 			'order_id' => '12345.1',
+			'initial_scheme_transaction_id' => 'lkjh0987lkjh0987lkjh0987'
 		];
 
 		$expectedTransformedParams = [
@@ -121,6 +122,7 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 					'isRecurring' => $params['recurring'],
 					'recurringPaymentSequenceIndicator' => $params['installment'],
 					'token' => $params['recurring_payment_token'],
+					'initialSchemeTransactionId' => 'lkjh0987lkjh0987lkjh0987'
 				],
 			'order' =>
 				[

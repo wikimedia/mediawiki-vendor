@@ -2,44 +2,40 @@
 
 namespace SmashPig\PaymentProviders\dlocal;
 
+use SmashPig\Core\Logging\Logger;
 use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentProviders\Responses\ApprovePaymentResponse;
-use SmashPig\PaymentProviders\Responses\ApprovePaymentResponseFactory;
+use SmashPig\PaymentProviders\Responses\IPaymentResponseFactory;
+use SmashPig\PaymentProviders\Responses\PaymentProviderResponse;
+use UnexpectedValueException;
 
-class DlocalApprovePaymentResponseFactory extends ApprovePaymentResponseFactory {
+class DlocalApprovePaymentResponseFactory extends DlocalPaymentResponseFactory implements IPaymentResponseFactory {
 
 	/**
 	 * @param mixed $rawResponse
-	 * @return ApprovePaymentResponse
+	 * @return PaymentProviderResponse
 	 */
-	public static function fromRawResponse( $rawResponse ): ApprovePaymentResponse {
-		$approvePaymentResponse = new ApprovePaymentResponse();
-		$approvePaymentResponse->setRawResponse( $rawResponse );
-		$gatewayTxnId = $rawResponse['id'] ?? null;
-		if ( $gatewayTxnId ) {
-			$approvePaymentResponse->setGatewayTxnId( $gatewayTxnId );
-		}
-		$rawStatus = $rawResponse['status'] ?? null;
-		if ( $rawStatus ) {
-			self::setStatusDetails( $approvePaymentResponse, $rawStatus );
-		} else {
+	public static function fromRawResponse( $rawResponse ): PaymentProviderResponse {
+		try {
+			$approvePaymentResponse = new ApprovePaymentResponse();
+			$approvePaymentResponse->setRawResponse( $rawResponse );
+			$gatewayTxnId = $rawResponse['id'] ?? null;
+			if ( $gatewayTxnId ) {
+				$approvePaymentResponse->setGatewayTxnId( $gatewayTxnId );
+			}
+
+			self::setStatusDetails( $approvePaymentResponse, new ApprovePaymentStatusNormalizer() );
+
+			if ( self::isFailedTransaction( $approvePaymentResponse->getStatus() ) ) {
+				self::addPaymentFailureError( $approvePaymentResponse, $rawResponse[ 'status_detail' ], $rawResponse[ 'status_code' ] );
+			}
+		} catch ( UnexpectedValueException $unexpectedValueException ) {
+			Logger::debug( 'Approve Payment failed', $rawResponse );
+
+			self::addPaymentFailureError( $approvePaymentResponse );
 			$approvePaymentResponse->setStatus( FinalStatus::UNKNOWN );
 			$approvePaymentResponse->setSuccessful( false );
 		}
 		return $approvePaymentResponse;
-	}
-
-	/**
-	 * @param ApprovePaymentResponse $approvePaymentResponse
-	 * @param string|null $rawStatus
-	 * @return void
-	 */
-	protected static function setStatusDetails( ApprovePaymentResponse $approvePaymentResponse, ?string $rawStatus ): void {
-		$approvePaymentResponse->setRawStatus( $rawStatus );
-		$approvePaymentStatusNormalizer = new ApprovePaymentStatusNormalizer();
-		$normalizedStatus = $approvePaymentStatusNormalizer->normalizeStatus( $rawStatus );
-		$approvePaymentResponse->setStatus( $normalizedStatus );
-		$isSuccessfulStatus = $approvePaymentStatusNormalizer->isSuccessStatus( $normalizedStatus );
-		$approvePaymentResponse->setSuccessful( $isSuccessfulStatus );
 	}
 }

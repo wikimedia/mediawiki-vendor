@@ -27,6 +27,15 @@ class PaymentDetailResponse extends PaymentProviderResponse {
 	protected $recurringPaymentToken;
 
 	/**
+	 * An identifier for the transaction set by the card network (e.g. Visa, Mastercard).
+	 * Some networks require some merchants to store the ID of the initial transaction and
+	 * send it back to the processor when charging a recurring installment, per PSD2 SCA.
+	 *
+	 * @var string|null
+	 */
+	protected $initialSchemeTransactionId;
+
+	/**
 	 * @var string|null
 	 */
 	protected $processorContactID;
@@ -83,6 +92,22 @@ class PaymentDetailResponse extends PaymentProviderResponse {
 	 */
 	public function setRecurringPaymentToken( string $recurringPaymentToken ): PaymentDetailResponse {
 		$this->recurringPaymentToken = $recurringPaymentToken;
+		return $this;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getInitialSchemeTransactionId(): ?string {
+		return $this->initialSchemeTransactionId;
+	}
+
+	/**
+	 * @param string|null $schemeTransactionId
+	 * @return PaymentDetailResponse
+	 */
+	public function setInitialSchemeTransactionId( ?string $schemeTransactionId ): PaymentDetailResponse {
+		$this->initialSchemeTransactionId = $schemeTransactionId;
 		return $this;
 	}
 

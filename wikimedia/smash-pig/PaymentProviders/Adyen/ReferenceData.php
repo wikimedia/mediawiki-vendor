@@ -165,6 +165,10 @@ class ReferenceData {
 			'method' => 'rtbt',
 			'submethod' => 'rtbt_multibanco',
 		],
+		'onlinebanking_CZ' => [
+			'method' => 'bt',
+			'submethod' => '',
+		],
 		'pulse' => [
 			'method' => 'cc',
 			'submethod' => 'visa',

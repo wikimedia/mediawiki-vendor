@@ -1,57 +1,41 @@
 <?php
 namespace SmashPig\PaymentProviders\dlocal;
 
-use Psr\Log\LogLevel;
 use SmashPig\Core\Logging\Logger;
-use SmashPig\Core\PaymentError;
-use SmashPig\PaymentData\ErrorCode;
 use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentProviders\Responses\CancelPaymentResponse;
+use SmashPig\PaymentProviders\Responses\IPaymentResponseFactory;
+use SmashPig\PaymentProviders\Responses\PaymentProviderResponse;
+use UnexpectedValueException;
 
-class DlocalCancelPaymentResponseFactory {
+class DlocalCancelPaymentResponseFactory extends DlocalPaymentResponseFactory implements IPaymentResponseFactory {
 
 	/**
 	 * @param mixed $rawResponse
-	 *
-	 * @return \SmashPig\PaymentProviders\Responses\CancelPaymentResponse
+	 * @return PaymentProviderResponse
 	 */
-	public static function fromRawResponse( $rawResponse ): CancelPaymentResponse {
-		$cancelPaymentResponse = new CancelPaymentResponse();
-		$cancelPaymentResponse->setRawResponse( $rawResponse );
-		$gatewayTxnId = $rawResponse['id'] ?? null;
-		if ( $gatewayTxnId ) {
-			$cancelPaymentResponse->setGatewayTxnId( $gatewayTxnId );
-		}
-		$rawStatus = $rawResponse['status'] ?? null;
-		if ( $rawStatus ) {
-			self::setStatusDetails( $cancelPaymentResponse, $rawStatus );
-		} else {
+	public static function fromRawResponse( $rawResponse ): PaymentProviderResponse {
+		try {
+			$cancelPaymentResponse = new CancelPaymentResponse();
+			$cancelPaymentResponse->setRawResponse( $rawResponse );
+			$gatewayTxnId = $rawResponse['id'] ?? null;
+			if ( $gatewayTxnId ) {
+				$cancelPaymentResponse->setGatewayTxnId( $gatewayTxnId );
+			}
+
+			self::setStatusDetails( $cancelPaymentResponse, new CancelPaymentStatusNormalizer() );
+
+			if ( self::isFailedTransaction( $cancelPaymentResponse->getStatus() ) ) {
+				self::addPaymentFailureError( $cancelPaymentResponse, $rawResponse[ 'status_detail' ], $rawResponse[ 'status_code' ] );
+			}
+		} catch ( UnexpectedValueException $unexpectedValueException ) {
 			$responseError = 'cancelResult element missing from dlocal cancel response.';
-			$cancelPaymentResponse->addErrors(
-				new PaymentError(
-					ErrorCode::MISSING_REQUIRED_DATA,
-					$responseError,
-					LogLevel::ERROR
-				)
-			);
+			Logger::debug( $responseError, $rawResponse );
+
+			self::addPaymentFailureError( $cancelPaymentResponse, $responseError );
 			$cancelPaymentResponse->setStatus( FinalStatus::UNKNOWN );
 			$cancelPaymentResponse->setSuccessful( false );
-			Logger::debug( $responseError, $rawResponse );
 		}
 		return $cancelPaymentResponse;
-	}
-
-	/**
-	 * @param CancelPaymentResponse $cancelPaymentResponse
-	 * @param string|null $rawStatus
-	 * @return void
-	 */
-	protected static function setStatusDetails( CancelPaymentResponse $cancelPaymentResponse, ?string $rawStatus ): void {
-		$cancelPaymentResponse->setRawStatus( $rawStatus );
-		$cancelPaymentStatusNormalizer = new CancelPaymentStatusNormalizer();
-		$normalizedStatus = $cancelPaymentStatusNormalizer->normalizeStatus( $rawStatus );
-		$cancelPaymentResponse->setStatus( $normalizedStatus );
-		$isSuccessfulStatus = $cancelPaymentStatusNormalizer->isSuccessStatus( $normalizedStatus );
-		$cancelPaymentResponse->setSuccessful( $isSuccessfulStatus );
 	}
 }
