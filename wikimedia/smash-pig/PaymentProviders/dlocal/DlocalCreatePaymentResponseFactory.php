@@ -2,52 +2,61 @@
 
 namespace SmashPig\PaymentProviders\dlocal;
 
-use SmashPig\Core\Logging\Logger;
-use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentProviders\Responses\CreatePaymentResponse;
 use SmashPig\PaymentProviders\Responses\IPaymentResponseFactory;
 use SmashPig\PaymentProviders\Responses\PaymentProviderResponse;
-use UnexpectedValueException;
 
 class DlocalCreatePaymentResponseFactory extends DlocalPaymentResponseFactory implements IPaymentResponseFactory {
+
+	protected static function createBasicResponse(): PaymentProviderResponse {
+		return new CreatePaymentResponse();
+	}
+
 	/**
-	 * @param mixed $rawResponse
-	 * @return PaymentProviderResponse
+	 * @param PaymentProviderResponse $paymentResponse
+	 * @param array $rawResponse
 	 */
-	public static function fromRawResponse( $rawResponse ): PaymentProviderResponse {
-		try {
-			$createPaymentResponse = new CreatePaymentResponse();
-			$createPaymentResponse->setRawResponse( $rawResponse );
-			$gatewayTxnId = $rawResponse['id'] ?? null;
-			if ( $gatewayTxnId ) {
-				$createPaymentResponse->setGatewayTxnId( $gatewayTxnId );
-			}
-			self::setRedirectURL( $rawResponse, $createPaymentResponse );
-			if ( self::responseHasRecurringPaymentToken( $rawResponse ) ) {
-				$createPaymentResponse->setRecurringPaymentToken( $rawResponse['card']['card_id'] );
-			}
-
-			self::setStatusDetails( $createPaymentResponse, new PaymentStatusNormalizer() );
-
-			if ( self::isFailedTransaction( $createPaymentResponse->getStatus() ) ) {
-				self::addPaymentFailureError( $createPaymentResponse, $rawResponse[ 'status_detail' ], $rawResponse[ 'status_code' ] );
-			}
-		} catch ( UnexpectedValueException $unexpectedValueException ) {
-			Logger::debug( 'Create Payment failed', $rawResponse );
-
-			self::addPaymentFailureError( $createPaymentResponse );
-			$createPaymentResponse->setStatus( FinalStatus::UNKNOWN );
-			$createPaymentResponse->setSuccessful( false );
+	protected static function decorateResponse( PaymentProviderResponse $paymentResponse, array $rawResponse ): void {
+		if ( !$paymentResponse instanceof CreatePaymentResponse ) {
+			return;
 		}
-		return $createPaymentResponse;
+		self::setRedirectURL( $rawResponse, $paymentResponse );
+		self::setRecurringPaymentToken( $paymentResponse, $rawResponse );
+	}
+
+	protected static function getStatusNormalizer(): PaymentStatusNormalizer {
+		return new PaymentStatusNormalizer();
 	}
 
 	/**
 	 * @param array $rawResponse
 	 * @return bool
 	 */
-	protected static function responseHasRecurringPaymentToken( array $rawResponse ): bool {
+	protected static function responseHasCardRecurringPaymentToken( array $rawResponse ): bool {
 		return array_key_exists( 'card', $rawResponse ) && array_key_exists( 'card_id', $rawResponse['card'] );
+	}
+
+	/**
+	 * @param PaymentProviderResponse $paymentResponse
+	 * @param array $rawResponse
+	 * @return void
+	 */
+	protected static function setRecurringPaymentToken( PaymentProviderResponse $paymentResponse, array $rawResponse ): void {
+		if ( !$paymentResponse instanceof CreatePaymentResponse ) {
+			return;
+		}
+		if ( self::responseHasCardRecurringPaymentToken( $rawResponse ) ) {
+			$token = self::getCardRecurringPaymentTokenFromRawResponse( $rawResponse );
+			$paymentResponse->setRecurringPaymentToken( $token );
+		}
+	}
+
+	/**
+	 * @param array $rawResponse
+	 * @return string
+	 */
+	protected static function getCardRecurringPaymentTokenFromRawResponse( array $rawResponse ): string {
+		return $rawResponse['card']['card_id'];
 	}
 
 	/**

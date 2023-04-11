@@ -2291,7 +2291,7 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\PaymentProviders\\dlocal\\DlocalPaymentStatusResponseFactory' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/DlocalPaymentStatusResponseFactory.php',
         'SmashPig\\PaymentProviders\\dlocal\\ErrorMapper' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/ErrorMapper.php',
         'SmashPig\\PaymentProviders\\dlocal\\ExpatriatedMessages\\DlocalMessage' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/ExpatriatedMessages/DlocalMessage.php',
-        'SmashPig\\PaymentProviders\\dlocal\\ExpatriatedMessages\\PaymentMessage' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/ExpatriatedMessages/PaymentMessage.php',
+        'SmashPig\\PaymentProviders\\dlocal\\ExpatriatedMessages\\PaidMessage' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/ExpatriatedMessages/PaidMessage.php',
         'SmashPig\\PaymentProviders\\dlocal\\HostedPaymentProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/HostedPaymentProvider.php',
         'SmashPig\\PaymentProviders\\dlocal\\IAPIRequestMapper' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/IAPIRequestMapper.php',
         'SmashPig\\PaymentProviders\\dlocal\\Jobs\\PaidMessageJob' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/Jobs/PaidMessageJob.php',

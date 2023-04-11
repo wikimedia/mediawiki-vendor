@@ -106,9 +106,10 @@ class Api {
 		Logger::debug( 'Raw response from dlocal: ' . $rawResponse['body'] );
 
 		if ( $this->responseHasErrorStatusCode( $rawResponse ) ) {
-			throw new ApiException(
-				'Response Error(' . $rawResponse['status'] . ') ' . $rawResponse['body']
-			);
+			$apiException = new ApiException(
+				'Response Error(' . $rawResponse['status'] . ') ' . $rawResponse['body'] );
+			$apiException->setRawErrors( json_decode( $rawResponse['body'], true ) );
+			throw $apiException;
 		}
 
 		return json_decode( $rawResponse['body'], true );

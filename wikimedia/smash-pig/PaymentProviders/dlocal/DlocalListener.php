@@ -14,7 +14,7 @@ use SmashPig\Core\Messages\ListenerMessage;
 class DlocalListener extends RestListener {
 
 	protected $paymentStatus = [
-		'PAID' => 'SmashPig\PaymentProviders\dlocal\ExpatriatedMessages\PaymentMessage',
+		'PAID' => 'SmashPig\PaymentProviders\dlocal\ExpatriatedMessages\PaidMessage',
 	];
 
 	/**

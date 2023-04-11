@@ -2,9 +2,11 @@
 
 namespace SmashPig\PaymentProviders\dlocal;
 
+use SmashPig\Core\ApiException;
 use SmashPig\Core\Context;
 use SmashPig\Core\ProviderConfiguration;
 use SmashPig\Core\ValidationError;
+use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentProviders\ICancelablePaymentProvider;
 use SmashPig\PaymentProviders\IGetLatestPaymentStatusProvider;
 use SmashPig\PaymentProviders\Responses\ApprovePaymentResponse;
@@ -45,8 +47,12 @@ class PaymentProvider implements IGetLatestPaymentStatusProvider, ICancelablePay
 	 * @throws \SmashPig\Core\ApiException
 	 */
 	public function cancelPayment( string $gatewayTxnId ): CancelPaymentResponse {
-		$result = $this->api->cancelPayment( $gatewayTxnId );
-		return DlocalCancelPaymentResponseFactory::fromRawResponse( $result );
+		try {
+			$result = $this->api->cancelPayment( $gatewayTxnId );
+			return DlocalCancelPaymentResponseFactory::fromRawResponse( $result );
+		} catch ( ApiException $apiException ) {
+			return DlocalCancelPaymentResponseFactory::fromErrorResponse( $apiException->getRawErrors() );
+		}
 	}
 
 	/**
@@ -57,8 +63,12 @@ class PaymentProvider implements IGetLatestPaymentStatusProvider, ICancelablePay
 	 * @throws \SmashPig\Core\ApiException
 	 */
 	public function getPaymentDetail( string $gatewayTxnId ): PaymentDetailResponse {
-		$result = $this->api->getPaymentDetail( $gatewayTxnId );
-		return DlocalCreatePaymentResponseFactory::fromRawResponse( $result );
+		try {
+			$result = $this->api->getPaymentDetail( $gatewayTxnId );
+			return DlocalCreatePaymentResponseFactory::fromRawResponse( $result );
+		} catch ( ApiException $apiException ) {
+			return DlocalCreatePaymentResponseFactory::fromErrorResponse( $apiException->getRawErrors() );
+		}
 	}
 
 	/**
@@ -68,8 +78,13 @@ class PaymentProvider implements IGetLatestPaymentStatusProvider, ICancelablePay
 	 * @throws \SmashPig\Core\ApiException
 	 */
 	public function createPaymentFromToken( array $params ): CreatePaymentResponse {
-		$result = $this->api->createPaymentFromToken( $params );
-		return DlocalCreatePaymentResponseFactory::fromRawResponse( $result );
+		try {
+			$result = $this->api->createPaymentFromToken( $params );
+			$response = DlocalCreatePaymentResponseFactory::fromRawResponse( $result );
+		} catch ( ApiException $apiException ) {
+			return DlocalCreatePaymentResponseFactory::fromErrorResponse( $apiException->getRawErrors() );
+		}
+		return $response;
 	}
 
 	/**
@@ -79,8 +94,12 @@ class PaymentProvider implements IGetLatestPaymentStatusProvider, ICancelablePay
 	 * @throws \SmashPig\Core\ApiException
 	 */
 	public function getLatestPaymentStatus( array $params ): PaymentDetailResponse {
-		$result = $this->api->getPaymentStatus( $params['gateway_txn_id'] );
-		return DlocalPaymentStatusResponseFactory::fromRawResponse( $result );
+		try {
+			$result = $this->api->getPaymentStatus( $params['gateway_txn_id'] );
+			return DlocalPaymentStatusResponseFactory::fromRawResponse( $result );
+		} catch ( ApiException $apiException ) {
+			return DlocalPaymentStatusResponseFactory::fromErrorResponse( $apiException->getRawErrors() );
+		}
 	}
 
 	/**
@@ -100,11 +119,22 @@ class PaymentProvider implements IGetLatestPaymentStatusProvider, ICancelablePay
 	}
 
 	/**
+	 * @param PaymentProviderResponse $paymentResponse
+	 * @param array $error
+	 * @return void
+	 */
+	protected static function handleValidationException( PaymentProviderResponse $paymentResponse, array $error ): void {
+		self::addPaymentResponseValidationErrors( $error, $paymentResponse );
+		$paymentResponse->setStatus( FinalStatus::FAILED );
+		$paymentResponse->setSuccessful( false );
+	}
+
+	/**
 	 * @param array $missingParams
 	 * @param PaymentProviderResponse $paymentResponse
 	 * @return void
 	 */
-	protected function addPaymentResponseValidationErrors(
+	protected static function addPaymentResponseValidationErrors(
 		array $params, PaymentProviderResponse $paymentResponse
 	): void {
 		foreach ( $params as $param => $message ) {
@@ -113,5 +143,4 @@ class PaymentProvider implements IGetLatestPaymentStatusProvider, ICancelablePay
 			);
 		}
 	}
-
 }

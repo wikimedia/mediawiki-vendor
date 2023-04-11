@@ -47,7 +47,7 @@ class RecurringChargePaymentApiRequestMapperTest extends TestCase {
 			'first_name' => 'Lorem',
 			'last_name' => 'Ipsum',
 			'email' => 'li@mail.com',
-			'fiscal_number' => '12345',
+			'fiscal_number' => '42243309114',
 			'contact_id' => '12345',
 			'state_province' => 'lore',
 			'city' => 'lore',

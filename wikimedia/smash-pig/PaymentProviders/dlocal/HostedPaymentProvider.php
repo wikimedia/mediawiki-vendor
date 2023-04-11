@@ -3,7 +3,6 @@
 namespace SmashPig\PaymentProviders\dlocal;
 
 use SmashPig\Core\ApiException;
-use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentProviders\IPaymentProvider;
 use SmashPig\PaymentProviders\Responses\CreatePaymentResponse;
 
@@ -23,15 +22,14 @@ class HostedPaymentProvider extends PaymentProvider implements IPaymentProvider 
 				// subsequent recurring will contain the token
 				$rawResponse = $this->api->createPaymentFromToken( $params );
 			}
-			$response = DlocalCreatePaymentResponseFactory::fromRawResponse( $rawResponse );
+			return DlocalCreatePaymentResponseFactory::fromRawResponse( $rawResponse );
 		} catch ( ValidationException $validationException ) {
 			$response = new CreatePaymentResponse();
-			$this->addPaymentResponseValidationErrors( $validationException->getData(), $response );
-			$response->setStatus( FinalStatus::FAILED );
-			$response->setSuccessful( false );
+			self::handleValidationException( $response, $validationException->getData() );
+			return $response;
+		} catch ( ApiException $apiException ) {
+			return DlocalCreatePaymentResponseFactory::fromErrorResponse( $apiException->getRawErrors() );
 		}
-
-		return $response;
 	}
 
 	/**

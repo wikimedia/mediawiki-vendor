@@ -1870,7 +1870,7 @@ return array(
     'SmashPig\\PaymentProviders\\dlocal\\DlocalPaymentStatusResponseFactory' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/dlocal/DlocalPaymentStatusResponseFactory.php',
     'SmashPig\\PaymentProviders\\dlocal\\ErrorMapper' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/dlocal/ErrorMapper.php',
     'SmashPig\\PaymentProviders\\dlocal\\ExpatriatedMessages\\DlocalMessage' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/dlocal/ExpatriatedMessages/DlocalMessage.php',
-    'SmashPig\\PaymentProviders\\dlocal\\ExpatriatedMessages\\PaymentMessage' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/dlocal/ExpatriatedMessages/PaymentMessage.php',
+    'SmashPig\\PaymentProviders\\dlocal\\ExpatriatedMessages\\PaidMessage' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/dlocal/ExpatriatedMessages/PaidMessage.php',
     'SmashPig\\PaymentProviders\\dlocal\\HostedPaymentProvider' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/dlocal/HostedPaymentProvider.php',
     'SmashPig\\PaymentProviders\\dlocal\\IAPIRequestMapper' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/dlocal/IAPIRequestMapper.php',
     'SmashPig\\PaymentProviders\\dlocal\\Jobs\\PaidMessageJob' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/dlocal/Jobs/PaidMessageJob.php',

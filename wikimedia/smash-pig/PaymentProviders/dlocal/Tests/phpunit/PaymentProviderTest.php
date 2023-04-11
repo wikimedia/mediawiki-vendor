@@ -5,6 +5,7 @@ namespace SmashPig\PaymentProviders\dlocal\Tests\phpunit;
 use SmashPig\Core\ApiException;
 use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentProviders\dlocal\Api;
+use SmashPig\PaymentProviders\dlocal\ErrorMapper;
 use SmashPig\PaymentProviders\dlocal\PaymentProvider;
 use SmashPig\Tests\BaseSmashPigUnitTestCase;
 
@@ -166,21 +167,57 @@ public function testGetLatestPaymentStatusResponseWithMisingStatus(): void {
 		$this->assertEquals( FinalStatus::COMPLETE, $paymentDetailResponse->getStatus() );
 	}
 
-	public function testGetLatestPaymentStatusThrowsExceptionOnPaymentIdNotFound(): void {
+	public function testGetLatestPaymentStatusReturnsPaymentErrorWithMessagePaymentIdNotFound(): void {
 		$gatewayTxnId = 'D-INVALID-5bc9c596-f3b6-4b7c-bf3c-432276030cd9';
+		$apiError = [
+			"code" => 4000,
+			"message" => "Payment not found"
+		];
+		$apiException = new ApiException();
+		$apiException->setRawErrors( $apiError );
+
 		$this->api->expects( $this->once() )
 			->method( 'getPaymentStatus' )
 			->with( $gatewayTxnId )
 			->willThrowException(
-				new ApiException( 'Response Error(404) {"code":4000,"message":"Payment not found"}' )
+				$apiException
 			);
-
-		$this->expectException( ApiException::class );
-		$this->expectExceptionMessage( 'Response Error(404) {"code":4000,"message":"Payment not found"}' );
 
 		$params = [ 'gateway_txn_id' => $gatewayTxnId ];
 		$paymentProvider = new PaymentProvider();
-		$paymentProvider->getLatestPaymentStatus( $params );
+		$response = $paymentProvider->getLatestPaymentStatus( $params );
+		$error = $response->getErrors();
+		$this->assertCount( 1, $error );
+		$this->assertEquals( $apiError["message"], $error[0]->getDebugMessage() );
+		$this->assertEquals( ErrorMapper::$errorCodes[ $apiError["code"] ], $error[0]->getErrorCode() );
+		$this->assertFalse( $response->isSuccessful() );
+		$this->assertEquals( FinalStatus::FAILED, $response->getStatus() );
+	}
+
+	public function testCancelPaymentReturnsPaymentErrorWithMessagePaymentIdNotFound(): void {
+		$gatewayTxnId = 'D-INVALID-5bc9c596-f3b6-4b7c-bf3c-432276030cd9';
+		$apiError = [
+			"code" => 4000,
+			"message" => "Payment not found"
+		];
+		$apiException = new ApiException();
+		$apiException->setRawErrors( $apiError );
+
+		$this->api->expects( $this->once() )
+			->method( 'cancelPayment' )
+			->with( $gatewayTxnId )
+			->willThrowException(
+				$apiException
+			);
+
+		$paymentProvider = new PaymentProvider();
+		$response = $paymentProvider->cancelPayment( $gatewayTxnId );
+		$error = $response->getErrors();
+		$this->assertCount( 1, $error );
+		$this->assertEquals( $apiError["message"], $error[0]->getDebugMessage() );
+		$this->assertEquals( ErrorMapper::$errorCodes[ $apiError["code"] ], $error[0]->getErrorCode() );
+		$this->assertFalse( $response->isSuccessful() );
+		$this->assertEquals( FinalStatus::FAILED, $response->getStatus() );
 	}
 
 	public function testCancelPaymentSuccessful(): void {
@@ -383,4 +420,67 @@ public function testCancelPaymentWithCompleteParamsFailsAndMisingStatus(): void 
 		$this->assertEquals( FinalStatus::PENDING, $response->getStatus() );
 	}
 
+	public function testCreatePaymentWithTokenReturnsPaymentErrorWithMessagePaymentIdNotFound(): void {
+		$params = [
+			"amount" => "1500",
+			"currency" => "INR",
+			"country" => "IN",
+			"payment_method_id" => "IR",
+			"first_name" => "asdf",
+			"last_name" => "asdf",
+			"email" => "sample@samplemail.com",
+			"fiscal_number" => "AAAAA9998C",
+			"recurring_payment_token" => "aad328f2-61e8-4a89-a015-feef4d52ff2c",
+			"order_id" => "839d446d-500b-43f0-b950-1689cfa0b630",
+			"notification_url" => "https://wikimedia.notification/url",
+		];
+
+		$apiError = [
+			"code" => 5008,
+			"message" => "Token not found or inactive"
+		];
+		$apiException = new ApiException();
+		$apiException->setRawErrors( $apiError );
+
+		$this->api->expects( $this->once() )
+			->method( 'createPaymentFromToken' )
+			->willThrowException(
+				$apiException
+			);
+
+		$paymentProvider = new PaymentProvider();
+		$response = $paymentProvider->createPaymentFromToken( $params );
+		$error = $response->getErrors();
+		$this->assertCount( 1, $error );
+		$this->assertEquals( $apiError["message"], $error[0]->getDebugMessage() );
+		$this->assertEquals( ErrorMapper::$errorCodes[ $apiError["code"] ], $error[0]->getErrorCode() );
+		$this->assertFalse( $response->isSuccessful() );
+		$this->assertEquals( FinalStatus::FAILED, $response->getStatus() );
+	}
+
+	public function testGetPaymentDetailReturnsPaymentErrorOnAPIException(): void {
+		$gatewayTxnId = 'D-INVALID-5bc9c596-f3b6-4b7c-bf3c-432276030cd9';
+		$apiError = [
+			"code" => 4000,
+			"message" => "Payment not found"
+		];
+		$apiException = new ApiException();
+		$apiException->setRawErrors( $apiError );
+
+		$this->api->expects( $this->once() )
+			->method( 'getPaymentDetail' )
+			->with( $gatewayTxnId )
+			->willThrowException(
+				$apiException
+			);
+
+		$paymentProvider = new PaymentProvider();
+		$response = $paymentProvider->getPaymentDetail( $gatewayTxnId );
+		$error = $response->getErrors();
+		$this->assertCount( 1, $error );
+		$this->assertEquals( $apiError["message"], $error[0]->getDebugMessage() );
+		$this->assertEquals( ErrorMapper::$errorCodes[ $apiError["code"] ], $error[0]->getErrorCode() );
+		$this->assertFalse( $response->isSuccessful() );
+		$this->assertEquals( FinalStatus::FAILED, $response->getStatus() );
+	}
 }

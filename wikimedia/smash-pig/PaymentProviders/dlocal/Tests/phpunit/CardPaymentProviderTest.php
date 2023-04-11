@@ -2,10 +2,12 @@
 
 namespace SmashPig\PaymentProviders\dlocal\Tests;
 
+use SmashPig\Core\ApiException;
 use SmashPig\PaymentData\ErrorCode;
 use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentProviders\dlocal\Api;
 use SmashPig\PaymentProviders\dlocal\CardPaymentProvider;
+use SmashPig\PaymentProviders\dlocal\ErrorMapper;
 use SmashPig\Tests\BaseSmashPigUnitTestCase;
 
 /**
@@ -207,7 +209,7 @@ public function testPaymentWithCompleteParamsFailsDueToUnknownStatus(): void {
 		$response = $provider->createPayment( $params );
 		$error = $response->getErrors();
 		$this->assertCount( 1, $error );
-		$this->assertEquals( 'Missing required field', $error[0]->getDebugMessage() );
+		$this->assertEquals( 'Status element missing from dlocal response.', $error[0]->getDebugMessage() );
 		$this->assertEquals( ErrorCode::MISSING_REQUIRED_DATA, $error[0]->getErrorCode() );
 		$this->assertFalse( $response->isSuccessful() );
 		$this->assertEquals( FinalStatus::UNKNOWN, $response->getStatus() );
@@ -454,10 +456,62 @@ public function testPaymentWithCompleteParamsFailsDueToUnknownStatus(): void {
 		$response = $provider->approvePayment( $params );
 		$error = $response->getErrors();
 		$this->assertCount( 1, $error );
-		$this->assertEquals( "Missing required field", $error[0]->getDebugMessage() );
+		$this->assertEquals( "Status element missing from dlocal response.", $error[0]->getDebugMessage() );
 		$this->assertEquals( ErrorCode::MISSING_REQUIRED_DATA, $error[0]->getErrorCode() );
 		$this->assertFalse( $response->isSuccessful() );
 		$this->assertEquals( FinalStatus::UNKNOWN, $response->getStatus() );
+	}
+
+	public function testApiAuthorizePaymentReturnsPaymentErrorWithMessageUserBlacklisted(): void {
+		$params = $this->getCreatePaymentRequestParams();
+		$apiError = [
+			"code" => 5014,
+			"message" => "User blacklisted"
+		];
+		$apiException = new ApiException();
+		$apiException->setRawErrors( $apiError );
+		$this->api->expects( $this->once() )
+				->method( 'cardAuthorizePayment' )
+				->with( $params )
+				->will( $this->throwException( $apiException ) );
+
+		$provider = new CardPaymentProvider();
+		$response = $provider->createPayment( $params );
+		$error = $response->getErrors();
+		$this->assertCount( 1, $error );
+		$this->assertEquals( $apiError["message"], $error[0]->getDebugMessage() );
+		$this->assertEquals( ErrorMapper::$errorCodes[ $apiError["code"] ], $error[0]->getErrorCode() );
+		$this->assertFalse( $response->isSuccessful() );
+		$this->assertEquals( FinalStatus::FAILED, $response->getStatus() );
+	}
+
+	public function testApiCapturePaymentReturnsPaymentErrorWithMessagePaymentNotFound(): void {
+		$gateway_txn_id = "PAY2323243343543";
+		$apiError = [
+			"code" => 4000,
+			"message" => "Payment not found"
+		];
+		$apiException = new ApiException();
+		$apiException->setRawErrors( $apiError );
+		$params = [
+			'gateway_txn_id' => $gateway_txn_id,
+			'amount' => 100,
+			'currency' => 'BRL',
+			'order_id' => '1234512345',
+		];
+		$this->api->expects( $this->once() )
+				->method( 'capturePayment' )
+				->with( $params )
+				->will( $this->throwException( $apiException ) );
+
+		$provider = new CardPaymentProvider();
+		$response = $provider->approvePayment( $params );
+		$error = $response->getErrors();
+		$this->assertCount( 1, $error );
+		$this->assertEquals( $apiError["message"], $error[0]->getDebugMessage() );
+		$this->assertEquals( ErrorMapper::$errorCodes[ $apiError["code"] ], $error[0]->getErrorCode() );
+		$this->assertFalse( $response->isSuccessful() );
+		$this->assertEquals( FinalStatus::FAILED, $response->getStatus() );
 	}
 
 	/**
@@ -486,7 +540,7 @@ public function testPaymentWithCompleteParamsFailsDueToUnknownStatus(): void {
 		$response = $provider->approvePayment( $params );
 		$error = $response->getErrors();
 		$this->assertCount( 1, $error );
-		$this->assertEquals( "Missing required field", $error[0]->getDebugMessage() );
+		$this->assertEquals( "Status element missing from dlocal response.", $error[0]->getDebugMessage() );
 		$this->assertEquals( ErrorCode::MISSING_REQUIRED_DATA, $error[0]->getErrorCode() );
 		$this->assertFalse( $response->isSuccessful() );
 		$this->assertEquals( FinalStatus::UNKNOWN, $response->getStatus() );

@@ -3,7 +3,6 @@
 namespace SmashPig\PaymentProviders\dlocal;
 
 use SmashPig\Core\ApiException;
-use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentProviders\IPaymentProvider;
 use SmashPig\PaymentProviders\Responses\ApprovePaymentResponse;
 use SmashPig\PaymentProviders\Responses\CreatePaymentResponse;
@@ -13,10 +12,8 @@ class CardPaymentProvider extends PaymentProvider implements IPaymentProvider {
 	/**
 	 * @param array $params
 	 * @return CreatePaymentResponse
-	 * @throws ApiException
 	 */
 	public function createPayment( array $params ): CreatePaymentResponse {
-		$response = new CreatePaymentResponse();
 		try {
 			$this->validateCreatePaymentParams( $params );
 			if ( !empty( $params['recurring_payment_token'] ) ) {
@@ -24,14 +21,14 @@ class CardPaymentProvider extends PaymentProvider implements IPaymentProvider {
 			} else {
 				$rawResponse = $this->api->cardAuthorizePayment( $params );
 			}
-			$response = DlocalCreatePaymentResponseFactory::fromRawResponse( $rawResponse );
+			return DlocalCreatePaymentResponseFactory::fromRawResponse( $rawResponse );
 		} catch ( ValidationException $validationException ) {
-			$this->addPaymentResponseValidationErrors( $validationException->getData(), $response );
-			$response->setStatus( FinalStatus::FAILED );
-			$response->setSuccessful( false );
+			$response = new CreatePaymentResponse();
+			self::handleValidationException( $response, $validationException->getData() );
+			return $response;
+		} catch ( ApiException $apiException ) {
+			return DlocalCreatePaymentResponseFactory::fromErrorResponse( $apiException->getRawErrors() );
 		}
-
-		return $response;
 	}
 
 	/**
@@ -44,21 +41,19 @@ class CardPaymentProvider extends PaymentProvider implements IPaymentProvider {
 	 *
 	 * @param array $params
 	 * @return ApprovePaymentResponse
-	 * @throws ApiException
 	 */
 	public function approvePayment( array $params ): ApprovePaymentResponse {
 		try {
 			$this->validateApprovePaymentParams( $params );
 			$rawResponse = $this->api->capturePayment( $params );
-			$approvePaymentResponse = DlocalApprovePaymentResponseFactory::fromRawResponse( $rawResponse );
+			return DlocalApprovePaymentResponseFactory::fromRawResponse( $rawResponse );
 		} catch ( ValidationException $validationException ) {
-			$approvePaymentResponse = new ApprovePaymentResponse();
-			$this->addPaymentResponseValidationErrors( $validationException->getData(), $approvePaymentResponse );
-			$approvePaymentResponse->setSuccessful( false );
-			$approvePaymentResponse->setStatus( FinalStatus::FAILED );
+			$response = new ApprovePaymentResponse();
+			self::handleValidationException( $response, $validationException->getData() );
+			return $response;
+		} catch ( ApiException $apiException ) {
+			return DlocalApprovePaymentResponseFactory::fromErrorResponse( $apiException->getRawErrors() );
 		}
-
-		return $approvePaymentResponse;
 	}
 
 	/**

@@ -3,6 +3,7 @@
 namespace SmashPig\PaymentProviders\dlocal;
 
 use Psr\Log\LogLevel;
+use SmashPig\Core\Logging\Logger;
 use SmashPig\Core\PaymentError;
 use SmashPig\PaymentData\ErrorCode;
 use SmashPig\PaymentData\FinalStatus;
@@ -10,6 +11,49 @@ use SmashPig\PaymentProviders\Responses\PaymentProviderResponse;
 use UnexpectedValueException;
 
 abstract class DlocalPaymentResponseFactory {
+
+	abstract protected static function createBasicResponse(): PaymentProviderResponse;
+
+	abstract protected static function getStatusNormalizer(): PaymentStatusNormalizer;
+
+	/**
+	 * @param mixed $rawResponse
+	 * @return PaymentProviderResponse
+	 */
+	public static function fromRawResponse( $rawResponse ): PaymentProviderResponse {
+		$response = static::createBasicResponse();
+		try {
+			$response->setRawResponse( $rawResponse );
+			$gatewayTxnId = $rawResponse['id'] ?? null;
+			if ( $gatewayTxnId ) {
+				$response->setGatewayTxnId( $gatewayTxnId );
+			}
+
+			static::setStatusDetails( $response, static::getStatusNormalizer() );
+			static::decorateResponse( $response, $rawResponse );
+			if ( static::isFailedTransaction( $response->getStatus() ) ) {
+				static::addPaymentFailureError( $response, $rawResponse[ 'status_detail' ], $rawResponse[ 'status_code' ] );
+			}
+		} catch ( UnexpectedValueException $unexpectedValueException ) {
+			$responseError = 'Status element missing from dlocal response.';
+			Logger::debug( $responseError, $rawResponse );
+
+			static::addPaymentFailureError( $response, $responseError );
+			$response->setStatus( FinalStatus::UNKNOWN );
+			$response->setSuccessful( false );
+		}
+		return $response;
+	}
+
+	/**
+	 * @param array $error
+	 * @return PaymentProviderResponse
+	 */
+	public static function fromErrorResponse( array $error ): PaymentProviderResponse {
+		$response = static::createBasicResponse();
+		self::setErrorDetails( $response, $error );
+		return $response;
+	}
 
 	/**
 	 * @param string $status
@@ -37,6 +81,26 @@ abstract class DlocalPaymentResponseFactory {
 
 	/**
 	 * @param PaymentProviderResponse $paymentResponse
+	 * @param array $error
+	 * @return void
+	 */
+	protected static function setErrorDetails( PaymentProviderResponse $paymentResponse, array $error ): void {
+		$code = $error['code'] ?? null;
+		$errorCode = ErrorMapper::$errorCodes[ $code ] ?? null;
+		$message = $error['message'] ?? "Server error";
+
+		if ( !$errorCode ) {
+			Logger::debug( 'Unable to map error code' );
+			$errorCode = ErrorCode::UNEXPECTED_VALUE;
+		}
+		$paymentResponse->addErrors( new PaymentError( $errorCode, $message, LogLevel::ERROR ) );
+		$paymentResponse->setRawResponse( $error );
+		$paymentResponse->setSuccessful( false );
+		$paymentResponse->setStatus( FinalStatus::FAILED );
+	}
+
+	/**
+	 * @param PaymentProviderResponse $paymentResponse
 	 * @param PaymentStatusNormalizer $statusMapper
 	 * @throws UnexpectedValueException
 	 * @return void
@@ -51,5 +115,13 @@ abstract class DlocalPaymentResponseFactory {
 		$normalizedStatus = $statusMapper->normalizeStatus( $rawStatus );
 		$paymentResponse->setStatus( $normalizedStatus );
 		$paymentResponse->setSuccessful( $statusMapper->isSuccessStatus( $normalizedStatus ) );
+	}
+
+	/**
+	 * @param PaymentProviderResponse $paymentResponse
+	 * @param array $rawResponse
+	 */
+	protected static function decorateResponse( PaymentProviderResponse $paymentResponse, array $rawResponse ): void {
+		// Default behavior is to do nothing here, but child classes can override it.
 	}
 }
