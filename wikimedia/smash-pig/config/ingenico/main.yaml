@@ -60,6 +60,15 @@ maps:
         transformers:
             - SmashPig\Core\Mapper\Transformers\AmountToCents
             - SmashPig\Core\Mapper\Transformers\DataConstraints
+    create-payment-session:
+        path: config/ingenico/maps/createPaymentSession.yaml
+        transformers:
+            - SmashPig\Core\Mapper\Transformers\AmountToCents
+            - SmashPig\Core\Mapper\Transformers\DataConstraints
+            - SmashPig\PaymentProviders\Ingenico\Transformers\IngenicoRecurring
+            # TODO move DonorLocale and IngenicoLocale staging down here
+            # - SmashPig\PaymentProviders\Ingenico\Transformers\IngenicoLocale
+            - SmashPig\PaymentProviders\Ingenico\Transformers\Inverted3DSecure
     refund-payment:
         path: config/ingenico/maps/refundPayment.yaml
         transformers:

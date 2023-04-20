@@ -14,12 +14,11 @@ class RecurringChargeCardPaymentApiRequestMapper extends DirectCardPaymentApiReq
 		// update country params for dlocal recurring something wrong with donor country from
 		// \CRM_Core_Payment_SmashPigRecurringProcessor::getPaymentParams
 		if ( !empty( $params['currency'] ) ) {
-			$source = ReferenceData::getPairedCountryFiscalNumberFromCurrency( $params['currency'] );
-			if ( !$source ) {
+			$country = ReferenceData::getPairedCountryFromCurrency( $params['currency'] );
+			if ( !$country ) {
 				throw new UnexpectedValueException( "Unknown CURRENCY" . $params['currency'] );
 			}
-			$mapperOutput['country'] = $source['country'];
-			$mapperOutput['payer']['document'] = $source['fiscal_number'];
+			$mapperOutput['country'] = $country;
 		}
 
 		return $mapperOutput;

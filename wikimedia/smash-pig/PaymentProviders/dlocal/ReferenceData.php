@@ -1,6 +1,7 @@
 <?php namespace SmashPig\PaymentProviders\dlocal;
 
 use OutOfBoundsException;
+use SmashPig\PaymentData\ReferenceData\NationalCurrencies;
 
 /**
  * These codes are listed per country here
@@ -107,44 +108,9 @@ class ReferenceData {
 		'WP' => 'webpay',
 	];
 
-	protected static $defaultCountryFiscalNumberFromCurrency = [
-		'ARS' => [
-			'country' => 'AR',
-			'fiscal_number' => '99.999.99',
-		],
-		'BRL' => [
-			'country' => 'BR',
-			'fiscal_number' => '332.945.766-09',
-		],
-		'CLP' => [
-			'country' => 'CL',
-			'fiscal_number' => '99999999-9',
-		],
-		'COP' => [
-			'country' => 'CO',
-			'fiscal_number' => '9.999.999.999',
-		],
-		'INR' => [
-			'country' => 'IN',
-			'fiscal_number' => 'AAAAA9999C',
-		],
-		'MXN' => [
-			'country' => 'MX',
-			'fiscal_number' => '42243309114',
-		],
-		'PEN' => [
-			'country' => 'PE',
-			'fiscal_number' => '27662162',
-		],
-		'UYU' => [
-			'country' => 'UY',
-			'fiscal_number' => '9.999.999-9',
-		],
-		'ZAR' => [
-			'country' => 'ZA',
-			'fiscal_number' => '0109116567086',
-		],
-	];
+	public static function getSimpleSubmethods() {
+		return self::$simpleSubmethods;
+	}
 
 	public static function decodePaymentMethod( $type, $bankCode ) {
 		if ( !array_key_exists( $type, self::$methods ) ) {
@@ -209,12 +175,12 @@ class ReferenceData {
 	 * Since we do not have country and fiscal number saved for contribution
 	 * check \CRM_Core_Payment_SmashPigRecurringProcessor::getPaymentParams
 	 * @param string $currency
-	 * @return string[]|null
+	 * @return string|null
 	 */
-	public static function getPairedCountryFiscalNumberFromCurrency( string $currency ): ?array {
-		foreach ( self::$defaultCountryFiscalNumberFromCurrency as $defaultCurrency => $source ) {
+	public static function getPairedCountryFromCurrency( string $currency ): ?string {
+		foreach ( NationalCurrencies::getNationalCurrencies() as $country => $defaultCurrency ) {
 			if ( $defaultCurrency === $currency ) {
-				return $source;
+				return $country;
 			}
 		}
 		return null;

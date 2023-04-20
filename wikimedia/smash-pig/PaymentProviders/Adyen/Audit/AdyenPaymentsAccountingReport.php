@@ -80,7 +80,7 @@ class AdyenPaymentsAccountingReport extends AdyenAudit {
 
 		$msg['gateway_parent_id'] = $row['Psp Reference'];
 		$msg['gateway_refund_id'] = $row['Modification Psp Reference'];
-		if ( strtolower( $row['Record Type'] ) === 'chargeback' ) {
+		if ( in_array( strtolower( $row['Record Type'] ), [ 'chargeback', 'secondchargeback' ] ) ) {
 			$msg['type'] = 'chargeback';
 		} else {
 			$msg['type'] = 'refund';

@@ -32,6 +32,11 @@ class DlocalListener extends RestListener {
 		$authorizationHeader = $request->headers->get( 'authorization' );
 		// We only want to process messages sent with an authorization header we can validate
 		if ( empty( $authorizationHeader ) ) {
+			$requestValues = $request->getValues();
+			if ( isset( $requestValues['x_control'] ) ) {
+				Logger::info( 'discarding mis-directed old-style IPN' );
+				return [];
+			}
 			throw new ListenerDataException(
 				'INVALID dlocal IPN message with no authorization header: ' . print_r( $rawRequest, true )
 			);

@@ -1,0 +1,42 @@
+cardPaymentMethodSpecificInput:
+    threeDSecure:
+        skipAuthentication: '%skip_3d_secure%'
+    tokenize: '%recurring%'
+    recurring:
+        # TODO: we need endDate and minFrequency for 3ds2 per
+        # https://apireference.connect.worldline-solutions.com/s2sapi/v1/en_US/java/hostedcheckouts/create.html?paymentPlatform=ALL
+        recurringPaymentSequenceIndicator: '%recurring_payment_sequence_indicator%'
+hostedCheckoutSpecificInput:
+    isRecurring: '%recurring%'
+    locale: '%language%'
+    returnCancelState: true
+    paymentProductFilters:
+        restrictTo:
+            groups: [ 'cards' ]
+    returnUrl: '%return_url%'
+    showResultPage: false
+    variant: '%processor_form%' # For a/b testing of iframe
+fraudFields:
+    customerIpAddress: '%user_ip%'
+order:
+    amountOfMoney:
+        amount: '%amount%'
+        currencyCode: '%currency%'
+    customer:
+        billingAddress:
+            city: '%city%'
+            countryCode: '%country%'
+            state: '%state_province%'
+            street: '%street_address%'
+            zip: '%postal_code%'
+        contactDetails:
+            emailAddress: '%email%'
+        locale: '%language%' # used for redirection to 3rd parties
+        personalInformation:
+            # no longer sent from our side since they collect card name
+            name:
+                firstName: '%first_name%'
+                surname: '%last_name%'
+    references:
+        descriptor: '%description%'
+        merchantReference: '%order_id%'

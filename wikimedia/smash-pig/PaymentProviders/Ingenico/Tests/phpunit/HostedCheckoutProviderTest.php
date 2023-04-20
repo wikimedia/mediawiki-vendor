@@ -63,7 +63,7 @@ class HostedCheckoutProviderTest extends BaseSmashPigUnitTestCase {
 		$this->assertEquals( $expectedUrl, $hostedPaymentUrl );
 	}
 
-	public function testGetHostedPaymentStatus() {
+	public function testGetLatestPaymentStatus() {
 		$hostedPaymentId = '8915-28e5b79c889641c8ba770f1ba576c1fe';
 		$this->setUpResponse( __DIR__ . "/../Data/hostedPaymentStatus.response", 200 );
 		$this->curlWrapper->expects( $this->once() )
@@ -71,13 +71,16 @@ class HostedCheckoutProviderTest extends BaseSmashPigUnitTestCase {
 				$this->equalTo( "https://eu.sandbox.api-ingenico.com/v1/1234/hostedcheckouts/$hostedPaymentId" ),
 				$this->equalTo( 'GET' )
 			);
-		$response = $this->provider->getHostedPaymentStatus( $hostedPaymentId );
+		$response = $this->provider->getLatestPaymentStatus( [ 'gateway_session_id' => $hostedPaymentId ] );
 		$rawResponse = $response->getRawResponse();
 		$this->assertEquals( 'PAYMENT_CREATED', $rawResponse['status'] );
 		// checking the PaymentDetailResponse
 		$this->assertEquals( 'PENDING_APPROVAL', $response->getRawStatus() );
 		$this->assertEquals( 'pending-poke', $response->getStatus() );
 		$this->assertTrue( $response->isSuccessful() );
+		$this->assertEquals( 23.45, $response->getAmount() );
+		$this->assertEquals( 'USD', $response->getCurrency() );
+		$this->assertEquals( 'visa', $response->getPaymentSubmethod() );
 		$this->assertSame( '000000891566072501680000200001', $response->getGatewayTxnId() );
 		$this->assertEquals( [ 'avs' => 25, 'cvv' => 0 ], $response->getRiskScores() );
 		$this->assertEquals( "Testy McTesterson", $response->getDonorDetails()->getFullName() );
@@ -87,9 +90,9 @@ class HostedCheckoutProviderTest extends BaseSmashPigUnitTestCase {
 	 * Test that we prefer the explicitly specified initialSchemeTransactionId
 	 * @throws \SmashPig\Core\ApiException
 	 */
-	public function testGetHostedPaymentStatusWithInitialSchemeTransactionId() {
+	public function testGetLatestPaymentStatusWithInitialSchemeTransactionId() {
 		$this->setUpResponse( __DIR__ . "/../Data/hostedPaymentStatusWithInitialSchemeId.response", 200 );
-		$response = $this->provider->getHostedPaymentStatus( '8915-28e5b79c889641c8ba770f1ba576c1fe' );
+		$response = $this->provider->getLatestPaymentStatus( [ 'gateway_session_id' => '8915-28e5b79c889641c8ba770f1ba576c1fe' ] );
 		$this->assertEquals( "asdf1234asdf1234Sdasdf1234", $response->getInitialSchemeTransactionId() );
 	}
 
@@ -97,16 +100,16 @@ class HostedCheckoutProviderTest extends BaseSmashPigUnitTestCase {
 	 * Test that we map the fallback schemeTransactionId
 	 * @throws \SmashPig\Core\ApiException
 	 */
-	public function testGetHostedPaymentStatusWithSchemeTransactionId() {
+	public function testGetLatestPaymentStatusWithSchemeTransactionId() {
 		$this->setUpResponse( __DIR__ . "/../Data/hostedPaymentStatusWithSchemeId.response", 200 );
-		$response = $this->provider->getHostedPaymentStatus( '8915-28e5b79c889641c8ba770f1ba576c1fe' );
+		$response = $this->provider->getLatestPaymentStatus( [ 'gateway_session_id' => '8915-28e5b79c889641c8ba770f1ba576c1fe' ] );
 		$this->assertEquals( "lkjh0987lkjh0987lkjh0987", $response->getInitialSchemeTransactionId() );
 	}
 
 	/**
 	 * @dataProvider hostedPaymentStatusRejectedErrors
 	 */
-	public function testGetHostedPaymentStatusFailuresReturnErrors( $errorCode, $errorDescription ) {
+	public function testGetLatestPaymentStatusFailuresReturnErrors( $errorCode, $errorDescription ) {
 		$hostedPaymentId = 'DUMMY-ID-8915-28e5b79c889641c8ba770f1ba576c1fe';
 		$this->setUpResponse( __DIR__ . "/../Data/hostedPaymentStatusRejected$errorCode.response", 200 );
 		$this->curlWrapper->expects( $this->once() )
@@ -115,7 +118,7 @@ class HostedCheckoutProviderTest extends BaseSmashPigUnitTestCase {
 				$this->equalTo( 'GET' )
 			);
 
-		$response = $this->provider->getHostedPaymentStatus( $hostedPaymentId );
+		$response = $this->provider->getLatestPaymentStatus( [ 'gateway_session_id' => $hostedPaymentId ] );
 		$rawResponse = $response->getRawResponse();
 		$this->assertNotEmpty( $rawResponse['errors'] );
 		$this->assertEquals( $errorCode, $rawResponse['errors'][0]['code'] );
@@ -138,7 +141,7 @@ class HostedCheckoutProviderTest extends BaseSmashPigUnitTestCase {
 		];
 	}
 
-	public function testGetHostedPaymentStatusInProgress() {
+	public function testGetLatestPaymentStatusInProgress() {
 		$hostedPaymentId = '8915-28e5b79c889641c8ba770f1ba576c1fe';
 		$this->setUpResponse( __DIR__ . "/../Data/hostedPaymentStatusIN_PROGRESS.response", 200 );
 		$this->curlWrapper->expects( $this->once() )
@@ -146,7 +149,7 @@ class HostedCheckoutProviderTest extends BaseSmashPigUnitTestCase {
 				$this->equalTo( "https://eu.sandbox.api-ingenico.com/v1/1234/hostedcheckouts/$hostedPaymentId" ),
 				$this->equalTo( 'GET' )
 			);
-		$response = $this->provider->getHostedPaymentStatus( $hostedPaymentId );
+		$response = $this->provider->getLatestPaymentStatus( [ 'gateway_session_id' => $hostedPaymentId ] );
 		$rawResponse = $response->getRawResponse();
 		$this->assertEquals( 'IN_PROGRESS', $rawResponse['status'] );
 		$this->assertEquals( 'IN_PROGRESS', $response->getRawStatus() );
@@ -154,4 +157,175 @@ class HostedCheckoutProviderTest extends BaseSmashPigUnitTestCase {
 		$this->assertFalse( $response->isSuccessful() );
 	}
 
+	public function testCreatePaymentSession() {
+		$params = [
+			'use_3d_secure' => false,
+			'amount' => 10,
+			'currency' => 'USD',
+			'recurring' => 0,
+			'return_url' => 'https://example.com',
+			'processor_form' => 'blah',
+			'city' => 'Twin Peaks',
+			'street_address' => '708 Northwestern Street',
+			'state_province' => 'WA',
+			'postal_code' => '98045',
+			'email' => 'lpalmer@example.com',
+			'order_id' => '19900408',
+			'description' => 'Donation to Stop Ghostwood campaign',
+			'user_ip' => '127.0.0.1',
+			'country' => 'US',
+			'language' => 'en_US',
+		];
+		$this->setUpResponse( __Dir__ . '/../Data/newHostedCheckout.response', 200 );
+		$this->curlWrapper->expects( $this->once() )
+			->method( 'execute' )->with(
+				$this->equalTo( 'https://eu.sandbox.api-ingenico.com/v1/1234/hostedcheckouts' ),
+				$this->equalTo( 'POST' ),
+				$this->anything(),
+				$this->callback( function ( $curlData ) {
+					$decoded = json_decode( $curlData, true );
+					$this->assertSame( [
+							'cardPaymentMethodSpecificInput' => [
+								'threeDSecure' => [
+									'skipAuthentication' => 'true',
+								],
+							],
+							'hostedCheckoutSpecificInput' => [
+								'locale' => 'en_US',
+								'returnCancelState' => true,
+								'paymentProductFilters' => [
+									'restrictTo' => [
+										'groups' => [ 'cards' ],
+									]
+								],
+								'returnUrl' => 'https://example.com',
+								'showResultPage' => false,
+								'variant' => 'blah',
+							],
+							'fraudFields' => [
+								'customerIpAddress' => '127.0.0.1',
+							],
+							'order' => [
+								'amountOfMoney' => [
+									'amount' => '1000',
+									'currencyCode' => 'USD',
+								],
+								'customer' => [
+									'billingAddress' => [
+										'city' => 'Twin Peaks',
+										'countryCode' => 'US',
+										'state' => 'WA',
+										'street' => '708 Northwestern Street',
+										'zip' => '98045',
+									],
+									'contactDetails' => [
+										'emailAddress' => 'lpalmer@example.com'
+									],
+									'locale' => 'en_US',
+								],
+								'references' => [
+									'descriptor' => 'Donation to Stop Ghostwood campaign',
+									'merchantReference' => '19900408',
+								]
+							]
+						],
+						$decoded
+					);
+					return true;
+				} )
+			);
+		$response = $this->provider->createPaymentSession( $params );
+		$this->assertEquals( '8915-28e5b79c889641c8ba770f1ba576c1fe', $response->getPaymentSession() );
+		$this->assertEquals(
+			'https://payments.test.pay1.secured-by-ingenico.com/pay8915-53ebca407e6b4a1dbd086aad4f10354d:8915-28e5b79c889641c8ba770f1ba576c1fe:9798f4c44ac6406e8288494332d1daa0',
+			$response->getRedirectUrl()
+		);
+	}
+
+	public function testCreatePaymentSessionRecurring() {
+		$params = [
+			'use_3d_secure' => true,
+			'amount' => 10,
+			'currency' => 'USD',
+			'recurring' => 1,
+			'return_url' => 'https://example.com',
+			'processor_form' => 'blah',
+			'city' => 'Twin Peaks',
+			'street_address' => '708 Northwestern Street',
+			'state_province' => 'WA',
+			'postal_code' => '98045',
+			'email' => 'lpalmer@example.com',
+			'order_id' => '19900408',
+			'description' => 'Monthly donation to Stop Ghostwood campaign',
+			'user_ip' => '127.0.0.1',
+			'country' => 'US',
+			'language' => 'en_US',
+		];
+		$this->setUpResponse( __Dir__ . '/../Data/newHostedCheckout.response', 200 );
+		$this->curlWrapper->expects( $this->once() )
+			->method( 'execute' )->with(
+				$this->equalTo( 'https://eu.sandbox.api-ingenico.com/v1/1234/hostedcheckouts' ),
+				$this->equalTo( 'POST' ),
+				$this->anything(),
+				$this->callback( function ( $curlData ) {
+					$decoded = json_decode( $curlData, true );
+					$this->assertSame( [
+							'cardPaymentMethodSpecificInput' => [
+								'tokenize' => 'true',
+								'recurring' => [
+									'recurringPaymentSequenceIndicator' => 'first',
+								]
+							],
+							'hostedCheckoutSpecificInput' => [
+								'isRecurring' => 'true',
+								'locale' => 'en_US',
+								'returnCancelState' => true,
+								'paymentProductFilters' => [
+									'restrictTo' => [
+										'groups' => [ 'cards' ],
+									]
+								],
+								'returnUrl' => 'https://example.com',
+								'showResultPage' => false,
+								'variant' => 'blah',
+							],
+							'fraudFields' => [
+								'customerIpAddress' => '127.0.0.1',
+							],
+							'order' => [
+								'amountOfMoney' => [
+									'amount' => '1000',
+									'currencyCode' => 'USD',
+								],
+								'customer' => [
+									'billingAddress' => [
+										'city' => 'Twin Peaks',
+										'countryCode' => 'US',
+										'state' => 'WA',
+										'street' => '708 Northwestern Street',
+										'zip' => '98045',
+									],
+									'contactDetails' => [
+										'emailAddress' => 'lpalmer@example.com'
+									],
+									'locale' => 'en_US',
+								],
+								'references' => [
+									'descriptor' => 'Monthly donation to Stop Ghostwood campaign',
+									'merchantReference' => '19900408',
+								]
+							]
+						],
+						$decoded
+					);
+					return true;
+				} )
+			);
+		$response = $this->provider->createPaymentSession( $params );
+		$this->assertEquals( '8915-28e5b79c889641c8ba770f1ba576c1fe', $response->getPaymentSession() );
+		$this->assertEquals(
+			'https://payments.test.pay1.secured-by-ingenico.com/pay8915-53ebca407e6b4a1dbd086aad4f10354d:8915-28e5b79c889641c8ba770f1ba576c1fe:9798f4c44ac6406e8288494332d1daa0',
+			$response->getRedirectUrl()
+		);
+	}
 }

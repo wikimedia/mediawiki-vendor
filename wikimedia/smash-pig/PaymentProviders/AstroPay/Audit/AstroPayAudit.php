@@ -1,11 +1,12 @@
 <?php namespace SmashPig\PaymentProviders\AstroPay\Audit;
 
 use OutOfBoundsException;
+use SmashPig\Core\Context;
 use SmashPig\Core\DataFiles\AuditParser;
 use SmashPig\Core\Logging\Logger;
 use SmashPig\Core\NormalizationException;
 use SmashPig\Core\UtcDate;
-use SmashPig\PaymentProviders\AstroPay\ReferenceData;
+use SmashPig\PaymentProviders\dlocal\ReferenceData;
 
 class AstroPayAudit implements AuditParser {
 
@@ -74,7 +75,7 @@ class AstroPayAudit implements AuditParser {
 
 		// Common to all types
 		$msg['date'] = UtcDate::getUtcTimestamp( $row['Creation date'] );
-		$msg['gateway'] = 'astropay';
+		$msg['gateway'] = $this->getGateway( $msg['date'] );
 		$msg['gross'] = $row['Net Amount (local)'];
 
 		switch ( $row['Type'] ) {
@@ -142,5 +143,21 @@ class AstroPayAudit implements AuditParser {
 	protected function getContributionTrackingId( $invoice ) {
 		$parts = explode( '.', $invoice );
 		return $parts[0];
+	}
+
+	protected function getGateway( int $timestamp ): string {
+		static $cutoverDate;
+		if ( $cutoverDate === null ) {
+			$config = Context::get()->getProviderConfiguration();
+			if ( $config->nodeExists( 'api-cutover-date' ) ) {
+				$cutoverDate = UtcDate::getUtcTimestamp( $config->val( 'api-cutover-date' ) );
+			} else {
+				$cutoverDate = false;
+			}
+		}
+		if ( $cutoverDate === false ) {
+			return 'astropay';
+		}
+		return ( $timestamp > $cutoverDate ) ? 'dlocal' : 'astropay';
 	}
 }

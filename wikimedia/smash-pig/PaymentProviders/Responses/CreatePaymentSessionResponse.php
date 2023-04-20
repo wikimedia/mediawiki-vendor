@@ -12,6 +12,13 @@ class CreatePaymentSessionResponse extends PaymentProviderResponse {
 	protected $paymentSession;
 
 	/**
+	 * URL that a user should be redirected to in order to complete the payment
+	 *
+	 * @var string|null
+	 */
+	protected $redirectUrl;
+
+	/**
 	 * @return string
 	 */
 	public function getPaymentSession(): string {
@@ -25,5 +32,25 @@ class CreatePaymentSessionResponse extends PaymentProviderResponse {
 	public function setPaymentSession( string $paymentSession ): CreatePaymentSessionResponse {
 		$this->paymentSession = $paymentSession;
 		return $this;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getRedirectUrl(): ?string {
+		return $this->redirectUrl;
+	}
+
+	/**
+	 * @param string $redirectUrl
+	 * @return CreatePaymentSessionResponse
+	 */
+	public function setRedirectUrl( string $redirectUrl ): CreatePaymentSessionResponse {
+		$this->redirectUrl = $redirectUrl;
+		return $this;
+	}
+
+	public function requiresRedirect(): bool {
+		return !empty( $this->redirectUrl );
 	}
 }

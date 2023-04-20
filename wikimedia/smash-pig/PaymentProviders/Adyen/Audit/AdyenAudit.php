@@ -104,6 +104,7 @@ abstract class AdyenAudit implements AuditParser {
 			case 'chargebackexternally':
 			case 'refunded':
 			case 'refundedexternally':
+			case 'secondchargeback':
 				$msg = $this->parseRefund( $row, $msg );
 				break;
 			default:

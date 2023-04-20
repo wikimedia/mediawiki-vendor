@@ -53,6 +53,21 @@ class PaymentDetailResponse extends PaymentProviderResponse {
 	protected $donorDetails = null;
 
 	/**
+	 * @var numeric|null
+	 */
+	protected $amount;
+
+	/**
+	 * @var string|null
+	 */
+	protected $currency;
+
+	/**
+	 * @var string|null
+	 */
+	protected $paymentSubmethod;
+
+	/**
 	 * Determines whether the payment is in a status that requires further
 	 * action from the merchant to push through. Generally this means a card
 	 * payment has been authorized but not yet captured.
@@ -143,4 +158,53 @@ class PaymentDetailResponse extends PaymentProviderResponse {
 	public function getDonorDetails(): ?DonorDetails {
 		return $this->donorDetails;
 	}
+
+	/**
+	 * @return numeric|null
+	 */
+	public function getAmount() {
+		return $this->amount;
+	}
+
+	/**
+	 * @param numeric|null $amount
+	 * @return PaymentDetailResponse
+	 */
+	public function setAmount( $amount ): PaymentDetailResponse {
+		$this->amount = $amount;
+		return $this;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getCurrency(): ?string {
+		return $this->currency;
+	}
+
+	/**
+	 * @param string|null $currency
+	 * @return PaymentDetailResponse
+	 */
+	public function setCurrency( ?string $currency ): PaymentDetailResponse {
+		$this->currency = $currency;
+		return $this;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getPaymentSubmethod(): ?string {
+		return $this->paymentSubmethod;
+	}
+
+	/**
+	 * @param string|null $paymentSubmethod
+	 * @return PaymentDetailResponse
+	 */
+	public function setPaymentSubmethod( ?string $paymentSubmethod ): PaymentDetailResponse {
+		$this->paymentSubmethod = $paymentSubmethod;
+		return $this;
+	}
+
 }
