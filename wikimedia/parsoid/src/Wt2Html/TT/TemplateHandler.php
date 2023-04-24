@@ -62,8 +62,6 @@ class TemplateHandler extends TokenHandler {
 	 */
 	public function __construct( TokenTransformManager $manager, array $options ) {
 		parent::__construct( $manager, $options );
-		// Set this here so that it's available in the TokenStreamPatcher,
-		// which continues to inherit from TemplateHandler.
 		$this->parserFunctions = new ParserFunctions( $this->env );
 		$this->ae = new AttributeExpander( $this->manager, [
 			'expandTemplates' => $this->options['expandTemplates'],
@@ -365,7 +363,6 @@ class TemplateHandler extends TokenHandler {
 					// FIXME: Some made up synthetic title
 				'title' => $syntheticTitle,
 				'magicWordType' => isset( Utils::magicMasqs()[$canonicalFunctionName] ) ? 'MASQ' : null,
-				'targetToks' => !is_array( $targetToks ) ? [ $targetToks ] : $targetToks,
 			];
 		}
 
@@ -879,7 +876,7 @@ class TemplateHandler extends TokenHandler {
 	 * @param array $resolvedTgt
 	 * @return TemplateExpansionResult
 	 */
-	public function processSpecialMagicWord(
+	private function processSpecialMagicWord(
 		bool $atTopLevel, TemplateEncapsulator $state, array $resolvedTgt
 	): TemplateExpansionResult {
 		$env = $this->env;
