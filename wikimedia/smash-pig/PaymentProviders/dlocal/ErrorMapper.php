@@ -2,6 +2,7 @@
 
 namespace SmashPig\PaymentProviders\dlocal;
 
+use SmashPig\Core\ValidationError;
 use SmashPig\PaymentData\ErrorCode;
 
 class ErrorMapper {
@@ -60,4 +61,24 @@ class ErrorMapper {
 		'7000' => ErrorCode::INTERNAL_ERROR, // Failed to process the request.
 //		'5010' => ErrorCode::UNKNOWN, // Request Timeout. => duplicate
 	];
+
+	public static $fieldMapping = [
+		'currency' => 'currency',
+		'payer.document' => 'fiscal_number',
+	];
+
+	public static function getValidationError( array $errorResponse ): ?ValidationError {
+		if (
+			!empty( $errorResponse['param'] ) &&
+			array_key_exists( $errorResponse['param'], self::$fieldMapping )
+		) {
+			return new ValidationError(
+				self::$fieldMapping[$errorResponse['param']],
+				null,
+				[],
+				$errorResponse['message'] ?? null
+			);
+		}
+		return null;
+	}
 }

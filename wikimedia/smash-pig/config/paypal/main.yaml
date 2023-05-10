@@ -113,6 +113,7 @@ messages:
             - recurring_payment_expired
             - recurring_payment_failed
             - recurring_payment_outstanding_payment_failed
+            - recurring_payment_outstanding_payment
             - recurring_payment_profile_cancel
             - recurring_payment_profile_created
             - recurring_payment_skipped

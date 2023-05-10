@@ -93,7 +93,13 @@ abstract class DlocalPaymentResponseFactory {
 			Logger::debug( 'Unable to map error code' );
 			$errorCode = ErrorCode::UNEXPECTED_VALUE;
 		}
-		$paymentResponse->addErrors( new PaymentError( $errorCode, $message, LogLevel::ERROR ) );
+
+		$validationError = ErrorMapper::getValidationError( $error );
+		if ( $validationError !== null ) {
+			$paymentResponse->addValidationError( $validationError );
+		} else {
+			$paymentResponse->addErrors( new PaymentError( $errorCode, $message, LogLevel::ERROR ) );
+		}
 		$paymentResponse->setRawResponse( $error );
 		$paymentResponse->setSuccessful( false );
 		$paymentResponse->setStatus( FinalStatus::FAILED );

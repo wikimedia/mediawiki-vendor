@@ -37,12 +37,12 @@ class RecurringContractJob extends RunnableJob {
 	}
 
 	public function execute() {
+		$logger = Logger::getTaggedLogger( "corr_id-adyen-$this->merchantReference" );
 		// We get an RECURRING_CONTRACT for every new recurring but only need to process recurring iDEAL
 		if ( $this->paymentMethod == 'ideal' ) {
-			$logger = Logger::getTaggedLogger( "corr_id-adyen-{$this->merchantReference}" );
 			$logger->info(
-				"Recording recurring contract for payment method: '{$this->paymentMethod}' order ID: " .
-				"'{$this->merchantReference}' with recurring token: '{$this->recurringPaymentToken}'"
+				"Handling recurring contract IPN for payment method '$this->paymentMethod', order ID " .
+				"'$this->merchantReference' and recurring token '$this->recurringPaymentToken'"
 			);
 
 			// Find the details from the payment site in the pending database.
@@ -51,7 +51,9 @@ class RecurringContractJob extends RunnableJob {
 			$dbMessage = $db->fetchMessageByGatewayOrderId( 'adyen', $this->merchantReference );
 
 			if ( $dbMessage && ( isset( $dbMessage['gateway_txn_id'] ) ) ) {
-				$logger->debug( 'A valid message was obtained from the pending queue' );
+				$logger->debug(
+					'A valid message was obtained from the pending queue. Sending message to donations queue.'
+				);
 
 				// Add the recurring setup information
 				$dbMessage['recurring_payment_token'] = $this->recurringPaymentToken;
@@ -66,11 +68,16 @@ class RecurringContractJob extends RunnableJob {
 			} else {
 				// There was no matching pending entry found
 				$logger->warning(
-					"Could not find donor details for payment method: '{$this->paymentMethod}' order ID: " .
-					"'{$this->merchantReference}' with recurring token: '{$this->recurringPaymentToken}'",
+					"Could not find donor details for payment method '$this->paymentMethod', order ID: " .
+					"'$this->merchantReference', and recurring token: '$this->recurringPaymentToken'",
 					$dbMessage
 				);
 			}
+		} else {
+			$logger->info(
+				"Discarding recurring contract IPN for payment method '$this->paymentMethod', order ID " .
+				"'$this->merchantReference' and recurring token '$this->recurringPaymentToken'"
+			);
 		}
 
 		return true;

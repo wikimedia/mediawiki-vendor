@@ -119,7 +119,10 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 		$this->curlWrapper->expects( $this->once() )
 			->method( 'execute' )
 			->with(
-				'https://checkout-test.adyen.com/v67/payments',
+				$this->callback( function ( $url ) {
+					$this->assertStringEndsWith( '/payments', $url );
+					return true;
+				} ),
 				'POST',
 				$this->callback( function ( $actualHeaders ) {
 					$this->assertArrayHasKey( 'Idempotency-Key', $actualHeaders );

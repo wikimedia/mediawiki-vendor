@@ -15,6 +15,10 @@ class BankTransferPaymentProvider extends HostedPaymentProvider {
 	 * @var string
 	 */
 	public const SUBSCRIPTION_FREQUENCY_UNIT_MONTHLY = 'MONTH';
+	/**
+	 * @var string
+	 */
+	public const UPI_ID_VERIFY_STATUS_VERIFIED = 'VERIFIED';
 
 	/**
 	 * Should be set to one of the two SUBSCRIPTION_FREQUENCY_UNIT_* values

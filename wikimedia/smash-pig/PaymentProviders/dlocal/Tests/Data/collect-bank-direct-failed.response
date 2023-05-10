@@ -1,0 +1,12 @@
+HTTP/1.1 200 OK
+Date: Sat, 01 Apr 2023 01:55:29 GMT
+Content-Type: application/json
+Content-Length: 396
+Connection: keep-alive
+Server: rhino-core-shield
+X-RequestId: api-middleware
+X-UOW: 1-64278f07-29d633573b581b9f68e33dfd
+X-ServiceName: api-middleware
+X-Upstream: 10.145.77.133:80
+
+{ "id": "F-413092-a0198fd7-6550-4191-9753-241629506a23", "amount": 10000, "currency": "INR", "payment_method_id": "UD", "payment_method_type": "WALLET", "payment_method_flow": "DIRECT", "country": "IN", "created_date": "2023-04-01T01:55:19.000+0000", "status": "REJECTED", "status_detail": "Invalid user account.", "status_code": "323", "order_id": "5346523565", "notification_url": "http://merchant.com/notifications" }

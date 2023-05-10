@@ -151,6 +151,10 @@ class ReferenceData {
 			// Recurring UPI and PayTM payments need to be charged as IR, 'India Recurring'
 			return 'IR';
 		}
+		if ( !empty( $params['upi_id'] ) ) {
+			// This is specifically the code for the direct version of one-time UPI payments
+			return 'UD';
+		}
 		if ( $params['payment_submethod'] === 'upi' ) {
 			// Need to skip the lookup below for non-recurring UPI since three codes map
 			// to it in the lookup table. It maps to UI or UD depending on the flow, but

@@ -77,6 +77,7 @@ class CardPaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$this->assertTrue( $response->isSuccessful() );
 		$this->assertEquals( $response->getGatewayTxnId(), $gateway_txn_id );
 		$this->assertEquals( FinalStatus::PENDING_POKE, $response->getStatus() );
+		$this->assertEquals( 'visa', $response->getPaymentSubmethod() );
 	}
 
 	public function testPaymentWithCompleteParamsFail(): void {
@@ -115,6 +116,7 @@ class CardPaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$this->assertFalse( $response->isSuccessful() );
 		$this->assertEquals( $response->getGatewayTxnId(), $gateway_txn_id );
 		$this->assertEquals( FinalStatus::FAILED, $response->getStatus() );
+		$this->assertEquals( 'visa', $response->getPaymentSubmethod() );
 	}
 
 	public function testPaymentWithCompleteParamsPending(): void {
@@ -153,9 +155,10 @@ class CardPaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$this->assertTrue( $response->isSuccessful() );
 		$this->assertEquals( $response->getGatewayTxnId(), $gateway_txn_id );
 		$this->assertEquals( FinalStatus::PENDING_POKE, $response->getStatus() );
+		$this->assertEquals( 'visa', $response->getPaymentSubmethod() );
 	}
 
-public function testPaymentWithCompleteParamsFailsDueToUnknownStatus(): void {
+	public function testPaymentWithCompleteParamsFailsDueToUnknownStatus(): void {
 		$params = $this->getCreatePaymentRequestParams();
 		$gateway_txn_id = "PAY2323243343543";
 		$this->api->expects( $this->once() )
@@ -191,7 +194,7 @@ public function testPaymentWithCompleteParamsFailsDueToUnknownStatus(): void {
 		$this->assertFalse( $response->isSuccessful() );
 		$this->assertEquals( $response->getGatewayTxnId(), $gateway_txn_id );
 		$this->assertEquals( FinalStatus::UNKNOWN, $response->getStatus() );
-}
+	}
 
 	public function testPaymentWithCompleteParamsFailsAndMissingStatusInResponse(): void {
 		$params = $this->getCreatePaymentRequestParams();
@@ -329,6 +332,27 @@ public function testPaymentWithCompleteParamsFailsDueToUnknownStatus(): void {
 		$this->assertEquals( $response->getGatewayTxnId(), $gateway_txn_id );
 		$this->assertEquals( $response->getRecurringPaymentToken(), $card_id );
 		$this->assertEquals( FinalStatus::PENDING_POKE, $response->getStatus() );
+		$this->assertEquals( 'visa', $response->getPaymentSubmethod() );
+	}
+
+	public function testPaymentWithFiscalNumberValidationError(): void {
+		$params = $this->getCreatePaymentRequestParams();
+		$exception = new ApiException();
+		$exception->setRawErrors( [
+			'code' => 5001,
+			'message' => 'Invalid parameter: payer.document',
+			'param' => 'payer.document',
+		] );
+		$this->api->expects( $this->once() )
+			->method( 'cardAuthorizePayment' )
+			->with( $params )
+			->will( $this->throwException( $exception ) );
+		$provider = new CardPaymentProvider();
+		$response = $provider->createPayment( $params );
+		$this->assertTrue( $response->hasErrors() );
+		$errors = $response->getValidationErrors();
+		$this->assertCount( 1, $errors );
+		$this->assertSame( 'fiscal_number', $errors[0]->getField() );
 	}
 
 	public function testPaymentWithCompleteParamsAndRecurringPaymentToken(): void {
@@ -372,6 +396,7 @@ public function testPaymentWithCompleteParamsFailsDueToUnknownStatus(): void {
 		$this->assertEquals( $response->getGatewayTxnId(), $gateway_txn_id );
 		$this->assertEquals( $response->getRecurringPaymentToken(), $card_id );
 		$this->assertEquals( FinalStatus::COMPLETE, $response->getStatus() );
+		$this->assertEquals( 'visa', $response->getPaymentSubmethod() );
 	}
 
 	public function testApprovePaymentFailMissingGatewayTxnId(): void {

@@ -186,10 +186,10 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 				} )
 			)->willReturn( $mockResponse );
 
-		$results = $this->api->cardAuthorizePayment( $apiParams );
+		 $this->api->cardAuthorizePayment( $apiParams );
 	}
 
-	public function testtestAuthorizePayment3DSecure() {
+	public function testAuthorizePayment3DSecure() {
 		$this->markTestIncomplete();
 	}
 
@@ -368,21 +368,125 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 
 	/**
 	 * @return void
+	 */
+	public function testValidateUpiIdValid():void {
+		$params = $this->getINCreatePaymentRequestParams();
+		$params['upi_id'] = '11111111@axisb';
+		$mockResponse = $this->prepareMockResponse( 'validate-upi-id-success.response', 200 );
+		$this->curlWrapper->expects( $this->once() )
+			->method( 'execute' )
+			->with(
+				$this->equalTo( 'http://example.com/payments' ), // url
+				$this->equalTo( 'POST' ), // method
+				$this->anything(),
+				$this->callback( function ( $dataAsJson ) {
+					$dataAsArray = json_decode( $dataAsJson, true );
+					$this->assertArrayHasKey( 'payment_method_id', $dataAsArray );
+					$this->assertEquals( 'UD', $dataAsArray['payment_method_id'] );
+					return true;
+				} )
+			)->willReturn( $mockResponse );
+		$result = $this->api->verifyUpiId( $params );
+		$this->assertEquals( 'F-413092-76e0c2ac-194e-4814-b3a4-dc8748bf80d8', $result['id'] );
+		$this->assertEquals( 'VERIFIED', $result['status'] );
+		$this->assertEquals( 'The wallet was verified.', $result['status_detail'] );
+		$this->assertEquals( 700, $result['status_code'] );
+		$this->assertEquals( Api::PAYMENT_METHOD_FLOW_DIRECT, $result['payment_method_flow'] );
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testValidateUpiIdFailed():void {
+		$params = $this->getINCreatePaymentRequestParams();
+		$params['upi_id'] = 'asdf@axisb';
+		$mockResponse = $this->prepareMockResponse( 'validate-upi-id-failed.response', 200 );
+		$this->curlWrapper->expects( $this->once() )
+			->method( 'execute' )
+			->with(
+				$this->equalTo( 'http://example.com/payments' ), // url
+				$this->equalTo( 'POST' ), // method
+				$this->anything(),
+				$this->callback( function ( $dataAsJson ) {
+					$dataAsArray = json_decode( $dataAsJson, true );
+					$this->assertArrayHasKey( 'payment_method_id', $dataAsArray );
+					$this->assertEquals( 'UD', $dataAsArray['payment_method_id'] );
+					return true;
+				} )
+			)->willReturn( $mockResponse );
+		$result = $this->api->verifyUpiId( $params );
+		$this->assertEquals( 'F-413092-0eeaf9f9-6dd7-418f-97b1-4c3a364e507b', $result['id'] );
+		$this->assertEquals( 'REJECTED', $result['status'] );
+		$this->assertEquals( 'The payment was rejected.', $result['status_detail'] );
+		$this->assertEquals( 300, $result['status_code'] );
+		$this->assertEquals( Api::PAYMENT_METHOD_FLOW_DIRECT, $result['payment_method_flow'] );
+	}
+
+	/**
+	 * @return void
+	 * @throws \SmashPig\Core\ApiException
+	 */
+	public function testCollectUPIDirectSuccess(): void {
+		$params = $this->getINCreatePaymentRequestParams();
+		$params['upi_id'] = '11111111@axisb';
+		$mockResponse = $this->prepareMockResponse( 'collect-bank-direct-success.response', 200 );
+		$this->curlWrapper->expects( $this->once() )
+			->method( 'execute' )
+			->with(
+				$this->equalTo( 'http://example.com/payments' ), // url
+				$this->equalTo( 'POST' ), // method
+				$this->anything(),
+				$this->callback( function ( $dataAsJson ) {
+					$dataAsArray = json_decode( $dataAsJson, true );
+					$this->assertArrayHasKey( 'payment_method_id', $dataAsArray );
+					$this->assertEquals( 'UD', $dataAsArray['payment_method_id'] );
+					return true;
+				} )
+			)->willReturn( $mockResponse );
+		$result = $this->api->collectDirectBankTransfer( $params );
+		$this->assertEquals( 'F-413092-6beff67a-2f29-4e09-b334-54c475b1a715', $result['id'] );
+		$this->assertEquals( 'PAID', $result['status'] );
+		$this->assertEquals( 'The payment was paid.', $result['status_detail'] );
+		$this->assertEquals( 200, $result['status_code'] );
+		$this->assertEquals( Api::PAYMENT_METHOD_FLOW_DIRECT, $result['payment_method_flow'] );
+	}
+
+	/**
+	 * @return void
+	 * @throws \SmashPig\Core\ApiException
+	 */
+	public function testCollectUPIDirectFailed(): void {
+		$params = $this->getINCreatePaymentRequestParams();
+		$params['upi_id'] = 'asdf@axisb';
+		$mockResponse = $this->prepareMockResponse( 'collect-bank-direct-failed.response', 200 );
+		$this->curlWrapper->expects( $this->once() )
+			->method( 'execute' )
+			->with(
+				$this->equalTo( 'http://example.com/payments' ), // url
+				$this->equalTo( 'POST' ), // method
+				$this->anything(),
+				$this->callback( function ( $dataAsJson ) {
+					$dataAsArray = json_decode( $dataAsJson, true );
+					$this->assertArrayHasKey( 'payment_method_id', $dataAsArray );
+					$this->assertEquals( 'UD', $dataAsArray['payment_method_id'] );
+					return true;
+				} )
+			)->willReturn( $mockResponse );
+		$result = $this->api->collectDirectBankTransfer( $params );
+		$this->assertEquals( 'F-413092-a0198fd7-6550-4191-9753-241629506a23', $result['id'] );
+		$this->assertEquals( 'REJECTED', $result['status'] );
+		$this->assertEquals( 'Invalid user account.', $result['status_detail'] );
+		$this->assertEquals( 323, $result['status_code'] );
+		$this->assertEquals( Api::PAYMENT_METHOD_FLOW_DIRECT, $result['payment_method_flow'] );
+	}
+
+	/**
+	 * @return void
 	 * @throws \SmashPig\Core\ApiException
 	 */
 	public function testCreateRecurringUPISubscription(): void {
-		$apiParams = [
-			"amount" => "999",
-			"currency" => "INR",
-			"country" => "IN",
-			"order_id" => "9134402.1",
-			"recurring" => 1,
-			"payment_submethod" => "upi",
-			"first_name" => "sample",
-			"last_name" => "name",
-			"email" => "sample@samplemail.com",
-			"fiscal_number" => "AAAAA9999C",
-		];
+		$params = $this->getINCreatePaymentRequestParams();
+		$params['recurring'] = 1;
 		$mockResponse = $this->prepareMockResponse( 'create-upi-recurring-subscription.response', 200 );
 		$this->curlWrapper->expects( $this->once() )
 			->method( 'execute' )
@@ -398,11 +502,12 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 				} )
 			)->willReturn( $mockResponse );
 
-		$result = $this->api->redirectPayment( $apiParams );
+		$result = $this->api->redirectPayment( $params );
 		$this->assertEquals( 'F-2486-48f61d11-4d22-4b40-8a27-d6fbb297a618', $result['id'] );
 		$this->assertEquals( 'PENDING', $result['status'] );
 		$this->assertEquals( 'The payment is pending.', $result['status_detail'] );
 		$this->assertEquals( 100, $result['status_code'] );
+		$this->assertEquals( Api::PAYMENT_METHOD_FLOW_REDIRECT, $result['payment_method_flow'] );
 		$this->assertNotNull( $result['redirect_url'] );
 	}
 
@@ -435,19 +540,8 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 	 * @throws \SmashPig\Core\ApiException
 	 */
 	public function testCreatePaymentFromToken(): void {
-		$params = [
-			"amount" => "1500",
-			"currency" => "INR",
-			"country" => "IN",
-			"payment_submethod" => "upi",
-			"first_name" => "asdf",
-			"last_name" => "asdf",
-			"email" => "sample@samplemail.com",
-			"fiscal_number" => "AAAAA9998C",
-			"recurring_payment_token" => "aad328f2-61e8-4a89-a015-feef4d52ff2c",
-			"order_id" => "839d446d-500b-43f0-b950-1689cfa0b630",
-			"notification_url" => "https://wikimedia.notification/url"
-		];
+		$params = $this->getINCreatePaymentRequestParams();
+		$params['recurring_payment_token'] = 'aad328f2-61e8-4a89-a015-feef4d52ff2c';
 		$mockResponse = $this->prepareMockResponse( 'charge-payment-recurring.response', 200 );
 		$this->curlWrapper->expects( $this->once() )
 			->method( 'execute' )
@@ -468,6 +562,7 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 		$this->assertEquals( 'PENDING', $result['status'] );
 		$this->assertEquals( 'The payment is pending.', $result['status_detail'] );
 		$this->assertEquals( 100, $result['status_code'] );
+		$this->assertEquals( Api::PAYMENT_METHOD_FLOW_DIRECT, $result['payment_method_flow'] );
 		$this->assertFalse( $result['recurring_info']['prenotify_approved'] );
 	}
 
@@ -610,6 +705,24 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 				'header_size' => $header_size,
 			]
 		);
+	}
+
+	/**
+	 * @return string[]
+	 */
+	private function getINCreatePaymentRequestParams(): array {
+		return [
+			'amount' => '1500',
+			'currency' => 'INR',
+			'country' => 'IN',
+			'first_name' => 'asdf',
+			'last_name' => 'asdf',
+			'payment_submethod' => 'upi',
+			'email' => 'sample@samplemail.com',
+			'fiscal_number' => 'AAAAA999C',
+			'order_id' => '9134402.1',
+			'user_ip' => '127.0.0.1'
+		];
 	}
 
 	private function getAuthorizePaymentRequestParams(): array {

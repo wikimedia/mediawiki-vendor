@@ -61,6 +61,8 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 		// check the results
 		$this->assertInstanceOf( 'SmashPig\PaymentProviders\Responses\PaymentDetailResponse', $response );
 		$this->assertTrue( $response->isSuccessful() );
+		$this->assertEquals( 25.00, $response->getAmount() );
+		$this->assertEquals( 'USD', $response->getCurrency() );
 		$this->assertEquals( "PaymentActionNotInitiated", $response->getRawStatus() );
 		$this->assertEquals( "Success", $response->getRawResponse()['ACK'] );
 		$this->assertTrue( $response->requiresApproval() );

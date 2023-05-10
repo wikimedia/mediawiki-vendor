@@ -9,7 +9,7 @@ class ExceptionMapper {
 	// List from https://developer.paypal.com/api/nvp-soap/errors/
 	// todo: could add more later
 	protected static $fatalErrorCodes = [
-		'11502' => ErrorCode::INVALID_TOKEN,
+		'11502' => ErrorCode::UNEXPECTED_VALUE, // Invalid token
 		'11516' => ErrorCode::MISSING_REQUIRED_DATA, // Invalid billing frequency.
 		'11518' => ErrorCode::MISSING_REQUIRED_DATA, // Invalid billing period.
 		'11519' => ErrorCode::UNEXPECTED_VALUE, // Invalid amount.

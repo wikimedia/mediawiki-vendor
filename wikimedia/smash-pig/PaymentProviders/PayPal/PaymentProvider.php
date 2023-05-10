@@ -193,7 +193,9 @@ class PaymentProvider implements IPaymentProvider, IGetLatestPaymentStatusProvid
 
 			$response->setSuccessful( true )
 				->setDonorDetails( $details )
-				->setProcessorContactID( $rawResponse['PAYERID'] ?? null );
+				->setProcessorContactID( $rawResponse['PAYERID'] ?? null )
+				->setAmount( $rawResponse['AMT'] ?? null )
+				->setCurrency( $rawResponse['CURRENCYCODE'] ?? null );
 
 			if ( !empty( $rawResponse['PAYMENTREQUEST_0_TRANSACTIONID'] ) ) {
 				// This field is only returned after a successful transaction for DoExpressCheckout has occurred.

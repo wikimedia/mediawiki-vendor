@@ -1,0 +1,12 @@
+HTTP/1.1 200 OK
+Date: Mon, 20 Mar 2023 15:52:23 GMT
+Content-Type: application/json
+Content-Length: 439
+Connection: keep-alive
+Server: rhino-core-shield
+X-RequestId: api-middleware
+X-UOW: 1-64188136-65a2d87514d4309729326d47
+X-ServiceName: api-middleware
+X-Upstream: 10.145.76.80:80
+
+{ "id": "F-413092-6beff67a-2f29-4e09-b334-54c475b1a715", "amount": 10000, "currency": "INR", "payment_method_id": "UD", "payment_method_type": "WALLET", "payment_method_flow": "DIRECT", "country": "IN", "created_date": "2023-03-20T15:52:22.000+0000", "approved_date": "2023-03-20T15:52:23.000+0000", "status": "PAID", "status_detail": "The payment was paid.", "status_code": "200", "order_id": "5346523565", "notification_url": "http://merchant.com/notifications" }

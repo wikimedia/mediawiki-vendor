@@ -165,7 +165,7 @@ class ReferenceData {
 			'method' => 'rtbt',
 			'submethod' => 'rtbt_multibanco',
 		],
-		'onlinebanking_CZ' => [
+		'onlineBanking_CZ' => [
 			'method' => 'bt',
 			'submethod' => '',
 		],

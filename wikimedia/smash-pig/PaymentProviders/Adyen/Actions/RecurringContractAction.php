@@ -20,15 +20,15 @@ class RecurringContractAction implements IListenerMessageAction {
 		if ( $msg instanceof RecurringContract ) {
 			if ( $msg->success ) {
 				$tl->info(
-					"Adding new recurring with payment method: {$msg->paymentMethod} order ID: " .
-					"{$msg->merchantReference} with recurring token: {$msg->pspReference}."
+					"Sending RecurringContractJob to jobs-adyen with payment method '$msg->paymentMethod'," .
+					"order ID '$msg->merchantReference' and recurring token '$msg->pspReference'."
 				);
 				$recordJob = RecurringContractJob::factory( $msg );
 				QueueWrapper::push( 'jobs-adyen', $recordJob );
 			} else {
 				$tl->warning(
-					"Recurring contract failed for payment method: {$msg->paymentMethod} order ID: " .
-					"{$msg->merchantReference} with token {$msg->pspReference}.",
+					"Recurring contract failed for payment method '$msg->paymentMethod', order ID " .
+					"'$msg->merchantReference' and token '$msg->pspReference'.",
 					$msg
 				);
 			}

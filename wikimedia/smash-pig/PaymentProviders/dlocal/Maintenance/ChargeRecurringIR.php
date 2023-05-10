@@ -16,9 +16,14 @@ class ChargeRecurringIR extends MaintenanceBase {
 	public function __construct() {
 		parent::__construct();
 		$this->desiredOptions['config-node']['default'] = 'dlocal';
-		$this->addArgument( 'id', 'Gateway Txn ID (gateway_tnx_id)', true );
-		$this->addArgument( 'amount', 'recurring amount could be any less than 5k', false );
+		$this->addArgument( 'id', 'Gateway Txn ID (gateway_tnx_id)', false );
+		$this->addArgument( 'amount', 'recurring amount could be any less than 5k', true );
 		$this->addArgument( 'token', 'if null get it from payment detail based on txn id, otherwise use it', false );
+		$this->addArgument( 'order_id', 'Order ID', true );
+		$this->addArgument( 'email', 'Email' );
+		$this->addArgument( 'first_name', 'First Name' );
+		$this->addArgument( 'last_name', 'Last Name' );
+		$this->addArgument( 'fiscal_number', 'Fiscal Number' );
 	}
 
 	public function execute(): void {
@@ -33,19 +38,19 @@ class ChargeRecurringIR extends MaintenanceBase {
 			$paymentDetailResponse = $paymentProvider->getPaymentDetail( $gateway_txn_id );
 			$paymentDetail = $paymentDetailResponse->getRawResponse();
 			$token = $paymentDetail['wallet']['token'];
-			Logger::info( "Get token from payment detail: " . $token );
+			Logger::info( "Got token from payment detail: " . $token );
 		}
 		$params = [
 			'amount' => $amount,
 			'currency' => 'INR',
 			'country' => 'IN',
-			'order_id' => 'test_recurring',
-			'first_name' => 'test',
-			'last_name' => 'test',
+			'order_id' => $this->getArgument( 'order_id' ),
+			'first_name' => $this->getArgument( 'first_name' ) ?? 'test',
+			'last_name' => $this->getArgument( 'last_name' ) ?? 'test',
 			'description' => 'test IR recurring payment subscription',
-			'email' => 'test@test.com',
+			'email' => $this->getArgument( 'email' ) ?? 'email',
 			'payment_submethod' => 'upi',
-			'fiscal_number' => 'AAAAA9999C',
+			'fiscal_number' => $this->getArgument( 'fiscal_number' ),
 			'recurring' => 1,
 			'recurring_payment_token' => $token,
 		];

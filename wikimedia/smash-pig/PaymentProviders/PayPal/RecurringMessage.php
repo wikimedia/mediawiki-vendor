@@ -9,7 +9,11 @@ class RecurringMessage extends Message {
 		$message['gateway'] = 'paypal_ec';
 
 		// Contact info
-		if ( $ipnMessage['txn_type'] === 'recurring_payment_profile_created' || $ipnMessage['txn_type'] === 'recurring_payment' ) {
+		if ( in_array( $ipnMessage['txn_type'], [
+				'recurring_payment_profile_created',
+				'recurring_payment',
+				'recurring_payment_outstanding_payment'
+			], true ) ) {
 			$message['middle_name'] = '';
 
 			if ( isset( $ipnMessage['address_street'] ) ) {

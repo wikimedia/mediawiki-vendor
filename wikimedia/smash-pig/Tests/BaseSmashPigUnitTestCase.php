@@ -31,12 +31,16 @@ class BaseSmashPigUnitTestCase extends TestCase {
 	 * @param int $statusCode
 	 */
 	protected function setUpResponse( $filepath, $statusCode ) {
+		$parsed = $this->getParsedCurlWrapperResponse( $filepath, $statusCode );
+		$this->curlWrapper->method( 'execute' )->willReturn( $parsed );
+	}
+
+	protected function getParsedCurlWrapperResponse( $filepath, $statusCode ) {
 		$contents = file_get_contents( $filepath );
 		$header_size = strpos( $contents, "\r\n\r\n" ) + 4;
-		$parsed = CurlWrapper::parseResponse(
+		return CurlWrapper::parseResponse(
 			$contents, [ 'http_code' => $statusCode, 'header_size' => $header_size ]
 		);
-		$this->curlWrapper->method( 'execute' )->willReturn( $parsed );
 	}
 
 	protected function loadJson( $path ) {

@@ -1,7 +1,7 @@
 cardPaymentMethodSpecificInput:
     threeDSecure:
         skipAuthentication: '%skip_3d_secure%'
-    tokenize: '%recurring%'
+    tokenize: '%tokenize%'
     recurring:
         # TODO: we need endDate and minFrequency for 3ds2 per
         # https://apireference.connect.worldline-solutions.com/s2sapi/v1/en_US/java/hostedcheckouts/create.html?paymentPlatform=ALL

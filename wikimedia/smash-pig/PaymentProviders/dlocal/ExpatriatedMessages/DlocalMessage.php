@@ -17,6 +17,7 @@ abstract class DlocalMessage extends ListenerMessage {
 		'status_code',
 		'currency',
 		'country',
+		'payment_id',
 		'payment_method_id',
 		'payment_method_type',
 		'payment_method_flow',
@@ -70,6 +71,12 @@ abstract class DlocalMessage extends ListenerMessage {
 	protected $document;
 
 	/**
+	 * On refunds, this is the id of the original payment
+	 * @var string
+	 */
+	protected $payment_id;
+
+	/**
 	 * @var string
 	 */
 	protected $payment_method_id;
@@ -113,6 +120,11 @@ abstract class DlocalMessage extends ListenerMessage {
 	 * @var mixed
 	 */
 	protected $status;
+
+	/**
+	 * @var mixed
+	 */
+	protected $status_detail;
 
 	/**
 	 * @var array

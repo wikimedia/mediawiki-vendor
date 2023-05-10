@@ -9,6 +9,8 @@ use SmashPig\Core\Helpers\UniqueId;
 use SmashPig\Core\Http\OutboundRequest;
 use SmashPig\Core\Logging\Logger;
 use SmashPig\PaymentProviders\dlocal\ApiMappers\CapturePaymentApiRequestMapper;
+use SmashPig\PaymentProviders\dlocal\ApiMappers\DirectBankTransferPaymentApiRequestMapper;
+use SmashPig\PaymentProviders\dlocal\ApiMappers\DirectBankTransferValidationApiRequestMapper;
 use SmashPig\PaymentProviders\dlocal\ApiMappers\DirectCardAuthorizePaymentApiRequestMapper;
 use SmashPig\PaymentProviders\dlocal\ApiMappers\HostedPaymentApiRequestMapper;
 use SmashPig\PaymentProviders\dlocal\ApiMappers\RecurringChargeCardPaymentApiRequestMapper;
@@ -141,6 +143,24 @@ class Api {
 	 */
 	public function cardAuthorizePayment( array $params ): array {
 		return $this->makePaymentApiCall( $params, new DirectCardAuthorizePaymentApiRequestMapper() );
+	}
+
+	/**
+	 * @param array $params
+	 * @return array
+	 * @throws \SmashPig\Core\ApiException
+	 */
+	public function verifyUpiId( $params ) {
+		return $this->makePaymentApiCall( $params, new DirectBankTransferValidationApiRequestMapper() );
+	}
+
+	/**
+	 * @param array $params
+	 * @return array
+	 * @throws \SmashPig\Core\ApiException
+	 */
+	public function collectDirectBankTransfer( array $params ): array {
+		return $this->makePaymentApiCall( $params, new DirectBankTransferPaymentApiRequestMapper() );
 	}
 
 	/**
