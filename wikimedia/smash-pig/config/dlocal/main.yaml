@@ -39,3 +39,7 @@ payment-provider:
         class: SmashPig\PaymentProviders\dlocal\HostedPaymentProvider
     bt:
         class: SmashPig\PaymentProviders\dlocal\BankTransferPaymentProvider
+
+curl:
+  validator:
+    class: SmashPig\PaymentProviders\dlocal\RestResponseValidator
