@@ -7568,17 +7568,17 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.18.0-a9",
-            "version_normalized": "0.18.0.0-alpha9",
+            "version": "v0.18.0-a10",
+            "version_normalized": "0.18.0.0-alpha10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
-                "reference": "2f98f6a85c360fbad1747bc2b12b3067f9e6f665"
+                "reference": "961e9c4e9dbd71dfabfb2edfcc565f8bca27aa50"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/2f98f6a85c360fbad1747bc2b12b3067f9e6f665",
-                "reference": "2f98f6a85c360fbad1747bc2b12b3067f9e6f665",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/961e9c4e9dbd71dfabfb2edfcc565f8bca27aa50",
+                "reference": "961e9c4e9dbd71dfabfb2edfcc565f8bca27aa50",
                 "shasum": ""
             },
             "require": {
@@ -7622,7 +7622,7 @@
             "suggest": {
                 "wikimedia/langconv": "Provides script conversion support"
             },
-            "time": "2023-05-08T14:48:58+00:00",
+            "time": "2023-05-15T15:37:27+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -7636,7 +7636,7 @@
             ],
             "authors": [
                 {
-                    "name": "Wikimedia Parsing Team and the broader MediaWiki community",
+                    "name": "Wikimedia Content Transform Team and the broader MediaWiki community",
                     "homepage": "https://www.mediawiki.org/wiki/Parsoid"
                 }
             ],
@@ -7648,7 +7648,7 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.18.0-a9",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.18.0-a10",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
             "install-path": "../wikimedia/parsoid"
