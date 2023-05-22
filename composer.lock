@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7805faab7aad04fbaa34727ea1d9add3",
+    "content-hash": "c59badcdf28762ef6093917d987e65c7",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -7252,16 +7252,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.18.0-a10",
+            "version": "v0.18.0-a11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
-                "reference": "961e9c4e9dbd71dfabfb2edfcc565f8bca27aa50"
+                "reference": "db0772cd77d89ea166bf6ea162f9d223264a6f50"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/961e9c4e9dbd71dfabfb2edfcc565f8bca27aa50",
-                "reference": "961e9c4e9dbd71dfabfb2edfcc565f8bca27aa50",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/db0772cd77d89ea166bf6ea162f9d223264a6f50",
+                "reference": "db0772cd77d89ea166bf6ea162f9d223264a6f50",
                 "shasum": ""
             },
             "require": {
@@ -7329,10 +7329,10 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.18.0-a10",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.18.0-a11",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
-            "time": "2023-05-15T15:37:27+00:00"
+            "time": "2023-05-21T09:49:56+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",
