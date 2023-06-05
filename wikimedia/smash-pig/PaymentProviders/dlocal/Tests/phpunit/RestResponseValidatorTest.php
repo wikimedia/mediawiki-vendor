@@ -8,6 +8,9 @@ use SmashPig\Tests\BaseSmashPigUnitTestCase;
 use SmashPig\Tests\TestingProviderConfiguration;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @group Dlocal
+ */
 class RestResponseValidatorTest extends BaseSmashPigUnitTestCase {
 	/**
 	 * @var \PHPUnit_Framework_MockObject_MockObject|\SmashPig\Core\Logging\LogStreams\SyslogLogStream
@@ -53,6 +56,30 @@ class RestResponseValidatorTest extends BaseSmashPigUnitTestCase {
 			'status' => Response::HTTP_BAD_REQUEST,
 			'body' => '{"code":5000,"message":"Invalid request."}'
 		] );
+		$this->assertFalse( $result );
+	}
+
+	public function test400ErrorWithUserLimitExceededDoesNotLogError(): void {
+		$this->mockLogStream->expects( $this->never() )
+			->method( 'processEvent' );
+
+		$result = $this->validator->shouldRetry( [
+			'status' => Response::HTTP_BAD_REQUEST,
+			'body' => '{"code":5006,"message":"User limit exceeded"}'
+		] );
+
+		$this->assertFalse( $result );
+	}
+
+	public function test400ErrorWithUserBlacklistedDoesNotLogError(): void {
+		$this->mockLogStream->expects( $this->never() )
+			->method( 'processEvent' );
+
+		$result = $this->validator->shouldRetry( [
+			'status' => Response::HTTP_BAD_REQUEST,
+			'body' => '{"code":5014,"message":"User blacklisted"}'
+		] );
+
 		$this->assertFalse( $result );
 	}
 }

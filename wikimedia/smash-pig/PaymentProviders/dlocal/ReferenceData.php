@@ -42,11 +42,14 @@ class ReferenceData {
 		'BG' => 'cash_provencia_pagos',
 		'BL' => 'cash_boleto',
 		'BM' => 'cash_banamex',
+		'BN' => 'bancolombia', // Colombia cash
 		'BP' => 'bbva', // Peru, bank transfer
 		'BV' => 'cash_bancomer', // Mexico, aka BBVA
 		'BX' => 'banco_de_chile',
 		'CA' => 'caixa',
 		'CB' => 'baloto',
+		'CJ' => 'codi', // mexico bank with Push Notification
+		'CQ' => 'codi', // mexico bank with QR code
 		'CL' => 'cabal',
 		'CM' => 'cmr',
 		'CR' => 'carulla',
@@ -58,6 +61,7 @@ class ReferenceData {
 		'DI' => 'discover',
 		'DM' => 'cash_dineromail', // (Cash)
 		'DS' => 'discover',
+		'DT' => 'debin', // AR Immediate debit
 		'EF' => 'cash_pago_efectivo',
 		'EL' => 'elo',
 		'EQ' => 'quindio',
@@ -70,11 +74,14 @@ class ReferenceData {
 		'IO' => 'ach', // South Africa, ACH bt
 		'IR' => 'upi', // India. We also get this back for recurring 'paytmwallet' but 'upi' is more common
 		'JC' => 'jcb',
+		'KC' => 'carnet_credit', // Mexico cc
+		'KD' => 'carnet_debit', // Mexico cc
 		'LD' => 'cabal-debit',
 		'LI' => 'lider',
 		'MC' => 'mc',
 		'MD' => 'mc-debit',
 		'MG' => 'magna',
+		'MH' => 'mach', // Chili cc
 		'ML' => 'mercadolivre',
 		'MP' => 'mercadopago',
 		'MS' => 'maestro',
@@ -86,6 +93,7 @@ class ReferenceData {
 		'OX' => 'cash_oxxo',
 		'PA' => 'bcp', // Peru, "via LatinAmericanPayments"
 		'PC' => 'pse', // Colombia, "all banks"
+		'PD' => 'puntored', // Colombia, cash
 		'PF' => 'cash_pago_facil',
 		'PQ' => 'pix', // Brazil
 		'PR' => 'presto',
@@ -96,7 +104,9 @@ class ReferenceData {
 		'RP' => 'cash_rapipago',
 		'RU' => 'rupay', // India
 		'SB' => 'santander', // Brazil
+		'SE' => 'spei', // Mexico
 		'SI' => 'santander_rio', // Argentina
+		'SK' => 'sencillito', // Chili cash
 		'SM' => 'cash_santander', // Mexico
 		'SP' => 'servipag',
 		'SX' => 'surtimax',
@@ -106,6 +116,7 @@ class ReferenceData {
 		'VD' => 'visa-debit',
 		'VI' => 'visa',
 		'WP' => 'webpay',
+		'ZT' => 'stitch', // South Africa bank transfer
 	];
 
 	public static function getSimpleSubmethods() {
@@ -163,6 +174,9 @@ class ReferenceData {
 		}
 		if ( $params['payment_submethod'] === 'webpay_bt' ) {
 			return 'WP';
+		}
+		if ( isset( $params['codi_use_qr_code'] ) && $params['codi_use_qr_code'] ) {
+			return 'CQ';
 		}
 		foreach ( self::$simpleSubmethods as $paymentMethodId => $submethod ) {
 			if ( $submethod === $params['payment_submethod'] ) {

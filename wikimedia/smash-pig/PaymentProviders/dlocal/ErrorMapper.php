@@ -91,15 +91,15 @@ class ErrorMapper {
 	 * @return bool true if the error is a decline type.
 	 */
 	public static function isPaymentDecline( array $errorResponse ): bool {
-		if ( empty( $errorResponse['code'] ) ) {
+		if ( empty( $errorResponse['code'] ) || !isset( self::$errorCodes[$errorResponse['code']] ) ) {
 			return false;
 		}
-		if ( !in_array( $errorResponse['code'], self::$errorCodes ) ) {
-			return false;
-		}
+
 		return in_array(
 			self::$errorCodes[$errorResponse['code']],
-			[ ErrorCode::DECLINED, ErrorCode::DECLINED_DO_NOT_RETRY ]
+			[ ErrorCode::DECLINED, ErrorCode::DECLINED_DO_NOT_RETRY ],
+			true
 		);
 	}
+
 }

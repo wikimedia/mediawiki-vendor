@@ -33,6 +33,10 @@ class BankTransferPaymentProvider extends HostedPaymentProvider {
 	 * @var int|null
 	 */
 	protected $indiaRecurringSubscriptionDurationInMonths;
+	/**
+	 * @var bool|null
+	 */
+	protected $codiUseQrCode;
 
 	public function __construct( ?array $params = null ) {
 		parent::__construct();
@@ -42,12 +46,26 @@ class BankTransferPaymentProvider extends HostedPaymentProvider {
 		if ( !empty( $params['inr_subscription_months'] ) ) {
 			$this->indiaRecurringSubscriptionDurationInMonths = $params['inr_subscription_months'];
 		}
+		if ( !empty( $params['codi_use_qr_code'] ) ) {
+			$this->codiUseQrCode = $params['codi_use_qr_code'];
+		}
 	}
 
 	public static function isIndiaRecurring( array $params ): bool {
 		$submethod = $params['payment_submethod'] ?? '';
 		$isRecurring = ( !empty( $params['recurring'] ) || !empty( $params['recurring_payment_token'] ) );
 		return $isRecurring && in_array( $submethod, [ 'upi', 'paytmwallet' ] );
+	}
+
+	/**
+	 * If mx use codi
+	 *
+	 * @param array $params
+	 * @return bool
+	 */
+	public static function isCodi( array $params ): bool {
+		$submethod = $params['payment_submethod'] ?? '';
+		return $submethod === 'codi';
 	}
 
 	/**
@@ -69,6 +87,9 @@ class BankTransferPaymentProvider extends HostedPaymentProvider {
 		if ( self::isIndiaRecurring( $params ) ) {
 			$params['inr_subscription_frequency'] = $this->indiaRecurringSubscriptionFrequency;
 			$params['inr_subscription_months'] = $this->indiaRecurringSubscriptionDurationInMonths;
+		}
+		if ( self::isCodi( $params ) ) {
+			$params['codi_use_qr_code'] = $this->codiUseQrCode;
 		}
 		return parent::createPayment( $params );
 	}
