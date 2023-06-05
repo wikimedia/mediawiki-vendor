@@ -46,7 +46,7 @@ class ErrorMapper {
 		'5003' => ErrorCode::VALIDATION,	// Country not supported.
 		'5004' => ErrorCode::VALIDATION, // Currency not allowed for this country.
 		'5005' => ErrorCode::UNKNOWN, // User unauthorized due to cadastral situation.
-		'5006' => ErrorCode::EXCEEDED_LIMIT, // User limit exceeded.
+		'5006' => ErrorCode::DECLINED, // User limit exceeded.
 		'5007' => ErrorCode::VALIDATION,	// Amount exceeded.
 		'5008' => ErrorCode::VALIDATION,	// Token not found or inactive.
 		'5009' => ErrorCode::DUPLICATE_ORDER_ID, // Order ID is duplicated.
@@ -80,5 +80,26 @@ class ErrorMapper {
 			);
 		}
 		return null;
+	}
+
+	/**
+	 * Determine whether an error code represents a payment decline,
+	 * so we should just show the donor the fail page rather than
+	 * sending a failmail.
+	 *
+	 * @param array $errorResponse decoded JSON from response body
+	 * @return bool true if the error is a decline type.
+	 */
+	public static function isPaymentDecline( array $errorResponse ): bool {
+		if ( empty( $errorResponse['code'] ) ) {
+			return false;
+		}
+		if ( !in_array( $errorResponse['code'], self::$errorCodes ) ) {
+			return false;
+		}
+		return in_array(
+			self::$errorCodes[$errorResponse['code']],
+			[ ErrorCode::DECLINED, ErrorCode::DECLINED_DO_NOT_RETRY ]
+		);
 	}
 }

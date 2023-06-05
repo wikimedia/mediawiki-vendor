@@ -26,6 +26,17 @@ class RecurringChargeHostedPaymentApiRequestMapperTest extends TestCase {
 		$this->assertEquals( $expectedOutput, $apiRequestMapper->getAll() );
 	}
 
+	public function testRecurringChargeHostedPaymentApiParamsWithMismatchCountryCurrency() {
+		$params = $this->getBaseParams();
+		$apiParams = $params['params'];
+		// Change country to something different from the set currency
+		$apiParams['country'] = 'IN';
+		$expectedOutput = $params['transformedParams'];
+		$apiRequestMapper = new RecurringChargeHostedPaymentApiRequestMapper();
+		$apiRequestMapper->setInputParams( $apiParams );
+		$this->assertEquals( $expectedOutput, $apiRequestMapper->getAll() );
+	}
+
 	private function getBaseParams(): array {
 		$input = [
 			'order_id' => '123.3',

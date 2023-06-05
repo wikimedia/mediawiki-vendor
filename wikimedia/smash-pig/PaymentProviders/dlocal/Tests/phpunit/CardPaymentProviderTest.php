@@ -571,6 +571,27 @@ class CardPaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$this->assertEquals( FinalStatus::UNKNOWN, $response->getStatus() );
 	}
 
+	public function testPaymentWithUserLimitExceededError(): void {
+		$params = $this->getCreatePaymentRequestParams();
+		$exception = new ApiException();
+		$exception->setRawErrors( [
+			'code' => 5006,
+			'message' => 'User limit exceeded'
+		] );
+		$this->api->expects( $this->once() )
+			->method( 'cardAuthorizePayment' )
+			->with( $params )
+			->will( $this->throwException( $exception ) );
+		$provider = new CardPaymentProvider();
+		$response = $provider->createPayment( $params );
+
+		$this->assertFalse( $response->isSuccessful() );
+		$this->assertTrue( $response->hasErrors() );
+		$errors = $response->getErrors();
+		$this->assertCount( 1, $errors );
+		$this->assertSame( 'User limit exceeded', $errors[0]->getDebugMessage() );
+	}
+
 	private function getCreatePaymentRequestParams(): array {
 		return [
 						'payment_token' => 'fake-token',

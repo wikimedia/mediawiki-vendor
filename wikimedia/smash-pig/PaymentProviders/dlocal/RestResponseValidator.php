@@ -25,6 +25,10 @@ class RestResponseValidator extends HttpStatusValidator {
 				// No sense retrying validation errors or sending failmail.
 				return false;
 			}
+			if ( ErrorMapper::isPaymentDecline( $body ) ) {
+				// Also don't retry payment declines or their-side fraud fails.
+				return false;
+			}
 		}
 		return parent::shouldRetry( $parsedResponse );
 	}

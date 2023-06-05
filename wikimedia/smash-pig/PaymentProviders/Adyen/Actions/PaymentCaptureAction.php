@@ -15,6 +15,10 @@ use SmashPig\PaymentProviders\Adyen\Jobs\RecordCaptureJob;
  * the transaction failed.
  */
 class PaymentCaptureAction implements IListenerMessageAction {
+	public const METHODS_RECORDED_ON_AUTHORISATION = [
+		'ideal', 'onlineBanking_CZ'
+	];
+
 	public function execute( ListenerMessage $msg ): bool {
 		$tl = new TaggedLogger( 'PaymentCaptureAction' );
 
@@ -26,7 +30,10 @@ class PaymentCaptureAction implements IListenerMessageAction {
 				}
 				// For iDEAL, treat this as the final notification of success. We don't
 				// need to make any more API calls, just record it in Civi.
-				if ( isset( $msg->paymentMethod ) && $msg->paymentMethod == 'ideal' ) {
+				if (
+					isset( $msg->paymentMethod ) &&
+					in_array( $msg->paymentMethod, self::METHODS_RECORDED_ON_AUTHORISATION, true )
+				) {
 					$tl->info(
 						"Adding Adyen record capture job for {$msg->currency} {$msg->amount} " .
 						"with psp reference {$msg->pspReference}."
