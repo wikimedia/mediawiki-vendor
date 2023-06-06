@@ -193,7 +193,6 @@ class ComposerStaticInit_mediawiki_vendor
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Http\\Client\\' => 16,
             'Psr\\Container\\' => 14,
-            'Pleo\\BloomFilter\\' => 17,
             'PhpParser\\' => 10,
         ),
         'O' => 
@@ -358,7 +357,7 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'Wikimedia\\CommonPasswords\\' => 
         array (
-            0 => __DIR__ . '/..' . '/wikimedia/common-passwords/src/CommonPasswords',
+            0 => __DIR__ . '/..' . '/wikimedia/common-passwords/src',
         ),
         'Wikimedia\\CSS\\' => 
         array (
@@ -514,10 +513,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Psr\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
-        ),
-        'Pleo\\BloomFilter\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/pleonasm/bloom-filter/src',
         ),
         'PhpParser\\' => 
         array (
@@ -2889,9 +2884,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Pimple\\Tests\\Psr11\\ContainerTest' => __DIR__ . '/..' . '/pimple/pimple/src/Pimple/Tests/Psr11/ContainerTest.php',
         'Pimple\\Tests\\Psr11\\ServiceLocatorTest' => __DIR__ . '/..' . '/pimple/pimple/src/Pimple/Tests/Psr11/ServiceLocatorTest.php',
         'Pimple\\Tests\\ServiceIteratorTest' => __DIR__ . '/..' . '/pimple/pimple/src/Pimple/Tests/ServiceIteratorTest.php',
-        'Pleo\\BloomFilter\\BitArray' => __DIR__ . '/..' . '/pleonasm/bloom-filter/src/BitArray.php',
-        'Pleo\\BloomFilter\\BloomFilter' => __DIR__ . '/..' . '/pleonasm/bloom-filter/src/BloomFilter.php',
-        'Pleo\\BloomFilter\\HasherList' => __DIR__ . '/..' . '/pleonasm/bloom-filter/src/HasherList.php',
         'Psr\\Container\\ContainerExceptionInterface' => __DIR__ . '/..' . '/psr/container/src/ContainerExceptionInterface.php',
         'Psr\\Container\\ContainerInterface' => __DIR__ . '/..' . '/psr/container/src/ContainerInterface.php',
         'Psr\\Container\\NotFoundExceptionInterface' => __DIR__ . '/..' . '/psr/container/src/NotFoundExceptionInterface.php',
@@ -4194,7 +4186,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\CSS\\Sanitizer\\StylesheetSanitizer' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Sanitizer/StylesheetSanitizer.php',
         'Wikimedia\\CSS\\Sanitizer\\SupportsAtRuleSanitizer' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Sanitizer/SupportsAtRuleSanitizer.php',
         'Wikimedia\\CSS\\Util' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Util.php',
-        'Wikimedia\\CommonPasswords\\CommonPasswords' => __DIR__ . '/..' . '/wikimedia/common-passwords/src/CommonPasswords/CommonPasswords.php',
+        'Wikimedia\\CommonPasswords\\CommonPasswords' => __DIR__ . '/..' . '/wikimedia/common-passwords/src/CommonPasswords.php',
         'Wikimedia\\Composer\\Merge\\V2\\ExtraPackage' => __DIR__ . '/..' . '/wikimedia/composer-merge-plugin/src/ExtraPackage.php',
         'Wikimedia\\Composer\\Merge\\V2\\Logger' => __DIR__ . '/..' . '/wikimedia/composer-merge-plugin/src/Logger.php',
         'Wikimedia\\Composer\\Merge\\V2\\MergePlugin' => __DIR__ . '/..' . '/wikimedia/composer-merge-plugin/src/MergePlugin.php',
