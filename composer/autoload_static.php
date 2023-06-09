@@ -39,7 +39,6 @@ class ComposerStaticInit_mediawiki_vendor
             'Wikimedia\\ObjectFactory\\' => 24,
             'Wikimedia\\NormalizedException\\' => 30,
             'Wikimedia\\Minify\\' => 17,
-            'Wikimedia\\LangConv\\' => 19,
             'Wikimedia\\IDLeDOM\\' => 18,
             'Wikimedia\\Equivset\\' => 19,
             'Wikimedia\\Composer\\Merge\\V2\\' => 28,
@@ -153,10 +152,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Minify\\' => 
         array (
             0 => __DIR__ . '/..' . '/wikimedia/minify/src',
-        ),
-        'Wikimedia\\LangConv\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/wikimedia/langconv/src',
         ),
         'Wikimedia\\IDLeDOM\\' => 
         array (
@@ -1461,17 +1456,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\IDLeDOM\\XPathResult' => __DIR__ . '/..' . '/wikimedia/idle-dom/src/XPathResult.php',
         'Wikimedia\\IPSet' => __DIR__ . '/..' . '/wikimedia/ip-set/src/IPSet.php',
         'Wikimedia\\IPUtils' => __DIR__ . '/..' . '/wikimedia/ip-utils/src/IPUtils.php',
-        'Wikimedia\\LangConv\\BacktrackState' => __DIR__ . '/..' . '/wikimedia/langconv/src/BacktrackState.php',
-        'Wikimedia\\LangConv\\BracketResult' => __DIR__ . '/..' . '/wikimedia/langconv/src/BracketResult.php',
-        'Wikimedia\\LangConv\\Construct\\Edge' => __DIR__ . '/..' . '/wikimedia/langconv/src/Construct/Edge.php',
-        'Wikimedia\\LangConv\\Construct\\GenReplFst' => __DIR__ . '/..' . '/wikimedia/langconv/src/Construct/GenReplFst.php',
-        'Wikimedia\\LangConv\\Construct\\MutableFST' => __DIR__ . '/..' . '/wikimedia/langconv/src/Construct/MutableFST.php',
-        'Wikimedia\\LangConv\\Construct\\State' => __DIR__ . '/..' . '/wikimedia/langconv/src/Construct/State.php',
-        'Wikimedia\\LangConv\\FST' => __DIR__ . '/..' . '/wikimedia/langconv/src/FST.php',
-        'Wikimedia\\LangConv\\FstReplacementMachine' => __DIR__ . '/..' . '/wikimedia/langconv/src/FstReplacementMachine.php',
-        'Wikimedia\\LangConv\\NullReplacementMachine' => __DIR__ . '/..' . '/wikimedia/langconv/src/NullReplacementMachine.php',
-        'Wikimedia\\LangConv\\ReplacementMachine' => __DIR__ . '/..' . '/wikimedia/langconv/src/ReplacementMachine.php',
-        'Wikimedia\\LangConv\\ZhReplacementMachine' => __DIR__ . '/..' . '/wikimedia/langconv/src/ZhReplacementMachine.php',
         'Wikimedia\\Minify\\CSSMin' => __DIR__ . '/..' . '/wikimedia/minify/src/CSSMin.php',
         'Wikimedia\\Minify\\Cli' => __DIR__ . '/..' . '/wikimedia/minify/src/Cli.php',
         'Wikimedia\\Minify\\JavaScriptMapperState' => __DIR__ . '/..' . '/wikimedia/minify/src/JavaScriptMapperState.php',

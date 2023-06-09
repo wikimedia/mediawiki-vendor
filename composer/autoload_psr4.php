@@ -20,7 +20,6 @@ return array(
     'Wikimedia\\ObjectFactory\\' => array($vendorDir . '/wikimedia/object-factory/src'),
     'Wikimedia\\NormalizedException\\' => array($vendorDir . '/wikimedia/normalized-exception/src'),
     'Wikimedia\\Minify\\' => array($vendorDir . '/wikimedia/minify/src'),
-    'Wikimedia\\LangConv\\' => array($vendorDir . '/wikimedia/langconv/src'),
     'Wikimedia\\IDLeDOM\\' => array($vendorDir . '/wikimedia/idle-dom/src'),
     'Wikimedia\\Equivset\\' => array($vendorDir . '/wikimedia/equivset/src'),
     'Wikimedia\\Composer\\Merge\\V2\\' => array($vendorDir . '/wikimedia/composer-merge-plugin/src'),
