@@ -3085,17 +3085,17 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.17.0-a21",
-            "version_normalized": "0.17.0.0-alpha21",
+            "version": "v0.17.0",
+            "version_normalized": "0.17.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
-                "reference": "bebcb729e5ead6cf7603e9b87cbc23ba302237ff"
+                "reference": "1d547054d187995dac32f878426e5b5f12b5a787"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/bebcb729e5ead6cf7603e9b87cbc23ba302237ff",
-                "reference": "bebcb729e5ead6cf7603e9b87cbc23ba302237ff",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/1d547054d187995dac32f878426e5b5f12b5a787",
+                "reference": "1d547054d187995dac32f878426e5b5f12b5a787",
                 "shasum": ""
             },
             "require": {
@@ -3139,7 +3139,7 @@
             "suggest": {
                 "wikimedia/langconv": "Provides script conversion support"
             },
-            "time": "2023-03-13T19:16:25+00:00",
+            "time": "2023-06-09T19:07:26+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -3165,7 +3165,7 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.17.0-a21",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.17.0",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
             "install-path": "../wikimedia/parsoid"

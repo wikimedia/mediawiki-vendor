@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "89c384a365073af95f237ae333f18cfd",
+    "content-hash": "e7c315db52b925de8d44c5835feade6d",
     "packages": [
         {
             "name": "christian-riesen/base32",
@@ -2950,16 +2950,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.17.0-a21",
+            "version": "v0.17.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
-                "reference": "bebcb729e5ead6cf7603e9b87cbc23ba302237ff"
+                "reference": "1d547054d187995dac32f878426e5b5f12b5a787"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/bebcb729e5ead6cf7603e9b87cbc23ba302237ff",
-                "reference": "bebcb729e5ead6cf7603e9b87cbc23ba302237ff",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/1d547054d187995dac32f878426e5b5f12b5a787",
+                "reference": "1d547054d187995dac32f878426e5b5f12b5a787",
                 "shasum": ""
             },
             "require": {
@@ -3027,10 +3027,10 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.17.0-a21",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.17.0",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
-            "time": "2023-03-13T19:16:25+00:00"
+            "time": "2023-06-09T19:07:26+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",
@@ -4009,9 +4009,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "wikimedia/parsoid": 15
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
