@@ -1269,8 +1269,6 @@ class Linter implements Wt2HtmlDOMProcessor {
 		$this->logBogusMediaOptions( $env, $node, $dp, $tplInfo );
 		$this->logTidyWhitespaceBug( $env, $node, $dp, $tplInfo );
 		$this->logTidyDivSpanFlip( $env, $node, $dp, $tplInfo );
-		// For T334528
-		$this->logLargeTables( $env, $node, $dp, $tplInfo );
 
 		// When an HTML table is nested inside a list and if any part of the table
 		// is on a new line, the PHP parser misnests the list and the table.
@@ -1329,12 +1327,17 @@ class Linter implements Wt2HtmlDOMProcessor {
 			// Let native extensions lint their content
 			$nativeExt = WTUtils::getNativeExt( $env, $node );
 			if ( $nativeExt ) {
+				if ( !$this->extApi ) {
+					$this->extApi = new ParsoidExtensionAPI( $env );
+				}
 				$nextNode = $nativeExt->lintHandler(
 					$this->extApi,
 					$node,
 					function ( $extRootNode ) use ( $env, $tplInfo ) {
-						return $this->findLints( $extRootNode, $env,
-							empty( $tplInfo->isTemplated ) ? null : $tplInfo );
+						$this->findLints(
+							$extRootNode, $env,
+							empty( $tplInfo->isTemplated ) ? null : $tplInfo
+						);
 					}
 				);
 			}
@@ -1381,7 +1384,6 @@ class Linter implements Wt2HtmlDOMProcessor {
 			$timer = Timing::start( $metrics );
 		}
 
-		$this->extApi = new ParsoidExtensionAPI( $env );
 		$this->findLints( $root, $env );
 		$this->postProcessLints( $env->getLints(), $env );
 
