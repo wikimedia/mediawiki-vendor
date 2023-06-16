@@ -88,6 +88,7 @@ return array(
     'GeoIp2\\' => array($vendorDir . '/geoip2/geoip2/src'),
     'Firebase\\JWT\\' => array($vendorDir . '/firebase/php-jwt/src'),
     'FG\\' => array($vendorDir . '/fgrosse/phpasn1/lib'),
+    'Endroid\\QrCode\\' => array($vendorDir . '/endroid/qr-code/src'),
     'Elasticsearch\\' => array($vendorDir . '/elasticsearch/elasticsearch/src/Elasticsearch'),
     'Elastica\\' => array($vendorDir . '/ruflin/elastica/src'),
     'Diff\\' => array($vendorDir . '/diff/diff/src'),
@@ -97,6 +98,7 @@ return array(
     'DataValues\\Geo\\' => array($vendorDir . '/data-values/geo/src'),
     'DataValues\\Deserializers\\' => array($vendorDir . '/data-values/serialization/src/Deserializers'),
     'DataValues\\' => array($vendorDir . '/data-values/common/src/DataValues', $vendorDir . '/data-values/data-values/src'),
+    'DASPRiD\\Enum\\' => array($vendorDir . '/dasprid/enum/src'),
     'Cose\\' => array($vendorDir . '/web-auth/cose-lib/src'),
     'Composer\\Semver\\' => array($vendorDir . '/composer/semver/src'),
     'Composer\\CaBundle\\' => array($vendorDir . '/composer/ca-bundle/src'),
@@ -105,5 +107,6 @@ return array(
     'Brick\\Math\\' => array($vendorDir . '/brick/math/src'),
     'Base64Url\\' => array($vendorDir . '/spomky-labs/base64url/src'),
     'Base32\\' => array($vendorDir . '/christian-riesen/base32/src'),
+    'BaconQrCode\\' => array($vendorDir . '/bacon/bacon-qr-code/src'),
     'Assert\\' => array($vendorDir . '/beberlei/assert/lib/Assert'),
 );
