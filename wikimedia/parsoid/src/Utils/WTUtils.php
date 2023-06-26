@@ -785,15 +785,22 @@ class WTUtils {
 	}
 
 	/**
+	 * @param Node $node
+	 * @return ?string
+	 */
+	public static function getExtTagName( Node $node ): ?string {
+		$match = DOMUtils::matchTypeOf( $node, '#^mw:Extension/(.+?)$#D' );
+		return $match ? mb_strtolower( substr( $match, strlen( 'mw:Extension/' ) ) ) : null;
+	}
+
+	/**
 	 * @param Env $env
 	 * @param Node $node
 	 * @return ?ExtensionTagHandler
 	 */
 	public static function getNativeExt( Env $env, Node $node ): ?ExtensionTagHandler {
-		$match = DOMUtils::matchTypeOf( $node, '#^mw:Extension/(.+?)$#D' );
-		$matchingTag = $match ? substr( $match, strlen( 'mw:Extension/' ) ) : null;
-		return $matchingTag ?
-			$env->getSiteConfig()->getExtTagImpl( $matchingTag ) : null;
+		$extTagName = self::getExtTagName( $node );
+		return $extTagName ? $env->getSiteConfig()->getExtTagImpl( $extTagName ) : null;
 	}
 
 	/**

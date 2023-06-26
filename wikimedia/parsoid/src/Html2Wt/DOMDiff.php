@@ -395,19 +395,14 @@ class DOMDiff {
 			'@phan-var Element $baseNode';  // @var Element $baseNode
 			'@phan-var Element $newNode';  // @var Element $newNode
 
-			$extType = DOMUtils::matchTypeOf( $baseNode, '!^mw:Extension/!' );
 			$ext = null;
 
-			if ( $extType ) {
-				$dataMw = DOMDataUtils::getDataMw( $baseNode );
-				// FIXME: The EncapsulatedContentHandler tries to get the name from
-				// the typeOf if it isn't in dataMw ...
-				$ext = $this->env->getSiteConfig()->getExtTagImpl( $dataMw->name ?? '' );
+			$baseExtTagName = WTUtils::getExtTagName( $baseNode );
+			if ( $baseExtTagName ) {
+				$ext = $this->env->getSiteConfig()->getExtTagImpl( $baseExtTagName );
 			}
 
-			if (
-				$ext && ( DOMUtils::matchTypeOf( $newNode, '!^mw:Extension/!' ) === $extType )
-			) {
+			if ( $ext && ( $baseExtTagName === WTUtils::getExtTagName( $newNode ) ) ) {
 				$this->debug( '--diffing extension content--' );
 				$subtreeDiffers = $ext->diffHandler(
 					$this->extApi, [ $this, 'doDOMDiff' ], $baseNode, $newNode

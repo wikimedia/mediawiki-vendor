@@ -1035,13 +1035,13 @@ class WikitextSerializer {
 	 */
 	public function serializeExtensionStartTag( Element $node, SerializerState $state ): string {
 		$dataMw = DOMDataUtils::getDataMw( $node );
-		$extName = $dataMw->name;
+		$extTagName = $dataMw->name;
 
 		// Serialize extension attributes in normalized form as:
 		// key='value'
 		// FIXME: with no dataParsoid, shadow info will mark it as new
 		$attrs = (array)( $dataMw->attrs ?? [] );
-		$extTok = new TagTk( $extName, array_map( static function ( $key ) use ( $attrs ) {
+		$extTok = new TagTk( $extTagName, array_map( static function ( $key ) use ( $attrs ) {
 			return new KV( $key, $attrs[$key] );
 		}, array_keys( $attrs ) ) );
 
@@ -1053,7 +1053,7 @@ class WikitextSerializer {
 		}
 
 		$attrStr = $this->serializeAttributes( $node, $extTok );
-		$src = '<' . $extName;
+		$src = '<' . $extTagName;
 		if ( $attrStr ) {
 			$src .= ' ' . $attrStr;
 		}
@@ -1066,15 +1066,24 @@ class WikitextSerializer {
 	 * @return string
 	 */
 	public function defaultExtensionHandler( Element $node, SerializerState $state ): string {
+		$dp = DOMDataUtils::getDataParsoid( $node );
 		$dataMw = DOMDataUtils::getDataMw( $node );
 		$src = $this->serializeExtensionStartTag( $node, $state );
 		if ( !isset( $dataMw->body ) ) {
 			return $src; // We self-closed this already.
 		} elseif ( is_string( $dataMw->body->extsrc ?? null ) ) {
 			$src .= $dataMw->body->extsrc;
+		} elseif ( isset( $dp->src ) ) {
+			$this->env->log(
+				'error/html2wt/ext',
+				'Extension data-mw missing for: ' . DOMCompat::getOuterHTML( $node )
+			);
+			return $dp->src;
 		} else {
-			$this->env->log( 'error/html2wt/ext', 'Extension src unavailable for: '
-				. DOMCompat::getOuterHTML( $node ) );
+			$this->env->log(
+				'error/html2wt/ext',
+				'Extension src unavailable for: ' . DOMCompat::getOuterHTML( $node )
+			);
 		}
 		return $src . '</' . $dataMw->name . '>';
 	}

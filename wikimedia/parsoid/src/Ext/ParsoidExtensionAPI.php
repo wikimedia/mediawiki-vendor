@@ -407,7 +407,7 @@ class ParsoidExtensionAPI {
 			}
 
 			if ( $dsrFn ) {
-				ContentUtils::shiftDSR( $this->env, $domFragment, $dsrFn );
+				ContentUtils::shiftDSR( $this->env, $domFragment, $dsrFn, $this );
 			}
 		}
 		return $domFragment;
@@ -618,63 +618,12 @@ class ParsoidExtensionAPI {
 	 *
 	 * @param Element $elt The node whose data attributes need to be examined
 	 * @param Closure $proc The processor that will process the embedded HTML
+	 *        Signature: (string) -> string
+	 *        This processor will be provided the HTML string as input
+	 *        and is expected to return a possibly modified string.
 	 */
 	public function processAttributeEmbeddedHTML( Element $elt, Closure $proc ): void {
-		/* -----------------------------------------------------------------
-		 * FIXME: This works but feels special cased, maybe?
-		 *
-		 * We should also be running DOM cleanup passes on embedded HTML
-		 * in data-mw and other attributes.
-		 *
-		 * See T214994
-		 * ----------------------------------------------------------------- */
-		// Expanded attributes
-		if ( DOMUtils::matchTypeOf( $elt, '/^mw:ExpandedAttrs$/' ) ) {
-			$dmw = DOMDataUtils::getDataMw( $elt );
-			if ( $dmw->attribs ?? null ) {
-				foreach ( $dmw->attribs as &$a ) {
-					foreach ( $a as $kOrV ) {
-						if ( gettype( $kOrV ) !== 'string' && isset( $kOrV->html ) ) {
-							$kOrV->html = $proc( $kOrV->html );
-						}
-					}
-				}
-			}
-		}
-
-		// Language variant markup
-		if ( DOMUtils::matchTypeOf( $elt, '/^mw:LanguageVariant$/' ) ) {
-			$dmwv = DOMDataUtils::getJSONAttribute( $elt, 'data-mw-variant', null );
-			if ( $dmwv ) {
-				if ( isset( $dmwv->disabled ) ) {
-					$dmwv->disabled->t = $proc( $dmwv->disabled->t );
-				}
-				if ( isset( $dmwv->twoway ) ) {
-					foreach ( $dmwv->twoway as $l ) {
-						$l->t = $proc( $l->t );
-					}
-				}
-				if ( isset( $dmwv->oneway ) ) {
-					foreach ( $dmwv->oneway as $l ) {
-						$l->f = $proc( $l->f );
-						$l->t = $proc( $l->t );
-					}
-				}
-				if ( isset( $dmwv->filter ) ) {
-					$dmwv->filter->t = $proc( $dmwv->filter->t );
-				}
-				DOMDataUtils::setJSONAttribute( $elt, 'data-mw-variant', $dmwv );
-			}
-		}
-
-		// Inline media -- look inside the data-mw attribute
-		if ( WTUtils::isInlineMedia( $elt ) ) {
-			$dmw = DOMDataUtils::getDataMw( $elt );
-			$caption = $dmw->caption ?? null;
-			if ( $caption ) {
-				$dmw->caption = $proc( $caption );
-			}
-		}
+		ContentUtils::processAttributeEmbeddedHTML( $this, $elt, $proc );
 	}
 
 	/**
@@ -713,7 +662,7 @@ class ParsoidExtensionAPI {
 	/**
 	 * Parse input string into DOM.
 	 * NOTE: This leaves the DOM in Parsoid-canonical state and is the preferred method
-	 * to convert HTML to DOM that will be passed into Parsoid's code processing code.
+	 * to convert HTML to DOM that will be passed into Parsoid's processing code.
 	 *
 	 * @param string $html
 	 * @param ?Document $doc XXX You probably don't want to be doing this
