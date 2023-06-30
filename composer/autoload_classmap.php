@@ -3440,6 +3440,7 @@ return array(
     'Wikimedia\\Composer\\Merge\\V2\\NestedArray' => $vendorDir . '/wikimedia/composer-merge-plugin/src/NestedArray.php',
     'Wikimedia\\Composer\\Merge\\V2\\PluginState' => $vendorDir . '/wikimedia/composer-merge-plugin/src/PluginState.php',
     'Wikimedia\\Composer\\Merge\\V2\\StabilityFlags' => $vendorDir . '/wikimedia/composer-merge-plugin/src/StabilityFlags.php',
+    'Wikimedia\\Equivset\\Command\\BenchmarkEquivset' => $vendorDir . '/wikimedia/equivset/src/Command/BenchmarkEquivset.php',
     'Wikimedia\\Equivset\\Command\\GenerateEquivset' => $vendorDir . '/wikimedia/equivset/src/Command/GenerateEquivset.php',
     'Wikimedia\\Equivset\\Equivset' => $vendorDir . '/wikimedia/equivset/src/Equivset.php',
     'Wikimedia\\Equivset\\EquivsetInterface' => $vendorDir . '/wikimedia/equivset/src/EquivsetInterface.php',
