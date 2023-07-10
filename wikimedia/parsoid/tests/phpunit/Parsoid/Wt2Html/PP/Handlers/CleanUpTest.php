@@ -77,11 +77,11 @@ class CleanUpTest extends TestCase {
 
 	/**
 	 * test searching for autoInsertedEnd flags using DOM traversal helper functions
-	 * @covers ::cleanupAndSaveDataParsoid
+	 * @covers ::finalCleanup
 	 * @dataProvider provideCleanUp
 	 * @param string $test
 	 */
-	public function testCleanUp( string $test ): void {
+	public function testfinalCleanUp( string $test ): void {
 		// Cleanup DOM pass should confirm removal of autoInsertedEnd flag
 		// for wikitext table tags without closing tag syntax using DOM traversal
 		$mockEnv = new MockEnv( [] );
@@ -91,7 +91,7 @@ class CleanUpTest extends TestCase {
 		$tags = [ 'tr', 'td', ];
 		$this->addHandlers( $domVisitor, $tags, false );
 
-		$domVisitor->traverse( $mockEnv, $body );
+		$domVisitor->traverse( $mockEnv, null, $body );
 	}
 
 	/**
@@ -109,7 +109,7 @@ class CleanUpTest extends TestCase {
 	/**
 	 * test for autoInsertedEnd flags in all possible WT tags with no closing tags
 	 * "PRE", "LI", "DT", "DD", "HR", "TR", "TD", "TH", "CAPTION"
-	 * @covers ::cleanupAndSaveDataParsoid
+	 * @covers ::finalCleanup
 	 * @dataProvider provideCleanUpWT
 	 * @param string $test
 	 */
@@ -123,7 +123,7 @@ class CleanUpTest extends TestCase {
 		$tags = [ 'pre', 'li', 'dt', 'dd', 'hr', 'tr', 'td', 'th', 'caption' ];
 		$this->addHandlers( $domVisitor, $tags, false );
 
-		$domVisitor->traverse( $mockEnv, $body );
+		$domVisitor->traverse( $mockEnv, null, $body );
 	}
 
 	/**
@@ -154,7 +154,7 @@ class CleanUpTest extends TestCase {
 	/**
 	 * test for autoInsertedEnd flags in all possible HTML wikitext tags with no closing tags
 	 * "PRE", "LI", "DT", "DD", "HR", "TR", "TD", "TH", "CAPTION"
-	 * @covers ::cleanupAndSaveDataParsoid
+	 * @covers ::finalCleanup
 	 * @dataProvider provideCleanUpHTML
 	 * @param string $test
 	 */
@@ -168,7 +168,7 @@ class CleanUpTest extends TestCase {
 		$tags = [ 'pre', 'li', 'dt', 'dd', 'hr', 'tr', 'td', 'th', 'caption' ];
 		$this->addHandlers( $domVisitor, $tags, true );
 
-		$domVisitor->traverse( $mockEnv, $body );
+		$domVisitor->traverse( $mockEnv, null, $body );
 	}
 
 	/**

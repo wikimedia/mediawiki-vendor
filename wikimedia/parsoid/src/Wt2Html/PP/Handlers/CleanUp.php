@@ -54,7 +54,7 @@ class CleanUp {
 					// @see explanation in PreHandler::newIndentPreWS()
 					$dsr->openWidth = 1;
 				}
-				// Strip this in the cleanupAndSaveDataParsoid handler since
+				// Strip this in the cleanup handler since
 				// DOM passes till the end may need DSR info from this tag.
 				return true;
 			} else {
@@ -230,17 +230,14 @@ class CleanUp {
 	}
 
 	/**
-	 * Perform some final cleanup and save data-parsoid attributes on each node.
+	 * Perform some final cleanup
 	 *
-	 * @param array $usedIdIndex
 	 * @param Node $node
 	 * @param Env $env
 	 * @param DTState $state
 	 * @return bool|Node The next node or true to continue with $node->nextSibling
 	 */
-	public static function cleanupAndSaveDataParsoid(
-		array $usedIdIndex, Node $node, Env $env, DTState $state
-	) {
+	public static function finalCleanup( Node $node, Env $env, DTState $state ) {
 		if ( !( $node instanceof Element ) ) {
 			return true;
 		}
@@ -301,68 +298,92 @@ class CleanUp {
 			$dp->dsr->start = $dp->dsr->end;
 		}
 
-		if ( $state->atTopLevel ) {
-			// Strip nowiki spans from encapsulated content but leave behind
-			// wrappers on root nodes since they have valid about ids and we
-			// don't want to break the about-chain by stripping the wrapper
-			// and associated ids (we cannot add an about id on the nowiki-ed
-			// content since that would be a text node).
-			if ( ( $state->tplInfo ?? null ) && !WTUtils::hasParsoidAboutId( $node ) &&
-				 DOMUtils::hasTypeOf( $node, 'mw:Nowiki' )
-			) {
-				DOMUtils::migrateChildren( $node, $node->parentNode, $node->nextSibling );
-				$next = $node->nextSibling;
-				$node->parentNode->removeChild( $node );
-				return $next;
-			}
+		// Strip nowiki spans from encapsulated content but leave behind
+		// wrappers on root nodes since they have valid about ids and we
+		// don't want to break the about-chain by stripping the wrapper
+		// and associated ids (we cannot add an about id on the nowiki-ed
+		// content since that would be a text node).
+		if ( ( $state->tplInfo ?? null ) && !WTUtils::hasParsoidAboutId( $node ) &&
+			 DOMUtils::hasTypeOf( $node, 'mw:Nowiki' )
+		) {
+			DOMUtils::migrateChildren( $node, $node->parentNode, $node->nextSibling );
+			$next = $node->nextSibling;
+			$node->parentNode->removeChild( $node );
+			return $next;
+		}
 
-			// Strip IndentPre marker metas
-			if ( PreHandler::isIndentPreWS( $node ) ) {
-				$nextNode = $node->nextSibling;
-				$node->parentNode->removeChild( $node );
-				return $nextNode;
-			}
+		// Strip IndentPre marker metas
+		if ( PreHandler::isIndentPreWS( $node ) ) {
+			$nextNode = $node->nextSibling;
+			$node->parentNode->removeChild( $node );
+			return $nextNode;
+		}
 
-			// Trim whitespace from some wikitext markup
-			// not involving explicit HTML tags (T157481)
-			if ( !WTUtils::hasLiteralHTMLMarker( $dp ) &&
-				isset( Consts::$WikitextTagsWithTrimmableWS[DOMCompat::nodeName( $node )] )
-			) {
-				self::trimWhiteSpace( $node, $dp->dsr ?? null );
-			}
+		// Trim whitespace from some wikitext markup
+		// not involving explicit HTML tags (T157481)
+		if ( !WTUtils::hasLiteralHTMLMarker( $dp ) &&
+			isset( Consts::$WikitextTagsWithTrimmableWS[DOMCompat::nodeName( $node )] )
+		) {
+			self::trimWhiteSpace( $node, $dp->dsr ?? null );
+		}
 
-			$discardDataParsoid = $env->discardDataParsoid;
-
-			// Strip data-parsoid from templated content, where unnecessary.
-			if ( ( $state->tplInfo ?? null ) &&
-				// Always keep info for the first node
-				!$isFirstEncapsulationWrapperNode &&
-				// We can't remove data-parsoid from inside <references> text,
-				// as that's the only HTML representation we have left for it.
-				!self::inNativeContent( $env, $node ) &&
-				// FIXME: We can't remove dp from nodes with stx information
-				// because the serializer uses stx information in some cases to
-				// emit the right newline separators.
-				//
-				// For example, "a\n\nb" and "<p>a</p><p>b/p>" both generate
-				// identical html but serialize to different wikitext.
-				//
-				// This is only needed for the last top-level node .
-				( empty( $dp->stx ) || ( $state->tplInfo->last ?? null ) !== $node )
-			) {
-				$discardDataParsoid = true;
-			}
-
-			DOMDataUtils::storeDataAttribs( $node, [
-					'discardDataParsoid' => $discardDataParsoid,
-					// Even though we're passing in the `env`, this is the only place
-					// we want the storage to happen, so don't refactor this in there.
-					'storeInPageBundle' => $env->pageBundle,
-					'idIndex' => $usedIdIndex,
-					'env' => $env
-				]
-			);
-		} // We only need the env in this case.
 		return true;
 	}
+
+	/**
+	 * Perform some final cleanup
+	 *
+	 * @param array $usedIdIndex
+	 * @param Node $node
+	 * @param Env $env
+	 * @param DTState $state
+	 * @return bool|Node The next node or true to continue with $node->nextSibling
+	 */
+	public static function saveDataParsoid(
+		array $usedIdIndex, Node $node, Env $env, DTState $state
+	) {
+		if ( !( $node instanceof Element ) ) {
+			return true;
+		}
+
+		$dp = DOMDataUtils::getDataParsoid( $node );
+		$isFirstEncapsulationWrapperNode = ( $state->tplInfo->first ?? null ) === $node ||
+			// Traversal isn't done with tplInfo for section tags, but we should
+			// still clean them up as if they are the head of encapsulation.
+			WTUtils::isParsoidSectionTag( $node );
+		$discardDataParsoid = $env->discardDataParsoid;
+
+		// Strip data-parsoid from templated content, where unnecessary.
+		if ( ( $state->tplInfo ?? null ) &&
+			// Always keep info for the first node
+			!$isFirstEncapsulationWrapperNode &&
+			// We can't remove data-parsoid from inside <references> text,
+			// as that's the only HTML representation we have left for it.
+			!self::inNativeContent( $env, $node ) &&
+			// FIXME: We can't remove dp from nodes with stx information
+			// because the serializer uses stx information in some cases to
+			// emit the right newline separators.
+			//
+			// For example, "a\n\nb" and "<p>a</p><p>b/p>" both generate
+			// identical html but serialize to different wikitext.
+			//
+			// This is only needed for the last top-level node .
+			( empty( $dp->stx ) || ( $state->tplInfo->last ?? null ) !== $node )
+		) {
+			$discardDataParsoid = true;
+		}
+
+		DOMDataUtils::storeDataAttribs( $node, [
+				'discardDataParsoid' => $discardDataParsoid,
+				// Even though we're passing in the `env`, this is the only place
+				// we want the storage to happen, so don't refactor this in there.
+				'storeInPageBundle' => $env->pageBundle,
+				'idIndex' => $usedIdIndex,
+				'env' => $env
+			]
+		);
+
+		return true;
+	}
+
 }
