@@ -4860,6 +4860,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Ext\\Gallery\\SlideshowMode' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/Gallery/SlideshowMode.php',
         'Wikimedia\\Parsoid\\Ext\\Gallery\\TraditionalMode' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/Gallery/TraditionalMode.php',
         'Wikimedia\\Parsoid\\Ext\\ImageMap\\ImageMap' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/ImageMap/ImageMap.php',
+        'Wikimedia\\Parsoid\\Ext\\Indicator\\Indicator' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/Indicator/Indicator.php',
         'Wikimedia\\Parsoid\\Ext\\JSON\\JSON' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/JSON/JSON.php',
         'Wikimedia\\Parsoid\\Ext\\LST\\LST' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/LST/LST.php',
         'Wikimedia\\Parsoid\\Ext\\Nowiki\\Nowiki' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/Nowiki/Nowiki.php',

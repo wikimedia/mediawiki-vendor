@@ -4093,6 +4093,7 @@ return array(
     'Wikimedia\\Parsoid\\Ext\\Gallery\\SlideshowMode' => $vendorDir . '/wikimedia/parsoid/src/Ext/Gallery/SlideshowMode.php',
     'Wikimedia\\Parsoid\\Ext\\Gallery\\TraditionalMode' => $vendorDir . '/wikimedia/parsoid/src/Ext/Gallery/TraditionalMode.php',
     'Wikimedia\\Parsoid\\Ext\\ImageMap\\ImageMap' => $vendorDir . '/wikimedia/parsoid/src/Ext/ImageMap/ImageMap.php',
+    'Wikimedia\\Parsoid\\Ext\\Indicator\\Indicator' => $vendorDir . '/wikimedia/parsoid/src/Ext/Indicator/Indicator.php',
     'Wikimedia\\Parsoid\\Ext\\JSON\\JSON' => $vendorDir . '/wikimedia/parsoid/src/Ext/JSON/JSON.php',
     'Wikimedia\\Parsoid\\Ext\\LST\\LST' => $vendorDir . '/wikimedia/parsoid/src/Ext/LST/LST.php',
     'Wikimedia\\Parsoid\\Ext\\Nowiki\\Nowiki' => $vendorDir . '/wikimedia/parsoid/src/Ext/Nowiki/Nowiki.php',

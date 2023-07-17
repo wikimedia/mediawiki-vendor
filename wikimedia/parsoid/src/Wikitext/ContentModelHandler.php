@@ -15,6 +15,7 @@ use Wikimedia\Parsoid\Html2Wt\WikitextSerializer;
 use Wikimedia\Parsoid\Utils\ContentUtils;
 use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
+use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\Timing;
 
 class ContentModelHandler extends IContentModelHandler {
@@ -122,13 +123,51 @@ class ContentModelHandler extends IContentModelHandler {
 	}
 
 	/**
+	 * @param Document $doc
+	 */
+	private function processIndicators( Document $doc, ParsoidExtensionAPI $extApi ): void {
+		// Erroneous indicators without names will be <span>s
+		$indicators = DOMCompat::querySelectorAll( $doc, 'meta[typeof~="mw:Extension/indicator"]' );
+		$iData = [];
+
+		// https://www.mediawiki.org/wiki/Help:Page_status_indicators#Adding_page_status_indicators
+		// says that last one wins. But, that may just be documentation of the
+		// implementation vs. being a deliberate strategy.
+		//
+		// The indicators are ordered by depth-first pre-order DOM traversal.
+		// This ensures that the indicators are in document textual order.
+		// Given that, the for-loop below implements "last-one-wins" semantics
+		// for indicators that use the same name key.
+		foreach ( $indicators as $meta ) {
+			// T214241: indicator data-mw info is clobbered when the indicator
+			// happens to be the transclusion wrapper as well.
+			if ( !DOMUtils::hasTypeOf( $meta, "mw:Transclusion" ) ) {
+				// Since the DOM is in "stored" state, we have to reparse data-mw here.
+				$dmw = DOMDataUtils::getJSONAttribute( $meta, 'data-mw', null );
+				$name = $dmw->attrs->name;
+				$iData[$name] = $dmw->html;
+			}
+		}
+
+		// set indicator metadata for unique keys
+		foreach ( $iData as $name => $html ) {
+			$extApi->getMetadata()->setIndicator( (string)$name,  $html );
+		}
+	}
+
+	/**
 	 * @inheritDoc
 	 */
 	public function toDOM( ParsoidExtensionAPI $extApi ): Document {
-		return $this->env->getPipelineFactory()->parse(
+		$doc = $this->env->getPipelineFactory()->parse(
 			// @phan-suppress-next-line PhanDeprecatedFunction not ready for topFrame yet
 			$this->env->getPageConfig()->getPageMainContent()
 		);
+
+		// Hardcoded support for indicators
+		$this->processIndicators( $doc, $extApi );
+
+		return $doc;
 	}
 
 	/**
