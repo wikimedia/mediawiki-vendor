@@ -4243,6 +4243,7 @@ return array(
     'Wikimedia\\Parsoid\\Wikitext\\Consts' => $vendorDir . '/wikimedia/parsoid/src/Wikitext/Consts.php',
     'Wikimedia\\Parsoid\\Wikitext\\ContentModelHandler' => $vendorDir . '/wikimedia/parsoid/src/Wikitext/ContentModelHandler.php',
     'Wikimedia\\Parsoid\\Wikitext\\Wikitext' => $vendorDir . '/wikimedia/parsoid/src/Wikitext/Wikitext.php',
+    'Wikimedia\\Parsoid\\Wt2Html\\DOMPPTraverser' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/DOMPPTraverser.php',
     'Wikimedia\\Parsoid\\Wt2Html\\DOMPostProcessor' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/DOMPostProcessor.php',
     'Wikimedia\\Parsoid\\Wt2Html\\Frame' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/Frame.php',
     'Wikimedia\\Parsoid\\Wt2Html\\Grammar' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/Grammar.php',

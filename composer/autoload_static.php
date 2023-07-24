@@ -5010,6 +5010,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Wikitext\\Consts' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wikitext/Consts.php',
         'Wikimedia\\Parsoid\\Wikitext\\ContentModelHandler' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wikitext/ContentModelHandler.php',
         'Wikimedia\\Parsoid\\Wikitext\\Wikitext' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wikitext/Wikitext.php',
+        'Wikimedia\\Parsoid\\Wt2Html\\DOMPPTraverser' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/DOMPPTraverser.php',
         'Wikimedia\\Parsoid\\Wt2Html\\DOMPostProcessor' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/DOMPostProcessor.php',
         'Wikimedia\\Parsoid\\Wt2Html\\Frame' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/Frame.php',
         'Wikimedia\\Parsoid\\Wt2Html\\Grammar' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/Grammar.php',

@@ -16,7 +16,6 @@ use Wikimedia\Parsoid\Tokens\SourceRange;
 use Wikimedia\Parsoid\Utils\ContentUtils;
 use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
-use Wikimedia\Parsoid\Utils\DOMTraverser;
 use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\PHPUtils;
 use Wikimedia\Parsoid\Utils\Utils;
@@ -141,7 +140,7 @@ class DOMPostProcessor extends PipelineStage {
 				$p['shortcut'] = $p['name'];
 			}
 			if ( !empty( $p['isTraverser'] ) ) {
-				$t = new DOMTraverser(
+				$t = new DOMPPTraverser(
 					$p['tplInfo'] ?? false,
 					$p['applyToAttributeEmbeddedHTML'] ?? false
 				);
@@ -279,7 +278,7 @@ class DOMPostProcessor extends PipelineStage {
 				'handlers' => [
 					[
 						'nodeName' => 'meta',
-						'action' => static function ( $node, $env ) use ( &$abouts ) {
+						'action' => static function ( $node ) use ( &$abouts, $env ) {
 							// TODO: $abouts can be part of DTState
 							$isStart = false;
 							$t = WTUtils::extractAnnotationType( $node, $isStart );
@@ -325,11 +324,11 @@ class DOMPostProcessor extends PipelineStage {
 				'handlers' => [
 					[
 						'nodeName' => 'a',
-						'action' => [ HandleLinkNeighbours::class, 'handler' ]
+						'action' => static fn ( $node ) => HandleLinkNeighbours::handler( $node, $env )
 					],
 					[
 						'nodeName' => null,
-						'action' => [ UnpackDOMFragments::class, 'handler' ]
+						'action' => static fn ( $node ) => UnpackDOMFragments::handler( $node, $env )
 					]
 				]
 			]
@@ -416,40 +415,34 @@ class DOMPostProcessor extends PipelineStage {
 					// Move trailing categories in <li>s out of the list
 					[
 						'nodeName' => 'li',
-						'action' => [ LiFixups::class, 'migrateTrailingCategories' ]
+						'action' => static fn ( $node, $state ) => LiFixups::migrateTrailingCategories( $node, $state )
 					],
 					[
 						'nodeName' => 'dt',
-						'action' => [ LiFixups::class, 'migrateTrailingCategories' ]
+						'action' => static fn ( $node, $state ) => LiFixups::migrateTrailingCategories( $node, $state )
 					],
 					[
 						'nodeName' => 'dd',
-						'action' => [ LiFixups::class, 'migrateTrailingCategories' ]
+						'action' => static fn ( $node, $state ) => LiFixups::migrateTrailingCategories( $node, $state )
 					],
 					// 2. Fix up issues from templated table cells and table cell attributes
 					[
 						'nodeName' => 'td',
-						'action' => function ( $node, $env ) use ( &$tableFixer ) {
-							return $tableFixer->stripDoubleTDs( $node, $this->frame );
-						}
+						'action' => fn ( $node ) => $tableFixer->stripDoubleTDs( $node, $this->frame )
 					],
 					[
 						'nodeName' => 'td',
-						'action' => function ( $node, $env ) use ( &$tableFixer ) {
-							return $tableFixer->handleTableCellTemplates( $node, $this->frame );
-						}
+						'action' => fn ( $node ) => $tableFixer->handleTableCellTemplates( $node, $this->frame )
 					],
 					[
 						'nodeName' => 'th',
-						'action' => function ( $node, $env ) use ( &$tableFixer ) {
-							return $tableFixer->handleTableCellTemplates( $node, $this->frame );
-						}
+						'action' => fn ( $node ) => $tableFixer->handleTableCellTemplates( $node, $this->frame )
 					],
 					// 3. Deduplicate template styles
 					// (should run after dom-fragment expansion + after extension post-processors)
 					[
 						'nodeName' => 'style',
-						'action' => [ DedupeStyles::class, 'dedupe' ]
+						'action' => static fn ( $node, $dtState ) => DedupeStyles::dedupe( $node, $env, $dtState )
 					]
 				]
 			],
@@ -464,11 +457,11 @@ class DOMPostProcessor extends PipelineStage {
 				'handlers' => [
 					[
 						'nodeName' => null,
-						'action' => [ Headings::class, 'genAnchors' ]
+						'action' => static fn ( $node ) => Headings::genAnchors( $node, $env )
 					],
 					[
 						'nodeName' => null,
-						'action' => static function ( $node, $env ) use ( &$seenIds ) {
+						'action' => static function ( $node ) use ( &$seenIds ) {
 							// TODO: $seenIds can be part of DTState
 							return Headings::dedupeHeadingIds( $seenIds, $node );
 						}
@@ -491,7 +484,7 @@ class DOMPostProcessor extends PipelineStage {
 				'handlers' => [
 					[
 						'nodeName' => 'meta',
-						'action' => [ CleanUp::class, 'stripMarkerMetas' ]
+						'action' => static fn( $node ) => CleanUp::stripMarkerMetas( $node ),
 					]
 				]
 			],
@@ -517,11 +510,11 @@ class DOMPostProcessor extends PipelineStage {
 				'handlers' => [
 					[
 						'nodeName' => null,
-						'action' => [ DisplaySpace::class, 'leftHandler' ]
+						'action' => static fn( $node ) => DisplaySpace::leftHandler( $node )
 					],
 					[
 						'nodeName' => null,
-						'action' => [ DisplaySpace::class, 'rightHandler' ]
+						'action' => static fn( $node ) => DisplaySpace::rightHandler( $node )
 					],
 				]
 			],
@@ -563,12 +556,12 @@ class DOMPostProcessor extends PipelineStage {
 					// Strip empty elements from template content
 					[
 						'nodeName' => null,
-						'action' => [ CleanUp::class, 'handleEmptyElements' ]
+						'action' => static fn( $node, $state ) => CleanUp::handleEmptyElements( $node, $state )
 					],
 					// Additional cleanup
 					[
 						'nodeName' => null,
-						'action' => [ CleanUp::class, 'finalCleanup' ]
+						'action' => static fn( $node, $state ) => CleanUp::finalCleanup( $node, $state )
 					]
 				]
 			],
@@ -591,7 +584,7 @@ class DOMPostProcessor extends PipelineStage {
 					// don't affect other handlers that run alongside it.
 					[
 						'nodeName' => null,
-						'action' => static function ( $node, $env, $state ) use ( &$usedIdIndex ) {
+						'action' => static function ( $node, $state ) use ( $env, &$usedIdIndex ) {
 							// TODO: $usedIdIndex can be part of DTState
 							if ( $state->atTopLevel && DOMUtils::isBody( $node ) ) {
 								$usedIdIndex = DOMDataUtils::usedIdIndex( $node );
