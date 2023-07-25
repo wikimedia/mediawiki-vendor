@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "57cb4f16d43c1775c52d073ce3d71ff4",
+    "content-hash": "c6562a0ab1a1c97c4d36947fc65813fb",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -6247,28 +6247,32 @@
         },
         {
             "name": "wikimedia/cdb",
-            "version": "2.0.0",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/cdb.git",
-                "reference": "70c724f88faa74338c9918f5b999445a615593e8"
+                "reference": "3d7622f39319ea2149cac92415222d1fb39c46d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/cdb/zipball/70c724f88faa74338c9918f5b999445a615593e8",
-                "reference": "70c724f88faa74338c9918f5b999445a615593e8",
+                "url": "https://api.github.com/repos/wikimedia/cdb/zipball/3d7622f39319ea2149cac92415222d1fb39c46d0",
+                "reference": "3d7622f39319ea2149cac92415222d1fb39c46d0",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.9"
+                "php": ">=7.4.0"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "38.0.0",
+                "mediawiki/mediawiki-codesniffer": "41.0.0",
+                "mediawiki/mediawiki-phan-config": "0.12.1",
                 "mediawiki/minus-x": "1.1.1",
-                "ockcyp/covers-validator": "1.3.3",
-                "php-parallel-lint/php-console-highlighter": "0.5.0",
-                "php-parallel-lint/php-parallel-lint": "1.3.1",
-                "phpunit/phpunit": "^8.5"
+                "ockcyp/covers-validator": "1.6.0",
+                "php-parallel-lint/php-console-highlighter": "1.0.0",
+                "php-parallel-lint/php-parallel-lint": "1.3.2",
+                "phpunit/phpunit": "9.5.28"
+            },
+            "suggest": {
+                "ext-dba": "PHP extension for DBA access. Would be quicker than the PHP based fallback"
             },
             "type": "library",
             "autoload": {
@@ -6300,9 +6304,9 @@
             "description": "Constant Database (CDB) wrapper library for PHP. Provides pure-PHP fallback when dba_* functions are absent.",
             "homepage": "https://www.mediawiki.org/wiki/CDB",
             "support": {
-                "source": "https://github.com/wikimedia/cdb/tree/2.0.0"
+                "source": "https://github.com/wikimedia/cdb/tree/3.0.0"
             },
-            "time": "2021-12-21T22:49:31+00:00"
+            "time": "2023-07-24T18:27:07+00:00"
         },
         {
             "name": "wikimedia/cldr-plural-rule-parser",
