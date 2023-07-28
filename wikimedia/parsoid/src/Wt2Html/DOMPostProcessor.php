@@ -6,6 +6,7 @@ namespace Wikimedia\Parsoid\Wt2Html;
 use Closure;
 use DateTime;
 use Generator;
+use Wikimedia\Assert\Assert;
 use Wikimedia\Parsoid\Config\Env;
 use Wikimedia\Parsoid\DOM\Document;
 use Wikimedia\Parsoid\DOM\Element;
@@ -166,7 +167,7 @@ class DOMPostProcessor extends PipelineStage {
 						'assertClass' => ExtDOMProcessor::class,
 					] );
 					$p['proc'] = function ( Node $workNode, array $options, bool $atTopLevel ) use ( $c ) {
-						return $c->wtPostprocess( $this->extApi, $workNode, $options, $atTopLevel );
+						return $c->wtPostprocess( $this->extApi, $workNode, $options );
 					};
 				}
 			}
@@ -212,30 +213,31 @@ class DOMPostProcessor extends PipelineStage {
 			// Common post processing
 			[
 				'Processor' => MarkFosteredContent::class,
-				'shortcut' => 'fostered'
+				'shortcut' => 'fostered',
+				'skipNested' => false
 			],
 			[
 				'Processor' => ProcessTreeBuilderFixups::class,
-				'shortcut' => 'process-fixups'
+				'shortcut' => 'process-fixups',
+				'skipNested' => false
 			],
 			[
-				'Processor' => Normalize::class
+				'Processor' => Normalize::class,
+				'skipNested' => false
 			],
 			[
 				'Processor' => PWrap::class,
 				'shortcut' => 'pwrap',
 				'skipNested' => true
 			],
-			// This is run at all levels since, for now, we don't have a generic
-			// solution to running top level passes on HTML stashed in data-mw.
-			// See T214994 for that.
-			//
-			// Also, the gallery extension's "packed" mode would otherwise need a
-			// post-processing pass to scale media after it has been fetched.  That
-			// introduces an ordering dependency that may or may not complicate things.
+			// This is run at all levels for now - gallery extension's "packed" mode
+			// would otherwise need a post-processing pass to scale media after it
+			// has been fetched. That introduces an ordering dependency that may
+			// or may not complicate things.
 			[
 				'Processor' => AddMediaInfo::class,
-				'shortcut' => 'media'
+				'shortcut' => 'media',
+				'skipNested' => false
 			],
 			// Run this after:
 			// * ProcessTreeBuilderFixups because this pass needs
@@ -243,6 +245,7 @@ class DOMPostProcessor extends PipelineStage {
 			// * PWrap because PWrap can add additional opportunities
 			//   for meta migration which we will miss if we run this
 			//   before p-wrapping.
+			//   FIXME: But, pwrapping doesn't run on nested pipelines!
 			//
 			// We could potentially move this just before WrapTemplates
 			// by seeing this as a preprocessing pass for that. But, we
@@ -254,26 +257,31 @@ class DOMPostProcessor extends PipelineStage {
 			[
 				'Processor' => MigrateTemplateMarkerMetas::class,
 				'shortcut' => 'migrate-metas',
-				'omit' => $options['inTemplate']
+				'omit' => $options['inTemplate'],
+				'skipNested' => false
 			],
 			[
 				'Processor' => MigrateTrailingNLs::class,
-				'shortcut' => 'migrate-nls'
+				'shortcut' => 'migrate-nls',
+				'skipNested' => false
 			],
 			// dsr computation and tpl encap are only relevant for top-level content
 			[
 				'Processor' => ComputeDSR::class,
 				'shortcut' => 'dsr',
-				'omit' => $options['inTemplate']
+				'omit' => $options['inTemplate'],
+				'skipNested' => false
 			],
 			[
 				'Processor' => WrapTemplates::class,
 				'shortcut' => 'tplwrap',
-				'omit' => $options['inTemplate']
+				'omit' => $options['inTemplate'],
+				'skipNested' => false
 			],
 			[
 				'name' => 'AddAnnotationIds',
 				'shortcut' => 'ann-ids',
+				'skipNested' => false,
 				'isTraverser' => true,
 				'handlers' => [
 					[
@@ -313,13 +321,18 @@ class DOMPostProcessor extends PipelineStage {
 			[
 				'Processor' => WrapAnnotations::class,
 				'shortcut' => 'annwrap',
+				'skipNested' => false,
 				'withAnnotations' => true
 			],
 			// 1. Link prefixes and suffixes
 			// 2. Unpack DOM fragments
+			//    Always run this on nested pipelines so that
+			//    when we get to the top level pipeline, all
+			//    embedded fragments have been expanded!
 			[
 				'name' => 'HandleLinkNeighbours,UnpackDOMFragments',
 				'shortcut' => 'dom-unpack',
+				'skipNested' => false,
 				'isTraverser' => true,
 				'handlers' => [
 					[
@@ -399,6 +412,9 @@ class DOMPostProcessor extends PipelineStage {
 					'isExtPP' => true, // This is an extension DOM post processor
 					'name' => "pp:$extName:$i",
 					'Processor' => $domProcSpec,
+					// This should be documented in the spec that an extension's
+					// wtDOMProcess handler is run once on the top level document.
+					'skipNested' => true
 				];
 			}
 		}
@@ -846,7 +862,9 @@ class DOMPostProcessor extends PipelineStage {
 
 		for ( $i = 0;  $i < count( $this->processors );  $i++ ) {
 			$pp = $this->processors[$i];
-			if ( !empty( $pp['skipNested'] ) && !$this->atTopLevel ) {
+			Assert::invariant( isset( $pp['skipNested'] ),
+				"skipNested property missing for " . $pp['name'] . " processor." );
+			if ( $pp['skipNested'] && !$this->atTopLevel ) {
 				continue;
 			}
 
