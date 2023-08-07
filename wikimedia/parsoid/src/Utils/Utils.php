@@ -3,6 +3,7 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Utils;
 
+use Psr\Log\LoggerInterface;
 use Wikimedia\Bcp47Code\Bcp47Code;
 use Wikimedia\Bcp47Code\Bcp47CodeValue;
 use Wikimedia\Parsoid\Config\Env;
@@ -361,7 +362,7 @@ class Utils {
 	public static function getExtArgInfo( Token $extToken ): \stdClass {
 		$name = $extToken->getAttribute( 'name' );
 		$options = $extToken->getAttribute( 'options' );
-		return (object)[
+		$info = (object)[
 			'dict' => (object)[
 				'name' => $name,
 				'attrs' => PHPUtils::arrayToObject( TokenUtils::kvToHash( $options ) ),
@@ -370,6 +371,11 @@ class Utils {
 				],
 			],
 		];
+		$extTagOffsets = $extToken->dataParsoid->extTagOffsets;
+		if ( $extTagOffsets->closeWidth === 0 ) {
+			unset( $info->dict->body ); // Serialize to self-closing.
+		}
+		return $info;
 	}
 
 	/**
@@ -532,12 +538,33 @@ class Utils {
 	 * mapping table.
 	 *
 	 * @param string|Bcp47Code $code Mediawiki-internal language code or object
+	 * @param bool $strict If true, this code will log a deprecation message
+	 *  or fail if a MediaWiki-internal language code is passed.
+	 * @param ?LoggerInterface $warnLogger A deprecation warning will be
+	 *   emitted on $warnLogger if $strict is true and a string-valued
+	 *   MediaWiki-internal language code is passed; otherwise an exception
+	 *   will be thrown.
 	 * @return Bcp47Code BCP-47 language code.
 	 * @see LanguageCode::bcp47()
 	 */
-	public static function mwCodeToBcp47( $code ): Bcp47Code {
+	public static function mwCodeToBcp47(
+		$code, bool $strict = false, ?LoggerInterface $warnLogger = null
+	): Bcp47Code {
 		if ( $code instanceof Bcp47Code ) {
 			return $code;
+		}
+		if ( $strict ) {
+			$msg = "Use of string-valued BCP-47 codes is deprecated.";
+			if ( defined( 'MW_PHPUNIT_TEST' ) || defined( 'MW_PARSER_TEST' ) ) {
+				// Always throw an error if running tests
+				throw new \Error( $msg );
+			}
+			if ( $warnLogger ) {
+				$warnLogger->warning( $msg );
+			} else {
+				// Strict mode requested but no deprecation logger provided
+				throw new \Error( $msg );
+			}
 		}
 		// This map is dumped from
 		// LanguageCode::getNonstandardLanguageCodeMapping() in core.
