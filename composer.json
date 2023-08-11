@@ -116,7 +116,7 @@
 		"wikimedia/less.php": "4.1.1",
 		"wikimedia/lucene-explain-parser": "2.0.0",
 		"wikimedia/metrics-platform": "2.0.0",
-		"wikimedia/minify": "2.4.0",
+		"wikimedia/minify": "2.5.0",
 		"wikimedia/normalized-exception": "1.0.1",
 		"wikimedia/object-factory": "5.0.1",
 		"wikimedia/parsoid": "0.18.0-a21",

@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.5.0 (2023-08-11)
+
+Added:
+
+* bin: Add `css-remap` command. (Timo Tijhof)
+* IdentityMinifierState and JavaScriptMinifier::createIdentityMinifier(). (Tim Starling)
+* MinifierState::ensureNewline()
+* IndexMap class, for generating a combined source map
+
 ## 2.4.0 (2023-03-20)
 
 Added:

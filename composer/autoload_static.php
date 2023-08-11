@@ -731,8 +731,8 @@ class ComposerStaticInit_mediawiki_vendor
         array (
             'Mail' => 
             array (
-                0 => __DIR__ . '/..' . '/pear/mail_mime',
-                1 => __DIR__ . '/..' . '/pear/mail',
+                0 => __DIR__ . '/..' . '/pear/mail',
+                1 => __DIR__ . '/..' . '/pear/mail_mime',
             ),
         ),
         'L' => 
@@ -4786,12 +4786,16 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\MetricsPlatform\\StreamConfig\\ValidatingStreamConfigFactory' => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/src/StreamConfig/ValidatingStreamConfigFactory.php',
         'Wikimedia\\Minify\\CSSMin' => __DIR__ . '/..' . '/wikimedia/minify/src/CSSMin.php',
         'Wikimedia\\Minify\\Cli' => __DIR__ . '/..' . '/wikimedia/minify/src/Cli.php',
+        'Wikimedia\\Minify\\IdentityMinifierState' => __DIR__ . '/..' . '/wikimedia/minify/src/IdentityMinifierState.php',
+        'Wikimedia\\Minify\\IndexMap' => __DIR__ . '/..' . '/wikimedia/minify/src/IndexMap.php',
+        'Wikimedia\\Minify\\IndexMapOffset' => __DIR__ . '/..' . '/wikimedia/minify/src/IndexMapOffset.php',
         'Wikimedia\\Minify\\JavaScriptMapperState' => __DIR__ . '/..' . '/wikimedia/minify/src/JavaScriptMapperState.php',
         'Wikimedia\\Minify\\JavaScriptMinifier' => __DIR__ . '/..' . '/wikimedia/minify/src/JavaScriptMinifier.php',
         'Wikimedia\\Minify\\JavaScriptMinifierState' => __DIR__ . '/..' . '/wikimedia/minify/src/JavaScriptMinifierState.php',
         'Wikimedia\\Minify\\MapperState' => __DIR__ . '/..' . '/wikimedia/minify/src/MapperState.php',
         'Wikimedia\\Minify\\MappingsGenerator' => __DIR__ . '/..' . '/wikimedia/minify/src/MappingsGenerator.php',
         'Wikimedia\\Minify\\MinifierState' => __DIR__ . '/..' . '/wikimedia/minify/src/MinifierState.php',
+        'Wikimedia\\Minify\\Utils' => __DIR__ . '/..' . '/wikimedia/minify/src/Utils.php',
         'Wikimedia\\NormalizedException\\INormalizedException' => __DIR__ . '/..' . '/wikimedia/normalized-exception/src/INormalizedException.php',
         'Wikimedia\\NormalizedException\\NormalizedException' => __DIR__ . '/..' . '/wikimedia/normalized-exception/src/NormalizedException.php',
         'Wikimedia\\NormalizedException\\NormalizedExceptionTrait' => __DIR__ . '/..' . '/wikimedia/normalized-exception/src/NormalizedExceptionTrait.php',

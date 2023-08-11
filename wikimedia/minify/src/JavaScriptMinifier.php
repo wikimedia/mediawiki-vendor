@@ -1289,6 +1289,15 @@ class JavaScriptMinifier {
 	}
 
 	/**
+	 * Create a MinifierState that doesn't actually minify
+	 *
+	 * @return IdentityMinifierState
+	 */
+	public static function createIdentityMinifier() {
+		return new IdentityMinifierState;
+	}
+
+	/**
 	 * Minify with optional source map.
 	 *
 	 * @internal
