@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e7c315db52b925de8d44c5835feade6d",
+    "content-hash": "006a2e76ac2514ccc69175ef08bf2e64",
     "packages": [
         {
             "name": "christian-riesen/base32",
@@ -936,16 +936,16 @@
         },
         {
             "name": "pear/mail",
-            "version": "v1.5.0",
+            "version": "v1.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear/Mail.git",
-                "reference": "c31b7635899a630a8ce681e5ced18cededcc15f3"
+                "reference": "1665e1b1dc0261a15cb3ee99ef38b4254aa7564a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/Mail/zipball/c31b7635899a630a8ce681e5ced18cededcc15f3",
-                "reference": "c31b7635899a630a8ce681e5ced18cededcc15f3",
+                "url": "https://api.github.com/repos/pear/Mail/zipball/1665e1b1dc0261a15cb3ee99ef38b4254aa7564a",
+                "reference": "1665e1b1dc0261a15cb3ee99ef38b4254aa7564a",
                 "shasum": ""
             },
             "require": {
@@ -999,7 +999,7 @@
                 "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Mail",
                 "source": "https://github.com/pear/Mail"
             },
-            "time": "2022-11-29T22:04:18+00:00"
+            "time": "2023-08-08T21:11:59+00:00"
         },
         {
             "name": "pear/mail_mime",
