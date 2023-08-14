@@ -418,6 +418,8 @@ class TableFixups {
 
 		// Sanitize attrs and transfer them to the td node
 		Sanitizer::applySanitizedArgs( $env->getSiteConfig(), $cell, $attrs );
+		$cellDp = DOMDataUtils::getDataParsoid( $cell );
+		$cellDp->setTempFlag( TempData::NO_ATTRS, false );
 
 		// If the transclusion node was embedded within the td node,
 		// lift up the about group to the td node.
@@ -454,6 +456,8 @@ class TableFixups {
 			return false;
 		}
 
+		$cellIsTplWrapper = WTUtils::isFirstEncapsulationWrapperNode( $cell );
+
 		$prev = $cell->previousSibling;
 		DOMUtils::assertElt( $prev );
 
@@ -471,6 +475,12 @@ class TableFixups {
 		// this scenario for now.
 		$prevDp = DOMDataUtils::getDataParsoid( $prev );
 		if ( !$prevDp->getTempFlag( TempData::NO_ATTRS ) ) {
+			return false;
+		}
+
+		// Eliminates scenarios where prevDp comes from a template
+		// and hence couldn't possibly be a candidate for combining.
+		if ( !Utils::isValidDSR( $prevDp->dsr ?? null ) ) {
 			return false;
 		}
 
@@ -493,13 +503,16 @@ class TableFixups {
 		$attrs = $attributeTokens[0];
 
 		Sanitizer::applySanitizedArgs( $env->getSiteConfig(), $cell, $attrs );
+		$cellDp->setTempFlag( TempData::NO_ATTRS, false );
 
-		// Update data-mw, DSR
-		$dataMW = DOMDataUtils::getDataMw( $cell );
-		array_unshift( $dataMW->parts, $prevCellSrc );
-		$cellDSR = $cellDp->dsr ?? null;
-		if ( $cellDSR && $cellDSR->start ) {
-			$cellDSR->start -= strlen( $prevCellSrc );
+		// Update data-mw, DSR if $cell is an encapsulation wrapper
+		if ( $cellIsTplWrapper ) {
+			$dataMW = DOMDataUtils::getDataMw( $cell );
+			array_unshift( $dataMW->parts, $prevCellSrc );
+			$cellDSR = $cellDp->dsr ?? null;
+			if ( $cellDSR && $cellDSR->start ) {
+				$cellDSR->start -= strlen( $prevCellSrc );
+			}
 		}
 
 		$parent = $cell->parentNode;
@@ -539,7 +552,7 @@ class TableFixups {
 		$isTd = DOMCompat::nodeName( $cell ) === 'td';
 		$dp = DOMDataUtils::getDataParsoid( $cell );
 		if ( $isTd && // only | can separate attributes & content => $cell has to be <td>
-			WTUtils::isFirstEncapsulationWrapperNode( $cell ) && // See long comment below
+			WTUtils::fromEncapsulatedContent( $cell ) && // See long comment below
 			!$dp->getTempFlag( TempData::FAILED_REPARSE ) &&
 			!isset( $dp->stx ) // has to be first cell of the row
 		) {
@@ -554,8 +567,10 @@ class TableFixups {
 			// with other templated cells.  So, previous sibling cannot be templated.
 
 			$prev = $cell->previousSibling;
-			if ( $prev instanceof Element &&
-				!WTUtils::hasLiteralHTMLMarker( DOMDataUtils::getDataParsoid( $prev ) ) &&
+			$prevDp = $prev instanceof Element ? DOMDataUtils::getDataParsoid( $prev ) : null;
+			if ( $prevDp &&
+				!WTUtils::hasLiteralHTMLMarker( $prevDp ) &&
+				$prevDp->getTempFlag( TempData::NO_ATTRS ) &&
 				!DOMUtils::hasTypeOf( $prev, 'mw:Transclusion' ) &&
 				!str_contains( DOMCompat::getInnerHTML( $prev ), "\n" )
 			) {
