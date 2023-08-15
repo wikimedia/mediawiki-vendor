@@ -61,7 +61,7 @@ class CardPaymentProvider extends PaymentProvider {
 		);
 		$response = new CreatePaymentResponse();
 		$response->setRawResponse( $rawResponse );
-		$this->mapRestIdAndErrors( $response, $rawResponse );
+		$this->mapGatewayTxnIdAndErrors( $response, $rawResponse );
 
 		$rawStatus = $rawResponse['resultCode'] ?? null;
 		$this->mapStatus(
@@ -111,7 +111,7 @@ class CardPaymentProvider extends PaymentProvider {
 			$rawStatus
 		);
 
-		$this->mapRestIdAndErrors( $response, $rawResponse );
+		$this->mapGatewayTxnIdAndErrors( $response, $rawResponse );
 		return $response;
 	}
 

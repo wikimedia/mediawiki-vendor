@@ -43,7 +43,7 @@ class BankTransferPaymentProvider extends PaymentProvider {
 		if ( $rawStatus === 'RedirectShopper' ) {
 			$response->setRedirectUrl( $rawResponse['action']['url'] );
 		}
-		$this->mapRestIdAndErrors( $response, $rawResponse );
+		$this->mapGatewayTxnIdAndErrors( $response, $rawResponse );
 
 		return $response;
 	}

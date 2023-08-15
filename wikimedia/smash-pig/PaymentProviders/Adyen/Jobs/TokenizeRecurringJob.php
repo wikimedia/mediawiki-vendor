@@ -1,6 +1,6 @@
 <?php
 
-namespace SmashPig\PaymentProviders\Adyen;
+namespace SmashPig\PaymentProviders\Adyen\Jobs;
 
 use SmashPig\Core\DataStores\QueueWrapper;
 use SmashPig\Core\Logging\Logger;
@@ -16,7 +16,7 @@ class TokenizeRecurringJob implements Runnable {
 
 	public static function fromDonationMessage( array $message ): array {
 		$job = [
-			'class' => '\SmashPig\PaymentProviders\Adyen\TokenizeRecurringJob',
+			'class' => '\SmashPig\PaymentProviders\Adyen\Jobs\TokenizeRecurringJob',
 			'payload' => $message
 		];
 		return $job;

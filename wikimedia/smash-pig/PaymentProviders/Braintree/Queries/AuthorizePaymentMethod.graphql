@@ -1,8 +1,9 @@
-mutation AuthorizePaymentMethod($input: AuthorizePaymentMethodInput!) {
-  authorizePaymentMethod(input: $input) {
+mutation AuthorizePaymentMethod($input: AuthorizePaymentMethodInput!){
+  authorizePaymentMethod(input: $input){
     transaction{
       id
       status
+      legacyId
       createdAt
       paymentInitiatedAt
       source
@@ -19,6 +20,10 @@ mutation AuthorizePaymentMethod($input: AuthorizePaymentMethodInput!) {
             email
             phone
           }
+        }
+        ... on VenmoAccountDetails {
+          username
+          venmoUserId
         }
       }
     }

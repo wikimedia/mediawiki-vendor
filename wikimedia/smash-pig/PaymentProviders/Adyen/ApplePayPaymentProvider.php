@@ -38,7 +38,7 @@ class ApplePayPaymentProvider extends PaymentProvider {
 			new ApprovalNeededCreatePaymentStatus(),
 			$rawResponse['resultCode'] ?? null
 		);
-		$this->mapRestIdAndErrors( $response, $rawResponse );
+		$this->mapGatewayTxnIdAndErrors( $response, $rawResponse );
 		// additionalData has the recurring details
 		if ( isset( $rawResponse['additionalData'] ) ) {
 			$this->mapAdditionalData( $rawResponse['additionalData'], $response );

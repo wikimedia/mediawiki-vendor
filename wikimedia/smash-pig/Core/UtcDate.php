@@ -3,19 +3,11 @@
 use DateTime;
 use DateTimeZone;
 use Exception;
-use SmashPig\Core\Logging\Logger;
 
 class UtcDate {
-	// FIXME: Should probably let the exception bubble up instead of setting
-	// dates to null.
-	public static function getUtcTimestamp( $dateString = 'now', $timeZone = 'UTC' ) {
-		try {
-			$obj = new DateTime( $dateString, new DateTimeZone( $timeZone ) );
-			return $obj->getTimestamp();
-		} catch ( Exception $ex ) {
-			Logger::warning( 'Could not get timestamp from string', $dateString, $ex );
-			return null;
-		}
+	public static function getUtcTimestamp( $dateString = 'now', $timeZone = 'UTC' ): int {
+		$obj = new DateTime( $dateString, new DateTimeZone( $timeZone ) );
+		return $obj->getTimestamp();
 	}
 
 	/**

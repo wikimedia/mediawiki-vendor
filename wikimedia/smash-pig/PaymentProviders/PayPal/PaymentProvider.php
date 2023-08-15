@@ -18,6 +18,7 @@ use SmashPig\PaymentProviders\Responses\CreatePaymentResponse;
 use SmashPig\PaymentProviders\Responses\CreatePaymentSessionResponse;
 use SmashPig\PaymentProviders\Responses\CreateRecurringPaymentsProfileResponse;
 use SmashPig\PaymentProviders\Responses\PaymentDetailResponse;
+use SmashPig\PaymentProviders\Responses\RefundPaymentResponse;
 use UnexpectedValueException;
 
 class PaymentProvider implements IPaymentProvider, IGetLatestPaymentStatusProvider, IRecurringPaymentProfileProvider {
@@ -124,6 +125,36 @@ class PaymentProvider implements IPaymentProvider, IGetLatestPaymentStatusProvid
 	}
 
 	/**
+	 * Refunds a payment
+	 * https://developer.paypal.com/api/nvp-soap/refund-transaction-nvp/
+	 *
+	 * @param array $params Associative array with a 'gateway_txn_id' key
+	 * @return RefundPaymentResponse
+	 */
+	public function refundPayment( array $params ): RefundPaymentResponse {
+		$rawResponse = $this->api->refundPayment( $params );
+		$response = new RefundPaymentResponse();
+		$response->setRawResponse( $rawResponse );
+		$response->setRawStatus( $rawResponse['ACK'] ?? null );
+
+		if ( $this->isSuccessfulPaypalResponse( $rawResponse ) ) {
+			$response->setSuccessful( true );
+			if (
+				empty( $rawResponse[ 'REFUNDTRANSACTIONID' ] )
+			) {
+				throw new UnexpectedValueException(
+					"Paypal API call successful but incorrect or missing REFUNDTRANSACTIONID in response" );
+			}
+		} else {
+			$response->setSuccessful( false );
+			$response->setStatus( FinalStatus::FAILED );
+			$response->addErrors( $this->mapErrorsInResponse( $rawResponse ) );
+		}
+
+		return $response;
+	}
+
+	/**
 	 * Cancel an existing PayPal subscription
 	 *
 	 * @param array $params Associative array with a 'subscr_id' key
@@ -145,7 +176,6 @@ class PaymentProvider implements IPaymentProvider, IGetLatestPaymentStatusProvid
 				throw new UnexpectedValueException(
 					"Paypal API call successful but incorrect or missing PROFILEID in response" );
 			}
-
 		} else {
 			$response->setSuccessful( false );
 			$response->setStatus( FinalStatus::FAILED );

@@ -74,7 +74,7 @@ class ReferenceData {
 		'IO' => 'ach', // South Africa, ACH bt
 		'IR' => 'upi', // India. We also get this back for recurring 'paytmwallet' but 'upi' is more common
 		'JC' => 'jcb',
-		'KC' => 'carnet_credit', // Mexico cc
+		'KC' => 'carnet', // Mexico cc
 		'KD' => 'carnet_debit', // Mexico cc
 		'LD' => 'cabal-debit',
 		'LI' => 'lider',

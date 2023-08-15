@@ -17,9 +17,9 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessDonation() {
 		$processor = new BraintreeAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/settlement_batch_report_2022-06-27.json' );
-		$this->assertSame( 1, count( $output ), 'Should have found one donation' );
-		$actual = $output[0];
-		$expected = [
+		$this->assertSame( 2, count( $output ), 'Should have found two donations' );
+		$actualPaypal = $output[0];
+		$expectedPaypal = [
 			'gateway' => 'braintree',
 			'date' => 1656383927,
 			'gross' => '3.33',
@@ -33,7 +33,23 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'last_name' => 'doner',
 			'payment_method' => 'paypal',
 		];
-		$this->assertEquals( $expected, $actual, 'Did not parse donation correctly' );
+		$this->assertEquals( $expectedPaypal, $actualPaypal, 'Did not parse paypal donation correctly' );
+		$actualVenmo = $output[1];
+		$expectedVenmo = [
+			'gateway' => 'braintree',
+			'date' => 1690227624,
+			'gross' => '10.00',
+			'contribution_tracking_id' => '68',
+			'currency' => 'USD',
+			'email' => 'iannievan@gmail.com',
+			'gateway_txn_id' => 'dHJhbnNhY3Rpb25fZ3p5MnMwbjk',
+			'invoice_id' => '68.1',
+			'phone' => null,
+			'first_name' => 'Ann',
+			'last_name' => 'Fan',
+			'payment_method' => 'venmo',
+		];
+		$this->assertEquals( $expectedVenmo, $actualVenmo, 'Did not parse venmo donation correctly' );
 	}
 
 	/**
@@ -42,9 +58,9 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessRefund() {
 		$processor = new BraintreeAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/settlement_batch_report_refund_2022-06-27.json' );
-		$this->assertSame( 1, count( $output ), 'Should have found one refund donation' );
-		$actual = $output[0];
-		$expected = [
+		$this->assertSame( 2, count( $output ), 'Should have found two refund donations' );
+		$actualPaypal = $output[0];
+		$expectedPaypal = [
 			'gateway' => 'braintree',
 			'date' => 1656390820,
 			'gross' => '10.00',
@@ -60,7 +76,25 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'payment_method' => 'paypal',
 			'type' => 'refund',
 		];
-		$this->assertEquals( $expected, $actual, 'Did not parse refund correctly' );
+		$this->assertEquals( $expectedPaypal, $actualPaypal, 'Did not parse paypal refund correctly' );
+		$actualVenmo = $output[1];
+		$expectedVenmo = [
+			'gateway' => 'braintree',
+			'date' => 1690485762,
+			'gross' => '5.00',
+			'contribution_tracking_id' => '61',
+			'currency' => 'USD',
+			'email' => 'iannievan@gmail.com',
+			'gateway_parent_id' => 'dHJhbnNhY3Rpb25fY2EyMWdnNjk',
+			'gateway_refund_id' => 'cmVmdW5kX2V5NWdnNjJl',
+			'invoice_id' => '61.1',
+			'phone' => null,
+			'first_name' => 'Ann',
+			'last_name' => 'Fan',
+			'payment_method' => 'venmo',
+			'type' => 'refund',
+		];
+		$this->assertEquals( $expectedVenmo, $actualVenmo, 'Did not parse venmo refund correctly' );
 	}
 
 	/**
@@ -69,9 +103,9 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessDispute() {
 		$processor = new BraintreeAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/settlement_batch_report_dispute_2022-06-27.json' );
-		$this->assertSame( 1, count( $output ), 'Should have found one refund donation' );
-		$actual = $output[0];
-		$expected = [
+		$this->assertSame( 2, count( $output ), 'Should have found two dispute donations' );
+		$actualPaypal = $output[0];
+		$expectedPaypal = [
 				'gateway' => 'braintree',
 				'date' => 1656381367,
 				'gross' => '3.33',
@@ -86,6 +120,23 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 				'payment_method' => 'paypal',
 				'type' => 'chargeback',
 			];
-		$this->assertEquals( $expected, $actual, 'Did not parse refund correctly' );
+		$this->assertEquals( $expectedPaypal, $actualPaypal, 'Did not parse dispute paypal correctly' );
+		$actualVenmo = $output[1];
+		$expectedVenmo = [
+				'gateway' => 'braintree',
+				'date' => 1690485762,
+				'gross' => '5.00',
+				'contribution_tracking_id' => '61',
+				'currency' => 'USD',
+				'email' => 'iannievan@gmail.com',
+				'gateway_txn_id' => 'dHJhbnNhY3Rpb25fY2EyMWdnNjk',
+				'invoice_id' => '61.1',
+				'phone' => null,
+				'first_name' => 'Ann',
+				'last_name' => 'Fan',
+				'payment_method' => 'venmo',
+				'type' => 'chargeback',
+			];
+		$this->assertEquals( $expectedVenmo, $actualVenmo, 'Did not parse dispute venmo correctly' );
 	}
 }

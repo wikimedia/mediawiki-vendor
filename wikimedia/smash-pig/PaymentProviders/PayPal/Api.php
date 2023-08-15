@@ -179,6 +179,26 @@ class Api {
 	}
 
 	/**
+	 * Refund paypal
+	 * @param array $params
+	 *
+	 * @return array
+	 * @throws \SmashPig\Core\ApiException
+	 */
+	public function refundPayment( array $params ) : array {
+		$requestParams = [
+			'METHOD' => 'RefundTransaction',
+			'INVOICEID' => $params['order_id'], // optional
+			'TRANSACTIONID' => $params[ 'gateway_txn_id' ], // Unique identifier of the transaction to be refunded.
+			'REFUNDTYPE' => $params['amount'] ? 'Partial' : 'Full'
+		];
+		if ( $params['amount'] ) {
+			$requestParams['AMT'] = $params['amount'];
+		}
+		return $this->makeApiCall( $requestParams );
+	}
+
+	/**
 	 * Paypal expects auth and version params to be sent within the request body.
 	 * https://developer.paypal.com/api/nvp-soap/gs-PayPalAPIs/#link-callpayload
 	 *

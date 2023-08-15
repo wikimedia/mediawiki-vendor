@@ -7,7 +7,7 @@ use SmashPig\Core\QueueConsumers\JobQueueConsumer;
 use SmashPig\CrmLink\Messages\SourceFields;
 use SmashPig\PaymentData\SavedPaymentDetails;
 use SmashPig\PaymentProviders\Adyen\CardPaymentProvider;
-use SmashPig\PaymentProviders\Adyen\TokenizeRecurringJob;
+use SmashPig\PaymentProviders\Adyen\Jobs\TokenizeRecurringJob;
 use SmashPig\PaymentProviders\Responses\SavedPaymentDetailsResponse;
 use SmashPig\Tests\BaseSmashPigUnitTestCase;
 
@@ -35,7 +35,7 @@ class TokenizeRecurringJobTest extends BaseSmashPigUnitTestCase {
 	 */
 	public function testFromDonationMessage( $message ) {
 		$expected = [
-			'class' => '\SmashPig\PaymentProviders\Adyen\TokenizeRecurringJob',
+			'class' => '\SmashPig\PaymentProviders\Adyen\Jobs\TokenizeRecurringJob',
 			'payload' => $message
 		];
 		$actual = TokenizeRecurringJob::fromDonationMessage( $message );

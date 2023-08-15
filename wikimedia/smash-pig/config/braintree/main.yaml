@@ -37,6 +37,8 @@ payment-provider:
         class: SmashPig\PaymentProviders\Braintree\SearchTransactionsProvider
     report:
         class: SmashPig\PaymentProviders\Braintree\VenmoReportProvider
+    venmo:
+        class: SmashPig\PaymentProviders\Braintree\VenmoPaymentProvider
     paypal:
         class: SmashPig\PaymentProviders\Braintree\PaypalPaymentProvider
         constructor-parameters:

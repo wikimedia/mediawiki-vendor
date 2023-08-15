@@ -8,7 +8,7 @@ use SmashPig\PaymentProviders\Adyen\ExpatriatedMessages\AdyenMessage;
 
 class AdyenListener extends SoapListener {
 
-	protected $wsdlpath = "https://ca-live.adyen.com/ca/services/Notification?wsdl";
+	protected $wsdlpath;
 
 	protected $classmap = [
 		'NotificationRequest'      => 'SmashPig\PaymentProviders\Adyen\WSDL\NotificationRequest',
@@ -25,6 +25,8 @@ class AdyenListener extends SoapListener {
 
 	public function __construct() {
 		require_once 'WSDL/Notification.php';
+		$this->wsdlpath = __DIR__ . "/WSDL/NotificationService.wsdl";
+
 		parent::__construct();
 	}
 

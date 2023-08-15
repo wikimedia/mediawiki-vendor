@@ -25,6 +25,20 @@ class DonorDetails {
 	protected $fullName;
 
 	/**
+	 * Venmo customer id as a single string, as given by some payment providers
+	 *
+	 * @var string|null
+	 */
+	protected $customerId;
+
+	/**
+	 * Venmo user name as a single string, as given by some payment providers
+	 *
+	 * @var string|null
+	 */
+	protected $userName;
+
+	/**
 	 * The donor email
 	 *
 	 * @var string|null
@@ -62,6 +76,24 @@ class DonorDetails {
 	 */
 	public function setFullName( ?string $fullName ): DonorDetails {
 		$this->fullName = $fullName;
+		return $this;
+	}
+
+	/**
+	 * @param string|null $customerId
+	 * @return DonorDetails
+	 */
+	public function setCustomerId( ?string $customerId ): DonorDetails {
+		$this->customerId = $customerId;
+		return $this;
+	}
+
+	/**
+	 * @param string|null $userName
+	 * @return DonorDetails
+	 */
+	public function setUserName( ?string $userName ): DonorDetails {
+		$this->userName = $userName;
 		return $this;
 	}
 
@@ -105,6 +137,22 @@ class DonorDetails {
 	 */
 	public function getFullName(): ?string {
 		return $this->fullName;
+	}
+
+	/**
+	 * Get venmo user name from payment response
+	 * @return string|null
+	 */
+	public function getUserName(): ?string {
+		return $this->userName;
+	}
+
+	/**
+	 * Get venmo customer id from payment response
+	 * @return string|null
+	 */
+	public function getCustomerId(): ?string {
+		return $this->customerId;
 	}
 
 	/**

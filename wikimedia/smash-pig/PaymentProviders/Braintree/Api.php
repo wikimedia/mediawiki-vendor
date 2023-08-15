@@ -85,6 +85,27 @@ class Api {
 	}
 
 	/**
+	 * @param array $params
+	 * https://graphql.braintreepayments.com/reference/#Mutation--refundTransaction
+	 * @return array
+	 */
+	public function refundPayment( array $params ): array {
+		$query = $this->getQuery( 'refundPayment' );
+		$input = [
+			'transactionId' => $params['gateway_txn_id'],
+			'refund' => [
+				'orderId' => $params['order_id']
+			]
+		];
+		// only if we want partial refund, or we can omit this para,
+		// we can also add reason of refund, but probably not important
+		if ( isset( $params['amount'] ) ) {
+			$input['refund']['amount'] = $params['amount'];
+		}
+		return $this->makeApiCall( $query, [ 'input' => $input ] );
+	}
+
+	/**
 	 * @param array $input
 	 * @param ?string $after
 	 * @return array
@@ -108,30 +129,19 @@ class Api {
 	 * @param array $input
 	 * @return array
 	 */
-	public function chargePayment( array $input ): array {
-		$query = $this->getQuery( 'ChargePaymentMethod' );
-		$variables = [ 'input' => $input ];
-		return $this->makeApiCall( $query, $variables );
-	}
-
-	/**
-	 *
-	 * @param array $input
-	 * @return array
-	 */
-	public function authorizePayment( array $input ): array {
-		$query = $this->getQuery( 'AuthorizePaymentMethod' );
-		$variables = [ 'input' => $input ];
-		return $this->makeApiCall( $query, $variables );
-	}
-
-	/**
-	 *
-	 * @param array $input
-	 * @return array
-	 */
 	public function captureTransaction( array $input ): array {
 		$query = $this->getQuery( 'CaptureTransaction' );
+		$variables = [ 'input' => $input ];
+		return $this->makeApiCall( $query, $variables );
+	}
+
+	/**
+	 *
+	 * @param array $input
+	 * @return array
+	 */
+	public function authorizePaymentMethod( array $input ): array {
+		$query = $this->getQuery( 'AuthorizePaymentMethod' );
 		$variables = [ 'input' => $input ];
 		return $this->makeApiCall( $query, $variables );
 	}

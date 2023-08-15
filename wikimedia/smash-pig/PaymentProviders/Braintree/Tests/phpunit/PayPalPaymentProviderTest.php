@@ -4,6 +4,7 @@ namespace SmashPig\PaymentProviders\Braintree\Tests;
 
 use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentProviders\Braintree\PaypalPaymentProvider;
+use SmashPig\PaymentProviders\Braintree\VenmoPaymentProvider;
 use SmashPig\Tests\BaseSmashPigUnitTestCase;
 
 /**
@@ -26,11 +27,41 @@ class PayPalPaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$this->merchantAccounts = [ 'USD' => 'wikimediafoundation', 'GBP' => 'WMF-GBP' ];
 	}
 
+	public function testPaymentWithNoDeviceDataError() {
+		$request = [
+			"payment_token" => "fake-valid-nonce",
+			"order_id" => '123.3',
+			"amount" => '1.00',
+			"currency" => "USD"
+		];
+
+		$provider = new PaypalPaymentProvider( [ 'merchant-accounts' => $this->merchantAccounts ] );
+		$response = $provider->createPayment( $request );
+		$validationError = $response->getValidationErrors();
+		$this->assertEquals( $validationError[0]->getField(), 'device_data' );
+	}
+
+	public function testVenmoNotUSDError() {
+		$request = [
+			"payment_token" => "fake-valid-nonce",
+			"order_id" => '123.3',
+			"amount" => '1.00',
+			"device_data" => '{}',
+			"currency" => "EUR"
+		];
+
+		$provider = new VenmoPaymentProvider();
+		$response = $provider->createPayment( $request );
+		$validationError = $response->getValidationErrors();
+		$this->assertEquals( $validationError[0]->getField(), 'currency' );
+	}
+
 	public function testPaymentWithNotSupportedCurrencyError() {
 		$request = [
 			"payment_token" => "fake-valid-nonce",
 			"order_id" => '123.3',
 			"amount" => '1.00',
+			"device_data" => '{}',
 			"currency" => "CNY"
 		];
 
@@ -52,10 +83,11 @@ class PayPalPaymentProviderTest extends BaseSmashPigUnitTestCase {
 			"payment_token" => "fake-valid-nonce",
 			"order_id" => '123.3',
 			"amount" => '1.00',
+			"device_data" => '{}',
 			"currency" => 'USD'
 		];
 		$this->api->expects( $this->once() )
-			->method( 'authorizePayment' )
+			->method( 'authorizePaymentMethod' )
 			->willReturn( [
 				'data' => [
 					'authorizePaymentMethod' => [
@@ -128,15 +160,19 @@ class PayPalPaymentProviderTest extends BaseSmashPigUnitTestCase {
 			"payment_token" => "fake-valid-nonce",
 			"order_id" => '123.3',
 			"amount" => '1.00',
+			"device_data" => '{}',
 			"currency" => "GBP"
 		];
 		$this->api->expects( $this->once() )
-			->method( 'authorizePayment' )
+			->method( 'authorizePaymentMethod' )
 			->with( [
 				'transaction' => [
 					'merchantAccountId' => 'WMF-GBP',
 					'amount' => '1.00',
-					'orderId' => '123.3'
+					'orderId' => '123.3',
+					'riskData' => [
+						'deviceData' => '{}'
+					]
 				],
 				'paymentMethodId' => 'fake-valid-nonce'
 			] )
@@ -171,6 +207,8 @@ class PayPalPaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$provider = new PaypalPaymentProvider( [ 'merchant-accounts' => $this->merchantAccounts ] );
 		$requestWithoutPaymentToken = [
 			"amount" => '1.00',
+			"currency" => 'USD',
+			"deviceData" => '{}',
 			"order_id" => '123.3'
 		];
 		$response = $provider->createPayment( $requestWithoutPaymentToken );
@@ -179,6 +217,8 @@ class PayPalPaymentProviderTest extends BaseSmashPigUnitTestCase {
 
 		$requestWithoutAmount = [
 			"payment_token" => "fake-valid-nonce",
+			"currency" => 'USD',
+			"deviceData" => '{}',
 			"order_id" => '123.3'
 		];
 		$response = $provider->createPayment( $requestWithoutAmount );
@@ -187,7 +227,9 @@ class PayPalPaymentProviderTest extends BaseSmashPigUnitTestCase {
 
 		$requestWithoutOrderId = [
 			"payment_token" => "fake-valid-nonce",
-			"amount" => '1.00'
+			"amount" => '1.00',
+			"currency" => 'USD',
+			"deviceData" => '{}',
 		];
 		$response = $provider->createPayment( $requestWithoutOrderId );
 		$validationError = $response->getValidationErrors();

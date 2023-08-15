@@ -1,0 +1,22 @@
+mutation RefundPayment($input: RefundTransactionInput!) {
+  refundTransaction(input: $input) {
+    refund{
+      id
+      legacyId
+      createdAt
+      amount {
+       value
+       currencyCode
+      }
+      orderId
+      status
+      statusHistory {
+        ... on SettlementDeclinedEvent {
+		  processorResponse {
+			message
+		  }
+	   }
+	  }
+    }
+  }
+}

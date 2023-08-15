@@ -156,7 +156,7 @@ abstract class PaymentProvider implements
 		if ( isset( $rawResponse['additionalData'] ) ) {
 			$this->mapAdditionalData( $rawResponse['additionalData'], $response );
 		}
-		$this->mapRestIdAndErrors( $response, $rawResponse );
+		$this->mapGatewayTxnIdAndErrors( $response, $rawResponse );
 		return $response;
 	}
 
@@ -253,7 +253,7 @@ abstract class PaymentProvider implements
 				[ FinalStatus::COMPLETE ]
 			);
 		}
-		$this->mapRestIdAndErrors( $response, $rawResponse );
+		$this->mapGatewayTxnIdAndErrors( $response, $rawResponse );
 		return $response;
 	}
 
@@ -287,7 +287,7 @@ abstract class PaymentProvider implements
 				[ FinalStatus::COMPLETE ]
 			);
 		}
-		$this->mapRestIdAndErrors( $response, $rawResponse );
+		$this->mapGatewayTxnIdAndErrors( $response, $rawResponse );
 		return $response;
 	}
 
@@ -323,7 +323,7 @@ abstract class PaymentProvider implements
 				[ FinalStatus::CANCELLED ]
 			);
 		}
-		$this->mapRestIdAndErrors(
+		$this->mapGatewayTxnIdAndErrors(
 			$response,
 			$rawResponse
 		);
@@ -393,10 +393,10 @@ abstract class PaymentProvider implements
 	 * @param PaymentProviderResponse $response
 	 * @param ?array $rawResponse
 	 */
-	protected function mapRestIdAndErrors(
+	protected function mapGatewayTxnIdAndErrors(
 		PaymentProviderResponse $response,
 		?array $rawResponse
-	) {
+	) : void {
 		if ( $rawResponse === null ) {
 			$responseError = 'Adyen response was null or invalid JSON.';
 			$response->addErrors( new PaymentError(

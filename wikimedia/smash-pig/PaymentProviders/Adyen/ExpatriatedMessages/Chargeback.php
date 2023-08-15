@@ -1,6 +1,6 @@
 <?php namespace SmashPig\PaymentProviders\Adyen\ExpatriatedMessages;
 
-use SmashPig\PaymentProviders\Adyen\Actions\PaymentCaptureAction;
+use SmashPig\PaymentProviders\Adyen\Actions\ChargebackInitiatedAction;
 
 /**
  * A CHARGEBACK message is sent as the final stage of the chargeback
@@ -22,7 +22,7 @@ class Chargeback extends AdyenMessage {
 	 * @return bool True if all actions were successful. False otherwise.
 	 */
 	public function runActionChain() {
-		$action = new PaymentCaptureAction();
+		$action = new ChargebackInitiatedAction();
 		$result = $action->execute( $this );
 
 		if ( $result === true ) {
