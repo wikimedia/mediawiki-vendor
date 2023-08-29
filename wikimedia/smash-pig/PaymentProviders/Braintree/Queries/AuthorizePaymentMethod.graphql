@@ -12,6 +12,16 @@ mutation AuthorizePaymentMethod($input: AuthorizePaymentMethodInput!){
         id
         legacyId
       }
+      customer {
+	    lastName
+	    firstName
+	    email
+	    phoneNumber
+      }
+      customFields {
+	    name
+	    value
+      }
       paymentMethodSnapshot {
         ... on PayPalTransactionDetails {
           payer {

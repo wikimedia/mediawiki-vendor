@@ -84,6 +84,9 @@ class PayPalPaymentProviderTest extends BaseSmashPigUnitTestCase {
 			"order_id" => '123.3',
 			"amount" => '1.00',
 			"device_data" => '{}',
+			'first_name' => "Jimmy",
+			'last_name' => "Wales",
+			'email' => "mockjwales@wikimedia.org",
 			"currency" => 'USD'
 		];
 		$this->api->expects( $this->once() )
@@ -161,6 +164,9 @@ class PayPalPaymentProviderTest extends BaseSmashPigUnitTestCase {
 			"order_id" => '123.3',
 			"amount" => '1.00',
 			"device_data" => '{}',
+			'first_name' => "Jimmy",
+			'last_name' => "Wales",
+			'email' => "mockjwales@wikimedia.org",
 			"currency" => "GBP"
 		];
 		$this->api->expects( $this->once() )
@@ -172,6 +178,14 @@ class PayPalPaymentProviderTest extends BaseSmashPigUnitTestCase {
 					'orderId' => '123.3',
 					'riskData' => [
 						'deviceData' => '{}'
+					],
+					"customerDetails" => [
+						"email" => "mockjwales@wikimedia.org",
+						'phoneNumber' => ''
+					],
+					"customFields" => [
+						"name" => "fullname",
+						"value" => "Jimmy Wales"
 					]
 				],
 				'paymentMethodId' => 'fake-valid-nonce'

@@ -23,6 +23,10 @@ recurring-base-url: https://pal-test.adyen.com/pal/servlet/Recurring/v68
 
 data-protection-base-url: https://ca-test.adyen.com/ca/services/DataProtectionService/v1
 
+enable-auto-rescue: false
+
+max-days-to-rescue: 40
+
 accounts: {}
     # FIXME: Provide sample account config more consistently.  The
     # empty map above is easy to overlook.

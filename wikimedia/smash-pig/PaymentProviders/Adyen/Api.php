@@ -95,6 +95,8 @@ class Api {
 		$this->recurringBaseUrl = $c->val( 'recurring-base-url' );
 		$this->dataProtectionBaseUrl = $c->val( 'data-protection-base-url' );
 		$this->apiKey = $c->val( "accounts/{$this->account}/ws-api-key" );
+		$this->enableAutoRescue = $c->val( 'enable-auto-rescue' );
+		$this->maxDaysToRescue = $c->val( 'max-days-to-rescue' );
 	}
 
 	/**
@@ -501,6 +503,12 @@ class Api {
 			$data->paymentRequest->shopperInteraction = static::RECURRING_SHOPPER_INTERACTION;
 			$data->paymentRequest->selectedRecurringDetailReference = static::RECURRING_SELECTED_RECURRING_DETAIL_REFERENCE;
 			$data->paymentRequest->shopperReference = $params['recurring_payment_token'];
+			if ( $this->enableAutoRescue ) {
+				$data->paymentRequest->additionalData['additionalData'] = [
+					'autoRescue' => true,
+					'maxDaysToRescue' => $this->maxDaysToRescue
+				];
+			}
 		}
 
 		// additional required fields that aren't listed in the docs as being required
@@ -676,7 +684,12 @@ class Api {
 		// credit card, apple pay, and iDeal all need shopperReference and storePaymentMethod
 		$recurringParams['shopperReference'] = $params['order_id'];
 		$recurringParams['storePaymentMethod'] = true;
-
+		if ( $this->enableAutoRescue ) {
+			$recurringParams['additionalData'] = [
+				'autoRescue' => true,
+				'maxDaysToRescue' => $this->maxDaysToRescue
+			];
+		}
 		if ( $needInteractionAndModel ) {
 			// credit card and apple pay also need shopperInteraction and recurringProcessingModel
 			$recurringParams['shopperInteraction'] = static::RECURRING_SHOPPER_INTERACTION_SETUP;

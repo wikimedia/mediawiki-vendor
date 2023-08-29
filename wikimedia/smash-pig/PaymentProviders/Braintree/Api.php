@@ -90,7 +90,7 @@ class Api {
 	 * @return array
 	 */
 	public function refundPayment( array $params ): array {
-		$query = $this->getQuery( 'refundPayment' );
+		$query = $this->getQuery( 'RefundPayment' );
 		$input = [
 			'transactionId' => $params['gateway_txn_id'],
 			'refund' => [
