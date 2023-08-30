@@ -2555,6 +2555,8 @@ class ComposerStaticInit_mediawiki_vendor
         'OOUI\\TextInputWidget' => __DIR__ . '/..' . '/oojs/oojs-ui/php/widgets/TextInputWidget.php',
         'OOUI\\Theme' => __DIR__ . '/..' . '/oojs/oojs-ui/php/Theme.php',
         'OOUI\\TitledElement' => __DIR__ . '/..' . '/oojs/oojs-ui/php/mixins/TitledElement.php',
+        'OOUI\\ToggleSwitchWidget' => __DIR__ . '/..' . '/oojs/oojs-ui/php/widgets/ToggleSwitchWidget.php',
+        'OOUI\\ToggleWidget' => __DIR__ . '/..' . '/oojs/oojs-ui/php/widgets/ToggleWidget.php',
         'OOUI\\Widget' => __DIR__ . '/..' . '/oojs/oojs-ui/php/Widget.php',
         'OOUI\\WikimediaUITheme' => __DIR__ . '/..' . '/oojs/oojs-ui/php/themes/WikimediaUITheme.php',
         'OS_Guess' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/OS/Guess.php',

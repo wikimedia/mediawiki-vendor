@@ -1782,6 +1782,8 @@ return array(
     'OOUI\\TextInputWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/TextInputWidget.php',
     'OOUI\\Theme' => $vendorDir . '/oojs/oojs-ui/php/Theme.php',
     'OOUI\\TitledElement' => $vendorDir . '/oojs/oojs-ui/php/mixins/TitledElement.php',
+    'OOUI\\ToggleSwitchWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/ToggleSwitchWidget.php',
+    'OOUI\\ToggleWidget' => $vendorDir . '/oojs/oojs-ui/php/widgets/ToggleWidget.php',
     'OOUI\\Widget' => $vendorDir . '/oojs/oojs-ui/php/Widget.php',
     'OOUI\\WikimediaUITheme' => $vendorDir . '/oojs/oojs-ui/php/themes/WikimediaUITheme.php',
     'OS_Guess' => $vendorDir . '/pear/pear-core-minimal/src/OS/Guess.php',
