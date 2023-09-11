@@ -1337,7 +1337,15 @@ class Linter implements Wt2HtmlDOMProcessor {
 		$this->logLargeTables( $env, $node, $dp, $tplInfo );
 
 		// Log fostered content, but skip rendering-transparent nodes
-		if ( !empty( $dp->fostered ) && !WTUtils::isRenderingTransparentNode( $node ) ) {
+		if (
+			!empty( $dp->fostered ) &&
+			!WTUtils::isRenderingTransparentNode( $node ) &&
+			// TODO: Section tags are rendering transparent but not sol transparent,
+			// and that method only considers WTUtils::isSolTransparentLink, though
+			// there is a FIXME to consider all link nodes.
+			!( DOMCompat::nodeName( $node ) === 'link' &&
+				DOMUtils::hasTypeOf( $node, 'mw:Extension/section' ) )
+		) {
 			return $this->logFosteredContent( $env, $node, $dp, $tplInfo );
 		} else {
 			return null;
@@ -1429,11 +1437,6 @@ class Linter implements Wt2HtmlDOMProcessor {
 	public function run(
 		Env $env, Node $root, array $options = [], bool $atTopLevel = false
 	): void {
-		// Skip linting if we cannot lint it
-		if ( !$env->getPageConfig()->hasLintableContentModel() ) {
-			return;
-		}
-
 		// Track time spent linting so we can evaluate benefits
 		// of migrating this code off the critical path to its own
 		// post processor.

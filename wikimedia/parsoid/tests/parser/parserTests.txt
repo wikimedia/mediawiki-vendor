@@ -13083,6 +13083,31 @@ LST Sections: Newfangled approach
 <p>&lt;section begin="2011-05-16" /> &lt;section end="2014-04-10 (MW 1.23wmf22)" /></p>
 !! end
 
+!! test
+LST Sections: Fostering
+!! options
+parsoid=wt2html
+!! wikitext
+{|
+<section name="testing"/>
+| 123
+|}
+!! html/parsoid
+<link typeof="mw:Extension/section" about="#mwt2" data-parsoid='{"fostered":true}' data-mw='{"name":"section","attrs":{"name":"testing"}}'/><table>
+
+<tbody><tr><td>123
+</td></tr></tbody></table>
+!! html/parsoid+integrated
+<p>&lt;section name="testing"/></p>
+<table>
+<tbody>
+<tr>
+<td>123</td>
+</tr>
+</tbody>
+</table>
+!! end
+
 #--------- Test stripping of empty nodes in template content ----------
 
 !! test
@@ -13860,6 +13885,21 @@ T73074: More fostering fun
 <table><td></td>{{1x|<tr>}}<!--c-->[[Category:Two]]
 !! html/parsoid
 <link rel="mw:PageProp/Category" href="./Category:Two" data-parsoid='{"stx":"simple","a":{"href":"./Category:Two"},"sa":{"href":"Category:Two"},"fostered":true}'/><table data-parsoid='{"stx":"html","autoInsertedEnd":true}'><tbody><tr data-parsoid='{"autoInsertedStart":true}'><td data-parsoid='{"stx":"html"}'></td></tr><tr about="#mwt1" typeof="mw:Transclusion" data-parsoid='{"autoInsertedEnd":true,"stx":"html","pi":[[{"k":"1"}]]}' data-mw='{"parts":[{"template":{"target":{"wt":"1x","href":"./Template:1x"},"params":{"1":{"wt":"&lt;tr>"}},"i":0}}]}'></tr><!--c--></tbody></table>
+!! end
+
+## Regression test for Parsoid's template wrapping of fostered content
+!! test
+Fostered content with a dom fragment token starting with a transclusion
+!! options
+parsoid=wt2html
+!! wikitext
+{|
+[[File:Foobar.jpg|right|{{1x|<div>123</div>}}]]
+|}
+!! html/parsoid
+<figure class="mw-default-size mw-halign-right" typeof="mw:File" data-parsoid='{"fostered":true}'><a href="./File:Foobar.jpg" class="mw-file-description" title="123"><img alt="123" resource="./File:Foobar.jpg" src="http://example.com/images/3/3a/Foobar.jpg" decoding="async" data-file-width="1941" data-file-height="220" data-file-type="bitmap" height="220" width="1941" class="mw-file-element"/></a><figcaption><div about="#mwt1" typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"1x","href":"./Template:1x"},"params":{"1":{"wt":"&lt;div>123&lt;/div>"}},"i":0}}]}'>123</div></figcaption></figure><table>
+
+</table>
 !! end
 
 !!test
