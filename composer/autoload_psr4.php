@@ -67,6 +67,7 @@ return array(
     'Psr\\Http\\Client\\' => array($vendorDir . '/psr/http-client/src'),
     'Psr\\Container\\' => array($vendorDir . '/psr/container/src'),
     'PhpParser\\' => array($vendorDir . '/nikic/php-parser/lib/PhpParser'),
+    'Peast\\' => array($vendorDir . '/mck89/peast/lib/Peast'),
     'Opis\\JsonSchema\\' => array($vendorDir . '/opis/json-schema/src'),
     'Onoi\\MessageReporter\\' => array($vendorDir . '/onoi/message-reporter/src'),
     'Nyholm\\Dsn\\' => array($vendorDir . '/nyholm/dsn/src'),
