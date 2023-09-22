@@ -23,7 +23,6 @@
 namespace Wikimedia;
 
 use JsonSerializable;
-use Wikimedia\AtEase\AtEase;
 
 /**
  * Matches IP addresses against a set of CIDR specifications
@@ -134,8 +133,9 @@ class IPSet implements JsonSerializable {
 		// explicit integer convert, checked above
 		$mask = (int)$mask;
 
-		// convert $net to an array of integer bytes, length 4 or 16:
-		$raw = AtEase::quietCall( 'inet_pton', $net );
+		// convert $net to an array of integer bytes, length 4 or 16
+		// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+		$raw = @inet_pton( $net );
 		if ( $raw === false ) {
 			return false;
 		}
@@ -207,7 +207,8 @@ class IPSet implements JsonSerializable {
 	 * @return bool True is match success, false is match failure
 	 */
 	public function match( $ip ): bool {
-		$raw = AtEase::quietCall( 'inet_pton', $ip );
+		// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+		$raw = @inet_pton( $ip );
 		if ( $raw === false ) {
 			return false;
 		}
