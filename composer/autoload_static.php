@@ -379,13 +379,13 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'Wikimedia\\' => 
         array (
-            0 => __DIR__ . '/..' . '/wikimedia/running-stat/src',
-            1 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
-            2 => __DIR__ . '/..' . '/wikimedia/testing-access-wrapper/src',
-            3 => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src',
-            4 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
-            5 => __DIR__ . '/..' . '/wikimedia/ip-set/src',
-            6 => __DIR__ . '/..' . '/wikimedia/ip-utils/src',
+            0 => __DIR__ . '/..' . '/wikimedia/ip-set/src',
+            1 => __DIR__ . '/..' . '/wikimedia/ip-utils/src',
+            2 => __DIR__ . '/..' . '/wikimedia/running-stat/src',
+            3 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
+            4 => __DIR__ . '/..' . '/wikimedia/testing-access-wrapper/src',
+            5 => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src',
+            6 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
         ),
         'Webauthn\\MetadataService\\' => 
         array (

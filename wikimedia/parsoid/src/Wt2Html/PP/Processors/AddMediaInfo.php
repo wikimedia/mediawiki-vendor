@@ -284,6 +284,10 @@ class AddMediaInfo implements Wt2HtmlDOMProcessor {
 			self::copyOverAttribute( $audio, $span, 'lang' );
 		}
 
+		if ( $info['duration'] ?? null ) {
+			$audio->setAttribute( 'data-durationhint', (string)ceil( (float)$info['duration'] ) );
+		}
+
 		self::addSources( $audio, $info, $dataMw, false );
 		self::addTracks( $audio, $info );
 
@@ -331,6 +335,10 @@ class AddMediaInfo implements Wt2HtmlDOMProcessor {
 
 		if ( $span->hasAttribute( 'lang' ) ) {
 			self::copyOverAttribute( $video, $span, 'lang' );
+		}
+
+		if ( $info['duration'] ?? null ) {
+			$video->setAttribute( 'data-durationhint', (string)ceil( (float)$info['duration'] ) );
 		}
 
 		self::addSources( $video, $info, $dataMw, true );
@@ -710,6 +718,9 @@ class AddMediaInfo implements Wt2HtmlDOMProcessor {
 			$infos
 		);
 
+		$hasThumb = false;
+		$needsTMHModules = false;
+
 		foreach ( $validContainers as $c ) {
 			$container = $c['container'];
 			$anchor = $c['anchor'];
@@ -717,6 +728,8 @@ class AddMediaInfo implements Wt2HtmlDOMProcessor {
 			$attrs = $c['attrs'];
 			$dataMw = DOMDataUtils::getDataMw( $container );
 			$errs = $c['errs'];
+
+			$hasThumb = $hasThumb || DOMUtils::hasTypeOf( $container, 'mw:File/Thumb' );
 
 			$info = $files[$c['infoKey']];
 			if ( !$info ) {
@@ -794,6 +807,8 @@ class AddMediaInfo implements Wt2HtmlDOMProcessor {
 					break;
 			}
 
+			$needsTMHModules = $needsTMHModules || !$isImage;
+
 			$alt = null;
 			$keepAltInDataMw = !$isImage || $errs;
 			$attr = WTSUtils::getAttrFromDataMw( $dataMw, 'alt', $keepAltInDataMw );
@@ -822,6 +837,15 @@ class AddMediaInfo implements Wt2HtmlDOMProcessor {
 			if ( isset( $dataMw->attribs ) && count( $dataMw->attribs ) === 0 ) {
 				unset( $dataMw->attribs );
 			}
+		}
+
+		if ( $hasThumb ) {
+			$env->getMetadata()->addModules( [ 'mediawiki.page.media' ] );
+		}
+
+		if ( $needsTMHModules ) {
+			$env->getMetadata()->addModuleStyles( [ 'ext.tmh.player.styles' ] );
+			$env->getMetadata()->addModules( [ 'ext.tmh.player' ] );
 		}
 	}
 }
