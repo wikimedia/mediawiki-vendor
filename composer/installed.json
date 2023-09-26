@@ -7358,17 +7358,17 @@
         },
         {
             "name": "wikimedia/metrics-platform",
-            "version": "2.0.0",
-            "version_normalized": "2.0.0.0",
+            "version": "2.1.0",
+            "version_normalized": "2.1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-metrics-platform.git",
-                "reference": "f84580798dc43b87dc8c6d0a90b61631757e8a7f"
+                "reference": "20ae4f2e566ab8aa8f66b8d28cad56bfbfd54c66"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-metrics-platform/zipball/f84580798dc43b87dc8c6d0a90b61631757e8a7f",
-                "reference": "f84580798dc43b87dc8c6d0a90b61631757e8a7f",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-metrics-platform/zipball/20ae4f2e566ab8aa8f66b8d28cad56bfbfd54c66",
+                "reference": "20ae4f2e566ab8aa8f66b8d28cad56bfbfd54c66",
                 "shasum": ""
             },
             "require": {
@@ -7378,7 +7378,7 @@
             },
             "require-dev": {
                 "mediawiki/mediawiki-codesniffer": "41.0.0",
-                "mediawiki/mediawiki-phan-config": "0.12.0",
+                "mediawiki/mediawiki-phan-config": "0.12.1",
                 "mediawiki/minus-x": "1.1.1",
                 "ockcyp/covers-validator": "1.6.0",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
@@ -7386,9 +7386,9 @@
                 "phpunit/phpunit": "9.5.28",
                 "symfony/process": "^5.4",
                 "wikimedia/testing-access-wrapper": "2.0.0",
-                "wikimedia/timestamp": "3.0.0"
+                "wikimedia/timestamp": "4.1.0"
             },
-            "time": "2023-03-17T14:00:48+00:00",
+            "time": "2023-09-20T15:52:38+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -7416,7 +7416,7 @@
             "homepage": "https://wikitech.wikimedia.org/wiki/Metrics_Platform",
             "support": {
                 "issues": "https://phabricator.wikimedia.org/project/board/5324/",
-                "source": "https://github.com/wikimedia/mediawiki-libs-metrics-platform/tree/2.0.0"
+                "source": "https://github.com/wikimedia/mediawiki-libs-metrics-platform/tree/2.1.0"
             },
             "install-path": "../wikimedia/metrics-platform"
         },

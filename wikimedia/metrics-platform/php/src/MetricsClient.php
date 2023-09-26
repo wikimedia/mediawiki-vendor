@@ -17,7 +17,7 @@ class MetricsClient implements LoggerAwareInterface {
 	 *
 	 * @var string
 	 */
-	public const SCHEMA = '/analytics/mediawiki/client/metrics_event/1.2.0';
+	public const SCHEMA = '/analytics/mediawiki/client/metrics_event/2.0.0';
 
 	/** @var EventSubmitter */
 	private $eventSubmitter;
