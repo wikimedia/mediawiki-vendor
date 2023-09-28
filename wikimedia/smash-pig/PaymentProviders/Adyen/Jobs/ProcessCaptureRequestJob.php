@@ -28,6 +28,7 @@ class ProcessCaptureRequestJob extends RunnableJob {
 	protected $currency;
 	protected $amount;
 	protected $merchantReference;
+	protected $shopperReference;
 	protected $pspReference;
 	protected $avsResult;
 	protected $cvvResult;
@@ -41,6 +42,7 @@ class ProcessCaptureRequestJob extends RunnableJob {
 	protected $logger;
 	protected $propertiesExcludedFromExport = [ 'logger' ];
 
+	protected $isSuccessfulAutoRescue = false;
 	const ACTION_DUPLICATE = 'duplicate'; // duplicate payment attempt - cancel the authorization
 	const ACTION_IGNORE = 'ignore'; // duplicate authorisation IPN - ignore
 	const ACTION_MISSING = 'missing'; // missing donor details - shunt job to damaged queue
@@ -52,11 +54,12 @@ class ProcessCaptureRequestJob extends RunnableJob {
 		$obj->currency = $authMessage->currency;
 		$obj->amount = $authMessage->amount;
 		$obj->merchantReference = $authMessage->merchantReference;
+		$obj->shopperReference = $authMessage->shopperReference;
 		$obj->pspReference = $authMessage->pspReference;
 		$obj->cvvResult = $authMessage->cvvResult;
 		$obj->avsResult = $authMessage->avsResult;
 		$obj->paymentMethod = $authMessage->paymentMethod;
-
+		$obj->isSuccessfulAutoRescue = $authMessage->isSuccessfulAutoRescue();
 		return $obj;
 	}
 
@@ -161,6 +164,9 @@ class ProcessCaptureRequestJob extends RunnableJob {
 	}
 
 	protected function determineAction( $dbMessage ) {
+		if ( $this->isSuccessfulAutoRescue ) {
+			 return ValidationAction::PROCESS;
+		}
 		if ( $dbMessage && isset( $dbMessage['order_id'] ) ) {
 			$this->logger->debug( 'Found a valid message.' );
 		} else {

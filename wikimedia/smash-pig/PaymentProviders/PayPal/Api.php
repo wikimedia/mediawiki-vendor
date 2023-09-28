@@ -190,9 +190,9 @@ class Api {
 			'METHOD' => 'RefundTransaction',
 			'INVOICEID' => $params['order_id'], // optional
 			'TRANSACTIONID' => $params[ 'gateway_txn_id' ], // Unique identifier of the transaction to be refunded.
-			'REFUNDTYPE' => $params['amount'] ? 'Partial' : 'Full'
+			'REFUNDTYPE' => isset( $params['amount'] ) ? 'Partial' : 'Full'
 		];
-		if ( $params['amount'] ) {
+		if ( isset( $params['amount'] ) ) {
 			$requestParams['AMT'] = $params['amount'];
 		}
 		return $this->makeApiCall( $requestParams );

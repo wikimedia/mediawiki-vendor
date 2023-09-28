@@ -165,6 +165,16 @@ class ReferenceData {
 			'method' => 'rtbt',
 			'submethod' => 'rtbt_multibanco',
 		],
+		'nyce' => [
+			'method' => 'cc',
+			'submethod' => 'mc',
+			'variants' => [
+				'mc_googlepay' => [
+					'method' => 'google',
+					'submethod' => 'mc',
+				],
+			],
+		],
 		'onlineBanking_CZ' => [
 			'method' => 'bt',
 			'submethod' => '',

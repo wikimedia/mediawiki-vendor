@@ -23,8 +23,12 @@ class PendingQueueConsumer extends BaseQueueConsumer {
 	}
 
 	public function processMessage( array $message ) {
-		$logIdentifier = "message with gateway {$message['gateway']}" .
-			" and order ID {$message['order_id']}";
+		$logIdentifier = "message with gateway '{$message['gateway']}'," .
+			" order ID '{$message['order_id']}', and" .
+			( isset( $message['gateway_txn_id'] ) ?
+				" gateway txn id '{$message['gateway_txn_id']}'" :
+				'no gateway txn id'
+			);
 
 		if ( $this->paymentsInitialDatabase->isTransactionFailed( $message ) ) {
 			// Throw the message out if it's already failed

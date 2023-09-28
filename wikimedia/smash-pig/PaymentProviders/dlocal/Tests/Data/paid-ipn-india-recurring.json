@@ -1,0 +1,30 @@
+{
+  "id": "D-648-a96a7f71-2171-48c9-aad6-f01e129464ad",
+  "amount": 25,
+  "status": "PAID",
+  "status_detail": "The payment was paid.",
+  "status_code": "200",
+  "currency": "INR",
+  "country": "IN",
+  "payment_method_id": "IR",
+  "payment_method_type": "WALLET",
+  "payment_method_flow": "REDIRECT",
+  "payer": {
+    "name": "Testy McTest",
+    "user_reference": "",
+    "email": "test@example.com",
+    "document": "ABC123ABC",
+    "address": {
+      "city": "Mumbai",
+      "empty": false
+    }
+  },
+  "wallet": {
+    "token": "c595b7bc-9794-4b12-9a75-dcb5c42a97b0"
+  },
+  "order_id": "123456789.1",
+  "description": "Wikimedia 877 600 9454",
+  "notification_url": "https://testurl.com/dlocal",
+  "callback_url": "https://testurl.com/index.php?title=Special:DlocalGatewayResult",
+  "created_date": "2023-08-24T06:32:45.000+0000"
+}

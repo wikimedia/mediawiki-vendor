@@ -29,14 +29,16 @@ class ChargebackInitiatedActionTest extends BaseAdyenTestCase {
 		$chargeback->amount = 10.00;
 		$chargeback->eventDate = "";
 		$chargeback->success = true;
-		$chargeback->pspReference = "T89RVDS9V379R782";
+		$chargeback->parentPspReference = "T89RVDS9V379R782";
+		$chargeback->pspReference = "DAS676ASD5ASD77";
 		$chargeback->merchantReference = "testMerchantRef1";
 		$chargeback->reason = "test";
 
 		$action = new ChargebackInitiatedAction();
 		$action->execute( $chargeback );
 		$refund = $this->refundQueue->pop();
-		$this->assertEquals( $chargeback->pspReference, $refund['gateway_parent_id'] );
+		$this->assertEquals( $chargeback->parentPspReference, $refund['gateway_parent_id'] );
+		$this->assertEquals( $chargeback->pspReference, $refund['gateway_refund_id'] );
 	}
 
 	public function testFailedChargeback() {

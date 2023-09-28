@@ -1,6 +1,7 @@
 <?php
 namespace SmashPig\PaymentProviders\Adyen\Test;
 
+use SmashPig\PaymentProviders\Adyen\Audit\AdyenPaymentsAccountingReport;
 use SmashPig\PaymentProviders\Adyen\Audit\AdyenSettlementDetailReport;
 use SmashPig\Tests\BaseSmashPigUnitTestCase;
 
@@ -117,5 +118,30 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'payment_submethod' => 'visa',
 		];
 		$this->assertEquals( $expected, $actual, 'Did not parse chargeback correctly' );
+	}
+
+	public function testProcessPaymentsAccountingNyce() {
+		$processor = new AdyenPaymentsAccountingReport();
+		$output = $processor->parseFile( __DIR__ . '/../Data/payments_accounting_report_nyce.csv' );
+		$this->assertSame( 1, count( $output ) );
+		$actual = $output[0];
+		$expected = [
+			'gateway' => 'adyen',
+			'gateway_account' => 'WikimediaDonations',
+			'gross' => '10.40',
+			'contribution_tracking_id' => '191638898',
+			'currency' => 'USD',
+			'gateway_txn_id' => 'DASD76ASD7ASD4AS',
+			'modification_reference' => 'ASDF5ASDF4QWER3A',
+			'invoice_id' => '191638898.1',
+			'payment_method' => 'google',
+			'payment_submethod' => 'mc',
+			'date' => 1694092254,
+			'settled_currency' => 'USD',
+			'fee' => '0.38',
+			'settled_gross' => '10.02',
+			'settled_fee' => '0.38',
+		];
+		$this->assertEquals( $expected, $actual, 'Did not parse donation correctly' );
 	}
 }

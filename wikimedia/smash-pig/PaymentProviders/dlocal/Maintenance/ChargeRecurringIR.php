@@ -16,14 +16,14 @@ class ChargeRecurringIR extends MaintenanceBase {
 	public function __construct() {
 		parent::__construct();
 		$this->desiredOptions['config-node']['default'] = 'dlocal';
-		$this->addArgument( 'id', 'Gateway Txn ID (gateway_tnx_id)', false );
-		$this->addArgument( 'amount', 'recurring amount could be any less than 5k', true );
+		$this->addArgument( 'id', 'Gateway Txn ID (gateway_tnx_id)' );
+		$this->addArgument( 'order_id', 'Order ID' );
+		$this->addArgument( 'amount', 'recurring amount could be any less than 5k' );
 		$this->addArgument( 'token', 'if null get it from payment detail based on txn id, otherwise use it', false );
-		$this->addArgument( 'order_id', 'Order ID', true );
-		$this->addArgument( 'email', 'Email' );
-		$this->addArgument( 'first_name', 'First Name' );
-		$this->addArgument( 'last_name', 'Last Name' );
-		$this->addArgument( 'fiscal_number', 'Fiscal Number' );
+		$this->addArgument( 'email', 'Email', false );
+		$this->addArgument( 'first_name', 'First Name', false );
+		$this->addArgument( 'last_name', 'Last Name', false );
+		$this->addArgument( 'fiscal_number', 'Fiscal Number', false );
 	}
 
 	public function execute(): void {

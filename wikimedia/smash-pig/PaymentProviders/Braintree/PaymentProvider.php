@@ -238,6 +238,9 @@ class PaymentProvider implements IPaymentProvider {
 				'email' => $params['email'], // for venmo
 				'phoneNumber' => $params['phone'] ?? ''
 			],
+			'descriptor' => [
+				'name' => 'Wikimedia Foundation',
+			],
 			'customFields' => [
 				"name" => "fullname",
 				"value" => $params['first_name'] . ' ' . $params['last_name'],

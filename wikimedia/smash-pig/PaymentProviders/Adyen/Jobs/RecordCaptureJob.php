@@ -58,7 +58,7 @@ class RecordCaptureJob extends RunnableJob {
 
 			// If its an iDEAL recurring we need the pending rows as more information is coming
 			// on the RECURRING_CONTRACT ipn, don't send to the donations queue here
-			if ( $dbMessage['recurring'] && $dbMessage['payment_submethod'] == 'rtbt_ideal' ) {
+			if ( !empty( $dbMessage['recurring'] ) && $dbMessage['payment_submethod'] == 'rtbt_ideal' ) {
 				// Add the currency and gross (amount), this can change on the bank's end
 				$dbMessage['gross'] = $this->amount;
 				$dbMessage['currency'] = $this->currency;
@@ -67,6 +67,22 @@ class RecordCaptureJob extends RunnableJob {
 				// We do need to update the gateway_txn_id as the one in the pending table comes back from the redirect
 				// and may not be there if the donor never got back to us
 				$db->storeMessage( $dbMessage );
+				return true;
+			}
+
+			if ( !empty( $dbMessage['is_auto_rescue_retry'] ) && $dbMessage['is_auto_rescue_retry'] ) {
+				$logger->debug(
+					'An AutoRescue payment was received. Sending message to recurring queue.'
+				);
+				$dbMessage['txn_type'] = 'subscr_payment';
+				$dbMessage['subscr_id'] = $dbMessage['contribution_recur_id'];
+
+				QueueWrapper::push( 'recurring', $dbMessage );
+
+				// Remove it from the pending database
+				$logger->debug( 'Removing donor details message from pending database' );
+				$db->deleteMessage( $dbMessage );
+
 				return true;
 			}
 

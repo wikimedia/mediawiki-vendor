@@ -143,4 +143,39 @@ class PaymentProvider implements IGetLatestPaymentStatusProvider, ICancelablePay
 			);
 		}
 	}
+
+	/**
+	 * Adds default params when none were entered
+	 * Currently focused on fiscal number
+	 * This is copied from PlaceholderFiscalNumber.php in Donation Interface
+	 *
+	 * TODO: Find this a better place to live (maybe)
+	 *
+	 */
+	protected function addPlaceholderCreateHostedPaymentParams( &$params ): void {
+		$placeholders = [
+			'MX' => [ 1.0e+12, 1.0e+13 ],
+			'PE' => [ 1.0e+8, 1.0e+10 ],
+			'IN' => 'AABBC1122C', // DLOCAL-specific PAN. See T258086
+			'ZA' => 'AABBC1122C'  // DLOCAL-specific default for empty cpf. See T307743
+		];
+
+		if (
+			empty( $params['fiscal_number'] ) &&
+			isset( $params['country'] ) &&
+			array_key_exists( $params['country'], $placeholders )
+		) {
+			$country = $params['country'];
+			$fiscalNumber = $placeholders[$country];
+
+			// if placeholder is an array we use the values as upper and lower range bounds
+			if ( is_array( $fiscalNumber ) ) {
+				$lower = $fiscalNumber[0];
+				$upper = $fiscalNumber[1];
+				$fiscalNumber = mt_rand( $lower, $upper );
+			}
+
+			$params['fiscal_number'] = $fiscalNumber;
+		}
+	}
 }

@@ -15,6 +15,8 @@ class CardPaymentProvider extends PaymentProvider implements IPaymentProvider {
 	 */
 	public function createPayment( array $params ): CreatePaymentResponse {
 		try {
+			// Ensure placeholder fiscal_number is set for SA transactions
+			$this->addPlaceholderCreateHostedPaymentParams( $params );
 			$this->validateCreatePaymentParams( $params );
 			if ( !empty( $params['recurring_payment_token'] ) ) {
 				$rawResponse = $this->api->makeRecurringCardPayment( $params );

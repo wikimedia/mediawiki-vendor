@@ -186,6 +186,9 @@ class PayPalPaymentProviderTest extends BaseSmashPigUnitTestCase {
 					"customFields" => [
 						"name" => "fullname",
 						"value" => "Jimmy Wales"
+					],
+					'descriptor' => [
+						'name' => 'Wikimedia Foundation'
 					]
 				],
 				'paymentMethodId' => 'fake-valid-nonce'

@@ -25,9 +25,10 @@ class PaymentCaptureAction implements IListenerMessageAction {
 		if ( $msg instanceof Authorisation ) {
 			if ( $msg->success ) {
 				// Ignore subsequent recurring IPNs
-				if ( $msg->isRecurringInstallment() ) {
+				if ( !$msg->isSuccessfulAutoRescue() && $msg->isRecurringInstallment() ) {
 					return true;
 				}
+
 				// For iDEAL, treat this as the final notification of success. We don't
 				// need to make any more API calls, just record it in Civi.
 				if (

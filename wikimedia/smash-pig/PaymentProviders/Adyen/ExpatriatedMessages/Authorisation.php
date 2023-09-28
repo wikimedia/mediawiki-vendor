@@ -24,6 +24,9 @@ class Authorisation extends AdyenMessage {
 	public $recurringProcessingModel = '';
 	public $recurringDetailReference = '';
 	public $shopperReference = '';
+	public $retryRescueScheduled = false;
+	public $retryRescueReference = '';
+	public $retryOrderAttemptNumber = 0;
 
 	/**
 	 * Overloads the generic Adyen method adding fields specific to the Authorization message
@@ -71,6 +74,15 @@ class Authorisation extends AdyenMessage {
 				case 'recurring.shopperReference':
 					$this->shopperReference = $firstSegment( $entry->value );
 					break;
+				case 'retry.rescueScheduled':
+					$this->retryRescueScheduled = $firstSegment( $entry->value );
+					break;
+				case 'retry.rescueReference':
+					$this->retryRescueReference = $firstSegment( $entry->value );
+					break;
+				case 'retry.orderAttemptNumber':
+					$this->retryOrderAttemptNumber = $firstSegment( $entry->value );
+					break;
 			}
 		}
 	}
@@ -93,6 +105,18 @@ class Authorisation extends AdyenMessage {
 		} else {
 			return false;
 		}
+	}
+
+	/**
+	 * Check if message is a successful auto rescue payment
+	 *
+	 * @return bool True if successful auto rescue
+	 */
+	public function isSuccessfulAutoRescue(): bool {
+			if ( $this->success && $this->retryOrderAttemptNumber > 0 ) {
+				return true;
+			}
+			return false;
 	}
 
 	/**

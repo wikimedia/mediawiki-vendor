@@ -18,6 +18,7 @@ class DlocalListener extends RestListener {
 		'PAID' => 'SmashPig\PaymentProviders\dlocal\ExpatriatedMessages\PaidMessage',
 		'SUCCESS' => 'SmashPig\PaymentProviders\dlocal\ExpatriatedMessages\SuccessMessage',
 		'COMPLETED' => 'SmashPig\PaymentProviders\dlocal\ExpatriatedMessages\CompletedMessage',
+		'REJECTED' => 'SmashPig\PaymentProviders\dlocal\ExpatriatedMessages\RejectedMessage',
 	];
 
 	/**

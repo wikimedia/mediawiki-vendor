@@ -226,7 +226,12 @@ class Api {
 		$restParams['shopperInteraction'] = static::RECURRING_SHOPPER_INTERACTION;
 		$restParams['recurringProcessingModel'] = static::RECURRING_MODEL_SUBSCRIPTION;
 		$restParams = array_merge( $restParams, $this->getContactInfo( $params ) );
-
+		if ( $this->enableAutoRescue ) {
+			$restParams['additionalData'] = [
+				'autoRescue' => true,
+				'maxDaysToRescue' => $this->maxDaysToRescue
+			];
+		}
 		$result = $this->makeRestApiCall( $restParams, 'payments', 'POST' );
 		return $result['body'];
 	}
@@ -387,7 +392,7 @@ class Api {
 	public function getPaymentMethods( $params ) {
 		$restParams = [
 			'merchantAccount' => $this->account,
-			'channel' => 'Web',
+			'channel' => $params['channel'] ?? 'Web',
 		];
 
 		if ( !empty( $params['amount'] ) && !empty( $params['currency'] ) ) {
@@ -503,12 +508,6 @@ class Api {
 			$data->paymentRequest->shopperInteraction = static::RECURRING_SHOPPER_INTERACTION;
 			$data->paymentRequest->selectedRecurringDetailReference = static::RECURRING_SELECTED_RECURRING_DETAIL_REFERENCE;
 			$data->paymentRequest->shopperReference = $params['recurring_payment_token'];
-			if ( $this->enableAutoRescue ) {
-				$data->paymentRequest->additionalData['additionalData'] = [
-					'autoRescue' => true,
-					'maxDaysToRescue' => $this->maxDaysToRescue
-				];
-			}
 		}
 
 		// additional required fields that aren't listed in the docs as being required
@@ -684,12 +683,7 @@ class Api {
 		// credit card, apple pay, and iDeal all need shopperReference and storePaymentMethod
 		$recurringParams['shopperReference'] = $params['order_id'];
 		$recurringParams['storePaymentMethod'] = true;
-		if ( $this->enableAutoRescue ) {
-			$recurringParams['additionalData'] = [
-				'autoRescue' => true,
-				'maxDaysToRescue' => $this->maxDaysToRescue
-			];
-		}
+
 		if ( $needInteractionAndModel ) {
 			// credit card and apple pay also need shopperInteraction and recurringProcessingModel
 			$recurringParams['shopperInteraction'] = static::RECURRING_SHOPPER_INTERACTION_SETUP;

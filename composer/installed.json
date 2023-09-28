@@ -4744,17 +4744,17 @@
         },
         {
             "name": "wikimedia/smash-pig",
-            "version": "v0.8.6.2",
-            "version_normalized": "0.8.6.2",
+            "version": "v0.8.8.3",
+            "version_normalized": "0.8.8.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/wikimedia-fundraising-SmashPig.git",
-                "reference": "c96b01602f6d2a0d23e1d1b597563afb03fedc64"
+                "reference": "1bbcec2ae7259c24b212b5f053345605fbe74227"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/wikimedia-fundraising-SmashPig/zipball/c96b01602f6d2a0d23e1d1b597563afb03fedc64",
-                "reference": "c96b01602f6d2a0d23e1d1b597563afb03fedc64",
+                "url": "https://api.github.com/repos/wikimedia/wikimedia-fundraising-SmashPig/zipball/1bbcec2ae7259c24b212b5f053345605fbe74227",
+                "reference": "1bbcec2ae7259c24b212b5f053345605fbe74227",
                 "shasum": ""
             },
             "require": {
@@ -4764,7 +4764,7 @@
                 "ext-curl": "*",
                 "ext-json": "*",
                 "ext-pdo": "*",
-                "php": ">=7.3",
+                "php": ">=7.4",
                 "phpmailer/phpmailer": "^6",
                 "predis/predis": "^1.1",
                 "psr/cache": "^1.0",
@@ -4778,7 +4778,7 @@
                 "php-parallel-lint/php-parallel-lint": "^1.2",
                 "phpunit/phpunit": "^9.5"
             },
-            "time": "2023-08-25T19:44:09+00:00",
+            "time": "2023-09-28T21:44:08+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -4831,7 +4831,7 @@
                 "payments"
             ],
             "support": {
-                "source": "https://github.com/wikimedia/wikimedia-fundraising-SmashPig/tree/v0.8.6.2"
+                "source": "https://github.com/wikimedia/wikimedia-fundraising-SmashPig/tree/v0.8.8.3"
             },
             "install-path": "../wikimedia/smash-pig"
         },
