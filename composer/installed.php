@@ -3,7 +3,7 @@
         'name' => 'mediawiki/core',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '505a616d61434a175909772fc933ddfff3f499b1',
+        'reference' => '8aeb3eb4cda01c0085e2c7ad2fe82b13d310d44b',
         'type' => 'mediawiki-core',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -175,7 +175,7 @@
         'mediawiki/core' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '505a616d61434a175909772fc933ddfff3f499b1',
+            'reference' => '8aeb3eb4cda01c0085e2c7ad2fe82b13d310d44b',
             'type' => 'mediawiki-core',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -184,7 +184,7 @@
         'mediawiki/mediawiki' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.39.4',
+                0 => '1.39.5',
             ),
         ),
         'monolog/monolog' => array(
@@ -224,9 +224,9 @@
             'dev_requirement' => false,
         ),
         'pear/mail' => array(
-            'pretty_version' => 'v1.5.0',
-            'version' => '1.5.0.0',
-            'reference' => 'c31b7635899a630a8ce681e5ced18cededcc15f3',
+            'pretty_version' => 'v1.5.1',
+            'version' => '1.5.1.0',
+            'reference' => '1665e1b1dc0261a15cb3ee99ef38b4254aa7564a',
             'type' => 'library',
             'install_path' => __DIR__ . '/../pear/mail',
             'aliases' => array(),
@@ -569,9 +569,9 @@
             'dev_requirement' => false,
         ),
         'wikimedia/html-formatter' => array(
-            'pretty_version' => '3.0.1',
-            'version' => '3.0.1.0',
-            'reference' => 'f18622f3384b9b7fed185bff2a46594aec92fa47',
+            'pretty_version' => '4.0.3',
+            'version' => '4.0.3.0',
+            'reference' => '9f3f30ad5d0287a1ca17c50bcbc45457db534208',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/html-formatter',
             'aliases' => array(),
