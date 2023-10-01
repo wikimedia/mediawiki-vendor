@@ -287,9 +287,9 @@
             'dev_requirement' => false,
         ),
         'justinrainbow/json-schema' => array(
-            'pretty_version' => '5.2.12',
-            'version' => '5.2.12.0',
-            'reference' => 'ad87d5a5ca981228e0e205c2bc7dfb8e24559b60',
+            'pretty_version' => 'v5.2.13',
+            'version' => '5.2.13.0',
+            'reference' => 'fbbe7e5d79f618997bc3332a6f49246036c45793',
             'type' => 'library',
             'install_path' => __DIR__ . '/../justinrainbow/json-schema',
             'aliases' => array(),
