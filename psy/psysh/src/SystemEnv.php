@@ -12,14 +12,23 @@
 namespace Psy;
 
 /**
- * Abstraction around environment variables.
+ * Environment variables implementation via getenv().
  */
-interface EnvInterface
+class SystemEnv implements EnvInterface
 {
     /**
      * Get an environment variable by name.
      *
      * @return string|null
      */
-    public function get(string $key);
+    public function get(string $key)
+    {
+        if (isset($_SERVER[$key]) && $_SERVER[$key]) {
+            return $_SERVER[$key];
+        }
+
+        $result = \getenv($key);
+
+        return $result === false ? null : $result;
+    }
 }

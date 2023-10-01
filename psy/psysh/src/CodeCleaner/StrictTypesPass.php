@@ -3,7 +3,7 @@
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2022 Justin Hileman
+ * (c) 2012-2023 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -33,6 +33,14 @@ class StrictTypesPass extends CodeCleanerPass
     const EXCEPTION_MESSAGE = 'strict_types declaration must have 0 or 1 as its value';
 
     private $strictTypes = false;
+
+    /**
+     * @param bool $strictTypes enforce strict types by default
+     */
+    public function __construct(bool $strictTypes = false)
+    {
+        $this->strictTypes = $strictTypes;
+    }
 
     /**
      * If this is a standalone strict types declaration, remember it for later.

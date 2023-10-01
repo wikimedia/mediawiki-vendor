@@ -3,7 +3,7 @@
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2022 Justin Hileman
+ * (c) 2012-2023 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -27,6 +27,7 @@ use Psy\TabCompletion\Matcher;
 use Psy\VarDumper\PresenterAware;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command as BaseCommand;
+use Symfony\Component\Console\Exception\ExceptionInterface as SymfonyConsoleException;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
@@ -49,7 +50,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class Shell extends Application
 {
-    const VERSION = 'v0.11.10';
+    const VERSION = 'v0.11.21';
 
     /** @deprecated */
     const PROMPT = '>>> ';
@@ -229,7 +230,7 @@ class Shell extends Application
     }
 
     /**
-     * @return array
+     * @return Matcher\AbstractMatcher[]
      */
     protected function getDefaultMatchers(): array
     {
@@ -594,8 +595,6 @@ class Shell extends Application
      * Run execution loop listeners on user input.
      *
      * @param string $input
-     *
-     * @return string
      */
     public function onInput(string $input): string
     {
@@ -612,8 +611,6 @@ class Shell extends Application
      * Run execution loop listeners on code to be executed.
      *
      * @param string $code
-     *
-     * @return string
      */
     public function onExecute(string $code): string
     {
@@ -630,7 +627,7 @@ class Shell extends Application
             $output = $output->getErrorOutput();
         }
 
-        $output->writeln(\sprintf('<aside>%s</aside>', OutputFormatter::escape($code)), ConsoleOutput::VERBOSITY_DEBUG);
+        $output->writeln(\sprintf('<whisper>%s</whisper>', OutputFormatter::escape($code)), ConsoleOutput::VERBOSITY_DEBUG);
 
         return $code;
     }
@@ -814,7 +811,7 @@ class Shell extends Application
     /**
      * Get PHP files to be parsed and executed before running the interactive shell.
      *
-     * @return array
+     * @return string[]
      */
     public function getIncludes(): array
     {
@@ -909,7 +906,7 @@ class Shell extends Application
      *
      * This is useful for commands which manipulate the buffer.
      *
-     * @return array
+     * @return string[]
      */
     public function getCodeBuffer(): array
     {
@@ -1207,8 +1204,6 @@ class Shell extends Application
      * Check whether the last exec was successful.
      *
      * Returns true if a return value was logged rather than an exception.
-     *
-     * @return bool
      */
     public function getLastExecSuccess(): bool
     {
@@ -1221,8 +1216,6 @@ class Shell extends Application
      * @todo extract this to somewhere it makes more sense
      *
      * @param \Throwable $e
-     *
-     * @return string
      */
     public function formatException(\Throwable $e): string
     {
@@ -1267,8 +1260,6 @@ class Shell extends Application
      * Helper for getting an output style for the given ErrorException's level.
      *
      * @param \ErrorException $e
-     *
-     * @return string
      */
     protected function getSeverity(\ErrorException $e): string
     {
@@ -1299,8 +1290,6 @@ class Shell extends Application
      * Helper for getting an output style for the given ErrorException's level.
      *
      * @param \Throwable $e
-     *
-     * @return string
      */
     protected function getMessageLabel(\Throwable $e): string
     {
@@ -1331,10 +1320,21 @@ class Shell extends Application
             }
         }
 
-        if ($e instanceof PsyException) {
+        if ($e instanceof PsyException || $e instanceof SymfonyConsoleException) {
             $exceptionShortName = (new \ReflectionClass($e))->getShortName();
             $typeParts = \preg_split('/(?=[A-Z])/', $exceptionShortName);
-            \array_pop($typeParts); // Removes "Exception"
+
+            switch ($exceptionShortName) {
+                case 'RuntimeException':
+                case 'LogicException':
+                    // These ones look weird without 'Exception'
+                    break;
+                default:
+                    if (\end($typeParts) === 'Exception') {
+                        \array_pop($typeParts);
+                    }
+                    break;
+            }
 
             return \trim(\strtoupper(\implode(' ', $typeParts)));
         }
@@ -1519,8 +1519,6 @@ class Shell extends Application
 
     /**
      * Get the shell output header.
-     *
-     * @return string
      */
     protected function getHeader(): string
     {
@@ -1531,8 +1529,6 @@ class Shell extends Application
      * Get the current version of Psy Shell.
      *
      * @deprecated call self::getVersionHeader instead
-     *
-     * @return string
      */
     public function getVersion(): string
     {
@@ -1543,8 +1539,6 @@ class Shell extends Application
      * Get a pretty header including the current version of Psy Shell.
      *
      * @param bool $useUnicode
-     *
-     * @return string
      */
     public static function getVersionHeader(bool $useUnicode = false): string
     {
