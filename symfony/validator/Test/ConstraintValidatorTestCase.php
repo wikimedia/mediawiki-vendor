@@ -130,16 +130,18 @@ abstract class ConstraintValidatorTestCase extends TestCase
         $context->setNode($this->value, $this->object, $this->metadata, $this->propertyPath);
         $context->setConstraint($this->constraint);
 
-        $contextualValidator = $this->getMockBuilder(AssertingContextualValidator::class)
-            ->setConstructorArgs([$context])
-            ->setMethods([
-                'atPath',
-                'validate',
-                'validateProperty',
-                'validatePropertyValue',
-                'getViolations',
-            ])
-            ->getMock();
+        $contextualValidatorMockBuilder = $this->getMockBuilder(AssertingContextualValidator::class)
+            ->setConstructorArgs([$context]);
+        $contextualValidatorMethods = [
+            'atPath',
+            'validate',
+            'validateProperty',
+            'validatePropertyValue',
+            'getViolations',
+        ];
+
+        $contextualValidatorMockBuilder->onlyMethods($contextualValidatorMethods);
+        $contextualValidator = $contextualValidatorMockBuilder->getMock();
         $contextualValidator->expects($this->any())
             ->method('atPath')
             ->willReturnCallback(function ($path) use ($contextualValidator) {
