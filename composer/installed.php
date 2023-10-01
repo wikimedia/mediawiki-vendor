@@ -530,9 +530,9 @@
             'dev_requirement' => false,
         ),
         'pear/pear-core-minimal' => array(
-            'pretty_version' => 'v1.10.11',
-            'version' => '1.10.11.0',
-            'reference' => '68d0d32ada737153b7e93b8d3c710ebe70ac867d',
+            'pretty_version' => 'v1.10.13',
+            'version' => '1.10.13.0',
+            'reference' => 'aed862e95fd286c53cc546734868dc38ff4b5b1d',
             'type' => 'library',
             'install_path' => __DIR__ . '/../pear/pear-core-minimal',
             'aliases' => array(),
@@ -695,7 +695,7 @@
         'rsky/pear-core-min' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v1.10.11',
+                0 => 'v1.10.13',
             ),
         ),
         'ruflin/elastica' => array(
