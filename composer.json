@@ -56,7 +56,7 @@
 		"maxmind/web-service-common": "0.9.0",
 		"monolog/monolog": "2.2.0",
 		"mustangostang/spyc": "0.6.3",
-		"nikic/php-parser": "4.15.2",
+		"nikic/php-parser": "4.17.1",
 		"nyholm/dsn": "2.0.1",
 		"onoi/message-reporter": "1.4.2",
 		"oojs/oojs-ui": "0.48.1",
