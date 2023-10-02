@@ -19,11 +19,11 @@ use Wikimedia\ObjectFactory\ObjectFactory;
 use Wikimedia\Parsoid\Core\ContentMetadataCollector;
 use Wikimedia\Parsoid\Core\ContentModelHandler;
 use Wikimedia\Parsoid\DOM\Document;
+use Wikimedia\Parsoid\Ext\AnnotationStripper;
 use Wikimedia\Parsoid\Ext\Cite\Cite;
 use Wikimedia\Parsoid\Ext\ExtensionModule;
 use Wikimedia\Parsoid\Ext\ExtensionTagHandler;
 use Wikimedia\Parsoid\Ext\Gallery\Gallery;
-use Wikimedia\Parsoid\Ext\ImageMap\ImageMap;
 use Wikimedia\Parsoid\Ext\Indicator\Indicator;
 use Wikimedia\Parsoid\Ext\JSON\JSON;
 use Wikimedia\Parsoid\Ext\LST\LST;
@@ -43,20 +43,22 @@ use Wikimedia\Parsoid\Wikitext\Consts;
  */
 abstract class SiteConfig {
 	/**
-	 * Maps aliases to the canonical magic word
 	 * FIXME: not private so that ParserTests can reset these variables
 	 * since they reuse site config and other objects between tests for
 	 * efficiency reasons.
 	 *
 	 * @var array|null
 	 */
-	protected $magicWordMap;
+	protected $mwAliases;
 
 	/** @var array|null */
-	private $mwAliases;
+	private $behaviorSwitches;
 
 	/** @var array|null */
 	private $variables;
+
+	/** @var array|null */
+	private $mediaOptions;
 
 	/** @var array|null */
 	protected $functionSynonyms;
@@ -98,8 +100,7 @@ abstract class SiteConfig {
 		// soon, but for now are implemented in the Parsoid repo.
 		Cite::class,
 		LST::class,
-		Poem::class,
-		ImageMap::class
+		Poem::class
 	];
 
 	/**
@@ -967,40 +968,38 @@ abstract class SiteConfig {
 	}
 
 	private function populateMagicWords() {
-		if ( !empty( $this->magicWordMap ) ) {
+		if ( !empty( $this->mwAliases ) ) {
 			return;
 		}
 
-		$this->magicWordMap = $this->mwAliases = $this->variables = [];
+		$this->mwAliases = $this->behaviorSwitches = $this->variables = $this->mediaOptions = [];
 		$variablesMap = PHPUtils::makeSet( $this->getVariableIDs() );
 		$this->functionSynonyms = $this->getFunctionSynonyms();
 		$haveSynonyms = $this->haveComputedFunctionSynonyms();
 		foreach ( $this->getMagicWords() as $magicword => $aliases ) {
 			$caseSensitive = array_shift( $aliases );
+			$isVariable = isset( $variablesMap[$magicword] );
+			$isMediaOption = preg_match( '/^(img|timedmedia)_/', $magicword );
 			foreach ( $aliases as $alias ) {
 				$this->mwAliases[$magicword][] = $alias;
 				if ( !$caseSensitive ) {
 					$alias = mb_strtolower( $alias );
 					$this->mwAliases[$magicword][] = $alias;
 				}
-				$this->magicWordMap[$alias] = [ $caseSensitive, $magicword ];
-				if ( isset( $variablesMap[$magicword] ) ) {
+				if ( substr( $alias, 0, 2 ) === '__' ) {
+					$this->behaviorSwitches[$alias] = [ $caseSensitive, $magicword ];
+				}
+				if ( $isVariable ) {
 					$this->variables[$alias] = $magicword;
+				}
+				if ( $isMediaOption ) {
+					$this->mediaOptions[$alias] = [ $caseSensitive, $magicword ];
 				}
 				if ( !$haveSynonyms ) {
 					$this->updateFunctionSynonym( $alias, $magicword, (bool)$caseSensitive );
 				}
 			}
 		}
-	}
-
-	/**
-	 * List all magic words by alias
-	 * @return string[] Keys are aliases, values are arrays of case-sensitive, canonical names.
-	 */
-	public function magicWords(): array {
-		$this->populateMagicWords();
-		return $this->magicWordMap;
 	}
 
 	/**
@@ -1042,14 +1041,7 @@ abstract class SiteConfig {
 		return $this->variables[$str] ?? null;
 	}
 
-	/**
-	 * Get canonical magicword name for the input word.
-	 *
-	 * @param string $word
-	 * @return string|null
-	 */
-	public function magicWordCanonicalName( string $word ): ?string {
-		$mws = $this->magicWords();
+	private static function getMagicWordCanonicalName( array $mws, string $word ): ?string {
 		if ( isset( $mws[$word] ) ) {
 			return $mws[$word][1];
 		}
@@ -1058,13 +1050,33 @@ abstract class SiteConfig {
 	}
 
 	/**
-	 * Check if a string is a recognized magic word.
+	 * Return canonical magic word for a media option
+	 * @param string $word
+	 * @return string|null
+	 */
+	public function getMagicWordForMediaOption( string $word ): ?string {
+		$this->populateMagicWords();
+		return self::getMagicWordCanonicalName( $this->mediaOptions, $word );
+	}
+
+	/**
+	 * Return canonical magic word for a behavior switch
+	 * @param string $word
+	 * @return string|null
+	 */
+	public function getMagicWordForBehaviorSwitch( string $word ): ?string {
+		$this->populateMagicWords();
+		return self::getMagicWordCanonicalName( $this->behaviorSwitches, $word );
+	}
+
+	/**
+	 * Check if a string is a recognized behavior switch.
 	 *
 	 * @param string $word
 	 * @return bool
 	 */
-	public function isMagicWord( string $word ): bool {
-		return $this->magicWordCanonicalName( $word ) !== null;
+	public function isBehaviorSwitch( string $word ): bool {
+		return $this->getMagicWordForBehaviorSwitch( $word ) !== null;
 	}
 
 	/**
@@ -1385,6 +1397,7 @@ abstract class SiteConfig {
 			'parsoidExtTags' => [],
 			'annotationTags' => [],
 			'domProcessors'  => [],
+			'annotationStrippers' => [],
 			'contentModels'  => [],
 		];
 
@@ -1434,10 +1447,21 @@ abstract class SiteConfig {
 			}
 		}
 
-		foreach ( $extConfig['annotations'] ?? [] as $aTag ) {
-			$lowerTagName = mb_strtolower( $aTag );
-			$this->extConfig['allTags'][$lowerTagName] = true;
-			$this->extConfig['annotationTags'][$lowerTagName] = true;
+		if ( isset( $extConfig['annotations'] ) ) {
+			$annotationConfig = $extConfig['annotations'];
+			$annotationTags = $annotationConfig['tagNames'] ?? $annotationConfig;
+			foreach ( $annotationTags ?? [] as $aTag ) {
+				$lowerTagName = mb_strtolower( $aTag );
+				$this->extConfig['allTags'][$lowerTagName] = true;
+				$this->extConfig['annotationTags'][$lowerTagName] = true;
+			}
+			if ( isset( $annotationConfig['annotationStripper'] ) ) {
+				$obj = $this->getObjectFactory()->createObject( $annotationConfig['annotationStripper'], [
+					'allowClassName' => true,
+					'assertClass' => AnnotationStripper::class,
+				] );
+				$this->extConfig['annotationStrippers'][$name] = $obj;
+			}
 		}
 
 		// Extension modules may also register dom processors.
@@ -1480,6 +1504,17 @@ abstract class SiteConfig {
 	 */
 	public function getContentModelHandler( string $contentmodel ): ?ContentModelHandler {
 		return ( $this->getExtConfig() )['contentModels'][$contentmodel] ?? null;
+	}
+
+	/**
+	 * Returns all the annotationStrippers that are defined as annotation configuration
+	 * @return array<AnnotationStripper>
+	 */
+	public function getAnnotationStrippers(): array {
+		$res = $this->getExtConfig()['annotationStrippers'] ?? [];
+		// ensures stability of the method list order
+		ksort( $res );
+		return array_values( $res );
 	}
 
 	/**

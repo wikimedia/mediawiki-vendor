@@ -521,12 +521,17 @@ class TestRunner {
 		// 'ill' not yet supported
 
 		if ( isset( $opts['cat'] ) ) {
-			foreach ( $output->getCategories() as $name => $sortkey ) {
+			foreach ( $output->getCategoryNames() as $name ) {
+				$sortkey = $output->getCategorySortKey( $name );
 				$after[] = "cat=$name sort=$sortkey";
 			}
 		}
 		if ( isset( $opts['extension'] ) ) {
-			foreach ( explode( ',', $opts['extension'] ) as $ext ) {
+			$extList = $opts['extension'];
+			if ( !is_array( $extList ) ) {
+				$extList = [ $extList ];
+			}
+			foreach ( $extList as $ext ) {
 				$after[] = "extension[$ext]=" .
 					// XXX should use JsonCodec
 					json_encode(
@@ -536,7 +541,11 @@ class TestRunner {
 			}
 		}
 		if ( isset( $opts['property'] ) ) {
-			foreach ( explode( ',', $opts['property'] ) as $prop ) {
+			$propList = $opts['property'];
+			if ( !is_array( $propList ) ) {
+				$propList = [ $propList ];
+			}
+			foreach ( $propList as $prop ) {
 				$after[] = "property[$prop]=" .
 					( $output->getPageProperty( $prop ) ?? '' );
 			}

@@ -113,6 +113,12 @@ class LinterTest extends TestCase {
 		$desc = 'should not flag tags where end tags are optional in the spec';
 		$wt = '<ul><li>x<li>y</ul><table><tr><th>heading 1<tr><td>col 1<td>col 2</table>';
 		$this->expectEmptyResults( $desc, $wt );
+
+		$desc = 'should lint missing end tag for wikitext table syntax';
+		$result = $this->wtToLint( '{|\n|hiho' );
+		$this->assertCount( 1, $result, $desc );
+		$this->assertEquals( 'missing-end-tag', $result[0]['type'], $desc );
+		$this->assertEquals( [ 0, 9, 9, 0 ], $result[0]['dsr'], $desc );
 	}
 
 	/**

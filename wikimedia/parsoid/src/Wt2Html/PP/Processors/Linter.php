@@ -438,7 +438,7 @@ class Linter implements Wt2HtmlDOMProcessor {
 		//
 		// 2. c is tbody (FIXME: don't remember why we have this exception)
 		//
-		// 3. c is not an HTML element (unless they are i/b quotes)
+		// 3. c is not an HTML element (unless they are i/b quotes or tables)
 		//
 		// 4. c doesn't have DSR info and doesn't come from a template either
 		$cNodeName = DOMCompat::nodeName( $c );
@@ -446,7 +446,7 @@ class Linter implements Wt2HtmlDOMProcessor {
 		$isHtmlElement = WTUtils::hasLiteralHTMLMarker( $dp );
 		if ( !Utils::isVoidElement( $cNodeName ) &&
 			$cNodeName !== 'tbody' &&
-			( $isHtmlElement || DOMUtils::isQuoteElt( $c ) ) &&
+			( $isHtmlElement || DOMUtils::isQuoteElt( $c ) || $cNodeName === 'table' ) &&
 			( $tplInfo !== null || $dsr !== null )
 		) {
 			if ( !empty( $dp->selfClose ) && $cNodeName !== 'meta' ) {
@@ -513,7 +513,14 @@ class Linter implements Wt2HtmlDOMProcessor {
 						$lintObj['params']['inTable'] = DOMUtils::hasNameOrHasAncestorOfName( $c, 'table' );
 						$category = $this->getHeadingAncestor( $c ) ?
 							'missing-end-tag-in-heading' : 'missing-end-tag';
-						$env->recordLint( $category, $lintObj );
+						$next = DiffDOMUtils::nextNonSepSibling( $c );
+						if (
+							// Skip if covered by deletable-table-tag
+							!( $cNodeName === 'table' && $next &&
+							( DOMCompat::nodeName( $c ) === 'table' ) )
+						) {
+							$env->recordLint( $category, $lintObj );
+						}
 						if ( isset( Consts::$HTML['FormattingTags'][DOMCompat::nodeName( $c )] ) &&
 							$this->matchedOpenTagPairExists( $c, $dp )
 						) {
