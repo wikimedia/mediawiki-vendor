@@ -116,6 +116,7 @@
 		"wikimedia/equivset": "1.5.1",
 		"wikimedia/html-formatter": "4.0.3",
 		"wikimedia/ip-utils": "5.0.0",
+		"wikimedia/json-codec": "2.2.1",
 		"wikimedia/langconv": "0.4.2",
 		"wikimedia/less.php": "4.1.1",
 		"wikimedia/lucene-explain-parser": "2.0.0",

@@ -22,6 +22,7 @@ return array(
     'Wikimedia\\Minify\\' => array($vendorDir . '/wikimedia/minify/src'),
     'Wikimedia\\MetricsPlatform\\' => array($vendorDir . '/wikimedia/metrics-platform/php/src'),
     'Wikimedia\\LangConv\\' => array($vendorDir . '/wikimedia/langconv/src'),
+    'Wikimedia\\JsonCodec\\' => array($vendorDir . '/wikimedia/json-codec/src'),
     'Wikimedia\\IDLeDOM\\' => array($vendorDir . '/wikimedia/idle-dom/src'),
     'Wikimedia\\Equivset\\' => array($vendorDir . '/wikimedia/equivset/src'),
     'Wikimedia\\Composer\\Merge\\V2\\' => array($vendorDir . '/wikimedia/composer-merge-plugin/src'),

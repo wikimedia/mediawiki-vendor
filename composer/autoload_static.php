@@ -10,8 +10,8 @@ class ComposerStaticInit_mediawiki_vendor
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
         'a4ecaeafb8cfb009ad0e052c90355e98' => __DIR__ . '/..' . '/beberlei/assert/lib/Assert/functions.php',
-        '0d59ee240a4cd96ddbb4ff164fccea4d' => __DIR__ . '/..' . '/symfony/polyfill-php73/bootstrap.php',
         '23c18046f52bef3eea034657bafda50f' => __DIR__ . '/..' . '/symfony/polyfill-php81/bootstrap.php',
+        '0d59ee240a4cd96ddbb4ff164fccea4d' => __DIR__ . '/..' . '/symfony/polyfill-php73/bootstrap.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         'ad155f8f1cf0d418fe49e248db8c661b' => __DIR__ . '/..' . '/react/promise/src/functions_include.php',
         'eccc0347283a01e62f5536bcf76b6e62' => __DIR__ . '/..' . '/wikimedia/at-ease/src/Wikimedia/Functions.php',
@@ -143,6 +143,7 @@ class ComposerStaticInit_mediawiki_vendor
             'Wikimedia\\Minify\\' => 17,
             'Wikimedia\\MetricsPlatform\\' => 26,
             'Wikimedia\\LangConv\\' => 19,
+            'Wikimedia\\JsonCodec\\' => 20,
             'Wikimedia\\IDLeDOM\\' => 18,
             'Wikimedia\\Equivset\\' => 19,
             'Wikimedia\\Composer\\Merge\\V2\\' => 28,
@@ -349,6 +350,10 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\LangConv\\' => 
         array (
             0 => __DIR__ . '/..' . '/wikimedia/langconv/src',
+        ),
+        'Wikimedia\\JsonCodec\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/wikimedia/json-codec/src',
         ),
         'Wikimedia\\IDLeDOM\\' => 
         array (
@@ -4951,6 +4956,13 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\IDLeDOM\\XPathResult' => __DIR__ . '/..' . '/wikimedia/idle-dom/src/XPathResult.php',
         'Wikimedia\\IPSet' => __DIR__ . '/..' . '/wikimedia/ip-utils/src/IPSet.php',
         'Wikimedia\\IPUtils' => __DIR__ . '/..' . '/wikimedia/ip-utils/src/IPUtils.php',
+        'Wikimedia\\JsonCodec\\JsonClassCodec' => __DIR__ . '/..' . '/wikimedia/json-codec/src/JsonClassCodec.php',
+        'Wikimedia\\JsonCodec\\JsonCodec' => __DIR__ . '/..' . '/wikimedia/json-codec/src/JsonCodec.php',
+        'Wikimedia\\JsonCodec\\JsonCodecInterface' => __DIR__ . '/..' . '/wikimedia/json-codec/src/JsonCodecInterface.php',
+        'Wikimedia\\JsonCodec\\JsonCodecable' => __DIR__ . '/..' . '/wikimedia/json-codec/src/JsonCodecable.php',
+        'Wikimedia\\JsonCodec\\JsonCodecableTrait' => __DIR__ . '/..' . '/wikimedia/json-codec/src/JsonCodecableTrait.php',
+        'Wikimedia\\JsonCodec\\JsonStaticClassCodec' => __DIR__ . '/..' . '/wikimedia/json-codec/src/JsonStaticClassCodec.php',
+        'Wikimedia\\JsonCodec\\JsonStdClassCodec' => __DIR__ . '/..' . '/wikimedia/json-codec/src/JsonStdClassCodec.php',
         'Wikimedia\\LangConv\\BacktrackState' => __DIR__ . '/..' . '/wikimedia/langconv/src/BacktrackState.php',
         'Wikimedia\\LangConv\\BracketResult' => __DIR__ . '/..' . '/wikimedia/langconv/src/BracketResult.php',
         'Wikimedia\\LangConv\\Construct\\Edge' => __DIR__ . '/..' . '/wikimedia/langconv/src/Construct/Edge.php',
