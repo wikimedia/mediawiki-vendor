@@ -196,7 +196,7 @@ class IPSet implements JsonSerializable {
 			$node =& $node[$index];
 			++$curBit;
 		}
-	} // @codeCoverageIgnore
+	}
 
 	/**
 	 * Match an IP address against the set

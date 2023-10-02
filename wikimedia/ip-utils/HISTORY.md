@@ -1,5 +1,9 @@
 # Release History
 
+## 5.0.0
+* Require PHP 7.4 or later (Timo Tijhof)
+* The IPSet class is now part of the IPUtils library (Timo Tijhof)
+
 ## 4.0.1
 * Allow wikimedia/ip-set ^4.0.0 (Timo Tijhof)
 

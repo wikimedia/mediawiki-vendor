@@ -382,13 +382,12 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'Wikimedia\\' => 
         array (
-            0 => __DIR__ . '/..' . '/wikimedia/ip-set/src',
-            1 => __DIR__ . '/..' . '/wikimedia/ip-utils/src',
-            2 => __DIR__ . '/..' . '/wikimedia/running-stat/src',
-            3 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
-            4 => __DIR__ . '/..' . '/wikimedia/testing-access-wrapper/src',
-            5 => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src',
-            6 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
+            0 => __DIR__ . '/..' . '/wikimedia/running-stat/src',
+            1 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
+            2 => __DIR__ . '/..' . '/wikimedia/testing-access-wrapper/src',
+            3 => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src',
+            4 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
+            5 => __DIR__ . '/..' . '/wikimedia/ip-utils/src',
         ),
         'Webauthn\\MetadataService\\' => 
         array (
@@ -4928,7 +4927,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\IDLeDOM\\XPathExpression' => __DIR__ . '/..' . '/wikimedia/idle-dom/src/XPathExpression.php',
         'Wikimedia\\IDLeDOM\\XPathNSResolver' => __DIR__ . '/..' . '/wikimedia/idle-dom/src/XPathNSResolver.php',
         'Wikimedia\\IDLeDOM\\XPathResult' => __DIR__ . '/..' . '/wikimedia/idle-dom/src/XPathResult.php',
-        'Wikimedia\\IPSet' => __DIR__ . '/..' . '/wikimedia/ip-set/src/IPSet.php',
+        'Wikimedia\\IPSet' => __DIR__ . '/..' . '/wikimedia/ip-utils/src/IPSet.php',
         'Wikimedia\\IPUtils' => __DIR__ . '/..' . '/wikimedia/ip-utils/src/IPUtils.php',
         'Wikimedia\\LangConv\\BacktrackState' => __DIR__ . '/..' . '/wikimedia/langconv/src/BacktrackState.php',
         'Wikimedia\\LangConv\\BracketResult' => __DIR__ . '/..' . '/wikimedia/langconv/src/BracketResult.php',

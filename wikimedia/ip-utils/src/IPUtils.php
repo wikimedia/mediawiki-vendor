@@ -1,7 +1,5 @@
 <?php
 /**
- * Functions and constants to play with IP addresses and ranges
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -26,8 +24,7 @@ namespace Wikimedia;
 use InvalidArgumentException;
 
 /**
- * A collection of public static functions to play with IP address
- * and IP ranges.
+ * Play with IP addresses and IP ranges.
  */
 class IPUtils {
 

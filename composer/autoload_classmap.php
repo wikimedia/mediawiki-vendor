@@ -4140,7 +4140,7 @@ return array(
     'Wikimedia\\IDLeDOM\\XPathExpression' => $vendorDir . '/wikimedia/idle-dom/src/XPathExpression.php',
     'Wikimedia\\IDLeDOM\\XPathNSResolver' => $vendorDir . '/wikimedia/idle-dom/src/XPathNSResolver.php',
     'Wikimedia\\IDLeDOM\\XPathResult' => $vendorDir . '/wikimedia/idle-dom/src/XPathResult.php',
-    'Wikimedia\\IPSet' => $vendorDir . '/wikimedia/ip-set/src/IPSet.php',
+    'Wikimedia\\IPSet' => $vendorDir . '/wikimedia/ip-utils/src/IPSet.php',
     'Wikimedia\\IPUtils' => $vendorDir . '/wikimedia/ip-utils/src/IPUtils.php',
     'Wikimedia\\LangConv\\BacktrackState' => $vendorDir . '/wikimedia/langconv/src/BacktrackState.php',
     'Wikimedia\\LangConv\\BracketResult' => $vendorDir . '/wikimedia/langconv/src/BracketResult.php',
