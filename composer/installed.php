@@ -1122,9 +1122,9 @@
             'dev_requirement' => false,
         ),
         'wikimedia/parsoid' => array(
-            'pretty_version' => 'v0.18.0-a26',
-            'version' => '0.18.0.0-alpha26',
-            'reference' => '4e31735a9fd59475cfbd8eb0442aa752cc6d2f30',
+            'pretty_version' => 'v0.18.0-a27',
+            'version' => '0.18.0.0-alpha27',
+            'reference' => '163b0f0d512efdee7e635cc1da34ca952de9af36',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/parsoid',
             'aliases' => array(),
