@@ -116,6 +116,7 @@ class ComposerStaticInit_mediawiki_vendor
         '04c6c5c2f7095ccf6c481d3e53e1776f' => __DIR__ . '/..' . '/mustangostang/spyc/Spyc.php',
         '801c31d8ed748cfa537fa45402288c95' => __DIR__ . '/..' . '/psy/psysh/src/functions.php',
         '5897ea0ac4cccf14d323035e65887801' => __DIR__ . '/..' . '/symfony/polyfill-php82/bootstrap.php',
+        '662a729f963d39afe703c9d9b7ab4a8c' => __DIR__ . '/..' . '/symfony/polyfill-php83/bootstrap.php',
         'a1105708a18b76903365ca1c4aa61b02' => __DIR__ . '/..' . '/symfony/translation/Resources/functions.php',
         '6513700b70192b7dfd0e5e9fc8082cf3' => __DIR__ . '/..' . '/wikimedia/relpath/src/Wikimedia/RelPath.php',
     );
@@ -163,6 +164,7 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'S' => 
         array (
+            'Symfony\\Polyfill\\Php83\\' => 23,
             'Symfony\\Polyfill\\Php82\\' => 23,
             'Symfony\\Polyfill\\Php81\\' => 23,
             'Symfony\\Polyfill\\Php80\\' => 23,
@@ -414,6 +416,10 @@ class ComposerStaticInit_mediawiki_vendor
         array (
             0 => __DIR__ . '/..' . '/data-values/common/src/ValueFormatters',
             1 => __DIR__ . '/..' . '/data-values/interfaces/src/ValueFormatters',
+        ),
+        'Symfony\\Polyfill\\Php83\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-php83',
         ),
         'Symfony\\Polyfill\\Php82\\' => 
         array (
@@ -1064,6 +1070,15 @@ class ComposerStaticInit_mediawiki_vendor
         'DataValues\\UnDeserializableValue' => __DIR__ . '/..' . '/data-values/data-values/src/UnDeserializableValue.php',
         'DataValues\\UnboundedQuantityValue' => __DIR__ . '/..' . '/data-values/number/src/DataValues/UnboundedQuantityValue.php',
         'DataValues\\UnknownValue' => __DIR__ . '/..' . '/data-values/data-values/src/UnknownValue.php',
+        'DateError' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateError.php',
+        'DateException' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateException.php',
+        'DateInvalidOperationException' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateInvalidOperationException.php',
+        'DateInvalidTimeZoneException' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateInvalidTimeZoneException.php',
+        'DateMalformedIntervalStringException' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateMalformedIntervalStringException.php',
+        'DateMalformedPeriodStringException' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateMalformedPeriodStringException.php',
+        'DateMalformedStringException' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateMalformedStringException.php',
+        'DateObjectError' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateObjectError.php',
+        'DateRangeError' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateRangeError.php',
         'Defuse\\Crypto\\Core' => __DIR__ . '/..' . '/defuse/php-encryption/src/Core.php',
         'Defuse\\Crypto\\Crypto' => __DIR__ . '/..' . '/defuse/php-encryption/src/Crypto.php',
         'Defuse\\Crypto\\DerivedKeys' => __DIR__ . '/..' . '/defuse/php-encryption/src/DerivedKeys.php',
@@ -2767,6 +2782,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Opis\\JsonSchema\\ValidationResult' => __DIR__ . '/..' . '/opis/json-schema/src/ValidationResult.php',
         'Opis\\JsonSchema\\Validator' => __DIR__ . '/..' . '/opis/json-schema/src/Validator.php',
         'Opis\\JsonSchema\\ValidatorHelper' => __DIR__ . '/..' . '/opis/json-schema/src/ValidatorHelper.php',
+        'Override' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/Override.php',
         'PEAR' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/PEAR.php',
         'PEAR_ErrorStack' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/PEAR/ErrorStack.php',
         'PEAR_Exception' => __DIR__ . '/..' . '/pear/pear_exception/PEAR/Exception.php',
@@ -4139,6 +4155,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Symfony\\Polyfill\\Php82\\Php82' => __DIR__ . '/..' . '/symfony/polyfill-php82/Php82.php',
         'Symfony\\Polyfill\\Php82\\Random\\Engine\\Secure' => __DIR__ . '/..' . '/symfony/polyfill-php82/Random/Engine/Secure.php',
         'Symfony\\Polyfill\\Php82\\SensitiveParameterValue' => __DIR__ . '/..' . '/symfony/polyfill-php82/SensitiveParameterValue.php',
+        'Symfony\\Polyfill\\Php83\\Php83' => __DIR__ . '/..' . '/symfony/polyfill-php83/Php83.php',
         'System' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/System.php',
         'TextCat' => __DIR__ . '/..' . '/wikimedia/textcat/src/TextCat.php',
         'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
