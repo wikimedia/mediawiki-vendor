@@ -5141,6 +5141,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Mocks\\MockSiteConfig' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Mocks/MockSiteConfig.php',
         'Wikimedia\\Parsoid\\NodeData\\DataBag' => __DIR__ . '/..' . '/wikimedia/parsoid/src/NodeData/DataBag.php',
         'Wikimedia\\Parsoid\\NodeData\\DataI18n' => __DIR__ . '/..' . '/wikimedia/parsoid/src/NodeData/DataI18n.php',
+        'Wikimedia\\Parsoid\\NodeData\\DataMw' => __DIR__ . '/..' . '/wikimedia/parsoid/src/NodeData/DataMw.php',
         'Wikimedia\\Parsoid\\NodeData\\DataParsoid' => __DIR__ . '/..' . '/wikimedia/parsoid/src/NodeData/DataParsoid.php',
         'Wikimedia\\Parsoid\\NodeData\\I18nInfo' => __DIR__ . '/..' . '/wikimedia/parsoid/src/NodeData/I18nInfo.php',
         'Wikimedia\\Parsoid\\NodeData\\NodeData' => __DIR__ . '/..' . '/wikimedia/parsoid/src/NodeData/NodeData.php',
