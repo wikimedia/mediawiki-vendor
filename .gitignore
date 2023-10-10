@@ -47,33 +47,53 @@ phpstan.neon.dist
 phpunit.xml.dist
 
 # Library test files etc. most of which are (wrongly?) listed
-psy/psysh/test
 
+# Upstreamed in https://github.com/Bacon/BaconQrCode/commit/2ca58705f6361673a658dbcb070940c65d04c7ac, unreleased
+bacon/bacon-qr-code/test
+
+# v0.8 branch in https://github.com/brick/math/commit/ddc77ce08a3fcfc8cec8bca7da14e606e3310a0a, unreleased
+# https://github.com/brick/math/commit/a31e375a6b496042922fea7dd82e3d167e4ee0b3 in >= 0.9.2
 brick/math/psalm.xml
+brick/math/psalm-baseline.xml
 
+# Upstreamed in https://github.com/wikimedia/php-cssjanus/commit/6dc3e45d6ec4a815f689715d9f66ab6f4e458ad1, unreleased
+cssjanus/cssjanus/Doxyfile
+
+# Upstreamed in https://github.com/DataValues/Common/commit/2243b64f0148251bcd36421258405fb7ccce21a2, unreleased
 data-values/common/tests/
+# Upstreamed in https://github.com/DataValues/DataValues/commit/4c557b2576b284143b325e0943dd876c84de6071, unreleased
 data-values/data-values/tests/
+# Upstreamed in https://github.com/DataValues/Interfaces/commit/fdfd9969c409769dbe001b5e9c08454df947b14d, unreleased
 data-values/interfaces/tests/
+# Upstreamed in https://github.com/DataValues/Interfaces/commit/ee2c34c530124e0be026362d9d2fd2db8cead9ad, unreleased
+data-values/interfaces/phpmd.xml
 
-# This was fixed upstream but then reverted
+# Reverted upstream because breaking CI
+elasticsearch/elasticsearch/docs
+# 8.0 in https://github.com/elastic/elasticsearch-php/commit/73363bc9cd40b7b0699c033ff8da3926ff4e5845
+elasticsearch/elasticsearch/.ci
+
+# Pending in https://github.com/ezimuel/guzzlestreams/pull/2
+ezimuel/guzzlestreams/tests
+
+# Fixed upstream but then reverted in https://github.com/JamesHeinrich/getID3/commit/a24656a102853b85610acc00237b2e85f41007cf
 james-heinrich/getid3/demos/
 
+# Excluded in .gitattributes, but included by composer due to WMF fork
 league/oauth2-server/CONTRIBUTING.md
 league/oauth2-server/examples/
 league/oauth2-server/tests/
 
-spomky-labs/base64url/infection.json.dist
-spomky-labs/cbor-php/infection.json.dist
+# Upstreamed in https://github.com/ramsey/collection/commit/929049dd85ed8a70cceec787f1a29738e1725363, unreleasd
+ramsey/collection/conventional-commits.json
 
-elasticsearch/elasticsearch/docs
-elasticsearch/elasticsearch/.github
-elasticsearch/elasticsearch/.ci
-
-ezimuel/guzzlestreams/tests
-ezimuel/ringphp/docs
-ezimuel/ringphp/tests
-
+# Re-added for ForeignResourcesManager, https://github.com/wikimedia/mediawiki-libs-metrics-platform/commit/d98c47371f6447f6549de9d1ffe798ef9bee18e1
 wikimedia/metrics-platform/js
-wikimedia/metrics-platform/tests
+# Added in https://gerrit.wikimedia.org/r/c/mediawiki/libs/metrics-platform/+/964595
+wikimedia/metrics-platform/mvnw
+wikimedia/metrics-platform/mvnw.cmd
+wikimedia/metrics-platform/tests/
 
-bacon/bacon-qr-code/test
+# Removed in https://github.com/wikimedia/mediawiki-libs-Services/commit/d46059001e0a9f4bdab8e0452179f0a890dff1f0, unreleased
+wikimedia/services/build/
+

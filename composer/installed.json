@@ -92,12 +92,12 @@
             "type": "library",
             "installation-source": "dist",
             "autoload": {
-                "psr-4": {
-                    "Assert\\": "lib/Assert"
-                },
                 "files": [
                     "lib/Assert/functions.php"
-                ]
+                ],
+                "psr-4": {
+                    "Assert\\": "lib/Assert"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -776,8 +776,8 @@
             "installation-source": "dist",
             "autoload": {
                 "psr-4": {
-                    "ValueFormatters\\": "src/ValueFormatters/",
                     "ValueParsers\\": "src/ValueParsers/",
+                    "ValueFormatters\\": "src/ValueFormatters/",
                     "ValueValidators\\": "src/ValueValidators/"
                 }
             },
@@ -2334,6 +2334,7 @@
                 "ext-openssl": "*",
                 "lcobucci/jwt": "^3.4.6 || ^4.0.4",
                 "league/event": "^2.2",
+                "league/uri": "^6.4",
                 "php": "^7.2 || ^8.0",
                 "psr/http-message": "^1.0.1"
             },
@@ -2348,7 +2349,7 @@
                 "phpunit/phpunit": "^8.5.13",
                 "roave/security-advisories": "dev-master"
             },
-            "time": "2022-02-08T23:54:51+00:00",
+            "time": "2022-08-02T10:31:36+00:00",
             "default-branch": true,
             "type": "library",
             "installation-source": "source",
@@ -4524,12 +4525,12 @@
             },
             "installation-source": "dist",
             "autoload": {
-                "psr-4": {
-                    "Ramsey\\Uuid\\": "src/"
-                },
                 "files": [
                     "src/functions.php"
-                ]
+                ],
+                "psr-4": {
+                    "Ramsey\\Uuid\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -4740,8 +4741,8 @@
             "installation-source": "dist",
             "autoload": {
                 "psr-4": {
-                    "Deserializers\\": "src/Deserializers/",
-                    "Serializers\\": "src/Serializers/"
+                    "Serializers\\": "src/Serializers/",
+                    "Deserializers\\": "src/Deserializers/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -6293,13 +6294,6 @@
             },
             "installation-source": "dist",
             "autoload": {
-                "psr-4": {
-                    "Safe\\": [
-                        "lib/",
-                        "deprecated/",
-                        "generated/"
-                    ]
-                },
                 "files": [
                     "deprecated/apc.php",
                     "deprecated/libevent.php",
@@ -6390,7 +6384,14 @@
                     "generated/yaz.php",
                     "generated/zip.php",
                     "generated/zlib.php"
-                ]
+                ],
+                "psr-4": {
+                    "Safe\\": [
+                        "lib/",
+                        "deprecated/",
+                        "generated/"
+                    ]
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -6717,12 +6718,12 @@
             "type": "library",
             "installation-source": "dist",
             "autoload": {
-                "psr-4": {
-                    "Wikimedia\\AtEase\\": "src/Wikimedia/AtEase/"
-                },
                 "files": [
                     "src/Wikimedia/Functions.php"
-                ]
+                ],
+                "psr-4": {
+                    "Wikimedia\\AtEase\\": "src/Wikimedia/AtEase/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [

@@ -384,9 +384,9 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'Wikimedia\\' => 
         array (
-            0 => __DIR__ . '/..' . '/wikimedia/ip-utils/src',
-            1 => __DIR__ . '/..' . '/wikimedia/running-stat/src',
-            2 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
+            0 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
+            1 => __DIR__ . '/..' . '/wikimedia/ip-utils/src',
+            2 => __DIR__ . '/..' . '/wikimedia/running-stat/src',
             3 => __DIR__ . '/..' . '/wikimedia/testing-access-wrapper/src',
             4 => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src',
             5 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
@@ -409,13 +409,13 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'ValueParsers\\' => 
         array (
-            0 => __DIR__ . '/..' . '/data-values/common/src/ValueParsers',
-            1 => __DIR__ . '/..' . '/data-values/interfaces/src/ValueParsers',
+            0 => __DIR__ . '/..' . '/data-values/interfaces/src/ValueParsers',
+            1 => __DIR__ . '/..' . '/data-values/common/src/ValueParsers',
         ),
         'ValueFormatters\\' => 
         array (
-            0 => __DIR__ . '/..' . '/data-values/common/src/ValueFormatters',
-            1 => __DIR__ . '/..' . '/data-values/interfaces/src/ValueFormatters',
+            0 => __DIR__ . '/..' . '/data-values/interfaces/src/ValueFormatters',
+            1 => __DIR__ . '/..' . '/data-values/common/src/ValueFormatters',
         ),
         'Symfony\\Polyfill\\Php83\\' => 
         array (
@@ -517,8 +517,8 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-factory/src',
-            1 => __DIR__ . '/..' . '/psr/http-message/src',
+            0 => __DIR__ . '/..' . '/psr/http-message/src',
+            1 => __DIR__ . '/..' . '/psr/http-factory/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -570,9 +570,9 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'League\\Uri\\' => 
         array (
-            0 => __DIR__ . '/..' . '/league/uri/src',
-            1 => __DIR__ . '/..' . '/league/uri-components/src',
-            2 => __DIR__ . '/..' . '/league/uri-interfaces/src',
+            0 => __DIR__ . '/..' . '/league/uri-interfaces/src',
+            1 => __DIR__ . '/..' . '/league/uri/src',
+            2 => __DIR__ . '/..' . '/league/uri-components/src',
         ),
         'League\\OAuth2\\Server\\' => 
         array (
@@ -668,8 +668,8 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'DataValues\\' => 
         array (
-            0 => __DIR__ . '/..' . '/data-values/common/src/DataValues',
-            1 => __DIR__ . '/..' . '/data-values/data-values/src',
+            0 => __DIR__ . '/..' . '/data-values/data-values/src',
+            1 => __DIR__ . '/..' . '/data-values/common/src/DataValues',
         ),
         'DASPRiD\\Enum\\' => 
         array (
@@ -749,8 +749,8 @@ class ComposerStaticInit_mediawiki_vendor
         array (
             'Net' => 
             array (
-                0 => __DIR__ . '/..' . '/pear/net_smtp',
-                1 => __DIR__ . '/..' . '/pear/net_socket',
+                0 => __DIR__ . '/..' . '/pear/net_socket',
+                1 => __DIR__ . '/..' . '/pear/net_smtp',
             ),
         ),
         'M' => 
