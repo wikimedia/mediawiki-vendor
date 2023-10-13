@@ -105,7 +105,7 @@ class MappingsGenerator {
 
 	/**
 	 * Notify the source map generator of the generated output of text which
-	 * may contain a line break and should not generate a mapping segment.
+	 * should not generate a mapping segment.
 	 *
 	 * @param string $out
 	 */
@@ -123,8 +123,8 @@ class MappingsGenerator {
 
 	/**
 	 * Notify the source map generator of the generated output of text which
-	 * does not contain a line break and should generate a mapping segment.
-	 * Append the mapping segment to the internal buffer.
+	 * should generate a mapping segment. Append the mapping segment to the
+	 * internal buffer.
 	 *
 	 * @param string $out
 	 */
@@ -151,7 +151,7 @@ class MappingsGenerator {
 		$this->prevSourceLine = $this->curSourceLine;
 		$this->prevSourceColumn = $this->curSourceColumn;
 
-		$this->curOutColumn += Utils::getJsLength( $out );
+		$this->outputSpace( $out );
 	}
 
 	/**
