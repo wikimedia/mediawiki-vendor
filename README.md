@@ -24,7 +24,7 @@ Adding or updating libraries
    minimal and so easier to validate and manually rebase. This is most easily
    done with Docker. For example, to run `composer update --no-dev` do:
    ```
-   docker run --rm -it -u "$(id -u):$(id -g)" -v "$PWD/.git:/src/.git:ro" -v "$PWD:/src" -w /src docker-registry.wikimedia.org/releng/composer-php74 update --no-dev
+   docker run --rm -it -u "$(id -u):$(id -g)" -v "$PWD/.git:/src/.git:ro" -v "$PWD:/src" -w /src docker-registry.wikimedia.org/releng/composer-php74:0.3.2-s1 update --no-dev
    ```
 2. Edit the composer.json file to add/update the libraries you want to change.
    It is recommended that you use `composer require <package> <version>

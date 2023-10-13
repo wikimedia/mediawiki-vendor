@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7cfe0fb0f8f42b354312064de8f14594",
+    "content-hash": "3d41141f961586ca74c2832e2088fd01",
     "packages": [
         {
             "name": "christian-riesen/base32",
@@ -2897,16 +2897,16 @@
         },
         {
             "name": "wikimedia/minify",
-            "version": "2.5.0",
+            "version": "2.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-Minify.git",
-                "reference": "63a9950205896249aa8893a9adc63579562d7546"
+                "reference": "ed306d1114bf5ccbc3f2c848ac9035851cb06643"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Minify/zipball/63a9950205896249aa8893a9adc63579562d7546",
-                "reference": "63a9950205896249aa8893a9adc63579562d7546",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Minify/zipball/ed306d1114bf5ccbc3f2c848ac9035851cb06643",
+                "reference": "ed306d1114bf5ccbc3f2c848ac9035851cb06643",
                 "shasum": ""
             },
             "require": {
@@ -2960,9 +2960,9 @@
             "description": "Minification of JavaScript code and CSS stylesheets.",
             "homepage": "https://gerrit.wikimedia.org/g/mediawiki/libs/Minify",
             "support": {
-                "source": "https://github.com/wikimedia/mediawiki-libs-Minify/tree/2.5.0"
+                "source": "https://github.com/wikimedia/mediawiki-libs-Minify/tree/2.5.1"
             },
-            "time": "2023-08-11T01:59:40+00:00"
+            "time": "2023-10-06T04:35:53+00:00"
         },
         {
             "name": "wikimedia/normalized-exception",

@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.5.1 (2023-10-06)
+
+* Fix source map output for multi-line templates. (Tim Starling) [T348280](https://phabricator.wikimedia.org/T348280)
+
 ## 2.5.0 (2023-08-11)
 
 Added:
