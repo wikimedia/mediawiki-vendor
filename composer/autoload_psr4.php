@@ -26,6 +26,7 @@ return array(
     'Wikimedia\\Assert\\' => array($vendorDir . '/wikimedia/assert/src'),
     'Wikimedia\\' => array($vendorDir . '/wikimedia/ip-set/src', $vendorDir . '/wikimedia/ip-utils/src', $vendorDir . '/wikimedia/running-stat/src', $vendorDir . '/wikimedia/scoped-callback/src', $vendorDir . '/wikimedia/wait-condition-loop/src', $vendorDir . '/wikimedia/wrappedstring/src'),
     'WikiPEG\\' => array($vendorDir . '/wikimedia/wikipeg/src'),
+    'WhichBrowser\\' => array($vendorDir . '/whichbrowser/parser/src', $vendorDir . '/whichbrowser/parser/tests/src'),
     'Twig\\' => array($vendorDir . '/twig/twig/src'),
     'Symfony\\Polyfill\\Php80\\' => array($vendorDir . '/symfony/polyfill-php80'),
     'Symfony\\Component\\Yaml\\' => array($vendorDir . '/symfony/yaml'),

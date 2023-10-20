@@ -9,7 +9,7 @@ return array(
     'Twig_' => array($vendorDir . '/twig/twig/lib'),
     'PHPQueue' => array($vendorDir . '/coderkungfu/php-queue/src'),
     'Net' => array($vendorDir . '/pear/net_smtp', $vendorDir . '/pear/net_socket'),
-    'Mail' => array($vendorDir . '/pear/mail_mime', $vendorDir . '/pear/mail'),
+    'Mail' => array($vendorDir . '/pear/mail', $vendorDir . '/pear/mail_mime'),
     'Liuggio' => array($vendorDir . '/liuggio/statsd-php-client/src'),
     'Less' => array($vendorDir . '/wikimedia/less.php/lib'),
     'ForceUTF8\\' => array($vendorDir . '/neitanod/forceutf8/src'),
