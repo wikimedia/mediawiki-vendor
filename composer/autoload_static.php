@@ -5190,6 +5190,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Tokens\\SourceRange' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Tokens/SourceRange.php',
         'Wikimedia\\Parsoid\\Tokens\\TagTk' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Tokens/TagTk.php',
         'Wikimedia\\Parsoid\\Tokens\\Token' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Tokens/Token.php',
+        'Wikimedia\\Parsoid\\Utils\\CompatJsonCodec' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/CompatJsonCodec.php',
         'Wikimedia\\Parsoid\\Utils\\ConfigUtils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/ConfigUtils.php',
         'Wikimedia\\Parsoid\\Utils\\ContentUtils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/ContentUtils.php',
         'Wikimedia\\Parsoid\\Utils\\DOMCompat' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/DOMCompat.php',

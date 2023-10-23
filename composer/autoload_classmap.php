@@ -4392,6 +4392,7 @@ return array(
     'Wikimedia\\Parsoid\\Tokens\\SourceRange' => $vendorDir . '/wikimedia/parsoid/src/Tokens/SourceRange.php',
     'Wikimedia\\Parsoid\\Tokens\\TagTk' => $vendorDir . '/wikimedia/parsoid/src/Tokens/TagTk.php',
     'Wikimedia\\Parsoid\\Tokens\\Token' => $vendorDir . '/wikimedia/parsoid/src/Tokens/Token.php',
+    'Wikimedia\\Parsoid\\Utils\\CompatJsonCodec' => $vendorDir . '/wikimedia/parsoid/src/Utils/CompatJsonCodec.php',
     'Wikimedia\\Parsoid\\Utils\\ConfigUtils' => $vendorDir . '/wikimedia/parsoid/src/Utils/ConfigUtils.php',
     'Wikimedia\\Parsoid\\Utils\\ContentUtils' => $vendorDir . '/wikimedia/parsoid/src/Utils/ContentUtils.php',
     'Wikimedia\\Parsoid\\Utils\\DOMCompat' => $vendorDir . '/wikimedia/parsoid/src/Utils/DOMCompat.php',
