@@ -5,8 +5,14 @@ namespace Wikimedia\Parsoid\Utils;
 
 use Wikimedia\IPUtils;
 use Wikimedia\Parsoid\Config\SiteConfig;
+use Wikimedia\Parsoid\Core\LinkTarget;
+use Wikimedia\Parsoid\Core\LinkTargetTrait;
 
-class Title {
+class Title implements LinkTarget {
+	use LinkTargetTrait;
+
+	/** @var string */
+	private $interwiki;
 
 	/** @var int */
 	private $namespaceId;
@@ -17,57 +23,48 @@ class Title {
 	/** @var string */
 	private $dbkey;
 
-	/** @var ?string */
+	/** @var string */
 	private $fragment;
 
-	/** @var TitleNamespace */
-	private $namespace;
-
 	/**
+	 * @param string $interwiki Interwiki prefix, or empty string if none
 	 * @param string $key Page DBkey (with underscores, not spaces)
-	 * @param int|TitleNamespace $ns
-	 * @param SiteConfig $siteConfig
+	 * @param int $namespaceId
+	 * @param string $namespaceName
 	 * @param ?string $fragment
 	 */
-	public function __construct(
-		string $key, $ns, SiteConfig $siteConfig, ?string $fragment = null
+	private function __construct(
+		string $interwiki, string $key, int $namespaceId, string $namespaceName, ?string $fragment = null
 	) {
+		$this->interwiki = $interwiki;
 		$this->dbkey = $key;
-		if ( $ns instanceof TitleNamespace ) {
-			$this->namespaceId = $ns->getId();
-			$this->namespace = $ns;
-		} else {
-			$this->namespaceId = (int)$ns;
-			// @phan-suppress-next-line PhanDeprecatedClass transitional
-			$this->namespace = new TitleNamespace( $this->namespaceId, $siteConfig );
-		}
-		$this->namespaceName = $siteConfig->namespaceName( $this->namespaceId );
-		$this->fragment = $fragment;
+		$this->namespaceId = $namespaceId;
+		$this->namespaceName = $namespaceName;
+		$this->fragment = $fragment ?? '';
 	}
 
 	/**
 	 * @param string $title
 	 * @param SiteConfig $siteConfig
-	 * @param int|TitleNamespace $defaultNs
+	 * @param ?int $defaultNs
 	 * @return Title
 	 */
 	public static function newFromText(
-		string $title, SiteConfig $siteConfig, $defaultNs = 0
+		string $title, SiteConfig $siteConfig, ?int $defaultNs = null
 	): Title {
 		if ( $defaultNs === null ) {
 			$defaultNs = 0;
 		}
-
 		$origTitle = $title;
 
 		if ( !mb_check_encoding( $title, 'UTF-8' ) ) {
-			throw new TitleException( "Bad UTF-8 in title \"$title\"", 'title-invalid-utf8', $title );
+			throw new TitleException( "Bad UTF-8 in title \"$origTitle\"", 'title-invalid-utf8', $origTitle );
 		}
 
 		// Strip Unicode bidi override characters.
 		$title = preg_replace( '/[\x{200E}\x{200F}\x{202A}-\x{202E}]+/u', '', $title );
 		if ( $title === null ) {
-			throw new TitleException( "Bad UTF-8 in title \"$title\"", 'title-invalid-utf8', $title );
+			throw new TitleException( "Bad UTF-8 in title \"$origTitle\"", 'title-invalid-utf8', $origTitle );
 		}
 
 		// Clean up whitespace
@@ -93,9 +90,6 @@ class Title {
 			throw new TitleException( 'Empty title', 'title-invalid-empty', $title );
 		}
 
-		if ( $defaultNs instanceof TitleNamespace ) {
-			$defaultNs = $defaultNs->getId();
-		}
 		$ns = $defaultNs;
 		$interwiki = null;
 
@@ -231,20 +225,46 @@ class Title {
 			$title = self::fixSpecialName( $siteConfig, $title );
 		}
 
-		// This is not in core's splitTitleString but matches parsoid's
-		// convention.
-		if ( $interwiki !== null ) {
-			$title = "$interwiki:$title";
-		}
-
-		return new self( $title, $ns, $siteConfig, $fragment );
+		$namespaceName = $siteConfig->namespaceName( $ns );
+		return new self( $interwiki ?? '', $title, $ns, $namespaceName, $fragment );
 	}
 
 	/**
-	 * Get the DBkey
+	 * The interwiki component of this LinkTarget.
+	 * This is the empty string if there is no interwiki component.
+	 *
 	 * @return string
 	 */
+	public function getInterwiki(): string {
+		return $this->interwiki;
+	}
+
+	/**
+	 * Get the DBkey, prefixed with interwiki prefix if any.
+	 * This is Parsoid's convention, which differs from core;
+	 * use ::getDBkey() for a method compatible with core's
+	 * convention.
+	 *
+	 * @return string
+	 * @see ::getDBkey()
+	 */
 	public function getKey(): string {
+		if ( $this->interwiki ) {
+			return $this->interwiki . ':' . $this->dbkey;
+		}
+		return $this->dbkey;
+	}
+
+	/**
+	 * Get the main part of the link target, in canonical database form.
+	 *
+	 * The main part is the link target without namespace prefix or hash fragment.
+	 * The database form means that spaces become underscores, this is also
+	 * used for URLs.
+	 *
+	 * @return string
+	 */
+	public function getDBkey(): string {
 		return $this->dbkey;
 	}
 
@@ -253,10 +273,11 @@ class Title {
 	 * @return string
 	 */
 	public function getPrefixedDBKey(): string {
+		$dbkey = $this->getKey();
 		if ( $this->namespaceName === '' ) {
-			return $this->dbkey;
+			return $dbkey;
 		}
-		return strtr( $this->namespaceName, ' ', '_' ) . ':' . $this->dbkey;
+		return strtr( $this->namespaceName, ' ', '_' ) . ':' . $dbkey;
 	}
 
 	/**
@@ -264,7 +285,7 @@ class Title {
 	 * @return string
 	 */
 	public function getPrefixedText(): string {
-		$ret = strtr( $this->dbkey, '_', ' ' );
+		$ret = strtr( $this->getKey(), '_', ' ' );
 		if ( $this->namespaceName !== '' ) {
 			$ret = $this->namespaceName . ':' . $ret;
 		}
@@ -272,27 +293,28 @@ class Title {
 	}
 
 	/**
-	 * Get the fragment, if any
-	 * @return string|null
-	 */
-	public function getFragment(): ?string {
-		return $this->fragment;
-	}
-
-	/**
-	 * @deprecated Use namespace IDs and SiteConfig methods instead.
-	 * @return TitleNamespace
-	 */
-	public function getNamespace(): TitleNamespace {
-		return $this->namespace;
-	}
-
-	/**
 	 * Get the namespace ID
 	 * @return int
 	 */
-	public function getNamespaceId(): int {
+	public function getNamespace(): int {
 		return $this->namespaceId;
+	}
+
+	/**
+	 * Get the human-readable name for the namespace
+	 * @return string
+	 */
+	public function getNamespaceName(): string {
+		return $this->namespaceName;
+	}
+
+	/**
+	 * Get the link fragment in text form (i.e. the bit after the hash `#`).
+	 *
+	 * @return string link fragment
+	 */
+	public function getFragment(): string {
+		return $this->fragment ?? '';
 	}
 
 	/**
@@ -302,7 +324,7 @@ class Title {
 	 * @return bool
 	 */
 	public function equals( Title $title ) {
-		return $this->getNamespaceId() === $title->getNamespaceId() &&
+		return $this->getNamespace() === $title->getNamespace() &&
 			$this->getKey() === $title->getKey();
 	}
 
@@ -323,5 +345,41 @@ class Title {
 			$title = implode( '/', $parts );
 		}
 		return $title;
+	}
+
+	/**
+	 * Create a new LinkTarget with a different fragment on the same page.
+	 *
+	 * It is expected that the same type of object will be returned, but the
+	 * only requirement is that it is a LinkTarget.
+	 *
+	 * @param string $fragment The fragment override, or "" to remove it.
+	 *
+	 * @return self
+	 */
+	public function createFragmentTarget( string $fragment ) {
+		return new self( $this->interwiki, $this->dbkey, $this->namespaceId, $this->namespaceName, $fragment ?: null );
+	}
+
+	/**
+	 * Convert LinkTarget from core (or other implementation) into a
+	 * Parsoid Title.
+	 *
+	 * @param LinkTarget $linkTarget
+	 * @return self
+	 */
+	public static function newFromLinkTarget(
+		LinkTarget $linkTarget, SiteConfig $siteConfig
+	) {
+		if ( $linkTarget instanceof Title ) {
+			return $linkTarget;
+		}
+		return new self(
+			$linkTarget->getInterwiki(),
+			$linkTarget->getDBkey(),
+			$linkTarget->getNamespace(),
+			$siteConfig->namespaceName( $linkTarget->getNamespace() ),
+			$linkTarget->getFragment()
+		);
 	}
 }

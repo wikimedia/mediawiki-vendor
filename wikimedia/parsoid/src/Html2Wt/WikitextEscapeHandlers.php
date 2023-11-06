@@ -338,8 +338,7 @@ class WikitextEscapeHandlers {
 				strspn( $text, '-+}', 0, 1 ) &&
 				$node
 			) {
-				$patch = DOMUtils::pathToAncestor( $node, $tdNode );
-				foreach ( $patch as $n ) {
+				foreach ( DOMUtils::pathToAncestor( $node, $tdNode ) as $n ) {
 					if ( !$this->isFirstContentNode( $n ) ||
 						!( $n === $node || WTUtils::isZeroWidthWikitextElt( $n ) ) ) {
 						return false;
@@ -520,9 +519,7 @@ class WikitextEscapeHandlers {
 		// If the token stream has a TagTk, SelfclosingTagTk, EndTagTk or CommentTk
 		// then this text needs escaping!
 		$numEntities = 0;
-		for ( $i = 0,  $n = count( $tokens );  $i < $n;  $i++ ) {
-			$t = $tokens[$i];
-
+		foreach ( $tokens as $t ) {
 			$env->log(
 				'trace/wt-escape', 'T:',
 				static function () use ( $t ) {
@@ -724,8 +721,7 @@ class WikitextEscapeHandlers {
 
 		$tokens = $this->tokenizeStr( $text, $sol );
 
-		for ( $i = 0,  $n = count( $tokens );  $i < $n;  $i++ ) {
-			$t = $tokens[$i];
+		foreach ( $tokens as $t ) {
 			if ( is_string( $t ) ) {
 				if ( strlen( $t ) > 0 ) {
 					$t = WTSUtils::escapeNowikiTags( $t );
@@ -859,8 +855,8 @@ class WikitextEscapeHandlers {
 		if ( !$fullCheckNeeded ) {
 			$hasQuoteChar = str_contains( $text, "'" );
 			$indentPreUnsafe = !$indentPreSafeMode && (
-				preg_match( '/\n +[^\r\n]*?[^\s]+/', $text ) ||
-				$sol && preg_match( '/^ +[^\r\n]*?[^\s]+/', $text )
+				preg_match( '/\n +[^\r\n]*?\S+/', $text ) ||
+				$sol && preg_match( '/^ +[^\r\n]*?\S+/', $text )
 			);
 			$hasNonQuoteEscapableChars = preg_match( '/[<>\[\]\-\+\|!=#\*:;~{}]|__[^_]*__/', $text );
 			$hasLanguageConverter = preg_match( '/-\{|\}-/', $text );

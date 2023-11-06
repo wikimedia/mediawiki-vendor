@@ -77,7 +77,7 @@ class Sanitizer {
 	 * and deny everything else.
 	 * [1]: http://ha.ckers.org/xss.html
 	 */
-	private const EVIL_URI_PATTERN = '!(^|\s|\*/\s*)(javascript|vbscript)([^\w]|$)!iD';
+	private const EVIL_URI_PATTERN = '!(^|\s|\*/\s*)(javascript|vbscript)(\W|$)!iD';
 	private const XMLNS_ATTRIBUTE_PATTERN = "/^xmlns:[:A-Z_a-z-.0-9]+$/D";
 
 	/**
@@ -162,7 +162,7 @@ class Sanitizer {
 	 * Fetch the list of acceptable attributes for a given element name.
 	 *
 	 * @param string $element
-	 * @return array
+	 * @return array<string,int>
 	 */
 	public static function attributesAllowedInternal( string $element ): array {
 		// PORT-FIXME: this method is private in core, but used by Gallery
@@ -174,7 +174,7 @@ class Sanitizer {
 	/**
 	 * Foreach array key (an allowed HTML element), return an array
 	 * of allowed attributes
-	 * @return array
+	 * @return array<string,string[]>
 	 */
 	private static function setupAttributesAllowedInternal(): array {
 		static $allowed;
@@ -1007,7 +1007,7 @@ class Sanitizer {
 				// Paranoia. Allow "simple" values but suppress javascript
 				if ( preg_match( self::EVIL_URI_PATTERN, $v ) ) {
 					// Retain the Parsoid typeofs for Parsoid attrs
-					$newV = $psdAttr ? trim( preg_replace( '/(?:^|\s)(?!mw:\w)[^\s]*/', '', $origV ) ) : null;
+					$newV = $psdAttr ? trim( preg_replace( '/(?:^|\s)(?!mw:\w)\S*/', '', $origV ) ) : null;
 					$newAttrs[$k] = [ $newV, $origV, $origK ];
 					continue;
 				}
