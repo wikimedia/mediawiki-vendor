@@ -8,6 +8,7 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * Diagnostic tool to print materialized configuration values to stdout.
+ * Example: php DumpConfig.php --config-node=adyen
  */
 class DumpConfig extends MaintenanceBase {
 	public function execute() {

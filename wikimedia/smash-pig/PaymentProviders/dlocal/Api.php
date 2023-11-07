@@ -256,6 +256,20 @@ class Api {
 	}
 
 	/**
+	 * Refund a payment
+	 *
+	 * https://docs.dlocal.com/reference/make-a-refund
+	 *
+	 * @param string $gatewayTxnId
+	 * @return array
+	 * @throws ApiException
+	 */
+	public function refundPayment( array $params ): array {
+		$route = 'refunds';
+		return $this->makeApiCall( 'POST', $route, $params );
+	}
+
+	/**
 	 * Set dLocal request headers
 	 * https://docs.dlocal.com/reference/payins-security#headers
 	 *

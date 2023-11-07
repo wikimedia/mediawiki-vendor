@@ -49,7 +49,7 @@ class TestCreatePayment extends MaintenanceBase {
 				'recurring_payment_token' => $token,
 				'amount' => $amount,
 				'currency' => 'USD',
-				'descriptor' => 'Recurring donation to Wikimedia!',
+				'descriptor' => 'Wikimedia Foundation - Recurring donation',
 				'order_id' => mt_rand(),
 			];
 

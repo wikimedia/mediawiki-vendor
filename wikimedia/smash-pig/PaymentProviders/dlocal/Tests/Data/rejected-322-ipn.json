@@ -29,7 +29,7 @@
     "prenotify_approved": false
   },
   "order_id": "123456789.1",
-  "description": "Wikimedia 877 600 9454",
+  "description": "Wikimedia Foundation",
   "notification_url": "https://testurl.com/dlocal",
   "callback_url": "https://testurl.com/index.php?title=Special:DlocalGatewayResult",
   "created_date": "2023-08-24T06:32:45.000+0000"

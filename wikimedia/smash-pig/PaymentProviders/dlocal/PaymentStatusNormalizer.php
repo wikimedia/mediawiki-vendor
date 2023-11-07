@@ -45,6 +45,7 @@ class PaymentStatusNormalizer implements StatusNormalizer {
 				$normalizedStatus = FinalStatus::CANCELLED;
 				break;
 			case 'VERIFIED':
+			case 'SUCCESS':
 			case 'PAID':
 				$normalizedStatus = FinalStatus::COMPLETE;
 				break;

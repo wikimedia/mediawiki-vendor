@@ -14,6 +14,7 @@ use SmashPig\PaymentProviders\Responses\CancelPaymentResponse;
 use SmashPig\PaymentProviders\Responses\CreatePaymentResponse;
 use SmashPig\PaymentProviders\Responses\PaymentDetailResponse;
 use SmashPig\PaymentProviders\Responses\PaymentProviderResponse;
+use SmashPig\PaymentProviders\Responses\RefundPaymentResponse;
 
 class PaymentProvider implements IGetLatestPaymentStatusProvider, ICancelablePaymentProvider {
 	/**
@@ -52,6 +53,22 @@ class PaymentProvider implements IGetLatestPaymentStatusProvider, ICancelablePay
 			return DlocalCancelPaymentResponseFactory::fromRawResponse( $result );
 		} catch ( ApiException $apiException ) {
 			return DlocalCancelPaymentResponseFactory::fromErrorResponse( $apiException->getRawErrors() );
+		}
+	}
+
+	/**
+	 * Refund a payment
+	 * @param array $params
+	 *
+	 * @return \SmashPig\PaymentProviders\Responses\RefundPaymentResponse
+	 * @throws \SmashPig\Core\ApiException
+	 */
+	public function refundPayment( array $params ): RefundPaymentResponse {
+		try {
+			$result = $this->api->refundPayment( $params );
+			return DlocalRefundPaymentResponseFactory::fromRawResponse( $result );
+		} catch ( ApiException $apiException ) {
+			return DlocalRefundPaymentResponseFactory::fromErrorResponse( $apiException->getRawErrors() );
 		}
 	}
 

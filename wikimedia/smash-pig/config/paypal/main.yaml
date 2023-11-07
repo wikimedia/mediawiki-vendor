@@ -77,6 +77,12 @@ var_map:
     amount3: gross
     mc_fee: fee
 
+# See https://phabricator.wikimedia.org/T295726
+# When a donation seems to come from GiveLively, add a direct_mail_appeal field
+# with the value specified here, and add a no_thank_you field with 'GiveLively'
+# If not set or set to something false, treat GiveLively donations as any other.
+givelively-appeal: EV1V23
+
 rejects:
     txn_type:
         - new_case

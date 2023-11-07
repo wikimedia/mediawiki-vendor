@@ -41,12 +41,12 @@ class Listener implements IHttpActionHandler {
 			$job->payload = $requestValues;
 			QueueWrapper::push( 'jobs-paypal', $job );
 			Logger::info( 'Pushed new message to jobs-paypal: ' .
-				print_r( $requestValues, true ) );
+				json_encode( $requestValues ) );
 			Logger::info( 'Finished processing listener request' );
 			return true;
 		}
 
-		Logger::info( 'INVALID IPN message: ' . print_r( $requestValues, true ) );
+		Logger::info( 'INVALID IPN message: ' . json_encode( $requestValues ) );
 		return false;
 	}
 

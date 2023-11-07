@@ -33,7 +33,7 @@ class SetExpressCheckout extends MaintenanceBase {
 			'order_id' => $this->getArgument( 'order_id' ),
 			'is_recurring' => $this->getArgument( 'is_recurring' ),
 			'locale' => $this->getArgument( 'locale' ),
-			'description' => 'Wikimedia 877 600 9454',
+			'description' => 'Wikimedia Foundation',
 			'return_url' => $this->getReturnUrl(),
 			'cancel_url' => 'https://donate.wikimedia.org/wiki/Ways_to_Give/' . $this->getArgument( 'locale' ),
 		];

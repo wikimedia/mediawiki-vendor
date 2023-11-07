@@ -13,6 +13,7 @@ class RecurringImport extends FundraiseupImports {
 		'Supporter Last Name' => 'last_name',
 		'Supporter Employer' => 'employer',
 		'Supporter Email' => 'email',
+		'Supporter ID' => 'external_identifier',
 		'Recurring Amount' => 'gross',
 		'Recurring Currency' => 'currency',
 		'Next Donation Date' => 'next_sched_contribution_date',

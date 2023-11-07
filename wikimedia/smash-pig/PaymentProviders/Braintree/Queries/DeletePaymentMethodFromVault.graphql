@@ -1,0 +1,5 @@
+mutation DeletePaymentMethodFromVault($input: DeletePaymentMethodFromVaultInput!){
+  deletePaymentMethodFromVault(input: $input){
+    clientMutationId
+  }
+}

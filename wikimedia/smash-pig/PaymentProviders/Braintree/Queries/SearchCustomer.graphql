@@ -1,0 +1,25 @@
+query searchCustomer($input: CustomerSearchInput!){
+  search {
+    customers (input: $input) {
+       edges {
+          node {
+          id
+          paymentMethods {
+            edges {
+              node {
+                id
+              }
+            }
+          }
+          transactions {
+            edges {
+              node {
+                orderId
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

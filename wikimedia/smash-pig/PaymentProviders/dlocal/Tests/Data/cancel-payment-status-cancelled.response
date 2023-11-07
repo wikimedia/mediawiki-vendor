@@ -10,4 +10,4 @@ Vary: Accept-Encoding, User-Agent
 Content-Encoding: gzip
 X-Upstream: 10.145.77.220:80
 
-{"id":"T-2486-0ef6f3b6-544f-4734-9ee8-b8a7130cd8c6","amount":100.00,"currency":"BRL","payment_method_id":"VI","payment_method_type":"CARD","payment_method_flow":"DIRECT","country":"BR","created_date":"2023-02-15T19:05:27.000+0000","approved_date":"2023-02-15T19:05:27.000+0000","status":"CANCELLED","status_detail":"The payment was cancelled.","status_code":"200","order_id":"9134343.4","description":"Wikimedia 877 600 9454"}
+{"id":"T-2486-0ef6f3b6-544f-4734-9ee8-b8a7130cd8c6","amount":100.00,"currency":"BRL","payment_method_id":"VI","payment_method_type":"CARD","payment_method_flow":"DIRECT","country":"BR","created_date":"2023-02-15T19:05:27.000+0000","approved_date":"2023-02-15T19:05:27.000+0000","status":"CANCELLED","status_detail":"The payment was cancelled.","status_code":"200","order_id":"9134343.4","description":"Wikimedia Foundation"}

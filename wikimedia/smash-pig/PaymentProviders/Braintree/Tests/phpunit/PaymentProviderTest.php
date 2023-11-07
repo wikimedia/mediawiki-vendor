@@ -214,4 +214,26 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$this->assertEquals( FinalStatus::COMPLETE, $response->getStatus() );
 		$this->assertSame( 0, count( array_merge( $response->getValidationErrors(), $response->getErrors() ) ) );
 	}
+
+	/**
+	 * Test fetch customer info if no customer email passed from client side
+	 * @return void
+	 */
+	public function testFetchCustomer() {
+		$payment_context_id = 'cGF5bWVudGNvbnRleHRfbXM5ZnFtdzlneHJtMmJwMyM3YTliNjk1ZC0zZjZjLTQ5NTItOTI4Ny1mZWE4OTI5NTU0YzQ=';
+		$expectEmail = 'tt@tt.tt';
+		$this->api->expects( $this->once() )
+			->method( 'fetchCustomer' )
+			->willReturn( [
+				'data' => [ 'node' => [
+					'payerInfo' => [
+						'email' => $expectEmail,
+					]
+				] ]
+			] );
+
+		$provider = new PaymentProvider();
+		$donorDetails = $provider->fetchCustomerData( $payment_context_id );
+		$this->assertEquals( $expectEmail, $donorDetails->getEmail() );
+	}
 }

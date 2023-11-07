@@ -49,4 +49,7 @@ class RecurringContract extends AdyenMessage {
 		}
 	}
 
+	public function getGatewayTxnId() {
+		return $this->parentPspReference;
+	}
 }

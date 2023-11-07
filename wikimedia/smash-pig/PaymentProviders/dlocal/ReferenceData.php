@@ -63,6 +63,7 @@ class ReferenceData {
 		'DS' => 'discover',
 		'DT' => 'debin', // AR Immediate debit
 		'EF' => 'cash_pago_efectivo',
+		'ED' => 'elo-debit',
 		'EL' => 'elo',
 		'EQ' => 'quindio',
 		'EX' => 'almancenes',

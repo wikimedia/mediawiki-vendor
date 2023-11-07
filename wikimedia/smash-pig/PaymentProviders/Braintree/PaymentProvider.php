@@ -9,6 +9,7 @@ use SmashPig\Core\ValidationError;
 use SmashPig\PaymentData\DonorDetails;
 use SmashPig\PaymentData\ErrorCode;
 use SmashPig\PaymentData\FinalStatus;
+use SmashPig\PaymentProviders\IDeleteRecurringPaymentTokenProvider;
 use SmashPig\PaymentProviders\IPaymentProvider;
 use SmashPig\PaymentProviders\Responses\ApprovePaymentResponse;
 use SmashPig\PaymentProviders\Responses\CreatePaymentResponse;
@@ -16,7 +17,7 @@ use SmashPig\PaymentProviders\Responses\CreatePaymentSessionResponse;
 use SmashPig\PaymentProviders\Responses\PaymentProviderResponse;
 use SmashPig\PaymentProviders\Responses\RefundPaymentResponse;
 
-class PaymentProvider implements IPaymentProvider {
+class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaymentTokenProvider {
 
 	/**
 	 * @var Api
@@ -137,6 +138,43 @@ class PaymentProvider implements IPaymentProvider {
 	}
 
 	/**
+	 * @param array $params
+	 * triggered by post Monthly Convert's decline button
+	 *
+	 * we must remove the associated payment method (aka recurring payment token) from customer
+	 * before we can delete it
+	 * @return bool
+	 */
+	public function deleteRecurringPaymentToken( array $params ): bool {
+		if ( $params['processor_contact_id'] && $params['recurring_payment_token'] ) {
+			$customerId = $params['processor_contact_id'];
+			$paymentTxnId = $params['recurring_payment_token'];
+		} else {
+			$searchCustomerRawResponse = $this->api->searchCustomer( $params['email'] );
+			$customerData = $searchCustomerRawResponse['data']['search']['customers']['edges'];
+			// usually able to find it with only one donation, in case they donate multiple times
+			foreach ( $customerData as $donation ) {
+				$orderId = $donation['node']['transactions']['edges'][0]['node']['orderId'];
+				if ( $params['order_id'] === $orderId ) {
+					// find the right customer
+					$customerId = $donation['node']['id'];
+					$paymentTxnId = $donation['node']['paymentMethods']['edges'][0]['node']['id'];
+				}
+			}
+		}
+		// before delete customer from vault, make sure no recurring token associated otherwise this deletion will be failed
+		$deletePaymentVaultRawData = $this->api->deletePaymentMethodFromVault( $paymentTxnId );
+		if ( $deletePaymentVaultRawData['data']['deletePaymentMethodFromVault']['clientMutationId'] === $paymentTxnId ) {
+			// get the token delete successfully, ready to delete customer from vault
+			$deleteCustomerRawData = $this->api->deleteCustomer( $customerId );
+			if ( $deleteCustomerRawData['data']['deleteCustomer']['clientMutationId'] === $customerId ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * @param string $errorClass
 	 * @return int
 	 * https://graphql.braintreepayments.com/guides/making_api_calls/#understanding-responses
@@ -222,24 +260,23 @@ class PaymentProvider implements IPaymentProvider {
 			}
 		}
 
-		// use the set recurring payment token as the payment_token for subsequent recurring charges
-		if ( !empty( $params['recurring_payment_token'] ) ) {
-			$params['payment_token'] = $params['recurring_payment_token'];
+		if ( !$params['email'] ) {
+			$donorDetails = $this->fetchCustomerData( $params['gateway_session_id'] );
+			if ( $donorDetails ) {
+				$params['email'] = $donorDetails->getEmail();
+				$params['first_name'] = $donorDetails->getFirstName();
+				$params['last_name'] = $donorDetails->getLastName();
+				$params['phone'] = $donorDetails->getPhone();
+			}
 		}
-
-		$apiParams['paymentMethodId'] = $params['payment_token'];
 
 		$apiParams['transaction'] = [
 			'amount' => $params['amount'],
 			'riskData' => [
 				"deviceData" => $params['device_data'] ?? '{}', // do device_data then it's recurring donation
 			],
-			'customerDetails' => [
-				'email' => $params['email'], // for venmo
-				'phoneNumber' => $params['phone'] ?? ''
-			],
 			'descriptor' => [
-				'name' => 'Wikimedia Foundation',
+				'name' => $params['description'] ?? 'Wikimedia Foundation', // only used in USD in us, so should be fine to hard code if not provided
 			],
 			'customFields' => [
 				"name" => "fullname",
@@ -247,6 +284,23 @@ class PaymentProvider implements IPaymentProvider {
 			]
 		];
 
+		// PayPal required Company name/DBA section must be either 3, 7 or 12 characters
+		// and the product descriptor can be up to 18, 14, or 9 characters respectively
+		// (with an * in between for a total descriptor name of 22 characters).
+		if ( !isset( $params['user_name'] ) ) {
+			$apiParams['transaction']['descriptor']['name'] = "WMF*Wikimedia";
+		}
+		// use the set recurring payment token as the payment_token for subsequent recurring charges, if not recurring, pass customerDetails
+		if ( !empty( $params['recurring_payment_token'] ) ) {
+			$params['payment_token'] = $params['recurring_payment_token'];
+		} else {
+			$apiParams['transaction']['customerDetails'] = [
+				'email' => $params['email'], // for venmo
+				'phoneNumber' => $params['phone'] ?? ''
+			];
+		}
+
+		$apiParams['paymentMethodId'] = $params['payment_token'];
 		$this->indicateMerchant( $params, $apiParams );
 
 		$apiParams['transaction']['orderId'] = $params['order_id'];
@@ -265,6 +319,26 @@ class PaymentProvider implements IPaymentProvider {
 		return $apiParams;
 	}
 
+	/**
+	 * @param string $id
+	 * todo: check if other braintree payment methods can and need use this
+	 * @return \SmashPig\PaymentData\DonorDetails
+	 */
+	public function fetchCustomerData( string $id ) {
+		// venmo is using client side return for email, if not return for some reason, fetch again
+		$rawResponse = $this->api->fetchCustomer( $id )['data']['node']['payerInfo'];
+		$donorDetails = new DonorDetails();
+		if ( $rawResponse ) {
+			$donorDetails->setUserName( $rawResponse['userName'] ?? null );
+			$donorDetails->setCustomerId( $rawResponse['externalId'] ?? null );
+			$donorDetails->setEmail( $rawResponse['email'] ?? null );
+			$donorDetails->setFirstName( $rawResponse['firstName'] ?? null );
+			$donorDetails->setLastName( $rawResponse['lastName'] ?? null );
+			$donorDetails->setPhone( $rawResponse['phoneNumber'] ?? null );
+		}
+		return $donorDetails;
+	}
+
 	protected function setCreatePaymentSuccessfulResponseDetails( array $transaction, CreatePaymentResponse $response, array $params ) {
 		$successfulStatuses = [ FinalStatus::PENDING_POKE, FinalStatus::COMPLETE ];
 		$mappedStatus = ( new PaymentStatus() )->normalizeStatus( $transaction['status'] );
@@ -275,15 +349,15 @@ class PaymentProvider implements IPaymentProvider {
 		$donorDetails->setLastName( $transaction['paymentMethodSnapshot']['payer']['lastName'] ?? $params['last_name'] );
 		$donorDetails->setEmail( $transaction['paymentMethodSnapshot']['payer']['email'] ?? $params['email'] );
 		$donorDetails->setPhone( $transaction['paymentMethodSnapshot']['payer']['phone'] ?? $params['phone'] ?? null );
-		// additional data for venmo if customer id exist
-		if ( !empty( $params['customer_id'] ) ) {
-			$donorDetails->setCustomerId( $transaction['paymentMethodSnapshot']['payer']['customer_id'] ?? $params['customer_id'] );
-			$donorDetails->setUserName( $transaction['paymentMethodSnapshot']['payer']['user_name'] ?? $params['user_name'] );
-		}
+		$donorDetails->setFullName( $donorDetails->getFirstName() . ' ' . $donorDetails->getLastName() );
+		$donorDetails->setCustomerId( $transaction['paymentMethodSnapshot']['payer']['payerId'] ?? $transaction['customer']['id'] );
+		// additional data for venmo
+		$donorDetails->setUserName( $transaction['paymentMethodSnapshot']['username'] ?? null );
 		$response->setDonorDetails( $donorDetails );
 		// The recurring token (vault) is the id of paymentMethod
 		if ( isset( $transaction['recurring'] ) && $transaction['paymentMethod']['id'] ) {
 			$response->setRecurringPaymentToken( $transaction['paymentMethod']['id'] );
+			$response->setProcessorContactID( $donorDetails->getCustomerId() );
 		}
 		$response->setStatus( $mappedStatus );
 	}
@@ -317,6 +391,9 @@ class PaymentProvider implements IPaymentProvider {
 				} else {
 					$response->addErrors( $mappedError );
 				}
+			} elseif ( isset( $error['message'] ) ) {
+				$mappedError = $this->mapErrors( $error, $error['message'] );
+				$response->addErrors( $mappedError );
 			}
 		}
 	}

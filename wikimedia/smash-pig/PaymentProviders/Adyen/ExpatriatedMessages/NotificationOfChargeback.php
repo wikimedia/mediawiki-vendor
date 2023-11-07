@@ -1,6 +1,6 @@
 <?php namespace SmashPig\PaymentProviders\Adyen\ExpatriatedMessages;
 
-use SmashPig\PaymentProviders\Adyen\Actions\PaymentCaptureAction;
+use SmashPig\Core\Logging\TaggedLogger;
 
 /**
  * A NOTIFICATION_OF_CHARGEBACK message is sent as a preliminary stage
@@ -12,23 +12,18 @@ use SmashPig\PaymentProviders\Adyen\Actions\PaymentCaptureAction;
 class NotificationOfChargeback extends AdyenMessage {
 
 	/**
-	 * Will run all the actions that are loaded (from the 'actions' configuration
-	 * node) and that are applicable to this message type. Will return true
-	 * if all actions returned true. Otherwise will return false. This implicitly
-	 * means that the message will be re-queued if any action fails. Therefore
-	 * all actions need to be idempotent.
+	 * Just log the notification of chargeback. Might be nice to be able to
+	 * send an email just to Donor Relations here, to give them a chance to
+	 * do something about it.
 	 *
 	 * @return bool True if all actions were successful. False otherwise.
 	 */
 	public function runActionChain() {
-		// HUH? This seems like a weird action to take on chargeback notification
-		$action = new PaymentCaptureAction();
-		$result = $action->execute( $this );
+		$tl = new TaggedLogger( 'NotificationOfChargeback' );
 
-		if ( $result === true ) {
-			return parent::runActionChain();
-		} else {
-			return false;
-		}
+		$tl->warning(
+			"Chargeback proceedings initiated for original reference $this->parentPspReference with new reference $this->pspReference"
+		);
+		return true;
 	}
 }

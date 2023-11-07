@@ -4,30 +4,17 @@ namespace SmashPig\PaymentProviders\Braintree\Tests;
 
 use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentProviders\Braintree\PaypalPaymentProvider;
-use SmashPig\PaymentProviders\Braintree\VenmoPaymentProvider;
-use SmashPig\Tests\BaseSmashPigUnitTestCase;
 
 /**
  * @group Braintree
  */
-class PayPalPaymentProviderTest extends BaseSmashPigUnitTestCase {
-	/**
-	 * @var PHPUnit_Framework_MockObject_MockObject
-	 */
-	protected $api;
-	protected $merchantAccounts;
+class PayPalPaymentProviderTest extends BaseBraintreeTest {
 
 	public function setUp(): void {
 		parent::setUp();
-		$providerConfig = $this->setProviderConfiguration( 'braintree' );
-		$this->api = $this->getMockBuilder( 'SmashPig\PaymentProviders\Braintree\Api' )
-			->disableOriginalConstructor()
-			->getMock();
-		$providerConfig->overrideObjectInstance( 'api', $this->api );
-		$this->merchantAccounts = [ 'USD' => 'wikimediafoundation', 'GBP' => 'WMF-GBP' ];
 	}
 
-	public function testPaymentWithNoDeviceDataError() {
+	public function testPaypalPaymentWithNoDeviceDataError() {
 		$request = [
 			"payment_token" => "fake-valid-nonce",
 			"order_id" => '123.3',
@@ -39,21 +26,6 @@ class PayPalPaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$response = $provider->createPayment( $request );
 		$validationError = $response->getValidationErrors();
 		$this->assertEquals( $validationError[0]->getField(), 'device_data' );
-	}
-
-	public function testVenmoNotUSDError() {
-		$request = [
-			"payment_token" => "fake-valid-nonce",
-			"order_id" => '123.3',
-			"amount" => '1.00',
-			"device_data" => '{}',
-			"currency" => "EUR"
-		];
-
-		$provider = new VenmoPaymentProvider();
-		$response = $provider->createPayment( $request );
-		$validationError = $response->getValidationErrors();
-		$this->assertEquals( $validationError[0]->getField(), 'currency' );
 	}
 
 	public function testPaymentWithNotSupportedCurrencyError() {
@@ -71,12 +43,13 @@ class PayPalPaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$this->assertEquals( $validationError[0]->getField(), 'currency' );
 	}
 
-	public function testAuthorizePayment() {
+	public function testAuthorizePaymentPaypal() {
 		$txn_id = "dHJhbnNhY3Rpb25fYXIxMTNuZzQ";
 		$payer = [
 			'firstName' => "Jimmy",
 			'lastName' => "Wales",
 			'email' => "mockjwales@wikimedia.org",
+			'payerId' => "123",
 			'phone' => "1-800-wikimedia"
 		];
 		$request = [
@@ -116,6 +89,7 @@ class PayPalPaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$this->assertEquals( $payer[ 'lastName' ], $donor_details->getLastName() );
 		$this->assertEquals( $payer[ 'email' ], $donor_details->getEmail() );
 		$this->assertEquals( $payer[ 'phone' ], $donor_details->getPhone() );
+		$this->assertEquals( $payer[ 'payerId' ], $donor_details->getCustomerId() );
 	}
 
 	public function testApprovePaymentThrowsExceptionWhenCalledWithoutRequiredFields() {
@@ -157,6 +131,7 @@ class PayPalPaymentProviderTest extends BaseSmashPigUnitTestCase {
 			'firstName' => "Jimmy",
 			'lastName' => "Wales",
 			'email' => "mockjwales@wikimedia.org",
+			'payerId' => "123",
 			'phone' => "1-800-wikimedia"
 		];
 		$request = [
@@ -188,7 +163,7 @@ class PayPalPaymentProviderTest extends BaseSmashPigUnitTestCase {
 						"value" => "Jimmy Wales"
 					],
 					'descriptor' => [
-						'name' => 'Wikimedia Foundation'
+						'name' => 'WMF*Wikimedia'
 					]
 				],
 				'paymentMethodId' => 'fake-valid-nonce'
@@ -218,6 +193,7 @@ class PayPalPaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$this->assertEquals( $payer[ 'lastName' ], $donor_details->getLastName() );
 		$this->assertEquals( $payer[ 'email' ], $donor_details->getEmail() );
 		$this->assertEquals( $payer[ 'phone' ], $donor_details->getPhone() );
+		$this->assertEquals( $payer[ 'payerId' ], $donor_details->getCustomerId() );
 	}
 
 	public function testCreatePaymentValidationErrorWhenCalledWithoutRequiredFields() {

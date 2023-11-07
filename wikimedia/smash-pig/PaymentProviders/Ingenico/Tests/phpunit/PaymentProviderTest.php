@@ -111,7 +111,7 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 			'recurring_payment_token' => '229a1d6e-1b26-4c91-8e00-969a49c9d041',
 			'amount' => 10, // dollars
 			'currency' => 'USD',
-			'description' => 'Recurring donation to Wikimedia!',
+			'description' => 'Wikimedia Foundation - Recurring donation',
 			'order_id' => '12345.1',
 			'initial_scheme_transaction_id' => 'lkjh0987lkjh0987lkjh0987'
 		];
@@ -166,7 +166,7 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 			'recurring_payment_token' => '229a1d6e-1b26-4c91-8e00-969a49c9d041',
 			'amount' => 10, // dollars
 			'currency' => 'USD',
-			'description' => 'Recurring donation to Wikimedia!',
+			'description' => 'Wikimedia Foundation - Recurring donation',
 			'order_id' => '12345.1',
 			'first_name' => 'Testy',
 			'last_name' => 'McTesterson',
@@ -241,7 +241,7 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 			'recurring_payment_token' => '229a1d6e-1b26-4c91-8e00-969a49c9d041',
 			'amount' => 10, // dollars
 			'currency' => 'USD',
-			'description' => 'Recurring donation to Wikimedia!',
+			'description' => 'Wikimedia Foundation - Recurring donation',
 			'order_id' => '12345.1',
 			'first_name' => 'SuperLongFirstNameWhenAllWeCanSendIsFifteenChars',
 			'last_name' => 'McTesterson',
@@ -272,7 +272,7 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 			'recurring_payment_token' => '229a1d6e-1b26-4c91-8e00-969a49c9d041',
 			'amount' => 10, // dollars
 			'currency' => 'USD',
-			'description' => 'Recurring donation to Wikimedia!',
+			'description' => 'Wikimedia Foundation - Recurring donation',
 			'order_id' => '12345.1',
 			'first_name' => 'Супердлинноеимякогдавсечтомыможемотправитьпятнадцатьбукв',
 			'last_name' => 'McTesterson',
@@ -303,7 +303,7 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 			'recurring_payment_token' => '229a1d6e-1b26-4c91-8e00-969a49c9d041',
 			'amount' => 10, // dollars
 			'currency' => 'USD',
-			'description' => 'Recurring donation to Wikimedia!',
+			'description' => 'Wikimedia Foundation - Recurring donation',
 			'order_id' => '12345.1',
 		];
 
@@ -327,7 +327,7 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 			'recurring_payment_token' => '229a1d6e-1b26-4c91-8e00-969a49c9d041',
 			'amount' => 10, // dollars
 			'currency' => 'USD',
-			'description' => 'Recurring donation to Wikimedia!',
+			'description' => 'Wikimedia Foundation - Recurring donation',
 			'order_id' => '12345.1',
 		];
 

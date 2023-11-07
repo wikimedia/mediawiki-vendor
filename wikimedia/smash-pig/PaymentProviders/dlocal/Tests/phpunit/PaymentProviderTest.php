@@ -240,7 +240,7 @@ public function testGetLatestPaymentStatusResponseWithMisingStatus(): void {
 					"status_detail" => "The payment was cancelled.",
 					"status_code" => "200",
 					"order_id" => "9134343.4",
-					"description" => "Wikimedia 877 600 9454",
+					"description" => "Wikimedia Foundation",
 				]
 			);
 		$paymentProvider = new PaymentProvider();
@@ -270,7 +270,7 @@ public function testGetLatestPaymentStatusResponseWithMisingStatus(): void {
 					"status_detail" => "The payment was cancelled.",
 					"status_code" => "300",
 					"order_id" => "9134343.4",
-					"description" => "Wikimedia 877 600 9454",
+					"description" => "Wikimedia Foundation",
 				]
 			);
 		$paymentProvider = new PaymentProvider();

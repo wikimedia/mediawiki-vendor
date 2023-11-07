@@ -175,7 +175,7 @@ class PaymentProviderTest extends BaseAdyenTestCase {
 			'city' => 'Detroit',
 			'street_address' => '8952 Grand River Avenue',
 			'country' => 'US',
-			'description' => 'Wikimedia 877 600 9454',
+			'description' => 'Wikimedia Foundation',
 			'email' => 'wkramer@mc5.net',
 			'first_name' => 'Wayne',
 			'last_name' => 'Kramer',

@@ -204,6 +204,16 @@ class ReferenceData {
 			'method' => 'rtbt',
 			'submethod' => 'rtbt_ideal',
 		],
+		'star' => [
+			'method' => 'cc',
+			'submethod' => 'visa',
+			'variants' => [
+				'visa_applepay' => [
+					'method' => 'apple',
+					'submethod' => 'visa',
+				],
+			]
+		],
 		'tenpay' => [
 			'method' => 'ew',
 			'submethod' => 'ew_tenpay',
@@ -256,7 +266,7 @@ class ReferenceData {
 	 */
 	public static function decodePaymentMethod( $method, $variant ) {
 		if ( !array_key_exists( $method, self::$methods ) ) {
-			throw new OutOfBoundsException( "Unknown Payment Method $method " );
+			throw new OutOfBoundsException( "Unknown Payment Method '$method'" );
 		}
 		$entry = self::$methods[$method];
 		$ourMethod = $entry['method'];

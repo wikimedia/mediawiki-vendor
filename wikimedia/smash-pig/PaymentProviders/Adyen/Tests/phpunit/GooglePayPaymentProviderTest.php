@@ -34,7 +34,7 @@ class GooglePayPaymentProviderTest extends BaseAdyenTestCase {
 			'city' => 'Mountain View',
 			'country' => 'US',
 			'currency' => 'USD',
-			'description' => 'Wikimedia 877 600 9454',
+			'description' => 'Wikimedia Foundation',
 			'email' => 'dadedoyin@wikimedia.org',
 			'order_id' => '105.1',
 			'postal_code' => '94043',

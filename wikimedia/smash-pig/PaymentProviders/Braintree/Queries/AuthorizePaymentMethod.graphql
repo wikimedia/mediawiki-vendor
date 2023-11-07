@@ -10,9 +10,9 @@ mutation AuthorizePaymentMethod($input: AuthorizePaymentMethodInput!){
       orderId
       paymentMethod {
         id
-        legacyId
       }
       customer {
+	    id
 	    lastName
 	    firstName
 	    email
@@ -28,7 +28,8 @@ mutation AuthorizePaymentMethod($input: AuthorizePaymentMethodInput!){
             firstName
             lastName
             email
-            phone
+            user_name
+            payerId
           }
         }
         ... on VenmoAccountDetails {

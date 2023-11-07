@@ -26,6 +26,7 @@ class BankTransferPaymentProvider extends PaymentProvider {
 		} else {
 			// subsequent recurrings will not have an issuer_id
 			$params['payment_method'] = 'sepadirectdebit';
+			$params['manual_capture'] = false;
 			$rawResponse = $this->api->createPaymentFromToken( $params );
 		}
 		$response = new CreatePaymentResponse();

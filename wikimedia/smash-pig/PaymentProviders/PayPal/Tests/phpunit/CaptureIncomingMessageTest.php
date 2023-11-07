@@ -308,4 +308,36 @@ class CaptureIncomingMessageTest extends BaseSmashPigUnitTestCase {
 			$this->assertNull( $msg );
 		}
 	}
+
+	/**
+	 * Test that likely GiveLively donations are tagged correctly
+	 */
+	public function testTagGiveLively() {
+		$this->getCurlMock( 'VERIFIED' );
+		$this->providerConfig->override( [ 'givelively-appeal' => 'TeddyBearsPicnic' ] );
+		$payload = json_decode(
+			file_get_contents( __DIR__ . '/../Data/give_lively.json' ),
+			true
+		);
+		$this->capture( $payload );
+		$jobQueue = $this->config->object( 'data-store/jobs-paypal' );
+		$jobMessage = $jobQueue->pop();
+
+		$job = JsonSerializableObject::fromJsonProxy(
+			$jobMessage['php-message-class'],
+			json_encode( $jobMessage )
+		);
+
+		$success = $job->execute();
+		// Job should succeed
+		$this->assertTrue( $success );
+		// And send one message to the donations queue but no others
+		foreach ( [ 'recurring', 'refund' ] as $queue ) {
+			$msg = $this->config->object( "data-store/$queue" )->pop();
+			$this->assertNull( $msg );
+		}
+		$msg = $this->config->object( 'data-store/donations' )->pop();
+		$this->assertEquals( 'TeddyBearsPicnic', $msg['direct_mail_appeal'] );
+		$this->assertEquals( 'GiveLively', $msg['no_thank_you'] );
+	}
 }

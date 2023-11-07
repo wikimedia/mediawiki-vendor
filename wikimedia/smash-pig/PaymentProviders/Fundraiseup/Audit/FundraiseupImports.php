@@ -67,7 +67,8 @@ class FundraiseupImports {
 			'apple pay' => 'apple',
 			'paypal' => 'paypal',
 			'ach' => 'bt',
-			'direct debit' => 'dd'
+			'direct debit' => 'dd',
+			'venmo' => 'venmo'
 		];
 
 		$paymentMethod = $msg['payment_method'];

@@ -128,7 +128,7 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 					$this->assertArrayHasKey( 'Idempotency-Key', $actualHeaders );
 					unset( $actualHeaders['Idempotency-Key'] );
 					$this->assertEquals( [
-						'Content-Length' => '4664',
+						'Content-Length' => '4702',
 						'x-API-key' => 'K1ck0utTh3J4ms',
 						'content-type' => 'application/json'
 					], $actualHeaders );
@@ -144,6 +144,9 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 					'holderName' => 'Wayne Kramer'
 				],
 				'merchantAccount' => 'test',
+				'additionalData' => [
+					'manualCapture' => true,
+				],
 				'returnUrl' => $params['return_url'],
 				'origin' => 'https://paymentstest2.wmcloud.org',
 				'channel' => 'Web',
@@ -161,7 +164,7 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 					'firstName' => 'Wayne',
 					'lastName' => 'Kramer'
 				],
-				'shopperStatement' => 'Wikimedia 877 600 9454',
+				'shopperStatement' => 'Wikimedia Foundation',
 			] ) )
 			->willReturn( [
 				'body' => $responseBody,
@@ -199,7 +202,7 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 			'city' => 'Detroit',
 			'street_address' => '8952 Grand River Avenue',
 			'country' => 'US',
-			'description' => 'Wikimedia 877 600 9454',
+			'description' => 'Wikimedia Foundation',
 			'email' => 'wkramer@mc5.net',
 			'first_name' => 'Wayne',
 			'last_name' => 'Kramer',
