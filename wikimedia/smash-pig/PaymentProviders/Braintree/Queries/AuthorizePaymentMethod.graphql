@@ -28,7 +28,6 @@ mutation AuthorizePaymentMethod($input: AuthorizePaymentMethodInput!){
             firstName
             lastName
             email
-            user_name
             payerId
           }
         }
