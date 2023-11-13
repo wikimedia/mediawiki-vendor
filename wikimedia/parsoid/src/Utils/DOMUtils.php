@@ -193,44 +193,33 @@ class DOMUtils {
 	}
 
 	/**
-	 * Build path from a node to its passed-in ancestor.
-	 * Doesn't include the ancestor in the returned path.
+	 * Build path from a node to the root of the document.
 	 *
 	 * @param Node $node
-	 * @param ?Node $ancestor
-	 *   $ancestor should be an ancestor of $node.
-	 *   If null, we'll walk to the document root.
-	 * @return Node[]
+	 * @return Node[] Path including all nodes from $node to the root of the document
 	 */
-	public static function pathToAncestor(
-		Node $node, ?Node $ancestor = null
-	): array {
+	public static function pathToRoot( Node $node ): array {
 		$path = [];
-		while ( $node && $node !== $ancestor ) {
+		do {
 			$path[] = $node;
-			$node = $node->parentNode;
-		}
+		// phpcs:ignore MediaWiki.ControlStructures.AssignmentInControlStructures
+		} while ( $node = $node->parentNode );
 		return $path;
 	}
 
 	/**
-	 * Build path from a node to the root of the document.
-	 *
-	 * @param Node $node
-	 * @return Node[]
-	 */
-	public static function pathToRoot( Node $node ): array {
-		return self::pathToAncestor( $node, null );
-	}
-
-	/**
-	 * Compute length of path from $node to the root.
+	 * Compute the edge length of the path from $node to the root.
 	 * Root document is at depth 0, <html> at 1, <body> at 2.
 	 * @param Node $node
 	 * @return int
 	 */
 	public static function nodeDepth( Node $node ): int {
-		return count( self::pathToAncestor( $node ) ) - 1;
+		$edges = 0;
+		// phpcs:ignore MediaWiki.ControlStructures.AssignmentInControlStructures
+		while ( $node = $node->parentNode ) {
+			$edges++;
+		}
+		return $edges;
 	}
 
 	/**

@@ -284,7 +284,7 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 		$env->log( "trace/dsr", static function () use ( $args ) {
 			$buf = '';
 			foreach ( $args as $arg ) {
-				$buf .= ( gettype( $arg ) === 'string' ? $arg : PHPUtils::jsonEncode( $arg ) );
+				$buf .= is_string( $arg ) ? $arg : PHPUtils::jsonEncode( $arg );
 			}
 			return $buf;
 		} );
@@ -638,9 +638,7 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 						} elseif ( $nType === XML_ELEMENT_NODE ) {
 							DOMUtils::assertElt( $sibling );
 							$siblingDP = DOMDataUtils::getDataParsoid( $sibling );
-							if ( !isset( $siblingDP->dsr ) ) {
-								$siblingDP->dsr = new DomSourceRange( null, null, null, null );
-							}
+							$siblingDP->dsr ??= new DomSourceRange( null, null, null, null );
 							$sdsrStart = $siblingDP->dsr->start;
 							if ( !empty( $siblingDP->fostered ) ||
 								( $sdsrStart !== null && $sdsrStart === $newCE ) ||

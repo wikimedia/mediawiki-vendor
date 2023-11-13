@@ -676,9 +676,7 @@ class LinkHandlerUtils {
 			if ( $linkData->type === 'mw:PageProp/Language' ) {
 				// Fix up the content string
 				// TODO: see if linkData can be cleaner!
-				if ( !isset( $linkData->content->string ) ) {
-					$linkData->content->string = Utils::decodeWtEntities( $target['value'] );
-				}
+				$linkData->content->string ??= Utils::decodeWtEntities( $target['value'] );
 			}
 		}
 
@@ -1378,16 +1376,13 @@ class LinkHandlerUtils {
 				$a = WTSUtils::getAttrFromDataMw( $outerDMW, $o['ck'], true );
 				if ( $a !== null ) {
 					if ( isset( $a[1]->html ) ) {
-						// FIXME: Apply this to more that just page?
-						if ( $o['prop'] === 'page' ) {
-							$page = $state->serializer->getAttributeValueAsShadowInfo( $outerElt, 'page' );
-							if ( isset( $page['value'] ) ) {
-								$nopts[] = [
-									'ck' => $o['prop'],
-									'ak' => [ $page['value'] ],
-								];
-								continue;
-							}
+						$si = $state->serializer->getAttributeValueAsShadowInfo( $outerElt, $o['ck'] );
+						if ( isset( $si['value'] ) ) {
+							$nopts[] = [
+								'ck' => $o['ck'],
+								'ak' => [ $si['value'] ],
+							];
+							continue;
 						}
 					} else {
 						$v = $a[1]->txt;

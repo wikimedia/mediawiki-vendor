@@ -88,7 +88,7 @@ class Env {
 	private $profileStack = [];
 
 	/** @var bool */
-	private $wrapSections = true;
+	private $wrapSections;
 
 	/** @var string */
 	private $requestOffsetType = 'byte';
@@ -177,7 +177,7 @@ class Env {
 	public $styleTagKeys = [];
 
 	/** @var bool */
-	public $pageBundle = false;
+	public $pageBundle;
 
 	/** @var bool */
 	public $discardDataParsoid = false;
@@ -287,12 +287,8 @@ class Env {
 		$this->metadata = $metadata;
 		$this->tocData = new TOCData();
 		$this->topFrame = new PageConfigFrame( $this, $pageConfig, $siteConfig );
-		if ( isset( $options['wrapSections'] ) ) {
-			$this->wrapSections = !empty( $options['wrapSections'] );
-		}
-		if ( isset( $options['pageBundle'] ) ) {
-			$this->pageBundle = !empty( $options['pageBundle'] );
-		}
+		$this->wrapSections = (bool)( $options['wrapSections'] ?? true );
+		$this->pageBundle = (bool)( $options['pageBundle'] ?? false );
 		$this->pipelineFactory = new ParserPipelineFactory( $this );
 		$defaultContentVersion = Parsoid::defaultHTMLVersion();
 		$this->inputContentVersion = $options['inputContentVersion'] ?? $defaultContentVersion;
@@ -941,11 +937,7 @@ class Env {
 
 		// This will always be recorded as a native 'byte' offset
 		$lintData['dsr'] = $lintData['dsr']->jsonSerialize();
-
-		// Ensure a "params" array
-		if ( !isset( $lintData['params'] ) ) {
-			$lintData['params'] = [];
-		}
+		$lintData['params'] ??= [];
 
 		$this->lints[] = [ 'type' => $type ] + $lintData;
 	}
