@@ -83,14 +83,9 @@ abstract class PaymentProvider implements
 			return $response;
 		}
 		$callback = function () use ( $params ) {
-			$rawResponse = $this->api->getPaymentMethods( $params );
-
-			$response = new PaymentMethodResponse();
-			$response->setRawResponse( $rawResponse );
-			$response->setSuccessful( true );
-
-			return $response;
+			return $this->api->getPaymentMethods( $params );
 		};
+
 		// Not actually varying the cache based on amount, since
 		// that would make it a lot less useful and we seem to see
 		// the same values regardless of value.
@@ -99,7 +94,12 @@ abstract class PaymentProvider implements
 			. $params['currency'] . '_'
 			. $params['language'];
 
-		return CacheHelper::getWithSetCallback( $cacheKey, $this->cacheParameters['duration'], $callback );
+		$rawResponse = CacheHelper::getWithSetCallback( $cacheKey, $this->cacheParameters['duration'], $callback );
+		$response = new PaymentMethodResponse();
+		$response->setRawResponse( $rawResponse );
+		$response->setSuccessful( true );
+
+		return $response;
 	}
 
 	/**
@@ -593,6 +593,7 @@ abstract class PaymentProvider implements
 	}
 
 	/**
+	 * The only required param is country
 	 * @param array $params
 	 * @return array
 	 */
@@ -603,13 +604,13 @@ abstract class PaymentProvider implements
 		if ( !array_key_exists( $params['country'], NationalCurrencies::getNationalCurrencies() ) ) {
 			$badParams[] = 'country';
 		}
-		if ( !array_key_exists( $params['currency'], CurrencyRates::getCurrencyRates() ) ) {
+		if ( isset( $params['currency'] ) && !array_key_exists( $params['currency'], CurrencyRates::getCurrencyRates() ) ) {
 			$badParams[] = 'currency';
 		}
-		if ( !is_numeric( $params['amount'] ) ) {
+		if ( isset( $params['amount'] ) && !is_numeric( $params['amount'] ) ) {
 			$badParams[] = 'amount';
 		}
-		if ( empty( $params['language'] ) ) {
+		if ( isset( $params['language'] ) && empty( $params['language'] ) ) {
 			$badParams[] = 'language';
 		}
 		return $badParams;

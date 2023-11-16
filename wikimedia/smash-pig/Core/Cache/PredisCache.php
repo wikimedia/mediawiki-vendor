@@ -6,6 +6,7 @@ use Predis\Client;
 use Psr\Cache\CacheItemInterface;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Cache\InvalidArgumentException;
+use RuntimeException;
 
 class PredisCache implements CacheItemPoolInterface {
 
@@ -49,7 +50,7 @@ class PredisCache implements CacheItemPoolInterface {
 	public function getItem( $key ) {
 		$fullKey = $this->fullKey( $key );
 		if ( $this->client->exists( $fullKey ) ) {
-			return new SimpleCacheItem( $key, $this->client->get( $fullKey ), true );
+			return new SimpleCacheItem( $key, json_decode( $this->client->get( $fullKey ), true ), true );
 		}
 		return new SimpleCacheItem( $key, null, false );
 	}
@@ -158,10 +159,15 @@ class PredisCache implements CacheItemPoolInterface {
 				'Cache items are not transferable between pools. I only work with items of type SimpleCacheItem.'
 			);
 		}
+		$value = $item->get();
+		if ( is_object( $value ) ) {
+			throw new RuntimeException( 'Attempting to cache an object that cannot be JSON encoded' );
+		}
+		$encoded = json_encode( $value );
 		if ( $item->getTtl() ) {
-			$this->client->setex( $this->fullKey( $item->getKey() ), $item->getTtl(), $item->get() );
+			$this->client->setex( $this->fullKey( $item->getKey() ), $item->getTtl(), $encoded );
 		} else {
-			$this->client->set( $this->fullKey( $item->getKey() ), $item->get() );
+			$this->client->set( $this->fullKey( $item->getKey() ), $encoded );
 		}
 		return true;
 	}
