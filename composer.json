@@ -85,7 +85,7 @@
 		"serialization/serialization": "4.0.0",
 		"spomky-labs/base64url": "2.0.4",
 		"spomky-labs/cbor-php": "2.1.0",
-		"swaggest/json-diff": "3.10.4",
+		"swaggest/json-diff": "3.10.5",
 		"symfony/console": "5.4.28",
 		"symfony/deprecation-contracts": "2.5.2",
 		"symfony/polyfill-php80": "1.28.0",
