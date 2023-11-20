@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "78bed83c024649885e5558e3e8456a6c",
+    "content-hash": "9bee3d23abdc67e58961a71f99c51f2b",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -7375,16 +7375,16 @@
         },
         {
             "name": "wikimedia/minify",
-            "version": "2.5.1",
+            "version": "2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-Minify.git",
-                "reference": "ed306d1114bf5ccbc3f2c848ac9035851cb06643"
+                "reference": "cfe7568b1b005d37cff5897f40dbcd96cf18a969"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Minify/zipball/ed306d1114bf5ccbc3f2c848ac9035851cb06643",
-                "reference": "ed306d1114bf5ccbc3f2c848ac9035851cb06643",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Minify/zipball/cfe7568b1b005d37cff5897f40dbcd96cf18a969",
+                "reference": "cfe7568b1b005d37cff5897f40dbcd96cf18a969",
                 "shasum": ""
             },
             "require": {
@@ -7396,7 +7396,7 @@
             },
             "require-dev": {
                 "mediawiki/mediawiki-codesniffer": "41.0.0",
-                "mediawiki/mediawiki-phan-config": "0.12.1",
+                "mediawiki/mediawiki-phan-config": "0.13.0",
                 "mediawiki/minus-x": "1.1.1",
                 "ockcyp/covers-validator": "1.6.0",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
@@ -7438,9 +7438,9 @@
             "description": "Minification of JavaScript code and CSS stylesheets.",
             "homepage": "https://gerrit.wikimedia.org/g/mediawiki/libs/Minify",
             "support": {
-                "source": "https://github.com/wikimedia/mediawiki-libs-Minify/tree/2.5.1"
+                "source": "https://github.com/wikimedia/mediawiki-libs-Minify/tree/2.7.0"
             },
-            "time": "2023-10-06T04:35:53+00:00"
+            "time": "2023-11-18T16:20:43+00:00"
         },
         {
             "name": "wikimedia/normalized-exception",
