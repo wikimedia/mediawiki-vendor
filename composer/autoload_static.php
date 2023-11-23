@@ -141,6 +141,7 @@ class ComposerStaticInit_mediawiki_vendor
             'Wikimedia\\ObjectFactory\\' => 24,
             'Wikimedia\\NormalizedException\\' => 30,
             'Wikimedia\\Minify\\' => 17,
+            'Wikimedia\\MetricsPlatform\\Tests\\' => 32,
             'Wikimedia\\MetricsPlatform\\' => 26,
             'Wikimedia\\LangConv\\' => 19,
             'Wikimedia\\JsonCodec\\' => 20,
@@ -342,6 +343,10 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Minify\\' => 
         array (
             0 => __DIR__ . '/..' . '/wikimedia/minify/src',
+        ),
+        'Wikimedia\\MetricsPlatform\\Tests\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/tests',
         ),
         'Wikimedia\\MetricsPlatform\\' => 
         array (
@@ -4978,6 +4983,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\MetricsPlatform\\CurationController' => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/src/CurationController.php',
         'Wikimedia\\MetricsPlatform\\EventSubmitter' => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/src/EventSubmitter.php',
         'Wikimedia\\MetricsPlatform\\Integration' => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/src/Integration.php',
+        'Wikimedia\\MetricsPlatform\\InteractionDataTrait' => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/src/InteractionDataTrait.php',
         'Wikimedia\\MetricsPlatform\\MetricsClient' => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/src/MetricsClient.php',
         'Wikimedia\\MetricsPlatform\\StreamConfig\\StreamConfig' => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/src/StreamConfig/StreamConfig.php',
         'Wikimedia\\MetricsPlatform\\StreamConfig\\StreamConfigException' => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/src/StreamConfig/StreamConfigException.php',

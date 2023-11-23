@@ -26,6 +26,11 @@ class ContextController {
 	 */
 	public function addRequestedValues( array $event, StreamConfig $streamConfig ): array {
 		$requestedValues = $streamConfig->getRequestedValues();
+		$requestedValues = array_unique(
+			array_merge( $requestedValues, [
+				'agent_client_platform',
+				'agent_client_platform_family',
+		] ) );
 
 		foreach ( $requestedValues as $requestedValue ) {
 			list( $primaryKey, $secondaryKey ) = explode( '_', $requestedValue, 2 );

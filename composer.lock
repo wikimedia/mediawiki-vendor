@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d2a34fed350d84e50329e37a7191cb43",
+    "content-hash": "c9310dd81d1ae78a0545996f53a02df4",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -7314,16 +7314,16 @@
         },
         {
             "name": "wikimedia/metrics-platform",
-            "version": "2.1.0",
+            "version": "3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-metrics-platform.git",
-                "reference": "20ae4f2e566ab8aa8f66b8d28cad56bfbfd54c66"
+                "reference": "e0f4e0327312a328b73977b04f9a79e925b9a64b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-metrics-platform/zipball/20ae4f2e566ab8aa8f66b8d28cad56bfbfd54c66",
-                "reference": "20ae4f2e566ab8aa8f66b8d28cad56bfbfd54c66",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-metrics-platform/zipball/e0f4e0327312a328b73977b04f9a79e925b9a64b",
+                "reference": "e0f4e0327312a328b73977b04f9a79e925b9a64b",
                 "shasum": ""
             },
             "require": {
@@ -7341,12 +7341,13 @@
                 "phpunit/phpunit": "9.5.28",
                 "symfony/process": "^5.4",
                 "wikimedia/testing-access-wrapper": "2.0.0",
-                "wikimedia/timestamp": "4.1.0"
+                "wikimedia/timestamp": "4.1.1"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Wikimedia\\MetricsPlatform\\": "php/src/"
+                    "Wikimedia\\MetricsPlatform\\": "php/src/",
+                    "Wikimedia\\MetricsPlatform\\Tests\\": "php/tests/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -7369,9 +7370,9 @@
             "homepage": "https://wikitech.wikimedia.org/wiki/Metrics_Platform",
             "support": {
                 "issues": "https://phabricator.wikimedia.org/project/board/5324/",
-                "source": "https://github.com/wikimedia/mediawiki-libs-metrics-platform/tree/2.1.0"
+                "source": "https://github.com/wikimedia/mediawiki-libs-metrics-platform/tree/3.1.0"
             },
-            "time": "2023-09-20T15:52:38+00:00"
+            "time": "2023-11-23T11:41:34+00:00"
         },
         {
             "name": "wikimedia/minify",
