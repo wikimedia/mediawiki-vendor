@@ -365,12 +365,12 @@ class DOMUtils {
 	 * @return ?string The matching attribute value, or `null` if there is
 	 *   no match.
 	 */
-	public static function matchMultivalAttr( Node $n, string $attrName, string $valueRe ): ?string {
+	private static function matchMultivalAttr( Node $n, string $attrName, string $valueRe ): ?string {
 		if ( !( $n instanceof Element ) ) {
 			return null;
 		}
-		$attrValue = $n->getAttribute( $attrName );
-		if ( $attrValue === '' ) {
+		$attrValue = DOMCompat::getAttribute( $n, $attrName );
+		if ( $attrValue === null || $attrValue === '' ) {
 			return null;
 		}
 		foreach ( explode( ' ', $attrValue ) as $ty ) {
@@ -415,8 +415,8 @@ class DOMUtils {
 	 * @return bool
 	 */
 	public static function hasClass( Element $element, string $regex ): bool {
-		$value = $element->getAttribute( 'class' );
-		return $value && (bool)preg_match( '{(?<=^|\s)' . $regex . '(?=\s|$)}', $value );
+		$value = DOMCompat::getAttribute( $element, 'class' );
+		return (bool)preg_match( '{(?<=^|\s)' . $regex . '(?=\s|$)}', $value ?? '' );
 	}
 
 	/**
@@ -426,13 +426,13 @@ class DOMUtils {
 	 * @param string $value Expected value of $attrName" attribute, as a literal string.
 	 * @return bool True if the node matches
 	 */
-	public static function hasValueInMultivalAttr( Node $n, string $attrName, string $value ): bool {
+	private static function hasValueInMultivalAttr( Node $n, string $attrName, string $value ): bool {
 		// fast path
 		if ( !( $n instanceof Element ) ) {
 			return false;
 		}
-		$attrValue = $n->getAttribute( $attrName );
-		if ( $attrValue === '' ) {
+		$attrValue = DOMCompat::getAttribute( $n, $attrName );
+		if ( $attrValue === null || $attrValue === '' ) {
 			return false;
 		}
 		if ( $attrValue === $value ) {
@@ -449,9 +449,11 @@ class DOMUtils {
 	 *
 	 * @param Element $node node
 	 * @param string $type type
+	 * @param bool $prepend If true, adds value to start, rather than end.
+	 *    Use of this option in new code is discouraged.
 	 */
-	public static function addTypeOf( Element $node, string $type ): void {
-		self::addValueToMultivalAttr( $node, 'typeof', $type );
+	public static function addTypeOf( Element $node, string $type, bool $prepend = false ): void {
+		self::addValueToMultivalAttr( $node, 'typeof', $type, $prepend );
 	}
 
 	/**
@@ -474,19 +476,46 @@ class DOMUtils {
 	 * @param Element $node
 	 * @param string $attr
 	 * @param string $value
+	 * @param bool $prepend If true, adds value to start, rather than end
 	 */
-	public static function addValueToMultivalAttr(
-		Element $node, string $attr, string $value
+	private static function addValueToMultivalAttr(
+		Element $node, string $attr, string $value, bool $prepend = false
 	): void {
-		$oldValue = $node->getAttribute( $attr ) ?? '';
-		if ( $oldValue !== '' ) {
-			$values = explode( ' ', $oldValue );
+		$value = trim( $value );
+		if ( $value === '' ) {
+			return;
+		}
+		$oldValue = DOMCompat::getAttribute( $node, $attr );
+		if ( $oldValue !== null && trim( $oldValue ) !== '' ) {
+			$values = explode( ' ', trim( $oldValue ) );
 			if ( in_array( $value, $values, true ) ) {
 				return;
 			}
-			$value = $oldValue . ' ' . $value;
+			$value = $prepend ? "$value $oldValue" : "$oldValue $value";
 		}
 		$node->setAttribute( $attr, $value );
+	}
+
+	/**
+	 * Remove a value from a multiple-valued attribute.
+	 *
+	 * @param Element $node node
+	 * @param string $attr The attribute name
+	 * @param string $value The value to remove
+	 */
+	private static function removeValueFromMultivalAttr(
+		Element $node, string $attr, string $value
+	): void {
+		$oldValue = DOMCompat::getAttribute( $node, $attr );
+		if ( $oldValue !== null && $oldValue !== '' ) {
+			$value = trim( $value );
+			$types = array_diff( explode( ' ', $oldValue ), [ $value ] );
+			if ( count( $types ) > 0 ) {
+				$node->setAttribute( $attr, implode( ' ', $types ) );
+			} else {
+				$node->removeAttribute( $attr );
+			}
+		}
 	}
 
 	/**
@@ -496,15 +525,17 @@ class DOMUtils {
 	 * @param string $type type
 	 */
 	public static function removeTypeOf( Element $node, string $type ): void {
-		$oldValue = $node->getAttribute( 'typeof' ) ?? '';
-		if ( $oldValue !== '' ) {
-			$types = array_diff( explode( ' ', $oldValue ), [ $type ] );
-			if ( count( $types ) > 0 ) {
-				$node->setAttribute( 'typeof', implode( ' ', $types ) );
-			} else {
-				$node->removeAttribute( 'typeof' );
-			}
-		}
+		self::removeValueFromMultivalAttr( $node, 'typeof', $type );
+	}
+
+	/**
+	 * Remove a type from the rel attribute.
+	 *
+	 * @param Element $node node
+	 * @param string $rel rel
+	 */
+	public static function removeRel( Element $node, string $rel ): void {
+		self::removeValueFromMultivalAttr( $node, 'rel', $rel );
 	}
 
 	/**
@@ -733,7 +764,9 @@ class DOMUtils {
 		$elts = DOMCompat::querySelectorAll( $doc, 'meta[http-equiv][content]' );
 		$r = [];
 		foreach ( $elts as $el ) {
-			$r[strtolower( $el->getAttribute( 'http-equiv' ) )] = $el->getAttribute( 'content' );
+			$r[strtolower(
+				DOMCompat::getAttribute( $el, 'http-equiv' )
+			)] = DOMCompat::getAttribute( $el, 'content' );
 		}
 		return $r;
 	}
@@ -771,7 +804,7 @@ class DOMUtils {
 	public static function extractInlinedContentVersion( Document $doc ): ?string {
 		$el = DOMCompat::querySelector( $doc,
 			'meta[property="mw:htmlVersion"], meta[property="mw:html:version"]' );
-		return $el ? $el->getAttribute( 'content' ) : null;
+		return $el ? DOMCompat::getAttribute( $el, 'content' ) : null;
 	}
 
 	/**
@@ -903,8 +936,9 @@ class DOMUtils {
 	public static function attributes( Element $element ): array {
 		$result = [];
 		// The 'xmlns' attribute is "invisible" T235295
-		if ( $element->hasAttribute( 'xmlns' ) ) {
-			$result['xmlns'] = $element->getAttribute( 'xmlns' );
+		$xmlns = DOMCompat::getAttribute( $element, 'xmlns' );
+		if ( $xmlns !== null ) {
+			$result['xmlns'] = $xmlns;
 		}
 		foreach ( $element->attributes as $attr ) {
 			$result[$attr->name] = $attr->value;

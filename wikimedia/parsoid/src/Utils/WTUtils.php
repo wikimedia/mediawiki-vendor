@@ -228,15 +228,21 @@ class WTUtils {
 		/** @var Element $node */
 		DOMUtils::assertElt( $node );
 
-		$about = $node->getAttribute( 'about' );
+		$about = DOMCompat::getAttribute( $node, 'about' );
 		$prev = $node;
 		do {
 			$node = $prev;
 			$prev = DiffDOMUtils::previousNonDeletedSibling( $node );
 		} while (
 			$prev instanceof Element &&
-			$prev->getAttribute( 'about' ) === $about
+			DOMCompat::getAttribute( $prev, 'about' ) === $about
 		);
+		// NOTE: findFirstEncapsulationWrapperNode can be called by code
+		// even before templates have been fully encapsulated everywhere.
+		// ProcessTreeBuilderFixups::removeAutoInsertedEmptyTags is the main
+		// culprit here and it makes the contract for this helper murky
+		// by hiding potential brokenness since this should never return null
+		// once all templates have been encapsulated!
 		$elt = self::isFirstEncapsulationWrapperNode( $node ) ? $node : null;
 		'@phan-var ?Element $elt'; // @var ?Element $elt
 		return $elt;
@@ -327,9 +333,11 @@ class WTUtils {
 	 * @return bool
 	 */
 	public static function isEncapsulatedDOMForestRoot( Node $node ): bool {
-		if ( $node instanceof Element && $node->hasAttribute( 'about' ) ) {
+		$about = $node instanceof Element ?
+			DOMCompat::getAttribute( $node, 'about' ) : null;
+		if ( $about !== null ) {
 			// FIXME: Ensure that our DOM spec clarifies this expectation
-			return Utils::isParsoidObjectId( $node->getAttribute( 'about' ) );
+			return Utils::isParsoidObjectId( $about );
 		} else {
 			return false;
 		}
@@ -602,19 +610,19 @@ class WTUtils {
 	 * prevent them from getting fostered out.
 	 *
 	 * @param Node $node
-	 * @param string $about
+	 * @param ?string $about
 	 * @return Node[]
 	 */
-	public static function getAboutSiblings( Node $node, string $about ): array {
+	public static function getAboutSiblings( Node $node, ?string $about ): array {
 		$nodes = [ $node ];
 
-		if ( !$about ) {
+		if ( $about === null ) {
 			return $nodes;
 		}
 
 		$node = $node->nextSibling;
 		while ( $node && (
-			( $node instanceof Element && $node->getAttribute( 'about' ) === $about ) ||
+			( $node instanceof Element && DOMCompat::getAttribute( $node, 'about' ) === $about ) ||
 			( DOMUtils::isFosterablePosition( $node ) && DOMUtils::isIEW( $node ) )
 		) ) {
 			$nodes[] = $node;
@@ -642,8 +650,9 @@ class WTUtils {
 	 * @return Node|null
 	 */
 	public static function skipOverEncapsulatedContent( Node $node ): ?Node {
-		if ( $node instanceof Element && $node->hasAttribute( 'about' ) ) {
-			$about = $node->getAttribute( 'about' );
+		$about = $node instanceof Element ?
+			DOMCompat::getAttribute( $node, 'about' ) : null;
+		if ( $about !== null ) {
 			// Guaranteed not to be empty. It will at least include $node.
 			$aboutSiblings = self::getAboutSiblings( $node, $about );
 			return end( $aboutSiblings )->nextSibling;

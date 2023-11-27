@@ -64,28 +64,38 @@ class ExtensionHandler extends TokenHandler {
 		$env = $this->env;
 		$siteConfig = $env->getSiteConfig();
 		$pageConfig = $env->getPageConfig();
-		$extensionName = $token->getAttribute( 'name' );
+		$extensionName = $token->getAttributeV( 'name' );
 		$extConfig = $env->getSiteConfig()->getExtTagConfig( $extensionName );
 
-		// Track uses of extensions in the talk namespace
-		if ( $siteConfig->namespaceIsTalk( $pageConfig->getNS() ) ) {
-			$metrics = $siteConfig->metrics();
-			if ( $metrics ) {
-				$metrics->increment( "extension.talk.{$extensionName}" );
+		$metrics = $siteConfig->metrics();
+		if ( $metrics ) {
+			// Track uses of extensions
+			$wiki = $siteConfig->iwp();
+			$ns = $pageConfig->getNs();
+			if ( $ns === 0 ) {
+				// Article space
+				$nsName = 'main';
+			} elseif ( $siteConfig->namespaceIsTalk( $ns ) ) {
+				// Any talk namespace
+				$nsName = 'talk';
+			} else {
+				// Everything else
+				$nsName = "ns-$ns";
 			}
+			$metrics->increment( "extension.{$wiki}.${nsName}.{$extensionName}" );
 		}
 
 		$nativeExt = $siteConfig->getExtTagImpl( $extensionName );
 		$cachedExpansion = $env->extensionCache[$token->dataParsoid->src] ?? null;
 
-		$options = $token->getAttribute( 'options' );
+		$options = $token->getAttributeV( 'options' );
 		$token->setAttribute( 'options', self::normalizeExtOptions( $options ) );
 
 		// Call after normalizing extension options, since that can affect the result
 		$dataMw = Utils::getExtArgInfo( $token );
 
 		if ( $nativeExt !== null ) {
-			$extArgs = $token->getAttribute( 'options' );
+			$extArgs = $token->getAttributeV( 'options' );
 			$extApi = new ParsoidExtensionAPI( $env, [
 				'wt2html' => [
 					'frame' => $this->manager->getFrame(),
@@ -149,7 +159,7 @@ class ExtensionHandler extends TokenHandler {
 		} else {
 			$start = microtime( true );
 			$ret = $env->getDataAccess()->parseWikitext(
-				$pageConfig, $env->getMetadata(), $token->getAttribute( 'source' )
+				$pageConfig, $env->getMetadata(), $token->getAttributeV( 'source' )
 			);
 			if ( $env->profiling() ) {
 				$profile = $env->getCurrentProfile();
@@ -184,13 +194,13 @@ class ExtensionHandler extends TokenHandler {
 		array $errors
 	): array {
 		$env = $this->env;
-		$extensionName = $extToken->getAttribute( 'name' );
+		$extensionName = $extToken->getAttributeV( 'name' );
 
 		if ( $env->hasDumpFlag( 'extoutput' ) ) {
 			$logger = $env->getSiteConfig()->getLogger();
 			$logger->warning( str_repeat( '=', 80 ) );
 			$logger->warning(
-				'EXTENSION INPUT: ' . $extToken->getAttribute( 'source' )
+				'EXTENSION INPUT: ' . $extToken->getAttributeV( 'source' )
 			);
 			$logger->warning( str_repeat( '=', 80 ) );
 			$logger->warning( "EXTENSION OUTPUT:\n" );

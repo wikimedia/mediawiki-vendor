@@ -33,7 +33,7 @@ class Linter implements Wt2HtmlDOMProcessor {
 	/** @var ParsoidExtensionAPI */
 	private $extApi = null;
 
-	/** @phan-var array<string,bool>|null */
+	/** @var array<string,bool>|null */
 	private $tagsWithChangedMisnestingBehavior = null;
 
 	/** @var string|null */
@@ -663,7 +663,8 @@ class Linter implements Wt2HtmlDOMProcessor {
 			$tidyFontBug = $c->firstChild !== null;
 			$haveLink = false;
 			for ( $n = $c->firstChild;  $n;  $n = $n->nextSibling ) {
-				if ( DOMCompat::nodeName( $n ) !== 'a' &&
+				$nodeName = DOMCompat::nodeName( $n );
+				if ( $nodeName !== 'a' &&
 					!WTUtils::isRenderingTransparentNode( $n ) &&
 					!WTUtils::isTplMarkerMeta( $n )
 				) {
@@ -671,7 +672,7 @@ class Linter implements Wt2HtmlDOMProcessor {
 					break;
 				}
 
-				if ( DOMCompat::nodeName( $n ) === 'a' || DOMCompat::nodeName( $n ) === 'figure' ) {
+				if ( $nodeName === 'a' || $nodeName === 'figure' ) {
 					if ( !$haveLink ) {
 						$haveLink = true;
 					} else {
@@ -820,7 +821,7 @@ class Linter implements Wt2HtmlDOMProcessor {
 	 */
 	private function hasNoWrapCSS( Node $node ): bool {
 		return $node instanceof Element && (
-			str_contains( $node->getAttribute( 'style' ) ?? '', 'nowrap' ) ||
+			str_contains( DOMCompat::getAttribute( $node, 'style' ) ?? '', 'nowrap' ) ||
 			DOMUtils::hasClass( $node, 'nowrap' )
 		);
 	}
@@ -1385,7 +1386,7 @@ class Linter implements Wt2HtmlDOMProcessor {
 			// !tplInfo check is to protect against templated content in
 			// extensions which might in turn be nested in templated content.
 			if ( !$tplInfo && WTUtils::isFirstEncapsulationWrapperNode( $node ) ) {
-				$aboutSibs = WTUtils::getAboutSiblings( $node, $node->getAttribute( 'about' ) ?? '' );
+				$aboutSibs = WTUtils::getAboutSiblings( $node, DOMCompat::getAttribute( $node, 'about' ) );
 				$tplInfo = (object)[
 					'first' => $node,
 					'last' => end( $aboutSibs ),

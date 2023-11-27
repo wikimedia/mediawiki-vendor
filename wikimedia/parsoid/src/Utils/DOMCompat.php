@@ -43,7 +43,7 @@ class DOMCompat {
 	 * Tab, LF, FF, CR, space
 	 * @see https://infra.spec.whatwg.org/#ascii-whitespace
 	 */
-	private static $ASCII_WHITESPACE = "\t\r\f\n ";
+	private const ASCII_WHITESPACE = "\t\r\f\n ";
 
 	/**
 	 * Create a new empty document.
@@ -83,7 +83,8 @@ class DOMCompat {
 		}
 		foreach ( $document->documentElement->childNodes as $element ) {
 			/** @var Element $element */
-			if ( self::nodeName( $element ) === 'body' || self::nodeName( $element ) === 'frameset' ) {
+			$nodeName = self::nodeName( $element );
+			if ( $nodeName === 'body' || $nodeName === 'frameset' ) {
 				// Caching!
 				$document->body = $element;
 				// @phan-suppress-next-line PhanTypeMismatchReturnSuperType
@@ -414,6 +415,27 @@ class DOMCompat {
 	}
 
 	/**
+	 * Return the value of an element attribute.
+	 *
+	 * Unlike PHP's version, this is spec-compliant and returns `null` if
+	 * the attribute is not present, allowing the caller to distinguish
+	 * between "the attribute exists but has the empty string as its value"
+	 * and "the attribute does not exist".
+	 *
+	 * @param Element $element
+	 * @param string $attributeName
+	 * @return ?string The attribute value, or `null` if the attribute does
+	 *   not exist on the element.
+	 * @see https://dom.spec.whatwg.org/#dom-element-getattribute
+	 */
+	public static function getAttribute( $element, string $attributeName ): ?string {
+		if ( !$element->hasAttribute( $attributeName ) ) {
+			return null;
+		}
+		return $element->getAttribute( $attributeName );
+	}
+
+	/**
 	 * Return the class list of this element.
 	 * @param Element $node
 	 * @return TokenList
@@ -429,7 +451,7 @@ class DOMCompat {
 	 * @see https://infra.spec.whatwg.org/#strip-and-collapse-ascii-whitespace
 	 */
 	private static function stripAndCollapseASCIIWhitespace( string $text ): string {
-		$ws = self::$ASCII_WHITESPACE;
+		$ws = self::ASCII_WHITESPACE;
 		return preg_replace( "/[$ws]+/", ' ', trim( $text, $ws ) );
 	}
 
