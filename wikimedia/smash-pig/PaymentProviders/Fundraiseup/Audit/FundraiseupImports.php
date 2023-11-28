@@ -2,12 +2,14 @@
 
 namespace SmashPig\PaymentProviders\Fundraiseup\Audit;
 
-use SmashPig\Core\DataFiles\DataFileException;
 use SmashPig\Core\DataFiles\HeadedCsvReader;
 use SmashPig\Core\Logging\Logger;
 
 class FundraiseupImports {
 
+	/**
+	 * @throws \Exception
+	 */
 	public function parse( $path ) {
 		$csv = new HeadedCsvReader( $path, ',', 4098, 0 );
 		$fileData = [];
@@ -19,8 +21,9 @@ class FundraiseupImports {
 					$fileData[] = $row;
 				}
 				$csv->next();
-			} catch ( DataFileException $ex ) {
-				Logger::error( $ex->getMessage() );
+			} catch ( \Exception $exception ) {
+				Logger::error( 'DataFileException: ' . $exception->getMessage() );
+				throw $exception;
 			}
 		}
 
@@ -29,6 +32,7 @@ class FundraiseupImports {
 
 	/**
 	 * @param HeadedCsvReader $csv
+	 * @throws \Exception
 	 */
 	protected function parseLine( HeadedCsvReader $csv ) {
 		$msg = [];
@@ -36,8 +40,9 @@ class FundraiseupImports {
 		foreach ( $this->importMap as $header => $mappedProperty ) {
 			try {
 				$msg[$mappedProperty] = $csv->currentCol( $header );
-			} catch ( DataFileException $ex ) {
-				Logger::warning( $ex->getMessage() );
+			} catch ( \Exception $exception ) {
+				Logger::warning( $exception->getMessage() );
+				throw $exception;
 			}
 		}
 		if ( !empty( $msg['payment_method'] ) ) {

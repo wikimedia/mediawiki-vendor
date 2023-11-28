@@ -1765,6 +1765,7 @@ return array(
     'SmashPig\\PaymentProviders\\Braintree\\Audit\\BraintreeAudit' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Braintree/Audit/BraintreeAudit.php',
     'SmashPig\\PaymentProviders\\Braintree\\BraintreeListener' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Braintree/BraintreeListener.php',
     'SmashPig\\PaymentProviders\\Braintree\\Exceptions\\SignatureValidatorException' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Braintree/Exceptions/SignatureValidatorException.php',
+    'SmashPig\\PaymentProviders\\Braintree\\Maintenance\\FetchCustomersInfo' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Braintree/Maintenance/FetchCustomersInfo.php',
     'SmashPig\\PaymentProviders\\Braintree\\Maintenance\\GetReport' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Braintree/Maintenance/GetReport.php',
     'SmashPig\\PaymentProviders\\Braintree\\Maintenance\\RefundPayments' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Braintree/Maintenance/RefundPayments.php',
     'SmashPig\\PaymentProviders\\Braintree\\Maintenance\\SearchTransactions' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Braintree/Maintenance/SearchTransactions.php',

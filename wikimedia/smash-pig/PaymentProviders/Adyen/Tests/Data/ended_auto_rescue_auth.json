@@ -1,0 +1,22 @@
+{
+  "paymentMethod": "visa",
+  "operations": [],
+  "reason": "Issuer Suspected Fraud",
+  "cvvResult": "3",
+  "avsResult": "4",
+  "recurringProcessingModel": "Subscription",
+  "recurringDetailReference": "",
+  "shopperReference": "",
+  "retryRescueScheduled": "false",
+  "retryRescueReference": "",
+  "retryOrderAttemptNumber": 0,
+  "parentPspReference": null,
+  "pspReference": "J52D2D9BZGNG5S82",
+  "merchantReference": "100000095.2",
+  "merchantAccountCode": "WikimediaDonations",
+  "currency": "USD",
+  "amount": 10,
+  "eventDate": "2023-10-13T02:10:16+02:00",
+  "success": false,
+  "propertiesExcludedFromExport": []
+}

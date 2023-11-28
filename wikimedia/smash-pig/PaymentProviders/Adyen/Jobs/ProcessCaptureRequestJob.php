@@ -43,7 +43,9 @@ class ProcessCaptureRequestJob extends RunnableJob {
 	protected $propertiesExcludedFromExport = [ 'logger' ];
 
 	protected $isSuccessfulAutoRescue = false;
+	protected $isEndedAutoRescue = false;
 	const ACTION_DUPLICATE = 'duplicate'; // duplicate payment attempt - cancel the authorization
+	const ACTION_END = 'end'; // end payment attempt from failed auto rescue - cancel the authorization
 	const ACTION_IGNORE = 'ignore'; // duplicate authorisation IPN - ignore
 	const ACTION_MISSING = 'missing'; // missing donor details - shunt job to damaged queue
 
@@ -60,6 +62,7 @@ class ProcessCaptureRequestJob extends RunnableJob {
 		$obj->avsResult = $authMessage->avsResult;
 		$obj->paymentMethod = $authMessage->paymentMethod;
 		$obj->isSuccessfulAutoRescue = $authMessage->isSuccessfulAutoRescue();
+		$obj->isEndedAutoRescue = $authMessage->isEndedAutoRescue();
 		return $obj;
 	}
 
@@ -139,6 +142,7 @@ class ProcessCaptureRequestJob extends RunnableJob {
 				// Delete the fraudy donor details
 				$db->deleteMessage( $dbMessage );
 				break;
+			case self::ACTION_END: // todo: https://docs.adyen.com/online-payments/auto-rescue/cards/#cancel-auto-rescue-process. Can implement removeRecurringToken as we did for braintree
 			case self::ACTION_DUPLICATE:
 				// We have already captured one payment for this donation attempt, so
 				// cancel the duplicate authorization. If there is a pending db entry,
@@ -166,6 +170,11 @@ class ProcessCaptureRequestJob extends RunnableJob {
 	protected function determineAction( $dbMessage ) {
 		if ( $this->isSuccessfulAutoRescue ) {
 			 return ValidationAction::PROCESS;
+		}
+		if ( $this->isEndedAutoRescue ) {
+			$this->logger->debug( 'Ended Auto Rescue process' );
+			// end action by cancel authorization process
+			return self::ACTION_END;
 		}
 		if ( $dbMessage && isset( $dbMessage['order_id'] ) ) {
 			$this->logger->debug( 'Found a valid message.' );

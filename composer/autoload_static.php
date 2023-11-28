@@ -2191,6 +2191,7 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\PaymentProviders\\Braintree\\Audit\\BraintreeAudit' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Braintree/Audit/BraintreeAudit.php',
         'SmashPig\\PaymentProviders\\Braintree\\BraintreeListener' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Braintree/BraintreeListener.php',
         'SmashPig\\PaymentProviders\\Braintree\\Exceptions\\SignatureValidatorException' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Braintree/Exceptions/SignatureValidatorException.php',
+        'SmashPig\\PaymentProviders\\Braintree\\Maintenance\\FetchCustomersInfo' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Braintree/Maintenance/FetchCustomersInfo.php',
         'SmashPig\\PaymentProviders\\Braintree\\Maintenance\\GetReport' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Braintree/Maintenance/GetReport.php',
         'SmashPig\\PaymentProviders\\Braintree\\Maintenance\\RefundPayments' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Braintree/Maintenance/RefundPayments.php',
         'SmashPig\\PaymentProviders\\Braintree\\Maintenance\\SearchTransactions' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Braintree/Maintenance/SearchTransactions.php',

@@ -23,9 +23,9 @@ class PaymentCaptureAction implements IListenerMessageAction {
 		$tl = new TaggedLogger( 'PaymentCaptureAction' );
 
 		if ( $msg instanceof Authorisation ) {
-			if ( $msg->success ) {
-				// Ignore subsequent recurring IPNs
-				if ( !$msg->isSuccessfulAutoRescue() && $msg->isRecurringInstallment() ) {
+			if ( $msg->success || $msg->isEndedAutoRescue() ) {
+				// Ignore subsequent recurring IPNs when it's not an ongoing auto rescue (means it's a success or cancel auto rescue)
+				if ( !$msg->isSuccessfulAutoRescue() && !$msg->isEndedAutoRescue() && $msg->isRecurringInstallment() ) {
 					return true;
 				}
 

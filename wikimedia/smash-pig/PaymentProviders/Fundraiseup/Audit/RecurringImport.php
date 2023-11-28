@@ -8,7 +8,6 @@ class RecurringImport extends FundraiseupImports {
 	protected $importMap = [
 		'Account Name' => 'gateway_account',
 		'Recurring ID' => 'subscr_id',
-		'Payment ID' => 'gateway_txn_id',
 		'Supporter First Name' => 'first_name',
 		'Supporter Last Name' => 'last_name',
 		'Supporter Employer' => 'employer',

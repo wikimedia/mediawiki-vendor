@@ -56,8 +56,31 @@ class AuthorisationActionTest extends BaseAdyenTestCase {
 			] )
 			->willReturn( AdyenTestConfiguration::getSuccessfulApproveResult() );
 
-		$x = $capture->execute();
+		$capture->execute();
 		$this->assertEquals( $msg['merchantReference'], $authorisation->merchantReference );
 		$this->assertEquals( $msg['shopperReference'], $authorisation->shopperReference );
+	}
+
+	public function testEndedAutoRescueAuth(): void {
+		$authorisation = JsonSerializableObject::fromJsonProxy(
+			'SmashPig\PaymentProviders\Adyen\ExpatriatedMessages\Authorisation',
+			file_get_contents( __DIR__ . '/../Data/ended_auto_rescue_auth.json' )
+		);
+		$action = new PaymentCaptureAction();
+		$action->execute( $authorisation );
+
+		$msg = $this->jobsAdyenQueue->pop();
+		$this->assertTrue( $msg['isEndedAutoRescue'] );
+		$this->assertEquals( $msg['merchantReference'], $authorisation->merchantReference );
+		$this->assertEquals( $msg['pspReference'], $authorisation->pspReference );
+
+		$capture = JsonSerializableObject::fromJsonProxy( $msg['php-message-class'], json_encode( $msg ) );
+		$this->mockApi->expects( $this->once() )
+			->method( 'cancel' )
+			->with( $msg['pspReference'] )
+			->willReturn( AdyenTestConfiguration::getSuccessfulCancelResult() );
+
+		$successfulCancelResult = $capture->execute();
+		$this->assertTrue( $successfulCancelResult );
 	}
 }

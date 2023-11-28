@@ -2,6 +2,7 @@
 namespace SmashPig\PaymentProviders\Fundraiseup\Tests;
 
 use SmashPig\Core\Context;
+use SmashPig\Core\DataFiles\DataFileException;
 use SmashPig\PaymentProviders\Fundraiseup\Audit\FundraiseupAudit;
 use SmashPig\Tests\BaseSmashPigUnitTestCase;
 
@@ -164,6 +165,24 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'frequency_interval' => 1
 		];
 		$this->assertEquals( $expected, $actual, 'Did not parse refund correctly' );
+	}
+
+	/**
+	 * Import Failed recurrings
+	 */
+	public function testProcessFileWithWrongHeader() {
+		$processor = new FundraiseupAudit();
+		$this->expectException( DataFileException::class );
+		$processor->parseFile( __DIR__ . '/../Data/ErroneuousExport/export_recurring_2023-09-18_00-00_2023-09-22_23-59.csv' );
+	}
+
+	/**
+	 * Import Failed donations
+	 */
+	public function testProcessDonationFileWithWrongHeader() {
+		$processor = new FundraiseupAudit();
+		$this->expectException( DataFileException::class );
+		$processor->parseFile( __DIR__ . '/../Data/ErroneuousExport/export_donations_2023-test.csv' );
 	}
 
 	/**

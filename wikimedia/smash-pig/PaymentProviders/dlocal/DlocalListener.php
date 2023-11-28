@@ -31,7 +31,8 @@ class DlocalListener extends RestListener {
 
 		// dlocal sends us a json string with the request
 		$rawRequest = $request->getRawRequest();
-		Logger::info( 'Incoming message (raw): ' . print_r( $rawRequest, true ) );
+		$sanitized = $this->sanitizeRequestForLogging( $rawRequest );
+		Logger::info( 'Incoming message (raw): ' . $sanitized );
 
 		$authorizationHeader = $request->headers->get( 'authorization' );
 		// We only want to process messages sent with an authorization header we can validate
@@ -42,7 +43,7 @@ class DlocalListener extends RestListener {
 				return [];
 			}
 			throw new ListenerDataException(
-				'INVALID dlocal IPN message with no authorization header: ' . print_r( $rawRequest, true )
+				'INVALID dlocal IPN message with no authorization header: ' . print_r( $sanitized, true )
 			);
 		}
 
@@ -97,5 +98,13 @@ class DlocalListener extends RestListener {
 
 	protected function ackEnvelope() {
 		// pass
+	}
+
+	protected function sanitizeRequestForLogging( string $rawRequest ): string {
+		$rawRequest = mb_ereg_replace( 'expiration_month":\d\d', 'expiration_month":00', $rawRequest );
+		$rawRequest = mb_ereg_replace( 'expiration_year":\d\d\d\d', 'expiration_year":0000', $rawRequest );
+		$rawRequest = mb_ereg_replace( 'bin":"[^"]+"', 'bin":"000000"', $rawRequest );
+		$rawRequest = mb_ereg_replace( 'last4":"[^"]+"', 'last4":"0000"', $rawRequest );
+		return $rawRequest;
 	}
 }

@@ -4,6 +4,7 @@ namespace SmashPig\PaymentProviders\Braintree;
 
 use Psr\Log\LogLevel;
 use SmashPig\Core\Context;
+use SmashPig\Core\Logging\Logger;
 use SmashPig\Core\PaymentError;
 use SmashPig\Core\ValidationError;
 use SmashPig\PaymentData\DonorDetails;
@@ -261,12 +262,16 @@ class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaymentTokenP
 		}
 
 		if ( !$params['email'] ) {
+			Logger::info( 'No email passed, fetch again with gateway_session_id: ' . $params['gateway_session_id'] );
 			$donorDetails = $this->fetchCustomerData( $params['gateway_session_id'] );
 			if ( $donorDetails ) {
 				$params['email'] = $donorDetails->getEmail();
 				$params['first_name'] = $donorDetails->getFirstName();
 				$params['last_name'] = $donorDetails->getLastName();
 				$params['phone'] = $donorDetails->getPhone();
+			}
+			if ( !$params['email'] ) {
+				Logger::info( 'Braintree re-fetch email failed: Need to use Maintenance script to fetch data again with order_id ' . $params['order_id'] . ' and gateway_session_id ' . $params['gateway_session_id'] );
 			}
 		}
 
@@ -327,6 +332,7 @@ class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaymentTokenP
 	public function fetchCustomerData( string $id ) {
 		// venmo is using client side return for email, if not return for some reason, fetch again
 		$rawResponse = $this->api->fetchCustomer( $id )['data']['node']['payerInfo'];
+		Logger::info( 'Result from customer info fetch: ' . json_encode( $rawResponse ) );
 		$donorDetails = new DonorDetails();
 		if ( $rawResponse ) {
 			$donorDetails->setUserName( $rawResponse['userName'] ?? null );

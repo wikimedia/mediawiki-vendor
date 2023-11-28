@@ -2,6 +2,7 @@
 
 namespace SmashPig\PaymentProviders;
 
+use SmashPig\PaymentProviders\Responses\CancelSubscriptionResponse;
 use SmashPig\PaymentProviders\Responses\CreateRecurringPaymentsProfileResponse;
 
 /**
@@ -10,4 +11,6 @@ use SmashPig\PaymentProviders\Responses\CreateRecurringPaymentsProfileResponse;
  */
 interface IRecurringPaymentProfileProvider {
 	public function createRecurringPaymentsProfile( array $params ): CreateRecurringPaymentsProfileResponse;
+
+	public function cancelSubscription( array $params ): CancelSubscriptionResponse;
 }

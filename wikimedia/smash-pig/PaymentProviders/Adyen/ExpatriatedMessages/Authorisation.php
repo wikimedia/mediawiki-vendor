@@ -120,6 +120,29 @@ class Authorisation extends AdyenMessage {
 	}
 
 	/**
+	 * Check either retryRescueScheduled false, which indicated no more rescue schedule:
+	 * https://docs.adyen.com/online-payments/auto-rescue/cards/#rescue-process-ended
+	 * Or if end auto rescue webhook send with below reasons:
+	 * https://docs.adyen.com/online-payments/auto-rescue/cards/#rescue-process-ended
+	 *
+	 * @return bool True if indicate end auto rescue
+	 */
+	public function isEndedAutoRescue(): bool {
+		$autoRetryRefusalReasons = [
+			'retryWindowHasElapsed',
+			'maxRetryAttemptsReached',
+			'fraudDecline',
+			'internalError'
+		];
+		if ( !$this->success &&
+				( $this->retryRescueScheduled === 'false' ||
+					in_array( $this->reason, $autoRetryRefusalReasons, true ) ) ) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Check for subsequent recurring payment IPNs.
 	 *
 	 * Credit card recurring payments will not have the recurringDetailReference set

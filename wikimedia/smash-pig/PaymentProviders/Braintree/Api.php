@@ -141,7 +141,7 @@ class Api {
 	 * @return array
 	 */
 	public function fetchCustomer( string $id ): array {
-		$query = $this->getQuery( 'fetchCustomer' );
+		$query = $this->getQuery( 'FetchCustomer' );
 		$variables = [ 'id' => $id ];
 		return $this->makeApiCall( $query, $variables );
 	}
