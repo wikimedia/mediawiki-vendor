@@ -4,13 +4,7 @@ class AdyenSettlementDetailReport extends AdyenAudit {
 
 	public function __construct() {
 		$this->columnHeaders = [
-			'Company Account',
-			'Merchant Account',
-			'Psp Reference',
-			'Merchant Reference',
-			'Payment Method',
 			'Creation Date',
-			'TimeZone',
 			'Type',
 			'Modification Reference',
 			'Gross Currency',
@@ -24,16 +18,6 @@ class AdyenSettlementDetailReport extends AdyenAudit {
 			'Markup (NC)',
 			'Scheme Fees (NC)',
 			'Interchange (NC)',
-			'Payment Method Variant',
-			'Modification Merchant Reference',
-			'Batch Number',
-			'Reserved4',
-			'Reserved5',
-			'Reserved6',
-			'Reserved7',
-			'Reserved8',
-			'Reserved9',
-			'Reserved10',
 		];
 
 		$this->type = 'Type';

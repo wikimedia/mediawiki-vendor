@@ -58,6 +58,16 @@ abstract class AdyenAudit implements AuditParser {
 	protected $date;
 	protected $columnHeaders;
 
+	// These are the common ones - subclasses should add more in their constructors.
+	protected $requiredColumns = [
+		'Merchant Account',
+		'Merchant Reference',
+		'Psp Reference',
+		'Payment Method',
+		'Payment Method Variant',
+		'TimeZone',
+	];
+
 	abstract protected function parseDonation( array $row, array $msg );
 
 	abstract protected function parseRefund( array $row, array $msg );
@@ -66,12 +76,19 @@ abstract class AdyenAudit implements AuditParser {
 		$this->fileData = [];
 		$file = fopen( $path, 'r' );
 
-		$ignoreLines = 1;
-		for ( $i = 0; $i < $ignoreLines; $i++ ) {
-			fgets( $file );
+		$this->columnHeaders = fgetcsv( $file, 0 );
+
+		$missingColumns = [];
+		foreach ( $this->requiredColumns as $requiredColumn ) {
+			if ( !in_array( $requiredColumn, $this->columnHeaders ) ) {
+				$missingColumns[] = $requiredColumn;
+			}
+		}
+		if ( count( $missingColumns ) > 0 ) {
+			throw new \RuntimeException( 'Missing columns ' . implode( ',', $missingColumns ) );
 		}
 
-		while ( $line = fgetcsv( $file, 0, ',', '"', '\\' ) ) {
+		while ( $line = fgetcsv( $file, 0 ) ) {
 			try {
 				$this->parseLine( $line );
 			} catch ( NormalizationException $ex ) {

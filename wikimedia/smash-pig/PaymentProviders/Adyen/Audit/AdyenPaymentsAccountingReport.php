@@ -3,23 +3,12 @@
 class AdyenPaymentsAccountingReport extends AdyenAudit {
 
 	public function __construct() {
-		$this->columnHeaders = [
-			'Company Account',
-			'Merchant Account',
-			'Psp Reference',
-			'Merchant Reference',
-			'Payment Method',
-			'Payment Method Variant',
+		$this->requiredColumns += [
 			'Booking Date',
-			'TimeZone',
 			'Record Type',
 			'Modification Psp Reference', // this is the Modification Reference
-			'Main Currency',
-			'Main Amount',
 			'Payment Currency',
-			'Received (PC)',
 			'Exchange Rate',
-			'Authorised (PC)',
 			'Captured (PC)',
 			'Settlement Currency',
 			'Payable (SC)',
@@ -27,21 +16,9 @@ class AdyenPaymentsAccountingReport extends AdyenAudit {
 			'Markup (SC)',
 			'Scheme Fees (SC)',
 			'Interchange (SC)',
-			'Processing Fee Currency',
-			'Processing Fee (FC)',
-			'Modification Merchant Reference',
 			'Original Amount',
-			'Merchant Order Reference',
-			'Shopper Reference',
-			'Reserved3',
-			'Reserved4',
-			'Reserved5',
-			'Reserved6',
-			'Reserved7',
-			'Reserved8',
-			'Reserved9',
-			'Reserved10',
 		];
+
 		$this->type = 'Record Type';
 		// in this report the latest payment status date is in Booking Date, it has the same value as
 		// Creation Date for the settlement detail report

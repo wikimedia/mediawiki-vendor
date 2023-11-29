@@ -678,7 +678,9 @@ class Api {
 		} elseif ( CurrencyRoundingHelper::isFractionalCurrency( $currency ) ) {
 			$amount = $amount * 100;
 		}
-		return (int)$amount;
+		// PHP does indeed need us to round it off before casting to int.
+		// For example, try $36.80
+		return (int)round( $amount );
 	}
 
 	/**

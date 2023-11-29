@@ -41,6 +41,34 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	}
 
 	/**
+	 * Normal donation, but with the PSP Reference moved to the last column
+	 */
+	public function testProcessSettlementDetailDonationReordered() {
+		$processor = new AdyenSettlementDetailReport();
+		$output = $processor->parseFile( __DIR__ . '/../Data/settlement_detail_report_donation_reordered.csv' );
+		$this->assertSame( 1, count( $output ), 'Should have found one donation' );
+		$actual = $output[0];
+		$expected = [
+			'gateway' => 'adyen',
+			'gateway_account' => 'WikimediaCOM',
+			'gross' => '1.00',
+			'contribution_tracking_id' => '33992337',
+			'currency' => 'USD',
+			'gateway_txn_id' => '5364893193133131',
+			'invoice_id' => '33992337.0',
+			'modification_reference' => '5364893193133131',
+			'payment_method' => 'cc',
+			'payment_submethod' => 'visa-debit',
+			'date' => 1455840651,
+			'settled_currency' => 'USD',
+			'fee' => '0.24',
+			'settled_gross' => '0.76',
+			'settled_fee' => '0.24',
+		];
+		$this->assertEquals( $expected, $actual, 'Did not parse donation correctly' );
+	}
+
+	/**
 	 * iDEAL donation with variant that we should discard
 	 */
 	public function testProcessDonationIdeal() {
