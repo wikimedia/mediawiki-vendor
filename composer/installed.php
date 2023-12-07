@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
-        'reference' => '7ff537230f85ff6c7796b01a2afbd71a9c51b1c0',
+        'pretty_version' => '1.0.0+no-version-set',
+        'version' => '1.0.0.0',
+        'reference' => NULL,
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'reference' => '7ff537230f85ff6c7796b01a2afbd71a9c51b1c0',
+            'pretty_version' => '1.0.0+no-version-set',
+            'version' => '1.0.0.0',
+            'reference' => NULL,
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -1230,9 +1230,9 @@
             'dev_requirement' => false,
         ),
         'wikimedia/testing-access-wrapper' => array(
-            'pretty_version' => '2.0.0',
-            'version' => '2.0.0.0',
-            'reference' => '280e613c76f481f2fe90e0ea22361080b6ab0d65',
+            'pretty_version' => '3.0.0',
+            'version' => '3.0.0.0',
+            'reference' => '975e89994a667b2ab10b36f99d049318b6137db8',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/testing-access-wrapper',
             'aliases' => array(),

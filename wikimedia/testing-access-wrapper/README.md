@@ -21,7 +21,14 @@ class NonPublic {
 	protected static function staticFunc() {}
 }
 
+class NonPublicCtor {
+	protected function __construct() {}
+}
+
 $object = new NonPublic();
+// or:
+// $object = TestingAccessWrapper::construct( NonPublicCtor::class );
+
 $wrapper = TestingAccessWrapper::newFromObject( $object );
 $classWrapper = TestingAccessWrapper::newFromClass( NonPublic::class );
 

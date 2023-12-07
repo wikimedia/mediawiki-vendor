@@ -8474,31 +8474,32 @@
         },
         {
             "name": "wikimedia/testing-access-wrapper",
-            "version": "2.0.0",
-            "version_normalized": "2.0.0.0",
+            "version": "3.0.0",
+            "version_normalized": "3.0.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/testing-access-wrapper.git",
-                "reference": "280e613c76f481f2fe90e0ea22361080b6ab0d65"
+                "reference": "975e89994a667b2ab10b36f99d049318b6137db8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/testing-access-wrapper/zipball/280e613c76f481f2fe90e0ea22361080b6ab0d65",
-                "reference": "280e613c76f481f2fe90e0ea22361080b6ab0d65",
+                "url": "https://api.github.com/repos/wikimedia/testing-access-wrapper/zipball/975e89994a667b2ab10b36f99d049318b6137db8",
+                "reference": "975e89994a667b2ab10b36f99d049318b6137db8",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.9"
+                "php": ">=7.4"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "33.0.0",
-                "mediawiki/minus-x": "1.1.0",
-                "ockcyp/covers-validator": "1.3.0",
-                "php-parallel-lint/php-console-highlighter": "0.5.0",
-                "php-parallel-lint/php-parallel-lint": "1.2.0",
-                "phpunit/phpunit": "^8.5"
+                "mediawiki/mediawiki-codesniffer": "41.0.0",
+                "mediawiki/mediawiki-phan-config": "0.12.1",
+                "mediawiki/minus-x": "1.1.1",
+                "ockcyp/covers-validator": "1.6.0",
+                "php-parallel-lint/php-console-highlighter": "1.0.0",
+                "php-parallel-lint/php-parallel-lint": "1.3.2",
+                "phpunit/phpunit": "9.5.28"
             },
-            "time": "2020-11-27T00:11:16+00:00",
+            "time": "2023-11-28T06:57:09+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -8527,7 +8528,7 @@
             "description": "A simple helper class to access non-public elements of a class when testing.",
             "homepage": "https://www.mediawiki.org/wiki/Testing-access-wrapper",
             "support": {
-                "source": "https://github.com/wikimedia/testing-access-wrapper/tree/2.0.0"
+                "source": "https://github.com/wikimedia/testing-access-wrapper/tree/3.0.0"
             },
             "install-path": "../wikimedia/testing-access-wrapper"
         },

@@ -50,7 +50,7 @@ class TestingAccessWrapper {
 	 * Allow access to non-public static methods and properties of the class.
 	 * Returns an object whose methods/properties will correspond to the
 	 * static methods/properties of the given class.
-	 * @param string $className
+	 * @param class-string $className
 	 * @return self
 	 * @throws InvalidArgumentException
 	 */
@@ -76,10 +76,26 @@ class TestingAccessWrapper {
 		while ( !$classReflection->hasConstant( $constantName ) ) {
 			$classReflection = $classReflection->getParentClass();
 			if ( !$classReflection ) {
-				throw new \ReflectionException( 'constant not present' );
+				throw new ReflectionException( 'constant not present' );
 			}
 		}
 		return $classReflection->getConstant( $constantName );
+	}
+
+	/**
+	 * Allow constructing a class with a non-public constructor.
+	 * @param class-string<T> $className
+	 * @param mixed ...$args
+	 * @return T
+	 * @phan-template T
+	 */
+	public static function construct( string $className, ...$args ) {
+		$classReflection = new ReflectionClass( $className );
+		$constructor = $classReflection->getConstructor();
+		$constructor->setAccessible( true );
+		$object = $classReflection->newInstanceWithoutConstructor();
+		$constructor->invokeArgs( $object, $args );
+		return $object;
 	}
 
 	/**
@@ -111,7 +127,12 @@ class TestingAccessWrapper {
 				. ': Cannot set non-static property when wrapping static class' );
 		}
 
-		$propertyReflection->setValue( $this->object, $value );
+		if ( $this->isStatic() ) {
+			$class = new ReflectionClass( $this->object );
+			$class->setStaticPropertyValue( $name, $value );
+		} else {
+			$propertyReflection->setValue( $this->object, $value );
+		}
 	}
 
 	/**
