@@ -7874,22 +7874,22 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.19.0-a7",
-            "version_normalized": "0.19.0.0-alpha7",
+            "version": "v0.19.0-a8",
+            "version_normalized": "0.19.0.0-alpha8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
-                "reference": "5101586dce622e8708be2a5584cf2687d37dab29"
+                "reference": "2840c5d66ca041b61e8cda7a240fab814c2cf0ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/5101586dce622e8708be2a5584cf2687d37dab29",
-                "reference": "5101586dce622e8708be2a5584cf2687d37dab29",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/2840c5d66ca041b61e8cda7a240fab814c2cf0ec",
+                "reference": "2840c5d66ca041b61e8cda7a240fab814c2cf0ec",
                 "shasum": ""
             },
             "require": {
                 "composer-runtime-api": "^2.0",
-                "composer/semver": "3.3.2",
+                "composer/semver": "^3.3.2",
                 "ext-dom": "*",
                 "ext-json": "*",
                 "liuggio/statsd-php-client": "^1.0.18",
@@ -7929,7 +7929,7 @@
             "suggest": {
                 "wikimedia/langconv": "Provides script conversion support"
             },
-            "time": "2023-11-22T20:08:48+00:00",
+            "time": "2023-12-11T17:52:14+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -7955,7 +7955,7 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.19.0-a7",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.19.0-a8",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
             "install-path": "../wikimedia/parsoid"

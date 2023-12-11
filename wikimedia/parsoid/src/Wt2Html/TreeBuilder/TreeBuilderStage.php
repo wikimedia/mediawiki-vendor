@@ -133,7 +133,7 @@ class TreeBuilderStage extends PipelineStage {
 		if ( isset( $this->lastToken ) && !( $this->lastToken instanceof EOFTk ) ) {
 			$this->env->log(
 				'error', 'EOFTk was lost in page',
-				$this->env->getPageConfig()->getTitle()
+				$this->env->getContextTitle()->getPrefixedText()
 			);
 		}
 
@@ -287,12 +287,10 @@ class TreeBuilderStage extends PipelineStage {
 
 			// Transclusion metas are placeholders and are eliminated after template-wrapping.
 			// Fostering them unnecessarily expands template ranges. Same for mw:Param metas.
-			// Annotations are not fostered because the AnnotationBuilder handles its own
-			// range expansion for metas that end up in fosterable positions.
 			if ( $tName === 'meta' ) {
 				$shouldNotFoster = TokenUtils::matchTypeOf(
 					$token,
-					'#^mw:(Transclusion|Annotation|Param)(/|$)#'
+					'#^mw:(Transclusion|Param)(/|$)#'
 				);
 				if ( $shouldNotFoster ) {
 					// transclusions state

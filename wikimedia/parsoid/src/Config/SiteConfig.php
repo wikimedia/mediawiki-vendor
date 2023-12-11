@@ -18,6 +18,7 @@ use Wikimedia\Bcp47Code\Bcp47Code;
 use Wikimedia\ObjectFactory\ObjectFactory;
 use Wikimedia\Parsoid\Core\ContentMetadataCollector;
 use Wikimedia\Parsoid\Core\ContentModelHandler;
+use Wikimedia\Parsoid\Core\LinkTarget;
 use Wikimedia\Parsoid\DOM\Document;
 use Wikimedia\Parsoid\Ext\AnnotationStripper;
 use Wikimedia\Parsoid\Ext\Cite\Cite;
@@ -33,6 +34,7 @@ use Wikimedia\Parsoid\Ext\Pre\Pre;
 use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\PHPUtils;
+use Wikimedia\Parsoid\Utils\Title;
 use Wikimedia\Parsoid\Utils\Utils;
 use Wikimedia\Parsoid\Wikitext\Consts;
 
@@ -299,11 +301,38 @@ abstract class SiteConfig {
 
 	/**
 	 * Whether to enable linter Backend.
-	 * @return bool|string[] Boolean to enable/disable all linting, or an array
-	 *  of enabled linting types.
+	 * Consults the allow list and block list from ::getLinterConfig().
+	 *
+	 * @param null $type If $type is null or omitted, returns true if *any* linting
+	 *   type is enabled; otherwise returns true only if the specified
+	 *   linting type is enabled.
+	 * @return bool If $type is null or omitted, returns true if *any* linting
+	 *   type is enabled; otherwise returns true only if the specified
+	 *   linting type is enabled.
 	 */
-	public function linting() {
-		return $this->linterEnabled;
+	final public function linting( ?string $type = null ) {
+		if ( !$this->linterEnabled ) {
+			return false;
+		}
+		$lintConfig = $this->getLinterConfig();
+		// Allow list
+		$allowList = $lintConfig['enabled'] ?? null;
+		if ( is_array( $allowList ) ) {
+			if ( $type === null ) {
+				return count( $allowList ) > 0;
+			}
+			return $allowList[$type] ?? false;
+		}
+		// Block list
+		if ( $type === null ) {
+			return true;
+		}
+		$blockList = $lintConfig['disabled'] ?? null;
+		if ( is_array( $blockList ) ) {
+			return !( $blockList[$type] ?? false );
+		}
+		// No specific configuration
+		return true;
 	}
 
 	/**
@@ -407,6 +436,7 @@ abstract class SiteConfig {
 
 	/**
 	 * Map a namespace index to its preferred name
+	 * (with spaces, not underscores).
 	 *
 	 * @note This replaces namespaceNames
 	 * @param int $ns
@@ -651,11 +681,26 @@ abstract class SiteConfig {
 	 */
 	abstract public function langBcp47(): Bcp47Code;
 
+	// At least one of ::mainpage(), ::mainPageLinkTarget() should be defined
+
 	/**
 	 * Main page title
 	 * @return string
+	 * @deprecated Use ::mainPageLinkTarget()
 	 */
-	abstract public function mainpage(): string;
+	public function mainpage(): string {
+		return Title::newFromLinkTarget( $this->mainPageLinkTarget(), $this )
+			->getPrefixedText();
+	}
+
+	/**
+	 * Main page title, as LinkTarget
+	 * @return LinkTarget
+	 */
+	public function mainPageLinkTarget(): LinkTarget {
+		// @phan-suppress-next-line PhanDeprecatedFunction
+		return Title::newFromText( $this->mainpage(), $this );
+	}
 
 	/**
 	 * Lookup config
@@ -1211,15 +1256,46 @@ abstract class SiteConfig {
 	}
 
 	/**
+	 * Return the desired linter configuration.  These are heuristic values
+	 * which have hardcoded defaults but could be overridden on a per-wiki
+	 * basis.
+	 * @return array{enabled?:string[],disabled?:string[],maxTableColumnHeuristic?:int,maxTableRowsToCheck?:int}
+	 */
+	public function getLinterConfig(): array {
+		return [
+			// Allow list for specific lint types.
+			// Takes precedence over block list.
+			'enabled' => null,
+			// Block list for specific lint types.
+			// Not used if an allow list is set.
+			'disabled' => null,
+			// The maximum columns in a table before the table is considered
+			// large
+			'maxTableColumnHeuristic' => 5,
+			// The maximum rows (header or data) to be checked for the large
+			// table lint
+			// - If we consider the first N rows to be representative of the
+			//   table, and the table is well-formed and uniform, it is
+			//   sufficent to check the first N rows to check if the table is
+			//   "large".
+			// - This heuristic is used together with the
+			//   'maxTableColumnHeuristic' to identify "large tables".
+			'maxTableRowsToCheck' => 10,
+		];
+	}
+
+	/**
 	 * Get the maximum columns in a table before the table is considered large.
 	 *
 	 * This lint heuristic value is hardcoded here and centrally determined without
 	 * an option to set it per-wiki.
 	 *
 	 * @return int
+	 * @deprecated Use ::getLinterConfig()
 	 */
 	public function getMaxTableColumnLintHeuristic(): int {
-		return 5;
+		$lintConfig = $this->getLinterConfig();
+		return $lintConfig['maxTableColumnHeuristic'] ?? 0;
 	}
 
 	/**
@@ -1231,9 +1307,11 @@ abstract class SiteConfig {
 	 *   identify "large tables".
 	 *
 	 * @return int
+	 * @deprecated Use ::getLinterConfig()
 	 */
 	public function getMaxTableRowsToCheckLintHeuristic(): int {
-		return 10;
+		$lintConfig = $this->getLinterConfig();
+		return $lintConfig['maxTableRowsToCheck'] ?? 0;
 	}
 
 	/**

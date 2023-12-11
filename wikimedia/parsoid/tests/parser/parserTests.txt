@@ -3893,6 +3893,9 @@ Parsoid: Test of whitespace serialization with Templated bullets
 parsoid=wt2html
 !! wikitext
 * {{bullet}}
+!! html/php
+<ul><li class="mw-empty-elt"></li>
+<li>Bar</li></ul>
 !! html/parsoid
 <ul><li class="mw-empty-elt"></li><span about="#mwt1" typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"bullet","href":"./Template:Bullet"},"params":{},"i":0}}]}'>
 </span><li about="#mwt1">Bar</li></ul>
@@ -5090,7 +5093,7 @@ T236868: Un-closed <noinclude> caused bad SourceRange length
 |-</noinclude>
 |}
 !! html/parsoid
-<table about="#mwt2" typeof="mw:ExpandedAttrs" data-parsoid='{"a":{"&lt;noinclude>\n|- &lt;noinclude>\n| A\n|-&lt;/noinclude>":null},"sa":{"&lt;noinclude>\n|- &lt;noinclude>\n| A\n|-&lt;/noinclude>":""}}' data-mw='{"attribs":[[{"txt":" A","html":"&lt;meta typeof=\"mw:Includes/NoInclude\" data-parsoid=&apos;{\"src\":\"&amp;lt;noinclude>\",\"dsr\":[3,14,null,null]}&apos;/>\n|- &amp;lt;noinclude>\n| A\n|-&lt;meta typeof=\"mw:Includes/NoInclude/End\" data-parsoid=&apos;{\"src\":\"&amp;lt;/noinclude>\",\"dsr\":[36,48,null,null]}&apos;/>"},{"html":""}]]}'>
+<table about="#mwt2" typeof="mw:ExpandedAttrs" data-parsoid='{"a":{"&lt;noinclude>\n|- &lt;noinclude>\n| A\n|-&lt;/noinclude>":null},"sa":{"&lt;noinclude>\n|- &lt;noinclude>\n| A\n|-&lt;/noinclude>":""}}' data-mw='{"attribs":[[{"txt":" A","html":"&lt;meta typeof=\"mw:Includes/NoInclude\" data-parsoid=&apos;{\"src\":\"&amp;lt;noinclude>\",\"dsr\":[3,14,null,null]}&apos;/>\n|- &lt;meta typeof=\"mw:Includes/NoInclude\" data-parsoid=&apos;{\"src\":\"&amp;lt;noinclude>\",\"dsr\":[18,29,null,null]}&apos;/>\n| A\n|-&lt;meta typeof=\"mw:Includes/NoInclude/End\" data-parsoid=&apos;{\"src\":\"&amp;lt;/noinclude>\",\"dsr\":[36,48,null,null]}&apos;/>"},{"html":""}]]}'>
 </table>
 !! end
 
@@ -8483,11 +8486,22 @@ wgFragmentMode=[ "legacy" ]
 Expansion of multi-line templates in attribute values (T8255)
 !! wikitext
 <div style="background: {{1x|#00FF00}}">-</div>
-!! html
+!! html/php
 <div style="background: #00FF00">-</div>
-!! html/parsoid
+!! html/parsoid+integrated
 <div style="background: 
-#00FF00" about="#mwt2" typeof="mw:ExpandedAttrs" data-parsoid='{"stx":"html","a":{"style":"background: \n#00FF00"},"sa":{"style":"background: {{identity|#00FF00}}"}}' data-mw='{"attribs":[[{"txt":"style"},{"html":"background: &lt;span about=\"#mwt1\" typeof=\"mw:Transclusion\" data-parsoid=&apos;{\"pi\":[[{\"k\":\"1\"}]],\"dsr\":[24,44,null,null]}&apos; data-mw=&apos;{\"parts\":[{\"template\":{\"target\":{\"wt\":\"identity\",\"href\":\"./Template:Identity\"},\"params\":{\"1\":{\"wt\":\"#00FF00\"}},\"i\":0}}]}&apos;>\n#00FF00&lt;/span>"}]]}'>-</div>
+#00FF00" about="#mwt2" typeof="mw:ExpandedAttrs" data-parsoid='{"stx":"html","a":{"style":"background: \n#00FF00"},"sa":{"style":"background: {{1x|#00FF00}}"}}' data-mw='{"attribs":[[{"txt":"style"},{"html":"background: &lt;span about=\"#mwt1\" typeof=\"mw:Transclusion\" data-parsoid=&apos;{\"pi\":[[{\"k\":\"1\"}]],\"dsr\":[24,38,null,null]}&apos; data-mw=&apos;{\"parts\":[{\"template\":{\"target\":{\"wt\":\"1x\",\"href\":\"./Template:1x\"},\"params\":{\"1\":{\"wt\":\"#00FF00\"}},\"i\":0}}]}&apos;>\n#00FF00&lt;/span>"}]]}'>-</div>
+!! end
+
+!! test
+Expansion of multi-line parser-functions in attribute values (T8255)
+!! wikitext
+<div style="background: {{#if:1|#00FF00|#FF00FF}}">-</div>
+!! html/php
+<div style="background: #00FF00">-</div>
+!! html/parsoid+integrated
+<div style="background: 
+#00FF00" about="#mwt2" typeof="mw:ExpandedAttrs" data-parsoid='{"stx":"html","a":{"style":"background: \n#00FF00"},"sa":{"style":"background: {{#if:1|#00FF00|#FF00FF}}"}}' data-mw='{"attribs":[[{"txt":"style"},{"html":"background: &lt;span about=\"#mwt1\" typeof=\"mw:Transclusion\" data-parsoid=&apos;{\"pi\":[[{\"k\":\"1\"},{\"k\":\"2\"}]],\"dsr\":[24,49,null,null]}&apos; data-mw=&apos;{\"parts\":[{\"template\":{\"target\":{\"wt\":\"#if:1\",\"function\":\"if\"},\"params\":{\"1\":{\"wt\":\"#00FF00\"},\"2\":{\"wt\":\"#FF00FF\"}},\"i\":0}}]}&apos;>\n#00FF00&lt;/span>"}]]}'>-</div>
 !! end
 
 !! test
@@ -11563,10 +11577,6 @@ y
 <p>y</p>
 !! end
 
-## FIXME: Parsoid & legacy parser results differ here.
-## This will be fixed in integrated mode testing and standalone
-## mode testing will be disabled on this test since parser functions
-## aren't properly implemented in Parsoid for standalone testing.
 !! test
 T2529: Uncovered bullet in parser function result
 !! wikitext
@@ -11574,8 +11584,6 @@ T2529: Uncovered bullet in parser function result
 !! html/php
 <ul><li>Foo</li>
 <li>bar</li></ul>
-!! html/parsoid
-<ul><li>Foo<span about="#mwt1" typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"lc:{{bullet}} ","function":"lc"},"params":{},"i":0}}]}'>bar </span></li></ul>
 !! html/parsoid+integrated
 <ul><li>Foo</li><span about="#mwt1" typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"lc:{{bullet}} ","function":"lc"},"params":{},"i":0}}]}'>
 </span><li about="#mwt1">bar</li></ul>

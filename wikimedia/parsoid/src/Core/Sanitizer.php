@@ -54,7 +54,7 @@ class Sanitizer {
 		'/&([A-Za-z0-9\x80-\xff]+;)
 		|&\#([0-9]+);
 		|&\#[xX]([0-9A-Fa-f]+);
-		|(&)/x';
+		|&/x';
 
 	private const INSECURE_RE = '! expression
 		| filter\s*:
@@ -424,7 +424,8 @@ class Sanitizer {
 		return preg_replace_callback(
 			self::CHAR_REFS_REGEX,
 			[ self::class, 'normalizeCharReferencesCallback' ],
-			$text );
+			$text, -1, $count, PREG_UNMATCHED_AS_NULL
+		);
 	}
 
 	/**
@@ -433,11 +434,11 @@ class Sanitizer {
 	 */
 	private static function normalizeCharReferencesCallback( $matches ): string {
 		$ret = null;
-		if ( $matches[1] != '' ) {
+		if ( isset( $matches[1] ) ) {
 			$ret = self::normalizeEntity( $matches[1] );
-		} elseif ( $matches[2] != '' ) {
+		} elseif ( isset( $matches[2] ) ) {
 			$ret = self::decCharReference( $matches[2] );
-		} elseif ( $matches[3] != '' ) {
+		} elseif ( isset( $matches[3] ) ) {
 			$ret = self::hexCharReference( $matches[3] );
 		}
 		if ( $ret === null ) {
@@ -494,14 +495,9 @@ class Sanitizer {
 	 * @return null|string
 	 */
 	private static function hexCharReference( string $codepoint ): ?string {
-		# hexdec() will return a float (not an int) if $codepoint is too
-		# long, so protect against that.  The largest valid codepoint is
-		# 0x10FFFF.
-		if ( strlen( ltrim( $codepoint, '0' ) ) > 6 ) {
-			return null;
-		}
 		$point = hexdec( $codepoint );
-		if ( self::validateCodepoint( $point ) ) {
+		// hexdec() might return a float if the string is too long
+		if ( is_int( $point ) && self::validateCodepoint( $point ) ) {
 			return sprintf( '&#x%x;', $point );
 		} else {
 			return null;
@@ -637,23 +633,23 @@ class Sanitizer {
 		return preg_replace_callback(
 			self::CHAR_REFS_REGEX,
 			function ( $matches ) {
-				if ( $matches[1] !== '' ) {
+				if ( isset( $matches[1] ) ) {
 					return self::decodeEntity( $matches[1] );
-				} elseif ( $matches[2] !== '' ) {
+				} elseif ( isset( $matches[2] ) ) {
 					return self::decodeChar( intval( $matches[2] ) );
-				} elseif ( $matches[3] !== '' ) {
-					# hexdec will return a float if the string is too long (!) so
-					# check the length of the string first.
-					if ( strlen( ltrim( $matches[3], '0' ) ) > 6 ) {
+				} elseif ( isset( $matches[3] ) ) {
+					$point = hexdec( $matches[3] );
+					// hexdec() might return a float if the string is too long
+					if ( !is_int( $point ) ) {
 						// Invalid character reference.
 						return self::UTF8_REPLACEMENT;
 					}
-					return self::decodeChar( hexdec( $matches[3] ) );
+					return self::decodeChar( $point );
 				}
 				# Last case should be an ampersand by itself
-				return $matches[4];
+				return $matches[0];
 			},
-			$text
+			$text, -1, $count, PREG_UNMATCHED_AS_NULL
 		);
 	}
 

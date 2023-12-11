@@ -572,7 +572,9 @@ class LinkHandlerUtils {
 				// Relative link
 				(
 					(
-						$env->getSiteConfig()->namespaceHasSubpages( $env->getPageConfig()->getNs() ) &&
+						$env->getSiteConfig()->namespaceHasSubpages(
+							$env->getContextTitle()->getNamespace()
+						) &&
 						preg_match( '#^\.\./.*[^/]$#D', $strippedTargetValue ) &&
 						$contentString === $env->resolveTitle( $strippedTargetValue )
 					) ||

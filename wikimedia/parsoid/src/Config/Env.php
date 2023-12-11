@@ -240,6 +240,8 @@ class Env {
 	 */
 	private $wikitextContentModelHandler;
 
+	private ?Title $cachedContextTitle = null;
+
 	/**
 	 * @param SiteConfig $siteConfig
 	 * @param PageConfig $pageConfig
@@ -572,6 +574,19 @@ class Env {
 	}
 
 	/**
+	 * Return the title from the PageConfig, as a Parsoid title.
+	 * @return Title
+	 */
+	public function getContextTitle(): Title {
+		if ( $this->cachedContextTitle === null ) {
+			$this->cachedContextTitle = Title::newFromLinkTarget(
+				$this->pageConfig->getLinkTarget(), $this->siteConfig
+			);
+		}
+		return $this->cachedContextTitle;
+	}
+
+	/**
 	 * Resolve strings that are page-fragments or subpage references with
 	 * respect to the current page name.
 	 *
@@ -585,21 +600,22 @@ class Env {
 		$str = trim( $str );
 
 		$pageConfig = $this->getPageConfig();
+		$title = $this->getContextTitle();
 
 		// Resolve lonely fragments (important if the current page is a subpage,
 		// otherwise the relative link will be wrong)
 		if ( $str !== '' && $str[0] === '#' ) {
-			return $pageConfig->getTitle() . $str;
+			return $title->getPrefixedText() . $str;
 		}
 
 		// Default return value
 		$titleKey = $str;
-		if ( $this->getSiteConfig()->namespaceHasSubpages( $pageConfig->getNs() ) ) {
+		if ( $this->getSiteConfig()->namespaceHasSubpages( $title->getNamespace() ) ) {
 			// Resolve subpages
 			$reNormalize = false;
 			if ( preg_match( '!^(?:\.\./)+!', $str, $relUp ) ) {
 				$levels = strlen( $relUp[0] ) / 3;  // Levels are indicated by '../'.
-				$titleBits = explode( '/', $pageConfig->getTitle() );
+				$titleBits = explode( '/', $title->getPrefixedText() );
 				if ( $titleBits[0] === '' ) {
 					// FIXME: Punt on subpages of titles starting with "/" for now
 					return $origName;
@@ -616,7 +632,7 @@ class Env {
 				$reNormalize = true;
 			} elseif ( $str !== '' && $str[0] === '/' ) {
 				// Resolve absolute subpage links
-				$str = $pageConfig->getTitle() . $str;
+				$str = $title->getPrefixedText() . $str;
 				$reNormalize = true;
 			}
 
@@ -680,7 +696,7 @@ class Env {
 	private function makeTitle( string $text, ?int $defaultNs = null, bool $noExceptions = false ): ?Title {
 		try {
 			if ( preg_match( '!^(?:[#/]|\.\./)!', $text ) ) {
-				$defaultNs = $this->getPageConfig()->getNs();
+				$defaultNs = $this->getContextTitle()->getNamespace();
 			}
 			$text = $this->resolveTitle( $text );
 			return Title::newFromText( $text, $this->getSiteConfig(), $defaultNs );

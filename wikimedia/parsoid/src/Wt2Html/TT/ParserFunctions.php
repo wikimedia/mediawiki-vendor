@@ -95,6 +95,10 @@ class ParserFunctions {
 		}
 	}
 
+	private function prefixedTitleText(): string {
+		return $this->env->getContextTitle()->getPrefixedText();
+	}
+
 	public function pf_if( $token, Frame $frame, Params $params ): array {
 		$args = $params->args;
 		if ( trim( $args[0]->k ) !== '' ) {
@@ -629,13 +633,13 @@ class ParserFunctions {
 	public function pf_fullpagename( $token, Frame $frame, Params $params ): array {
 		$args = $params->args;
 		$target = $args[0]->k;
-		return [ $target ?: ( $this->env->getPageConfig()->getTitle() ) ];
+		return [ $target ?: ( $this->prefixedTitleText() ) ];
 	}
 
 	public function pf_fullpagenamee( $token, Frame $frame, Params $params ): array {
 		$args = $params->args;
 		$target = $args[0]->k;
-		return [ $target ?: ( $this->env->getPageConfig()->getTitle() ) ];
+		return [ $target ?: ( $this->prefixedTitleText() ) ];
 	}
 
 	public function pf_pagelanguage( $token, Frame $frame, Params $params ): array {
@@ -663,7 +667,7 @@ class ParserFunctions {
 	public function pf_fullurl( $token, Frame $frame, Params $params ): array {
 		$args = $params->args;
 		$target = $args[0]->k;
-		$target = str_replace( ' ', '_', $target ?: ( $this->env->getPageConfig()->getTitle() ) );
+		$target = str_replace( ' ', '_', $target ?: ( $this->prefixedTitleText() ) );
 		$wikiConf = $this->env->getSiteConfig();
 		$url = null;
 		if ( $args[1] ) {
@@ -846,12 +850,12 @@ class ParserFunctions {
 
 	public function pf_pagename( $token, Frame $frame, Params $params ): array {
 		$args = $params->args;
-		return [ $this->env->getPageConfig()->getTitle() ];
+		return [ $this->prefixedTitleText() ];
 	}
 
 	public function pf_pagenamebase( $token, Frame $frame, Params $params ): array {
 		$args = $params->args;
-		return [ $this->env->getPageConfig()->getTitle() ];
+		return [ $this->prefixedTitleText() ];
 	}
 
 	public function pf_scriptpath( $token, Frame $frame, Params $params ): array {
@@ -883,7 +887,7 @@ class ParserFunctions {
 
 	public function pf_talkpagename( $token, Frame $frame, Params $params ): array {
 		$args = $params->args;
-		$title = $this->env->getPageConfig()->getTitle();
+		$title = $this->prefixedTitleText();
 		return [ preg_replace( '/^[^:]:/', 'Talk:', $title, 1 ) ];
 	}
 

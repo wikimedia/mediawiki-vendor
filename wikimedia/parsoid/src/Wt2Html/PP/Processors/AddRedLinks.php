@@ -50,6 +50,8 @@ class AddRedLinks implements Wt2HtmlDOMProcessor {
 				$profile->bumpCount( "RedLinks" );
 			}
 
+			$prefixedTitleText = $env->getContextTitle()->getPrefixedText();
+
 			foreach ( $links as $a ) {
 				$k = DOMCompat::getAttribute( $a, 'title' );
 				if ( $k === null ) {
@@ -74,7 +76,7 @@ class AddRedLinks implements Wt2HtmlDOMProcessor {
 
 				if (
 					!empty( $data['missing'] ) && empty( $data['known'] ) &&
-					$k !== $env->getPageConfig()->getTitle()
+					$k !== $prefixedTitleText
 				) {
 					DOMCompat::getClassList( $a )->add( 'new' );
 					WTUtils::addPageContentI18nAttribute( $a, 'title', 'red-link-title', [ $k ] );

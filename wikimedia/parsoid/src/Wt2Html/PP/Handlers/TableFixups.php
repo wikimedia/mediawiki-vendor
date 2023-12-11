@@ -690,14 +690,17 @@ class TableFixups {
 				// FIXME: This skips over scenarios like <div>foo||bar</div>.
 				$cellName = DOMCompat::nodeName( $cell );
 				$hasSpanWrapper = !( $child instanceof Text );
-				$match = null;
+				$match = $match1 = $match2 = null;
 
+				// Find the first match of ||
+				preg_match( '/^((?:[^|]*(?:\|[^|])?)*)\|\|([^|].*)?$/D', $child->textContent, $match1 );
 				if ( $isTd ) {
-					preg_match( '/^(.*?[^|])?\|\|([^|].*)?$/D', $child->textContent, $match );
-				} else { /* cellName === 'th' */
-					// Find the first match of || or !!
-					preg_match( '/^(.*?[^|])?\|\|([^|].*)?$/D', $child->textContent, $match1 );
-					preg_match( '/^(.*?[^!])?\!\!([^!].*)?$/D', $child->textContent, $match2 );
+					$match = $match1;
+				} else {
+					// Find the first match !!
+					preg_match( '/^((?:[^!]*(?:\![^!])?)*)\!\!([^!].*)?$/D', $child->textContent, $match2 );
+
+					// Pick the shortest match
 					if ( $match1 && $match2 ) {
 						$match = strlen( $match1[1] ?? '' ) < strlen( $match2[1] ?? '' )
 							? $match1
@@ -739,6 +742,10 @@ class TableFixups {
 					// Set data-parsoid noAttrs flag
 					$newCellDP = DOMDataUtils::getDataParsoid( $newCell );
 					$newCellDP->setTempFlag( TempData::NO_ATTRS );
+					// This new cell has 'row' stx (would be set if the tokenizer had parsed it)
+					// It is important to set this so that when $newCell is processed by this pass,
+					// it won't accidentally recombine again with the previous cell!
+					$newCellDP->stx = 'row';
 				}
 			}
 

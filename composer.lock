@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "982d0703760a359dd90530886b7a0a08",
+    "content-hash": "fc5bbee1546349c2d442a3e4fce3d0ac",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -7544,21 +7544,21 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.19.0-a7",
+            "version": "v0.19.0-a8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
-                "reference": "5101586dce622e8708be2a5584cf2687d37dab29"
+                "reference": "2840c5d66ca041b61e8cda7a240fab814c2cf0ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/5101586dce622e8708be2a5584cf2687d37dab29",
-                "reference": "5101586dce622e8708be2a5584cf2687d37dab29",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/2840c5d66ca041b61e8cda7a240fab814c2cf0ec",
+                "reference": "2840c5d66ca041b61e8cda7a240fab814c2cf0ec",
                 "shasum": ""
             },
             "require": {
                 "composer-runtime-api": "^2.0",
-                "composer/semver": "3.3.2",
+                "composer/semver": "^3.3.2",
                 "ext-dom": "*",
                 "ext-json": "*",
                 "liuggio/statsd-php-client": "^1.0.18",
@@ -7622,10 +7622,10 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.19.0-a7",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.19.0-a8",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
-            "time": "2023-11-22T20:08:48+00:00"
+            "time": "2023-12-11T17:52:14+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",
@@ -8779,5 +8779,5 @@
         "composer-plugin-api": "^2.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
