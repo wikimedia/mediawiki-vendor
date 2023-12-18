@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8450aa3ab410513265ee933d627423f0",
+    "content-hash": "ba9ca1a402e683fac37c30da1909efaa",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -7544,16 +7544,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.19.0-a8",
+            "version": "v0.19.0-a9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
-                "reference": "2840c5d66ca041b61e8cda7a240fab814c2cf0ec"
+                "reference": "e28424520400c9fdbd29323a855a07fb81b0dc56"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/2840c5d66ca041b61e8cda7a240fab814c2cf0ec",
-                "reference": "2840c5d66ca041b61e8cda7a240fab814c2cf0ec",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/e28424520400c9fdbd29323a855a07fb81b0dc56",
+                "reference": "e28424520400c9fdbd29323a855a07fb81b0dc56",
                 "shasum": ""
             },
             "require": {
@@ -7593,7 +7593,7 @@
                 "sebastian/diff": "^4.0.3",
                 "wikimedia/alea": "^1.0.0",
                 "wikimedia/langconv": "^0.4.2",
-                "wikimedia/testing-access-wrapper": "~1.0"
+                "wikimedia/testing-access-wrapper": "~3.0"
             },
             "suggest": {
                 "wikimedia/langconv": "Provides script conversion support"
@@ -7622,10 +7622,10 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.19.0-a8",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.19.0-a9",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
-            "time": "2023-12-11T17:52:14+00:00"
+            "time": "2023-12-18T16:56:32+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",
