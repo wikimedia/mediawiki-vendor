@@ -117,5 +117,4 @@ return array(
     '5897ea0ac4cccf14d323035e65887801' => $vendorDir . '/symfony/polyfill-php82/bootstrap.php',
     '662a729f963d39afe703c9d9b7ab4a8c' => $vendorDir . '/symfony/polyfill-php83/bootstrap.php',
     'a1105708a18b76903365ca1c4aa61b02' => $vendorDir . '/symfony/translation/Resources/functions.php',
-    '6513700b70192b7dfd0e5e9fc8082cf3' => $vendorDir . '/wikimedia/relpath/src/Wikimedia/RelPath.php',
 );

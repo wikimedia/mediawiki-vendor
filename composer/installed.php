@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => NULL,
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => 'eb54a3c0569c73636a7f8011b272425d90bf6e5c',
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => NULL,
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => 'eb54a3c0569c73636a7f8011b272425d90bf6e5c',
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -1167,9 +1167,9 @@
             'dev_requirement' => false,
         ),
         'wikimedia/relpath' => array(
-            'pretty_version' => '3.0.0',
-            'version' => '3.0.0.0',
-            'reference' => 'b237d203c820cd1000f2c5ecad25de9fa7165612',
+            'pretty_version' => '4.0.0',
+            'version' => '4.0.0.0',
+            'reference' => 'b4dc7c1e8b4f7dd81c38c2071a2d5c2ace39fc8e',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/relpath',
             'aliases' => array(),

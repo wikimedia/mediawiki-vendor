@@ -4511,6 +4511,7 @@ return array(
     'Wikimedia\\Purtle\\TurtleRdfWriter' => $vendorDir . '/wikimedia/purtle/src/TurtleRdfWriter.php',
     'Wikimedia\\Purtle\\UnicodeEscaper' => $vendorDir . '/wikimedia/purtle/src/UnicodeEscaper.php',
     'Wikimedia\\Purtle\\XmlRdfWriter' => $vendorDir . '/wikimedia/purtle/src/XmlRdfWriter.php',
+    'Wikimedia\\RelPath' => $vendorDir . '/wikimedia/relpath/src/RelPath.php',
     'Wikimedia\\RemexHtml\\DOM\\DOMBuilder' => $vendorDir . '/wikimedia/remex-html/src/DOM/DOMBuilder.php',
     'Wikimedia\\RemexHtml\\DOM\\DOMFormatter' => $vendorDir . '/wikimedia/remex-html/src/DOM/DOMFormatter.php',
     'Wikimedia\\RemexHtml\\DOM\\DOMSerializer' => $vendorDir . '/wikimedia/remex-html/src/DOM/DOMSerializer.php',

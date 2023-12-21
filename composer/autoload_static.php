@@ -118,7 +118,6 @@ class ComposerStaticInit_mediawiki_vendor
         '5897ea0ac4cccf14d323035e65887801' => __DIR__ . '/..' . '/symfony/polyfill-php82/bootstrap.php',
         '662a729f963d39afe703c9d9b7ab4a8c' => __DIR__ . '/..' . '/symfony/polyfill-php83/bootstrap.php',
         'a1105708a18b76903365ca1c4aa61b02' => __DIR__ . '/..' . '/symfony/translation/Resources/functions.php',
-        '6513700b70192b7dfd0e5e9fc8082cf3' => __DIR__ . '/..' . '/wikimedia/relpath/src/Wikimedia/RelPath.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -400,6 +399,7 @@ class ComposerStaticInit_mediawiki_vendor
             3 => __DIR__ . '/..' . '/wikimedia/testing-access-wrapper/src',
             4 => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src',
             5 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
+            6 => __DIR__ . '/..' . '/wikimedia/relpath/src',
         ),
         'Webauthn\\MetadataService\\' => 
         array (
@@ -5314,6 +5314,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Purtle\\TurtleRdfWriter' => __DIR__ . '/..' . '/wikimedia/purtle/src/TurtleRdfWriter.php',
         'Wikimedia\\Purtle\\UnicodeEscaper' => __DIR__ . '/..' . '/wikimedia/purtle/src/UnicodeEscaper.php',
         'Wikimedia\\Purtle\\XmlRdfWriter' => __DIR__ . '/..' . '/wikimedia/purtle/src/XmlRdfWriter.php',
+        'Wikimedia\\RelPath' => __DIR__ . '/..' . '/wikimedia/relpath/src/RelPath.php',
         'Wikimedia\\RemexHtml\\DOM\\DOMBuilder' => __DIR__ . '/..' . '/wikimedia/remex-html/src/DOM/DOMBuilder.php',
         'Wikimedia\\RemexHtml\\DOM\\DOMFormatter' => __DIR__ . '/..' . '/wikimedia/remex-html/src/DOM/DOMFormatter.php',
         'Wikimedia\\RemexHtml\\DOM\\DOMSerializer' => __DIR__ . '/..' . '/wikimedia/remex-html/src/DOM/DOMSerializer.php',
