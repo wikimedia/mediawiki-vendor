@@ -2242,6 +2242,7 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\PaymentProviders\\Braintree\\SearchTransactionsProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Braintree/SearchTransactionsProvider.php',
         'SmashPig\\PaymentProviders\\Braintree\\SignatureValidator' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Braintree/SignatureValidator.php',
         'SmashPig\\PaymentProviders\\Braintree\\TestPaymentProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Braintree/TestPaymentProvider.php',
+        'SmashPig\\PaymentProviders\\Braintree\\Tests\\BaseBraintreeTest' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Braintree/Tests/BaseBraintreeTest.php',
         'SmashPig\\PaymentProviders\\Braintree\\TransactionType' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Braintree/TransactionType.php',
         'SmashPig\\PaymentProviders\\Braintree\\ValidationErrorMapper' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Braintree/ValidationErrorMapper.php',
         'SmashPig\\PaymentProviders\\Braintree\\VenmoPaymentProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Braintree/VenmoPaymentProvider.php',
