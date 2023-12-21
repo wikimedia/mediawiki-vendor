@@ -12,7 +12,6 @@ return array(
     'Mail' => array($vendorDir . '/pear/mail', $vendorDir . '/pear/mail_mime'),
     'Liuggio' => array($vendorDir . '/liuggio/statsd-php-client/src'),
     'Less' => array($vendorDir . '/wikimedia/less.php/lib'),
-    'JsonMapper' => array($vendorDir . '/netresearch/jsonmapper/src'),
     'ForceUTF8\\' => array($vendorDir . '/neitanod/forceutf8/src'),
     'Console' => array($vendorDir . '/pear/console_getopt'),
     'ComposerVendorHtaccessCreator' => array($baseDir . '/includes/composer'),
