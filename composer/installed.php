@@ -1032,8 +1032,8 @@
             'dev_requirement' => false,
         ),
         'wikimedia/equivset' => array(
-            'pretty_version' => '1.5.1',
-            'version' => '1.5.1.0',
+            'pretty_version' => '1.6.0',
+            'version' => '1.6.0.0',
             'reference' => 'a5ca9c26726594b5bd294bd4c91822a6560072d6',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/equivset',

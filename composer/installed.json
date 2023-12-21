@@ -7145,8 +7145,8 @@
         },
         {
             "name": "wikimedia/equivset",
-            "version": "1.5.1",
-            "version_normalized": "1.5.1.0",
+            "version": "1.6.0",
+            "version_normalized": "1.6.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-Equivset.git",
@@ -7201,7 +7201,7 @@
             "description": "Visually Equivalent Set of UTF-8 Characters",
             "homepage": "https://www.mediawiki.org/wiki/Equivset",
             "support": {
-                "source": "https://github.com/wikimedia/mediawiki-libs-Equivset/tree/1.5.1"
+                "source": "https://github.com/wikimedia/mediawiki-libs-Equivset/tree/1.6.0"
             },
             "install-path": "../wikimedia/equivset"
         },

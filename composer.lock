@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d1f3c41f8bb6a4b70d360cb460232155",
+    "content-hash": "bdb978c51ee5364276326ceae6cfc622",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -6851,7 +6851,7 @@
         },
         {
             "name": "wikimedia/equivset",
-            "version": "1.5.1",
+            "version": "1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-Equivset.git",
@@ -6904,7 +6904,7 @@
             "description": "Visually Equivalent Set of UTF-8 Characters",
             "homepage": "https://www.mediawiki.org/wiki/Equivset",
             "support": {
-                "source": "https://github.com/wikimedia/mediawiki-libs-Equivset/tree/1.5.1"
+                "source": "https://github.com/wikimedia/mediawiki-libs-Equivset/tree/1.6.0"
             },
             "time": "2023-08-29T14:21:48+00:00"
         },
