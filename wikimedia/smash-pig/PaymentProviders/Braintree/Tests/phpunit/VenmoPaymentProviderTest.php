@@ -19,8 +19,6 @@ class VenmoPaymentProviderTest extends BaseBraintreeTest {
 			"payment_token" => "fake-valid-nonce",
 			"order_id" => '123.3',
 			"amount" => '1.00',
-			"email" => 'test@gmail.com',
-			"gateway_session_id" => 'xxxx',
 			"currency" => "USD"
 		];
 
@@ -36,8 +34,6 @@ class VenmoPaymentProviderTest extends BaseBraintreeTest {
 			"order_id" => '123.3',
 			"amount" => '1.00',
 			"device_data" => '{}',
-			"email" => 'test@gmail.com',
-			"gateway_session_id" => 'xxxx',
 			"currency" => "EUR"
 		];
 
@@ -45,28 +41,6 @@ class VenmoPaymentProviderTest extends BaseBraintreeTest {
 		$response = $provider->createPayment( $request );
 		$validationError = $response->getValidationErrors();
 		$this->assertEquals( $validationError[0]->getField(), 'currency' );
-	}
-
-	/**
-	 * Test fetch customer info if no customer email passed from client side
-	 * @return void
-	 */
-	public function testFetchCustomer() {
-		$payment_context_id = 'cGF5bWVudGNvbnRleHRfbXM5ZnFtdzlneHJtMmJwMyM3YTliNjk1ZC0zZjZjLTQ5NTItOTI4Ny1mZWE4OTI5NTU0YzQ=';
-		$expectEmail = 'tt@tt.tt';
-		$this->api->expects( $this->once() )
-			->method( 'fetchCustomer' )
-			->willReturn( [
-				'data' => [ 'node' => [
-					'payerInfo' => [
-						'email' => $expectEmail,
-					]
-				] ]
-			] );
-
-		$provider = new VenmoPaymentProvider();
-		$donorDetails = $provider->fetchCustomerData( $payment_context_id );
-		$this->assertEquals( $expectEmail, $donorDetails->getEmail() );
 	}
 
 	public function testAuthorizePaymentVenmo() {

@@ -4,6 +4,7 @@ namespace SmashPig\PaymentProviders\Braintree;
 
 use Psr\Log\LogLevel;
 use SmashPig\Core\Context;
+use SmashPig\Core\Logging\Logger;
 use SmashPig\Core\PaymentError;
 use SmashPig\Core\ValidationError;
 use SmashPig\PaymentData\DonorDetails;
@@ -260,6 +261,20 @@ class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaymentTokenP
 			}
 		}
 
+		if ( !$params['email'] ) {
+			Logger::info( 'No email passed, fetch again with gateway_session_id: ' . $params['gateway_session_id'] );
+			$donorDetails = $this->fetchCustomerData( $params['gateway_session_id'] );
+			if ( $donorDetails ) {
+				$params['email'] = $donorDetails->getEmail();
+				$params['first_name'] = $donorDetails->getFirstName();
+				$params['last_name'] = $donorDetails->getLastName();
+				$params['phone'] = $donorDetails->getPhone();
+			}
+			if ( !$params['email'] ) {
+				Logger::info( 'Braintree re-fetch email failed: Need to use Maintenance script to fetch data again with order_id ' . $params['order_id'] . ' and gateway_session_id ' . $params['gateway_session_id'] );
+			}
+		}
+
 		$apiParams['transaction'] = [
 			'amount' => $params['amount'],
 			'riskData' => [
@@ -309,13 +324,33 @@ class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaymentTokenP
 		return $apiParams;
 	}
 
+	/**
+	 * @param string $id
+	 * todo: check if other braintree payment methods can and need use this
+	 * @return \SmashPig\PaymentData\DonorDetails
+	 */
+	public function fetchCustomerData( string $id ) {
+		// venmo is using client side return for email, if not return for some reason, fetch again
+		$rawResponse = $this->api->fetchCustomer( $id )['data']['node']['payerInfo'];
+		Logger::info( 'Result from customer info fetch: ' . json_encode( $rawResponse ) );
+		$donorDetails = new DonorDetails();
+		if ( $rawResponse ) {
+			$donorDetails->setUserName( $rawResponse['userName'] ?? null );
+			$donorDetails->setCustomerId( $rawResponse['externalId'] ?? null );
+			$donorDetails->setEmail( $rawResponse['email'] ?? null );
+			$donorDetails->setFirstName( $rawResponse['firstName'] ?? null );
+			$donorDetails->setLastName( $rawResponse['lastName'] ?? null );
+			$donorDetails->setPhone( $rawResponse['phoneNumber'] ?? null );
+		}
+		return $donorDetails;
+	}
+
 	protected function setCreatePaymentSuccessfulResponseDetails( array $transaction, CreatePaymentResponse $response, array $params ) {
 		$successfulStatuses = [ FinalStatus::PENDING_POKE, FinalStatus::COMPLETE ];
 		$mappedStatus = ( new PaymentStatus() )->normalizeStatus( $transaction['status'] );
 		$response->setSuccessful( in_array( $mappedStatus, $successfulStatuses ) );
 		$response->setGatewayTxnId( $transaction['id'] );
 		$donorDetails = new DonorDetails();
-		// if paypal, could get info from paymentMethodSnapshot payer, otherwise get from params
 		$donorDetails->setFirstName( $transaction['paymentMethodSnapshot']['payer']['firstName'] ?? $params['first_name'] );
 		$donorDetails->setLastName( $transaction['paymentMethodSnapshot']['payer']['lastName'] ?? $params['last_name'] );
 		$donorDetails->setEmail( $transaction['paymentMethodSnapshot']['payer']['email'] ?? $params['email'] );

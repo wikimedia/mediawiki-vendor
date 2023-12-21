@@ -1,6 +1,14 @@
 CHANGELOG
 =========
 
+1.23.0 (2023-03-06)
+-------------------
+
+* Fixed "creation of a dynamic property" deprecation warning on newer PHP
+  versions. Reported by Andrey Lebedev. GitHub #145.
+* Added `google_pay` to the payment processor validation.
+* Added `placetopay` to the payment processor validation.
+
 1.22.0 (2022-08-05)
 -------------------
 
