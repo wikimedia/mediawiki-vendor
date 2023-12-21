@@ -485,9 +485,9 @@
             'dev_requirement' => false,
         ),
         'pear/mail' => array(
-            'pretty_version' => 'v1.5.1',
-            'version' => '1.5.1.0',
-            'reference' => '1665e1b1dc0261a15cb3ee99ef38b4254aa7564a',
+            'pretty_version' => 'v1.6.0',
+            'version' => '1.6.0.0',
+            'reference' => '4fda3292ac6bf226d8841cfd8ee3cf4e28395c01',
             'type' => 'library',
             'install_path' => __DIR__ . '/../pear/mail',
             'aliases' => array(),
@@ -503,9 +503,9 @@
             'dev_requirement' => false,
         ),
         'pear/net_smtp' => array(
-            'pretty_version' => '1.10.1',
-            'version' => '1.10.1.0',
-            'reference' => 'cfd963dc5cc73b4d64c7769e47dfa0f439dec536',
+            'pretty_version' => '1.11.1',
+            'version' => '1.11.1.0',
+            'reference' => '0ae529d6f8358e29a7eaa8b314e5bcf168bfcec8',
             'type' => 'library',
             'install_path' => __DIR__ . '/../pear/net_smtp',
             'aliases' => array(),
@@ -530,9 +530,9 @@
             'dev_requirement' => false,
         ),
         'pear/pear-core-minimal' => array(
-            'pretty_version' => 'v1.10.13',
-            'version' => '1.10.13.0',
-            'reference' => 'aed862e95fd286c53cc546734868dc38ff4b5b1d',
+            'pretty_version' => 'v1.10.14',
+            'version' => '1.10.14.0',
+            'reference' => 'a86fc145edb5caedbf96527214ce3cadc9de4a32',
             'type' => 'library',
             'install_path' => __DIR__ . '/../pear/pear-core-minimal',
             'aliases' => array(),
@@ -695,7 +695,7 @@
         'rsky/pear-core-min' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v1.10.13',
+                0 => 'v1.10.14',
             ),
         ),
         'ruflin/elastica' => array(

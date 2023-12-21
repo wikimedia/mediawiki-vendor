@@ -3413,17 +3413,17 @@
         },
         {
             "name": "pear/mail",
-            "version": "v1.5.1",
-            "version_normalized": "1.5.1.0",
+            "version": "v1.6.0",
+            "version_normalized": "1.6.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear/Mail.git",
-                "reference": "1665e1b1dc0261a15cb3ee99ef38b4254aa7564a"
+                "reference": "4fda3292ac6bf226d8841cfd8ee3cf4e28395c01"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/Mail/zipball/1665e1b1dc0261a15cb3ee99ef38b4254aa7564a",
-                "reference": "1665e1b1dc0261a15cb3ee99ef38b4254aa7564a",
+                "url": "https://api.github.com/repos/pear/Mail/zipball/4fda3292ac6bf226d8841cfd8ee3cf4e28395c01",
+                "reference": "4fda3292ac6bf226d8841cfd8ee3cf4e28395c01",
                 "shasum": ""
             },
             "require": {
@@ -3436,7 +3436,7 @@
             "suggest": {
                 "pear/net_smtp": "Install optionally via your project's composer.json"
             },
-            "time": "2023-08-08T21:11:59+00:00",
+            "time": "2023-11-01T21:31:59+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -3537,17 +3537,17 @@
         },
         {
             "name": "pear/net_smtp",
-            "version": "1.10.1",
-            "version_normalized": "1.10.1.0",
+            "version": "1.11.1",
+            "version_normalized": "1.11.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear/Net_SMTP.git",
-                "reference": "cfd963dc5cc73b4d64c7769e47dfa0f439dec536"
+                "reference": "0ae529d6f8358e29a7eaa8b314e5bcf168bfcec8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/Net_SMTP/zipball/cfd963dc5cc73b4d64c7769e47dfa0f439dec536",
-                "reference": "cfd963dc5cc73b4d64c7769e47dfa0f439dec536",
+                "url": "https://api.github.com/repos/pear/Net_SMTP/zipball/0ae529d6f8358e29a7eaa8b314e5bcf168bfcec8",
+                "reference": "0ae529d6f8358e29a7eaa8b314e5bcf168bfcec8",
                 "shasum": ""
             },
             "require": {
@@ -3561,7 +3561,7 @@
             "suggest": {
                 "pear/auth_sasl": "Install optionally via your project's composer.json"
             },
-            "time": "2022-09-23T21:48:50+00:00",
+            "time": "2023-11-01T15:03:18+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -3740,27 +3740,28 @@
         },
         {
             "name": "pear/pear-core-minimal",
-            "version": "v1.10.13",
-            "version_normalized": "1.10.13.0",
+            "version": "v1.10.14",
+            "version_normalized": "1.10.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear/pear-core-minimal.git",
-                "reference": "aed862e95fd286c53cc546734868dc38ff4b5b1d"
+                "reference": "a86fc145edb5caedbf96527214ce3cadc9de4a32"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/pear-core-minimal/zipball/aed862e95fd286c53cc546734868dc38ff4b5b1d",
-                "reference": "aed862e95fd286c53cc546734868dc38ff4b5b1d",
+                "url": "https://api.github.com/repos/pear/pear-core-minimal/zipball/a86fc145edb5caedbf96527214ce3cadc9de4a32",
+                "reference": "a86fc145edb5caedbf96527214ce3cadc9de4a32",
                 "shasum": ""
             },
             "require": {
                 "pear/console_getopt": "~1.4",
-                "pear/pear_exception": "~1.0"
+                "pear/pear_exception": "~1.0",
+                "php": ">=5.4"
             },
             "replace": {
                 "rsky/pear-core-min": "self.version"
             },
-            "time": "2023-04-19T19:15:47+00:00",
+            "time": "2023-11-26T16:15:38+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
