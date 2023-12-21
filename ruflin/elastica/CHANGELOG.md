@@ -4,7 +4,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/ruflin/Elastica/compare/7.3.0...master)
+## [Unreleased](https://github.com/ruflin/Elastica/compare/7.3.1...master)
+
 ### Backward Compatibility Breaks
 ### Added
 ### Changed
@@ -12,6 +13,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 ### Fixed
 ### Security
+
+
+## [7.3.1](https://github.com/ruflin/Elastica/compare/7.3.0...7.3.1)
+
+### Added
+* Added missing `@throws` annotations to Client::request and related methods [#2153](https://github.com/ruflin/Elastica/pull/2153)
+
+### Deprecated
+* Deprecated not passing a `buckets_path` and `script` when constructing `Elastica\Aggregation\BucketScript` and `Elastica\Aggregation\BucketSelector`
+
+### Fixed
+* Fix types order in `Elastica\Query` to work with psalm & expand the `aggs` type to include raw arrays
 
 ## [7.3.0](https://github.com/ruflin/Elastica/compare/7.3.0...7.2.0)
 ### Changed
