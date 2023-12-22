@@ -80,7 +80,7 @@
 		"ralouphie/getallheaders": "3.0.3",
 		"ramsey/collection": "1.3.0",
 		"ramsey/uuid": "4.2.3",
-		"react/promise": "2.9.0",
+		"react/promise": "2.11.0",
 		"ruflin/elastica": "7.3.1",
 		"serialization/serialization": "4.0.0",
 		"spomky-labs/base64url": "2.0.4",

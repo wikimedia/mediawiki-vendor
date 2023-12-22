@@ -678,9 +678,9 @@
             'dev_requirement' => false,
         ),
         'react/promise' => array(
-            'pretty_version' => 'v2.9.0',
-            'version' => '2.9.0.0',
-            'reference' => '234f8fd1023c9158e2314fa9d7d0e6a83db42910',
+            'pretty_version' => 'v2.11.0',
+            'version' => '2.11.0.0',
+            'reference' => '1a8460931ea36dc5c76838fec5734d55c88c6831',
             'type' => 'library',
             'install_path' => __DIR__ . '/../react/promise',
             'aliases' => array(),
