@@ -155,9 +155,9 @@
             'dev_requirement' => false,
         ),
         'defuse/php-encryption' => array(
-            'pretty_version' => 'v2.3.1',
-            'version' => '2.3.1.0',
-            'reference' => '77880488b9954b7884c25555c2a0ea9e7053f9d2',
+            'pretty_version' => 'v2.4.0',
+            'version' => '2.4.0.0',
+            'reference' => 'f53396c2d34225064647a05ca76c1da9d99e5828',
             'type' => 'library',
             'install_path' => __DIR__ . '/../defuse/php-encryption',
             'aliases' => array(),
