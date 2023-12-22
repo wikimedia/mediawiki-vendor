@@ -28,17 +28,10 @@ class ReferencesData {
 	/** @var string */
 	public $referencesGroup = '';
 
-	/**
-	 * @return bool
-	 */
 	public function inReferencesContent(): bool {
 		return $this->inEmbeddedContent( 'references' );
 	}
 
-	/**
-	 * @param ?string $needle
-	 * @return bool
-	 */
 	public function inEmbeddedContent( ?string $needle = null ): bool {
 		if ( $needle ) {
 			return in_array( $needle, $this->inEmbeddedContent, true );
@@ -47,10 +40,7 @@ class ReferencesData {
 		}
 	}
 
-	/**
-	 * @param string $needle
-	 */
-	public function pushEmbeddedContentFlag( string $needle = 'embed' ) {
+	public function pushEmbeddedContentFlag( string $needle = 'embed' ): void {
 		array_unshift( $this->inEmbeddedContent, $needle );
 	}
 
@@ -58,11 +48,6 @@ class ReferencesData {
 		array_shift( $this->inEmbeddedContent );
 	}
 
-	/**
-	 * @param string $groupName
-	 * @param bool $allocIfMissing
-	 * @return ?RefGroup
-	 */
 	public function getRefGroup(
 		string $groupName, bool $allocIfMissing = false
 	): ?RefGroup {
@@ -72,9 +57,6 @@ class ReferencesData {
 		return $this->refGroups[$groupName] ?? null;
 	}
 
-	/**
-	 * @param string $groupName
-	 */
 	public function removeRefGroup( string $groupName ): void {
 		// '' is a valid group (the default group)
 		unset( $this->refGroups[$groupName] );
@@ -87,21 +69,11 @@ class ReferencesData {
 	 * @return string
 	 */
 	private function normalizeKey( string $key ): string {
-		$ret = Sanitizer::escapeIdForAttribute( $key );
+		$ret = Sanitizer::escapeIdForLink( $key );
 		$ret = preg_replace( '/[_\s]+/u', '_', $ret );
-		// FIXME: The extension to the legacy parser does the following too,
-		// but Parsoid hasn't ported it yet and needs investigation of
-		// whether it's still relevant in the Parsoid context.
-		// $ret = Sanitizer::safeEncodeAttribute( $ret );
 		return $ret;
 	}
 
-	/**
-	 * @param ParsoidExtensionAPI $extApi
-	 * @param string $groupName
-	 * @param string $refName
-	 * @return stdClass
-	 */
 	public function add(
 		ParsoidExtensionAPI $extApi, string $groupName, string $refName
 	): stdClass {

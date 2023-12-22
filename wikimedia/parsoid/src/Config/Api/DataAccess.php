@@ -101,13 +101,16 @@ class DataAccess extends IDataAccess {
 	}
 
 	/** @inheritDoc */
-	public function getPageInfo( PageConfig $pageConfig, array $titles ): array {
+	public function getPageInfo( $pageConfigOrTitle, array $titles ): array {
+		$contextTitle = $pageConfigOrTitle instanceof PageConfig ?
+			$pageConfigOrTitle->getLinkTarget() : $pageConfigOrTitle;
+
 		if ( !$titles ) {
 			return [];
 		}
 
 		$ret = [];
-		$pageConfigTitle = $this->toPrefixedText( $pageConfig->getLinkTarget() );
+		$pageConfigTitle = $this->toPrefixedText( $contextTitle );
 		foreach ( array_chunk( $titles, 50 ) as $batch ) {
 			$data = $this->api->makeRequest( [
 				'action' => 'query',
@@ -386,11 +389,9 @@ class DataAccess extends IDataAccess {
 
 	/** @inheritDoc */
 	public function fetchTemplateSource(
-		PageConfig $pageConfig, $title
+		PageConfig $pageConfig, LinkTarget $title
 	): ?PageContent {
-		if ( !is_string( $title ) ) {
-			$title = $this->toPrefixedText( $title );
-		}
+		$title = $this->toPrefixedText( $title );
 		$key = implode( ':', [ 'content', md5( $title ) ] );
 		$ret = $this->getCache( $key );
 		if ( $ret === null ) {
@@ -417,10 +418,8 @@ class DataAccess extends IDataAccess {
 	}
 
 	/** @inheritDoc */
-	public function fetchTemplateData( PageConfig $pageConfig, $title ): ?array {
-		if ( !is_string( $title ) ) {
-			$title = $this->toPrefixedText( $title );
-		}
+	public function fetchTemplateData( PageConfig $pageConfig, LinkTarget $title ): ?array {
+		$title = $this->toPrefixedText( $title );
 		$key = implode( ':', [ 'templatedata', md5( $title ) ] );
 		$ret = $this->getCache( $key );
 		if ( $ret === null ) {

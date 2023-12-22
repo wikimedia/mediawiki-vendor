@@ -54,11 +54,8 @@ class DOMPostProcessor extends PipelineStage {
 	/** @var array */
 	private $options;
 
-	/** @var array */
-	private $seenIds;
-
-	/** @var array */
-	private $processors;
+	private array $seenIds = [];
+	private array $processors = [];
 
 	/** @var ParsoidExtensionAPI Provides post-processing support to extensions */
 	private $extApi;
@@ -69,12 +66,6 @@ class DOMPostProcessor extends PipelineStage {
 	/** @var string */
 	private $timeProfile = '';
 
-	/**
-	 * @param Env $env
-	 * @param array $options
-	 * @param string $stageId
-	 * @param ?PipelineStage $prevStage
-	 */
 	public function __construct(
 		Env $env, array $options = [], string $stageId = "",
 		?PipelineStage $prevStage = null
@@ -82,8 +73,6 @@ class DOMPostProcessor extends PipelineStage {
 		parent::__construct( $env, $prevStage );
 
 		$this->options = $options;
-		$this->seenIds = [];
-		$this->processors = [];
 		$this->extApi = new ParsoidExtensionAPI( $env );
 
 		// map from mediawiki metadata names to RDFa property names
@@ -122,9 +111,6 @@ class DOMPostProcessor extends PipelineStage {
 		];
 	}
 
-	/**
-	 * @param ?array $processors
-	 */
 	public function registerProcessors( ?array $processors ): void {
 		foreach ( $processors ?: $this->getDefaultProcessors() as $p ) {
 			if ( empty( $p['name'] ) ) {
@@ -168,9 +154,6 @@ class DOMPostProcessor extends PipelineStage {
 		}
 	}
 
-	/**
-	 * @return array
-	 */
 	public function getDefaultProcessors(): array {
 		$env = $this->env;
 		$options = $this->options;
@@ -643,10 +626,6 @@ class DOMPostProcessor extends PipelineStage {
 		$this->seenIds = [];
 	}
 
-	/**
-	 * @param Element $body
-	 * @param Env $env
-	 */
 	private function updateBodyClasslist( Element $body, Env $env ): void {
 		$dir = $env->getPageConfig()->getPageLanguageDir();
 		$bodyCL = DOMCompat::getClassList( $body );
@@ -840,9 +819,6 @@ class DOMPostProcessor extends PipelineStage {
 		}
 	}
 
-	/**
-	 * @param Node $node
-	 */
 	public function doPostProcess( Node $node ): void {
 		$env = $this->env;
 

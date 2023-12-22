@@ -161,17 +161,12 @@ class ParserPipelineFactory {
 		'attrExpansion'
 	];
 
-	/** @var array */
-	private $pipelineCache;
+	private array $pipelineCache = [];
 
 	/** @var Env */
 	private $env;
 
-	/**
-	 * @param Env $env
-	 */
 	public function __construct( Env $env ) {
-		$this->pipelineCache = [];
 		$this->env = $env;
 	}
 
@@ -245,11 +240,6 @@ class ParserPipelineFactory {
 		);
 	}
 
-	/**
-	 * @param string $cacheKey
-	 * @param array $options
-	 * @return string
-	 */
 	private function getCacheKey( string $cacheKey, array $options ): string {
 		if ( empty( $options['isInclude'] ) ) {
 			$cacheKey .= '::noInclude';
@@ -278,10 +268,6 @@ class ParserPipelineFactory {
 		return $cacheKey;
 	}
 
-	/**
-	 * @param string $src
-	 * @return Document
-	 */
 	public function parse( string $src ): Document {
 		$pipe = $this->getPipeline( 'text/x-mediawiki/full' );
 		$pipe->init( [

@@ -34,7 +34,6 @@ use Wikimedia\Parsoid\Ext\Pre\Pre;
 use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\PHPUtils;
-use Wikimedia\Parsoid\Utils\Title;
 use Wikimedia\Parsoid\Utils\Utils;
 use Wikimedia\Parsoid\Wikitext\Consts;
 
@@ -681,26 +680,11 @@ abstract class SiteConfig {
 	 */
 	abstract public function langBcp47(): Bcp47Code;
 
-	// At least one of ::mainpage(), ::mainPageLinkTarget() should be defined
-
-	/**
-	 * Main page title
-	 * @return string
-	 * @deprecated Use ::mainPageLinkTarget()
-	 */
-	public function mainpage(): string {
-		return Title::newFromLinkTarget( $this->mainPageLinkTarget(), $this )
-			->getPrefixedText();
-	}
-
 	/**
 	 * Main page title, as LinkTarget
 	 * @return LinkTarget
 	 */
-	public function mainPageLinkTarget(): LinkTarget {
-		// @phan-suppress-next-line PhanDeprecatedFunction
-		return Title::newFromText( $this->mainpage(), $this );
-	}
+	abstract public function mainPageLinkTarget(): LinkTarget;
 
 	/**
 	 * Lookup config
@@ -970,25 +954,17 @@ abstract class SiteConfig {
 
 	/**
 	 * Default thumbnail width
-	 * @return int
 	 */
 	abstract public function widthOption(): int;
 
-	/**
-	 * @return array
-	 */
 	abstract protected function getVariableIDs(): array;
 
-	/**
-	 * @return array
-	 */
 	abstract protected function getMagicWords(): array;
 
 	/**
 	 * Does the SiteConfig provide precomputed function synonyms?
 	 * If no, the SiteConfig is expected to provide an implementation
 	 * for updateFunctionSynonym.
-	 * @return bool
 	 */
 	protected function haveComputedFunctionSynonyms(): bool {
 		return true;
@@ -996,17 +972,11 @@ abstract class SiteConfig {
 
 	/**
 	 * Get a list of precomputed function synonyms
-	 * @return array
 	 */
 	protected function getFunctionSynonyms(): array {
 		return [];
 	}
 
-	/**
-	 * @param string $func
-	 * @param string $magicword
-	 * @param bool $caseSensitive
-	 */
 	protected function updateFunctionSynonym( string $func, string $magicword, bool $caseSensitive ): void {
 		throw new \RuntimeException( "Unexpected code path!" );
 	}
@@ -1554,9 +1524,6 @@ abstract class SiteConfig {
 		}
 	}
 
-	/**
-	 * @return array
-	 */
 	protected function getExtConfig(): array {
 		if ( !$this->extConfig ) {
 			$this->constructExtConfig();
@@ -1732,9 +1699,6 @@ abstract class SiteConfig {
 		return $logger;
 	}
 
-	/**
-	 * @return array
-	 */
 	abstract public function getNoFollowConfig(): array;
 
 	/** @return string|false */

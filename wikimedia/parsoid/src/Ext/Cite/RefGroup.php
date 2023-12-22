@@ -23,20 +23,15 @@ class RefGroup {
 	/**
 	 * @var stdClass[]
 	 */
-	public $refs;
+	public array $refs = [];
 
 	/**
 	 * @var stdClass[]
 	 */
-	public $indexByName;
+	public array $indexByName = [];
 
-	/**
-	 * @param string $group
-	 */
 	public function __construct( string $group = '' ) {
 		$this->name = $group;
-		$this->refs = [];
-		$this->indexByName = [];
 	}
 
 	/**
@@ -65,11 +60,6 @@ class RefGroup {
 		return $a;
 	}
 
-	/**
-	 * @param ParsoidExtensionAPI $extApi
-	 * @param Element $refsList
-	 * @param stdClass $ref
-	 */
 	public function renderLine(
 		ParsoidExtensionAPI $extApi, Element $refsList, stdClass $ref
 	): void {

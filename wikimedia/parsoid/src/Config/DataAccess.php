@@ -24,7 +24,9 @@ abstract class DataAccess {
 	 *
 	 * Replaces Batcher.getPageProps()
 	 *
-	 * @param PageConfig $pageConfig
+	 * @param PageConfig|LinkTarget $pageConfigOrTitle
+	 *  Either a PageConfig or else just the context title from the PageConfig
+	 *  (as a LinkTarget)
 	 * @param string[] $titles
 	 * @return array<string,array> [ string Title => array ], where the array contains
 	 *  - pageId: (int|null) Page ID
@@ -35,7 +37,7 @@ abstract class DataAccess {
 	 *  - linkclasses: (string[]) Extensible "link color" information; see
 	 *      ApiQueryInfo::getLinkClasses() in MediaWiki core
 	 */
-	abstract public function getPageInfo( PageConfig $pageConfig, array $titles ): array;
+	abstract public function getPageInfo( $pageConfigOrTitle, array $titles ): array;
 
 	/**
 	 * Return information about files (images)
@@ -129,11 +131,11 @@ abstract class DataAccess {
 	 * @todo TemplateRequest also returns a bunch of other data, but seems to never use it except for
 	 *   TemplateRequest.setPageSrcInfo() which is replaced by PageConfig.
 	 * @param PageConfig $pageConfig
-	 * @param string|LinkTarget $title Title of the page to fetch
+	 * @param LinkTarget $title Title of the page to fetch
 	 * @return PageContent|null
 	 */
 	abstract public function fetchTemplateSource(
-		PageConfig $pageConfig, $title
+		PageConfig $pageConfig, LinkTarget $title
 	): ?PageContent;
 
 	/**
@@ -142,10 +144,10 @@ abstract class DataAccess {
 	 * This replaces TemplateDataRequest
 	 *
 	 * @param PageConfig $pageConfig
-	 * @param string|LinkTarget $title
+	 * @param LinkTarget $title
 	 * @return array|null
 	 */
-	abstract public function fetchTemplateData( PageConfig $pageConfig, $title ): ?array;
+	abstract public function fetchTemplateData( PageConfig $pageConfig, LinkTarget $title ): ?array;
 
 	/**
 	 * Log linter data.
