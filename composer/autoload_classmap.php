@@ -2024,6 +2024,7 @@ return array(
     'Peast\\Syntax\\ES2021\\Features' => $vendorDir . '/mck89/peast/lib/Peast/Syntax/ES2021/Features.php',
     'Peast\\Syntax\\ES2022\\Features' => $vendorDir . '/mck89/peast/lib/Peast/Syntax/ES2022/Features.php',
     'Peast\\Syntax\\ES2023\\Features' => $vendorDir . '/mck89/peast/lib/Peast/Syntax/ES2023/Features.php',
+    'Peast\\Syntax\\ES2024\\Features' => $vendorDir . '/mck89/peast/lib/Peast/Syntax/ES2024/Features.php',
     'Peast\\Syntax\\EncodingException' => $vendorDir . '/mck89/peast/lib/Peast/Syntax/EncodingException.php',
     'Peast\\Syntax\\EventsEmitter' => $vendorDir . '/mck89/peast/lib/Peast/Syntax/EventsEmitter.php',
     'Peast\\Syntax\\Exception' => $vendorDir . '/mck89/peast/lib/Peast/Syntax/Exception.php',
