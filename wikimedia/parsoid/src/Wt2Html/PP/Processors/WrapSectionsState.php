@@ -28,44 +28,37 @@ use Wikimedia\Parsoid\Utils\WTUtils;
 use Wikimedia\Parsoid\Wt2Html\Frame;
 
 class WrapSectionsState {
-	/** @var Env */
-	private $env;
-
-	/** @var Frame */
-	private $frame;
+	private Env $env;
+	private Frame $frame;
 
 	/** @var Element|DocumentFragment */
 	private $rootNode;
 
 	/**
 	 * The next section debug ID
-	 * @var int
 	 */
-	private $count = 1;
+	private int $count = 1;
 
-	/** @var Document */
-	private $doc;
+	/**
+	 * Pseudo section count is needed to determine TOC rendering
+	 */
+	private int $pseudoSectionCount = 0;
+	private Document $doc;
 
 	/**
 	 * Map of about ID to first element
 	 * @var Element[]
 	 */
-	private $aboutIdMap = [];
-
-	/** @var int */
-	private $sectionNumber = 0;
-
-	/** @var ?WrapSectionsTplInfo */
-	private $tplInfo = null;
+	private array $aboutIdMap = [];
+	private int $sectionNumber = 0;
+	private ?WrapSectionsTplInfo $tplInfo = null;
 
 	/** @var WrapSectionsTplInfo[] */
-	private $tplsAndExtsToExamine = [];
-
-	/** @var int */
-	private $oldLevel = 0;
+	private array $tplsAndExtsToExamine = [];
+	private int $oldLevel = 0;
 
 	/** @var array<string,bool> Set of section anchors */
-	private $processedAnchors = [];
+	private array $processedAnchors = [];
 
 	/**
 	 * See the safe-heading transform code in Parser::finalizeHeadings in core
@@ -328,6 +321,7 @@ class WrapSectionsState {
 		 * The code here handles uneditable sections because of templating.
 		 */
 		if ( $pseudoSection ) {
+			$this->pseudoSectionCount++;
 			$section->setId( -2 );
 		} elseif ( $this->tplInfo !== null ) {
 			$section->setId( -1 );
@@ -517,7 +511,7 @@ class WrapSectionsState {
 	 * @param Element $n
 	 * @return bool
 	 */
-	private function isParsoidSection( Element $n ): bool {
+	private static function isParsoidSection( Element $n ): bool {
 		return DOMCompat::nodeName( $n ) === 'section' && $n->hasAttribute( 'data-mw-section-id' );
 	}
 
@@ -525,14 +519,14 @@ class WrapSectionsState {
 	 * Find an ancestor that is a Parsoid-inserted section
 	 *
 	 * @param Node $n
-	 * @return Node
+	 * @return Element
 	 */
-	private function findSectionAncestor( Node $n ): Node {
+	private static function findSectionAncestor( Node $n ): Element {
 		do {
 			$n = DOMUtils::findAncestorOfName( $n, 'section' );
 		} while ( $n && !self::isParsoidSection( $n ) );
 
-		Assert::invariant( $n !== null, "Expected to find Parsoid-section ancestor" );
+		Assert::invariant( $n instanceof Element, "Expected to find Parsoid-section ancestor" );
 		return $n;
 	}
 
@@ -807,6 +801,140 @@ class WrapSectionsState {
 	}
 
 	/**
+	 * In core, Parser.php adds a TOC marker before the *first* heading element
+	 * independent of how that heading element is nested. In the common case,
+	 * that insertion point corresponds to the last element of the lead section
+	 * as computed by section wrapping code in this file. In the edge case, when
+	 * a <div> wraps the heading, the insertion point lies inside the <div> and
+	 * has no relation to the lead section.
+	 */
+	private static function findTOCInsertionPoint( Node $elt ): ?Element {
+		while ( $elt ) {
+			if ( $elt instanceof Element ) {
+				if ( DOMUtils::isHeading( $elt ) ) {
+					return $elt;
+				} elseif ( $elt->firstChild ) {
+					$tocIP = self::findTOCInsertionPoint( $elt->firstChild );
+					if ( $tocIP ) {
+						return $tocIP;
+					}
+				}
+			}
+			$elt = $elt->nextSibling;
+		}
+		return null;
+	}
+
+	/**
+	 * Insert a synthetic section in which to place the TOC
+	 */
+	private function insertSyntheticSection(
+		Element $syntheticTocMeta, Element $insertionPoint
+	): Element {
+		$prev = $insertionPoint->previousSibling;
+
+		// Create a pseudo-section contaning the TOC
+		$syntheticTocSection = $this->doc->createElement( 'section' );
+		$syntheticTocSection->setAttribute( 'data-mw-section-id', '-2' );
+		$insertionPoint->parentNode->insertBefore( $syntheticTocSection, $insertionPoint );
+		$this->pseudoSectionCount++;
+		$syntheticTocSection->appendChild( $syntheticTocMeta );
+
+		// Ensure template continuity is not broken!
+		// If $prev is not an encapsulation wrapper, nothing to do!
+		if ( $prev && WTUtils::isEncapsulationWrapper( $prev ) ) {
+			'@phan-var Element $prev';
+			$prevAbout = DOMCompat::getAttribute( $prev, 'about' );
+
+			// First, handle the case of section-tag-stripping that VE does.
+			// So, find the leftmost non-section-wrapper node since we want
+			// If the about ids are different, $next & $prev belong to
+			// different transclusions and the TOC meta can be left alone.
+			$next = $insertionPoint->firstChild;
+			$nextAbout = $next instanceof Element ? DOMCompat::getAttribute( $next, 'about' ) : null;
+			if ( $prevAbout === $nextAbout ) {
+				$syntheticTocMeta->setAttribute( 'about', $prevAbout );
+			}
+
+			// Now handle case of section-tags not being stripped
+			// NOTE that $syntheticMeta is before $insertipnPoint
+			// If it is not-null, it is known to be a <section>.
+			$next = $insertionPoint;
+			'@phan-var Element $next';
+			$nextAbout = $next ? DOMCompat::getAttribute( $next, 'about' ) : null;
+			if ( $prevAbout === $nextAbout ) {
+				$syntheticTocSection->setAttribute( 'about', $prevAbout );
+			}
+		}
+
+		return $syntheticTocSection;
+	}
+
+	private function addSyntheticTOCMarker(): void {
+		// Add a synthetic TOC at the end of the first section, if necessary
+		$tocBS = $this->env->getBehaviorSwitch( 'toc' );
+		$noTocBS = $this->env->getBehaviorSwitch( 'notoc' );
+		$forceTocBS = $this->env->getBehaviorSwitch( 'forcetoc' );
+
+		$showToc = true;
+		if ( $noTocBS && !$tocBS ) {
+			$showToc = false;
+		}
+		$numHeadings = $this->count - 1 - $this->pseudoSectionCount; // $this->count is initialized to 1
+		$enoughToc = $showToc && ( $numHeadings >= 4 || $tocBS );
+		if ( $forceTocBS ) {
+			$showToc = true;
+			$enoughToc = true;
+		}
+		if ( $numHeadings == 0 ) {
+			$enoughToc = false;
+		}
+
+		if ( !$this->env->getPageConfig()->getSuppressTOC() ) {
+			if ( $enoughToc ) {
+				// ParserOutputFlags::SHOW_TOC
+				$this->env->getMetadata()->setOutputFlag( 'show-toc' );
+				if ( !$tocBS ) {
+					$syntheticTocMeta = $this->doc->createElement( 'meta' );
+					$syntheticTocMeta->setAttribute( 'property', 'mw:PageProp/toc' );
+					$dmw = DOMDataUtils::getDataMw( $syntheticTocMeta );
+					$dmw->autoGenerated = true;
+					$tocIP = $this->findTOCInsertionPoint( DOMCompat::getBody( $this->doc ) );
+					if ( $tocIP === null ) {
+						// should not happen, but nothing to do here!
+						return;
+					}
+
+					// NOTE: Given how <section>s are computed in this file, headings
+					// will never have previous siblings. So, we look at $eltSection's
+					// previous siblings always.
+					$insertionPoint = self::findSectionAncestor( $tocIP );
+
+					$insertionContainer = $insertionPoint->previousSibling;
+					if ( !$insertionContainer || DOMCompat::nodeName( $insertionContainer ) !== 'section' ) {
+						$insertionContainer = $this->insertSyntheticSection(
+							$syntheticTocMeta, $insertionPoint
+						);
+					}
+					$insertionContainer->appendChild( $syntheticTocMeta );
+
+					// Set a synthetic zero-length dsr to suppress noisy warnings
+					// from the round trip testing script.
+					$syntheticOffset = DOMDataUtils::getDataParsoid( $tocIP )->dsr->start ?? null;
+					if ( $syntheticOffset !== null ) {
+						$dp = DOMDataUtils::getDataParsoid( $syntheticTocMeta );
+						$dp->dsr = new DomSourceRange( $syntheticOffset, $syntheticOffset, 0, 0 );
+					}
+				}
+			}
+			if ( !$showToc ) {
+				// ParserOutputFlags::NO_TOC
+				$this->env->getMetadata()->setOutputFlag( 'no-toc' );
+			}
+		}
+	}
+
+	/**
 	 * DOM Postprocessor entry function to walk DOM rooted at $root
 	 * and add <section> wrappers as necessary.
 	 * Implements the algorithm documented @ mw:Parsing/Notes/Section_Wrapping
@@ -830,68 +958,6 @@ class WrapSectionsState {
 		// (done in a batch to avoid O(N^2) string traversals)
 		$this->convertTOCOffsets();
 
-		// Add a synthetic TOC at the end of the first section, if necessary
-		$tocBS = $this->env->getBehaviorSwitch( "toc" );
-		$noTocBS = $this->env->getBehaviorSwitch( "notoc" );
-		$forceTocBS = $this->env->getBehaviorSwitch( "forcetoc" );
-
-		$showToc = true;
-		if ( $noTocBS && !$tocBS ) {
-			$showToc = false;
-		}
-		$numHeadings = $this->count - 1; // $this->count is initialized to 1
-		$enoughToc = $showToc && ( $numHeadings >= 4 || $tocBS );
-		if ( $forceTocBS ) {
-			$showToc = true;
-			$enoughToc = true;
-		}
-		if ( $numHeadings == 0 ) {
-			$enoughToc = false;
-		}
-
-		if ( !$this->env->getPageConfig()->getSuppressTOC() ) {
-			if ( $enoughToc ) {
-				// ParserOutputFlags::SHOW_TOC
-				$this->env->getMetadata()->setOutputFlag( 'show-toc' );
-				if ( !$tocBS ) {
-					$syntheticTocMeta = $this->doc->createElement( 'meta' );
-					$syntheticTocMeta->setAttribute( 'property', 'mw:PageProp/toc' );
-					$dmw = DOMDataUtils::getDataMw( $syntheticTocMeta );
-					$dmw->autoGenerated = true;
-					// Set a synthetic zero-length dsr to suppress noisy warnings
-					// from the round trip testing script.
-					$sectionDSR = $this->getDSR( $leadSection->container, false );
-					if ( $sectionDSR !== -1 ) {
-						$dp = DOMDataUtils::getDataParsoid( $syntheticTocMeta );
-						$dp->dsr = new DomSourceRange( $sectionDSR, $sectionDSR, 0, 0 );
-					}
-					$insertionPoint = $leadSection->container->lastChild;
-					$leadSection->container->appendChild( $syntheticTocMeta );
-
-					$nextSection = $leadSection->container->nextSibling;
-					// If insertionPoint is an encapsulation wrapper *and* next section
-					// also has an encapsulation wrapper (which implies the template content
-					// continued across section boundaries), we need to tag the synthetic
-					// meta as part of the same templated region.
-					// ( REMINDER: section tags get a second template layer on top and hence
-					// they have a different about id. The two layers of template wrapping
-					// ensures that template wrapping semantics are preserved whether section tags
-					// are present or not. )
-					if ( $insertionPoint && WTUtils::isEncapsulationWrapper( $insertionPoint ) &&
-						$nextSection && WTUtils::isEncapsulationWrapper( $nextSection )
-					) {
-						'@phan-var Element $insertionPoint';
-						$syntheticTocMeta->setAttribute(
-							'about',
-							DOMCompat::getAttribute( $insertionPoint, 'about' )
-						);
-					}
-				}
-			}
-			if ( !$showToc ) {
-				// ParserOutputFlags::NO_TOC
-				$this->env->getMetadata()->setOutputFlag( 'no-toc' );
-			}
-		}
+		$this->addSyntheticTOCMarker();
 	}
 }

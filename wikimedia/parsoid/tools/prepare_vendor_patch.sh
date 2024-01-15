@@ -10,6 +10,7 @@ if [ $# -lt 2 ]; then
 	echo "Ex: $0 v0.19.0-a6 v0.19.0-a7 HEAD"
 	echo "Ex: $0 v0.19.0-a6 v0.19.0-a7"
 	echo "You have to skip OR provide both repo values on the CLI"
+	echo "A specific composer install can be passed via the MW_COMPOSER env variable."
 	exit 1
 fi
 
@@ -69,7 +70,7 @@ echo "^^^ These patches will be part of the new tag."
 waitForConfirmation
 echo
 
-tagCount=$(git tag -l "$2" | wc -l)
+tagCount=$(git tag -l "$2" | wc -l | xargs)
 if [ "$tagCount" != "0" ]; then
 	existingTagSha=$(git rev-list -n 1 "$2")
 	if [[ "$existingTagSha" != "$newTagSha"* ]]; then
@@ -90,7 +91,7 @@ echo "Pushed new tag $2 to origin"
 echo
 
 # Identify fixed bugs
-fixedbugs=$(git log "$1".."$2" | grep -E "^\s*Bug:" | sed 's/^\s*//g;' | sort | uniq)
+fixedbugs=$(git log "$1".."$2" | (grep -E "^\s*Bug:" || echo "") | sed 's/^\s*//g;' | sort | uniq)
 
 # --- Prepare vendor patch ---
 # Update composer.json
@@ -98,9 +99,9 @@ cd "$vendorRepo"
 
 ## checkout master branch and update
 git checkout master
-git pull --rebase
+git pull origin master --rebase
 vstring=$(echo "$2" | sed 's/v//g;')
-sed --in-place "s/wikimedia\/parsoid.*/wikimedia\/parsoid\": \"$vstring\",/g;" composer.json
+sed -i '' "s/wikimedia\/parsoid.*/wikimedia\/parsoid\": \"$vstring\",/g;" composer.json
 
 # Wait a bit for changes to propagate to packagist
 sleep 2
@@ -110,11 +111,14 @@ waitForConfirmation
 echo
 
 # update packages
+# FIXME: Verify that composer is running the version from the README
+# `composer --version === 2.6.4`
 echo "Running composer update"
-composer update --no-dev
+"${MW_COMPOSER:-composer}" update --no-dev
 echo
 
 # Generate commit
+# FIXME: Use a branch instead of master?
 echo "Preparing vendor patch"
 git add -A wikimedia/parsoid composer.lock composer.json composer
 git commit -m "Bump wikimedia/parsoid to $vstring
@@ -127,12 +131,12 @@ cd "$pwd" # $5 could be relative or absolute - so go back to original dir first
 cd "$coreRepo"
 ## checkout master branch and update
 git checkout master
-git pull --rebase
+git pull origin master --rebase
 
 echo
 echo "Bumping Parsoid version in core and preparing patch"
 
-sed --in-place "s/wikimedia\/parsoid.*/wikimedia\/parsoid\": \"$vstring\",/g;" composer.json
+sed -i '' "s/wikimedia\/parsoid.*/wikimedia\/parsoid\": \"$vstring\",/g;" composer.json
 git commit composer.json -m "Bump wikimedia/parsoid to $vstring
 
 Depends-On: $changeid"
