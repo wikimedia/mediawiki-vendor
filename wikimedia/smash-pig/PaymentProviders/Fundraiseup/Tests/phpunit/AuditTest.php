@@ -42,7 +42,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'last_name' => 'Wales',
 			'street_address' => '',
 			'city' => '',
-			'country' => '',
+			'country' => 'GB',
 			'email' => 'jwales@example.org',
 			'invoice_id' => 'DQZQFCJS',
 			'gateway_account' => 'Wikimedia Foundation',
@@ -80,7 +80,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'last_name' => 'Wales',
 			'street_address' => '',
 			'city' => '',
-			'country' => '',
+			'country' => 'GB',
 			'email' => 'jwales@example.org',
 			'external_identifier' => 'SCHNECUN',
 			'invoice_id' => 'DGVYEEWH',
@@ -162,7 +162,8 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'frequency_unit' => 'month',
 			'cancel_date' => 1695140630,
 			'create_date' => 1695063200,
-			'frequency_interval' => 1
+			'frequency_interval' => 1,
+			'country' => 'GB'
 		];
 		$this->assertEquals( $expected, $actual, 'Did not parse refund correctly' );
 	}
@@ -216,8 +217,41 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'frequency_unit' => 'month',
 			'txn_type' => 'subscr_signup',
 			'create_date' => 1695035319,
-			'frequency_interval' => 1
+			'frequency_interval' => 1,
+			'country' => 'GB'
 		];
 		$this->assertEquals( $expected, $actual, 'Did not parse refund correctly' );
+	}
+
+	/**
+	 * @covers ::getCountryFromDonationURL
+	 */
+	public function testProcessDonationEmptyCountryUseFallbackFromDonationURL() : void {
+		$processor = new FundraiseupAudit();
+		$output = $processor->parseFile( __DIR__ . '/../Data/Donations/export_donations_2023-country-fallback-test.csv' );
+		$this->assertEquals( 'GB', $output[0]['country'] );
+		$this->assertEquals( 'US', $output[1]['country'] );
+	}
+
+	/**
+	 * @covers ::getCountryFromDonationURL
+	 */
+	public function testProcessDonationEmptyCountryAndFallbackIsUnavailable() : void {
+		$processor = new FundraiseupAudit();
+		$output = $processor->parseFile( __DIR__ . '/../Data/Donations/export_donations_2023-country-fallback-is-empty-test.csv' );
+		$this->assertSame( '', $output[0]['country'] );
+		$this->assertSame( '', $output[1]['country'] );
+	}
+
+	public function testNewRecurringEmptyCountryUseFallbackFromDonationURL() : void {
+		$processor = new FundraiseupAudit();
+		$output = $processor->parseFile( __DIR__ . '/../Data/Recurring/New/export_recurring_2023-empty-country-test.csv' );
+		$this->assertEquals( 'GB', $output[0]['country'] );
+	}
+
+	public function testNewRecurringEmptyCountryAndFallbackIsUnavailable() : void {
+		$processor = new FundraiseupAudit();
+		$output = $processor->parseFile( __DIR__ . '/../Data/Recurring/New/export_recurring_2023-country-fallback-is-empty-test.csv' );
+		$this->assertSame( '', $output[0]['country'] );
 	}
 }

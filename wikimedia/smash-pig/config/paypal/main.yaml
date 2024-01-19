@@ -23,6 +23,8 @@ payment-provider:
         class:
             SmashPig\PaymentProviders\PayPal\PaymentProvider
 
+default-method: paypal
+
 ipn-validator:
     class: SmashPig\PaymentProviders\PayPal\PayPalIpnValidator
 

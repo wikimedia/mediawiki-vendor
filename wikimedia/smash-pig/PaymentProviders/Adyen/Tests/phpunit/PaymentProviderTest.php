@@ -151,6 +151,47 @@ class PaymentProviderTest extends BaseAdyenTestCase {
 		);
 	}
 
+	public function testGoodCancelAutoRescue() {
+		$rescueReference = 'CANCEL-AUTO-RESCUE-TEST-' . rand( 0, 100 );
+
+		$this->mockApi->expects( $this->once() )
+			->method( 'cancelAutoRescue' )
+			->with( $rescueReference )
+			->willReturn( AdyenTestConfiguration::getSuccessfulCancelAutoRescueResult() );
+
+		$cancelAutoRescueResponse = $this->provider->cancelAutoRescue( $rescueReference );
+
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\CancelAutoRescueResponse',
+			$cancelAutoRescueResponse );
+		$this->assertEquals( '[cancel-received]', $cancelAutoRescueResponse->getRawResponse()['response'] );
+		$this->assertSame( '00000000000000CR', $cancelAutoRescueResponse->getGatewayTxnId() );
+		$this->assertTrue( $cancelAutoRescueResponse->isSuccessful() );
+		$this->assertTrue( count( $cancelAutoRescueResponse->getErrors() ) == 0 );
+	}
+
+	public function testBadCancelAutoRescue() {
+		$rescueReference = 'CANCEL-AUTO-RESCUE-TEST-' . rand( 0, 100 );
+
+		$this->mockApi->expects( $this->once() )
+			->method( 'cancelAutoRescue' )
+			->with( $rescueReference )
+			->willReturn( [] );
+
+		$cancelAutoRescueResponse = $this->provider->cancelAutoRescue( $rescueReference );
+
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\CancelAutoRescueResponse',
+			$cancelAutoRescueResponse );
+		$this->assertFalse( $cancelAutoRescueResponse->isSuccessful() );
+
+		$firstError = $cancelAutoRescueResponse->getErrors()[0];
+		$this->assertInstanceOf( 'SmashPig\Core\PaymentError', $firstError );
+		$this->assertEquals( ErrorCode::MISSING_REQUIRED_DATA, $firstError->getErrorCode() );
+		$this->assertEquals(
+			'cancel auto rescue request is not received',
+			$firstError->getDebugMessage()
+		);
+	}
+
 	public function testUnsupportedCard() {
 		$this->mockApi->expects( $this->once() )
 			->method( 'createPaymentFromEncryptedDetails' )

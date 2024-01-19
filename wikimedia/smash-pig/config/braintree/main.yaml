@@ -48,3 +48,5 @@ payment-provider:
                 # codes to account names, e.g.
                 # USD: main-account-name
                 # GBP: sterling-account-name
+
+default-method: paypal

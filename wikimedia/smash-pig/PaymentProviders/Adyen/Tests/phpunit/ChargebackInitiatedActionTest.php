@@ -5,6 +5,7 @@ use PHPQueue\Interfaces\FifoQueueStore;
 use SmashPig\Core\Context;
 use SmashPig\PaymentProviders\Adyen\Actions\ChargebackInitiatedAction;
 use SmashPig\PaymentProviders\Adyen\ExpatriatedMessages\Chargeback;
+use SmashPig\PaymentProviders\Adyen\ExpatriatedMessages\SecondChargeback;
 
 /**
  * @group Adyen
@@ -39,6 +40,7 @@ class ChargebackInitiatedActionTest extends BaseAdyenTestCase {
 		$refund = $this->refundQueue->pop();
 		$this->assertEquals( $chargeback->parentPspReference, $refund['gateway_parent_id'] );
 		$this->assertEquals( $chargeback->pspReference, $refund['gateway_refund_id'] );
+		$this->assertEquals( 'chargeback', $refund['type'] );
 	}
 
 	public function testFailedChargeback() {
@@ -53,4 +55,23 @@ class ChargebackInitiatedActionTest extends BaseAdyenTestCase {
 		$this->assertNull( $refund, 'Should not have queued a chargeback' );
 	}
 
+	public function testSuccessfulSecondChargeBack() {
+		$chargeback = new SecondChargeback();
+		$chargeback->merchantAccountCode = 'WikimediaTest';
+		$chargeback->currency = 'USD';
+		$chargeback->amount = 10.00;
+		$chargeback->eventDate = "";
+		$chargeback->success = true;
+		$chargeback->pspReference = "DAS676ASD5ASD77";
+		$chargeback->merchantReference = "testMerchantRef1";
+		$chargeback->reason = "test second chargeback";
+
+		$action = new ChargebackInitiatedAction();
+		$action->execute( $chargeback );
+		$refund = $this->refundQueue->pop();
+
+		$this->assertEquals( $chargeback->pspReference, $refund['gateway_refund_id'] );
+		// pspReference should have also been mapped to gateway_parent_id
+		$this->assertEquals( $chargeback->pspReference, $refund['gateway_parent_id'] );
+	}
 }

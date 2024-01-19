@@ -50,10 +50,20 @@ class AdyenPaymentsAccountingReport extends AdyenAudit {
 	}
 
 	protected function parseRefund( array $row, array $msg ): array {
-		// Captured (PC) and Original Amount both have the amount refunded
+		// For refunds, captured (PC) and Original Amount both have the amount refunded
 		// For some currencies (JPY) Original Amount seems to be off by 100x
-		$msg['gross'] = $row['Captured (PC)'];
-		$msg['gross_currency'] = $row['Payment Currency'];
+		if ( !empty( $row['Captured (PC)'] ) ) {
+			$msg['gross'] = $row['Captured (PC)'];
+			$msg['gross_currency'] = $row['Payment Currency'];
+		} else {
+			// For chargebacks, subtract off a couple fees to get the same number as we're getting from
+			// the settlement report's 'Gross Debit' field.
+			$msg['gross_currency'] = $row['Main Currency'];
+			// Doing math on floats, need to round to thousandths place to keep sanity
+			$msg['gross'] = round(
+				$row['Main Amount'] - $row['Markup (SC)'] - $row['Interchange (SC)'], 3
+			);
+		}
 
 		$msg['gateway_parent_id'] = $row['Psp Reference'];
 		$msg['gateway_refund_id'] = $row['Modification Psp Reference'];

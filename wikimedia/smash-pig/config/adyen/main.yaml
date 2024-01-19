@@ -21,6 +21,8 @@ rest-base-url: https://checkout-test.adyen.com/v68
 
 recurring-base-url: https://pal-test.adyen.com/pal/servlet/Recurring/v68
 
+payment-base-url: https://pal-test.adyen.com/pal/servlet/Payment/v68
+
 data-protection-base-url: https://ca-test.adyen.com/ca/services/DataProtectionService/v1
 
 enable-auto-rescue: false

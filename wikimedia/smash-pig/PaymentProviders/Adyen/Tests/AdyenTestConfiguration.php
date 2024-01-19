@@ -44,4 +44,11 @@ class AdyenTestConfiguration extends TestingProviderConfiguration {
 			'status' => 'received',
 		];
 	}
+
+	public static function getSuccessfulCancelAutoRescueResult() {
+		return [
+			'response' => '[cancel-received]',
+			'pspReference' => '00000000000000CR',
+		];
+	}
 }

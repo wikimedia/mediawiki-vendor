@@ -60,3 +60,5 @@ audit:
     file-types:
         - SmashPig\PaymentProviders\Amazon\Audit\RefundReport
         - SmashPig\PaymentProviders\Amazon\Audit\SettlementReport
+
+default-method: amazon

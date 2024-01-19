@@ -1,7 +1,5 @@
 <?php namespace SmashPig\PaymentProviders\dlocal\ExpatriatedMessages;
 
-use SmashPig\PaymentProviders\dlocal\ReferenceData;
-
 /**
  * Message indicating a successful payment
  */
@@ -17,10 +15,7 @@ class PaidMessage extends DlocalMessage {
 	 */
 	public function normalizeForQueue() {
 		// Normalize the payment method and submethod
-		[ $method, $submethod ] = ReferenceData::decodePaymentMethod(
-			$this->payment_method_type,
-			$this->payment_method_id
-		);
+		[ $method, $submethod ] = $this->decodePaymentMethod();
 
 		// Get just the contribution_tracking_id from the order_id in 12345.1 format
 		$contributionTracking = explode( '.', $this->order_id );

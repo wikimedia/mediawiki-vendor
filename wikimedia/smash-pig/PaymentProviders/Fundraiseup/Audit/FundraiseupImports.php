@@ -112,4 +112,29 @@ class FundraiseupImports {
 		];
 		return $mapper[$frequency] ?? '';
 	}
+
+	/**
+	 * Country fallback
+	 *
+	 * The audit file contains the URL that the donor used
+	 * to make the donation, so we try to extract the country
+	 * code from that URL here and use it for the country field.
+	 *
+	 * @param string $donationURL
+	 *
+	 * @return string
+	 */
+	protected function getCountryFromDonationURL( string $donationURL ): string {
+		$countryCode = '';
+		$parts = parse_url( $donationURL );
+		if ( isset( $parts['query'] ) ) {
+			parse_str( $parts['query'], $query );
+			// Validate if 'country' is present, not empty, and is a two-letter country code
+			if ( isset( $query['country'] ) && preg_match( '/^[A-Za-z]{2}$/', $query['country'] ) ) {
+				$countryCode = $query['country'];
+			}
+		}
+
+		return $countryCode;
+	}
 }

@@ -54,4 +54,25 @@ class RejectedMessageJobTest extends BaseSmashPigUnitTestCase {
 		$this->assertNull( $upiDonationsMessage, 'upi-donations queue should be empty!' );
 	}
 
+	public function testRejectionCardMessageNoException() : void {
+		// set up the test RejectedMessage object
+		$rejectedIpnFixture = file_get_contents( __DIR__ . '/../Data/rejected-card.json' );
+		$rejectedMessage = RejectedMessage::fromJson(
+			RejectedMessage::class,
+			$rejectedIpnFixture
+		);
+
+		// set up the RejectedMessageJob using the RejectedMessage test
+		$rejectedMessageJob = JobQueueConsumer::createJobObject(
+			$rejectedMessage->normalizeForQueue()
+		);
+
+		// check that job completes successfully
+		$this->assertTrue( $rejectedMessageJob->execute() );
+
+		// check that a message is not pushed to upi-donations queue. We only push 'Wallet disabled' rejections
+		$upiDonationsMessage = QueueWrapper::getQueue( 'donations' )->pop();
+		$this->assertNull( $upiDonationsMessage, 'donations queue should be empty!' );
+	}
+
 }

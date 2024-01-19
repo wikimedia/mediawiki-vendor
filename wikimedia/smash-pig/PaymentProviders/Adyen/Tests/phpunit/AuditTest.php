@@ -172,4 +172,27 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 		];
 		$this->assertEquals( $expected, $actual, 'Did not parse donation correctly' );
 	}
+
+	public function testProcessPaymentsAccountingChargeback() {
+		$processor = new AdyenPaymentsAccountingReport();
+		$output = $processor->parseFile( __DIR__ . '/../Data/payments_accounting_report_chargeback.csv' );
+		$this->assertSame( 1, count( $output ) );
+		$actual = $output[0];
+		$expected = [
+			'gateway' => 'adyen',
+			'gateway_account' => 'WikimediaDonations',
+			'gross' => 13.43,
+			'contribution_tracking_id' => '189748459',
+			'gross_currency' => 'USD',
+			'gateway_refund_id' => 'ASDF5ASDF4QWER3A',
+			'gateway_parent_id' => 'DASD76ASD7ASD4AS',
+			'invoice_id' => '189748459.1',
+			'payment_method' => 'cc',
+			'payment_submethod' => 'mc',
+			'date' => 1697133875,
+			'type' => 'chargeback',
+			'gateway_txn_id' => 'DASD76ASD7ASD4AS',
+		];
+		$this->assertEquals( $expected, $actual, 'Did not parse donation correctly' );
+	}
 }

@@ -15,7 +15,7 @@ class VenmoPaymentProvider extends PaymentProvider {
 	 */
 	public function createPayment( array $params ): CreatePaymentResponse {
 		// re-fetch email info for venmo
-		if ( !$params['email'] ) {
+		if ( !empty( $params['gateway_session_id'] ) && empty( $params['email'] ) ) {
 			Logger::info( 'No email passed, fetch again with gateway_session_id: ' . $params['gateway_session_id'] );
 			$donorDetails = $this->fetchCustomerData( $params['gateway_session_id'] );
 			if ( $donorDetails ) {
@@ -71,5 +71,13 @@ class VenmoPaymentProvider extends PaymentProvider {
 	protected function indicateMerchant( array $params, array &$apiParams ) {
 		// multi currency depends on different merchant, no need for venmo yet since only one account supported
 		return $apiParams;
+	}
+
+	protected function getInvalidParams( array $params ): array {
+		$invalidParams = parent::getInvalidParams( $params );
+		if ( empty( $params['gateway_session_id'] ) && empty( $params['email'] ) ) {
+			$invalidParams[] = 'gateway_session_id';
+		}
+		return $invalidParams;
 	}
 }

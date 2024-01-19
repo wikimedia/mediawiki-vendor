@@ -17,11 +17,13 @@ use SmashPig\PaymentData\ReferenceData\NationalCurrencies;
 use SmashPig\PaymentData\SavedPaymentDetails;
 use SmashPig\PaymentData\StatusNormalizer;
 use SmashPig\PaymentProviders\ICancelablePaymentProvider;
+use SmashPig\PaymentProviders\ICancelAutoRescueProvider;
 use SmashPig\PaymentProviders\IDeleteDataProvider;
 use SmashPig\PaymentProviders\IGetLatestPaymentStatusProvider;
 use SmashPig\PaymentProviders\IPaymentProvider;
 use SmashPig\PaymentProviders\IRefundablePaymentProvider;
 use SmashPig\PaymentProviders\Responses\ApprovePaymentResponse;
+use SmashPig\PaymentProviders\Responses\CancelAutoRescueResponse;
 use SmashPig\PaymentProviders\Responses\CancelPaymentResponse;
 use SmashPig\PaymentProviders\Responses\DeleteDataResponse;
 use SmashPig\PaymentProviders\Responses\PaymentDetailResponse;
@@ -42,7 +44,8 @@ abstract class PaymentProvider implements
 	IDeleteDataProvider,
 	IPaymentProvider,
 	IRefundablePaymentProvider,
-	IGetLatestPaymentStatusProvider
+	IGetLatestPaymentStatusProvider,
+	ICancelAutoRescueProvider
 {
 	/**
 	 * @var Api
@@ -327,6 +330,38 @@ abstract class PaymentProvider implements
 			$response,
 			$rawResponse
 		);
+
+		return $response;
+	}
+
+	/**
+	 * Cancel auto rescue when donor cancels recurring donation in Civi
+	 *
+	 * @param string $rescueReference
+	 * @return CancelAutoRescueResponse
+	 * @throws \SmashPig\Core\ApiException
+	 */
+	public function cancelAutoRescue( $rescueReference ) : CancelAutoRescueResponse {
+		$rawResponse = $this->api->cancelAutoRescue( $rescueReference );
+		$response = new CancelAutoRescueResponse();
+		$response->setRawResponse( $rawResponse );
+
+		if ( empty( $rawResponse['response'] ) || $rawResponse['response'] !== '[cancel-received]' ) {
+			$responseError = 'cancel auto rescue request is not received';
+			$response->addErrors(
+				new PaymentError(
+					ErrorCode::MISSING_REQUIRED_DATA,
+					$responseError,
+					LogLevel::ERROR
+				)
+			);
+			$response->setSuccessful( false );
+			Logger::debug( $responseError, $rawResponse );
+		} else {
+			$response->setSuccessful( true );
+			// This PSP reference associated with this cancel request not the original one, but save for potential future use
+			$response->setGatewayTxnId( $rawResponse['pspReference'] );
+		}
 
 		return $response;
 	}

@@ -18,4 +18,15 @@ class PaymentProviderFactory {
 		$node = "payment-provider/$paymentMethod";
 		return $config->object( $node );
 	}
+
+	/**
+	 * Gets a provider for the default payment method
+	 * @return IPaymentProvider
+	 * @throws \SmashPig\Core\ConfigurationKeyException
+	 */
+	public static function getDefaultProvider(): IPaymentProvider {
+		$config = Context::get()->getProviderConfiguration();
+		$defaultMethod = $config->val( 'default-method' );
+		return self::getProviderForMethod( $defaultMethod );
+	}
 }

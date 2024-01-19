@@ -63,8 +63,14 @@ class DonationsImport extends FundraiseupImports {
 				}
 			}
 			$msg['fee'] += $csv->currentCol( 'Donation Platform Fee' );
+
+			if ( empty( $msg['country'] ) ) {
+				$donationURL = $csv->currentCol( 'Donation Page URL' );
+				$msg['country'] = $this->getCountryFromDonationURL( $donationURL );
+			}
 			return $msg;
 		}
 		return [];
 	}
+
 }

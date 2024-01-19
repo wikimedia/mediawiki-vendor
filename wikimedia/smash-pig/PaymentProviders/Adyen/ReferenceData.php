@@ -161,6 +161,10 @@ class ReferenceData {
 			'method' => 'cc',
 			'submethod' => 'maestro',
 		],
+		'maestro_googlepay' => [
+			'method' => 'google',
+			'submethod' => 'maestro',
+		],
 		'multibanco' => [
 			'method' => 'rtbt',
 			'submethod' => 'rtbt_multibanco',

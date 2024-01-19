@@ -1,0 +1,45 @@
+{
+  "id": "T-648-a5d96311-2222-3333-4444-b35d32db0f24",
+  "amount": 12.00,
+  "status": "REJECTED",
+  "status_detail": "Card restricted by the bank.",
+  "status_code": "312",
+  "currency": "BRL",
+  "country": "BR",
+  "payment_method_id": "CARD",
+  "payment_method_type": "CARD",
+  "payment_method_flow": "DIRECT",
+  "payer": {
+    "name": "Nobody Jones",
+    "email": "nobodyjones@example.com",
+    "document": "24681012141618",
+    "address": {
+      "empty": true
+    },
+    "ip": "11.22.33.44"
+  },
+  "card": {
+    "token": "CV-55556666-aabb-ccd3-eef5-ggaa44dd55667",
+    "holder_name": "Nobody Jones",
+    "expiration_month": 11,
+    "expiration_year": 2021,
+    "brand": "VI",
+    "last4": "0000",
+    "bin": "111111",
+    "descriptor": "WikimediaFoun",
+    "capture": false,
+    "status": "IN_MEMORY",
+    "card_merchant_id": "777",
+    "issuer": "MERCADO PAGO",
+    "country": "BR",
+    "type": "DEBIT",
+    "category": "CLASSIC",
+    "cvv_in_memory": true
+  },
+  "order_id": "93189.1",
+  "description": "Wikimedia Foundation",
+  "notification_url": "https://payments-listener.wikimedia.org/dlocal",
+  "callback_url": "https://payments.wikimedia.org/index.php?title=Special:DlocalGatewayResult&order_id=93189.1",
+  "created_date": "2023-11-21T16:45:32.000+0000",
+  "eci": "06"
+}

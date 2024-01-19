@@ -64,6 +64,13 @@ class Api {
 	protected $recurringBaseUrl;
 
 	/**
+	 * Base path for REST API calls to the payment service
+	 * (see https://docs.adyen.com/api-explorer/Payment/68/overview)
+	 * @var string
+	 */
+	protected $paymentBaseUrl;
+
+	/**
 	 * Base path for REST API calls to the data protection service
 	 * (see https://docs.adyen.com/development-resources/data-protection-api)
 	 * @var string
@@ -93,6 +100,7 @@ class Api {
 		$this->wsdlPass = $c->val( "accounts/{$this->account}/ws-password" );
 		$this->restBaseUrl = $c->val( 'rest-base-url' );
 		$this->recurringBaseUrl = $c->val( 'recurring-base-url' );
+		$this->paymentBaseUrl = $c->val( 'payment-base-url' );
 		$this->dataProtectionBaseUrl = $c->val( 'data-protection-base-url' );
 		$this->apiKey = $c->val( "accounts/{$this->account}/ws-api-key" );
 		$this->enableAutoRescue = $c->val( 'enable-auto-rescue' );
@@ -633,6 +641,28 @@ class Api {
 		// support an array of parameters.
 		$path = "payments/$pspReference/cancels";
 		$result = $this->makeRestApiCall( $restParams, $path, 'POST' );
+		return $result['body'];
+	}
+
+	/**
+	 * cancel auto rescue with the rescue reference
+	 *
+	 * @param string $rescueReference
+	 * @return array
+	 * @throws \SmashPig\Core\ApiException
+	 */
+	public function cancelAutoRescue( string $rescueReference ) {
+		$restParams = [
+			'merchantAccount' => $this->account,
+			'originalReference' => $rescueReference,
+			'additionalData' => [
+				'cancellationType' => 'autoRescue',
+			]
+		];
+
+		$result = $this->makeRestApiCall(
+			$restParams, 'cancel', 'POST', $this->paymentBaseUrl
+		);
 		return $result['body'];
 	}
 

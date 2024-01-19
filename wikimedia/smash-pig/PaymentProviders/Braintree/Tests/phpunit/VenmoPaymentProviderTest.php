@@ -30,6 +30,23 @@ class VenmoPaymentProviderTest extends BaseBraintreeTest {
 		$this->assertEquals( $validationError[0]->getField(), 'device_data' );
 	}
 
+	public function testVenmoPaymentWithNoGatewaySessionIdAndEmail() {
+		$request = [
+			"payment_token" => "fake-valid-nonce",
+			"order_id" => '123.3',
+			"amount" => '1.00',
+			"email" => '',
+			"gateway_session_id" => '',
+			"currency" => "USD",
+			"device_data" => '{}'
+		];
+
+		$provider = new VenmoPaymentProvider();
+		$response = $provider->createPayment( $request );
+		$validationError = $response->getValidationErrors();
+		$this->assertEquals( $validationError[0]->getField(), 'gateway_session_id' );
+	}
+
 	public function testVenmoNotUSDError() {
 		$request = [
 			"payment_token" => "fake-valid-nonce",

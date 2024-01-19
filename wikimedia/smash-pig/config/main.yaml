@@ -12,6 +12,7 @@ data-store:
             scheme: tcp
             host: 127.0.0.1
             port: 6379
+            read_write_timeout: -1
 
     payments-antifraud:
         class: PHPQueue\Backend\Predis
@@ -83,6 +84,14 @@ data-store:
             -
                 <<: *REDIS
                 queue: email-preferences
+
+
+    recurring-upgrade:
+        class: PHPQueue\Backend\Predis
+        constructor-parameters:
+            -
+                <<: *REDIS
+                queue: recurring-upgrade
 
     jobs-paypal:
         class: PHPQueue\Backend\Predis

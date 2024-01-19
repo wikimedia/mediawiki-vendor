@@ -13,6 +13,7 @@ class RecurringImport extends FundraiseupImports {
 		'Supporter Employer' => 'employer',
 		'Supporter Email' => 'email',
 		'Supporter ID' => 'external_identifier',
+		'Mailing Country Code' => 'country',
 		'Recurring Amount' => 'gross',
 		'Recurring Currency' => 'currency',
 		'Next Donation Date' => 'next_sched_contribution_date',
@@ -48,6 +49,11 @@ class RecurringImport extends FundraiseupImports {
 			$msg['start_date'] = strtotime( $msg['start_date'] );
 			$msg['create_date'] = $msg['start_date'];
 			$msg['date'] = $msg['create_date'];
+		}
+
+		if ( empty( $msg['country'] ) ) {
+			$donationURL = $csv->currentCol( 'Recurring Page URL' );
+			$msg['country'] = $this->getCountryFromDonationURL( $donationURL );
 		}
 		return $msg;
 	}

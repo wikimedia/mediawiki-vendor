@@ -1,6 +1,7 @@
 <?php namespace SmashPig\PaymentProviders\dlocal\ExpatriatedMessages;
 
 use SmashPig\Core\Messages\ListenerMessage;
+use SmashPig\PaymentProviders\dlocal\ReferenceData;
 
 abstract class DlocalMessage extends ListenerMessage {
 
@@ -10,6 +11,7 @@ abstract class DlocalMessage extends ListenerMessage {
 	protected $fields = [
 		'id',
 		'type',
+		'card',
 		'event_info',
 		'amount',
 		'status',
@@ -131,6 +133,11 @@ abstract class DlocalMessage extends ListenerMessage {
 	 */
 	protected $wallet;
 
+	/**
+	 * @var array
+	 */
+	protected $card;
+
 	public function validate(): bool {
 		return true;
 	}
@@ -167,4 +174,17 @@ abstract class DlocalMessage extends ListenerMessage {
 	abstract public function getDestinationQueue();
 
 	abstract public function normalizeForQueue();
+
+	protected function decodePaymentMethod(): array {
+		if ( is_array( $this->card ) && isset( $this->card['brand'] ) ) {
+			return ReferenceData::decodePaymentMethod(
+				$this->payment_method_type,
+				$this->card['brand']
+			);
+		}
+		return ReferenceData::decodePaymentMethod(
+			$this->payment_method_type,
+			$this->payment_method_id
+		);
+	}
 }
