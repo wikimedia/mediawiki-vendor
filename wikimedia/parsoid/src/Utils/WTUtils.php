@@ -476,18 +476,27 @@ class WTUtils {
 	}
 
 	/**
+	 * Is $node the first wrapper element of extension content?
+	 *
+	 * @param Node $node
+	 * @return bool
+	 */
+	public static function isFirstExtensionWrapperNode( Node $node ): bool {
+		return DOMUtils::matchTypeOf( $node, "#mw:Extension/#" ) !== null;
+	}
+
+	/**
 	 * Checks whether a first encapsulation wrapper node is encapsulating an extension
 	 * that outputs Mediawiki Core DOM Spec HTML (https://www.mediawiki.org/wiki/Specs/HTML)
 	 * @param Node $node
 	 * @param Env $env
 	 * @return bool
 	 */
-	public static function isExtensionOutputingCoreMwDomSpec( Node $node, Env $env ): bool {
+	public static function isExtensionOutputtingCoreMwDomSpec( Node $node, Env $env ): bool {
 		if ( DOMUtils::matchTypeOf( $node, self::NON_EXTENSION_ENCAP_REGEXP ) !== null ) {
 			return false;
 		}
-		$match = DOMUtils::matchTypeOf( $node, '#^mw:Extension/(.+?)$#D' );
-		$extTagName = $match ? substr( $match, strlen( 'mw:Extension/' ) ) : null;
+		$extTagName = self::getExtTagName( $node );
 		$extConfig = $env->getSiteConfig()->getExtTagConfig( $extTagName );
 		$htmlType = $extConfig['options']['outputHasCoreMwDomSpecMarkup'] ?? null;
 		return $htmlType === true;

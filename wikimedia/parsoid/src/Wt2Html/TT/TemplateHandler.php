@@ -371,7 +371,7 @@ class TemplateHandler extends TokenHandler {
 				);
 			}
 			return [
-				'isPF' => true,
+				'isParserFunction' => true,
 				'magicWordType' => null,
 				'name' => $canonicalFunctionName,
 				'title' => $syntheticTitle, // FIXME: Some made up synthetic title
@@ -529,7 +529,7 @@ class TemplateHandler extends TokenHandler {
 		// .wikitext() methods (subclass of Array)
 
 		$target = $resolvedTgt['name'];
-		if ( isset( $resolvedTgt['isPF'] ) || isset( $resolvedTgt['isVariable'] ) ) {
+		if ( isset( $resolvedTgt['isParserFunction'] ) || isset( $resolvedTgt['isVariable'] ) ) {
 			// FIXME: HARDCODED to core parser function implementations!
 			// These should go through function hook registrations in the
 			// ParserTests mock setup ideally. But, it is complicated because the
@@ -912,7 +912,7 @@ class TemplateHandler extends TokenHandler {
 		// positions.  However, proceeding to go through template expansion
 		// will reparse it as a table cell token.  Hence this special case
 		// handling to avoid that path.
-		if ( $resolvedTgt['magicWordType'] === '!' || $tplToken->attribs[0]->k === '!' ) {
+		if ( $resolvedTgt['magicWordType'] === '!' ) {
 			// If we're not at the top level, return a table cell. This will always
 			// be the case. Either {{!}} was tokenized as a td, or it was tokenized
 			// as template but the recursive call to fetch its content returns a
@@ -1049,6 +1049,19 @@ class TemplateHandler extends TokenHandler {
 					)
 				);
 			} else {
+				if (
+					!isset( $tgt['isParserFunction'] ) &&
+					!isset( $tgt['isVariable'] ) &&
+					!$templateTitle->isExternal() &&
+					$templateTitle->isSpecialPage()
+				) {
+					$domFragment = PipelineUtils::fetchHTML( $env, $text );
+					$toks = $domFragment
+						? PipelineUtils::tunnelDOMThroughTokens( $env, $token, $domFragment, [] )
+						: [];
+					return new TemplateExpansionResult( $toks, true, $this->wrapTemplates );
+				}
+
 				// Fetch and process the template expansion
 				$expansion = Wikitext::preprocess( $env, $text );
 				if ( $expansion['error'] ) {

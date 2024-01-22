@@ -147,24 +147,16 @@ class ExtensionHandler extends TokenHandler {
 			*/
 		} else {
 			$start = microtime( true );
-			$ret = $env->getDataAccess()->parseWikitext(
-				$pageConfig, $env->getMetadata(), $token->getAttributeV( 'source' )
-			);
+			$domFragment = PipelineUtils::fetchHTML( $env, $token->getAttributeV( 'source' ) );
 			if ( $env->profiling() ) {
 				$profile = $env->getCurrentProfile();
 				$profile->bumpMWTime( "Extension", 1000 * ( microtime( true ) - $start ), "api" );
 				$profile->bumpCount( "Extension" );
 			}
-
-			$domFragment = DOMUtils::parseHTMLToFragment(
-				$env->topLevelDoc,
-				// Strip a paragraph wrapper, if any, before parsing HTML to DOM
-				preg_replace( '#(^<p>)|(\n</p>(' . Utils::COMMENT_REGEXP_FRAGMENT . '|\s)*$)#D', '', $ret )
-			);
-
-			$toks = $this->onDocumentFragment(
-				$token, $domFragment, $dataMw, []
-			);
+			if ( !$domFragment ) {
+				$domFragment = DOMUtils::parseHTMLToFragment( $env->topLevelDoc, '' );
+			}
+			$toks = $this->onDocumentFragment( $token, $domFragment, $dataMw, [] );
 		}
 		return new TokenHandlerResult( $toks );
 	}
