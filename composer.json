@@ -149,7 +149,6 @@
 	"replace": {
 		"paragonie/random_compat": "9.99.99",
 		"symfony/polyfill-ctype": "1.99",
-		"symfony/polyfill-intl-idn": "1.17.0",
 		"symfony/polyfill-intl-grapheme": "1.17.1",
 		"symfony/polyfill-intl-normalizer": "1.17.1",
 		"symfony/polyfill-mbstring": "1.99"

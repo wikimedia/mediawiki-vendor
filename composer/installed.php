@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '2d2d0475b0c1d9813bb997ac8da7d8ff003601a2',
+        'reference' => 'e52ccf1d9edf8ba8946f86378c393016b1f9e7ba',
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '2d2d0475b0c1d9813bb997ac8da7d8ff003601a2',
+            'reference' => 'e52ccf1d9edf8ba8946f86378c393016b1f9e7ba',
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -780,12 +780,6 @@
             'dev_requirement' => false,
             'replaced' => array(
                 0 => '1.17.1',
-            ),
-        ),
-        'symfony/polyfill-intl-idn' => array(
-            'dev_requirement' => false,
-            'replaced' => array(
-                0 => '1.17.0',
             ),
         ),
         'symfony/polyfill-intl-normalizer' => array(
