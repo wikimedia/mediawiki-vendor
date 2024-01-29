@@ -645,7 +645,7 @@ class ParsoidExtensionAPI {
 	}
 
 	/**
-	 * Equivalent of 'preprocessWikitext' from Parser.php in core.
+	 * Equivalent of 'preprocess' from Parser.php in core.
 	 * - expands templates
 	 * - replaces magic variables
 	 * This does not run any hooks however since that would be unexpected.
@@ -781,7 +781,7 @@ class ParsoidExtensionAPI {
 		Element $elt, bool $inner, callable $checkIfOrigSrcReusable
 	): ?string {
 		$state = $this->serializerState;
-		if ( !$state->selserMode ) {
+		if ( !$state->selserMode || $state->inInsertedContent ) {
 			return null;
 		}
 		$dsr = DOMDataUtils::getDataParsoid( $elt )->dsr ?? null;

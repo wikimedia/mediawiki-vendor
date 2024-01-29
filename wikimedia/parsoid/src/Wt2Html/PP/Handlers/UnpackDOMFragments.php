@@ -161,19 +161,19 @@ class UnpackDOMFragments {
 		// - EXCEPTION: fostered content from tables get their DSR reset
 		//   to zero-width.
 		// - FIXME: We seem to also be doing this for new extension content,
-		//   which is the only place still using `setDSR`.
+		//   and new parser functions returning html, which are the only places
+		//   still using `setDSR`.
 		//
 		// There is currently no DSR for DOMFragments nested inside
 		// transclusion / extension content (extension inside template
 		// content etc).
 		// TODO: Make sure that is the only reason for not having a DSR here.
 		$placeholderDSR = $placeholderDP->dsr ?? null;
-		if ( $placeholderDSR && !(
-				!$placeholderDP->getTempFlag( TempData::SET_DSR ) &&
-				!$placeholderDP->getTempFlag( TempData::FROM_CACHE ) &&
-				empty( $placeholderDP->fostered )
-			)
-		) {
+		if ( $placeholderDSR && (
+			$placeholderDP->getTempFlag( TempData::SET_DSR ) ||
+			$placeholderDP->getTempFlag( TempData::FROM_CACHE ) ||
+			!empty( $placeholderDP->fostered )
+		) ) {
 			DOMUtils::assertElt( $fragmentContent );
 			$fragmentDP = DOMDataUtils::getDataParsoid( $fragmentContent );
 			if ( DOMUtils::hasTypeOf( $fragmentContent, 'mw:Transclusion' ) ) {
