@@ -158,7 +158,7 @@
 		"php-parallel-lint/php-parallel-lint": "1.3.2"
 	},
 	"scripts": {
-		"test": "parallel-lint --exclude composer/autoload_static.php --exclude symfony/console/Attribute/AsCommand.php --exclude symfony/polyfill-php83/bootstrap81.php ."
+		"test": "parallel-lint --exclude composer/autoload_static.php --exclude symfony/console/Attribute/AsCommand.php --exclude symfony/polyfill-php83/bootstrap81.php --exclude ruflin/elastica/src/Query/Match.php ."
 	},
 	"repositories": [
 		{
