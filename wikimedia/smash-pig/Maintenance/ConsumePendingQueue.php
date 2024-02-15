@@ -15,7 +15,7 @@ class ConsumePendingQueue extends MaintenanceBase {
 		parent::__construct();
 		$this->addOption( 'queue', 'queue name to consume from', 'pending' );
 		$this->addOption( 'time-limit', 'Try to keep execution under <n> seconds', 60, 't' );
-		$this->addOption( 'max-messages', 'At most consume <n> messages', 0, 'm' );
+		$this->addOption( 'message-limit', 'At most consume <n> messages', 0, 'm' );
 		$this->addFlag( 'wait-for-messages', 'Wait for messages when queue is empty', 'w' );
 	}
 
@@ -27,7 +27,7 @@ class ConsumePendingQueue extends MaintenanceBase {
 		$consumer = new PendingQueueConsumer(
 			$this->getOption( 'queue' ),
 			$this->getOptionOrConfig( 'time-limit', $basePath . 'time-limit' ),
-			$this->getOptionOrConfig( 'max-messages', $basePath . 'message-limit' ),
+			$this->getOptionOrConfig( 'message-limit', $basePath . 'message-limit' ),
 			$this->getOptionOrConfig( 'wait-for-messages', $basePath . 'wait-for-messages' )
 		);
 

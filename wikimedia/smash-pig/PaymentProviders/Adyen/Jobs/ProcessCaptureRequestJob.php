@@ -30,6 +30,7 @@ class ProcessCaptureRequestJob extends RunnableJob {
 	protected $merchantReference;
 	protected $shopperReference;
 	protected $pspReference;
+	protected $retryRescueReference;
 	protected $avsResult;
 	protected $cvvResult;
 	/**
@@ -63,6 +64,7 @@ class ProcessCaptureRequestJob extends RunnableJob {
 		$obj->paymentMethod = $authMessage->paymentMethod;
 		$obj->isSuccessfulAutoRescue = $authMessage->isSuccessfulAutoRescue();
 		$obj->isEndedAutoRescue = $authMessage->isEndedAutoRescue();
+		$obj->retryRescueReference = $authMessage->retryRescueReference;
 		return $obj;
 	}
 
@@ -85,7 +87,7 @@ class ProcessCaptureRequestJob extends RunnableJob {
 		$db = PendingDatabase::get();
 		$dbMessage = $db->fetchMessageByGatewayOrderId( 'adyen', $this->merchantReference );
 		$messageIsFromFredge = false;
-		if ( !$dbMessage ) {
+		if ( !$dbMessage && !$this->isSuccessfulAutoRescue ) {
 			$this->logger->info( 'No message found in pending database, looking in fredge.' );
 			// Try to find the risk score from fredge
 			$messageIsFromFredge = true;
@@ -119,7 +121,22 @@ class ProcessCaptureRequestJob extends RunnableJob {
 							'Marking pending database message as captured.'
 					);
 
-					if ( !$messageIsFromFredge ) {
+					if ( $this->isSuccessfulAutoRescue ) {
+						$msg = [
+							'txn_type' => 'subscr_payment',
+							'is_successful_autorescue' => true,
+							'rescue_reference' => $this->retryRescueReference,
+							'order_id' => $this->merchantReference,
+							'gross' => $this->amount,
+							'currency' => $this->currency,
+							'gateway_txn_id' => $captureResult->getGatewayTxnId(),
+							'gateway' => 'adyen'
+						];
+
+						QueueWrapper::push( 'recurring', $msg );
+					}
+
+					if ( !$messageIsFromFredge && !$this->isSuccessfulAutoRescue ) {
 						// If we read the message from pending, update it.
 						$dbMessage['captured'] = true;
 						$dbMessage['gateway_txn_id'] = $this->pspReference;

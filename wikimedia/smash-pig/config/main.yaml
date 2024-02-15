@@ -179,11 +179,11 @@ cache:
 maintenance:
     job-runner:
         time-limit: 60
-        max-messages: 10
+        message-limit: 10
 
     consume-pending:
         time-limit: 60
-        max-messages: 0
+        message-limit: 0
         wait-for-messages: false
 
 # in seconds

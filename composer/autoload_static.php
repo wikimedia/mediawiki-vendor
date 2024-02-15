@@ -7,8 +7,8 @@ namespace Composer\Autoload;
 class ComposerStaticInit_mediawiki_vendor
 {
     public static $files = array (
-        'eccc0347283a01e62f5536bcf76b6e62' => __DIR__ . '/..' . '/wikimedia/at-ease/src/Wikimedia/Functions.php',
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
+        'eccc0347283a01e62f5536bcf76b6e62' => __DIR__ . '/..' . '/wikimedia/at-ease/src/Wikimedia/Functions.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
         '2df68f9e79c919e2d88506611769ed2e' => __DIR__ . '/..' . '/respect/stringifier/src/stringify.php',
@@ -645,6 +645,7 @@ class ComposerStaticInit_mediawiki_vendor
         'DrupalFakeMwConfig' => __DIR__ . '/../..' . '/extensions/DonationInterface/gateway_common/DrupalFakeMwConfig.php',
         'EmployerFieldValidation' => __DIR__ . '/../..' . '/extensions/DonationInterface/gateway_common/EmployerFieldValidation.php',
         'EmployerSearchAPI' => __DIR__ . '/../..' . '/extensions/DonationInterface/gateway_common/employerSearch.api.php',
+        'EncryptedCardParameters' => __DIR__ . '/../..' . '/extensions/DonationInterface/adyen_gateway/EncryptedCardParameters.php',
         'EndowmentHooks' => __DIR__ . '/../..' . '/extensions/DonationInterface/gateway_common/EndowmentHooks.php',
         'ErrorState' => __DIR__ . '/../..' . '/extensions/DonationInterface/gateway_common/ErrorState.php',
         'FallbackLogPrefixer' => __DIR__ . '/../..' . '/extensions/DonationInterface/gateway_common/FallbackLogPrefixer.php',

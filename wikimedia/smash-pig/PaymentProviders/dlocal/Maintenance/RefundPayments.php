@@ -46,10 +46,7 @@ class RefundPayments extends MaintenanceBase {
 
 		while ( $reader->valid() ) {
 			$params = $reader->currentArray();
-			// Our gateway_txn_id corresponds to dlocals payment_id
 			$gatewayTxnId = $params['gateway_txn_id'];
-			$params['payment_id'] = $params['gateway_txn_id'];
-			unset( $params['gateway_txn_id'] );
 
 			try {
 				$result = $provider->refundPayment( $params );

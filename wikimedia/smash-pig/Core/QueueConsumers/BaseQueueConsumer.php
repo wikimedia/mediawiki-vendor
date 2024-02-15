@@ -110,7 +110,7 @@ abstract class BaseQueueConsumer {
 			} catch ( JsonException $ex ) {
 				// Set a non-null value so as not to exit the loop
 				$data = false;
-				$this->sendToDamagedStore( null, $ex );
+				$this->sendToDamagedStore( [], $ex );
 			}
 			$timeOk = $this->timeLimit === 0 || time() <= $startTime + $this->timeLimit;
 			$countOk = $this->messageLimit === 0 || $processed < $this->messageLimit;
@@ -164,16 +164,15 @@ abstract class BaseQueueConsumer {
 	protected function handleError( array $message, Exception $ex ) {
 		if ( $ex instanceof RetryableException ) {
 			$now = UtcDate::getUtcTimestamp();
-			$config = Context::get()->getGlobalConfiguration();
 
 			if ( !isset( $message['source_enqueued_time'] ) ) {
 				$message['source_enqueued_time'] = UtcDate::getUtcTimestamp();
 			}
 			$expirationDate = $message['source_enqueued_time'] +
-				$config->val( 'requeue-max-age' );
+				$this->getRequeueMaxAge();
 
 			if ( $now < $expirationDate ) {
-				$retryDate = $now + $config->val( 'requeue-delay' );
+				$retryDate = $now + $this->getRequeueDelay();
 				$this->sendToDamagedStore( $message, $ex, $retryDate );
 				return;
 			}
@@ -211,5 +210,13 @@ abstract class BaseQueueConsumer {
 			$ex->getTraceAsString(),
 			$retryDate
 		);
+	}
+
+	protected function getRequeueDelay() {
+		return Context::get()->getGlobalConfiguration()->val( 'requeue-delay' );
+	}
+
+	protected function getRequeueMaxAge() {
+		return Context::get()->getGlobalConfiguration()->val( 'requeue-max-age' );
 	}
 }

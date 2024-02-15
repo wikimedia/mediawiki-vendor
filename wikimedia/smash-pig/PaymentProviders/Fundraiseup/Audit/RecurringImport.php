@@ -37,10 +37,14 @@ class RecurringImport extends FundraiseupImports {
 		$msg = parent::parseLine( $csv );
 		$msg['type'] = 'recurring';
 		$msg['txn_type'] = 'subscr_signup';
-		if ( $this->isCancelled( $csv ) ) {
-   $msg['cancel_date'] = strtotime( $csv->currentCol( 'Cancelled Date' ) );
+		if ( $this->isCancelled( $csv ) || $this->isFailed( $csv ) ) {
+			$msg['cancel_date'] = strtotime( $csv->currentCol( 'Cancelled Date' ) );
 			$msg['date'] = $msg['cancel_date'];
 			$msg['txn_type'] = 'subscr_cancel';
+			if ( $this->isFailed( $csv ) ) {
+				$msg['cancel_date'] = strtotime( $csv->currentCol( 'Failed Date' ) );
+				$msg['cancel_reason'] = 'Failed: ' . $csv->currentCol( 'Latest Payment Error Message' );
+			}
 		}
 		if ( !empty( $msg['next_sched_contribution_date'] ) ) {
 			$msg['next_sched_contribution_date'] = strtotime( $msg['next_sched_contribution_date'] );
@@ -48,7 +52,9 @@ class RecurringImport extends FundraiseupImports {
 		if ( !empty( $msg['start_date'] ) ) {
 			$msg['start_date'] = strtotime( $msg['start_date'] );
 			$msg['create_date'] = $msg['start_date'];
-			$msg['date'] = $msg['create_date'];
+			if ( empty( $msg['date'] ) ) {
+				$msg['date'] = $msg['create_date'];
+			}
 		}
 
 		if ( empty( $msg['country'] ) ) {
@@ -63,5 +69,12 @@ class RecurringImport extends FundraiseupImports {
 	 */
 	protected function isCancelled( HeadedCsvReader $csv ) {
 		return $csv->currentCol( 'Recurring Status' ) === 'cancelled';
+	}
+
+	/**
+	 * @param HeadedCsvReader $csv
+	 */
+	protected function isFailed( HeadedCsvReader $csv ) {
+		return $csv->currentCol( 'Recurring Status' ) === 'failed';
 	}
 }

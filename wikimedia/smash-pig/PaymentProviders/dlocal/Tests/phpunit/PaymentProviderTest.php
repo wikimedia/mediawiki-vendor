@@ -483,4 +483,40 @@ public function testCancelPaymentWithCompleteParamsFailsAndMisingStatus(): void 
 		$this->assertFalse( $response->isSuccessful() );
 		$this->assertEquals( FinalStatus::FAILED, $response->getStatus() );
 	}
+
+	public function testPaymentRefundWithGatewayTxnId(): void {
+		$gatewayTxnId = 'D-VALID-5bc9c596-f3b6-4b7c-bf3c-432276030cd9';
+
+		$this->api->expects( $this->once() )
+			->method( 'refundPayment' )
+			->with( [
+				'payment_id' => $gatewayTxnId,
+				'currency' => 'USD',
+				'amount' => 25
+			] )
+			->willReturn(
+				[
+					'status' => 'SUCCESS'
+				]
+			);
+
+		$paymentProvider = new PaymentProvider();
+		$response = $paymentProvider->refundPayment( [
+			'gateway_txn_id' => $gatewayTxnId,
+			'gross' => 25,
+			'currency' => 'USD'
+		] );
+
+		$this->assertEquals( FinalStatus::COMPLETE, $response->getStatus() );
+	}
+
+	public function testPaymentRefundWithoutGatewayTxnId(): void {
+		$paymentProvider = new PaymentProvider();
+		$response = $paymentProvider->refundPayment( [
+			'gross' => 25,
+			'currency' => 'USD'
+		] );
+
+		$this->assertEquals( FinalStatus::FAILED, $response->getStatus() );
+	}
 }

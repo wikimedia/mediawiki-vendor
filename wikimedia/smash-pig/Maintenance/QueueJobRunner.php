@@ -18,7 +18,7 @@ class QueueJobRunner extends MaintenanceBase {
 
 		$this->addOption( 'queue', 'queue name to consume from', 'jobs' );
 		$this->addOption( 'time-limit', 'Try to keep execution under <n> seconds', 60, 't' );
-		$this->addOption( 'max-messages', 'At most consume <n> messages', 10, 'm' );
+		$this->addOption( 'message-limit', 'At most consume <n> messages', 10, 'm' );
 	}
 
 	/**
@@ -32,7 +32,7 @@ class QueueJobRunner extends MaintenanceBase {
 		$consumer = new JobQueueConsumer(
 			$this->getOption( 'queue' ),
 			$this->getOptionOrConfig( 'time-limit', $basePath . 'time-limit' ),
-			$this->getOptionOrConfig( 'max-messages', $basePath . 'message-limit' )
+			$this->getOptionOrConfig( 'message-limit', $basePath . 'message-limit' )
 		);
 
 		$startTime = time();

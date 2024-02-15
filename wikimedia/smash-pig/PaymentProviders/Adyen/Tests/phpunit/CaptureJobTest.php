@@ -56,7 +56,7 @@ class CaptureJobTest extends BaseAdyenTestCase {
 			->with( [
 				'amount' => 10,
 				'currency' => 'USD',
-				'gateway_txn_id' => '762895314225'
+				'gateway_txn_id' => '762895314225',
 			] )
 			->willReturn( AdyenTestConfiguration::getSuccessfulApproveResult() );
 

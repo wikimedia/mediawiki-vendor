@@ -27,6 +27,7 @@ class Authorisation extends AdyenMessage {
 	public $retryRescueScheduled = false;
 	public $retryRescueReference = '';
 	public $retryOrderAttemptNumber = 0;
+	public $retryNextAttemptDate = '';
 
 	/**
 	 * Overloads the generic Adyen method adding fields specific to the Authorization message
@@ -82,6 +83,9 @@ class Authorisation extends AdyenMessage {
 					break;
 				case 'retry.orderAttemptNumber':
 					$this->retryOrderAttemptNumber = $firstSegment( $entry->value );
+					break;
+				case 'retry.nextAttemptDate':
+					$this->retryNextAttemptDate = $firstSegment( $entry->value );
 					break;
 			}
 		}

@@ -56,11 +56,11 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'external_identifier' => 'SUBJJCQA',
 			'start_date' => '2023-09-18T18:53:20.676Z',
 			'employer' => '',
-   'street_number' => '',
-   'postal_code' => '',
-   'state_province' => '',
-   'language' => 'en-US',
-   'utm_medium' => 'spontaneous',
+			'street_number' => '',
+			'postal_code' => '',
+			'state_province' => '',
+			'language' => 'en-US',
+			'utm_medium' => 'spontaneous',
 			'utm_source' => 'fr-redir',
 			'utm_campaign' => 'spontaneous',
 			'type' => 'donations'
@@ -122,10 +122,10 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'gateway_refund_id' => 'ch_3NrfJTJaRQOHTfEW0mf8ewoL',
 			'type' => 'refund',
 			'gateway_account' => 'TEST',
-	'account' => 'Wikimedia Foundation',
-	'fee' => 1.66,
-	'refund' => '65.84',
-	'date' => 1695047409,
+			'account' => 'Wikimedia Foundation',
+			'fee' => 1.66,
+			'refund' => '65.84',
+			'date' => 1695047409,
 		];
 		$this->assertEquals( $expected, $actual, 'Did not parse refund correctly' );
 	}
@@ -148,7 +148,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'email' => 'jwales@example.org',
 			'external_identifier' => 'SUBJJCQA',
 			'type' => 'recurring',
-			'date' => 1695063200,
+			'date' => 1695140630,
 			'gross' => '4.60',
 			'currency' => 'GBP',
 			'txn_type' => 'subscr_cancel',
@@ -253,5 +253,40 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 		$processor = new FundraiseupAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/Recurring/New/export_recurring_2023-country-fallback-is-empty-test.csv' );
 		$this->assertSame( '', $output[0]['country'] );
+	}
+
+	public function testFailedRecurring() : void {
+		$processor = new FundraiseupAudit();
+		$output = $processor->parseFile( __DIR__ . '/../Data/Recurring/Failed/export_recurring_failed_2023-test.csv' );
+		$actual = $output[0];
+		$expected = [
+			'gateway' => 'fundraiseup',
+			'gateway_account' => 'Wikimedia Foundation',
+			'subscr_id' => 'RWRYRXYC',
+			'first_name' => 'Jimmy',
+			'last_name' => 'Wales',
+			'employer' => 'Wikpedia',
+			'email' => 'jwales@example.org',
+			'external_identifier' => 'SUBJJCQA',
+			'type' => 'recurring',
+			'date' => 1701558151,
+			'gross' => '3.50',
+			'currency' => 'USD',
+			'payment_method' => 'apple',
+			'payment_submethod' => 'mc',
+			'utm_medium' => '',
+			'utm_source' => 'portal',
+			'utm_campaign' => 'portal',
+			'next_sched_contribution_date' => '',
+			'start_date' => 1701558151,
+			'frequency_unit' => 'month',
+			'txn_type' => 'subscr_cancel',
+			'create_date' => 1701558151,
+			'frequency_interval' => 1,
+			'country' => 'GB',
+			'cancel_date' => 1705359722,
+			'cancel_reason' => 'Failed: Your card was declined.'
+		];
+		$this->assertEquals( $expected, $actual, 'Did not parse refund correctly' );
 	}
 }

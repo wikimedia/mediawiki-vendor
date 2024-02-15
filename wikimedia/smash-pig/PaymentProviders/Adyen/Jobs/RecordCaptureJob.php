@@ -22,6 +22,7 @@ class RecordCaptureJob extends RunnableJob {
 	protected $gatewayTxnId;
 	protected $merchantReference;
 	protected $eventDate;
+	protected $retryRescueReference;
 
 	public static function factory( AdyenMessage $ipnMessage ) {
 		$obj = new RecordCaptureJob();
@@ -45,6 +46,7 @@ class RecordCaptureJob extends RunnableJob {
 
 		// Find the details from the payment site in the pending database.
 		$logger->debug( 'Attempting to locate associated message in pending database' );
+
 		$db = PendingDatabase::get();
 		$dbMessage = $db->fetchMessageByGatewayOrderId( 'adyen', $this->merchantReference );
 
@@ -67,22 +69,6 @@ class RecordCaptureJob extends RunnableJob {
 				// We do need to update the gateway_txn_id as the one in the pending table comes back from the redirect
 				// and may not be there if the donor never got back to us
 				$db->storeMessage( $dbMessage );
-				return true;
-			}
-
-			if ( !empty( $dbMessage['is_auto_rescue_retry'] ) && $dbMessage['is_auto_rescue_retry'] ) {
-				$logger->debug(
-					'An AutoRescue payment was received. Sending message to recurring queue.'
-				);
-				$dbMessage['txn_type'] = 'subscr_payment';
-				$dbMessage['subscr_id'] = $dbMessage['contribution_recur_id'];
-
-				QueueWrapper::push( 'recurring', $dbMessage );
-
-				// Remove it from the pending database
-				$logger->debug( 'Removing donor details message from pending database' );
-				$db->deleteMessage( $dbMessage );
-
 				return true;
 			}
 

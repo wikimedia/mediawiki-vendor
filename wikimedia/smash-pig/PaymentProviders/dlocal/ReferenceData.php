@@ -44,12 +44,12 @@ class ReferenceData {
 		'BM' => 'cash_banamex',
 		'BN' => 'bancolombia', // Colombia cash
 		'BP' => 'bbva', // Peru, bank transfer
-		'BV' => 'cash_bancomer', // Mexico, aka BBVA
+		'BV' => 'cash_bancomer', // Mexico, aka BBVA and it's actually bt
 		'BX' => 'banco_de_chile',
 		'CA' => 'caixa',
-		'CB' => 'baloto',
+		'CB' => 'cordobesa',
 		'CJ' => 'codi', // mexico bank with Push Notification
-		'CQ' => 'codi', // mexico bank with QR code
+		'CQ' => 'codi_qr', // mexico bank with QR code
 		'CL' => 'cabal',
 		'CM' => 'cmr',
 		'CR' => 'carulla',
@@ -99,7 +99,8 @@ class ReferenceData {
 		'PQ' => 'pix', // Brazil
 		'PR' => 'presto',
 		'PW' => 'paytmwallet', // India
-		'PY' => 'picpay', // Brazil
+		'PZ' => 'picpay', // Brazil
+		'QB' => 'boleto_hibrido', // Brazil Boleto Hibrido
 		'RE' => 'cash_red_pagos',
 		'RL' => 'red_link',
 		'RP' => 'cash_rapipago',
@@ -108,7 +109,7 @@ class ReferenceData {
 		'SE' => 'spei', // Mexico
 		'SI' => 'santander_rio', // Argentina
 		'SK' => 'sencillito', // Chili cash
-		'SM' => 'cash_santander', // Mexico
+		'SM' => 'cash_santander', // Mexico actually bt but code is different from brazil
 		'SP' => 'servipag',
 		'SX' => 'surtimax',
 		'TS' => 'shopping',

@@ -19,7 +19,7 @@ class EmptyQueueToDump extends MaintenanceBase {
 		parent::__construct();
 		$this->addOption( 'queue', 'queue name to consume from', 'test' );
 		$this->addOption( 'gateway', 'only consume message with this gateway', null );
-		$this->addOption( 'max-messages', 'At most consume <n> messages, 0 is infinite', 10, 'm' );
+		$this->addOption( 'message-limit', 'At most consume <n> messages, 0 is infinite', 10, 'm' );
 		$this->addOption( 'outfile', 'File to place JSON encoded messages into', 'messages.json', 'f' );
 	}
 
@@ -36,7 +36,7 @@ class EmptyQueueToDump extends MaintenanceBase {
 
 		$consumer = new QueueFileDumper(
 			$this->getOption( 'queue' ),
-			$this->getOption( 'max-messages' ),
+			$this->getOption( 'message-limit' ),
 			$outfile,
 			$conditions
 		);

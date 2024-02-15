@@ -31,7 +31,7 @@ class CreateIpnMessagesFromPendingDb extends MaintenanceBase {
 	public function __construct() {
 		parent::__construct();
 		$this->addArgument( 'gateway', 'Create IPN messages for which gateway', true );
-		$this->addOption( 'max-messages', 'At most create <n> messages', 10, 'm' );
+		$this->addOption( 'message-limit', 'At most create <n> messages', 10, 'm' );
 		$this->addOption( 'output-dir', 'Write messages to this directory', getcwd(), 'o' );
 	}
 
@@ -42,7 +42,7 @@ class CreateIpnMessagesFromPendingDb extends MaintenanceBase {
 		$pendingDatabase = PendingDatabase::get();
 
 		$numCreated = 0;
-		$limit = $this->getOptionOrConfig( 'max-messages', 'maintenance/create-ipns/message-limit' );
+		$limit = $this->getOptionOrConfig( 'message-limit', 'maintenance/create-ipns/message-limit' );
 		$output = $this->getOption( 'output-dir' );
 		$gateway = $this->getArgument( 'gateway' );
 		$pendingMessages = $pendingDatabase->fetchMessagesByGatewayNewest( $gateway, $limit );

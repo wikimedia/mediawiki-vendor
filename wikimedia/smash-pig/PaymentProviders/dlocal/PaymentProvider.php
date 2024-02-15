@@ -9,6 +9,7 @@ use SmashPig\Core\ValidationError;
 use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentProviders\ICancelablePaymentProvider;
 use SmashPig\PaymentProviders\IGetLatestPaymentStatusProvider;
+use SmashPig\PaymentProviders\IRefundablePaymentProvider;
 use SmashPig\PaymentProviders\Responses\ApprovePaymentResponse;
 use SmashPig\PaymentProviders\Responses\CancelPaymentResponse;
 use SmashPig\PaymentProviders\Responses\CreatePaymentResponse;
@@ -16,7 +17,7 @@ use SmashPig\PaymentProviders\Responses\PaymentDetailResponse;
 use SmashPig\PaymentProviders\Responses\PaymentProviderResponse;
 use SmashPig\PaymentProviders\Responses\RefundPaymentResponse;
 
-class PaymentProvider implements IGetLatestPaymentStatusProvider, ICancelablePaymentProvider {
+class PaymentProvider implements IGetLatestPaymentStatusProvider, ICancelablePaymentProvider, IRefundablePaymentProvider {
 	/**
 	 * @var Api
 	 */
@@ -65,7 +66,26 @@ class PaymentProvider implements IGetLatestPaymentStatusProvider, ICancelablePay
 	 */
 	public function refundPayment( array $params ): RefundPaymentResponse {
 		try {
-			$result = $this->api->refundPayment( $params );
+			if ( empty( $params['gateway_txn_id'] ) ) {
+				return DlocalRefundPaymentResponseFactory::fromErrorResponse( [
+					'error' => 'Missing required fields'
+				] );
+			}
+			$apiParams = [];
+			if ( !empty( $params['gateway_txn_id'] ) ) {
+				$apiParams['payment_id'] = $params['gateway_txn_id'];
+			}
+			if ( !empty( $params['currency'] ) ) {
+				$apiParams['currency'] = $params['currency'];
+			}
+			if ( !empty( $params['gross'] ) ) {
+				$apiParams['amount'] = $params['gross'];
+			}
+			if ( !empty( $params['amount'] ) ) {
+				$apiParams['amount'] = $params['amount'];
+			}
+
+			$result = $this->api->refundPayment( $apiParams );
 			return DlocalRefundPaymentResponseFactory::fromRawResponse( $result );
 		} catch ( ApiException $apiException ) {
 			return DlocalRefundPaymentResponseFactory::fromErrorResponse( $apiException->getRawErrors() );

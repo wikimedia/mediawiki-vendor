@@ -79,38 +79,4 @@ class RecordCaptureJobTest extends BaseAdyenTestCase {
 		}
 	}
 
-	public function testRecordCaptureForAutoRescue() {
-		$auto_rescue_message = json_decode(
-			file_get_contents( __DIR__ . '/../Data/auto-rescue-pending.json' ), true
-		);
-		$this->pendingMessage = $auto_rescue_message;
-		$this->pendingDatabase->storeMessage( $this->pendingMessage );
-
-		$recurringQueue = QueueWrapper::getQueue( 'recurring' );
-		$capture = JsonSerializableObject::fromJsonProxy(
-			'SmashPig\PaymentProviders\Adyen\ExpatriatedMessages\Capture',
-			file_get_contents( __DIR__ . '/../Data/auto-rescue-capture.json' )
-		);
-
-		$job = RecordCaptureJob::factory( $capture );
-		$this->assertTrue( $job->execute() );
-
-		$donorData = $this->pendingDatabase->fetchMessageByGatewayOrderId(
-			'adyen', $capture->merchantReference
-		);
-
-		$this->assertNull(
-			$donorData,
-			'RecordCaptureJob left donor data on pending queue'
-		);
-
-		$donationMessage = $recurringQueue->pop();
-		$this->assertNotNull(
-			$donationMessage,
-			'RecordCaptureJob did not send donation message'
-		);
-
-		$this->assertEquals( $donationMessage['subscr_id'], $this->pendingMessage['contribution_recur_id'] );
-		$this->assertEquals( $donationMessage['txn_type'], 'subscr_payment' );
-	}
 }
