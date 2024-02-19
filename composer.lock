@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a86294cbeb8f7e509b948ee2502464d9",
+    "content-hash": "0edcd9e43fc11733d52011ab236deed2",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -7593,21 +7593,21 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.19.0-a17",
+            "version": "v0.19.0-a18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
-                "reference": "e447f1ef37904feac70c262e73ea1a1085fbbd9f"
+                "reference": "ef14aad80582be61ecfcd399088453f582722290"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/e447f1ef37904feac70c262e73ea1a1085fbbd9f",
-                "reference": "e447f1ef37904feac70c262e73ea1a1085fbbd9f",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/ef14aad80582be61ecfcd399088453f582722290",
+                "reference": "ef14aad80582be61ecfcd399088453f582722290",
                 "shasum": ""
             },
             "require": {
                 "composer-runtime-api": "^2.0",
-                "composer/semver": "^3.3.2",
+                "composer/semver": "^3.3.2 || ^3.4.0",
                 "ext-dom": "*",
                 "ext-json": "*",
                 "liuggio/statsd-php-client": "^1.0.18",
@@ -7671,10 +7671,10 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.19.0-a17",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.19.0-a18",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
-            "time": "2024-02-09T19:23:17+00:00"
+            "time": "2024-02-17T01:07:41+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",
