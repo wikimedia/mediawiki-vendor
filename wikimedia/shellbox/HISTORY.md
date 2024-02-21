@@ -1,5 +1,10 @@
 # Release History
 
+## 4.0.1 (2023-02-20)
+* In the Firejail wrapper, fix handling of empty environment variables.
+* Fix compatibility with Firejail 0.9.72 and fix a possible sandbox escape by
+  passing the whole command string to a shell that runs under Firejail.
+
 ## 4.0.0 (2022-11-10)
 * Require PHP >=7.4.3, up from 7.2.9.
 * Fix OOM in MultipartAction when handling a large request body.

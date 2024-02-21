@@ -8473,17 +8473,17 @@
         },
         {
             "name": "wikimedia/shellbox",
-            "version": "4.0.0",
-            "version_normalized": "4.0.0.0",
+            "version": "4.0.1",
+            "version_normalized": "4.0.1.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/wikimedia/shellbox.git",
-                "reference": "de46442301ca19faadb5649bf21047d36b72b05d"
+                "url": "https://github.com/wikimedia/mediawiki-libs-Shellbox.git",
+                "reference": "837d8ecfa64ccd15086cf7c6226af3e4f5b8b610"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/shellbox/zipball/de46442301ca19faadb5649bf21047d36b72b05d",
-                "reference": "de46442301ca19faadb5649bf21047d36b72b05d",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Shellbox/zipball/837d8ecfa64ccd15086cf7c6226af3e4f5b8b610",
+                "reference": "837d8ecfa64ccd15086cf7c6226af3e4f5b8b610",
                 "shasum": ""
             },
             "require": {
@@ -8496,16 +8496,16 @@
                 "wikimedia/wikipeg": "^2.0.6 || ^3.0.0"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "39.0.0",
-                "mediawiki/mediawiki-phan-config": "0.12.0",
+                "mediawiki/mediawiki-codesniffer": "41.0.0",
+                "mediawiki/mediawiki-phan-config": "0.14.0",
                 "mediawiki/minus-x": "1.1.1",
-                "ockcyp/covers-validator": "1.4.0",
+                "ockcyp/covers-validator": "1.6.0",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
                 "php-parallel-lint/php-parallel-lint": "1.3.2",
-                "phpunit/phpunit": "^9.5",
+                "phpunit/phpunit": "9.6.16",
                 "psy/psysh": "~0.10.4"
             },
-            "time": "2022-11-10T18:27:01+00:00",
+            "time": "2024-02-20T04:10:35+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -8531,7 +8531,7 @@
             "description": "Library and server for containerized shell execution",
             "homepage": "https://www.mediawiki.org/wiki/Shellbox",
             "support": {
-                "source": "https://github.com/wikimedia/shellbox/tree/4.0.0"
+                "source": "https://github.com/wikimedia/mediawiki-libs-Shellbox/tree/4.0.1"
             },
             "install-path": "../wikimedia/shellbox"
         },
