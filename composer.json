@@ -119,7 +119,7 @@
 		"wikimedia/ip-utils": "5.0.0",
 		"wikimedia/json-codec": "2.2.1",
 		"wikimedia/langconv": "0.4.2",
-		"wikimedia/less.php": "4.1.1",
+		"wikimedia/less.php": "4.2.1",
 		"wikimedia/lucene-explain-parser": "2.0.0",
 		"wikimedia/metrics-platform": "3.1.0",
 		"wikimedia/minify": "2.7.0",
