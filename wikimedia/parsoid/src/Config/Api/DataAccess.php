@@ -176,7 +176,7 @@ class DataAccess extends IDataAccess {
 			'prop' => $propName,
 			"{$prefix}badfilecontexttitle" => $pageConfigTitle,
 			"{$prefix}prop" => implode( '|', [
-				'mediatype', 'mime', 'size', 'url', 'badfile'
+				'mediatype', 'mime', 'size', 'url', 'badfile', 'sha1', 'timestamp'
 			] )
 		];
 		if ( $prefix === 'vi' ) {
@@ -274,7 +274,7 @@ class DataAccess extends IDataAccess {
 	/** @inheritDoc */
 	public function doPst( PageConfig $pageConfig, string $wikitext ): string {
 		$pageConfigTitle = $this->toPrefixedText( $pageConfig->getLinkTarget() );
-		$key = implode( ':', [ 'pst', md5( $pageConfigTitle ) , md5( $wikitext ) ] );
+		$key = implode( ':', [ 'pst', md5( $pageConfigTitle ), md5( $wikitext ) ] );
 		$ret = $this->getCache( $key );
 		if ( $ret === null ) {
 			$data = $this->api->makeRequest( [

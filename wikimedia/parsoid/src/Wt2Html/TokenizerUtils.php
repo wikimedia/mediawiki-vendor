@@ -50,7 +50,7 @@ class TokenizerUtils {
 					$res[] = $v;
 				}
 			} else {
-				throw new \Exception( __METHOD__ . ": found falsy element $i" );
+				throw new \RuntimeException( __METHOD__ . ": found falsy element $i" );
 			}
 		}
 
@@ -92,7 +92,7 @@ class TokenizerUtils {
 		$out = [];
 		$text = '';
 		$c = self::flattenIfArray( $c );
-		for ( $i = 0,  $l = count( $c );  $i < $l;  $i++ ) {
+		for ( $i = 0, $l = count( $c );  $i < $l;  $i++ ) {
 			$ci = $c[$i];
 			if ( is_string( $ci ) ) {
 				if ( $ci !== '' ) {
@@ -353,7 +353,7 @@ class TokenizerUtils {
 					&& $c2 === ']';
 
 			default:
-				throw new \Exception( 'Unhandled case!' );
+				throw new \RuntimeException( 'Unhandled case!' );
 		}
 	}
 

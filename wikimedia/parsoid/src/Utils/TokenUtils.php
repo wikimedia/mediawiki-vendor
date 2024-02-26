@@ -264,7 +264,7 @@ class TokenUtils {
 		}
 
 		// update/clear tsr
-		for ( $i = 0,  $n = count( $tokens );  $i < $n;  $i++ ) {
+		for ( $i = 0, $n = count( $tokens );  $i < $n;  $i++ ) {
 			$t = $tokens[$i];
 			switch ( is_object( $t ) ? get_class( $t ) : null ) {
 				case TagTk::class:
@@ -305,7 +305,7 @@ class TokenUtils {
 
 					// Process attributes
 					if ( isset( $t->attribs ) ) {
-						for ( $j = 0,  $m = count( $t->attribs );  $j < $m;  $j++ ) {
+						for ( $j = 0, $m = count( $t->attribs );  $j < $m;  $j++ ) {
 							$a = $t->attribs[$j];
 							if ( is_array( $a->k ) ) {
 								self::shiftTokenTSR( $a->k, $offset );
@@ -497,7 +497,7 @@ class TokenUtils {
 			if ( $sr instanceof DomSourceRange ) {
 				// Adjust widths back from being character offsets
 				if ( $sr->openWidth !== null ) {
-					$sr->openWidth = $sr->openWidth - $sr->start;
+					$sr->openWidth -= $sr->start;
 				}
 				if ( $sr->closeWidth !== null ) {
 					$sr->closeWidth = $sr->end - $sr->closeWidth;

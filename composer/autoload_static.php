@@ -2450,7 +2450,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Less_Tree_Extend' => __DIR__ . '/..' . '/wikimedia/less.php/lib/Less/Tree/Extend.php',
         'Less_Tree_HasValueProperty' => __DIR__ . '/..' . '/wikimedia/less.php/lib/Less/Tree/HasValueProperty.php',
         'Less_Tree_Import' => __DIR__ . '/..' . '/wikimedia/less.php/lib/Less/Tree/Import.php',
-        'Less_Tree_JavaScript' => __DIR__ . '/..' . '/wikimedia/less.php/lib/Less/Tree/JavaScript.php',
         'Less_Tree_Keyword' => __DIR__ . '/..' . '/wikimedia/less.php/lib/Less/Tree/Keyword.php',
         'Less_Tree_Media' => __DIR__ . '/..' . '/wikimedia/less.php/lib/Less/Tree/Media.php',
         'Less_Tree_Mixin_Call' => __DIR__ . '/..' . '/wikimedia/less.php/lib/Less/Tree/Mixin/Call.php',
