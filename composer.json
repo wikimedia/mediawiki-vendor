@@ -7,7 +7,8 @@
 		"vendor-dir": ".",
 		"sort-packages": true,
 		"allow-plugins": {
-			"wikimedia/composer-merge-plugin": true
+			"wikimedia/composer-merge-plugin": true,
+			"dealerdirect/phpcodesniffer-composer-installer": true
 		}
 	},
 	"prefer-stable": true,
