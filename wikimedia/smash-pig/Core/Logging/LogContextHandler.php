@@ -6,17 +6,20 @@ use SmashPig\Core\Logging\LogStreams\ILogStream;
 use SmashPig\Core\ProviderConfiguration;
 
 class LogContextHandler {
-	/** @var [LogEvent[]] Stack of LogEvent arrays holding all log lines for a context */
-	protected $contextData = [ [] ];
+	/** @var LogEvent[] Stack of LogEvent arrays holding all log lines for a context */
+	protected array $contextData = [ [] ];
 
 	/** @var string[] Stack of strings holding context names */
-	protected $contextNames;
+	protected array $contextNames;
 
 	/** @var ILogStream[] */
-	protected $logStreams;
+	protected array $logStreams;
 
 	/** @var int The log level must be greater than this to be processed. */
-	protected $threshold = LOG_DEBUG;
+	protected int $threshold = LOG_DEBUG;
+
+	/** @var string The string to prefix log lines with */
+	protected string $contextString;
 
 	public function __construct( $rootName, $logStreams, $threshold ) {
 		$this->contextNames = [ $rootName ];
@@ -45,12 +48,12 @@ class LogContextHandler {
 	/**
 	 * @param ILogStream $logStream
 	 */
-	public function addLogStream( ILogStream $logStream ) {
+	public function addLogStream( ILogStream $logStream ): void {
 		$this->logStreams[] = $logStream;
 		$logStream->enterContext( $this->contextNames );
 	}
 
-	public function removeLogStreamByType( string $className ) {
+	public function removeLogStreamByType( string $className ): void {
 		$newLogStreams = [];
 		foreach ( $this->logStreams as $existingStream ) {
 			if ( $existingStream instanceof $className ) {
@@ -67,9 +70,9 @@ class LogContextHandler {
 	 *
 	 * @param string $name Child context name
 	 */
-	public function enterContext( $name ) {
+	public function enterContext( string $name ): void {
 		if ( $name !== ProviderConfiguration::NO_PROVIDER ) {
-			Logger::debug( "Entering logging context '{$name}'." );
+			Logger::debug( "Entering logging context '$name'." );
 		}
 
 		array_unshift( $this->contextNames, $name );
@@ -90,11 +93,11 @@ class LogContextHandler {
 	 *
 	 * @return string The old name of this context
 	 */
-	public function renameContext( $newName, $addLogEntry = true ) {
+	public function renameContext( string $newName, bool $addLogEntry = true ): string {
 		$old = $this->contextNames[ 0 ];
 
 		if ( $addLogEntry ) {
-			Logger::info( "Renaming logging context '{$old}' to '{$newName}'." );
+			Logger::info( "Renaming logging context '$old' to '$newName'." );
 		}
 
 		$this->contextNames[ 0 ] = $newName;
@@ -111,7 +114,7 @@ class LogContextHandler {
 	 *
 	 * @param LogEvent $event Event to add
 	 */
-	public function addEventToContext( LogEvent $event ) {
+	public function addEventToContext( LogEvent $event ): void {
 		if ( $event->level > $this->threshold ) {
 			return;
 		}
@@ -153,12 +156,8 @@ class LogContextHandler {
 	 *
 	 * @return array[{message data, exception}]
 	 */
-	public function getContextEntries( $n ) {
-		if ( isset( $this->contextData[ $n ] ) ) {
-			return $this->contextData[ $n ];
-		} else {
-			return [];
-		}
+	public function getContextEntries( int $n ): array {
+		return $this->contextData[$n] ?? [];
 	}
 
 	/**
@@ -169,7 +168,7 @@ class LogContextHandler {
 	 *
 	 * @return string The fully qualified context name.
 	 */
-	public static function createQualifiedContextName( $contextStack ) {
+	public static function createQualifiedContextName( array $contextStack ): string {
 		return implode( '::', array_reverse( $contextStack ) );
 	}
 }

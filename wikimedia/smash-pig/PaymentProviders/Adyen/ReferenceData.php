@@ -20,6 +20,10 @@ class ReferenceData {
 	 */
 
 	protected static $methods = [
+		'ach' => [
+			'method' => 'ach',
+			'submethod' => '',
+		],
 		'alipay' => [
 			'method' => 'ew',
 			'submethod' => 'ew_alipay',

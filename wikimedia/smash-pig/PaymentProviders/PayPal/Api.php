@@ -76,7 +76,7 @@ class Api {
 			'CANCELURL' => $params['cancel_url'],
 			'REQCONFIRMSHIPPING' => 0,
 			'NOSHIPPING' => 1,
-			'LOCALECODE' => $params['locale'],
+			'LOCALECODE' => $params['language'],
 			'L_PAYMENTREQUEST_0_AMT0' => $params['amount'],
 			'L_PAYMENTREQUEST_0_DESC0' => $params['description'],
 			'PAYMENTREQUEST_0_AMT' => $params['amount'],
@@ -90,7 +90,7 @@ class Api {
 			'SOLUTIONTYPE' => 'Mark'
 		];
 
-		if ( $params['is_recurring'] === 1 ) {
+		if ( $params['recurring'] === 1 ) {
 			$requestParams['L_BILLINGTYPE0'] = 'RecurringPayments';
 			$requestParams['L_BILLINGAGREEMENTDESCRIPTION0'] = $params['description'];
 		}

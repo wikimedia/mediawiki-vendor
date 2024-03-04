@@ -23,6 +23,10 @@ class PaymentCaptureActionTest extends BaseAdyenTestCase {
 	}
 
 	public function testSuccessfulAuth() {
+		$providerConfig = Context::get()->getProviderConfiguration();
+		$providerConfig->override(
+			[ 'capture-from-ipn-listener' => true ]
+		);
 		$auth = new Authorisation();
 		$auth->success = true;
 		$auth->paymentMethod = 'amex';

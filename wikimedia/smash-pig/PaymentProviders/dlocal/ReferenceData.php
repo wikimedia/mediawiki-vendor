@@ -44,7 +44,7 @@ class ReferenceData {
 		'BM' => 'cash_banamex',
 		'BN' => 'bancolombia', // Colombia cash
 		'BP' => 'bbva', // Peru, bank transfer
-		'BV' => 'cash_bancomer', // Mexico, aka BBVA and it's actually bt
+		'BV' => 'bancomer', // Mexico, aka BBVA and it's actually bt
 		'BX' => 'banco_de_chile',
 		'CA' => 'caixa',
 		'CB' => 'cordobesa',

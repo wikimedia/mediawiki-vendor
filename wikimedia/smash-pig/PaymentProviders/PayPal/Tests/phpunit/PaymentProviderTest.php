@@ -189,7 +189,7 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 			'amount' => '30.00',
 			'currency' => 'ddd',
 			'order_id' => '888.1',
-			'is_recurring' => 1,
+			'recurring' => 1,
 		];
 
 		$testCreatePaymentSessionResponse = $this->getTestData( 'SetExpressCheckoutFail.response' );
@@ -216,7 +216,7 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 			'amount' => '30.00',
 			'currency' => 'USD',
 			'order_id' => '888.1',
-			'is_recurring' => 1,
+			'recurring' => 1,
 		];
 
 		$testCreatePaymentSessionResponse = $this->getTestData( 'SetExpressCheckoutSuccess.response' );

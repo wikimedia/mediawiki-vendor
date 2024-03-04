@@ -24,8 +24,9 @@ class PaymentCaptureAction implements IListenerMessageAction {
 
 		if ( $msg instanceof Authorisation ) {
 			if ( $msg->success || $msg->isEndedAutoRescue() ) {
+				$isAutoRescue = $msg->isSuccessfulAutoRescue() || $msg->isEndedAutoRescue();
 				// Ignore subsequent recurring IPNs when it's not an ongoing auto rescue (means it's a success or cancel auto rescue)
-				if ( !$msg->isSuccessfulAutoRescue() && !$msg->isEndedAutoRescue() && $msg->isRecurringInstallment() ) {
+				if ( !$isAutoRescue && $msg->isRecurringInstallment() ) {
 					return true;
 				}
 
@@ -43,7 +44,7 @@ class PaymentCaptureAction implements IListenerMessageAction {
 					QueueWrapper::push( 'jobs-adyen', $job );
 				} else {
 					$providerConfig = Context::get()->getProviderConfiguration();
-					if ( !$providerConfig->val( 'capture-from-ipn-listener' ) ) {
+					if ( !$providerConfig->val( 'capture-from-ipn-listener' ) && !$isAutoRescue ) {
 						return true;
 					}
 					// Here we need to capture the payment, the job runner will collect the

@@ -5,7 +5,7 @@
         'type' => 'mediawiki-core',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '29eb0fff65a1c61c1bc4e087087f3b5ca42810e3',
+        'reference' => '709d89bf6f37a05ea0fae759603cf9c3119916e9',
         'name' => 'mediawiki/core',
         'dev' => false,
     ),
@@ -178,7 +178,7 @@
             'type' => 'mediawiki-core',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '29eb0fff65a1c61c1bc4e087087f3b5ca42810e3',
+            'reference' => '709d89bf6f37a05ea0fae759603cf9c3119916e9',
             'dev_requirement' => false,
         ),
         'mediawiki/mediawiki' => array(
@@ -767,12 +767,12 @@
             'dev_requirement' => false,
         ),
         'wikimedia/smash-pig' => array(
-            'pretty_version' => 'v0.8.9.14',
-            'version' => '0.8.9.14',
+            'pretty_version' => 'v0.8.9.18',
+            'version' => '0.8.9.18',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/smash-pig',
             'aliases' => array(),
-            'reference' => '2d67bba2113b88f828855cd82057bfd030d5b79d',
+            'reference' => '2d75964a20249ba7505e4430f1082ffd18e119aa',
             'dev_requirement' => false,
         ),
         'wikimedia/timestamp' => array(

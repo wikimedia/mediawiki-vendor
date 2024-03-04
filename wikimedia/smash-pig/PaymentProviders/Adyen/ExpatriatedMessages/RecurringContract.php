@@ -30,6 +30,18 @@ class RecurringContract extends AdyenMessage {
 	}
 
 	/**
+	 * Overloads the generic Adyen method adding fields specific to the Recurring Contract message
+	 * type.
+	 *
+	 * @param array $notification
+	 */
+	protected function constructFromJSON( array $notification ) {
+		parent::constructFromJSON( $notification );
+
+		$this->paymentMethod = $notification['paymentMethod'];
+	}
+
+	/**
 	 * Will run all the actions that are loaded (from the 'actions' configuration
 	 * node) and that are applicable to this message type. Will return true
 	 * if all actions returned true. Otherwise will return false. This implicitly

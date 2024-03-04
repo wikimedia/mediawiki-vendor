@@ -1,27 +1,27 @@
 <?php
-namespace SmashPig\PaymentProviders\AstroPay\Test;
+namespace SmashPig\PaymentProviders\dlocal\Test;
 
-use SmashPig\PaymentProviders\AstroPay\Audit\AstroPayAudit;
+use SmashPig\PaymentProviders\dlocal\Audit\DlocalAudit;
 use SmashPig\Tests\BaseSmashPigUnitTestCase;
 
 /**
- * Verify AstroPay audit file processor functions
+ * Verify dlocal audit file processor functions
  *
  * @group Audit
- * @group AstroPay
+ * @group Dlocal
  */
 class AuditTest extends BaseSmashPigUnitTestCase {
 	/**
 	 * Normal donation
 	 */
 	public function testProcessDonation() {
-		$processor = new AstroPayAudit();
+		$processor = new DlocalAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/donation.csv' );
 		$this->assertSame( 1, count( $output ), 'Should have found one donation' );
 		$actual = $output[0];
 		$expected = [
-			'gateway' => 'astropay',
-			'date' => 1434450583,
+			'gateway' => 'dlocal',
+			'date' => 1686911383,
 			'gross' => '5.00',
 			'contribution_tracking_id' => '266221341',
 			'country' => 'BR',
@@ -31,7 +31,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'invoice_id' => '266221341.0',
 			'payment_method' => 'cc',
 			'payment_submethod' => 'mc',
-			'settled_date' => 1434456032,
+			'settled_date' => 1686916832,
 			'settled_currency' => 'USD',
 			'settled_fee' => '0.03',
 			'settled_gross' => '1.50',
@@ -43,14 +43,14 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	 * Now try a refund
 	 */
 	public function testProcessRefund() {
-		$processor = new AstroPayAudit();
+		$processor = new DlocalAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/refund.csv' );
 		$this->assertSame( 1, count( $output ), 'Should have found one refund' );
 		$actual = $output[0];
 		$expected = [
-			'gateway' => 'astropay',
+			'gateway' => 'dlocal',
 			'contribution_tracking_id' => '314159265',
-			'date' => 1434747909,
+			'date' => 1687208709,
 			'gross' => '5.00',
 			'gateway_parent_id' => '7654321',
 			'gateway_refund_id' => '12345',
@@ -65,14 +65,14 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	 * And a chargeback
 	 */
 	public function testProcessChargeback() {
-		$processor = new AstroPayAudit();
+		$processor = new DlocalAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/chargebacks.csv' );
 		$this->assertSame( 1, count( $output ), 'Should have found one chargeback' );
 		$actual = $output[0];
 		$expected = [
-			'gateway' => 'astropay',
+			'gateway' => 'dlocal',
 			'contribution_tracking_id' => '314159265',
-			'date' => 1434747909,
+			'date' => 1687208709,
 			'gross' => '5.00',
 			'gateway_parent_id' => '7654321',
 			'gateway_refund_id' => '12345',

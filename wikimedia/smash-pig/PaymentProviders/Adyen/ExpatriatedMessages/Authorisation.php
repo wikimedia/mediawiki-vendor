@@ -92,6 +92,61 @@ class Authorisation extends AdyenMessage {
 	}
 
 	/**
+	 * Overloads the generic Adyen method adding fields specific to the Authorization message
+	 * type.
+	 *
+	 * @param array $notification
+	 */
+	protected function constructFromJSON( array $notification ) {
+		parent::constructFromJSON( $notification );
+
+		$this->paymentMethod = $notification['paymentMethod'];
+
+		// Add AVS, CVV results, recurringProcessingModel, and recurringDetailReference from additionalData if any is provided
+		if ( empty( $notification['additionalData'] ) || !is_array( $notification['additionalData'] ) ) {
+			return;
+		}
+
+		// For AVS and CVV we just want the code, not the words
+		$firstSegment = function ( $value ) {
+			$parts = explode( ' ', $value );
+			return $parts[0];
+		};
+
+		foreach ( $notification['additionalData'] as $key => $value ) {
+			switch ( $key ) {
+				case 'cvcResult':
+					$this->cvvResult = $firstSegment( $value );
+					break;
+				case 'avsResult':
+					$this->avsResult = $firstSegment( $value );
+					break;
+				case 'recurringProcessingModel':
+					$this->recurringProcessingModel = $value;
+					break;
+				case 'recurring.recurringDetailReference':
+					$this->recurringDetailReference = $value;
+					break;
+				case 'recurring.shopperReference':
+					$this->shopperReference = $value;
+					break;
+				case 'retry.rescueScheduled':
+					$this->retryRescueScheduled = $value;
+					break;
+				case 'retry.rescueReference':
+					$this->retryRescueReference = $value;
+					break;
+				case 'retry.orderAttemptNumber':
+					$this->retryOrderAttemptNumber = $value;
+					break;
+				case 'retry.nextAttemptDate':
+					$this->retryNextAttemptDate = $value;
+					break;
+			}
+		}
+	}
+
+	/**
 	 * Will run all the actions that are loaded (from the 'actions' configuration
 	 * node) and that are applicable to this message type. Will return true
 	 * if all actions returned true. Otherwise will return false. This implicitly

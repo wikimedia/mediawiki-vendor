@@ -18,8 +18,8 @@ class SetExpressCheckout extends MaintenanceBase {
 		$this->addArgument( 'amount', 'amount' );
 		$this->addArgument( 'currency', 'currency' );
 		$this->addArgument( 'order_id', 'Order ID' );
-		$this->addArgument( 'is_recurring', 'if true, then create recurring token' );
-		$this->addArgument( 'locale', 'language locale for cancel url' );
+		$this->addArgument( 'recurring', 'if true, then create recurring token' );
+		$this->addArgument( 'language', 'language locale for cancel url' );
 	}
 
 	/**
@@ -31,14 +31,14 @@ class SetExpressCheckout extends MaintenanceBase {
 			'amount' => $this->getArgument( 'amount' ),
 			'currency' => $this->getArgument( 'currency' ),
 			'order_id' => $this->getArgument( 'order_id' ),
-			'is_recurring' => $this->getArgument( 'is_recurring' ),
-			'locale' => $this->getArgument( 'locale' ),
+			'recurring' => $this->getArgument( 'recurring' ),
+			'language' => $this->getArgument( 'language' ),
 			'description' => 'Wikimedia Foundation',
 			'return_url' => $this->getReturnUrl(),
-			'cancel_url' => 'https://donate.wikimedia.org/wiki/Ways_to_Give/' . $this->getArgument( 'locale' ),
+			'cancel_url' => 'https://donate.wikimedia.org/wiki/Ways_to_Give/' . $this->getArgument( 'language' ),
 		];
 
-		if ( $this->getArgument( 'is_recurring' ) === 1 ) {
+		if ( $this->getArgument( 'recurring' ) === 1 ) {
 			$params['description'] = 'Monthly Subscription';
 		}
 		$result = $provider->createPaymentSession( $params );
@@ -51,7 +51,7 @@ class SetExpressCheckout extends MaintenanceBase {
 	private function getReturnUrl(): string {
 		$url = "https://payments.wikimedia.org/index.php?title=Special:PaypalExpressGatewayResult";
 		$url .= '&order_id=' . $this->getArgument( 'order_id' );
-		if ( $this->getArgument( 'is_recurring' ) === 1 ) {
+		if ( $this->getArgument( 'recurring' ) === 1 ) {
 			$url .= '&recurring=1';
 		}
 		return $url;

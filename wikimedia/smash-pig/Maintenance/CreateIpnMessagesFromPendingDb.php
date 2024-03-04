@@ -3,7 +3,6 @@ namespace SmashPig\Maintenance;
 
 require 'MaintenanceBase.php';
 
-use SmashPig\Core\Context;
 use SmashPig\Core\DataStores\PendingDatabase;
 use SmashPig\Core\Logging\Logger;
 
@@ -15,9 +14,6 @@ use SmashPig\Core\Logging\Logger;
  * Amazon:
  *  php Maintenance/CreateIpnMessagesFromPendingDb.php amazon
  *  PaymentProvider/Amazon/Tests/inject.ph payments-listener.local.wmftest.net '/smashpig_http_handler.php?p=amazon/listener' CaptureCompleted.10-1.json
- * AstroPay:
- *  php Maintenance/CreateIpnMessagesFromPendingDb.php --config-node astropay astropay
- *  curl -d @success.10.1.curl http://payments-listener.local.wmftest.net/smashpig_http_handler.php?p=astropay/listener
  */
 class CreateIpnMessagesFromPendingDb extends MaintenanceBase {
 
@@ -77,11 +73,6 @@ class CreateIpnMessagesFromPendingDb extends MaintenanceBase {
 			'[[PROCESSOR_REF_1]]' => mt_rand(),
 			'[[PROCESSOR_REF_2]]' => mt_rand(),
 		];
-		if ( $this->getArgument( 'gateway' ) === 'astropay' ) {
-			// ugly, but whatchagonnado?
-			$replacements['[[ASTROPAY_SIGNATURE_SUCCESS]]'] = $this->getAstroPaySignature( $pendingMessage, '9' );
-			$replacements['[[ASTROPAY_SIGNATURE_FAILURE]]'] = $this->getAstroPaySignature( $pendingMessage, '8' );
-		}
 		if ( isset( $pendingMessage['gateway_account'] ) ) {
 			$replacements['[[ACCOUNT_CODE]]'] = $pendingMessage['gateway_account'];
 		}
@@ -103,17 +94,6 @@ class CreateIpnMessagesFromPendingDb extends MaintenanceBase {
 			Logger::debug( "Wrote $fname." );
 		}
 	}
-
-	protected function getAstroPaySignature( $pendingMessage, $result ) {
-		$c = Context::get()->getProviderConfiguration();
-		$login = $c->val( 'login' );
-		$secret = $c->val( 'secret' );
-		$signed = $login . $result . $pendingMessage['gross'] . $pendingMessage['order_id'];
-		return strtoupper(
-			hash_hmac( 'sha256', pack( 'A*', $signed ), pack( 'A*', $secret ) )
-		);
-	}
-
 }
 
 $maintClass = CreateIpnMessagesFromPendingDb::class;

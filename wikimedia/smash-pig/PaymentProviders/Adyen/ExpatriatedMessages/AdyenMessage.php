@@ -73,6 +73,42 @@ abstract class AdyenMessage extends ListenerMessage {
 	}
 
 	/**
+	 * Creates an appropriate derived AdyenMessage instance from the object received
+	 *  during the JSON transaction.
+	 *
+	 *  The magic here is looking at the eventCode field, normalizing it, and then
+	 *  loading the class if it exists.
+	 *
+	 * @param array $notification
+	 * @return false|AdyenMessage
+	 * @throws ListenerDataException
+	 */
+	public static function getInstanceFromJSON( array $notification ) {
+		// Adyen events come in as UPPER_CASE_UNDERSCORE_DELIMITED, we turn this
+		// into UpperCaseUnderscoreDelimited
+		$className = implode( '', array_map( 'ucwords', explode( '_', strtolower( $notification['eventCode'] ) ) ) );
+		$className = 'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\' . $className;
+
+		if ( class_exists( $className ) ) {
+			Logger::debug( "Attempting construction of '$className'" );
+			$obj = new $className();
+		} else {
+			Logger::debug( "Class not found '$className'" );
+			return false;
+		}
+
+		if ( $obj instanceof AdyenMessage ) {
+			$obj->constructFromJSON( $notification );
+		} else {
+			throw new ListenerDataException(
+				"Instantiated object '$className' does not inherit from AdyenMessage'!"
+			);
+		}
+
+		return $obj;
+	}
+
+	/**
 	 * Called by the getInstanceFromWSDL function to continue message type specific construction
 	 * after generic construction has been completed.
 	 *
@@ -90,6 +126,27 @@ abstract class AdyenMessage extends ListenerMessage {
 		$this->pspReference = $msgObj->pspReference;
 		$this->success = (bool)$msgObj->success;
 		$this->reason = $msgObj->reason;
+	}
+
+	/**
+	 * Called by the getInstanceFromJSON function to continue message type specific construction
+	 *  after generic construction has been completed.
+	 *
+	 * @param array $notification
+	 * @return void
+	 */
+	protected function constructFromJSON( array $notification ) {
+		if ( !empty( $notification['amount'] ) ) {
+			$this->currency = $notification['amount']['currency'];
+			$this->amount = $notification['amount']['value'] / 100;	// TODO: Make this CLDR aware
+		}
+		$this->eventDate = $notification['eventDate'];
+		$this->merchantAccountCode = $notification['merchantAccountCode'];
+		$this->merchantReference = $notification['merchantReference'];
+		$this->parentPspReference = $notification['originalReference'] ?? null;
+		$this->pspReference = $notification['pspReference'];
+		$this->success = (bool)$notification['success'];
+		$this->reason = $notification['reason'];
 	}
 
 	/**

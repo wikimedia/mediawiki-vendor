@@ -13,9 +13,6 @@
       <testsuite name="Amazon tests">
         <directory>PaymentProviders/Amazon/Tests/phpunit</directory>
       </testsuite>
-      <testsuite name="AstroPay tests">
-        <directory>PaymentProviders/AstroPay/Tests/phpunit</directory>
-      </testsuite>
       <testsuite name="Braintree tests">
         <directory>PaymentProviders/Braintree/Tests/phpunit</directory>
       </testsuite>

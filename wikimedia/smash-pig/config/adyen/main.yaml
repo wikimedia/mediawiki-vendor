@@ -7,15 +7,19 @@
 logging:
     root-context: SmashPig-Adyen
 
+# Transitional config, allows running REST listener and SOAP listener in parallel
 endpoints:
     listener:
-        class: SmashPig\PaymentProviders\Adyen\AdyenListener
+        class: SmashPig\PaymentProviders\Adyen\AdyenMultiListener
+
+rest-listener:
+    class: SmashPig\PaymentProviders\Adyen\AdyenRestListener
+
+soap-listener:
+    class: SmashPig\PaymentProviders\Adyen\AdyenListener
 
 api:
     class: SmashPig\PaymentProviders\Adyen\Api
-
-payments-wsdl: https://pal-live.adyen.com/pal/Payment.wsdl
-#payments-wsdl: https://pal-test.adyen.com/pal/Payment.wsdl
 
 rest-base-url: https://checkout-test.adyen.com/v68
 
@@ -44,8 +48,6 @@ accounts: {}
     #
     # example-account-name:
     #   ws-api-key: ""
-    #   ws-username: ""
-    #   ws-password: ""
     #   report-username: ""
     #   report-password: ""
     #   report-location: "/tmp"
@@ -59,6 +61,9 @@ common-cache-parameters: &CACHE
                 key-base: SMASHPIG_ADYEN_METHODS
 
 payment-provider:
+    ach:
+        class: SmashPig\PaymentProviders\Adyen\ACHDirectDebitPaymentProvider
+        <<: *CACHE
     bt:
         class: SmashPig\PaymentProviders\Adyen\BankTransferPaymentProvider
         <<: *CACHE
@@ -119,7 +124,8 @@ payment-provider:
 # value should be true. When we are confident we no longer need the HPP
 # integration, this setting can be deleted along with the code to send
 # PaymentCaptureJobs.
-capture-from-ipn-listener: true
+# Setting value to false to mirror production configuration
+capture-from-ipn-listener: false
 
 # Number of job queues to use in parallel for capture jobs. If this is left
 # at the default 1, all jobs go to jobs-adyen. If this is anything greater,

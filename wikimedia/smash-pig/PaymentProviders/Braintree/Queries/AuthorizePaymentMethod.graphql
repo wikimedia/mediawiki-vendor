@@ -27,6 +27,7 @@ mutation AuthorizePaymentMethod($input: AuthorizePaymentMethodInput!){
           payer {
             firstName
             lastName
+            phone
             email
             payerId
           }

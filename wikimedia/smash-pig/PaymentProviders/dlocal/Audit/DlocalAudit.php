@@ -1,14 +1,13 @@
-<?php namespace SmashPig\PaymentProviders\AstroPay\Audit;
+<?php namespace SmashPig\PaymentProviders\dlocal\Audit;
 
 use OutOfBoundsException;
-use SmashPig\Core\Context;
 use SmashPig\Core\DataFiles\AuditParser;
 use SmashPig\Core\Logging\Logger;
 use SmashPig\Core\NormalizationException;
 use SmashPig\Core\UtcDate;
 use SmashPig\PaymentProviders\dlocal\ReferenceData;
 
-class AstroPayAudit implements AuditParser {
+class DlocalAudit implements AuditParser {
 
 	protected $columnHeaders = [
 		'Type', // 'Payment' or 'Refund'
@@ -27,9 +26,9 @@ class AstroPayAudit implements AuditParser {
 		// These two fields refer to the original donation for refunds
 		'Transaction Reference',
 		'Transaction Invoice',
-		'Fee', // In USD.  AstroPay's processing fee
+		'Fee', // In USD.  Dlocal's processing fee
 		'IOF', // In USD.  Fee for financial transactions in Brazil
-		// The IOF is included in AstroPay's fee, but broken out by request
+		// The IOF is included in Dlocal's fee, but broken out by request
 	];
 
 	protected $ignoredStatuses = [
@@ -75,7 +74,7 @@ class AstroPayAudit implements AuditParser {
 
 		// Common to all types
 		$msg['date'] = UtcDate::getUtcTimestamp( $row['Creation date'] );
-		$msg['gateway'] = $this->getGateway( $msg['date'] );
+		$msg['gateway'] = 'dlocal';
 		$msg['gross'] = $row['Net Amount (local)'];
 
 		switch ( $row['Type'] ) {
@@ -125,7 +124,7 @@ class AstroPayAudit implements AuditParser {
 		$msg['settled_fee'] = $row['Fee']; // settled_fee since it's given in USD
 		$msg['gateway_txn_id'] = $row['Reference'];
 		$msg['invoice_id'] = $row['Invoice'];
-		list( $method, $submethod ) = ReferenceData::decodePaymentMethod(
+		[ $method, $submethod ] = ReferenceData::decodePaymentMethod(
 			$row['Payment Method Type'],
 			$row['Payment Method']
 		);
@@ -143,21 +142,5 @@ class AstroPayAudit implements AuditParser {
 	protected function getContributionTrackingId( $invoice ) {
 		$parts = explode( '.', $invoice );
 		return $parts[0];
-	}
-
-	protected function getGateway( int $timestamp ): string {
-		static $cutoverDate;
-		if ( $cutoverDate === null ) {
-			$config = Context::get()->getProviderConfiguration();
-			if ( $config->nodeExists( 'api-cutover-date' ) ) {
-				$cutoverDate = UtcDate::getUtcTimestamp( $config->val( 'api-cutover-date' ) );
-			} else {
-				$cutoverDate = false;
-			}
-		}
-		if ( $cutoverDate === false ) {
-			return 'astropay';
-		}
-		return ( $timestamp > $cutoverDate ) ? 'dlocal' : 'astropay';
 	}
 }

@@ -359,7 +359,7 @@ public function testCancelPaymentWithCompleteParamsFailsAndMisingStatus(): void 
 					"order_id" => "2bf0d4a4-6fdd-4e01-b4a6-2f329f457ed0",
 					"description" => "test-wallet",
 					"notification_url" => "http://conductor.sandbox.internal/robot-server/rest/generic/notification/new",
-					"callback_url" => "https://paymentstest6.wmcloud.org/index.php?title=Special:AstroPayGatewayResult",
+					"callback_url" => "https://paymentstest6.wmcloud.org/index.php?title=Special:DlocalGatewayResult",
 					"refunds" => [],
 					"wallet" => [
 						"token" => "09f3ce3c-04cb-4d0f-b8f5-2775d275c6bd",

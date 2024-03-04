@@ -1,10 +1,7 @@
 <?php
 namespace SmashPig\PaymentProviders\Adyen\Test;
 
-include 'PaymentProviders/Adyen/WSDL/Payment.php';
-
 use SmashPig\PaymentProviders\Adyen\Api;
-use SmashPig\PaymentProviders\Adyen\WSDL\Amount;
 use SmashPig\Tests\BaseSmashPigUnitTestCase;
 
 /**
@@ -27,8 +24,6 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 			'accounts' => [
 				'test' => [
 					'ws-api-key' => 'K1ck0utTh3J4ms',
-					'ws-username' => 'rtyner',
-					'ws-password' => 'm0t0rc1tyf1v3'
 				]
 			]
 		] );
@@ -38,7 +33,7 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 	public function testGetAmountFormatsNonFractionalCurrency() {
 		// open up access to the private getAmount method
 		$reflectionClass = new \ReflectionClass( Api::class );
-		$reflectionMethod = $reflectionClass->getMethod( 'getWsdlAmountObject' );
+		$reflectionMethod = $reflectionClass->getMethod( 'getArrayAmount' );
 		$reflectionMethod->setAccessible( true );
 
 		// mock the Api class to skip constructor call
@@ -52,9 +47,10 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 			'amount' => '150'
 		];
 
-		$expected = new Amount();
-		$expected->currency = 'JPY';
-		$expected->value = '150';
+		$expected = [
+			'currency' => 'JPY',
+			'value' => 150
+		];
 
 		// call getAmount via reflection
 		$result = $reflectionMethod->invoke( $apiMock, $params );
@@ -64,7 +60,7 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 	public function testGetAmountFormatsFractionalCurrency() {
 		// open up access to the private getAmount method
 		$reflectionClass = new \ReflectionClass( Api::class );
-		$reflectionMethod = $reflectionClass->getMethod( 'getWsdlAmountObject' );
+		$reflectionMethod = $reflectionClass->getMethod( 'getArrayAmount' );
 		$reflectionMethod->setAccessible( true );
 
 		// mock the Api class to skip constructor call
@@ -78,9 +74,10 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 			'amount' => '9.99'
 		];
 
-		$expected = new Amount();
-		$expected->currency = 'USD';
-		$expected->value = '999';
+		$expected = [
+			'currency' => 'USD',
+			'value' => 999
+		];
 
 		// call getAmount via reflection
 		$result = $reflectionMethod->invoke( $apiMock, $params );
@@ -90,7 +87,7 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 	public function testGetAmountFormatsExponent3Currency() {
 		// open up access to the private getAmount method
 		$reflectionClass = new \ReflectionClass( Api::class );
-		$reflectionMethod = $reflectionClass->getMethod( 'getWsdlAmountObject' );
+		$reflectionMethod = $reflectionClass->getMethod( 'getArrayAmount' );
 		$reflectionMethod->setAccessible( true );
 
 		// mock the Api class to skip constructor call
@@ -104,9 +101,10 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 			'amount' => '74.698'
 		];
 
-		$expected = new Amount();
-		$expected->currency = 'IQD';
-		$expected->value = '74698';
+		$expected = [
+			'currency' => 'IQD',
+			'value' => 74698
+		];
 
 		// call getAmount via reflection
 		$result = $reflectionMethod->invoke( $apiMock, $params );
@@ -150,6 +148,12 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 				'returnUrl' => $params['return_url'],
 				'origin' => 'https://paymentstest2.wmcloud.org',
 				'channel' => 'Web',
+				'shopperEmail' => 'wkramer@mc5.net',
+				'shopperIP' => '127.0.0.1',
+				'shopperName' => [
+					'firstName' => 'Wayne',
+					'lastName' => 'Kramer'
+				],
 				'billingAddress' => [
 					'city' => 'Detroit',
 					'country' => 'US',
@@ -157,12 +161,6 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 					'postalCode' => '48204',
 					'stateOrProvince' => 'MI',
 					'street' => '8952 Grand River Avenue',
-				],
-				'shopperEmail' => 'wkramer@mc5.net',
-				'shopperIP' => '127.0.0.1',
-				'shopperName' => [
-					'firstName' => 'Wayne',
-					'lastName' => 'Kramer'
 				],
 				'shopperStatement' => 'Wikimedia Foundation',
 			] ) )

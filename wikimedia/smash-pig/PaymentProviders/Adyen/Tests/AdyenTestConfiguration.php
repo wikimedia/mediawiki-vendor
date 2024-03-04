@@ -18,6 +18,23 @@ class AdyenTestConfiguration extends TestingProviderConfiguration {
 		];
 	}
 
+	public static function getSuccessfulACHResult( $id ): array {
+		return [
+			'additionalData' => [
+				'achdirectdebit.dateOfSignature' => '2024-02-26',
+				'achdirectdebit.mandateId' => 'NTLGLFS8C6PFWR82',
+				'achdirectdebit.sequenceType' => 'OneOff'
+			],
+			'pspReference' => 'NTLGLFS8C6PFWR82',
+			'resultCode' => 'Authorised',
+			'amount' => [
+				'currency' => 'USD',
+				'value' => 8500,
+			],
+			'merchantReference' => $id,
+		];
+	}
+
 	public static function getSuccessfulGoogleResult( $id ): array {
 		return [
 			'additionalData' => [
