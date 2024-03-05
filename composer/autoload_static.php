@@ -5226,8 +5226,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Ext\\Nowiki\\Nowiki' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/Nowiki/Nowiki.php',
         'Wikimedia\\Parsoid\\Ext\\PHPUtils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/PHPUtils.php',
         'Wikimedia\\Parsoid\\Ext\\ParsoidExtensionAPI' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/ParsoidExtensionAPI.php',
-        'Wikimedia\\Parsoid\\Ext\\Poem\\Poem' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/Poem/Poem.php',
-        'Wikimedia\\Parsoid\\Ext\\Poem\\PoemProcessor' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/Poem/PoemProcessor.php',
         'Wikimedia\\Parsoid\\Ext\\Pre\\Pre' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/Pre/Pre.php',
         'Wikimedia\\Parsoid\\Ext\\Utils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/Utils.php',
         'Wikimedia\\Parsoid\\Ext\\WTSUtils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/WTSUtils.php',
