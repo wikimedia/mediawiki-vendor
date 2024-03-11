@@ -143,7 +143,7 @@
 		"wikimedia/wait-condition-loop": "2.0.2",
 		"wikimedia/wrappedstring": "4.0.1",
 		"wikimedia/xmp-reader": "0.9.1",
-		"wikimedia/zest-css": "3.0.0",
+		"wikimedia/zest-css": "3.0.1",
 		"wmde/php-vuejs-templating": "2.0.0",
 		"zordius/lightncandy": "1.2.6"
 	},

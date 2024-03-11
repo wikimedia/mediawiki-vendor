@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d288c53629c5bc1b670bb9424a21004d",
+    "content-hash": "73e39195ae51ef239c9014db31b9025e",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -8606,16 +8606,16 @@
         },
         {
             "name": "wikimedia/zest-css",
-            "version": "3.0.0",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-Zest.git",
-                "reference": "56c8f3844ef1c85648d9dacd20bc9e95e082a770"
+                "reference": "e61a0fc4b9704b9c6b89d99b896ef8011deefc94"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Zest/zipball/56c8f3844ef1c85648d9dacd20bc9e95e082a770",
-                "reference": "56c8f3844ef1c85648d9dacd20bc9e95e082a770",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Zest/zipball/e61a0fc4b9704b9c6b89d99b896ef8011deefc94",
+                "reference": "e61a0fc4b9704b9c6b89d99b896ef8011deefc94",
                 "shasum": ""
             },
             "require": {
@@ -8624,15 +8624,15 @@
                 "php": ">=7.4"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "40.0.1",
-                "mediawiki/mediawiki-phan-config": "0.12.0",
+                "mediawiki/mediawiki-codesniffer": "41.0.0",
+                "mediawiki/mediawiki-phan-config": "0.14.0",
                 "mediawiki/minus-x": "1.1.1",
                 "ockcyp/covers-validator": "1.6.0",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
                 "php-parallel-lint/php-parallel-lint": "1.3.2",
-                "phpunit/phpunit": "9.5.28",
+                "phpunit/phpunit": "9.6.16",
                 "wikimedia/remex-html": "^4.0.0",
-                "wikimedia/testing-access-wrapper": "~1.0",
+                "wikimedia/testing-access-wrapper": "^3.0",
                 "wikimedia/update-history": "^1.0.1"
             },
             "suggest": {
@@ -8665,9 +8665,9 @@
                 "selector"
             ],
             "support": {
-                "source": "https://github.com/wikimedia/mediawiki-libs-Zest/tree/3.0.0"
+                "source": "https://github.com/wikimedia/mediawiki-libs-Zest/tree/3.0.1"
             },
-            "time": "2023-02-27T17:23:02+00:00"
+            "time": "2024-03-11T18:54:59+00:00"
         },
         {
             "name": "wmde/php-vuejs-templating",
