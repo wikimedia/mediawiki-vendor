@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "73e39195ae51ef239c9014db31b9025e",
+    "content-hash": "6173c7b9e0d30776549808db61c37075",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -7600,16 +7600,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.19.0-a22",
+            "version": "v0.19.0-a23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
-                "reference": "725ec3998e41dae27d3f20aac8894a2572dd039d"
+                "reference": "1f6c1bd4517eccf096320d3c44b14099e41c109e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/725ec3998e41dae27d3f20aac8894a2572dd039d",
-                "reference": "725ec3998e41dae27d3f20aac8894a2572dd039d",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/1f6c1bd4517eccf096320d3c44b14099e41c109e",
+                "reference": "1f6c1bd4517eccf096320d3c44b14099e41c109e",
                 "shasum": ""
             },
             "require": {
@@ -7631,7 +7631,7 @@
                 "wikimedia/remex-html": "^3.0.0 || ^4.0.0",
                 "wikimedia/scoped-callback": "^3.0.0 || ^4.0.0",
                 "wikimedia/wikipeg": "^4.0.0",
-                "wikimedia/zest-css": "^3.0.0"
+                "wikimedia/zest-css": "^3.0.1"
             },
             "conflict": {
                 "wikimedia/langconv": "<0.4.2"
@@ -7679,10 +7679,10 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.191.0-a22",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.19.0-a23",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
-            "time": "2024-03-09T16:21:29+00:00"
+            "time": "2024-03-16T14:02:22+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",
