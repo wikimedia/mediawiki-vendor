@@ -8202,37 +8202,37 @@
         },
         {
             "name": "wikimedia/remex-html",
-            "version": "4.0.1",
-            "version_normalized": "4.0.1.0",
+            "version": "4.1.0",
+            "version_normalized": "4.1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-RemexHtml.git",
-                "reference": "d3fb0ed9e6a4db4ed703bf095f4d4c38df134465"
+                "reference": "e39f23cf5074dee550bf059be38a9582b8998190"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-RemexHtml/zipball/d3fb0ed9e6a4db4ed703bf095f4d4c38df134465",
-                "reference": "d3fb0ed9e6a4db4ed703bf095f4d4c38df134465",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-RemexHtml/zipball/e39f23cf5074dee550bf059be38a9582b8998190",
+                "reference": "e39f23cf5074dee550bf059be38a9582b8998190",
                 "shasum": ""
             },
             "require": {
                 "ext-dom": "*",
                 "ext-mbstring": "*",
                 "php": ">=7.4",
-                "wikimedia/utfnormal": "1.1.0 || 2.0.0 || ^3.0.1 || ^4.0.0"
+                "wikimedia/utfnormal": "^3.0.1 || ^4.0.0"
             },
             "require-dev": {
                 "ext-json": "*",
-                "mediawiki/mediawiki-codesniffer": "41.0.0",
+                "mediawiki/mediawiki-codesniffer": "43.0.0",
                 "mediawiki/mediawiki-phan-config": "0.12.1",
                 "mediawiki/minus-x": "1.1.1",
                 "ockcyp/covers-validator": "1.6.0",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
                 "php-parallel-lint/php-parallel-lint": "1.3.2",
-                "phpunit/phpunit": "9.5.28",
+                "phpunit/phpunit": "9.6.16",
                 "wikimedia/update-history": "1.0.1"
             },
-            "time": "2023-08-29T12:12:23+00:00",
+            "time": "2024-03-16T15:54:54+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -8253,7 +8253,7 @@
             "description": "Fast HTML 5 parser",
             "homepage": "https://www.mediawiki.org/wiki/RemexHtml",
             "support": {
-                "source": "https://github.com/wikimedia/mediawiki-libs-RemexHtml/tree/4.0.1"
+                "source": "https://github.com/wikimedia/mediawiki-libs-RemexHtml/tree/4.1.0"
             },
             "install-path": "../wikimedia/remex-html"
         },
