@@ -97,3 +97,4 @@ wikimedia/metrics-platform/tests/
 # Removed in https://github.com/wikimedia/mediawiki-libs-Services/commit/d46059001e0a9f4bdab8e0452179f0a890dff1f0, unreleased
 wikimedia/services/build/
 
+composer/semver/phpstan-baseline.neon
