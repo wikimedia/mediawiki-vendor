@@ -43,7 +43,9 @@ class TokenizeRecurringJob implements Runnable {
 			QueueWrapper::push( 'donations', $this->payload );
 			return true;
 		}
-		Logger::warning( "Could not find token for shopper reference $processorContactId" );
+		Logger::error(
+			"Could not find token for shopper reference $processorContactId. Raw Response: " . $tokenResult->getRawResponse()
+		);
 		return false;
 	}
 }

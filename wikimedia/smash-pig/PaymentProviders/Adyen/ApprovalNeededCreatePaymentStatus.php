@@ -23,6 +23,7 @@ class ApprovalNeededCreatePaymentStatus implements StatusNormalizer {
 				$status = FinalStatus::PENDING_POKE;
 				break;
 			case 'Refused':
+			case 'Error':
 				$status = FinalStatus::FAILED;
 				break;
 			default:

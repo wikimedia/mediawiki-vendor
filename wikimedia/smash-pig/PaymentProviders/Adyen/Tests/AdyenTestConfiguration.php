@@ -35,6 +35,18 @@ class AdyenTestConfiguration extends TestingProviderConfiguration {
 		];
 	}
 
+	public static function getErrorCreatePaymentResult() {
+		return [
+			'additionalData' => [
+				'cvcResult' => 3,
+				'avsResult' => 'Unavailable',
+			],
+			'pspReference' => 'MOCK_REFERENCE',
+			'resultCode' => 'Error',
+			'refusalReason' => 'Acquirer Error'
+		];
+	}
+
 	public static function getSuccessfulGoogleResult( $id ): array {
 		return [
 			'additionalData' => [

@@ -179,7 +179,7 @@ abstract class PaymentProvider implements
 		// call we're using now just seems to have this on the root node.
 		$email = $rawResponse['lastKnownShopperEmail'] ?? null;
 		$detailsList = [];
-		foreach ( $rawResponse['details'] as $detail ) {
+		foreach ( $rawResponse['details'] ?? [] as $detail ) {
 			$storedMethod = $detail['RecurringDetail'];
 			$paymentDetailsObject = new SavedPaymentDetails();
 			// Set generic properties

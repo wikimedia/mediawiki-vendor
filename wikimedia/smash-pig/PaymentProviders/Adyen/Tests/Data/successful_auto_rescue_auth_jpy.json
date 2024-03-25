@@ -1,0 +1,25 @@
+{
+  "paymentMethod": "visa",
+  "operations": [
+    "CANCEL",
+    "CAPTURE",
+    "REFUND"
+  ],
+  "reason": "050206:1111:03\/2030",
+  "cvvResult": "3",
+  "avsResult": "2",
+  "recurringProcessingModel": "Subscription",
+  "recurringDetailReference": "S772DFJCV6KXWD82",
+  "shopperReference": "267.1",
+  "retryRescueScheduled": "false",
+  "retryRescueReference": "FK2ZJG6Z8TGLNK82",
+  "retryOrderAttemptNumber": "1",
+  "parentPspReference": null,
+  "pspReference": "Z4PPDL3DHVTFWR82",
+  "merchantReference": "267.3",
+  "merchantAccountCode": "WikimediaDonations",
+  "currency": "JPY",
+  "amount": 3.35,
+  "eventDate": "2023-09-06T17:42:27+02:00",
+  "success": true
+}

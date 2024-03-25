@@ -22,6 +22,7 @@ class CreatePaymentStatus implements StatusNormalizer {
 				$status = FinalStatus::PENDING;
 				break;
 			case 'Refused':
+			case 'Error':
 				$status = FinalStatus::FAILED;
 				break;
 			default:

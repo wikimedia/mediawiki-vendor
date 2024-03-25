@@ -7,8 +7,8 @@ namespace Composer\Autoload;
 class ComposerStaticInit_mediawiki_vendor
 {
     public static $files = array (
-        '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
         'eccc0347283a01e62f5536bcf76b6e62' => __DIR__ . '/..' . '/wikimedia/at-ease/src/Wikimedia/Functions.php',
+        '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
         '2df68f9e79c919e2d88506611769ed2e' => __DIR__ . '/..' . '/respect/stringifier/src/stringify.php',
@@ -2116,6 +2116,7 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\Maintenance\\QueuePeek' => __DIR__ . '/..' . '/wikimedia/smash-pig/Maintenance/QueuePeek.php',
         'SmashPig\\Maintenance\\RequeueDelayedMessages' => __DIR__ . '/..' . '/wikimedia/smash-pig/Maintenance/RequeueDelayedMessages.php',
         'SmashPig\\Maintenance\\TestFailMail' => __DIR__ . '/..' . '/wikimedia/smash-pig/Maintenance/TestFailMail.php',
+        'SmashPig\\PaymentData\\Address' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentData/Address.php',
         'SmashPig\\PaymentData\\DonorDetails' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentData/DonorDetails.php',
         'SmashPig\\PaymentData\\ErrorCode' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentData/ErrorCode.php',
         'SmashPig\\PaymentData\\FinalStatus' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentData/FinalStatus.php',
@@ -2153,6 +2154,7 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\Authorisation' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/Authorisation.php',
         'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\Autorescue' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/Autorescue.php',
         'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\AutorescueNextAttempt' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/AutorescueNextAttempt.php',
+        'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\CancelAutorescue' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/CancelAutorescue.php',
         'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\Cancellation' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/Cancellation.php',
         'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\Capture' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/Capture.php',
         'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\CaptureFailed' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/CaptureFailed.php',

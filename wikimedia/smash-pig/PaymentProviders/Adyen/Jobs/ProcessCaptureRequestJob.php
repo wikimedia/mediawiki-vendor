@@ -44,6 +44,7 @@ class ProcessCaptureRequestJob extends RunnableJob {
 	protected $propertiesExcludedFromExport = [ 'logger' ];
 
 	protected $isSuccessfulAutoRescue = false;
+	protected $processAutoRescueCapture = false;
 	protected $isEndedAutoRescue = false;
 	const ACTION_DUPLICATE = 'duplicate'; // duplicate payment attempt - cancel the authorization
 	const ACTION_END = 'end'; // end payment attempt from failed auto rescue - cancel the authorization
@@ -63,6 +64,7 @@ class ProcessCaptureRequestJob extends RunnableJob {
 		$obj->avsResult = $authMessage->avsResult;
 		$obj->paymentMethod = $authMessage->paymentMethod;
 		$obj->isSuccessfulAutoRescue = $authMessage->isSuccessfulAutoRescue();
+		$obj->processAutoRescueCapture = $authMessage->processAutoRescueCapture();
 		$obj->isEndedAutoRescue = $authMessage->isEndedAutoRescue();
 		$obj->retryRescueReference = $authMessage->retryRescueReference;
 		return $obj;
@@ -103,11 +105,18 @@ class ProcessCaptureRequestJob extends RunnableJob {
 			case ValidationAction::PROCESS:
 				// Attempt to capture the payment
 				$provider = $this->getProvider();
+
+				/**
+				 * Currently all amounts are divided by 100 in the AdyenMessage JSON construction, PaymentProviders/Adyen/ExpatriatedMessages/AdyenMessage.php::L141
+				 * This adjusts the captured amount for JPY payments as it is currently skipped, PaymentProviders/Adyen/Api.php::L615
+				 */
+				if ( strtoupper( $this->currency ) === "JPY" ) {
+					$this->amount *= 100;
+				}
 				$this->logger->info(
 					"Attempting capture API call for currency '{$this->currency}', " .
 					"amount '{$this->amount}', reference '{$this->pspReference}'."
 				);
-
 				$captureResult = $provider->approvePayment( [
 					'gateway_txn_id' => $this->pspReference,
 					'currency' => $this->currency,
@@ -129,7 +138,7 @@ class ProcessCaptureRequestJob extends RunnableJob {
 							'order_id' => $this->merchantReference,
 							'gross' => $this->amount,
 							'currency' => $this->currency,
-							'gateway_txn_id' => $captureResult->getGatewayTxnId(),
+							'gateway_txn_id' => $this->pspReference,
 							'gateway' => 'adyen'
 						];
 
@@ -186,7 +195,11 @@ class ProcessCaptureRequestJob extends RunnableJob {
 
 	protected function determineAction( $dbMessage ) {
 		if ( $this->isSuccessfulAutoRescue ) {
-			 return ValidationAction::PROCESS;
+			if ( $this->processAutoRescueCapture ) {
+				return ValidationAction::PROCESS;
+			} else {
+				return self::ACTION_IGNORE;
+			}
 		}
 		if ( $this->isEndedAutoRescue ) {
 			$this->logger->debug( 'Ended Auto Rescue process' );

@@ -206,6 +206,12 @@ class Api {
 		$restParams['shopperInteraction'] = static::RECURRING_SHOPPER_INTERACTION;
 		$restParams['recurringProcessingModel'] = static::RECURRING_MODEL_SUBSCRIPTION;
 		$restParams = array_merge( $restParams, $this->getContactInfo( $params ) );
+		if ( $params['payment_method'] === 'ach' ) {
+			// ach billing address optional,
+			// if pass needs to pass country and state,
+			// for recurring token charge we have no state info, so do not pass
+			unset( $restParams['billingAddress'] );
+		}
 		// T351340 we will do credit card which have method scheme first and then add SEPA which use sepadirectdebit later
 		if ( $this->enableAutoRescue && $params['payment_method'] !== 'sepadirectdebit' ) {
 			$restParams['additionalData'] = [
@@ -271,9 +277,14 @@ class Api {
 				'ownerName' => $params['full_name'] // the name on the bank account
 			]
 		];
-
-		// billing address optional
+		$isRecurring = $params['recurring'] ?? '';
+		if ( $isRecurring ) {
+			$restParams = array_merge( $restParams, $this->addRecurringParams( $params, true ) );
+		}
 		$restParams = array_merge( $restParams, $this->getContactInfo( $params ) );
+
+		$tl = new TaggedLogger( 'RawData' );
+		$tl->info( "Making request for {$params['gateway_txn_id']}", $restParams );
 
 		$result = $this->makeRestApiCall(
 			$restParams,

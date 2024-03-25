@@ -6,6 +6,7 @@ use Psr\Log\LogLevel;
 use SmashPig\Core\Context;
 use SmashPig\Core\Logging\Logger;
 use SmashPig\Core\PaymentError;
+use SmashPig\PaymentData\Address;
 use SmashPig\PaymentData\DonorDetails;
 use SmashPig\PaymentData\ErrorCode;
 use SmashPig\PaymentData\FinalStatus;
@@ -216,13 +217,8 @@ class PaymentProvider implements IPaymentProvider, IGetLatestPaymentStatusProvid
 			->setRawResponse( $rawResponse );
 
 		if ( $this->isSuccessfulPaypalResponse( $rawResponse ) ) {
-			$details = ( new DonorDetails() )
-				->setEmail( $rawResponse['EMAIL'] ?? null )
-				->setFirstName( $rawResponse['FIRSTNAME'] ?? null )
-				->setLastName( $rawResponse['LASTNAME'] ?? null );
-
 			$response->setSuccessful( true )
-				->setDonorDetails( $details )
+				->setDonorDetails( $this->mapDonorDetails( $rawResponse ) )
 				->setProcessorContactID( $rawResponse['PAYERID'] ?? null )
 				->setAmount( $rawResponse['AMT'] ?? null )
 				->setCurrency( $rawResponse['CURRENCYCODE'] ?? null );
@@ -277,6 +273,60 @@ class PaymentProvider implements IPaymentProvider, IGetLatestPaymentStatusProvid
 			return true;
 		}
 		return false;
+	}
+
+	protected function mapDonorDetails( array $rawResponse ): DonorDetails {
+		$details = ( new DonorDetails() )
+			->setEmail( $rawResponse['EMAIL'] ?? null )
+			->setFirstName( $rawResponse['FIRSTNAME'] ?? null )
+			->setLastName( $rawResponse['LASTNAME'] ?? null );
+
+		// Decide which address to use. Prefer SHIPTO, but it needs to have a COUNTRYCODE
+		if ( !empty( $rawResponse['PAYMENTREQUEST_0_SHIPTOCOUNTRYCODE'] ) ) {
+			$addressPrefix = 'SHIPTO';
+		} elseif ( !empty( $rawResponse['PAYMENTREQUEST_0_FULFILLMENTADDRESSCOUNTRYCODE'] ) ) {
+			$addressPrefix = 'FULFILLMENTADDRESS';
+		} else {
+			$addressPrefix = '';
+		}
+
+		$address = new Address();
+		if ( empty( $addressPrefix ) ) {
+			// If neither SHIPTO nor FULFILLMENT has a country code, there's a top-level key to use
+			$address->setCountryCode( $this->normalizeCountryCode( $rawResponse['COUNTRYCODE'] ?? null ) );
+		} else {
+			$address
+				->setCountryCode( $this->normalizeCountryCode(
+					$rawResponse["PAYMENTREQUEST_0_{$addressPrefix}COUNTRYCODE"] ?? null
+				) )->setStreetAddress(
+					$rawResponse["PAYMENTREQUEST_0_{$addressPrefix}STREET"] ?? null
+				)->setCity(
+					$rawResponse["PAYMENTREQUEST_0_{$addressPrefix}CITY"] ?? null
+				)->setStateOrProvinceCode(
+					$rawResponse["PAYMENTREQUEST_0_{$addressPrefix}STATE"] ?? null
+				)->setPostalCode(
+					$rawResponse["PAYMENTREQUEST_0_{$addressPrefix}ZIP"] ?? null
+				);
+		}
+		$details->setBillingAddress( $address );
+		return $details;
+	}
+
+	/**
+	 * Map possibly non-standard PayPal country codes to the usual ones.
+	 *
+	 * @param string|null $code raw country code from the PayPal response
+	 * @return string|null normalized ISO code for the country
+	 */
+	protected function normalizeCountryCode( ?string $code ): ?string {
+		$nonStandardCodes = [
+			'C2' => 'CN', // mutant China code for merchants outside of China
+			'AN' => 'NL', // Netherlands Antilles is part of the Netherlands since 2010
+		];
+		if ( array_key_exists( $code, $nonStandardCodes ) ) {
+			return $nonStandardCodes[$code];
+		}
+		return $code;
 	}
 
 	/**

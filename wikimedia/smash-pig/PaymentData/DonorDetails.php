@@ -8,49 +8,56 @@ class DonorDetails {
 	 *
 	 * @var string|null
 	 */
-	protected $firstName;
+	protected ?string $firstName;
 
 	/**
 	 * The donor last name
 	 *
 	 * @var string|null
 	 */
-	protected $lastName;
+	protected ?string $lastName;
 
 	/**
 	 * Full name as a single string, as given by some payment providers
 	 *
 	 * @var string|null
 	 */
-	protected $fullName;
+	protected ?string $fullName;
 
 	/**
 	 * Venmo customer id as a single string, as given by some payment providers
 	 *
 	 * @var string|null
 	 */
-	protected $customerId;
+	protected ?string $customerId;
 
 	/**
 	 * Venmo user name as a single string, as given by some payment providers
 	 *
 	 * @var string|null
 	 */
-	protected $userName;
+	protected ?string $userName;
 
 	/**
 	 * The donor email
 	 *
 	 * @var string|null
 	 */
-	protected $email;
+	protected ?string $email;
 
 	/**
 	 * The donor phone
 	 *
 	 * @var string|null
 	 */
-	protected $phone;
+	protected ?string $phone;
+
+	/**
+	 * Donor's billing address
+	 *
+	 * @var Address|null
+	 */
+	protected ?Address $billingAddress;
 
 	/**
 	 * @param string|null $firstName
@@ -116,6 +123,15 @@ class DonorDetails {
 	}
 
 	/**
+	 * @param Address|null $billingAddress
+	 * @return DonorDetails
+	 */
+	public function setBillingAddress( ?Address $billingAddress ): DonorDetails {
+		$this->billingAddress = $billingAddress;
+		return $this;
+	}
+
+	/**
 	 * Get donor first name from payment response
 	 * @return string
 	 */
@@ -169,5 +185,13 @@ class DonorDetails {
 	 */
 	public function getPhone(): ?string {
 		return $this->phone;
+	}
+
+	/**
+	 * Get donor billing address from payment response
+	 * @return Address|null
+	 */
+	public function getBillingAddress(): ?Address {
+		return $this->billingAddress;
 	}
 }

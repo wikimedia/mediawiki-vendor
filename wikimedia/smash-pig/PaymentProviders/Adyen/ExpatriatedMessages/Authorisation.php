@@ -179,6 +179,15 @@ class Authorisation extends AdyenMessage {
 	}
 
 	/**
+	 * Only capture Authorisation AutoRescue message
+	 *
+	 * @return bool
+	 */
+	public function processAutoRescueCapture(): bool {
+		return true;
+	}
+
+	/**
 	 * Check either retryRescueScheduled false, which indicated no more rescue schedule:
 	 * https://docs.adyen.com/online-payments/auto-rescue/cards/#rescue-process-ended
 	 * Or if end auto rescue webhook send with below reasons:

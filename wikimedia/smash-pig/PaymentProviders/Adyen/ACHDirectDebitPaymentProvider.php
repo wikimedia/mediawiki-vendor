@@ -9,7 +9,12 @@ use SmashPig\PaymentProviders\Responses\CreatePaymentResponse;
 class ACHDirectDebitPaymentProvider extends PaymentProvider {
 
 	public function createPayment( array $params ) : CreatePaymentResponse {
-		$rawResponse = $this->api->createACHDirectDebitPayment( $params );
+		if ( !empty( $params['recurring_payment_token'] ) ) {
+			$params['payment_method'] = 'ach';
+			$rawResponse = $this->api->createPaymentFromToken( $params );
+		} else {
+			$rawResponse = $this->api->createACHDirectDebitPayment( $params );
+		}
 		$response = new CreatePaymentResponse();
 		$response->setRawResponse( $rawResponse );
 

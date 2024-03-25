@@ -15,4 +15,13 @@ class Autorescue extends Authorisation {
 		}
 		return false;
 	}
+
+	/**
+	 * Only capture Authorisation AutoRescue message
+	 *
+	 * @return bool
+	 */
+	public function processAutoRescueCapture(): bool {
+		return false;
+	}
 }
