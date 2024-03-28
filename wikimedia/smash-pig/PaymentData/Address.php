@@ -4,11 +4,11 @@ namespace SmashPig\PaymentData;
 
 class Address {
 
-	protected ?string $streetAddress;
-	protected ?string $countryCode;
-	protected ?string $city;
-	protected ?string $postalCode;
-	protected ?string $stateOrProvinceCode;
+	protected ?string $streetAddress = null;
+	protected ?string $countryCode = null;
+	protected ?string $city = null;
+	protected ?string $postalCode = null;
+	protected ?string $stateOrProvinceCode = null;
 
 	public function getStreetAddress(): ?string {
 		return $this->streetAddress;

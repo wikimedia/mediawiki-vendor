@@ -8,56 +8,56 @@ class DonorDetails {
 	 *
 	 * @var string|null
 	 */
-	protected ?string $firstName;
+	protected ?string $firstName = null;
 
 	/**
 	 * The donor last name
 	 *
 	 * @var string|null
 	 */
-	protected ?string $lastName;
+	protected ?string $lastName = null;
 
 	/**
 	 * Full name as a single string, as given by some payment providers
 	 *
 	 * @var string|null
 	 */
-	protected ?string $fullName;
+	protected ?string $fullName = null;
 
 	/**
 	 * Venmo customer id as a single string, as given by some payment providers
 	 *
 	 * @var string|null
 	 */
-	protected ?string $customerId;
+	protected ?string $customerId = null;
 
 	/**
 	 * Venmo user name as a single string, as given by some payment providers
 	 *
 	 * @var string|null
 	 */
-	protected ?string $userName;
+	protected ?string $userName = null;
 
 	/**
 	 * The donor email
 	 *
 	 * @var string|null
 	 */
-	protected ?string $email;
+	protected ?string $email = null;
 
 	/**
 	 * The donor phone
 	 *
 	 * @var string|null
 	 */
-	protected ?string $phone;
+	protected ?string $phone = null;
 
 	/**
 	 * Donor's billing address
 	 *
 	 * @var Address|null
 	 */
-	protected ?Address $billingAddress;
+	protected ?Address $billingAddress = null;
 
 	/**
 	 * @param string|null $firstName

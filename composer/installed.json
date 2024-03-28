@@ -4451,17 +4451,17 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.16.2",
-            "version_normalized": "0.16.2.0",
+            "version": "v0.16.3",
+            "version_normalized": "0.16.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
-                "reference": "5f2c9b728613eabdd07aad255f42f3893c668a05"
+                "reference": "715011a9496b9084245009f80ec4ed206d7a48b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/5f2c9b728613eabdd07aad255f42f3893c668a05",
-                "reference": "5f2c9b728613eabdd07aad255f42f3893c668a05",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/715011a9496b9084245009f80ec4ed206d7a48b8",
+                "reference": "715011a9496b9084245009f80ec4ed206d7a48b8",
                 "shasum": ""
             },
             "require": {
@@ -4504,7 +4504,7 @@
             "suggest": {
                 "wikimedia/langconv": "Provides script conversion support"
             },
-            "time": "2023-10-02T21:34:06+00:00",
+            "time": "2024-02-12T22:02:43+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -4530,7 +4530,7 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.16.2",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.16.3",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
             "install-path": "../wikimedia/parsoid"
@@ -5049,17 +5049,17 @@
         },
         {
             "name": "wikimedia/smash-pig",
-            "version": "v0.8.9.20",
-            "version_normalized": "0.8.9.20",
+            "version": "v0.8.9.21",
+            "version_normalized": "0.8.9.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/wikimedia-fundraising-SmashPig.git",
-                "reference": "a0878a868480ab6c6c3fb7b72deebf9831a95d5a"
+                "reference": "f5cca4f6dae796373fed433796f0ef1caf2d8000"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/wikimedia-fundraising-SmashPig/zipball/a0878a868480ab6c6c3fb7b72deebf9831a95d5a",
-                "reference": "a0878a868480ab6c6c3fb7b72deebf9831a95d5a",
+                "url": "https://api.github.com/repos/wikimedia/wikimedia-fundraising-SmashPig/zipball/f5cca4f6dae796373fed433796f0ef1caf2d8000",
+                "reference": "f5cca4f6dae796373fed433796f0ef1caf2d8000",
                 "shasum": ""
             },
             "require": {
@@ -5083,7 +5083,7 @@
                 "php-parallel-lint/php-parallel-lint": "^1.2",
                 "phpunit/phpunit": "^9.5"
             },
-            "time": "2024-03-25T13:03:25+00:00",
+            "time": "2024-03-25T18:51:43+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -5136,7 +5136,7 @@
                 "payments"
             ],
             "support": {
-                "source": "https://github.com/wikimedia/wikimedia-fundraising-SmashPig/tree/v0.8.9.20"
+                "source": "https://github.com/wikimedia/wikimedia-fundraising-SmashPig/tree/v0.8.9.21"
             },
             "install-path": "../wikimedia/smash-pig"
         },
