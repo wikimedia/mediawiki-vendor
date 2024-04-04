@@ -4482,6 +4482,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\CSS\\Grammar\\AnythingMatcher' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/AnythingMatcher.php',
         'Wikimedia\\CSS\\Grammar\\BlockMatcher' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/BlockMatcher.php',
         'Wikimedia\\CSS\\Grammar\\CheckedMatcher' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/CheckedMatcher.php',
+        'Wikimedia\\CSS\\Grammar\\CustomPropertyMatcher' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/CustomPropertyMatcher.php',
         'Wikimedia\\CSS\\Grammar\\DelimMatcher' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/DelimMatcher.php',
         'Wikimedia\\CSS\\Grammar\\FunctionMatcher' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/FunctionMatcher.php',
         'Wikimedia\\CSS\\Grammar\\GrammarMatch' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/GrammarMatch.php',

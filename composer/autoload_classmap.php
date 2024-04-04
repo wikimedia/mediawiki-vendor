@@ -3675,6 +3675,7 @@ return array(
     'Wikimedia\\CSS\\Grammar\\AnythingMatcher' => $vendorDir . '/wikimedia/css-sanitizer/src/Grammar/AnythingMatcher.php',
     'Wikimedia\\CSS\\Grammar\\BlockMatcher' => $vendorDir . '/wikimedia/css-sanitizer/src/Grammar/BlockMatcher.php',
     'Wikimedia\\CSS\\Grammar\\CheckedMatcher' => $vendorDir . '/wikimedia/css-sanitizer/src/Grammar/CheckedMatcher.php',
+    'Wikimedia\\CSS\\Grammar\\CustomPropertyMatcher' => $vendorDir . '/wikimedia/css-sanitizer/src/Grammar/CustomPropertyMatcher.php',
     'Wikimedia\\CSS\\Grammar\\DelimMatcher' => $vendorDir . '/wikimedia/css-sanitizer/src/Grammar/DelimMatcher.php',
     'Wikimedia\\CSS\\Grammar\\FunctionMatcher' => $vendorDir . '/wikimedia/css-sanitizer/src/Grammar/FunctionMatcher.php',
     'Wikimedia\\CSS\\Grammar\\GrammarMatch' => $vendorDir . '/wikimedia/css-sanitizer/src/Grammar/GrammarMatch.php',
