@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a0cf9363a0c9c525fb8ce449c055db0a",
+    "content-hash": "efc53d56750a6409b1c24f824bb28b9f",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -3133,23 +3133,23 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.49.0",
+            "version": "v0.49.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "6367cbc8f7921691d129a43bca5cf18c9112a5b9"
+                "reference": "e217752a0dfaf6f494b29d2eb46237dc08ff24ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/6367cbc8f7921691d129a43bca5cf18c9112a5b9",
-                "reference": "6367cbc8f7921691d129a43bca5cf18c9112a5b9",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/e217752a0dfaf6f494b29d2eb46237dc08ff24ff",
+                "reference": "e217752a0dfaf6f494b29d2eb46237dc08ff24ff",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.4.3"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "41.0.0",
+                "mediawiki/mediawiki-codesniffer": "43.0.0",
                 "mediawiki/mediawiki-phan-config": "0.14.0",
                 "mediawiki/minus-x": "1.1.1",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
@@ -3219,9 +3219,9 @@
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOUI",
             "support": {
-                "source": "https://github.com/wikimedia/oojs-ui/tree/v0.49.0"
+                "source": "https://github.com/wikimedia/oojs-ui/tree/v0.49.1"
             },
-            "time": "2024-02-06T23:55:45+00:00"
+            "time": "2024-04-04T16:33:54+00:00"
         },
         {
             "name": "opis/json-schema",
@@ -8853,5 +8853,5 @@
         "composer-plugin-api": "^2.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
