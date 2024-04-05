@@ -3542,24 +3542,24 @@
         },
         {
             "name": "pear/mail_mime",
-            "version": "1.10.11",
-            "version_normalized": "1.10.11.0",
+            "version": "1.10.12",
+            "version_normalized": "1.10.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear/Mail_Mime.git",
-                "reference": "d4fb9ce61201593d0f8c6db629c45e29c3409c14"
+                "reference": "d032c7c9335e96d5954ac6e93d33955f3b7246e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/Mail_Mime/zipball/d4fb9ce61201593d0f8c6db629c45e29c3409c14",
-                "reference": "d4fb9ce61201593d0f8c6db629c45e29c3409c14",
+                "url": "https://api.github.com/repos/pear/Mail_Mime/zipball/d032c7c9335e96d5954ac6e93d33955f3b7246e2",
+                "reference": "d032c7c9335e96d5954ac6e93d33955f3b7246e2",
                 "shasum": ""
             },
             "require": {
                 "pear/pear-core-minimal": "*",
                 "php": ">=5.2.0"
             },
-            "time": "2021-09-05T08:42:45+00:00",
+            "time": "2024-03-10T20:20:27+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -3799,17 +3799,17 @@
         },
         {
             "name": "pear/pear-core-minimal",
-            "version": "v1.10.14",
-            "version_normalized": "1.10.14.0",
+            "version": "v1.10.15",
+            "version_normalized": "1.10.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear/pear-core-minimal.git",
-                "reference": "a86fc145edb5caedbf96527214ce3cadc9de4a32"
+                "reference": "ce0adade8b97561656ace07cdaac4751c271ea8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/pear-core-minimal/zipball/a86fc145edb5caedbf96527214ce3cadc9de4a32",
-                "reference": "a86fc145edb5caedbf96527214ce3cadc9de4a32",
+                "url": "https://api.github.com/repos/pear/pear-core-minimal/zipball/ce0adade8b97561656ace07cdaac4751c271ea8c",
+                "reference": "ce0adade8b97561656ace07cdaac4751c271ea8c",
                 "shasum": ""
             },
             "require": {
@@ -3820,13 +3820,13 @@
             "replace": {
                 "rsky/pear-core-min": "self.version"
             },
-            "time": "2023-11-26T16:15:38+00:00",
+            "time": "2024-03-16T18:41:45+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
-                "psr-0": {
-                    "": "src/"
-                }
+                "classmap": [
+                    "src/"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "include-path": [

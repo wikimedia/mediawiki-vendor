@@ -503,9 +503,9 @@
             'dev_requirement' => false,
         ),
         'pear/mail_mime' => array(
-            'pretty_version' => '1.10.11',
-            'version' => '1.10.11.0',
-            'reference' => 'd4fb9ce61201593d0f8c6db629c45e29c3409c14',
+            'pretty_version' => '1.10.12',
+            'version' => '1.10.12.0',
+            'reference' => 'd032c7c9335e96d5954ac6e93d33955f3b7246e2',
             'type' => 'library',
             'install_path' => __DIR__ . '/../pear/mail_mime',
             'aliases' => array(),
@@ -539,9 +539,9 @@
             'dev_requirement' => false,
         ),
         'pear/pear-core-minimal' => array(
-            'pretty_version' => 'v1.10.14',
-            'version' => '1.10.14.0',
-            'reference' => 'a86fc145edb5caedbf96527214ce3cadc9de4a32',
+            'pretty_version' => 'v1.10.15',
+            'version' => '1.10.15.0',
+            'reference' => 'ce0adade8b97561656ace07cdaac4751c271ea8c',
             'type' => 'library',
             'install_path' => __DIR__ . '/../pear/pear-core-minimal',
             'aliases' => array(),
@@ -704,7 +704,7 @@
         'rsky/pear-core-min' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v1.10.14',
+                0 => 'v1.10.15',
             ),
         ),
         'ruflin/elastica' => array(

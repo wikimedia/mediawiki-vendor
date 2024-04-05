@@ -1997,6 +1997,7 @@ return array(
     'Opis\\JsonSchema\\ValidatorHelper' => $vendorDir . '/opis/json-schema/src/ValidatorHelper.php',
     'Override' => $vendorDir . '/symfony/polyfill-php83/Resources/stubs/Override.php',
     'PEAR' => $vendorDir . '/pear/pear-core-minimal/src/PEAR.php',
+    'PEAR_Error' => $vendorDir . '/pear/pear-core-minimal/src/PEAR.php',
     'PEAR_ErrorStack' => $vendorDir . '/pear/pear-core-minimal/src/PEAR/ErrorStack.php',
     'PEAR_Exception' => $vendorDir . '/pear/pear_exception/PEAR/Exception.php',
     'Peast\\Formatter\\Base' => $vendorDir . '/mck89/peast/lib/Peast/Formatter/Base.php',
