@@ -9,12 +9,8 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Contracts\Translation;
-
-/**
- * @author Nicolas Grekas <p@tchwork.com>
- */
-interface TranslatableInterface
-{
-    public function trans(TranslatorInterface $translator, ?string $locale = null): string;
+if (\PHP_VERSION_ID < 80300) {
+    class SQLite3Exception extends Exception
+    {
+    }
 }
