@@ -19,7 +19,7 @@
 		"beberlei/assert": "3.3.2",
 		"brick/math": "0.8.17",
 		"christian-riesen/base32": "1.6.0",
-		"composer/ca-bundle": "1.4.0",
+		"composer/ca-bundle": "1.5.0",
 		"composer/semver": "3.4.0",
 		"cssjanus/cssjanus": "2.1.1",
 		"dasprid/enum": "1.0.5",
