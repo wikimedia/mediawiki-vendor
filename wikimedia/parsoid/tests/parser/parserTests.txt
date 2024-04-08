@@ -1853,7 +1853,7 @@ Don't break on | in extension attribute in template
 !! wikitext
 {{1x|<tag name="hi|ho">ha</tag>}}
 !! html/parsoid
-<pre typeof="mw:Extension/tag mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"1x","href":"./Template:1x"},"params":{"1":{"wt":"&lt;tag name=\"hi|ho\">ha&lt;/tag>"}},"i":0}}]}'>'ha'
+<pre typeof="mw:Extension/tag mw:Transclusion" data-mw='{"name":"tag","attrs":{"name":"hi|ho"},"body":{"extsrc":"ha"},"parts":[{"template":{"target":{"wt":"1x","href":"./Template:1x"},"params":{"1":{"wt":"&lt;tag name=\"hi|ho\">ha&lt;/tag>"}},"i":0}}]}'>'ha'
 array (
   'name' => 'hi|ho',
 )</pre>
@@ -4681,7 +4681,7 @@ Don't bail on table cell attribute parsing if wikilink is found in template arg
 |}
 !! html/parsoid+integrated
 <table>
-<tbody><tr data-parsoid='{"autoInsertedStart":true}'><td>Test <span typeof="mw:Extension/spantag mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"#tag:spantag","function":"tag"},"params":{"1":{"wt":"One two \"[[three]]\" four"}},"i":0}}]}'>One two "<a rel="mw:WikiLink" href="./Three" title="Three">three</a>" four</span></td></tr>
+<tbody><tr data-parsoid='{"autoInsertedStart":true}'><td>Test <span typeof="mw:Extension/spantag mw:Transclusion" data-mw='{"name":"spantag","attrs":{},"body":{"extsrc":"One two \"[[three]]\" four"},"parts":[{"template":{"target":{"wt":"#tag:spantag","function":"tag"},"params":{"1":{"wt":"One two \"[[three]]\" four"}},"i":0}}]}'>One two "<a rel="mw:WikiLink" href="./Three" title="Three">three</a>" four</span></td></tr>
 </tbody></table>
 !! end
 
@@ -5962,7 +5962,7 @@ Templates: Support for templates generating attributes and content
 <td>bar
 </td></tr></tbody></table>
 !! html/parsoid
-<table style="color:red;" title="T48811" about="#mwt1" typeof="mw:Transclusion mw:ExpandedAttrs" data-mw='{"parts":["{| ",{"template":{"target":{"wt":"mixed_attr_content_template","href":"./Template:Mixed_attr_content_template"},"params":{},"i":0}},"\n|-\n|bar\n|}"]}'>
+<table style="color:red;" title="T48811" about="#mwt1" typeof="mw:Transclusion mw:ExpandedAttrs" data-mw='{"attribs":[[{"txt":"style","html":"style=\"color:red;\" title=\"T48811\"","uneditable":true},{"html":""}]],"parts":["{| ",{"template":{"target":{"wt":"mixed_attr_content_template","href":"./Template:Mixed_attr_content_template"},"params":{},"i":0}},"\n|-\n|bar\n|}"]}'>
 <tbody><tr>
 <td>foo</td></tr>
 <tr>
@@ -6092,7 +6092,7 @@ Extension tag in templated tag attribute
 <td>hi
 </td></tr></tbody></table>
 !! html/parsoid
-<table class="123" about="#mwt2" typeof="mw:Transclusion mw:ExpandedAttrs" data-parsoid='{"startTagSrc":"{{{!}}","a":{"&lt;nowiki />":null},"sa":{"&lt;nowiki />":""},"pi":[[{"k":"1","named":true,"spc":["","","\n","\n"]}]]}' data-mw='{"parts":[{"template":{"target":{"wt":"1x","href":"./Template:1x"},"params":{"1":{"wt":"{{{!}} class=\"123\" &lt;nowiki />\n{{!}} hi\n{{!}}}"}},"i":0}}]}'>
+<table class="123" about="#mwt2" typeof="mw:Transclusion mw:ExpandedAttrs" data-parsoid='{"startTagSrc":"{{{!}}","a":{"&lt;nowiki />":null},"sa":{"&lt;nowiki />":""},"pi":[[{"k":"1","named":true,"spc":["","","\n","\n"]}]]}' data-mw='{"attribs":[[{"txt":"","html":"&lt;span typeof=\"mw:Nowiki\">&lt;/span>"},{"html":""}]],"parts":[{"template":{"target":{"wt":"1x","href":"./Template:1x"},"params":{"1":{"wt":"{{{!}} class=\"123\" &lt;nowiki />\n{{!}} hi\n{{!}}}"}},"i":0}}]}'>
 <tbody><tr><td>hi</td></tr>
 </tbody></table>
 !! end
@@ -7104,8 +7104,8 @@ Bar
  {{1x|[[Category:Baz]]}}
 [[Category:Baz]]
 !! html/php
-<p>Foo Bar
-</p><p>Foo
+<p>Foo  Bar
+</p><p>Foo 
 Bar
 </p><p>Foo
 Bar
@@ -7121,6 +7121,60 @@ Bar
 <p>Foo <link rel="mw:PageProp/Category" href="./Category:Baz"/> <link rel="mw:PageProp/Category" href="./Category:Baz"/> <link rel="mw:PageProp/Category" href="./Category:Baz"/> Bar</p>
 <link rel="mw:PageProp/Category" href="./Category:Baz"/> <link rel="mw:PageProp/Category" href="./Category:Baz"/> <link rel="mw:PageProp/Category" href="./Category:Baz"/> <link rel="mw:PageProp/Category" href="./Category:Baz"/> <link rel="mw:PageProp/Category" href="./Category:Baz" typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"1x","href":"./Template:1x"},"params":{"1":{"wt":"[[Category:Baz]]"}},"i":0}}]}'/>
 <link rel="mw:PageProp/Category" href="./Category:Baz"/>
+!! end
+
+## We used to, but no longer wt2wt this test since the default serializer
+## will normalize all categories to serialize on their own line.
+## This wikitext usage is going to be fairly uncommon in production and
+## selser will take care of preserving formatting in those scenarios.
+!! test
+Category / non-newline whitespace interactions (T359886)
+!! options
+parsoid=wt2html
+!! wikitext
+* Foo[[Category:Foo]]Bar
+* Foo[[Category:Foo]] Bar
+* Foo [[Category:Foo]]Bar
+* Foo [[Category:Foo]] Bar
+
+* Foo[[Category:Foo]][[Category:Bar]]Bar
+* Foo[[Category:Foo]][[Category:Bar]] Bar
+* Foo[[Category:Foo]] [[Category:Bar]]Bar
+* Foo[[Category:Foo]] [[Category:Bar]] Bar
+* Foo [[Category:Foo]][[Category:Bar]]Bar
+* Foo [[Category:Foo]][[Category:Bar]] Bar
+* Foo [[Category:Foo]] [[Category:Bar]]Bar
+* Foo [[Category:Foo]] [[Category:Bar]] Bar
+!! html/php
+<ul><li>FooBar</li>
+<li>Foo Bar</li>
+<li>Foo Bar</li>
+<li>Foo  Bar</li></ul>
+<ul><li>FooBar</li>
+<li>Foo Bar</li>
+<li>Foo Bar</li>
+<li>Foo  Bar</li>
+<li>Foo Bar</li>
+<li>Foo  Bar</li>
+<li>Foo  Bar</li>
+<li>Foo   Bar</li></ul>
+!! html/parsoid
+<ul>
+<li>Foo<link rel="mw:PageProp/Category" href="./Category:Foo"/>Bar</li>
+<li>Foo<link rel="mw:PageProp/Category" href="./Category:Foo"/> Bar</li>
+<li>Foo <link rel="mw:PageProp/Category" href="./Category:Foo"/>Bar</li>
+<li>Foo <link rel="mw:PageProp/Category" href="./Category:Foo"/> Bar</li>
+</ul>
+<ul>
+<li>Foo<link rel="mw:PageProp/Category" href="./Category:Foo"/><link rel="mw:PageProp/Category" href="./Category:Bar"/>Bar</li>
+<li>Foo<link rel="mw:PageProp/Category" href="./Category:Foo"/><link rel="mw:PageProp/Category" href="./Category:Bar"/> Bar</li>
+<li>Foo<link rel="mw:PageProp/Category" href="./Category:Foo"/> <link rel="mw:PageProp/Category" href="./Category:Bar"/>Bar</li>
+<li>Foo<link rel="mw:PageProp/Category" href="./Category:Foo"/> <link rel="mw:PageProp/Category" href="./Category:Bar"/> Bar</li>
+<li>Foo <link rel="mw:PageProp/Category" href="./Category:Foo"/><link rel="mw:PageProp/Category" href="./Category:Bar"/>Bar</li>
+<li>Foo <link rel="mw:PageProp/Category" href="./Category:Foo"/><link rel="mw:PageProp/Category" href="./Category:Bar"/> Bar</li>
+<li>Foo <link rel="mw:PageProp/Category" href="./Category:Foo"/> <link rel="mw:PageProp/Category" href="./Category:Bar"/>Bar</li>
+<li>Foo <link rel="mw:PageProp/Category" href="./Category:Foo"/> <link rel="mw:PageProp/Category" href="./Category:Bar"/> Bar</li>
+</ul>
 !! end
 
 ## We used to, but no longer wt2wt this test since the default serializer
@@ -12097,6 +12151,21 @@ formatdate uses correct capitalisation in English
 </p>
 !! html/parsoid+integrated
 <p><span class="mw-formatted-date" title="06-03" about="#mwt1" typeof="mw:Transclusion" data-parsoid='{"stx":"html","pi":[[{"k":"1"}]]}' data-mw='{"parts":[{"template":{"target":{"wt":"#formatdate:june 3","function":"formatdate"},"params":{"1":{"wt":"dmy"}},"i":0}}]}'>3 June</span></p>
+!! end
+
+!! test
+formatdate formats ISO year 0 as 1 BC
+!! wikitext
+{{#formatdate:-0001-12-31|mdy}}
+{{#formatdate:0000-12-31|mdy}}
+{{#formatdate:0001-12-31|mdy}}
+!! html/php
+<p><span class="mw-formatted-date" title="-0001-12-31">December 31, 2 BC</span>
+<span class="mw-formatted-date" title="0000-12-31">December 31, 1 BC</span>
+<span class="mw-formatted-date" title="0001-12-31">December 31, 1</span>
+</p>
+!! html/parsoid+integrated
+<p><span class="mw-formatted-date" title="-0001-12-31" typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"#formatdate:-0001-12-31","function":"formatdate"},"params":{"1":{"wt":"mdy"}},"i":0}}]}'>December 31, 2 BC</span> <span class="mw-formatted-date" title="0000-12-31" typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"#formatdate:0000-12-31","function":"formatdate"},"params":{"1":{"wt":"mdy"}},"i":0}}]}'>December 31, 1 BC</span> <span class="mw-formatted-date" title="0001-12-31" typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"#formatdate:0001-12-31","function":"formatdate"},"params":{"1":{"wt":"mdy"}},"i":0}}]}'>December 31, 1</span></p>
 !! end
 
 #
