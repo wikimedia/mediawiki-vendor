@@ -509,50 +509,43 @@ class Linter implements Wt2HtmlDOMProcessor {
 	 */
 	private function lintFostered(
 		Env $env, Element $node, DataParsoid $dp, ?stdClass $tplInfo
-	): ?Element {
-		$maybeTable = $node->nextSibling;
-		$clear = false;
-
-		while ( $maybeTable && DOMCompat::nodeName( $maybeTable ) !== 'table' ) {
-			if ( $tplInfo && $maybeTable === $tplInfo->last ) {
-				$clear = true;
-			}
-			$maybeTable = $maybeTable->nextSibling;
+	): void {
+		if ( DOMCompat::nodeName( $node ) !== 'table' ) {
+			return;
 		}
 
-		if ( !$maybeTable instanceof Element ) {
-			return null;
-		} elseif ( $clear && $tplInfo ) {
-			$tplInfo->clear = true;
+		// The top-level nodes in the foster box are span/p wrapped
+		// and so, if we have fostered content, previous siblings to
+		// the table are expected to be elements.
+		$maybeFostered = $node->previousSibling;
+
+		// Skip rendering-transparent nodes
+		while ( $maybeFostered instanceof Element && (
+			WTUtils::isRenderingTransparentNode( $maybeFostered ) ||
+			// TODO: Section tags are rendering transparent but not sol transparent,
+			// and that method only considers WTUtils::isSolTransparentLink, though
+			// there is a FIXME to consider all link nodes.
+			( DOMCompat::nodeName( $maybeFostered ) === 'link' &&
+				DOMUtils::hasTypeOf( $maybeFostered, 'mw:Extension/section' ) )
+		) ) {
+			$maybeFostered = $maybeFostered->previousSibling;
 		}
 
-		// In pathological cases, we might walk past fostered nodes
-		// that carry templating information. This then triggers
-		// other errors downstream. So, walk back to that first node
-		// and ignore this fostered content error. The new node will
-		// trigger fostered content lint error.
-		if ( !$tplInfo && WTUtils::isEncapsulatedDOMForestRoot( $maybeTable ) &&
-			!WTUtils::isFirstEncapsulationWrapperNode( $maybeTable )
+		if (
+			!( $maybeFostered instanceof Element ) ||
+			 empty( DOMDataUtils::getDataParsoid( $maybeFostered )->fostered )
 		) {
-			$tplNode = WTUtils::findFirstEncapsulationWrapperNode( $maybeTable );
-			if ( $tplNode !== null ) {
-				return $tplNode;
-			}
-
-			// We got misled by the about id on 'maybeTable'.
-			// Let us carry on with regularly scheduled programming.
+			return;
 		}
 
 		$tplLintInfo = $this->findEnclosingTemplateName( $env, $tplInfo );
 		$lintObj = [
 			'dsr' => $this->findLintDSR(
-				$tplLintInfo, $tplInfo, DOMDataUtils::getDataParsoid( $maybeTable )->dsr ?? null
+				$tplLintInfo, $tplInfo, $dp->dsr ?? null
 			),
 			'templateInfo' => $tplLintInfo,
 		];
 		$env->recordLint( 'fostered', $lintObj );
-
-		return $maybeTable;
 	}
 
 	/**
@@ -1068,6 +1061,11 @@ class Linter implements Wt2HtmlDOMProcessor {
 	/**
 	 * Lint a PHP parser bug.
 	 *
+	 * When an HTML table is nested inside a list, if any part of the table
+	 * is on a new line, the PHP parser misnests the list and the table.
+	 * Tidy fixes the misnesting one way (puts table inside/outside the list)
+	 * HTML5 parser fixes it another way (list expands to rest of the page!)
+	 *
 	 * Lint category: `multiline-html-table-in-list`
 	 */
 	private function lintMultilineHtmlTableInList(
@@ -1275,7 +1273,6 @@ class Linter implements Wt2HtmlDOMProcessor {
 		Element $node, Env $env, ?stdClass $tplInfo
 	): ?Element {
 		$dp = DOMDataUtils::getDataParsoid( $node );
-
 		$this->lintTreeBuilderFixup( $env, $node, $dp, $tplInfo );
 		$this->lintDeletableTableTag( $env, $node, $dp, $tplInfo ); // For T161341
 		$this->lintPWrapBugWorkaround( $env, $node, $dp, $tplInfo ); // For T161306
@@ -1283,31 +1280,12 @@ class Linter implements Wt2HtmlDOMProcessor {
 		$this->lintBogusImageOptions( $env, $node, $dp, $tplInfo );
 		$this->lintTidyWhitespaceBug( $env, $node, $dp, $tplInfo );
 		$this->lintMiscTidyReplacementIssues( $env, $node, $dp, $tplInfo );
-
-		// When an HTML table is nested inside a list and if any part of the table
-		// is on a new line, the PHP parser misnests the list and the table.
-		// Tidy fixes the misnesting one way (puts table inside/outside the list)
-		// HTML5 parser fix it another way (list expands to rest of the page!)
 		$this->lintMultilineHtmlTableInList( $env, $node, $dp, $tplInfo );
 		$this->lintWikilinksInExtlink( $env, $node, $dp, $tplInfo );
 		$this->lintLargeTables( $env, $node, $dp, $tplInfo );
-
 		$this->lintNightModeUnawareBackgroundColor( $env, $node, $dp, $tplInfo );
-
-		// Log fostered content, but skip rendering-transparent nodes
-		if (
-			!empty( $dp->fostered ) &&
-			!WTUtils::isRenderingTransparentNode( $node ) &&
-			// TODO: Section tags are rendering transparent but not sol transparent,
-			// and that method only considers WTUtils::isSolTransparentLink, though
-			// there is a FIXME to consider all link nodes.
-			!( DOMCompat::nodeName( $node ) === 'link' &&
-				DOMUtils::hasTypeOf( $node, 'mw:Extension/section' ) )
-		) {
-			return $this->lintFostered( $env, $node, $dp, $tplInfo );
-		} else {
-			return null;
-		}
+		$this->lintFostered( $env, $node, $dp, $tplInfo );
+		return null;
 	}
 
 	/**
