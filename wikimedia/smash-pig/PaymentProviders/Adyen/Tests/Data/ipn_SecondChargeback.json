@@ -10,7 +10,7 @@
         },
         "amount": {
           "currency": "EUR",
-          "value": 1000
+          "value": 200
         },
         "eventCode": "SECOND_CHARGEBACK",
         "eventDate": "2021-01-01T01:00:00+01:00",

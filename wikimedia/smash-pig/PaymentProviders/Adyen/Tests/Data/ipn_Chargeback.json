@@ -20,13 +20,13 @@
         },
         "amount": {
           "currency": "EUR",
-          "value": 1000
+          "value": 200
         },
         "eventCode": "CHARGEBACK",
         "eventDate": "2021-01-01T01:00:00+01:00",
         "merchantAccountCode": "YOUR_MERCHANT_ACCOUNT",
         "merchantReference": "YOUR_MERCHANT_REFERENCE",
-        "originalReference": "9913140798220028",
+        "originalReference": "YOUR_MERCHANT_REFERENCE",
         "paymentMethod": "mc",
         "pspReference": "YOUR_PSP_REFERENCE",
         "reason": "Payment.TxId=300000000524534724 dispute",

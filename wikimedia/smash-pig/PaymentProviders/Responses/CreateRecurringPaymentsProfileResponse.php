@@ -7,13 +7,14 @@ namespace SmashPig\PaymentProviders\Responses;
  * @package SmashPig\PaymentProviders
  */
 class CreateRecurringPaymentsProfileResponse extends PaymentDetailResponse {
+
 	/**
 	 * A unique identifier for future reference to the details of this recurring payment.
 	 * Up to 14 single-byte alphanumeric characters.
 	 *
-	 * @var string
+	 * @var string|null
 	 */
-	protected $profileId;
+	protected ?string $profileId = null;
 
 	/**
 	 * @param string $profileId
@@ -22,5 +23,12 @@ class CreateRecurringPaymentsProfileResponse extends PaymentDetailResponse {
 	public function setProfileId( string $profileId ): self {
 		$this->profileId = $profileId;
 		return $this;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getProfileId(): ?string {
+		return $this->profileId;
 	}
 }

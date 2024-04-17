@@ -295,6 +295,7 @@ class CardPaymentProviderTest extends BaseSmashPigUnitTestCase {
 	public function testPaymentWithCompleteParamsPendingRecurringSetToTrue(): void {
 		$params = $this->getCreatePaymentRequestParams();
 		$params['recurring'] = "1";
+		$params['description'] = "Wikimedia Foundation (Recurring)";
 		$gateway_txn_id = "PAY2323243343543";
 		$card_id = "CID-e41c183d-2657-4e82-b39a-b0069c2af657";
 		$this->api->expects( $this->once() )

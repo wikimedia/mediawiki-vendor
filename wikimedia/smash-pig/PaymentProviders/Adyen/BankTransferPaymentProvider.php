@@ -9,9 +9,9 @@ use SmashPig\PaymentProviders\Responses\CreatePaymentResponse;
 class BankTransferPaymentProvider extends PaymentProvider {
 
 	/**
-	 * Create a Bank Transfer payment with Adyen Checkout
-	 * Initial payments will be of type iDEAL or onlineBanking_CZ, and subsequent payments
-	 * will be SEPA Direct Debit
+	 * Create a Bank Transfer payment onlineBanking_CZ for one-time, with Adyen Checkout
+	 * OR initial payments will be type SEPA Direct Debit or iDEAL, which ideal use
+	 * SEPA Direct Debit for subsequent recurring
 	 * https://docs.adyen.com/payment-methods/ideal/web-component
 	 * https://docs.adyen.com/payment-methods/online-banking-czech-republic/web-component
 	 *
@@ -20,11 +20,15 @@ class BankTransferPaymentProvider extends PaymentProvider {
 	 * @throws \SmashPig\Core\ApiException
 	 */
 	public function createPayment( array $params ): CreatePaymentResponse {
-		// one time and initial recurrings will have an issuer_id set
 		if ( !empty( $params['issuer_id'] ) ) {
+			// one time and initial iDEAL will have an issuer_id set
 			$rawResponse = $this->api->createBankTransferPaymentFromCheckout( $params );
+		} elseif ( !empty( $params['iban_number'] ) ) {
+			// The IBAN of the bank account for SEPA, do not encrypt
+			$rawResponse = $this->api->createSEPABankTransferPayment( $params );
 		} else {
-			// subsequent recurrings will not have an issuer_id
+			// subsequent recurring will have recurring_payment_token as storedPaymentMethodId,
+			// which is the pspReference from the RECURRING_CONTRACT webhook
 			$params['payment_method'] = 'sepadirectdebit';
 			$params['manual_capture'] = false;
 			$rawResponse = $this->api->createPaymentFromToken( $params );

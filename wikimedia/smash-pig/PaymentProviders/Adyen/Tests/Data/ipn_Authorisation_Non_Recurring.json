@@ -3,19 +3,24 @@
   "notificationItems": [
     {
       "NotificationRequestItem": {
+
         "amount": {
           "currency": "EUR",
           "value": 200
         },
-        "eventCode": "REFUND",
+        "eventCode": "AUTHORISATION",
         "eventDate": "2021-01-01T01:00:00+01:00",
         "merchantAccountCode": "YOUR_MERCHANT_ACCOUNT",
         "merchantReference": "YOUR_MERCHANT_REFERENCE",
-        "originalReference": "9913140798220028",
-        "paymentMethod": "visa",
+        "paymentMethod": "ideal",
+        "operations": [
+          "CANCEL",
+          "CAPTURE",
+          "REFUND"
+        ],
         "pspReference": "YOUR_PSP_REFERENCE",
-        "reason": "Transaction hasn't been captured, refund not possible",
-        "success": "false"
+        "reason": "null",
+        "success": "true"
       }
     }
   ]

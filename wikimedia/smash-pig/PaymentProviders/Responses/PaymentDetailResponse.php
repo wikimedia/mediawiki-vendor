@@ -13,6 +13,8 @@ use SmashPig\PaymentData\FinalStatus;
  */
 class PaymentDetailResponse extends PaymentProviderResponse {
 
+	use RedirectResponseTrait;
+
 	/**
 	 * Keys are types of risk scores (e.g. 'cvv' and 'avs') and values are
 	 * numbers from 0-100 indicating how likely the authorization is fraudulent.

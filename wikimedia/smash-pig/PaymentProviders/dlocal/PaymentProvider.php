@@ -214,5 +214,8 @@ class PaymentProvider implements IGetLatestPaymentStatusProvider, ICancelablePay
 
 			$params['fiscal_number'] = $fiscalNumber;
 		}
+		if ( isset( $params['recurring'] ) && $params['recurring'] ) {
+			$params['description'] = 'Wikimedia Foundation (Recurring)';
+		}
 	}
 }

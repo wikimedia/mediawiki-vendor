@@ -11,10 +11,12 @@ class AdyenRestListener extends RestListener {
 
 	protected function doMessageSecurity( ListenerMessage $msg ) {
 		// TODO: Implement doMessageSecurity() method.
+		return true;
 	}
 
 	protected function ackMessage( ListenerMessage $msg ) {
 		// TODO: Implement ackMessage() method.
+		return true;
 	}
 
 	protected function parseEnvelope( Request $request ) {

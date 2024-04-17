@@ -90,7 +90,7 @@ class Api {
 			'SOLUTIONTYPE' => 'Mark'
 		];
 
-		if ( $params['recurring'] === 1 ) {
+		if ( $params['recurring'] ) {
 			$requestParams['L_BILLINGTYPE0'] = 'RecurringPayments';
 			$requestParams['L_BILLINGAGREEMENTDESCRIPTION0'] = $params['description'];
 		}

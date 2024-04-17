@@ -34,6 +34,19 @@ class Capture extends AdyenMessage {
 	}
 
 	/**
+	 * Called by the getInstanceFromJSON function to continue message type specific construction
+	 *  after generic construction has been completed.
+	 *
+	 * @param array $notification
+	 * @return void
+	 */
+	protected function constructFromJSON( array $notification ) {
+		parent::constructFromJSON( $notification );
+
+		$this->originalReference = $notification['originalReference'];
+	}
+
+	/**
 	 * Will run all the actions that are loaded (from the 'actions' configuration
 	 * node) and that are applicable to this message type. Will return true
 	 * if all actions returned true. Otherwise will return false. This implicitly

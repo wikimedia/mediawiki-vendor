@@ -39,7 +39,7 @@ class RecurringContractJob extends RunnableJob {
 	public function execute() {
 		$logger = Logger::getTaggedLogger( "corr_id-adyen-$this->merchantReference" );
 		// We get an RECURRING_CONTRACT for every new recurring but only need to process recurring iDEAL
-		if ( $this->paymentMethod == 'ideal' ) {
+		if ( $this->paymentMethod == 'ideal' || $this->paymentMethod == 'sepadirectdebit' ) {
 			$logger->info(
 				"Handling recurring contract IPN for payment method '$this->paymentMethod', order ID " .
 				"'$this->merchantReference' and recurring token '$this->recurringPaymentToken'"

@@ -205,12 +205,11 @@ class ReferenceData {
 		//	'method' => 'dd',
 		//	'submethod' => 'dd_sepa',
 		// ],
-		// Technically, sepadirectdebit is method 'dd', but under Adyen we only ever use it for
-		// recurring installments on iDeal payments. We tag it as iDeal here to be consistent
-		// with how the donations are sent to the queue from the nightly charge job.
+		// Technically, sepadirectdebit is method 'dd', but under Adyen we also use it for
+		// recurring installments on iDeal payments, and other sepadirectdebit so make it consistant use rtbt.
 		'sepadirectdebit' => [
 			'method' => 'rtbt',
-			'submethod' => 'rtbt_ideal',
+			'submethod' => 'sepadirectdebit',
 		],
 		'star' => [
 			'method' => 'cc',

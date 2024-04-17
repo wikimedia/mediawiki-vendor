@@ -14,7 +14,7 @@
         "eventDate": "2021-01-01T01:00:00+01:00",
         "merchantAccountCode": "YOUR_MERCHANT_ACCOUNT",
         "merchantReference": "",
-        "pspReference": "YOUR_PSP_REFERENCE",
+        "pspReference": "settlement_detail_report",
         "reason": "URL_TO_DOWNLOAD_REPORT",
         "success": "true"
       }
