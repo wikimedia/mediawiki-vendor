@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "50af3f6afb596a3d17a4f6515ce20f39",
+    "content-hash": "fea0b3fdc18af354fcd6973af18e8a4e",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -3465,16 +3465,16 @@
         },
         {
             "name": "pear/net_smtp",
-            "version": "1.11.1",
+            "version": "1.12.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear/Net_SMTP.git",
-                "reference": "0ae529d6f8358e29a7eaa8b314e5bcf168bfcec8"
+                "reference": "5d7ba854d75a7c207d8581de1cc6fd2895ae2518"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/Net_SMTP/zipball/0ae529d6f8358e29a7eaa8b314e5bcf168bfcec8",
-                "reference": "0ae529d6f8358e29a7eaa8b314e5bcf168bfcec8",
+                "url": "https://api.github.com/repos/pear/Net_SMTP/zipball/5d7ba854d75a7c207d8581de1cc6fd2895ae2518",
+                "reference": "5d7ba854d75a7c207d8581de1cc6fd2895ae2518",
                 "shasum": ""
             },
             "require": {
@@ -3530,7 +3530,7 @@
                 "issues": "https://github.com/pear/Net_SMTP/issues",
                 "source": "https://github.com/pear/Net_SMTP"
             },
-            "time": "2023-11-01T15:03:18+00:00"
+            "time": "2024-04-15T19:42:15+00:00"
         },
         {
             "name": "pear/net_socket",
