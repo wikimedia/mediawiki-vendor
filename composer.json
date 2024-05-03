@@ -39,7 +39,7 @@
 		"fgrosse/phpasn1": "2.5.0",
 		"firebase/php-jwt": "6.10.0",
 		"geoip2/geoip2": "2.13.0",
-		"guzzlehttp/guzzle": "7.7.1",
+		"guzzlehttp/guzzle": "7.8.1",
 		"guzzlehttp/promises": "2.0.2",
 		"guzzlehttp/psr7": "2.6.2",
 		"jakobo/hotp-php": "2.0.0",
