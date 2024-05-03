@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'b3e8af46eb24d0532b8cd52c0046016beeb5e71f',
+        'reference' => '9effd595984532bcde1a50d1664782d345cacca2',
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'b3e8af46eb24d0532b8cd52c0046016beeb5e71f',
+            'reference' => '9effd595984532bcde1a50d1664782d345cacca2',
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -637,8 +637,8 @@
         'psr/log-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.0|2.0',
-                1 => '1.0.0 || 2.0.0 || 3.0.0',
+                0 => '1.0.0 || 2.0.0 || 3.0.0',
+                1 => '1.0|2.0',
             ),
         ),
         'psr/simple-cache' => array(
@@ -909,9 +909,9 @@
             'dev_requirement' => false,
         ),
         'symfony/yaml' => array(
-            'pretty_version' => 'v5.4.35',
-            'version' => '5.4.35.0',
-            'reference' => 'e78db7f5c70a21f0417a31f414c4a95fe76c07e4',
+            'pretty_version' => 'v5.4.39',
+            'version' => '5.4.39.0',
+            'reference' => 'bc780e16879000f77a1022163c052f5323b5e640',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/yaml',
             'aliases' => array(),
