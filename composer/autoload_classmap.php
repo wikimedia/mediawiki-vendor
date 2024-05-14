@@ -1809,6 +1809,7 @@ return array(
     'SmashPig\\PaymentProviders\\Fundraiseup\\Audit\\FundraiseupAudit' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Fundraiseup/Audit/FundraiseupAudit.php',
     'SmashPig\\PaymentProviders\\Fundraiseup\\Audit\\FundraiseupImports' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Fundraiseup/Audit/FundraiseupImports.php',
     'SmashPig\\PaymentProviders\\Fundraiseup\\Audit\\RecurringImport' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Fundraiseup/Audit/RecurringImport.php',
+    'SmashPig\\PaymentProviders\\Fundraiseup\\Audit\\RecurringUpdateImport' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Fundraiseup/Audit/RecurringUpdateImport.php',
     'SmashPig\\PaymentProviders\\Fundraiseup\\Audit\\RefundsImport' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Fundraiseup/Audit/RefundsImport.php',
     'SmashPig\\PaymentProviders\\Fundraiseup\\Tests\\FundraiseupTestConfiguration' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Fundraiseup/Tests/FundraiseupTestConfiguration.php',
     'SmashPig\\PaymentProviders\\GlobalCollect\\ExpatriatedMessages\\GlobalCollectMessage' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/GlobalCollect/ExpatriatedMessages/GlobalCollectMessage.php',

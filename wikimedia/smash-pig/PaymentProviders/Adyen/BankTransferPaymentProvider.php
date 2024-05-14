@@ -23,7 +23,7 @@ class BankTransferPaymentProvider extends PaymentProvider {
 		if ( !empty( $params['issuer_id'] ) ) {
 			// one time and initial iDEAL will have an issuer_id set
 			$rawResponse = $this->api->createBankTransferPaymentFromCheckout( $params );
-		} elseif ( !empty( $params['iban_number'] ) ) {
+		} elseif ( !empty( $params['iban'] ) ) {
 			// The IBAN of the bank account for SEPA, do not encrypt
 			$rawResponse = $this->api->createSEPABankTransferPayment( $params );
 		} else {

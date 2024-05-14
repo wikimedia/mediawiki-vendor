@@ -2253,6 +2253,7 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\PaymentProviders\\Fundraiseup\\Audit\\FundraiseupAudit' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Fundraiseup/Audit/FundraiseupAudit.php',
         'SmashPig\\PaymentProviders\\Fundraiseup\\Audit\\FundraiseupImports' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Fundraiseup/Audit/FundraiseupImports.php',
         'SmashPig\\PaymentProviders\\Fundraiseup\\Audit\\RecurringImport' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Fundraiseup/Audit/RecurringImport.php',
+        'SmashPig\\PaymentProviders\\Fundraiseup\\Audit\\RecurringUpdateImport' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Fundraiseup/Audit/RecurringUpdateImport.php',
         'SmashPig\\PaymentProviders\\Fundraiseup\\Audit\\RefundsImport' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Fundraiseup/Audit/RefundsImport.php',
         'SmashPig\\PaymentProviders\\Fundraiseup\\Tests\\FundraiseupTestConfiguration' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Fundraiseup/Tests/FundraiseupTestConfiguration.php',
         'SmashPig\\PaymentProviders\\GlobalCollect\\ExpatriatedMessages\\GlobalCollectMessage' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/GlobalCollect/ExpatriatedMessages/GlobalCollectMessage.php',

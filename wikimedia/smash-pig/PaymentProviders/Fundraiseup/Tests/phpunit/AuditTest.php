@@ -192,7 +192,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessNewRecurring() {
 		$processor = new FundraiseupAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/Recurring/New/export_recurring_2023-09-18_00-00_2023-09-22_23-59.csv' );
-		$this->assertSame( 1, count( $output ), 'Should have found one cancelled recurring' );
+		$this->assertSame( 1, count( $output ), 'Should have found one new recurring' );
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'fundraiseup',
@@ -220,7 +220,33 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'frequency_interval' => 1,
 			'country' => 'GB'
 		];
-		$this->assertEquals( $expected, $actual, 'Did not parse refund correctly' );
+		$this->assertEquals( $expected, $actual, 'Did not parse recurring correctly' );
+	}
+
+	/**
+	 * Import Modified recurrings
+	 */
+	public function testProcessModifiedRecurring() {
+		$processor = new FundraiseupAudit();
+		$output = $processor->parseFile( __DIR__ . '/../Data/Recurring/PlanChange/export_recurring_plan_change_2024-03-18_00-00_2024-03-18_23-59.csv' );
+		$this->assertSame( 1, count( $output ), 'Should have found one modifed recurring' );
+		$actual = $output[0];
+		$expected = [
+			'gateway' => 'fundraiseup',
+			'subscr_id' => 'RWRYRXYC',
+			'first_name' => 'Jimmy',
+			'last_name' => 'Wales Updated',
+			'email' => 'jwales@example.org',
+			'type' => 'recurring-modify',
+			'amount' => '11',
+			'employer' => '',
+			'txn_type' => 'external_recurring_modification',
+			'payment_method' => 'cc',
+			'payment_submethod' => 'visa',
+			'date' => 1710760069,
+			'external_identifier' => 'SUBJJCQA'
+		];
+		$this->assertEquals( $expected, $actual, 'Did not parse recurring correctly' );
 	}
 
 	/**

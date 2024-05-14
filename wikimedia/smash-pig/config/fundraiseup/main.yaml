@@ -2,4 +2,6 @@ audit:
   file-types:
     - SmashPig\PaymentProviders\Fundraiseup\Audit\DonationsImport
     - SmashPig\PaymentProviders\Fundraiseup\Audit\RefundsImport
+    - SmashPig\PaymentProviders\Fundraiseup\Audit\RecurringUpdateImport
     - SmashPig\PaymentProviders\Fundraiseup\Audit\RecurringImport
+

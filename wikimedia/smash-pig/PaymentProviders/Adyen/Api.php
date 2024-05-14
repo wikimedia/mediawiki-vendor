@@ -268,7 +268,7 @@ class Api {
 	 * Uses the rest API to create a SEPA direct deposit transfer
 	 *
 	 * @param array $params
-	 * amount, currency, order_id, iban_number, full_name
+	 * amount, currency, order_id, iban, full_name
 	 * @throws \SmashPig\Core\ApiException
 	 */
 	public function createSEPABankTransferPayment( $params ) {
@@ -279,7 +279,7 @@ class Api {
 			'paymentMethod' => [
 				'type' => 'sepadirectdebit',
 				'sepa.ownerName' => $params['full_name'], // the name on the SEPA bank account.
-				'sepa.ibanNumber' => $params['iban_number'], // the IBAN of the bank account, (do not encrypt)
+				'sepa.ibanNumber' => $params['iban'], // the IBAN of the bank account, (do not encrypt)
 			]
 		];
 		$isRecurring = $params['recurring'] ?? '';

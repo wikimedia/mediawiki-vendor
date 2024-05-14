@@ -16,6 +16,7 @@ class FundraiseupAudit implements AuditParser {
 			if ( $type::isMatch( $path ) ) {
 				$parser = new $type();
 				$fileData = $parser->parse( $path );
+				break;
 			}
 		}
 		return $fileData;
