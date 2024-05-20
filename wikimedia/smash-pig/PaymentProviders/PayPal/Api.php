@@ -130,6 +130,12 @@ class Api {
 	 * @return array
 	 */
 	public function createRecurringPaymentsProfile( array $params ) {
+		if ( isset( $params['frequency_unit'] ) && $params['frequency_unit'] === 'year' ) {
+			$billingPeriod = 'Year';
+		} else {
+			$billingPeriod = 'Month';
+		}
+		$frequencyInterval = $params['frequency_interval'] ?? 1;
 		$requestParams = [
 			'METHOD' => 'CreateRecurringPaymentsProfile',
 			// A timestamped token, the value of which was returned in the response to the first call to SetExpressCheckout or SetCustomerBillingAgreement response.
@@ -138,8 +144,8 @@ class Api {
 			'PROFILESTARTDATE' => gmdate( "Y-m-d\TH:i:s\Z", $params['date'] ), // The date when billing for this profile begins, set it today
 			'DESC' => $params['description'],
 			'PROFILEREFERENCE' => $params['order_id'],
-			'BILLINGPERIOD' => 'Month',
-			'BILLINGFREQUENCY' => 1,
+			'BILLINGPERIOD' => $billingPeriod,
+			'BILLINGFREQUENCY' => $frequencyInterval,
 			'AMT' => $params['amount'],
 			'CURRENCYCODE' => $params['currency'],
 			'EMAIL' => $params['email'],

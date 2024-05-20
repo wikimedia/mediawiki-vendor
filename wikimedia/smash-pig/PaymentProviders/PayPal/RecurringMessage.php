@@ -38,6 +38,9 @@ class RecurringMessage extends Message {
 				if ( $ipnMessage['payment_cycle'] == 'Monthly' ) {
 					$message['frequency_interval'] = '1';
 					$message['frequency_unit'] = 'month';
+				} elseif ( $ipnMessage['payment_cycle'] == 'Yearly' ) {
+					$message['frequency_interval'] = '1';
+					$message['frequency_unit'] = 'year';
 				}
 
 				$message['installments'] = 0;
