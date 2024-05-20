@@ -380,7 +380,7 @@ class ParsoidExtensionAPI {
 				$this->env, $frame, $wikitext,
 				[
 					// Full pipeline for processing content
-					'pipelineType' => 'text/x-mediawiki/full',
+					'pipelineType' => 'wikitext-to-dom',
 					'pipelineOpts' => [
 						'expandTemplates' => true,
 						'extTag' => $parseOpts['extTag'],
@@ -846,7 +846,7 @@ class ParsoidExtensionAPI {
 	}
 
 	/**
-	 * EXTAPI-FIXME: We have to figure out what it means to run a DOM PP pass
+	 * EXTAPI-FIXME: We have to figure out what it means to run a DOM pass
 	 * (and what processors and what handlers apply) on content models that are
 	 * not wikitext. For now, we are only storing data attribs back to the DOM
 	 * and adding metadata to the page.
