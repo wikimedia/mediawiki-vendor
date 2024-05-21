@@ -2360,6 +2360,7 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\PaymentProviders\\dlocal\\IAPIRequestMapper' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/IAPIRequestMapper.php',
         'SmashPig\\PaymentProviders\\dlocal\\Jobs\\PaidMessageJob' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/Jobs/PaidMessageJob.php',
         'SmashPig\\PaymentProviders\\dlocal\\Jobs\\RejectedMessageJob' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/Jobs/RejectedMessageJob.php',
+        'SmashPig\\PaymentProviders\\dlocal\\Maintenance\\ApprovePayments' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/Maintenance/ApprovePayments.php',
         'SmashPig\\PaymentProviders\\dlocal\\Maintenance\\CancelPayment' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/Maintenance/CancelPayment.php',
         'SmashPig\\PaymentProviders\\dlocal\\Maintenance\\ChargeRecurringIR' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/Maintenance/ChargeRecurringIR.php',
         'SmashPig\\PaymentProviders\\dlocal\\Maintenance\\CreateIRRecurringSubscription' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/Maintenance/CreateIRRecurringSubscription.php',

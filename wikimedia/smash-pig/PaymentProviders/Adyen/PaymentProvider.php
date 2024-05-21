@@ -625,6 +625,12 @@ abstract class PaymentProvider implements
 				$additionalData['recurring.recurringDetailReference']
 			);
 		}
+		if ( isset( $additionalData['paymentMethod'] ) ) {
+			[ $method, $submethod ] = ReferenceData::decodePaymentMethod(
+				$additionalData['paymentMethod'], $additionalData['paymentMethodVariant']
+			);
+			$response->setPaymentSubmethod( $submethod )->setPaymentMethod( $method );
+		}
 	}
 
 	/**

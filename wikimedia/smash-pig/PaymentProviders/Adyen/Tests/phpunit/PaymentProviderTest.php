@@ -58,6 +58,43 @@ class PaymentProviderTest extends BaseAdyenTestCase {
 		$this->assertEquals( FinalStatus::FAILED, $response->getStatus() );
 	}
 
+	public function testSuccessfulCreatePaymentFromToken() {
+		$id = rand( 1000, 10000 );
+		$this->mockApi->expects( $this->once() )
+			->method( 'createPaymentFromEncryptedDetails' )
+			->willReturn( AdyenTestConfiguration::getSuccessfulCreatePaymentResult( $id ) );
+
+		$response = $this->provider->createPayment( [
+			'currency' => 'EUR',
+			'amount' => '23.25',
+			'order_id' => '1234.1',
+			'encrypted_payment_data' => [
+				'encryptedCardNumber' => 'adyenjs_0_1_25$Wzozxz+Xa60jIs/aAyaddayaddayadda',
+				'encryptedExpiryMonth' => 'adyenjs_0_1_25$W+Jspf1bZ2AGu6lSetcetera',
+				'encryptedExpiryYear' => 'adyenjs_0_1_25$XoUIwK1nyHSn1Hpicandsoforth',
+				'encryptedSecurityCode' => 'adyenjs_0_1_25$Sn6D6UB3yLAX+5Sloremipsum',
+			],
+			'processor_contact_id' => 'MOCK_ID',
+			'city' => 'Detroit',
+			'street_address' => '8952 Grand River Avenue',
+			'country' => 'US',
+			'description' => 'Wikimedia Foundation',
+			'email' => 'wkramer@mc5.net',
+			'first_name' => 'Wayne',
+			'last_name' => 'Kramer',
+			'postal_code' => '48204',
+			'return_url' => 'https://paymentstest2.wmcloud.org/index.php?title=Special:AdyenCheckoutGatewayResult&order_id=1234.1&wmf_token=9b5527285f64111d11fb9dc8579ad147%2B%5C',
+			'state_province' => 'MI',
+			'user_ip' => '127.0.0.1',
+		] );
+
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\CreatePaymentResponse',
+			$response );
+		$this->assertTrue( $response->isSuccessful() );
+		$this->assertEquals( 'visa', $response->getPaymentSubmethod() );
+		$this->assertEquals( 'cc', $response->getPaymentMethod() );
+	}
+
 	public function testErrorCreatePaymentFromEncryptedDetails() {
 		$this->mockApi->expects( $this->once() )
 			->method( 'createPaymentFromEncryptedDetails' )

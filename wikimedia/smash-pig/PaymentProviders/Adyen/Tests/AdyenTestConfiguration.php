@@ -47,6 +47,26 @@ class AdyenTestConfiguration extends TestingProviderConfiguration {
 		];
 	}
 
+	public static function getSuccessfulCreatePaymentResult( $id ) {
+		return [
+			'additionalData' => [
+				'cvcResult' => '6 No CVC/CVV provided',
+				'authCode' => '099013',
+				'avsResult' => '2 Neither postal code nor address match',
+				'scaExemptionRequested' => 'lowValue',
+				'paymentMethod' => 'visa',
+				'paymentMethodVariant' => 'visa'
+			],
+			'pspReference' => '00000000000000AB',
+			'resultCode' => 'Authorised',
+			'amount' => [
+				'currency' => 'USD',
+				'value' => 1000,
+			],
+			'merchantReference' => $id,
+		];
+	}
+
 	public static function getSuccessfulGoogleResult( $id ): array {
 		return [
 			'additionalData' => [

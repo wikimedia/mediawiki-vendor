@@ -70,6 +70,11 @@ class PaymentDetailResponse extends PaymentProviderResponse {
 	protected $paymentSubmethod;
 
 	/**
+	 * @var string|null
+	 */
+	protected $paymentMethod;
+
+	/**
 	 * Determines whether the payment is in a status that requires further
 	 * action from the merchant to push through. Generally this means a card
 	 * payment has been authorized but not yet captured.
@@ -206,6 +211,22 @@ class PaymentDetailResponse extends PaymentProviderResponse {
 	 */
 	public function setPaymentSubmethod( ?string $paymentSubmethod ): PaymentDetailResponse {
 		$this->paymentSubmethod = $paymentSubmethod;
+		return $this;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getPaymentMethod(): ?string {
+		return $this->paymentMethod;
+	}
+
+	/**
+	 * @param string|null $paymentSubmethod
+	 * @return PaymentDetailResponse
+	 */
+	public function setPaymentMethod( ?string $paymentMethod ): PaymentDetailResponse {
+		$this->paymentMethod = $paymentMethod;
 		return $this;
 	}
 
