@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "66357747f9d85f7277382acc8e175d73",
+    "content-hash": "e3a84504f8fd894dda578e1ba821ebd5",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -1986,12 +1986,12 @@
             "version": "v5.2.13",
             "source": {
                 "type": "git",
-                "url": "https://github.com/justinrainbow/json-schema.git",
+                "url": "https://github.com/jsonrainbow/json-schema.git",
                 "reference": "fbbe7e5d79f618997bc3332a6f49246036c45793"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/fbbe7e5d79f618997bc3332a6f49246036c45793",
+                "url": "https://api.github.com/repos/jsonrainbow/json-schema/zipball/fbbe7e5d79f618997bc3332a6f49246036c45793",
                 "reference": "fbbe7e5d79f618997bc3332a6f49246036c45793",
                 "shasum": ""
             },
@@ -2046,8 +2046,8 @@
                 "schema"
             ],
             "support": {
-                "issues": "https://github.com/justinrainbow/json-schema/issues",
-                "source": "https://github.com/justinrainbow/json-schema/tree/v5.2.13"
+                "issues": "https://github.com/jsonrainbow/json-schema/issues",
+                "source": "https://github.com/jsonrainbow/json-schema/tree/v5.2.13"
             },
             "time": "2023-09-26T02:20:38+00:00"
         },
@@ -7240,16 +7240,16 @@
         },
         {
             "name": "wikimedia/less.php",
-            "version": "v4.2.1",
+            "version": "v4.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/less.php.git",
-                "reference": "9bdb3fda0452a05769e51d9941f2cfc0871d5fc0"
+                "reference": "7d66ab6d38af72f80a0c0a3598d7feac04bbc7b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/less.php/zipball/9bdb3fda0452a05769e51d9941f2cfc0871d5fc0",
-                "reference": "9bdb3fda0452a05769e51d9941f2cfc0871d5fc0",
+                "url": "https://api.github.com/repos/wikimedia/less.php/zipball/7d66ab6d38af72f80a0c0a3598d7feac04bbc7b7",
+                "reference": "7d66ab6d38af72f80a0c0a3598d7feac04bbc7b7",
                 "shasum": ""
             },
             "require": {
@@ -7258,9 +7258,9 @@
             "require-dev": {
                 "mediawiki/mediawiki-codesniffer": "43.0.0",
                 "mediawiki/mediawiki-phan-config": "0.14.0",
-                "mediawiki/minus-x": "1.1.1",
+                "mediawiki/minus-x": "1.1.3",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
-                "php-parallel-lint/php-parallel-lint": "1.3.2",
+                "php-parallel-lint/php-parallel-lint": "1.4.0",
                 "phpunit/phpunit": "9.6.16"
             },
             "bin": [
@@ -7309,9 +7309,9 @@
             ],
             "support": {
                 "issues": "https://github.com/wikimedia/less.php/issues",
-                "source": "https://github.com/wikimedia/less.php/tree/v4.2.1"
+                "source": "https://github.com/wikimedia/less.php/tree/v4.4.1"
             },
-            "time": "2024-02-25T01:55:00+00:00"
+            "time": "2024-05-27T14:47:49+00:00"
         },
         {
             "name": "wikimedia/lucene-explain-parser",
