@@ -2,10 +2,11 @@
 
 namespace SmashPig\PaymentProviders\Fundraiseup\Audit;
 
+use SmashPig\Core\DataFiles\DataFileException;
 use SmashPig\Core\DataFiles\HeadedCsvReader;
 
 class DonationsImport extends FundraiseupImports {
-	protected $importMap = [
+	protected array $importMap = [
 		'Account Name' => 'gateway_account',
 		'Donation ID' => 'order_id',
 		'Receipt ID' => 'invoice_id',
@@ -40,14 +41,16 @@ class DonationsImport extends FundraiseupImports {
 		'UTM Campaign' => 'utm_campaign',
 	];
 
-	public static function isMatch( $filename ) {
+	public static function isMatch( $filename ): bool {
 		return preg_match( '/.*export_donations_.*csv/', $filename );
 	}
 
 	/**
 	 * @param HeadedCsvReader $csv
+	 * @return array
+	 * @throws DataFileException
 	 */
-	protected function parseLine( HeadedCsvReader $csv ) {
+	protected function parseLine( HeadedCsvReader $csv ): array {
 		// Only allow successful donations in,
 		// for donations refunded on the same day as the donation,
 		// FRUP sets the status to refunded in the exports
@@ -62,7 +65,7 @@ class DonationsImport extends FundraiseupImports {
 					$msg['email'] = $paypalEmail;
 				}
 			}
-			$msg['fee'] += $csv->currentCol( 'Donation Platform Fee' );
+			$msg['fee'] += floatval( $csv->currentCol( 'Donation Platform Fee' ) );
 
 			if ( empty( $msg['country'] ) ) {
 				$donationURL = $csv->currentCol( 'Donation Page URL' );

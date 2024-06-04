@@ -2,11 +2,12 @@
 
 namespace SmashPig\PaymentProviders\Fundraiseup\Audit;
 
+use SmashPig\Core\DataFiles\DataFileException;
 use SmashPig\Core\DataFiles\HeadedCsvReader;
 
 class RecurringUpdateImport extends FundraiseupImports {
 
-	protected $importMap = [
+	protected array $importMap = [
 		'Recurring ID' => 'subscr_id',
 		'Supporter First Name' => 'first_name',
 		'Supporter Last Name' => 'last_name',
@@ -19,14 +20,16 @@ class RecurringUpdateImport extends FundraiseupImports {
 		'Supporter ID' => 'external_identifier'
 	];
 
-	public static function isMatch( $filename ) {
+	public static function isMatch( string $filename ): bool {
 		return preg_match( '/.*export_recurring_plan_change.*csv/', $filename );
 	}
 
 	/**
 	 * @param HeadedCsvReader $csv
+	 * @return array
+	 * @throws DataFileException
 	 */
-	protected function parseLine( HeadedCsvReader $csv ) {
+	protected function parseLine( HeadedCsvReader $csv ): array {
 		$msg = parent::parseLine( $csv );
 		$msg['type'] = 'recurring-modify';
 		$msg['txn_type'] = 'external_recurring_modification';
@@ -45,15 +48,19 @@ class RecurringUpdateImport extends FundraiseupImports {
 
 	/**
 	 * @param HeadedCsvReader $csv
+	 * @return bool
+	 * @throws DataFileException
 	 */
-	protected function isCancelled( HeadedCsvReader $csv ) {
+	protected function isCancelled( HeadedCsvReader $csv ): bool {
 		return $csv->currentCol( 'Recurring Status' ) === 'cancelled';
 	}
 
 	/**
 	 * @param HeadedCsvReader $csv
+	 * @return bool
+	 * @throws DataFileException
 	 */
-	protected function isFailed( HeadedCsvReader $csv ) {
+	protected function isFailed( HeadedCsvReader $csv ): bool {
 		return $csv->currentCol( 'Recurring Status' ) === 'failed';
 	}
 }

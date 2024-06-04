@@ -68,6 +68,10 @@ class RecurringMessage extends Message {
 			case 'recurring_payment_failed':
 			case 'recurring_payment_outstanding_payment_failed':
 			case 'recurring_payment_skipped':
+				if ( isset( $ipnMessage['next_payment_date'] ) ) {
+					$message['failure_retry_date'] = strtotime( $ipnMessage['next_payment_date'] );
+				}
+				// fall through
 			case 'recurring_payment_suspended':
 			case 'recurring_payment_suspended_due_to_max_failed_payment':
 				$message['txn_type'] = 'subscr_failed';

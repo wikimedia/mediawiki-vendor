@@ -2,7 +2,7 @@
 
 namespace SmashPig\PaymentProviders\Adyen\Tests\phpunit;
 
-use SmashPig\PaymentProviders\Adyen\ACHDirectDebitPaymentProvider;
+use SmashPig\PaymentProviders\Adyen\BankTransferPaymentProvider;
 use SmashPig\PaymentProviders\Adyen\Tests\AdyenTestConfiguration;
 use SmashPig\PaymentProviders\Adyen\Tests\BaseAdyenTestCase;
 
@@ -12,13 +12,13 @@ use SmashPig\PaymentProviders\Adyen\Tests\BaseAdyenTestCase;
 class ACHPaymentProviderTest extends BaseAdyenTestCase {
 
 	/**
-	 * @var ACHDirectDebitPaymentProvider
+	 * @var BankTransferPaymentProvider
 	 */
 	public $provider;
 
 	public function setUp() : void {
 		parent::setUp();
-		$this->provider = $this->config->object( 'payment-provider/ach' );
+		$this->provider = $this->config->object( 'payment-provider/dd' );
 	}
 
 	public function testCreateACHPayment() {
@@ -41,6 +41,7 @@ class ACHPaymentProviderTest extends BaseAdyenTestCase {
 			'postal_code' => '94043',
 			'state_province' => 'CA',
 			'street_address' => 'Amphitheatre Parkway',
+			'payment_submethod' => 'ach',
 			'encrypted_bank_account_number' => '123456789',
 			'encrypted_bank_location_id' => '121000358',
 			'supplemental_address_1' => '1600',

@@ -2,15 +2,18 @@
 
 namespace SmashPig\PaymentProviders\Fundraiseup\Audit;
 
+use SmashPig\Core\DataFiles\DataFileException;
 use SmashPig\Core\DataFiles\HeadedCsvReader;
 use SmashPig\Core\Logging\Logger;
 
 class FundraiseupImports {
 
 	/**
-	 * @throws \Exception
+	 * @param string $path
+	 * @return array
+	 * @throws DataFileException
 	 */
-	public function parse( $path ) {
+	public function parse( string $path ): array {
 		$csv = new HeadedCsvReader( $path, ',', 4098, 0 );
 		$fileData = [];
 
@@ -32,9 +35,10 @@ class FundraiseupImports {
 
 	/**
 	 * @param HeadedCsvReader $csv
-	 * @throws \Exception
+	 * @return array
+	 * @throws DataFileException
 	 */
-	protected function parseLine( HeadedCsvReader $csv ) {
+	protected function parseLine( HeadedCsvReader $csv ): array {
 		$msg = [];
 		$msg['gateway'] = 'fundraiseup';
 		foreach ( $this->importMap as $header => $mappedProperty ) {
@@ -65,7 +69,7 @@ class FundraiseupImports {
 		return $msg;
 	}
 
-	protected function setPaymentMethod( &$msg ): void {
+	protected function setPaymentMethod( array &$msg ): void {
 		$paymentMethods = [
 			'credit card' => 'cc',
 			'google pay' => 'google',
@@ -101,9 +105,10 @@ class FundraiseupImports {
 	}
 
 	/**
-	 * @param string $msg
+	 * @param string $frequency
+	 * @return string
 	 */
-	protected function transformRecurringFrequency( $frequency ) {
+	protected function transformRecurringFrequency( string $frequency ): string {
 		$mapper = [
 			'Monthly' => 'month',
 			'Daily' => 'day',

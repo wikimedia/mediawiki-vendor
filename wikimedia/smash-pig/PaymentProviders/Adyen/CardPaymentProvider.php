@@ -110,7 +110,7 @@ class CardPaymentProvider extends PaymentProvider {
 			if ( !empty( $rawResponse['additionalData']['retry.rescueReference'] ) ) {
 				$response->setProcessorRetryRescueReference( (string)$rawResponse['additionalData']['retry.rescueReference'] );
 			}
-			if ( !$response->getIsProcessorRetryScheduled() ) {
+			if ( !$response->getIsProcessorRetryScheduled() && !empty( $rawResponse['refusalReason'] ) ) {
 				$response->setProcessorRetryRefusalReason( $rawResponse['refusalReason'] );
 			}
 		} else {

@@ -20,6 +20,9 @@ class BankTransferPaymentProvider extends PaymentProvider {
 	 * @throws \SmashPig\Core\ApiException
 	 */
 	public function createPayment( array $params ): CreatePaymentResponse {
+		if ( isset( $params['payment_submethod'] ) && $params['payment_submethod'] === 'ach' ) {
+			return $this->createACHPayment( $params );
+		}
 		if ( !empty( $params['issuer_id'] ) ) {
 			// one time and initial iDEAL will have an issuer_id set
 			$rawResponse = $this->api->createBankTransferPaymentFromCheckout( $params );
@@ -49,6 +52,31 @@ class BankTransferPaymentProvider extends PaymentProvider {
 			$response->setRedirectUrl( $rawResponse['action']['url'] );
 		}
 		$this->mapGatewayTxnIdAndErrors( $response, $rawResponse );
+
+		return $response;
+	}
+
+	protected function createACHPayment( array $params ) : CreatePaymentResponse {
+		if ( !empty( $params['recurring_payment_token'] ) ) {
+			$params['payment_method'] = 'ach';
+			$rawResponse = $this->api->createPaymentFromToken( $params );
+		} else {
+			$rawResponse = $this->api->createACHDirectDebitPayment( $params );
+		}
+		$response = new CreatePaymentResponse();
+		$response->setRawResponse( $rawResponse );
+
+		$this->mapStatus(
+			$response,
+			$rawResponse,
+			new ApprovalNeededCreatePaymentStatus(),
+			$rawResponse['resultCode'] ?? null
+		);
+		$this->mapGatewayTxnIdAndErrors( $response, $rawResponse );
+		// additionalData has the recurring details
+		if ( isset( $rawResponse['additionalData'] ) ) {
+			$this->mapAdditionalData( $rawResponse['additionalData'], $response );
+		}
 
 		return $response;
 	}

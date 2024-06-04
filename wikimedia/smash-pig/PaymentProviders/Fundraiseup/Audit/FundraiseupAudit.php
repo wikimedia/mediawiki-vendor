@@ -1,4 +1,6 @@
-<?php namespace SmashPig\PaymentProviders\Fundraiseup\Audit;
+<?php
+
+namespace SmashPig\PaymentProviders\Fundraiseup\Audit;
 
 use SmashPig\Core\Context;
 use SmashPig\Core\DataFiles\AuditParser;
