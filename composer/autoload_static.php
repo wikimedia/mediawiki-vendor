@@ -2142,6 +2142,7 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\PaymentProviders\\Adyen\\CancelPaymentStatus' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/CancelPaymentStatus.php',
         'SmashPig\\PaymentProviders\\Adyen\\CardPaymentProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/CardPaymentProvider.php',
         'SmashPig\\PaymentProviders\\Adyen\\CreatePaymentStatus' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/CreatePaymentStatus.php',
+        'SmashPig\\PaymentProviders\\Adyen\\DelayedTokenStatus' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/DelayedTokenStatus.php',
         'SmashPig\\PaymentProviders\\Adyen\\ExceptionMapper' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExceptionMapper.php',
         'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\AdyenMessage' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/AdyenMessage.php',
         'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\Authentication' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/Authentication.php',

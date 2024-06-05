@@ -26,26 +26,37 @@ class BankTransferPaymentProvider extends PaymentProvider {
 		if ( !empty( $params['issuer_id'] ) ) {
 			// one time and initial iDEAL will have an issuer_id set
 			$rawResponse = $this->api->createBankTransferPaymentFromCheckout( $params );
+			$hasIbanOrIssuer = true;
 		} elseif ( !empty( $params['iban'] ) ) {
 			// The IBAN of the bank account for SEPA, do not encrypt
 			$rawResponse = $this->api->createSEPABankTransferPayment( $params );
+			$hasIbanOrIssuer = true;
 		} else {
 			// subsequent recurring will have recurring_payment_token as storedPaymentMethodId,
 			// which is the pspReference from the RECURRING_CONTRACT webhook
 			$params['payment_method'] = 'sepadirectdebit';
 			$params['manual_capture'] = false;
 			$rawResponse = $this->api->createPaymentFromToken( $params );
+			$hasIbanOrIssuer = false;
 		}
 		$response = new CreatePaymentResponse();
 		$response->setRawResponse( $rawResponse );
 		$rawStatus = $rawResponse['resultCode'];
+		// When we are creating an initial recurring bank transfer payment, we do not get
+		// the recurring token on the createPayment response so we can't call the payment
+		// complete. For these payments the initial successful response should be pending.
+		if ( $hasIbanOrIssuer && !empty( $params['recurring'] ) ) {
+			$statusMapper = new DelayedTokenStatus();
+		} else {
+			$statusMapper = new CreatePaymentStatus();
+		}
 
 		$this->mapStatus(
 			$response,
 			$rawResponse,
-			new CreatePaymentStatus(),
+			$statusMapper,
 			$rawStatus,
-			[ FinalStatus::PENDING, FinalStatus::PENDING_POKE, FinalStatus::COMPLETE ]
+			[ FinalStatus::PENDING, FinalStatus::COMPLETE ]
 		);
 
 		if ( $rawStatus === 'RedirectShopper' ) {

@@ -1698,6 +1698,7 @@ return array(
     'SmashPig\\PaymentProviders\\Adyen\\CancelPaymentStatus' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Adyen/CancelPaymentStatus.php',
     'SmashPig\\PaymentProviders\\Adyen\\CardPaymentProvider' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Adyen/CardPaymentProvider.php',
     'SmashPig\\PaymentProviders\\Adyen\\CreatePaymentStatus' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Adyen/CreatePaymentStatus.php',
+    'SmashPig\\PaymentProviders\\Adyen\\DelayedTokenStatus' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Adyen/DelayedTokenStatus.php',
     'SmashPig\\PaymentProviders\\Adyen\\ExceptionMapper' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExceptionMapper.php',
     'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\AdyenMessage' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/AdyenMessage.php',
     'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\Authentication' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/Authentication.php',
