@@ -5394,7 +5394,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Wt2Html\\DOM\\Processors\\DOMRangeBuilder' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/DOM/Processors/DOMRangeBuilder.php',
         'Wikimedia\\Parsoid\\Wt2Html\\DOM\\Processors\\DOMRangeInfo' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/DOM/Processors/DOMRangeInfo.php',
         'Wikimedia\\Parsoid\\Wt2Html\\DOM\\Processors\\DOMRangeInfoArray' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/DOM/Processors/DOMRangeInfoArray.php',
-        'Wikimedia\\Parsoid\\Wt2Html\\DOM\\Processors\\I18n' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/DOM/Processors/I18n.php',
         'Wikimedia\\Parsoid\\Wt2Html\\DOM\\Processors\\LangConverter' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/DOM/Processors/LangConverter.php',
         'Wikimedia\\Parsoid\\Wt2Html\\DOM\\Processors\\Linter' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/DOM/Processors/Linter.php',
         'Wikimedia\\Parsoid\\Wt2Html\\DOM\\Processors\\MarkFosteredContent' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/DOM/Processors/MarkFosteredContent.php',

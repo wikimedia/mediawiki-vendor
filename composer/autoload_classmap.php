@@ -4588,7 +4588,6 @@ return array(
     'Wikimedia\\Parsoid\\Wt2Html\\DOM\\Processors\\DOMRangeBuilder' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/DOM/Processors/DOMRangeBuilder.php',
     'Wikimedia\\Parsoid\\Wt2Html\\DOM\\Processors\\DOMRangeInfo' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/DOM/Processors/DOMRangeInfo.php',
     'Wikimedia\\Parsoid\\Wt2Html\\DOM\\Processors\\DOMRangeInfoArray' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/DOM/Processors/DOMRangeInfoArray.php',
-    'Wikimedia\\Parsoid\\Wt2Html\\DOM\\Processors\\I18n' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/DOM/Processors/I18n.php',
     'Wikimedia\\Parsoid\\Wt2Html\\DOM\\Processors\\LangConverter' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/DOM/Processors/LangConverter.php',
     'Wikimedia\\Parsoid\\Wt2Html\\DOM\\Processors\\Linter' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/DOM/Processors/Linter.php',
     'Wikimedia\\Parsoid\\Wt2Html\\DOM\\Processors\\MarkFosteredContent' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/DOM/Processors/MarkFosteredContent.php',
