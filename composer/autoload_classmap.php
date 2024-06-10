@@ -4315,6 +4315,7 @@ return array(
     'Wikimedia\\IDLeDOM\\XPathResult' => $vendorDir . '/wikimedia/idle-dom/src/XPathResult.php',
     'Wikimedia\\IPSet' => $vendorDir . '/wikimedia/ip-utils/src/IPSet.php',
     'Wikimedia\\IPUtils' => $vendorDir . '/wikimedia/ip-utils/src/IPUtils.php',
+    'Wikimedia\\JsonCodec\\Hint' => $vendorDir . '/wikimedia/json-codec/src/Hint.php',
     'Wikimedia\\JsonCodec\\JsonClassCodec' => $vendorDir . '/wikimedia/json-codec/src/JsonClassCodec.php',
     'Wikimedia\\JsonCodec\\JsonCodec' => $vendorDir . '/wikimedia/json-codec/src/JsonCodec.php',
     'Wikimedia\\JsonCodec\\JsonCodecInterface' => $vendorDir . '/wikimedia/json-codec/src/JsonCodecInterface.php',

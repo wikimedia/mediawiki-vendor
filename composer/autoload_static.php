@@ -5121,6 +5121,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\IDLeDOM\\XPathResult' => __DIR__ . '/..' . '/wikimedia/idle-dom/src/XPathResult.php',
         'Wikimedia\\IPSet' => __DIR__ . '/..' . '/wikimedia/ip-utils/src/IPSet.php',
         'Wikimedia\\IPUtils' => __DIR__ . '/..' . '/wikimedia/ip-utils/src/IPUtils.php',
+        'Wikimedia\\JsonCodec\\Hint' => __DIR__ . '/..' . '/wikimedia/json-codec/src/Hint.php',
         'Wikimedia\\JsonCodec\\JsonClassCodec' => __DIR__ . '/..' . '/wikimedia/json-codec/src/JsonClassCodec.php',
         'Wikimedia\\JsonCodec\\JsonCodec' => __DIR__ . '/..' . '/wikimedia/json-codec/src/JsonCodec.php',
         'Wikimedia\\JsonCodec\\JsonCodecInterface' => __DIR__ . '/..' . '/wikimedia/json-codec/src/JsonCodecInterface.php',
