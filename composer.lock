@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "50bc0fec55ad03dabcffe856c864ff85",
+    "content-hash": "e45f201e79ea4a8255b06bd8cba08dd2",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -3137,16 +3137,16 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.49.2",
+            "version": "v0.50.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "3cb82f60b7532924a5f084a22c74b28c7c723ab0"
+                "reference": "e81e0f0d90c759d693a08cbc6ed5ee497c32ada9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/3cb82f60b7532924a5f084a22c74b28c7c723ab0",
-                "reference": "3cb82f60b7532924a5f084a22c74b28c7c723ab0",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/e81e0f0d90c759d693a08cbc6ed5ee497c32ada9",
+                "reference": "e81e0f0d90c759d693a08cbc6ed5ee497c32ada9",
                 "shasum": ""
             },
             "require": {
@@ -3223,9 +3223,9 @@
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOUI",
             "support": {
-                "source": "https://github.com/wikimedia/oojs-ui/tree/v0.49.2"
+                "source": "https://github.com/wikimedia/oojs-ui/tree/v0.50.0"
             },
-            "time": "2024-05-17T02:27:41+00:00"
+            "time": "2024-06-11T21:15:43+00:00"
         },
         {
             "name": "opis/json-schema",
