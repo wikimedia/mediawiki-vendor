@@ -4337,7 +4337,6 @@ return array(
     'Wikimedia\\MetricsPlatform\\CurationController' => $vendorDir . '/wikimedia/metrics-platform/php/src/CurationController.php',
     'Wikimedia\\MetricsPlatform\\EventSubmitter' => $vendorDir . '/wikimedia/metrics-platform/php/src/EventSubmitter.php',
     'Wikimedia\\MetricsPlatform\\Integration' => $vendorDir . '/wikimedia/metrics-platform/php/src/Integration.php',
-    'Wikimedia\\MetricsPlatform\\InteractionDataTrait' => $vendorDir . '/wikimedia/metrics-platform/php/src/InteractionDataTrait.php',
     'Wikimedia\\MetricsPlatform\\MetricsClient' => $vendorDir . '/wikimedia/metrics-platform/php/src/MetricsClient.php',
     'Wikimedia\\MetricsPlatform\\StreamConfig\\StreamConfig' => $vendorDir . '/wikimedia/metrics-platform/php/src/StreamConfig/StreamConfig.php',
     'Wikimedia\\MetricsPlatform\\StreamConfig\\StreamConfigException' => $vendorDir . '/wikimedia/metrics-platform/php/src/StreamConfig/StreamConfigException.php',

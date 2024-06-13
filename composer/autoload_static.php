@@ -5143,7 +5143,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\MetricsPlatform\\CurationController' => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/src/CurationController.php',
         'Wikimedia\\MetricsPlatform\\EventSubmitter' => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/src/EventSubmitter.php',
         'Wikimedia\\MetricsPlatform\\Integration' => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/src/Integration.php',
-        'Wikimedia\\MetricsPlatform\\InteractionDataTrait' => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/src/InteractionDataTrait.php',
         'Wikimedia\\MetricsPlatform\\MetricsClient' => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/src/MetricsClient.php',
         'Wikimedia\\MetricsPlatform\\StreamConfig\\StreamConfig' => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/src/StreamConfig/StreamConfig.php',
         'Wikimedia\\MetricsPlatform\\StreamConfig\\StreamConfigException' => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/src/StreamConfig/StreamConfigException.php',

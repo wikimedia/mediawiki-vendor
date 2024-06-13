@@ -12,15 +12,6 @@ use Wikimedia\Timestamp\ConvertibleTimestamp;
 
 class MetricsClient implements LoggerAwareInterface {
 	use LoggerAwareTrait;
-	use InteractionDataTrait;
-
-	/**
-	 * The ID of the mediawiki/client/metrics_event schema in the schemas/event/secondary
-	 * repository.
-	 *
-	 * @var string
-	 */
-	public const MONO_SCHEMA = '/analytics/mediawiki/client/metrics_event/2.0.0';
 
 	/**
 	 * The ID of the Metrics Platform base schema in the schemas/event/secondary repository.
@@ -92,21 +83,29 @@ class MetricsClient implements LoggerAwareInterface {
 		string $streamName,
 		string $schemaId,
 		string $action,
-		array $interactionData
+		array $interactionData = []
 	): void {
-		$event = $this->createEvent( $action, $schemaId );
-		$formattedInteractionData = $this->getInteractionData( $action, $interactionData );
-		$eventData = array_merge( $event, $formattedInteractionData );
+		// See https://gitlab.wikimedia.org/repos/data-engineering/metrics-platform/-/blob/f7d52c6394a26f9de9cfe0fadbbc3c0dfe51b095/js/src/MetricsClient.js#L458
+		$event = array_merge(
+			[
+				'action' => $action,
+			],
+			$interactionData,
+			[
+				'$schema' => $schemaId,
+				'dt' => $this->getTimestamp()
+			]
+		);
 
 		try {
 			$streamConfig = $this->streamConfigFactory->getStreamConfig( $streamName );
 
-			$eventData = $this->contextController->addRequestedValues( $eventData, $streamConfig );
+			$event = $this->contextController->addRequestedValues( $event, $streamConfig );
 		} catch ( StreamConfigException $e ) {
 			return;
 		}
 
-		$this->eventSubmitter->submit( $streamName, $eventData );
+		$this->eventSubmitter->submit( $streamName, $event );
 	}
 
 	/**
@@ -132,21 +131,5 @@ class MetricsClient implements LoggerAwareInterface {
 	 */
 	private function getTimestamp(): string {
 		return ConvertibleTimeStamp::now( TS_ISO_8601 );
-	}
-
-	/**
-	 * @param string $eventName
-	 * @param string|null $schemaId
-	 */
-	private function createEvent( string $eventName, string $schemaId = null ): array {
-		$event = [
-			'$schema' => $schemaId ?? self::MONO_SCHEMA,
-			'dt' => $this->getTimestamp()
-		];
-		// Add the "name" key if monoschema is being used.
-		if ( $event['$schema'] === self::MONO_SCHEMA ) {
-			$event['name'] = $eventName;
-		}
-		return $event;
 	}
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e45f201e79ea4a8255b06bd8cba08dd2",
+    "content-hash": "df5c4816f83cce95b8566c5bee166497",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -7367,16 +7367,16 @@
         },
         {
             "name": "wikimedia/metrics-platform",
-            "version": "4.1.0",
+            "version": "4.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-metrics-platform.git",
-                "reference": "f7d52c6394a26f9de9cfe0fadbbc3c0dfe51b095"
+                "reference": "f101640ecec83c0fd494854bf72ae88180ae9e28"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-metrics-platform/zipball/f7d52c6394a26f9de9cfe0fadbbc3c0dfe51b095",
-                "reference": "f7d52c6394a26f9de9cfe0fadbbc3c0dfe51b095",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-metrics-platform/zipball/f101640ecec83c0fd494854bf72ae88180ae9e28",
+                "reference": "f101640ecec83c0fd494854bf72ae88180ae9e28",
                 "shasum": ""
             },
             "require": {
@@ -7423,9 +7423,9 @@
             "homepage": "https://wikitech.wikimedia.org/wiki/Metrics_Platform",
             "support": {
                 "issues": "https://phabricator.wikimedia.org/project/board/5324/",
-                "source": "https://github.com/wikimedia/mediawiki-libs-metrics-platform/tree/4.1.0"
+                "source": "https://github.com/wikimedia/mediawiki-libs-metrics-platform/tree/4.2.0"
             },
-            "time": "2024-04-16T17:31:06+00:00"
+            "time": "2024-04-24T13:41:23+00:00"
         },
         {
             "name": "wikimedia/minify",
