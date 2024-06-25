@@ -36,6 +36,7 @@
 				"performer_pageview_id",
 				"performer_groups",
 				"performer_is_bot",
+				"performer_is_temp",
 				"performer_language",
 				"performer_language_variant",
 				"performer_can_probably_edit_page",
@@ -232,6 +233,9 @@
 					"$ref": "#/$defs/curation_rules"
 				},
 				"performer_is_bot": {
+					"$ref": "#/$defs/curation_rules"
+				},
+				"performer_is_temp": {
 					"$ref": "#/$defs/curation_rules"
 				},
 				"performer_language": {

@@ -17,7 +17,7 @@ class CurationController {
 		$curationRules = $streamConfig->getCurationRules();
 
 		foreach ( $curationRules as $property => $rules ) {
-			list( $primaryKey, $secondaryKey ) = explode( '_', $property, 2 );
+			[ $primaryKey, $secondaryKey ] = explode( '_', $property, 2 );
 
 			if (
 				!isset( $event[$primaryKey][$secondaryKey] )

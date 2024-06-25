@@ -30,11 +30,10 @@ class ContextController {
 			array_merge( $requestedValues, [
 				'agent_client_platform',
 				'agent_client_platform_family',
-		] ) );
+			] )
+		);
 
 		foreach ( $requestedValues as $requestedValue ) {
-			list( $primaryKey, $secondaryKey ) = explode( '_', $requestedValue, 2 );
-
 			$value = $this->integration->getContextAttribute( $requestedValue );
 
 			// Context attributes are null by default. Only add the requested context attribute
@@ -42,6 +41,8 @@ class ContextController {
 			if ( $value === null ) {
 				continue;
 			}
+
+			[ $primaryKey, $secondaryKey ] = explode( '_', $requestedValue, 2 );
 
 			if ( !isset( $event[$primaryKey] ) ) {
 				$event[$primaryKey] = [];

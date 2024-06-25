@@ -122,7 +122,7 @@
 		"wikimedia/langconv": "0.4.2",
 		"wikimedia/less.php": "4.4.1",
 		"wikimedia/lucene-explain-parser": "2.0.0",
-		"wikimedia/metrics-platform": "4.2.0",
+		"wikimedia/metrics-platform": "4.2.1",
 		"wikimedia/minify": "2.7.0",
 		"wikimedia/normalized-exception": "1.0.1",
 		"wikimedia/object-factory": "5.0.1",
