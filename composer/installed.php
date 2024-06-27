@@ -3,7 +3,7 @@
         'name' => 'mediawiki/core',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'c255fda8eb5fce9baf199c964b6161c7a08129e5',
+        'reference' => '259258d7f42ce7587162de62976bca70c66811cc',
         'type' => 'mediawiki-core',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -175,7 +175,7 @@
         'mediawiki/core' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'c255fda8eb5fce9baf199c964b6161c7a08129e5',
+            'reference' => '259258d7f42ce7587162de62976bca70c66811cc',
             'type' => 'mediawiki-core',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -184,7 +184,7 @@
         'mediawiki/mediawiki' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.39.6',
+                0 => '1.39.8',
             ),
         ),
         'monolog/monolog' => array(
@@ -641,9 +641,9 @@
             'dev_requirement' => false,
         ),
         'wikimedia/less.php' => array(
-            'pretty_version' => 'v3.1.0',
-            'version' => '3.1.0.0',
-            'reference' => 'a486d78b9bd16b72f237fc6093aa56d69ce8bd13',
+            'pretty_version' => 'v3.2.1',
+            'version' => '3.2.1.0',
+            'reference' => '0d5b30ba792bdbf8991a646fc9c30561b38a5559',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/less.php',
             'aliases' => array(),
@@ -677,9 +677,9 @@
             'dev_requirement' => false,
         ),
         'wikimedia/parsoid' => array(
-            'pretty_version' => 'v0.16.3',
-            'version' => '0.16.3.0',
-            'reference' => '715011a9496b9084245009f80ec4ed206d7a48b8',
+            'pretty_version' => 'v0.16.4',
+            'version' => '0.16.4.0',
+            'reference' => '31553436c0c0fa99518c2de524c0adb3c256a6fb',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/parsoid',
             'aliases' => array(),
