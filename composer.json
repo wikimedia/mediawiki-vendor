@@ -61,7 +61,7 @@
 		"nikic/php-parser": "4.19.1",
 		"nyholm/dsn": "2.0.1",
 		"onoi/message-reporter": "1.4.2",
-		"oojs/oojs-ui": "0.50.0",
+		"oojs/oojs-ui": "0.50.2",
 		"opis/json-schema": "1.1.0",
 		"pear/console_getopt": "1.4.3",
 		"pear/mail": "1.6.0",
