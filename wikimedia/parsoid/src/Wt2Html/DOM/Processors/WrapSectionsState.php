@@ -16,13 +16,14 @@ use Wikimedia\Parsoid\DOM\Element;
 use Wikimedia\Parsoid\DOM\Node;
 use Wikimedia\Parsoid\DOM\Text;
 use Wikimedia\Parsoid\NodeData\DataMw;
-use Wikimedia\Parsoid\NodeData\DataMwPart;
 use Wikimedia\Parsoid\NodeData\DataParsoid;
+use Wikimedia\Parsoid\NodeData\TemplateInfo;
 use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\PHPUtils;
 use Wikimedia\Parsoid\Utils\TokenUtils;
+use Wikimedia\Parsoid\Utils\Utils;
 use Wikimedia\Parsoid\Utils\WTUtils;
 use Wikimedia\Parsoid\Wt2Html\Frame;
 
@@ -101,9 +102,9 @@ class WrapSectionsState {
 				$metadata->fromTitle = null;
 			} else {
 				$p0 = $dmw->parts[0];
-				if ( !( $p0 instanceof DataMwPart ) ) {
+				if ( !( $p0 instanceof TemplateInfo ) ) {
 					throw new UnreachableException(
-						"a single part will always be a DataMwPart not a string"
+						"a single part will always be a TemplateInfo not a string"
 					);
 				}
 				if ( $p0->type === 'templatearg' ) {
@@ -112,10 +113,10 @@ class WrapSectionsState {
 					// comes from the current page. But, legacy parser returns 'false'
 					// for this, so we'll return null as well instead of current title.
 					$metadata->fromTitle = null;
-				} elseif ( !empty( $p0->target->href ) ) {
+				} elseif ( !empty( $p0->href ) ) {
 					// Pick template title, but strip leading "./" prefix
-					$metadata->fromTitle = preg_replace(
-						"#^./#", "", $p0->target->href );
+					$tplHref = Utils::decodeURIComponent( $p0->href );
+					$metadata->fromTitle = PHPUtils::stripPrefix( $tplHref, './' );
 					if ( $this->sectionNumber >= 0 ) {
 						// Legacy parser sets this to '' in some cases
 						// See "Templated sections (heading from template arg)" parser test
@@ -512,7 +513,7 @@ class WrapSectionsState {
 
 	/**
 	 * FIXME: Duplicated with TableFixups code.
-	 * @param list<string|DataMwPart> &$parts
+	 * @param list<string|TemplateInfo> &$parts
 	 * @param ?int $offset1
 	 * @param ?int $offset2
 	 * @throws InternalException
