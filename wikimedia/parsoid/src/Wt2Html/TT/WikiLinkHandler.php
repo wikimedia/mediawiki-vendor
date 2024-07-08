@@ -11,13 +11,13 @@ namespace Wikimedia\Parsoid\Wt2Html\TT;
 
 use stdClass;
 use Wikimedia\Assert\Assert;
-use Wikimedia\JsonCodec\JsonCodec;
 use Wikimedia\Parsoid\Config\Env;
 use Wikimedia\Parsoid\Core\DomSourceRange;
 use Wikimedia\Parsoid\Core\InternalException;
 use Wikimedia\Parsoid\Core\Sanitizer;
 use Wikimedia\Parsoid\Language\Language;
 use Wikimedia\Parsoid\NodeData\DataMw;
+use Wikimedia\Parsoid\NodeData\DataMwAttrib;
 use Wikimedia\Parsoid\NodeData\DataParsoid;
 use Wikimedia\Parsoid\NodeData\TempData;
 use Wikimedia\Parsoid\Tokens\EndTagTk;
@@ -28,7 +28,6 @@ use Wikimedia\Parsoid\Tokens\SourceRange;
 use Wikimedia\Parsoid\Tokens\TagTk;
 use Wikimedia\Parsoid\Tokens\Token;
 use Wikimedia\Parsoid\Utils\ContentUtils;
-use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\PHPUtils;
 use Wikimedia\Parsoid\Utils\PipelineUtils;
 use Wikimedia\Parsoid\Utils\Title;
@@ -196,8 +195,10 @@ class WikiLinkHandler extends TokenHandler {
 		// the href from the result, and then creating a
 		// <link rel="mw:PageProp/redirect"> token from it.
 
-		$rlink = new SelfclosingTagTk( 'link', Utils::clone( $token->attribs ),
-			$token->dataParsoid->clone() );
+		$rlink = new SelfclosingTagTk( 'link',
+			Utils::clone( $token->attribs ),
+			$token->dataParsoid->clone(),
+			$token->dataMw ? $token->dataMw->clone() : null );
 		$wikiLinkTk = $rlink->dataParsoid->linkTk;
 		$rlink->setAttribute( 'rel', 'mw:PageProp/redirect' );
 
@@ -427,8 +428,6 @@ class WikiLinkHandler extends TokenHandler {
 					$rdfaType = $rdfaType ? $rdfaType . ' ' . $v : $v;
 				} elseif ( trim( $k ) === 'about' ) {
 					$about = $v;
-				} elseif ( trim( $k ) === 'data-mw' ) {
-					$newAttrs[] = $kv;
 				}
 			}
 		}
@@ -469,6 +468,7 @@ class WikiLinkHandler extends TokenHandler {
 	): array {
 		$attribs = $token->attribs;
 		$dataParsoid = $token->dataParsoid;
+		$dataMw = $token->dataMw;
 		$newAttrData = self::buildLinkAttrs( $attribs, true, null, [ new KV( 'rel', 'mw:WikiLink' ) ] );
 		$content = $newAttrData['contentKVs'];
 		$env = $this->env;
@@ -476,6 +476,7 @@ class WikiLinkHandler extends TokenHandler {
 		// Set attribs and dataParsoid
 		$newTk->attribs = $newAttrData['attribs'];
 		$newTk->dataParsoid = $dataParsoid->clone();
+		$newTk->dataMw = $dataMw !== null ? $dataMw->clone() : null;
 		unset( $newTk->dataParsoid->src ); // clear src string since we can serialize this
 
 		// Note: Link tails are handled on the DOM in handleLinkNeighbours, so no
@@ -663,19 +664,18 @@ class WikiLinkHandler extends TokenHandler {
 				$this->options['expandTemplates'],
 				$this->options['inTemplate']
 			);
-			$attr = [ $key, $val ];
-			$dataMW = $newTk->getAttributeV( 'data-mw' );
-			if ( $dataMW ) {
-				$dataMW = PHPUtils::jsonDecode( $dataMW, false );
-				$dataMW->attribs[] = $attr;
+			$attr = new DataMwAttrib( $key, $val );
+			$dataMw = $newTk->dataMw;
+			if ( $dataMw ) {
+				$dataMw->attribs[] = $attr;
 			} else {
-				$dataMW = (object)[ 'attribs' => [ $attr ] ];
+				$dataMw = new DataMw( [ 'attribs' => [ $attr ] ] );
 			}
 
 			// Mark token as having expanded attrs
 			$newTk->addAttribute( 'about', $env->newAboutId() );
 			$newTk->addSpaceSeparatedAttribute( 'typeof', 'mw:ExpandedAttrs' );
-			$newTk->addAttribute( 'data-mw', PHPUtils::jsonEncode( $dataMW ) );
+			$newTk->dataMw = $dataMw;
 		}
 		$this->env->getMetadata()->addCategory( $target->title, $categorySort );
 		return new TokenHandlerResult( [ $newTk ] );
@@ -1184,8 +1184,7 @@ class WikiLinkHandler extends TokenHandler {
 		$dataParsoid->optList = [];
 
 		// Account for the possibility of an expanded target
-		$dataMwAttr = $token->getAttributeV( 'data-mw' );
-		$dataMw = $dataMwAttr ? PHPUtils::jsonDecode( $dataMwAttr, false ) : new stdClass;
+		$dataMw = $token->dataMw ?? new DataMw();
 
 		$opts = [
 			'title' => [
@@ -1429,7 +1428,7 @@ class WikiLinkHandler extends TokenHandler {
 					$val['txt'] = $optInfo['v'];
 				}
 				$dataMw->attribs ??= [];
-				$dataMw->attribs[] = [ $opt['ck'], $val ];
+				$dataMw->attribs[] = new DataMwAttrib( $opt['ck'], $val );
 			}
 		}
 
@@ -1600,8 +1599,8 @@ class WikiLinkHandler extends TokenHandler {
 			$tokens[] = new EndTagTk( 'figcaption' );
 		}
 
-		if ( (array)$dataMw !== [] ) {
-			$container->addAttribute( 'data-mw', PHPUtils::jsonEncode( $dataMw ) );
+		if ( !$dataMw->isEmpty() ) {
+			$container->dataMw = $dataMw;
 		}
 
 		$tokens[] = $containerClose;
@@ -1649,19 +1648,13 @@ class WikiLinkHandler extends TokenHandler {
 			}
 
 			// Update data-mw
-			$codec = new JsonCodec();
-			$dataMwAttr = $token->getAttributeV( 'data-mw' );
-			$dataMw = $dataMwAttr ? $codec->newFromJsonString(
-				$dataMwAttr, DOMDataUtils::getCodecHints()['data-mw']
-			) : new DataMw;
+			$dataMw = $token->dataMw ?? new DataMw;
 			if ( is_array( $dataMw->errors ?? null ) ) {
 				PHPUtils::pushArray( $dataMw->errors, $errs );
 			} else {
 				$dataMw->errors = $errs;
 			}
-			$link->setAttribute( 'data-mw', $codec->toJsonString(
-				$dataMw, DOMDataUtils::getCodecHints()['data-mw']
-			) );
+			$link->dataMw = $dataMw;
 		}
 
 		$tokens = array_merge( [ $link ], $content, [ new EndTagTk( 'a' ) ] );

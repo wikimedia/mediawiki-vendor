@@ -158,12 +158,11 @@ class TreeBuilderStage extends PipelineStage {
 	 * @param DataParsoid $dataParsoid
 	 * @return array
 	 */
-	private function stashDataAttribs( array $attribs, DataParsoid $dataParsoid ): array {
+	private function stashDataAttribs( array $attribs, DataParsoid $dataParsoid, ?DataMw $dataMw ): array {
 		$data = new NodeData;
 		$data->parsoid = $dataParsoid;
-		if ( isset( $attribs['data-mw'] ) ) {
-			$data->mw = new DataMw( (array)json_decode( $attribs['data-mw'] ) );
-			unset( $attribs['data-mw'] );
+		if ( $dataMw !== null ) {
+			$data->mw = $dataMw;
 		}
 		// Store in the top level doc since we'll be importing the nodes after treebuilding
 		$nodeId = DOMDataUtils::stashObjectInDoc( $this->env->topLevelDoc, $data );
@@ -189,6 +188,7 @@ class TreeBuilderStage extends PipelineStage {
 		$dispatcher = $this->remexPipeline->dispatcher;
 		$attribs = isset( $token->attribs ) ? $this->kvArrToAttr( $token->attribs ) : [];
 		$dataParsoid = $token->dataParsoid ?? new DataParsoid;
+		$dataMw = $token->dataMw ?? null;
 		$tmp = $dataParsoid->getTemp();
 
 		if ( $this->inTransclusion ) {
@@ -256,7 +256,7 @@ class TreeBuilderStage extends PipelineStage {
 
 			$node = $this->remexPipeline->insertExplicitStartTag(
 				$tName,
-				$this->stashDataAttribs( $attribs, $dataParsoid ),
+				$this->stashDataAttribs( $attribs, $dataParsoid, $dataMw ),
 				false
 			);
 			if ( !$node ) {
@@ -288,7 +288,7 @@ class TreeBuilderStage extends PipelineStage {
 						$this->inTransclusion = ( $transType === 'mw:Transclusion' );
 					}
 					$this->remexPipeline->insertUnfosteredMeta(
-						$this->stashDataAttribs( $attribs, $dataParsoid ) );
+						$this->stashDataAttribs( $attribs, $dataParsoid, $dataMw ) );
 					$wasInserted = true;
 				}
 			}
@@ -296,7 +296,7 @@ class TreeBuilderStage extends PipelineStage {
 			if ( !$wasInserted ) {
 				$node = $this->remexPipeline->insertExplicitStartTag(
 					$tName,
-					$this->stashDataAttribs( $attribs, $dataParsoid ),
+					$this->stashDataAttribs( $attribs, $dataParsoid, $dataMw ),
 					false
 				);
 				if ( $node ) {
@@ -358,7 +358,7 @@ class TreeBuilderStage extends PipelineStage {
 				// Add a marker meta tag to aid accurate DSR computation
 				$attribs = [ 'typeof' => 'mw:Placeholder/UnclosedComment' ];
 				$this->remexPipeline->insertUnfosteredMeta(
-					$this->stashDataAttribs( $attribs, $dp ) );
+					$this->stashDataAttribs( $attribs, $dp, $token->dataMw ) );
 			}
 			$dispatcher->comment( $token->value, 0, 0 );
 		} elseif ( $token instanceof EOFTk ) {
@@ -452,7 +452,7 @@ class TreeBuilderStage extends PipelineStage {
 			$this->remexPipeline->insertUnfosteredMeta(
 				$this->stashDataAttribs(
 					[ 'typeof' => 'mw:Placeholder/StrippedTag' ],
-					$metaDP
+					$metaDP, null
 				)
 			);
 		}

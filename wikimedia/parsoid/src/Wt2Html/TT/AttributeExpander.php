@@ -6,6 +6,8 @@ namespace Wikimedia\Parsoid\Wt2Html\TT;
 use Wikimedia\Assert\Assert;
 use Wikimedia\Assert\UnreachableException;
 use Wikimedia\Parsoid\Config\Env;
+use Wikimedia\Parsoid\NodeData\DataMw;
+use Wikimedia\Parsoid\NodeData\DataMwAttrib;
 use Wikimedia\Parsoid\Tokens\KV;
 use Wikimedia\Parsoid\Tokens\NlTk;
 use Wikimedia\Parsoid\Tokens\SelfclosingTagTk;
@@ -585,7 +587,7 @@ class AttributeExpander extends TokenHandler {
 			// Rebuild flattened k-v pairs.
 			$expAttrs = [];
 			for ( $j = 0;  $j < count( $eVals );  $j += 2 ) {
-				$expAttrs[] = [ $eVals[$j], $eVals[$j + 1] ];
+				$expAttrs[] = new DataMwAttrib( $eVals[$j], $eVals[$j + 1] );
 			}
 
 			if ( $token->getName() === 'template' ) {
@@ -605,7 +607,7 @@ class AttributeExpander extends TokenHandler {
 				foreach ( $annotationTypes as $annotationType ) {
 					$token->addSpaceSeparatedAttribute( 'typeof', 'mw:Annotation/' . $annotationType );
 				}
-				$token->addAttribute( 'data-mw', PHPUtils::jsonEncode( [ 'attribs' => $expAttrs ] ) );
+				$token->dataMw = new DataMw( [ 'attribs' => $expAttrs ] );
 			}
 		}
 

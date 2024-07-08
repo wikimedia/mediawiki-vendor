@@ -13,6 +13,7 @@ use Wikimedia\Parsoid\DOM\Element;
 use Wikimedia\Parsoid\DOM\Node;
 use Wikimedia\Parsoid\DOM\NodeList;
 use Wikimedia\Parsoid\DOM\Text;
+use Wikimedia\Parsoid\NodeData\DataMw;
 use Wikimedia\Parsoid\NodeData\DataParsoid;
 use Wikimedia\Parsoid\NodeData\TempData;
 use Wikimedia\Parsoid\Tokens\CommentTk;
@@ -192,8 +193,8 @@ class PipelineUtils {
 	 * are stored outside the DOM.
 	 *
 	 * @param Element $node
-	 * @param string[] $attrs
-	 * @return array
+	 * @param array<string,string> $attrs
+	 * @return array{attrs:KV[],dataParsoid:?DataParsoid,dataMw:?DataMw}
 	 */
 	private static function domAttrsToTagAttrs( Element $node, array $attrs ): array {
 		$out = [];
@@ -202,10 +203,12 @@ class PipelineUtils {
 				$out[] = new KV( $name, $value );
 			}
 		}
-		if ( DOMDataUtils::validDataMw( $node ) ) {
-			$out[] = new KV( 'data-mw', PHPUtils::jsonEncode( DOMDataUtils::getDataMw( $node ) ) );
-		}
-		return [ 'attrs' => $out, 'dataAttrs' => DOMDataUtils::getDataParsoid( $node ) ];
+		return [
+			'attrs' => $out,
+			'dataParsoid' => DOMDataUtils::getDataParsoid( $node ),
+			'dataMw' =>
+				DOMDataUtils::validDataMw( $node ) ? DOMDataUtils::getDataMw( $node ) : null,
+		];
 	}
 
 	/**
@@ -221,9 +224,15 @@ class PipelineUtils {
 			$attrInfo = self::domAttrsToTagAttrs( $node, DOMUtils::attributes( $node ) );
 
 			if ( Utils::isVoidElement( $nodeName ) ) {
-				$tokBuf[] = new SelfclosingTagTk( $nodeName, $attrInfo['attrs'], $attrInfo['dataAttrs'] );
+				$tokBuf[] = new SelfclosingTagTk(
+					$nodeName, $attrInfo['attrs'],
+					$attrInfo['dataParsoid'], $attrInfo['dataMw']
+				);
 			} else {
-				$tokBuf[] = new TagTk( $nodeName, $attrInfo['attrs'], $attrInfo['dataAttrs'] );
+				$tokBuf[] = new TagTk(
+					$nodeName, $attrInfo['attrs'],
+					$attrInfo['dataParsoid'], $attrInfo['dataMw']
+				);
 				for ( $child = $node->firstChild;  $child;  $child = $child->nextSibling ) {
 					$tokBuf = self::convertDOMtoTokens( $child, $tokBuf );
 				}

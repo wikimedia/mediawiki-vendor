@@ -4507,6 +4507,7 @@ return array(
     'Wikimedia\\Parsoid\\Mocks\\MockSiteConfig' => $vendorDir . '/wikimedia/parsoid/src/Mocks/MockSiteConfig.php',
     'Wikimedia\\Parsoid\\NodeData\\DataBag' => $vendorDir . '/wikimedia/parsoid/src/NodeData/DataBag.php',
     'Wikimedia\\Parsoid\\NodeData\\DataMw' => $vendorDir . '/wikimedia/parsoid/src/NodeData/DataMw.php',
+    'Wikimedia\\Parsoid\\NodeData\\DataMwAttrib' => $vendorDir . '/wikimedia/parsoid/src/NodeData/DataMwAttrib.php',
     'Wikimedia\\Parsoid\\NodeData\\DataMwI18n' => $vendorDir . '/wikimedia/parsoid/src/NodeData/DataMwI18n.php',
     'Wikimedia\\Parsoid\\NodeData\\DataParsoid' => $vendorDir . '/wikimedia/parsoid/src/NodeData/DataParsoid.php',
     'Wikimedia\\Parsoid\\NodeData\\I18nInfo' => $vendorDir . '/wikimedia/parsoid/src/NodeData/I18nInfo.php',
