@@ -8,9 +8,6 @@ use SmashPig\Core\Logging\Logger;
 
 /**
  * Reads messages from the pending db and creates test IPN message files
- * Adyen:
- *  php Maintenance/CreateIpnMessagesFromPendingDb.php adyen
- *  Tests/SoapInjector/soapinject.py payments-listener.local.wmftest.net '/smashpig_http_handler.php?p=adyen/listener' auth_success.10.1.xml
  * Amazon:
  *  php Maintenance/CreateIpnMessagesFromPendingDb.php amazon
  *  PaymentProvider/Amazon/Tests/inject.ph payments-listener.local.wmftest.net '/smashpig_http_handler.php?p=amazon/listener' CaptureCompleted.10-1.json

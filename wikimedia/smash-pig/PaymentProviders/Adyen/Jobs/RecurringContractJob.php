@@ -38,17 +38,18 @@ class RecurringContractJob extends RunnableJob {
 
 	public function execute() {
 		$logger = Logger::getTaggedLogger( "corr_id-adyen-$this->merchantReference" );
-		// We get an RECURRING_CONTRACT for every new recurring but only need to process recurring iDEAL
+		// Find the details from the payment site in the pending database.
+		$logger->debug( 'Attempting to locate associated message in pending database' );
+		$db = PendingDatabase::get();
+		$dbMessage = $db->fetchMessageByGatewayOrderId( 'adyen', $this->merchantReference );
+
+		// We get an RECURRING_CONTRACT for every new recurring but only send it
+		// to donations here for recurring SEPA/iDEAL
 		if ( $this->paymentMethod == 'ideal' || $this->paymentMethod == 'sepadirectdebit' ) {
 			$logger->info(
 				"Handling recurring contract IPN for payment method '$this->paymentMethod', order ID " .
 				"'$this->merchantReference' and recurring token '$this->recurringPaymentToken'"
 			);
-
-			// Find the details from the payment site in the pending database.
-			$logger->debug( 'Attempting to locate associated message in pending database' );
-			$db = PendingDatabase::get();
-			$dbMessage = $db->fetchMessageByGatewayOrderId( 'adyen', $this->merchantReference );
 
 			if ( $dbMessage && ( isset( $dbMessage['gateway_txn_id'] ) ) ) {
 				$logger->debug(
@@ -74,10 +75,23 @@ class RecurringContractJob extends RunnableJob {
 				);
 			}
 		} else {
-			$logger->info(
-				"Discarding recurring contract IPN for payment method '$this->paymentMethod', order ID " .
-				"'$this->merchantReference' and recurring token '$this->recurringPaymentToken'"
-			);
+			if ( $dbMessage ) {
+				// Add the recurring setup information
+				$dbMessage['recurring_payment_token'] = $this->recurringPaymentToken;
+				$dbMessage['processor_contact_id'] = $this->processorContactId;
+				$logger->info(
+					"Storing recurring contract IPN info for payment method '$this->paymentMethod', order ID " .
+					"'$this->merchantReference' and recurring token '$this->recurringPaymentToken' to matching " .
+					'pending db row.'
+				);
+				$db->storeMessage( $dbMessage );
+			} else {
+				$logger->info(
+					"Discarding recurring contract IPN for payment method '$this->paymentMethod', order ID " .
+					"'$this->merchantReference' and recurring token '$this->recurringPaymentToken' with no " .
+					'matching pending db row.'
+				);
+			}
 		}
 
 		return true;

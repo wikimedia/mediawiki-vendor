@@ -1,7 +1,6 @@
 <?php namespace SmashPig\PaymentProviders\Adyen\ExpatriatedMessages;
 
 use SmashPig\PaymentProviders\Adyen\Actions\RecurringContractAction;
-use SmashPig\PaymentProviders\Adyen\WSDL\NotificationRequestItem;
 
 /**
  * An Adyen RECURRING_CONTRACT message is sent from the server to SmashPig after
@@ -16,18 +15,6 @@ class RecurringContract extends AdyenMessage {
 
 	/** @var string The payment method used in this transaction, eg visa, mc, ideal, ev, wallie, etc... */
 	public $paymentMethod;
-
-	/**
-	 * Overloads the generic Adyen method adding fields specific to the Recurring Contract message
-	 * type.
-	 *
-	 * @param \SmashPig\PaymentProviders\Adyen\WSDL\NotificationRequestItem $msgObj
-	 */
-	protected function constructFromWSDL( NotificationRequestItem $msgObj ) {
-		parent::constructFromWSDL( $msgObj );
-
-		$this->paymentMethod = $msgObj->paymentMethod;
-	}
 
 	/**
 	 * Overloads the generic Adyen method adding fields specific to the Recurring Contract message

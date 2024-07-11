@@ -3,11 +3,11 @@
 use Exception;
 use SmashPig\Core\Context;
 use SmashPig\Core\DataStores\QueueWrapper;
-use SmashPig\Core\Jobs\RunnableJob;
 use SmashPig\Core\Logging\Logger;
 use SmashPig\Core\ProviderConfiguration;
+use SmashPig\Core\Runnable;
 
-class Job extends RunnableJob {
+class Job implements Runnable {
 
 	public $payload;
 
@@ -18,9 +18,9 @@ class Job extends RunnableJob {
 
 	public function is_reject() {
 		foreach ( $this->providerConfiguration->val( 'rejects' ) as $key => $val ) {
-			if ( isset( $this->payload->{$key} ) ) {
+			if ( isset( $this->payload[$key] ) ) {
 				$values = (array)$val;
-				if ( in_array( $this->payload->{$key}, $values, true ) ) {
+				if ( in_array( $this->payload[$key], $values, true ) ) {
 					return true;
 				}
 			}
@@ -37,8 +37,7 @@ class Job extends RunnableJob {
 			return true;
 		}
 
-		// XXX Why does everything get made into objects?
-		$request = (array)$this->payload;
+		$request = $this->payload;
 
 		// Determine message type.
 		if ( isset( $request['txn_type'] ) ) {

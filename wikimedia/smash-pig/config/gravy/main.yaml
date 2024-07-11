@@ -1,0 +1,20 @@
+# Settings for Gravy
+#
+# To override, create a file in:
+#   /etc/smashpig/gravy/main.yaml
+#   $HOME/.smashpig/gravy/main.yaml
+
+api:
+    class: SmashPig\PaymentProviders\Gravy\Api
+
+gravy-id: wikimedia
+
+api-prefix: sandbox
+
+merchantAccountId: default
+
+privateKeyLocation: /srv/config/private/gr4vy/private_key.pem
+
+payment-provider:
+    cc:
+        class: SmashPig\PaymentProviders\Gravy\CardPaymentProvider

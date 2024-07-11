@@ -14,8 +14,8 @@
         "originalReference": "9913140798220028",
         "paymentMethod": "visa",
         "pspReference": "YOUR_PSP_REFERENCE",
-        "reason": "Transaction hasn't been captured, refund not possible",
-        "success": "false"
+        "reason": "",
+        "success": "true"
       }
     }
   ]

@@ -97,6 +97,34 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	}
 
 	/**
+	 * ACH donation
+	 */
+	public function testProcessDonationAch() {
+		$processor = new AdyenSettlementDetailReport();
+		$output = $processor->parseFile( __DIR__ . '/../Data/settlement_detail_report_donation-ach.csv' );
+		$this->assertSame( 1, count( $output ), 'Should have found one donation' );
+		$actual = $output[0];
+		$expected = [
+			'gateway' => 'adyen',
+			'gateway_account' => 'WikimediaCOM',
+			'gross' => '1.00',
+			'contribution_tracking_id' => '206543313',
+			'currency' => 'USD',
+			'gateway_txn_id' => 'GDC9ZZ4L2MONEY42',
+			'modification_reference' => 'X99BANANA6S8TN25',
+			'invoice_id' => '206543313.1',
+			'payment_method' => 'dd',
+			'payment_submethod' => 'ach',
+			'date' => 1717525240	,
+			'settled_currency' => 'USD',
+			'fee' => '0.22',
+			'settled_gross' => '0.78',
+			'settled_fee' => '0.22',
+		];
+		$this->assertEquals( $expected, $actual, 'Did not parse donation correctly' );
+	}
+
+	/**
 	 * Now try a refund
 	 */
 	public function testProcessSettlementDetailRefund() {

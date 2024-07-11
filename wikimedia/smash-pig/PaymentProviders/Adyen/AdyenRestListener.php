@@ -30,7 +30,7 @@ class AdyenRestListener extends RestListener {
 		Logger::getTaggedLogger( 'RawData' )->info( preg_replace( $patterns, $replace, $rawRequest ) );
 		$decoded = json_decode( $rawRequest, true );
 		$messages = [];
-		foreach ( $decoded['notificationItems'] as $notification ) {
+		foreach ( $decoded['notificationItems'] ?? [] as $notification ) {
 			$messages[] = AdyenMessage::getInstanceFromJSON( $notification['NotificationRequestItem'] );
 		}
 		return $messages;

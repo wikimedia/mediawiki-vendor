@@ -7,16 +7,9 @@
 logging:
     root-context: SmashPig-Adyen
 
-# Transitional config, allows running REST listener and SOAP listener in parallel
 endpoints:
     listener:
-        class: SmashPig\PaymentProviders\Adyen\AdyenMultiListener
-
-rest-listener:
-    class: SmashPig\PaymentProviders\Adyen\AdyenRestListener
-
-soap-listener:
-    class: SmashPig\PaymentProviders\Adyen\AdyenListener
+        class: SmashPig\PaymentProviders\Adyen\AdyenRestListener
 
 api:
     class: SmashPig\PaymentProviders\Adyen\Api

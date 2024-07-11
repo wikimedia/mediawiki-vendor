@@ -1,22 +1,26 @@
 {
-  "paymentMethod": "visa",
-  "operations": [],
-  "reason": "Issuer Suspected Fraud",
-  "cvvResult": "3",
-  "avsResult": "4",
-  "recurringProcessingModel": "Subscription",
-  "recurringDetailReference": "",
-  "shopperReference": "",
-  "retryRescueScheduled": "false",
-  "retryRescueReference": "",
-  "retryOrderAttemptNumber": 0,
-  "parentPspReference": null,
-  "pspReference": "J52D2D9BZGNG5S82",
-  "merchantReference": "100000095.2",
+  "additionalData": {
+    "cvcResult": "0 Unknown",
+    "expiryDate": "",
+    "retry.rescueReference": "ABCD49EFGH5MPK42",
+    "retry.orderAttemptNumber": "4",
+    "merchantOrderReference": "ABCD49EFGH5MPK42",
+    "avsResult": "26 Neither postal code, address nor name match",
+    "cardSummary": "1234",
+    "acquirerResponseCode": "100 : Deny",
+    "retry.rescueScheduled": "false",
+    "checkout.cardAddedBrand": "amex"
+  },
+  "amount": {
+    "currency": "USD",
+    "value": 175
+  },
+  "eventCode": "AUTHORISATION",
+  "eventDate": "2024-06-11T01:22:21+02:00",
   "merchantAccountCode": "WikimediaDonations",
-  "currency": "USD",
-  "amount": 10,
-  "eventDate": "2023-10-13T02:10:16+02:00",
-  "success": false,
-  "propertiesExcludedFromExport": []
+  "merchantReference": "191002432.9",
+  "paymentMethod": "amex",
+  "pspReference": "ABC6DEF9GHIJK4X3",
+  "reason": "Refused",
+  "success": "false"
 }

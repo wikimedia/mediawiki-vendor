@@ -32,6 +32,12 @@ abstract class PaymentProviderResponse {
 	protected $rawResponse;
 
 	/**
+	 * normalized response from provider response
+	 * @var mixed
+	 */
+	protected $normalizedResponse;
+
+	/**
 	 * Payment provider transaction ID
 	 *
 	 * https://www.mediawiki.org/wiki/Fundraising_tech/Transaction_IDs
@@ -74,11 +80,27 @@ abstract class PaymentProviderResponse {
 	}
 
 	/**
+	 * @return mixed
+	 */
+	public function getNormalizedResponse() {
+		return $this->normalizedResponse;
+	}
+
+	/**
 	 * @param mixed $rawResponse
 	 * @return $this
 	 */
 	public function setRawResponse( $rawResponse ): self {
 		$this->rawResponse = $rawResponse;
+		return $this;
+	}
+
+	/**
+	 * @param mixed $normalizedResponse
+	 * @return $this
+	 */
+	public function setNormalizedResponse( $normalizedResponse ): self {
+		$this->normalizedResponse = $normalizedResponse;
 		return $this;
 	}
 

@@ -44,4 +44,6 @@ class ErrorCode {
 	const SUBSCRIPTION_CANNOT_BE_CANCELED = 1000016;
 	/** @var int Invalid request */
 	const INVALID_REQUEST = 1000017;
+	/** @var int Duplicate records */
+	const DUPLICATE = 1000018;
 }

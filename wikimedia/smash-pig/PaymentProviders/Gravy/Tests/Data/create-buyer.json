@@ -1,0 +1,31 @@
+{
+    "type": "buyer",
+    "id": "fe26475d-ec3e-4884-9553-f7356683f7f9",
+    "billing_details": {
+      "type": "billing-details",
+      "first_name": "Lorem",
+      "last_name": "Ipsum",
+      "email_address": "lorem@ipsum",
+      "phone_number": "+1234567890",
+      "address": {
+        "city": "San Francisco",
+        "country": "US",
+        "postal_code": "1234",
+        "state": "California",
+        "state_code": "california",
+        "house_number_or_name": "10",
+        "line1": "10 hopewell street",
+        "line2": "Hopewell Street",
+        "organization": "Wikimedia Foundation"
+      },
+      "tax_id": {
+        "value": "12345678931",
+        "kind": "gb.vat"
+      }
+    },
+    "created_at": "2013-07-16T19:23:00.000+00:00",
+    "display_name": "Lorem Ipsum",
+    "external_identifier": null,
+    "merchant_account_id": "default",
+    "updated_at": "2013-07-16T19:23:00.000+00:00"
+  }

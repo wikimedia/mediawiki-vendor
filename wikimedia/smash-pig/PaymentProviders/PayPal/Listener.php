@@ -37,9 +37,10 @@ class Listener implements IHttpActionHandler {
 
 		if ( $valid ) {
 			Logger::info( 'PayPal confirms message is valid' );
-			$job = new Job;
-			$job->payload = $requestValues;
-			QueueWrapper::push( 'jobs-paypal', $job );
+			QueueWrapper::push( 'jobs-paypal', [
+				'class' => 'SmashPig\PaymentProviders\PayPal\Job',
+				'payload' => $requestValues
+			] );
 			Logger::info( 'Pushed new message to jobs-paypal: ' .
 				json_encode( $requestValues ) );
 			Logger::info( 'Finished processing listener request' );

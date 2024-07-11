@@ -3,7 +3,6 @@
 use SmashPig\Core\Listeners\ListenerDataException;
 use SmashPig\Core\Logging\Logger;
 use SmashPig\Core\Messages\ListenerMessage;
-use SmashPig\PaymentProviders\Adyen\WSDL\NotificationRequestItem;
 
 abstract class AdyenMessage extends ListenerMessage {
 
@@ -37,40 +36,6 @@ abstract class AdyenMessage extends ListenerMessage {
 
 	/** @var string|null Reason for event */
 	public $reason;
-
-	/**
-	 * Creates an appropriate derived AdyenMessage instance from the object received
-	 * during the SOAP transaction.
-	 *
-	 * The magic here is looking at the eventCode field, normalizing it, and then
-	 * loading the class if it exists.
-	 *
-	 * @param \SmashPig\PaymentProviders\Adyen\WSDL\NotificationRequestItem $obj
-	 */
-	public static function getInstanceFromWSDL( NotificationRequestItem $msgObj ) {
-		// Adyen events come in as UPPER_CASE_UNDERSCORE_DELIMITED, we turn this
-		// into UpperCaseUnderscoreDelimited
-		$className = implode( '', array_map( 'ucwords', explode( '_', strtolower( $msgObj->eventCode ) ) ) );
-		$className = 'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\' . $className;
-
-		if ( class_exists( $className ) ) {
-			Logger::debug( "Attempting construction of '$className'" );
-			$obj = new $className();
-		} else {
-			Logger::debug( "Class not found '$className'" );
-			return false;
-		}
-
-		if ( $obj instanceof AdyenMessage ) {
-			$obj->constructFromWSDL( $msgObj );
-		} else {
-			throw new ListenerDataException(
-				"Instantiated object '{$className}' does not inherit from AdyenMessage'!"
-			);
-		}
-
-		return $obj;
-	}
 
 	/**
 	 * Creates an appropriate derived AdyenMessage instance from the object received
@@ -109,26 +74,6 @@ abstract class AdyenMessage extends ListenerMessage {
 	}
 
 	/**
-	 * Called by the getInstanceFromWSDL function to continue message type specific construction
-	 * after generic construction has been completed.
-	 *
-	 * @param NotificationRequestItem $msgObj Received and processed object
-	 */
-	protected function constructFromWSDL( NotificationRequestItem $msgObj ) {
-		if ( $msgObj->amount ) {
-			$this->currency = $msgObj->amount->currency;
-			$this->amount = $msgObj->amount->value / 100;	// TODO: Make this CLDR aware
-		}
-		$this->eventDate = $msgObj->eventDate;
-		$this->merchantAccountCode = $msgObj->merchantAccountCode;
-		$this->merchantReference = $msgObj->merchantReference;
-		$this->parentPspReference = $msgObj->originalReference;
-		$this->pspReference = $msgObj->pspReference;
-		$this->success = (bool)$msgObj->success;
-		$this->reason = $msgObj->reason;
-	}
-
-	/**
 	 * Called by the getInstanceFromJSON function to continue message type specific construction
 	 *  after generic construction has been completed.
 	 *
@@ -145,7 +90,7 @@ abstract class AdyenMessage extends ListenerMessage {
 		$this->merchantReference = $notification['merchantReference'];
 		$this->parentPspReference = $notification['originalReference'] ?? null;
 		$this->pspReference = $notification['pspReference'];
-		$this->success = (bool)$notification['success'];
+		$this->success = ( $notification['success'] === 'true' );
 		$this->reason = $notification['reason'];
 	}
 
@@ -160,8 +105,6 @@ abstract class AdyenMessage extends ListenerMessage {
 	 */
 	public function validate(): bool {
 		// Not sure if there's any validation we can do that hasn't already been done
-		// by the WSDL processor.
-
 		return true;
 	}
 

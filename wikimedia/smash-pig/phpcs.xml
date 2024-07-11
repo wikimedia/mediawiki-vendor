@@ -32,7 +32,6 @@
 	<arg name="extensions" value="php,php5,inc"/>
 	<arg name="encoding" value="UTF-8"/>
 	<exclude-pattern>vendor</exclude-pattern>
-	<exclude-pattern>PaymentProviders/Adyen/WSDL</exclude-pattern>
 	<exclude-pattern>PaymentProviders/Adyen/Tests/phpunit/ApiTest.php</exclude-pattern>
 </ruleset>
 

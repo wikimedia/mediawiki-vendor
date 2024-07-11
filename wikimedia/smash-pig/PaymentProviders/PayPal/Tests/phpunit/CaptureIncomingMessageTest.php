@@ -3,7 +3,6 @@
 namespace SmashPig\PaymentProviders\PayPal\Tests;
 
 use SmashPig\Core\Context;
-use SmashPig\Core\DataStores\JsonSerializableObject;
 use SmashPig\Core\DataStores\PendingDatabase;
 use SmashPig\Core\GlobalConfiguration;
 use SmashPig\Core\Http\EnumValidator;
@@ -11,6 +10,7 @@ use SmashPig\Core\Http\Request;
 use SmashPig\Core\Http\Response;
 use SmashPig\Core\ProviderConfiguration;
 use SmashPig\CrmLink\Messages\SourceFields;
+use SmashPig\PaymentProviders\PayPal\Job;
 use SmashPig\PaymentProviders\PayPal\Listener;
 use SmashPig\Tests\BaseSmashPigUnitTestCase;
 
@@ -120,7 +120,7 @@ class CaptureIncomingMessageTest extends BaseSmashPigUnitTestCase {
 		$jobMessage = $jobQueue->pop();
 
 		$this->assertEquals(
-			$jobMessage['php-message-class'],
+			$jobMessage['class'],
 			'SmashPig\PaymentProviders\PayPal\Job'
 		);
 
@@ -143,10 +143,8 @@ class CaptureIncomingMessageTest extends BaseSmashPigUnitTestCase {
 		$jobQueue = $this->config->object( 'data-store/jobs-paypal' );
 		$jobMessage = $jobQueue->pop();
 
-		$job = JsonSerializableObject::fromJsonProxy(
-			$jobMessage['php-message-class'],
-			json_encode( $jobMessage )
-		);
+		$job = new Job();
+		$job->payload = $jobMessage['payload'];
 
 		$job->execute();
 
@@ -188,10 +186,8 @@ class CaptureIncomingMessageTest extends BaseSmashPigUnitTestCase {
 		$jobQueue = $this->config->object( 'data-store/jobs-paypal' );
 		$jobMessage = $jobQueue->pop();
 
-		$job = JsonSerializableObject::fromJsonProxy(
-			$jobMessage['php-message-class'],
-			json_encode( $jobMessage )
-		);
+		$job = new Job();
+		$job->payload = $jobMessage['payload'];
 
 		$pendingMessage = null;
 		$pdb = PendingDatabase::get();
@@ -294,10 +290,8 @@ class CaptureIncomingMessageTest extends BaseSmashPigUnitTestCase {
 		$jobQueue = $this->config->object( 'data-store/jobs-paypal' );
 		$jobMessage = $jobQueue->pop();
 
-		$job = JsonSerializableObject::fromJsonProxy(
-			$jobMessage['php-message-class'],
-			json_encode( $jobMessage )
-		);
+		$job = new Job();
+		$job->payload = $jobMessage['payload'];
 
 		$success = $job->execute();
 		// Job should succeed
@@ -323,10 +317,8 @@ class CaptureIncomingMessageTest extends BaseSmashPigUnitTestCase {
 		$jobQueue = $this->config->object( 'data-store/jobs-paypal' );
 		$jobMessage = $jobQueue->pop();
 
-		$job = JsonSerializableObject::fromJsonProxy(
-			$jobMessage['php-message-class'],
-			json_encode( $jobMessage )
-		);
+		$job = new Job();
+		$job->payload = $jobMessage['payload'];
 
 		$success = $job->execute();
 		// Job should succeed

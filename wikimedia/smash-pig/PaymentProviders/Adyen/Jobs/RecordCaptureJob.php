@@ -4,6 +4,7 @@ use SmashPig\Core\DataStores\PendingDatabase;
 use SmashPig\Core\DataStores\QueueWrapper;
 use SmashPig\Core\Jobs\RunnableJob;
 use SmashPig\Core\Logging\Logger;
+use SmashPig\Core\RetryableException;
 use SmashPig\PaymentProviders\Adyen\ExpatriatedMessages\AdyenMessage;
 
 /**
@@ -58,18 +59,29 @@ class RecordCaptureJob extends RunnableJob {
 			// Use the eventDate from the capture as the date
 			$dbMessage['date'] = strtotime( $this->eventDate );
 
-			// If its an iDEAL recurring we need the pending rows as more information is coming
-			// on the RECURRING_CONTRACT ipn, don't send to the donations queue here
-			if ( !empty( $dbMessage['recurring'] ) && $dbMessage['payment_submethod'] == 'rtbt_ideal' ) {
-				// Add the currency and gross (amount), this can change on the bank's end
-				$dbMessage['gross'] = $this->amount;
-				$dbMessage['currency'] = $this->currency;
+			// Special handling for recurring donations
+			if ( !empty( $dbMessage['recurring'] ) ) {
+				// If it's an iDEAL recurring we need to save the pending rows as more information is coming
+				// on the RECURRING_CONTRACT ipn, don't send to the donations queue here
+				if ( $dbMessage['payment_submethod'] == 'rtbt_ideal' ) {
+					// Add the currency and gross (amount), this can change on the bank's end
+					$dbMessage['gross'] = $this->amount;
+					$dbMessage['currency'] = $this->currency;
 
-				// Update the pending message with gateway_txn_id, date, gross, and currency
-				// We do need to update the gateway_txn_id as the one in the pending table comes back from the redirect
-				// and may not be there if the donor never got back to us
-				$db->storeMessage( $dbMessage );
-				return true;
+					// Update the pending message with gateway_txn_id, date, gross, and currency
+					// We do need to update the gateway_txn_id as the one in the pending table is saved before
+					// the redirect and may not be there if the donor never got back to us
+					$db->storeMessage( $dbMessage );
+					return true;
+				}
+				// For other recurring donations, we expect to find a token in the pending message. When
+				// that's not there, we could possibly get it later from a RECURRING_CONTRACT IPN. Requeue
+				// for later processing, if the message isn't already too old.
+				if ( empty( $dbMessage['recurring_payment_token'] ) ) {
+					throw new RetryableException(
+						'Recurring message was obtained from the pending queue with no token. Requeuing job.'
+					);
+				}
 			}
 
 			QueueWrapper::push( 'donations', $dbMessage );
