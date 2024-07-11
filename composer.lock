@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5e1948daa12f86b054d61fe36e81dad3",
+    "content-hash": "5b499ce31dce80795f194b143cb04b33",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -3137,16 +3137,16 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.50.3",
+            "version": "v0.50.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "4716e30064fe9aeffd58dbbbc3f9ffa973946bd9"
+                "reference": "4cd40741087ca6b7b5e49db6b2a0352cecfd39fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/4716e30064fe9aeffd58dbbbc3f9ffa973946bd9",
-                "reference": "4716e30064fe9aeffd58dbbbc3f9ffa973946bd9",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/4cd40741087ca6b7b5e49db6b2a0352cecfd39fb",
+                "reference": "4cd40741087ca6b7b5e49db6b2a0352cecfd39fb",
                 "shasum": ""
             },
             "require": {
@@ -3223,9 +3223,9 @@
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOUI",
             "support": {
-                "source": "https://github.com/wikimedia/oojs-ui/tree/v0.50.3"
+                "source": "https://github.com/wikimedia/oojs-ui/tree/v0.50.4"
             },
-            "time": "2024-07-02T13:17:31+00:00"
+            "time": "2024-07-11T21:53:47+00:00"
         },
         {
             "name": "opis/json-schema",
@@ -6329,6 +6329,7 @@
                     "type": "patreon"
                 }
             ],
+            "abandoned": "web-auth/webauthn-lib",
             "time": "2021-11-21T11:14:31+00:00"
         },
         {
