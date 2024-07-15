@@ -1880,7 +1880,9 @@ private function a168($lvtext) {
 }
 private function a169($arg, $tagEndPos, &$th, $d) {
 
-			if ( $th !== false && strpos( $this->text(), "\n" ) !== false ) {
+			// Ignore newlines found in transclusions!
+			// This is not perfect (since {{..}} may not always tokenize to transclusions).
+			if ( $th !== false && strpos( preg_replace( "/{{[\s\S]+?}}/", "", $this->text() ), "\n" ) !== false ) {
 				// There's been a newline. Remove the break and continue
 				// tokenizing nested_block_in_tables.
 				$th = false;
@@ -15237,8 +15239,8 @@ private function parsenowiki($silence, $boolParams, &$param_preproc, &$param_th)
 case "start_async":
   return $this->streamstart_async(false, self::newRef(null));
   break;
-				default:
-					throw new \Wikimedia\WikiPEG\InternalError( "Can't stream rule $startRule." );
+			default:
+				throw new \Wikimedia\WikiPEG\InternalError( "Can't stream rule $startRule." );
 			}
 		} else {
 			switch ( $startRule ) {
@@ -15278,8 +15280,8 @@ case "extlink":
 case "list_item":
   $result = $this->parselist_item(false, 0, self::newRef(null), self::newRef(null));
   break;
-				default:
-					throw new \Wikimedia\WikiPEG\InternalError( "Can't start parsing from rule $startRule." );
+			default:
+				throw new \Wikimedia\WikiPEG\InternalError( "Can't start parsing from rule $startRule." );
 			}
 		}
 
