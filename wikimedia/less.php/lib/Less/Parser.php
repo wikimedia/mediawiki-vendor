@@ -12,36 +12,20 @@ class Less_Parser {
 	public static $default_options = [
 		'compress'				=> false, // option - whether to compress
 		'strictUnits'			=> false, // whether units need to evaluate correctly
-		'strictMath'			=> false, // whether math has to be within parenthesis
+		/* How to process math
+		 *   always           - eagerly try to solve all operations
+		 *   parens-division  - require parens for division "/"
+		 *   parens | strict  - require parens for all operations
+		 */
+		// NOTE: We use the default of Less.js 4.0 (parens-division)
+		//       instead of Less.js 3.13 (always).
+		'math'					=> 'parens-division',
 		'relativeUrls'			=> true, // option - whether to adjust URL's to be relative
 		'urlArgs'				=> '', // whether to add args into url tokens
 		'numPrecision'			=> 8,
 
 		'import_dirs'			=> [],
 
-		// Override how imported file names are resolved.
-		//
-		// This legacy calllback exposes internal objects and their implementation
-		// details and is therefore deprecated. Use Less_Parser::SetImportDirs instead
-		// to override the resolution of imported file names.
-		//
-		// Example:
-		//
-		//     $parser = new Less_Parser( [
-		//       'import_callback' => function ( $importNode ) {
-		//            $path = $importNode->getPath();
-		//            if ( $path === 'special.less' ) {
-		//                return [ $mySpecialFilePath, null ];
-		//            }
-		//       }
-		//     ] );
-		//
-		// @since 1.5.1
-		// @deprecated since 4.3.0
-		// @see Less_Environment::callImportCallback
-		// @see Less_Parser::SetImportDirs
-		//
-		'import_callback'		=> null,
 		'cache_dir'				=> null,
 		'cache_method'			=> 'serialize', // false, 'serialize', 'callback';
 		'cache_callback_get'	=> null,
@@ -59,11 +43,8 @@ class Less_Parser {
 
 	];
 
-	/** @var array{compress:bool,strictUnits:bool,strictMath:bool,relativeUrls:bool,urlArgs:string,numPrecision:int,import_dirs:array,import_callback:null|callable,indentation:string} */
+	/** @var array{compress:bool,strictUnits:bool,relativeUrls:bool,urlArgs:string,numPrecision:int,import_dirs:array,indentation:string} */
 	public static $options = [];
-
-	/** @var Less_Environment */
-	private static $envCompat;
 
 	private $input;					// Less input string
 	private $input_len;				// input string length
@@ -110,7 +91,6 @@ class Less_Parser {
 		// which will then be passed around by reference.
 		if ( $env instanceof Less_Environment ) {
 			$this->env = $env;
-			self::$envCompat = $this->env;
 		} else {
 			$this->Reset( $env );
 		}
@@ -134,7 +114,6 @@ class Less_Parser {
 		self::$contentsMap = [];
 
 		$this->env = new Less_Environment();
-		self::$envCompat = $this->env;
 
 		// set new options
 		$this->SetOptions( self::$default_options );
@@ -161,16 +140,26 @@ class Less_Parser {
 	public function SetOption( $option, $value ) {
 		switch ( $option ) {
 			case 'strictMath':
-				$this->env->strictMath = (bool)$value;
-				self::$options[$option] = $value;
+				if ( $value ) {
+					$this->env->math = Less_Environment::MATH_PARENS;
+				} else {
+					$this->env->math = Less_Environment::MATH_ALWAYS;
+				}
+				break;
+
+			case 'math':
+				$value = strtolower( $value );
+				if ( $value === 'always' ) {
+					$this->env->math = Less_Environment::MATH_ALWAYS;
+				} elseif ( $value === 'parens-division' ) {
+					$this->env->math = Less_Environment::MATH_PARENS_DIVISION;
+				} elseif ( $value === 'parens' || $value === 'strict' ) {
+					$this->env->math = Less_Environment::MATH_PARENS;
+				}
 				return;
 
 			case 'import_dirs':
 				$this->SetImportDirs( $value );
-				return;
-
-			case 'import_callback':
-				$this->env->importCallback = $value;
 				return;
 
 			case 'cache_dir':
@@ -649,9 +638,9 @@ class Less_Parser {
 	 * @param string|null $file_path
 	 */
 	private function GetRules( $file_path ) {
-		$this->SetInput( $file_path );
+		$this->setInput( $file_path );
 
-		$cache_file = $this->CacheFile( $file_path );
+		$cache_file = $this->cacheFile( $file_path );
 		if ( $cache_file ) {
 			if ( self::$options['cache_method'] == 'callback' ) {
 				$callback = self::$options['cache_callback_get'];
@@ -659,7 +648,7 @@ class Less_Parser {
 					$cache = $callback( $this, $file_path, $cache_file );
 
 					if ( $cache ) {
-						$this->UnsetInput();
+						$this->unsetInput();
 						return $cache;
 					}
 				}
@@ -672,7 +661,7 @@ class Less_Parser {
 						$cache = unserialize( file_get_contents( $cache_file ) );
 						if ( $cache ) {
 							touch( $cache_file );
-							$this->UnsetInput();
+							$this->unsetInput();
 							return $cache;
 						}
 						break;
@@ -686,7 +675,7 @@ class Less_Parser {
 			throw new Less_Exception_Chunk( $this->input, null, $this->furthest, $this->env->currentFileInfo );
 		}
 
-		$this->UnsetInput();
+		$this->unsetInput();
 
 		// save the cache
 		if ( $cache_file ) {
@@ -712,7 +701,7 @@ class Less_Parser {
 	/**
 	 * @internal since 4.3.0 No longer a public API.
 	 */
-	public function SetInput( $file_path ) {
+	private function setInput( $file_path ) {
 		// Set up the input buffer
 		if ( $file_path ) {
 			$this->input = file_get_contents( $file_path );
@@ -733,7 +722,7 @@ class Less_Parser {
 	/**
 	 * @internal since 4.3.0 No longer a public API.
 	 */
-	public function UnsetInput() {
+	private function unsetInput() {
 		// Free up some memory
 		$this->input = $this->pos = $this->input_len = $this->furthest = null;
 		$this->saveStack = [];
@@ -742,7 +731,7 @@ class Less_Parser {
 	/**
 	 * @internal since 4.3.0 Use Less_Cache instead.
 	 */
-	public function CacheFile( $file_path ) {
+	private function cacheFile( $file_path ) {
 		if ( $file_path && $this->CacheEnabled() ) {
 
 			$env = get_object_vars( $this->env );
@@ -760,14 +749,6 @@ class Less_Parser {
 	}
 
 	/**
-	 * @deprecated since 4.3.0 Use $parser->getParsedFiles() instead.
-	 * @return string[]
-	 */
-	public static function AllParsedFiles() {
-		return self::$envCompat->imports;
-	}
-
-	/**
 	 * @since 4.3.0
 	 * @return string[]
 	 */
@@ -778,7 +759,7 @@ class Less_Parser {
 	/**
 	 * @internal since 4.3.0 No longer a public API.
 	 */
-	public function save() {
+	private function save() {
 		$this->saveStack[] = $this->pos;
 	}
 
@@ -1069,14 +1050,14 @@ class Less_Parser {
 	 *	 "milky way" 'he\'s the one!'
 	 *
 	 * @return Less_Tree_Quoted|null
-	 * @see less-2.5.3.js#entities.quoted
+	 * @see less-3.13.1.js#entities.quoted
 	 */
-	private function parseEntitiesQuoted() {
+	private function parseEntitiesQuoted( $forceEscaped = false ) {
 		// Optimization: Determine match potential without save()/restore() overhead
 		// Optimization: Inline matchChar() here, with its skipWhitespace(1) call below
 		$startChar = $this->input[$this->pos] ?? null;
 		$isEscaped = $startChar === '~';
-		if ( !$isEscaped && $startChar !== "'" && $startChar !== '"' ) {
+		if ( ( !$isEscaped && $startChar !== "'" && $startChar !== '"' ) || ( $forceEscaped && !$isEscaped ) ) {
 			return;
 		}
 
@@ -1125,8 +1106,8 @@ class Less_Parser {
 	 * @return Less_Tree_Keyword|Less_Tree_Color|null
 	 */
 	private function parseEntitiesKeyword() {
-		// $k = $this->matchReg('/\\G[_A-Za-z-][_A-Za-z0-9-]*/');
-		$k = $this->matchReg( '/\\G%|\\G[_A-Za-z-][_A-Za-z0-9-]*/' );
+		// $k = $this->matchReg('/\\G\\[?(?:[\\w-]|\\\\(?:[A-Fa-f0-9]{1,6} ?|[^A-Fa-f0-9]))+\\]?/');
+		$k = $this->matchReg( '/\\G%|\\G\\[?(?:[\\w-]|\\\\(?:[A-Fa-f0-9]{1,6} ?|[^A-Fa-f0-9]))+\\]?/' );
 		if ( $k ) {
 			$color = Less_Tree_Color::fromKeyword( $k );
 			if ( $color ) {
@@ -2462,12 +2443,12 @@ class Less_Parser {
 	 * Parses multiplication operation
 	 *
 	 * @return Less_Tree_Operation|null
+	 * @see less-3.13.1.js#parsers.multiplication
 	 */
 	private function parseMultiplication() {
 		$return = $m = $this->parseOperand();
 		if ( $return ) {
 			while ( true ) {
-
 				$isSpaced = $this->isWhitespace( -1 );
 
 				if ( $this->peekReg( '/\\G\/[*\/]/' ) ) {
@@ -2475,13 +2456,10 @@ class Less_Parser {
 				}
 				$this->save();
 
-				$op = $this->matchChar( '/' );
+				$op = $this->matchChar( '/' ) ?? $this->matchChar( '*' ) ?? $this->matchStr( './' );
 				if ( !$op ) {
-					$op = $this->matchChar( '*' );
-					if ( !$op ) {
-						$this->forget();
-						break;
-					}
+					$this->forget();
+					break;
 				}
 
 				$a = $this->parseOperand();
@@ -2596,6 +2574,8 @@ class Less_Parser {
 	/**
 	 * An operand is anything that can be part of an operation,
 	 * such as a Color, or a Variable
+	 *
+	 * @see less-3.13.1.js#parsers.operand
 	 */
 	private function parseOperand() {
 		$negate = false;
@@ -2604,11 +2584,20 @@ class Less_Parser {
 			return;
 		}
 		$char = $this->input[$offset];
+		// TODO: handle char `$`
 		if ( $char === '@' || $char === '(' ) {
 			$negate = $this->matchChar( '-' );
 		}
 
-		$o = $this->parseSub() ?? $this->parseEntitiesDimension() ?? $this->parseEntitiesColor() ?? $this->parseEntitiesVariable() ?? $this->parseEntitiesCall();
+		$o = $this->parseSub()
+			?? $this->parseEntitiesDimension()
+			?? $this->parseEntitiesColor()
+			?? $this->parseEntitiesVariable()
+			// TODO: from less-3.13.1.js missing entities.property()
+			?? $this->parseEntitiesCall()
+			?? $this->parseEntitiesQuoted( true );
+			// TODO: from less-3.13.1.js missing entities.colorKeyword()
+			// TODO: from less-3.13.1.js missing entities.mixinLookup()
 
 		if ( $negate ) {
 			$o->parensInOp = true;
