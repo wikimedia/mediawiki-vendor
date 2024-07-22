@@ -3894,6 +3894,31 @@ parsoid=wt2html,html2html
 <li>b<meta typeof="mw:Placeholder/StrippedTag" data-parsoid='{"src":"&lt;/span>","name":"span"}'/></li></ul>
 !! end
 
+## The legacy parser output matches the HTML5 spec, the token is ignored.
+## Parsoid's ListHandler doesn't track open elements outside of the list frame
+## so the token induces an implied end to the list.  Considering that Parsoid
+## already diverges from the HTML5 spec in which tag names induce implied ends
+## (see the discussion above about "wikitext block"), we accept this edge case
+## as a known difference.
+!! test
+T368721: Closing block tags not on the stack of open elements in lists
+!! wikitext
+<!-- block tag  -->
+*a</div>b
+
+<!-- wikitext block tag -->
+*a</p>b
+!! html/php
+<ul><li>ab</li></ul>
+<ul><li>a<p class="mw-empty-elt"></p>b</li></ul>
+!! html/parsoid
+<!-- block tag  -->
+<ul><li>a</li></ul><p>b</p>
+
+<!-- wikitext block tag -->
+<ul><li>a</li></ul><p class="mw-empty-elt" data-parsoid='{"autoInsertedStart":true,"stx":"html"}'></p><p>b</p>
+!! end
+
 # Parsoid does some post-dom-building cleanup
 # which is why its output differs from Remex.
 !! test
@@ -13596,7 +13621,7 @@ Empty TR followed by mixed-ws-comment line should RT correctly
 <tbody>
 <tr class='mw-empty-elt'></tr>
  <!--c-->
-<tr>
+<tr class="mw-empty-elt">
 <!--c--> </tr><!--d-->
 </tbody></table>
 !! end
@@ -16394,6 +16419,19 @@ Empty LI (T49673)
 <li class="mw-empty-elt"></li>
 <li class="mw-empty-elt"></li>
 <li>b</li></ul>
+!! end
+
+!! test
+Empty list item with rendering transparent tag
+!! wikitext
+{{1x|*hmm
+*[[category:123]]}}
+!! html/php
+<ul><li>hmm</li>
+<li class="mw-empty-elt"></li></ul>
+!! html/parsoid
+<ul about="#mwt1" typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"1x","href":"./Template:1x"},"params":{"1":{"wt":"*hmm\n*[[category:123]]"}},"i":0}}]}'><li>hmm</li>
+<li class="mw-empty-elt"><link rel="mw:PageProp/Category" href="./Category:123"/></li></ul>
 !! end
 
 !! test
