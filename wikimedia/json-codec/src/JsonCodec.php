@@ -303,7 +303,7 @@ class JsonCodec implements JsonCodecInterface {
 				$this->markArray(
 					$value, $className, $classHint
 				);
-				if ( $forceBraces === true && $value === [] ) {
+				if ( $forceBraces === true && array_is_list( $value ) ) {
 					// It is somewhat surprising for ::toJsonArray() to return
 					// an object (rather than an array), but allow this case
 					// if the class hint expressly asked for it.

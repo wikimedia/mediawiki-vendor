@@ -1,5 +1,9 @@
 # Release History
 
+## 3.0.2 (2024-07-22)
+* Add generic template types to the Hint object.
+* Fix behavior of ALLOW_OBJECT hint for non-empty lists.
+
 ## 3.0.1 (2024-06-14)
 * Refactor JsonCodec::codecFor() to be non-recursive.  This simplifies
   the implementation of extensions without worrying about recursive

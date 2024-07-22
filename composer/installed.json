@@ -7412,17 +7412,17 @@
         },
         {
             "name": "wikimedia/json-codec",
-            "version": "v3.0.1",
-            "version_normalized": "3.0.1.0",
+            "version": "v3.0.2",
+            "version_normalized": "3.0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-JsonCodec.git",
-                "reference": "e7773c6c39cd01950f1f7a5bd8b5f64ab619075a"
+                "reference": "b7c415e8481031d43d874979bb45aad64771872e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-JsonCodec/zipball/e7773c6c39cd01950f1f7a5bd8b5f64ab619075a",
-                "reference": "e7773c6c39cd01950f1f7a5bd8b5f64ab619075a",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-JsonCodec/zipball/b7c415e8481031d43d874979bb45aad64771872e",
+                "reference": "b7c415e8481031d43d874979bb45aad64771872e",
                 "shasum": ""
             },
             "require": {
@@ -7441,7 +7441,7 @@
                 "wikimedia/assert": "^0.5.1",
                 "wikimedia/update-history": "1.0.1"
             },
-            "time": "2024-06-14T05:59:12+00:00",
+            "time": "2024-07-22T18:29:21+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -7471,7 +7471,7 @@
             "description": "Interfaces to serialize and deserialize PHP objects to/from JSON",
             "homepage": "https://www.mediawiki.org/wiki/JsonCodec",
             "support": {
-                "source": "https://github.com/wikimedia/mediawiki-libs-JsonCodec/tree/v3.0.1"
+                "source": "https://github.com/wikimedia/mediawiki-libs-JsonCodec/tree/v3.0.2"
             },
             "install-path": "../wikimedia/json-codec"
         },

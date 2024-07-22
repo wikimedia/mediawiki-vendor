@@ -24,6 +24,7 @@ namespace Wikimedia\JsonCodec;
 
 /**
  * Class hints with modifiers.
+ * @template T
  */
 class Hint {
 	/**
@@ -66,13 +67,13 @@ class Hint {
 	 */
 	public const INHERITED = 5;
 
-	/** @var class-string|Hint */
+	/** @var class-string<T>|Hint<T> */
 	public $parent;
 	public int $modifier;
 
 	/**
 	 * Create a new serialization class type hint.
-	 * @param class-string|Hint $parent
+	 * @param class-string<T>|Hint<T> $parent
 	 * @param int $modifier A hint modifier
 	 */
 	public function __construct( $parent, int $modifier = 0 ) {
@@ -90,9 +91,10 @@ class Hint {
 	 * values which are lists of Foo" is written 'backwards' as:
 	 * `Hint::build(Foo::class, Hint::LIST, Hint::STDCLASS)`.
 	 *
-	 * @param class-string $className
+	 * @phan-template T
+	 * @param class-string<T> $className
 	 * @param int ...$modifiers
-	 * @return class-string|Hint
+	 * @return class-string<T>|Hint<T>
 	 */
 	public static function build( string $className, int ...$modifiers ) {
 		if ( count( $modifiers ) === 0 ) {
