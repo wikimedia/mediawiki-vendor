@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2840fd319d3ec5a04d1d2e62cc456431",
+    "content-hash": "25eff7902797f5b49ad013bb21f79fb5",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -6908,32 +6908,31 @@
         },
         {
             "name": "wikimedia/equivset",
-            "version": "1.6.1",
+            "version": "1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-Equivset.git",
-                "reference": "f849307e72f8920da614db48d8ae19c2f110c9e5"
+                "reference": "2a8cae4bb2c1aa102eea9fcb6e4d4de1d46e59f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Equivset/zipball/f849307e72f8920da614db48d8ae19c2f110c9e5",
-                "reference": "f849307e72f8920da614db48d8ae19c2f110c9e5",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Equivset/zipball/2a8cae4bb2c1aa102eea9fcb6e4d4de1d46e59f3",
+                "reference": "2a8cae4bb2c1aa102eea9fcb6e4d4de1d46e59f3",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.4.3",
-                "wikimedia/utfnormal": "^3.0.1 || ^4.0.0"
+                "php": ">=7.4.3"
             },
             "require-dev": {
                 "ext-json": "*",
-                "mediawiki/mediawiki-codesniffer": "42.0.0",
-                "mediawiki/mediawiki-phan-config": "0.13.0",
-                "mediawiki/minus-x": "1.1.1",
+                "mediawiki/mediawiki-codesniffer": "43.0.0",
+                "mediawiki/mediawiki-phan-config": "0.14.0",
+                "mediawiki/minus-x": "1.1.3",
                 "mikey179/vfsstream": "^1.6",
                 "ockcyp/covers-validator": "1.6.0",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
-                "php-parallel-lint/php-parallel-lint": "1.3.2",
-                "phpunit/phpunit": "9.5.28",
+                "php-parallel-lint/php-parallel-lint": "1.4.0",
+                "phpunit/phpunit": "9.6.16",
                 "rregeer/phpunit-coverage-check": "~0.3.1",
                 "symfony/console": "^3.3 || ^4 || ^5 || ^6",
                 "symfony/var-dumper": "^3.3 || ^4 || ^5 || ^6"
@@ -6950,20 +6949,28 @@
             ],
             "authors": [
                 {
-                    "name": "Brion Vibber",
+                    "name": "Brooke Vibber",
                     "email": "bvibber@wikimedia.org"
                 },
                 {
                     "name": "David Barratt",
                     "email": "dbarratt@wikimedia.org"
+                },
+                {
+                    "name": "Thiemo Kreuz",
+                    "email": "thiemo.kreuz@wikimedia.de"
+                },
+                {
+                    "name": "Umherirrender",
+                    "email": "umherirrender_de.wp@web.de"
                 }
             ],
             "description": "Visually Equivalent Set of UTF-8 Characters",
             "homepage": "https://www.mediawiki.org/wiki/Equivset",
             "support": {
-                "source": "https://github.com/wikimedia/mediawiki-libs-Equivset/tree/1.6.1"
+                "source": "https://github.com/wikimedia/mediawiki-libs-Equivset/tree/1.7.0"
             },
-            "time": "2023-10-26T18:13:25+00:00"
+            "time": "2024-07-26T20:06:50+00:00"
         },
         {
             "name": "wikimedia/html-formatter",
