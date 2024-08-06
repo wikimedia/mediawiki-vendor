@@ -21,7 +21,7 @@
 		"christian-riesen/base32": "1.6.0",
 		"composer/ca-bundle": "1.5.0",
 		"composer/semver": "3.4.0",
-		"cssjanus/cssjanus": "2.2.0",
+		"cssjanus/cssjanus": "2.3.0",
 		"dasprid/enum": "1.0.5",
 		"data-values/common": "1.1.0",
 		"data-values/data-values": "3.1.0",

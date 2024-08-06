@@ -28,6 +28,8 @@
  */
 class CSSJanus {
 	private const TOKEN_TMP = '`TMP`';
+	private const TOKEN_LTR_TMP = '`TMPLTR`';
+	private const TOKEN_RTL_TMP = '`TMPRTL`';
 	private const TOKEN_COMMENT = '`COMMENT`';
 
 	private static $patterns = null;
@@ -38,7 +40,6 @@ class CSSJanus {
 		}
 		// Patterns defined as null are built dynamically
 		$patterns = [
-			'tmpToken' => '`TMP`',
 			'nonAscii' => '[\200-\377]',
 			'unicode' => '(?:(?:\\\\[0-9a-f]{1,6})(?:\r\n|\s)?)',
 			'num' => '(?:[0-9]*\.[0-9]+|[0-9]+)',
@@ -71,6 +72,8 @@ class CSSJanus {
 			'right' => null,
 			'left_in_url' => null,
 			'right_in_url' => null,
+			'ltr_dir_selector' => '/(:dir\( *)ltr( *\))/',
+			'rtl_dir_selector' => '/(:dir\( *)rtl( *\))/',
 			'ltr_in_url' => null,
 			'rtl_in_url' => null,
 			'cursor_east' => null,
@@ -238,9 +241,13 @@ class CSSJanus {
 	 * @return string
 	 */
 	private static function fixLtrRtlInURL( $css ) {
+		$css = preg_replace( self::$patterns['ltr_dir_selector'], '$1' . self::TOKEN_LTR_TMP . '$2', $css );
+		$css = preg_replace( self::$patterns['rtl_dir_selector'], '$1' . self::TOKEN_RTL_TMP . '$2', $css );
 		$css = preg_replace( self::$patterns['ltr_in_url'], self::TOKEN_TMP, $css );
 		$css = preg_replace( self::$patterns['rtl_in_url'], 'ltr', $css );
 		$css = str_replace( self::TOKEN_TMP, 'rtl', $css );
+		$css = str_replace( self::TOKEN_LTR_TMP, 'ltr', $css );
+		$css = str_replace( self::TOKEN_RTL_TMP, 'rtl', $css );
 
 		return $css;
 	}

@@ -413,17 +413,17 @@
         },
         {
             "name": "cssjanus/cssjanus",
-            "version": "v2.2.0",
-            "version_normalized": "2.2.0.0",
+            "version": "v2.3.0",
+            "version_normalized": "2.3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/php-cssjanus.git",
-                "reference": "81afe9fa6029f9521585a7f45c4dda6391d826d6"
+                "reference": "c5868a543c466c994ba5bf9b3297e150105ab803"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/php-cssjanus/zipball/81afe9fa6029f9521585a7f45c4dda6391d826d6",
-                "reference": "81afe9fa6029f9521585a7f45c4dda6391d826d6",
+                "url": "https://api.github.com/repos/wikimedia/php-cssjanus/zipball/c5868a543c466c994ba5bf9b3297e150105ab803",
+                "reference": "c5868a543c466c994ba5bf9b3297e150105ab803",
                 "shasum": ""
             },
             "require": {
@@ -435,7 +435,7 @@
                 "php-parallel-lint/php-parallel-lint": "1.3.2",
                 "phpunit/phpunit": "9.6.16"
             },
-            "time": "2024-07-23T21:16:52+00:00",
+            "time": "2024-08-06T19:37:16+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -461,7 +461,7 @@
             "description": "Convert CSS stylesheets between left-to-right and right-to-left.",
             "homepage": "https://www.mediawiki.org/wiki/CSSJanus",
             "support": {
-                "source": "https://github.com/wikimedia/php-cssjanus/tree/v2.2.0"
+                "source": "https://github.com/wikimedia/php-cssjanus/tree/v2.3.0"
             },
             "install-path": "../cssjanus/cssjanus"
         },
