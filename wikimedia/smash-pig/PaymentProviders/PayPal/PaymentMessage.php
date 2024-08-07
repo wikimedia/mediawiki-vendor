@@ -29,7 +29,27 @@ class PaymentMessage extends Message {
 			$message['direct_mail_appeal'] = $glAppeal;
 			$message['no_thank_you'] = 'GiveLively';
 		}
-
 		self::mergePendingDetails( $message );
+
+		// We are pretty sure Giving Fund messages will have no corresponding pending entry (they are PayPal-initiated,
+		// not from any activity on payments-wiki). Still, we put this after mergePendingDetails to make sure any
+		// name / address / email is deleted so as not to change the PayPal Giving Fund contact.
+		self::addContactIdWhenGivingFund( $message, $config );
+	}
+
+	protected static function addContactIdWhenGivingFund( &$message, $config ) {
+		// Tag donations from givingfund email list with the giving fund organization contact ID
+		$gfCid = $config->val( 'givingfund-cid' );
+		$gfEmails = $config->val( 'givingfund-emails' );
+		if ( $gfCid && $gfEmails && in_array( $message['email'], $gfEmails ) ) {
+			$message['contact_id'] = $gfCid;
+			$contactFields = [
+				'city', 'country', 'email', 'first_name', 'last_name', 'postal_code', 'state_province',
+				'street_address', 'supplemental_address_1'
+			];
+			foreach ( $contactFields as $field ) {
+				unset( $message[$field] );
+			}
+		}
 	}
 }

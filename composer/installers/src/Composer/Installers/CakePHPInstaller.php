@@ -46,7 +46,7 @@ class CakePHPInstaller extends BaseInstaller
     /**
      * Check if CakePHP version matches against a version
      *
-     * @phpstan-param '='|'=='|'<'|'<='|'>'|'>='|'<>'|'!=' $matcher
+     * @phpstan-param Constraint::STR_OP_* $matcher
      */
     protected function matchesCakeVersion(string $matcher, string $version): bool
     {

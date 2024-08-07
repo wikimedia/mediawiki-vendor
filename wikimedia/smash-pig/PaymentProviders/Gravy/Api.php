@@ -106,4 +106,21 @@ class Api {
 		$tl->info( "Approve payment response for Transaction ID {$trxn_id} $response_string" );
 		return $response;
 	}
+
+	/**
+	 * Uses the rest API to delete a stored payment token on Gravy
+	 *
+	 * @param array $params
+	 * @throws \SmashPig\Core\ApiException
+	 * @return array
+	 * @link https://docs.gr4vy.com/guides/api/resources/payment-methods/delete#delete-a-payment-method Documentation to delete payment token
+	 */
+	public function deletePaymentToken( array $params ): array {
+		$payment_method_id = $params['payment_method_id'];
+		$tl = new TaggedLogger( 'RawData' );
+		$response = $this->gravyApiClient->deletePaymentMethod( $payment_method_id );
+		$response_string = json_encode( $response );
+		$tl->info( "Delete payment token response for token {$payment_method_id} $response_string" );
+		return $response;
+	}
 }

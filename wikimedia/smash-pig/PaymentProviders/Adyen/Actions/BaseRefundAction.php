@@ -20,6 +20,7 @@ abstract class BaseRefundAction {
 			'gross' => $msg->amount,
 			'date' => strtotime( $msg->eventDate ),
 			'gateway' => 'adyen',
+			'reason' => $msg->reason,
 			'type' => $this->getTypeForQueueMessage(),
 		];
 		return $queueMsg;

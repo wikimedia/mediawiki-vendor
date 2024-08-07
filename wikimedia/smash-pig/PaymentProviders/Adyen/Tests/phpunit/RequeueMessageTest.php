@@ -20,7 +20,9 @@ class RequeueMessageTest extends BaseAdyenTestCase {
 			file_get_contents( __DIR__ . '/../Data/auth.json' )
 		);
 
-		$job = ProcessCaptureRequestJob::factory( $auth );
+		$payload = ProcessCaptureRequestJob::factory( $auth );
+		$job = new ProcessCaptureRequestJob();
+		$job->payload = $payload['payload'];
 		$job->execute();
 	}
 

@@ -131,7 +131,7 @@ fraud-filters:
     # The following maps set a risk score for each result code, which
     # we combine with any risk score computed on the payment site to
     # decide whether to capture the payment or leave it for review.
-    # https://docs.adyen.com/manuals/api-manual/payment-responses/additionaldata-payment-responses
+    # https://docs.adyen.com/risk-management/avs-checks/#avs-mapping-table
     avs-map:
         # Unknown. This is often returned in non-AVS countries.
         0: 50
@@ -188,6 +188,7 @@ fraud-filters:
         # Neither postal code, address nor name matches
         26: 100
 
+    # https://docs.adyen.com/development-resources/testing/result-codes/cvc-cvv-cid-result-codes/
     cvv-map:
         # Unknown
         0: 100

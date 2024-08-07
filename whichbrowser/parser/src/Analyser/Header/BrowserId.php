@@ -9,8 +9,6 @@ use WhichBrowser\Model\Version;
 
 class BrowserId
 {
-    private $data;
-
     public function __construct($header, &$data)
     {
         if ($header == 'XMLHttpRequest') {

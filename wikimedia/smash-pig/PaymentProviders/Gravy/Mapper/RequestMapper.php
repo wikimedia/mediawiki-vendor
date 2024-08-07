@@ -2,11 +2,15 @@
 
 namespace SmashPig\PaymentProviders\Gravy\Mapper;
 
+use SmashPig\Core\Helpers\CurrencyRoundingHelper;
+
 class RequestMapper {
 
 	public function mapToCreatePaymentRequest( array $params ): array {
 		$request = [
-			'amount' => $this->convertAmountToGravyAmountFormat( $params['amount'] ),
+			// Gravy requires amount to be sent in the smallest unit for the given currency
+			// See https://docs.gr4vy.com/reference/transactions/new-transaction
+			'amount' => CurrencyRoundingHelper::getAmountInMinorUnits( $params['amount'], $params['currency'] ),
 			'currency' => $params['currency'],
 			'country' => $params['country'],
 			'payment_method' => [
@@ -31,22 +35,32 @@ class RequestMapper {
 		return $request;
 	}
 
+	/**
+	 * @param array $params
+	 * @return array
+	 * T370700 Gravy treat buyer email case-sensitive
+	 */
 	public function mapToGetDonorRequest( array $params ): array {
 		$request = [
-			'external_identifier' => $params['email']
+			'external_identifier' => strtolower( $params['email'] )
 		];
 
 		return $request;
 	}
 
+	/**
+	 * @param array $params
+	 * @return array
+	 * T370700 Make sure buyer email all lowercase to avoid duplicate buyer creation in gravy
+	 */
 	public function mapToCreateDonorRequest( array $params ): array {
 		$request = [
 			'display_name' => $params['first_name'] . ' ' . $params['last_name'],
-			'external_identifier' => $params['email'],
+			'external_identifier' => strtolower( $params['email'] ),
 			'billing_details' => [
 				'first_name' => $params['first_name'],
 				'last_name' => $params['last_name'],
-				'email_address' => $params['email'],
+				'email_address' => strtolower( $params['email'] ),
 				'phone_number' => $params['phone_number'] ?? null,
 				'address' => [
 					'city' => $params['city'] ?? " ",
@@ -82,20 +96,19 @@ class RequestMapper {
 	 */
 	public function mapToCardApprovePaymentRequest( array $params ): array {
 		$request = [
-			'amount' => $this->convertAmountToGravyAmountFormat( $params['amount'] ),
+			'amount' => CurrencyRoundingHelper::getAmountInMinorUnits( $params['amount'], $params['currency'] ),
 		];
 		return $request;
 	}
 
 	/**
-	 * Gravy requires amounts to be sent over in cents.
-	 *
-	 * @see https://docs.gr4vy.com/reference/transactions/new-transaction
-	 * @param string $amount
-	 * @return float
+	 * @return array
 	 */
-	protected function convertAmountToGravyAmountFormat( string $amount ): float {
-		return (float)$amount * 100;
+	public function mapToDeletePaymentTokenRequest( array $params ): array {
+		$request = [
+			'payment_method_id' => $params['recurring_payment_token'],
+		];
+		return $request;
 	}
 
 }

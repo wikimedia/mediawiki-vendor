@@ -2,8 +2,8 @@
 
 use SmashPig\Core\DataStores\PendingDatabase;
 use SmashPig\Core\DataStores\QueueWrapper;
-use SmashPig\Core\Jobs\RunnableJob;
 use SmashPig\Core\Logging\Logger;
+use SmashPig\Core\Runnable;
 use SmashPig\PaymentProviders\Adyen\ExpatriatedMessages\AdyenMessage;
 
 /**
@@ -14,51 +14,48 @@ use SmashPig\PaymentProviders\Adyen\ExpatriatedMessages\AdyenMessage;
  *
  * @package SmashPig\PaymentProviders\Adyen\Jobs
  */
-class RecurringContractJob extends RunnableJob {
+class RecurringContractJob implements Runnable {
 
-	protected $gatewayTxnId;
-	protected $merchantReference;
-	protected $eventDate;
-	protected $recurringPaymentToken;
-	protected $processorContactId;
-	protected $paymentMethod;
+	public array $payload;
 
-	public static function factory( AdyenMessage $ipnMessage ) {
-		$obj = new RecurringContractJob();
-
-		$obj->gatewayTxnId = $ipnMessage->getGatewayTxnId();
-		$obj->merchantReference = $ipnMessage->merchantReference;
-		$obj->eventDate = $ipnMessage->eventDate;
-		$obj->recurringPaymentToken = $ipnMessage->pspReference;
-		$obj->processorContactId = $ipnMessage->merchantReference;
-		$obj->paymentMethod = $ipnMessage->paymentMethod;
-
-		return $obj;
+	public static function factory( AdyenMessage $ipnMessage ): array {
+		return [
+			'class' => self::class,
+			'payload' => [
+				'gatewayTxnId' => $ipnMessage->getGatewayTxnId(),
+				'merchantReference' => $ipnMessage->merchantReference,
+				'eventDate' => $ipnMessage->eventDate,
+				'recurringPaymentToken' => $ipnMessage->pspReference,
+				'processorContactId' => $ipnMessage->merchantReference,
+				'paymentMethod' => $ipnMessage->paymentMethod,
+			],
+		];
 	}
 
 	public function execute() {
-		$logger = Logger::getTaggedLogger( "corr_id-adyen-$this->merchantReference" );
+		$logger = Logger::getTaggedLogger( "corr_id-adyen-{$this->payload['merchantReference']}" );
 		// Find the details from the payment site in the pending database.
 		$logger->debug( 'Attempting to locate associated message in pending database' );
 		$db = PendingDatabase::get();
-		$dbMessage = $db->fetchMessageByGatewayOrderId( 'adyen', $this->merchantReference );
+		$dbMessage = $db->fetchMessageByGatewayOrderId( 'adyen', $this->payload['merchantReference'] );
 
 		// We get an RECURRING_CONTRACT for every new recurring but only send it
 		// to donations here for recurring SEPA/iDEAL
-		if ( $this->paymentMethod == 'ideal' || $this->paymentMethod == 'sepadirectdebit' ) {
+		if ( $this->payload['paymentMethod'] == 'ideal' || $this->payload['paymentMethod'] == 'sepadirectdebit' ) {
 			$logger->info(
-				"Handling recurring contract IPN for payment method '$this->paymentMethod', order ID " .
-				"'$this->merchantReference' and recurring token '$this->recurringPaymentToken'"
+				"Handling recurring contract IPN for payment method '{$this->payload['paymentMethod']}', order ID " .
+				"'{$this->payload['merchantReference']}' and recurring token '{$this->payload['recurringPaymentToken']}'"
 			);
 
-			if ( $dbMessage && ( isset( $dbMessage['gateway_txn_id'] ) ) ) {
+			if ( $dbMessage ) {
 				$logger->debug(
 					'A valid message was obtained from the pending queue. Sending message to donations queue.'
 				);
 
 				// Add the recurring setup information
-				$dbMessage['recurring_payment_token'] = $this->recurringPaymentToken;
-				$dbMessage['processor_contact_id'] = $this->processorContactId;
+				$dbMessage['recurring_payment_token'] = $this->payload['recurringPaymentToken'];
+				$dbMessage['processor_contact_id'] = $this->payload['processorContactId'];
+				$dbMessage['gateway_txn_id'] = $this->payload['gatewayTxnId'];
 
 				QueueWrapper::push( 'donations', $dbMessage );
 
@@ -69,26 +66,26 @@ class RecurringContractJob extends RunnableJob {
 			} else {
 				// There was no matching pending entry found
 				$logger->warning(
-					"Could not find donor details for payment method '$this->paymentMethod', order ID: " .
-					"'$this->merchantReference', and recurring token: '$this->recurringPaymentToken'",
+					"Could not find donor details for payment method '{$this->payload['paymentMethod']}', order ID: " .
+					"'{$this->payload['merchantReference']}', and recurring token: '{$this->payload['recurringPaymentToken']}'",
 					$dbMessage
 				);
 			}
 		} else {
 			if ( $dbMessage ) {
 				// Add the recurring setup information
-				$dbMessage['recurring_payment_token'] = $this->recurringPaymentToken;
-				$dbMessage['processor_contact_id'] = $this->processorContactId;
+				$dbMessage['recurring_payment_token'] = $this->payload['recurringPaymentToken'];
+				$dbMessage['processor_contact_id'] = $this->payload['processorContactId'];
 				$logger->info(
-					"Storing recurring contract IPN info for payment method '$this->paymentMethod', order ID " .
-					"'$this->merchantReference' and recurring token '$this->recurringPaymentToken' to matching " .
+					"Storing recurring contract IPN info for payment method '{$this->payload['paymentMethod']}', order ID " .
+					"'{$this->payload['merchantReference']}' and recurring token '{$this->payload['recurringPaymentToken']}' to matching " .
 					'pending db row.'
 				);
 				$db->storeMessage( $dbMessage );
 			} else {
 				$logger->info(
-					"Discarding recurring contract IPN for payment method '$this->paymentMethod', order ID " .
-					"'$this->merchantReference' and recurring token '$this->recurringPaymentToken' with no " .
+					"Discarding recurring contract IPN for payment method '{$this->payload['paymentMethod']}', order ID " .
+					"'{$this->payload['merchantReference']}' and recurring token '{$this->payload['recurringPaymentToken']}' with no " .
 					'matching pending db row.'
 				);
 			}

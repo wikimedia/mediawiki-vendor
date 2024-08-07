@@ -4,7 +4,9 @@ namespace SmashPig\PaymentProviders\Gravy\Tests\phpunit;
 
 use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentProviders\Gravy\CardPaymentProvider;
+use SmashPig\PaymentProviders\Gravy\Factories\GravyCreatePaymentResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Mapper\ErrorMapper;
+use SmashPig\PaymentProviders\Gravy\Mapper\ResponseMapper;
 use SmashPig\PaymentProviders\Gravy\Tests\BaseGravyTestCase;
 
 /**
@@ -52,6 +54,22 @@ class CardPaymentProviderTest extends BaseGravyTestCase {
 		$this->assertEquals( $responseBody['buyer']['id'], $response->getDonorDetails()->getCustomerId() );
 		$this->assertEquals( $responseBody['buyer']['billing_details']['address']['line1'], $response->getDonorDetails()->getBillingAddress()->getStreetAddress() );
 		$this->assertTrue( $response->isSuccessful() );
+	}
+
+	public function testCorrectMappedRiskScores() {
+		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/create-transaction.json' ), true );
+		$gravyResponseMapper = new ResponseMapper();
+		$normalizedResponse = $gravyResponseMapper->mapFromCreatePaymentResponse( $responseBody );
+
+		$response = GravyCreatePaymentResponseFactory::fromNormalizedResponse( $normalizedResponse );
+
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\CreatePaymentResponse',
+			$response );
+		$this->assertTrue( $response->isSuccessful() );
+		$this->assertEquals( [
+			'avs' => 75,
+			'cvv' => 0
+		], $response->getRiskScores() );
 	}
 
 	public function testSuccessfulCreatePaymentFailCreateDonor() {
@@ -108,11 +126,12 @@ class CardPaymentProviderTest extends BaseGravyTestCase {
 
 	public function testSuccessfulApprovePayment() {
 		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/capture-transaction.json' ), true );
+		$params = $this->getApproveTrxnParams();
+
 		$this->mockApi->expects( $this->once() )
 			->method( 'approvePayment' )
+			->with( $params['gateway_txn_id'], [ 'amount' => 1299 ] )
 			->willReturn( $responseBody );
-
-		$params = $this->getApproveTrxnParams();
 
 		$response = $this->provider->approvePayment( $params );
 
@@ -269,73 +288,6 @@ class CardPaymentProviderTest extends BaseGravyTestCase {
 		$this->assertEquals( ErrorMapper::$errorCodes[$error_code], $errors[0]->getErrorCode() );
 	}
 
-	public function testSuccessfulCreateDonor() {
-		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/create-buyer.json' ), true );
-		$this->mockApi->expects( $this->once() )
-			->method( 'createDonor' )
-			->willReturn( $responseBody );
-		$params = $this->getCreateDonorParams();
-		$response = $this->provider->createDonor( $params );
-
-		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\PaymentDetailResponse',
-			$response );
-		$this->assertTrue( $response->isSuccessful() );
-		$this->assertEquals( $responseBody['id'], $response->getDonorDetails()->getCustomerId() );
-		$this->assertEquals( $params['first_name'], $response->getDonorDetails()->getFirstName() );
-		$this->assertEquals( $params['last_name'], $response->getDonorDetails()->getLastName() );
-		$this->assertEquals( $responseBody['billing_details']['address']['city'], $response->getDonorDetails()->getBillingAddress()->getCity() );
-	}
-
-	public function testValidationErrorCreateDonorBeforeApiCall() {
-		$params = [
-			'gateway_session_id' => 'random-session-id'
-		];
-
-		$response = $this->provider->createDonor( $params );
-
-		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\PaymentDetailResponse',
-			$response );
-		$this->assertFalse( $response->isSuccessful() );
-		$valErrors = $response->getValidationErrors();
-		$errors = $response->getErrors();
-		$this->assertCount( 3, $valErrors );
-		$this->assertCount( 0, $errors );
-	}
-
-	public function testSuccessfulGetDonor() {
-		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/list-buyer.json' ), true );
-		$this->mockApi->expects( $this->once() )
-			->method( 'getDonor' )
-			->willReturn( $responseBody );
-		$params = $this->getCreateDonorParams();
-		$response = $this->provider->getDonorRecord( $params );
-
-		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\PaymentDetailResponse',
-			$response );
-		$this->assertTrue( $response->isSuccessful() );
-		$donor = $responseBody['items'][0];
-		$this->assertEquals( $donor['id'], $response->getDonorDetails()->getCustomerId() );
-		$this->assertEquals( $params['first_name'], $response->getDonorDetails()->getFirstName() );
-		$this->assertEquals( $params['last_name'], $response->getDonorDetails()->getLastName() );
-		$this->assertEquals( $donor['billing_details']['address']['city'], $response->getDonorDetails()->getBillingAddress()->getCity() );
-	}
-
-	public function testValidationErrorGetDonorBeforeApiCall() {
-		$params = [
-			'gateway_session_id' => 'random-session-id'
-		];
-
-		$response = $this->provider->getDonorRecord( $params );
-
-		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\PaymentDetailResponse',
-			$response );
-		$this->assertFalse( $response->isSuccessful() );
-		$valErrors = $response->getValidationErrors();
-		$errors = $response->getErrors();
-		$this->assertCount( 1, $valErrors );
-		$this->assertCount( 0, $errors );
-	}
-
 	private function getCreateTrxnParams( string $checkoutSessionId, ?string $donor_id = '123', ?string $amount = '1299' ) {
 		$params = [];
 		$params['country'] = 'US';
@@ -353,23 +305,11 @@ class CardPaymentProviderTest extends BaseGravyTestCase {
 		return $params;
 	}
 
-	private function getApproveTrxnParams( $amount = '1299' ) {
+	private function getApproveTrxnParams( $amount = '12.99' ) {
 		return [
 			'amount' => $amount,
+			'currency' => 'USD',
 			'gateway_txn_id' => 'random-id'
 		];
-	}
-
-	private function getCreateDonorParams() {
-		$params = [];
-		$params['first_name'] = 'Lorem';
-		$params['last_name'] = 'Ipsum';
-		$params['email'] = 'lorem@ipsum';
-		$params['street_address'] = '10 hopewell street';
-		$params['postal_code'] = '1234';
-		$params['country'] = 'US';
-		$params['employer'] = 'Wikimedia Foundation';
-
-		return $params;
 	}
 }

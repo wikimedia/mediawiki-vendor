@@ -63,7 +63,7 @@ class CardPaymentProvider extends PaymentProvider implements IPaymentProvider {
 		try {
 			// extract out the validation of input out to a separate class
 			$validator = new Validator();
-			$validator->approvePaymentInputIsValid( $params );
+			$validator->validateApprovePaymentInput( $params );
 
 			// map local params to external format, ideally only changing key names and minor input format transformations
 			$gravyRequestMapper = new RequestMapper();
@@ -97,7 +97,7 @@ class CardPaymentProvider extends PaymentProvider implements IPaymentProvider {
 		try {
 			// extract out the validation of input out to a separate class
 			$validator = new Validator();
-			$validator->createPaymentInputIsValid( $params );
+			$validator->validateCreatePaymentInput( $params );
 
 			// map local params to external format, ideally only changing key names and minor input format transformations
 			$gravyRequestMapper = new RequestMapper();

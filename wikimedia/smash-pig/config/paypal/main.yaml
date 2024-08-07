@@ -88,6 +88,13 @@ var_map:
 # If not set or set to something false, treat GiveLively donations as any other.
 givelively-appeal: EV1V23
 
+# Donations from the PayPal giving fund are sometimes sent via the current CEO's
+# email address. Map them directly to a contact_id so they all end up attached
+# to the correct organization record
+givingfund-cid: 3729480
+givingfund-emails:
+    - ppgfuspay@paypalgivingfund.org
+
 rejects:
     txn_type:
         - new_case

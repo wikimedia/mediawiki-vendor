@@ -4,10 +4,10 @@ use SmashPig\Core\Context;
 use SmashPig\Core\DataStores\PaymentsFraudDatabase;
 use SmashPig\Core\DataStores\PendingDatabase;
 use SmashPig\Core\DataStores\QueueWrapper;
-use SmashPig\Core\Jobs\RunnableJob;
 use SmashPig\Core\Logging\Logger;
 use SmashPig\Core\Logging\TaggedLogger;
 use SmashPig\Core\RetryableException;
+use SmashPig\Core\Runnable;
 use SmashPig\CrmLink\Messages\DonationInterfaceAntifraudFactory;
 use SmashPig\PaymentData\ValidationAction;
 use SmashPig\PaymentProviders\Adyen\CardPaymentProvider;
@@ -22,56 +22,41 @@ use SmashPig\PaymentProviders\PaymentProviderFactory;
  *
  * @package SmashPig\PaymentProviders\Adyen\Jobs
  */
-class ProcessCaptureRequestJob extends RunnableJob {
+class ProcessCaptureRequestJob implements Runnable {
 
-	protected $account;
-	protected $currency;
-	protected $amount;
-	protected $merchantReference;
-	protected $shopperReference;
-	protected $pspReference;
-	protected $retryRescueReference;
-	protected $avsResult;
-	protected $cvvResult;
-	/**
-	 * @var string Adyen-side code for the card type
-	 */
-	protected $paymentMethod;
-	/**
-	 * @var TaggedLogger
-	 */
-	protected $logger;
-	protected $propertiesExcludedFromExport = [ 'logger' ];
+	public array $payload;
 
-	protected $isSuccessfulAutoRescue = false;
-	protected $processAutoRescueCapture = false;
+	protected TaggedLogger $logger;
+
 	const ACTION_DUPLICATE = 'duplicate'; // duplicate payment attempt - cancel the authorization
 	const ACTION_IGNORE = 'ignore'; // duplicate authorisation IPN - ignore
 	const ACTION_MISSING = 'missing'; // missing donor details - shunt job to damaged queue
 
-	public static function factory( Authorisation $authMessage ) {
-		$obj = new ProcessCaptureRequestJob();
-
-		$obj->account = $authMessage->merchantAccountCode;
-		$obj->currency = $authMessage->currency;
-		$obj->amount = $authMessage->amount;
-		$obj->merchantReference = $authMessage->merchantReference;
-		$obj->shopperReference = $authMessage->shopperReference;
-		$obj->pspReference = $authMessage->pspReference;
-		$obj->cvvResult = $authMessage->cvvResult;
-		$obj->avsResult = $authMessage->avsResult;
-		$obj->paymentMethod = $authMessage->paymentMethod;
-		$obj->isSuccessfulAutoRescue = $authMessage->isSuccessfulAutoRescue();
-		$obj->processAutoRescueCapture = $authMessage->processAutoRescueCapture();
-		$obj->retryRescueReference = $authMessage->retryRescueReference;
-		return $obj;
+	public static function factory( Authorisation $authMessage ): array {
+		return [
+			'class' => self::class,
+			'payload' => [
+				'account' => $authMessage->merchantAccountCode,
+				'amount' => $authMessage->amount,
+				'avsResult' => $authMessage->avsResult,
+				'currency' => $authMessage->currency,
+				'cvvResult' => $authMessage->cvvResult,
+				'isSuccessfulAutoRescue' => $authMessage->isSuccessfulAutoRescue(),
+				'merchantReference' => $authMessage->merchantReference,
+				'paymentMethod' => $authMessage->paymentMethod,
+				'processAutoRescueCapture' => $authMessage->processAutoRescueCapture(),
+				'pspReference' => $authMessage->pspReference,
+				'retryRescueReference' => $authMessage->retryRescueReference,
+				'shopperReference' => $authMessage->shopperReference,
+			]
+		];
 	}
 
 	public function execute() {
-		$this->logger = Logger::getTaggedLogger( "psp_ref-{$this->pspReference}" );
+		$this->logger = Logger::getTaggedLogger( "psp_ref-{$this->payload['pspReference']}" );
 		$this->logger->info(
-			"Running capture request job on account '{$this->account}'" .
-			"with reference '{$this->pspReference}'."
+			"Running capture request job on account '{$this->payload['account']}'" .
+			"with reference '{$this->payload['pspReference']}'."
 		);
 
 		// Determine if a message exists in the pending database; if it does not then
@@ -84,15 +69,15 @@ class ProcessCaptureRequestJob extends RunnableJob {
 		// with missing donor details open for potential manual capture.
 		$this->logger->debug( 'Attempting to locate associated message in pending database.' );
 		$db = PendingDatabase::get();
-		$dbMessage = $db->fetchMessageByGatewayOrderId( 'adyen', $this->merchantReference );
+		$dbMessage = $db->fetchMessageByGatewayOrderId( 'adyen', $this->payload['merchantReference'] );
 		$messageIsFromFredge = false;
-		if ( !$dbMessage && !$this->isSuccessfulAutoRescue ) {
+		if ( !$dbMessage && !$this->payload['isSuccessfulAutoRescue'] ) {
 			$this->logger->info( 'No message found in pending database, looking in fredge.' );
 			// Try to find the risk score from fredge
 			$messageIsFromFredge = true;
 			$fraudDb = PaymentsFraudDatabase::get();
 			$dbMessage = $fraudDb->fetchMessageByGatewayOrderId(
-				'adyen', $this->merchantReference
+				'adyen', $this->payload['merchantReference']
 			);
 		}
 		$success = true;
@@ -107,17 +92,17 @@ class ProcessCaptureRequestJob extends RunnableJob {
 				 * Currently all amounts are divided by 100 in the AdyenMessage JSON construction, PaymentProviders/Adyen/ExpatriatedMessages/AdyenMessage.php::L141
 				 * This adjusts the captured amount for JPY payments as it is currently skipped, PaymentProviders/Adyen/Api.php::L615
 				 */
-				if ( strtoupper( $this->currency ) === "JPY" ) {
-					$this->amount *= 100;
+				if ( strtoupper( $this->payload['currency'] ) === "JPY" ) {
+					$this->payload['amount'] *= 100;
 				}
 				$this->logger->info(
-					"Attempting capture API call for currency '{$this->currency}', " .
-					"amount '{$this->amount}', reference '{$this->pspReference}'."
+					"Attempting capture API call for currency '{$this->payload['currency']}', " .
+					"amount '{$this->payload['amount']}', reference '{$this->payload['pspReference']}'."
 				);
 				$captureResult = $provider->approvePayment( [
-					'gateway_txn_id' => $this->pspReference,
-					'currency' => $this->currency,
-					'amount' => $this->amount
+					'gateway_txn_id' => $this->payload['pspReference'],
+					'currency' => $this->payload['currency'],
+					'amount' => $this->payload['amount']
 				] );
 
 				if ( $captureResult->isSuccessful() ) {
@@ -127,25 +112,25 @@ class ProcessCaptureRequestJob extends RunnableJob {
 							'Marking pending database message as captured.'
 					);
 
-					if ( $this->isSuccessfulAutoRescue ) {
+					if ( $this->payload['isSuccessfulAutoRescue'] ) {
 						$msg = [
 							'txn_type' => 'subscr_payment',
 							'is_successful_autorescue' => true,
-							'rescue_reference' => $this->retryRescueReference,
-							'order_id' => $this->merchantReference,
-							'gross' => $this->amount,
-							'currency' => $this->currency,
-							'gateway_txn_id' => $this->pspReference,
+							'rescue_reference' => $this->payload['retryRescueReference'],
+							'order_id' => $this->payload['merchantReference'],
+							'gross' => $this->payload['amount'],
+							'currency' => $this->payload['currency'],
+							'gateway_txn_id' => $this->payload['pspReference'],
 							'gateway' => 'adyen'
 						];
 
 						QueueWrapper::push( 'recurring', $msg );
 					}
 
-					if ( !$messageIsFromFredge && !$this->isSuccessfulAutoRescue ) {
+					if ( !$messageIsFromFredge && !$this->payload['isSuccessfulAutoRescue'] ) {
 						// If we read the message from pending, update it.
 						$dbMessage['captured'] = true;
-						$dbMessage['gateway_txn_id'] = $this->pspReference;
+						$dbMessage['gateway_txn_id'] = $this->payload['pspReference'];
 						$db->storeMessage( $dbMessage );
 					}
 				} else {
@@ -153,8 +138,8 @@ class ProcessCaptureRequestJob extends RunnableJob {
 					// db entry, complain loudly, and move this capture job to the
 					// damaged queue.
 					$this->logger->error(
-						"Failed to capture payment on account '{$this->account}' with reference " .
-							"'{$this->pspReference}' and order id '{$this->merchantReference}'.",
+						"Failed to capture payment on account '{$this->payload['account']}' with reference " .
+							"'{$this->payload['pspReference']}' and order id '{$this->payload['merchantReference']}'.",
 						$dbMessage
 					);
 					$success = false;
@@ -190,8 +175,8 @@ class ProcessCaptureRequestJob extends RunnableJob {
 	}
 
 	protected function determineAction( $dbMessage ) {
-		if ( $this->isSuccessfulAutoRescue ) {
-			if ( $this->processAutoRescueCapture ) {
+		if ( $this->payload['isSuccessfulAutoRescue'] ) {
+			if ( $this->payload['processAutoRescueCapture'] ) {
 				return ValidationAction::PROCESS;
 			} else {
 				return self::ACTION_IGNORE;
@@ -201,8 +186,8 @@ class ProcessCaptureRequestJob extends RunnableJob {
 			$this->logger->debug( 'Found a valid message.' );
 		} else {
 			$errMessage = "Could not find a processable message for " .
-				"PSP Reference '{$this->pspReference}' and " .
-				"order ID '{$this->merchantReference}'.";
+				"PSP Reference '{$this->payload['pspReference']}' and " .
+				"order ID '{$this->payload['merchantReference']}'.";
 			$this->logger->warning(
 				$errMessage,
 				$dbMessage
@@ -210,15 +195,15 @@ class ProcessCaptureRequestJob extends RunnableJob {
 			return self::ACTION_MISSING;
 		}
 		if ( !empty( $dbMessage['captured'] ) ) {
-			if ( $this->pspReference === $dbMessage['gateway_txn_id'] ) {
+			if ( $this->payload['pspReference'] === $dbMessage['gateway_txn_id'] ) {
 				$this->logger->info(
-					"Duplicate Authorisation IPN for PSP reference '{$this->pspReference}' and order ID '{$this->merchantReference}'.",
+					"Duplicate Authorisation IPN for PSP reference '{$this->payload['pspReference']}' and order ID '{$this->payload['merchantReference']}'.",
 					$dbMessage
 				);
 				return self::ACTION_IGNORE;
 			} else {
 				$this->logger->info(
-					"Duplicate PSP Reference '{$this->pspReference}' for order ID '{$this->merchantReference}'.",
+					"Duplicate PSP Reference '{$this->payload['pspReference']}' for order ID '{$this->payload['merchantReference']}'.",
 					$dbMessage
 				);
 				return self::ACTION_DUPLICATE;
@@ -231,23 +216,23 @@ class ProcessCaptureRequestJob extends RunnableJob {
 		$providerConfig = Context::get()->getProviderConfiguration();
 		$riskScore = isset( $dbMessage['risk_score'] ) ? $dbMessage['risk_score'] : 0;
 		$this->logger->debug( "Base risk score from payments site is $riskScore, " .
-			"raw CVV result is '{$this->cvvResult}' and raw AVS result is '{$this->avsResult}'." );
+			"raw CVV result is '{$this->payload['cvvResult']}' and raw AVS result is '{$this->payload['avsResult']}'." );
 		$cvvMap = $providerConfig->val( 'fraud-filters/cvv-map' );
 		$avsMap = $providerConfig->val( 'fraud-filters/avs-map' );
 		$scoreBreakdown = [];
-		if ( array_key_exists( $this->cvvResult, $cvvMap ) ) {
-			$scoreBreakdown['getCVVResult'] = $cvvScore = $cvvMap[$this->cvvResult];
-			$this->logger->debug( "CVV result '{$this->cvvResult}' adds risk score $cvvScore." );
+		if ( array_key_exists( $this->payload['cvvResult'], $cvvMap ) ) {
+			$scoreBreakdown['getCVVResult'] = $cvvScore = $cvvMap[$this->payload['cvvResult']];
+			$this->logger->debug( "CVV result '{$this->payload['cvvResult']}' adds risk score $cvvScore." );
 			$riskScore += $cvvScore;
 		} else {
-			$this->logger->warning( "CVV result '{$this->cvvResult}' not found in cvv-map.", $cvvMap );
+			$this->logger->warning( "CVV result '{$this->payload['cvvResult']}' not found in cvv-map.", $cvvMap );
 		}
-		if ( array_key_exists( $this->avsResult, $avsMap ) ) {
-			$scoreBreakdown['getAVSResult'] = $avsScore = $avsMap[$this->avsResult];
-			$this->logger->debug( "AVS result '{$this->avsResult}' adds risk score $avsScore." );
+		if ( array_key_exists( $this->payload['avsResult'], $avsMap ) ) {
+			$scoreBreakdown['getAVSResult'] = $avsScore = $avsMap[$this->payload['avsResult']];
+			$this->logger->debug( "AVS result '{$this->payload['avsResult']}' adds risk score $avsScore." );
 			$riskScore += $avsScore;
 		} else {
-			$this->logger->warning( "AVS result '{$this->avsResult}' not found in avs-map.", $avsMap );
+			$this->logger->warning( "AVS result '{$this->payload['avsResult']}' not found in avs-map.", $avsMap );
 		}
 		$action = ValidationAction::PROCESS;
 		if ( $riskScore >= $providerConfig->val( 'fraud-filters/review-threshold' ) ) {
@@ -276,9 +261,9 @@ class ProcessCaptureRequestJob extends RunnableJob {
 	}
 
 	protected function cancelAuthorization() {
-		$this->logger->debug( "Cancelling authorization with reference '{$this->pspReference}'" );
+		$this->logger->debug( "Cancelling authorization with reference '{$this->payload['pspReference']}'" );
 		$provider = $this->getProvider();
-		$result = $provider->cancelPayment( $this->pspReference );
+		$result = $provider->cancelPayment( $this->payload['pspReference'] );
 		if ( $result->isSuccessful() ) {
 			$this->logger->debug( "Successfully cancelled authorization" );
 		} else {
@@ -294,11 +279,11 @@ class ProcessCaptureRequestJob extends RunnableJob {
 	 * skip sending a failmail when there are no donor details in the queue.
 	 */
 	protected function isLikelyRecurring() {
-		$merchantReferenceParts = explode( '.', $this->merchantReference );
+		$merchantReferenceParts = explode( '.', $this->payload['merchantReference'] );
 		$sequenceNumber = (int)$merchantReferenceParts[1];
 		return (
 			in_array(
-				$this->paymentMethod,
+				$this->payload['paymentMethod'],
 				[ 'amex', 'discover' ],
 				true
 			) &&

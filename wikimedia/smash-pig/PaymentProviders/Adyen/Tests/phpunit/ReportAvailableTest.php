@@ -43,10 +43,11 @@ class ReportAvailableTest extends BaseAdyenTestCase {
 		SourceFields::removeFromMessage( $job );
 		unset( $job['propertiesExcludedFromExport'] );
 		$expected = [
-			'php-message-class' => 'SmashPig\PaymentProviders\Adyen\Jobs\DownloadReportJob',
-			'reportUrl' => $url,
-			'account' => $account,
-			'gateway' => 'adyen',
+			'class' => 'SmashPig\PaymentProviders\Adyen\Jobs\DownloadReportJob',
+			'payload' => [
+				'reportUrl' => $url,
+				'account' => $account,
+			]
 		];
 		$this->assertEquals( $expected, $job );
 	}

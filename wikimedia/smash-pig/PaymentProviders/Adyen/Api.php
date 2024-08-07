@@ -190,7 +190,7 @@ class Api {
 		$restParams = [
 			'amount' => [
 				'currency' => $params['currency'],
-				'value' => $this->getAmountInMinorUnits(
+				'value' => CurrencyRoundingHelper::getAmountInMinorUnits(
 					$params['amount'], $params['currency']
 				)
 			],
@@ -316,7 +316,11 @@ class Api {
 			$restParams = array_merge( $restParams, $this->addRecurringParams( $params, true ) );
 		}
 		$restParams = array_merge( $restParams, $this->getContactInfo( $params ) );
-
+		if ( $restParams['billingAddress']['stateOrProvince'] === 'NA' ) {
+			// ach billing address optional,
+			// if pass needs to pass country and state, for T360825 no need to pass
+			unset( $restParams['billingAddress'] );
+		}
 		$result = $this->makeRestApiCall(
 			$restParams,
 			'payments',
@@ -556,7 +560,7 @@ class Api {
 		$restParams = [
 			'amount' => [
 				'currency' => $params['currency'],
-				'value' => $this->getAmountInMinorUnits(
+				'value' => CurrencyRoundingHelper::getAmountInMinorUnits(
 					$params['amount'], $params['currency']
 				)
 			],
@@ -627,31 +631,10 @@ class Api {
 	private function getArrayAmount( array $params ): array {
 		return [
 			'currency' => $params['currency'],
-			'value' => $this->getAmountInMinorUnits(
+			'value' => CurrencyRoundingHelper::getAmountInMinorUnits(
 				$params['amount'], $params['currency']
 			)
 		];
-	}
-
-	/**
-	 * Adyen requires amounts to be passed as an integer representing the value
-	 * in minor units for that currency. Currencies that lack a minor unit
-	 * (such as JPY) are simply passed as is. For example: USD 10.50 would be
-	 * changed to 1050, JPY 150 would be passed as 150.
-	 *
-	 * @param float $amount The amount in major units
-	 * @param string $currency ISO currency code
-	 * @return int The amount in minor units
-	 */
-	private function getAmountInMinorUnits( float $amount, string $currency ): int {
-		if ( CurrencyRoundingHelper::isThreeDecimalCurrency( $currency ) ) {
-			$amount = $amount * 1000;
-		} elseif ( CurrencyRoundingHelper::isFractionalCurrency( $currency ) ) {
-			$amount = $amount * 100;
-		}
-		// PHP does indeed need us to round it off before casting to int.
-		// For example, try $36.80
-		return (int)round( $amount );
 	}
 
 	/**

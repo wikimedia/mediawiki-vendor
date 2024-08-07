@@ -6,7 +6,6 @@ namespace WhichBrowser\Model\Primitive;
  * @internal
  */
 
-#[\AllowDynamicProperties]
 class Base
 {
     /**

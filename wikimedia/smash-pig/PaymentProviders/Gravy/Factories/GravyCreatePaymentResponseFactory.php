@@ -32,6 +32,7 @@ class GravyCreatePaymentResponseFactory extends GravyPaymentResponseFactory {
 		}
 
 		self::setPaymentDetails( $paymentResponse, $normalizedResponse );
+		self::setRiskScores( $paymentResponse, $normalizedResponse );
 		self::setRedirectURL( $paymentResponse, $normalizedResponse );
 		self::setRecurringPaymentToken( $paymentResponse, $normalizedResponse );
 		self::setPaymentSubmethod( $paymentResponse, $normalizedResponse );
@@ -99,5 +100,9 @@ class GravyCreatePaymentResponseFactory extends GravyPaymentResponseFactory {
 			->setBillingAddress( $address );
 		$paymentResponse->setProcessorContactID( $donorDetails['processor_contact_id'] ?? '' );
 		$paymentResponse->setDonorDetails( $details );
+	}
+
+	protected static function setRiskScores( CreatePaymentResponse $paymentResponse, array $normalizedResponse ) {
+		$paymentResponse->setRiskScores( $normalizedResponse['risk_scores'] );
 	}
 }

@@ -2,9 +2,9 @@
 
 use SmashPig\Core\DataStores\PendingDatabase;
 use SmashPig\Core\DataStores\QueueWrapper;
-use SmashPig\Core\Jobs\RunnableJob;
 use SmashPig\Core\Logging\Logger;
 use SmashPig\Core\RetryableException;
+use SmashPig\Core\Runnable;
 use SmashPig\PaymentProviders\Adyen\ExpatriatedMessages\AdyenMessage;
 
 /**
@@ -15,49 +15,44 @@ use SmashPig\PaymentProviders\Adyen\ExpatriatedMessages\AdyenMessage;
  *
  * @package SmashPig\PaymentProviders\Adyen\Jobs
  */
-class RecordCaptureJob extends RunnableJob {
+class RecordCaptureJob implements Runnable {
 
-	protected $account;
-	protected $currency;
-	protected $amount;
-	protected $gatewayTxnId;
-	protected $merchantReference;
-	protected $eventDate;
-	protected $retryRescueReference;
+	public array $payload;
 
-	public static function factory( AdyenMessage $ipnMessage ) {
-		$obj = new RecordCaptureJob();
-
-		$obj->account = $ipnMessage->merchantAccountCode;
-		$obj->currency = $ipnMessage->currency;
-		$obj->amount = $ipnMessage->amount;
-		$obj->gatewayTxnId = $ipnMessage->getGatewayTxnId();
-		$obj->merchantReference = $ipnMessage->merchantReference;
-		$obj->eventDate = $ipnMessage->eventDate;
-
-		return $obj;
+	public static function factory( AdyenMessage $ipnMessage ): array {
+		return [
+			'class' => self::class,
+			'payload' => [
+				'account' => $ipnMessage->merchantAccountCode,
+				'currency' => $ipnMessage->currency,
+				'amount' => $ipnMessage->amount,
+				'gatewayTxnId' => $ipnMessage->getGatewayTxnId(),
+				'merchantReference' => $ipnMessage->merchantReference,
+				'eventDate' => $ipnMessage->eventDate,
+			]
+		];
 	}
 
 	public function execute() {
-		$logger = Logger::getTaggedLogger( "corr_id-adyen-{$this->merchantReference}" );
+		$logger = Logger::getTaggedLogger( "corr_id-adyen-{$this->payload['merchantReference']}" );
 		$logger->info(
-			"Recording successful capture on account '{$this->account}' with authorization reference " .
-				"'{$this->gatewayTxnId}' and order ID '{$this->merchantReference}'."
+			"Recording successful capture on account '{$this->payload['account']}' with authorization reference " .
+				"'{$this->payload['gatewayTxnId']}' and order ID '{$this->payload['merchantReference']}'."
 		);
 
 		// Find the details from the payment site in the pending database.
 		$logger->debug( 'Attempting to locate associated message in pending database' );
 
 		$db = PendingDatabase::get();
-		$dbMessage = $db->fetchMessageByGatewayOrderId( 'adyen', $this->merchantReference );
+		$dbMessage = $db->fetchMessageByGatewayOrderId( 'adyen', $this->payload['merchantReference'] );
 
 		if ( $dbMessage && ( isset( $dbMessage['order_id'] ) ) ) {
 			$logger->debug( 'A valid message was obtained from the pending queue' );
 
 			// Add the gateway transaction ID and send it to the completed queue
-			$dbMessage['gateway_txn_id'] = $this->gatewayTxnId;
+			$dbMessage['gateway_txn_id'] = $this->payload['gatewayTxnId'];
 			// Use the eventDate from the capture as the date
-			$dbMessage['date'] = strtotime( $this->eventDate );
+			$dbMessage['date'] = strtotime( $this->payload['eventDate'] );
 
 			// Special handling for recurring donations
 			if ( !empty( $dbMessage['recurring'] ) ) {
@@ -65,8 +60,8 @@ class RecordCaptureJob extends RunnableJob {
 				// on the RECURRING_CONTRACT ipn, don't send to the donations queue here
 				if ( $dbMessage['payment_submethod'] == 'rtbt_ideal' ) {
 					// Add the currency and gross (amount), this can change on the bank's end
-					$dbMessage['gross'] = $this->amount;
-					$dbMessage['currency'] = $this->currency;
+					$dbMessage['gross'] = $this->payload['amount'];
+					$dbMessage['currency'] = $this->payload['currency'];
 
 					// Update the pending message with gateway_txn_id, date, gross, and currency
 					// We do need to update the gateway_txn_id as the one in the pending table is saved before
@@ -97,8 +92,8 @@ class RecordCaptureJob extends RunnableJob {
 			// we'll eventually get the donor details from the payments log
 			// when we parse the audit.
 			$logger->warning(
-				"Could not find donor details for authorization Reference '{$this->gatewayTxnId}' " .
-					"and order ID '{$this->merchantReference}'.",
+				"Could not find donor details for authorization Reference '{$this->payload['gatewayTxnId']}' " .
+					"and order ID '{$this->payload['merchantReference']}'.",
 				$dbMessage
 			);
 		}

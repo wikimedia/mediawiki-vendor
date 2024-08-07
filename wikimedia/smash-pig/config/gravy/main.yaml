@@ -18,3 +18,32 @@ privateKeyLocation: /srv/config/private/gr4vy/private_key.pem
 payment-provider:
     cc:
         class: SmashPig\PaymentProviders\Gravy\CardPaymentProvider
+
+fraud-filters:
+    # Authorization notifications include AVS and CVV result codes.
+    # The following maps set a risk score for each result code, which
+    # we combine with any risk score computed on the payment site to
+    # decide whether to capture the payment or leave it for review.
+    # https://docs.gr4vy.com/reference/transactions/new-transaction#:~:text=otherwise%20approved%20before.-,avs_response_code,-enum%3Cstring%3E%20%7C%20null
+    avs-map:
+        # no_match - neither address or postal code match
+        no_match: 100
+        # match - both address and postal code match
+        match: 0
+        # partial_match_address - address matches but postal code does not
+        partial_match_address: 75
+        # partial_match_postcode - postal code matches but address does not
+        partial_match_postcode: 75
+        # unavailable - AVS is unavailable for card/country
+        unavailable: 50
+
+    # https://docs.gr4vy.com/reference/transactions/new-transaction#:~:text=for%20this%20transaction.-,cvv_response_code,-enum%3Cstring%3E%20%7C%20null
+    cvv-map:
+        # no_match - the CVV does not match the expected value
+        no_match: 100
+        # match - the CVV matches the expected value
+        match: 0
+        # not_provided -  CVV not provided
+        not_provided: 100
+        # unavailable -  CVV check unavailable for card our country
+        unavailable: 50

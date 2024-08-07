@@ -48,11 +48,11 @@ class NotificationRequestTest extends BaseAdyenTestCase {
 		ob_end_clean();
 		$message = $this->jobsAdyenQueue->pop();
 		$this->assertNotNull( $message );
-		$this->assertEquals( $authorisation['pspReference'], $message['gatewayTxnId'] );
-		$this->assertEquals( $authorisation['merchantReference'], $message['merchantReference'] );
-		$this->assertEquals( $authorisation['eventDate'], $message['eventDate'] );
-		$this->assertEquals( $authorisation['amount']['currency'], $message['currency'] );
-		$this->assertEquals( $authorisation['amount']['value'] / 100, $message['amount'] );
+		$this->assertEquals( $authorisation['pspReference'], $message['payload']['gatewayTxnId'] );
+		$this->assertEquals( $authorisation['merchantReference'], $message['payload']['merchantReference'] );
+		$this->assertEquals( $authorisation['eventDate'], $message['payload']['eventDate'] );
+		$this->assertEquals( $authorisation['amount']['currency'], $message['payload']['currency'] );
+		$this->assertEquals( $authorisation['amount']['value'] / 100, $message['payload']['amount'] );
 		$this->assertStringContainsString( "[accepted]", $getContent );
 	}
 
@@ -138,10 +138,10 @@ class NotificationRequestTest extends BaseAdyenTestCase {
 		ob_end_clean();
 		$message = $this->jobsAdyenQueue->pop();
 		$this->assertNotNull( $message );
-		$this->assertEquals( $capture['originalReference'], $message['gatewayTxnId'] );
-		$this->assertEquals( $capture['merchantReference'], $message['merchantReference'] );
-		$this->assertEquals( $capture['amount']['currency'], $message['currency'] );
-		$this->assertEquals( $capture['amount']['value'] / 100, $message['amount'] );
+		$this->assertEquals( $capture['originalReference'], $message['payload']['gatewayTxnId'] );
+		$this->assertEquals( $capture['merchantReference'], $message['payload']['merchantReference'] );
+		$this->assertEquals( $capture['amount']['currency'], $message['payload']['currency'] );
+		$this->assertEquals( $capture['amount']['value'] / 100, $message['payload']['amount'] );
 		$this->assertStringContainsString( "[accepted]", $getContent );
 	}
 
@@ -323,12 +323,12 @@ class NotificationRequestTest extends BaseAdyenTestCase {
 		$getContent = ob_get_contents();
 		ob_end_clean();
 		$message = $this->jobsAdyenQueue->pop();
-		$this->assertEquals( $recurringContract['originalReference'], $message['gatewayTxnId'] );
-		$this->assertEquals( $recurringContract['merchantReference'], $message['merchantReference'] );
-		$this->assertEquals( $recurringContract['eventDate'], $message['eventDate'] );
-		$this->assertEquals( $recurringContract['pspReference'], $message['recurringPaymentToken'] );
-		$this->assertEquals( $recurringContract['merchantReference'], $message['processorContactId'] );
-		$this->assertEquals( $recurringContract['paymentMethod'], $message['paymentMethod'] );
+		$this->assertEquals( $recurringContract['originalReference'], $message['payload']['gatewayTxnId'] );
+		$this->assertEquals( $recurringContract['merchantReference'], $message['payload']['merchantReference'] );
+		$this->assertEquals( $recurringContract['eventDate'], $message['payload']['eventDate'] );
+		$this->assertEquals( $recurringContract['pspReference'], $message['payload']['recurringPaymentToken'] );
+		$this->assertEquals( $recurringContract['merchantReference'], $message['payload']['processorContactId'] );
+		$this->assertEquals( $recurringContract['paymentMethod'], $message['payload']['paymentMethod'] );
 		$this->assertStringContainsString( "[accepted]", $getContent );
 	}
 
@@ -388,10 +388,8 @@ class NotificationRequestTest extends BaseAdyenTestCase {
 		ob_end_clean();
 		$message = $this->jobsAdyenQueue->pop();
 		$this->assertNotNull( $message );
-		$this->assertEquals( 'adyen', $message['gateway'] );
-		$this->assertEquals( $reportMessage['merchantAccountCode'], $message['account'] );
-		$this->assertEquals( $reportMessage['reason'], $message['reportUrl'] );
-		$this->assertCount( 2, $message['propertiesExcludedFromExport'] );
+		$this->assertEquals( $reportMessage['merchantAccountCode'], $message['payload']['account'] );
+		$this->assertEquals( $reportMessage['reason'], $message['payload']['reportUrl'] );
 		$this->assertStringContainsString( "[accepted]", $getContent );
 	}
 

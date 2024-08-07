@@ -212,6 +212,7 @@ class ComposerStaticInit_mediawiki_vendor
         'WhichBrowser\\' => 
         array (
             0 => __DIR__ . '/..' . '/whichbrowser/parser/src',
+            1 => __DIR__ . '/..' . '/whichbrowser/parser/tests/src',
         ),
         'Twig\\' => 
         array (
@@ -460,6 +461,7 @@ class ComposerStaticInit_mediawiki_vendor
 
     public static $fallbackDirsPsr0 = array (
         0 => __DIR__ . '/..' . '/cssjanus/cssjanus/src',
+        1 => __DIR__ . '/..' . '/pear/pear-core-minimal/src',
     );
 
     public static $classMap = array (
@@ -485,7 +487,6 @@ class ComposerStaticInit_mediawiki_vendor
         'AmountInCents' => __DIR__ . '/../..' . '/extensions/DonationInterface/gateway_common/AmountInCents.php',
         'ArrayHelper' => __DIR__ . '/../..' . '/extensions/DonationInterface/gateway_common/ArrayHelper.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
-        'BannerHistoryLogIdProcessor' => __DIR__ . '/../..' . '/extensions/DonationInterface/extras/banner_history/BannerHistoryLogIdProcessor.php',
         'BlankAddressFields' => __DIR__ . '/../..' . '/extensions/DonationInterface/adyen_gateway/BlankAddressFields.php',
         'CLDRPluralRuleParser\\Converter' => __DIR__ . '/..' . '/wikimedia/cldr-plural-rule-parser/src/Converter.php',
         'CLDRPluralRuleParser\\Converter\\Expression' => __DIR__ . '/..' . '/wikimedia/cldr-plural-rule-parser/src/Converter/Expression.php',
@@ -523,7 +524,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Composer\\Installers\\BaseInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/BaseInstaller.php',
         'Composer\\Installers\\BitrixInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/BitrixInstaller.php',
         'Composer\\Installers\\BonefishInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/BonefishInstaller.php',
-        'Composer\\Installers\\BotbleInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/BotbleInstaller.php',
         'Composer\\Installers\\CakePHPInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/CakePHPInstaller.php',
         'Composer\\Installers\\ChefInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/ChefInstaller.php',
         'Composer\\Installers\\CiviCrmInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/CiviCrmInstaller.php',
@@ -531,7 +531,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Composer\\Installers\\CockpitInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/CockpitInstaller.php',
         'Composer\\Installers\\CodeIgniterInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/CodeIgniterInstaller.php',
         'Composer\\Installers\\Concrete5Installer' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/Concrete5Installer.php',
-        'Composer\\Installers\\ConcreteCMSInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/ConcreteCMSInstaller.php',
         'Composer\\Installers\\CroogoInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/CroogoInstaller.php',
         'Composer\\Installers\\DecibelInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/DecibelInstaller.php',
         'Composer\\Installers\\DframeInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/DframeInstaller.php',
@@ -542,7 +541,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Composer\\Installers\\EliasisInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/EliasisInstaller.php',
         'Composer\\Installers\\ExpressionEngineInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/ExpressionEngineInstaller.php',
         'Composer\\Installers\\EzPlatformInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/EzPlatformInstaller.php',
-        'Composer\\Installers\\ForkCMSInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/ForkCMSInstaller.php',
         'Composer\\Installers\\FuelInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/FuelInstaller.php',
         'Composer\\Installers\\FuelphpInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/FuelphpInstaller.php',
         'Composer\\Installers\\GravInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/GravInstaller.php',
@@ -740,6 +738,10 @@ class ComposerStaticInit_mediawiki_vendor
         'GetOptionKit\\ValueType\\StringType' => __DIR__ . '/..' . '/corneltek/getoptionkit/src/ValueType/StringType.php',
         'GetOptionKit\\ValueType\\UrlType' => __DIR__ . '/..' . '/corneltek/getoptionkit/src/ValueType/UrlType.php',
         'Gr4vy\\Gr4vyConfig' => __DIR__ . '/..' . '/gr4vy/gr4vy-php/lib/Gr4vyConfig.php',
+        'GravyAdapter' => __DIR__ . '/../..' . '/extensions/DonationInterface/gravy_gateway/gravy.adapter.php',
+        'GravyDonationApi' => __DIR__ . '/../..' . '/extensions/DonationInterface/gravy_gateway/gravy.api.php',
+        'GravyGateway' => __DIR__ . '/../..' . '/extensions/DonationInterface/gravy_gateway/gravy_gateway.body.php',
+        'GravyGatewayResult' => __DIR__ . '/../..' . '/extensions/DonationInterface/gravy_gateway/gravy_resultswitcher.body.php',
         'GuzzleHttp\\BodySummarizer' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/BodySummarizer.php',
         'GuzzleHttp\\BodySummarizerInterface' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/BodySummarizerInterface.php',
         'GuzzleHttp\\Client' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Client.php',
@@ -1302,7 +1304,6 @@ class ComposerStaticInit_mediawiki_vendor
         'OS_Guess' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/OS/Guess.php',
         'Override' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/Override.php',
         'PEAR' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/PEAR.php',
-        'PEAR_Error' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/PEAR.php',
         'PEAR_ErrorStack' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/PEAR/ErrorStack.php',
         'PEAR_Exception' => __DIR__ . '/..' . '/pear/pear_exception/PEAR/Exception.php',
         'PHPMailer\\PHPMailer\\DSNConfigurator' => __DIR__ . '/..' . '/phpmailer/phpmailer/src/DSNConfigurator.php',
@@ -2155,7 +2156,6 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\Core\\Http\\ResponseValidator' => __DIR__ . '/..' . '/wikimedia/smash-pig/Core/Http/ResponseValidator.php',
         'SmashPig\\Core\\Jobs\\DeletePendingJob' => __DIR__ . '/..' . '/wikimedia/smash-pig/Core/Jobs/DeletePendingJob.php',
         'SmashPig\\Core\\Jobs\\JobQueue' => __DIR__ . '/..' . '/wikimedia/smash-pig/Core/Jobs/JobQueue.php',
-        'SmashPig\\Core\\Jobs\\RunnableJob' => __DIR__ . '/..' . '/wikimedia/smash-pig/Core/Jobs/RunnableJob.php',
         'SmashPig\\Core\\Listeners\\ListenerBase' => __DIR__ . '/..' . '/wikimedia/smash-pig/Core/Listeners/ListenerBase.php',
         'SmashPig\\Core\\Listeners\\ListenerConfigException' => __DIR__ . '/..' . '/wikimedia/smash-pig/Core/Listeners/ListenerConfigException.php',
         'SmashPig\\Core\\Listeners\\ListenerDataException' => __DIR__ . '/..' . '/wikimedia/smash-pig/Core/Listeners/ListenerDataException.php',
@@ -2367,6 +2367,7 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\PaymentProviders\\Gravy\\Factories\\GravyGetDonorResponseFactory' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Factories/GravyGetDonorResponseFactory.php',
         'SmashPig\\PaymentProviders\\Gravy\\Factories\\GravyPaymentResponseFactory' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Factories/GravyPaymentResponseFactory.php',
         'SmashPig\\PaymentProviders\\Gravy\\Maintenance\\ApprovePayments' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Maintenance/ApprovePayments.php',
+        'SmashPig\\PaymentProviders\\Gravy\\Maintenance\\DeletePaymentToken' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Maintenance/DeletePaymentToken.php',
         'SmashPig\\PaymentProviders\\Gravy\\Maintenance\\TestCapturePaymentProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Maintenance/TestCapturePaymentProvider.php',
         'SmashPig\\PaymentProviders\\Gravy\\Maintenance\\TestCreatePaymentSession' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Maintenance/TestCreatePaymentSession.php',
         'SmashPig\\PaymentProviders\\Gravy\\Mapper\\ErrorMapper' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Mapper/ErrorMapper.php',
@@ -2378,6 +2379,7 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\PaymentProviders\\Gravy\\Tests\\GravyTestConfiguration' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Tests/GravyTestConfiguration.php',
         'SmashPig\\PaymentProviders\\Gravy\\Tests\\phpunit\\CardPaymentProviderTest' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Tests/phpunit/CardPaymentProviderTest.php',
         'SmashPig\\PaymentProviders\\Gravy\\Tests\\phpunit\\GravyPaymentResponseFactoryTest' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Tests/phpunit/GravyPaymentResponseFactoryTest.php',
+        'SmashPig\\PaymentProviders\\Gravy\\Tests\\phpunit\\PaymentProviderTest' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Tests/phpunit/PaymentProviderTest.php',
         'SmashPig\\PaymentProviders\\Gravy\\Validators\\Validator' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Validators/Validator.php',
         'SmashPig\\PaymentProviders\\ICancelablePaymentProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/ICancelablePaymentProvider.php',
         'SmashPig\\PaymentProviders\\IDeleteDataProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/IDeleteDataProvider.php',

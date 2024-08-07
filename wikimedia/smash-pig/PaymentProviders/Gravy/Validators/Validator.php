@@ -9,19 +9,18 @@ class Validator {
 	/**
 	 * @throws ValidationException
 	 */
-	public function getDonorInputIsValid( array $params ) {
+	public function validateDonorInput( array $params ): void {
 		$required = [
 			'email',
 		];
 
-		$this->checkFields( $required, $params );
-		return true;
+		$this->validateFields( $required, $params );
 	}
 
 	/**
 	 * @throws ValidationException
 	 */
-	public function createPaymentInputIsValid( array $params ) {
+	public function validateCreatePaymentInput( array $params ): void {
 		$required = [
 			'gateway_session_id',
 			'amount',
@@ -32,41 +31,48 @@ class Validator {
 			'last_name'
 		];
 
-		$this->checkFields( $required, $params );
-		return true;
+		$this->validateFields( $required, $params );
 	}
 
 	/**
 	 * @throws ValidationException
 	 */
-	public function approvePaymentInputIsValid( array $params ) {
+	public function validateApprovePaymentInput( array $params ): void {
 		$required = [
 			'gateway_txn_id',
+			'currency',
 			'amount'
 		];
 
-		$this->checkFields( $required, $params );
+		$this->validateFields( $required, $params );
+	}
+
+	public function validateDeletePaymentTokenInput( array $params ) {
+		$required = [
+			'recurring_payment_token'
+		];
+
+		$this->validateFields( $required, $params );
 		return true;
 	}
 
 	/**
 	 * @throws ValidationException
 	 */
-	public function createDonorInputIsValid( array $params ) {
+	public function validateCreateDonorInput( array $params ): void {
 		$required = [
 			'first_name',
 			'last_name',
 			'email'
 		];
 
-		$this->checkFields( $required, $params );
-		return true;
+		$this->validateFields( $required, $params );
 	}
 
 	/**
 	 * @throws ValidationException
 	 */
-	protected function checkFields( array $requiredFields, array $params ) {
+	protected function validateFields( array $requiredFields, array $params ) {
 		$invalidFields = [];
 		foreach ( $requiredFields as $field ) {
 			if ( empty( $params[$field] ) ) {

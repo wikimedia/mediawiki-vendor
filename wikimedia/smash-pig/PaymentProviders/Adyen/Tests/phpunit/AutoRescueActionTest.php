@@ -50,12 +50,9 @@ class AutoRescueActionTest extends BaseAdyenTestCase {
 
 		$msg = $this->jobsAdyenQueue->pop();
 
-		$this->assertEquals( $msg['retryRescueReference'], $authorisation->retryRescueReference );
-		$this->assertEquals( $msg['pspReference'], $authorisation->pspReference );
-		$this->assertEquals(
-			"SmashPig\PaymentProviders\Adyen\Jobs\ProcessCaptureRequestJob",
-			$msg['php-message-class']
-		);
+		$this->assertEquals( $msg['payload']['retryRescueReference'], $authorisation->retryRescueReference );
+		$this->assertEquals( $msg['payload']['pspReference'], $authorisation->pspReference );
+		$this->assertEquals( "SmashPig\PaymentProviders\Adyen\Jobs\ProcessCaptureRequestJob", $msg['class'] );
 	}
 
 	public function testSuccessfulAutoRescueAuthorisationMessageCapture(): void {
@@ -68,7 +65,8 @@ class AutoRescueActionTest extends BaseAdyenTestCase {
 
 		$msg = $this->jobsAdyenQueue->pop();
 
-		$capture = JsonSerializableObject::fromJsonProxy( $msg['php-message-class'], json_encode( $msg ) );
+		$capture = new $msg['class']();
+		$capture->payload = $msg['payload'];
 		$approvePaymentResult = AdyenTestConfiguration::getSuccessfulApproveResult();
 		$this->mockApi->expects( $this->once() )
 			->method( 'approvePayment' )
@@ -80,8 +78,8 @@ class AutoRescueActionTest extends BaseAdyenTestCase {
 			->willReturn( $approvePaymentResult );
 
 		$capture->execute();
-		$this->assertEquals( $msg['merchantReference'], $authorisation->merchantReference );
-		$this->assertEquals( $msg['shopperReference'], $authorisation->shopperReference );
+		$this->assertEquals( $msg['payload']['merchantReference'], $authorisation->merchantReference );
+		$this->assertEquals( $msg['payload']['shopperReference'], $authorisation->shopperReference );
 
 		$recurringMsg = $this->recurringQueue->pop();
 		$this->assertNotNull( $recurringMsg );
@@ -101,7 +99,8 @@ class AutoRescueActionTest extends BaseAdyenTestCase {
 
 		$msg = $this->jobsAdyenQueue->pop();
 
-		$capture = JsonSerializableObject::fromJsonProxy( $msg['php-message-class'], json_encode( $msg ) );
+		$capture = new $msg['class']();
+		$capture->payload = $msg['payload'];
 		$approvePaymentResult = AdyenTestConfiguration::getSuccessfulApproveResult();
 		$this->mockApi->expects( $this->once() )
 			->method( 'approvePayment' )
@@ -113,8 +112,8 @@ class AutoRescueActionTest extends BaseAdyenTestCase {
 			->willReturn( $approvePaymentResult );
 
 		$capture->execute();
-		$this->assertEquals( $msg['merchantReference'], $authorisation->merchantReference );
-		$this->assertEquals( $msg['shopperReference'], $authorisation->shopperReference );
+		$this->assertEquals( $msg['payload']['merchantReference'], $authorisation->merchantReference );
+		$this->assertEquals( $msg['payload']['shopperReference'], $authorisation->shopperReference );
 
 		$recurringMsg = $this->recurringQueue->pop();
 		$this->assertNotNull( $recurringMsg );
@@ -134,7 +133,8 @@ class AutoRescueActionTest extends BaseAdyenTestCase {
 
 		$msg = $this->jobsAdyenQueue->pop();
 
-		$capture = JsonSerializableObject::fromJsonProxy( $msg['php-message-class'], json_encode( $msg ) );
+		$capture = new $msg['class']();
+		$capture->payload = $msg['payload'];
 
 		$capture->execute();
 

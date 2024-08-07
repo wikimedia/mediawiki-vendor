@@ -25,4 +25,17 @@ class BaseGravyTestCase extends BaseSmashPigUnitTestCase {
 		$this->config = GravyTestConfiguration::instance( $this->mockApi, $ctx->getGlobalConfiguration() );
 		$ctx->setProviderConfiguration( $this->config );
 	}
+
+	protected function getCreateDonorParams() {
+		$params = [];
+		$params['first_name'] = 'Lorem';
+		$params['last_name'] = 'Ipsum';
+		$params['email'] = 'lorem@ipsum';
+		$params['street_address'] = '10 hopewell street';
+		$params['postal_code'] = '1234';
+		$params['country'] = 'US';
+		$params['employer'] = 'Wikimedia Foundation';
+
+		return $params;
+	}
 }

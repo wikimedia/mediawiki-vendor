@@ -45,17 +45,16 @@ class PaymentCaptureActionTest extends BaseAdyenTestCase {
 
 		$this->assertEquals(
 			'SmashPig\PaymentProviders\Adyen\Jobs\ProcessCaptureRequestJob',
-			$job['php-message-class']
+			$job['class']
 		);
 		$sameProps = [
 			'currency', 'amount', 'pspReference', 'merchantReference',
 			'avsResult', 'cvvResult',
-
 		];
 		foreach ( $sameProps as $prop ) {
 			$this->assertEquals(
 				$auth->$prop,
-				$job[$prop],
+				$job['payload'][$prop],
 				"Job property $prop does not match capture"
 			);
 		}
@@ -78,20 +77,19 @@ class PaymentCaptureActionTest extends BaseAdyenTestCase {
 
 		$this->assertEquals(
 			'SmashPig\PaymentProviders\Adyen\Jobs\RecordCaptureJob',
-			$job['php-message-class']
+			$job['class']
 		);
 		$sameProps = [
 			'currency', 'amount', 'merchantReference',
-
 		];
 		foreach ( $sameProps as $prop ) {
 			$this->assertEquals(
 				$auth->$prop,
-				$job[$prop],
+				$job['payload'][$prop],
 				"Job property $prop does not match capture"
 			);
 		}
-		$this->assertEquals( $auth->pspReference, $job['gatewayTxnId'] );
+		$this->assertEquals( $auth->pspReference, $job['payload']['gatewayTxnId'] );
 	}
 
 	public function testFailedAuth() {

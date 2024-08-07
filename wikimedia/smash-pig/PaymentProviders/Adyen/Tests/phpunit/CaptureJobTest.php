@@ -60,7 +60,8 @@ class CaptureJobTest extends BaseAdyenTestCase {
 			] )
 			->willReturn( AdyenTestConfiguration::getSuccessfulApproveResult() );
 
-		$job = ProcessCaptureRequestJob::factory( $auth );
+		$job = new ProcessCaptureRequestJob();
+		$job->payload = ProcessCaptureRequestJob::factory( $auth )['payload'];
 		$this->assertTrue( $job->execute() );
 
 		$donorData = $this->pendingDatabase->fetchMessageByGatewayOrderId(
@@ -103,7 +104,8 @@ class CaptureJobTest extends BaseAdyenTestCase {
 		$this->mockApi->expects( $this->never() )
 			->method( 'approvePayment' );
 
-		$job = ProcessCaptureRequestJob::factory( $auth );
+		$job = new ProcessCaptureRequestJob();
+		$job->payload = ProcessCaptureRequestJob::factory( $auth )['payload'];
 		$this->assertTrue( $job->execute() );
 
 		$donorData = $this->pendingDatabase->fetchMessageByGatewayOrderId(
@@ -151,7 +153,8 @@ class CaptureJobTest extends BaseAdyenTestCase {
 			->with( $auth->pspReference )
 			->willReturn( AdyenTestConfiguration::getSuccessfulCancelResult() );
 
-		$job = ProcessCaptureRequestJob::factory( $auth );
+		$job = new ProcessCaptureRequestJob();
+		$job->payload = ProcessCaptureRequestJob::factory( $auth )['payload'];
 		$this->assertTrue( $job->execute() );
 
 		$donorData = $this->pendingDatabase->fetchMessageByGatewayOrderId(
@@ -188,7 +191,8 @@ class CaptureJobTest extends BaseAdyenTestCase {
 			->method( 'approvePayment' )
 			->willReturn( AdyenTestConfiguration::getSuccessfulApproveResult() );
 
-		$job1 = ProcessCaptureRequestJob::factory( $auth1 );
+		$job1 = new ProcessCaptureRequestJob();
+		$job1->payload = ProcessCaptureRequestJob::factory( $auth1 )['payload'];
 		$job1->execute();
 
 		$auth2 = JsonSerializableObject::fromJsonProxy(
@@ -202,7 +206,8 @@ class CaptureJobTest extends BaseAdyenTestCase {
 			->with( $auth2->pspReference )
 			->willReturn( AdyenTestConfiguration::getSuccessfulCancelResult() );
 
-		$job2 = ProcessCaptureRequestJob::factory( $auth2 );
+		$job2 = new ProcessCaptureRequestJob();
+		$job2->payload = ProcessCaptureRequestJob::factory( $auth2 )['payload'];
 		$this->assertTrue(
 			$job2->execute(),
 			'Duplicate auths should not clutter damage queue'
@@ -252,7 +257,8 @@ class CaptureJobTest extends BaseAdyenTestCase {
 			] )
 			->willReturn( AdyenTestConfiguration::getSuccessfulApproveResult() );
 
-		$job = ProcessCaptureRequestJob::factory( $auth );
+		$job = new ProcessCaptureRequestJob();
+		$job->payload = ProcessCaptureRequestJob::factory( $auth )['payload'];
 		$this->assertTrue( $job->execute() );
 
 		$antifraudMessage = $this->antifraudQueue->pop();

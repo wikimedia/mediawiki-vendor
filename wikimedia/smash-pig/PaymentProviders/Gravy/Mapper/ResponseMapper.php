@@ -4,6 +4,7 @@ namespace SmashPig\PaymentProviders\Gravy\Mapper;
 
 use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentProviders\Gravy\ReferenceData;
+use SmashPig\PaymentProviders\RiskScorer;
 
 class ResponseMapper {
 	/**
@@ -46,7 +47,8 @@ class ResponseMapper {
 			'order_id' => $response['external_identifier'],
 			'raw_status' => $response['status'],
 			'status' => $this->normalizeStatus( $response['status'] ),
-			'raw_response' => $response
+			'raw_response' => $response,
+			'risk_scores' => $this->getRiskScores( $response['avs_response_code'] ?? null, $response['cvv_response_code'] ?? null )
 		];
 
 		if ( !empty( $response['payment_method'] ) ) {
@@ -156,12 +158,28 @@ class ResponseMapper {
 		return $this->mapDonorResponse( $donorResponse );
 	}
 
+	public function getRiskScores( ?string $avs_response, ?string $cvv_response ): array {
+		return ( new RiskScorer() )->getRiskScores(
+			$avs_response,
+			$cvv_response
+		);
+	}
+
 	/**
 	 * @return array
 	 */
 	public function mapFromCardApprovePaymentResponse(): array {
 		$request = [];
 		return $request;
+	}
+
+	public function mapFromDeletePaymentTokenResponse( array $response ): array {
+		if ( ( isset( $response['type'] ) && $response['type'] == 'error' ) || isset( $response['error_code'] ) ) {
+			return $this->mapErrorFromResponse( $response );
+		}
+		return [
+			"is_successful" => true
+		];
 	}
 
 	/**

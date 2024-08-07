@@ -1,8 +1,8 @@
 <?php namespace SmashPig\PaymentProviders\Adyen\Jobs;
 
 use SmashPig\Core\Context;
-use SmashPig\Core\Jobs\RunnableJob;
 use SmashPig\Core\Logging\TaggedLogger;
+use SmashPig\Core\Runnable;
 use SmashPig\Core\SmashPigException;
 
 /**
@@ -11,28 +11,21 @@ use SmashPig\Core\SmashPigException;
  *
  * @package SmashPig\PaymentProviders\Adyen\Jobs
  */
-class DownloadReportJob extends RunnableJob {
-	// Helps locate these in e.g. damaged message db
-	public $gateway = 'adyen';
+class DownloadReportJob implements Runnable {
+	public array $payload;
 
-	/** @var TaggedLogger */
-	protected $logger;
+	protected TaggedLogger $logger;
 
-	protected $account;
-	protected $reportUrl;
+	protected string $downloadLoc;
 
-	protected $downloadLoc;
-	protected $propertiesExcludedFromExport = [
-		'logger', 'downloadLoc'
-	];
-
-	public static function factory( $account, $url ) {
-		$obj = new DownloadReportJob();
-
-		$obj->account = $account;
-		$obj->reportUrl = $url;
-
-		return $obj;
+	public static function factory( $account, $url ): array {
+		return [
+			'class' => 'SmashPig\PaymentProviders\Adyen\Jobs\DownloadReportJob',
+			'payload' => [
+				'account' => $account,
+				'reportUrl' => $url,
+			]
+		];
 	}
 
 	public function execute() {
@@ -40,16 +33,16 @@ class DownloadReportJob extends RunnableJob {
 		$c = Context::get()->getProviderConfiguration();
 
 		// Construct the temporary file path
-		$fileName = basename( $this->reportUrl );
+		$fileName = basename( $this->payload['reportUrl'] );
 		$this->downloadLoc =
-			$c->val( "accounts/{$this->account}/report-location" ) . '/' .
+			$c->val( "accounts/{$this->payload['account']}/report-location" ) . '/' .
 			$fileName;
 
-		$user = $c->val( "accounts/{$this->account}/report-username" );
-		$pass = $c->val( "accounts/{$this->account}/report-password" );
+		$user = $c->val( "accounts/{$this->payload['account']}/report-username" );
+		$pass = $c->val( "accounts/{$this->payload['account']}/report-password" );
 
 		$this->logger->info(
-			"Beginning report download from {$this->reportUrl} using username {$user} into {$this->downloadLoc}"
+			"Beginning report download from {$this->payload['reportUrl']} using username {$user} into {$this->downloadLoc}"
 		);
 
 		$fp = fopen( $this->downloadLoc, 'w' );
@@ -60,7 +53,7 @@ class DownloadReportJob extends RunnableJob {
 		}
 
 		$ch = curl_init();
-		curl_setopt( $ch, CURLOPT_URL, $this->reportUrl );
+		curl_setopt( $ch, CURLOPT_URL, $this->payload['reportUrl'] );
 
 		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, false );
 		curl_setopt( $ch, CURLOPT_FILE, $fp );

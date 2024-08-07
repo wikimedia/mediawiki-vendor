@@ -8,8 +8,6 @@ use WhichBrowser\Model\Version;
 
 class UCBrowserNew
 {
-    private $data;
-
     public function __construct($header, &$data)
     {
         $this->data =& $data;

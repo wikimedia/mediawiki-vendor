@@ -1,0 +1,22 @@
+{
+  "gateway_txn_id": false,
+  "response": false,
+  "gateway_account": "WikimediaDonations",
+  "fee": 0,
+  "contribution_tracking_id": "48991692",
+  "utm_source": "..rtbt",
+  "language": "en",
+  "email": "jwales@example.com",
+  "first_name": "Jimmy",
+  "last_name": "Wales",
+  "country": "NL",
+  "gateway": "adyen",
+  "order_id": "48991692.1",
+  "recurring": "",
+  "payment_method": "rtbt",
+  "payment_submethod": "rtbt_ideal",
+  "currency": "EUR",
+  "gross": "2.00",
+  "user_ip": "172.20.0.1",
+  "date": 1722548529
+}

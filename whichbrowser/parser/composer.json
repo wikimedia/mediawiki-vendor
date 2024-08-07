@@ -20,7 +20,7 @@
 
     "autoload": {
         "psr-4": {
-            "WhichBrowser\\": [ "src/" ]
+            "WhichBrowser\\": [ "src/", "tests/src/" ]
         }
     },
 
@@ -40,8 +40,7 @@
 
     "autoload-dev": {
        "psr-4": {
-            "WhichBrowserTest\\":  "tests/unit",
-            "WhichBrowser\\": [ "tests/src/" ]
+            "WhichBrowserTest\\":  "tests/unit"
         },
 
         "files": [ "tests/src/polyfills.php" ]

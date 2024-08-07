@@ -9,11 +9,12 @@ use SmashPig\PaymentProviders\Gravy\Factories\GravyGetDonorResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Mapper\RequestMapper;
 use SmashPig\PaymentProviders\Gravy\Mapper\ResponseMapper;
 use SmashPig\PaymentProviders\Gravy\Validators\Validator;
+use SmashPig\PaymentProviders\IDeleteRecurringPaymentTokenProvider;
 use SmashPig\PaymentProviders\IPaymentProvider;
 use SmashPig\PaymentProviders\Responses\PaymentDetailResponse;
 use SmashPig\PaymentProviders\ValidationException;
 
-abstract class PaymentProvider implements IPaymentProvider {
+abstract class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaymentTokenProvider {
 	/**
 	 * @var Api
 	 */
@@ -35,7 +36,7 @@ abstract class PaymentProvider implements IPaymentProvider {
 		try {
 			// extract out the validation of input out to a separate class
 			$validator = new Validator();
-			$validator->getDonorInputIsValid( $params );
+			$validator->validateDonorInput( $params );
 			// map local params to external format, ideally only changing key names and minor input format transformations
 			$gravyRequestMapper = new RequestMapper();
 			$gravyGetDonorRequest = $gravyRequestMapper->mapToGetDonorRequest( $params );
@@ -65,7 +66,7 @@ abstract class PaymentProvider implements IPaymentProvider {
 		try {
 			// extract out the validation of input out to a separate class
 			$validator = new Validator();
-			$validator->createDonorInputIsValid( $params );
+			$validator->validateCreateDonorInput( $params );
 
 			// map local params to external format, ideally only changing key names and minor input format transformations
 			$gravyRequestMapper = new RequestMapper();
@@ -88,6 +89,36 @@ abstract class PaymentProvider implements IPaymentProvider {
 		}
 
 		return $donorResponse;
+	}
+
+	public function deleteRecurringPaymentToken( array $params ): bool {
+		$response = false;
+		try {
+			$validator = new Validator();
+			$validator->validateDeletePaymentTokenInput( $params );
+
+			$gravyRequestMapper = new RequestMapper();
+			$gravyDeleteToken = $gravyRequestMapper->mapToDeletePaymentTokenRequest( $params );
+
+			$rawGravyDeletePaymentTokenResponse = $this->api->deletePaymentToken( $gravyDeleteToken );
+
+			// map the response from the external format back to our normalized structure.
+			$gravyResponseMapper = new ResponseMapper();
+			$normalizedResponse = $gravyResponseMapper->mapFromDeletePaymentTokenResponse( $rawGravyDeletePaymentTokenResponse );
+
+			if ( !$normalizedResponse['is_successful'] ) {
+				Logger::error( 'Processor failed to delete recurring token with response:' . $normalizedResponse['code'] . ', ' . $normalizedResponse['description'] );
+				return $response;
+			}
+			$response = true;
+		} catch ( ValidationException $e ) {
+			// it threw an exception!
+			Logger::error( 'Missing required data' . json_encode( $e->getData() ) );
+		} catch ( \Exception $e ) {
+			// it threw an exception!
+			Logger::error( 'Processor failed to delete recurring token with response:' . $e->getMessage() );
+		}
+		return $response;
 	}
 
 }

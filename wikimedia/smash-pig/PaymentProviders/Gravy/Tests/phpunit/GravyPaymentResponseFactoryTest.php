@@ -26,6 +26,7 @@ class GravyPaymentResponseFactoryTest extends TestCase {
 		$this->assertEquals( 'pending-poke', $gravyPaymentProviderResponse->getStatus() );
 		$this->assertEquals( 'processing', $gravyPaymentProviderResponse->getRawStatus() );
 		$this->assertEquals( $testNormalizedResponseData['raw_response'], $gravyPaymentProviderResponse->getRawResponse() );
+		$this->assertEquals( $testNormalizedResponseData['risk_scores'], $gravyPaymentProviderResponse->getRiskScores() );
 		$this->assertEmpty( $gravyPaymentProviderResponse->getErrors() );
 	}
 
@@ -43,6 +44,10 @@ class GravyPaymentResponseFactoryTest extends TestCase {
 			'order_id' => 'user-789123',
 			'raw_status' => 'processing',
 			'status' => 'pending-poke',
+			'risk_scores' => [
+				'cvv' => 50,
+				'avs' => 0
+			],
 			'raw_response' =>
 				[
 					'type' => 'transaction',

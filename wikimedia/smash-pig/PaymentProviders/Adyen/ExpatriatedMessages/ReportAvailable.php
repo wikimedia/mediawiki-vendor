@@ -24,11 +24,11 @@ class ReportAvailable extends AdyenMessage {
 		// The payments_accounting_report is a nightly file that has the same information
 		if ( strpos( $this->pspReference, 'settlement_detail_report' ) === 0 ||
 			 strpos( $this->pspReference, 'payments_accounting_report' ) === 0 ) {
-			$jobObject = DownloadReportJob::factory(
+			$jobArray = DownloadReportJob::factory(
 				$this->merchantAccountCode,
 				$this->reason
 			);
-			QueueWrapper::push( 'jobs-adyen', $jobObject );
+			QueueWrapper::push( 'jobs-adyen', $jobArray );
 		} else {
 			// We don't know how to handle this report yet
 			Logger::notice( "Do not know how to handle report with name '{$this->pspReference}'" );

@@ -61,7 +61,7 @@ class AdyenPaymentsAccountingReport extends AdyenAudit {
 			$msg['gross_currency'] = $row['Main Currency'];
 			// Doing math on floats, need to round to thousandths place to keep sanity
 			$msg['gross'] = round(
-				$row['Main Amount'] - $row['Markup (SC)'] - $row['Interchange (SC)'], 3
+				(float)$row['Main Amount'] - (float)$row['Markup (SC)'] - (float)$row['Interchange (SC)'], 3
 			);
 		}
 
