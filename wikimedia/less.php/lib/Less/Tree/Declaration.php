@@ -1,11 +1,13 @@
 <?php
 /**
  * @private
+ * @see less-3.13.1.js#Declaration.prototype
+ * @todo check for feature parity with 3.13.1
  */
-class Less_Tree_Rule extends Less_Tree implements Less_Tree_HasValueProperty {
+class Less_Tree_Declaration extends Less_Tree implements Less_Tree_HasValueProperty {
 
 	public $name;
-	/** @var Less_Tree */
+	/** @var Less_Tree[]|Less_Tree_Anonymous */
 	public $value;
 	/** @var string */
 	public $important;
@@ -16,8 +18,16 @@ class Less_Tree_Rule extends Less_Tree implements Less_Tree_HasValueProperty {
 	public $currentFileInfo;
 
 	/**
+	 * In the upstream `parsed` is stored in `Node`, but Less_Tree_Declaration is the only place
+	 * that make use of it.
+	 * @see less-3.13.1.js#Node.parsed
+	 * @var bool
+	 */
+	public $parsed = false;
+
+	/**
 	 * @param string|array<Less_Tree_Keyword|Less_Tree_Variable> $name
-	 * @param mixed $value
+	 * @param Less_Tree|string|null $value
 	 * @param null|false|string $important
 	 * @param null|false|string $merge
 	 * @param int|null $index
@@ -30,7 +40,7 @@ class Less_Tree_Rule extends Less_Tree implements Less_Tree_HasValueProperty {
 		$this->name = $name;
 		$this->value = ( $value instanceof Less_Tree )
 			? $value
-			: new Less_Tree_Value( [ $value ] );
+			: new Less_Tree_Value( [ $value ? new Less_Tree_Anonymous( $value ) : null ] );
 		$this->important = $important ? ' ' . trim( $important ) : '';
 		$this->merge = $merge;
 		$this->index = $index;
@@ -100,7 +110,7 @@ class Less_Tree_Rule extends Less_Tree implements Less_Tree_HasValueProperty {
 				$important = $importantResult['important'];
 			}
 
-			$return = new Less_Tree_Rule( $name,
+			$return = new Less_Tree_Declaration( $name,
 				$evaldValue,
 				$important,
 				$this->merge,
@@ -142,7 +152,6 @@ class Less_Tree_Rule extends Less_Tree implements Less_Tree_HasValueProperty {
 		if ( !is_array( $this->value ) ) {
 
 			if ( method_exists( $value, 'markReferenced' ) ) {
-				// @phan-suppress-next-line PhanUndeclaredMethod
 				$value->markReferenced();
 			}
 		} else {
