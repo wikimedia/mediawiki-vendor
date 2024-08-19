@@ -12,7 +12,6 @@ use Wikimedia\Parsoid\DOM\DocumentFragment;
 use Wikimedia\Parsoid\DOM\Element;
 use Wikimedia\Parsoid\DOM\Node;
 use Wikimedia\Parsoid\Html2Wt\DOMHandlers\DOMHandler;
-use Wikimedia\Parsoid\Tokens\SourceRange;
 use Wikimedia\Parsoid\Utils\DiffDOMUtils;
 use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
@@ -478,7 +477,7 @@ class Separators {
 			// (except for a special case for <br> nodes)
 			if ( $nodeB && WTSUtils::precedingSpaceSuppressesIndentPre( $nodeB, $origNodeB ) ) {
 				$isIndentPreSafe = true;
-			} elseif ( $sepType === 'sibling' || $nodeA && DOMUtils::atTheTop( $nodeA ) ) {
+			} elseif ( $sepType === 'sibling' || ( $nodeA && DOMUtils::atTheTop( $nodeA ) ) ) {
 				Assert::invariant( !DOMUtils::atTheTop( $nodeA ) || $sepType === 'parent-child', __METHOD__ );
 
 				// 'nodeB' is the first non-separator child of 'nodeA'.
@@ -635,19 +634,26 @@ class Separators {
 			$state = $this->state;
 			$dsr = DOMDataUtils::getDataParsoid( $parentNode )->dsr ?? null;
 			if ( Utils::isValidDSR( $dsr, true ) ) {
-				if ( $state->haveTrimmedWsDSR && (
-					$dsr->leadingWS > 0 || ( $dsr->leadingWS === 0 && $dsr->trailingWS > 0 )
-				) ) {
-					$range = new SourceRange( $dsr->innerStart(), $dsr->innerStart() + $dsr->leadingWS );
-					$sep = $state->getOrigSrc( $range ) ?? '';
-					return strspn( $sep, " \t" ) === strlen( $sep ) ? $sep : null;
-				} else {
-					if ( $dsr->innerStart() < $dsr->innerEnd() ) {
-						$sep = $state->getOrigSrc( $dsr->innerRange() ) ?? '';
-						// return first character of inner range iff it is
-						// tab or space
-						return preg_match( '/^[ \t]/', $sep ) ? $sep[0] : null;
+				if ( $state->haveTrimmedWsDSR && $dsr->leadingWS > 0 ) {
+					if ( preg_match(
+						'/^([ \t]*)/',
+						$state->getOrigSrc( $dsr->innerRange() ) ?? '',
+						$matches
+					) ) {
+						// $matches[1] is just spaces and tabs
+						$sep = substr( $matches[1], 0, $dsr->leadingWS );
+						if ( strlen( $sep ) !== $dsr->leadingWS ) {
+							return null;
+						}
+						return $sep;
 					}
+				} elseif ( $state->haveTrimmedWsDSR && $dsr->leadingWS === 0 && $dsr->trailingWS > 0 ) {
+					return '';
+				} elseif ( $dsr->innerStart() < $dsr->innerEnd() ) {
+					$sep = $state->getOrigSrc( $dsr->innerRange() ) ?? '';
+					// return first character of inner range iff it is
+					// tab or space
+					return preg_match( '/^[ \t]/', $sep ) ? $sep[0] : null;
 				}
 			}
 		}
@@ -701,23 +707,24 @@ class Separators {
 			$state = $this->state;
 			$dsr = DOMDataUtils::getDataParsoid( $parentNode )->dsr ?? null;
 			if ( Utils::isValidDSR( $dsr, true ) ) {
-				if ( $state->haveTrimmedWsDSR && (
-					$dsr->trailingWS > 0 || ( $dsr->trailingWS === 0 && $dsr->leadingWS > 0 )
-				) ) {
-					$range = new SourceRange( $dsr->innerEnd() - $dsr->trailingWS, $dsr->innerEnd() );
-					$sep = $state->getOrigSrc( $range ) ?? '';
-					if ( !preg_match( '/^[ \t]*$/', $sep ) ) {
-						$sep = null;
+				if ( $state->haveTrimmedWsDSR && $dsr->trailingWS > 0 ) {
+					if ( preg_match(
+						'/([ \t]*)$/',
+						$state->getOrigSrc( $dsr->innerRange() ) ?? '',
+						$matches
+					) ) {
+						// $matches[1] is just spaces and tabs
+						$sep = substr( $matches[1], -$dsr->trailingWS );
 					}
-				} else {
-					// The > instead of >= is to deal with an edge case
-					// = = where that single space is captured by the
-					// getLeadingSpace case above
-					if ( ( $dsr->innerEnd() - 1 ) > $dsr->innerStart() ) {
-						$sep = $state->getOrigSrc( $dsr->innerRange() ) ?? '';
-						// Return last character of $sep iff it is space or tab
-						$sep = preg_match( '/[ \t]$/', $sep ) ? substr( $sep, -1 ) : null;
-					}
+				} elseif ( $state->haveTrimmedWsDSR && $dsr->trailingWS === 0 && $dsr->leadingWS > 0 ) {
+					return '';
+				} elseif ( ( $dsr->innerEnd() - 1 ) > $dsr->innerStart() ) {
+					// The > instead of >= in the test above is to
+					// deal with an edge case where that single space
+					// is captured by the getLeadingSpace case above
+					$sep = $state->getOrigSrc( $dsr->innerRange() ) ?? '';
+					// Return last character of $sep iff it is space or tab
+					$sep = preg_match( '/[ \t]$/', $sep ) ? substr( $sep, -1 ) : null;
 				}
 			}
 		}
@@ -884,6 +891,12 @@ class Separators {
 			// FIXME: Maybe we shouldn't set dsr in the dsr pass if both aren't valid?
 			if ( Utils::isValidDSR( $dsrA ) && Utils::isValidDSR( $dsrB ) ) {
 				// Figure out containment relationship
+				//
+				// NOTE: "->to()" calls below compute synthetic DSR ranges
+				// which may not necessarily have offsets that correspond to valid
+				// UTF-8 characters. So, we shouldn't be doing utf-8 validity checks
+				// for these ranges. Since we validate $sep further below, it is also
+				// safe because bogus $sep strings are discarded.
 				if ( $dsrA->start <= $dsrB->start ) {
 					if ( $dsrB->end <= $dsrA->end ) {
 						if ( $dsrA->start === $dsrB->start && $dsrA->end === $dsrB->end ) {
@@ -892,19 +905,19 @@ class Separators {
 							$sep = '';
 						} elseif ( isset( $dsrA->openWidth ) ) {
 							// B in A, from parent to child
-							$sep = $state->getOrigSrc( $dsrA->openRange()->to( $dsrB ) );
+							$sep = $state->getOrigSrc( $dsrA->openRange()->to( $dsrB ), true );
 						}
 					} elseif ( $dsrA->end <= $dsrB->start ) {
 						// B following A (siblingish)
-						$sep = $state->getOrigSrc( $dsrA->to( $dsrB ) );
+						$sep = $state->getOrigSrc( $dsrA->to( $dsrB ), true );
 					} elseif ( isset( $dsrB->closeWidth ) ) {
 						// A in B, from child to parent
-						$sep = $state->getOrigSrc( $dsrA->to( $dsrB->closeRange() ) );
+						$sep = $state->getOrigSrc( $dsrA->to( $dsrB->closeRange() ), true );
 					}
 				} elseif ( $dsrA->end <= $dsrB->end ) {
 					if ( isset( $dsrB->closeWidth ) ) {
 						// A in B, from child to parent
-						$sep = $state->getOrigSrc( $dsrA->to( $dsrB->closeRange() ) );
+						$sep = $state->getOrigSrc( $dsrA->to( $dsrB->closeRange() ), true );
 					}
 				} else {
 					$this->env->log( 'info/html2wt', 'dsr backwards: should not happen!' );

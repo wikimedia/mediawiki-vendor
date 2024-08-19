@@ -22,6 +22,7 @@ use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\PHPUtils;
 use Wikimedia\Parsoid\Utils\Utils;
 use Wikimedia\Parsoid\Utils\WTUtils;
+use Wikimedia\Parsoid\Wt2Html\DOM\Handlers\AddLinkAttributes;
 use Wikimedia\Parsoid\Wt2Html\DOM\Handlers\CleanUp;
 use Wikimedia\Parsoid\Wt2Html\DOM\Handlers\DedupeStyles;
 use Wikimedia\Parsoid\Wt2Html\DOM\Handlers\DisplaySpace;
@@ -30,7 +31,6 @@ use Wikimedia\Parsoid\Wt2Html\DOM\Handlers\Headings;
 use Wikimedia\Parsoid\Wt2Html\DOM\Handlers\LiFixups;
 use Wikimedia\Parsoid\Wt2Html\DOM\Handlers\TableFixups;
 use Wikimedia\Parsoid\Wt2Html\DOM\Handlers\UnpackDOMFragments;
-use Wikimedia\Parsoid\Wt2Html\DOM\Processors\AddLinkAttributes;
 use Wikimedia\Parsoid\Wt2Html\DOM\Processors\AddMediaInfo;
 use Wikimedia\Parsoid\Wt2Html\DOM\Processors\AddRedLinks;
 use Wikimedia\Parsoid\Wt2Html\DOM\Processors\ComputeDSR;
@@ -489,11 +489,10 @@ class DOMPostProcessor extends PipelineStage {
 				// FIXME: T214994: Have to process HTML in embedded attributes?
 			],
 			[
-				'name' => 'DisplaySpace',
-				'shortcut' => 'displayspace',
+				'name' => 'DisplaySpace+AddLinkAttributes',
+				'shortcut' => 'displayspace+linkclasses',
 				'skipNested' => true,
-				// Don't need to process HTML in embedded attributes
-				'applyToAttributeEmbeddedHTML' => false,
+				'applyToAttributeEmbeddedHTML' => true,
 				'isTraverser' => true,
 				'handlers' => [
 					[
@@ -504,15 +503,12 @@ class DOMPostProcessor extends PipelineStage {
 						'nodeName' => null,
 						'action' => static fn ( $node ) => DisplaySpace::rightHandler( $node )
 					],
+					[
+						'nodeName' => 'a',
+						'action' => static fn ( $node ) => AddLinkAttributes::handler( $node, $env ),
+					],
+
 				]
-			],
-			[
-				'Processor' => AddLinkAttributes::class,
-				'shortcut' => 'linkclasses',
-				// FIXME: T214994: Might be beneficial to process HTML in embedded attributes
-				// since some (not yet known) use cases might benefit from this information
-				// on these hidden links.
-				'skipNested' => true
 			],
 			// Benefits from running after determining which media are redlinks
 			[

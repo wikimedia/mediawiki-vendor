@@ -75,6 +75,7 @@ class AnnotationDOMRangeBuilder extends DOMRangeBuilder {
 			$startParent = DOMCompat::getParentElement( $range->start );
 			$endParent = DOMCompat::getParentElement( $range->end );
 			if ( $startParent !== $endParent ) {
+				// Post-moves above, start/end have been set to the respective metas
 				$correctedRange = self::findEnclosingRange( $range->start, $range->end );
 				if ( $range->start !== $correctedRange->start ) {
 					$this->moveRangeStart( $range, $correctedRange->start );
@@ -91,64 +92,75 @@ class AnnotationDOMRangeBuilder extends DOMRangeBuilder {
 	 * it into a <div> (for block ranges) or <span> (for inline ranges) with the mw:ExtendedAnnRange
 	 * type.
 	 * @param DOMRangeInfo $range
-	 * @param int|null $actualRangeStart
-	 * @param int|null $actualRangeEnd
 	 */
-	private function makeUneditable( DOMRangeInfo $range, ?int $actualRangeStart, ?int $actualRangeEnd ) {
-		$parent = $range->startElem->parentNode;
+	private function makeUneditable( DOMRangeInfo $range ) {
+		$startMeta = $range->startElem;
+		$endMeta = $range->endElem;
 
-		$node = $range->startElem;
+		$actualRangeStart = DOMDataUtils::getDataParsoid( $startMeta )->dsr->start;
+		$actualRangeEnd = DOMDataUtils::getDataParsoid( $endMeta )->dsr->end;
+
 		$inline = true;
-		while ( $node !== $range->endElem && $node !== null ) {
+		$node = $startMeta;
+		while ( true ) {
+			if ( $node === null ) {
+				// Start and end aren't siblings, we'll log an error below
+				break;
+			}
 			if ( DOMUtils::hasBlockTag( $node ) ) {
 				$inline = false;
 				break;
 			}
+			if ( $node === $endMeta ) {
+				break;
+			}
 			$node = $node->nextSibling;
 		}
-		if ( $inline && $node !== null && DOMUtils::hasBlockTag( $node ) ) {
-			$inline = false;
-		}
 
-		$wrap = $parent->ownerDocument->createElement( $inline ? 'span' : 'div' );
-		$parent->insertBefore( $wrap, $range->startElem );
-
-		$toMove = $range->startElem;
-		while ( $toMove !== $range->endElem && $toMove !== null ) {
-			$nextToMove = $toMove->nextSibling;
-			$wrap->appendChild( $toMove );
-			$toMove = $nextToMove;
-		}
-
-		if ( $toMove !== null ) {
-			$wrap->appendChild( $toMove );
-		} else {
-			$this->env->log( 'warn', "End of annotation range [$actualRangeStart, $actualRangeEnd] not found. " .
-				"Document marked uneditable until its end." );
-		}
-
+		$wrap = $startMeta->ownerDocument->createElement( $inline ? 'span' : 'div' );
 		$wrap->setAttribute( "typeof", "mw:ExtendedAnnRange" );
+		$startMeta->parentNode->insertBefore( $wrap, $startMeta );
+
+		$node = $startMeta;
+		while ( true ) {
+			if ( $node === null ) {
+				$this->env->log(
+					'warn',
+					"End of annotation range [$actualRangeStart, $actualRangeEnd] not found. " .
+					"Document marked uneditable until its end."
+				);
+				break;
+			}
+			$next = $node->nextSibling;
+			$wrap->appendChild( $node );
+			if ( $node === $endMeta ) {
+				break;
+			}
+			$node = $next;
+		}
 
 		// Ensure template continuity is not broken
-		$about = DOMCompat::getAttribute( $range->startElem, "about" );
+		// FIXME: What about if the endMeta has an about id?  Even though
+		// annotations don't come from template, template ranges can subsume
+		// them by adding strings to their "parts".
+		$about = DOMCompat::getAttribute( $startMeta, "about" );
+		$previousElt = DOMCompat::getPreviousElementSibling( $startMeta );
+		$nextElt = DOMCompat::getNextElementSibling( $endMeta );
 		$continuity = (
-			(
-				DOMCompat::getPreviousElementSibling( $range->startElem ) &&
-				DOMCompat::getPreviousElementSibling( $range->startElem )->hasAttribute( "about" )
-			) ||
-			( DOMCompat::getNextElementSibling( $range->endElem ) &&
-				DOMCompat::getNextElementSibling( $range->endElem )->hasAttribute( "about" )
-			)
+			( $previousElt && $previousElt->hasAttribute( "about" ) ) ||
+			( $nextElt && $nextElt->hasAttribute( "about" ) )
 		);
 		if ( $about && $continuity ) {
 			$wrap->setAttribute( "about", $about );
 		}
+
+		// FIXME: If we're adding an about id, we need to fixup the dsr
+		// on the template to include any range we may be adding.
 		$dp = new DataParsoid();
 		$dp->autoInsertedStart = true;
 		$dp->autoInsertedEnd = true;
 		$dp->dsr = new DomSourceRange( $actualRangeStart, $actualRangeEnd, 0, 0 );
 		DOMDataUtils::setDataParsoid( $wrap, $dp );
-		$openRanges = [];
 	}
 
 	/**
@@ -306,16 +318,24 @@ class AnnotationDOMRangeBuilder extends DOMRangeBuilder {
 			$rangesByType[$annType][] = $range;
 		}
 
-		foreach ( $rangesByType as $singleTypeRange ) {
+		foreach ( $rangesByType as $singleTypeRanges ) {
+			// FIXME: The ranges in $singleTypeRanges may have start/end that
+			// are no longer siblings because of the wrapping in makeUneditable.
+			// wrapAnnotationsInTree tries to account for that by calling
+			// by redoing findEnclosingRange but that happens after
+			// findTopLevelNonOverlappingRanges, which may rely on the assumption
+			// of a linear range, further analysis is needed.
+			//
+			// Furthermore, makeUneditable may be messing up any ranges we've
+			// already processed of other types since those aren't guaranteed
+			// to be non-overlapping of the current type.
 			$this->nodeRanges = new SplObjectStorage;
-			$topRanges = $this->findTopLevelNonOverlappingRanges( $root, $singleTypeRange );
+			$topRanges = $this->findTopLevelNonOverlappingRanges( $root, $singleTypeRanges );
 			$this->wrapAnnotationsInTree( $topRanges );
 			foreach ( $topRanges as $range ) {
-				$actualRangeStart = DOMDataUtils::getDataParsoid( $range->start )->dsr->start;
-				$actualRangeEnd = DOMDataUtils::getDataParsoid( $range->end )->dsr->end;
 				$isExtended = $this->isExtended( $range );
 				if ( $isExtended ) {
-					$this->makeUneditable( $range, $actualRangeStart, $actualRangeEnd );
+					$this->makeUneditable( $range );
 				}
 				$this->setMetaDataMwForRange( $range, $isExtended );
 			}
