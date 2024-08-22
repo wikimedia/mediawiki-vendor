@@ -5,6 +5,7 @@ namespace SmashPig\PaymentProviders\Gravy\Mapper;
 use SmashPig\Core\Helpers\CurrencyRoundingHelper;
 
 class RequestMapper {
+	private const CAPTURE_INTENT = 'capture';
 
 	public function mapToCreatePaymentRequest( array $params ): array {
 		$request = [
@@ -24,12 +25,17 @@ class RequestMapper {
 		}
 
 		if ( !empty( $params['recurring'] ) ) {
-			$request['store'] = true;
+			if ( !$this->isRecurringCharge( $params ) ) {
+				$request['store'] = true;
+			} else {
+				$request['merchant_initiated'] = true;
+				$request['is_subsequent_payment'] = true;
+			}
 			$request['payment_source'] = 'recurring';
 		}
 
-		if ( !empty( $params['redirect_url'] ) ) {
-			$request['payment_method']['redirect_url'] = $params['redirect_url'];
+		if ( !empty( $params['return_url'] ) ) {
+			$request['payment_method']['redirect_url'] = $params['return_url'];
 		}
 
 		return $request;
@@ -80,13 +86,44 @@ class RequestMapper {
 	/**
 	 * @return array
 	 */
+	public function mapToBankCreatePaymentRequest( array $params ): array {
+		$request = $this->mapToCreatePaymentRequest( $params );
+		if ( isset( $params['recurring_payment_token'] ) ) {
+			$payment_method = [
+				'method' => 'id',
+				'id' => $params['recurring_payment_token'],
+			];
+		} else {
+			$payment_method = [
+				'method' => $this->mapPaymentMethodToGravyPaymentMethod( $params['payment_submethod'] ),
+				'country' => $params['country'],
+				'currency' => $params['currency'],
+			];
+		}
+		$request['payment_method'] = array_merge( $request['payment_method'], $payment_method );
+
+		$request['intent'] = self::CAPTURE_INTENT;
+		return $request;
+	}
+
+	/**
+	 * @return array
+	 */
 	public function mapToCardCreatePaymentRequest( array $params ): array {
 		$request = $this->mapToCreatePaymentRequest( $params );
-
-		$request['payment_method'] = array_merge( $request['payment_method'], [
-			'method' => 'checkout-session',
-			'id' => $params['gateway_session_id'],
-		] );
+		$payment_method = [];
+		if ( isset( $params['gateway_session_id'] ) ) {
+			$payment_method = [
+				'method' => 'checkout-session',
+				'id' => $params['gateway_session_id'],
+			];
+		} elseif ( isset( $params['recurring_payment_token'] ) ) {
+			$payment_method = [
+				'method' => 'id',
+				'id' => $params['recurring_payment_token'],
+			];
+		}
+		$request['payment_method'] = array_merge( $request['payment_method'], $payment_method );
 
 		return $request;
 	}
@@ -111,4 +148,26 @@ class RequestMapper {
 		return $request;
 	}
 
+	/**
+	 * Check if payment params is for recurring charge
+	 * @param array $params
+	 * @return bool
+	 */
+	private function isRecurringCharge( array $params ): bool {
+		return isset( $params['recurring_payment_token'] );
+	}
+
+	/**
+	 * Maps our payment submethod to gravy's
+	 * @param mixed $payment_submethod
+	 * @return string
+	 */
+	private function mapPaymentMethodToGravyPaymentMethod( $payment_submethod ): string {
+		switch ( $payment_submethod ) {
+			case 'ach':
+				return 'trustly';
+			default:
+				return '';
+		}
+	}
 }

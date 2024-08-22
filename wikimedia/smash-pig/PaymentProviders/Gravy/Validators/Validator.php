@@ -2,6 +2,7 @@
 
 namespace SmashPig\PaymentProviders\Gravy\Validators;
 
+use SmashPig\Core\ProviderConfiguration;
 use SmashPig\PaymentProviders\ValidationException;
 
 class Validator {
@@ -25,6 +26,43 @@ class Validator {
 			'gateway_session_id',
 			'amount',
 			'currency',
+			'country',
+			'order_id',
+			'email',
+			'first_name',
+			'last_name'
+		];
+
+		$this->validateFields( $required, $params );
+	}
+
+	/**
+	 * @throws ValidationException
+	 */
+	public function validateRedirectCreatePaymentInput( array $params ): void {
+		$required = [
+			'amount',
+			'currency',
+			'country',
+			'order_id',
+			'email',
+			'first_name',
+			'last_name',
+		];
+
+		$this->validateFields( $required, $params );
+	}
+
+	/**
+	 * @throws ValidationException
+	 */
+	public function validateCreatePaymentFromTokenInput( array $params ): void {
+		$required = [
+			'recurring_payment_token',
+			'processor_contact_id',
+			'amount',
+			'currency',
+			'country',
 			'order_id',
 			'email',
 			'first_name',
@@ -42,6 +80,17 @@ class Validator {
 			'gateway_txn_id',
 			'currency',
 			'amount'
+		];
+
+		$this->validateFields( $required, $params );
+	}
+
+	/**
+	 * @throws ValidationException
+	 */
+	public function validateGetPaymentDetailsInput( array $params ): void {
+		$required = [
+			'gateway_txn_id'
 		];
 
 		$this->validateFields( $required, $params );
@@ -67,6 +116,26 @@ class Validator {
 		];
 
 		$this->validateFields( $required, $params );
+	}
+
+	/**
+	 * @throws ValidationException
+	 */
+	public function validateWebhookEventHeader( array $params, ProviderConfiguration $config ): void {
+		$required = [
+			'AUTHORIZATION'
+		];
+
+		$this->validateFields( $required, $params );
+
+		// Gr4vy currently only supports basic authentication for webhook security
+		$base64_authorization_value = "Basic " . base64_encode( $config->val( "accounts/webhook/username" ) . ":" . $config->val( "accounts/webhook/password" ) );
+
+		if ( $params["AUTHORIZATION"] != $base64_authorization_value ) {
+			throw new ValidationException( "Invalid Authorisation header", [
+				"AUTHORISATION" => 'invalid'
+			] );
+		}
 	}
 
 	/**

@@ -144,6 +144,13 @@ data-store:
                 <<: *REDIS
                 queue: jobs-braintree
 
+    jobs-gravy:
+        class: PHPQueue\Backend\Predis
+        constructor-parameters:
+            -
+                <<: *REDIS
+                queue: jobs-gravy
+
     donations:
         class: PHPQueue\Backend\Predis
         constructor-parameters:

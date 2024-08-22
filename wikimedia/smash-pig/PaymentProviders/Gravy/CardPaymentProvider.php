@@ -17,23 +17,6 @@ use SmashPig\PaymentProviders\ValidationException;
 
 class CardPaymentProvider extends PaymentProvider implements IPaymentProvider {
 
-	/**
-	 * @param array $params [gateway_session_id, amount, currency]
-	 * for payment from secure fields, required parameters are:
-	 * * gateway_session_id
-	 * * amount
-	 * * currency
-	 * * order_id
-	 * * email
-	 * * first_name
-	 * * last_name
-	 *
-	 * @return CreatePaymentResponse
-	 */
-	public function createPayment( array $params ) : CreatePaymentResponse {
-		return $this->createPaymentFromSecureFields( $params );
-	}
-
 	public function createPaymentSession() : CreatePaymentSessionResponse {
 		$sessionResponse = new CreatePaymentSessionResponse();
 		try {
@@ -57,7 +40,6 @@ class CardPaymentProvider extends PaymentProvider implements IPaymentProvider {
 	}
 
 	public function approvePayment( array $params ) : ApprovePaymentResponse {
-		// create our standard response object from the normalized response
 		$approvePaymentResponse = new ApprovePaymentResponse();
 
 		try {
@@ -74,7 +56,7 @@ class CardPaymentProvider extends PaymentProvider implements IPaymentProvider {
 
 			// map the response from the external format back to our normalized structure.
 			$gravyResponseMapper = new ResponseMapper();
-			$normalizedResponse = $gravyResponseMapper->mapFromApprovePaymentResponse( $rawGravyApprovePaymentResponse );
+			$normalizedResponse = $gravyResponseMapper->mapFromPaymentResponse( $rawGravyApprovePaymentResponse );
 
 			// populate our standard response object from the normalized response
 			// this could be extracted out to a factory as we do for dlocal
@@ -91,27 +73,35 @@ class CardPaymentProvider extends PaymentProvider implements IPaymentProvider {
 		return $approvePaymentResponse;
 	}
 
-	protected function createPaymentFromSecureFields( array $params ) : CreatePaymentResponse {
-		// create our standard response object from the normalized response
+	/**
+	 * @param array $params [gateway_session_id, amount, currency]
+	 * for payment from secure fields, required parameters are:
+	 * * gateway_session_id
+	 * * amount
+	 * * currency
+	 * * order_id
+	 * * email
+	 * * first_name
+	 * * last_name
+	 *
+	 * @return CreatePaymentResponse
+	 */
+	public function createPayment( array $params ) : CreatePaymentResponse {
 		$createPaymentResponse = new createPaymentResponse();
 		try {
 			// extract out the validation of input out to a separate class
 			$validator = new Validator();
-			$validator->validateCreatePaymentInput( $params );
+
+			if ( isset( $params['recurring_payment_token'] ) ) {
+				$validator->validateCreatePaymentFromTokenInput( $params );
+			} else {
+				$validator->validateCreatePaymentInput( $params );
+			}
 
 			// map local params to external format, ideally only changing key names and minor input format transformations
 			$gravyRequestMapper = new RequestMapper();
-			$processorContact = $this->getDonorRecord( $params );
-			if ( !$processorContact->isSuccessful() ) {
-				Logger::info( 'Creating new donor record on Gr4vy with the following parameters:' . json_encode( $params ) );
-				$processorContact = $this->createDonor( $params );
-			}
-			if ( !$processorContact->isSuccessful() ) {
-				Logger::error( 'Processor failed to create new contact record with error response:' . json_encode( $processorContact->getRawResponse() ) );
-				return GravyCreatePaymentResponseFactory::handlePaymentErrorFromDonorRespone( $createPaymentResponse, $processorContact );
-			}
-			$processorContactRecord = $processorContact->getDonorDetails();
-			$params['processor_contact_id'] = $processorContactRecord->getCustomerId();
+
+			$this->setProcessorContactId( $params );
 
 			$gravyCreatePaymentRequest = $gravyRequestMapper->mapToCardCreatePaymentRequest( $params );
 
@@ -120,7 +110,7 @@ class CardPaymentProvider extends PaymentProvider implements IPaymentProvider {
 
 			// normalize gravy response
 			$gravyResponseMapper = new ResponseMapper();
-			$normalizedResponse = $gravyResponseMapper->mapFromCreatePaymentResponse( $rawGravyCreatePaymentResponse );
+			$normalizedResponse = $gravyResponseMapper->mapFromPaymentResponse( $rawGravyCreatePaymentResponse );
 
 			// populate our standard response object from the normalized response
 			// this could be extracted out to a factory as we do for dlocal

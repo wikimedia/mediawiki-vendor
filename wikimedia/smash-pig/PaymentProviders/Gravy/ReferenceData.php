@@ -103,8 +103,9 @@ class ReferenceData {
 		"thaiqr" => '',
 		"touchngo" => '',
 		"truemoney" => '',
-		"trustly" => '',
-		"trustlyeurope" => '',
+		"trustly" => self::DD_PAYMENT_METHOD,
+		"trustlyus" => self::DD_PAYMENT_METHOD,
+		"trustlyeurope" => self::DD_PAYMENT_METHOD,
 		"network-token" => '',
 		"givingblock" => '',
 		"wechat" => '',
@@ -159,6 +160,12 @@ class ReferenceData {
 		"eps" => "rtbt",
 	];
 
+	protected static $ddSubmethods = [
+		"trustly" => "ach",
+		"trustlyus" => "ach",
+		"trustlyeurope" => ''
+	];
+
 	public static function decodePaymentMethod( string $method, ?string $scheme = '' ) {
 		$methods = self::$methods;
 		$payment_method = $methods[$method] ?? '';
@@ -176,7 +183,9 @@ class ReferenceData {
 			case self::GOOGLE_PAYMENT_METHOD:
 			$payment_submethod = self::$cardPaymentSubmethods[$scheme];
 				break;
-
+			case self::DD_PAYMENT_METHOD:
+				$payment_submethod = self::$ddSubmethods[$method];
+				break;
 			default:
 				break;
 		}

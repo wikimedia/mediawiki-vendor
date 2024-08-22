@@ -3,7 +3,6 @@
 namespace SmashPig\PaymentProviders\Adyen\Test;
 
 use SmashPig\Core\Context;
-use SmashPig\Core\DataStores\JsonSerializableObject;
 use SmashPig\Core\DataStores\QueueWrapper;
 use SmashPig\CrmLink\Messages\SourceFields;
 use SmashPig\PaymentProviders\Adyen\Actions\PaymentCaptureAction;
@@ -24,26 +23,23 @@ class AutoRescueActionTest extends BaseAdyenTestCase {
 	}
 
 	public function testAutoRescueMessageIsInstanceOfAuthorisation(): void {
-		$authorisation = JsonSerializableObject::fromJsonProxy(
-			'SmashPig\PaymentProviders\Adyen\ExpatriatedMessages\Autorescue',
-			file_get_contents( __DIR__ . '/../Data/successful_auto_rescue_auth.json' )
+		$authorisation = Autorescue::getInstanceFromJSON(
+			json_decode( file_get_contents( __DIR__ . '/../Data/successful_auto_rescue_auth.json' ), true )
 		);
 
 		$this->assertInstanceOf( Authorisation::class, $authorisation );
 	}
 
 	public function testAutoRescueIsRecurringInstallmentReturnsCorrectValue(): void {
-		$authorisation = JsonSerializableObject::fromJsonProxy(
-			'SmashPig\PaymentProviders\Adyen\ExpatriatedMessages\Autorescue',
-			file_get_contents( __DIR__ . '/../Data/successful_auto_rescue_auth.json' )
+		$authorisation = Autorescue::getInstanceFromJSON(
+			json_decode( file_get_contents( __DIR__ . '/../Data/successful_auto_rescue_auth.json' ), true )
 		);
 		$this->assertTrue( $authorisation->isSuccessfulAutoRescue() );
 	}
 
 	public function testSuccessfulAutoRescueMessageTransferredToJobsAdyenQueue(): void {
-		$authorisation = JsonSerializableObject::fromJsonProxy(
-			'SmashPig\PaymentProviders\Adyen\ExpatriatedMessages\Autorescue',
-			file_get_contents( __DIR__ . '/../Data/successful_auto_rescue_auth.json' )
+		$authorisation = Autorescue::getInstanceFromJSON(
+			json_decode( file_get_contents( __DIR__ . '/../Data/successful_auto_rescue_auth.json' ), true )
 		);
 		$action = new PaymentCaptureAction();
 		$action->execute( $authorisation );
@@ -56,9 +52,8 @@ class AutoRescueActionTest extends BaseAdyenTestCase {
 	}
 
 	public function testSuccessfulAutoRescueAuthorisationMessageCapture(): void {
-		$authorisation = JsonSerializableObject::fromJsonProxy(
-			'SmashPig\PaymentProviders\Adyen\ExpatriatedMessages\Authorisation',
-			file_get_contents( __DIR__ . '/../Data/successful_auto_rescue_auth.json' )
+		$authorisation = Autorescue::getInstanceFromJSON(
+			json_decode( file_get_contents( __DIR__ . '/../Data/successful_auto_rescue_auth.json' ), true )
 		);
 		$action = new PaymentCaptureAction();
 		$action->execute( $authorisation );
@@ -90,9 +85,8 @@ class AutoRescueActionTest extends BaseAdyenTestCase {
 	}
 
 	public function testSuccessfulAutoRescueAuthorisationMessageCaptureJPY(): void {
-		$authorisation = JsonSerializableObject::fromJsonProxy(
-			'SmashPig\PaymentProviders\Adyen\ExpatriatedMessages\Authorisation',
-			file_get_contents( __DIR__ . '/../Data/successful_auto_rescue_auth_jpy.json' )
+		$authorisation = Autorescue::getInstanceFromJSON(
+			json_decode( file_get_contents( __DIR__ . '/../Data/successful_auto_rescue_auth_jpy.json' ), true )
 		);
 		$action = new PaymentCaptureAction();
 		$action->execute( $authorisation );
@@ -124,9 +118,8 @@ class AutoRescueActionTest extends BaseAdyenTestCase {
 	}
 
 	public function testNoCaptureForAutoRescueMessage(): void {
-		$authorisation = JsonSerializableObject::fromJsonProxy(
-			'SmashPig\PaymentProviders\Adyen\ExpatriatedMessages\Autorescue',
-			file_get_contents( __DIR__ . '/../Data/successful_auto_rescue_auth.json' )
+		$authorisation = Autorescue::getInstanceFromJSON(
+			json_decode( file_get_contents( __DIR__ . '/../Data/successful_auto_rescue_auth.json' ), true )
 		);
 		$action = new PaymentCaptureAction();
 		$action->execute( $authorisation );

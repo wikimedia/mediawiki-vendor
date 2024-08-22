@@ -34,7 +34,7 @@ class ResponseMapper {
 	 * @return array
 	 * @link https://docs.gr4vy.com/reference/transactions/new-transaction
 	 */
-	public function mapFromCreatePaymentResponse( array $response ): array {
+	public function mapFromPaymentResponse( array $response ): array {
 		if ( ( isset( $response['type'] ) && $response['type'] == 'error' ) || isset( $response['error_code'] ) ) {
 			return $this->mapErrorFromResponse( $response );
 		}
@@ -50,6 +50,10 @@ class ResponseMapper {
 			'raw_response' => $response,
 			'risk_scores' => $this->getRiskScores( $response['avs_response_code'] ?? null, $response['cvv_response_code'] ?? null )
 		];
+
+		if ( $params['status'] == FinalStatus::FAILED ) {
+			$params['is_successful'] = false;
+		}
 
 		if ( !empty( $response['payment_method'] ) ) {
 			$params['recurring_payment_token'] = $response['payment_method']['id'];
@@ -88,18 +92,6 @@ class ResponseMapper {
 		}
 
 		return $params;
-	}
-
-	/**
-	 * @return array
-	 * @link https://docs.gr4vy.com/reference/transactions/capture-transaction
-	 */
-	public function mapFromApprovePaymentResponse( array $response ): array {
-		if ( ( isset( $response['type'] ) && $response['type'] == 'error' ) || isset( $response['error_code'] ) ) {
-			return $this->mapErrorFromResponse( $response );
-		}
-
-		return $this->mapFromCreatePaymentResponse( $response );
 	}
 
 	public function mapDonorResponse( array $response ) : array {

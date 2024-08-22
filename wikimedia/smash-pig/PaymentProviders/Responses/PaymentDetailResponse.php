@@ -75,6 +75,11 @@ class PaymentDetailResponse extends PaymentProviderResponse {
 	protected $paymentMethod;
 
 	/**
+	 * @var string|null
+	 */
+	protected $orderId;
+
+	/**
 	 * Determines whether the payment is in a status that requires further
 	 * action from the merchant to push through. Generally this means a card
 	 * payment has been authorized but not yet captured.
@@ -230,4 +235,19 @@ class PaymentDetailResponse extends PaymentProviderResponse {
 		return $this;
 	}
 
+	/**
+	 * @return string
+	 */
+	public function getOrderId(): string {
+		return $this->orderId;
+	}
+
+	/**
+	 * @param string $orderId
+	 * @return static
+	 */
+	public function setOrderId( string $orderId ): PaymentDetailResponse {
+		$this->orderId = $orderId;
+		return $this;
+	}
 }

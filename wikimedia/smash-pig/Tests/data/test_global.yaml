@@ -82,6 +82,13 @@ data-store:
                 connection_string: 'sqlite::memory:'
                 queue: jobs_braintree
 
+    jobs-gravy:
+        class: PHPQueue\Backend\PDO
+        constructor-parameters:
+            -
+                connection_string: 'sqlite::memory:'
+                queue: jobs_gravy
+
     jobs-adyen:
         class: PHPQueue\Backend\PDO
         constructor-parameters:

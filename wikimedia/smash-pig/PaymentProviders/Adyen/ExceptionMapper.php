@@ -125,6 +125,7 @@ class ExceptionMapper {
 		'700' => ErrorCode::MISSING_REQUIRED_DATA, // No method specified
 		'701' => ErrorCode::UNKNOWN, // Server could not process request
 		'702' => ErrorCode::UNKNOWN, // Problem parsing request
+		'703' => ErrorCode::UNKNOWN, // Required resource temporarily unavailable
 		'704' => ErrorCode::UNKNOWN, // Request already processed
 		'800' => ErrorCode::UNKNOWN, // Contract not found
 		'801' => ErrorCode::UNKNOWN, // Too many PaymentDetails defined

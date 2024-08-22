@@ -212,7 +212,6 @@ class ComposerStaticInit_mediawiki_vendor
         'WhichBrowser\\' => 
         array (
             0 => __DIR__ . '/..' . '/whichbrowser/parser/src',
-            1 => __DIR__ . '/..' . '/whichbrowser/parser/tests/src',
         ),
         'Twig\\' => 
         array (
@@ -461,7 +460,6 @@ class ComposerStaticInit_mediawiki_vendor
 
     public static $fallbackDirsPsr0 = array (
         0 => __DIR__ . '/..' . '/cssjanus/cssjanus/src',
-        1 => __DIR__ . '/..' . '/pear/pear-core-minimal/src',
     );
 
     public static $classMap = array (
@@ -512,8 +510,10 @@ class ComposerStaticInit_mediawiki_vendor
         'Clio\\Console' => __DIR__ . '/..' . '/clio/clio/src/Clio/Console.php',
         'Clio\\Daemon' => __DIR__ . '/..' . '/clio/clio/src/Clio/Daemon.php',
         'ComposerHookHandler' => __DIR__ . '/../..' . '/includes/composer/ComposerHookHandler.php',
+        'ComposerPackageModifier' => __DIR__ . '/../..' . '/includes/composer/ComposerPackageModifier.php',
         'ComposerPhpunitXmlCoverageEdit' => __DIR__ . '/../..' . '/includes/composer/ComposerPhpunitXmlCoverageEdit.php',
         'ComposerVendorHtaccessCreator' => __DIR__ . '/../..' . '/includes/composer/ComposerVendorHtaccessCreator.php',
+        'ComposerVersionNormalizer' => __DIR__ . '/../..' . '/includes/composer/ComposerVersionNormalizer.php',
         'Composer\\CaBundle\\CaBundle' => __DIR__ . '/..' . '/composer/ca-bundle/src/CaBundle.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Composer\\Installers\\AglInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/AglInstaller.php',
@@ -524,6 +524,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Composer\\Installers\\BaseInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/BaseInstaller.php',
         'Composer\\Installers\\BitrixInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/BitrixInstaller.php',
         'Composer\\Installers\\BonefishInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/BonefishInstaller.php',
+        'Composer\\Installers\\BotbleInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/BotbleInstaller.php',
         'Composer\\Installers\\CakePHPInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/CakePHPInstaller.php',
         'Composer\\Installers\\ChefInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/ChefInstaller.php',
         'Composer\\Installers\\CiviCrmInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/CiviCrmInstaller.php',
@@ -531,6 +532,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Composer\\Installers\\CockpitInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/CockpitInstaller.php',
         'Composer\\Installers\\CodeIgniterInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/CodeIgniterInstaller.php',
         'Composer\\Installers\\Concrete5Installer' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/Concrete5Installer.php',
+        'Composer\\Installers\\ConcreteCMSInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/ConcreteCMSInstaller.php',
         'Composer\\Installers\\CroogoInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/CroogoInstaller.php',
         'Composer\\Installers\\DecibelInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/DecibelInstaller.php',
         'Composer\\Installers\\DframeInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/DframeInstaller.php',
@@ -541,6 +543,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Composer\\Installers\\EliasisInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/EliasisInstaller.php',
         'Composer\\Installers\\ExpressionEngineInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/ExpressionEngineInstaller.php',
         'Composer\\Installers\\EzPlatformInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/EzPlatformInstaller.php',
+        'Composer\\Installers\\ForkCMSInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/ForkCMSInstaller.php',
         'Composer\\Installers\\FuelInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/FuelInstaller.php',
         'Composer\\Installers\\FuelphpInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/FuelphpInstaller.php',
         'Composer\\Installers\\GravInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/GravInstaller.php',
@@ -1304,6 +1307,7 @@ class ComposerStaticInit_mediawiki_vendor
         'OS_Guess' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/OS/Guess.php',
         'Override' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/Override.php',
         'PEAR' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/PEAR.php',
+        'PEAR_Error' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/PEAR.php',
         'PEAR_ErrorStack' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/PEAR/ErrorStack.php',
         'PEAR_Exception' => __DIR__ . '/..' . '/pear/pear_exception/PEAR/Exception.php',
         'PHPMailer\\PHPMailer\\DSNConfigurator' => __DIR__ . '/..' . '/phpmailer/phpmailer/src/DSNConfigurator.php',
@@ -2359,13 +2363,17 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\PaymentProviders\\GlobalCollect\\ExpatriatedMessages\\PaymentMessage' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/GlobalCollect/ExpatriatedMessages/PaymentMessage.php',
         'SmashPig\\PaymentProviders\\GlobalCollect\\GlobalCollectListener' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/GlobalCollect/GlobalCollectListener.php',
         'SmashPig\\PaymentProviders\\Gravy\\Api' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Api.php',
+        'SmashPig\\PaymentProviders\\Gravy\\Audit\\GravyAudit' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Audit/GravyAudit.php',
+        'SmashPig\\PaymentProviders\\Gravy\\BankPaymentProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/BankPaymentProvider.php',
         'SmashPig\\PaymentProviders\\Gravy\\CardPaymentProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/CardPaymentProvider.php',
         'SmashPig\\PaymentProviders\\Gravy\\Factories\\GravyApprovePaymentResponseFactory' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Factories/GravyApprovePaymentResponseFactory.php',
         'SmashPig\\PaymentProviders\\Gravy\\Factories\\GravyCreateDonorResponseFactory' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Factories/GravyCreateDonorResponseFactory.php',
         'SmashPig\\PaymentProviders\\Gravy\\Factories\\GravyCreatePaymentResponseFactory' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Factories/GravyCreatePaymentResponseFactory.php',
         'SmashPig\\PaymentProviders\\Gravy\\Factories\\GravyCreatePaymentSessionResponseFactory' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Factories/GravyCreatePaymentSessionResponseFactory.php',
         'SmashPig\\PaymentProviders\\Gravy\\Factories\\GravyGetDonorResponseFactory' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Factories/GravyGetDonorResponseFactory.php',
+        'SmashPig\\PaymentProviders\\Gravy\\Factories\\GravyGetPaymentDetailsResponseFactory' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Factories/GravyGetPaymentDetailsResponseFactory.php',
         'SmashPig\\PaymentProviders\\Gravy\\Factories\\GravyPaymentResponseFactory' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Factories/GravyPaymentResponseFactory.php',
+        'SmashPig\\PaymentProviders\\Gravy\\GravyListener' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/GravyListener.php',
         'SmashPig\\PaymentProviders\\Gravy\\Maintenance\\ApprovePayments' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Maintenance/ApprovePayments.php',
         'SmashPig\\PaymentProviders\\Gravy\\Maintenance\\DeletePaymentToken' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Maintenance/DeletePaymentToken.php',
         'SmashPig\\PaymentProviders\\Gravy\\Maintenance\\TestCapturePaymentProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Maintenance/TestCapturePaymentProvider.php',
@@ -2377,6 +2385,7 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\PaymentProviders\\Gravy\\ReferenceData' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/ReferenceData.php',
         'SmashPig\\PaymentProviders\\Gravy\\Tests\\BaseGravyTestCase' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Tests/BaseGravyTestCase.php',
         'SmashPig\\PaymentProviders\\Gravy\\Tests\\GravyTestConfiguration' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Tests/GravyTestConfiguration.php',
+        'SmashPig\\PaymentProviders\\Gravy\\Tests\\phpunit\\AuditTest' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Tests/phpunit/AuditTest.php',
         'SmashPig\\PaymentProviders\\Gravy\\Tests\\phpunit\\CardPaymentProviderTest' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Tests/phpunit/CardPaymentProviderTest.php',
         'SmashPig\\PaymentProviders\\Gravy\\Tests\\phpunit\\GravyPaymentResponseFactoryTest' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Tests/phpunit/GravyPaymentResponseFactoryTest.php',
         'SmashPig\\PaymentProviders\\Gravy\\Tests\\phpunit\\PaymentProviderTest' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Tests/phpunit/PaymentProviderTest.php',
@@ -4074,6 +4083,8 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Zest\\ZestInst' => __DIR__ . '/..' . '/wikimedia/zest-css/src/ZestInst.php',
         'WmfFramework' => __DIR__ . '/../..' . '/extensions/DonationInterface/gateway_common/WmfFramework.php',
         'lessc' => __DIR__ . '/..' . '/wikimedia/less.php/lessc.inc.php',
+        'smashpig\\PaymentProviders\\ICancelAutoRescueProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/ICancelAutoRescueProvider.php',
+        'smashpig\\PaymentProviders\\IDeleteRecurringPaymentTokenProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/IDeleteRecurringPaymentTokenProvider.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

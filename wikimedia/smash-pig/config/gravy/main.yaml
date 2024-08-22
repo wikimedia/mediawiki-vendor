@@ -11,6 +11,10 @@ gravy-id: wikimedia
 
 api-prefix: sandbox
 
+endpoints:
+    listener:
+        class: SmashPig\PaymentProviders\Gravy\GravyListener
+
 merchantAccountId: default
 
 privateKeyLocation: /srv/config/private/gr4vy/private_key.pem
@@ -18,6 +22,8 @@ privateKeyLocation: /srv/config/private/gr4vy/private_key.pem
 payment-provider:
     cc:
         class: SmashPig\PaymentProviders\Gravy\CardPaymentProvider
+    dd:
+        class: SmashPig\PaymentProviders\Gravy\BankPaymentProvider
 
 fraud-filters:
     # Authorization notifications include AVS and CVV result codes.

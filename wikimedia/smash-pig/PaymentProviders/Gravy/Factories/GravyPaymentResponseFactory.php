@@ -5,6 +5,7 @@ namespace SmashPig\PaymentProviders\Gravy\Factories;
 use Psr\Log\LogLevel;
 use SmashPig\Core\PaymentError;
 use SmashPig\Core\ValidationError;
+use SmashPig\PaymentData\ErrorCode;
 use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentProviders\Responses\PaymentProviderResponse;
 
@@ -72,9 +73,10 @@ abstract class GravyPaymentResponseFactory {
 	 * @return void
 	 */
 	protected static function addPaymentFailureError( PaymentProviderResponse $paymentResponse, ?string $statusDetail = 'Unknown error', ?string $errorCode = null ): void {
+		$paymentResponse->setSuccessful( false );
 		$paymentResponse->addErrors(
 			new PaymentError(
-				$errorCode,
+				$errorCode ?? ErrorCode::UNKNOWN,
 				$statusDetail,
 				LogLevel::ERROR
 			)

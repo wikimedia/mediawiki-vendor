@@ -136,4 +136,29 @@ class PaymentProviderTest extends BaseGravyTestCase {
 		$response = $this->provider->deleteRecurringPaymentToken( $params );
 		$this->assertFalse( $response );
 	}
+
+	public function testGetPaymentDetails() {
+		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/create-transaction.json' ), true );
+		$params = [
+			'gateway_txn_id' => 'random_txn_id'
+		];
+
+		$this->mockApi->expects( $this->once() )
+			->method( 'getTransaction' )
+			->with( $params )
+			->willReturn( $responseBody );
+
+		$response = $this->provider->getPaymentDetails( $params );
+
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\PaymentDetailResponse',
+			$response );
+		$this->assertEquals( $responseBody['amount'] / 100, $response->getAmount() );
+		$this->assertEquals( $responseBody['id'], $response->getGatewayTxnId() );
+		$this->assertEquals( $responseBody['buyer']['billing_details']['first_name'], $response->getDonorDetails()->getFirstName() );
+		$this->assertEquals( $responseBody['buyer']['billing_details']['last_name'], $response->getDonorDetails()->getLastName() );
+		$this->assertEquals( $responseBody['buyer']['billing_details']['email_address'], $response->getDonorDetails()->getEmail() );
+		$this->assertEquals( $responseBody['buyer']['id'], $response->getDonorDetails()->getCustomerId() );
+		$this->assertEquals( $responseBody['buyer']['billing_details']['address']['line1'], $response->getDonorDetails()->getBillingAddress()->getStreetAddress() );
+		$this->assertTrue( $response->isSuccessful() );
+	}
 }

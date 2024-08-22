@@ -59,7 +59,7 @@ class CardPaymentProviderTest extends BaseGravyTestCase {
 	public function testCorrectMappedRiskScores() {
 		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/create-transaction.json' ), true );
 		$gravyResponseMapper = new ResponseMapper();
-		$normalizedResponse = $gravyResponseMapper->mapFromCreatePaymentResponse( $responseBody );
+		$normalizedResponse = $gravyResponseMapper->mapFromPaymentResponse( $responseBody );
 
 		$response = GravyCreatePaymentResponseFactory::fromNormalizedResponse( $normalizedResponse );
 
@@ -109,6 +109,41 @@ class CardPaymentProviderTest extends BaseGravyTestCase {
 			->willReturn( $responseBody );
 
 		$params = $this->getCreateTrxnParams( $responseBody['checkout_session_id'], $responseBody['amount'] );
+
+		$response = $this->provider->createPayment( $params );
+
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\CreatePaymentResponse',
+			$response );
+		$this->assertEquals( $responseBody['amount'] / 100, $response->getAmount() );
+		$this->assertEquals( $responseBody['id'], $response->getGatewayTxnId() );
+		$this->assertEquals( $responseBody['buyer']['billing_details']['first_name'], $response->getDonorDetails()->getFirstName() );
+		$this->assertEquals( $responseBody['buyer']['billing_details']['last_name'], $response->getDonorDetails()->getLastName() );
+		$this->assertEquals( $responseBody['buyer']['billing_details']['email_address'], $response->getDonorDetails()->getEmail() );
+		$this->assertEquals( $responseBody['buyer']['id'], $response->getDonorDetails()->getCustomerId() );
+		$this->assertEquals( $responseBody['buyer']['billing_details']['address']['line1'], $response->getDonorDetails()->getBillingAddress()->getStreetAddress() );
+		$this->assertTrue( $response->isSuccessful() );
+	}
+
+	public function testSuccessfulCreatePaymentFromTokenNoCreateDonorNoGetDonor() {
+		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/create-transaction.json' ), true );
+		$params = $this->getCreateTrxnFromTokenParams( $responseBody['amount'] / 100 );
+		$this->mockApi->expects( $this->once() )
+			->method( 'createPayment' )
+			->with( [
+				'amount' => $params['amount'] * 100,
+				'currency' => $params['currency'],
+				'country' => $params['country'],
+				'payment_method' => [
+					'method' => 'id',
+					'id' => $params['recurring_payment_token']
+				],
+				'payment_source' => 'recurring',
+				'is_subsequent_payment' => true,
+				'merchant_initiated' => true,
+				'external_identifier' => $params['order_id'],
+				'buyer_id' => $params['processor_contact_id']
+			] )
+			->willReturn( $responseBody );
 
 		$response = $this->provider->createPayment( $params );
 
@@ -251,7 +286,7 @@ class CardPaymentProviderTest extends BaseGravyTestCase {
 		$this->assertFalse( $response->isSuccessful() );
 		$valErrors = $response->getValidationErrors();
 		$errors = $response->getErrors();
-		$this->assertCount( 6, $valErrors );
+		$this->assertCount( 7, $valErrors );
 		$this->assertCount( 0, $errors );
 	}
 
@@ -288,19 +323,30 @@ class CardPaymentProviderTest extends BaseGravyTestCase {
 		$this->assertEquals( ErrorMapper::$errorCodes[$error_code], $errors[0]->getErrorCode() );
 	}
 
-	private function getCreateTrxnParams( string $checkoutSessionId, ?string $donor_id = '123', ?string $amount = '1299' ) {
+	private function getCreateTrxnParams( string $checkoutSessionId, ?string $amount = '1299' ) {
 		$params = [];
 		$params['country'] = 'US';
 		$params['currency'] = 'USD';
 		$params['amount'] = $amount;
 		$params['gateway_session_id'] = $checkoutSessionId;
-		$params['gateway_donor_id'] = $donor_id;
 		$ct_id = mt_rand( 100000, 1000009 );
 		$params['order_id'] = "$ct_id.1";
 
 		$donorParams = $this->getCreateDonorParams();
 
 		$params = array_merge( $params, $donorParams );
+
+		return $params;
+	}
+
+	private function getCreateTrxnFromTokenParams( $amount ) {
+		$params = $this->getCreateTrxnParams( "", $amount );
+
+		unset( $params['gateway_session_id'] );
+
+		$params['recurring'] = 1;
+		$params['recurring_payment_token'] = "random_token";
+		$params['processor_contact_id'] = "random_contact_id";
 
 		return $params;
 	}

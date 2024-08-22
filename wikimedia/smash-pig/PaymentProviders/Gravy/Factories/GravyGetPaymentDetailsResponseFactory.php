@@ -4,13 +4,13 @@ namespace SmashPig\PaymentProviders\Gravy\Factories;
 
 use SmashPig\PaymentData\Address;
 use SmashPig\PaymentData\DonorDetails;
-use SmashPig\PaymentProviders\Responses\CreatePaymentResponse;
+use SmashPig\PaymentProviders\Responses\PaymentDetailResponse;
 use SmashPig\PaymentProviders\Responses\PaymentProviderResponse;
 
-class GravyCreatePaymentResponseFactory extends GravyPaymentResponseFactory {
+class GravyGetPaymentDetailsResponseFactory extends GravyPaymentResponseFactory {
 
-	protected static function createBasicResponse(): CreatePaymentResponse {
-		return new CreatePaymentResponse();
+	protected static function createBasicResponse(): PaymentDetailResponse {
+		return new PaymentDetailResponse();
 	}
 
 	/**
@@ -18,16 +18,27 @@ class GravyCreatePaymentResponseFactory extends GravyPaymentResponseFactory {
 	 * @param array $normalizedResponse
 	 */
 	protected static function decorateResponse( PaymentProviderResponse $paymentResponse, array $normalizedResponse ): void {
-		if ( !$paymentResponse instanceof CreatePaymentResponse ) {
+		if ( !$paymentResponse instanceof PaymentDetailResponse ) {
 			return;
 		}
-
+		self::setOrderId( $paymentResponse, $normalizedResponse );
 		self::setPaymentDetails( $paymentResponse, $normalizedResponse );
 		self::setRiskScores( $paymentResponse, $normalizedResponse );
 		self::setRedirectURL( $paymentResponse, $normalizedResponse );
 		self::setRecurringPaymentToken( $paymentResponse, $normalizedResponse );
 		self::setPaymentSubmethod( $paymentResponse, $normalizedResponse );
 		self::setDonorDetails( $paymentResponse, $normalizedResponse );
+	}
+
+	/**
+	 * @param PaymentProviderResponse $paymentResponse
+	 * @param array $normalizedResponse
+	 * @return void
+	 */
+	protected static function setOrderId( PaymentProviderResponse $paymentResponse, array $normalizedResponse ): void {
+		if ( !empty( $normalizedResponse['order_id'] ) ) {
+			$paymentResponse->setOrderId( $normalizedResponse['order_id'] );
+		}
 	}
 
 	/**
@@ -53,18 +64,18 @@ class GravyCreatePaymentResponseFactory extends GravyPaymentResponseFactory {
 	}
 
 	/**
-	 * @param CreatePaymentResponse $createPaymentResponse
+	 * @param PaymentProviderResponse $createPaymentResponse
 	 * @param array $rawResponse
 	 * @return void
 	 */
-	protected static function setRedirectURL( CreatePaymentResponse $createPaymentResponse, array $normalizedResponse ): void {
+	protected static function setRedirectURL( PaymentProviderResponse $createPaymentResponse, array $normalizedResponse ): void {
 		if ( !empty( $normalizedResponse['redirect_url'] ) ) {
 			$createPaymentResponse->setRedirectUrl( $normalizedResponse['redirect_url'] );
 		}
 	}
 
 	/**
-	 * @param CreatePaymentResponse $paymentResponse
+	 * @param PaymentProviderResponse $paymentResponse
 	 * @param array $rawResponse
 	 * @return void
 	 */
@@ -73,7 +84,13 @@ class GravyCreatePaymentResponseFactory extends GravyPaymentResponseFactory {
 		$paymentResponse->setPaymentSubmethod( $normalizedResponse['payment_submethod'] );
 	}
 
-	protected static function setDonorDetails( CreatePaymentResponse $paymentResponse, array $normalizedResponse ) {
+	/**
+	 * Summary of setDonorDetails
+	 * @param PaymentProviderResponse $paymentResponse
+	 * @param array $normalizedResponse
+	 * @return void
+	 */
+	protected static function setDonorDetails( PaymentProviderResponse $paymentResponse, array $normalizedResponse ) {
 		$donorDetails = $normalizedResponse['donor_details'];
 
 		$address = ( new Address() )
@@ -93,7 +110,12 @@ class GravyCreatePaymentResponseFactory extends GravyPaymentResponseFactory {
 		$paymentResponse->setDonorDetails( $details );
 	}
 
-	protected static function setRiskScores( CreatePaymentResponse $paymentResponse, array $normalizedResponse ) {
+	/**
+	 * @param PaymentProviderResponse $paymentResponse
+	 * @param array $normalizedResponse
+	 * @return void
+	 */
+	protected static function setRiskScores( PaymentProviderResponse $paymentResponse, array $normalizedResponse ) {
 		$paymentResponse->setRiskScores( $normalizedResponse['risk_scores'] );
 	}
 }
