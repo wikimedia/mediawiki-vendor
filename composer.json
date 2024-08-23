@@ -123,7 +123,7 @@
 		"wikimedia/less.php": "5.1.1",
 		"wikimedia/lucene-explain-parser": "2.0.0",
 		"wikimedia/metrics-platform": "4.2.1",
-		"wikimedia/minify": "2.7.0",
+		"wikimedia/minify": "2.8.0",
 		"wikimedia/normalized-exception": "1.0.1",
 		"wikimedia/object-factory": "5.0.1",
 		"wikimedia/parsoid": "0.20.0-a18",

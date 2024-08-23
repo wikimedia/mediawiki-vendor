@@ -5160,6 +5160,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Minify\\MapperState' => __DIR__ . '/..' . '/wikimedia/minify/src/MapperState.php',
         'Wikimedia\\Minify\\MappingsGenerator' => __DIR__ . '/..' . '/wikimedia/minify/src/MappingsGenerator.php',
         'Wikimedia\\Minify\\MinifierState' => __DIR__ . '/..' . '/wikimedia/minify/src/MinifierState.php',
+        'Wikimedia\\Minify\\ParseError' => __DIR__ . '/..' . '/wikimedia/minify/src/ParseError.php',
         'Wikimedia\\Minify\\Utils' => __DIR__ . '/..' . '/wikimedia/minify/src/Utils.php',
         'Wikimedia\\NormalizedException\\INormalizedException' => __DIR__ . '/..' . '/wikimedia/normalized-exception/src/INormalizedException.php',
         'Wikimedia\\NormalizedException\\NormalizedException' => __DIR__ . '/..' . '/wikimedia/normalized-exception/src/NormalizedException.php',
