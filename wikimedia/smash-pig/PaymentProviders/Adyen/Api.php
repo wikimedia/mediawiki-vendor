@@ -246,7 +246,6 @@ class Api {
 			'reference' => $params['order_id'],
 			'merchantAccount' => $this->account,
 			'paymentMethod' => [
-				'issuer' => $params['issuer_id'],
 				'type' => $typesByCountry[$params['country']],
 			],
 			'returnUrl' => $params['return_url'],
@@ -254,6 +253,9 @@ class Api {
 				'manualCapture' => false,
 			],
 		];
+		if ( isset( $params['issuer_id'] ) ) {
+			$restParams['paymentMethod']['issuerId'] = $params['issuer_id'];
+		}
 		$isRecurring = $params['recurring'] ?? '';
 		if ( $isRecurring ) {
 			$restParams = array_merge( $restParams, $this->addRecurringParams( $params, true ) );

@@ -80,6 +80,13 @@ class PaymentDetailResponse extends PaymentProviderResponse {
 	protected $orderId;
 
 	/**
+	 * @var string|null
+	 * When the primary processor is a payment orchestrator, this field has a normalized name of the
+	 * processor which the orchestrator used to process the payment.
+	 */
+	protected ?string $backendProcessor;
+
+	/**
 	 * Determines whether the payment is in a status that requires further
 	 * action from the merchant to push through. Generally this means a card
 	 * payment has been authorized but not yet captured.
@@ -249,5 +256,21 @@ class PaymentDetailResponse extends PaymentProviderResponse {
 	public function setOrderId( string $orderId ): PaymentDetailResponse {
 		$this->orderId = $orderId;
 		return $this;
+	}
+
+	/**
+	 * @param string|null $backendProcessor
+	 * @return static
+	 */
+	public function setBackendProcessor( ?string $backendProcessor ): PaymentDetailResponse {
+		$this->backendProcessor = $backendProcessor;
+		return $this;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getBackendProcessor(): ?string {
+		return $this->backendProcessor;
 	}
 }

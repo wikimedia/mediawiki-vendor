@@ -5,18 +5,21 @@ namespace SmashPig\PaymentProviders\Gravy;
 use SmashPig\Core\Context;
 use SmashPig\Core\Logging\Logger;
 use SmashPig\PaymentData\ErrorCode;
+use SmashPig\PaymentProviders\Gravy\Factories\GravyCancelPaymentResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyCreateDonorResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyGetDonorResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyGetPaymentDetailsResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Mapper\RequestMapper;
 use SmashPig\PaymentProviders\Gravy\Mapper\ResponseMapper;
 use SmashPig\PaymentProviders\Gravy\Validators\Validator;
+use SmashPig\PaymentProviders\ICancelablePaymentProvider;
 use SmashPig\PaymentProviders\IDeleteRecurringPaymentTokenProvider;
 use SmashPig\PaymentProviders\IPaymentProvider;
+use SmashPig\PaymentProviders\Responses\CancelPaymentResponse;
 use SmashPig\PaymentProviders\Responses\PaymentDetailResponse;
 use SmashPig\PaymentProviders\ValidationException;
 
-abstract class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaymentTokenProvider {
+abstract class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaymentTokenProvider, ICancelablePaymentProvider {
 	/**
 	 * @var Api
 	 */
@@ -60,6 +63,26 @@ abstract class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaym
 		}
 
 		return $paymentDetailResponse;
+	}
+
+	public function cancelPayment( string $gatewayTxnId ) : CancelPaymentResponse {
+		// create our standard response object from the normalized response
+		$cancelPaymentResponse = new CancelPaymentResponse();
+		try {
+			$rawGravyGetPaymentDetailResponse = $this->api->cancelTransaction( $gatewayTxnId );
+
+			// map the response from the external format back to our normalized structure.
+			$gravyResponseMapper = new ResponseMapper();
+			$normalizedResponse = $gravyResponseMapper->mapFromPaymentResponse( $rawGravyGetPaymentDetailResponse );
+
+			$cancelPaymentResponse = GravyCancelPaymentResponseFactory::fromNormalizedResponse( $normalizedResponse );
+		} catch ( \Exception $e ) {
+			// it threw an exception!
+			Logger::error( 'Processor failed to cancel transaction:' . $e->getMessage() );
+			GravyCancelPaymentResponseFactory::handleException( $cancelPaymentResponse, $e->getMessage(), $e->getCode() );
+		}
+
+		return $cancelPaymentResponse;
 	}
 
 	public function getDonorRecord( array $params ) : PaymentDetailResponse {
@@ -111,7 +134,7 @@ abstract class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaym
 			$donorResponse = GravyCreateDonorResponseFactory::fromNormalizedResponse( $normalizedResponse );
 		}  catch ( ValidationException $e ) {
 			// it threw an exception!
-			GravyGetDonorResponseFactory::handleValidationException( $donorResponse, $e->getData() );
+			GravyCreateDonorResponseFactory::handleValidationException( $donorResponse, $e->getData() );
 		} catch ( \Exception $e ) {
 			// it threw an exception!
 			Logger::error( 'Processor failed to create new Donor with response:' . $e->getMessage() );

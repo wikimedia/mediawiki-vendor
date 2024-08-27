@@ -140,4 +140,19 @@ class Api {
 		$tl->info( "Transaction details for transaction with ID {$txn_id} $response_string" );
 		return $response;
 	}
+
+	/**
+	 * Uses the rest API to cancel an authorized transaction on Gravy
+	 * @param string $gatewayTxnId
+	 * @return array
+	 * @throws \SmashPig\Core\ApiException
+	 * @link https://docs.gr4vy.com/reference/transactions/void-transaction
+	 */
+	public function cancelTransaction( string $gatewayTxnId ): array {
+		$tl = new TaggedLogger( 'RawData' );
+		$response = $this->gravyApiClient->voidTransaction( $gatewayTxnId, [] );
+		$response_string = json_encode( $response );
+		$tl->info( "Cancel transaction response for transaction with ID $gatewayTxnId $response_string" );
+		return $response;
+	}
 }

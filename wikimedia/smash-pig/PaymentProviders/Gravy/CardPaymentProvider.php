@@ -66,7 +66,7 @@ class CardPaymentProvider extends PaymentProvider implements IPaymentProvider {
 			GravyApprovePaymentResponseFactory::handleValidationException( $approvePaymentResponse, $e->getData() );
 		} catch ( \Exception $e ) {
 			// it threw an exception!
-			Logger::info( 'Processor failed to create new payment session with response:' . $e->getMessage() );
+			Logger::info( 'Processor failed to approve payment with response:' . $e->getMessage() );
 			GravyApprovePaymentResponseFactory::handleException( $approvePaymentResponse, $e->getMessage(), $e->getCode() );
 		}
 

@@ -9,7 +9,7 @@ use SmashPig\PaymentProviders\Responses\PaymentProviderResponse;
 
 class GravyCreatePaymentResponseFactory extends GravyPaymentResponseFactory {
 
-	protected static function createBasicResponse(): CreatePaymentResponse {
+	protected static function createBasicResponse(): PaymentProviderResponse {
 		return new CreatePaymentResponse();
 	}
 
@@ -28,6 +28,7 @@ class GravyCreatePaymentResponseFactory extends GravyPaymentResponseFactory {
 		self::setRecurringPaymentToken( $paymentResponse, $normalizedResponse );
 		self::setPaymentSubmethod( $paymentResponse, $normalizedResponse );
 		self::setDonorDetails( $paymentResponse, $normalizedResponse );
+		self::setBackendProcessor( $paymentResponse, $normalizedResponse );
 	}
 
 	/**
@@ -95,5 +96,9 @@ class GravyCreatePaymentResponseFactory extends GravyPaymentResponseFactory {
 
 	protected static function setRiskScores( CreatePaymentResponse $paymentResponse, array $normalizedResponse ) {
 		$paymentResponse->setRiskScores( $normalizedResponse['risk_scores'] );
+	}
+
+	protected static function setBackendProcessor( CreatePaymentResponse $paymentResponse, array $normalizedResponse ) {
+		$paymentResponse->setBackendProcessor( $normalizedResponse['backend_processor'] ?? null );
 	}
 }

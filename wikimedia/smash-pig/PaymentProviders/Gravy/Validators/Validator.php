@@ -75,11 +75,9 @@ class Validator {
 	/**
 	 * @throws ValidationException
 	 */
-	public function validateApprovePaymentInput( array $params ): void {
+	public function validateGetPaymentDetailsInput( array $params ): void {
 		$required = [
-			'gateway_txn_id',
-			'currency',
-			'amount'
+			'gateway_txn_id'
 		];
 
 		$this->validateFields( $required, $params );
@@ -88,9 +86,22 @@ class Validator {
 	/**
 	 * @throws ValidationException
 	 */
-	public function validateGetPaymentDetailsInput( array $params ): void {
+	public function validateCancelPaymentInput( array $params ): void {
 		$required = [
 			'gateway_txn_id'
+		];
+
+		$this->validateFields( $required, $params );
+	}
+
+	/**
+	 * @throws ValidationException
+	 */
+	public function validateApprovePaymentInput( array $params ): void {
+		$required = [
+			'gateway_txn_id',
+			'currency',
+			'amount'
 		];
 
 		$this->validateFields( $required, $params );
