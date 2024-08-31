@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
-        'reference' => 'f86c4a3c125be4954af4d31f7517cbd7a66664a8',
+        'pretty_version' => '1.0.0+no-version-set',
+        'version' => '1.0.0.0',
+        'reference' => NULL,
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'reference' => 'f86c4a3c125be4954af4d31f7517cbd7a66664a8',
+            'pretty_version' => '1.0.0+no-version-set',
+            'version' => '1.0.0.0',
+            'reference' => NULL,
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -839,6 +839,15 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'symfony/polyfill-uuid' => array(
+            'pretty_version' => 'v1.30.0',
+            'version' => '1.30.0.0',
+            'reference' => '2ba1f33797470debcda07fe9dce20a0003df18e9',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/polyfill-uuid',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'symfony/process' => array(
             'pretty_version' => 'v5.4.36',
             'version' => '5.4.36.0',
@@ -889,6 +898,15 @@
             'provided' => array(
                 0 => '2.3',
             ),
+        ),
+        'symfony/uid' => array(
+            'pretty_version' => 'v5.4.43',
+            'version' => '5.4.43.0',
+            'reference' => '886c1742a710ceee6e2306169981db6b643a6dd4',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/uid',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'symfony/validator' => array(
             'pretty_version' => 'v5.4.38',

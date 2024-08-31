@@ -99,6 +99,7 @@
 		"symfony/string": "5.4.36",
 		"symfony/translation": "5.4.35",
 		"symfony/translation-contracts": "2.5.3",
+		"symfony/uid": "5.4.43",
 		"symfony/validator": "5.4.38",
 		"symfony/var-dumper": "5.4.38",
 		"symfony/yaml": "5.4.39",
