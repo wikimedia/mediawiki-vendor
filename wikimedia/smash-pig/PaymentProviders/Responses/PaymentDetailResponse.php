@@ -21,12 +21,12 @@ class PaymentDetailResponse extends PaymentProviderResponse {
 	 *
 	 * @var array
 	 */
-	protected $riskScores = [];
+	protected array $riskScores = [];
 
 	/**
 	 * @var string|null
 	 */
-	protected $recurringPaymentToken;
+	protected ?string $recurringPaymentToken = null;
 
 	/**
 	 * An identifier for the transaction set by the card network (e.g. Visa, Mastercard).
@@ -35,56 +35,64 @@ class PaymentDetailResponse extends PaymentProviderResponse {
 	 *
 	 * @var string|null
 	 */
-	protected $initialSchemeTransactionId;
+	protected ?string $initialSchemeTransactionId = null;
 
 	/**
 	 * @var string|null
 	 */
-	protected $processorContactID;
+	protected ?string $processorContactID = null;
 
 	/**
+	 * FIXME: unaccessed, should probably just return $this->donorDetails !== null
 	 * @var boolean
 	 */
-	protected $hasDonorDetails = false;
+	protected bool $hasDonorDetails = false;
 
 	/**
 	 * Child class for saving Donor details
 	 *
 	 * @var DonorDetails|null
 	 */
-	protected $donorDetails = null;
+	protected ?DonorDetails $donorDetails = null;
 
 	/**
-	 * @var numeric|null
+	 * @var float|null
 	 */
-	protected $amount;
-
-	/**
-	 * @var string|null
-	 */
-	protected $currency;
+	protected ?float $amount = null;
 
 	/**
 	 * @var string|null
 	 */
-	protected $paymentSubmethod;
+	protected ?string $currency = null;
 
 	/**
 	 * @var string|null
 	 */
-	protected $paymentMethod;
+	protected ?string $paymentSubmethod = null;
 
 	/**
 	 * @var string|null
 	 */
-	protected $orderId;
+	protected ?string $paymentMethod = null;
+
+	/**
+	 * @var string|null
+	 */
+	protected ?string $orderId = null;
 
 	/**
 	 * @var string|null
 	 * When the primary processor is a payment orchestrator, this field has a normalized name of the
 	 * processor which the orchestrator used to process the payment.
 	 */
-	protected ?string $backendProcessor;
+	protected ?string $backendProcessor = null;
+
+	/**
+	 * @var string|null
+	 * When the primary processor is a payment orchestrator, this field has the transaction identifier
+	 * at the processor which the orchestrator used to process the payment.
+	 */
+	protected ?string $backendProcessorTransactionId = null;
 
 	/**
 	 * Determines whether the payment is in a status that requires further
@@ -179,14 +187,14 @@ class PaymentDetailResponse extends PaymentProviderResponse {
 	}
 
 	/**
-	 * @return numeric|null
+	 * @return float|null
 	 */
-	public function getAmount() {
+	public function getAmount(): ?float {
 		return $this->amount;
 	}
 
 	/**
-	 * @param numeric|null $amount
+	 * @param float|null $amount
 	 * @return PaymentDetailResponse
 	 */
 	public function setAmount( $amount ): PaymentDetailResponse {
@@ -234,7 +242,7 @@ class PaymentDetailResponse extends PaymentProviderResponse {
 	}
 
 	/**
-	 * @param string|null $paymentSubmethod
+	 * @param string|null $paymentMethod
 	 * @return PaymentDetailResponse
 	 */
 	public function setPaymentMethod( ?string $paymentMethod ): PaymentDetailResponse {
@@ -243,17 +251,17 @@ class PaymentDetailResponse extends PaymentProviderResponse {
 	}
 
 	/**
-	 * @return string
+	 * @return string|null
 	 */
-	public function getOrderId(): string {
+	public function getOrderId(): ?string {
 		return $this->orderId;
 	}
 
 	/**
-	 * @param string $orderId
+	 * @param string|null $orderId
 	 * @return static
 	 */
-	public function setOrderId( string $orderId ): PaymentDetailResponse {
+	public function setOrderId( ?string $orderId ): PaymentDetailResponse {
 		$this->orderId = $orderId;
 		return $this;
 	}
@@ -272,5 +280,14 @@ class PaymentDetailResponse extends PaymentProviderResponse {
 	 */
 	public function getBackendProcessor(): ?string {
 		return $this->backendProcessor;
+	}
+
+	public function setBackendProcessorTransactionId( ?string $backendProcessorTransactionId ): PaymentDetailResponse {
+		$this->backendProcessorTransactionId = $backendProcessorTransactionId;
+		return $this;
+	}
+
+	public function getBackendProcessorTransactionId(): ?string {
+		return $this->backendProcessorTransactionId;
 	}
 }

@@ -17,13 +17,13 @@ abstract class PaymentProviderResponse {
 	 * array of errors returned
 	 * @var PaymentError[]
 	 */
-	protected $errors = [];
+	protected array $errors = [];
 
 	/**
 	 * FIXME: should find a cleaner way to fold these in with the PaymentErrors above
 	 * @var ValidationError[]
 	 */
-	protected $validationErrors = [];
+	protected array $validationErrors = [];
 
 	/**
 	 * raw response sent back from payment provider
@@ -33,9 +33,9 @@ abstract class PaymentProviderResponse {
 
 	/**
 	 * normalized response from provider response
-	 * @var mixed
+	 * @var array
 	 */
-	protected $normalizedResponse;
+	protected array $normalizedResponse = [];
 
 	/**
 	 * Payment provider transaction ID
@@ -47,30 +47,30 @@ abstract class PaymentProviderResponse {
 	 *
 	 * @var string|null
 	 */
-	protected $gateway_txn_id;
+	protected ?string $gateway_txn_id = null;
 
 	/**
 	 * mapped PaymentStatus status for the providers transaction status
 	 * @var string|null
 	 */
-	protected $status;
+	protected ?string $status = null;
 
 	/**
 	 * raw provider status in its original form.
 	 * @var string|null
 	 */
-	protected $rawStatus;
+	protected ?string $rawStatus = null;
 
 	/**
 	 * @var bool
 	 */
-	protected $successful;
+	protected bool $successful;
 
 	/**
 	 * Time taken in milliseconds
 	 * @var int
 	 */
-	protected $timeTaken;
+	protected int $timeTaken = 0;
 
 	/**
 	 * @return mixed
@@ -80,9 +80,9 @@ abstract class PaymentProviderResponse {
 	}
 
 	/**
-	 * @return mixed
+	 * @return array
 	 */
-	public function getNormalizedResponse() {
+	public function getNormalizedResponse(): array {
 		return $this->normalizedResponse;
 	}
 
@@ -96,10 +96,10 @@ abstract class PaymentProviderResponse {
 	}
 
 	/**
-	 * @param mixed $normalizedResponse
+	 * @param array $normalizedResponse
 	 * @return $this
 	 */
-	public function setNormalizedResponse( $normalizedResponse ): self {
+	public function setNormalizedResponse( array $normalizedResponse ): self {
 		$this->normalizedResponse = $normalizedResponse;
 		return $this;
 	}
@@ -114,7 +114,7 @@ abstract class PaymentProviderResponse {
 	/**
 	 * @return ValidationError[]
 	 */
-	public function getValidationErrors() {
+	public function getValidationErrors(): array {
 		return $this->validationErrors;
 	}
 
@@ -122,7 +122,7 @@ abstract class PaymentProviderResponse {
 	 * @param PaymentError[] $errors
 	 * @return $this
 	 */
-	public function setErrors( $errors ): self {
+	public function setErrors( array $errors ): self {
 		$this->errors = $errors;
 		return $this;
 	}

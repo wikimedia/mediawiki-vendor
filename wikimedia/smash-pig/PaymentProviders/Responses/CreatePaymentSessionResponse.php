@@ -11,7 +11,7 @@ class CreatePaymentSessionResponse extends PaymentProviderResponse {
 	 * data to start making payment. Maybe be a short alphanumeric ID or a JSON blob.
 	 * @var string
 	 */
-	protected $paymentSession;
+	protected string $paymentSession;
 
 	/**
 	 * @return string

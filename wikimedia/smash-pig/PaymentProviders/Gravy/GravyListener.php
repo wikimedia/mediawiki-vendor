@@ -72,12 +72,19 @@ class GravyListener implements IHttpActionHandler {
 	 * @param array $message
 	 * @return array
 	 */
-	private function mapFromWebhookMessage( array $message ) {
-		return [
+	public function mapFromWebhookMessage( array $message ): array {
+		$type = $message["target"]["type"];
+		$normalized = [
 			'created_at' => $message["created_at"],
 			'id' => $message["target"]["id"],
-			'message_type' => $this->normalizeMessageType( $message["target"]["type"] )
+			'message_type' => $this->normalizeMessageType( $type ),
+			'raw_response' => $message
 		];
+
+		if ( $this->isRefundMessage( $type ) ) {
+			$normalized['gateway_parent_id'] = $message["target"]["transaction_id"];
+		}
+		return $normalized;
 	}
 
 	/**
@@ -89,8 +96,14 @@ class GravyListener implements IHttpActionHandler {
 		switch ( $type ) {
 			case 'transaction':
 				return 'TransactionMessage';
+			case 'refund':
+				return 'RefundMessage';
 			default:
 				throw new \UnexpectedValueException( "Listener received unknown message type $type" );
 		}
+	}
+
+	protected function isRefundMessage( string $type ) {
+		return $type === 'refund';
 	}
 }

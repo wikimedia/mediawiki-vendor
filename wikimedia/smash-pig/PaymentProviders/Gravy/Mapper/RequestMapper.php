@@ -162,12 +162,32 @@ class RequestMapper {
 	 * @param mixed $payment_submethod
 	 * @return string
 	 */
-	private function mapPaymentMethodToGravyPaymentMethod( $payment_submethod ): string {
-		switch ( $payment_submethod ) {
-			case 'ach':
-				return 'trustly';
-			default:
-				return '';
+   private function mapPaymentMethodToGravyPaymentMethod( $payment_submethod ): string {
+	   switch ( $payment_submethod ) {
+		   case 'ach':
+			   return 'trustly';
+		   default:
+			   return '';
+	   }
+   }
+
+	/**
+	 * @return array
+	 */
+	public function mapToRefundPaymentRequest( array $params ): array {
+		$body = [
+			"reason" => $params["reason"] ?? "Refunded due to user request",
+		];
+
+		if ( isset( $params['amount'] ) && !empty( $params['amount'] ) ) {
+			$body["amount"] = CurrencyRoundingHelper::getAmountInMinorUnits( $params['amount'], $params['currency'] );
 		}
+
+		$request = [
+			'gateway_txn_id' => $params['gateway_txn_id'],
+			'body' => $body
+		];
+		return $request;
 	}
+
 }

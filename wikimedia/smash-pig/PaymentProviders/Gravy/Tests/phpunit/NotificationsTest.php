@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\ServerBag;
 class NotificationsTest extends BaseGravyTestCase {
 	private $jobsGravyQueue;
 
+	private $refundQueue;
 	/**
 	 * @var GravyListener
 	 */
@@ -25,10 +26,12 @@ class NotificationsTest extends BaseGravyTestCase {
 		parent::setUp();
 		$this->jobsGravyQueue = Context::get()->getGlobalConfiguration()
 			->object( 'data-store/jobs-gravy' );
+		$this->refundQueue = Context::get()->getGlobalConfiguration()
+			->object( 'data-store/refund' );
 		$this->gravyListener = $this->config->object( 'endpoints/listener' );
 	}
 
-	public function testTransactionMessageInvalidRequestEmptyHeader() {
+	public function testMessageInvalidRequestEmptyHeader() {
 		[ $request, $response ] = $this->getInvalidRequestResponseObjectsEmptyHeader();
 		$response->expects( $this->once() )->method( 'setStatusCode' )->with( Response::HTTP_FORBIDDEN, 'Invalid authorization' );
 		$request->method( 'getRawRequest' )->willReturn( " " );
@@ -37,7 +40,7 @@ class NotificationsTest extends BaseGravyTestCase {
 		$this->assertFalse( $result );
 	}
 
-	public function testTransactionMessageInvalidRequestInvalidAuthorizationValue() {
+	public function testMessageInvalidRequestInvalidAuthorizationValue() {
 		[ $request, $response ] = $this->getInvalidRequestResponseObjectsInvalidAuth();
 		$response->expects( $this->once() )->method( 'setStatusCode' )->with( Response::HTTP_FORBIDDEN, 'Invalid authorization' );
 		$request->method( 'getRawRequest' )->willReturn( " " );
@@ -102,6 +105,28 @@ class NotificationsTest extends BaseGravyTestCase {
 		$this->assertTrue( $result );
 	}
 
+	public function testRefundMessage(): void {
+		[ $request, $response ] = $this->getValidRequestResponseObjects();
+		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/successful-refund.json' ), true );
+		$message = json_decode( $this->getValidGravyRefundMessage(), true );
+		$request->method( 'getRawRequest' )->willReturn( json_encode( $message ) );
+		$this->mockApi->expects( $this->once() )
+			->method( 'getRefund' )
+			->willReturn( $responseBody );
+		$result = $this->gravyListener->execute( $request, $response );
+		$queued_message = $this->refundQueue->pop();
+		$normalized_details = ( new ResponseMapper() )->mapFromRefundPaymentResponse( $responseBody );
+		unset( $normalized_details['raw_response'] );
+		$normalized_details["date"] = strtotime( $message["created_at"] );
+		$this->assertEquals( $normalized_details['gateway_parent_id'], $queued_message['gateway_parent_id'] );
+		$this->assertEquals( $normalized_details['gateway_refund_id'], $queued_message['gateway_refund_id'] );
+		$this->assertEquals( $normalized_details['currency'], $queued_message['currency'] );
+		$this->assertEquals( $normalized_details['amount'], $queued_message['amount'] );
+		$this->assertEquals( $normalized_details['type'], $queued_message['type'] );
+		$this->assertEquals( $normalized_details['date'], $queued_message['date'] );
+		$this->assertTrue( $result );
+	}
+
 	public function getValidRequestResponseObjects( string $request = " " ): array {
 		return $this->getMockRequestResponseObjects( [
 			"AUTHORIZATION" => "Basic " . base64_encode( $this->config->val( "accounts/webhook/username" ) . ":" . $this->config->val( "accounts/webhook/password" ) )
@@ -130,5 +155,10 @@ class NotificationsTest extends BaseGravyTestCase {
 	private function getValidGravyTransactionMessage(): string {
 		return '{"type":"event","id":"36d2c101-4db5-4afd-ba4b-8fd9b60764ab","created_at":"2024-07-22T19:56:22.973896+00:00",
         "target":{"type":"transaction","id":"b332ca0a-1dce-4ae6-b27b-04f70db8fae7"},"merchant_account_id":"default"}';
+	}
+
+	private function getValidGravyRefundMessage(): string {
+		return '{"type":"event","id":"36d2c101-4db5-4afd-ba4b-8fd9b60764ab","created_at":"2024-07-22T19:56:22.973896+00:00",
+        "target":{"type":"refund","id":"c88fcbc0-8070-481c-87e3-6c4d4a5c9219","transaction_id":"795c27e9d-6cc3-40f6-a359-1355c434c30d"},"merchant_account_id":"default"}';
 	}
 }

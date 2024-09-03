@@ -28,7 +28,7 @@ class GravyCreatePaymentResponseFactory extends GravyPaymentResponseFactory {
 		self::setRecurringPaymentToken( $paymentResponse, $normalizedResponse );
 		self::setPaymentSubmethod( $paymentResponse, $normalizedResponse );
 		self::setDonorDetails( $paymentResponse, $normalizedResponse );
-		self::setBackendProcessor( $paymentResponse, $normalizedResponse );
+		self::setBackendProcessorAndId( $paymentResponse, $normalizedResponse );
 	}
 
 	/**
@@ -98,7 +98,12 @@ class GravyCreatePaymentResponseFactory extends GravyPaymentResponseFactory {
 		$paymentResponse->setRiskScores( $normalizedResponse['risk_scores'] );
 	}
 
-	protected static function setBackendProcessor( CreatePaymentResponse $paymentResponse, array $normalizedResponse ) {
+	protected static function setBackendProcessorAndId(
+		CreatePaymentResponse $paymentResponse, array $normalizedResponse
+	) {
 		$paymentResponse->setBackendProcessor( $normalizedResponse['backend_processor'] ?? null );
+		$paymentResponse->setBackendProcessorTransactionId(
+			$normalizedResponse['backend_processor_transaction_id'] ?? null
+		);
 	}
 }

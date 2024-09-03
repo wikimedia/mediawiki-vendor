@@ -9,17 +9,20 @@ use SmashPig\PaymentProviders\Gravy\Factories\GravyCancelPaymentResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyCreateDonorResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyGetDonorResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyGetPaymentDetailsResponseFactory;
+use SmashPig\PaymentProviders\Gravy\Factories\GravyRefundResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Mapper\RequestMapper;
 use SmashPig\PaymentProviders\Gravy\Mapper\ResponseMapper;
 use SmashPig\PaymentProviders\Gravy\Validators\Validator;
 use SmashPig\PaymentProviders\ICancelablePaymentProvider;
 use SmashPig\PaymentProviders\IDeleteRecurringPaymentTokenProvider;
 use SmashPig\PaymentProviders\IPaymentProvider;
+use SmashPig\PaymentProviders\IRefundablePaymentProvider;
 use SmashPig\PaymentProviders\Responses\CancelPaymentResponse;
 use SmashPig\PaymentProviders\Responses\PaymentDetailResponse;
+use SmashPig\PaymentProviders\Responses\RefundPaymentResponse;
 use SmashPig\PaymentProviders\ValidationException;
 
-abstract class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaymentTokenProvider, ICancelablePaymentProvider {
+abstract class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaymentTokenProvider, ICancelablePaymentProvider, IRefundablePaymentProvider {
 	/**
 	 * @var Api
 	 */
@@ -195,4 +198,50 @@ abstract class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaym
 		}
 	}
 
+	public function refundPayment( array $params ): RefundPaymentResponse {
+		$refundResponse = new RefundPaymentResponse();
+		try {
+			$validator = new Validator();
+			$validator->validateRefundInput( $params );
+
+			$gravyRequestMapper = new RequestMapper();
+			$gravyRefundRequest = $gravyRequestMapper->mapToRefundPaymentRequest( $params );
+
+			$rawGravyRefundResponse = $this->api->refundTransaction( $gravyRefundRequest );
+			// map the response from the external format back to our normalized structure.
+			$gravyResponseMapper = new ResponseMapper();
+			$normalizedResponse = $gravyResponseMapper->mapFromRefundPaymentResponse( $rawGravyRefundResponse );
+			$refundResponse = GravyRefundResponseFactory::fromNormalizedResponse( $normalizedResponse );
+		} catch ( ValidationException $e ) {
+			// it threw an exception!
+			GravyRefundResponseFactory::handleValidationException( $refundResponse, $e->getData() );
+		} catch ( \Exception $e ) {
+			// it threw an exception!
+			Logger::error( 'Processor failed to refund transaction with response:' . $e->getMessage() );
+			GravyRefundResponseFactory::handleException( $refundResponse, $e->getMessage(), $e->getCode() );
+		}
+		return $refundResponse;
+	}
+
+	public function getRefundDetails( array $params ): RefundPaymentResponse {
+		$refundResponse = new RefundPaymentResponse();
+		try {
+			$validator = new Validator();
+			$validator->validateGetRefundInput( $params );
+
+			$rawGravyRefundResponse = $this->api->getRefund( $params );
+			// map the response from the external format back to our normalized structure.
+			$gravyResponseMapper = new ResponseMapper();
+			$normalizedResponse = $gravyResponseMapper->mapFromRefundPaymentResponse( $rawGravyRefundResponse );
+			$refundResponse = GravyRefundResponseFactory::fromNormalizedResponse( $normalizedResponse );
+		} catch ( ValidationException $e ) {
+			// it threw an exception!
+			GravyRefundResponseFactory::handleValidationException( $refundResponse, $e->getData() );
+		} catch ( \Exception $e ) {
+			// it threw an exception!
+			Logger::error( "Processor failed to fetch refund with refund id {$params['gateway_refund_id']}. returned response:" . $e->getMessage() );
+			GravyRefundResponseFactory::handleException( $refundResponse, $e->getMessage(), $e->getCode() );
+		}
+		return $refundResponse;
+	}
 }

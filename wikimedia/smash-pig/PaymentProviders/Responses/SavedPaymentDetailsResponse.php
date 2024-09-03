@@ -9,7 +9,7 @@ class SavedPaymentDetailsResponse extends PaymentProviderResponse {
 	/**
 	 * @var SavedPaymentDetails[]
 	 */
-	protected $detailsList;
+	protected array $detailsList = [];
 
 	/**
 	 * @return SavedPaymentDetails[]

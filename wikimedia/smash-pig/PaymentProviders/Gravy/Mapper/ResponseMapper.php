@@ -98,6 +98,7 @@ class ResponseMapper {
 				$params['backend_processor'] = explode( '-', $response['payment_service']['payment_service_definition_id'] )[0];
 			}
 		}
+		$params['backend_processor_transaction_id'] = $response['payment_service_transaction_id'] ?? null;
 
 		return $params;
 	}
@@ -183,6 +184,28 @@ class ResponseMapper {
 	}
 
 	/**
+	 * @param array $response
+	 * @return array
+	 */
+	public function mapFromRefundPaymentResponse( array $response ): array {
+		if ( ( isset( $response['type'] ) && $response['type'] == 'error' ) || isset( $response['error_code'] ) ) {
+			return $this->mapErrorFromResponse( $response );
+		}
+		return [
+			"is_successful" => true,
+			"gateway_parent_id" => $response["transaction_id"],
+			"gateway_refund_id" => $response["id"],
+			"currency" => $response["currency"],
+			"amount" => $response["amount"] / 100,
+			"reason" => $response["reason"],
+			"status" => $this->normalizeStatus( $response["status"] ),
+			"raw_status" => $response["status"],
+			"type" => 'refund',
+			"raw_response" => $response,
+		];
+	}
+
+	/**
 	 * @param string $paymentProcessorStatus
 	 * @return string
 	 * @link https://docs.gr4vy.com/guides/api/resources/transactions/statuses
@@ -248,4 +271,9 @@ class ResponseMapper {
 
 		];
 	}
+
+	protected function isRefundMessage( string $type ) {
+		return $type === 'refund';
+	}
+
 }

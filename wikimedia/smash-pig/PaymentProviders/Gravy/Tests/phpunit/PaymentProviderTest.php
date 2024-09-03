@@ -161,4 +161,93 @@ class PaymentProviderTest extends BaseGravyTestCase {
 		$this->assertEquals( $responseBody['buyer']['billing_details']['address']['line1'], $response->getDonorDetails()->getBillingAddress()->getStreetAddress() );
 		$this->assertTrue( $response->isSuccessful() );
 	}
+
+	public function testValidationErrorRefundBeforeApiCall() {
+		$params = [
+			'amount' => 1000
+		];
+
+		$response = $this->provider->refundPayment( $params );
+
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\PaymentDetailResponse',
+			$response );
+		$this->assertFalse( $response->isSuccessful() );
+		$valErrors = $response->getValidationErrors();
+		$errors = $response->getErrors();
+		// 2 - missing currency and gateway_txn_id
+		$this->assertCount( 2, $valErrors );
+		$this->assertCount( 0, $errors );
+	}
+
+	public function testApiErrorRefundApiCall() {
+		$params = [
+			'gateway_txn_id' => 'random-id'
+		];
+		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/refund-api-error.json' ), true );
+
+		$this->mockApi->expects( $this->once() )
+		->method( 'refundTransaction' )
+		->willReturn( $responseBody );
+
+		$response = $this->provider->refundPayment( $params );
+
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\PaymentDetailResponse',
+			$response );
+		$this->assertFalse( $response->isSuccessful() );
+		$errors = $response->getErrors();
+
+		$this->assertCount( 1, $errors );
+	}
+
+	public function testSuccessfulRefundPayment() {
+		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/successful-refund.json' ), true );
+		$params = [
+			'gateway_txn_id' => $responseBody['transaction_id'],
+			'amount' => $responseBody['amount'] / 100,
+			'currency' => $responseBody['currency']
+		];
+		$this->mockApi->expects( $this->once() )
+			->method( 'refundTransaction' )
+			->with( [
+				'gateway_txn_id' => $responseBody['transaction_id'],
+				'body' => [
+					'amount' => $responseBody['amount'],
+					'reason' => 'Refunded due to user request'
+				]
+			] )
+			->willReturn( $responseBody );
+
+		$response = $this->provider->refundPayment( $params );
+
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\RefundPaymentResponse',
+			$response );
+		$this->assertEquals( $responseBody['amount'] / 100, $response->getAmount() );
+		$this->assertEquals( $responseBody['id'], $response->getGatewayRefundId() );
+		$this->assertEquals( $responseBody['transaction_id'], $response->getGatewayParentId() );
+		$this->assertEquals( $responseBody['currency'], $response->getCurrency() );
+		$this->assertEquals( $responseBody['reason'], $response->getReason() );
+		$this->assertTrue( $response->isSuccessful() );
+	}
+
+	public function testGetSuccessfulRefundPayment() {
+		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/successful-refund.json' ), true );
+		$params = [
+			'gateway_refund_id' => $responseBody['id']
+		];
+		$this->mockApi->expects( $this->once() )
+			->method( 'getRefund' )
+			->with( $params )
+			->willReturn( $responseBody );
+
+		$response = $this->provider->getRefundDetails( $params );
+
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\RefundPaymentResponse',
+			$response );
+		$this->assertEquals( $responseBody['amount'] / 100, $response->getAmount() );
+		$this->assertEquals( $responseBody['id'], $response->getGatewayRefundId() );
+		$this->assertEquals( $responseBody['transaction_id'], $response->getGatewayParentId() );
+		$this->assertEquals( $responseBody['currency'], $response->getCurrency() );
+		$this->assertEquals( $responseBody['reason'], $response->getReason() );
+		$this->assertTrue( $response->isSuccessful() );
+	}
 }

@@ -86,6 +86,32 @@ class Validator {
 	/**
 	 * @throws ValidationException
 	 */
+	public function validateGetRefundInput( array $params ): void {
+		$required = [
+			'gateway_refund_id',
+		];
+
+		$this->validateFields( $required, $params );
+	}
+
+	/**
+	 * @throws ValidationException
+	 */
+	public function validateRefundInput( array $params ): void {
+		$required = [
+			'gateway_txn_id',
+		];
+
+		if ( isset( $params['amount'] ) && !empty( $params['amount'] ) ) {
+			$required[] = 'currency';
+		}
+
+		$this->validateFields( $required, $params );
+	}
+
+	/**
+	 * @throws ValidationException
+	 */
 	public function validateCancelPaymentInput( array $params ): void {
 		$required = [
 			'gateway_txn_id'

@@ -15,19 +15,19 @@ class CreatePaymentWithProcessorRetryResponse extends CreatePaymentResponse {
 	 * Whether a processor retry is scheduled.
 	 * @var bool
 	 */
-	protected $isProcessorRetryScheduled;
+	protected bool $isProcessorRetryScheduled;
 
 	/**
 	 * When processor retry is true, record reference.
 	 * @var ?string
 	 */
-	protected $processorRetryRescueReference = null;
+	protected ?string $processorRetryRescueReference = null;
 
 	/**
 	 * When processor retry stop, record reason.
 	 * @var ?string
 	 */
-	protected $processorRetryRefusalReason = null;
+	protected ?string $processorRetryRefusalReason = null;
 
 	/**
 	 * @param bool $isProcessorRetryScheduled

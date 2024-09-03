@@ -96,7 +96,7 @@ class TokenApiTest extends TestCase
         try {
             $config = new Gr4vyConfig(self::$gr4vyId, self::$privateKeyLocation);
 
-            $buyer_request = array("external_identifier"=>"412231123","display_name"=>"Tester T.");
+            $buyer_request = array("display_name"=>"Tester T.");
             $result = $config->addBuyer($buyer_request);
             $this->assertArrayHasKey("id", $result);
 
