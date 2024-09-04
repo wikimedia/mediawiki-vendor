@@ -5278,23 +5278,23 @@
         },
         {
             "name": "symfony/polyfill-php80",
-            "version": "v1.29.0",
-            "version_normalized": "1.29.0.0",
+            "version": "v1.30.0",
+            "version_normalized": "1.30.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php80.git",
-                "reference": "87b68208d5c1188808dd7839ee1e6c8ec3b02f1b"
+                "reference": "77fa7995ac1b21ab60769b7323d600a991a90433"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/87b68208d5c1188808dd7839ee1e6c8ec3b02f1b",
-                "reference": "87b68208d5c1188808dd7839ee1e6c8ec3b02f1b",
+                "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/77fa7995ac1b21ab60769b7323d600a991a90433",
+                "reference": "77fa7995ac1b21ab60769b7323d600a991a90433",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1"
             },
-            "time": "2024-01-29T20:11:03+00:00",
+            "time": "2024-05-31T15:07:36+00:00",
             "type": "library",
             "extra": {
                 "thanks": {
@@ -5341,7 +5341,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php80/tree/v1.29.0"
+                "source": "https://github.com/symfony/polyfill-php80/tree/v1.30.0"
             },
             "funding": [
                 {
@@ -5361,23 +5361,23 @@
         },
         {
             "name": "symfony/polyfill-php81",
-            "version": "v1.29.0",
-            "version_normalized": "1.29.0.0",
+            "version": "v1.30.0",
+            "version_normalized": "1.30.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php81.git",
-                "reference": "c565ad1e63f30e7477fc40738343c62b40bc672d"
+                "reference": "3fb075789fb91f9ad9af537c4012d523085bd5af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php81/zipball/c565ad1e63f30e7477fc40738343c62b40bc672d",
-                "reference": "c565ad1e63f30e7477fc40738343c62b40bc672d",
+                "url": "https://api.github.com/repos/symfony/polyfill-php81/zipball/3fb075789fb91f9ad9af537c4012d523085bd5af",
+                "reference": "3fb075789fb91f9ad9af537c4012d523085bd5af",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1"
             },
-            "time": "2024-01-29T20:11:03+00:00",
+            "time": "2024-06-19T12:30:46+00:00",
             "type": "library",
             "extra": {
                 "thanks": {
@@ -5420,7 +5420,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php81/tree/v1.29.0"
+                "source": "https://github.com/symfony/polyfill-php81/tree/v1.30.0"
             },
             "funding": [
                 {
@@ -5440,23 +5440,23 @@
         },
         {
             "name": "symfony/polyfill-php82",
-            "version": "v1.29.0",
-            "version_normalized": "1.29.0.0",
+            "version": "v1.30.0",
+            "version_normalized": "1.30.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php82.git",
-                "reference": "559d488c38784112c78b9bf17c5ce8366a265643"
+                "reference": "77ff49780f56906788a88974867ed68bc49fae5b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php82/zipball/559d488c38784112c78b9bf17c5ce8366a265643",
-                "reference": "559d488c38784112c78b9bf17c5ce8366a265643",
+                "url": "https://api.github.com/repos/symfony/polyfill-php82/zipball/77ff49780f56906788a88974867ed68bc49fae5b",
+                "reference": "77ff49780f56906788a88974867ed68bc49fae5b",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1"
             },
-            "time": "2024-01-29T20:11:03+00:00",
+            "time": "2024-06-19T12:30:46+00:00",
             "type": "library",
             "extra": {
                 "thanks": {
@@ -5499,7 +5499,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php82/tree/v1.29.0"
+                "source": "https://github.com/symfony/polyfill-php82/tree/v1.30.0"
             },
             "funding": [
                 {
@@ -5519,24 +5519,23 @@
         },
         {
             "name": "symfony/polyfill-php83",
-            "version": "v1.29.0",
-            "version_normalized": "1.29.0.0",
+            "version": "v1.30.0",
+            "version_normalized": "1.30.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php83.git",
-                "reference": "86fcae159633351e5fd145d1c47de6c528f8caff"
+                "reference": "dbdcdf1a4dcc2743591f1079d0c35ab1e2dcbbc9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php83/zipball/86fcae159633351e5fd145d1c47de6c528f8caff",
-                "reference": "86fcae159633351e5fd145d1c47de6c528f8caff",
+                "url": "https://api.github.com/repos/symfony/polyfill-php83/zipball/dbdcdf1a4dcc2743591f1079d0c35ab1e2dcbbc9",
+                "reference": "dbdcdf1a4dcc2743591f1079d0c35ab1e2dcbbc9",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.1",
-                "symfony/polyfill-php80": "^1.14"
+                "php": ">=7.1"
             },
-            "time": "2024-01-29T20:11:03+00:00",
+            "time": "2024-06-19T12:35:24+00:00",
             "type": "library",
             "extra": {
                 "thanks": {
@@ -5579,7 +5578,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php83/tree/v1.29.0"
+                "source": "https://github.com/symfony/polyfill-php83/tree/v1.30.0"
             },
             "funding": [
                 {
