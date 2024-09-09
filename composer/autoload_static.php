@@ -5215,6 +5215,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Core\\ClientError' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Core/ClientError.php',
         'Wikimedia\\Parsoid\\Core\\ContentMetadataCollector' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Core/ContentMetadataCollector.php',
         'Wikimedia\\Parsoid\\Core\\ContentMetadataCollectorCompat' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Core/ContentMetadataCollectorCompat.php',
+        'Wikimedia\\Parsoid\\Core\\ContentMetadataCollectorStringSets' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Core/ContentMetadataCollectorStringSets.php',
         'Wikimedia\\Parsoid\\Core\\ContentModelHandler' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Core/ContentModelHandler.php',
         'Wikimedia\\Parsoid\\Core\\DomSourceRange' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Core/DomSourceRange.php',
         'Wikimedia\\Parsoid\\Core\\ElementRange' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Core/ElementRange.php',

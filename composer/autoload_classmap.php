@@ -4398,6 +4398,7 @@ return array(
     'Wikimedia\\Parsoid\\Core\\ClientError' => $vendorDir . '/wikimedia/parsoid/src/Core/ClientError.php',
     'Wikimedia\\Parsoid\\Core\\ContentMetadataCollector' => $vendorDir . '/wikimedia/parsoid/src/Core/ContentMetadataCollector.php',
     'Wikimedia\\Parsoid\\Core\\ContentMetadataCollectorCompat' => $vendorDir . '/wikimedia/parsoid/src/Core/ContentMetadataCollectorCompat.php',
+    'Wikimedia\\Parsoid\\Core\\ContentMetadataCollectorStringSets' => $vendorDir . '/wikimedia/parsoid/src/Core/ContentMetadataCollectorStringSets.php',
     'Wikimedia\\Parsoid\\Core\\ContentModelHandler' => $vendorDir . '/wikimedia/parsoid/src/Core/ContentModelHandler.php',
     'Wikimedia\\Parsoid\\Core\\DomSourceRange' => $vendorDir . '/wikimedia/parsoid/src/Core/DomSourceRange.php',
     'Wikimedia\\Parsoid\\Core\\ElementRange' => $vendorDir . '/wikimedia/parsoid/src/Core/ElementRange.php',
