@@ -98,6 +98,8 @@ class GravyListener implements IHttpActionHandler {
 				return 'TransactionMessage';
 			case 'refund':
 				return 'RefundMessage';
+			case 'report-execution':
+				return 'ReportExecutionMessage';
 			default:
 				throw new \UnexpectedValueException( "Listener received unknown message type $type" );
 		}

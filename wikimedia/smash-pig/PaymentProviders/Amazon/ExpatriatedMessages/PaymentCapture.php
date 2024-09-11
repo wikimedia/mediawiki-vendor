@@ -18,7 +18,6 @@ abstract class PaymentCapture extends AmazonMessage {
 	protected $gateway_status;
 
 	public function __construct( $values ) {
-		parent::__construct();
 		$details = $values['CaptureDetails'];
 
 		$this->setGatewayIds( $details['AmazonCaptureId'] );

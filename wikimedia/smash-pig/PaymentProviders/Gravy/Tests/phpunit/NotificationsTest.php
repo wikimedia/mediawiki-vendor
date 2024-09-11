@@ -4,6 +4,7 @@ use SmashPig\Core\Context;
 use SmashPig\Core\Http\Request;
 use SmashPig\Core\Http\Response;
 use SmashPig\PaymentProviders\Gravy\GravyListener;
+use SmashPig\PaymentProviders\Gravy\Jobs\DownloadReportJob;
 use SmashPig\PaymentProviders\Gravy\Jobs\ProcessCaptureRequestJob;
 use SmashPig\PaymentProviders\Gravy\Jobs\RecordCaptureJob;
 use SmashPig\PaymentProviders\Gravy\Mapper\ResponseMapper;
@@ -105,9 +106,9 @@ class NotificationsTest extends BaseGravyTestCase {
 		$this->assertTrue( $result );
 	}
 
-	public function testRefundMessage(): void {
+	public function testRefundMessageWithProcessingStatusIsSkipped(): void {
 		[ $request, $response ] = $this->getValidRequestResponseObjects();
-		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/successful-refund.json' ), true );
+		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/pending-refund.json' ), true );
 		$message = json_decode( $this->getValidGravyRefundMessage(), true );
 		$request->method( 'getRawRequest' )->willReturn( json_encode( $message ) );
 		$this->mockApi->expects( $this->once() )
@@ -115,15 +116,57 @@ class NotificationsTest extends BaseGravyTestCase {
 			->willReturn( $responseBody );
 		$result = $this->gravyListener->execute( $request, $response );
 		$queued_message = $this->refundQueue->pop();
+		$this->assertNull( $queued_message, "Queue message shoud be skipped due to pending refund IPN" );
+	}
+
+	public function testRefundMessageComplete(): void {
+		[ $request, $response ] = $this->getValidRequestResponseObjects();
+		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/successful-refund.json' ), true );
+		$message = json_decode( $this->getValidGravyRefundMessage(), true );
+		$request->method( 'getRawRequest' )->willReturn( json_encode( $message ) );
+
+		$this->mockApi->expects( $this->once() )
+			->method( 'getRefund' )
+			->willReturn( $responseBody );
+
+		$result = $this->gravyListener->execute( $request, $response );
+		$queued_message = $this->refundQueue->pop();
 		$normalized_details = ( new ResponseMapper() )->mapFromRefundPaymentResponse( $responseBody );
 		unset( $normalized_details['raw_response'] );
 		$normalized_details["date"] = strtotime( $message["created_at"] );
+
 		$this->assertEquals( $normalized_details['gateway_parent_id'], $queued_message['gateway_parent_id'] );
 		$this->assertEquals( $normalized_details['gateway_refund_id'], $queued_message['gateway_refund_id'] );
 		$this->assertEquals( $normalized_details['currency'], $queued_message['currency'] );
 		$this->assertEquals( $normalized_details['amount'], $queued_message['amount'] );
 		$this->assertEquals( $normalized_details['type'], $queued_message['type'] );
 		$this->assertEquals( $normalized_details['date'], $queued_message['date'] );
+		$this->assertTrue( $result );
+	}
+
+	public function testReportExecutionMessage(): void {
+		[ $request, $response ] = $this->getValidRequestResponseObjects();
+		$reportExecutionResponseBody = json_decode( file_get_contents( __DIR__ . '/../Data/report-execution-successful.json' ), true );
+		$generateReportUrlResponseBody = json_decode( file_get_contents( __DIR__ . '/../Data/generate-report-url-successful.json' ), true );
+
+		$message = json_decode( $this->getValidGravyReportExecutionMessage(), true );
+		$request->method( 'getRawRequest' )->willReturn( json_encode( $message ) );
+		$this->mockApi->expects( $this->once() )
+			->method( 'getReportExecutionDetails' )
+			->willReturn( $reportExecutionResponseBody );
+
+		$this->mockApi->expects( $this->once() )
+			->method( 'generateReportDownloadUrl' )
+			->willReturn( $generateReportUrlResponseBody );
+
+		$result = $this->gravyListener->execute( $request, $response );
+		$queued_message = $this->jobsGravyQueue->pop();
+		$payload = $queued_message['payload'];
+		$class = $queued_message['class'];
+		$normalized_details = ( new ResponseMapper() )->mapFromGenerateReportUrlResponse( $generateReportUrlResponseBody );
+		$this->assertEquals( DownloadReportJob::class, $class );
+		$this->assertEquals( $normalized_details['expires'], $payload['expires'] );
+		$this->assertEquals( $normalized_details['report_url'], $payload['report_url'] );
 		$this->assertTrue( $result );
 	}
 
@@ -160,5 +203,10 @@ class NotificationsTest extends BaseGravyTestCase {
 	private function getValidGravyRefundMessage(): string {
 		return '{"type":"event","id":"36d2c101-4db5-4afd-ba4b-8fd9b60764ab","created_at":"2024-07-22T19:56:22.973896+00:00",
         "target":{"type":"refund","id":"c88fcbc0-8070-481c-87e3-6c4d4a5c9219","transaction_id":"795c27e9d-6cc3-40f6-a359-1355c434c30d"},"merchant_account_id":"default"}';
+	}
+
+	private function getValidGravyReportExecutionMessage(): string {
+		return '{"type":"event","id":"347901e1-8b53-42a4-951b-ec546a5078f1","created_at":"2012-12-12T10:53:43+00:00",
+		"merchant_account_id":"default","target":{"type":"report-execution","id":"8d29457b-683a-49c4-8afd-800cd7117236"}}';
 	}
 }

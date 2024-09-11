@@ -1,10 +1,10 @@
 <?php namespace SmashPig\PaymentProviders\Adyen\Test;
 
 use PHPQueue\Backend\PDO;
-use SmashPig\Core\DataStores\JsonSerializableObject;
 use SmashPig\Core\DataStores\PaymentsFraudDatabase;
 use SmashPig\Core\DataStores\PendingDatabase;
 use SmashPig\Core\DataStores\QueueWrapper;
+use SmashPig\PaymentProviders\Adyen\ExpatriatedMessages\Authorisation;
 use SmashPig\PaymentProviders\Adyen\Jobs\ProcessCaptureRequestJob;
 use SmashPig\PaymentProviders\Adyen\Tests\AdyenTestConfiguration;
 use SmashPig\PaymentProviders\Adyen\Tests\BaseAdyenTestCase;
@@ -46,9 +46,8 @@ class CaptureJobTest extends BaseAdyenTestCase {
 	 * in the pending database, add an antifraud message, and return true.
 	 */
 	public function testSuccessfulCapture() {
-		$auth = JsonSerializableObject::fromJsonProxy(
-			'SmashPig\PaymentProviders\Adyen\ExpatriatedMessages\Authorisation',
-			file_get_contents( __DIR__ . '/../Data/auth.json' )
+		$auth = Authorisation::getInstanceFromJSON(
+			json_decode( file_get_contents( __DIR__ . '/../Data/auth.json' ), true )
 		);
 
 		$this->mockApi->expects( $this->once() )
@@ -94,9 +93,8 @@ class CaptureJobTest extends BaseAdyenTestCase {
 	 * we should not capture the payment, but leave the donor details.
 	 */
 	public function testReviewThreshold() {
-		$auth = JsonSerializableObject::fromJsonProxy(
-			'SmashPig\PaymentProviders\Adyen\ExpatriatedMessages\Authorisation',
-			file_get_contents( __DIR__ . '/../Data/auth.json' )
+		$auth = Authorisation::getInstanceFromJSON(
+			json_decode( file_get_contents( __DIR__ . '/../Data/auth.json' ), true )
 		);
 
 		$auth->avsResult = '1'; // Bad zip code pushes us over review
@@ -137,9 +135,8 @@ class CaptureJobTest extends BaseAdyenTestCase {
 	 * we should cancel the authorization and delete the donor details.
 	 */
 	public function testRejectThreshold() {
-		$auth = JsonSerializableObject::fromJsonProxy(
-			'SmashPig\PaymentProviders\Adyen\ExpatriatedMessages\Authorisation',
-			file_get_contents( __DIR__ . '/../Data/auth.json' )
+		$auth = Authorisation::getInstanceFromJSON(
+			json_decode( file_get_contents( __DIR__ . '/../Data/auth.json' ), true )
 		);
 
 		$auth->avsResult = '2'; // No match at all
@@ -182,9 +179,8 @@ class CaptureJobTest extends BaseAdyenTestCase {
 	 * should cancel the second one and leave the donor details in pending.
 	 */
 	public function testDuplicateAuthorisation() {
-		$auth1 = JsonSerializableObject::fromJsonProxy(
-			'SmashPig\PaymentProviders\Adyen\ExpatriatedMessages\Authorisation',
-			file_get_contents( __DIR__ . '/../Data/auth.json' )
+		$auth1 = Authorisation::getInstanceFromJSON(
+			json_decode( file_get_contents( __DIR__ . '/../Data/auth.json' ), true )
 		);
 
 		$this->mockApi->expects( $this->once() )
@@ -195,9 +191,8 @@ class CaptureJobTest extends BaseAdyenTestCase {
 		$job1->payload = ProcessCaptureRequestJob::factory( $auth1 )['payload'];
 		$job1->execute();
 
-		$auth2 = JsonSerializableObject::fromJsonProxy(
-			'SmashPig\PaymentProviders\Adyen\ExpatriatedMessages\Authorisation',
-			file_get_contents( __DIR__ . '/../Data/auth.json' )
+		$auth2 = Authorisation::getInstanceFromJSON(
+			json_decode( file_get_contents( __DIR__ . '/../Data/auth.json' ), true )
 		);
 		$auth2->pspReference = mt_rand( 1000000000, 10000000000 );
 
@@ -226,9 +221,8 @@ class CaptureJobTest extends BaseAdyenTestCase {
 	 * fredge to decide whether to capture.
 	 */
 	public function testFredgeFallback() {
-		$auth = JsonSerializableObject::fromJsonProxy(
-			'SmashPig\PaymentProviders\Adyen\ExpatriatedMessages\Authorisation',
-			file_get_contents( __DIR__ . '/../Data/auth.json' )
+		$auth = Authorisation::getInstanceFromJSON(
+			json_decode( file_get_contents( __DIR__ . '/../Data/auth.json' ), true )
 		);
 
 		$this->pendingDatabase->deleteMessage( [

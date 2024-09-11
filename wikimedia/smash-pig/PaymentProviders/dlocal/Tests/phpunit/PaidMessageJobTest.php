@@ -17,9 +17,9 @@ class PaidMessageJobTest extends BaseSmashPigUnitTestCase {
 	 */
 	public function testIndiaPaidOneTimeMessagePushedToDonationsQueue() : void {
 		// set up the test PaidMessage object
-		$paidIpnFixture = file_get_contents( __DIR__ . '/../Data/paid-ipn-india-one-time.json' );
-		$paidMessage = PaidMessage::fromJson(
-			PaidMessage::class,
+		$paidIpnFixture = json_decode( file_get_contents( __DIR__ . '/../Data/paid-ipn-india-one-time.json' ), true );
+		$paidMessage = new PaidMessage();
+		$paidMessage->constructFromValues(
 			$paidIpnFixture
 		);
 
@@ -41,9 +41,9 @@ class PaidMessageJobTest extends BaseSmashPigUnitTestCase {
 	 */
 	public function testIndiaPaidRecurringMessagePushedToUpiDonationsQueue() : void {
 		// set up our test PaidMessage object
-		$paidIpnFixture = file_get_contents( __DIR__ . '/../Data/paid-ipn-india-recurring.json' );
-		$paidMessage = PaidMessage::fromJson(
-			PaidMessage::class,
+		$paidIpnFixture = json_decode( file_get_contents( __DIR__ . '/../Data/paid-ipn-india-recurring.json' ), true );
+		$paidMessage = new PaidMessage();
+		$paidMessage->constructFromValues(
 			$paidIpnFixture
 		);
 

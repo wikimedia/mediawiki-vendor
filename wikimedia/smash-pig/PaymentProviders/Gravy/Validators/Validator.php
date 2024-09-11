@@ -97,6 +97,29 @@ class Validator {
 	/**
 	 * @throws ValidationException
 	 */
+	public function validateGetReportExecutionInput( array $params ): void {
+		$required = [
+			'report_execution_id'
+		];
+
+		$this->validateFields( $required, $params );
+	}
+
+	/**
+	 * @throws ValidationException
+	 */
+	public function validateGenerateReportUrlInput( array $params ): void {
+		$required = [
+			'report_execution_id',
+			'report_id'
+		];
+
+		$this->validateFields( $required, $params );
+	}
+
+	/**
+	 * @throws ValidationException
+	 */
 	public function validateRefundInput( array $params ): void {
 		$required = [
 			'gateway_txn_id',

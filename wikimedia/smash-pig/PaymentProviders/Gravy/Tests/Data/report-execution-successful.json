@@ -1,0 +1,20 @@
+{
+    "type": "report-execution",
+    "id": "fe26475d-ec3e-4884-9553-f7356683f7f9",
+    "created_at": "2013-07-16T19:23:00.000+00:00",
+    "updated_at": "2013-07-16T19:23:00.000+00:00",
+    "status": "succeeded",
+    "context": {
+      "reference_timestamp": "2013-07-16T19:23:00.000+00:00",
+      "reference_timezone": "Europe/London"
+    },
+    "report": {
+      "type": "report",
+      "id": "fe26475d-ec3e-4884-9553-f7356683f7f9",
+      "merchant_account_id": "default",
+      "name": "Failed Authorizations 042022",
+      "creator_id": "bd5d40d1-913b-419c-bd62-84efc46e0026",
+      "creator_display_name": "John Doe",
+      "creator_type": "user"
+    }
+  }

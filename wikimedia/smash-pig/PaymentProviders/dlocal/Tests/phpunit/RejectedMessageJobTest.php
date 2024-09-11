@@ -14,9 +14,9 @@ class RejectedMessageJobTest extends BaseSmashPigUnitTestCase {
 
 	public function testRejectionMessagePushedToQueueIfTypeIsWalletDisabled() : void {
 		// set up the test RejectedMessage object
-		$rejectedIpnFixture = file_get_contents( __DIR__ . '/../Data/rejected-322-ipn.json' );
-		$rejectedMessage = RejectedMessage::fromJson(
-			RejectedMessage::class,
+		$rejectedIpnFixture = json_decode( file_get_contents( __DIR__ . '/../Data/rejected-322-ipn.json' ), true );
+		$rejectedMessage = new RejectedMessage();
+		$rejectedMessage->constructFromValues(
 			$rejectedIpnFixture
 		);
 
@@ -35,9 +35,9 @@ class RejectedMessageJobTest extends BaseSmashPigUnitTestCase {
 
 	public function testRejectionMessageNotPushedToQueueIfTypeIsGeneral() : void {
 		// set up the test RejectedMessage object
-		$rejectedIpnFixture = file_get_contents( __DIR__ . '/../Data/rejected-ipn.json' );
-		$rejectedMessage = RejectedMessage::fromJson(
-			RejectedMessage::class,
+		$rejectedIpnFixture = json_decode( file_get_contents( __DIR__ . '/../Data/rejected-ipn.json' ), true );
+		$rejectedMessage = new RejectedMessage();
+		$rejectedMessage->constructFromValues(
 			$rejectedIpnFixture
 		);
 
@@ -56,9 +56,9 @@ class RejectedMessageJobTest extends BaseSmashPigUnitTestCase {
 
 	public function testRejectionCardMessageNoException() : void {
 		// set up the test RejectedMessage object
-		$rejectedIpnFixture = file_get_contents( __DIR__ . '/../Data/rejected-card.json' );
-		$rejectedMessage = RejectedMessage::fromJson(
-			RejectedMessage::class,
+		$rejectedIpnFixture = json_decode( file_get_contents( __DIR__ . '/../Data/rejected-card.json' ), true );
+		$rejectedMessage = new RejectedMessage();
+		$rejectedMessage->constructFromValues(
 			$rejectedIpnFixture
 		);
 

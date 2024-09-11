@@ -2,7 +2,6 @@
 
 namespace SmashPig\PaymentProviders\dlocal\Jobs;
 
-use SmashPig\Core\DataStores\JsonSerializableObject;
 use SmashPig\Core\DataStores\QueueWrapper;
 use SmashPig\Core\Logging\Logger;
 use SmashPig\Core\Runnable;
@@ -13,7 +12,7 @@ use SmashPig\Core\Runnable;
  * If a 'Wallet disabled' rejection is detected, we push it to the 'upi-donations'
  * queue so that the UpiQueueConsumer can close it down. See T341300
  */
-class RejectedMessageJob extends JsonSerializableObject implements Runnable {
+class RejectedMessageJob implements Runnable {
 
 	public const WALLET_DISABLED_STATUS = 322;
 

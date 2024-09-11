@@ -148,29 +148,6 @@ abstract class DlocalMessage extends ListenerMessage {
 		}
 	}
 
-	/**
-	 * Override parent fromJson() method here to decode json
-	 * strings out to associative arrays.
-	 *
-	 * ListenerMessage::fromJson() decodes json strings to stdClass objects
-	 * which is different to what we do in the dLocalListener. I did
-	 * try updating the base class, but it caused test failures. I can't see a
-	 * good reason to stick with stdClass decoding but due to the failures it
-	 * felt like a fight for another day!
-	 *
-	 * @param string $className
-	 * @param string $jsonStr
-	 *
-	 * @return \SmashPig\Core\DataStores\JsonSerializableObject|void
-	 * @throws \SmashPig\Core\DataStores\DataSerializationException
-	 */
-	public static function fromJson( $className, $jsonStr ) {
-		$properties = json_decode( $jsonStr, true );
-		$obj = static::serializedConstructor( $className, $properties );
-		$obj->__wakeup();
-		return $obj;
-	}
-
 	abstract public function getDestinationQueue();
 
 	abstract public function normalizeForQueue();

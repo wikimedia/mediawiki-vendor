@@ -25,6 +25,8 @@ class GravyRefundResponseFactory extends GravyPaymentResponseFactory {
 	}
 
 	protected static function setRefundReason( RefundPaymentResponse $refundResponse, array $normalizedResponse ): void {
+		# refund reason is optional so when blank we drop in a placeholder
+		$normalizedResponse['reason'] = $normalizedResponse['reason'] ?? 'Reason not provided';
 		$refundResponse->setReason( $normalizedResponse['reason'] );
 	}
 

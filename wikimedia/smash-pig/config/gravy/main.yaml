@@ -18,6 +18,9 @@ endpoints:
 merchantAccountId: default
 
 privateKeyLocation: /srv/config/private/gr4vy/private_key.pem
+
+report-location: /tmp
+
 accounts:
   webhook:
     username: WikimediaFoundationTest

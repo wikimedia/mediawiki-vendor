@@ -41,7 +41,7 @@ class PaymentMessage extends Message {
 		// Tag donations from givingfund email list with the giving fund organization contact ID
 		$gfCid = $config->val( 'givingfund-cid' );
 		$gfEmails = $config->val( 'givingfund-emails' );
-		if ( $gfCid && $gfEmails && in_array( $message['email'], $gfEmails ) ) {
+		if ( $gfCid && $gfEmails && in_array( strtolower( $message['email'] ), $gfEmails ) ) {
 			$message['contact_id'] = $gfCid;
 			$contactFields = [
 				'city', 'country', 'email', 'first_name', 'last_name', 'postal_code', 'state_province',

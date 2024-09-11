@@ -204,6 +204,33 @@ class CardPaymentProviderTest extends BaseGravyTestCase {
 		$this->assertEquals( ErrorMapper::$errorCodes[$error_code], $errors[0]->getErrorCode() );
 	}
 
+	public function testError3DSecureCreatePayment() {
+		$apiErrorResponseBody = json_decode( file_get_contents( __DIR__ . '/../Data/create-transaction-3dsecure-error.json' ), true );
+		$params = $this->getCreateTrxnParams( 'random-session-id' );
+		$getDonorResponseBody = json_decode( file_get_contents( __DIR__ . '/../Data/list-buyer.json' ), true );
+
+		$this->mockApi->expects( $this->once() )
+			->method( 'getDonor' )
+			->willReturn( $getDonorResponseBody );
+
+		$this->mockApi->expects( $this->once() )
+			->method( 'createPayment' )
+			->willReturn( $apiErrorResponseBody );
+
+		$response = $this->provider->createPayment( $params );
+
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\CreatePaymentResponse',
+			$response );
+		$this->assertFalse( $response->isSuccessful() );
+		$errors = $response->getErrors();
+		$this->assertCount( 1, $errors );
+		$error_code = $apiErrorResponseBody['three_d_secure']['error_data']['code'];
+		$description = $apiErrorResponseBody['three_d_secure']['error_data']['description'];
+		$detail = $apiErrorResponseBody['three_d_secure']['error_data']['detail'];
+		$this->assertEquals( ErrorMapper::getError( $error_code ), $errors[0]->getErrorCode() );
+		$this->assertEquals( $description . ':' . $detail, $errors[0]->getDebugMessage() );
+	}
+
 	public function testDupErrorCreatePayment() {
 		$dupTrxnErrorResponseBody = json_decode( file_get_contents( __DIR__ . '/../Data/create-transaction-duplicate-transaction-fail.json' ), true );
 		$params = $this->getCreateTrxnParams( 'random-session-id' );

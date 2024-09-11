@@ -20,7 +20,7 @@ abstract class GravyPaymentResponseFactory {
 	public static function fromNormalizedResponse( array $response ): PaymentProviderResponse {
 		$paymentProviderResponse = static::createBasicResponse();
 
-		$rawResponse = $response['raw_response'];
+		$rawResponse = $response['raw_response'] ?? [];
 		$isSuccessful = $response['is_successful'];
 
 		$paymentProviderResponse->setRawResponse( $rawResponse );
@@ -49,7 +49,7 @@ abstract class GravyPaymentResponseFactory {
 
 	/**
 	 * @param PaymentProviderResponse $paymentResponse
-	 * @param array $error
+	 * @param string $error
 	 * @return void
 	 */
 	public static function handleException( PaymentProviderResponse $paymentResponse, ?string $error = '', ?string $errorCode = null ): void {

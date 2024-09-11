@@ -223,4 +223,10 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 		];
 		$this->assertEquals( $expected, $actual, 'Did not parse donation correctly' );
 	}
+
+	public function testIgnoreMerchantReference() {
+		$processor = new AdyenSettlementDetailReport();
+		$output = $processor->parseFile( __DIR__ . '/../Data/settlement_detail_report_ignore.csv' );
+		$this->assertSame( 0, count( $output ) );
+	}
 }

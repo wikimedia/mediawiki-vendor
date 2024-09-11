@@ -172,13 +172,14 @@ class BuyersApiTest extends TestCase
         try {
             $config = new Gr4vyConfig(self::$gr4vyId, self::$privateKeyLocation);
 
-            $buyer_request = array("external_identifier"=>"testAddBuyer3","display_name"=>"abc");
+            $buyer_request = array("external_identifier"=>"testAddBuyer6","display_name"=>"abc");
             $result = $config->addBuyer($buyer_request);
-
-            $buyer_update = array("external_identifier"=>"testUpdateBuyer");
+            print_r($result);
+            $buyer_update = array("external_identifier"=>"testUpdateBuyer6");
             $result = $config->updateBuyer($result["id"], $buyer_update);
+            print_r($result);
             $this->assertArrayHasKey("id", $result);
-            $this->assertEquals($result["external_identifier"], "testUpdateBuyer");
+            $this->assertEquals($result["external_identifier"], "testUpdateBuyer6");
 
             $result = $config->deleteBuyer($result["id"]);
             $this->assertArrayHasKey("success", $result);

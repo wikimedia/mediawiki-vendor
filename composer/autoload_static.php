@@ -263,8 +263,8 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-factory/src',
-            1 => __DIR__ . '/..' . '/psr/http-message/src',
+            0 => __DIR__ . '/..' . '/psr/http-message/src',
+            1 => __DIR__ . '/..' . '/psr/http-factory/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -2136,7 +2136,6 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\Core\\DataStores\\DataSerializationException' => __DIR__ . '/..' . '/wikimedia/smash-pig/Core/DataStores/DataSerializationException.php',
         'SmashPig\\Core\\DataStores\\DataStoreException' => __DIR__ . '/..' . '/wikimedia/smash-pig/Core/DataStores/DataStoreException.php',
         'SmashPig\\Core\\DataStores\\DataStoreTransactionException' => __DIR__ . '/..' . '/wikimedia/smash-pig/Core/DataStores/DataStoreTransactionException.php',
-        'SmashPig\\Core\\DataStores\\JsonSerializableObject' => __DIR__ . '/..' . '/wikimedia/smash-pig/Core/DataStores/JsonSerializableObject.php',
         'SmashPig\\Core\\DataStores\\PaymentsFraudDatabase' => __DIR__ . '/..' . '/wikimedia/smash-pig/Core/DataStores/PaymentsFraudDatabase.php',
         'SmashPig\\Core\\DataStores\\PaymentsInitialDatabase' => __DIR__ . '/..' . '/wikimedia/smash-pig/Core/DataStores/PaymentsInitialDatabase.php',
         'SmashPig\\Core\\DataStores\\PendingDatabase' => __DIR__ . '/..' . '/wikimedia/smash-pig/Core/DataStores/PendingDatabase.php',
@@ -2362,6 +2361,7 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\PaymentProviders\\GlobalCollect\\GlobalCollectListener' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/GlobalCollect/GlobalCollectListener.php',
         'SmashPig\\PaymentProviders\\Gravy\\Actions\\GravyAction' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Actions/GravyAction.php',
         'SmashPig\\PaymentProviders\\Gravy\\Actions\\RefundAction' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Actions/RefundAction.php',
+        'SmashPig\\PaymentProviders\\Gravy\\Actions\\ReportExecutionAction' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Actions/ReportExecutionAction.php',
         'SmashPig\\PaymentProviders\\Gravy\\Actions\\TransactionAction' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Actions/TransactionAction.php',
         'SmashPig\\PaymentProviders\\Gravy\\Api' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Api.php',
         'SmashPig\\PaymentProviders\\Gravy\\Audit\\GravyAudit' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Audit/GravyAudit.php',
@@ -2369,6 +2369,7 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\PaymentProviders\\Gravy\\CardPaymentProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/CardPaymentProvider.php',
         'SmashPig\\PaymentProviders\\Gravy\\ExpatriatedMessages\\GravyMessage' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/ExpatriatedMessages/GravyMessage.php',
         'SmashPig\\PaymentProviders\\Gravy\\ExpatriatedMessages\\RefundMessage' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/ExpatriatedMessages/RefundMessage.php',
+        'SmashPig\\PaymentProviders\\Gravy\\ExpatriatedMessages\\ReportExecutionMessage' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/ExpatriatedMessages/ReportExecutionMessage.php',
         'SmashPig\\PaymentProviders\\Gravy\\ExpatriatedMessages\\TransactionMessage' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/ExpatriatedMessages/TransactionMessage.php',
         'SmashPig\\PaymentProviders\\Gravy\\Factories\\GravyApprovePaymentResponseFactory' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Factories/GravyApprovePaymentResponseFactory.php',
         'SmashPig\\PaymentProviders\\Gravy\\Factories\\GravyCancelPaymentResponseFactory' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Factories/GravyCancelPaymentResponseFactory.php',
@@ -2379,7 +2380,9 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\PaymentProviders\\Gravy\\Factories\\GravyGetPaymentDetailsResponseFactory' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Factories/GravyGetPaymentDetailsResponseFactory.php',
         'SmashPig\\PaymentProviders\\Gravy\\Factories\\GravyPaymentResponseFactory' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Factories/GravyPaymentResponseFactory.php',
         'SmashPig\\PaymentProviders\\Gravy\\Factories\\GravyRefundResponseFactory' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Factories/GravyRefundResponseFactory.php',
+        'SmashPig\\PaymentProviders\\Gravy\\Factories\\GravyReportResponseFactory' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Factories/GravyReportResponseFactory.php',
         'SmashPig\\PaymentProviders\\Gravy\\GravyListener' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/GravyListener.php',
+        'SmashPig\\PaymentProviders\\Gravy\\Jobs\\DownloadReportJob' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Jobs/DownloadReportJob.php',
         'SmashPig\\PaymentProviders\\Gravy\\Jobs\\ProcessCaptureRequestJob' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Jobs/ProcessCaptureRequestJob.php',
         'SmashPig\\PaymentProviders\\Gravy\\Jobs\\RecordCaptureJob' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Jobs/RecordCaptureJob.php',
         'SmashPig\\PaymentProviders\\Gravy\\Maintenance\\ApprovePayments' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Maintenance/ApprovePayments.php',
@@ -2392,6 +2395,7 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\PaymentProviders\\Gravy\\Mapper\\ResponseMapper' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Mapper/ResponseMapper.php',
         'SmashPig\\PaymentProviders\\Gravy\\PaymentProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/PaymentProvider.php',
         'SmashPig\\PaymentProviders\\Gravy\\ReferenceData' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/ReferenceData.php',
+        'SmashPig\\PaymentProviders\\Gravy\\Responses\\ReportResponse' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Responses/ReportResponse.php',
         'SmashPig\\PaymentProviders\\Gravy\\Tests\\BaseGravyTestCase' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Tests/BaseGravyTestCase.php',
         'SmashPig\\PaymentProviders\\Gravy\\Tests\\GravyTestConfiguration' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Tests/GravyTestConfiguration.php',
         'SmashPig\\PaymentProviders\\Gravy\\Tests\\phpunit\\AuditTest' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Tests/phpunit/AuditTest.php',

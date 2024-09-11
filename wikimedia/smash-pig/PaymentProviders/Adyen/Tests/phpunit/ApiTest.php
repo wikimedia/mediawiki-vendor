@@ -1,6 +1,7 @@
 <?php
 namespace SmashPig\PaymentProviders\Adyen\Test;
 
+use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentProviders\Adyen\Api;
 use SmashPig\Tests\BaseSmashPigUnitTestCase;
 
@@ -126,7 +127,7 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 					$this->assertArrayHasKey( 'Idempotency-Key', $actualHeaders );
 					unset( $actualHeaders['Idempotency-Key'] );
 					$this->assertEquals( [
-						'Content-Length' => '4702',
+						'Content-Length' => '4700',
 						'x-API-key' => 'K1ck0utTh3J4ms',
 						'content-type' => 'application/json'
 					], $actualHeaders );
@@ -157,7 +158,7 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 				'billingAddress' => [
 					'city' => 'Detroit',
 					'country' => 'US',
-					'houseNumberOrName' => 'NA',
+					'houseNumberOrName' => '',
 					'postalCode' => '48204',
 					'stateOrProvince' => 'MI',
 					'street' => '8952 Grand River Avenue',
@@ -186,6 +187,75 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 		$this->assertEquals( '905_1', $response['errorCode'] );
 	}
 
+	/**
+	 * Make sure we send the right params for a CZ online banking auth
+	 * @return void
+	 * @throws \SmashPig\Core\ApiException
+	 */
+	public function testCzechOnlineBankingCreatePayment() {
+		$params = [
+			'amount' => '100.00',
+			'country' => 'CZ',
+			'currency' => 'CZK',
+			'description' => 'Wikimedia Foundation',
+			'email' => 'testytest@example.com',
+			'first_name' => 'Testy',
+			'last_name' => 'Test',
+			'order_id' => '48991764.1',
+			'postal_code' => '0',
+			'return_url' => 'https://localhost:9001/index.php?title=Special:AdyenCheckoutGatewayResult&order_id=48991764.1&wmf_token=7b760d3a08327538d824c00a1c042a29%2B%5C&amount=100.00&currency=CZK&payment_method=bt&payment_submethod=&utm_source=..bt',
+			'street_address' => 'N0NE PROVIDED',
+			'user_ip' => '172.20.0.1',
+			'issuer_id' => 'cs',
+		];
+		$expectedRestParams = [
+			'amount' => [
+				'currency' => 'CZK',
+				'value' => 10000,
+			],
+			'reference' => '48991764.1',
+			'merchantAccount' => 'test',
+			'paymentMethod' => [
+				'type' => 'onlineBanking_CZ',
+				'issuer' => 'cs',
+			],
+			'returnUrl' => 'https://localhost:9001/index.php?title=Special:AdyenCheckoutGatewayResult&order_id=48991764.1&wmf_token=7b760d3a08327538d824c00a1c042a29%2B%5C&amount=100.00&currency=CZK&payment_method=bt&payment_submethod=&utm_source=..bt',
+			'additionalData' => [
+				'manualCapture' => false,
+			],
+			'shopperEmail' => 'testytest@example.com',
+			'shopperIP' => '172.20.0.1',
+			'shopperName' => [
+				'firstName' => 'Testy',
+				'lastName' => 'Test',
+			],
+			'billingAddress' => [
+				'city' => 'NA',
+				'country' => 'CZ',
+				'houseNumberOrName' => '',
+				'postalCode' => '0',
+				'stateOrProvince' => 'NA',
+				'street' => 'N0NE PROVIDED',
+			],
+		];
+		$this->curlWrapper->expects( $this->once() )
+			->method( 'execute' )
+			->with(
+				$this->callback( function ( $url ) {
+					$this->assertStringEndsWith( '/payments', $url );
+					return true;
+				} ),
+				'POST',
+				$this->anything(), // ignore headers for this test
+				json_encode( $expectedRestParams )
+			)->willReturn( [
+				'body' => '{}', // ignoring returned content for this test
+				'headers' => [], // This API doesn't care
+				'status' => 200
+			] );
+		$this->api->createBankTransferPaymentFromCheckout( $params );
+	}
+
 	protected function getCreatePaymentTestParams() {
 		return [
 			'currency' => 'EUR',
@@ -201,7 +271,7 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 			'street_address' => '8952 Grand River Avenue',
 			'country' => 'US',
 			'description' => 'Wikimedia Foundation',
-			'email' => 'wkramer@mc5.net',
+			'email' => 'wkramer@mc5.net', // Not donor data, just a band reference. Kick out the Jams!
 			'first_name' => 'Wayne',
 			'last_name' => 'Kramer',
 			'postal_code' => '48204',

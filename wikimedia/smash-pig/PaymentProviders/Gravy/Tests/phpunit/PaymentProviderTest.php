@@ -250,4 +250,80 @@ class PaymentProviderTest extends BaseGravyTestCase {
 		$this->assertEquals( $responseBody['reason'], $response->getReason() );
 		$this->assertTrue( $response->isSuccessful() );
 	}
+
+	public function testGetDownloadReportUrlSuccessful() {
+		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/generate-report-url-successful.json' ), true );
+		$params = [
+			'report_execution_id' => 'random-exec-id',
+			'report_id' => 'random-id',
+		];
+		$this->mockApi->expects( $this->once() )
+			->method( 'generateReportDownloadUrl' )
+			->with( $params )
+			->willReturn( $responseBody );
+
+		$response = $this->provider->generateReportDownloadUrl( $params );
+
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Gravy\Responses\ReportResponse',
+			$response );
+		$this->assertEquals( $responseBody['url'], $response->getReportUrl() );
+		$this->assertTrue( $response->isSuccessful() );
+	}
+
+	public function testApiErrorGetDownloadReportUrl() {
+		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/generate-report-url-fail.json' ), true );
+		$params = [
+			'report_execution_id' => 'random-id'
+		];
+		$this->mockApi->expects( $this->once() )
+			->method( 'getReportExecutionDetails' )
+			->willReturn( $responseBody );
+
+		$response = $this->provider->getReportExecutionDetails( $params );
+
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Gravy\Responses\ReportResponse',
+			$response );
+		$this->assertFalse( $response->isSuccessful() );
+		$errors = $response->getErrors();
+
+		$this->assertCount( 1, $errors );
+	}
+
+	public function testGetSuccessfulReportExecution() {
+		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/report-execution-successful.json' ), true );
+		$params = [
+			'report_execution_id' => $responseBody['id']
+		];
+		$this->mockApi->expects( $this->once() )
+			->method( 'getReportExecutionDetails' )
+			->with( $params )
+			->willReturn( $responseBody );
+
+		$response = $this->provider->getReportExecutionDetails( $params );
+
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Gravy\Responses\ReportResponse',
+			$response );
+		$this->assertEquals( $responseBody['id'], $response->getReportExecutionId() );
+		$this->assertEquals( $responseBody['report']['id'], $response->getReportId() );
+		$this->assertTrue( $response->isSuccessful() );
+	}
+
+	public function testApiErrorReportExecution() {
+		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/report-execution-fail.json' ), true );
+		$params = [
+			'report_execution_id' => 'random-id'
+		];
+		$this->mockApi->expects( $this->once() )
+			->method( 'getReportExecutionDetails' )
+			->willReturn( $responseBody );
+
+		$response = $this->provider->getReportExecutionDetails( $params );
+
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Gravy\Responses\ReportResponse',
+			$response );
+		$this->assertFalse( $response->isSuccessful() );
+		$errors = $response->getErrors();
+
+		$this->assertCount( 1, $errors );
+	}
 }

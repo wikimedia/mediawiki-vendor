@@ -2,10 +2,9 @@
 
 use SmashPig\Core\Actions\IListenerMessageAction;
 use SmashPig\Core\Context;
-use SmashPig\Core\DataStores\JsonSerializableObject;
 use SmashPig\Core\Logging\Logger;
 
-abstract class ListenerMessage extends JsonSerializableObject {
+abstract class ListenerMessage {
 
 	/**
 	 * Determine if the message is complete, well formed, and able to be

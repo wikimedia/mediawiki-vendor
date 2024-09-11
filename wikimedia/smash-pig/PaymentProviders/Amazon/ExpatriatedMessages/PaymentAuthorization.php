@@ -9,7 +9,6 @@ abstract class PaymentAuthorization extends AmazonMessage {
 	protected $amount;
 
 	public function __construct( $values ) {
-		parent::__construct();
 		$details = $values['AuthorizationDetails'];
 
 		$captureReferenceId = $details['AuthorizationReferenceId'];

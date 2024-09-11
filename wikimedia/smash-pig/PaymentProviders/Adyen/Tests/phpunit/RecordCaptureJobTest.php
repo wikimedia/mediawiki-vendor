@@ -1,8 +1,8 @@
 <?php namespace SmashPig\PaymentProviders\Adyen\Test;
 
-use SmashPig\Core\DataStores\JsonSerializableObject;
 use SmashPig\Core\DataStores\PendingDatabase;
 use SmashPig\Core\DataStores\QueueWrapper;
+use SmashPig\PaymentProviders\Adyen\ExpatriatedMessages\Capture;
 use SmashPig\PaymentProviders\Adyen\Jobs\RecordCaptureJob;
 use SmashPig\PaymentProviders\Adyen\Tests\BaseAdyenTestCase;
 
@@ -36,9 +36,8 @@ class RecordCaptureJobTest extends BaseAdyenTestCase {
 
 	public function testRecordCapture() {
 		$donationsQueue = QueueWrapper::getQueue( 'donations' );
-		$capture = JsonSerializableObject::fromJsonProxy(
-			'SmashPig\PaymentProviders\Adyen\ExpatriatedMessages\Capture',
-			file_get_contents( __DIR__ . '/../Data/capture.json' )
+		$capture = Capture::getInstanceFromJSON(
+			json_decode( file_get_contents( __DIR__ . '/../Data/capture.json' ), true )
 		);
 
 		$job = new RecordCaptureJob();

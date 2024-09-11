@@ -56,6 +56,7 @@ abstract class AdyenAudit implements AuditParser {
 	protected $type;
 	// the date of the state of the payment for example when it settled or was refunded
 	protected $date;
+	protected $merchantReference = 'Merchant Reference';
 	protected $columnHeaders;
 
 	// These are the common ones - subclasses should add more in their constructors.
@@ -107,8 +108,11 @@ abstract class AdyenAudit implements AuditParser {
 		if ( in_array( $type, self::$ignoredTypes ) ) {
 			return;
 		}
+		$merchantReference = $row[$this->merchantReference];
+		if ( $this->isIgnoredMerchantReference( $merchantReference ) ) {
+			return;
+		}
 
-		// maybe just put this back then
 		$msg = $this->setCommonValues( $row );
 
 		switch ( $type ) {
@@ -153,6 +157,16 @@ abstract class AdyenAudit implements AuditParser {
 		$msg['date'] = UtcDate::getUtcTimestamp( $row[$this->date], $row['TimeZone'] );
 
 		return $msg;
+	}
+
+	/**
+	 * Skip lines where we do not want to process
+	 * eg Gravy transactions coming in on the adyen audit
+	 *
+	 */
+	protected function isIgnoredMerchantReference( $merchantReference ): bool {
+		// ignore gravy transactions, they have no period and contain letters
+		return ( !strpos( $merchantReference, '.' ) && !is_numeric( $merchantReference ) );
 	}
 
 }

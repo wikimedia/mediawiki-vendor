@@ -439,4 +439,12 @@ class Gr4vyConfig
         $response = $this->delete("/checkout/sessions/" . $checkout_session_id);
         return $response;
     }
+    public function getReportExecution($report_execution_id) {
+        $response = $this->get("/report-executions/" . $report_execution_id);
+        return $response;
+    }
+    public function generateReportDownloadUrl($report_id, $report_execution_id, $request = array()) {
+        $response = $this->post("/reports/". $report_id . "/executions/" . $report_execution_id . "/url", $request);
+        return $response;
+    }
 }

@@ -189,4 +189,37 @@ class Api {
 		$tl->info( "Refund transaction response for transaction with ID $gatewayTxnId $response_string" );
 		return $response;
 	}
+
+	/**
+	 * Uses the rest API to get a report execution id
+	 * @param array $params
+	 * @throws \SmashPig\Core\ApiException
+	 * @return array
+	 * @link https://docs.gr4vy.com/reference/reports/get-report-execution Documentation to get report execution details
+	 */
+	public function getReportExecutionDetails( array $params ): array {
+		$report_execution_id = $params['report_execution_id'];
+		$tl = new TaggedLogger( 'RawData' );
+		$response = $this->gravyApiClient->getReportExecution( $report_execution_id );
+		$response_string = json_encode( $response );
+		$tl->info( "Report execution details for execution with ID {$report_execution_id} $response_string" );
+		return $response;
+	}
+
+	/**
+	 * Uses the rest API to generate a report from url
+	 * @param array $params
+	 * @throws \SmashPig\Core\ApiException
+	 * @return array
+	 * @link https://docs.gr4vy.com/reference/reports/get-report-execution Documentation to get report execution details
+	 */
+	public function generateReportDownloadUrl( array $params ): array {
+		$report_id = $params['report_id'];
+		$report_execution_id = $params['report_execution_id'];
+		$tl = new TaggedLogger( 'RawData' );
+		$response = $this->gravyApiClient->generateReportDownloadUrl( $report_id, $report_execution_id );
+		$response_string = json_encode( $response );
+		$tl->info( "Report url for report with execution ID {$report_execution_id} $response_string" );
+		return $response;
+	}
 }

@@ -10,8 +10,10 @@ use SmashPig\PaymentProviders\Gravy\Factories\GravyCreateDonorResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyGetDonorResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyGetPaymentDetailsResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyRefundResponseFactory;
+use SmashPig\PaymentProviders\Gravy\Factories\GravyReportResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Mapper\RequestMapper;
 use SmashPig\PaymentProviders\Gravy\Mapper\ResponseMapper;
+use SmashPig\PaymentProviders\Gravy\Responses\ReportResponse;
 use SmashPig\PaymentProviders\Gravy\Validators\Validator;
 use SmashPig\PaymentProviders\ICancelablePaymentProvider;
 use SmashPig\PaymentProviders\IDeleteRecurringPaymentTokenProvider;
@@ -243,5 +245,49 @@ abstract class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaym
 			GravyRefundResponseFactory::handleException( $refundResponse, $e->getMessage(), $e->getCode() );
 		}
 		return $refundResponse;
+	}
+
+	public function getReportExecutionDetails( array $params ): ReportResponse {
+		$reportResponse = new ReportResponse();
+		try {
+			$validator = new Validator();
+			$validator->validateGetReportExecutionInput( $params );
+
+			$rawGravyReportExecutionResponse = $this->api->getReportExecutionDetails( $params );
+			// map the response from the external format back to our normalized structure.
+			$gravyResponseMapper = new ResponseMapper();
+			$normalizedResponse = $gravyResponseMapper->mapFromReportExecutionResponse( $rawGravyReportExecutionResponse );
+			$reportResponse = GravyReportResponseFactory::fromNormalizedResponse( $normalizedResponse );
+		} catch ( ValidationException $e ) {
+			// it threw an exception!
+			GravyReportResponseFactory::handleValidationException( $reportResponse, $e->getData() );
+		} catch ( \Exception $e ) {
+			// it threw an exception!
+			Logger::error( "Processor failed to fetch report execution with id {$params['report_execution_id']}. returned response:" . $e->getMessage() );
+			GravyReportResponseFactory::handleException( $reportResponse, $e->getMessage(), $e->getCode() );
+		}
+		return $reportResponse;
+	}
+
+	public function generateReportDownloadUrl( array $params ): ReportResponse {
+		$reportResponse = new ReportResponse();
+		try {
+			$validator = new Validator();
+			$validator->validateGenerateReportUrlInput( $params );
+
+			$rawGravyReportDownloadResponse = $this->api->generateReportDownloadUrl( $params );
+			// map the response from the external format back to our normalized structure.
+			$gravyResponseMapper = new ResponseMapper();
+			$normalizedResponse = $gravyResponseMapper->mapFromGenerateReportUrlResponse( $rawGravyReportDownloadResponse );
+			$reportResponse = GravyReportResponseFactory::fromNormalizedResponse( $normalizedResponse );
+		} catch ( ValidationException $e ) {
+			// it threw an exception!
+			GravyReportResponseFactory::handleValidationException( $reportResponse, $e->getData() );
+		} catch ( \Exception $e ) {
+			// it threw an exception!
+			Logger::error( "Processor failed to fetch report execution with id {$params['report_execution_id']}. returned response:" . $e->getMessage() );
+			GravyReportResponseFactory::handleException( $reportResponse, $e->getMessage(), $e->getCode() );
+		}
+		return $reportResponse;
 	}
 }

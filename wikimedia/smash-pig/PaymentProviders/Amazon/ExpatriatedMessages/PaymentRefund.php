@@ -11,7 +11,6 @@ abstract class PaymentRefund extends AmazonMessage {
 	protected $gateway_parent_id;
 
 	public function __construct( $values ) {
-		parent::__construct();
 		$details = $values['RefundDetails'];
 
 		$this->setGatewayIds( $details['AmazonRefundId'] );
