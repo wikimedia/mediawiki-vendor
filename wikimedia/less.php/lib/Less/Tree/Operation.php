@@ -7,7 +7,6 @@ class Less_Tree_Operation extends Less_Tree {
 	public $op;
 	public $operands;
 	public $isSpaced;
-	public $type = 'Operation';
 
 	/**
 	 * @param string $op
@@ -30,7 +29,7 @@ class Less_Tree_Operation extends Less_Tree {
 		// For example, if one argument is a Less_Tree_Call like 'var(--foo)' then we
 		// preserve it as literal for native CSS.
 		// https://phabricator.wikimedia.org/T331688
-		if ( Less_Environment::isMathOn() ) {
+		if ( $env->isMathOn() ) {
 
 			if ( $a instanceof Less_Tree_Dimension && $b instanceof Less_Tree_Color ) {
 				$a = $a->toColor();
@@ -48,7 +47,7 @@ class Less_Tree_Operation extends Less_Tree {
 			}
 		}
 
-		return new Less_Tree_Operation( $this->op, [ $a, $b ], $this->isSpaced );
+		return new self( $this->op, [ $a, $b ], $this->isSpaced );
 	}
 
 	/**

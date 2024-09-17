@@ -1,9 +1,9 @@
 <?php
 /**
  * @private
+ * @see less-2.5.3.js#Anonymous.prototype
  */
-class Less_Tree_Directive extends Less_Tree {
-
+class Less_Tree_Directive extends Less_Tree implements Less_Tree_HasValueProperty {
 	public $name;
 	public $value;
 	public $rules;
@@ -12,13 +12,12 @@ class Less_Tree_Directive extends Less_Tree {
 	public $isRooted;
 	public $currentFileInfo;
 	public $debugInfo;
-	public $type = 'Directive';
 
-	public function __construct( $name, $value = null, $rules = null, $index = null, $isRooted = false, $currentFileInfo = null, $debugInfo = null ) {
+	public function __construct( $name, $value = null, $rules = null, $index = null, $isRooted = false, $currentFileInfo = null, $debugInfo = null, $isReferenced = false ) {
 		$this->name = $name;
 		$this->value = $value;
 
-		if ( $rules ) {
+		if ( $rules !== null ) {
 			if ( is_array( $rules ) ) {
 				$this->rules = $rules;
 			} else {
@@ -35,6 +34,7 @@ class Less_Tree_Directive extends Less_Tree {
 		$this->isRooted = $isRooted;
 		$this->currentFileInfo = $currentFileInfo;
 		$this->debugInfo = $debugInfo;
+		$this->isReferenced = $isReferenced;
 	}
 
 	public function accept( $visitor ) {
@@ -46,18 +46,24 @@ class Less_Tree_Directive extends Less_Tree {
 		}
 	}
 
+	public function isRulesetLike() {
+		return $this->rules || !$this->isCharset();
+	}
+
+	public function isCharset() {
+		return $this->name === "@charset";
+	}
+
 	/**
 	 * @see Less_Tree::genCSS
 	 */
 	public function genCSS( $output ) {
-		$value = $this->value;
-		$rules = $this->rules;
 		$output->add( $this->name, $this->currentFileInfo, $this->index );
 		if ( $this->value ) {
 			$output->add( ' ' );
 			$this->value->genCSS( $output );
 		}
-		if ( $this->rules ) {
+		if ( $this->rules !== null ) {
 			Less_Tree::outputRuleset( $output, $this->rules );
 		} else {
 			$output->add( ';' );
@@ -90,7 +96,7 @@ class Less_Tree_Directive extends Less_Tree {
 		$env->mediaPath = $mediaPathBackup;
 		$env->mediaBlocks = $mediaPBlocksBackup;
 
-		return new Less_Tree_Directive( $this->name, $value, $rules, $this->index, $this->isRooted, $this->currentFileInfo, $this->debugInfo );
+		return new self( $this->name, $value, $rules, $this->index, $this->isRooted, $this->currentFileInfo, $this->debugInfo, $this->isReferenced );
 	}
 
 	public function variable( $name ) {
@@ -105,13 +111,15 @@ class Less_Tree_Directive extends Less_Tree {
 		}
 	}
 
-	// rulesets: function () { if (this.rules) return tree.Ruleset.prototype.rulesets.apply(this.rules); },
-
 	public function markReferenced() {
 		$this->isReferenced = true;
 		if ( $this->rules ) {
 			Less_Tree::ReferencedArray( $this->rules );
 		}
+	}
+
+	public function getIsReferenced() {
+		return !isset( $this->currentFileInfo['reference'] ) || !$this->currentFileInfo['reference'] || $this->isReferenced;
 	}
 
 	public function emptySelectors() {
