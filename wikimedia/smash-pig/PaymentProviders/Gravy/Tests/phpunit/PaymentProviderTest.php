@@ -159,6 +159,9 @@ class PaymentProviderTest extends BaseGravyTestCase {
 		$this->assertEquals( $responseBody['buyer']['billing_details']['email_address'], $response->getDonorDetails()->getEmail() );
 		$this->assertEquals( $responseBody['buyer']['id'], $response->getDonorDetails()->getCustomerId() );
 		$this->assertEquals( $responseBody['buyer']['billing_details']['address']['line1'], $response->getDonorDetails()->getBillingAddress()->getStreetAddress() );
+		$this->assertEquals( explode( '-', $responseBody['payment_service']['payment_service_definition_id'] )[0], $response->getBackendProcessor() );
+		$this->assertEquals( $responseBody['payment_service_transaction_id'], $response->getBackendProcessorTransactionId() );
+
 		$this->assertTrue( $response->isSuccessful() );
 	}
 

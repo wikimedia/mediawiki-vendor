@@ -2,12 +2,10 @@
 
 namespace SmashPig\PaymentProviders\Gravy\Factories;
 
-use SmashPig\PaymentData\Address;
-use SmashPig\PaymentData\DonorDetails;
 use SmashPig\PaymentProviders\Responses\PaymentDetailResponse;
 use SmashPig\PaymentProviders\Responses\PaymentProviderResponse;
 
-class GravyGetPaymentDetailsResponseFactory extends GravyPaymentResponseFactory {
+class GravyGetPaymentDetailsResponseFactory extends GravyCreatePaymentResponseFactory {
 
 	protected static function createBasicResponse(): PaymentProviderResponse {
 		return new PaymentDetailResponse();
@@ -28,6 +26,7 @@ class GravyGetPaymentDetailsResponseFactory extends GravyPaymentResponseFactory 
 		self::setRecurringPaymentToken( $paymentResponse, $normalizedResponse );
 		self::setPaymentSubmethod( $paymentResponse, $normalizedResponse );
 		self::setDonorDetails( $paymentResponse, $normalizedResponse );
+		self::setBackendProcessorAndId( $paymentResponse, $normalizedResponse );
 	}
 
 	/**
@@ -39,83 +38,5 @@ class GravyGetPaymentDetailsResponseFactory extends GravyPaymentResponseFactory 
 		if ( !empty( $normalizedResponse['order_id'] ) ) {
 			$paymentResponse->setOrderId( $normalizedResponse['order_id'] );
 		}
-	}
-
-	/**
-	 * @param PaymentProviderResponse $paymentResponse
-	 * @param array $normalizedResponse
-	 * @return void
-	 */
-	protected static function setRecurringPaymentToken( PaymentProviderResponse $paymentResponse, array $normalizedResponse ): void {
-		if ( !empty( $normalizedResponse['recurring_payment_token'] ) ) {
-			$paymentResponse->setRecurringPaymentToken( $normalizedResponse['recurring_payment_token'] );
-		}
-	}
-
-	/**
-	 * @param PaymentProviderResponse $paymentResponse
-	 * @param array $normalizedResponse
-	 * @return void
-	 */
-	protected static function setPaymentDetails( PaymentProviderResponse $paymentResponse, array $normalizedResponse ): void {
-		$paymentResponse->setGatewayTxnId( $normalizedResponse['gateway_txn_id'] );
-		$paymentResponse->setAmount( $normalizedResponse['amount'] );
-		$paymentResponse->setCurrency( $normalizedResponse['currency'] );
-	}
-
-	/**
-	 * @param PaymentProviderResponse $createPaymentResponse
-	 * @param array $rawResponse
-	 * @return void
-	 */
-	protected static function setRedirectURL( PaymentProviderResponse $createPaymentResponse, array $normalizedResponse ): void {
-		if ( !empty( $normalizedResponse['redirect_url'] ) ) {
-			$createPaymentResponse->setRedirectUrl( $normalizedResponse['redirect_url'] );
-		}
-	}
-
-	/**
-	 * @param PaymentProviderResponse $paymentResponse
-	 * @param array $rawResponse
-	 * @return void
-	 */
-	protected static function setPaymentSubmethod( PaymentProviderResponse $paymentResponse, array $normalizedResponse ): void {
-		$paymentResponse->setPaymentMethod( $normalizedResponse['payment_method'] );
-		$paymentResponse->setPaymentSubmethod( $normalizedResponse['payment_submethod'] );
-	}
-
-	/**
-	 * Summary of setDonorDetails
-	 * @param PaymentProviderResponse $paymentResponse
-	 * @param array $normalizedResponse
-	 * @return void
-	 */
-	protected static function setDonorDetails( PaymentProviderResponse $paymentResponse, array $normalizedResponse ) {
-		$donorDetails = $normalizedResponse['donor_details'];
-
-		$address = ( new Address() )
-			->setStreetAddress( $donorDetails['address']['address_line1'] ?? '' )
-			->setPostalCode( $donorDetails['address']['postal_code'] ?? '' )
-			->setStateOrProvinceCode( $donorDetails['address']['state'] ?? '' )
-			->setCity( $donorDetails['address']['city'] ?? '' )
-			->setCountryCode( $donorDetails['address']['country'] ?? '' );
-		$details = ( new DonorDetails() )
-			->setFirstName( $donorDetails['first_name'] ?? '' )
-			->setLastName( $donorDetails['last_name'] ?? '' )
-			->setEmail( $donorDetails['email_address'] ?? '' )
-			->setPhone( $donorDetails['phone_number'] ?? '' )
-			->setCustomerId( $donorDetails['processor_contact_id'] ?? '' )
-			->setBillingAddress( $address );
-		$paymentResponse->setProcessorContactID( $donorDetails['processor_contact_id'] ?? '' );
-		$paymentResponse->setDonorDetails( $details );
-	}
-
-	/**
-	 * @param PaymentProviderResponse $paymentResponse
-	 * @param array $normalizedResponse
-	 * @return void
-	 */
-	protected static function setRiskScores( PaymentProviderResponse $paymentResponse, array $normalizedResponse ) {
-		$paymentResponse->setRiskScores( $normalizedResponse['risk_scores'] );
 	}
 }

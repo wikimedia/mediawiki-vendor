@@ -263,8 +263,8 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -460,7 +460,6 @@ class ComposerStaticInit_mediawiki_vendor
 
     public static $fallbackDirsPsr0 = array (
         0 => __DIR__ . '/..' . '/cssjanus/cssjanus/src',
-        1 => __DIR__ . '/..' . '/pear/pear-core-minimal/src',
     );
 
     public static $classMap = array (
@@ -511,8 +510,10 @@ class ComposerStaticInit_mediawiki_vendor
         'Clio\\Console' => __DIR__ . '/..' . '/clio/clio/src/Clio/Console.php',
         'Clio\\Daemon' => __DIR__ . '/..' . '/clio/clio/src/Clio/Daemon.php',
         'ComposerHookHandler' => __DIR__ . '/../..' . '/includes/composer/ComposerHookHandler.php',
+        'ComposerPackageModifier' => __DIR__ . '/../..' . '/includes/composer/ComposerPackageModifier.php',
         'ComposerPhpunitXmlCoverageEdit' => __DIR__ . '/../..' . '/includes/composer/ComposerPhpunitXmlCoverageEdit.php',
         'ComposerVendorHtaccessCreator' => __DIR__ . '/../..' . '/includes/composer/ComposerVendorHtaccessCreator.php',
+        'ComposerVersionNormalizer' => __DIR__ . '/../..' . '/includes/composer/ComposerVersionNormalizer.php',
         'Composer\\CaBundle\\CaBundle' => __DIR__ . '/..' . '/composer/ca-bundle/src/CaBundle.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Composer\\Installers\\AglInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/AglInstaller.php',
@@ -1306,6 +1307,7 @@ class ComposerStaticInit_mediawiki_vendor
         'OS_Guess' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/OS/Guess.php',
         'Override' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/Override.php',
         'PEAR' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/PEAR.php',
+        'PEAR_Error' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/PEAR.php',
         'PEAR_ErrorStack' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/PEAR/ErrorStack.php',
         'PEAR_Exception' => __DIR__ . '/..' . '/pear/pear_exception/PEAR/Exception.php',
         'PHPMailer\\PHPMailer\\DSNConfigurator' => __DIR__ . '/..' . '/phpmailer/phpmailer/src/DSNConfigurator.php',
@@ -2260,6 +2262,7 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\ChargebackReversed' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/ChargebackReversed.php',
         'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\DisputeDefensePeriodEnded' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/DisputeDefensePeriodEnded.php',
         'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\DisputeOpenedWithChargeback' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/DisputeOpenedWithChargeback.php',
+        'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\Expire' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/Expire.php',
         'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\InformationSupplied' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/InformationSupplied.php',
         'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\NotificationOfChargeback' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/NotificationOfChargeback.php',
         'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\NotificationOfFraud' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/NotificationOfFraud.php',
@@ -2276,6 +2279,7 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\ReportAvailable' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/ReportAvailable.php',
         'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\RequestForInformation' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/RequestForInformation.php',
         'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\SecondChargeback' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/SecondChargeback.php',
+        'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\TechnicalCancel' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/TechnicalCancel.php',
         'SmashPig\\PaymentProviders\\Adyen\\GooglePayPaymentProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/GooglePayPaymentProvider.php',
         'SmashPig\\PaymentProviders\\Adyen\\Jobs\\DownloadReportJob' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/Jobs/DownloadReportJob.php',
         'SmashPig\\PaymentProviders\\Adyen\\Jobs\\ProcessCaptureRequestJob' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/Jobs/ProcessCaptureRequestJob.php',
@@ -4096,6 +4100,8 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Zest\\ZestInst' => __DIR__ . '/..' . '/wikimedia/zest-css/src/ZestInst.php',
         'WmfFramework' => __DIR__ . '/../..' . '/extensions/DonationInterface/gateway_common/WmfFramework.php',
         'lessc' => __DIR__ . '/..' . '/wikimedia/less.php/lessc.inc.php',
+        'smashpig\\PaymentProviders\\ICancelAutoRescueProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/ICancelAutoRescueProvider.php',
+        'smashpig\\PaymentProviders\\IDeleteRecurringPaymentTokenProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/IDeleteRecurringPaymentTokenProvider.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

@@ -2135,17 +2135,17 @@
         },
         {
             "name": "pear/pear-core-minimal",
-            "version": "v1.10.14",
-            "version_normalized": "1.10.14.0",
+            "version": "v1.10.15",
+            "version_normalized": "1.10.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear/pear-core-minimal.git",
-                "reference": "a86fc145edb5caedbf96527214ce3cadc9de4a32"
+                "reference": "ce0adade8b97561656ace07cdaac4751c271ea8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/pear-core-minimal/zipball/a86fc145edb5caedbf96527214ce3cadc9de4a32",
-                "reference": "a86fc145edb5caedbf96527214ce3cadc9de4a32",
+                "url": "https://api.github.com/repos/pear/pear-core-minimal/zipball/ce0adade8b97561656ace07cdaac4751c271ea8c",
+                "reference": "ce0adade8b97561656ace07cdaac4751c271ea8c",
                 "shasum": ""
             },
             "require": {
@@ -2156,13 +2156,13 @@
             "replace": {
                 "rsky/pear-core-min": "self.version"
             },
-            "time": "2023-11-26T16:15:38+00:00",
+            "time": "2024-03-16T18:41:45+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
-                "psr-0": {
-                    "": "src/"
-                }
+                "classmap": [
+                    "src/"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "include-path": [
@@ -5257,17 +5257,17 @@
         },
         {
             "name": "wikimedia/smash-pig",
-            "version": "v0.8.11.9",
-            "version_normalized": "0.8.11.9",
+            "version": "v0.8.11.10",
+            "version_normalized": "0.8.11.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/wikimedia-fundraising-SmashPig.git",
-                "reference": "ff5be7a33155c4d8ffd200eb602a9cfa14777c42"
+                "reference": "b88233e8ae945e63e6b73c078865b27b5f754468"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/wikimedia-fundraising-SmashPig/zipball/ff5be7a33155c4d8ffd200eb602a9cfa14777c42",
-                "reference": "ff5be7a33155c4d8ffd200eb602a9cfa14777c42",
+                "url": "https://api.github.com/repos/wikimedia/wikimedia-fundraising-SmashPig/zipball/b88233e8ae945e63e6b73c078865b27b5f754468",
+                "reference": "b88233e8ae945e63e6b73c078865b27b5f754468",
                 "shasum": ""
             },
             "require": {
@@ -5292,7 +5292,7 @@
                 "php-parallel-lint/php-parallel-lint": "^1.2",
                 "phpunit/phpunit": "^9.5"
             },
-            "time": "2024-09-11T18:22:03+00:00",
+            "time": "2024-09-19T13:42:19+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -5345,7 +5345,7 @@
                 "payments"
             ],
             "support": {
-                "source": "https://github.com/wikimedia/wikimedia-fundraising-SmashPig/tree/v0.8.11.9"
+                "source": "https://github.com/wikimedia/wikimedia-fundraising-SmashPig/tree/v0.8.11.10"
             },
             "install-path": "../wikimedia/smash-pig"
         },
