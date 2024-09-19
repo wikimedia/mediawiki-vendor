@@ -850,7 +850,6 @@ return array(
     'OS_Guess' => $vendorDir . '/pear/pear-core-minimal/src/OS/Guess.php',
     'Override' => $vendorDir . '/symfony/polyfill-php83/Resources/stubs/Override.php',
     'PEAR' => $vendorDir . '/pear/pear-core-minimal/src/PEAR.php',
-    'PEAR_Error' => $vendorDir . '/pear/pear-core-minimal/src/PEAR.php',
     'PEAR_ErrorStack' => $vendorDir . '/pear/pear-core-minimal/src/PEAR/ErrorStack.php',
     'PEAR_Exception' => $vendorDir . '/pear/pear_exception/PEAR/Exception.php',
     'PHPMailer\\PHPMailer\\DSNConfigurator' => $vendorDir . '/phpmailer/phpmailer/src/DSNConfigurator.php',

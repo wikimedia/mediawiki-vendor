@@ -3,7 +3,7 @@
         'name' => 'mediawiki/core',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '672c9fb65a8d0691896fcaa4242c45a0673c9539',
+        'reference' => '7e241be1ddaaedf528868c45e8a8578434dac214',
         'type' => 'mediawiki-core',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -202,7 +202,7 @@
         'mediawiki/core' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '672c9fb65a8d0691896fcaa4242c45a0673c9539',
+            'reference' => '7e241be1ddaaedf528868c45e8a8578434dac214',
             'type' => 'mediawiki-core',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -296,9 +296,9 @@
             'dev_requirement' => false,
         ),
         'pear/pear-core-minimal' => array(
-            'pretty_version' => 'v1.10.15',
-            'version' => '1.10.15.0',
-            'reference' => 'ce0adade8b97561656ace07cdaac4751c271ea8c',
+            'pretty_version' => 'v1.10.14',
+            'version' => '1.10.14.0',
+            'reference' => 'a86fc145edb5caedbf96527214ce3cadc9de4a32',
             'type' => 'library',
             'install_path' => __DIR__ . '/../pear/pear-core-minimal',
             'aliases' => array(),
@@ -454,7 +454,7 @@
         'rsky/pear-core-min' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v1.10.15',
+                0 => 'v1.10.14',
             ),
         ),
         'symfony/deprecation-contracts' => array(

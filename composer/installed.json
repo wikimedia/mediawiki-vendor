@@ -2135,17 +2135,17 @@
         },
         {
             "name": "pear/pear-core-minimal",
-            "version": "v1.10.15",
-            "version_normalized": "1.10.15.0",
+            "version": "v1.10.14",
+            "version_normalized": "1.10.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear/pear-core-minimal.git",
-                "reference": "ce0adade8b97561656ace07cdaac4751c271ea8c"
+                "reference": "a86fc145edb5caedbf96527214ce3cadc9de4a32"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/pear-core-minimal/zipball/ce0adade8b97561656ace07cdaac4751c271ea8c",
-                "reference": "ce0adade8b97561656ace07cdaac4751c271ea8c",
+                "url": "https://api.github.com/repos/pear/pear-core-minimal/zipball/a86fc145edb5caedbf96527214ce3cadc9de4a32",
+                "reference": "a86fc145edb5caedbf96527214ce3cadc9de4a32",
                 "shasum": ""
             },
             "require": {
@@ -2156,13 +2156,13 @@
             "replace": {
                 "rsky/pear-core-min": "self.version"
             },
-            "time": "2024-03-16T18:41:45+00:00",
+            "time": "2023-11-26T16:15:38+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
-                "classmap": [
-                    "src/"
-                ]
+                "psr-0": {
+                    "": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "include-path": [
