@@ -1538,7 +1538,7 @@ class WikiLinkHandler extends TokenHandler {
 					$this->manager->getFrame(),
 					array_merge( $optsCaption['v'], [ new EOFTk() ] ),
 					[
-						'pipelineType' => 'expanded-tokens-to-dom',
+						'pipelineType' => 'expanded-tokens-to-fragment',
 						'pipelineOpts' => [
 							'inlineContext' => true,
 							'expandTemplates' => $this->options['expandTemplates'],
@@ -1584,7 +1584,7 @@ class WikiLinkHandler extends TokenHandler {
 	}
 
 	private function specialFilePath( Title $title ): string {
-		$filePath = Sanitizer::sanitizeTitleURI( $title->getKey(), false );
+		$filePath = Sanitizer::sanitizeTitleURI( $title->getDBkey(), false );
 		return "./Special:FilePath/{$filePath}";
 	}
 
@@ -1652,7 +1652,7 @@ class WikiLinkHandler extends TokenHandler {
 		$errs = [];
 		$info = $env->getDataAccess()->getFileInfo(
 			$env->getPageConfig(),
-			[ [ $title->getKey(), [ 'height' => null, 'width' => null ] ] ]
+			[ [ $title->getDBkey(), [ 'height' => null, 'width' => null ] ] ]
 		)[0];
 		if ( !$info ) {
 			$errs[] = [ 'key' => 'apierror-filedoesnotexist', 'message' => 'This image does not exist.' ];

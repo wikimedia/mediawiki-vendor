@@ -646,7 +646,7 @@ class AddMediaInfo implements Wt2HtmlDOMProcessor {
 				'title' => $env->makeTitleFromText( $span->textContent ),
 			];
 
-			$file = [ $attrs['title']->getKey(), $dims ];
+			$file = [ $attrs['title']->getDBKey(), $dims ];
 			$infoKey = md5( json_encode( $file ) );
 			$files[$infoKey] = $file;
 			$errs = [];
@@ -663,7 +663,7 @@ class AddMediaInfo implements Wt2HtmlDOMProcessor {
 						[ 'name' => $val ]
 					);
 				} else {
-					$file = [ $title->getKey(), $dims ];
+					$file = [ $title->getDBkey(), $dims ];
 					$manualKey = md5( json_encode( $file ) );
 					$files[$manualKey] = $file;
 				}
@@ -717,6 +717,11 @@ class AddMediaInfo implements Wt2HtmlDOMProcessor {
 
 			$info = $files[$c['infoKey']];
 			if ( !$info ) {
+				$env->getDataAccess()->addTrackingCategory(
+					$env->getPageConfig(),
+					$env->getMetadata(),
+					'broken-file-category'
+				);
 				$errs[] = self::makeErr( 'apierror-filedoesnotexist', 'This image does not exist.' );
 			} elseif ( isset( $info['thumberror'] ) ) {
 				$errs[] = self::makeErr( 'apierror-unknownerror', $info['thumberror'] );

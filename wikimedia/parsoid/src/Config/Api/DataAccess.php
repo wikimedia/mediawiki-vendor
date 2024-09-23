@@ -15,6 +15,7 @@ use Wikimedia\Parsoid\Core\LinkTarget;
 use Wikimedia\Parsoid\Mocks\MockPageContent;
 use Wikimedia\Parsoid\Utils\PHPUtils;
 use Wikimedia\Parsoid\Utils\Title;
+use Wikimedia\Parsoid\Utils\TitleValue;
 
 /**
  * DataAccess via MediaWiki's Action API
@@ -299,7 +300,11 @@ class DataAccess extends IDataAccess {
 	 */
 	private function mergeMetadata( array $data, ContentMetadataCollector $metadata ): void {
 		foreach ( ( $data['categories'] ?? [] ) as $c ) {
-			$metadata->addCategory( $c['category'], $c['sortkey'] );
+			$tv = TitleValue::tryNew(
+				14, // NS_CATEGORY,
+				$c['category']
+			);
+			$metadata->addCategory( $tv, $c['sortkey'] );
 		}
 		$metadata->appendOutputStrings( CMCSS::MODULE, $data['modules'] ?? [] );
 		$metadata->appendOutputStrings( CMCSS::MODULE_STYLE, $data['modulestyles'] ?? [] );
@@ -462,5 +467,35 @@ class DataAccess extends IDataAccess {
 		return Title::newFromLinkTarget(
 			$linkTarget, $this->siteConfig
 		)->getPrefixedText();
+	}
+
+	/** @inheritDoc */
+	public function addTrackingCategory(
+		PageConfig $pageConfig,
+		ContentMetadataCollector $metadata,
+		string $key
+	): void {
+		$pageConfigTitle = $this->toPrefixedText( $pageConfig->getLinkTarget() );
+		$cacheKey = implode( ':', [ 'allmessages', md5( $pageConfigTitle ), md5( $key ) ] );
+		$data = $this->getCache( $cacheKey );
+		if ( $data === null ) {
+			$params = [
+				'action' => 'query',
+				'meta' => 'allmessages',
+				'amtitle' => $pageConfigTitle,
+				'ammessages' => $key,
+				'amenableparser' => 1,
+			];
+			$data = $this->api->makeRequest( $params )['query']['allmessages'][0];
+			$this->setCache( $cacheKey, $data );
+		}
+		if ( isset( $data['missing'] ) ) {
+			return;
+		}
+		$tv = TitleValue::tryNew(
+			14, // NS_CATEGORY,
+			$data['content']
+		);
+		$metadata->addCategory( $tv );
 	}
 }

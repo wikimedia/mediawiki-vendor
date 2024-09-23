@@ -1,6 +1,6 @@
 <?php
 
-namespace Wikimedia\Parsoid\Wt2Html\DOM\Handlers;
+namespace Test\Parsoid\Wt2Html\DOM\Handlers;
 
 use PHPUnit\Framework\TestCase;
 use Wikimedia\Parsoid\Mocks\MockEnv;
@@ -9,6 +9,7 @@ use Wikimedia\Parsoid\Mocks\MockSiteConfig;
 use Wikimedia\Parsoid\Utils\ContentUtils;
 use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
+use Wikimedia\Parsoid\Wt2Html\DOM\Handlers\AddLinkAttributes;
 use Wikimedia\Parsoid\Wt2Html\DOMPPTraverser;
 
 class AddLinkAttributesTest extends TestCase {
@@ -20,8 +21,8 @@ class AddLinkAttributesTest extends TestCase {
 		$doc = ContentUtils::createAndLoadDocument( $html );
 		$body = DOMCompat::getBody( $doc );
 		$traverser = new DOMPPTraverser( false, true );
-		$traverser->addHandler( 'a', static fn ( $node ) => AddLinkAttributes::handler( $node, $mockEnv ) );
-		$traverser->run( $mockEnv, $body );
+		$traverser->addHandler( 'a', static fn ( $node, $state ) => AddLinkAttributes::handler( $node, $state ) );
+		$traverser->run( $mockEnv, $body, [ 'env' => $mockEnv ] );
 
 		$innerHtml = DOMCompat::getInnerHTML( $body );
 		$pattern = '/ ' . DOMDataUtils::DATA_OBJECT_ATTR_NAME . '="\d+"/';
@@ -36,8 +37,8 @@ class AddLinkAttributesTest extends TestCase {
 		$doc = ContentUtils::createAndLoadDocument( $html );
 		$body = DOMCompat::getBody( $doc );
 		$traverser = new DOMPPTraverser( false, true );
-		$traverser->addHandler( 'a', static fn ( $node ) => AddLinkAttributes::handler( $node, $mockEnv ) );
-		$traverser->run( $mockEnv, $body );
+		$traverser->addHandler( 'a', static fn ( $node, $state ) => AddLinkAttributes::handler( $node, $state ) );
+		$traverser->run( $mockEnv, $body, [ 'env' => $mockEnv ] );
 
 		$innerHtml = DOMCompat::getInnerHTML( $body );
 		$pattern = '/ ' . DOMDataUtils::DATA_OBJECT_ATTR_NAME . '="\d+"/';
