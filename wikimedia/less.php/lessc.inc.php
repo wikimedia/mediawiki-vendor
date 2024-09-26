@@ -129,8 +129,7 @@ class lessc {
 		$parser->parse( $string );
 		$out = $parser->getCss();
 
-		$parsed = Less_Parser::AllParsedFiles();
-		foreach ( $parsed as $file ) {
+		foreach ( $parser->getParsedFiles() as $file ) {
 			$this->addParsedFile( $file );
 		}
 
@@ -165,8 +164,7 @@ class lessc {
 		$parser->parseFile( $fname );
 		$out = $parser->getCss();
 
-		$parsed = Less_Parser::AllParsedFiles();
-		foreach ( $parsed as $file ) {
+		foreach ( $parser->getParsedFiles() as $file ) {
 			$this->addParsedFile( $file );
 		}
 
@@ -213,15 +211,15 @@ class lessc {
 
 		if ( is_string( $in ) ) {
 			$root = $in;
-		} elseif ( is_array( $in ) and isset( $in['root'] ) ) {
-			if ( $force or !isset( $in['files'] ) ) {
+		} elseif ( is_array( $in ) && isset( $in['root'] ) ) {
+			if ( $force || !isset( $in['files'] ) ) {
 				// If we are forcing a recompile or if for some reason the
 				// structure does not contain any file information we should
 				// specify the root to trigger a rebuild.
 				$root = $in['root'];
-			} elseif ( isset( $in['files'] ) and is_array( $in['files'] ) ) {
+			} elseif ( isset( $in['files'] ) && is_array( $in['files'] ) ) {
 				foreach ( $in['files'] as $fname => $ftime ) {
-					if ( !file_exists( $fname ) or filemtime( $fname ) > $ftime ) {
+					if ( !file_exists( $fname ) || filemtime( $fname ) > $ftime ) {
 						// One of the files we knew about previously has changed
 						// so we should look at our incoming root again.
 						$root = $in['root'];
@@ -240,7 +238,7 @@ class lessc {
 			$out = [];
 			$out['root'] = $root;
 			$out['compiled'] = $this->compileFile( $root );
-			$out['files'] = $this->allParsedFiles();
+			$out['files'] = $this->allParsedFiles;
 			$out['updated'] = time();
 			return $out;
 		} else {
