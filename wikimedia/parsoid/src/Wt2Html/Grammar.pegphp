@@ -824,8 +824,15 @@ extlink "extlink" =
 			]; }
 	) { return $r; }
 
+RFC = &{ return $this->siteConfig->magicLinkEnabled("RFC"); } 'RFC' {
+	return 'RFC';
+}
+PMID = &{ return $this->siteConfig->magicLinkEnabled("PMID"); } 'PMID' {
+	return 'PMID';
+}
+
 autoref =
-	ref:('RFC' / 'PMID') sp:space_or_nbsp+ identifier:$[0-9]+ end_of_word
+	ref:(RFC / PMID) sp:space_or_nbsp+ identifier:$[0-9]+ end_of_word
 	{
 		$base_urls = [
 			'RFC' => 'https://tools.ietf.org/html/rfc%s',
@@ -835,9 +842,14 @@ autoref =
 		$dp = new DataParsoid;
 		$dp->tsr = $tsr;
 		$dp->stx = 'magiclink';
+		$this->env->getDataAccess()->addTrackingCategory(
+			$this->env->getPageConfig(),
+			$this->env->getMetadata(),
+			'magiclink-tracking-' . strtolower($ref)
+		);
 		return [
 			new SelfclosingTagTk( 'extlink', [
-					new KV( 'href', sprintf( $base_urls[ $ref ], $identifier ) ),
+					new KV( 'href', sprintf( $base_urls[$ref], $identifier ) ),
 					new KV( 'mw:content', TokenizerUtils::flattenString( [ $ref, $sp, $identifier ] ), $tsr->expandTsrV() ),
 					new KV( 'typeof', 'mw:ExtLink/' . $ref )
 				],
@@ -847,6 +859,7 @@ autoref =
 	}
 
 isbn =
+	&{ return $this->siteConfig->magicLinkEnabled("ISBN"); }
 	'ISBN' sp:space_or_nbsp+ isbn:(
 		[0-9]
 		((space_or_nbsp_or_dash / "") [0-9])+
@@ -875,6 +888,11 @@ isbn =
 		$dp = new DataParsoid;
 		$dp->stx = 'magiclink';
 		$dp->tsr = $tsr;
+		$this->env->getDataAccess()->addTrackingCategory(
+			$this->env->getPageConfig(),
+			$this->env->getMetadata(),
+			'magiclink-tracking-isbn'
+		);
 		return [
 			new SelfclosingTagTk( 'extlink', [
 					new KV( 'href', 'Special:BookSources/' . $isbncode ),

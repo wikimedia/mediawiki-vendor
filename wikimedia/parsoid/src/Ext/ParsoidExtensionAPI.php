@@ -20,6 +20,7 @@ use Wikimedia\Parsoid\DOM\Node;
 use Wikimedia\Parsoid\Html2Wt\ConstrainedText\WikiLinkText;
 use Wikimedia\Parsoid\Html2Wt\LinkHandlerUtils;
 use Wikimedia\Parsoid\Html2Wt\SerializerState;
+use Wikimedia\Parsoid\NodeData\DataMwError;
 use Wikimedia\Parsoid\Tokens\KV;
 use Wikimedia\Parsoid\Tokens\SourceRange;
 use Wikimedia\Parsoid\Utils\ContentUtils;
@@ -32,7 +33,7 @@ use Wikimedia\Parsoid\Utils\TokenUtils;
 use Wikimedia\Parsoid\Utils\Utils;
 use Wikimedia\Parsoid\Utils\WTUtils;
 use Wikimedia\Parsoid\Wikitext\Wikitext;
-use Wikimedia\Parsoid\Wt2Html\DOMPostProcessor;
+use Wikimedia\Parsoid\Wt2Html\DOM\Processors\AddMetaData;
 use Wikimedia\Parsoid\Wt2Html\Frame;
 
 /**
@@ -72,7 +73,7 @@ class ParsoidExtensionAPI {
 	 * an extension is returning a dom fragment, errors were encountered while
 	 * generating it and should be marked up with the mw:Error typeof.
 	 *
-	 * @var array
+	 * @var list<DataMwError>
 	 */
 	private $errors = [];
 
@@ -118,11 +119,7 @@ class ParsoidExtensionAPI {
 	 * @return DocumentFragment
 	 */
 	public function pushError( string $key, ...$params ): DocumentFragment {
-		$err = [ 'key' => $key ];
-		if ( count( $params ) > 0 ) {
-			$err['params'] = $params;
-		}
-		$this->errors[] = (object)$err; // T367141: should create Error object
+		$this->errors[] = new DataMwError( $key, $params );
 		return WTUtils::createInterfaceI18nFragment( $this->getTopLevelDoc(), $key, $params );
 	}
 
@@ -212,6 +209,9 @@ class ParsoidExtensionAPI {
 		WTUtils::addLangI18nAttribute( $element, $lang, $name, $key, $params );
 	}
 
+	/**
+	 * @return list<DataMwError>
+	 */
 	public function getErrors(): array {
 		return $this->errors;
 	}
@@ -857,13 +857,13 @@ class ParsoidExtensionAPI {
 	public function postProcessDOM( Document $doc ): void {
 		$env = $this->env;
 		// From CleanUp::saveDataParsoid
-		DOMDataUtils::visitAndStoreDataAttribs( DOMCompat::getBody( $doc ), [
+		$body = DOMCompat::getBody( $doc );
+		DOMDataUtils::visitAndStoreDataAttribs( $body, [
 			'storeInPageBundle' => $env->pageBundle,
 			'env' => $env
 		] );
-		// DOMPostProcessor has a FIXME about moving this to DOMUtils / Env
-		$dompp = new DOMPostProcessor( $env );
-		$dompp->addMetaData( $env, $doc );
+		// Ugh! But, this whole method needs to go away anyway
+		( new AddMetaData( null ) )->run( $env, $body );
 	}
 
 	/**
