@@ -105,4 +105,16 @@ class PaymentCaptureActionTest extends BaseAdyenTestCase {
 
 		$this->assertNull( $job );
 	}
+
+	public function testGr4vyInitiatedAuth() {
+		$auth = new Authorisation();
+		$auth->success = true;
+
+		$auth->additionalData['metadata.gr4vy_intent'] = 'authorize';
+		$action = new PaymentCaptureAction();
+		$action->execute( $auth );
+
+		$job = $this->jobQueue->pop();
+		$this->assertNull( $job, 'Should not have queued a auth' );
+	}
 }

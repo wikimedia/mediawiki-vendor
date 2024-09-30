@@ -3,6 +3,7 @@
 namespace SmashPig\PaymentProviders\Gravy\Mapper;
 
 use SmashPig\Core\Helpers\CurrencyRoundingHelper;
+use SmashPig\PaymentData\RecurringModel;
 
 class RequestMapper {
 	private const CAPTURE_INTENT = 'capture';
@@ -25,13 +26,7 @@ class RequestMapper {
 		}
 
 		if ( !empty( $params['recurring'] ) ) {
-			if ( !$this->isRecurringCharge( $params ) ) {
-				$request['store'] = true;
-			} else {
-				$request['merchant_initiated'] = true;
-				$request['is_subsequent_payment'] = true;
-			}
-			$request['payment_source'] = 'recurring';
+			$request = $this->addRecurringParams( $params, $request );
 		}
 
 		if ( !empty( $params['return_url'] ) ) {
@@ -187,6 +182,37 @@ class RequestMapper {
 			'gateway_txn_id' => $params['gateway_txn_id'],
 			'body' => $body
 		];
+		return $request;
+	}
+
+	/**
+	 * @param array $params
+	 * @param array $request
+	 * @return array
+	 */
+	protected function addRecurringParams( array $params, array $request ): array {
+		if ( !$this->isRecurringCharge( $params ) ) {
+			$request['store'] = true;
+		} else {
+			$request['merchant_initiated'] = true;
+			$request['is_subsequent_payment'] = true;
+		}
+
+		// Default recurring model to 'Subscription' but allow for Card On File
+		// in case of speculative tokenization (e.g. for monthly convert).
+		$recurringModel = $params['recurring_model'] ?? RecurringModel::SUBSCRIPTION;
+
+		switch ( $recurringModel ) {
+			case RecurringModel::SUBSCRIPTION:
+				$request['payment_source'] = 'recurring';
+				break;
+			case RecurringModel::CARD_ON_FILE:
+				$request['payment_source'] = 'card_on_file';
+				break;
+			default:
+				throw new \UnexpectedValueException( "Unknown recurring processing model $recurringModel" );
+		}
+
 		return $request;
 	}
 

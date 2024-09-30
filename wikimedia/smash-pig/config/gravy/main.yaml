@@ -31,6 +31,9 @@ payment-provider:
     dd:
         class: SmashPig\PaymentProviders\Gravy\BankPaymentProvider
 
+# Setting value to false to mirror production configuration
+capture-from-ipn-listener: false
+
 fraud-filters:
     # Authorization notifications include AVS and CVV result codes.
     # The following maps set a risk score for each result code, which

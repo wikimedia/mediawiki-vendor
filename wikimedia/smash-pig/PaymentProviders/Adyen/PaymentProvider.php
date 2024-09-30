@@ -62,6 +62,8 @@ abstract class PaymentProvider implements
 	 */
 	protected $cacheParameters;
 
+	protected PaymentsInitialDatabase $paymentsInitialDatabase;
+
 	public function __construct( array $options ) {
 		$this->providerConfiguration = Context::get()->getProviderConfiguration();
 		$this->api = $this->providerConfiguration->object( 'api' );

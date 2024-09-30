@@ -25,6 +25,10 @@ class TransactionAction extends GravyAction {
 				$recordCaptureJob = RecordCaptureJob::factory( $msg, $transactionDetails );
 				QueueWrapper::push( $msg->getDestinationQueue(), $recordCaptureJob );
 			} elseif ( $transactionDetails->getStatus() == FinalStatus::PENDING_POKE ) {
+				$providerConfig = Context::get()->getProviderConfiguration();
+				if ( !$providerConfig->val( 'capture-from-ipn-listener' ) ) {
+					return true;
+				}
 				$tl->info(
 					"Adding successful authorized job for {$transactionDetails->getCurrency()} {$transactionDetails->getAmount()} with psp reference {$transactionDetails->getGatewayTxnId()}"
 				);
@@ -51,7 +55,7 @@ class TransactionAction extends GravyAction {
 		$providerConfiguration = Context::get()->getProviderConfiguration();
 		$provider = $providerConfiguration->object( 'payment-provider/cc' );
 
-		$transactionDetails = $provider->getPaymentDetails( [
+		$transactionDetails = $provider->getLatestPaymentStatus( [
 			"gateway_txn_id" => $msg->getTransactionId()
 		] );
 

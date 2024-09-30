@@ -137,7 +137,7 @@ class PaymentProviderTest extends BaseGravyTestCase {
 		$this->assertFalse( $response );
 	}
 
-	public function testGetPaymentDetails() {
+	public function testGetLatestPaymentStatus() {
 		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/create-transaction.json' ), true );
 		$params = [
 			'gateway_txn_id' => 'random_txn_id'
@@ -148,7 +148,7 @@ class PaymentProviderTest extends BaseGravyTestCase {
 			->with( $params )
 			->willReturn( $responseBody );
 
-		$response = $this->provider->getPaymentDetails( $params );
+		$response = $this->provider->getLatestPaymentStatus( $params );
 
 		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\PaymentDetailResponse',
 			$response );

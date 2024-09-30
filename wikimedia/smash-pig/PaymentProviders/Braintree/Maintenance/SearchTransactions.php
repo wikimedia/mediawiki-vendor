@@ -10,6 +10,8 @@ use SmashPig\PaymentProviders\PaymentProviderFactory;
 
 class SearchTransactions extends MaintenanceBase {
 
+	protected array $fileData;
+
 	public function __construct() {
 		parent::__construct();
 		$this->addOption( 'hours', 'search transactions from how many hours till now', '24', 'r' );

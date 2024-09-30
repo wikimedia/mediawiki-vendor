@@ -14,6 +14,9 @@ abstract class AdyenMessage extends ListenerMessage {
 	/** @var string The reference Adyen assigned to the payment or modification order */
 	public $pspReference;
 
+	/** @var array The additional Data Adyen assigned to the payment */
+	public $additionalData;
+
 	/** @var string The original reference string SmashPig provided to Adyen */
 	public $merchantReference;
 
@@ -90,6 +93,7 @@ abstract class AdyenMessage extends ListenerMessage {
 		$this->merchantReference = $notification['merchantReference'];
 		$this->parentPspReference = $notification['originalReference'] ?? null;
 		$this->pspReference = $notification['pspReference'];
+		$this->additionalData = $notification['additionalData'] ?? [];
 		$this->success = ( $notification['success'] === 'true' );
 		$this->reason = $notification['reason'];
 	}

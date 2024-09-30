@@ -66,4 +66,15 @@ class CaptureResponseActionTest extends BaseAdyenTestCase {
 		$this->assertNull( $job, 'Should not have queued a job' );
 	}
 
+	public function testGr4vyInitiatedCapture() {
+		$capture = new Capture();
+		$capture->success = true;
+
+		$capture->additionalData['metadata.gr4vy_intent'] = 'authorize';
+		$action = new CaptureResponseAction();
+		$action->execute( $capture );
+
+		$job = $this->jobQueue->pop();
+		$this->assertNull( $job, 'Should not have queued a capture' );
+	}
 }

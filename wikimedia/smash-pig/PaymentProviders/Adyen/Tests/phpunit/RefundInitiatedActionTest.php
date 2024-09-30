@@ -54,4 +54,15 @@ class RefundInitiatedActionTest extends BaseAdyenTestCase {
 		$this->assertNull( $queueMessage, 'Should not have queued a chargeback' );
 	}
 
+	public function testGr4vyInitiatedRefund() {
+		$refund = new Refund();
+		$refund->success = true;
+
+		$refund->additionalData['metadata.gr4vy_intent'] = 'authorize';
+		$action = new RefundInitiatedAction();
+		$action->execute( $refund );
+
+		$job = $this->refundQueue->pop();
+		$this->assertNull( $job, 'Should not have queued a refund' );
+	}
 }

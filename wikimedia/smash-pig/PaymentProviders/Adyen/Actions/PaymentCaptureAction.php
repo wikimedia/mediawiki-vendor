@@ -15,6 +15,8 @@ use SmashPig\PaymentProviders\Adyen\Jobs\RecordCaptureJob;
  * the transaction failed.
  */
 class PaymentCaptureAction implements IListenerMessageAction {
+	use DropGravyInitiatedMessageTrait;
+
 	public const METHODS_RECORDED_ON_AUTHORISATION = [
 		'ideal', 'onlineBanking_CZ'
 	];
@@ -28,7 +30,10 @@ class PaymentCaptureAction implements IListenerMessageAction {
 				if ( !$msg->isSuccessfulAutoRescue() && $msg->isRecurringInstallment() ) {
 					return true;
 				}
-
+				// drop Gr4vy initiated message
+				if ( $this->isGravyInitiatedMessage( $msg, 'authorisation' ) ) {
+					return true;
+				}
 				// For iDEAL, treat this as the final notification of success. We don't
 				// need to make any more API calls, just record it in Civi.
 				if (

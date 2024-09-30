@@ -11,11 +11,17 @@ use SmashPig\PaymentProviders\Adyen\ExpatriatedMessages\RefundWithData;
  * Action for a refund! whoo!
  */
 class RefundInitiatedAction extends BaseRefundAction implements IListenerMessageAction {
+	use DropGravyInitiatedMessageTrait;
+
 	public function execute( ListenerMessage $msg ): bool {
 		$tl = new TaggedLogger( 'RefundInitiatedAction' );
 
 		if ( $msg instanceof Refund ) {
 			if ( $msg->success ) {
+				// drop Gr4vy initiated message
+				if ( $this->isGravyInitiatedMessage( $msg, 'refund' ) ) {
+					return true;
+				}
 				$tl->info(
 					"Adding refund for {$msg->currency} {$msg->amount} with psp reference {$msg->pspReference} and originalReference {$msg->parentPspReference}."
 				);

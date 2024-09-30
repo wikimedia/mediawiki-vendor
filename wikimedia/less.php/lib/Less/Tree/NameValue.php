@@ -10,12 +10,13 @@
  *
  * @private
  */
-class Less_Tree_NameValue extends Less_Tree implements Less_Tree_HasValueProperty {
+class Less_Tree_NameValue extends Less_Tree {
 
 	public $name;
 	public $value;
 	public $index;
 	public $currentFileInfo;
+	public $type = 'NameValue';
 	public $important = '';
 
 	public function __construct( $name, $value = null, $index = null, $currentFileInfo = null ) {
@@ -28,7 +29,7 @@ class Less_Tree_NameValue extends Less_Tree implements Less_Tree_HasValuePropert
 	public function genCSS( $output ) {
 		$output->add(
 			$this->name
-			. ( Less_Parser::$options['compress'] ? ':' : ': ' )
+			. Less_Environment::$_outputMap[': ']
 			. $this->value
 			. $this->important
 			. ( ( ( Less_Environment::$lastRule && Less_Parser::$options['compress'] ) ) ? "" : ";" ),
@@ -40,7 +41,7 @@ class Less_Tree_NameValue extends Less_Tree implements Less_Tree_HasValuePropert
 	}
 
 	public function makeImportant() {
-		$new = new self( $this->name, $this->value, $this->index, $this->currentFileInfo );
+		$new = new Less_Tree_NameValue( $this->name, $this->value, $this->index, $this->currentFileInfo );
 		$new->important = ' !important';
 		return $new;
 	}

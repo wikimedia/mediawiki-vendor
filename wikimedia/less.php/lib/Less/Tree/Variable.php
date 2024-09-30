@@ -8,6 +8,7 @@ class Less_Tree_Variable extends Less_Tree {
 	public $index;
 	public $currentFileInfo;
 	public $evaluating = false;
+	public $type = 'Variable';
 
 	/**
 	 * @param string $name
@@ -20,14 +21,16 @@ class Less_Tree_Variable extends Less_Tree {
 
 	/**
 	 * @param Less_Environment $env
-	 * @return Less_Tree|Less_Tree_Keyword|Less_Tree_Quoted
-	 * @see less-2.5.3.js#Variable.prototype.eval
+	 * @return Less_Tree
+	 * @see less-2.5.3.js#Ruleset.prototype.eval
 	 */
 	public function compile( $env ) {
 		if ( $this->name[1] === '@' ) {
-			$v = new self( substr( $this->name, 1 ), $this->index + 1, $this->currentFileInfo );
-			// While some Less_Tree nodes have no 'value', we know these can't occur after a
-			// variable assignment (would have been a ParseError).
+			$v = new Less_Tree_Variable( substr( $this->name, 1 ), $this->index + 1, $this->currentFileInfo );
+			// While some Less_Tree nodes have no 'value', we know these can't ocurr after a variable
+			// assignment (would have been a ParseError).
+			// TODO: Solve better (https://phabricator.wikimedia.org/T327082).
+			// @phan-suppress-next-line PhanUndeclaredProperty
 			$name = '@' . $v->compile( $env )->value;
 		} else {
 			$name = $this->name;
@@ -40,12 +43,7 @@ class Less_Tree_Variable extends Less_Tree {
 		$this->evaluating = true;
 
 		foreach ( $env->frames as $frame ) {
-			$v = $frame->variable( $name );
-			if ( $v ) {
-				if ( isset( $v->important ) && $v->important ) {
-					$importantScopeLength = count( $env->importantScope );
-					$env->importantScope[ $importantScopeLength - 1 ]['important'] = $v->important;
-				}
+			if ( $v = $frame->variable( $name ) ) {
 				$r = $v->value->compile( $env );
 				$this->evaluating = false;
 				return $r;

@@ -8,7 +8,7 @@ use SmashPig\PaymentData\ErrorCode;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyCancelPaymentResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyCreateDonorResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyGetDonorResponseFactory;
-use SmashPig\PaymentProviders\Gravy\Factories\GravyGetPaymentDetailsResponseFactory;
+use SmashPig\PaymentProviders\Gravy\Factories\GravyGetLatestPaymentStatusResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyRefundResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyReportResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Mapper\RequestMapper;
@@ -17,6 +17,7 @@ use SmashPig\PaymentProviders\Gravy\Responses\ReportResponse;
 use SmashPig\PaymentProviders\Gravy\Validators\Validator;
 use SmashPig\PaymentProviders\ICancelablePaymentProvider;
 use SmashPig\PaymentProviders\IDeleteRecurringPaymentTokenProvider;
+use SmashPig\PaymentProviders\IGetLatestPaymentStatusProvider;
 use SmashPig\PaymentProviders\IPaymentProvider;
 use SmashPig\PaymentProviders\IRefundablePaymentProvider;
 use SmashPig\PaymentProviders\Responses\CancelPaymentResponse;
@@ -24,7 +25,7 @@ use SmashPig\PaymentProviders\Responses\PaymentDetailResponse;
 use SmashPig\PaymentProviders\Responses\RefundPaymentResponse;
 use SmashPig\PaymentProviders\ValidationException;
 
-abstract class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaymentTokenProvider, ICancelablePaymentProvider, IRefundablePaymentProvider {
+abstract class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaymentTokenProvider, ICancelablePaymentProvider, IRefundablePaymentProvider, IGetLatestPaymentStatusProvider {
 	/**
 	 * @var Api
 	 */
@@ -44,12 +45,12 @@ abstract class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaym
 	 * @param array $params
 	 * @return PaymentDetailResponse
 	 */
-	public function getPaymentDetails( array $params ) : PaymentDetailResponse {
+	public function getLatestPaymentStatus( array $params ) : PaymentDetailResponse {
 		$paymentDetailResponse = new PaymentDetailResponse();
 		try {
 			// extract out the validation of input out to a separate class
 			$validator = new Validator();
-			$validator->validateGetPaymentDetailsInput( $params );
+			$validator->validateGetLatestPaymentStatusInput( $params );
 
 			$rawGravyGetPaymentDetailResponse = $this->api->getTransaction( $params );
 
@@ -57,14 +58,14 @@ abstract class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaym
 			$gravyResponseMapper = new ResponseMapper();
 			$normalizedResponse = $gravyResponseMapper->mapFromPaymentResponse( $rawGravyGetPaymentDetailResponse );
 
-			$paymentDetailResponse = GravyGetPaymentDetailsResponseFactory::fromNormalizedResponse( $normalizedResponse );
+			$paymentDetailResponse = GravyGetLatestPaymentStatusResponseFactory::fromNormalizedResponse( $normalizedResponse );
 		}  catch ( ValidationException $e ) {
 			// it threw an exception!
-			GravyGetPaymentDetailsResponseFactory::handleValidationException( $paymentDetailResponse, $e->getData() );
+			GravyGetLatestPaymentStatusResponseFactory::handleValidationException( $paymentDetailResponse, $e->getData() );
 		} catch ( \Exception $e ) {
 			// it threw an exception!
 			Logger::error( 'Failed to get payment details, response: ' . $e->getMessage() );
-			GravyGetPaymentDetailsResponseFactory::handleException( $paymentDetailResponse, $e->getMessage(), $e->getCode() );
+			GravyGetLatestPaymentStatusResponseFactory::handleException( $paymentDetailResponse, $e->getMessage(), $e->getCode() );
 		}
 
 		return $paymentDetailResponse;

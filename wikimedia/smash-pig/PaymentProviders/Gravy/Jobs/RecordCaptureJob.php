@@ -7,7 +7,7 @@ use SmashPig\Core\Logging\Logger;
 use SmashPig\Core\RetryableException;
 use SmashPig\Core\Runnable;
 use SmashPig\PaymentProviders\Gravy\ExpatriatedMessages\GravyMessage;
-use SmashPig\PaymentProviders\Gravy\Factories\GravyGetPaymentDetailsResponseFactory;
+use SmashPig\PaymentProviders\Gravy\Factories\GravyGetLatestPaymentStatusResponseFactory;
 use SmashPig\PaymentProviders\Responses\PaymentDetailResponse;
 
 /**
@@ -33,7 +33,7 @@ class RecordCaptureJob implements Runnable {
 	}
 
 	public function execute() {
-		$transactionDetails = GravyGetPaymentDetailsResponseFactory::fromNormalizedResponse( $this->payload );
+		$transactionDetails = GravyGetLatestPaymentStatusResponseFactory::fromNormalizedResponse( $this->payload );
 		$logger = Logger::getTaggedLogger( "corr_id-gravy-{$transactionDetails->getOrderId()}" );
 		$logger->info(
 			"Recording successful capture of Gravy transaction with authorization reference " .

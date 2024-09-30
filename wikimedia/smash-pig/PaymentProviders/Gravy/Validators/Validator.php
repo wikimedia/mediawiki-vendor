@@ -75,7 +75,7 @@ class Validator {
 	/**
 	 * @throws ValidationException
 	 */
-	public function validateGetPaymentDetailsInput( array $params ): void {
+	public function validateGetLatestPaymentStatusInput( array $params ): void {
 		$required = [
 			'gateway_txn_id'
 		];

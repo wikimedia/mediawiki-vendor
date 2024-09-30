@@ -67,6 +67,16 @@ class Api {
 	 */
 	protected $dataProtectionBaseUrl;
 
+	/**
+	 * @var bool
+	 */
+	protected $enableAutoRescue;
+
+	/**
+	 * @var int
+	 */
+	protected $maxDaysToRescue;
+
 	public function __construct() {
 		$c = Context::get()->getProviderConfiguration();
 		$this->account = array_keys( $c->val( 'accounts' ) )[0]; // this feels fragile

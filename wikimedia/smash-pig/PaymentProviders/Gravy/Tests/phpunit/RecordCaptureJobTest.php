@@ -2,7 +2,7 @@
 
 use SmashPig\Core\DataStores\PendingDatabase;
 use SmashPig\Core\DataStores\QueueWrapper;
-use SmashPig\PaymentProviders\Gravy\Factories\GravyGetPaymentDetailsResponseFactory;
+use SmashPig\PaymentProviders\Gravy\Factories\GravyGetLatestPaymentStatusResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Jobs\RecordCaptureJob;
 use SmashPig\PaymentProviders\Gravy\Mapper\ResponseMapper;
 use SmashPig\PaymentProviders\Gravy\Tests\BaseGravyTestCase;
@@ -39,7 +39,7 @@ class RecordCaptureJobTest extends BaseGravyTestCase {
 		);
 
 		$normalizedResponse = ( new ResponseMapper() )->mapFromPaymentResponse( $capturedTransaction );
-		$transactionDetails = GravyGetPaymentDetailsResponseFactory::fromNormalizedResponse( $normalizedResponse );
+		$transactionDetails = GravyGetLatestPaymentStatusResponseFactory::fromNormalizedResponse( $normalizedResponse );
 		$job = new RecordCaptureJob();
 		$message = json_decode( $this->getValidGravyTransactionMessage(), true );
 		$job->payload = array_merge(

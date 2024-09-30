@@ -87,6 +87,10 @@ class NotificationsTest extends BaseGravyTestCase {
 	}
 
 	public function testAuthorizedTransactionMessage(): void {
+		$providerConfig = Context::get()->getProviderConfiguration();
+		$providerConfig->override(
+			[ 'capture-from-ipn-listener' => true ]
+		);
 		[ $request, $response ] = $this->getValidRequestResponseObjects();
 		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/approve-transaction.json' ), true );
 		$message = json_decode( $this->getValidGravyTransactionMessage(), true );
@@ -103,6 +107,20 @@ class NotificationsTest extends BaseGravyTestCase {
 			], ( new ResponseMapper() )->mapFromPaymentResponse( $responseBody )
 		);
 		$this->assertSame( $payload, $queued_message['payload'] );
+		$this->assertTrue( $result );
+	}
+
+	public function testAuthorizedTransactionMessageNoCapture(): void {
+		[ $request, $response ] = $this->getValidRequestResponseObjects();
+		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/approve-transaction.json' ), true );
+		$message = json_decode( $this->getValidGravyTransactionMessage(), true );
+		$request->method( 'getRawRequest' )->willReturn( json_encode( $message ) );
+		$this->mockApi->expects( $this->once() )
+			->method( 'getTransaction' )
+			->willReturn( $responseBody );
+		$result = $this->gravyListener->execute( $request, $response );
+		$queued_message = $this->jobsGravyQueue->pop();
+		$this->assertNull( $queued_message );
 		$this->assertTrue( $result );
 	}
 

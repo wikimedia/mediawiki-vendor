@@ -13,7 +13,7 @@ use SmashPig\CrmLink\Messages\DonationInterfaceAntifraudFactory;
 use SmashPig\PaymentData\ValidationAction;
 use SmashPig\PaymentProviders\Gravy\CardPaymentProvider;
 use SmashPig\PaymentProviders\Gravy\ExpatriatedMessages\GravyMessage;
-use SmashPig\PaymentProviders\Gravy\Factories\GravyGetPaymentDetailsResponseFactory;
+use SmashPig\PaymentProviders\Gravy\Factories\GravyGetLatestPaymentStatusResponseFactory;
 use SmashPig\PaymentProviders\PaymentProviderFactory;
 use SmashPig\PaymentProviders\Responses\PaymentDetailResponse;
 
@@ -46,7 +46,7 @@ class ProcessCaptureRequestJob implements Runnable {
 	}
 
 	public function execute() {
-		$transactionDetails = GravyGetPaymentDetailsResponseFactory::fromNormalizedResponse( $this->payload );
+		$transactionDetails = GravyGetLatestPaymentStatusResponseFactory::fromNormalizedResponse( $this->payload );
 		$this->logger = Logger::getTaggedLogger( "psp_ref-{$transactionDetails->getGatewayTxnId()}" );
 		$this->logger->info(
 			"Running capture request job on Gravy transaction" .

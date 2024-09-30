@@ -13,11 +13,17 @@ use SmashPig\PaymentProviders\Adyen\Jobs\RecordCaptureJob;
  * @package SmashPig\PaymentProviders\Adyen\Actions
  */
 class CaptureResponseAction implements IListenerMessageAction {
+	use DropGravyInitiatedMessageTrait;
+
 	public function execute( ListenerMessage $msg ): bool {
 		$tl = new TaggedLogger( 'CaptureResponseAction' );
 
 		if ( $msg instanceof Capture ) {
 			if ( $msg->success ) {
+				// drop Gr4vy initiated message
+				if ( $this->isGravyInitiatedMessage( $msg, 'capture' ) ) {
+					return true;
+				}
 				$tl->info(
 					"Adding record capture job for {$msg->currency} {$msg->amount} with psp reference {$msg->pspReference}."
 				);

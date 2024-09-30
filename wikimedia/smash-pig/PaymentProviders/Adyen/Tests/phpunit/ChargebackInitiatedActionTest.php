@@ -74,4 +74,14 @@ class ChargebackInitiatedActionTest extends BaseAdyenTestCase {
 		// pspReference should have also been mapped to gateway_parent_id
 		$this->assertEquals( $chargeback->pspReference, $refund['gateway_parent_id'] );
 	}
+
+	public function testGr4vyInitiatedChargeback() {
+		$chargeback = new Chargeback();
+		$chargeback->success = true;
+		$chargeback->additionalData['metadata.gr4vy_intent'] = 'authorize';
+		$action = new ChargebackInitiatedAction();
+		$action->execute( $chargeback );
+		$refund = $this->refundQueue->pop();
+		$this->assertNull( $refund, 'Should not have queued a chargeback' );
+	}
 }
