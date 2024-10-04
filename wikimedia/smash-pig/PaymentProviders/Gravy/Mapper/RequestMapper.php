@@ -6,7 +6,14 @@ use SmashPig\Core\Helpers\CurrencyRoundingHelper;
 use SmashPig\PaymentData\RecurringModel;
 
 class RequestMapper {
-	private const CAPTURE_INTENT = 'capture';
+
+	private const INTENT_CAPTURE = 'capture';
+
+	/**
+	 * Trustly is currently a capture-only payment method, so we set the 'intent'
+	 * flag on Gravy API calls to capture
+	 */
+	private const CAPTURE_ONLY_PAYMENT_METHOD = [ 'trustly' ];
 
 	public function mapToCreatePaymentRequest( array $params ): array {
 		$request = [
@@ -18,11 +25,30 @@ class RequestMapper {
 			'payment_method' => [
 				'method' => $params['method'] ?? '',
 			],
-			'external_identifier' => $params['order_id'],
+			'external_identifier' => $params['order_id']
 		];
 
 		if ( !empty( $params['processor_contact_id'] ) ) {
 			$request['buyer_id'] = $params['processor_contact_id'];
+		} else {
+			$request['buyer'] = [
+				'external_identifier' => strtolower( $params['email'] ),
+				'billing_details' => [
+					'first_name' => $params['first_name'],
+					'last_name' => $params['last_name'],
+					'email_address' => strtolower( $params['email'] ),
+					'phone_number' => $params['phone_number'] ?? null,
+					'address' => [
+						'city' => $params['city'] ?? " ",
+						'country' => $params['country'] ?? " ",
+						'postal_code' => $params['postal_code'] ?? " ",
+						'state' => $params['state_province'] ?? " ",
+						'line1' => $params['street_address'] ?? " ",
+						'line2' => " ",
+						'organization' => $params['employer'] ?? " "
+					]
+				]
+			];
 		}
 
 		if ( !empty( $params['recurring'] ) ) {
@@ -81,7 +107,7 @@ class RequestMapper {
 	/**
 	 * @return array
 	 */
-	public function mapToBankCreatePaymentRequest( array $params ): array {
+	public function mapToRedirectCreatePaymentRequest( array $params ): array {
 		$request = $this->mapToCreatePaymentRequest( $params );
 		if ( isset( $params['recurring_payment_token'] ) ) {
 			$payment_method = [
@@ -89,15 +115,30 @@ class RequestMapper {
 				'id' => $params['recurring_payment_token'],
 			];
 		} else {
+			$method = $params['payment_submethod'];
+			if ( empty( $method ) ) {
+				$method = $params['payment_method'];
+			}
 			$payment_method = [
-				'method' => $this->mapPaymentMethodToGravyPaymentMethod( $params['payment_submethod'] ),
+				'method' => $this->mapPaymentMethodToGravyPaymentMethod( $method ),
 				'country' => $params['country'],
 				'currency' => $params['currency'],
 			];
 		}
 		$request['payment_method'] = array_merge( $request['payment_method'], $payment_method );
 
-		$request['intent'] = self::CAPTURE_INTENT;
+		if ( in_array( $payment_method['method'], self::CAPTURE_ONLY_PAYMENT_METHOD ) ) {
+			/**
+			 * Defines the intent of a Gravy API call
+			 *
+			 * Available options:
+			 * - `authorize` (Default): Optionally approves and then authorizes a
+			 * transaction, but does not capture the funds.
+			 * - `capture`: Optionally approves and then authorizes and captures the
+			 * funds of the transaction.
+			 */
+			$request['intent'] = self::INTENT_CAPTURE;
+		}
 		return $request;
 	}
 
@@ -126,7 +167,7 @@ class RequestMapper {
 	/**
 	 * @return array
 	 */
-	public function mapToCardApprovePaymentRequest( array $params ): array {
+	public function mapToApprovePaymentRequest( array $params ): array {
 		$request = [
 			'amount' => CurrencyRoundingHelper::getAmountInMinorUnits( $params['amount'], $params['currency'] ),
 		];
@@ -158,11 +199,13 @@ class RequestMapper {
 	 * @return string
 	 */
    private function mapPaymentMethodToGravyPaymentMethod( $payment_submethod ): string {
-	   switch ( $payment_submethod ) {
-		   case 'ach':
-			   return 'trustly';
-		   default:
-			   return '';
+	   switch ( strtolower( $payment_submethod ) ) {
+			case 'ach':
+				return 'trustly';
+			case 'venmo':
+				return 'venmo';
+			default:
+				throw new \UnexpectedValueException( "Unknown Gravy Payment Method - $payment_submethod" );
 	   }
    }
 

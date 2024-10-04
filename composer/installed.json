@@ -4405,31 +4405,31 @@
         },
         {
             "name": "wikimedia/less.php",
-            "version": "v3.2.1",
-            "version_normalized": "3.2.1.0",
+            "version": "v4.4.1",
+            "version_normalized": "4.4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/less.php.git",
-                "reference": "0d5b30ba792bdbf8991a646fc9c30561b38a5559"
+                "reference": "7d66ab6d38af72f80a0c0a3598d7feac04bbc7b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/less.php/zipball/0d5b30ba792bdbf8991a646fc9c30561b38a5559",
-                "reference": "0d5b30ba792bdbf8991a646fc9c30561b38a5559",
+                "url": "https://api.github.com/repos/wikimedia/less.php/zipball/7d66ab6d38af72f80a0c0a3598d7feac04bbc7b7",
+                "reference": "7d66ab6d38af72f80a0c0a3598d7feac04bbc7b7",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.9"
+                "php": ">=7.4.3"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "40.0.1",
-                "mediawiki/mediawiki-phan-config": "0.12.0",
-                "mediawiki/minus-x": "1.1.1",
+                "mediawiki/mediawiki-codesniffer": "43.0.0",
+                "mediawiki/mediawiki-phan-config": "0.14.0",
+                "mediawiki/minus-x": "1.1.3",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
-                "php-parallel-lint/php-parallel-lint": "1.3.2",
-                "phpunit/phpunit": "^8.5"
+                "php-parallel-lint/php-parallel-lint": "1.4.0",
+                "phpunit/phpunit": "9.6.16"
             },
-            "time": "2023-02-03T06:43:41+00:00",
+            "time": "2024-05-27T14:47:49+00:00",
             "bin": [
                 "bin/lessc"
             ],
@@ -4477,7 +4477,7 @@
             ],
             "support": {
                 "issues": "https://github.com/wikimedia/less.php/issues",
-                "source": "https://github.com/wikimedia/less.php/tree/v3.2.1"
+                "source": "https://github.com/wikimedia/less.php/tree/v4.4.1"
             },
             "install-path": "../wikimedia/less.php"
         },
@@ -5257,17 +5257,17 @@
         },
         {
             "name": "wikimedia/smash-pig",
-            "version": "v0.8.13",
-            "version_normalized": "0.8.13.0",
+            "version": "v0.8.14",
+            "version_normalized": "0.8.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/wikimedia-fundraising-SmashPig.git",
-                "reference": "eb894b3ed004c16db7de6c6eb448dfa32f42f5f1"
+                "reference": "44d7261ccd46a0e092e35936fb6a1bc4f3aaedb8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/wikimedia-fundraising-SmashPig/zipball/eb894b3ed004c16db7de6c6eb448dfa32f42f5f1",
-                "reference": "eb894b3ed004c16db7de6c6eb448dfa32f42f5f1",
+                "url": "https://api.github.com/repos/wikimedia/wikimedia-fundraising-SmashPig/zipball/44d7261ccd46a0e092e35936fb6a1bc4f3aaedb8",
+                "reference": "44d7261ccd46a0e092e35936fb6a1bc4f3aaedb8",
                 "shasum": ""
             },
             "require": {
@@ -5292,7 +5292,7 @@
                 "php-parallel-lint/php-parallel-lint": "^1.2",
                 "phpunit/phpunit": "^9.5"
             },
-            "time": "2024-09-27T03:13:26+00:00",
+            "time": "2024-10-03T19:58:51+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -5345,7 +5345,7 @@
                 "payments"
             ],
             "support": {
-                "source": "https://github.com/wikimedia/wikimedia-fundraising-SmashPig/tree/v0.8.13"
+                "source": "https://github.com/wikimedia/wikimedia-fundraising-SmashPig/tree/v0.8.14"
             },
             "install-path": "../wikimedia/smash-pig"
         },

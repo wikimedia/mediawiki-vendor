@@ -59,7 +59,6 @@ class Validator {
 	public function validateCreatePaymentFromTokenInput( array $params ): void {
 		$required = [
 			'recurring_payment_token',
-			'processor_contact_id',
 			'amount',
 			'currency',
 			'country',

@@ -16,18 +16,8 @@ class BankPaymentProviderTest extends BaseGravyTestCase {
 		$this->provider = $this->config->object( 'payment-provider/dd' );
 	}
 
-	public function testSuccessfulCreatePaymentCreateDonor() {
+	public function testSuccessfulCreatePayment() {
 		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/trustly-create-transaction-success.json' ), true );
-		$getDonorResponseBody = json_decode( file_get_contents( __DIR__ . '/../Data/list-buyer.json' ), true );
-		$createDonorResponseBody = json_decode( file_get_contents( __DIR__ . '/../Data/create-buyer.json' ), true );
-
-		$getDonorResponseBody['items'] = [];
-		$this->mockApi->expects( $this->once() )
-			->method( 'getDonor' )
-			->willReturn( $getDonorResponseBody );
-		$this->mockApi->expects( $this->once() )
-			->method( 'createDonor' )
-			->willReturn( $createDonorResponseBody );
 		$this->mockApi->expects( $this->once() )
 			->method( 'createPayment' )
 			->willReturn( $responseBody );

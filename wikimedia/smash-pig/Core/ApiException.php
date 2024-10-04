@@ -4,7 +4,7 @@ namespace SmashPig\Core;
 
 class ApiException extends SmashPigException {
 
-	protected $rawErrors;
+	protected $rawErrors = [];
 
 	public function setRawErrors( $errors ) {
 		$this->rawErrors = $errors;

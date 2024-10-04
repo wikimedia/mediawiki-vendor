@@ -30,6 +30,8 @@ payment-provider:
         class: SmashPig\PaymentProviders\Gravy\CardPaymentProvider
     dd:
         class: SmashPig\PaymentProviders\Gravy\BankPaymentProvider
+    venmo:
+        class: SmashPig\PaymentProviders\Gravy\RedirectPaymentProvider
 
 # Setting value to false to mirror production configuration
 capture-from-ipn-listener: false

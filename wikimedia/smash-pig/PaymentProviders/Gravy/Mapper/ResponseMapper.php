@@ -8,6 +8,9 @@ use SmashPig\PaymentProviders\Gravy\ReferenceData;
 use SmashPig\PaymentProviders\RiskScorer;
 
 class ResponseMapper {
+	// List of methods with username as identifiers
+	const METHODS_WITH_USERNAME = [ 'venmo' ];
+
 	/**
 	 * @return array
 	 */
@@ -84,6 +87,11 @@ class ResponseMapper {
 				'employer' => $response['buyer']['organization'] ?? '',
 				'processor_contact_id' => $response['buyer']['id'] ?? '',
 				];
+
+			if ( in_array( $paymentMethod, self::METHODS_WITH_USERNAME ) ) {
+				$params['donor_details']['username'] = $response['payment_method']['label'];
+			}
+
 			if ( !empty( $donorDetails['address'] ) ) {
 				$donorAddress = $donorDetails['address'];
 				$params['donor_details']['address'] = [

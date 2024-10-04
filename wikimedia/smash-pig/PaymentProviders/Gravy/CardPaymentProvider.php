@@ -3,14 +3,12 @@
 namespace SmashPig\PaymentProviders\Gravy;
 
 use SmashPig\Core\Logging\Logger;
-use SmashPig\PaymentProviders\Gravy\Factories\GravyApprovePaymentResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyCreatePaymentResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyCreatePaymentSessionResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Mapper\RequestMapper;
 use SmashPig\PaymentProviders\Gravy\Mapper\ResponseMapper;
 use SmashPig\PaymentProviders\Gravy\Validators\Validator;
 use SmashPig\PaymentProviders\IPaymentProvider;
-use SmashPig\PaymentProviders\Responses\ApprovePaymentResponse;
 use SmashPig\PaymentProviders\Responses\CreatePaymentResponse;
 use SmashPig\PaymentProviders\Responses\CreatePaymentSessionResponse;
 use SmashPig\PaymentProviders\ValidationException;
@@ -37,40 +35,6 @@ class CardPaymentProvider extends PaymentProvider implements IPaymentProvider {
 		}
 
 		return $sessionResponse;
-	}
-
-	public function approvePayment( array $params ) : ApprovePaymentResponse {
-		$approvePaymentResponse = new ApprovePaymentResponse();
-
-		try {
-			// extract out the validation of input out to a separate class
-			$validator = new Validator();
-			$validator->validateApprovePaymentInput( $params );
-
-			// map local params to external format, ideally only changing key names and minor input format transformations
-			$gravyRequestMapper = new RequestMapper();
-			$gravyApprovePaymentRequest = $gravyRequestMapper->mapToCardApprovePaymentRequest( $params );
-
-			// dispatch api call to external API using mapped params
-			$rawGravyApprovePaymentResponse = $this->api->approvePayment( $params['gateway_txn_id'], $gravyApprovePaymentRequest );
-
-			// map the response from the external format back to our normalized structure.
-			$gravyResponseMapper = new ResponseMapper();
-			$normalizedResponse = $gravyResponseMapper->mapFromPaymentResponse( $rawGravyApprovePaymentResponse );
-
-			// populate our standard response object from the normalized response
-			// this could be extracted out to a factory as we do for dlocal
-			$approvePaymentResponse = GravyApprovePaymentResponseFactory::fromNormalizedResponse( $normalizedResponse );
-		} catch ( ValidationException $e ) {
-			// it threw an exception!
-			GravyApprovePaymentResponseFactory::handleValidationException( $approvePaymentResponse, $e->getData() );
-		} catch ( \Exception $e ) {
-			// it threw an exception!
-			Logger::info( 'Processor failed to approve payment with response:' . $e->getMessage() );
-			GravyApprovePaymentResponseFactory::handleException( $approvePaymentResponse, $e->getMessage(), $e->getCode() );
-		}
-
-		return $approvePaymentResponse;
 	}
 
 	/**
@@ -100,8 +64,6 @@ class CardPaymentProvider extends PaymentProvider implements IPaymentProvider {
 
 			// map local params to external format, ideally only changing key names and minor input format transformations
 			$gravyRequestMapper = new RequestMapper();
-
-			$this->setProcessorContactId( $params );
 
 			$gravyCreatePaymentRequest = $gravyRequestMapper->mapToCardCreatePaymentRequest( $params );
 

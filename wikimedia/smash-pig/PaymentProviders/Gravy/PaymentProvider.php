@@ -4,10 +4,8 @@ namespace SmashPig\PaymentProviders\Gravy;
 
 use SmashPig\Core\Context;
 use SmashPig\Core\Logging\Logger;
-use SmashPig\PaymentData\ErrorCode;
+use SmashPig\PaymentProviders\Gravy\Factories\GravyApprovePaymentResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyCancelPaymentResponseFactory;
-use SmashPig\PaymentProviders\Gravy\Factories\GravyCreateDonorResponseFactory;
-use SmashPig\PaymentProviders\Gravy\Factories\GravyGetDonorResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyGetLatestPaymentStatusResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyRefundResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyReportResponseFactory;
@@ -20,6 +18,7 @@ use SmashPig\PaymentProviders\IDeleteRecurringPaymentTokenProvider;
 use SmashPig\PaymentProviders\IGetLatestPaymentStatusProvider;
 use SmashPig\PaymentProviders\IPaymentProvider;
 use SmashPig\PaymentProviders\IRefundablePaymentProvider;
+use SmashPig\PaymentProviders\Responses\ApprovePaymentResponse;
 use SmashPig\PaymentProviders\Responses\CancelPaymentResponse;
 use SmashPig\PaymentProviders\Responses\PaymentDetailResponse;
 use SmashPig\PaymentProviders\Responses\RefundPaymentResponse;
@@ -91,65 +90,6 @@ abstract class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaym
 		return $cancelPaymentResponse;
 	}
 
-	public function getDonorRecord( array $params ) : PaymentDetailResponse {
-		$donorResponse = new PaymentDetailResponse();
-		try {
-			// extract out the validation of input out to a separate class
-			$validator = new Validator();
-			$validator->validateDonorInput( $params );
-			// map local params to external format, ideally only changing key names and minor input format transformations
-			$gravyRequestMapper = new RequestMapper();
-			$gravyGetDonorRequest = $gravyRequestMapper->mapToGetDonorRequest( $params );
-
-			$rawGravyGetDonorResponse = $this->api->getDonor( $gravyGetDonorRequest );
-
-			// map the response from the external format back to our normalized structure.
-			$gravyResponseMapper = new ResponseMapper();
-			$normalizedResponse = $gravyResponseMapper->mapFromGetDonorResponse( $rawGravyGetDonorResponse );
-
-			$donorResponse = GravyGetDonorResponseFactory::fromNormalizedResponse( $normalizedResponse );
-		}  catch ( ValidationException $e ) {
-			// it threw an exception!
-			GravyGetDonorResponseFactory::handleValidationException( $donorResponse, $e->getData() );
-		} catch ( \Exception $e ) {
-			// it threw an exception!
-			Logger::error( 'Processor failed to get Donor with response:' . $e->getMessage() );
-			GravyGetDonorResponseFactory::handleException( $donorResponse, $e->getMessage(), $e->getCode() );
-		}
-
-		return $donorResponse;
-	}
-
-	public function createDonor( array $params ) : PaymentDetailResponse {
-		$donorResponse = new PaymentDetailResponse();
-		try {
-			// extract out the validation of input out to a separate class
-			$validator = new Validator();
-			$validator->validateCreateDonorInput( $params );
-
-			// map local params to external format, ideally only changing key names and minor input format transformations
-			$gravyRequestMapper = new RequestMapper();
-			$gravyCreateDonorRequest = $gravyRequestMapper->mapToCreateDonorRequest( $params );
-
-			$rawGravyCreateDonorResponse = $this->api->createDonor( $gravyCreateDonorRequest );
-
-			// map the response from the external format back to our normalized structure.
-			$gravyResponseMapper = new ResponseMapper();
-			$normalizedResponse = $gravyResponseMapper->mapFromCreateDonorResponse( $rawGravyCreateDonorResponse );
-
-			$donorResponse = GravyCreateDonorResponseFactory::fromNormalizedResponse( $normalizedResponse );
-		}  catch ( ValidationException $e ) {
-			// it threw an exception!
-			GravyCreateDonorResponseFactory::handleValidationException( $donorResponse, $e->getData() );
-		} catch ( \Exception $e ) {
-			// it threw an exception!
-			Logger::error( 'Processor failed to create new Donor with response:' . $e->getMessage() );
-			GravyCreateDonorResponseFactory::handleException( $donorResponse, $e->getMessage(), $e->getCode() );
-		}
-
-		return $donorResponse;
-	}
-
 	public function deleteRecurringPaymentToken( array $params ): bool {
 		$response = false;
 		try {
@@ -178,27 +118,6 @@ abstract class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaym
 			Logger::error( 'Processor failed to delete recurring token with response:' . $e->getMessage() );
 		}
 		return $response;
-	}
-
-	protected function setProcessorContactId( &$params ): void {
-		if ( !isset( $params['processor_contact_id'] ) ) {
-			$processorContact = $this->getDonorRecord( $params );
-			if ( !$processorContact->isSuccessful() ) {
-				Logger::info( 'Creating new donor record on Gr4vy with the following parameters:' . json_encode( $params ) );
-				$processorContact = $this->createDonor( $params );
-			}
-			if ( !$processorContact->isSuccessful() ) {
-				Logger::error( 'Processor failed to create new contact record with error response:' . json_encode( $processorContact->getRawResponse() ) );
-				if ( count( $processorContact->getErrors() ) > 0 ) {
-					$error = $processorContact->getErrors()[0];
-					throw new \Exception( $error->getDebugMessage(), $error->getErrorCode() );
-				} else {
-					throw new \Exception( "Unknown Error when creating donor record on Processor", ErrorCode::UNKNOWN );
-				}
-			}
-			$processorContactRecord = $processorContact->getDonorDetails();
-			$params['processor_contact_id'] = $processorContactRecord->getCustomerId();
-		}
 	}
 
 	public function refundPayment( array $params ): RefundPaymentResponse {
@@ -290,5 +209,39 @@ abstract class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaym
 			GravyReportResponseFactory::handleException( $reportResponse, $e->getMessage(), $e->getCode() );
 		}
 		return $reportResponse;
+	}
+
+	public function approvePayment( array $params ) : ApprovePaymentResponse {
+		$approvePaymentResponse = new ApprovePaymentResponse();
+
+		try {
+			// extract out the validation of input out to a separate class
+			$validator = new Validator();
+			$validator->validateApprovePaymentInput( $params );
+
+			// map local params to external format, ideally only changing key names and minor input format transformations
+			$gravyRequestMapper = new RequestMapper();
+			$gravyApprovePaymentRequest = $gravyRequestMapper->mapToApprovePaymentRequest( $params );
+
+			// dispatch api call to external API using mapped params
+			$rawGravyApprovePaymentResponse = $this->api->approvePayment( $params['gateway_txn_id'], $gravyApprovePaymentRequest );
+
+			// map the response from the external format back to our normalized structure.
+			$gravyResponseMapper = new ResponseMapper();
+			$normalizedResponse = $gravyResponseMapper->mapFromPaymentResponse( $rawGravyApprovePaymentResponse );
+
+			// populate our standard response object from the normalized response
+			// this could be extracted out to a factory as we do for dlocal
+			$approvePaymentResponse = GravyApprovePaymentResponseFactory::fromNormalizedResponse( $normalizedResponse );
+		} catch ( ValidationException $e ) {
+			// it threw an exception!
+			GravyApprovePaymentResponseFactory::handleValidationException( $approvePaymentResponse, $e->getData() );
+		} catch ( \Exception $e ) {
+			// it threw an exception!
+			Logger::info( 'Processor failed to approve payment with response:' . $e->getMessage() );
+			GravyApprovePaymentResponseFactory::handleException( $approvePaymentResponse, $e->getMessage(), $e->getCode() );
+		}
+
+		return $approvePaymentResponse;
 	}
 }

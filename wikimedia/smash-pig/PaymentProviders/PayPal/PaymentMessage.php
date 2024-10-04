@@ -4,6 +4,7 @@ namespace SmashPig\PaymentProviders\PayPal;
 
 use SmashPig\Core\Context;
 use SmashPig\Core\Logging\Logger;
+use SmashPig\Core\ProviderConfiguration;
 
 class PaymentMessage extends Message {
 
@@ -34,15 +35,27 @@ class PaymentMessage extends Message {
 		// We are pretty sure Giving Fund messages will have no corresponding pending entry (they are PayPal-initiated,
 		// not from any activity on payments-wiki). Still, we put this after mergePendingDetails to make sure any
 		// name / address / email is deleted so as not to change the PayPal Giving Fund contact.
-		self::addContactIdWhenGivingFund( $message, $config );
+		self::addFieldsWhenGivingFund( $message, $config );
 	}
 
-	protected static function addContactIdWhenGivingFund( &$message, $config ) {
-		// Tag donations from givingfund email list with the giving fund organization contact ID
+	/**
+	 * Tag donations from givingfund email list with the giving fund organization
+	 * contact ID and add appropriate values for Gift Data fields.
+	 * @param array &$message
+	 * @param ProviderConfiguration $config
+	 * @return void
+	 */
+	protected static function addFieldsWhenGivingFund( array &$message, ProviderConfiguration $config ): void {
 		$gfCid = $config->val( 'givingfund-cid' );
 		$gfEmails = $config->val( 'givingfund-emails' );
 		if ( $gfCid && $gfEmails && in_array( strtolower( $message['email'] ), $gfEmails ) ) {
-			$message['contact_id'] = $gfCid;
+			$message += [
+				'contact_id' => $gfCid,
+				'Gift_Data.Appeal' => 'White Mail',
+				'Gift_Data.Campaign' => 'Donor Advised Fund', // This field is labeled 'Gift Type'
+				'Gift_Data.Channel' => 'Other Offline',
+				'Gift_Data.Fund' => 'Major Gifts - CC104',
+			];
 			$contactFields = [
 				'city', 'country', 'email', 'first_name', 'last_name', 'postal_code', 'state_province',
 				'street_address', 'supplemental_address_1'
