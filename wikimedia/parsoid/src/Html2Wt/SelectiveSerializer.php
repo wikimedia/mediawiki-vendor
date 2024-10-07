@@ -94,7 +94,7 @@ class SelectiveSerializer {
 			$start = $eltDSR->innerStart();
 			while ( $c ) {
 				if ( $eltDSR && $c === $firstChild ) {
-					if ( $eltDSR->leadingWS < 0 ) {
+					if ( !$eltDSR->hasValidLeadingWS() ) {
 						// We don't have accurate information about the length of trimmed WS.
 						// So, we cannot wrap this text node with a <span>.
 						break;
@@ -130,7 +130,11 @@ class SelectiveSerializer {
 								$inListItem && DOMUtils::isList( $next ) && WTUtils::isNewElt( $next )
 							)
 						) ) {
-							$len += $eltDSR->trailingWS;
+							if ( !$eltDSR->hasValidTrailingWS() ) {
+								break;
+							} else {
+								$len += $eltDSR->trailingWS;
+							}
 						}
 					}
 
@@ -202,7 +206,7 @@ class SelectiveSerializer {
 		} else {
 			$domDiffTiming = Timing::start( $this->env->getSiteConfig() );
 			$diff = ( new DOMDiff( $this->env ) )->diff( $oldBody, $body );
-			$domDiffTiming->end( 'html2wt.selser.domDiff', 'html2wt_domDiff', [ 'wts' => 'selser' ] );
+			$domDiffTiming->end( 'html2wt.selser.domDiff', 'html2wt_domDiff_seconds', [ 'wts' => 'selser' ] );
 		}
 
 		if ( $diff['isEmpty'] ) {
