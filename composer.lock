@@ -9010,6 +9010,6 @@
         "php": ">=7.4.3",
         "composer-plugin-api": "^2.0"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }
