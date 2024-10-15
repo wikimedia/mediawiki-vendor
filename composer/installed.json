@@ -588,12 +588,12 @@
             "version_normalized": "5.2.11.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/justinrainbow/json-schema.git",
+                "url": "https://github.com/jsonrainbow/json-schema.git",
                 "reference": "2ab6744b7296ded80f8cc4f9509abbff393399aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/2ab6744b7296ded80f8cc4f9509abbff393399aa",
+                "url": "https://api.github.com/repos/jsonrainbow/json-schema/zipball/2ab6744b7296ded80f8cc4f9509abbff393399aa",
                 "reference": "2ab6744b7296ded80f8cc4f9509abbff393399aa",
                 "shasum": ""
             },
@@ -650,8 +650,8 @@
                 "schema"
             ],
             "support": {
-                "issues": "https://github.com/justinrainbow/json-schema/issues",
-                "source": "https://github.com/justinrainbow/json-schema/tree/5.2.11"
+                "issues": "https://github.com/jsonrainbow/json-schema/issues",
+                "source": "https://github.com/jsonrainbow/json-schema/tree/5.2.11"
             },
             "install-path": "../justinrainbow/json-schema"
         },
@@ -2457,12 +2457,12 @@
             "type": "library",
             "installation-source": "dist",
             "autoload": {
-                "psr-4": {
-                    "Wikimedia\\AtEase\\": "src/Wikimedia/AtEase/"
-                },
                 "files": [
                     "src/Wikimedia/Functions.php"
-                ]
+                ],
+                "psr-4": {
+                    "Wikimedia\\AtEase\\": "src/Wikimedia/AtEase/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -4164,17 +4164,17 @@
         },
         {
             "name": "wikimedia/xmp-reader",
-            "version": "0.8.6",
-            "version_normalized": "0.8.6.0",
+            "version": "0.9.2",
+            "version_normalized": "0.9.2.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/wikimedia/xmp-reader.git",
-                "reference": "f2bc581314de73858d33c80c705da9b5644a996a"
+                "url": "https://github.com/wikimedia/mediawiki-libs-XMPReader.git",
+                "reference": "cc1c372108fa088ba6f37a11480e7d2c3c98da67"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/xmp-reader/zipball/f2bc581314de73858d33c80c705da9b5644a996a",
-                "reference": "f2bc581314de73858d33c80c705da9b5644a996a",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-XMPReader/zipball/cc1c372108fa088ba6f37a11480e7d2c3c98da67",
+                "reference": "cc1c372108fa088ba6f37a11480e7d2c3c98da67",
                 "shasum": ""
             },
             "require": {
@@ -4182,23 +4182,22 @@
                 "ext-libxml": "*",
                 "ext-xml": "*",
                 "ext-xmlreader": "*",
-                "php": ">=7.2.9",
+                "php": ">=7.4.3",
                 "psr/log": "^1.0",
-                "wikimedia/at-ease": "^2.0.0",
                 "wikimedia/scoped-callback": "^1.0 || ^2.0 || ^3.0 || ^4.0",
                 "wikimedia/timestamp": "^1.0 || ^2.0 || ^3.0 || ^4.0"
             },
             "require-dev": {
                 "ext-exif": "*",
-                "mediawiki/mediawiki-codesniffer": "39.0.0",
-                "mediawiki/mediawiki-phan-config": "0.11.1",
-                "mediawiki/minus-x": "1.1.1",
-                "ockcyp/covers-validator": "1.4.0",
+                "mediawiki/mediawiki-codesniffer": "44.0.0",
+                "mediawiki/mediawiki-phan-config": "0.14.0",
+                "mediawiki/minus-x": "1.1.3",
+                "ockcyp/covers-validator": "1.6.0",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
-                "php-parallel-lint/php-parallel-lint": "1.3.2",
-                "phpunit/phpunit": "^8.5"
+                "php-parallel-lint/php-parallel-lint": "1.4.0",
+                "phpunit/phpunit": "9.6.16"
             },
-            "time": "2022-11-04T22:57:59+00:00",
+            "time": "2024-08-12T05:55:11+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -4226,7 +4225,7 @@
                 "xmp"
             ],
             "support": {
-                "source": "https://github.com/wikimedia/xmp-reader/tree/0.8.6"
+                "source": "https://github.com/wikimedia/mediawiki-libs-XMPReader/tree/0.9.2"
             },
             "install-path": "../wikimedia/xmp-reader"
         },

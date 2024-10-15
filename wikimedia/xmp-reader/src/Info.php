@@ -32,10 +32,10 @@ namespace Wikimedia\XMPReader;
  */
 class Info {
 	/**
-	 * Get the items array
+	 * Get the item array
 	 * @return array XMP item configuration array.
 	 */
-	public static function getItems() {
+	public static function getItems(): array {
 		return self::$items;
 	}
 
@@ -64,10 +64,10 @@ class Info {
 	 *   * structPart - Indicates that this element can only appear as a member
 	 *     of a structure.
 	 *
-	 * Currently this just has a bunch of EXIF values as this class is only half-done.
+	 * Currently, this just has a bunch of EXIF values as this class is only half-done.
 	 * @var array
 	 */
-	private static $items = [
+	private static array $items = [
 		'http://ns.adobe.com/exif/1.0/' => [
 			'ApertureValue' => [
 				'map_group' => 'exif',
