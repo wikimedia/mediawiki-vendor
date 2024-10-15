@@ -26,7 +26,7 @@ return array(
     'Wikimedia\\Composer\\Merge\\V2\\' => array($vendorDir . '/wikimedia/composer-merge-plugin/src'),
     'Wikimedia\\CommonPasswords\\' => array($vendorDir . '/wikimedia/common-passwords/src'),
     'Wikimedia\\Bcp47Code\\' => array($vendorDir . '/wikimedia/bcp-47-code/src'),
-    'Wikimedia\\AtEase\\' => array($vendorDir . '/wikimedia/at-ease/src/Wikimedia/AtEase'),
+    'Wikimedia\\AtEase\\' => array($vendorDir . '/wikimedia/at-ease/src'),
     'Wikimedia\\Assert\\' => array($vendorDir . '/wikimedia/assert/src'),
     'Wikimedia\\' => array($vendorDir . '/wikimedia/ip-utils/src', $vendorDir . '/wikimedia/php-session-serializer/src', $vendorDir . '/wikimedia/relpath/src', $vendorDir . '/wikimedia/running-stat/src', $vendorDir . '/wikimedia/scoped-callback/src', $vendorDir . '/wikimedia/wait-condition-loop/src', $vendorDir . '/wikimedia/wrappedstring/src'),
     'Symfony\\Polyfill\\Php83\\' => array($vendorDir . '/symfony/polyfill-php83'),

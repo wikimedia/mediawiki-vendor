@@ -22,6 +22,8 @@ namespace Wikimedia\AtEase;
 
 class AtEase {
 	private static $suppressCount = 0;
+
+	/** @var false|int */
 	private static $originalLevel = false;
 
 	/**
@@ -39,8 +41,9 @@ class AtEase {
 			}
 		} else {
 			if ( !self::$suppressCount ) {
-				self::$originalLevel =
-					error_reporting( E_ALL & ~(
+				// T375707 - E_STRICT is deprecated on PHP >= 8.4
+				if ( PHP_VERSION_ID < 80400 ) {
+					self::$originalLevel = error_reporting( E_ALL & ~(
 						E_WARNING |
 						E_NOTICE |
 						E_USER_WARNING |
@@ -49,6 +52,16 @@ class AtEase {
 						E_USER_DEPRECATED |
 						E_STRICT
 					) );
+				} else {
+					self::$originalLevel = error_reporting( E_ALL & ~(
+						E_WARNING |
+						E_NOTICE |
+						E_USER_WARNING |
+						E_USER_NOTICE |
+						E_DEPRECATED |
+						E_USER_DEPRECATED
+					) );
+				}
 			}
 			++self::$suppressCount;
 		}
@@ -70,6 +83,7 @@ class AtEase {
 	 */
 	public static function quietCall( callable $callback, ...$args ) {
 		self::suppressWarnings();
+		$rv = null;
 		try {
 			$rv = $callback( ...$args );
 		} finally {
