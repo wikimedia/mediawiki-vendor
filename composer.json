@@ -95,11 +95,5 @@
 	},
 	"scripts": {
 		"test": "parallel-lint --exclude composer/autoload_static.php --exclude symfony/console/Attribute/AsCommand.php --exclude symfony/polyfill-php83/bootstrap81.php ."
-	},
-	"repositories": [
-		{
-			"type": "git",
-			"url": "https://github.com/wikimedia/oauth2-server.git"
-		}
-	]
+	}
 }
