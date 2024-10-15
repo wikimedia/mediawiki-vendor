@@ -117,7 +117,6 @@ class ComposerStaticInit_mediawiki_vendor
         '5897ea0ac4cccf14d323035e65887801' => __DIR__ . '/..' . '/symfony/polyfill-php82/bootstrap.php',
         '662a729f963d39afe703c9d9b7ab4a8c' => __DIR__ . '/..' . '/symfony/polyfill-php83/bootstrap.php',
         'a1105708a18b76903365ca1c4aa61b02' => __DIR__ . '/..' . '/symfony/translation/Resources/functions.php',
-        'eccc0347283a01e62f5536bcf76b6e62' => __DIR__ . '/..' . '/wikimedia/at-ease/src/Wikimedia/Functions.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -388,7 +387,7 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'Wikimedia\\AtEase\\' => 
         array (
-            0 => __DIR__ . '/..' . '/wikimedia/at-ease/src/Wikimedia/AtEase',
+            0 => __DIR__ . '/..' . '/wikimedia/at-ease/src',
         ),
         'Wikimedia\\Assert\\' => 
         array (
@@ -4513,7 +4512,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Assert\\PostconditionException' => __DIR__ . '/..' . '/wikimedia/assert/src/PostconditionException.php',
         'Wikimedia\\Assert\\PreconditionException' => __DIR__ . '/..' . '/wikimedia/assert/src/PreconditionException.php',
         'Wikimedia\\Assert\\UnreachableException' => __DIR__ . '/..' . '/wikimedia/assert/src/UnreachableException.php',
-        'Wikimedia\\AtEase\\AtEase' => __DIR__ . '/..' . '/wikimedia/at-ease/src/Wikimedia/AtEase/AtEase.php',
+        'Wikimedia\\AtEase\\AtEase' => __DIR__ . '/..' . '/wikimedia/at-ease/src/AtEase.php',
         'Wikimedia\\Bcp47Code\\Bcp47Code' => __DIR__ . '/..' . '/wikimedia/bcp-47-code/src/Bcp47Code.php',
         'Wikimedia\\Bcp47Code\\Bcp47CodeValue' => __DIR__ . '/..' . '/wikimedia/bcp-47-code/src/Bcp47CodeValue.php',
         'Wikimedia\\CSS\\Grammar\\Alternative' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/Alternative.php',
