@@ -7,6 +7,7 @@ class Less_Tree_Operation extends Less_Tree {
 	public $op;
 	public $operands;
 	public $isSpaced;
+	public $type = 'Operation';
 
 	/**
 	 * @param string $op
@@ -25,29 +26,24 @@ class Less_Tree_Operation extends Less_Tree {
 		$a = $this->operands[0]->compile( $env );
 		$b = $this->operands[1]->compile( $env );
 
-		// Skip operation if argument was not compiled down to a non-operable value.
-		// For example, if one argument is a Less_Tree_Call like 'var(--foo)' then we
-		// preserve it as literal for native CSS.
-		// https://phabricator.wikimedia.org/T331688
-		if ( $env->isMathOn() ) {
+		if ( Less_Environment::isMathOn() ) {
 
 			if ( $a instanceof Less_Tree_Dimension && $b instanceof Less_Tree_Color ) {
 				$a = $a->toColor();
 
 			} elseif ( $b instanceof Less_Tree_Dimension && $a instanceof Less_Tree_Color ) {
 				$b = $b->toColor();
+
 			}
 
-			if ( !( $a instanceof Less_Tree_Dimension || $a instanceof Less_Tree_Color ) ) {
+			if ( !method_exists( $a, 'operate' ) ) {
 				throw new Less_Exception_Compiler( "Operation on an invalid type" );
 			}
 
-			if ( $b instanceof Less_Tree_Dimension || $b instanceof Less_Tree_Color ) {
-				return $a->operate( $this->op, $b );
-			}
+			return $a->operate( $this->op, $b );
 		}
 
-		return new self( $this->op, [ $a, $b ], $this->isSpaced );
+		return new Less_Tree_Operation( $this->op, [ $a, $b ], $this->isSpaced );
 	}
 
 	/**

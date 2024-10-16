@@ -153,11 +153,48 @@ class RedirectPaymentProviderTest extends BaseGravyTestCase {
 		return $params;
 	}
 
+	public function testSuccessfulCreatePaymentFromTokenNoCreateDonorNoGetDonor() {
+		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/venmo-create-transaction-success.json' ), true );
+		$params = $this->getCreateTrxnFromTokenParams( $responseBody['amount'] / 100 );
+		$this->mockApi->expects( $this->once() )
+			->method( 'createPayment' )
+			->with( [
+				'amount' => $params['amount'] * 100,
+				'currency' => $params['currency'],
+				'country' => $params['country'],
+				'payment_method' => [
+					'method' => 'id',
+					'id' => $params['recurring_payment_token']
+				],
+				'payment_source' => 'recurring',
+				'is_subsequent_payment' => true,
+				'merchant_initiated' => true,
+				'external_identifier' => $params['order_id'],
+				'buyer_id' => $params['processor_contact_id']
+			] )
+			->willReturn( $responseBody );
+
+		$response = $this->provider->createPayment( $params );
+
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\CreatePaymentResponse',
+			$response );
+		$this->assertEquals( $responseBody['amount'] / 100, $response->getAmount() );
+		$this->assertEquals( $responseBody['id'], $response->getGatewayTxnId() );
+		$this->assertEquals( $responseBody['buyer']['billing_details']['first_name'], $response->getDonorDetails()->getFirstName() );
+		$this->assertEquals( $responseBody['payment_service_transaction_id'], $response->getBackendProcessorTransactionId() );
+		$this->assertEquals( $responseBody['buyer']['billing_details']['last_name'], $response->getDonorDetails()->getLastName() );
+		$this->assertEquals( $responseBody['buyer']['billing_details']['email_address'], $response->getDonorDetails()->getEmail() );
+		$this->assertEquals( $responseBody['buyer']['id'], $response->getDonorDetails()->getCustomerId() );
+		$this->assertEquals( $responseBody['buyer']['billing_details']['address']['line1'], $response->getDonorDetails()->getBillingAddress()->getStreetAddress() );
+		$this->assertTrue( $response->isSuccessful() );
+	}
+
 	private function getCreateTrxnFromTokenParams( $amount ) {
 		$params = $this->getCreateTrxnParams( $amount );
 
 		unset( $params['gateway_session_id'] );
 
+		$params['recurring'] = 1;
 		$params['recurring_payment_token'] = "random_token";
 		$params['processor_contact_id'] = "random_contact_id";
 

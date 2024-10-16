@@ -9,11 +9,11 @@ class Less_Environment {
 	 *
 	 * - rootpath: rootpath to append to URLs
 	 *
-	 * @var array|null
+	 * @var array|null $currentFileInfo;
 	 */
 	public $currentFileInfo;
 
-	/** @var bool Whether we are currently importing multiple copies */
+	/* Whether we are currently importing multiple copies */
 	public $importMultiple = false;
 
 	/**
@@ -21,25 +21,15 @@ class Less_Environment {
 	 */
 	public $frames = [];
 
-	/** @var Less_Tree_Media[] */
+	/**
+	 * @var array
+	 */
 	public $mediaBlocks = [];
-	/** @var Less_Tree_Media[] */
-	public $mediaPath = [];
-
-	/** @var string[] */
-	public $imports = [];
-
-	/** @var array */
-	public $importantScope = [];
 
 	/**
-	 * This is the equivalent of `importVisitor.onceFileDetectionMap`
-	 * as used by the dynamic `importNode.skip` function.
-	 *
-	 * @see less-2.5.3.js#ImportVisitor.prototype.onImported
-	 * @var array<string,true>
+	 * @var array
 	 */
-	public $importVisitorOnceMap = [];
+	public $mediaPath = [];
 
 	public static $parensStack = 0;
 
@@ -47,13 +37,9 @@ class Less_Environment {
 
 	public static $lastRule = false;
 
-	public static $_noSpaceCombinators;
+	public static $_outputMap;
 
 	public static $mixin_stack = 0;
-
-	public $strictMath = false;
-
-	public $importCallback = null;
 
 	/**
 	 * @var array
@@ -66,75 +52,53 @@ class Less_Environment {
 		self::$lastRule = false;
 		self::$mixin_stack = 0;
 
-		self::$_noSpaceCombinators = [
-			'' => true,
-			' ' => true,
-			'|' => true
-		];
-	}
+		if ( Less_Parser::$options['compress'] ) {
 
-	/**
-	 * @param string $file
-	 * @return void
-	 */
-	public function addParsedFile( $file ) {
-		$this->imports[] = $file;
-	}
+			self::$_outputMap = [
+				','	=> ',',
+				': ' => ':',
+				''  => '',
+				' ' => ' ',
+				':' => ' :',
+				'+' => '+',
+				'~' => '~',
+				'>' => '>',
+				'|' => '|',
+				'^' => '^',
+				'^^' => '^^'
+			];
 
-	public function clone() {
-		$new_env = clone $this;
-		// NOTE: Match JavaScript by-ref behaviour for arrays
-		$new_env->imports =& $this->imports;
-		$new_env->importVisitorOnceMap =& $this->importVisitorOnceMap;
-		return $new_env;
-	}
+		} else {
 
-	/**
-	 * @param string $file
-	 * @return bool
-	 */
-	public function isFileParsed( $file ) {
-		return in_array( $file, $this->imports );
+			self::$_outputMap = [
+				','	=> ', ',
+				': ' => ': ',
+				''  => '',
+				' ' => ' ',
+				':' => ' :',
+				'+' => ' + ',
+				'~' => ' ~ ',
+				'>' => ' > ',
+				'|' => '|',
+				'^' => ' ^ ',
+				'^^' => ' ^^ '
+			];
+
+		}
 	}
 
 	public function copyEvalEnv( $frames = [] ) {
-		$new_env = new self();
+		$new_env = new Less_Environment();
 		$new_env->frames = $frames;
-		$new_env->importantScope = $this->importantScope;
-		$new_env->strictMath = $this->strictMath;
 		return $new_env;
 	}
 
-	/**
-	 * @return bool
-	 * @see Eval.prototype.isMathOn in less.js 3.0.0 https://github.com/less/less.js/blob/v3.0.0/dist/less.js#L1007
-	 */
-	public function isMathOn() {
-		return $this->strictMath ? (bool)self::$parensStack : true;
+	public static function isMathOn() {
+		return !Less_Parser::$options['strictMath'] || self::$parensStack;
 	}
 
-	/**
-	 * @param string $path
-	 * @return bool
-	 * @see less-2.5.3.js#Eval.isPathRelative
-	 */
 	public static function isPathRelative( $path ) {
-		return !preg_match( '/^(?:[a-z-]+:|\/|#)/', $path );
-	}
-
-	/**
-	 * Apply legacy 'import_callback' option.
-	 *
-	 * See Less_Parser::$default_options to learn more about the 'import_callback' option.
-	 * This option is deprecated in favour of Less_Parser::SetImportDirs.
-	 *
-	 * @param Less_Tree_Import $importNode
-	 * @return array{0:string,1:string|null}|null Array containing path and (optional) uri or null
-	 */
-	public function callImportCallback( Less_Tree_Import $importNode ) {
-		if ( is_callable( $this->importCallback ) ) {
-			return ( $this->importCallback )( $importNode );
-		}
+		return !preg_match( '/^(?:[a-z-]+:|\/)/', $path );
 	}
 
 	/**

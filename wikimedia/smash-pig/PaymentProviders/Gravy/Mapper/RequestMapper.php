@@ -195,17 +195,18 @@ class RequestMapper {
 
 	/**
 	 * Maps our payment submethod to gravy's
-	 * @param mixed $payment_submethod
+	 * @param mixed $paymentMethod
 	 * @return string
 	 */
-   private function mapPaymentMethodToGravyPaymentMethod( $payment_submethod ): string {
-	   switch ( strtolower( $payment_submethod ) ) {
+   private function mapPaymentMethodToGravyPaymentMethod( $paymentMethod ): string {
+	   switch ( strtolower( $paymentMethod ) ) {
 			case 'ach':
 				return 'trustly';
-			case 'venmo':
-				return 'venmo';
-			default:
-				throw new \UnexpectedValueException( "Unknown Gravy Payment Method - $payment_submethod" );
+		   case 'paypal':
+		   case 'venmo':
+				return $paymentMethod;
+		   default:
+				throw new \UnexpectedValueException( "Unknown Gravy Payment Method - $paymentMethod" );
 	   }
    }
 

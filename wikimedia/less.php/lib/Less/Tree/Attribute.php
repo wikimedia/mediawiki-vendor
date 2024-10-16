@@ -1,18 +1,14 @@
 <?php
 /**
  * @private
- * @see less-2.5.3.js#Attribute.prototype
  */
-class Less_Tree_Attribute extends Less_Tree implements Less_Tree_HasValueProperty {
+class Less_Tree_Attribute extends Less_Tree {
+
 	public $key;
 	public $op;
 	public $value;
+	public $type = 'Attribute';
 
-	/**
-	 * @param string $key
-	 * @param null|string $op
-	 * @param null|string|Less_Tree $value
-	 */
 	public function __construct( $key, $op, $value ) {
 		$this->key = $key;
 		$this->op = $op;
@@ -20,18 +16,22 @@ class Less_Tree_Attribute extends Less_Tree implements Less_Tree_HasValuePropert
 	}
 
 	public function compile( $env ) {
-		// Optimization: Avoid object churn for the common case.
-		// Attributes are very common in CSS/LESS input, but rarely involve dynamic values.
-		if ( !$this->key instanceof Less_Tree && !$this->value instanceof Less_Tree ) {
+		$key_obj = is_object( $this->key );
+		$val_obj = is_object( $this->value );
+
+		if ( !$key_obj && !$val_obj ) {
 			return $this;
 		}
 
-		return new self(
-			$this->key instanceof Less_Tree ? $this->key->compile( $env ) : $this->key,
+		return new Less_Tree_Attribute(
+			$key_obj ? $this->key->compile( $env ) : $this->key,
 			$this->op,
-			$this->value instanceof Less_Tree ? $this->value->compile( $env ) : $this->value );
+			$val_obj ? $this->value->compile( $env ) : $this->value );
 	}
 
+	/**
+	 * @see Less_Tree::genCSS
+	 */
 	public function genCSS( $output ) {
 		$output->add( $this->toCSS() );
 	}

@@ -20,6 +20,11 @@ class OutboundRequest {
 	protected $config;
 
 	/**
+	 * @var string URL
+	 */
+	protected $url;
+
+	/**
 	 * @var string HTTP method
 	 */
 	protected $method;

@@ -50,7 +50,7 @@ class ProcessCaptureRequestJob implements Runnable {
 		$this->logger = Logger::getTaggedLogger( "psp_ref-{$transactionDetails->getGatewayTxnId()}" );
 		$this->logger->info(
 			"Running capture request job on Gravy transaction" .
-			"with reference '{$transactionDetails->getGatewayTxnId()}'."
+			" with reference '{$transactionDetails->getGatewayTxnId()}'."
 		);
 
 		$this->logger->debug( 'Attempting to locate associated message in pending database.' );

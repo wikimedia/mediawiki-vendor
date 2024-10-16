@@ -29,7 +29,7 @@ class RefundInitiatedAction extends BaseRefundAction implements IListenerMessage
 				QueueWrapper::push( 'refund', $queueMessage );
 			} else {
 				$tl->info(
-					"Got a failed refund for {$msg->currency} {$msg->amount} with psp reference {$msg->pspReference} and originalReference {$msg->parentPspReference}. Doing nothing."
+					"Got a failed refund for {$msg->currency} {$msg->amount} with psp reference {$msg->pspReference} and originalReference {$msg->parentPspReference} due to: {$msg->reason}. Doing nothing."
 				);
 			}
 			if ( $msg instanceof RefundWithData ) {

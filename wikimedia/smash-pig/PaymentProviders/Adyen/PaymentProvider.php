@@ -554,11 +554,10 @@ abstract class PaymentProvider implements
 				Logger::debug( 'Unable to map Adyen status', $rawResponse );
 			}
 		} else {
-			if ( $response->hasErrors() ) {
-				// We don't necessarily get a status code if there's another error
-				// but it sure as heck didn't succeed!
-				$response->setStatus( FinalStatus::FAILED );
-			} else {
+			// We don't necessarily get a status code if there's another error
+			// but it sure as heck didn't succeed!
+			$response->setStatus( FinalStatus::FAILED );
+			if ( !$response->hasErrors() ) {
 				$message = 'Missing Adyen status';
 				$response->addErrors(
 					new PaymentError(
