@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "573a54fb11a68ced69bca956cb47ff86",
+    "content-hash": "e8eb985a396e82b7029082393ba3b7df",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -8278,16 +8278,16 @@
         },
         {
             "name": "wikimedia/shellbox",
-            "version": "4.0.2",
+            "version": "4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-Shellbox.git",
-                "reference": "a3789ef67a3d07ee1dafed0b2001b6331e5ee5e0"
+                "reference": "d7be36c17c86b7516170af9c2ce6e6ece3c04c7d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Shellbox/zipball/a3789ef67a3d07ee1dafed0b2001b6331e5ee5e0",
-                "reference": "a3789ef67a3d07ee1dafed0b2001b6331e5ee5e0",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Shellbox/zipball/d7be36c17c86b7516170af9c2ce6e6ece3c04c7d",
+                "reference": "d7be36c17c86b7516170af9c2ce6e6ece3c04c7d",
                 "shasum": ""
             },
             "require": {
@@ -8297,15 +8297,16 @@
                 "monolog/monolog": "^2.0.0",
                 "php": ">=7.4.3",
                 "psr/log": "~1.1.3",
-                "wikimedia/wikipeg": "^3.0.0 || ^4.0.0"
+                "wikimedia/base-convert": "2.0.2",
+                "wikimedia/wikipeg": "^4.0.0"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "41.0.0",
+                "mediawiki/mediawiki-codesniffer": "44.0.0",
                 "mediawiki/mediawiki-phan-config": "0.14.0",
-                "mediawiki/minus-x": "1.1.1",
+                "mediawiki/minus-x": "1.1.3",
                 "ockcyp/covers-validator": "1.6.0",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
-                "php-parallel-lint/php-parallel-lint": "1.3.2",
+                "php-parallel-lint/php-parallel-lint": "1.4.0",
                 "phpunit/phpunit": "9.6.16",
                 "psy/psysh": "~0.10.4"
             },
@@ -8333,9 +8334,9 @@
             "description": "Library and server for containerized shell execution",
             "homepage": "https://www.mediawiki.org/wiki/Shellbox",
             "support": {
-                "source": "https://github.com/wikimedia/mediawiki-libs-Shellbox/tree/4.0.2"
+                "source": "https://github.com/wikimedia/mediawiki-libs-Shellbox/tree/4.1.0"
             },
-            "time": "2024-03-05T17:51:38+00:00"
+            "time": "2024-10-16T22:34:29+00:00"
         },
         {
             "name": "wikimedia/testing-access-wrapper",

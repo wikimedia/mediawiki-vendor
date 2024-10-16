@@ -1,5 +1,13 @@
 # Release History
 
+## 4.1.0 (2024-10-17)
+* Add remote download/upload support for large file performance (T292322). The
+  feature is off by default. Once the server is updated and has allowUrlFiles
+  enabled, the client can enable allowUrlFiles to fully enable the feature for
+  callers.
+* Fix bug in BoxedCommand::inputFileFromStream.
+* Require wikimedia/wikipeg 4.0.0.
+
 ## 4.0.2 (2024-03-05)
 * blubber: create videoscaler variant
 * dev: Replace blubberoid with blubber buildkit

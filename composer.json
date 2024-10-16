@@ -136,7 +136,7 @@
 		"wikimedia/running-stat": "2.1.0",
 		"wikimedia/scoped-callback": "4.0.0",
 		"wikimedia/services": "3.0.0",
-		"wikimedia/shellbox": "4.0.2",
+		"wikimedia/shellbox": "4.1.0",
 		"wikimedia/testing-access-wrapper": "3.0.0",
 		"wikimedia/textcat": "2.0.0",
 		"wikimedia/timestamp": "4.1.1",
