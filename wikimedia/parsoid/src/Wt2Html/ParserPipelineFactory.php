@@ -9,6 +9,7 @@ use Wikimedia\Parsoid\Core\InternalException;
 use Wikimedia\Parsoid\Core\SelectiveUpdateData;
 use Wikimedia\Parsoid\DOM\Document;
 use Wikimedia\Parsoid\Utils\PHPUtils;
+use Wikimedia\Parsoid\Utils\Utils;
 use Wikimedia\Parsoid\Wt2Html\DOM\Handlers\AddAnnotationIds;
 use Wikimedia\Parsoid\Wt2Html\DOM\Handlers\AddLinkAttributes;
 use Wikimedia\Parsoid\Wt2Html\DOM\Handlers\CleanUp;
@@ -85,27 +86,26 @@ class ParserPipelineFactory {
 	}
 
 	private const DOM_PROCESSOR_CONFIG = [
-		'addmetadata' => [ 'Processor' => AddMetaData::class ],
-		'annwrap' => [ 'Processor' => WrapAnnotations::class, 'withAnnotations' => true ],
-		'convertoffsets' => [ 'Processor' => ConvertOffsets::class ],
-		'dsr' => [ 'Processor' => ComputeDSR::class ],
-		'embedded-docs' => [ 'Processor' => ProcessEmbeddedDocs::class ],
-		'extpp' => [ 'Processor' => RunExtensionProcessors::class ],
-		'fostered' => [ 'Processor' => MarkFosteredContent::class ],
-		'linter' => [ 'Processor' => Linter::class ],
-		'lang-converter' => [ 'Processor' => LangConverter::class ],
-		'media' => [ 'Processor' => AddMediaInfo::class ],
-		'migrate-metas' => [ 'Processor' => MigrateTemplateMarkerMetas::class ],
-		'migrate-nls' => [ 'Processor' => MigrateTrailingNLs::class ],
-		'normalize' => [ 'Processor' => Normalize::class ],
-		'process-fixups' => [ 'Processor' => ProcessTreeBuilderFixups::class ],
-		'pwrap' => [ 'Processor' => PWrap::class ],
-		'redlinks' => [ 'Processor' => AddRedLinks::class ],
-		'sections' => [ 'Processor' => WrapSections::class ], // Don't process HTML in embedded attributes
-		'tplwrap' => [ 'Processor' => WrapTemplates::class ],
-		'update-template' => [ 'Processor' => UpdateTemplateOutput::class ],
+		'addmetadata' => AddMetaData::class,
+		'annwrap' => WrapAnnotations::class,
+		'convertoffsets' => ConvertOffsets::class,
+		'dsr' => ComputeDSR::class,
+		'embedded-docs' => ProcessEmbeddedDocs::class,
+		'extpp' => RunExtensionProcessors::class,
+		'fostered' => MarkFosteredContent::class,
+		'linter' => Linter::class,
+		'lang-converter' => LangConverter::class,
+		'media' => AddMediaInfo::class,
+		'migrate-metas' => MigrateTemplateMarkerMetas::class,
+		'migrate-nls' => MigrateTrailingNLs::class,
+		'normalize' => Normalize::class,
+		'process-fixups' => ProcessTreeBuilderFixups::class,
+		'pwrap' => PWrap::class,
+		'redlinks' => AddRedLinks::class,
+		'sections' => WrapSections::class, // Don't process HTML in embedded attributes
+		'tplwrap' => WrapTemplates::class,
+		'update-template' => UpdateTemplateOutput::class,
 		'ann-ids' => [
-			'isTraverser' => true,
 			'name' => 'AddAnnotationIds',
 			'handlers' => [
 				[ 'nodeName' => 'meta', 'action' => [ AddAnnotationIds::class, 'handler' ] ]
@@ -113,7 +113,6 @@ class ParserPipelineFactory {
 			'withAnnotations' => true
 		],
 		'linkneighbours+dom-unpack' => [
-			'isTraverser' => true,
 			'name' => 'HandleLinkNeighbours,UnpackDOMFragments',
 			'handlers' => [
 				// Link prefixes and suffixes
@@ -122,7 +121,6 @@ class ParserPipelineFactory {
 			]
 		],
 		'fixups' => [
-			'isTraverser' => true,
 			'name' => 'MigrateTrailingCategories,TableFixups',
 			'tplInfo' => true,
 			'handlers' => [
@@ -136,7 +134,6 @@ class ParserPipelineFactory {
 			]
 		],
 		'fixups+dedupe-styles' => [
-			'isTraverser' => true,
 			'name' => 'MigrateTrailingCategories,TableFixups,DedupeStyles',
 			'tplInfo' => true,
 			'handlers' => [
@@ -155,14 +152,12 @@ class ParserPipelineFactory {
 		// Strip marker metas -- removes left over marker metas (ex: metas
 		// nested in expanded tpl/extension output).
 		'strip-metas' => [
-			'isTraverser' => true,
 			'name' => 'CleanUp-stripMarkerMetas',
 			'handlers' => [
 				[ 'nodeName' => 'meta', 'action' => [ CleanUp::class, 'stripMarkerMetas' ] ]
 			]
 		],
 		'displayspace+linkclasses' => [
-			'isTraverser' => true,
 			'name' => 'DisplaySpace+AddLinkAttributes',
 			'handlers' => [
 				[ 'nodeName' => null, 'action' => [ DisplaySpace::class, 'leftHandler' ] ],
@@ -171,21 +166,18 @@ class ParserPipelineFactory {
 			]
 		],
 		'gen-anchors' => [
-			'isTraverser' => true,
 			'name' => 'Headings-genAnchors',
 			'handlers' => [
 				[ 'nodeName' => null, 'action' => [ Headings::class, 'genAnchors' ] ],
 			]
 		],
 		'dedupe-heading-ids' => [
-			'isTraverser' => true,
 			'name' => 'Headings-dedupeIds',
 			'handlers' => [
 				[ 'nodeName' => null, 'action' => [ Headings::class, 'dedupeHeadingIds' ] ]
 			]
 		],
 		'heading-ids' => [
-			'isTraverser' => true,
 			'name' => 'Headings-genAnchors',
 			'handlers' => [
 				[ 'nodeName' => null, 'action' => [ Headings::class, 'genAnchors' ] ],
@@ -193,7 +185,6 @@ class ParserPipelineFactory {
 			]
 		],
 		'cleanup' => [
-			'isTraverser' => true,
 			'name' => 'CleanUp-handleEmptyElts,CleanUp-cleanup',
 			'tplInfo' => true,
 			'handlers' => [
@@ -204,7 +195,6 @@ class ParserPipelineFactory {
 			]
 		],
 		'saveDP' => [
-			'isTraverser' => true,
 			'name' => 'CleanUp-saveDataParsoid',
 			'tplInfo' => true,
 			'handlers' => [
@@ -216,7 +206,8 @@ class ParserPipelineFactory {
 		]
 	];
 
-	// NOTES about ordering:
+	// NOTES about ordering / inclusion:
+	//
 	// media:
 	//    This is run at all levels for now - gallery extension's "packed" mode
 	//    would otherwise need a post-processing pass to scale media after it
@@ -234,6 +225,12 @@ class ParserPipelineFactory {
 	//    DSR computation and template wrapping cannot be skipped for top-level content
 	//    even if they are part of nested level pipelines, because such content might be
 	//    embedded in attributes and they may need to be processed independently.
+	//
+	// Nested (non-top-level) pipelines can never include the following:
+	// - lang-converter, convertoffsets, dedupe-styles, cleanup, saveDP
+	//
+	// FIXME: Perhaps introduce a config flag in the processor config that
+	// verifies this property against a pipeline's 'toplevel' state.
 	public const NESTED_PIPELINE_DOM_TRANSFORMS = [
 		'fostered', 'process-fixups', 'normalize', 'pwrap',
 		'media', 'migrate-metas', 'migrate-nls', 'dsr', 'tplwrap',
@@ -241,7 +238,7 @@ class ParserPipelineFactory {
 	];
 
 	// NOTES about ordering:
-	// lang-converter, redlinkts:
+	// lang-converter, redlinks:
 	//    Language conversion and redlink marking are done here
 	//    *before* we cleanup and save data-parsoid because they
 	//    are also used in pb2pb/html2html passes, and we want to
@@ -484,8 +481,7 @@ class ParserPipelineFactory {
 
 	private array $pipelineCache = [];
 
-	/** @var Env */
-	private $env;
+	private Env $env;
 
 	public function __construct( Env $env ) {
 		$this->env = $env;
@@ -522,6 +518,12 @@ class ParserPipelineFactory {
 		$processors = [];
 		foreach ( $procNames as $name ) {
 			$proc = self::DOM_PROCESSOR_CONFIG[$name];
+			if ( !is_array( $proc ) ) {
+				$proc = [
+					'name' => Utils::stripNamespace( $proc ),
+					'Processor' => $proc,
+				];
+			}
 			$proc['shortcut'] = $name;
 			$processors[] = $proc;
 		}
