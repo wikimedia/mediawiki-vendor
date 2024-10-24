@@ -1,4 +1,6 @@
 <?php
+
+use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentProviders\Gravy\BankPaymentProvider;
 use SmashPig\PaymentProviders\Gravy\Tests\BaseGravyTestCase;
 
@@ -36,6 +38,34 @@ class BankPaymentProviderTest extends BaseGravyTestCase {
 		$this->assertEquals( $responseBody['buyer']['id'], $response->getDonorDetails()->getCustomerId() );
 		$this->assertEquals( $responseBody['buyer']['billing_details']['address']['line1'], $response->getDonorDetails()->getBillingAddress()->getStreetAddress() );
 		$this->assertTrue( $response->requiresRedirect() );
+		$this->assertEquals( $responseBody['payment_method']['approval_url'], $response->getRedirectUrl() );
+		$this->assertTrue( $response->isSuccessful() );
+		$this->assertEquals( "dd", $response->getPaymentMethod() );
+		$this->assertEquals( "ach", $response->getPaymentSubmethod() );
+	}
+
+	public function testSuccessfulPayment() {
+		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/successful-transaction-trustly.json' ), true );
+		$this->mockApi->expects( $this->once() )
+			->method( 'getTransaction' )
+			->willReturn( $responseBody );
+
+		$params = [
+			'gateway_txn_id' => $responseBody['id']
+		];
+
+		$response = $this->provider->getLatestPaymentStatus( $params );
+
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\PaymentDetailResponse',
+			$response );
+		$this->assertEquals( $responseBody['amount'] / 100, $response->getAmount() );
+		$this->assertEquals( $responseBody['id'], $response->getGatewayTxnId() );
+		$this->assertEquals( $responseBody['buyer']['billing_details']['first_name'], $response->getDonorDetails()->getFirstName() );
+		$this->assertEquals( $responseBody['buyer']['billing_details']['last_name'], $response->getDonorDetails()->getLastName() );
+		$this->assertEquals( $responseBody['buyer']['billing_details']['email_address'], $response->getDonorDetails()->getEmail() );
+		$this->assertEquals( $responseBody['buyer']['id'], $response->getDonorDetails()->getCustomerId() );
+		$this->assertEquals( $responseBody['buyer']['billing_details']['address']['line1'], $response->getDonorDetails()->getBillingAddress()->getStreetAddress() );
+		$this->assertEquals( FinalStatus::COMPLETE, $response->getStatus() );
 		$this->assertEquals( $responseBody['payment_method']['approval_url'], $response->getRedirectUrl() );
 		$this->assertTrue( $response->isSuccessful() );
 		$this->assertEquals( "dd", $response->getPaymentMethod() );

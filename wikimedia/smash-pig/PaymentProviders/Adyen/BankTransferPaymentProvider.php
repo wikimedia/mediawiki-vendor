@@ -45,6 +45,18 @@ class BankTransferPaymentProvider extends PaymentProvider {
 				// The IBAN of the bank account for SEPA, do not encrypt
 				$rawResponse = $this->api->createSEPABankTransferPayment( $params );
 				$recurringTokenDelayed = true;
+			} else {
+				$response->setSuccessful( false );
+				$response->setStatus( FinalStatus::FAILED );
+				$response->addErrors( [
+					new PaymentError(
+						ErrorCode::VALIDATION,
+						'Bad parameters: need to either set payment_submethod to ach or rtbt_ideal, or set one of ' .
+						'recurring_payment_token, iban, or issuer_id.',
+						LogLevel::ERROR
+					)
+				] );
+				return $response;
 			}
 			$response->setRawResponse( $rawResponse );
 			$rawStatus = $rawResponse['resultCode'];

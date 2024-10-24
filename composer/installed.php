@@ -3,7 +3,7 @@
         'name' => 'mediawiki/core',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '983efc84b071513fd0a0a4137404f1a826cc0877',
+        'reference' => 'a039cd50117cade302cbde0d0a0cc60de7d3d67e',
         'type' => 'mediawiki-core',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -202,7 +202,7 @@
         'mediawiki/core' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '983efc84b071513fd0a0a4137404f1a826cc0877',
+            'reference' => 'a039cd50117cade302cbde0d0a0cc60de7d3d67e',
             'type' => 'mediawiki-core',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -211,7 +211,7 @@
         'mediawiki/mediawiki' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.39.8',
+                0 => '1.39.10',
             ),
         ),
         'monolog/monolog' => array(
@@ -668,9 +668,9 @@
             'dev_requirement' => false,
         ),
         'wikimedia/less.php' => array(
-            'pretty_version' => 'v3.2.1',
-            'version' => '3.2.1.0',
-            'reference' => '0d5b30ba792bdbf8991a646fc9c30561b38a5559',
+            'pretty_version' => 'v4.4.1',
+            'version' => '4.4.1.0',
+            'reference' => '7d66ab6d38af72f80a0c0a3598d7feac04bbc7b7',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/less.php',
             'aliases' => array(),
@@ -794,9 +794,9 @@
             'dev_requirement' => false,
         ),
         'wikimedia/smash-pig' => array(
-            'pretty_version' => 'v0.8.15',
-            'version' => '0.8.15.0',
-            'reference' => 'ac92f19737c4c38abdea388a4c6d11ac5c7a25b1',
+            'pretty_version' => 'v0.8.16',
+            'version' => '0.8.16.0',
+            'reference' => 'a076e4c50fbd92cf5635d19086bb6032dd6c5fc5',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/smash-pig',
             'aliases' => array(),

@@ -28,6 +28,7 @@ class RecurringMessage extends Message {
 
 		switch ( $ipnMessage['txn_type'] ) {
 			case 'recurring_payment':
+			case 'recurring_payment_outstanding_payment':
 				$message['txn_type'] = 'subscr_payment';
 				self::mergePendingDetails( $message );
 				break;

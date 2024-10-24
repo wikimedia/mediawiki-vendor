@@ -256,7 +256,7 @@ class ResponseMapper {
 	 * @return string
 	 * @link https://docs.gr4vy.com/guides/api/resources/transactions/statuses
 	 */
-	private function normalizeStatus( string $paymentProcessorStatus ): string {
+	protected function normalizeStatus( string $paymentProcessorStatus ): string {
 		switch ( $paymentProcessorStatus ) {
 			case 'authorization_succeeded':
 				$normalizedStatus = FinalStatus::PENDING_POKE;

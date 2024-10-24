@@ -4,6 +4,7 @@ namespace SmashPig\PaymentProviders\Gravy;
 
 use SmashPig\Core\Logging\Logger;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyCreatePaymentResponseFactory;
+use SmashPig\PaymentProviders\Gravy\Mapper\BankResponseMapper;
 use SmashPig\PaymentProviders\Gravy\Mapper\RequestMapper;
 use SmashPig\PaymentProviders\Gravy\Mapper\ResponseMapper;
 use SmashPig\PaymentProviders\Gravy\Validators\Validator;
@@ -45,7 +46,7 @@ class BankPaymentProvider extends PaymentProvider implements IPaymentProvider {
 			$rawGravyCreatePaymentResponse = $this->api->createPayment( $gravyCreatePaymentRequest );
 
 			// normalize gravy response
-			$gravyResponseMapper = new ResponseMapper();
+			$gravyResponseMapper = $this->getResponseMapper();
 			$normalizedResponse = $gravyResponseMapper->mapFromPaymentResponse( $rawGravyCreatePaymentResponse );
 
 			// populate our standard response object from the normalized response
@@ -69,4 +70,7 @@ class BankPaymentProvider extends PaymentProvider implements IPaymentProvider {
 		return new ApprovePaymentResponse();
 	}
 
+	protected function getResponseMapper(): ResponseMapper {
+		return new BankResponseMapper();
+	}
 }

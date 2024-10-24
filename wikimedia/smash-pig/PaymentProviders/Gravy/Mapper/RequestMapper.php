@@ -109,25 +109,22 @@ class RequestMapper {
 	 */
 	public function mapToRedirectCreatePaymentRequest( array $params ): array {
 		$request = $this->mapToCreatePaymentRequest( $params );
-		if ( isset( $params['recurring_payment_token'] ) ) {
-			$payment_method = [
-				'method' => 'id',
-				'id' => $params['recurring_payment_token'],
-			];
-		} else {
-			$method = $params['payment_submethod'];
-			if ( empty( $method ) ) {
-				$method = $params['payment_method'];
-			}
+
+		$method = $params['payment_submethod'];
+		if ( empty( $method ) ) {
+			$method = $params['payment_method'];
+		}
+
+		if ( !isset( $params['recurring_payment_token'] ) ) {
 			$payment_method = [
 				'method' => $this->mapPaymentMethodToGravyPaymentMethod( $method ),
 				'country' => $params['country'],
 				'currency' => $params['currency'],
 			];
+			$request['payment_method'] = array_merge( $request['payment_method'], $payment_method );
 		}
-		$request['payment_method'] = array_merge( $request['payment_method'], $payment_method );
 
-		if ( in_array( $payment_method['method'], self::CAPTURE_ONLY_PAYMENT_METHOD ) ) {
+		if ( in_array( $method, self::CAPTURE_ONLY_PAYMENT_METHOD ) ) {
 			/**
 			 * Defines the intent of a Gravy API call
 			 *
@@ -153,12 +150,8 @@ class RequestMapper {
 				'method' => 'checkout-session',
 				'id' => $params['gateway_session_id'],
 			];
-		} elseif ( isset( $params['recurring_payment_token'] ) ) {
-			$payment_method = [
-				'method' => 'id',
-				'id' => $params['recurring_payment_token'],
-			];
 		}
+
 		$request['payment_method'] = array_merge( $request['payment_method'], $payment_method );
 
 		return $request;
@@ -240,6 +233,10 @@ class RequestMapper {
 		} else {
 			$request['merchant_initiated'] = true;
 			$request['is_subsequent_payment'] = true;
+			$request['payment_method'] = [
+				'method' => 'id',
+				'id' => $params['recurring_payment_token'],
+			];
 		}
 
 		// Default recurring model to 'Subscription' but allow for Card On File

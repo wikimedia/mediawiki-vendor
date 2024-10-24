@@ -6,7 +6,6 @@ use SmashPig\Core\Logging\Logger;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyCreatePaymentResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyCreatePaymentSessionResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Mapper\RequestMapper;
-use SmashPig\PaymentProviders\Gravy\Mapper\ResponseMapper;
 use SmashPig\PaymentProviders\Gravy\Validators\Validator;
 use SmashPig\PaymentProviders\IPaymentProvider;
 use SmashPig\PaymentProviders\Responses\CreatePaymentResponse;
@@ -23,7 +22,7 @@ class CardPaymentProvider extends PaymentProvider implements IPaymentProvider {
 			$rawResponse = $this->api->createPaymentSession();
 
 			// map the response from the external format back to our normalized structure.
-			$gravyResponseMapper = new ResponseMapper();
+			$gravyResponseMapper = $this->getResponseMapper();
 			$normalizedResponse = $gravyResponseMapper->mapFromCreatePaymentSessionResponse( $rawResponse );
 
 			$sessionResponse = GravyCreatePaymentSessionResponseFactory::fromNormalizedResponse( $normalizedResponse );
@@ -71,7 +70,7 @@ class CardPaymentProvider extends PaymentProvider implements IPaymentProvider {
 			$rawGravyCreatePaymentResponse = $this->api->createPayment( $gravyCreatePaymentRequest );
 
 			// normalize gravy response
-			$gravyResponseMapper = new ResponseMapper();
+			$gravyResponseMapper = $this->getResponseMapper();
 			$normalizedResponse = $gravyResponseMapper->mapFromPaymentResponse( $rawGravyCreatePaymentResponse );
 
 			// populate our standard response object from the normalized response
