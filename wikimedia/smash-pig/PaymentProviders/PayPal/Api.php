@@ -115,6 +115,7 @@ class Api {
 			'PAYMENTREQUEST_0_INVNUM' => $params['order_id'],
 			'PAYMENTREQUEST_0_ITEMAMT' => $params['amount'],
 			'PAYMENTREQUEST_0_PAYMENTACTION' => 'Sale',
+			'PAYMENTREQUEST_0_SOFTDESCRIPTOR' => $params['description'] ?? "Wikimedia Foundation",
 		];
 		if ( !empty( $params['description'] ) ) {
 			$requestParams['PAYMENTREQUEST_0_DESC'] = $params['description'];
@@ -143,6 +144,7 @@ class Api {
 			'TOKEN' => $params['gateway_session_id'],
 			'PROFILESTARTDATE' => gmdate( "Y-m-d\TH:i:s\Z", $params['date'] ), // The date when billing for this profile begins, set it today
 			'DESC' => $params['description'],
+			'SOFTDESCRIPTOR' => $params['description'] ?? "Wikimedia Foundation",
 			'PROFILEREFERENCE' => $params['order_id'],
 			'BILLINGPERIOD' => $billingPeriod,
 			'BILLINGFREQUENCY' => $frequencyInterval,
@@ -181,6 +183,9 @@ class Api {
 			'PROFILEID' => $params[ 'subscr_id' ],
 			'ACTION' => 'Cancel'
 		];
+		if ( !empty( $params['note'] ) ) {
+			$requestParams['NOTE'] = $params['note'];
+		}
 		return $this->makeApiCall( $requestParams );
 	}
 

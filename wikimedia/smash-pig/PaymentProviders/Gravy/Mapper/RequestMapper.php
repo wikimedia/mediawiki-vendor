@@ -44,7 +44,7 @@ class RequestMapper {
 						'postal_code' => $params['postal_code'] ?? null,
 						'state' => $params['state_province'] ?? null,
 						'line1' => $params['street_address'] ?? null,
-						'line2' => "",
+						'line2' => null,
 						'organization' => $params['employer'] ?? null
 					]
 				]

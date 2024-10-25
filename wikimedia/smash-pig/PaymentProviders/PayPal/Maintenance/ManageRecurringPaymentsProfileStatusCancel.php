@@ -19,6 +19,12 @@ class ManageRecurringPaymentsProfileStatusCancel extends MaintenanceBase {
 		parent::__construct();
 		$this->desiredOptions['config-node']['default'] = 'paypal';
 		$this->addArgument( 'file', 'CSV file with a single column with PROFILEID (subscr_id) of subscriptions to cancel' );
+		$this->addOption(
+			'notefile',
+			'Text file whose contents will be sent as a note along with the cancellation',
+			null,
+			'n'
+		);
 	}
 
 	/**
@@ -32,6 +38,16 @@ class ManageRecurringPaymentsProfileStatusCancel extends MaintenanceBase {
 			throw new \RuntimeException( 'Could not find cancellation file: ' . $filename );
 		}
 
+		$params = [];
+		$noteFile = $this->getOption( 'notefile' );
+		if ( $noteFile && file_exists( $noteFile ) ) {
+			$params['note'] = trim( file_get_contents( $noteFile ) );
+			$noteLength = mb_strlen( $params['note'] );
+			if ( $noteLength > 128 ) {
+				throw new \RuntimeException( "Note length of $noteLength characters is greater than the maximum 128." );
+			}
+		}
+
 		$provider = PaymentProviderFactory::getProviderForMethod( 'paypal' );
 
 		while ( $cancel = fgetcsv( $file ) ) {
@@ -41,7 +57,8 @@ class ManageRecurringPaymentsProfileStatusCancel extends MaintenanceBase {
 
 			$subscr_id = $cancel[ 0 ];
 			Logger::info( "Canceling subscription $subscr_id" );
-			$result = $provider->cancelSubscription( [ 'subscr_id' => $subscr_id ] );
+			$params[ 'subscr_id' ] = $subscr_id;
+			$result = $provider->cancelSubscription( $params );
 
 			if ( $result->isSuccessful() ) {
 				Logger::info( "Canceled subscription $subscr_id" );
