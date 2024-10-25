@@ -38,6 +38,10 @@ payment-provider:
 # Setting value to false to mirror production configuration
 capture-from-ipn-listener: false
 
+proxy:
+  proxy_host: ~ # example.proxy.url
+  proxy_port: -1 # 80
+
 fraud-filters:
     # Authorization notifications include AVS and CVV result codes.
     # The following maps set a risk score for each result code, which

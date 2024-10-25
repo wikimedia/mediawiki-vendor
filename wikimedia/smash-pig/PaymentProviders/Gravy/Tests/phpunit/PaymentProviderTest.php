@@ -71,7 +71,7 @@ class PaymentProviderTest extends BaseGravyTestCase {
 		$this->assertFalse( $response );
 	}
 
-	public function testGetLatestPaymentStatus() {
+	public function testGetLatestPaymentStatus(): void {
 		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/create-transaction.json' ), true );
 		$params = [
 			'gateway_txn_id' => 'random_txn_id'
@@ -88,6 +88,7 @@ class PaymentProviderTest extends BaseGravyTestCase {
 			$response );
 		$this->assertEquals( $responseBody['amount'] / 100, $response->getAmount() );
 		$this->assertEquals( $responseBody['id'], $response->getGatewayTxnId() );
+		$this->assertEquals( $responseBody['reconciliation_id'], $response->getPaymentOrchestratorReconciliationId() );
 		$this->assertEquals( $responseBody['buyer']['billing_details']['first_name'], $response->getDonorDetails()->getFirstName() );
 		$this->assertEquals( $responseBody['buyer']['billing_details']['last_name'], $response->getDonorDetails()->getLastName() );
 		$this->assertEquals( $responseBody['buyer']['billing_details']['email_address'], $response->getDonorDetails()->getEmail() );

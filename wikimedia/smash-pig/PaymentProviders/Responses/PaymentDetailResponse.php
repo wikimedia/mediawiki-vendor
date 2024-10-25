@@ -95,6 +95,12 @@ class PaymentDetailResponse extends PaymentProviderResponse {
 	protected ?string $backendProcessorTransactionId = null;
 
 	/**
+	 * @var string|null
+	 * When submitted via a payment orchestrator, this field contains the cross-system 'reconciliation' ID.
+	 */
+	protected ?string $paymentOrchestratorReconciliationId = null;
+
+	/**
 	 * Determines whether the payment is in a status that requires further
 	 * action from the merchant to push through. Generally this means a card
 	 * payment has been authorized but not yet captured.
@@ -290,4 +296,14 @@ class PaymentDetailResponse extends PaymentProviderResponse {
 	public function getBackendProcessorTransactionId(): ?string {
 		return $this->backendProcessorTransactionId;
 	}
+
+	public function getPaymentOrchestratorReconciliationId(): ?string {
+		return $this->paymentOrchestratorReconciliationId;
+	}
+
+	public function setPaymentOrchestratorReconciliationId( ?string $paymentOrchestratorReconciliationId ): PaymentDetailResponse {
+		$this->paymentOrchestratorReconciliationId = $paymentOrchestratorReconciliationId;
+		return $this;
+	}
+
 }

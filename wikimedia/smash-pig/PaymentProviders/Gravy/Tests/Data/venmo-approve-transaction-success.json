@@ -57,15 +57,15 @@
             "email_address": "jimmy@example.com",
             "phone_number": null,
             "address": {
-                "city": " ",
+                "city": null,
                 "country": "US",
-                "postal_code": " ",
-                "state": " ",
+                "postal_code": null,
+                "state": null,
                 "state_code": null,
                 "house_number_or_name": null,
-                "line1": " ",
-                "line2": " ",
-                "organization": " "
+                "line1": null,
+                "line2": null,
+                "organization": null
             },
             "tax_id": null
         }

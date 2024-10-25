@@ -106,7 +106,9 @@ class ResponseMapper {
 				$result['backend_processor'] = GravyHelper::extractProcessorNameFromServiceDefinitionId( $paymentServiceDefinitionId );
 			}
 		}
+
 		$result['backend_processor_transaction_id'] = $response['payment_service_transaction_id'] ?? null;
+		$result['payment_orchestrator_reconciliation_id'] = $response['reconciliation_id'] ?? null;
 
 		return $result;
 	}

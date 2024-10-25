@@ -39,6 +39,7 @@ class GravyPaymentResponseFactoryTest extends TestCase {
 		return [
 			'is_successful' => true,
 			'gateway_txn_id' => 'fe26475d-ec3e-4884-9553-f7356683f7f9',
+			'payment_orchestrator_reconciliation_id' => '7jZXl4gBUNl0CnaLEnfXbt',
 			'amount' => 12.99,
 			'currency' => 'USD',
 			'order_id' => 'user-789123',

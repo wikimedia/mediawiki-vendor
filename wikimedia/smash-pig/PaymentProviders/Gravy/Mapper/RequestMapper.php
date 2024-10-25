@@ -39,13 +39,13 @@ class RequestMapper {
 					'email_address' => strtolower( $params['email'] ),
 					'phone_number' => $params['phone_number'] ?? null,
 					'address' => [
-						'city' => $params['city'] ?? " ",
-						'country' => $params['country'] ?? " ",
-						'postal_code' => $params['postal_code'] ?? " ",
-						'state' => $params['state_province'] ?? " ",
-						'line1' => $params['street_address'] ?? " ",
-						'line2' => " ",
-						'organization' => $params['employer'] ?? " "
+						'city' => $params['city'] ?? null,
+						'country' => $params['country'] ?? null,
+						'postal_code' => $params['postal_code'] ?? null,
+						'state' => $params['state_province'] ?? null,
+						'line1' => $params['street_address'] ?? null,
+						'line2' => "",
+						'organization' => $params['employer'] ?? null
 					]
 				]
 			];
@@ -90,13 +90,13 @@ class RequestMapper {
 				'email_address' => strtolower( $params['email'] ),
 				'phone_number' => $params['phone_number'] ?? null,
 				'address' => [
-					'city' => $params['city'] ?? " ",
-					'country' => $params['country'] ?? " ",
-					'postal_code' => $params['postal_code'] ?? " ",
-					'state' => $params['state_province'] ?? " ",
-					'line1' => $params['street_address'] ?? " ",
-					'line2' => " ",
-					'organization' => $params['employer'] ?? " "
+					'city' => $params['city'] ?? null,
+					'country' => $params['country'] ?? null,
+					'postal_code' => $params['postal_code'] ?? null,
+					'state' => $params['state_province'] ?? null,
+					'line1' => $params['street_address'] ?? null,
+					'line2' => "",
+					'organization' => $params['employer'] ?? null
 				]
 			]
 		];

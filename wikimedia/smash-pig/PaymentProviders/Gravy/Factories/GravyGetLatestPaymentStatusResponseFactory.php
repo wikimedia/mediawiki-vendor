@@ -27,6 +27,7 @@ class GravyGetLatestPaymentStatusResponseFactory extends GravyCreatePaymentRespo
 		self::setPaymentSubmethod( $paymentResponse, $normalizedResponse );
 		self::setDonorDetails( $paymentResponse, $normalizedResponse );
 		self::setBackendProcessorAndId( $paymentResponse, $normalizedResponse );
+		self::setPaymentOrchestrationReconciliationId( $paymentResponse, $normalizedResponse );
 	}
 
 	/**

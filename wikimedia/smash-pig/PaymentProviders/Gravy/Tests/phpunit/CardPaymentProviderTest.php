@@ -100,13 +100,13 @@ class CardPaymentProviderTest extends BaseGravyTestCase {
 						'email_address' => strtolower( $params['email'] ),
 						'phone_number' => $params['phone_number'] ?? null,
 						'address' => [
-							'city' => $params['city'] ?? " ",
-							'country' => $params['country'] ?? " ",
-							'postal_code' => $params['postal_code'] ?? " ",
-							'state' => $params['state_province'] ?? " ",
-							'line1' => $params['street_address'] ?? " ",
-							'line2' => " ",
-							'organization' => $params['employer'] ?? " "
+							'city' => $params['city'] ?? null,
+							'country' => $params['country'] ?? null,
+							'postal_code' => $params['postal_code'] ?? null,
+							'state' => $params['state_province'] ?? null,
+							'line1' => $params['street_address'] ?? null,
+							'line2' => null,
+							'organization' => $params['employer'] ?? null
 						]
 					]
 				]
@@ -119,6 +119,7 @@ class CardPaymentProviderTest extends BaseGravyTestCase {
 			$response );
 		$this->assertEquals( $responseBody['amount'] / 100, $response->getAmount() );
 		$this->assertEquals( $responseBody['id'], $response->getGatewayTxnId() );
+		$this->assertEquals( $responseBody['reconciliation_id'], $response->getPaymentOrchestratorReconciliationId() );
 		$this->assertEquals( $responseBody['buyer']['billing_details']['first_name'], $response->getDonorDetails()->getFirstName() );
 		$this->assertEquals( $responseBody['payment_service_transaction_id'], $response->getBackendProcessorTransactionId() );
 		$this->assertEquals( $responseBody['buyer']['billing_details']['last_name'], $response->getDonorDetails()->getLastName() );

@@ -32,7 +32,7 @@ class DownloadReportJob implements Runnable {
 		$reportResponse = GravyReportResponseFactory::fromNormalizedResponse( $this->payload );
 
 		// generate the filename using the current time and data
-		$date = date( 'Y_m_d' );
+		$date = date( 'Y_m_d-His' );
 		$fileName = "gravy_settlement_report_{$date}.csv";
 
 		$this->downloadLoc =
@@ -54,8 +54,8 @@ class DownloadReportJob implements Runnable {
 		curl_setopt( $ch, CURLOPT_URL, $reportResponse->getReportUrl() );
 
 		// Set up the proxy for google storage T375492
-		curl_setopt( $ch, CURLOPT_PROXY, 'frpm1002.frack.eqiad.wmnet' );
-		curl_setopt( $ch, CURLOPT_PROXYPORT, 3128 );
+		curl_setopt( $ch, CURLOPT_PROXY, $c->val( "proxy/proxy_host" ) );
+		curl_setopt( $ch, CURLOPT_PROXYPORT, $c->val( "proxy/proxy_port" ) );
 
 		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, false );
 		curl_setopt( $ch, CURLOPT_FILE, $fp );

@@ -547,7 +547,6 @@ return array(
     'Less_Tree_Extend' => $vendorDir . '/wikimedia/less.php/lib/Less/Tree/Extend.php',
     'Less_Tree_HasValueProperty' => $vendorDir . '/wikimedia/less.php/lib/Less/Tree/HasValueProperty.php',
     'Less_Tree_Import' => $vendorDir . '/wikimedia/less.php/lib/Less/Tree/Import.php',
-    'Less_Tree_JavaScript' => $vendorDir . '/wikimedia/less.php/lib/Less/Tree/JavaScript.php',
     'Less_Tree_Keyword' => $vendorDir . '/wikimedia/less.php/lib/Less/Tree/Keyword.php',
     'Less_Tree_Media' => $vendorDir . '/wikimedia/less.php/lib/Less/Tree/Media.php',
     'Less_Tree_Mixin_Call' => $vendorDir . '/wikimedia/less.php/lib/Less/Tree/Mixin/Call.php',

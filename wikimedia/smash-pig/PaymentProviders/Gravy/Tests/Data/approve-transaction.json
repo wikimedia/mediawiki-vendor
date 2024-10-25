@@ -64,8 +64,8 @@
               "state_code": null,
               "house_number_or_name": null,
               "line1": "1 Montgomery Street",
-              "line2": " ",
-              "organization": " "
+              "line2": null,
+              "organization": null
           },
           "tax_id": null
       }

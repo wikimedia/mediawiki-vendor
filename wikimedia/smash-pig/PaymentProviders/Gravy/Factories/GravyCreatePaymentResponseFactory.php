@@ -29,6 +29,7 @@ class GravyCreatePaymentResponseFactory extends GravyPaymentResponseFactory {
 		self::setPaymentSubmethod( $paymentResponse, $normalizedResponse );
 		self::setDonorDetails( $paymentResponse, $normalizedResponse );
 		self::setBackendProcessorAndId( $paymentResponse, $normalizedResponse );
+		self::setPaymentOrchestrationReconciliationId( $paymentResponse, $normalizedResponse );
 	}
 
 	/**
@@ -106,5 +107,12 @@ class GravyCreatePaymentResponseFactory extends GravyPaymentResponseFactory {
 		$paymentResponse->setBackendProcessorTransactionId(
 			$normalizedResponse['backend_processor_transaction_id'] ?? null
 		);
+	}
+
+	protected static function setPaymentOrchestrationReconciliationId(
+		PaymentProviderResponse $paymentResponse,
+		array $normalizedResponse
+	): void {
+		$paymentResponse->setPaymentOrchestratorReconciliationId( $normalizedResponse['payment_orchestrator_reconciliation_id'] );
 	}
 }
