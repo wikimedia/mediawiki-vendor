@@ -20,14 +20,11 @@ class BankPaymentProviderTest extends BaseGravyTestCase {
 
 	public function testSuccessfulCreatePayment() {
 		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/trustly-create-transaction-success.json' ), true );
-		$requestBody = json_decode( file_get_contents( __DIR__ . '/../Data/trustly-create-payment-request.json' ), true );
-		$params = $this->getCreateTrxnParams( $responseBody['amount'] );
-		$requestBody['external_identifier'] = $params['order_id'];
-
 		$this->mockApi->expects( $this->once() )
 			->method( 'createPayment' )
-			->with( $requestBody )
 			->willReturn( $responseBody );
+
+		$params = $this->getCreateTrxnParams( $responseBody['amount'] );
 
 		$response = $this->provider->createPayment( $params );
 

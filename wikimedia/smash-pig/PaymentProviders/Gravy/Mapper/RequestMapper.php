@@ -124,7 +124,7 @@ class RequestMapper {
 			$request['payment_method'] = array_merge( $request['payment_method'], $payment_method );
 		}
 
-		if ( in_array( $request['payment_method']['method'], self::CAPTURE_ONLY_PAYMENT_METHOD ) ) {
+		if ( in_array( $method, self::CAPTURE_ONLY_PAYMENT_METHOD ) ) {
 			/**
 			 * Defines the intent of a Gravy API call
 			 *
@@ -193,12 +193,12 @@ class RequestMapper {
 	 */
    private function mapPaymentMethodToGravyPaymentMethod( $paymentMethod ): string {
 	   switch ( strtolower( $paymentMethod ) ) {
-		case 'ach':
-			return 'trustly';
-		case 'paypal':
-		case 'venmo':
-			return $paymentMethod;
-		default:
+			case 'ach':
+				return 'trustly';
+		   case 'paypal':
+		   case 'venmo':
+				return $paymentMethod;
+		   default:
 				throw new \UnexpectedValueException( "Unknown Gravy Payment Method - $paymentMethod" );
 	   }
    }
