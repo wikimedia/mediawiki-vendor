@@ -53,10 +53,8 @@ return array(
     'Clio\\Console' => $vendorDir . '/clio/clio/src/Clio/Console.php',
     'Clio\\Daemon' => $vendorDir . '/clio/clio/src/Clio/Daemon.php',
     'ComposerHookHandler' => $baseDir . '/includes/composer/ComposerHookHandler.php',
-    'ComposerPackageModifier' => $baseDir . '/includes/composer/ComposerPackageModifier.php',
     'ComposerPhpunitXmlCoverageEdit' => $baseDir . '/includes/composer/ComposerPhpunitXmlCoverageEdit.php',
     'ComposerVendorHtaccessCreator' => $baseDir . '/includes/composer/ComposerVendorHtaccessCreator.php',
-    'ComposerVersionNormalizer' => $baseDir . '/includes/composer/ComposerVersionNormalizer.php',
     'Composer\\CaBundle\\CaBundle' => $vendorDir . '/composer/ca-bundle/src/CaBundle.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'Composer\\Installers\\AglInstaller' => $vendorDir . '/composer/installers/src/Composer/Installers/AglInstaller.php',
@@ -3649,6 +3647,4 @@ return array(
     'Wikimedia\\Zest\\ZestInst' => $vendorDir . '/wikimedia/zest-css/src/ZestInst.php',
     'WmfFramework' => $baseDir . '/extensions/DonationInterface/gateway_common/WmfFramework.php',
     'lessc' => $vendorDir . '/wikimedia/less.php/lessc.inc.php',
-    'smashpig\\PaymentProviders\\ICancelAutoRescueProvider' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/ICancelAutoRescueProvider.php',
-    'smashpig\\PaymentProviders\\IDeleteRecurringPaymentTokenProvider' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/IDeleteRecurringPaymentTokenProvider.php',
 );
