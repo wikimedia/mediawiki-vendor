@@ -81,8 +81,9 @@ class Api {
 	 * @link https://docs.gr4vy.com/reference/transactions/new-transaction Gr4vy Documentation to create a new transaction
 	 */
 	public function createPayment( array $params ): array {
-		$response = $this->gravyApiClient->authorizeNewTransaction( $params );
 		$tl = new TaggedLogger( 'RawData' );
+		$tl->info( "Create payment request params: " . json_encode( $params ) );
+		$response = $this->gravyApiClient->authorizeNewTransaction( $params );
 		$response_string = json_encode( $response );
 		$tl->info( "Create payment response $response_string" );
 		return $response;
@@ -101,6 +102,7 @@ class Api {
 	 */
 	public function approvePayment( string $trxn_id, array $requestBody ): array {
 		$tl = new TaggedLogger( 'RawData' );
+		$tl->info( "Approve payment request params: {\"trxn_id\":" . $trxn_id . "} " . json_encode( $requestBody ) );
 		$response = $this->gravyApiClient->captureTransaction( $trxn_id, $requestBody );
 		$response_string = json_encode( $response );
 		$tl->info( "Approve payment response for Transaction ID {$trxn_id} $response_string" );
