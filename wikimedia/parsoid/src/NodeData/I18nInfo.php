@@ -4,8 +4,12 @@ declare( strict_types = 1 );
 namespace Wikimedia\Parsoid\NodeData;
 
 use Wikimedia\Bcp47Code\Bcp47Code;
+use Wikimedia\JsonCodec\JsonCodecable;
+use Wikimedia\JsonCodec\JsonCodecableTrait;
 
-class I18nInfo {
+class I18nInfo implements JsonCodecable {
+	use JsonCodecableTrait;
+
 	public const USER_LANG = "x-user";
 	public const PAGE_LANG = "x-page";
 
@@ -69,5 +73,25 @@ class I18nInfo {
 	 */
 	public static function createLangI18n( Bcp47Code $lang, string $key, ?array $params ): I18nInfo {
 		return new I18nInfo( $lang->toBcp47Code(), $key, $params );
+	}
+
+	// Rich attribute serialization support.
+
+	/** @inheritDoc */
+	public function toJsonArray(): array {
+		$json = [
+			'lang' => $this->lang,
+			'key' => $this->key,
+		];
+		// Save some space when there are no params
+		if ( $this->params !== null ) {
+			$json['params'] = $this->params;
+		}
+		return $json;
+	}
+
+	/** @inheritDoc */
+	public static function newFromJsonArray( array $json ) {
+		return new I18nInfo( $json['lang'], $json['key'], $json['params'] ?? null );
 	}
 }

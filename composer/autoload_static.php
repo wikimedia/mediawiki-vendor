@@ -5406,6 +5406,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Utils\\DiffDOMUtils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/DiffDOMUtils.php',
         'Wikimedia\\Parsoid\\Utils\\PHPUtils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/PHPUtils.php',
         'Wikimedia\\Parsoid\\Utils\\PipelineUtils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/PipelineUtils.php',
+        'Wikimedia\\Parsoid\\Utils\\RichCodecable' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/RichCodecable.php',
         'Wikimedia\\Parsoid\\Utils\\ScriptUtils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/ScriptUtils.php',
         'Wikimedia\\Parsoid\\Utils\\Timing' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/Timing.php',
         'Wikimedia\\Parsoid\\Utils\\Title' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/Title.php',
