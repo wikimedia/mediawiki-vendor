@@ -36,8 +36,8 @@ class Shellbox {
 	 */
 	public static function createBoxedExecutor(
 		$config = [],
-		LoggerInterface $logger = null,
-		ClientInterface $urlFileClient = null
+		?LoggerInterface $logger = null,
+		?ClientInterface $urlFileClient = null
 	) {
 		$tempDirManager = self::createTempDirManager( $config['tempDir'] ?? null );
 		$unboxedExecutor = new UnboxedExecutor;
@@ -79,7 +79,7 @@ class Shellbox {
 	 * @param LoggerInterface|null $logger
 	 * @return UnboxedExecutor
 	 */
-	public static function createUnboxedExecutor( $config = [], LoggerInterface $logger = null ) {
+	public static function createUnboxedExecutor( $config = [], ?LoggerInterface $logger = null ) {
 		$executor = new UnboxedExecutor( $config['tempDir'] ?? null );
 		$executor->addWrappersFromConfiguration( $config );
 		if ( $logger ) {

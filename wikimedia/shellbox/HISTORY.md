@@ -1,5 +1,10 @@
 # Release History
 
+# 4.1.1 (2024-10-29)
+* composer.json: Add changelog command (Reedy)
+* composer.json: Bump guzzle/guzzlehttp to 7.9.2 (Reedy)
+* Use explicit nullable type on parameter arguments (Reedy)
+
 ## 4.1.0 (2024-10-17)
 * Add remote download/upload support for large file performance (T292322). The
   feature is off by default. Once the server is updated and has allowUrlFiles
