@@ -616,7 +616,7 @@ class MatcherFactory {
 	 * For example, `border-color` allows up to 4 `var(...)` expressions to
 	 * potentially be concatenated.
 	 *
-	 * @see https://www.w3.org/TR/css-variables-1/#custom-property
+	 * @see https://www.w3.org/TR/2022/CR-css-variables-1-20220616/#custom-property
 	 * @return Matcher
 	 */
 	public function safeColor() {
@@ -936,7 +936,7 @@ class MatcherFactory {
 	 * @return Matcher
 	 */
 	public function cssSupportsCondition(
-		PropertySanitizer $declarationSanitizer = null, $strict = true
+		?PropertySanitizer $declarationSanitizer = null, $strict = true
 	) {
 		$ws = $this->significantWhitespace();
 		$anythingPlus = new AnythingMatcher( [ 'quantifier' => '+' ] );
@@ -977,7 +977,7 @@ class MatcherFactory {
 	 * @param PropertySanitizer|null $declarationSanitizer Check declarations against this Sanitizer
 	 * @return Matcher
 	 */
-	public function cssDeclaration( PropertySanitizer $declarationSanitizer = null ) {
+	public function cssDeclaration( ?PropertySanitizer $declarationSanitizer = null ) {
 		$anythingPlus = new AnythingMatcher( [ 'quantifier' => '+' ] );
 
 		return new CheckedMatcher(
@@ -1320,6 +1320,7 @@ class MatcherFactory {
 	 * following sources:
 	 * - https://www.w3.org/TR/2018/REC-selectors-3-20181106/#pseudo-classes
 	 * - https://www.w3.org/TR/2019/WD-css-pseudo-4-20190225/
+	 * - https://www.w3.org/TR/2022/WD-selectors-4-20221111/#the-dir-pseudo
 	 *
 	 * @return Matcher
 	 */
@@ -1328,6 +1329,7 @@ class MatcherFactory {
 			$colon = new TokenMatcher( Token::T_COLON );
 			$ows = $this->optionalWhitespace();
 			$anplusb = new Juxtaposition( [ $ows, $this->cssANplusB(), $ows ] );
+			$dirValues = new KeywordMatcher( [ 'ltr', 'rtl' ] );
 			$this->cache[__METHOD__] = new Alternative( [
 				new Juxtaposition( [
 					$colon,
@@ -1340,6 +1342,7 @@ class MatcherFactory {
 							'first-line', 'first-letter', 'before', 'after',
 						] ),
 						new FunctionMatcher( 'lang', new Juxtaposition( [ $ows, $this->ident(), $ows ] ) ),
+						new FunctionMatcher( 'dir', new Juxtaposition( [ $ows, $dirValues, $ows ] ) ),
 						new FunctionMatcher( 'nth-child', $anplusb ),
 						new FunctionMatcher( 'nth-last-child', $anplusb ),
 						new FunctionMatcher( 'nth-of-type', $anplusb ),
