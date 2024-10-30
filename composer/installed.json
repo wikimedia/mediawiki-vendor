@@ -9072,17 +9072,17 @@
         },
         {
             "name": "wikimedia/xmp-reader",
-            "version": "0.9.2",
-            "version_normalized": "0.9.2.0",
+            "version": "0.9.3",
+            "version_normalized": "0.9.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-XMPReader.git",
-                "reference": "cc1c372108fa088ba6f37a11480e7d2c3c98da67"
+                "reference": "0a3e45c67af50588eabbfc1e83e1dcee994d0b65"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-XMPReader/zipball/cc1c372108fa088ba6f37a11480e7d2c3c98da67",
-                "reference": "cc1c372108fa088ba6f37a11480e7d2c3c98da67",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-XMPReader/zipball/0a3e45c67af50588eabbfc1e83e1dcee994d0b65",
+                "reference": "0a3e45c67af50588eabbfc1e83e1dcee994d0b65",
                 "shasum": ""
             },
             "require": {
@@ -9092,7 +9092,7 @@
                 "ext-xmlreader": "*",
                 "php": ">=7.4.3",
                 "psr/log": "^1.0",
-                "wikimedia/scoped-callback": "^1.0 || ^2.0 || ^3.0 || ^4.0",
+                "wikimedia/scoped-callback": "^1.0 || ^2.0 || ^3.0 || ^4.0 || ^5.0",
                 "wikimedia/timestamp": "^1.0 || ^2.0 || ^3.0 || ^4.0"
             },
             "require-dev": {
@@ -9105,7 +9105,7 @@
                 "php-parallel-lint/php-parallel-lint": "1.4.0",
                 "phpunit/phpunit": "9.6.16"
             },
-            "time": "2024-08-12T05:55:11+00:00",
+            "time": "2024-10-29T21:11:56+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -9133,7 +9133,7 @@
                 "xmp"
             ],
             "support": {
-                "source": "https://github.com/wikimedia/mediawiki-libs-XMPReader/tree/0.9.2"
+                "source": "https://github.com/wikimedia/mediawiki-libs-XMPReader/tree/0.9.3"
             },
             "install-path": "../wikimedia/xmp-reader"
         },
