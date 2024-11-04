@@ -511,8 +511,10 @@ class ComposerStaticInit_mediawiki_vendor
         'Clio\\Console' => __DIR__ . '/..' . '/clio/clio/src/Clio/Console.php',
         'Clio\\Daemon' => __DIR__ . '/..' . '/clio/clio/src/Clio/Daemon.php',
         'ComposerHookHandler' => __DIR__ . '/../..' . '/includes/composer/ComposerHookHandler.php',
+        'ComposerPackageModifier' => __DIR__ . '/../..' . '/includes/composer/ComposerPackageModifier.php',
         'ComposerPhpunitXmlCoverageEdit' => __DIR__ . '/../..' . '/includes/composer/ComposerPhpunitXmlCoverageEdit.php',
         'ComposerVendorHtaccessCreator' => __DIR__ . '/../..' . '/includes/composer/ComposerVendorHtaccessCreator.php',
+        'ComposerVersionNormalizer' => __DIR__ . '/../..' . '/includes/composer/ComposerVersionNormalizer.php',
         'Composer\\CaBundle\\CaBundle' => __DIR__ . '/..' . '/composer/ca-bundle/src/CaBundle.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Composer\\Installers\\AglInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/AglInstaller.php',
@@ -4105,6 +4107,8 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Zest\\ZestInst' => __DIR__ . '/..' . '/wikimedia/zest-css/src/ZestInst.php',
         'WmfFramework' => __DIR__ . '/../..' . '/extensions/DonationInterface/gateway_common/WmfFramework.php',
         'lessc' => __DIR__ . '/..' . '/wikimedia/less.php/lessc.inc.php',
+        'smashpig\\PaymentProviders\\ICancelAutoRescueProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/ICancelAutoRescueProvider.php',
+        'smashpig\\PaymentProviders\\IDeleteRecurringPaymentTokenProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/IDeleteRecurringPaymentTokenProvider.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

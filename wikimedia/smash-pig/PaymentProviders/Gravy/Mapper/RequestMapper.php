@@ -13,7 +13,7 @@ class RequestMapper {
 	 * Trustly is currently a capture-only payment method, so we set the 'intent'
 	 * flag on Gravy API calls to capture
 	 */
-	private const CAPTURE_ONLY_PAYMENT_METHOD = [ 'trustly' ];
+	private const CAPTURE_ONLY_PAYMENT_METHOD = [];
 
 	public function mapToCreatePaymentRequest( array $params ): array {
 		$request = [

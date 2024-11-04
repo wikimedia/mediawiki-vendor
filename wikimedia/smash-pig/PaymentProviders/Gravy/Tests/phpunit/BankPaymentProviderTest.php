@@ -75,6 +75,60 @@ class BankPaymentProviderTest extends BaseGravyTestCase {
 		$this->assertEquals( "ach", $response->getPaymentSubmethod() );
 	}
 
+	public function testSuccessfulCreatePaymentFromToken() {
+		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/trustly-recurring-create-payment-response.json' ), true );
+		$params = $this->getCreateTrxnFromTokenParams( $responseBody['amount'] / 100, true );
+		$this->mockApi->expects( $this->once() )
+			->method( 'createPayment' )
+			->with( [
+				'amount' => $params['amount'] * 100,
+				'currency' => $params['currency'],
+				'country' => $params['country'],
+				'payment_method' => [
+					'method' => 'id',
+					'id' => $params['recurring_payment_token']
+				],
+				'payment_source' => 'recurring',
+				'is_subsequent_payment' => true,
+				'merchant_initiated' => true,
+				'external_identifier' => $params['order_id'],
+				'buyer' => [
+					'external_identifier' => strtolower( $params['email'] ),
+					'billing_details' => [
+						'first_name' => $params['first_name'],
+						'last_name' => $params['last_name'],
+						'email_address' => strtolower( $params['email'] ),
+						'phone_number' => $params['phone_number'] ?? null,
+						'address' => [
+							'city' => $params['city'] ?? null,
+							'country' => $params['country'] ?? null,
+							'postal_code' => $params['postal_code'] ?? null,
+							'state' => $params['state_province'] ?? null,
+							'line1' => $params['street_address'] ?? null,
+							'line2' => null,
+							'organization' => $params['employer'] ?? null
+						]
+					]
+				]
+			] )
+			->willReturn( $responseBody );
+
+		$response = $this->provider->createPayment( $params );
+
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\CreatePaymentResponse',
+			$response );
+		$this->assertEquals( $responseBody['amount'] / 100, $response->getAmount() );
+		$this->assertEquals( $responseBody['id'], $response->getGatewayTxnId() );
+		$this->assertEquals( $responseBody['reconciliation_id'], $response->getPaymentOrchestratorReconciliationId() );
+		$this->assertEquals( $responseBody['buyer']['billing_details']['first_name'], $response->getDonorDetails()->getFirstName() );
+		$this->assertEquals( $responseBody['payment_service_transaction_id'], $response->getBackendProcessorTransactionId() );
+		$this->assertEquals( $responseBody['buyer']['billing_details']['last_name'], $response->getDonorDetails()->getLastName() );
+		$this->assertEquals( $responseBody['buyer']['billing_details']['email_address'], $response->getDonorDetails()->getEmail() );
+		$this->assertEquals( $responseBody['buyer']['id'], $response->getDonorDetails()->getCustomerId() );
+		$this->assertEquals( $responseBody['buyer']['billing_details']['address']['line1'], $response->getDonorDetails()->getBillingAddress()->getStreetAddress() );
+		$this->assertTrue( $response->isSuccessful() );
+	}
+
 	private function getCreateTrxnParams( ?string $amount = '1299' ) {
 		$params = [];
 		$params['country'] = 'US';
@@ -91,14 +145,13 @@ class BankPaymentProviderTest extends BaseGravyTestCase {
 		return $params;
 	}
 
-	private function getCreateTrxnFromTokenParams( $amount ) {
+	private function getCreateTrxnFromTokenParams( $amount, $guest = false ) {
 		$params = $this->getCreateTrxnParams( $amount );
 
 		unset( $params['gateway_session_id'] );
 
+		$params['recurring'] = 1;
 		$params['recurring_payment_token'] = "random_token";
-		$params['processor_contact_id'] = "random_contact_id";
-
 		return $params;
 	}
 }

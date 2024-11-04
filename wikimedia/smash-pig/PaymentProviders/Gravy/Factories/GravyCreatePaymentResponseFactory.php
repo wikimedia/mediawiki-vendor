@@ -76,7 +76,7 @@ class GravyCreatePaymentResponseFactory extends GravyPaymentResponseFactory {
 	}
 
 	protected static function setDonorDetails( PaymentProviderResponse $paymentResponse, array $normalizedResponse ) {
-		$donorDetails = $normalizedResponse['donor_details'];
+		$donorDetails = $normalizedResponse['donor_details'] ?? [];
 
 		$address = ( new Address() )
 			->setStreetAddress( $donorDetails['address']['address_line1'] ?? '' )

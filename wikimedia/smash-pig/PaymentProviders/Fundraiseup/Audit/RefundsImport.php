@@ -27,7 +27,7 @@ class RefundsImport extends FundraiseupImports {
 	 * @throws DataFileException
 	 */
 	protected function parseLine( HeadedCsvReader $csv ): array {
-		if ( $csv->currentCol( 'Donation Status' ) == 'refunded' ) {
+		if ( $csv->currentCol( 'Donation Status - New' ) == 'refunded' ) {
 			$msg = parent::parseLine( $csv );
 			$msg['gateway_refund_id'] = $msg['gateway_parent_id'];
 			$msg['type'] = 'refund';

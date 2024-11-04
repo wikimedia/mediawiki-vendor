@@ -8,6 +8,8 @@ use SmashPig\Core\Logging\Logger;
 
 class FundraiseupImports {
 
+	protected array $importMap = [];
+
 	/**
 	 * @param string $path
 	 * @return array

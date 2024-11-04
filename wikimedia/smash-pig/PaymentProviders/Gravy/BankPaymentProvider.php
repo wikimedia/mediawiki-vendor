@@ -9,7 +9,6 @@ use SmashPig\PaymentProviders\Gravy\Mapper\RequestMapper;
 use SmashPig\PaymentProviders\Gravy\Mapper\ResponseMapper;
 use SmashPig\PaymentProviders\Gravy\Validators\Validator;
 use SmashPig\PaymentProviders\IPaymentProvider;
-use SmashPig\PaymentProviders\Responses\ApprovePaymentResponse;
 use SmashPig\PaymentProviders\Responses\CreatePaymentResponse;
 use SmashPig\PaymentProviders\ValidationException;
 
@@ -38,7 +37,7 @@ class BankPaymentProvider extends PaymentProvider implements IPaymentProvider {
 			}
 
 			// map local params to external format, ideally only changing key names and minor input format transformations
-			$gravyRequestMapper = new RequestMapper();
+			$gravyRequestMapper = $this->getRequestMapper();
 
 			$gravyCreatePaymentRequest = $gravyRequestMapper->mapToRedirectCreatePaymentRequest( $params );
 
@@ -56,7 +55,7 @@ class BankPaymentProvider extends PaymentProvider implements IPaymentProvider {
 		}  catch ( ValidationException $e ) {
 			// it threw an exception!
 			GravyCreatePaymentResponseFactory::handleValidationException( $createPaymentResponse, $e->getData() );
-		} catch ( \Exception $e ) {
+		}  catch ( \Exception $e ) {
 			// it threw an exception that isn't validation!
 			Logger::error( 'Processor failed to create new payment with response:' . $e->getMessage() );
 			GravyCreatePaymentResponseFactory::handleException( $createPaymentResponse, $e->getMessage(), $e->getCode() );
@@ -65,12 +64,11 @@ class BankPaymentProvider extends PaymentProvider implements IPaymentProvider {
 		return $createPaymentResponse;
 	}
 
-	public function approvePayment( array $params ): ApprovePaymentResponse {
-		// Trustly payments are intent capture only
-		return new ApprovePaymentResponse();
-	}
-
 	protected function getResponseMapper(): ResponseMapper {
 		return new BankResponseMapper();
+	}
+
+	protected function getRequestMapper(): RequestMapper {
+		return new RequestMapper();
 	}
 }

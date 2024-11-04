@@ -125,7 +125,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'account' => 'Wikimedia Foundation',
 			'fee' => 1.66,
 			'refund' => '65.84',
-			'date' => 1695047409,
+			'date' => 1695047409
 		];
 		$this->assertEquals( $expected, $actual, 'Did not parse refund correctly' );
 	}
