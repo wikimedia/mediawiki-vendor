@@ -3,7 +3,7 @@
         'name' => 'mediawiki/core',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '15634081f1096e9c01942cd59a143df9de8eaba4',
+        'reference' => '6527e320f3a2d68d769ea68a0fa78c4b8619b3ea',
         'type' => 'mediawiki-core',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -47,9 +47,9 @@
             'dev_requirement' => false,
         ),
         'composer/ca-bundle' => array(
-            'pretty_version' => '1.5.1',
-            'version' => '1.5.1.0',
-            'reference' => '063d9aa8696582f5a41dffbbaf3c81024f0a604a',
+            'pretty_version' => '1.5.3',
+            'version' => '1.5.3.0',
+            'reference' => '3b1fc3f0be055baa7c6258b1467849c3e8204eb2',
             'type' => 'library',
             'install_path' => __DIR__ . '/./ca-bundle',
             'aliases' => array(),
@@ -202,7 +202,7 @@
         'mediawiki/core' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '15634081f1096e9c01942cd59a143df9de8eaba4',
+            'reference' => '6527e320f3a2d68d769ea68a0fa78c4b8619b3ea',
             'type' => 'mediawiki-core',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -296,9 +296,9 @@
             'dev_requirement' => false,
         ),
         'pear/pear-core-minimal' => array(
-            'pretty_version' => 'v1.10.14',
-            'version' => '1.10.14.0',
-            'reference' => 'a86fc145edb5caedbf96527214ce3cadc9de4a32',
+            'pretty_version' => 'v1.10.15',
+            'version' => '1.10.15.0',
+            'reference' => 'ce0adade8b97561656ace07cdaac4751c271ea8c',
             'type' => 'library',
             'install_path' => __DIR__ . '/../pear/pear-core-minimal',
             'aliases' => array(),
@@ -314,9 +314,9 @@
             'dev_requirement' => false,
         ),
         'phpmailer/phpmailer' => array(
-            'pretty_version' => 'v6.9.1',
-            'version' => '6.9.1.0',
-            'reference' => '039de174cd9c17a8389754d3b877a2ed22743e18',
+            'pretty_version' => 'v6.9.2',
+            'version' => '6.9.2.0',
+            'reference' => 'a7b17b42fa4887c92146243f3d2f4ccb962af17c',
             'type' => 'library',
             'install_path' => __DIR__ . '/../phpmailer/phpmailer',
             'aliases' => array(),
@@ -454,7 +454,7 @@
         'rsky/pear-core-min' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v1.10.14',
+                0 => 'v1.10.15',
             ),
         ),
         'symfony/deprecation-contracts' => array(
