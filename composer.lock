@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "338eec9ee704296154d1fbe0d375efab",
+    "content-hash": "b07f0806223c0d5e952629797f251b9e",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -7526,35 +7526,35 @@
         },
         {
             "name": "wikimedia/metrics-platform",
-            "version": "4.2.1",
+            "version": "4.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-metrics-platform.git",
-                "reference": "e959228fdb209a1ad479e5008421732a8f8363ba"
+                "reference": "f2ce03c89b387028adf3503fcb9bf825ce974959"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-metrics-platform/zipball/e959228fdb209a1ad479e5008421732a8f8363ba",
-                "reference": "e959228fdb209a1ad479e5008421732a8f8363ba",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-metrics-platform/zipball/f2ce03c89b387028adf3503fcb9bf825ce974959",
+                "reference": "f2ce03c89b387028adf3503fcb9bf825ce974959",
                 "shasum": ""
             },
             "require": {
-                "justinrainbow/json-schema": "~5.2.11",
+                "justinrainbow/json-schema": "~5.2.11 || ~5.3.0",
                 "php": ">=7.4.3",
                 "psr/log": "^1.1.4",
-                "wikimedia/timestamp": "4.1.1"
+                "wikimedia/timestamp": "^4.1.1"
             },
             "require-dev": {
                 "ext-json": "*",
-                "mediawiki/mediawiki-codesniffer": "43.0.0",
+                "mediawiki/mediawiki-codesniffer": "45.0.0",
                 "mediawiki/mediawiki-phan-config": "0.14.0",
-                "mediawiki/minus-x": "1.1.1",
+                "mediawiki/minus-x": "1.1.3",
                 "ockcyp/covers-validator": "1.6.0",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
-                "php-parallel-lint/php-parallel-lint": "1.3.2",
-                "phpunit/phpunit": "9.5.28",
+                "php-parallel-lint/php-parallel-lint": "1.4.0",
+                "phpunit/phpunit": "9.6.21",
                 "symfony/process": "^5.4",
-                "wikimedia/testing-access-wrapper": "2.0.0"
+                "wikimedia/testing-access-wrapper": "3.0.0"
             },
             "type": "library",
             "autoload": {
@@ -7583,9 +7583,9 @@
             "homepage": "https://wikitech.wikimedia.org/wiki/Metrics_Platform",
             "support": {
                 "issues": "https://phabricator.wikimedia.org/project/board/5324/",
-                "source": "https://github.com/wikimedia/mediawiki-libs-metrics-platform/tree/4.2.1"
+                "source": "https://github.com/wikimedia/mediawiki-libs-metrics-platform/tree/4.2.2"
             },
-            "time": "2024-06-24T15:37:20+00:00"
+            "time": "2024-11-08T16:18:02+00:00"
         },
         {
             "name": "wikimedia/minify",
