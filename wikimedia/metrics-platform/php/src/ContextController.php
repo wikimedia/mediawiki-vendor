@@ -23,6 +23,8 @@ class ContextController {
 	 * @param array $event
 	 * @param StreamConfig $streamConfig
 	 * @return array
+	 *
+	 * @see https://wikitech.wikimedia.org/wiki/Metrics_Platform/Contextual_attributes
 	 */
 	public function addRequestedValues( array $event, StreamConfig $streamConfig ): array {
 		$requestedValues = $streamConfig->getRequestedValues();

@@ -18,7 +18,7 @@ class MetricsClient implements LoggerAwareInterface {
 	 *
 	 * @var string
 	 */
-	public const BASE_SCHEMA = '/analytics/product_metrics/web/base/1.0.0';
+	public const BASE_SCHEMA = '/analytics/product_metrics/web/base/1.2.0';
 
 	/** @var EventSubmitter */
 	private $eventSubmitter;
@@ -78,6 +78,8 @@ class MetricsClient implements LoggerAwareInterface {
 	 * @param string $schemaId
 	 * @param string $action
 	 * @param array $interactionData
+	 *
+	 * @see https://wikitech.wikimedia.org/wiki/Metrics_Platform/PHP_API
 	 */
 	public function submitInteraction(
 		string $streamName,
@@ -113,6 +115,8 @@ class MetricsClient implements LoggerAwareInterface {
 	 *
 	 * @param string $streamName
 	 * @param array $interactionData
+	 *
+	 * @see https://wikitech.wikimedia.org/wiki/Metrics_Platform/PHP_API
 	 */
 	public function submitClick(
 		string $streamName,
