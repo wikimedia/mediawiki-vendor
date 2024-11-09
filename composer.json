@@ -110,7 +110,7 @@
 		"wikimedia/assert": "0.5.1",
 		"wikimedia/at-ease": "3.0.0",
 		"wikimedia/base-convert": "2.0.2",
-		"wikimedia/bcp-47-code": "2.0.0",
+		"wikimedia/bcp-47-code": "2.0.1",
 		"wikimedia/cdb": "3.0.0",
 		"wikimedia/cldr-plural-rule-parser": "2.0.0",
 		"wikimedia/common-passwords": "0.5.0",
@@ -144,7 +144,7 @@
 		"wikimedia/wait-condition-loop": "2.0.2",
 		"wikimedia/wrappedstring": "4.0.1",
 		"wikimedia/xmp-reader": "0.9.4",
-		"wikimedia/zest-css": "3.0.1",
+		"wikimedia/zest-css": "3.0.2",
 		"wmde/php-vuejs-templating": "2.0.0",
 		"zordius/lightncandy": "1.2.6"
 	},
