@@ -22,11 +22,13 @@ declare( strict_types=1 );
 
 namespace Wikimedia\JsonCodec;
 
+use Stringable;
+
 /**
  * Class hints with modifiers.
  * @template T
  */
-class Hint {
+class Hint implements Stringable {
 	/**
 	 * The default class hint behavior: an exact match for class name,
 	 * and the serialization for an object will always use curly
@@ -102,5 +104,25 @@ class Hint {
 		}
 		$last = array_pop( $modifiers );
 		return new Hint( self::build( $className, ...$modifiers ), $last );
+	}
+
+	public function __toString(): string {
+		$parent = strval( $this->parent );
+		switch ( $this->modifier ) {
+			case self::DEFAULT:
+				return "DEFAULT($parent)";
+			case self::LIST:
+				return "LIST($parent)";
+			case self::STDCLASS:
+				return "STDCLASS($parent)";
+			case self::USE_SQUARE:
+				return "USE_SQUARE($parent)";
+			case self::ALLOW_OBJECT:
+				return "ALLOW_OBJECT($parent)";
+			case self::INHERITED:
+				return "INHERITED($parent)";
+			default:
+				return "UNKNOWN($parent)";
+		}
 	}
 }

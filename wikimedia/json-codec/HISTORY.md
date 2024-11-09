@@ -1,5 +1,9 @@
 # Release History
 
+## 3.0.3 (2024-11-09)
+* Make Hint a Stringable class for easier debugging.
+* Improve InvalidArgumentException messages for easier debugging.
+
 ## 3.0.2 (2024-07-22)
 * Add generic template types to the Hint object.
 * Fix behavior of ALLOW_OBJECT hint for non-empty lists.

@@ -232,7 +232,7 @@ class JsonCodec implements JsonCodecInterface {
 				// No-op, included for completeness
 				$classHint = $classHint->parent;
 			} else {
-				throw new InvalidArgumentException( 'bad hint modifier' );
+				throw new InvalidArgumentException( 'bad hint modifier: ' . $classHint->modifier );
 			}
 		}
 		if ( is_object( $value ) ) {
@@ -312,7 +312,7 @@ class JsonCodec implements JsonCodecInterface {
 			}
 		} elseif ( !is_scalar( $value ) && $value !== null ) {
 			throw new InvalidArgumentException(
-				'Unable to serialize JSON.'
+				'Unable to serialize JSON: ' . get_debug_type( $value )
 			);
 		}
 		return $value;
