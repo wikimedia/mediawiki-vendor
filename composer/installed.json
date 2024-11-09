@@ -8570,37 +8570,37 @@
         },
         {
             "name": "wikimedia/services",
-            "version": "3.0.0",
-            "version_normalized": "3.0.0.0",
+            "version": "4.0.0",
+            "version_normalized": "4.0.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-Services.git",
-                "reference": "c63d949c363378a5f435cfd7a81932aa6f712462"
+                "reference": "87f71136c19ca4769dcb2b870e565dceb72e23fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Services/zipball/c63d949c363378a5f435cfd7a81932aa6f712462",
-                "reference": "c63d949c363378a5f435cfd7a81932aa6f712462",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Services/zipball/87f71136c19ca4769dcb2b870e565dceb72e23fb",
+                "reference": "87f71136c19ca4769dcb2b870e565dceb72e23fb",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.9",
+                "php": ">=7.4.3",
                 "psr/container": "^1.1 || ^2.0",
-                "wikimedia/scoped-callback": "^3.0 || ^4.0"
+                "wikimedia/scoped-callback": "^3.0 || ^4.0 || ^5.0"
             },
             "provide": {
                 "psr/container-implementation": "1.0.0"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "39.0.0",
-                "mediawiki/mediawiki-phan-config": "0.11.1",
-                "mediawiki/minus-x": "1.1.1",
-                "ockcyp/covers-validator": "1.4.0",
+                "mediawiki/mediawiki-codesniffer": "45.0.0",
+                "mediawiki/mediawiki-phan-config": "0.14.0",
+                "mediawiki/minus-x": "1.1.3",
+                "ockcyp/covers-validator": "1.6.0",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
-                "php-parallel-lint/php-parallel-lint": "1.3.2",
-                "phpunit/phpunit": "^8.5"
+                "php-parallel-lint/php-parallel-lint": "1.4.0",
+                "phpunit/phpunit": "9.6.21"
             },
-            "time": "2022-07-09T23:20:28+00:00",
+            "time": "2024-11-08T15:57:49+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -8621,7 +8621,7 @@
             "description": "Generic service to manage named services using lazy instantiation based on instantiator callback functions",
             "homepage": "https://www.mediawiki.org/wiki/Services_(PHP_library)",
             "support": {
-                "source": "https://github.com/wikimedia/mediawiki-libs-Services/tree/3.0.0"
+                "source": "https://github.com/wikimedia/mediawiki-libs-Services/tree/4.0.0"
             },
             "install-path": "../wikimedia/services"
         },
