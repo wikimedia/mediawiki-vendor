@@ -42,7 +42,7 @@ class ReflectionCaster
 
         $a = static::castFunctionAbstract($c, $a, $stub, $isNested, $filter);
 
-        if (!str_contains($c->name, '{closure}')) {
+        if (!str_contains($c->name, '{closure')) {
             $stub->class = isset($a[$prefix.'class']) ? $a[$prefix.'class']->value.'::'.$c->name : $c->name;
             unset($a[$prefix.'class']);
         }
@@ -83,13 +83,13 @@ class ReflectionCaster
         // Cannot create ReflectionGenerator based on a terminated Generator
         try {
             $reflectionGenerator = new \ReflectionGenerator($c);
+
+            return self::castReflectionGenerator($reflectionGenerator, $a, $stub, $isNested);
         } catch (\Exception $e) {
             $a[Caster::PREFIX_VIRTUAL.'closed'] = true;
 
             return $a;
         }
-
-        return self::castReflectionGenerator($reflectionGenerator, $a, $stub, $isNested);
     }
 
     public static function castType(\ReflectionType $c, array $a, Stub $stub, bool $isNested)
