@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "025a1ce7d7cb898e5e784814c2614ae4",
+    "content-hash": "11305dd7237d4fd9b64e59a552bc3e4c",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -8699,16 +8699,16 @@
         },
         {
             "name": "wikimedia/xmp-reader",
-            "version": "0.9.3",
+            "version": "0.9.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-XMPReader.git",
-                "reference": "0a3e45c67af50588eabbfc1e83e1dcee994d0b65"
+                "reference": "0c13a18f322c3fdd4013148d5a647c1670ad82d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-XMPReader/zipball/0a3e45c67af50588eabbfc1e83e1dcee994d0b65",
-                "reference": "0a3e45c67af50588eabbfc1e83e1dcee994d0b65",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-XMPReader/zipball/0c13a18f322c3fdd4013148d5a647c1670ad82d3",
+                "reference": "0c13a18f322c3fdd4013148d5a647c1670ad82d3",
                 "shasum": ""
             },
             "require": {
@@ -8723,7 +8723,7 @@
             },
             "require-dev": {
                 "ext-exif": "*",
-                "mediawiki/mediawiki-codesniffer": "44.0.0",
+                "mediawiki/mediawiki-codesniffer": "45.0.0",
                 "mediawiki/mediawiki-phan-config": "0.14.0",
                 "mediawiki/minus-x": "1.1.3",
                 "ockcyp/covers-validator": "1.6.0",
@@ -8757,9 +8757,9 @@
                 "xmp"
             ],
             "support": {
-                "source": "https://github.com/wikimedia/mediawiki-libs-XMPReader/tree/0.9.3"
+                "source": "https://github.com/wikimedia/mediawiki-libs-XMPReader/tree/0.9.4"
             },
-            "time": "2024-10-29T21:11:56+00:00"
+            "time": "2024-11-03T12:28:34+00:00"
         },
         {
             "name": "wikimedia/zest-css",
