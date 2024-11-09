@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9ae37014ddc279ef514bdffa5bdbcbc2",
+    "content-hash": "c759bfa57c63ae10431682e47e9c904a",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -8446,29 +8446,29 @@
         },
         {
             "name": "wikimedia/timestamp",
-            "version": "v4.1.1",
+            "version": "v4.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-Timestamp.git",
-                "reference": "138f3099b46e3f6679ac100e5ab1932e89746a05"
+                "reference": "e7b9e56fe00f3d41283e360f5a81d83ecbea921e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Timestamp/zipball/138f3099b46e3f6679ac100e5ab1932e89746a05",
-                "reference": "138f3099b46e3f6679ac100e5ab1932e89746a05",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Timestamp/zipball/e7b9e56fe00f3d41283e360f5a81d83ecbea921e",
+                "reference": "e7b9e56fe00f3d41283e360f5a81d83ecbea921e",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.4.0"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "41.0.0",
-                "mediawiki/mediawiki-phan-config": "0.12.1",
-                "mediawiki/minus-x": "1.1.1",
+                "mediawiki/mediawiki-codesniffer": "44.0.0",
+                "mediawiki/mediawiki-phan-config": "0.14.0",
+                "mediawiki/minus-x": "1.1.3",
                 "ockcyp/covers-validator": "1.6.0",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
-                "php-parallel-lint/php-parallel-lint": "1.3.2",
-                "phpunit/phpunit": "9.5.28"
+                "php-parallel-lint/php-parallel-lint": "1.4.0",
+                "phpunit/phpunit": "9.6.16"
             },
             "type": "library",
             "autoload": {
@@ -8492,9 +8492,9 @@
             "description": "Creation, parsing, and conversion of timestamps",
             "homepage": "https://www.mediawiki.org/wiki/Timestamp",
             "support": {
-                "source": "https://github.com/wikimedia/mediawiki-libs-Timestamp/tree/v4.1.1"
+                "source": "https://github.com/wikimedia/mediawiki-libs-Timestamp/tree/v4.2.0"
             },
-            "time": "2023-09-29T18:53:03+00:00"
+            "time": "2024-09-26T00:20:33+00:00"
         },
         {
             "name": "wikimedia/utfnormal",
