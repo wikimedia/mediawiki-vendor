@@ -64,7 +64,7 @@
 		"oojs/oojs-ui": "0.51.1",
 		"opis/json-schema": "1.1.0",
 		"pear/console_getopt": "1.4.3",
-		"pear/mail": "1.6.0",
+		"pear/mail": "2.0.0",
 		"pear/mail_mime": "1.10.12",
 		"pear/net_smtp": "1.12.1",
 		"pear/net_socket": "1.2.2",

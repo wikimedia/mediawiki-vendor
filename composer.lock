@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "037dc73120ef579fa5d803def5aa2594",
+    "content-hash": "868bfa165d524ad2edacd14d13b342cf",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -3344,16 +3344,16 @@
         },
         {
             "name": "pear/mail",
-            "version": "v1.6.0",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear/Mail.git",
-                "reference": "4fda3292ac6bf226d8841cfd8ee3cf4e28395c01"
+                "reference": "eb053f8b74f4f3178105fcf001626e63068c0dbc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/Mail/zipball/4fda3292ac6bf226d8841cfd8ee3cf4e28395c01",
-                "reference": "4fda3292ac6bf226d8841cfd8ee3cf4e28395c01",
+                "url": "https://api.github.com/repos/pear/Mail/zipball/eb053f8b74f4f3178105fcf001626e63068c0dbc",
+                "reference": "eb053f8b74f4f3178105fcf001626e63068c0dbc",
                 "shasum": ""
             },
             "require": {
@@ -3407,7 +3407,7 @@
                 "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Mail",
                 "source": "https://github.com/pear/Mail"
             },
-            "time": "2023-11-01T21:31:59+00:00"
+            "time": "2024-01-15T21:56:23+00:00"
         },
         {
             "name": "pear/mail_mime",
