@@ -55,7 +55,7 @@
 		"liuggio/statsd-php-client": "1.0.18",
 		"maxmind-db/reader": "1.11.1",
 		"maxmind/web-service-common": "0.9.0",
-		"mck89/peast": "1.16.2",
+		"mck89/peast": "1.16.3",
 		"monolog/monolog": "2.9.3",
 		"mustangostang/spyc": "0.6.3",
 		"nikic/php-parser": "4.19.1",
