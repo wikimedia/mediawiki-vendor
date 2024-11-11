@@ -10,6 +10,7 @@ use Wikimedia\Assert\Assert;
 use Wikimedia\Assert\UnreachableException;
 use Wikimedia\JsonCodec\Hint;
 use Wikimedia\JsonCodec\JsonCodec;
+use Wikimedia\Parsoid\Core\DomPageBundle;
 use Wikimedia\Parsoid\Core\PageBundle;
 use Wikimedia\Parsoid\DOM\Document;
 use Wikimedia\Parsoid\DOM\Element;
@@ -436,9 +437,9 @@ class DOMDataUtils {
 	/**
 	 * Get this document's pagebundle object
 	 * @param Document $doc
-	 * @return PageBundle
+	 * @return PageBundle|DomPageBundle
 	 */
-	public static function getPageBundle( Document $doc ): PageBundle {
+	public static function getPageBundle( Document $doc ) {
 		return self::getBag( $doc )->getPageBundle();
 	}
 
@@ -637,7 +638,8 @@ class DOMDataUtils {
 	 *   - keepTmp: Preserve DataParsoid::$tmp
 	 *   - storeInPageBundle: If true, data will be stored in the page bundle
 	 *     instead of data-parsoid and data-mw.
-	 *   - env: The Env object required for various features
+	 *   - outputContentVersion: Version of output we're storing.  The page bundle
+	 *     didn't have data-mw before 999.x
 	 *   - idIndex: Array of used ID attributes
 	 */
 	public static function storeDataAttribs( Node $node, ?array $options = null ): void {
@@ -704,9 +706,9 @@ class DOMDataUtils {
 		// Strip invalid data-mw attributes
 		if ( self::validDataMw( $node ) ) {
 			if (
-				!empty( $options['storeInPageBundle'] ) && isset( $options['env'] ) &&
+				!empty( $options['storeInPageBundle'] ) &&
 				// The pagebundle didn't have data-mw before 999.x
-				Semver::satisfies( $options['env']->getOutputContentVersion(), '^999.0.0' )
+				Semver::satisfies( $options['outputContentVersion'] ?? '0.0.0', '^999.0.0' )
 			) {
 				$data ??= new stdClass;
 				$data->mw = self::getDataMw( $node );
@@ -760,7 +762,7 @@ class DOMDataUtils {
 	 */
 	private static function fixClonedData( Element $elt ) {
 		if ( $elt->hasAttribute( self::DATA_OBJECT_ATTR_NAME ) ) {
-			self::setNodeData( $elt, self::getNodeData( $elt )->cloneNodeData() );
+			self::setNodeData( $elt, clone self::getNodeData( $elt ) );
 		}
 		foreach ( $elt->childNodes as $child ) {
 			if ( $child instanceof Element ) {

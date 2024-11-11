@@ -348,6 +348,9 @@ class TestRunner {
 		$handler = $env->getContentHandler();
 		$extApi = new ParsoidExtensionAPI( $env );
 		$doc = $handler->toDOM( $extApi );
+		DOMDataUtils::visitAndStoreDataAttribs( DOMCompat::getBody( $doc ), [
+			'storeInPageBundle' => false,
+		] );
 		return $doc;
 	}
 
@@ -690,9 +693,7 @@ class TestRunner {
 		$metadataActual = null;
 		if ( isset( $test->options['nohtml'] ) ) {
 			$body = DOMCompat::getBody( $doc );
-			while ( $body->hasChildNodes() ) {
-				$body->removeChild( $body->firstChild );
-			}
+			DOMCompat::replaceChildren( $body );
 		}
 		$this->addParserOutputInfo(
 			$env, $test, $options, $mode, $doc,

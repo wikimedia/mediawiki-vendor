@@ -638,10 +638,10 @@ class ParsoidExtensionAPI {
 	): void {
 		DOMUtils::migrateChildren( $from, $to );
 		DOMDataUtils::setDataParsoid(
-			$to, DOMDataUtils::getDataParsoid( $from )->clone()
+			$to, clone DOMDataUtils::getDataParsoid( $from )
 		);
 		DOMDataUtils::setDataMw(
-			$to, Utils::clone( DOMDataUtils::getDataMw( $from ) )
+			$to, clone DOMDataUtils::getDataMw( $from )
 		);
 	}
 
@@ -855,15 +855,8 @@ class ParsoidExtensionAPI {
 	 * @param Document $doc
 	 */
 	public function postProcessDOM( Document $doc ): void {
-		$env = $this->env;
-		// From CleanUp::saveDataParsoid
-		$body = DOMCompat::getBody( $doc );
-		DOMDataUtils::visitAndStoreDataAttribs( $body, [
-			'storeInPageBundle' => $env->pageBundle,
-			'env' => $env
-		] );
 		// Ugh! But, this whole method needs to go away anyway
-		( new AddMetaData( null ) )->run( $env, $body );
+		( new AddMetaData( null ) )->run( $this->env, DOMCompat::getBody( $doc ) );
 	}
 
 	/**

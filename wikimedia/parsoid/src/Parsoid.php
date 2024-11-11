@@ -29,7 +29,6 @@ use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\Timing;
 use Wikimedia\Parsoid\Utils\Utils;
-use Wikimedia\Parsoid\Wikitext\Wikitext;
 use Wikimedia\Parsoid\Wt2Html\DOM\Processors\AddRedLinks;
 use Wikimedia\Parsoid\Wt2Html\DOM\Processors\ConvertOffsets;
 
@@ -154,6 +153,7 @@ class Parsoid {
 	 * @param array $options See wikitext2html.
 	 * @param ?SelectiveUpdateData $selparData See wikitext2html.
 	 * @return array{0:Env,1:Document,2:?string}
+	 *  The returned document is in "prepared and loaded" form.
 	 */
 	private function parseWikitext(
 		PageConfig $pageConfig,
@@ -165,7 +165,6 @@ class Parsoid {
 		if ( isset( $options['outputContentVersion'] ) ) {
 			$envOptions['outputContentVersion'] = $options['outputContentVersion'];
 		}
-		$envOptions['discardDataParsoid'] = !empty( $options['discardDataParsoid'] );
 		if ( isset( $options['wrapSections'] ) ) {
 			$envOptions['wrapSections'] = (bool)$options['wrapSections'];
 		}
@@ -194,7 +193,6 @@ class Parsoid {
 		$contentmodel = $options['contentmodel'] ?? null;
 		$handler = $env->getContentHandler( $contentmodel );
 		$extApi = new ParsoidExtensionAPI( $env );
-		// FIXME: Hardcoded to assume 'mode' is 'template'
 		return [ $env, $handler->toDOM( $extApi, $selparData ), $contentmodel ];
 	}
 
@@ -210,7 +208,6 @@ class Parsoid {
 	 *   'outputContentVersion' => (string|null) Version of HTML to output.
 	 *                                           `null` returns the default version.
 	 *   'contentmodel'         => (string|null) The content model of the input.
-	 *   'discardDataParsoid'   => (bool) Drop all data-parsoid annotations.
 	 *   'offsetType'           => (string) ucs2, char, byte are valid values
 	 *                                      what kind of source offsets should be emitted?
 	 *   'skipLanguageConversionPass'  => (bool) Skip the language variant conversion pass (defaults to false)
@@ -254,6 +251,10 @@ class Parsoid {
 
 		$parseTiming = Timing::start();
 		[ $env, $doc, $contentmodel ] = $this->parseWikitext( $pageConfig, $metadata, $options, $selparData );
+		DOMDataUtils::visitAndStoreDataAttribs( DOMCompat::getBody( $doc ), [
+			'storeInPageBundle' => $env->pageBundle,
+			'outputContentVersion' => $env->getOutputContentVersion(),
+		] );
 		$parseTimeMs = $parseTiming->end();
 
 		// FIXME: Does this belong in parseWikitext so that the other endpoint
@@ -269,6 +270,9 @@ class Parsoid {
 		$node = $body_only ? DOMCompat::getBody( $doc ) : $doc;
 
 		if ( $env->pageBundle ) {
+			DOMDataUtils::injectPageBundle(
+				$doc, DOMDataUtils::getPageBundle( $doc )
+			);
 			$out = ContentUtils::extractDpAndSerialize( $node, [
 				'innerXML' => $body_only,
 				'contentversion' => $env->getOutputContentVersion(),
@@ -633,9 +637,8 @@ class Parsoid {
 
 		DOMDataUtils::visitAndStoreDataAttribs(
 			DOMCompat::getBody( $doc ), [
-				'discardDataParsoid' => $env->discardDataParsoid,
 				'storeInPageBundle' => $env->pageBundle,
-				'env' => $env,
+				'outputContentVersion' => $env->getOutputContentVersion(),
 			]
 		);
 		$body_only = !empty( $options['body_only'] );
@@ -650,21 +653,6 @@ class Parsoid {
 			'contentmodel' => $pb->contentmodel ?? $pageConfig->getContentModel()
 		] );
 		return $out['pb'];
-	}
-
-	/**
-	 * Perform pre-save transformations with top-level templates subst'd.
-	 *
-	 * @param PageConfig $pageConfig
-	 * @param string $wikitext
-	 * @return string
-	 */
-	public function substTopLevelTemplates(
-		PageConfig $pageConfig, string $wikitext
-	): string {
-		$metadata = new StubMetadataCollector( $this->siteConfig );
-		$env = new Env( $this->siteConfig, $pageConfig, $this->dataAccess, $metadata );
-		return Wikitext::pst( $env, $wikitext, true /* $substTLTemplates */ );
 	}
 
 	/**

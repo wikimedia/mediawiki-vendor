@@ -4409,6 +4409,7 @@ return array(
     'Wikimedia\\Parsoid\\Core\\ContentMetadataCollectorCompat' => $vendorDir . '/wikimedia/parsoid/src/Core/ContentMetadataCollectorCompat.php',
     'Wikimedia\\Parsoid\\Core\\ContentMetadataCollectorStringSets' => $vendorDir . '/wikimedia/parsoid/src/Core/ContentMetadataCollectorStringSets.php',
     'Wikimedia\\Parsoid\\Core\\ContentModelHandler' => $vendorDir . '/wikimedia/parsoid/src/Core/ContentModelHandler.php',
+    'Wikimedia\\Parsoid\\Core\\DomPageBundle' => $vendorDir . '/wikimedia/parsoid/src/Core/DomPageBundle.php',
     'Wikimedia\\Parsoid\\Core\\DomSourceRange' => $vendorDir . '/wikimedia/parsoid/src/Core/DomSourceRange.php',
     'Wikimedia\\Parsoid\\Core\\ElementRange' => $vendorDir . '/wikimedia/parsoid/src/Core/ElementRange.php',
     'Wikimedia\\Parsoid\\Core\\InternalException' => $vendorDir . '/wikimedia/parsoid/src/Core/InternalException.php',
