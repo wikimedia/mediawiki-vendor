@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "089557d0c804bbdad54c45a3750ae3fa",
+    "content-hash": "03b5dd32ccff95c0d26b9bd947fafba0",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -7892,29 +7892,31 @@
         },
         {
             "name": "wikimedia/purtle",
-            "version": "v1.0.8",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/purtle.git",
-                "reference": "8f106f38ff811906853511a934d7f5e86dce3d20"
+                "reference": "af5b7f1da5bbfea6f2b7992600bfdaf258f61762"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/purtle/zipball/8f106f38ff811906853511a934d7f5e86dce3d20",
-                "reference": "8f106f38ff811906853511a934d7f5e86dce3d20",
+                "url": "https://api.github.com/repos/wikimedia/purtle/zipball/af5b7f1da5bbfea6f2b7992600bfdaf258f61762",
+                "reference": "af5b7f1da5bbfea6f2b7992600bfdaf258f61762",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.9"
+                "ext-json": "*",
+                "php": ">=7.4"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "36.0.0",
-                "mediawiki/minus-x": "1.1.1",
-                "ockcyp/covers-validator": "1.3.3",
-                "php-parallel-lint/php-console-highlighter": "0.5.0",
-                "php-parallel-lint/php-parallel-lint": "1.3.0",
+                "mediawiki/mediawiki-codesniffer": "45.0.0",
+                "mediawiki/mediawiki-phan-config": "0.14.0",
+                "mediawiki/minus-x": "1.1.3",
+                "ockcyp/covers-validator": "1.6.0",
+                "php-parallel-lint/php-console-highlighter": "1.0.0",
+                "php-parallel-lint/php-parallel-lint": "1.4.0",
                 "phpmd/phpmd": "~2.3",
-                "phpunit/phpunit": "^8.5"
+                "phpunit/phpunit": "9.6.16"
             },
             "type": "library",
             "extra": {
@@ -7955,10 +7957,10 @@
                 "serializer"
             ],
             "support": {
-                "irc": "irc://irc.freenode.net/wikimedia-dev",
-                "source": "https://github.com/wikimedia/purtle/tree/v1.0.8"
+                "irc": "irc://irc.libera.chat/wikimedia-dev",
+                "source": "https://github.com/wikimedia/purtle/tree/v2.0.0"
             },
-            "time": "2021-06-17T14:47:56+00:00"
+            "time": "2024-11-10T02:02:15+00:00"
         },
         {
             "name": "wikimedia/relpath",
