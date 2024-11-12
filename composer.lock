@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a0131bd9be713c198d31c11d8d75eedb",
+    "content-hash": "c003ffd3496b17c566ac7b6e35aa9e79",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -7657,29 +7657,29 @@
         },
         {
             "name": "wikimedia/normalized-exception",
-            "version": "v1.0.1",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-NormalizedException.git",
-                "reference": "ed9fc13d75f65c80dc1a95d4792658c97fd782e6"
+                "reference": "ae352bb80f1c345d5cd74b82bbd02e012bf01662"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-NormalizedException/zipball/ed9fc13d75f65c80dc1a95d4792658c97fd782e6",
-                "reference": "ed9fc13d75f65c80dc1a95d4792658c97fd782e6",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-NormalizedException/zipball/ae352bb80f1c345d5cd74b82bbd02e012bf01662",
+                "reference": "ae352bb80f1c345d5cd74b82bbd02e012bf01662",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.9"
+                "php": ">=7.4"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "35.0.0",
-                "mediawiki/mediawiki-phan-config": "0.10.6",
-                "mediawiki/minus-x": "1.1.1",
-                "ockcyp/covers-validator": "1.3.3",
-                "php-parallel-lint/php-console-highlighter": "^0.5",
-                "php-parallel-lint/php-parallel-lint": "1.2.0",
-                "phpunit/phpunit": "^8.5|^9.5"
+                "mediawiki/mediawiki-codesniffer": "45.0.0",
+                "mediawiki/mediawiki-phan-config": "0.14.0",
+                "mediawiki/minus-x": "1.1.3",
+                "ockcyp/covers-validator": "1.6.0",
+                "php-parallel-lint/php-console-highlighter": "1.0.0",
+                "php-parallel-lint/php-parallel-lint": "1.4.0",
+                "phpunit/phpunit": "9.6.16"
             },
             "type": "library",
             "autoload": {
@@ -7700,9 +7700,9 @@
             "description": "A helper for making exceptions play nice with PSR-3 logging",
             "homepage": "https://www.mediawiki.org/wiki/NormalizedException",
             "support": {
-                "source": "https://github.com/wikimedia/mediawiki-libs-NormalizedException/tree/v1.0.1"
+                "source": "https://github.com/wikimedia/mediawiki-libs-NormalizedException/tree/v2.0.0"
             },
-            "time": "2021-07-01T07:36:43+00:00"
+            "time": "2024-11-10T01:02:06+00:00"
         },
         {
             "name": "wikimedia/object-factory",
