@@ -276,36 +276,18 @@ class Less_Parser {
 	}
 
 	/**
-	 * Gets the private rules variable and returns an array of the found variables
-	 * it uses a helper method getVariableValue() that contains the logic ot fetch the value
-	 * from the rule object
+	 * Get an array of the found variables in the parsed input.
 	 *
 	 * @return array
+	 * @phan-return array<string,string|float|array>
 	 */
 	public function getVariables() {
 		$variables = [];
 
-		$not_variable_type = [
-			Less_Tree_Comment::class, // this include less comments ( // ) and css comments (/* */)
-			Less_Tree_Import::class, // do not search variables in included files @import
-			Less_Tree_Ruleset::class, // selectors (.someclass, #someid, …)
-			Less_Tree_Operation::class,
-		];
-
 		$rules = $this->cachedEvaldRules ?? $this->rules;
-
 		foreach ( $rules as $key => $rule ) {
-			if ( in_array( get_class( $rule ), $not_variable_type ) ) {
-				continue;
-			}
-
-			// Note: it seems $rule is always Less_Tree_Rule when variable = true
 			if ( $rule instanceof Less_Tree_Declaration && $rule->variable ) {
 				$variables[$rule->name] = $this->getVariableValue( $rule );
-			} else {
-				if ( $rule instanceof Less_Tree_Comment ) {
-					$variables[] = $this->getVariableValue( $rule );
-				}
 			}
 		}
 		return $variables;
@@ -330,6 +312,7 @@ class Less_Parser {
 	 *
 	 * @param Less_Tree $var
 	 * @return mixed
+	 * @phan-return string|float|array<string|float>
 	 */
 	private function getVariableValue( Less_Tree $var ) {
 		switch ( get_class( $var ) ) {
@@ -613,11 +596,11 @@ class Less_Parser {
 	 *         }
 	 *     }
 	 *
-	 *
-	 * @param array<string|callable> $dirs The key should be a server directory from which LESS
+	 * @param array $dirs The key should be a server directory from which LESS
 	 * files may be imported. The value is an optional public URL or URL base path that corresponds to
 	 * the same directory (use empty string otherwise). The value may also be a closure, in
 	 * which case the key is ignored.
+	 * @phan-param array<string,string|callable> $dirs
 	 */
 	public function SetImportDirs( $dirs ) {
 		self::$options['import_dirs'] = [];
@@ -3234,6 +3217,7 @@ class Less_Parser {
 	/**
 	 * Some versions of PHP have trouble with method_exists($a,$b) if $a is not an object
 	 *
+	 * @internal For internal use only
 	 * @param mixed $a
 	 * @param string $b
 	 */
@@ -3244,6 +3228,8 @@ class Less_Parser {
 	/**
 	 * Round numbers similarly to javascript
 	 * eg: 1.499999 to 1 instead of 2
+	 *
+	 * @internal For internal use only
 	 */
 	public static function round( $input, $precision = 0 ) {
 		$precision = pow( 10, $precision );
