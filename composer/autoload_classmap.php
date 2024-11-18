@@ -4551,6 +4551,7 @@ return array(
     'Wikimedia\\Parsoid\\NodeData\\DataMwError' => $vendorDir . '/wikimedia/parsoid/src/NodeData/DataMwError.php',
     'Wikimedia\\Parsoid\\NodeData\\DataMwI18n' => $vendorDir . '/wikimedia/parsoid/src/NodeData/DataMwI18n.php',
     'Wikimedia\\Parsoid\\NodeData\\DataParsoid' => $vendorDir . '/wikimedia/parsoid/src/NodeData/DataParsoid.php',
+    'Wikimedia\\Parsoid\\NodeData\\DataParsoidDiff' => $vendorDir . '/wikimedia/parsoid/src/NodeData/DataParsoidDiff.php',
     'Wikimedia\\Parsoid\\NodeData\\I18nInfo' => $vendorDir . '/wikimedia/parsoid/src/NodeData/I18nInfo.php',
     'Wikimedia\\Parsoid\\NodeData\\NodeData' => $vendorDir . '/wikimedia/parsoid/src/NodeData/NodeData.php',
     'Wikimedia\\Parsoid\\NodeData\\ParamInfo' => $vendorDir . '/wikimedia/parsoid/src/NodeData/ParamInfo.php',

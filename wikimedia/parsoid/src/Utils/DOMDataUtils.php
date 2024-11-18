@@ -21,6 +21,7 @@ use Wikimedia\Parsoid\NodeData\DataMw;
 use Wikimedia\Parsoid\NodeData\DataMwAttrib;
 use Wikimedia\Parsoid\NodeData\DataMwI18n;
 use Wikimedia\Parsoid\NodeData\DataParsoid;
+use Wikimedia\Parsoid\NodeData\DataParsoidDiff;
 use Wikimedia\Parsoid\NodeData\I18nInfo;
 use Wikimedia\Parsoid\NodeData\NodeData;
 use Wikimedia\Parsoid\NodeData\TempData;
@@ -61,10 +62,16 @@ class DOMDataUtils {
 		return $doc->codec;
 	}
 
+	public static function isPrepared( Document $doc ): bool {
+		// `bag` is a deliberate dynamic property; see DOMDataUtils::getBag()
+		// @phan-suppress-next-line PhanUndeclaredProperty dynamic property
+		return isset( $doc->bag );
+	}
+
 	public static function prepareDoc( Document $doc ): void {
 		// `bag` is a deliberate dynamic property; see DOMDataUtils::getBag()
 		// @phan-suppress-next-line PhanUndeclaredProperty dynamic property
-		$doc->bag = new DataBag();
+		$doc->bag = new DataBag( $doc );
 		// `codec` is a deliberate dynamic property; see DOMDataUtils::getCodec()
 		// @phan-suppress-next-line PhanUndeclaredProperty dynamic property
 		$doc->codec = new JsonCodec();
@@ -139,7 +146,7 @@ class DOMDataUtils {
 				// If this node's data-object id is different from storedId,
 				// it will indicate that the data-parsoid object was shared
 				// between nodes without getting cloned. Useful for debugging.
-				'Node id: ' . $nodeId .
+				'Node id: ' . $nodeId . ' ' .
 				'Stored data: ' . PHPUtils::jsonEncode( $dataObject )
 			);
 		}
@@ -273,23 +280,35 @@ class DOMDataUtils {
 	 * Get data diff info from a node.
 	 *
 	 * @param Element $node node
-	 * @return ?stdClass
+	 * @return ?DataParsoidDiff
 	 */
-	public static function getDataParsoidDiff( Element $node ): ?stdClass {
-		$data = self::getNodeData( $node );
-		// We won't set a default value for this property
-		return $data->parsoid_diff ?? null;
+	public static function getDataParsoidDiff( Element $node ): ?DataParsoidDiff {
+		// No default value; returns null if not present.
+		return self::getAttributeObject( $node, 'data-parsoid-diff', DataParsoidDiff::hint() );
+	}
+
+	/**
+	 * Get data diff info from a node, setting a default value if not present.
+	 *
+	 * @param Element $node node
+	 * @return DataParsoidDiff
+	 */
+	public static function getDataParsoidDiffDefault( Element $node ): DataParsoidDiff {
+		return self::getAttributeObjectDefault( $node, 'data-parsoid-diff', DataParsoidDiff::hint() );
 	}
 
 	/**
 	 * Set data diff info on a node.
 	 *
 	 * @param Element $node node
-	 * @param ?stdClass $diffObj data-parsoid-diff object
+	 * @param ?DataParsoidDiff $diffObj data-parsoid-diff object
 	 */
-	public static function setDataParsoidDiff( Element $node, ?stdClass $diffObj ): void {
-		$data = self::getNodeData( $node );
-		$data->parsoid_diff = $diffObj;
+	public static function setDataParsoidDiff( Element $node, ?DataParsoidDiff $diffObj ): void {
+		if ( $diffObj !== null ) {
+			self::setAttributeObject( $node, 'data-parsoid-diff', $diffObj, DataParsoidDiff::hint() );
+		} else {
+			self::removeAttributeObject( $node, 'data-parsoid-diff' );
+		}
 	}
 
 	/**
@@ -437,10 +456,8 @@ class DOMDataUtils {
 
 	/**
 	 * Get this document's pagebundle object
-	 * @param Document $doc
-	 * @return PageBundle|DomPageBundle
 	 */
-	public static function getPageBundle( Document $doc ) {
+	public static function getPageBundle( Document $doc ): DomPageBundle {
 		return self::getBag( $doc )->getPageBundle();
 	}
 
@@ -577,10 +594,6 @@ class DOMDataUtils {
 			$codec->newFromJsonString( $dataMwAttr, self::getCodecHints()['data-mw'] );
 		self::setDataMw( $node, $dmw );
 		$node->removeAttribute( 'data-mw' );
-
-		$dpd = self::getJSONAttribute( $node, 'data-parsoid-diff', null );
-		self::setDataParsoidDiff( $node, $dpd );
-		$node->removeAttribute( 'data-parsoid-diff' );
 
 		// We don't load rich attributes here: that will be done lazily as
 		// getAttributeObject()/etc methods are called because we don't
