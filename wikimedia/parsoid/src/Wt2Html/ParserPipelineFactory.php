@@ -45,10 +45,8 @@ use Wikimedia\Parsoid\Wt2Html\TT\BehaviorSwitchHandler;
 use Wikimedia\Parsoid\Wt2Html\TT\DOMFragmentBuilder;
 use Wikimedia\Parsoid\Wt2Html\TT\ExtensionHandler;
 use Wikimedia\Parsoid\Wt2Html\TT\ExternalLinkHandler;
-use Wikimedia\Parsoid\Wt2Html\TT\IncludeOnly;
 use Wikimedia\Parsoid\Wt2Html\TT\LanguageVariantHandler;
 use Wikimedia\Parsoid\Wt2Html\TT\ListHandler;
-use Wikimedia\Parsoid\Wt2Html\TT\NoInclude;
 use Wikimedia\Parsoid\Wt2Html\TT\OnlyInclude;
 use Wikimedia\Parsoid\Wt2Html\TT\ParagraphWrapper;
 use Wikimedia\Parsoid\Wt2Html\TT\PreHandler;
@@ -277,8 +275,6 @@ class ParserPipelineFactory {
 			"class" => TokenTransformManager::class,
 			"transformers" => [
 				OnlyInclude::class,
-				IncludeOnly::class,
-				NoInclude::class,
 
 				TemplateHandler::class,
 				ExtensionHandler::class,
@@ -447,7 +443,8 @@ class ParserPipelineFactory {
 		'inTemplate',
 
 		// If true, indicates that we are in a <includeonly> context
-		// (in current usage, isInclude === inTemplate)
+		// (in current usage, isInclude === inTemplate,
+		// or Frame::expand'ing at some depth)
 		'isInclude',
 
 		// The extension tag that is being processed (Ex: ref, references)
