@@ -62,6 +62,20 @@ class RequestMapper {
 		return $request;
 	}
 
+	public function mapToGoogleCreatePaymentRequest( array $params ): array {
+		$nameParts = explode( ' ', $params['full_name'], 2 );
+		$params['first_name'] = $nameParts[0];
+		$params['last_name'] = $nameParts[1] ?? '';
+		$request_params = $this->mapToCreatePaymentRequest( $params );
+		$request_params['payment_method'] = array_merge( $request_params['payment_method'], [
+			"method" => "googlepay",
+			"token" => $params['payment_token'],
+			"card_suffix" => $params['card_suffix'],
+			"card_scheme" => $params['card_scheme'],
+		] );
+		return $request_params;
+	}
+
 	/**
 	 * @param array $params
 	 * @return array

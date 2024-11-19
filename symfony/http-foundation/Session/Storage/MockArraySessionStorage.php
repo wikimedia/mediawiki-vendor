@@ -50,7 +50,7 @@ class MockArraySessionStorage implements SessionStorageInterface
     /**
      * @var array
      */
-    protected $data = array();
+    protected $data = [];
 
     /**
      * @var MetadataBag
@@ -60,13 +60,9 @@ class MockArraySessionStorage implements SessionStorageInterface
     /**
      * @var array|SessionBagInterface[]
      */
-    protected $bags = array();
+    protected $bags = [];
 
-    /**
-     * @param string      $name    Session name
-     * @param MetadataBag $metaBag MetadataBag instance
-     */
-    public function __construct($name = 'MOCKSESSID', MetadataBag $metaBag = null)
+    public function __construct(string $name = 'MOCKSESSID', ?MetadataBag $metaBag = null)
     {
         $this->name = $name;
         $this->setMetadataBag($metaBag);
@@ -98,7 +94,7 @@ class MockArraySessionStorage implements SessionStorageInterface
     /**
      * {@inheritdoc}
      */
-    public function regenerate($destroy = false, $lifetime = null)
+    public function regenerate(bool $destroy = false, ?int $lifetime = null)
     {
         if (!$this->started) {
             $this->start();
@@ -121,7 +117,7 @@ class MockArraySessionStorage implements SessionStorageInterface
     /**
      * {@inheritdoc}
      */
-    public function setId($id)
+    public function setId(string $id)
     {
         if ($this->started) {
             throw new \LogicException('Cannot set session ID after the session has started.');
@@ -141,7 +137,7 @@ class MockArraySessionStorage implements SessionStorageInterface
     /**
      * {@inheritdoc}
      */
-    public function setName($name)
+    public function setName(string $name)
     {
         $this->name = $name;
     }
@@ -152,7 +148,7 @@ class MockArraySessionStorage implements SessionStorageInterface
     public function save()
     {
         if (!$this->started || $this->closed) {
-            throw new \RuntimeException('Trying to save a session that was not started yet or was already closed');
+            throw new \RuntimeException('Trying to save a session that was not started yet or was already closed.');
         }
         // nothing to do since we don't persist the session data
         $this->closed = false;
@@ -170,7 +166,7 @@ class MockArraySessionStorage implements SessionStorageInterface
         }
 
         // clear out the session
-        $this->data = array();
+        $this->data = [];
 
         // reconnect the bags to the session
         $this->loadSession();
@@ -187,10 +183,10 @@ class MockArraySessionStorage implements SessionStorageInterface
     /**
      * {@inheritdoc}
      */
-    public function getBag($name)
+    public function getBag(string $name)
     {
         if (!isset($this->bags[$name])) {
-            throw new \InvalidArgumentException(sprintf('The SessionBagInterface %s is not registered.', $name));
+            throw new \InvalidArgumentException(sprintf('The SessionBagInterface "%s" is not registered.', $name));
         }
 
         if (!$this->started) {
@@ -208,7 +204,7 @@ class MockArraySessionStorage implements SessionStorageInterface
         return $this->started;
     }
 
-    public function setMetadataBag(MetadataBag $bag = null)
+    public function setMetadataBag(?MetadataBag $bag = null)
     {
         if (null === $bag) {
             $bag = new MetadataBag();
@@ -230,23 +226,20 @@ class MockArraySessionStorage implements SessionStorageInterface
     /**
      * Generates a session ID.
      *
-     * This doesn't need to be particularly cryptographically secure since this is just
-     * a mock.
-     *
      * @return string
      */
     protected function generateId()
     {
-        return hash('sha256', uniqid('ss_mock_', true));
+        return bin2hex(random_bytes(16));
     }
 
     protected function loadSession()
     {
-        $bags = array_merge($this->bags, array($this->metadataBag));
+        $bags = array_merge($this->bags, [$this->metadataBag]);
 
         foreach ($bags as $bag) {
             $key = $bag->getStorageKey();
-            $this->data[$key] = isset($this->data[$key]) ? $this->data[$key] : array();
+            $this->data[$key] = $this->data[$key] ?? [];
             $bag->initialize($this->data[$key]);
         }
 

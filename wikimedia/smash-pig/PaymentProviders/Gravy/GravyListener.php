@@ -73,18 +73,23 @@ class GravyListener implements IHttpActionHandler {
 	 * @return array
 	 */
 	public function mapFromWebhookMessage( array $message ): array {
-		$type = $message["target"]["type"];
-		$normalized = [
-			'created_at' => $message["created_at"],
-			'id' => $message["target"]["id"],
-			'message_type' => $this->normalizeMessageType( $type ),
-			'raw_response' => $message
-		];
+		try {
+			$type = $message["target"]["type"];
+			$normalized = [
+				'created_at' => $message["created_at"],
+				'id' => $message["target"]["id"],
+				'message_type' => $this->normalizeMessageType( $type ),
+				'raw_response' => $message
+			];
 
-		if ( $this->isRefundMessage( $type ) ) {
-			$normalized['gateway_parent_id'] = $message["target"]["transaction_id"];
+			if ( $this->isRefundMessage( $type ) ) {
+				$normalized['gateway_parent_id'] = $message["target"]["transaction_id"];
+			}
+			return $normalized;
+		} catch ( \Exception $exception ) {
+			Logger::info( "Exception thrown when normalizing type:" . json_encode( $message ) );
+			throw new \UnexpectedValueException( "Error normalizing message type: " . $exception->getMessage() );
 		}
-		return $normalized;
 	}
 
 	/**

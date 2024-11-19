@@ -16,6 +16,8 @@ abstract class BaseRefundAction {
 		$queueMsg = [
 			'gateway_refund_id' => $msg->pspReference,
 			'gateway_parent_id' => $this->getGatewayParentId( $msg ),
+			'payment_method' => $this->getPaymentMethod( $msg ),
+			'order_id' => $this->getOrderID( $msg ),
 			'gross_currency' => $msg->currency,
 			'gross' => $msg->amount,
 			'date' => strtotime( $msg->eventDate ),
@@ -40,6 +42,26 @@ abstract class BaseRefundAction {
 	 */
 	private function getGatewayParentId( AdyenMessage $msg ): string {
 		return !empty( $msg->parentPspReference ) ? $msg->parentPspReference : $msg->pspReference;
+	}
+
+	/**
+	 * get refund message's payment method
+	 *
+	 * @param AdyenMessage $msg
+	 * @return string
+	 */
+	private function getPaymentMethod( AdyenMessage $msg ): string {
+		return !empty( $msg->paymentMethod ) ? $msg->paymentMethod : '';
+	}
+
+	/**
+	 * get order id in case remove from pending table
+	 *
+	 * @param AdyenMessage $msg
+	 * @return string
+	 */
+	private function getOrderID( AdyenMessage $msg ): string {
+		return !empty( $msg->merchantReference ) ? $msg->merchantReference : '';
 	}
 
 	abstract protected function getTypeForQueueMessage(): string;

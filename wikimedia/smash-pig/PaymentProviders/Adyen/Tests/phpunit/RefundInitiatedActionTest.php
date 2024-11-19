@@ -27,6 +27,7 @@ class RefundInitiatedActionTest extends BaseAdyenTestCase {
 		$refund->merchantAccountCode = 'WikimediaTest';
 		$refund->currency = 'USD';
 		$refund->amount = 10.00;
+		$refund->paymentMethod = 'jcb';
 		$refund->eventDate = "2023-12-28T12:21:16+01:00";
 		$refund->success = true;
 		$refund->parentPspReference = "T89RVDS9V379R782";
@@ -37,7 +38,9 @@ class RefundInitiatedActionTest extends BaseAdyenTestCase {
 		$action = new RefundInitiatedAction();
 		$action->execute( $refund );
 		$queueMessage = $this->refundQueue->pop();
+		$this->assertEquals( $refund->paymentMethod, $queueMessage['payment_method'] );
 		$this->assertEquals( $refund->parentPspReference, $queueMessage['gateway_parent_id'] );
+		$this->assertEquals( $refund->merchantReference, $queueMessage['order_id'] );
 		$this->assertEquals( $refund->pspReference, $queueMessage['gateway_refund_id'] );
 		$this->assertEquals( 'refund', $queueMessage['type'] );
 	}

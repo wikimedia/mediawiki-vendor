@@ -87,12 +87,18 @@ class RequestHandler {
 
 		// Inform the request object of our security environment
 		$trustedHeader = $providerConfig->val( 'security/ip-header-name' );
+		$trustedHeaderSet = 0;
 		if ( $trustedHeader ) {
-			$request->setTrustedHeaderName( Request::HEADER_CLIENT_IP, $trustedHeader );
+			// Currently only support the 'X-Forwarded-For'
+			if ( $trustedHeader === 'X-Forwarded-For' ) {
+				$trustedHeaderSet = $trustedHeaderSet | Request::HEADER_X_FORWARDED_FOR;
+			} else {
+				throw new \RuntimeException( "Unsupported ip-header-name $trustedHeader" );
+			}
 		}
 		$trustedProxies = $providerConfig->val( 'security/ip-trusted-proxies' );
 		if ( $trustedProxies ) {
-			$request->setTrustedProxies( $trustedProxies );
+			$request->setTrustedProxies( $trustedProxies, $trustedHeaderSet );
 		}
 
 		// --- Actually get the endpoint object and start the request ---

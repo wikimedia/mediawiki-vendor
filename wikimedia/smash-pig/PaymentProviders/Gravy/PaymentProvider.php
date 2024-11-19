@@ -6,6 +6,7 @@ use SmashPig\Core\Context;
 use SmashPig\Core\Logging\Logger;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyApprovePaymentResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyCancelPaymentResponseFactory;
+use SmashPig\PaymentProviders\Gravy\Factories\GravyCreatePaymentResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyGetLatestPaymentStatusResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyRefundResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyReportResponseFactory;
@@ -20,6 +21,7 @@ use SmashPig\PaymentProviders\IPaymentProvider;
 use SmashPig\PaymentProviders\IRefundablePaymentProvider;
 use SmashPig\PaymentProviders\Responses\ApprovePaymentResponse;
 use SmashPig\PaymentProviders\Responses\CancelPaymentResponse;
+use SmashPig\PaymentProviders\Responses\CreatePaymentResponse;
 use SmashPig\PaymentProviders\Responses\PaymentDetailResponse;
 use SmashPig\PaymentProviders\Responses\RefundPaymentResponse;
 use SmashPig\PaymentProviders\ValidationException;
@@ -209,6 +211,57 @@ abstract class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaym
 			GravyReportResponseFactory::handleException( $reportResponse, $e->getMessage(), $e->getCode() );
 		}
 		return $reportResponse;
+	}
+
+	public function getPaymentRequest( array $params ): array {
+		// map local params to external format, ideally only changing key names and minor input format transformations
+		$gravyRequestMapper = new RequestMapper();
+
+		$gravyCreatePaymentRequest = $gravyRequestMapper->mapToCardCreatePaymentRequest( $params );
+		return $gravyCreatePaymentRequest;
+	}
+
+	public function validateInput( Validator $validator, array $params ): void {
+		$validator->validateCreatePaymentInput( $params );
+	}
+
+	public function createPayment( array $params ) : CreatePaymentResponse {
+		$createPaymentResponse = new createPaymentResponse();
+		try {
+			// extract out the validation of input out to a separate class
+			$validator = new Validator();
+
+			// recurring charge is same across all methods
+			if ( isset( $params['recurring_payment_token'] ) ) {
+				$validator->validateCreatePaymentFromTokenInput( $params );
+			} else {
+				$this->validateInput( $validator, $params );
+			}
+
+			$gravyCreatePaymentRequest = $this->getPaymentRequest( $params );
+
+			// dispatch api call to external API using mapped params
+			$rawGravyCreatePaymentResponse = $this->api->createPayment( $gravyCreatePaymentRequest );
+
+			// normalize gravy response
+			$gravyResponseMapper = $this->getResponseMapper();
+			$normalizedResponse = $gravyResponseMapper->mapFromPaymentResponse( $rawGravyCreatePaymentResponse );
+
+			// populate our standard response object from the normalized response
+			// this could be extracted out to a factory as we do for dlocal
+			$createPaymentResponse = GravyCreatePaymentResponseFactory::fromNormalizedResponse( $normalizedResponse );
+
+		}  catch ( ValidationException $e ) {
+			// it threw an exception!
+			GravyCreatePaymentResponseFactory::handleValidationException( $createPaymentResponse, $e->getData() );
+		}
+		 catch ( \Exception $e ) {
+			// it threw an exception that isn't validation!
+			Logger::error( 'Processor failed to create new payment with response:' . $e->getMessage() );
+			GravyCreatePaymentResponseFactory::handleException( $createPaymentResponse, $e->getMessage(), $e->getCode() );
+		 }
+
+		return $createPaymentResponse;
 	}
 
 	public function approvePayment( array $params ) : ApprovePaymentResponse {

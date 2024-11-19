@@ -11,6 +11,22 @@ use SmashPig\PaymentProviders\Adyen\Actions\ChargebackInitiatedAction;
  * @package SmashPig\PaymentProviders\Adyen\ExpatriatedMessages
  */
 class Chargeback extends AdyenMessage {
+	/** @var string The payment method used in this transaction, eg visa, mc, ideal, ev, wallie, etc... */
+	public $paymentMethod = '';
+
+	/** @var string The merchant reference, as order id */
+	public $merchantReference = '';
+
+	/**
+	 * add payment method the Chargeback message
+	 *
+	 * @param array $notification
+	 */
+	protected function constructFromJSON( array $notification ) {
+		parent::constructFromJSON( $notification );
+		$this->paymentMethod = $notification['paymentMethod'] ?? '';
+		$this->merchantReference = $notification['merchantReference'] ?? '';
+	}
 
 	/**
 	 * Will run all the actions that are loaded (from the 'actions' configuration

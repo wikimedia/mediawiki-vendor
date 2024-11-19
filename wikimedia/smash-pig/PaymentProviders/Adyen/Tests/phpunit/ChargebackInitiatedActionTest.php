@@ -33,12 +33,15 @@ class ChargebackInitiatedActionTest extends BaseAdyenTestCase {
 		$chargeback->parentPspReference = "T89RVDS9V379R782";
 		$chargeback->pspReference = "DAS676ASD5ASD77";
 		$chargeback->merchantReference = "testMerchantRef1";
+		$chargeback->paymentMethod = "jcb";
 		$chargeback->reason = "test";
 
 		$action = new ChargebackInitiatedAction();
 		$action->execute( $chargeback );
 		$refund = $this->refundQueue->pop();
 		$this->assertEquals( $chargeback->parentPspReference, $refund['gateway_parent_id'] );
+		$this->assertEquals( $chargeback->paymentMethod, $refund['payment_method'] );
+		$this->assertEquals( $chargeback->merchantReference, $refund['order_id'] );
 		$this->assertEquals( $chargeback->pspReference, $refund['gateway_refund_id'] );
 		$this->assertEquals( 'chargeback', $refund['type'] );
 	}
@@ -63,6 +66,7 @@ class ChargebackInitiatedActionTest extends BaseAdyenTestCase {
 		$chargeback->eventDate = "";
 		$chargeback->success = true;
 		$chargeback->pspReference = "DAS676ASD5ASD77";
+		$chargeback->paymentMethod = "amex";
 		$chargeback->merchantReference = "testMerchantRef1";
 		$chargeback->reason = "test second chargeback";
 
@@ -71,6 +75,8 @@ class ChargebackInitiatedActionTest extends BaseAdyenTestCase {
 		$refund = $this->refundQueue->pop();
 
 		$this->assertEquals( $chargeback->pspReference, $refund['gateway_refund_id'] );
+		$this->assertEquals( $chargeback->paymentMethod, $refund['payment_method'] );
+		$this->assertEquals( $chargeback->merchantReference, $refund['order_id'] );
 		// pspReference should have also been mapped to gateway_parent_id
 		$this->assertEquals( $chargeback->pspReference, $refund['gateway_parent_id'] );
 	}

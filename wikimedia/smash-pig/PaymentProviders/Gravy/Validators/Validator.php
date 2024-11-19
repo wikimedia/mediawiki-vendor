@@ -39,6 +39,25 @@ class Validator {
 	/**
 	 * @throws ValidationException
 	 */
+	public function validateGoogleCreatePaymentInput( array $params ): void {
+		$required = [
+			'payment_token',
+			'amount',
+			'currency',
+			'country',
+			'order_id',
+			'email',
+			'full_name',
+			'card_suffix',
+			'card_scheme'
+		];
+
+		$this->validateFields( $required, $params );
+	}
+
+	/**
+	 * @throws ValidationException
+	 */
 	public function validateRedirectCreatePaymentInput( array $params ): void {
 		$required = [
 			'amount',
