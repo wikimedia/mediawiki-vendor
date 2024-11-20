@@ -62,7 +62,7 @@
 		"nyholm/dsn": "2.0.1",
 		"onoi/message-reporter": "1.4.2",
 		"oojs/oojs-ui": "0.51.6",
-		"opis/json-schema": "1.1.0",
+		"opis/json-schema": "2.3.0",
 		"pear/console_getopt": "1.4.3",
 		"pear/mail": "2.0.0",
 		"pear/mail_mime": "1.10.12",
