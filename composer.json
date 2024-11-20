@@ -22,7 +22,7 @@
 		"composer/ca-bundle": "1.5.3",
 		"composer/semver": "3.4.3",
 		"cssjanus/cssjanus": "2.3.0",
-		"dasprid/enum": "1.0.5",
+		"dasprid/enum": "1.0.6",
 		"data-values/common": "1.1.0",
 		"data-values/data-values": "3.1.0",
 		"data-values/geo": "4.4.0",
