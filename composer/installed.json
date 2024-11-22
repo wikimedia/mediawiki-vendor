@@ -1201,17 +1201,17 @@
         },
         {
             "name": "pear/mail",
-            "version": "v1.6.0",
-            "version_normalized": "1.6.0.0",
+            "version": "v2.0.0",
+            "version_normalized": "2.0.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear/Mail.git",
-                "reference": "4fda3292ac6bf226d8841cfd8ee3cf4e28395c01"
+                "reference": "eb053f8b74f4f3178105fcf001626e63068c0dbc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/Mail/zipball/4fda3292ac6bf226d8841cfd8ee3cf4e28395c01",
-                "reference": "4fda3292ac6bf226d8841cfd8ee3cf4e28395c01",
+                "url": "https://api.github.com/repos/pear/Mail/zipball/eb053f8b74f4f3178105fcf001626e63068c0dbc",
+                "reference": "eb053f8b74f4f3178105fcf001626e63068c0dbc",
                 "shasum": ""
             },
             "require": {
@@ -1224,7 +1224,7 @@
             "suggest": {
                 "pear/net_smtp": "Install optionally via your project's composer.json"
             },
-            "time": "2023-11-01T21:31:59+00:00",
+            "time": "2024-01-15T21:56:23+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
