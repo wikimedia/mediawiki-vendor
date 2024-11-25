@@ -7,6 +7,7 @@ use Wikimedia\Assert\Assert;
 use Wikimedia\Bcp47Code\Bcp47Code;
 use Wikimedia\Parsoid\Core\ContentMetadataCollector;
 use Wikimedia\Parsoid\Core\ContentModelHandler;
+use Wikimedia\Parsoid\Core\DomPageBundle;
 use Wikimedia\Parsoid\Core\ResourceLimitExceededException;
 use Wikimedia\Parsoid\Core\Sanitizer;
 use Wikimedia\Parsoid\Core\TOCData;
@@ -187,8 +188,12 @@ class Env {
 	 */
 	public $styleTagKeys = [];
 
-	/** @var bool */
-	public $pageBundle;
+	/**
+	 * The DomPageBundle holding the JSON data for data-parsoid and data-mw
+	 * attributes, or `null` if these are to be encoded as inline HTML
+	 * attributes.
+	 */
+	public ?DomPageBundle $pageBundle = null;
 
 	/** @var Document */
 	private $domDiff;
@@ -257,7 +262,8 @@ class Env {
 	 * @param ContentMetadataCollector $metadata
 	 * @param ?array $options
 	 *  - wrapSections: (bool) Whether `<section>` wrappers should be added.
-	 *  - pageBundle: (bool) Sets ids on nodes and stores data-* attributes in a JSON blob.
+	 *  - pageBundle: (bool) When true, sets ids on nodes and stores
+	 *      data-* attributes in a JSON blob in Env::$pageBundle
 	 *  - traceFlags: (array) Flags indicating which components need to be traced
 	 *  - dumpFlags: (bool[]) Dump flags
 	 *  - debugFlags: (bool[]) Debug flags
@@ -298,7 +304,6 @@ class Env {
 		$this->tocData = new TOCData();
 		$this->topFrame = new PageConfigFrame( $this, $pageConfig, $siteConfig );
 		$this->wrapSections = (bool)( $options['wrapSections'] ?? true );
-		$this->pageBundle = (bool)( $options['pageBundle'] ?? false );
 		$this->pipelineFactory = new ParserPipelineFactory( $this );
 		$defaultContentVersion = Parsoid::defaultHTMLVersion();
 		$this->inputContentVersion = $options['inputContentVersion'] ?? $defaultContentVersion;
@@ -340,6 +345,13 @@ class Env {
 			$this->profiling = true;
 		}
 		$this->setupTopLevelDoc( $options['topLevelDoc'] ?? null );
+		if ( $options['pageBundle'] ?? false ) {
+			$this->pageBundle = new DomPageBundle(
+				$this->topLevelDoc,
+				[ 'counter' => -1, 'ids' => [], ],
+				[ 'ids' => [], ]
+			);
+		}
 		// NOTE:
 		// Don't try to do this in setupTopLevelDoc since it is called on existing Env objects
 		// in a couple of places. That then leads to a multiple-write to tocdata property on
@@ -654,23 +666,6 @@ class Env {
 	}
 
 	/**
-	 * Convert a Title to a string
-	 * @param Title $title
-	 * @param bool $ignoreFragment
-	 * @return string
-	 */
-	private function titleToString( Title $title, bool $ignoreFragment = false ): string {
-		$ret = $title->getPrefixedDBKey();
-		if ( !$ignoreFragment ) {
-			$fragment = $title->getFragment();
-			if ( $fragment !== '' ) {
-				$ret .= '#' . $fragment;
-			}
-		}
-		return $ret;
-	}
-
-	/**
 	 * Get normalized title key for a title string.
 	 *
 	 * @param string $str Should be in url-decoded format.
@@ -685,7 +680,9 @@ class Env {
 		if ( !$title ) {
 			return null;
 		}
-		return $this->titleToString( $title, $ignoreFragment );
+		return $ignoreFragment ?
+			$title->getPrefixedDBKey() :
+			$title->getFullDBKey();
 	}
 
 	/**
@@ -739,13 +736,16 @@ class Env {
 	}
 
 	/**
-	 * Make a link to a Title
+	 * Make a link to a local Title
 	 * @param Title $title
 	 * @return string
 	 */
 	public function makeLink( Title $title ): string {
+		// T380676: This method *should* be used only for local titles,
+		// (ie $title->getInterwiki() should be '') but apparently we
+		// are using it for interwiki/interlanguage links as well.
 		return $this->getSiteConfig()->relativeLinkPrefix() . Sanitizer::sanitizeTitleURI(
-			$this->titleToString( $title ),
+			$title->getFullDBKey(),
 			false
 		);
 	}
