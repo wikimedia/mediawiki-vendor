@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "070670a2ce367508a834bb3d39ff3f5b",
+    "content-hash": "ef469562aeeec29186fcdbf4929683a7",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -3134,16 +3134,16 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.51.2",
+            "version": "v0.51.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "9a2b2b42aac087db15c8a91fd6bbcef78dbd9898"
+                "reference": "d3b6711be6d85d23d4286f38afd967769c7dbe5a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/9a2b2b42aac087db15c8a91fd6bbcef78dbd9898",
-                "reference": "9a2b2b42aac087db15c8a91fd6bbcef78dbd9898",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/d3b6711be6d85d23d4286f38afd967769c7dbe5a",
+                "reference": "d3b6711be6d85d23d4286f38afd967769c7dbe5a",
                 "shasum": ""
             },
             "require": {
@@ -3155,7 +3155,7 @@
                 "mediawiki/minus-x": "1.1.3",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
                 "php-parallel-lint/php-parallel-lint": "1.4.0",
-                "phpunit/phpunit": "9.6.16"
+                "phpunit/phpunit": "9.6.21"
             },
             "type": "library",
             "autoload": {
@@ -3220,9 +3220,9 @@
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOUI",
             "support": {
-                "source": "https://github.com/wikimedia/oojs-ui/tree/v0.51.2"
+                "source": "https://github.com/wikimedia/oojs-ui/tree/v0.51.4"
             },
-            "time": "2024-11-13T15:47:35+00:00"
+            "time": "2024-12-05T17:21:22+00:00"
         },
         {
             "name": "opis/json-schema",
@@ -4162,12 +4162,12 @@
             ],
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-main": "0.12.x-dev"
-                },
                 "bamarni-bin": {
                     "bin-links": false,
                     "forward-command": false
+                },
+                "branch-alias": {
+                    "dev-main": "0.12.x-dev"
                 }
             },
             "autoload": {
@@ -4394,11 +4394,11 @@
             },
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-main": "4.x-dev"
-                },
                 "captainhook": {
                     "force-install": true
+                },
+                "branch-alias": {
+                    "dev-main": "4.x-dev"
                 }
             },
             "autoload": {
