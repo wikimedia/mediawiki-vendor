@@ -4688,6 +4688,7 @@ return array(
     'Wikimedia\\Parsoid\\Wt2Html\\TT\\WikiLinkHandler' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/TT/WikiLinkHandler.php',
     'Wikimedia\\Parsoid\\Wt2Html\\TokenTransformManager' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/TokenTransformManager.php',
     'Wikimedia\\Parsoid\\Wt2Html\\TokenizerUtils' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/TokenizerUtils.php',
+    'Wikimedia\\Parsoid\\Wt2Html\\TracingGrammar' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/TracingGrammar.php',
     'Wikimedia\\Parsoid\\Wt2Html\\TreeBuilder\\Attributes' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/TreeBuilder/Attributes.php',
     'Wikimedia\\Parsoid\\Wt2Html\\TreeBuilder\\DOMBuilder' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/TreeBuilder/DOMBuilder.php',
     'Wikimedia\\Parsoid\\Wt2Html\\TreeBuilder\\RemexPipeline' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/TreeBuilder/RemexPipeline.php',

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ef469562aeeec29186fcdbf4929683a7",
+    "content-hash": "ba789dc7fb5e36a2b43fa04c094bec64",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -5011,8 +5011,8 @@
             "type": "library",
             "extra": {
                 "thanks": {
-                    "name": "symfony/polyfill",
-                    "url": "https://github.com/symfony/polyfill"
+                    "url": "https://github.com/symfony/polyfill",
+                    "name": "symfony/polyfill"
                 }
             },
             "autoload": {
@@ -5087,8 +5087,8 @@
             "type": "library",
             "extra": {
                 "thanks": {
-                    "name": "symfony/polyfill",
-                    "url": "https://github.com/symfony/polyfill"
+                    "url": "https://github.com/symfony/polyfill",
+                    "name": "symfony/polyfill"
                 }
             },
             "autoload": {
@@ -5167,8 +5167,8 @@
             "type": "library",
             "extra": {
                 "thanks": {
-                    "name": "symfony/polyfill",
-                    "url": "https://github.com/symfony/polyfill"
+                    "url": "https://github.com/symfony/polyfill",
+                    "name": "symfony/polyfill"
                 }
             },
             "autoload": {
@@ -5243,8 +5243,8 @@
             "type": "library",
             "extra": {
                 "thanks": {
-                    "name": "symfony/polyfill",
-                    "url": "https://github.com/symfony/polyfill"
+                    "url": "https://github.com/symfony/polyfill",
+                    "name": "symfony/polyfill"
                 }
             },
             "autoload": {
@@ -5319,8 +5319,8 @@
             "type": "library",
             "extra": {
                 "thanks": {
-                    "name": "symfony/polyfill",
-                    "url": "https://github.com/symfony/polyfill"
+                    "url": "https://github.com/symfony/polyfill",
+                    "name": "symfony/polyfill"
                 }
             },
             "autoload": {
@@ -5401,8 +5401,8 @@
             "type": "library",
             "extra": {
                 "thanks": {
-                    "name": "symfony/polyfill",
-                    "url": "https://github.com/symfony/polyfill"
+                    "url": "https://github.com/symfony/polyfill",
+                    "name": "symfony/polyfill"
                 }
             },
             "autoload": {
@@ -6974,10 +6974,10 @@
             },
             "type": "composer-plugin",
             "extra": {
+                "class": "Wikimedia\\Composer\\Merge\\V2\\MergePlugin",
                 "branch-alias": {
                     "dev-master": "2.x-dev"
-                },
-                "class": "Wikimedia\\Composer\\Merge\\V2\\MergePlugin"
+                }
             },
             "autoload": {
                 "psr-4": {
@@ -7757,16 +7757,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.21.0-a9",
+            "version": "v0.21.0-a10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
-                "reference": "d186df169f823dc833e35ed2d8fd7595056088ba"
+                "reference": "4eca147c687af5c15d7ae7502bc3a36ec5c47301"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/d186df169f823dc833e35ed2d8fd7595056088ba",
-                "reference": "d186df169f823dc833e35ed2d8fd7595056088ba",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/4eca147c687af5c15d7ae7502bc3a36ec5c47301",
+                "reference": "4eca147c687af5c15d7ae7502bc3a36ec5c47301",
                 "shasum": ""
             },
             "require": {
@@ -7803,7 +7803,7 @@
                 "ockcyp/covers-validator": "1.6.0",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
                 "php-parallel-lint/php-parallel-lint": "1.4.0",
-                "phpunit/phpunit": "9.6.16",
+                "phpunit/phpunit": "9.6.21",
                 "sebastian/diff": "^4.0.3",
                 "wikimedia/alea": "^1.0.0",
                 "wikimedia/langconv": "^0.4.2",
@@ -7836,10 +7836,10 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.21.0-a9",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.21.0-a10",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
-            "time": "2024-11-27T15:08:12+00:00"
+            "time": "2024-12-11T16:42:01+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",
