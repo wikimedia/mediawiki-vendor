@@ -1,14 +1,14 @@
 # DataValues Geo
 
-Small library for **parsing, formatting and representing coordinates**. This library supports multiple coordinate formats,
-it is well tested, and it is used by the software behind Wikipedia and Wikidata.
+Small library for **parsing, formatting, and representing coordinates**. This library supports multiple coordinate formats,
+is well-tested, and is used by the software behind Wikipedia and Wikidata.
 
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/DataValues/Geo/PHP%20Composer)](https://github.com/DataValues/Geo/actions?query=workflow%3Aphp)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/DataValues/Geo/php.yml?branch=master)](https://github.com/DataValues/Geo/actions?query=workflow%3Aphp)
 [![Code Coverage](https://scrutinizer-ci.com/g/DataValues/Geo/badges/coverage.png?s=bf4cfd11f3b985fd05918f395c350b376a9ce0ee)](https://scrutinizer-ci.com/g/DataValues/Geo/)
 
 On [Packagist](https://packagist.org/packages/data-values/geo):
-[![Latest Stable Version](https://poser.pugx.org/data-values/geo/version.png)](https://packagist.org/packages/data-values/geo)
-[![Download count](https://poser.pugx.org/data-values/geo/d/total.png)](https://packagist.org/packages/data-values/geo)
+[![Latest Stable Version](https://poser.pugx.org/data-values/geo/v/stable)](https://packagist.org/packages/data-values/geo)
+[![Download count](https://poser.pugx.org/data-values/geo/downloads)](https://packagist.org/packages/data-values/geo)
 
 ## Usage
 
@@ -22,7 +22,7 @@ var_dump($latLongValue->getLongitude()); // float: -37.6176330
 
 These parsers are provided:
 
-* `LatLongParser` - Facade for format specific parsers. In most cases you will be using this one
+* `LatLongParser` - Facade for format-specific parsers. In most cases, you will be using this one
 * `DdCoordinateParser` - Parses decimal degree coordinates
 * `DmCoordinateParser` - Parses decimal minute coordinates
 * `DmsCoordinateParser` - Parses degree minute second coordinates
@@ -58,7 +58,7 @@ to change the letters used to indicate direction (N, E, S, W).
 
 ## Requirements
 
-**Geo 4.x:** PHP 7.1 or later (tested with PHP 7.1 up to PHP 7.4)
+**Geo 4.x:** PHP 7.1 or later (tested with PHP 7.1 up to PHP 8.4)
 
 **Geo 3.x:** PHP 5.5 or later (tested with PHP 5.5 up to PHP 7.4 and HHVM)
 
@@ -98,10 +98,21 @@ DataValues Geo is based upon and contains a lot of code written by
 [Maps](https://github.com/JeroenDeDauw/Maps) and
 [Semantic MediaWiki](https://semantic-mediawiki.org/) projects.
 
-Significant contributions where made by the Wikidata team, as [Wikimedia Germany](https://wikimedia.de/en)
+Significant contributions were made by the Wikidata team, as [Wikimedia Germany](https://wikimedia.de/en)
 employees for the [Wikidata project](https://wikidata.org/).
 
 ## Release notes
+
+### 4.5.1 (2025-01-06)
+
+* Restore support for PHP 7.4, required currently by Mediawiki CI
+
+### 4.5.0 (2024-12-10)
+
+* Dropped support for PHP 7.3 and 7.4
+* Improved support for PHP 8.4 by explicitly declaring nullable types
+* Upgraded `mediawiki/mediawiki-codesniffer` rules to version 45.0.0
+* Added testing with PHP 8.2 and 8.3
 
 ### 4.4.0 (2022-10-21)
 

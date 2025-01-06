@@ -8,7 +8,7 @@ use InvalidArgumentException;
 use RuntimeException;
 
 /**
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 final class ParserOptions {
@@ -31,6 +31,30 @@ final class ParserOptions {
 		}
 
 		$this->options = $options;
+	}
+
+	/**
+	 * Create and return a copy of these options,
+	 * where the value of an option was set to the provided default
+	 * if it had not been set already.
+	 *
+	 * Example usage:
+	 * ```php
+	 * public function __construct( ParserOptions $options ) {
+	 *     $this->options = $options
+	 *         ->withDefaultOption( self::OPT_A, 'A' )
+	 *         ->withDefaultOption( self::OPT_B, 'B' );
+	 * }
+	 * ```
+	 *
+	 * @param string $option
+	 * @param mixed $default
+	 * @return self
+	 */
+	public function withDefaultOption( string $option, $default ): self {
+		$options = new self( $this->options );
+		$options->defaultOption( $option, $default );
+		return $options;
 	}
 
 	/**
@@ -76,6 +100,7 @@ final class ParserOptions {
 	/**
 	 * Sets the value of an option to the provided default in case the option is not set yet.
 	 *
+	 * @deprecated Use {@link withDefaultOption()} instead.
 	 * @param string $option
 	 * @param mixed $default
 	 */

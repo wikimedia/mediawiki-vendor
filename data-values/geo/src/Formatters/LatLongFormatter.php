@@ -93,9 +93,9 @@ class LatLongFormatter implements ValueFormatter {
 
 	private const DEFAULT_PRECISION = 1 / 3600;
 
-	private $options;
+	private FormatterOptions $options;
 
-	public function __construct( FormatterOptions $options = null ) {
+	public function __construct( ?FormatterOptions $options = null ) {
 		$this->options = $options ?? new FormatterOptions();
 
 		$this->defaultOption( self::OPT_NORTH_SYMBOL, 'N' );
@@ -119,7 +119,7 @@ class LatLongFormatter implements ValueFormatter {
 		$this->defaultOption( self::OPT_PRECISION, 0 );
 
 		// Not used in this component, only here for downstream compatibility reasons
-		$this->options->defaultOption( ValueFormatter::OPT_LANG, 'en' );
+		$this->defaultOption( ValueFormatter::OPT_LANG, 'en' );
 	}
 
 	/**
@@ -211,7 +211,6 @@ class LatLongFormatter implements ValueFormatter {
 
 	private function makeDirectionalIfNeeded( string $coordinate, string $positiveSymbol,
 		string $negativeSymbol ): string {
-
 		if ( $this->options->getOption( self::OPT_DIRECTIONAL ) ) {
 			return $this->makeDirectional( $coordinate, $positiveSymbol, $negativeSymbol );
 		}
@@ -221,7 +220,6 @@ class LatLongFormatter implements ValueFormatter {
 
 	private function makeDirectional( string $coordinate, string $positiveSymbol,
 		string $negativeSymbol ): string {
-
 		$isNegative = substr( $coordinate, 0, 1 ) === '-';
 
 		if ( $isNegative ) {
@@ -374,8 +372,10 @@ class LatLongFormatter implements ValueFormatter {
 	 * @param string $option
 	 * @param mixed $default
 	 */
-	private function defaultOption( $option, $default ) {
-		$this->options->defaultOption( $option, $default );
+	private function defaultOption( string $option, $default ): void {
+		if ( !$this->options->hasOption( $option ) ) {
+			$this->options->setOption( $option, $default );
+		}
 	}
 
 }

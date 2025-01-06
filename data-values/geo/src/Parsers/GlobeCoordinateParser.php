@@ -33,14 +33,13 @@ class GlobeCoordinateParser implements ValueParser {
 	 */
 	public const OPT_GLOBE = 'globe';
 
-	private $options;
-	private $latLongPrecisionParser;
+	private ParserOptions $options;
+	private ?LatLongPrecisionParser $latLongPrecisionParser = null;
 
-	public function __construct( ParserOptions $options = null ) {
+	public function __construct( ?ParserOptions $options = null ) {
 		$this->options = $options ?: new ParserOptions();
-
-		$this->options->defaultOption( ValueParser::OPT_LANG, 'en' );
-		$this->options->defaultOption( self::OPT_GLOBE, 'http://www.wikidata.org/entity/Q2' );
+		$this->options = $this->options->withDefaultOption( ValueParser::OPT_LANG, 'en' );
+		$this->options = $this->options->withDefaultOption( self::OPT_GLOBE, 'http://www.wikidata.org/entity/Q2' );
 	}
 
 	/**
@@ -71,6 +70,9 @@ class GlobeCoordinateParser implements ValueParser {
 		);
 	}
 
+	/**
+	 * @return LatLongPrecisionParser
+	 */
 	private function getParser() {
 		if ( $this->latLongPrecisionParser === null ) {
 			$this->latLongPrecisionParser = new LatLongPrecisionParser( $this->options );

@@ -2,7 +2,7 @@
 
 namespace Deserializers\Exceptions;
 
-use Exception;
+use Throwable;
 
 /**
  * A deserialization exception that is thrown when an expected array key is present, but it's value
@@ -10,9 +10,9 @@ use Exception;
  *
  * @since 1.0
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
- * @author Thiemo Mättig
+ * @author Thiemo Kreuz
  */
 class InvalidAttributeException extends DeserializationException {
 
@@ -23,13 +23,13 @@ class InvalidAttributeException extends DeserializationException {
 	 * @param string $attributeName
 	 * @param mixed $attributeValue
 	 * @param string $message
-	 * @param Exception|null $previous
+	 * @param Throwable|null $previous
 	 */
 	public function __construct(
 		$attributeName,
 		$attributeValue,
 		$message = '',
-		Exception $previous = null
+		?Throwable $previous = null
 	) {
 		$this->attributeName = $attributeName;
 		$this->attributeValue = $attributeValue;

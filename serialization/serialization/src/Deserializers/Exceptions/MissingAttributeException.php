@@ -2,16 +2,16 @@
 
 namespace Deserializers\Exceptions;
 
-use Exception;
+use Throwable;
 
 /**
  * A deserialization exception that is thrown when an expected array key is not present.
  *
  * @since 1.0
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
- * @author Thiemo Mättig
+ * @author Thiemo Kreuz
  */
 class MissingAttributeException extends DeserializationException {
 
@@ -20,9 +20,9 @@ class MissingAttributeException extends DeserializationException {
 	/**
 	 * @param string $attributeName
 	 * @param string $message
-	 * @param Exception|null $previous
+	 * @param Throwable|null $previous
 	 */
-	public function __construct( $attributeName, $message = '', Exception $previous = null ) {
+	public function __construct( $attributeName, $message = '', ?Throwable $previous = null ) {
 		$this->attributeName = $attributeName;
 
 		if ( $message === '' ) {

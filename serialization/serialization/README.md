@@ -1,6 +1,6 @@
 # Serialization
 
-[![Build Status](https://secure.travis-ci.org/wmde/Serialization.png?branch=master)](http://travis-ci.org/wmde/Serialization)
+[![Build Status](https://github.com/wmde/Serialization/actions/workflows/lint-and-test.yaml/badge.svg?branch=master)](https://github.com/wmde/Serialization/actions/workflows/lint-and-test.yaml)
 [![Code Coverage](https://scrutinizer-ci.com/g/wmde/Serialization/badges/coverage.png?s=c1db04f88f763f63dc0f0d8315cf9b8491fc81e6)](https://scrutinizer-ci.com/g/wmde/Serialization/)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/wmde/Serialization/badges/quality-score.png?s=d25b9d7cbc4a737817ebf072d2e4b55b0bd8b662)](https://scrutinizer-ci.com/g/wmde/Serialization/)
 
@@ -14,7 +14,7 @@ Also contains various Exceptions and a few basic (de)serialization utilities.
 
 ## Requirements
 
-* PHP 5.5 or later
+* PHP 7.4 or later
 
 ## Installation
 
@@ -48,18 +48,19 @@ its "autoload" section.
 
 This component contains two sub parts, one containing serialization related code, the
 other holding deserialization specific code. The former is located in the Serializers
-namespace, while the later resides in the Deserializers one. Both namespaces are PSR-0
+namespace, while the latter resides in the Deserializers one. Both namespaces are PSR-0
 mapped onto the src directory.
 
 ### Interfaces
 
 The primary thing provided by this library are the Serializer and Deserializer namespaces.
 A set of Exceptions each process typically can encounter are also provided, and are located
-in respective Exceptions namespaces. They all derive from (Des/S)erializationException.
+in respective Exceptions namespaces. They all derive from
+`SerializationException`/`DeserializationException`.
 
-Both interfaces define two methods: a (de)serialize method that does the actual work, and
-a can(Des/S)erialize method that allows finding out if a given (de)serializer can process
-a given input.
+The main interfaces define the `serialize`/`deserialize` methods that do the actual work.
+In addition there are interfaces with a `isSerializerFor`/`isDeserializerFor` method
+respectively that allows finding out if a given (de)serializer can process a given input.
 
 ### Utilities
 
@@ -86,6 +87,18 @@ Serialization has been written by [Jeroen De Dauw](https://www.mediawiki.org/wik
 as [Wikimedia Germany](https://wikimedia.de) employee for the [Wikidata project](https://wikidata.org/).
 
 ## Release notes
+
+### 5.0.0 (dev)
+
+### 4.1.0 (2024-12-11)
+
+* Drop support for PHP 7.2, 7.3
+* Upgrade codesniffer rules to current `mediawiki/mediawiki-codesniffer` version (45.0.0)
+* Make nullable type parameter declarations explicit for compatibility with PHP 8.4
+* Type hinted the `$previous` parameter as `Throwable` instead of `Exception`
+* Updated minimum required PHP version from `5.5.9` to `7.2` (HHVM is no longer supported)
+* Updated to `GPL-2.0-or-later` according to SPDX v3
+* Added a default message to the MissingTypeException
 
 ### 4.0.0 (2017-10-25)
 

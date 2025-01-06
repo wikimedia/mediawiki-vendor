@@ -2,12 +2,12 @@
 
 namespace Serializers\Exceptions;
 
-use Exception;
+use Throwable;
 
 /**
  * @since 1.0
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class UnsupportedObjectException extends SerializationException {
@@ -17,9 +17,9 @@ class UnsupportedObjectException extends SerializationException {
 	/**
 	 * @param mixed $unsupportedObject
 	 * @param string $message
-	 * @param Exception|null $previous
+	 * @param Throwable|null $previous
 	 */
-	public function __construct( $unsupportedObject, $message = '', Exception $previous = null ) {
+	public function __construct( $unsupportedObject, $message = '', ?Throwable $previous = null ) {
 		$this->unsupportedObject = $unsupportedObject;
 
 		parent::__construct( $message, $previous );

@@ -5,7 +5,7 @@ namespace Deserializers;
 /**
  * @since 3.0
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 interface DispatchableDeserializer extends Deserializer {

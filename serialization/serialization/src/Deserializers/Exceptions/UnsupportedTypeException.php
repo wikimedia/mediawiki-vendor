@@ -2,16 +2,16 @@
 
 namespace Deserializers\Exceptions;
 
-use Exception;
+use Throwable;
 
 /**
  * Indicates the objectType specified in the serialization is not supported by a deserializer.
  *
  * @since 1.0
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
- * @author Thiemo Mättig
+ * @author Thiemo Kreuz
  */
 class UnsupportedTypeException extends DeserializationException {
 
@@ -20,9 +20,9 @@ class UnsupportedTypeException extends DeserializationException {
 	/**
 	 * @param mixed $type
 	 * @param string $message
-	 * @param Exception|null $previous
+	 * @param Throwable|null $previous
 	 */
-	public function __construct( $type, $message = '', Exception $previous = null ) {
+	public function __construct( $type, $message = '', ?Throwable $previous = null ) {
 		$this->type = $type;
 
 		if ( $message === '' && is_scalar( $type ) ) {

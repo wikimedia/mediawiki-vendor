@@ -1,6 +1,6 @@
 # Diff
 
-[![Build Status](https://secure.travis-ci.org/wmde/Diff.png?branch=master)](http://travis-ci.org/wmde/Diff)
+[![Build Status](https://github.com/wmde/Diff/actions/workflows/push.yaml/badge.svg?branch=master)](https://github.com/wmde/Diff/actions/workflows/push.yaml)
 [![Code Coverage](https://scrutinizer-ci.com/g/wmde/Diff/badges/coverage.png?s=6ef6a74a92b7efc6e26470bb209293125f70731e)](https://scrutinizer-ci.com/g/wmde/Diff/)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/wmde/Diff/badges/quality-score.png?s=d75d876247594bb4088159574cedf7bd648b9db2)](https://scrutinizer-ci.com/g/wmde/Diff/)
 [![Latest Stable Version](https://poser.pugx.org/diff/diff/version.png)](https://packagist.org/packages/diff/diff)
@@ -19,7 +19,7 @@ A full history of the different versions of Diff can be found in the [release no
 
 **Diff 3.x:**
 
-* PHP 7.2 or later (tested with PHP 7.2 up to PHP 8.1)
+* PHP 7.2 or later (tested with PHP 7.4 up to PHP 8.4)
 
 **Diff 2.x:**
 
@@ -221,5 +221,4 @@ $newVersion = $patcher->patch( $oldVersion, $diff );
 
 * [Diff on Packagist](https://packagist.org/packages/diff/diff)
 * [Diff on OpenHub](https://www.openhub.net/p/phpdiff)
-* [Diff on TravisCI](https://travis-ci.org/wmde/Diff)
 * [Diff on ScrutinizerCI](https://scrutinizer-ci.com/g/wmde/Diff/)

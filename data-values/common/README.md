@@ -54,6 +54,13 @@ employees for the [Wikidata project](https://wikidata.org/).
 
 ## Release notes
 
+### 1.2.0 (2024-12-10)
+
+* Dropped support for PHP 7.2 and PHP 7.3
+* Improved support for PHP 8.4 by explicitly declaring nullable types
+* Upgraded codesniffer rules to current `mediawiki/mediawiki-codesniffer` version (45.0.0)
+* Added testing with PHP 8.1 up to 8.4
+
 ### 1.1.0 (2022-10-21)
 
 * Improved compatibility with PHP 8.1;

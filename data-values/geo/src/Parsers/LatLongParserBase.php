@@ -33,22 +33,29 @@ abstract class LatLongParserBase implements ValueParser {
 	 */
 	public const OPT_SEPARATOR_SYMBOL = 'separator';
 
-	/**
-	 * @var ParserOptions
-	 */
-	private $options;
+	private ParserOptions $options;
 
-	public function __construct( ParserOptions $options = null ) {
+	public function __construct( ?ParserOptions $options = null ) {
 		$this->options = $options ?: new ParserOptions();
 
-		$this->options->defaultOption( ValueParser::OPT_LANG, 'en' );
+		$this->defaultOption( ValueParser::OPT_LANG, 'en' );
 
-		$this->options->defaultOption( self::OPT_NORTH_SYMBOL, 'N' );
-		$this->options->defaultOption( self::OPT_EAST_SYMBOL, 'E' );
-		$this->options->defaultOption( self::OPT_SOUTH_SYMBOL, 'S' );
-		$this->options->defaultOption( self::OPT_WEST_SYMBOL, 'W' );
+		$this->defaultOption( self::OPT_NORTH_SYMBOL, 'N' );
+		$this->defaultOption( self::OPT_EAST_SYMBOL, 'E' );
+		$this->defaultOption( self::OPT_SOUTH_SYMBOL, 'S' );
+		$this->defaultOption( self::OPT_WEST_SYMBOL, 'W' );
 
-		$this->options->defaultOption( self::OPT_SEPARATOR_SYMBOL, ',' );
+		$this->defaultOption( self::OPT_SEPARATOR_SYMBOL, ',' );
+	}
+
+	/**
+	 * @param string $option
+	 * @param mixed $default
+	 */
+	private function defaultOption( string $option, $default ): void {
+		if ( !$this->options->hasOption( $option ) ) {
+			$this->options->setOption( $option, $default );
+		}
 	}
 
 	/**
@@ -94,7 +101,7 @@ abstract class LatLongParserBase implements ValueParser {
 			throw new ParseException( 'Not a valid geographical coordinate', $rawValue, static::FORMAT_NAME );
 		}
 
-		list( $latitude, $longitude ) = $normalizedCoordinateSegments;
+		[ $latitude, $longitude ] = $normalizedCoordinateSegments;
 
 		return new LatLongValue(
 			$this->getParsedCoordinate( $latitude ),
@@ -183,6 +190,10 @@ abstract class LatLongParserBase implements ValueParser {
 		return $coordinateSegment;
 	}
 
+	/**
+	 * @param string $optionName
+	 * @return mixed
+	 */
 	protected function getOption( string $optionName ) {
 		return $this->options->getOption( $optionName );
 	}
