@@ -33,6 +33,7 @@ class ApprovePaymentStatus implements StatusNormalizer {
 				$status = FinalStatus::TIMEOUT;
 				break;
 			case 'In-Progress':
+			case 'Pending':
 				$status = FinalStatus::PENDING;
 				break;
 			case 'Partially-Refunded':

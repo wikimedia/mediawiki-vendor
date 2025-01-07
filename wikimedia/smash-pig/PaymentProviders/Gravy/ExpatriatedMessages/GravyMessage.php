@@ -6,11 +6,8 @@ use SmashPig\Core\Logging\Logger;
 use SmashPig\Core\Messages\ListenerMessage;
 
 abstract class GravyMessage extends ListenerMessage {
-	private $message = null;
 
-	private $provider_configuration = null;
-
-	private $date = "";
+	private string $date = '';
 
 	public function validate(): bool {
 		return true;
@@ -22,10 +19,10 @@ abstract class GravyMessage extends ListenerMessage {
 	 *  The method uses the normalized "message_type" property to locate the appropriate message class.
 	 *
 	 * @param array $notification
-	 * @return false|GravyMessage
+	 * @return GravyMessage
 	 * @throws ListenerDataException
 	 */
-	public static function getInstanceFromNormalizedNotification( array $notification ) {
+	public static function getInstanceFromNormalizedNotification( array $notification ): GravyMessage {
 		$messageClassName = $notification["message_type"];
 		$className = 'SmashPig\\PaymentProviders\\Gravy\\ExpatriatedMessages\\' . $messageClassName;
 
@@ -64,7 +61,7 @@ abstract class GravyMessage extends ListenerMessage {
 	 *
 	 * @return string
 	 */
-	abstract public function getAction(): string;
+	abstract public function getAction(): ?string;
 
-	abstract public function getDestinationQueue();
+	abstract public function getDestinationQueue(): ?string;
 }

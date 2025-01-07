@@ -7,13 +7,12 @@ use SmashPig\PaymentData\RecurringModel;
 
 class RequestMapper {
 
-	private const INTENT_CAPTURE = 'capture';
+	const INTENT_CAPTURE = 'capture';
 
 	/**
-	 * Trustly is currently a capture-only payment method, so we set the 'intent'
-	 * flag on Gravy API calls to capture
+	 * List for payment methods that do not have the 2 step auth/capture
 	 */
-	private const CAPTURE_ONLY_PAYMENT_METHOD = [];
+	const CAPTURE_ONLY_PAYMENT_METHOD = [];
 
 	public function mapToCreatePaymentRequest( array $params ): array {
 		$request = [
@@ -62,18 +61,23 @@ class RequestMapper {
 		return $request;
 	}
 
-	public function mapToGoogleCreatePaymentRequest( array $params ): array {
-		$nameParts = explode( ' ', $params['full_name'], 2 );
-		$params['first_name'] = $nameParts[0];
-		$params['last_name'] = $nameParts[1] ?? '';
-		$request_params = $this->mapToCreatePaymentRequest( $params );
-		$request_params['payment_method'] = array_merge( $request_params['payment_method'], [
-			"method" => "googlepay",
-			"token" => $params['payment_token'],
-			"card_suffix" => $params['card_suffix'],
-			"card_scheme" => $params['card_scheme'],
-		] );
-		return $request_params;
+	/**
+	 * @return array
+	 */
+	public function mapToRefundPaymentRequest( array $params ): array {
+		$body = [
+			"reason" => $params["reason"] ?? "Refunded due to user request",
+		];
+
+		if ( isset( $params['amount'] ) && !empty( $params['amount'] ) ) {
+			$body["amount"] = CurrencyRoundingHelper::getAmountInMinorUnits( $params['amount'], $params['currency'] );
+		}
+
+		$request = [
+			'gateway_txn_id' => $params['gateway_txn_id'],
+			'body' => $body
+		];
+		return $request;
 	}
 
 	/**
@@ -121,59 +125,6 @@ class RequestMapper {
 	/**
 	 * @return array
 	 */
-	public function mapToRedirectCreatePaymentRequest( array $params ): array {
-		$request = $this->mapToCreatePaymentRequest( $params );
-
-		$method = $params['payment_submethod'];
-		if ( empty( $method ) ) {
-			$method = $params['payment_method'];
-		}
-
-		if ( !isset( $params['recurring_payment_token'] ) ) {
-			$payment_method = [
-				'method' => $this->mapPaymentMethodToGravyPaymentMethod( $method ),
-				'country' => $params['country'],
-				'currency' => $params['currency'],
-			];
-			$request['payment_method'] = array_merge( $request['payment_method'], $payment_method );
-		}
-
-		if ( in_array( $request['payment_method']['method'], self::CAPTURE_ONLY_PAYMENT_METHOD ) ) {
-			/**
-			 * Defines the intent of a Gravy API call
-			 *
-			 * Available options:
-			 * - `authorize` (Default): Optionally approves and then authorizes a
-			 * transaction, but does not capture the funds.
-			 * - `capture`: Optionally approves and then authorizes and captures the
-			 * funds of the transaction.
-			 */
-			$request['intent'] = self::INTENT_CAPTURE;
-		}
-		return $request;
-	}
-
-	/**
-	 * @return array
-	 */
-	public function mapToCardCreatePaymentRequest( array $params ): array {
-		$request = $this->mapToCreatePaymentRequest( $params );
-		$payment_method = [];
-		if ( isset( $params['gateway_session_id'] ) ) {
-			$payment_method = [
-				'method' => 'checkout-session',
-				'id' => $params['gateway_session_id'],
-			];
-		}
-
-		$request['payment_method'] = array_merge( $request['payment_method'], $payment_method );
-
-		return $request;
-	}
-
-	/**
-	 * @return array
-	 */
 	public function mapToApprovePaymentRequest( array $params ): array {
 		$request = [
 			'amount' => CurrencyRoundingHelper::getAmountInMinorUnits( $params['amount'], $params['currency'] ),
@@ -192,20 +143,11 @@ class RequestMapper {
 	}
 
 	/**
-	 * Check if payment params is for recurring charge
-	 * @param array $params
-	 * @return bool
-	 */
-	private function isRecurringCharge( array $params ): bool {
-		return isset( $params['recurring_payment_token'] );
-	}
-
-	/**
 	 * Maps our payment submethod to gravy's
 	 * @param mixed $paymentMethod
 	 * @return string
 	 */
-   private function mapPaymentMethodToGravyPaymentMethod( $paymentMethod ): string {
+   protected function mapPaymentMethodToGravyPaymentMethod( $paymentMethod ): string {
 	   switch ( strtolower( $paymentMethod ) ) {
 		case 'ach':
 			return 'trustly';
@@ -216,25 +158,6 @@ class RequestMapper {
 				throw new \UnexpectedValueException( "Unknown Gravy Payment Method - $paymentMethod" );
 	   }
    }
-
-	/**
-	 * @return array
-	 */
-	public function mapToRefundPaymentRequest( array $params ): array {
-		$body = [
-			"reason" => $params["reason"] ?? "Refunded due to user request",
-		];
-
-		if ( isset( $params['amount'] ) && !empty( $params['amount'] ) ) {
-			$body["amount"] = CurrencyRoundingHelper::getAmountInMinorUnits( $params['amount'], $params['currency'] );
-		}
-
-		$request = [
-			'gateway_txn_id' => $params['gateway_txn_id'],
-			'body' => $body
-		];
-		return $request;
-	}
 
 	/**
 	 * @param array $params
@@ -271,4 +194,12 @@ class RequestMapper {
 		return $request;
 	}
 
+	/**
+	 * Check if payment params is for recurring charge
+	 * @param array $params
+	 * @return bool
+	 */
+	protected function isRecurringCharge( array $params ): bool {
+		return isset( $params['recurring_payment_token'] );
+	}
 }

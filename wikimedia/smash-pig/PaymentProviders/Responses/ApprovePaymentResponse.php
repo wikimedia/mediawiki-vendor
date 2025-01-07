@@ -6,7 +6,7 @@ namespace SmashPig\PaymentProviders\Responses;
  * Class ApprovePaymentResponse
  * @package SmashPig\PaymentProviders
  */
-class ApprovePaymentResponse extends PaymentProviderResponse {
+class ApprovePaymentResponse extends PaymentDetailResponse {
 
 	/**
 	 * Net amount, may have been converted to settlement currency

@@ -18,6 +18,7 @@ class CancelRecurringAction implements IListenerMessageAction {
 		/** @var Authorisation $msg */
 		QueueWrapper::push( 'recurring', [
 			'txn_type' => 'subscr_cancel',
+			'gateway' => 'adyen',
 			'rescue_reference' => $msg->retryRescueReference,
 			'is_autorescue' => true,
 			'cancel_reason' => 'Payment cannot be rescued: maximum failures reached'

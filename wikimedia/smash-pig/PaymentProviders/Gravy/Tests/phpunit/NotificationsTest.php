@@ -137,6 +137,17 @@ class NotificationsTest extends BaseGravyTestCase {
 		$this->assertNull( $queued_message, "Queue message shoud be skipped due to pending refund IPN" );
 	}
 
+	public function testPaymentMethodMessageIsDropped(): void {
+		[ $request, $response ] = $this->getValidRequestResponseObjects();
+		$responseBody = file_get_contents( __DIR__ . '/../Data/payment-method-updated.json' );
+		$request->method( 'getRawRequest' )->willReturn( $responseBody );
+		$this->gravyListener->execute( $request, $response );
+		$refundMessage = $this->refundQueue->pop();
+		$jobsMessage = $this->jobsGravyQueue->pop();
+		$this->assertNull( $refundMessage, 'No message shoud be queued to refund queue' );
+		$this->assertNull( $jobsMessage, 'No message shoud be queued to jobs queue' );
+	}
+
 	public function testRefundMessageComplete(): void {
 		[ $request, $response ] = $this->getValidRequestResponseObjects();
 		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/successful-refund.json' ), true );

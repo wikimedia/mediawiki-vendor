@@ -106,6 +106,89 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 		$this->assertEquals( $expectedAchDonation, $achDonation, 'Did not parse ACH donation correctly' );
 	}
 
+	public function testProcessDonationsWithFallBackUTM() {
+		$processor = new FundraiseupAudit();
+		$output = $processor->parseFile( __DIR__ . '/../Data/Donations/export_donations_2024-11-26_00-00_2024-11-26_23-59.csv' );
+		$this->assertSame( 2, count( $output ), 'Should have found four successful donations' );
+		$expectedDonation = [
+			'gateway' => 'fundraiseup',
+			'gross' => '5.00',
+			'currency' => 'USD',
+			'order_id' => 'DXYZ124',
+			'gateway_txn_id' => 'ch_payments123',
+			'payment_method' => 'apple',
+			'payment_submethod' => 'visa',
+			'date' => 1732633980,
+			'user_ip' => '127.0.0.1',
+			'first_name' => 'Jimmy',
+			'last_name' => 'Wales',
+			'street_address' => '',
+			'city' => '',
+			'country' => 'US',
+			'email' => 'jwales@example.org',
+			'invoice_id' => 'DXYZ124',
+			'gateway_account' => 'Wikimedia Foundation',
+			'frequency_unit' => 'month',
+			'frequency_interval' => 1,
+			'original_currency' => 'USD',
+			'original_gross' => '5.00',
+			'fee' => 0.13,
+			'recurring' => '1',
+			'subscr_id' => 'RCGCEFBA',
+			'external_identifier' => 'TEST_SUPPORTER2',
+			'start_date' => '2023-11-26T15:13:30.535Z',
+			'employer' => '',
+			'street_number' => '',
+			'postal_code' => '',
+			'state_province' => '',
+			'language' => 'en-US',
+			'utm_medium' => 'test_medium',
+			'utm_source' => 'test_source',
+			'utm_campaign' => 'test_campaign',
+			'type' => 'donations'
+		];
+
+		$expectedDonationFallbackUTM = [
+			'gateway' => 'fundraiseup',
+			'gross' => '5.00',
+			'currency' => 'USD',
+			'order_id' => 'DXYZ124',
+			'gateway_txn_id' => 'ch_payments123',
+			'payment_method' => 'apple',
+			'payment_submethod' => 'visa',
+			'date' => 1732633980,
+			'user_ip' => '127.0.0.1',
+			'first_name' => 'Jimmy',
+			'last_name' => 'Wales',
+			'street_address' => '',
+			'city' => '',
+			'country' => 'US',
+			'email' => 'jwales@example.org',
+			'invoice_id' => 'DXYZ124',
+			'gateway_account' => 'Wikimedia Foundation',
+			'frequency_unit' => 'month',
+			'frequency_interval' => 1,
+			'original_currency' => 'USD',
+			'original_gross' => '5.00',
+			'fee' => 0.13,
+			'recurring' => '1',
+			'subscr_id' => 'RCGCEFBA',
+			'external_identifier' => 'TEST_SUPPORTER2',
+			'start_date' => '2023-11-26T15:13:30.535Z',
+			'employer' => '',
+			'street_number' => '',
+			'postal_code' => '',
+			'state_province' => '',
+			'language' => 'en-US',
+			'utm_medium' => 'test_wmf_medium',
+			'utm_source' => 'test_wmf_source',
+			'utm_campaign' => 'test_wmf_campaign',
+			'type' => 'donations'
+		];
+		$this->assertEquals( $expectedDonation, $output[0], 'Did not parse refund correctly' );
+		$this->assertEquals( $expectedDonationFallbackUTM, $output[1], 'Did not parse refund correctly' );
+	}
+
 	/**
 	 * Now try a refund
 	 */

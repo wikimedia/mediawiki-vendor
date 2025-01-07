@@ -105,6 +105,7 @@ rejects:
         - merch_pmt
         - mp_signup
         - mp_notification
+        - mp_cancel
 
 # txn types defined here:
 # https://developer.paypal.com/api/nvp-soap/ipn/IPNandPDTVariables/#link-ipntransactiontypes

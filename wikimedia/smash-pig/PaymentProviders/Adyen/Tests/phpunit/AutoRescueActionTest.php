@@ -153,6 +153,7 @@ class AutoRescueActionTest extends BaseAdyenTestCase {
 		SourceFields::removeFromMessage( $recurMsg );
 		$this->assertEquals( [
 			'txn_type' => 'subscr_cancel',
+			'gateway' => 'adyen',
 			'rescue_reference' => $autorescue->retryRescueReference,
 			'is_autorescue' => true,
 			'cancel_reason' => 'Payment cannot be rescued: maximum failures reached'

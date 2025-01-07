@@ -282,6 +282,7 @@ class PaymentProviderTest extends BaseGravyTestCase {
 		$this->assertTrue( $response->isSuccessful() );
 		$this->assertEquals( FinalStatus::PENDING, $response->getStatus() );
 		$this->assertEquals( $responseBody['id'], $response->getGatewayTxnId() );
+		$this->assertEquals( $responseBody['payment_service_transaction_id'], $response->getBackendProcessorTransactionId() );
 	}
 
 	private function getApproveTrxnParams( $amount = '12.99' ) {

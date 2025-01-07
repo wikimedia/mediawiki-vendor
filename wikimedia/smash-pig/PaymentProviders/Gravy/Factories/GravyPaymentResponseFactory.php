@@ -7,6 +7,7 @@ use SmashPig\Core\PaymentError;
 use SmashPig\Core\ValidationError;
 use SmashPig\PaymentData\ErrorCode;
 use SmashPig\PaymentData\FinalStatus;
+use SmashPig\PaymentProviders\Responses\PaymentDetailResponse;
 use SmashPig\PaymentProviders\Responses\PaymentProviderResponse;
 
 abstract class GravyPaymentResponseFactory {
@@ -56,6 +57,15 @@ abstract class GravyPaymentResponseFactory {
 		self::addPaymentFailureError( $paymentResponse, $error, $errorCode );
 		$paymentResponse->setStatus( FinalStatus::FAILED );
 		$paymentResponse->setSuccessful( false );
+	}
+
+	protected static function setBackendProcessorAndId(
+		PaymentDetailResponse $paymentResponse, array $normalizedResponse
+	) {
+		$paymentResponse->setBackendProcessor( $normalizedResponse['backend_processor'] ?? null );
+		$paymentResponse->setBackendProcessorTransactionId(
+			$normalizedResponse['backend_processor_transaction_id'] ?? null
+		);
 	}
 
 	/**

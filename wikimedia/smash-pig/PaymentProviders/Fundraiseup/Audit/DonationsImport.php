@@ -71,6 +71,18 @@ class DonationsImport extends FundraiseupImports {
 				$donationURL = $csv->currentCol( 'Donation Page URL' );
 				$msg['country'] = $this->getCountryFromDonationURL( $donationURL );
 			}
+			if ( empty( $msg['utm_medium'] ) ) {
+				$utm_medium = $csv->currentCol( 'WMF Medium' );
+				$msg['utm_medium'] = $utm_medium ?? '';
+			}
+			if ( empty( $msg['utm_campaign'] ) ) {
+				$utm_campaign = $csv->currentCol( 'WMF Campaign' );
+				$msg['utm_campaign'] = $utm_campaign ?? '';
+			}
+			if ( empty( $msg['utm_source'] ) ) {
+				$utm_source = $csv->currentCol( 'WMF Source' );
+				$msg['utm_source'] = $utm_source ?? '';
+			}
 			return $msg;
 		}
 		return [];

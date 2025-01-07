@@ -10,11 +10,7 @@ class TransactionMessage extends GravyMessage {
 
 	private $action = "TransactionAction";
 
-	/**
-	 *
-	 * @param array $notification
-	 */
-	public function init( array $notification ) {
+	public function init( array $notification ): GravyMessage {
 		$this->setTransactionId( $notification["id"] );
 		$this->setMessageDate( $notification["created_at"] );
 		return $this;
@@ -24,7 +20,7 @@ class TransactionMessage extends GravyMessage {
 		return true;
 	}
 
-	public function getDestinationQueue() {
+	public function getDestinationQueue(): ?string {
 		return 'jobs-gravy';
 	}
 
@@ -36,7 +32,7 @@ class TransactionMessage extends GravyMessage {
 		$this->gateway_txn_id = $gateway_txn_id;
 	}
 
-	public function getAction(): string {
+	public function getAction(): ?string {
 		return $this->action;
 	}
 }

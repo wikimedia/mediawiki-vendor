@@ -100,15 +100,6 @@ class GravyCreatePaymentResponseFactory extends GravyPaymentResponseFactory {
 		$paymentResponse->setRiskScores( $normalizedResponse['risk_scores'] );
 	}
 
-	protected static function setBackendProcessorAndId(
-		PaymentProviderResponse $paymentResponse, array $normalizedResponse
-	) {
-		$paymentResponse->setBackendProcessor( $normalizedResponse['backend_processor'] ?? null );
-		$paymentResponse->setBackendProcessorTransactionId(
-			$normalizedResponse['backend_processor_transaction_id'] ?? null
-		);
-	}
-
 	protected static function setPaymentOrchestrationReconciliationId(
 		PaymentProviderResponse $paymentResponse,
 		array $normalizedResponse

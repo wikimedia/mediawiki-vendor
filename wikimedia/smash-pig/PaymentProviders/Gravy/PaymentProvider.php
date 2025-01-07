@@ -10,10 +10,12 @@ use SmashPig\PaymentProviders\Gravy\Factories\GravyCreatePaymentResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyGetLatestPaymentStatusResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyRefundResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyReportResponseFactory;
+use SmashPig\PaymentProviders\Gravy\Mapper\CardPaymentProviderRequestMapper;
 use SmashPig\PaymentProviders\Gravy\Mapper\RequestMapper;
 use SmashPig\PaymentProviders\Gravy\Mapper\ResponseMapper;
 use SmashPig\PaymentProviders\Gravy\Responses\ReportResponse;
-use SmashPig\PaymentProviders\Gravy\Validators\Validator;
+use SmashPig\PaymentProviders\Gravy\Validators\CardPaymentProviderValidator;
+use SmashPig\PaymentProviders\Gravy\Validators\PaymentProviderValidator;
 use SmashPig\PaymentProviders\ICancelablePaymentProvider;
 use SmashPig\PaymentProviders\IDeleteRecurringPaymentTokenProvider;
 use SmashPig\PaymentProviders\IGetLatestPaymentStatusProvider;
@@ -50,7 +52,7 @@ abstract class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaym
 		$paymentDetailResponse = new PaymentDetailResponse();
 		try {
 			// extract out the validation of input out to a separate class
-			$validator = new Validator();
+			$validator = $this->getValidator();
 			$validator->validateGetLatestPaymentStatusInput( $params );
 
 			$rawGravyGetPaymentDetailResponse = $this->api->getTransaction( $params );
@@ -95,10 +97,10 @@ abstract class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaym
 	public function deleteRecurringPaymentToken( array $params ): bool {
 		$response = false;
 		try {
-			$validator = new Validator();
+			$validator = $this->getValidator();
 			$validator->validateDeletePaymentTokenInput( $params );
 
-			$gravyRequestMapper = new RequestMapper();
+			$gravyRequestMapper = $this->getRequestMapper();
 			$gravyDeleteToken = $gravyRequestMapper->mapToDeletePaymentTokenRequest( $params );
 
 			$rawGravyDeletePaymentTokenResponse = $this->api->deletePaymentToken( $gravyDeleteToken );
@@ -125,10 +127,10 @@ abstract class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaym
 	public function refundPayment( array $params ): RefundPaymentResponse {
 		$refundResponse = new RefundPaymentResponse();
 		try {
-			$validator = new Validator();
+			$validator = $this->getValidator();
 			$validator->validateRefundInput( $params );
 
-			$gravyRequestMapper = new RequestMapper();
+			$gravyRequestMapper = $this->getRequestMapper();
 			$gravyRefundRequest = $gravyRequestMapper->mapToRefundPaymentRequest( $params );
 
 			$rawGravyRefundResponse = $this->api->refundTransaction( $gravyRefundRequest );
@@ -150,7 +152,7 @@ abstract class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaym
 	public function getRefundDetails( array $params ): RefundPaymentResponse {
 		$refundResponse = new RefundPaymentResponse();
 		try {
-			$validator = new Validator();
+			$validator = $this->getValidator();
 			$validator->validateGetRefundInput( $params );
 
 			$rawGravyRefundResponse = $this->api->getRefund( $params );
@@ -172,7 +174,7 @@ abstract class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaym
 	public function getReportExecutionDetails( array $params ): ReportResponse {
 		$reportResponse = new ReportResponse();
 		try {
-			$validator = new Validator();
+			$validator = $this->getValidator();
 			$validator->validateGetReportExecutionInput( $params );
 
 			$rawGravyReportExecutionResponse = $this->api->getReportExecutionDetails( $params );
@@ -194,7 +196,7 @@ abstract class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaym
 	public function generateReportDownloadUrl( array $params ): ReportResponse {
 		$reportResponse = new ReportResponse();
 		try {
-			$validator = new Validator();
+			$validator = $this->getValidator();
 			$validator->validateGenerateReportUrlInput( $params );
 
 			$rawGravyReportDownloadResponse = $this->api->generateReportDownloadUrl( $params );
@@ -213,32 +215,16 @@ abstract class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaym
 		return $reportResponse;
 	}
 
-	public function getPaymentRequest( array $params ): array {
-		// map local params to external format, ideally only changing key names and minor input format transformations
-		$gravyRequestMapper = new RequestMapper();
-
-		$gravyCreatePaymentRequest = $gravyRequestMapper->mapToCardCreatePaymentRequest( $params );
-		return $gravyCreatePaymentRequest;
-	}
-
-	public function validateInput( Validator $validator, array $params ): void {
-		$validator->validateCreatePaymentInput( $params );
-	}
-
 	public function createPayment( array $params ) : CreatePaymentResponse {
 		$createPaymentResponse = new createPaymentResponse();
 		try {
 			// extract out the validation of input out to a separate class
-			$validator = new Validator();
+			$validator = $this->getValidator();
 
-			// recurring charge is same across all methods
-			if ( isset( $params['recurring_payment_token'] ) ) {
-				$validator->validateCreatePaymentFromTokenInput( $params );
-			} else {
-				$this->validateInput( $validator, $params );
-			}
+			$validator->validateCreatePaymentInput( $params );
 
-			$gravyCreatePaymentRequest = $this->getPaymentRequest( $params );
+			$gravyRequestMapper = $this->getRequestMapper();
+			$gravyCreatePaymentRequest = $gravyRequestMapper->mapToCreatePaymentRequest( $params );
 
 			// dispatch api call to external API using mapped params
 			$rawGravyCreatePaymentResponse = $this->api->createPayment( $gravyCreatePaymentRequest );
@@ -269,11 +255,11 @@ abstract class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaym
 
 		try {
 			// extract out the validation of input out to a separate class
-			$validator = new Validator();
+			$validator = $this->getValidator();
 			$validator->validateApprovePaymentInput( $params );
 
 			// map local params to external format, ideally only changing key names and minor input format transformations
-			$gravyRequestMapper = new RequestMapper();
+			$gravyRequestMapper = $this->getRequestMapper();
 			$gravyApprovePaymentRequest = $gravyRequestMapper->mapToApprovePaymentRequest( $params );
 
 			// dispatch api call to external API using mapped params
@@ -300,5 +286,13 @@ abstract class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaym
 
 	protected function getResponseMapper(): ResponseMapper {
 		return new ResponseMapper();
+	}
+
+	protected function getRequestMapper(): RequestMapper {
+		return new CardPaymentProviderRequestMapper();
+	}
+
+	protected function getValidator(): PaymentProviderValidator {
+		return new CardPaymentProviderValidator();
 	}
 }

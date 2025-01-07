@@ -12,11 +12,7 @@ class RefundMessage extends GravyMessage {
 
 	private $action = "RefundAction";
 
-	/**
-	 *
-	 * @param array $notification
-	 */
-	public function init( array $notification ) {
+	public function init( array $notification ): GravyMessage {
 		$this->setGatewayRefundId( $notification["id"] );
 		$this->setGatewayParentId( $notification["gateway_parent_id"] );
 		$this->setMessageDate( $notification["created_at"] );
@@ -27,7 +23,7 @@ class RefundMessage extends GravyMessage {
 		return true;
 	}
 
-	public function getDestinationQueue() {
+	public function getDestinationQueue(): ?string {
 		return 'refund';
 	}
 
@@ -47,7 +43,7 @@ class RefundMessage extends GravyMessage {
 		$this->gateway_parent_id = $gateway_parent_id;
 	}
 
-	public function getAction(): string {
+	public function getAction(): ?string {
 		return $this->action;
 	}
 }

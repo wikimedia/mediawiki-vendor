@@ -4,7 +4,7 @@ namespace SmashPig\PaymentProviders\Gravy\Mapper;
 
 use SmashPig\PaymentData\FinalStatus;
 
-class BankResponseMapper extends ResponseMapper {
+class BankPaymentProviderResponseMapper extends RedirectPaymentProviderResponseMapper {
 
 	protected function normalizeStatus( string $paymentProcessorStatus ): string {
 		if ( $paymentProcessorStatus === "processing" || $paymentProcessorStatus === "capture_pending" ) {

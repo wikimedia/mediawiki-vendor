@@ -1,6 +1,5 @@
 <?php namespace SmashPig\PaymentProviders\PayPal;
 
-use LogicException;
 use SmashPig\Core\Context;
 use SmashPig\Core\Http\EnumValidator;
 use SmashPig\Core\Http\OutboundRequest;
@@ -31,8 +30,9 @@ class PayPalIpnValidator {
 			return false;
 		}
 
-		throw new LogicException(
-			'EnumValidator should not allow reaching this point!'
+		$responseToJSON = json_encode( $response, JSON_UNESCAPED_UNICODE ) ?: 'Unable to encode response.';
+		throw new \UnexpectedValueException(
+			'Unexpected $response[\'body\'] received during paypal validate postback-url request: ' . $responseToJSON
 		);
 	}
 
