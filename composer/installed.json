@@ -4293,17 +4293,17 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.12.4",
-            "version_normalized": "0.12.4.0",
+            "version": "v0.12.7",
+            "version_normalized": "0.12.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "2fd717afa05341b4f8152547f142cd2f130f6818"
+                "reference": "d73fa3c74918ef4522bb8a3bf9cab39161c4b57c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/2fd717afa05341b4f8152547f142cd2f130f6818",
-                "reference": "2fd717afa05341b4f8152547f142cd2f130f6818",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/d73fa3c74918ef4522bb8a3bf9cab39161c4b57c",
+                "reference": "d73fa3c74918ef4522bb8a3bf9cab39161c4b57c",
                 "shasum": ""
             },
             "require": {
@@ -4325,18 +4325,18 @@
                 "ext-pdo-sqlite": "The doc command requires SQLite to work.",
                 "ext-posix": "If you have PCNTL, you'll want the POSIX extension as well."
             },
-            "time": "2024-06-10T01:18:23+00:00",
+            "time": "2024-12-10T01:58:33+00:00",
             "bin": [
                 "bin/psysh"
             ],
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-main": "0.12.x-dev"
-                },
                 "bamarni-bin": {
                     "bin-links": false,
                     "forward-command": false
+                },
+                "branch-alias": {
+                    "dev-main": "0.12.x-dev"
                 }
             },
             "installation-source": "dist",
@@ -4369,7 +4369,7 @@
             ],
             "support": {
                 "issues": "https://github.com/bobthecow/psysh/issues",
-                "source": "https://github.com/bobthecow/psysh/tree/v0.12.4"
+                "source": "https://github.com/bobthecow/psysh/tree/v0.12.7"
             },
             "install-path": "../psy/psysh"
         },
