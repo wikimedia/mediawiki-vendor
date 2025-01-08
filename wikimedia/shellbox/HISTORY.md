@@ -1,6 +1,15 @@
 # Release History
 
-# 4.1.1 (2024-10-29)
+## 4.1.2 (2025-01-07)
+* Check that error level should be handled before throwing. Allows expected
+  warnings and errors to be suppressed, rather than triggering a ShellboxError
+* build: Updating mediawiki/mediawiki-phan-config to 0.15.0
+* Add wmf-certificates to video variants
+* Pass pcov options to child process
+* build: Updating phpunit/phpunit to 9.6.21
+* build: Updating mediawiki/mediawiki-codesniffer to 45.0.0
+
+## 4.1.1 (2024-10-29)
 * composer.json: Add changelog command (Reedy)
 * composer.json: Bump guzzle/guzzlehttp to 7.9.2 (Reedy)
 * Use explicit nullable type on parameter arguments (Reedy)
