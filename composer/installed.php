@@ -3,7 +3,7 @@
         'name' => 'mediawiki/core',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '7b20ffdd2b5a1ffd0f8e303d56a556074a897781',
+        'reference' => '85d876350f30d0ab164ed91ec87725e39cac68c4',
         'type' => 'mediawiki-core',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -47,9 +47,9 @@
             'dev_requirement' => false,
         ),
         'composer/ca-bundle' => array(
-            'pretty_version' => '1.5.3',
-            'version' => '1.5.3.0',
-            'reference' => '3b1fc3f0be055baa7c6258b1467849c3e8204eb2',
+            'pretty_version' => '1.5.5',
+            'version' => '1.5.5.0',
+            'reference' => '08c50d5ec4c6ced7d0271d2862dec8c1033283e6',
             'type' => 'library',
             'install_path' => __DIR__ . '/./ca-bundle',
             'aliases' => array(),
@@ -173,9 +173,9 @@
             'dev_requirement' => false,
         ),
         'maxmind-db/reader' => array(
-            'pretty_version' => 'v1.11.1',
-            'version' => '1.11.1.0',
-            'reference' => '1e66f73ffcf25e17c7a910a1317e9720a95497c7',
+            'pretty_version' => 'v1.12.0',
+            'version' => '1.12.0.0',
+            'reference' => '5b2d7a721dedfaef9dc20822c5fe7d26f9f8eb90',
             'type' => 'library',
             'install_path' => __DIR__ . '/../maxmind-db/reader',
             'aliases' => array(),
@@ -202,7 +202,7 @@
         'mediawiki/core' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '7b20ffdd2b5a1ffd0f8e303d56a556074a897781',
+            'reference' => '85d876350f30d0ab164ed91ec87725e39cac68c4',
             'type' => 'mediawiki-core',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -296,9 +296,9 @@
             'dev_requirement' => false,
         ),
         'pear/pear-core-minimal' => array(
-            'pretty_version' => 'v1.10.15',
-            'version' => '1.10.15.0',
-            'reference' => 'ce0adade8b97561656ace07cdaac4751c271ea8c',
+            'pretty_version' => 'v1.10.16',
+            'version' => '1.10.16.0',
+            'reference' => 'c0f51b45f50683bf5bbf558036854ebc9b54d033',
             'type' => 'library',
             'install_path' => __DIR__ . '/../pear/pear-core-minimal',
             'aliases' => array(),
@@ -454,7 +454,7 @@
         'rsky/pear-core-min' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v1.10.15',
+                0 => 'v1.10.16',
             ),
         ),
         'symfony/deprecation-contracts' => array(
