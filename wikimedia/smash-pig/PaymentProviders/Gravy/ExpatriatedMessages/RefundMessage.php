@@ -5,12 +5,12 @@ namespace SmashPig\PaymentProviders\Gravy\ExpatriatedMessages;
 class RefundMessage extends GravyMessage {
 
 	// @var string The refund id from Gravy
-	private $gateway_refund_id;
+	private string $gateway_refund_id;
 
 	// @var string The parent id from Gravy
-	private $gateway_parent_id;
+	private string $gateway_parent_id;
 
-	private $action = "RefundAction";
+	private string $action = "RefundAction";
 
 	public function init( array $notification ): GravyMessage {
 		$this->setGatewayRefundId( $notification["id"] );

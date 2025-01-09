@@ -10,12 +10,12 @@ use SmashPig\PaymentProviders\Adyen\ExpatriatedMessages\AdyenMessage;
 
 class AdyenRestListener extends RestListener {
 
-	protected function doMessageSecurity( ListenerMessage $msg ) {
+	protected function doMessageSecurity( ListenerMessage $msg ): bool {
 		// TODO: Implement doMessageSecurity() method.
 		return true;
 	}
 
-	protected function ackMessage( ListenerMessage $msg ) {
+	protected function ackMessage( ListenerMessage $msg ): bool {
 		// TODO: Implement ackMessage() method.
 		return true;
 	}

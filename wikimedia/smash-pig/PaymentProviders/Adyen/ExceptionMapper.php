@@ -297,7 +297,7 @@ class ExceptionMapper {
 	/**
 	 * @throws ApiException
 	 */
-	public static function throwOnAdyenError( $adyenResponse ) {
+	public static function throwOnAdyenError( $adyenResponse ): void {
 		$exceptionCode = null;
 		$exceptionMessage = null;
 

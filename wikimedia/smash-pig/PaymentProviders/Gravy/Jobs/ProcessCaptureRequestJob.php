@@ -134,7 +134,7 @@ class ProcessCaptureRequestJob implements Runnable {
 		return $success;
 	}
 
-	protected function getRiskAction( array $dbMessage, PaymentDetailResponse $transactionDetails ) {
+	protected function getRiskAction( array $dbMessage, PaymentDetailResponse $transactionDetails ): string {
 		$providerConfig = Context::get()->getProviderConfiguration();
 		$riskScore = isset( $dbMessage['risk_score'] ) ? $dbMessage['risk_score'] : 0;
 		$riskScores = $transactionDetails->getRiskScores();
@@ -176,7 +176,7 @@ class ProcessCaptureRequestJob implements Runnable {
 		return PaymentProviderFactory::getProviderForMethod( 'cc' );
 	}
 
-	protected function determineAction( $dbMessage, PaymentDetailResponse $transactionDetails ) {
+	protected function determineAction( $dbMessage, PaymentDetailResponse $transactionDetails ): string {
 		if ( $dbMessage && isset( $dbMessage['order_id'] ) ) {
 			$this->logger->debug( 'Found a valid message.' );
 		} else {

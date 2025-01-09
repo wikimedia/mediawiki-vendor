@@ -80,6 +80,15 @@ class RequestMapper {
 		return $request;
 	}
 
+	public function mapToAppleCreatePaymentRequest( array $params ): array {
+		$request_params = $this->mapToCreatePaymentRequest( $params );
+		$request_params['payment_method'] = array_merge( $request_params['payment_method'], [
+			"method" => "applepay",
+			"token" => json_decode( $params['payment_token'] ),
+		] );
+		return $request_params;
+	}
+
 	/**
 	 * @param array $params
 	 * @return array

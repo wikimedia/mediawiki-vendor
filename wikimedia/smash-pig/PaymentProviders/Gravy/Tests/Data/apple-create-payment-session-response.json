@@ -1,0 +1,13 @@
+{
+    "epochTimestamp": 1734020361822,
+    "expiresAt": 1734023961822,
+    "merchantSessionIdentifier": "random-merchant-session-id",
+    "nonce": "6c586e7e",
+    "merchantIdentifier": "random-merchant-id",
+    "domainName": "localhost:9001",
+    "displayName": "WikimediaFoundation",
+    "signature": "random-signature",
+    "operationalAnalyticsIdentifier": "random-op-id:123456",
+    "retries": 0,
+    "pspId": "random-id"
+}

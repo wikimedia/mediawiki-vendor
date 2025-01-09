@@ -5,8 +5,8 @@ namespace SmashPig\PaymentProviders\Gravy\ExpatriatedMessages;
 class ReportExecutionMessage extends GravyMessage {
 
 	// @var string The Report Execution id from Gravy
-	private $report_execution_id;
-	private $action = "ReportExecutionAction";
+	private string $report_execution_id;
+	private string $action = "ReportExecutionAction";
 
 	public function init( array $notification ): GravyMessage {
 		$this->setReportExecutionId( $notification["id"] );

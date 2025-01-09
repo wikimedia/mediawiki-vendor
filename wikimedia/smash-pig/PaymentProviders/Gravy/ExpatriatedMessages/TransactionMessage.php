@@ -6,9 +6,9 @@ class TransactionMessage extends GravyMessage {
 
 	// @var string The gateway_txn_id from Gravy
 
-	private $gateway_txn_id;
+	private string $gateway_txn_id;
 
-	private $action = "TransactionAction";
+	private string $action = "TransactionAction";
 
 	public function init( array $notification ): GravyMessage {
 		$this->setTransactionId( $notification["id"] );

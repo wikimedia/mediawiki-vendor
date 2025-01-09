@@ -403,6 +403,10 @@ class Gr4vyConfig
         $response = $this->get("/transactions/" . $transaction_id);
         return $response;
     }
+    public function syncTransaction($transaction_id) {
+        $response = $this->post("/transactions/" . $transaction_id . "/sync", null);
+        return $response;
+    }
     public function captureTransaction($transaction_id, $transaction_request) {
         $response = $this->post("/transactions/" . $transaction_id . "/capture", $transaction_request);
         return $response;
@@ -445,6 +449,18 @@ class Gr4vyConfig
     }
     public function generateReportDownloadUrl($report_id, $report_execution_id, $request = array()) {
         $response = $this->post("/reports/". $report_id . "/executions/" . $report_execution_id . "/url", $request);
+        return $response;
+    }
+    public function newApplePaySession($request = array()) {
+        $response = $this->post("/digital-wallets/apple/session", $request);
+        return $response;
+    }
+    public function newGooglePaySession($request = array()) {
+        $response = $this->post("/digital-wallets/google/session", $request);
+        return $response;
+    }
+    public function newClickToPaySession($request = array()) {
+        $response = $this->post("/digital-wallets/click-to-pay/session", $request);
         return $response;
     }
 }

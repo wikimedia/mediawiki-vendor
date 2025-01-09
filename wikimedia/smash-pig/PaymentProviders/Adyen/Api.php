@@ -147,7 +147,7 @@ class Api {
 		return $result['body'];
 	}
 
-	protected function getBillingAddress( array $params ) {
+	protected function getBillingAddress( array $params ): array {
 		$billingInfo = [
 			'billingAddress' => [
 				'city' => $params['city'] ?? 'NA',
@@ -169,7 +169,7 @@ class Api {
 	 * @param array $params normalized params from calling code
 	 * @return array contact ID parameters formatted Adyen-style
 	 */
-	protected function getContactInfo( array $params ) {
+	protected function getContactInfo( array $params ): array {
 		$contactInfo = [
 			'shopperEmail' => $params['email'] ?? '',
 			'shopperIP' => $params['user_ip'] ?? '',
@@ -196,7 +196,7 @@ class Api {
 	 * amount, currency, payment_method, recurring_payment_token, processor_contact_id
 	 * @throws \SmashPig\Core\ApiException
 	 */
-	public function createPaymentFromToken( $params ) {
+	public function createPaymentFromToken( array $params ) {
 		$restParams = [
 			'amount' => [
 				'currency' => $params['currency'],
@@ -543,7 +543,7 @@ class Api {
 	 */
 	protected function makeRestApiCall(
 		array $params, string $path, string $method, ?string $alternateBaseUrl = null
-	) {
+	): array {
 		$basePath = $alternateBaseUrl ?? $this->restBaseUrl;
 		$url = $basePath . '/' . $path;
 		$request = new OutboundRequest( $url, $method );
@@ -568,7 +568,7 @@ class Api {
 	 * @param array $params Needs keys 'gateway_txn_id', 'currency', and 'amount' set
 	 * @return bool|array
 	 */
-	public function approvePayment( $params ) {
+	public function approvePayment( array $params ) {
 		$restParams = [
 			'amount' => [
 				'currency' => $params['currency'],
@@ -657,7 +657,7 @@ class Api {
 	 *  which need the shopperInteraction and recurringProcessModel parameters set.
 	 * @return array
 	 */
-	private function addRecurringParams( $params, $needInteractionAndModel ) {
+	private function addRecurringParams( $params, bool $needInteractionAndModel ) {
 		// credit card, apple pay, and iDeal all need shopperReference and storePaymentMethod
 		$recurringParams['shopperReference'] = $params['order_id'];
 		$recurringParams['storePaymentMethod'] = true;

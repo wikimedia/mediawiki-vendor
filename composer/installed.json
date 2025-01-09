@@ -533,17 +533,17 @@
         },
         {
             "name": "corneltek/getoptionkit",
-            "version": "2.7.2",
-            "version_normalized": "2.7.2.0",
+            "version": "2.7.3",
+            "version_normalized": "2.7.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/c9s/GetOptionKit.git",
-                "reference": "aab2728de80175217cab0d7a4d078c3eb907e2c0"
+                "reference": "3d42c14251cfd8becbffc851852de3587d4e8eec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/c9s/GetOptionKit/zipball/aab2728de80175217cab0d7a4d078c3eb907e2c0",
-                "reference": "aab2728de80175217cab0d7a4d078c3eb907e2c0",
+                "url": "https://api.github.com/repos/c9s/GetOptionKit/zipball/3d42c14251cfd8becbffc851852de3587d4e8eec",
+                "reference": "3d42c14251cfd8becbffc851852de3587d4e8eec",
                 "shasum": ""
             },
             "require": {
@@ -552,7 +552,7 @@
             "require-dev": {
                 "phpunit/phpunit": "^8.0 || ^9.0"
             },
-            "time": "2023-04-14T03:35:14+00:00",
+            "time": "2024-12-18T10:10:51+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -579,7 +579,7 @@
             "homepage": "http://github.com/c9s/GetOptionKit",
             "support": {
                 "issues": "https://github.com/c9s/GetOptionKit/issues",
-                "source": "https://github.com/c9s/GetOptionKit/tree/2.7.2"
+                "source": "https://github.com/c9s/GetOptionKit/tree/2.7.3"
             },
             "install-path": "../corneltek/getoptionkit"
         },
@@ -696,17 +696,17 @@
         },
         {
             "name": "gr4vy/gr4vy-php",
-            "version": "v0.21.4",
-            "version_normalized": "0.21.4.0",
+            "version": "v0.23.2",
+            "version_normalized": "0.23.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/gr4vy/gr4vy-php.git",
-                "reference": "5fd242eb7b6c2434cd40b16d4e5b27b1152aad17"
+                "reference": "1b0ece57c02f99536f8986d34685d2fa94e95ba3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gr4vy/gr4vy-php/zipball/5fd242eb7b6c2434cd40b16d4e5b27b1152aad17",
-                "reference": "5fd242eb7b6c2434cd40b16d4e5b27b1152aad17",
+                "url": "https://api.github.com/repos/gr4vy/gr4vy-php/zipball/1b0ece57c02f99536f8986d34685d2fa94e95ba3",
+                "reference": "1b0ece57c02f99536f8986d34685d2fa94e95ba3",
                 "shasum": ""
             },
             "require": {
@@ -721,7 +721,7 @@
                 "friendsofphp/php-cs-fixer": "^3.4.0",
                 "phpunit/phpunit": "^9.5.20"
             },
-            "time": "2024-08-06T16:53:49+00:00",
+            "time": "2025-01-07T17:40:18+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -751,7 +751,7 @@
                 "sdk"
             ],
             "support": {
-                "source": "https://github.com/gr4vy/gr4vy-php/tree/v0.21.4"
+                "source": "https://github.com/gr4vy/gr4vy-php/tree/v0.23.2"
             },
             "install-path": "../gr4vy/gr4vy-php"
         },
@@ -2249,17 +2249,17 @@
         },
         {
             "name": "phpmailer/phpmailer",
-            "version": "v6.9.2",
-            "version_normalized": "6.9.2.0",
+            "version": "v6.9.3",
+            "version_normalized": "6.9.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "a7b17b42fa4887c92146243f3d2f4ccb962af17c"
+                "reference": "2f5c94fe7493efc213f643c23b1b1c249d40f47e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/a7b17b42fa4887c92146243f3d2f4ccb962af17c",
-                "reference": "a7b17b42fa4887c92146243f3d2f4ccb962af17c",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/2f5c94fe7493efc213f643c23b1b1c249d40f47e",
+                "reference": "2f5c94fe7493efc213f643c23b1b1c249d40f47e",
                 "shasum": ""
             },
             "require": {
@@ -2289,7 +2289,7 @@
                 "symfony/polyfill-mbstring": "To support UTF-8 if the Mbstring PHP extension is not enabled (^1.2)",
                 "thenetworg/oauth2-azure": "Needed for Microsoft XOAUTH2 authentication"
             },
-            "time": "2024-10-09T10:07:50+00:00",
+            "time": "2024-11-24T18:04:13+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -2321,7 +2321,7 @@
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
             "support": {
                 "issues": "https://github.com/PHPMailer/PHPMailer/issues",
-                "source": "https://github.com/PHPMailer/PHPMailer/tree/v6.9.2"
+                "source": "https://github.com/PHPMailer/PHPMailer/tree/v6.9.3"
             },
             "funding": [
                 {
@@ -2955,31 +2955,31 @@
         },
         {
             "name": "symfony/deprecation-contracts",
-            "version": "v2.5.3",
-            "version_normalized": "2.5.3.0",
+            "version": "v2.5.4",
+            "version_normalized": "2.5.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/deprecation-contracts.git",
-                "reference": "80d075412b557d41002320b96a096ca65aa2c98d"
+                "reference": "605389f2a7e5625f273b53960dc46aeaf9c62918"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/deprecation-contracts/zipball/80d075412b557d41002320b96a096ca65aa2c98d",
-                "reference": "80d075412b557d41002320b96a096ca65aa2c98d",
+                "url": "https://api.github.com/repos/symfony/deprecation-contracts/zipball/605389f2a7e5625f273b53960dc46aeaf9c62918",
+                "reference": "605389f2a7e5625f273b53960dc46aeaf9c62918",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1"
             },
-            "time": "2023-01-24T14:02:46+00:00",
+            "time": "2024-09-25T14:11:13+00:00",
             "type": "library",
             "extra": {
+                "thanks": {
+                    "url": "https://github.com/symfony/contracts",
+                    "name": "symfony/contracts"
+                },
                 "branch-alias": {
                     "dev-main": "2.5-dev"
-                },
-                "thanks": {
-                    "name": "symfony/contracts",
-                    "url": "https://github.com/symfony/contracts"
                 }
             },
             "installation-source": "dist",
@@ -3005,7 +3005,7 @@
             "description": "A generic function and convention to trigger deprecation notices",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/deprecation-contracts/tree/v2.5.3"
+                "source": "https://github.com/symfony/deprecation-contracts/tree/v2.5.4"
             },
             "funding": [
                 {
@@ -3025,17 +3025,17 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v5.4.46",
-            "version_normalized": "5.4.46.0",
+            "version": "v5.4.48",
+            "version_normalized": "5.4.48.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
-                "reference": "168b77c71e6f02d8fc479db78beaf742a37d3cab"
+                "reference": "3f38b8af283b830e1363acd79e5bc3412d055341"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/168b77c71e6f02d8fc479db78beaf742a37d3cab",
-                "reference": "168b77c71e6f02d8fc479db78beaf742a37d3cab",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/3f38b8af283b830e1363acd79e5bc3412d055341",
+                "reference": "3f38b8af283b830e1363acd79e5bc3412d055341",
                 "shasum": ""
             },
             "require": {
@@ -3056,7 +3056,7 @@
             "suggest": {
                 "symfony/mime": "To use the file extension guesser"
             },
-            "time": "2024-11-05T15:52:21+00:00",
+            "time": "2024-11-13T18:58:02+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -3084,7 +3084,7 @@
             "description": "Defines an object-oriented layer for the HTTP specification",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/http-foundation/tree/v5.4.46"
+                "source": "https://github.com/symfony/http-foundation/tree/v5.4.48"
             },
             "funding": [
                 {
@@ -5135,17 +5135,17 @@
         },
         {
             "name": "wikimedia/smash-pig",
-            "version": "v0.8.25",
-            "version_normalized": "0.8.25.0",
+            "version": "v0.8.26",
+            "version_normalized": "0.8.26.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/wikimedia-fundraising-SmashPig.git",
-                "reference": "7afa5fcc3a75e6f1286a0d2079c0f881f1c9c120"
+                "reference": "225e43475e99f3094aefffe647b54b4dd3012844"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/wikimedia-fundraising-SmashPig/zipball/7afa5fcc3a75e6f1286a0d2079c0f881f1c9c120",
-                "reference": "7afa5fcc3a75e6f1286a0d2079c0f881f1c9c120",
+                "url": "https://api.github.com/repos/wikimedia/wikimedia-fundraising-SmashPig/zipball/225e43475e99f3094aefffe647b54b4dd3012844",
+                "reference": "225e43475e99f3094aefffe647b54b4dd3012844",
                 "shasum": ""
             },
             "require": {
@@ -5155,7 +5155,7 @@
                 "ext-curl": "*",
                 "ext-json": "*",
                 "ext-pdo": "*",
-                "gr4vy/gr4vy-php": "0.21.4",
+                "gr4vy/gr4vy-php": "0.23.2",
                 "php": ">=7.4",
                 "phpmailer/phpmailer": "^6",
                 "predis/predis": "^1.1",
@@ -5170,7 +5170,7 @@
                 "php-parallel-lint/php-parallel-lint": "^1.2",
                 "phpunit/phpunit": "^9.5"
             },
-            "time": "2025-01-06T18:31:18+00:00",
+            "time": "2025-01-08T22:33:53+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -5223,7 +5223,7 @@
                 "payments"
             ],
             "support": {
-                "source": "https://github.com/wikimedia/wikimedia-fundraising-SmashPig/tree/v0.8.25"
+                "source": "https://github.com/wikimedia/wikimedia-fundraising-SmashPig/tree/v0.8.26"
             },
             "install-path": "../wikimedia/smash-pig"
         },

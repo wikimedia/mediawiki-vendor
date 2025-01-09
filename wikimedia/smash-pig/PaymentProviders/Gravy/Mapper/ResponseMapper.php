@@ -296,7 +296,7 @@ class ResponseMapper {
 		];
 	}
 
-	protected function mapFrom3DSecureErrorResponse( array $params ) {
+	protected function mapFrom3DSecureErrorResponse( array $params ): array {
 		$error_data = $params['error_data'];
 		$error = [
 			"code" => $error_data['code'],

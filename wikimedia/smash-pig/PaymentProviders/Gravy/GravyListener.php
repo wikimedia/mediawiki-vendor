@@ -115,7 +115,7 @@ class GravyListener implements IHttpActionHandler {
 		}
 	}
 
-	protected function isRefundMessage( string $type ) {
+	protected function isRefundMessage( string $type ): bool {
 		return $type === 'refund';
 	}
 }

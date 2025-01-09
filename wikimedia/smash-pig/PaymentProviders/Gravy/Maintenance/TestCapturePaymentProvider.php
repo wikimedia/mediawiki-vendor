@@ -26,7 +26,7 @@ class TestCapturePaymentProvider extends MaintenanceBase {
 	/**
 	 * Do the actual work of the script.
 	 */
-	public function execute() {
+	public function execute(): void {
 		/**
 		 * @var PaymentProvider
 		 */

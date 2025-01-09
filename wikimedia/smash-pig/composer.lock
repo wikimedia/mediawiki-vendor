@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dddf16a7fc0fffb8cd6a05db3a795877",
+    "content-hash": "cdffd8f69d71af6923a997e09eb1f9d4",
     "packages": [
         {
             "name": "amzn/login-and-pay-with-amazon-sdk-php",
@@ -215,16 +215,16 @@
         },
         {
             "name": "gr4vy/gr4vy-php",
-            "version": "v0.21.4",
+            "version": "v0.23.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/gr4vy/gr4vy-php.git",
-                "reference": "5fd242eb7b6c2434cd40b16d4e5b27b1152aad17"
+                "reference": "1b0ece57c02f99536f8986d34685d2fa94e95ba3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gr4vy/gr4vy-php/zipball/5fd242eb7b6c2434cd40b16d4e5b27b1152aad17",
-                "reference": "5fd242eb7b6c2434cd40b16d4e5b27b1152aad17",
+                "url": "https://api.github.com/repos/gr4vy/gr4vy-php/zipball/1b0ece57c02f99536f8986d34685d2fa94e95ba3",
+                "reference": "1b0ece57c02f99536f8986d34685d2fa94e95ba3",
                 "shasum": ""
             },
             "require": {
@@ -267,9 +267,9 @@
                 "sdk"
             ],
             "support": {
-                "source": "https://github.com/gr4vy/gr4vy-php/tree/v0.21.4"
+                "source": "https://github.com/gr4vy/gr4vy-php/tree/v0.23.2"
             },
-            "time": "2024-08-06T16:53:49+00:00"
+            "time": "2025-01-07T17:40:18+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -3838,5 +3838,5 @@
     "platform-overrides": {
         "php": "7.4.33"
     },
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }

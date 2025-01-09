@@ -24,13 +24,18 @@ class Api {
 	}
 
 	/**
-	 * Creates a new checkout session
+	 * Creates a new payment session for an apple or card payment
 	 */
-	public function createPaymentSession( $params = [] ) {
-		$response = $this->gravyApiClient->newCheckoutSession( $params );
+	public function createPaymentSession( $params = [], $method = "card" ) {
+		$response = null;
 		$tl = new TaggedLogger( 'RawData' );
-		$response_string = json_encode( $response );
-		$tl->info( "New Checkout Session response $response_string" );
+		if ( $method == "apple" ) {
+			$response = $this->gravyApiClient->newApplePaySession( $params );
+			$tl->info( "New Apple Pay Session response " . json_encode( $response ) );
+		} else {
+			$response = $this->gravyApiClient->newCheckoutSession( $params );
+			$tl->info( "New Checkout Session response " . json_encode( $response ) );
+		}
 		return $response;
 	}
 

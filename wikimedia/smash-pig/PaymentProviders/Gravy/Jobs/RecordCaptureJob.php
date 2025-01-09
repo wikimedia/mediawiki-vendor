@@ -32,7 +32,7 @@ class RecordCaptureJob implements Runnable {
 		];
 	}
 
-	public function execute() {
+	public function execute(): bool {
 		$transactionDetails = GravyGetLatestPaymentStatusResponseFactory::fromNormalizedResponse( $this->payload );
 		$logger = Logger::getTaggedLogger( "corr_id-gravy-{$transactionDetails->getOrderId()}" );
 		$logger->info(

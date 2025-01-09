@@ -30,6 +30,8 @@ payment-provider:
         class: SmashPig\PaymentProviders\Gravy\CardPaymentProvider
     google:
         class: SmashPig\PaymentProviders\Gravy\GooglePayPaymentProvider
+    apple:
+        class: SmashPig\PaymentProviders\Gravy\ApplePayPaymentProvider
     dd:
         class: SmashPig\PaymentProviders\Gravy\BankPaymentProvider
     venmo:

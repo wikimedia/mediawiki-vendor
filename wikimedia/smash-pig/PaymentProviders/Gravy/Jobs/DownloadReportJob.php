@@ -26,7 +26,7 @@ class DownloadReportJob implements Runnable {
 		];
 	}
 
-	public function execute() {
+	public function execute(): bool {
 		$this->logger = new TaggedLogger( __CLASS__ );
 		$c = Context::get()->getProviderConfiguration();
 		$reportResponse = GravyReportResponseFactory::fromNormalizedResponse( $this->payload );

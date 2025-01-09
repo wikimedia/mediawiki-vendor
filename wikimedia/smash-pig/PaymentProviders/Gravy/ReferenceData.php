@@ -166,7 +166,7 @@ class ReferenceData {
 		"trustlyeurope" => ''
 	];
 
-	public static function decodePaymentMethod( string $method, ?string $scheme = '' ) {
+	public static function decodePaymentMethod( string $method, ?string $scheme = '' ): array {
 		$methods = self::$methods;
 		$payment_method = $methods[$method] ?? '';
 		$payment_submethod = '';
