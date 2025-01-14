@@ -321,12 +321,12 @@ class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaymentTokenP
 		$donorDetails->setEmail( $transaction['paymentMethodSnapshot']['payer']['email'] ?? $params['email'] );
 		$donorDetails->setPhone( $transaction['paymentMethodSnapshot']['payer']['phone'] ?? $params['phone'] ?? null );
 		$donorDetails->setFullName( $donorDetails->getFirstName() . ' ' . $donorDetails->getLastName() );
-		$donorDetails->setCustomerId( $transaction['paymentMethodSnapshot']['payer']['payerId'] ?? $transaction['customer']['id'] );
+		$donorDetails->setCustomerId( $transaction['paymentMethodSnapshot']['payer']['payerId'] ?? $transaction['customer']['id'] ?? null );
 		// additional data for venmo
 		$donorDetails->setUserName( $transaction['paymentMethodSnapshot']['username'] ?? null );
 		$response->setDonorDetails( $donorDetails );
 		// The recurring token (vault) is the id of paymentMethod
-		if ( isset( $transaction['recurring'] ) && $transaction['paymentMethod']['id'] ) {
+		if ( isset( $transaction['recurring'] ) && isset( $transaction['paymentMethod']['id'] ) ) {
 			$response->setRecurringPaymentToken( $transaction['paymentMethod']['id'] );
 			$response->setProcessorContactID( $donorDetails->getCustomerId() );
 		}

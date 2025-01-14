@@ -742,6 +742,7 @@ class ComposerStaticInit_mediawiki_vendor
         'GetOptionKit\\ValueType\\UrlType' => __DIR__ . '/..' . '/corneltek/getoptionkit/src/ValueType/UrlType.php',
         'Gr4vy\\Gr4vyConfig' => __DIR__ . '/..' . '/gr4vy/gr4vy-php/lib/Gr4vyConfig.php',
         'GravyAdapter' => __DIR__ . '/../..' . '/extensions/DonationInterface/gravy_gateway/gravy.adapter.php',
+        'GravyAppleApi' => __DIR__ . '/../..' . '/extensions/DonationInterface/gravy_gateway/gravy_apple.api.php',
         'GravyDonationApi' => __DIR__ . '/../..' . '/extensions/DonationInterface/gravy_gateway/gravy.api.php',
         'GravyGateway' => __DIR__ . '/../..' . '/extensions/DonationInterface/gravy_gateway/gravy_gateway.body.php',
         'GravyGatewayResult' => __DIR__ . '/../..' . '/extensions/DonationInterface/gravy_gateway/gravy_resultswitcher.body.php',

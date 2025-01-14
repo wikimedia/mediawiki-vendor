@@ -1,5 +1,6 @@
 {
     "type": "transaction",
+    "reconciliation_id":"7XcL8k1xEfOsOWNZMi2RaO",
     "id": "fe26475d-ec3e-4884-9553-f7356683f7f9",
     "amount": 1299,
     "auth_response_code": "00",

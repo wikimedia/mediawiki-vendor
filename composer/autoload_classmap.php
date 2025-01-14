@@ -285,6 +285,7 @@ return array(
     'GetOptionKit\\ValueType\\UrlType' => $vendorDir . '/corneltek/getoptionkit/src/ValueType/UrlType.php',
     'Gr4vy\\Gr4vyConfig' => $vendorDir . '/gr4vy/gr4vy-php/lib/Gr4vyConfig.php',
     'GravyAdapter' => $baseDir . '/extensions/DonationInterface/gravy_gateway/gravy.adapter.php',
+    'GravyAppleApi' => $baseDir . '/extensions/DonationInterface/gravy_gateway/gravy_apple.api.php',
     'GravyDonationApi' => $baseDir . '/extensions/DonationInterface/gravy_gateway/gravy.api.php',
     'GravyGateway' => $baseDir . '/extensions/DonationInterface/gravy_gateway/gravy_gateway.body.php',
     'GravyGatewayResult' => $baseDir . '/extensions/DonationInterface/gravy_gateway/gravy_resultswitcher.body.php',

@@ -100,10 +100,4 @@ class GravyCreatePaymentResponseFactory extends GravyPaymentResponseFactory {
 		$paymentResponse->setRiskScores( $normalizedResponse['risk_scores'] );
 	}
 
-	protected static function setPaymentOrchestrationReconciliationId(
-		PaymentProviderResponse $paymentResponse,
-		array $normalizedResponse
-	): void {
-		$paymentResponse->setPaymentOrchestratorReconciliationId( $normalizedResponse['payment_orchestrator_reconciliation_id'] );
-	}
 }

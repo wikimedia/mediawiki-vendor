@@ -68,6 +68,13 @@ abstract class GravyPaymentResponseFactory {
 		);
 	}
 
+	protected static function setPaymentOrchestrationReconciliationId(
+		PaymentDetailResponse $paymentResponse,
+		array $normalizedResponse
+	): void {
+		$paymentResponse->setPaymentOrchestratorReconciliationId( $normalizedResponse['payment_orchestrator_reconciliation_id'] );
+	}
+
 	/**
 	 * @param string $status
 	 * @return bool
