@@ -1,0 +1,44 @@
+#
+# Sample Apache/PHP/SmashPig settings
+#   Customize this file as appropriate for your install enviornment
+#   and place in the primary apache config or rename to .htaccess
+#
+
+# Make sure Apache cannot serve things we don't want it to
+## Bad Extensions (Anywhere) *.SQL, *.CFG, .*
+<FilesMatch "(?i)(.*\.(sql|cfg))|(^\.[a-z0-9]+)|(config_default\.php)|(config\.php)$">
+    Order Allow,Deny
+</FilesMatch>
+
+# We do not want Apache to show directory lists
+#Options -Indexes
+
+# We do want to allow Apache to follow symbolic links
+Options +FollowSymLinks
+
+# Set the default handler.
+DirectoryIndex index.php
+
+# Required unmodifiable PHP settings
+<IfModule mod_php5.c>
+    php_value magic_quotes_gpc                0
+    php_value register_globals                0
+    php_value session.auto_start              0
+    php_value mbstring.http_input             pass
+    php_value mbstring.http_output            pass
+    php_value mbstring.encoding_translation   0
+</IfModule>
+
+# Rewrite rules! IE: direct everything to /smashpig_http_handler.php
+<IfModule mod_rewrite.c>
+    RewriteEngine on
+
+    # Modify this as needed -- but the bottom level should always be ./smashpig
+    RewriteBase /smashpig
+
+    # Rewrite URLs of the form 'x' to the form 'index.php?p=x'.
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} !=/favicon.ico
+    RewriteRule ^.*smashpig/(.*)$ /smashpig_http_handler.php?p=$1 [L,QSA]
+</IfModule>

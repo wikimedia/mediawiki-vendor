@@ -1,0 +1,10 @@
+{
+    "type": "checkout-session",
+    "id": "8d3fe99b-1422-42e6-bbb3-932d95ae5f79",
+    "expires_at": "2022-01-01T00:00:00+00:00",
+    "cart_items": [],
+    "metadata": {
+      "key": "value"
+    },
+    "payment_method": { }
+  }

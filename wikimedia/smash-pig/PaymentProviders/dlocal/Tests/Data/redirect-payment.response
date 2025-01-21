@@ -1,0 +1,14 @@
+HTTP/1.1 600 OK
+Date: Tue, 10 Jan 2023 21:51:35 GMT
+Content-Type: application/json
+Content-Length: 279
+Connection: keep-alive
+Server: rhino-core-shield
+X-RequestId: api-middleware
+X-UOW: 1-63bddde7-319a14f80091ff1625398232
+X-ServiceName: api-middleware
+Vary: Accept-Encoding, User-Agent
+Content-Encoding: gzip
+X-Upstream: 10.145.76.81:80
+
+{"id": "D-4-80ca7fbd-67ad-444a-aa88-791ca4a0c2b2","payment_method_flow": "REDIRECT","created_date": "2018-12-26T20:28:47.000+0000","status": "PENDING","status_detail": "The payment is pending.","status_code": "100","order_id": "123.3","redirect_url": "https://sandbox.dlocal.com/collect/select_payment_method?id=M-faeefc04-bdf7-4a72-9d8a-8af234dc4b26&xtid=CATH-ST-1675083201-1103267419","notification_url": "http://merchant.com/notifications"}

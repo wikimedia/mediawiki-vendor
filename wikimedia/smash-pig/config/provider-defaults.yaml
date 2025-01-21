@@ -1,0 +1,59 @@
+# The following settings can be overridden per provider in the files under
+# each providers name in the config directory.
+#
+# Access these settings via Context::getProviderConfiguration
+
+logging:
+    root-context: SmashPig
+    # LOG_INFO
+    log-level: 6
+
+    enabled-log-streams:
+        - syslog
+
+    log-streams:
+        syslog:
+            class: SmashPig\Core\Logging\LogStreams\SyslogLogStream
+            constructor-parameters:
+                # LOG_LOCAL0
+                - 128
+                # LOG_NDELAY
+                - 8
+
+security:
+    ip-header-name: ""
+    ip-trusted-proxies: []
+    ip-allowlist: []
+
+endpoints: []
+
+payment-provider: []
+
+actions: []
+
+email:
+    # TODO: Instead, format like: Name <email@domain>
+    from-address:
+        - sender@contoso.com
+        - Example Sender
+    bounce-address: bounce+$1@contoso.com
+    archive-addresses: []
+
+curl:
+    wrapper:
+        class: SmashPig\Core\Http\CurlWrapper
+    validator:
+        class: SmashPig\Core\Http\HttpStatusValidator
+    # FIXME: provide these as constructor-parameters to CurlWrapper?
+    timeout: 7
+    retries: 3
+    user-agent: SmashPig
+    log-outbound: false
+
+fraud-filters:
+    # Automatically capture authorizations under this score
+    review-threshold: 75
+    # Automatically cancel authorizations with at least this score
+    reject-threshold: 125
+
+default-method: cc

@@ -1,0 +1,21 @@
+cardPaymentMethodSpecificInput:
+    isRecurring: '%recurring%'
+    recurringPaymentSequenceIndicator: '%installment%'
+    token: '%recurring_payment_token%'
+    initialSchemeTransactionId: '%initial_scheme_transaction_id%'
+order:
+    amountOfMoney:
+        amount: '%amount%'
+        currencyCode: '%currency%'
+    references:
+        descriptor: '%description%'
+        merchantReference: '%order_id%'
+    customer:
+        contactDetails:
+            emailAddress: '%email%'
+        personalInformation:
+            name:
+                firstName: '%first_name%'
+                surname: '%last_name%'
+fraudFields:
+    customerIpAddress: '%user_ip%'

@@ -1,0 +1,8 @@
+﻿"Amazon Payments Advanced",
+"Settlement Report",
+"SellerId","ABCDEFGHIJKLM"
+"SettlementStartDate","2015-09-30T15:00:44 -0700"
+"SettlementEndDate","2015-10-01T14:59:44 -0700"
+"TransactionPostedDate","SettlementId","AmazonTransactionId","SellerReferenceId","TransactionType","AmazonOrderReferenceId","SellerOrderId","StoreName","CurrencyCode","TransactionDescription","TransactionAmount","TransactionPercentageFee","TransactionFixedFee","TotalTransactionFee","NetTransactionAmount",
+"2015-10-01T07:06:47 -0700","5984862222","","","Transfer","","","","USD","SellerPayments_DateRangeReport_transfer_accounting_ending_with_trace_id","-25.54","0","0","0","-25.54"
+"2015-10-01T11:10:34 -0700","5984862222","P01-1488694-1234567-C034811","87654321-0","Capture","P01-1234567-2138100","","","USD","","10.00","-0.29","-0.30","-0.59","9.41"

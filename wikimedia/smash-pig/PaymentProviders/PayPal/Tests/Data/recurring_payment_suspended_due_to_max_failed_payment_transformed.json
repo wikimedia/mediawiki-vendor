@@ -1,0 +1,15 @@
+{
+  "subscr_id": "I-WCJA1MBC3CWY",
+  "txn_type": "subscr_failed",
+  "contribution_tracking_id": "49006681",
+  "order_id": "49006681.1",
+  "email": "jonq@public.com",
+  "first_name": "John",
+  "last_name": "Public",
+  "country": "US",
+  "gateway": "paypal_ec",
+  "recurring": "1",
+  "gross": "5.00",
+  "currency": "USD",
+  "date": "1501679678"
+}

@@ -1,0 +1,3 @@
+test-array:
+    test-array-value-one: '%test_array_value%'
+    test-array-value-two: '%test_array_value%'

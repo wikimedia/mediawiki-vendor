@@ -1,0 +1,14 @@
+HTTP/1.1 600 OK
+Date: Tue, 10 Jan 2023 21:51:35 GMT
+Content-Type: application/json
+Content-Length: 279
+Connection: keep-alive
+Server: rhino-core-shield
+X-RequestId: api-middleware
+X-UOW: 1-63bddde7-319a14f80091ff1625398232
+X-ServiceName: api-middleware
+Vary: Accept-Encoding, User-Agent
+Content-Encoding: gzip
+X-Upstream: 10.145.76.81:80
+
+{"id": "D-4-80ca7fbd-67ad-444a-aa88-791ca4a0c2b2","amount": 120,"currency": "USD","payment_method_id": "CARD","payment_method_type": "CARD","payment_method_flow": "DIRECT","country": "BR","card": {"holder_name": "Thiago Gabriel","expiration_month": 10,"expiration_year": 2040,"brand": "VI","last4": "1111"},"created_date": "2018-12-26T20:28:47.000+0000","approved_date": "2018-12-26T20:28:47.000+0000","status": "AUTHORIZED","status_detail": "The payment was authorized","status_code": "600","order_id": "657434343","notification_url": "http://merchant.com/notifications"}

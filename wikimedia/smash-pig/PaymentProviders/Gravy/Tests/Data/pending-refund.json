@@ -1,0 +1,14 @@
+{
+    "type": "refund",
+    "id": "8724fd24-5489-4a5d-90fd-0604df7d3b83",
+    "transaction_id": "fe26475d-ec3e-4884-9553-f7356683f7f9",
+    "payment_service_refund_id": "refund_xYqd43gySMtori",
+    "status": "processing",
+    "currency": "USD",
+    "amount": 1299,
+    "reason": "Refund due to user request",
+    "created_at": "2013-07-16T19:23:00.000+00:00",
+    "updated_at": "2013-07-16T19:23:00.000+00:00",
+    "target_type": "payment-method",
+    "target_id": "c23ea83f-1b1c-4584-a0e8-78ef8c041949"
+  }

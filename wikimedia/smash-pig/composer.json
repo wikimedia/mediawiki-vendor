@@ -1,0 +1,87 @@
+{
+    "name": "wikimedia/smash-pig",
+    "description": "The open source PHP flexible payments library and frontend/backend mediator.",
+    "keywords": ["payments", "donations"],
+    "homepage": "http://smashpig.org",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Katie Horn",
+            "email": "khorn@wikimedia.org"
+        },
+        {
+            "name": "Matthew Walker",
+            "email": "mwalker@wikimedia.org"
+        },
+        {
+            "name": "Adam Roses Wight",
+            "email": "awight@wikimedia.org"
+        },
+        {
+            "name": "Elliott Eggleston",
+            "email": "eeggleston@wikimedia.org"
+        },
+        {
+            "name": "Maggie Epps",
+            "email": "mepps@wikimedia.org"
+        },
+        {
+            "name": "Jack Gleeson",
+            "email": "jgleeson@wikimedia.org"
+        },
+        {
+            "name": "Christine Stone",
+            "email": "cstone@wikimedia.org"
+        },
+        {
+            "name": "Andrew Russell Green",
+            "email": "agreen@wikimedia.org"
+        }
+    ],
+    "require": {
+        "coderkungfu/php-queue": "^1.0",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "ext-pdo": "*",
+        "php": ">=7.4",
+        "phpmailer/phpmailer": "^6",
+        "predis/predis": "^1.1",
+        "symfony/http-foundation": "^5|^6",
+        "symfony/yaml": "^4|^5",
+        "amzn/login-and-pay-with-amazon-sdk-php": "^2.5",
+        "psr/cache": "^1.0",
+        "psr/log": "^1.0",
+        "corneltek/getoptionkit": "^2.5",
+        "gr4vy/gr4vy-php": "0.23.2"
+    },
+	"require-dev": {
+		"php-parallel-lint/php-parallel-lint": "^1.2",
+		"phpunit/phpunit": "^9.5",
+		"ext-sqlite3": "*",
+		"mediawiki/mediawiki-codesniffer": "^31.0"
+	},
+	"scripts": {
+		"fix": "phpcbf",
+		"test": [
+			"parallel-lint . --exclude vendor",
+			"[ ! -f phpunit.xml ] || phpunit",
+			"phpcs -p -s"
+		]
+	},
+    "autoload": {
+        "psr-4": {
+            "SmashPig\\": "./"
+        }
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/ejegg/login-and-pay-with-amazon-sdk-php"
+        }
+    ],
+    "config": {
+      "platform": {
+        "php": "7.4.33"
+      }
+    }
+}

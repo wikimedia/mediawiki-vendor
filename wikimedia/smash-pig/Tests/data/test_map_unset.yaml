@@ -1,0 +1,3 @@
+test-array:
+    test-array-value: '%test_array_unset%'
+test-string: '%test_string_unset%'

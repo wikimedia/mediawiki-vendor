@@ -1,0 +1,31 @@
+{
+    "amount": 8500,
+    "currency": "USD",
+    "country": "US",
+    "payment_method": {
+        "method": "id",
+        "id": "c954d5b1-5e9c-4767-927c-0afbb97cc85a"
+    },
+    "external_identifier": "182.3",
+    "buyer": {
+        "external_identifier": "test@test.com",
+        "billing_details": {
+            "first_name": "Lorem",
+            "last_name": "Ipsum",
+            "email_address": "test@test.com",
+            "phone_number": null,
+            "address": {
+                "city": null,
+                "country": "US",
+                "postal_code": null,
+                "state": null,
+                "line1": null,
+                "line2": null,
+                "organization": null
+            }
+        }
+    },
+    "merchant_initiated": true,
+    "is_subsequent_payment": true,
+    "payment_source": "recurring"
+}

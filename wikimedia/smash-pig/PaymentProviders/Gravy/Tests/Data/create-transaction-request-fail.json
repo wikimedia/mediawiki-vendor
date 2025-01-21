@@ -1,0 +1,7 @@
+{
+    "type": "error",
+    "code": "too_many_requests",
+    "status": 429,
+    "message": "Too many requests",
+    "details": []
+  }

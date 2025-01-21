@@ -1,0 +1,7 @@
+{
+  "status":500,
+  "errorCode":"905_1",
+  "message":"Could not find an acquirer account for the provided txvariant (uatp), currency (NOK), and action (AUTH).",
+  "errorType":"configuration",
+  "pspReference":"SZ7VN2XQSCZ28222"
+}

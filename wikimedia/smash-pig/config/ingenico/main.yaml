@@ -1,0 +1,197 @@
+# Settings for Ingenico (formerly GlobalCollect)
+#
+# To override, create a file in:
+#   /etc/smashpig/ingenico/main.yaml
+#   $HOME/.smashpig/ingenico/main.yaml
+
+logging:
+    root-context: SmashPig-Ingenico
+
+actions:
+    - SmashPig\Core\Actions\IncomingMessage
+
+endpoints:
+    listener:
+        class: SmashPig\PaymentProviders\GlobalCollect\GlobalCollectListener
+
+api:
+    class: SmashPig\PaymentProviders\Ingenico\Api
+    constructor-parameters:
+        - 'https://eu.sandbox.api-ingenico.com/'
+        - 1234 # numeric merchant ID
+
+authenticator:
+    class: SmashPig\PaymentProviders\Ingenico\Authenticator
+    constructor-parameters:
+        - 'apiKey'
+        - 'apiSecret'
+
+payment-provider:
+    rtbt:
+        class: SmashPig\PaymentProviders\Ingenico\BankPaymentProvider
+        constructor-parameters:
+            -
+                cache-parameters:
+                    duration: 900
+                    key-base: SMASHPIG_INGENICO_IDEAL_BANK_LIST
+    cc:
+        class: SmashPig\PaymentProviders\Ingenico\HostedCheckoutProvider
+        constructor-parameters:
+            -
+                subdomain: 'payment'
+    test:
+        class: SmashPig\PaymentProviders\Ingenico\TestConnectionProvider
+
+ideal-status-provider:
+    class: SmashPig\PaymentProviders\Ingenico\BankPaymentProvider
+    constructor-parameters:
+            cache-parameters:
+                duration: 900
+                key: SMASHPIG_IDEAL_BANK_STATUS
+            availability-url: https://availability.ideal.nl/api/api/GetIssuers
+
+curl:
+    validator:
+        class: SmashPig\PaymentProviders\Ingenico\RestResponseValidator
+
+maps:
+    create-payment:
+        path: config/ingenico/maps/createPayment.yaml
+        transformers:
+            - SmashPig\Core\Mapper\Transformers\AmountToCents
+            - SmashPig\Core\Mapper\Transformers\DataConstraints
+    create-payment-session:
+        path: config/ingenico/maps/createPaymentSession.yaml
+        transformers:
+            - SmashPig\Core\Mapper\Transformers\AmountToCents
+            - SmashPig\Core\Mapper\Transformers\DataConstraints
+            - SmashPig\PaymentProviders\Ingenico\Transformers\IngenicoRecurring
+            # TODO move DonorLocale and IngenicoLocale staging down here
+            # - SmashPig\PaymentProviders\Ingenico\Transformers\IngenicoLocale
+            - SmashPig\PaymentProviders\Ingenico\Transformers\Inverted3DSecure
+    refund-payment:
+        path: config/ingenico/maps/refundPayment.yaml
+        transformers:
+            - SmashPig\Core\Mapper\Transformers\AmountToCents
+            - SmashPig\Core\Mapper\Transformers\DataConstraints
+
+data-constraints:
+    # General fields
+    # AMOUNT: N12
+    amount:
+        type: numeric
+        length: 12
+    # city: AN40
+    city:
+        type: alphanumeric
+        length: 35
+    # countryCode: AN2
+    country:
+        type: alphanumeric
+        length: 2
+    # currency: AN3
+    currency:
+        type: alphanumeric
+        length: 3
+    # emailAddress: AN70
+    email:
+        type: alphanumeric
+        length: 70
+    # firstName: AN15
+    first_name:
+        type: alphanumeric
+        length: 15
+    # IPADDRESS: AN45
+    user_ip:
+        type: alphanumeric
+        length: 45
+    # locale: AN6
+    language:
+        type: alphanumeric
+        length: 6
+    # merchantReference: AN40
+    order_id:
+        type: alphanumeric
+        length: 40
+    # paymentProductId
+    payment_product:
+        type: numeric
+        length: 5
+    # returnUrl: AN512
+    returnto:
+        type: alphanumeric
+        length: 512
+    # state: AN35
+    state_province:
+        type: alphanumeric
+        length: 35
+    # street: AN50
+    street_address:
+        type: alphanumeric
+        length: 50
+    # surname: AN70
+    last_name:
+        type: alphanumeric
+        length: 70
+    # zip: AN10
+    postal_code:
+        type: alphanumeric
+        length: 10
+
+fraud-filters:
+    # https://epayments.developer-ingenico.com/services/avs
+    avs-map:
+        # The street addresses match but the postal or ZIP codes do not, or the request does not include the postal or ZIP code.
+        A: 50
+        # Street addresses match. Postal or ZIP code not verified due to incompatible formats.
+        B: 50
+        # Street address and postal code or ZIP code not verified due to incompatible formats.
+        C: 50
+        # Street addresses and postal or ZIP codes match.
+        D: 0
+        # Street addresses and postal codes match. Applies to U.K.-domestic transactions only.
+        F: 0
+        # Address information not verified for international transaction.
+        G: 50
+        # Address information not verified.
+        I: 50
+        # Street addresses and postal and ZIP codes match.
+        M: 0
+        # No match.
+        N: 100
+        # Postal or ZIP codes match but street address not verified due to incompatible formats.
+        P: 50
+        # Retry. System unavailable or timed out.
+        R: 100
+        # Service not supported at the Issuer.
+        S: 50
+        # Address information is unavailable for that account number, or the card issuer does not support.
+        U: 50
+        # 9 digit ZIP matches, Address (or street) dos not match.
+        W: 50
+        # Exact AVS match
+        X: 0
+        # Street address and postal and ZIP code match.
+        Y: 0
+        # Postal or ZIP codes match, street addresses do not match or street address not included in request.
+        Z: 50
+        # No service available
+        "0": 25
+        "": 100
+
+    cvv-map:
+        # Match
+        M: 0
+        # No Match
+        N: 100
+        # Not Processed
+        P: 50
+        # CVV2 should be on the card
+        S: 0
+        # Issuer does not participate in the CVV2 service
+        U: 50
+        # Issuer did not respond
+        Y: 50
+        # No service available
+        "0": 50
+        "": 0

@@ -1,0 +1,18 @@
+{
+	"payment_date": "05:32:08 Jun 30, 2017 PDT",
+	"txn_id": "91N12345TB8654321",
+	"payment_status": "Completed",
+	"mc_currency": "USD",
+	"parent_txn_id": "2JP12345X654321V",
+	"notify_version": 3.8,
+	"custom": 47470083,
+	"txn_type": "adjustment",
+	"charset": "UTF-8",
+	"mc_gross": -1.00,
+	"payment_gross": -1.00,
+	"payer_email": "recipient@wikimedia.org",
+	"verify_sign": "AZfnGop49sf6bIkvk-UIIwAT3vE6AqUlokuReG4Znr85ICxgRDn1rO8s",
+	"payer_id": "AA987ASDFGHUW8",
+	"payer_status": "verified",
+	"ipn_track_id": "28eec9b3c7857"
+}

@@ -1,0 +1,19 @@
+{
+	"headers": {
+        "x-amz-sns-message-type": "Notification",
+		"x-amz-sns-message-id": "bfb0b4f5-2ddf-5e2f-b396-fa9fbd0381dd",
+		"x-amz-sns-topic-arn": "arn:aws:sns:us-east-1:291180941288:A3BXB0YN3XH17HAYIWJDULFQUMA",
+		"x-amz-sns-subscription-arn": "arn:aws:sns:us-east-1:291180941288:A3BXB0YN3XH17HAYIWJDULFQUMA:e86c70e5-06e0-4f20-8c29-f3982401c7fd"
+	},
+	"body": {
+		"Type": "Notification",
+		"MessageId": "bfb0b4f5-2ddf-5e2f-b396-fa9fbd0381dd",
+		"TopicArn": "arn:aws:sns:us-east-1:291180941288:A3BXB0YN3XH17HAYIWJDULFQUMA",
+		"Message": "{\"MarketplaceID\":\"A3BXB0YN3XH17H\",\"ReleaseEnvironment\":\"Sandbox\",\"Version\":\"2013-01-01\",\"NotificationType\":\"PaymentRefund\",\"SellerId\":\"AYIWJDULFQUMA\",\"NotificationReferenceId\":\"1111111-1111-11111-1111-11111EXAMPLE\",\"IsSample\":true,\"Timestamp\":\"2015-09-09T19:55:08.591Z\",\"NotificationData\":\"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?>\\n        <RefundNotification xmlns=\\\"https:\/\/mws.amazonservices.com\/ipn\/OffAmazonPayments\/2013-01-01\\\">\\n            <RefundDetails>\\n                <AmazonRefundId>P01-0000000-0000000-000000<\\\/AmazonRefundId>\\n                <RefundReferenceId>P01-0000000-0000000-000000<\\\/RefundReferenceId>\\n                <RefundType>SellerInitiated<\\\/RefundType>\\n                <RefundAmount>\\n                    <Amount>10.0<\\\/Amount>\\n                    <CurrencyCode>USD<\\\/CurrencyCode>\\n                <\\\/RefundAmount>\\n                <FeeRefunded>\\n                    <Amount>0.0<\\\/Amount>\\n                    <CurrencyCode>USD<\\\/CurrencyCode>\\n                <\\\/FeeRefunded>\\n                <CreationTimestamp>2013-01-01T01:01:01.001Z<\\\/CreationTimestamp>\\n                <RefundStatus>\\n                    <State>Completed<\\\/State>    \\n                    <LastUpdateTimestamp>2013-01-01T01:01:01.001Z<\\\/LastUpdateTimestamp>\\n                        <ReasonCode>None<\\\/ReasonCode>                    \\n                <\\\/RefundStatus>\\n                <SoftDescriptor>AMZ*softDescriptor<\\\/SoftDescriptor>\\n            <\\\/RefundDetails>\\n        <\\\/RefundNotification>\"}", 
+		"Timestamp": "2015-09-09T19:55:08.667Z", 
+		"SignatureVersion": "1", 
+		"Signature": "Ftl8DcGzUbcZOGzrWAy371XI3ALIZVayIGiuGiMpmFuCGUTLPxgTT1d7kN196KbzZOaiGHw989cGHeV5Z1kspd5SGr9rmwez73VVNBkWF7Ml7DA9icEbiqC\/s2IfcFDb1MOD24c8jaTEDLsRCnWN52IdiJDb4pzbHjtjqVMqctl7g\/IY5jmxhVFBby2lQpfbNYqG\/9vm\/Qy7HlZ1vUD714+6TGmLkwEdC5xyD+Ayr2dz5Mn8ZmqD3Za\/Mji7rDSD1VUmSs\/YJG8wOlPyH8KOQgUdANxhOyvf+xuPtZD+E2b7z4T0oyKCUwaVV74aUr+duAnKXFUGcLGEdkQR0pAw8Q==", 
+		"SigningCertURL": "https:\/\/sns.us-east-1.amazonaws.com\/SimpleNotificationService-bb750dd426d95ee9390147a5624348ee.pem", 
+		"UnsubscribeURL": "https:\/\/sns.us-east-1.amazonaws.com\/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:us-east-1:291180941288:A3BXB0YN3XH17HAYIWJDULFQUMA:e86c70e5-06e0-4f20-8c29-f3982401c7fd" 
+	}
+}

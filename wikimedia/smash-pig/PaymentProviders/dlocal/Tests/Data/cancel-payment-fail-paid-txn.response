@@ -1,0 +1,10 @@
+HTTP/2 403 Bad Request
+Date: Thu, 16 Feb 2023 09:14:24 GMT
+Content-Type: application/json
+Content-Length: 71
+Server: rhino-core-shield
+X-RequestId: api-middleware
+X-UOW: 1-63edf3f0-67f3a74a4a3f61956ca1b8ea
+X-ServiceName: api-middleware
+
+{"code":3003,"message":"Merchant has no authorization to use this API"}

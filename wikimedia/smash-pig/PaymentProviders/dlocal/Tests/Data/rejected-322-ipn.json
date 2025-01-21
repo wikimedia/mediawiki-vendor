@@ -1,0 +1,36 @@
+{
+  "id": "D-648-d531e3a1-a480-4254-a652-a2af926592c5",
+  "amount": 104,
+  "status": "REJECTED",
+  "status_detail": "Wallet disabled.",
+  "status_code": "322",
+  "currency": "INR",
+  "country": "IN",
+  "payment_method_id": "IR",
+  "payment_method_type": "WALLET",
+  "payment_method_flow": "DIRECT",
+  "payer": {
+    "name": "Testy McTest",
+    "user_reference": "",
+    "email": "test@example.com",
+    "document": "ABC123ABC",
+    "address": {
+      "state": "NP",
+      "city": "not_provided_city",
+      "zip_code": "00000",
+      "street": "not_provided_street",
+      "empty": false
+    }
+  },
+  "wallet": {
+    "token": "5c3f1cd1-19cc-42fe-9793-1e4a3069d9b4"
+  },
+  "recurring_info": {
+    "prenotify_approved": false
+  },
+  "order_id": "123456789.1",
+  "description": "Wikimedia Foundation",
+  "notification_url": "https://testurl.com/dlocal",
+  "callback_url": "https://testurl.com/index.php?title=Special:DlocalGatewayResult",
+  "created_date": "2023-08-24T06:32:45.000+0000"
+}

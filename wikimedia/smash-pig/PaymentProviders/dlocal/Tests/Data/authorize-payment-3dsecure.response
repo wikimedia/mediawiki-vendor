@@ -1,0 +1,12 @@
+HTTP/1.1 200 OK
+Date: Thu, 09 Feb 2023 14:47:49 GMT
+Content-Type: application/json
+Content-Length: 750
+Connection: keep-alive
+Server: rhino-core-shield
+X-RequestId: api-middleware
+X-UOW: 1-63e50794-49481a5f2b1a44925fdb34dd
+X-ServiceName: api-middleware
+X-Upstream: 10.145.77.220:80
+ 
+{"id":"T-2486-433db58a-6ee3-4f61-9dcc-390ddc49977a","amount":120,"currency":"USD","payment_method_id":"CARD","payment_method_type":"CARD","payment_method_flow":"DIRECT","country":"BR","card":{"holder_name":"Jimmy Wales","expiration_month":10,"expiration_year":2024,"brand":"VI","last4":"1111"},"three_dsecure":{"redirect_url":"https://sandbox.dlocal.com/threeds/v?id=e816f8e2-7e8b-4454-a591-6f184feb9727&redirect_url=https%3A%2F%2Fpaymentstest2.wmcloud.org%2Findex.php%3Ftitle%3DSpecial%3ADlocalGatewayResult&schemeId=VI"},"created_date":"2023-02-09T14:47:49.000+0000","status":"PENDING","status_detail":"The payment is pending for 3ds authorization.","status_code":"101","order_id":"657434343","notification_url":"http://merchant.com/notifications"}

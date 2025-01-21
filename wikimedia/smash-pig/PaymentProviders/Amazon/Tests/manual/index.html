@@ -1,0 +1,16 @@
+<html>
+<head>
+<script src='https://code.jquery.com/jquery-1.11.3.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js'></script>
+</head>
+<body>
+	<h3>Amazon listener test posts</h3>
+	<p>Send some convincing-looking posts (including valid signatures) to your listener</p>
+	<p>If you have an externally-accessible https URL and an Amazon merchant account, you can test more varieties at <a href="https://sellercentral.amazon.com/hz/me/hmi/ipn/main">https://sellercentral.amazon.com/hz/me/hmi/ipn/main</a></p>
+Listener URL (must be on the same domain as this page): <input type='text' id='listener_url' /><br/>
+<button id='capture_completed'>Capture completed</button><br/>
+<button id='refund_completed'>Refund completed</button><br/>
+<button id='capture_declined'>Capture declined</button><br/>
+<button id='refund_declined'>Refund declined</button><br/>
+<script src='amznipnfake.js'></script>
+</body>

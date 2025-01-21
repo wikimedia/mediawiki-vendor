@@ -1,0 +1,52 @@
+{
+    "GetOrderReferenceDetailsResult": {
+        "OrderReferenceDetails": {
+            "OrderReferenceStatus": {
+                "LastUpdateTimestamp": "2018-09-12T21:10:02.505Z",
+                "ReasonCode": "MaxAuthorizationsProcessed",
+                "State": "Closed"
+            },
+            "OrderLanguage": "en-US",
+            "ExpirationTimestamp": "2019-03-11T21:10:00.106Z",
+            "PlatformId": "ABCDEFGHIJK",
+            "IdList": {
+                "member": "B01-0000555-5550000-0000000"
+            },
+            "SellerOrderAttributes": {
+                "StoreName": "SmashPig Foundation - Alexa Donations"
+            },
+            "ParentDetails": {
+                "Type": "BillingAgreement",
+                "Id": "B01-0000555-5550000"
+            },
+            "OrderTotal": {
+                "CurrencyCode": "USD",
+                "Amount": "10.00"
+            },
+            "Buyer": {
+                "Name": "Jorge Gaitán",
+                "Email": "jgaitan@liberals.co"
+            },
+            "ReleaseEnvironment": "Live",
+            "AmazonOrderReferenceId": "P01-6574269-4903176",
+            "CreationTimestamp": "2018-09-12T21:10:00.106Z",
+            "BillingAddress": {
+                "PhysicalAddress": {
+                    "StateOrRegion": "CA",
+                    "City": "Los Angeles",
+                    "Phone": "4155551212",
+                    "CountryCode": "US",
+                    "PostalCode": "90210",
+                    "Name": "Jorge Gaitán",
+                    "AddressLine1": "123 Sunset Blvd"
+                },
+                "AddressType": "Physical"
+            },
+            "RequestPaymentAuthorization": "false"
+        }
+    },
+    "ResponseMetadata": {
+        "RequestId": "896332ae-e316-4eb6-865e-79278e1aa214"
+    },
+    "ResponseStatus": "200"
+}

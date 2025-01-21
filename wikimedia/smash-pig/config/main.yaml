@@ -1,0 +1,211 @@
+# Global settings
+# Access these settings via Context::getGlobalConfiguration
+#
+# To override, create a file in:
+#   /etc/smashpig/main.yaml
+#   $HOME/.smashpig/main.yaml
+#   or edit this file if you're feeling cheeky, and be careful when upgrading.
+
+data-store:
+    redis: &REDIS
+        servers:
+            scheme: tcp
+            host: 127.0.0.1
+            port: 6379
+            read_write_timeout: -1
+
+    payments-antifraud:
+        class: PHPQueue\Backend\Predis
+        constructor-parameters:
+            -
+                <<: *REDIS
+                queue: payments-antifraud
+
+    payments-init:
+        class: PHPQueue\Backend\Predis
+        constructor-parameters:
+            -
+                <<: *REDIS
+
+    pending:
+        class: PHPQueue\Backend\Predis
+        constructor-parameters:
+            -
+                <<: *REDIS
+                queue: pending
+
+    # FIXME: Consolidate these two backends
+    pending-db:
+        class: PDO
+        constructor-parameters:
+            - 'mysql:host=127.0.0.1;dbname=smashpig'
+
+    damaged-db:
+        class: PDO
+        constructor-parameters:
+            - 'mysql:host=127.0.0.1;dbname=smashpig'
+
+    fredge-db:
+        class: PDO
+        constructor-parameters:
+            - 'mysql:host=127.0.0.1;dbname=fredge'
+
+    recurring:
+        class: PHPQueue\Backend\Predis
+        constructor-parameters:
+            -
+                <<: *REDIS
+                queue: recurring
+
+    refund:
+        class: PHPQueue\Backend\Predis
+        constructor-parameters:
+            -
+                <<: *REDIS
+                queue: refund
+
+    unsubscribe:
+        class: PHPQueue\Backend\Predis
+        constructor-parameters:
+            -
+                <<: *REDIS
+                queue: unsubscribe
+
+    opt-in:
+        class: PHPQueue\Backend\Predis
+        constructor-parameters:
+            -
+                <<: *REDIS
+                queue: opt-in
+
+    email-preferences:
+        class: PHPQueue\Backend\Predis
+        constructor-parameters:
+            -
+                <<: *REDIS
+                queue: email-preferences
+
+
+    recurring-modify:
+        class: PHPQueue\Backend\Predis
+        constructor-parameters:
+            -
+                <<: *REDIS
+                queue: recurring-modify
+
+    recurring-upgrade:
+        class: PHPQueue\Backend\Predis
+        constructor-parameters:
+            -
+                <<: *REDIS
+                queue: recurring-upgrade
+
+    jobs-paypal:
+        class: PHPQueue\Backend\Predis
+        constructor-parameters:
+            -
+                <<: *REDIS
+                # FIXME: This queue thing is introspected at times, and at
+                # others not.  Make it consistent (and invisible).
+                queue: jobs-paypal
+
+    jobs-adyen:
+        class: PHPQueue\Backend\Predis
+        constructor-parameters:
+            -
+                <<: *REDIS
+                queue: jobs-adyen
+
+    jobs-amazon:
+        class: PHPQueue\Backend\Predis
+        constructor-parameters:
+            -
+                <<: *REDIS
+                queue: jobs-amazon
+
+    jobs-dlocal:
+        class: PHPQueue\Backend\Predis
+        constructor-parameters:
+            -
+                <<: *REDIS
+                queue: jobs-dlocal
+
+    jobs-ingenico:
+        class: PHPQueue\Backend\Predis
+        constructor-parameters:
+            -
+                <<: *REDIS
+                queue: jobs-ingenico
+
+    jobs-braintree:
+        class: PHPQueue\Backend\Predis
+        constructor-parameters:
+            -
+                <<: *REDIS
+                queue: jobs-braintree
+
+    jobs-gravy:
+        class: PHPQueue\Backend\Predis
+        constructor-parameters:
+            -
+                <<: *REDIS
+                queue: jobs-gravy
+
+    donations:
+        class: PHPQueue\Backend\Predis
+        constructor-parameters:
+            -
+                <<: *REDIS
+                queue: donations
+
+    # A special queue for recurring donations via India's UPI system,
+    # which need pre-processing due to local regulations.
+    upi-donations:
+        class: PHPQueue\Backend\Predis
+        constructor-parameters:
+            -
+                <<: *REDIS
+                queue: upi-donations
+
+    contribution-tracking:
+        class: PHPQueue\Backend\Predis
+        constructor-parameters:
+            -
+                <<: *REDIS
+                queue: contribution-tracking
+
+sequence-generator:
+    contribution-tracking:
+        class: SmashPig\Core\SequenceGenerators\PredisSequenceGenerator
+        constructor-parameters:
+            -
+                <<: *REDIS
+                sequence: contribution-tracking
+
+mail-backend:
+    smtp: false
+
+# Must implement Psr\Cache\CacheItemPoolInterface
+# See PSR-6: http://www.php-fig.org/psr/psr-6/
+cache:
+    class: SmashPig\Core\Cache\HashCache
+
+maintenance:
+    job-runner:
+        time-limit: 60
+        message-limit: 10
+
+    consume-pending:
+        time-limit: 60
+        message-limit: 0
+        wait-for-messages: false
+
+# in seconds
+requeue-delay: 1200
+
+requeue-max-age: 12000
+
+# By default, provider configuration files live in the same directory as
+# global configuration files. Change this value to read provider configuration
+# files from an alternate directory.
+provider-configuration-directory: '/etc/smashpig'

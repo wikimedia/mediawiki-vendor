@@ -1,0 +1,26 @@
+{
+  "live": "false",
+  "notificationItems": [
+    {
+      "NotificationRequestItem": {
+        "additionalData": {
+          "chargebackReasonCode": "502",
+          "modificationMerchantReferences": "shopperReferenceTest",
+          "chargebackSchemeCode": "jcb"
+        },
+        "amount": {
+          "currency": "EUR",
+          "value": 200
+        },
+        "eventCode": "SECOND_CHARGEBACK",
+        "eventDate": "2021-01-01T01:00:00+01:00",
+        "merchantAccountCode": "YOUR_MERCHANT_ACCOUNT",
+        "merchantReference": "YOUR_MERCHANT_REFERENCE",
+        "paymentMethod": "jcb",
+        "pspReference": "YOUR_PSP_REFERENCE",
+        "reason": "502:Cardmember Dispute",
+        "success": "true"
+      }
+    }
+  ]
+}

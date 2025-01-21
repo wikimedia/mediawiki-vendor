@@ -1,0 +1,9 @@
+payments-client:
+    class: PayWithAmazon\Mocks\MockPaymentsClient
+    constructor-parameters:
+        - response-directory: ./Data/responses
+
+reports-client:
+    class: PayWithAmazon\Mocks\MockReportsClient
+    constructor-parameters:
+        - response-directory: ./Data/responses

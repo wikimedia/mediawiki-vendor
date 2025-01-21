@@ -1,0 +1,17 @@
+HTTP/1.1 402 Payment Required
+Date: Mon, 30 Jan 2017 17:58:02 GMT
+Server: Apache/2.4.16 (Unix) OpenSSL/1.0.1t
+X-Powered-By: Servlet/3.0 JSP/2.2
+Transfer-Encoding: chunked
+Content-Type: application/json
+
+{
+    "errorId" : "1105db54-9c91-4a97-baa7-3c4182458047",
+    "errors" : [
+        {
+            "code" : "410110",
+            "requestId" : "3927859",
+            "message" : "UNKNOWN ORDER OR NOT PENDING"
+        }
+    ]
+}

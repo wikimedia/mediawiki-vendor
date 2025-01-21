@@ -1,0 +1,47 @@
+HTTP/1.1 201 OK
+Date: Mon, 30 Jan 2017 17:58:02 GMT
+Server: Apache/2.4.16 (Unix) OpenSSL/1.0.1t
+X-Powered-By: Servlet/3.0 JSP/2.2
+Transfer-Encoding: chunked
+Content-Type: application/json
+
+{
+    "creationOutput" : {
+        "additionalReference" : "12345.1",
+        "externalReference" : "12345.1"
+    },
+    "payment" : {
+        "id" : "000000850010000188130000200001",
+        "paymentOutput" : {
+            "amountOfMoney" : {
+                "amount" : 1234,
+                "currencyCode" : "USD"
+            },
+            "references" : {
+                "merchantReference" : "12345.1",
+                "paymentReference" : "0"
+            },
+            "paymentMethod" : "card",
+            "cardPaymentMethodSpecificOutput" : {
+                "paymentProductId" : 1,
+                "authorisationCode" : "726747",
+                "card" : {
+                    "cardNumber" : "************7977",
+                    "expiryDate" : "1220"
+                },
+                "fraudResults" : {
+                    "avsResult" : "0",
+                    "cvvResult" : "0",
+                    "fraudServiceResult" : "no-advice"
+                }
+            }
+        },
+        "status" : "UNKNOWN_STATUS",
+        "statusOutput" : {
+            "isCancellable" : true,
+            "statusCode" : 600,
+            "statusCodeChangeDateTime" : "20140630154830",
+            "isAuthorized" : true
+        }
+    }
+}

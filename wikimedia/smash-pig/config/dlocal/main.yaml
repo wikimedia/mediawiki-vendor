@@ -1,0 +1,45 @@
+# Settings for d*Local (formerly AstroPay)
+#
+# To override, create a file in:
+#   /etc/smashpig/dlocal/main.yaml
+#   $HOME/.smashpig/dlocal/main.yaml
+
+logging:
+    root-context: SmashPig-Dlocal
+
+actions:
+    - SmashPig\Core\Actions\IncomingMessage
+
+endpoints:
+    listener:
+        class: SmashPig\PaymentProviders\dlocal\DlocalListener
+
+login: &login x_login
+secret: "secretkey"
+
+api:
+    class: SmashPig\PaymentProviders\dlocal\Api
+    constructor-parameters:
+        -
+            login: *login
+            trans-key: x_trans_key
+            secret: generated_when_api_account_created
+            endpoint: https://sandbox.dlocal.com
+            callback_url:
+            notification_url:
+            version: 2.1
+
+signature-calculator:
+    class: SmashPig\PaymentProviders\dlocal\SignatureCalculator
+
+payment-provider:
+    cc:
+        class: SmashPig\PaymentProviders\dlocal\CardPaymentProvider
+    cash:
+        class: SmashPig\PaymentProviders\dlocal\HostedPaymentProvider
+    bt:
+        class: SmashPig\PaymentProviders\dlocal\BankTransferPaymentProvider
+
+curl:
+  validator:
+    class: SmashPig\PaymentProviders\dlocal\RestResponseValidator

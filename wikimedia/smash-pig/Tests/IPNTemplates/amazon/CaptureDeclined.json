@@ -1,0 +1,35 @@
+{
+    "NotificationReferenceId": "1111111-1111-11111-1111-11111EXAMPLE",
+    "NotificationType": "PaymentCapture",
+    "IsSample": true,
+    "SellerId": "AYIWJDULFQUMA",
+    "ReleaseEnvironment": "Sandbox",
+    "Version": "2013-01-01",
+    "CaptureDetails": {
+        "AmazonCaptureId": "P01-0000000-[[PROCESSOR_REF_1]]-C00001",
+        "CaptureReferenceId": "[[ORDER_ID]]",
+        "CaptureAmount": {
+            "Amount": "[[AMOUNT]]",
+            "CurrencyCode": "[[CURRENCY]]"
+        },
+        "RefundedAmount": {
+            "Amount": "0.0",
+            "CurrencyCode": "[[CURRENCY]]"
+        },
+        "CaptureFee": {
+            "Amount": "0.0",
+            "CurrencyCode": "[[CURRENCY]]"
+        },
+        "IdList": [],
+        "CreationTimestamp": "2013-01-01T01:01:01.001Z",
+        "CaptureStatus": {
+            "State": "Declined",
+            "LastUpdateTimestamp": "2013-01-01T01:01:01.001Z",
+            "ReasonCode": "AmazonClosed"
+        },
+        "SoftDescriptor": "AMZ*softDescriptor"
+    },
+    "Type": "Notification",
+    "MessageId": "9d965f88-ab63-57da-96b6-11e1e0b31215",
+    "TopicArn": "arn:aws:sns:us-east-1:291180941288:A3BXB0YN3XH17HAYIWJDULFQUMA"
+}

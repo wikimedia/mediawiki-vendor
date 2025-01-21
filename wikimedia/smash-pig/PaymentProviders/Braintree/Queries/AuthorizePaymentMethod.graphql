@@ -1,0 +1,42 @@
+mutation AuthorizePaymentMethod($input: AuthorizePaymentMethodInput!){
+  authorizePaymentMethod(input: $input){
+    transaction{
+      id
+      status
+      legacyId
+      createdAt
+      paymentInitiatedAt
+      source
+      orderId
+      paymentMethod {
+        id
+      }
+      customer {
+	    id
+	    lastName
+	    firstName
+	    email
+	    phoneNumber
+      }
+      customFields {
+	    name
+	    value
+      }
+      paymentMethodSnapshot {
+        ... on PayPalTransactionDetails {
+          payer {
+            firstName
+            lastName
+            phone
+            email
+            payerId
+          }
+        }
+        ... on VenmoAccountDetails {
+          username
+          venmoUserId
+        }
+      }
+    }
+  }
+}

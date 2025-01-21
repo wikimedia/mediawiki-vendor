@@ -1,0 +1,12 @@
+HTTP/1.1 200 OK
+Date: Mon, 27 Mar 2023 23:25:53 GMT
+Content-Type: application/json
+Content-Length: 395
+Connection: keep-alive
+Server: rhino-core-shield
+X-RequestId: api-middleware
+X-UOW: 1-64222601-27ce081d53a92edc2c202b81
+X-ServiceName: api-middleware
+X-Upstream: 10.145.78.112:80
+
+{ "id": "F-413092-0eeaf9f9-6dd7-418f-97b1-4c3a364e507b", "amount": 0, "currency": "INR", "payment_method_id": "UD", "payment_method_type": "WALLET", "payment_method_flow": "DIRECT", "country": "IN", "created_date": "2023-03-27T23:25:53.000+0000", "status": "REJECTED", "status_detail": "The payment was rejected.", "status_code": "300", "order_id": "497529111040", "notification_url": "http://merchant.com/notifications" }

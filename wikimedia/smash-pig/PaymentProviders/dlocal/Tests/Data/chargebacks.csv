@@ -1,0 +1,2 @@
+Type;"Creation date";"Settlement date";Reference;Invoice;Country;"Payment Method";"Payment Method Type";"Net Amount (local)";"Amount (USD)";currency;Status;"User Mail";"Transaction Reference";"Transaction Invoice";Fee;IOF
+Chargebacks;"2023-06-19 21:05:09";;12345;;BR;;;5.00;;BRL;Settled;chargeitback@example.com;7654321;314159265.0;;
