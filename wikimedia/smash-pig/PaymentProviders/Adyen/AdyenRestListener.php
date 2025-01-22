@@ -20,7 +20,7 @@ class AdyenRestListener extends RestListener {
 		return true;
 	}
 
-	protected function parseEnvelope( Request $request ) {
+	protected function parseEnvelope( Request $request ): array {
 		$rawRequest = $request->getRawRequest();
 		// remove expiryDate from rawRequest for reason and additionalData
 		// replace mm/yyyy with blank for logging

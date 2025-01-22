@@ -24,7 +24,7 @@ class ApprovePayments extends MaintenanceBase {
 		$this->addArgument( 'file', 'CSV file containing payment parameters', true );
 	}
 
-	public function execute() {
+	public function execute(): void {
 		$filePath = $this->getArgument( 'file' );
 		$reader = new HeadedCsvReader( $filePath );
 		$headerList = implode( ',', $reader->headers() );

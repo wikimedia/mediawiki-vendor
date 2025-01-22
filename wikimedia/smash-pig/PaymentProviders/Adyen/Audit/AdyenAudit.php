@@ -136,7 +136,7 @@ abstract class AdyenAudit implements AuditParser {
 	}
 
 	// these column names are shared between SettlementDetail and PaymentsAccounting reports
-	protected function setCommonValues( $row ) {
+	protected function setCommonValues( array $row ) {
 		$msg = [
 			'gateway' => 'adyen',
 			'gateway_account' => $row['Merchant Account'],

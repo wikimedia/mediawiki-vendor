@@ -6,8 +6,8 @@ use SmashPig\Core\Context;
 use SmashPig\Core\DataStores\QueueWrapper;
 use SmashPig\Core\Http\IHttpActionHandler;
 use SmashPig\Core\Http\Request;
-use SmashPig\Core\Http\Response;
 use SmashPig\Core\Logging\Logger;
+use Symfony\Component\HttpFoundation\Response;
 
 class BraintreeListener implements IHttpActionHandler {
 

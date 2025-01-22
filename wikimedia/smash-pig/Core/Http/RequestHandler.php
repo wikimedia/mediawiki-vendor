@@ -6,6 +6,7 @@ use SmashPig\Core\Logging\Logger;
 
 use SmashPig\Core\ProviderConfiguration;
 use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Entry point for the base initialized SmashPig application. Expects the requested

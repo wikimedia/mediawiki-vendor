@@ -17,7 +17,7 @@ class DeleteDataForPayment extends MaintenanceBase {
 		$this->addArgument( 'gatewayTxnId', 'Gateway transaction ID (PSP Reference)', true );
 	}
 
-	public function execute() {
+	public function execute(): void {
 		/** @var PaymentProvider $provider */
 		$provider = PaymentProviderFactory::getProviderForMethod( 'cc' );
 		$gatewayTxnId = $this->getArgument( 'gatewayTxnId' );

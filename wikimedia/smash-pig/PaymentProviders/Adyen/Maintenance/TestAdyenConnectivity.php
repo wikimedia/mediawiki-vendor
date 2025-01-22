@@ -18,7 +18,7 @@ class TestAdyenConnectivity extends MaintenanceBase {
 		$this->addOption( 'language', 'Locale to send', 'en' );
 	}
 
-	public function execute() {
+	public function execute(): void {
 		$providerConfiguration = Context::get()->getProviderConfiguration();
 		$api = $providerConfiguration->object( 'api' );
 		$result = $api->getPaymentMethods( [

@@ -45,7 +45,7 @@ class Authorisation extends AdyenMessage {
 		}
 
 		// For AVS and CVV we just want the code, not the words
-		$firstSegment = function ( $value ) {
+		$firstSegment = function ( $value ): string {
 			$parts = explode( ' ', $value );
 			return $parts[0];
 		};
@@ -159,7 +159,7 @@ class Authorisation extends AdyenMessage {
 	 *
 	 * @return bool True if it is a recurring payment otherwise False
 	 */
-	public function isRecurringInstallment() {
+	public function isRecurringInstallment(): bool {
 		// Check for credit card recurring
 		if ( isset( $this->recurringProcessingModel )
 				 && $this->recurringProcessingModel == 'Subscription'

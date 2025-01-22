@@ -3,10 +3,10 @@
 use SmashPig\Core\Context;
 use SmashPig\Core\Http\IHttpActionHandler;
 use SmashPig\Core\Http\Request;
-use SmashPig\Core\Http\Response;
 use SmashPig\Core\Logging\Logger;
 use SmashPig\Core\Messages\ListenerMessage;
 use SmashPig\Core\ProviderConfiguration;
+use Symfony\Component\HttpFoundation\Response;
 
 abstract class ListenerBase implements IHttpActionHandler {
 

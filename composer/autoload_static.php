@@ -198,12 +198,12 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'Wikimedia\\' => 
         array (
-            0 => __DIR__ . '/..' . '/wikimedia/ip-set/src',
-            1 => __DIR__ . '/..' . '/wikimedia/ip-utils/src',
+            0 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
+            1 => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src',
             2 => __DIR__ . '/..' . '/wikimedia/running-stat/src',
-            3 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
-            4 => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src',
-            5 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
+            3 => __DIR__ . '/..' . '/wikimedia/ip-utils/src',
+            4 => __DIR__ . '/..' . '/wikimedia/ip-set/src',
+            5 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
         ),
         'WikiPEG\\' => 
         array (
@@ -407,8 +407,8 @@ class ComposerStaticInit_mediawiki_vendor
         array (
             'Mail' => 
             array (
-                0 => __DIR__ . '/..' . '/pear/mail',
-                1 => __DIR__ . '/..' . '/pear/mail_mime',
+                0 => __DIR__ . '/..' . '/pear/mail_mime',
+                1 => __DIR__ . '/..' . '/pear/mail',
             ),
         ),
         'L' => 
@@ -2159,7 +2159,6 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\Core\\Http\\OutboundRequest' => __DIR__ . '/..' . '/wikimedia/smash-pig/Core/Http/OutboundRequest.php',
         'SmashPig\\Core\\Http\\Request' => __DIR__ . '/..' . '/wikimedia/smash-pig/Core/Http/Request.php',
         'SmashPig\\Core\\Http\\RequestHandler' => __DIR__ . '/..' . '/wikimedia/smash-pig/Core/Http/RequestHandler.php',
-        'SmashPig\\Core\\Http\\Response' => __DIR__ . '/..' . '/wikimedia/smash-pig/Core/Http/Response.php',
         'SmashPig\\Core\\Http\\ResponseValidator' => __DIR__ . '/..' . '/wikimedia/smash-pig/Core/Http/ResponseValidator.php',
         'SmashPig\\Core\\Jobs\\DeletePendingJob' => __DIR__ . '/..' . '/wikimedia/smash-pig/Core/Jobs/DeletePendingJob.php',
         'SmashPig\\Core\\Jobs\\JobQueue' => __DIR__ . '/..' . '/wikimedia/smash-pig/Core/Jobs/JobQueue.php',
