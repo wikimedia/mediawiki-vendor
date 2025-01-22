@@ -31,7 +31,7 @@ class TokenizeRecurringJob implements Runnable {
 	/**
 	 * Do whatever it is that you do.
 	 */
-	public function execute() {
+	public function execute(): bool {
 		/**
 		 * @var PaymentProvider
 		 */

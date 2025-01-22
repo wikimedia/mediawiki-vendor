@@ -4,9 +4,9 @@ namespace SmashPig\PaymentProviders\Adyen\Tests\phpunit;
 
 use SmashPig\Core\Context;
 use SmashPig\Core\Http\Request;
-use SmashPig\Core\Http\Response;
 use SmashPig\PaymentProviders\Adyen\AdyenRestListener;
 use SmashPig\PaymentProviders\Adyen\Tests\BaseAdyenTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @group Adyen

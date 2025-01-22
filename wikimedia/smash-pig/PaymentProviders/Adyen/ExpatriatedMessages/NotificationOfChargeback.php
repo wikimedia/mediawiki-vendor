@@ -18,7 +18,7 @@ class NotificationOfChargeback extends AdyenMessage {
 	 *
 	 * @return bool True if all actions were successful. False otherwise.
 	 */
-	public function runActionChain() {
+	public function runActionChain(): bool {
 		$tl = new TaggedLogger( 'NotificationOfChargeback' );
 
 		$tl->warning(

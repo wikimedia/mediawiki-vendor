@@ -2342,7 +2342,6 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\Core\\Http\\OutboundRequest' => __DIR__ . '/..' . '/wikimedia/smash-pig/Core/Http/OutboundRequest.php',
         'SmashPig\\Core\\Http\\Request' => __DIR__ . '/..' . '/wikimedia/smash-pig/Core/Http/Request.php',
         'SmashPig\\Core\\Http\\RequestHandler' => __DIR__ . '/..' . '/wikimedia/smash-pig/Core/Http/RequestHandler.php',
-        'SmashPig\\Core\\Http\\Response' => __DIR__ . '/..' . '/wikimedia/smash-pig/Core/Http/Response.php',
         'SmashPig\\Core\\Http\\ResponseValidator' => __DIR__ . '/..' . '/wikimedia/smash-pig/Core/Http/ResponseValidator.php',
         'SmashPig\\Core\\Jobs\\DeletePendingJob' => __DIR__ . '/..' . '/wikimedia/smash-pig/Core/Jobs/DeletePendingJob.php',
         'SmashPig\\Core\\Jobs\\JobQueue' => __DIR__ . '/..' . '/wikimedia/smash-pig/Core/Jobs/JobQueue.php',

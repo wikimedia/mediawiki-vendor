@@ -33,7 +33,7 @@ class RecordCaptureJob implements Runnable {
 		];
 	}
 
-	public function execute() {
+	public function execute(): bool {
 		$logger = Logger::getTaggedLogger( "corr_id-adyen-{$this->payload['merchantReference']}" );
 		$logger->info(
 			"Recording successful capture on account '{$this->payload['account']}' with authorization reference " .

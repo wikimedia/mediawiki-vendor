@@ -1884,7 +1884,6 @@ return array(
     'SmashPig\\Core\\Http\\OutboundRequest' => $vendorDir . '/wikimedia/smash-pig/Core/Http/OutboundRequest.php',
     'SmashPig\\Core\\Http\\Request' => $vendorDir . '/wikimedia/smash-pig/Core/Http/Request.php',
     'SmashPig\\Core\\Http\\RequestHandler' => $vendorDir . '/wikimedia/smash-pig/Core/Http/RequestHandler.php',
-    'SmashPig\\Core\\Http\\Response' => $vendorDir . '/wikimedia/smash-pig/Core/Http/Response.php',
     'SmashPig\\Core\\Http\\ResponseValidator' => $vendorDir . '/wikimedia/smash-pig/Core/Http/ResponseValidator.php',
     'SmashPig\\Core\\Jobs\\DeletePendingJob' => $vendorDir . '/wikimedia/smash-pig/Core/Jobs/DeletePendingJob.php',
     'SmashPig\\Core\\Jobs\\JobQueue' => $vendorDir . '/wikimedia/smash-pig/Core/Jobs/JobQueue.php',

@@ -2,8 +2,8 @@
 
 use SmashPig\Core;
 use SmashPig\Core\Http\Request;
-use SmashPig\Core\Http\Response;
 use SmashPig\Core\Logging\Logger;
+use Symfony\Component\HttpFoundation\Response;
 
 abstract class RestListener extends ListenerBase {
 	public function execute( Request $request, Response $response ) {

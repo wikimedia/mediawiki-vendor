@@ -32,7 +32,7 @@ class RecurringContractJob implements Runnable {
 		];
 	}
 
-	public function execute() {
+	public function execute(): bool {
 		$logger = Logger::getTaggedLogger( "corr_id-adyen-{$this->payload['merchantReference']}" );
 		// Find the details from the payment site in the pending database.
 		$logger->debug( 'Attempting to locate associated message in pending database' );

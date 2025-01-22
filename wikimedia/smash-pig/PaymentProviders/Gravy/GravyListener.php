@@ -4,12 +4,12 @@ namespace SmashPig\PaymentProviders\Gravy;
 use SmashPig\Core\Context;
 use SmashPig\Core\Http\IHttpActionHandler;
 use SmashPig\Core\Http\Request;
-use SmashPig\Core\Http\Response;
 use SmashPig\Core\Logging\Logger;
 use SmashPig\PaymentProviders\Gravy\Actions\GravyAction;
 use SmashPig\PaymentProviders\Gravy\ExpatriatedMessages\GravyMessage;
 use SmashPig\PaymentProviders\Gravy\Validators\ListenerValidator;
 use SmashPig\PaymentProviders\ValidationException;
+use Symfony\Component\HttpFoundation\Response;
 
 class GravyListener implements IHttpActionHandler {
 

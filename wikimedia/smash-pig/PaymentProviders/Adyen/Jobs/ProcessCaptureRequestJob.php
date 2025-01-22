@@ -212,7 +212,7 @@ class ProcessCaptureRequestJob implements Runnable {
 		return $this->getRiskAction( $dbMessage );
 	}
 
-	protected function getRiskAction( $dbMessage ) {
+	protected function getRiskAction( $dbMessage ): string {
 		$providerConfig = Context::get()->getProviderConfiguration();
 		$riskScore = isset( $dbMessage['risk_score'] ) ? $dbMessage['risk_score'] : 0;
 		$this->logger->debug( "Base risk score from payments site is $riskScore, " .
@@ -256,7 +256,7 @@ class ProcessCaptureRequestJob implements Runnable {
 	/**
 	 * @return CardPaymentProvider
 	 */
-	protected function getProvider() {
+	protected function getProvider(): \SmashPig\PaymentProviders\IPaymentProvider {
 		return PaymentProviderFactory::getProviderForMethod( 'cc' );
 	}
 
@@ -278,7 +278,7 @@ class ProcessCaptureRequestJob implements Runnable {
 	 * sequential bit of the merchant ref is greater than one, we can probably
 	 * skip sending a failmail when there are no donor details in the queue.
 	 */
-	protected function isLikelyRecurring() {
+	protected function isLikelyRecurring(): bool {
 		$merchantReferenceParts = explode( '.', $this->payload['merchantReference'] );
 		$sequenceNumber = (int)$merchantReferenceParts[1];
 		return (

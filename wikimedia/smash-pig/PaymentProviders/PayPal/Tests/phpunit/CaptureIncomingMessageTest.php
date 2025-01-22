@@ -7,12 +7,12 @@ use SmashPig\Core\DataStores\PendingDatabase;
 use SmashPig\Core\GlobalConfiguration;
 use SmashPig\Core\Http\EnumValidator;
 use SmashPig\Core\Http\Request;
-use SmashPig\Core\Http\Response;
 use SmashPig\Core\ProviderConfiguration;
 use SmashPig\CrmLink\Messages\SourceFields;
 use SmashPig\PaymentProviders\PayPal\Job;
 use SmashPig\PaymentProviders\PayPal\Listener;
 use SmashPig\Tests\BaseSmashPigUnitTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Test the IPN listener which receives messages, stores and processes them.
