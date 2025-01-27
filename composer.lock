@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "310d5b16d70edd3f93f429093fee39c9",
+    "content-hash": "234ab11e18262ee08e7121339a02f662",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -3134,16 +3134,16 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.51.4",
+            "version": "v0.51.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "d3b6711be6d85d23d4286f38afd967769c7dbe5a"
+                "reference": "18e83298b2101d4c2690aa0eaa84191db39b705d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/d3b6711be6d85d23d4286f38afd967769c7dbe5a",
-                "reference": "d3b6711be6d85d23d4286f38afd967769c7dbe5a",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/18e83298b2101d4c2690aa0eaa84191db39b705d",
+                "reference": "18e83298b2101d4c2690aa0eaa84191db39b705d",
                 "shasum": ""
             },
             "require": {
@@ -3151,7 +3151,7 @@
             },
             "require-dev": {
                 "mediawiki/mediawiki-codesniffer": "45.0.0",
-                "mediawiki/mediawiki-phan-config": "0.14.0",
+                "mediawiki/mediawiki-phan-config": "0.15.1",
                 "mediawiki/minus-x": "1.1.3",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
                 "php-parallel-lint/php-parallel-lint": "1.4.0",
@@ -3220,9 +3220,9 @@
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOUI",
             "support": {
-                "source": "https://github.com/wikimedia/oojs-ui/tree/v0.51.4"
+                "source": "https://github.com/wikimedia/oojs-ui/tree/v0.51.5"
             },
-            "time": "2024-12-05T17:21:22+00:00"
+            "time": "2025-01-24T23:29:22+00:00"
         },
         {
             "name": "opis/json-schema",
