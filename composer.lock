@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a3e25802a733e9a2e17230e47ede29b2",
+    "content-hash": "de3a8c5cc25e20b64aa9a7fbd1b29d83",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -7003,16 +7003,16 @@
         },
         {
             "name": "wikimedia/css-sanitizer",
-            "version": "v5.4.0",
+            "version": "v5.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/css-sanitizer.git",
-                "reference": "7d0a15de3d234fd083aa6b0cb3fb6ac817089ece"
+                "reference": "72d751f04c09ff92b31426208025e5c859e9b4af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/css-sanitizer/zipball/7d0a15de3d234fd083aa6b0cb3fb6ac817089ece",
-                "reference": "7d0a15de3d234fd083aa6b0cb3fb6ac817089ece",
+                "url": "https://api.github.com/repos/wikimedia/css-sanitizer/zipball/72d751f04c09ff92b31426208025e5c859e9b4af",
+                "reference": "72d751f04c09ff92b31426208025e5c859e9b4af",
                 "shasum": ""
             },
             "require": {
@@ -7023,12 +7023,12 @@
                 "wikimedia/utfnormal": "^3.0.1 || ^4.0.0"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "44.0.0",
-                "mediawiki/mediawiki-phan-config": "0.14.0",
+                "mediawiki/mediawiki-codesniffer": "45.0.0",
+                "mediawiki/mediawiki-phan-config": "0.15.1",
                 "mediawiki/minus-x": "1.1.3",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
                 "php-parallel-lint/php-parallel-lint": "1.4.0",
-                "phpunit/phpunit": "9.6.16",
+                "phpunit/phpunit": "9.6.21",
                 "wikimedia/testing-access-wrapper": "~2.0.0 || ~3.0.0",
                 "wikimedia/update-history": "^1.0.1"
             },
@@ -7051,9 +7051,9 @@
             "description": "Classes to parse and sanitize CSS",
             "homepage": "https://www.mediawiki.org/wiki/Css-sanitizer",
             "support": {
-                "source": "https://github.com/wikimedia/css-sanitizer/tree/v5.4.0"
+                "source": "https://github.com/wikimedia/css-sanitizer/tree/v5.5.0"
             },
-            "time": "2024-10-30T14:04:42+00:00"
+            "time": "2025-01-27T12:21:54+00:00"
         },
         {
             "name": "wikimedia/equivset",

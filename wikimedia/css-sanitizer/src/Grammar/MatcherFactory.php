@@ -631,9 +631,13 @@ class MatcherFactory {
 
 	/**
 	 * Matcher for a color value, including a possible custom property
-	 * reference.
+	 * reference and light-dark color function.
 	 *
-	 * @see https://www.w3.org/TR/2018/REC-css-color-3-20180619/#colorunits
+	 * Follows:
+	 * * https://www.w3.org/TR/2018/REC-css-color-3-20180619/#colorunits
+	 * * https://www.w3.org/TR/css-variables-1/
+	 * * https://www.w3.org/TR/2024/WD-css-color-5-20240229/#funcdef-light-dark
+	 *
 	 * @return Matcher
 	 */
 	public function color() {
@@ -646,6 +650,16 @@ class MatcherFactory {
 							$this->colorWords(),
 							$this->colorHex(),
 						] ) ),
+				], true ) ),
+				new FunctionMatcher( 'light-dark', new Juxtaposition( [
+						new Alternative( [
+							$this->colorWords(),
+							$this->colorHex(),
+						] ),
+						new Alternative( [
+							$this->colorWords(),
+							$this->colorHex(),
+						] ),
 				], true ) ),
 			] );
 		}
@@ -790,6 +804,8 @@ class MatcherFactory {
 	/**
 	 * Matcher for a CSS media query
 	 * @see https://www.w3.org/TR/2017/CR-mediaqueries-4-20170905/#mq-syntax
+	 * Level 5 accessibility queries are also supported
+	 * @see https://drafts.csswg.org/mediaqueries-5/#mf-user-preferences
 	 * @param bool $strict Only allow defined query types
 	 * @return Matcher
 	 */
@@ -812,7 +828,9 @@ class MatcherFactory {
 				];
 				$discreteFeatures = [
 					'orientation', 'scan', 'grid', 'update', 'overflow-block', 'overflow-inline', 'color-gamut',
-					'pointer', 'hover', 'any-pointer', 'any-hover', 'scripting', 'prefers-color-scheme'
+					'pointer', 'hover', 'any-pointer', 'any-hover', 'scripting', 'prefers-color-scheme',
+					'prefers-reduced-motion', 'prefers-reduced-transparency',
+					'prefers-contrast', 'forced-colors'
 				];
 				$mfName = new KeywordMatcher( array_merge(
 					$rangeFeatures,
