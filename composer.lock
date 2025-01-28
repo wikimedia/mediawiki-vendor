@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "46eac3ec94bf80eed6a663976431b9fd",
+    "content-hash": "a3e25802a733e9a2e17230e47ede29b2",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -8078,16 +8078,16 @@
         },
         {
             "name": "wikimedia/request-timeout",
-            "version": "v2.0.1",
+            "version": "v2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-RequestTimeout.git",
-                "reference": "cc0e36afd38cfe9b0f5dd94130eba3c8c39c1fc8"
+                "reference": "13cfc7d3375ae94ccceab5379c47b97773afc95e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-RequestTimeout/zipball/cc0e36afd38cfe9b0f5dd94130eba3c8c39c1fc8",
-                "reference": "cc0e36afd38cfe9b0f5dd94130eba3c8c39c1fc8",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-RequestTimeout/zipball/13cfc7d3375ae94ccceab5379c47b97773afc95e",
+                "reference": "13cfc7d3375ae94ccceab5379c47b97773afc95e",
                 "shasum": ""
             },
             "require": {
@@ -8121,9 +8121,9 @@
             "description": "Request timeout library for Excimer with plain PHP fallback",
             "homepage": "https://www.mediawiki.org/wiki/RequestTimeout",
             "support": {
-                "source": "https://github.com/wikimedia/mediawiki-libs-RequestTimeout/tree/v2.0.1"
+                "source": "https://github.com/wikimedia/mediawiki-libs-RequestTimeout/tree/v2.0.2"
             },
-            "time": "2025-01-21T19:03:56+00:00"
+            "time": "2025-01-28T15:00:43+00:00"
         },
         {
             "name": "wikimedia/running-stat",

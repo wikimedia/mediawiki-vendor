@@ -8415,17 +8415,17 @@
         },
         {
             "name": "wikimedia/request-timeout",
-            "version": "v2.0.1",
-            "version_normalized": "2.0.1.0",
+            "version": "v2.0.2",
+            "version_normalized": "2.0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-RequestTimeout.git",
-                "reference": "cc0e36afd38cfe9b0f5dd94130eba3c8c39c1fc8"
+                "reference": "13cfc7d3375ae94ccceab5379c47b97773afc95e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-RequestTimeout/zipball/cc0e36afd38cfe9b0f5dd94130eba3c8c39c1fc8",
-                "reference": "cc0e36afd38cfe9b0f5dd94130eba3c8c39c1fc8",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-RequestTimeout/zipball/13cfc7d3375ae94ccceab5379c47b97773afc95e",
+                "reference": "13cfc7d3375ae94ccceab5379c47b97773afc95e",
                 "shasum": ""
             },
             "require": {
@@ -8441,7 +8441,7 @@
                 "php-parallel-lint/php-parallel-lint": "1.4.0",
                 "phpunit/phpunit": "9.6.21"
             },
-            "time": "2025-01-21T19:03:56+00:00",
+            "time": "2025-01-28T15:00:43+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -8461,7 +8461,7 @@
             "description": "Request timeout library for Excimer with plain PHP fallback",
             "homepage": "https://www.mediawiki.org/wiki/RequestTimeout",
             "support": {
-                "source": "https://github.com/wikimedia/mediawiki-libs-RequestTimeout/tree/v2.0.1"
+                "source": "https://github.com/wikimedia/mediawiki-libs-RequestTimeout/tree/v2.0.2"
             },
             "install-path": "../wikimedia/request-timeout"
         },
