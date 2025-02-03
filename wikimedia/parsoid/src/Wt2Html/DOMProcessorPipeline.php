@@ -10,11 +10,12 @@ use Wikimedia\Parsoid\DOM\Node;
 use Wikimedia\Parsoid\Ext\ParsoidExtensionAPI;
 use Wikimedia\Parsoid\Tokens\SourceRange;
 use Wikimedia\Parsoid\Utils\ContentUtils;
+use Wikimedia\Parsoid\Wt2Html\DOM\Processors\DOMPPTraverser;
 
 /**
  * Perform post-processing steps on an already-built HTML DOM.
  */
-class DOMPostProcessor extends PipelineStage {
+class DOMProcessorPipeline extends PipelineStage {
 	private array $options;
 	/** @var array[] */
 	private array $processors = [];

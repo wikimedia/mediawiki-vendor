@@ -272,8 +272,8 @@ class ParserPipelineFactory {
 			"class" => PegTokenizer::class,
 		],
 		"TokenTransform2" => [
-			"class" => TokenTransformManager::class,
-			"transformers" => [
+			"class" => TokenHandlerPipeline::class,
+			"token-handlers" => [
 				OnlyInclude::class,
 
 				TemplateHandler::class,
@@ -297,8 +297,8 @@ class ParserPipelineFactory {
 			],
 		],
 		"TokenTransform3" => [
-			"class" => TokenTransformManager::class,
-			"transformers" => [
+			"class" => TokenHandlerPipeline::class,
+			"token-handlers" => [
 				TokenStreamPatcher::class,
 				// add <pre>s
 				PreHandler::class,
@@ -324,7 +324,7 @@ class ParserPipelineFactory {
 		// This performs a lot of post-processing of the DOM
 		// (Template wrapping, broken wikitext/html detection, etc.)
 		"FullParseDOMTransform" => [
-			"class" => DOMPostProcessor::class,
+			"class" => DOMProcessorPipeline::class,
 			"processors" => [
 				self::NESTED_PIPELINE_DOM_TRANSFORMS,
 				self::FULL_PARSE_GLOBAL_DOM_TRANSFORMS
@@ -332,19 +332,19 @@ class ParserPipelineFactory {
 		],
 		// DOM transformer for fragments of a top-level document
 		"NestedFragmentDOMTransform" => [
-			"class" => DOMPostProcessor::class,
+			"class" => DOMProcessorPipeline::class,
 			"processors" => self::NESTED_PIPELINE_DOM_TRANSFORMS
 		],
 		// DOM transformations to run on attribute-embedded docs of the top level doc
 		"FullParseEmbeddedDocsDOMTransform" => [
-			"class" => DOMPostProcessor::class,
+			"class" => DOMProcessorPipeline::class,
 			"processors" => self::FULL_PARSE_EMBEDDED_DOC_DOM_TRANSFORMS
 		],
 		// DOM transformer for fragments during selective updates.
 		// This may eventually become identical to NestedFrgmentDOMTransform,
 		// but at this time, it is unclear if that will materialize.
 		"SelectiveUpdateFragmentDOMTransform" => [
-			"class" => DOMPostProcessor::class,
+			"class" => DOMProcessorPipeline::class,
 			"processors" => [
 				self::NESTED_PIPELINE_DOM_TRANSFORMS,
 				self::SELECTIVE_UPDATE_FRAGMENT_GLOBAL_DOM_TRANSFORMS
@@ -353,7 +353,7 @@ class ParserPipelineFactory {
 		// DOM transformer for the top-level page during selective updates.
 		"SelectiveUpdateDOMTransform" => [
 			// For use in the top-level of the selective-update pipeline
-			"class" => DOMPostProcessor::class,
+			"class" => DOMProcessorPipeline::class,
 			"processors" => self::SELECTIVE_UPDATE_GLOBAL_DOM_TRANSFORMS
 		]
 	];
@@ -527,8 +527,8 @@ class ParserPipelineFactory {
 		foreach ( $recipeStages as $stageId ) {
 			$stageData = self::$stages[$stageId];
 			$stage = new $stageData["class"]( $this->env, $options, $stageId, $prevStage );
-			if ( isset( $stageData["transformers"] ) ) {
-				foreach ( $stageData["transformers"] as $tName ) {
+			if ( isset( $stageData["token-handlers"] ) ) {
+				foreach ( $stageData["token-handlers"] as $tName ) {
 					$stage->addTransformer( new $tName( $stage, $options ) );
 				}
 			} elseif ( isset( $stageData["processors"] ) ) {
