@@ -5,6 +5,8 @@ use OutOfBoundsException;
 class ReferenceData {
 
 	/**
+	 * @var array mapping from Adyen's method names to our method/submethod
+	 *
 	 * Example for adding a new Payment Method
 	 *  'PaymentMethodNameFromPaymentProcessor' => [
 	 *    'method' => 'OurNameForThePaymentMethod',
@@ -18,7 +20,6 @@ class ReferenceData {
 	 *    ],
 	 *  ],
 	 */
-
 	protected static $methods = [
 		'ach' => [
 			'method' => 'dd',

@@ -156,7 +156,7 @@ class Mapper {
 	/**
 	 * Convert transformer paths to classes if necessary
 	 *
-	 * @param array &$transformers
+	 * @param array $transformers
 	 */
 	protected function setupInputTransformers( array &$transformers ) {
 		foreach ( $transformers as $i => $transformer ) {

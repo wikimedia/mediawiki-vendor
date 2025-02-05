@@ -66,6 +66,7 @@ return array(
     'Gr4vy\\' => array($vendorDir . '/gr4vy/gr4vy-php/lib'),
     'GetOptionKit\\' => array($vendorDir . '/corneltek/getoptionkit/src'),
     'GeoIp2\\' => array($vendorDir . '/geoip2/geoip2/src'),
+    'ForceUTF8\\' => array($vendorDir . '/relisten/forceutf8/src/ForceUTF8'),
     'Composer\\Semver\\' => array($vendorDir . '/composer/semver/src'),
     'Composer\\Installers\\' => array($vendorDir . '/composer/installers/src/Composer/Installers'),
     'Composer\\CaBundle\\' => array($vendorDir . '/composer/ca-bundle/src'),

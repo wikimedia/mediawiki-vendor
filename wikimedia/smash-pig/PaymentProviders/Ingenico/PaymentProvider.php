@@ -135,7 +135,7 @@ abstract class PaymentProvider implements IPaymentProvider, ICancelablePaymentPr
 	 * Check for the presence of payment status response errors and if present
 	 * log and add them to the top-level response.
 	 *
-	 * @param array &$response
+	 * @param array $response
 	 * @param array|null $paymentResponse
 	 */
 	protected function addPaymentStatusErrorsIfPresent( &$response, $paymentResponse = null ) {

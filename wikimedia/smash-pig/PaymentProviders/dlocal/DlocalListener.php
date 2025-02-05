@@ -13,7 +13,10 @@ use SmashPig\Core\Messages\ListenerMessage;
  */
 class DlocalListener extends RestListener {
 
-	// Success status are refunds and completed status are chargebacks
+	/**
+	 * @var array
+	 * Success status are refunds and completed status are chargebacks
+	 */
 	protected $paymentStatus = [
 		'PAID' => 'SmashPig\PaymentProviders\dlocal\ExpatriatedMessages\PaidMessage',
 		'SUCCESS' => 'SmashPig\PaymentProviders\dlocal\ExpatriatedMessages\SuccessMessage',

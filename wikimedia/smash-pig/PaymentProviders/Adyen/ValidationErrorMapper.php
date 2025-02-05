@@ -6,8 +6,11 @@ namespace SmashPig\PaymentProviders\Adyen;
  * Maps Adyen error codes to normalized field names
  */
 class ValidationErrorMapper {
-	// TODO: after refactoring ValidationError (https://phabricator.wikimedia.org/T294957)
-	// these values will need more than just a field name
+	/**
+	 * @var array mapping of adyen error codes to our-side field names
+	 * TODO: after refactoring ValidationError (https://phabricator.wikimedia.org/T294957)
+	 * these values will need more than just a field name
+	 */
 	protected static $validationErrorFields = [
 		'101' => 'card_num', // Invalid card number
 		'102' => 'card_num', // Unable to determine variant

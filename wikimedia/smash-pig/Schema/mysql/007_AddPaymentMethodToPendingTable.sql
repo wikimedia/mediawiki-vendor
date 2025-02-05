@@ -1,1 +1,0 @@
-ALTER TABLE pending ADD COLUMN IF NOT EXISTS payment_method varchar(16) DEFAULT NULL;

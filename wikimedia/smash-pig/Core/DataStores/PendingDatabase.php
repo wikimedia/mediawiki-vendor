@@ -244,8 +244,6 @@ class PendingDatabase extends SmashPigDatabase {
 	}
 
 	protected function getTableScriptFiles(): array {
-		return [ '001_CreatePendingTable.sql',
-				 '007_AddPaymentMethodToPendingTable.sql'
-		];
+		return [ '001_CreatePendingTable.sql' ];
 	}
 }

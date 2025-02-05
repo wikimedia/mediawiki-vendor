@@ -65,7 +65,7 @@ class VenmoPaymentProvider extends PaymentProvider {
 
 	/**
 	 * @param array $params
-	 * @param array &$apiParams
+	 * @param array $apiParams
 	 * @return array
 	 */
 	protected function indicateMerchant( array $params, array &$apiParams ) {

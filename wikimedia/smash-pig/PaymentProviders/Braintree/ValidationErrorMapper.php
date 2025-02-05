@@ -7,6 +7,7 @@ namespace SmashPig\PaymentProviders\Braintree;
  */
 class ValidationErrorMapper {
 	/**
+	 * @var array
 	 * Braintree transaction validation error matching normalized field names.
 	 * normalized fields: https://phabricator.wikimedia.org/diffusion/EDOI/browse/master/gateway_common/DonationData.php$950
 	 */

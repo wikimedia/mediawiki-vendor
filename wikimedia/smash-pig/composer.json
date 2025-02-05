@@ -43,7 +43,7 @@
         "ext-curl": "*",
         "ext-json": "*",
         "ext-pdo": "*",
-        "php": ">=7.4",
+        "php": ">=8.0",
         "phpmailer/phpmailer": "^6",
         "predis/predis": "^1.1",
         "symfony/http-foundation": "^5|^6",
@@ -54,20 +54,20 @@
         "corneltek/getoptionkit": "^2.5",
         "gr4vy/gr4vy-php": "0.23.2"
     },
-	"require-dev": {
-		"php-parallel-lint/php-parallel-lint": "^1.2",
-		"phpunit/phpunit": "^9.5",
-		"ext-sqlite3": "*",
-		"mediawiki/mediawiki-codesniffer": "^31.0"
-	},
-	"scripts": {
-		"fix": "phpcbf",
-		"test": [
-			"parallel-lint . --exclude vendor",
-			"[ ! -f phpunit.xml ] || phpunit",
-			"phpcs -p -s"
-		]
-	},
+    "require-dev": {
+    	"php-parallel-lint/php-parallel-lint": "^1.2",
+    	"phpunit/phpunit": "^9.5",
+    	"ext-sqlite3": "*",
+    	"mediawiki/mediawiki-codesniffer": "^34.0"
+    },
+    "scripts": {
+    	"fix": "phpcbf",
+    	"test": [
+    		"parallel-lint . --exclude vendor",
+    		"[ ! -f phpunit.xml ] || phpunit",
+    		"phpcs -p -s"
+    	]
+    },
     "autoload": {
         "psr-4": {
             "SmashPig\\": "./"
@@ -81,7 +81,7 @@
     ],
     "config": {
       "platform": {
-        "php": "7.4.33"
+        "php": "8.2.26"
       }
     }
 }

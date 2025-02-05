@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 class BankPaymentProvider extends PaymentProvider {
 
 	/**
-	 * @var array()
+	 * @var array
 	 */
 	protected $cacheParameters;
 

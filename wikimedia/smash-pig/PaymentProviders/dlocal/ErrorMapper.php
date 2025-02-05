@@ -6,8 +6,11 @@ use SmashPig\Core\ValidationError;
 use SmashPig\PaymentData\ErrorCode;
 
 class ErrorMapper {
-	// Payment status codes for erroneous payments
-	// Source: https://docs.dlocal.com/reference/http-errors-payments#errors
+	/**
+	 * @var array
+	 * Payment status codes for erroneous payments
+	 * Source: https://docs.dlocal.com/reference/http-errors-payments#errors
+	 */
 	public static $paymentStatusErrorCodes = [
 			'300' => ErrorCode::UNKNOWN, // The payment was rejected.
 			'301' => ErrorCode::UNKNOWN, // Rejected by bank.
@@ -33,8 +36,11 @@ class ErrorMapper {
 			'321' => ErrorCode::UNKNOWN, // Error in Acquirer
 	];
 
-	// Error response code mapping
-	// Source: https://docs.dlocal.com/reference/http-errors-payments#http-errors
+	/**
+	 * @var array
+	 * Error response code mapping
+	 * Source: https://docs.dlocal.com/reference/http-errors-payments#http-errors
+	 */
 	public static $errorCodes = [
 		'3001' => ErrorCode::ACCOUNT_MISCONFIGURATION, // Invalid Credentials.
 		'3002' => ErrorCode::UNKNOWN, // Unregistered IP address.

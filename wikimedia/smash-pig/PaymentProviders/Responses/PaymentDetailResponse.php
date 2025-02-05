@@ -44,7 +44,7 @@ class PaymentDetailResponse extends PaymentProviderResponse {
 
 	/**
 	 * FIXME: unaccessed, should probably just return $this->donorDetails !== null
-	 * @var boolean
+	 * @var bool
 	 */
 	protected bool $hasDonorDetails = false;
 

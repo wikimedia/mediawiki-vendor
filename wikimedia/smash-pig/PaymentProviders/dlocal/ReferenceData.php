@@ -21,8 +21,11 @@ class ReferenceData {
 		'Debit Card' => 'cc',
 	];
 
-	// At least one dLocal bank code is used for both credit cards
-	// and bank transfers. We have a different internal code for each.
+	/**
+	 * @var array
+	 * At least one dLocal bank code is used for both credit cards
+	 * and bank transfers. We have a different internal code for each.
+	 */
 	protected static $multiTypeSubmethods = [
 		'WP' => [
 			'cc' => 'webpay',

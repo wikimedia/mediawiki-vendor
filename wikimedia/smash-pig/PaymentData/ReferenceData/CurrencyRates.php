@@ -6,10 +6,10 @@
  */
 namespace SmashPig\PaymentData\ReferenceData;
 
+/**
+ * Supplies rough (not up-to-date) conversion rates for currencies
+ */
 class CurrencyRates {
-	/**
-	 * Supplies rough (not up-to-date) conversion rates for currencies
-	 */
 
 	public static $lastUpdated = '2024-05-20';
 

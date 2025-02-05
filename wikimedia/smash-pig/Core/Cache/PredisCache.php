@@ -10,7 +10,7 @@ use RuntimeException;
 
 class PredisCache implements CacheItemPoolInterface {
 
-	/* @var Client */
+	/** @var Client */
 	protected $client;
 
 	protected $deferredQueue = [];

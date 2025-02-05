@@ -23,14 +23,12 @@ use Twig\Node\Node;
 class BlockReferenceExpression extends AbstractExpression
 {
     /**
-     * @param Node|null $template
+     * @param AbstractExpression $name
      */
-    public function __construct(\Twig_NodeInterface $name, $template, $lineno, $tag = null)
+    public function __construct(Node $name, ?Node $template, int $lineno)
     {
-        if (\is_bool($template)) {
-            @trigger_error(sprintf('The %s method "$asString" argument is deprecated since version 1.28 and will be removed in 2.0.', __METHOD__), \E_USER_DEPRECATED);
-
-            $template = null;
+        if (!$name instanceof AbstractExpression) {
+            trigger_deprecation('twig/twig', '3.15', 'Not passing a "%s" instance to the "node" argument of "%s" is deprecated ("%s" given).', AbstractExpression::class, static::class, \get_class($name));
         }
 
         $nodes = ['name' => $name];
@@ -38,10 +36,10 @@ class BlockReferenceExpression extends AbstractExpression
             $nodes['template'] = $template;
         }
 
-        parent::__construct($nodes, ['is_defined_test' => false, 'output' => false], $lineno, $tag);
+        parent::__construct($nodes, ['is_defined_test' => false, 'output' => false], $lineno);
     }
 
-    public function compile(Compiler $compiler)
+    public function compile(Compiler $compiler): void
     {
         if ($this->getAttribute('is_defined_test')) {
             $this->compileTemplateCall($compiler, 'hasBlock');
@@ -49,8 +47,9 @@ class BlockReferenceExpression extends AbstractExpression
             if ($this->getAttribute('output')) {
                 $compiler->addDebugInfo($this);
 
+                $compiler->write('yield from ');
                 $this
-                    ->compileTemplateCall($compiler, 'displayBlock')
+                    ->compileTemplateCall($compiler, 'yieldBlock')
                     ->raw(";\n");
             } else {
                 $this->compileTemplateCall($compiler, 'renderBlock');
@@ -58,7 +57,7 @@ class BlockReferenceExpression extends AbstractExpression
         }
     }
 
-    private function compileTemplateCall(Compiler $compiler, $method)
+    private function compileTemplateCall(Compiler $compiler, string $method): Compiler
     {
         if (!$this->hasNode('template')) {
             $compiler->write('$this');
@@ -74,13 +73,12 @@ class BlockReferenceExpression extends AbstractExpression
             ;
         }
 
-        $compiler->raw(sprintf('->%s', $method));
-        $this->compileBlockArguments($compiler);
+        $compiler->raw(\sprintf('->unwrap()->%s', $method));
 
-        return $compiler;
+        return $this->compileBlockArguments($compiler);
     }
 
-    private function compileBlockArguments(Compiler $compiler)
+    private function compileBlockArguments(Compiler $compiler): Compiler
     {
         $compiler
             ->raw('(')
@@ -94,5 +92,3 @@ class BlockReferenceExpression extends AbstractExpression
         return $compiler->raw(')');
     }
 }
-
-class_alias('Twig\Node\Expression\BlockReferenceExpression', 'Twig_Node_Expression_BlockReference');

@@ -9,7 +9,7 @@ class SimpleCacheItem implements CacheItemInterface {
 	protected $key;
 	protected $value;
 	protected $hit;
-	/* @var int|null time to live in seconds */
+	/** @var int|null time to live in seconds */
 	protected $ttl = null;
 
 	/**

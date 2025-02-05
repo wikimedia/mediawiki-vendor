@@ -6,9 +6,10 @@ use SmashPig\Core\UtcDate;
 class QueueFileDumper extends BaseQueueConsumer {
 
 	/**
-	 * @resource
+	 * @var resource
 	 */
 	protected $file;
+
 	/**
 	 * @var array
 	 */

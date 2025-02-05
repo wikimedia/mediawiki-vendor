@@ -1,0 +1,32 @@
+{
+    "name": "relisten/forceutf8",
+    "homepage": "https://github.com/RelistenNL/forceutf8",
+    "license": "BSD-3-Clause",
+    "type": "library",
+    "description": "PHP Class Encoding featuring popular Encoding::toUTF8() function --formerly known as forceUTF8()-- that fixes mixed encoded strings.",
+    "require": {
+        "php": "^7.0 || ^8.0"
+    },
+    "suggest": {
+        "ext-iconv": "To convert non-UTF-8 strings to UTF-8",
+        "ext-intl": "To convert non-UTF-8 strings to UTF-8",
+        "ext-mbstring": "To convert non-UTF-8 strings to UTF-8"
+    },
+    "authors": [
+        {
+            "name": "Sjoerd Wenker",
+            "email": "sjoerd@relisten.nl"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "ForceUTF8\\": "src/ForceUTF8/"
+        }
+    },
+    "extra": {
+        "thanks": {
+            "name": "neitanod/forceutf8",
+            "url": "https://github.com/neitanod/forceutf8"
+        }
+    }
+}

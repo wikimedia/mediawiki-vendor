@@ -427,7 +427,7 @@ abstract class MaintenanceBase {
 	 *
 	 * @param int|null $len The number of bytes to read from the stream. If null, this will return a handle
 	 * 					to stdin. Maintenance::STDIN_ALL reads to the end of the stream.
-	 * @return Mixed
+	 * @return mixed
 	 */
 	protected function getStdIn( $len = null ) {
 		if ( $len == self::STDIN_ALL ) {

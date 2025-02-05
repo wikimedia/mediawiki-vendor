@@ -13,7 +13,7 @@ use SmashPig\Core\Http\OutboundRequest;
 class IdealStatusProvider {
 
 	/**
-	 * @var array()
+	 * @var array
 	 */
 	protected $cacheParameters;
 

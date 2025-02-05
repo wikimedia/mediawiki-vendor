@@ -6,8 +6,11 @@ use SmashPig\PaymentData\ErrorCode;
 
 class ErrorMapper {
 
-	// Core failures
-	// Source: https://docs.gr4vy.com/guides/api/resources/transactions/error-codes#core-failures
+	/**
+	 * @var array
+	 * Core failures
+	 * Source: https://docs.gr4vy.com/guides/api/resources/transactions/error-codes#core-failures
+	 */
 	public static $transactionErrorCodesCore = [
 		'incomplete_buyer_approval' => ErrorCode::INVALID_REQUEST, // The shipping address is invalid.
 		'failed_buyer_approval' => ErrorCode::UNKNOWN,	// The service could not create a resource due to a conflict.
@@ -16,8 +19,11 @@ class ErrorMapper {
 		'all_attempts_skipped	' => ErrorCode::UNKNOWN, // The resource could not be found by the service.
 	];
 
-	// Connector declines/Failures
-	// Source: https://docs.gr4vy.com/guides/api/resources/transactions/error-codes#connector-declines
+	/**
+	 * @var array
+	 * Connector declines/Failures
+	 * Source: https://docs.gr4vy.com/guides/api/resources/transactions/error-codes#connector-declines
+	 */
 	public static $transactionErrorCodes = [
 			'canceled_payment_method' => ErrorCode::DECLINED_DO_NOT_RETRY, // The payment method reported lost, stolen, or otherwise canceled..
 			'disputed_transaction' => ErrorCode::UNKNOWN, // The transaction cannot be refunded due to chargeback.
@@ -69,8 +75,11 @@ class ErrorMapper {
 			'unsupported_currency' => ErrorCode::VALIDATION, // The currency is not supported by the service.
 	];
 
-	// Error response code mapping
-	// source: https://docs.gr4vy.com/reference/errors/server-errors, https://docs.gr4vy.com/reference/errors/client-errors
+	/**
+	 * @var array
+	 * Error response code mapping
+	 * source: https://docs.gr4vy.com/reference/errors/server-errors, https://docs.gr4vy.com/reference/errors/client-errors
+	 */
 	public static $errorCodes = [
 		'400' => ErrorCode::VALIDATION, // Bad request.
 		'401' => ErrorCode::INVALID_REQUEST, // Unauthorized.

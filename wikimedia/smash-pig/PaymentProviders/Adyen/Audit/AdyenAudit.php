@@ -52,14 +52,17 @@ abstract class AdyenAudit implements AuditParser {
 	];
 
 	protected $fileData;
-	// the state of the payment in the report
+	/** @var string the state of the payment in the report */
 	protected $type;
-	// the date of the state of the payment for example when it settled or was refunded
+	/** @var string the date of the state of the payment for example when it settled or was refunded */
 	protected $date;
 	protected $merchantReference = 'Merchant Reference';
 	protected $columnHeaders;
 
-	// These are the common ones - subclasses should add more in their constructors.
+	/**
+	 * @var array
+	 * These are the common ones - subclasses should add more in their constructors.
+	 */
 	protected $requiredColumns = [
 		'Merchant Account',
 		'Merchant Reference',
@@ -135,7 +138,9 @@ abstract class AdyenAudit implements AuditParser {
 		$this->fileData[] = $msg;
 	}
 
-	// these column names are shared between SettlementDetail and PaymentsAccounting reports
+	/**
+	 * these column names are shared between SettlementDetail and PaymentsAccounting reports
+	 */
 	protected function setCommonValues( array $row ) {
 		$msg = [
 			'gateway' => 'adyen',

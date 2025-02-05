@@ -207,7 +207,7 @@ abstract class Configuration {
 	 * array where the $base array does not have an array at that node. If it does have an
 	 * array the merge will continue recursively.
 	 *
-	 * @param array &$base The base array to merge into
+	 * @param array $base The base array to merge into
 	 * @param array $graft Values to merge into the $base
 	 *
 	 * @param string $myRoot Internal recursion state: parent node path so far,

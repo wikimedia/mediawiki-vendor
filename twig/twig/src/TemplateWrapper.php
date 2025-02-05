@@ -18,131 +18,84 @@ namespace Twig;
  */
 final class TemplateWrapper
 {
-    private $env;
-    private $template;
-
     /**
      * This method is for internal use only and should never be called
      * directly (use Twig\Environment::load() instead).
      *
      * @internal
      */
-    public function __construct(Environment $env, Template $template)
-    {
-        $this->env = $env;
-        $this->template = $template;
+    public function __construct(
+        private Environment $env,
+        private Template $template,
+    ) {
     }
 
     /**
-     * Renders the template.
-     *
-     * @param array $context An array of parameters to pass to the template
-     *
-     * @return string The rendered template
+     * @return iterable<scalar|\Stringable|null>
      */
-    public function render($context = [])
+    public function stream(array $context = []): iterable
+    {
+        yield from $this->template->yield($context);
+    }
+
+    /**
+     * @return iterable<scalar|\Stringable|null>
+     */
+    public function streamBlock(string $name, array $context = []): iterable
+    {
+        yield from $this->template->yieldBlock($name, $context);
+    }
+
+    public function render(array $context = []): string
+    {
+        return $this->template->render($context);
+    }
+
+    /**
+     * @return void
+     */
+    public function display(array $context = [])
     {
         // using func_get_args() allows to not expose the blocks argument
         // as it should only be used by internal code
-        return $this->template->render($context, \func_num_args() > 1 ? func_get_arg(1) : []);
+        $this->template->display($context, \func_get_args()[1] ?? []);
     }
 
-    /**
-     * Displays the template.
-     *
-     * @param array $context An array of parameters to pass to the template
-     */
-    public function display($context = [])
-    {
-        // using func_get_args() allows to not expose the blocks argument
-        // as it should only be used by internal code
-        $this->template->display($context, \func_num_args() > 1 ? func_get_arg(1) : []);
-    }
-
-    /**
-     * Checks if a block is defined.
-     *
-     * @param string $name    The block name
-     * @param array  $context An array of parameters to pass to the template
-     *
-     * @return bool
-     */
-    public function hasBlock($name, $context = [])
+    public function hasBlock(string $name, array $context = []): bool
     {
         return $this->template->hasBlock($name, $context);
     }
 
     /**
-     * Returns defined block names in the template.
-     *
-     * @param array $context An array of parameters to pass to the template
-     *
      * @return string[] An array of defined template block names
      */
-    public function getBlockNames($context = [])
+    public function getBlockNames(array $context = []): array
     {
         return $this->template->getBlockNames($context);
     }
 
-    /**
-     * Renders a template block.
-     *
-     * @param string $name    The block name to render
-     * @param array  $context An array of parameters to pass to the template
-     *
-     * @return string The rendered block
-     */
-    public function renderBlock($name, $context = [])
+    public function renderBlock(string $name, array $context = []): string
     {
-        $context = $this->env->mergeGlobals($context);
-        $level = ob_get_level();
-        if ($this->env->isDebug()) {
-            ob_start();
-        } else {
-            ob_start(function () { return ''; });
-        }
-        try {
-            $this->template->displayBlock($name, $context);
-        } catch (\Exception $e) {
-            while (ob_get_level() > $level) {
-                ob_end_clean();
-            }
-
-            throw $e;
-        } catch (\Throwable $e) {
-            while (ob_get_level() > $level) {
-                ob_end_clean();
-            }
-
-            throw $e;
-        }
-
-        return ob_get_clean();
+        return $this->template->renderBlock($name, $context + $this->env->getGlobals());
     }
 
     /**
-     * Displays a template block.
-     *
-     * @param string $name    The block name to render
-     * @param array  $context An array of parameters to pass to the template
+     * @return void
      */
-    public function displayBlock($name, $context = [])
+    public function displayBlock(string $name, array $context = [])
     {
-        $this->template->displayBlock($name, $this->env->mergeGlobals($context));
+        $context += $this->env->getGlobals();
+        foreach ($this->template->yieldBlock($name, $context) as $data) {
+            echo $data;
+        }
     }
 
-    /**
-     * @return Source
-     */
-    public function getSourceContext()
+    public function getSourceContext(): Source
     {
         return $this->template->getSourceContext();
     }
 
-    /**
-     * @return string
-     */
-    public function getTemplateName()
+    public function getTemplateName(): string
     {
         return $this->template->getTemplateName();
     }
@@ -157,5 +110,3 @@ final class TemplateWrapper
         return $this->template;
     }
 }
-
-class_alias('Twig\TemplateWrapper', 'Twig_TemplateWrapper');

@@ -5,10 +5,9 @@ namespace SmashPig\PaymentProviders\Ingenico;
 use OutOfBoundsException;
 
 class ReferenceData {
-	// FIXME: replace this whole class with payment_(sub)method.yaml files
-	// See https://epayments-api.developer-ingenico.com/s2sapi/v1/en_US/java/paymentproducts.html
-	// Also see wmf_civicrm.module, lines 618-699
-
+	/**
+	 * @var array
+	 */
 	protected static $methods = [
 		'1' => [ 'payment_method' => 'cc', 'payment_submethod' => 'visa' ],
 		'2' => [ 'payment_method' => 'cc', 'payment_submethod' => 'amex' ],

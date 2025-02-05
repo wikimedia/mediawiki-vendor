@@ -6,8 +6,11 @@ use SmashPig\Core\ApiException;
 use SmashPig\PaymentData\ErrorCode;
 
 class ExceptionMapper {
-	// List from https://developer.paypal.com/api/nvp-soap/errors/
-	// todo: could add more later
+	/**
+	 * @var array
+	 * List from https://developer.paypal.com/api/nvp-soap/errors/
+	 * todo: could add more later
+	 */
 	protected static $fatalErrorCodes = [
 		'11502' => ErrorCode::UNEXPECTED_VALUE, // Invalid token
 		'11516' => ErrorCode::MISSING_REQUIRED_DATA, // Invalid billing frequency.

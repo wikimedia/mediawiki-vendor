@@ -41,7 +41,7 @@ class PaymentMessage extends Message {
 	/**
 	 * Tag donations from givingfund email list with the giving fund organization
 	 * contact ID and add appropriate values for Gift Data fields.
-	 * @param array &$message
+	 * @param array $message
 	 * @param ProviderConfiguration $config
 	 * @return void
 	 */

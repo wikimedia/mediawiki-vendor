@@ -8,7 +8,7 @@ class SourceFields {
 	/**
 	 * Add fields to a queue message to identify the source
 	 *
-	 * @param array &$message
+	 * @param array $message
 	 */
 	public static function addToMessage( &$message ) {
 		$context = Context::get();
@@ -23,7 +23,7 @@ class SourceFields {
 	/**
 	 * Remove and return the source fields from a queue message
 	 *
-	 * @param array &$message
+	 * @param array $message
 	 * @return array
 	 */
 	public static function removeFromMessage( &$message ) {

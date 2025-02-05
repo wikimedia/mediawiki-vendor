@@ -24,7 +24,7 @@ class DataConstraints extends AbstractTransformer {
 
 	/**
 	 * @param array $original
-	 * @param array &$transformed
+	 * @param array $transformed
 	 *
 	 * @return void
 	 */

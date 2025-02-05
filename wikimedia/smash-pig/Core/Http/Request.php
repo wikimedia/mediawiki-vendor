@@ -7,8 +7,10 @@ class Request extends SymfonyRequest {
 		return file_get_contents( 'php://input' );
 	}
 
-	// XXX It's weird that we wrap the symfony helper just to export the
-	// request as an array. Worth the extra layer of indirection?
+	/**
+	 * XXX It's weird that we wrap the symfony helper just to export the
+	 * request as an array. Worth the extra layer of indirection?
+	 */
 	public function getValues(): array {
 		return $this->query->all() +
 			$this->attributes->all() +

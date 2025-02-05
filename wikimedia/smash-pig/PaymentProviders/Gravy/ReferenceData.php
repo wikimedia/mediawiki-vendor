@@ -119,8 +119,6 @@ class ReferenceData {
 		"vipps" => ""
 	];
 
-	// At least one dLocal bank code is used for both credit cards
-	// and bank transfers. We have a different internal code for each.
 	protected static $cardPaymentSubmethods = [
 		"amex" => 'amex',
 		"bancontact" => '',

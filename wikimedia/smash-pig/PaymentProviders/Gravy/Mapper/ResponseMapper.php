@@ -20,74 +20,7 @@ class ResponseMapper {
 			return $this->mapErrorFromResponse( $response );
 		}
 
-		$result = [
-			'is_successful' => true,
-			'gateway_txn_id' => $response['id'],
-			'amount' => $response['amount'] / 100,
-			'currency' => $response['currency'],
-			'order_id' => $response['external_identifier'],
-			'raw_status' => $response['status'],
-			'status' => $this->normalizeStatus( $response['status'] ),
-			'raw_response' => $response,
-			'risk_scores' => $this->getRiskScores( $response['avs_response_code'] ?? null, $response['cvv_response_code'] ?? null )
-		];
-
-		if ( $result['status'] == FinalStatus::FAILED ) {
-			$result['is_successful'] = false;
-		}
-
-		if ( !empty( $response['payment_method'] ) ) {
-			$result['recurring_payment_token'] = $response['payment_method']['id'];
-
-			$gravyPaymentMethod = $response['payment_method']['method'] ?? '';
-			$gravyPaymentSubmethod = $response['payment_method']['scheme'] ?? '';
-			[ $normalizedPaymentMethod, $normalizedPaymentSubmethod ] = ReferenceData::decodePaymentMethod( $gravyPaymentMethod, $gravyPaymentSubmethod );
-			$result['payment_method'] = $normalizedPaymentMethod;
-			$result['payment_submethod'] = $normalizedPaymentSubmethod;
-
-			if ( !empty( $response['payment_method']['approval_url'] ) ) {
-				$result['redirect_url'] = $response['payment_method']['approval_url'];
-			}
-		}
-
-		if ( !empty( $response['buyer'] ) && !empty( $response['buyer']['billing_details'] ) ) {
-			$donorDetails = $response['buyer']['billing_details'];
-			$result['donor_details'] = [
-				'first_name' => $donorDetails['first_name'] ?? '',
-				'last_name' => $donorDetails['last_name'] ?? '',
-				'phone_number' => $donorDetails['phone_number'] ?? '',
-				'email_address' => $donorDetails['email_address'] ?? '',
-				'employer' => $response['buyer']['organization'] ?? '',
-				'processor_contact_id' => $response['buyer']['id'] ?? '',
-				];
-
-			if ( in_array( $gravyPaymentMethod, self::METHODS_WITH_USERNAME ) ) {
-				$result['donor_details']['username'] = $response['payment_method']['label'];
-			}
-
-			if ( !empty( $donorDetails['address'] ) ) {
-				$donorAddress = $donorDetails['address'];
-				$result['donor_details']['address'] = [
-					'address_line1' => $donorAddress['line1'] ?? '',
-					'postal_code' => $donorAddress['postal_code'] ?? '',
-					'state' => $donorAddress['state'] ?? '',
-					'city' => $donorAddress['city'] ?? '',
-					'country' => $donorAddress['country'] ?? '',
-				];
-			}
-		}
-
-		if ( !empty( $response['payment_service'] ) ) {
-			if ( !empty( $response['payment_service']['payment_service_definition_id'] ) ) {
-				$paymentServiceDefinitionId = $response['payment_service']['payment_service_definition_id'];
-				$result['backend_processor'] = GravyHelper::extractProcessorNameFromServiceDefinitionId( $paymentServiceDefinitionId );
-			}
-		}
-
-		$result['backend_processor_transaction_id'] = $response['payment_service_transaction_id'] ?? null;
-		$result['payment_orchestrator_reconciliation_id'] = $response['reconciliation_id'] ?? null;
-
-		return $result;
+		return $this->mapSuccessfulPaymentResponse( $response );
 	}
 
 	public function mapDonorResponse( array $response ) : array {
@@ -170,18 +103,7 @@ class ResponseMapper {
 		if ( ( isset( $response['type'] ) && $response['type'] == 'error' ) || isset( $response['error_code'] ) ) {
 			return $this->mapErrorFromResponse( $response );
 		}
-		return [
-			"is_successful" => true,
-			"gateway_parent_id" => $response["transaction_id"],
-			"gateway_refund_id" => $response["id"],
-			"currency" => $response["currency"],
-			"amount" => $response["amount"] / 100,
-			"reason" => $response["reason"],
-			"status" => $this->normalizeStatus( $response["status"] ),
-			"raw_status" => $response["status"],
-			"type" => 'refund',
-			"raw_response" => $response,
-		];
+		return $this->mapSuccessfulRefundMessage( $response );
 	}
 
 	/**
@@ -219,6 +141,125 @@ class ResponseMapper {
 			"raw_response" => $response,
 			"status" => $this->normalizeStatus( "succeeded" ),
 			"raw_status" => "succeeded"
+		];
+	}
+
+	/**
+	 * Maps from gravy payment response payment method details
+	 * @param array $result
+	 * @param array $response
+	 * @return void
+	 */
+	private function mapPaymentResponsePaymentMethodDetails( array &$result, array $response ): void {
+		if ( !empty( $response['payment_method'] ) ) {
+			$result['recurring_payment_token'] = $response['payment_method']['id'];
+
+			$gravyPaymentMethod = $response['payment_method']['method'] ?? '';
+			$gravyPaymentSubmethod = $response['payment_method']['scheme'] ?? '';
+			[ $normalizedPaymentMethod, $normalizedPaymentSubmethod ] = ReferenceData::decodePaymentMethod( $gravyPaymentMethod, $gravyPaymentSubmethod );
+			$result['payment_method'] = $normalizedPaymentMethod;
+			$result['payment_submethod'] = $normalizedPaymentSubmethod;
+
+			if ( !empty( $response['payment_method']['approval_url'] ) ) {
+				$result['redirect_url'] = $response['payment_method']['approval_url'];
+			}
+		}
+	}
+
+	/**
+	 * Maps from gravy payment response donor details
+	 * @param array $result
+	 * @param array $response
+	 * @return void
+	 */
+	private function mapPaymentResponseDonorDetails( array &$result, array $response ): void {
+		$gravyPaymentMethod = $response['payment_method']['method'] ?? '';
+		if ( !empty( $response['buyer'] ) && !empty( $response['buyer']['billing_details'] ) ) {
+			$donorDetails = $response['buyer']['billing_details'];
+			$result['donor_details'] = [
+				'first_name' => $donorDetails['first_name'] ?? '',
+				'last_name' => $donorDetails['last_name'] ?? '',
+				'phone_number' => $donorDetails['phone_number'] ?? '',
+				'email_address' => $donorDetails['email_address'] ?? '',
+				'employer' => $response['buyer']['organization'] ?? '',
+				'processor_contact_id' => $response['buyer']['id'] ?? '',
+				];
+
+			if ( in_array( $gravyPaymentMethod, self::METHODS_WITH_USERNAME ) ) {
+				$result['donor_details']['username'] = $response['payment_method']['label'];
+			}
+
+			if ( !empty( $donorDetails['address'] ) ) {
+				$donorAddress = $donorDetails['address'];
+				$result['donor_details']['address'] = [
+					'address_line1' => $donorAddress['line1'] ?? '',
+					'postal_code' => $donorAddress['postal_code'] ?? '',
+					'state' => $donorAddress['state'] ?? '',
+					'city' => $donorAddress['city'] ?? '',
+					'country' => $donorAddress['country'] ?? '',
+				];
+			}
+		}
+	}
+
+	/**
+	 * Maps from gravy payment response payment service details
+	 * @param array $result
+	 * @param array $response
+	 * @return void
+	 */
+	private function mapPaymentResponsePaymentService( array &$result, array $response ): void {
+		$result['backend_processor'] = $this->getBackendProcessor( $response );
+		$result['backend_processor_transaction_id'] = $response['payment_service_transaction_id'] ?? null;
+		$result['payment_orchestrator_reconciliation_id'] = $response['reconciliation_id'] ?? null;
+	}
+
+	/**
+	 * Normalize Gravy payment response from Gravy format to pick out the key parameters
+	 * @param array $response
+	 * @return array
+	 */
+	private function mapSuccessfulPaymentResponse( array $response ): array {
+		$result = [
+			'is_successful' => true,
+			'gateway_txn_id' => $response['id'],
+			'amount' => $response['amount'] / 100,
+			'currency' => $response['currency'],
+			'order_id' => $response['external_identifier'],
+			'raw_status' => $response['status'],
+			'status' => $this->normalizeStatus( $response['status'] ),
+			'raw_response' => $response,
+			'risk_scores' => $this->getRiskScores( $response['avs_response_code'] ?? null, $response['cvv_response_code'] ?? null )
+		];
+
+		if ( $result['status'] == FinalStatus::FAILED ) {
+			$result['is_successful'] = false;
+		}
+
+		$this->mapPaymentResponsePaymentMethodDetails( $result, $response );
+		$this->mapPaymentResponseDonorDetails( $result, $response );
+		$this->mapPaymentResponsePaymentService( $result, $response );
+
+		return $result;
+	}
+
+	/**
+	 * Normalize Gravy payment refund response from Gravy format to pick out the key parameters
+	 * @param array $response
+	 * @return array
+	 */
+	protected function mapSuccessfulRefundMessage( array $response ): array {
+		return [
+			"is_successful" => true,
+			"gateway_parent_id" => $response["transaction_id"],
+			"gateway_refund_id" => $response["id"],
+			"currency" => $response["currency"],
+			"amount" => $response["amount"] / 100,
+			"reason" => $response["reason"],
+			"status" => $this->normalizeStatus( $response["status"] ),
+			"raw_status" => $response["status"],
+			"type" => 'refund',
+			"raw_response" => $response,
 		];
 	}
 
@@ -283,25 +324,25 @@ class ResponseMapper {
 			$errorParameters = $this->mapFrom3DSecureErrorResponse( $error['three_d_secure'] );
 		}
 
-		$error_code = ErrorMapper::getError( $errorParameters['code'] );
+		$errorCode = ErrorMapper::getError( $errorParameters['code'] );
 
-		return [
+		$errorResponse = [
 			'is_successful' => false,
 			'status' => FinalStatus::FAILED,
-			'code' => $error_code,
+			'code' => $errorCode,
 			'message' => $errorParameters['message'],
 			'description' => $errorParameters['description'],
 			'raw_response' => $error
-
 		];
+		return $errorResponse;
 	}
 
 	protected function mapFrom3DSecureErrorResponse( array $params ): array {
-		$error_data = $params['error_data'];
+		$errorData = $params['error_data'];
 		$error = [
-			"code" => $error_data['code'],
-			"message" => $error_data['description'],
-			"description" => $error_data['detail']
+			"code" => $errorData['code'],
+			"message" => $errorData['description'],
+			"description" => $errorData['detail']
 		];
 
 		return $error;
@@ -321,5 +362,20 @@ class ResponseMapper {
 			|| $response['intent_outcome'] === 'failed'
 			// 3d secure errors
 			|| ( isset( $response['three_d_secure'] ) && $response['three_d_secure']['status'] === 'error' );
+	}
+
+	/**
+	 * Gets the payment processor used by Gravy for the transaction
+	 * @param array $response
+	 * @return string|null
+	 */
+	protected function getBackendProcessor( array $response ): ?string {
+		if ( !empty( $response['payment_service'] ) ) {
+			if ( !empty( $response['payment_service']['payment_service_definition_id'] ) ) {
+				$paymentServiceDefinitionId = $response['payment_service']['payment_service_definition_id'];
+				return GravyHelper::extractProcessorNameFromServiceDefinitionId( $paymentServiceDefinitionId );
+			}
+		}
+		return null;
 	}
 }
