@@ -635,7 +635,7 @@ class TestRunner {
 		}
 		if ( isset( $opts['showmedia'] ) ) {
 			$images = array_map(
-				fn ( $item ) => $item['link']->getDBkey(),
+				static fn ( $item ) => $item['link']->getDBkey(),
 				$output->getLinkList( StubMetadataCollector::LINKTYPE_MEDIA )
 			);
 			$after[] = 'images=' . implode( ', ', $images );
@@ -1112,6 +1112,8 @@ class TestRunner {
 				$test->config['wgExternalLinkTarget']
 			);
 		}
+
+		$this->siteConfig->v3pf = $test->config['wgParsoidExperimentalParserFunctionSupport'] ?? false;
 
 		// Process test-specific options
 		if ( $testOpts ) {

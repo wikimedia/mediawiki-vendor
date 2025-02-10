@@ -383,16 +383,14 @@ class ParsoidExtensionAPI {
 		} else {
 			// Parse content to DOM and pass DOM-fragment token back to the main pipeline.
 			// The DOM will get unwrapped and integrated  when processing the top level document.
-			[ $wikitext, $pFragmentMap ] =
-				PipelineUtils::pFragmentToParsoidFragmentMarkers( $pFragment );
-			$srcOffsets = $pFragment->getSrcOffsets() ?? $opts['srcOffsets'] ?? null;
+			[
+				'frame' => $frame,
+				'wikitext' => $wikitext,
+				'srcOffsets' => $srcOffsets,
+			] = PipelineUtils::preparePFragment(
+				$this->env, $this->frame, $pFragment, $opts
+			);
 			$parseOpts = $opts['parseOpts'] ?? [];
-			$frame = $this->frame;
-			if ( !empty( $opts['processInNewFrame'] ) ) {
-				$frame = $frame->newChild( $frame->getTitle(), [], $wikitext );
-				$srcOffsets = new SourceRange( 0, strlen( $wikitext ) );
-			}
-			$this->env->addToPFragmentMap( $pFragmentMap );
 			$domFragment = PipelineUtils::processContentInPipeline(
 				$this->env, $frame, $wikitext,
 				[
@@ -715,6 +713,8 @@ class ParsoidExtensionAPI {
 		// FIXME: This is going to drop any diff markers but since
 		// the dom differ doesn't traverse into extension content (right now),
 		// none should exist anyways.
+		// FIXME: This roundtrip discards data-parsoid.tmp data from $node.
+		// Maybe it meant to set keepTmp, but that flag is currently broken.
 		$html = ContentUtils::ppToXML( $node, [ 'innerXML' => $innerHTML ] );
 		if ( !$releaseDom ) {
 			DOMDataUtils::visitAndLoadDataAttribs( $node );
