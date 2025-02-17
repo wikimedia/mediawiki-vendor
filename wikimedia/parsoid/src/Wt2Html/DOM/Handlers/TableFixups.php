@@ -510,6 +510,7 @@ class TableFixups {
 
 		// Process attribute wikitext as HTML
 		$leadingPipeChar = DOMCompat::nodeName( $cell ) === 'td' ? '|' : '!';
+		// FIXME: Encapsulated doesn't necessarily mean templated
 		$fromTpl = WTUtils::fromEncapsulatedContent( $cell );
 		if ( !preg_match( "#['[{<]#", $cellAttrSrc ) ) {
 			// Optimization:
@@ -615,10 +616,17 @@ class TableFixups {
 		$cellDp = DOMDataUtils::getDataParsoid( $cell );
 		$cellHasAttrs = !$cellDp->getTempFlag( TempData::NO_ATTRS );
 
-		$prevCellSrc = $prevDp->dsr->substr( $frame->getSrcText() );
+		// Even though we have valid dsr for $prev as a condition of entering
+		// here, use tsr start because dsr computation may have expanded the range
+		// to include fostered content
+		$prevDsr = clone $prevDp->dsr;
+		$prevDsr->start = $prevDp->tsr->start;
+
+		$prevCellSrc = $prevDsr->substr( $frame->getSrcText() );
+
 		// $prevCellContent = substr( $prevCellSrc, $prevDp->dsr->openWidth );
 		// The following is equivalent because td/th has zero end-tag width
-		$prevCellContent = $prevDp->dsr->innerSubstr( $frame->getSrcText() );
+		$prevCellContent = $prevDsr->innerSubstr( $frame->getSrcText() );
 
 		// Parsoid currently doesn't support parsing "|<--cmt-->|" as
 		// a "||" which legacy parser does. We won't support this.
@@ -637,8 +645,8 @@ class TableFixups {
 			//    migrate "|" to $cell
 			$strippedChar = self::stripTrailingPipe( $prev );
 			if ( !$strippedChar ) {
-				// If we don't see any instances of these in logstash in a few weeks,
-				// we should get rid of the conservative checks.
+				// We saw these in T384737, it's worth keeping around these conservative
+				// checks for the time being
 				$env->log( "error/wt2html", "TableFixups: stripTrailingPipe failed." );
 			} else {
 				self::transferSourceBetweenCells(
@@ -751,19 +759,15 @@ class TableFixups {
 	 * $cell is known to be <td>/<th>
 	 */
 	private static function getReparseType( Element $cell, DTState $dtState ): int {
-		$inTplContent = $dtState->tplInfo !== null &&
-			DOMUtils::hasTypeOf( $dtState->tplInfo->first, 'mw:Transclusion' );
 		$dp = DOMDataUtils::getDataParsoid( $cell );
-		if ( !$dp->getTempFlag( TempData::NON_MERGEABLE_TABLE_CELL ) &&
+		if (
+			!$dp->getTempFlag( TempData::NON_MERGEABLE_TABLE_CELL ) &&
 			!$dp->getTempFlag( TempData::MERGED_TABLE_CELL ) &&
 			!$dp->getTempFlag( TempData::FAILED_REPARSE ) &&
-			// This is a good proxy for what we need: "Is $cell a template wrapper?".
-			// That info won't be available for nested templates unless we want
-			// to use a more expensive hacky check.
-			// "inTplContent" is sufficient because we won't have mergeable
-			// cells for wikitext that doesn't get any part of its content from
-			// templates because NON_MERGEABLE_TABLE_CELL prevents such merges.
-			$inTplContent
+			// Template wrapping, which happens prior to this pass, may have combined
+			// various regions.  The important indicator of whether we want to try
+			// to combine is if the $cell was the first node of a template.
+			$dp->getTempFlag( TempData::AT_SRC_START )
 		) {
 			// Look for opportunities where table cells could combine. This requires
 			// $cell to be a templated cell. But, we don't support combining
@@ -783,6 +787,11 @@ class TableFixups {
 				return self::COMBINE_WITH_PREV_CELL;
 			}
 		}
+
+		// FIXME: We're traversing with the outermost encapsulation, but encapsulations
+		// can be nested (ie. template in extension content) so the check is insufficient
+		$inTplContent = $dtState->tplInfo !== null &&
+			DOMUtils::hasTypeOf( $dtState->tplInfo->first, 'mw:Transclusion' );
 
 		$cellIsTd = DOMCompat::nodeName( $cell ) === 'td';
 		$testRE = $cellIsTd ? '/[|]/' : '/[!|]/';

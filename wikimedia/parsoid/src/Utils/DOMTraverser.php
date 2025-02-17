@@ -108,7 +108,7 @@ class DOMTraverser {
 
 		foreach ( $this->handlers as $handler ) {
 			if ( $handler['nodeName'] === null || $handler['nodeName'] === $name ) {
-				$result = call_user_func( $handler['action'], $node, $state );
+				$result = $handler['action']( $node, $state );
 				if ( $result !== true ) {
 					// Abort processing for this node
 					return $result;
@@ -164,9 +164,9 @@ class DOMTraverser {
 					!( $state->tplInfo ?? null ) && WTUtils::isFirstEncapsulationWrapperNode( $workNode )
 					// Ensure this isn't just a meta marker, since we might
 					// not be traversing after encapsulation.  Note that the
-					// valid data-mw assertion is the same test as used in
+					// nonempty data-mw assertion is the same test as used in
 					// cleanup.
-					&& ( !WTUtils::isTplMarkerMeta( $workNode ) || DOMDataUtils::validDataMw( $workNode ) )
+					&& ( !WTUtils::isTplMarkerMeta( $workNode ) || !DOMDataUtils::getDataMw( $workNode )->isEmpty() )
 					// Encapsulation info on sections should not be used to
 					// traverse with since it's designed to be dropped and
 					// may have expanded ranges.

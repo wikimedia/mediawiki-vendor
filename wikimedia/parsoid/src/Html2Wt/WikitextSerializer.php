@@ -1307,7 +1307,7 @@ class WikitextSerializer {
 		);
 
 		$this->env->log( 'debug/wts', 'Calling serialization handler for ' . $nodeName );
-		$nextNode = call_user_func( $method, $node, $domHandler );
+		$nextNode = $method( $node, $domHandler );
 
 		$next = DiffDOMUtils::nextNonSepSibling( $node ) ?: $node->parentNode;
 		$this->env->log( 'debug/wts', 'After constraints for ' . $nodeName );
@@ -1551,7 +1551,7 @@ class WikitextSerializer {
 		Node $node, bool $selserMode = false
 	): string {
 		Assert::parameterType(
-			Document::class . '|' . DocumentFragment::class,
+			[ Document::class, DocumentFragment::class ],
 			$node, '$node' );
 
 		if ( $node instanceof Document ) {

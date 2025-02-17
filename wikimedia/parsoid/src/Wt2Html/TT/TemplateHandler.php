@@ -6,6 +6,7 @@ namespace Wikimedia\Parsoid\Wt2Html\TT;
 use Wikimedia\Assert\Assert;
 use Wikimedia\Assert\UnreachableException;
 use Wikimedia\Parsoid\Ext\ParsoidExtensionAPI;
+use Wikimedia\Parsoid\NodeData\TempData;
 use Wikimedia\Parsoid\Tokens\CommentTk;
 use Wikimedia\Parsoid\Tokens\EndTagTk;
 use Wikimedia\Parsoid\Tokens\KV;
@@ -527,7 +528,7 @@ class TemplateHandler extends TokenHandler {
 				$resolvedTgt['srcOffsets']->expandTsrK()
 			);
 			$env->log( 'debug', 'entering prefix', $target, $state->token );
-			$res = call_user_func( [ $this->parserFunctions, $target ],
+			$res = $this->parserFunctions->$target(
 				$state->token, $this->manager->getFrame(), $pfAttribs );
 			if ( $this->wrapTemplates ) {
 				$res = $this->parserFunctionsWrapper( $res );
@@ -746,6 +747,7 @@ class TemplateHandler extends TokenHandler {
 			if ( empty( $atTopLevel ) ) {
 				$td = new TagTk( 'td' );
 				$td->dataParsoid->getTemp()->attrSrc = '';
+				$td->dataParsoid->setTempFlag( TempData::AT_SRC_START );
 				$toks = [ $td ];
 			} else {
 				$toks = [ '|' ];
