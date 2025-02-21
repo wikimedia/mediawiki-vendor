@@ -383,9 +383,9 @@
             ),
         ),
         'maxmind-db/reader' => array(
-            'pretty_version' => 'v1.11.1',
-            'version' => '1.11.1.0',
-            'reference' => '1e66f73ffcf25e17c7a910a1317e9720a95497c7',
+            'pretty_version' => 'v1.12.0',
+            'version' => '1.12.0.0',
+            'reference' => '5b2d7a721dedfaef9dc20822c5fe7d26f9f8eb90',
             'type' => 'library',
             'install_path' => __DIR__ . '/../maxmind-db/reader',
             'aliases' => array(),
