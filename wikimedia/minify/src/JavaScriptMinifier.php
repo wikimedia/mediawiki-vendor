@@ -1985,10 +1985,22 @@ class JavaScriptMinifier {
 				$end += strspn( $s, '0123456789', $end );
 				$decimal = strspn( $s, '.', $end );
 				if ( $decimal ) {
-					if ( $decimal > 2 && !$error ) {
+					// Valid: "5." (number literal, optional fraction)
+					// Valid: "5.42" (number literal)
+					// Valid: "5..toString" (number literal "5.", followed by member expression).
+					// Invalid: "5..42"
+					// Invalid: "5...42"
+					// Invalid: "5...toString"
+					$fraction = strspn( $s, '0123456789', $end + $decimal );
+					if ( $decimal === 2 && !$fraction ) {
+						// Rewind one character, so that the member expression dot
+						// will be parsed as the next token (TYPE_DOT).
+						$decimal = 1;
+					}
+					if ( $decimal > 1 && !$error ) {
 						$error = new ParseError( 'Too many decimal points', $end );
 					}
-					$end += strspn( $s, '0123456789', $end + 1 ) + $decimal;
+					$end += $decimal + $fraction;
 				} else {
 					$dotlessNum = true;
 				}
@@ -2040,21 +2052,22 @@ class JavaScriptMinifier {
 			}
 
 			$pad = '';
+
 			if ( $newlineFound && isset( self::$semicolon[$state][$type] ) ) {
 				// This token triggers the semicolon insertion mechanism of javascript. While we
 				// could add the ; token here ourselves, keeping the newline has a few advantages.
 				$pad = "\n";
 				$state = $state < 0 ? -self::STATEMENT : self::STATEMENT;
 				$lineLength = 0;
-			} elseif ( $lineLength + $end - $pos > self::$maxLineLength &&
+			// This check adds a new line if we have exceeded the max length and only does this if
+			// a newline was found in this this position, if it wasn't, it uses the next available
+			// line break
+			} elseif ( $newlineFound &&
+				$lineLength + $end - $pos > self::$maxLineLength &&
 				!isset( self::$semicolon[$state][$type] ) &&
 				$type !== self::TYPE_INCR_OP &&
 				$type !== self::TYPE_ARROW
 			) {
-				// This line would get too long if we added $token, so add a newline first.
-				// Only do this if it won't trigger semicolon insertion and if it won't
-				// put a postfix increment operator or an arrow on its own line,
-				// which is illegal in js.
 				$pad = "\n";
 				$lineLength = 0;
 			// Check, whether we have to separate the token from the last one with whitespace
