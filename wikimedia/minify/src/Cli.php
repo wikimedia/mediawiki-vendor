@@ -86,12 +86,12 @@ final class Cli {
 		}
 	}
 
-	private function runCss( string $file = null ): void {
+	private function runCss( ?string $file = null ): void {
 		$data = $file === null ? stream_get_contents( $this->in ) : file_get_contents( $file );
 		$this->output( CSSMin::minify( $data ) );
 	}
 
-	private function runCssRemap( string $file = null ): void {
+	private function runCssRemap( ?string $file = null ): void {
 		if ( $file === null ) {
 			$this->error( 'Remapping requires a filepath' );
 			return;
@@ -102,7 +102,7 @@ final class Cli {
 		$this->output( CSSMin::minify( $data ) );
 	}
 
-	private function runJs( string $file = null ): void {
+	private function runJs( ?string $file = null ): void {
 		$data = $file === null ? stream_get_contents( $this->in ) : file_get_contents( $file );
 		$onError = function ( ParseError $error ) {
 			$this->output( 'ParseError: ' . $error->getMessage() . ' at position ' . $error->getOffset() );
@@ -114,7 +114,7 @@ final class Cli {
 		}
 	}
 
-	private function runJsMapWeb( string $file = null ): void {
+	private function runJsMapWeb( ?string $file = null ): void {
 		$data = $file === null ? stream_get_contents( $this->in ) : file_get_contents( $file );
 		$sourceName = $file === null ? 'file.js' : basename( $file );
 		$mapper = JavaScriptMinifier::createSourceMapState();
@@ -122,7 +122,7 @@ final class Cli {
 		$this->output( rtrim( $mapper->getSourceMap(), "\n" ) );
 	}
 
-	private function runJsMapRaw( string $file = null ): void {
+	private function runJsMapRaw( ?string $file = null ): void {
 		$data = $file === null ? stream_get_contents( $this->in ) : file_get_contents( $file );
 		$sourceName = $file === null ? 'file.js' : basename( $file );
 		$mapper = JavaScriptMinifier::createSourceMapState();

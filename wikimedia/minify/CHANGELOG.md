@@ -1,6 +1,13 @@
 # Changelog
 
-## 2.8.0 (2014-08-20)
+## 2.8.1 (2025-02-27)
+
+Fixed:
+
+* JavaScriptMinifier: Reject "5..0" as invalid syntax (Timo Tijhof)
+* JavaScriptMinifier: Remove new line insertion (Hannah Okwelum) [T368204](https://phabricator.wikimedia.org/T368204)
+
+## 2.8.0 (2024-08-20)
 
 Added:
 
