@@ -7759,7 +7759,7 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "V0.21.0-a19",
+            "version": "v0.21.0-a19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
@@ -7838,7 +7838,7 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/V0.21.0-a19",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.21.0-a19",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
             "time": "2025-03-03T17:55:10+00:00"
