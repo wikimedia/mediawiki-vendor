@@ -1,0 +1,22 @@
+{
+  "date": 1475088922,
+  "gateway_parent_id": "22b55555YY4499222",
+  "gateway_txn_id": "99E56789RR1234222",
+  "currency": "USD",
+  "type": "refund",
+  "contribution_tracking_id": "93731212",
+  "email": "clyde@barrowgang.org",
+  "first_name": "Clyde",
+  "last_name": "Barrow",
+  "street_address": "1234 Outlaw Ave",
+  "city": "Telico",
+  "state_province": "TX",
+  "country": "US",
+  "postal_code": "75119",
+  "gross": "-1.00",
+  "fee": "-0.27",
+  "order_id": "93731212",
+  "gateway_refund_id": "99E56789RR1234222",
+  "gross_currency": "USD",
+  "gateway": "paypal"
+}

@@ -1,0 +1,26 @@
+{
+  "live": "false",
+  "notificationItems": [
+    {
+      "NotificationRequestItem": {
+        "additionalData": {
+          "order-1-pspReference": "861617275047284E",
+          "order-1-paymentAmount": "EUR 10.00",
+          "order-1-success": "true",
+          "order-1-paymentMethod": "ideal"
+        },
+        "amount": {
+          "currency": "EUR",
+          "value": 1000
+        },
+        "eventCode": "ORDER_CLOSED",
+        "eventDate": "2021-01-01T01:00:00+01:00",
+        "merchantAccountCode": "YOUR_MERCHANT_ACCOUNT",
+        "merchantReference": "YOUR_MERCHANT_REFERENCE",
+        "pspReference": "YOUR_PSP_REFERENCE",
+        "reason": "",
+        "success": "false"
+      }
+    }
+  ]
+}

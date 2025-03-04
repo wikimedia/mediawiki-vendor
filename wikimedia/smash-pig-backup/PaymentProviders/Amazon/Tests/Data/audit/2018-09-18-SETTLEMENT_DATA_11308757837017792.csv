@@ -1,0 +1,8 @@
+﻿"Amazon Payments Advanced",
+"Settlement Report",
+"SellerId","ABCDEFGHIJKLM"
+"SettlementStartDate","2018-09-11T00:04:03 -0700"
+"SettlementEndDate","2018-09-18T00:00:03 -0700"
+"TransactionPostedDate","SettlementId","AmazonTransactionId","SellerReferenceId","TransactionType","AmazonOrderReferenceId","SellerOrderId","StoreName","CurrencyCode","TransactionDescription","TransactionAmount","TransactionPercentageFee","TransactionFixedFee","TotalTransactionFee","NetTransactionAmount",
+"2018-09-11T00:19:53 -0700","5984862222","","","Reserve","","","","USD","Previous Reserve Balance","24.00","0","0","0","24.00"
+"2018-09-12T14:10:08 -0700","5984862222","P01-5551212-4903176-C039376","8032276654432210046","Capture","P01-5551212-4903176","","SmashPig Foundation - Alexa Donations","USD","","5.00","-0.11","-0.30","-0.41","4.59"

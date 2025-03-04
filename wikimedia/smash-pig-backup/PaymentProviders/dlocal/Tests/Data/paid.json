@@ -1,0 +1,14 @@
+{
+	"result": "9",
+	"x_amount": "100.00",
+	"x_amount_usd": "42.05",
+	"x_bank": "TE",
+	"x_bank_name": "TEST BANK (GNB)",
+	"x_control": "0037CFE3A840EF67B732ED243A529469F6D5CB6FE0FBD73CF4CE021D7AF51C06",
+	"x_currency": "BRL",
+	"x_description": "Donation to the Wikimedia Foundation",
+	"x_document": "31912",
+	"x_iduser": "MWE3ZmIxZjliNjg3ZWY0",
+	"x_invoice": "32303.1",
+	"x_payment_type": "02"
+}

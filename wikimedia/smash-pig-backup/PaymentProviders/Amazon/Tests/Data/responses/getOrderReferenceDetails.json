@@ -1,0 +1,37 @@
+{
+    "GetOrderReferenceDetailsResult": {
+        "OrderReferenceDetails": {
+            "OrderReferenceStatus": {
+                "LastUpdateTimestamp": "2015-09-28T17:49:08.123Z",
+                "ReasonCode": "SellerClosed",
+                "State": "Closed"
+            },
+            "ExpirationTimestamp": "2016-03-27T17:48:23.249Z",
+            "IdList": {
+                "member": [
+                    "P01-0133129-0199515-A068790",
+                    "P01-0133129-0199515-A019658"
+                ]
+            },
+            "SellerOrderAttributes": {
+                "SellerOrderId": "123456789-0"
+            },
+            "OrderTotal": {
+                "CurrencyCode": "USD",
+                "Amount": "10.00"
+            },
+            "Buyer": {
+                "Name": "Testy Test",
+                "Email": "nobody@wikimedia.org"
+            },
+            "ReleaseEnvironment": "Sandbox",
+            "SellerNote": "Donation to the Wikimedia Foundation",
+            "AmazonOrderReferenceId": "P01-0133129-0199515",
+            "CreationTimestamp": "2015-09-28T17:48:23.123Z"
+        }
+    },
+    "ResponseMetadata": {
+        "RequestId": "896332ae-e316-4eb6-865e-79278e1aa214"
+    },
+    "ResponseStatus": "200"
+}

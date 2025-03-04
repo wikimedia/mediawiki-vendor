@@ -1,0 +1,11 @@
+HTTP/1.1 400 Bad Request
+Date: Mon, 23 Jan 2023 13:35:37 GMT
+Content-Type: application/json
+Content-Length: 53
+Connection: keep-alive
+Server: rhino-core-shield
+X-RequestId: api-middleware
+X-UOW: 1-63ce8d29-5c8f5f6862cc765e69503bbb
+X-ServiceName: api-middleware
+
+{"code":5007,"message":"Amount exceeded"}

@@ -1,0 +1,15 @@
+HTTP/1.1 200 OK
+Date: Mon, 30 Jan 2017 17:58:02 GMT
+Server: Apache/2.4.16 (Unix) OpenSSL/1.0.1t
+X-Powered-By: Servlet/3.0 JSP/2.2
+Transfer-Encoding: chunked
+Content-Type: application/json
+
+{
+   "entries" : [ {
+      "countryNames" : [ "Nederland" ],
+      "issuerId" : "INGBNL2A",
+      "issuerList" : "short",
+      "issuerName" : "Issuer Simulation V3 - ING"
+   } ]
+}

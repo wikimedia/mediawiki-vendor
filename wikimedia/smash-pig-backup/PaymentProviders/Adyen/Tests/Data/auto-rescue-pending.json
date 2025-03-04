@@ -1,0 +1,17 @@
+{
+  "order_id": "278.3",
+  "gateway": "adyen",
+  "gateway_txn_id": "CFC9KVTP4NK2WN82",
+  "date": 1694530827,
+  "is_auto_rescue_retry": true,
+  "currency": "USD",
+  "amount": 10,
+  "contribution_recur_id": 39,
+  "payment_instrument_id": 1,
+  "source_name": "CiviCRM",
+  "source_type": "direct",
+  "source_host": "051a7ac1b08d",
+  "source_run_id": 10315,
+  "source_version": "unknown",
+  "source_enqueued_time": 1694530827
+}

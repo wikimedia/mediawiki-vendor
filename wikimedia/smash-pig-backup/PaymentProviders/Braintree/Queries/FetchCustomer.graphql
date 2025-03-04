@@ -1,0 +1,14 @@
+query fetchCustomer($id: ID!) {
+  node(id: $id) {
+      ... on VenmoPaymentContext {
+        payerInfo {
+          firstName
+          lastName
+          userName
+          phoneNumber
+          email
+          externalId
+        }
+      }
+   }
+}

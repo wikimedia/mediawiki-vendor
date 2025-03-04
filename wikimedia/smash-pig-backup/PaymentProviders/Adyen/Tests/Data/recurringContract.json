@@ -1,0 +1,21 @@
+{
+  "additionalData": {
+    "shopperEmail": "jwales@example.com",
+    "recurring.shopperReference": "48991692.1",
+    "recurring.recurringDetailReference": "KV3BLVUVU7V4BHX3",
+    "shopperReference": "48991692.1"
+  },
+  "amount": {
+    "currency": "EUR",
+    "value": 200
+  },
+  "eventCode": "RECURRING_CONTRACT",
+  "eventDate": "2024-08-01T16:07:18+02:00",
+  "merchantAccountCode": "WikimediaDonations",
+  "merchantReference": "48991692.1",
+  "originalReference": "X3WXJML93J7KZQ25",
+  "paymentMethod": "ideal",
+  "pspReference": "KV3BLVUVU7V4BHX3",
+  "reason": "",
+  "success": "true"
+}

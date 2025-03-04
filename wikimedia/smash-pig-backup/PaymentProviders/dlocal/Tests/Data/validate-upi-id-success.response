@@ -1,0 +1,12 @@
+HTTP/1.1 200 OK
+Date: Fri, 24 Mar 2023 16:09:07 GMT
+Content-Type: application/json
+Content-Length: 441
+Connection: keep-alive
+Server: rhino-core-shield
+X-RequestId: api-middleware
+X-UOW: 1-641dcb23-5bd200dc48dff6810aac1b9e
+X-ServiceName: api-middleware
+X-Upstream: 10.145.78.124:80
+
+{ "id": "F-413092-76e0c2ac-194e-4814-b3a4-dc8748bf80d8", "amount": 0, "currency": "INR", "payment_method_id": "UD", "payment_method_type": "WALLET", "payment_method_flow": "DIRECT", "country": "IN", "created_date": "2023-03-24T16:09:07.000+0000", "approved_date": "2023-03-24T16:09:07.000+0000", "status": "VERIFIED", "status_detail": "The wallet was verified.", "status_code": "700", "order_id": "497529111040", "notification_url": "http://merchant.com/notifications" }

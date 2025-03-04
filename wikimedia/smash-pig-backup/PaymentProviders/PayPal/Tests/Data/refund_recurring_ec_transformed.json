@@ -1,0 +1,19 @@
+{
+  "date": 1490200431,
+  "gateway_parent_id": "4GV70894MM323713P",
+  "gateway_txn_id": "4CX17568KP793000L",
+  "currency": "JPY",
+  "type": "refund",
+  "contribution_tracking_id": "45931681",
+  "email": "donor@generous.net",
+  "first_name": "Testy",
+  "last_name": "McTesterson",
+  "gross": "-150",
+  "fee": "-43",
+  "order_id": "45931681.1",
+  "gateway_refund_id": "4CX17568KP793000L",
+  "gross_currency": "JPY",
+  "country": "US",
+  "gateway": "paypal_ec",
+  "subscr_id": "I-DD1FNAAAUU22"
+}

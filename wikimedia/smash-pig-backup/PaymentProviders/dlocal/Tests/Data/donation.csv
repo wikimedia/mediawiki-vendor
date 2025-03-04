@@ -1,0 +1,2 @@
+Type;"Creation date";"Settlement date";Reference;Invoice;Country;"Payment Method";"Payment Method Type";"Net Amount (local)";"Amount (USD)";currency;Status;"User Mail";"Transaction Reference";"Transaction Invoice";Fee;IOF
+Payment;"2023-06-16 10:29:43";"2023-06-16 12:00:32";5432123;266221341.0;BR;MC;"Credit Card";5.00;1.50;BRL;Cleared;donoriffic@example.org;;;0.03;0.02

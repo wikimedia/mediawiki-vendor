@@ -1,0 +1,54 @@
+HTTP/1.1 200 OK
+Date: Mon, 30 Jan 2017 17:58:02 GMT
+Server: Apache/2.4.16 (Unix) OpenSSL/1.0.1t
+X-Powered-By: Servlet/3.0 JSP/2.2
+Transfer-Encoding: chunked
+Content-Type: application/json
+
+{
+  "createdPaymentOutput": {
+    "payment": {
+      "id": "000000891566072501680000200001",
+      "paymentOutput": {
+        "amountOfMoney": {
+          "amount": 2345,
+          "currencyCode": "USD"
+        },
+        "references": {
+          "paymentReference": "0"
+        },
+        "paymentMethod": "card",
+        "cardPaymentMethodSpecificOutput": {
+          "paymentProductId": 1,
+          "authorisationCode": "123456",
+          "card": {
+            "cardNumber": "************7977",
+            "expiryDate": "1220",
+            "cardholderName": "Testy McTesterson"
+          },
+          "fraudResults": {
+            "avsResult": "0",
+            "cvvResult": "M",
+            "fraudServiceResult": "no-advice"
+          },
+          "initialSchemeTransactionId" : "asdf1234asdf1234Sdasdf1234",
+          "schemeTransactionId" : "lkjh0987lkjh0987lkjh0987"
+        }
+      },
+      "status": "PENDING_APPROVAL",
+      "statusOutput": {
+        "isCancellable": true,
+        "statusCode": 600,
+        "statusCodeChangeDateTime": "20140717145840",
+        "isAuthorized": true
+      }
+    },
+    "paymentCreationReferences": {
+      "additionalReference": "00000089156607250168",
+      "externalReference": "000000891566072501680000200001"
+    },
+    "tokens": ""
+  },
+  "status": "PAYMENT_CREATED"
+}
+

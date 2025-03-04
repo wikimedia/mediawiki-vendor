@@ -1,0 +1,12 @@
+HTTP/1.1 200 OK
+Date: Mon, 30 Jan 2017 17:58:02 GMT
+Server: Apache/2.4.16 (Unix) OpenSSL/1.0.1t
+X-Powered-By: Servlet/3.0 JSP/2.2
+Transfer-Encoding: chunked
+Content-Type: application/json
+
+{
+  "partialRedirectUrl": "pay1.secured-by-ingenico.com/pay8915-53ebca407e6b4a1dbd086aad4f10354d:8915-28e5b79c889641c8ba770f1ba576c1fe:9798f4c44ac6406e8288494332d1daa0",
+  "hostedCheckoutId": "8915-28e5b79c889641c8ba770f1ba576c1fe",
+  "RETURNMAC": "f5b66cf9-c64c-4c8d-8171-b47205c89a56"
+}

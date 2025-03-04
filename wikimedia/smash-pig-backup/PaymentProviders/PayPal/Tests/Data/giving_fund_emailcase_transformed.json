@@ -1,0 +1,16 @@
+{
+	"date": 1481144318,
+	"txn_type": "express_checkout",
+	"gateway_txn_id": "3N2616476S0123456",
+	"currency": "JPY",
+	"contribution_tracking_id": "123456",
+	"contact_id": "3729480",
+	"gross": "150",
+	"fee": "43",
+	"order_id": "123456.1",
+	"gateway": "paypal_ec",
+	"Gift_Data.Appeal": "White Mail",
+	"Gift_Data.Campaign": "Donor Advised Fund",
+	"Gift_Data.Channel": "Other Offline",
+	"Gift_Data.Fund": "Major Gifts - CC104"
+}

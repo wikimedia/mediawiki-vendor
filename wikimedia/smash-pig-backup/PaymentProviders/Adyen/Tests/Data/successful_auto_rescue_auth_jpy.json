@@ -1,0 +1,29 @@
+{
+  "additionalData": {
+    "cvcResult": "3",
+    "expiryDate": "",
+    "retry.rescueReference": "FK2ZJG6Z8TGLNK82",
+    "retry.orderAttemptNumber": "1",
+    "merchantOrderReference": "ABCD49EFGH5MPK42",
+    "avsResult": "2",
+    "cardSummary": "1234",
+    "acquirerResponseCode": "100 : Deny",
+    "retry.rescueScheduled": "false",
+    "checkout.cardAddedBrand": "visa",
+    "recurringProcessingModel": "Subscription",
+    "recurring.recurringDetailReference": "S772DFJCV6KXWD82",
+    "recurring.shopperReference": "267.1"
+  },
+  "amount": {
+    "currency": "JPY",
+    "value": 335
+  },
+  "eventCode": "AUTHORISATION",
+  "eventDate": "2023-09-06T17:42:27+02:00",
+  "merchantAccountCode": "WikimediaDonations",
+  "merchantReference": "267.3",
+  "paymentMethod": "visa",
+  "pspReference": "Z4PPDL3DHVTFWR82",
+  "reason": "050206:1111:03\/2030",
+  "success": "true"
+}

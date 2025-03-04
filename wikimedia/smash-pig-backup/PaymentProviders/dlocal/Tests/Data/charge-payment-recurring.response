@@ -1,0 +1,12 @@
+HTTP/1.1 200 OK
+Date: Fri, 03 Mar 2023 23:51:36 GMT
+Content-Type: application/json
+Content-Length: 487
+Connection: keep-alive
+Server: rhino-core-shield
+X-RequestId: api-middleware
+X-UOW: 1-64028807-557a15e36009a851594c61d9
+X-ServiceName: api-middleware
+X-Upstream: 10.145.78.165:80
+
+{"id":"F-2486-7cdf7b27-5132-432e-9df8-3e2b2a8ca3a1","amount":1500.00,"currency":"INR","payment_method_id":"IR","payment_method_type":"WALLET","payment_method_flow":"DIRECT","country":"IN","created_date":"2023-03-04T00:47:37.000+0000","status":"PENDING","status_detail":"The payment is pending.","status_code":"100","order_id":"839d446d-500b-43f0-b950-1689cfa0b630","notification_url":"https://wikimedia.notification/url","recurring_info":{"prenotify_approved":false}}

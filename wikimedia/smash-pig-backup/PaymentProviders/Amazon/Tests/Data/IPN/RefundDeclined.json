@@ -1,0 +1,31 @@
+{
+    "NotificationReferenceId": "1111111-1111-11111-1111-11111EXAMPLE",
+    "NotificationType": "PaymentRefund",
+    "IsSample": true,
+    "SellerId": "AYIWJDULFQUMA",
+    "ReleaseEnvironment": "Sandbox",
+    "Version": "2013-01-01",
+    "RefundDetails": {
+        "AmazonRefundId": "P01-0000000-0000000-000000",
+        "RefundReferenceId": "P01-0000000-0000000-000000",
+        "RefundType": "SellerInitiated",
+        "RefundAmount": {
+            "Amount": "10.0",
+            "CurrencyCode": "USD"
+        },
+        "FeeRefunded": {
+            "Amount": "0.0",
+            "CurrencyCode": "USD"
+        },
+        "CreationTimestamp": "2013-01-01T01:01:01.001Z",
+        "RefundStatus": {
+            "State": "Declined",
+            "LastUpdateTimestamp": "2013-01-01T01:01:01.001Z",
+            "ReasonCode": "ProcessingFailure"
+        },
+        "SoftDescriptor": "AMZ*softDescriptor"
+    },
+    "Type": "Notification",
+    "MessageId": "f10a0798-672d-564b-8312-49f2f5c2d61d",
+    "TopicArn": "arn:aws:sns:us-east-1:291180941288:A3BXB0YN3XH17HAYIWJDULFQUMA"
+}

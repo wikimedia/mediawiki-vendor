@@ -1,0 +1,12 @@
+HTTP/1.1 200 OK
+Date: Fri, 03 Mar 2023 22:00:35 GMT
+Content-Type: application/json
+Content-Length: 452
+Connection: keep-alive
+Server: rhino-core-shield
+X-RequestId: api-middleware
+X-UOW: 1-64026dff-75c27d360ff4d4552acb01cd
+X-ServiceName: api-middleware
+X-Upstream: 10.145.76.22:80
+
+{"id":"F-2486-48f61d11-4d22-4b40-8a27-d6fbb297a618","amount":999.00,"currency":"INR","payment_method_id":"IR","payment_method_type":"WALLET","payment_method_flow":"REDIRECT","country":"IN","created_date":"2023-03-04T00:59:54.000+0000","status":"PENDING","status_detail":"The payment is pending.","status_code":"100","order_id":"9134402.1","redirect_url":"https://sandbox.dlocal.com/gmf-apm/payments-redirect/M-382ba332-b194-44d5-8e35-9c34981f33c2"}

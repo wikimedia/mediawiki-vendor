@@ -1,0 +1,14 @@
+{
+    "type": "error",
+    "code": "bad_request",
+    "status": 400,
+    "message": "Missing '****' field",
+    "details": [
+      {
+        "location": "body",
+        "type": "value_error.missing",
+        "pointer": "/payment_method/number",
+        "message": "field required"
+      }
+    ]
+  }

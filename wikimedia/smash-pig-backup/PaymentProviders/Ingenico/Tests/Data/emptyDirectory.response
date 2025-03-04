@@ -1,0 +1,16 @@
+HTTP/1.1 404 Not Found
+Date: Mon, 27 Mar 2017 12:08:10 GMT
+Server: Apache/2.4.23 (Unix) OpenSSL/1.0.1t
+X-Powered-By: Servlet/3.0 JSP/2.2
+Transfer-Encoding: chunked
+Content-Type: application/json
+
+{
+   "errorId" : "2036059b-1138-42b0-8734-21d669a79d44",
+   "errors" : [ {
+      "code" : "210390",
+      "message" : "NO DIRECTORY FOUND",
+      "httpStatusCode" : 404
+   } ]
+}
+

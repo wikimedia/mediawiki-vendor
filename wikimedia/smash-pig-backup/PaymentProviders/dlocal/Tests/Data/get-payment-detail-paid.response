@@ -1,0 +1,12 @@
+HTTP/1.1 200 OK
+Date: Sat, 04 Mar 2023 00:47:39 GMT
+Content-Type: application/json
+Content-Length: 467
+Connection: keep-alive
+Server: rhino-core-shield
+X-RequestId: api-middleware
+X-UOW: 1-64029529-07ff1f645fc8dbbd1ebccdc0
+X-ServiceName: api-middleware
+X-Upstream: 10.145.76.22:80
+
+{"id":"F-2486-1d54e9c1-6909-46a7-ac9e-e0f3bb4208f8","amount":1000.00,"currency":"INR","payment_method_id":"IR","payment_method_type":"WALLET","payment_method_flow":"DIRECT","country":"IN","created_date":"2023-02-03T21:15:28.000+0000","approved_date":"2023-02-03T21:16:46.000+0000","status":"PAID","status_detail":"The payment was paid.","status_code":"200","order_id":"2bf0d4a4-6fdd-4e01-b4a6-2f329f457ed0","description":"test-wallet","notification_url":"http://conductor.sandbox.internal/robot-server/rest/generic/notification/new","callback_url":"https://paymentstest6.wmcloud.org/index.php?title=Special:DlocalGatewayResult","refunds":[],"wallet":{"token":"09f3ce3c-04cb-4d0f-b8f5-2775d275c6bd","username":"ZXHhMuLL UlZdgMAV","email":"2wkz3wpxdigo-autest@dlocal.com"}}

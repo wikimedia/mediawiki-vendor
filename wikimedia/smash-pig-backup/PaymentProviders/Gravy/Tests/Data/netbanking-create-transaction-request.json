@@ -1,0 +1,36 @@
+{
+    "amount": 50000,
+    "currency": "INR",
+    "country": "IN",
+    "payment_method": {
+        "method": "netbanking",
+        "redirect_url": "localhost",
+        "country": "IN",
+        "currency": "INR"
+    },
+    "external_identifier": "444.5",
+    "buyer": {
+        "external_identifier": "lorem@ipsum",
+        "billing_details": {
+            "first_name": "Lorem",
+            "last_name": "Ipsum",
+            "email_address": "lorem@ipsum",
+            "phone_number": "+910123456789",
+            "address": {
+                "city": "Mumbai",
+                "country": "IN",
+                "postal_code": "400393",
+                "state": "MH",
+                "line1": "New Street",
+                "line2": null,
+                "organization": "Wikimedia Foundation",
+                "house_number_or_name": "10"
+            },
+            "tax_id": {
+                "value": "AAAAA9999C",
+                "kind": "in.gst"
+            }
+        }
+    },
+    "intent": "capture"
+}

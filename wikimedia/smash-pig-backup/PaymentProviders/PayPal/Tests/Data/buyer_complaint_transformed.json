@@ -1,0 +1,18 @@
+{
+  "date": 1504053902,
+  "gateway_parent_id": "8RW98769SM297882G",
+  "gateway_txn_id": "1V82215816267470S",
+  "currency": "CAD",
+  "type": "refund",
+  "contribution_tracking_id": "49020255",
+  "email": "hurgurk@blagurk.com",
+  "first_name": "Hurgurk",
+  "last_name": "Blagurk",
+  "gross": "-20.00",
+  "fee": "-0.84",
+  "order_id": "49020255",
+  "gateway_refund_id": "1V82215816267470S",
+  "gross_currency": "CAD",
+  "country": "CA",
+  "gateway": "paypal_ec"
+}

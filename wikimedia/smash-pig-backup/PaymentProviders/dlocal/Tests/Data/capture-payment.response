@@ -1,0 +1,12 @@
+HTTP/1.1 200 OK
+Date: Mon, 23 Jan 2023 12:37:44 GMT
+Content-Type: application/json
+Content-Length: 413
+Connection: keep-alive
+Server: rhino-core-shield
+X-RequestId: api-middleware
+X-UOW: 1-63ce7f98-7e1c7eec59faccde103383c9
+X-ServiceName: api-middleware
+X-Upstream: 10.145.78.160:80
+
+{"id":"T-2486-aa9c1884-9f54-409a-9223-ede614b78173","amount":100.00,"currency":"BRL","country":"BR","created_date":"2023-01-23T12:37:44.000+0000","approved_date":"2023-01-23T12:37:44.000+0000","status":"PAID","status_detail":"The payment was paid.","status_code":"200","order_id":"1234512345","notification_url":"http://merchant.com/notifications","authorization_id":"T-2486-91e73695-3e0a-4a77-8594-f2220f8c6515"}
