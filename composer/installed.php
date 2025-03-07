@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '37c3f94d9bb125f2755c25fd6d9ea9e632dab4fc',
+        'reference' => '272d496e0174f482f78206d9a1fe6f6f2ddb862f',
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '37c3f94d9bb125f2755c25fd6d9ea9e632dab4fc',
+            'reference' => '272d496e0174f482f78206d9a1fe6f6f2ddb862f',
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -200,9 +200,9 @@
             'dev_requirement' => false,
         ),
         'ezimuel/ringphp' => array(
-            'pretty_version' => '1.2.2',
-            'version' => '1.2.2.0',
-            'reference' => '7887fc8488013065f72f977dcb281994f5fde9f4',
+            'pretty_version' => '1.2.3',
+            'version' => '1.2.3.0',
+            'reference' => '648a9c3c8b5f2591a317d31aa7a18a784011b00d',
             'type' => 'library',
             'install_path' => __DIR__ . '/../ezimuel/ringphp',
             'aliases' => array(),
@@ -265,7 +265,7 @@
         'guzzlehttp/ringphp' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => '1.2.2',
+                0 => '1.2.3',
             ),
         ),
         'jakobo/hotp-php' => array(

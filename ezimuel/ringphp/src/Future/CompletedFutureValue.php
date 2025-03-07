@@ -20,7 +20,7 @@ class CompletedFutureValue implements FutureInterface
      * @param \Exception $e      Error. Pass a GuzzleHttp\Ring\Exception\CancelledFutureAccessException
      *                           to mark the future as cancelled.
      */
-    public function __construct($result, \Exception $e = null)
+    public function __construct($result, ?\Exception $e = null)
     {
         $this->result = $result;
         $this->error = $e;
@@ -58,9 +58,9 @@ class CompletedFutureValue implements FutureInterface
      * @return PromiseInterface
      */
     public function then(
-        callable $onFulfilled = null,
-        callable $onRejected = null,
-        callable $onProgress = null
+        ?callable $onFulfilled = null,
+        ?callable $onRejected = null,
+        ?callable $onProgress = null
     ) {
         return $this->promise()->then($onFulfilled, $onRejected, $onProgress);
     }
