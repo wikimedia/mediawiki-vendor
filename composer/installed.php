@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => null,
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => '37c3f94d9bb125f2755c25fd6d9ea9e632dab4fc',
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => null,
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => '37c3f94d9bb125f2755c25fd6d9ea9e632dab4fc',
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -1071,9 +1071,9 @@
             'dev_requirement' => false,
         ),
         'wikimedia/equivset' => array(
-            'pretty_version' => '1.7.0',
-            'version' => '1.7.0.0',
-            'reference' => '2a8cae4bb2c1aa102eea9fcb6e4d4de1d46e59f3',
+            'pretty_version' => '1.7.1',
+            'version' => '1.7.1.0',
+            'reference' => 'c23fd697a35794ee907cf143c54fbb003532341e',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/equivset',
             'aliases' => array(),

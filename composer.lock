@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c65942fec721c151291e6d2b1f8f7233",
+    "content-hash": "fd27299061a5279c4346e8484ca63863",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -7182,16 +7182,16 @@
         },
         {
             "name": "wikimedia/equivset",
-            "version": "1.7.0",
+            "version": "1.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-Equivset.git",
-                "reference": "2a8cae4bb2c1aa102eea9fcb6e4d4de1d46e59f3"
+                "reference": "c23fd697a35794ee907cf143c54fbb003532341e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Equivset/zipball/2a8cae4bb2c1aa102eea9fcb6e4d4de1d46e59f3",
-                "reference": "2a8cae4bb2c1aa102eea9fcb6e4d4de1d46e59f3",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Equivset/zipball/c23fd697a35794ee907cf143c54fbb003532341e",
+                "reference": "c23fd697a35794ee907cf143c54fbb003532341e",
                 "shasum": ""
             },
             "require": {
@@ -7199,14 +7199,14 @@
             },
             "require-dev": {
                 "ext-json": "*",
-                "mediawiki/mediawiki-codesniffer": "43.0.0",
-                "mediawiki/mediawiki-phan-config": "0.14.0",
+                "mediawiki/mediawiki-codesniffer": "46.0.0",
+                "mediawiki/mediawiki-phan-config": "0.15.1",
                 "mediawiki/minus-x": "1.1.3",
                 "mikey179/vfsstream": "^1.6",
                 "ockcyp/covers-validator": "1.6.0",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
                 "php-parallel-lint/php-parallel-lint": "1.4.0",
-                "phpunit/phpunit": "9.6.16",
+                "phpunit/phpunit": "9.6.21",
                 "rregeer/phpunit-coverage-check": "~0.3.1",
                 "symfony/console": "^3.3 || ^4 || ^5 || ^6",
                 "symfony/var-dumper": "^3.3 || ^4 || ^5 || ^6"
@@ -7242,9 +7242,9 @@
             "description": "Visually Equivalent Set of UTF-8 Characters",
             "homepage": "https://www.mediawiki.org/wiki/Equivset",
             "support": {
-                "source": "https://github.com/wikimedia/mediawiki-libs-Equivset/tree/1.7.0"
+                "source": "https://github.com/wikimedia/mediawiki-libs-Equivset/tree/1.7.1"
             },
-            "time": "2024-07-26T20:06:50+00:00"
+            "time": "2025-03-07T19:59:51+00:00"
         },
         {
             "name": "wikimedia/html-formatter",
