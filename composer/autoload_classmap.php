@@ -2133,6 +2133,7 @@ return array(
     'Opis\\JsonSchema\\Schemas\\ExceptionSchema' => $vendorDir . '/opis/json-schema/src/Schemas/ExceptionSchema.php',
     'Opis\\JsonSchema\\Schemas\\LazySchema' => $vendorDir . '/opis/json-schema/src/Schemas/LazySchema.php',
     'Opis\\JsonSchema\\Schemas\\ObjectSchema' => $vendorDir . '/opis/json-schema/src/Schemas/ObjectSchema.php',
+    'Opis\\JsonSchema\\Uri' => $vendorDir . '/opis/json-schema/src/Uri.php',
     'Opis\\JsonSchema\\ValidationContext' => $vendorDir . '/opis/json-schema/src/ValidationContext.php',
     'Opis\\JsonSchema\\ValidationResult' => $vendorDir . '/opis/json-schema/src/ValidationResult.php',
     'Opis\\JsonSchema\\Validator' => $vendorDir . '/opis/json-schema/src/Validator.php',

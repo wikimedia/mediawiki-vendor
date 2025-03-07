@@ -2960,6 +2960,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Opis\\JsonSchema\\Schemas\\ExceptionSchema' => __DIR__ . '/..' . '/opis/json-schema/src/Schemas/ExceptionSchema.php',
         'Opis\\JsonSchema\\Schemas\\LazySchema' => __DIR__ . '/..' . '/opis/json-schema/src/Schemas/LazySchema.php',
         'Opis\\JsonSchema\\Schemas\\ObjectSchema' => __DIR__ . '/..' . '/opis/json-schema/src/Schemas/ObjectSchema.php',
+        'Opis\\JsonSchema\\Uri' => __DIR__ . '/..' . '/opis/json-schema/src/Uri.php',
         'Opis\\JsonSchema\\ValidationContext' => __DIR__ . '/..' . '/opis/json-schema/src/ValidationContext.php',
         'Opis\\JsonSchema\\ValidationResult' => __DIR__ . '/..' . '/opis/json-schema/src/ValidationResult.php',
         'Opis\\JsonSchema\\Validator' => __DIR__ . '/..' . '/opis/json-schema/src/Validator.php',

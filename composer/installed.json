@@ -3351,17 +3351,17 @@
         },
         {
             "name": "opis/json-schema",
-            "version": "2.3.0",
-            "version_normalized": "2.3.0.0",
+            "version": "2.4.1",
+            "version_normalized": "2.4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opis/json-schema.git",
-                "reference": "c48df6d7089a45f01e1c82432348f2d5976f9bfb"
+                "reference": "712827751c62b465daae6e725bf0cf5ffbf965e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opis/json-schema/zipball/c48df6d7089a45f01e1c82432348f2d5976f9bfb",
-                "reference": "c48df6d7089a45f01e1c82432348f2d5976f9bfb",
+                "url": "https://api.github.com/repos/opis/json-schema/zipball/712827751c62b465daae6e725bf0cf5ffbf965e1",
+                "reference": "712827751c62b465daae6e725bf0cf5ffbf965e1",
                 "shasum": ""
             },
             "require": {
@@ -3375,7 +3375,7 @@
                 "ext-intl": "*",
                 "phpunit/phpunit": "^9.0"
             },
-            "time": "2022-01-08T20:38:03+00:00",
+            "time": "2024-12-30T20:20:21+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -3413,7 +3413,7 @@
             ],
             "support": {
                 "issues": "https://github.com/opis/json-schema/issues",
-                "source": "https://github.com/opis/json-schema/tree/2.3.0"
+                "source": "https://github.com/opis/json-schema/tree/2.4.1"
             },
             "install-path": "../opis/json-schema"
         },

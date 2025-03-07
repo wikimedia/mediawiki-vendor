@@ -470,9 +470,9 @@
             'dev_requirement' => false,
         ),
         'opis/json-schema' => array(
-            'pretty_version' => '2.3.0',
-            'version' => '2.3.0.0',
-            'reference' => 'c48df6d7089a45f01e1c82432348f2d5976f9bfb',
+            'pretty_version' => '2.4.1',
+            'version' => '2.4.1.0',
+            'reference' => '712827751c62b465daae6e725bf0cf5ffbf965e1',
             'type' => 'library',
             'install_path' => __DIR__ . '/../opis/json-schema',
             'aliases' => array(),
