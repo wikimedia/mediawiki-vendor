@@ -1908,6 +1908,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Elasticsearch\\Serializers\\SerializerInterface' => __DIR__ . '/..' . '/elasticsearch/elasticsearch/src/Elasticsearch/Serializers/SerializerInterface.php',
         'Elasticsearch\\Serializers\\SmartSerializer' => __DIR__ . '/..' . '/elasticsearch/elasticsearch/src/Elasticsearch/Serializers/SmartSerializer.php',
         'Elasticsearch\\Transport' => __DIR__ . '/..' . '/elasticsearch/elasticsearch/src/Elasticsearch/Transport.php',
+        'Elasticsearch\\Utility' => __DIR__ . '/..' . '/elasticsearch/elasticsearch/src/Elasticsearch/Utility.php',
         'Endroid\\QrCode\\Bacon\\ErrorCorrectionLevelConverter' => __DIR__ . '/..' . '/endroid/qr-code/src/Bacon/ErrorCorrectionLevelConverter.php',
         'Endroid\\QrCode\\Bacon\\MatrixFactory' => __DIR__ . '/..' . '/endroid/qr-code/src/Bacon/MatrixFactory.php',
         'Endroid\\QrCode\\Builder\\Builder' => __DIR__ . '/..' . '/endroid/qr-code/src/Builder/Builder.php',

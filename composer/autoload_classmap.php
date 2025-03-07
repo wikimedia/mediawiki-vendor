@@ -1094,6 +1094,7 @@ return array(
     'Elasticsearch\\Serializers\\SerializerInterface' => $vendorDir . '/elasticsearch/elasticsearch/src/Elasticsearch/Serializers/SerializerInterface.php',
     'Elasticsearch\\Serializers\\SmartSerializer' => $vendorDir . '/elasticsearch/elasticsearch/src/Elasticsearch/Serializers/SmartSerializer.php',
     'Elasticsearch\\Transport' => $vendorDir . '/elasticsearch/elasticsearch/src/Elasticsearch/Transport.php',
+    'Elasticsearch\\Utility' => $vendorDir . '/elasticsearch/elasticsearch/src/Elasticsearch/Utility.php',
     'Endroid\\QrCode\\Bacon\\ErrorCorrectionLevelConverter' => $vendorDir . '/endroid/qr-code/src/Bacon/ErrorCorrectionLevelConverter.php',
     'Endroid\\QrCode\\Bacon\\MatrixFactory' => $vendorDir . '/endroid/qr-code/src/Bacon/MatrixFactory.php',
     'Endroid\\QrCode\\Builder\\Builder' => $vendorDir . '/endroid/qr-code/src/Builder/Builder.php',
