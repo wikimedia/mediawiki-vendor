@@ -4687,17 +4687,17 @@
         },
         {
             "name": "ruflin/elastica",
-            "version": "7.3.1",
-            "version_normalized": "7.3.1.0",
+            "version": "7.3.2",
+            "version_normalized": "7.3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ruflin/Elastica.git",
-                "reference": "7c61a630c3d456b00a5610960ae3a9bd29987469"
+                "reference": "84ba137678707a1aa4242d12bad891dc38fa2608"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ruflin/Elastica/zipball/7c61a630c3d456b00a5610960ae3a9bd29987469",
-                "reference": "7c61a630c3d456b00a5610960ae3a9bd29987469",
+                "url": "https://api.github.com/repos/ruflin/Elastica/zipball/84ba137678707a1aa4242d12bad891dc38fa2608",
+                "reference": "84ba137678707a1aa4242d12bad891dc38fa2608",
                 "shasum": ""
             },
             "require": {
@@ -4722,7 +4722,7 @@
                 "guzzlehttp/guzzle": "Allow using guzzle as transport",
                 "monolog/monolog": "Logging request"
             },
-            "time": "2023-04-21T09:04:46+00:00",
+            "time": "2024-03-11T14:11:50+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -4753,7 +4753,7 @@
             ],
             "support": {
                 "issues": "https://github.com/ruflin/Elastica/issues",
-                "source": "https://github.com/ruflin/Elastica/tree/7.3.1"
+                "source": "https://github.com/ruflin/Elastica/tree/7.3.2"
             },
             "install-path": "../ruflin/elastica"
         },

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "040b56dbb8760596fe7ba3dbff1b3d7a",
+    "content-hash": "a26648b4521d0d5fcdb7f04c1236ff02",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -4490,16 +4490,16 @@
         },
         {
             "name": "ruflin/elastica",
-            "version": "7.3.1",
+            "version": "7.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ruflin/Elastica.git",
-                "reference": "7c61a630c3d456b00a5610960ae3a9bd29987469"
+                "reference": "84ba137678707a1aa4242d12bad891dc38fa2608"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ruflin/Elastica/zipball/7c61a630c3d456b00a5610960ae3a9bd29987469",
-                "reference": "7c61a630c3d456b00a5610960ae3a9bd29987469",
+                "url": "https://api.github.com/repos/ruflin/Elastica/zipball/84ba137678707a1aa4242d12bad891dc38fa2608",
+                "reference": "84ba137678707a1aa4242d12bad891dc38fa2608",
                 "shasum": ""
             },
             "require": {
@@ -4553,9 +4553,9 @@
             ],
             "support": {
                 "issues": "https://github.com/ruflin/Elastica/issues",
-                "source": "https://github.com/ruflin/Elastica/tree/7.3.1"
+                "source": "https://github.com/ruflin/Elastica/tree/7.3.2"
             },
-            "time": "2023-04-21T09:04:46+00:00"
+            "time": "2024-03-11T14:11:50+00:00"
         },
         {
             "name": "serialization/serialization",
