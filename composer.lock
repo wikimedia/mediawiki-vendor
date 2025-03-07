@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f86726572c4e6360f2e5d57e32ddf55e",
+    "content-hash": "f63c4e242d71aa29d0dcc0196385214f",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -4910,16 +4910,16 @@
         },
         {
             "name": "swaggest/json-diff",
-            "version": "v3.11.0",
+            "version": "v3.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swaggest/json-diff.git",
-                "reference": "c55d38a3cb372753b5d5ee4c9b7d8470e486e6a5"
+                "reference": "d17d237f9159d312b4827a4e9f18984b31317c51"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swaggest/json-diff/zipball/c55d38a3cb372753b5d5ee4c9b7d8470e486e6a5",
-                "reference": "c55d38a3cb372753b5d5ee4c9b7d8470e486e6a5",
+                "url": "https://api.github.com/repos/swaggest/json-diff/zipball/d17d237f9159d312b4827a4e9f18984b31317c51",
+                "reference": "d17d237f9159d312b4827a4e9f18984b31317c51",
                 "shasum": ""
             },
             "require": {
@@ -4947,9 +4947,9 @@
             "description": "JSON diff/rearrange/patch/pointer library for PHP",
             "support": {
                 "issues": "https://github.com/swaggest/json-diff/issues",
-                "source": "https://github.com/swaggest/json-diff/tree/v3.11.0"
+                "source": "https://github.com/swaggest/json-diff/tree/v3.12.0"
             },
-            "time": "2024-07-02T11:32:10+00:00"
+            "time": "2025-03-03T15:47:08+00:00"
         },
         {
             "name": "symfony/console",
