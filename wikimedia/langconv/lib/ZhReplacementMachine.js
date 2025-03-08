@@ -16,6 +16,7 @@ class ZhReplacementMachine extends ReplacementMachine {
 			'zh-tw'
 		);
 	}
+
 	validCodePair(destCode, invertCode) {
 		if (destCode === invertCode) { return true; }
 		switch (destCode) {

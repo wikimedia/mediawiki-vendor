@@ -23,6 +23,8 @@
 
 require_once __DIR__ . '/Maintenance.php';
 
+use MediaWiki\MediaWikiServices;
+
 /**
  * Dumps the conversion exceptions table from ZhConversion.php
  *
@@ -87,8 +89,9 @@ class DumpZh extends Maintenance {
 
 	/** @inheritDoc */
 	public function execute() {
-		$zh = Language::factory( 'zh' );
-		$converter = $zh->getConverter();
+		$services = MediaWikiServices::getInstance();
+		$zh = $services->getLanguageFactory()->getLanguage( 'zh' );
+		$converter = $services->getLanguageConverterFactory()->getLanguageConverter( $zh );
 		# autoConvert will trigger the tables to be loaded
 		$converter->autoConvertToAllVariants( "xyz" );
 		# XXX WE ALSO LOAD ADDITIONAL CONVERSIONS FROM WIKI PAGES!

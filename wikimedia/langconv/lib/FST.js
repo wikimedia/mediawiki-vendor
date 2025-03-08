@@ -1,6 +1,7 @@
 /**
  * Load and execute a finite-state transducer (FST) based converter or
  * bracketing machine from a compact JSON description.
+ *
  * @module
  */
 
@@ -21,6 +22,7 @@ const BYTE_EPSILON  = 0x00; // Always appears first in sorted order
 
 /**
  * A FST conversion machine.
+ *
  * @callback module:language/FST~ConversionMachine
  * @param {Buffer} buffer UTF-8 encoded input buffer.
  * @param {number} [start] Start position in the buffer, default 0.
@@ -31,6 +33,7 @@ const BYTE_EPSILON  = 0x00; // Always appears first in sorted order
 
 /**
  * A FST bracket machine.
+ *
  * @callback module:language/FST~BracketMachine
  * @param {Buffer} buffer UTF-8 encoded input buffer.
  * @param {number} [start] Start position in the buffer, default 0.
@@ -41,6 +44,7 @@ const BYTE_EPSILON  = 0x00; // Always appears first in sorted order
 
 /**
  * Load an FST description and return a function which runs the machine.
+ *
  * @param {Buffer|Utf8Array|string} file The FST description, either as a
  *  filename (to be loaded synchronously) or a loaded byte array.
  * @param {boolean} [justBrackets] The machine will return an array of

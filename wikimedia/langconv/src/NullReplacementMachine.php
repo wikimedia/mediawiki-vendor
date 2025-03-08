@@ -6,7 +6,9 @@ namespace Wikimedia\LangConv;
  * A replacement machine that leaves text untouched.
  */
 class NullReplacementMachine extends ReplacementMachine {
+	/** @var string */
 	private $baseLanguage;
+	/** @var array<string,string> */
 	private $codes = [];
 
 	/**

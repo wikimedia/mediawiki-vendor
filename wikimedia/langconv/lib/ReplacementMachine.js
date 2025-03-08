@@ -1,6 +1,7 @@
 /**
  * This is a wrapper around functionality similar to PHP's `ReplacementArray`,
  * but built on (reversible) Finite-State Transducers.
+ *
  * @module
  */
 
@@ -12,6 +13,7 @@ class ReplacementMachine {
 	/**
 	 * Create a new ReplacementArray, which holds a given source->destination
 	 * transformation.
+	 *
 	 * @param baseLanguage
 	 * @param {...any} codes
 	 */
@@ -19,12 +21,12 @@ class ReplacementMachine {
 		this.baseLanguage = baseLanguage;
 		this.codes = codes.slice(0);
 		this.machine = new Map(codes.map((c) => [c, {
-			convert: ReplacementMachine.loadFST(`trans-${c}`),
+			convert: ReplacementMachine.loadFST(`trans-${ c }`),
 			bracket: new Map(
 				codes.filter((cc) => this.validCodePair(c, cc)).map((cc) => [
 					cc,
 					ReplacementMachine.loadFST(
-						`brack-${c}-${c === cc ? 'noop' : cc}`,
+						`brack-${ c }-${ c === cc ? 'noop' : cc }`,
 						'bracket'
 					)
 				])),
@@ -37,7 +39,7 @@ class ReplacementMachine {
 	 * @private
 	 */
 	static loadFST(filename, bracket) {
-		return FST.compile(`${__dirname}/../fst/${filename}.pfst`, bracket);
+		return FST.compile(`${ __dirname }/../fst/${ filename }.pfst`, bracket);
 	}
 
 	/**
@@ -45,6 +47,7 @@ class ReplacementMachine {
 	 * possible code pairs bracketed.  (For example, zh has a large
 	 * number of variants, but we typically want to use only a limited
 	 * number of these as possible invert codes.)
+	 *
 	 * @param {string} destCode
 	 * @param {string} invertCode
 	 * @return {boolean} whether this is a valid bracketing pair.
@@ -63,6 +66,7 @@ class ReplacementMachine {
 	 * the number of codepoints we wouldn't have to escape, and `len` is
 	 * the total number of codepoints in `s`.  Generally lower values of
 	 * `nonsafe` indicate a better guess for `invertCode`.
+	 *
 	 * @param s
 	 * @param destCode
 	 * @param invertCode
@@ -75,7 +79,7 @@ class ReplacementMachine {
 	countBrackets(s, destCode, invertCode) {
 		console.assert(
 			this.validCodePair(destCode, invertCode),
-			`Invalid code pair: ${destCode}/${invertCode}`
+			`Invalid code pair: ${ destCode }/${ invertCode }`
 		);
 		const m = this.machine.get(destCode).bracket.get(invertCode);
 		const buf = Buffer.from(s, 'utf8');
@@ -96,6 +100,7 @@ class ReplacementMachine {
 	 * Replace the given text Node with converted text, protecting any
 	 * markup which can't be round-tripped back to `invertCode` with
 	 * appropriate synthetic language-converter markup.
+	 *
 	 * @param {Node} textNode
 	 * @param {string} destCode
 	 * @param {string} invertCode
@@ -127,6 +132,7 @@ class ReplacementMachine {
 	 * markup which can't be round-tripped back to `invertCode` with
 	 * appropriate synthetic language-converter markup.  Returns
 	 * a DocumentFragment.
+	 *
 	 * @param {Document} document
 	 *   Owner of the resulting DocumentFragment.
 	 * @param {string} s
@@ -163,12 +169,10 @@ class ReplacementMachine {
 				// more appropriate invertCode !== destCode.
 				let ic = invertCode;
 				if (ic === destCode) {
-					const cs = this.codes.filter((c) => c !== destCode).map((code) => {
-						return {
-							code,
-							stats: this.countBrackets(orig, code, code)
-						};
-					}).sort((a,b) => a.stats.unsafe - b.stats.unsafe);
+					const cs = this.codes.filter((c) => c !== destCode).map((code) => ({
+						code,
+						stats: this.countBrackets(orig, code, code)
+					})).sort((a,b) => a.stats.unsafe - b.stats.unsafe);
 					if (cs.length === 0) {
 						ic = '-';
 					} else {

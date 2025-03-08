@@ -15,14 +15,16 @@
  */
 require_once __DIR__ . '/Maintenance.php';
 
+use MediaWiki\MediaWikiServices;
 use Wikimedia\LangConv\Construct\GenReplFst as ConsGenReplFst;
 
 class GenReplFst extends Maintenance {
 
 	/** @inheritDoc */
 	public function execute() {
-		$zh = Language::factory( 'zh' );
-		$converter = $zh->getConverter();
+		$services = MediaWikiServices::getInstance();
+		$zh = $services->getLanguageFactory()->getLanguage( 'zh' );
+		$converter = $services->getLanguageConverterFactory()->getLanguageConverter( $zh );
 		# autoConvert will trigger the tables to be loaded
 		$converter->autoConvertToAllVariants( "xyz" );
 		foreach ( $converter->mTables as $var => $table ) {

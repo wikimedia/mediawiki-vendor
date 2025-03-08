@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => null,
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => 'b322a9f99cb5c8abbd295e6b9aa5dc1f9c04162d',
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => null,
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => 'b322a9f99cb5c8abbd295e6b9aa5dc1f9c04162d',
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -1116,9 +1116,9 @@
             'dev_requirement' => false,
         ),
         'wikimedia/langconv' => array(
-            'pretty_version' => '0.4.2',
-            'version' => '0.4.2.0',
-            'reference' => '4bd255fd316df6650c489fa0f9b621c48458859b',
+            'pretty_version' => '0.5.0',
+            'version' => '0.5.0.0',
+            'reference' => '07cd2f09b8456e673953aa33b2001399a42987ae',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/langconv',
             'aliases' => array(),

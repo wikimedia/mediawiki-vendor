@@ -47,12 +47,11 @@ class FST {
 		$this->pfst = $pfst;
 		$this->justBrackets = $justBrackets;
 		Assert::precondition(
-			strlen( $pfst ) >= self::MAGIC_BYTES + 2 /*states, min*/,
+			strlen( $pfst ) >= self::MAGIC_BYTES + 2, /*states, min*/
 			"pFST file too short: $name"
 		);
 		Assert::precondition(
-			"pFST\0WM\0" ===
-			substr( $pfst, 0, self::MAGIC_BYTES ),
+			substr( $pfst, 0, self::MAGIC_BYTES ) === "pFST\0WM\0",
 			"Invalid pFST file: $name"
 		);
 	}

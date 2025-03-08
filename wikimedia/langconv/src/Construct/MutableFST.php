@@ -15,7 +15,9 @@ class MutableFST {
 	/** Special alphabet symbol for lower-side `?` used in AT&T format FST files. */
 	public const IDENTITY = '@_IDENTITY_SYMBOL_@';
 
+	/** @var array<string,true> */
 	private $alphabet = [];
+	/** @var State[] */
 	private $states = [];
 
 	/**

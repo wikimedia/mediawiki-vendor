@@ -25,6 +25,7 @@ require_once __DIR__ . '/Maintenance.php';
 require_once __DIR__ . '/BadRegexException.php';
 require_once __DIR__ . '/BadEscapeException.php';
 
+use MediaWiki\MediaWikiServices;
 use Wikimedia\Assert\Assert;
 
 /**
@@ -419,8 +420,9 @@ class DumpCrh extends Maintenance {
 
 	/** @inheritDoc */
 	public function execute() {
-		$crh = Language::factory( 'crh' );
-		$converter = $crh->getConverter();
+		$services = MediaWikiServices::getInstance();
+		$crh = $services->getLanguageFactory()->getLanguage( 'crh' );
+		$converter = $services->getLanguageConverterFactory()->getLanguageConverter( $crh );
 
 		$this->emitFomaRepl( "CRH'LATN'EXCEPTIONS", $converter->mCyrl2LatnExceptions );
 		$this->emitFomaRepl( "CRH'CYRL'EXCEPTIONS", $converter->mLatn2CyrlExceptions );

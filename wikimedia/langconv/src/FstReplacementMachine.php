@@ -8,8 +8,11 @@ use Wikimedia\Assert\Assert;
 
 class FstReplacementMachine extends ReplacementMachine {
 
+	/** @var string */
 	private $baseLanguage;
+	/** @var array<string,string> */
 	private $codes = [];
+	/** @var array<string,array> */
 	private $machines = [];
 
 	/**
@@ -55,7 +58,7 @@ class FstReplacementMachine extends ReplacementMachine {
 	 * @return FST
 	 */
 	public function loadFST( string $filename, bool $justBrackets = false ): FST {
-		return FST::compile( __dir__ . "/../fst/$filename.pfst", $justBrackets );
+		return FST::compile( __DIR__ . "/../fst/$filename.pfst", $justBrackets );
 	}
 
 	/**
