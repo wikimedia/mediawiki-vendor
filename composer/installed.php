@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
-        'reference' => '77c748a48c75309a2a9f225cd8cadf144f7d4533',
+        'pretty_version' => '1.0.0+no-version-set',
+        'version' => '1.0.0.0',
+        'reference' => null,
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'reference' => '77c748a48c75309a2a9f225cd8cadf144f7d4533',
+            'pretty_version' => '1.0.0+no-version-set',
+            'version' => '1.0.0.0',
+            'reference' => null,
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -762,9 +762,9 @@
             'dev_requirement' => false,
         ),
         'swaggest/json-diff' => array(
-            'pretty_version' => 'v3.12.0',
-            'version' => '3.12.0.0',
-            'reference' => 'd17d237f9159d312b4827a4e9f18984b31317c51',
+            'pretty_version' => 'v3.12.1',
+            'version' => '3.12.1.0',
+            'reference' => '7ebc4eab95bcc73916433964c266588d09b35052',
             'type' => 'library',
             'install_path' => __DIR__ . '/../swaggest/json-diff',
             'aliases' => array(),
