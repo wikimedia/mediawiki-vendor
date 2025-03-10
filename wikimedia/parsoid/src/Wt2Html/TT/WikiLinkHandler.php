@@ -324,6 +324,7 @@ class WikiLinkHandler extends TokenHandler {
 			// TODO: add useful debugging info for editors ('if you would like to
 			// make this content editable, then fix template X..')
 			// TODO: also check other parameters for pipes!
+			// NOTE: We'd need to clear firstPipeSrc if this case gets supported
 			return new TokenHandlerResult( self::bailTokens( $this->manager, $token ) );
 		}
 
@@ -1621,7 +1622,7 @@ class WikiLinkHandler extends TokenHandler {
 		// Change the rel to be mw:MediaLink
 		$link->getAttributeKV( 'rel' )->v = 'mw:MediaLink';
 
-		$link->setAttribute( 'href', $imgHref );
+		$link->addNormalizedAttribute( 'href', $imgHref, $target->hrefSrc );
 
 		// html2wt will use the resource rather than try to parse the href.
 		$link->addNormalizedAttribute(

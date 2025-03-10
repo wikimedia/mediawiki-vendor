@@ -200,13 +200,9 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 		} else {
 			if ( WTUtils::isATagFromWikiLinkSyntax( $node ) && !WTUtils::hasExpandedAttrsType( $node ) ) {
 				if ( isset( $dp->stx ) && $dp->stx === "piped" ) {
-					// this seems like some kind of a phan bug
-					$href = $dp->sa['href'] ?? null;
-					if ( $href ) {
-						return [ strlen( $href ) + 3, 2 ];
-					} else {
-						return null;
-					}
+					$pipeLen = strlen( $dp->firstPipeSrc ?? '|' );
+					$href = $dp->sa['href'];
+					return [ 2 + strlen( $href ) + $pipeLen, 2 ];
 				} else {
 					return [ 2, 2 ];
 				}

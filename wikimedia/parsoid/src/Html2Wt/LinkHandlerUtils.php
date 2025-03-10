@@ -290,6 +290,12 @@ class LinkHandlerUtils {
 		// Check if the href matches any of our interwiki URL patterns
 		$interwikiMatch = $siteConfig->interwikiMatcher( $href );
 		if ( !$interwikiMatch ) {
+			if ( !empty( $dp->isIW ) ) {
+				// If the data-parsoid thinks this is an interwiki but we can't find it
+				// then ignore the data-parsoid href (which is proably just the interwiki link again)
+				// and use the href from the <a> tag
+				$rtData->target = DOMCompat::getAttribute( $node, 'href' );
+			}
 			return $rtData;
 		}
 
@@ -832,13 +838,14 @@ class LinkHandlerUtils {
 			$state->needsEscaping = $needsEscaping;
 			$state->emitChunk( $linkData->prefix . $pipedText . $linkData->tail, $node );
 		} else {
+			$pipe = $dp->firstPipeSrc ?? '|';
 			if ( $isPiped && $needsEscaping ) {
 				// We are definitely not in sol context since content
 				// will be preceded by "[[" or "[" text in target wikitext.
-				$pipedText = '|' . $state->serializer->wteHandlers
+				$pipedText = $pipe . $state->serializer->wteHandlers
 					->escapeLinkContent( $state, $contentSrc, false, $node, false );
 			} elseif ( $isPiped ) {
-				$pipedText = '|' . $contentSrc;
+				$pipedText = $pipe . $contentSrc;
 			} else {
 				$pipedText = '';
 			}

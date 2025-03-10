@@ -32,7 +32,7 @@ return array(
     'Wikimedia\\Bcp47Code\\' => array($vendorDir . '/wikimedia/bcp-47-code/src'),
     'Wikimedia\\AtEase\\' => array($vendorDir . '/wikimedia/at-ease/src'),
     'Wikimedia\\Assert\\' => array($vendorDir . '/wikimedia/assert/src'),
-    'Wikimedia\\' => array($vendorDir . '/wikimedia/ip-utils/src', $vendorDir . '/wikimedia/relpath/src', $vendorDir . '/wikimedia/running-stat/src', $vendorDir . '/wikimedia/scoped-callback/src', $vendorDir . '/wikimedia/testing-access-wrapper/src', $vendorDir . '/wikimedia/wait-condition-loop/src', $vendorDir . '/wikimedia/wrappedstring/src', $vendorDir . '/wikimedia/php-session-serializer/src'),
+    'Wikimedia\\' => array($vendorDir . '/wikimedia/ip-utils/src', $vendorDir . '/wikimedia/php-session-serializer/src', $vendorDir . '/wikimedia/relpath/src', $vendorDir . '/wikimedia/running-stat/src', $vendorDir . '/wikimedia/scoped-callback/src', $vendorDir . '/wikimedia/testing-access-wrapper/src', $vendorDir . '/wikimedia/wait-condition-loop/src', $vendorDir . '/wikimedia/wrappedstring/src'),
     'Webauthn\\MetadataService\\' => array($vendorDir . '/web-auth/metadata-service/src'),
     'Webauthn\\' => array($vendorDir . '/web-auth/webauthn-lib/src'),
     'WMDE\\VueJsTemplating\\' => array($vendorDir . '/wmde/php-vuejs-templating/src'),
