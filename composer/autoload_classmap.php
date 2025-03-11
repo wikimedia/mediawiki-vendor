@@ -2511,6 +2511,7 @@ return array(
     'Twig\\Node\\Expression\\Binary\\AbstractBinary' => $vendorDir . '/twig/twig/src/Node/Expression/Binary/AbstractBinary.php',
     'Twig\\Node\\Expression\\Binary\\AddBinary' => $vendorDir . '/twig/twig/src/Node/Expression/Binary/AddBinary.php',
     'Twig\\Node\\Expression\\Binary\\AndBinary' => $vendorDir . '/twig/twig/src/Node/Expression/Binary/AndBinary.php',
+    'Twig\\Node\\Expression\\Binary\\BinaryInterface' => $vendorDir . '/twig/twig/src/Node/Expression/Binary/BinaryInterface.php',
     'Twig\\Node\\Expression\\Binary\\BitwiseAndBinary' => $vendorDir . '/twig/twig/src/Node/Expression/Binary/BitwiseAndBinary.php',
     'Twig\\Node\\Expression\\Binary\\BitwiseOrBinary' => $vendorDir . '/twig/twig/src/Node/Expression/Binary/BitwiseOrBinary.php',
     'Twig\\Node\\Expression\\Binary\\BitwiseXorBinary' => $vendorDir . '/twig/twig/src/Node/Expression/Binary/BitwiseXorBinary.php',
@@ -2574,6 +2575,7 @@ return array(
     'Twig\\Node\\Expression\\Unary\\PosUnary' => $vendorDir . '/twig/twig/src/Node/Expression/Unary/PosUnary.php',
     'Twig\\Node\\Expression\\Unary\\SpreadUnary' => $vendorDir . '/twig/twig/src/Node/Expression/Unary/SpreadUnary.php',
     'Twig\\Node\\Expression\\Unary\\StringCastUnary' => $vendorDir . '/twig/twig/src/Node/Expression/Unary/StringCastUnary.php',
+    'Twig\\Node\\Expression\\Unary\\UnaryInterface' => $vendorDir . '/twig/twig/src/Node/Expression/Unary/UnaryInterface.php',
     'Twig\\Node\\Expression\\Variable\\AssignContextVariable' => $vendorDir . '/twig/twig/src/Node/Expression/Variable/AssignContextVariable.php',
     'Twig\\Node\\Expression\\Variable\\AssignTemplateVariable' => $vendorDir . '/twig/twig/src/Node/Expression/Variable/AssignTemplateVariable.php',
     'Twig\\Node\\Expression\\Variable\\ContextVariable' => $vendorDir . '/twig/twig/src/Node/Expression/Variable/ContextVariable.php',
@@ -3771,4 +3773,6 @@ return array(
     'Wikimedia\\Zest\\ZestInst' => $vendorDir . '/wikimedia/zest-css/src/ZestInst.php',
     'WmfFramework' => $baseDir . '/extensions/DonationInterface/gateway_common/WmfFramework.php',
     'lessc' => $vendorDir . '/wikimedia/less.php/lessc.inc.php',
+    'smashpig\\PaymentProviders\\ICancelAutoRescueProvider' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/ICancelAutoRescueProvider.php',
+    'smashpig\\PaymentProviders\\IDeleteRecurringPaymentTokenProvider' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/IDeleteRecurringPaymentTokenProvider.php',
 );
