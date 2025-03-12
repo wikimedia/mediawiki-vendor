@@ -46,7 +46,7 @@ class ReportExecutionAction extends GravyAction {
 		$provider = $providerConfiguration->object( 'payment-provider/cc' );
 
 		$reportExecutionDetails = $provider->getReportExecutionDetails( [
-			"report_execution_id" => $msg->getReportExecutionId()
+			'report_execution_id' => $msg->getReportExecutionId()
 		] );
 
 		return $reportExecutionDetails;
@@ -57,8 +57,8 @@ class ReportExecutionAction extends GravyAction {
 		$provider = $providerConfiguration->object( 'payment-provider/cc' );
 
 		$reportDetails = $provider->generateReportDownloadUrl( [
-			"report_execution_id" => $response->getReportExecutionId(),
-			"report_id" => $response->getReportId()
+			'report_execution_id' => $response->getReportExecutionId(),
+			'report_id' => $response->getReportId()
 		] );
 
 		return $reportDetails;

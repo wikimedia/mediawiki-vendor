@@ -10,8 +10,8 @@ class TransactionMessage extends GravyMessage {
 	private string $action = "TransactionAction";
 
 	public function init( array $notification ): GravyMessage {
-		$this->setTransactionId( $notification["id"] );
-		$this->setMessageDate( $notification["created_at"] );
+		$this->setTransactionId( $notification['id'] );
+		$this->setMessageDate( $notification['created_at'] );
 		return $this;
 	}
 

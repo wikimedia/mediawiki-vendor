@@ -1949,6 +1949,7 @@ return array(
     'SmashPig\\PaymentData\\DonorDetails' => $vendorDir . '/wikimedia/smash-pig/PaymentData/DonorDetails.php',
     'SmashPig\\PaymentData\\ErrorCode' => $vendorDir . '/wikimedia/smash-pig/PaymentData/ErrorCode.php',
     'SmashPig\\PaymentData\\FinalStatus' => $vendorDir . '/wikimedia/smash-pig/PaymentData/FinalStatus.php',
+    'SmashPig\\PaymentData\\PaymentMethod' => $vendorDir . '/wikimedia/smash-pig/PaymentData/PaymentMethod.php',
     'SmashPig\\PaymentData\\RecurringModel' => $vendorDir . '/wikimedia/smash-pig/PaymentData/RecurringModel.php',
     'SmashPig\\PaymentData\\ReferenceData\\CurrencyRates' => $vendorDir . '/wikimedia/smash-pig/PaymentData/ReferenceData/CurrencyRates.php',
     'SmashPig\\PaymentData\\ReferenceData\\NationalCurrencies' => $vendorDir . '/wikimedia/smash-pig/PaymentData/ReferenceData/NationalCurrencies.php',
@@ -3773,6 +3774,4 @@ return array(
     'Wikimedia\\Zest\\ZestInst' => $vendorDir . '/wikimedia/zest-css/src/ZestInst.php',
     'WmfFramework' => $baseDir . '/extensions/DonationInterface/gateway_common/WmfFramework.php',
     'lessc' => $vendorDir . '/wikimedia/less.php/lessc.inc.php',
-    'smashpig\\PaymentProviders\\ICancelAutoRescueProvider' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/ICancelAutoRescueProvider.php',
-    'smashpig\\PaymentProviders\\IDeleteRecurringPaymentTokenProvider' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/IDeleteRecurringPaymentTokenProvider.php',
 );

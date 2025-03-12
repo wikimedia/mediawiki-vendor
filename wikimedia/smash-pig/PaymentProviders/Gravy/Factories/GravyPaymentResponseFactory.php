@@ -29,7 +29,7 @@ abstract class GravyPaymentResponseFactory {
 		$paymentProviderResponse->setStatus( $response['status'] );
 		$paymentProviderResponse->setSuccessful( $isSuccessful );
 		if ( static::isFailedTransaction( $paymentProviderResponse->getStatus() ) ) {
-			static::addPaymentFailureError( $paymentProviderResponse, $response[ 'message' ] . ':' . $response[ 'description' ], $response[ 'code' ] );
+			static::addPaymentFailureError( $paymentProviderResponse, $response['message'] . ':' . $response['description'], $response['code'] );
 			return $paymentProviderResponse;
 		}
 		$paymentProviderResponse->setRawStatus( $response['raw_status'] ?? '' );

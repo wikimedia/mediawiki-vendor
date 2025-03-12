@@ -10,12 +10,12 @@ class RefundMessage extends GravyMessage {
 	/** @var string The parent id from Gravy */
 	private string $gateway_parent_id;
 
-	private string $action = "RefundAction";
+	private string $action = 'RefundAction';
 
 	public function init( array $notification ): GravyMessage {
-		$this->setGatewayRefundId( $notification["id"] );
-		$this->setGatewayParentId( $notification["gateway_parent_id"] );
-		$this->setMessageDate( $notification["created_at"] );
+		$this->setGatewayRefundId( $notification['id'] );
+		$this->setGatewayParentId( $notification['gateway_parent_id'] );
+		$this->setMessageDate( $notification['created_at'] );
 		return $this;
 	}
 

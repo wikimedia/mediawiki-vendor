@@ -1,0 +1,35 @@
+{
+    "amount": 600000,
+    "currency": "COP",
+    "country": "CO",
+    "payment_method": {
+        "method": "pse",
+        "redirect_url": "localhost",
+        "country": "CO",
+        "currency": "COP"
+    },
+    "external_identifier": "458.8",
+    "buyer": {
+        "external_identifier": "lorem@ipsum",
+        "billing_details": {
+            "first_name": "Lorem",
+            "last_name": "Ipsum",
+            "email_address": "lorem@ipsum",
+            "phone_number": null,
+            "address": {
+                "city": null,
+                "country": "CO",
+                "postal_code": "1234",
+                "state": null,
+                "line1": "10 hopewell street",
+                "line2": null,
+                "organization": "Wikimedia Foundation"
+            },
+            "tax_id": {
+                "value": "9999999999",
+                "kind": "co.nit"
+            }
+        }
+    },
+    "intent": "capture"
+}

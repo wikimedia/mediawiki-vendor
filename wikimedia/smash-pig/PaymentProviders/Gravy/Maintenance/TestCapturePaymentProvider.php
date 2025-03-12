@@ -40,7 +40,7 @@ class TestCapturePaymentProvider extends MaintenanceBase {
 
 		$gravy->createPayment( $request );
 
-		Logger::info( "Result: " . print_r( $request, true ) );
+		Logger::info( 'Result: ' . print_r( $request, true ) );
 	}
 }
 

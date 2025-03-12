@@ -1,0 +1,32 @@
+{
+  "amount": 1600,
+  "currency": "PEN",
+  "country": "PE",
+  "payment_method": {
+    "method": "bcp",
+    "redirect_url": "localhost",
+    "country": "PE",
+    "currency": "PEN"
+  },
+  "external_identifier": "466.5",
+  "buyer": {
+    "external_identifier": "lorem@ipsum",
+    "billing_details": {
+        "first_name": "Lorem",
+        "last_name": "Ipsum",
+        "email_address": "lorem@ipsum",
+        "phone_number": null,
+        "address": {
+            "city": null,
+            "country": "PE",
+            "postal_code": "1234",
+            "state": null,
+            "line1": "10 hopewell street",
+            "line2": null,
+            "organization": "Wikimedia Foundation"
+        },
+      "tax_id": { "value": "8480052240", "kind": "pe.ruc" }
+    }
+  },
+  "intent": "capture"
+}

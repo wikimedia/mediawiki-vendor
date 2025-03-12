@@ -41,7 +41,7 @@ class RefundAction extends GravyAction {
 		$provider = $providerConfiguration->object( 'payment-provider/cc' );
 
 		$refundDetails = $provider->getRefundDetails( [
-			"gateway_refund_id" => $msg->getGatewayRefundId()
+			'gateway_refund_id' => $msg->getGatewayRefundId()
 		] );
 
 		return $refundDetails;

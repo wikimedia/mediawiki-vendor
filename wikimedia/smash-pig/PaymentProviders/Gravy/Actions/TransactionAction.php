@@ -43,7 +43,7 @@ class TransactionAction extends GravyAction {
 			}
 		} else {
 			$id = $transactionDetails->getRawResponse()['id'] ?? null;
-			$message = "Skipping unsuccessful transaction";
+			$message = 'Skipping unsuccessful transaction';
 			if ( !empty( $id ) ) {
 				if ( $this->requiresChargeback( $transactionDetails ) ) {
 					$message = "Pushing failed trustly transaction with id: {$id} to refund queue for chargeback.";
@@ -63,7 +63,7 @@ class TransactionAction extends GravyAction {
 		$provider = $providerConfiguration->object( 'payment-provider/cc' );
 
 		$transactionDetails = $provider->getLatestPaymentStatus( [
-			"gateway_txn_id" => $msg->getTransactionId()
+			'gateway_txn_id' => $msg->getTransactionId()
 		] );
 
 		return $transactionDetails;

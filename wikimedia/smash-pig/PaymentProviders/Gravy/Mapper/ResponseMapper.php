@@ -91,7 +91,7 @@ class ResponseMapper {
 			return $this->mapErrorFromResponse( $response );
 		}
 		return [
-			"is_successful" => true
+			'is_successful' => true
 		];
 	}
 
@@ -114,14 +114,14 @@ class ResponseMapper {
 		if ( ( isset( $response['type'] ) && $response['type'] == 'error' ) || isset( $response['error_code'] ) ) {
 			return $this->mapErrorFromResponse( $response );
 		}
-		$report = $response["report"];
+		$report = $response['report'];
 		return [
-			"is_successful" => true,
-			"report_execution_id" => $response["id"],
-			"report_id" => $report["id"],
-			"raw_response" => $response,
-			"status" => $this->normalizeStatus( $response["status"] ),
-			"raw_status" => $response["status"]
+			'is_successful' => true,
+			'report_execution_id' => $response['id'],
+			'report_id' => $report['id'],
+			'raw_response' => $response,
+			'status' => $this->normalizeStatus( $response['status'] ),
+			'raw_status' => $response['status']
 		];
 	}
 
@@ -135,12 +135,12 @@ class ResponseMapper {
 		}
 
 		return [
-			"is_successful" => true,
-			"report_url" => $response["url"],
-			"expires" => $response["expires_at"],
-			"raw_response" => $response,
-			"status" => $this->normalizeStatus( "succeeded" ),
-			"raw_status" => "succeeded"
+			'is_successful' => true,
+			'report_url' => $response['url'],
+			'expires' => $response['expires_at'],
+			'raw_response' => $response,
+			'status' => $this->normalizeStatus( 'succeeded' ),
+			'raw_status' => 'succeeded'
 		];
 	}
 
@@ -249,19 +249,19 @@ class ResponseMapper {
 	 * @param string $type
 	 * @return array
 	 */
-	protected function mapSuccessfulRefundMessage( array $response, string $type = "refund" ): array {
+	protected function mapSuccessfulRefundMessage( array $response, string $type = 'refund' ): array {
 		return [
-			"is_successful" => true,
-			"gateway_parent_id" => $response["transaction_id"] ?? $response["id"],
-			"gateway_refund_id" => $response["id"],
-			"currency" => $response["currency"],
-			"amount" => $response["amount"] / 100,
-			"reason" => $response["reason"] ?? "",
-			"status" => $this->normalizeStatus( $response["status"] ),
-			"raw_status" => $response["status"],
-			"type" => $type,
-			"raw_response" => $response,
-			"backend_processor" => $this->getBackendProcessor( $response ) ?? ''
+			'is_successful' => true,
+			'gateway_parent_id' => $response['transaction_id'] ?? $response['id'],
+			'gateway_refund_id' => $response['id'],
+			'currency' => $response['currency'],
+			'amount' => $response['amount'] / 100,
+			'reason' => $response['reason'] ?? '',
+			'status' => $this->normalizeStatus( $response['status'] ),
+			'raw_status' => $response['status'],
+			'type' => $type,
+			'raw_response' => $response,
+			'backend_processor' => $this->getBackendProcessor( $response ) ?? ''
 		];
 	}
 
@@ -305,9 +305,9 @@ class ResponseMapper {
 	 */
 	protected function mapErrorFromResponse( array $error ): array {
 		$errorParameters = [
-			"code" => '',
-			"message" => '',
-			"description" => ''
+			'code' => '',
+			'message' => '',
+			'description' => ''
 		];
 		if ( $error['type'] == 'error' ) {
 			$errorParameters['code'] = $error['status'] ?? '';
@@ -354,9 +354,9 @@ class ResponseMapper {
 	protected function mapFrom3DSecureErrorResponse( array $params ): array {
 		$errorData = $params['error_data'];
 		$error = [
-			"code" => $errorData['code'],
-			"message" => $errorData['description'],
-			"description" => $errorData['detail']
+			'code' => $errorData['code'],
+			'message' => $errorData['description'],
+			'description' => $errorData['detail']
 		];
 
 		return $error;

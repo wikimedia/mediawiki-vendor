@@ -16,7 +16,9 @@ class RequestMapper {
 	public const CAPTURE_ONLY_PAYMENT_METHOD = [
 		'netbanking',
 		'pix',
-		'oxxo'
+		'oxxo',
+		'pse',
+		'bcp'
 	];
 
 	public function mapToCreatePaymentRequest( array $params ): array {
@@ -79,11 +81,11 @@ class RequestMapper {
 	 */
 	public function mapToRefundPaymentRequest( array $params ): array {
 		$body = [
-			"reason" => $params["reason"] ?? "Refunded due to user request",
+			'reason' => $params['reason'] ?? 'Refunded due to user request',
 		];
 
 		if ( !empty( $params['amount'] ) ) {
-			$body["amount"] = CurrencyRoundingHelper::getAmountInMinorUnits( $params['amount'], $params['currency'] );
+			$body['amount'] = CurrencyRoundingHelper::getAmountInMinorUnits( $params['amount'], $params['currency'] );
 		}
 
 		$request = [
@@ -96,8 +98,8 @@ class RequestMapper {
 	public function mapToAppleCreatePaymentRequest( array $params ): array {
 		$request_params = $this->mapToCreatePaymentRequest( $params );
 		$request_params['payment_method'] = array_merge( $request_params['payment_method'], [
-			"method" => "applepay",
-			"token" => json_decode( $params['payment_token'] ),
+			'method' => 'applepay',
+			'token' => json_decode( $params['payment_token'] ),
 		] );
 		return $request_params;
 	}
@@ -179,9 +181,11 @@ class RequestMapper {
 		case 'paypal':
 		case 'venmo':
 		case 'pix':
+		case 'pse':
+		case 'bcp':
 			return $paymentMethod;
 		default:
-				throw new \UnexpectedValueException( "Unknown Gravy Payment Method - $paymentMethod" );
+			throw new \UnexpectedValueException( "Unknown Gravy Payment Method - $paymentMethod" );
 	   }
    }
 
@@ -243,7 +247,7 @@ class RequestMapper {
 		$identifier = CountryIdentifiers::getGravyTaxIdTypeForSuppliedCountryIdentifier( $params['country'], $params['fiscal_number'] );
 		if ( $identifier ) {
 			$request['buyer']['billing_details']['tax_id'] = [
-				'value' => $params['fiscal_number'],
+				'value' => strval( $params['fiscal_number'] ),
 				'kind' => $identifier
 			];
 		} else {

@@ -17,7 +17,7 @@ trait ValidatorTrait {
 		}
 
 		if ( count( $invalidFields ) ) {
-			throw new ValidationException( "Invalid input", $invalidFields );
+			throw new ValidationException( 'Invalid input', $invalidFields );
 		}
 	}
 }

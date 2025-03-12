@@ -19,11 +19,11 @@ class ListenerValidator {
 		$this->validateFields( $required, $params );
 
 		// Gr4vy currently only supports basic authentication for webhook security
-		$base64_authorization_value = "Basic " . base64_encode( $config->val( "accounts/webhook/username" ) . ":" . $config->val( "accounts/webhook/password" ) );
+		$base64_authorization_value = 'Basic ' . base64_encode( $config->val( 'accounts/webhook/username' ) . ':' . $config->val( 'accounts/webhook/password' ) );
 
-		if ( $params["AUTHORIZATION"] != $base64_authorization_value ) {
-			throw new ValidationException( "Invalid Authorisation header", [
-				"AUTHORISATION" => 'invalid'
+		if ( $params['AUTHORIZATION'] != $base64_authorization_value ) {
+			throw new ValidationException( 'Invalid Authorisation header', [
+				'AUTHORISATION' => 'invalid'
 			] );
 		}
 	}

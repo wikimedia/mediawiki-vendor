@@ -23,7 +23,7 @@ abstract class GravyMessage extends ListenerMessage {
 	 * @throws ListenerDataException
 	 */
 	public static function getInstanceFromNormalizedNotification( array $notification ): GravyMessage {
-		$messageClassName = $notification["message_type"];
+		$messageClassName = $notification['message_type'];
 		$className = 'SmashPig\\PaymentProviders\\Gravy\\ExpatriatedMessages\\' . $messageClassName;
 
 		if ( class_exists( $className ) ) {

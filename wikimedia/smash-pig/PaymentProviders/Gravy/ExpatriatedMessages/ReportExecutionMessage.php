@@ -6,11 +6,11 @@ class ReportExecutionMessage extends GravyMessage {
 
 	/** @var string The Report Execution id from Gravy */
 	private string $report_execution_id;
-	private string $action = "ReportExecutionAction";
+	private string $action = 'ReportExecutionAction';
 
 	public function init( array $notification ): GravyMessage {
-		$this->setReportExecutionId( $notification["id"] );
-		$this->setMessageDate( $notification["created_at"] );
+		$this->setReportExecutionId( $notification['id'] );
+		$this->setMessageDate( $notification['created_at'] );
 		return $this;
 	}
 

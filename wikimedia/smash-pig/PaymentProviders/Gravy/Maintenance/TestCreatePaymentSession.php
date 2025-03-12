@@ -30,7 +30,7 @@ class TestCreatePaymentSession extends MaintenanceBase {
 		$gravy = PaymentProviderFactory::getDefaultProvider();
 
 		$paymentSession = $gravy->createPaymentSession();
-		Logger::info( "Result: " . print_r( $paymentSession, true ) );
+		Logger::info( 'Result: ' . print_r( $paymentSession, true ) );
 	}
 }
 

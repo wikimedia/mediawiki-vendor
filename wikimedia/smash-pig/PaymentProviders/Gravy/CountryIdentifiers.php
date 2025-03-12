@@ -103,11 +103,6 @@ class CountryIdentifiers {
 		'CO' => [
 			'patterns' => [
 				[
-					// 6–10 digits => typical "Cédula de Ciudadanía"
-					'regex' => '/^\d{6,10}$/',
-					'type' => 'co.cc',
-				],
-				[
 					// 9–10 digits
 					'regex' => '/^\d{9,10}$/',
 					'type' => 'co.nit',
@@ -116,7 +111,12 @@ class CountryIdentifiers {
 					// 9 digits
 					'regex' => '/^\d{9}$/',
 					'type' => 'co.itin',
-				]
+				],
+				[
+					// 6–10 digits => typical "Cédula de Ciudadanía"
+					'regex' => '/^\d{6,10}$/',
+					'type' => 'co.cc',
+				],
 			],
 		],
 		'IN' => [

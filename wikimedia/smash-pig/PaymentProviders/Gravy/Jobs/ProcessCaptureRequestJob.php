@@ -39,7 +39,7 @@ class ProcessCaptureRequestJob implements Runnable {
 			'class' => self::class,
 			'payload' => array_merge(
 				[
-					"eventDate" => $message->getMessageDate()
+					'eventDate' => $message->getMessageDate()
 				], $transactionDetails->getNormalizedResponse()
 			)
 		];
@@ -49,7 +49,7 @@ class ProcessCaptureRequestJob implements Runnable {
 		$transactionDetails = GravyGetLatestPaymentStatusResponseFactory::fromNormalizedResponse( $this->payload );
 		$this->logger = Logger::getTaggedLogger( "psp_ref-{$transactionDetails->getGatewayTxnId()}" );
 		$this->logger->info(
-			"Running capture request job on Gravy transaction" .
+			'Running capture request job on Gravy transaction' .
 			" with reference '{$transactionDetails->getGatewayTxnId()}'."
 		);
 
@@ -212,10 +212,10 @@ class ProcessCaptureRequestJob implements Runnable {
 		$provider = $this->getProvider();
 		$result = $provider->cancelPayment( $transactionDetails->getGatewayTxnId() );
 		if ( $result->isSuccessful() ) {
-			$this->logger->debug( "Successfully cancelled authorization" );
+			$this->logger->debug( 'Successfully cancelled authorization' );
 		} else {
 			// Not a big deal
-			$this->logger->warning( "Failed to cancel authorization, it will remain in the payment console" );
+			$this->logger->warning( 'Failed to cancel authorization, it will remain in the payment console' );
 		}
 	}
 }

@@ -78,6 +78,80 @@ class BankPaymentProviderTest extends BaseGravyTestCase {
 		$this->assertEquals( "netbanking", $response->getPaymentSubmethod() );
 	}
 
+	public function testSuccessfulCreatePaymenPse() {
+		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/pse-create-transaction-response-pending.json' ), true );
+		$requestBody = json_decode( file_get_contents( __DIR__ . '/../Data/pse-create-transaction-request.json' ), true );
+		$params = $this->getCreateTrxnParams( $responseBody['amount'] / 100 );
+		$params['return_url'] = 'localhost';
+		$requestBody['external_identifier'] = $params['order_id'];
+		$params['payment_method'] = 'bt';
+		$params['payment_submethod'] = 'pse';
+		$params['country'] = 'CO';
+		$params['currency'] = 'COP';
+		$params['fiscal_number'] = '9999999999';
+
+		$this->mockApi->expects( $this->once() )
+			->method( 'createPayment' )
+			->with( $requestBody )
+			->willReturn( $responseBody );
+
+		$response = $this->provider->createPayment( $params );
+
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\CreatePaymentResponse',
+			$response );
+		$this->assertCount( 0, $response->getValidationErrors() );
+		$this->assertCount( 0, $response->getErrors() );
+		$this->assertEquals( $responseBody['amount'] / 100, $response->getAmount() );
+		$this->assertEquals( $responseBody['id'], $response->getGatewayTxnId() );
+		$this->assertEquals( $responseBody['buyer']['billing_details']['first_name'], $response->getDonorDetails()->getFirstName() );
+		$this->assertEquals( $responseBody['buyer']['billing_details']['last_name'], $response->getDonorDetails()->getLastName() );
+		$this->assertEquals( $responseBody['buyer']['billing_details']['email_address'], $response->getDonorDetails()->getEmail() );
+		$this->assertEquals( $responseBody['buyer']['id'], $response->getDonorDetails()->getCustomerId() );
+		$this->assertEquals( $responseBody['buyer']['billing_details']['address']['line1'], $response->getDonorDetails()->getBillingAddress()->getStreetAddress() );
+		$this->assertTrue( $response->requiresRedirect() );
+		$this->assertEquals( $responseBody['payment_method']['approval_url'], $response->getRedirectUrl() );
+		$this->assertTrue( $response->isSuccessful() );
+		$this->assertEquals( "bt", $response->getPaymentMethod() );
+		$this->assertEquals( "pse", $response->getPaymentSubmethod() );
+	}
+
+	public function testSuccessfulCreatePaymenBcp() {
+		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/bcp-create-transaction-response-pending.json' ), true );
+		$requestBody = json_decode( file_get_contents( __DIR__ . '/../Data/bcp-create-transaction-request.json' ), true );
+		$params = $this->getCreateTrxnParams( $responseBody['amount'] / 100 );
+		$params['return_url'] = 'localhost';
+		$requestBody['external_identifier'] = $params['order_id'];
+		$params['payment_method'] = 'bt';
+		$params['payment_submethod'] = 'bcp';
+		$params['country'] = 'PE';
+		$params['currency'] = 'PEN';
+		$params['fiscal_number'] = '8480052240';
+
+		$this->mockApi->expects( $this->once() )
+			->method( 'createPayment' )
+			->with( $requestBody )
+			->willReturn( $responseBody );
+
+		$response = $this->provider->createPayment( $params );
+
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\CreatePaymentResponse',
+			$response );
+		$this->assertCount( 0, $response->getValidationErrors() );
+		$this->assertCount( 0, $response->getErrors() );
+		$this->assertEquals( $responseBody['amount'] / 100, $response->getAmount() );
+		$this->assertEquals( $responseBody['id'], $response->getGatewayTxnId() );
+		$this->assertEquals( $responseBody['buyer']['billing_details']['first_name'], $response->getDonorDetails()->getFirstName() );
+		$this->assertEquals( $responseBody['buyer']['billing_details']['last_name'], $response->getDonorDetails()->getLastName() );
+		$this->assertEquals( $responseBody['buyer']['billing_details']['email_address'], $response->getDonorDetails()->getEmail() );
+		$this->assertEquals( $responseBody['buyer']['id'], $response->getDonorDetails()->getCustomerId() );
+		$this->assertEquals( $responseBody['buyer']['billing_details']['address']['line1'], $response->getDonorDetails()->getBillingAddress()->getStreetAddress() );
+		$this->assertTrue( $response->requiresRedirect() );
+		$this->assertEquals( $responseBody['payment_method']['approval_url'], $response->getRedirectUrl() );
+		$this->assertTrue( $response->isSuccessful() );
+		$this->assertEquals( "bt", $response->getPaymentMethod() );
+		$this->assertEquals( "bcp", $response->getPaymentSubmethod() );
+	}
+
 	public function testSuccessfulPayment() {
 		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/successful-transaction-trustly.json' ), true );
 		$this->mockApi->expects( $this->once() )

@@ -26,7 +26,7 @@ class RecordCaptureJob implements Runnable {
 			'class' => self::class,
 			'payload' => array_merge(
 				[
-					"eventDate" => $message->getMessageDate()
+					'eventDate' => $message->getMessageDate()
 				], $transactionDetails->getNormalizedResponse()
 			)
 		];
@@ -36,7 +36,7 @@ class RecordCaptureJob implements Runnable {
 		$transactionDetails = GravyGetLatestPaymentStatusResponseFactory::fromNormalizedResponse( $this->payload );
 		$logger = Logger::getTaggedLogger( "corr_id-gravy-{$transactionDetails->getOrderId()}" );
 		$logger->info(
-			"Recording successful capture of Gravy transaction with authorization reference " .
+			'Recording successful capture of Gravy transaction with authorization reference ' .
 				"'{$transactionDetails->getGatewayTxnId()}' and order ID '{$transactionDetails->getOrderId()}'."
 		);
 

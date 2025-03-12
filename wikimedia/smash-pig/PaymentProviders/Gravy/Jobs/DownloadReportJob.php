@@ -36,7 +36,7 @@ class DownloadReportJob implements Runnable {
 		$fileName = "gravy_settlement_report_{$date}.csv";
 
 		$this->downloadLoc =
-			$c->val( "report-location" ) . '/' .
+			$c->val( 'report-location' ) . '/' .
 			$fileName;
 
 		$this->logger->info(
@@ -54,8 +54,8 @@ class DownloadReportJob implements Runnable {
 		curl_setopt( $ch, CURLOPT_URL, $reportResponse->getReportUrl() );
 
 		// Set up the proxy for google storage T375492
-		curl_setopt( $ch, CURLOPT_PROXY, $c->val( "proxy/proxy_host" ) );
-		curl_setopt( $ch, CURLOPT_PROXYPORT, $c->val( "proxy/proxy_port" ) );
+		curl_setopt( $ch, CURLOPT_PROXY, $c->val( 'proxy/proxy_host' ) );
+		curl_setopt( $ch, CURLOPT_PROXYPORT, $c->val( 'proxy/proxy_port' ) );
 
 		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, false );
 		curl_setopt( $ch, CURLOPT_FILE, $fp );
@@ -73,10 +73,10 @@ class DownloadReportJob implements Runnable {
 
 		if ( $result === false ) {
 			$this->logger->error( "Could not download report due to cURL error {$error}" );
-			throw new SmashPigException( "Could not download report." );
+			throw new SmashPigException( 'Could not download report.' );
 		} elseif ( $httpCode !== 200 ) {
 			$this->logger->error( "Report downloaded(?), but with incorrect HTTP code: {$httpCode}" );
-			throw new SmashPigException( "Could not download report." );
+			throw new SmashPigException( 'Could not download report.' );
 		}
 		return true;
 	}
