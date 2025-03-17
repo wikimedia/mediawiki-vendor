@@ -4704,6 +4704,7 @@ return array(
     'Wikimedia\\Parsoid\\NodeData\\DataBag' => $vendorDir . '/wikimedia/parsoid/src/NodeData/DataBag.php',
     'Wikimedia\\Parsoid\\NodeData\\DataMw' => $vendorDir . '/wikimedia/parsoid/src/NodeData/DataMw.php',
     'Wikimedia\\Parsoid\\NodeData\\DataMwAttrib' => $vendorDir . '/wikimedia/parsoid/src/NodeData/DataMwAttrib.php',
+    'Wikimedia\\Parsoid\\NodeData\\DataMwBody' => $vendorDir . '/wikimedia/parsoid/src/NodeData/DataMwBody.php',
     'Wikimedia\\Parsoid\\NodeData\\DataMwError' => $vendorDir . '/wikimedia/parsoid/src/NodeData/DataMwError.php',
     'Wikimedia\\Parsoid\\NodeData\\DataMwI18n' => $vendorDir . '/wikimedia/parsoid/src/NodeData/DataMwI18n.php',
     'Wikimedia\\Parsoid\\NodeData\\DataParsoid' => $vendorDir . '/wikimedia/parsoid/src/NodeData/DataParsoid.php',

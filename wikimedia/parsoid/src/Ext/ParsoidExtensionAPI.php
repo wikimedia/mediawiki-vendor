@@ -602,6 +602,41 @@ class ParsoidExtensionAPI {
 	}
 
 	/**
+	 * Updates all arguments, similar to findAndUpdateArg, but applies the closure to all arguments
+	 * @param KV[] &$extArgs Array of extension args
+	 * @param ?Closure $updater $updater will get the existing string value
+	 *    for the key and value of the arg and is expected to return an updated value.
+	 */
+	public function updateAllArgs( array &$extArgs, ?Closure $updater = null ): void {
+		if ( !$updater ) {
+			return;
+		}
+		foreach ( $extArgs as $i => $kv ) {
+			$k = TokenUtils::tokensToString( $kv->k );
+			$val = $kv->v;
+			$kv = clone $kv;
+			$kv->v = $updater( $k, TokenUtils::tokensToString( $val ) );
+			$extArgs[$i] = $kv;
+		}
+	}
+
+	/**
+	 * Normalizes spaces from extension tag arguments, except for those keyed by values in $exceptions
+	 * @param KV[] &$extArgs Array of extension args
+	 * @param string[] $exclude array of keys for which the value should not be normalized
+	 */
+	public function normalizeWhiteSpaceInArgs( array &$extArgs, array $exclude ) {
+		$closure = static function ( $key, $value ) use ( $exclude ) {
+			if ( in_array( strtolower( trim( $key ) ), $exclude, true ) ) {
+				return $value;
+			} else {
+				return trim( preg_replace( '/[\r\n\t ]+/', ' ', $value ) );
+			}
+		};
+		$this->updateAllArgs( $extArgs, $closure );
+	}
+
+	/**
 	 * This method adds a new argument to the extension args array
 	 * @param KV[] &$extArgs
 	 * @param string $key
@@ -625,10 +660,14 @@ class ParsoidExtensionAPI {
 
 	/**
 	 * Extensions might be interested in examining (their) content embedded
-	 * in data-mw attributes that don't otherwise show up in the DOM.
+	 * in attributes that don't otherwise show up in the DOM.
 	 *
 	 * Ex: inline media captions that aren't rendered, language variant markup,
 	 *     attributes that are transcluded. More scenarios might be added later.
+	 * @deprecated
+	 * Don't use this directly: use ::processAttributeEmbeddedDom().
+	 * This method may omit content which is embedded natively as
+	 * DocumentFragments instead of as HTML strings.
 	 *
 	 * @param Element $elt The node whose data attributes need to be examined
 	 * @param Closure $proc The processor that will process the embedded HTML
@@ -637,7 +676,25 @@ class ParsoidExtensionAPI {
 	 *        and is expected to return a possibly modified string.
 	 */
 	public function processAttributeEmbeddedHTML( Element $elt, Closure $proc ): void {
+		// @phan-suppress-next-line PhanDeprecatedFunction
 		ContentUtils::processAttributeEmbeddedHTML( $this, $elt, $proc );
+	}
+
+	/**
+	 * Extensions might be interested in examining (their) content embedded
+	 * in attributes that don't otherwise show up in the DOM.
+	 *
+	 * Ex: inline media captions that aren't rendered, language variant markup,
+	 *     attributes that are transcluded. More scenarios might be added later.
+	 *
+	 * @param Element $elt The node whose data attributes need to be examined
+	 * @param callable(DocumentFragment):bool $proc
+	 *        The processor that will process the embedded HTML.
+	 *        This processor will be provided a DocumentFragment
+	 *        and is expected to return true if that fragment was modified.
+	 */
+	public function processAttributeEmbeddedDom( Element $elt, callable $proc ): void {
+		ContentUtils::processAttributeEmbeddedDom( $this, $elt, $proc );
 	}
 
 	/**

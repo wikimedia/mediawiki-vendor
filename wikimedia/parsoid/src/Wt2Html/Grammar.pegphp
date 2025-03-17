@@ -314,17 +314,25 @@ redirect_word =
  * The actual contents of each block.
  */
 block =
-	// Redirect has to be the first alternative; otherwise it gets parsed as a <ol>
-	// In practice, WikiContent::getRedirectTargetAndText() in MediaWiki strips
-	// the redirect from the source so it never sees it.
+/* Redirect has to be the first alternative; otherwise it gets parsed as a <ol>
+ *  In practice, WikiContent::getRedirectTargetAndText() in MediaWiki strips
+ *  the redirect from the source so it never sees it.
+ */
 	&sof r:redirect cil:sol_transparent* bl:block_line? {
 		return array_merge( [ $r ], $cil, $bl ?: [] );
 	}
 	/ block_lines
-	// Inlineline includes generic tags; wrapped into paragraphs in token
-	// transform and DOM postprocessor
+/* Inlineline includes generic tags; wrapped into paragraphs in token
+ * transform and DOM postprocessor
+ */
 	/ inlineline
-	/ s:sol !sof !inline_breaks { return $s; }
+/*
+ * Don't match SOL on its own when in a table data-block. This ensures
+ * we don't match a stray "||" on the line as a <td> when the newline itself
+ * may not have started with a <td>. The block_lines rule above does allow
+ * SOLs to be matched when required for lists, headings, hrs, and fresh table lines.
+ */
+	/ ( &<tableCaption> / !<tableDataBlock> ) s:sol !sof !inline_breaks { return $s; }
 
 /*
  * A block nested in other constructs. Avoid eating end delimiters for other
@@ -335,7 +343,7 @@ nested_block = !inline_breaks b:block { return $b; }
 /*
  * The same, but suitable for use inside a table construct.
  * Doesn't match table_heading_tag, table_row_tag, table_data_tag,
- * table_caption tag, or table_end_tag, although it does allow
+ * table_caption_tag, or table_end_tag, although it does allow
  * table_start_tag (for nested tables).
  */
 nested_block_in_table =
@@ -2102,7 +2110,7 @@ table_caption_tag =
 	p:pipe "+"
 	args:row_syntax_table_args?
 	tagEndPos:("" { return $this->endOffset(); })
-	c:nested_block_in_table* {
+	c:nested_block_in_table<tableCaption>* {
 		$tsr = new SourceRange( $this->startOffset(), $tagEndPos );
 		return TokenizerUtils::buildTableTokens(
 			$this->input, 'caption', '|+', $args, $tsr, $this->endOffset(), $c, true

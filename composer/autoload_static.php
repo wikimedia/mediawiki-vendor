@@ -399,12 +399,12 @@ class ComposerStaticInit_mediawiki_vendor
         array (
             0 => __DIR__ . '/..' . '/wikimedia/ip-utils/src',
             1 => __DIR__ . '/..' . '/wikimedia/php-session-serializer/src',
-            2 => __DIR__ . '/..' . '/wikimedia/running-stat/src',
-            3 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
-            4 => __DIR__ . '/..' . '/wikimedia/testing-access-wrapper/src',
-            5 => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src',
-            6 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
-            7 => __DIR__ . '/..' . '/wikimedia/relpath/src',
+            2 => __DIR__ . '/..' . '/wikimedia/relpath/src',
+            3 => __DIR__ . '/..' . '/wikimedia/running-stat/src',
+            4 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
+            5 => __DIR__ . '/..' . '/wikimedia/testing-access-wrapper/src',
+            6 => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src',
+            7 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
         ),
         'Webauthn\\MetadataService\\' => 
         array (
@@ -5531,6 +5531,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\NodeData\\DataBag' => __DIR__ . '/..' . '/wikimedia/parsoid/src/NodeData/DataBag.php',
         'Wikimedia\\Parsoid\\NodeData\\DataMw' => __DIR__ . '/..' . '/wikimedia/parsoid/src/NodeData/DataMw.php',
         'Wikimedia\\Parsoid\\NodeData\\DataMwAttrib' => __DIR__ . '/..' . '/wikimedia/parsoid/src/NodeData/DataMwAttrib.php',
+        'Wikimedia\\Parsoid\\NodeData\\DataMwBody' => __DIR__ . '/..' . '/wikimedia/parsoid/src/NodeData/DataMwBody.php',
         'Wikimedia\\Parsoid\\NodeData\\DataMwError' => __DIR__ . '/..' . '/wikimedia/parsoid/src/NodeData/DataMwError.php',
         'Wikimedia\\Parsoid\\NodeData\\DataMwI18n' => __DIR__ . '/..' . '/wikimedia/parsoid/src/NodeData/DataMwI18n.php',
         'Wikimedia\\Parsoid\\NodeData\\DataParsoid' => __DIR__ . '/..' . '/wikimedia/parsoid/src/NodeData/DataParsoid.php',
