@@ -5577,6 +5577,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Utils\\ContentUtils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/ContentUtils.php',
         'Wikimedia\\Parsoid\\Utils\\DOMCompat' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/DOMCompat.php',
         'Wikimedia\\Parsoid\\Utils\\DOMCompat\\TokenList' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/DOMCompat/TokenList.php',
+        'Wikimedia\\Parsoid\\Utils\\DOMDataCodec' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/DOMDataCodec.php',
         'Wikimedia\\Parsoid\\Utils\\DOMDataUtils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/DOMDataUtils.php',
         'Wikimedia\\Parsoid\\Utils\\DOMPostOrder' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/DOMPostOrder.php',
         'Wikimedia\\Parsoid\\Utils\\DOMTraverser' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Utils/DOMTraverser.php',
