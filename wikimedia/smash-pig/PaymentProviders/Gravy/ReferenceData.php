@@ -10,6 +10,7 @@ use SmashPig\PaymentData\PaymentMethod;
 class ReferenceData {
 
 	protected static $methods = [
+		'abitab' => PaymentMethod::CASH,
 		'afterpay' => '',
 		'alipay' => PaymentMethod::EW,
 		'alipayhk' => PaymentMethod::EW,
@@ -82,10 +83,12 @@ class ReferenceData {
 		'payto' => '',
 		'pix' => PaymentMethod::CASH,
 		'pse' => PaymentMethod::BT,
+		'pagoefectivo' => PaymentMethod::CASH,
 		'pulse' => PaymentMethod::CC,
 		'rabbitlinepay' => '',
 		'razorpay' => '',
 		'rupay' => PaymentMethod::CC,
+		'redpagos' => PaymentMethod::CASH,
 		'scalapay' => '',
 		'sepa' => PaymentMethod::RTBT,
 		'shopeepay' => '',
@@ -107,6 +110,7 @@ class ReferenceData {
 		'visa' => PaymentMethod::CC,
 		'waave' => '',
 		'wechat' => '',
+		'webpay' => PaymentMethod::BT,
 		'zippay' => '',
 	];
 
@@ -164,6 +168,8 @@ class ReferenceData {
 	protected static $cashSubmethods = [
 		'pix' => 'pix',
 		'oxxo' => 'cash_oxxo',
+		'redpagos' => 'redpagos',
+		'boleto' => 'boleto',
 	];
 
 	public static function decodePaymentMethod( string $method, ?string $scheme = '' ): array {

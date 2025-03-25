@@ -2712,6 +2712,7 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\PaymentProviders\\dlocal\\DlocalPaymentStatusResponseFactory' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/DlocalPaymentStatusResponseFactory.php',
         'SmashPig\\PaymentProviders\\dlocal\\DlocalRefundPaymentResponseFactory' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/DlocalRefundPaymentResponseFactory.php',
         'SmashPig\\PaymentProviders\\dlocal\\ErrorMapper' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/ErrorMapper.php',
+        'SmashPig\\PaymentProviders\\dlocal\\ExpatriatedMessages\\AuthorizedMessage' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/ExpatriatedMessages/AuthorizedMessage.php',
         'SmashPig\\PaymentProviders\\dlocal\\ExpatriatedMessages\\CompletedMessage' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/ExpatriatedMessages/CompletedMessage.php',
         'SmashPig\\PaymentProviders\\dlocal\\ExpatriatedMessages\\DlocalMessage' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/ExpatriatedMessages/DlocalMessage.php',
         'SmashPig\\PaymentProviders\\dlocal\\ExpatriatedMessages\\PaidMessage' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/ExpatriatedMessages/PaidMessage.php',
@@ -2719,6 +2720,7 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\PaymentProviders\\dlocal\\ExpatriatedMessages\\SuccessMessage' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/ExpatriatedMessages/SuccessMessage.php',
         'SmashPig\\PaymentProviders\\dlocal\\HostedPaymentProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/HostedPaymentProvider.php',
         'SmashPig\\PaymentProviders\\dlocal\\IAPIRequestMapper' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/IAPIRequestMapper.php',
+        'SmashPig\\PaymentProviders\\dlocal\\Jobs\\AuthorizedMessageJob' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/Jobs/AuthorizedMessageJob.php',
         'SmashPig\\PaymentProviders\\dlocal\\Jobs\\PaidMessageJob' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/Jobs/PaidMessageJob.php',
         'SmashPig\\PaymentProviders\\dlocal\\Jobs\\RejectedMessageJob' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/Jobs/RejectedMessageJob.php',
         'SmashPig\\PaymentProviders\\dlocal\\Maintenance\\ApprovePayments' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/Maintenance/ApprovePayments.php',
@@ -4230,6 +4232,8 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Zest\\ZestInst' => __DIR__ . '/..' . '/wikimedia/zest-css/src/ZestInst.php',
         'WmfFramework' => __DIR__ . '/../..' . '/extensions/DonationInterface/gateway_common/WmfFramework.php',
         'lessc' => __DIR__ . '/..' . '/wikimedia/less.php/lessc.inc.php',
+        'smashpig\\PaymentProviders\\ICancelAutoRescueProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/ICancelAutoRescueProvider.php',
+        'smashpig\\PaymentProviders\\IDeleteRecurringPaymentTokenProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/IDeleteRecurringPaymentTokenProvider.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

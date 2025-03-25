@@ -234,10 +234,10 @@ class Api {
 
 	/**
 	 * Uses the rest API to create a bank transfer payment from the
-	 * Component web integration. Handles NL (iDEAL) and CZ bank transfer.
+	 * Component web integration. Handles NL (iDEAL 2.0) and CZ bank transfer.
 	 *
 	 * @param array $params
-	 * amount, currency, value, issuer, returnUrl
+	 * amount, currency, value, issuer_id (for CZ), return_url
 	 * @throws \SmashPig\Core\ApiException
 	 */
 	public function createBankTransferPaymentFromCheckout( $params ) {

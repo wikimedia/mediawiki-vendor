@@ -153,6 +153,11 @@ class CountryIdentifiers {
 					'regex' => '/^\d{12}$/',
 					'type' => 'uy.rut',
 				],
+				[
+					// typical CI can be 6-8 digits, according to dlocal docs.
+					'regex' => '/^\d{6,8}$/',
+					'type' => 'uy.ci',
+				],
 			],
 		],
 		'ZA' => [

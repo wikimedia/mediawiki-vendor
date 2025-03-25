@@ -38,7 +38,7 @@ class BankTransferPaymentProvider extends PaymentProvider {
 				$recurringTokenDelayed = false;
 			} elseif ( isset( $params['issuer_id'] ) || $submethod === 'rtbt_ideal' ) {
 				// one time and initial CZ online banking will have an issuer_id set
-				// iDEAL 1.0 has issuer_id - to use iDEAL 2.0 just send payment_submethod=rtbt_ideal
+				// for iDEAL 2.0 just send payment_submethod=rtbt_ideal
 				$rawResponse = $this->api->createBankTransferPaymentFromCheckout( $params );
 				$recurringTokenDelayed = true;
 			} elseif ( !empty( $params['iban'] ) ) {

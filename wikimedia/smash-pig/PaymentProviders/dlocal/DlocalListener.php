@@ -18,6 +18,7 @@ class DlocalListener extends RestListener {
 	 * Success status are refunds and completed status are chargebacks
 	 */
 	protected $paymentStatus = [
+		'AUTHORIZED' => 'SmashPig\PaymentProviders\dlocal\ExpatriatedMessages\AuthorizedMessage',
 		'PAID' => 'SmashPig\PaymentProviders\dlocal\ExpatriatedMessages\PaidMessage',
 		'SUCCESS' => 'SmashPig\PaymentProviders\dlocal\ExpatriatedMessages\SuccessMessage',
 		'COMPLETED' => 'SmashPig\PaymentProviders\dlocal\ExpatriatedMessages\CompletedMessage',
