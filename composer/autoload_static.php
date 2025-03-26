@@ -198,11 +198,11 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'Wikimedia\\' => 
         array (
-            0 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
-            1 => __DIR__ . '/..' . '/wikimedia/ip-utils/src',
-            2 => __DIR__ . '/..' . '/wikimedia/php-session-serializer/src',
-            3 => __DIR__ . '/..' . '/wikimedia/relpath/src',
-            4 => __DIR__ . '/..' . '/wikimedia/running-stat/src',
+            0 => __DIR__ . '/..' . '/wikimedia/ip-utils/src',
+            1 => __DIR__ . '/..' . '/wikimedia/php-session-serializer/src',
+            2 => __DIR__ . '/..' . '/wikimedia/relpath/src',
+            3 => __DIR__ . '/..' . '/wikimedia/running-stat/src',
+            4 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
             5 => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src',
             6 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
         ),
@@ -236,8 +236,8 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -310,8 +310,8 @@ class ComposerStaticInit_mediawiki_vendor
         array (
             'Net' => 
             array (
-                0 => __DIR__ . '/..' . '/pear/net_socket',
-                1 => __DIR__ . '/..' . '/pear/net_smtp',
+                0 => __DIR__ . '/..' . '/pear/net_smtp',
+                1 => __DIR__ . '/..' . '/pear/net_socket',
             ),
         ),
         'M' => 
