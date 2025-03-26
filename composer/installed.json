@@ -3264,24 +3264,24 @@
         },
         {
             "name": "wikimedia/minify",
-            "version": "2.8.1",
-            "version_normalized": "2.8.1.0",
+            "version": "2.9.0",
+            "version_normalized": "2.9.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-Minify.git",
-                "reference": "808dd00427c99413b1faf71b1a852874af04d5ac"
+                "reference": "244bbb0c0acf0c1679078cc87cbc95c79ad9f33f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Minify/zipball/808dd00427c99413b1faf71b1a852874af04d5ac",
-                "reference": "808dd00427c99413b1faf71b1a852874af04d5ac",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Minify/zipball/244bbb0c0acf0c1679078cc87cbc95c79ad9f33f",
+                "reference": "244bbb0c0acf0c1679078cc87cbc95c79ad9f33f",
                 "shasum": ""
             },
             "require": {
                 "ext-fileinfo": "*",
                 "ext-json": "*",
                 "ext-mbstring": "*",
-                "pear/net_url2": "2.2.2",
+                "pear/net_url2": "~2.2.2",
                 "php": ">=7.4.3"
             },
             "require-dev": {
@@ -3292,9 +3292,9 @@
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
                 "php-parallel-lint/php-parallel-lint": "1.4.0",
                 "phpunit/phpunit": "9.6.21",
-                "wikimedia/testing-access-wrapper": "~2.0"
+                "wikimedia/testing-access-wrapper": "~3.0.0"
             },
-            "time": "2025-02-27T20:24:15+00:00",
+            "time": "2025-03-26T17:40:22+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -3330,7 +3330,7 @@
             "description": "Minification of JavaScript code and CSS stylesheets.",
             "homepage": "https://gerrit.wikimedia.org/g/mediawiki/libs/Minify",
             "support": {
-                "source": "https://github.com/wikimedia/mediawiki-libs-Minify/tree/2.8.1"
+                "source": "https://github.com/wikimedia/mediawiki-libs-Minify/tree/2.9.0"
             },
             "install-path": "../wikimedia/minify"
         },
