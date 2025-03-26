@@ -56,26 +56,32 @@ final class Cli {
 	public function run(): void {
 		try {
 			switch ( $this->command ) {
-			case 'css':
-				$this->runCss( ...$this->params );
-				break;
-			case 'js':
-				$this->runJs( ...$this->params );
-				break;
-			case 'jsmap-web':
-				$this->runJsMapWeb( ...$this->params );
-				break;
-			case 'jsmap-raw':
-				$this->runJsMapRaw( ...$this->params );
-				break;
-			case '':
-			case 'help':
-				$this->exitCode = 1;
-				$this->help();
-				break;
-			default:
-				$this->error( 'Unknown command' );
-				break;
+				case 'css':
+					$this->runCss( ...$this->params );
+					break;
+				case 'css-remap':
+					$this->runCssRemap( ...$this->params );
+					break;
+				case 'js':
+					$this->runJs( ...$this->params );
+					break;
+				case 'jsdebug':
+					$this->runJsDebug( ...$this->params );
+					break;
+				case 'jsmap-web':
+					$this->runJsMapWeb( ...$this->params );
+					break;
+				case 'jsmap-raw':
+					$this->runJsMapRaw( ...$this->params );
+					break;
+				case '':
+				case 'help':
+					$this->exitCode = 1;
+					$this->help();
+					break;
+				default:
+					$this->error( 'Unknown command' );
+					break;
 			}
 		} catch ( \Throwable $e ) {
 			$this->exitCode = 1;
@@ -83,17 +89,75 @@ final class Cli {
 		}
 	}
 
-	private function runCss( string $file = null ): void {
+	private function runCss( ?string $file = null ): void {
 		$data = $file === null ? stream_get_contents( $this->in ) : file_get_contents( $file );
 		$this->output( CSSMin::minify( $data ) );
 	}
 
-	private function runJs( string $file = null ): void {
-		$data = $file === null ? stream_get_contents( $this->in ) : file_get_contents( $file );
-		$this->output( JavaScriptMinifier::minify( $data ) );
+	private function runCssRemap( ?string $file = null ): void {
+		if ( $file === null ) {
+			$this->error( 'Remapping requires a filepath' );
+			return;
+		}
+		$fulldir = dirname( realpath( $file ) );
+		$data = file_get_contents( $file );
+		$data = CSSMin::remap( $data, $fulldir, $fulldir );
+		$this->output( CSSMin::minify( $data ) );
 	}
 
-	private function runJsMapWeb( string $file = null ): void {
+	private function runJs( ?string $file = null ): void {
+		$data = $file === null ? stream_get_contents( $this->in ) : file_get_contents( $file );
+		$onError = function ( ParseError $error ) {
+			$this->output( 'ParseError: ' . $error->getMessage() . ' at position ' . $error->getOffset() );
+			$this->exitCode = 1;
+		};
+		$ret = JavaScriptMinifier::minify( $data, $onError );
+		if ( !$this->exitCode ) {
+			$this->output( $ret );
+		}
+	}
+
+	private function runJsDebug( ?string $file = null ): void {
+		$data = $file === null ? stream_get_contents( $this->in ) : file_get_contents( $file );
+		$onError = function ( ParseError $error ) {
+			$this->output( 'ParseError: ' . $error->getMessage() . ' at position ' . $error->getOffset() );
+			$this->exitCode = 1;
+		};
+
+		$first = true;
+		$onDebug = static function ( array $frame ) use ( &$first ) {
+			if ( $first ) {
+				print sprintf( "| %-45s | %-4s | %-22s | %-17s | %-16s\n",
+					'stack', 'last', 'state', 'token', 'type' );
+				print sprintf( "| %'-45s | %'-4s | %'-22s | %'-17s | %'-16s\n",
+					'', '', '', '', '' );
+				$first = false;
+			}
+			$stackStrLen = 0;
+			$stackPieces = [];
+			$stackOverflow = 0;
+			foreach ( array_reverse( $frame['stack'] ) as $i => $state ) {
+				$stackStrLen += strlen( $state ) + 2;
+				if ( $stackStrLen < 40 ) {
+					$stackPieces[] = $state;
+				} else {
+					$stackOverflow++;
+				}
+			}
+			if ( $stackOverflow ) {
+				$stackPieces[] = "$stackOverflow ...";
+			}
+			$stack = implode( ', ', array_reverse( $stackPieces ) );
+			print sprintf( "| %-45s | %-4s | %-22s | @%-3s %-12s | %-16s\n",
+				$stack, $frame['last'], $frame['state'], $frame['pos'], $frame['token'], $frame['type'] );
+		};
+		$ret = JavaScriptMinifier::minifyInternal( $data, null, $onError, $onDebug );
+		if ( !$this->exitCode ) {
+			$this->output( $ret );
+		}
+	}
+
+	private function runJsMapWeb( ?string $file = null ): void {
 		$data = $file === null ? stream_get_contents( $this->in ) : file_get_contents( $file );
 		$sourceName = $file === null ? 'file.js' : basename( $file );
 		$mapper = JavaScriptMinifier::createSourceMapState();
@@ -101,7 +165,7 @@ final class Cli {
 		$this->output( rtrim( $mapper->getSourceMap(), "\n" ) );
 	}
 
-	private function runJsMapRaw( string $file = null ): void {
+	private function runJsMapRaw( ?string $file = null ): void {
 		$data = $file === null ? stream_get_contents( $this->in ) : file_get_contents( $file );
 		$sourceName = $file === null ? 'file.js' : basename( $file );
 		$mapper = JavaScriptMinifier::createSourceMapState();
@@ -116,6 +180,8 @@ usage: {$this->self} <command>
 commands:
    css [<file>]        Minify input data as CSS code, and write to output.
                        Reads from stdin by default, or can read from a file.
+   css-remap <file>    Remap and process any "@embed" comments in a CSS file,
+                       and write the minified code to output.
    js  [<file>]        Minify input data as JavaScript code, write to output.
                        Reads from stdin by default, or can read from a file.
    jsmap-raw [<file>]  Minify JavaScript code and write a raw source map to

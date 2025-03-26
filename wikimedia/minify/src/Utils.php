@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2022 Wikimedia Foundation
+ * Copyright 2023 Wikimedia Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,16 +24,16 @@
 namespace Wikimedia\Minify;
 
 /**
- * A stateful minifier for JavaScript without source map support.
- *
- * Use the factory JavaScriptMinifier::createMinifier()
+ * Shared static utility functions
  */
-class JavaScriptMinifierState extends MinifierState {
+class Utils {
 	/**
-	 * @param string $source
-	 * @return string
+	 * Get the length of a string in UTF-16 code units
+	 *
+	 * @param string $s
+	 * @return int
 	 */
-	protected function minify( string $source ): string {
-		return JavaScriptMinifier::minifyInternal( $source, null, $this->onError );
+	public static function getJsLength( $s ) {
+		return strlen( mb_convert_encoding( $s, 'UTF-16', 'UTF-8' ) ) / 2;
 	}
 }

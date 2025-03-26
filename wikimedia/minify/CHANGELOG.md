@@ -1,5 +1,73 @@
 # Changelog
 
+## 2.9.0 (2025-03-25)
+
+Fixed:
+
+* Fix compat with PCRE 10.45, e.g. on Debian 13 or Ubuntu 25, and likely PHP 8.3+. (Reedy) [T388335](https://phabricator.wikimedia.org/T388335)
+
+Added:
+
+* JavaScriptMinifier: Add support for async function as property value (Hannah Okwelum) [T386139](https://phabricator.wikimedia.org/T386139)
+* JavaScriptMinifier: Add support for optional catch binding (Hannah Okwelum) [T387432](https://phabricator.wikimedia.org/T387432)
+* Cli: Add `jsdebug` command (Timo Tijhof)
+
+Changed:
+
+* JavaScriptMinifier: Update class documentation for ES2017 support (Hannah Okwelum) [T277675](https://phabricator.wikimedia.org/T277675)
+
+## 2.8.1 (2025-02-27)
+
+Fixed:
+
+* JavaScriptMinifier: Reject "5..0" as invalid syntax (Timo Tijhof)
+* JavaScriptMinifier: Remove new line insertion (Hannah Okwelum) [T368204](https://phabricator.wikimedia.org/T368204)
+
+## 2.8.0 (2024-08-20)
+
+Added:
+
+* JavaScriptMinifier: Add support for ES2020 `??` nullish operator (Hannah Okwelum) [T351610](https://phabricator.wikimedia.org/T351610)
+* JavaScriptMinifier: Add support for ES2016 `**=` operator (Timo Tijhof) [T277675](https://phabricator.wikimedia.org/T277675)
+* JavaScriptMinifier: Add optional `onError` callback to `minify()` (Timo Tijhof) [T357477](https://phabricator.wikimedia.org/T357477)
+* Cli: Append "onError" result to minify command output (Timo Tijhof)
+
+Changed:
+
+* Raise required PHP to >= 7.4.3 (Sam Reed)
+
+Fixed:
+
+* JavaScriptMinifier: Fix treatment of `yield` in expressions (Roan Kattouw) [T371938](https://phabricator.wikimedia.org/T371938)
+
+## 2.7.0 (2023-11-14)
+
+* JavaScriptMinifier: Add basic ES2017 async-await syntax support (Hannah Okwelum)
+* JavaScriptMinifier: Update debug() to remove $lastType (Timo Tijhof)
+
+## 2.5.1 (2023-10-06)
+
+* Fix source map output for multi-line templates. (Tim Starling) [T348280](https://phabricator.wikimedia.org/T348280)
+
+## 2.5.0 (2023-08-11)
+
+Added:
+
+* bin: Add `css-remap` command. (Timo Tijhof)
+* IdentityMinifierState and JavaScriptMinifier::createIdentityMinifier(). (Tim Starling)
+* MinifierState::ensureNewline()
+* IndexMap class, for generating a combined source map
+
+## 2.4.0 (2023-03-20)
+
+Added:
+
+* JavaScriptMinifier: Add ES2016 syntax support. (Siddharth VP) [T277675](https://phabricator.wikimedia.org/T277675)
+
+Changed:
+
+* package: Require `ext-fileinfo` in composer.json. (Sam Reed)
+
 ## 2.3.0 (2022-04-19)
 
 Added:

@@ -45,6 +45,9 @@ abstract class MinifierState {
 	/** @var string|null The value for the "sourceRoot" key in the source map */
 	protected $sourceRoot;
 
+	/** @var callable|null */
+	protected $onError;
+
 	/**
 	 * Set the name of the output file, to be given as the "file" key.
 	 *
@@ -84,6 +87,38 @@ abstract class MinifierState {
 	}
 
 	/**
+	 * Register an error callback
+	 *
+	 * JavaScriptMinifier assumes all input has previously been validated
+	 * by a linter (such as Peast or ESLint) and not attempt to validate
+	 * the syntax. Any new or unknown syntax is generally silently preserved
+	 * in the output.
+	 *
+	 * Certain kinds of syntax error are nonetheless detected and can
+	 * be logged via this error callback to aid in debugging.
+	 *
+	 * The error callback may be invoked during MinifierState::addSourceFile
+	 * (via JavaScriptMinifier::minify), and is passed a ParseError object
+	 * as its only parameter.
+	 *
+	 * Example:
+	 *
+	 *   JavaScriptMinifier::createMinifier()
+	 *     ->setErrorHandler( static function ( $error ) {
+	 *         trigger_error( $error->getMessage() );
+	 *     } )
+	 *     ->addSourceFile( 'file.js', $source )
+	 *     ->getMinifiedOutput();
+	 *
+	 * @param callable $onError
+	 * @return $this
+	 */
+	public function setErrorHandler( $onError ) {
+		$this->onError = $onError;
+		return $this;
+	}
+
+	/**
 	 * Minify a string
 	 *
 	 * @param string $source
@@ -99,6 +134,19 @@ abstract class MinifierState {
 	 */
 	public function addOutput( string $output ) {
 		$this->minifiedOutput .= $output;
+		return $this;
+	}
+
+	/**
+	 * Add a line break to the output if the output is non-empty and does not
+	 * end in a line break.
+	 *
+	 * @return $this
+	 */
+	public function ensureNewline() {
+		if ( $this->minifiedOutput !== '' && substr( $this->minifiedOutput, -1 ) !== "\n" ) {
+			$this->addOutput( "\n" );
+		}
 		return $this;
 	}
 

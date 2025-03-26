@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2022 Wikimedia Foundation
+ * Copyright 2023 Wikimedia Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,16 +24,12 @@
 namespace Wikimedia\Minify;
 
 /**
- * A stateful minifier for JavaScript without source map support.
+ * A MinifierState that just returns the input, it doesn't actually minify.
  *
- * Use the factory JavaScriptMinifier::createMinifier()
+ * Can be created with the factory JavaScriptMinifier::createIdentityMinifier().
  */
-class JavaScriptMinifierState extends MinifierState {
-	/**
-	 * @param string $source
-	 * @return string
-	 */
+class IdentityMinifierState extends MinifierState {
 	protected function minify( string $source ): string {
-		return JavaScriptMinifier::minifyInternal( $source, null, $this->onError );
+		return $source;
 	}
 }
