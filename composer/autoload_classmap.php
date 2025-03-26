@@ -1480,6 +1480,7 @@ return array(
     'Wikimedia\\Minify\\MapperState' => $vendorDir . '/wikimedia/minify/src/MapperState.php',
     'Wikimedia\\Minify\\MappingsGenerator' => $vendorDir . '/wikimedia/minify/src/MappingsGenerator.php',
     'Wikimedia\\Minify\\MinifierState' => $vendorDir . '/wikimedia/minify/src/MinifierState.php',
+    'Wikimedia\\Minify\\ParseError' => $vendorDir . '/wikimedia/minify/src/ParseError.php',
     'Wikimedia\\Minify\\Utils' => $vendorDir . '/wikimedia/minify/src/Utils.php',
     'Wikimedia\\NormalizedException\\INormalizedException' => $vendorDir . '/wikimedia/normalized-exception/src/INormalizedException.php',
     'Wikimedia\\NormalizedException\\NormalizedException' => $vendorDir . '/wikimedia/normalized-exception/src/NormalizedException.php',
