@@ -3,7 +3,7 @@
         'name' => 'mediawiki/core',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'db93f6219ea9f56575b993e118331c9937323a0d',
+        'reference' => '515897c905facb0617048b7a28ec915f7026c1ac',
         'type' => 'mediawiki-core',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -211,7 +211,7 @@
         'mediawiki/core' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'db93f6219ea9f56575b993e118331c9937323a0d',
+            'reference' => '515897c905facb0617048b7a28ec915f7026c1ac',
             'type' => 'mediawiki-core',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
