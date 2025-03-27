@@ -29,7 +29,7 @@ class CaptureJobTest extends BaseAdyenTestCase {
 	 */
 	protected $fraudDatabase;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->pendingDatabase = PendingDatabase::get();
@@ -113,8 +113,10 @@ class CaptureJobTest extends BaseAdyenTestCase {
 			$donorData,
 			'RequestCaptureJob did not leave donor data for review'
 		);
-		$this->assertTrue(
-			empty( $donorData['captured'] ),
+
+		$this->assertArrayNotHasKey(
+			'captured',
+			$donorData,
 			'RequestCaptureJob marked donor data above review threshold as captured'
 		);
 

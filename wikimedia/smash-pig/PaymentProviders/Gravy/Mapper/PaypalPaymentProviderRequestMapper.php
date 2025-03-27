@@ -2,29 +2,24 @@
 
 namespace SmashPig\PaymentProviders\Gravy\Mapper;
 
-use SmashPig\PaymentProviders\Gravy\PaymentMethod;
-
-class RedirectPaymentProviderRequestMapper extends RequestMapper {
+class PaypalPaymentProviderRequestMapper extends RequestMapper {
 	/**
 	 * @return array
 	 */
 	public function mapToCreatePaymentRequest( array $params ): array {
 		$request = parent::mapToCreatePaymentRequest( $params );
 
-		$paymentMethodString = $params['payment_submethod'];
-		if ( empty( $paymentMethodString ) ) {
-			$paymentMethodString = $params['payment_method'];
-		}
+		// getting the buyer details from Paypal and not from our form
+		unset( $request['buyer'] );
 
-		// Convert string to our PaymentMethod enum (null if invalid)
-		$paymentMethodEnum = PaymentMethod::tryFrom( strtolower( $paymentMethodString ) );
-		if ( $paymentMethodEnum === null ) {
-			throw new \UnexpectedValueException( "Invalid PaymentMethod passed in: {$paymentMethodString}" );
+		$method = $params['payment_submethod'];
+		if ( empty( $method ) ) {
+			$method = $params['payment_method'];
 		}
 
 		if ( !isset( $params['recurring_payment_token'] ) ) {
 			$payment_method = [
-				'method' => $paymentMethodEnum->toGravyValue(),
+				'method' => $this->mapPaymentMethodToGravyPaymentMethod( $method ),
 				'country' => $params['country'],
 				'currency' => $params['currency'],
 			];

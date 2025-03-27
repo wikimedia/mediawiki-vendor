@@ -22,7 +22,7 @@ class NotificationRequestTest extends BaseAdyenTestCase {
 	 */
 	public $rest_listener;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 		$this->jobsAdyenQueue = Context::get()->getGlobalConfiguration()
 			->object( 'data-store/jobs-adyen' );

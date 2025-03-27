@@ -16,7 +16,7 @@ class ACHPaymentProviderTest extends BaseAdyenTestCase {
 	 */
 	public $provider;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 		$this->provider = $this->config->object( 'payment-provider/dd' );
 	}

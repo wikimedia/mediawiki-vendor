@@ -147,7 +147,7 @@ class SignatureValidator {
 	 * @return bool
 	 */
 	private function payloadMatches( string $signature, string $payload ): bool {
-		$payloadSignature = $this->hexDigestSha1( $payload,  $this->config['private-key'] );
+		$payloadSignature = $this->hexDigestSha1( $payload, $this->config['private-key'] );
 		return $this->secureCompare( $signature, $payloadSignature );
 	}
 

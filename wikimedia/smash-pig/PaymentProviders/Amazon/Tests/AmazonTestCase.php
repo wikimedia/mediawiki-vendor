@@ -9,7 +9,7 @@ class AmazonTestCase extends BaseSmashPigUnitTestCase {
 
 	protected $mockClient;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 		chdir( __DIR__ ); // So the mock client can find its response files
 		$ctx = Context::get();
@@ -21,7 +21,7 @@ class AmazonTestCase extends BaseSmashPigUnitTestCase {
 		$this->mockClient->exceptions = [];
 	}
 
-	public function tearDown() : void {
+	public function tearDown(): void {
 		parent::tearDown();
 		$api = new ReflectionClass( 'SmashPig\PaymentProviders\Amazon\AmazonApi' );
 		$instance = $api->getProperty( 'instance' );

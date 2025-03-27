@@ -48,7 +48,7 @@ class AmazonListener extends RestListener {
 		);
 
 		$messages = [];
-		try{
+		try {
 			$amazonHandlerMessage = AmazonApi::createIpnHandler(
 				$headers,
 				$json

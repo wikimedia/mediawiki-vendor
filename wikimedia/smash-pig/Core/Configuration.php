@@ -64,7 +64,7 @@ abstract class Configuration {
 	 * @return array Actual files discovered in the path.
 	 */
 	protected function expandSearchPathToActual( array $searchPath ) {
-		$paths = array_reduce( $searchPath, function ( $carry, $pattern ) {
+		$paths = array_reduce( $searchPath, static function ( $carry, $pattern ) {
 			$matchingPaths = glob( $pattern );
 			if ( $matchingPaths === false ) {
 				throw new \RuntimeException( "Illegal glob while matching {$pattern}" );
@@ -207,7 +207,7 @@ abstract class Configuration {
 	 * array where the $base array does not have an array at that node. If it does have an
 	 * array the merge will continue recursively.
 	 *
-	 * @param array $base The base array to merge into
+	 * @param array &$base The base array to merge into
 	 * @param array $graft Values to merge into the $base
 	 *
 	 * @param string $myRoot Internal recursion state: parent node path so far,

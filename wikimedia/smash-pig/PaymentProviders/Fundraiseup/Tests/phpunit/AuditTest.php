@@ -12,7 +12,7 @@ use SmashPig\Tests\BaseSmashPigUnitTestCase;
  */
 class AuditTest extends BaseSmashPigUnitTestCase {
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 		$ctx = Context::get();
 		$config = FundraiseupTestConfiguration::instance( $ctx->getGlobalConfiguration() );
@@ -25,7 +25,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessDonations() {
 		$processor = new FundraiseupAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/Donations/export_donations_2023-test.csv' );
-		$this->assertSame( 4, count( $output ), 'Should have found four successful donations' );
+		$this->assertCount( 4, $output, 'Should have found four successful donations' );
 		$creditCardDonation = $output[0];
 		$achDonation = $output[2];
 		$expectedCreditCardDonation = [
@@ -109,7 +109,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessDonationsWithFallBackUTM() {
 		$processor = new FundraiseupAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/Donations/export_donations_2024-11-26_00-00_2024-11-26_23-59.csv' );
-		$this->assertSame( 2, count( $output ), 'Should have found four successful donations' );
+		$this->assertCount( 2, $output, 'Should have found four successful donations' );
 		$expectedDonation = [
 			'gateway' => 'fundraiseup',
 			'gross' => '5.00',
@@ -195,7 +195,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessRefund() {
 		$processor = new FundraiseupAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/Refunds/export_refunds_2023-test.csv' );
-		$this->assertSame( 1, count( $output ), 'Should have found one refund' );
+		$this->assertCount( 1, $output, 'Should have found one refund' );
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'fundraiseup',
@@ -219,7 +219,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessCancelledRecurring() {
 		$processor = new FundraiseupAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/Recurring/Cancelled/export_recurring_cancelled_2023-09-18_00-00_2023-09-22_23-59.csv' );
-		$this->assertSame( 1, count( $output ), 'Should have found one cancelled recurring' );
+		$this->assertCount( 1, $output, 'Should have found one cancelled recurring' );
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'fundraiseup',
@@ -275,7 +275,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessNewRecurring() {
 		$processor = new FundraiseupAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/Recurring/New/export_recurring_2023-09-18_00-00_2023-09-22_23-59.csv' );
-		$this->assertSame( 1, count( $output ), 'Should have found one new recurring' );
+		$this->assertCount( 1, $output, 'Should have found one new recurring' );
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'fundraiseup',
@@ -312,7 +312,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessModifiedRecurring() {
 		$processor = new FundraiseupAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/Recurring/PlanChange/export_recurring_plan_change_2024-03-18_00-00_2024-03-18_23-59.csv' );
-		$this->assertSame( 1, count( $output ), 'Should have found one modifed recurring' );
+		$this->assertCount( 1, $output, 'Should have found one modifed recurring' );
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'fundraiseup',
@@ -335,7 +335,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	/**
 	 * @covers ::getCountryFromDonationURL
 	 */
-	public function testProcessDonationEmptyCountryUseFallbackFromDonationURL() : void {
+	public function testProcessDonationEmptyCountryUseFallbackFromDonationURL(): void {
 		$processor = new FundraiseupAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/Donations/export_donations_2023-country-fallback-test.csv' );
 		$this->assertEquals( 'GB', $output[0]['country'] );
@@ -345,26 +345,26 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	/**
 	 * @covers ::getCountryFromDonationURL
 	 */
-	public function testProcessDonationEmptyCountryAndFallbackIsUnavailable() : void {
+	public function testProcessDonationEmptyCountryAndFallbackIsUnavailable(): void {
 		$processor = new FundraiseupAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/Donations/export_donations_2023-country-fallback-is-empty-test.csv' );
 		$this->assertSame( '', $output[0]['country'] );
 		$this->assertSame( '', $output[1]['country'] );
 	}
 
-	public function testNewRecurringEmptyCountryUseFallbackFromDonationURL() : void {
+	public function testNewRecurringEmptyCountryUseFallbackFromDonationURL(): void {
 		$processor = new FundraiseupAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/Recurring/New/export_recurring_2023-empty-country-test.csv' );
 		$this->assertEquals( 'GB', $output[0]['country'] );
 	}
 
-	public function testNewRecurringEmptyCountryAndFallbackIsUnavailable() : void {
+	public function testNewRecurringEmptyCountryAndFallbackIsUnavailable(): void {
 		$processor = new FundraiseupAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/Recurring/New/export_recurring_2023-country-fallback-is-empty-test.csv' );
 		$this->assertSame( '', $output[0]['country'] );
 	}
 
-	public function testFailedRecurring() : void {
+	public function testFailedRecurring(): void {
 		$processor = new FundraiseupAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/Recurring/Failed/export_recurring_failed_2023-test.csv' );
 		$actual = $output[0];

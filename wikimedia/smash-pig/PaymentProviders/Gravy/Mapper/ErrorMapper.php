@@ -13,7 +13,7 @@ class ErrorMapper {
 	 */
 	public static $transactionErrorCodesCore = [
 		'incomplete_buyer_approval' => ErrorCode::INVALID_REQUEST, // The shipping address is invalid.
-		'failed_buyer_approval' => ErrorCode::UNKNOWN,	// The service could not create a resource due to a conflict.
+		'failed_buyer_approval' => ErrorCode::UNKNOWN, // The service could not create a resource due to a conflict.
 		'missing_redirect_url' => ErrorCode::ACCOUNT_MISCONFIGURATION, // The service is configured in an unexpected state.
 		'flow_decline' => ErrorCode::UNKNOWN, // An unknown error occurred.
 		'all_attempts_skipped	' => ErrorCode::UNKNOWN, // The resource could not be found by the service.
@@ -32,12 +32,12 @@ class ErrorMapper {
 			'expired_payment_method' => ErrorCode::UNKNOWN, // The payment method has expired.
 			'incorrect_billing_address' => ErrorCode::VALIDATION, // The billing address does not match the account.
 			'incorrect_country' => ErrorCode::ACCOUNT_MISCONFIGURATION, // The country code was rejected by the service or issuer.
-			'incorrect_currency' => ErrorCode::ACCOUNT_MISCONFIGURATION,	// The currency code was rejected by the service or issuer.
+			'incorrect_currency' => ErrorCode::ACCOUNT_MISCONFIGURATION, // The currency code was rejected by the service or issuer.
 			'incorrect_cvv' => ErrorCode::VALIDATION, // The CVV was incorrect.
 			'incorrect_expiry_date' => ErrorCode::VALIDATION, // The expiry date is incorrect or the payment method has expired.
 			'insufficient_funds' => ErrorCode::UNKNOWN, // The amount exceeds the available balance on the payment method.
-			'issuer_decline' => ErrorCode::DECLINED_DO_NOT_RETRY,	// The payment was declined by the issuer.
-			'other_decline' => ErrorCode::UNKNOWN,	// The transaction failed for an unknown reason but may succeed if retried.
+			'issuer_decline' => ErrorCode::DECLINED_DO_NOT_RETRY, // The payment was declined by the issuer.
+			'other_decline' => ErrorCode::UNKNOWN, // The transaction failed for an unknown reason but may succeed if retried.
 			'requires_buyer_authentication' => ErrorCode::VALIDATION, // Additional credentials were requested by the issuer, for example, the security code (CVV).
 			'refused_transaction' => ErrorCode::DECLINED_DO_NOT_RETRY, // The transaction was refused due to legal reasons (e.g. watch list, embargo, sanctions).
 			'service_decline' => ErrorCode::DECLINED_DO_NOT_RETRY, // The payment was declined by service.
@@ -57,7 +57,7 @@ class ErrorMapper {
 			'missing_cvv' => ErrorCode::VALIDATION, // The CVV is required.
 			'missing_shipping_address' => ErrorCode::VALIDATION, // The shipping address is required.
 			'missing_tax_identifier' => ErrorCode::VALIDATION, // The tax identifier is required.
-			'refund_period_expired' => ErrorCode::DECLINED_DO_NOT_RETRY,	// The refund can not be performed due to the refund period expiring.
+			'refund_period_expired' => ErrorCode::DECLINED_DO_NOT_RETRY, // The refund can not be performed due to the refund period expiring.
 			'service_error' => ErrorCode::INTERNAL_ERROR, // The service reported an internal server error or upstream processing error.
 			'service_network_error' => ErrorCode::INTERNAL_ERROR, // The service was unreachable or experienced a timeout.
 			'service_rate_limit	' => ErrorCode::EXCEEDED_LIMIT, // The service responded with a rate-limiting error.
@@ -67,7 +67,7 @@ class ErrorMapper {
 			'invalid_request_parameters' => ErrorCode::INVALID_REQUEST, // The one or more request parameters are invalid.
 			'invalid_service_request' => ErrorCode::INVALID_REQUEST, // The service request could not be parsed.
 			'invalid_shipping_address' => ErrorCode::INVALID_REQUEST, // The shipping address is invalid.
-			'service_resource_conflict' => ErrorCode::UNKNOWN,	// The service could not create a resource due to a conflict.
+			'service_resource_conflict' => ErrorCode::UNKNOWN, // The service could not create a resource due to a conflict.
 			'unexpected_state' => ErrorCode::ACCOUNT_MISCONFIGURATION, // The service is configured in an unexpected state.
 			'unknown_error' => ErrorCode::UNKNOWN, // An unknown error occurred.
 			'unknown_service_resource	' => ErrorCode::UNKNOWN, // The resource could not be found by the service.

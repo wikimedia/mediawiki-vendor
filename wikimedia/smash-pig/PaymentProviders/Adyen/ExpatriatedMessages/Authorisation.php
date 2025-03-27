@@ -45,7 +45,7 @@ class Authorisation extends AdyenMessage {
 		}
 
 		// For AVS and CVV we just want the code, not the words
-		$firstSegment = function ( $value ): string {
+		$firstSegment = static function ( $value ): string {
 			$parts = explode( ' ', $value );
 			return $parts[0];
 		};

@@ -19,7 +19,7 @@ class AuthenticatorTest extends BaseSmashPigUnitTestCase {
 	 */
 	protected $authenticator;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		$this->authenticator = new Authenticator(
 			'5e45c937b9db33ae',
 			'I42Zf4pVnRdroHfuHnRiJjJ2B6+22h0yQt/R3nZR8Xg='

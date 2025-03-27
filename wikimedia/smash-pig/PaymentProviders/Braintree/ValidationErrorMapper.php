@@ -21,7 +21,7 @@ class ValidationErrorMapper {
 	 * @param array|null $inputPath
 	 * @return string
 	 */
-	public static function getValidationErrorField( array $inputPath = null ): ?string {
+	public static function getValidationErrorField( ?array $inputPath = null ): ?string {
 		if ( $inputPath ) {
 			$errorProperty = $inputPath[count( $inputPath ) - 1];
 			if ( array_key_exists( $errorProperty, self::$validationErrorInputPathMap ) ) {

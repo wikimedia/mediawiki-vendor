@@ -27,7 +27,7 @@ class ApplePayPaymentProvider extends PaymentProvider {
 		$this->sessionDomains = $options['session-domains'] ?? [];
 	}
 
-	public function createPayment( array $params ) : CreatePaymentResponse {
+	public function createPayment( array $params ): CreatePaymentResponse {
 		$rawResponse = $this->api->createApplePayPayment( $params );
 		$response = new CreatePaymentResponse();
 		$response->setRawResponse( $rawResponse );
@@ -55,7 +55,7 @@ class ApplePayPaymentProvider extends PaymentProvider {
 	 * {@inheritDoc}
 	 * @see \SmashPig\PaymentProviders\Adyen\PaymentProvider::getPaymentDetailsStatusNormalizer()
 	 */
-	protected function getPaymentDetailsStatusNormalizer() : StatusNormalizer {
+	protected function getPaymentDetailsStatusNormalizer(): StatusNormalizer {
 		throw new \BadMethodCallException( 'No payment details status normalizer for Apple Pay.' );
 	}
 
@@ -63,7 +63,7 @@ class ApplePayPaymentProvider extends PaymentProvider {
 		throw new \BadMethodCallException( 'Unexpected getPaymentDetails call for Apple Pay.' );
 	}
 
-	public function createPaymentSession( array $params ) : array {
+	public function createPaymentSession( array $params ): array {
 		$params += [
 			'merchant_identifier' => $this->merchantIdentifier,
 			'display_name' => $this->displayName,

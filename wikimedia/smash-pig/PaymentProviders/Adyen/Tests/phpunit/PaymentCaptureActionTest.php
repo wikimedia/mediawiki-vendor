@@ -16,7 +16,7 @@ class PaymentCaptureActionTest extends BaseAdyenTestCase {
 	 */
 	protected $jobQueue;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 		$globalConfig = Context::get()->getGlobalConfiguration();
 		$this->jobQueue = $globalConfig->object( 'data-store/jobs-adyen' );

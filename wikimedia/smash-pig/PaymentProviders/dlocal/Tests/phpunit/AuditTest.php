@@ -17,7 +17,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessDonation() {
 		$processor = new DlocalAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/donation.csv' );
-		$this->assertSame( 1, count( $output ), 'Should have found one donation' );
+		$this->assertCount( 1, $output, 'Should have found one donation' );
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'dlocal',
@@ -45,7 +45,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessRefund() {
 		$processor = new DlocalAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/refund.csv' );
-		$this->assertSame( 1, count( $output ), 'Should have found one refund' );
+		$this->assertCount( 1, $output, 'Should have found one refund' );
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'dlocal',
@@ -67,7 +67,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessChargeback() {
 		$processor = new DlocalAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/chargebacks.csv' );
-		$this->assertSame( 1, count( $output ), 'Should have found one chargeback' );
+		$this->assertCount( 1, $output, 'Should have found one chargeback' );
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'dlocal',

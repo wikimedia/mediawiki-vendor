@@ -8,7 +8,7 @@ use SmashPig\PaymentProviders\Responses\CreatePaymentResponse;
 
 class GooglePayPaymentProvider extends PaymentProvider {
 
-	public function createPayment( array $params ) : CreatePaymentResponse {
+	public function createPayment( array $params ): CreatePaymentResponse {
 		$rawResponse = $this->api->createGooglePayPayment( $params );
 		$response = new CreatePaymentResponse();
 		$response->setRawResponse( $rawResponse );
@@ -36,7 +36,7 @@ class GooglePayPaymentProvider extends PaymentProvider {
 	 * {@inheritDoc}
 	 * @see \SmashPig\PaymentProviders\Adyen\PaymentProvider::getPaymentDetailsStatusNormalizer()
 	 */
-	protected function getPaymentDetailsStatusNormalizer() : StatusNormalizer {
+	protected function getPaymentDetailsStatusNormalizer(): StatusNormalizer {
 		throw new \BadMethodCallException( 'No payment details status normalizer for Google Pay.' );
 	}
 

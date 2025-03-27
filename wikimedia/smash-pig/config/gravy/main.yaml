@@ -39,7 +39,7 @@ payment-provider:
   venmo:
     class: SmashPig\PaymentProviders\Gravy\RedirectPaymentProvider
   paypal:
-    class: SmashPig\PaymentProviders\Gravy\RedirectPaymentProvider
+    class: SmashPig\PaymentProviders\Gravy\PaypalPaymentProvider
   cash:
     class: SmashPig\PaymentProviders\Gravy\RedirectPaymentProvider
 

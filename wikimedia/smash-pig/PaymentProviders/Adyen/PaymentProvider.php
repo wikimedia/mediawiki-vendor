@@ -73,7 +73,7 @@ abstract class PaymentProvider implements
 	 * @param array $params
 	 * @return PaymentMethodResponse
 	 */
-	public function getPaymentMethods( array $params ) : PaymentMethodResponse {
+	public function getPaymentMethods( array $params ): PaymentMethodResponse {
 		$badParams = $this->validateGetPaymentMethodsParams( $params );
 		if ( count( $badParams ) > 0 ) {
 			$response = new PaymentMethodResponse();
@@ -195,8 +195,7 @@ abstract class PaymentProvider implements
 					$paymentDetailsObject
 						->setPaymentMethod( $method )
 						->setPaymentSubmethod( $submethod );
-				}
-				catch ( OutOfBoundsException $ex ) {
+				} catch ( OutOfBoundsException $ex ) {
 					// No big deal for us if we don't have it mapped - the token field
 					// is the only one we actually use.
 				}
@@ -340,7 +339,7 @@ abstract class PaymentProvider implements
 	 * @return CancelAutoRescueResponse
 	 * @throws \SmashPig\Core\ApiException
 	 */
-	public function cancelAutoRescue( $rescueReference ) : CancelAutoRescueResponse {
+	public function cancelAutoRescue( $rescueReference ): CancelAutoRescueResponse {
 		$rawResponse = $this->api->cancelAutoRescue( $rescueReference );
 		$response = new CancelAutoRescueResponse();
 		$response->setRawResponse( $rawResponse );
@@ -430,7 +429,7 @@ abstract class PaymentProvider implements
 	protected function mapGatewayTxnIdAndErrors(
 		PaymentProviderResponse $response,
 		?array $rawResponse
-	) : void {
+	): void {
 		if ( $rawResponse === null ) {
 			$responseError = 'Adyen response was null or invalid JSON.';
 			$response->addErrors( new PaymentError(

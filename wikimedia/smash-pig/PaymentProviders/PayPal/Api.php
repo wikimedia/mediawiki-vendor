@@ -196,7 +196,7 @@ class Api {
 	 * @return array
 	 * @throws \SmashPig\Core\ApiException
 	 */
-	public function refundPayment( array $params ) : array {
+	public function refundPayment( array $params ): array {
 		$requestParams = [
 			'METHOD' => 'RefundTransaction',
 			'INVOICEID' => $params['order_id'], // optional

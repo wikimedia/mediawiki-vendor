@@ -23,7 +23,7 @@ class RecordPaymentsJobTest extends AmazonTestCase {
 	 */
 	protected $refId;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 		$this->id = 'P01-0000555-5550000-C' . mt_rand( 10000, 99999 );
 		$this->refId = null;

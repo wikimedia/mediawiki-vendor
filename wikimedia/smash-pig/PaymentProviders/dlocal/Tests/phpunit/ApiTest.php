@@ -86,7 +86,7 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 					$expectedDateFormat = 'Y-m-d\TH:i:s.v\Z';
 					$dateFromString = \DateTime::createFromFormat( $expectedDateFormat, $headers['X-Date'] );
 					$this->assertNotFalse( $dateFromString ); // returns false when string doesn't match format
-					$this->assertEquals( $dateFromString->format( $expectedDateFormat ),  $headers['X-Date'] );
+					$this->assertEquals( $dateFromString->format( $expectedDateFormat ), $headers['X-Date'] );
 					return true; // if we get here, the date header was good were set.
 				} )
 			)
@@ -142,8 +142,8 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 		$this->curlWrapper->expects( $this->once() )
 			->method( 'execute' )
 			->with(
-				$this->equalTo( 'http://example.com/payments-methods?country=MX' ),
-				$this->equalTo( 'GET' )
+				'http://example.com/payments-methods?country=MX',
+				'GET'
 			)->willReturn( $mockResponse );
 
 		$results = $this->api->getPaymentMethods( 'MX' ); // MX is Mexico
@@ -176,8 +176,8 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 		$this->curlWrapper->expects( $this->once() )
 			->method( 'execute' )
 			->with(
-				$this->equalTo( 'http://example.com/payments' ), // url
-				$this->equalTo( 'POST' ), // method
+				'http://example.com/payments', // url
+				'POST', // method
 				$this->anything(),
 				$this->callback( function ( $body ) use ( $transformedParams ) {
 					// request body should be a json formatted string of the mapped params
@@ -206,8 +206,8 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 		$this->curlWrapper->expects( $this->once() )
 			->method( 'execute' )
 			->with(
-				$this->equalTo( 'http://example.com/payments' ), // url
-				$this->equalTo( 'POST' ), // method
+				'http://example.com/payments', // url
+				'POST', // method
 				$this->anything(),
 				$this->callback( function ( $body ) use ( $transformedParams ) {
 					// request body should be a json formatted string of the mapped params
@@ -232,8 +232,8 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 		$this->curlWrapper->expects( $this->once() )
 			->method( 'execute' )
 			->with(
-				$this->equalTo( 'http://example.com/payments' ), // url
-				$this->equalTo( 'POST' ), // method
+				'http://example.com/payments', // url
+				'POST', // method
 				$this->anything(),
 				$this->callback( function ( $requestParams ) {
 					// confirm payment_method_id is present in generated request params
@@ -272,8 +272,8 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 		$this->curlWrapper->expects( $this->once() )
 			->method( 'execute' )
 			->with(
-				$this->equalTo( 'http://example.com/payments' ), // url
-				$this->equalTo( 'POST' ), // method
+				'http://example.com/payments', // url
+				'POST', // method
 				$this->anything(),
 				$this->callback( function ( $body ) use ( $expectedMappedParams ) {
 					// request body should be a json formatted string of the mapped params
@@ -302,8 +302,8 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 		$this->curlWrapper->expects( $this->once() )
 			->method( 'execute' )
 			->with(
-				$this->equalTo( 'http://example.com/payments' ), // url
-				$this->equalTo( 'POST' ), // method
+				'http://example.com/payments', // url
+				'POST', // method
 				$this->anything(),
 			)->willReturn( $mockResponse );
 
@@ -331,8 +331,8 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 		$this->curlWrapper->expects( $this->once() )
 			->method( 'execute' )
 			->with(
-				$this->equalTo( 'http://example.com/payments' ), // url
-				$this->equalTo( 'POST' ), // method
+				'http://example.com/payments', // url
+				'POST', // method
 				$this->anything()
 			)->willReturn( $mockResponse );
 
@@ -358,8 +358,8 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 		$this->curlWrapper->expects( $this->once() )
 			->method( 'execute' )
 			->with(
-				$this->equalTo( 'http://example.com/payments' ), // url
-				$this->equalTo( 'POST' ), // method
+				'http://example.com/payments', // url
+				'POST', // method
 				$this->anything()
 			)->willReturn( $mockResponse );
 
@@ -369,15 +369,15 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 	/**
 	 * @return void
 	 */
-	public function testValidateUpiIdValid():void {
+	public function testValidateUpiIdValid(): void {
 		$params = $this->getINCreatePaymentRequestParams();
 		$params['upi_id'] = '11111111@axisb';
 		$mockResponse = $this->prepareMockResponse( 'validate-upi-id-success.response', 200 );
 		$this->curlWrapper->expects( $this->once() )
 			->method( 'execute' )
 			->with(
-				$this->equalTo( 'http://example.com/payments' ), // url
-				$this->equalTo( 'POST' ), // method
+				'http://example.com/payments', // url
+				'POST', // method
 				$this->anything(),
 				$this->callback( function ( $dataAsJson ) {
 					$dataAsArray = json_decode( $dataAsJson, true );
@@ -397,15 +397,15 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 	/**
 	 * @return void
 	 */
-	public function testValidateUpiIdFailed():void {
+	public function testValidateUpiIdFailed(): void {
 		$params = $this->getINCreatePaymentRequestParams();
 		$params['upi_id'] = 'asdf@axisb';
 		$mockResponse = $this->prepareMockResponse( 'validate-upi-id-failed.response', 200 );
 		$this->curlWrapper->expects( $this->once() )
 			->method( 'execute' )
 			->with(
-				$this->equalTo( 'http://example.com/payments' ), // url
-				$this->equalTo( 'POST' ), // method
+				'http://example.com/payments', // url
+				'POST', // method
 				$this->anything(),
 				$this->callback( function ( $dataAsJson ) {
 					$dataAsArray = json_decode( $dataAsJson, true );
@@ -433,8 +433,8 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 		$this->curlWrapper->expects( $this->once() )
 			->method( 'execute' )
 			->with(
-				$this->equalTo( 'http://example.com/payments' ), // url
-				$this->equalTo( 'POST' ), // method
+				'http://example.com/payments', // url
+				'POST', // method
 				$this->anything(),
 				$this->callback( function ( $dataAsJson ) {
 					$dataAsArray = json_decode( $dataAsJson, true );
@@ -462,8 +462,8 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 		$this->curlWrapper->expects( $this->once() )
 			->method( 'execute' )
 			->with(
-				$this->equalTo( 'http://example.com/payments' ), // url
-				$this->equalTo( 'POST' ), // method
+				'http://example.com/payments', // url
+				'POST', // method
 				$this->anything(),
 				$this->callback( function ( $dataAsJson ) {
 					$dataAsArray = json_decode( $dataAsJson, true );
@@ -491,8 +491,8 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 		$this->curlWrapper->expects( $this->once() )
 			->method( 'execute' )
 			->with(
-				$this->equalTo( 'http://example.com/payments' ), // url
-				$this->equalTo( 'POST' ), // method
+				'http://example.com/payments', // url
+				'POST', // method
 				$this->anything(),
 				$this->callback( function ( $dataAsJson ) {
 					$dataAsArray = json_decode( $dataAsJson, true );
@@ -521,8 +521,8 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 		$this->curlWrapper->expects( $this->once() )
 			->method( 'execute' )
 			->with(
-				$this->equalTo( 'http://example.com/payments/' . $gatewayTxnId ), // url
-				$this->equalTo( 'GET' ), // method
+				'http://example.com/payments/' . $gatewayTxnId, // url
+				'GET', // method
 				$this->anything()
 			)->willReturn( $mockResponse );
 
@@ -546,8 +546,8 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 		$this->curlWrapper->expects( $this->once() )
 			->method( 'execute' )
 			->with(
-				$this->equalTo( 'http://example.com/payments' ), // url
-				$this->equalTo( 'POST' ), // method
+				'http://example.com/payments', // url
+				'POST', // method
 				$this->anything(),
 				$this->callback( function ( $dataAsJson ) {
 					$dataAsArray = json_decode( $dataAsJson, true );
@@ -573,8 +573,8 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 		$this->curlWrapper->expects( $this->once() )
 			->method( 'execute' )
 			->with(
-				$this->equalTo( 'http://example.com/payments/' . $gatewayTxnId . '/status' ), // url
-				$this->equalTo( 'GET' ), // method
+				'http://example.com/payments/' . $gatewayTxnId . '/status', // url
+				'GET', // method
 				$this->anything()
 			)->willReturn( $mockResponse );
 
@@ -593,8 +593,8 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 		$this->curlWrapper->expects( $this->once() )
 			->method( 'execute' )
 			->with(
-				$this->equalTo( 'http://example.com/payments/' . $gatewayTxnId . '/status' ), // url
-				$this->equalTo( 'GET' ), // method
+				'http://example.com/payments/' . $gatewayTxnId . '/status', // url
+				'GET', // method
 				$this->anything()
 			)->willReturn( $mockResponse );
 
@@ -613,8 +613,8 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 		$this->curlWrapper->expects( $this->once() )
 			->method( 'execute' )
 			->with(
-				$this->equalTo( 'http://example.com/payments/' . $gatewayTxnId . '/status' ), // url
-				$this->equalTo( 'GET' ), // method
+				'http://example.com/payments/' . $gatewayTxnId . '/status', // url
+				'GET', // method
 				$this->anything()
 			)->willReturn( $mockResponse );
 
@@ -631,8 +631,8 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 		$this->curlWrapper->expects( $this->once() )
 			->method( 'execute' )
 			->with(
-				$this->equalTo( 'http://example.com/payments/' . $gatewayTxnId . '/cancel' ), // url
-				$this->equalTo( 'POST' ), // method
+				'http://example.com/payments/' . $gatewayTxnId . '/cancel', // url
+				'POST', // method
 				$this->anything()
 			)->willReturn( $mockResponse );
 
@@ -654,8 +654,8 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 		$this->curlWrapper->expects( $this->once() )
 			->method( 'execute' )
 			->with(
-				$this->equalTo( 'http://example.com/payments/' . $gatewayTxnId . '/cancel' ), // url
-				$this->equalTo( 'POST' ), // method
+				'http://example.com/payments/' . $gatewayTxnId . '/cancel', // url
+				'POST', // method
 				$this->anything()
 			)->willReturn( $mockResponse );
 		$cancelPayment = $this->api->cancelPayment( $gatewayTxnId );
@@ -672,8 +672,8 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 		$this->curlWrapper->expects( $this->once() )
 			->method( 'execute' )
 			->with(
-				$this->equalTo( 'http://example.com/payments/' . $gatewayTxnId . '/cancel' ), // url
-				$this->equalTo( 'POST' ), // method
+				'http://example.com/payments/' . $gatewayTxnId . '/cancel', // url
+				'POST', // method
 				$this->anything()
 			)->willReturn( $mockResponse );
 

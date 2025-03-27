@@ -57,8 +57,7 @@ class GravyListener implements IHttpActionHandler {
 
 			$response->setStatusCode( Response::HTTP_FORBIDDEN, 'Invalid authorization' );
 			return false;
-		}
-		catch ( \Exception $e ) {
+		} catch ( \Exception $e ) {
 			// Log exception
 			Logger::error( $e->getMessage() );
 			// 403 should tell them to send it again later.

@@ -347,7 +347,7 @@ class CardPaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$this->api->expects( $this->once() )
 			->method( 'cardAuthorizePayment' )
 			->with( $params )
-			->will( $this->throwException( $exception ) );
+			->willThrowException( $exception );
 		$provider = new CardPaymentProvider();
 		$response = $provider->createPayment( $params );
 		$this->assertTrue( $response->hasErrors() );
@@ -499,7 +499,7 @@ class CardPaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$this->api->expects( $this->once() )
 				->method( 'cardAuthorizePayment' )
 				->with( $params )
-				->will( $this->throwException( $apiException ) );
+				->willThrowException( $apiException );
 
 		$provider = new CardPaymentProvider();
 		$response = $provider->createPayment( $params );
@@ -528,7 +528,7 @@ class CardPaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$this->api->expects( $this->once() )
 				->method( 'capturePayment' )
 				->with( $params )
-				->will( $this->throwException( $apiException ) );
+				->willThrowException( $apiException );
 
 		$provider = new CardPaymentProvider();
 		$response = $provider->approvePayment( $params );
@@ -582,7 +582,7 @@ class CardPaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$this->api->expects( $this->once() )
 			->method( 'cardAuthorizePayment' )
 			->with( $params )
-			->will( $this->throwException( $exception ) );
+			->willThrowException( $exception );
 		$provider = new CardPaymentProvider();
 		$response = $provider->createPayment( $params );
 

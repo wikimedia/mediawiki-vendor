@@ -18,7 +18,7 @@ class RecurringPaymentTest extends BaseAdyenTestCase {
 	 */
 	public $provider;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 		$this->provider = $this->config->object( 'payment-provider/cc' );
 	}
@@ -48,13 +48,13 @@ class RecurringPaymentTest extends BaseAdyenTestCase {
 
 		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\CreatePaymentResponse',
 			$createPaymentResponse );
-		$this->assertEmpty( $createPaymentResponse->getErrors() );
+		$this->assertCount( 0, $createPaymentResponse->getErrors() );
 		$this->assertTrue( $createPaymentResponse->isSuccessful() );
 		$this->assertEquals( FinalStatus::PENDING_POKE, $createPaymentResponse->getStatus() );
 	}
 
 	/**
-	 * @param $refusalReason
+	 * @param string $refusalReason
 	 * @dataProvider cannotRetryRefusalReasons
 	 */
 	public function testNonRetryableFailedRecurringCreatePaymentCall( $refusalReason ) {
@@ -79,7 +79,7 @@ class RecurringPaymentTest extends BaseAdyenTestCase {
 	}
 
 	/**
-	 * @param $refusalReason
+	 * @param string $refusalReason
 	 * @dataProvider canRetryRefusalReasons
 	 */
 	public function testRetryableFailedRecurringCreatePaymentCall( $refusalReason ) {
@@ -177,7 +177,7 @@ class RecurringPaymentTest extends BaseAdyenTestCase {
 			'\SmashPig\PaymentProviders\Responses\CreatePaymentResponse',
 			$createPaymentResponse
 		);
-		$this->assertSame( 0, count( $createPaymentResponse->getErrors() ) );
+		$this->assertCount( 0, $createPaymentResponse->getErrors() );
 		$this->assertTrue( $createPaymentResponse->isSuccessful() );
 	}
 
@@ -202,7 +202,7 @@ class RecurringPaymentTest extends BaseAdyenTestCase {
 			$createPaymentResponse
 		);
 		$this->assertFalse( $createPaymentResponse->isSuccessful() );
-		$this->assertSame( 1, count( $createPaymentResponse->getErrors() ) );
+		$this->assertCount( 1, $createPaymentResponse->getErrors() );
 		$firstError = $createPaymentResponse->getErrors()[0];
 		$this->assertEquals( ErrorCode::DECLINED, $firstError->getErrorCode() );
 		$this->assertEquals( '800 Contract not found', $firstError->getDebugMessage() );
@@ -231,7 +231,7 @@ class RecurringPaymentTest extends BaseAdyenTestCase {
 			$createPaymentResponse );
 		$this->assertFalse( $createPaymentResponse->isSuccessful() );
 		$this->assertFalse( $createPaymentResponse->getIsProcessorRetryScheduled() );
-		$this->assertEmpty( $createPaymentResponse->getProcessorRetryRescueReference() );
+		$this->assertNull( $createPaymentResponse->getProcessorRetryRescueReference() );
 	}
 
 	public function testFailRecurringCreatePaymentCallWithAutoRescueScheduled() {

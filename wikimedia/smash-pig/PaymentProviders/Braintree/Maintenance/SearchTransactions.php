@@ -67,7 +67,7 @@ class SearchTransactions extends MaintenanceBase {
 	 * get the base transaction id
 	 * @return string
 	 */
-	private function getContributionTrackingId( ?string $invoice ) : string {
+	private function getContributionTrackingId( ?string $invoice ): string {
 		if ( $invoice ) {
 			$parts = explode( '.', $invoice );
 			return $parts[0];
@@ -82,7 +82,7 @@ class SearchTransactions extends MaintenanceBase {
 	 * @param bool $isChargeBack
 	 * @return string|null
 	 */
-	private function getPayerInfo( array $row, string $info, bool $isChargeBack = false ) : ?string {
+	private function getPayerInfo( array $row, string $info, bool $isChargeBack = false ): ?string {
 		if ( !$isChargeBack && $row['paymentMethodSnapshot'] ) {
 			$payerBlock = $row['paymentMethodSnapshot'];
 		} elseif ( $isChargeBack && $row['transaction']['paymentMethodSnapshot'] ) {

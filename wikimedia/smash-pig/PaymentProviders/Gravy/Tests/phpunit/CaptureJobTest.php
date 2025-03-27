@@ -26,7 +26,7 @@ class CaptureJobTest extends BaseGravyTestCase {
 	 */
 	protected $fraudDatabase;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->pendingDatabase = PendingDatabase::get();
@@ -116,9 +116,11 @@ class CaptureJobTest extends BaseGravyTestCase {
 			$donorData,
 			'RequestCaptureJob did not leave donor data for review'
 		);
-		$this->assertTrue(
-			empty( $donorData['captured'] ),
-			'RequestCaptureJob marked donor data above review threshold as captured'
+
+		$this->assertArrayNotHasKey(
+		  'captured',
+		  $donorData,
+		  'RequestCaptureJob marked donor data above review threshold as captured'
 		);
 
 		$antifraudMessage = $this->antifraudQueue->pop();

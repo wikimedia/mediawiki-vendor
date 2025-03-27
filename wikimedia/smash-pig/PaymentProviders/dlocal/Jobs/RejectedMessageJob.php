@@ -33,7 +33,7 @@ class RejectedMessageJob implements Runnable {
 	/**
 	 * @return bool
 	 */
-	protected function isDLocalWalletDisabledRejection() : bool {
+	protected function isDLocalWalletDisabledRejection(): bool {
 		return $this->payload['gateway_status'] === 'REJECTED' && (int)$this->payload['gateway_status_code'] === self::WALLET_DISABLED_STATUS;
 	}
 

@@ -404,7 +404,7 @@ class Api {
 	 * handled for you in Adyen's code.
 	 * https://developer.apple.com/documentation/apple_pay_on_the_web/apple_pay_js_api/requesting_an_apple_pay_payment_session
 	 */
-	public function createApplePaySession( array $params ) : array {
+	public function createApplePaySession( array $params ): array {
 		$request = new OutboundRequest( $params['validation_url'], 'POST' );
 		$request->setBody( json_encode( [
 			// Your Apple Pay merchant ID

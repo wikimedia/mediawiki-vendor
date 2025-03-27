@@ -19,7 +19,7 @@ class RecordCaptureJobTest extends BaseAdyenTestCase {
 	protected $pendingDatabase;
 	protected $pendingMessage;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 		$this->pendingDatabase = PendingDatabase::get();
 		$this->pendingMessage = json_decode(
@@ -29,7 +29,7 @@ class RecordCaptureJobTest extends BaseAdyenTestCase {
 		$this->pendingDatabase->storeMessage( $this->pendingMessage );
 	}
 
-	public function tearDown() : void {
+	public function tearDown(): void {
 		$this->pendingDatabase->deleteMessage( $this->pendingMessage );
 		parent::tearDown();
 	}

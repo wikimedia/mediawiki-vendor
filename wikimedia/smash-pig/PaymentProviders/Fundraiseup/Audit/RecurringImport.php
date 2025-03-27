@@ -73,7 +73,7 @@ class RecurringImport extends FundraiseupImports {
 	 * @throws DataFileException
 	 */
 	protected function isCancelled( HeadedCsvReader $csv ): bool {
-		$cancelled_statuses = [ 'cancelled','canceled','completed' ];
+		$cancelled_statuses = [ 'cancelled', 'canceled', 'completed' ];
 		return in_array( $csv->currentCol( 'Recurring Status - New' ), $cancelled_statuses );
 	}
 

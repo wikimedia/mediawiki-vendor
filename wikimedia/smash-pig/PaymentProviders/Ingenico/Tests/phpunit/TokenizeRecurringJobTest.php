@@ -19,7 +19,7 @@ class TokenizeRecurringJobTest extends BaseSmashPigUnitTestCase {
 	 */
 	protected $provider;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 
 		$providerConfiguration = $this->setProviderConfiguration( 'ingenico' );
@@ -29,7 +29,7 @@ class TokenizeRecurringJobTest extends BaseSmashPigUnitTestCase {
 
 	/**
 	 * @dataProvider donationMessageProvider
-	 * @param $message
+	 * @param array $message
 	 */
 	public function testFromDonationMessage( $message ) {
 		$expected = [
@@ -79,7 +79,7 @@ class TokenizeRecurringJobTest extends BaseSmashPigUnitTestCase {
 	/**
 	 * @dataProvider donationMessageProvider
 	 * @param array $message
-	 * @param boolean $expectedNeedsTokenizing
+	 * @param bool $expectedNeedsTokenizing
 	 */
 	public function testNeedsTokenizing( $message, $expectedNeedsTokenizing ) {
 		$actual = TokenizeRecurringJob::donationNeedsTokenizing( $message );
@@ -98,7 +98,7 @@ class TokenizeRecurringJobTest extends BaseSmashPigUnitTestCase {
 		$this->provider->expects( $this->once() )
 			->method( 'tokenizePayment' )
 			->with(
-				$this->equalTo( '000000123400000004230000100001' )
+				'000000123400000004230000100001'
 			)->willReturn(
 				[
 					'token' => '2d6f1234-df49-9876-bcb4-55aa44ce3e22'
@@ -128,7 +128,7 @@ class TokenizeRecurringJobTest extends BaseSmashPigUnitTestCase {
 		$this->provider->expects( $this->once() )
 			->method( 'tokenizePayment' )
 			->with(
-				$this->equalTo( '000000123400000004230000100001' )
+				'000000123400000004230000100001'
 			)->willReturn(
 				[
 					'token' => '2d6f1234-df49-9876-bcb4-55aa44ce3e22'

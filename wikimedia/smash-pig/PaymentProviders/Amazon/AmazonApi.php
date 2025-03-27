@@ -49,8 +49,7 @@ class AmazonApi {
 		while ( $tries < $retryLimit - 1 ) {
 			try {
 				return new $klass( $headers, $body, $proxy );
-			}
-			catch ( \Exception $ex ) {
+			} catch ( \Exception $ex ) {
 				$tries++;
 			}
 		}

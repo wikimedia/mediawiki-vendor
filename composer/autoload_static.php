@@ -2596,11 +2596,13 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\PaymentProviders\\Gravy\\Mapper\\ErrorMapper' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Mapper/ErrorMapper.php',
         'SmashPig\\PaymentProviders\\Gravy\\Mapper\\GooglePayPaymentProviderRequestMapper' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Mapper/GooglePayPaymentProviderRequestMapper.php',
         'SmashPig\\PaymentProviders\\Gravy\\Mapper\\GooglePayPaymentProviderResponseMapper' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Mapper/GooglePayPaymentProviderResponseMapper.php',
+        'SmashPig\\PaymentProviders\\Gravy\\Mapper\\PaypalPaymentProviderRequestMapper' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Mapper/PaypalPaymentProviderRequestMapper.php',
         'SmashPig\\PaymentProviders\\Gravy\\Mapper\\RedirectPaymentProviderRequestMapper' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Mapper/RedirectPaymentProviderRequestMapper.php',
         'SmashPig\\PaymentProviders\\Gravy\\Mapper\\RedirectPaymentProviderResponseMapper' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Mapper/RedirectPaymentProviderResponseMapper.php',
         'SmashPig\\PaymentProviders\\Gravy\\Mapper\\RequestMapper' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Mapper/RequestMapper.php',
         'SmashPig\\PaymentProviders\\Gravy\\Mapper\\ResponseMapper' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Mapper/ResponseMapper.php',
         'SmashPig\\PaymentProviders\\Gravy\\PaymentProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/PaymentProvider.php',
+        'SmashPig\\PaymentProviders\\Gravy\\PaypalPaymentProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/PaypalPaymentProvider.php',
         'SmashPig\\PaymentProviders\\Gravy\\RedirectPaymentProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/RedirectPaymentProvider.php',
         'SmashPig\\PaymentProviders\\Gravy\\ReferenceData' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/ReferenceData.php',
         'SmashPig\\PaymentProviders\\Gravy\\Responses\\ReportResponse' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Responses/ReportResponse.php',
@@ -2617,6 +2619,7 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\PaymentProviders\\Gravy\\Validators\\GooglePayPaymentProviderValidator' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Validators/GooglePayPaymentProviderValidator.php',
         'SmashPig\\PaymentProviders\\Gravy\\Validators\\ListenerValidator' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Validators/ListenerValidator.php',
         'SmashPig\\PaymentProviders\\Gravy\\Validators\\PaymentProviderValidator' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Validators/PaymentProviderValidator.php',
+        'SmashPig\\PaymentProviders\\Gravy\\Validators\\PaypalPaymentProviderValidator' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Validators/PaypalPaymentProviderValidator.php',
         'SmashPig\\PaymentProviders\\Gravy\\Validators\\RedirectPaymentProviderValidator' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Validators/RedirectPaymentProviderValidator.php',
         'SmashPig\\PaymentProviders\\Gravy\\Validators\\ValidatorTrait' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Validators/ValidatorTrait.php',
         'SmashPig\\PaymentProviders\\ICancelablePaymentProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/ICancelablePaymentProvider.php',
@@ -4232,8 +4235,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Zest\\ZestInst' => __DIR__ . '/..' . '/wikimedia/zest-css/src/ZestInst.php',
         'WmfFramework' => __DIR__ . '/../..' . '/extensions/DonationInterface/gateway_common/WmfFramework.php',
         'lessc' => __DIR__ . '/..' . '/wikimedia/less.php/lessc.inc.php',
-        'smashpig\\PaymentProviders\\ICancelAutoRescueProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/ICancelAutoRescueProvider.php',
-        'smashpig\\PaymentProviders\\IDeleteRecurringPaymentTokenProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/IDeleteRecurringPaymentTokenProvider.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

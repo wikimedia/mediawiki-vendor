@@ -39,7 +39,7 @@ class ValidationError {
 	 * @param string|null $debugMessage message from gateway stating error detail
 	 * @param array|null $messageParams parameters to interpolate into the message
 	 */
-	public function __construct( string $field, ?string $messageKey = null, array $messageParams = [], string $debugMessage = null ) {
+	public function __construct( string $field, ?string $messageKey = null, array $messageParams = [], ?string $debugMessage = null ) {
 		$this->field = $field;
 		$this->messageKey = $messageKey;
 		$this->messageParams = $messageParams;

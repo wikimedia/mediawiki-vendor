@@ -21,7 +21,7 @@ class TokenizeRecurringJobTest extends BaseSmashPigUnitTestCase {
 	 */
 	protected $provider;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 
 		$providerConfiguration = $this->setProviderConfiguration( 'adyen' );
@@ -31,7 +31,7 @@ class TokenizeRecurringJobTest extends BaseSmashPigUnitTestCase {
 
 	/**
 	 * @dataProvider donationMessageProvider
-	 * @param $message
+	 * @param array $message
 	 */
 	public function testFromDonationMessage( $message ) {
 		$expected = [
@@ -81,7 +81,7 @@ class TokenizeRecurringJobTest extends BaseSmashPigUnitTestCase {
 	/**
 	 * @dataProvider donationMessageProvider
 	 * @param array $message
-	 * @param boolean $expectedNeedsTokenizing
+	 * @param bool $expectedNeedsTokenizing
 	 */
 	public function testNeedsTokenizing( $message, $expectedNeedsTokenizing ) {
 		$actual = TokenizeRecurringJob::donationNeedsTokenizing( $message );
@@ -103,7 +103,7 @@ class TokenizeRecurringJobTest extends BaseSmashPigUnitTestCase {
 		$this->provider->expects( $this->once() )
 			->method( 'getSavedPaymentDetails' )
 			->with(
-				$this->equalTo( '3.1' )
+				'3.1'
 			)->willReturn( $detailsResponse );
 		$job->execute();
 		$queue = QueueWrapper::getQueue( 'donations' );
@@ -132,7 +132,7 @@ class TokenizeRecurringJobTest extends BaseSmashPigUnitTestCase {
 		$this->provider->expects( $this->once() )
 			->method( 'getSavedPaymentDetails' )
 			->with(
-				$this->equalTo( '3.1' )
+				'3.1'
 			)->willReturn( $detailsResponse );
 
 		$runner = new JobQueueConsumer( 'jobs-adyen' );

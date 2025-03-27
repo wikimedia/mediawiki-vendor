@@ -5,7 +5,6 @@ namespace SmashPig\Tests;
 use Exception;
 use PDO;
 use PHPQueue\Interfaces\FifoQueueStore;
-
 use SmashPig\Core\DataStores\DamagedDatabase;
 use SmashPig\Core\DataStores\QueueWrapper;
 
@@ -20,7 +19,7 @@ class QueueConsumerTest extends BaseSmashPigUnitTestCase {
 	 */
 	protected $damaged;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 		$this->queue = QueueWrapper::getQueue( 'test' );
 		$damagedDb = DamagedDatabase::get();
@@ -105,9 +104,9 @@ class QueueConsumerTest extends BaseSmashPigUnitTestCase {
 		$this->assertEquals(
 			3, $count, 'dequeueMessages returned wrong count'
 		);
-		$this->assertEquals(
+		$this->assertCount(
 			3,
-			count( $consumer->processed ),
+			$consumer->processed,
 			'Called callback wrong number of times'
 		);
 
@@ -152,9 +151,9 @@ class QueueConsumerTest extends BaseSmashPigUnitTestCase {
 		$this->assertEquals(
 			3, $count, 'dequeueMessages returned wrong count'
 		);
-		$this->assertEquals(
+		$this->assertCount(
 			3,
-			count( $consumer->processed ),
+			$consumer->processed,
 			'Called callback wrong number of times'
 		);
 

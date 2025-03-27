@@ -16,7 +16,7 @@ class HostedCheckoutProviderTest extends BaseSmashPigUnitTestCase {
 	 */
 	protected $provider;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 		$this->setProviderConfiguration( 'ingenico' );
 		$this->provider = new HostedCheckoutProvider( [ 'subdomain' => 'payments.test' ] );
@@ -47,11 +47,11 @@ class HostedCheckoutProviderTest extends BaseSmashPigUnitTestCase {
 			"hostedCheckoutId" => "8915-28e5b79c889641c8ba770f1ba576c1fe",
 			"RETURNMAC" => "f5b66cf9-c64c-4c8d-8171-b47205c89a56"
 		];
-		$this->setUpResponse( __Dir__ . '/../Data/newHostedCheckout.response', 200 );
+		$this->setUpResponse( __DIR__ . '/../Data/newHostedCheckout.response', 200 );
 		$this->curlWrapper->expects( $this->once() )
 			->method( 'execute' )->with(
-				$this->equalTo( 'https://eu.sandbox.api-ingenico.com/v1/1234/hostedcheckouts' ),
-				$this->equalTo( 'POST' )
+				'https://eu.sandbox.api-ingenico.com/v1/1234/hostedcheckouts',
+				'POST'
 			);
 		$response = $this->provider->createHostedPayment( $params );
 		$this->assertEquals( $expectedResponse, $response );
@@ -69,8 +69,8 @@ class HostedCheckoutProviderTest extends BaseSmashPigUnitTestCase {
 		$this->setUpResponse( __DIR__ . "/../Data/hostedPaymentStatus.response", 200 );
 		$this->curlWrapper->expects( $this->once() )
 			->method( 'execute' )->with(
-				$this->equalTo( "https://eu.sandbox.api-ingenico.com/v1/1234/hostedcheckouts/$hostedPaymentId" ),
-				$this->equalTo( 'GET' )
+				"https://eu.sandbox.api-ingenico.com/v1/1234/hostedcheckouts/$hostedPaymentId",
+				'GET'
 			);
 		$response = $this->provider->getLatestPaymentStatus( [ 'gateway_session_id' => $hostedPaymentId ] );
 		$rawResponse = $response->getRawResponse();
@@ -115,8 +115,8 @@ class HostedCheckoutProviderTest extends BaseSmashPigUnitTestCase {
 		$this->setUpResponse( __DIR__ . "/../Data/hostedPaymentStatusRejected$errorCode.response", 200 );
 		$this->curlWrapper->expects( $this->once() )
 			->method( 'execute' )->with(
-				$this->equalTo( "https://eu.sandbox.api-ingenico.com/v1/1234/hostedcheckouts/$hostedPaymentId" ),
-				$this->equalTo( 'GET' )
+				"https://eu.sandbox.api-ingenico.com/v1/1234/hostedcheckouts/$hostedPaymentId",
+				'GET'
 			);
 
 		$response = $this->provider->getLatestPaymentStatus( [ 'gateway_session_id' => $hostedPaymentId ] );
@@ -147,8 +147,8 @@ class HostedCheckoutProviderTest extends BaseSmashPigUnitTestCase {
 		$this->setUpResponse( __DIR__ . "/../Data/hostedPaymentStatusIN_PROGRESS.response", 200 );
 		$this->curlWrapper->expects( $this->once() )
 			->method( 'execute' )->with(
-				$this->equalTo( "https://eu.sandbox.api-ingenico.com/v1/1234/hostedcheckouts/$hostedPaymentId" ),
-				$this->equalTo( 'GET' )
+				"https://eu.sandbox.api-ingenico.com/v1/1234/hostedcheckouts/$hostedPaymentId",
+				'GET'
 			);
 		$response = $this->provider->getLatestPaymentStatus( [ 'gateway_session_id' => $hostedPaymentId ] );
 		$rawResponse = $response->getRawResponse();
@@ -177,11 +177,11 @@ class HostedCheckoutProviderTest extends BaseSmashPigUnitTestCase {
 			'country' => 'US',
 			'language' => 'en_US',
 		];
-		$this->setUpResponse( __Dir__ . '/../Data/newHostedCheckout.response', 200 );
+		$this->setUpResponse( __DIR__ . '/../Data/newHostedCheckout.response', 200 );
 		$this->curlWrapper->expects( $this->once() )
 			->method( 'execute' )->with(
-				$this->equalTo( 'https://eu.sandbox.api-ingenico.com/v1/1234/hostedcheckouts' ),
-				$this->equalTo( 'POST' ),
+				'https://eu.sandbox.api-ingenico.com/v1/1234/hostedcheckouts',
+				'POST',
 				$this->anything(),
 				$this->callback( function ( $curlData ) {
 					$decoded = json_decode( $curlData, true );
@@ -265,8 +265,8 @@ class HostedCheckoutProviderTest extends BaseSmashPigUnitTestCase {
 		$curlResponse = $this->getParsedCurlWrapperResponse( __DIR__ . '/../Data/newHostedCheckout.response', 200 );
 		$this->curlWrapper->expects( $this->once() )
 			->method( 'execute' )->with(
-				$this->equalTo( 'https://eu.sandbox.api-ingenico.com/v1/1234/hostedcheckouts' ),
-				$this->equalTo( 'POST' ),
+				'https://eu.sandbox.api-ingenico.com/v1/1234/hostedcheckouts',
+				'POST',
 				$this->anything(),
 				$this->callback( function ( $curlData ) {
 					$decoded = json_decode( $curlData, true );
@@ -357,8 +357,8 @@ class HostedCheckoutProviderTest extends BaseSmashPigUnitTestCase {
 		$curlResponse = $this->getParsedCurlWrapperResponse( __DIR__ . '/../Data/newHostedCheckout.response', 200 );
 		$this->curlWrapper->expects( $this->once() )
 			->method( 'execute' )->with(
-				$this->equalTo( 'https://eu.sandbox.api-ingenico.com/v1/1234/hostedcheckouts' ),
-				$this->equalTo( 'POST' ),
+				'https://eu.sandbox.api-ingenico.com/v1/1234/hostedcheckouts',
+				'POST',
 				$this->anything(),
 				$this->callback( function ( $curlData ) {
 					$decoded = json_decode( $curlData, true );

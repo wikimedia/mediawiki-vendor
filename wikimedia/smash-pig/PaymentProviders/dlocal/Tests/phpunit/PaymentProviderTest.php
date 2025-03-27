@@ -125,9 +125,9 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$this->assertEquals( FinalStatus::UNKNOWN, $response->getStatus() );
 	}
 
-public function testGetLatestPaymentStatusResponseWithMisingStatus(): void {
-	$gateway_txn_id = "PAY2323243343543";
-	$this->api->expects( $this->once() )
+	public function testGetLatestPaymentStatusResponseWithMisingStatus(): void {
+		$gateway_txn_id = "PAY2323243343543";
+		$this->api->expects( $this->once() )
 			->method( 'getPaymentStatus' )
 			->with( $gateway_txn_id )
 			->willReturn( [
@@ -135,14 +135,14 @@ public function testGetLatestPaymentStatusResponseWithMisingStatus(): void {
 				"message" => "Placeholder message"
 			] );
 
-	$paymentProvider = new PaymentProvider();
-	$params = [ 'gateway_txn_id' => $gateway_txn_id ];
-	$response = $paymentProvider->getLatestPaymentStatus( $params );
-	$error = $response->getErrors();
-	$this->assertCount( 1, $error );
-	$this->assertFalse( $response->isSuccessful() );
-	$this->assertEquals( FinalStatus::UNKNOWN, $response->getStatus() );
-}
+		$paymentProvider = new PaymentProvider();
+		$params = [ 'gateway_txn_id' => $gateway_txn_id ];
+		$response = $paymentProvider->getLatestPaymentStatus( $params );
+		$error = $response->getErrors();
+		$this->assertCount( 1, $error );
+		$this->assertFalse( $response->isSuccessful() );
+		$this->assertEquals( FinalStatus::UNKNOWN, $response->getStatus() );
+	}
 
 	public function testGetLatestPaymentStatusPaid(): void {
 		$gatewayTxnId = 'D-2486-5bc9c596-f3b6-4b7c-bf3c-432276030cd9';
@@ -319,9 +319,9 @@ public function testGetLatestPaymentStatusResponseWithMisingStatus(): void {
 		$this->assertEquals( FinalStatus::UNKNOWN, $response->getStatus() );
 	}
 
-public function testCancelPaymentWithCompleteParamsFailsAndMisingStatus(): void {
-	$gateway_txn_id = "PAY2323243343543";
-	$this->api->expects( $this->once() )
+	public function testCancelPaymentWithCompleteParamsFailsAndMisingStatus(): void {
+		$gateway_txn_id = "PAY2323243343543";
+		$this->api->expects( $this->once() )
 			->method( 'cancelPayment' )
 			->with( $gateway_txn_id )
 			->willReturn( [
@@ -329,13 +329,13 @@ public function testCancelPaymentWithCompleteParamsFailsAndMisingStatus(): void 
 				"message" => "Placeholder message"
 			] );
 
-	$paymentProvider = new PaymentProvider();
-	$response = $paymentProvider->cancelPayment( $gateway_txn_id );
-	$error = $response->getErrors();
-	$this->assertCount( 1, $error );
-	$this->assertFalse( $response->isSuccessful() );
-	$this->assertEquals( FinalStatus::UNKNOWN, $response->getStatus() );
-}
+		$paymentProvider = new PaymentProvider();
+		$response = $paymentProvider->cancelPayment( $gateway_txn_id );
+		$error = $response->getErrors();
+		$this->assertCount( 1, $error );
+		$this->assertFalse( $response->isSuccessful() );
+		$this->assertEquals( FinalStatus::UNKNOWN, $response->getStatus() );
+	}
 
 	public function testGetPaymentDetail(): void {
 		$gatewayTxnId = 'D-INVALID-5bc9c596-f3b6-4b7c-bf3c-432276030cd9';

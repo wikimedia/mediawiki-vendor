@@ -48,7 +48,7 @@ abstract class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaym
 	 * @param array $params
 	 * @return PaymentDetailResponse
 	 */
-	public function getLatestPaymentStatus( array $params ) : PaymentDetailResponse {
+	public function getLatestPaymentStatus( array $params ): PaymentDetailResponse {
 		$paymentDetailResponse = new PaymentDetailResponse();
 		try {
 			$this->getValidator()->validateGetLatestPaymentStatusInput( $params );
@@ -57,7 +57,7 @@ abstract class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaym
 			// map the response from the external format back to our normalized structure.
 			$normalizedResponse = $this->getResponseMapper()->mapFromPaymentResponse( $rawGravyGetPaymentDetailResponse );
 			$paymentDetailResponse = GravyGetLatestPaymentStatusResponseFactory::fromNormalizedResponse( $normalizedResponse );
-		}  catch ( ValidationException $e ) {
+		} catch ( ValidationException $e ) {
 			// it threw an exception!
 			GravyGetLatestPaymentStatusResponseFactory::handleValidationException( $paymentDetailResponse, $e->getData() );
 		} catch ( \Exception $e ) {
@@ -69,7 +69,7 @@ abstract class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaym
 		return $paymentDetailResponse;
 	}
 
-	public function cancelPayment( string $gatewayTxnId ) : CancelPaymentResponse {
+	public function cancelPayment( string $gatewayTxnId ): CancelPaymentResponse {
 		$cancelPaymentResponse = new CancelPaymentResponse();
 		try {
 			// dispatch api call to external API
@@ -193,7 +193,7 @@ abstract class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaym
 		return $reportResponse;
 	}
 
-	public function createPayment( array $params ) : CreatePaymentResponse {
+	public function createPayment( array $params ): CreatePaymentResponse {
 		$createPaymentResponse = new createPaymentResponse();
 		try {
 			$this->getValidator()->validateCreatePaymentInput( $params );
@@ -203,11 +203,10 @@ abstract class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaym
 			// normalize gravy response
 			$normalizedResponse = $this->getResponseMapper()->mapFromPaymentResponse( $rawGravyCreatePaymentResponse );
 			$createPaymentResponse = GravyCreatePaymentResponseFactory::fromNormalizedResponse( $normalizedResponse );
-		}  catch ( ValidationException $e ) {
+		} catch ( ValidationException $e ) {
 			// it threw an exception!
 			GravyCreatePaymentResponseFactory::handleValidationException( $createPaymentResponse, $e->getData() );
-		}
-		catch ( \Exception $e ) {
+		} catch ( \Exception $e ) {
 			// it threw an exception that isn't validation!
 			Logger::error( 'Processor failed to create new payment with response:' . $e->getMessage() );
 			GravyCreatePaymentResponseFactory::handleException( $createPaymentResponse, $e->getMessage(), $e->getCode() );
@@ -216,7 +215,7 @@ abstract class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaym
 		return $createPaymentResponse;
 	}
 
-	public function approvePayment( array $params ) : ApprovePaymentResponse {
+	public function approvePayment( array $params ): ApprovePaymentResponse {
 		$approvePaymentResponse = new ApprovePaymentResponse();
 		try {
 			$this->getValidator()->validateApprovePaymentInput( $params );

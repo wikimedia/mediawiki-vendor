@@ -17,7 +17,7 @@ class BaseBraintreeTest extends BaseSmashPigUnitTestCase {
 	 */
 	protected $mockApi;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 		$providerConfig = $this->setProviderConfiguration( 'braintree' );
 		$this->api = $this->getMockBuilder( 'SmashPig\PaymentProviders\Braintree\Api' )

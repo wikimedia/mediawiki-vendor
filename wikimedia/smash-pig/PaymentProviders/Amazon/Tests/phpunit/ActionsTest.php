@@ -31,7 +31,7 @@ class ActionsTest extends AmazonTestCase {
 		$action = new ReconstructMerchantReference();
 		$action->execute( $message );
 		$this->assertEquals( '98765432-1', $message->getOrderId() );
-		$this->assertEmpty( $this->mockClient->calls );
+		$this->assertCount( 0, $this->mockClient->calls );
 	}
 
 	/**

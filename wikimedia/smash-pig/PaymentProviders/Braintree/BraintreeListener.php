@@ -35,7 +35,7 @@ class BraintreeListener implements IHttpActionHandler {
 			Logger::info( 'Validating Braintree Webhook notification' );
 			$signature = $requestValues['bt_signature'];
 			$payload = $requestValues['bt_payload'];
-			$parsed = $this->providerConfiguration->object( 'signature-validator' )->parse( $signature,  $payload );
+			$parsed = $this->providerConfiguration->object( 'signature-validator' )->parse( $signature, $payload );
 		} catch ( Exception $e ) {
 			// Tried to validate a bunch of times and got nonsense responses.
 			Logger::error( $e->getMessage() );

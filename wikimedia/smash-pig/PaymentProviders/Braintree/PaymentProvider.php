@@ -59,7 +59,7 @@ class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaymentTokenP
 	/**
 	 * If any important params can re-fetch based on session
 	 *
-	 * @param array $params
+	 * @param array &$params
 	 * @return void
 	 */
 	public function getMissingParams( array &$params ): void {
@@ -218,7 +218,7 @@ class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaymentTokenP
 	 * @param string|null $debugMessage
 	 * @return PaymentError|ValidationError
 	 */
-	protected function mapErrors( array $error, string $debugMessage = null ) {
+	protected function mapErrors( array $error, ?string $debugMessage = null ) {
 		$defaultCode = ErrorCode::UNKNOWN;
 
 		/**
@@ -258,7 +258,7 @@ class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaymentTokenP
 	 *
 	 * @return array
 	 */
-	protected function transformToApiParams( array $params, string $type = null ): array {
+	protected function transformToApiParams( array $params, ?string $type = null ): array {
 		$apiParams = [];
 
 		if ( $type === TransactionType::CAPTURE ) {

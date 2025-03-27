@@ -95,7 +95,7 @@ class BankTransferPaymentProvider extends PaymentProvider {
 		return $response;
 	}
 
-	protected function createACHPayment( array $params ) : CreatePaymentResponse {
+	protected function createACHPayment( array $params ): CreatePaymentResponse {
 		if ( !empty( $params['recurring_payment_token'] ) ) {
 			$params['payment_method'] = 'ach';
 			$rawResponse = $this->api->createPaymentFromToken( $params );

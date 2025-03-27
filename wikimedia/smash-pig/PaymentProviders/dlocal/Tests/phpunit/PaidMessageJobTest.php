@@ -15,7 +15,7 @@ class PaidMessageJobTest extends BaseSmashPigUnitTestCase {
 	/**
 	 * Test that Paid IPNs for one-time donations are pushed to the 'donations' queue
 	 */
-	public function testIndiaPaidOneTimeMessagePushedToDonationsQueue() : void {
+	public function testIndiaPaidOneTimeMessagePushedToDonationsQueue(): void {
 		// set up the test PaidMessage object
 		$paidIpnFixture = json_decode( file_get_contents( __DIR__ . '/../Data/paid-ipn-india-one-time.json' ), true );
 		$paidMessage = new PaidMessage();
@@ -39,7 +39,7 @@ class PaidMessageJobTest extends BaseSmashPigUnitTestCase {
 	/**
 	 * Test that Paid IPNs for recurring donations are pushed to the 'upi-donations' queue
 	 */
-	public function testIndiaPaidRecurringMessagePushedToUpiDonationsQueue() : void {
+	public function testIndiaPaidRecurringMessagePushedToUpiDonationsQueue(): void {
 		// set up our test PaidMessage object
 		$paidIpnFixture = json_decode( file_get_contents( __DIR__ . '/../Data/paid-ipn-india-recurring.json' ), true );
 		$paidMessage = new PaidMessage();

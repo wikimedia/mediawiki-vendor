@@ -17,7 +17,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessDonation() {
 		$processor = new BraintreeAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/settlement_batch_report_2022-06-27.json' );
-		$this->assertSame( 2, count( $output ), 'Should have found two donations' );
+		$this->assertCount( 2, $output, 'Should have found two donations' );
 		$actualPaypal = $output[0];
 		$expectedPaypal = [
 			'gateway' => 'braintree',
@@ -58,7 +58,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessRefund() {
 		$processor = new BraintreeAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/settlement_batch_report_refund_2022-06-27.json' );
-		$this->assertSame( 2, count( $output ), 'Should have found two refund donations' );
+		$this->assertCount( 2, $output, 'Should have found two refund donations' );
 		$actualPaypal = $output[0];
 		$expectedPaypal = [
 			'gateway' => 'braintree',
@@ -103,7 +103,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessDispute() {
 		$processor = new BraintreeAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/settlement_batch_report_dispute_2022-06-27.json' );
-		$this->assertSame( 2, count( $output ), 'Should have found two dispute donations' );
+		$this->assertCount( 2, $output, 'Should have found two dispute donations' );
 		$actualPaypal = $output[0];
 		$expectedPaypal = [
 				'gateway' => 'braintree',

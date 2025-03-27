@@ -27,7 +27,7 @@ class VenmoPaymentProviderTest extends BaseBraintreeTest {
 		$provider = new VenmoPaymentProvider();
 		$response = $provider->createPayment( $request );
 		$validationError = $response->getValidationErrors();
-		$this->assertEquals( $validationError[0]->getField(), 'device_data' );
+		$this->assertEquals( 'device_data', $validationError[0]->getField() );
 	}
 
 	public function testVenmoPaymentWithNoGatewaySessionIdAndEmail() {
@@ -44,7 +44,7 @@ class VenmoPaymentProviderTest extends BaseBraintreeTest {
 		$provider = new VenmoPaymentProvider();
 		$response = $provider->createPayment( $request );
 		$validationError = $response->getValidationErrors();
-		$this->assertEquals( $validationError[0]->getField(), 'gateway_session_id' );
+		$this->assertEquals( 'gateway_session_id', $validationError[0]->getField() );
 	}
 
 	public function testVenmoNotUSDError() {
@@ -61,7 +61,7 @@ class VenmoPaymentProviderTest extends BaseBraintreeTest {
 		$provider = new VenmoPaymentProvider();
 		$response = $provider->createPayment( $request );
 		$validationError = $response->getValidationErrors();
-		$this->assertEquals( $validationError[0]->getField(), 'currency' );
+		$this->assertEquals( 'currency', $validationError[0]->getField() );
 	}
 
 	public function testCreatePaymentWithoutEmail() {
@@ -254,7 +254,7 @@ class VenmoPaymentProviderTest extends BaseBraintreeTest {
 					],
 				'extensions' => [
 					'requestId' => 'ffea98e0-29d5-49d1-a9fd-ad316192a59c'
-			] ] );
+					] ] );
 
 		$provider = new VenmoPaymentProvider();
 		$response = $provider->createPayment( $request );

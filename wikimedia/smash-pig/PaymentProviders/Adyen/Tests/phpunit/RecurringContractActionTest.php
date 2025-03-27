@@ -12,7 +12,7 @@ use SmashPig\PaymentProviders\Adyen\Tests\BaseAdyenTestCase;
  */
 class RecurringContractActionTest extends BaseAdyenTestCase {
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 		$globalConfig = Context::get()->getGlobalConfiguration();
 		$this->jobQueue = $globalConfig->object( 'data-store/jobs-adyen' );

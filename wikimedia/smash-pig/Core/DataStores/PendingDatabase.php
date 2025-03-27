@@ -144,7 +144,7 @@ class PendingDatabase extends SmashPigDatabase {
 		if ( !$rows ) {
 			return null;
 		}
-		$messages = array_map( function ( $row ) {
+		$messages = array_map( static function ( $row ) {
 			return json_decode( $row['message'], true );
 		}, $rows );
 
@@ -186,7 +186,7 @@ class PendingDatabase extends SmashPigDatabase {
 	 * @return int Number of rows deleted
 	 * @throws DataStoreException
 	 */
-	public function deleteOldMessages( int $originalDate, string $gateway = null ) {
+	public function deleteOldMessages( int $originalDate, ?string $gateway = null ) {
 		$sql = 'DELETE FROM pending WHERE date < :date';
 		$params = [
 			'date' => UtcDate::getUtcDatabaseString( $originalDate ),
@@ -216,7 +216,7 @@ class PendingDatabase extends SmashPigDatabase {
 	 * @return string SQL to insert a pending record, with parameters
 	 */
 	protected function getInsertStatement( array $record ): string {
-		list( $fieldList, $paramList ) = self::formatInsertParameters(
+		[ $fieldList, $paramList ] = self::formatInsertParameters(
 			$record
 		);
 

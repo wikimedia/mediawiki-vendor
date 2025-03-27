@@ -14,7 +14,7 @@ use SmashPig\PaymentProviders\Responses\CreatePaymentSessionResponse;
 
 class CardPaymentProvider extends PaymentProvider implements IPaymentProvider {
 
-	public function createPaymentSession() : CreatePaymentSessionResponse {
+	public function createPaymentSession(): CreatePaymentSessionResponse {
 		$createPaymentSessionResponse = new CreatePaymentSessionResponse();
 		try {
 			// dispatch api call to external API

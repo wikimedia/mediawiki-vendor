@@ -12,7 +12,7 @@ use SmashPig\Tests\BaseSmashPigUnitTestCase;
  */
 class RejectedMessageJobTest extends BaseSmashPigUnitTestCase {
 
-	public function testRejectionMessagePushedToQueueIfTypeIsWalletDisabled() : void {
+	public function testRejectionMessagePushedToQueueIfTypeIsWalletDisabled(): void {
 		// set up the test RejectedMessage object
 		$rejectedIpnFixture = json_decode( file_get_contents( __DIR__ . '/../Data/rejected-322-ipn.json' ), true );
 		$rejectedMessage = new RejectedMessage();
@@ -33,7 +33,7 @@ class RejectedMessageJobTest extends BaseSmashPigUnitTestCase {
 		$this->assertNotNull( $upiDonationsMessage, 'upi-donations queue should not be empty!' );
 	}
 
-	public function testRejectionMessageNotPushedToQueueIfTypeIsGeneral() : void {
+	public function testRejectionMessageNotPushedToQueueIfTypeIsGeneral(): void {
 		// set up the test RejectedMessage object
 		$rejectedIpnFixture = json_decode( file_get_contents( __DIR__ . '/../Data/rejected-ipn.json' ), true );
 		$rejectedMessage = new RejectedMessage();
@@ -54,7 +54,7 @@ class RejectedMessageJobTest extends BaseSmashPigUnitTestCase {
 		$this->assertNull( $upiDonationsMessage, 'upi-donations queue should be empty!' );
 	}
 
-	public function testRejectionCardMessageNoException() : void {
+	public function testRejectionCardMessageNoException(): void {
 		// set up the test RejectedMessage object
 		$rejectedIpnFixture = json_decode( file_get_contents( __DIR__ . '/../Data/rejected-card.json' ), true );
 		$rejectedMessage = new RejectedMessage();

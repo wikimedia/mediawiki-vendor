@@ -80,7 +80,7 @@ class AutoRescueActionTest extends BaseAdyenTestCase {
 		$this->assertNotNull( $recurringMsg );
 		$this->assertEquals( $recurringMsg['rescue_reference'], $authorisation->retryRescueReference );
 		$this->assertEquals( $recurringMsg['gateway_txn_id'], $authorisation->pspReference );
-		$this->assertEquals( $recurringMsg['txn_type'], 'subscr_payment' );
+		$this->assertEquals( 'subscr_payment', $recurringMsg['txn_type'] );
 		$this->assertTrue( $recurringMsg['is_successful_autorescue'] );
 	}
 
@@ -113,7 +113,7 @@ class AutoRescueActionTest extends BaseAdyenTestCase {
 		$this->assertNotNull( $recurringMsg );
 		$this->assertEquals( $recurringMsg['rescue_reference'], $authorisation->retryRescueReference );
 		$this->assertEquals( $recurringMsg['gateway_txn_id'], $authorisation->pspReference );
-		$this->assertEquals( $recurringMsg['txn_type'], 'subscr_payment' );
+		$this->assertEquals( 'subscr_payment', $recurringMsg['txn_type'] );
 		$this->assertTrue( $recurringMsg['is_successful_autorescue'] );
 	}
 

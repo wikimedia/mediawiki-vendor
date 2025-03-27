@@ -33,7 +33,6 @@ class CaptureIncomingMessageTest extends BaseSmashPigUnitTestCase {
 	/**
 	 * @var array
 	 */
-	// filename and the queue it should get dropped in
 	public static $message_data = [
 		'web_accept.json' => 'donations',
 		'express_checkout.json' => 'donations',
@@ -54,17 +53,15 @@ class CaptureIncomingMessageTest extends BaseSmashPigUnitTestCase {
 		'refund_unauthorized_spoof.json' => 'refund',
 		'refund_admin_fraud_reversal.json' => 'refund',
 		'recurring_payment_suspended_due_to_max_failed_payment.json' => 'recurring',
-		// this should not actually get written to
-		// TODO 'new_case.json' => 'no-op',
 	];
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 		$this->config = Context::get()->getGlobalConfiguration();
 		$this->providerConfig = $this->setProviderConfiguration( 'paypal' );
 	}
 
-	public function tearDown() : void {
+	public function tearDown(): void {
 		$this->providerConfig->overrideObjectInstance( 'curl/wrapper', null );
 		parent::tearDown();
 	}
@@ -122,8 +119,8 @@ class CaptureIncomingMessageTest extends BaseSmashPigUnitTestCase {
 		$jobMessage = $jobQueue->pop();
 
 		$this->assertEquals(
-			$jobMessage['class'],
-			'SmashPig\PaymentProviders\PayPal\Job'
+			'SmashPig\PaymentProviders\PayPal\Job',
+			$jobMessage['class']
 		);
 
 		$this->assertEquals( $jobMessage['payload'], $msg['payload'] );
@@ -154,7 +151,7 @@ class CaptureIncomingMessageTest extends BaseSmashPigUnitTestCase {
 		$message = $queue->pop();
 
 		if ( $job->is_reject() ) {
-			$this->assertEmpty( $message );
+			$this->assertNull( $message );
 		} else {
 			$this->assertNotEmpty( $message );
 			if ( isset( $message['contribution_tracking_id'] ) ) {
@@ -231,7 +228,7 @@ class CaptureIncomingMessageTest extends BaseSmashPigUnitTestCase {
 		$message = $queue->pop();
 
 		if ( $job->is_reject() ) {
-			$this->assertEmpty( $message );
+			$this->assertNull( $message );
 		} else {
 			$this->assertNotEmpty( $message );
 			// order_id should start with the ct_id

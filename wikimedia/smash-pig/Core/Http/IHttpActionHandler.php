@@ -12,7 +12,7 @@ interface IHttpActionHandler {
 	 * @param Request $request HTTP request context object
 	 * @param Response $response HTTP response data object
 	 *
-	 * @return Null
+	 * @return null
 	 */
 	public function execute( Request $request, Response $response );
 }

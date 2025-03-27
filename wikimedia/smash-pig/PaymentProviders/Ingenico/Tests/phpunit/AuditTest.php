@@ -16,7 +16,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessDonation() {
 		$processor = new IngenicoAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/donation.xml.gz' );
-		$this->assertSame( 1, count( $output ), 'Should have found one donation' );
+		$this->assertCount( 1, $output, 'Should have found one donation' );
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'globalcollect',
@@ -48,7 +48,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessBPayDonation() {
 		$processor = new IngenicoAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/donation_bpay.xml.gz' );
-		$this->assertSame( 1, count( $output ), 'Should have found one donation' );
+		$this->assertCount( 1, $output, 'Should have found one donation' );
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'globalcollect',
@@ -73,7 +73,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessRecurring() {
 		$processor = new IngenicoAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/recurring.xml.gz' );
-		$this->assertSame( 1, count( $output ), 'Should have found one recurring donation' );
+		$this->assertCount( 1, $output, 'Should have found one recurring donation' );
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'globalcollect',
@@ -106,7 +106,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessRefund() {
 		$processor = new IngenicoAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/refund.xml.gz' );
-		$this->assertSame( 1, count( $output ), 'Should have found one refund' );
+		$this->assertCount( 1, $output, 'Should have found one refund' );
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'globalcollect',
@@ -137,7 +137,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testParseIngenicoConnectRefund() {
 		$processor = new IngenicoAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/refund_ingenico_connect.xml.gz' );
-		$this->assertSame( 1, count( $output ), 'Should have found one refund' );
+		$this->assertCount( 1, $output, 'Should have found one refund' );
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'ingenico',
@@ -162,7 +162,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testParseUncollectedRefund() {
 		$processor = new IngenicoAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/refund_uncollected.xml.gz' );
-		$this->assertSame( 1, count( $output ), 'Should have found one refund' );
+		$this->assertCount( 1, $output, 'Should have found one refund' );
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'ingenico',
@@ -186,7 +186,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessRecurringRefund() {
 		$processor = new IngenicoAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/recurringrefund.xml.gz' );
-		$this->assertSame( 1, count( $output ), 'Should have found one refund' );
+		$this->assertCount( 1, $output, 'Should have found one refund' );
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'globalcollect', // TODO: switch to ingenico for Connect
@@ -210,7 +210,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessChargeback() {
 		$processor = new IngenicoAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/chargeback.xml.gz' );
-		$this->assertSame( 1, count( $output ), 'Should have found one chargeback' );
+		$this->assertCount( 1, $output, 'Should have found one chargeback' );
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'globalcollect',
@@ -235,7 +235,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessSparseRefund() {
 		$processor = new IngenicoAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/sparseRefund.xml.gz' );
-		$this->assertSame( 1, count( $output ), 'Should have found one refund' );
+		$this->assertCount( 1, $output, 'Should have found one refund' );
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'globalcollect',
@@ -259,7 +259,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessConnectDonation() {
 		$processor = new IngenicoAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/connectdonation.xml.gz' );
-		$this->assertSame( 1, count( $output ), 'Should have found one donation' );
+		$this->assertCount( 1, $output, 'Should have found one donation' );
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'ingenico',

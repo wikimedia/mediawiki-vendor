@@ -90,7 +90,7 @@ class Mapper {
 		array $input,
 		string $mapFilePath,
 		array $transformers = [],
-		string $outputFormat = null,
+		?string $outputFormat = null,
 		bool $pruneEmpty = false
 	) {
 		$mapper = new static;
@@ -156,7 +156,7 @@ class Mapper {
 	/**
 	 * Convert transformer paths to classes if necessary
 	 *
-	 * @param array $transformers
+	 * @param array &$transformers
 	 */
 	protected function setupInputTransformers( array &$transformers ) {
 		foreach ( $transformers as $i => $transformer ) {
@@ -212,7 +212,7 @@ class Mapper {
 	 * @return array
 	 */
 	protected function translatePlaceholdersToInput( array $map, array $input ): array {
-		array_walk_recursive( $map, function ( &$value ) use ( $input ) {
+		array_walk_recursive( $map, static function ( &$value ) use ( $input ) {
 			$replacements = [];
 			// this is ugly php but it works, preg_match_all return values are horrible.
 			if ( preg_match_all( "/%([^%]+)%/", $value, $matches ) >= 1 ) {

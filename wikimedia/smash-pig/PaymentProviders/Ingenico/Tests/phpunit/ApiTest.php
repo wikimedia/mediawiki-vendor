@@ -22,7 +22,7 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 	 */
 	protected $api;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 		$providerConfiguration = $this->setProviderConfiguration( 'ingenico' );
 		$this->curlWrapper = $this->createMock( '\SmashPig\Core\Http\CurlWrapper' );
@@ -39,7 +39,7 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 	}
 
 	public function testCreateRequest() {
-		$headerVerification = function ( $headers ) {
+		$headerVerification = static function ( $headers ) {
 			$date = new DateTime( $headers['Date'] );
 			return $date !== null &&
 				$headers['Content-Type'] === 'application/json';
@@ -48,10 +48,10 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 		$this->curlWrapper->expects( $this->once() )
 			->method( 'execute' )
 			->with(
-				$this->equalTo( 'https://example.com/v1/9876/testPath' ),
-				$this->equalTo( 'POST' ),
+				'https://example.com/v1/9876/testPath',
+				'POST',
 				$this->callback( $headerVerification ),
-				$this->equalTo( '{"foo":"bar"}' )
+				'{"foo":"bar"}'
 			)->willReturn( [
 				'status' => 200,
 				'body' => '{"baz":"quux"}',

@@ -15,7 +15,7 @@ class RecurringContractJobTest extends BaseAdyenTestCase {
 
 	protected $pendingMessage;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 		$pendingDatabase = PendingDatabase::get();
 		$this->pendingMessage = json_decode(

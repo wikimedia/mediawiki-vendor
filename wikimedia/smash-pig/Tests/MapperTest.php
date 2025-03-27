@@ -191,7 +191,7 @@ class MapperTest extends BaseSmashPigUnitTestCase {
 		$testMapFilePath = 'Tests/data/test_map_string.yaml';
 		$testMapVars['test_string_value'] = 'abc';
 
-		$uppercaseTransformer = function ( $original, &$transformed ) {
+		$uppercaseTransformer = static function ( $original, &$transformed ) {
 			foreach ( $original as $key => $value ) {
 				$transformed[$key] = strtoupper( $value );
 			}
@@ -210,13 +210,13 @@ class MapperTest extends BaseSmashPigUnitTestCase {
 		$testMapFilePath = 'Tests/data/test_map_string.yaml';
 		$testMapVars['test_string_value'] = 'abc';
 
-		$uppercaseTransformer = function ( $original, &$transformed ) {
+		$uppercaseTransformer = static function ( $original, &$transformed ) {
 			foreach ( $original as $key => $value ) {
 				$transformed[$key] = strtoupper( $transformed[$key] );
 			}
 		};
 
-		$underscoreSeparatorTransformer = function ( $original, &$transformed ) {
+		$underscoreSeparatorTransformer = static function ( $original, &$transformed ) {
 			foreach ( $original as $key => $value ) {
 				// using $transformed[$key] to allow for transformation "layering".
 				$transformed[$key] = implode( "_", str_split( $transformed[$key] ) );

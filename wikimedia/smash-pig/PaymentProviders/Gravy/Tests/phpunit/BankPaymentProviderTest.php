@@ -9,11 +9,11 @@ use SmashPig\PaymentProviders\Gravy\Tests\BaseGravyTestCase;
  */
 class BankPaymentProviderTest extends BaseGravyTestCase {
 	/**
-	 * @var BankPaymentProvider;
+	 * @var BankPaymentProvider
 	 */
 	public $provider;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 		$this->provider = $this->config->object( 'payment-provider/dd' );
 	}

@@ -10,7 +10,7 @@ use SmashPig\PaymentProviders\Gravy\Validators\ApplePayPaymentProviderValidator;
 use SmashPig\PaymentProviders\Responses\CreatePaymentSessionResponse;
 
 class ApplePayPaymentProvider extends PaymentProvider {
-	public function createPaymentSession( array $params ) : CreatePaymentSessionResponse {
+	public function createPaymentSession( array $params ): CreatePaymentSessionResponse {
 		$sessionResponse = new CreatePaymentSessionResponse();
 		try {
 			// extract out the validation of input out to a separate class

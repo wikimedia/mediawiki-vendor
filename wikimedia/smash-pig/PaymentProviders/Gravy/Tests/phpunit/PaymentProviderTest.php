@@ -16,7 +16,7 @@ class PaymentProviderTest extends BaseGravyTestCase {
 	 */
 	public $provider;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 		$this->provider = $this->config->object( 'payment-provider/cc' );
 	}

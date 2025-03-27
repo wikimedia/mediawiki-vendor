@@ -5,7 +5,6 @@ use Exception;
 use InvalidArgumentException;
 use PHPQueue\Exception\JsonException;
 use PHPQueue\Interfaces\AtomicReadBuffer;
-
 use SmashPig\Core\Context;
 use SmashPig\Core\DataStores\DamagedDatabase;
 use SmashPig\Core\DataStores\QueueWrapper;
@@ -134,8 +133,7 @@ abstract class BaseQueueConsumer {
 			if ( !empty( $debugMessages ) ) {
 				Logger::debug( implode( ' ', $debugMessages ) );
 			}
-		}
-		while ( $timeOk && $countOk && $data !== null );
+		} while ( $timeOk && $countOk && $data !== null );
 		return $processed;
 	}
 

@@ -8,11 +8,11 @@ use SmashPig\PaymentProviders\Gravy\Tests\BaseGravyTestCase;
  */
 class RedirectPaymentProviderTest extends BaseGravyTestCase {
 	/**
-	 * @var RedirectPaymentProvider;
+	 * @var RedirectPaymentProvider
 	 */
 	public $provider;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 		$this->provider = $this->config->object( 'payment-provider/venmo' );
 	}

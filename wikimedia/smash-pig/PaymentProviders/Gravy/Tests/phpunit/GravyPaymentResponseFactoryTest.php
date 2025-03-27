@@ -27,7 +27,7 @@ class GravyPaymentResponseFactoryTest extends TestCase {
 		$this->assertEquals( 'processing', $gravyPaymentProviderResponse->getRawStatus() );
 		$this->assertEquals( $testNormalizedResponseData['raw_response'], $gravyPaymentProviderResponse->getRawResponse() );
 		$this->assertEquals( $testNormalizedResponseData['risk_scores'], $gravyPaymentProviderResponse->getRiskScores() );
-		$this->assertEmpty( $gravyPaymentProviderResponse->getErrors() );
+		$this->assertCount( 0, $gravyPaymentProviderResponse->getErrors() );
 	}
 
 	/**

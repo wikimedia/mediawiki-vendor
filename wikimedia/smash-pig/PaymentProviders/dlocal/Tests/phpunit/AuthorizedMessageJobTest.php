@@ -15,7 +15,7 @@ class AuthorizedMessageJobTest extends BaseSmashPigUnitTestCase {
 	/**
 	 * Test that recurring tokens from Authorized IPNs are added to the pending row
 	 */
-	public function testAuthorizedMessageAddsTokenToPending() : void {
+	public function testAuthorizedMessageAddsTokenToPending(): void {
 		// Store a pending recurring transaction with no token
 		$pendingDb = PendingDatabase::get();
 		$pendingDb->storeMessage(

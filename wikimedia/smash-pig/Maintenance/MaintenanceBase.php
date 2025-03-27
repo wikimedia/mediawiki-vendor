@@ -408,7 +408,7 @@ abstract class MaintenanceBase {
 		$count = 0;
 		array_walk(
 			$this->expectedArguments,
-			function ( $el ) use ( &$count ) {
+			static function ( $el ) use ( &$count ) {
 				$count += $el['required'] ? 1 : 0;
 			}
 		);

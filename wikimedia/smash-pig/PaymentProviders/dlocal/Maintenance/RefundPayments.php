@@ -56,8 +56,7 @@ class RefundPayments extends MaintenanceBase {
 					Logger::info( "Could not refund payment $gatewayTxnId" );
 					Logger::info( 'Full response: ' . json_encode( $result->getRawResponse() ) );
 				}
-			}
-			catch ( \Exception $ex ) {
+			} catch ( \Exception $ex ) {
 				Logger::error( "Could not refund payment $gatewayTxnId", null, $ex );
 			}
 			$reader->next();

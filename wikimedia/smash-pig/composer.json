@@ -58,7 +58,7 @@
     	"php-parallel-lint/php-parallel-lint": "^1.2",
     	"phpunit/phpunit": "^9.5",
     	"ext-sqlite3": "*",
-    	"mediawiki/mediawiki-codesniffer": "^34.0"
+    	"mediawiki/mediawiki-codesniffer": "^46.0"
     },
     "scripts": {
     	"fix": "phpcbf",
@@ -82,6 +82,9 @@
     "config": {
       "platform": {
         "php": "8.2.26"
-      }
+      },
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     }
 }

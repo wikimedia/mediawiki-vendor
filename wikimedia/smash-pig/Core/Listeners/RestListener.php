@@ -24,16 +24,13 @@ abstract class RestListener extends ListenerBase {
 		} catch ( ListenerSecurityException $ex ) {
 			Logger::notice( 'Message denied by security policy, death is me.', null, $ex );
 			$response->setStatusCode( Response::HTTP_FORBIDDEN, "Not authorized." );
-		}
-		catch ( ListenerDataException $ex ) {
+		} catch ( ListenerDataException $ex ) {
 			Logger::error( 'Listener received request it could not process, death is me.', null, $ex );
 			$response->setStatusCode( Response::HTTP_INTERNAL_SERVER_ERROR, 'Received data could not be processed.' );
-		}
-		catch ( Core\ConfigurationException $ex ) {
+		} catch ( Core\ConfigurationException $ex ) {
 			Logger::alert( 'Some sad panda gave me a bad configuration.', null, $ex );
 			$response->setStatusCode( Response::HTTP_INTERNAL_SERVER_ERROR, "Configuration error." );
-		}
-		catch ( \Exception $ex ) {
+		} catch ( \Exception $ex ) {
 			Logger::error( 'Listener threw an unknown exception, death is me.', null, $ex );
 			$response->setStatusCode( Response::HTTP_INTERNAL_SERVER_ERROR, "Unknown listener exception" );
 		}

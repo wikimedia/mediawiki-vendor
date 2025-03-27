@@ -23,8 +23,8 @@ class ErrorMapper {
 			'308' => ErrorCode::DECLINED_DO_NOT_RETRY, // Credit card disabled.
 			'309' => ErrorCode::UNKNOWN, // Card expired.
 			'310' => ErrorCode::DECLINED_DO_NOT_RETRY, // Card reported lost.
-			'311' => ErrorCode::DECLINED_DO_NOT_RETRY,	// Card requested by the bank.
-			'312' => ErrorCode::DECLINED_DO_NOT_RETRY,	// Card restricted by the bank.
+			'311' => ErrorCode::DECLINED_DO_NOT_RETRY, // Card requested by the bank.
+			'312' => ErrorCode::DECLINED_DO_NOT_RETRY, // Card restricted by the bank.
 			'313' => ErrorCode::DECLINED_DO_NOT_RETRY, // Card reported stolen.
 			'314' => ErrorCode::UNKNOWN, // Invalid card number.
 			'315' => ErrorCode::UNKNOWN, // Invalid security code
@@ -49,12 +49,12 @@ class ErrorMapper {
 		'5000' => ErrorCode::INVALID_REQUEST, // Invalid request.
 		'5001' => ErrorCode::MISSING_REQUIRED_DATA, // Missing parameter. [parameter_name]
 		'5002' => ErrorCode::UNKNOWN, // Invalid transaction status.
-		'5003' => ErrorCode::VALIDATION,	// Country not supported.
+		'5003' => ErrorCode::VALIDATION, // Country not supported.
 		'5004' => ErrorCode::VALIDATION, // Currency not allowed for this country.
 		'5005' => ErrorCode::UNKNOWN, // User unauthorized due to cadastral situation.
 		'5006' => ErrorCode::DECLINED, // User limit exceeded.
-		'5007' => ErrorCode::VALIDATION,	// Amount exceeded.
-		'5008' => ErrorCode::VALIDATION,	// Token not found or inactive.
+		'5007' => ErrorCode::VALIDATION, // Amount exceeded.
+		'5008' => ErrorCode::VALIDATION, // Token not found or inactive.
 		'5009' => ErrorCode::DUPLICATE_ORDER_ID, // Order ID is duplicated.
 		'5010' => ErrorCode::METHOD_NOT_FOUND, // Method not available.
 		'5013' => ErrorCode::ACCOUNT_MISCONFIGURATION, // Unsupported operation.

@@ -12,14 +12,14 @@ class BaseSmashPigUnitTestCase extends TestCase {
 	 */
 	protected $curlWrapper;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 		$globalConfig = TestingGlobalConfiguration::create();
 		TestingContext::init( $globalConfig );
 		$this->curlWrapper = $this->createMock( '\SmashPig\Core\Http\CurlWrapper' );
 	}
 
-	public function tearDown() : void {
+	public function tearDown(): void {
 		TestingDatabase::clearStatics();
 		Context::set(); // Nullify the context for next run.
 	}

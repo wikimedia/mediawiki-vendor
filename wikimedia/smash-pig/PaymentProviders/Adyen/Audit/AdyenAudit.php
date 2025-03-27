@@ -151,7 +151,7 @@ abstract class AdyenAudit implements AuditParser {
 		$parts = explode( '.', $row['Merchant Reference'] );
 		$msg['contribution_tracking_id'] = $parts[0];
 
-		list( $method, $submethod ) = ReferenceData::decodePaymentMethod(
+		[ $method, $submethod ] = ReferenceData::decodePaymentMethod(
 			$row['Payment Method'],
 			$row['Payment Method Variant']
 		);

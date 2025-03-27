@@ -52,7 +52,7 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 
 		$this->api->expects( $this->once() )
 			->method( 'getExpressCheckoutDetails' )
-			->with( $this->equalTo( $testParams['gateway_session_id'] ) )
+			->with( $testParams['gateway_session_id'] )
 			->willReturn( $parsedTestApiResponse );
 
 		// call the code
@@ -84,7 +84,7 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 
 		$this->api->expects( $this->once() )
 			->method( 'getExpressCheckoutDetails' )
-			->with( $this->equalTo( $testParams['gateway_session_id'] ) )
+			->with( $testParams['gateway_session_id'] )
 			->willReturn( $parsedTestApiResponse );
 
 		// call the code
@@ -110,7 +110,7 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 
 		$this->api->expects( $this->once() )
 			->method( 'getExpressCheckoutDetails' )
-			->with( $this->equalTo( $testParams['gateway_session_id'] ) )
+			->with( $testParams['gateway_session_id'] )
 			->willReturn( $parsedTestApiResponse );
 
 		// call the code
@@ -138,7 +138,7 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 
 		$this->api->expects( $this->once() )
 			->method( 'createRecurringPaymentsProfile' )
-			->with( $this->equalTo( $testParams ) )
+			->with( $testParams )
 			->willReturn( $parsedTestApiResponse );
 
 		// call the code
@@ -168,7 +168,7 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 
 		$this->api->expects( $this->once() )
 			->method( 'doExpressCheckoutPayment' )
-			->with( $this->equalTo( $testParams ) )
+			->with( $testParams )
 			->willReturn( $parsedTestApiResponse );
 
 		// call the code
@@ -197,7 +197,7 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 
 		$this->api->expects( $this->once() )
 			->method( 'createPaymentSession' )
-			->with( $this->equalTo( $testParams ) )
+			->with( $testParams )
 			->willReturn( $parsedTestCreatePaymentSessionResponse );
 
 		// call the code
@@ -224,7 +224,7 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 
 		$this->api->expects( $this->once() )
 			->method( 'createPaymentSession' )
-			->with( $this->equalTo( $testParams ) )
+			->with( $testParams )
 			->willReturn( $parsedTestCreatePaymentSessionResponse );
 
 		// call the code

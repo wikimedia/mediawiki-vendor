@@ -11,7 +11,7 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 	 */
 	protected $api;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 		$providerConfiguration = $this->setProviderConfiguration( 'paypal' );
 		$this->curlWrapper = $this->createMock( '\SmashPig\Core\Http\CurlWrapper' );
@@ -46,10 +46,10 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 		$this->curlWrapper->expects( $this->once() )
 			->method( 'execute' )
 			->with(
-				$this->equalTo( 'https://testurl.com' ),
-				$this->equalTo( 'POST' ),
-				$this->equalTo( $expectedHeaders ),
-				$this->equalTo( $stringifiedExpectedRequestBody )
+				'https://testurl.com',
+				'POST',
+				$expectedHeaders,
+				$stringifiedExpectedRequestBody
 			)->willReturn( [
 				'status' => 200,
 				'body' => $testApiResponse,

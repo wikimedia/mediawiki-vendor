@@ -18,7 +18,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessSettlementDetailDonation() {
 		$processor = new AdyenSettlementDetailReport();
 		$output = $processor->parseFile( __DIR__ . '/../Data/settlement_detail_report_donation.csv' );
-		$this->assertSame( 1, count( $output ), 'Should have found one donation' );
+		$this->assertCount( 1, $output, 'Should have found one donation' );
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'adyen',
@@ -46,7 +46,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessSettlementDetailDonationReordered() {
 		$processor = new AdyenSettlementDetailReport();
 		$output = $processor->parseFile( __DIR__ . '/../Data/settlement_detail_report_donation_reordered.csv' );
-		$this->assertSame( 1, count( $output ), 'Should have found one donation' );
+		$this->assertCount( 1, $output, 'Should have found one donation' );
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'adyen',
@@ -74,7 +74,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessDonationIdeal() {
 		$processor = new AdyenSettlementDetailReport();
 		$output = $processor->parseFile( __DIR__ . '/../Data/settlement_detail_report_donation-ideal.csv' );
-		$this->assertSame( 1, count( $output ), 'Should have found one donation' );
+		$this->assertCount( 1, $output, 'Should have found one donation' );
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'adyen',
@@ -102,7 +102,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessDonationAch() {
 		$processor = new AdyenSettlementDetailReport();
 		$output = $processor->parseFile( __DIR__ . '/../Data/settlement_detail_report_donation-ach.csv' );
-		$this->assertSame( 1, count( $output ), 'Should have found one donation' );
+		$this->assertCount( 1, $output, 'Should have found one donation' );
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'adyen',
@@ -115,7 +115,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'invoice_id' => '206543313.1',
 			'payment_method' => 'dd',
 			'payment_submethod' => 'ach',
-			'date' => 1717525240	,
+			'date' => 1717525240,
 			'settled_currency' => 'USD',
 			'fee' => '0.22',
 			'settled_gross' => '0.78',
@@ -130,7 +130,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessSettlementDetailRefund() {
 		$processor = new AdyenSettlementDetailReport();
 		$output = $processor->parseFile( __DIR__ . '/../Data/settlement_detail_report_refund.csv' );
-		$this->assertSame( 1, count( $output ), 'Should have found one refund' );
+		$this->assertCount( 1, $output, 'Should have found one refund' );
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'adyen',
@@ -156,7 +156,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessSettlementDetailChargeback() {
 		$processor = new AdyenSettlementDetailReport();
 		$output = $processor->parseFile( __DIR__ . '/../Data/settlement_detail_report_chargeback.csv' );
-		$this->assertSame( 1, count( $output ), 'Should have found one chargeback' );
+		$this->assertCount( 1, $output, 'Should have found one chargeback' );
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'adyen',
@@ -179,7 +179,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessPaymentsAccountingNyce() {
 		$processor = new AdyenPaymentsAccountingReport();
 		$output = $processor->parseFile( __DIR__ . '/../Data/payments_accounting_report_nyce.csv' );
-		$this->assertSame( 1, count( $output ) );
+		$this->assertCount( 1, $output );
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'adyen',
@@ -204,7 +204,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessPaymentsAccountingChargeback() {
 		$processor = new AdyenPaymentsAccountingReport();
 		$output = $processor->parseFile( __DIR__ . '/../Data/payments_accounting_report_chargeback.csv' );
-		$this->assertSame( 1, count( $output ) );
+		$this->assertCount( 1, $output );
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'adyen',
@@ -227,6 +227,6 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testIgnoreMerchantReference() {
 		$processor = new AdyenSettlementDetailReport();
 		$output = $processor->parseFile( __DIR__ . '/../Data/settlement_detail_report_ignore.csv' );
-		$this->assertSame( 0, count( $output ) );
+		$this->assertCount( 0, $output );
 	}
 }

@@ -172,39 +172,6 @@ class RequestMapper {
 	}
 
 	/**
-	 * Maps our payment submethod to gravy's
-	 * @param mixed $paymentMethod
-	 * @return string
-	 */
-	protected function mapPaymentMethodToGravyPaymentMethod( $paymentMethod ): string {
-		switch ( strtolower( $paymentMethod ) ) {
-			case 'ach':
-				return 'trustly';
-			case 'cash_oxxo':
-				return 'oxxo';
-			case 'cash_abitab':
-				return 'abitab';
-			case 'cash_pago_efectivo':
-				return 'pagoefectivo';
-			case 'cash_red_pagos':
-				return 'redpagos';
-			case 'cash_boleto':
-				return 'boleto';
-			case 'netbanking':
-			case 'paypal':
-			case 'venmo':
-			case 'pix':
-			case 'pse':
-			case 'bcp':
-			case 'webpay':
-			case 'boleto':
-				return $paymentMethod;
-			default:
-				throw new \UnexpectedValueException( "Unknown Gravy Payment Method - $paymentMethod" );
-		}
-	}
-
-	/**
 	 * @param array $params
 	 * @param array $request
 	 * @return array

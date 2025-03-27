@@ -3,7 +3,6 @@
 namespace SmashPig\Tests;
 
 use PDO;
-
 use SmashPig\Core\DataStores\DamagedDatabase;
 
 class DamagedDatabaseTest extends BaseSmashPigUnitTestCase {
@@ -13,7 +12,7 @@ class DamagedDatabaseTest extends BaseSmashPigUnitTestCase {
 	 */
 	protected $db;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 		$this->db = DamagedDatabase::get();
 	}
@@ -48,7 +47,7 @@ class DamagedDatabaseTest extends BaseSmashPigUnitTestCase {
 			WHERE gateway='test'
 			AND order_id = '{$message['order_id']}'" );
 		$rows = $result->fetchAll( PDO::FETCH_ASSOC );
-		$this->assertSame( 1, count( $rows ),
+		$this->assertCount( 1, $rows,
 			'One row stored and retrieved.' );
 		$expected = [
 			'id' => $damagedId,
@@ -105,7 +104,7 @@ class DamagedDatabaseTest extends BaseSmashPigUnitTestCase {
 			WHERE gateway='test'
 				AND order_id = '{$message1['order_id']}'" );
 		$rows = $result->fetchAll( PDO::FETCH_ASSOC );
-		$this->assertEquals( 2, count( $rows ),
+		$this->assertCount( 2, $rows,
 			'Both records were stored.' );
 		$this->assertNotNull( $rows[0]['id'],
 			'Record includes a primary row id' );
@@ -122,7 +121,7 @@ class DamagedDatabaseTest extends BaseSmashPigUnitTestCase {
 			WHERE gateway='test'
 				AND order_id = '{$message1['order_id']}'" );
 		$rowsAfter = $result->fetchAll( PDO::FETCH_ASSOC );
-		$this->assertSame( 1, count( $rowsAfter ),
+		$this->assertCount( 1, $rowsAfter,
 			'Not only one row deleted.' );
 		$this->assertEquals( $rowsAfter[0]['id'], $rows[0]['id'],
 			'Deleted the wrong row.' );

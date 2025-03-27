@@ -15,7 +15,7 @@ use SmashPig\PaymentProviders\Responses\PaymentDetailResponse;
 class TransactionAction extends GravyAction {
 	use RefundTrait;
 
-	 public function execute( ListenerMessage $msg ): bool {
+	public function execute( ListenerMessage $msg ): bool {
 		$tl = new TaggedLogger( 'TransactionAction' );
 		$transactionDetails = $this->getTransactionDetails( $msg );
 
@@ -56,7 +56,7 @@ class TransactionAction extends GravyAction {
 		}
 
 		return true;
-	 }
+	}
 
 	public function getTransactionDetails( TransactionMessage $msg ): PaymentDetailResponse {
 		$providerConfiguration = Context::get()->getProviderConfiguration();

@@ -47,7 +47,7 @@ class Context {
 	 * @param Context|null $c
 	 * @return Context|null
 	 */
-	public static function set( Context $c = null ): ?Context {
+	public static function set( ?Context $c = null ): ?Context {
 		$old = self::$instance;
 		self::$instance = $c;
 

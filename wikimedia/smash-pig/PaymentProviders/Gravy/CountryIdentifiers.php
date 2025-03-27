@@ -27,20 +27,20 @@ class CountryIdentifiers {
 		// Argentina (AR)
 		'AR' => [
 			'ar.cuit', // Unique Taxpayer Identification Code (CUIT)
-			'ar.dni',  // Documento Nacional de Identidad (DNI)
+			'ar.dni', // Documento Nacional de Identidad (DNI)
 			'ar.cuil', // Unique Labor Identification Code (CUIL)
 		],
 		// Brazil (BR)
 		'BR' => [
 			'br.cnpj', // Business Tax ID
-			'br.cpf',  // Personal Taxpayer ID
+			'br.cpf', // Personal Taxpayer ID
 		],
 		// Chile (CL)
 		'CL' => [ 'cl.tin' ], // Taxpayer Identification Number (TIN)
 		// Colombia (CO) -- UPDATED to support co.cc, co.nit, and co.itin
 		'CO' => [
-			'co.nit',  // Número de Identificación Tributaria (business)
-			'co.itin',  // Individual Taxpayer Identification Number
+			'co.nit', // Número de Identificación Tributaria (business)
+			'co.itin', // Individual Taxpayer Identification Number
 			// 'co.cc',   // Cédula de Ciudadanía (commented out for now)
 		],
 		// India (IN)
@@ -52,7 +52,7 @@ class CountryIdentifiers {
 		// Uruguay (UY)
 		'UY' => [ 'uy.rut' ], // Registro Único Tributario (RUT)
 		// Peru (PE)
-		'PE' => [ 'pe.ruc' ] , // Registro Único de Contribuyentes (RUC)
+		'PE' => [ 'pe.ruc' ], // Registro Único de Contribuyentes (RUC)
 	];
 
 	/**

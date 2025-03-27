@@ -61,7 +61,7 @@ class DamagedDatabase extends SmashPigDatabase {
 			}
 		}
 
-		list( $fieldList, $paramList ) = self::formatInsertParameters(
+		[ $fieldList, $paramList ] = self::formatInsertParameters(
 			$dbRecord
 		);
 

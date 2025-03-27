@@ -177,7 +177,7 @@ class CurlWrapper {
 		foreach ( $headerLines as $line ) {
 			if ( strstr( $line, ': ' ) !== false ) {
 				$line = rtrim( $line );
-				list( $name, $value ) = explode( ': ', $line, 2 );
+				[ $name, $value ] = explode( ': ', $line, 2 );
 				$responseHeaders[$name] = $value;
 			}
 		}

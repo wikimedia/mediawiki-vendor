@@ -107,7 +107,7 @@ class PaymentsFraudDatabase extends SmashPigDatabase {
 		} else {
 			// Insert a new row
 			$inserting = true;
-			list( $fieldList, $paramList ) = self::formatInsertParameters(
+			[ $fieldList, $paramList ] = self::formatInsertParameters(
 				$message
 			);
 			$sql = "INSERT INTO payments_fraud ( $fieldList ) VALUES ( $paramList )";

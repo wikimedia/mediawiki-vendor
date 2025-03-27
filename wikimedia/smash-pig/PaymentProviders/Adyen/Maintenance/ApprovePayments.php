@@ -54,8 +54,7 @@ class ApprovePayments extends MaintenanceBase {
 					Logger::info( "Could not approve payment $gatewayTxnId" );
 					Logger::info( 'Full response: ' . json_encode( $result->getRawResponse() ) );
 				}
-			}
-			catch ( \Exception $ex ) {
+			} catch ( \Exception $ex ) {
 				Logger::error( "Could not approve payment $gatewayTxnId", null, $ex );
 			}
 			$reader->next();

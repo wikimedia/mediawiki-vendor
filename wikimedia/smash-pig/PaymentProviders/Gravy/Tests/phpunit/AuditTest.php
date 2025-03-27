@@ -44,7 +44,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 		$processor = new GravyAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/settlement_repor_no_captured_trnxs.csv' );
 		// 2 rows in the sample report but non with expected capture_succeeded status.
-		$this->assertEmpty( $output );
+		$this->assertCount( 0, $output );
 	}
 
 	public function testRefundsProcessed(): void {

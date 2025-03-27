@@ -47,8 +47,7 @@ class DeletePaymentToken extends MaintenanceBase {
 			try {
 				$provider->deleteRecurringPaymentToken( $params );
 				Logger::info( "Successfully deleted payment token $paymentToken" );
-			}
-			catch ( \Exception $ex ) {
+			} catch ( \Exception $ex ) {
 				Logger::error( "Could not delete payment with token id $paymentToken", null, $ex );
 			}
 			$reader->next();

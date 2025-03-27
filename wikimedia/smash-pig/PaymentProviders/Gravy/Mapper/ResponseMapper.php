@@ -23,7 +23,7 @@ class ResponseMapper {
 		return $this->mapSuccessfulPaymentResponse( $response );
 	}
 
-	public function mapDonorResponse( array $response ) : array {
+	public function mapDonorResponse( array $response ): array {
 		$buyer = $response;
 		$donorDetails = $buyer['billing_details'] ?? [];
 		$params = [
@@ -146,7 +146,7 @@ class ResponseMapper {
 
 	/**
 	 * Maps from gravy payment response payment method details
-	 * @param array $result
+	 * @param array &$result
 	 * @param array $response
 	 * @return void
 	 */
@@ -168,7 +168,7 @@ class ResponseMapper {
 
 	/**
 	 * Maps from gravy payment response donor details
-	 * @param array $result
+	 * @param array &$result
 	 * @param array $response
 	 * @return void
 	 */
@@ -204,7 +204,7 @@ class ResponseMapper {
 
 	/**
 	 * Maps from gravy payment response payment service details
-	 * @param array $result
+	 * @param array &$result
 	 * @param array $response
 	 * @return void
 	 */

@@ -161,10 +161,10 @@ class ProcessCaptureRequestJob implements Runnable {
 				// the pending database in case the authorization is captured via the console.
 				break;
 			case self::ACTION_MISSING:
-				// Missing donor details - retry later, unless this is a likely recurring installment
 				if ( !$this->isLikelyRecurring() ) {
 					throw new RetryableException( 'Missing donor details' );
 				}
+				// Missing donor details - retry later, unless this is a likely recurring installment
 			case self::ACTION_IGNORE:
 				// We got a second Authorisation IPN for the same donation attempt with
 				// the exact same PSP reference. Just drop the second one.

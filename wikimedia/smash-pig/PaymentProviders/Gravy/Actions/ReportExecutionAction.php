@@ -11,7 +11,7 @@ use SmashPig\PaymentProviders\Gravy\Jobs\DownloadReportJob;
 use SmashPig\PaymentProviders\Gravy\Responses\ReportResponse;
 
 class ReportExecutionAction extends GravyAction {
-	 public function execute( ListenerMessage $msg ): bool {
+	public function execute( ListenerMessage $msg ): bool {
 		$tl = new TaggedLogger( 'TransactionAction' );
 		$reportExecutionDetails = $this->getReportExecutionDetails( $msg );
 
@@ -39,7 +39,7 @@ class ReportExecutionAction extends GravyAction {
 		}
 
 		return true;
-	 }
+	}
 
 	public function getReportExecutionDetails( ReportExecutionMessage $msg ): ReportResponse {
 		$providerConfiguration = Context::get()->getProviderConfiguration();

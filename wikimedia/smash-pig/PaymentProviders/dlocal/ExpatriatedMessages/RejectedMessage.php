@@ -16,7 +16,7 @@ class RejectedMessage extends DlocalMessage {
 	/**
 	 * @return array
 	 */
-	public function normalizeForQueue() : array {
+	public function normalizeForQueue(): array {
 		// Normalize the payment method and submethod
 		[ $method, $submethod ] = $this->decodePaymentMethod();
 

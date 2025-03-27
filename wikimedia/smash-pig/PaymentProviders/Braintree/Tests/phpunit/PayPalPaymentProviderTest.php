@@ -25,7 +25,7 @@ class PayPalPaymentProviderTest extends BaseBraintreeTest {
 		$provider = new PaypalPaymentProvider( [ 'merchant-accounts' => $this->merchantAccounts ] );
 		$response = $provider->createPayment( $request );
 		$validationError = $response->getValidationErrors();
-		$this->assertEquals( $validationError[0]->getField(), 'device_data' );
+		$this->assertEquals( 'device_data', $validationError[0]->getField() );
 	}
 
 	public function testPaymentWithNotSupportedCurrencyError() {
@@ -40,7 +40,7 @@ class PayPalPaymentProviderTest extends BaseBraintreeTest {
 		$provider = new PaypalPaymentProvider( [ 'merchant-accounts' => $this->merchantAccounts ] );
 		$response = $provider->createPayment( $request );
 		$validationError = $response->getValidationErrors();
-		$this->assertEquals( $validationError[0]->getField(), 'currency' );
+		$this->assertEquals( 'currency', $validationError[0]->getField() );
 	}
 
 	public function testAuthorizePaymentPaypal() {
@@ -206,7 +206,7 @@ class PayPalPaymentProviderTest extends BaseBraintreeTest {
 		];
 		$response = $provider->createPayment( $requestWithoutPaymentToken );
 		$validationError = $response->getValidationErrors();
-		$this->assertEquals( $validationError[0]->getField(), 'payment_token' );
+		$this->assertEquals( 'payment_token', $validationError[0]->getField() );
 
 		$requestWithoutAmount = [
 			"payment_token" => "fake-valid-nonce",
@@ -216,7 +216,7 @@ class PayPalPaymentProviderTest extends BaseBraintreeTest {
 		];
 		$response = $provider->createPayment( $requestWithoutAmount );
 		$validationError = $response->getValidationErrors();
-		$this->assertEquals( $validationError[0]->getField(), 'amount' );
+		$this->assertEquals( 'amount', $validationError[0]->getField() );
 
 		$requestWithoutOrderId = [
 			"payment_token" => "fake-valid-nonce",
@@ -226,6 +226,6 @@ class PayPalPaymentProviderTest extends BaseBraintreeTest {
 		];
 		$response = $provider->createPayment( $requestWithoutOrderId );
 		$validationError = $response->getValidationErrors();
-		$this->assertEquals( $validationError[0]->getField(), 'order_id' );
+		$this->assertEquals( 'order_id', $validationError[0]->getField() );
 	}
 }

@@ -81,13 +81,13 @@ class GravyAudit implements AuditParser {
 		return $normalizedLineData;
 	}
 
-  /**
-   * Extract payment processor from payment_service_definition_id and return it
-   *
-   * @param array $data
-   *
-   * @return array
-   */
+	/**
+	 * Extract payment processor from payment_service_definition_id and return it
+	 *
+	 * @param array $data
+	 *
+	 * @return array
+	 */
 	protected function addBackendProcessor( array $data ): array {
 		if ( isset( $data['payment_service_definition_id'] ) ) {
 			$data['backend_processor'] = GravyHelper::extractProcessorNameFromServiceDefinitionId( $data['payment_service_definition_id'] );
@@ -96,13 +96,13 @@ class GravyAudit implements AuditParser {
 		return $data;
 	}
 
-  /**
-   * Pull ct_id from order_id and return it
-   *
-   * @param array $data
-   *
-   * @return string|null
-   */
+	/**
+	 * Pull ct_id from order_id and return it
+	 *
+	 * @param array $data
+	 *
+	 * @return string|null
+	 */
 	protected function getContributionTrackingId( array $data ): ?string {
 		if ( isset( $data['order_id'] ) ) {
 			return explode( '.', $data['order_id'] )[0];
@@ -110,13 +110,13 @@ class GravyAudit implements AuditParser {
 		return null;
 	}
 
-  /**
-   * Convert date string to timestamp
-   *
-   * @param array $data
-   *
-   * @return int|null
-   */
+	/**
+	 * Convert date string to timestamp
+	 *
+	 * @param array $data
+	 *
+	 * @return int|null
+	 */
 	protected function getDateAsTimestamp( array $data ): ?int {
 		if ( isset( $data['date'] ) ) {
 			return UtcDate::getUtcTimestamp( $data['date'] );
@@ -124,13 +124,13 @@ class GravyAudit implements AuditParser {
 		return null;
 	}
 
-  /**
-   * Convert amount from cents (minor units) to major units
-   *
-   * @param array $data
-   *
-   * @return array
-   */
+	/**
+	 * Convert amount from cents (minor units) to major units
+	 *
+	 * @param array $data
+	 *
+	 * @return array
+	 */
 	protected function convertAmountFields( array $data ): array {
 		$amountFields = [ 'settled_gross', 'gross' ];
 		foreach ( $amountFields as $field ) {
@@ -141,15 +141,15 @@ class GravyAudit implements AuditParser {
 		return $data;
 	}
 
-  /**
-   * Check to see if row contains refund and add refund-specific fields if so
-   *
-   * @param \SmashPig\Core\DataFiles\HeadedCsvReader $csv
-   * @param array $data
-   *
-   * @return array
-   * @throws \SmashPig\Core\DataFiles\DataFileException
-   */
+	/**
+	 * Check to see if row contains refund and add refund-specific fields if so
+	 *
+	 * @param \SmashPig\Core\DataFiles\HeadedCsvReader $csv
+	 * @param array $data
+	 *
+	 * @return array
+	 * @throws \SmashPig\Core\DataFiles\DataFileException
+	 */
 	protected function addRefundFieldsIfRefundAmountSet( HeadedCsvReader $csv, array $data ): array {
 		$refundedAmount = $csv->currentCol( 'refunded_amount' );
 		if ( $refundedAmount !== null && $refundedAmount > 0 ) {
@@ -168,14 +168,14 @@ class GravyAudit implements AuditParser {
 		return array_key_exists( 'type', $row ) && $row['type'] === self::TRANSACTION_TYPE_REFUND;
 	}
 
-  /**
-   * Gravy combine the payment and refund into a single row in the settlement
-   * report, so we split them out and transform as needed when parsing the file.
-   *
-   * @param array $row
-   *
-   * @return array
-   */
+	/**
+	 * Gravy combine the payment and refund into a single row in the settlement
+	 * report, so we split them out and transform as needed when parsing the file.
+	 *
+	 * @param array $row
+	 *
+	 * @return array
+	 */
 	protected function extractPaymentAndRefundFromRow( array $row ): array {
 		// tidy up the payment row: remove refund info
 		$payment = $row;

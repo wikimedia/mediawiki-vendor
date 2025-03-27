@@ -12,7 +12,7 @@ use SmashPig\Tests\BaseSmashPigUnitTestCase;
  * @group Audit
  */
 class AuditTest extends BaseSmashPigUnitTestCase {
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 		$ctx = Context::get();
 		$config = AmazonTestConfiguration::instance( $ctx->getGlobalConfiguration() );
@@ -25,7 +25,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessDonation() {
 		$processor = new AmazonAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/audit/2015-10-01-SETTLEMENT_DATA_371273040777777.csv' );
-		$this->assertSame( 1, count( $output ), 'Should have found one donation' );
+		$this->assertCount( 1, $output, 'Should have found one donation' );
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'amazon',
@@ -48,7 +48,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessOffPaymentsDonation() {
 		$processor = new AmazonAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/audit/2018-09-18-SETTLEMENT_DATA_11308757837017792.csv' );
-		$this->assertSame( 1, count( $output ), 'Should have found one donation' );
+		$this->assertCount( 1, $output, 'Should have found one donation' );
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'amazon',
@@ -70,7 +70,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessRefund() {
 		$processor = new AmazonAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/audit/2015-10-06-REFUND_DATA_414749300022222.csv' );
-		$this->assertSame( 1, count( $output ), 'Should have found one refund' );
+		$this->assertCount( 1, $output, 'Should have found one refund' );
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'amazon',
@@ -90,7 +90,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessChargeback() {
 		$processor = new AmazonAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/audit/2015-10-06-REFUND_DATA_414749300033333.csv' );
-		$this->assertSame( 1, count( $output ), 'Should have found one chargeback' );
+		$this->assertCount( 1, $output, 'Should have found one chargeback' );
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'amazon',

@@ -56,7 +56,7 @@ class Api {
 	 * @throws ApiException
 	 */
 	public function makeApiCall(
-		string $path, string $method = 'POST', array $data = null, bool $idempotent = false
+		string $path, string $method = 'POST', ?array $data = null, bool $idempotent = false
 	) {
 		if ( is_array( $data ) ) {
 			// FIXME: this is weird, maybe OutboundRequest should handle this part

@@ -16,7 +16,7 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 	 */
 	protected $api;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 		$providerConfig = $this->setProviderConfiguration( 'braintree' );
 		$this->api = $this->getMockBuilder( 'SmashPig\PaymentProviders\Braintree\Api' )
@@ -53,19 +53,19 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 			"input",
 			"paymentMethodId"
 		] );
-		$this->assertEquals( $validationError, 'payment_method' );
+		$this->assertEquals( 'payment_method', $validationError );
 		$validationError = ValidationErrorMapper::getValidationErrorField( [
 			"input",
 			"transaction",
 			"amount"
 		] );
-		$this->assertEquals( $validationError, 'amount' );
+		$this->assertEquals( 'amount', $validationError );
 		$validationError = ValidationErrorMapper::getValidationErrorField( [
 			"input",
 			"transaction",
 			"mock"
 		] );
-		$this->assertEquals( $validationError, 'general' );
+		$this->assertEquals( 'general', $validationError );
 	}
 
 	/**
@@ -101,7 +101,7 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$provider = new PaymentProvider();
 		$response = $provider->refundPayment( $request );
 		$this->assertEquals( FinalStatus::FAILED, $response->getStatus() );
-		$this->assertSame( 1, count( array_merge( $response->getValidationErrors(), $response->getErrors() ) ) );
+		$this->assertCount( 1, array_merge( $response->getValidationErrors(), $response->getErrors() ) );
 		$this->assertEquals( '{"errorClass":"NOT_FOUND","inputPath":["input","transactionId"],"message":"An object with this ID was not found."}', $response->getErrors()[0]->getDebugMessage() );
 	}
 
@@ -138,7 +138,7 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$provider = new PaymentProvider();
 		$response = $provider->refundPayment( $request );
 		$this->assertEquals( FinalStatus::FAILED, $response->getStatus() );
-		$this->assertSame( 1, count( array_merge( $response->getValidationErrors(), $response->getErrors() ) ) );
+		$this->assertCount( 1, array_merge( $response->getValidationErrors(), $response->getErrors() ) );
 		$this->assertEquals( 'Transaction has already been fully refunded.', $response->getValidationErrors()[0]->getDebugMessage() );
 	}
 
@@ -179,7 +179,7 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$response = $provider->refundPayment( $request );
 		$this->assertEquals( FinalStatus::FAILED, $response->getStatus() );
 		$this->assertEquals( 'SETTLEMENT_DECLINED', $response->getRawStatus() );
-		$this->assertSame( 1, count( array_merge( $response->getValidationErrors(), $response->getErrors() ) ) );
+		$this->assertCount( 1, array_merge( $response->getValidationErrors(), $response->getErrors() ) );
 		$this->assertEquals( '{"message":"PayPal or Venmo account not configured to refund more than settled amount"}', $response->getErrors()[0]->getDebugMessage() );
 	}
 
@@ -212,6 +212,6 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$provider = new PaymentProvider();
 		$response = $provider->refundPayment( $request );
 		$this->assertEquals( FinalStatus::COMPLETE, $response->getStatus() );
-		$this->assertSame( 0, count( array_merge( $response->getValidationErrors(), $response->getErrors() ) ) );
+		$this->assertCount( 0, array_merge( $response->getValidationErrors(), $response->getErrors() ) );
 	}
 }

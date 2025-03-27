@@ -10,6 +10,6 @@ interface ICancelablePaymentProvider {
 	 *
 	 * @return CancelPaymentResponse
 	 */
-	public function cancelPayment( string $gatewayTxnId ) : CancelPaymentResponse;
+	public function cancelPayment( string $gatewayTxnId ): CancelPaymentResponse;
 
 }

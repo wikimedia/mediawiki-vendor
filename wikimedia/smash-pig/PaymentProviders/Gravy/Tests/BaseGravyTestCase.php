@@ -18,7 +18,7 @@ class BaseGravyTestCase extends BaseSmashPigUnitTestCase {
 	 */
 	protected $mockApi;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 		$this->mockApi = $this->createMock( 'SmashPig\PaymentProviders\Gravy\Api' );
 		$ctx = Context::get();

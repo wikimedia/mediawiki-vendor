@@ -33,7 +33,7 @@ abstract class AbstractTransformer implements Transformer {
 
 	/**
 	 * @param array $original original input data
-	 * @param array $transformed copy of $original passed in by reference to be updated
+	 * @param array &$transformed copy of $original passed in by reference to be updated
 	 * and passed back as transformed output data.
 	 *
 	 */

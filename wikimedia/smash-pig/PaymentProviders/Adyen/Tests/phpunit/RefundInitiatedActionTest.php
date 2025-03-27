@@ -16,7 +16,7 @@ class RefundInitiatedActionTest extends BaseAdyenTestCase {
 	 */
 	protected $refundQueue;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 		$this->refundQueue = Context::get()->getGlobalConfiguration()
 			->object( 'data-store/refund' );

@@ -12,7 +12,7 @@ class PaymentsFraudDatabaseTest extends BaseSmashPigUnitTestCase {
 	 */
 	protected $db;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 		$this->db = PaymentsFraudDatabase::get();
 	}

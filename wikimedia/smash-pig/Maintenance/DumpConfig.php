@@ -3,7 +3,6 @@
 require 'MaintenanceBase.php';
 
 use SmashPig\Core\Context;
-
 use Symfony\Component\Yaml\Yaml;
 
 /**

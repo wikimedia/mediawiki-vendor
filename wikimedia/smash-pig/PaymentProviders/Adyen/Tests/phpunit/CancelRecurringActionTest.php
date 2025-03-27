@@ -14,7 +14,7 @@ class CancelRecurringActionTest extends BaseAdyenTestCase {
 
 	protected $pendingMessage;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 		$globalConfig = Context::get()->getGlobalConfiguration();
 		$this->jobQueue = $globalConfig->object( 'data-store/recurring' );

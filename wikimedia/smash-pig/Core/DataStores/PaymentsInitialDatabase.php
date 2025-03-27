@@ -97,7 +97,7 @@ class PaymentsInitialDatabase extends SmashPigDatabase {
 	 * @throws DataStoreException
 	 */
 	public function storeMessage( array $message ): string {
-		list( $fieldList, $paramList ) = self::formatInsertParameters(
+		[ $fieldList, $paramList ] = self::formatInsertParameters(
 			$message
 		);
 

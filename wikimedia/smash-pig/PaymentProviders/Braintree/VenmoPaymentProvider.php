@@ -41,7 +41,7 @@ class VenmoPaymentProvider extends PaymentProvider {
 
 	/**
 	 * @param array $params
-	 * @param array $apiParams
+	 * @param array &$apiParams
 	 * @return array
 	 */
 	protected function indicateMerchant( array $params, array &$apiParams ) {
@@ -52,7 +52,7 @@ class VenmoPaymentProvider extends PaymentProvider {
 	/**
 	 * Make sure email exist for venmo donations
 	 *
-	 * @param array $params
+	 * @param array &$params
 	 * @return void
 	 */
 	public function getMissingParams( array &$params ): void {

@@ -76,7 +76,7 @@ class PaymentProvider implements IPaymentProvider, IGetLatestPaymentStatusProvid
 	 *
 	 * @return CreateRecurringPaymentsProfileResponse
 	 */
-	public function createRecurringPaymentsProfile( array $params ) : CreateRecurringPaymentsProfileResponse {
+	public function createRecurringPaymentsProfile( array $params ): CreateRecurringPaymentsProfileResponse {
 		$rawResponse = $this->api->createRecurringPaymentsProfile( $params );
 
 		$response = ( new CreateRecurringPaymentsProfileResponse() )

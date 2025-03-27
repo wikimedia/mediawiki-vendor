@@ -3,7 +3,6 @@
 use SmashPig\Core\Context;
 use SmashPig\Core\GlobalConfiguration;
 use SmashPig\Core\Logging\Logger;
-
 use SmashPig\Core\ProviderConfiguration;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Response;
