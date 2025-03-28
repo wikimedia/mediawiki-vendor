@@ -2145,6 +2145,7 @@ return array(
     'SmashPig\\PaymentProviders\\Gravy\\Mapper\\RedirectPaymentProviderResponseMapper' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/Mapper/RedirectPaymentProviderResponseMapper.php',
     'SmashPig\\PaymentProviders\\Gravy\\Mapper\\RequestMapper' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/Mapper/RequestMapper.php',
     'SmashPig\\PaymentProviders\\Gravy\\Mapper\\ResponseMapper' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/Mapper/ResponseMapper.php',
+    'SmashPig\\PaymentProviders\\Gravy\\PaymentMethod' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/PaymentMethod.php',
     'SmashPig\\PaymentProviders\\Gravy\\PaymentProvider' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/PaymentProvider.php',
     'SmashPig\\PaymentProviders\\Gravy\\PaypalPaymentProvider' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/PaypalPaymentProvider.php',
     'SmashPig\\PaymentProviders\\Gravy\\RedirectPaymentProvider' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/RedirectPaymentProvider.php',
