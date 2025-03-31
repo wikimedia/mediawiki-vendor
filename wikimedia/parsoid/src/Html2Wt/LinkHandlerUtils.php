@@ -15,6 +15,7 @@ use Wikimedia\Parsoid\Html2Wt\ConstrainedText\ConstrainedText;
 use Wikimedia\Parsoid\Html2Wt\ConstrainedText\ExtLinkText;
 use Wikimedia\Parsoid\Html2Wt\ConstrainedText\MagicLinkText;
 use Wikimedia\Parsoid\Html2Wt\ConstrainedText\WikiLinkText;
+use Wikimedia\Parsoid\Html2Wt\DOMHandlers\FallbackHTMLHandler;
 use Wikimedia\Parsoid\NodeData\DataParsoid;
 use Wikimedia\Parsoid\NodeData\TempData;
 use Wikimedia\Parsoid\Utils\ContentUtils;
@@ -32,8 +33,8 @@ use Wikimedia\Parsoid\Wt2Html\TokenizerUtils;
  * Serializes link markup.
  */
 class LinkHandlerUtils {
-	private static $REDIRECT_TEST_RE = '/^([ \t\n\r\0\x0b])*$/D';
-	private static $MW_TITLE_WHITESPACE_RE
+	private const REDIRECT_TEST_RE = '/^([ \t\n\r\0\x0b])*$/D';
+	private const MW_TITLE_WHITESPACE_RE
 		= '/[ _\xA0\x{1680}\x{180E}\x{2000}-\x{200A}\x{2028}\x{2029}\x{202F}\x{205F}\x{3000}]+/u';
 
 	/**
@@ -579,7 +580,7 @@ class LinkHandlerUtils {
 				// normalize as titles and compare
 				// FIXME: This will strip an interwiki prefix.  Is that right?
 				$env->normalizedTitleKey( $contentString, true )
-					=== preg_replace( self::$MW_TITLE_WHITESPACE_RE, '_', $decodedTarget ) ||
+					=== preg_replace( self::MW_TITLE_WHITESPACE_RE, '_', $decodedTarget ) ||
 				// Relative link
 				(
 					(
@@ -819,7 +820,7 @@ class LinkHandlerUtils {
 			}
 
 			// Buffer redirect text if it is not in start of file position
-			if ( !preg_match( self::$REDIRECT_TEST_RE, $state->out . $state->currLine->text ) ) {
+			if ( !preg_match( self::REDIRECT_TEST_RE, $state->out . $state->currLine->text ) ) {
 				$state->redirectText = $linkData->prefix . '[[' . $linkTarget . ']]';
 				$state->emitChunk( '', $node ); // Flush separators for this node
 				// Flush separators for this node
@@ -1058,6 +1059,7 @@ class LinkHandlerUtils {
 				"Couldn't parse media structure: ",
 				DOMCompat::getOuterHTML( $node )
 			);
+			( new FallbackHTMLHandler )->handle( $node, $state );
 			return;
 		}
 		$ct = self::figureToConstrainedText( $state, $ms );
