@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "875f096504c168dfe277b729a3bdd830",
+    "content-hash": "228d5356c075f67064d48908fad52682",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -8407,16 +8407,16 @@
         },
         {
             "name": "wikimedia/shellbox",
-            "version": "4.1.2",
+            "version": "4.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-Shellbox.git",
-                "reference": "e23ef2634a2433fa597078829869536b558ccdd2"
+                "reference": "b5aa54be64f28abf1eaa166164d4929b61a2c3ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Shellbox/zipball/e23ef2634a2433fa597078829869536b558ccdd2",
-                "reference": "e23ef2634a2433fa597078829869536b558ccdd2",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Shellbox/zipball/b5aa54be64f28abf1eaa166164d4929b61a2c3ac",
+                "reference": "b5aa54be64f28abf1eaa166164d4929b61a2c3ac",
                 "shasum": ""
             },
             "require": {
@@ -8430,8 +8430,8 @@
                 "wikimedia/wikipeg": "^4.0.0"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "45.0.0",
-                "mediawiki/mediawiki-phan-config": "0.15.0",
+                "mediawiki/mediawiki-codesniffer": "46.0.0",
+                "mediawiki/mediawiki-phan-config": "0.15.1",
                 "mediawiki/minus-x": "1.1.3",
                 "ockcyp/covers-validator": "1.6.0",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
@@ -8463,9 +8463,9 @@
             "description": "Library and server for containerized shell execution",
             "homepage": "https://www.mediawiki.org/wiki/Shellbox",
             "support": {
-                "source": "https://github.com/wikimedia/mediawiki-libs-Shellbox/tree/4.1.2"
+                "source": "https://github.com/wikimedia/mediawiki-libs-Shellbox/tree/4.2.0"
             },
-            "time": "2025-01-07T13:58:41+00:00"
+            "time": "2025-03-24T10:51:04+00:00"
         },
         {
             "name": "wikimedia/testing-access-wrapper",
