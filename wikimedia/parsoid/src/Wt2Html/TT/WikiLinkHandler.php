@@ -28,7 +28,6 @@ use Wikimedia\Parsoid\Tokens\SelfclosingTagTk;
 use Wikimedia\Parsoid\Tokens\SourceRange;
 use Wikimedia\Parsoid\Tokens\TagTk;
 use Wikimedia\Parsoid\Tokens\Token;
-use Wikimedia\Parsoid\Utils\ContentUtils;
 use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\PHPUtils;
@@ -200,7 +199,7 @@ class WikiLinkHandler extends TokenHandler {
 		// <link rel="mw:PageProp/redirect"> token from it.
 
 		$rlink = new SelfclosingTagTk( 'link',
-			Utils::clone( $token->attribs ),
+			Utils::cloneArray( $token->attribs ?? [] ),
 			clone $token->dataParsoid,
 			$token->dataMw ? clone $token->dataMw : null );
 		$wikiLinkTk = $rlink->dataParsoid->linkTk;
@@ -212,7 +211,7 @@ class WikiLinkHandler extends TokenHandler {
 
 		// Transfer href attribute back to wikiLinkTk, since it may have been
 		// template-expanded in the pipeline prior to this point.
-		$wikiLinkTk->attribs = Utils::clone( $token->attribs );
+		$wikiLinkTk->attribs = Utils::cloneArray( $token->attribs ?? [] );
 
 		// Set "redirect" attribute on the wikilink token to indicate that
 		// image and category links should be handled as plain links.
@@ -1571,11 +1570,7 @@ class WikiLinkHandler extends TokenHandler {
 
 				// Use parsed DOM given in `captionDOM`
 				// FIXME: Does this belong in `dataMw.attribs`?
-				// FIXME: This should use a rich attribute with a fragment type
-				$dataMw->caption = ContentUtils::ppToXML( $captionDOM, [
-					'innerXML' => true,
-					'fragment' => true,
-				] );
+				$dataMw->caption = $captionDOM;
 			}
 		} else {
 			// We always add a figcaption for blocks

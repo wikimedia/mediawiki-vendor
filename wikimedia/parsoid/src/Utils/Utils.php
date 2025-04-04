@@ -27,6 +27,8 @@ class Utils {
 	/** Regular fragment for matching a wikitext comment */
 	public const COMMENT_REGEXP = '/' . self::COMMENT_REGEXP_FRAGMENT . '/';
 
+	public const COMMENT_OR_WS_REGEXP = '/^(\s|' . self::COMMENT_REGEXP_FRAGMENT . ')*$/D';
+
 	/**
 	 * Strip Parsoid id prefix from aboutID
 	 *
@@ -68,14 +70,19 @@ class Utils {
 		return isset( Consts::$HTML['VoidTags'][$name] );
 	}
 
-	/**
-	 * recursive deep clones helper function
-	 *
-	 * @param object $el object
-	 * @return object
-	 */
-	private static function recursiveClone( $el ) {
-		return self::clone( $el, true );
+	public static function cloneArray( array $arr ): array {
+		return array_map(
+			static function ( $val ) {
+				if ( is_array( $val ) ) {
+					return self::cloneArray( $val );
+				} elseif ( is_object( $val ) ) {
+					return clone $val;
+				} else {
+					return $val;
+				}
+			},
+			$arr
+		);
 	}
 
 	/**
@@ -91,6 +98,7 @@ class Utils {
 	 * @param bool $deepClone
 	 * @param bool $debug
 	 * @return object|array
+	 * @deprecated Use native PHP cloning and Utils::cloneArray when needed
 	 */
 	public static function clone( $obj, $deepClone = true, $debug = false ) {
 		if ( $debug ) {
@@ -101,6 +109,7 @@ class Utils {
 				if ( $deepClone ) {
 					return array_map(
 						static function ( $o ) {
+							// @phan-suppress-next-line PhanDeprecatedFunction
 							return Utils::clone( $o, true, true );
 						},
 						$obj

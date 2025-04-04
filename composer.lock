@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "228d5356c075f67064d48908fad52682",
+    "content-hash": "4987bbe1f28dbebbbb8efeb46c1e7e5f",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -7884,16 +7884,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.21.0-a23",
+            "version": "v0.21.0-a24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
-                "reference": "8eb59dc46c12037a88dc6e1a3ed3b53f44078af0"
+                "reference": "8b6e6a1ff8ea3107a676fef024825fea2d6b3848"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/8eb59dc46c12037a88dc6e1a3ed3b53f44078af0",
-                "reference": "8eb59dc46c12037a88dc6e1a3ed3b53f44078af0",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/8b6e6a1ff8ea3107a676fef024825fea2d6b3848",
+                "reference": "8b6e6a1ff8ea3107a676fef024825fea2d6b3848",
                 "shasum": ""
             },
             "require": {
@@ -7901,6 +7901,7 @@
                 "composer/semver": "^3.4.0",
                 "ext-dom": "*",
                 "ext-json": "*",
+                "justinrainbow/json-schema": "5.3.0",
                 "liuggio/statsd-php-client": "^1.0.18",
                 "php": ">=7.4.0",
                 "psr/container": "~1.1.2 || ~2.0.2",
@@ -7963,10 +7964,10 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.21.0-a23",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.21.0-a24",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
-            "time": "2025-03-28T17:18:55+00:00"
+            "time": "2025-04-04T03:30:03+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",

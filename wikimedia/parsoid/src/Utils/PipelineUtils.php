@@ -148,10 +148,25 @@ class PipelineUtils {
 			PHPUtils::jsonEncode( $dp['src'] ) . "\n";
 		$dump .= str_repeat( '-', 80 ) . "\n";
 		$dump .= $src . "\n";
+		$pfragMapStr = $env->pFragmentMapToString();
+		if ( $pfragMapStr ) {
+			$dump .= "----- P-FRAGMENT MAP -----\n";
+			$dump .= $pfragMapStr;
+		}
 		$dump .= str_repeat( '-', 80 ) . "\n";
 		$env->writeDump( $dump );
 	}
 
+	/**
+	 * Prepare a PFragment for our parsing pipeline: split the fragment,
+	 * convert it to embedded fragment markers, and add those markers to
+	 * the pfragment map in the env.
+	 * @param Env $env
+	 * @param Frame $frame
+	 * @param PFragment $pFragment
+	 * @param array $opts
+	 * @return array{frame:Frame,wikitext:string,srcOffsets:?SourceRange}
+	 */
 	public static function preparePFragment(
 		Env $env,
 		Frame $frame,

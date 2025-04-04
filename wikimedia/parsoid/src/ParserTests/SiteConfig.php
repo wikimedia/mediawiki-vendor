@@ -68,6 +68,11 @@ class SiteConfig extends ApiSiteConfig {
 		$this->suppressLogger->pushHandler( $filterHandler );
 	}
 
+	/** @inheritDoc */
+	protected function getCustomSiteConfigFileName(): string {
+		return ParserHook::getParserTestConfigFileName();
+	}
+
 	public function reset() {
 		parent::reset();
 
@@ -211,6 +216,9 @@ class SiteConfig extends ApiSiteConfig {
 
 			case 'CiteResponsiveReferencesThreshold':
 				return $this->responsiveReferences['threshold'];
+
+			case 'ParsoidFragmentInput':
+				return false;
 
 			case 'ParsoidExperimentalParserFunctionOutput':
 				return $this->v3pf;

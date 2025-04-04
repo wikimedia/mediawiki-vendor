@@ -60,7 +60,9 @@ use Wikimedia\Parsoid\Ext\ParsoidExtensionAPI;
  * their own fragment types: as long as they are JsonCodecable and
  * define one of ::asDom() or ::asHtmlString() they will interoperate
  * with Parsoid and other extensions, albeit possibly as an opaque
- * strip marker.
+ * strip marker.  Consider returning a PFragment implementing the
+ * Arguments interface if you want to allow argument
+ * interpolation into other transclusions.
  *
  * For example, Wikifunctions might define a PFragment for ZObjects,
  * which would allow nested wikifunction invocations to transfer
@@ -241,6 +243,66 @@ abstract class PFragment implements JsonCodecable {
 	public function markerSkipCallback( callable $callback ): PFragment {
 		// This is overridden in WikitextPFragment
 		return $this;
+	}
+
+	/**
+	 * Trim leading and trailing wikitext whitespace from this fragment.
+	 *
+	 * For non-wikitext fragments, this will typically return the
+	 * original fragment unmodified: it does *not* trim whitespace
+	 * from within HTML strings or DOM nodes.  For custom fragment
+	 * types which can serialize to wikitext, this may trim whitespace
+	 * from the wikitext serialization.
+	 *
+	 * @return PFragment
+	 */
+	public function trim(): PFragment {
+		// This is overridden in WikitextPFragment
+		return $this;
+	}
+
+	/**
+	 * Expand templates, extension tags, and parser functions in a fragment.
+	 *
+	 * Fragment values are typically provided as lazy arguments with delayed
+	 * evaluation; see [[en:Lazy_evaluation]].  The ::expand() method will
+	 * "demand" a value, expanding templates and in the process executing
+	 * parser functions and extension tags, making the argument strict.
+	 * The ::asDom() and ::asHtmlString() methods perform a similar
+	 * strict-evaluation function in the process of rendering to DOM/HTML.
+	 *
+	 * Expansion is generally considered to be idempotent: expanding an
+	 * expanded value should be a no-op.
+	 *
+	 * @see PPFrame::expand() in core
+	 * @see frame:expandTemplate(), frame:getArgument():expand() in Scribunto
+	 */
+	public function expand( ParsoidExtensionAPI $ext, ?bool &$error = null ): PFragment {
+		return $ext->preprocessFragment( $this, $error );
+	}
+
+	/**
+	 * Return the 'raw text' of this fragment.
+	 *
+	 * This helper method implements several conventions for passing
+	 * raw text, including surrounding the desired text with <nowiki>
+	 * (T390345).
+	 */
+	public function toRawText( ParsoidExtensionAPI $ext ): string {
+		/* TODO T390345: This should expand the fragment and then:
+		 * - If the trimmed result consists of a <nowiki>, then return the
+		 *   contents of that <nowiki>
+		 * - If the trimmed result consists of a LiteralPFragment, then return
+		 *   the literal contents
+		 * - Otherwise, return the result as wikitext with strip
+		 *   markers killed (legacy compat).
+		 *
+		 * Note that <nowiki> effectively decodes entities, so the result
+		 * is not *exactly* raw text.  Other methods can be used (for
+		 * example, a FragmentHandler which returns a LiteralPFragment)
+		 * if we need literal treatment of `&`.
+		 */
+		return $this->asDom( $ext )->textContent;
 	}
 
 	/**
