@@ -7,6 +7,7 @@ use Wikimedia\Assert\Assert;
 use Wikimedia\Assert\UnreachableException;
 use Wikimedia\Parsoid\Ext\AsyncResult;
 use Wikimedia\Parsoid\Ext\ParsoidExtensionAPI;
+use Wikimedia\Parsoid\Fragments\DomPFragment;
 use Wikimedia\Parsoid\Fragments\WikitextPFragment;
 use Wikimedia\Parsoid\NodeData\TempData;
 use Wikimedia\Parsoid\Tokens\CommentTk;
@@ -17,6 +18,7 @@ use Wikimedia\Parsoid\Tokens\SelfclosingTagTk;
 use Wikimedia\Parsoid\Tokens\SourceRange;
 use Wikimedia\Parsoid\Tokens\TagTk;
 use Wikimedia\Parsoid\Tokens\Token;
+use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\PHPUtils;
 use Wikimedia\Parsoid\Utils\PipelineUtils;
 use Wikimedia\Parsoid\Utils\Title;
@@ -305,7 +307,7 @@ class TemplateHandler extends TokenHandler {
 		[ 'key' => $canonicalFunctionName, 'isNative' => $isNative ] =
 			  $siteConfig->getMagicWordForParserFunction( $prefix );
 		if ( $canonicalFunctionName !== null && !$isNative ) {
-			// Parsoid's FragmentHandler handles both magic variables (T391063)
+			// Parsoid's PFragmentHandler handles both magic variables (T391063)
 			// and zero-argument parser functions, but in the legacy
 			// parser "nohash" parser functions without a colon must
 			// be magic variables; they won't be invoked as parser
@@ -314,7 +316,7 @@ class TemplateHandler extends TokenHandler {
 				$canonicalFunctionName = null;
 			}
 		}
-		// Ensure that magic words registered by parsoid fragment handlers
+		// Ensure that magic words registered by parsoid PFragment handlers
 		// aren't confused for magic variables implemented by the legacy parser
 		if ( $magicWordVar && $canonicalFunctionName === null ) {
 			$state->variableName = $magicWordVar;
@@ -364,19 +366,20 @@ class TemplateHandler extends TokenHandler {
 				'localName' => $prefix,
 				'title' => $syntheticTitle, // FIXME: Some made up synthetic title
 				'pfArg' => $pfArg,
+				'haveColon' => $haveColon, // FIXME: T391063
 				'srcOffsets' => new SourceRange(
 					$srcOffsets->start + strlen( $untrimmedPrefix ) + ( $haveColon ? 1 : 0 ),
 					$srcOffsets->end ),
 			];
 
-			// Check if we have a Parsoid fragment handler for this parser func
+			// Check if we have a Parsoid PFragment handler for this parser func
 			// ($canonicalFunctionName is invalid/not localized if this is
 			// $broken)
-			$fragmentHandler = ( $broken || !$isNative ) ? null :
-				$siteConfig->getFragmentHandlerImpl( $canonicalFunctionName );
-			if ( $fragmentHandler ) {
-				$ret['handler'] = $fragmentHandler;
-				$ret['handlerOptions'] = $siteConfig->getFragmentHandlerConfig(
+			$pFragmentHandler = ( $broken || !$isNative ) ? null :
+				$siteConfig->getPFragmentHandlerImpl( $canonicalFunctionName );
+			if ( $pFragmentHandler ) {
+				$ret['handler'] = $pFragmentHandler;
+				$ret['handlerOptions'] = $siteConfig->getPFragmentHandlerConfig(
 					$canonicalFunctionName
 				)['options'] ?? [];
 				$state->isV3ParserFunction = true;
@@ -852,10 +855,13 @@ class TemplateHandler extends TokenHandler {
 					'parseOpts' => $this->options,
 				],
 			] );
-			// Trim before colon to make first argument
-			$args = [
-				new KV( '', $tgt['pfArg'], $tgt['srcOffsets']->expandTsrV() ),
-			];
+			$args = [];
+			// Don't pass '' as the "1st argument" if the parser function
+			// didn't have a colon delimiter.
+			if ( count( $token->attribs ) > 1 || $tgt['haveColon'] ) {
+				// Trim before colon to make first argument
+				$args[] = new KV( '', $tgt['pfArg'], $tgt['srcOffsets']->expandTsrV() );
+			}
 			for ( $i = 1; $i < count( $token->attribs ); $i++ ) {
 				$args[] = $token->attribs[$i];
 			}
@@ -879,9 +885,24 @@ class TemplateHandler extends TokenHandler {
 					"returning async result without declaration"
 				);
 				$env->getMetadata()->setOutputFlag( 'async-not-ready' );
-				$fragment = $fragment->fallbackContent( $extApi ) ??
-					// TODO (T390341): use localized fallback message
-					WikitextPFragment::newFromLiteral( 'Content not ready', null );
+				$fragment = $fragment->fallbackContent( $extApi );
+				if ( $fragment === null ) {
+					// Create localized fallback message
+					$doc = $env->getTopLevelDoc();
+					$msg = $doc->createDocumentFragment();
+					$span = $doc->createElement( 'span' );
+					$span->setAttribute( 'class', 'mw-async-not-ready' );
+					DOMCompat::append(
+						$span,
+						WTUtils::createPageContentI18nFragment(
+							$doc,
+							$env->getSiteConfig()->getAsyncFallbackMessageKey(),
+							null
+						)
+					);
+					$msg->appendChild( $span );
+					$fragment = DomPFragment::newFromDocumentFragment( $msg, null );
+				}
 			}
 			// Map fragment to parsoid wikitext + embedded markers
 			[
@@ -996,20 +1017,6 @@ class TemplateHandler extends TokenHandler {
 				$wrapTemplates = false;
 				return new TemplateExpansionResult( $toks, true, $wrapTemplates );
 			} else {
-				if (
-					!isset( $tgt['isParserFunction'] ) &&
-					!isset( $tgt['isVariable'] ) &&
-					!$templateTitle->isExternal() &&
-					$templateTitle->isSpecialPage()
-				) {
-					$domFragment = PipelineUtils::parseToHTML( $env, $text );
-					$toks = $domFragment
-						? PipelineUtils::tunnelDOMThroughTokens( $env, $token, $domFragment, [] )
-						: [];
-					$toks = $this->processTemplateTokens( $toks );
-					return new TemplateExpansionResult( $toks, true, $this->wrapTemplates );
-				}
-
 				// Fetch and process the template expansion
 				$error = false;
 				$fragment = Wikitext::preprocessFragment(
