@@ -23,7 +23,8 @@ class RequestMapper {
 		'pagoefectivo',
 		'redpagos',
 		'abitab',
-		'boleto'
+		'boleto',
+		'stitch'
 	];
 
 	public function mapToCreatePaymentRequest( array $params ): array {

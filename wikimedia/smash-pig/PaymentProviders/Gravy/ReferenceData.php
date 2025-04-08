@@ -96,6 +96,7 @@ class ReferenceData {
 		'smartpay' => '',
 		'sofort' => PaymentMethod::RTBT,
 		'star' => PaymentMethod::CC,
+		'stitch' => PaymentMethod::BT,
 		'stripedd' => PaymentMethod::STRIPE,
 		'thaiqr' => '',
 		'touchngo' => '',
@@ -162,14 +163,17 @@ class ReferenceData {
 	protected static $btSubmethods = [
 		'bcp' => 'bcp',
 		'pse' => 'pse',
-		'netbanking' => 'netbanking'
+		'netbanking' => 'netbanking',
+		'webpay' => 'webpay',
+		'stitch' => 'stitch',
 	];
 
 	protected static $cashSubmethods = [
 		'pix' => 'pix',
 		'oxxo' => 'cash_oxxo',
 		'redpagos' => 'redpagos',
-		'boleto' => 'boleto',
+		'boleto' => 'cash_boleto',
+		'abitab' => 'cash_abitab',
 	];
 
 	public static function decodePaymentMethod( string $method, ?string $scheme = '' ): array {

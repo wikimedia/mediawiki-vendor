@@ -2601,7 +2601,6 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\PaymentProviders\\Gravy\\Mapper\\RedirectPaymentProviderResponseMapper' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Mapper/RedirectPaymentProviderResponseMapper.php',
         'SmashPig\\PaymentProviders\\Gravy\\Mapper\\RequestMapper' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Mapper/RequestMapper.php',
         'SmashPig\\PaymentProviders\\Gravy\\Mapper\\ResponseMapper' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Mapper/ResponseMapper.php',
-        'SmashPig\\PaymentProviders\\Gravy\\PaymentMethod' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/PaymentMethod.php',
         'SmashPig\\PaymentProviders\\Gravy\\PaymentProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/PaymentProvider.php',
         'SmashPig\\PaymentProviders\\Gravy\\PaypalPaymentProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/PaypalPaymentProvider.php',
         'SmashPig\\PaymentProviders\\Gravy\\RedirectPaymentProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/RedirectPaymentProvider.php',

@@ -9,7 +9,6 @@ enum PaymentMethod: string {
 	case CASH_ABITAB = 'cash_abitab';
 	case CASH_RED_PAGOS = 'cash_red_pagos';
 	case CASH_BOLETO = 'cash_boleto';
-	case BOLETO = 'boleto';
 	case NETBANKING = 'netbanking';
 	case PAYPAL = 'paypal';
 	case VENMO = 'venmo';
@@ -17,6 +16,7 @@ enum PaymentMethod: string {
 	case PSE = 'pse';
 	case BCP = 'bcp';
 	case WEBPAY = 'webpay';
+	case STITCH = 'stitch';
 
 	public function toGravyValue(): string {
 		return match ( $this ) {
