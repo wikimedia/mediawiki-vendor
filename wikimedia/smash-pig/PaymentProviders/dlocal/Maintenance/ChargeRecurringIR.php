@@ -35,8 +35,8 @@ class ChargeRecurringIR extends MaintenanceBase {
 		if ( $token ) {
 			Logger::info( "use token from ipn: " . $token );
 		} else {
-			$paymentDetailResponse = $paymentProvider->getPaymentDetail( $gateway_txn_id );
-			$paymentDetail = $paymentDetailResponse->getRawResponse();
+			$PaymentProviderExtendedResponse = $paymentProvider->getPaymentDetail( $gateway_txn_id );
+			$paymentDetail = $PaymentProviderExtendedResponse->getRawResponse();
 			$token = $paymentDetail['wallet']['token'];
 			Logger::info( "Got token from payment detail: " . $token );
 		}

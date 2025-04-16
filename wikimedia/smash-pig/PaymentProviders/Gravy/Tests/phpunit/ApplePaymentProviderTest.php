@@ -116,7 +116,7 @@ class ApplePaymentProviderTest extends BaseGravyTestCase {
 
 		$response = $this->provider->getLatestPaymentStatus( $params );
 
-		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\PaymentDetailResponse',
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\PaymentProviderExtendedResponse',
 			$response );
 		$this->assertEquals( $responseBody['amount'] / 100, $response->getAmount() );
 		$this->assertEquals( $responseBody['id'], $response->getGatewayTxnId() );

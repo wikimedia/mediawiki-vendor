@@ -19,7 +19,7 @@ use SmashPig\PaymentProviders\Responses\CancelSubscriptionResponse;
 use SmashPig\PaymentProviders\Responses\CreatePaymentResponse;
 use SmashPig\PaymentProviders\Responses\CreatePaymentSessionResponse;
 use SmashPig\PaymentProviders\Responses\CreateRecurringPaymentsProfileResponse;
-use SmashPig\PaymentProviders\Responses\PaymentDetailResponse;
+use SmashPig\PaymentProviders\Responses\PaymentProviderExtendedResponse;
 use SmashPig\PaymentProviders\Responses\RefundPaymentResponse;
 use UnexpectedValueException;
 
@@ -199,9 +199,9 @@ class PaymentProvider implements IPaymentProvider, IGetLatestPaymentStatusProvid
 	 * $params['gateway_session_id'] should match the PayPal EC Token
 	 *
 	 * @param array $params
-	 * @return PaymentDetailResponse
+	 * @return PaymentProviderExtendedResponse
 	 */
-	public function getLatestPaymentStatus( array $params ): PaymentDetailResponse {
+	public function getLatestPaymentStatus( array $params ): PaymentProviderExtendedResponse {
 		$rawResponse = $this->api->getExpressCheckoutDetails( $params['gateway_session_id'] );
 		return $this->mapGetDetailsResponse( $rawResponse, $params['gateway_session_id'] );
 	}
@@ -216,10 +216,10 @@ class PaymentProvider implements IPaymentProvider, IGetLatestPaymentStatusProvid
 	 *
 	 * @param array $rawResponse
 	 * @param string $token
-	 * @return PaymentDetailResponse
+	 * @return PaymentProviderExtendedResponse
 	 */
-	protected function mapGetDetailsResponse( array $rawResponse, string $token ): PaymentDetailResponse {
-		$response = ( new PaymentDetailResponse() )
+	protected function mapGetDetailsResponse( array $rawResponse, string $token ): PaymentProviderExtendedResponse {
+		$response = ( new PaymentProviderExtendedResponse() )
 			->setRawResponse( $rawResponse );
 
 		if ( $this->isSuccessfulPaypalResponse( $rawResponse ) ) {

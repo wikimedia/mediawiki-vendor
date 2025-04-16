@@ -10,7 +10,7 @@ use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentProviders\Gravy\ExpatriatedMessages\TransactionMessage;
 use SmashPig\PaymentProviders\Gravy\Jobs\ProcessCaptureRequestJob;
 use SmashPig\PaymentProviders\Gravy\Jobs\RecordCaptureJob;
-use SmashPig\PaymentProviders\Responses\PaymentDetailResponse;
+use SmashPig\PaymentProviders\Responses\PaymentProviderExtendedResponse;
 
 class TransactionAction extends GravyAction {
 	use RefundTrait;
@@ -58,7 +58,7 @@ class TransactionAction extends GravyAction {
 		return true;
 	}
 
-	public function getTransactionDetails( TransactionMessage $msg ): PaymentDetailResponse {
+	public function getTransactionDetails( TransactionMessage $msg ): PaymentProviderExtendedResponse {
 		$providerConfiguration = Context::get()->getProviderConfiguration();
 		$provider = $providerConfiguration->object( 'payment-provider/cc' );
 
@@ -72,10 +72,10 @@ class TransactionAction extends GravyAction {
 	/**
 	 * Some payment method requires a chargeback message when it fails
 	 * because they are set to complete status before getting a successful response
-	 * @param PaymentDetailResponse $transaction
+	 * @param PaymentProviderExtendedResponse $transaction
 	 * @return bool
 	 */
-	public function requiresChargeback( PaymentDetailResponse $transaction ): bool {
+	public function requiresChargeback( PaymentProviderExtendedResponse $transaction ): bool {
 		$normalizedResponse = $transaction->getNormalizedResponse();
 		return isset( $normalizedResponse['backend_processor'] ) && $normalizedResponse['backend_processor'] === 'trustly';
 	}
@@ -83,10 +83,10 @@ class TransactionAction extends GravyAction {
 	/**
 	 * Cancel saved contributions in civi using a chargeback
 	 * @param string $ipnMessageDate
-	 * @param \SmashPig\PaymentProviders\Responses\PaymentDetailResponse $transaction
+	 * @param \SmashPig\PaymentProviders\Responses\PaymentProviderExtendedResponse $transaction
 	 * @return void
 	 */
-	public function pushFailedAuthAsChargebackToRefundQueue( string $ipnMessageDate, PaymentDetailResponse $transaction ) {
+	public function pushFailedAuthAsChargebackToRefundQueue( string $ipnMessageDate, PaymentProviderExtendedResponse $transaction ) {
 		$refundMessage = $this->buildRefundQueueMessage( $ipnMessageDate, $transaction->getNormalizedResponse() );
 		$refundMessage['status'] = FinalStatus::COMPLETE;
 		QueueWrapper::push( 'refund', $refundMessage );

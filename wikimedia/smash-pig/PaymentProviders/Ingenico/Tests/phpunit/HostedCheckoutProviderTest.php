@@ -75,7 +75,7 @@ class HostedCheckoutProviderTest extends BaseSmashPigUnitTestCase {
 		$response = $this->provider->getLatestPaymentStatus( [ 'gateway_session_id' => $hostedPaymentId ] );
 		$rawResponse = $response->getRawResponse();
 		$this->assertEquals( 'PAYMENT_CREATED', $rawResponse['status'] );
-		// checking the PaymentDetailResponse
+		// checking the PaymentProviderExtendedResponse
 		$this->assertEquals( 'PENDING_APPROVAL', $response->getRawStatus() );
 		$this->assertEquals( 'pending-poke', $response->getStatus() );
 		$this->assertTrue( $response->isSuccessful() );

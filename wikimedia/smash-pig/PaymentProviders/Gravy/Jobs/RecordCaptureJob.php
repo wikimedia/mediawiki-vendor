@@ -8,7 +8,7 @@ use SmashPig\Core\RetryableException;
 use SmashPig\Core\Runnable;
 use SmashPig\PaymentProviders\Gravy\ExpatriatedMessages\GravyMessage;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyGetLatestPaymentStatusResponseFactory;
-use SmashPig\PaymentProviders\Responses\PaymentDetailResponse;
+use SmashPig\PaymentProviders\Responses\PaymentProviderExtendedResponse;
 
 /**
  * Job that sends a Transaction Webhook message from Gravy into the donations queue.
@@ -21,7 +21,7 @@ class RecordCaptureJob implements Runnable {
 
 	public array $payload;
 
-	public static function factory( GravyMessage $message, PaymentDetailResponse $transactionDetails ): array {
+	public static function factory( GravyMessage $message, PaymentProviderExtendedResponse $transactionDetails ): array {
 		return [
 			'class' => self::class,
 			'payload' => array_merge(

@@ -6,7 +6,7 @@ namespace SmashPig\PaymentProviders\Responses;
  * Class CreateRecurringPaymentsProfileResponse
  * @package SmashPig\PaymentProviders
  */
-class CreateRecurringPaymentsProfileResponse extends PaymentDetailResponse {
+class CreateRecurringPaymentsProfileResponse extends PaymentProviderExtendedResponse {
 
 	/**
 	 * A unique identifier for future reference to the details of this recurring payment.

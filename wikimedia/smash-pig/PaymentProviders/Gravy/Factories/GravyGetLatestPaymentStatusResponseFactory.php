@@ -2,13 +2,13 @@
 
 namespace SmashPig\PaymentProviders\Gravy\Factories;
 
-use SmashPig\PaymentProviders\Responses\PaymentDetailResponse;
+use SmashPig\PaymentProviders\Responses\PaymentProviderExtendedResponse;
 use SmashPig\PaymentProviders\Responses\PaymentProviderResponse;
 
 class GravyGetLatestPaymentStatusResponseFactory extends GravyCreatePaymentResponseFactory {
 
 	protected static function createBasicResponse(): PaymentProviderResponse {
-		return new PaymentDetailResponse();
+		return new PaymentProviderExtendedResponse();
 	}
 
 	/**
@@ -16,7 +16,7 @@ class GravyGetLatestPaymentStatusResponseFactory extends GravyCreatePaymentRespo
 	 * @param array $normalizedResponse
 	 */
 	protected static function decorateResponse( PaymentProviderResponse $paymentResponse, array $normalizedResponse ): void {
-		if ( !$paymentResponse instanceof PaymentDetailResponse ) {
+		if ( !$paymentResponse instanceof PaymentProviderExtendedResponse ) {
 			return;
 		}
 		self::setOrderId( $paymentResponse, $normalizedResponse );

@@ -13,7 +13,7 @@ use SmashPig\PaymentProviders\IRefundablePaymentProvider;
 use SmashPig\PaymentProviders\Responses\ApprovePaymentResponse;
 use SmashPig\PaymentProviders\Responses\CancelPaymentResponse;
 use SmashPig\PaymentProviders\Responses\CreatePaymentResponse;
-use SmashPig\PaymentProviders\Responses\PaymentDetailResponse;
+use SmashPig\PaymentProviders\Responses\PaymentProviderExtendedResponse;
 use SmashPig\PaymentProviders\Responses\PaymentProviderResponse;
 use SmashPig\PaymentProviders\Responses\RefundPaymentResponse;
 
@@ -96,10 +96,10 @@ class PaymentProvider implements IGetLatestPaymentStatusProvider, ICancelablePay
 	 * Get Payment detail which could contain recurring bt token
 	 * @param string $gatewayTxnId
 	 *
-	 * @return \SmashPig\PaymentProviders\Responses\PaymentDetailResponse
+	 * @return \SmashPig\PaymentProviders\Responses\PaymentProviderExtendedResponse
 	 * @throws \SmashPig\Core\ApiException
 	 */
-	public function getPaymentDetail( string $gatewayTxnId ): PaymentDetailResponse {
+	public function getPaymentDetail( string $gatewayTxnId ): PaymentProviderExtendedResponse {
 		try {
 			$result = $this->api->getPaymentDetail( $gatewayTxnId );
 			return DlocalCreatePaymentResponseFactory::fromRawResponse( $result );
@@ -127,10 +127,10 @@ class PaymentProvider implements IGetLatestPaymentStatusProvider, ICancelablePay
 	/**
 	 * @param array $params
 	 *
-	 * @return \SmashPig\PaymentProviders\Responses\PaymentDetailResponse
+	 * @return \SmashPig\PaymentProviders\Responses\PaymentProviderExtendedResponse
 	 * @throws \SmashPig\Core\ApiException
 	 */
-	public function getLatestPaymentStatus( array $params ): PaymentDetailResponse {
+	public function getLatestPaymentStatus( array $params ): PaymentProviderExtendedResponse {
 		try {
 			$result = $this->api->getPaymentStatus( $params['gateway_txn_id'] );
 			return DlocalPaymentStatusResponseFactory::fromRawResponse( $result );

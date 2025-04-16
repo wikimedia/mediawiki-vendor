@@ -54,6 +54,10 @@ class NotificationsTest extends BaseGravyTestCase {
 	public function testTransactionMessageValidRequestValidAuthorizationValue(): void {
 		[ $request, $response ] = $this->getValidRequestResponseObjects();
 		$request->method( 'getRawRequest' )->willReturn( $this->getValidGravyTransactionMessage() );
+		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/successful-transaction.json' ), true );
+		$this->mockApi->expects( $this->once() )
+			->method( 'getTransaction' )
+			->willReturn( $responseBody );
 		$result = $this->gravyListener->execute( $request, $response );
 		$this->assertTrue( $result );
 	}

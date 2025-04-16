@@ -14,7 +14,7 @@ use SmashPig\PaymentData\DonorDetails;
 use SmashPig\PaymentData\ErrorCode;
 use SmashPig\PaymentProviders\IGetLatestPaymentStatusProvider;
 use SmashPig\PaymentProviders\Responses\CreatePaymentSessionResponse;
-use SmashPig\PaymentProviders\Responses\PaymentDetailResponse;
+use SmashPig\PaymentProviders\Responses\PaymentProviderExtendedResponse;
 use SmashPig\PaymentProviders\Responses\PaymentProviderResponse;
 use SmashPig\PaymentProviders\RiskScorer;
 
@@ -49,19 +49,19 @@ class HostedCheckoutProvider extends PaymentProvider implements IGetLatestPaymen
 	 * $params['gateway_session_id'] should match the hostedPaymentId
 	 *
 	 * @param array $params
-	 * @return PaymentDetailResponse
+	 * @return PaymentProviderExtendedResponse
 	 */
-	public function getLatestPaymentStatus( array $params ): PaymentDetailResponse {
+	public function getLatestPaymentStatus( array $params ): PaymentProviderExtendedResponse {
 		if ( empty( $params['gateway_session_id'] ) ) {
 			throw new BadMethodCallException(
 				'Called getLatestPaymentStatus with empty gateway_session_id'
 			);
 		}
 		$path = "hostedcheckouts/{$params['gateway_session_id']}";
-		$response = new PaymentDetailResponse();
+		$response = new PaymentProviderExtendedResponse();
 		$rawResponse = $this->makeApiCallAndSetBasicResponseProperties( $response, $path );
 		if ( $rawResponse === null ) {
-			// Just return the failed PaymentDetailResponse with the NO_RESPONSE error
+			// Just return the failed PaymentProviderExtendedResponse with the NO_RESPONSE error
 			return $response;
 		}
 
@@ -114,7 +114,7 @@ class HostedCheckoutProvider extends PaymentProvider implements IGetLatestPaymen
 	}
 
 	protected function mapCardSpecificStatusProperties(
-		PaymentDetailResponse $response,
+		PaymentProviderExtendedResponse $response,
 		array $cardOutput
 	) {
 		try {
@@ -220,13 +220,13 @@ class HostedCheckoutProvider extends PaymentProvider implements IGetLatestPaymen
 	}
 
 	/**
-	 * @deprecated use getLatestPaymentStatus directly
 	 * @param string $hostedPaymentId
 	 *
-	 * @return PaymentDetailResponse
+	 * @return PaymentProviderExtendedResponse
 	 * @throws \SmashPig\Core\ApiException
+	 * @deprecated use getLatestPaymentStatus directly
 	 */
-	public function getHostedPaymentStatus( string $hostedPaymentId ): PaymentDetailResponse {
+	public function getHostedPaymentStatus( string $hostedPaymentId ): PaymentProviderExtendedResponse {
 		return $this->getLatestPaymentStatus( [ 'gateway_session_id' => $hostedPaymentId ] );
 	}
 

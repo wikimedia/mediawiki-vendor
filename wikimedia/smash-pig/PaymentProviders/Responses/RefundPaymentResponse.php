@@ -6,7 +6,7 @@ namespace SmashPig\PaymentProviders\Responses;
  * Class RefundPaymentResponse
  * @package SmashPig\PaymentProviders
  */
-class RefundPaymentResponse extends PaymentDetailResponse {
+class RefundPaymentResponse extends PaymentProviderExtendedResponse {
 	/**
 	 * Payment provider refund ID
 	 *

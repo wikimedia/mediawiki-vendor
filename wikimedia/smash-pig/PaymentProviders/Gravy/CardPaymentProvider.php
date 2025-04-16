@@ -22,8 +22,8 @@ class CardPaymentProvider extends PaymentProvider implements IPaymentProvider {
 			// map the response from the external format back to our normalized structure.
 			$normalizedResponse = $this->getResponseMapper()->mapFromCreatePaymentSessionResponse( $createPaymentSessionRawResponse );
 			$createPaymentSessionResponse = GravyCreatePaymentSessionResponseFactory::fromNormalizedResponse( $normalizedResponse );
-		} catch ( \Exception $e ) {
-			// it threw an exception!
+		} catch ( \UnexpectedValueException $e ) {
+			// it threw an API exception!
 			Logger::error( 'Processor failed to create new payment session with response:' . $e->getMessage() );
 			GravyCreatePaymentSessionResponseFactory::handleException( $createPaymentSessionResponse, $e->getMessage(), $e->getCode() );
 		}

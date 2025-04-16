@@ -26,8 +26,8 @@ use SmashPig\PaymentProviders\Responses\ApprovePaymentResponse;
 use SmashPig\PaymentProviders\Responses\CancelAutoRescueResponse;
 use SmashPig\PaymentProviders\Responses\CancelPaymentResponse;
 use SmashPig\PaymentProviders\Responses\DeleteDataResponse;
-use SmashPig\PaymentProviders\Responses\PaymentDetailResponse;
 use SmashPig\PaymentProviders\Responses\PaymentMethodResponse;
+use SmashPig\PaymentProviders\Responses\PaymentProviderExtendedResponse;
 use SmashPig\PaymentProviders\Responses\PaymentProviderResponse;
 use SmashPig\PaymentProviders\Responses\RefundPaymentResponse;
 use SmashPig\PaymentProviders\Responses\SavedPaymentDetailsResponse;
@@ -117,10 +117,10 @@ abstract class PaymentProvider implements
 	 * we return pending-poke.
 	 *
 	 * @param array $params
-	 * @return PaymentDetailResponse
+	 * @return PaymentProviderExtendedResponse
 	 */
-	public function getLatestPaymentStatus( array $params ): PaymentDetailResponse {
-		$response = new PaymentDetailResponse();
+	public function getLatestPaymentStatus( array $params ): PaymentProviderExtendedResponse {
+		$response = new PaymentProviderExtendedResponse();
 		$response->setGatewayTxnId( $params['gateway_txn_id'] );
 		$response->setRecurringPaymentToken( $params['recurring_payment_token'] ?? '' );
 		// will check the breakdown at resolve again, so it's fine to be blank
@@ -139,12 +139,12 @@ abstract class PaymentProvider implements
 	 * Get more payment details from the redirect result
 	 *
 	 * @param string $redirectResult
-	 * @return PaymentDetailResponse
+	 * @return PaymentProviderExtendedResponse
 	 */
-	public function getHostedPaymentDetails( $redirectResult ): PaymentDetailResponse {
+	public function getHostedPaymentDetails( $redirectResult ): PaymentProviderExtendedResponse {
 		$rawResponse = $this->api->getPaymentDetails( $redirectResult );
 
-		$response = new PaymentDetailResponse();
+		$response = new PaymentProviderExtendedResponse();
 		// TODO: DRY with CreatePaymentResponse
 		$response->setRawResponse( $rawResponse );
 		$rawStatus = $rawResponse['resultCode'];
@@ -603,7 +603,7 @@ abstract class PaymentProvider implements
 		return true;
 	}
 
-	protected function mapAdditionalData( array $additionalData, PaymentDetailResponse $response ) {
+	protected function mapAdditionalData( array $additionalData, PaymentProviderExtendedResponse $response ) {
 		$response->setRiskScores(
 			( new RiskScorer() )->getRiskScores(
 				$additionalData['avsResult'] ?? null,

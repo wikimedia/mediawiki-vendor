@@ -7,7 +7,7 @@ use SmashPig\Core\PaymentError;
 use SmashPig\Core\ValidationError;
 use SmashPig\PaymentData\ErrorCode;
 use SmashPig\PaymentData\FinalStatus;
-use SmashPig\PaymentProviders\Responses\PaymentDetailResponse;
+use SmashPig\PaymentProviders\Responses\PaymentProviderExtendedResponse;
 use SmashPig\PaymentProviders\Responses\PaymentProviderResponse;
 
 abstract class GravyPaymentResponseFactory {
@@ -60,7 +60,7 @@ abstract class GravyPaymentResponseFactory {
 	}
 
 	protected static function setBackendProcessorAndId(
-		PaymentDetailResponse $paymentResponse, array $normalizedResponse
+		PaymentProviderExtendedResponse $paymentResponse, array $normalizedResponse
 	) {
 		$paymentResponse->setBackendProcessor( $normalizedResponse['backend_processor'] ?? null );
 		$paymentResponse->setBackendProcessorTransactionId(
@@ -69,7 +69,7 @@ abstract class GravyPaymentResponseFactory {
 	}
 
 	protected static function setPaymentOrchestrationReconciliationId(
-		PaymentDetailResponse $paymentResponse,
+		PaymentProviderExtendedResponse $paymentResponse,
 		array $normalizedResponse
 	): void {
 		$paymentResponse->setPaymentOrchestratorReconciliationId( $normalizedResponse['payment_orchestrator_reconciliation_id'] );

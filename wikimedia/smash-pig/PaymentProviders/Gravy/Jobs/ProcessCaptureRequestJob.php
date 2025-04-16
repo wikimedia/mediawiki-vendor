@@ -15,7 +15,7 @@ use SmashPig\PaymentProviders\Gravy\CardPaymentProvider;
 use SmashPig\PaymentProviders\Gravy\ExpatriatedMessages\GravyMessage;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyGetLatestPaymentStatusResponseFactory;
 use SmashPig\PaymentProviders\PaymentProviderFactory;
-use SmashPig\PaymentProviders\Responses\PaymentDetailResponse;
+use SmashPig\PaymentProviders\Responses\PaymentProviderExtendedResponse;
 
 /**
  * Job that sends a Transaction Webhook message from Gravy into the donations queue.
@@ -34,7 +34,7 @@ class ProcessCaptureRequestJob implements Runnable {
 	const ACTION_IGNORE = 'ignore'; // duplicate authorisation IPN - ignore
 	const ACTION_MISSING = 'missing'; // missing donor details - shunt job to damaged queue
 
-	public static function factory( GravyMessage $message, PaymentDetailResponse $transactionDetails ): array {
+	public static function factory( GravyMessage $message, PaymentProviderExtendedResponse $transactionDetails ): array {
 		return [
 			'class' => self::class,
 			'payload' => array_merge(
@@ -134,7 +134,7 @@ class ProcessCaptureRequestJob implements Runnable {
 		return $success;
 	}
 
-	protected function getRiskAction( array $dbMessage, PaymentDetailResponse $transactionDetails ): string {
+	protected function getRiskAction( array $dbMessage, PaymentProviderExtendedResponse $transactionDetails ): string {
 		$providerConfig = Context::get()->getProviderConfiguration();
 		$riskScore = isset( $dbMessage['risk_score'] ) ? $dbMessage['risk_score'] : 0;
 		$riskScores = $transactionDetails->getRiskScores();
@@ -176,7 +176,7 @@ class ProcessCaptureRequestJob implements Runnable {
 		return PaymentProviderFactory::getProviderForMethod( 'cc' );
 	}
 
-	protected function determineAction( $dbMessage, PaymentDetailResponse $transactionDetails ): string {
+	protected function determineAction( $dbMessage, PaymentProviderExtendedResponse $transactionDetails ): string {
 		if ( $dbMessage && isset( $dbMessage['order_id'] ) ) {
 			$this->logger->debug( 'Found a valid message.' );
 		} else {
@@ -207,7 +207,7 @@ class ProcessCaptureRequestJob implements Runnable {
 		return $this->getRiskAction( $dbMessage, $transactionDetails );
 	}
 
-	protected function cancelAuthorization( PaymentDetailResponse $transactionDetails ) {
+	protected function cancelAuthorization( PaymentProviderExtendedResponse $transactionDetails ) {
 		$this->logger->debug( "Cancelling authorization with reference '{$transactionDetails->getGatewayTxnId()}'" );
 		$provider = $this->getProvider();
 		$result = $provider->cancelPayment( $transactionDetails->getGatewayTxnId() );

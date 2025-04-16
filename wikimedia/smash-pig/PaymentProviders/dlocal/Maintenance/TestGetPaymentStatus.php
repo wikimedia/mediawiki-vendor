@@ -22,8 +22,8 @@ class TestGetPaymentStatus extends MaintenanceBase {
 	public function execute(): void {
 		$paymentProvider = new PaymentProvider();
 		$params['gateway_txn_id'] = $this->getArgument( 'id' );
-		$paymentDetailResponse = $paymentProvider->getLatestPaymentStatus( $params );
-		print_r( $paymentDetailResponse );
+		$PaymentProviderExtendedResponse = $paymentProvider->getLatestPaymentStatus( $params );
+		print_r( $PaymentProviderExtendedResponse );
 	}
 }
 

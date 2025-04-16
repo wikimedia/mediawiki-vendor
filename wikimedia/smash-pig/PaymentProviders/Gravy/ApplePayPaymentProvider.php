@@ -8,6 +8,7 @@ use SmashPig\PaymentProviders\Gravy\Mapper\ApplePayPaymentProviderResponseMapper
 use SmashPig\PaymentProviders\Gravy\Mapper\RequestMapper;
 use SmashPig\PaymentProviders\Gravy\Validators\ApplePayPaymentProviderValidator;
 use SmashPig\PaymentProviders\Responses\CreatePaymentSessionResponse;
+use SmashPig\PaymentProviders\ValidationException;
 
 class ApplePayPaymentProvider extends PaymentProvider {
 	public function createPaymentSession( array $params ): CreatePaymentSessionResponse {
@@ -28,9 +29,12 @@ class ApplePayPaymentProvider extends PaymentProvider {
 
 			$sessionResponse = GravyCreatePaymentSessionResponseFactory::fromNormalizedResponse( $normalizedResponse );
 			return $sessionResponse;
-		} catch ( \Exception $e ) {
+		} catch ( ValidationException $e ) {
 			// it threw an exception!
-			Logger::error( 'Processor failed to create new payment session with response:' . $e->getMessage() );
+			GravyCreatePaymentSessionResponseFactory::handleValidationException( $sessionResponse, $e->getData() );
+		} catch ( \UnexpectedValueException $e ) {
+			// it threw an API exception that isn't validation!
+			Logger::error( 'Processor failed to create new payment with response:' . $e->getMessage() );
 			GravyCreatePaymentSessionResponseFactory::handleException( $sessionResponse, $e->getMessage(), $e->getCode() );
 		}
 

@@ -84,7 +84,7 @@ class PaymentProviderTest extends BaseGravyTestCase {
 
 		$response = $this->provider->getLatestPaymentStatus( $params );
 
-		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\PaymentDetailResponse',
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\PaymentProviderExtendedResponse',
 			$response );
 		$this->assertEquals( $responseBody['amount'] / 100, $response->getAmount() );
 		$this->assertEquals( $responseBody['id'], $response->getGatewayTxnId() );
@@ -107,7 +107,7 @@ class PaymentProviderTest extends BaseGravyTestCase {
 
 		$response = $this->provider->refundPayment( $params );
 
-		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\PaymentDetailResponse',
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\PaymentProviderExtendedResponse',
 			$response );
 		$this->assertFalse( $response->isSuccessful() );
 		$valErrors = $response->getValidationErrors();
@@ -129,7 +129,7 @@ class PaymentProviderTest extends BaseGravyTestCase {
 
 		$response = $this->provider->refundPayment( $params );
 
-		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\PaymentDetailResponse',
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\PaymentProviderExtendedResponse',
 			$response );
 		$this->assertFalse( $response->isSuccessful() );
 		$errors = $response->getErrors();

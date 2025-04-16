@@ -59,7 +59,7 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$response = $this->provider->getLatestPaymentStatus( $testParams );
 
 		// check the results
-		$this->assertInstanceOf( 'SmashPig\PaymentProviders\Responses\PaymentDetailResponse', $response );
+		$this->assertInstanceOf( 'SmashPig\PaymentProviders\Responses\PaymentProviderExtendedResponse', $response );
 		$this->assertTrue( $response->isSuccessful() );
 		$this->assertEquals( 25.00, $response->getAmount() );
 		$this->assertEquals( 'USD', $response->getCurrency() );
@@ -91,7 +91,7 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$response = $this->provider->getLatestPaymentStatus( $testParams );
 
 		// check the results
-		$this->assertInstanceOf( 'SmashPig\PaymentProviders\Responses\PaymentDetailResponse', $response );
+		$this->assertInstanceOf( 'SmashPig\PaymentProviders\Responses\PaymentProviderExtendedResponse', $response );
 		$this->assertTrue( $response->isSuccessful() );
 		$this->assertEquals( "PaymentActionNotInitiated", $response->getRawStatus() );
 		$this->assertEquals( "Success", $response->getRawResponse()['ACK'] );
@@ -117,7 +117,7 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$response = $this->provider->getLatestPaymentStatus( $testParams );
 
 		// check the results
-		$this->assertInstanceOf( 'SmashPig\PaymentProviders\Responses\PaymentDetailResponse', $response );
+		$this->assertInstanceOf( 'SmashPig\PaymentProviders\Responses\PaymentProviderExtendedResponse', $response );
 		$this->assertFalse( $response->isSuccessful() );
 		$this->assertNull( $response->getRawStatus() );
 		$this->assertNull( $response->getStatus() );

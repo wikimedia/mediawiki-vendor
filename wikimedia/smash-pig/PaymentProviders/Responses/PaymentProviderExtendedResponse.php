@@ -6,12 +6,15 @@ use SmashPig\PaymentData\DonorDetails;
 use SmashPig\PaymentData\FinalStatus;
 
 /**
- * Represents the status of a payment which may have been created remotely
+ * Provides extended metadata and details about a payment transaction. In addition
+ * to the base properties from PaymentProviderResponse, this class includes fields for
+ * risk scoring, recurring payment tokens, donor information, order identifiers,
+ * backend processor details, and other provider-specific data.
  *
- * Class PaymentDetailResponse
- * @package SmashPig\PaymentProviders
+ * Note: not all payment providers supply or require these extra fields. See T383400 for details.
  */
-class PaymentDetailResponse extends PaymentProviderResponse {
+
+class PaymentProviderExtendedResponse extends PaymentProviderResponse {
 
 	use RedirectResponseTrait;
 
@@ -122,7 +125,7 @@ class PaymentDetailResponse extends PaymentProviderResponse {
 	 * @param array $riskScores
 	 * @return static
 	 */
-	public function setRiskScores( array $riskScores ): PaymentDetailResponse {
+	public function setRiskScores( array $riskScores ): PaymentProviderExtendedResponse {
 		$this->riskScores = $riskScores;
 		return $this;
 	}
@@ -138,7 +141,7 @@ class PaymentDetailResponse extends PaymentProviderResponse {
 	 * @param string $recurringPaymentToken
 	 * @return static
 	 */
-	public function setRecurringPaymentToken( string $recurringPaymentToken ): PaymentDetailResponse {
+	public function setRecurringPaymentToken( string $recurringPaymentToken ): PaymentProviderExtendedResponse {
 		$this->recurringPaymentToken = $recurringPaymentToken;
 		return $this;
 	}
@@ -152,9 +155,9 @@ class PaymentDetailResponse extends PaymentProviderResponse {
 
 	/**
 	 * @param string|null $schemeTransactionId
-	 * @return PaymentDetailResponse
+	 * @return PaymentProviderExtendedResponse
 	 */
-	public function setInitialSchemeTransactionId( ?string $schemeTransactionId ): PaymentDetailResponse {
+	public function setInitialSchemeTransactionId( ?string $schemeTransactionId ): PaymentProviderExtendedResponse {
 		$this->initialSchemeTransactionId = $schemeTransactionId;
 		return $this;
 	}
@@ -170,16 +173,16 @@ class PaymentDetailResponse extends PaymentProviderResponse {
 	 * @param string|null $processorContactID
 	 * @return static
 	 */
-	public function setProcessorContactID( ?string $processorContactID ): PaymentDetailResponse {
+	public function setProcessorContactID( ?string $processorContactID ): PaymentProviderExtendedResponse {
 		$this->processorContactID = $processorContactID;
 		return $this;
 	}
 
 	/**
 	 * @param DonorDetails $donorDetails
-	 * @return PaymentDetailResponse
+	 * @return PaymentProviderExtendedResponse
 	 */
-	public function setDonorDetails( DonorDetails $donorDetails ): PaymentDetailResponse {
+	public function setDonorDetails( DonorDetails $donorDetails ): PaymentProviderExtendedResponse {
 		$this->hasDonorDetails = true;
 		$this->donorDetails = $donorDetails;
 		return $this;
@@ -201,9 +204,9 @@ class PaymentDetailResponse extends PaymentProviderResponse {
 
 	/**
 	 * @param float|null $amount
-	 * @return PaymentDetailResponse
+	 * @return PaymentProviderExtendedResponse
 	 */
-	public function setAmount( $amount ): PaymentDetailResponse {
+	public function setAmount( $amount ): PaymentProviderExtendedResponse {
 		$this->amount = $amount;
 		return $this;
 	}
@@ -217,9 +220,9 @@ class PaymentDetailResponse extends PaymentProviderResponse {
 
 	/**
 	 * @param string|null $currency
-	 * @return PaymentDetailResponse
+	 * @return PaymentProviderExtendedResponse
 	 */
-	public function setCurrency( ?string $currency ): PaymentDetailResponse {
+	public function setCurrency( ?string $currency ): PaymentProviderExtendedResponse {
 		$this->currency = $currency;
 		return $this;
 	}
@@ -233,9 +236,9 @@ class PaymentDetailResponse extends PaymentProviderResponse {
 
 	/**
 	 * @param string|null $paymentSubmethod
-	 * @return PaymentDetailResponse
+	 * @return PaymentProviderExtendedResponse
 	 */
-	public function setPaymentSubmethod( ?string $paymentSubmethod ): PaymentDetailResponse {
+	public function setPaymentSubmethod( ?string $paymentSubmethod ): PaymentProviderExtendedResponse {
 		$this->paymentSubmethod = $paymentSubmethod;
 		return $this;
 	}
@@ -249,9 +252,9 @@ class PaymentDetailResponse extends PaymentProviderResponse {
 
 	/**
 	 * @param string|null $paymentMethod
-	 * @return PaymentDetailResponse
+	 * @return PaymentProviderExtendedResponse
 	 */
-	public function setPaymentMethod( ?string $paymentMethod ): PaymentDetailResponse {
+	public function setPaymentMethod( ?string $paymentMethod ): PaymentProviderExtendedResponse {
 		$this->paymentMethod = $paymentMethod;
 		return $this;
 	}
@@ -267,7 +270,7 @@ class PaymentDetailResponse extends PaymentProviderResponse {
 	 * @param string|null $orderId
 	 * @return static
 	 */
-	public function setOrderId( ?string $orderId ): PaymentDetailResponse {
+	public function setOrderId( ?string $orderId ): PaymentProviderExtendedResponse {
 		$this->orderId = $orderId;
 		return $this;
 	}
@@ -276,7 +279,7 @@ class PaymentDetailResponse extends PaymentProviderResponse {
 	 * @param string|null $backendProcessor
 	 * @return static
 	 */
-	public function setBackendProcessor( ?string $backendProcessor ): PaymentDetailResponse {
+	public function setBackendProcessor( ?string $backendProcessor ): PaymentProviderExtendedResponse {
 		$this->backendProcessor = $backendProcessor;
 		return $this;
 	}
@@ -288,7 +291,7 @@ class PaymentDetailResponse extends PaymentProviderResponse {
 		return $this->backendProcessor;
 	}
 
-	public function setBackendProcessorTransactionId( ?string $backendProcessorTransactionId ): PaymentDetailResponse {
+	public function setBackendProcessorTransactionId( ?string $backendProcessorTransactionId ): PaymentProviderExtendedResponse {
 		$this->backendProcessorTransactionId = $backendProcessorTransactionId;
 		return $this;
 	}
@@ -301,7 +304,7 @@ class PaymentDetailResponse extends PaymentProviderResponse {
 		return $this->paymentOrchestratorReconciliationId;
 	}
 
-	public function setPaymentOrchestratorReconciliationId( ?string $paymentOrchestratorReconciliationId ): PaymentDetailResponse {
+	public function setPaymentOrchestratorReconciliationId( ?string $paymentOrchestratorReconciliationId ): PaymentProviderExtendedResponse {
 		$this->paymentOrchestratorReconciliationId = $paymentOrchestratorReconciliationId;
 		return $this;
 	}
