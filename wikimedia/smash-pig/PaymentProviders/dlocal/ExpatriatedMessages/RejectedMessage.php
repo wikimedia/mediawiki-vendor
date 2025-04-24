@@ -17,8 +17,12 @@ class RejectedMessage extends DlocalMessage {
 	 * @return array
 	 */
 	public function normalizeForQueue(): array {
-		// Normalize the payment method and submethod
-		[ $method, $submethod ] = $this->decodePaymentMethod();
+		if ( empty( $this->payment_method_type ) ) {
+			[ $method, $submethod ] = [ null, null ];
+		} else {
+			// Normalize the payment method and submethod
+			[ $method, $submethod ] = $this->decodePaymentMethod();
+		}
 
 		// Get just the contribution_tracking_id from the order_id in 12345.1 format
 		$contributionTracking = explode( '.', $this->order_id );

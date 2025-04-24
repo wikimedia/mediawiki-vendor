@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fc71e8b42aa99b081e529da79a5b37b6",
+    "content-hash": "3837e4a41b6d5becc407d81620fb0911",
     "packages": [
         {
             "name": "amzn/login-and-pay-with-amazon-sdk-php",
@@ -215,16 +215,16 @@
         },
         {
             "name": "gr4vy/gr4vy-php",
-            "version": "v0.23.2",
+            "version": "v0.26.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/gr4vy/gr4vy-php.git",
-                "reference": "1b0ece57c02f99536f8986d34685d2fa94e95ba3"
+                "reference": "2c85b6d8b44e1afb4a21b16f5f414fe659e1dcb8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gr4vy/gr4vy-php/zipball/1b0ece57c02f99536f8986d34685d2fa94e95ba3",
-                "reference": "1b0ece57c02f99536f8986d34685d2fa94e95ba3",
+                "url": "https://api.github.com/repos/gr4vy/gr4vy-php/zipball/2c85b6d8b44e1afb4a21b16f5f414fe659e1dcb8",
+                "reference": "2c85b6d8b44e1afb4a21b16f5f414fe659e1dcb8",
                 "shasum": ""
             },
             "require": {
@@ -233,7 +233,7 @@
                 "ext-mbstring": "*",
                 "guzzlehttp/guzzle": ">=6.5.5",
                 "lcobucci/jwt": "^4.1.5",
-                "php": ">=7.3"
+                "php": ">=8.1"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^3.4.0",
@@ -267,9 +267,9 @@
                 "sdk"
             ],
             "support": {
-                "source": "https://github.com/gr4vy/gr4vy-php/tree/v0.23.2"
+                "source": "https://github.com/gr4vy/gr4vy-php/tree/v0.26.0"
             },
-            "time": "2025-01-07T17:40:18+00:00"
+            "time": "2025-04-23T18:25:53+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",

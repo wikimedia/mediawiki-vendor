@@ -1,6 +1,6 @@
 <?php
 /**
- * ReportsApiTest
+ * CheckoutSessionApiTest
  * PHP version 7.2
  *
  * @category Class
@@ -32,14 +32,14 @@ use \Gr4vy\Gr4vyConfig;
 use PHPUnit\Framework\TestCase;
 
 /**
- * ReportsApiTest Class Doc Comment
+ * CheckoutSessionApiTest Class Doc Comment
  *
  * @category Class
  * @package  Gr4vy
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
-class ReportsApiTest extends TestCase
+class CheckoutSessionApiTest extends TestCase
 {
     private static $privateKeyLocation = __DIR__ . "/../../private_key.pem";
     private static $gr4vyId = "spider";
@@ -73,20 +73,40 @@ class ReportsApiTest extends TestCase
     }
 
     /**
-     * Test case for generateReportDownloadUrl
+     * Test case for createCheckoutSession
      *
      * New transaction.
      *
      */
-    // public function testGenerateReportDownloadUrl()
-    // {
-    //     try {
-    //         $config = new Gr4vyConfig(self::$gr4vyId, self::$privateKeyLocation);
-    //         $result = $config->generateReportDownloadUrl("5e7882ac-1bda-413f-9e78-4fcf650657da", "83770ad3-2465-4a74-8bd4-3aa80849cf4b");
-    //         $this->assertArrayHasKey("url", $result);
-    //     } catch (Exception $e) {
-    //         $this->fail("Exception thrown: " . $e->getMessage());
-    //     }
-    // }
+    public function testCreateCheckoutSession()
+    {
+        try {
+            $config = new Gr4vyConfig(self::$gr4vyId, self::$privateKeyLocation);
+            $transaction_request = array("expires_in"=>3600);
+            $result = $config->newCheckoutSession($transaction_request);
+            $this->assertArrayHasKey("id", $result);
+            $this->assertEquals($result["type"], "checkout-session");
+        } catch (Exception $e) {
+            $this->fail("Exception thrown: " . $e->getMessage());
+        }
+    }
 
+    /**
+     * Test case for createCheckoutSession
+     *
+     * New transaction.
+     *
+     */
+    public function testCreateCheckoutSessionWithNoData()
+    {
+        try {
+            $config = new Gr4vyConfig(self::$gr4vyId, self::$privateKeyLocation);
+            $transaction_request = array();
+            $result = $config->newCheckoutSession($transaction_request);
+            $this->assertArrayHasKey("id", $result);
+            $this->assertEquals($result["type"], "checkout-session");
+        } catch (Exception $e) {
+            $this->fail("Exception thrown: " . $e->getMessage());
+        }
+    }
 }

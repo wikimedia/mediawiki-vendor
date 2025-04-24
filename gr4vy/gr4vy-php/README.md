@@ -179,6 +179,39 @@ request made to the API.
 Authorization: Bearer <bearerToken>
 ```
 
+## Verify Webhook Signature
+
+The SDK provides a method to verify the signature of incoming webhooks to ensure they are sent by Gr4vy.
+
+```php
+try {
+    Gr4vyConfig::verifyWebhook(
+        $secret,            // The webhook secret key
+        $payload,           // The raw payload of the webhook
+        $signatureHeader,   // The `X-Gr4vy-Webhook-Signatures` header from the webhook
+        $timestampHeader,   // The `X-Gr4vy-Webhook-Timestamp` header from the webhook
+        $timestampTolerance // Optional: Tolerance in seconds for timestamp validation
+    );
+    echo "Webhook verified successfully.";
+} catch (Exception $e) {
+    echo "Webhook verification failed: " . $e->getMessage();
+}
+```
+
+### Exceptions
+
+The `verifyWebhook` function will throw an exception in the following cases:
+
+- Missing or empty `signatureHeader` or `timestampHeader`.
+- Invalid `timestampHeader` (not numeric).
+- Signature mismatch (no matching signature found).
+- Timestamp too old (if `timestampTolerance` is set to non-0 value).
+
+### Notes
+
+- Ensure you store your webhook secret securely and do not expose it publicly.
+- Use the `timestampTolerance` parameter to account for potential clock drift between servers.
+
 ## Logging & Debugging
 
 The SDK makes it easy possible to the requests and responses to the console.
