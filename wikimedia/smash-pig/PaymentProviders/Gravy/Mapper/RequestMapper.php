@@ -22,6 +22,7 @@ class RequestMapper {
 		'webpay',
 		'pagoefectivo',
 		'redpagos',
+		'rapipago',
 		'abitab',
 		'boleto',
 		'stitch'

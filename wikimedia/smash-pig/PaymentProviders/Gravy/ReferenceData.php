@@ -89,6 +89,7 @@ class ReferenceData {
 		'razorpay' => '',
 		'rupay' => PaymentMethod::CC,
 		'redpagos' => PaymentMethod::CASH,
+		'rapipago' => PaymentMethod::CASH,
 		'scalapay' => '',
 		'sepa' => PaymentMethod::RTBT,
 		'shopeepay' => '',
@@ -174,6 +175,7 @@ class ReferenceData {
 		'redpagos' => 'redpagos',
 		'boleto' => 'cash_boleto',
 		'abitab' => 'cash_abitab',
+		'rapipago' => 'cash_rapipago',
 	];
 
 	public static function decodePaymentMethod( string $method, ?string $scheme = '' ): array {
