@@ -55,30 +55,17 @@ class GrammarCacheEntry {
 class Grammar extends \Wikimedia\WikiPEG\PEGParserBase {
 	// initializer
 	
-	/** @var Env */
-	private $env;
-
-	/** @var SiteConfig */
-	private $siteConfig;
-
-	/** @var array */
-	private $pipelineOpts;
-
-	/** @var int */
-	private $pipelineOffset;
-
-	private $extTags;
-
+	private Env $env;
+	private SiteConfig $siteConfig;
+	private array $pipelineOpts;
+	private int $pipelineOffset;
+	private array $extTags;
+	/** @var int|float */
 	private $startTime;
-
-	/** @var string */
-	private $reUrltextLookahead;
-
-	/** @var string */
-	private $urltextPlainSegment = '';
-
-	/** @var bool */
-	private $urltextFoundAutolink = false;
+	private string $reUrltextLookahead;
+	private string $urltextPlainSegment = '';
+	private bool $urltextFoundAutolink = false;
+	private bool $annotationsEnabledOnWiki = false;
 
 	protected function initialize() {
 		$this->env = $this->options['env'];
@@ -90,6 +77,7 @@ class Grammar extends \Wikimedia\WikiPEG\PEGParserBase {
 		// standalone tokenizers user by some pipelines handlers.
 		$this->pipelineOffset = $this->options['pipelineOffset'] ?? 0;
 		$this->extTags = $this->siteConfig->getExtensionTagNameMap();
+		$this->annotationsEnabledOnWiki = count( $this->siteConfig->getAnnotationTags() ) > 0;
 
 		// Non-greedy text_char sequence: stop at ampersand, double-underscore,
 		 // magic link prefix or protocol
@@ -98,6 +86,9 @@ class Grammar extends \Wikimedia\WikiPEG\PEGParserBase {
 			'(?:__|$|[-\'<[{\n\r:;\]}|\!=&]|(RFC|PMID|ISBN|' .
 			'(?i)' . $this->siteConfig->getProtocolsRegex( true ) .
 			')))!A';
+
+		// Flag should always be an actual boolean (not falsy or undefined)
+		$this->assert( is_bool( $this->options['sol'] ), 'sol should be boolean' );
 	}
 
 	private $prevOffset = 0;
@@ -293,7 +284,7 @@ class Grammar extends \Wikimedia\WikiPEG\PEGParserBase {
 				$this->startTime = null;
 				if ( $this->env->profiling() ) {
 					$profile = $this->env->getCurrentProfile();
-					$this->startTime = microtime( true );
+					$this->startTime = hrtime( true );
 				}
 				return true;
 			
@@ -303,7 +294,7 @@ private function a1($t) {
 				if ( $this->env->profiling() ) {
 					$profile = $this->env->getCurrentProfile();
 					$profile->bumpTimeUse(
-						'PEG', 1000 * ( microtime( true ) - $this->startTime ), 'PEG' );
+						'PEG', hrtime( true ) - $this->startTime, 'PEG' );
 				}
 				return true;
 			
@@ -884,8 +875,6 @@ private function a82($sc, $startPos, $p, $b) {
 private function a83() {
 
 		// Use the sol flag only at the start of the input
-		// Flag should always be an actual boolean (not falsy or undefined)
-		$this->assert( is_bool( $this->options['sol'] ), 'sol should be boolean' );
 		return $this->endOffset() === 0 && $this->options['sol'];
 	
 }
@@ -1016,7 +1005,10 @@ private function a87($t) {
 		}
 	
 }
-private function a88($t) {
+private function a88() {
+ return $this->annotationsEnabledOnWiki; /* short-circuit! */ 
+}
+private function a89($t) {
 
 			$end = ( $t instanceof EndTagTk );
 			$attribs = $t->attribs;
@@ -1036,18 +1028,16 @@ private function a88($t) {
 			$metaAttrs = [ new KV( 'typeof', 'mw:Annotation/' . $tagName . ( $end ? '/End' : '' ) ) ];
 			$datamw = null;
 			if ( count( $attribs ) > 0 ) {
-				$attrMap = [];
+				$datamw = new DataMw();
 				foreach ( $attribs as $attr ) {
 					// If the key or the value is not a string,
 					// we replace it by the thing that generated it and
 					// consider that wikitext as a raw string instead.
 					$k = is_string( $attr->k ) ? $attr->k : $attr->ksrc;
 					$v = is_string( $attr->v ) ? $attr->v : $attr->vsrc;
-					$attrMap[$k] = $v;
+					// Possible follow-up in T295168 for attribute sanitation
+					$datamw->setExtAttrib( $k, $v );
 				}
-				// Possible follow-up in T295168 for attribute sanitation
-				// T367616: 'attrs' should be renamed to 'extAttrs'
-				$datamw = new DataMw( [ 'attrs' => (object)$attrMap ] );
 			}
 			$dp = new DataParsoid();
 			$dp->tsr = $tsr;
@@ -1056,7 +1046,7 @@ private function a88($t) {
 			return new SelfclosingTagTk ( 'meta', $metaAttrs, $dp, $datamw );
 		
 }
-private function a89($tag) {
+private function a90($tag) {
 
 		// FIXME: Suppress annotation meta tokens from template pipelines
 		// since they may not have TSR values and won't get recognized as
@@ -1069,16 +1059,16 @@ private function a89($tag) {
 		}
 	
 }
-private function a90($s, $ill) {
+private function a91($s, $ill) {
  return $ill ?: []; 
 }
-private function a91($s, $ce) {
+private function a92($s, $ce) {
  return $ce || strlen( $s ) > 2; 
 }
-private function a92($s, $ce) {
+private function a93($s, $ce) {
  return $this->endOffset(); 
 }
-private function a93($s, $ce, $endTPos, $spc) {
+private function a94($s, $ce, $endTPos, $spc) {
 
 			$c = null;
 			$e = null;
@@ -1151,13 +1141,13 @@ private function a93($s, $ce, $endTPos, $spc) {
 			return $res;
 		
 }
-private function a94($d) {
+private function a95($d) {
  return null; 
 }
-private function a95($d) {
+private function a96($d) {
  return true; 
 }
-private function a96($d, $lineContent) {
+private function a97($d, $lineContent) {
 
 		$dataParsoid = new DataParsoid;
 		$dataParsoid->tsr = $this->tsrOffsets();
@@ -1170,22 +1160,22 @@ private function a96($d, $lineContent) {
 		return [new SelfclosingTagTk( 'hr', [], $dataParsoid )];
 	
 }
-private function a97($p, $target) {
+private function a98($p, $target) {
  return $this->endOffset(); 
 }
-private function a98($p, $target, $p0, $v) {
+private function a99($p, $target, $p0, $v) {
  return $this->endOffset(); 
 }
-private function a99($p, $target, $p0, $v, $p1) {
+private function a100($p, $target, $p0, $v, $p1) {
 
 				// empty argument
 				return [ 'tokens' => $v, 'srcOffsets' => new SourceRange( $p0, $p1 ) ];
 			
 }
-private function a100($p, $target, $r) {
+private function a101($p, $target, $r) {
  return $r; 
 }
-private function a101($p, $target, $params) {
+private function a102($p, $target, $params) {
 
 		$kvs = [];
 
@@ -1209,23 +1199,23 @@ private function a101($p, $target, $params) {
 		return $obj;
 	
 }
-private function a102($leadWS, $target) {
+private function a103($leadWS, $target) {
  return $this->endOffset(); 
 }
-private function a103($leadWS, $target, $p0, $v) {
+private function a104($leadWS, $target, $p0, $v) {
  return $this->endOffset(); 
 }
-private function a104($leadWS, $target, $p0, $v, $p1) {
+private function a105($leadWS, $target, $p0, $v, $p1) {
 
 				// empty argument
 				$tsr0 = new SourceRange( $p0, $p1 );
 				return new KV( '', TokenizerUtils::flattenIfArray( $v ), $tsr0->expandTsrV() );
 			
 }
-private function a105($leadWS, $target, $r) {
+private function a106($leadWS, $target, $r) {
  return $r; 
 }
-private function a106($leadWS, $target, $params, $trailWS) {
+private function a107($leadWS, $target, $params, $trailWS) {
 
 		// Insert target as first positional attribute, so that it can be
 		// generically expanded. The TemplateHandler then needs to shift it out
@@ -1241,16 +1231,16 @@ private function a106($leadWS, $target, $params, $trailWS) {
 		return $obj;
 	
 }
-private function a107($spos, $target) {
+private function a108($spos, $target) {
  return $this->endOffset(); 
 }
-private function a108($spos, $target, $tpos, $l) {
+private function a109($spos, $target, $tpos, $l) {
  return [$l,null]; 
 }
-private function a109($spos, $target, $tpos, $l) {
+private function a110($spos, $target, $tpos, $l) {
  return [null,$l]; 
 }
-private function a110($spos, $target, $tpos, $lcs) {
+private function a111($spos, $target, $tpos, $lcs) {
 
 		[$lcs, $not_wikilink] = $lcs;
 		$pipeTrick = $lcs && count( $lcs ) === 1 && count( $lcs[0][1]->v ) === 0;
@@ -1298,21 +1288,21 @@ private function a110($spos, $target, $tpos, $lcs) {
 		return [ $obj ];
 	
 }
-private function a111(&$preproc) {
+private function a112(&$preproc) {
  $preproc = null; return true; 
 }
-private function a112(&$preproc, $a) {
+private function a113(&$preproc, $a) {
 
 		return $a;
 	
 }
-private function a113($extToken) {
+private function a114($extToken) {
  return $extToken->getName() === 'extension'; 
 }
-private function a114($extToken) {
+private function a115($extToken) {
  return $extToken; 
 }
-private function a115($annOrExtTag, $start) {
+private function a116($annOrExtTag, $start) {
 
 		// Only enforce ascii alpha first char for non-extension tags.
 		// See tag_name above for the details.
@@ -1321,7 +1311,7 @@ private function a115($annOrExtTag, $start) {
 			( preg_match( '/^[A-Za-z]/', $name ) && $this->isXMLTag( $name ) );
 	
 }
-private function a116($annOrExtTag, $start, $attribs, $selfclose) {
+private function a117($annOrExtTag, $start, $attribs, $selfclose) {
 
 		list($end, $name) = $start;
 		$lcName = mb_strtolower( $name );
@@ -1350,10 +1340,10 @@ private function a116($annOrExtTag, $start, $attribs, $selfclose) {
 		return $res;
 	
 }
-private function a117($proto, $addr, $rhe) {
+private function a118($proto, $addr, $rhe) {
  return $rhe === '<' || $rhe === '>' || $rhe === "\u{A0}"; 
 }
-private function a118($proto, $addr, $path) {
+private function a119($proto, $addr, $path) {
 
 			// as in Parser.php::makeFreeExternalLink, we're going to
 			// yank trailing punctuation out of this match.
@@ -1374,10 +1364,10 @@ private function a118($proto, $addr, $path) {
 			return $url;
 		
 }
-private function a119($r) {
+private function a120($r) {
  return $r !== null; 
 }
-private function a120($r) {
+private function a121($r) {
 
 		$tsr = $this->tsrOffsets();
 		$dp = new DataParsoid;
@@ -1386,7 +1376,7 @@ private function a120($r) {
 		return $res;
 	
 }
-private function a121($ref, $sp, $identifier) {
+private function a122($ref, $sp, $identifier) {
 
 		$base_urls = [
 			'RFC' => 'https://datatracker.ietf.org/doc/html/rfc%s',
@@ -1412,10 +1402,10 @@ private function a121($ref, $sp, $identifier) {
 		];
 	
 }
-private function a122() {
+private function a123() {
  return $this->siteConfig->magicLinkEnabled("ISBN"); 
 }
-private function a123($sp, $isbn) {
+private function a124($sp, $isbn) {
 
 			// Convert isbn token-and-entity array to stripped string.
 			$stripped = '';
@@ -1427,14 +1417,14 @@ private function a123($sp, $isbn) {
 			return strtoupper( preg_replace( '/[^\dX]/i', '', $stripped ) );
 		
 }
-private function a124($sp, $isbn, $isbncode) {
+private function a125($sp, $isbn, $isbncode) {
 
 		// ISBNs can only be 10 or 13 digits long (with a specific format)
 		return strlen( $isbncode ) === 10
 			|| ( strlen( $isbncode ) === 13 && preg_match( '/^97[89]/', $isbncode ) );
 	
 }
-private function a125($sp, $isbn, $isbncode) {
+private function a126($sp, $isbn, $isbncode) {
 
 		$tsr = $this->tsrOffsets();
 		$dp = new DataParsoid;
@@ -1456,7 +1446,7 @@ private function a125($sp, $isbn, $isbncode) {
 		];
 	
 }
-private function a126($t) {
+private function a127($t) {
 
 		$tagName = mb_strtolower( $t->getName() );
 		$dp = $t->dataParsoid;
@@ -1563,19 +1553,18 @@ private function a126($t) {
 		return new SelfclosingTagTk( 'extension', [
 			new KV( 'typeof', 'mw:Extension' ),
 			new KV( 'name', $tagName ),
-			new KV( 'about', $this->env->newAboutId() ),
 			new KV( 'source', $dp->src ),
 			new KV( 'options', $t->attribs )
 		], $dp );
 	
 }
-private function a127($p, $dashes) {
+private function a128($p, $dashes) {
  $this->unreachable(); 
 }
-private function a128($p, $dashes, $a) {
+private function a129($p, $dashes, $a) {
  return $this->endOffset(); 
 }
-private function a129($p, $dashes, $a, $tagEndPos, $s2) {
+private function a130($p, $dashes, $a, $tagEndPos, $s2) {
 
 		$coms = TokenizerUtils::popComments( $a );
 		if ( $coms ) {
@@ -1594,7 +1583,7 @@ private function a129($p, $dashes, $a, $tagEndPos, $s2) {
 		return array_merge( [ $trToken ], $coms ? $coms['buf'] : [], $s2 );
 	
 }
-private function a130($p, $td, $tds) {
+private function a131($p, $td, $tds) {
 
 		// Avoid modifying a cached result
 		$td[0] = clone $td[0];
@@ -1608,10 +1597,10 @@ private function a130($p, $td, $tds) {
 		return array_merge( $td, $tds );
 	
 }
-private function a131($p, $args) {
+private function a132($p, $args) {
  return $this->endOffset(); 
 }
-private function a132($p, $args, $tagEndPos, $c) {
+private function a133($p, $args, $tagEndPos, $c) {
 
 		$tsr = new SourceRange( $this->startOffset(), $tagEndPos );
 		return TokenizerUtils::buildTableTokens(
@@ -1619,16 +1608,16 @@ private function a132($p, $args, $tagEndPos, $c) {
 		);
 	
 }
-private function a133($start) {
+private function a134($start) {
 
 		list(,$name) = $start;
 		return WTUtils::isIncludeTag( mb_strtolower( $name ) );
 	
 }
-private function a134() {
+private function a135() {
  return $this->env->hasAnnotations && $this->siteConfig->isAnnotationTag( 'tvar' ); 
 }
-private function a135() {
+private function a136() {
 
 		$metaAttrs = [ new KV( 'typeof', 'mw:Annotation/tvar/End' ) ];
 		$dp = new DataParsoid();
@@ -1636,24 +1625,24 @@ private function a135() {
 		return new SelfclosingTagTk ( 'meta', $metaAttrs, $dp );
 	
 }
-private function a136($start) {
+private function a137($start) {
 
 		list(,$name) = $start;
 		return WTUtils::isAnnotationTag( $this->env, $name );
 	
 }
-private function a137($tpt) {
+private function a138($tpt) {
 
 		return [ 'tokens' => $tpt, 'srcOffsets' => $this->tsrOffsets() ];
 	
 }
-private function a138($name) {
+private function a139($name) {
  return $this->endOffset(); 
 }
-private function a139($name, $kEndPos) {
+private function a140($name, $kEndPos) {
  return $this->endOffset(); 
 }
-private function a140($name, $kEndPos, $vStartPos, $optSp, $tpv) {
+private function a141($name, $kEndPos, $vStartPos, $optSp, $tpv) {
 
 			return [
 				'kEndPos' => $kEndPos,
@@ -1662,7 +1651,7 @@ private function a140($name, $kEndPos, $vStartPos, $optSp, $tpv) {
 			];
 		
 }
-private function a141($name, $val) {
+private function a142($name, $val) {
 
 		if ( $val !== null ) {
 			if ( $val['value'] !== null ) {
@@ -1692,19 +1681,14 @@ private function a141($name, $val) {
 		}
 	
 }
-private function a142() {
+private function a143() {
 
 		$so = new SourceRange( $this->startOffset(), $this->endOffset() );
 		return new KV( '', '', $so->expandTsrV() );
 	
 }
-private function a143($t, $wr) {
+private function a144($t, $wr) {
  return $wr; 
-}
-private function a144($r) {
-
-		return TokenizerUtils::flattenStringlist( $r );
-	
 }
 private function a145($p) {
  return $this->endOffset(); 
@@ -9297,45 +9281,63 @@ private function parseannotation_tag($silence, $boolParams, &$param_preproc, &$p
   $saved_preproc=$param_preproc;
   $saved_th=$param_th;
   $p2 = $this->currPos;
+  // start seq_1
+  $p3 = $this->currPos;
+  $this->savedPos = $this->currPos;
+  $r4 = $this->a88();
+  if ($r4) {
+    $r4 = false;
+  } else {
+    $r4 = self::$FAILED;
+    $r1 = self::$FAILED;
+    goto seq_1;
+  }
   // start choice_1
-  $r3 = $this->parsetvar_old_syntax_closing_HACK($silence, $boolParams);
-  if ($r3!==self::$FAILED) {
+  $r5 = $this->parsetvar_old_syntax_closing_HACK($silence, $boolParams);
+  if ($r5!==self::$FAILED) {
     goto choice_1;
   }
-  $p4 = $this->currPos;
-  // start seq_1
-  $p5 = $this->currPos;
   $p6 = $this->currPos;
-  $r7 = $this->discardannotation_check(true, $boolParams);
-  if ($r7!==self::$FAILED) {
-    $r7 = false;
-    $this->currPos = $p6;
+  // start seq_2
+  $p7 = $this->currPos;
+  $p8 = $this->currPos;
+  $r9 = $this->discardannotation_check(true, $boolParams);
+  if ($r9!==self::$FAILED) {
+    $r9 = false;
+    $this->currPos = $p8;
   } else {
-    $r3 = self::$FAILED;
-    goto seq_1;
+    $r5 = self::$FAILED;
+    goto seq_2;
   }
-  // free $p6
-  $r8 = $this->parsexmlish_tag($silence, $boolParams | 0x2, $param_preproc, $param_th);
-  // t <- $r8
-  if ($r8===self::$FAILED) {
-    $this->currPos = $p5;
-    $r3 = self::$FAILED;
-    goto seq_1;
+  // free $p8
+  $r10 = $this->parsexmlish_tag($silence, $boolParams | 0x2, $param_preproc, $param_th);
+  // t <- $r10
+  if ($r10===self::$FAILED) {
+    $this->currPos = $p7;
+    $r5 = self::$FAILED;
+    goto seq_2;
   }
-  $r3 = true;
-  seq_1:
-  if ($r3!==self::$FAILED) {
-    $this->savedPos = $p4;
-    $r3 = $this->a88($r8);
+  $r5 = true;
+  seq_2:
+  if ($r5!==self::$FAILED) {
+    $this->savedPos = $p6;
+    $r5 = $this->a89($r10);
   }
-  // free $p5
+  // free $p7
   choice_1:
-  // tag <- $r3
-  $r1 = $r3;
+  // tag <- $r5
+  if ($r5===self::$FAILED) {
+    $this->currPos = $p3;
+    $r1 = self::$FAILED;
+    goto seq_1;
+  }
+  $r1 = true;
+  seq_1:
   if ($r1!==self::$FAILED) {
     $this->savedPos = $p2;
-    $r1 = $this->a89($r3);
+    $r1 = $this->a90($r5);
   }
+  // free $p3
   $this->cache[$bucket][$key] = new GrammarCacheEntry(
     $this->currPos,
     $r1,
@@ -9408,7 +9410,7 @@ private function parseheading($silence, $boolParams, &$param_preproc, &$param_th
   $r11 = $r13;
   if ($r11!==self::$FAILED) {
     $this->savedPos = $p12;
-    $r11 = $this->a90($r8, $r13);
+    $r11 = $this->a91($r8, $r13);
   } else {
     $r10 = self::$FAILED;
     goto seq_3;
@@ -9444,7 +9446,7 @@ private function parseheading($silence, $boolParams, &$param_preproc, &$param_th
   // free $p9
   // ce <- $r10
   $this->savedPos = $this->currPos;
-  $r16 = $this->a91($r8, $r10);
+  $r16 = $this->a92($r8, $r10);
   if ($r16) {
     $r16 = false;
   } else {
@@ -9458,7 +9460,7 @@ private function parseheading($silence, $boolParams, &$param_preproc, &$param_th
   // endTPos <- $r17
   if ($r17!==self::$FAILED) {
     $this->savedPos = $p9;
-    $r17 = $this->a92($r8, $r10);
+    $r17 = $this->a93($r8, $r10);
   } else {
     $this->currPos = $p7;
     $r6 = self::$FAILED;
@@ -9497,7 +9499,7 @@ private function parseheading($silence, $boolParams, &$param_preproc, &$param_th
   // r <- $r6
   if ($r6!==self::$FAILED) {
     $this->savedPos = $p4;
-    $r6 = $this->a93($r8, $r10, $r17, $r18);
+    $r6 = $this->a94($r8, $r10, $r17, $r18);
   } else {
     $this->currPos = $p3;
     $r1 = self::$FAILED;
@@ -9584,7 +9586,7 @@ private function parsehr($silence, $boolParams, &$param_preproc, &$param_th) {
   seq_2:
   if ($r7!==self::$FAILED) {
     $this->savedPos = $p6;
-    $r7 = $this->a94($r5);
+    $r7 = $this->a95($r5);
     goto choice_1;
   }
   // free $p8
@@ -9592,7 +9594,7 @@ private function parsehr($silence, $boolParams, &$param_preproc, &$param_th) {
   $r7 = '';
   if ($r7!==self::$FAILED) {
     $this->savedPos = $p8;
-    $r7 = $this->a95($r5);
+    $r7 = $this->a96($r5);
   }
   choice_1:
   // lineContent <- $r7
@@ -9605,7 +9607,7 @@ private function parsehr($silence, $boolParams, &$param_preproc, &$param_th) {
   seq_1:
   if ($r1!==self::$FAILED) {
     $this->savedPos = $p2;
-    $r1 = $this->a96($r5, $r7);
+    $r1 = $this->a97($r5, $r7);
   }
   // free $p3
   $this->cache[$bucket][$key] = new GrammarCacheEntry(
@@ -9693,7 +9695,7 @@ private function discardtplarg_preproc($silence, $boolParams, &$param_preproc, &
     // p0 <- $r16
     if ($r16!==self::$FAILED) {
       $this->savedPos = $p17;
-      $r16 = $this->a97($r5, $r7);
+      $r16 = $this->a98($r5, $r7);
     } else {
       $r13 = self::$FAILED;
       goto seq_3;
@@ -9714,7 +9716,7 @@ private function discardtplarg_preproc($silence, $boolParams, &$param_preproc, &
     // p1 <- $r19
     if ($r19!==self::$FAILED) {
       $this->savedPos = $p20;
-      $r19 = $this->a98($r5, $r7, $r16, $r18);
+      $r19 = $this->a99($r5, $r7, $r16, $r18);
     } else {
       $this->currPos = $p15;
       $r13 = self::$FAILED;
@@ -9749,7 +9751,7 @@ private function discardtplarg_preproc($silence, $boolParams, &$param_preproc, &
     seq_3:
     if ($r13!==self::$FAILED) {
       $this->savedPos = $p14;
-      $r13 = $this->a99($r5, $r7, $r16, $r18, $r19);
+      $r13 = $this->a100($r5, $r7, $r16, $r18, $r19);
       goto choice_1;
     }
     // free $p15
@@ -9765,7 +9767,7 @@ private function discardtplarg_preproc($silence, $boolParams, &$param_preproc, &
     seq_2:
     if ($r9!==self::$FAILED) {
       $this->savedPos = $p10;
-      $r9 = $this->a100($r5, $r7, $r13);
+      $r9 = $this->a101($r5, $r7, $r13);
       $r8[] = $r9;
     } else {
       break;
@@ -9808,7 +9810,7 @@ private function discardtplarg_preproc($silence, $boolParams, &$param_preproc, &
   seq_1:
   if ($r1!==self::$FAILED) {
     $this->savedPos = $p2;
-    $r1 = $this->a101($r5, $r7, $r8);
+    $r1 = $this->a102($r5, $r7, $r8);
   }
   // free $p3
   $this->cache[$bucket][$key] = new GrammarCacheEntry(
@@ -9913,7 +9915,7 @@ private function parsetemplate_preproc($silence, $boolParams, &$param_preproc, &
     // p0 <- $r15
     if ($r15!==self::$FAILED) {
       $this->savedPos = $p16;
-      $r15 = $this->a102($r5, $r7);
+      $r15 = $this->a103($r5, $r7);
     } else {
       $r12 = self::$FAILED;
       goto seq_3;
@@ -9934,7 +9936,7 @@ private function parsetemplate_preproc($silence, $boolParams, &$param_preproc, &
     // p1 <- $r18
     if ($r18!==self::$FAILED) {
       $this->savedPos = $p19;
-      $r18 = $this->a103($r5, $r7, $r15, $r17);
+      $r18 = $this->a104($r5, $r7, $r15, $r17);
     } else {
       $this->currPos = $p14;
       $r12 = self::$FAILED;
@@ -9969,7 +9971,7 @@ private function parsetemplate_preproc($silence, $boolParams, &$param_preproc, &
     seq_3:
     if ($r12!==self::$FAILED) {
       $this->savedPos = $p13;
-      $r12 = $this->a104($r5, $r7, $r15, $r17, $r18);
+      $r12 = $this->a105($r5, $r7, $r15, $r17, $r18);
       goto choice_3;
     }
     // free $p14
@@ -9985,7 +9987,7 @@ private function parsetemplate_preproc($silence, $boolParams, &$param_preproc, &
     seq_2:
     if ($r9!==self::$FAILED) {
       $this->savedPos = $p6;
-      $r9 = $this->a105($r5, $r7, $r12);
+      $r9 = $this->a106($r5, $r7, $r12);
       $r8[] = $r9;
     } else {
       break;
@@ -10033,7 +10035,7 @@ private function parsetemplate_preproc($silence, $boolParams, &$param_preproc, &
   seq_1:
   if ($r1!==self::$FAILED) {
     $this->savedPos = $p2;
-    $r1 = $this->a106($r5, $r7, $r8, $r9);
+    $r1 = $this->a107($r5, $r7, $r8, $r9);
     goto choice_1;
   }
   // free $p3
@@ -10168,7 +10170,7 @@ private function parsetplarg_preproc($silence, $boolParams, &$param_preproc, &$p
     // p0 <- $r16
     if ($r16!==self::$FAILED) {
       $this->savedPos = $p17;
-      $r16 = $this->a97($r5, $r7);
+      $r16 = $this->a98($r5, $r7);
     } else {
       $r13 = self::$FAILED;
       goto seq_3;
@@ -10189,7 +10191,7 @@ private function parsetplarg_preproc($silence, $boolParams, &$param_preproc, &$p
     // p1 <- $r19
     if ($r19!==self::$FAILED) {
       $this->savedPos = $p20;
-      $r19 = $this->a98($r5, $r7, $r16, $r18);
+      $r19 = $this->a99($r5, $r7, $r16, $r18);
     } else {
       $this->currPos = $p15;
       $r13 = self::$FAILED;
@@ -10224,7 +10226,7 @@ private function parsetplarg_preproc($silence, $boolParams, &$param_preproc, &$p
     seq_3:
     if ($r13!==self::$FAILED) {
       $this->savedPos = $p14;
-      $r13 = $this->a99($r5, $r7, $r16, $r18, $r19);
+      $r13 = $this->a100($r5, $r7, $r16, $r18, $r19);
       goto choice_1;
     }
     // free $p15
@@ -10240,7 +10242,7 @@ private function parsetplarg_preproc($silence, $boolParams, &$param_preproc, &$p
     seq_2:
     if ($r9!==self::$FAILED) {
       $this->savedPos = $p10;
-      $r9 = $this->a100($r5, $r7, $r13);
+      $r9 = $this->a101($r5, $r7, $r13);
       $r8[] = $r9;
     } else {
       break;
@@ -10283,7 +10285,7 @@ private function parsetplarg_preproc($silence, $boolParams, &$param_preproc, &$p
   seq_1:
   if ($r1!==self::$FAILED) {
     $this->savedPos = $p2;
-    $r1 = $this->a101($r5, $r7, $r8);
+    $r1 = $this->a102($r5, $r7, $r8);
   }
   // free $p3
   $this->cache[$bucket][$key] = new GrammarCacheEntry(
@@ -10339,7 +10341,7 @@ private function discardwikilink_preproc($silence, $boolParams, &$param_preproc,
   // tpos <- $r8
   if ($r8!==self::$FAILED) {
     $this->savedPos = $p9;
-    $r8 = $this->a107($r5, $r7);
+    $r8 = $this->a108($r5, $r7);
   } else {
     $this->currPos = $p3;
     $r1 = self::$FAILED;
@@ -10365,7 +10367,7 @@ private function discardwikilink_preproc($silence, $boolParams, &$param_preproc,
   seq_2:
   if ($r10!==self::$FAILED) {
     $this->savedPos = $p11;
-    $r10 = $this->a108($r5, $r7, $r8, $r13);
+    $r10 = $this->a109($r5, $r7, $r8, $r13);
     goto choice_1;
   }
   // free $p12
@@ -10375,7 +10377,7 @@ private function discardwikilink_preproc($silence, $boolParams, &$param_preproc,
   $r10 = $r15;
   if ($r10!==self::$FAILED) {
     $this->savedPos = $p12;
-    $r10 = $this->a109($r5, $r7, $r8, $r15);
+    $r10 = $this->a110($r5, $r7, $r8, $r15);
   }
   choice_1:
   // lcs <- $r10
@@ -10398,7 +10400,7 @@ private function discardwikilink_preproc($silence, $boolParams, &$param_preproc,
   seq_1:
   if ($r1!==self::$FAILED) {
     $this->savedPos = $p2;
-    $r1 = $this->a110($r5, $r7, $r8, $r10);
+    $r1 = $this->a111($r5, $r7, $r8, $r10);
   }
   // free $p3
   $this->cache[$bucket][$key] = new GrammarCacheEntry(
@@ -10437,7 +10439,7 @@ private function discardbroken_wikilink($silence, $boolParams, &$param_preproc, 
   }
   // free $p4
   $this->savedPos = $this->currPos;
-  $r6 = $this->a111($param_preproc);
+  $r6 = $this->a112($param_preproc);
   if ($r6) {
     $r6 = false;
   } else {
@@ -10488,7 +10490,7 @@ private function discardbroken_wikilink($silence, $boolParams, &$param_preproc, 
   seq_1:
   if ($r1!==self::$FAILED) {
     $this->savedPos = $p2;
-    $r1 = $this->a112($param_preproc, $r7);
+    $r1 = $this->a113($param_preproc, $r7);
   }
   // free $p3
   $this->cache[$bucket][$key] = new GrammarCacheEntry(
@@ -10521,7 +10523,7 @@ private function parsewellformed_extension_tag($silence, $boolParams, &$param_pr
     goto seq_1;
   }
   $this->savedPos = $this->currPos;
-  $r5 = $this->a113($r4);
+  $r5 = $this->a114($r4);
   if ($r5) {
     $r5 = false;
   } else {
@@ -10534,7 +10536,7 @@ private function parsewellformed_extension_tag($silence, $boolParams, &$param_pr
   seq_1:
   if ($r1!==self::$FAILED) {
     $this->savedPos = $p2;
-    $r1 = $this->a114($r4);
+    $r1 = $this->a115($r4);
   }
   // free $p3
   $this->cache[$bucket][$key] = new GrammarCacheEntry(
@@ -10568,7 +10570,7 @@ private function parsexmlish_tag($silence, $boolParams, &$param_preproc, &$param
     goto seq_1;
   }
   $this->savedPos = $this->currPos;
-  $r5 = $this->a115(/*annOrExtTag*/($boolParams & 0x2) !== 0, $r4);
+  $r5 = $this->a116(/*annOrExtTag*/($boolParams & 0x2) !== 0, $r4);
   if ($r5) {
     $r5 = false;
   } else {
@@ -10635,7 +10637,7 @@ private function parsexmlish_tag($silence, $boolParams, &$param_preproc, &$param
   seq_1:
   if ($r1!==self::$FAILED) {
     $this->savedPos = $p2;
-    $r1 = $this->a116(/*annOrExtTag*/($boolParams & 0x2) !== 0, $r4, $r6, $r7);
+    $r1 = $this->a117(/*annOrExtTag*/($boolParams & 0x2) !== 0, $r4, $r6, $r7);
   }
   // free $p3
   $this->cache[$bucket][$key] = new GrammarCacheEntry(
@@ -10788,7 +10790,7 @@ private function parseautourl($silence, $boolParams, &$param_preproc, &$param_th
       goto seq_6;
     }
     $this->savedPos = $this->currPos;
-    $r24 = $this->a117($r8, $r9, $r23);
+    $r24 = $this->a118($r8, $r9, $r23);
     if ($r24) {
       $r24 = false;
     } else {
@@ -10886,7 +10888,7 @@ private function parseautourl($silence, $boolParams, &$param_preproc, &$param_th
   // r <- $r6
   if ($r6!==self::$FAILED) {
     $this->savedPos = $p4;
-    $r6 = $this->a118($r8, $r9, $r10);
+    $r6 = $this->a119($r8, $r9, $r10);
   } else {
     $this->currPos = $p3;
     $r1 = self::$FAILED;
@@ -10894,7 +10896,7 @@ private function parseautourl($silence, $boolParams, &$param_preproc, &$param_th
   }
   // free $p7
   $this->savedPos = $this->currPos;
-  $r11 = $this->a119($r6);
+  $r11 = $this->a120($r6);
   if ($r11) {
     $r11 = false;
   } else {
@@ -10907,7 +10909,7 @@ private function parseautourl($silence, $boolParams, &$param_preproc, &$param_th
   seq_1:
   if ($r1!==self::$FAILED) {
     $this->savedPos = $p2;
-    $r1 = $this->a120($r6);
+    $r1 = $this->a121($r6);
   }
   // free $p3
   $this->cache[$bucket][$key] = new GrammarCacheEntry(
@@ -10996,7 +10998,7 @@ private function parseautoref($silence) {
   seq_1:
   if ($r1!==self::$FAILED) {
     $this->savedPos = $p2;
-    $r1 = $this->a121($r4, $r5, $r6);
+    $r1 = $this->a122($r4, $r5, $r6);
   }
   // free $p3
   $this->cache[$bucket][$key] = new GrammarCacheEntry(
@@ -11021,7 +11023,7 @@ private function parseisbn($silence) {
   // start seq_1
   $p3 = $this->currPos;
   $this->savedPos = $this->currPos;
-  $r4 = $this->a122();
+  $r4 = $this->a123();
   if ($r4) {
     $r4 = false;
   } else {
@@ -11163,14 +11165,14 @@ private function parseisbn($silence) {
   // isbncode <- $r17
   if ($r17!==self::$FAILED) {
     $this->savedPos = $p8;
-    $r17 = $this->a123($r6, $r7);
+    $r17 = $this->a124($r6, $r7);
   } else {
     $this->currPos = $p3;
     $r1 = self::$FAILED;
     goto seq_1;
   }
   $this->savedPos = $this->currPos;
-  $r18 = $this->a124($r6, $r7, $r17);
+  $r18 = $this->a125($r6, $r7, $r17);
   if ($r18) {
     $r18 = false;
   } else {
@@ -11183,7 +11185,7 @@ private function parseisbn($silence) {
   seq_1:
   if ($r1!==self::$FAILED) {
     $this->savedPos = $p2;
-    $r1 = $this->a125($r6, $r7, $r17);
+    $r1 = $this->a126($r6, $r7, $r17);
   }
   // free $p3
   $this->cache[$bucket][$key] = new GrammarCacheEntry(
@@ -11303,7 +11305,7 @@ private function parsemaybe_extension_tag($silence, $boolParams, &$param_preproc
   seq_1:
   if ($r1!==self::$FAILED) {
     $this->savedPos = $p2;
-    $r1 = $this->a126($r6);
+    $r1 = $this->a127($r6);
   }
   // free $p3
   $this->cache[$bucket][$key] = new GrammarCacheEntry(
@@ -11386,7 +11388,7 @@ private function parsewikilink_preproc($silence, $boolParams, &$param_preproc, &
   // tpos <- $r8
   if ($r8!==self::$FAILED) {
     $this->savedPos = $p9;
-    $r8 = $this->a107($r5, $r7);
+    $r8 = $this->a108($r5, $r7);
   } else {
     $this->currPos = $p3;
     $r1 = self::$FAILED;
@@ -11412,7 +11414,7 @@ private function parsewikilink_preproc($silence, $boolParams, &$param_preproc, &
   seq_2:
   if ($r10!==self::$FAILED) {
     $this->savedPos = $p11;
-    $r10 = $this->a108($r5, $r7, $r8, $r13);
+    $r10 = $this->a109($r5, $r7, $r8, $r13);
     goto choice_1;
   }
   // free $p12
@@ -11422,7 +11424,7 @@ private function parsewikilink_preproc($silence, $boolParams, &$param_preproc, &
   $r10 = $r15;
   if ($r10!==self::$FAILED) {
     $this->savedPos = $p12;
-    $r10 = $this->a109($r5, $r7, $r8, $r15);
+    $r10 = $this->a110($r5, $r7, $r8, $r15);
   }
   choice_1:
   // lcs <- $r10
@@ -11445,7 +11447,7 @@ private function parsewikilink_preproc($silence, $boolParams, &$param_preproc, &
   seq_1:
   if ($r1!==self::$FAILED) {
     $this->savedPos = $p2;
-    $r1 = $this->a110($r5, $r7, $r8, $r10);
+    $r1 = $this->a111($r5, $r7, $r8, $r10);
   }
   // free $p3
   $this->cache[$bucket][$key] = new GrammarCacheEntry(
@@ -11484,7 +11486,7 @@ private function parsebroken_wikilink($silence, $boolParams, &$param_preproc, &$
   }
   // free $p4
   $this->savedPos = $this->currPos;
-  $r6 = $this->a111($param_preproc);
+  $r6 = $this->a112($param_preproc);
   if ($r6) {
     $r6 = false;
   } else {
@@ -11535,7 +11537,7 @@ private function parsebroken_wikilink($silence, $boolParams, &$param_preproc, &$
   seq_1:
   if ($r1!==self::$FAILED) {
     $this->savedPos = $p2;
-    $r1 = $this->a112($param_preproc, $r7);
+    $r1 = $this->a113($param_preproc, $r7);
   }
   // free $p3
   $this->cache[$bucket][$key] = new GrammarCacheEntry(
@@ -11624,7 +11626,7 @@ private function parsetable_row_tag($silence, $boolParams, &$param_preproc, &$pa
     goto choice_1;
   }
   $this->savedPos = $this->currPos;
-  $r8 = $this->a127($r5, $r6);
+  $r8 = $this->a128($r5, $r6);
   if ($r8) {
     $r8 = false;
   } else {
@@ -11642,7 +11644,7 @@ private function parsetable_row_tag($silence, $boolParams, &$param_preproc, &$pa
   // tagEndPos <- $r9
   if ($r9!==self::$FAILED) {
     $this->savedPos = $p7;
-    $r9 = $this->a128($r5, $r6, $r8);
+    $r9 = $this->a129($r5, $r6, $r8);
   } else {
     $this->currPos = $p3;
     $r1 = self::$FAILED;
@@ -11663,7 +11665,7 @@ private function parsetable_row_tag($silence, $boolParams, &$param_preproc, &$pa
   seq_1:
   if ($r1!==self::$FAILED) {
     $this->savedPos = $p2;
-    $r1 = $this->a129($r5, $r6, $r8, $r9, $r10);
+    $r1 = $this->a130($r5, $r6, $r8, $r9, $r10);
   }
   // free $p3
   $this->cache[$bucket][$key] = new GrammarCacheEntry(
@@ -11738,7 +11740,7 @@ private function parsetable_data_tags($silence, $boolParams, &$param_preproc, &$
   seq_1:
   if ($r1!==self::$FAILED) {
     $this->savedPos = $p2;
-    $r1 = $this->a130($r5, $r8, $r9);
+    $r1 = $this->a131($r5, $r8, $r9);
   }
   // free $p3
   $this->cache[$bucket][$key] = new GrammarCacheEntry(
@@ -11798,7 +11800,7 @@ private function parsetable_caption_tag($silence, $boolParams, &$param_preproc, 
   // tagEndPos <- $r8
   if ($r8!==self::$FAILED) {
     $this->savedPos = $p9;
-    $r8 = $this->a131($r5, $r7);
+    $r8 = $this->a132($r5, $r7);
   } else {
     $this->currPos = $p3;
     $r1 = self::$FAILED;
@@ -11819,7 +11821,7 @@ private function parsetable_caption_tag($silence, $boolParams, &$param_preproc, 
   seq_1:
   if ($r1!==self::$FAILED) {
     $this->savedPos = $p2;
-    $r1 = $this->a132($r5, $r7, $r8, $r10);
+    $r1 = $this->a133($r5, $r7, $r8, $r10);
   }
   // free $p3
   $this->cache[$bucket][$key] = new GrammarCacheEntry(
@@ -11892,7 +11894,7 @@ private function discardinclude_check($silence, $boolParams) {
     goto seq_1;
   }
   $this->savedPos = $this->currPos;
-  $r5 = $this->a133($r4);
+  $r5 = $this->a134($r4);
   if ($r5) {
     $r5 = false;
   } else {
@@ -11943,7 +11945,7 @@ private function parsetvar_old_syntax_closing_HACK($silence, $boolParams) {
     goto seq_1;
   }
   $this->savedPos = $this->currPos;
-  $r6 = $this->a134();
+  $r6 = $this->a135();
   if ($r6) {
     $r6 = false;
   } else {
@@ -11956,7 +11958,7 @@ private function parsetvar_old_syntax_closing_HACK($silence, $boolParams) {
   seq_1:
   if ($r1!==self::$FAILED) {
     $this->savedPos = $p2;
-    $r1 = $this->a135();
+    $r1 = $this->a136();
   }
   // free $p3
   $this->cache[$bucket][$key] = new GrammarCacheEntry(
@@ -11994,7 +11996,7 @@ private function discardannotation_check($silence, $boolParams) {
     goto seq_1;
   }
   $this->savedPos = $this->currPos;
-  $r5 = $this->a136($r4);
+  $r5 = $this->a137($r4);
   if ($r5) {
     $r5 = false;
   } else {
@@ -12084,7 +12086,7 @@ private function parsetemplate_param_value($silence, $boolParams, &$param_prepro
   $r1 = $r3;
   if ($r1!==self::$FAILED) {
     $this->savedPos = $p2;
-    $r1 = $this->a137($r3);
+    $r1 = $this->a138($r3);
   }
   $this->cache[$bucket][$key] = new GrammarCacheEntry(
     $this->currPos,
@@ -12239,7 +12241,7 @@ private function parsetemplate_param($silence, $boolParams, &$param_preproc, &$p
   // kEndPos <- $r8
   if ($r8!==self::$FAILED) {
     $this->savedPos = $p9;
-    $r8 = $this->a138($r4);
+    $r8 = $this->a139($r4);
   } else {
     $r5 = self::$FAILED;
     goto seq_2;
@@ -12259,7 +12261,7 @@ private function parsetemplate_param($silence, $boolParams, &$param_preproc, &$p
   // vStartPos <- $r11
   if ($r11!==self::$FAILED) {
     $this->savedPos = $p12;
-    $r11 = $this->a139($r4, $r8);
+    $r11 = $this->a140($r4, $r8);
   } else {
     $this->currPos = $p7;
     $r5 = self::$FAILED;
@@ -12281,7 +12283,7 @@ private function parsetemplate_param($silence, $boolParams, &$param_preproc, &$p
   seq_2:
   if ($r5!==self::$FAILED) {
     $this->savedPos = $p6;
-    $r5 = $this->a140($r4, $r8, $r11, $r13, $r14);
+    $r5 = $this->a141($r4, $r8, $r11, $r13, $r14);
   } else {
     $r5 = null;
   }
@@ -12291,7 +12293,7 @@ private function parsetemplate_param($silence, $boolParams, &$param_preproc, &$p
   seq_1:
   if ($r1!==self::$FAILED) {
     $this->savedPos = $p2;
-    $r1 = $this->a141($r4, $r5);
+    $r1 = $this->a142($r4, $r5);
     goto choice_1;
   }
   // free $p3
@@ -12303,7 +12305,7 @@ private function parsetemplate_param($silence, $boolParams, &$param_preproc, &$p
     $r1 = false;
     $this->currPos = $p7;
     $this->savedPos = $p3;
-    $r1 = $this->a142();
+    $r1 = $this->a143();
   } else {
     $r1 = self::$FAILED;
   }
@@ -12444,7 +12446,7 @@ private function parsewikilink_preprocessor_text($silence, $boolParams, &$param_
     seq_1:
     if ($r4!==self::$FAILED) {
       $this->savedPos = $p6;
-      $r4 = $this->a143($r5, $r11);
+      $r4 = $this->a144($r5, $r11);
     }
     // free $p8
     choice_1:
@@ -12462,7 +12464,7 @@ private function parsewikilink_preprocessor_text($silence, $boolParams, &$param_
   $r1 = $r3;
   if ($r1!==self::$FAILED) {
     $this->savedPos = $p2;
-    $r1 = $this->a144($r3);
+    $r1 = $this->a59($r3);
   }
   $this->cache[$bucket][$key] = new GrammarCacheEntry(
     $this->currPos,
@@ -15278,8 +15280,8 @@ private function parsenowiki($silence, $boolParams, &$param_preproc, &$param_th)
 case "start_async":
   return $this->streamstart_async(false, self::newRef(null));
   break;
-				default:
-					throw new \Wikimedia\WikiPEG\InternalError( "Can't stream rule $startRule." );
+			default:
+				throw new \Wikimedia\WikiPEG\InternalError( "Can't stream rule $startRule." );
 			}
 		} else {
 			switch ( $startRule ) {
@@ -15319,8 +15321,8 @@ case "extlink":
 case "list_item":
   $result = $this->parselist_item(false, 0, self::newRef(null), self::newRef(null));
   break;
-				default:
-					throw new \Wikimedia\WikiPEG\InternalError( "Can't start parsing from rule $startRule." );
+			default:
+				throw new \Wikimedia\WikiPEG\InternalError( "Can't start parsing from rule $startRule." );
 			}
 		}
 

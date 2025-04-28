@@ -114,18 +114,15 @@ class PreHandler extends TokenHandler {
 
 	/**
 	 * debug string output of FSM states
-	 * @return array
 	 */
-	private static function stateStr(): array {
-		return [
-			1 => 'sol          ',
-			2 => 'pre          ',
-			3 => 'pre_collect  ',
-			4 => 'sol_after_pre',
-			5 => 'multiline_pre',
-			6 => 'ignore       '
-		];
-	}
+	private const STATE_STR = [
+		1 => 'sol          ',
+		2 => 'pre          ',
+		3 => 'pre_collect  ',
+		4 => 'sol_after_pre',
+		5 => 'multiline_pre',
+		6 => 'ignore       '
+	];
 
 	/**
 	 * Create a token to represent the indent-pre whitespace character.
@@ -332,11 +329,7 @@ class PreHandler extends TokenHandler {
 		$env = $this->env;
 
 		$env->log( 'trace/pre', $this->pipelineId, 'NL    |',
-			$this->state, ':',
-			self::stateStr()[$this->state], '|',
-			static function () use ( $token ) {
-				return PHPUtils::jsonEncode( $token );
-			}
+			self::STATE_STR[$this->state], '| ', $token
 		);
 
 		// Whenever we move into SOL-state, init preTSR to
@@ -376,11 +369,7 @@ class PreHandler extends TokenHandler {
 		}
 
 		$env->log( 'debug/pre', $this->pipelineId, 'saved :', $this->tokens );
-		$env->log( 'debug/pre', $this->pipelineId, '---->  ',
-			static function () use ( $ret ) {
-				return PHPUtils::jsonEncode( $ret );
-			}
-		);
+		$env->log( 'debug/pre', $this->pipelineId, '---->   ', $ret );
 
 		return new TokenHandlerResult( $ret, true );
 	}
@@ -390,11 +379,7 @@ class PreHandler extends TokenHandler {
 	 */
 	public function onEnd( EOFTk $token ): ?TokenHandlerResult {
 		$this->env->log( 'trace/pre', $this->pipelineId, 'eof   |',
-			$this->state, ':',
-			self::stateStr()[$this->state], '|',
-			static function () use ( $token ) {
-				return PHPUtils::jsonEncode( $token );
-			}
+			self::STATE_STR[$this->state], '| ', $token
 		);
 
 		switch ( $this->state ) {
@@ -424,11 +409,7 @@ class PreHandler extends TokenHandler {
 		}
 
 		$this->env->log( 'debug/pre', $this->pipelineId, 'saved :', $this->tokens );
-		$this->env->log( 'debug/pre', $this->pipelineId, '---->  ',
-			static function () use ( $ret ){
-				return PHPUtils::jsonEncode( $ret );
-			}
-		);
+		$this->env->log( 'debug/pre', $this->pipelineId, '---->   ', $ret );
 
 		return new TokenHandlerResult( $ret, true );
 	}
@@ -461,11 +442,7 @@ class PreHandler extends TokenHandler {
 		$env = $this->env;
 
 		$env->log( 'trace/pre', $this->pipelineId, 'any   |',
-			$this->state, ':',
-			self::stateStr()[$this->state], '|',
-			static function () use ( $token ) {
-				return PHPUtils::jsonEncode( $token );
-			}
+			self::STATE_STR[$this->state], '|', $token
 		);
 
 		if ( $this->state === self::STATE_IGNORE ) {
@@ -547,11 +524,7 @@ class PreHandler extends TokenHandler {
 		}
 
 		$env->log( 'debug/pre', $this->pipelineId, 'saved :', $this->tokens );
-		$env->log( 'debug/pre', $this->pipelineId, '---->  ',
-			static function () use ( $ret ) {
-				return PHPUtils::jsonEncode( $ret );
-			}
-		);
+		$env->log( 'debug/pre', $this->pipelineId, '---->   ', $ret );
 
 		return new TokenHandlerResult( $ret );
 	}

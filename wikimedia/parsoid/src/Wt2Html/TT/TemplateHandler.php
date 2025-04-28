@@ -489,7 +489,7 @@ class TemplateHandler extends TokenHandler {
 				'srcOffsets' => $srcOffsets,
 			]
 		);
-		TokenUtils::stripEOFTkfromTokens( $toks );
+		TokenUtils::stripEOFTkFromTokens( $toks );
 		return new TemplateExpansionResult( array_merge( [ '{' ], $toks, [ '}' ] ), true );
 	}
 
@@ -666,7 +666,7 @@ class TemplateHandler extends TokenHandler {
 	 * @return array
 	 */
 	private function processTemplateTokens( array $chunk ): array {
-		TokenUtils::stripEOFTkfromTokens( $chunk );
+		TokenUtils::stripEOFTkFromTokens( $chunk );
 
 		foreach ( $chunk as $i => $t ) {
 			if ( !$t ) {
@@ -718,14 +718,14 @@ class TemplateHandler extends TokenHandler {
 			return $env->pageCache[$templateName];
 		}
 
-		$start = microtime( true );
+		$start = hrtime( true );
 		$pageContent = $env->getDataAccess()->fetchTemplateSource(
 			$env->getPageConfig(),
 			Title::newFromText( $templateName, $env->getSiteConfig() )
 		);
 		if ( $env->profiling() ) {
 			$profile = $env->getCurrentProfile();
-			$profile->bumpMWTime( "TemplateFetch", 1000 * ( microtime( true ) - $start ), "api" );
+			$profile->bumpMWTime( "TemplateFetch", hrtime( true ) - $start, "api" );
 			$profile->bumpCount( "TemplateFetch" );
 		}
 
@@ -937,10 +937,11 @@ class TemplateHandler extends TokenHandler {
 
 		if ( $env->nativeTemplateExpansionEnabled() ) {
 			// Expand argument keys
-			$atm = new AttributeTransformManager( $frame,
-				[ 'expandTemplates' => false, 'inTemplate' => true ]
-			);
-			$newAttribs = $atm->process( $token->attribs );
+			$newAttribs = AttributeTransformManager::process(
+				$frame,
+				[ 'expandTemplates' => false, 'inTemplate' => true ],
+				$token->attribs
+			) ?? $token->attribs;
 			$target = $newAttribs[0]->k;
 			if ( !$target ) {
 				$env->log( 'debug', 'No template target! ', $newAttribs );

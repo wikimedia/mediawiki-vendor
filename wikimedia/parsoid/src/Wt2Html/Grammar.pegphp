@@ -31,30 +31,17 @@
 	use Wikimedia\Parsoid\Wikitext\Consts;
 }
 {
-	/** @var Env */
-	private $env;
-
-	/** @var SiteConfig */
-	private $siteConfig;
-
-	/** @var array */
-	private $pipelineOpts;
-
-	/** @var int */
-	private $pipelineOffset;
-
-	private $extTags;
-
+	private Env $env;
+	private SiteConfig $siteConfig;
+	private array $pipelineOpts;
+	private int $pipelineOffset;
+	private array $extTags;
+	/** @var int|float */
 	private $startTime;
-
-	/** @var string */
-	private $reUrltextLookahead;
-
-	/** @var string */
-	private $urltextPlainSegment = '';
-
-	/** @var bool */
-	private $urltextFoundAutolink = false;
+	private string $reUrltextLookahead;
+	private string $urltextPlainSegment = '';
+	private bool $urltextFoundAutolink = false;
+	private bool $annotationsEnabledOnWiki = false;
 
 	protected function initialize() {
 		$this->env = $this->options['env'];
@@ -66,6 +53,7 @@
 		// standalone tokenizers user by some pipelines handlers.
 		$this->pipelineOffset = $this->options['pipelineOffset'] ?? 0;
 		$this->extTags = $this->siteConfig->getExtensionTagNameMap();
+		$this->annotationsEnabledOnWiki = count( $this->siteConfig->getAnnotationTags() ) > 0;
 
 		// Non-greedy text_char sequence: stop at ampersand, double-underscore,
 		 // magic link prefix or protocol
@@ -74,6 +62,9 @@
 			'(?:__|$|[-\'<[{\n\r:;\]}|\!=&]|(RFC|PMID|ISBN|' .
 			'(?i)' . $this->siteConfig->getProtocolsRegex( true ) .
 			')))!A';
+
+		// Flag should always be an actual boolean (not falsy or undefined)
+		$this->assert( is_bool( $this->options['sol'] ), 'sol should be boolean' );
 	}
 
 	private $prevOffset = 0;
@@ -218,7 +209,7 @@ start_async =
 				$this->startTime = null;
 				if ( $this->env->profiling() ) {
 					$profile = $this->env->getCurrentProfile();
-					$this->startTime = microtime( true );
+					$this->startTime = hrtime( true );
 				}
 				return true;
 			}
@@ -227,7 +218,7 @@ start_async =
 				if ( $this->env->profiling() ) {
 					$profile = $this->env->getCurrentProfile();
 					$profile->bumpTimeUse(
-						'PEG', 1000 * ( microtime( true ) - $this->startTime ), 'PEG' );
+						'PEG', hrtime( true ) - $this->startTime, 'PEG' );
 				}
 				return true;
 			}
@@ -1498,6 +1489,7 @@ annotation_check =
 	}
 
 annotation_tag =
+	& { return $this->annotationsEnabledOnWiki; /* short-circuit! */ }
 	tag:( tvar_old_syntax_closing_HACK / (
 		&annotation_check
 		t:xmlish_tag<annOrExtTag>
@@ -1520,18 +1512,16 @@ annotation_tag =
 			$metaAttrs = [ new KV( 'typeof', 'mw:Annotation/' . $tagName . ( $end ? '/End' : '' ) ) ];
 			$datamw = null;
 			if ( count( $attribs ) > 0 ) {
-				$attrMap = [];
+				$datamw = new DataMw();
 				foreach ( $attribs as $attr ) {
 					// If the key or the value is not a string,
 					// we replace it by the thing that generated it and
 					// consider that wikitext as a raw string instead.
 					$k = is_string( $attr->k ) ? $attr->k : $attr->ksrc;
 					$v = is_string( $attr->v ) ? $attr->v : $attr->vsrc;
-					$attrMap[$k] = $v;
+					// Possible follow-up in T295168 for attribute sanitation
+					$datamw->setExtAttrib( $k, $v );
 				}
-				// Possible follow-up in T295168 for attribute sanitation
-				// T367616: 'attrs' should be renamed to 'extAttrs'
-				$datamw = new DataMw( [ 'attrs' => (object)$attrMap ] );
 			}
 			$dp = new DataParsoid();
 			$dp->tsr = $tsr;
@@ -1674,7 +1664,6 @@ maybe_extension_tag =
 		return new SelfclosingTagTk( 'extension', [
 			new KV( 'typeof', 'mw:Extension' ),
 			new KV( 'name', $tagName ),
-			new KV( 'about', $this->env->newAboutId() ),
 			new KV( 'source', $dp->src ),
 			new KV( 'options', $t->attribs )
 		], $dp );
@@ -2544,7 +2533,7 @@ wikilink_preprocessor_text =
 		/ !inline_breaks !pipe wr:( directive / $( !"]]" ( text_char / [!<\-\}\]\n\r] ) ) )
 		{ return $wr; }
 	)+ {
-		return TokenizerUtils::flattenStringlist( $r );
+		return TokenizerUtils::flattenString( $r );
 	}
 
 // added special separator character class inline: separates url from
@@ -2731,8 +2720,6 @@ sol_prefix =
 	newlineToken
 	/ & {
 		// Use the sol flag only at the start of the input
-		// Flag should always be an actual boolean (not falsy or undefined)
-		$this->assert( is_bool( $this->options['sol'] ), 'sol should be boolean' );
 		return $this->endOffset() === 0 && $this->options['sol'];
 	} {
 		return [];

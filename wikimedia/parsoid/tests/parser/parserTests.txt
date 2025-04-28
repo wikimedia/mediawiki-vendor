@@ -1062,7 +1062,8 @@ Nowiki with newlines in list
 123</span></dd></dl>
 !! end
 
-## The output here may change with the outcome of T255007
+## We should get rid of this test - it is unclear if this
+## is the right thing to do. See discussion in T255007.
 !! test
 Nowiki and french spacing
 !! wikitext
@@ -2509,7 +2510,7 @@ parsoid=wt2html
 <p>[<a rel="nofollow" class="external text" href="http://example.com%7C"></a><a href="/wiki/Example" title="Example">Example</a>]
 </p>
 !! html/parsoid
-<p>[<a rel="mw:ExtLink nofollow" href="http://example.com%7C" class="external autonumber" data-parsoid='{"a":{"href":"http://example.com%7C"},"sa":{"href":"http://example.com|"}}'></a><a rel="mw:WikiLink" href="./Example" title="Example" data-parsoid='{"stx":"simple","a":{"href":"./Example"},"sa":{"href":"Example"},"misnested":true}'>Example</a>]</p>
+<p>[<a rel="mw:ExtLink nofollow" href="http://example.com%7C" class="external text" data-parsoid='{"a":{"href":"http://example.com%7C"},"sa":{"href":"http://example.com|"}}'></a><a rel="mw:WikiLink" href="./Example" title="Example" data-parsoid='{"stx":"simple","a":{"href":"./Example"},"sa":{"href":"Example"},"misnested":true}'>Example</a>]</p>
 !! end
 
 !! test
@@ -9873,8 +9874,6 @@ Article for special page transclusion test
 
 !! test
 Special page transclusion
-!! config
-wgParsoidFragmentSupport="v3"
 !! wikitext
 {{Special:Prefixindex/Xyzzyx}}
 !! html/php
@@ -9888,8 +9887,6 @@ wgParsoidFragmentSupport="v3"
 
 !! test
 Special page transclusion twice (T7021)
-!! config
-wgParsoidFragmentSupport="v3"
 !! wikitext
 {{Special:Prefixindex/Xyzzyx}}
 {{Special:Prefixindex/Xyzzyx}}
@@ -9915,8 +9912,6 @@ Template:Nested special
 
 !! test
 Nested special page transclusion
-!! config
-wgParsoidFragmentSupport="v3"
 !! wikitext
 {{nested special}}
 !! html/php
@@ -10854,8 +10849,6 @@ parsoid=html2wt
 
 !! test
 Special:Search page linking.
-!! config
-wgParsoidFragmentSupport="v3"
 !! wikitext
 {{Special:search}}
 !! html/php
@@ -15610,7 +15603,7 @@ parsoid=wt2html
 !! wikitext
 {{1x|hi}}[http://example.com [[ho]]]
 !! html/parsoid
-<p><span about="#mwt1" typeof="mw:Transclusion" data-parsoid='{"pi":[[{"k":"1"}]]}' data-mw='{"parts":[{"template":{"target":{"wt":"1x","href":"./Template:1x"},"params":{"1":{"wt":"hi"}},"i":0}}]}'>hi</span><a rel="mw:ExtLink nofollow" href="http://example.com" class="external autonumber"></a><a rel="mw:WikiLink" href="./Ho" title="Ho" data-parsoid='{"stx":"simple","a":{"href":"./Ho"},"sa":{"href":"ho"},"misnested":true}'>ho</a></p>
+<p><span about="#mwt1" typeof="mw:Transclusion" data-parsoid='{"pi":[[{"k":"1"}]]}' data-mw='{"parts":[{"template":{"target":{"wt":"1x","href":"./Template:1x"},"params":{"1":{"wt":"hi"}},"i":0}}]}'>hi</span><a rel="mw:ExtLink nofollow" href="http://example.com" class="external text"></a><a rel="mw:WikiLink" href="./Ho" title="Ho" data-parsoid='{"stx":"simple","a":{"href":"./Ho"},"sa":{"href":"ho"},"misnested":true}'>ho</a></p>
 !! end
 
 !! test
@@ -17238,8 +17231,6 @@ Include directive string gluing
 # Parsoid has same output for isHTML and isRawHTML (known difference)
 !! test
 Extension tag contents using isRawHTML flag
-!! config
-wgParsoidFragmentSupport="v3"
 !! options
 language=zh
 !! wikitext
@@ -17273,8 +17264,6 @@ But with isRawHTML the result is left alone:
 # Parsoid has same output for isHTML and isRawHTML (known difference)
 !! test
 Parser function contents using isRawHTML flag
-!! config
-wgParsoidFragmentSupport="v3"
 !! options
 language=zh
 !! wikitext
@@ -17302,9 +17291,17 @@ But with isRawHTML the result is left alone:
 !! end
 
 !! test
+Handling of numeric extension tag arguments
+!! options
+parsoid=wt2html
+!! wikitext
+<spantag name=Round of 16>test</spantag>
+!! html/parsoid
+<p><span typeof="mw:Extension/spantag" data-mw='{"name":"spantag","attrs":{"name":"Round","of":"","16":""},"body":{"extsrc":"test"}}'>test</span></p>
+!! end
+
+!! test
 Handling of nowiki strip markers in Parsoid fragments
-!! config
-wgParsoidFragmentSupport="v3"
 !! options
 parsoid=wt2html
 !! wikitext
@@ -17322,8 +17319,6 @@ Parser function: {{#spantag:<nowiki>a &amp;amp; <b>c</b></nowiki>}}
 
 !! test
 Handling of nested nowiki strip markers in Parsoid fragments (1)
-!! config
-wgParsoidFragmentSupport="v3"
 !! wikitext
 Text {{#spantag:text <spantag>more text</spantag>}}
 !! html/php
@@ -17335,8 +17330,6 @@ Text {{#spantag:text <spantag>more text</spantag>}}
 
 !! test
 Handling of nested nowiki strip markers in Parsoid fragments (2)
-!! config
-wgParsoidFragmentSupport="v3"
 !! wikitext
 Text {{#spantag:<nowiki><b></nowiki> {{#spantag:<nowiki><c></nowiki>}}}}
 !! html/php
@@ -17348,8 +17341,6 @@ Text {{#spantag:<nowiki><b></nowiki> {{#spantag:<nowiki><c></nowiki>}}}}
 
 !! test
 T386233: suppress <nowiki/> tags between extension tags
-!! config
-wgParsoidFragmentSupport="v3"
 !! wikitext
 Deliberately unclosed b tag triggers p-wrapping if a nowiki span is
 added between the divtags:

@@ -394,7 +394,8 @@ class WikitextEscapeHandlers {
 			} elseif ( $t->getName() === 'wikilink' ) {
 				$target = $t->getAttributeV( 'href' );
 				if ( is_array( $target ) ) {
-					// FIXME: in theory template expansion *could* make this a link.
+					// FIXME: Can lead to false negatives.
+					// In theory, template expansion *could* make this a link.
 					return false;
 				}
 				if ( $env->isValidLinkTarget( $target ) &&
@@ -488,12 +489,7 @@ class WikitextEscapeHandlers {
 		// then this text needs escaping!
 		$numEntities = 0;
 		foreach ( $tokens as $t ) {
-			$env->log(
-				'trace/wt-escape', 'T:',
-				static function () use ( $t ) {
-					return PHPUtils::jsonEncode( $t );
-				}
-			);
+			$env->log( 'trace/wt-escape', 'T:', $t );
 
 			// Ignore html tags that aren't allowed as literals in wikitext
 			if ( TokenUtils::isHTMLTag( $t ) ) {

@@ -8216,17 +8216,17 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.21.0-a26",
-            "version_normalized": "0.21.0.0-alpha26",
+            "version": "v0.21.0-a27",
+            "version_normalized": "0.21.0.0-alpha27",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
-                "reference": "f71d8776b9495669cd53468c637471ec35dfebd2"
+                "reference": "442e94ef767cdca6ea12e35342791118837d504d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/f71d8776b9495669cd53468c637471ec35dfebd2",
-                "reference": "f71d8776b9495669cd53468c637471ec35dfebd2",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/442e94ef767cdca6ea12e35342791118837d504d",
+                "reference": "442e94ef767cdca6ea12e35342791118837d504d",
                 "shasum": ""
             },
             "require": {
@@ -8246,7 +8246,7 @@
                 "wikimedia/ip-utils": "^5.0.0",
                 "wikimedia/json-codec": "^3.0.2",
                 "wikimedia/object-factory": "^5.0.1",
-                "wikimedia/remex-html": "^4.0.1",
+                "wikimedia/remex-html": "^4.1.2",
                 "wikimedia/scoped-callback": "^4.0.0 || ^5.0.0",
                 "wikimedia/wikipeg": "^4.0.0",
                 "wikimedia/zest-css": "^3.0.1"
@@ -8273,7 +8273,7 @@
             "suggest": {
                 "wikimedia/langconv": "Provides script conversion support"
             },
-            "time": "2025-04-08T18:22:09+00:00",
+            "time": "2025-04-26T19:40:37+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -8299,7 +8299,7 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.21.0-a26",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.21.0-a27",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
             "install-path": "../wikimedia/parsoid"

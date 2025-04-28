@@ -7,7 +7,6 @@ namespace Wikimedia\Parsoid\Wt2Html\TT;
 use Wikimedia\Parsoid\Tokens\EOFTk;
 use Wikimedia\Parsoid\Tokens\NlTk;
 use Wikimedia\Parsoid\Tokens\Token;
-use Wikimedia\Parsoid\Utils\PHPUtils;
 use Wikimedia\Parsoid\Wt2Html\TokenHandlerPipeline;
 
 class TraceProxy extends TokenHandler {
@@ -35,18 +34,16 @@ class TraceProxy extends TokenHandler {
 		$this->env->log(
 			$this->traceType, $this->pipelineId,
 			function () {
-				return str_pad( $this->name, 23, ' ', STR_PAD_LEFT ) . "|";
+				return str_pad( $this->name, 23, ' ', STR_PAD_LEFT ) . "| ";
 			},
-			static function () use ( $token ) {
-				return PHPUtils::jsonEncode( $token );
-			}
+			$token
 		);
 
 		$profile = $this->manager->profile;
 		if ( $profile ) {
-			$s = microtime( true );
+			$s = hrtime( true );
 			$res = $this->handler->$func( $token );
-			$t = (int)( ( microtime( true ) - $s ) * 1000 );
+			$t = hrtime( true ) - $s;
 			$traceName = "{$this->name}::$func";
 			$profile->bumpTimeUse( $traceName, $t, "TT" );
 			$profile->bumpCount( $traceName );

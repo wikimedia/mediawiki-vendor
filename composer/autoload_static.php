@@ -5678,6 +5678,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Wt2Html\\TT\\WikiLinkHandler' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/TT/WikiLinkHandler.php',
         'Wikimedia\\Parsoid\\Wt2Html\\TokenHandlerPipeline' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/TokenHandlerPipeline.php',
         'Wikimedia\\Parsoid\\Wt2Html\\TokenizerUtils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/TokenizerUtils.php',
+        'Wikimedia\\Parsoid\\Wt2Html\\Tracer' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/Tracer.php',
         'Wikimedia\\Parsoid\\Wt2Html\\TracingGrammar' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/TracingGrammar.php',
         'Wikimedia\\Parsoid\\Wt2Html\\TreeBuilder\\Attributes' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/TreeBuilder/Attributes.php',
         'Wikimedia\\Parsoid\\Wt2Html\\TreeBuilder\\DOMBuilder' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/TreeBuilder/DOMBuilder.php',
