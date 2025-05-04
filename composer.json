@@ -20,7 +20,7 @@
 		"composer/semver": "3.4.3",
 		"dasprid/enum": "1.0.5",
 		"endroid/qr-code": "5.1.0",
-		"guzzlehttp/guzzle": "7.9.2",
+		"guzzlehttp/guzzle": "7.9.3",
 		"guzzlehttp/promises": "2.0.4",
 		"guzzlehttp/psr7": "2.7.0",
 		"jakobo/hotp-php": "2.0.0",
