@@ -11,8 +11,8 @@ use Wikimedia\Parsoid\DOM\Element;
 use Wikimedia\Parsoid\DOM\Node;
 use Wikimedia\Parsoid\DOM\Text;
 use Wikimedia\Parsoid\Utils\DOMCompat\TokenList;
+use Wikimedia\Parsoid\Wt2Html\TreeBuilder\DOMBuilder;
 use Wikimedia\Parsoid\Wt2Html\XMLSerializer;
-use Wikimedia\RemexHtml\DOM\DOMBuilder;
 use Wikimedia\RemexHtml\HTMLData;
 use Wikimedia\RemexHtml\Tokenizer\Tokenizer;
 use Wikimedia\RemexHtml\TreeBuilder\Dispatcher;
@@ -27,15 +27,21 @@ use Wikimedia\Zest\Zest;
  *
  * Only implements the methods that are actually used by Parsoid.
  *
- * Because this class may be used by code outside Parsoid it tries to
+ * Because this class may be used by code outside Parsoid, it tries to
  * be relatively tolerant of object types: you can call it either with
  * PHP's DOM* types or with a "proper" DOM implementation, and it will
- * attempt to Do The Right Thing regardless.  As a result there are
+ * attempt to Do The Right Thing regardless. As a result, there are
  * generally not parameter type hints for DOM object types, and the
  * return types will be broad enough to accomodate the value a "real"
  * DOM implementation would return, as well as the values our
  * thunk will return. (For instance, we can't create a "real" NodeList
  * in our compatibility thunk.)
+ *
+ * Exception to the above: ::nodeName method is not so much a DOM compatibility
+ * method in the sense above, but a proxy to let us support multiple DOM libraries
+ * against the Parsoid codebase that expects lower-case names. In this specific
+ * instance the default behavior is tailored for performance vs. being
+ * HTML-standards-compliant.
  */
 class DOMCompat {
 
@@ -59,13 +65,15 @@ class DOMCompat {
 	}
 
 	/**
-	 * Return the lower-case version of the node name (HTML says this should
-	 * be capitalized).
-	 * @param Node $node
-	 * @return string
+	 * Return the lower-case version of the node name.
+	 * FIXME: HTML says this should be capitalized, but we are tailoring
+	 * this to the DOM libraries that Parsoid uses that return lower-case names.
 	 */
 	public static function nodeName( Node $node ): string {
-		return strtolower( $node->nodeName );
+		// If we change DOM libraries that defaults to upper-case per HTML spec,
+		// we will probably flip this condition and change rest of Parsoid to
+		// compare against upper-case strings.
+		return $node instanceof \DOMNode ? $node->nodeName : strtolower( $node->nodeName );
 	}
 
 	/**
@@ -80,6 +88,9 @@ class DOMCompat {
 		// document body changes.
 		if ( $document->body !== null ) {
 			return $document->body;
+		}
+		if ( $document->documentElement === null ) {
+			return null;
 		}
 		foreach ( $document->documentElement->childNodes as $element ) {
 			/** @var Element $element */
@@ -107,6 +118,9 @@ class DOMCompat {
 		// document head changes.
 		if ( isset( $document->head ) ) {
 			return $document->head;
+		}
+		if ( $document->documentElement === null ) {
+			return null;
 		}
 		foreach ( $document->documentElement->childNodes as $element ) {
 			/** @var Element $element */
@@ -417,19 +431,7 @@ class DOMCompat {
 	 * @param string $html
 	 */
 	public static function setInnerHTML( $element, string $html ): void {
-		$domBuilder = new class( [
-			'suppressHtmlNamespace' => true,
-		] ) extends DOMBuilder {
-			/** @inheritDoc */
-			protected function createDocument(
-				?string $doctypeName = null,
-				?string $public = null,
-				?string $system = null
-			) {
-				// @phan-suppress-next-line PhanTypeMismatchReturn
-				return DOMCompat::newDocument( $doctypeName === 'html' );
-			}
-		};
+		$domBuilder = new DOMBuilder; // Our version, not Remex's
 		$treeBuilder = new TreeBuilder( $domBuilder );
 		$dispatcher = new Dispatcher( $treeBuilder );
 		$tokenizer = new Tokenizer( $dispatcher, $html, [ 'ignoreErrors' => true ] );

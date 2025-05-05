@@ -4845,7 +4845,6 @@ return array(
     'Wikimedia\\Parsoid\\Wt2Html\\TT\\TemplateHandler' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/TT/TemplateHandler.php',
     'Wikimedia\\Parsoid\\Wt2Html\\TT\\TemplateHandlerArguments' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/TT/TemplateHandlerArguments.php',
     'Wikimedia\\Parsoid\\Wt2Html\\TT\\TokenHandler' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/TT/TokenHandler.php',
-    'Wikimedia\\Parsoid\\Wt2Html\\TT\\TokenHandlerResult' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/TT/TokenHandlerResult.php',
     'Wikimedia\\Parsoid\\Wt2Html\\TT\\TokenStreamPatcher' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/TT/TokenStreamPatcher.php',
     'Wikimedia\\Parsoid\\Wt2Html\\TT\\TraceProxy' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/TT/TraceProxy.php',
     'Wikimedia\\Parsoid\\Wt2Html\\TT\\WikiLinkHandler' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/TT/WikiLinkHandler.php',

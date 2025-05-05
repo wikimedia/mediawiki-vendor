@@ -273,20 +273,6 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 	}
 
 	/**
-	 * @param Env $env
-	 * @param mixed ...$args
-	 */
-	private function trace( Env $env, ...$args ): void {
-		$env->log( "trace/dsr", static function () use ( $args ) {
-			$buf = '';
-			foreach ( $args as $arg ) {
-				$buf .= is_string( $arg ) ? $arg : PHPUtils::jsonEncode( $arg );
-			}
-			return $buf;
-		} );
-	}
-
-	/**
 	 * TSR = "Tag Source Range".  Start and end offsets giving the location
 	 * where the tag showed up in the original source.
 	 *
@@ -323,7 +309,7 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 			$e = $s;
 		}
 
-		$this->trace( $env, "BEG: ", DOMCompat::nodeName( $node ), " with [s, e]=", [ $s, $e ] );
+		$env->trace( "dsr", "BEG: ", DOMCompat::nodeName( $node ), "with [s, e]=", [ $s, $e ] );
 
 		/** @var int|null $ce Child end */
 		$ce = $e;
@@ -386,7 +372,7 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 				}
 			}
 
-			$env->log( "trace/dsr", static function () use ( $child, $cs, $ce ) {
+			$env->trace( "dsr", static function () use ( $child, $cs, $ce ) {
 				// slow, for debugging only
 				$i = 0;
 				foreach ( $child->parentNode->childNodes as $x ) {
@@ -416,7 +402,7 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 					$cs = $ce - WTUtils::decodedCommentLength( $child );
 				}
 			} elseif ( $cType === XML_ELEMENT_NODE ) {
-				DOMUtils::assertElt( $child );
+				'@phan-var Element $child'; // @var Element $child
 				$dp = DOMDataUtils::getDataParsoid( $child );
 				$tsr = $dp->tsr ?? null;
 				$oldCE = $tsr ? $tsr->end : null;
@@ -498,7 +484,7 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 								$stWidth = $tsr->end - $tsr->start;
 							}
 
-							$this->trace( $env, "     TSR: ", $tsr, "; cs: ", $cs, "; ce: ", $ce );
+							$env->trace( "dsr", "     TSR: ", $tsr, "; cs: ", $cs, "; ce: ", $ce );
 						} elseif ( $s && $child->previousSibling === null ) {
 							$cs = $s;
 						}
@@ -557,7 +543,7 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 						 * ------------------------------------------------------------- */
 						$newDsr = [ $ccs, $cce ];
 					} else {
-						$env->log( "trace/dsr", static function () use (
+						$env->trace( "dsr", static function () use (
 							$env, $cs, $ce, $stWidth, $etWidth, $ccs, $cce
 						) {
 							return "     before-recursing:" .
@@ -566,9 +552,9 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 								"; subtree-[cs,ce]=" . PHPUtils::jsonEncode( [ $ccs, $cce ] );
 						} );
 
-						$this->trace( $env, "<recursion>" );
+						$env->trace( "dsr", "<recursion>" );
 						$newDsr = $this->computeNodeDSR( $frame, $child, $ccs, $cce, $dsrCorrection, $opts );
-						$this->trace( $env, "</recursion>" );
+						$env->trace( "dsr", "</recursion>" );
 					}
 
 					// $cs = min($child-dom-tree dsr->start - tag-width, current dsr->start)
@@ -609,7 +595,7 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 						$dp->dsr = new DomSourceRange( $cs, $ce, $stWidth, $etWidth );
 					}
 
-					$env->log( "trace/dsr", static function () use ( $frame, $child, $cs, $ce, $dp ) {
+					$env->trace( "dsr", static function () use ( $frame, $child, $cs, $ce, $dp ) {
 						return "     UPDATING " . DOMCompat::nodeName( $child ) .
 							" with " . PHPUtils::jsonEncode( [ $cs, $ce ] ) .
 							"; typeof: " . ( DOMCompat::getAttribute( $child, "typeof" ) ?? '' );
@@ -632,7 +618,7 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 							'@phan-var Comment $sibling'; // @var Comment $sibling
 							$newCE += WTUtils::decodedCommentLength( $sibling );
 						} elseif ( $nType === XML_ELEMENT_NODE ) {
-							DOMUtils::assertElt( $sibling );
+							'@phan-var Element $sibling'; // @var Element $sibling
 							$siblingDP = DOMDataUtils::getDataParsoid( $sibling );
 							$siblingDP->dsr ??= new DomSourceRange( null, null, null, null );
 							$sdsrStart = $siblingDP->dsr->start;
@@ -650,7 +636,7 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 							}
 
 							// Update and move right
-							$env->log( "trace/dsr", static function () use ( $frame, $newCE, $sibling, $siblingDP ) {
+							$env->trace( "dsr", static function () use ( $frame, $newCE, $sibling, $siblingDP ) {
 								return "     CHANGING ce.start of " . DOMCompat::nodeName( $sibling ) .
 									" from " . $siblingDP->dsr->start . " to " . $newCE;
 							} );
@@ -702,7 +688,7 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 				DOMCompat::nodeName( $node ), "s:", $s, "; cs:", $cs );
 		}
 
-		$this->trace( $env, "END: ", DOMCompat::nodeName( $node ), ", returning: ", $cs, ", ", $e );
+		$env->trace( "dsr", "END: ", DOMCompat::nodeName( $node ), "returning: ", $cs, ", ", $e );
 
 		return [ $cs, $e ];
 	}
@@ -730,7 +716,7 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 		$frame = $options['frame'] ?? $env->topFrame;
 		$startOffset = $options['sourceOffsets']->start ?? 0;
 		$endOffset = $options['sourceOffsets']->end ?? strlen( $frame->getSrcText() );
-		$env->log( "trace/dsr", "------- tracing DSR computation -------" );
+		$env->trace( "dsr", "------- tracing DSR computation -------" );
 
 		// The actual computation buried in trace/debug stmts.
 		$opts = [ 'attrExpansion' => $options['attrExpansion'] ?? false ];
@@ -740,6 +726,6 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 			$dp = DOMDataUtils::getDataParsoid( $root );
 			$dp->dsr = new DomSourceRange( $startOffset, $endOffset, 0, 0 );
 		}
-		$env->log( "trace/dsr", "------- done tracing computation -------" );
+		$env->trace( "dsr", "------- done tracing computation -------" );
 	}
 }
