@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => null,
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => '896001f288336ec57697b4d20e1ee450fdb06111',
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => null,
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => '896001f288336ec57697b4d20e1ee450fdb06111',
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -1179,8 +1179,8 @@
             'dev_requirement' => false,
         ),
         'wikimedia/parsoid' => array(
-            'pretty_version' => 'v0.21.0-a28',
-            'version' => '0.21.0.0-alpha28',
+            'pretty_version' => 'v0.22.0-a1',
+            'version' => '0.22.0.0-alpha1',
             'reference' => '0426b8548c523634e2150fa54d10e307d6a072ce',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/parsoid',
