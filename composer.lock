@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9ae541c3ac339163663f5f6242dca02e",
+    "content-hash": "db11da6985ca161179ea84a8c656349e",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -7884,7 +7884,7 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.21.0-a28",
+            "version": "v0.21.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
@@ -7964,7 +7964,7 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.21.0-a28",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.21.0",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
             "time": "2025-05-05T21:20:32+00:00"
@@ -9130,8 +9130,7 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
-        "league/oauth2-server": 20,
-        "wikimedia/parsoid": 15
+        "league/oauth2-server": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

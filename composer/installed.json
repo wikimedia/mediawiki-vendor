@@ -8216,8 +8216,8 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.21.0-a28",
-            "version_normalized": "0.21.0.0-alpha28",
+            "version": "v0.21.0",
+            "version_normalized": "0.21.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
@@ -8299,7 +8299,7 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.21.0-a28",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.21.0",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
             "install-path": "../wikimedia/parsoid"
