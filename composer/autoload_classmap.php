@@ -4858,7 +4858,7 @@ return array(
     'Wikimedia\\Parsoid\\Wt2Html\\TreeBuilder\\TreeBuilderStage' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/TreeBuilder/TreeBuilderStage.php',
     'Wikimedia\\Parsoid\\Wt2Html\\TreeBuilder\\TreeMutationRelay' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/TreeBuilder/TreeMutationRelay.php',
     'Wikimedia\\Parsoid\\Wt2Html\\Wt2HtmlDOMProcessor' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/Wt2HtmlDOMProcessor.php',
-    'Wikimedia\\Parsoid\\Wt2Html\\XMLSerializer' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/XMLSerializer.php',
+    'Wikimedia\\Parsoid\\Wt2Html\\XHtmlSerializer' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/XHtmlSerializer.php',
     'Wikimedia\\PhpSessionSerializer' => $vendorDir . '/wikimedia/php-session-serializer/src/PhpSessionSerializer.php',
     'Wikimedia\\Purtle\\BNodeLabeler' => $vendorDir . '/wikimedia/purtle/src/BNodeLabeler.php',
     'Wikimedia\\Purtle\\JsonLdRdfWriter' => $vendorDir . '/wikimedia/purtle/src/JsonLdRdfWriter.php',

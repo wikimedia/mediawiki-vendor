@@ -5685,7 +5685,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Wt2Html\\TreeBuilder\\TreeBuilderStage' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/TreeBuilder/TreeBuilderStage.php',
         'Wikimedia\\Parsoid\\Wt2Html\\TreeBuilder\\TreeMutationRelay' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/TreeBuilder/TreeMutationRelay.php',
         'Wikimedia\\Parsoid\\Wt2Html\\Wt2HtmlDOMProcessor' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/Wt2HtmlDOMProcessor.php',
-        'Wikimedia\\Parsoid\\Wt2Html\\XMLSerializer' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/XMLSerializer.php',
+        'Wikimedia\\Parsoid\\Wt2Html\\XHtmlSerializer' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/XHtmlSerializer.php',
         'Wikimedia\\PhpSessionSerializer' => __DIR__ . '/..' . '/wikimedia/php-session-serializer/src/PhpSessionSerializer.php',
         'Wikimedia\\Purtle\\BNodeLabeler' => __DIR__ . '/..' . '/wikimedia/purtle/src/BNodeLabeler.php',
         'Wikimedia\\Purtle\\JsonLdRdfWriter' => __DIR__ . '/..' . '/wikimedia/purtle/src/JsonLdRdfWriter.php',
