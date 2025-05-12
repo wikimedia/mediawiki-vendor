@@ -5,11 +5,19 @@ namespace SmashPig\PaymentProviders\Gravy\Validators;
 use SmashPig\Core\ProviderConfiguration;
 use SmashPig\PaymentProviders\ValidationException;
 
+/**
+ * This class contains validator logic used in the webhook listener class.
+ */
 class ListenerValidator {
 	use ValidatorTrait;
 
 	/**
+	 * Validates the authorization params in the webhook event header
+	 *
+	 * @param array $params
+	 * @param ProviderConfiguration $config
 	 * @throws ValidationException
+	 * @return void
 	 */
 	public function validateWebhookEventHeader( array $params, ProviderConfiguration $config ): void {
 		$required = [

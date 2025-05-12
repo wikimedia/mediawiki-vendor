@@ -28,11 +28,21 @@ class RequestMapper {
 		'stitch'
 	];
 
+	/**
+	 * Maps the smashpig parameters to Gravy parameters.
+	 *
+	 * Base mapper method for handling create payment requests.
+	 * Some use cases may require additional fields or custom logic.
+	 * In such cases, this method should be extended in a dedicated subclass
+	 * to accommodate the specific requirements.
+	 * @param array $params
+	 * @return array|array{amount: int, country: string, currency: string, external_identifier: string, payment_method: array{method: string}}
+	 */
 	public function mapToCreatePaymentRequest( array $params ): array {
 		$request = [
 			// Gravy requires amount to be sent in the smallest unit for the given currency
 			// See https://docs.gr4vy.com/reference/transactions/new-transaction
-			'amount' => CurrencyRoundingHelper::getAmountInMinorUnits( $params['amount'], $params['currency'] ),
+			'amount' => CurrencyRoundingHelper::getAmountInMinorUnits( (float)$params['amount'], $params['currency'] ),
 			'currency' => $params['currency'],
 			'country' => $params['country'],
 			'payment_method' => [
@@ -84,7 +94,12 @@ class RequestMapper {
 	}
 
 	/**
-	 * @return array
+	 * Creates the refund payment request parameters
+	 *
+	 * This method is the same for all payment methods on Gravy.
+	 *
+	 * @param array $params
+	 * @return array{body: array{reason: string, gateway_txn_id: string}}
 	 */
 	public function mapToRefundPaymentRequest( array $params ): array {
 		$body = [
@@ -102,59 +117,13 @@ class RequestMapper {
 		return $request;
 	}
 
-	public function mapToAppleCreatePaymentRequest( array $params ): array {
-		$request_params = $this->mapToCreatePaymentRequest( $params );
-		$request_params['payment_method'] = array_merge( $request_params['payment_method'], [
-			'method' => 'applepay',
-			'token' => json_decode( $params['payment_token'] ),
-		] );
-		return $request_params;
-	}
-
 	/**
+	 * Maps the smashpig parameters to Gravy requirements for Approve payments
+	 *
+	 * This method is the same for all payment methods on Gravy.
+	 *
 	 * @param array $params
-	 * @return array
-	 * T370700 Gravy treat buyer email case-sensitive
-	 */
-	public function mapToGetDonorRequest( array $params ): array {
-		$request = [
-			'external_identifier' => strtolower( $params['email'] )
-		];
-
-		return $request;
-	}
-
-	/**
-	 * @param array $params
-	 * @return array
-	 * T370700 Make sure buyer email all lowercase to avoid duplicate buyer creation in gravy
-	 */
-	public function mapToCreateDonorRequest( array $params ): array {
-		$request = [
-			'display_name' => $params['first_name'] . ' ' . $params['last_name'],
-			'external_identifier' => strtolower( $params['email'] ),
-			'billing_details' => [
-				'first_name' => $params['first_name'],
-				'last_name' => $params['last_name'],
-				'email_address' => strtolower( $params['email'] ),
-				'phone_number' => $params['phone_number'] ?? null,
-				'address' => [
-					'city' => $params['city'] ?? null,
-					'country' => $params['country'] ?? null,
-					'postal_code' => $params['postal_code'] ?? null,
-					'state' => $params['state_province'] ?? null,
-					'line1' => $params['street_address'] ?? null,
-					'line2' => "",
-					'organization' => $params['employer'] ?? null
-				]
-			]
-		];
-
-		return $request;
-	}
-
-	/**
-	 * @return array
+	 * @return array{amount: int}
 	 */
 	public function mapToApprovePaymentRequest( array $params ): array {
 		$request = [
@@ -164,7 +133,12 @@ class RequestMapper {
 	}
 
 	/**
-	 * @return array
+	 * Maps the smashpig parameters to Gravy requirements for delete payment token request
+	 *
+	 * This method is the same for all payment methods on Gravy.
+	 *
+	 * @param array $params
+	 * @return array{amount: int}
 	 */
 	public function mapToDeletePaymentTokenRequest( array $params ): array {
 		$request = [
@@ -174,8 +148,13 @@ class RequestMapper {
 	}
 
 	/**
+	 * Populates the create payment request with Gravy's requirements for create payment
+	 *
+	 * This method is the same for all payment methods on Gravy.
+	 *
 	 * @param array $params
 	 * @param array $request
+	 * @throws \UnexpectedValueException
 	 * @return array
 	 */
 	protected function addRecurringParams( array $params, array $request ): array {

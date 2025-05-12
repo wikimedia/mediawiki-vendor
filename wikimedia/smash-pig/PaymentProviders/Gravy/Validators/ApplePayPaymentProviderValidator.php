@@ -4,10 +4,17 @@ namespace SmashPig\PaymentProviders\Gravy\Validators;
 
 use SmashPig\PaymentProviders\ValidationException;
 
+/**
+ * This class provides input validation for Apple payment requests.
+ */
 class ApplePayPaymentProviderValidator extends PaymentProviderValidator {
 
 	/**
+	 * Checks the Apple session creation input parameters for correctness and completeness.
+	 *
+	 * @param array $params
 	 * @throws ValidationException
+	 * @return void
 	 */
 	public function validateCreateSessionInput( array $params ): void {
 		$required = [
@@ -19,7 +26,11 @@ class ApplePayPaymentProviderValidator extends PaymentProviderValidator {
 	}
 
 	/**
+	 * Checks the one time Apple create payment input parameters for correctness and completeness.
+	 *
+	 * @param array $params
 	 * @throws ValidationException
+	 * @return void
 	 */
 	public function validateOneTimeCreatePaymentInput( array $params ): void {
 		$required = [

@@ -1932,7 +1932,7 @@ return array(
     'SmashPig\\CrmLink\\Messages\\DonationInterfaceFinalStatus' => $vendorDir . '/wikimedia/smash-pig/CrmLink/Messages/DonationInterfaceFinalStatus.php',
     'SmashPig\\CrmLink\\Messages\\DonationInterfaceMessage' => $vendorDir . '/wikimedia/smash-pig/CrmLink/Messages/DonationInterfaceMessage.php',
     'SmashPig\\CrmLink\\Messages\\SourceFields' => $vendorDir . '/wikimedia/smash-pig/CrmLink/Messages/SourceFields.php',
-    'SmashPig\\Maintenance\\BuildDonationMessageFromPaymentLogs' => $vendorDir . '/wikimedia/smash-pig/Maintenance/BuildDonationMessageFromPaymentLogs.php',
+    'SmashPig\\Maintenance\\BuildGravyDonationMessageFromLogs' => $vendorDir . '/wikimedia/smash-pig/Maintenance/BuildGravyDonationMessageFromLogs.php',
     'SmashPig\\Maintenance\\ConsumePendingQueue' => $vendorDir . '/wikimedia/smash-pig/Maintenance/ConsumePendingQueue.php',
     'SmashPig\\Maintenance\\CreateIpnMessagesFromPendingDb' => $vendorDir . '/wikimedia/smash-pig/Maintenance/CreateIpnMessagesFromPendingDb.php',
     'SmashPig\\Maintenance\\DeleteExpiredPendingMessages' => $vendorDir . '/wikimedia/smash-pig/Maintenance/DeleteExpiredPendingMessages.php',
@@ -3781,6 +3781,4 @@ return array(
     'Wikimedia\\Zest\\ZestInst' => $vendorDir . '/wikimedia/zest-css/src/ZestInst.php',
     'WmfFramework' => $baseDir . '/extensions/DonationInterface/gateway_common/WmfFramework.php',
     'lessc' => $vendorDir . '/wikimedia/less.php/lessc.inc.php',
-    'smashpig\\PaymentProviders\\ICancelAutoRescueProvider' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/ICancelAutoRescueProvider.php',
-    'smashpig\\PaymentProviders\\IDeleteRecurringPaymentTokenProvider' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/IDeleteRecurringPaymentTokenProvider.php',
 );
