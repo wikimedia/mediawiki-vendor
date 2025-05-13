@@ -2146,7 +2146,6 @@ return array(
     'SmashPig\\PaymentProviders\\Gravy\\Mapper\\RedirectPaymentProviderResponseMapper' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/Mapper/RedirectPaymentProviderResponseMapper.php',
     'SmashPig\\PaymentProviders\\Gravy\\Mapper\\RequestMapper' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/Mapper/RequestMapper.php',
     'SmashPig\\PaymentProviders\\Gravy\\Mapper\\ResponseMapper' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/Mapper/ResponseMapper.php',
-    'SmashPig\\PaymentProviders\\Gravy\\PaymentMethod' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/PaymentMethod.php',
     'SmashPig\\PaymentProviders\\Gravy\\PaymentProvider' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/PaymentProvider.php',
     'SmashPig\\PaymentProviders\\Gravy\\PaypalPaymentProvider' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/PaypalPaymentProvider.php',
     'SmashPig\\PaymentProviders\\Gravy\\RedirectPaymentProvider' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/RedirectPaymentProvider.php',
@@ -3781,4 +3780,6 @@ return array(
     'Wikimedia\\Zest\\ZestInst' => $vendorDir . '/wikimedia/zest-css/src/ZestInst.php',
     'WmfFramework' => $baseDir . '/extensions/DonationInterface/gateway_common/WmfFramework.php',
     'lessc' => $vendorDir . '/wikimedia/less.php/lessc.inc.php',
+    'smashpig\\PaymentProviders\\ICancelAutoRescueProvider' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/ICancelAutoRescueProvider.php',
+    'smashpig\\PaymentProviders\\IDeleteRecurringPaymentTokenProvider' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/IDeleteRecurringPaymentTokenProvider.php',
 );

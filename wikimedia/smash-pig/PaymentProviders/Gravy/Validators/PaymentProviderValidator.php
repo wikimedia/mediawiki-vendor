@@ -17,7 +17,7 @@ abstract class PaymentProviderValidator {
 	 */
 	private const FIELD_COUNTRY_REQUIREMENTS = [
 		'fiscal_number' => [
-			'AR', 'BR', 'CL', 'CO', 'ID', 'IN', 'MX', 'MY', 'PH', 'TH', 'ZA',
+			'AR', 'BR', 'CL', 'CO', 'ID', 'IN', 'MX', 'PH', 'TH', 'ZA',
 		],
 	];
 
