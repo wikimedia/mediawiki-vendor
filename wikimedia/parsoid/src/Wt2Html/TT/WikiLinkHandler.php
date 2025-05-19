@@ -28,6 +28,7 @@ use Wikimedia\Parsoid\Tokens\SelfclosingTagTk;
 use Wikimedia\Parsoid\Tokens\SourceRange;
 use Wikimedia\Parsoid\Tokens\TagTk;
 use Wikimedia\Parsoid\Tokens\Token;
+use Wikimedia\Parsoid\Tokens\XMLTagTk;
 use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\PHPUtils;
@@ -909,7 +910,7 @@ class WikiLinkHandler extends TokenHandler {
 		// 'imgOption' is the key we'd put in opts; it names the 'group'
 		// for the option, and doesn't have an img_ prefix.
 		$imgOption = Consts::$Media['SimpleOptions'][$canonicalOption] ?? null;
-		if ( !empty( $imgOption ) ) {
+		if ( $imgOption !== null ) {
 			return [
 				'ck' => $imgOption,
 				'v' => $shortCanonicalOption,
@@ -1685,7 +1686,7 @@ class WikiLinkHandler extends TokenHandler {
 	}
 
 	/** @inheritDoc */
-	public function onTag( Token $token ): ?array {
+	public function onTag( XMLTagTk $token ): ?array {
 		switch ( $token->getName() ) {
 			case 'wikilink':
 				return $this->onWikiLink( $token );

@@ -116,3 +116,54 @@ parsoid=wt2html
 <tbody><tr><td>[[|]] [[|]]</td></tr>
 </tbody></table>
 !! end
+
+!! test
+SOL whitespace and newlines after lists should not be swallowed into ListTk compound token
+!! options
+parsoid=wt2html
+!! wikitext
+*a
+  
+   
+<div>b</div>
+!! html/parsoid
+<ul><li>a</li></ul>
+  <p>
+   <br></p>
+<div data-parsoid='{"stx":"html"}'>b</div>
+!! end
+
+# Edge case in p-wrapping handling IndentPreTk
+!! test
+Unbalanced i-tags shouldn't leak out of blockquote containing leading whitespace
+!! options
+parsoid=wt2html
+!! wikitext
+<blockquote>
+    foo ''bar
+</blockquote>
+
+baz
+!! html/parsoid
+<blockquote data-parsoid='{"stx":"html"}'>
+ <p>   foo <i data-parsoid='{"autoInsertedEnd":true}'>bar</i></p>
+</blockquote>
+
+<p>baz</p>
+!! end
+
+!! test
+Ensure ListHandler properly handles other compound tokens
+!! options
+parsoid=wt2html
+!! wikitext
+:{|
+|
+ a
+|}
+!! html/parsoid
+<dl><dd><table>
+<tbody><tr><td>
+<pre>a</pre></td></tr>
+</tbody></table></dd></dl>
+!! end

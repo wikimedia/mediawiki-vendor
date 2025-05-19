@@ -10,9 +10,6 @@ use Wikimedia\Parsoid\DOM\Node;
 use Wikimedia\Parsoid\DOM\Text;
 use Wikimedia\Parsoid\NodeData\DataMw;
 use Wikimedia\Parsoid\NodeData\DataMwAttrib;
-use Wikimedia\Parsoid\Tokens\EndTagTk;
-use Wikimedia\Parsoid\Tokens\KV;
-use Wikimedia\Parsoid\Tokens\TagTk;
 use Wikimedia\Parsoid\Utils\DiffDOMUtils;
 use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
@@ -32,50 +29,6 @@ class WTSUtils {
 
 	public static function hasValidTagWidths( ?DomSourceRange $dsr ): bool {
 		return $dsr !== null && $dsr->hasValidTagWidths();
-	}
-
-	/**
-	 * Get the attributes on a node in an array of KV objects.
-	 *
-	 * @param Element $node
-	 * @return KV[]
-	 */
-	public static function getAttributeKVArray( Element $node ): array {
-		$kvs = [];
-		foreach ( DOMUtils::attributes( $node ) as $name => $value ) {
-			$kvs[] = new KV( $name, $value );
-		}
-		return $kvs;
-	}
-
-	/**
-	 * Create a `TagTk` corresponding to a DOM node.
-	 *
-	 * @param Element $node
-	 * @return TagTk
-	 */
-	public static function mkTagTk( Element $node ): TagTk {
-		$attribKVs = self::getAttributeKVArray( $node );
-		return new TagTk(
-			DOMCompat::nodeName( $node ),
-			$attribKVs,
-			DOMDataUtils::getDataParsoid( $node )
-		);
-	}
-
-	/**
-	 * Create a `EndTagTk` corresponding to a DOM node.
-	 *
-	 * @param Element $node
-	 * @return EndTagTk
-	 */
-	public static function mkEndTagTk( Element $node ): EndTagTk {
-		$attribKVs = self::getAttributeKVArray( $node );
-		return new EndTagTk(
-			DOMCompat::nodeName( $node ),
-			$attribKVs,
-			DOMDataUtils::getDataParsoid( $node )
-		);
 	}
 
 	/**
@@ -212,7 +165,7 @@ class WTSUtils {
 		} elseif ( DOMCompat::nodeName( $node ) === 'br' ) {
 			return true;
 		} elseif ( WTUtils::isFirstEncapsulationWrapperNode( $node ) ) {
-			DOMUtils::assertElt( $node );
+			'@phan-var Element $node'; // @var Element $node
 			// Dont try any harder than this
 			return !$node->hasChildNodes() || DOMCompat::getInnerHTML( $node )[0] === "\n";
 		} else {
@@ -250,7 +203,7 @@ class WTSUtils {
 		} elseif ( self::dsrContainsOpenExtendedRangeAnnotationTag( $node, $state ) ) {
 			return false;
 		} elseif ( DOMCompat::nodeName( $node ) === 'th' || DOMCompat::nodeName( $node ) === 'td' ) {
-			DOMUtils::assertElt( $node );
+			'@phan-var Element $node'; // @var Element $node
 			// The wikitext representation for them is dependent
 			// on cell position (first cell is always single char).
 
@@ -279,8 +232,9 @@ class WTSUtils {
 			// showed up on the same line via the "||" or "!!" syntax, nothing
 			// to worry about.
 			return ( DOMDataUtils::getDataParsoid( $node )->stx ?? '' ) !== 'row';
-		} elseif ( $node instanceof Element && DOMCompat::nodeName( $node ) === 'tr' &&
-			empty( DOMDataUtils::getDataParsoid( $node )->startTagSrc )
+		} elseif (
+			$node instanceof Element && DOMCompat::nodeName( $node ) === 'tr' &&
+			!isset( DOMDataUtils::getDataParsoid( $node )->startTagSrc )
 		) {
 			// If this <tr> didn't have a startTagSrc, it would have been
 			// the first row of a table in original wikitext. So, it is safe
@@ -351,7 +305,7 @@ class WTSUtils {
 	private static function dsrContainsOpenExtendedRangeAnnotationTag( Node $node,
 		SerializerState $state
 	): bool {
-		if ( empty( $state->openAnnotations ) || !$node instanceof Element ) {
+		if ( ( !$state->openAnnotations ) || !$node instanceof Element ) {
 			return false;
 		}
 
@@ -417,6 +371,20 @@ class WTSUtils {
 	 */
 	public static function escapeNowikiTags( string $text ): string {
 		return preg_replace( '#<(/?nowiki\s*/?\s*)>#i', '&lt;$1&gt;', $text );
+	}
+
+	public static function hasNonIgnorableAttributes( Element $node ): bool {
+		foreach ( DOMUtils::attributes( $node ) as $k => $v ) {
+			$k = (string)$k;
+			if (
+				!preg_match( '/^data-parsoid/', $k ) &&
+				( $k !== DOMDataUtils::DATA_OBJECT_ATTR_NAME ) &&
+				!( $k === 'id' && preg_match( '/^mw[\w-]{2,}$/D', $v ) )
+			) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

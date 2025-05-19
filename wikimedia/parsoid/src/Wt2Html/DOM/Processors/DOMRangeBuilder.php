@@ -711,8 +711,7 @@ class DOMRangeBuilder {
 		$dp = DOMDataUtils::getDataParsoid( $firstNode );
 		while ( !empty( $dp->fostered ) ) {
 			$firstNode = $firstNode->nextSibling;
-			/** @var Element $firstNode */
-			DOMUtils::assertElt( $firstNode );
+			'@phan-var Element $firstNode'; // @var Element $firstNode
 			$dp = DOMDataUtils::getDataParsoid( $firstNode );
 		}
 
@@ -787,7 +786,7 @@ class DOMRangeBuilder {
 	 */
 	private static function findEncapTarget( DOMRangeInfo $range ): Element {
 		$encapTgt = $range->start;
-		'@phan-var Node $encapTgt';
+		'@phan-var Node $encapTgt'; // @var Node $encapTgt
 
 		// Skip template-marker meta-tags.
 		while ( WTUtils::isTplMarkerMeta( $encapTgt ) ||
@@ -805,7 +804,7 @@ class DOMRangeBuilder {
 			$encapTgt = $encapTgt->nextSibling;
 		}
 
-		'@phan-var Element $encapTgt';
+		'@phan-var Element $encapTgt'; // @var Node $encapTgt
 		return $encapTgt;
 	}
 
@@ -1100,7 +1099,7 @@ class DOMRangeBuilder {
 	 * Recursively walk the DOM tree. Find wrappable template ranges and return them.
 	 *
 	 * @param Node $rootNode
-	 * @return DOMRangeInfo[]
+	 * @return list<DOMRangeInfo>
 	 */
 	protected function findWrappableMetaRanges( Node $rootNode ): array {
 		$tpls = [];
@@ -1113,8 +1112,8 @@ class DOMRangeBuilder {
 	 * Recursive helper for findWrappableTemplateRanges()
 	 *
 	 * @param Node $rootNode
-	 * @param ElementRange[] &$tpls Template start and end elements by ID
-	 * @param DOMRangeInfo[] &$tplRanges Template range info
+	 * @param array<string,ElementRange> &$tpls Template start and end elements by ID
+	 * @param list<DOMRangeInfo> &$tplRanges Template range info
 	 */
 	private function findWrappableTemplateRangesRecursive(
 		Node $rootNode, array &$tpls, array &$tplRanges
@@ -1152,7 +1151,7 @@ class DOMRangeBuilder {
 						if ( $tpl ) {
 							$tpl->startElem = $elem;
 							// content or end marker existed already
-							if ( !empty( $tpl->endElem ) ) {
+							if ( $tpl->endElem !== null ) {
 								// End marker was foster-parented.
 								// Found actual start tag.
 								$tplRanges[] = $this->getDOMRange(
