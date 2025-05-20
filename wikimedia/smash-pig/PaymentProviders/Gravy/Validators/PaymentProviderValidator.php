@@ -31,7 +31,24 @@ abstract class PaymentProviderValidator {
 	 * @throws ValidationException
 	 * @return void
 	 */
-	abstract public function validateOneTimeCreatePaymentInput( array $params ): void;
+	public function validateOneTimeCreatePaymentInput( array $params ): void {
+		$defaultRequiredFields = [
+			'amount',
+			'currency',
+			'country',
+			'order_id',
+		];
+
+		$this->validateFields( $defaultRequiredFields, $params );
+
+		$amount = $params['amount'] ?? null;
+		// Check if amount is set and is a positive number
+		if ( !is_numeric( $amount ) || (float)$amount <= 0 ) {
+			throw new ValidationException( 'Invalid amount. Amount must be numeric and a positive number.', [
+				'amount' => "Invalid amount: $amount",
+			] );
+		}
+	}
 
 	/**
 	 * Resolves the type of validation for the create payment input depending on the transaction type.

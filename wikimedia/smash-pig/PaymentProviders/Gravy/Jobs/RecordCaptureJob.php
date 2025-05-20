@@ -33,6 +33,7 @@ class RecordCaptureJob implements Runnable {
 	}
 
 	public function execute(): bool {
+		/** @var PaymentProviderExtendedResponse $transactionDetails */
 		$transactionDetails = GravyGetLatestPaymentStatusResponseFactory::fromNormalizedResponse( $this->payload );
 		$logger = Logger::getTaggedLogger( "corr_id-gravy-{$transactionDetails->getOrderId()}" );
 		$logger->info(
@@ -49,23 +50,10 @@ class RecordCaptureJob implements Runnable {
 		if ( $dbMessage && ( isset( $dbMessage['order_id'] ) ) ) {
 			$logger->debug( 'A valid message was obtained from the pending queue' );
 
-			// Add the gateway transaction ID and send it to the completed queue
-			$dbMessage['gateway_txn_id'] = $transactionDetails->getGatewayTxnId();
+			$this->addMissingFieldsToPendingRecord( $dbMessage, $transactionDetails );
+
 			// Use the eventDate from the capture as the date
 			$dbMessage['date'] = strtotime( $this->payload['eventDate'] );
-
-			// Special handling for recurring donations
-			if ( !empty( $dbMessage['recurring'] ) ) {
-				if ( empty( $dbMessage['recurring_payment_token'] ) ) {
-					if ( !empty( $transactionDetails->getRecurringPaymentToken() ) ) {
-						$dbMessage['recurring_payment_token'] = $transactionDetails->getRecurringPaymentToken();
-					} else {
-						throw new RetryableException(
-							'Recurring message was obtained from the pending queue with no token. Requeuing job.'
-						);
-					}
-				}
-			}
 
 			QueueWrapper::push( 'donations', $dbMessage );
 
@@ -82,5 +70,36 @@ class RecordCaptureJob implements Runnable {
 		}
 
 		return true;
+	}
+
+	protected function addMissingFieldsToPendingRecord( array &$dbMessage, PaymentProviderExtendedResponse $transactionDetails ): void {
+		// Add the gateway transaction ID
+		$dbMessage['gateway_txn_id'] = $transactionDetails->getGatewayTxnId();
+
+		// Other things that are missing for e.g. 3d-secure transactions
+		if ( empty( $dbMessage['backend_processor'] ) ) {
+			$dbMessage['backend_processor'] = $transactionDetails->getBackendProcessor();
+		}
+		if ( empty( $dbMessage['backend_processor_txn_id'] ) ) {
+			$dbMessage['backend_processor_txn_id'] = $transactionDetails->getBackendProcessorTransactionId();
+		}
+		if ( empty( $dbMessage['payment_submethod'] ) ) {
+			$dbMessage['payment_submethod'] = $transactionDetails->getPaymentSubmethod();
+		}
+		if ( empty( $dbMessage['payment_orchestrator_reconciliation_id'] ) ) {
+			$dbMessage['payment_orchestrator_reconciliation_id'] = $transactionDetails->getPaymentOrchestratorReconciliationId();
+		}
+		// Special handling for recurring donations
+		if ( !empty( $dbMessage['recurring'] ) ) {
+			if ( empty( $dbMessage['recurring_payment_token'] ) ) {
+				if ( !empty( $transactionDetails->getRecurringPaymentToken() ) ) {
+					$dbMessage['recurring_payment_token'] = $transactionDetails->getRecurringPaymentToken();
+				} else {
+					throw new RetryableException(
+						'Recurring message was obtained from the pending queue with no token. Requeuing job.'
+					);
+				}
+			}
+		}
 	}
 }

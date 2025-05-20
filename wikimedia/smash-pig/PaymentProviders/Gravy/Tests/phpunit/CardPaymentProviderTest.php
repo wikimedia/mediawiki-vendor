@@ -239,8 +239,138 @@ class CardPaymentProviderTest extends BaseGravyTestCase {
 		$this->assertFalse( $response->isSuccessful() );
 		$valErrors = $response->getValidationErrors();
 		$errors = $response->getErrors();
-		$this->assertCount( 7, $valErrors );
+		$this->assertCount( 4, $valErrors, "Parameters should be missing the 4 fundamental fields for creating a payment transaction" );
 		$this->assertCount( 0, $errors );
+	}
+
+	public function testValidationErrorCreatePaymentNonNumericAmountBeforeApiCall() {
+		$params = $this->getCreateTrxnParams( 'ABC123-c067-4cd6-a3c8-aec67899d5af' );
+		$params['amount'] = 'not-a-number';
+
+		$response = $this->provider->createPayment( $params );
+
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\CreatePaymentResponse',
+			$response );
+		$this->assertFalse( $response->isSuccessful() );
+		$valErrors = $response->getValidationErrors();
+		$errors = $response->getErrors();
+		$this->assertCount( 1, $valErrors, "Validator should reject non numeric amounts" );
+		$this->assertCount( 0, $errors );
+	}
+
+	public function testValidationErrorCreatePaymentEmptyAmountBeforeApiCall() {
+		$params = $this->getCreateTrxnParams( 'ABC123-c067-4cd6-a3c8-aec67899d5af' );
+		$params['amount'] = '';
+
+		$response = $this->provider->createPayment( $params );
+
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\CreatePaymentResponse',
+			$response );
+		$this->assertFalse( $response->isSuccessful() );
+		$valErrors = $response->getValidationErrors();
+		$errors = $response->getErrors();
+		$this->assertCount( 1, $valErrors, "Validator should reject non numeric amounts" );
+		$this->assertCount( 0, $errors );
+	}
+
+	public function testValidationErrorCreatePaymentNumericStringAmountBeforeApiCall() {
+		$requestErrorResponseBody = json_decode( file_get_contents( __DIR__ . '/../Data/create-transaction-request-fail.json' ), true );
+		$transactionId = 'ABC123-c067-4cd6-a3c8-aec67899d5af';
+		$params = $this->getCreateTrxnParams( $transactionId );
+		$params['amount'] = '100.50';
+
+		$mockedAmount = 10050; // Amount in minor units
+
+		$expectedRequest = [
+			'amount' => $mockedAmount,
+			'currency' => $params['currency'],
+			'country' => $params['country'],
+			'payment_method' => [
+				'method' => 'checkout-session',
+				'id' => $transactionId,
+			],
+			'external_identifier' => $params['order_id'],
+			'buyer' => [
+				'external_identifier' => $params['email'],
+				'billing_details' => [
+					'first_name' => $params['first_name'],
+					'last_name' => $params['last_name'],
+					'email_address' => strtolower( $params['email'] ),
+					'phone_number' => $params['phone_number'] ?? null,
+					'address' => [
+						'city' => $params['city'] ?? null,
+						'country' => $params['country'] ?? null,
+						'postal_code' => $params['postal_code'] ?? null,
+						'state' => $params['state_province'] ?? null,
+						'line1' => $params['street_address'] ?? null,
+						'line2' => null,
+						'organization' => $params['employer'] ?? null
+					],
+				]
+			]
+		];
+		$this->mockApi->expects( $this->once() )
+			->method( 'createPayment' )
+			->with( $expectedRequest )
+			->willReturn( $requestErrorResponseBody );
+
+		$response = $this->provider->createPayment( $params );
+
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\CreatePaymentResponse',
+			$response );
+		$this->assertFalse( $response->isSuccessful() );
+		$valErrors = $response->getValidationErrors();
+		$this->assertCount( 0, $valErrors, "Validator should not reject numeric string amount" );
+	}
+
+	public function testValidationErrorCreatePaymentNumericAmountBeforeApiCall() {
+		$requestErrorResponseBody = json_decode( file_get_contents( __DIR__ . '/../Data/create-transaction-request-fail.json' ), true );
+		$transactionId = 'ABC123-c067-4cd6-a3c8-aec67899d5af';
+		$params = $this->getCreateTrxnParams( $transactionId );
+		$params['amount'] = 100.50;
+
+		$mockedAmount = 10050; // Amount in minor units
+
+		$expectedRequest = [
+			'amount' => $mockedAmount,
+			'currency' => $params['currency'],
+			'country' => $params['country'],
+			'payment_method' => [
+				'method' => 'checkout-session',
+				'id' => $transactionId,
+			],
+			'external_identifier' => $params['order_id'],
+			'buyer' => [
+				'external_identifier' => $params['email'],
+				'billing_details' => [
+					'first_name' => $params['first_name'],
+					'last_name' => $params['last_name'],
+					'email_address' => strtolower( $params['email'] ),
+					'phone_number' => $params['phone_number'] ?? null,
+					'address' => [
+						'city' => $params['city'] ?? null,
+						'country' => $params['country'] ?? null,
+						'postal_code' => $params['postal_code'] ?? null,
+						'state' => $params['state_province'] ?? null,
+						'line1' => $params['street_address'] ?? null,
+						'line2' => null,
+						'organization' => $params['employer'] ?? null
+					],
+				]
+			]
+		];
+		$this->mockApi->expects( $this->once() )
+			->method( 'createPayment' )
+			->with( $expectedRequest )
+			->willReturn( $requestErrorResponseBody );
+
+		$response = $this->provider->createPayment( $params );
+
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\CreatePaymentResponse',
+			$response );
+		$this->assertFalse( $response->isSuccessful() );
+		$valErrors = $response->getValidationErrors();
+		$this->assertCount( 0, $valErrors, "Validator should not reject numeric string amount" );
 	}
 
 	public function testValidationErrorForMissingFiscalNumberForCountryRequiringIt(): void {

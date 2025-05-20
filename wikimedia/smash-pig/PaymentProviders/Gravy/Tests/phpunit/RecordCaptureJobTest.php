@@ -15,16 +15,11 @@ class RecordCaptureJobTest extends BaseGravyTestCase {
 	 * @var PendingDatabase
 	 */
 	protected $pendingDatabase;
-	protected $pendingMessage;
+	protected array $pendingMessage;
 
 	public function setUp(): void {
 		parent::setUp();
 		$this->pendingDatabase = PendingDatabase::get();
-		$this->pendingMessage = json_decode(
-			file_get_contents( __DIR__ . '/../Data/pending.json' ), true
-		);
-		$this->pendingMessage['captured'] = true;
-		$this->pendingDatabase->storeMessage( $this->pendingMessage );
 	}
 
 	public function tearDown(): void {
@@ -33,36 +28,8 @@ class RecordCaptureJobTest extends BaseGravyTestCase {
 	}
 
 	public function testRecordCapture() {
-		$donationsQueue = QueueWrapper::getQueue( 'donations' );
-		$capturedTransaction = json_decode(
-			file_get_contents( __DIR__ . '/../Data/successful-transaction.json' ), true
-		);
-
-		$normalizedResponse = ( new ResponseMapper() )->mapFromPaymentResponse( $capturedTransaction );
-		$transactionDetails = GravyGetLatestPaymentStatusResponseFactory::fromNormalizedResponse( $normalizedResponse );
-		$job = new RecordCaptureJob();
-		$message = json_decode( $this->getValidGravyTransactionMessage(), true );
-		$job->payload = array_merge(
-			[
-				"eventDate" => $message["created_at"]
-			], $normalizedResponse
-		);
-		$this->assertTrue( $job->execute() );
-
-		$donorData = $this->pendingDatabase->fetchMessageByGatewayOrderId(
-			'gravy', $transactionDetails->getOrderId()
-		);
-
-		$this->assertNull(
-			$donorData,
-			'RecordCaptureJob left donor data on pending queue'
-		);
-
-		$donationMessage = $donationsQueue->pop();
-		$this->assertNotNull(
-			$donationMessage,
-			'RecordCaptureJob did not send donation message'
-		);
+		$this->storePendingMessage( 'pending' );
+		[ $transactionDetails, $donationMessage ] = $this->runJobAndGetDonationMessage();
 		// can we use arraySubset yet?
 		$sameKeys = array_intersect(
 			array_keys( $donationMessage ),
@@ -84,8 +51,74 @@ class RecordCaptureJobTest extends BaseGravyTestCase {
 		}
 	}
 
+	public function testRecordCaptureWithSparsePendingMessage() {
+		$this->storePendingMessage( 'pending-sparse' );
+		[ $transactionDetails, $donationMessage ] = $this->runJobAndGetDonationMessage();
+		$this->assertEquals( $donationMessage['gateway_txn_id'], $transactionDetails->getGatewayTxnId() );
+		$this->assertEquals( $donationMessage['backend_processor'], $transactionDetails->getBackendProcessor() );
+		$this->assertEquals( $donationMessage['backend_processor_txn_id'], $transactionDetails->getBackendProcessorTransactionId() );
+		$this->assertEquals( $donationMessage['payment_submethod'], $transactionDetails->getPaymentSubmethod() );
+	}
+
 	private function getValidGravyTransactionMessage(): string {
 		return '{"type":"event","id":"36d2c101-4db5-4afd-ba4b-8fd9b60764ab","created_at":"2024-07-22T19:56:22.973896+00:00",
         "target":{"type":"transaction","id":"b332ca0a-1dce-4ae6-b27b-04f70db8fae7"},"merchant_account_id":"default"}';
+	}
+
+	/**
+	 * @param string $fileName
+	 * @return void
+	 * @throws \SmashPig\Core\DataStores\DataStoreException
+	 * @throws \SmashPig\Core\SmashPigException
+	 */
+	public function storePendingMessage( string $fileName ): void {
+		$contents = file_get_contents( __DIR__ . '/../Data/' . $fileName . '.json' );
+		$this->pendingMessage = json_decode( $contents, true );
+		$this->pendingMessage['captured'] = true;
+		$this->pendingDatabase->storeMessage( $this->pendingMessage );
+	}
+
+	/**
+	 * @return array
+	 * @throws \PHPQueue\Exception\JobNotFoundException
+	 * @throws \SmashPig\Core\ConfigurationKeyException
+	 * @throws \SmashPig\Core\DataStores\DataStoreException
+	 * @throws \SmashPig\Core\RetryableException
+	 */
+	public function runJobAndGetDonationMessage(): array {
+		$donationsQueue = QueueWrapper::getQueue( 'donations' );
+		$capturedTransaction = json_decode(
+			file_get_contents( __DIR__ . '/../Data/successful-transaction.json' ),
+			true
+		);
+
+		$normalizedResponse = ( new ResponseMapper() )->mapFromPaymentResponse( $capturedTransaction );
+		$transactionDetails = GravyGetLatestPaymentStatusResponseFactory::fromNormalizedResponse( $normalizedResponse );
+		$job = new RecordCaptureJob();
+		$message = json_decode( $this->getValidGravyTransactionMessage(), true );
+		$job->payload = array_merge(
+			[
+				"eventDate" => $message["created_at"]
+			],
+			$normalizedResponse
+		);
+		$this->assertTrue( $job->execute() );
+
+		$donorData = $this->pendingDatabase->fetchMessageByGatewayOrderId(
+			'gravy',
+			$transactionDetails->getOrderId()
+		);
+
+		$this->assertNull(
+			$donorData,
+			'RecordCaptureJob left donor data on pending queue'
+		);
+
+		$donationMessage = $donationsQueue->pop();
+		$this->assertNotNull(
+			$donationMessage,
+			'RecordCaptureJob did not send donation message'
+		);
+		return [ $transactionDetails, $donationMessage ];
 	}
 }

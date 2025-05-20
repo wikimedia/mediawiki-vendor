@@ -17,12 +17,10 @@ class GooglePayPaymentProviderValidator extends PaymentProviderValidator {
 	 * @return void
 	 */
 	public function validateOneTimeCreatePaymentInput( array $params ): void {
+		parent::validateOneTimeCreatePaymentInput( $params );
+
 		$required = [
 			'payment_token',
-			'amount',
-			'currency',
-			'country',
-			'order_id',
 			'email',
 			'full_name',
 			'card_suffix',

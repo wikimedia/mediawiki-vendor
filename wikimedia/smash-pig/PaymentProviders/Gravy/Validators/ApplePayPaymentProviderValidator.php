@@ -33,12 +33,10 @@ class ApplePayPaymentProviderValidator extends PaymentProviderValidator {
 	 * @return void
 	 */
 	public function validateOneTimeCreatePaymentInput( array $params ): void {
+		parent::validateOneTimeCreatePaymentInput( $params );
+
 		$required = [
 			'payment_token',
-			'amount',
-			'currency',
-			'country',
-			'order_id',
 			'email',
 			'first_name',
 			'last_name'

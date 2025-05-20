@@ -5,11 +5,11 @@ namespace SmashPig\PaymentProviders\Gravy\Validators;
 use SmashPig\PaymentProviders\ValidationException;
 
 /**
- * This class provides input validation for PayPal redirect payment requests.
+ * This class provides input validation for ACH redirect payment requests.
  */
-class PaypalPaymentProviderValidator extends PaymentProviderValidator {
+class DirectDepositPaymentProviderValidator extends PaymentProviderValidator {
 	/**
-	 * Checks the one time PayPal create payment input parameters for correctness and completeness.
+	 * Checks the one time ACH create payment input parameters for correctness and completeness.
 	 *
 	 * @param array $params
 	 * @throws ValidationException

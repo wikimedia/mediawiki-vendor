@@ -17,19 +17,17 @@ class CardPaymentProviderValidator extends PaymentProviderValidator {
 	 * @return void
 	 */
 	public function validateOneTimeCreatePaymentInput( array $params ): void {
-		$defaultRequiredFields = [
+		parent::validateOneTimeCreatePaymentInput( $params );
+
+		$requiredFields = [
 			'gateway_session_id',
-			'amount',
-			'currency',
-			'country',
-			'order_id',
 			'email',
 			'first_name',
 			'last_name',
 		];
 
 		$required = array_merge(
-			$defaultRequiredFields,
+			$requiredFields,
 			$this->addCountrySpecificRequiredFields( $params )
 		);
 

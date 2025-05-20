@@ -6,6 +6,7 @@ require 'MaintenanceBase.php';
 
 use SmashPig\Core\DataStores\QueueWrapper;
 use SmashPig\Core\Logging\Logger;
+use SmashPig\PaymentProviders\Gravy\GravyHelper;
 use SmashPig\PaymentProviders\Gravy\ReferenceData;
 
 /**
@@ -28,12 +29,12 @@ use SmashPig\PaymentProviders\Gravy\ReferenceData;
  *
  * 4. Run script:
  *    ./scripts/smashpig.sh
- *    php maintenance/BuildGravyDonationMessageFromLogs.php <YYYYMMDD> <contribution_tracking_id>
+ *    php maintenance/BuildGravyDonationFromLogs.php <YYYYMMDD> <contribution_tracking_id>
  *
  * Example:
- *    php Maintenance/BuildGravyDonationMessageFromLogs.php 20250101 1234567890.1
+ *    php Maintenance/BuildGravyDonationFromLogs.php 20250101 1234567890.1
  */
-class BuildGravyDonationMessageFromLogs extends MaintenanceBase {
+class BuildGravyDonationFromLogs extends MaintenanceBase {
 
 	public const LOG_FILES_PATH = '/srv/archive/frlog/logs/*%s.gz';
 	public const ZGREP_COMMAND = '/bin/zgrep -H -i %s %s';
@@ -56,6 +57,9 @@ class BuildGravyDonationMessageFromLogs extends MaintenanceBase {
 		'amount' => 'gross',
 		'payment_method' => 'payment_method',
 		'payment_submethod' => 'payment_submethod',
+		'payment_service' => 'backend_processor',
+		'payment_service_transaction_id' => 'backend_processor_txn_id',
+		'reconciliation_id' => 'payment_orchestrator_reconciliation_id',
 		'first_name' => 'first_name',
 		'last_name' => 'last_name',
 		'state' => 'state_province',
@@ -139,32 +143,6 @@ class BuildGravyDonationMessageFromLogs extends MaintenanceBase {
 	}
 
 	/**
-	 * Prompts the user to confirm pushing a message to the donation queue.
-	 *
-	 * @param array $message The message to push to the queue
-	 * @return bool Whether the message was successfully pushed
-	 */
-	protected function promptAndPushToQueue( array $message ): bool {
-		echo "\nWould you like to push this message to the donation queue? [y/N]: ";
-		$userInput = trim( fgets( STDIN ) ) ?: '';
-
-		if ( strtolower( $userInput ) === 'y' ) {
-			try {
-				Logger::info( "Pushing message to donation queue..." );
-				QueueWrapper::push( 'donations', $message );
-				Logger::info( "Message pushed to donation queue!" );
-				return true;
-			} catch ( \Exception $e ) {
-				Logger::info( "Failed to push message to queue: " . $e->getMessage() );
-				return false;
-			}
-		} else {
-			Logger::info( "You declined to push the message to the queue." );
-			return false;
-		}
-	}
-
-	/**
 	 * Executes a log search by running a zgrep command for a specific contribution tracking ID
 	 * across log files for a given date.
 	 *
@@ -212,6 +190,20 @@ class BuildGravyDonationMessageFromLogs extends MaintenanceBase {
 			$logLines[$filePath][] = $restOfLine;
 		}
 		return $logLines;
+	}
+
+	/**
+	 * Logs the total count of matched lines.
+	 *
+	 * @param array $structuredLogData
+	 * @return void
+	 */
+	protected function logMatchingLinesCount( array $structuredLogData ): void {
+		$lineCount = 0;
+		foreach ( $structuredLogData as $file => $lines ) {
+			$lineCount += count( $lines );
+		}
+		Logger::info( "Found $lineCount total matching lines. Looking for donation queue message data in them..." );
 	}
 
 	/**
@@ -328,11 +320,17 @@ class BuildGravyDonationMessageFromLogs extends MaintenanceBase {
 				switch ( $gravyField ) {
 					case 'payment_method':
 						if ( is_array( $data[$gravyField] ) && isset( $data[$gravyField]['method'] ) ) {
-							$methodData = ReferenceData::decodePaymentMethod( $data[$gravyField]['method'], $data[$gravyField]['scheme'] );
+							$methodData = ReferenceData::decodePaymentMethod( $data[$gravyField]['method'],
+								$data[$gravyField]['scheme'] );
 							$extracted['payment_method'] = $methodData[0];
 							$extracted['payment_submethod'] = $methodData[1];
 						} else {
 							$extracted[$queueMessageKey] = $data[$gravyField];
+						}
+						break;
+					case 'payment_service':
+						if ( is_array( $data[$gravyField] ) && isset( $data[$gravyField]['payment_service_definition_id'] ) ) {
+							$extracted[$queueMessageKey] = GravyHelper::extractProcessorNameFromServiceDefinitionId( $data[$gravyField]['payment_service_definition_id'] );
 						}
 						break;
 
@@ -384,6 +382,9 @@ class BuildGravyDonationMessageFromLogs extends MaintenanceBase {
 			'gateway_txn_id' => $extractedFields['gateway_txn_id'] ?? '',
 			'order_id' => $extractedFields['order_id'] ?? '',
 			'contribution_tracking_id' => $extractedFields['contribution_tracking_id'] ?? '',
+			'backend_processor' => $extractedFields['backend_processor'] ?? '',
+			'backend_processor_txn_id' => $extractedFields['backend_processor_txn_id'] ?? '',
+			'payment_orchestrator_reconciliation_id' => $extractedFields['payment_orchestrator_reconciliation_id'] ?? '',
 
 			// Payment details
 			'response' => false,
@@ -435,19 +436,31 @@ class BuildGravyDonationMessageFromLogs extends MaintenanceBase {
 	}
 
 	/**
-	 * Logs the total count of matched lines.
+	 * Prompts the user to confirm pushing a message to the donation queue.
 	 *
-	 * @param array $structuredLogData
-	 * @return void
+	 * @param array $message The message to push to the queue
+	 * @return bool Whether the message was successfully pushed
 	 */
-	protected function logMatchingLinesCount( array $structuredLogData ): void {
-		$lineCount = 0;
-		foreach ( $structuredLogData as $file => $lines ) {
-			$lineCount += count( $lines );
+	protected function promptAndPushToQueue( array $message ): bool {
+		echo "\nWould you like to push this message to the donation queue? [y/N]: ";
+		$userInput = trim( fgets( STDIN ) ) ?: '';
+
+		if ( strtolower( $userInput ) === 'y' ) {
+			try {
+				Logger::info( "Pushing message to donation queue..." );
+				QueueWrapper::push( 'donations', $message );
+				Logger::info( "Message pushed to donation queue!" );
+				return true;
+			} catch ( \Exception $e ) {
+				Logger::info( "Failed to push message to queue: " . $e->getMessage() );
+				return false;
+			}
+		} else {
+			Logger::info( "You declined to push the message to the queue." );
+			return false;
 		}
-		Logger::info( "Found $lineCount total matching lines. Looking for donation queue message data in them..." );
 	}
 }
 
-$maintClass = BuildGravyDonationMessageFromLogs::class;
+$maintClass = BuildGravyDonationFromLogs::class;
 require RUN_MAINTENANCE_IF_MAIN;

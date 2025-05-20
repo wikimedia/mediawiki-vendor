@@ -373,7 +373,7 @@ class ResponseMapper {
 			// contains error code
 			|| isset( $response['error_code'] )
 			// failure
-			|| $response['intent_outcome'] === 'failed'
+			|| ( isset( $response['intent_outcome'] ) && $response['intent_outcome'] === 'failed' )
 			// 3d secure errors
 			|| ( isset( $response['three_d_secure'] ) && $response['three_d_secure']['status'] === 'error' );
 	}
