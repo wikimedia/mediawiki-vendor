@@ -12,6 +12,7 @@ use Wikimedia\Parsoid\Tokens\NlTk;
 use Wikimedia\Parsoid\Tokens\SelfclosingTagTk;
 use Wikimedia\Parsoid\Tokens\TagTk;
 use Wikimedia\Parsoid\Tokens\Token;
+use Wikimedia\Parsoid\Tokens\XMLTagTk;
 use Wikimedia\Parsoid\Utils\PHPUtils;
 use Wikimedia\Parsoid\Utils\PipelineUtils;
 use Wikimedia\Parsoid\Utils\TokenUtils;
@@ -28,7 +29,7 @@ use Wikimedia\Parsoid\Wt2Html\TokenHandlerPipeline;
  * given that we dont have a preprocessor.  This will be a grab-bag of
  * heuristics and tricks to handle different scenarios.
  */
-class TokenStreamPatcher extends TokenHandler {
+class TokenStreamPatcher extends LineBasedHandler {
 	private PegTokenizer $tokenizer;
 
 	/** @var int|null */
@@ -165,7 +166,8 @@ class TokenStreamPatcher extends TokenHandler {
 		} elseif ( !empty( $da->autoInsertedStart ) && !empty( $da->autoInsertedEnd ) ) {
 			return [ '' ];
 		} else {
-			switch ( $token->getName() ) {
+			$tokenName = ( $token instanceof XMLTagTk ) ? $token->getName() : '';
+			switch ( $tokenName ) {
 				case 'td':
 					return [ ( $token->dataParsoid->stx ?? '' ) === 'row' ? '||' : '|' ];
 				case 'th':

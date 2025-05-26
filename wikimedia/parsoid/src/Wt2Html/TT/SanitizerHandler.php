@@ -15,17 +15,17 @@ namespace Wikimedia\Parsoid\Wt2Html\TT;
 
 use Wikimedia\Parsoid\Config\SiteConfig;
 use Wikimedia\Parsoid\Core\Sanitizer;
-use Wikimedia\Parsoid\Tokens\CompoundTk;
 use Wikimedia\Parsoid\Tokens\EndTagTk;
 use Wikimedia\Parsoid\Tokens\SelfclosingTagTk;
 use Wikimedia\Parsoid\Tokens\TagTk;
 use Wikimedia\Parsoid\Tokens\Token;
+use Wikimedia\Parsoid\Tokens\XMLTagTk;
 use Wikimedia\Parsoid\Utils\TokenUtils;
 use Wikimedia\Parsoid\Wikitext\Consts;
 use Wikimedia\Parsoid\Wt2Html\Frame;
 use Wikimedia\Parsoid\Wt2Html\TokenHandlerPipeline;
 
-class SanitizerHandler extends TokenHandler {
+class SanitizerHandler extends UniversalTokenHandler {
 	/** @var bool */
 	private $inTemplate;
 
@@ -55,10 +55,11 @@ class SanitizerHandler extends TokenHandler {
 		$attribs = $token->attribs ?? null;
 		$allowedTags = Consts::$Sanitizer['AllowedLiteralTags'];
 
-		if ( TokenUtils::isHTMLTag( $token )
-			&& ( empty( $allowedTags[$token->getName()] )
-				|| ( $token instanceof EndTagTk && !empty( self::NO_END_TAG_SET[$token->getName()] ) )
-			)
+		if (
+			$token instanceof XMLTagTk &&
+			TokenUtils::isHTMLTag( $token ) &&
+			( empty( $allowedTags[$token->getName()] ) ||
+				( $token instanceof EndTagTk && !empty( self::NO_END_TAG_SET[$token->getName()] ) ) )
 		) { // unknown tag -- convert to plain text
 			if ( !$inTemplate && !empty( $token->dataParsoid->tsr ) ) {
 				// Just get the original token source, so that we can avoid
@@ -123,16 +124,6 @@ class SanitizerHandler extends TokenHandler {
 	public function __construct( TokenHandlerPipeline $manager, array $options ) {
 		parent::__construct( $manager, $options );
 		$this->inTemplate = $options['inTemplate'];
-	}
-
-	/**
-	 * Process nested tokens and update the compound token.
-	 *
-	 * @inheritDoc
-	 */
-	public function onCompoundTk( CompoundTk $ctk, TokenHandler $tokensHandler ): ?array {
-		$ctk->setNestedTokens( $tokensHandler->process( $ctk->getNestedTokens() ) );
-		return null;
 	}
 
 	/**

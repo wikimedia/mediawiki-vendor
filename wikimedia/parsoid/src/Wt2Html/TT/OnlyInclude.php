@@ -17,7 +17,7 @@ use Wikimedia\Parsoid\Tokens\XMLTagTk;
  * This can fortunately be worked around by caching the tokens after
  * onlyinclude processing (which is a good idea anyway).
  */
-class OnlyInclude extends TokenHandler {
+class OnlyInclude extends UniversalTokenHandler {
 	/** @var array */
 	private $accum = [];
 
@@ -31,8 +31,9 @@ class OnlyInclude extends TokenHandler {
 	 * @inheritDoc
 	 */
 	public function onAny( $token ): ?array {
-		return !empty( $this->options['inTemplate'] ) ?
-			$this->onAnyInclude( $token ) : null;
+		$enabled = $this->options['inTemplate'] &&
+			$this->env->nativeTemplateExpansionEnabled();
+		return ( $enabled ) ? $this->onAnyInclude( $token ) : null;
 	}
 
 	/**

@@ -130,8 +130,7 @@ class ParserPipelineFactory {
 		'displayspace' => [
 			'name' => 'DisplaySpace',
 			'handlers' => [
-				[ 'nodeName' => null, 'action' => [ DisplaySpace::class, 'leftHandler' ] ],
-				[ 'nodeName' => null, 'action' => [ DisplaySpace::class, 'rightHandler' ] ],
+				[ 'nodeName' => null, 'action' => [ DisplaySpace::class, 'textHandler' ] ],
 			]
 		],
 		'linkclasses' => [
@@ -235,7 +234,7 @@ class ParserPipelineFactory {
 
 	// Skipping sections, addmetadata from the above pipeline
 	//
-	// FIXME: Skip extpp, linter, lang-converter, redlinks, gen-anchors, dedupe-heading-ids, convertoffsets for now.
+	// FIXME: Skip extpp, lang-converter, redlinks, gen-anchors, dedupe-heading-ids, convertoffsets for now.
 	// This replicates behavior prior to this refactor.
 	public const FULL_PARSE_EMBEDDED_DOC_DOM_TRANSFORMS = [
 		// Even though displayspace *could* be run in the nested pipeline,
@@ -243,7 +242,9 @@ class ParserPipelineFactory {
 		// with french spacing, we should run it once on the full DOM including
 		// content of all extensions (wikitext-produced or not).
 		'displayspace',
-		'dedupe-styles', 'strip-metas',
+		'dedupe-styles',
+		'linter',
+		'strip-metas',
 		'cleanup',
 		'embedded-docs', // Need to run this recursively
 		'markDiscardableDP'
@@ -283,6 +284,7 @@ class ParserPipelineFactory {
 		"Tokenizer" => [
 			"class" => PegTokenizer::class,
 		],
+		/* Except for OnlyInclude & AttributeExpander, these are all tag-based handlers */
 		"TokenTransform2" => [
 			"class" => TokenHandlerPipeline::class,
 			"token-handlers" => [
@@ -296,6 +298,10 @@ class ParserPipelineFactory {
 				// as with the legacy parser - up to end of TokenTransform2.
 				AttributeExpander::class,
 
+				// add before transforms that depend on behavior switches
+				// examples: toc generation, edit sections
+				BehaviorSwitchHandler::class,
+
 				// now all attributes expanded to tokens or string
 				// more convenient after attribute expansion
 				WikiLinkHandler::class,
@@ -308,6 +314,9 @@ class ParserPipelineFactory {
 				DOMFragmentBuilder::class
 			],
 		],
+		/**
+		 * Except for SanitizerHandler, these are all line-based handlers.
+		 */
 		"TokenTransform3" => [
 			"class" => TokenHandlerPipeline::class,
 			"token-handlers" => [
@@ -315,9 +324,6 @@ class ParserPipelineFactory {
 				// add <pre>s
 				PreHandler::class,
 				QuoteTransformer::class,
-				// add before transforms that depend on behavior switches
-				// examples: toc generation, edit sections
-				BehaviorSwitchHandler::class,
 
 				ListHandler::class,
 				SanitizerHandler::class,
