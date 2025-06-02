@@ -675,13 +675,14 @@ class PipelineUtils {
 	 * of the HTML DOM for the purposes of additional token transformations
 	 * that will be applied to them.
 	 *
+	 * The DOMProcessorPipeline will unpack the fragment and insert the HTML
+	 * back into the DOM.
+	 *
 	 * @param Env $env
 	 *    The active environment/context.
 	 * @param Token $token
 	 *    The token that generated the DOM.
-	 * @param array $expansion
-	 *    - string html HTML of the expansion.
-	 *    - DocumentFragment domFragment Outermost nodes of the HTML.
+	 * @param DocumentFragment $domFragment Outermost nodes of the HTML
 	 * @param array $opts
 	 *    - SourceRange tsr
 	 *            The TSR to set on the generated tokens. This TSR is
@@ -699,21 +700,23 @@ class PipelineUtils {
 	 *    - string wrapperName
 	 * @return array<Token|string>
 	 */
-	public static function encapsulateExpansionHTML(
-		Env $env, Token $token, array $expansion, array $opts
+	public static function tunnelDOMThroughTokens(
+		Env $env, Token $token, DocumentFragment $domFragment, array $opts
 	): array {
 		$opts['unpackOutput'] ??= true; // Default
 		// Get placeholder tokens to get our subdom through the token processing
 		// stages. These will be finally unwrapped on the DOM.
-		$toks = self::getWrapperTokens( $expansion['domFragment'], $opts );
+		$fragmentId = $env->newFragmentId();
+		$env->setDOMFragment( $fragmentId, $domFragment );
+		$toks = self::getWrapperTokens( $domFragment, $opts );
 		$firstWrapperToken = $toks[0];
 
 		// Add the DOMFragment type so that we get unwrapped later.
 		$fragmentType = 'mw:DOMFragment' . ( !$opts['unpackOutput'] ? '/sealed/' . $opts['wrapperName'] : '' );
 		$firstWrapperToken->setAttribute( 'typeof', $fragmentType );
 
-		// Assign the HTML fragment to the data-parsoid.html on the first wrapper token.
-		$firstWrapperToken->dataParsoid->html = $expansion['html'];
+		// Assign the HTML fragment to the data-mw.html on the first wrapper token.
+		$firstWrapperToken->dataParsoid->html = $fragmentId;
 
 		// Pass through setDSR flag
 		if ( !empty( $opts['setDSR'] ) ) {
@@ -809,121 +812,6 @@ class PipelineUtils {
 		if ( count( $textCommentAccum ) ) {
 			self::wrapAccum( $doc, $textCommentAccum );
 		}
-	}
-
-	/**
-	 * Convert a HTML5 DOM into a mw:DOMFragment and generate appropriate
-	 * tokens to insert into the token stream for further processing.
-	 *
-	 * The DOMProcessorPipeline will unpack the fragment and insert the HTML
-	 * back into the DOM.
-	 *
-	 * @param Env $env
-	 *    The active environment/context.
-	 * @param Token $token
-	 *    The token that generated the DOM.
-	 * @param DocumentFragment $domFragment
-	 *    The DOM that the token expanded to.
-	 * @param array $opts
-	 *    Options to be passed onto the encapsulation code
-	 *    See encapsulateExpansionHTML's doc. for more info about these options.
-	 * @return array<Token|string>
-	 */
-	public static function tunnelDOMThroughTokens(
-		Env $env, Token $token, DocumentFragment $domFragment, array $opts
-	): array {
-		// Get placeholder tokens to get our subdom through the token processing
-		// stages. These will be finally unwrapped on the DOM.
-		$expansion = self::makeExpansion( $env, $domFragment );
-		return self::encapsulateExpansionHTML( $env, $token, $expansion, $opts );
-	}
-
-	public static function makeExpansion(
-		Env $env, DocumentFragment $domFragment
-	): array {
-		$fragmentId = $env->newFragmentId();
-		$env->setDOMFragment( $fragmentId, $domFragment );
-		return [ 'domFragment' => $domFragment, 'html' => $fragmentId ];
-	}
-
-	private static function doExtractExpansions( Env $env, array &$expansions, Node $node ): void {
-		$nodes = null;
-		$expAccum = null;
-		while ( $node ) {
-			if ( $node instanceof Element ) {
-				if ( DOMUtils::matchTypeOf( $node, '#^mw:(Transclusion$|Extension/)#' ) &&
-						$node->hasAttribute( 'about' )
-					) {
-					$dp = DOMDataUtils::getDataParsoid( $node );
-					$about = DOMCompat::getAttribute( $node, 'about' );
-					$nodes = WTUtils::getAboutSiblings( $node, $about );
-					$key = null;
-					if ( DOMUtils::hasTypeOf( $node, 'mw:Transclusion' ) ) {
-						$expAccum = $expansions['transclusions'];
-						$key = $dp->src;
-					} elseif ( DOMUtils::matchTypeOf( $node, '#^mw:Extension/#' ) ) {
-						$expAccum = $expansions['extensions'];
-						$key = $dp->src;
-					} else {
-						$expAccum = $expansions['media'];
-						// XXX gwicke: use proper key that is not
-						// source-based? This also needs to work for
-						// transclusion output.
-						$key = null;
-					}
-
-					if ( $key ) {
-						throw new UnreachableException( 'Callsite was not ported!' );
-						// FIXME: makeExpansion return type changed
-						// $expAccum[$key] = self::makeExpansion( $env, $nodes );
-					}
-
-					$node = end( $nodes );
-				} else {
-					self::doExtractExpansions( $env, $expansions, $node->firstChild );
-				}
-			}
-			$node = $node->nextSibling;
-		}
-	}
-
-	/**
-	 * Extract transclusion and extension expansions from a DOM, and return
-	 * them in a structure like this:
-	 *     {
-	 *         transclusions: {
-	 *             'key1': {
-	 *                  html: 'html1',
-	 *                  nodes: [<node1>, <node2>]
-	 *             }
-	 *         },
-	 *         extensions: {
-	 *             'key2': {
-	 *                  html: 'html2',
-	 *                  nodes: [<node1>, <node2>]
-	 *             }
-	 *         },
-	 *         files: {
-	 *             'key3': {
-	 *                  html: 'html3',
-	 *                  nodes: [<node1>, <node2>]
-	 *             }
-	 *         }
-	 *     }
-	 *
-	 * @param Env $env
-	 * @param Element $body
-	 * @return array
-	 */
-	public static function extractExpansions( Env $env, Element $body ): array {
-		$expansions = [
-			'transclusions' => [],
-			'extensions' => [],
-			'media' => []
-		];
-		// Kick off the extraction
-		self::doExtractExpansions( $env, $expansions, $body->firstChild );
-		return $expansions;
 	}
 
 	/**

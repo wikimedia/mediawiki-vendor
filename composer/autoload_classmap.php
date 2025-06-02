@@ -4859,6 +4859,7 @@ return array(
     'Wikimedia\\Parsoid\\Wt2Html\\TT\\WikiLinkHandler' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/TT/WikiLinkHandler.php',
     'Wikimedia\\Parsoid\\Wt2Html\\TT\\XMLTagBasedHandler' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/TT/XMLTagBasedHandler.php',
     'Wikimedia\\Parsoid\\Wt2Html\\TT\\XMLTagBasedHandlerTraceProxy' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/TT/XMLTagBasedHandlerTraceProxy.php',
+    'Wikimedia\\Parsoid\\Wt2Html\\TokenCache' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/TokenCache.php',
     'Wikimedia\\Parsoid\\Wt2Html\\TokenHandlerPipeline' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/TokenHandlerPipeline.php',
     'Wikimedia\\Parsoid\\Wt2Html\\TokenizerUtils' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/TokenizerUtils.php',
     'Wikimedia\\Parsoid\\Wt2Html\\Tracer' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/Tracer.php',

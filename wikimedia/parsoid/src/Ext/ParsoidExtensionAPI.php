@@ -237,7 +237,7 @@ class ParsoidExtensionAPI {
 	 * @return string
 	 */
 	public function newAboutId(): string {
-		return $this->env->newAboutId();
+		return DOMDataUtils::getBag( $this->getTopLevelDoc() )->newAboutId();
 	}
 
 	/**
@@ -346,6 +346,24 @@ class ParsoidExtensionAPI {
 
 	public function clearContentDOM( string $contentId ): void {
 		$this->env->removeDOMFragment( $contentId );
+	}
+
+	/**
+	 * Get an ID from a Node which is storing a DOMFragment, which can
+	 * be passed to ::getContentDOM() to retrieve the DOMFragment.
+	 */
+	public function getContentId( Element $node ): string {
+		return DOMDataUtils::getDataParsoid( $node )->html;
+	}
+
+	/**
+	 * Remove the DOMFragment referenced from this node.
+	 */
+	public function clearContentId( Element $node ): void {
+		$dp = DOMDataUtils::getDataParsoid( $node );
+		$contentId = $dp->html;
+		$this->clearContentDOM( $contentId );
+		unset( $dp->html );
 	}
 
 	/**

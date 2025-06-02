@@ -31,22 +31,14 @@ use Wikimedia\Parsoid\Wt2Html\TokenHandlerPipeline;
  */
 class TokenStreamPatcher extends LineBasedHandler {
 	private PegTokenizer $tokenizer;
-
-	/** @var int|null */
-	private $srcOffset;
-
+	private ?int $srcOffset;
 	private bool $sol;
-
 	private array $tokenBuf;
 	private int $wikiTableNesting;
 	/** True only for top-level & attribute value pipelines */
 	private bool $inIndependentParse;
-
-	/** @var Token|null */
-	private $lastConvertedTableCellToken;
-
-	/** @var SelfclosingTagTk|null */
-	private $tplStartToken = null;
+	private ?Token $lastConvertedTableCellToken;
+	private ?SelfclosingTagTk $tplStartToken = null;
 
 	public function __construct( TokenHandlerPipeline $manager, array $options ) {
 		$newOptions = [ 'tsp' => true ] + $options;
@@ -58,10 +50,10 @@ class TokenStreamPatcher extends LineBasedHandler {
 	/**
 	 * Resets any internal state for this token handler.
 	 *
-	 * @param array $parseOpts
+	 * @param array $options
 	 */
-	public function resetState( array $parseOpts ): void {
-		parent::resetState( $parseOpts );
+	public function resetState( array $options ): void {
+		parent::resetState( $options );
 		$this->inIndependentParse = $this->atTopLevel || isset( $this->options['attrExpansion'] );
 	}
 

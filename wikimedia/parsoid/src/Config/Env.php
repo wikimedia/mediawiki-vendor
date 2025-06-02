@@ -29,6 +29,7 @@ use Wikimedia\Parsoid\Wikitext\ContentModelHandler as WikitextContentModelHandle
 use Wikimedia\Parsoid\Wt2Html\Frame;
 use Wikimedia\Parsoid\Wt2Html\PageConfigFrame;
 use Wikimedia\Parsoid\Wt2Html\ParserPipelineFactory;
+use Wikimedia\Parsoid\Wt2Html\TokenCache;
 use Wikimedia\Parsoid\Wt2Html\TreeBuilder\RemexPipeline;
 
 /**
@@ -106,12 +107,6 @@ class Env {
 	 */
 	private int $fid = 1;
 
-	/** Used to generate uids as needed during this parse */
-	private int $uid = 1;
-
-	/** Used to generate annotation uids as needed during this parse */
-	private int $annUid = 0;
-
 	/** Lints recorded */
 	private array $lints = [];
 	public bool $logLinterData = false;
@@ -170,6 +165,12 @@ class Env {
 	 * Cache of wikitext source for a title; only used for ParserTests.
 	 */
 	public array $pageCache = [];
+
+	/**
+	 * Token caches used in the pipeline
+	 * @var array<TokenCache>
+	 */
+	private array $tokenCaches = [];
 
 	/**
 	 * The current top-level document. During wt2html, this will be the document
@@ -451,14 +452,6 @@ class Env {
 	}
 
 	/**
-	 * Get the current uid counter value
-	 * @return int
-	 */
-	public function getUID(): int {
-		return $this->uid;
-	}
-
-	/**
 	 * Get the current fragment id counter value
 	 * @return int
 	 */
@@ -481,6 +474,23 @@ class Env {
 	 */
 	public function getPipelineFactory(): ParserPipelineFactory {
 		return $this->pipelineFactory;
+	}
+
+	/**
+	 * Get a token cache for a given cache name. A cache is shared across all pipelines
+	 * and processing that happens in the lifetime of this Env object.
+	 * @param string $cacheName Key to retrieve a token cache
+	 * @param array{repeatThreshold:int,cloneValue:bool} $newCacheOpts Opts for the new cache
+	 */
+	public function getCache( string $cacheName, array $newCacheOpts ): TokenCache {
+		if ( !isset( $this->tokenCaches[$cacheName] ) ) {
+			$this->tokenCaches[$cacheName] = new TokenCache(
+				$newCacheOpts['repeatThreshold'],
+				$newCacheOpts['cloneValue']
+			);
+		}
+
+		return $this->tokenCaches[$cacheName];
 	}
 
 	/**
@@ -697,27 +707,11 @@ class Env {
 	}
 
 	/**
-	 * Generate a new uid
-	 * @return int
-	 */
-	public function generateUID(): int {
-		return $this->uid++;
-	}
-
-	/**
-	 * Generate a new annotation uid
-	 * @return int
-	 */
-	public function generateAnnotationUID(): int {
-		return $this->annUid++;
-	}
-
-	/**
 	 * Generate a new annotation id
 	 * @return string
 	 */
 	public function newAnnotationId(): string {
-		return "mwa" . $this->generateAnnotationUID();
+		return DOMDataUtils::getBag( $this->topLevelDoc )->newAnnotationId();
 	}
 
 	/**
@@ -725,7 +719,7 @@ class Env {
 	 * @return string
 	 */
 	public function newAboutId(): string {
-		return '#mwt' . $this->generateUID();
+		return DOMDataUtils::getBag( $this->topLevelDoc )->newAboutId();
 	}
 
 	/**

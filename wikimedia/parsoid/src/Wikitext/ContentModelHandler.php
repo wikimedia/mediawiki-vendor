@@ -149,8 +149,10 @@ class ContentModelHandler extends IContentModelHandler {
 		}
 
 		// set indicator metadata for unique keys
+		// (Note that this could easily be updated in the future to pass
+		// a DocumentFragment directly, instead of converting to a string.)
 		foreach ( $iData as $name => $html ) {
-			$extApi->getMetadata()->setIndicator( (string)$name, $html );
+			$extApi->getMetadata()->setIndicator( (string)$name, $extApi->domToHtml( $html, true ) );
 		}
 	}
 
@@ -234,7 +236,7 @@ class ContentModelHandler extends IContentModelHandler {
 	 * @inheritDoc
 	 */
 	public function fromDOM(
-		ParsoidExtensionAPI $extApi, ?SelectiveUpdateData $selserData = null
+		ParsoidExtensionAPI $extApi, ?SelectiveUpdateData $selectiveUpdateData = null
 	): string {
 		$env = $this->env;
 		$siteConfig = $env->getSiteConfig();
@@ -242,10 +244,10 @@ class ContentModelHandler extends IContentModelHandler {
 
 		$this->canonicalizeDOM( $env, $env->getTopLevelDoc() );
 
-		$serializerOpts = [ 'selserData' => $selserData ];
-		if ( $selserData ) {
+		$serializerOpts = [ 'selserData' => $selectiveUpdateData ];
+		if ( $selectiveUpdateData ) {
 			$serializer = new SelectiveSerializer( $env, $serializerOpts );
-			$this->setupSelser( $extApi, $selserData );
+			$this->setupSelser( $extApi, $selectiveUpdateData );
 			$wtsType = 'selser';
 		} else {
 			// Fallback

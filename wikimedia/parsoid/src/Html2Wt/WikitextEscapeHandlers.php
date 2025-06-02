@@ -11,7 +11,7 @@ use Wikimedia\Parsoid\Tokens\CommentTk;
 use Wikimedia\Parsoid\Tokens\EndTagTk;
 use Wikimedia\Parsoid\Tokens\EOFTk;
 use Wikimedia\Parsoid\Tokens\NlTk;
-use Wikimedia\Parsoid\Tokens\SelfClosingTagTk;
+use Wikimedia\Parsoid\Tokens\SelfclosingTagTk;
 use Wikimedia\Parsoid\Tokens\SourceRange;
 use Wikimedia\Parsoid\Tokens\TagTk;
 use Wikimedia\Parsoid\Tokens\Token;
@@ -487,7 +487,7 @@ class WikitextEscapeHandlers {
 
 		$tokens = $this->tokenizeStr( $text, $sol );
 
-		// If the token stream has a TagTk, SelfclosingTagTk, EndTagTk or CommentTk
+		// If the token stream has a XmlTagTk or CommentTk
 		// then this text needs escaping!
 		$numEntities = 0;
 		foreach ( $tokens as $t ) {
