@@ -91,6 +91,7 @@ class GravyCreatePaymentResponseFactory extends GravyPaymentResponseFactory {
 			->setPhone( $donorDetails['phone_number'] ?? '' )
 			->setCustomerId( $donorDetails['processor_contact_id'] ?? '' )
 			->setUserName( $donorDetails['username'] ?? '' )
+			->setBillingEmail( $donorDetails['billing_email'] ?? '' )
 			->setBillingAddress( $address );
 		$paymentResponse->setProcessorContactID( $donorDetails['processor_contact_id'] ?? '' );
 		$paymentResponse->setDonorDetails( $details );

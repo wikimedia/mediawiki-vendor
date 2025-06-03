@@ -172,7 +172,7 @@ class ResponseMapper {
 	 * @param array $response
 	 * @return void
 	 */
-	private function mapPaymentResponseDonorDetails( array &$result, array $response ): void {
+	protected function mapPaymentResponseDonorDetails( array &$result, array $response ): void {
 		$gravyPaymentMethod = $response['payment_method']['method'] ?? '';
 		if ( !empty( $response['buyer'] ) && !empty( $response['buyer']['billing_details'] ) ) {
 			$donorDetails = $response['buyer']['billing_details'];

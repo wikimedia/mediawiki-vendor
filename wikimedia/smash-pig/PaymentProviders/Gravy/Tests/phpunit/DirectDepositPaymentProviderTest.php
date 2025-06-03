@@ -93,7 +93,10 @@ class DirectDepositPaymentProviderTest extends BaseGravyTestCase {
 				'payment_source' => 'recurring',
 				'is_subsequent_payment' => true,
 				'merchant_initiated' => true,
-				'external_identifier' => $params['order_id']
+				'external_identifier' => $params['order_id'],
+				'buyer' => [
+					'external_identifier' => $params['email'],
+				]
 			] )
 			->willReturn( $responseBody );
 

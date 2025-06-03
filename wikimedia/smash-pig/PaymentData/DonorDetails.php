@@ -46,6 +46,13 @@ class DonorDetails {
 	protected ?string $email = null;
 
 	/**
+	 * The donor billing email
+	 *
+	 * @var string|null
+	 */
+	protected ?string $billing_email = null;
+
+	/**
 	 * The donor phone
 	 *
 	 * @var string|null
@@ -114,6 +121,15 @@ class DonorDetails {
 	}
 
 	/**
+	 * @param string|null $billing_email
+	 * @return DonorDetails
+	 */
+	public function setBillingEmail( ?string $billing_email ): DonorDetails {
+		$this->billing_email = $billing_email;
+		return $this;
+	}
+
+	/**
 	 * @param string|null $phone
 	 * @return DonorDetails
 	 */
@@ -177,6 +193,14 @@ class DonorDetails {
 	 */
 	public function getEmail(): ?string {
 		return $this->email;
+	}
+
+	/**
+	 * Get donor billing email from payment response
+	 * @return string
+	 */
+	public function getBillingEmail(): ?string {
+		return $this->billing_email;
 	}
 
 	/**
