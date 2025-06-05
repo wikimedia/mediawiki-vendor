@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9b21beb48576921c9bafca0fbac427dd",
+    "content-hash": "b7ca3a4f65e4e69071249c6e78457455",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -8965,19 +8965,21 @@
         },
         {
             "name": "wmde/php-vuejs-templating",
-            "version": "2.0.0",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wmde/php-vuejs-templating.git",
-                "reference": "6db5bd039dfa015b8850f121e711a4fc4fa0788d"
+                "reference": "158a0ff874aa0aecfffbdcaf1bcfcdc8a75e1315"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wmde/php-vuejs-templating/zipball/6db5bd039dfa015b8850f121e711a4fc4fa0788d",
-                "reference": "6db5bd039dfa015b8850f121e711a4fc4fa0788d",
+                "url": "https://api.github.com/repos/wmde/php-vuejs-templating/zipball/158a0ff874aa0aecfffbdcaf1bcfcdc8a75e1315",
+                "reference": "158a0ff874aa0aecfffbdcaf1bcfcdc8a75e1315",
                 "shasum": ""
             },
             "require": {
+                "ext-dom": "*",
+                "ext-libxml": "*",
                 "php": ">=7.2"
             },
             "require-dev": {
@@ -9002,9 +9004,9 @@
             "description": "PHP implementation of Vue.js templating engine",
             "support": {
                 "issues": "https://github.com/wmde/php-vuejs-templating/issues",
-                "source": "https://github.com/wmde/php-vuejs-templating/tree/2.0.0"
+                "source": "https://github.com/wmde/php-vuejs-templating/tree/2.1.0"
             },
-            "time": "2022-11-07T15:27:47+00:00"
+            "time": "2025-06-05T11:03:46+00:00"
         },
         {
             "name": "zordius/lightncandy",

@@ -4586,6 +4586,7 @@ class ComposerStaticInit_mediawiki_vendor
         'ValueValidators\\Result' => __DIR__ . '/..' . '/data-values/interfaces/src/ValueValidators/Result.php',
         'ValueValidators\\ValueValidator' => __DIR__ . '/..' . '/data-values/interfaces/src/ValueValidators/ValueValidator.php',
         'WMDE\\VueJsTemplating\\Component' => __DIR__ . '/..' . '/wmde/php-vuejs-templating/src/Component.php',
+        'WMDE\\VueJsTemplating\\HtmlParser' => __DIR__ . '/..' . '/wmde/php-vuejs-templating/src/HtmlParser.php',
         'WMDE\\VueJsTemplating\\JsParsing\\BasicJsExpressionParser' => __DIR__ . '/..' . '/wmde/php-vuejs-templating/src/JsParsing/BasicJsExpressionParser.php',
         'WMDE\\VueJsTemplating\\JsParsing\\CachingExpressionParser' => __DIR__ . '/..' . '/wmde/php-vuejs-templating/src/JsParsing/CachingExpressionParser.php',
         'WMDE\\VueJsTemplating\\JsParsing\\JsExpressionParser' => __DIR__ . '/..' . '/wmde/php-vuejs-templating/src/JsParsing/JsExpressionParser.php',
