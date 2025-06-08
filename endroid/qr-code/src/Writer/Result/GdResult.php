@@ -6,23 +6,27 @@ namespace Endroid\QrCode\Writer\Result;
 
 use Endroid\QrCode\Matrix\MatrixInterface;
 
-final class EpsResult extends AbstractResult
+class GdResult extends AbstractResult
 {
     public function __construct(
         MatrixInterface $matrix,
-        /** @var array<string> $lines */
-        private readonly array $lines
+        protected readonly \GdImage $image
     ) {
         parent::__construct($matrix);
     }
 
+    public function getImage(): \GdImage
+    {
+        return $this->image;
+    }
+
     public function getString(): string
     {
-        return implode("\n", $this->lines);
+        throw new \Exception('You can only use this method in a concrete implementation');
     }
 
     public function getMimeType(): string
     {
-        return 'image/eps';
+        throw new \Exception('You can only use this method in a concrete implementation');
     }
 }

@@ -6,11 +6,14 @@ namespace BaconQrCode\Renderer\Eye;
 use BaconQrCode\Renderer\Path\Path;
 
 /**
- * Renders the inner eye as a circle.
+ * Renders the outer eye as solid with a curved corner and inner eye as a circle.
  */
-final class SimpleCircleEye implements EyeInterface
+final class PointyEye implements EyeInterface
 {
-    private static ?SimpleCircleEye $instance = null;
+    /**
+     * @var self|null
+     */
+    private static $instance;
 
     private function __construct()
     {
@@ -24,15 +27,17 @@ final class SimpleCircleEye implements EyeInterface
     public function getExternalPath() : Path
     {
         return (new Path())
-            ->move(-3.5, -3.5)
+            ->move(-3.5, 3.5)
+            ->line(-3.5, 0)
+            ->ellipticArc(3.5, 3.5, 0, false, true, 0, -3.5)
             ->line(3.5, -3.5)
             ->line(3.5, 3.5)
-            ->line(-3.5, 3.5)
             ->close()
-            ->move(-2.5, -2.5)
-            ->line(-2.5, 2.5)
-            ->line(2.5, 2.5)
-            ->line(2.5, -2.5)
+            ->move(2.5, 0)
+            ->ellipticArc(2.5, 2.5, 0, false, true, 0, 2.5)
+            ->ellipticArc(2.5, 2.5, 0, false, true, -2.5, 0)
+            ->ellipticArc(2.5, 2.5, 0, false, true, 0, -2.5)
+            ->ellipticArc(2.5, 2.5, 0, false, true, 2.5, 0)
             ->close()
         ;
     }
