@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '65af2e0a2236112281e4cc2cf52d6ceedc76f2ea',
+        'reference' => '6c820ecda86405e2637463f3a073e6872276b10c',
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '65af2e0a2236112281e4cc2cf52d6ceedc76f2ea',
+            'reference' => '6c820ecda86405e2637463f3a073e6872276b10c',
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -855,13 +855,10 @@
             'dev_requirement' => false,
         ),
         'symfony/polyfill-uuid' => array(
-            'pretty_version' => 'v1.32.0',
-            'version' => '1.32.0.0',
-            'reference' => '21533be36c24be3f4b1669c4725c7d1d2bab4ae2',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../symfony/polyfill-uuid',
-            'aliases' => array(),
             'dev_requirement' => false,
+            'replaced' => array(
+                0 => '1.99',
+            ),
         ),
         'symfony/process' => array(
             'pretty_version' => 'v5.4.47',

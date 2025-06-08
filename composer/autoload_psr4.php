@@ -39,7 +39,6 @@ return array(
     'ValueValidators\\' => array($vendorDir . '/data-values/interfaces/src/ValueValidators'),
     'ValueParsers\\' => array($vendorDir . '/data-values/common/src/ValueParsers', $vendorDir . '/data-values/interfaces/src/ValueParsers'),
     'ValueFormatters\\' => array($vendorDir . '/data-values/common/src/ValueFormatters', $vendorDir . '/data-values/interfaces/src/ValueFormatters'),
-    'Symfony\\Polyfill\\Uuid\\' => array($vendorDir . '/symfony/polyfill-uuid'),
     'Symfony\\Polyfill\\Php83\\' => array($vendorDir . '/symfony/polyfill-php83'),
     'Symfony\\Polyfill\\Php82\\' => array($vendorDir . '/symfony/polyfill-php82'),
     'Symfony\\Contracts\\Translation\\' => array($vendorDir . '/symfony/translation-contracts'),

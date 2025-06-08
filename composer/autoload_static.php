@@ -17,7 +17,6 @@ class ComposerStaticInit_mediawiki_vendor
         '8592c7b0947d8a0965a9e8c3d16f9c24' => __DIR__ . '/..' . '/elasticsearch/elasticsearch/src/autoload.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         'e39a8b23c42d4e1452234d762b03835a' => __DIR__ . '/..' . '/ramsey/uuid/src/functions.php',
-        '09f6b20656683369174dd6fa83b7e5fb' => __DIR__ . '/..' . '/symfony/polyfill-uuid/bootstrap.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         '51fcf4e06c07cc00c920b44bcd900e7a' => __DIR__ . '/..' . '/thecodingmachine/safe/deprecated/apc.php',
         '47f619d9197b36cf5ab70738d7743fe2' => __DIR__ . '/..' . '/thecodingmachine/safe/deprecated/libevent.php',
@@ -161,7 +160,6 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'S' => 
         array (
-            'Symfony\\Polyfill\\Uuid\\' => 22,
             'Symfony\\Polyfill\\Php83\\' => 23,
             'Symfony\\Polyfill\\Php82\\' => 23,
             'Symfony\\Contracts\\Translation\\' => 30,
@@ -425,10 +423,6 @@ class ComposerStaticInit_mediawiki_vendor
         array (
             0 => __DIR__ . '/..' . '/data-values/common/src/ValueFormatters',
             1 => __DIR__ . '/..' . '/data-values/interfaces/src/ValueFormatters',
-        ),
-        'Symfony\\Polyfill\\Uuid\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/polyfill-uuid',
         ),
         'Symfony\\Polyfill\\Php83\\' => 
         array (
@@ -4508,7 +4502,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Symfony\\Polyfill\\Php82\\Random\\Engine\\Secure' => __DIR__ . '/..' . '/symfony/polyfill-php82/Random/Engine/Secure.php',
         'Symfony\\Polyfill\\Php82\\SensitiveParameterValue' => __DIR__ . '/..' . '/symfony/polyfill-php82/SensitiveParameterValue.php',
         'Symfony\\Polyfill\\Php83\\Php83' => __DIR__ . '/..' . '/symfony/polyfill-php83/Php83.php',
-        'Symfony\\Polyfill\\Uuid\\Uuid' => __DIR__ . '/..' . '/symfony/polyfill-uuid/Uuid.php',
         'System' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/System.php',
         'TextCat' => __DIR__ . '/..' . '/wikimedia/textcat/src/TextCat.php',
         'UtfNormal\\Constants' => __DIR__ . '/..' . '/wikimedia/utfnormal/src/Constants.php',

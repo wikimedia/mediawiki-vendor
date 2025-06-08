@@ -3699,7 +3699,6 @@ return array(
     'Symfony\\Polyfill\\Php82\\Random\\Engine\\Secure' => $vendorDir . '/symfony/polyfill-php82/Random/Engine/Secure.php',
     'Symfony\\Polyfill\\Php82\\SensitiveParameterValue' => $vendorDir . '/symfony/polyfill-php82/SensitiveParameterValue.php',
     'Symfony\\Polyfill\\Php83\\Php83' => $vendorDir . '/symfony/polyfill-php83/Php83.php',
-    'Symfony\\Polyfill\\Uuid\\Uuid' => $vendorDir . '/symfony/polyfill-uuid/Uuid.php',
     'System' => $vendorDir . '/pear/pear-core-minimal/src/System.php',
     'TextCat' => $vendorDir . '/wikimedia/textcat/src/TextCat.php',
     'UtfNormal\\Constants' => $vendorDir . '/wikimedia/utfnormal/src/Constants.php',
