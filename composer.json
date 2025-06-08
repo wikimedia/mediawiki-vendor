@@ -92,6 +92,7 @@
 		"symfony/deprecation-contracts": "2.5.4",
 		"symfony/polyfill-php82": "1.32.0",
 		"symfony/polyfill-php83": "1.32.0",
+		"symfony/polyfill-php84": "1.32.0",
 		"symfony/process": "5.4.47",
 		"symfony/service-contracts": "3.6.0",
 		"symfony/string": "5.4.47",
