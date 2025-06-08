@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'f7c5543aae7676465de9e3e799ec14496cba83d7',
+        'reference' => '2e0bfb9d91126849612308f9e910682fc4ad2229',
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'f7c5543aae7676465de9e3e799ec14496cba83d7',
+            'reference' => '2e0bfb9d91126849612308f9e910682fc4ad2229',
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -364,23 +364,29 @@
                 0 => '1.99',
             ),
         ),
-        'symfony/polyfill-php80' => array(
-            'pretty_version' => 'v1.32.0',
-            'version' => '1.32.0.0',
-            'reference' => '0cc9dd0f17f61d8131e7df6b84bd344899fe2608',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../symfony/polyfill-php80',
-            'aliases' => array(),
+        'symfony/polyfill-php73' => array(
             'dev_requirement' => false,
+            'replaced' => array(
+                0 => '1.99',
+            ),
+        ),
+        'symfony/polyfill-php74' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => '1.99',
+            ),
+        ),
+        'symfony/polyfill-php80' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => '1.99',
+            ),
         ),
         'symfony/polyfill-php81' => array(
-            'pretty_version' => 'v1.32.0',
-            'version' => '1.32.0.0',
-            'reference' => '4a4cfc2d253c21a5ad0e53071df248ed48c6ce5c',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../symfony/polyfill-php81',
-            'aliases' => array(),
             'dev_requirement' => false,
+            'replaced' => array(
+                0 => '1.99',
+            ),
         ),
         'symfony/polyfill-php82' => array(
             'pretty_version' => 'v1.32.0',
