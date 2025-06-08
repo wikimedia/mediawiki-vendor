@@ -22,11 +22,18 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 /**
  * Loads validation metadata using a Doctrine annotation {@link Reader} or using PHP 8 attributes.
  *
+ * @deprecated since Symfony 6.4, use {@see AttributeLoader} instead
+ *
  * @author Bernhard Schussek <bschussek@gmail.com>
  * @author Alexander M. Turek <me@derrabus.de>
  */
 class AnnotationLoader implements LoaderInterface
 {
+    /**
+     * @deprecated since Symfony 6.4, this property will be removed in 7.0
+     *
+     * @var Reader|null
+     */
     protected $reader;
 
     public function __construct(?Reader $reader = null)
@@ -34,10 +41,7 @@ class AnnotationLoader implements LoaderInterface
         $this->reader = $reader;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function loadClassMetadata(ClassMetadata $metadata)
+    public function loadClassMetadata(ClassMetadata $metadata): bool
     {
         $reflClass = $metadata->getReflectionClass();
         $className = $reflClass->name;
@@ -47,6 +51,7 @@ class AnnotationLoader implements LoaderInterface
             if ($constraint instanceof GroupSequence) {
                 $metadata->setGroupSequence($constraint->groups);
             } elseif ($constraint instanceof GroupSequenceProvider) {
+                $metadata->setGroupProvider($constraint->provider);
                 $metadata->setGroupSequenceProvider(true);
             } elseif ($constraint instanceof Constraint) {
                 $metadata->addConstraint($constraint);
@@ -90,26 +95,21 @@ class AnnotationLoader implements LoaderInterface
         return $success;
     }
 
-    /**
-     * @param \ReflectionClass|\ReflectionMethod|\ReflectionProperty $reflection
-     */
-    private function getAnnotations(object $reflection): iterable
+    private function getAnnotations(\ReflectionMethod|\ReflectionClass|\ReflectionProperty $reflection): iterable
     {
         $dedup = [];
 
-        if (\PHP_VERSION_ID >= 80000) {
-            foreach ($reflection->getAttributes(GroupSequence::class) as $attribute) {
-                $dedup[] = $attribute->newInstance();
-                yield $attribute->newInstance();
-            }
-            foreach ($reflection->getAttributes(GroupSequenceProvider::class) as $attribute) {
-                $dedup[] = $attribute->newInstance();
-                yield $attribute->newInstance();
-            }
-            foreach ($reflection->getAttributes(Constraint::class, \ReflectionAttribute::IS_INSTANCEOF) as $attribute) {
-                $dedup[] = $attribute->newInstance();
-                yield $attribute->newInstance();
-            }
+        foreach ($reflection->getAttributes(GroupSequence::class) as $attribute) {
+            $dedup[] = $attribute->newInstance();
+            yield $attribute->newInstance();
+        }
+        foreach ($reflection->getAttributes(GroupSequenceProvider::class) as $attribute) {
+            $dedup[] = $attribute->newInstance();
+            yield $attribute->newInstance();
+        }
+        foreach ($reflection->getAttributes(Constraint::class, \ReflectionAttribute::IS_INSTANCEOF) as $attribute) {
+            $dedup[] = $attribute->newInstance();
+            yield $attribute->newInstance();
         }
         if (!$this->reader) {
             return;
@@ -117,14 +117,14 @@ class AnnotationLoader implements LoaderInterface
 
         $annotations = [];
 
-        if ($reflection instanceof \ReflectionClass) {
-            $annotations = $this->reader->getClassAnnotations($reflection);
+        if ($reflection instanceof \ReflectionClass && $annotations = $this->reader->getClassAnnotations($reflection)) {
+            $this->triggerDeprecationIfAnnotationIsUsed($annotations, sprintf('Class "%s"', $reflection->getName()));
         }
-        if ($reflection instanceof \ReflectionMethod) {
-            $annotations = $this->reader->getMethodAnnotations($reflection);
+        if ($reflection instanceof \ReflectionMethod && $annotations = $this->reader->getMethodAnnotations($reflection)) {
+            $this->triggerDeprecationIfAnnotationIsUsed($annotations, sprintf('Method "%s::%s()"', $reflection->getDeclaringClass()->getName(), $reflection->getName()));
         }
-        if ($reflection instanceof \ReflectionProperty) {
-            $annotations = $this->reader->getPropertyAnnotations($reflection);
+        if ($reflection instanceof \ReflectionProperty && $annotations = $this->reader->getPropertyAnnotations($reflection)) {
+            $this->triggerDeprecationIfAnnotationIsUsed($annotations, sprintf('Property "%s::$%s"', $reflection->getDeclaringClass()->getName(), $reflection->getName()));
         }
 
         foreach ($dedup as $annotation) {
@@ -139,6 +139,20 @@ class AnnotationLoader implements LoaderInterface
             }
             if (!\in_array($annotation, $dedup, false)) {
                 yield $annotation;
+            }
+        }
+    }
+
+    private function triggerDeprecationIfAnnotationIsUsed(array $annotations, string $messagePrefix): void
+    {
+        foreach ($annotations as $annotation) {
+            if (
+                $annotation instanceof Constraint
+                || $annotation instanceof GroupSequence
+                || $annotation instanceof GroupSequenceProvider
+            ) {
+                trigger_deprecation('symfony/validator', '6.4', sprintf('%s uses Doctrine Annotations to configure validation constraints, which is deprecated. Use PHP attributes instead.', $messagePrefix));
+                break;
             }
         }
     }
