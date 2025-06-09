@@ -508,11 +508,15 @@ class MockApiHelper extends ApiHelper {
 	/** @var callable(string):string A helper to normalize titles. */
 	private $normalizeTitle = null;
 
+	/**
+	 * @param ?string $prefix
+	 * @param ?callable(string):string $normalizeTitleFunc
+	 */
 	public function __construct( ?string $prefix = null, ?callable $normalizeTitleFunc = null ) {
 		$this->prefix = $prefix ?? $this->prefix;
 		$this->normalizeTitle = $normalizeTitleFunc ??
 			// poor man's normalization
-			( static fn ( $t ) => str_replace( ' ', '_', $t ) );
+			( static fn ( string $t ): string => str_replace( ' ', '_', $t ) );
 	}
 
 	/**
@@ -918,7 +922,7 @@ class MockApiHelper extends ApiHelper {
 		if ( ( $params['prop'] ?? null ) === 'imageinfo' ) {
 			$response = [ 'query' => [] ];
 			$filename = $params['titles']; // assumes this is a single file
-			$tonum = static function ( $x ) {
+			$tonum = static function ( $x ): ?int {
 				return $x ? (int)$x : null;
 			};
 			$ii = self::imageInfo(
@@ -972,7 +976,6 @@ class MockApiHelper extends ApiHelper {
 			return [ 'text' => preg_replace( '/\{\{subst:1x\|([^}]+)\}\}/', '$1', $text, 1 ) ];
 		}
 
-		$res = null;
 		// Render to html the contents of known extension tags
 		// These are the only known extensions (besides native extensions)
 		// used in parser tests currently. This would need to be updated

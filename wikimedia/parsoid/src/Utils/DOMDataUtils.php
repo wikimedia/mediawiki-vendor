@@ -152,7 +152,7 @@ class DOMDataUtils {
 				// As with annotation ranges, these can occur multiple times
 				// in a given subtree, so we need to record the mapping used.
 				$oldAbout = DOMCompat::getAttribute( $node, 'about' );
-				if ( DOMUtils::hasTypeOf( $node, 'mw:Transclusion' ) ) {
+				if ( WTUtils::isFirstEncapsulationWrapperNode( $node ) ) {
 					$aboutMap[$oldAbout] = $bag->newAboutId();
 				}
 				$node->setAttribute( 'about', $aboutMap[$oldAbout] ?? $oldAbout );
@@ -1370,7 +1370,6 @@ class DOMDataUtils {
 				) {
 					continue; // skip this for now
 				}
-				$flat = null;
 				if ( is_array( $v ) ) {
 					// If $v is an array, it was never decoded.
 					$json = $v[0];
@@ -1431,7 +1430,7 @@ class DOMDataUtils {
 		$codec = self::getCodec( $node );
 		// Reset to a default set of codec options
 		// (in particular, make sure 'useFragmentBank' is not set)
-		$oldOptions = $codec->setOptions( [] );
+		$oldOptions = $codec->setOptions( [ 'noSideEffects' => true, ] );
 		foreach ( get_object_vars( $nodeData ) as $k => $v ) {
 			// Look for dynamic properties with names w/ the proper prefix
 			if ( str_starts_with( $k, self::RICH_ATTR_DATA_PREFIX ) ) {

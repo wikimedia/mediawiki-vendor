@@ -61,7 +61,6 @@ class TemplateEncapsulator {
 		if ( $this->env->getSiteConfig()->addHTMLTemplateParameters() ) {
 			// Parse the parameters that need parsing
 			foreach ( $tplInfo->paramInfos as $paramInfo ) {
-				$paramTokens = null;
 				if ( $paramInfo->named ) {
 					$paramTokens = $this->token->getAttributeV( $paramInfo->k );
 				} else {
@@ -118,8 +117,6 @@ class TemplateEncapsulator {
 		for ( $i = 1, $n = count( $params );  $i < $n;  $i++ ) {
 			$param = $params[$i];
 			$srcOffsets = $param->srcOffsets;
-			$kSrc = null;
-			$vSrc = null;
 			if ( $srcOffsets !== null ) {
 				$kSrc = $srcOffsets->key->substr( $src );
 				$vSrc = $srcOffsets->value->substr( $src );
@@ -129,7 +126,7 @@ class TemplateEncapsulator {
 			}
 
 			$kWt = trim( $kSrc );
-			$k = TokenUtils::tokensToString( $param->k, true, [ 'stripEmptyLineMeta' => true ] );
+			$k = TokenUtils::tokensToString( $param->k, true, [ 'stripEmptyLines' => true ] );
 			if ( is_array( $k ) ) {
 				// The PHP parser only removes comments and whitespace to construct
 				// the real parameter name, so if there were other tokens, use the

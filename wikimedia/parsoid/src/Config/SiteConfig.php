@@ -202,9 +202,9 @@ abstract class SiteConfig {
 	 * Return the set of Parsoid extension modules associated with this
 	 * SiteConfig.
 	 *
-	 * @return ExtensionModule[]
+	 * @return list<ExtensionModule>
 	 */
-	final public function getExtensionModules() {
+	final public function getExtensionModules(): array {
 		if ( $this->extModules === null ) {
 			$this->extModules = [];
 			foreach ( self::$coreExtModules as $m ) {
@@ -1302,15 +1302,7 @@ abstract class SiteConfig {
 		$pats = [
 			'ISBN' => '(?:\.\.?/)*(?i:' . $nsAliases . ')(?:%3[Aa]|:)'
 				. '(?i:' . $pageAliases . ')(?:%2[Ff]|/)(?P<ISBN>\d+[Xx]?)',
-			// Recently the target url for RFCs changed from
-			// tools.ietf.org to datatracker.ietf.org/docs.
-			// Given edit stash storage on Wikimedia wikis, we need to retain the
-			// old mapping to ensure html->wt can handle that HTML properly
-			// But, 3rd party wikis with Parsoid HTML in their caches will also
-			// need this b/c support for much longer. Once the MW LTS release with
-			// tools.ietf.org EOLs, we can remove the tools.ietf.org string here.
-			// T382963 tracks the eventual removal of this b/c.
-			'RFC' => '[^/]*//(?:datatracker\.ietf\.org/doc|tools\.ietf\.org)/html/rfc(?P<RFC>\w+)',
+			'RFC' => '[^/]*//datatracker\.ietf\.org/doc/html/rfc(?P<RFC>\w+)',
 			'PMID' => '[^/]*//www\.ncbi\.nlm\.nih\.gov/pubmed/(?P<PMID>\w+)\?dopt=Abstract',
 		];
 		// T145590: remove patterns for disabled magic links
@@ -1916,7 +1908,7 @@ abstract class SiteConfig {
 		$handler->setFormatter( new LineFormatter( $format, null, true ) );
 		$logger->pushHandler( $handler );
 
-		if ( $filePath ) {
+		if ( $filePath && !str_starts_with( $filePath, 'php://' ) ) {
 			// Separator between logs since StreamHandler appends
 			$logger->log( Logger::INFO, "-------------- starting fresh log --------------" );
 		}

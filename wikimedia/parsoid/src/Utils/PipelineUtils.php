@@ -79,7 +79,7 @@ class PipelineUtils {
 	): SelfclosingTagTk {
 		$token = $opts['token'];
 		return new SelfclosingTagTk( 'mw:dom-fragment-token', [
-			new KV( 'contextTok', $token, $token->dataParsoid->tsr->expandTsrV() ),
+			new KV( 'contextTokName', $token->getName() ),
 			new KV( 'content', $content, $srcOffsets->expandTsrV() ),
 			new KV( 'inlineContext', ( $opts['inlineContext'] ?? false ) ? "1" : "0" ),
 			new KV( 'inPHPBlock', ( $opts['inPHPBlock'] ?? false ) ? "1" : "0" ),
@@ -561,7 +561,6 @@ class PipelineUtils {
 			}
 		}
 
-		$wrapperName = null;
 		if ( $wrapperType === 'BLOCK' && !DOMUtils::isWikitextBlockNode( $node ) ) {
 			$wrapperName = 'div';
 		} elseif ( DOMCompat::nodeName( $node ) === 'a' ) {
@@ -625,6 +624,9 @@ class PipelineUtils {
 				}
 				if ( isset( $nodeData->parsoid->tmp->endTSR ) ) {
 					unset( $nodeData->parsoid->tmp->endTSR );
+				}
+				if ( isset( $nodeData->parsoid->html ) ) {
+					unset( $nodeData->parsoid->html );
 				}
 
 				// The "in transclusion" flag was set on the first child for template
@@ -706,8 +708,6 @@ class PipelineUtils {
 		$opts['unpackOutput'] ??= true; // Default
 		// Get placeholder tokens to get our subdom through the token processing
 		// stages. These will be finally unwrapped on the DOM.
-		$fragmentId = $env->newFragmentId();
-		$env->setDOMFragment( $fragmentId, $domFragment );
 		$toks = self::getWrapperTokens( $domFragment, $opts );
 		$firstWrapperToken = $toks[0];
 
@@ -716,7 +716,11 @@ class PipelineUtils {
 		$firstWrapperToken->setAttribute( 'typeof', $fragmentType );
 
 		// Assign the HTML fragment to the data-mw.html on the first wrapper token.
-		$firstWrapperToken->dataParsoid->html = $fragmentId;
+		Assert::invariant(
+			!isset( $firstWrapperToken->dataParsoid->html ),
+			"Overwriting existing DOMFragment"
+		);
+		$firstWrapperToken->dataParsoid->html = $domFragment;
 
 		// Pass through setDSR flag
 		if ( !empty( $opts['setDSR'] ) ) {

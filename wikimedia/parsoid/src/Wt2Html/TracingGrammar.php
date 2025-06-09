@@ -18,6 +18,7 @@ namespace Wikimedia\Parsoid\Wt2Html;
 	use Wikimedia\Parsoid\NodeData\TempData;
 	use Wikimedia\Parsoid\Tokens\CommentTk;
 	use Wikimedia\Parsoid\Tokens\EOFTk;
+	use Wikimedia\Parsoid\Tokens\EmptyLineTk;
 	use Wikimedia\Parsoid\Tokens\EndTagTk;
 	use Wikimedia\Parsoid\Tokens\KV;
 	use Wikimedia\Parsoid\Tokens\KVSourceRange;
@@ -1136,10 +1137,7 @@ private function a95($p, $c) {
 
 		$dp = new DataParsoid;
 		$dp->tsr = new SourceRange( $p, $this->endOffset() );
-		$dp->tokens = TokenizerUtils::flattenIfArray( $c );
-		return [
-			new SelfclosingTagTk( 'meta', [ new KV( 'typeof', 'mw:EmptyLine' ) ], $dp )
-		];
+		return [ new EmptyLineTk( TokenizerUtils::flattenIfArray( $c ), $dp ) ];
 	
 }
 private function a96($p, $target) {
@@ -1600,30 +1598,23 @@ private function a135($name, $kEndPos, $vStartPos, $optSp, $tpv) {
 			return [
 				'kEndPos' => $kEndPos,
 				'vStartPos' => $vStartPos,
-				'value' => TokenizerUtils::flattenString( [ $optSp, $tpv['tokens'] ?? [] ] ),
+				'value' => ( $tpv === null ) ? '' :
+					TokenizerUtils::flattenString( [ $optSp, $tpv['tokens'] ] ),
 			];
 		
 }
 private function a136($name, $val) {
 
 		if ( $val !== null ) {
-			if ( $val['value'] !== null ) {
-				$so = new KVSourceRange(
-					$this->startOffset(), $val['kEndPos'],
-					$val['vStartPos'], $this->endOffset()
-				);
-				return new KV(
-					$name,
-					TokenizerUtils::flattenIfArray( $val['value'] ),
-					$so
-				);
-			} else {
-				return new KV(
-					TokenizerUtils::flattenIfArray( $name ),
-					'',
-					$so
-				);
-			}
+			$so = new KVSourceRange(
+				$this->startOffset(), $val['kEndPos'],
+				$val['vStartPos'], $this->endOffset()
+			);
+			return new KV(
+				$name,
+				TokenizerUtils::flattenIfArray( $val['value'] ),
+				$so
+			);
 		} else {
 			$so = new SourceRange( $this->startOffset(), $this->endOffset() );
 			return new KV(

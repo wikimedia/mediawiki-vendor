@@ -12,7 +12,6 @@ use Wikimedia\Parsoid\Core\ResourceLimitExceededException;
 use Wikimedia\Parsoid\Core\Sanitizer;
 use Wikimedia\Parsoid\Core\TOCData;
 use Wikimedia\Parsoid\DOM\Document;
-use Wikimedia\Parsoid\DOM\DocumentFragment;
 use Wikimedia\Parsoid\Fragments\PFragment;
 use Wikimedia\Parsoid\Logger\ParsoidLogger;
 use Wikimedia\Parsoid\Parsoid;
@@ -91,21 +90,10 @@ class Env {
 	private array $behaviorSwitches = [];
 
 	/**
-	 * Maps fragment id to the fragment forest (array of Nodes).
-	 * @var array<string,DocumentFragment>
-	 */
-	private array $fragmentMap = [];
-
-	/**
 	 * Maps pfragment id to a PFragment.
 	 * @var array<string,PFragment>
 	 */
 	private array $pFragmentMap = [];
-
-	/**
-	 * Used to generate fragment ids as needed during parse
-	 */
-	private int $fid = 1;
 
 	/** Lints recorded */
 	private array $lints = [];
@@ -267,18 +255,6 @@ class Env {
 		$this->requestOffsetType = $options['offsetType'] ?? 'byte';
 		$this->logLinterData = !empty( $options['logLinterData'] );
 		$this->linterOverrides = $options['linterOverrides'] ?? [];
-		$this->traceFlags = $options['traceFlags'] ?? [];
-		$this->dumpFlags = $options['dumpFlags'] ?? [];
-		$this->debugFlags = $options['debugFlags'] ?? [];
-		$this->parsoidLogger = new ParsoidLogger( $this->siteConfig->getLogger(), [
-			'logLevels' => $options['logLevels'] ?? [ 'fatal', 'error', 'warn', 'info' ],
-			'debugFlags' => $this->debugFlags,
-			'dumpFlags' => $this->dumpFlags,
-			'traceFlags' => $this->traceFlags
-		] );
-		if ( $this->hasTraceFlag( 'time' ) ) {
-			$this->profiling = true;
-		}
 		$this->setupTopLevelDoc( $options['topLevelDoc'] ?? null );
 		if ( $options['pageBundle'] ?? false ) {
 			$this->pageBundle = DomPageBundle::newEmpty(
@@ -300,13 +276,27 @@ class Env {
 		// Constructing a new Env in both cases could eliminate this issue.
 		$this->metadata->setTOCData( $this->tocData );
 
+		$this->traceFlags = $options['traceFlags'] ?? [];
+		$this->dumpFlags = $options['dumpFlags'] ?? [];
+		$this->debugFlags = $options['debugFlags'] ?? [];
+		$this->parsoidLogger = new ParsoidLogger( $this->siteConfig->getLogger(), [
+			'logLevels' => $options['logLevels'] ?? [ 'fatal', 'error', 'warn', 'info' ],
+			'debugFlags' => $this->debugFlags,
+			'dumpFlags' => $this->dumpFlags,
+			'traceFlags' => $this->traceFlags,
+			'ownerDoc' => $this->getTopLevelDoc(),
+		] );
+		if ( $this->hasTraceFlag( 'time' ) ) {
+			$this->profiling = true;
+		}
+
 		$this->wikitextContentModelHandler = new WikitextContentModelHandler( $this );
 	}
 
 	/**
 	 * Check to see if the PHP platform is sensible
 	 */
-	private static function checkPlatform() {
+	private static function checkPlatform(): void {
 		static $checked;
 		if ( !$checked ) {
 			$highBytes =
@@ -355,7 +345,7 @@ class Env {
 	 */
 	public function pushNewProfile(): Profile {
 		$currProfile = count( $this->profileStack ) > 0 ? $this->getCurrentProfile() : null;
-		$profile = new Profile();
+		$profile = new Profile( $this, isset( $this->debugFlags['oom'] ) );
 		$this->profileStack[] = $profile;
 		if ( $currProfile !== null ) {
 			$currProfile->pushNestedProfile( $profile );
@@ -401,9 +391,10 @@ class Env {
 
 	/**
 	 * Write out a string (because it was requested by dumpFlags)
+	 *
 	 * @param string $str
 	 */
-	public function writeDump( string $str ) {
+	public function writeDump( string $str ): void {
 		$this->log( 'dump', $str );
 	}
 
@@ -449,14 +440,6 @@ class Env {
 
 	public function nativeTemplateExpansionEnabled(): bool {
 		return $this->nativeTemplateExpansion;
-	}
-
-	/**
-	 * Get the current fragment id counter value
-	 * @return int
-	 */
-	public function getFID(): int {
-		return $this->fid;
 	}
 
 	/**
@@ -523,9 +506,10 @@ class Env {
 	/**
 	 * Update the current offset type. Only
 	 * Parsoid\Wt2Html\DOM\Processors\ConvertOffsets should be doing this.
+	 *
 	 * @param ('byte'|'ucs2'|'char') $offsetType 'byte', 'ucs2', or 'char'
 	 */
-	public function setCurrentOffsetType( string $offsetType ) {
+	public function setCurrentOffsetType( string $offsetType ): void {
 		$this->currentOffsetType = $offsetType;
 	}
 
@@ -555,7 +539,6 @@ class Env {
 		$origName = $str;
 		$str = trim( $str );
 
-		$pageConfig = $this->getPageConfig();
 		$title = $this->getContextTitle();
 
 		// Resolve lonely fragments (important if the current page is a subpage,
@@ -739,14 +722,6 @@ class Env {
 	}
 
 	/**
-	 * Generate a new fragment id
-	 * @return string
-	 */
-	public function newFragmentId(): string {
-		return "mwf" . (string)$this->fid++;
-	}
-
-	/**
 	 * When an environment is constructed, we initialize a document (and
 	 * RemexPipeline) to be used throughout the parse.
 	 *
@@ -828,44 +803,6 @@ class Env {
 	 */
 	public function getBehaviorSwitch( string $switch, $default = null ) {
 		return $this->behaviorSwitches[$switch] ?? $default;
-	}
-
-	/**
-	 * @return array<string,DocumentFragment>
-	 */
-	public function getDOMFragmentMap(): array {
-		return $this->fragmentMap;
-	}
-
-	/**
-	 * @param string $id Fragment id
-	 * @return DocumentFragment
-	 */
-	public function getDOMFragment( string $id ): DocumentFragment {
-		return $this->fragmentMap[$id];
-	}
-
-	/**
-	 * @param string $id Fragment id
-	 * @param DocumentFragment $forest DOM forest
-	 *   to store against the fragment id
-	 */
-	public function setDOMFragment(
-		string $id, DocumentFragment $forest
-	): void {
-		Assert::invariant(
-			$forest->ownerDocument === $this->topLevelDoc,
-			"fragment should belong to the top level document"
-		);
-		$this->fragmentMap[$id] = $forest;
-	}
-
-	public function removeDOMFragment( string $id ): void {
-		$domFragment = $this->fragmentMap[$id];
-		Assert::invariant(
-			!$domFragment->hasChildNodes(), 'Fragment should be empty.'
-		);
-		unset( $this->fragmentMap[$id] );
 	}
 
 	public function getPFragment( string $id ): PFragment {
@@ -1111,6 +1048,8 @@ class Env {
 
 	/**
 	 * Get an array of attributes to apply to an anchor linking to $url
+	 *
+	 * @return array{rel?: list<'nofollow'|'noopener'|'noreferrer'>, target?: string}
 	 */
 	public function getExternalLinkAttribs( string $url ): array {
 		$siteConfig = $this->getSiteConfig();

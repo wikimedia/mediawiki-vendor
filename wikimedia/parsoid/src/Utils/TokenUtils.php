@@ -8,6 +8,7 @@ use Wikimedia\Assert\UnreachableException;
 use Wikimedia\Parsoid\Config\Env;
 use Wikimedia\Parsoid\Core\DomSourceRange;
 use Wikimedia\Parsoid\Tokens\CommentTk;
+use Wikimedia\Parsoid\Tokens\EmptyLineTk;
 use Wikimedia\Parsoid\Tokens\EndTagTk;
 use Wikimedia\Parsoid\Tokens\EOFTk;
 use Wikimedia\Parsoid\Tokens\KV;
@@ -167,6 +168,8 @@ class TokenUtils {
 			return (bool)preg_match( '/^[ \t]*$/D', $token );
 		} elseif ( self::isSolTransparentLinkTag( $token ) ) {
 			return true;
+		} elseif ( $token instanceof EmptyLineTk ) {
+			return true;
 		} elseif ( $token instanceof CommentTk && !self::isTranslationUnitMarker( $env, $token ) ) {
 			return true;
 		} elseif ( self::isBehaviorSwitch( $env, $token ) ) {
@@ -220,18 +223,6 @@ class TokenUtils {
 	}
 
 	/**
-	 * Is token a transparent link tag?
-	 *
-	 * @param Token|string $token
-	 * @return bool
-	 */
-	public static function isEmptyLineMetaToken( $token ): bool {
-		return $token instanceof SelfclosingTagTk &&
-			$token->getName() === 'meta' &&
-			$token->getAttributeV( 'typeof' ) === 'mw:EmptyLine';
-	}
-
-	/**
 	 * Determine whether the token matches the given `typeof` attribute value.
 	 *
 	 * @param Token $t The token to test
@@ -268,6 +259,41 @@ class TokenUtils {
 		return self::matchTypeOf(
 			$t, '/^' . preg_quote( $type, '/' ) . '$/D'
 		) !== null;
+	}
+
+	/**
+	 * @param Env $env
+	 * @param array<mixed> $maybeTokens
+	 *   Attribute arrays in tokens may be tokens or something else.
+	 */
+	public static function dedupeAboutIds( Env $env, array $maybeTokens ): void {
+		$aboutMap = [];
+		foreach ( $maybeTokens as $t ) {
+			if ( $t instanceof Token ) {
+				foreach ( $t->attribs as $kv ) {
+					if ( $kv->k === 'about' ) {
+						$oldAbout = $kv->v;
+						$newAbout = $aboutMap[$oldAbout] ?? null;
+						if ( !$newAbout ) {
+							$newAbout = $aboutMap[$oldAbout] = $env->newAboutId();
+						}
+						$t->setAttribute( 'about', $newAbout );
+					} else {
+						if ( $kv->k instanceof Token ) {
+							self::dedupeAboutIds( $env, [ $kv->k ] );
+						} elseif ( is_array( $kv->k ) ) {
+							self::dedupeAboutIds( $env, $kv->k );
+						}
+
+						if ( $kv->v instanceof Token ) {
+							self::dedupeAboutIds( $env, [ $kv->v ] );
+						} elseif ( is_array( $kv->v ) ) {
+							self::dedupeAboutIds( $env, $kv->v );
+						}
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -558,9 +584,6 @@ class TokenUtils {
 			if ( isset( $input->dataParsoid->tmp->extLinkContentOffsets ) ) {
 				self::collectOffsets( $input->dataParsoid->tmp->extLinkContentOffsets, $offsetFunc );
 			}
-			if ( isset( $input->dataParsoid->tokens ) ) {
-				self::collectOffsets( $input->dataParsoid->tokens, $offsetFunc );
-			}
 			if ( isset( $input->dataParsoid->extTagOffsets ) ) {
 				self::collectOffsets( $input->dataParsoid->extTagOffsets, $offsetFunc );
 			}
@@ -649,7 +672,7 @@ class TokenUtils {
 				( empty( $opts['retainNLs'] ) && $token instanceof NlTk )
 			) {
 				// strip comments and newlines
-			} elseif ( !empty( $opts['stripEmptyLineMeta'] ) && self::isEmptyLineMetaToken( $token ) ) {
+			} elseif ( !empty( $opts['stripEmptyLines'] ) && ( $token instanceof EmptyLineTk ) ) {
 				// If requested, strip empty line meta tokens too.
 			} elseif ( !empty( $opts['includeEntities'] ) && self::isEntitySpanToken( $token ) ) {
 				$out .= $token->dataParsoid->src;
@@ -665,10 +688,8 @@ class TokenUtils {
 				self::hasDOMFragmentType( $token )
 			) {
 				// Handle dom fragments
-				$domFragment = $opts['env']->getDOMFragment(
-					$token->dataParsoid->html
-				);
-				// Calling `env->removeDOMFragment()` here is case dependent
+				$domFragment = $token->dataParsoid->html;
+				// Removing the DOMFragment here is case dependent
 				// but should be rare enough when permissible that it can be
 				// ignored.
 				// FIXME: The correct thing to do would be to return

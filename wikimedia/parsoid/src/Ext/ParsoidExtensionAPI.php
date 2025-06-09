@@ -199,6 +199,7 @@ class ParsoidExtensionAPI {
 	 * The use of this method is discouraged; use ::addPageContentI18nAttribute(...) and
 	 * ::addInterfaceI18nAttribute(...) where possible rather than, respectively,
 	 * ::addLangI18nAttribute(..., $wgContLang, ...) and ::addLangI18nAttribute(..., $wgLang, ...).
+	 *
 	 * @param Element $element element on which to add internationalization information
 	 * @param Bcp47Code $lang language in which the  attribute will be localized
 	 * @param string $name name of the attribute whose value will be localized
@@ -207,7 +208,7 @@ class ParsoidExtensionAPI {
 	 */
 	public function addLangI18nAttribute(
 		Element $element, Bcp47Code $lang, string $name, string $key, array $params
-	) {
+	): void {
 		WTUtils::addLangI18nAttribute( $element, $lang, $name, $key, $params );
 	}
 
@@ -308,6 +309,7 @@ class ParsoidExtensionAPI {
 	/**
 	 * Are we parsing for a preview?
 	 * FIXME: Right now, we never do; when we do, this needs to be modified to reflect reality
+	 *
 	 * @unstable
 	 * @return bool
 	 */
@@ -336,16 +338,25 @@ class ParsoidExtensionAPI {
 	}
 
 	/**
-	 * Get the content DOM corresponding to an id
-	 * @param string $contentId
+	 * Get the content DOM corresponding to an id or an Element
+	 * @param string|Element $contentIdOrElement
 	 * @return DocumentFragment
 	 */
-	public function getContentDOM( string $contentId ): DocumentFragment {
-		return $this->env->getDOMFragment( $contentId );
+	public function getContentDOM( $contentIdOrElement ): DocumentFragment {
+		if ( $contentIdOrElement instanceof Element ) {
+			return DOMDataUtils::getDataParsoid( $contentIdOrElement )->html;
+		}
+		// Back-compat for old code which passes a string ID.
+		$bag = DOMDataUtils::getBag( $this->getTopLevelDoc() );
+		$nd = $bag->getObject( (int)$contentIdOrElement );
+		return $nd->parsoid->html;
 	}
 
+	/**
+	 * @deprecated Use ::clearContentId() instead
+	 */
 	public function clearContentDOM( string $contentId ): void {
-		$this->env->removeDOMFragment( $contentId );
+		/* does nothing */
 	}
 
 	/**
@@ -353,7 +364,7 @@ class ParsoidExtensionAPI {
 	 * be passed to ::getContentDOM() to retrieve the DOMFragment.
 	 */
 	public function getContentId( Element $node ): string {
-		return DOMDataUtils::getDataParsoid( $node )->html;
+		return DOMCompat::getAttribute( $node, DOMDataUtils::DATA_OBJECT_ATTR_NAME );
 	}
 
 	/**
@@ -361,8 +372,6 @@ class ParsoidExtensionAPI {
 	 */
 	public function clearContentId( Element $node ): void {
 		$dp = DOMDataUtils::getDataParsoid( $node );
-		$contentId = $dp->html;
-		$this->clearContentDOM( $contentId );
 		unset( $dp->html );
 	}
 
@@ -640,11 +649,12 @@ class ParsoidExtensionAPI {
 
 	/**
 	 * Normalizes spaces from extension tag arguments, except for those keyed by values in $exceptions
+	 *
 	 * @param KV[] &$extArgs Array of extension args
 	 * @param array[] $action array that is either empty or has one key, 'except' or 'only', which defines the
 	 * attributes that should be respectively excluded or only included from the normalization
 	 */
-	public function normalizeWhiteSpaceInArgs( array &$extArgs, array $action = [] ) {
+	public function normalizeWhiteSpaceInArgs( array &$extArgs, array $action = [] ): void {
 		$except = $action['except'] ?? null;
 		$only = $action['only'] ?? null;
 
@@ -654,7 +664,7 @@ class ParsoidExtensionAPI {
 		}
 
 		if ( $except ) {
-			$closure = static function ( $key, $value ) use ( $except ) {
+			$closure = static function ( string $key, $value ) use ( $except ) {
 				if ( in_array( strtolower( trim( $key ) ), $except, true ) ) {
 					return $value;
 				} else {
@@ -662,7 +672,7 @@ class ParsoidExtensionAPI {
 				}
 			};
 		} elseif ( $only ) {
-			$closure = static function ( $key, $value ) use ( $only ) {
+			$closure = static function ( string $key, $value ) use ( $only ) {
 				if ( in_array( strtolower( trim( $key ) ), $only, true ) ) {
 					return trim( preg_replace( '/[\r\n\t ]+/', ' ', $value ) );
 				} else {
@@ -670,7 +680,7 @@ class ParsoidExtensionAPI {
 				}
 			};
 		} else {
-			$closure = static function ( $key, $value ) {
+			$closure = static function ( string $key, $value ): string {
 				return trim( preg_replace( '/[\r\n\t ]+/', ' ', $value ) );
 			};
 		}
@@ -863,9 +873,10 @@ class ParsoidExtensionAPI {
 
 	/**
 	 * FIXME: This is a bit broken - shouldn't be needed ideally
+	 *
 	 * @param string $flag
 	 */
-	public function setHtml2wtStateFlag( string $flag ) {
+	public function setHtml2wtStateFlag( string $flag ): void {
 		$this->serializerState->{$flag} = true;
 	}
 

@@ -9,6 +9,7 @@ use Wikimedia\Parsoid\DOM\DocumentFragment;
 use Wikimedia\Parsoid\DOM\Element;
 use Wikimedia\Parsoid\DOM\Node;
 use Wikimedia\Parsoid\DOM\Text;
+use Wikimedia\Parsoid\NodeData\DataMw;
 use Wikimedia\Parsoid\Utils\ContentUtils;
 use Wikimedia\Parsoid\Utils\DiffDOMUtils;
 use Wikimedia\Parsoid\Utils\DOMCompat;
@@ -51,6 +52,9 @@ class DOMNormalizer {
 	];
 	private const HTML_IGNORABLE_ATTRS = [ 'data-parsoid', DOMDataUtils::DATA_OBJECT_ATTR_NAME ];
 
+	/**
+	 * @var array<string,callable(Element,mixed,Element,mixed):bool>
+	 */
 	private static array $specializedAttribHandlers = [];
 
 	/** @var bool */
@@ -62,7 +66,8 @@ class DOMNormalizer {
 	public function __construct( SerializerState $state ) {
 		if ( !self::$specializedAttribHandlers ) {
 			self::$specializedAttribHandlers = [
-				'data-mw' => static function ( $nodeA, $dmwA, $nodeB, $dmwB ) {
+				'data-mw' => static function ( Element $nodeA, DataMw $dmwA, Element $nodeB, DataMw $dmwB ): bool {
+					// @phan-suppress-next-line PhanPluginComparisonObjectEqualityNotStrict
 					return $dmwA == $dmwB;
 				}
 			];
@@ -316,8 +321,6 @@ class DOMNormalizer {
 
 	public function stripIfEmpty( Element $node ): ?Node {
 		$next = DiffDOMUtils::nextNonDeletedSibling( $node );
-		$dp = DOMDataUtils::getDataParsoid( $node );
-		$autoInserted = isset( $dp->autoInsertedStart ) || isset( $dp->autoInsertedEnd );
 
 		$strippable =
 			DiffDOMUtils::nodeEssentiallyEmpty( $node, false );
@@ -725,7 +728,6 @@ class DOMNormalizer {
 		// recurse = false => assume the subtree is already normalized
 
 		// Normalize node till it stabilizes
-		$next = null;
 		while ( true ) {
 			// Skip templated content
 			while ( $node && WTUtils::isFirstEncapsulationWrapperNode( $node ) ) {
@@ -741,7 +743,7 @@ class DOMNormalizer {
 			if ( $insertedSubtree ) {
 				if ( $this->inInsertedContent ) {
 					// Dump debugging info
-					$options = [ 'storeDiffMark' => true, 'saveData' => true ];
+					$options = [ 'storeDiffMark' => true, 'noSideEffects' => true ];
 					$dump = ContentUtils::dumpDOM(
 						DOMCompat::getBody( $node->ownerDocument ),
 						'-- DOM triggering nested inserted dom-diff flags --',

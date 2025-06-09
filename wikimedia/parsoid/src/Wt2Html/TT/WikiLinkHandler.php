@@ -44,7 +44,7 @@ use Wikimedia\Parsoid\Wt2Html\TokenHandlerPipeline;
 
 class WikiLinkHandler extends XMLTagBasedHandler {
 	/** Disable caching till we fix cloning of DOM fragments in data-parsoid */
-	private static bool $cachingEnabled = false;
+	private static bool $cachingEnabled = true;
 
 	private static function hrefParts( string $str ): ?array {
 		if ( preg_match( '/^([^:]+):(.*)$/D', $str, $matches ) ) {
@@ -303,6 +303,7 @@ class WikiLinkHandler extends XMLTagBasedHandler {
 	 * @throws InternalException
 	 */
 	private function onWikiLink( Token $token ): array {
+		$env = $this->env;
 		$tsrStart = $token->dataParsoid->tsr->start ?? null;
 
 		// Check if we have cached output for this wikilink source.
@@ -316,11 +317,11 @@ class WikiLinkHandler extends XMLTagBasedHandler {
 				$offset = $tsrStart - $cachedOutput['start'];
 				$toks = $cachedOutput['tokens'];
 				TokenUtils::shiftTokenTSR( $toks, $offset );
+				TokenUtils::dedupeAboutIds( $env, $toks );
 				return $toks;
 			}
 		}
 
-		$env = $this->env;
 		$hrefKV = $token->getAttributeKV( 'href' );
 		$hrefTokenStr = TokenUtils::tokensToString( $hrefKV->v );
 
@@ -358,7 +359,6 @@ class WikiLinkHandler extends XMLTagBasedHandler {
 			return self::bailTokens( $this->manager, $token );
 		}
 
-		$target = null;
 		try {
 			$target = $this->getWikiLinkTargetInfo( $token, $hrefTokenStr, $hrefKV->vsrc );
 		} catch ( TitleException | InternalException $e ) {
@@ -1016,9 +1016,6 @@ class WikiLinkHandler extends XMLTagBasedHandler {
 	 */
 	private static function stringifyOptionTokens( array $tstream, string $prefix, Env $env ) {
 		// Seems like this should be a more general "stripTags"-like function?
-		$tokenType = null;
-		$tkHref = null;
-		$nextResult = null;
 		$skipToEndOf = null;
 		$optInfo = null;
 		$resultStr = '';
@@ -1291,7 +1288,7 @@ class WikiLinkHandler extends XMLTagBasedHandler {
 				}
 			}
 
-			$recordCaption = static function () use ( $oContent, $oText, $dataParsoid, &$opts ) {
+			$recordCaption = static function () use ( $oContent, $oText, $dataParsoid, &$opts ): void {
 				$optsCaption = [
 					'v' => $oContent->v,
 					'src' => $oContent->vsrc ?? $oText,
@@ -1417,7 +1414,6 @@ class WikiLinkHandler extends XMLTagBasedHandler {
 
 			// Collect source wikitext for image options for possible template expansion.
 			$maybeOpt = !isset( self::getUsed()[$opt['ck']] );
-			$expOpt = null;
 			// Links more often than not show up as arrays here because they're
 			// tokenized as `autourl`.  To avoid unnecessarily considering them
 			// expanded, we'll use a more restrictive test, at the cost of

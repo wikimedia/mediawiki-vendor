@@ -4,7 +4,6 @@ declare( strict_types = 1 );
 namespace Wikimedia\Parsoid\Utils;
 
 use Closure;
-use Wikimedia\Assert\Assert;
 use Wikimedia\Assert\UnreachableException;
 use Wikimedia\Parsoid\Config\Env;
 use Wikimedia\Parsoid\Core\DomSourceRange;
@@ -271,15 +270,13 @@ class ContentUtils {
 	 * @param Node $rootNode
 	 * @param callable $dsrFunc
 	 * @param ParsoidExtensionAPI $extAPI
-	 * @return Node Returns the $rootNode passed in to allow chaining.
 	 */
 	public static function shiftDSR(
 		Env $env, Node $rootNode, callable $dsrFunc, ParsoidExtensionAPI $extAPI
-	): Node {
-		$doc = $rootNode->ownerDocument;
+	): void {
 		$convertNode = static function ( Node $node ) use (
 			$env, $extAPI, $dsrFunc, &$convertNode
-		) {
+		): void {
 			if ( !( $node instanceof Element ) ) {
 				return;
 			}
@@ -329,13 +326,11 @@ class ContentUtils {
 			if ( DOMUtils::matchTypeOf( $node, '#^mw:DOMFragment/sealed/\w+$#D' ) ) {
 				$dp = DOMDataUtils::getDataParsoid( $node );
 				if ( $dp->html ?? null ) {
-					$domFragment = $env->getDOMFragment( $dp->html );
-					DOMPostOrder::traverse( $domFragment, $convertNode );
+					DOMPostOrder::traverse( $dp->html, $convertNode );
 				}
 			}
 		};
 		DOMPostOrder::traverse( $rootNode, $convertNode );
-		return $rootNode; // chainable
 	}
 
 	/**
@@ -366,7 +361,7 @@ class ContentUtils {
 		}
 		$offsetMap = [];
 		$offsets = [];
-		$collect = static function ( int $n ) use ( &$offsetMap, &$offsets ) {
+		$collect = static function ( int $n ) use ( &$offsetMap, &$offsets ): void {
 			if ( !array_key_exists( $n, $offsetMap ) ) {
 				$box = (object)[ 'value' => $n ];
 				$offsetMap[$n] = $box;
@@ -374,7 +369,7 @@ class ContentUtils {
 			}
 		};
 		// Collect DSR offsets throughout the document
-		$collectDSR = static function ( DomSourceRange $dsr ) use ( $collect ) {
+		$collectDSR = static function ( DomSourceRange $dsr ) use ( $collect ): DomSourceRange {
 			if ( $dsr->start !== null ) {
 				$collect( $dsr->start );
 				$collect( $dsr->innerStart() );
@@ -396,7 +391,7 @@ class ContentUtils {
 			$env->topFrame->getSrcText(), $from, $to, $offsets
 		);
 		// Apply converted offsets
-		$applyDSR = static function ( DomSourceRange $dsr ) use ( $offsetMap ) {
+		$applyDSR = static function ( DomSourceRange $dsr ) use ( $offsetMap ): DomSourceRange {
 			$start = $dsr->start;
 			$openWidth = $dsr->openWidth;
 			if ( $start !== null ) {
@@ -422,7 +417,7 @@ class ContentUtils {
 	 * @return string
 	 */
 	private static function dumpNode( Node $node, array $options ): string {
-		return self::toXML( $node, $options + [ 'saveData' => true ] );
+		return self::toXML( $node, $options + [ 'noSideEffects' => true ] );
 	}
 
 	/**
@@ -431,7 +426,6 @@ class ContentUtils {
 	 * @param Node $rootNode
 	 * @param string $title
 	 * @param array $options Associative array of options:
-	 *   - dumpFragmentMap: Dump the fragment map from env
 	 *   - quiet: Suppress separators
 	 *
 	 * storeDataAttribs options:
@@ -452,27 +446,11 @@ class ContentUtils {
 	public static function dumpDOM(
 		Node $rootNode, string $title = '', array $options = []
 	): string {
-		if ( !empty( $options['dumpFragmentMap'] ) ) {
-			Assert::invariant( isset( $options['env'] ), "env should be set" );
-		}
-
 		$buf = '';
 		if ( empty( $options['quiet'] ) ) {
 			$buf .= "----- {$title} -----\n";
 		}
 		$buf .= self::dumpNode( $rootNode, $options ) . "\n";
-
-		// Dump cached fragments
-		if ( !empty( $options['dumpFragmentMap'] ) ) {
-			foreach ( $options['env']->getDOMFragmentMap() as $k => $fragment ) {
-				$buf .= str_repeat( '=', 15 ) . "\n";
-				$buf .= "FRAGMENT {$k}\n";
-				$buf .= self::dumpNode(
-					is_array( $fragment ) ? $fragment[0] : $fragment,
-					$options
-				) . "\n";
-			}
-		}
 
 		if ( empty( $options['quiet'] ) ) {
 			$buf .= str_repeat( '-', mb_strlen( $title ) + 12 ) . "\n";

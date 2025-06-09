@@ -74,6 +74,10 @@ class Parse extends \Wikimedia\Parsoid\Tools\Maintenance {
 
 		$this->addOption( 'profile', 'Proxy for --trace time' );
 		$this->addOption( 'benchmark', 'Suppress output and show timing summary' );
+		$this->addOption( 'debug-oom',
+			'Show peak memory usage at different points in code execution. ' .
+			'This enables --profile as well.'
+		);
 		$this->addOption( 'count',
 			'Repeat the operation this many times',
 			false, true );
@@ -299,7 +303,7 @@ class Parse extends \Wikimedia\Parsoid\Tools\Maintenance {
 		$services = MediaWikiServices::getInstance();
 		$siteConfig = $services->getParsoidSiteConfig();
 		// Overwriting logger so that it logs to console/file
-		$logFilePath = null;
+		$logFilePath = 'php://stderr';
 		if ( $this->hasOption( 'logFile' ) ) {
 			$logFilePath = $this->getOption( 'logFile' );
 		}
@@ -351,10 +355,11 @@ class Parse extends \Wikimedia\Parsoid\Tools\Maintenance {
 		$api = new ApiHelper( $configOpts );
 
 		$siteConfig = new SiteConfig( $api, $configOpts );
+		$logFilePath = 'php://stderr';
 		if ( $this->hasOption( 'logFile' ) ) {
-			// Overwrite logger so that it logs to file
-			$siteConfig->setLogger( SiteConfig::createLogger( $this->getOption( 'logFile' ) ) );
+			$logFilePath = $this->getOption( 'logFile' );
 		}
+		$siteConfig->setLogger( SiteConfig::createLogger( $logFilePath ) );
 		$dataAccess = new DataAccess( $api, $siteConfig, $configOpts );
 		$this->siteConfig = $siteConfig;
 		$configOpts['title'] = isset( $configOpts['title'] )
@@ -641,6 +646,13 @@ class Parse extends \Wikimedia\Parsoid\Tools\Maintenance {
 		if ( $this->hasOption( 'profile' ) ) {
 			$parsoidOpts['traceFlags'] ??= [];
 			$parsoidOpts['traceFlags']['time'] = true;
+		}
+		if ( $this->hasOption( 'debug-oom' ) ) {
+			// Enable --profile
+			$parsoidOpts['traceFlags'] ??= [];
+			$parsoidOpts['traceFlags']['time'] = true;
+			$parsoidOpts['debugFlags']['oom'] = true;
+			$parsoidOpts['dumpFlags']['oom'] = true; // HACK
 		}
 
 		$startsAtHtml = $this->hasOption( 'html2wt' ) ||

@@ -79,9 +79,9 @@ class LanguageVariantHandler {
 	/**
 	 * Canonicalize combinations of flags.
 	 * $originalFlags should be [ 'flag' => <integer position>, ... ]
-	 * @param array $originalFlags
-	 * @param array $flSp
-	 * @param array $flags
+	 * @param array<string,int> $originalFlags
+	 * @param list<string> $flSp
+	 * @param list<string> $flags
 	 * @param bool $noFilter
 	 * @param ?string $protectFunc
 	 * @return string
@@ -90,7 +90,7 @@ class LanguageVariantHandler {
 		array $originalFlags, array $flSp, array $flags, bool $noFilter,
 		?string $protectFunc
 	): string {
-		$filterInternal = static function ( $f ) use ( $noFilter ) {
+		$filterInternal = static function ( string $f ) use ( $noFilter ): bool {
 			// Filter out internal-use-only flags
 			if ( $noFilter ) {
 				return true;
@@ -99,14 +99,14 @@ class LanguageVariantHandler {
 		};
 		$flags = array_filter( $flags, $filterInternal );
 
-		$sortByOriginalPosition = static function ( $a, $b ) use ( $originalFlags ) {
+		$sortByOriginalPosition = static function ( string $a, string $b ) use ( $originalFlags ): int {
 			$ai = $originalFlags[$a] ?? -1;
 			$bi = $originalFlags[$b] ?? -1;
 			return $ai - $bi;
 		};
 		usort( $flags, $sortByOriginalPosition );
 
-		$insertOriginalWhitespace = static function ( $f ) use ( $originalFlags, $protectFunc, $flSp ) {
+		$insertOriginalWhitespace = static function ( string $f ) use ( $originalFlags, $protectFunc, $flSp ): string {
 			// Reinsert the original whitespace around the flag (if any)
 			$i = $originalFlags[$f] ?? null;
 			if ( $protectFunc !== null ) {
@@ -115,7 +115,7 @@ class LanguageVariantHandler {
 				$p = $f;
 			}
 			if ( $i !== null && ( 2 * $i + 1 ) < count( $flSp ) ) {
-				return $flSp[2 * $i] + $p + $flSp[2 * $i + 1];
+				return $flSp[2 * $i] . $p . $flSp[2 * $i + 1];
 			}
 			return $p;
 		};
@@ -148,7 +148,6 @@ class LanguageVariantHandler {
 		$flSp = self::expandSpArray( $dp->flSp ?? [] );
 		$textSp = self::expandSpArray( $dp->tSp ?? [] );
 		$trailingSemi = false;
-		$text = null;
 		$flags = [];
 		$originalFlags = [];
 		if ( isset( $dp->fl ) ) {
@@ -249,7 +248,7 @@ class LanguageVariantHandler {
 					$dataMWV->twoway ?? [];
 				$text = implode( ';',
 					array_map(
-						function ( $rule, $idx ) use ( $state, $textSp ) {
+						function ( $rule, $idx ) use ( $state, $textSp, &$trailingSemi ) {
 							$text = self::ser( $state, $rule->t, [ 'protect' => '/;|\}-/' ] );
 							if ( $rule->l === '*' ) {
 								$trailingSemi = false;

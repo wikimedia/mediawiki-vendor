@@ -3,11 +3,10 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Wt2Html\TT;
 
-use Wikimedia\Parsoid\NodeData\DataParsoid;
 use Wikimedia\Parsoid\Tokens\CommentTk;
+use Wikimedia\Parsoid\Tokens\EmptyLineTk;
 use Wikimedia\Parsoid\Tokens\EndTagTk;
 use Wikimedia\Parsoid\Tokens\EOFTk;
-use Wikimedia\Parsoid\Tokens\KV;
 use Wikimedia\Parsoid\Tokens\NlTk;
 use Wikimedia\Parsoid\Tokens\SelfclosingTagTk;
 use Wikimedia\Parsoid\Tokens\TagTk;
@@ -37,7 +36,6 @@ class TokenStreamPatcher extends LineBasedHandler {
 	private int $wikiTableNesting;
 	/** True only for top-level & attribute value pipelines */
 	private bool $inIndependentParse;
-	private ?Token $lastConvertedTableCellToken;
 	private ?SelfclosingTagTk $tplStartToken = null;
 
 	public function __construct( TokenHandlerPipeline $manager, array $options ) {
@@ -62,17 +60,6 @@ class TokenStreamPatcher extends LineBasedHandler {
 		$this->sol = true;
 		$this->tokenBuf = [];
 		$this->wikiTableNesting = 0;
-		// This marker tries to track the most recent table-cell token (td/th)
-		// that was converted to string. For those, we want to get rid
-		// of their corresponding mw:TSRMarker meta tag.
-		//
-		// This marker is set when we convert a td/th token to string
-		//
-		// This marker is cleared in one of the following scenarios:
-		// 1. When we clear a mw:TSRMarker corresponding to the token set earlier
-		// 2. When we change table nesting
-		// 3. When we hit a tr/td/th/caption token that wasn't converted to string
-		$this->lastConvertedTableCellToken = null;
 	}
 
 	/**
@@ -257,7 +244,6 @@ class TokenStreamPatcher extends LineBasedHandler {
 						} else {
 							$tokens = $this->reprocessTokens( $this->srcOffset, $retoks );
 							$this->wikiTableNesting++;
-							$this->lastConvertedTableCellToken = null;
 						}
 					} elseif ( $this->inIndependentParse && $T2529hack ) { // {| has been handled above
 						$retoks = $this->tokenizer->tokenizeAs( $token, 'list_item', /* sol */true );
@@ -280,7 +266,8 @@ class TokenStreamPatcher extends LineBasedHandler {
 				break;
 
 			case $token instanceof CommentTk:
-				// Comments don't change SOL state
+			case $token instanceof EmptyLineTk:
+				// Comments / EmptyLines don't change SOL state
 				// Update srcOffset
 				$this->srcOffset = $token->dataParsoid->tsr->end ?? null;
 				break;
@@ -300,8 +287,8 @@ class TokenStreamPatcher extends LineBasedHandler {
 						return [];
 					}
 				} elseif ( TokenUtils::isSolTransparentLinkTag( $token ) ) {
-					// Replace buffered newline & whitespace tokens with mw:EmptyLine
-					// meta-tokens. This tunnels them through the rest of the transformations
+					// Replace buffered newline & whitespace tokens with EmptyLineTk tokens.
+					// This tunnels them through the rest of the transformations
 					// without affecting them. During HTML building, they are expanded
 					// back to newlines / whitespace.
 					$n = count( $this->tokenBuf );
@@ -313,23 +300,13 @@ class TokenStreamPatcher extends LineBasedHandler {
 							$i++;
 						}
 
-						$dp = new DataParsoid;
-						$dp->tokens = array_slice( $this->tokenBuf, 0, $i );
 						$toks = [
-							new SelfclosingTagTk( 'meta',
-								[ new KV( 'typeof', 'mw:EmptyLine' ) ],
-								$dp
-							)
+							new EmptyLineTk( array_slice( $this->tokenBuf, 0, $i ) )
 						];
 						if ( $i < $n ) {
 							$toks[] = $this->tokenBuf[$i];
 							if ( $i + 1 < $n ) {
-								$dp = new DataParsoid;
-								$dp->tokens = array_slice( $this->tokenBuf, $i + 1 );
-								$toks[] = new SelfclosingTagTk( 'meta',
-									[ new KV( 'typeof', 'mw:EmptyLine' ) ],
-									$dp
-								);
+								$toks[] = new EmptyLineTk( array_slice( $this->tokenBuf, $i + 1 ) );
 							}
 						}
 						$tokens = array_merge( $toks, $tokens );
@@ -348,16 +325,10 @@ class TokenStreamPatcher extends LineBasedHandler {
 						// Convert list items back to bullet wikitext in attribute context
 						$tokens = $this->convertTokenToString( $token );
 					} elseif ( $tokenName === 'table' ) {
-						$this->lastConvertedTableCellToken = null;
 						$this->wikiTableNesting++;
 					} elseif ( in_array( $tokenName, [ 'td', 'th', 'tr', 'caption' ], true ) ) {
 						if ( $this->wikiTableNesting === 0 ) {
-							if ( $token->getName() === 'td' || $token->getName() === 'th' ) {
-								$this->lastConvertedTableCellToken = $token;
-							}
 							$tokens = $this->convertTokenToString( $token );
-						} else {
-							$this->lastConvertedTableCellToken = null;
 						}
 					}
 				}
@@ -368,7 +339,6 @@ class TokenStreamPatcher extends LineBasedHandler {
 				if ( $this->inIndependentParse && !TokenUtils::isHTMLTag( $token ) ) {
 					if ( $this->wikiTableNesting > 0 ) {
 						if ( $token->getName() === 'table' ) {
-							$this->lastConvertedTableCellToken = null;
 							$this->wikiTableNesting--;
 						}
 					} elseif ( $token->getName() === 'table' || $token->getName() === 'caption' ) {

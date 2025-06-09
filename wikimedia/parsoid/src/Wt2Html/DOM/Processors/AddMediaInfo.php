@@ -448,7 +448,7 @@ class AddMediaInfo implements Wt2HtmlDOMProcessor {
 
 		if ( $isImage ) {
 			$anchor = $doc->createElement( 'a' );
-			$addDescriptionLink = static function ( Title $title ) use ( $env, $anchor, $page, $lang ) {
+			$addDescriptionLink = static function ( Title $title ) use ( $env, $anchor, $page, $lang ): void {
 				$href = $env->makeLink( $title );
 				$qs = [];
 				if ( $page > 0 ) {
@@ -750,8 +750,7 @@ class AddMediaInfo implements Wt2HtmlDOMProcessor {
 						$caption->firstChild &&
 						DOMUtils::hasTypeOf( $caption->firstChild, 'mw:DOMFragment' )
 					) {
-						$id = DOMDataUtils::getDataParsoid( $caption->firstChild )->html;
-						$caption = $env->getDOMFragment( $id );
+						$caption = DOMDataUtils::getDataParsoid( $caption->firstChild )->html;
 					}
 				}
 				$captionText = trim( WTUtils::textContentFromCaption( $caption ) );

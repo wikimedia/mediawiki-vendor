@@ -145,7 +145,7 @@ class SiteConfig extends ISiteConfig {
 		$this->v3pf = $opts['v3pf'] ?? false;
 	}
 
-	protected function reset() {
+	protected function reset(): void {
 		$this->siteData = null;
 		$this->baseUri = null;
 		$this->relativeLinkPrefix = null;
@@ -337,7 +337,7 @@ class SiteConfig extends ISiteConfig {
 		}
 
 		$redirect = '(?i:\#REDIRECT)';
-		$quote = static function ( $s ) {
+		$quote = static function ( string $s ): string {
 			$q = preg_quote( $s, '@' );
 			# Note that PHP < 7.3 doesn't escape # in preg_quote.  That means
 			# that the $redirect regexp will fail if used with the `x` flag.
@@ -874,12 +874,13 @@ class SiteConfig extends ISiteConfig {
 
 	/**
 	 * Generate mock histogram buckets
+	 *
 	 * @param float $mean
 	 * @param int $skip
-	 * @return array
+	 * @return list<float>
 	 */
 	public function getHistogramBuckets( float $mean, int $skip ) {
-		return [ 0, $mean, 2 * $mean ];
+		return [ 0., $mean, 2 * $mean ];
 	}
 
 	/** @inheritDoc */

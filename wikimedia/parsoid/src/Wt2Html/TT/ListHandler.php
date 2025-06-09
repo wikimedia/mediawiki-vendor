@@ -6,6 +6,7 @@ namespace Wikimedia\Parsoid\Wt2Html\TT;
 use Wikimedia\Assert\UnreachableException;
 use Wikimedia\Parsoid\NodeData\DataParsoid;
 use Wikimedia\Parsoid\Tokens\CompoundTk;
+use Wikimedia\Parsoid\Tokens\EmptyLineTk;
 use Wikimedia\Parsoid\Tokens\EndTagTk;
 use Wikimedia\Parsoid\Tokens\EOFTk;
 use Wikimedia\Parsoid\Tokens\IndentPreTk;
@@ -90,9 +91,9 @@ class ListHandler extends LineBasedHandler {
 	 * @inheritDoc
 	 */
 	public function onCompoundTk( CompoundTk $ctk, TokenHandler $tokensHandler ): ?array {
-		if ( $ctk instanceof IndentPreTk ) {
+		if ( $ctk instanceof EmptyLineTk || $ctk instanceof IndentPreTk ) {
 			// Nothing to do!
-			// IndentPre content is of no interest to us
+			// IndentPre content / empty lines are of no interest to us
 			return null;
 		} else {
 			throw new UnreachableException(
@@ -421,9 +422,6 @@ class ListHandler extends LineBasedHandler {
 		$tokenDP = $token->dataParsoid;
 		$listFrame->bstack = $bn;
 
-		$res = null;
-		$itemToken = null;
-
 		// emit close tag tokens for closed lists
 		$this->env->trace(
 			'list', $this->pipelineId,
@@ -478,7 +476,6 @@ class ListHandler extends LineBasedHandler {
 				}
 				$listFrame->endtags[] = new EndTagTk( $newName );
 
-				$newTag = null;
 				if ( isset( $tokenDP->stx ) && $tokenDP->stx === 'row' ) {
 					// stx='row' is only set for single-line dt-dd lists (see tokenizer)
 					// In this scenario, the dd token we are building a token for has no prefix
@@ -548,8 +545,6 @@ class ListHandler extends LineBasedHandler {
 				//
 				// ";c:d" is embedded within a dt that is 1 char wide(;)
 
-				$listDP = null;
-				$listItemDP = null;
 				if ( $i === $prefixLen ) {
 					$this->env->trace( 'list', $this->pipelineId,
 						'    -> increased nesting: first'

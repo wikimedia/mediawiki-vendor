@@ -8,6 +8,8 @@ use Wikimedia\Assert\UnreachableException;
 use Wikimedia\Parsoid\Config\Env;
 use Wikimedia\Parsoid\NodeData\DataMw;
 use Wikimedia\Parsoid\NodeData\DataMwAttrib;
+use Wikimedia\Parsoid\Tokens\CompoundTk;
+use Wikimedia\Parsoid\Tokens\EmptyLineTk;
 use Wikimedia\Parsoid\Tokens\KV;
 use Wikimedia\Parsoid\Tokens\NlTk;
 use Wikimedia\Parsoid\Tokens\SelfclosingTagTk;
@@ -95,7 +97,6 @@ class AttributeExpander extends UniversalTokenHandler {
 		$preNLBuf = [];
 		$postNLBuf = null;
 		$startMeta = null;
-		$metaTokens = null;
 
 		// Split the token array around the first newline token.
 		$startMetaIndex = null;
@@ -268,7 +269,6 @@ class AttributeExpander extends UniversalTokenHandler {
 		// objects in the common case where nothing of significance
 		// happens in this code.
 		$newAttrs = null;
-		$nlTkPos = -1;
 		$nlTkOkay = TokenUtils::isHTMLTag( $token ) || !TokenUtils::isTableTag( $token );
 		$annotationTypes = [];
 
@@ -655,6 +655,16 @@ class AttributeExpander extends UniversalTokenHandler {
 		} else {
 			// null signifies unmodified token
 			return null;
+		}
+	}
+
+	/** @inheritDoc */
+	public function onCompoundTk( CompoundTk $ctk, TokenHandler $tokensHandler ): ?array {
+		if ( $ctk instanceof EmptyLineTk ) {
+			return null;
+		} else {
+			// default handling: in this case throws exception!
+			return parent::onCompoundTk( $ctk, $tokensHandler );
 		}
 	}
 

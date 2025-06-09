@@ -7,6 +7,7 @@ use Wikimedia\Assert\Assert;
 use Wikimedia\Assert\UnreachableException;
 use Wikimedia\Parsoid\Tokens\CommentTk;
 use Wikimedia\Parsoid\Tokens\CompoundTk;
+use Wikimedia\Parsoid\Tokens\EmptyLineTk;
 use Wikimedia\Parsoid\Tokens\EndTagTk;
 use Wikimedia\Parsoid\Tokens\EOFTk;
 use Wikimedia\Parsoid\Tokens\IndentPreTk;
@@ -73,7 +74,7 @@ class ParagraphWrapper extends LineBasedHandler {
 	 * @inheritDoc
 	 */
 	public function onCompoundTk( CompoundTk $ctk, TokenHandler $tokensHandler ): ?array {
-		if ( $ctk instanceof ListTk || $ctk instanceof IndentPreTk ) {
+		if ( $ctk instanceof ListTk || $ctk instanceof IndentPreTk || $ctk instanceof EmptyLineTk ) {
 			return null;
 		} else {
 			throw new UnreachableException(
@@ -315,7 +316,6 @@ class ParagraphWrapper extends LineBasedHandler {
 	private function processPendingNLs(): array {
 		$resToks = $this->tokenBuffer;
 		$newLineCount = $this->newLineCount;
-		$nlTk = null;
 		$nlOffset = 0;
 
 		$this->env->trace( 'p-wrap', $this->pipelineId, '        NL-count:', $newLineCount );
@@ -399,10 +399,10 @@ class ParagraphWrapper extends LineBasedHandler {
 	 */
 	public function onAny( $token ): ?array {
 		$this->env->trace( 'p-wrap', $this->pipelineId, 'ANY   |', $token );
-		$res = null;
 
 		if ( is_string( $token ) ||
-			$token instanceof CommentTk || TokenUtils::isEmptyLineMetaToken( $token )
+			$token instanceof CommentTk ||
+			$token instanceof EmptyLineTk
 		) {
 			if ( !is_string( $token ) || preg_match( '/^[\t ]*$/D', $token ) ) {
 				if ( $this->newLineCount === 0 ) {

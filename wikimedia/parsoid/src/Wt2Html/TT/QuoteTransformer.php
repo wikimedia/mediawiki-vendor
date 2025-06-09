@@ -7,6 +7,7 @@ use Wikimedia\Assert\Assert;
 use Wikimedia\Assert\UnreachableException;
 use Wikimedia\Parsoid\NodeData\DataParsoid;
 use Wikimedia\Parsoid\Tokens\CompoundTk;
+use Wikimedia\Parsoid\Tokens\EmptyLineTk;
 use Wikimedia\Parsoid\Tokens\EndTagTk;
 use Wikimedia\Parsoid\Tokens\EOFTk;
 use Wikimedia\Parsoid\Tokens\NlTk;
@@ -16,6 +17,7 @@ use Wikimedia\Parsoid\Tokens\TagTk;
 use Wikimedia\Parsoid\Tokens\Token;
 use Wikimedia\Parsoid\Tokens\XMLTagTk;
 use Wikimedia\Parsoid\Utils\PHPUtils;
+use Wikimedia\Parsoid\Utils\TokenUtils;
 use Wikimedia\Parsoid\Wt2html\TokenHandlerPipeline;
 
 /**
@@ -104,7 +106,10 @@ class QuoteTransformer extends LineBasedHandler {
 		$tkName = $token->getName();
 		if ( $tkName === 'mw-quote' ) {
 			return $this->onQuote( $token );
-		} elseif ( $tkName === 'td' || $tkName === 'th' ) {
+		} elseif (
+			( $tkName === 'td' || $tkName === 'th' ) &&
+			!TokenUtils::isHTMLTag( $token )
+		) {
 			return $this->processQuotes( $token );
 		} else {
 			return null;
@@ -134,6 +139,18 @@ class QuoteTransformer extends LineBasedHandler {
 	 * @inheritDoc
 	 */
 	public function onCompoundTk( CompoundTk $ctk, TokenHandler $tokensHandler ): ?array {
+		if ( $ctk instanceof EmptyLineTk ) {
+			// TSP might create EmptyLineTk by swallowing a NlTk into it
+			// rather than requiring it to precede a EmptyLineTk.
+			// So, call processQuotes always.
+			// * If there was a NlTk seen before it, the buffers are empty,
+			//   and we return null and $ctk is passed through.
+			// * If there was no NlTk before it (TSP case), we effectively
+			//   flush the buffers and send the $ctk after that.
+			// In either case, we are good.
+			return $this->processQuotes( $ctk );
+		}
+
 		$newToks = $tokensHandler->process( $ctk->getNestedTokens() );
 		if ( $ctk->setsEOLContext() ) {
 			$flushedOutput = $this->processQuotes();
@@ -201,14 +218,6 @@ class QuoteTransformer extends LineBasedHandler {
 		}
 
 		$this->env->trace( "quote", $this->pipelineId, "NL    |", $token );
-
-		if (
-			$token instanceof XMLTagTk &&
-			( $token->getName() === 'td' || $token->getName() === 'th' ) &&
-			( $token->dataParsoid->stx ?? '' ) === 'html'
-		) {
-			return null;
-		}
 
 		// count number of bold and italics
 		$numbold = 0;
