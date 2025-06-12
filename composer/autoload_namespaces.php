@@ -6,15 +6,15 @@ $vendorDir = dirname(__DIR__);
 $baseDir = $vendorDir;
 
 return array(
-    'ValueParsers\\' => array($vendorDir . '/data-values/number/src', $vendorDir . '/data-values/time/src'),
-    'ValueFormatters\\' => array($vendorDir . '/data-values/number/src', $vendorDir . '/data-values/time/src'),
+    'ValueParsers\\' => array($vendorDir . '/data-values/time/src', $vendorDir . '/data-values/number/src'),
+    'ValueFormatters\\' => array($vendorDir . '/data-values/time/src', $vendorDir . '/data-values/number/src'),
     'TextCat' => array($vendorDir . '/wikimedia/textcat/src'),
     'Pimple' => array($vendorDir . '/pimple/pimple/src'),
     'Net' => array($vendorDir . '/pear/net_smtp', $vendorDir . '/pear/net_socket'),
-    'Mail' => array($vendorDir . '/pear/mail', $vendorDir . '/pear/mail_mime'),
+    'Mail' => array($vendorDir . '/pear/mail_mime', $vendorDir . '/pear/mail'),
     'Liuggio' => array($vendorDir . '/liuggio/statsd-php-client/src'),
     'Less' => array($vendorDir . '/wikimedia/less.php/lib'),
-    'DataValues\\' => array($vendorDir . '/data-values/number/src', $vendorDir . '/data-values/time/src'),
+    'DataValues\\' => array($vendorDir . '/data-values/time/src', $vendorDir . '/data-values/number/src'),
     'Console' => array($vendorDir . '/pear/console_getopt'),
     'CSSMin' => array($vendorDir . '/wikimedia/minify/src'),
     '' => array($vendorDir . '/cssjanus/cssjanus/src'),
