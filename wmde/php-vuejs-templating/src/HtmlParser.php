@@ -28,7 +28,7 @@ class HtmlParser {
 		// LIBXML_NOBLANKS Constant excludes "ghost nodes" to avoid violating
 		// vue's single root node constraint
 		if ( !$document->loadHTML( '<?xml encoding="utf-8" ?>' . $html, LIBXML_NOBLANKS ) ) {
-			//TODO Test failure
+			throw new Exception( 'Failed to parse HTML' );
 		}
 
 		/** @var LibXMLError[] $errors */
@@ -41,9 +41,21 @@ class HtmlParser {
 			libxml_disable_entity_loader( $entityLoaderDisabled );
 		}
 
+		$exception = null;
 		foreach ( $errors as $error ) {
-			//TODO html5 tags can fail parsing
-			//TODO Throw an exception
+			$msg = $error->message;
+			if ( str_starts_with( $msg, 'Tag ' ) && str_ends_with( $msg, " invalid\n" ) ) {
+				// discard "Tag xyz invalid" messages from libxml2 < 2.14.0(?)
+				continue;
+			}
+			if ( $msg === "error parsing attribute name\n" ) {
+				// discard these messages (e.g. @event="") from libxml < 2.14.0(?)
+				continue;
+			}
+			$exception = new Exception( $msg, $error->code, $exception );
+		}
+		if ( $exception !== null ) {
+			throw $exception;
 		}
 
 		return $document;

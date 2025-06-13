@@ -3793,6 +3793,7 @@ return array(
     'ValueValidators\\Error' => $vendorDir . '/data-values/interfaces/src/ValueValidators/Error.php',
     'ValueValidators\\Result' => $vendorDir . '/data-values/interfaces/src/ValueValidators/Result.php',
     'ValueValidators\\ValueValidator' => $vendorDir . '/data-values/interfaces/src/ValueValidators/ValueValidator.php',
+    'WMDE\\VueJsTemplating\\App' => $vendorDir . '/wmde/php-vuejs-templating/src/App.php',
     'WMDE\\VueJsTemplating\\Component' => $vendorDir . '/wmde/php-vuejs-templating/src/Component.php',
     'WMDE\\VueJsTemplating\\HtmlParser' => $vendorDir . '/wmde/php-vuejs-templating/src/HtmlParser.php',
     'WMDE\\VueJsTemplating\\JsParsing\\BasicJsExpressionParser' => $vendorDir . '/wmde/php-vuejs-templating/src/JsParsing/BasicJsExpressionParser.php',

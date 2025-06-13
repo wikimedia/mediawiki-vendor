@@ -9047,29 +9047,29 @@
         },
         {
             "name": "wmde/php-vuejs-templating",
-            "version": "2.1.0",
-            "version_normalized": "2.1.0.0",
+            "version": "2.2.0-beta.2",
+            "version_normalized": "2.2.0.0-beta2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wmde/php-vuejs-templating.git",
-                "reference": "158a0ff874aa0aecfffbdcaf1bcfcdc8a75e1315"
+                "reference": "2d28b47fb32f1856948b306d12f7bd2a4972967c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wmde/php-vuejs-templating/zipball/158a0ff874aa0aecfffbdcaf1bcfcdc8a75e1315",
-                "reference": "158a0ff874aa0aecfffbdcaf1bcfcdc8a75e1315",
+                "url": "https://api.github.com/repos/wmde/php-vuejs-templating/zipball/2d28b47fb32f1856948b306d12f7bd2a4972967c",
+                "reference": "2d28b47fb32f1856948b306d12f7bd2a4972967c",
                 "shasum": ""
             },
             "require": {
                 "ext-dom": "*",
                 "ext-libxml": "*",
-                "php": ">=7.2"
+                "php": ">=8.1"
             },
             "require-dev": {
                 "mediawiki/mediawiki-codesniffer": "34.0.0",
                 "phpunit/phpunit": "^8.5.3"
             },
-            "time": "2025-06-05T11:03:46+00:00",
+            "time": "2025-06-13T14:16:48+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -9089,7 +9089,7 @@
             "description": "PHP implementation of Vue.js templating engine",
             "support": {
                 "issues": "https://github.com/wmde/php-vuejs-templating/issues",
-                "source": "https://github.com/wmde/php-vuejs-templating/tree/2.1.0"
+                "source": "https://github.com/wmde/php-vuejs-templating/tree/2.2.0-beta.2"
             },
             "install-path": "../wmde/php-vuejs-templating"
         },
