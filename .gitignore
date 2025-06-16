@@ -48,9 +48,6 @@ phpunit.xml.dist
 
 # Library test files etc. most of which are (wrongly?) listed
 
-# Upstreamed in https://github.com/Bacon/BaconQrCode/commit/2ca58705f6361673a658dbcb070940c65d04c7ac, unreleased
-bacon/bacon-qr-code/test
-
 # Reverted upstream because breaking CI
 elasticsearch/elasticsearch/docs
 # 8.0 in https://github.com/elastic/elasticsearch-php/commit/73363bc9cd40b7b0699c033ff8da3926ff4e5845
