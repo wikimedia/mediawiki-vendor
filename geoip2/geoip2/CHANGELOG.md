@@ -1,6 +1,44 @@
 CHANGELOG
 =========
 
+3.2.0 (2025-05-05)
+------------------
+
+* Support for the GeoIP Anonymous Plus database has been added. To do a
+  lookup in this database, use the `anonymousPlus` method on
+  `GeoIP2\Database\Reader`.
+* `metroCode` on `GeoIp2\Record\Location` has been deprecated. The code
+  values are no longer being maintained.
+
+3.1.0 (2024-11-15)
+------------------
+
+* This library no longer uses implicitly nullable parameter types. This
+  will fix deprecation warning in PHP 8.4. Reported by Steven Lewis.
+  GitHub #230.
+* The PHPDoc type hints have been improved for use with PHPStan.
+
+3.0.0 (2023-12-04)
+------------------
+
+* IMPORTANT: PHP 8.1 or greater is now required.
+* BREAKING: Read-only properties are now used for the model and record
+  classes rather than magic methods. This significantly improves performance.
+* BREAKING: The `raw` property on model classes and the `record` property on
+  record classes have been removed.
+* BREAKING: On `GeoIp2\Record\Traits`, the deprecated `isAnonymousProxy` and
+  `isSatelliteProvider` properties have been removed.
+* BREAKING: The `jsonSerialize` output has changed.
+* `GeoIp2\WebService\Client` methods now throw an `InvalidArgumentException`
+  if an invalid IP address is passed to them. Previously, they would make
+  a request to the web service and throw a
+  `GeoIp2\Exception\InvalidRequestException`.
+* The `isAnycast` property was added to `GeoIp2\Record\Traits`. This returns
+  `true` if the IP address belongs to an [anycast
+  network](https://en.wikipedia.org/wiki/Anycast). This is available for the
+  GeoIP2 Country, City Plus, and Insights web services and the GeoIP2 Country,
+  City, and Enterprise databases.
+
 2.13.0 (2022-08-05)
 -------------------
 

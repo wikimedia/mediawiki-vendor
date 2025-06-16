@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
-        'reference' => 'c90184944e08971fde11d704dc7a343dd1407947',
+        'pretty_version' => '1.0.0+no-version-set',
+        'version' => '1.0.0.0',
+        'reference' => null,
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'reference' => 'c90184944e08971fde11d704dc7a343dd1407947',
+            'pretty_version' => '1.0.0+no-version-set',
+            'version' => '1.0.0.0',
+            'reference' => null,
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -218,9 +218,9 @@
             'dev_requirement' => false,
         ),
         'geoip2/geoip2' => array(
-            'pretty_version' => 'v2.13.0',
-            'version' => '2.13.0.0',
-            'reference' => '6a41d8fbd6b90052bc34dff3b4252d0f88067b23',
+            'pretty_version' => 'v3.2.0',
+            'version' => '3.2.0.0',
+            'reference' => 'b7aa58760a6bf89a608dd92ee2d9436b52557ce2',
             'type' => 'library',
             'install_path' => __DIR__ . '/../geoip2/geoip2',
             'aliases' => array(),
