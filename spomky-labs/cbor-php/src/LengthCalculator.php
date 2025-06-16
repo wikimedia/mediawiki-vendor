@@ -2,21 +2,13 @@
 
 declare(strict_types=1);
 
-/*
- * The MIT License (MIT)
- *
- * Copyright (c) 2018-2020 Spomky-Labs
- *
- * This software may be modified and distributed under the terms
- * of the MIT license.  See the LICENSE file for details.
- */
-
 namespace CBOR;
 
 use Brick\Math\BigInteger;
+use InvalidArgumentException;
 use function chr;
 use function count;
-use InvalidArgumentException;
+use function strlen;
 use const STR_PAD_LEFT;
 
 final class LengthCalculator
@@ -26,7 +18,7 @@ final class LengthCalculator
      */
     public static function getLengthOfString(string $data): array
     {
-        $length = mb_strlen($data, '8bit');
+        $length = strlen($data);
 
         return self::computeLength($length);
     }
@@ -48,25 +40,22 @@ final class LengthCalculator
      */
     private static function computeLength(int $length): array
     {
-        switch (true) {
-            case $length <= 23:
-                return [$length, null];
-            case $length <= 0xFF:
-                return [CBORObject::LENGTH_1_BYTE, chr($length)];
-            case $length <= 0xFFFF:
-                return [CBORObject::LENGTH_2_BYTES, self::hex2bin(dechex($length))];
-            case $length <= 0xFFFFFFFF:
-                return [CBORObject::LENGTH_4_BYTES, self::hex2bin(dechex($length))];
-            case BigInteger::of($length)->isLessThanOrEqualTo(BigInteger::fromBase('FFFFFFFFFFFFFFFF', 16)):
-                return [CBORObject::LENGTH_8_BYTES, self::hex2bin(dechex($length))];
-            default:
-                return [CBORObject::LENGTH_INDEFINITE, null];
-        }
+        return match (true) {
+            $length <= 23 => [$length, null],
+            $length <= 0xFF => [24, chr($length)],
+            $length <= 0xFFFF => [25, self::hex2bin(dechex($length))],
+            $length <= 0xFFFFFFFF => [26, self::hex2bin(dechex($length))],
+            BigInteger::of($length)->isLessThan(BigInteger::fromBase('FFFFFFFFFFFFFFFF', 16)) => [
+                27,
+                self::hex2bin(dechex($length)),
+            ],
+            default => [31, null],
+        };
     }
 
     private static function hex2bin(string $data): string
     {
-        $data = str_pad($data, (int) (2 ** ceil(log(mb_strlen($data, '8bit'), 2))), '0', STR_PAD_LEFT);
+        $data = str_pad($data, (int) (2 ** ceil(log(strlen($data), 2))), '0', STR_PAD_LEFT);
         $result = hex2bin($data);
         if ($result === false) {
             throw new InvalidArgumentException('Unable to convert the data');

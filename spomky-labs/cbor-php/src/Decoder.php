@@ -2,15 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * The MIT License (MIT)
- *
- * Copyright (c) 2018-2020 Spomky-Labs
- *
- * This software may be modified and distributed under the terms
- * of the MIT license.  See the LICENSE file for details.
- */
-
 namespace CBOR;
 
 use CBOR\OtherObject\BreakObject;
@@ -42,49 +33,30 @@ use CBOR\Tag\TimestampTag;
 use CBOR\Tag\UnsignedBigIntegerTag;
 use CBOR\Tag\UriTag;
 use InvalidArgumentException;
-use function ord;
 use RuntimeException;
+use function ord;
+use function sprintf;
 use const STR_PAD_LEFT;
 
 final class Decoder implements DecoderInterface
 {
-    /**
-     * @var Tag\TagManagerInterface
-     */
-    private $tagManager;
+    private TagManagerInterface $tagObjectManager;
 
-    /**
-     * @var OtherObject\OtherObjectManagerInterface
-     */
-    private $otherObjectManager;
+    private OtherObjectManagerInterface $otherTypeManager;
 
     public function __construct(
-        ?TagManagerInterface $tagManager = null,
+        ?TagManagerInterface $tagObjectManager = null,
         ?OtherObjectManagerInterface $otherTypeManager = null
     ) {
-        $this->tagManager = $tagManager ?? $this->generateTagManager();
-        $this->otherObjectManager = $otherTypeManager ?? $this->generateOtherObjectManager();
+        $this->tagObjectManager = $tagObjectManager ?? $this->generateTagManager();
+        $this->otherTypeManager = $otherTypeManager ?? $this->generateOtherObjectManager();
     }
 
     public static function create(
-        ?TagManagerInterface $tagManager = null,
-        ?OtherObjectManagerInterface $otherObjectManager = null
+        ?TagManagerInterface $tagObjectManager = null,
+        ?OtherObjectManagerInterface $otherTypeManager = null
     ): self {
-        return new self($tagManager, $otherObjectManager);
-    }
-
-    public function withTagManager(TagManagerInterface $tagManager): self
-    {
-        $this->tagManager = $tagManager;
-
-        return $this;
-    }
-
-    public function withOtherObjectManager(OtherObjectManagerInterface $otherObjectManager): self
-    {
-        $this->otherObjectManager = $otherObjectManager;
-
-        return $this;
+        return new self($tagObjectManager, $otherTypeManager);
     }
 
     public function decode(Stream $stream): CBORObject
@@ -152,9 +124,9 @@ final class Decoder implements DecoderInterface
 
                 return $object;
             case CBORObject::MAJOR_TYPE_TAG: //6
-                return $this->tagManager->createObjectForValue($ai, $val, $this->process($stream, false));
+                return $this->tagObjectManager->createObjectForValue($ai, $val, $this->process($stream, false));
             case CBORObject::MAJOR_TYPE_OTHER_TYPE: //7
-                return $this->otherObjectManager->createObjectForValue($ai, $val);
+                return $this->otherTypeManager->createObjectForValue($ai, $val);
             default:
                 throw new RuntimeException(sprintf(
                     'Unsupported major type "%s" (%d).',
@@ -263,6 +235,6 @@ final class Decoder implements DecoderInterface
             ->add(HalfPrecisionFloatObject::class)
             ->add(SinglePrecisionFloatObject::class)
             ->add(DoublePrecisionFloatObject::class)
-            ;
+        ;
     }
 }

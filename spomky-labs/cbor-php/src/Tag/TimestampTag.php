@@ -2,15 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * The MIT License (MIT)
- *
- * Copyright (c) 2018-2020 Spomky-Labs
- *
- * This software may be modified and distributed under the terms
- * of the MIT license.  See the LICENSE file for details.
- */
-
 namespace CBOR\Tag;
 
 use CBOR\CBORObject;
@@ -24,6 +15,7 @@ use CBOR\UnsignedIntegerObject;
 use DateTimeImmutable;
 use DateTimeInterface;
 use InvalidArgumentException;
+use function strlen;
 use const STR_PAD_RIGHT;
 
 final class TimestampTag extends Tag implements Normalizable
@@ -62,15 +54,15 @@ final class TimestampTag extends Tag implements Normalizable
             case $object instanceof NegativeIntegerObject:
                 $formatted = DateTimeImmutable::createFromFormat('U', $object->normalize());
 
-            break;
+                break;
             case $object instanceof HalfPrecisionFloatObject:
             case $object instanceof SinglePrecisionFloatObject:
             case $object instanceof DoublePrecisionFloatObject:
                 $value = (string) $object->normalize();
                 $parts = explode('.', $value);
                 if (isset($parts[1])) {
-                    if (mb_strlen($parts[1], '8bit') > 6) {
-                        $parts[1] = mb_substr($parts[1], 0, 6, '8bit');
+                    if (strlen($parts[1]) > 6) {
+                        $parts[1] = substr($parts[1], 0, 6);
                     } else {
                         $parts[1] = str_pad($parts[1], 6, '0', STR_PAD_RIGHT);
                     }
@@ -87,25 +79,5 @@ final class TimestampTag extends Tag implements Normalizable
         }
 
         return $formatted;
-    }
-
-    /**
-     * @deprecated The method will be removed on v3.0. Please rely on the CBOR\Normalizable interface
-     */
-    public function getNormalizedData(bool $ignoreTags = false)
-    {
-        if ($ignoreTags) {
-            return $this->object->getNormalizedData($ignoreTags);
-        }
-        switch (true) {
-            case $this->object instanceof UnsignedIntegerObject:
-            case $this->object instanceof NegativeIntegerObject:
-            case $this->object instanceof HalfPrecisionFloatObject:
-            case $this->object instanceof SinglePrecisionFloatObject:
-            case $this->object instanceof DoublePrecisionFloatObject:
-                return $this->normalize();
-            default:
-                return $this->object->getNormalizedData($ignoreTags);
-        }
     }
 }

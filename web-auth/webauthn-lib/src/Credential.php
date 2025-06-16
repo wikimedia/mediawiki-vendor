@@ -2,16 +2,10 @@
 
 declare(strict_types=1);
 
-/*
- * The MIT License (MIT)
- *
- * Copyright (c) 2014-2021 Spomky-Labs
- *
- * This software may be modified and distributed under the terms
- * of the MIT license.  See the LICENSE file for details.
- */
-
 namespace Webauthn;
+
+use InvalidArgumentException;
+use ParagonIE\ConstantTime\Base64UrlSafe;
 
 /**
  * @see https://w3c.github.io/webappsec-credential-management/#credential
@@ -19,26 +13,46 @@ namespace Webauthn;
 abstract class Credential
 {
     /**
-     * @var string
+     * @deprecated since 4.9.0. Please use the property rawId instead.
      */
-    protected $id;
+    public readonly string $id;
 
-    /**
-     * @var string
-     */
-    protected $type;
+    public readonly string $rawId;
 
-    public function __construct(string $id, string $type)
-    {
+    public function __construct(
+        null|string $id,
+        public readonly string $type,
+        null|string $rawId = null,
+    ) {
+        if ($id === null && $rawId === null) {
+            throw new InvalidArgumentException('You must provide a valid raw ID');
+        }
+        if ($id !== null) {
+            trigger_deprecation(
+                'web-auth/webauthn-lib',
+                '4.9.0',
+                'The property "$id" is deprecated and will be removed in 5.0.0. Please set null use "rawId" instead.'
+            );
+        } else {
+            $id = Base64UrlSafe::encodeUnpadded($rawId);
+        }
         $this->id = $id;
-        $this->type = $type;
+        $this->rawId = $rawId ?? Base64UrlSafe::decodeNoPadding($id);
     }
 
+    /**
+     * @deprecated since 4.7.0. Please use the property directly.
+     * @infection-ignore-all
+     */
     public function getId(): string
     {
         return $this->id;
     }
 
+    /**
+     * @deprecated since 4.7.0. Please use the property directly.
+     * @infection-ignore-all
+     */
     public function getType(): string
     {
         return $this->type;

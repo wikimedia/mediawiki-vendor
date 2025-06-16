@@ -16,6 +16,7 @@ project.index
 ## Sublime
 sublime-*
 sftp-config.json
+.editorconfig
 
 # Building & testing
 node_modules/
@@ -63,9 +64,6 @@ james-heinrich/getid3/demos/
 league/oauth2-server/CONTRIBUTING.md
 league/oauth2-server/examples/
 league/oauth2-server/tests/
-
-# Upstreamed in https://github.com/ramsey/collection/commit/929049dd85ed8a70cceec787f1a29738e1725363, unreleasd
-ramsey/collection/conventional-commits.json
 
 # Re-added for ForeignResourcesManager, https://github.com/wikimedia/mediawiki-libs-metrics-platform/commit/d98c47371f6447f6549de9d1ffe798ef9bee18e1
 wikimedia/metrics-platform/js

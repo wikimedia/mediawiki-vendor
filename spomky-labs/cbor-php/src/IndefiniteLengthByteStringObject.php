@@ -2,21 +2,12 @@
 
 declare(strict_types=1);
 
-/*
- * The MIT License (MIT)
- *
- * Copyright (c) 2018-2020 Spomky-Labs
- *
- * This software may be modified and distributed under the terms
- * of the MIT license.  See the LICENSE file for details.
- */
-
 namespace CBOR;
 
 /**
- * @final
+ * @see \CBOR\Test\IndefiniteLengthByteStringObjectTest
  */
-class IndefiniteLengthByteStringObject extends AbstractCBORObject implements Normalizable
+final class IndefiniteLengthByteStringObject extends AbstractCBORObject implements Normalizable
 {
     private const MAJOR_TYPE = self::MAJOR_TYPE_BYTE_STRING;
 
@@ -25,7 +16,7 @@ class IndefiniteLengthByteStringObject extends AbstractCBORObject implements Nor
     /**
      * @var ByteStringObject[]
      */
-    private $chunks = [];
+    private array $chunks = [];
 
     public function __construct()
     {
@@ -42,9 +33,14 @@ class IndefiniteLengthByteStringObject extends AbstractCBORObject implements Nor
         return $result . "\xFF";
     }
 
-    public static function create(): self
+    public static function create(string ...$chunks): self
     {
-        return new self();
+        $object = new self();
+        foreach ($chunks as $chunk) {
+            $object->append($chunk);
+        }
+
+        return $object;
     }
 
     public function add(ByteStringObject $chunk): self
@@ -86,19 +82,6 @@ class IndefiniteLengthByteStringObject extends AbstractCBORObject implements Nor
         $result = '';
         foreach ($this->chunks as $chunk) {
             $result .= $chunk->normalize();
-        }
-
-        return $result;
-    }
-
-    /**
-     * @deprecated The method will be removed on v3.0. Please rely on the CBOR\Normalizable interface
-     */
-    public function getNormalizedData(bool $ignoreTags = false): string
-    {
-        $result = '';
-        foreach ($this->chunks as $chunk) {
-            $result .= $chunk->getNormalizedData($ignoreTags);
         }
 
         return $result;
