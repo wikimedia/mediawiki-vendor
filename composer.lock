@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8f1b768a110081d6738c6b48063d91c6",
+    "content-hash": "4df975870a6050db73d39fa9b3743dfc",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -7914,24 +7914,24 @@
         },
         {
             "name": "wikimedia/request-timeout",
-            "version": "v2.0.2",
+            "version": "v3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-RequestTimeout.git",
-                "reference": "13cfc7d3375ae94ccceab5379c47b97773afc95e"
+                "reference": "4e980a916b30fa0acc79bd0133f2d1aa456cccb0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-RequestTimeout/zipball/13cfc7d3375ae94ccceab5379c47b97773afc95e",
-                "reference": "13cfc7d3375ae94ccceab5379c47b97773afc95e",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-RequestTimeout/zipball/4e980a916b30fa0acc79bd0133f2d1aa456cccb0",
+                "reference": "4e980a916b30fa0acc79bd0133f2d1aa456cccb0",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.4",
+                "php": ">=8.1",
                 "wikimedia/normalized-exception": "1.0.1 || ^2.0.0"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "45.0.0",
+                "mediawiki/mediawiki-codesniffer": "47.0.0",
                 "mediawiki/mediawiki-phan-config": "0.15.1",
                 "mediawiki/minus-x": "1.1.3",
                 "ockcyp/covers-validator": "1.6.0",
@@ -7957,9 +7957,9 @@
             "description": "Request timeout library for Excimer with plain PHP fallback",
             "homepage": "https://www.mediawiki.org/wiki/RequestTimeout",
             "support": {
-                "source": "https://github.com/wikimedia/mediawiki-libs-RequestTimeout/tree/v2.0.2"
+                "source": "https://github.com/wikimedia/mediawiki-libs-RequestTimeout/tree/v3.0.0"
             },
-            "time": "2025-01-28T15:00:43+00:00"
+            "time": "2025-06-15T22:29:15+00:00"
         },
         {
             "name": "wikimedia/running-stat",

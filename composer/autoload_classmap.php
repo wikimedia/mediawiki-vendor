@@ -5005,7 +5005,6 @@ return array(
     'Wikimedia\\RequestTimeout\\CriticalSectionProvider' => $vendorDir . '/wikimedia/request-timeout/src/CriticalSectionProvider.php',
     'Wikimedia\\RequestTimeout\\CriticalSectionScope' => $vendorDir . '/wikimedia/request-timeout/src/CriticalSectionScope.php',
     'Wikimedia\\RequestTimeout\\Detail\\BasicRequestTimeout' => $vendorDir . '/wikimedia/request-timeout/src/Detail/BasicRequestTimeout.php',
-    'Wikimedia\\RequestTimeout\\Detail\\CriticalSection' => $vendorDir . '/wikimedia/request-timeout/src/Detail/CriticalSection.php',
     'Wikimedia\\RequestTimeout\\Detail\\ExcimerRequestTimeout' => $vendorDir . '/wikimedia/request-timeout/src/Detail/ExcimerRequestTimeout.php',
     'Wikimedia\\RequestTimeout\\Detail\\ExcimerTimerWrapper' => $vendorDir . '/wikimedia/request-timeout/src/Detail/ExcimerTimerWrapper.php',
     'Wikimedia\\RequestTimeout\\EmergencyTimeoutException' => $vendorDir . '/wikimedia/request-timeout/src/EmergencyTimeoutException.php',

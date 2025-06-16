@@ -5814,7 +5814,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\RequestTimeout\\CriticalSectionProvider' => __DIR__ . '/..' . '/wikimedia/request-timeout/src/CriticalSectionProvider.php',
         'Wikimedia\\RequestTimeout\\CriticalSectionScope' => __DIR__ . '/..' . '/wikimedia/request-timeout/src/CriticalSectionScope.php',
         'Wikimedia\\RequestTimeout\\Detail\\BasicRequestTimeout' => __DIR__ . '/..' . '/wikimedia/request-timeout/src/Detail/BasicRequestTimeout.php',
-        'Wikimedia\\RequestTimeout\\Detail\\CriticalSection' => __DIR__ . '/..' . '/wikimedia/request-timeout/src/Detail/CriticalSection.php',
         'Wikimedia\\RequestTimeout\\Detail\\ExcimerRequestTimeout' => __DIR__ . '/..' . '/wikimedia/request-timeout/src/Detail/ExcimerRequestTimeout.php',
         'Wikimedia\\RequestTimeout\\Detail\\ExcimerTimerWrapper' => __DIR__ . '/..' . '/wikimedia/request-timeout/src/Detail/ExcimerTimerWrapper.php',
         'Wikimedia\\RequestTimeout\\EmergencyTimeoutException' => __DIR__ . '/..' . '/wikimedia/request-timeout/src/EmergencyTimeoutException.php',
