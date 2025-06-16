@@ -40,7 +40,7 @@
 		"firebase/php-jwt": "6.11.1",
 		"geoip2/geoip2": "2.13.0",
 		"guzzlehttp/guzzle": "7.9.3",
-		"guzzlehttp/promises": "2.0.4",
+		"guzzlehttp/promises": "2.2.0",
 		"guzzlehttp/psr7": "2.7.1",
 		"jakobo/hotp-php": "2.0.0",
 		"james-heinrich/getid3": "1.9.23",
