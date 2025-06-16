@@ -72,7 +72,7 @@ class UnpackDOMFragments {
 	private static function makeChildrenEncapWrappers(
 		DocumentFragment $domFragment, string $about
 	): void {
-		PipelineUtils::addSpanWrappers( $domFragment->childNodes );
+		PipelineUtils::addSpanWrappers( DOMUtils::childNodes( $domFragment ) );
 
 		$c = $domFragment->firstChild;
 		while ( $c ) {
@@ -114,9 +114,10 @@ class UnpackDOMFragments {
 	/**
 	 * DOMTraverser handler that unpacks DOM fragments which were injected in the
 	 * token pipeline.
+	 *
 	 * @param Node $placeholder
 	 * @param DTState $state
-	 * @return bool|Node
+	 * @return bool|?Node
 	 */
 	public static function handler( Node $placeholder, DTState $state ) {
 		if ( !$placeholder instanceof Element ) {
@@ -146,7 +147,7 @@ class UnpackDOMFragments {
 			//   [[Test|{{1x|[[Hmm|Something <sup>strange</sup>]]}}]]
 			// A new use of dom fragments is for parser functions returning html
 			// (special page transclusions) which don't do span wrapping.
-			PipelineUtils::addSpanWrappers( $fragmentDOM->childNodes );
+			PipelineUtils::addSpanWrappers( DOMUtils::childNodes( $fragmentDOM ) );
 			// Reset `fragmentContent`, since the `firstChild` may have changed in
 			// span wrapping.
 			$fragmentContent = $fragmentDOM->firstChild;
@@ -229,7 +230,7 @@ class UnpackDOMFragments {
 		if ( $about !== null ) {
 			// Span wrapping may not have happened for the transclusion above if
 			// the fragment is not the first encapsulation wrapper node.
-			PipelineUtils::addSpanWrappers( $fragmentDOM->childNodes );
+			PipelineUtils::addSpanWrappers( DOMUtils::childNodes( $fragmentDOM ) );
 			$c = $fragmentDOM->firstChild;
 			while ( $c ) {
 				'@phan-var Element $c'; // @var Element $c
@@ -311,7 +312,7 @@ class UnpackDOMFragments {
 				$linkNode = $placeholderParent->parentNode->firstChild;
 			}
 			PipelineUtils::addSpanWrappers(
-				$linkNode->parentNode->childNodes, $linkNode->nextSibling, $placeholderParent );
+				DOMUtils::childNodes( $linkNode->parentNode ), $linkNode->nextSibling, $placeholderParent );
 
 			$newOffset = null;
 			$node = $linkNode;
@@ -342,7 +343,7 @@ class UnpackDOMFragments {
 		} else {
 			// Preserve fostered flag from DOM fragment
 			if ( !empty( $placeholderDP->fostered ) ) {
-				PipelineUtils::addSpanWrappers( $fragmentDOM->childNodes );
+				PipelineUtils::addSpanWrappers( DOMUtils::childNodes( $fragmentDOM ) );
 				$n = $fragmentDOM->firstChild;
 				while ( $n ) {
 					'@phan-var Element $n'; // @var Element $n

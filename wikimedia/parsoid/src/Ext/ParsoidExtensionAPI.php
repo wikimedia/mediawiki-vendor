@@ -648,47 +648,6 @@ class ParsoidExtensionAPI {
 	}
 
 	/**
-	 * Normalizes spaces from extension tag arguments, except for those keyed by values in $exceptions
-	 *
-	 * @param KV[] &$extArgs Array of extension args
-	 * @param array[] $action array that is either empty or has one key, 'except' or 'only', which defines the
-	 * attributes that should be respectively excluded or only included from the normalization
-	 */
-	public function normalizeWhiteSpaceInArgs( array &$extArgs, array $action = [] ): void {
-		$except = $action['except'] ?? null;
-		$only = $action['only'] ?? null;
-
-		if ( $except && $only ) {
-			$this->log( 'warn', 'normalizeWhiteSpaceInArgs should not have both except and only parameters' );
-			return;
-		}
-
-		if ( $except ) {
-			$closure = static function ( string $key, $value ) use ( $except ) {
-				if ( in_array( strtolower( trim( $key ) ), $except, true ) ) {
-					return $value;
-				} else {
-					return trim( preg_replace( '/[\r\n\t ]+/', ' ', $value ) );
-				}
-			};
-		} elseif ( $only ) {
-			$closure = static function ( string $key, $value ) use ( $only ) {
-				if ( in_array( strtolower( trim( $key ) ), $only, true ) ) {
-					return trim( preg_replace( '/[\r\n\t ]+/', ' ', $value ) );
-				} else {
-					return $value;
-				}
-			};
-		} else {
-			$closure = static function ( string $key, $value ): string {
-				return trim( preg_replace( '/[\r\n\t ]+/', ' ', $value ) );
-			};
-		}
-
-		$this->updateAllArgs( $extArgs, $closure );
-	}
-
-	/**
 	 * This method adds a new argument to the extension args array
 	 * @param KV[] &$extArgs
 	 * @param string $key
@@ -750,7 +709,7 @@ class ParsoidExtensionAPI {
 	}
 
 	/**
-	 * Copy $from->childNodes to $to and clone the data attributes of $from
+	 * Copy childNodes of $from to $to and clone the data attributes of $from
 	 * to $to.
 	 *
 	 * @param Element $from
@@ -1172,7 +1131,7 @@ class ParsoidExtensionAPI {
 	 * The converse to ::renderMedia.
 	 *
 	 * @param MediaStructure $ms
-	 * @return array Where,
+	 * @return array{0:string,1:string} Where,
 	 *   [0] is the media title string
 	 *   [1] is the string of media options
 	 */
@@ -1190,17 +1149,19 @@ class ParsoidExtensionAPI {
 
 	/**
 	 * @param array $modules
+	 *
 	 * @deprecated Use ::getMetadata()->appendOutputStrings( MODULE, ...) instead.
 	 */
-	public function addModules( array $modules ) {
+	public function addModules( array $modules ): void {
 		$this->getMetadata()->appendOutputStrings( CMCSS::MODULE, $modules );
 	}
 
 	/**
 	 * @param array $modulestyles
+	 *
 	 * @deprecated Use ::getMetadata()->appendOutputStrings(MODULE_STYLE, ...) instead.
 	 */
-	public function addModuleStyles( array $modulestyles ) {
+	public function addModuleStyles( array $modulestyles ): void {
 		$this->getMetadata()->appendOutputStrings( CMCSS::MODULE_STYLE, $modulestyles );
 	}
 

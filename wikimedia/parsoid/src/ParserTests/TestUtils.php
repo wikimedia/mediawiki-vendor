@@ -446,7 +446,7 @@ class TestUtils {
 	 */
 	public static function filterDsr( string $raw ): string {
 		$doc = ContentUtils::createAndLoadDocument( $raw );
-		foreach ( $doc->childNodes as $child ) {
+		foreach ( DOMUtils::childNodes( $doc ) as $child ) {
 			if ( $child instanceof Element ) {
 				self::filterNodeDsr( $child );
 			}
@@ -459,12 +459,12 @@ class TestUtils {
 	/**
 	 * Removes DSR from data-parsoid for test normalization of an element.
 	 */
-	public static function filterNodeDsr( Element $el ) {
+	public static function filterNodeDsr( Element $el ): void {
 		$dp = DOMDataUtils::getDataParsoid( $el );
 		unset( $dp->dsr );
 		// XXX: could also set TempData::IS_NEW if !$dp->isModified(),
 		// rather than using the preg_replace above.
-		foreach ( $el->childNodes as $child ) {
+		foreach ( DOMUtils::childNodes( $el ) as $child ) {
 			if ( $child instanceof Element ) {
 				self::filterNodeDsr( $child );
 			}

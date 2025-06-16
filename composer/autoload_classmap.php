@@ -4735,6 +4735,7 @@ return array(
     'Wikimedia\\Parsoid\\Language\\ZhConverter' => $vendorDir . '/wikimedia/parsoid/src/Language/ZhConverter.php',
     'Wikimedia\\Parsoid\\Logger\\LintLogger' => $vendorDir . '/wikimedia/parsoid/src/Logger/LintLogger.php',
     'Wikimedia\\Parsoid\\Logger\\ParsoidLogger' => $vendorDir . '/wikimedia/parsoid/src/Logger/ParsoidLogger.php',
+    'Wikimedia\\Parsoid\\Mocks\\LinterTag' => $vendorDir . '/wikimedia/parsoid/src/Mocks/LinterTag.php',
     'Wikimedia\\Parsoid\\Mocks\\MockDataAccess' => $vendorDir . '/wikimedia/parsoid/src/Mocks/MockDataAccess.php',
     'Wikimedia\\Parsoid\\Mocks\\MockEnv' => $vendorDir . '/wikimedia/parsoid/src/Mocks/MockEnv.php',
     'Wikimedia\\Parsoid\\Mocks\\MockMetrics' => $vendorDir . '/wikimedia/parsoid/src/Mocks/MockMetrics.php',

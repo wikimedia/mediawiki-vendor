@@ -298,7 +298,8 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 	 * @param ?int $e end position, exclusive
 	 * @param int $dsrCorrection
 	 * @param array $opts
-	 * @return array
+	 *
+	 * @return list{?int, ?int}
 	 */
 	private function computeNodeDSR(
 		Frame $frame, Node $node, ?int $s, ?int $e, int $dsrCorrection,
@@ -375,7 +376,7 @@ class ComputeDSR implements Wt2HtmlDOMProcessor {
 			$env->trace( "dsr", static function () use ( $child, $cs, $ce ) {
 				// slow, for debugging only
 				$i = 0;
-				foreach ( $child->parentNode->childNodes as $x ) {
+				foreach ( DOMUtils::childNodes( $child->parentNode ) as $x ) {
 					if ( $x === $child ) {
 						break;
 					}

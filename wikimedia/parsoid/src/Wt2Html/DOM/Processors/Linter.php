@@ -36,7 +36,7 @@ class Linter implements Wt2HtmlDOMProcessor {
 	private ?string $obsoleteTagsRE = null;
 	private array $seenIds = [];
 
-	/** @var array<string,bool>|null */
+	/** @var ?array<string,true> */
 	private ?array $tagsWithChangedMisnestingBehavior = null;
 
 	/**
@@ -77,8 +77,7 @@ class Linter implements Wt2HtmlDOMProcessor {
 	 * https://phabricator.wikimedia.org/T176363#3628173 verifies that this list of
 	 * tags all demonstrate this behavior.
 	 *
-	 * @return array
-	 * @phan-return array<string,bool>
+	 * @return array<string,true>
 	 */
 	private function getTagsWithChangedMisnestingBehavior(): array {
 		if ( $this->tagsWithChangedMisnestingBehavior === null ) {
@@ -101,7 +100,7 @@ class Linter implements Wt2HtmlDOMProcessor {
 				'map', 'object', 'pre', 'progress', 'video',
 			] );
 			$this->tagsWithChangedMisnestingBehavior = [];
-			foreach ( Consts::$HTML['HTML5Tags'] as $tag => $dummy ) {
+			foreach ( Consts::$HTML['HTML5Tags'] as $tag => $_ignore ) {
 				if ( isset( Consts::$Sanitizer['AllowedLiteralTags'][$tag] ) &&
 					!isset( $HTML4TidyBlockTags[$tag] ) &&
 					!isset( Consts::$HTML['FormattingTags'][$tag] ) &&
@@ -175,6 +174,8 @@ class Linter implements Wt2HtmlDOMProcessor {
 	 * FIXME: We might potentially be computing this information redundantly
 	 * for every lint we find within this template's content. It could probably
 	 * be cached in tplInfo after it is computed once.
+	 *
+	 * @return ?array{multiPartTemplateBlock?: true, name?: string}
 	 */
 	public static function findEnclosingTemplateName( Env $env, ?stdClass $tplInfo ): ?array {
 		if ( !$tplInfo ) {
@@ -579,7 +580,7 @@ class Linter implements Wt2HtmlDOMProcessor {
 	): void {
 		if ( !$this->obsoleteTagsRE ) {
 			$elts = [];
-			foreach ( Consts::$HTML['OlderHTMLTags'] as $tag => $dummy ) {
+			foreach ( Consts::$HTML['OlderHTMLTags'] as $tag => $_ignore ) {
 				// Looks like all existing editors let editors add the <big> tag.
 				// VE has a button to add <big>, it seems so does the WikiEditor
 				// and JS wikitext editor. So, don't flag BIG as an obsolete tag.
@@ -1289,7 +1290,7 @@ class Linter implements Wt2HtmlDOMProcessor {
 	 */
 	private function lintIds(
 		Env $env, Element $node, DataParsoid $dp, ?stdClass $tplInfo
-	) {
+	): void {
 		$id = DOMCompat::getAttribute( $node, 'id' );
 
 		if ( DOMUtils::isHeading( $node ) ) {

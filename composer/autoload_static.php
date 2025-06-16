@@ -5544,6 +5544,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Language\\ZhConverter' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Language/ZhConverter.php',
         'Wikimedia\\Parsoid\\Logger\\LintLogger' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Logger/LintLogger.php',
         'Wikimedia\\Parsoid\\Logger\\ParsoidLogger' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Logger/ParsoidLogger.php',
+        'Wikimedia\\Parsoid\\Mocks\\LinterTag' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Mocks/LinterTag.php',
         'Wikimedia\\Parsoid\\Mocks\\MockDataAccess' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Mocks/MockDataAccess.php',
         'Wikimedia\\Parsoid\\Mocks\\MockEnv' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Mocks/MockEnv.php',
         'Wikimedia\\Parsoid\\Mocks\\MockMetrics' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Mocks/MockMetrics.php',

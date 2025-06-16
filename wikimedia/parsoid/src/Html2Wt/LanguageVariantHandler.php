@@ -16,6 +16,12 @@ use Wikimedia\Parsoid\Wikitext\Consts;
  */
 class LanguageVariantHandler {
 
+	/**
+	 * Expand a whitespace sequence.
+	 * @see \Wikimedia\Parsoid\Wt2Html\TT\LanguageVariantHandler::compressSpArray
+	 * @param list<int|string> $a
+	 * @return list<string>
+	 */
 	private static function expandSpArray( array $a ): array {
 		$result = [];
 		foreach ( $a as $el ) {
@@ -170,7 +176,7 @@ class LanguageVariantHandler {
 			unset( $dataMWV->unidir );
 		}
 
-		foreach ( get_object_vars( $dataMWV ) as $key => $val ) {
+		foreach ( get_object_vars( $dataMWV ) as $key => $_val ) {
 			if ( isset( Consts::$LCNameMap[$key] ) ) {
 				$flags[Consts::$LCNameMap[$key]] = true;
 			}

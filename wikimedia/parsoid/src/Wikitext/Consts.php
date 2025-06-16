@@ -11,7 +11,6 @@ class Consts {
 	public static array $WikitextTagsWithTrimmableWS;
 	public static array $HTMLTagsRequiringSOLContext;
 	public static array $WTQuoteTags;
-	public static array $SolSpaceSensitiveTags;
 	public static array $HTML;
 	public static array $WTTagsWithNoClosingTags;
 	public static array $Output;
@@ -26,7 +25,7 @@ class Consts {
 	public static array $wikitextBlockElems;
 	public static string $strippedUrlCharacters;
 
-	public static function init() {
+	public static function init(): void {
 		/*
 		 * Valid media options:
 		 * - Prefix options are of the form "alt=foo"

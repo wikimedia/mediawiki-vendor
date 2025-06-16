@@ -8,6 +8,7 @@ use Wikimedia\Assert\Assert;
 use Wikimedia\Parsoid\Config\Env;
 use Wikimedia\Parsoid\Tokens\EOFTk;
 use Wikimedia\Parsoid\Tokens\SourceRange;
+use Wikimedia\Parsoid\Tokens\Token;
 use Wikimedia\WikiPEG\SyntaxError;
 
 /**
@@ -17,7 +18,6 @@ use Wikimedia\WikiPEG\SyntaxError;
 class PegTokenizer extends PipelineStage {
 	private array $options;
 	private array $offsets;
-	private ?SyntaxError $lastError = null;
 	/** @var Grammar|TracingGrammar|null */
 	private $grammar = null;
 	private bool $tracing;
@@ -94,9 +94,10 @@ class PegTokenizer extends PipelineStage {
 	 * The text is tokenized in chunks (one per top-level block).
 	 *
 	 * @param string $input
-	 * @param array{sol:bool} $options
+	 * @param array{atTopLevel:bool,sol:bool} $options
+	 *   - atTopLevel: (bool) Whether we are processing the top-level document
 	 *   - sol (bool) Whether text should be processed in start-of-line context.
-	 * @return Generator
+	 * @return Generator<list<Token|string>>
 	 */
 	public function processChunkily( $input, array $options ): Generator {
 		if ( !$this->grammar ) {
@@ -122,16 +123,11 @@ class PegTokenizer extends PipelineStage {
 			$args['tracer'] = new Tracer( $input );
 		}
 
-		try {
-			// Wrap wikipeg's generator with our own generator
-			// to catch exceptions and track time usage.
-			// @phan-suppress-next-line PhanTypeInvalidYieldFrom
-			yield from $this->grammar->parse( $input, $args );
-			yield [ new EOFTk() ];
-		} catch ( SyntaxError $e ) {
-			$this->lastError = $e;
-			throw $e;
-		}
+		// Wrap wikipeg's generator with our own generator
+		// to track time usage.
+		// @phan-suppress-next-line PhanTypeInvalidYieldFrom
+		yield from $this->grammar->parse( $input, $args );
+		yield [ new EOFTk() ];
 	}
 
 	/**
@@ -188,7 +184,6 @@ class PegTokenizer extends PipelineStage {
 		try {
 			$toks = $this->grammar->parse( $text, $args );
 		} catch ( SyntaxError $e ) {
-			$this->lastError = $e;
 			return false;
 		}
 
