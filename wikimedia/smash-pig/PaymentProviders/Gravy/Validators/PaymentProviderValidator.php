@@ -17,7 +17,7 @@ abstract class PaymentProviderValidator {
 	 */
 	private const FIELD_COUNTRY_REQUIREMENTS = [
 		'fiscal_number' => [
-			'AR', 'BR', 'CL', 'CO', 'ID', 'IN', 'MX', 'PH', 'TH', 'ZA',
+			'AR', 'BR'
 		],
 	];
 
@@ -82,9 +82,7 @@ abstract class PaymentProviderValidator {
 			'currency',
 			'country',
 			'order_id',
-			'email',
-			'first_name',
-			'last_name'
+			'email'
 		];
 
 		$required = array_merge(
