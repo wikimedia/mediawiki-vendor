@@ -23,7 +23,6 @@ use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\ScriptUtils;
 use Wikimedia\Parsoid\Utils\Title;
-use Wikimedia\Parsoid\Utils\Utils;
 use Wikimedia\Parsoid\Wt2Html\PageConfigFrame;
 
 /**
@@ -415,18 +414,6 @@ class TestRunner {
 		// The test can explicitly opt-in to variant conversion with the
 		// 'langconv' option.
 		if ( $testOpts['langconv'] ?? null ) {
-			// These test option names are deprecated:
-			// (Note that test options names are lowercased by the reader.)
-			if ( $testOpts['sourcevariant'] ?? false ) {
-				$this->envOptions['wtVariantLanguage'] = Utils::mwCodeToBcp47(
-					$testOpts['sourcevariant'], true, $this->siteConfig->getLogger()
-				);
-			}
-			if ( $testOpts['variant'] ?? false ) {
-				$this->envOptions['htmlVariantLanguage'] = Utils::mwCodeToBcp47(
-					$testOpts['variant'], true, $this->siteConfig->getLogger()
-				);
-			}
 			// Preferred option names, which are also specified in bcp-47 codes
 			// (Note that test options names are lowercased by the reader.)
 			if ( $testOpts['wtvariantlanguage'] ?? false ) {
@@ -460,16 +447,16 @@ class TestRunner {
 		// Source preparation
 		if ( $startsAtHtml ) {
 			$html = $test->parsoidHtml ?? '';
-			if ( !$parsoidOnly ) {
-				// Strip some php output that has no wikitext representation
-				// (like .mw-editsection) and won't html2html roundtrip and
-				// therefore causes false failures.
-				$html = TestUtils::normalizePhpOutput( $html );
-			}
 			// FUTURE WORK: it would be better if we used
 			// ContentUtils::createAndLoadDocument() here -- and for all of the
 			// ::parseHTML() calls below this as well.
 			$doc = DOMUtils::parseHTML( $html );
+			if ( !$parsoidOnly ) {
+				// Strip some php output that has no wikitext representation
+				// (like .mw-editsection) and won't html2html roundtrip and
+				// therefore causes false failures.
+				TestUtils::normalizePhpOutput( DOMCompat::getBody( $doc ) );
+			}
 			$wt = $this->convertHtml2Wt( $env, $test, $mode, $doc );
 		} else { // startsAtWikitext
 			// Always serialize DOM to string and reparse before passing to wt2wt

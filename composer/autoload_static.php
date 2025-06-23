@@ -5557,6 +5557,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\NodeData\\DataMwAttrib' => __DIR__ . '/..' . '/wikimedia/parsoid/src/NodeData/DataMwAttrib.php',
         'Wikimedia\\Parsoid\\NodeData\\DataMwBody' => __DIR__ . '/..' . '/wikimedia/parsoid/src/NodeData/DataMwBody.php',
         'Wikimedia\\Parsoid\\NodeData\\DataMwError' => __DIR__ . '/..' . '/wikimedia/parsoid/src/NodeData/DataMwError.php',
+        'Wikimedia\\Parsoid\\NodeData\\DataMwExtAttribs' => __DIR__ . '/..' . '/wikimedia/parsoid/src/NodeData/DataMwExtAttribs.php',
         'Wikimedia\\Parsoid\\NodeData\\DataMwI18n' => __DIR__ . '/..' . '/wikimedia/parsoid/src/NodeData/DataMwI18n.php',
         'Wikimedia\\Parsoid\\NodeData\\DataParsoid' => __DIR__ . '/..' . '/wikimedia/parsoid/src/NodeData/DataParsoid.php',
         'Wikimedia\\Parsoid\\NodeData\\DataParsoidDiff' => __DIR__ . '/..' . '/wikimedia/parsoid/src/NodeData/DataParsoidDiff.php',

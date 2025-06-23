@@ -4748,6 +4748,7 @@ return array(
     'Wikimedia\\Parsoid\\NodeData\\DataMwAttrib' => $vendorDir . '/wikimedia/parsoid/src/NodeData/DataMwAttrib.php',
     'Wikimedia\\Parsoid\\NodeData\\DataMwBody' => $vendorDir . '/wikimedia/parsoid/src/NodeData/DataMwBody.php',
     'Wikimedia\\Parsoid\\NodeData\\DataMwError' => $vendorDir . '/wikimedia/parsoid/src/NodeData/DataMwError.php',
+    'Wikimedia\\Parsoid\\NodeData\\DataMwExtAttribs' => $vendorDir . '/wikimedia/parsoid/src/NodeData/DataMwExtAttribs.php',
     'Wikimedia\\Parsoid\\NodeData\\DataMwI18n' => $vendorDir . '/wikimedia/parsoid/src/NodeData/DataMwI18n.php',
     'Wikimedia\\Parsoid\\NodeData\\DataParsoid' => $vendorDir . '/wikimedia/parsoid/src/NodeData/DataParsoid.php',
     'Wikimedia\\Parsoid\\NodeData\\DataParsoidDiff' => $vendorDir . '/wikimedia/parsoid/src/NodeData/DataParsoidDiff.php',
