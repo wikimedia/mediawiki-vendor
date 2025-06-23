@@ -1,16 +1,14 @@
 <?php
+
 namespace SmashPig\PaymentProviders\Gravy;
 
 use SmashPig\Core\Logging\Logger;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyCreatePaymentSessionResponseFactory;
-use SmashPig\PaymentProviders\Gravy\Mapper\ApplePayPaymentProviderRequestMapper;
-use SmashPig\PaymentProviders\Gravy\Mapper\ApplePayPaymentProviderResponseMapper;
-use SmashPig\PaymentProviders\Gravy\Mapper\RequestMapper;
-use SmashPig\PaymentProviders\Gravy\Validators\ApplePayPaymentProviderValidator;
 use SmashPig\PaymentProviders\Responses\CreatePaymentSessionResponse;
 use SmashPig\PaymentProviders\ValidationException;
 
 class ApplePayPaymentProvider extends PaymentProvider {
+
 	public function createPaymentSession( array $params ): CreatePaymentSessionResponse {
 		$sessionResponse = new CreatePaymentSessionResponse();
 		try {
@@ -35,21 +33,11 @@ class ApplePayPaymentProvider extends PaymentProvider {
 		} catch ( \UnexpectedValueException $e ) {
 			// it threw an API exception that isn't validation!
 			Logger::error( 'Processor failed to create new payment with response:' . $e->getMessage() );
-			GravyCreatePaymentSessionResponseFactory::handleException( $sessionResponse, $e->getMessage(), $e->getCode() );
+			GravyCreatePaymentSessionResponseFactory::handleException( $sessionResponse, $e->getMessage(),
+				$e->getCode() );
 		}
 
 		return $sessionResponse;
 	}
 
-	protected function getValidator(): ApplePayPaymentProviderValidator {
-		return new ApplePayPaymentProviderValidator();
-	}
-
-	protected function getRequestMapper(): RequestMapper {
-		return new ApplePayPaymentProviderRequestMapper();
-	}
-
-	protected function getResponseMapper(): ApplePayPaymentProviderResponseMapper {
-		return new ApplePayPaymentProviderResponseMapper();
-	}
 }

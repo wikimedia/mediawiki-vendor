@@ -1,0 +1,20 @@
+{
+    "id": "REF-RANDOM-REF-ID",
+    "payment_id": "T-RANDOM-PAYMENT-ID",
+    "notification_url": "https://payments-listener.wikimedia.org/dlocal",
+    "amount": 10.00,
+    "currency": "BRL",
+    "id_payment": "T-RANDOM-PAYMENT-ID",
+    "status": "REJECTED",
+    "status_code": 300,
+    "status_detail": "The refund was rejected.",
+    "created_date": "2025-06-12T21:09:31.000+0000",
+    "amount_refunded": 0.00,
+    "use_orig_fx": false,
+    "payment_request_amount": 10.00,
+    "payment_request_currency": "BRL",
+    "transaction_id": "230815474.2",
+    "document_number": "12345567899",
+    "idempotency_key": "RANDOM-idempotency_key",
+    "order_id": "111.1"
+}

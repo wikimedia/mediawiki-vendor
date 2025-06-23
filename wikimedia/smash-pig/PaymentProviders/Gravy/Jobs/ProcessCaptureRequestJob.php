@@ -110,6 +110,12 @@ class ProcessCaptureRequestJob implements Runnable {
 				}
 				break;
 			case ValidationAction::REJECT:
+				// T392156: log all authorized payments that are rejected for future rescue if needed
+				$this->logger->info(
+					"Log all authorized payment before delete, order id '{$transactionDetails->getOrderId()}', " .
+					"gateway txn id '{$transactionDetails->getGatewayTxnId()}'. Logging for audit.",
+					$dbMessage
+				);
 				$this->cancelAuthorization( $transactionDetails );
 				// Delete the fraudy donor details
 				$db->deleteMessage( $dbMessage );

@@ -3,6 +3,8 @@
 # To override, create a file in:
 #   /etc/smashpig/gravy/main.yaml
 #   $HOME/.smashpig/gravy/main.yaml
+logging:
+  root-context: SmashPig-Gravy
 
 api:
   class: SmashPig\PaymentProviders\Gravy\Api
@@ -28,20 +30,60 @@ accounts:
 payment-provider:
   cc:
     class: SmashPig\PaymentProviders\Gravy\CardPaymentProvider
+    constructor-parameters:
+      -
+        request-mapper: "mappers/cc-request"
+        response-mapper: "mappers/cc-response"
+        validator: "validators/cc"
   google:
     class: SmashPig\PaymentProviders\Gravy\GooglePayPaymentProvider
+    constructor-parameters:
+      -
+        request-mapper: "mappers/google-request"
+        response-mapper: "mappers/google-response"
+        validator: "validators/google"
   apple:
     class: SmashPig\PaymentProviders\Gravy\ApplePayPaymentProvider
+    constructor-parameters:
+      -
+        request-mapper: "mappers/apple-request"
+        response-mapper: "mappers/apple-response"
+        validator: "validators/apple"
   dd:
     class: SmashPig\PaymentProviders\Gravy\DirectDepositPaymentProvider
+    constructor-parameters:
+      -
+        request-mapper: "mappers/dd-request"
+        response-mapper: "mappers/dd-response"
+        validator: "validators/dd"
   bt:
-    class: SmashPig\PaymentProviders\Gravy\RedirectPaymentProvider
+    class: SmashPig\PaymentProviders\Gravy\BankPaymentProvider
+    constructor-parameters:
+      -
+        request-mapper: "mappers/bt-request"
+        response-mapper: "mappers/bt-response"
+        validator: "validators/redirect"
   venmo:
     class: SmashPig\PaymentProviders\Gravy\RedirectPaymentProvider
+    constructor-parameters:
+      -
+        request-mapper: "mappers/redirect-request"
+        response-mapper: "mappers/redirect-response"
+        validator: "validators/redirect"
   paypal:
     class: SmashPig\PaymentProviders\Gravy\PaypalPaymentProvider
+    constructor-parameters:
+      -
+        request-mapper: "mappers/paypal-request"
+        response-mapper: "mappers/paypal-response"
+        validator: "validators/paypal"
   cash:
     class: SmashPig\PaymentProviders\Gravy\RedirectPaymentProvider
+    constructor-parameters:
+      -
+        request-mapper: "mappers/redirect-request"
+        response-mapper: "mappers/redirect-response"
+        validator: "validators/redirect"
 
 # Setting value to false to mirror production configuration
 capture-from-ipn-listener: false
@@ -49,6 +91,50 @@ capture-from-ipn-listener: false
 proxy:
   proxy_host: ~ # example.proxy.url
   proxy_port: -1 # 80
+
+mappers:
+  cc-request:
+    class: SmashPig\PaymentProviders\Gravy\Mapper\CardPaymentProviderRequestMapper
+  cc-response:
+    class: SmashPig\PaymentProviders\Gravy\Mapper\CardPaymentProviderResponseMapper
+  redirect-request:
+    class: SmashPig\PaymentProviders\Gravy\Mapper\RedirectPaymentProviderRequestMapper
+  redirect-response:
+    class: SmashPig\PaymentProviders\Gravy\Mapper\RedirectPaymentProviderResponseMapper
+  apple-request:
+    class: SmashPig\PaymentProviders\Gravy\Mapper\ApplePayPaymentProviderRequestMapper
+  apple-response:
+    class: SmashPig\PaymentProviders\Gravy\Mapper\ApplePayPaymentProviderResponseMapper
+  google-request:
+    class: SmashPig\PaymentProviders\Gravy\Mapper\GooglePayPaymentProviderRequestMapper
+  google-response:
+    class: SmashPig\PaymentProviders\Gravy\Mapper\GooglePayPaymentProviderResponseMapper
+  dd-request:
+    class: SmashPig\PaymentProviders\Gravy\Mapper\DirectDepositPaymentProviderRequestMapper
+  dd-response:
+    class: SmashPig\PaymentProviders\Gravy\Mapper\DirectDepositPaymentProviderResponseMapper
+  paypal-request:
+    class: SmashPig\PaymentProviders\Gravy\Mapper\PaypalPaymentProviderRequestMapper
+  paypal-response:
+    class: SmashPig\PaymentProviders\Gravy\Mapper\RedirectPaymentProviderResponseMapper
+  bt-request:
+    class: SmashPig\PaymentProviders\Gravy\Mapper\BankPaymentProviderRequestMapper
+  bt-response:
+    class: SmashPig\PaymentProviders\Gravy\Mapper\BankPaymentProviderResponseMapper
+
+validators:
+  cc:
+    class: SmashPig\PaymentProviders\Gravy\Validators\CardPaymentProviderValidator
+  redirect:
+    class: SmashPig\PaymentProviders\Gravy\Validators\RedirectPaymentProviderValidator
+  apple:
+    class: SmashPig\PaymentProviders\Gravy\Validators\ApplePayPaymentProviderValidator
+  google:
+    class: SmashPig\PaymentProviders\Gravy\Validators\GooglePayPaymentProviderValidator
+  dd:
+    class: SmashPig\PaymentProviders\Gravy\Validators\DirectDepositPaymentProviderValidator
+  paypal:
+    class: SmashPig\PaymentProviders\Gravy\Validators\PaypalPaymentProviderValidator
 
 fraud-filters:
   # Authorization notifications include AVS and CVV result codes.

@@ -40,133 +40,133 @@ abstract class DlocalMessage extends ListenerMessage {
 	/**
 	 * @var mixed
 	 */
-	protected $amount;
+	protected $amount = 0;
 
 	/**
 	 * @var mixed
 	 */
-	public $authorization;
+	public $authorization = '';
 
 	/**
 	 * @var string
 	 */
-	public $callback_url;
+	public $callback_url = '';
 
 	/**
 	 * @var array
 	 */
-	protected $card;
+	protected $card = [];
 
 	/**
 	 * @var mixed
 	 */
-	protected $country;
+	protected $country = '';
 
 	/**
 	 * @var mixed
 	 */
-	protected $created_date;
+	protected $created_date = '';
 
 	/**
 	 * @var mixed
 	 */
-	protected $currency;
+	protected $currency = '';
 
 	/**
 	 * @var mixed
 	 */
-	protected $description;
+	protected $description = '';
 
 	/**
 	 * @var mixed
 	 */
-	protected $document;
+	protected $document = '';
 
 	/**
 	 * @var string
 	 */
-	protected $email;
+	protected $email = '';
 
 	/**
 	 * @var mixed
 	 */
-	protected $event_info;
+	protected $event_info = '';
 
 	/**
 	 * @var mixed
 	 */
-	protected $id;
+	protected $id = '';
 
 	/**
 	 * @var string
 	 */
-	protected $notification_url;
+	protected $notification_url = '';
 
 	/**
 	 * @var mixed
 	 */
-	protected $order_id;
+	protected $order_id = '';
 
 	/**
 	 * @var array
 	 */
-	protected $payer;
+	protected $payer = [];
 
 	/**
 	 * On refunds, this is the id of the original payment
 	 * @var string
 	 */
-	protected $payment_id;
+	protected $payment_id = '';
 
 	/**
 	 * @var mixed
 	 */
-	protected $payment_method_flow;
+	protected $payment_method_flow = '';
 
 	/**
 	 * @var string
 	 */
-	protected $payment_method_id;
+	protected $payment_method_id = '';
 
 	/**
 	 * @var string
 	 */
-	protected $payment_method_type;
+	protected $payment_method_type = '';
 
 	/**
 	 * @var mixed
 	 */
-	public $signatureInput;
+	public $signatureInput = '';
 
 	/**
 	 * @var mixed
 	 */
-	protected $status;
+	protected $status = '';
 
 	/**
 	 * @var mixed
 	 */
-	protected $status_code;
+	protected $status_code = '';
 
 	/**
 	 * @var mixed
 	 */
-	protected $status_detail;
+	protected $status_detail = '';
 
 	/**
 	 * @var mixed
 	 */
-	protected $type;
+	protected $type = '';
 
 	/**
 	 * @var mixed
 	 */
-	protected $user_reference;
+	protected $user_reference = '';
 
 	/**
 	 * @var array
 	 */
-	protected $wallet;
+	protected $wallet = [];
 
 	public function validate(): bool {
 		return true;
@@ -174,7 +174,9 @@ abstract class DlocalMessage extends ListenerMessage {
 
 	public function constructFromValues( array $values ) {
 		foreach ( $this->fields as $key ) {
-			$this->$key = ( array_key_exists( $key, $values ) ? $values[$key] : '' );
+			if ( array_key_exists( $key, $values ) ) {
+				$this->$key = $values[ $key ];
+			}
 		}
 	}
 

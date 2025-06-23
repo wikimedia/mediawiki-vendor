@@ -29,7 +29,7 @@ use SmashPig\PaymentProviders\Gravy\ReferenceData;
  *
  * 4. Run script:
  *    ./scripts/smashpig.sh
- *    php maintenance/BuildGravyDonationFromLogs.php <YYYYMMDD> <contribution_tracking_id>
+ *    php Maintenance/BuildGravyDonationFromLogs.php <YYYYMMDD> <contribution_tracking_id>
  *
  * Example:
  *    php Maintenance/BuildGravyDonationFromLogs.php 20250101 1234567890.1
@@ -294,7 +294,7 @@ class BuildGravyDonationFromLogs extends MaintenanceBase {
 		foreach ( $decodedJsonLogData as $filePath => $logEntries ) {
 			foreach ( $logEntries as $jsonEntry ) {
 				foreach ( $jsonEntry as $donationData ) {
-					$this->extractDonationQueueMessageFieldsRecursive( $donationData, $extractedFields );
+					$this->extractDonationQueueMessageFieldsRecursive( $donationData, $filePath, $extractedFields );
 				}
 			}
 		}
@@ -306,9 +306,10 @@ class BuildGravyDonationFromLogs extends MaintenanceBase {
 	 * and any special-case logic (e.g. 'accept_language' => 'language').
 	 *
 	 * @param mixed $data
+	 * @param string $filePath
 	 * @param array &$extracted
 	 */
-	protected function extractDonationQueueMessageFieldsRecursive( mixed $data, array &$extracted ): void {
+	protected function extractDonationQueueMessageFieldsRecursive( mixed $data, string $filePath, array &$extracted ): void {
 		if ( !is_array( $data ) ) {
 			// Not an array, no further descending
 			return;
@@ -318,14 +319,29 @@ class BuildGravyDonationFromLogs extends MaintenanceBase {
 		foreach ( self::GRAVY_FIELD_TO_QUEUE_MESSAGE_MAP as $gravyField => $queueMessageKey ) {
 			if ( isset( $data[$gravyField] ) && !isset( $extracted[$queueMessageKey] ) ) {
 				switch ( $gravyField ) {
-					case 'payment_method':
-						if ( is_array( $data[$gravyField] ) && isset( $data[$gravyField]['method'] ) ) {
-							$methodData = ReferenceData::decodePaymentMethod( $data[$gravyField]['method'],
-								$data[$gravyField]['scheme'] );
-							$extracted['payment_method'] = $methodData[0];
-							$extracted['payment_submethod'] = $methodData[1];
-						} else {
+					case 'id':
+						// Skip looking for transaction IDs in the fraud logs as maxmind data contains conflicting keys
+						$isNotFraudLogFile = !str_contains( strtolower( $filePath ), 'fraud' );
+						if ( $isNotFraudLogFile ) {
 							$extracted[$queueMessageKey] = $data[$gravyField];
+						}
+						break;
+					case 'payment_method':
+						if ( is_array( $data[$gravyField] ) ) {
+							// Note: we only process this when $data[payment_method] is an array.
+							// Set payment method and submethod from the payment_method data
+							if ( isset( $data[$gravyField]['method'] ) ) {
+								$methodData = ReferenceData::decodePaymentMethod(
+									$data[$gravyField]['method'],
+									$data[$gravyField]['scheme'] ?? ''
+								);
+								$extracted['payment_method'] = $methodData[0];
+								$extracted['payment_submethod'] = $methodData[1];
+							}
+							// When this is set, it contains the recurring payment token
+							if ( isset( $data[$gravyField]['id'] ) ) {
+								$extracted['recurring_payment_token'] = $data[$gravyField]['id'];
+							}
 						}
 						break;
 					case 'payment_service':
@@ -365,7 +381,7 @@ class BuildGravyDonationFromLogs extends MaintenanceBase {
 
 		// Descend further if needed
 		foreach ( $data as $subValue ) {
-			$this->extractDonationQueueMessageFieldsRecursive( $subValue, $extracted );
+			$this->extractDonationQueueMessageFieldsRecursive( $subValue, $filePath, $extracted );
 		}
 	}
 
@@ -396,6 +412,7 @@ class BuildGravyDonationFromLogs extends MaintenanceBase {
 			'payment_method' => $extractedFields['payment_method'] ?? '',
 			'payment_submethod' => $extractedFields['payment_submethod'] ?? '',
 			'recurring' => $extractedFields['recurring'] ?? '',
+			'recurring_payment_token' => $extractedFields['recurring_payment_token'] ?? '',
 
 			// Donor information
 			'first_name' => $extractedFields['first_name'] ?? '',
@@ -431,6 +448,11 @@ class BuildGravyDonationFromLogs extends MaintenanceBase {
 			if ( empty( $message[$requiredField] ) ) {
 				return $requiredField;
 			}
+		}
+		// Add recurring token check for recurring messages
+		if ( isset( $message['recurring'] ) && $message['recurring'] === '1'
+			&& empty( $message['recurring_payment_token'] ) ) {
+			return 'recurring_payment_token';
 		}
 		return true;
 	}

@@ -132,6 +132,53 @@ class ApplePaymentProviderTest extends BaseGravyTestCase {
 		$this->assertEquals( "visa", $response->getPaymentSubmethod() );
 	}
 
+	/**
+	 * Confirm token payments are successful in Brazil.
+	 *
+	 * This was  previously failing due to the code adding fiscal number as a required field.
+	 *
+	 * @return void
+	 */
+	public function testCreatePaymentFromTokenInBrazil(): void {
+		// set params for Brazil
+		$brazilianRecurringPaymentParams = $this->getCreateTrxnFromTokenParams( amount:1000 );
+		$brazilianRecurringPaymentParams['country'] = 'BR';
+		$brazilianRecurringPaymentParams['currency'] = 'BRL';
+
+		$mockApiResponse = json_decode( file_get_contents( __DIR__ . '/../Data/apple-create-transaction-success.json' ), true );
+		$mockApiResponse['is_subsequent_payment'] = true;
+		$mockApiResponse['merchant_initiated'] = true;
+		$mockApiResponse['payment_source'] = "recurring";
+
+		$expectedApiRequest = json_decode( file_get_contents( __DIR__ . '/../Data/apple-create-payment-request.json' ), true );
+		$expectedApiRequest['external_identifier'] = $brazilianRecurringPaymentParams['order_id'];
+		$expectedApiRequest['payment_method']['redirect_url'] = $brazilianRecurringPaymentParams['return_url'];
+		$expectedApiRequest['country'] = 'BR';
+		$expectedApiRequest['currency'] = 'BRL';
+		$expectedApiRequest["buyer"]["billing_details"]["address"]["country"] = 'BR';
+
+		$this->mockApi->expects( $this->once() )
+			->method( 'createPayment' )
+			->with( $expectedApiRequest )
+			->willReturn( $mockApiResponse );
+
+		$response = $this->provider->createPayment( $brazilianRecurringPaymentParams );
+
+		$this->assertEquals( $mockApiResponse['amount'] / 100, $response->getAmount() );
+		$this->assertEquals( $mockApiResponse['id'], $response->getGatewayTxnId() );
+		$this->assertEquals( $mockApiResponse['reconciliation_id'], $response->getPaymentOrchestratorReconciliationId() );
+		$this->assertEquals( $mockApiResponse['buyer']['billing_details']['first_name'], $response->getDonorDetails()->getFirstName() );
+		$this->assertEquals( $mockApiResponse['payment_service_transaction_id'], $response->getBackendProcessorTransactionId() );
+		$this->assertEquals( $mockApiResponse['buyer']['billing_details']['last_name'], $response->getDonorDetails()->getLastName() );
+		$this->assertEquals( $mockApiResponse['buyer']['billing_details']['email_address'], $response->getDonorDetails()->getEmail() );
+		$this->assertEquals( $mockApiResponse['buyer']['id'], $response->getDonorDetails()->getCustomerId() );
+		$this->assertEquals( $mockApiResponse['buyer']['billing_details']['address']['line1'], $response->getDonorDetails()->getBillingAddress()->getStreetAddress() );
+		$this->assertTrue( $response->isSuccessful() );
+		$this->assertEquals( FinalStatus::PENDING_POKE, $response->getStatus() );
+		$this->assertEquals( "apple", $response->getPaymentMethod() );
+		$this->assertEquals( "visa", $response->getPaymentSubmethod() );
+	}
+
 	private function getCreateTrxnParams( ?string $amount = '1299' ) {
 		$payment_token = file_get_contents( __DIR__ . '/../Data/apple-payment-token-sample.json' );
 		$params = [];

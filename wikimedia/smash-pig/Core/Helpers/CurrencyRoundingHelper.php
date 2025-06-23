@@ -33,6 +33,7 @@ class CurrencyRoundingHelper {
 		'BHD',
 		'CLF',
 		'IQD',
+		'JOD',
 		'KWD',
 		'LYD',
 		'MGA',

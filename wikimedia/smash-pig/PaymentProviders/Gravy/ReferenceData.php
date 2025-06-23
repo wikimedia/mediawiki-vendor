@@ -187,15 +187,15 @@ class ReferenceData {
 
 		switch ( $payment_method ) {
 			case PaymentMethod::EW:
-				$payment_submethod = self::$ewSubmethods[$scheme];
+				$payment_submethod = $scheme ? self::$ewSubmethods[$scheme] : '';
 				break;
 			case PaymentMethod::RTBT:
-				$payment_submethod = self::$rtbtSubmethods[$scheme];
+				$payment_submethod = $scheme ? self::$rtbtSubmethods[$scheme] : '';
 				break;
 			case PaymentMethod::CC:
 			case PaymentMethod::APPLE:
 			case PaymentMethod::GOOGLE:
-				$payment_submethod = self::$cardPaymentSubmethods[$scheme];
+				$payment_submethod = $scheme ? self::$cardPaymentSubmethods[$scheme] : '';
 				break;
 			case PaymentMethod::DD:
 				$payment_submethod = self::$ddSubmethods[$method];
@@ -211,5 +211,14 @@ class ReferenceData {
 		}
 
 		return [ $payment_method, $payment_submethod ];
+	}
+
+	public static function getShorthandPaymentMethod( string $paymentMethod ): string {
+		$gravyMethods = self::$paymentMethodMapper;
+		if ( !isset( $gravyMethods[$paymentMethod] ) ) {
+			throw new \InvalidArgumentException( "Payment method '$paymentMethod' not found" );
+		}
+
+		return $gravyMethods[$paymentMethod];
 	}
 }

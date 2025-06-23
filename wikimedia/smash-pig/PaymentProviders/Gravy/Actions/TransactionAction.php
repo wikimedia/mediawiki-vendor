@@ -10,6 +10,7 @@ use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentProviders\Gravy\ExpatriatedMessages\TransactionMessage;
 use SmashPig\PaymentProviders\Gravy\Jobs\ProcessCaptureRequestJob;
 use SmashPig\PaymentProviders\Gravy\Jobs\RecordCaptureJob;
+use SmashPig\PaymentProviders\Gravy\TransactionDetailsNormalizer;
 use SmashPig\PaymentProviders\Responses\PaymentProviderExtendedResponse;
 
 class TransactionAction extends GravyAction {
@@ -59,14 +60,14 @@ class TransactionAction extends GravyAction {
 	}
 
 	public function getTransactionDetails( TransactionMessage $msg ): PaymentProviderExtendedResponse {
-		$providerConfiguration = Context::get()->getProviderConfiguration();
-		$provider = $providerConfiguration->object( 'payment-provider/cc' );
+		$transactionDetailsNormalizer = new TransactionDetailsNormalizer();
+		$paymentMethod = $msg->getTransactionPaymentMethod();
+		$transactionDetails = $msg->getTransactionDetails();
 
-		$transactionDetails = $provider->getLatestPaymentStatus( [
-			'gateway_txn_id' => $msg->getTransactionId()
-		] );
-
-		return $transactionDetails;
+		return $transactionDetailsNormalizer->normalizeTransactionDetails(
+			$paymentMethod,
+			$transactionDetails
+		);
 	}
 
 	/**
@@ -77,7 +78,7 @@ class TransactionAction extends GravyAction {
 	 */
 	public function requiresChargeback( PaymentProviderExtendedResponse $transaction ): bool {
 		$normalizedResponse = $transaction->getNormalizedResponse();
-		return isset( $normalizedResponse['backend_processor'] ) && $normalizedResponse['backend_processor'] === 'trustly';
+		return $normalizedResponse['type'] == "chargeback";
 	}
 
 	/**

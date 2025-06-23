@@ -33,7 +33,12 @@ class DownloadReportJob implements Runnable {
 
 		// generate the filename using the current time and data
 		$date = date( 'Y_m_d-His' );
-		$fileName = "gravy_settlement_report_{$date}.csv";
+		// multiple types of report can be downloaded, use the report name
+		$reportName = $reportResponse->getReportName();
+		$reportName = strtolower( $reportName );
+		$reportName = str_replace( ' ', '_', $reportName );
+
+		$fileName = "gravy_{$reportName}_report_{$date}.csv";
 
 		$this->downloadLoc =
 			$c->val( 'report-location' ) . '/' .

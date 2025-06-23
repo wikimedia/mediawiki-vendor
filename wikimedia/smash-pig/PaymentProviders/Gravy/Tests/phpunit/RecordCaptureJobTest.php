@@ -60,11 +60,6 @@ class RecordCaptureJobTest extends BaseGravyTestCase {
 		$this->assertEquals( $donationMessage['payment_submethod'], $transactionDetails->getPaymentSubmethod() );
 	}
 
-	private function getValidGravyTransactionMessage(): string {
-		return '{"type":"event","id":"36d2c101-4db5-4afd-ba4b-8fd9b60764ab","created_at":"2024-07-22T19:56:22.973896+00:00",
-        "target":{"type":"transaction","id":"b332ca0a-1dce-4ae6-b27b-04f70db8fae7"},"merchant_account_id":"default"}';
-	}
-
 	/**
 	 * @param string $fileName
 	 * @return void
@@ -87,21 +82,29 @@ class RecordCaptureJobTest extends BaseGravyTestCase {
 	 */
 	public function runJobAndGetDonationMessage(): array {
 		$donationsQueue = QueueWrapper::getQueue( 'donations' );
+		$capturedTransactionMessage = json_decode(
+			file_get_contents( __DIR__ . '/../Data/successful-transaction-capture-message.json' ),
+			true
+		);
 		$capturedTransaction = json_decode(
 			file_get_contents( __DIR__ . '/../Data/successful-transaction.json' ),
 			true
 		);
 
 		$normalizedResponse = ( new ResponseMapper() )->mapFromPaymentResponse( $capturedTransaction );
+		$normalizedMessage = ( new ResponseMapper() )->mapFromPaymentResponse( $capturedTransactionMessage['target'] );
 		$transactionDetails = GravyGetLatestPaymentStatusResponseFactory::fromNormalizedResponse( $normalizedResponse );
 		$job = new RecordCaptureJob();
-		$message = json_decode( $this->getValidGravyTransactionMessage(), true );
 		$job->payload = array_merge(
 			[
-				"eventDate" => $message["created_at"]
+				"eventDate" => $capturedTransactionMessage["created_at"]
 			],
-			$normalizedResponse
+			$normalizedMessage
 		);
+		$this->mockApi->expects( $this->once() )
+			->method( 'getTransaction' )
+			->willReturn( $capturedTransaction );
+
 		$this->assertTrue( $job->execute() );
 
 		$donorData = $this->pendingDatabase->fetchMessageByGatewayOrderId(

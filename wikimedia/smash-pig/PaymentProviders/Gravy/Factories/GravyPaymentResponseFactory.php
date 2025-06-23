@@ -29,6 +29,10 @@ abstract class GravyPaymentResponseFactory {
 		$paymentProviderResponse->setStatus( $response['status'] );
 		$paymentProviderResponse->setSuccessful( $isSuccessful );
 		if ( static::isFailedTransaction( $paymentProviderResponse->getStatus() ) ) {
+			$response['message'] ??= 'Unknown error';
+			$response['description'] ??= 'Unknown error';
+			$response['code'] ??= ErrorCode::UNKNOWN;
+
 			static::addPaymentFailureError( $paymentProviderResponse, $response['message'] . ':' . $response['description'], $response['code'] );
 			return $paymentProviderResponse;
 		}

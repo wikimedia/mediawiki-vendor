@@ -53,11 +53,10 @@ class NotificationsTest extends BaseGravyTestCase {
 
 	public function testTransactionMessageValidRequestValidAuthorizationValue(): void {
 		[ $request, $response ] = $this->getValidRequestResponseObjects();
-		$request->method( 'getRawRequest' )->willReturn( $this->getValidGravyTransactionMessage() );
-		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/successful-transaction.json' ), true );
-		$this->mockApi->expects( $this->once() )
-			->method( 'getTransaction' )
-			->willReturn( $responseBody );
+		$message = json_decode( file_get_contents( __DIR__ . '/../Data/successful-transaction-authorize-message.json' ), true );
+		$request->method( 'getRawRequest' )->willReturn( json_encode( $message ) );
+		$this->mockApi->expects( $this->never() )
+			->method( 'getTransaction' );
 		$result = $this->gravyListener->execute( $request, $response );
 		$this->assertTrue( $result );
 	}
@@ -73,19 +72,17 @@ class NotificationsTest extends BaseGravyTestCase {
 
 	public function testCapturedTransactionMessage(): void {
 		[ $request, $response ] = $this->getValidRequestResponseObjects();
-		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/successful-transaction.json' ), true );
-		$message = json_decode( $this->getValidGravyTransactionMessage(), true );
+		$message = json_decode( file_get_contents( __DIR__ . '/../Data/successful-transaction-capture-message.json' ), true );
 		$request->method( 'getRawRequest' )->willReturn( json_encode( $message ) );
-		$this->mockApi->expects( $this->once() )
-			->method( 'getTransaction' )
-			->willReturn( $responseBody );
+		$this->mockApi->expects( $this->never() )
+			->method( 'getTransaction' );
 		$result = $this->gravyListener->execute( $request, $response );
 		$queued_message = $this->jobsGravyQueue->pop();
 		$this->assertEquals( RecordCaptureJob::class, $queued_message['class'] );
 		$payload = array_merge(
 				[
 					"eventDate" => $message["created_at"]
-				], ( new ResponseMapper() )->mapFromPaymentResponse( $responseBody )
+				], ( new ResponseMapper() )->mapFromPaymentResponse( $message['target'] )
 			);
 		$this->assertSame( $payload, $queued_message['payload'] );
 		$this->assertTrue( $result );
@@ -97,19 +94,17 @@ class NotificationsTest extends BaseGravyTestCase {
 			[ 'capture-from-ipn-listener' => true ]
 		);
 		[ $request, $response ] = $this->getValidRequestResponseObjects();
-		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/approve-transaction.json' ), true );
-		$message = json_decode( $this->getValidGravyTransactionMessage(), true );
+		$message = json_decode( file_get_contents( __DIR__ . '/../Data/successful-transaction-authorize-message.json' ), true );
 		$request->method( 'getRawRequest' )->willReturn( json_encode( $message ) );
-		$this->mockApi->expects( $this->once() )
-			->method( 'getTransaction' )
-			->willReturn( $responseBody );
+		$this->mockApi->expects( $this->never() )
+			->method( 'getTransaction' );
 		$result = $this->gravyListener->execute( $request, $response );
 		$queued_message = $this->jobsGravyQueue->pop();
 		$this->assertEquals( ProcessCaptureRequestJob::class, $queued_message['class'] );
 		$payload = array_merge(
 			[
 				"eventDate" => $message["created_at"]
-			], ( new ResponseMapper() )->mapFromPaymentResponse( $responseBody )
+			], ( new ResponseMapper() )->mapFromPaymentResponse( $message['target'] )
 		);
 		$this->assertSame( $payload, $queued_message['payload'] );
 		$this->assertTrue( $result );
@@ -117,12 +112,10 @@ class NotificationsTest extends BaseGravyTestCase {
 
 	public function testAuthorizedTransactionMessageNoCapture(): void {
 		[ $request, $response ] = $this->getValidRequestResponseObjects();
-		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/approve-transaction.json' ), true );
-		$message = json_decode( $this->getValidGravyTransactionMessage(), true );
+		$message = json_decode( file_get_contents( __DIR__ . '/../Data/successful-transaction-authorize-message.json' ), true );
 		$request->method( 'getRawRequest' )->willReturn( json_encode( $message ) );
-		$this->mockApi->expects( $this->once() )
-			->method( 'getTransaction' )
-			->willReturn( $responseBody );
+		$this->mockApi->expects( $this->never() )
+			->method( 'getTransaction' );
 		$result = $this->gravyListener->execute( $request, $response );
 		$queued_message = $this->jobsGravyQueue->pop();
 		$this->assertNull( $queued_message );
@@ -155,16 +148,14 @@ class NotificationsTest extends BaseGravyTestCase {
 
 	public function testTrustlyPaymentMFailedMessageIsSentToRefund(): void {
 		[ $request, $response ] = $this->getValidRequestResponseObjects();
-		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/trustly-create-transaction-failed.json' ), true );
-		$message = json_decode( $this->getValidGravyTransactionMessage(), true );
+		$message = json_decode( file_get_contents( __DIR__ . '/../Data/trustly-create-transaction-failed-message.json' ), true );
 		$request->method( 'getRawRequest' )->willReturn( json_encode( $message ) );
-		$this->mockApi->expects( $this->once() )
-			->method( 'getTransaction' )
-			->willReturn( $responseBody );
+		$this->mockApi->expects( $this->never() )
+			->method( 'getTransaction' );
 		$this->gravyListener->execute( $request, $response );
 		$refundMessage = $this->refundQueue->pop();
 		$jobsMessage = $this->jobsGravyQueue->pop();
-		$normalized_details = ( new ResponseMapper() )->mapFromPaymentResponse( $responseBody );
+		$normalized_details = ( new ResponseMapper() )->mapFromPaymentResponse( $message['target'] );
 
 		$this->assertNotNull( $refundMessage, '1 message for the failed ACH payment shoud be queued to refund queue' );
 		$this->assertNull( $jobsMessage, 'No message shoud be queued to jobs queue' );

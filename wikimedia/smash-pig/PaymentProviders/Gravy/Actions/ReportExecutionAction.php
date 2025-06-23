@@ -24,6 +24,8 @@ class ReportExecutionAction extends GravyAction {
 			if ( $reportUrl->isSuccessful() ) {
 				$message = $reportUrl->getNormalizedResponse();
 				unset( $message['raw_response'] );
+				$message['report_name'] = $reportExecutionDetails->getReportName();
+				$message['report_created_by'] = $reportExecutionDetails->getReportCreatedBy();
 				$message = DownloadReportJob::factory( $message );
 				QueueWrapper::push( $msg->getDestinationQueue(), $message );
 			} else {

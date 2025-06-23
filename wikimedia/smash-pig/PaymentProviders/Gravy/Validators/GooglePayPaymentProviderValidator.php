@@ -30,4 +30,12 @@ class GooglePayPaymentProviderValidator extends PaymentProviderValidator {
 		$this->validateFields( $required, $params );
 	}
 
+	/**
+	 * Override the parent method because we do not require fiscal number
+	 * validation for Google Pay payments
+	 */
+	protected function addCountrySpecificRequiredFields( array $params ): array {
+		return [];
+	}
+
 }

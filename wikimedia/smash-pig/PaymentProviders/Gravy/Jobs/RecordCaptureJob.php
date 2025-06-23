@@ -1,6 +1,7 @@
 <?php
 namespace SmashPig\PaymentProviders\Gravy\Jobs;
 
+use SmashPig\Core\Context;
 use SmashPig\Core\DataStores\PendingDatabase;
 use SmashPig\Core\DataStores\QueueWrapper;
 use SmashPig\Core\Logging\Logger;
@@ -72,9 +73,11 @@ class RecordCaptureJob implements Runnable {
 		return true;
 	}
 
-	protected function addMissingFieldsToPendingRecord( array &$dbMessage, PaymentProviderExtendedResponse $transactionDetails ): void {
+	protected function addMissingFieldsToPendingRecord( array &$dbMessage, PaymentProviderExtendedResponse $partialTransactionDetails ): void {
 		// Add the gateway transaction ID
-		$dbMessage['gateway_txn_id'] = $transactionDetails->getGatewayTxnId();
+		$dbMessage['gateway_txn_id'] = $partialTransactionDetails->getGatewayTxnId();
+
+		$transactionDetails = $this->getFullTransactionDetails( $partialTransactionDetails->getGatewayTxnId() );
 
 		// Other things that are missing for e.g. 3d-secure transactions
 		if ( empty( $dbMessage['backend_processor'] ) ) {
@@ -101,5 +104,16 @@ class RecordCaptureJob implements Runnable {
 				}
 			}
 		}
+	}
+
+	public function getFullTransactionDetails( string $gateway_txn_id ): PaymentProviderExtendedResponse {
+		$providerConfiguration = Context::get()->getProviderConfiguration();
+		$provider = $providerConfiguration->object( 'payment-provider/cc' );
+
+		$transactionDetails = $provider->getLatestPaymentStatus( [
+			'gateway_txn_id' => $gateway_txn_id,
+		] );
+
+		return $transactionDetails;
 	}
 }

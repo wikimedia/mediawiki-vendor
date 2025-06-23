@@ -57,8 +57,8 @@ class RequestMapper {
 			$request['buyer'] = [
 				'external_identifier' => strtolower( $params['email'] ),
 				'billing_details' => [
-					'first_name' => $params['first_name'],
-					'last_name' => $params['last_name'],
+					'first_name' => $params['first_name'] ?? null,
+					'last_name' => $params['last_name'] ?? null,
 					'email_address' => strtolower( $params['email'] ),
 					'phone_number' => $params['phone'] ?? null,
 					'address' => [

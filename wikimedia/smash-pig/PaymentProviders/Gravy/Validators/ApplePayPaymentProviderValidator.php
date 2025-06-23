@@ -45,4 +45,12 @@ class ApplePayPaymentProviderValidator extends PaymentProviderValidator {
 		$this->validateFields( $required, $params );
 	}
 
+	/**
+	 * Override the parent method because we do not require fiscal number
+	 * validation for Apple Pay payments
+	 */
+	protected function addCountrySpecificRequiredFields( array $params ): array {
+		return [];
+	}
+
 }

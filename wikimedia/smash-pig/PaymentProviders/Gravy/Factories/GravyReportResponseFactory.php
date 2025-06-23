@@ -20,6 +20,8 @@ class GravyReportResponseFactory extends GravyPaymentResponseFactory {
 		self::setReportUrl( $reportResponse, $normalizedResponse );
 		self::setReportId( $reportResponse, $normalizedResponse );
 		self::setReportExecutionId( $reportResponse, $normalizedResponse );
+		self::setReportName( $reportResponse, $normalizedResponse );
+		self::setReportCreatedBy( $reportResponse, $normalizedResponse );
 	}
 
 	protected static function setReportUrl( ReportResponse $reportResponse, array $normalizedResponse ): void {
@@ -37,6 +39,18 @@ class GravyReportResponseFactory extends GravyPaymentResponseFactory {
 	protected static function setReportExecutionId( ReportResponse $reportResponse, array $normalizedResponse ): void {
 		if ( isset( $normalizedResponse['report_execution_id'] ) ) {
 			$reportResponse->setReportExecutionId( $normalizedResponse['report_execution_id'] );
+		}
+	}
+
+	protected static function setReportName( ReportResponse $reportResponse, array $normalizedResponse ): void {
+		if ( isset( $normalizedResponse['report_name'] ) ) {
+			$reportResponse->setReportName( $normalizedResponse['report_name'] );
+		}
+	}
+
+	protected static function setReportCreatedBy( ReportResponse $reportResponse, array $normalizedResponse ): void {
+		if ( isset( $normalizedResponse['report_created_by'] ) ) {
+			$reportResponse->setReportCreatedBy( $normalizedResponse['report_created_by'] );
 		}
 	}
 
