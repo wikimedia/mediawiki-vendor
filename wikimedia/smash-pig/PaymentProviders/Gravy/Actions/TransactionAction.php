@@ -78,7 +78,7 @@ class TransactionAction extends GravyAction {
 	 */
 	public function requiresChargeback( PaymentProviderExtendedResponse $transaction ): bool {
 		$normalizedResponse = $transaction->getNormalizedResponse();
-		return $normalizedResponse['type'] == "chargeback";
+		return isset( $normalizedResponse['type'] ) && $normalizedResponse['type'] == "chargeback";
 	}
 
 	/**

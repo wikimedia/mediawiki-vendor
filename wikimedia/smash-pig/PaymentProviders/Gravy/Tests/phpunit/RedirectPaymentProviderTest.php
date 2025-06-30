@@ -154,7 +154,10 @@ class RedirectPaymentProviderTest extends BaseGravyTestCase {
 				'is_subsequent_payment' => true,
 				'merchant_initiated' => true,
 				'external_identifier' => $params['order_id'],
-				'buyer_id' => $params['processor_contact_id']
+				'buyer_id' => $params['processor_contact_id'],
+				"statement_descriptor" => [
+					"description" => "Wikimedia Foundation - monthly gift"
+				]
 			] )
 			->willReturn( $responseBody );
 
@@ -225,6 +228,9 @@ class RedirectPaymentProviderTest extends BaseGravyTestCase {
 						],
 					],
 					'intent' => 'capture',
+					"statement_descriptor" => [
+						"description" => "Wikimedia Foundation"
+					]
 				]
 			)
 			->willReturn( $responseBody );
@@ -290,6 +296,9 @@ class RedirectPaymentProviderTest extends BaseGravyTestCase {
 						],
 					],
 					'intent' => 'capture',
+					"statement_descriptor" => [
+						"description" => "Wikimedia Foundation"
+					]
 				]
 			)
 			->willReturn( $responseBody );
@@ -311,6 +320,7 @@ class RedirectPaymentProviderTest extends BaseGravyTestCase {
 		$params['order_id'] = "$ct_id.1";
 		$params['payment_method'] = "venmo";
 		$params['payment_submethod'] = "";
+		$params['description'] = "Wikimedia Foundation";
 
 		$donorParams = $this->getCreateDonorParams();
 		$params = array_merge( $params, $donorParams );
@@ -326,7 +336,7 @@ class RedirectPaymentProviderTest extends BaseGravyTestCase {
 		$params['recurring'] = 1;
 		$params['recurring_payment_token'] = "random_token";
 		$params['processor_contact_id'] = "random_contact_id";
-
+		$params['description'] = "Wikimedia Foundation - monthly gift";
 		return $params;
 	}
 }

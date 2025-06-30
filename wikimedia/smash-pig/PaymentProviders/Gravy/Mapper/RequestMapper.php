@@ -25,7 +25,8 @@ class RequestMapper {
 		'rapipago',
 		'abitab',
 		'boleto',
-		'stitch'
+		'stitch',
+		'bancomer'
 	];
 
 	/**
@@ -48,7 +49,10 @@ class RequestMapper {
 			'payment_method' => [
 				'method' => $params['method'] ?? '',
 			],
-			'external_identifier' => $params['order_id']
+			'external_identifier' => $params['order_id'],
+			"statement_descriptor" => [
+				"description" => $params["description"] ?? "Wikimedia Foundation",
+			]
 		];
 
 		if ( !empty( $params['processor_contact_id'] ) ) {

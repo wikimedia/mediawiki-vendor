@@ -6,7 +6,6 @@ use SmashPig\Core\Logging\Logger;
 use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentData\StatusNormalizer;
 use SmashPig\PaymentProviders\Responses\CreatePaymentResponse;
-use SmashPig\PaymentProviders\Responses\CreatePaymentWithProcessorRetryResponse;
 
 class CardPaymentProvider extends PaymentProvider {
 
@@ -90,42 +89,4 @@ class CardPaymentProvider extends PaymentProvider {
 		return $response;
 	}
 
-	/**
-	 * @param array $params
-	 * @return CreatePaymentResponse
-	 * @throws \SmashPig\Core\ApiException
-	 */
-	protected function createRecurringPaymentWithShopperReference( array $params ): CreatePaymentResponse {
-		// New style recurrings will have both the token and processor_contact_id (shopper reference)
-		// set, old style just the token
-		$params['payment_method'] = 'scheme';
-		$params['manual_capture'] = true;
-		$rawResponse = $this->api->createPaymentFromToken(
-			$params
-		);
-		if ( isset( $rawResponse['additionalData']['retry.rescueScheduled'] ) ) {
-			$response = new CreatePaymentWithProcessorRetryResponse();
-			$autoRescueScheduled = filter_var( $rawResponse['additionalData']['retry.rescueScheduled'], FILTER_VALIDATE_BOOLEAN );
-			$response->setIsProcessorRetryScheduled( $autoRescueScheduled );
-			if ( !empty( $rawResponse['additionalData']['retry.rescueReference'] ) ) {
-				$response->setProcessorRetryRescueReference( (string)$rawResponse['additionalData']['retry.rescueReference'] );
-			}
-			if ( !$response->getIsProcessorRetryScheduled() && !empty( $rawResponse['refusalReason'] ) ) {
-				$response->setProcessorRetryRefusalReason( $rawResponse['refusalReason'] );
-			}
-		} else {
-			$response = new CreatePaymentResponse();
-		}
-		$response->setRawResponse( $rawResponse );
-		$rawStatus = $rawResponse['resultCode'];
-		$this->mapStatus(
-			$response,
-			$rawResponse,
-			new ApprovalNeededCreatePaymentStatus(),
-			$rawStatus
-		);
-
-		$this->mapGatewayTxnIdAndErrors( $response, $rawResponse );
-		return $response;
-	}
 }

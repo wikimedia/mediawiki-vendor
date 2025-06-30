@@ -89,6 +89,7 @@ class GooglePaymentProviderTest extends BaseGravyTestCase {
 		$params['payment_method'] = "google";
 		$params['card_scheme'] = "VISA";
 		$params['return_url'] = "https://localhost:9001";
+		$params['description'] = "Wikimedia Foundation";
 
 		$donorParams = $this->getCreateDonorParams();
 		unset( $donorParams['first_name'], $donorParams['last_name'] );
@@ -102,6 +103,7 @@ class GooglePaymentProviderTest extends BaseGravyTestCase {
 
 	private function getCreateTrxnFromTokenParams( $amount ) {
 		$params = $this->getCreateTrxnParams( $amount );
+		$params['description'] = "Wikimedia Foundation - monthly gift";
 
 		unset( $params['gateway_session_id'] );
 

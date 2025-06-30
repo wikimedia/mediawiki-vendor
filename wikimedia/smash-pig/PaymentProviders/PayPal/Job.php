@@ -17,6 +17,9 @@ class Job implements Runnable {
 	protected $providerConfiguration;
 
 	public function is_reject() {
+		if ( $this->is_gravy() ) {
+			return true;
+		}
 		foreach ( $this->providerConfiguration->val( 'rejects' ) as $key => $val ) {
 			if ( isset( $this->payload[$key] ) ) {
 				$values = (array)$val;
@@ -98,5 +101,15 @@ class Job implements Runnable {
 		// TODO It would be nice if push() returned something useful so we
 		// could return something here too
 		return true;
+	}
+
+	/**
+	 * Detect gravy-originated messages by the non-numeric format of their 'custom' field
+	 * @return bool
+	 */
+	protected function is_gravy() {
+		return isset( $this->payload['custom'] ) &&
+			!is_numeric( $this->payload['custom'] ) &&
+			strlen( $this->payload['custom'] ) > 20;
 	}
 }

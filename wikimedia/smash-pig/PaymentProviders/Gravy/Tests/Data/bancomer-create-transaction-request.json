@@ -3,7 +3,7 @@
   "currency": "PEN",
   "country": "PE",
   "payment_method": {
-    "method": "bcp",
+    "method": "bancomer",
     "redirect_url": "localhost",
     "country": "PE",
     "currency": "PEN"

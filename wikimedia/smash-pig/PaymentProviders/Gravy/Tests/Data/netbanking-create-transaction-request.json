@@ -32,5 +32,8 @@
             }
         }
     },
-    "intent": "capture"
+    "intent": "capture",
+    "statement_descriptor": {
+        "description": "Wikimedia Foundation"
+    }
 }

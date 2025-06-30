@@ -57,6 +57,9 @@ class CardPaymentProviderTest extends BaseGravyTestCase {
 				'merchant_initiated' => true,
 				'external_identifier' => $params['order_id'],
 				'buyer_id' => $params['processor_contact_id'],
+				"statement_descriptor" => [
+					"description" => "Wikimedia Foundation - monthly gift"
+				]
 			] )
 			->willReturn( $responseBody );
 
@@ -109,6 +112,9 @@ class CardPaymentProviderTest extends BaseGravyTestCase {
 							'organization' => $params['employer'] ?? null
 						]
 					]
+				],
+				"statement_descriptor" => [
+					"description" => "Wikimedia Foundation - monthly gift"
 				]
 			] )
 			->willReturn( $responseBody );
@@ -290,6 +296,9 @@ class CardPaymentProviderTest extends BaseGravyTestCase {
 				'id' => $transactionId,
 			],
 			'external_identifier' => $params['order_id'],
+			"statement_descriptor" => [
+					"description" => "Wikimedia Foundation"
+			],
 			'buyer' => [
 				'external_identifier' => $params['email'],
 				'billing_details' => [
@@ -357,6 +366,9 @@ class CardPaymentProviderTest extends BaseGravyTestCase {
 						'organization' => $params['employer'] ?? null
 					],
 				]
+			],
+			"statement_descriptor" => [
+				"description" => "Wikimedia Foundation"
 			]
 		];
 		$this->mockApi->expects( $this->once() )
@@ -423,6 +435,9 @@ class CardPaymentProviderTest extends BaseGravyTestCase {
 						'id' => 'ABC123-c067-4cd6-a3c8-aec67899d5af',
 					],
 					'external_identifier' => $params['order_id'],
+					"statement_descriptor" => [
+						"description" => "Wikimedia Foundation"
+					],
 					'buyer' => [
 						'external_identifier' => 'lorem@ipsum',
 						'billing_details' => [
@@ -476,6 +491,9 @@ class CardPaymentProviderTest extends BaseGravyTestCase {
 						'id' => 'ABC123-c067-4cd6-a3c8-aec67899d5af',
 					],
 					'external_identifier' => $params['order_id'],
+					"statement_descriptor" => [
+						"description" => "Wikimedia Foundation"
+					],
 					'buyer' => [
 						'external_identifier' => 'lorem@ipsum',
 						'billing_details' => [
@@ -531,6 +549,9 @@ class CardPaymentProviderTest extends BaseGravyTestCase {
 						'id' => 'ABC123-c067-4cd6-a3c8-aec67899d5af',
 					],
 					'external_identifier' => $params['order_id'],
+					"statement_descriptor" => [
+						"description" => "Wikimedia Foundation"
+					],
 					'buyer' => [
 						'external_identifier' => 'lorem@ipsum',
 						'billing_details' => [
@@ -629,6 +650,7 @@ class CardPaymentProviderTest extends BaseGravyTestCase {
 		$params['gateway_session_id'] = $checkoutSessionId;
 		$ct_id = mt_rand( 100000, 1000009 );
 		$params['order_id'] = "$ct_id.1";
+		$params['description'] = "Wikimedia Foundation";
 
 		$donorParams = $this->getCreateDonorParams();
 
@@ -641,7 +663,7 @@ class CardPaymentProviderTest extends BaseGravyTestCase {
 		$params = $this->getCreateTrxnParams( "", $amount );
 
 		unset( $params['gateway_session_id'] );
-
+		$params['description'] = "Wikimedia Foundation - monthly gift";
 		$params['recurring'] = 1;
 		$params['recurring_payment_token'] = "random_token";
 		if ( !$guest ) {

@@ -13,12 +13,16 @@ class DirectDepositPaymentProviderResponseMapper extends ResponseMapper {
 	 */
 	protected function mapPaymentResponseDonorDetails( array &$result, array $response ): void {
 		parent::mapPaymentResponseDonorDetails( $result, $response );
-		$donorDetails = $response['buyer']['billing_details'];
-		$result['donor_details']['email_address'] = $response['buyer']['external_identifier'];
-		if ( isset( $donorDetails['email_address'] ) ) {
-			// compare if the email address from the form is different from the one in trustly in lowercase
-			if ( strtolower( $response['buyer']['external_identifier'] ) !== strtolower( $donorDetails['email_address'] ) ) {
-				$result['donor_details']['billing_email'] = $donorDetails['email_address'];
+		if ( !empty( $response['buyer'] ) && !empty( $response['buyer']['billing_details'] ) ) {
+			$donorDetails = $response['buyer']['billing_details'];
+			$result['donor_details']['email_address'] = $response['buyer']['external_identifier'] ?? '';
+			if ( isset( $donorDetails['email_address'] ) ) {
+				// compare if the email address from the form is different from the one in trustly in lowercase
+				if ( strtolower( $response['buyer']['external_identifier'] ) !== strtolower(
+						$donorDetails['email_address']
+					) ) {
+					$result['donor_details']['billing_email'] = $donorDetails['email_address'];
+				}
 			}
 		}
 	}

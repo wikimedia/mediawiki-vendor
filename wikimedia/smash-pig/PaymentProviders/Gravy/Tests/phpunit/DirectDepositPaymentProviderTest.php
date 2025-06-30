@@ -94,6 +94,9 @@ class DirectDepositPaymentProviderTest extends BaseGravyTestCase {
 				'is_subsequent_payment' => true,
 				'merchant_initiated' => true,
 				'external_identifier' => $params['order_id'],
+				"statement_descriptor" => [
+					"description" => "Wikimedia Foundation - monthly gift"
+				],
 				'buyer' => [
 					'external_identifier' => $params['email'],
 				]
@@ -119,6 +122,7 @@ class DirectDepositPaymentProviderTest extends BaseGravyTestCase {
 		$params['order_id'] = "$ct_id.1";
 		$params['payment_method'] = "dd";
 		$params['payment_submethod'] = "ach";
+		$params['description'] = "Wikimedia Foundation";
 
 		$donorParams = $this->getCreateDonorParams();
 		$params = array_merge( $params, $donorParams );
@@ -130,6 +134,7 @@ class DirectDepositPaymentProviderTest extends BaseGravyTestCase {
 		$params = $this->getCreateTrxnParams( $amount );
 
 		unset( $params['gateway_session_id'] );
+		$params['description'] = "Wikimedia Foundation - monthly gift";
 
 		$params['recurring'] = 1;
 		$params['recurring_payment_token'] = "random_token";

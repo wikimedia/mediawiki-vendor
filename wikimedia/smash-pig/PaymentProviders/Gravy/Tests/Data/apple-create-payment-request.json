@@ -42,5 +42,8 @@
         "organization": "Wikimedia Foundation"
       }
     }
+  },
+  "statement_descriptor": {
+		"description": "Wikimedia Foundation"
   }
 }

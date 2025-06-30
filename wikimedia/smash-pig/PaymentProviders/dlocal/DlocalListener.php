@@ -2,7 +2,6 @@
 
 use SmashPig\Core\Context;
 use SmashPig\Core\Http\Request;
-use SmashPig\Core\Listeners\ListenerDataException;
 use SmashPig\Core\Listeners\ListenerSecurityException;
 use SmashPig\Core\Listeners\RestListener;
 use SmashPig\Core\Logging\Logger;
@@ -12,6 +11,10 @@ use SmashPig\Core\Messages\ListenerMessage;
  * Responds to payment notifications from dlocal
  */
 class DlocalListener extends RestListener {
+
+	private const X_CONTROL_PARAMETER = 'x_control';
+	private const MISDIRECTED_IPN_MESSAGE = 'discarding mis-directed old-style IPN';
+	private const INVALID_AUTHORIZATION_MESSAGE = 'INVALID dlocal IPN message with no authorization header: ';
 
 	/**
 	 * @var array
@@ -42,13 +45,12 @@ class DlocalListener extends RestListener {
 		// We only want to process messages sent with an authorization header we can validate
 		if ( empty( $authorizationHeader ) ) {
 			$requestValues = $request->getValues();
-			if ( isset( $requestValues['x_control'] ) ) {
-				Logger::info( 'discarding mis-directed old-style IPN' );
+			if ( isset( $requestValues[self::X_CONTROL_PARAMETER] ) ) {
+				Logger::info( self::MISDIRECTED_IPN_MESSAGE );
 				return [];
 			}
-			throw new ListenerDataException(
-				'INVALID dlocal IPN message with no authorization header: ' . print_r( $sanitized, true )
-			);
+			Logger::info( self::INVALID_AUTHORIZATION_MESSAGE . print_r( $sanitized, true ) );
+			return [];
 		}
 
 		$messages = [];

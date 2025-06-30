@@ -28,6 +28,26 @@ class TransactionDetailsNormalizerTest extends BaseGravyTestCase {
 		$this->assertSame( 'USD', $transactionDetailsResponse->getCurrency() );
 	}
 
+	public function testNormalizeTrustlyTransactionDetails(): void {
+		$transactionDetailsNormalizer = new TransactionDetailsNormalizer();
+		$paymentMethod = 'trustly';
+		$transactionDetails = $this->getTransactionDetailsFixture();
+
+		$transactionDetailsResponse = $transactionDetailsNormalizer->normalizeTransactionDetails(
+			$paymentMethod,
+			$transactionDetails
+		);
+
+		$this->assertInstanceOf( PaymentProviderResponse::class,
+			$transactionDetailsResponse );
+		$this->assertSame( FinalStatus::COMPLETE, $transactionDetailsResponse->getStatus() );
+		$this->assertSame( 'capture_succeeded', $transactionDetailsResponse->getRawStatus() );
+		$this->assertSame( 'b332ca0a-1dce-4ae6-b27b-04f70db8fae7', $transactionDetailsResponse->getGatewayTxnId() );
+		$this->assertSame( '8110000000002017185', $transactionDetailsResponse->getBackendProcessorTransactionId() );
+		$this->assertSame( 12.99, $transactionDetailsResponse->getAmount() );
+		$this->assertSame( 'USD', $transactionDetailsResponse->getCurrency() );
+	}
+
 	/**
 	 * Test with a different payment method
 	 */

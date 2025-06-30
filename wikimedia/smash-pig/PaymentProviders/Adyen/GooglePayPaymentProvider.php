@@ -9,6 +9,9 @@ use SmashPig\PaymentProviders\Responses\CreatePaymentResponse;
 class GooglePayPaymentProvider extends PaymentProvider {
 
 	public function createPayment( array $params ): CreatePaymentResponse {
+		if ( !empty( $params['recurring_payment_token'] ) && !empty( $params['processor_contact_id'] ) ) {
+			return $this->createRecurringPaymentWithShopperReference( $params );
+		}
 		$rawResponse = $this->api->createGooglePayPayment( $params );
 		$response = new CreatePaymentResponse();
 		$response->setRawResponse( $rawResponse );

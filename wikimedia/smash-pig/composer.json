@@ -51,8 +51,9 @@
         "amzn/login-and-pay-with-amazon-sdk-php": "^2.5",
         "psr/cache": "^1.0",
         "psr/log": "^1.0",
+        "psr/container": "~1.0 || ~2.0",
         "corneltek/getoptionkit": "^2.5",
-        "gr4vy/gr4vy-php": "0.26.0"
+        "gr4vy/gr4vy-php": "0.27"
     },
     "require-dev": {
     	"php-parallel-lint/php-parallel-lint": "^1.2",

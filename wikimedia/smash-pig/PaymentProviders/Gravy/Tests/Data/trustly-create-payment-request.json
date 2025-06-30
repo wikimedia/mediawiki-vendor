@@ -2,9 +2,16 @@
   "amount": 100000,
   "currency": "USD",
   "country": "US",
-  "payment_method": { "method": "trustly", "country": "US", "currency": "USD" },
+  "payment_method": {
+    "method": "trustly",
+    "country": "US",
+    "currency": "USD"
+  },
   "external_identifier": "907184.1",
   "buyer": {
     "external_identifier": "lorem@ipsum"
+  },
+  "statement_descriptor": {
+    "description": "Wikimedia Foundation"
   }
 }

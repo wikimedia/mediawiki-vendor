@@ -25,6 +25,8 @@ use SmashPig\PaymentProviders\IRefundablePaymentProvider;
 use SmashPig\PaymentProviders\Responses\ApprovePaymentResponse;
 use SmashPig\PaymentProviders\Responses\CancelAutoRescueResponse;
 use SmashPig\PaymentProviders\Responses\CancelPaymentResponse;
+use SmashPig\PaymentProviders\Responses\CreatePaymentResponse;
+use SmashPig\PaymentProviders\Responses\CreatePaymentWithProcessorRetryResponse;
 use SmashPig\PaymentProviders\Responses\DeleteDataResponse;
 use SmashPig\PaymentProviders\Responses\PaymentMethodResponse;
 use SmashPig\PaymentProviders\Responses\PaymentProviderExtendedResponse;
@@ -469,51 +471,6 @@ abstract class PaymentProvider implements
 	}
 
 	/**
-	 * Maps gateway transaction ID and errors from $rawResponse to $response. The replies we get back from the
-	 * Adyen API have a section with 'pspReference' and 'refusalReason' properties. Exactly where this section
-	 * is depends on the API call, but we map them all the same way.
-	 *
-	 * @param PaymentProviderResponse $response An instance of a PaymentProviderResponse subclass to be populated
-	 * @param object $rawResponse The bit of the API response that has pspReference and refusalReason
-	 * @param bool $checkForRetry Whether to test the refusalReason against a list of retryable reasons.
-	 */
-	protected function mapTxnIdAndErrors(
-		PaymentProviderResponse $response,
-		$rawResponse,
-		$checkForRetry = true
-	) {
-		// map trxn id
-		if ( !empty( $rawResponse->pspReference ) ) {
-			$response->setGatewayTxnId( $rawResponse->pspReference );
-		} else {
-			$message = 'Unable to map Adyen Gateway Transaction ID';
-			$response->addErrors( new PaymentError(
-				ErrorCode::MISSING_TRANSACTION_ID,
-				$message,
-				LogLevel::ERROR
-			) );
-			Logger::debug( $message, $rawResponse );
-		}
-		// map errors
-		if ( !empty( $rawResponse->refusalReason ) ) {
-			if ( $checkForRetry ) {
-				if ( $this->canRetryRefusalReason( $rawResponse->refusalReason ) ) {
-					$errorCode = ErrorCode::DECLINED;
-				} else {
-					$errorCode = ErrorCode::DECLINED_DO_NOT_RETRY;
-				}
-			} else {
-				$errorCode = ErrorCode::UNEXPECTED_VALUE;
-			}
-			$response->addErrors( new PaymentError(
-				$errorCode,
-				$rawResponse->refusalReason,
-				LogLevel::INFO
-			) );
-		}
-	}
-
-	/**
 	 * Normalize the raw status or add appropriate errors to our response object. We have a group of classes
 	 * whose function is normalizing raw status codes for specific API calls. We expect SOME status code back
 	 * from any API call, so when that is missing we always add a MISSING_REQUIRED_DATA error. Otherwise we
@@ -652,5 +609,49 @@ abstract class PaymentProvider implements
 			$badParams[] = 'language';
 		}
 		return $badParams;
+	}
+
+	/**
+	 * @param array $params
+	 * @return CreatePaymentResponse
+	 * @throws \SmashPig\Core\ApiException
+	 */
+	protected function createRecurringPaymentWithShopperReference( array $params ): CreatePaymentResponse {
+		// New style recurrings will have both the token and processor_contact_id (shopper reference)
+		// set, old style just the token
+		$params['payment_method'] = 'scheme';
+		$params['manual_capture'] = true;
+		$rawResponse = $this->api->createPaymentFromToken(
+			$params
+		);
+		if ( isset( $rawResponse['additionalData']['retry.rescueScheduled'] ) ) {
+			$response = new CreatePaymentWithProcessorRetryResponse();
+			$autoRescueScheduled = filter_var(
+				$rawResponse['additionalData']['retry.rescueScheduled'],
+				FILTER_VALIDATE_BOOLEAN
+			);
+			$response->setIsProcessorRetryScheduled( $autoRescueScheduled );
+			if ( !empty( $rawResponse['additionalData']['retry.rescueReference'] ) ) {
+				$response->setProcessorRetryRescueReference(
+					(string)$rawResponse['additionalData']['retry.rescueReference']
+				);
+			}
+			if ( !$response->getIsProcessorRetryScheduled() && !empty( $rawResponse['refusalReason'] ) ) {
+				$response->setProcessorRetryRefusalReason( $rawResponse['refusalReason'] );
+			}
+		} else {
+			$response = new CreatePaymentResponse();
+		}
+		$response->setRawResponse( $rawResponse );
+		$rawStatus = $rawResponse['resultCode'];
+		$this->mapStatus(
+			$response,
+			$rawResponse,
+			new ApprovalNeededCreatePaymentStatus(),
+			$rawStatus
+		);
+
+		$this->mapGatewayTxnIdAndErrors( $response, $rawResponse );
+		return $response;
 	}
 }

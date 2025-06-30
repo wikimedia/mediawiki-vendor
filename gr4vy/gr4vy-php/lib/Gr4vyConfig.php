@@ -263,7 +263,7 @@ class Gr4vyConfig
         return json_decode($responseData, true);
     }
 
-    private function post($endpoint, $data) {
+    private function post($endpoint, $data, $headers = array()) {
         $url = $this->host . $endpoint;
 
         $scopes = array("*.read", "*.write");
@@ -277,10 +277,13 @@ class Gr4vyConfig
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                'Authorization: Bearer ' . $accessToken,
-                'Content-Type:application/json',
-                "X-GR4VY-MERCHANT-ACCOUNT-ID:" . $this->merchantAccountId
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array_merge(
+                array(
+                    'Authorization: Bearer ' . $accessToken,
+                    'Content-Type:application/json',
+                    "X-GR4VY-MERCHANT-ACCOUNT-ID:" . $this->merchantAccountId
+                ),
+                $headers,
             )
         );
         curl_setopt($ch, CURLOPT_POST, 1);
@@ -435,8 +438,8 @@ class Gr4vyConfig
         $response = $this->delete("/payment-services/" . $payment_service_id);
         return $response;
     }
-    public function authorizeNewTransaction($transaction_request) {
-        $response = $this->post("/transactions", $transaction_request);
+    public function authorizeNewTransaction($transaction_request, $headers = array()) {
+        $response = $this->post(endpoint: "/transactions", data: $transaction_request, headers: $headers );
         return $response;
     }
     public function getTransaction($transaction_id) {

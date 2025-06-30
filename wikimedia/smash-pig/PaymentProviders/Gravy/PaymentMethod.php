@@ -16,6 +16,7 @@ enum PaymentMethod: string {
 	case PIX = 'pix';
 	case PSE = 'pse';
 	case BCP = 'bcp';
+	case BANCOMER = 'bancomer';
 	case WEBPAY = 'webpay';
 	case STITCH = 'stitch';
 

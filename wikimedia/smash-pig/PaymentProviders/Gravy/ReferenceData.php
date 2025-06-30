@@ -18,6 +18,7 @@ class ReferenceData {
 		'amex' => PaymentMethod::CC,
 		'applepay' => PaymentMethod::APPLE,
 		'bacs' => PaymentMethod::DD,
+		'bancomer' => PaymentMethod::BT,
 		'bancontact' => PaymentMethod::CC,
 		'banked' => PaymentMethod::BT,
 		'bcp' => PaymentMethod::BT,
@@ -50,6 +51,7 @@ class ReferenceData {
 		'givingblock' => '',
 		'gocardless' => '',
 		'googlepay' => PaymentMethod::GOOGLE,
+		'googlepay_pan_only' => PaymentMethod::GOOGLE,
 		'gopay' => '',
 		'grabpay' => '',
 		'hipercard' => PaymentMethod::CC,
@@ -168,6 +170,7 @@ class ReferenceData {
 		'netbanking' => 'netbanking',
 		'webpay' => 'webpay',
 		'stitch' => 'stitch',
+		'bancomer' => 'bancomer'
 	];
 
 	protected static $cashSubmethods = [

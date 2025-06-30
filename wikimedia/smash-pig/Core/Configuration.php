@@ -1,12 +1,13 @@
 <?php
 namespace SmashPig\Core;
 
+use Psr\Container\ContainerInterface;
 use Symfony\Component\Yaml\Parser;
 
 /**
  * Cascading configuration using YAML files
  */
-abstract class Configuration {
+abstract class Configuration implements ContainerInterface {
 
 	/** @var array K/V array of configuration options for the initialized node */
 	protected $options = [];
@@ -138,6 +139,10 @@ abstract class Configuration {
 		return $currentNode;
 	}
 
+	public function get( string $id ) {
+		return $this->val( $id );
+	}
+
 	/**
 	 * Creates an object from the configuration file. This works by looking up the configuration
 	 * key name which will be an array with at least a subkey of 'class'. The class will then be
@@ -200,6 +205,10 @@ abstract class Configuration {
 		} catch ( ConfigurationKeyException $ex ) {
 			return false;
 		}
+	}
+
+	public function has( string $id ): bool {
+		return $this->nodeExists( $id );
 	}
 
 	/**

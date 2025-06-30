@@ -27,5 +27,8 @@
     },
     "merchant_initiated": true,
     "is_subsequent_payment": true,
-    "payment_source": "recurring"
+    "payment_source": "recurring",
+    "statement_descriptor": {
+        "description": "Wikimedia Foundation - monthly gift"
+    }
 }

@@ -246,6 +246,7 @@ class ResponseMapper {
 
 		$this->mapPaymentResponsePaymentMethodDetails( $result, $response );
 		$this->mapPaymentResponseDonorDetails( $result, $response );
+
 		$this->mapPaymentResponsePaymentService( $result, $response );
 
 		return $result;

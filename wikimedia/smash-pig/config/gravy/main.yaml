@@ -121,6 +121,10 @@ mappers:
     class: SmashPig\PaymentProviders\Gravy\Mapper\BankPaymentProviderRequestMapper
   bt-response:
     class: SmashPig\PaymentProviders\Gravy\Mapper\BankPaymentProviderResponseMapper
+  cash-request:
+    class: SmashPig\PaymentProviders\Gravy\Mapper\RedirectPaymentProviderRequestMapper
+  cash-response:
+    class: SmashPig\PaymentProviders\Gravy\Mapper\RedirectPaymentProviderResponseMapper
 
 validators:
   cc:

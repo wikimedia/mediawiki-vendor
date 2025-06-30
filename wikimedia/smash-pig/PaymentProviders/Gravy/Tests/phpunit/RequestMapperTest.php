@@ -3,6 +3,9 @@
 use PHPUnit\Framework\TestCase;
 use SmashPig\PaymentProviders\Gravy\Mapper\RequestMapper;
 
+/**
+ * @group Gravy
+ */
 class RequestMapperTest extends TestCase {
 
 	public function testMapToCreatePaymentRequest() {
@@ -23,6 +26,7 @@ class RequestMapperTest extends TestCase {
 			'state_province' => 'NY',
 			'street_address' => '123 Main St',
 			'employer' => 'Company Inc.',
+			'description' => 'Wikimedia Foundation'
 		];
 
 		// Mock the CurrencyRoundingHelper to return a specific value
@@ -36,6 +40,9 @@ class RequestMapperTest extends TestCase {
 				'method' => 'credit_card',
 			],
 			'external_identifier' => '12345',
+			"statement_descriptor" => [
+				"description" => "Wikimedia Foundation"
+			],
 			'buyer' => [
 				'external_identifier' => 'test@example.com',
 				'billing_details' => [
