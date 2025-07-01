@@ -85,7 +85,15 @@ class Api {
 	public function createPayment( array $params ): array {
 		$tl = new TaggedLogger( 'RawData' );
 		$tl->info( 'Create payment request params: ' . json_encode( $params ) );
-		$response = $this->gravyApiClient->authorizeNewTransaction( $params );
+		// This one parameter needs to be mapped here, as it is sent as a header rather than as
+		// a POST request parameter.
+		if ( empty( $params['user_ip'] ) ) {
+			$headers = [];
+		} else {
+			$headers = [ 'X-Forwarded-For: ' . $params['user_ip'] ];
+			unset( $params['user_ip'] );
+		}
+		$response = $this->gravyApiClient->authorizeNewTransaction( $params, $headers );
 		$response_string = json_encode( $response );
 		$tl->info( "Create payment response $response_string" );
 		return $response;

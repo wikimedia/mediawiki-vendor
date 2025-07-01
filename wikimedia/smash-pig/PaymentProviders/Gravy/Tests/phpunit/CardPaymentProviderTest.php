@@ -42,6 +42,7 @@ class CardPaymentProviderTest extends BaseGravyTestCase {
 	public function testSuccessfulCreatePaymentFromTokenWithProcessorContactId() {
 		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/create-transaction.json' ), true );
 		$params = $this->getCreateTrxnFromTokenParams( $responseBody['amount'] / 100 );
+		$params['user_ip'] = '127.5.4.1';
 		$this->mockApi->expects( $this->once() )
 			->method( 'createPayment' )
 			->with( [
@@ -59,7 +60,8 @@ class CardPaymentProviderTest extends BaseGravyTestCase {
 				'buyer_id' => $params['processor_contact_id'],
 				"statement_descriptor" => [
 					"description" => "Wikimedia Foundation - monthly gift"
-				]
+				],
+				'user_ip' => '127.5.4.1'
 			] )
 			->willReturn( $responseBody );
 

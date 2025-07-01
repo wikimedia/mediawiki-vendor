@@ -52,7 +52,7 @@ class RequestMapper {
 			'external_identifier' => $params['order_id'],
 			"statement_descriptor" => [
 				"description" => $params["description"] ?? "Wikimedia Foundation",
-			]
+			],
 		];
 
 		if ( !empty( $params['processor_contact_id'] ) ) {
@@ -92,6 +92,10 @@ class RequestMapper {
 
 		if ( !empty( $params['return_url'] ) ) {
 			$request['payment_method']['redirect_url'] = $params['return_url'];
+		}
+
+		if ( !empty( $params['user_ip'] ) ) {
+			$request['user_ip'] = $params['user_ip'];
 		}
 
 		return $request;
