@@ -3,7 +3,7 @@
         'name' => 'mediawiki/core',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'aafd2f114adf329dcd614c05ae5bf080486d160a',
+        'reference' => '2f9cefad1eff849d6b409ba1cfe122cc9daaf318',
         'type' => 'mediawiki-core',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -211,7 +211,7 @@
         'mediawiki/core' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'aafd2f114adf329dcd614c05ae5bf080486d160a',
+            'reference' => '2f9cefad1eff849d6b409ba1cfe122cc9daaf318',
             'type' => 'mediawiki-core',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -509,22 +509,16 @@
             ),
         ),
         'symfony/polyfill-php80' => array(
-            'pretty_version' => 'v1.31.0',
-            'version' => '1.31.0.0',
-            'reference' => '60328e362d4c2c802a54fcbf04f9d3fb892b4cf8',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../symfony/polyfill-php80',
-            'aliases' => array(),
             'dev_requirement' => false,
+            'replaced' => array(
+                0 => '1.99',
+            ),
         ),
         'symfony/polyfill-php81' => array(
-            'pretty_version' => 'v1.31.0',
-            'version' => '1.31.0.0',
-            'reference' => '4a4cfc2d253c21a5ad0e53071df248ed48c6ce5c',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../symfony/polyfill-php81',
-            'aliases' => array(),
             'dev_requirement' => false,
+            'replaced' => array(
+                0 => '1.99',
+            ),
         ),
         'symfony/polyfill-php82' => array(
             'pretty_version' => 'v1.31.0',
