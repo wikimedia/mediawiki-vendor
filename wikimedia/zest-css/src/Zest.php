@@ -20,10 +20,9 @@ use DOMNode;
 
 class Zest {
 
-	/** @var ZestInst */
-	private static $singleton = null;
+	private static ?ZestInst $singleton = null;
 
-	private static function singleton() {
+	private static function singleton(): ZestInst {
 		if ( !self::$singleton ) {
 			self::$singleton = new ZestInst();
 		}

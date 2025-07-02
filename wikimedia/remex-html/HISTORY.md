@@ -1,5 +1,23 @@
 # Release History
 
+## RemexHtml 5.0.0 (2025-06-04)
+* Bug fixes for PHP 8.4 Dom\Document compatibility.
+* New options and defaults for DOMBuilder:
+  - 'domImplementationClass' defaults to \Dom\Implementation on PHP 8.4.
+    This is a change from prior versions, which always defaulted to
+    \DOMImplementation.
+  - 'coercionWorkaround' selects the workaround for
+    element/attribute/doctype character set mismatches between the
+    HTML parser spec and the DOM spec.  Defaults to 'coerce' on PHP < 8.4,
+    which matches the previous default.  When using
+    \Dom\Implementation on PHP 8.4, defaults to using the PHP 8.4 HTML
+    parser to avoid coercion.
+* The method signature for the DOMFormatter class has changed.
+* HTMLData properties were converted to constants in the previous
+  release; the compatibility properties have now been dropped.
+* HTMLData::TAGS has been added to make HTML tag properties (the set
+  of void, raw text, and "line feed inserting" tags) generally available.
+
 ## RemexHtml 4.1.2 (2025-04-23)
 * Turn off "lazy attribute" creation in Tokenizer by default in order
   to eliminate a memory hotspot.  Add 'lazyAttributes' option to
