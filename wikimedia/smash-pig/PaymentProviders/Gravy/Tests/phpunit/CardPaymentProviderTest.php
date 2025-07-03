@@ -59,7 +59,7 @@ class CardPaymentProviderTest extends BaseGravyTestCase {
 				'external_identifier' => $params['order_id'],
 				'buyer_id' => $params['processor_contact_id'],
 				"statement_descriptor" => [
-					"description" => "Wikimedia Foundation - monthly gift"
+					"description" => "Wikimedia Foundation"
 				],
 				'user_ip' => '127.5.4.1'
 			] )
@@ -116,7 +116,7 @@ class CardPaymentProviderTest extends BaseGravyTestCase {
 					]
 				],
 				"statement_descriptor" => [
-					"description" => "Wikimedia Foundation - monthly gift"
+					"description" => "Wikimedia Foundation"
 				]
 			] )
 			->willReturn( $responseBody );
@@ -665,7 +665,7 @@ class CardPaymentProviderTest extends BaseGravyTestCase {
 		$params = $this->getCreateTrxnParams( "", $amount );
 
 		unset( $params['gateway_session_id'] );
-		$params['description'] = "Wikimedia Foundation - monthly gift";
+		$params['description'] = "Wikimedia Foundation";
 		$params['recurring'] = 1;
 		$params['recurring_payment_token'] = "random_token";
 		if ( !$guest ) {

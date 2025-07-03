@@ -103,7 +103,7 @@ class GooglePaymentProviderTest extends BaseGravyTestCase {
 
 	private function getCreateTrxnFromTokenParams( $amount ) {
 		$params = $this->getCreateTrxnParams( $amount );
-		$params['description'] = "Wikimedia Foundation - monthly gift";
+		$params['description'] = "Wikimedia Foundation";
 
 		unset( $params['gateway_session_id'] );
 

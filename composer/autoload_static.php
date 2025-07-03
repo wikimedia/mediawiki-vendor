@@ -2572,6 +2572,7 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\PaymentProviders\\Gravy\\Jobs\\RecordCaptureJob' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Jobs/RecordCaptureJob.php',
         'SmashPig\\PaymentProviders\\Gravy\\Maintenance\\ApprovePayments' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Maintenance/ApprovePayments.php',
         'SmashPig\\PaymentProviders\\Gravy\\Maintenance\\DeletePaymentToken' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Maintenance/DeletePaymentToken.php',
+        'SmashPig\\PaymentProviders\\Gravy\\Maintenance\\GetRefundDetails' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Maintenance/GetRefundDetails.php',
         'SmashPig\\PaymentProviders\\Gravy\\Maintenance\\GetTransactionDetails' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Maintenance/GetTransactionDetails.php',
         'SmashPig\\PaymentProviders\\Gravy\\Maintenance\\ListPaymentServiceDefinitions' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Maintenance/ListPaymentServiceDefinitions.php',
         'SmashPig\\PaymentProviders\\Gravy\\Maintenance\\RefundPayments' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Maintenance/RefundPayments.php',
