@@ -98,10 +98,6 @@ class RequestMapper {
 			$request['user_ip'] = $params['user_ip'];
 		}
 
-		if ( !empty( $params['description'] ) ) {
-			$request = $this->addStatementDescriptor( $params, $request );
-		}
-
 		return $request;
 	}
 
@@ -227,15 +223,6 @@ class RequestMapper {
 			];
 		} else {
 			throw new \UnexpectedValueException( "Can't map fiscal number to Gravy Tax ID type.  ({$params['country']}:{$params['fiscal_number']})" );
-		}
-		return $request;
-	}
-
-	protected function addStatementDescriptor( array $params, array $request ): array {
-		$pattern = '/(?:\+?\d{1,3}[\s.-]?)?(?:\(?\d{3}\)?[\s.-]?)?\d{3}[\s.-]?\d{4}/';
-		$phone_number_in_descriptor = preg_match_all( $pattern, $params["description"], $matches );
-		if ( $phone_number_in_descriptor ) {
-			$request['statement_descriptor']['phone_number'] = $matches[0][0];
 		}
 		return $request;
 	}
