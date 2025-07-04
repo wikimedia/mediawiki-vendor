@@ -8,6 +8,7 @@ use DOMElement;
 use DOMNode;
 use DOMNodeList;
 use DOMText;
+use RuntimeException;
 
 class Component {
 
@@ -56,7 +57,7 @@ class Component {
 			if ( !$this->isRemovedFromTheDom( $node ) ) {
 				if ( !$this->handleComponent( $node, $data ) ) {
 					$this->handleAttributeBinding( $node, $data );
-					$this->handleIf( $node->childNodes, $data );
+					$this->handleConditionalNodes( $node->childNodes, $data );
 
 					foreach ( iterator_to_array( $node->childNodes ) as $childNode ) {
 						$this->handleNode( $childNode, $data );
@@ -86,6 +87,13 @@ class Component {
 		}
 	}
 
+	private function convertDataValueToString( $value ) {
+		if ( is_string( $value ) ) {
+			return $value;
+		}
+		return json_encode( $value );
+	}
+
 	/**
 	 * @param DOMNode $node
 	 * @param array $data
@@ -99,8 +107,7 @@ class Component {
 
 			foreach ( $matches['expression'] as $index => $expression ) {
 				$value = $this->app->evaluateExpression( $expression, $data );
-
-				$text = str_replace( $matches[0][$index], $value, $text );
+				$text = str_replace( $matches[0][$index], $this->convertDataValueToString( $value ), $text );
 			}
 
 			if ( $text !== $node->textContent ) {
@@ -136,6 +143,26 @@ class Component {
 		return true;
 	}
 
+	private function handleArrayAttributeBinding( DOMElement $node, string $name, array $value ) {
+		if ( $name !== 'class' ) {
+			throw new RuntimeException( 'Array-valued data invalid for "' . $name . '" attribute' );
+		}
+		$existingParts = [];
+		if ( $node->getAttribute( $name ) ) {
+			$existingParts = explode( " ", $node->getAttribute( $name ) );
+		}
+		if ( array_is_list( $value ) ) {
+			$existingParts = array_merge( $existingParts, $value );
+		} else {
+			foreach ( $value as $key => $addKey ) {
+				if ( $addKey ) {
+					array_unshift( $existingParts, $key );
+				}
+			}
+		}
+		$node->setAttribute( $name, implode( " ", $existingParts ) );
+	}
+
 	private function handleAttributeBinding( DOMElement $node, array $data ) {
 		/** @var DOMAttr $attribute */
 		foreach ( iterator_to_array( $node->attributes ) as $attribute ) {
@@ -150,6 +177,8 @@ class Component {
 				if ( $value ) {
 					$node->setAttribute( $name, $name );
 				}
+			} elseif ( is_array( $value ) ) {
+				$this->handleArrayAttributeBinding( $node, $name, $value );
 			} else {
 				$node->setAttribute( $name, $value );
 			}
@@ -157,14 +186,52 @@ class Component {
 		}
 	}
 
+	private function handleIf(
+		DOMNode $node,
+		array $data,
+		bool $previousIfCondition,
+		array &$nodesToRemove
+	): bool {
+		$conditionString = $node->getAttribute( 'v-if' );
+		$node->removeAttribute( 'v-if' );
+		$condition = $this->app->evaluateExpression( $conditionString, $data );
+
+		if ( !$condition ) {
+			$nodesToRemove[] = $node;
+		}
+
+		return $condition;
+	}
+
+	private function handleElseIf(
+		DOMNode $node,
+		array $data,
+		bool $previousIfCondition,
+		array &$nodesToRemove
+	): bool {
+		$conditionString = $node->getAttribute( 'v-else-if' );
+		$node->removeAttribute( 'v-else-if' );
+		if ( !$previousIfCondition ) {
+			$condition = $this->app->evaluateExpression( $conditionString, $data );
+
+			if ( !$condition ) {
+				$nodesToRemove[] = $node;
+			}
+			return $condition;
+		}
+		$nodesToRemove[] = $node;
+		return $previousIfCondition;
+	}
+
 	/**
 	 * @param DOMNodeList $nodes
 	 * @param array $data
 	 */
-	private function handleIf( DOMNodeList $nodes, array $data ) {
+	private function handleConditionalNodes( DOMNodeList $nodes, array $data ) {
 		// Iteration of iterator breaks if we try to remove items while iterating, so defer node
 		// removing until finished iterating.
 		$nodesToRemove = [];
+		$previousIfCondition = false;
 		foreach ( $nodes as $node ) {
 			if ( $this->isTextNode( $node ) ) {
 				continue;
@@ -172,18 +239,11 @@ class Component {
 
 			/** @var DOMElement $node */
 			if ( $node->hasAttribute( 'v-if' ) ) {
-				$conditionString = $node->getAttribute( 'v-if' );
-				$node->removeAttribute( 'v-if' );
-				$condition = $this->app->evaluateExpression( $conditionString, $data );
-
-				if ( !$condition ) {
-					$nodesToRemove[] = $node;
-				}
-
-				$previousIfCondition = $condition;
+				$previousIfCondition = $this->handleIf( $node, $data, $previousIfCondition, $nodesToRemove );
+			} elseif ( $node->hasAttribute( 'v-else-if' ) ) {
+				$previousIfCondition = $this->handleElseIf( $node, $data, $previousIfCondition, $nodesToRemove );
 			} elseif ( $node->hasAttribute( 'v-else' ) ) {
 				$node->removeAttribute( 'v-else' );
-
 				if ( $previousIfCondition ) {
 					$nodesToRemove[] = $node;
 				}
@@ -204,8 +264,9 @@ class Component {
 		if ( $node->hasAttribute( 'v-for' ) ) {
 			list( $itemName, $listName ) = explode( ' in ', $node->getAttribute( 'v-for' ) );
 			$node->removeAttribute( 'v-for' );
+			$node->removeAttribute( ':key' );
 
-			foreach ( $data[$listName] as $item ) {
+			foreach ( $this->app->evaluateExpression( $listName, $data ) as $item ) {
 				$newNode = $node->cloneNode( true );
 				$node->parentNode->insertBefore( $newNode, $node );
 				$this->handleNode( $newNode, array_merge( $data, [ $itemName => $item ] ) );

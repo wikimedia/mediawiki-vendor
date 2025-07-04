@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ad0a5d6ecc855f8c674621bb5b7494e5",
+    "content-hash": "613b0b0f51b2efea6982df1267165a59",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -8668,21 +8668,22 @@
         },
         {
             "name": "wmde/php-vuejs-templating",
-            "version": "2.2.0-beta.3",
+            "version": "2.2.0-beta.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wmde/php-vuejs-templating.git",
-                "reference": "cc9b51c9988f77a163883332b5663117111a05fd"
+                "reference": "3e391502deb11f4c427cfcb8d7e7dee1fc2dd776"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wmde/php-vuejs-templating/zipball/cc9b51c9988f77a163883332b5663117111a05fd",
-                "reference": "cc9b51c9988f77a163883332b5663117111a05fd",
+                "url": "https://api.github.com/repos/wmde/php-vuejs-templating/zipball/3e391502deb11f4c427cfcb8d7e7dee1fc2dd776",
+                "reference": "3e391502deb11f4c427cfcb8d7e7dee1fc2dd776",
                 "shasum": ""
             },
             "require": {
                 "ext-dom": "*",
                 "ext-libxml": "*",
+                "mck89/peast": "^1.17",
                 "php": ">=8.1"
             },
             "require-dev": {
@@ -8707,9 +8708,9 @@
             "description": "PHP implementation of Vue.js templating engine",
             "support": {
                 "issues": "https://github.com/wmde/php-vuejs-templating/issues",
-                "source": "https://github.com/wmde/php-vuejs-templating/tree/2.2.0-beta.3"
+                "source": "https://github.com/wmde/php-vuejs-templating/tree/2.2.0-beta.4"
             },
-            "time": "2025-06-23T07:12:25+00:00"
+            "time": "2025-07-03T13:35:14+00:00"
         },
         {
             "name": "zordius/lightncandy",
