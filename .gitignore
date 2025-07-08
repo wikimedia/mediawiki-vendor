@@ -73,3 +73,6 @@ wikimedia/metrics-platform/js
 wikimedia/metrics-platform/mvnw
 wikimedia/metrics-platform/mvnw.cmd
 wikimedia/metrics-platform/tests/
+
+# Only for non-MW usage, not used by us
+wikimedia/codex/i18n/

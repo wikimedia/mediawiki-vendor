@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "939ad4ad05a6314f4a8b01e54e6a6924",
+    "content-hash": "86ef44c632147fc3057da304b0641e6f",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -6730,6 +6730,66 @@
                 "source": "https://github.com/wikimedia/CLDRPluralRuleParser/tree/v2.0.0"
             },
             "time": "2021-02-11T20:47:01+00:00"
+        },
+        {
+            "name": "wikimedia/codex",
+            "version": "v0.7.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wikimedia/design-codex-php.git",
+                "reference": "3f70e3184fa1708398780748efeea6a6f5de56b8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wikimedia/design-codex-php/zipball/3f70e3184fa1708398780748efeea6a6f5de56b8",
+                "reference": "3f70e3184fa1708398780748efeea6a6f5de56b8",
+                "shasum": ""
+            },
+            "require": {
+                "ext-intl": "*",
+                "ext-json": "*",
+                "guzzlehttp/psr7": "^2.7",
+                "krinkle/intuition": "^2.3",
+                "php": "^7.4 || ^8.0",
+                "wikimedia/services": "^4.0",
+                "zordius/lightncandy": "1.2.6"
+            },
+            "require-dev": {
+                "mediawiki/mediawiki-codesniffer": "47.0.0",
+                "mediawiki/mediawiki-phan-config": "0.16.0",
+                "mediawiki/minus-x": "1.1.3",
+                "ockcyp/covers-validator": "1.6.0",
+                "php-parallel-lint/php-console-highlighter": "1.0.0",
+                "php-parallel-lint/php-parallel-lint": "1.4.0",
+                "phpunit/phpunit": "9.6.21"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Wikimedia\\Codex\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Doğu Abaris",
+                    "email": "abaris@null.net"
+                }
+            ],
+            "description": "A PHP library for building HTML and CSS UI components using Codex, the Wikimedia design system.",
+            "homepage": "https://doc.wikimedia.org/codex/",
+            "keywords": [
+                "Wikimedia",
+                "codex"
+            ],
+            "support": {
+                "issues": "https://phabricator.wikimedia.org/tag/codex/",
+                "source": "https://github.com/wikimedia/design-codex-php/tree/v0.7.1"
+            },
+            "time": "2025-07-11T17:24:19+00:00"
         },
         {
             "name": "wikimedia/common-passwords",

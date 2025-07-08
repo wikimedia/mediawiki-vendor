@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '6207a293654b43ab7752e5d54fc3ce6c7315801a',
+        'reference' => '1c75b257d5b997217ce39873368910ef32826e48',
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '6207a293654b43ab7752e5d54fc3ce6c7315801a',
+            'reference' => '1c75b257d5b997217ce39873368910ef32826e48',
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -294,6 +294,12 @@
             'install_path' => __DIR__ . '/../justinrainbow/json-schema',
             'aliases' => array(),
             'dev_requirement' => false,
+        ),
+        'krinkle/intuition' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => '2.3.99',
+            ),
         ),
         'lcobucci/clock' => array(
             'pretty_version' => '2.0.0',
@@ -1043,6 +1049,15 @@
             'reference' => '83d78cb8018d5c0f66fd6d0efff6a8ae2de92d36',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/cldr-plural-rule-parser',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'wikimedia/codex' => array(
+            'pretty_version' => 'v0.7.1',
+            'version' => '0.7.1.0',
+            'reference' => '3f70e3184fa1708398780748efeea6a6f5de56b8',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../wikimedia/codex',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
