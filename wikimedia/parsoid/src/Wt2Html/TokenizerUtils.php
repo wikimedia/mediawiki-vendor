@@ -307,7 +307,8 @@ class TokenizerUtils {
 				return false;
 
 			case '|':
-				return !$stops['annOrExtTag'] && (
+				$htmlOrEmpty = ( $stops['tagType'] === 'html' || $stops['tagType'] === '' );
+				return $htmlOrEmpty && (
 					$stops['templateArg']
 					|| $stops['tableCellArg']
 					|| $stops['linkdesc']
@@ -318,7 +319,7 @@ class TokenizerUtils {
 
 			case '!':
 				return $stops['th']
-					&& !$stops['intemplate']
+					&& $stops['preproc'] !== '}}'
 					&& $c2 === '!';
 
 			case '{':
@@ -338,9 +339,11 @@ class TokenizerUtils {
 			case ':':
 				return $stops['colon']
 					&& !$stops['extlink']
-					&& !$stops['intemplate']
 					&& !$stops['linkdesc']
-					&& !( $stops['preproc'] === '}-' );
+					// ':' inside -{ .. }- or {{ .. }} should
+					// not trigger the colon break
+					&& $stops['preproc'] !== '}-'
+					&& $stops['preproc'] !== '}}';
 
 			case ';':
 				return $stops['semicolon'];

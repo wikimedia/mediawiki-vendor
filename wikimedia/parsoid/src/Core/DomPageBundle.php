@@ -4,9 +4,8 @@ declare( strict_types = 1 );
 namespace Wikimedia\Parsoid\Core;
 
 use Wikimedia\Assert\Assert;
-use Wikimedia\JsonCodec\JsonCodecable;
-use Wikimedia\JsonCodec\JsonCodecableTrait;
 use Wikimedia\Parsoid\DOM\Document;
+use Wikimedia\Parsoid\DOM\DocumentFragment;
 use Wikimedia\Parsoid\DOM\Element;
 use Wikimedia\Parsoid\DOM\Node;
 use Wikimedia\Parsoid\Utils\DOMCompat;
@@ -26,54 +25,28 @@ use Wikimedia\Parsoid\Wt2Html\XHtmlSerializer;
  * array" form; that is, they are flat arrays appropriate for json-encoding
  * and do not contain DataParsoid or DataMw objects.
  *
- * See PageBundle for a similar structure used where the HTML DOM has been
+ * See HtmlPageBundle for a similar structure used where the HTML DOM has been
  * serialized into a string.
  */
-class DomPageBundle implements JsonCodecable {
-	use JsonCodecableTrait;
-
-	/** The document, as a DOM. */
-	public ?Document $doc;
-
-	/**
-	 * A map from ID to the array serialization of DataParsoid for the Node
-	 * with that ID.
-	 *
-	 * @var null|array{counter?:int,offsetType?:'byte'|'ucs2'|'char',ids:array<string,array>}
-	 */
-	public $parsoid;
-
-	/**
-	 * A map from ID to the array serialization of DataMw for the Node
-	 * with that ID.
-	 *
-	 * @var null|array{ids:array<string,array>}
-	 */
-	public $mw;
-
-	/** @var ?string */
-	public $version;
-
-	/**
-	 * A map of HTTP headers: both name and value should be strings.
-	 * @var array<string,string>|null
-	 */
-	public $headers;
-
-	/** @var string|null */
-	public $contentmodel;
+class DomPageBundle extends BasePageBundle {
+	private bool $invalid = false;
 
 	public function __construct(
-		Document $doc, ?array $parsoid = null, ?array $mw = null,
+		/** The document, as a DOM. */
+		public Document $doc,
+		?array $parsoid = null, ?array $mw = null,
 		?string $version = null, ?array $headers = null,
-		?string $contentmodel = null
+		?string $contentmodel = null,
+		/** @var array<string,DocumentFragment> Additional named DocumentFragments. */
+		public array $fragments = [],
 	) {
-		$this->doc = $doc;
-		$this->parsoid = $parsoid;
-		$this->mw = $mw;
-		$this->version = $version;
-		$this->headers = $headers;
-		$this->contentmodel = $contentmodel;
+		parent::__construct(
+			parsoid: $parsoid,
+			mw: $mw,
+			version: $version,
+			headers: $headers,
+			contentmodel: $contentmodel,
+		);
 		Assert::invariant(
 			!self::isSingleDocument( $doc ),
 			'single document should be unpacked before DomPageBundle created'
@@ -102,20 +75,31 @@ class DomPageBundle implements JsonCodecable {
 	}
 
 	/**
-	 * Create a DomPageBundle from a PageBundle.
+	 * Create a DomPageBundle from a HtmlPageBundle.
 	 *
-	 * This simply parses the HTML string from the PageBundle, preserving
+	 * This simply parses the HTML string from the HtmlPageBundle, preserving
 	 * the metadata.
 	 */
-	public static function fromPageBundle( PageBundle $pb ): DomPageBundle {
+	public static function fromHtmlPageBundle( HtmlPageBundle $pb ): DomPageBundle {
+		$doc = DOMUtils::parseHTML( $pb->html );
+		$fragments = array_map(
+			static fn ( $html )=>DOMUtils::parseHTMLToFragment( $doc, $html ),
+			$pb->fragments
+		);
 		return new DomPageBundle(
-			DOMUtils::parseHTML( $pb->html ),
+			$doc,
 			$pb->parsoid,
 			$pb->mw,
 			$pb->version,
 			$pb->headers,
-			$pb->contentmodel
+			$pb->contentmodel,
+			$fragments,
 		);
+	}
+
+	/** @deprecated since 0.22; use ::fromHtmlPageBundle */
+	public static function fromPageBundle( HtmlPageBundle $pb ): DomPageBundle {
+		return self::fromHtmlPageBundle( $pb );
 	}
 
 	/**
@@ -129,27 +113,37 @@ class DomPageBundle implements JsonCodecable {
 	 * process is less efficient than preparing and loading the document
 	 * directly from the DOM and should be avoided if possible.
 	 */
-	public function toDom( bool $load = true, ?array $options = null ): Document {
+	public function toDom( bool $load = true, ?array $options = null, array &$fragments = [] ): Document {
+		Assert::invariant( !$this->invalid, "invalidated" );
 		$doc = $this->doc;
 		if ( $load ) {
 			$options ??= [];
 			DOMDataUtils::prepareDoc( $doc );
 			$body = DOMCompat::getBody( $doc );
 			'@phan-var Element $body'; // assert non-null
+			$options = [
+				'loadFromPageBundle' => $this,
+			] + $options + [
+				'markNew' => true,
+				'validateXMLNames' => true,
+			];
 			DOMDataUtils::visitAndLoadDataAttribs(
-				$body,
-				[
-					'loadFromPageBundle' => $this,
-				] + $options + [
-					'markNew' => true,
-					'validateXMLNames' => true,
-				]
+				$body, $options
 			);
+			foreach ( $this->fragments as $name => $f ) {
+				DOMDataUtils::visitAndLoadDataAttribs(
+					$f, $options
+				);
+				$fragments[$name] = $f;
+			}
 			DOMDataUtils::getBag( $doc )->loaded = true;
 		} else {
-			self::apply( $doc, $this );
+			self::apply( $doc, $this->fragments, $this );
+			foreach ( $this->fragments as $name => $f ) {
+				$fragments[$name] = $f;
+			}
 		}
-		$this->doc = null; // Prevent reuse of the DomPageBundle
+		$this->invalid = true;
 		return $doc;
 	}
 
@@ -159,9 +153,10 @@ class DomPageBundle implements JsonCodecable {
 	 * extract `<ref>` body from the DOM.
 	 *
 	 * @param Document $doc doc
+	 * @param array<string,DocumentFragment> $fragments
 	 * @param DomPageBundle $pb page bundle
 	 */
-	private static function apply( Document $doc, DomPageBundle $pb ): void {
+	private static function apply( Document $doc, array $fragments, DomPageBundle $pb ): void {
 		Assert::invariant(
 			!self::isSingleDocument( $doc ),
 			"conflicting page bundle found in document"
@@ -197,6 +192,10 @@ class DomPageBundle implements JsonCodecable {
 		DOMUtils::visitDOM(
 			DOMCompat::getHead( $doc ), $apply
 		);
+		// Visit all the other fragments
+		foreach ( $fragments as $name => $f ) {
+			DOMUtils::visitDOM( $f, $apply );
+		}
 	}
 
 	/**
@@ -206,6 +205,7 @@ class DomPageBundle implements JsonCodecable {
 	 * @see ::fromSingleDocument()
 	 */
 	public function toSingleDocument(): Document {
+		Assert::invariant( !$this->invalid, "invalidated" );
 		$script = DOMUtils::appendToHead( $this->doc, 'script', [
 			'id' => 'mw-pagebundle',
 			'type' => 'application/x-mw-pagebundle',
@@ -213,7 +213,7 @@ class DomPageBundle implements JsonCodecable {
 		$script->appendChild( $this->doc->createTextNode( $this->encodeForHeadElement() ) );
 		$doc = $this->doc;
 		// Invalidate this DomPageBundle to prevent us from using it again.
-		$this->doc = null;
+		$this->invalid = true;
 		return $doc;
 	}
 
@@ -244,9 +244,12 @@ class DomPageBundle implements JsonCodecable {
 	 *
 	 * @param Document $doc Should be "prepared and loaded"
 	 * @param array $options store options
+	 * @param array<string,DocumentFragment> $fragments
 	 * @return DomPageBundle
 	 */
-	public static function fromLoadedDocument( Document $doc, array $options = [] ): DomPageBundle {
+	public static function fromLoadedDocument(
+		Document $doc, array $options = [], array $fragments = []
+	): DomPageBundle {
 		$metadata = $options['pageBundle'] ?? null;
 		$dpb = self::newEmpty(
 			$doc,
@@ -259,14 +262,20 @@ class DomPageBundle implements JsonCodecable {
 		// but as long as your extension content doesn't contain IDs beginning
 		// with 'mw' you'll be fine.
 		$env = $options['env'] ?? $options['extAPI'] ?? null;
+		$options = [
+			'storeInPageBundle' => $dpb,
+			'outputContentVersion' => $dpb->version,
+			'idIndex' => DOMDataUtils::usedIdIndex( $env, $doc, $fragments ),
+		] + $options;
 		DOMDataUtils::visitAndStoreDataAttribs(
-			DOMCompat::getBody( $doc ),
-			[
-				'storeInPageBundle' => $dpb,
-				'outputContentVersion' => $dpb->version,
-				'idIndex' => DOMDataUtils::usedIdIndex( $env, $doc ),
-			] + $options
+			DOMCompat::getBody( $doc ), $options
 		);
+		foreach ( $fragments as $name => $f ) {
+			DOMDataUtils::visitAndStoreDataAttribs(
+				$f, $options
+			);
+			$dpb->fragments[$name] = $f;
+		}
 		return $dpb;
 	}
 
@@ -285,6 +294,7 @@ class DomPageBundle implements JsonCodecable {
 	 * @return string an HTML string
 	 */
 	public function toSingleDocumentHtml( array $options = [] ): string {
+		Assert::invariant( !$this->invalid, "invalidated" );
 		$doc = $this->toSingleDocument();
 		return XHtmlSerializer::serialize( $doc, $options )['html'];
 	}
@@ -293,10 +303,15 @@ class DomPageBundle implements JsonCodecable {
 	 * Convert this DomPageBundle to "inline attribute" form, where page bundle
 	 * information is represented as inline JSON-valued attributes.
 	 * @param array $options XHtmlSerializer options
+	 * @param array<string,string> &$fragments
 	 * @return string an HTML string
 	 */
-	public function toInlineAttributeHtml( array $options = [] ): string {
-		$doc = $this->toDom( false );
+	public function toInlineAttributeHtml( array $options = [], array &$fragments = [] ): string {
+		Assert::invariant( !$this->invalid, "invalidated" );
+		$doc = $this->toDom( false, null, $fragments );
+		foreach ( $fragments as $name => $f ) {
+			$fragments[$name] = XHtmlSerializer::serialize( $f, $options )['html'];
+		}
 		if ( $options['body_only'] ?? false ) {
 			$node = DOMCompat::getBody( $doc );
 			$options['innerXML'] = true;
@@ -313,7 +328,15 @@ class DomPageBundle implements JsonCodecable {
 	private function encodeForHeadElement(): string {
 		// Note that $this->parsoid and $this->mw are already serialized arrays
 		// so a naive jsonEncode is sufficient.  We don't need a codec.
-		return PHPUtils::jsonEncode( [ 'parsoid' => $this->parsoid ?? [], 'mw' => $this->mw ?? [] ] );
+		$json = [ 'parsoid' => $this->parsoid ?? [], 'mw' => $this->mw ?? [] ];
+		if ( $this->fragments ) {
+			// Preserve fragments in the <head>
+			$json['fragments'] = array_map(
+				static fn ( $f ) => XHtmlSerializer::serialize( $f, [] )['html'],
+				$this->fragments
+			);
+		}
+		return PHPUtils::jsonEncode( $json );
 	}
 
 	/**
@@ -324,13 +347,18 @@ class DomPageBundle implements JsonCodecable {
 		// Note that only 'parsoid' and 'mw' are encoded, so these will be
 		// the only fields set in the decoded DomPageBundle
 		$decoded = PHPUtils::jsonDecode( $s );
+		$fragments = array_map(
+			static fn ( $html ) => DOMUtils::parseHTMLToFragment( $doc, $html ),
+			$decoded['fragments'] ?? []
+		);
 		return new DomPageBundle(
 			$doc,
 			$decoded['parsoid'] ?? null,
 			$decoded['mw'] ?? null,
 			$options['contentversion'] ?? null,
 			$options['headers'] ?? null,
-			$options['contentmodel'] ?? null
+			$options['contentmodel'] ?? null,
+			$fragments
 		);
 	}
 
@@ -338,12 +366,13 @@ class DomPageBundle implements JsonCodecable {
 
 	/** @inheritDoc */
 	public function toJsonArray(): array {
-		return PageBundle::fromDomPageBundle( $this )->toJsonArray();
+		Assert::invariant( !$this->invalid, "invalidated" );
+		return HtmlPageBundle::fromDomPageBundle( $this )->toJsonArray();
 	}
 
 	/** @inheritDoc */
 	public static function newFromJsonArray( array $json ): DomPageBundle {
-		$pb = PageBundle::newFromJsonArray( $json );
-		return self::fromPageBundle( $pb );
+		$pb = HtmlPageBundle::newFromJsonArray( $json );
+		return self::fromHtmlPageBundle( $pb );
 	}
 }

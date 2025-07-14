@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1edb79f2e5beaa061a0516340423676d",
+    "content-hash": "11f028fb4237c289bdd40f2b98e8c455",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -7653,16 +7653,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.22.0-a11",
+            "version": "v0.22.0-a12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
-                "reference": "1bb942f57e8c3456f8673dcc392afe9a048ed5cd"
+                "reference": "8b4d23df4ec450e96e50042dbce3b9e188ce43d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/1bb942f57e8c3456f8673dcc392afe9a048ed5cd",
-                "reference": "1bb942f57e8c3456f8673dcc392afe9a048ed5cd",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/8b4d23df4ec450e96e50042dbce3b9e188ce43d0",
+                "reference": "8b4d23df4ec450e96e50042dbce3b9e188ce43d0",
                 "shasum": ""
             },
             "require": {
@@ -7683,7 +7683,7 @@
                 "wikimedia/object-factory": "^5.0.1",
                 "wikimedia/remex-html": "^5.0.0",
                 "wikimedia/scoped-callback": "^4.0.0 || ^5.0.0",
-                "wikimedia/wikipeg": "^5.0.0",
+                "wikimedia/wikipeg": "^5.0.1",
                 "wikimedia/zest-css": "^4.0.0"
             },
             "conflict": {
@@ -7733,10 +7733,10 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.22.0-a11",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.22.0-a12",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
-            "time": "2025-07-07T06:47:30+00:00"
+            "time": "2025-07-13T20:58:30+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",

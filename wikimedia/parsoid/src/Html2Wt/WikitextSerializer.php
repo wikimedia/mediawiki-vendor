@@ -97,17 +97,13 @@ class WikitextSerializer {
 		'sepSuffixWithNlsRE' => '/\n[ \t\r\n]*$/D',
 	];
 
-	/** @var WikitextEscapeHandlers */
-	public $wteHandlers;
+	public Env $env;
+	private SerializerState $state;
+	public WikitextEscapeHandlers $wteHandlers;
+	private ?string $commentsOrAnnotationsRE = null;
 
-	/** @var Env */
-	public $env;
-
-	/** @var SerializerState */
-	private $state;
-
-	/** @var string Trace type for Env::trace() */
-	public $logType;
+	/** Trace type for Env::trace() */
+	public string $logType;
 
 	/**
 	 * @param Env $env
@@ -120,6 +116,12 @@ class WikitextSerializer {
 		$this->logType = $options['logType'] ?? 'wts';
 		$this->state = new SerializerState( $this, $options );
 		$this->wteHandlers = new WikitextEscapeHandlers( $env, $options['extName'] ?? null );
+
+		$annotationTags = $env->getSiteConfig()->getAnnotationTags();
+		$this->commentsOrAnnotationsRE = "#(" .
+			Utils::COMMENT_REGEXP_FRAGMENT .
+			( $annotationTags ? "|</?(?:" . implode( '|', $annotationTags ) . ")[^>]*>" : '' ) .
+			")#ui";
 	}
 
 	/**
@@ -433,10 +435,27 @@ class WikitextSerializer {
 				// PORT-FIXME: is this type safe? $vv could be a ConstrainedText
 				if ( $vv !== null && strlen( $vv ) > 0 ) {
 					if ( !$vInfo['fromsrc'] ) {
-						// Escape wikitext entities
-						$vv = str_replace( '>', '&gt;', Utils::escapeWtEntities( $vv ) );
+						$vs = preg_split(
+							$this->commentsOrAnnotationsRE, $vv, -1,
+							PREG_SPLIT_DELIM_CAPTURE
+						);
+						$vv = '';
+						foreach ( $vs as $i => $vsi ) {
+							if ( $i % 2 === 0 ) {
+								// Escape wikitext entities
+								$vsi = Utils::escapeWtEntities( $vsi );
+								$vsi = str_replace( '>', '&gt;', $vsi );
+								$vsi = str_replace( '"', '&quot;', $vsi );
+								$vv .= $vsi;
+							} else {
+								// Don't escape annotation tags
+								$vv .= $vsi;
+							}
+						}
+						$out[] = $kk . '="' . $vv . '"';
+					} else {
+						$out[] = $kk . '="' . str_replace( '"', '&quot;', $vv ) . '"';
 					}
-					$out[] = $kk . '="' . str_replace( '"', '&quot;', $vv ) . '"';
 				} elseif ( preg_match( '/[{<]/', $kk ) ) {
 					// Templated, <*include*>, or <ext-tag> generated
 					$out[] = $kk;

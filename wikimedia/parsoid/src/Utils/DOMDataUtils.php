@@ -13,6 +13,7 @@ use Wikimedia\Assert\Assert;
 use Wikimedia\Assert\UnreachableException;
 use Wikimedia\JsonCodec\Hint;
 use Wikimedia\Parsoid\Config\Env;
+use Wikimedia\Parsoid\Core\BasePageBundle;
 use Wikimedia\Parsoid\Core\DomPageBundle;
 use Wikimedia\Parsoid\DOM\Document;
 use Wikimedia\Parsoid\DOM\DocumentFragment;
@@ -222,10 +223,10 @@ class DOMDataUtils {
 	 * Get data object from a node.
 	 *
 	 * @param Element $node node
-	 * @param ?DomPageBundle $pb Optional source for node data
+	 * @param ?BasePageBundle $pb Optional source for node data
 	 * @return NodeData
 	 */
-	public static function getNodeData( Element $node, ?DomPageBundle $pb = null ): NodeData {
+	public static function getNodeData( Element $node, ?BasePageBundle $pb = null ): NodeData {
 		$nodeId = DOMCompat::getAttribute( $node, self::DATA_OBJECT_ATTR_NAME );
 		if ( $nodeId === null ) {
 			// Initialized on first request
@@ -720,9 +721,10 @@ class DOMDataUtils {
 	 *  extension API in order to properly traverse
 	 *  document fragments embedded in extension DOM.
 	 * @param Document $doc
+	 * @param array<string,DocumentFragment> $fragments
 	 * @return array<string, true>
 	 */
-	public static function usedIdIndex( $env, Document $doc ): array {
+	public static function usedIdIndex( $env, Document $doc, array $fragments = [] ): array {
 		$index = [];
 		$t = new DOMTraverser( false, $env !== null );
 		$t->addHandler( null, static function ( $n, $state ) use ( &$index ) {
@@ -736,6 +738,9 @@ class DOMDataUtils {
 		} );
 		$extApi = ( $env instanceof Env ) ? new ParsoidExtensionAPI( $env ) : $env;
 		$t->traverse( $extApi, DOMCompat::getBody( $doc ) );
+		foreach ( $fragments as $name => $f ) {
+			$t->traverse( $extApi, $f );
+		}
 		return $index;
 	}
 
