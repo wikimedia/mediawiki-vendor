@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
-        'reference' => '1c75b257d5b997217ce39873368910ef32826e48',
+        'pretty_version' => '1.0.0+no-version-set',
+        'version' => '1.0.0.0',
+        'reference' => null,
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'reference' => '1c75b257d5b997217ce39873368910ef32826e48',
+            'pretty_version' => '1.0.0+no-version-set',
+            'version' => '1.0.0.0',
+            'reference' => null,
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -1368,9 +1368,9 @@
             'dev_requirement' => false,
         ),
         'wmde/php-vuejs-templating' => array(
-            'pretty_version' => '2.2.0-beta.4',
-            'version' => '2.2.0.0-beta4',
-            'reference' => '3e391502deb11f4c427cfcb8d7e7dee1fc2dd776',
+            'pretty_version' => '2.2.0-beta.6',
+            'version' => '2.2.0.0-beta6',
+            'reference' => '5b6318aad3f5e117d4a2a573d1b867803e856b95',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wmde/php-vuejs-templating',
             'aliases' => array(),

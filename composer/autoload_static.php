@@ -4614,6 +4614,7 @@ class ComposerStaticInit_mediawiki_vendor
         'WMDE\\VueJsTemplating\\JsParsing\\BinaryExpression' => __DIR__ . '/..' . '/wmde/php-vuejs-templating/src/JsParsing/BinaryExpression.php',
         'WMDE\\VueJsTemplating\\JsParsing\\BooleanLiteral' => __DIR__ . '/..' . '/wmde/php-vuejs-templating/src/JsParsing/BooleanLiteral.php',
         'WMDE\\VueJsTemplating\\JsParsing\\CachingExpressionParser' => __DIR__ . '/..' . '/wmde/php-vuejs-templating/src/JsParsing/CachingExpressionParser.php',
+        'WMDE\\VueJsTemplating\\JsParsing\\ComputedKey' => __DIR__ . '/..' . '/wmde/php-vuejs-templating/src/JsParsing/ComputedKey.php',
         'WMDE\\VueJsTemplating\\JsParsing\\JsDictionary' => __DIR__ . '/..' . '/wmde/php-vuejs-templating/src/JsParsing/JsDictionary.php',
         'WMDE\\VueJsTemplating\\JsParsing\\JsExpressionParser' => __DIR__ . '/..' . '/wmde/php-vuejs-templating/src/JsParsing/JsExpressionParser.php',
         'WMDE\\VueJsTemplating\\JsParsing\\MethodCall' => __DIR__ . '/..' . '/wmde/php-vuejs-templating/src/JsParsing/MethodCall.php',

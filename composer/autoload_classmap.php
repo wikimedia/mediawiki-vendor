@@ -3800,6 +3800,7 @@ return array(
     'WMDE\\VueJsTemplating\\JsParsing\\BinaryExpression' => $vendorDir . '/wmde/php-vuejs-templating/src/JsParsing/BinaryExpression.php',
     'WMDE\\VueJsTemplating\\JsParsing\\BooleanLiteral' => $vendorDir . '/wmde/php-vuejs-templating/src/JsParsing/BooleanLiteral.php',
     'WMDE\\VueJsTemplating\\JsParsing\\CachingExpressionParser' => $vendorDir . '/wmde/php-vuejs-templating/src/JsParsing/CachingExpressionParser.php',
+    'WMDE\\VueJsTemplating\\JsParsing\\ComputedKey' => $vendorDir . '/wmde/php-vuejs-templating/src/JsParsing/ComputedKey.php',
     'WMDE\\VueJsTemplating\\JsParsing\\JsDictionary' => $vendorDir . '/wmde/php-vuejs-templating/src/JsParsing/JsDictionary.php',
     'WMDE\\VueJsTemplating\\JsParsing\\JsExpressionParser' => $vendorDir . '/wmde/php-vuejs-templating/src/JsParsing/JsExpressionParser.php',
     'WMDE\\VueJsTemplating\\JsParsing\\MethodCall' => $vendorDir . '/wmde/php-vuejs-templating/src/JsParsing/MethodCall.php',

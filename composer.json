@@ -146,7 +146,7 @@
 		"wikimedia/wrappedstring": "4.0.1",
 		"wikimedia/xmp-reader": "0.9.4",
 		"wikimedia/zest-css": "4.0.0",
-		"wmde/php-vuejs-templating": "2.2.0-beta.4",
+		"wmde/php-vuejs-templating": "2.2.0-beta.6",
 		"zordius/lightncandy": "1.2.6"
 	},
 	"replace": {
