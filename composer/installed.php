@@ -1368,9 +1368,9 @@
             'dev_requirement' => false,
         ),
         'wmde/php-vuejs-templating' => array(
-            'pretty_version' => '2.2.0-beta.6',
-            'version' => '2.2.0.0-beta6',
-            'reference' => '5b6318aad3f5e117d4a2a573d1b867803e856b95',
+            'pretty_version' => '2.2.0-beta.7',
+            'version' => '2.2.0.0-beta7',
+            'reference' => 'f86634831b8f57ba854072738f706839f7d172b1',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wmde/php-vuejs-templating',
             'aliases' => array(),
