@@ -390,14 +390,13 @@ class WikitextSerializer {
 			if ( $k === 'class'
 				 && isset( Consts::$Output['FlaggedEmptyElts'][DOMCompat::nodeName( $node )] )
 			) {
-				// Overwrite $v.  Cleanup::handleEmptyElements won't add the
-				// mw-empty-elt class if the node had attributes to begin with
-				// (particularly a "class" attribute) but an edit may have
-				// made this multi-valued so attempt to serialize that.  It's
-				// a bit ambiguous what to do here since this won't html2html
-				// with the mw-empty-elt anymore.  It might be better to force
-				// clients to remove mw-empty-elt if they want to add a class.
-				$v = preg_replace( '/\bmw-empty-elt\b/', '', $v, 1 );
+				// Overwrite $v.  Cleanup::handleEmptyElements may have made
+				// this multivalued.  It's a bit ambiguous what to do here
+				// if a client added a class to an mw-empty-elt since, for the
+				// most part, it won't html2html with the mw-empty-elt anymore.
+				// It might be better to force clients to remove mw-empty-elt
+				// if they want to add a class though.
+				$v = preg_replace( '/\b ?mw-empty-elt\b/', '', $v, 1 );
 				if ( !$v ) {
 					continue;
 				}
@@ -678,7 +677,7 @@ class WikitextSerializer {
 		// Short-circuit transclusions without params
 		$paramKeys = array_map( static fn ( ParamInfo $pi ) => $pi->k, $part->paramInfos );
 		if ( !$paramKeys ) {
-			if ( substr( $formatEnd, 0, 1 ) === "\n" ) {
+			if ( str_starts_with( $formatEnd, "\n" ) ) {
 				$formatEnd = substr( $formatEnd, 1 );
 			}
 			return $buf . $formatEnd;
@@ -832,7 +831,7 @@ class WikitextSerializer {
 				// by adding missing newlines.
 				$spc = $dpArgInfoMap[$arg['dpKey']]->spc ?? null;
 				if ( $spc && ( !$format || preg_match( Utils::COMMENT_REGEXP, $spc[3] ?? '' ) ) ) {
-					$nl = ( substr( $formatParamName, 0, 1 ) === "\n" ) ? "\n" : '';
+					$nl = str_starts_with( $formatParamName, "\n" ) ? "\n" : '';
 					$modFormatParamName = $nl . '|' . $spc[0] . '_' . $spc[1] . '=' . $spc[2];
 					$modFormatParamValue = '_' . $spc[3];
 				} else {
@@ -843,7 +842,7 @@ class WikitextSerializer {
 
 			// Don't create duplicate newlines.
 			$trailing = preg_match( self::TRAILING_COMMENT_OR_WS_AFTER_NL_REGEXP, $buf );
-			if ( $trailing && substr( $formatParamName, 0, 1 ) === "\n" ) {
+			if ( $trailing && str_starts_with( $formatParamName, "\n" ) ) {
 				$modFormatParamName = substr( $formatParamName, 1 );
 			}
 
@@ -853,7 +852,7 @@ class WikitextSerializer {
 
 		// Don't create duplicate newlines.
 		if ( preg_match( self::TRAILING_COMMENT_OR_WS_AFTER_NL_REGEXP, $buf )
-			 && substr( $formatEnd, 0, 1 ) === "\n"
+			&& str_starts_with( $formatEnd, "\n" )
 		) {
 			$buf .= substr( $formatEnd, 1 );
 		} else {
@@ -869,10 +868,10 @@ class WikitextSerializer {
 				while ( $next instanceof Comment ) {
 					$next = DiffDOMUtils::nextNonDeletedSibling( $next );
 				}
-				if ( !( $next instanceof Text ) || substr( $next->nodeValue, 0, 1 ) !== "\n" ) {
+				if ( !( $next instanceof Text ) || !str_starts_with( $next->nodeValue, "\n" ) ) {
 					$buf .= "\n";
 				}
-			} elseif ( !is_string( $nextPart ) || substr( $nextPart, 0, 1 ) !== "\n" ) {
+			} elseif ( !is_string( $nextPart ) || !str_starts_with( $nextPart, "\n" ) ) {
 				// If nextPart is another template, and it wants a leading nl,
 				// this \n we add here will count towards that because of the
 				// formatSOL check at the top.
@@ -1499,8 +1498,8 @@ class WikitextSerializer {
 				// We only want to process:
 				// - trailing single quotes (bar')
 				// - or single quotes by themselves without a preceding '' sequence
-				if ( substr( $p[$j - 1], -1 ) === "'"
-					&& !( $p[$j - 1] === "'" && $j > 1 && substr( $p[$j - 2], -2 ) === "''" )
+				if ( str_ends_with( $p[$j - 1], "'" )
+					&& !( $p[$j - 1] === "'" && $j > 1 && str_ends_with( $p[$j - 2], "''" ) )
 					// Consider <b>foo<i>bar'</i>baz</b> or <b>foo'<i>bar'</i>baz</b>.
 					// The <nowiki/> before the <i> or </i> cannot be stripped
 					// if the <i> is embedded inside another quote.
