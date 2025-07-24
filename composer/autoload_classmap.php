@@ -2128,7 +2128,6 @@ return array(
     'SmashPig\\PaymentProviders\\Gravy\\Jobs\\RecordCaptureJob' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/Jobs/RecordCaptureJob.php',
     'SmashPig\\PaymentProviders\\Gravy\\Maintenance\\ApprovePayments' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/Maintenance/ApprovePayments.php',
     'SmashPig\\PaymentProviders\\Gravy\\Maintenance\\DeletePaymentToken' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/Maintenance/DeletePaymentToken.php',
-    'SmashPig\\PaymentProviders\\Gravy\\Maintenance\\GetRefundDetails' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/Maintenance/GetRefundDetails.php',
     'SmashPig\\PaymentProviders\\Gravy\\Maintenance\\GetTransactionDetails' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/Maintenance/GetTransactionDetails.php',
     'SmashPig\\PaymentProviders\\Gravy\\Maintenance\\ListPaymentServiceDefinitions' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/Maintenance/ListPaymentServiceDefinitions.php',
     'SmashPig\\PaymentProviders\\Gravy\\Maintenance\\RefundPayments' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/Maintenance/RefundPayments.php',

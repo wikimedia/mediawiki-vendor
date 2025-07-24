@@ -28,7 +28,7 @@ class GetTransactionDetails extends MaintenanceBase {
 				'gateway_txn_id' => $transactionID
 			] );
 		} catch ( \Exception $ex ) {
-			Logger::debug( "Could not find payment with transaction id $transactionID", null, $ex );
+			Logger::error( "Could not find payment with transaction id $transactionID", null, $ex );
 		}
 	}
 }

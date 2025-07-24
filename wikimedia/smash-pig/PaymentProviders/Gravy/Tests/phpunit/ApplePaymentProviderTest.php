@@ -77,7 +77,7 @@ class ApplePaymentProviderTest extends BaseGravyTestCase {
 		$params = $this->getCreateTrxnFromTokenParams( $responseBody['amount'] );
 		$requestBody['external_identifier'] = $params['order_id'];
 		$requestBody['payment_method']['redirect_url'] = $params['return_url'];
-		$requestBody['statement_descriptor']['description'] = 'Wikimedia Foundation';
+		$requestBody['statement_descriptor']['description'] = 'Wikimedia Foundation - monthly gift';
 
 		$this->mockApi->expects( $this->once() )
 			->method( 'createPayment' )
@@ -156,7 +156,7 @@ class ApplePaymentProviderTest extends BaseGravyTestCase {
 		$expectedApiRequest['payment_method']['redirect_url'] = $brazilianRecurringPaymentParams['return_url'];
 		$expectedApiRequest['country'] = 'BR';
 		$expectedApiRequest['currency'] = 'BRL';
-		$expectedApiRequest['statement_descriptor']['description'] = 'Wikimedia Foundation';
+		$expectedApiRequest['statement_descriptor']['description'] = 'Wikimedia Foundation - monthly gift';
 		$expectedApiRequest["buyer"]["billing_details"]["address"]["country"] = 'BR';
 
 		$this->mockApi->expects( $this->once() )
@@ -207,7 +207,7 @@ class ApplePaymentProviderTest extends BaseGravyTestCase {
 		unset( $params['gateway_session_id'] );
 
 		$params['recurring_payment_token'] = "random_token";
-		$params['description'] = "Wikimedia Foundation";
+		$params['description'] = "Wikimedia Foundation - monthly gift";
 		return $params;
 	}
 }
