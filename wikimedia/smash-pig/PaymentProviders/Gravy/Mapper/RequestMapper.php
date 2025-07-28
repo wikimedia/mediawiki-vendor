@@ -51,7 +51,7 @@ class RequestMapper {
 			],
 			'external_identifier' => $params['order_id'],
 			"statement_descriptor" => [
-				"description" => $params["description"] ?? "Wikimedia Foundation",
+				"description" => "Wikimedia Foundation",
 			],
 		];
 

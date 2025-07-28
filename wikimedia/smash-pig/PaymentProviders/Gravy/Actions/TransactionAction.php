@@ -25,6 +25,7 @@ class TransactionAction extends GravyAction {
 				$tl->info(
 					"Adding successful capture job for {$transactionDetails->getCurrency()} {$transactionDetails->getAmount()} with psp reference {$transactionDetails->getGatewayTxnId()}."
 				);
+
 				$recordCaptureJob = RecordCaptureJob::factory( $msg, $transactionDetails );
 				QueueWrapper::push( $msg->getDestinationQueue(), $recordCaptureJob );
 			} elseif ( $transactionDetails->getStatus() == FinalStatus::PENDING_POKE ) {
@@ -89,6 +90,7 @@ class TransactionAction extends GravyAction {
 	 */
 	public function pushFailedAuthAsChargebackToRefundQueue( string $ipnMessageDate, PaymentProviderExtendedResponse $transaction ) {
 		$refundMessage = $this->buildRefundQueueMessage( $ipnMessageDate, $transaction->getNormalizedResponse() );
+		$refundMessage['backend_processor'] = 'trustly';
 		$refundMessage['status'] = FinalStatus::COMPLETE;
 		QueueWrapper::push( 'refund', $refundMessage );
 	}

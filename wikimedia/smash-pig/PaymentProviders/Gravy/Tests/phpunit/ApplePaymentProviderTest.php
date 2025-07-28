@@ -73,11 +73,14 @@ class ApplePaymentProviderTest extends BaseGravyTestCase {
 		$responseBody['is_subsequent_payment'] = true;
 		$responseBody['merchant_initiated'] = true;
 		$responseBody['payment_source'] = "recurring";
-		$requestBody = json_decode( file_get_contents( __DIR__ . '/../Data/apple-create-payment-request.json' ), true );
+		$requestBody = json_decode( file_get_contents( __DIR__ . '/../Data/recurring-payment-request.json' ), true );
+
 		$params = $this->getCreateTrxnFromTokenParams( $responseBody['amount'] );
+		$requestBody['amount'] = $responseBody['amount'] * 100;
+		$requestBody['payment_method']['id'] = 'random_token';
 		$requestBody['external_identifier'] = $params['order_id'];
-		$requestBody['payment_method']['redirect_url'] = $params['return_url'];
-		$requestBody['statement_descriptor']['description'] = 'Wikimedia Foundation - monthly gift';
+		$requestBody['statement_descriptor']['description'] = 'Wikimedia Foundation';
+		$requestBody['user_ip'] = '12.34.56.78';
 
 		$this->mockApi->expects( $this->once() )
 			->method( 'createPayment' )
@@ -146,18 +149,20 @@ class ApplePaymentProviderTest extends BaseGravyTestCase {
 		$brazilianRecurringPaymentParams['country'] = 'BR';
 		$brazilianRecurringPaymentParams['currency'] = 'BRL';
 
+		$expectedApiRequest = json_decode( file_get_contents( __DIR__ . '/../Data/recurring-payment-request.json' ), true );
+		$expectedApiRequest['amount'] = 100000;
+		$expectedApiRequest['payment_method']['id'] = 'random_token';
+		$expectedApiRequest['external_identifier'] = $brazilianRecurringPaymentParams['order_id'];
+		$expectedApiRequest['country'] = 'BR';
+		$expectedApiRequest['currency'] = 'BRL';
+		$expectedApiRequest['statement_descriptor']['description'] = 'Wikimedia Foundation';
+		$expectedApiRequest['buyer']['billing_details']['address']['country'] = 'BR';
+		$expectedApiRequest['user_ip'] = '12.34.56.78';
+
 		$mockApiResponse = json_decode( file_get_contents( __DIR__ . '/../Data/apple-create-transaction-success.json' ), true );
 		$mockApiResponse['is_subsequent_payment'] = true;
 		$mockApiResponse['merchant_initiated'] = true;
 		$mockApiResponse['payment_source'] = "recurring";
-
-		$expectedApiRequest = json_decode( file_get_contents( __DIR__ . '/../Data/apple-create-payment-request.json' ), true );
-		$expectedApiRequest['external_identifier'] = $brazilianRecurringPaymentParams['order_id'];
-		$expectedApiRequest['payment_method']['redirect_url'] = $brazilianRecurringPaymentParams['return_url'];
-		$expectedApiRequest['country'] = 'BR';
-		$expectedApiRequest['currency'] = 'BRL';
-		$expectedApiRequest['statement_descriptor']['description'] = 'Wikimedia Foundation - monthly gift';
-		$expectedApiRequest["buyer"]["billing_details"]["address"]["country"] = 'BR';
 
 		$this->mockApi->expects( $this->once() )
 			->method( 'createPayment' )
@@ -202,12 +207,20 @@ class ApplePaymentProviderTest extends BaseGravyTestCase {
 	}
 
 	private function getCreateTrxnFromTokenParams( $amount ) {
-		$params = $this->getCreateTrxnParams( $amount );
-
-		unset( $params['gateway_session_id'] );
-
-		$params['recurring_payment_token'] = "random_token";
-		$params['description'] = "Wikimedia Foundation - monthly gift";
-		return $params;
+		$ct_id = mt_rand( 100000, 1000009 );
+		return [
+			'recurring_payment_token' => 'random_token',
+			'amount' => $amount,
+			'country' => 'US',
+			'currency' => 'USD',
+			'first_name' => 'Lorem',
+			'last_name' => 'Ipsum',
+			'email' => 'test@test.com',
+			'order_id' => "$ct_id.1",
+			'installment' => 'recurring',
+			'description' => 'Wikimedia Foundation',
+			'recurring' => true,
+			'user_ip' => '12.34.56.78',
+		];
 	}
 }

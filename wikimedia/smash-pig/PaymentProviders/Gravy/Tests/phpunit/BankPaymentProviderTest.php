@@ -156,6 +156,35 @@ class BankPaymentProviderTest extends BaseGravyTestCase {
 		$this->assertEquals( "bancomer", $response->getPaymentSubmethod() );
 	}
 
+	/**
+	 * Tests that a 'processing' status for a non-Trustly payment method (Stitch)
+	 * is not treated as a complete payment status.
+	 *
+	 * @return void
+	 * @see T399577
+	 */
+	public function testProcessingStatusNotCompleteForNonTrustly(): void {
+		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/stitch-processing-transacton-message.json' ), true );
+
+		$this->mockApi->expects( $this->once() )
+			->method( 'createPayment' )
+			->willReturn( $responseBody );
+
+		$params = $this->getCreateTrxnParams( $responseBody['amount'] / 100 );
+		$params['payment_submethod'] = 'stitch';
+		$params['country'] = 'ZA';
+		$params['currency'] = 'ZAR';
+
+		$response = $this->provider->createPayment( $params );
+
+		$this->assertTrue( $response->isSuccessful() );
+		// The key assertion: processing status should NOT be treated as complete for Stitch
+		$this->assertEquals( 'pending', $response->getStatus() );
+		$this->assertNotEquals( 'complete', $response->getStatus() );
+		$this->assertEquals( 'bt', $response->getPaymentMethod() );
+		$this->assertEquals( 'stitch', $response->getPaymentSubmethod() );
+	}
+
 	private function getCreateTrxnParams( ?string $amount = '1299' ) {
 		$params = [];
 		$params['country'] = 'US';

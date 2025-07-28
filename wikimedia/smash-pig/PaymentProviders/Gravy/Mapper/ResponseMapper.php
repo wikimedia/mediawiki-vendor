@@ -3,80 +3,37 @@
 namespace SmashPig\PaymentProviders\Gravy\Mapper;
 
 use SmashPig\PaymentData\FinalStatus;
+use SmashPig\PaymentProviders\Gravy\Errors\ErrorChecker;
+use SmashPig\PaymentProviders\Gravy\Errors\ErrorMapper;
 use SmashPig\PaymentProviders\Gravy\GravyHelper;
+use SmashPig\PaymentProviders\Gravy\PaymentMethod;
+use SmashPig\PaymentProviders\Gravy\PaymentStatusNormalizer;
 use SmashPig\PaymentProviders\Gravy\ReferenceData;
 use SmashPig\PaymentProviders\RiskScorer;
 
 class ResponseMapper {
 	// List of methods with username as identifiers
-	const METHODS_WITH_USERNAME = [ 'venmo' ];
+	public const METHODS_WITH_USERNAME = [ 'venmo' ];
+
+	/**
+	 * @var ErrorChecker
+	 */
+	private $responseErrorChecker;
+
+	public function __construct() {
+		$this->responseErrorChecker = new ErrorChecker();
+	}
 
 	/**
 	 * @return array
 	 * @link https://docs.gr4vy.com/reference/transactions/new-transaction
 	 */
 	public function mapFromPaymentResponse( array $response ): array {
-		if ( $this->paymentResponseContainsError( $response ) ) {
+		if ( $this->responseErrorChecker->responseHasErrors( $response ) ) {
 			return $this->mapErrorFromResponse( $response );
 		}
 
 		return $this->mapSuccessfulPaymentResponse( $response );
-	}
-
-	public function mapDonorResponse( array $response ): array {
-		$buyer = $response;
-		$donorDetails = $buyer['billing_details'] ?? [];
-		$params = [
-			'status' => FinalStatus::COMPLETE,
-			'is_successful' => true,
-			'donor_details' => [
-				'processor_contact_id' => $buyer['id'] ?? '',
-			],
-			'raw_response' => $response
-		];
-
-		if ( !empty( $donorDetails ) ) {
-			$params['donor_details'] = array_merge( $params['donor_details'], [
-				'first_name' => $donorDetails['first_name'] ?? '',
-				'last_name' => $donorDetails['last_name'] ?? '',
-				'phone_number' => $donorDetails['phone_number'] ?? '',
-				'email_address' => $donorDetails['email_address'] ?? '',
-				] );
-			if ( !empty( $donorDetails['address'] ) ) {
-				$donorAddress = $donorDetails['address'];
-				$params['donor_details']['address'] = [
-					'address_line1' => $donorAddress['line1'] ?? '',
-					'postal_code' => $donorAddress['postal_code'] ?? '',
-					'state' => $donorAddress['state'] ?? '',
-					'city' => $donorAddress['city'] ?? '',
-					'country' => $donorAddress['country'] ?? '',
-				];
-			}
-		} else {
-			$params['is_successful'] = false;
-		}
-
-		return $params;
-	}
-
-	public function mapFromCreateDonorResponse( array $response ): array {
-		if ( ( isset( $response['type'] ) && $response['type'] == 'error' ) || isset( $response['error_code'] ) ) {
-			return $this->mapErrorFromResponse( $response );
-		}
-		return $this->mapDonorResponse( $response );
-	}
-
-	public function mapFromGetDonorResponse( array $response ): array {
-		if ( ( isset( $response['type'] ) && $response['type'] == 'error' ) || isset( $response['error_code'] ) ) {
-			return $this->mapErrorFromResponse( $response );
-		}
-
-		$donorResponse = [];
-		if ( !empty( $response['items'] ) ) {
-			$donorResponse = $response['items'][0];
-		}
-
-		return $this->mapDonorResponse( $donorResponse );
 	}
 
 	public function getRiskScores( ?string $avs_response, ?string $cvv_response ): array {
@@ -87,7 +44,7 @@ class ResponseMapper {
 	}
 
 	public function mapFromDeletePaymentTokenResponse( array $response ): array {
-		if ( ( isset( $response['type'] ) && $response['type'] == 'error' ) || isset( $response['error_code'] ) ) {
+		if ( $this->responseErrorChecker->responseHasErrors( $response ) ) {
 			return $this->mapErrorFromResponse( $response );
 		}
 		return [
@@ -100,7 +57,7 @@ class ResponseMapper {
 	 * @return array
 	 */
 	public function mapFromRefundPaymentResponse( array $response ): array {
-		if ( ( isset( $response['type'] ) && $response['type'] == 'error' ) || isset( $response['error_code'] ) ) {
+		if ( $this->responseErrorChecker->responseHasErrors( $response ) ) {
 			return $this->mapErrorFromResponse( $response );
 		}
 		return $this->mapSuccessfulRefundMessage( $response );
@@ -111,7 +68,7 @@ class ResponseMapper {
 	 * @return array
 	 */
 	public function mapFromReportExecutionResponse( array $response ): array {
-		if ( ( isset( $response['type'] ) && $response['type'] == 'error' ) || isset( $response['error_code'] ) ) {
+		if ( $this->responseErrorChecker->responseHasErrors( $response ) ) {
 			return $this->mapErrorFromResponse( $response );
 		}
 		$report = $response['report'];
@@ -132,7 +89,7 @@ class ResponseMapper {
 	 * @return array
 	 */
 	public function mapFromGenerateReportUrlResponse( array $response ): array {
-		if ( ( isset( $response['type'] ) && $response['type'] == 'error' ) || isset( $response['error_code'] ) ) {
+		if ( $this->responseErrorChecker->responseHasErrors( $response ) ) {
 			return $this->mapErrorFromResponse( $response );
 		}
 
@@ -280,32 +237,7 @@ class ResponseMapper {
 	 * @link https://docs.gr4vy.com/guides/api/resources/transactions/statuses
 	 */
 	protected function normalizeStatus( string $paymentProcessorStatus ): string {
-		switch ( $paymentProcessorStatus ) {
-			case 'authorization_succeeded':
-				$normalizedStatus = FinalStatus::PENDING_POKE;
-				break;
-			case 'processing':
-			case 'buyer_approval_pending':
-			case 'authorization_void_pending':
-			case 'capture_pending':
-				$normalizedStatus = FinalStatus::PENDING;
-				break;
-			case 'authorization_declined':
-			case 'authorization_failed':
-				$normalizedStatus = FinalStatus::FAILED;
-				break;
-			case 'authorization_voided':
-				$normalizedStatus = FinalStatus::CANCELLED;
-				break;
-			case 'capture_succeeded':
-			case 'succeeded':
-				$normalizedStatus = FinalStatus::COMPLETE;
-				break;
-			default:
-				throw new \UnexpectedValueException( "Unknown status $paymentProcessorStatus" );
-		}
-
-		return $normalizedStatus;
+		return ( new PaymentStatusNormalizer() )->normalizeStatus( $paymentProcessorStatus );
 	}
 
 	/**
@@ -374,24 +306,6 @@ class ResponseMapper {
 	}
 
 	/**
-	 * @param array $response
-	 * @return bool
-	 */
-	protected function paymentResponseContainsError( array $response ): bool {
-		return (
-			// response type = error
-			isset( $response['type'] ) && $response['type'] === 'error' )
-			// contains error code
-			|| isset( $response['error_code'] )
-			// failure
-			|| ( isset( $response['intent_outcome'] ) && $response['intent_outcome'] === 'failed' )
-			// 3d secure errors
-			|| ( isset( $response['three_d_secure'] ) && $response['three_d_secure']['status'] === 'error' )
-			// Payment errors from the listener
-			|| ( isset( $response['status'] ) && $this->normalizeStatus( $response['status'] ) === FinalStatus::FAILED );
-	}
-
-	/**
 	 * Gets the payment processor used by Gravy for the transaction
 	 * @param array $response
 	 * @return string|null
@@ -413,7 +327,7 @@ class ResponseMapper {
 	 * @return bool
 	 */
 	protected function requiresChargebackIfFailed( array $response ): bool {
-		if ( $this->getBackendProcessor( $response ) === 'trustly' ) {
+		if ( $this->getBackendProcessor( $response ) === PaymentMethod::ACH->toGravyValue() ) {
 			return true;
 		}
 		[ $normalizedPaymentMethod, $normalizedPaymentSubmethod ] = ReferenceData::decodePaymentMethod(

@@ -151,10 +151,10 @@ fraud-filters:
     no_match: 100
     # match - both address and postal code match
     match: 0
-    # partial_match_address - address matches but postal code does not
+    # partial_matches - matches some part of the data
     partial_match_address: 75
-    # partial_match_postcode - postal code matches but address does not
     partial_match_postcode: 75
+    partial_name_match: 75
     # unavailable - AVS is unavailable for card/country
     unavailable: 50
 

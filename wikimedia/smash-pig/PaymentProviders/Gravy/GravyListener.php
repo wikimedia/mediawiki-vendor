@@ -47,7 +47,9 @@ class GravyListener implements IHttpActionHandler {
 						$action = GravyAction::getInstanceOf( $actionClass );
 						$action->execute( $message );
 					}
+					Logger::info( 'Message type: ' . get_class( $message ) . ' did not have an action for this request' );
 					Logger::info( 'Finished processing listener request' );
+
 					return true;
 				}
 

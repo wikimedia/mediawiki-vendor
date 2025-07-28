@@ -1,6 +1,6 @@
 <?php
 
-namespace SmashPig\PaymentProviders\Gravy\Mapper;
+namespace SmashPig\PaymentProviders\Gravy\Errors;
 
 use SmashPig\PaymentData\ErrorCode;
 

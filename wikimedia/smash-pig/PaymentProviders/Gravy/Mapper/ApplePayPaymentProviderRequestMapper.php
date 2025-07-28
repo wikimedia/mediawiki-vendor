@@ -8,10 +8,13 @@ class ApplePayPaymentProviderRequestMapper extends RequestMapper {
 	 */
 	public function mapToCreatePaymentRequest( array $params ): array {
 		$request_params = parent::mapToCreatePaymentRequest( $params );
-		$request_params['payment_method'] = array_merge( $request_params['payment_method'], [
-			'method' => 'applepay',
-			'token' => json_decode( $params['payment_token'], true ),
-		] );
+		// Don't add the applepay payment_method parameters if this is a subsequent recurring charge
+		if ( !$this->isRecurringCharge( $params ) ) {
+			$request_params['payment_method'] = array_merge( $request_params['payment_method'], [
+				'method' => 'applepay',
+				'token' => json_decode( $params['payment_token'], true ),
+			] );
+		}
 		return $request_params;
 	}
 }

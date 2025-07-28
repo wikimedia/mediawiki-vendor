@@ -20,9 +20,12 @@ class RiskScorer {
 	}
 
 	public function getRiskScores( ?string $avsResult, ?string $cvvResult ): array {
-		$scores = [];
+		if ( ( $avsResult === '' || $avsResult === null ) && ( $cvvResult === '' || $cvvResult === null ) ) {
+			Logger::warning( 'Both AVS and CVV results are empty' );
+			return [];
+		}
 
-		// TODO: Warn or log somewhere if avs/cvv results are null?
+		$scores = [];
 		if ( $cvvResult !== null ) {
 			$cvvResult = $this->trim( $cvvResult );
 			if ( array_key_exists( $cvvResult, $this->cvvMap ) ) {

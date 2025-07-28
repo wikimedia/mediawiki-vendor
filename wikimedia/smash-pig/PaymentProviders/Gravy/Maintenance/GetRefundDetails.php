@@ -11,28 +11,28 @@ use SmashPig\PaymentProviders\PaymentProviderFactory;
 /**
  * Get latest transaction status
  */
-class GetTransactionDetails extends MaintenanceBase {
+class GetRefundDetails extends MaintenanceBase {
 
 	public function __construct() {
 		parent::__construct();
 		$this->desiredOptions['config-node']['default'] = 'gravy';
-		$this->addArgument( 'transaction_id', 'ID of required transaction', true );
+		$this->addArgument( 'refund_id', 'ID of required transaction', true );
 	}
 
 	public function execute(): void {
-		$transactionID = $this->getArgument( 'transaction_id' );
+		$refundID = $this->getArgument( 'refund_id' );
 
 		$provider = PaymentProviderFactory::getDefaultProvider();
 		try {
-			$provider->getLatestPaymentStatus( [
-				'gateway_txn_id' => $transactionID
-			] );
+			print_r( $provider->getRefundDetails( [
+				'gateway_refund_id' => $refundID
+			] ) );
 		} catch ( \Exception $ex ) {
-			Logger::debug( "Could not find payment with transaction id $transactionID", null, $ex );
+			Logger::info( "Could not find refund with transaction id $refundID", null, $ex );
 		}
 	}
 }
 
-$maintClass = GetTransactionDetails::class;
+$maintClass = GetRefundDetails::class;
 
 require RUN_MAINTENANCE_IF_MAIN;

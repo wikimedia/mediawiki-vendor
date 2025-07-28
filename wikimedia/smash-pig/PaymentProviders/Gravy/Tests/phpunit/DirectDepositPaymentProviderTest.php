@@ -95,7 +95,7 @@ class DirectDepositPaymentProviderTest extends BaseGravyTestCase {
 				'merchant_initiated' => true,
 				'external_identifier' => $params['order_id'],
 				"statement_descriptor" => [
-					"description" => "Wikimedia Foundation - monthly gift"
+					"description" => "Wikimedia Foundation"
 				],
 				'buyer' => [
 					'external_identifier' => $params['email'],
@@ -134,7 +134,7 @@ class DirectDepositPaymentProviderTest extends BaseGravyTestCase {
 		$params = $this->getCreateTrxnParams( $amount );
 
 		unset( $params['gateway_session_id'] );
-		$params['description'] = "Wikimedia Foundation - monthly gift";
+		$params['description'] = "Wikimedia Foundation";
 
 		$params['recurring'] = 1;
 		$params['recurring_payment_token'] = "random_token";

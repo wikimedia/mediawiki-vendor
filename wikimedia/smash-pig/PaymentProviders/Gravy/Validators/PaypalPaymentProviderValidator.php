@@ -21,4 +21,14 @@ class PaypalPaymentProviderValidator extends PaymentProviderValidator {
 		$required = $this->addCountrySpecificRequiredFields( $params );
 		$this->validateFields( $required, $params );
 	}
+
+	/**
+	 * Summary of addCountrySpecificRequiredFields
+	 * @param array $params
+	 * @return array
+	 */
+	protected function addCountrySpecificRequiredFields( array $params ): array {
+		// PayPal does not require tax id to process payments
+		return [];
+	}
 }
