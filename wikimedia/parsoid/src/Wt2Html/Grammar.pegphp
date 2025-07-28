@@ -323,7 +323,7 @@ block =
  * may not have started with a <td>. The block_lines rule above does allow
  * SOLs to be matched when required for lists, headings, hrs, and fresh table lines.
  */
-	/ ( &<tableCaption> / &<fullTable> / !<tableDataBlock> ) s:sol !sof !inline_breaks { return $s; }
+	/ ( &<tableCaption> / &<fullTable> / !<tableDataBlock> ) s:sol !sof !inline_breaks notempty { return $s; }
 
 /*
  * A block nested in other constructs. Avoid eating end delimiters for other
@@ -401,7 +401,7 @@ br =
 		] );
 	}
 
-inline_breaks =
+inline_breaks [cache=false] =
 	& [=|!{}:;\r\n[\]\-]
 	(
 		tagType: <tagType>
@@ -477,7 +477,7 @@ heading =
 			$'='+
 		)?
 		& { return $ce || strlen( $s ) > 2; }
-		endTPos:("" { return $this->endOffset(); })
+		endTPos:POSITION
 		spc:( space / sol_transparent )*
 		&eolf
 		{
@@ -597,7 +597,7 @@ extlink "extlink" =
 	! <extlink> // extlink cannot be nested
 	r:(
 		"["
-		p0:( "" { return $this->endOffset(); })
+		p0:POSITION
 		flat:(
 			addr:(url_protocol ipv6urladdr / "")
 			target:(extlink_nonipv6url<extlink> / "")
@@ -613,11 +613,11 @@ extlink "extlink" =
 			}
 			return Utils::isProtocolValid( substr( $flat, 0, -1 ), $this->env );
 		}
-		p1:( "" { return $this->endOffset(); })
+		p1:POSITION
 		sp:$( space / unispace )*
-		p2:( "" { return $this->endOffset(); })
+		p2:POSITION
 		content:inlineline<extlink>?
-		p3:( "" { return $this->endOffset(); })
+		p3:POSITION
 		"]" {
 			$tsr1 = new SourceRange( $p0, $p1 );
 			$tsr2 = new SourceRange( $p2, $p3 );
@@ -888,9 +888,9 @@ template_preproc =
 	params:(
 		nl_comment_space* "|"
 		r:(
-			p0:("" { return $this->endOffset(); })
+			p0:POSITION
 			v:nl_comment_space*
-			p1:("" { return $this->endOffset(); })
+			p1:POSITION
 			&("|" / "}}")
 			{
 				// empty argument
@@ -923,14 +923,14 @@ tplarg =
 
 tplarg_preproc =
 	"{{{" nl_comment_space*
-	p:("" { return $this->endOffset(); })
+	p:POSITION
 	target:inlineline_in_tpls?
 	params:(
 		nl_comment_space* "|"
 		r:(
-			p0:("" { return $this->endOffset(); })
+			p0:POSITION
 			v:nl_comment_space*
-			p1:("" { return $this->endOffset(); })
+			p1:POSITION
 			&("|" / "}}}")
 			{
 				// empty argument
@@ -967,10 +967,10 @@ tplarg_preproc =
 template_param =
 	name:template_param_name
 	val:(
-		kEndPos:("" { return $this->endOffset(); })
+		kEndPos:POSITION
 		// no optionalSpaceToken here, it's eaten by template_param_name
 		"="
-		vStartPos:("" { return $this->endOffset(); })
+		vStartPos:POSITION
 		optSp:optionalSpaceToken
 		tpv:template_param_value? {
 			return [
@@ -1092,7 +1092,7 @@ lang_variant_preproc =
 		lv:lang_variant_option_list { return $lv; }
 	)
 	inline_breaks
-	lv1:("}-" { return $this->endOffset(); })
+	lv1:("}-" @POSITION)
 	{
 		if ( !$this->env->langConverterEnabled() ) {
 			return [ '-{', $ts[0]['text']['tokens'], '}-' ];
@@ -1321,7 +1321,7 @@ lang_variant_text_no_semi_or_arrow =
 wikilink_content =
 	(
 		p:pipe
-		startPos:("" { return $this->endOffset(); })
+		startPos:POSITION
 		lt:link_text? {
 			$tsr = new SourceRange( $startPos, $this->endOffset() );
 			$maybeContent = new KV( 'mw:maybeContent', $lt ?? [], $tsr->expandTsrV() );
@@ -1348,9 +1348,9 @@ broken_wikilink =
 
 wikilink_preproc =
 	"[["
-	spos:("" { return $this->endOffset(); })
+	spos:POSITION
 	target:wikilink_preprocessor_text?
-	tpos:("" { return $this->endOffset(); })
+	tpos:POSITION
 	lcs:(
 	  l:wikilink_content inline_breaks { return [$l,null]; }
 	  / l:inlineline { return [null,$l]; }
@@ -1776,9 +1776,9 @@ xmlish_tag =
 // A generic attribute that can span multiple lines.
 generic_newline_attribute =
 	space_or_newline_or_solidus*
-	namePos0:("" { return $this->endOffset(); })
+	namePos0:POSITION
 	name:generic_attribute_name
-	namePos1:("" { return $this->endOffset(); })
+	namePos1:POSITION
 	vd:(space_or_newline* "=" v:generic_att_value? { return $v; })?
 {
 	// NB: Keep in sync w/ table_attibute
@@ -1803,9 +1803,9 @@ generic_newline_attribute =
 // A single-line attribute.
 table_attribute =
 	optional_spaces
-	namePos0:("" { return $this->endOffset(); })
+	namePos0:POSITION
 	name:table_attribute_name
-	namePos1:("" { return $this->endOffset(); })
+	namePos1:POSITION
 	vd:(optional_spaces "=" v:table_att_value? { return $v; })?
 {
 	// NB: Keep in sync w/ generic_newline_attribute
@@ -1966,7 +1966,7 @@ hacky_dl_uses =
 	return array_merge( [ $li ], $sc, $tbl );
 }
 
-dtdd_colon = c:inlineline_break_on_colon? cpos:(":" { return $this->endOffset(); })
+dtdd_colon = c:inlineline_break_on_colon? cpos:(":" @POSITION)
 {
 	return [ $c, $cpos ];
 }
@@ -2111,8 +2111,8 @@ table_content_line =
 table_start_tag "table_start_tag" =
 	b:"{" p:pipe
 	// ok to normalize away stray |} on rt (see T59360)
-	ta:(table_attributes<table=false> / &{ $this->unreachable(); })
-	tsEndPos:("" { return $this->endOffset(); })
+	ta:(table_attributes<table=false> / unreachable)
+	tsEndPos:POSITION
 	s2:space*
 	{
 		$coms = TokenizerUtils::popComments( $ta );
@@ -2134,13 +2134,15 @@ table_start_tag "table_start_tag" =
 		);
 	}
 
+unreachable [unreachable] = &{ $this->unreachable(); } ""
+
 // FIXME: Not sure if we want to support it, but this should allow columns.
 table_caption_tag =
 	// avoid recursion via nested_block_in_table
 	! <tableDataBlock>
 	p:pipe "+"
 	args:row_syntax_table_args?
-	tagEndPos:("" { return $this->endOffset(); })
+	tagEndPos:POSITION
 	c:nested_block_in_table<tableCaption>* {
 		$tsr = new SourceRange( $this->startOffset(), $tagEndPos );
 		return TokenizerUtils::buildTableTokens(
@@ -2152,8 +2154,8 @@ table_row_tag =
 	// avoid recursion via nested_block_in_table
 	! <tableDataBlock>
 	p:pipe dashes:$"-"+
-	a:(table_attributes<table=false> / &{ $this->unreachable(); })
-	tagEndPos:("" { return $this->endOffset(); })
+	a:(table_attributes<table=false> / unreachable)
+	tagEndPos:POSITION
 	s2:space*
 	{
 		$coms = TokenizerUtils::popComments( $a );
@@ -2190,7 +2192,7 @@ table_heading_tags_parameterized =
 
 table_heading_tag =
 	arg:row_syntax_table_args?
-	tagEndPos:("" { return $this->endOffset(); })
+	tagEndPos:POSITION
 	c:(
 		th:<&th>
 		d:nested_block_in_table {
@@ -2251,7 +2253,7 @@ table_data_tag =
 	! "}"
 	arg:row_syntax_table_args?
 	// use inline_breaks to break on tr etc
-	tagEndPos:("" { return $this->endOffset(); })
+	tagEndPos:POSITION
 	td:nested_block_in_table*
 	{
 		$tagStart = $this->startOffset();
@@ -2364,7 +2366,7 @@ urltext =
 				return false;
 			}
 		}
-		'' {
+		notempty {
 			$this->currPos += strlen( $this->urltextPlainSegment );
 			return $this->urltextPlainSegment;
 		}
@@ -2373,6 +2375,8 @@ urltext =
 		/ & ('__') bs:behavior_switch { return $bs; }
 		/ text_char
 	)+
+
+notempty [empty=false,cache=false] = ""
 
 raw_htmlentity =
 	m:$("&" [#0-9a-zA-Zרלמرلم]+ ";") {
@@ -2642,26 +2646,28 @@ table_attribute_preprocessor_text_double =
 	}
 
 // Special-case support for those pipe templates
-pipe = "|" / "{{!}}"
+pipe [inline] = "|" / "{{!}}"
 
 // SSS FIXME: what about |{{!}} and {{!}}|
-pipe_pipe = "||" / "{{!}}{{!}}"
+pipe_pipe [inline] = "||" / "{{!}}{{!}}"
 
-space = [ \t]
+space [inline] = [ \t]
 
-optional_spaces = [ \t]*
+optional_spaces [inline] = [ \t]*
 
 // Start of file
-sof = & { return $this->endOffset() === 0 && !$this->pipelineOffset; }
+sof [inline] = & { return $this->endOffset() === 0 && !$this->pipelineOffset; }
 
 // End of file
-eof = & { return $this->endOffset() === $this->inputLength; }
+eof [inline] = & { return $this->endOffset() === $this->inputLength; }
 
-newline = '\n' / '\r\n'
+newline [inline] = '\n' / '\r\n'
 
-newlineToken = newline { return [ new NlTk( $this->tsrOffsets() ) ]; }
+newlineToken [inline] = newline { return [ new NlTk( $this->tsrOffsets() ) ]; }
 
-eolf = newline / eof
+eolf [inline] = newline / eof
+
+POSITION [cache=false] = "" { return $this->endOffset(); }
 
 // The old parser does a straight str.replace(/<!--((?!-->).)*-->/g, "")
 // but, as always, things around here are a little more complicated.
@@ -2681,11 +2687,11 @@ comment =
 		return [ new CommentTk( $data, $dp ) ];
 	}
 
-space_or_comment = space / comment
+space_or_comment [inline] = space / comment
 
-nl_comment_space = newlineToken / space_or_comment
+nl_comment_space [inline] = newlineToken / space_or_comment
 
-optionalSpaceToken =
+optionalSpaceToken [inline] =
 	s:$optional_spaces {
 		if ( $s !== '' ) {
 			return [ $s ];
@@ -2700,35 +2706,35 @@ optionalSpaceToken =
  * of Perl, which PHP inherited via the PCRE (Perl-Compatible Regular
  * Expressions) library.
  */
-space_or_newline = [ \t\n\r\x0c]
+space_or_newline [inline] = [ \t\n\r\x0c]
 
 /* This rule corresponds to \b in the PHP preg_* functions,
  * after a word character.  That is, it's a zero-width lookahead that
  * the next character is not a word character.
  */
-end_of_word = eof / ![A-Za-z0-9_]
+end_of_word [inline] = eof / ![A-Za-z0-9_]
 
 // Unicode "separator, space" category.  It covers the \u0020 space as well
 // as \u3000 IDEOGRAPHIC SPACE (see bug 19052).  In PHP this is \p{Zs}.
 // Keep this up-to-date with the characters tagged ;Zs; in
 // http://www.unicode.org/Public/UNIDATA/UnicodeData.txt
-unispace = [ \u00A0\u1680\u2000-\u200A\u202F\u205F\u3000]
+unispace [inline] = [ \u00A0\u1680\u2000-\u200A\u202F\u205F\u3000]
 
 // Non-newline whitespace, including non-breaking spaces.  Used for magic links.
-space_or_nbsp =
+space_or_nbsp [inline] =
 	space // includes \t
 	/ unispace
 	/ & "&" he:htmlentity &{ return is_array( $he ) && $he[ 1 ] === "\u{A0}"; }
 	{ return $he; }
 
 // Used within ISBN magic links
-space_or_nbsp_or_dash =
+space_or_nbsp_or_dash [inline] =
 	space_or_nbsp / "-"
 
 // Elements that do not break beginning or end of line for blocks (headers for instance)
 sol_transparent = comment / include_limits / annotation_tag / behavior_switch
 
-sol =
+sol [inline] =
   // optimization: fail fast before putting more entries in the backtracking cache
   &{ return $this->endOffset() === 0 || strspn($this->input, "\r\n", $this->currPos, 1) > 0; }
     sp:sol_prefix elc:empty_lines_with_comments? st:sol_transparent* {
@@ -2736,7 +2742,7 @@ sol =
 	return [ $sp, $elc ?? [], $st ];
 }
 
-sol_prefix =
+sol_prefix [inline] =
 	newlineToken
 	/ & {
 		// Use the sol flag only at the start of the input
@@ -2748,7 +2754,7 @@ sol_prefix =
 // This rule requires at least one comment to be matched
 // This matches a run of empty lines with comments
 empty_lines_with_comments =
-	p:("" { return $this->endOffset(); }) c:(space* comment space_or_comment* newline)+ {
+	p:POSITION c:(space* comment space_or_comment* newline)+ {
 		$dp = new DataParsoid;
 		$dp->tsr = new SourceRange( $p, $this->endOffset() );
 		return [ new EmptyLineTk( TokenizerUtils::flattenIfArray( $c ), $dp ) ];

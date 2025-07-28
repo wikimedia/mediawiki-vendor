@@ -7983,17 +7983,17 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.22.0-a13",
-            "version_normalized": "0.22.0.0-alpha13",
+            "version": "v0.22.0-a14",
+            "version_normalized": "0.22.0.0-alpha14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
-                "reference": "c8e0d61f035ad2fbfab1a0022b183b24fb2f59fe"
+                "reference": "940be16994da329ae868b30739d021e5b6d5672c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/c8e0d61f035ad2fbfab1a0022b183b24fb2f59fe",
-                "reference": "c8e0d61f035ad2fbfab1a0022b183b24fb2f59fe",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/940be16994da329ae868b30739d021e5b6d5672c",
+                "reference": "940be16994da329ae868b30739d021e5b6d5672c",
                 "shasum": ""
             },
             "require": {
@@ -8040,12 +8040,12 @@
             "suggest": {
                 "wikimedia/langconv": "Provides script conversion support"
             },
-            "time": "2025-07-21T20:21:50+00:00",
+            "time": "2025-07-24T04:28:29+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
                 "psr-4": {
-                    "Wikimedia\\Parsoid\\": "src"
+                    "Wikimedia\\Parsoid\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -8066,7 +8066,7 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.22.0-a13",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.22.0-a14",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
             "install-path": "../wikimedia/parsoid"
