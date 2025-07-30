@@ -360,7 +360,7 @@ class ComposerStaticInit_mediawiki_vendor
     );
 
     public static $fallbackDirsPsr0 = array (
-        0 => __DIR__ . '/..' . '/cssjanus/cssjanus/src',
+        0 => __DIR__ . '/..' . '/wikimedia/cssjanus/src',
     );
 
     public static $classMap = array (
@@ -436,7 +436,7 @@ class ComposerStaticInit_mediawiki_vendor
         'CLDRPluralRuleParser\\Error' => __DIR__ . '/..' . '/wikimedia/cldr-plural-rule-parser/src/Error.php',
         'CLDRPluralRuleParser\\Evaluator' => __DIR__ . '/..' . '/wikimedia/cldr-plural-rule-parser/src/Evaluator.php',
         'CLDRPluralRuleParser\\Range' => __DIR__ . '/..' . '/wikimedia/cldr-plural-rule-parser/src/Range.php',
-        'CSSJanus' => __DIR__ . '/..' . '/cssjanus/cssjanus/src/CSSJanus.php',
+        'CSSJanus' => __DIR__ . '/..' . '/wikimedia/cssjanus/src/CSSJanus.php',
         'Cdb\\Cli' => __DIR__ . '/..' . '/wikimedia/cdb/src/Cli.php',
         'Cdb\\Exception' => __DIR__ . '/..' . '/wikimedia/cdb/src/Exception.php',
         'Cdb\\Reader' => __DIR__ . '/..' . '/wikimedia/cdb/src/Reader.php',
