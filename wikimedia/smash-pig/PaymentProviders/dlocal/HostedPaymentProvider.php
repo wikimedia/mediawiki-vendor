@@ -8,6 +8,11 @@ use SmashPig\PaymentProviders\Responses\CreatePaymentResponse;
 
 class HostedPaymentProvider extends PaymentProvider implements IPaymentProvider {
 
+	protected array $countriesNeedingFiscalNumber = [
+		'AR',
+		'BR',
+	];
+
 	/**
 	 * @param array $params
 	 * @return CreatePaymentResponse
@@ -62,8 +67,11 @@ class HostedPaymentProvider extends PaymentProvider implements IPaymentProvider 
 			'first_name',
 			'last_name',
 			'email',
-			'fiscal_number',
 		];
+
+		if ( !empty( $params['country'] ) && in_array( $params['country'], $this->countriesNeedingFiscalNumber, true ) ) {
+			$requiredFields[] = 'fiscal_number';
+		}
 
 		self::checkFields( $requiredFields, $params );
 	}

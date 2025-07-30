@@ -6,5 +6,6 @@ CREATE TABLE IF NOT EXISTS pending (
   `order_id` varchar(255) NULL,
   `gateway_txn_id` varchar(255) NULL,
   `payment_method` varchar(16) DEFAULT NULL,
-  `message` text NOT NULL
+  `message` text NOT NULL,
+  `is_resolved` integer NOT NULL DEFAULT 0
 );

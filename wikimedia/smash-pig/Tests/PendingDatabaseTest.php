@@ -57,6 +57,7 @@ class PendingDatabaseTest extends BaseSmashPigUnitTestCase {
 			'gateway_txn_id' => $message['gateway_txn_id'],
 			'payment_method' => $message['payment_method'],
 			'message' => json_encode( $message ),
+			'is_resolved' => 0,
 		];
 		$this->assertEquals( $expected, $rows[0],
 			'Stored message had expected contents' );
