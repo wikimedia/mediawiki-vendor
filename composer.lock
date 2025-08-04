@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d99daccc6844eb20da43033a28396b6b",
+    "content-hash": "cf505171f2bf0388866b927c36707cd9",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -452,6 +452,7 @@
             "support": {
                 "source": "https://github.com/wikimedia/php-cssjanus/tree/v2.3.0"
             },
+            "abandoned": "wikimedia/cssjanus",
             "time": "2024-08-06T19:37:16+00:00"
         },
         {
@@ -7653,16 +7654,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.22.0-a14",
+            "version": "v0.22.0-a15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
-                "reference": "940be16994da329ae868b30739d021e5b6d5672c"
+                "reference": "ca739ece415cf934670f521bdcac5ebaa80c5ac0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/940be16994da329ae868b30739d021e5b6d5672c",
-                "reference": "940be16994da329ae868b30739d021e5b6d5672c",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/ca739ece415cf934670f521bdcac5ebaa80c5ac0",
+                "reference": "ca739ece415cf934670f521bdcac5ebaa80c5ac0",
                 "shasum": ""
             },
             "require": {
@@ -7675,6 +7676,9 @@
                 "php": ">=8.1.0",
                 "psr/container": "~1.1.2 || ~2.0.2",
                 "psr/log": "^1.1.4",
+                "symfony/polyfill-php82": "1.32.0",
+                "symfony/polyfill-php83": "1.32.0",
+                "symfony/polyfill-php84": "1.32.0",
                 "wikimedia/assert": "^0.5.1",
                 "wikimedia/bcp-47-code": "^2.0.0",
                 "wikimedia/idle-dom": "2.0.1",
@@ -7733,10 +7737,10 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.22.0-a14",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.22.0-a15",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
-            "time": "2025-07-24T04:28:29+00:00"
+            "time": "2025-08-04T19:29:48+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",
