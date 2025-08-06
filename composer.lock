@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "65bb78e7648d1aca8bccc62a537198b9",
+    "content-hash": "20ed84cc8d37d888789c0b45080cf64b",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -6848,28 +6848,28 @@
         },
         {
             "name": "wikimedia/css-sanitizer",
-            "version": "v5.5.0",
+            "version": "v6.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/css-sanitizer.git",
-                "reference": "72d751f04c09ff92b31426208025e5c859e9b4af"
+                "reference": "82f00953e18463686be7ea461d9997371c4a9e87"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/css-sanitizer/zipball/72d751f04c09ff92b31426208025e5c859e9b4af",
-                "reference": "72d751f04c09ff92b31426208025e5c859e9b4af",
+                "url": "https://api.github.com/repos/wikimedia/css-sanitizer/zipball/82f00953e18463686be7ea461d9997371c4a9e87",
+                "reference": "82f00953e18463686be7ea461d9997371c4a9e87",
                 "shasum": ""
             },
             "require": {
                 "ext-iconv": "*",
                 "ext-mbstring": "*",
-                "php": ">=7.4.0",
+                "php": ">=8.1",
                 "wikimedia/scoped-callback": "3.0.0 || 4.0.0 || 5.0.0",
                 "wikimedia/utfnormal": "^3.0.1 || ^4.0.0"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "45.0.0",
-                "mediawiki/mediawiki-phan-config": "0.15.1",
+                "mediawiki/mediawiki-codesniffer": "47.0.0",
+                "mediawiki/mediawiki-phan-config": "0.16.0",
                 "mediawiki/minus-x": "1.1.3",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
                 "php-parallel-lint/php-parallel-lint": "1.4.0",
@@ -6896,9 +6896,9 @@
             "description": "Classes to parse and sanitize CSS",
             "homepage": "https://www.mediawiki.org/wiki/Css-sanitizer",
             "support": {
-                "source": "https://github.com/wikimedia/css-sanitizer/tree/v5.5.0"
+                "source": "https://github.com/wikimedia/css-sanitizer/tree/v6.0.0"
             },
-            "time": "2025-01-27T12:21:54+00:00"
+            "time": "2025-07-23T02:41:13+00:00"
         },
         {
             "name": "wikimedia/cssjanus",

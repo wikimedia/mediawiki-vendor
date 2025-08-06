@@ -4769,6 +4769,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\CSS\\Parser\\StringDataSource' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Parser/StringDataSource.php',
         'Wikimedia\\CSS\\Parser\\TokenListTokenizer' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Parser/TokenListTokenizer.php',
         'Wikimedia\\CSS\\Parser\\Tokenizer' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Parser/Tokenizer.php',
+        'Wikimedia\\CSS\\Sanitizer\\CounterStyleAtRuleSanitizer' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Sanitizer/CounterStyleAtRuleSanitizer.php',
         'Wikimedia\\CSS\\Sanitizer\\FontFaceAtRuleSanitizer' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Sanitizer/FontFaceAtRuleSanitizer.php',
         'Wikimedia\\CSS\\Sanitizer\\ImportAtRuleSanitizer' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Sanitizer/ImportAtRuleSanitizer.php',
         'Wikimedia\\CSS\\Sanitizer\\KeyframesAtRuleSanitizer' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Sanitizer/KeyframesAtRuleSanitizer.php',

@@ -3955,6 +3955,7 @@ return array(
     'Wikimedia\\CSS\\Parser\\StringDataSource' => $vendorDir . '/wikimedia/css-sanitizer/src/Parser/StringDataSource.php',
     'Wikimedia\\CSS\\Parser\\TokenListTokenizer' => $vendorDir . '/wikimedia/css-sanitizer/src/Parser/TokenListTokenizer.php',
     'Wikimedia\\CSS\\Parser\\Tokenizer' => $vendorDir . '/wikimedia/css-sanitizer/src/Parser/Tokenizer.php',
+    'Wikimedia\\CSS\\Sanitizer\\CounterStyleAtRuleSanitizer' => $vendorDir . '/wikimedia/css-sanitizer/src/Sanitizer/CounterStyleAtRuleSanitizer.php',
     'Wikimedia\\CSS\\Sanitizer\\FontFaceAtRuleSanitizer' => $vendorDir . '/wikimedia/css-sanitizer/src/Sanitizer/FontFaceAtRuleSanitizer.php',
     'Wikimedia\\CSS\\Sanitizer\\ImportAtRuleSanitizer' => $vendorDir . '/wikimedia/css-sanitizer/src/Sanitizer/ImportAtRuleSanitizer.php',
     'Wikimedia\\CSS\\Sanitizer\\KeyframesAtRuleSanitizer' => $vendorDir . '/wikimedia/css-sanitizer/src/Sanitizer/KeyframesAtRuleSanitizer.php',
