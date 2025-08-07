@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '0c4239f236cf395bc19884ff1e99d71af1ed912a',
+        'reference' => 'c90184944e08971fde11d704dc7a343dd1407947',
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '0c4239f236cf395bc19884ff1e99d71af1ed912a',
+            'reference' => 'c90184944e08971fde11d704dc7a343dd1407947',
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -182,18 +182,18 @@
             'dev_requirement' => false,
         ),
         'ezimuel/guzzlestreams' => array(
-            'pretty_version' => '3.1.0',
-            'version' => '3.1.0.0',
-            'reference' => 'b4b5a025dfee70d6cd34c780e07330eb93d5b997',
+            'pretty_version' => '4.1.0',
+            'version' => '4.1.0.0',
+            'reference' => '903161be81e9f497cc42fb7db982404a4e6441b0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../ezimuel/guzzlestreams',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
         'ezimuel/ringphp' => array(
-            'pretty_version' => '1.3.0',
-            'version' => '1.3.0.0',
-            'reference' => '5e4ee1dfc7a323b87873b83f17c69c76ba047793',
+            'pretty_version' => '1.4.0',
+            'version' => '1.4.0.0',
+            'reference' => 'bc983599ec7add50c00e420e867c403c8ed16ae7',
             'type' => 'library',
             'install_path' => __DIR__ . '/../ezimuel/ringphp',
             'aliases' => array(),
@@ -256,7 +256,7 @@
         'guzzlehttp/ringphp' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => '1.3.0',
+                0 => '1.4.0',
             ),
         ),
         'jakobo/hotp-php' => array(

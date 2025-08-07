@@ -11,7 +11,7 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "ezimuel/guzzlestreams": "^3.0.1",
+        "ezimuel/guzzlestreams": "^3.0.1 || ^4.0.0",
         "react/promise": "^2.0 || ^3.0"
     },
     "require-dev": {
