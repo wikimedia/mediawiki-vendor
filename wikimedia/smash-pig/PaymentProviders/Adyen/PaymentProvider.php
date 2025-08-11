@@ -643,13 +643,18 @@ abstract class PaymentProvider implements
 			$response = new CreatePaymentResponse();
 		}
 		$response->setRawResponse( $rawResponse );
-		$rawStatus = $rawResponse['resultCode'];
-		$this->mapStatus(
-			$response,
-			$rawResponse,
-			new ApprovalNeededCreatePaymentStatus(),
-			$rawStatus
-		);
+
+		if ( empty( $rawResponse['resultCode'] ) ) {
+			$response->setSuccessful( false );
+		} else {
+			$rawStatus = $rawResponse['resultCode'];
+			$this->mapStatus(
+				$response,
+				$rawResponse,
+				new ApprovalNeededCreatePaymentStatus(),
+				$rawStatus
+			);
+		}
 
 		$this->mapGatewayTxnIdAndErrors( $response, $rawResponse );
 		return $response;

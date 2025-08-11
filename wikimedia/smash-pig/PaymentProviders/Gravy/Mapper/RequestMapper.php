@@ -58,12 +58,13 @@ class RequestMapper {
 		if ( !empty( $params['processor_contact_id'] ) ) {
 			$request['buyer_id'] = $params['processor_contact_id'];
 		} else {
+			$buyerEmail = $params['email'] ? strtolower( $params['email'] ) : null;
 			$request['buyer'] = [
-				'external_identifier' => strtolower( $params['email'] ),
+				'external_identifier' => $buyerEmail,
 				'billing_details' => [
 					'first_name' => $params['first_name'] ?? null,
 					'last_name' => $params['last_name'] ?? null,
-					'email_address' => strtolower( $params['email'] ),
+					'email_address' => $buyerEmail,
 					'phone_number' => $params['phone'] ?? null,
 					'address' => [
 						'city' => $params['city'] ?? null,

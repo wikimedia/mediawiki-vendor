@@ -104,6 +104,34 @@ class RecurringPaymentTest extends BaseAdyenTestCase {
 	}
 
 	/**
+	 * Not sure how we end up with 'invalid card number' when charging a tokenized payment,
+	 * but apparently it's possible, so make sure we don't error out.
+	 * @return void
+	 */
+	public function testRecurringFailWithNoResultCode() {
+		$this->mockApi->expects( $this->once() )
+			->method( 'createPaymentFromToken' )
+			->willReturn( [
+				'status' => 422,
+				'errorCode' => '101',
+				'message' => 'Invalid card number',
+				'errorType' => 'validation',
+				'pspReference' => 'K9ABCDEFGH84J769'
+			] );
+
+		$params = $this->getTestParams();
+
+		$createPaymentResponse = $this->provider->createPayment( $params );
+
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\CreatePaymentResponse', $createPaymentResponse );
+		$this->assertEquals( 'K9ABCDEFGH84J769', $createPaymentResponse->getGatewayTxnId() );
+		$this->assertTrue( $createPaymentResponse->hasErrors() );
+		$validationError = $createPaymentResponse->getValidationErrors()[0];
+		$this->assertEquals( 'card_num', $validationError->getField() );
+		$this->assertFalse( $createPaymentResponse->isSuccessful() );
+	}
+
+	/**
 	 * Refusal codes taken from https://docs.adyen.com/development-resources/test-cards/result-code-testing/adyen-response-codes
 	 * @return array
 	 */
