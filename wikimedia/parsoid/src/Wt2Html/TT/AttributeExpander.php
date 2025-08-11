@@ -140,6 +140,7 @@ class AttributeExpander extends UniversalTokenHandler {
 		// Since we no longer know where this token now ends tsr-wise,
 		// set tsr->end to null
 		$token->dataParsoid->tsr->end = null;
+		$token->dataParsoid->getTemp()->attrSrc = '';
 
 		if ( $startMeta ) {
 			// Support template wrapping with the following steps:
@@ -386,6 +387,7 @@ class AttributeExpander extends UniversalTokenHandler {
 						// We split up this attribute's key into pieces.
 						if ( $expandedA->srcOffsets->key ) {
 							$expandedA->srcOffsets->key->end = null;
+							$expandedA->ksrc = null;
 						}
 					} else {
 						// Maybe scenario 2 from the documentation comment above.
@@ -476,6 +478,7 @@ class AttributeExpander extends UniversalTokenHandler {
 						// We split up this attribute's value into pieces.
 						if ( $expandedA->srcOffsets->value ) {
 							$expandedA->srcOffsets->value->end = null;
+							$expandedA->vsrc = null;
 						}
 					} else {
 						// Maybe scenario 2 from the documentation comment above.

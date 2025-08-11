@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => null,
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => 'e82b18ebc124142c0b7c28dfc99a58da6b7db335',
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => null,
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => 'e82b18ebc124142c0b7c28dfc99a58da6b7db335',
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -1197,9 +1197,9 @@
             'dev_requirement' => false,
         ),
         'wikimedia/parsoid' => array(
-            'pretty_version' => 'v0.22.0-a15',
-            'version' => '0.22.0.0-alpha15',
-            'reference' => 'ca739ece415cf934670f521bdcac5ebaa80c5ac0',
+            'pretty_version' => 'v0.22.0-a16',
+            'version' => '0.22.0.0-alpha16',
+            'reference' => '9da4d607de6ee2d5504ffedad2829b97ebc3974a',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/parsoid',
             'aliases' => array(),
