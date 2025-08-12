@@ -19,7 +19,7 @@ class ApplePayPaymentProvider extends PaymentProvider {
 
 			// dispatch api call to external API using mapped params
 			$sessionResponse = new CreatePaymentSessionResponse();
-			$rawResponse = $this->api->createPaymentSession( $params, 'apple' );
+			$rawResponse = $this->api->createPaymentSession( $params, PaymentMethod::APPLE_PAY );
 
 			// map the response from the external format back to our normalized structure.
 			$gravyResponseMapper = $this->getResponseMapper();

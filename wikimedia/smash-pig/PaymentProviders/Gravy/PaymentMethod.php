@@ -19,6 +19,7 @@ enum PaymentMethod: string {
 	case BANCOMER = 'bancomer';
 	case WEBPAY = 'webpay';
 	case STITCH = 'stitch';
+	case APPLE_PAY = 'apple';
 
 	public function toGravyValue(): string {
 		return match ( $this ) {

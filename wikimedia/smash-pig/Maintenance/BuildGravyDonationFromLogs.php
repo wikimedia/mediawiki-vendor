@@ -67,7 +67,7 @@ class BuildGravyDonationFromLogs extends MaintenanceBase {
 		'line1' => 'street_address',
 		'city' => 'city',
 		'email_address' => 'email',
-		'authorized_at' => 'date',
+		'created_at' => 'date',
 		'recurringProcessingModel' => 'recurring',
 		'utm_source' => 'utm_source',
 	];
@@ -356,7 +356,7 @@ class BuildGravyDonationFromLogs extends MaintenanceBase {
 						$extracted['contribution_tracking_id'] = preg_replace( '/\.\d+$/', '', $data[$gravyField] );
 						break;
 
-					case 'authorized_at':
+					case 'created_at':
 						$extracted[$queueMessageKey] = strtotime( $data[$gravyField] );
 						break;
 					case 'recurringProcessingModel':

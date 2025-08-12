@@ -2614,6 +2614,7 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\PaymentProviders\\Gravy\\Tests\\phpunit\\ErrorCheckerTest' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Tests/phpunit/ErrorCheckerTest.php',
         'SmashPig\\PaymentProviders\\Gravy\\Tests\\phpunit\\GooglePaymentProviderTest' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Tests/phpunit/GooglePaymentProviderTest.php',
         'SmashPig\\PaymentProviders\\Gravy\\Tests\\phpunit\\GravyPaymentResponseFactoryTest' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Tests/phpunit/GravyPaymentResponseFactoryTest.php',
+        'SmashPig\\PaymentProviders\\Gravy\\Tests\\phpunit\\GravyReferenceDataTest' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Tests/phpunit/GravyReferenceDataTest.php',
         'SmashPig\\PaymentProviders\\Gravy\\Tests\\phpunit\\PaymentProviderTest' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Tests/phpunit/PaymentProviderTest.php',
         'SmashPig\\PaymentProviders\\Gravy\\Tests\\phpunit\\RecurringCancellationJobTest' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Tests/phpunit/RecurringCancellationJobTest.php',
         'SmashPig\\PaymentProviders\\Gravy\\Tests\\phpunit\\TransactionDetailsNormalizerTest' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Tests/phpunit/TransactionDetailsNormalizerTest.php',

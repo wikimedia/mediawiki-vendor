@@ -8,9 +8,7 @@ use SmashPig\Core\Logging\TaggedLogger;
 
 class Api {
 
-	private $merchantAccountId;
-
-	private $gravyApiClient;
+	private Gr4vyConfig $gravyApiClient;
 
 	public function __construct() {
 		$c = Context::get()->getProviderConfiguration();
@@ -18,9 +16,9 @@ class Api {
 		$privateKeyLocation = $c->val( 'privateKeyLocation' );
 		$gravyId = $c->val( 'gravy-id' );
 		$apiPrefix = $c->val( 'api-prefix' );
+		$merchantAccountId = $c->val( 'merchantAccountId' );
 
-		$this->merchantAccountId = $c->val( 'merchantAccountId' );
-		$this->gravyApiClient = new Gr4vyConfig( $gravyId, $privateKeyLocation, true, $apiPrefix, $this->merchantAccountId );
+		$this->gravyApiClient = new Gr4vyConfig( $gravyId, $privateKeyLocation, true, $apiPrefix, $merchantAccountId );
 	}
 
 	/**
@@ -29,47 +27,13 @@ class Api {
 	public function createPaymentSession( $params = [], $method = 'card' ) {
 		$response = null;
 		$tl = new TaggedLogger( 'RawData' );
-		if ( $method == 'apple' ) {
+		if ( $method === PaymentMethod::APPLE_PAY ) {
 			$response = $this->gravyApiClient->newApplePaySession( $params );
 			$tl->info( 'New Apple Pay Session response ' . json_encode( $response ) );
 		} else {
 			$response = $this->gravyApiClient->newCheckoutSession( $params );
 			$tl->info( 'New Checkout Session response ' . json_encode( $response ) );
 		}
-		return $response;
-	}
-
-	/**
-	 * Get donor record to map transactions to on Gr4vy
-	 *
-	 *
-	 * @param array $params
-	 *
-	 * @return array
-	 * @link https://docs.gr4vy.com/reference/buyers/list-buyers Gr4vy Documentation to get an existing buyer
-	 */
-	public function getDonor( array $params ): array {
-		$response = $this->gravyApiClient->listBuyers( $params );
-		$tl = new TaggedLogger( 'RawData' );
-		$response_string = json_encode( $response );
-		$tl->info( "Get donor response $response_string" );
-		return $response;
-	}
-
-	/**
-	 * Create donor record to map transactions to on Gr4vy
-	 *
-	 *
-	 * @param array $params
-	 *
-	 * @return array
-	 * @link https://docs.gr4vy.com/reference/buyers/new-buyer Gr4vy Documentation to create a new buyer
-	 */
-	public function createDonor( array $params ): array {
-		$response = $this->gravyApiClient->addBuyer( $params );
-		$tl = new TaggedLogger( 'RawData' );
-		$response_string = json_encode( $response );
-		$tl->info( "Create donor response $response_string" );
 		return $response;
 	}
 

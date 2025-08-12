@@ -2170,6 +2170,7 @@ return array(
     'SmashPig\\PaymentProviders\\Gravy\\Tests\\phpunit\\ErrorCheckerTest' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/Tests/phpunit/ErrorCheckerTest.php',
     'SmashPig\\PaymentProviders\\Gravy\\Tests\\phpunit\\GooglePaymentProviderTest' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/Tests/phpunit/GooglePaymentProviderTest.php',
     'SmashPig\\PaymentProviders\\Gravy\\Tests\\phpunit\\GravyPaymentResponseFactoryTest' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/Tests/phpunit/GravyPaymentResponseFactoryTest.php',
+    'SmashPig\\PaymentProviders\\Gravy\\Tests\\phpunit\\GravyReferenceDataTest' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/Tests/phpunit/GravyReferenceDataTest.php',
     'SmashPig\\PaymentProviders\\Gravy\\Tests\\phpunit\\PaymentProviderTest' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/Tests/phpunit/PaymentProviderTest.php',
     'SmashPig\\PaymentProviders\\Gravy\\Tests\\phpunit\\RecurringCancellationJobTest' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/Tests/phpunit/RecurringCancellationJobTest.php',
     'SmashPig\\PaymentProviders\\Gravy\\Tests\\phpunit\\TransactionDetailsNormalizerTest' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/Tests/phpunit/TransactionDetailsNormalizerTest.php',

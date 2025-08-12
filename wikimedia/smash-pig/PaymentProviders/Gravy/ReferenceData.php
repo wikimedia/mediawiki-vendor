@@ -12,6 +12,7 @@ class ReferenceData {
 
 	protected static $paymentMethodMapper = [
 		'abitab' => PaymentMethod::CASH,
+		'accel' => PaymentMethod::CC,
 		'afterpay' => '',
 		'alipay' => PaymentMethod::EW,
 		'alipayhk' => PaymentMethod::EW,
@@ -120,6 +121,7 @@ class ReferenceData {
 	];
 
 	protected static $cardPaymentSubmethods = [
+		'accel' => 'accel',
 		'amex' => 'amex',
 		'bancontact' => '',
 		'carte-bancaire' => 'cb',
