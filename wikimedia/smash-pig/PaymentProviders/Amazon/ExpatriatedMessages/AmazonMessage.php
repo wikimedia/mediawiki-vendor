@@ -46,6 +46,6 @@ abstract class AmazonMessage extends ListenerMessage {
 	}
 
 	public function getOrderReferenceId() {
-		return substr( $this->gateway_txn_id, 0, 19 );
+		return substr( $this->gateway_txn_id ?? '', 0, 19 );
 	}
 }

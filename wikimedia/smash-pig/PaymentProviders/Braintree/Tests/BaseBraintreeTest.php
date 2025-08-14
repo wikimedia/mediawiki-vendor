@@ -15,7 +15,9 @@ class BaseBraintreeTest extends BaseSmashPigUnitTestCase {
 	/**
 	 * @var \PHPUnit_Framework_MockObject_MockObject
 	 */
-	protected $mockApi;
+	protected $api;
+
+	protected array $merchantAccounts;
 
 	public function setUp(): void {
 		parent::setUp();

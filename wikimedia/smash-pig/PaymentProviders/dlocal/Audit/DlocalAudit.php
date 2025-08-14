@@ -9,7 +9,7 @@ use SmashPig\PaymentProviders\dlocal\ReferenceData;
 
 class DlocalAudit implements AuditParser {
 
-	protected $columnHeaders = [
+	protected array $columnHeaders = [
 		'Type', // 'Payment' or 'Refund'
 		'Creation date', // YYYY-MM-dd HH:mm:ss
 		'Settlement date', // same format
@@ -31,7 +31,7 @@ class DlocalAudit implements AuditParser {
 		// The IOF is included in Dlocal's fee, but broken out by request
 	];
 
-	protected $ignoredStatuses = [
+	protected array $ignoredStatuses = [
 		'Cancelled', // User pressed cancel or async payment expired
 		'In process', // Chargeback is... charging back? 'Settled' means done
 		'Reimbursed', // Chargeback settled in our favor - not refunding
@@ -62,7 +62,7 @@ class DlocalAudit implements AuditParser {
 		return $this->fileData;
 	}
 
-	protected function parseLine( $line ) {
+	protected function parseLine( array $line ): void {
 		$row = array_combine( $this->columnHeaders, $line );
 
 		// Ignore certain statuses
@@ -79,11 +79,17 @@ class DlocalAudit implements AuditParser {
 
 		switch ( $row['Type'] ) {
 			case 'Payment':
+				if ( $this->isFromOrchestrator( $row['Invoice'] ) ) {
+					return;
+				}
 				$this->parseDonation( $row, $msg );
 				break;
 			case 'Refund':
 			case 'Chargeback':
 			case 'Chargebacks': // started seeing these with the 's'
+				if ( $this->isFromOrchestrator( $row['Transaction Invoice'] ) ) {
+					return;
+				}
 				$this->parseRefund( $row, $msg );
 				break;
 			case 'Credit Note':
@@ -103,7 +109,7 @@ class DlocalAudit implements AuditParser {
 		$this->fileData[] = $msg;
 	}
 
-	protected function parseRefund( array $row, array &$msg ) {
+	protected function parseRefund( array $row, array &$msg ): void {
 		$msg['contribution_tracking_id'] = $this->getContributionTrackingId( $row['Transaction Invoice'] );
 		$msg['gateway_parent_id'] = $row['Transaction Reference'];
 		$msg['gateway_refund_id'] = $row['Reference'];
@@ -116,7 +122,7 @@ class DlocalAudit implements AuditParser {
 		}
 	}
 
-	protected function parseDonation( array $row, array &$msg ) {
+	protected function parseDonation( array $row, array &$msg ): void {
 		$msg['contribution_tracking_id'] = $this->getContributionTrackingId( $row['Invoice'] );
 		$msg['country'] = $row['Country'];
 		$msg['currency'] = $row['currency'];
@@ -139,8 +145,13 @@ class DlocalAudit implements AuditParser {
 		}
 	}
 
-	protected function getContributionTrackingId( $invoice ) {
+	protected function getContributionTrackingId( string $invoice ): string {
 		$parts = explode( '.', $invoice );
 		return $parts[0];
+	}
+
+	protected function isFromOrchestrator( $invoice ): bool {
+		// ignore gravy transactions, they have no period and contain letters
+		return ( !strpos( $invoice, '.' ) && !is_numeric( $invoice ) );
 	}
 }

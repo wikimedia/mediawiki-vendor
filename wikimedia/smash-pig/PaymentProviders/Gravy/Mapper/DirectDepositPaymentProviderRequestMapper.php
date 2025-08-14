@@ -11,6 +11,9 @@ class DirectDepositPaymentProviderRequestMapper extends RequestMapper {
 
 		// getting the buyer billing details from ACH which is not from our form
 		unset( $request['buyer']['billing_details'] );
+		// ... except for email, which we DO collect and want to be searchable
+		// in the gravy console even for incomplete transactions.
+		$request['buyer']['billing_details']['email_address'] = $params['email'];
 
 		if ( !isset( $params['recurring_payment_token'] ) ) {
 			$payment_method = [

@@ -116,7 +116,7 @@ class PendingDatabaseTest extends BaseSmashPigUnitTestCase {
 			'Got the oldest record match cc.' );
 	}
 
-	public function testDeleteMessage() {
+	public function testMarkMessageResolved() {
 		$uniq = mt_rand();
 		$message1 = $this->getTestMessage( $uniq );
 		// Store a second message for a good time, and make sure we delete the
@@ -140,14 +140,15 @@ class PendingDatabaseTest extends BaseSmashPigUnitTestCase {
 		$this->assertNotEquals( $rows[0]['id'], $rows[1]['id'],
 			'Records have unique primary ids' );
 
-		$this->db->deleteMessage( $message1 );
+		$this->db->markMessageResolved( $message1 );
 
 		// Confirm work without using the API.
 		$pdo = $this->db->getDatabase();
 		$result = $pdo->query( "
 			select * from pending
 			where gateway = 'test'
-				and order_id = '{$message1['order_id']}'" );
+				and order_id = '{$message1['order_id']}'
+				and is_resolved = 0" );
 		$rows = $result->fetchAll( PDO::FETCH_ASSOC );
 		$this->assertCount( 0, $rows,
 			'All rows deleted.' );

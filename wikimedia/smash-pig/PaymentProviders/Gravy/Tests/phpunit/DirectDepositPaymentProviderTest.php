@@ -99,6 +99,9 @@ class DirectDepositPaymentProviderTest extends BaseGravyTestCase {
 				],
 				'buyer' => [
 					'external_identifier' => $params['email'],
+					'billing_details' => [
+						'email_address' => $params['email'],
+					],
 				]
 			] )
 			->willReturn( $responseBody );

@@ -2,6 +2,7 @@
 
 namespace SmashPig\PaymentProviders\Adyen\Test;
 
+use PHPQueue\Interfaces\FifoQueueStore;
 use SmashPig\Core\Context;
 use SmashPig\Core\DataStores\QueueWrapper;
 use SmashPig\CrmLink\Messages\SourceFields;
@@ -12,7 +13,8 @@ use SmashPig\PaymentProviders\Adyen\Tests\AdyenTestConfiguration;
 use SmashPig\PaymentProviders\Adyen\Tests\BaseAdyenTestCase;
 
 class AutoRescueActionTest extends BaseAdyenTestCase {
-	private $jobsAdyenQueue;
+	private FifoQueueStore $jobsAdyenQueue;
+	private FifoQueueStore $recurringQueue;
 
 	public function setUp(): void {
 		parent::setUp();

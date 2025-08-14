@@ -9,7 +9,10 @@
   },
   "external_identifier": "907184.1",
   "buyer": {
-    "external_identifier": "lorem@ipsum"
+    "external_identifier": "lorem@ipsum",
+    "billing_details": {
+      "email_address": "lorem@ipsum"
+    }
   },
   "statement_descriptor": {
     "description": "Wikimedia Foundation"

@@ -46,7 +46,7 @@ class PendingDatabase extends SmashPigDatabase {
 		// These fields (and date) have their own columns in the database
 		// Copy the values from the message to the record
 		$indexedFields = [
-			'gateway', 'gateway_account', 'gateway_txn_id', 'order_id', 'payment_method'
+			'gateway', 'gateway_account', 'gateway_txn_id', 'order_id', 'payment_method', 'is_resolved'
 		];
 
 		foreach ( $indexedFields as $fieldName ) {
@@ -71,7 +71,7 @@ class PendingDatabase extends SmashPigDatabase {
 	}
 
 	/**
-	 * Return record matching a (gateway, order_id), or null
+	 * Return unresolved record matching a (gateway, order_id), or null
 	 *
 	 * @param string $gatewayName
 	 * @param string $orderId
@@ -82,6 +82,7 @@ class PendingDatabase extends SmashPigDatabase {
 		$sql = 'select * from pending
 			where gateway = :gateway
 				and order_id = :order_id
+				and is_resolved = 0
 			limit 1';
 
 		$params = [
@@ -97,7 +98,7 @@ class PendingDatabase extends SmashPigDatabase {
 	}
 
 	/**
-	 * Get the oldest message for a given gateway, and payment_method by date
+	 * Get the oldest unresolved message for a given gateway, and payment_method by date
 	 *
 	 * @param string $gatewayName
 	 * @param array|null $payment_methods
@@ -115,7 +116,11 @@ class PendingDatabase extends SmashPigDatabase {
 		if ( count( $placeholder ) > 0 ) {
 			$filterPaymentMethod .= ' and payment_method in (' . implode( ',', $placeholder ) . ')';
 		}
-		$sql = "select * from pending where gateway = :gateway" . $filterPaymentMethod . " order by date asc limit 1";
+		$sql = 'select * from pending ' .
+			'where gateway = :gateway ' .
+			'and is_resolved = 0 ' .
+			$filterPaymentMethod .
+			' order by date asc limit 1';
 		$executed = $this->prepareAndExecute( $sql, $params );
 		$row = $executed->fetch( PDO::FETCH_ASSOC );
 		if ( !$row ) {
@@ -125,7 +130,7 @@ class PendingDatabase extends SmashPigDatabase {
 	}
 
 	/**
-	 * Get the newest N messages for a given gateway.
+	 * Get the newest N unresolved messages for a given gateway.
 	 *
 	 * @param string $gatewayName
 	 * @param int $limit fetch at most this many messages
@@ -136,6 +141,7 @@ class PendingDatabase extends SmashPigDatabase {
 		$sql = "
 			select * from pending
 			where gateway = :gateway
+			and is_resolved = 0
 			order by date desc
 			limit $limit";
 		$params = [ 'gateway' => $gatewayName ];
@@ -152,14 +158,27 @@ class PendingDatabase extends SmashPigDatabase {
 	}
 
 	/**
-	 * Delete a message from the database
+	 * Marks a message as resolved
 	 *
-	 * Note that we delete by (gateway, order_id) internally.
+	 * Note that we update by (gateway, order_id) internally.
+	 *
+	 * @param array $message
+	 * @throws DataStoreException
+	 * @deprecated
+	 */
+	public function deleteMessage( array $message ) {
+		$this->markMessageResolved( $message );
+	}
+
+	/**
+	 * Marks a message as resolved
+	 *
+	 * Note that we update by (gateway, order_id) internally.
 	 *
 	 * @param array $message
 	 * @throws DataStoreException
 	 */
-	public function deleteMessage( array $message ) {
+	public function markMessageResolved( array $message ) {
 		if ( !isset( $message['order_id'] ) ) {
 			$json = json_encode( $message );
 			Logger::warning( "Trying to delete pending message with no order id: $json" );
@@ -167,7 +186,8 @@ class PendingDatabase extends SmashPigDatabase {
 		}
 
 		$sql = '
-			delete from pending
+			update pending
+			set is_resolved = 1
 			where gateway = :gateway
 				and order_id = :order_id';
 		$params = [
