@@ -8271,29 +8271,29 @@
         },
         {
             "name": "wikimedia/remex-html",
-            "version": "5.0.0",
-            "version_normalized": "5.0.0.0",
+            "version": "5.1.0",
+            "version_normalized": "5.1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-RemexHtml.git",
-                "reference": "5f124f68a25331d54f6f825bebbdd631be37273a"
+                "reference": "c75f653afdfc42040e27d311236e7856ebedaa25"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-RemexHtml/zipball/5f124f68a25331d54f6f825bebbdd631be37273a",
-                "reference": "5f124f68a25331d54f6f825bebbdd631be37273a",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-RemexHtml/zipball/c75f653afdfc42040e27d311236e7856ebedaa25",
+                "reference": "c75f653afdfc42040e27d311236e7856ebedaa25",
                 "shasum": ""
             },
             "require": {
                 "ext-dom": "*",
                 "ext-mbstring": "*",
-                "php": ">=7.4",
+                "php": ">=8.1",
                 "wikimedia/utfnormal": "^3.0.1 || ^4.0.0"
             },
             "require-dev": {
                 "ext-json": "*",
                 "mediawiki/mediawiki-codesniffer": "47.0.0",
-                "mediawiki/mediawiki-phan-config": "0.15.1",
+                "mediawiki/mediawiki-phan-config": "0.17.0",
                 "mediawiki/minus-x": "1.1.3",
                 "ockcyp/covers-validator": "1.6.0",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
@@ -8301,7 +8301,7 @@
                 "phpunit/phpunit": "9.6.21",
                 "wikimedia/update-history": "1.0.1"
             },
-            "time": "2025-06-04T22:03:25+00:00",
+            "time": "2025-08-14T21:59:40+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -8322,7 +8322,7 @@
             "description": "Fast HTML 5 parser",
             "homepage": "https://www.mediawiki.org/wiki/RemexHtml",
             "support": {
-                "source": "https://github.com/wikimedia/mediawiki-libs-RemexHtml/tree/5.0.0"
+                "source": "https://github.com/wikimedia/mediawiki-libs-RemexHtml/tree/5.1.0"
             },
             "install-path": "../wikimedia/remex-html"
         },
@@ -9054,40 +9054,40 @@
         },
         {
             "name": "wikimedia/zest-css",
-            "version": "4.0.0",
-            "version_normalized": "4.0.0.0",
+            "version": "4.1.0",
+            "version_normalized": "4.1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-Zest.git",
-                "reference": "5e542d65e8496e1fd921cc808be2b6066a454dc3"
+                "reference": "8e3c72cbfb4a2d449031b0bf97dd54966f1c029d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Zest/zipball/5e542d65e8496e1fd921cc808be2b6066a454dc3",
-                "reference": "5e542d65e8496e1fd921cc808be2b6066a454dc3",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Zest/zipball/8e3c72cbfb4a2d449031b0bf97dd54966f1c029d",
+                "reference": "8e3c72cbfb4a2d449031b0bf97dd54966f1c029d",
                 "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
                 "ext-xml": "*",
-                "php": ">=7.4"
+                "php": ">=8.1"
             },
             "require-dev": {
                 "mediawiki/mediawiki-codesniffer": "47.0.0",
-                "mediawiki/mediawiki-phan-config": "0.15.1",
+                "mediawiki/mediawiki-phan-config": "0.17.0",
                 "mediawiki/minus-x": "1.1.3",
                 "ockcyp/covers-validator": "1.6.0",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
                 "php-parallel-lint/php-parallel-lint": "1.4.0",
                 "phpunit/phpunit": "9.6.21",
-                "wikimedia/remex-html": "^4.1.2 || ^5.0.0",
+                "wikimedia/remex-html": "^5.0.0 || ^5.1.0",
                 "wikimedia/testing-access-wrapper": "^3.0",
                 "wikimedia/update-history": "^1.0.1"
             },
             "suggest": {
                 "ext-intl": "*"
             },
-            "time": "2025-06-05T16:00:28+00:00",
+            "time": "2025-08-15T02:40:56+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -9117,7 +9117,7 @@
                 "selector"
             ],
             "support": {
-                "source": "https://github.com/wikimedia/mediawiki-libs-Zest/tree/4.0.0"
+                "source": "https://github.com/wikimedia/mediawiki-libs-Zest/tree/4.1.0"
             },
             "install-path": "../wikimedia/zest-css"
         },

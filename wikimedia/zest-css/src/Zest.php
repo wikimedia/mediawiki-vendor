@@ -2,11 +2,6 @@
 
 namespace Wikimedia\Zest;
 
-use DOMDocument;
-use DOMDocumentFragment;
-use DOMElement;
-use DOMNode;
-
 /**
  * Zest.php (https://github.com/wikimedia/zest.php)
  * Copyright (c) 2019, C. Scott Ananian. (MIT licensed)
@@ -17,6 +12,11 @@ use DOMNode;
  * Copyright (c) 2011-2012, Christopher Jeffrey. (MIT Licensed)
  * Domino version based on Zest v0.1.3 with bugfixes applied.
  */
+
+use DOMDocument;
+use DOMDocumentFragment;
+use DOMElement;
+use DOMNode;
 
 class Zest {
 

@@ -5826,6 +5826,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\RelPath' => __DIR__ . '/..' . '/wikimedia/relpath/src/RelPath.php',
         'Wikimedia\\RemexHtml\\DOM\\DOMBuilder' => __DIR__ . '/..' . '/wikimedia/remex-html/src/DOM/DOMBuilder.php',
         'Wikimedia\\RemexHtml\\DOM\\DOMFormatter' => __DIR__ . '/..' . '/wikimedia/remex-html/src/DOM/DOMFormatter.php',
+        'Wikimedia\\RemexHtml\\DOM\\DOMFragmentBuilder' => __DIR__ . '/..' . '/wikimedia/remex-html/src/DOM/DOMFragmentBuilder.php',
         'Wikimedia\\RemexHtml\\DOM\\DOMSerializer' => __DIR__ . '/..' . '/wikimedia/remex-html/src/DOM/DOMSerializer.php',
         'Wikimedia\\RemexHtml\\DOM\\DOMUtils' => __DIR__ . '/..' . '/wikimedia/remex-html/src/DOM/DOMUtils.php',
         'Wikimedia\\RemexHtml\\HTMLData' => __DIR__ . '/..' . '/wikimedia/remex-html/src/HTMLData.php',

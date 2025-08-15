@@ -131,7 +131,7 @@
 		"wikimedia/php-session-serializer": "3.0.1",
 		"wikimedia/purtle": "2.0.0",
 		"wikimedia/relpath": "4.0.2",
-		"wikimedia/remex-html": "5.0.0",
+		"wikimedia/remex-html": "5.1.0",
 		"wikimedia/request-timeout": "3.0.0",
 		"wikimedia/running-stat": "2.1.0",
 		"wikimedia/scoped-callback": "5.0.0",
@@ -144,7 +144,7 @@
 		"wikimedia/wait-condition-loop": "2.0.2",
 		"wikimedia/wrappedstring": "4.0.1",
 		"wikimedia/xmp-reader": "0.9.4",
-		"wikimedia/zest-css": "4.0.0",
+		"wikimedia/zest-css": "4.1.0",
 		"wmde/php-vuejs-templating": "2.2.0-beta.7",
 		"zordius/lightncandy": "1.2.6"
 	},

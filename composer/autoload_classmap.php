@@ -5012,6 +5012,7 @@ return array(
     'Wikimedia\\RelPath' => $vendorDir . '/wikimedia/relpath/src/RelPath.php',
     'Wikimedia\\RemexHtml\\DOM\\DOMBuilder' => $vendorDir . '/wikimedia/remex-html/src/DOM/DOMBuilder.php',
     'Wikimedia\\RemexHtml\\DOM\\DOMFormatter' => $vendorDir . '/wikimedia/remex-html/src/DOM/DOMFormatter.php',
+    'Wikimedia\\RemexHtml\\DOM\\DOMFragmentBuilder' => $vendorDir . '/wikimedia/remex-html/src/DOM/DOMFragmentBuilder.php',
     'Wikimedia\\RemexHtml\\DOM\\DOMSerializer' => $vendorDir . '/wikimedia/remex-html/src/DOM/DOMSerializer.php',
     'Wikimedia\\RemexHtml\\DOM\\DOMUtils' => $vendorDir . '/wikimedia/remex-html/src/DOM/DOMUtils.php',
     'Wikimedia\\RemexHtml\\HTMLData' => $vendorDir . '/wikimedia/remex-html/src/HTMLData.php',

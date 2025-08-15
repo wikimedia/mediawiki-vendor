@@ -1,13 +1,8 @@
 <?php
 
-namespace Wikimedia\Zest;
+// @phan-file-suppress PhanUnusedClosureParameter
 
-use DOMDocument;
-use DOMDocumentFragment;
-use DOMElement;
-use DOMNode;
-use InvalidArgumentException;
-use Throwable;
+namespace Wikimedia\Zest;
 
 /**
  * Zest.php (https://github.com/wikimedia/zest.php)
@@ -19,6 +14,13 @@ use Throwable;
  * Copyright (c) 2011-2012, Christopher Jeffrey. (MIT Licensed)
  * Domino version based on Zest v0.1.3 with bugfixes applied.
  */
+
+use DOMDocument;
+use DOMDocumentFragment;
+use DOMElement;
+use DOMNode;
+use InvalidArgumentException;
+use Throwable;
 
 class ZestInst {
 
@@ -148,7 +150,7 @@ class ZestInst {
 		self::initRules();
 		$ch = $str[ 0 ];
 		if ( $ch === '"' || $ch === "'" ) {
-			if ( substr( $str, -1 ) === $ch ) {
+			if ( str_ends_with( $str, $ch ) ) {
 				$str = substr( $str, 1, -1 );
 			} else {
 				// bad string.
@@ -496,7 +498,7 @@ class ZestInst {
 			$param = '2n+0';
 		} elseif ( $param === 'odd' ) {
 			$param = '2n+1';
-		} elseif ( strpos( $param, 'n' ) === false ) {
+		} elseif ( !str_contains( $param, 'n' ) ) {
 			$param = '0n' . $param;
 		}
 
@@ -750,7 +752,7 @@ class ZestInst {
 						// PHP DOM doesn't have 'lang' property
 						$lang = $el->getAttribute( 'lang' );
 						if ( $lang ) {
-							return strpos( $lang, $param ) === 0;
+							return str_starts_with( $lang, $param );
 						}
 					}
 					$el = $el->parentNode;
@@ -868,6 +870,7 @@ class ZestInst {
 				 */
 				static function ( $el, $opts ) use ( $selector ): bool {
 					$self = $opts['this'];
+					// @phan-suppress-next-line PhanThrowTypeAbsent
 					throw $self->newBadSelectorException( $selector . ' is not supported.' );
 				}
 			);
@@ -876,7 +879,7 @@ class ZestInst {
 		$this->addSelector1( ':contains', static function ( string $param ): callable {
 			return static function ( $el ) use ( $param ): bool {
 				$text = $el->textContent;
-				return strpos( $text, $param ) !== false;
+				return str_contains( $text, $param );
 			};
 		} );
 		$this->addSelector1( ':has', static function ( string $param ): callable {
@@ -986,7 +989,7 @@ class ZestInst {
 			return $attr === $val;
 		} );
 		$this->addOperator( '*=', static function ( string $attr, string $val ): bool {
-			return strpos( $attr, $val ) !== false;
+			return str_contains( $attr, $val );
 		} );
 		$this->addOperator( '~=', static function ( string $attr, string $val ): bool {
 			// https://drafts.csswg.org/selectors-4/#attribute-representation
@@ -1031,7 +1034,7 @@ class ZestInst {
 			return $l === '-';
 		} );
 		$this->addOperator( '^=', static function ( string $attr, string $val ): bool {
-			return strpos( $attr, $val ) === 0;
+			return str_starts_with( $attr, $val );
 		} );
 		$this->addOperator( '$=', static function ( string $attr, string $val ): bool {
 			$i = strrpos( $attr, $val );
@@ -1202,7 +1205,6 @@ class ZestInst {
 
 	private function doCompile( string $sel ): ZestFunc {
 		$sel = preg_replace( '/^\s+|\s+$/', '', $sel );
-		$test = null;
 		$filter = [];
 		$buff = [];
 		$subject = null;
@@ -1217,9 +1219,9 @@ class ZestInst {
 				$qname = self::decodeid( $cap[ 1 ] );
 				$buff[] = $this->tokQname( $qname );
 				// strip off *| or | prefix
-				if ( substr( $qname, 0, 1 ) === '|' ) {
+				if ( str_starts_with( $qname, '|' ) ) {
 					$qname = substr( $qname, 1 );
-				} elseif ( substr( $qname, 0, 2 ) === '*|' ) {
+				} elseif ( str_starts_with( $qname, '*|' ) ) {
 					$qname = substr( $qname, 2 );
 				}
 			} elseif ( preg_match( self::$rules->simple, $sel, $cap, PREG_UNMATCHED_AS_NULL ) ) {
@@ -1298,10 +1300,10 @@ class ZestInst {
 		// qname
 		if ( $cap === '*' ) {
 			return $this->selectors0['*'];
-		} elseif ( substr( $cap, 0, 1 ) === '|' ) {
+		} elseif ( str_starts_with( $cap, '|' ) ) {
 			// no namespace
 			return $this->selectors1['typeNoNS']( substr( $cap, 1 ), $this );
-		} elseif ( substr( $cap, 0, 2 ) === '*|' ) {
+		} elseif ( str_starts_with( $cap, '*|' ) ) {
 			// any namespace including no namespace
 			return $this->selectors1['type']( substr( $cap, 2 ), $this );
 		} else {
@@ -1471,7 +1473,6 @@ class ZestInst {
 		$results = [];
 		$test = $this->compile( $sel );
 		$scope = $this->getElementsByTagName( $node, $test->qname, $opts );
-		$i = 0;
 		$el = null;
 		$needsSort = false;
 
@@ -1518,7 +1519,7 @@ class ZestInst {
 		$opts['scope'] = $context;
 
 		/* when context isn't a DocumentFragment and the selector is simple: */
-		if ( $context->nodeType !== 11 && strpos( $sel, ' ' ) === false ) {
+		if ( $context->nodeType !== 11 && !str_contains( $sel, ' ' ) ) {
 			// https://www.w3.org/TR/CSS21/syndata.html#value-def-identifier
 			// Valid identifiers starting with a hyphen or with escape
 			// sequences will be handled correctly by the fall-through case.
@@ -1576,6 +1577,7 @@ class ZestInst {
 	 * Allow customization of the exception thrown for a bad selector.
 	 * @param string $msg Description of the failure
 	 * @return Throwable
+	 * @phan-return InvalidArgumentException
 	 */
 	protected function newBadSelectorException( string $msg ): Throwable {
 		return new InvalidArgumentException( $msg );

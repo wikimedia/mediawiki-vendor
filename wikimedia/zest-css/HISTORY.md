@@ -1,5 +1,10 @@
 # Release History
 
+## zest-css 4.1.0 (2025-08-15)
+* Drop support for PHP < 8.1
+* Update wikimedia/remex-html to 5.0.0 || 5.1.0 (dev dependency)
+* Update mediawiki/mediawiki-phan-config to 0.17.0
+
 ## zest-css 4.0.0 (2025-06-05)
 * Update wikimedia/remex-html to 4.1.2 || 5.0.0 (dev dependency)
 * Update phpunit/phpunit to 9.6.21

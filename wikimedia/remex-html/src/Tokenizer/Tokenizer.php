@@ -399,6 +399,7 @@ class Tokenizer {
 	protected function executeInternal( $loop ) {
 		$eof = false;
 
+		// @phan-suppress-next-line PhanPossiblyInfiniteLoop
 		do {
 			switch ( $this->state ) {
 				case self::STATE_DATA:
@@ -1023,7 +1024,7 @@ class Tokenizer {
 
 			$haveSemicolon =
 				( isset( $m[self::MC_SEMICOLON] ) && strlen( $m[self::MC_SEMICOLON] ) )
-				|| ( strlen( $knownNamed ) && $knownNamed[ strlen( $knownNamed ) - 1 ] === ';' )
+				|| str_ends_with( $knownNamed, ';' )
 				|| ( isset( $m[self::MC_INVALID] ) && strlen( $m[self::MC_INVALID] ) );
 
 			if ( $inAttr && !$haveSemicolon ) {
