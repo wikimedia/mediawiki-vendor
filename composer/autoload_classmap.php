@@ -2184,6 +2184,7 @@ return array(
     'SmashPig\\PaymentProviders\\Gravy\\Validators\\PaypalPaymentProviderValidator' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/Validators/PaypalPaymentProviderValidator.php',
     'SmashPig\\PaymentProviders\\Gravy\\Validators\\RedirectPaymentProviderValidator' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/Validators/RedirectPaymentProviderValidator.php',
     'SmashPig\\PaymentProviders\\Gravy\\Validators\\ValidatorTrait' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/Validators/ValidatorTrait.php',
+    'SmashPig\\PaymentProviders\\Gravy\\Validators\\VenmoPaymentProviderValidator' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/Validators/VenmoPaymentProviderValidator.php',
     'SmashPig\\PaymentProviders\\ICancelablePaymentProvider' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/ICancelablePaymentProvider.php',
     'SmashPig\\PaymentProviders\\IDeleteDataProvider' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/IDeleteDataProvider.php',
     'SmashPig\\PaymentProviders\\IGetLatestPaymentStatusProvider' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/IGetLatestPaymentStatusProvider.php',

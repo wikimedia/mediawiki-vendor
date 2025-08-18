@@ -69,7 +69,7 @@ payment-provider:
       -
         request-mapper: "mappers/redirect-request"
         response-mapper: "mappers/redirect-response"
-        validator: "validators/redirect"
+        validator: "validators/venmo"
   paypal:
     class: SmashPig\PaymentProviders\Gravy\PaypalPaymentProvider
     constructor-parameters:
@@ -139,6 +139,8 @@ validators:
     class: SmashPig\PaymentProviders\Gravy\Validators\DirectDepositPaymentProviderValidator
   paypal:
     class: SmashPig\PaymentProviders\Gravy\Validators\PaypalPaymentProviderValidator
+  venmo:
+    class: SmashPig\PaymentProviders\Gravy\Validators\VenmoPaymentProviderValidator
 
 fraud-filters:
   # Authorization notifications include AVS and CVV result codes.

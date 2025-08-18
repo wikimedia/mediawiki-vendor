@@ -2628,6 +2628,7 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\PaymentProviders\\Gravy\\Validators\\PaypalPaymentProviderValidator' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Validators/PaypalPaymentProviderValidator.php',
         'SmashPig\\PaymentProviders\\Gravy\\Validators\\RedirectPaymentProviderValidator' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Validators/RedirectPaymentProviderValidator.php',
         'SmashPig\\PaymentProviders\\Gravy\\Validators\\ValidatorTrait' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Validators/ValidatorTrait.php',
+        'SmashPig\\PaymentProviders\\Gravy\\Validators\\VenmoPaymentProviderValidator' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Validators/VenmoPaymentProviderValidator.php',
         'SmashPig\\PaymentProviders\\ICancelablePaymentProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/ICancelablePaymentProvider.php',
         'SmashPig\\PaymentProviders\\IDeleteDataProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/IDeleteDataProvider.php',
         'SmashPig\\PaymentProviders\\IGetLatestPaymentStatusProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/IGetLatestPaymentStatusProvider.php',
