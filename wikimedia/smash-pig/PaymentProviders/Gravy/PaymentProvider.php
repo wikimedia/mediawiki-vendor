@@ -36,6 +36,9 @@ abstract class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaym
 	 * @var \SmashPig\Core\ProviderConfiguration
 	 */
 	protected $providerConfiguration;
+
+	protected array $cacheParameters;
+
 	protected PaymentProviderValidator $validator;
 	protected RequestMapper $requestMapper;
 	protected ResponseMapper $responseMapper;
@@ -48,6 +51,7 @@ abstract class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaym
 			$this->requestMapper = $this->providerConfiguration->object( $params['request-mapper'] );
 			$this->responseMapper = $this->providerConfiguration->object( $params['response-mapper'] );
 			$this->validator = $this->providerConfiguration->object( $params['validator'] );
+			$this->cacheParameters = $params['cache-parameters'];
 		}
 	}
 
@@ -255,5 +259,13 @@ abstract class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaym
 
 	protected function getValidator(): PaymentProviderValidator {
 		return $this->validator;
+	}
+
+	protected function getCacheParameters(): array {
+		return $this->cacheParameters;
+	}
+
+	protected function getApi(): Api {
+		return $this->api;
 	}
 }

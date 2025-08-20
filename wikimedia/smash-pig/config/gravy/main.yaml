@@ -27,6 +27,13 @@ accounts:
   webhook:
     username: WikimediaFoundationTest
     password: 'FoundationTest'
+
+# By default, cache payment method lookups for 5 minutes
+common-cache-parameters: &CACHE
+  cache-parameters:
+    duration: 300
+    key-base: SMASHPIG_GRAVY_METHODS
+
 payment-provider:
   cc:
     class: SmashPig\PaymentProviders\Gravy\CardPaymentProvider
@@ -35,6 +42,7 @@ payment-provider:
         request-mapper: "mappers/cc-request"
         response-mapper: "mappers/cc-response"
         validator: "validators/cc"
+        <<: *CACHE
   google:
     class: SmashPig\PaymentProviders\Gravy\GooglePayPaymentProvider
     constructor-parameters:
@@ -42,6 +50,8 @@ payment-provider:
         request-mapper: "mappers/google-request"
         response-mapper: "mappers/google-response"
         validator: "validators/google"
+        <<: *CACHE
+
   apple:
     class: SmashPig\PaymentProviders\Gravy\ApplePayPaymentProvider
     constructor-parameters:
@@ -49,6 +59,8 @@ payment-provider:
         request-mapper: "mappers/apple-request"
         response-mapper: "mappers/apple-response"
         validator: "validators/apple"
+        <<: *CACHE
+
   dd:
     class: SmashPig\PaymentProviders\Gravy\DirectDepositPaymentProvider
     constructor-parameters:
@@ -56,6 +68,8 @@ payment-provider:
         request-mapper: "mappers/dd-request"
         response-mapper: "mappers/dd-response"
         validator: "validators/dd"
+        <<: *CACHE
+
   bt:
     class: SmashPig\PaymentProviders\Gravy\BankPaymentProvider
     constructor-parameters:
@@ -63,13 +77,17 @@ payment-provider:
         request-mapper: "mappers/bt-request"
         response-mapper: "mappers/bt-response"
         validator: "validators/redirect"
+        <<: *CACHE
+
   venmo:
     class: SmashPig\PaymentProviders\Gravy\RedirectPaymentProvider
     constructor-parameters:
       -
-        request-mapper: "mappers/redirect-request"
-        response-mapper: "mappers/redirect-response"
+        request-mapper: "mappers/venmo-request"
+        response-mapper: "mappers/venmo-response"
         validator: "validators/venmo"
+        <<: *CACHE
+
   paypal:
     class: SmashPig\PaymentProviders\Gravy\PaypalPaymentProvider
     constructor-parameters:
@@ -77,6 +95,8 @@ payment-provider:
         request-mapper: "mappers/paypal-request"
         response-mapper: "mappers/paypal-response"
         validator: "validators/paypal"
+        <<: *CACHE
+
   cash:
     class: SmashPig\PaymentProviders\Gravy\RedirectPaymentProvider
     constructor-parameters:
@@ -84,6 +104,8 @@ payment-provider:
         request-mapper: "mappers/redirect-request"
         response-mapper: "mappers/redirect-response"
         validator: "validators/redirect"
+        <<: *CACHE
+
 
 # Setting value to false to mirror production configuration
 capture-from-ipn-listener: false
@@ -124,6 +146,10 @@ mappers:
   cash-request:
     class: SmashPig\PaymentProviders\Gravy\Mapper\RedirectPaymentProviderRequestMapper
   cash-response:
+    class: SmashPig\PaymentProviders\Gravy\Mapper\RedirectPaymentProviderResponseMapper
+  venmo-request:
+    class: SmashPig\PaymentProviders\Gravy\Mapper\RedirectPaymentProviderRequestMapper
+  venmo-response:
     class: SmashPig\PaymentProviders\Gravy\Mapper\RedirectPaymentProviderResponseMapper
 
 validators:

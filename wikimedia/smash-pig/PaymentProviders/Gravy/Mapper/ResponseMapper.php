@@ -88,6 +88,24 @@ class ResponseMapper {
 	 * @param array $response
 	 * @return array
 	 */
+	public function mapFromPaymentServiceDefinitionResponse( array $response ): array {
+		if ( $this->responseErrorChecker->responseHasErrors( $response ) ) {
+			return $this->mapErrorFromResponse( $response );
+		}
+		return [
+			'is_successful' => true,
+			'supported_countries' => $response['supported_countries'] ?? [],
+			'supported_currencies' => $response['supported_currencies'] ?? [],
+			'required_fields' => $response['required_checkout_fields'],
+			'status' => FinalStatus::COMPLETE,
+			'raw_response' => $response,
+		];
+	}
+
+	/**
+	 * @param array $response
+	 * @return array
+	 */
 	public function mapFromGenerateReportUrlResponse( array $response ): array {
 		if ( $this->responseErrorChecker->responseHasErrors( $response ) ) {
 			return $this->mapErrorFromResponse( $response );

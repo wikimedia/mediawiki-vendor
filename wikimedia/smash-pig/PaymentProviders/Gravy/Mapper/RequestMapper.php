@@ -58,7 +58,7 @@ class RequestMapper {
 		if ( !empty( $params['processor_contact_id'] ) ) {
 			$request['buyer_id'] = $params['processor_contact_id'];
 		} else {
-			$buyerEmail = $params['email'] ? strtolower( $params['email'] ) : null;
+			$buyerEmail = isset( $params['email'] ) ? strtolower( $params['email'] ) : null;
 			$request['buyer'] = [
 				'external_identifier' => $buyerEmail,
 				'billing_details' => [
@@ -154,6 +154,36 @@ class RequestMapper {
 			'payment_method_id' => $params['recurring_payment_token'],
 		];
 		return $request;
+	}
+
+	/**
+	 * Maps the smashpig parameters to Gravy requirements for payment service definition
+	 * Currently, only ideal for payment methods with a unique payment service definition
+	 * For example - PayPal and Venmo
+	 *
+	 * This method is the same for all payment methods on Gravy.
+	 *
+	 * @param string $method
+	 * @return array{ method: string }
+	 */
+	public function mapToPaymentServiceDefinitionRequest( string $method ): array {
+		$paymentServiceMethod = '';
+		switch ( $method ) {
+			case 'paypal':
+				$paymentServiceMethod = 'paypal-paypal';
+				break;
+			case 'venmo':
+				$paymentServiceMethod = 'braintree-venmo';
+				break;
+			case 'trustly':
+				$paymentServiceMethod = 'trustly-trustly';
+				break;
+			default:
+				throw new \UnexpectedValueException( "Unsupported payment method {$method}" );
+		}
+		return [
+			'method' => $paymentServiceMethod
+		];
 	}
 
 	/**

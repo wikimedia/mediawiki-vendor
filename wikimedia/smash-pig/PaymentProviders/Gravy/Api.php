@@ -193,7 +193,7 @@ class Api {
 
 	/**
 	 * Uses the rest API to fetch the payment service definition for specified method
-	 * @param array $params
+	 * @param string $method
 	 * @return array
 	 * @link https://docs.gr4vy.com/reference/payment-service-definitions/get-payment-service-definition#parameter-payment-service-definition-id
 	 */
