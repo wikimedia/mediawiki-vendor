@@ -146,7 +146,9 @@ abstract class AdyenAudit implements AuditParser {
 			'gateway' => 'adyen',
 			'gateway_account' => $row['Merchant Account'],
 			'invoice_id' => $row['Merchant Reference'],
-			'gateway_txn_id' => $row['Psp Reference']
+			'gateway_txn_id' => $row['Psp Reference'],
+			'settlement_batch_number' => $row['Batch Number'] ?? null,
+			'exchange_rate' => $row['Exchange Rate']
 		];
 		$parts = explode( '.', $row['Merchant Reference'] );
 		$msg['contribution_tracking_id'] = $parts[0];

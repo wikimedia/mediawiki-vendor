@@ -14,19 +14,20 @@ class RequestMapper {
 	 * List for payment methods that do not have the 2 step auth/capture
 	 */
 	public const CAPTURE_ONLY_PAYMENT_METHOD = [
-		'netbanking',
-		'pix',
-		'oxxo',
-		'pse',
-		'bcp',
-		'webpay',
-		'pagoefectivo',
-		'redpagos',
-		'rapipago',
 		'abitab',
+		'bancomer',
+		'bcp',
 		'boleto',
+		'netbanking',
+		'oxxo',
+		'pagoefectivo',
+		'pix',
+		'pse',
+		'rapipago',
+		'redpagos',
+		'sepa',
 		'stitch',
-		'bancomer'
+		'webpay',
 	];
 
 	/**

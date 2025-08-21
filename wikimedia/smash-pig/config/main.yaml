@@ -6,14 +6,14 @@
 #   $HOME/.smashpig/main.yaml
 #   or edit this file if you're feeling cheeky, and be careful when upgrading.
 
-data-store:
-  redis: &REDIS
-    servers:
-      scheme: tcp
-      host: 127.0.0.1
-      port: 6379
-      read_write_timeout: -1
+redis: &REDIS
+  servers:
+    scheme: tcp
+    host: 127.0.0.1
+    port: 6379
+    read_write_timeout: -1
 
+data-store:
   payments-antifraud:
     class: PHPQueue\Backend\Predis
     constructor-parameters:
@@ -92,13 +92,6 @@ data-store:
       -
         <<: *REDIS
         queue: recurring-modify
-
-  recurring-upgrade:
-    class: PHPQueue\Backend\Predis
-    constructor-parameters:
-      -
-        <<: *REDIS
-        queue: recurring-upgrade
 
   jobs-paypal:
     class: PHPQueue\Backend\Predis

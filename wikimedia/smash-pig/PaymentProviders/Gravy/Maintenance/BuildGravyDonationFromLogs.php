@@ -1,11 +1,12 @@
 <?php
 
-namespace SmashPig\Maintenance;
+namespace SmashPig\PaymentProviders\Gravy\Maintenance;
 
-require 'MaintenanceBase.php';
+require __DIR__ . '/../../../Maintenance/MaintenanceBase.php';
 
 use SmashPig\Core\DataStores\QueueWrapper;
 use SmashPig\Core\Logging\Logger;
+use SmashPig\Maintenance\MaintenanceBase;
 use SmashPig\PaymentProviders\Gravy\GravyHelper;
 use SmashPig\PaymentProviders\Gravy\ReferenceData;
 
@@ -335,8 +336,12 @@ class BuildGravyDonationFromLogs extends MaintenanceBase {
 									$data[$gravyField]['method'],
 									$data[$gravyField]['scheme'] ?? ''
 								);
-								$extracted['payment_method'] = $methodData[0];
-								$extracted['payment_submethod'] = $methodData[1];
+								if ( !empty( $methodData[0] ) ) {
+									$extracted['payment_method'] = $methodData[0];
+								}
+								if ( !empty( $methodData[1] ) ) {
+									$extracted['payment_submethod'] = $methodData[1];
+								}
 							}
 							// When this is set, it contains the recurring payment token
 							if ( isset( $data[$gravyField]['id'] ) ) {
@@ -370,6 +375,11 @@ class BuildGravyDonationFromLogs extends MaintenanceBase {
 						$languageCode = explode( ',', $languageString )[0];
 						$primaryLanguage = explode( '-', $languageCode )[0];
 						$extracted[$queueMessageKey] = $primaryLanguage;
+						break;
+					case 'amount':
+						if ( is_numeric( $data[$gravyField] ) ) {
+							$extracted[$queueMessageKey] = $data[$gravyField];
+						}
 						break;
 
 					default:
