@@ -9122,17 +9122,17 @@
         },
         {
             "name": "wmde/php-vuejs-templating",
-            "version": "2.2.0-beta.7",
-            "version_normalized": "2.2.0.0-beta7",
+            "version": "2.2.0-beta.8",
+            "version_normalized": "2.2.0.0-beta8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wmde/php-vuejs-templating.git",
-                "reference": "f86634831b8f57ba854072738f706839f7d172b1"
+                "reference": "fd9911645952884c46593bf6b58ad1bf6b1f75cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wmde/php-vuejs-templating/zipball/f86634831b8f57ba854072738f706839f7d172b1",
-                "reference": "f86634831b8f57ba854072738f706839f7d172b1",
+                "url": "https://api.github.com/repos/wmde/php-vuejs-templating/zipball/fd9911645952884c46593bf6b58ad1bf6b1f75cb",
+                "reference": "fd9911645952884c46593bf6b58ad1bf6b1f75cb",
                 "shasum": ""
             },
             "require": {
@@ -9145,7 +9145,7 @@
                 "mediawiki/mediawiki-codesniffer": "34.0.0",
                 "phpunit/phpunit": "^8.5.3"
             },
-            "time": "2025-07-16T14:00:55+00:00",
+            "time": "2025-08-21T10:50:34+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -9165,7 +9165,7 @@
             "description": "PHP implementation of Vue.js templating engine",
             "support": {
                 "issues": "https://github.com/wmde/php-vuejs-templating/issues",
-                "source": "https://github.com/wmde/php-vuejs-templating/tree/2.2.0-beta.7"
+                "source": "https://github.com/wmde/php-vuejs-templating/tree/2.2.0-beta.8"
             },
             "install-path": "../wmde/php-vuejs-templating"
         },
