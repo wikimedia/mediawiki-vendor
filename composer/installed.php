@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => null,
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => '1e4277f05320c9b18dbc745426434f611db0c3fd',
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => null,
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => '1e4277f05320c9b18dbc745426434f611db0c3fd',
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -1107,9 +1107,9 @@
             'dev_requirement' => false,
         ),
         'wikimedia/idle-dom' => array(
-            'pretty_version' => 'v2.0.1',
-            'version' => '2.0.1.0',
-            'reference' => '48be2bc5f19c5b33b5ba671ea563ce507cc323b7',
+            'pretty_version' => 'v2.1.0',
+            'version' => '2.1.0.0',
+            'reference' => '85bb88abcefd554e1d231092909996efe6e92610',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/idle-dom',
             'aliases' => array(),
@@ -1197,9 +1197,9 @@
             'dev_requirement' => false,
         ),
         'wikimedia/parsoid' => array(
-            'pretty_version' => 'v0.22.0-a17',
-            'version' => '0.22.0.0-alpha17',
-            'reference' => '301885b1942cba03374ae7ffe0fc06642c76c04b',
+            'pretty_version' => 'v0.22.0-a18',
+            'version' => '0.22.0.0-alpha18',
+            'reference' => '2ced5922f68f2fc652069d7ee8941d11f9f2c870',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/parsoid',
             'aliases' => array(),

@@ -1029,7 +1029,6 @@
         "html2wt": "Blah\n"
     },
     "T33490 Turkish: ucfirst 'ix'": {
-        "wt2html": "<p data-parsoid='{\"dsr\":[0,14,0,0]}'><span about=\"#mwt1\" typeof=\"mw:Transclusion\" data-parsoid='{\"pi\":[[]],\"dsr\":[0,14,null,null]}' data-mw='{\"parts\":[{\"template\":{\"target\":{\"wt\":\"ucfirst:ix\",\"function\":\"ucfirst\"},\"params\":{},\"i\":0}}]}'>Ix</span></p>",
         "html2wt": "İx\n"
     },
     "T368721: Closing block tags not on the stack of open elements in lists": {
@@ -1080,7 +1079,7 @@
         "html2wt": "<blockquote>\nFoo\n\nBar\n\n</blockquote>"
     },
     "T73074: More fostering fun": {
-        "wt2wt": "[[Category:Two]]\n<table><td></td></tr>{{1x|<tr>}}<!--c-->",
+        "wt2wt": "[[Category:Two]]\n<table><td></td>{{1x|<tr>}}<!--c-->",
         "html2wt": "[[Category:Two]]\n<table><td></td></tr>{{1x|<tr>}}<!--c-->",
         "selser [0,4]": "\nlomg0q",
         "selser [0,1]": "<table data-foobar=\"9cf581\"><td></td>{{1x|<tr>}}<!--c-->[[Category:Two]]",
@@ -1091,11 +1090,9 @@
         "selser [1,[2]]": "[[Category:Two]]<table><!--r9jimg--><td></td>{{1x|<tr>}}<!--c-->[[Category:Two]]",
         "selser [0,[1]]": "<table><td></td>{{1x|<tr>}}<!--c-->",
         "selser [0,2]": "\n11oow1i<table><td></td>{{1x|<tr>}}<!--c-->[[Category:Two]]",
-        "selser [3,[1]]": "<table><td></td>{{1x|<tr>}}<!--c-->",
         "selser [0,3]": "",
         "selser [2,1]": "1mv3j75\n<table data-foobar=\"xgfqp4\"><td></td>{{1x|<tr>}}<!--c-->[[Category:Two]]",
         "selser [0,[[[4],0,0]]]": "<table><td>1yx3do</td>{{1x|<tr>}}<!--c-->",
-        "selser [3,[[[2],0,0]]]": "<table><td>bu3ntq</td><td></td>{{1x|<tr>}}<!--c-->",
         "selser [0,[[[3],0,0]]]": "<table>{{1x|<tr>}}<!--c-->"
     },
     "T7678: Double-parsed template argument": {
