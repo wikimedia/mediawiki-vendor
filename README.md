@@ -26,7 +26,7 @@ Adding or updating libraries
    If you want to avoid running untrusted code, you can use Docker; for
    example, to run `composer update --no-dev` do:
    ```
-   docker run --rm -it -u "$(id -u):$(id -g)" -v "$PWD/.git:/src/.git:ro" -v "$PWD:/src" -w /src docker-registry.wikimedia.org/releng/composer-php81:8.1.32 update --no-dev
+   docker run --rm -it -u "$(id -u):$(id -g)" -v "$PWD/.git:/src/.git:ro" -v "$PWD:/src" -w /src docker-registry.wikimedia.org/releng/composer-php81:8.1.32-s7 update --no-dev
    ```
 2. Edit the composer.json file to add/update the libraries you want to change.
    It is recommended that you use `composer require <package> <version>
