@@ -123,6 +123,28 @@ proxy:
   proxy_host: ~ # example.proxy.url
   proxy_port: -1 # 80
 
+error-checker:
+  # Service responsible for detecting and categorizing payment errors from API responses
+  class: SmashPig\PaymentProviders\Gravy\Errors\ErrorChecker
+
+error-tracker:
+  # Service that monitors error frequency and triggers alerts when thresholds are exceeded
+  # Uses Redis to track error counts within expiring time buckets
+  class: SmashPig\PaymentProviders\Gravy\Errors\ErrorTracker
+  constructor-parameters:
+    -
+      # Redis-based tracking and alerting can be toggled on/off.
+      enabled: true
+      # Number of errors required to trigger an alert (default: 15)
+      threshold: 15
+      # Time window in seconds for error counting (1800 = 30 minutes)
+      time_window: 1800
+      # Redis key prefix for storing error counts
+      key_prefix: 'gravy_error_threshold_'
+      # Redis key expiry period in seconds (default: 2400 = 40 minutes)
+      key_expiry_period: 2400
+
+
 mappers:
   cc-request:
     class: SmashPig\PaymentProviders\Gravy\Mapper\CardPaymentProviderRequestMapper

@@ -37,7 +37,7 @@ abstract class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaym
 	 */
 	protected $providerConfiguration;
 
-	protected array $cacheParameters;
+	protected array $cacheParameters = [];
 
 	protected PaymentProviderValidator $validator;
 	protected RequestMapper $requestMapper;

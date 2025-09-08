@@ -220,6 +220,27 @@ class PendingDatabase extends SmashPigDatabase {
 	}
 
 	/**
+	 * Mark older messages as resolved, optionally by gateway
+	 *
+	 * @param int $originalDate Oldest date to leave unresolved as unix timestamp
+	 * @param string|null $gateway
+	 * @return int Number of rows marked resolved
+	 * @throws DataStoreException
+	 */
+	public function resolveOldMessages( int $originalDate, ?string $gateway = null ) {
+		$sql = 'UPDATE pending SET is_resolved = 1 WHERE date < :date';
+		$params = [
+			'date' => UtcDate::getUtcDatabaseString( $originalDate ),
+		];
+		if ( $gateway ) {
+			$sql .= ' AND gateway = :gateway';
+			$params['gateway'] = $gateway;
+		}
+		$executed = $this->prepareAndExecute( $sql, $params );
+		return $executed->rowCount();
+	}
+
+	/**
 	 * Parse a database row and return the normalized message.
 	 *
 	 * @param array $row An associative array whose keys are raw pending table columns

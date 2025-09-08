@@ -12,8 +12,8 @@ class PaymentStatusNormalizer implements StatusNormalizer {
 	 * @return string
 	 * @link https://docs.gr4vy.com/guides/api/resources/transactions/statuses
 	 */
-	public function normalizeStatus( string $paymentProcessorStatus ): string {
-		switch ( $paymentProcessorStatus ) {
+	public function normalizeStatus( string $status ): string {
+		switch ( $status ) {
 			case 'authorization_succeeded':
 				$normalizedStatus = FinalStatus::PENDING_POKE;
 				break;
@@ -34,8 +34,10 @@ class PaymentStatusNormalizer implements StatusNormalizer {
 			case 'succeeded':
 				$normalizedStatus = FinalStatus::COMPLETE;
 				break;
+			case 'failed':
+				return FinalStatus::FAILED;
 			default:
-				throw new \UnexpectedValueException( "Unknown status $paymentProcessorStatus" );
+				throw new \UnexpectedValueException( "Unknown status $status" );
 		}
 
 		return $normalizedStatus;

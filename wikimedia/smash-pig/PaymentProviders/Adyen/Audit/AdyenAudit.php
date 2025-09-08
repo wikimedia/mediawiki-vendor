@@ -18,7 +18,6 @@ use SmashPig\PaymentProviders\Adyen\ReferenceData;
 abstract class AdyenAudit implements AuditParser {
 
 	protected static $ignoredTypes = [
-		'fee',
 		'misccosts',
 		'merchantpayout',
 		'chargebackreversed', // oh hey, we could try to handle these
@@ -108,15 +107,22 @@ abstract class AdyenAudit implements AuditParser {
 	protected function parseLine( $line ) {
 		$row = array_combine( $this->columnHeaders, $line );
 		$type = strtolower( $row[$this->type] );
+		if ( $type === 'fee' ) {
+			return $this->getFeeTransaction( $row );
+		}
 		if ( in_array( $type, self::$ignoredTypes ) ) {
 			return;
 		}
 		$merchantReference = $row[$this->merchantReference];
-		if ( $this->isIgnoredMerchantReference( $merchantReference ) ) {
-			return;
-		}
 
 		$msg = $this->setCommonValues( $row );
+		if ( $this->isOrchestratorMerchantReference( $row ) ) {
+			$msg['backend_processor_txn_id'] = $msg['gateway_txn_id'];
+			$msg['backend_processor'] = 'adyen';
+			$msg['gateway_txn_id'] = null;
+			$msg['payment_orchestrator_reconciliation_id'] = $merchantReference;
+			$msg['contribution_tracking_id'] = null;
+		}
 
 		switch ( $type ) {
 			// Amex has externally in the type name
@@ -143,11 +149,12 @@ abstract class AdyenAudit implements AuditParser {
 	 */
 	protected function setCommonValues( array $row ) {
 		$msg = [
-			'gateway' => 'adyen',
+			'gateway' => $this->isOrchestratorMerchantReference( $row ) ? 'gravy' : 'adyen',
+			'audit_file_gateway' => 'adyen',
 			'gateway_account' => $row['Merchant Account'],
 			'invoice_id' => $row['Merchant Reference'],
 			'gateway_txn_id' => $row['Psp Reference'],
-			'settlement_batch_number' => $row['Batch Number'] ?? null,
+			'settlement_batch_reference' => $row['Batch Number'] ?? null,
 			'exchange_rate' => $row['Exchange Rate']
 		];
 		$parts = explode( '.', $row['Merchant Reference'] );
@@ -171,9 +178,13 @@ abstract class AdyenAudit implements AuditParser {
 	 * eg Gravy transactions coming in on the adyen audit
 	 *
 	 */
-	protected function isIgnoredMerchantReference( $merchantReference ): bool {
+	protected function isOrchestratorMerchantReference( array $row ): bool {
+		$merchantReference = $row[$this->merchantReference];
 		// ignore gravy transactions, they have no period and contain letters
 		return ( !strpos( $merchantReference, '.' ) && !is_numeric( $merchantReference ) );
 	}
 
+	protected function getFeeTransaction( array $row ): ?array {
+		return null;
+	}
 }

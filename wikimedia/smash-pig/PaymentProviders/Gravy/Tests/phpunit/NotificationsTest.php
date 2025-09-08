@@ -206,6 +206,32 @@ class NotificationsTest extends BaseGravyTestCase {
 		$this->assertTrue( $result );
 	}
 
+	public function testRefundMessageFailed(): void {
+		[ $request, $response ] = $this->getValidRequestResponseObjects();
+
+		// Create a failed refund webhook message by modifying the default one
+		$testGravyWebhook = json_decode( $this->getValidGravyRefundMessage(), true );
+		$testGravyWebhook['target']['id'] = '2d4ee558-43da-4dbe-9a6d-c47dd031b8bd';
+		$testGravyWebhook['target']['transaction_id'] = 'd9ec899b-0f53-45a6-a2d2-79a448771299';
+		$testGravyWebhook['target']['status'] = 'failed';
+
+		$request->method( 'getRawRequest' )->willReturn( json_encode( $testGravyWebhook ) );
+
+		$testGetRefundApiCallResponse = json_decode( file_get_contents( __DIR__ . '/../Data/failed-refund.json' ), true );
+
+		$this->mockApi->expects( $this->once() )
+		->method( 'getRefund' )
+		->willReturn( $testGetRefundApiCallResponse );
+
+		$result = $this->gravyListener->execute( $request, $response );
+
+		// For failed refunds, no message should be queued
+		$queued_message = $this->refundQueue->pop();
+
+		$this->assertNull( $queued_message, 'Failed refunds should not be queued' );
+		$this->assertTrue( $result, 'Listener should still return true for handled failed refunds' );
+	}
+
 	public function testReportExecutionMessage(): void {
 		[ $request, $response ] = $this->getValidRequestResponseObjects();
 		$reportExecutionResponseBody = json_decode( file_get_contents( __DIR__ . '/../Data/report-execution-successful.json' ), true );

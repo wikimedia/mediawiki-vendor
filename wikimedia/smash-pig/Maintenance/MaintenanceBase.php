@@ -270,8 +270,6 @@ abstract class MaintenanceBase {
 	 * @return mixed Value of the option or null if no default was provided
 	 */
 	protected function getOption( $name, $default = null ) {
-		$value = null;
-
 		if ( $this->optionProvided( ( $name ) ) ) {
 			$value = $this->options[$name];
 		} elseif ( $default ) {
@@ -280,7 +278,7 @@ abstract class MaintenanceBase {
 			$value = $this->desiredOptions[$name]['default'];
 		}
 
-		return trim( $value, "\" '\t\n\r\0\x0B" ); // The response from everything unfriendly
+		return $value === null ? $value : trim( $value, "\" '\t\n\r\0\x0B" ); // The response from everything unfriendly
 	}
 
 	/**

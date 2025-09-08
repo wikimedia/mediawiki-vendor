@@ -6,15 +6,15 @@ require 'ExpiredPendingMessageScriptBase.php';
 use SmashPig\Core\DataStores\PendingDatabase;
 
 /**
- * Deletes old messages from the pending table
+ * Marks older messages from the pending table as resolved
  */
-class DeleteExpiredPendingMessages extends ExpiredPendingMessageScriptBase {
+class ResolveExpiredPendingMessages extends ExpiredPendingMessageScriptBase {
 
 	protected function doTheThing( PendingDatabase $pendingDatabase, string $deleteBefore, ?string $gateway ): int {
-		return $pendingDatabase->deleteOldMessages( $deleteBefore, $gateway );
+		return $pendingDatabase->resolveOldMessages( $deleteBefore, $gateway );
 	}
 }
 
-$maintClass = DeleteExpiredPendingMessages::class;
+$maintClass = ResolveExpiredPendingMessages::class;
 
 require RUN_MAINTENANCE_IF_MAIN;

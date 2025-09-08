@@ -127,7 +127,7 @@ class DlocalAudit implements AuditParser {
 		$msg['country'] = $row['Country'];
 		$msg['currency'] = $row['currency'];
 		$msg['email'] = $row['User Mail'];
-		$msg['settled_fee'] = $row['Fee']; // settled_fee since it's given in USD
+		$msg['settled_fee_amount'] = $row['Fee']; // settled_fee since it's given in USD
 		$msg['gateway_txn_id'] = $row['Reference'];
 		$msg['invoice_id'] = $row['Invoice'];
 		[ $method, $submethod ] = ReferenceData::decodePaymentMethod(

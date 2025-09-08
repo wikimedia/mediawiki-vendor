@@ -1,0 +1,15 @@
+{
+    "type": "refund",
+    "id": "2d4ee558-43da-4dbe-9a6d-c47dd031b8bd",
+    "transaction_id": "d9ec899b-0f53-45a6-a2d2-79a448771299",
+    "payment_service_refund_id": null,
+    "status": "failed",
+    "currency": "GBP",
+    "amount": 2000,
+    "reason": null,
+    "error_code": "unexpected_state",
+    "raw_response_code": "CAPTURE_FULLY_REFUNDED",
+    "raw_response_description": "The capture has already been fully refunded",
+    "created_at": "2025-09-03T23:06:53.108341+00:00",
+    "updated_at": "2025-09-03T23:06:53.838455+00:00"
+}

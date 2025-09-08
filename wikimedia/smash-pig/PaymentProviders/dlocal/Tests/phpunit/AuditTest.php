@@ -33,7 +33,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'payment_submethod' => 'mc',
 			'settled_date' => 1686916832,
 			'settled_currency' => 'USD',
-			'settled_fee' => '0.03',
+			'settled_fee_amount' => '0.03',
 			'settled_gross' => '1.50',
 		];
 		$this->assertEquals( $expected, $actual, 'Did not parse donation correctly' );

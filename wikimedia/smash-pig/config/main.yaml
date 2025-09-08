@@ -85,6 +85,12 @@ data-store:
         <<: *REDIS
         queue: email-preferences
 
+  set-primary-email:
+    class: PHPQueue\Backend\Predis
+    constructor-parameters:
+      -
+        <<: *REDIS
+        queue: set-primary-email
 
   recurring-modify:
     class: PHPQueue\Backend\Predis

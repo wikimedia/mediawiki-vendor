@@ -27,7 +27,7 @@ class AdyenPaymentsAccountingReport extends AdyenAudit {
 
 	protected function parseDonation( array $row, array $msg ): array {
 		$msg['modification_reference'] = $row['Modification Psp Reference'];
-		$msg['currency'] = $row['Payment Currency'];
+		$msg['currency'] = $msg['original_currency'] = $row['Payment Currency'];
 		$msg['gross'] = $row['Original Amount'];
 		// fee is given in settlement currency
 		// but queue consumer expects it in original
@@ -41,10 +41,12 @@ class AdyenPaymentsAccountingReport extends AdyenAudit {
 			floatval( $row['Scheme Fees (SC)'] ) +
 			floatval( $row['Interchange (SC)'] );
 		$msg['fee'] = round( $fee / $exchange, 2 );
+		$msg['original_fee_amount'] = $msg['fee'];
 		// shouldn't this be settled_net or settled_amount?
 		$msg['settled_gross'] = $row['Payable (SC)'];
+		$msg['settled_total_amount'] = (float)$msg['settled_gross'];
 		$msg['settled_currency'] = $row['Settlement Currency'];
-		$msg['settled_fee'] = $fee;
+		$msg['settled_fee_amount'] = $fee;
 
 		return $msg;
 	}
@@ -64,7 +66,8 @@ class AdyenPaymentsAccountingReport extends AdyenAudit {
 				(float)$row['Main Amount'] - (float)$row['Markup (SC)'] - (float)$row['Interchange (SC)'], 3
 			);
 		}
-
+		$msg['original_currency'] = $msg['gross_currency'];
+		$msg['original_total_amount'] = (float)$msg['gross'];
 		$msg['gateway_parent_id'] = $row['Psp Reference'];
 		$msg['gateway_refund_id'] = $row['Modification Psp Reference'];
 		if ( in_array( strtolower( $row['Record Type'] ), [ 'chargeback', 'secondchargeback' ] ) ) {

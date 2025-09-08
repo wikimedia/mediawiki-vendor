@@ -2,9 +2,12 @@
 
 namespace SmashPig\PaymentProviders\Gravy\Mapper;
 
+use SmashPig\Core\Context;
 use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentProviders\Gravy\Errors\ErrorChecker;
+use SmashPig\PaymentProviders\Gravy\Errors\ErrorHelper;
 use SmashPig\PaymentProviders\Gravy\Errors\ErrorMapper;
+use SmashPig\PaymentProviders\Gravy\Errors\ErrorTracker;
 use SmashPig\PaymentProviders\Gravy\GravyHelper;
 use SmashPig\PaymentProviders\Gravy\PaymentMethod;
 use SmashPig\PaymentProviders\Gravy\PaymentStatusNormalizer;
@@ -15,13 +18,12 @@ class ResponseMapper {
 	// List of methods with username as identifiers
 	public const METHODS_WITH_USERNAME = [ 'venmo' ];
 
-	/**
-	 * @var ErrorChecker
-	 */
-	private $responseErrorChecker;
+	protected ErrorChecker $errorChecker;
+	protected ErrorTracker $errorTracker;
 
 	public function __construct() {
-		$this->responseErrorChecker = new ErrorChecker();
+		$this->errorChecker = Context::get()->getProviderConfiguration()->object( 'error-checker' );
+		$this->errorTracker = Context::get()->getProviderConfiguration()->object( 'error-tracker' );
 	}
 
 	/**
@@ -29,11 +31,8 @@ class ResponseMapper {
 	 * @link https://docs.gr4vy.com/reference/transactions/new-transaction
 	 */
 	public function mapFromPaymentResponse( array $response ): array {
-		if ( $this->responseErrorChecker->responseHasErrors( $response ) ) {
-			return $this->mapErrorFromResponse( $response );
-		}
-
-		return $this->mapSuccessfulPaymentResponse( $response );
+		$errorResponse = $this->handleResponseErrorsIfPresent( $response );
+		return $errorResponse ?? $this->mapSuccessfulPaymentResponse( $response );
 	}
 
 	public function getRiskScores( ?string $avs_response, ?string $cvv_response ): array {
@@ -44,10 +43,8 @@ class ResponseMapper {
 	}
 
 	public function mapFromDeletePaymentTokenResponse( array $response ): array {
-		if ( $this->responseErrorChecker->responseHasErrors( $response ) ) {
-			return $this->mapErrorFromResponse( $response );
-		}
-		return [
+		$errorResponse = $this->handleResponseErrorsIfPresent( $response );
+		return $errorResponse ?? [
 			'is_successful' => true
 		];
 	}
@@ -57,10 +54,8 @@ class ResponseMapper {
 	 * @return array
 	 */
 	public function mapFromRefundPaymentResponse( array $response ): array {
-		if ( $this->responseErrorChecker->responseHasErrors( $response ) ) {
-			return $this->mapErrorFromResponse( $response );
-		}
-		return $this->mapSuccessfulRefundMessage( $response );
+		$errorResponse = $this->handleResponseErrorsIfPresent( $response );
+		return $errorResponse ?? $this->mapSuccessfulRefundMessage( $response );
 	}
 
 	/**
@@ -68,9 +63,11 @@ class ResponseMapper {
 	 * @return array
 	 */
 	public function mapFromReportExecutionResponse( array $response ): array {
-		if ( $this->responseErrorChecker->responseHasErrors( $response ) ) {
-			return $this->mapErrorFromResponse( $response );
+		$errorResponse = $this->handleResponseErrorsIfPresent( $response );
+		if ( $errorResponse ) {
+			return $errorResponse;
 		}
+
 		$report = $response['report'];
 		return [
 			'is_successful' => true,
@@ -89,8 +86,9 @@ class ResponseMapper {
 	 * @return array
 	 */
 	public function mapFromPaymentServiceDefinitionResponse( array $response ): array {
-		if ( $this->responseErrorChecker->responseHasErrors( $response ) ) {
-			return $this->mapErrorFromResponse( $response );
+		$errorResponse = $this->handleResponseErrorsIfPresent( $response );
+		if ( $errorResponse ) {
+			return $errorResponse;
 		}
 		return [
 			'is_successful' => true,
@@ -107,8 +105,9 @@ class ResponseMapper {
 	 * @return array
 	 */
 	public function mapFromGenerateReportUrlResponse( array $response ): array {
-		if ( $this->responseErrorChecker->responseHasErrors( $response ) ) {
-			return $this->mapErrorFromResponse( $response );
+		$errorResponse = $this->handleResponseErrorsIfPresent( $response );
+		if ( $errorResponse ) {
+			return $errorResponse;
 		}
 
 		return [
@@ -255,7 +254,7 @@ class ResponseMapper {
 	 * @link https://docs.gr4vy.com/guides/api/resources/transactions/statuses
 	 */
 	protected function normalizeStatus( string $paymentProcessorStatus ): string {
-		return ( new PaymentStatusNormalizer() )->normalizeStatus( $paymentProcessorStatus );
+		return ( new PaymentStatusNormalizer )->normalizeStatus( $paymentProcessorStatus );
 	}
 
 	/**
@@ -354,5 +353,26 @@ class ResponseMapper {
 		);
 
 		return $normalizedPaymentMethod === 'dd' && $normalizedPaymentSubmethod === 'ach';
+	}
+
+	/**
+	 * Check if the API response contains errors and handle them if found
+	 *
+	 * @param array $response The API response to check
+	 * @return array|null Returns error mapping if the response has errors, null if successful
+	 */
+	protected function handleResponseErrorsIfPresent( array $response ): ?array {
+		if ( $this->errorChecker->responseHasErrors( $response ) ) {
+			$errorInfo = $this->errorChecker->getResponseErrorDetails( $response );
+			$trackableError = ErrorHelper::buildTrackableErrorFromResponse(
+				$errorInfo['error_code'],
+				$errorInfo['error_type'],
+				$response
+			);
+			$this->errorTracker->trackErrorAndCheckThreshold( $trackableError );
+			return $this->mapErrorFromResponse( $response );
+		}
+
+		return null;
 	}
 }

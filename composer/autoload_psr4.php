@@ -26,7 +26,7 @@ return array(
     'Wikimedia\\Bcp47Code\\' => array($vendorDir . '/wikimedia/bcp-47-code/src'),
     'Wikimedia\\AtEase\\' => array($vendorDir . '/wikimedia/at-ease/src'),
     'Wikimedia\\Assert\\' => array($vendorDir . '/wikimedia/assert/src'),
-    'Wikimedia\\' => array($vendorDir . '/wikimedia/wrappedstring/src', $vendorDir . '/wikimedia/wait-condition-loop/src', $vendorDir . '/wikimedia/running-stat/src', $vendorDir . '/wikimedia/relpath/src', $vendorDir . '/wikimedia/php-session-serializer/src', $vendorDir . '/wikimedia/ip-utils/src', $vendorDir . '/wikimedia/scoped-callback/src'),
+    'Wikimedia\\' => array($vendorDir . '/wikimedia/ip-utils/src', $vendorDir . '/wikimedia/php-session-serializer/src', $vendorDir . '/wikimedia/relpath/src', $vendorDir . '/wikimedia/running-stat/src', $vendorDir . '/wikimedia/scoped-callback/src', $vendorDir . '/wikimedia/wait-condition-loop/src', $vendorDir . '/wikimedia/wrappedstring/src'),
     'WhichBrowser\\' => array($vendorDir . '/whichbrowser/parser/src'),
     'Twig\\' => array($vendorDir . '/twig/twig/src'),
     'Symfony\\Polyfill\\Php83\\' => array($vendorDir . '/symfony/polyfill-php83'),

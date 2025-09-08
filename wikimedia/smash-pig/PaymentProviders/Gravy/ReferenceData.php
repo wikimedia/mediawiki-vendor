@@ -118,6 +118,7 @@ class ReferenceData {
 		'wechat' => '',
 		'webpay' => PaymentMethod::BT,
 		'zippay' => '',
+		'stripetoken' => PaymentMethod::CC,
 	];
 
 	protected static $cardPaymentSubmethods = [

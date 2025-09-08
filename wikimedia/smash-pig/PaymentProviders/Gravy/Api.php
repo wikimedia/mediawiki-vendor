@@ -93,8 +93,24 @@ class Api {
 		$payment_method_id = $params['payment_method_id'];
 		$tl = new TaggedLogger( 'RawData' );
 		$response = $this->gravyApiClient->deletePaymentMethod( $payment_method_id );
-		$response_string = json_encode( $response );
-		$tl->info( "Delete payment token response for token {$payment_method_id} $response_string" );
+
+		// Handle Gravy SDK error responses (null, string, or unexpected types)
+		if ( $response === null ) {
+			$errorMessage = "No response received from payment method deletion for token {$payment_method_id}";
+		} elseif ( is_string( $response ) ) {
+			$errorMessage = $response; // cURL error string
+		} elseif ( !is_array( $response ) ) {
+			$errorMessage = "Unexpected response from payment method deletion for token {$payment_method_id}";
+		}
+
+		if ( isset( $errorMessage ) ) {
+			// simulate a Gravy-style error for our error mapper
+			return [ 'type' => 'error', 'message' => $errorMessage ];
+		}
+
+		// Handle successful array response
+		$formattedResponse = json_encode( $response );
+		$tl->info( "Delete payment token response for token {$payment_method_id} {$formattedResponse}" );
 		return $response;
 	}
 
