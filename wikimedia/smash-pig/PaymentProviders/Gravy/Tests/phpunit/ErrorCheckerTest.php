@@ -654,7 +654,7 @@ class ErrorCheckerTest extends BaseGravyTestCase {
 
 		$expectedDetails = [
 			'error_type' => ErrorType::RESPONSE_TYPE->value,
-			'error_code' => 'unknown'
+			'error_code' => 'error_response_unknown_error_code'
 		];
 
 		$this->assertEquals( $expectedDetails, $this->errorChecker->getResponseErrorDetails( $testResponse ) );

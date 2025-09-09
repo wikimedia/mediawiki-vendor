@@ -33,10 +33,11 @@ class ErrorTrackerTest extends BaseGravyTestCase {
 		// Note: inspired by Art of Unit Testing - Roy Osherove
 		$this->errorTracker = new class( [
 			'enabled' => true,
-			'threshold' => 10,
-			'time_window' => 3600,
+			'threshold' => 20,
+			'time_window' => 1800,
 			'key_prefix' => 'gravy_error_threshold_',
-			'key_expiry_period' => 1800
+			'key_expiry_period' => 2400,
+			'alert_suppression_period' => 120
 		] ) extends ErrorTracker {
 			private Client $mockClient;
 
@@ -98,21 +99,71 @@ class ErrorTrackerTest extends BaseGravyTestCase {
 
 		$error = ErrorHelper::buildTrackableErrorFromResponse( $uniqueCode, 'code', $response );
 
-		// Mock Redis behavior - simulate reaching threshold
-		$this->mockRedisClient->expects( $this->once() )
+		// Mock Redis behavior for threshold breach scenario
+		// Calls: incr (returns 20, threshold reached), exists (check alert), setex (set suppression)
+		// Note: expire is NOT called when incr returns > 1
+		$this->mockRedisClient->expects( $this->exactly( 3 ) )
 			->method( '__call' )
-			->with( 'incr' )
-			->willReturn( 10 );
+			->willReturnCallback( static function ( $method, $args ) {
+				if ( $method === 'incr' ) {
+					return 20; // Threshold reached (20th occurrence)
+				}
+				if ( $method === 'exists' ) {
+					return false; // No recent alert
+				}
+				if ( $method === 'setex' ) {
+					return true; // Successfully set alert suppression
+				}
+				return null;
+			} );
 
 		// Should reach the threshold
 		$result = $this->errorTracker->trackErrorAndCheckThreshold( $error );
-		$this->assertTrue( $result, "Error tracking should exceed threshold at occurrence 10" );
+		$this->assertTrue( $result, "Error tracking should exceed threshold at occurrence 20" );
+	}
+
+	public function testThresholdBreachFirstTimeTriggersAlert(): void {
+		$uniqueCode = 'payment_declined_first_time';
+		$response = [
+			'id' => 'txn_' . time() . '_' . mt_rand(),
+			'external_identifier' => 'donation_' . mt_rand(),
+			'amount' => 1000,
+			'currency' => 'USD',
+			'payment_method' => [ 'method' => 'card' ],
+			'error_code' => $uniqueCode,
+			'status' => 'authorization_failed'
+		];
+
+		$error = ErrorHelper::buildTrackableErrorFromResponse( $uniqueCode, 'code', $response );
+
+		// Mock Redis behavior - threshold just reached, no recent alert exists
+		// Calls: incr (returns 20), exists (returns false - no recent alert), setex (set suppression)
+		$this->mockRedisClient->expects( $this->exactly( 3 ) )
+			->method( '__call' )
+			->willReturnCallback( static function ( $method, $args ) {
+				if ( $method === 'incr' ) {
+					return 20; // Threshold reached (20th occurrence)
+				}
+				if ( $method === 'exists' ) {
+					return false; // No recent alert exists
+				}
+				if ( $method === 'setex' ) {
+					return true; // Successfully set alert suppression
+				}
+				return null;
+			} );
+
+		// Should trigger alert and return true when threshold is reached for first time
+		$result = $this->errorTracker->trackErrorAndCheckThreshold( $error );
+		$this->assertTrue( $result, "Should return true when threshold is exceeded and alert is triggered" );
 	}
 
 	/**
-	 * Test threshold breaching continues to return true after being exceeded
+	 * Test that the threshold breach alert is suppressed when an alert was recently sent.
+	 *
+	 * @return void
 	 */
-	public function testThresholdBreachContinuesAfterExceeded(): void {
+	public function testThresholdBreachDuplicateAlertIsSuppressed(): void {
 		$uniqueCode = 'cancelled_buyer_approval_continued';
 		$response = [
 			'id' => 'txn_' . time() . '_' . mt_rand(),
@@ -126,15 +177,24 @@ class ErrorTrackerTest extends BaseGravyTestCase {
 
 		$error = ErrorHelper::buildTrackableErrorFromResponse( $uniqueCode, 'code', $response );
 
-		// Mock Redis behavior - return count above threshold
-		$this->mockRedisClient->expects( $this->once() )
+		// Mock Redis behavior - return count above threshold, alert was recently sent
+		// Calls: incr (returns 25), exists (returns true - alert recently sent)
+		// Note: setex is NOT called when alert was recently sent
+		$this->mockRedisClient->expects( $this->exactly( 2 ) )
 			->method( '__call' )
-			->with( 'incr' )
-			->willReturn( 15 );
+			->willReturnCallback( static function ( $method, $args ) {
+				if ( $method === 'incr' ) {
+					return 25; // Above threshold
+				}
+				if ( $method === 'exists' ) {
+					return true; // Alert recently sent, so no new alert
+				}
+				return null;
+			} );
 
-		// Should continue to return true after threshold breach
+		// Should continue to return true even if alert suppressed
 		$result = $this->errorTracker->trackErrorAndCheckThreshold( $error );
-		$this->assertTrue( $result, "Should continue returning true after threshold breach" );
+		$this->assertTrue( $result, "Should continue to return true even if alert suppressed" );
 	}
 
 	/**
@@ -253,6 +313,77 @@ class ErrorTrackerTest extends BaseGravyTestCase {
 		$this->assertTrue( $result );
 	}
 
+	public function testAlertSuppressionKeyGeneration(): void {
+		$uniqueCode = 'test_error_with-special.chars@123';
+		$response = [
+			'id' => 'txn_' . time() . '_' . mt_rand(),
+			'external_identifier' => 'donation_' . mt_rand(),
+			'amount' => 1000,
+			'currency' => 'USD',
+			'payment_method' => [ 'method' => 'card' ],
+			'error_code' => $uniqueCode,
+			'status' => 'authorization_failed'
+		];
+
+		$error = ErrorHelper::buildTrackableErrorFromResponse( $uniqueCode, 'code', $response );
+
+		// Mock Redis behavior for threshold breach with alert key generation
+		// Calls: incr (returns 20), exists (check alert key), setex (set alert suppression)
+		$this->mockRedisClient->expects( $this->exactly( 3 ) )
+			->method( '__call' )
+			->withConsecutive(
+				[ 'incr', $this->callback( static function ( $args ) {
+					// Validate the error key format: prefix + sanitized_code + time_slot
+					return (bool)preg_match( '/^gravy_error_threshold_test_error_with_special_chars_123:\d+$/', $args[0] );
+				} ) ],
+				[ 'exists', $this->callback( static function ( $args ) {
+					// Validate the alert key format: error_key + :alerted
+					return (bool)preg_match( '/^gravy_error_threshold_test_error_with_special_chars_123:\d+:alerted$/', $args[0] );
+				} ) ],
+				[ 'setex', $this->callback( static function ( $args ) {
+					// Verify setex uses the same alert key format
+					return (bool)preg_match( '/^gravy_error_threshold_test_error_with_special_chars_123:\d+:alerted$/', $args[0] );
+				} ) ]
+			)
+			->willReturnOnConsecutiveCalls( 20, false, true ); // threshold reached, no recent alert, suppression set
+
+		$result = $this->errorTracker->trackErrorAndCheckThreshold( $error );
+		$this->assertTrue( $result, "Should return true when threshold is exceeded and alert key is properly generated" );
+	}
+
+	public function testInvalidRedisKeyCharactersAreCleanedUp(): void {
+		$invalidErrorCode = 'test error@$%';
+
+		$response = [
+			'id' => 'txn_123',
+			'external_identifier' => 'donation_456',
+			'amount' => 1000,
+			'currency' => 'USD',
+			'payment_method' => [ 'method' => 'card' ],
+			'error_code' => $invalidErrorCode,
+			'status' => 'authorization_failed'
+		];
+
+		$error = ErrorHelper::buildTrackableErrorFromResponse( $invalidErrorCode, 'code', $response );
+
+		// Expect the Redis key to be sanitised - all non-alphanumeric characters should become underscores
+		$expectedSanitizedKey = 'test_error___';
+
+		$this->mockRedisClient->expects( $this->exactly( 2 ) )
+			->method( '__call' )
+			->withConsecutive(
+				[ 'incr', $this->callback( static function ( $args ) use ( $expectedSanitizedKey ) {
+					// Check that the key starts with the prefix and sanitized error code
+					return (bool)preg_match( "/^gravy_error_threshold_{$expectedSanitizedKey}:\d+$/", $args[0] );
+				} ) ],
+				[ 'expire', $this->anything() ]
+			)
+			->willReturnOnConsecutiveCalls( 1, true );
+
+		$result = $this->errorTracker->trackErrorAndCheckThreshold( $error );
+		$this->assertTrue( $result, "Should successfully track error with sanitised key" );
+	}
+
 	/**
 	 * Test that nothing happens when enabled is false
 	 */
@@ -260,10 +391,11 @@ class ErrorTrackerTest extends BaseGravyTestCase {
 		// Create a disabled ErrorTracker
 		$disabledErrorTracker = new class( [
 			'enabled' => false,
-			'threshold' => 10,
-			'time_window' => 3600,
+			'threshold' => 20,
+			'time_window' => 1800,
 			'key_prefix' => 'gravy_error_threshold_',
-			'key_expiry_period' => 1800
+			'key_expiry_period' => 2400,
+			'alert_suppression_period' => 120
 		] ) extends ErrorTracker {
 			private Client $mockClient;
 

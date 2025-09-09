@@ -20,6 +20,7 @@ class ErrorTracker {
 	protected int $timeWindow;
 	protected string $keyPrefix;
 	protected int $keyExpiryPeriod;
+	protected int $alertSuppressionPeriod;
 	protected ?Client $connection = null;
 
 	/**
@@ -31,6 +32,7 @@ class ErrorTracker {
 	 *                       - 'time_window' (int): The time window for measuring errors in seconds.
 	 *                       - 'key_prefix' (string): The redis prefix to be used for keys.
 	 *                       - 'key_expiry_period' (int): The expiry period for redis keys in seconds.
+	 *                       - 'alert_suppression_period' (int): The period in seconds to suppress duplicate alerts.
 	 *
 	 * @return void
 	 */
@@ -44,12 +46,16 @@ class ErrorTracker {
 		if ( $options['key_expiry_period'] <= 0 ) {
 			throw new InvalidArgumentException( 'ErrorTracker key expiry window must be positive' );
 		}
+		if ( $options['alert_suppression_period'] <= 0 ) {
+			throw new InvalidArgumentException( 'ErrorTracker alert suppression period must be positive' );
+		}
 
 		$this->enabled = $options['enabled'];
 		$this->threshold = $options['threshold'];
 		$this->timeWindow = $options['time_window'];
 		$this->keyPrefix = $options['key_prefix'];
 		$this->keyExpiryPeriod = $options['key_expiry_period'];
+		$this->alertSuppressionPeriod = $options['alert_suppression_period'];
 	}
 
 	public function trackErrorAndCheckThreshold( array $error ): bool {
@@ -59,9 +65,9 @@ class ErrorTracker {
 
 		$count = $this->trackError( $error );
 		if ( $count > 0 ) {
-			if ( $this->isThresholdExceeded( $count ) ) {
-				$errorCode = $error['error_code'] ?? self::UNKNOWN_ERROR_CODE;
-				ErrorHelper::raiseAlert( $errorCode, $count, $this->threshold, $this->timeWindow, $error );
+			if ( $this->isThresholdExceeded( $count ) && !$this->alertRecentlySent( $error['error_code'] ) ) {
+				ErrorHelper::raiseAlert( $error['error_code'], $count, $this->threshold, $this->timeWindow, $error );
+				$this->markAlertAsSent( $error['error_code'] );
 			}
 			return true;
 		}
@@ -75,7 +81,7 @@ class ErrorTracker {
 				$this->connection = $this->createRedisClient();
 			}
 
-			$cacheKey = $this->generateRedisErrorKey( $error['error_code'] ?? self::UNKNOWN_ERROR_CODE );
+			$cacheKey = $this->generateRedisErrorKey( $error['error_code'] );
 			$currentCount = $this->connection->incr( $cacheKey );
 
 			if ( $currentCount === 1 ) {
@@ -85,10 +91,43 @@ class ErrorTracker {
 			return $currentCount;
 		} catch ( \Exception $ex ) {
 			Logger::warning( 'Failed to track error in Redis', [
-				'error_code' => $error['error_code'] ?? self::UNKNOWN_ERROR_CODE,
+				'error_code' => $error['error_code'],
 				'exception' => $ex->getMessage()
 			] );
 			return 0;
+		}
+	}
+
+	protected function alertRecentlySent( string $errorCode ): bool {
+		try {
+			if ( !$this->connection ) {
+				$this->connection = $this->createRedisClient();
+			}
+
+			$alertKey = $this->generateRedisAlertKey( $errorCode );
+			return $this->connection->exists( $alertKey );
+		} catch ( \Exception $ex ) {
+			Logger::warning( 'Failed to check alert suppression key in Redis', [
+				'error_code' => $errorCode,
+				'exception' => $ex->getMessage()
+			] );
+			return false;
+		}
+	}
+
+	protected function markAlertAsSent( string $errorCode ): void {
+		try {
+			if ( !$this->connection ) {
+				$this->connection = $this->createRedisClient();
+			}
+
+			$alertKey = $this->generateRedisAlertKey( $errorCode );
+			$this->connection->setex( $alertKey, $this->alertSuppressionPeriod, '1' );
+		} catch ( \Exception $ex ) {
+			Logger::warning( 'Failed to set alert suppression key in Redis', [
+				'error_code' => $errorCode,
+				'exception' => $ex->getMessage()
+			] );
 		}
 	}
 
@@ -107,10 +146,28 @@ class ErrorTracker {
 		return new Client( $servers, $options );
 	}
 
+	/**
+	 * Generates a Redis key to track error occurrences based on the error code and the current time window.
+	 * For example, with a 30-minute time window (1800 seconds):
+	 * If the current timestamp is 1623456789, then 1623456789/1800 = 901920.43
+	 * floor() gives us 901920, so all errors within this 30-minute window
+	 * will have the same time slot number in the Redis key
+	 *
+	 * These keys expire automatically so we don't need to clean them up
+	 *
+	 * @param string $errorCode The specific error code to include in the Redis key.
+	 *
+	 * @return string The generated Redis key, which includes the key prefix, error code, and the current time slot.
+	 */
 	protected function generateRedisErrorKey( string $errorCode ): string {
+		// Sanitise error code: remove special characters and spaces, keep only alphanumeric and underscore
+		$sanitizedErrorCode = preg_replace( '/\W/', '_', $errorCode );
 		$currentTimeSlotInSeconds = floor( time() / $this->timeWindow );
-		$redisErrorTrackingKey = "{$this->keyPrefix}{$errorCode}:{$currentTimeSlotInSeconds}";
-		return $redisErrorTrackingKey;
+		return "{$this->keyPrefix}{$sanitizedErrorCode}:{$currentTimeSlotInSeconds}";
+	}
+
+	protected function generateRedisAlertKey( string $errorCode ): string {
+		return $this->generateRedisErrorKey( $errorCode ) . ':alerted';
 	}
 
 	protected function isThresholdExceeded( int $count ): bool {

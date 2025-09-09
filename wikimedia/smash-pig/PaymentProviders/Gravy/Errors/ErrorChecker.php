@@ -14,6 +14,11 @@ use SmashPig\PaymentProviders\Gravy\PaymentStatusNormalizer;
  */
 
 class ErrorChecker {
+	public const UNKNOWN_FAILED_PAYMENT_STATUS_ERROR_CODE = 'unknown_failed_payment_status_error_code';
+	public const UNKNOWN_3_D_SECURE_ERROR_CODE = 'unknown_3d_secure_error_code';
+	public const UNKNOWN_FAILED_INTENT_ERROR_CODE = 'unknown_failed_intent_error_code';
+	public const UNKNOWN_ERROR_CODE = 'unknown_error_code';
+	public const ERROR_RESPONSE_UNKNOWN_ERROR_CODE = 'error_response_unknown_error_code';
 
 	/**
 	 * Check if a Gravy payment response contains any error indicators
@@ -34,31 +39,31 @@ class ErrorChecker {
 
 		if ( $this->hasErrorResponseType( $response ) ) {
 			$errorDetails['error_type'] = ErrorType::RESPONSE_TYPE->value;
-			$errorDetails['error_code'] = $response['status'] ?? 'unknown';
+			$errorDetails['error_code'] = $response['status'] ?? self::ERROR_RESPONSE_UNKNOWN_ERROR_CODE;
 			return $errorDetails;
 		}
 
 		if ( $this->hasErrorCode( $response ) ) {
 			$errorDetails['error_type'] = ErrorType::ERROR_CODE->value;
-			$errorDetails['error_code'] = $response['error_code'];
+			$errorDetails['error_code'] = $response['error_code'] ?? self::UNKNOWN_ERROR_CODE;
 			return $errorDetails;
 		}
 
 		if ( $this->hasFailedIntentOutcome( $response ) ) {
 			$errorDetails['error_type'] = ErrorType::FAILED_INTENT->value;
-			$errorDetails['error_code'] = $response['intent_outcome'];
+			$errorDetails['error_code'] = $response['intent_outcome'] ?? self::UNKNOWN_FAILED_INTENT_ERROR_CODE;
 			return $errorDetails;
 		}
 
 		if ( $this->has3DSecureError( $response ) ) {
 			$errorDetails['error_type'] = ErrorType::THREE_D_SECURE->value;
-			$errorDetails['error_code'] = $response['three_d_secure']['status'] ?? 'unknown_3ds_error';
+			$errorDetails['error_code'] = $response['three_d_secure']['status'] ?? self::UNKNOWN_3_D_SECURE_ERROR_CODE;
 			return $errorDetails;
 		}
 
 		if ( $this->hasFailedPaymentStatus( $response ) ) {
 			$errorDetails['error_type'] = ErrorType::FAILED_PAYMENT->value;
-			$errorDetails['error_code'] = $response['status'];
+			$errorDetails['error_code'] = $response['status'] ?? self::UNKNOWN_FAILED_PAYMENT_STATUS_ERROR_CODE;
 			return $errorDetails;
 		}
 

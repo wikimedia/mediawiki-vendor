@@ -135,14 +135,16 @@ error-tracker:
     -
       # Redis-based tracking and alerting can be toggled on/off.
       enabled: true
-      # Number of errors required to trigger an alert (default: 15)
-      threshold: 15
+      # Number of errors required to trigger an alert (default: 20)
+      threshold: 20
       # Time window in seconds for error counting (1800 = 30 minutes)
       time_window: 1800
       # Redis key prefix for storing error counts
       key_prefix: 'gravy_error_threshold_'
       # Redis key expiry period in seconds (default: 2400 = 40 minutes)
       key_expiry_period: 2400
+      # Alert suppression period in seconds to prevent duplicate alerts (default: 120 = 2 minutes)
+      alert_suppression_period: 120
 
 
 mappers:
