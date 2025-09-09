@@ -86,9 +86,13 @@ class CardPaymentProvider extends PaymentProvider implements IPaymentProvider {
 			'order_id',
 			'first_name',
 			'last_name',
-			'email',
-			'fiscal_number',
+			'email'
 		];
+		$requireFiscalNumberCountries = [ 'AR', 'BR' ];
+
+		if ( isset( $params['country'] ) && in_array( $params['country'], $requireFiscalNumberCountries ) ) {
+			$requiredFields[] = 'fiscal_number';
+		}
 
 		self::checkFields( $requiredFields, $params );
 	}

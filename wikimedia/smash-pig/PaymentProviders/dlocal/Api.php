@@ -102,7 +102,7 @@ class Api {
 	 */
 	public function makeApiCall( string $method = 'POST', string $route = '', array $params = [] ): array {
 		$request = $this->createRequestBasedOnMethodAndSetBody( $method, $route, $params );
-
+		Logger::debug( 'Raw param to create dlocal payment: ' . json_encode( $params ) );
 		$this->setRequestHeaders( $request );
 		$rawResponse = $request->execute();
 		Logger::debug( 'Raw response from dlocal: ' . $rawResponse['body'] );
