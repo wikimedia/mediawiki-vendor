@@ -3806,6 +3806,4 @@ return array(
     'Wikimedia\\Zest\\ZestInst' => $vendorDir . '/wikimedia/zest-css/src/ZestInst.php',
     'WmfFramework' => $baseDir . '/extensions/DonationInterface/gateway_common/WmfFramework.php',
     'lessc' => $vendorDir . '/wikimedia/less.php/lessc.inc.php',
-    'smashpig\\PaymentProviders\\ICancelAutoRescueProvider' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/ICancelAutoRescueProvider.php',
-    'smashpig\\PaymentProviders\\IDeleteRecurringPaymentTokenProvider' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/IDeleteRecurringPaymentTokenProvider.php',
 );

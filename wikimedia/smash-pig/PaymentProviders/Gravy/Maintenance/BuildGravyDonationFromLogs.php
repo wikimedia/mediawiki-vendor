@@ -334,7 +334,8 @@ class BuildGravyDonationFromLogs extends MaintenanceBase {
 							if ( isset( $data[$gravyField]['method'] ) ) {
 								$methodData = ReferenceData::decodePaymentMethod(
 									$data[$gravyField]['method'],
-									$data[$gravyField]['scheme'] ?? ''
+									$data[$gravyField]['scheme'] ?? '',
+									$data[$gravyField]['label'] ?? ''
 								);
 								if ( !empty( $methodData[0] ) ) {
 									$extracted['payment_method'] = $methodData[0];

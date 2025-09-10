@@ -133,7 +133,8 @@ class ResponseMapper {
 			}
 			$gravyPaymentMethod = $response['payment_method']['method'] ?? '';
 			$gravyPaymentSubmethod = $response['payment_method']['scheme'] ?? '';
-			[ $normalizedPaymentMethod, $normalizedPaymentSubmethod ] = ReferenceData::decodePaymentMethod( $gravyPaymentMethod, $gravyPaymentSubmethod );
+			$gravyPaymentMethodLabel = $response['payment_method']['label'] ?? '';
+			[ $normalizedPaymentMethod, $normalizedPaymentSubmethod ] = ReferenceData::decodePaymentMethod( $gravyPaymentMethod, $gravyPaymentSubmethod, $gravyPaymentMethodLabel );
 			$result['payment_method'] = $normalizedPaymentMethod;
 			$result['payment_submethod'] = $normalizedPaymentSubmethod;
 
@@ -349,7 +350,8 @@ class ResponseMapper {
 		}
 		[ $normalizedPaymentMethod, $normalizedPaymentSubmethod ] = ReferenceData::decodePaymentMethod(
 			$response['payment_method']['method'] ?? '',
-			''
+			'',
+			$response['payment_method']['label'] ?? ''
 		);
 
 		return $normalizedPaymentMethod === 'dd' && $normalizedPaymentSubmethod === 'ach';

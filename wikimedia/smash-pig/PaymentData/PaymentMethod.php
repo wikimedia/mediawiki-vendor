@@ -14,4 +14,8 @@ class PaymentMethod {
 	public const RTBT = 'rtbt';
 	public const STRIPE = 'stripe';
 	public const VENMO = 'venmo';
+	/* The `stripetoken` payment method is only sent in the response for the charge on a migrated token
+	 * as such its only used in the Reference data class to map the label to a payment method.
+	 */
+	public const STRIPETOKEN = 'stripetoken';
 }

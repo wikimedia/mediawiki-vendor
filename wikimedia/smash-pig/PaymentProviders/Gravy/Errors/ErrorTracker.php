@@ -21,6 +21,7 @@ class ErrorTracker {
 	protected string $keyPrefix;
 	protected int $keyExpiryPeriod;
 	protected int $alertSuppressionPeriod;
+	protected array $ignoreList;
 	protected ?Client $connection = null;
 
 	/**
@@ -33,6 +34,7 @@ class ErrorTracker {
 	 *                       - 'key_prefix' (string): The redis prefix to be used for keys.
 	 *                       - 'key_expiry_period' (int): The expiry period for redis keys in seconds.
 	 *                       - 'alert_suppression_period' (int): The period in seconds to suppress duplicate alerts.
+	 *                       - 'ignore_list' (array): List of error codes to ignore from tracking and alerting.
 	 *
 	 * @return void
 	 */
@@ -56,10 +58,25 @@ class ErrorTracker {
 		$this->keyPrefix = $options['key_prefix'];
 		$this->keyExpiryPeriod = $options['key_expiry_period'];
 		$this->alertSuppressionPeriod = $options['alert_suppression_period'];
+		$this->ignoreList = $options['ignore_list'] ?? [];
 	}
 
 	public function trackErrorAndCheckThreshold( array $error ): bool {
 		if ( !$this->enabled ) {
+			return false;
+		}
+		// We need an error_code to work with
+		if ( !isset( $error['error_code'] ) ) {
+			Logger::info( 'Error code is missing in error array', [
+				'error' => $error
+			] );
+			return false;
+		}
+		// Skip tracking if error code is in the ignore list
+		if ( in_array( strtolower( $error['error_code'] ), array_map( 'strtolower', $this->ignoreList ), true ) ) {
+			Logger::info( 'Skipping error tracking - error code is in ignore list', [
+				'error_code' => $error['error_code']
+			] );
 			return false;
 		}
 

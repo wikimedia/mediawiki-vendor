@@ -427,4 +427,103 @@ class ErrorTrackerTest extends BaseGravyTestCase {
 		$result = $disabledErrorTracker->trackErrorAndCheckThreshold( $error );
 		$this->assertFalse( $result, "Should return false and do nothing when disabled" );
 	}
+
+	/**
+	 * Test that error codes in the ignore list are not tracked
+	 */
+	public function testIgnoredErrorCodesAreNotTracked(): void {
+		// Create an ErrorTracker with ignore list containing 'incomplete_buyer_approval'
+		$errorTrackerWithIgnoreList = new class( [
+			'enabled' => true,
+			'threshold' => 20,
+			'time_window' => 1800,
+			'key_prefix' => 'gravy_error_threshold_',
+			'key_expiry_period' => 2400,
+			'alert_suppression_period' => 120,
+			'ignore_list' => [ 'incomplete_buyer_approval' ]
+		] ) extends ErrorTracker {
+			private Client $mockClient;
+
+			public function setMockClient( $client ): void {
+				$this->mockClient = $client;
+			}
+
+			protected function createRedisClient(): Client {
+				return $this->mockClient ?? parent::createRedisClient();
+			}
+		};
+
+		$errorTrackerWithIgnoreList->setMockClient( $this->mockRedisClient );
+
+		$ignoredError = [
+			'error_code' => 'incomplete_buyer_approval',
+			'error_type' => 'code',
+			'gateway_txn_id' => 'txn_123',
+			'external_identifier' => 'donation_456',
+			'amount' => 1000,
+			'currency' => 'USD',
+			'payment_method' => 'card'
+		];
+
+		// Expect no Redis calls when error code is ignored
+		$this->mockRedisClient->expects( $this->never() )
+			->method( '__call' );
+
+		$result = $errorTrackerWithIgnoreList->trackErrorAndCheckThreshold( $ignoredError );
+		$this->assertFalse( $result, "Should return false and skip tracking for ignored error codes" );
+	}
+
+	/**
+	 * Test that non-ignored error codes are still tracked normally when ignore list is present
+	 */
+	public function testNonIgnoredErrorCodesAreStillTracked(): void {
+		// Create an ErrorTracker with ignore list containing 'incomplete_buyer_approval'
+		$errorTrackerWithIgnoreList = new class( [
+			'enabled' => true,
+			'threshold' => 20,
+			'time_window' => 1800,
+			'key_prefix' => 'gravy_error_threshold_',
+			'key_expiry_period' => 2400,
+			'alert_suppression_period' => 120,
+			'ignore_list' => [ 'incomplete_buyer_approval' ]
+		] ) extends ErrorTracker {
+			private Client $mockClient;
+
+			public function setMockClient( $client ): void {
+				$this->mockClient = $client;
+			}
+
+			protected function createRedisClient(): Client {
+				return $this->mockClient ?? parent::createRedisClient();
+			}
+		};
+
+		$errorTrackerWithIgnoreList->setMockClient( $this->mockRedisClient );
+
+		$nonIgnoredError = [
+			'error_code' => 'card_declined',
+			'error_type' => 'code',
+			'gateway_txn_id' => 'txn_123',
+			'external_identifier' => 'donation_456',
+			'amount' => 1000,
+			'currency' => 'USD',
+			'payment_method' => 'card'
+		];
+
+		// Expect Redis calls for non-ignored error codes
+		$this->mockRedisClient->expects( $this->exactly( 2 ) )
+			->method( '__call' )
+			->willReturnCallback( static function ( $method, $args ) {
+				if ( $method === 'incr' ) {
+					return 1; // First call returns 1
+				}
+				if ( $method === 'expire' ) {
+					return true;
+				}
+				return null;
+			} );
+
+		$result = $errorTrackerWithIgnoreList->trackErrorAndCheckThreshold( $nonIgnoredError );
+		$this->assertTrue( $result, "Should return true and track non-ignored error codes normally" );
+	}
 }

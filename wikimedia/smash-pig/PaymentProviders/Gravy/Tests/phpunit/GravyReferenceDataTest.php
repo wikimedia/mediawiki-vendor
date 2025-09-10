@@ -6,6 +6,9 @@ use SmashPig\PaymentData\PaymentMethod;
 use SmashPig\PaymentProviders\Gravy\ReferenceData;
 use SmashPig\Tests\BaseSmashPigUnitTestCase;
 
+/**
+ * @group Gravy
+ */
 class GravyReferenceDataTest extends BaseSmashPigUnitTestCase {
 
 	/**
@@ -87,5 +90,13 @@ class GravyReferenceDataTest extends BaseSmashPigUnitTestCase {
 
 	public function testGetShorthandAccel(): void {
 		$this->assertSame( PaymentMethod::CC, ReferenceData::getShorthandPaymentMethod( 'accel' ) );
+	}
+
+	public function testDecodeStripeTokenApple(): void {
+		$this->assertSame( PaymentMethod::APPLE, ReferenceData::decodePaymentMethod( 'stripetoken', '', 'apple_pay_1234' )[0] );
+	}
+
+	public function testDecodeStripeTokenGoogle(): void {
+		$this->assertSame( PaymentMethod::GOOGLE, ReferenceData::decodePaymentMethod( 'stripetoken', '', 'google_pay_1234' )[0] );
 	}
 }

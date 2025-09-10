@@ -10,6 +10,9 @@ use SmashPig\PaymentProviders\Gravy\PaymentMethod as PaymentSubmethod;
  */
 class ReferenceData {
 
+	protected const STRIPE_TOKEN_APPLE_PAY = 'apple_pay';
+	protected const STRIPE_TOKEN_GOOGLE_PAY = 'google_pay';
+
 	protected static $paymentMethodMapper = [
 		'abitab' => PaymentMethod::CASH,
 		'accel' => PaymentMethod::CC,
@@ -118,7 +121,7 @@ class ReferenceData {
 		'wechat' => '',
 		'webpay' => PaymentMethod::BT,
 		'zippay' => '',
-		'stripetoken' => PaymentMethod::CC,
+		'stripetoken' => PaymentMethod::STRIPETOKEN
 	];
 
 	protected static $cardPaymentSubmethods = [
@@ -186,7 +189,7 @@ class ReferenceData {
 		'pagoefectivo' => PaymentSubmethod::CASH_PAGO_EFECTIVO->value
 	];
 
-	public static function decodePaymentMethod( string $method, ?string $scheme = '' ): array {
+	public static function decodePaymentMethod( string $method, ?string $scheme = '', ?string $label = null ): array {
 		$gravyMethods = self::$paymentMethodMapper;
 		$payment_method = $gravyMethods[$method] ?? '';
 		$payment_submethod = '';
@@ -211,6 +214,23 @@ class ReferenceData {
 				break;
 			case PaymentMethod::CASH:
 				$payment_submethod = self::$cashSubmethods[$method];
+				break;
+			case PaymentMethod::STRIPETOKEN:
+				/**
+				 * Gravy uses the "stripetoken" payment method for migrated Apple Pay and Google Pay token payments.
+				 * In order to distinguish which is used in a transaction, the payment method is being added to the label
+				 * property of the payment_method object. This payment method is only sent in the response for the charge on a migrated
+				 * token
+				 */
+				if ( $label !== null ) {
+					$extracted_method = substr( $label, 0, -5 );
+					if ( $extracted_method === self::STRIPE_TOKEN_APPLE_PAY ) {
+						$payment_method = PaymentMethod::APPLE;
+					} elseif ( $extracted_method === self::STRIPE_TOKEN_GOOGLE_PAY ) {
+						$payment_method = PaymentMethod::GOOGLE;
+					}
+					$payment_submethod = $scheme ? self::$cardPaymentSubmethods[$scheme] : '';
+				}
 				break;
 			default:
 				break;

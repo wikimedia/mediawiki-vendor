@@ -104,6 +104,28 @@ class TransactionDetailsNormalizerTest extends BaseGravyTestCase {
 		);
 	}
 
+	public function testNormalizeStripetokenTransactionDetails(): void {
+		$transactionDetailsNormalizer = new TransactionDetailsNormalizer();
+		$paymentMethod = 'card';
+		$transactionDetails = json_decode( file_get_contents( __DIR__ . '/../Data/stripetoken-transaction-details-response.json' ),
+			true );
+
+		$transactionDetailsResponse = $transactionDetailsNormalizer->normalizeTransactionDetails(
+			$paymentMethod,
+			$transactionDetails
+		);
+
+		$this->assertInstanceOf( PaymentProviderResponse::class,
+			$transactionDetailsResponse );
+		$this->assertSame( FinalStatus::COMPLETE, $transactionDetailsResponse->getStatus() );
+		$this->assertSame( 'capture_succeeded', $transactionDetailsResponse->getRawStatus() );
+		$this->assertSame( 'random-transaction-id', $transactionDetailsResponse->getGatewayTxnId() );
+		$this->assertSame( 'random_payment_service_transaction_id', $transactionDetailsResponse->getBackendProcessorTransactionId() );
+		$this->assertSame( 'apple', $transactionDetailsResponse->getPaymentMethod() );
+		$this->assertSame( 1.00, $transactionDetailsResponse->getAmount() );
+		$this->assertSame( 'USD', $transactionDetailsResponse->getCurrency() );
+	}
+
 	protected function getTransactionDetailsFixture(): mixed {
 		return json_decode( file_get_contents( __DIR__ . '/../Data/transaction-message-body.json' ),
 			true );

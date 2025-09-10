@@ -145,7 +145,14 @@ error-tracker:
       key_expiry_period: 2400
       # Alert suppression period in seconds to prevent duplicate alerts (default: 120 = 2 minutes)
       alert_suppression_period: 120
-
+      # List of error codes to ignore from tracking and alerting
+      ignore_list:
+        # We get this response when a PayPal transaction times out
+        - 'incomplete_buyer_approval'
+        # We get these for non-standard declines. e.g. Insufficient funds & Exceeding daily card limits.
+        # Gravy mentions that we can also get them due to legal reasons (e.g. watch list, embargo, sanctions).
+        # See: https://docs.gr4vy.com/guides/api/error-codes
+        - 'refused_transaction'
 
 mappers:
   cc-request:
