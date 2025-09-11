@@ -143,8 +143,8 @@ error-tracker:
       key_prefix: 'gravy_error_threshold_'
       # Redis key expiry period in seconds (default: 2400 = 40 minutes)
       key_expiry_period: 2400
-      # Alert suppression period in seconds to prevent duplicate alerts (default: 120 = 2 minutes)
-      alert_suppression_period: 120
+      # Alert suppression period in seconds to prevent duplicate alerts (default: 300 = 5 minutes)
+      alert_suppression_period: 300
       # List of error codes to ignore from tracking and alerting
       ignore_list:
         # We get this response when a PayPal transaction times out
@@ -182,6 +182,10 @@ mappers:
   bt-request:
     class: SmashPig\PaymentProviders\Gravy\Mapper\BankPaymentProviderRequestMapper
   bt-response:
+    class: SmashPig\PaymentProviders\Gravy\Mapper\BankPaymentProviderResponseMapper
+  rtbt-request:
+    class: SmashPig\PaymentProviders\Gravy\Mapper\BankPaymentProviderRequestMapper
+  rtbt-response:
     class: SmashPig\PaymentProviders\Gravy\Mapper\BankPaymentProviderResponseMapper
   cash-request:
     class: SmashPig\PaymentProviders\Gravy\Mapper\RedirectPaymentProviderRequestMapper

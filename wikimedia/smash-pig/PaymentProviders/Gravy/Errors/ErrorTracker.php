@@ -14,7 +14,6 @@ use SmashPig\Core\Logging\Logger;
  * within a defined time window. Uses Redis for error counting and storage.
  */
 class ErrorTracker {
-	public const UNKNOWN_ERROR_CODE = 'unknown_error_code';
 	protected bool $enabled;
 	protected int $threshold;
 	protected int $timeWindow;
