@@ -71,12 +71,10 @@ namespace Wikimedia\Parsoid\Wt2Html;
 	}
 
 	private $prevOffset = 0;
-	private $headingIndex = 0;
 	private $hasSOLTransparentAtStart = false;
 
 	public function resetState() {
 		$this->prevOffset = 0;
-		$this->headingIndex = 0;
 		$this->hasSOLTransparentAtStart = false;
 	}
 
@@ -181,6 +179,10 @@ namespace Wikimedia\Parsoid\Wt2Html;
  * ******************************************************** */
 
 start "start" =
+	/* Initialize the headingIndex to 0 at the top of the parse */
+	start_with_headingIndex<&headingIndex=0>
+
+start_with_headingIndex =
 	t:tlb* n:newlineToken* {
 		if ( count( $t ) ) {
 			$ret = TokenizerUtils::flattenIfArray( $t );
@@ -477,6 +479,7 @@ heading =
 		endTPos:POSITION
 		spc:( space / sol_transparent )*
 		&eolf
+		headingIndex:<&headingIndex>
 		{
 			$c = null;
 			$e = null;
@@ -536,8 +539,8 @@ heading =
 			// will however parse as headings in the legacy parser's second pass,
 			// once sol transparent tokens have been stripped.
 			if ( !$this->hasSOLTransparentAtStart && !$hasSOLTransparentAtEnd ) {
-				$this->headingIndex++;
-				$tagDP->getTemp()->headingIndex = $this->headingIndex;
+				$headingIndex++;
+				$tagDP->getTemp()->headingIndex = $headingIndex;
 			}
 
 			$res = [ new TagTk( 'h' . $level, [], $tagDP ) ];
@@ -1768,7 +1771,9 @@ generic_newline_attribute =
 	namePos0:POSITION
 	name:generic_attribute_name
 	namePos1:POSITION
-	vd:(space_or_newline* "=" @generic_att_value?)?
+	space_or_newline*
+	!inline_breaks
+	vd:("=" @generic_att_value?)?
 {
 	// NB: Keep in sync w/ table_attibute
 	$res = null;
@@ -2664,7 +2669,7 @@ POSITION [cache=false] = "" { return $this->endOffset(); }
 // we always emit a valid HTML5 comment.  See the encodeComment helper
 // for further details.
 comment =
-	'<!--' c:$(!"-->" .)* cEnd:$('-->' / eof) {
+	'<!--' c:$([^-]+ / !"-->" .)* cEnd:$('-->' / eof) {
 		$data = WTUtils::encodeComment( $c );
 		$dp = new DataParsoid;
 		$dp->tsr = $this->tsrOffsets();
