@@ -64,7 +64,6 @@ class RequestMapper {
 				'external_identifier' => $buyerEmail,
 				'billing_details' => [
 					'first_name' => $params['first_name'] ?? null,
-					'last_name' => $params['last_name'] ?? null,
 					'email_address' => $buyerEmail,
 					'phone_number' => $params['phone'] ?? null,
 					'address' => [
@@ -78,6 +77,10 @@ class RequestMapper {
 					]
 				]
 			];
+
+			if ( !empty( $params['last_name'] ) ) {
+				$request['buyer']['billing_details']['last_name'] = $params['last_name'];
+			}
 
 			if ( !empty( $params['fiscal_number'] ) ) {
 				$request = $this->addFiscalNumberParams( $params, $request );

@@ -2593,6 +2593,7 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\PaymentProviders\\Gravy\\Maintenance\\TestCreatePaymentSession' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Maintenance/TestCreatePaymentSession.php',
         'SmashPig\\PaymentProviders\\Gravy\\Maintenance\\TestErrorTrackerAlert' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Maintenance/TestErrorTrackerAlert.php',
         'SmashPig\\PaymentProviders\\Gravy\\Maintenance\\TestErrorTrackerConnectivity' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Maintenance/TestErrorTrackerConnectivity.php',
+        'SmashPig\\PaymentProviders\\Gravy\\Maintenance\\TestFraudTransactionEmail' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Maintenance/TestFraudTransactionEmail.php',
         'SmashPig\\PaymentProviders\\Gravy\\Mapper\\ApplePayPaymentProviderRequestMapper' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Mapper/ApplePayPaymentProviderRequestMapper.php',
         'SmashPig\\PaymentProviders\\Gravy\\Mapper\\ApplePayPaymentProviderResponseMapper' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Mapper/ApplePayPaymentProviderResponseMapper.php',
         'SmashPig\\PaymentProviders\\Gravy\\Mapper\\BankPaymentProviderRequestMapper' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Mapper/BankPaymentProviderRequestMapper.php',

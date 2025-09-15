@@ -33,6 +33,7 @@ class GravyListener implements IHttpActionHandler {
 			$validator = new ListenerValidator();
 			$validator->validateWebhookEventHeader( $headers, $this->providerConfiguration );
 			Logger::info( 'Received Gravy webhook notification' );
+			Logger::getTaggedLogger( 'RawData' )->info( $requestValues );
 			$parsed = json_decode( $requestValues, true );
 
 			if ( $parsed ) {

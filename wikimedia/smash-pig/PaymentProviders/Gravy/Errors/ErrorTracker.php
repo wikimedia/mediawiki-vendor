@@ -14,6 +14,9 @@ use SmashPig\Core\Logging\Logger;
  * within a defined time window. Uses Redis for error counting and storage.
  */
 class ErrorTracker {
+	public const GRAVY_FRAUD_LIST_EXPIRY_TIME = 86400;
+	public const SUSPECTED_FRAUD_ERROR_CODE = 'suspected_fraud';
+
 	protected bool $enabled;
 	protected int $threshold;
 	protected int $timeWindow;
@@ -80,14 +83,22 @@ class ErrorTracker {
 		}
 
 		$count = $this->trackError( $error );
+
 		if ( $count > 0 ) {
 			if ( $this->isThresholdExceeded( $count ) && !$this->alertRecentlySent( $error['error_code'] ) ) {
 				ErrorHelper::raiseAlert( $error['error_code'], $count, $this->threshold, $this->timeWindow, $error );
 				$this->markAlertAsSent( $error['error_code'] );
+
+				// Check to see if we also need to send a fraud transaction list to donor relations
+				if ( $this->isFraudAlert( $error['error_code'] ) ) {
+					$fraudTransactionsData = $this->getFraudTransactionDataForTimeSlot( $this->getCurrentTimeSlot() );
+					ErrorHelper::sendFraudTransactionsEmail( $fraudTransactionsData );
+				}
 			}
 			return true;
 		}
 
+		// return false if $count !> 0 as something must have gone wrong
 		return false;
 	}
 
@@ -104,6 +115,9 @@ class ErrorTracker {
 				$this->connection->expire( $cacheKey, $this->keyExpiryPeriod );
 			}
 
+			// Track fraud transaction IDs separately
+			$this->trackFraudTransactionIfApplicable( $error );
+
 			return $currentCount;
 		} catch ( \Exception $ex ) {
 			Logger::warning( 'Failed to track error in Redis', [
@@ -112,6 +126,100 @@ class ErrorTracker {
 			] );
 			return 0;
 		}
+	}
+
+	/**
+	 * Track fraud transaction IDs in a separate Redis list for suspected_fraud errors
+	 * Groups by same time buckets as error counters for relevance
+	 */
+	protected function trackFraudTransactionIfApplicable( array $error ): void {
+		if ( !$this->isFraudAlert( $error['error_code'] ) ) {
+			return;
+		}
+
+		if ( !isset( $error['sample_transaction_id'] ) ) {
+			Logger::warning( 'suspected_fraud error missing transaction_id', [
+				'error' => $error
+			] );
+			return;
+		}
+
+		try {
+			$fraudListKey = $this->generateFraudTransactionListKey();
+
+			// Get the current list length before adding
+			$listLength = $this->connection->llen( $fraudListKey );
+
+			// Add transaction data to list
+			$transactionData = json_encode( [
+				'id' => $error['sample_transaction_id'],
+				'info' => $error['sample_data'] ?? ''
+			], JSON_THROW_ON_ERROR );
+
+			$this->connection->lpush( $fraudListKey, $transactionData );
+
+			// Only set expiration on the first transaction in this time bucket
+			if ( $listLength === 0 ) {
+				$this->connection->expire( $fraudListKey, self::GRAVY_FRAUD_LIST_EXPIRY_TIME );
+			}
+
+			Logger::info( 'Fraud transaction tracked in redis', [
+				'transaction_id' => $error['sample_transaction_id'],
+				'error_code' => $error['error_code'],
+				'time_bucket' => $this->getCurrentTimeSlot()
+			] );
+		} catch ( \Exception $ex ) {
+			Logger::warning( 'Failed to track fraud transaction in Redis', [
+				'transaction_id' => $error['transaction_id'],
+				'exception' => $ex->getMessage()
+			] );
+		}
+	}
+
+	/**
+	 * Get fraud transaction data for a specific time bucket
+	 */
+	protected function getFraudTransactionDataForTimeSlot( int $timeSlot ): array {
+		try {
+			if ( !$this->connection ) {
+				$this->connection = $this->createRedisClient();
+			}
+
+			$fraudListKey = "{$this->keyPrefix}fraud_transactions:{$timeSlot}";
+			$fraudTransactions = [];
+			$serializedTransactions = $this->connection->lrange( $fraudListKey, 0, -1 );
+			foreach ( $serializedTransactions as $data ) {
+				$fraudTransactions[] = json_decode( $data, true, 512, JSON_THROW_ON_ERROR );
+			}
+			return $fraudTransactions;
+		} catch ( \Exception $ex ) {
+			Logger::warning( 'Failed to retrieve fraud transaction IDs from Redis', [
+				'time_slot' => $timeSlot,
+				'exception' => $ex->getMessage()
+			] );
+			return [];
+		}
+	}
+
+	/**
+	 * Updated method to use extracted time slot calculation
+	 */
+	protected function generateRedisErrorKey( string $errorCode ): string {
+		$sanitizedErrorCode = preg_replace( '/\W/', '_', $errorCode );
+		$currentTimeSlotInSeconds = $this->getCurrentTimeSlot();
+		return "{$this->keyPrefix}{$sanitizedErrorCode}:{$currentTimeSlotInSeconds}";
+	}
+
+	protected function generateRedisAlertKey( string $errorCode ): string {
+		return $this->generateRedisErrorKey( $errorCode ) . ':alerted';
+	}
+
+	/**
+	 * Generate Redis key for fraud transaction list using same time bucketing as error counters
+	 */
+	protected function generateFraudTransactionListKey(): string {
+		$currentTimeSlotInSeconds = $this->getCurrentTimeSlot();
+		return "{$this->keyPrefix}fraud_transactions:{$currentTimeSlotInSeconds}";
 	}
 
 	protected function alertRecentlySent( string $errorCode ): bool {
@@ -163,30 +271,21 @@ class ErrorTracker {
 	}
 
 	/**
-	 * Generates a Redis key to track error occurrences based on the error code and the current time window.
-	 * For example, with a 30-minute time window (1800 seconds):
-	 * If the current timestamp is 1623456789, then 1623456789/1800 = 901920.43
-	 * floor() gives us 901920, so all errors within this 30-minute window
-	 * will have the same time slot number in the Redis key
-	 *
-	 * These keys expire automatically so we don't need to clean them up
-	 *
-	 * @param string $errorCode The specific error code to include in the Redis key.
-	 *
-	 * @return string The generated Redis key, which includes the key prefix, error code, and the current time slot.
+	 * Get current time slot (extracted for reuse)
 	 */
-	protected function generateRedisErrorKey( string $errorCode ): string {
-		// Sanitise error code: remove special characters and spaces, keep only alphanumeric and underscore
-		$sanitizedErrorCode = preg_replace( '/\W/', '_', $errorCode );
-		$currentTimeSlotInSeconds = floor( time() / $this->timeWindow );
-		return "{$this->keyPrefix}{$sanitizedErrorCode}:{$currentTimeSlotInSeconds}";
-	}
-
-	protected function generateRedisAlertKey( string $errorCode ): string {
-		return $this->generateRedisErrorKey( $errorCode ) . ':alerted';
+	protected function getCurrentTimeSlot(): int {
+		return (int)floor( time() / $this->timeWindow );
 	}
 
 	protected function isThresholdExceeded( int $count ): bool {
 		return $count >= $this->threshold;
+	}
+
+	/**
+	 * @param string $error_code
+	 * @return bool
+	 */
+	protected function isFraudAlert( string $error_code ): bool {
+		return $error_code === self::SUSPECTED_FRAUD_ERROR_CODE;
 	}
 }

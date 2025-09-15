@@ -2149,6 +2149,7 @@ return array(
     'SmashPig\\PaymentProviders\\Gravy\\Maintenance\\TestCreatePaymentSession' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/Maintenance/TestCreatePaymentSession.php',
     'SmashPig\\PaymentProviders\\Gravy\\Maintenance\\TestErrorTrackerAlert' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/Maintenance/TestErrorTrackerAlert.php',
     'SmashPig\\PaymentProviders\\Gravy\\Maintenance\\TestErrorTrackerConnectivity' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/Maintenance/TestErrorTrackerConnectivity.php',
+    'SmashPig\\PaymentProviders\\Gravy\\Maintenance\\TestFraudTransactionEmail' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/Maintenance/TestFraudTransactionEmail.php',
     'SmashPig\\PaymentProviders\\Gravy\\Mapper\\ApplePayPaymentProviderRequestMapper' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/Mapper/ApplePayPaymentProviderRequestMapper.php',
     'SmashPig\\PaymentProviders\\Gravy\\Mapper\\ApplePayPaymentProviderResponseMapper' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/Mapper/ApplePayPaymentProviderResponseMapper.php',
     'SmashPig\\PaymentProviders\\Gravy\\Mapper\\BankPaymentProviderRequestMapper' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/Mapper/BankPaymentProviderRequestMapper.php',

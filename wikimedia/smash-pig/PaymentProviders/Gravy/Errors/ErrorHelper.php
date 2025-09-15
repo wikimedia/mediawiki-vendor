@@ -3,6 +3,7 @@
 namespace SmashPig\PaymentProviders\Gravy\Errors;
 
 use SmashPig\Core\Logging\Logger;
+use SmashPig\Core\MailHandler;
 use SmashPig\PaymentProviders\Gravy\GravyHelper;
 
 class ErrorHelper {
@@ -117,5 +118,28 @@ class ErrorHelper {
 		}
 
 		return $timeWindowSeconds === 1 ? "1 second" : "{$timeWindowSeconds} seconds";
+	}
+
+	/**
+	 * Send basic fraud email with transaction IDs
+	 *
+	 * @param array $fraudTransactionIds Array of transaction ID strings
+	 * @return bool Success/failure of email sending
+	 */
+	public static function sendFraudTransactionsEmail( array $fraudTransactionIds ): bool {
+		if ( empty( $fraudTransactionIds ) ) {
+			return false;
+		}
+
+		$to = 'fr-tech@wikimedia.org';
+		$from = 'smashpig-failmail@wikimedia.org';
+		$subject = 'ALERT: Gravy Suspected Fraud Transactions List - ' . date( 'Y-m-d H:i' );
+
+		$body = "Suspected fraud transactions (" . count( $fraudTransactionIds ) . ")" . PHP_EOL . PHP_EOL;
+		foreach ( $fraudTransactionIds as $trxn ) {
+			$body .= " - https://wikimedia.gr4vy.app/merchants/default/transactions/{$trxn['id']}/overview" . $trxn['info'] . PHP_EOL;
+		}
+
+		return MailHandler::sendEmail( $to, $subject, $body, $from );
 	}
 }

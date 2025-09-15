@@ -115,6 +115,15 @@ payment-provider:
         validator: "validators/redirect"
         <<: *CACHE
 
+  stripetoken:
+    class: SmashPig\PaymentProviders\Gravy\PaymentProvider
+    constructor-parameters:
+      -
+        request-mapper: "mappers/stripetoken-request"
+        response-mapper: "mappers/stripetoken-response"
+        validator: "validators/default"
+        <<: *CACHE
+
 
 # Setting value to false to mirror production configuration
 capture-from-ipn-listener: false
@@ -195,6 +204,10 @@ mappers:
     class: SmashPig\PaymentProviders\Gravy\Mapper\VenmoPaymentProviderRequestMapper
   venmo-response:
     class: SmashPig\PaymentProviders\Gravy\Mapper\RedirectPaymentProviderResponseMapper
+  stripetoken-request:
+    class: SmashPig\PaymentProviders\Gravy\Mapper\RequestMapper
+  stripetoken-response:
+    class: SmashPig\PaymentProviders\Gravy\Mapper\ResponseMapper
 
 validators:
   cc:
@@ -211,6 +224,8 @@ validators:
     class: SmashPig\PaymentProviders\Gravy\Validators\PaypalPaymentProviderValidator
   venmo:
     class: SmashPig\PaymentProviders\Gravy\Validators\VenmoPaymentProviderValidator
+  default:
+    class: SmashPig\PaymentProviders\Gravy\Validators\PaymentProviderValidator
 
 fraud-filters:
   # Authorization notifications include AVS and CVV result codes.
