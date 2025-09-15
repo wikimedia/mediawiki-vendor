@@ -5473,7 +5473,7 @@ parsoid={
 </p>
 !!end
 
-!!test
+!! test
 4. includeonly in table attributes
 !! wikitext
 {|
@@ -5494,7 +5494,7 @@ parsoid={
 <td>a
 </td></tr>
 </tbody></table>
-!!end
+!! end
 
 ###
 ### Token Stream Patcher tests
@@ -5805,6 +5805,26 @@ parsoid=wt2html,wt2wt
 <tr><td>bar</td></tr>
 </tbody></table>
 !! end
+
+!! test
+5. Non-token gluing scenario across multiple lines and templates
+!! options
+parsoid=wt2html,wt2wt
+!! wikitext
+{|
+{{1x|1=
+{{!}}-
+}}{{1x|{{!}}} }}
+[[Category:Foo]]
+!! html/php
+<table>
+</table>
+!! html/parsoid+integrated
+<table about="#mwt1" typeof="mw:Transclusion" data-mw='{"parts":["{|\n",{"template":{"target":{"wt":"1x","href":"./Template:1x"},"params":{"1":{"wt":"{{!}}-"}},"i":0}},{"template":{"target":{"wt":"1x","href":"./Template:1x"},"params":{"1":{"wt":"{{!}}} "}},"i":1}}]}'>
+</table><span about="#mwt1"> </span>
+<link rel="mw:PageProp/Category" href="./Category:Foo"/>
+!! end
+
 
 ###
 ### Testing parsing of templates where a template arg
@@ -13880,7 +13900,7 @@ RT-ed inter-element separators should be valid separators
 </table>
 !! html/parsoid
 <table>
-<tbody><tr class='mw-empty-elt' data-parsoid='{"startTagSrc":"|-","a":{"[[foo]]":null},"sa":{"[[foo]]":""}}'></tr>
+<tbody class='mw-empty-elt'><tr class='mw-empty-elt' data-parsoid='{"startTagSrc":"|-","a":{"[[foo]]":null},"sa":{"[[foo]]":""}}'></tr>
 </tbody></table>
 !!end
 
@@ -14048,7 +14068,7 @@ Empty TR followed by mixed-ws-comment line should RT correctly
 </table>
 !! html/parsoid
 <table>
-<tbody>
+<tbody class='mw-empty-elt'>
 <tr class='mw-empty-elt'></tr>
  <!--c-->
 <tr class="mw-empty-elt">
