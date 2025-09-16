@@ -28,8 +28,5 @@
       <testsuite name="gr4vy tests">
         <directory>PaymentProviders/Gravy/Tests/phpunit</directory>
       </testsuite>
-      <testsuite name="Fundraise-up tests">
-        <directory>PaymentProviders/Fundraiseup/Tests/phpunit</directory>
-      </testsuite>
     </testsuites>
 </phpunit>

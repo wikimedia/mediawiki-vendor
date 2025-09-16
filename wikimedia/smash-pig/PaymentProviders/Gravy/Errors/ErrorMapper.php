@@ -17,6 +17,7 @@ class ErrorMapper {
 		'missing_redirect_url' => ErrorCode::ACCOUNT_MISCONFIGURATION, // The service is configured in an unexpected state.
 		'flow_decline' => ErrorCode::UNKNOWN, // An unknown error occurred.
 		'all_attempts_skipped	' => ErrorCode::UNKNOWN, // The resource could not be found by the service.
+		'cancelled_buyer_approval' => ErrorCode::CANCELLED_BY_DONOR
 	];
 
 	/**
@@ -93,6 +94,17 @@ class ErrorMapper {
 		'504' => ErrorCode::SERVER_TIMEOUT, // Gateway timeout
 	];
 
+	/**
+	 * @var array
+	 * Codes that indicate suspected fraud;
+	 * Source: https://docs.gr4vy.com/guides/api/resources/transactions/error-codes#connector-declines
+	 */
+	public static $suspectedFraudCodes = [
+		'canceled_payment_method', // The payment method reported lost, stolen, or otherwise canceled..
+		'refused_transaction', // The transaction was refused due to legal reasons (e.g. watch list, embargo, sanctions).
+		'suspected_fraud', // The service flagged the transaction as suspected fraud.
+	];
+
 	public static function getError( string $code ) {
 		if ( isset( self::$errorCodes[$code] ) ) {
 			return self::$errorCodes[$code];
@@ -103,5 +115,9 @@ class ErrorMapper {
 		}
 
 		return ErrorCode::UNKNOWN;
+	}
+
+	public static function isSuspectedFraud( string $code ) {
+		return in_array( $code, self::$suspectedFraudCodes );
 	}
 }

@@ -15,6 +15,7 @@ class RefundAction extends GravyAction {
 
 	private const ERROR_CODE_UNEXPECTED_STATE = 'unexpected_state';
 	private const RAW_RESPONSE_CODE_CAPTURE_FULLY_REFUNDED = 'CAPTURE_FULLY_REFUNDED';
+	const ERROR_CODE_REFUND_ALREADY_SATISFIED = 'refund_already_satisfied';
 
 	public function execute( ListenerMessage $msg ): bool {
 		$tl = new TaggedLogger( 'RefundAction' );
@@ -62,9 +63,10 @@ class RefundAction extends GravyAction {
 
 	/**
 	 * Check if the error indicates the transaction is already fully refunded
+	 * So far we've seen both 'unexpected_state' and 'refund_already_satisfied' for this scenario.
 	 */
 	private function isAlreadyFullyRefundedError( ?string $errorCode, ?string $rawResponseCode ): bool {
-		return $errorCode === self::ERROR_CODE_UNEXPECTED_STATE
-			&& $rawResponseCode === self::RAW_RESPONSE_CODE_CAPTURE_FULLY_REFUNDED;
+		return ( $errorCode === self::ERROR_CODE_UNEXPECTED_STATE || $errorCode === self::ERROR_CODE_REFUND_ALREADY_SATISFIED )
+		&& $rawResponseCode === self::RAW_RESPONSE_CODE_CAPTURE_FULLY_REFUNDED;
 	}
 }

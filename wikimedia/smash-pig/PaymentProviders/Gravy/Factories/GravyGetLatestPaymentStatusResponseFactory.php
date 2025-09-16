@@ -28,6 +28,7 @@ class GravyGetLatestPaymentStatusResponseFactory extends GravyCreatePaymentRespo
 		self::setDonorDetails( $paymentResponse, $normalizedResponse );
 		self::setBackendProcessorAndId( $paymentResponse, $normalizedResponse );
 		self::setPaymentOrchestrationReconciliationId( $paymentResponse, $normalizedResponse );
+		self::setSuspectedFraud( $paymentResponse, $normalizedResponse );
 	}
 
 	/**
@@ -38,6 +39,19 @@ class GravyGetLatestPaymentStatusResponseFactory extends GravyCreatePaymentRespo
 	protected static function setOrderId( PaymentProviderResponse $paymentResponse, array $normalizedResponse ): void {
 		if ( !empty( $normalizedResponse['order_id'] ) ) {
 			$paymentResponse->setOrderId( $normalizedResponse['order_id'] );
+		}
+	}
+
+	/**
+	 * @param PaymentProviderExtendedResponse $paymentResponse
+	 * @param array $normalizedResponse
+	 * @return void
+	 */
+	protected static function setSuspectedFraud(
+		PaymentProviderExtendedResponse $paymentResponse, array $normalizedResponse
+	): void {
+		if ( !empty( $normalizedResponse['is_suspected_fraud'] ) ) {
+			$paymentResponse->setSuspectedFraud( $normalizedResponse['is_suspected_fraud'] );
 		}
 	}
 }

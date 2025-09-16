@@ -25,6 +25,9 @@ class PaymentStatusNormalizer implements StatusNormalizer {
 				break;
 			case 'authorization_declined':
 			case 'authorization_failed':
+			case 'failed':
+			case 'declined':
+			case 'cancelled':
 				$normalizedStatus = FinalStatus::FAILED;
 				break;
 			case 'authorization_voided':
@@ -34,8 +37,6 @@ class PaymentStatusNormalizer implements StatusNormalizer {
 			case 'succeeded':
 				$normalizedStatus = FinalStatus::COMPLETE;
 				break;
-			case 'failed':
-				return FinalStatus::FAILED;
 			default:
 				throw new \UnexpectedValueException( "Unknown status $status" );
 		}

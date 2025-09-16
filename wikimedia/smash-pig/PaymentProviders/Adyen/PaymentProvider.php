@@ -161,6 +161,7 @@ abstract class PaymentProvider implements
 			$this->mapAdditionalData( $rawResponse['additionalData'], $response );
 		}
 		$this->mapGatewayTxnIdAndErrors( $response, $rawResponse );
+		$this->mapSuspectedFraud( $response, $rawResponse );
 		return $response;
 	}
 
@@ -658,5 +659,22 @@ abstract class PaymentProvider implements
 
 		$this->mapGatewayTxnIdAndErrors( $response, $rawResponse );
 		return $response;
+	}
+
+	protected function mapSuspectedFraud( PaymentProviderExtendedResponse $response, array $rawResponse ) {
+		if ( isset( $rawResponse['refusalReason'] ) ) {
+			if ( in_array( $rawResponse['refusalReason'], [
+				'Acquirer Fraud',
+				'Blocked Card',
+				'FRAUD',
+				'FRAUD-CANCELLED',
+				'Referral',
+				'Restricted Card',
+				'Revocation Of Auth',
+				'Issuer Suspected Fraud',
+			] ) ) {
+				$response->setSuspectedFraud( true );
+			}
+		}
 	}
 }

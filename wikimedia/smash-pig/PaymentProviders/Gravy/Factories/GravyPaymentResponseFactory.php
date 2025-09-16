@@ -33,7 +33,7 @@ abstract class GravyPaymentResponseFactory {
 			$response['description'] ??= 'Unknown error';
 			$response['code'] ??= ErrorCode::UNKNOWN;
 
-			static::addPaymentFailureError( $paymentProviderResponse, $response['message'] . ':' . $response['description'], $response['code'] );
+			static::addPaymentFailureError( $paymentProviderResponse, $response['message'] . ':' . $response['description'], $response['code'], $response );
 			return $paymentProviderResponse;
 		}
 		$paymentProviderResponse->setRawStatus( $response['raw_status'] ?? '' );
@@ -84,16 +84,17 @@ abstract class GravyPaymentResponseFactory {
 	 * @return bool
 	 */
 	protected static function isFailedTransaction( string $status ): bool {
-		return $status === FinalStatus::FAILED;
+		return $status === FinalStatus::FAILED || $status === FinalStatus::CANCELLED;
 	}
 
 	/**
 	 * @param PaymentProviderResponse $paymentResponse
 	 * @param string|null $statusDetail
-	 * @param string|null $statusCode
+	 * @param string|null $errorCode
+	 * @param array $normalizedResponse
 	 * @return void
 	 */
-	protected static function addPaymentFailureError( PaymentProviderResponse $paymentResponse, ?string $statusDetail = 'Unknown error', ?string $errorCode = null ): void {
+	protected static function addPaymentFailureError( PaymentProviderResponse $paymentResponse, ?string $statusDetail = 'Unknown error', ?string $errorCode = null, array $normalizedResponse = [] ): void {
 		$paymentResponse->setSuccessful( false );
 		$paymentResponse->addErrors(
 			new PaymentError(

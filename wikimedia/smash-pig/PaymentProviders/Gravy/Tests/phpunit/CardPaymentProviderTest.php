@@ -217,6 +217,22 @@ class CardPaymentProviderTest extends BaseGravyTestCase {
 		$this->assertEquals( ErrorMapper::$errorCodes[$error_code], $errors[0]->getErrorCode() );
 	}
 
+	public function testSuspectedFraud() {
+		$fraudResponseBody = json_decode( file_get_contents( __DIR__ . '/../Data/create-transaction-fraud.json' ), true );
+		$params = $this->getCreateTrxnParams( 'random-session-id' );
+
+		$this->mockApi->expects( $this->once() )
+			->method( 'createPayment' )
+			->willReturn( $fraudResponseBody );
+
+		$response = $this->provider->createPayment( $params );
+
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\CreatePaymentResponse',
+			$response );
+		$this->assertFalse( $response->isSuccessful() );
+		$this->assertTrue( $response->isSuspectedFraud() );
+	}
+
 	public function testValidationErrorCreatePaymentBeforeApiCall() {
 		$params = [
 			'gateway_session_id' => 'random-session-id'

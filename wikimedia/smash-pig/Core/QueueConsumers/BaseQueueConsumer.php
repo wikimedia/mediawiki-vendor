@@ -145,6 +145,8 @@ abstract class BaseQueueConsumer {
 	 */
 	public function processMessageWithErrorHandling( array $message ) {
 		try {
+			// in case of memory exceed, log the message before processing
+			Logger::info( "Message: " . json_encode( $message ) );
 			$this->processMessage( $message );
 		} catch ( Exception $ex ) {
 			$this->handleError( $message, $ex );

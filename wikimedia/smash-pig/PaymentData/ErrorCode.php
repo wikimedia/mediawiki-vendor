@@ -46,4 +46,6 @@ class ErrorCode {
 	const INVALID_REQUEST = 1000017;
 	/** @var int Duplicate records */
 	const DUPLICATE = 1000018;
+	/** @var int Donor cancelled attemp */
+	const CANCELLED_BY_DONOR = 1000019;
 }

@@ -14,7 +14,7 @@ use SmashPig\Core\Logging\Logger;
  * within a defined time window. Uses Redis for error counting and storage.
  */
 class ErrorTracker {
-	public const GRAVY_FRAUD_LIST_EXPIRY_TIME = 86400;
+	public const GRAVY_FRAUD_LIST_EXPIRY_TIME = 3600;
 	public const SUSPECTED_FRAUD_ERROR_CODE = 'suspected_fraud';
 
 	protected bool $enabled;

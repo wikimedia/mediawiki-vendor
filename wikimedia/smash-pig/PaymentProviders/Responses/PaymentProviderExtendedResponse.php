@@ -104,6 +104,11 @@ class PaymentProviderExtendedResponse extends PaymentProviderResponse {
 	protected ?string $paymentOrchestratorReconciliationId = null;
 
 	/**
+	 * @var bool True when created payment has been flagged as suspected fraud by the payment processor
+	 */
+	protected bool $isSuspectedFraud = false;
+
+	/**
 	 * Determines whether the payment is in a status that requires further
 	 * action from the merchant to push through. Generally this means a card
 	 * payment has been authorized but not yet captured.
@@ -309,4 +314,12 @@ class PaymentProviderExtendedResponse extends PaymentProviderResponse {
 		return $this;
 	}
 
+	public function isSuspectedFraud(): bool {
+		return $this->isSuspectedFraud;
+	}
+
+	public function setSuspectedFraud( bool $suspectedFraud ): static {
+		$this->isSuspectedFraud = $suspectedFraud;
+		return $this;
+	}
 }

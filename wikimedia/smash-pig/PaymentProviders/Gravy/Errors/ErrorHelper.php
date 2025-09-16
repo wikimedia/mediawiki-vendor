@@ -2,6 +2,7 @@
 
 namespace SmashPig\PaymentProviders\Gravy\Errors;
 
+use SmashPig\Core\Context;
 use SmashPig\Core\Logging\Logger;
 use SmashPig\Core\MailHandler;
 use SmashPig\PaymentProviders\Gravy\GravyHelper;
@@ -131,10 +132,10 @@ class ErrorHelper {
 			return false;
 		}
 
-		$to = 'fr-tech@wikimedia.org';
-		$from = 'smashpig-failmail@wikimedia.org';
+		$config = Context::get()->getProviderConfiguration();
+		$to = $config->val( 'notifications/fraud-alerts/to' );
+		$from = $config->val( 'email/from-address' );
 		$subject = 'ALERT: Gravy Suspected Fraud Transactions List - ' . date( 'Y-m-d H:i' );
-
 		$body = "Suspected fraud transactions (" . count( $fraudTransactionIds ) . ")" . PHP_EOL . PHP_EOL;
 		foreach ( $fraudTransactionIds as $trxn ) {
 			$body .= " - https://wikimedia.gr4vy.app/merchants/default/transactions/{$trxn['id']}/overview" . $trxn['info'] . PHP_EOL;

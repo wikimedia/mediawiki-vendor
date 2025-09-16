@@ -30,6 +30,7 @@ class GravyCreatePaymentResponseFactory extends GravyPaymentResponseFactory {
 		self::setDonorDetails( $paymentResponse, $normalizedResponse );
 		self::setBackendProcessorAndId( $paymentResponse, $normalizedResponse );
 		self::setPaymentOrchestrationReconciliationId( $paymentResponse, $normalizedResponse );
+		self::setSuspectedFraud( $paymentResponse, $normalizedResponse );
 	}
 
 	/**
@@ -99,6 +100,26 @@ class GravyCreatePaymentResponseFactory extends GravyPaymentResponseFactory {
 
 	protected static function setRiskScores( PaymentProviderResponse $paymentResponse, array $normalizedResponse ) {
 		$paymentResponse->setRiskScores( $normalizedResponse['risk_scores'] );
+	}
+
+	protected static function setSuspectedFraud( CreatePaymentResponse $paymentResponse, array $normalizedResponse ): void {
+		if ( !empty( $normalizedResponse['is_suspected_fraud'] ) ) {
+			$paymentResponse->setSuspectedFraud( $normalizedResponse['is_suspected_fraud'] );
+		}
+	}
+
+	/**
+	 * @param PaymentProviderResponse $paymentResponse
+	 * @param string|null $statusDetail
+	 * @param string|null $errorCode
+	 * @param array $normalizedResponse
+	 * @return void
+	 */
+	protected static function addPaymentFailureError( PaymentProviderResponse $paymentResponse, ?string $statusDetail = 'Unknown error', ?string $errorCode = null, array $normalizedResponse = [] ): void {
+		parent::addPaymentFailureError( $paymentResponse, $statusDetail, $errorCode, $normalizedResponse );
+		if ( !empty( $normalizedResponse['is_suspected_fraud'] ) ) {
+			$paymentResponse->setSuspectedFraud( true );
+		}
 	}
 
 }

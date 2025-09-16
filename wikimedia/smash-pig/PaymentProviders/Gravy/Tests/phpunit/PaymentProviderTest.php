@@ -2,6 +2,7 @@
 
 namespace SmashPig\PaymentProviders\Gravy\Tests\phpunit;
 
+use SmashPig\PaymentData\ErrorCode;
 use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentProviders\Gravy\PaymentProvider;
 use SmashPig\PaymentProviders\Gravy\Tests\BaseGravyTestCase;
@@ -150,6 +151,27 @@ class PaymentProviderTest extends BaseGravyTestCase {
 		$this->assertEquals( $responseBody['payment_service_transaction_id'], $response->getBackendProcessorTransactionId() );
 
 		$this->assertTrue( $response->isSuccessful() );
+	}
+
+	public function testGetLatestPaymentStatusCancelledApproval(): void {
+		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/buyer-cancel-approval-from-redirect.json' ), true );
+		$params = [
+			'gateway_txn_id' => 'random_txn_id'
+		];
+
+		$this->mockApi->expects( $this->once() )
+			->method( 'getTransaction' )
+			->with( $params )
+			->willReturn( $responseBody );
+
+		$response = $this->provider->getLatestPaymentStatus( $params );
+
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\PaymentProviderExtendedResponse',
+			$response );
+
+		$this->assertFalse( $response->isSuccessful() );
+		$this->assertSame( ErrorCode::CANCELLED_BY_DONOR, $response->getNormalizedResponse()['code'] );
+		$this->assertSame( FinalStatus::CANCELLED, $response->getStatus() );
 	}
 
 	public function testValidationErrorRefundBeforeApiCall() {
