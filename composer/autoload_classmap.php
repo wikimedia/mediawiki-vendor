@@ -1871,6 +1871,7 @@ return array(
     'SmashPig\\Core\\DataStores\\QueueWrapper' => $vendorDir . '/wikimedia/smash-pig/Core/DataStores/QueueWrapper.php',
     'SmashPig\\Core\\DataStores\\SmashPigDatabase' => $vendorDir . '/wikimedia/smash-pig/Core/DataStores/SmashPigDatabase.php',
     'SmashPig\\Core\\GlobalConfiguration' => $vendorDir . '/wikimedia/smash-pig/Core/GlobalConfiguration.php',
+    'SmashPig\\Core\\Helpers\\Base62Helper' => $vendorDir . '/wikimedia/smash-pig/Core/Helpers/Base62Helper.php',
     'SmashPig\\Core\\Helpers\\CurrencyRoundingHelper' => $vendorDir . '/wikimedia/smash-pig/Core/Helpers/CurrencyRoundingHelper.php',
     'SmashPig\\Core\\Helpers\\UniqueId' => $vendorDir . '/wikimedia/smash-pig/Core/Helpers/UniqueId.php',
     'SmashPig\\Core\\Http\\CurlDebugLogFilter' => $vendorDir . '/wikimedia/smash-pig/Core/Http/CurlDebugLogFilter.php',
@@ -2328,6 +2329,7 @@ return array(
     'SmashPig\\Tests\\ConfigurationTest' => $vendorDir . '/wikimedia/smash-pig/Tests/ConfigurationTest.php',
     'SmashPig\\Tests\\DamagedDatabaseTest' => $vendorDir . '/wikimedia/smash-pig/Tests/DamagedDatabaseTest.php',
     'SmashPig\\Tests\\FileDumperTest' => $vendorDir . '/wikimedia/smash-pig/Tests/FileDumperTest.php',
+    'SmashPig\\Tests\\Helpers\\Base62HelperTest' => $vendorDir . '/wikimedia/smash-pig/Tests/Helpers/Base62HelperTest.php',
     'SmashPig\\Tests\\Helpers\\CurrencyRoundingHelperTest' => $vendorDir . '/wikimedia/smash-pig/Tests/Helpers/CurrencyRoundingHelperTest.php',
     'SmashPig\\Tests\\LogContextHandlerTest' => $vendorDir . '/wikimedia/smash-pig/Tests/LogContextHandlerTest.php',
     'SmashPig\\Tests\\MapperTest' => $vendorDir . '/wikimedia/smash-pig/Tests/MapperTest.php',
@@ -3800,6 +3802,4 @@ return array(
     'Wikimedia\\Zest\\ZestInst' => $vendorDir . '/wikimedia/zest-css/src/ZestInst.php',
     'WmfFramework' => $baseDir . '/extensions/DonationInterface/gateway_common/WmfFramework.php',
     'lessc' => $vendorDir . '/wikimedia/less.php/lessc.inc.php',
-    'smashpig\\PaymentProviders\\ICancelAutoRescueProvider' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/ICancelAutoRescueProvider.php',
-    'smashpig\\PaymentProviders\\IDeleteRecurringPaymentTokenProvider' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/IDeleteRecurringPaymentTokenProvider.php',
 );

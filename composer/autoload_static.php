@@ -210,13 +210,13 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'Wikimedia\\' => 
         array (
-            0 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
-            1 => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src',
-            2 => __DIR__ . '/..' . '/wikimedia/running-stat/src',
-            3 => __DIR__ . '/..' . '/wikimedia/relpath/src',
-            4 => __DIR__ . '/..' . '/wikimedia/php-session-serializer/src',
-            5 => __DIR__ . '/..' . '/wikimedia/ip-utils/src',
-            6 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
+            0 => __DIR__ . '/..' . '/wikimedia/ip-utils/src',
+            1 => __DIR__ . '/..' . '/wikimedia/php-session-serializer/src',
+            2 => __DIR__ . '/..' . '/wikimedia/relpath/src',
+            3 => __DIR__ . '/..' . '/wikimedia/running-stat/src',
+            4 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
+            5 => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src',
+            6 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
         ),
         'WhichBrowser\\' => 
         array (
@@ -413,8 +413,8 @@ class ComposerStaticInit_mediawiki_vendor
         array (
             'Mail' => 
             array (
-                0 => __DIR__ . '/..' . '/pear/mail_mime',
-                1 => __DIR__ . '/..' . '/pear/mail',
+                0 => __DIR__ . '/..' . '/pear/mail',
+                1 => __DIR__ . '/..' . '/pear/mail_mime',
             ),
         ),
         'L' => 
@@ -2315,6 +2315,7 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\Core\\DataStores\\QueueWrapper' => __DIR__ . '/..' . '/wikimedia/smash-pig/Core/DataStores/QueueWrapper.php',
         'SmashPig\\Core\\DataStores\\SmashPigDatabase' => __DIR__ . '/..' . '/wikimedia/smash-pig/Core/DataStores/SmashPigDatabase.php',
         'SmashPig\\Core\\GlobalConfiguration' => __DIR__ . '/..' . '/wikimedia/smash-pig/Core/GlobalConfiguration.php',
+        'SmashPig\\Core\\Helpers\\Base62Helper' => __DIR__ . '/..' . '/wikimedia/smash-pig/Core/Helpers/Base62Helper.php',
         'SmashPig\\Core\\Helpers\\CurrencyRoundingHelper' => __DIR__ . '/..' . '/wikimedia/smash-pig/Core/Helpers/CurrencyRoundingHelper.php',
         'SmashPig\\Core\\Helpers\\UniqueId' => __DIR__ . '/..' . '/wikimedia/smash-pig/Core/Helpers/UniqueId.php',
         'SmashPig\\Core\\Http\\CurlDebugLogFilter' => __DIR__ . '/..' . '/wikimedia/smash-pig/Core/Http/CurlDebugLogFilter.php',
@@ -2772,6 +2773,7 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\Tests\\ConfigurationTest' => __DIR__ . '/..' . '/wikimedia/smash-pig/Tests/ConfigurationTest.php',
         'SmashPig\\Tests\\DamagedDatabaseTest' => __DIR__ . '/..' . '/wikimedia/smash-pig/Tests/DamagedDatabaseTest.php',
         'SmashPig\\Tests\\FileDumperTest' => __DIR__ . '/..' . '/wikimedia/smash-pig/Tests/FileDumperTest.php',
+        'SmashPig\\Tests\\Helpers\\Base62HelperTest' => __DIR__ . '/..' . '/wikimedia/smash-pig/Tests/Helpers/Base62HelperTest.php',
         'SmashPig\\Tests\\Helpers\\CurrencyRoundingHelperTest' => __DIR__ . '/..' . '/wikimedia/smash-pig/Tests/Helpers/CurrencyRoundingHelperTest.php',
         'SmashPig\\Tests\\LogContextHandlerTest' => __DIR__ . '/..' . '/wikimedia/smash-pig/Tests/LogContextHandlerTest.php',
         'SmashPig\\Tests\\MapperTest' => __DIR__ . '/..' . '/wikimedia/smash-pig/Tests/MapperTest.php',
@@ -4244,8 +4246,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Zest\\ZestInst' => __DIR__ . '/..' . '/wikimedia/zest-css/src/ZestInst.php',
         'WmfFramework' => __DIR__ . '/../..' . '/extensions/DonationInterface/gateway_common/WmfFramework.php',
         'lessc' => __DIR__ . '/..' . '/wikimedia/less.php/lessc.inc.php',
-        'smashpig\\PaymentProviders\\ICancelAutoRescueProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/ICancelAutoRescueProvider.php',
-        'smashpig\\PaymentProviders\\IDeleteRecurringPaymentTokenProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/IDeleteRecurringPaymentTokenProvider.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

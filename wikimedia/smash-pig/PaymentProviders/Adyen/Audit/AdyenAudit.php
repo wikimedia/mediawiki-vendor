@@ -144,6 +144,15 @@ abstract class AdyenAudit implements AuditParser {
 		$this->fileData[] = $msg;
 	}
 
+	public function getGravyGatewayTransactionId( array $row ): ?string {
+		$reference = $row['Merchant Reference'];
+		if ( str_contains( $reference, '.' ) ) {
+			// This would be unexpected for gravy transactions....
+			return null;
+		}
+		return \SmashPig\Core\Helpers\Base62Helper::toUuid( $reference );
+	}
+
 	/**
 	 * these column names are shared between SettlementDetail and PaymentsAccounting reports
 	 */
