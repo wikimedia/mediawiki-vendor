@@ -29,11 +29,6 @@ class AdyenSettlementDetailReport extends AdyenAudit {
 	}
 
 	protected function parseDonation( array $row, array $msg ): array {
-		if ( $this->isOrchestratorMerchantReference( $row ) ) {
-			$msg['gateway_txn_id'] = $this->getGravyGatewayTransactionId( $row );
-		} else {
-			$msg['gateway_txn_id'] = $row['Psp Reference'];
-		}
 		// T306944
 		// We were saving the Capture ID for 2+ recurrings in civi which for settled payments is in the
 		// Modification reference. Adding this lets us match donations until the data is cleaned up

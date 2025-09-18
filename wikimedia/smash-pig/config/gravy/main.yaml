@@ -164,6 +164,10 @@ error-tracker:
         # Gravy mentions that we can also get them due to legal reasons (e.g. watch list, embargo, sanctions).
         # See: https://docs.gr4vy.com/guides/api/error-codes
         - 'refused_transaction'
+        # We get this when the cvv does not match
+        - 'incorrect_cvv'
+        # We get this when the card does not have enough funds
+        - 'insufficient_funds'
 
 notifications:
   fraud-alerts:

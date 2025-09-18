@@ -117,9 +117,8 @@ abstract class AdyenAudit implements AuditParser {
 
 		$msg = $this->setCommonValues( $row );
 		if ( $this->isOrchestratorMerchantReference( $row ) ) {
-			$msg['backend_processor_txn_id'] = $msg['gateway_txn_id'];
+			$msg['backend_processor_txn_id'] = $row['Psp Reference'];
 			$msg['backend_processor'] = 'adyen';
-			$msg['gateway_txn_id'] = null;
 			$msg['payment_orchestrator_reconciliation_id'] = $merchantReference;
 			$msg['contribution_tracking_id'] = null;
 		}
@@ -153,6 +152,14 @@ abstract class AdyenAudit implements AuditParser {
 		return \SmashPig\Core\Helpers\Base62Helper::toUuid( $reference );
 	}
 
+	protected function getGatewayTransactionId( array $row ): ?string {
+		if ( $this->isOrchestratorMerchantReference( $row ) ) {
+			return $this->getGravyGatewayTransactionId( $row );
+		} else {
+			return $row['Psp Reference'];
+		}
+	}
+
 	/**
 	 * these column names are shared between SettlementDetail and PaymentsAccounting reports
 	 */
@@ -162,7 +169,7 @@ abstract class AdyenAudit implements AuditParser {
 			'audit_file_gateway' => 'adyen',
 			'gateway_account' => $row['Merchant Account'],
 			'invoice_id' => $row['Merchant Reference'],
-			'gateway_txn_id' => $row['Psp Reference'],
+			'gateway_txn_id' => $this->getGatewayTransactionId( $row ),
 			'settlement_batch_reference' => $row['Batch Number'] ?? null,
 			'exchange_rate' => $row['Exchange Rate']
 		];
