@@ -34,8 +34,13 @@ Adding or updating libraries
    composer.json file.
 3. Run `composer update --no-dev` to download files and update the autoloader.
 4. Add all the new dependencies that got installed to composer.json as well,
-   so that everything has their version pinned. (You can look at the changes
-   in composer.lock or composer/installed.json to see what they are.)
+   so that everything has their version pinned. You can look at the changes
+   in composer.lock or composer/installed.json to see what they are, e.g. with
+   ```
+   git diff \
+       <(git show @{u}:composer/installed.json | jq --raw-output '.packages[] | "\(.name): \(.version)"') \
+       <(jq --raw-output '.packages[] | "\(.name): \(.version)"' composer/installed.json)
+   ```
 5. In some cases, the libraries might include not needed files (e.g. test files,
    project files, etc). If you cannot exclude them from library's archive
    (e.g. by `export-ignore`ing unwanted files in library's `.gitattributes`
