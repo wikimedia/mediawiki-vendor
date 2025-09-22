@@ -18,7 +18,7 @@ class MetricsClient implements LoggerAwareInterface {
 	 *
 	 * @var string
 	 */
-	public const BASE_SCHEMA = '/analytics/product_metrics/web/base/1.2.0';
+	public const BASE_SCHEMA = '/analytics/product_metrics/web/base/1.4.3';
 
 	/** @var EventSubmitter */
 	private $eventSubmitter;
@@ -103,7 +103,7 @@ class MetricsClient implements LoggerAwareInterface {
 			$streamConfig = $this->streamConfigFactory->getStreamConfig( $streamName );
 
 			$event = $this->contextController->addRequestedValues( $event, $streamConfig );
-		} catch ( StreamConfigException $e ) {
+		} catch ( StreamConfigException ) {
 			return;
 		}
 

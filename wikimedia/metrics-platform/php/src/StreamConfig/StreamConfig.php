@@ -9,9 +9,9 @@ class StreamConfig {
 	 * @see https://wikitech.wikimedia.org/wiki/Metrics_Platform/Contextual_attributes
 	 */
 	public const CONTEXTUAL_ATTRIBUTES = [
-		'agent_app_install_id',
 		'agent_client_platform',
 		'agent_client_platform_family',
+		'agent_ua_string',
 
 		'page_id',
 		'page_title',

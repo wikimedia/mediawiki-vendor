@@ -5,7 +5,6 @@
 		"context_attribute": {
 			"type": "string",
 			"enum": [
-				"agent_app_install_id",
 				"agent_client_platform",
 				"agent_client_platform_family",
 
@@ -154,9 +153,6 @@
 			"additionalProperties": false,
 			"$comment": "TODO: Simplify \"properties\" once \"propertyNames\" support lands in justinrainbow/json-schema (see https://github.com/justinrainbow/json-schema/issues/573).",
 			"properties": {
-				"agent_app_install_id": {
-					"$ref": "#/$defs/curation_rules"
-				},
 				"agent_client_platform": {
 					"$ref": "#/$defs/curation_rules"
 				},
