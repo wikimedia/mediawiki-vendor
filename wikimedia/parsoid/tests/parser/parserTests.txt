@@ -5668,6 +5668,185 @@ Orphaned table row wikitext with templated table for an attribute should not dup
 </span>
 !! end
 
+!! test
+1. Support token gluing for <tr> tags
+!! options
+parsoid=wt2html,wt2wt
+!! wikitext
+{|
+{{1x|1=
+{{!}}- title='test' <div>x</div> boo}} class="foo"
+|bar
+|}
+!! html/php
+<table>
+
+<tbody><tr title="test" class="foo">
+<td>bar
+</td></tr></tbody></table>
+!! html/parsoid+integrated
+<table>
+<tbody about="#mwt1" typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"1x","href":"./Template:1x"},"params":{"1":{"wt":"{{!}}- title=&apos;test&apos; &lt;div>x&lt;/div> boo"}},"i":0}}," class=\"foo\"\n|bar\n"]}'><tr title="test" class="foo">
+<td>bar</td></tr>
+</tbody></table>
+!! end
+
+!! test
+2. Support token gluing for <tr> tags in the present of extension tags
+!! options
+parsoid=wt2html,wt2wt
+!! wikitext
+{{1x|1=
+{{{!}}
+{{!}}-}}<tag>foo</tag> class='foo' {{1x|1=title='test'}} id='moo' <!--comment-->
+|bar
+|}
+!! html/php
+<table>
+
+<tbody><tr class="foo" title="test" id="moo">
+<td>bar
+</td></tr></tbody></table>
+!! html/parsoid+integrated
+<table about="#mwt1" typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"1x","href":"./Template:1x"},"params":{"1":{"wt":"{{{!}}\n{{!}}-"}},"i":0}},"&lt;tag>foo&lt;/tag> class=&apos;foo&apos; {{1x|1=title=&apos;test&apos;}} id=&apos;moo&apos; &lt;!--comment-->\n|bar\n|}"]}'>
+<tbody><tr class="foo" title="test" id="moo"><!--comment-->
+<td>bar</td></tr>
+</tbody></table>
+!! end
+
+!! test
+3. Unsupported token gluing scenario across an unclosed template
+!! options
+parsoid=wt2html,wt2wt
+!! wikitext
+{|
+{{1x|1=
+{{!}}- title='test' <div>x</div> boo}} {{1x|1=class='foo'
+{{!}}a
+{{!}}-
+}}
+|bar
+|}
+!! html/php
+<table>
+
+<tbody><tr title="test" class="foo">
+<td>a
+</td></tr>
+<tr>
+<td>bar
+</td></tr></tbody></table>
+!! html/parsoid+integrated
+<p about="#mwt1" typeof="mw:Transclusion" data-mw='{"parts":["{|\n",{"template":{"target":{"wt":"1x","href":"./Template:1x"},"params":{"1":{"wt":"{{!}}- title=&apos;test&apos; &lt;div>x&lt;/div> boo"}},"i":0}}," ",{"template":{"target":{"wt":"1x","href":"./Template:1x"},"params":{"1":{"wt":"class=&apos;foo&apos;\n{{!}}a\n{{!}}-"}},"i":1}},"\n|bar\n|}"]}'>class='foo'</p>
+<table about="#mwt1">
+<tbody><tr title="test">
+<td>a</td></tr>
+<tr><td>bar</td></tr>
+</tbody></table>
+!! end
+
+!! test
+4. Non-token gluing scenario across an unclosed template should be handled properly
+!! options
+parsoid=wt2html,wt2wt
+!! wikitext
+{|
+{{1x|1=
+{{!}}- title='test'
+{{!}}a
+{{!}}-
+}}
+|bar
+|}
+!! html/php
+<table>
+
+<tbody><tr title="test">
+<td>a
+</td></tr>
+<tr>
+<td>bar
+</td></tr></tbody></table>
+!! html/parsoid+integrated
+<table>
+<tbody about="#mwt1" typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"1x","href":"./Template:1x"},"params":{"1":{"wt":"{{!}}- title=&apos;test&apos;\n{{!}}a\n{{!}}-"}},"i":0}},"\n|bar\n"]}'><tr title="test">
+<td>a</td></tr>
+<tr><td>bar</td></tr>
+</tbody></table>
+!! end
+
+!! test
+5. Non-token gluing scenario across an unclosed template should be handled properly
+!! options
+parsoid=wt2html,wt2wt
+!! wikitext
+{|
+{{1x|1=
+{{!}}- title='test' <div>x</div> boo}} {{1x|
+{{!}}a
+{{!}}-
+}}
+|bar
+|}
+!! html/php
+<table>
+
+<tbody><tr title="test">
+<td>a
+</td></tr>
+
+<tr>
+<td>bar
+</td></tr></tbody></table>
+!! html/parsoid+integrated
+<table>
+<tbody about="#mwt1" typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"1x","href":"./Template:1x"},"params":{"1":{"wt":"{{!}}- title=&apos;test&apos; &lt;div>x&lt;/div> boo"}},"i":0}}," ",{"template":{"target":{"wt":"1x","href":"./Template:1x"},"params":{"1":{"wt":"\n{{!}}a\n{{!}}-\n"}},"i":1}},"\n|bar\n"]}'><tr title="test">
+<td>a</td></tr>
+<tr><td>bar</td></tr>
+</tbody></table>
+!! end
+
+!! test
+5. Non-token gluing scenario across multiple lines and templates
+!! options
+parsoid=wt2html,wt2wt
+!! wikitext
+{|
+{{1x|1=
+{{!}}-
+}}{{1x|{{!}}} }}
+[[Category:Foo]]
+!! html/php
+<table>
+</table>
+!! html/parsoid+integrated
+<table about="#mwt1" typeof="mw:Transclusion" data-mw='{"parts":["{|\n",{"template":{"target":{"wt":"1x","href":"./Template:1x"},"params":{"1":{"wt":"{{!}}-"}},"i":0}},{"template":{"target":{"wt":"1x","href":"./Template:1x"},"params":{"1":{"wt":"{{!}}} "}},"i":1}}]}'>
+</table><span about="#mwt1"> </span>
+<link rel="mw:PageProp/Category" href="./Category:Foo"/>
+!! end
+
+!! article
+Template:Just tr
+!! text
+|-
+!! endarticle
+
+!! test
+6. Non-token guing scenario where a templated tr is found in templated tr attribute position
+!! wikitext
+{|
+{{just tr}}{{just tr}}
+|}
+!! html/php
+<table>
+
+</table>
+!! html/parsoid
+<table>
+<tbody about="#mwt1" typeof="mw:Transclusion" class="mw-empty-elt" data-mw='{"parts":[{"template":{"target":{"wt":"just tr","href":"./Template:Just_tr"},"params":{},"i":0}},{"template":{"target":{"wt":"just tr","href":"./Template:Just_tr"},"params":{},"i":1}},"\n"]}'>
+</tbody></table>
+!! end
+
 ###
 ### Testing parsing of templates where a template arg
 ### has the same name as the template itself.
@@ -17495,6 +17674,62 @@ added between the divtags:
 <p>xyz</p>
 </div>
 </b>
+!! end
+
+!! test
+{{#contentmodel}} parser function
+!! wikitext
+{{#contentmodel}}
+
+{{#contentmodel:local}}
+
+{{#contentmodel:canonical}}
+!! html/php
+<p>wikitext
+</p><p>wikitext
+</p><p>wikitext
+</p>
+!! html/parsoid+integrated
+<p><span typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"#contentmodel","function":"contentmodel"},"params":{},"i":0}}]}'>wikitext</span></p>
+<p><span typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"#contentmodel:local","function":"contentmodel"},"params":{},"i":0}}]}'>wikitext</span></p>
+<p><span typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"#contentmodel:canonical","function":"contentmodel"},"params":{},"i":0}}]}'>wikitext</span></p>
+!! end
+
+!! test
+{{#contentmodel}} parser function on a CSS page
+!! options
+title=MediaWiki:Common.css
+!! wikitext
+{{#contentmodel}}
+!! html/php
+<p>CSS
+</p>
+!! html/parsoid+integrated
+<p><span typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"#contentmodel","function":"contentmodel"},"params":{},"i":0}}]}'>CSS</span></p>
+!! end
+
+!! test
+{{#contentmodel}} parser function on a CSS page (canonical)
+!! options
+title=MediaWiki:Common.css
+!! wikitext
+{{#contentmodel: canonical}}
+!! html/php
+<p>css
+</p>
+!! html/parsoid+integrated
+<p><span typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"#contentmodel: canonical","function":"contentmodel"},"params":{},"i":0}}]}'>css</span></p>
+!! end
+
+!! test
+{{#contentmodel}} parser function for a JS page using the title argument
+!! wikitext
+{{#contentmodel: canonical | MediaWiki:Common.js}}
+!! html/php
+<p>javascript
+</p>
+!! html/parsoid+integrated
+<p><span typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"#contentmodel: canonical ","function":"contentmodel"},"params":{"1":{"wt":" MediaWiki:Common.js"}},"i":0}}]}'>javascript</span></p>
 !! end
 
 !! test
