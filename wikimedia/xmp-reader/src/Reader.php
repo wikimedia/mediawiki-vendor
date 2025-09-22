@@ -30,6 +30,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use RuntimeException;
 use Wikimedia\ScopedCallback;
+use XMLParser;
 use XMLReader;
 
 /**
@@ -83,7 +84,7 @@ class Reader implements LoggerAwareInterface {
 	/** @var bool|string Used for lang alts only */
 	private $itemLang = false;
 
-	/** @var resource|null A resource handle for the XML parser */
+	/** @var XMLParser|null A resource handle for the XML parser */
 	private $xmlParser;
 
 	/** @var bool|string Character set like 'UTF-8' */
@@ -225,16 +226,16 @@ class Reader implements LoggerAwareInterface {
 
 		if ( isset( $data['xmp-special']['AuthorsPosition'] )
 			&& is_string( $data['xmp-special']['AuthorsPosition'] )
-			&& isset( $data['xmp-general']['Artist'][0] )
+			&& isset( $data['xmp-general']['Artist'] )
 		) {
-			// Note, if there is more than one creator,
-			// this only applies to first. This also will
-			// only apply to the dc:Creator prop, not the
-			// exif:Artist prop.
-
-			$data['xmp-general']['Artist'][0] =
-				$data['xmp-special']['AuthorsPosition'] . ', '
-				. $data['xmp-general']['Artist'][0];
+			if ( is_string( $data['xmp-general']['Artist'] ) ) {
+				$data['xmp-general']['Artist'] = $data['xmp-special']['AuthorsPosition'] . ', '
+					. $data['xmp-general']['Artist'];
+			} elseif ( isset( $data['xmp-general']['Artist'][0] ) ) {
+				// Note, if there is more than one creator, this only applies to first.
+				$data['xmp-general']['Artist'][0] = $data['xmp-special']['AuthorsPosition'] . ', '
+					. $data['xmp-general']['Artist'][0];
+			}
 		}
 
 		// Go through the LocationShown and LocationCreated
@@ -515,7 +516,7 @@ class Reader implements LoggerAwareInterface {
 	 * <exif:DigitalZoomRatio>0/10</exif:DigitalZoomRatio>
 	 * and are processing the 0/10 bit.
 	 *
-	 * @param resource $parser XMLParser reference to the xml parser
+	 * @param XMLParser $parser XMLParser reference to the xml parser
 	 * @param string $data Character data
 	 * @throws RuntimeException On invalid data
 	 */
@@ -712,7 +713,7 @@ class Reader implements LoggerAwareInterface {
 				);
 			} elseif ( is_callable( $validate ) ) {
 				$val =& $this->results['xmp-' . $info['map_group']][$finalName];
-				call_user_func_array( $validate, [ $info, &$val, false ] );
+				$validate( $info, $val, false );
 				if ( $val === null ) {
 					// the idea being the validation function will unset the variable if
 					// its invalid.
@@ -820,7 +821,7 @@ class Reader implements LoggerAwareInterface {
 	 * Ignores the outer wrapping elements that are optional in
 	 * xmp and have no meaning.
 	 *
-	 * @param resource $parser
+	 * @param XMLParser $parser
 	 * @param string $elm Namespace . ' ' . element name
 	 * @throws RuntimeException
 	 */
@@ -842,7 +843,7 @@ class Reader implements LoggerAwareInterface {
 			);
 		}
 
-		if ( strpos( $elm, ' ' ) === false ) {
+		if ( !str_contains( $elm, ' ' ) ) {
 			// This probably shouldn't happen.
 			// However, there is a bug in an adobe product
 			// that forgets the namespace on some things.
@@ -1249,7 +1250,7 @@ class Reader implements LoggerAwareInterface {
 	 * Generally just calls a helper based on what MODE we're in.
 	 * Also does some initial set up for the wrapper element
 	 *
-	 * @param resource $parser
+	 * @param XMLParser $parser
 	 * @param string $elm Namespace "<space>" element
 	 * @param array $attribs Attribute name => value
 	 * @throws RuntimeException
@@ -1281,7 +1282,7 @@ class Reader implements LoggerAwareInterface {
 			);
 		}
 
-		if ( strpos( $elm, ' ' ) === false ) {
+		if ( !str_contains( $elm, ' ' ) ) {
 			// This probably shouldn't happen.
 			$this->logger->info(
 				__METHOD__ . " Encountered <$elm> which has no namespace. Skipping.",
@@ -1364,7 +1365,7 @@ class Reader implements LoggerAwareInterface {
 			$this->mode[0] = self::MODE_QDESC;
 		}
 		foreach ( $attribs as $name => $val ) {
-			if ( strpos( $name, ' ' ) === false ) {
+			if ( !str_contains( $name, ' ' ) ) {
 				// This shouldn't happen, but so far some old software forgets namespace
 				// on rdf:about.
 				$this->logger->info(
@@ -1419,7 +1420,7 @@ class Reader implements LoggerAwareInterface {
 			}
 
 			if ( is_callable( $validate ) ) {
-				call_user_func_array( $validate, [ $info, &$val, true ] );
+				$validate( $info, $val, true );
 				// the reasoning behind using &$val instead of using the return value
 				// is to be consistent between here and validating structures.
 				if ( $val === null ) {
