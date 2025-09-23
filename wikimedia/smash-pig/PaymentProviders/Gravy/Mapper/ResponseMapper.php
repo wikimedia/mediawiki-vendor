@@ -368,7 +368,7 @@ class ResponseMapper {
 	protected function handleResponseErrorsIfPresent( array $response ): ?array {
 		if ( $this->errorChecker->responseHasErrors( $response ) ) {
 			$errorInfo = $this->errorChecker->getResponseErrorDetails( $response );
-			$trackableError = ErrorHelper::buildTrackableErrorFromResponse(
+			$trackableError = ErrorHelper::buildTrackableError(
 				$errorInfo['error_code'],
 				$errorInfo['error_type'],
 				$response

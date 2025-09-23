@@ -86,14 +86,17 @@ class ErrorTracker {
 
 		if ( $count > 0 ) {
 			if ( $this->isThresholdExceeded( $count ) && !$this->alertRecentlySent( $error['error_code'] ) ) {
-				ErrorHelper::raiseAlert( $error['error_code'], $count, $this->threshold, $this->timeWindow, $error );
-				$this->markAlertAsSent( $error['error_code'] );
-
-				// Check to see if we also need to send a fraud transaction list to donor relations
+				// Check to see if we need to send a fraud transaction list to donor relations
 				if ( $this->isFraudAlert( $error['error_code'] ) ) {
 					$fraudTransactionsData = $this->getFraudTransactionDataForTimeSlot( $this->getCurrentTimeSlot() );
 					ErrorHelper::sendFraudTransactionsEmail( $fraudTransactionsData );
+				} else {
+					// Just send the standard failmail warning of a repeated error
+					ErrorHelper::raiseAlert(
+						$error['error_code'], $count, $this->threshold, $this->timeWindow, $error
+					);
 				}
+				$this->markAlertAsSent( $error['error_code'] );
 			}
 			return true;
 		}
@@ -102,21 +105,64 @@ class ErrorTracker {
 		return false;
 	}
 
+	/**
+	 * Tracks an error transaction, stores relevant data in a Redis set, and logs the process.
+	 *
+	 * @param array $error An associative array containing error details.
+	 *                     Expected keys:
+	 *                     - 'error_code' (string): The error code identifying the error.
+	 *                     - 'sample_transaction_id' (string|null): Optional unique transaction ID.
+	 *                     - 'sample_transaction_summary' (string): Optional summary of the transaction.
+	 *
+	 * @return int The current count of error transactions associated with the specified error code.
+	 *             Returns 0 if the transaction could not be tracked.
+	 */
 	protected function trackError( array $error ): int {
 		try {
 			if ( !$this->connection ) {
 				$this->connection = $this->createRedisClient();
 			}
 
-			$cacheKey = $this->generateRedisErrorKey( $error['error_code'] );
-			$currentCount = $this->connection->incr( $cacheKey );
+			$redisSetKey = $this->generateRedisErrorKey( $error['error_code'] );
+			$transactionId = $error['sample_transaction_id'] ?? null;
+			$transactionSummary = $error['sample_transaction_summary'] ?? null;
 
-			if ( $currentCount === 1 ) {
-				$this->connection->expire( $cacheKey, $this->keyExpiryPeriod );
+			if ( !$transactionId ) {
+				Logger::warning( 'Error missing transaction_id', [
+					'error_code' => $error['error_code']
+				] );
 			}
 
-			// Track fraud transaction IDs separately
-			$this->trackFraudTransactionIfApplicable( $error );
+			// Serialize transaction data for redis
+			$errorTransactionData = json_encode( [
+				'id' => $transactionId,
+				'summary' => $transactionSummary
+			], JSON_THROW_ON_ERROR );
+
+			// SADD returns 1 if new member, 0 if already exists
+			$wasAdded = $this->connection->sadd( $redisSetKey, [ $errorTransactionData ] );
+			$currentCount = $this->connection->scard( $redisSetKey );
+
+			if ( $wasAdded ) {
+				Logger::info( 'Error transaction tracked in redis', [
+					'transaction_id' => $transactionId,
+					'error_code' => $error['error_code'],
+					'time_bucket' => $this->getCurrentTimeSlot(),
+					'current_count' => $currentCount
+				] );
+			} else {
+				Logger::info( 'Transaction already tracked for this error code in current time bucket', [
+					'transaction_id' => $transactionId,
+					'error_code' => $error['error_code'],
+					'time_bucket' => $this->getCurrentTimeSlot(),
+					'current_count' => $currentCount
+				] );
+			}
+
+			// Set expiration on first entry (when count is 1 after adding)
+			if ( $currentCount === 1 ) {
+				$this->connection->expire( $redisSetKey, $this->keyExpiryPeriod );
+			}
 
 			return $currentCount;
 		} catch ( \Exception $ex ) {
@@ -129,55 +175,7 @@ class ErrorTracker {
 	}
 
 	/**
-	 * Track fraud transaction IDs in a separate Redis list for suspected_fraud errors
-	 * Groups by same time buckets as error counters for relevance
-	 */
-	protected function trackFraudTransactionIfApplicable( array $error ): void {
-		if ( !$this->isFraudAlert( $error['error_code'] ) ) {
-			return;
-		}
-
-		if ( !isset( $error['sample_transaction_id'] ) ) {
-			Logger::warning( 'suspected_fraud error missing transaction_id', [
-				'error' => $error
-			] );
-			return;
-		}
-
-		try {
-			$fraudListKey = $this->generateFraudTransactionListKey();
-
-			// Get the current list length before adding
-			$listLength = $this->connection->llen( $fraudListKey );
-
-			// Add transaction data to list
-			$transactionData = json_encode( [
-				'id' => $error['sample_transaction_id'],
-				'info' => $error['sample_data'] ?? ''
-			], JSON_THROW_ON_ERROR );
-
-			$this->connection->lpush( $fraudListKey, $transactionData );
-
-			// Only set expiration on the first transaction in this time bucket
-			if ( $listLength === 0 ) {
-				$this->connection->expire( $fraudListKey, self::GRAVY_FRAUD_LIST_EXPIRY_TIME );
-			}
-
-			Logger::info( 'Fraud transaction tracked in redis', [
-				'transaction_id' => $error['sample_transaction_id'],
-				'error_code' => $error['error_code'],
-				'time_bucket' => $this->getCurrentTimeSlot()
-			] );
-		} catch ( \Exception $ex ) {
-			Logger::warning( 'Failed to track fraud transaction in Redis', [
-				'transaction_id' => $error['transaction_id'],
-				'exception' => $ex->getMessage()
-			] );
-		}
-	}
-
-	/**
-	 * Get fraud transaction data for a specific time bucket
+	 * Get fraud transaction data for a specific time bucket using sets
 	 */
 	protected function getFraudTransactionDataForTimeSlot( int $timeSlot ): array {
 		try {
@@ -185,15 +183,23 @@ class ErrorTracker {
 				$this->connection = $this->createRedisClient();
 			}
 
-			$fraudListKey = "{$this->keyPrefix}fraud_transactions:{$timeSlot}";
+			$fraudSetKey = $this->keyPrefix . self::SUSPECTED_FRAUD_ERROR_CODE . ":{$timeSlot}";
 			$fraudTransactions = [];
-			$serializedTransactions = $this->connection->lrange( $fraudListKey, 0, -1 );
+			$serializedTransactions = $this->connection->smembers( $fraudSetKey );
+
 			foreach ( $serializedTransactions as $data ) {
-				$fraudTransactions[] = json_decode( $data, true, 512, JSON_THROW_ON_ERROR );
+				$decoded = json_decode( $data, true, 512, JSON_THROW_ON_ERROR );
+				if ( $decoded ) {
+					// Format for email compatibility
+					$fraudTransactions[] = [
+						'id' => $decoded['id'],
+						'summary' => $decoded['summary'] ?? ''
+					];
+				}
 			}
 			return $fraudTransactions;
 		} catch ( \Exception $ex ) {
-			Logger::warning( 'Failed to retrieve fraud transaction IDs from Redis', [
+			Logger::warning( 'Failed to retrieve fraud transaction data from Redis', [
 				'time_slot' => $timeSlot,
 				'exception' => $ex->getMessage()
 			] );
@@ -212,14 +218,6 @@ class ErrorTracker {
 
 	protected function generateRedisAlertKey( string $errorCode ): string {
 		return $this->generateRedisErrorKey( $errorCode ) . ':alerted';
-	}
-
-	/**
-	 * Generate Redis key for fraud transaction list using same time bucketing as error counters
-	 */
-	protected function generateFraudTransactionListKey(): string {
-		$currentTimeSlotInSeconds = $this->getCurrentTimeSlot();
-		return "{$this->keyPrefix}fraud_transactions:{$currentTimeSlotInSeconds}";
 	}
 
 	protected function alertRecentlySent( string $errorCode ): bool {
@@ -244,8 +242,9 @@ class ErrorTracker {
 			if ( !$this->connection ) {
 				$this->connection = $this->createRedisClient();
 			}
-
 			$alertKey = $this->generateRedisAlertKey( $errorCode );
+
+			// Set redis "lockfile" with expiry time of alert suppression period
 			$this->connection->setex( $alertKey, $this->alertSuppressionPeriod, '1' );
 		} catch ( \Exception $ex ) {
 			Logger::warning( 'Failed to set alert suppression key in Redis', [

@@ -3,6 +3,7 @@
 namespace SmashPig\PaymentProviders\Gravy\Errors;
 
 use SmashPig\Core\Context;
+use SmashPig\Core\Helpers\CurrencyRoundingHelper;
 use SmashPig\Core\Logging\Logger;
 use SmashPig\Core\MailHandler;
 use SmashPig\PaymentProviders\Gravy\GravyHelper;
@@ -10,25 +11,19 @@ use SmashPig\PaymentProviders\Gravy\GravyHelper;
 class ErrorHelper {
 
 	/**
-	 * Builds a trackable error object by enhancing the provided response with additional error details
+	 * Builds a trackable error array by adding some extra info to the raw response
 	 *
 	 * @param string $errorCode The raw error code from Gravy.
 	 * @param string $errorType The type of the error, describing its category.
 	 * @param array $response The original response data to be augmented.
-	 * @return array An enhanced response array including the original data and additional error-related fields.
+	 * @return array An enhanced response including the original data with normalized error info and a trxn summary.
 	 */
-	public static function buildTrackableErrorFromResponse( string $errorCode, string $errorType, array $response ): array {
-		// Create a trackable error using the API response
-		$trackableError = array_merge( $response, [
-			'error_code' => $errorCode,
-			'error_type' => $errorType,
-			'backend_processor' => static::extractBackendProcessor( $response )
-		] );
-
-		// Add latest sample data to $trackableError for alerting if needed
+	public static function buildTrackableError( string $errorCode, string $errorType, array $response ): array {
+		$trackableError = $response;
+		$trackableError['error_code'] = $errorCode;
+		$trackableError['error_type'] = $errorType;
 		$trackableError['sample_transaction_id'] = $response['id'] ?? $response['external_identifier'] ?? null;
-		$trackableError['sample_data'] = static::buildSampleData( $response );
-
+		$trackableError['sample_transaction_summary'] = static::getTransactionSummaryFromResponse( $response );
 		return $trackableError;
 	}
 
@@ -57,7 +52,7 @@ class ErrorHelper {
 	 */
 	public static function raiseAlert( string $errorCode, int $currentCount, int $threshold, int $timeWindow, array $errorContext ): void {
 		$sampleTransactionId = $errorContext['sample_transaction_id'] ?? null;
-		$sampleContext = $errorContext['sample_data'] ?? '';
+		$sampleSummary = $errorContext['sample_transaction_summary'] ?? null;
 		$timeWindowDisplay = static::formatTimeWindow( $timeWindow );
 
 		$alertData = [
@@ -72,7 +67,7 @@ class ErrorHelper {
 			"ALERT: Gravy error threshold exceeded for error code '{$errorCode}'. " .
 			"Occurred {$currentCount} times in {$timeWindowDisplay} (threshold: {$threshold})" .
 			( $sampleTransactionId ? " - Sample transaction: {$sampleTransactionId}" : '' ) .
-			$sampleContext,
+			$sampleSummary,
 			$alertData
 		);
 	}
@@ -83,12 +78,24 @@ class ErrorHelper {
 	 * @param array $response
 	 * @return string
 	 */
-	protected static function buildSampleData( array $response ): string {
+	protected static function getTransactionSummaryFromResponse( array $response ): ?string {
 		$parts = [];
 
+		// Backend processor
+		$backendProcessor = static::extractBackendProcessor( $response );
+		if ( $backendProcessor !== null ) {
+			$parts[] = ucfirst( $backendProcessor );
+		}
+
+		// external identifier aka ct_id
+		if ( isset( $response['external_identifier'] ) ) {
+			$parts[] = $response['external_identifier'];
+		}
+
 		// Amount and currency
-		if ( isset( $response['amount'] ) && isset( $response['currency'] ) ) {
-			$parts[] = "{$response['amount']} {$response['currency']}";
+		if ( isset( $response['currency'] ) && isset( $response['amount'] ) ) {
+			$formattedAmount = CurrencyRoundingHelper::round( $response['amount'], $response['currency'] );
+			$parts[] = "{$response['currency']} {$formattedAmount}";
 		}
 
 		// Payment method
@@ -103,7 +110,7 @@ class ErrorHelper {
 			$parts[] = "from {$country}";
 		}
 
-		return $parts ? ' - ' . implode( ', ', $parts ) : '';
+		return $parts ? ' - ' . implode( ', ', $parts ) : null;
 	}
 
 	/**
@@ -124,11 +131,11 @@ class ErrorHelper {
 	/**
 	 * Send basic fraud email with transaction IDs
 	 *
-	 * @param array $fraudTransactionIds Array of transaction ID strings
+	 * @param array $fraudTransactions Array of transactions with ids and summaries
 	 * @return bool Success/failure of email sending
 	 */
-	public static function sendFraudTransactionsEmail( array $fraudTransactionIds ): bool {
-		if ( empty( $fraudTransactionIds ) ) {
+	public static function sendFraudTransactionsEmail( array $fraudTransactions ): bool {
+		if ( empty( $fraudTransactions ) ) {
 			return false;
 		}
 
@@ -136,9 +143,9 @@ class ErrorHelper {
 		$to = $config->val( 'notifications/fraud-alerts/to' );
 		$from = $config->val( 'email/from-address' );
 		$subject = 'ALERT: Gravy Suspected Fraud Transactions List - ' . date( 'Y-m-d H:i' );
-		$body = "Suspected fraud transactions (" . count( $fraudTransactionIds ) . ")" . PHP_EOL . PHP_EOL;
-		foreach ( $fraudTransactionIds as $trxn ) {
-			$body .= " - https://wikimedia.gr4vy.app/merchants/default/transactions/{$trxn['id']}/overview" . $trxn['info'] . PHP_EOL;
+		$body = "Suspected fraud transactions (" . count( $fraudTransactions ) . ")" . PHP_EOL . PHP_EOL;
+		foreach ( $fraudTransactions as $trxn ) {
+			$body .= " - https://wikimedia.gr4vy.app/merchants/default/transactions/{$trxn['id']}/overview" . $trxn['summary'] . PHP_EOL;
 		}
 
 		return MailHandler::sendEmail( $to, $subject, $body, $from );

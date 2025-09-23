@@ -4,6 +4,7 @@ namespace SmashPig\PaymentProviders\Gravy\Maintenance;
 
 require __DIR__ . '/../../../Maintenance/MaintenanceBase.php';
 
+use SmashPig\Core\Helpers\CurrencyRoundingHelper;
 use SmashPig\Core\Logging\Logger;
 use SmashPig\Maintenance\MaintenanceBase;
 use SmashPig\PaymentProviders\Gravy\Errors\ErrorHelper;
@@ -45,83 +46,23 @@ class TestFraudTransactionEmail extends MaintenanceBase {
 		return [
 			[
 				'id' => '12345678-1234-5678-9abc-def012345678',
-				'info' => ' - 1299 USD, via Adyen'
+				'summary' => ' - Adyen, 166.3, USD ' . CurrencyRoundingHelper::getAmountInMajorUnits( 1299, 'USD' ) . ', via card, from US'
 			],
 			[
 				'id' => 'abcdef12-3456-7890-1234-567890abcdef',
-				'info' => ' - 1299 USD, via Adyen'
+				'summary' => ' - PayPal, 166.3, USD ' . CurrencyRoundingHelper::getAmountInMajorUnits( 1299, 'USD' ) . ', via paypal, from US'
 			],
 			[
 				'id' => '98765432-dcba-4321-8765-432109876543',
-				'info' => ' - 1299 USD, via Adyen'
+				'summary' => ' - Trustly, 166.3, USD ' . CurrencyRoundingHelper::getAmountInMajorUnits( 1299, 'USD' ) . ', via rtbt, from US'
 			],
 			[
 				'id' => 'fedcba98-7654-3210-9876-543210fedcba',
-				'info' => ' - 1299 USD, via Adyen'
+				'summary' => ' - Braintree, 166.3, USD ' . CurrencyRoundingHelper::getAmountInMajorUnits( 1299, 'USD' ) . ', via venmo, from US'
 			],
 			[
 				'id' => 'a1b2c3d4-e5f6-7890-1234-567890123456',
-				'info' => ' - 1299 USD, via Adyen'
-			],
-			[
-				'id' => '11111111-2222-3333-4444-555555555555',
-				'info' => ' - 1299 USD, via Adyen'
-			],
-			[
-				'id' => '22222222-3333-4444-5555-666666666666',
-				'info' => ' - 1299 USD, via Adyen'
-			],
-			[
-				'id' => '33333333-4444-5555-6666-777777777777',
-				'info' => ' - 1299 USD, via Adyen'
-			],
-			[
-				'id' => '44444444-5555-6666-7777-888888888888',
-				'info' => ' - 1299 USD, via Adyen'
-			],
-			[
-				'id' => '55555555-6666-7777-8888-999999999999',
-				'info' => ' - 1299 USD, via Adyen'
-			],
-			[
-				'id' => '66666666-7777-8888-9999-aaaaaaaaaaaa',
-				'info' => ' - 1299 USD, via Adyen'
-			],
-			[
-				'id' => '77777777-8888-9999-aaaa-bbbbbbbbbbbb',
-				'info' => ' - 1299 USD, via Adyen'
-			],
-			[
-				'id' => '88888888-9999-aaaa-bbbb-cccccccccccc',
-				'info' => ' - 1299 USD, via Adyen'
-			],
-			[
-				'id' => '99999999-aaaa-bbbb-cccc-dddddddddddd',
-				'info' => ' - 1299 USD, via Adyen'
-			],
-			[
-				'id' => 'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee',
-				'info' => ' - 1299 USD, via Adyen'
-			],
-			[
-				'id' => 'bbbbbbbb-cccc-dddd-eeee-ffffffffffff',
-				'info' => ' - 1299 USD, via Adyen'
-			],
-			[
-				'id' => 'cccccccc-dddd-eeee-ffff-000000000000',
-				'info' => ' - 1299 USD, via Adyen'
-			],
-			[
-				'id' => 'dddddddd-eeee-ffff-0000-111111111111',
-				'info' => ' - 1299 USD, via Adyen'
-			],
-			[
-				'id' => 'eeeeeeee-ffff-0000-1111-222222222222',
-				'info' => ' - 1299 USD, via Adyen'
-			],
-			[
-				'id' => 'ffffffff-0000-1111-2222-333333333333',
-				'info' => ' - 1299 USD, via Adyen'
+				'summary' => ' - dLocal, 166.3, USD ' . CurrencyRoundingHelper::getAmountInMajorUnits( 1299, 'USD' ) . ', via card, from US'
 			]
 		];
 	}

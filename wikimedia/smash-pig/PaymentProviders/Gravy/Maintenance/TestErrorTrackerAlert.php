@@ -41,7 +41,7 @@ class TestErrorTrackerAlert extends MaintenanceBase {
 		$errorDetails = $errorChecker->getResponseErrorDetails( $response );
 
 		// Build trackable error like the system would do
-		$trackableError = ErrorHelper::buildTrackableErrorFromResponse(
+		$trackableError = ErrorHelper::buildTrackableError(
 			$errorDetails['error_code'],
 			$errorDetails['error_type'],
 			$response
@@ -52,7 +52,7 @@ class TestErrorTrackerAlert extends MaintenanceBase {
 			'error_code' => $trackableError['error_code'],
 			'error_type' => $trackableError['error_type'],
 			'sample_transaction_id' => $trackableError['sample_transaction_id'],
-			'sample_data' => $trackableError['sample_data']
+			'sample_transaction_summary' => $trackableError['sample_transaction_summary']
 		] );
 
 		// Simulate threshold being exceeded - call ErrorHelper::raiseAlert directly

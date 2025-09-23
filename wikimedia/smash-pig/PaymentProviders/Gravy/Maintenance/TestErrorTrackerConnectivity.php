@@ -30,7 +30,8 @@ class TestErrorTrackerConnectivity extends MaintenanceBase {
 				'threshold' => 10,
 				'time_window' => 300, // 5 minutes
 				'key_prefix' => 'smashpig_gravy_error_test_',
-				'key_expiry_period' => 600 // 10 minutes
+				'key_expiry_period' => 600, // 10 minutes
+				'alert_suppression_period' => 600 // 10 minutes
 			];
 
 			$errorTracker = new ErrorTracker( $errorTrackerConfig );
@@ -39,12 +40,14 @@ class TestErrorTrackerConnectivity extends MaintenanceBase {
 				'error_code' => 'connection_test',
 				'error_type' => 'test_error',
 				'sample_transaction_id' => 'test_' . time(),
-				'sample_data' => ' - Redis connectivity test at ' . date( 'Y-m-d H:i:s' ) . ' for testing purposes'
+				'sample_transaction_summary' => ' - Redis connectivity test at ' . date( 'Y-m-d H:i:s' ) . ' for testing purposes'
 			];
 
 			Logger::info( "Attempting to track test error to confirm Redis connectivity:", $testError );
 
+			// this one should get recorded
 			$alertTriggered = $errorTracker->trackErrorAndCheckThreshold( $testError );
+			// this one should be ignored as it's a duplicate of the first one
 			$secondAttempt = $errorTracker->trackErrorAndCheckThreshold( $testError );
 
 			if ( !$alertTriggered || !$secondAttempt ) {

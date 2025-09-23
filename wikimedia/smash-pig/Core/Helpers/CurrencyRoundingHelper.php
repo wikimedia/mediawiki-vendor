@@ -112,4 +112,23 @@ class CurrencyRoundingHelper {
 		// For example, try $36.80
 		return (int)round( $amount );
 	}
+
+	/**
+	 * Convert from the minor units to the major unit. Currencies that lack a major
+	 * unit (such as JPY) are simply passed as is. For example: USD 1050 would
+	 * be changed to 10.50, JPY 150 would be passed as 150.
+	 *
+	 * @param float $amount The amount in minor units
+	 * @param string $currencyCode ISO currency code
+	 * @return string The amount in major units
+	 */
+	public static function getAmountInMajorUnits( float $amount, string $currencyCode ): string {
+		if ( static::isThreeDecimalCurrency( $currencyCode ) ) {
+			$amount = $amount / 1000;
+		} elseif ( static::isFractionalCurrency( $currencyCode ) ) {
+			$amount = $amount / 100;
+		}
+
+		return static::round( $amount, $currencyCode );
+	}
 }

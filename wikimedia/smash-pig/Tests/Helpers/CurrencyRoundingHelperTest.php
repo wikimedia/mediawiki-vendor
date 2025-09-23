@@ -38,4 +38,67 @@ class CurrencyRoundingHelperTest extends BaseSmashPigUnitTestCase {
 
 		$this->assertSame( '74.699', $rounded );
 	}
+
+	public function testGetInMajorUnitsNonFractionalCurrency() {
+		$currencyCode = 'JPY';
+		$amount = (float)'1200';
+
+		$major = CurrencyRoundingHelper::getAmountInMajorUnits( $amount, $currencyCode );
+
+		$this->assertSame( '1200', $major );
+	}
+
+	public function testGetInMajorUnitsNonFractionalCurrencyLowAmount() {
+		$currencyCode = 'JPY';
+		$amount = (float)'12';
+
+		$major = CurrencyRoundingHelper::getAmountInMajorUnits( $amount, $currencyCode );
+
+		$this->assertSame( '12', $major );
+	}
+
+	public function testGetInMajorUnits() {
+		$currencyCode = 'USD';
+		$amount = (float)'3500';
+
+		$major = CurrencyRoundingHelper::getAmountInMajorUnits( $amount, $currencyCode );
+
+		$this->assertSame( '35.00', $major );
+	}
+
+	public function testGetInMajorUnitsTwoDecimal() {
+		$currencyCode = 'USD';
+		$amount = (float)'1234';
+
+		$major = CurrencyRoundingHelper::getAmountInMajorUnits( $amount, $currencyCode );
+
+		$this->assertSame( '12.34', $major );
+	}
+
+	public function testGetInMajorUnitsTwoDecimalLowAmount() {
+		$currencyCode = 'USD';
+		$amount = (float)'11';
+
+		$major = CurrencyRoundingHelper::getAmountInMajorUnits( $amount, $currencyCode );
+
+		$this->assertSame( '0.11', $major );
+	}
+
+	public function testGetInMajorUnitsThreeDecimal() {
+		$currencyCode = 'BHD';
+		$amount = (float)'123456';
+
+		$major = CurrencyRoundingHelper::getAmountInMajorUnits( $amount, $currencyCode );
+
+		$this->assertSame( '123.456', $major );
+	}
+
+	public function testGetInMajorUnitsThreeDecimalLowAmount() {
+		$currencyCode = 'BHD';
+		$amount = (float)'123';
+
+		$major = CurrencyRoundingHelper::getAmountInMajorUnits( $amount, $currencyCode );
+
+		$this->assertSame( '0.123', $major );
+	}
 }

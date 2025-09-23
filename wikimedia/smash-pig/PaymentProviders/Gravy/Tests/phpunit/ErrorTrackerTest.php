@@ -4,6 +4,7 @@ namespace SmashPig\PaymentProviders\Gravy\Tests\phpunit;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use Predis\Client;
+use SmashPig\PaymentProviders\Gravy\Errors\ErrorChecker;
 use SmashPig\PaymentProviders\Gravy\Errors\ErrorHelper;
 use SmashPig\PaymentProviders\Gravy\Errors\ErrorTracker;
 use SmashPig\PaymentProviders\Gravy\Tests\BaseGravyTestCase;
@@ -19,136 +20,158 @@ class ErrorTrackerTest extends BaseGravyTestCase {
 	protected ErrorTracker $errorTracker;
 
 	/**
-	 * @var MockObject|Client
+	 * @var Client|MockObject
 	 */
-	protected $mockRedisClient;
+	protected MockObject|Client $mockRedisClient;
 
 	public function setUp(): void {
 		parent::setUp();
-
-		// Create a mock Redis client
 		$this->mockRedisClient = $this->createMock( Client::class );
-
-		// Create a testable ErrorTracker that uses our mock
-		// Note: inspired by Art of Unit Testing - Roy Osherove
-		$this->errorTracker = new class( [
-			'enabled' => true,
-			'threshold' => 20,
-			'time_window' => 1800,
-			'key_prefix' => 'gravy_error_threshold_',
-			'key_expiry_period' => 2400,
-			'alert_suppression_period' => 120
-		] ) extends ErrorTracker {
-			private Client $mockClient;
-
-			public function setMockClient( $client ): void {
-				$this->mockClient = $client;
-			}
-
-			protected function createRedisClient(): Client {
-				return $this->mockClient ?? parent::createRedisClient();
-			}
-		};
-
+		$this->errorTracker = $this->getTestableErrorTracker();
 		$this->errorTracker->setMockClient( $this->mockRedisClient );
 	}
 
 	public function testTrackErrorAndCheckThreshold(): void {
-		$response = [
-			'id' => 'txn_' . time() . '_' . mt_rand(),
-			'external_identifier' => 'donation_' . mt_rand(),
-			'amount' => 1000,
-			'currency' => 'USD',
-			'payment_method' => [ 'method' => 'card' ],
-			'status' => 'authorization_declined'
-		];
+		$testTransactionId = '4cf23c6b-1a2d-4f5e-9d8b-e7f6c4a3b2d1';
+		$testErrorCode = 'invalid_payment_method';
+		$testResponse = $this->getTestErrorResponse();
+		$testResponse['id'] = $testTransactionId;
+		$testResponse['error_code'] = $testErrorCode;
+		$testErrorDetails = ( new ErrorChecker() )->getResponseErrorDetails( $testResponse );
 
-		$error = ErrorHelper::buildTrackableErrorFromResponse( 'card_declined', 'payment', $response );
+		$error = ErrorHelper::buildTrackableError(
+			$testErrorDetails['error_code'],
+			$testErrorDetails['error_type'],
+			$testResponse
+		);
 
-		// Mock the __call method for incr and expire
-		$this->mockRedisClient->expects( $this->exactly( 2 ) )
+		// The Redis client uses magic method __call to dynamically handle Redis commands.
+		// We mock __call instead of individual methods because the Redis client doesn't
+		// actually have concrete methods for commands like 'sadd', 'scard', etc.
+		// These commands are intercepted by __call and forwarded to Redis.
+		// Calls: sadd (returns 1, new item), scard (returns 1, below threshold), expire (set redis key TTL for first occurrence)
+		$this->mockRedisClient->expects( $this->exactly( 3 ) )
 			->method( '__call' )
-			->willReturnCallback( static function ( $method, $args ) {
-				if ( $method === 'incr' ) {
-					return 1; // First call returns 1
+			->willReturnCallback( function ( $method, $args ) use ( $testTransactionId ) {
+				if ( $method === 'sadd' ) {
+					$expectedSetKeyPattern = '^gravy_error_threshold_invalid_payment_method:\d+';
+					$expectedValue = '{"id":"' . $testTransactionId . '","summary":" - Adyen, 206065365.1, EUR 1500.00, via card, from FR"}';
+					$this->assertTrue( (bool)preg_match( "/$expectedSetKeyPattern/", $args[0] ) );
+					$this->assertSame( [ $expectedValue ], $args[1] ); // sadd expects an array of values
+					return 1;
+				}
+				if ( $method === 'scard' ) {
+					return 1; // simulate set reporting it has 1 item
 				}
 				if ( $method === 'expire' ) {
-					return true;
+					return true; // expire should be called for the first record
 				}
 				return null;
 			} );
 
+		// Track the error
 		$result = $this->errorTracker->trackErrorAndCheckThreshold( $error );
-		$this->assertTrue( $result ); // Should return true for successful error tracking
+		// Should return true for successful error tracking
+		$this->assertTrue( $result );
 	}
 
 	/**
-	 * Test threshold breaching with 'cancelled_buyer_approval' error from ErrorCheckerTest
+	 * Test that first occurrence sets expiration
 	 */
-	public function testThresholdBreachWithCancelledBuyerApproval(): void {
-		$uniqueCode = 'cancelled_buyer_approval';
-		$response = [
-			'id' => 'txn_' . time() . '_' . mt_rand(),
-			'external_identifier' => 'donation_' . mt_rand(),
-			'amount' => 1000,
-			'currency' => 'USD',
-			'payment_method' => [ 'method' => 'trustly' ],
-			'error_code' => $uniqueCode,
-			'status' => 'authorization_failed'
-		];
+	public function testFirstOccurrenceSetsExpiration(): void {
+		$testResponse = $this->getTestErrorResponse();
+		$testResponse['error_code'] = 'test_error_first';
+		$testErrorDetails = ( new ErrorChecker() )->getResponseErrorDetails( $testResponse );
 
-		$error = ErrorHelper::buildTrackableErrorFromResponse( $uniqueCode, 'code', $response );
+		$error = ErrorHelper::buildTrackableError(
+			$testErrorDetails['error_code'],
+			$testErrorDetails['error_type'],
+			$testResponse
+		);
 
-		// Mock Redis behavior for threshold breach scenario
-		// Calls: incr (returns 20, threshold reached), exists (check alert), setex (set suppression)
-		// Note: expire is NOT called when incr returns > 1
+		// The Redis client uses magic method __call to dynamically handle Redis commands.
+		// We mock __call instead of individual methods because the Redis client doesn't
+		// actually have concrete methods for commands like 'sadd', 'scard', etc.
+		// These commands are intercepted by __call and forwarded to Redis.
+		// Calls: sadd (returns 1, new item), scard (returns 1, first occurrence), expire (set redis key TTL)
 		$this->mockRedisClient->expects( $this->exactly( 3 ) )
 			->method( '__call' )
-			->willReturnCallback( static function ( $method, $args ) {
-				if ( $method === 'incr' ) {
-					return 20; // Threshold reached (20th occurrence)
-				}
-				if ( $method === 'exists' ) {
-					return false; // No recent alert
-				}
-				if ( $method === 'setex' ) {
-					return true; // Successfully set alert suppression
-				}
-				return null;
-			} );
+			->withConsecutive(
+				[ 'sadd', $this->anything() ],
+				[ 'scard', $this->anything() ],
+				[ 'expire', $this->anything() ]
+			)
+			->willReturnOnConsecutiveCalls( 1, 1, true );
 
-		// Should reach the threshold
 		$result = $this->errorTracker->trackErrorAndCheckThreshold( $error );
-		$this->assertTrue( $result, "Error tracking should exceed threshold at occurrence 20" );
+		$this->assertTrue( $result );
+	}
+
+	/**
+	 * Test that subsequent occurrences don't set expiration
+	 */
+	public function testSubsequentOccurrencesDontSetExpiration(): void {
+		$testResponse = $this->getTestErrorResponse();
+		$testResponse['error_code'] = 'test_error_subsequent';
+		$testErrorDetails = ( new ErrorChecker() )->getResponseErrorDetails( $testResponse );
+
+		$error = ErrorHelper::buildTrackableError(
+			$testErrorDetails['error_code'],
+			$testErrorDetails['error_type'],
+			$testResponse
+		);
+
+		// The Redis client uses magic method __call to dynamically handle Redis commands.
+		// We mock __call instead of individual methods because the Redis client doesn't
+		// actually have concrete methods for commands like 'sadd', 'scard', etc.
+		// These commands are intercepted by __call and forwarded to Redis.
+		// Calls: sadd (returns 0, already exists), scard (returns 5, subsequent occurrence - no expire called)
+		$this->mockRedisClient->expects( $this->exactly( 2 ) )
+			->method( '__call' )
+			->withConsecutive(
+				[ 'sadd', $this->anything() ],
+				[ 'scard', $this->anything() ]
+			)
+			->willReturnOnConsecutiveCalls( 0, 5 ); // Already exists, set has 5 items
+
+		$result = $this->errorTracker->trackErrorAndCheckThreshold( $error );
+		$this->assertTrue( $result );
 	}
 
 	public function testThresholdBreachFirstTimeTriggersAlert(): void {
-		$uniqueCode = 'payment_declined_first_time';
-		$response = [
-			'id' => 'txn_' . time() . '_' . mt_rand(),
-			'external_identifier' => 'donation_' . mt_rand(),
-			'amount' => 1000,
-			'currency' => 'USD',
-			'payment_method' => [ 'method' => 'card' ],
-			'error_code' => $uniqueCode,
-			'status' => 'authorization_failed'
-		];
+		$testResponse = $this->getTestErrorResponse();
+		$testResponse['error_code'] = 'payment_declined_first_time';
+		$testErrorDetails = ( new ErrorChecker() )->getResponseErrorDetails( $testResponse );
 
-		$error = ErrorHelper::buildTrackableErrorFromResponse( $uniqueCode, 'code', $response );
+		$error = ErrorHelper::buildTrackableError(
+			$testErrorDetails['error_code'],
+			$testErrorDetails['error_type'],
+			$testResponse
+		);
 
-		// Mock Redis behavior - threshold just reached, no recent alert exists
-		// Calls: incr (returns 20), exists (returns false - no recent alert), setex (set suppression)
-		$this->mockRedisClient->expects( $this->exactly( 3 ) )
+		// The Redis client uses magic method __call to dynamically handle Redis commands.
+		// We mock __call instead of individual methods because the Redis client doesn't
+		// actually have concrete methods for commands like 'sadd', 'scard', etc.
+		// These commands are intercepted by __call and forwarded to Redis.
+		// Calls: sadd (returns 1, new item), scard (returns 20, threshold reached), exists (check alert), setex (set suppression)
+		$this->mockRedisClient->expects( $this->exactly( 4 ) )
 			->method( '__call' )
 			->willReturnCallback( static function ( $method, $args ) {
-				if ( $method === 'incr' ) {
-					return 20; // Threshold reached (20th occurrence)
+				if ( $method === 'sadd' ) {
+					return 1; // simulate response for adding a new item to the set
+				}
+				if ( $method === 'scard' ) {
+					return 20; // simulate set reporting it has 20 items - the threshold is then reached
 				}
 				if ( $method === 'exists' ) {
-					return false; // No recent alert exists
+					return false; // simulate response to indicate no recent alerts have been sent
 				}
 				if ( $method === 'setex' ) {
-					return true; // Successfully set alert suppression
+					// a call to 'setex' tells us that ErrorTracker::markAlertAsSent() is called which runs
+					// after the alert is sent. now verify alert suppression key matches pattern with :alerted suffix
+					$actualKey = $args[0] ?? '';
+					$expectedKeyPattern = "^gravy_error_threshold_payment_declined_first_time:\d+:alerted$";
+					return (bool)preg_match( "/$expectedKeyPattern/", $actualKey );
 				}
 				return null;
 			} );
@@ -164,29 +187,32 @@ class ErrorTrackerTest extends BaseGravyTestCase {
 	 * @return void
 	 */
 	public function testThresholdBreachDuplicateAlertIsSuppressed(): void {
-		$uniqueCode = 'cancelled_buyer_approval_continued';
-		$response = [
-			'id' => 'txn_' . time() . '_' . mt_rand(),
-			'external_identifier' => 'donation_' . mt_rand(),
-			'amount' => 1000,
-			'currency' => 'USD',
-			'payment_method' => [ 'method' => 'trustly' ],
-			'error_code' => $uniqueCode,
-			'status' => 'authorization_failed'
-		];
+		$testResponse = $this->getTestErrorResponse();
+		$testResponse['error_code'] = 'cancelled_buyer_approval_continued';
+		$testErrorDetails = ( new ErrorChecker() )->getResponseErrorDetails( $testResponse );
 
-		$error = ErrorHelper::buildTrackableErrorFromResponse( $uniqueCode, 'code', $response );
+		$error = ErrorHelper::buildTrackableError(
+			$testErrorDetails['error_code'],
+			$testErrorDetails['error_type'],
+			$testResponse
+		);
 
-		// Mock Redis behavior - return count above threshold, alert was recently sent
-		// Calls: incr (returns 25), exists (returns true - alert recently sent)
-		// Note: setex is NOT called when alert was recently sent
-		$this->mockRedisClient->expects( $this->exactly( 2 ) )
+		// The Redis client uses magic method __call to dynamically handle Redis commands.
+		// We mock __call instead of individual methods because the Redis client doesn't
+		// actually have concrete methods for commands like 'sadd', 'scard', etc.
+		// These commands are intercepted by __call and forwarded to Redis.
+		// Calls: sadd (returns 1, new item), scard (returns 25, above threshold), exists (returns true, alert recently sent)
+		$this->mockRedisClient->expects( $this->exactly( 3 ) )
 			->method( '__call' )
 			->willReturnCallback( static function ( $method, $args ) {
-				if ( $method === 'incr' ) {
+				if ( $method === 'sadd' ) {
+					return 1; // New item added
+				}
+				if ( $method === 'scard' ) {
 					return 25; // Above threshold
 				}
 				if ( $method === 'exists' ) {
+					// A call to 'exists' tells us that ErrorTracker::alertRecentlySent() is called
 					return true; // Alert recently sent, so no new alert
 				}
 				return null;
@@ -201,23 +227,24 @@ class ErrorTrackerTest extends BaseGravyTestCase {
 	 * Test Redis connection failure is handled gracefully
 	 */
 	public function testRedisConnectionFailureIsHandledGracefully(): void {
-		$uniqueCode = 'test_error';
-		$response = [
-			'id' => 'txn_123',
-			'external_identifier' => 'donation_456',
-			'amount' => 1000,
-			'currency' => 'USD',
-			'payment_method' => [ 'method' => 'card' ],
-			'error_code' => $uniqueCode,
-			'status' => 'authorization_failed'
-		];
+		$testResponse = $this->getTestErrorResponse();
+		$testResponse['error_code'] = 'test_error';
+		$testErrorDetails = ( new ErrorChecker() )->getResponseErrorDetails( $testResponse );
 
-		$error = ErrorHelper::buildTrackableErrorFromResponse( $uniqueCode, 'code', $response );
+		$error = ErrorHelper::buildTrackableError(
+			$testErrorDetails['error_code'],
+			$testErrorDetails['error_type'],
+			$testResponse
+		);
 
-		// Mock Redis throwing an exception
+		// The Redis client uses magic method __call to dynamically handle Redis commands.
+		// We mock __call instead of individual methods because the Redis client doesn't
+		// actually have concrete methods for commands like 'sadd', 'scard', etc.
+		// These commands are intercepted by __call and forwarded to Redis.
+		// Calls: sadd (throws exception to simulate Redis connection failure)
 		$this->mockRedisClient->expects( $this->once() )
 			->method( '__call' )
-			->with( 'incr' )
+			->with( 'sadd' )
 			->willThrowException( new \Exception( 'Redis connection failed' ) );
 
 		// Should return false when Redis fails
@@ -226,116 +253,98 @@ class ErrorTrackerTest extends BaseGravyTestCase {
 	}
 
 	/**
-	 * Test that first occurrence sets expiration
-	 */
-	public function testFirstOccurrenceSetsExpiration(): void {
-		$uniqueCode = 'test_error_first';
-		$response = [
-			'id' => 'txn_123',
-			'external_identifier' => 'donation_456',
-			'amount' => 1000,
-			'currency' => 'USD',
-			'payment_method' => [ 'method' => 'card' ],
-			'error_code' => $uniqueCode,
-			'status' => 'authorization_failed'
-		];
-
-		$error = ErrorHelper::buildTrackableErrorFromResponse( $uniqueCode, 'code', $response );
-
-		// Mock Redis behavior - first call returns 1, then expire is called
-		$this->mockRedisClient->expects( $this->exactly( 2 ) )
-			->method( '__call' )
-			->withConsecutive(
-				[ 'incr', $this->anything() ],
-				[ 'expire', $this->anything() ]
-			)
-			->willReturnOnConsecutiveCalls( 1, true );
-
-		$result = $this->errorTracker->trackErrorAndCheckThreshold( $error );
-		$this->assertTrue( $result );
-	}
-
-	/**
-	 * Test that subsequent occurrences don't set expiration
-	 */
-	public function testSubsequentOccurrencesDontSetExpiration(): void {
-		$uniqueCode = 'test_error_subsequent';
-		$response = [
-			'id' => 'txn_123',
-			'external_identifier' => 'donation_456',
-			'amount' => 1000,
-			'currency' => 'USD',
-			'payment_method' => [ 'method' => 'card' ],
-			'error_code' => $uniqueCode,
-			'status' => 'authorization_failed'
-		];
-
-		$error = ErrorHelper::buildTrackableErrorFromResponse( $uniqueCode, 'code', $response );
-
-		// Mock Redis behavior - subsequent call returns 5 (no expire should be called)
-		$this->mockRedisClient->expects( $this->once() )
-			->method( '__call' )
-			->with( 'incr' )
-			->willReturn( 5 );
-
-		$result = $this->errorTracker->trackErrorAndCheckThreshold( $error );
-		$this->assertTrue( $result );
-	}
-
-	/**
 	 * Test key generation format
 	 */
 	public function testKeyGenerationFormat(): void {
-		$uniqueCode = 'test_error_123';
-		$response = [
-			'id' => 'txn_123',
-			'external_identifier' => 'donation_456',
-			'amount' => 1000,
-			'currency' => 'USD',
-			'payment_method' => [ 'method' => 'card' ],
-			'error_code' => $uniqueCode,
-			'status' => 'authorization_failed'
-		];
+		$testResponse = $this->getTestErrorResponse();
+		$testResponse['error_code'] = 'test_error_123';
+		$testErrorDetails = ( new ErrorChecker() )->getResponseErrorDetails( $testResponse );
 
-		$error = ErrorHelper::buildTrackableErrorFromResponse( $uniqueCode, 'code', $response );
+		$error = ErrorHelper::buildTrackableError(
+			$testErrorDetails['error_code'],
+			$testErrorDetails['error_type'],
+			$testResponse
+		);
 
-		$this->mockRedisClient->expects( $this->exactly( 2 ) )
+		// The Redis client uses magic method __call to dynamically handle Redis commands.
+		// We mock __call instead of individual methods because the Redis client doesn't
+		// actually have concrete methods for commands like 'sadd', 'scard', etc.
+		// These commands are intercepted by __call and forwarded to Redis.
+		// Calls: sadd (returns 1, new item), scard (returns 1, first occurrence), expire (set redis key TTL)
+		$this->mockRedisClient->expects( $this->exactly( 3 ) )
 			->method( '__call' )
 			->withConsecutive(
-				[ 'incr', $this->callback( static function ( $args ) {
+				[ 'sadd', $this->callback( static function ( $args ) {
 					return (bool)preg_match( '/^gravy_error_threshold_test_error_123:\d+$/', $args[0] );
 				} ) ],
+				[ 'scard', $this->anything() ],
 				[ 'expire', $this->anything() ]
 			)
-			->willReturnOnConsecutiveCalls( 1, true );
+			->willReturnOnConsecutiveCalls( 1, 1, true );
 
 		$result = $this->errorTracker->trackErrorAndCheckThreshold( $error );
 		$this->assertTrue( $result );
 	}
 
-	public function testAlertSuppressionKeyGeneration(): void {
-		$uniqueCode = 'test_error_with-special.chars@123';
-		$response = [
-			'id' => 'txn_' . time() . '_' . mt_rand(),
-			'external_identifier' => 'donation_' . mt_rand(),
-			'amount' => 1000,
-			'currency' => 'USD',
-			'payment_method' => [ 'method' => 'card' ],
-			'error_code' => $uniqueCode,
-			'status' => 'authorization_failed'
-		];
+	public function testInvalidRedisKeyCharactersAreCleanedUp(): void {
+		$testResponse = $this->getTestErrorResponse();
+		$testResponse['error_code'] = 'test error@$%';
+		$testErrorDetails = ( new ErrorChecker() )->getResponseErrorDetails( $testResponse );
 
-		$error = ErrorHelper::buildTrackableErrorFromResponse( $uniqueCode, 'code', $response );
+		$error = ErrorHelper::buildTrackableError(
+			$testErrorDetails['error_code'],
+			$testErrorDetails['error_type'],
+			$testResponse
+		);
 
-		// Mock Redis behavior for threshold breach with alert key generation
-		// Calls: incr (returns 20), exists (check alert key), setex (set alert suppression)
+		// Expect the Redis key to be sanitised - all non-alphanumeric characters should become underscores
+		$expectedSanitizedKey = 'test_error___';
+
+		// The Redis client uses magic method __call to dynamically handle Redis commands.
+		// We mock __call instead of individual methods because the Redis client doesn't
+		// actually have concrete methods for commands like 'sadd', 'scard', etc.
+		// These commands are intercepted by __call and forwarded to Redis.
+		// Calls: sadd (returns 1, new item), scard (returns 1, first occurrence), expire (returns true, set redis key TTL)
 		$this->mockRedisClient->expects( $this->exactly( 3 ) )
 			->method( '__call' )
 			->withConsecutive(
-				[ 'incr', $this->callback( static function ( $args ) {
+				[ 'sadd', $this->callback( static function ( $args ) use ( $expectedSanitizedKey ) {
+					// Check that the key starts with the prefix and sanitized error code
+					return (bool)preg_match( "/^gravy_error_threshold_{$expectedSanitizedKey}:\d+$/", $args[0] );
+				} ) ],
+				[ 'scard', $this->anything() ],
+				[ 'expire', $this->anything() ]
+			)
+			->willReturnOnConsecutiveCalls( 1, 1, true );
+
+		$result = $this->errorTracker->trackErrorAndCheckThreshold( $error );
+		$this->assertTrue( $result, "Should successfully track error with sanitised key" );
+	}
+
+	public function testAlertSuppressionKeyGeneration(): void {
+		$testResponse = $this->getTestErrorResponse();
+		$testResponse['error_code'] = 'test_error_with-special.chars@123';
+		$testErrorDetails = ( new ErrorChecker() )->getResponseErrorDetails( $testResponse );
+
+		$error = ErrorHelper::buildTrackableError(
+			$testErrorDetails['error_code'],
+			$testErrorDetails['error_type'],
+			$testResponse
+		);
+
+		// The Redis client uses magic method __call to dynamically handle Redis commands.
+		// We mock __call instead of individual methods because the Redis client doesn't
+		// actually have concrete methods for commands like 'sadd', 'scard', etc.
+		// These commands are intercepted by __call and forwarded to Redis.
+		// Calls: sadd (returns 1, new item), scard (returns 20, threshold reached), exists (returns false, no recent alert), setex (returns true, set alert suppression)
+		$this->mockRedisClient->expects( $this->exactly( 4 ) )
+			->method( '__call' )
+			->withConsecutive(
+				[ 'sadd', $this->callback( static function ( $args ) {
 					// Validate the error key format: prefix + sanitized_code + time_slot
 					return (bool)preg_match( '/^gravy_error_threshold_test_error_with_special_chars_123:\d+$/', $args[0] );
 				} ) ],
+				[ 'scard', $this->anything() ],
 				[ 'exists', $this->callback( static function ( $args ) {
 					// Validate the alert key format: error_key + :alerted
 					return (bool)preg_match( '/^gravy_error_threshold_test_error_with_special_chars_123:\d+:alerted$/', $args[0] );
@@ -345,43 +354,10 @@ class ErrorTrackerTest extends BaseGravyTestCase {
 					return (bool)preg_match( '/^gravy_error_threshold_test_error_with_special_chars_123:\d+:alerted$/', $args[0] );
 				} ) ]
 			)
-			->willReturnOnConsecutiveCalls( 20, false, true ); // threshold reached, no recent alert, suppression set
+			->willReturnOnConsecutiveCalls( 1, 20, false, true ); // new item, threshold reached, no recent alert, suppression set
 
 		$result = $this->errorTracker->trackErrorAndCheckThreshold( $error );
 		$this->assertTrue( $result, "Should return true when threshold is exceeded and alert key is properly generated" );
-	}
-
-	public function testInvalidRedisKeyCharactersAreCleanedUp(): void {
-		$invalidErrorCode = 'test error@$%';
-
-		$response = [
-			'id' => 'txn_123',
-			'external_identifier' => 'donation_456',
-			'amount' => 1000,
-			'currency' => 'USD',
-			'payment_method' => [ 'method' => 'card' ],
-			'error_code' => $invalidErrorCode,
-			'status' => 'authorization_failed'
-		];
-
-		$error = ErrorHelper::buildTrackableErrorFromResponse( $invalidErrorCode, 'code', $response );
-
-		// Expect the Redis key to be sanitised - all non-alphanumeric characters should become underscores
-		$expectedSanitizedKey = 'test_error___';
-
-		$this->mockRedisClient->expects( $this->exactly( 2 ) )
-			->method( '__call' )
-			->withConsecutive(
-				[ 'incr', $this->callback( static function ( $args ) use ( $expectedSanitizedKey ) {
-					// Check that the key starts with the prefix and sanitized error code
-					return (bool)preg_match( "/^gravy_error_threshold_{$expectedSanitizedKey}:\d+$/", $args[0] );
-				} ) ],
-				[ 'expire', $this->anything() ]
-			)
-			->willReturnOnConsecutiveCalls( 1, true );
-
-		$result = $this->errorTracker->trackErrorAndCheckThreshold( $error );
-		$this->assertTrue( $result, "Should successfully track error with sanitised key" );
 	}
 
 	/**
@@ -500,22 +476,32 @@ class ErrorTrackerTest extends BaseGravyTestCase {
 
 		$errorTrackerWithIgnoreList->setMockClient( $this->mockRedisClient );
 
-		$nonIgnoredError = [
-			'error_code' => 'card_declined',
-			'error_type' => 'code',
-			'gateway_txn_id' => 'txn_123',
+		// Create a proper response array and use ErrorHelper like other tests
+		$response = [
+			'id' => 'txn_123',
 			'external_identifier' => 'donation_456',
 			'amount' => 1000,
 			'currency' => 'USD',
-			'payment_method' => 'card'
+			'payment_method' => [ 'method' => 'card' ],
+			'error_code' => 'card_declined',
+			'status' => 'authorization_failed'
 		];
 
-		// Expect Redis calls for non-ignored error codes
-		$this->mockRedisClient->expects( $this->exactly( 2 ) )
+		$nonIgnoredError = ErrorHelper::buildTrackableError( 'card_declined', 'code', $response );
+
+		// The Redis client uses magic method __call to dynamically handle Redis commands.
+		// We mock __call instead of individual methods because the Redis client doesn't
+		// actually have concrete methods for commands like 'sadd', 'scard', etc.
+		// These commands are intercepted by __call and forwarded to Redis.
+		// Calls: sadd (returns 1, new item), scard (returns 1, first occurrence), expire (set redis key TTL)
+		$this->mockRedisClient->expects( $this->exactly( 3 ) )
 			->method( '__call' )
 			->willReturnCallback( static function ( $method, $args ) {
-				if ( $method === 'incr' ) {
-					return 1; // First call returns 1
+				if ( $method === 'sadd' ) {
+					return 1; // New item added
+				}
+				if ( $method === 'scard' ) {
+					return 1; // Set has 1 item
 				}
 				if ( $method === 'expire' ) {
 					return true;
@@ -525,5 +511,59 @@ class ErrorTrackerTest extends BaseGravyTestCase {
 
 		$result = $errorTrackerWithIgnoreList->trackErrorAndCheckThreshold( $nonIgnoredError );
 		$this->assertTrue( $result, "Should return true and track non-ignored error codes normally" );
+	}
+
+	/**
+	 * Get an 'Extract and override' testable Error Tracker
+	 *
+	 * @return ErrorTracker
+	 */
+	protected function getTestableErrorTracker(): ErrorTracker {
+		return new class( [
+			'enabled' => true,
+			'threshold' => 20,
+			'time_window' => 1800,
+			'key_prefix' => 'gravy_error_threshold_',
+			'key_expiry_period' => 2400,
+			'alert_suppression_period' => 120
+		] ) extends ErrorTracker {
+			private Client $mockClient;
+
+			public function setMockClient( $client ): void {
+				$this->mockClient = $client;
+			}
+
+			protected function createRedisClient(): Client {
+				return $this->mockClient ?? parent::createRedisClient();
+			}
+		};
+	}
+
+	/**
+	 * @return array
+	 */
+	protected function getTestErrorResponse(): array {
+		return [
+			"type" => "transaction",
+			"id" => "5cf23c6b-1a2d-4f5e-9d8b-e7f6c4a3b2d1",
+			"reconciliation_id" => "7v7gQ2jlL2YtpiEm8xIW6T",
+			"merchant_account_id" => "default",
+			"currency" => "EUR",
+			"amount" => 1500,
+			"status" => "authorization_declined",
+			"country" => "FR",
+			"external_identifier" => "206065365.1",
+			"intent" => "authorize",
+			"method" => "card",
+			"instrument_type" => "pan",
+			"error_code" => "insufficient_funds",
+			"payment_service" => [
+				"payment_service_definition_id" => "adyen-card",
+				"method" => "card",
+				"display_name" => "Adyen"
+			],
+			"raw_response_description" => "51 : Insufficient funds/over credit limit",
+			"intent_outcome" => "failed"
+		];
 	}
 }
