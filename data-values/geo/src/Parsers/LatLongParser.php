@@ -30,6 +30,7 @@ use ValueParsers\ValueParser;
  * MapsCoordinateParser class of the Maps extension for MediaWiki.
  *
  * @since 0.1, name changed in 2.0
+ * @api
  *
  * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -57,14 +58,11 @@ class LatLongParser implements ValueParser {
 	public const OPT_SECOND_SYMBOL = 'second';
 
 	/**
-	 * The symbol to use as separator between latitude and longitude.
+	 * The symbol to use as a separator between latitude and longitude.
 	 */
 	public const OPT_SEPARATOR_SYMBOL = 'separator';
 
-	/**
-	 * @var ParserOptions
-	 */
-	private $options;
+	private ParserOptions $options;
 
 	public function __construct( ?ParserOptions $options = null ) {
 		$this->options = ( $options ?: new ParserOptions() )->withDefaultOption( ValueParser::OPT_LANG, 'en' );
@@ -82,7 +80,7 @@ class LatLongParser implements ValueParser {
 		foreach ( $this->getParsers() as $parser ) {
 			try {
 				return $parser->parse( $value );
-			} catch ( ParseException $ex ) {
+			} catch ( ParseException ) {
 				continue;
 			}
 		}

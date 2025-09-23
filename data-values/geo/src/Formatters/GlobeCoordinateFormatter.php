@@ -19,16 +19,14 @@ use ValueFormatters\ValueFormatter;
  * TODO: add formatting of globe and precision
  *
  * @since 0.1
+ * @api
  *
  * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class GlobeCoordinateFormatter implements ValueFormatter {
 
-	/**
-	 * @var LatLongFormatter
-	 */
-	private $formatter;
+	private LatLongFormatter $formatter;
 
 	public function __construct( ?FormatterOptions $options = null ) {
 		$this->formatter = new LatLongFormatter( $options );

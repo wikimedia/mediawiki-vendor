@@ -29,7 +29,7 @@ abstract class LatLongParserBase implements ValueParser {
 	public const OPT_WEST_SYMBOL = 'west';
 
 	/**
-	 * The symbol to use as separator between latitude and longitude.
+	 * The symbol to use as a separator between latitude and longitude.
 	 */
 	public const OPT_SEPARATOR_SYMBOL = 'separator';
 
@@ -48,11 +48,7 @@ abstract class LatLongParserBase implements ValueParser {
 		$this->defaultOption( self::OPT_SEPARATOR_SYMBOL, ',' );
 	}
 
-	/**
-	 * @param string $option
-	 * @param mixed $default
-	 */
-	private function defaultOption( string $option, $default ): void {
+	private function defaultOption( string $option, mixed $default ): void {
 		if ( !$this->options->hasOption( $option ) ) {
 			$this->options->setOption( $option, $default );
 		}
@@ -61,10 +57,7 @@ abstract class LatLongParserBase implements ValueParser {
 	/**
 	 * Parses a single coordinate segment (either latitude or longitude) and returns it as a float.
 	 *
-	 * @param string $coordinateSegment
-	 *
 	 * @throws ParseException
-	 * @return float
 	 */
 	abstract protected function getParsedCoordinate( string $coordinateSegment ): float;
 
@@ -84,7 +77,6 @@ abstract class LatLongParserBase implements ValueParser {
 	 * @param string $value
 	 *
 	 * @throws ParseException
-	 * @return LatLongValue
 	 */
 	public function parse( $value ): LatLongValue {
 		if ( !is_string( $value ) ) {
@@ -144,7 +136,7 @@ abstract class LatLongParserBase implements ValueParser {
 	 *
 	 * @param string $normalizedCoordinateString
 	 *
-	 * @throws ParseException if unable to split input string into two segments
+	 * @throws ParseException if unable to split the input string into two segments
 	 * @return string[]
 	 */
 	abstract protected function splitString( string $normalizedCoordinateString ): array;

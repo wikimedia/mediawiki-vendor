@@ -7,6 +7,7 @@ namespace DataValues\Geo\Parsers;
 use DataValues\Geo\PackagePrivate\LatLongPrecisionParser;
 use DataValues\Geo\PackagePrivate\Precision;
 use DataValues\Geo\Values\GlobeCoordinateValue;
+use Exception;
 use ValueParsers\ParseException;
 use ValueParsers\ParserOptions;
 use ValueParsers\ValueParser;
@@ -14,9 +15,10 @@ use ValueParsers\ValueParser;
 /**
  * Extends the LatLongParser by adding precision detection support.
  *
- * The object that gets constructed is a GlobeCoordinateValue rather then a LatLongValue.
+ * The object that gets constructed is a GlobeCoordinateValue rather than a LatLongValue.
  *
  * @since 0.1
+ * @api
  *
  * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -55,7 +57,7 @@ class GlobeCoordinateParser implements ValueParser {
 
 		try {
 			$latLongPrecision = $parser->parse( $value );
-		} catch ( \Exception $ex ) {
+		} catch ( Exception ) {
 			throw new ParseException(
 				'The format of the coordinate could not be determined.',
 				$value,

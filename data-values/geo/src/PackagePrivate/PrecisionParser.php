@@ -4,14 +4,11 @@ namespace DataValues\Geo\PackagePrivate;
 
 use ValueParsers\ValueParser;
 
+/**
+ * @api
+ */
 class PrecisionParser {
-
-	private ValueParser $latLongParser;
-	private PrecisionDetector $precisionDetector;
-
-	public function __construct( ValueParser $latLongParser, PrecisionDetector $precisionDetector ) {
-		$this->latLongParser = $latLongParser;
-		$this->precisionDetector = $precisionDetector;
+	public function __construct( private readonly ValueParser $latLongParser, private readonly PrecisionDetector $precisionDetector ) {
 	}
 
 	public function parse( string $coordinate ): PreciseLatLong {

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4e77d26fab4434e4fd6948a1876e961f",
+    "content-hash": "da915857eb79356ddf048efb26f6f1db",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -511,32 +511,31 @@
         },
         {
             "name": "data-values/geo",
-            "version": "4.5.1",
+            "version": "4.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DataValues/Geo.git",
-                "reference": "eb1996b7ece9d501a86772755b1ba5dac25a540f"
+                "reference": "ffcbb2a44338e2a75b9596e4a72a6e0dace1035b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DataValues/Geo/zipball/eb1996b7ece9d501a86772755b1ba5dac25a540f",
-                "reference": "eb1996b7ece9d501a86772755b1ba5dac25a540f",
+                "url": "https://api.github.com/repos/DataValues/Geo/zipball/ffcbb2a44338e2a75b9596e4a72a6e0dace1035b",
+                "reference": "ffcbb2a44338e2a75b9596e4a72a6e0dace1035b",
                 "shasum": ""
             },
             "require": {
                 "data-values/data-values": "^3.0|^2.0|^1.0|~0.1",
-                "data-values/interfaces": "^1.0.0|^0.2.0",
-                "php": ">=7.4",
-                "symfony/polyfill-php80": "^1.18.1"
+                "data-values/interfaces": "^1.1.0",
+                "php": ">=8.1"
             },
             "require-dev": {
-                "maglnet/composer-require-checker": "^3.0|^2.0",
-                "mediawiki/mediawiki-codesniffer": "^45",
+                "maglnet/composer-require-checker": "^4.7.1",
+                "mediawiki/mediawiki-codesniffer": "^48",
                 "ockcyp/covers-validator": "^1.3.3",
                 "phpmd/phpmd": "^2.9.1",
                 "phpstan/phpstan": "^0.12.68 || ^1.0.0",
                 "phpunit/phpunit": "^9.4.1",
-                "vimeo/psalm": "^4.4.1"
+                "vimeo/psalm": "^5.26.1||^6.13.1"
             },
             "type": "library",
             "extra": {
@@ -587,7 +586,7 @@
             "support": {
                 "docs": "https://github.com/DataValues/Geo/#usage",
                 "issues": "https://github.com/DataValues/Geo/issues",
-                "source": "https://github.com/DataValues/Geo/tree/4.5.1"
+                "source": "https://github.com/DataValues/Geo/tree/4.6.0"
             },
             "funding": [
                 {
@@ -595,7 +594,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-01-06T11:04:09+00:00"
+            "time": "2025-09-23T20:43:19+00:00"
         },
         {
             "name": "data-values/interfaces",

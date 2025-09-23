@@ -6,14 +6,11 @@ namespace DataValues\Geo\PackagePrivate;
 
 use DataValues\Geo\Values\LatLongValue;
 
+/**
+ * @api
+ */
 class PreciseLatLong {
-
-	private LatLongValue $latLong;
-	private Precision $precision;
-
-	public function __construct( LatLongValue $latLong, Precision $precision ) {
-		$this->latLong = $latLong;
-		$this->precision = $precision;
+	public function __construct( private readonly LatLongValue $latLong, private readonly Precision $precision ) {
 	}
 
 	public function getLatLong(): LatLongValue {
