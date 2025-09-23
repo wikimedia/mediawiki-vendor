@@ -2836,6 +2836,7 @@ return array(
     'React\\Promise\\Internal\\RejectedPromise' => $vendorDir . '/react/promise/src/Internal/RejectedPromise.php',
     'React\\Promise\\Promise' => $vendorDir . '/react/promise/src/Promise.php',
     'React\\Promise\\PromiseInterface' => $vendorDir . '/react/promise/src/PromiseInterface.php',
+    'ReflectionConstant' => $vendorDir . '/symfony/polyfill-php84/Resources/stubs/ReflectionConstant.php',
     'SQLite3Exception' => $vendorDir . '/symfony/polyfill-php83/Resources/stubs/SQLite3Exception.php',
     'SensitiveParameter' => $vendorDir . '/symfony/polyfill-php82/Resources/stubs/SensitiveParameter.php',
     'SensitiveParameterValue' => $vendorDir . '/symfony/polyfill-php82/Resources/stubs/SensitiveParameterValue.php',
