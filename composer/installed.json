@@ -6262,17 +6262,17 @@
         },
         {
             "name": "web-auth/cose-lib",
-            "version": "4.4.1",
-            "version_normalized": "4.4.1.0",
+            "version": "4.4.2",
+            "version_normalized": "4.4.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-auth/cose-lib.git",
-                "reference": "b095f160a8c8fa7e53d0e36307093e34c26e7787"
+                "reference": "a93b61c48fb587855f64a9ec11ad7b60e867cb15"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-auth/cose-lib/zipball/b095f160a8c8fa7e53d0e36307093e34c26e7787",
-                "reference": "b095f160a8c8fa7e53d0e36307093e34c26e7787",
+                "url": "https://api.github.com/repos/web-auth/cose-lib/zipball/a93b61c48fb587855f64a9ec11ad7b60e867cb15",
+                "reference": "a93b61c48fb587855f64a9ec11ad7b60e867cb15",
                 "shasum": ""
             },
             "require": {
@@ -6301,7 +6301,7 @@
                 "ext-bcmath": "For better performance, please install either GMP (recommended) or BCMath extension",
                 "ext-gmp": "For better performance, please install either GMP (recommended) or BCMath extension"
             },
-            "time": "2025-06-13T11:35:45+00:00",
+            "time": "2025-08-14T20:33:29+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -6331,7 +6331,7 @@
             ],
             "support": {
                 "issues": "https://github.com/web-auth/cose-lib/issues",
-                "source": "https://github.com/web-auth/cose-lib/tree/4.4.1"
+                "source": "https://github.com/web-auth/cose-lib/tree/4.4.2"
             },
             "funding": [
                 {

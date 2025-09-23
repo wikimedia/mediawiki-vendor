@@ -101,7 +101,7 @@
 		"symfony/validator": "6.4.24",
 		"symfony/var-dumper": "6.4.24",
 		"symfony/yaml": "6.4.24",
-		"web-auth/cose-lib": "4.4.1",
+		"web-auth/cose-lib": "4.4.2",
 		"web-auth/webauthn-lib": "4.9.2",
 		"wikimedia/assert": "0.5.1",
 		"wikimedia/at-ease": "3.0.0",
