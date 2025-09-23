@@ -20,7 +20,7 @@
 		"christian-riesen/base32": "1.6.0",
 		"composer/ca-bundle": "1.5.8",
 		"composer/semver": "3.4.4",
-		"dasprid/enum": "1.0.6",
+		"dasprid/enum": "1.0.7",
 		"data-values/common": "1.2.0",
 		"data-values/data-values": "3.1.0",
 		"data-values/geo": "4.5.1",
