@@ -15,7 +15,7 @@ class StreamConfig {
 
 		'page_id',
 		'page_title',
-		'page_namespace',
+		'page_namespace_id',
 		'page_namespace_name',
 		'page_revision_id',
 		'page_wikidata_id',
