@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'a140f28219df4a89256a392952d2e9eaaaa81f59',
+        'reference' => '1bc513d11bc982129af6771f39ade546bc3252ab',
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'a140f28219df4a89256a392952d2e9eaaaa81f59',
+            'reference' => '1bc513d11bc982129af6771f39ade546bc3252ab',
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -599,6 +599,7 @@
             'dev_requirement' => false,
             'provided' => array(
                 0 => '1.0',
+                1 => '1.0.0',
             ),
         ),
         'psr/container' => array(
@@ -1293,9 +1294,9 @@
             'dev_requirement' => false,
         ),
         'wikimedia/timestamp' => array(
-            'pretty_version' => 'v4.2.0',
-            'version' => '4.2.0.0',
-            'reference' => 'e7b9e56fe00f3d41283e360f5a81d83ecbea921e',
+            'pretty_version' => 'v5.0.0',
+            'version' => '5.0.0.0',
+            'reference' => 'b5d6de92c8d966b07e31e5382b573aafc09b3fb9',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/timestamp',
             'aliases' => array(),

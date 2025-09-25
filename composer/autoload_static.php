@@ -6002,6 +6002,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Services\\ServiceContainer' => __DIR__ . '/..' . '/wikimedia/services/src/ServiceContainer.php',
         'Wikimedia\\Services\\ServiceDisabledException' => __DIR__ . '/..' . '/wikimedia/services/src/ServiceDisabledException.php',
         'Wikimedia\\TestingAccessWrapper' => __DIR__ . '/..' . '/wikimedia/testing-access-wrapper/src/TestingAccessWrapper.php',
+        'Wikimedia\\Timestamp\\Clock' => __DIR__ . '/..' . '/wikimedia/timestamp/src/Clock.php',
         'Wikimedia\\Timestamp\\ConvertibleTimestamp' => __DIR__ . '/..' . '/wikimedia/timestamp/src/ConvertibleTimestamp.php',
         'Wikimedia\\Timestamp\\TimestampException' => __DIR__ . '/..' . '/wikimedia/timestamp/src/TimestampException.php',
         'Wikimedia\\WaitConditionLoop' => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src/WaitConditionLoop.php',
