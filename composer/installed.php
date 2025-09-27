@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
-        'reference' => '2260296cd07423afb1e74a1b74b0d7f9da61ec92',
+        'pretty_version' => '1.0.0+no-version-set',
+        'version' => '1.0.0.0',
+        'reference' => null,
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'reference' => '2260296cd07423afb1e74a1b74b0d7f9da61ec92',
+            'pretty_version' => '1.0.0+no-version-set',
+            'version' => '1.0.0.0',
+            'reference' => null,
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -817,24 +817,6 @@
             ),
         ),
         'symfony/polyfill-php73' => array(
-            'dev_requirement' => false,
-            'replaced' => array(
-                0 => '1.99',
-            ),
-        ),
-        'symfony/polyfill-php74' => array(
-            'dev_requirement' => false,
-            'replaced' => array(
-                0 => '1.99',
-            ),
-        ),
-        'symfony/polyfill-php80' => array(
-            'dev_requirement' => false,
-            'replaced' => array(
-                0 => '1.99',
-            ),
-        ),
-        'symfony/polyfill-php81' => array(
             'dev_requirement' => false,
             'replaced' => array(
                 0 => '1.99',
