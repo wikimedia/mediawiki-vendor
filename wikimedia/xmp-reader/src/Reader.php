@@ -229,6 +229,8 @@ class Reader implements LoggerAwareInterface {
 			&& isset( $data['xmp-general']['Artist'] )
 		) {
 			if ( is_string( $data['xmp-general']['Artist'] ) ) {
+				// Not clear if this is reachable, as simple value Artist
+				// should always be xmp-general not xmp-exif
 				$data['xmp-general']['Artist'] = $data['xmp-special']['AuthorsPosition'] . ', '
 					. $data['xmp-general']['Artist'];
 			} elseif ( isset( $data['xmp-general']['Artist'][0] ) ) {
@@ -578,13 +580,20 @@ class Reader implements LoggerAwareInterface {
 			return false;
 		}
 
+		// 2.9.0 released Feb 2022 - https://gitlab.gnome.org/GNOME/libxml2/-/releases/v2.9.0
+		// https://www.php.net/manual/en/libxml.requirements.php
+		// > This extension requires » libxml >= 2.9.4 as of PHP 8.4.0, libxml >= 2.9.0
+		// > prior to PHP 8.4.0, and libxml >= 2.6.0 prior to PHP 8.0.0.
+		// So this can probably be removed when we require PHP >= 8.4.0!
 		if ( LIBXML_VERSION < 20900 ) {
+			// @codeCoverageIgnoreStart
 			$oldDisable = libxml_disable_entity_loader( true );
 			/** @noinspection PhpUnusedLocalVariableInspection */
 			$reset = new ScopedCallback(
 				'libxml_disable_entity_loader',
 				[ $oldDisable ]
 			);
+			// @codeCoverageIgnoreEnd
 		}
 
 		$reader->setParserProperty( XMLReader::SUBST_ENTITIES, false );
@@ -698,12 +707,8 @@ class Reader implements LoggerAwareInterface {
 			$info =& $this->items[$ns][$tag];
 			$finalName = $info['map_name'] ?? $tag;
 
-			if ( is_array( $info['validate'] ) ) {
-				$validate = $info['validate'];
-			} else {
-				$validator = new Validate( $this->logger );
-				$validate = [ $validator, $info['validate'] ];
-			}
+			$validator = new Validate( $this->logger );
+			$validate = [ $validator, $info['validate'] ];
 
 			if ( !isset( $this->results['xmp-' . $info['map_group']][$finalName] ) ) {
 				// This can happen if all the members of the struct failed validation.
@@ -711,7 +716,7 @@ class Reader implements LoggerAwareInterface {
 					__METHOD__ . " <$ns:$tag> has no valid members.",
 					[ 'file' => $this->filename ]
 				);
-			} elseif ( is_callable( $validate ) ) {
+			} else {
 				$val =& $this->results['xmp-' . $info['map_group']][$finalName];
 				$validate( $info, $val, false );
 				if ( $val === null ) {
@@ -723,12 +728,6 @@ class Reader implements LoggerAwareInterface {
 					);
 					unset( $this->results['xmp-' . $info['map_group']][$finalName] );
 				}
-			} else {
-				$this->logger->warning(
-					__METHOD__ . " Validation function for $finalName (" .
-					get_class( $validate[0] ) . '::' . $validate[1] . '()) is not callable.',
-					[ 'file' => $this->filename ]
-				);
 			}
 		}
 
@@ -804,7 +803,7 @@ class Reader implements LoggerAwareInterface {
 		if ( $elm === self::NS_RDF . ' value' ) {
 			[ $ns, $tag ] = explode( ' ', $this->curItem[0], 2 );
 			$this->saveValue( $ns, $tag, $this->charContent );
-
+			$this->charContent = false;
 			return;
 		}
 
@@ -979,7 +978,7 @@ class Reader implements LoggerAwareInterface {
 		if ( $elm === self::NS_RDF . ' Alt' ) {
 			array_unshift( $this->mode, self::MODE_LI_LANG );
 		} else {
-			throw new RuntimeException( "Expected <rdf:Seq> but got $elm." );
+			throw new RuntimeException( "Expected <rdf:Alt> but got $elm." );
 		}
 	}
 
@@ -1041,9 +1040,14 @@ class Reader implements LoggerAwareInterface {
 	 * Called when processing the <rdf:value> or <foo:someQualifier>.
 	 *
 	 * @param string $elm Namespace and tag name separated by a space.
+	 * @param array $attribs Array of attributes
 	 */
-	private function startElementModeQDesc( $elm ): void {
+	private function startElementModeQDesc( $elm, $attribs ): void {
 		if ( $elm === self::NS_RDF . ' value' ) {
+			// URL values use rdf:resource attribute instead of text content.
+			if ( isset( $attribs[ self::NS_RDF . ' resource' ] ) ) {
+				$this->char( $this->xmlParser, $attribs[ self::NS_RDF . ' resource' ] );
+			}
 			// do nothing
 			return;
 		}
@@ -1066,6 +1070,12 @@ class Reader implements LoggerAwareInterface {
 	 * @throws RuntimeException
 	 */
 	private function startElementModeInitial( $ns, $tag, $attribs ): void {
+		if ( $ns === self::NS_RDF && $tag === 'type' ) {
+			// Ignore top level rdf:type. See XMP spec part 1 section 7.9.2.5.
+			array_unshift( $this->mode, self::MODE_IGNORE );
+			array_unshift( $this->curItem, $ns . ' ' . $tag );
+			return;
+		}
 		if ( $ns !== self::NS_RDF ) {
 			if ( isset( $this->items[$ns][$tag] ) ) {
 				if ( isset( $this->items[$ns][$tag]['structPart'] ) ) {
@@ -1093,6 +1103,8 @@ class Reader implements LoggerAwareInterface {
 				if ( $this->charContent !== false ) {
 					// Something weird.
 					// Should not happen in valid XMP.
+					// char() should also throw an exception before
+					// we hit this.
 					throw new RuntimeException( 'tag nested in non-whitespace characters.' );
 				}
 			} else {
@@ -1330,7 +1342,7 @@ class Reader implements LoggerAwareInterface {
 				$this->startElementModeLi( $elm, $attribs );
 				break;
 			case self::MODE_QDESC:
-				$this->startElementModeQDesc( $elm );
+				$this->startElementModeQDesc( $elm, $attribs );
 				break;
 			default:
 				throw new RuntimeException( 'StartElement in unknown mode: ' . $this->mode[0] );
@@ -1370,7 +1382,7 @@ class Reader implements LoggerAwareInterface {
 				// on rdf:about.
 				$this->logger->info(
 					__METHOD__ . ' Encountered non-namespaced attribute: ' .
-					" $name=\"$val\". Skipping. ",
+					" $name=\"$val\". Skipping.",
 					[ 'file' => $this->filename ]
 				);
 				continue;
@@ -1412,31 +1424,19 @@ class Reader implements LoggerAwareInterface {
 		$info =& $this->items[$ns][$tag];
 		$finalName = $info['map_name'] ?? $tag;
 		if ( isset( $info['validate'] ) ) {
-			if ( is_array( $info['validate'] ) ) {
-				$validate = $info['validate'];
-			} else {
-				$validator = new Validate( $this->logger );
-				$validate = [ $validator, $info['validate'] ];
-			}
+			$validator = new Validate( $this->logger );
+			$validate = [ $validator, $info['validate'] ];
 
-			if ( is_callable( $validate ) ) {
-				$validate( $info, $val, true );
-				// the reasoning behind using &$val instead of using the return value
-				// is to be consistent between here and validating structures.
-				if ( $val === null ) {
-					$this->logger->info(
-						__METHOD__ . " <$ns:$tag> failed validation.",
-						[ 'file' => $this->filename ]
-					);
-
-					return;
-				}
-			} else {
-				$this->logger->warning(
-					__METHOD__ . " Validation function for $finalName (" .
-					get_class( $validate[0] ) . '::' . $validate[1] . '()) is not callable.',
+			$validate( $info, $val, true );
+			// the reasoning behind using &$val instead of using the return value
+			// is to be consistent between here and validating structures.
+			if ( $val === null ) {
+				$this->logger->info(
+					__METHOD__ . " <$ns:$tag> failed validation.",
 					[ 'file' => $this->filename ]
 				);
+
+				return;
 			}
 		}
 

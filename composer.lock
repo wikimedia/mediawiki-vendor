@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5540465f831bbac21ac7f36ba3409d1c",
+    "content-hash": "f43b22c1426689397fcefb2043ec2528",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -8445,16 +8445,16 @@
         },
         {
             "name": "wikimedia/xmp-reader",
-            "version": "0.10.0",
+            "version": "0.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-XMPReader.git",
-                "reference": "7f476d993e92ca68068db69e088b68e7bd283180"
+                "reference": "48397a030e65fc56e588697a9aaef9c8dcd31b93"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-XMPReader/zipball/7f476d993e92ca68068db69e088b68e7bd283180",
-                "reference": "7f476d993e92ca68068db69e088b68e7bd283180",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-XMPReader/zipball/48397a030e65fc56e588697a9aaef9c8dcd31b93",
+                "reference": "48397a030e65fc56e588697a9aaef9c8dcd31b93",
                 "shasum": ""
             },
             "require": {
@@ -8468,7 +8468,7 @@
                 "wikimedia/timestamp": "^1.0 || ^2.0 || ^3.0 || ^4.0 || ^5.0"
             },
             "require-dev": {
-                "ext-exif": "*",
+                "colinodell/psr-testlogger": "1.3.0",
                 "mediawiki/mediawiki-codesniffer": "48.0.0",
                 "mediawiki/mediawiki-phan-config": "0.17.0",
                 "mediawiki/minus-x": "1.1.3",
@@ -8496,16 +8496,13 @@
             "description": "Reader for XMP data containing properties relevant to images",
             "homepage": "https://www.mediawiki.org/wiki/XMPReader",
             "keywords": [
-                "IPTC",
-                "exif",
                 "metadata",
-                "parse",
                 "xmp"
             ],
             "support": {
-                "source": "https://github.com/wikimedia/mediawiki-libs-XMPReader/tree/0.10.0"
+                "source": "https://github.com/wikimedia/mediawiki-libs-XMPReader/tree/0.10.1"
             },
-            "time": "2025-09-22T20:27:33+00:00"
+            "time": "2025-09-26T20:57:32+00:00"
         },
         {
             "name": "wikimedia/zest-css",
