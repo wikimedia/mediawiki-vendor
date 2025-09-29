@@ -94,7 +94,7 @@ class ErrorHelper {
 
 		// Amount and currency
 		if ( isset( $response['currency'] ) && isset( $response['amount'] ) ) {
-			$formattedAmount = CurrencyRoundingHelper::round( $response['amount'], $response['currency'] );
+			$formattedAmount = CurrencyRoundingHelper::getAmountInMajorUnits( $response['amount'], $response['currency'] );
 			$parts[] = "{$response['currency']} {$formattedAmount}";
 		}
 

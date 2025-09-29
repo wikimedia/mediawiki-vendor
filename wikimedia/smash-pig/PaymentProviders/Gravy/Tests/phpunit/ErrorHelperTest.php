@@ -62,7 +62,7 @@ class ErrorHelperTest extends BaseGravyTestCase {
 		$this->assertEquals( 'error_code_present', $result['error_type'] );
 		$this->assertSame( '232515486.1', $result['external_identifier'] );
 		$this->assertEquals( 'f010a662-757e-4881-bad2-65feb1762a1e', $result['sample_transaction_id'] );
-		$this->assertEquals( ' - Trustly, 232515486.1, USD 10400.00, via trustly, from US', $result['sample_transaction_summary'] );
+		$this->assertEquals( ' - Trustly, 232515486.1, USD 104.00, via trustly, from US', $result['sample_transaction_summary'] );
 		$this->assertEquals( 'USD', $result['currency'] );
 		$this->assertEquals( 10400, $result['amount'] );
 	}
@@ -91,7 +91,7 @@ class ErrorHelperTest extends BaseGravyTestCase {
 		$this->assertEquals( $errorCode, $result['error_code'] );
 		$this->assertEquals( $errorType, $result['error_type'] );
 		$this->assertEquals( '943bec45-7cab-4555-8ea1-def34c34fae9', $result['sample_transaction_id'] );
-		$this->assertEquals( ' - Trustly, 417.2, USD 1223.00, via trustly, from US', $result['sample_transaction_summary'] );
+		$this->assertEquals( ' - Trustly, 417.2, USD 12.23, via trustly, from US', $result['sample_transaction_summary'] );
 		$this->assertSame( '417.2', $result['external_identifier'] );
 		$this->assertEquals( 'USD', $result['currency'] );
 		$this->assertEquals( 1223, $result['amount'] );
@@ -108,7 +108,7 @@ class ErrorHelperTest extends BaseGravyTestCase {
 		$this->assertEquals( $errorCode, $result['error_code'] );
 		$this->assertEquals( $errorType, $result['error_type'] );
 		$this->assertEquals( '61df177c-76b3-4f0c-80fb-d1ad53764c91', $result['sample_transaction_id'] );
-		$this->assertEquals( ' - Adyen, 166.3, USD 1000.00, via card, from US', $result['sample_transaction_summary'] );
+		$this->assertEquals( ' - Adyen, 166.3, USD 10.00, via card, from US', $result['sample_transaction_summary'] );
 		$this->assertSame( '166.3', $result['external_identifier'] );
 		$this->assertEquals( 'USD', $result['currency'] );
 		$this->assertEquals( 1000, $result['amount'] );
@@ -126,7 +126,7 @@ class ErrorHelperTest extends BaseGravyTestCase {
 		$this->assertEquals( $errorCode, $result['error_code'] );
 		$this->assertEquals( $errorType, $result['error_type'] );
 		$this->assertEquals( '61df177c-76b3-4f0c-80fb-d1ad53764c91', $result['sample_transaction_id'] );
-		$this->assertEquals( ' - Adyen, 166.3, USD 1000.00, via card, from US', $result['sample_transaction_summary'] );
+		$this->assertEquals( ' - Adyen, 166.3, USD 10.00, via card, from US', $result['sample_transaction_summary'] );
 		$this->assertSame( '166.3', $result['external_identifier'] );
 		$this->assertEquals( 'USD', $result['currency'] );
 		$this->assertEquals( 1000, $result['amount'] );
