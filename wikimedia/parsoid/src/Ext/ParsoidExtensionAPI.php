@@ -551,10 +551,11 @@ class ParsoidExtensionAPI {
 
 	/**
 	 * Forwards the logging request to the underlying logger
+	 * @param string $prefix
 	 * @param mixed ...$args
 	 */
-	public function log( ...$args ): void {
-		$this->env->log( ...$args );
+	public function log( string $prefix, ...$args ): void {
+		$this->env->log( $prefix, ...$args );
 	}
 
 	/**
@@ -850,12 +851,10 @@ class ParsoidExtensionAPI {
 	): ?Element {
 		$extTagName = $this->extTag->getName();
 
-		$title = $this->makeTitle(
-			$titleStr,
-			$this->getSiteConfig()->canonicalNamespaceId( 'file' )
-		);
+		$fileNs = $this->getSiteConfig()->canonicalNamespaceId( 'file' );
 
-		if ( $title === null || !$title->getNamespace()->isFile() ) {
+		$title = $this->makeTitle( $titleStr, $fileNs );
+		if ( $title === null || $title->getNamespaceId() !== $fileNs ) {
 			$error = "{$extTagName}_no_image";
 			return null;
 		}

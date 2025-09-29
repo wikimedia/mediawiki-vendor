@@ -445,7 +445,8 @@ class TokenUtils {
 					break;
 
 				default:
-					throw new \InvalidArgumentException( '$s is not UTF-8' );
+					throw new \InvalidArgumentException(
+						bin2hex( $s ) . " (dumped via php bin2hex) is not valid UTF-8" );
 			}
 		}
 
@@ -497,8 +498,7 @@ class TokenUtils {
 			if ( $sr instanceof DomSourceRange ) {
 				// Adjust widths back from being character offsets
 				if ( $sr->openWidth !== null ) {
-					// @phan-suppress-next-line PhanPluginDuplicateExpressionAssignmentOperation; consistency
-					$sr->openWidth = $sr->openWidth - $sr->start;
+					$sr->openWidth -= $sr->start;
 				}
 				if ( $sr->closeWidth !== null ) {
 					$sr->closeWidth = $sr->end - $sr->closeWidth;

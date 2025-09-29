@@ -269,7 +269,7 @@ class Env {
 		?array $options = null
 	) {
 		self::checkPlatform();
-		$options = $options ?? [];
+		$options ??= [];
 		$this->siteConfig = $siteConfig;
 		$this->pageConfig = $pageConfig;
 		$this->dataAccess = $dataAccess;
@@ -922,10 +922,11 @@ class Env {
 	}
 
 	/**
+	 * @param string $prefix
 	 * @param mixed ...$args
 	 */
-	public function log( ...$args ): void {
-		$this->parsoidLogger->log( ...$args );
+	public function log( string $prefix, ...$args ): void {
+		$this->parsoidLogger->log( $prefix, ...$args );
 	}
 
 	/**
@@ -988,7 +989,7 @@ class Env {
 	public function getContentHandler(
 		?string &$contentmodel = null
 	): ContentModelHandler {
-		$contentmodel = $contentmodel ?? $this->pageConfig->getContentModel();
+		$contentmodel ??= $this->pageConfig->getContentModel();
 		$handler = $this->siteConfig->getContentModelHandler( $contentmodel );
 		if ( !$handler && $contentmodel !== 'wikitext' ) {
 			// For now, fallback to 'wikitext' as the default handler

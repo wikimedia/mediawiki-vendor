@@ -172,8 +172,8 @@ class Gallery extends ExtensionTagHandler implements ExtensionModule {
 		} );
 
 		$mode = Mode::byName( $opts->mode );
-		$extApi->addModules( $mode->getModules() );
-		$extApi->addModuleStyles( $mode->getModuleStyles() );
+		$extApi->getMetadata()->addModules( $mode->getModules() );
+		$extApi->getMetadata()->addModuleStyles( $mode->getModuleStyles() );
 		return $mode->render( $extApi, $opts, $caption, $lines );
 	}
 
@@ -275,7 +275,7 @@ class Gallery extends ExtensionTagHandler implements ExtensionModule {
 		ParsoidExtensionAPI $extApi, Element $node, bool $wrapperUnmodified
 	) {
 		$dataMw = DOMDataUtils::getDataMw( $node );
-		$dataMw->attrs = $dataMw->attrs ?? new stdClass;
+		$dataMw->attrs ??= new stdClass;
 		// Handle the "gallerycaption" first
 		$galcaption = DOMCompat::querySelector( $node, 'li.gallerycaption' );
 		if (
