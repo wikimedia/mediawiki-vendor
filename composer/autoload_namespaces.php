@@ -8,7 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'PHPQueue' => array($vendorDir . '/coderkungfu/php-queue/src'),
     'Net' => array($vendorDir . '/pear/net_smtp', $vendorDir . '/pear/net_socket'),
-    'Mail' => array($vendorDir . '/pear/mail', $vendorDir . '/pear/mail_mime'),
+    'Mail' => array($vendorDir . '/pear/mail_mime', $vendorDir . '/pear/mail'),
     'Liuggio' => array($vendorDir . '/liuggio/statsd-php-client/src'),
     'Less' => array($vendorDir . '/wikimedia/less.php/lib'),
     'Console' => array($vendorDir . '/pear/console_getopt'),

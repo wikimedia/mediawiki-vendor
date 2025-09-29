@@ -84,17 +84,8 @@ class PaymentProviderTest extends BaseGravyTestCase {
 			->willReturn( $curlErrorMessage ); // SDK returns raw cURL error string
 
 		// Create a real API instance and inject the mocked SDK client
-		$api = new \SmashPig\PaymentProviders\Gravy\Api();
-		$reflection = new \ReflectionClass( $api );
-		$property = $reflection->getProperty( 'gravyApiClient' );
-		$property->setAccessible( true );
-		$property->setValue( $api, $mockGravyClient );
-
-		// Replace the provider's API with our modified one
-		$providerReflection = new \ReflectionClass( $this->provider );
-		$apiProperty = $providerReflection->getProperty( 'api' );
-		$apiProperty->setAccessible( true );
-		$apiProperty->setValue( $this->provider, $api );
+		$api = $this->createApiInstance();
+		$this->setMockGravyClient( $mockGravyClient, $api );
 
 		// Test the complete flow: Provider -> API -> SDK (returns cURL error) -> bubbles back up
 		$providerResult = $this->provider->deleteRecurringPaymentToken( $params );
@@ -107,7 +98,7 @@ class PaymentProviderTest extends BaseGravyTestCase {
 		$this->assertArrayHasKey( 'type', $apiResult, 'API should convert cURL error string to error array' );
 		$this->assertArrayHasKey( 'message', $apiResult, 'API should convert cURL error string to error array' );
 		$this->assertEquals( 'error', $apiResult['type'], 'API should return error type' );
-		$this->assertEquals( $curlErrorMessage, $apiResult['message'], 'API should preserve the original cURL error message' );
+		$this->assertEquals( 'Delete Payment Token response: (test-payment-method-id) ' . $curlErrorMessage, $apiResult['message'], 'API should preserve the original cURL error message' );
 	}
 
 	public function testApiErrorDeletePaymentTokenApiCall() {

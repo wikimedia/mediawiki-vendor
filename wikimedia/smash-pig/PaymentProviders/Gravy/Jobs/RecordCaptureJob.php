@@ -47,27 +47,24 @@ class RecordCaptureJob implements Runnable {
 		$db = PendingDatabase::get();
 		$dbMessage = $db->fetchMessageByGatewayOrderId( 'gravy', $transactionDetails->getOrderId() );
 
-		if ( $dbMessage && ( isset( $dbMessage['order_id'] ) ) ) {
-			$logger->debug( 'A valid message was obtained from the pending queue' );
-
-			$this->addMissingFieldsToPendingRecord( $dbMessage, $transactionDetails );
-
-			// Use the eventDate from the capture as the date
-			$dbMessage['date'] = strtotime( $this->payload['eventDate'] );
-
-			QueueWrapper::push( 'donations', $dbMessage );
-
-			// Remove it from the pending database
-			$logger->debug( 'Removing donor details message from pending database' );
-			$db->deleteMessage( $dbMessage );
-
-		} else {
-			$logger->warning(
+		if ( !$dbMessage ) {
+			throw new RetryableException(
 				"Could not find donor details for authorization Reference '{$transactionDetails->getGatewayTxnId()}' " .
-					"and order ID '{$transactionDetails->getOrderId()}'.",
-				$dbMessage
+				"and order ID '{$transactionDetails->getOrderId()}'. Requeuing job."
 			);
 		}
+		$logger->debug( 'A valid message was obtained from the pending table' );
+
+		$this->addMissingFieldsToPendingRecord( $dbMessage, $transactionDetails );
+
+		// Use the eventDate from the capture as the date
+		$dbMessage['date'] = strtotime( $this->payload['eventDate'] );
+
+		QueueWrapper::push( 'donations', $dbMessage );
+
+		// Mark it resolved in the pending table
+		$logger->debug( 'Marking transaction resolved in the pending table' );
+		$db->markMessageResolved( $dbMessage );
 
 		return true;
 	}
@@ -98,7 +95,7 @@ class RecordCaptureJob implements Runnable {
 					$dbMessage['recurring_payment_token'] = $transactionDetails->getRecurringPaymentToken();
 				} else {
 					throw new RetryableException(
-						'Recurring message was obtained from the pending queue with no token. Requeuing job.'
+						'Recurring message was obtained from the pending table with no token. Requeuing job.'
 					);
 				}
 			}

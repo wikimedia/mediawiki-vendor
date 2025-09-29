@@ -250,6 +250,9 @@ class RequestMapper {
 	 * @return array
 	 */
 	protected function addFiscalNumberParams( array $params, array $request ): array {
+		if ( !CountryIdentifiers::countryUsesFiscalNumberForPayments( $params['country'] ) ) {
+			return $request;
+		}
 		$identifier = CountryIdentifiers::getGravyTaxIdTypeForSuppliedCountryIdentifier( $params['country'], $params['fiscal_number'] );
 		if ( $identifier ) {
 			$request['buyer']['billing_details']['tax_id'] = [
