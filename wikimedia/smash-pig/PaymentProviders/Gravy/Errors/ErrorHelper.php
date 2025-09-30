@@ -104,6 +104,12 @@ class ErrorHelper {
 			$parts[] = "via {$method}";
 		}
 
+		// Bin Info
+		$binNumber = $response['payment_method']['details']['bin'] ?? null;
+		if ( $binNumber ) {
+			$parts[] = "bin {$binNumber}";
+		}
+
 		// Country
 		$country = $response['country'] ?? $response['buyer']['billing_details']['address']['country'] ?? null;
 		if ( $country ) {

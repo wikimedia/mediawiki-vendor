@@ -5139,17 +5139,17 @@
         },
         {
             "name": "wikimedia/smash-pig",
-            "version": "v0.9.11",
-            "version_normalized": "0.9.11.0",
+            "version": "v0.9.11.1",
+            "version_normalized": "0.9.11.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/wikimedia-fundraising-SmashPig.git",
-                "reference": "c656ad12310b7fb79f338f2901e73a743239ff16"
+                "reference": "2cf61ccd57565ce3c6fa6e75ce83497e515cd0a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/wikimedia-fundraising-SmashPig/zipball/c656ad12310b7fb79f338f2901e73a743239ff16",
-                "reference": "c656ad12310b7fb79f338f2901e73a743239ff16",
+                "url": "https://api.github.com/repos/wikimedia/wikimedia-fundraising-SmashPig/zipball/2cf61ccd57565ce3c6fa6e75ce83497e515cd0a0",
+                "reference": "2cf61ccd57565ce3c6fa6e75ce83497e515cd0a0",
                 "shasum": ""
             },
             "require": {
@@ -5175,7 +5175,7 @@
                 "php-parallel-lint/php-parallel-lint": "^1.2",
                 "phpunit/phpunit": "^9.5"
             },
-            "time": "2025-09-29T18:00:01+00:00",
+            "time": "2025-09-30T01:08:48+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -5228,7 +5228,7 @@
                 "payments"
             ],
             "support": {
-                "source": "https://github.com/wikimedia/wikimedia-fundraising-SmashPig/tree/v0.9.11"
+                "source": "https://github.com/wikimedia/wikimedia-fundraising-SmashPig/tree/v0.9.11.1"
             },
             "install-path": "../wikimedia/smash-pig"
         },
