@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
-        'reference' => '4ddd548ecf338a79898dc3989e6c7fd624fed016',
+        'pretty_version' => '1.0.0+no-version-set',
+        'version' => '1.0.0.0',
+        'reference' => null,
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'reference' => '4ddd548ecf338a79898dc3989e6c7fd624fed016',
+            'pretty_version' => '1.0.0+no-version-set',
+            'version' => '1.0.0.0',
+            'reference' => null,
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -921,6 +921,15 @@
             'reference' => '008b25171c27cf4813420d0de31cc059bcc71f1a',
             'type' => 'library',
             'install_path' => __DIR__ . '/../web-auth/webauthn-lib',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'webonyx/graphql-php' => array(
+            'pretty_version' => 'v15.30.0',
+            'version' => '15.30.0.0',
+            'reference' => 'eb3b86e3c1034055972ec2685f13b34c660d8844',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../webonyx/graphql-php',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
