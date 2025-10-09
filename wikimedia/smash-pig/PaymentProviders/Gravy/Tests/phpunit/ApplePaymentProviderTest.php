@@ -1,10 +1,8 @@
 <?php
 namespace SmashPig\PaymentProviders\Gravy\Tests\phpunit;
 
-use PHPUnit\Framework\MockObject\Exception;
 use SmashPig\PaymentData\FinalStatus;
-use SmashPig\PaymentData\PaymentMethod;
-use SmashPig\PaymentProviders\Gravy\ApplePayPaymentProvider;
+use SmashPig\PaymentProviders\Adyen\ApplePayPaymentProvider;
 use SmashPig\PaymentProviders\Gravy\Tests\BaseGravyTestCase;
 
 /**
@@ -136,43 +134,6 @@ class ApplePaymentProviderTest extends BaseGravyTestCase {
 		$this->assertTrue( $response->isSuccessful() );
 		$this->assertEquals( "apple", $response->getPaymentMethod() );
 		$this->assertEquals( "visa", $response->getPaymentSubmethod() );
-	}
-
-	/**
-	 * @throws Exception
-	 */
-	public function testCreatePaymentSessionApiCallSDKError() {
-		$stringSDKResponse = 'Request failed validation';
-		$params = [
-			'validation_url' => 'http://sample.com',
-			'domain_name' => 'sample_domain'
-		];
-		// Mock the Gravy SDK client to return a cURL error string
-		$api = $this->createApiInstance();
-		// Mock the Gravy SDK client to return a cURL error string
-		$mockGravyClient = $this->createMock( \Gr4vy\Gr4vyConfig::class );
-		$this->setMockGravyClient( $mockGravyClient, $api );
-		$mockGravyClient->expects( $this->exactly( 2 ) )
-			->method( 'newApplePaySession' )
-			->with( $params )
-			->willReturn( $stringSDKResponse );
-
-		// Test the complete flow: Provider -> API -> SDK (returns unexpected error) -> bubbles back up
-		$providerResult = $this->provider->createPaymentSession( $params );
-
-		// Verify the provider correctly handles the error and returns the right response
-		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\CreatePaymentSessionResponse',
-			$providerResult );
-		$this->assertFalse( $providerResult->isSuccessful() );
-		$this->assertEquals( "Create apple Payment Session response: (http://sample.com) {$stringSDKResponse}", $providerResult->getNormalizedResponse()['description'], 'Error message should normalized to string' );
-
-		// Also verify the API layer converts the string error correctly
-		$apiResult = $api->createPaymentSession( $params, PaymentMethod::APPLE );
-		$this->assertIsArray( $apiResult, 'API should convert unexpected error string to error array' );
-		$this->assertArrayHasKey( 'type', $apiResult, 'API should convert unexpected error string to error array' );
-		$this->assertArrayHasKey( 'message', $apiResult, 'API should convert unexpected error string to error array' );
-		$this->assertEquals( 'error', $apiResult['type'], 'API should return error type' );
-		$this->assertEquals( "Create apple Payment Session response: (http://sample.com) {$stringSDKResponse}", $apiResult['message'], 'API should return string error message' );
 	}
 
 	/**

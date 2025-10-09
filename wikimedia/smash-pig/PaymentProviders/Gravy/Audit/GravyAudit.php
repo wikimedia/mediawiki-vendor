@@ -4,11 +4,9 @@ namespace SmashPig\PaymentProviders\Gravy\Audit;
 
 use SmashPig\Core\DataFiles\AuditParser;
 use SmashPig\Core\DataFiles\HeadedCsvReader;
-use SmashPig\Core\Helpers\CurrencyRoundingHelper;
 use SmashPig\Core\Logging\Logger;
 use SmashPig\Core\UtcDate;
 use SmashPig\PaymentProviders\Gravy\GravyHelper;
-use SmashPig\PaymentProviders\Gravy\ReferenceData;
 
 class GravyAudit implements AuditParser {
 
@@ -22,9 +20,12 @@ class GravyAudit implements AuditParser {
 			'gateway_txn_id' => 'id',
 			'gross' => 'captured_amount',
 			'invoice_id' => 'external_identifier',
+			'payment_method' => 'scheme',
 			'email' => 'billing_details_email_address',
 			'first_name' => 'billing_details_first_name',
 			'last_name' => 'billing_details_last_name',
+			'settled_gross' => 'captured_amount',
+			'settled_currency' => 'currency',
 			'gross_currency' => 'currency',
 			'payment_service_definition_id' => 'payment_service_definition_id',
 	];
@@ -61,10 +62,7 @@ class GravyAudit implements AuditParser {
 		foreach ( $this->fieldMappings as $localFieldName => $gravyFieldName ) {
 			$normalizedLineData[$localFieldName] = $csv->currentCol( $gravyFieldName );
 		}
-		[ $normalizedLineData['payment_method'], $normalizedLineData['payment_submethod'] ] = ReferenceData::decodePaymentMethod(
-			$csv->currentCol( 'method' ),
-			$csv->currentCol( 'scheme' )
-		);
+
 		// Extract ct_id from order_id
 		$normalizedLineData['contribution_tracking_id'] = $this->getContributionTrackingId( $normalizedLineData );
 
@@ -137,7 +135,7 @@ class GravyAudit implements AuditParser {
 		$amountFields = [ 'settled_gross', 'gross' ];
 		foreach ( $amountFields as $field ) {
 			if ( isset( $data[$field] ) ) {
-				$data[$field] = CurrencyRoundingHelper::getAmountInMajorUnits( $data[$field], $data['currency'] );
+				$data[$field] /= 100;
 			}
 		}
 		return $data;
@@ -155,7 +153,7 @@ class GravyAudit implements AuditParser {
 	protected function addRefundFieldsIfRefundAmountSet( HeadedCsvReader $csv, array $data ): array {
 		$refundedAmount = $csv->currentCol( 'refunded_amount' );
 		if ( $refundedAmount !== null && $refundedAmount > 0 ) {
-			$data['refunded_amount'] = CurrencyRoundingHelper::getAmountInMajorUnits( $refundedAmount, $data['currency'] );
+			$data['refunded_amount'] = $refundedAmount / 100;
 			$data['refund_date'] = UtcDate::getUtcTimestamp( $csv->currentCol( 'updated_at' ) );
 			$data['type'] = self::TRANSACTION_TYPE_REFUND;
 		}

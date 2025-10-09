@@ -170,10 +170,6 @@ class CountryIdentifiers {
 		],
 	];
 
-	public static function countryUsesFiscalNumberForPayments( string $countryCode ): bool {
-		return array_key_exists( strtoupper( $countryCode ), self::IDENTIFIERS );
-	}
-
 	/**
 	 * Get the Gravy identifier code for a given country, based on a provided $fiscalNumber.
 	 * If there's more than one valid ID for that country, we'll attempt regex matching

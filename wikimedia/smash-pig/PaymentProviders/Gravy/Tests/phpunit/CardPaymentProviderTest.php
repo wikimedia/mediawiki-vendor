@@ -582,70 +582,30 @@ class CardPaymentProviderTest extends BaseGravyTestCase {
 		$this->assertTrue( $response->isSuccessful() );
 	}
 
-	public function testFiscalNumberWithCountryThatNeedsNone(): void {
+	public function testErrorBogusFiscalNumberAndCountryParams(): void {
 		$params = $this->getCreateTrxnParams( 'ABC123-c067-4cd6-a3c8-aec67899d5af' );
-		$params['amount'] = '10';
-		$params['currency'] = 'USD';
+		$params['amount'] = '1000';
+		$params['currency'] = 'ARS';
 
-		// this country should result in no tax_id being sent.
-		$params['country'] = 'US';
+		// this country and fiscal number format should give us an exception as it can't be mapped
+		$params['country'] = 'XX';
 		$params['fiscal_number'] = 'THIS-ISNT-A-VALID-1';
-
-		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/create-transaction-fiscal-number.json' ),
-			true );
-
-		$this->mockApi->expects( $this->once() )
-			->method( 'createPayment' )
-			->with( [
-					'amount' => 1000,
-					'currency' => 'USD',
-					'country' => 'US',
-					'payment_method' => [
-						'method' => 'checkout-session',
-						'id' => 'ABC123-c067-4cd6-a3c8-aec67899d5af',
-					],
-					'external_identifier' => $params['order_id'],
-					"statement_descriptor" => [
-						"description" => "Wikimedia Foundation"
-					],
-					'buyer' => [
-						'external_identifier' => 'lorem@ipsum',
-						'billing_details' => [
-							'first_name' => 'Lorem',
-							'last_name' => 'Ipsum',
-							'email_address' => 'lorem@ipsum',
-							'phone_number' => null,
-							'address' => [
-								'city' => null,
-								'country' => 'US',
-								'postal_code' => '1234',
-								'state' => null,
-								'line1' => '10 hopewell street',
-								'line2' => null,
-								'organization' => 'Wikimedia Foundation',
-							],
-							// Note no tax_id sent
-						],
-					],
-				]
-			)
-			->willReturn( $responseBody );
 
 		$response = $this->provider->createPayment( $params );
 
 		// assert that createPayment call is unsuccessful and that an error for fiscal_number being invalid is present
-		$this->assertTrue( $response->isSuccessful() );
+		$this->assertFalse( $response->isSuccessful() );
 		$errors = $response->getErrors();
 		$foundFiscalNumberError = false;
 		foreach ( $errors as $error ) {
-			if ( $error->getDebugMessage() === "Can't map fiscal number to Gravy Tax ID type.  (US:THIS-ISNT-A-VALID-1)" ) {
+			if ( $error->getDebugMessage() === "Can't map fiscal number to Gravy Tax ID type.  (XX:THIS-ISNT-A-VALID-1)" ) {
 				$foundFiscalNumberError = true;
 				break;
 			}
 		}
-		$this->assertFalse(
+		$this->assertTrue(
 			$foundFiscalNumberError,
-			"Expected no error for invalid fiscal_number for country US."
+			"Expected error for invalid fiscal_number for country AR."
 		);
 	}
 

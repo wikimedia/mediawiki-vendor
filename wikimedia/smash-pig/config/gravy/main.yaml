@@ -156,7 +156,18 @@ error-tracker:
       alert_suppression_period: 300
       # List of error codes to ignore from tracking and alerting
       ignore_list:
-        - 'unwanted_payment_status'
+        # We get this error when a PayPal transaction times out
+        - 'incomplete_buyer_approval'
+        # We get this error when a donor cancels a payment
+        - 'cancelled_buyer_approval'
+        # We get these for non-standard declines. e.g. Insufficient funds & Exceeding daily card limits.
+        # Gravy mentions that we can also get them due to legal reasons (e.g. watch list, embargo, sanctions).
+        # See: https://docs.gr4vy.com/guides/api/error-codes
+        - 'refused_transaction'
+        # We get this when the cvv does not match
+        - 'incorrect_cvv'
+        # We get this when the card does not have enough funds
+        - 'insufficient_funds'
 
 notifications:
   fraud-alerts:

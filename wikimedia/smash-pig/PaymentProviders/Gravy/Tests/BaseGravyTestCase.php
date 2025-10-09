@@ -2,8 +2,6 @@
 
 namespace SmashPig\PaymentProviders\Gravy\Tests;
 
-use Gr4vy\Gr4vyConfig;
-use PHPUnit\Framework\MockObject\Exception;
 use SmashPig\Core\Context;
 use SmashPig\Core\ProviderConfiguration;
 use SmashPig\Tests\BaseSmashPigUnitTestCase;
@@ -20,14 +18,6 @@ class BaseGravyTestCase extends BaseSmashPigUnitTestCase {
 	 */
 	protected $mockApi;
 
-	/**
-	 * @var \SmashPig\PaymentProviders\Gravy\PaymentProvider
-	 */
-	public $provider;
-
-	/**
-	 * @throws Exception
-	 */
 	public function setUp(): void {
 		parent::setUp();
 		$this->mockApi = $this->createMock( 'SmashPig\PaymentProviders\Gravy\Api' );
@@ -36,7 +26,7 @@ class BaseGravyTestCase extends BaseSmashPigUnitTestCase {
 		$ctx->setProviderConfiguration( $this->config );
 	}
 
-	protected function getCreateDonorParams(): array {
+	protected function getCreateDonorParams() {
 		$params = [];
 		$params['first_name'] = 'Lorem';
 		$params['last_name'] = 'Ipsum';
@@ -47,36 +37,5 @@ class BaseGravyTestCase extends BaseSmashPigUnitTestCase {
 		$params['employer'] = 'Wikimedia Foundation';
 
 		return $params;
-	}
-
-	/**
-	 * @return \SmashPig\PaymentProviders\Gravy\Api
-	 */
-	protected function createApiInstance(): \SmashPig\PaymentProviders\Gravy\Api {
-		return new \SmashPig\PaymentProviders\Gravy\Api();
-	}
-
-	/**
-	 * @param null $mockGravyClient
-	 * @param null $api
-	 * @return void
-	 * @throws Exception
-	 * @throws \ReflectionException
-	 */
-	protected function setMockGravyClient( $mockGravyClient = null, $api = null ): void {
-		if ( $api === null ) {
-			$api = $this->createApiInstance();
-		}
-		if ( $mockGravyClient === null ) {
-			$mockGravyClient = $this->createMock( Gr4vyConfig::class );
-		}
-		$reflection = new \ReflectionClass( $api );
-		$property = $reflection->getProperty( 'gravyApiClient' );
-		$property->setValue( $api, $mockGravyClient );
-
-		// Replace the provider's API with our modified one
-		$providerReflection = new \ReflectionClass( $this->provider );
-		$apiProperty = $providerReflection->getProperty( 'api' );
-		$apiProperty->setValue( $this->provider, $api );
 	}
 }
