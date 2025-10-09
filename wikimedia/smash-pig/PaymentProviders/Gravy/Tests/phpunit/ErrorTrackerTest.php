@@ -55,7 +55,7 @@ class ErrorTrackerTest extends BaseGravyTestCase {
 			->willReturnCallback( function ( $method, $args ) use ( $testTransactionId ) {
 				if ( $method === 'sadd' ) {
 					$expectedSetKeyPattern = '^gravy_error_threshold_invalid_payment_method:\d+';
-					$expectedValue = '{"id":"' . $testTransactionId . '","summary":" - Adyen, 206065365.1, EUR 1500.00, via card, from FR"}';
+					$expectedValue = '{"id":"' . $testTransactionId . '","summary":" - Adyen, 206065365.1, EUR 15.00, via card, from FR"}';
 					$this->assertTrue( (bool)preg_match( "/$expectedSetKeyPattern/", $args[0] ) );
 					$this->assertSame( [ $expectedValue ], $args[1] ); // sadd expects an array of values
 					return 1;

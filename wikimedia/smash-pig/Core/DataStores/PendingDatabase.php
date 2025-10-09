@@ -116,8 +116,11 @@ class PendingDatabase extends SmashPigDatabase {
 		if ( count( $placeholder ) > 0 ) {
 			$filterPaymentMethod .= ' and payment_method in (' . implode( ',', $placeholder ) . ')';
 		}
-		$sql = 'select * from pending ' .
-			'where gateway = :gateway ' .
+		$sql = 'select * from pending ';
+		if ( $this->getDatabase()->getAttribute( PDO::ATTR_DRIVER_NAME ) === 'mysql' ) {
+			$sql .= 'FORCE INDEX (idx_pending_resolved_gateway_method_date) ';
+		}
+		$sql .= 'where gateway = :gateway ' .
 			'and is_resolved = 0 ' .
 			$filterPaymentMethod .
 			' order by date asc limit 1';

@@ -204,7 +204,10 @@ class ReferenceData {
 			case PaymentMethod::CC:
 			case PaymentMethod::APPLE:
 			case PaymentMethod::GOOGLE:
-				$payment_submethod = $scheme ? self::$cardPaymentSubmethods[$scheme] : '';
+				if ( $scheme ) {
+					$schemeKey = str_replace( '_', '-', $scheme );
+					$payment_submethod = self::$cardPaymentSubmethods[ $schemeKey ] ?? '';
+				}
 				break;
 			case PaymentMethod::DD:
 				$payment_submethod = self::$ddSubmethods[$method];

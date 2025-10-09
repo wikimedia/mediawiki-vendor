@@ -427,13 +427,13 @@ abstract class PaymentProvider implements
 	 * TODO: some refusalReasons should get ValidationError not PaymentError
 	 *
 	 * @param PaymentProviderResponse $response
-	 * @param ?array $rawResponse
+	 * @param array|bool|null $rawResponse
 	 */
 	protected function mapGatewayTxnIdAndErrors(
 		PaymentProviderResponse $response,
-		?array $rawResponse
+		array|null|bool $rawResponse
 	): void {
-		if ( $rawResponse === null ) {
+		if ( !is_array( $rawResponse ) ) {
 			$responseError = 'Adyen response was null or invalid JSON.';
 			$response->addErrors( new PaymentError(
 				ErrorCode::NO_RESPONSE,

@@ -64,6 +64,13 @@ data-store:
         <<: *REDIS
         queue: refund
 
+  settle:
+    class: PHPQueue\Backend\Predis
+    constructor-parameters:
+      -
+        <<: *REDIS
+        queue: settle
+
   unsubscribe:
     class: PHPQueue\Backend\Predis
     constructor-parameters:
@@ -85,12 +92,12 @@ data-store:
         <<: *REDIS
         queue: email-preferences
 
-  set-primary-email:
+  verify-email:
     class: PHPQueue\Backend\Predis
     constructor-parameters:
       -
         <<: *REDIS
-        queue: set-primary-email
+        queue: verify-email
 
   recurring-modify:
     class: PHPQueue\Backend\Predis

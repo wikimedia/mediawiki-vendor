@@ -37,6 +37,9 @@ data-store:
   refund:
     <<: *QUEUE
 
+  settle:
+    <<: *QUEUE
+
   unsubscribe:
     <<: *QUEUE
 
@@ -54,12 +57,12 @@ data-store:
         connection_string: 'sqlite::memory:'
         queue: email_preferences
 
-  set-primary-email:
+  verify-email:
     class: PHPQueue\Backend\PDO
     constructor-parameters:
       -
         connection_string: 'sqlite::memory:'
-        queue: set_primary_email
+        queue: verify_email
 
   recurring-modify:
     class: PHPQueue\Backend\PDO

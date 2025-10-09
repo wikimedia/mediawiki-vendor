@@ -16,24 +16,33 @@ class ReportExecutionAction extends GravyAction {
 		$reportExecutionDetails = $this->getReportExecutionDetails( $msg );
 
 		if ( $reportExecutionDetails->isSuccessful() ) {
-			$tl->info(
-				"Report execution details for execution id {$reportExecutionDetails->getReportId()}: " . json_encode( $reportExecutionDetails->getRawResponse() )
-			);
-			$reportUrl = $this->generateReportDownloadUrl( $reportExecutionDetails );
+			// Only want to download the automated reports created by the report user
+			$providerConfiguration = Context::get()->getProviderConfiguration();
+			$reportUser = $providerConfiguration->val( 'report-user' );
+			$reportCreatedBy = $reportExecutionDetails->getReportCreatedBy();
+			if ( !empty( $reportCreatedBy ) && $reportCreatedBy == $reportUser ) {
+				$tl->info(
+					"Report execution details for execution id {$reportExecutionDetails->getReportId()}: " . json_encode( $reportExecutionDetails->getRawResponse() )
+				);
+				$reportUrl = $this->generateReportDownloadUrl( $reportExecutionDetails );
 
-			if ( $reportUrl->isSuccessful() ) {
-				$message = $reportUrl->getNormalizedResponse();
-				unset( $message['raw_response'] );
-				$message['report_name'] = $reportExecutionDetails->getReportName();
-				$message['report_created_by'] = $reportExecutionDetails->getReportCreatedBy();
-				$message = DownloadReportJob::factory( $message );
-				QueueWrapper::push( $msg->getDestinationQueue(), $message );
+				if ( $reportUrl->isSuccessful() ) {
+					$message = $reportUrl->getNormalizedResponse();
+					unset( $message['raw_response'] );
+					$message['report_name'] = $reportExecutionDetails->getReportName();
+					$message['report_created_by'] = $reportExecutionDetails->getReportCreatedBy();
+					$message = DownloadReportJob::factory( $message );
+					QueueWrapper::push( $msg->getDestinationQueue(), $message );
+				} else {
+					$tl->info(
+						"Problem generating report with id {$reportExecutionDetails->getReportId()}"
+					);
+				}
 			} else {
 				$tl->info(
-					"Problem generating report with id {$reportExecutionDetails->getReportId()}"
+					"Report user: {$reportCreatedBy} was not expected for report with id {$reportExecutionDetails->getReportId()}"
 				);
 			}
-
 		} else {
 			$tl->info(
 				"Problem locating report execution with id {$msg->getReportExecutionId()}"

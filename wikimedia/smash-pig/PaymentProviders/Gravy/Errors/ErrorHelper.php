@@ -94,7 +94,7 @@ class ErrorHelper {
 
 		// Amount and currency
 		if ( isset( $response['currency'] ) && isset( $response['amount'] ) ) {
-			$formattedAmount = CurrencyRoundingHelper::round( $response['amount'], $response['currency'] );
+			$formattedAmount = CurrencyRoundingHelper::getAmountInMajorUnits( $response['amount'], $response['currency'] );
 			$parts[] = "{$response['currency']} {$formattedAmount}";
 		}
 
@@ -102,6 +102,12 @@ class ErrorHelper {
 		$method = $response['payment_method']['method'] ?? $response['method'] ?? null;
 		if ( $method ) {
 			$parts[] = "via {$method}";
+		}
+
+		// Bin Info
+		$binNumber = $response['payment_method']['details']['bin'] ?? null;
+		if ( $binNumber ) {
+			$parts[] = "bin {$binNumber}";
 		}
 
 		// Country
