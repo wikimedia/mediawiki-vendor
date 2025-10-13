@@ -5,9 +5,9 @@ namespace Wikimedia\Parsoid\Wt2Html\TT;
 
 use Wikimedia\Assert\Assert;
 use Wikimedia\Assert\UnreachableException;
+use Wikimedia\Parsoid\Core\DomSourceRange;
 use Wikimedia\Parsoid\Ext\AsyncResult;
 use Wikimedia\Parsoid\Ext\ParsoidExtensionAPI;
-use Wikimedia\Parsoid\Fragments\DomPFragment;
 use Wikimedia\Parsoid\Fragments\WikitextPFragment;
 use Wikimedia\Parsoid\NodeData\TempData;
 use Wikimedia\Parsoid\Tokens\CommentTk;
@@ -20,7 +20,6 @@ use Wikimedia\Parsoid\Tokens\SourceRange;
 use Wikimedia\Parsoid\Tokens\TagTk;
 use Wikimedia\Parsoid\Tokens\Token;
 use Wikimedia\Parsoid\Tokens\XMLTagTk;
-use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\PHPUtils;
 use Wikimedia\Parsoid\Utils\PipelineUtils;
 use Wikimedia\Parsoid\Utils\Title;
@@ -248,16 +247,14 @@ class TemplateHandler extends XMLTagBasedHandler {
 		return (bool)preg_match( $this->safeSubstRegex, $prefix . ':' );
 	}
 
-	// phpcs:disable Generic.Files.LineLength.TooLong
-
 	/**
 	 * @param TemplateEncapsulator $state
 	 * @param string|Token|array $targetToks
 	 * @param SourceRange $srcOffsets
+	 * @phpcs:ignore Generic.Files.LineLength.TooLong
 	 * @return ?array{magicWordType: '!'|null, name: string, title: Title, isVariable?: true, pfArg?: string|list<string|Token>, srcOffsets?: SourceRange, isParserFunction?: true, localName?: string, haveColon?: bool, handler?: \Wikimedia\Parsoid\Ext\PFragmentHandler, handlerOptions?: array}
 	 */
 	private function resolveTemplateTarget(
-		// phpcs:enable Generic.Files.LineLength.TooLong
 		TemplateEncapsulator $state, $targetToks, $srcOffsets
 	): ?array {
 		$additionalToks = null;
@@ -829,32 +826,17 @@ class TemplateHandler extends XMLTagBasedHandler {
 			$fragment = $handler->sourceToFragment(
 				$extApi,
 				$arguments,
-				false /* this is using {{ ... }} syntax */
+				tagSyntax: false /* this is using {{ ... }} syntax */
 			);
 			if ( $fragment instanceof AsyncResult ) {
 				Assert::invariant(
 					$hasAsyncContent,
 					"returning async result without declaration"
 				);
-				$env->getMetadata()->setOutputFlag( 'async-not-ready' );
-				$fragment = $fragment->fallbackContent( $extApi );
-				if ( $fragment === null ) {
-					// Create localized fallback message
-					$doc = $env->getTopLevelDoc();
-					$msg = $doc->createDocumentFragment();
-					$span = $doc->createElement( 'span' );
-					$span->setAttribute( 'class', 'mw-async-not-ready' );
-					DOMCompat::append(
-						$span,
-						WTUtils::createPageContentI18nFragment(
-							$doc,
-							$env->getSiteConfig()->getAsyncFallbackMessageKey(),
-							null
-						)
-					);
-					$msg->appendChild( $span );
-					$fragment = DomPFragment::newFromDocumentFragment( $msg, null );
-				}
+				$fragment = PipelineUtils::handleAsyncResult(
+					$env, $extApi, $fragment,
+					DomSourceRange::fromTsr( $token->dataParsoid->tsr )
+				);
 			}
 			// Map fragment to parsoid wikitext + embedded markers
 			[
