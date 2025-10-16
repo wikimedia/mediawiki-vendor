@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a4e6d0356e4f19b9206eec8e066a12a7",
+    "content-hash": "a831924652ff190c166b1ddcfb809a56",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -7214,16 +7214,16 @@
         },
         {
             "name": "wikimedia/less.php",
-            "version": "v5.2.1",
+            "version": "v5.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/less.php.git",
-                "reference": "606e0450857f00d07335bb7ccaa3a789ca215969"
+                "reference": "0c64fe7477dbd491b27d3b10fc74a577d3bd66ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/less.php/zipball/606e0450857f00d07335bb7ccaa3a789ca215969",
-                "reference": "606e0450857f00d07335bb7ccaa3a789ca215969",
+                "url": "https://api.github.com/repos/wikimedia/less.php/zipball/0c64fe7477dbd491b27d3b10fc74a577d3bd66ec",
+                "reference": "0c64fe7477dbd491b27d3b10fc74a577d3bd66ec",
                 "shasum": ""
             },
             "require": {
@@ -7283,9 +7283,9 @@
             ],
             "support": {
                 "issues": "https://github.com/wikimedia/less.php/issues",
-                "source": "https://github.com/wikimedia/less.php/tree/v5.2.1"
+                "source": "https://github.com/wikimedia/less.php/tree/v5.2.2"
             },
-            "time": "2025-03-05T21:01:16+00:00"
+            "time": "2025-03-24T15:30:20+00:00"
         },
         {
             "name": "wikimedia/lucene-explain-parser",
