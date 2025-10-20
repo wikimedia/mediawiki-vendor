@@ -61,6 +61,7 @@
 		"onoi/message-reporter": "1.4.2",
 		"oojs/oojs-ui": "0.53.0",
 		"opis/json-schema": "2.4.1",
+		"opis/string": "2.0.2",
 		"paragonie/constant_time_encoding": "3.0.0",
 		"pear/console_getopt": "1.4.3",
 		"pear/mail": "2.0.0",
