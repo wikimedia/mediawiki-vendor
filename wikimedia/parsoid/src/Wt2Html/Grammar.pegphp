@@ -13,6 +13,7 @@ namespace Wikimedia\Parsoid\Wt2Html;
 	use Wikimedia\Parsoid\Config\Env;
 	use Wikimedia\Parsoid\Config\SiteConfig;
 	use Wikimedia\Parsoid\Core\DomSourceRange;
+	use Wikimedia\Parsoid\Core\Source;
 	use Wikimedia\Parsoid\NodeData\DataMw;
 	use Wikimedia\Parsoid\NodeData\DataParsoid;
 	use Wikimedia\Parsoid\NodeData\TempData;
@@ -22,6 +23,12 @@ namespace Wikimedia\Parsoid\Wt2Html;
 	use Wikimedia\Parsoid\Tokens\KV;
 	use Wikimedia\Parsoid\Tokens\KVSourceRange;
 	use Wikimedia\Parsoid\Tokens\NlTk;
+	use Wikimedia\Parsoid\Tokens\PreprocAngleTk;
+	use Wikimedia\Parsoid\Tokens\PreprocHeadingTk;
+	use Wikimedia\Parsoid\Tokens\PreprocIgnoreTk;
+	use Wikimedia\Parsoid\Tokens\PreprocPFragmentTk;
+	use Wikimedia\Parsoid\Tokens\PreprocTk;
+	use Wikimedia\Parsoid\Tokens\PreprocType;
 	use Wikimedia\Parsoid\Tokens\SelfclosingTagTk;
 	use Wikimedia\Parsoid\Tokens\SourceRange;
 	use Wikimedia\Parsoid\Tokens\TagTk;
@@ -37,7 +44,18 @@ namespace Wikimedia\Parsoid\Wt2Html;
 	private Env $env;
 	private SiteConfig $siteConfig;
 	private Frame $frame;
+	private Source $source;
 	private array $pipelineOpts;
+	/**
+	 * @var array<string,bool> Tags in this set will be ignored, while the
+	 *   contents will be included in the result.
+	 */
+	private array $ignoredTags;
+	/**
+	 * @var array<string,bool> Tags in this set will be ignored along with
+	 *   all their contents.
+	 */
+	private array $ignoredElements;
 	private int $pipelineOffset;
 	private array $extTags;
 	/** @var int|float */
@@ -53,6 +71,9 @@ namespace Wikimedia\Parsoid\Wt2Html;
 
 		$tokenizer = $this->options['pegTokenizer'];
 		$this->frame = $tokenizer->getFrame();
+		$this->source = $this->options['source'] ??
+			// XXX T405749 disentangle frame from source
+			$this->frame->getSource();
 		$this->pipelineOpts = $tokenizer->getOptions();
 		// FIXME: inTemplate option may not always be set in
 		// standalone tokenizers user by some pipelines handlers.
@@ -70,6 +91,23 @@ namespace Wikimedia\Parsoid\Wt2Html;
 
 		// Flag should always be an actual boolean (not falsy or undefined)
 		$this->assert( is_bool( $this->options['sol'] ), 'sol should be boolean' );
+
+		// Set up includeonly/onlyinclude/noinclude
+		if ($this->pipelineOpts['inTemplate'] ?? false) {
+		  $this->ignoredTags = PHPUtils::makeSet([
+		    'includeonly',
+		  ]);
+		  $this->ignoredElements = PHPUtils::makeSet([
+		    'noinclude',
+		  ]);
+		} else {
+		  $this->ignoredTags = PHPUtils::makeSet([
+		    'noinclude', 'onlyinclude'
+		  ]);
+		  $this->ignoredElements = PHPUtils::makeSet([
+		   'includeonly',
+		  ]);
+		}
 	}
 
 	private $prevOffset = 0;
@@ -102,11 +140,11 @@ namespace Wikimedia\Parsoid\Wt2Html;
 	private function tsrOffsets( $flag = 'default' ): SourceRange {
 		switch ( $flag ) {
 			case 'start':
-				return new SourceRange( $this->savedPos, $this->savedPos );
+				return new SourceRange( $this->savedPos, $this->savedPos, $this->source );
 			case 'end':
-				return new SourceRange( $this->currPos, $this->currPos );
+				return new SourceRange( $this->currPos, $this->currPos, $this->source );
 			default:
-				return new SourceRange( $this->savedPos, $this->currPos );
+				return new SourceRange( $this->savedPos, $this->currPos, $this->source );
 		}
 	}
 
@@ -123,6 +161,9 @@ namespace Wikimedia\Parsoid\Wt2Html;
 		}
 
 		// Shift tsr of all tokens by the pipeline offset
+		// (Note this only occurs for `start` and `start_async`
+		// entry points; for other start rules the shift must happen
+		// in `PegTokenizer::tokenizeSync()`)
 		TokenUtils::shiftTokenTSR( $tokens, $this->pipelineOffset );
 		$this->env->trace( 'peg', $this->options['pipelineId'] ?? '0', '---->   ', $tokens );
 
@@ -175,9 +216,15 @@ namespace Wikimedia\Parsoid\Wt2Html;
  * -  tplarg_or_template_or_bust
  * -  extlink
  * -  list_item
+ * -  preproc_pieces
  *
  * These start rules are listed in lib/wt2html/tokenizer.js
  * and is used during PEG grammar compilation.
+ *
+ * These do *not* shift the token TSR by pipelineOffset, and
+ * that must be done in the caller (`tokenizeSync`).
+ *
+ * `start` and `start_async` *do* shift the token TSR (via `emitChunk`).
  * ******************************************************** */
 
 start "start" =
@@ -548,7 +595,7 @@ heading =
 			$res = [ new TagTk( 'h' . $level, [], $tagDP ) ];
 			PHPUtils::pushArray( $res, $c );
 			$endTagDP = new DataParsoid;
-			$endTagDP->tsr = new SourceRange( $endTPos - $level, $endTPos );
+			$endTagDP->tsr = new SourceRange( $endTPos - $level, $endTPos, $this->source );
 			$res[] = new EndTagTk( 'h' . $level, [], $endTagDP );
 			PHPUtils::pushArray( $res, $spc );
 			return $res;
@@ -620,9 +667,21 @@ extlink "extlink" =
 		p2:POSITION
 		content:inlineline<extlink>?
 		p3:POSITION
-		"]" {
-			$tsr1 = new SourceRange( $p0, $p1 );
-			$tsr2 = new SourceRange( $p2, $p3 );
+		"]"
+		preproc:<&preproc>
+		& {
+			// Prevent the extlink from stealing a closing bracket
+			// from a wikilink
+			$c = $this->input[$p3 + 1] ?? '';
+			if ( $c !== ']' || $preproc !== ']]' ) {
+				return true;
+			}
+			preg_match( '/^]+/', substr( $this->input, $p3 ), $matches );
+			return strlen( $matches[0] ) % 2;
+		}
+		{
+			$tsr1 = new SourceRange( $p0, $p1, $this->source );
+			$tsr2 = new SourceRange( $p2, $p3, $this->source );
 			$dp = new DataParsoid;
 			$dp->tsr = $this->tsrOffsets();
 			$dp->getTemp()->extLinkContentOffsets = $tsr2;
@@ -636,7 +695,8 @@ extlink "extlink" =
 					],
 					$dp
 				)
-			]; }
+			];
+		}
 	)
 
 RFC = &{ return $this->siteConfig->magicLinkEnabled("RFC"); } @'RFC'
@@ -892,7 +952,7 @@ template_preproc =
 			&("|" / "}}")
 			{
 				// empty argument
-				$tsr0 = new SourceRange( $p0, $p1 );
+				$tsr0 = new SourceRange( $p0, $p1, $this->source );
 				return new KV( '', TokenizerUtils::flattenIfArray( $v ), $tsr0->expandTsrV() );
 			}
 			/ template_param
@@ -914,7 +974,9 @@ template_preproc =
 	/ $('{{' space_or_newline* '}}')
 
 // Keep this in sync with PipelineUtils::pfragmentToParsoidFragmentMarkers()
-parsoid_fragment_marker = marker:$("{{#parsoid\0fragment:" [0-9]+ "}}") {
+parsoid_fragment_marker_literal = $("{{#parsoid\0fragment:" [0-9]+ "}}")
+
+parsoid_fragment_marker = marker:parsoid_fragment_marker_literal {
 	return TokenizerUtils::parsoidFragmentMarkerToTokens(
 	  $this->env, $this->frame, $marker, $this->tsrOffsets()
 	);
@@ -936,7 +998,7 @@ tplarg_preproc =
 			&("|" / "}}}")
 			{
 				// empty argument
-				return [ 'tokens' => $v, 'srcOffsets' => new SourceRange( $p0, $p1 ) ];
+				return [ 'tokens' => $v, 'srcOffsets' => new SourceRange( $p0, $p1, $this->source ) ];
 			}
 			/ template_param_value
 		)
@@ -947,7 +1009,7 @@ tplarg_preproc =
 		$kvs = [];
 
 		if ( $target === null ) {
-			$target = [ 'tokens' => '', 'srcOffsets' => new SourceRange( $p, $p ) ];
+			$target = [ 'tokens' => '', 'srcOffsets' => new SourceRange( $p, $p, $this->source ) ];
 		}
 		// Insert target as first positional attribute, so that it can be
 		// generically expanded. The TemplateHandler then needs to shift it out
@@ -986,7 +1048,8 @@ template_param =
 		if ( $val !== null ) {
 			$so = new KVSourceRange(
 				$this->startOffset(), $val['kEndPos'],
-				$val['vStartPos'], $this->endOffset()
+				$val['vStartPos'], $this->endOffset(),
+				$this->source, $this->source
 			);
 			return new KV(
 				$name,
@@ -994,18 +1057,16 @@ template_param =
 				$so
 			);
 		} else {
-			$so = new SourceRange( $this->startOffset(), $this->endOffset() );
 			return new KV(
 				'',
 				TokenizerUtils::flattenIfArray( $name ),
-				$so->expandTsrV()
+				$this->tsrOffsets()->expandTsrV()
 			);
 		}
 	}
 	// empty parameter
 	/ & [|}] {
-		$so = new SourceRange( $this->startOffset(), $this->endOffset() );
-		return new KV( '', '', $so->expandTsrV() );
+		return new KV( '', '', $this->tsrOffsets()->expandTsrV() );
 	}
 
 template_param_name =
@@ -1124,7 +1185,7 @@ lang_variant_preproc =
 		sort( $variants );
 
 		$dp = new DataParsoid;
-		$dp->tsr = new SourceRange( $lv0, $lv1 );
+		$dp->tsr = new SourceRange( $lv0, $lv1, $this->source );
 		$dp->src = $lvsrc;
 		$dp->flags = $flags;
 		$dp->variants = $variants;
@@ -1325,7 +1386,7 @@ wikilink_content =
 		p:pipe
 		startPos:POSITION
 		lt:link_text? {
-			$tsr = new SourceRange( $startPos, $this->endOffset() );
+			$tsr = new SourceRange( $startPos, $this->endOffset(), $this->source );
 			$maybeContent = new KV( 'mw:maybeContent', $lt ?? [], $tsr->expandTsrV() );
 			$maybeContent->vsrc = substr( $this->input, $startPos, $this->endOffset() - $startPos );
 			return [$p, $maybeContent];
@@ -1380,7 +1441,7 @@ wikilink_preproc_internal =
 			$textTokens[] = ']]';
 			return $textTokens;
 		}
-		$tsr = new SourceRange( $spos, $tpos );
+		$tsr = new SourceRange( $spos, $tpos, $this->source );
 		$hrefKV = new KV(
 			'href', $target, $tsr->expandTsrV(), null,
 			$tsr->substr( $this->input )
@@ -1459,6 +1520,409 @@ quote =
 		return $result;
 	}
 
+/**********************************************************
+ * "New" PreprocTk tokens for unexpanded-but-preprocessed
+ * wikitext.
+ **********************************************************/
+
+preproc_pieces = p:preproc_pieces_with_sol<&preproc_sol=true> {
+	// Protect the tokenizer cache by cloning p, so that any
+	// in-place mutation won't affect cached values.
+	$p = clone $p;
+	// Return the contents of the KV as an array to allow
+	// PegTokenizer::tokenizeSync to shift the token TSRs.
+	return $p->v;
+}
+
+/* Start-of-line handling (necessary for headings) */
+
+preproc_pieces_with_sol = preproc_sol_from_options pieces:(preproc_piece+) {
+	return PreprocTk::newContentsKV( $pieces, $this->tsrOffsets() );
+}
+
+preproc_sol_from_options =
+	&{ return $this->options['sol'] ?? false; } preproc_sol_true /
+	preproc_sol_false
+
+preproc_sol_true [inline] = sol:<&preproc_sol> { $sol=true; return true; }
+
+preproc_sol_false [inline] = sol:<&preproc_sol> { $sol=false; return false; }
+
+/*
+ * Main rule for preprocessing one "piece" aka a single `PreprocTk|string`
+ * element.
+ */
+preproc_piece =
+	@preproc_piece_no_nl preproc_sol_false /
+	@"\n" !<no_nl> preproc_sol_true
+
+preproc_piece_no_nl [inline] =
+	// Headings (T213468/T214538)
+	&<preproc_sol> @preproc_heading /
+
+	// Skip characters ignored by the preprocessor
+	preproc_piece_ignored_chars /
+
+	// Square brackets -- note that single square brackets are *not*
+	// handled by the preprocessor (!) only double brackets count.
+	"[[" !"[" kv:preproc_pieces_inner<preproc_stop="]]"> "]]" {
+	  return new PreprocTk(
+	    type: PreprocType::BRACKET,
+	    tsr: $this->tsrOffsets(),
+	    contents: $kv,
+	    count: 2,
+	  );
+	} /
+
+	// Broken square open
+	"[" /
+
+	// Broken square close
+	@"]" (!<preproc_stop=="]]"> / &<preproc_stop=="]]"> !"]") /
+
+	// Curly braces
+
+	// Handle "rightmost wins" precedence by allowing an early match of
+	// preproc_piece_template or "{" in certain unusual circumstances,
+	// but otherwise match {{{ before {{ before -{
+
+	&("{{" preproc_piece_tplarg_lookahead ) @preproc_piece_template /
+
+	@"{" &preproc_piece_tplarg_lookahead /
+
+	@preproc_piece_tplarg /
+
+	@"{" &preproc_piece_template_lookahead /
+
+	@preproc_piece_template /
+
+	// Language converter markup
+
+	// Again, handle "rightmost wins" precedence by allowing an early
+	// match of "-" in certain unusual circumstances.
+
+	@"-" !("{" preproc_piece_tplarg_lookahead )
+	 &( preproc_piece_tplarg_lookahead / preproc_piece_template_lookahead )
+	/
+
+	"-{" kv:preproc_pieces_inner<preproc_stop="}-"> "}-" {
+	  return new PreprocTk(
+	    type: PreprocType::DASH_BRACE,
+	    tsr: $this->tsrOffsets(),
+	    contents: $kv,
+	  );
+	} /
+
+	// Broken -{
+	"-" /
+
+	// Broken curly open
+	"{" /
+
+	// Broken curly close
+	@"}" (
+	  &<preproc_stop=="}}}"> !"}}" /
+	  &<preproc_stop=="}}"> !"}" /
+	  &<preproc_stop=="}-"> !"-" /
+	  !<preproc_stop=="}}}"> !<preproc_stop=="}}"> !<preproc_stop=="}-">
+	) /
+
+	// Angle brackets: comments, extension tags, and include directives
+
+	comment {
+	  $type = PreprocType::COMMENT;
+	  if ( substr_compare(
+	    $this->input, '-->', $this->currPos - 3, 3
+	  ) !== 0 ) {
+	    // unclosed comment
+	    $innerTsr = new SourceRange(
+	      $this->savedPos + strlen( $type->open() ), $this->currPos,
+	      $this->source
+	    );
+	  } else {
+	    $innerTsr = $type->shrinkRange( $this->tsrOffsets() );
+	  }
+	  $contents = PreprocTk::newContentsKV(
+	    [ $innerTsr->substr( $this->input ) ], $innerTsr
+	  );
+	  return new PreprocTk(
+	    type: $type,
+	    tsr: $this->tsrOffsets(),
+	    contents: $contents,
+	  );
+	} /
+
+	// Extension tags
+	&"<" @preproc_piece_angle<preproc_stop=">"> /
+
+	// Broken extension tag
+	"<"
+
+preproc_pieces_inner =
+	pieces:(preproc_piece*) {
+	  return PreprocTk::newContentsKV( $pieces, null );
+	}
+
+preproc_piece_tplarg =
+	!("{" parsoid_fragment_marker_literal)
+	"{{{" kv:preproc_pieces_inner<preproc_stop="}}}"> "}}}" {
+	  return new PreprocTk(
+	    type: PreprocType::BRACE,
+	    tsr: $this->tsrOffsets(),
+	    contents: $kv,
+	    count: 3,
+	  );
+	}
+
+preproc_piece_template =
+	marker:parsoid_fragment_marker_literal	{
+	  return new PreprocPFragmentTk(
+	    tsr: $this->tsrOffsets(),
+	    contents: $marker,
+	  );
+	} /
+	"{{" kv:preproc_pieces_inner<preproc_stop="}}"> "}}" {
+	  return new PreprocTk(
+	    type: PreprocType::BRACE,
+	    tsr: $this->tsrOffsets(),
+	    contents: $kv,
+	    count: 2,
+	  );
+	}
+
+// These lookahead rules are used to ensure rightward precedence
+// http://www.mediawiki.org/wiki/Preprocessor_ABNF#Ideal_precedence
+
+preproc_piece_tplarg_lookahead =
+	&("{{{"+ !"{") @preproc_piece_tplarg
+
+preproc_piece_template_lookahead =
+	&("{{" "{{{"* !"{") @preproc_piece_template
+
+// Separate cached-and-not-inlined rule so we don't have to repeat our
+// search forward and can skip directly to the 'interesting' pieces when
+// backtracking.
+preproc_piece_ignored_chars[cache,inline=false] =
+	$[^-\[\]{<}\n]+
+
+/* Headings */
+preproc_heading =
+	// start marker: note that "sol transparent whitespace" is *not*
+	// permitted by the preprocessor.
+	open:$([=]+)
+	end:preproc_heading_find_close &{
+	  // if this is a single string of equals signs; open must
+	  // include at least 3 equals to count as a heading.
+	  return $end !== null && ( $end[1] !== null || strlen( $open ) >= 3 );
+	}
+	h:<&headingIndex> {
+	  // Increase the heading index!
+	  $headingIndex = $h++;
+	  [$before, $close, $p, $after] = $end;
+	  $type = PreprocType::HEADING;
+	  $contents = [];
+	  if ( $close === null ) {
+	    // This was a single string of equals signs; half are "open" and
+	    // half are "closed", and the contents are whatever's left.
+	    $count = min( $type->maxCount(), intval( ( strlen( $open ) - 1) / 2) );
+	    $contents[] = substr( $open, $count, -$count );
+	  } else {
+	    $count = min( $type->maxCount(), strlen( $open ), strlen( $close) );
+	    if ( strlen( $open ) > $count ) {
+	      $contents[] = substr( $open, $count );
+	    }
+	    PHPUtils::pushArray( $contents, $before );
+	    if ( strlen( $close ) > $count ) {
+	      $contents[] = substr( $close, 0, -$count );
+	    }
+	  }
+	  $innerTsr = PreprocType::HEADING->shrinkRange(
+	    new SourceRange( $this->savedPos, $p, $this->source ),
+	    $count
+	  );
+	  $trailingTsr = new SourceRange( $p, $this->currPos, $this->source );
+	  return new PreprocHeadingTk(
+	    tsr: $this->tsrOffsets(),
+	    contents: PreprocTk::newContentsKV(
+	      $contents, $innerTsr
+	    ),
+	    count: $count,
+	    trailingWS: PreprocTk::newContentsKV(
+	      $after, $trailingTsr
+	    ),
+	    headingIndex: $headingIndex ?? 0,
+	  );
+	}
+
+// Match preproc_pieces until the end of the line, and then verify
+// that the line ended with `[=]+([ \t]+|comment)*`
+preproc_heading_find_close =
+	positions:(POSITION preproc_piece<no_nl> POSITION)* {
+	  // Verify that this ended with `[=]+([ \t]+|comment)*`
+	  // whitespace and comment would have been `preproc_piece`
+	  // so we can efficiently skip backwards to check.
+	  for ( $i = count( $positions ) - 1; $i >= 0; $i-- ) {
+	    [ $start, $piece, $end ] = $positions[$i];
+	    if ($piece instanceof PreprocTk) {
+	      if ($piece->type === PreprocType::COMMENT) {
+	        // This is a comment
+	        continue;
+	      }
+	    } elseif (
+	      is_string( $piece ) &&
+	      strspn( $piece, " \t" ) === strlen( $piece )
+	    ) {
+	      // This is whitespace only
+	      continue;
+	    }
+	    break;
+	  }
+	  if ( $i < 0 ) {
+	    // This was a single string of equals signs
+	    $m = [ '', null, '' ];
+	    $headingEnd = $this->savedPos;
+	  } elseif ( !is_string( $piece ) ) {
+	    // Not a heading!
+	    return null;
+	  } else {
+	    // Check that $piece ends with at least 1 equal sign,
+	    // possibly followed by whitespace.
+	    $m = preg_split(
+	      '/(=+)(?=[ \t]*$)/', $piece, 2, PREG_SPLIT_DELIM_CAPTURE
+	    );
+	    if ( count( $m ) < 3 ) {
+	      // Not a heading!
+	      return null;
+	    }
+	    $headingEnd = $end - strlen( $m[2] );
+	  }
+	  // Now split our preproc_pieces into pieces 'before' the final
+	  // string of equals signs, the final string of equals signs,
+	  // the position of the end of that final string, then all the
+	  // pieces 'after' the equals signs.
+	  $before = [];
+	  $after = [];
+	  foreach( $positions as $j => [ $s, $piece, $e ] ) {
+	    if ( $j < $i ) {
+	      $before[] = $piece;
+	    } elseif ( $j > $i ) {
+	      $after[] = $piece;
+	    } else {
+	      if ( $m[0] !== '' ) {
+	        $before[] = $m[0];
+	      }
+	      if ( $m[2] !== '' ) {
+	        $after[] = $m[2];
+	      }
+	    }
+	  }
+	  return [ $before, $m[1], $headingEnd, $after ];
+	}
+
+/* Match an extension tag or include directive */
+preproc_piece_angle =
+	// Check for includeonly/noinclude/onlyinclude tags
+	"<"  slash:"/"? t:normalized_tag_name h:hash_part? ">" (
+	  // ignored tags end here, just the <...> is ignored
+	  &{ return $this->ignoredTags[$t] ?? false; } /
+	  // similarly, ignore just the <...> from an annotation tag
+	  &{ return WTUtils::isAnnotationTag( $this->env, $t ); } /
+	  // ignored *elements* include the entire contents, which are ignored
+	  &{ return ( !$slash ) && ( $this->ignoredElements[$t] ?? false ); }
+	  preproc_piece_angle_contents<tag=$t,hash=$h>?
+	  // The include tags are allowed to run to EOF w/o a close tag
+	  ( preproc_piece_angle_close<tag=$t,hash=$h> / eof )
+	) {
+	  return new PreprocIgnoreTk(
+	    tsr: $this->tsrOffsets(),
+	    contents: $this->text(),
+	    annotation: WTUtils::isAnnotationTag( $this->env, $t ) ? $t : null,
+	  );
+	} /
+	// All other extension tags
+	"<" p1:POSITION t:normalized_tag_name p2:POSITION h:hash_part?
+	&tag_trailing_context
+	attribs:$(preproc_piece_angle_attribs?) ">"
+	p3:POSITION
+	contents_and_close:(
+	  /* self-closed tag */
+	  &{ return str_ends_with( $attribs, "/" ); } { return [ '', null, null ]; }
+	  /
+	  (
+	     $(preproc_piece_angle_contents<tag=$t,hash=$h>?)
+	     POSITION
+	     $preproc_piece_angle_close<tag=$t,hash=$h>
+	  )
+	) {
+	  [ $contents, $p4, $close ] = $contents_and_close;
+	  if ($close === null ) {
+	    $attribs = substr( $attribs, 0, -1 ); /* remove trailing slash */
+	  }
+	  $open = substr( $this->input, $p1, $p2 - $p1 );
+	  return new PreprocAngleTk(
+	    tsr: $this->tsrOffsets(),
+	    open: $open . ( $h ?? '' ),
+	    extAttrs: $attribs,
+	    contents: PreprocTk::newContentsKV(
+	      [ $contents ], new SourceRange( $p3, $p4 ?? $p3, $this->source )
+	    ),
+	    close: $close,
+	  );
+	}
+
+// We optimize the caching of extension tag rules to avoid O(N^2)
+// backtracking in certain situations.
+
+/* This is just [^>]+ but we add cache entries after each potential tag
+ * start to prevent O(N^2) parse of `<pre <pre <pre <pre...`  */
+preproc_piece_angle_attribs [cache,inline=false] =
+	"<" tag_name &tag_trailing_context preproc_piece_angle_attribs?
+	/ [^>] [^<>]* preproc_piece_angle_attribs?
+
+/* Avoid O(N^2) for <pre><pre><pre> by adding a cache entry after every "<" */
+preproc_piece_angle_contents [cache,inline=false] =
+	[^<]+ preproc_piece_angle_contents? /
+	!preproc_piece_angle_close "<" preproc_piece_angle_contents?
+
+preproc_piece_angle_close =
+	"</" t:normalized_tag_name &<tag==$t> h:hash_part? &<hash==$h>
+	space_or_newline* ">"
+
+normalized_tag_name = name:$[^\t\n\v />\0#]+ &{
+	/* check that this is a valid extension or include tag name */
+	$lower = mb_strtolower( $name );
+	return isset( $this->extTags[$lower] ) ||
+		WTUtils::isIncludeTag( $lower ) ||
+		WTUtils::isAnnotationTag( $this->env, $lower );
+} {
+	return mb_strtolower( $name );
+}
+
+/* Supporting a hash part of extension tag is T393795 */
+hash_part = $( "#" $[^\t\n\v />\0]+ )
+
+tag_trailing_context = space_or_newline / "/>" / ">"
+
+/* <onlyinclude> processing */
+// Note that these offsets are not shifted by $pipelineOffset
+preproc_find_only_include =
+	@(preproc_only_include_ignore @preproc_only_include_region)*
+	preproc_only_include_ignore
+
+preproc_only_include_ignore =
+	( [^<]+ / !preproc_only_include_start "<" )*
+
+preproc_only_include_region =
+	h:preproc_only_include_start
+	@POSITION
+	preproc_piece_angle_contents<tag="onlyinclude",hash=$h>?
+	@POSITION
+	( preproc_piece_angle_close<tag="onlyinclude",hash=$h> / eof )
+
+preproc_only_include_start =
+	"<" t:normalized_tag_name ">" &{ return $t === 'onlyinclude'; } {
+	  return null;
+	}
 
 /***********************************************************
  * Xmlish tags
@@ -1586,7 +2050,8 @@ maybe_extension_tag =
 				$dp->src = $dp->tsr->substr( $this->input );
 				$dp->extTagOffsets = new DomSourceRange(
 					$dp->tsr->start, $dp->tsr->end,
-					$dp->tsr->length(), 0
+					$dp->tsr->length(), 0,
+					source: $this->source
 				);
 				break;
 
@@ -1658,7 +2123,8 @@ maybe_extension_tag =
 				$dp->src = $extSrc;
 				$dp->extTagOffsets = new DomSourceRange(
 					$dp->tsr->start, $extEndOffset,
-					$dp->tsr->length(), $extEndTagWidth
+					$dp->tsr->length(), $extEndTagWidth,
+					source: $dp->tsr->source
 				);
 
 				$this->currPos = $dp->extTagOffsets->end;
@@ -1788,7 +2254,7 @@ generic_newline_attribute =
 	if ( is_string( $name ) ) {
 		$name = TokenizerUtils::protectAttrs( $name );
 	}
-	$nameSO = new SourceRange( $namePos0, $namePos1 );
+	$nameSO = new SourceRange( $namePos0, $namePos1, $this->source );
 	if ( $vd !== null ) {
 		$res = new KV( $name, $vd['value'], $nameSO->join( $vd['srcOffsets'] ) );
 		$res->vsrc = $vd['srcOffsets']->substr( $this->input );
@@ -1815,7 +2281,7 @@ table_attribute =
 	if ( gettype( $name ) === 'string' ) {
 		$name = TokenizerUtils::protectAttrs( $name );
 	}
-	$nameSO = new SourceRange( $namePos0, $namePos1 );
+	$nameSO = new SourceRange( $namePos0, $namePos1, $this->source );
 	if ( $vd !== null ) {
 		$res = new KV( $name, $vd['value'], $nameSO->join( $vd['srcOffsets'] ) );
 		$res->vsrc = $vd['srcOffsets']->substr( $this->input );
@@ -1893,13 +2359,13 @@ table_attribute_name_piece =
 // These need to be kept in sync with the attribute_preprocessor_text_*
 generic_att_value =
 	s:$(space_or_newline* "'") t:attribute_preprocessor_text_single? q:$("'" / &('/'? '>')) {
-		return TokenizerUtils::getAttrVal( $t, $this->startOffset() + strlen( $s ), $this->endOffset() - strlen( $q ) );
+		return TokenizerUtils::getAttrVal( $t, $this->startOffset() + strlen( $s ), $this->endOffset() - strlen( $q ), $this->source );
 	}
 	/ s:$(space_or_newline* '"') t:attribute_preprocessor_text_double? q:$('"' / &('/'? '>')) {
-		return TokenizerUtils::getAttrVal( $t, $this->startOffset() + strlen( $s ), $this->endOffset() - strlen( $q ) );
+		return TokenizerUtils::getAttrVal( $t, $this->startOffset() + strlen( $s ), $this->endOffset() - strlen( $q ), $this->source );
 	}
 	/ s:$space_or_newline* t:attribute_preprocessor_text &(space_or_newline / eof / '/'? '>') {
-		return TokenizerUtils::getAttrVal( $t, $this->startOffset() + strlen( $s ), $this->endOffset() );
+		return TokenizerUtils::getAttrVal( $t, $this->startOffset() + strlen( $s ), $this->endOffset(), $this->source );
 	}
 
 // Attribute value, restricted to a single line.
@@ -1907,13 +2373,13 @@ generic_att_value =
 // These need to be kept in sync with the table_attribute_preprocessor_text_*
 table_att_value =
 	s:$(space* "'") t:table_attribute_preprocessor_text_single? q:$("'" / &('!!' / [|\r\n])) {
-		return TokenizerUtils::getAttrVal( $t, $this->startOffset() + strlen( $s ), $this->endOffset() - strlen( $q ) );
+		return TokenizerUtils::getAttrVal( $t, $this->startOffset() + strlen( $s ), $this->endOffset() - strlen( $q ), $this->source );
 	}
 	/ s:$(space* '"') t:table_attribute_preprocessor_text_double? q:$('"' / &('!!' / [|\r\n])) {
-		return TokenizerUtils::getAttrVal( $t, $this->startOffset() + strlen( $s ), $this->endOffset() - strlen( $q ) );
+		return TokenizerUtils::getAttrVal( $t, $this->startOffset() + strlen( $s ), $this->endOffset() - strlen( $q ), $this->source );
 	}
 	/ s:$space* t:table_attribute_preprocessor_text &(space_or_newline/ eof / '!!' / '|') {
-		return TokenizerUtils::getAttrVal( $t, $this->startOffset() + strlen( $s ), $this->endOffset() );
+		return TokenizerUtils::getAttrVal( $t, $this->startOffset() + strlen( $s ), $this->endOffset(), $this->source );
 	}
 
 /*********************************************************
@@ -1989,7 +2455,7 @@ dtdd =
 			// TSR: -1 for the intermediate ":"
 			$li2Bullets = $bullets;
 			$li2Bullets[] = ':';
-			$tsr2 = new SourceRange( $cpos - 1, $cpos );
+			$tsr2 = new SourceRange( $cpos - 1, $cpos, $this->source );
 			$dp2 = new DataParsoid;
 			$dp2->tsr = $tsr2;
 			$dp2->stx = 'row';
@@ -2115,7 +2581,7 @@ table_start_tag "table_start_tag" =
 		}
 
 		$dp = new DataParsoid;
-		$dp->tsr = new SourceRange( $this->startOffset(), $tsEndPos );
+		$dp->tsr = new SourceRange( $this->startOffset(), $tsEndPos, $this->source );
 		if ( $p !== '|' ) {
 			// Variation from default
 			$dp->startTagSrc = $b . $p;
@@ -2141,7 +2607,7 @@ table_caption_tag =
 	args:row_syntax_table_args?
 	tagEndPos:POSITION
 	c:nested_block_in_table<tableCaption>* {
-		$tsr = new SourceRange( $this->startOffset(), $tagEndPos );
+		$tsr = new SourceRange( $this->startOffset(), $tagEndPos, $this->source );
 		return TokenizerUtils::buildTableTokens(
 			$this->input, 'caption', '|+', $args, $tsr, $this->endOffset(), $c, true
 		);
@@ -2162,7 +2628,7 @@ table_row_tag =
 		}
 
 		$da = new DataParsoid;
-		$da->tsr = new SourceRange( $this->startOffset(), $tagEndPos );
+		$da->tsr = new SourceRange( $this->startOffset(), $tagEndPos, $this->source );
 		$da->startTagSrc = $p . $dashes;
 		$da->getTemp()->attrSrc = substr(
 			$this->input, $attrStartPos, $tagEndPos - $attrStartPos
@@ -2208,7 +2674,7 @@ table_heading_tag =
 		}
 	)* {
 		$tagStart = $this->startOffset();
-		$tsr = new SourceRange( $tagStart, $tagEndPos );
+		$tsr = new SourceRange( $tagStart, $tagEndPos, $this->source );
 		return TokenizerUtils::buildTableTokens(
 			$this->input, 'th', '!', $arg, $tsr, $this->endOffset(), $c
 		);
@@ -2258,7 +2724,7 @@ table_data_tag =
 	td:nested_block_in_table*
 	{
 		$tagStart = $this->startOffset();
-		$tsr = new SourceRange( $tagStart, $tagEndPos );
+		$tsr = new SourceRange( $tagStart, $tagEndPos, $this->source );
 		return TokenizerUtils::buildTableTokens(
 			$this->input, 'td', '|', $arg, $tsr, $this->endOffset(), $td
 		);
@@ -2287,7 +2753,7 @@ table_end_tag =
 	b:"}"
 	{
 		$dp = new DataParsoid;
-		$dp->tsr = new SourceRange( $this->startOffset(), $this->endOffset() );
+		$dp->tsr = $this->tsrOffsets();
 		$tblEnd = new EndTagTk( 'table', [], $dp );
 		if ( $p !== '|' ) {
 			// p+"<brace-char>" is triggering some bug in pegJS
@@ -2487,13 +2953,14 @@ include_limits =
 						$endTagWidth = strlen( $content[1] );
 						$tagOffsets = new DomSourceRange(
 							$dp->tsr->start, $endOffset,
-							$dp->tsr->length(), $endTagWidth
+							$dp->tsr->length(), $endTagWidth,
+							source: $this->source
 						);
 						$this->currPos = $tagOffsets->innerEnd();
 						$justContent = $tagOffsets->stripTags( $contentSrc );
 						// FIXME: What about the pipelineOpts of the current pipeline?
 						$tokenizer = new PegTokenizer( $this->env );
-						$tokenizer->setSourceOffsets( $tagOffsets->innerRange() );
+						$tokenizer->setSrcOffsets( $tagOffsets->innerRange() );
 						$contentToks = $tokenizer->tokenizeSync(
 							$justContent, [ 'sol' => true ]
 						);
@@ -2516,7 +2983,7 @@ include_limits =
 					// was never balanced to begin with
 					if ( strlen( $content[1] ) ) {
 						$eDp = new DataParsoid;
-						$eDp->tsr = new SourceRange( $dp->tsr->end, $dp->tsr->end );
+						$eDp->tsr = new SourceRange( $dp->tsr->end, $dp->tsr->end, $dp->tsr->source );
 						$eDp->src = $eDp->tsr->substr( $this->input );
 						$tokens[] = new SelfclosingTagTk( 'meta', [
 							new KV( 'typeof', 'mw:Includes/IncludeOnly/End' )
@@ -2754,6 +3221,6 @@ sol_prefix [inline] =
 empty_lines_with_comments =
 	p:POSITION c:(space* comment space_or_comment* newline)+ {
 		$dp = new DataParsoid;
-		$dp->tsr = new SourceRange( $p, $this->endOffset() );
+		$dp->tsr = new SourceRange( $p, $this->endOffset(), $this->source );
 		return [ new EmptyLineTk( TokenizerUtils::flattenIfArray( $c ), $dp ) ];
 	}

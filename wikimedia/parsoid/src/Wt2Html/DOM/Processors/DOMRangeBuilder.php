@@ -143,7 +143,8 @@ class DOMRangeBuilder {
 					$dsr->end + $offset,
 					$dsr->end + $offset + $len,
 					null,
-					null
+					null,
+					source: $dsr->source
 				);
 			}
 
@@ -359,8 +360,9 @@ class DOMRangeBuilder {
 			$prevTplInfo = PHPUtils::lastItem( $tplArray );
 			if ( $prevTplInfo->dsr->end < $dsr->start ) {
 				$width = $dsr->start - $prevTplInfo->dsr->end;
+				$source = $dsr->source ?? $this->frame->getSource();
 				$tplArray[] = PHPUtils::safeSubstr(
-					$this->frame->getSrcText(), $prevTplInfo->dsr->end, $width );
+					$source->getSrcText(), $prevTplInfo->dsr->end, $width );
 			}
 		}
 
@@ -714,6 +716,23 @@ class DOMRangeBuilder {
 				//     to preserve this for html2wt either. Removing this
 				//     lets us preserve DOM range continuity.
 				$n->parentNode->removeChild( $n );
+			} elseif (
+				// This is narrowly targeted hacky fix for T370751.
+				// Whitespace doesn't interfere with next-sibling CSS rules.
+				// But, if we span wrap them as below, those CSS rules break.
+				// Here, we strip such newlines instead of span-wrapping them
+				// in the narrow case where they show up between block tags and
+				// the following block tag is a wikitext list or a table since
+				// the template cannot be edited to strip those newlines - they are
+				// essential for the lists / tables to be rendered as such.
+				$n instanceof Text &&
+				$n->textContent === "\n" &&
+				DOMUtils::isWikitextBlockNode( $n->previousSibling ) &&
+				// Narrow set of sol-based wikitext constructs
+				in_array( DOMUtils::nodeName( $n->nextSibling ), [ 'ul', 'ol', 'table' ], true ) &&
+				!WTUtils::isLiteralHTMLNode( $n->nextSibling )
+			) {
+				$n->parentNode->removeChild( $n );
 			} else {
 				// Add a span wrapper to let us add about-ids to represent
 				// the DOM range as a contiguous chain of DOM nodes.
@@ -989,9 +1008,10 @@ class DOMRangeBuilder {
 						$encapDP->firstWikitextNode = $ftn;
 					}
 					$width = $firstTplInfo->dsr->start - $dp1DSR->start;
+					$source = $dp1DSR->source ?? $this->frame->getSource();
 					array_unshift(
 						$tplArray,
-						PHPUtils::safeSubstr( $this->frame->getSrcText(), $dp1DSR->start, $width )
+						PHPUtils::safeSubstr( $source->getSrcText(), $dp1DSR->start, $width )
 					);
 				}
 
@@ -1000,7 +1020,8 @@ class DOMRangeBuilder {
 				$lastTplInfo = PHPUtils::lastItem( $tplArray );
 				if ( $lastTplInfo->dsr->end < $dp1DSR->end ) {
 					$width = $dp1DSR->end - $lastTplInfo->dsr->end;
-					$tplArray[] = PHPUtils::safeSubstr( $this->frame->getSrcText(), $lastTplInfo->dsr->end, $width );
+					$source = $lastTplInfo->dsr->source ?? $this->frame->getSource();
+					$tplArray[] = PHPUtils::safeSubstr( $source->getSrcText(), $lastTplInfo->dsr->end, $width );
 				}
 
 				// Map the array of { dsr: .. , args: .. } objects to just the args property
@@ -1100,7 +1121,7 @@ class DOMRangeBuilder {
 					$encapDP->dsr->end = $dp1DSR->end;
 				}
 				$encapDP->src = $encapDP->dsr->substr(
-					$this->frame->getSrcText()
+					$this->frame->getSource()
 				);
 			}
 

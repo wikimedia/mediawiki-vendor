@@ -13,32 +13,22 @@ use Wikimedia\Parsoid\Wt2Html\TT\TokenHandler;
 
 /**
  * This represents the abstract interface for a wt2html parsing pipeline stage
- * Currently there are 4 known pipeline stages:
- * - PEG Tokenizer
- * - Token Transform Manager
- * - HTML5 Tree Builder
- * - DOM Post Processor
- *
- * The Token Transform Manager could eventually go away and be directly replaced by
- * the very many token transformers that are represented by the abstract TokenHandler class.
+ * Currently there are four known pipeline stages:
+ * - PEGTokenizer
+ * - TokenHandlerPipeline
+ * - TreeBuilder/TreeBuilderStage ( Remex-based HTML5 Tree Builder )
+ * - DOMProcessorPipeline
  */
 abstract class PipelineStage {
-	/**
-	 * This is primarily a debugging aid.
-	 * @var int
-	 */
-	protected $pipelineId = -1;
-
-	/** @var Env */
-	protected $env = null;
-
+	/** This is primarily a debugging aid. */
+	protected ?int $pipelineId = -1;
+	protected ?Env $env = null;
 	/** Defaults to false and resetState initializes it */
 	protected bool $atTopLevel = false;
-
 	protected bool $toFragment = true;
-
-	/** @var Frame */
-	protected $frame;
+	/** Both these default to null and are set by helper methods */
+	protected ?Frame $frame = null;
+	protected ?SourceRange $srcOffsets = null;
 
 	public function __construct( Env $env ) {
 		$this->env = $env;
@@ -58,10 +48,6 @@ abstract class PipelineStage {
 
 	/**
 	 * Register a token transformer
-	 *
-	 * @param TokenHandler $t
-	 *
-	 * @return never
 	 */
 	public function addTransformer( TokenHandler $t ): void {
 		throw new \BadMethodCallException( "This pipeline stage doesn't accept token transformers." );
@@ -70,8 +56,6 @@ abstract class PipelineStage {
 	/**
 	 * Resets any internal state for this pipeline stage.
 	 * This is usually called so a cached pipeline can be reused.
-	 *
-	 * @param array $options
 	 */
 	public function resetState( array $options ): void {
 		/* Default implementation */
@@ -81,22 +65,23 @@ abstract class PipelineStage {
 
 	/**
 	 * Set frame on this pipeline stage
-	 * @param Frame $frame Pipeline frame
 	 */
 	public function setFrame( Frame $frame ): void {
 		$this->frame = $frame;
 	}
 
 	/**
-	 * Set the source offsets for the content being processing by this pipeline
+	 * Set the source offsets for the content being processed by this pipeline.
 	 * This matters for when a substring of the top-level page is being processed
 	 * in its own pipeline. This ensures that all source offsets assigned to tokens
 	 * and DOM nodes in this stage are relative to the top-level page.
-	 *
-	 * @param SourceRange $so
 	 */
-	public function setSourceOffsets( SourceRange $so ): void {
-		/* Default implementation: Do nothing */
+	public function setSrcOffsets( SourceRange $srcOffsets ): void {
+		$this->srcOffsets = $srcOffsets;
+	}
+
+	public function getSrcOffsets(): ?SourceRange {
+		return $this->srcOffsets;
 	}
 
 	/**

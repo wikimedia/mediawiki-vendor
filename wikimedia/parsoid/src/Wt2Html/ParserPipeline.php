@@ -79,17 +79,17 @@ class ParserPipeline {
 	/**
 	 * Set source offsets for the source that this pipeline will process.
 	 *
-	 * This lets us use different pipelines to parse fragments of the same page
+	 * This lets us use different pipelines to parse fragments of the same page.
 	 * Ex: extension content (found on the same page) is parsed with a different
 	 * pipeline than the top-level page.
 	 *
 	 * Because of this, the source offsets are not [0, page.length) always
 	 * and needs to be explicitly initialized
 	 *
-	 * @param SourceRange $so
+	 * @param SourceRange $srcOffsets
 	 */
-	public function setSourceOffsets( SourceRange $so ): void {
-		$this->applyToStage( 'setSourceOffsets', $so );
+	public function setSrcOffsets( SourceRange $srcOffsets ): void {
+		$this->applyToStage( 'setSrcOffsets', $srcOffsets );
 	}
 
 	/**
@@ -230,12 +230,14 @@ class ParserPipeline {
 			'tplInfo' => $initialState['tplInfo'] ?? null,
 		] );
 
-		// Set frame
 		$frame = $initialState['frame'];
-
-		if ( !$this->atTopLevel || isset( $initialState['srcText'] ) ) {
+		$newSource = $initialState['srcOffsets']->source ?? $frame->getSource();
+		// Eventually we will disentangle the Frame from the Source and
+		// we won't have to create a new Frame if the only difference is
+		// the $newSource -- but for now, lets ensure that Frame::getSrcText()
+		// matches $srcOffsets->source->getSrcText()
+		if ( !$this->atTopLevel || $newSource !== $frame->getSource() ) {
 			$tplArgs = $initialState['tplArgs'] ?? null;
-			$srcText = $initialState['srcText'] ?? $frame->getSrcText();
 			if ( isset( $tplArgs['title'] ) ) {
 				$title = $tplArgs['title'];
 				$args = $tplArgs['attribs']; // KV[]
@@ -243,14 +245,13 @@ class ParserPipeline {
 				$title = $frame->getTitle();
 				$args = $frame->getArgs()->args; // KV[]
 			}
-			$frame = $frame->newChild( $title, $args, $srcText );
+			$frame = $frame->newChild( $title, $args, $newSource );
 		}
-		$this->setFrame( $frame );
 
-		// Set source offsets for this pipeline's content
-		$srcOffsets = $initialState['srcOffsets'] ?? null;
-		if ( $srcOffsets ) {
-			$this->setSourceOffsets( $srcOffsets );
-		}
+		$this->setFrame( $frame );
+		$this->setSrcOffsets(
+			$initialState['srcOffsets'] ??
+				SourceRange::fromSource( $frame->getSource() )
+		);
 	}
 }
