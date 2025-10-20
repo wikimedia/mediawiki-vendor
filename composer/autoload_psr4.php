@@ -30,6 +30,7 @@ return array(
     'Wikimedia\\AtEase\\' => array($vendorDir . '/wikimedia/at-ease/src'),
     'Wikimedia\\Assert\\' => array($vendorDir . '/wikimedia/assert/src'),
     'Wikimedia\\' => array($vendorDir . '/wikimedia/scoped-callback/src', $vendorDir . '/wikimedia/ip-utils/src', $vendorDir . '/wikimedia/php-session-serializer/src', $vendorDir . '/wikimedia/relpath/src', $vendorDir . '/wikimedia/running-stat/src', $vendorDir . '/wikimedia/wait-condition-loop/src', $vendorDir . '/wikimedia/wrappedstring/src'),
+    'Symfony\\Polyfill\\Php85\\' => array($vendorDir . '/symfony/polyfill-php85'),
     'Symfony\\Polyfill\\Php84\\' => array($vendorDir . '/symfony/polyfill-php84'),
     'Symfony\\Polyfill\\Php83\\' => array($vendorDir . '/symfony/polyfill-php83'),
     'Symfony\\Polyfill\\Php82\\' => array($vendorDir . '/symfony/polyfill-php82'),
