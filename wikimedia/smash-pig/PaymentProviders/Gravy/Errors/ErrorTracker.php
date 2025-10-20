@@ -123,7 +123,7 @@ class ErrorTracker {
 				$this->connection = $this->createRedisClient();
 			}
 
-			$redisSetKey = $this->generateRedisErrorKey( $error['error_code'] );
+			$redisHashKey = $this->generateRedisErrorKey( $error['error_code'] );
 			$transactionId = $error['sample_transaction_id'] ?? null;
 			$transactionSummary = $error['sample_transaction_summary'] ?? null;
 
@@ -133,15 +133,9 @@ class ErrorTracker {
 				] );
 			}
 
-			// Serialize transaction data for redis
-			$errorTransactionData = json_encode( [
-				'id' => $transactionId,
-				'summary' => $transactionSummary
-			], JSON_THROW_ON_ERROR );
-
-			// SADD returns 1 if new member, 0 if already exists
-			$wasAdded = $this->connection->sadd( $redisSetKey, [ $errorTransactionData ] );
-			$currentCount = $this->connection->scard( $redisSetKey );
+			// HSET returns 1 if new member, 0 if already exists
+			$wasAdded = $this->connection->hset( $redisHashKey, $transactionId, $transactionSummary );
+			$currentCount = $this->connection->hlen( $redisHashKey );
 
 			if ( $wasAdded ) {
 				Logger::info( 'Error transaction tracked in redis', [
@@ -161,7 +155,7 @@ class ErrorTracker {
 
 			// Set expiration on first entry (when count is 1 after adding)
 			if ( $currentCount === 1 ) {
-				$this->connection->expire( $redisSetKey, $this->keyExpiryPeriod );
+				$this->connection->expire( $redisHashKey, $this->keyExpiryPeriod );
 			}
 
 			return $currentCount;
@@ -183,19 +177,16 @@ class ErrorTracker {
 				$this->connection = $this->createRedisClient();
 			}
 
-			$fraudSetKey = $this->keyPrefix . self::SUSPECTED_FRAUD_ERROR_CODE . ":{$timeSlot}";
+			$fraudHashKey = $this->keyPrefix . self::SUSPECTED_FRAUD_ERROR_CODE . ":{$timeSlot}";
 			$fraudTransactions = [];
-			$serializedTransactions = $this->connection->smembers( $fraudSetKey );
+			$serializedTransactions = $this->connection->hgetall( $fraudHashKey );
 
-			foreach ( $serializedTransactions as $data ) {
-				$decoded = json_decode( $data, true, 512, JSON_THROW_ON_ERROR );
-				if ( $decoded ) {
-					// Format for email compatibility
-					$fraudTransactions[] = [
-						'id' => $decoded['id'],
-						'summary' => $decoded['summary'] ?? ''
-					];
-				}
+			foreach ( $serializedTransactions as $id => $summary ) {
+				// Format for email compatibility
+				$fraudTransactions[] = [
+					'id' => $id,
+					'summary' => $summary ?? ''
+				];
 			}
 			return $fraudTransactions;
 		} catch ( \Exception $ex ) {

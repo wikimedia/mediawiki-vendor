@@ -18,7 +18,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessSettlementDetailDonation() {
 		$processor = new AdyenSettlementDetailReport();
 		$output = $processor->parseFile( __DIR__ . '/../Data/settlement_detail_report_donation.csv' );
-		$this->assertCount( 1, $output, 'Should have found one donation' );
+		$this->assertCount( 2, $output, 'Should have found one donation and one payout row' );
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'adyen',
@@ -41,9 +41,9 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'settled_currency' => 'USD',
 			'original_currency' => 'USD',
 			'original_total_amount' => 1.0,
-			'original_fee_amount' => 0.24,
+			'original_fee_amount' => -0.24,
 			'original_net_amount' => 0.76,
-			'settled_fee_amount' => 0.24,
+			'settled_fee_amount' => -0.24,
 			'settled_net_amount' => 0.76,
 			'settled_total_amount' => 1.0,
 		];
@@ -56,7 +56,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessSettlementDetailDonationReordered() {
 		$processor = new AdyenSettlementDetailReport();
 		$output = $processor->parseFile( __DIR__ . '/../Data/settlement_detail_report_donation_reordered.csv' );
-		$this->assertCount( 1, $output, 'Should have found one donation' );
+		$this->assertCount( 2, $output, 'Should have found one donation row and one payout row' );
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'adyen',
@@ -80,9 +80,9 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'settled_currency' => 'USD',
 			'original_currency' => 'USD',
 			'original_total_amount' => 1.0,
-			'original_fee_amount' => 0.24,
+			'original_fee_amount' => -0.24,
 			'original_net_amount' => 0.76,
-			'settled_fee_amount' => 0.24,
+			'settled_fee_amount' => -0.24,
 			'settled_net_amount' => 0.76,
 			'settled_total_amount' => 1.0,
 		];
@@ -95,7 +95,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessDonationIdeal() {
 		$processor = new AdyenSettlementDetailReport();
 		$output = $processor->parseFile( __DIR__ . '/../Data/settlement_detail_report_donation-ideal.csv' );
-		$this->assertCount( 1, $output, 'Should have found one donation' );
+		$this->assertCount( 2, $output, 'Should have found one donation and one payout row' );
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'adyen',
@@ -119,9 +119,9 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'settled_currency' => 'USD',
 			'original_currency' => 'EUR',
 			'original_total_amount' => 5.35,
-			'original_fee_amount' => 0.25,
+			'original_fee_amount' => -0.25,
 			'original_net_amount' => 5.1,
-			'settled_fee_amount' => 0.27,
+			'settled_fee_amount' => -0.27,
 			'settled_net_amount' => 5.43,
 			'settled_total_amount' => 5.7,
 		];
@@ -134,7 +134,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessDonationAch() {
 		$processor = new AdyenSettlementDetailReport();
 		$output = $processor->parseFile( __DIR__ . '/../Data/settlement_detail_report_donation-ach.csv' );
-		$this->assertCount( 1, $output, 'Should have found one donation' );
+		$this->assertCount( 2, $output, 'Should have found one donation row and one payout row' );
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'adyen',
@@ -158,9 +158,9 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'settled_currency' => 'USD',
 			'original_currency' => 'USD',
 			'original_total_amount' => 1,
-			'original_fee_amount' => 0.22,
+			'original_fee_amount' => -0.22,
 			'original_net_amount' => 0.78,
-			'settled_fee_amount' => 0.22,
+			'settled_fee_amount' => -0.22,
 			'settled_net_amount' => 0.78,
 			'settled_total_amount' => 1,
 		];
@@ -173,7 +173,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessSettlementDetailRefund() {
 		$processor = new AdyenSettlementDetailReport();
 		$output = $processor->parseFile( __DIR__ . '/../Data/settlement_detail_report_refund.csv' );
-		$this->assertCount( 1, $output, 'Should have found one refund' );
+		$this->assertCount( 3, $output, 'Should have found one refund and one fee row and one payout row' );
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'adyen',
@@ -212,13 +212,13 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessSettlementDetailChargeback() {
 		$processor = new AdyenSettlementDetailReport();
 		$output = $processor->parseFile( __DIR__ . '/../Data/settlement_detail_report_chargeback.csv' );
-		$this->assertCount( 1, $output, 'Should have found one chargeback' );
+		$this->assertCount( 3, $output, 'Should have found one chargeback and one fee row and one payout row' );
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'adyen',
 			'audit_file_gateway' => 'adyen',
 			'gateway_account' => 'WikimediaCOM',
-			'contribution_tracking_id' => '92598318',
+			'contribution_tracking_id' => 92598318,
 			'date' => 1455128736,
 			'gross' => '1.00',
 			'gateway_parent_id' => '4555568860022701',
@@ -231,16 +231,54 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'payment_submethod' => 'visa',
 			'settlement_batch_reference' => '3',
 			'exchange_rate' => 1,
-			'fee' => -2.0,
+			'fee' => '-2.00',
 			'settled_date' => null,
 			'settled_currency' => 'USD',
 			'original_currency' => 'USD',
-			'original_fee_amount' => -2.0,
-			'original_net_amount' => -1.0,
-			'original_total_amount' => -3.0,
-			'settled_fee_amount' => -2.0,
-			'settled_net_amount' => -1.0,
-			'settled_total_amount' => -3.0,
+			'original_fee_amount' => '-2.00',
+			'original_net_amount' => '-3.00',
+			'original_total_amount' => '-1.00',
+			'settled_fee_amount' => '-2.00',
+			'settled_net_amount' => '-3.00',
+			'settled_total_amount' => '-1.00',
+		];
+		$this->assertEquals( $expected, $actual, 'Did not parse chargeback correctly' );
+	}
+
+	/**
+	 * And a chargeback
+	 */
+	public function testProcessSettlementDetailChargebackReversal() {
+		$processor = new AdyenSettlementDetailReport();
+		$output = $processor->parseFile( __DIR__ . '/../Data/settlement_detail_report_chargeback_reversed.csv' );
+		$actual = $output[0];
+		$expected = [
+			'gateway' => 'adyen',
+			'audit_file_gateway' => 'adyen',
+			'gateway_account' => 'WikimediaCOM',
+			'contribution_tracking_id' => 92598312,
+			'date' => 1455128736,
+			'gross' => '52',
+			'invoice_id' => '92598312.0',
+			'type' => 'chargeback_reversed',
+			'gateway_txn_id' => '4522268860022701',
+			'payment_method' => 'cc',
+			'payment_submethod' => 'visa',
+			'settlement_batch_reference' => '3',
+			'exchange_rate' => 1,
+			'fee' => 0.11,
+			'settled_date' => null,
+			'settled_currency' => 'USD',
+			'original_currency' => 'USD',
+			'currency' => 'USD',
+			'original_fee_amount' => -0.11,
+			'original_net_amount' => 51.89,
+			'settled_gross' => '51.89',
+			'original_total_amount' => 52,
+			'settled_fee_amount' => -0.11,
+			'settled_net_amount' => 51.89,
+			'settled_total_amount' => 52,
+			'modification_reference' => '4522268869855336',
 		];
 		$this->assertEquals( $expected, $actual, 'Did not parse chargeback correctly' );
 	}
@@ -269,9 +307,13 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'settlement_batch_reference' => null,
 			'exchange_rate' => 1,
 			'original_currency' => 'USD',
+			'original_total_amount' => '10.40',
+			'original_net_amount' => '10.02',
 			'original_fee_amount' => 0.38,
-			'settled_total_amount' => 10.02,
+			'settled_total_amount' => 10.40,
+			'settled_net_amount' => '10.02',
 			'settled_fee_amount' => 0.38,
+			'settled_date' => 1694092254,
 		];
 		$this->assertEquals( $expected, $actual, 'Did not parse donation correctly' );
 	}
@@ -285,8 +327,21 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'gateway' => 'adyen',
 			'audit_file_gateway' => 'adyen',
 			'gateway_account' => 'WikimediaDonations',
-			'gross' => 13.43,
+			// We are looking at a 'Main Amount' (net_amount) of 23.87
+			// this is what was deducted from 'us'
+			// less $10.65 + .21 fees (10.86) fee_amount
+			// = 13.01 total_amount - / gross - this is what the donor received back
+			'gross' => 13.01,
+			'settled_net_amount' => -23.87,
+			'settled_fee_amount' => -10.86,
+			'settled_total_amount' => -13.01,
+			'original_net_amount' => -23.87,
+			'original_total_amount' => -13.01,
+			'original_fee_amount' => -10.86,
 			'contribution_tracking_id' => '189748459',
+			'settled_currency' => 'USD',
+			'exchange_rate' => 1,
+			'original_currency' => 'USD',
 			'gross_currency' => 'USD',
 			'gateway_refund_id' => 'ASDF5ASDF4QWER3A',
 			'gateway_parent_id' => 'DASD76ASD7ASD4AS',
@@ -297,9 +352,48 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'type' => 'chargeback',
 			'gateway_txn_id' => 'DASD76ASD7ASD4AS',
 			'settlement_batch_reference' => null,
-			'exchange_rate' => 1,
+			'settled_date' => 1697133875,
+		];
+		$this->assertEquals( $expected, $actual, 'Did not parse donation correctly' );
+	}
+
+	public function testProcessPaymentsAccountingGravyChargeback() {
+		$processor = new AdyenPaymentsAccountingReport();
+		$output = $processor->parseFile( __DIR__ . '/../Data/payments_accounting_report_gravy_chargeback.csv' );
+		$this->assertCount( 1, $output );
+		$actual = $output[0];
+		$expected = [
+			'gateway' => 'gravy',
+			'audit_file_gateway' => 'adyen',
+			'gateway_account' => 'WikimediaDonations',
+			// We refunded 1.75 and paid a fee of $7.99 making our net 9.74
+			'gross' => 1.75,
+			'original_net_amount' => -9.74,
+			'settled_fee_amount' => -7.99,
+			'settled_total_amount' => -1.75,
+			'settled_net_amount' => -9.74,
+			'settled_currency' => 'USD',
+			'original_total_amount' => -1.75,
+			'original_fee_amount' => -7.99,
+			'contribution_tracking_id' => '900000',
 			'original_currency' => 'USD',
-			'original_total_amount' => 13.43,
+			'gross_currency' => 'USD',
+			'invoice_id' => '900000.1',
+			'payment_method' => 'cc',
+			'payment_submethod' => 'mc',
+			'date' => 1697133875,
+			'type' => 'chargeback',
+			'gateway_txn_id' => '3f9c958c-ee57-4121-a79e-408946b27077',
+			'settlement_batch_reference' => '1131',
+			'email' => 'mail@example.com',
+			'contribution_tracking_id' => '900000',
+			'exchange_rate' => '1',
+			'backend_processor_txn_id' => 'DASD76ASD7ASD4AS',
+			'backend_processor' => 'adyen',
+			'payment_orchestrator_reconciliation_id' => '1w24hGOdCSFLtsgBQr2jKh',
+			'backend_processor_parent_id' => 'DASD76ASD7ASD4AS',
+			'backend_processor_refund_id' => 'ASDF5ASDF4QWER3A',
+			'settled_date' => 1697133875,
 		];
 		$this->assertEquals( $expected, $actual, 'Did not parse donation correctly' );
 	}
@@ -307,7 +401,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testPresentMerchantReference() {
 		$processor = new AdyenSettlementDetailReport();
 		$output = $processor->parseFile( __DIR__ . '/../Data/settlement_detail_report_ignore.csv' );
-		$this->assertCount( 1, $output );
+		$this->assertCount( 2, $output );
 		$this->assertEquals( 'adyen', $output[0]['audit_file_gateway'] );
 		$this->assertEquals( 'gravy', $output[0]['gateway'] );
 	}

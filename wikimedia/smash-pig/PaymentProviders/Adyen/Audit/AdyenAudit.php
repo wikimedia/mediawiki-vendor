@@ -5,6 +5,7 @@ use SmashPig\Core\DataFiles\AuditParser;
 use SmashPig\Core\Logging\Logger;
 use SmashPig\Core\NormalizationException;
 use SmashPig\Core\UtcDate;
+use SmashPig\PaymentProviders\Adyen\AdyenCurrencyRoundingHelper;
 use SmashPig\PaymentProviders\Adyen\ReferenceData;
 
 /**
@@ -20,7 +21,6 @@ abstract class AdyenAudit implements AuditParser {
 	protected static $ignoredTypes = [
 		'misccosts',
 		'merchantpayout',
-		'chargebackreversed', // oh hey, we could try to handle these
 		'refundedreversed',
 		'depositcorrection',
 		'invoicededuction',
@@ -108,24 +108,26 @@ abstract class AdyenAudit implements AuditParser {
 		$row = array_combine( $this->columnHeaders, $line );
 		$type = strtolower( $row[$this->type] );
 		if ( $type === 'fee' ) {
-			return $this->getFeeTransaction( $row );
+			$this->fileData[] = $this->getFeeTransaction( $row );
+			return;
+		}
+		if ( $type === 'merchantpayout' ) {
+			$this->fileData[] = $this->getPayoutTransaction( $row );
+			return;
 		}
 		if ( in_array( $type, self::$ignoredTypes ) ) {
 			return;
 		}
-		$merchantReference = $row[$this->merchantReference];
 
 		$msg = $this->setCommonValues( $row );
-		if ( $this->isOrchestratorMerchantReference( $row ) ) {
-			$msg['backend_processor_txn_id'] = $row['Psp Reference'];
-			$msg['backend_processor'] = 'adyen';
-			$msg['payment_orchestrator_reconciliation_id'] = $merchantReference;
-			$msg['contribution_tracking_id'] = null;
-		}
 
 		switch ( $type ) {
-			// Amex has externally in the type name
+			case 'chargebackreversed':
+				// Set the type and then treat as normal donation.
+				$msg['type'] = 'chargeback_reversed';
+				// fall through
 			case 'settled':
+				// Amex has externally in the type name
 			case 'settledexternally':
 				$msg = $this->parseDonation( $row, $msg );
 				break;
@@ -141,6 +143,43 @@ abstract class AdyenAudit implements AuditParser {
 		}
 
 		$this->fileData[] = $msg;
+	}
+
+	public function getOrchestratorMetadata( $row ): array {
+		return json_decode( $row['Metadata'] ?? '{}', true ) ?? [];
+	}
+
+	protected function parseCommonRefundValues( array $row, array $msg, string $messageType, string $modificationReference ): array {
+		if ( in_array( strtolower( $messageType ), [ 'chargeback', 'secondchargeback' ] ) ) {
+			$msg['type'] = 'chargeback';
+		} else {
+			$msg['type'] = 'refund';
+		}
+
+		if ( $this->isOrchestratorMerchantReference( $row ) ) {
+			$msg['backend_processor_parent_id'] = $row['Psp Reference'];
+			$msg['backend_processor_refund_id'] = $modificationReference;
+		} else {
+			$msg['gateway_parent_id'] = $row['Psp Reference'];
+			$msg['gateway_refund_id'] = $modificationReference;
+		}
+
+		// This is REALLY confusing - but in the Adyen Settlement csv
+		// we can find (e.g) a USD row like
+		// Net Debit (NC)   = 15.65 (settled_total_amount)
+		// Markup (NC)      = 10.65 (settled_fee_amount)
+		// Gross Debit (GC) = 5     (settled_net_amount)
+		// In this case we hit a chargeback where $5 USD was returned to the donor
+		// We were charged $10.65 as a charge back penantly and
+		// $15.65 is charged to us in total. If it were not USD Gross Debit (GC) would be
+		// in the original currency.
+		$msg['settled_fee_amount'] = AdyenCurrencyRoundingHelper::round( -$this->getFee( $row ), $msg['settled_currency'] );
+		$msg['settled_total_amount'] = AdyenCurrencyRoundingHelper::round( $msg['settled_net_amount'] - $msg['settled_fee_amount'], $msg['settled_currency'] );
+		$msg['fee'] = $msg['settled_fee_amount'] ? AdyenCurrencyRoundingHelper::round( $msg['settled_fee_amount'] / $msg['exchange_rate'], $msg['settled_currency'] ) : 0;
+		$msg['original_total_amount'] = AdyenCurrencyRoundingHelper::round( -( (float)$msg['gross'] ), $msg['original_currency'] );
+		$msg['original_fee_amount'] = AdyenCurrencyRoundingHelper::round( $msg['fee'], $msg['original_currency'] );
+		$msg['original_net_amount'] = AdyenCurrencyRoundingHelper::round( $msg['original_total_amount'] + $msg['original_fee_amount'], $msg['original_currency'] );
+		return $msg;
 	}
 
 	public function getGravyGatewayTransactionId( array $row ): ?string {
@@ -160,6 +199,25 @@ abstract class AdyenAudit implements AuditParser {
 		}
 	}
 
+	protected function getInvoiceId( array $row ): string {
+		if ( $this->isOrchestratorMerchantReference( $row ) ) {
+			$metadata = $this->getOrchestratorMetadata( $row );
+			if ( isset( $metadata['gr4vy_tx_ref'] ) ) {
+				return $metadata['gr4vy_tx_ref'];
+			}
+		}
+		return $row['Merchant Reference'];
+	}
+
+	protected function getContributionTrackingId( array $row ): ?int {
+		$invoiceId = $this->getInvoiceId( $row );
+		if ( ( !strpos( $invoiceId, '.' ) && !is_numeric( $invoiceId ) ) ) {
+			return null;
+		}
+		$parts = explode( '.', $invoiceId );
+		return $parts[ 0 ];
+	}
+
 	/**
 	 * these column names are shared between SettlementDetail and PaymentsAccounting reports
 	 */
@@ -168,23 +226,35 @@ abstract class AdyenAudit implements AuditParser {
 			'gateway' => $this->isOrchestratorMerchantReference( $row ) ? 'gravy' : 'adyen',
 			'audit_file_gateway' => 'adyen',
 			'gateway_account' => $row['Merchant Account'],
-			'invoice_id' => $row['Merchant Reference'],
+			'invoice_id' => $this->getInvoiceId( $row ),
 			'gateway_txn_id' => $this->getGatewayTransactionId( $row ),
-			'settlement_batch_reference' => $row['Batch Number'] ?? null,
+			'settlement_batch_reference' => $row['Batch Number'] ?? $row['Payable Batch'] ?? null,
 			'exchange_rate' => $row['Exchange Rate']
 		];
-		$parts = explode( '.', $row['Merchant Reference'] );
-		$msg['contribution_tracking_id'] = $parts[0];
+
+		$msg['settled_date'] = empty( $row['Booking Date'] ) ? null : UtcDate::getUtcTimestamp( $row['Booking Date'], $row['Booking Date TimeZone'] ?? $row['TimeZone'] );
+
+		$msg['contribution_tracking_id'] = $this->getContributionTrackingId( $row );
 
 		[ $method, $submethod ] = ReferenceData::decodePaymentMethod(
 			$row['Payment Method'],
 			$row['Payment Method Variant']
 		);
+		if ( $this->getEmail( $row ) ) {
+			$msg['email'] = $this->getEmail( $row );
+		}
+
 		$msg['payment_method'] = $method;
 		$msg['payment_submethod'] = $submethod;
 		// Both reports have the Creation Date in PDT, the payments accounting report does not
 		// send the timezone as a separate column
 		$msg['date'] = UtcDate::getUtcTimestamp( $row[$this->date], $row['TimeZone'] );
+
+		if ( $this->isOrchestratorMerchantReference( $row ) ) {
+			$msg['backend_processor_txn_id'] = $row['Psp Reference'];
+			$msg['backend_processor'] = 'adyen';
+			$msg['payment_orchestrator_reconciliation_id'] = $row[$this->merchantReference];
+		}
 
 		return $msg;
 	}
@@ -201,6 +271,16 @@ abstract class AdyenAudit implements AuditParser {
 	}
 
 	protected function getFeeTransaction( array $row ): ?array {
+		return null;
+	}
+
+	protected function getEmail( array $row ): ?string {
+		if ( $this->isOrchestratorMerchantReference( $row ) ) {
+			$metadata = $this->getOrchestratorMetadata( $row );
+			if ( isset( $metadata['gr4vy_buy_ref'] ) ) {
+				return $metadata['gr4vy_buy_ref'] ?: null;
+			}
+		}
 		return null;
 	}
 }

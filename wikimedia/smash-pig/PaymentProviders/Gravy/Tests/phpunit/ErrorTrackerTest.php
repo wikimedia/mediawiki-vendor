@@ -47,20 +47,21 @@ class ErrorTrackerTest extends BaseGravyTestCase {
 
 		// The Redis client uses magic method __call to dynamically handle Redis commands.
 		// We mock __call instead of individual methods because the Redis client doesn't
-		// actually have concrete methods for commands like 'sadd', 'scard', etc.
+		// actually have concrete methods for commands like 'hset', 'hlen', etc.
 		// These commands are intercepted by __call and forwarded to Redis.
-		// Calls: sadd (returns 1, new item), scard (returns 1, below threshold), expire (set redis key TTL for first occurrence)
+		// Calls: hset (returns 1, new item), hlen (returns 1, below threshold), expire (set redis key TTL for first occurrence)
 		$this->mockRedisClient->expects( $this->exactly( 3 ) )
 			->method( '__call' )
 			->willReturnCallback( function ( $method, $args ) use ( $testTransactionId ) {
-				if ( $method === 'sadd' ) {
+				if ( $method === 'hset' ) {
 					$expectedSetKeyPattern = '^gravy_error_threshold_invalid_payment_method:\d+';
-					$expectedValue = '{"id":"' . $testTransactionId . '","summary":" - Adyen, 206065365.1, EUR 15.00, via card, from FR"}';
+					$expectedValue = ' - 206065365.1, EUR 15.00, via card';
 					$this->assertTrue( (bool)preg_match( "/$expectedSetKeyPattern/", $args[0] ) );
-					$this->assertSame( [ $expectedValue ], $args[1] ); // sadd expects an array of values
+					$this->assertEquals( $testTransactionId, $args[1] );
+					$this->assertSame( $expectedValue, $args[2] );
 					return 1;
 				}
-				if ( $method === 'scard' ) {
+				if ( $method === 'hlen' ) {
 					return 1; // simulate set reporting it has 1 item
 				}
 				if ( $method === 'expire' ) {
@@ -91,14 +92,14 @@ class ErrorTrackerTest extends BaseGravyTestCase {
 
 		// The Redis client uses magic method __call to dynamically handle Redis commands.
 		// We mock __call instead of individual methods because the Redis client doesn't
-		// actually have concrete methods for commands like 'sadd', 'scard', etc.
+		// actually have concrete methods for commands like 'hset', 'hlen', etc.
 		// These commands are intercepted by __call and forwarded to Redis.
-		// Calls: sadd (returns 1, new item), scard (returns 1, first occurrence), expire (set redis key TTL)
+		// Calls: hset (returns 1, new item), hlen (returns 1, first occurrence), expire (set redis key TTL)
 		$this->mockRedisClient->expects( $this->exactly( 3 ) )
 			->method( '__call' )
 			->withConsecutive(
-				[ 'sadd', $this->anything() ],
-				[ 'scard', $this->anything() ],
+				[ 'hset', $this->anything() ],
+				[ 'hlen', $this->anything() ],
 				[ 'expire', $this->anything() ]
 			)
 			->willReturnOnConsecutiveCalls( 1, 1, true );
@@ -123,14 +124,14 @@ class ErrorTrackerTest extends BaseGravyTestCase {
 
 		// The Redis client uses magic method __call to dynamically handle Redis commands.
 		// We mock __call instead of individual methods because the Redis client doesn't
-		// actually have concrete methods for commands like 'sadd', 'scard', etc.
+		// actually have concrete methods for commands like 'hset', 'hlen', etc.
 		// These commands are intercepted by __call and forwarded to Redis.
-		// Calls: sadd (returns 0, already exists), scard (returns 5, subsequent occurrence - no expire called)
+		// Calls: hset (returns 0, already exists), hlen (returns 5, subsequent occurrence - no expire called)
 		$this->mockRedisClient->expects( $this->exactly( 2 ) )
 			->method( '__call' )
 			->withConsecutive(
-				[ 'sadd', $this->anything() ],
-				[ 'scard', $this->anything() ]
+				[ 'hset', $this->anything() ],
+				[ 'hlen', $this->anything() ]
 			)
 			->willReturnOnConsecutiveCalls( 0, 5 ); // Already exists, set has 5 items
 
@@ -151,16 +152,16 @@ class ErrorTrackerTest extends BaseGravyTestCase {
 
 		// The Redis client uses magic method __call to dynamically handle Redis commands.
 		// We mock __call instead of individual methods because the Redis client doesn't
-		// actually have concrete methods for commands like 'sadd', 'scard', etc.
+		// actually have concrete methods for commands like 'hset', 'hlen', etc.
 		// These commands are intercepted by __call and forwarded to Redis.
-		// Calls: sadd (returns 1, new item), scard (returns 20, threshold reached), exists (check alert), setex (set suppression)
+		// Calls: hset (returns 1, new item), hlen (returns 20, threshold reached), exists (check alert), setex (set suppression)
 		$this->mockRedisClient->expects( $this->exactly( 4 ) )
 			->method( '__call' )
 			->willReturnCallback( static function ( $method, $args ) {
-				if ( $method === 'sadd' ) {
+				if ( $method === 'hset' ) {
 					return 1; // simulate response for adding a new item to the set
 				}
-				if ( $method === 'scard' ) {
+				if ( $method === 'hlen' ) {
 					return 20; // simulate set reporting it has 20 items - the threshold is then reached
 				}
 				if ( $method === 'exists' ) {
@@ -199,16 +200,16 @@ class ErrorTrackerTest extends BaseGravyTestCase {
 
 		// The Redis client uses magic method __call to dynamically handle Redis commands.
 		// We mock __call instead of individual methods because the Redis client doesn't
-		// actually have concrete methods for commands like 'sadd', 'scard', etc.
+		// actually have concrete methods for commands like 'hset', 'hlen', etc.
 		// These commands are intercepted by __call and forwarded to Redis.
-		// Calls: sadd (returns 1, new item), scard (returns 25, above threshold), exists (returns true, alert recently sent)
+		// Calls: hset (returns 1, new item), hlen (returns 25, above threshold), exists (returns true, alert recently sent)
 		$this->mockRedisClient->expects( $this->exactly( 3 ) )
 			->method( '__call' )
 			->willReturnCallback( static function ( $method, $args ) {
-				if ( $method === 'sadd' ) {
+				if ( $method === 'hset' ) {
 					return 1; // New item added
 				}
-				if ( $method === 'scard' ) {
+				if ( $method === 'hlen' ) {
 					return 25; // Above threshold
 				}
 				if ( $method === 'exists' ) {
@@ -239,12 +240,12 @@ class ErrorTrackerTest extends BaseGravyTestCase {
 
 		// The Redis client uses magic method __call to dynamically handle Redis commands.
 		// We mock __call instead of individual methods because the Redis client doesn't
-		// actually have concrete methods for commands like 'sadd', 'scard', etc.
+		// actually have concrete methods for commands like 'hset', 'hlen', etc.
 		// These commands are intercepted by __call and forwarded to Redis.
-		// Calls: sadd (throws exception to simulate Redis connection failure)
+		// Calls: hset (throws exception to simulate Redis connection failure)
 		$this->mockRedisClient->expects( $this->once() )
 			->method( '__call' )
-			->with( 'sadd' )
+			->with( 'hset' )
 			->willThrowException( new \Exception( 'Redis connection failed' ) );
 
 		// Should return false when Redis fails
@@ -268,16 +269,16 @@ class ErrorTrackerTest extends BaseGravyTestCase {
 
 		// The Redis client uses magic method __call to dynamically handle Redis commands.
 		// We mock __call instead of individual methods because the Redis client doesn't
-		// actually have concrete methods for commands like 'sadd', 'scard', etc.
+		// actually have concrete methods for commands like 'hset', 'hlen', etc.
 		// These commands are intercepted by __call and forwarded to Redis.
-		// Calls: sadd (returns 1, new item), scard (returns 1, first occurrence), expire (set redis key TTL)
+		// Calls: hset (returns 1, new item), hlen (returns 1, first occurrence), expire (set redis key TTL)
 		$this->mockRedisClient->expects( $this->exactly( 3 ) )
 			->method( '__call' )
 			->withConsecutive(
-				[ 'sadd', $this->callback( static function ( $args ) {
+				[ 'hset', $this->callback( static function ( $args ) {
 					return (bool)preg_match( '/^gravy_error_threshold_test_error_123:\d+$/', $args[0] );
 				} ) ],
-				[ 'scard', $this->anything() ],
+				[ 'hlen', $this->anything() ],
 				[ 'expire', $this->anything() ]
 			)
 			->willReturnOnConsecutiveCalls( 1, 1, true );
@@ -302,17 +303,17 @@ class ErrorTrackerTest extends BaseGravyTestCase {
 
 		// The Redis client uses magic method __call to dynamically handle Redis commands.
 		// We mock __call instead of individual methods because the Redis client doesn't
-		// actually have concrete methods for commands like 'sadd', 'scard', etc.
+		// actually have concrete methods for commands like 'hset', 'hlen', etc.
 		// These commands are intercepted by __call and forwarded to Redis.
-		// Calls: sadd (returns 1, new item), scard (returns 1, first occurrence), expire (returns true, set redis key TTL)
+		// Calls: hset (returns 1, new item), hlen (returns 1, first occurrence), expire (returns true, set redis key TTL)
 		$this->mockRedisClient->expects( $this->exactly( 3 ) )
 			->method( '__call' )
 			->withConsecutive(
-				[ 'sadd', $this->callback( static function ( $args ) use ( $expectedSanitizedKey ) {
+				[ 'hset', $this->callback( static function ( $args ) use ( $expectedSanitizedKey ) {
 					// Check that the key starts with the prefix and sanitized error code
 					return (bool)preg_match( "/^gravy_error_threshold_{$expectedSanitizedKey}:\d+$/", $args[0] );
 				} ) ],
-				[ 'scard', $this->anything() ],
+				[ 'hlen', $this->anything() ],
 				[ 'expire', $this->anything() ]
 			)
 			->willReturnOnConsecutiveCalls( 1, 1, true );
@@ -334,17 +335,17 @@ class ErrorTrackerTest extends BaseGravyTestCase {
 
 		// The Redis client uses magic method __call to dynamically handle Redis commands.
 		// We mock __call instead of individual methods because the Redis client doesn't
-		// actually have concrete methods for commands like 'sadd', 'scard', etc.
+		// actually have concrete methods for commands like 'hset', 'hlen', etc.
 		// These commands are intercepted by __call and forwarded to Redis.
-		// Calls: sadd (returns 1, new item), scard (returns 20, threshold reached), exists (returns false, no recent alert), setex (returns true, set alert suppression)
+		// Calls: hset (returns 1, new item), hlen (returns 20, threshold reached), exists (returns false, no recent alert), setex (returns true, set alert suppression)
 		$this->mockRedisClient->expects( $this->exactly( 4 ) )
 			->method( '__call' )
 			->withConsecutive(
-				[ 'sadd', $this->callback( static function ( $args ) {
+				[ 'hset', $this->callback( static function ( $args ) {
 					// Validate the error key format: prefix + sanitized_code + time_slot
 					return (bool)preg_match( '/^gravy_error_threshold_test_error_with_special_chars_123:\d+$/', $args[0] );
 				} ) ],
-				[ 'scard', $this->anything() ],
+				[ 'hlen', $this->anything() ],
 				[ 'exists', $this->callback( static function ( $args ) {
 					// Validate the alert key format: error_key + :alerted
 					return (bool)preg_match( '/^gravy_error_threshold_test_error_with_special_chars_123:\d+:alerted$/', $args[0] );
@@ -491,16 +492,16 @@ class ErrorTrackerTest extends BaseGravyTestCase {
 
 		// The Redis client uses magic method __call to dynamically handle Redis commands.
 		// We mock __call instead of individual methods because the Redis client doesn't
-		// actually have concrete methods for commands like 'sadd', 'scard', etc.
+		// actually have concrete methods for commands like 'hset', 'hlen', etc.
 		// These commands are intercepted by __call and forwarded to Redis.
-		// Calls: sadd (returns 1, new item), scard (returns 1, first occurrence), expire (set redis key TTL)
+		// Calls: hset (returns 1, new item), hlen (returns 1, first occurrence), expire (set redis key TTL)
 		$this->mockRedisClient->expects( $this->exactly( 3 ) )
 			->method( '__call' )
 			->willReturnCallback( static function ( $method, $args ) {
-				if ( $method === 'sadd' ) {
+				if ( $method === 'hset' ) {
 					return 1; // New item added
 				}
-				if ( $method === 'scard' ) {
+				if ( $method === 'hlen' ) {
 					return 1; // Set has 1 item
 				}
 				if ( $method === 'expire' ) {

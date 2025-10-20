@@ -1,5 +1,7 @@
 <?php namespace SmashPig\PaymentProviders\Adyen\Audit;
 
+use SmashPig\PaymentProviders\Adyen\AdyenCurrencyRoundingHelper;
+
 class AdyenPaymentsAccountingReport extends AdyenAudit {
 
 	public function __construct() {
@@ -28,7 +30,7 @@ class AdyenPaymentsAccountingReport extends AdyenAudit {
 	protected function parseDonation( array $row, array $msg ): array {
 		$msg['modification_reference'] = $row['Modification Psp Reference'];
 		$msg['currency'] = $msg['original_currency'] = $row['Payment Currency'];
-		$msg['gross'] = $row['Original Amount'];
+		$msg['original_total_amount'] = $msg['gross'] = $row['Original Amount'];
 		// fee is given in settlement currency
 		// but queue consumer expects it in original
 		$exchange = $row['Exchange Rate'];
@@ -36,18 +38,16 @@ class AdyenPaymentsAccountingReport extends AdyenAudit {
 		if ( $exchange == "" ) {
 			$exchange = 1;
 		}
-		$fee = floatval( $row['Commission (SC)'] ) +
-			floatval( $row['Markup (SC)'] ) +
-			floatval( $row['Scheme Fees (SC)'] ) +
-			floatval( $row['Interchange (SC)'] );
-		$msg['fee'] = round( $fee / $exchange, 2 );
-		$msg['original_fee_amount'] = $msg['fee'];
+		$fee = $msg['settled_fee_amount'] = $this->getFee( $row );
+		$msg['original_fee_amount'] = $msg['fee'] = AdyenCurrencyRoundingHelper::round( $fee / $exchange, $msg['original_currency'] );
+
 		// shouldn't this be settled_net or settled_amount?
 		$msg['settled_gross'] = $row['Payable (SC)'];
-		$msg['settled_total_amount'] = (float)$msg['settled_gross'];
+		$msg['settled_net_amount'] = $msg['settled_gross'];
 		$msg['settled_currency'] = $row['Settlement Currency'];
 		$msg['settled_fee_amount'] = $fee;
-
+		$msg['original_net_amount'] = AdyenCurrencyRoundingHelper::round( $msg['original_total_amount'] - $msg['original_fee_amount'], $msg['original_currency'] );
+		$msg['settled_total_amount'] = AdyenCurrencyRoundingHelper::round( $msg['settled_net_amount'] + $msg['settled_fee_amount'], $msg['settled_currency'] );
 		return $msg;
 	}
 
@@ -56,27 +56,29 @@ class AdyenPaymentsAccountingReport extends AdyenAudit {
 		// For some currencies (JPY) Original Amount seems to be off by 100x
 		if ( !empty( $row['Captured (PC)'] ) ) {
 			$msg['gross'] = $row['Captured (PC)'];
-			$msg['gross_currency'] = $row['Payment Currency'];
+			$msg['gross_currency'] = $msg['original_currency'] = $row['Payment Currency'];
 		} else {
 			// For chargebacks, subtract off a couple fees to get the same number as we're getting from
 			// the settlement report's 'Gross Debit' field.
-			$msg['gross_currency'] = $row['Main Currency'];
+			$msg['gross_currency'] = $msg['original_currency'] = $row['Main Currency'];
 			// Doing math on floats, need to round to thousandths place to keep sanity
 			$msg['gross'] = round(
-				(float)$row['Main Amount'] - (float)$row['Markup (SC)'] - (float)$row['Interchange (SC)'], 3
+				(float)$row['Main Amount'] - $this->getFee( $row ), 3
 			);
 		}
-		$msg['original_currency'] = $msg['gross_currency'];
-		$msg['original_total_amount'] = (float)$msg['gross'];
-		$msg['gateway_parent_id'] = $row['Psp Reference'];
-		$msg['gateway_refund_id'] = $row['Modification Psp Reference'];
-		if ( in_array( strtolower( $row['Record Type'] ), [ 'chargeback', 'secondchargeback' ] ) ) {
-			$msg['type'] = 'chargeback';
-		} else {
-			$msg['type'] = 'refund';
-		}
-
+		$msg['settled_net_amount'] = -( $row['Main Amount'] );
+		$msg['settled_currency'] = $row['Settlement Currency'];
+		$msg = $this->parseCommonRefundValues( $row, $msg, $row['Record Type'], $row['Modification Psp Reference'] );
+		// This has not been historically set & is a bit ambiguous. Phase it out rather than add it.
+		unset( $msg['fee'] );
 		return $msg;
+	}
+
+	protected function getFee( array $row ): float {
+		return (float)$row['Markup (SC)']
+			+ (float)$row['Interchange (SC)']
+			+ (float)$row['Scheme Fees (SC)']
+			+ (float)$row['Commission (SC)'];
 	}
 
 }

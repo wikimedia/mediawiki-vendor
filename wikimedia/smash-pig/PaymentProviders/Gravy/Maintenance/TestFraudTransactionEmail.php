@@ -46,23 +46,23 @@ class TestFraudTransactionEmail extends MaintenanceBase {
 		return [
 			[
 				'id' => '12345678-1234-5678-9abc-def012345678',
-				'summary' => ' - Adyen, 166.3, USD ' . CurrencyRoundingHelper::getAmountInMajorUnits( 1299, 'USD' ) . ', via card, from US'
+				'summary' => ' - 166.3, USD ' . CurrencyRoundingHelper::getAmountInMajorUnits( 1299, 'USD' ) . ', via card'
 			],
 			[
 				'id' => 'abcdef12-3456-7890-1234-567890abcdef',
-				'summary' => ' - PayPal, 166.3, USD ' . CurrencyRoundingHelper::getAmountInMajorUnits( 1299, 'USD' ) . ', via paypal, from US'
+				'summary' => ' - 166.3, USD ' . CurrencyRoundingHelper::getAmountInMajorUnits( 1299, 'USD' ) . ', via paypal'
 			],
 			[
 				'id' => '98765432-dcba-4321-8765-432109876543',
-				'summary' => ' - Trustly, 166.3, USD ' . CurrencyRoundingHelper::getAmountInMajorUnits( 1299, 'USD' ) . ', via rtbt, from US'
+				'summary' => ' - 166.3, USD ' . CurrencyRoundingHelper::getAmountInMajorUnits( 1299, 'USD' ) . ', via rtbt'
 			],
 			[
 				'id' => 'fedcba98-7654-3210-9876-543210fedcba',
-				'summary' => ' - Braintree, 166.3, USD ' . CurrencyRoundingHelper::getAmountInMajorUnits( 1299, 'USD' ) . ', via venmo, from US'
+				'summary' => ' - 166.3, USD ' . CurrencyRoundingHelper::getAmountInMajorUnits( 1299, 'USD' ) . ', via venmo'
 			],
 			[
 				'id' => 'a1b2c3d4-e5f6-7890-1234-567890123456',
-				'summary' => ' - dLocal, 166.3, USD ' . CurrencyRoundingHelper::getAmountInMajorUnits( 1299, 'USD' ) . ', via card, from US'
+				'summary' => ' - 166.3, USD ' . CurrencyRoundingHelper::getAmountInMajorUnits( 1299, 'USD' ) . ', via card'
 			]
 		];
 	}

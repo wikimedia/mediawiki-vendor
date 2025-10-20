@@ -81,12 +81,6 @@ class ErrorHelper {
 	protected static function getTransactionSummaryFromResponse( array $response ): ?string {
 		$parts = [];
 
-		// Backend processor
-		$backendProcessor = static::extractBackendProcessor( $response );
-		if ( $backendProcessor !== null ) {
-			$parts[] = ucfirst( $backendProcessor );
-		}
-
 		// external identifier aka ct_id
 		if ( isset( $response['external_identifier'] ) ) {
 			$parts[] = $response['external_identifier'];
@@ -102,18 +96,6 @@ class ErrorHelper {
 		$method = $response['payment_method']['method'] ?? $response['method'] ?? null;
 		if ( $method ) {
 			$parts[] = "via {$method}";
-		}
-
-		// Bin Info
-		$binNumber = $response['payment_method']['details']['bin'] ?? null;
-		if ( $binNumber ) {
-			$parts[] = "bin {$binNumber}";
-		}
-
-		// Country
-		$country = $response['country'] ?? $response['buyer']['billing_details']['address']['country'] ?? null;
-		if ( $country ) {
-			$parts[] = "from {$country}";
 		}
 
 		return $parts ? ' - ' . implode( ', ', $parts ) : null;

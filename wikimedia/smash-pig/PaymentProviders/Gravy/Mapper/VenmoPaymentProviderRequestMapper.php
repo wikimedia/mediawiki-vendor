@@ -7,6 +7,7 @@ class VenmoPaymentProviderRequestMapper extends RedirectPaymentProviderRequestMa
 	 * @return array
 	 */
 	public function mapToCreatePaymentRequest( array $params ): array {
+		$params['payment_method'] = 'venmo';
 		$request = parent::mapToCreatePaymentRequest( $params );
 
 		// getting the buyer details from Venmo and not from our form
