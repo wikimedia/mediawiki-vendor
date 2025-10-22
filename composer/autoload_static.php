@@ -210,13 +210,13 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'Wikimedia\\' => 
         array (
-            0 => __DIR__ . '/..' . '/wikimedia/ip-utils/src',
-            1 => __DIR__ . '/..' . '/wikimedia/php-session-serializer/src',
-            2 => __DIR__ . '/..' . '/wikimedia/relpath/src',
-            3 => __DIR__ . '/..' . '/wikimedia/running-stat/src',
-            4 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
-            5 => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src',
-            6 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
+            0 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
+            1 => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src',
+            2 => __DIR__ . '/..' . '/wikimedia/running-stat/src',
+            3 => __DIR__ . '/..' . '/wikimedia/relpath/src',
+            4 => __DIR__ . '/..' . '/wikimedia/php-session-serializer/src',
+            5 => __DIR__ . '/..' . '/wikimedia/ip-utils/src',
+            6 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
         ),
         'WhichBrowser\\' => 
         array (
@@ -413,8 +413,8 @@ class ComposerStaticInit_mediawiki_vendor
         array (
             'Mail' => 
             array (
-                0 => __DIR__ . '/..' . '/pear/mail',
-                1 => __DIR__ . '/..' . '/pear/mail_mime',
+                0 => __DIR__ . '/..' . '/pear/mail_mime',
+                1 => __DIR__ . '/..' . '/pear/mail',
             ),
         ),
         'L' => 
@@ -2451,6 +2451,7 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\PrearbitrationWon' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/PrearbitrationWon.php',
         'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\RecurringContract' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/RecurringContract.php',
         'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\Refund' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/Refund.php',
+        'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\RefundFailed' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/RefundFailed.php',
         'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\RefundWithData' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/RefundWithData.php',
         'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\RefundedReversed' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/RefundedReversed.php',
         'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\ReportAvailable' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/ReportAvailable.php',
@@ -4282,6 +4283,8 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Zest\\ZestInst' => __DIR__ . '/..' . '/wikimedia/zest-css/src/ZestInst.php',
         'WmfFramework' => __DIR__ . '/../..' . '/extensions/DonationInterface/gateway_common/WmfFramework.php',
         'lessc' => __DIR__ . '/..' . '/wikimedia/less.php/lessc.inc.php',
+        'smashpig\\PaymentProviders\\ICancelAutoRescueProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/ICancelAutoRescueProvider.php',
+        'smashpig\\PaymentProviders\\IDeleteRecurringPaymentTokenProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/IDeleteRecurringPaymentTokenProvider.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

@@ -2007,6 +2007,7 @@ return array(
     'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\PrearbitrationWon' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/PrearbitrationWon.php',
     'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\RecurringContract' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/RecurringContract.php',
     'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\Refund' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/Refund.php',
+    'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\RefundFailed' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/RefundFailed.php',
     'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\RefundWithData' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/RefundWithData.php',
     'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\RefundedReversed' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/RefundedReversed.php',
     'SmashPig\\PaymentProviders\\Adyen\\ExpatriatedMessages\\ReportAvailable' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Adyen/ExpatriatedMessages/ReportAvailable.php',
@@ -3838,4 +3839,6 @@ return array(
     'Wikimedia\\Zest\\ZestInst' => $vendorDir . '/wikimedia/zest-css/src/ZestInst.php',
     'WmfFramework' => $baseDir . '/extensions/DonationInterface/gateway_common/WmfFramework.php',
     'lessc' => $vendorDir . '/wikimedia/less.php/lessc.inc.php',
+    'smashpig\\PaymentProviders\\ICancelAutoRescueProvider' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/ICancelAutoRescueProvider.php',
+    'smashpig\\PaymentProviders\\IDeleteRecurringPaymentTokenProvider' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/IDeleteRecurringPaymentTokenProvider.php',
 );

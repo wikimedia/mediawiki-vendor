@@ -186,7 +186,7 @@ class ErrorHelper {
 		$subject = 'ALERT: Gravy Suspected Fraud Transactions List - ' . date( 'Y-m-d H:i' );
 		$body = "Suspected fraud transactions (" . count( $fraudTransactions ) . ")" . PHP_EOL . PHP_EOL;
 		foreach ( $fraudTransactions as $trxn ) {
-			$body .= " - https://wikimedia.gr4vy.app/merchants/default/transactions/{$trxn['id']}/overview" .
+			$body .= "https://wikimedia.gr4vy.app/merchants/default/transactions/{$trxn['id']}/overview " .
 				self::formatSummaryAsString( $trxn['summary'] ) . PHP_EOL;
 		}
 
