@@ -112,7 +112,7 @@ class ErrorTracker {
 	 *                     Expected keys:
 	 *                     - 'error_code' (string): The error code identifying the error.
 	 *                     - 'sample_transaction_id' (string|null): Optional unique transaction ID.
-	 *                     - 'sample_transaction_summary' (string): Optional summary of the transaction.
+	 *                     - 'sample_transaction_summary' (array): Optional summary of the transaction.
 	 *
 	 * @return int The current count of error transactions associated with the specified error code.
 	 *             Returns 0 if the transaction could not be tracked.
@@ -133,11 +133,14 @@ class ErrorTracker {
 				] );
 			}
 
-			// HSET returns 1 if new member, 0 if already exists
-			$wasAdded = $this->connection->hset( $redisHashKey, $transactionId, $transactionSummary );
+			$existing = $this->connection->hget( $redisHashKey, $transactionId );
+			if ( $existing ) {
+				$transactionSummary = array_merge( $transactionSummary, json_decode( $existing, true ) );
+			}
+			$this->connection->hset( $redisHashKey, $transactionId, json_encode( $transactionSummary ) );
 			$currentCount = $this->connection->hlen( $redisHashKey );
 
-			if ( $wasAdded ) {
+			if ( !$existing ) {
 				Logger::info( 'Error transaction tracked in redis', [
 					'transaction_id' => $transactionId,
 					'error_code' => $error['error_code'],
@@ -185,7 +188,7 @@ class ErrorTracker {
 				// Format for email compatibility
 				$fraudTransactions[] = [
 					'id' => $id,
-					'summary' => $summary ?? ''
+					'summary' => json_decode( $summary, true ),
 				];
 			}
 			return $fraudTransactions;

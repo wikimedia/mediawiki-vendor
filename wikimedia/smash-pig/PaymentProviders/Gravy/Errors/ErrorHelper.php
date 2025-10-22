@@ -67,38 +67,91 @@ class ErrorHelper {
 			"ALERT: Gravy error threshold exceeded for error code '{$errorCode}'. " .
 			"Occurred {$currentCount} times in {$timeWindowDisplay} (threshold: {$threshold})" .
 			( $sampleTransactionId ? " - Sample transaction: {$sampleTransactionId}" : '' ) .
-			$sampleSummary,
+			self::formatSummaryAsString( $sampleSummary ),
 			$alertData
 		);
 	}
 
+	protected static function formatSummaryAsString( array $summary ): string {
+		$parts = [];
+
+		if ( !empty( $summary['backend_processor'] ) ) {
+			$parts[] = $summary['backend_processor'];
+		}
+
+		// external identifier aka ct_id
+		if ( !empty( $summary['external_identifier'] ) ) {
+			$parts[] = $summary['external_identifier'];
+		}
+
+		// Amount and currency
+		if ( !empty( $summary['amount'] ) ) {
+			$parts[] = $summary['amount'];
+		}
+
+		// Payment method
+		if ( !empty( $summary['method'] ) ) {
+			$parts[] = "via {$summary['method']}";
+		}
+
+		// Bin Info
+		if ( !empty( $summary['bin'] ) ) {
+			$parts[] = "BIN {$summary['bin']}";
+		}
+
+		// Country
+		if ( !empty( $summary['country'] ) ) {
+			$parts[] = "from {$summary['country']}";
+		}
+
+		return implode( ', ', $parts );
+	}
+
 	/**
-	 * Build sample data string for logging
+	 * Build sample data array for logging
 	 *
 	 * @param array $response
-	 * @return string
+	 * @return array
 	 */
-	protected static function getTransactionSummaryFromResponse( array $response ): ?string {
+	protected static function getTransactionSummaryFromResponse( array $response ): array {
 		$parts = [];
+
+		// Backend processor
+		$backendProcessor = static::extractBackendProcessor( $response );
+		if ( $backendProcessor !== null ) {
+			$parts['backend_processor'] = ucfirst( $backendProcessor );
+		}
 
 		// external identifier aka ct_id
 		if ( isset( $response['external_identifier'] ) ) {
-			$parts[] = $response['external_identifier'];
+			$parts['external_identifier'] = $response['external_identifier'];
 		}
 
 		// Amount and currency
 		if ( isset( $response['currency'] ) && isset( $response['amount'] ) ) {
 			$formattedAmount = CurrencyRoundingHelper::getAmountInMajorUnits( $response['amount'], $response['currency'] );
-			$parts[] = "{$response['currency']} {$formattedAmount}";
+			$parts['amount'] = "{$response['currency']} {$formattedAmount}";
 		}
 
 		// Payment method
 		$method = $response['payment_method']['method'] ?? $response['method'] ?? null;
 		if ( $method ) {
-			$parts[] = "via {$method}";
+			$parts['method'] = $method;
 		}
 
-		return $parts ? ' - ' . implode( ', ', $parts ) : null;
+		// Bin Info
+		$binNumber = $response['payment_method']['details']['bin'] ?? null;
+		if ( $binNumber ) {
+			$parts['bin'] = $binNumber;
+		}
+
+		// Country
+		$country = $response['country'] ?? $response['buyer']['billing_details']['address']['country'] ?? null;
+		if ( $country ) {
+			$parts['country'] = $country;
+		}
+
+		return $parts;
 	}
 
 	/**
@@ -133,7 +186,8 @@ class ErrorHelper {
 		$subject = 'ALERT: Gravy Suspected Fraud Transactions List - ' . date( 'Y-m-d H:i' );
 		$body = "Suspected fraud transactions (" . count( $fraudTransactions ) . ")" . PHP_EOL . PHP_EOL;
 		foreach ( $fraudTransactions as $trxn ) {
-			$body .= " - https://wikimedia.gr4vy.app/merchants/default/transactions/{$trxn['id']}/overview" . $trxn['summary'] . PHP_EOL;
+			$body .= " - https://wikimedia.gr4vy.app/merchants/default/transactions/{$trxn['id']}/overview" .
+				self::formatSummaryAsString( $trxn['summary'] ) . PHP_EOL;
 		}
 
 		return MailHandler::sendEmail( $to, $subject, $body, $from );

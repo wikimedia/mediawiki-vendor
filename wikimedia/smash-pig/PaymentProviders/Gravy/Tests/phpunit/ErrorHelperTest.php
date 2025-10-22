@@ -62,7 +62,13 @@ class ErrorHelperTest extends BaseGravyTestCase {
 		$this->assertEquals( 'error_code_present', $result['error_type'] );
 		$this->assertSame( '232515486.1', $result['external_identifier'] );
 		$this->assertEquals( 'f010a662-757e-4881-bad2-65feb1762a1e', $result['sample_transaction_id'] );
-		$this->assertEquals( ' - 232515486.1, USD 104.00, via trustly', $result['sample_transaction_summary'] );
+		$this->assertEquals( [
+			'backend_processor' => 'Trustly',
+			'external_identifier' => '232515486.1',
+			'amount' => 'USD 104.00',
+			'method' => 'trustly',
+			'country' => 'US'
+		], $result['sample_transaction_summary'] );
 		$this->assertEquals( 'USD', $result['currency'] );
 		$this->assertEquals( 10400, $result['amount'] );
 	}
@@ -77,7 +83,7 @@ class ErrorHelperTest extends BaseGravyTestCase {
 		$this->assertEquals( 'unauthorized', $result['error_code'] );
 		$this->assertEquals( 'error_response_type', $result['error_type'] );
 		$this->assertNull( $result['sample_transaction_id'] );
-		$this->assertNull( $result['sample_transaction_summary'] );
+		$this->assertEquals( [], $result['sample_transaction_summary'] );
 	}
 
 	public function testBuildTrackableErrorFromResponseWithPartialData(): void {
@@ -91,7 +97,13 @@ class ErrorHelperTest extends BaseGravyTestCase {
 		$this->assertEquals( $errorCode, $result['error_code'] );
 		$this->assertEquals( $errorType, $result['error_type'] );
 		$this->assertEquals( '943bec45-7cab-4555-8ea1-def34c34fae9', $result['sample_transaction_id'] );
-		$this->assertEquals( ' - 417.2, USD 12.23, via trustly', $result['sample_transaction_summary'] );
+		$this->assertEquals( [
+			'backend_processor' => 'Trustly',
+			'external_identifier' => '417.2',
+			'amount' => 'USD 12.23',
+			'method' => 'trustly',
+			'country' => 'US'
+		], $result['sample_transaction_summary'] );
 		$this->assertSame( '417.2', $result['external_identifier'] );
 		$this->assertEquals( 'USD', $result['currency'] );
 		$this->assertEquals( 1223, $result['amount'] );
@@ -108,7 +120,14 @@ class ErrorHelperTest extends BaseGravyTestCase {
 		$this->assertEquals( $errorCode, $result['error_code'] );
 		$this->assertEquals( $errorType, $result['error_type'] );
 		$this->assertEquals( '61df177c-76b3-4f0c-80fb-d1ad53764c91', $result['sample_transaction_id'] );
-		$this->assertEquals( ' - 166.3, USD 10.00, via card', $result['sample_transaction_summary'] );
+		$this->assertEquals( [
+			'backend_processor' => 'Adyen',
+			'external_identifier' => '166.3',
+			'amount' => 'USD 10.00',
+			'method' => 'card',
+			'bin' => '444433',
+			'country' => 'US'
+		], $result['sample_transaction_summary'] );
 		$this->assertSame( '166.3', $result['external_identifier'] );
 		$this->assertEquals( 'USD', $result['currency'] );
 		$this->assertEquals( 1000, $result['amount'] );
@@ -126,7 +145,14 @@ class ErrorHelperTest extends BaseGravyTestCase {
 		$this->assertEquals( $errorCode, $result['error_code'] );
 		$this->assertEquals( $errorType, $result['error_type'] );
 		$this->assertEquals( '61df177c-76b3-4f0c-80fb-d1ad53764c91', $result['sample_transaction_id'] );
-		$this->assertEquals( ' - 166.3, USD 10.00, via card', $result['sample_transaction_summary'] );
+		$this->assertEquals( [
+			'backend_processor' => 'Adyen',
+			'external_identifier' => '166.3',
+			'amount' => 'USD 10.00',
+			'method' => 'card',
+			'bin' => '444433',
+			'country' => 'US'
+		], $result['sample_transaction_summary'] );
 		$this->assertSame( '166.3', $result['external_identifier'] );
 		$this->assertEquals( 'USD', $result['currency'] );
 		$this->assertEquals( 1000, $result['amount'] );
