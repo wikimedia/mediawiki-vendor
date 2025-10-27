@@ -12,6 +12,7 @@ use Wikimedia\Parsoid\DOM\Element;
 use Wikimedia\Parsoid\DOM\Node;
 use Wikimedia\Parsoid\DOM\Text;
 use Wikimedia\Parsoid\NodeData\DataMw;
+use Wikimedia\Parsoid\NodeData\DataParsoid;
 use Wikimedia\Parsoid\NodeData\TempData;
 use Wikimedia\Parsoid\NodeData\TemplateInfo;
 use Wikimedia\Parsoid\Tokens\SourceRange;
@@ -36,7 +37,10 @@ class TableFixups {
 
 	private static function isSimpleTemplatedSpan( Node $node ): bool {
 		return DOMUtils::nodeName( $node ) === 'span' &&
-			DOMUtils::hasTypeOf( $node, 'mw:Transclusion' ) &&
+			// This check only works because it is called from a context
+			// where we are tracking templates.
+			$node instanceof Element && /* make phan happy */
+			DOMCompat::getAttribute( $node, 'about' ) !== null &&
 			DOMUtils::allChildrenAreTextOrComments( $node );
 	}
 
@@ -76,9 +80,12 @@ class TableFixups {
 		$lastTpl = null;
 		$prevDp = null;
 		$frame = $dtState->options['frame'];
+		$aboutIdArray = [];
 
 		$index = 0;
 		foreach ( $transclusions as $tpl ) {
+			$aboutIdArray[] = DOMCompat::getAttribute( $tpl, 'about' );
+
 			$tplDp = DOMDataUtils::getDataParsoid( $tpl );
 			Assert::invariant( Utils::isValidDSR( $tplDp->dsr ?? null ), 'Expected valid DSR' );
 
@@ -136,34 +143,27 @@ class TableFixups {
 		// for additional fixups (|| Boo || Baz) by potentially
 		// invoking 'reparseTemplatedAttributes' on split cells
 		// with some modifications.
-		$child = $lastTpl;
-
-		// Transclusions may be nested in elements in some ugly wikitext so
-		// make sure we're starting at a direct descendant of td
-		while ( $child->parentNode !== $td ) {
-			$child = $child->parentNode;
-		}
-
-		while ( $child ) {
-			if (
-				DOMUtils::nodeName( $child ) === 'span' &&
-				DOMCompat::getAttribute( $child, 'about' ) === $aboutId
-			) {
-				// Remove the encapsulation attributes. If there are no more attributes left,
-				// the span wrapper is useless and can be removed.
-				$child->removeAttribute( 'about' );
-				$child->removeAttribute( 'typeof' );
-				if ( DOMDataUtils::noAttrs( $child ) ) {
-					$next = $child->firstChild ?: $child->nextSibling;
-					DOMUtils::migrateChildren( $child, $td, $child );
-					$child->parentNode->removeChild( $child );
-					$child = $next;
-				} else {
-					$child = $child->nextSibling;
+		$cell = $td;
+		while ( $cell instanceof Element && DOMCompat::getAttribute( $cell, 'about' ) === $aboutId ) {
+			$child = $cell->firstChild;
+			while ( $child ) {
+				$next = $child->nextSibling;
+				if ( $child instanceof Element &&
+					in_array( DOMCompat::getAttribute( $child, 'about' ), $aboutIdArray, true )
+				) {
+					// Remove the encapsulation attributes.
+					$child->removeAttribute( 'about' );
+					DOMUtils::removeTypeOf( $child, 'mw:Transclusion' );
+					// If there are no more attributes left, useless spans wrapper can be removed.
+					if ( DOMDataUtils::getDataParsoid( $child )->getTempFlag( TempData::WRAPPER ) ) {
+						$next = $child->firstChild ?: $child->nextSibling;
+						DOMUtils::migrateChildren( $child, $cell, $child );
+						$child->parentNode->removeChild( $child );
+					}
 				}
-			} else {
-				$child = $child->nextSibling;
+				$child = $next;
 			}
+			$cell = $cell->nextSibling;
 		}
 
 		// $dtState->tplInfo can be null when information is hoisted
@@ -859,7 +859,7 @@ class TableFixups {
 	 * This impacts parsing of tables when some cells are templated since
 	 * Parsoid parses template content independent of top-level content
 	 * (without any preceding context). This means that Parsoid's table-cell
-	 * parsing in templated contexts might be incorrect
+	 * parsing in templated contexts might be incorrect.
 	 *
 	 * To deal with this, Parsoid implements this table-fixups pass that
 	 * has to deal with cell-merging and cell-reparsing scenarios.
@@ -880,14 +880,18 @@ class TableFixups {
 			return true;
 		}
 
+		$cellDp = DOMDataUtils::getDataParsoid( $cell );
+
 		// Deal with <th> special case where "!! foo" is parsed as <th>! foo</th>
 		// but should have been parsed as <th>foo</th> when not the first child
 		if ( DOMUtils::nodeName( $cell ) === 'th' &&
 			DOMUtils::hasTypeOf( $cell, 'mw:Transclusion' ) &&
+			// The ! wouldn't be the first content char if attrs were present
+			$cellDp->getTempFlag( TempData::NO_ATTRS ) &&
 			// This is checking that previous sibling is not "\n" which would
 			// signal that this <th> is on a fresh line and the "!" shouldn't be stripped.
 			// If this weren't template output, we would check for "stx" === 'row'.
-			// FIXME: Note that ths check is fragile and doesn't work always, but this is
+			// FIXME: Note that this check is fragile and doesn't work always, but this is
 			// the price we pay for Parsoid's independent template parsing!
 			$cell->previousSibling instanceof Element
 		) {
@@ -896,6 +900,8 @@ class TableFixups {
 				$leadingText = $fc->nodeValue;
 				if ( str_starts_with( $leadingText, "!" ) ) {
 					$fc->nodeValue = substr( $leadingText, 1 );
+					$cellDp->stx = 'row';
+					$cellDp->setTempFlag( TempData::NON_MERGEABLE_TABLE_CELL );
 				}
 			}
 		}
@@ -905,7 +911,6 @@ class TableFixups {
 			return true;
 		}
 
-		$cellDp = DOMDataUtils::getDataParsoid( $cell );
 		if ( $reparseType === self::COMBINE_WITH_PREV_CELL ) {
 			if ( self::reparseWithPreviousCell( $dtState, $cell ) ) {
 				return true;
@@ -929,20 +934,38 @@ class TableFixups {
 		//
 		// DOMTraverser will process the new cell and invoke
 		// handleTableCellTemplates on it which ensures that
-		// if any addition attribute fixup or splits are required,
+		// if any additional attribute fixup or splits are required,
 		// they will get done.
+		$origCell = $cell;
 		$newCell = null;
-		$isTd = DOMUtils::nodeName( $cell ) === 'td';
+		$newCellInsertPosn = $cell->nextSibling;
 		$ownerDoc = $cell->ownerDocument;
+		$tplStart = null;
+		$tplAbout = null;
+		$transclusions = [];
+		$needsTplInfoHoisted = false;
+		$isTd = DOMUtils::nodeName( $cell ) === 'td';
 		$child = $cell->firstChild;
 		while ( $child ) {
 			$next = $child->nextSibling;
 
 			if ( $newCell ) {
 				$newCell->appendChild( $child );
-			} elseif ( $child instanceof Text || self::isSimpleTemplatedSpan( $child ) ) {
+				$cell = $newCell;
+			}
+
+			if ( DOMUtils::hasTypeOf( $child, 'mw:Transclusion' ) ) {
+				'@phan-var Element $child'; // @var Element $child
+				$tplStart = $child;
+				$transclusions[] = $child;
+				$tplAbout = DOMCompat::getAttribute( $child, 'about' );
+			} elseif ( !$child instanceof Element || DOMCompat::getAttribute( $child, 'about' ) !== $tplAbout ) {
+				$tplStart = null;
+				$tplAbout = null;
+			}
+
+			if ( $child instanceof Text || ( $tplStart !== null && self::isSimpleTemplatedSpan( $child ) ) ) {
 				// FIXME: This skips over scenarios like <div>foo||bar</div>.
-				$cellName = DOMUtils::nodeName( $cell );
 				$hasSpanWrapper = !( $child instanceof Text );
 				$match1 = $match2 = null;
 
@@ -965,23 +988,32 @@ class TableFixups {
 				}
 
 				if ( $match ) {
+					// Adjust $child's content & create $newCell
 					$child->textContent = $match[1] ?? '';
 
-					$newCell = $ownerDoc->createElement( $cellName );
+					$newCell = $ownerDoc->createElement( DOMUtils::nodeName( $cell ) );
+					$newCell->appendChild( $ownerDoc->createTextNode( $match[2] ?? '' ) );
+
+					$newCellDp = new DataParsoid;
+					// This new cell has 'row' stx (would be set if the tokenizer had parsed it)
+					$newCellDp->stx = 'row';
+					$newCellDp->setTempFlag( TempData::NO_ATTRS );
+					// It is important to set this so that when $newCell is processed by this pass,
+					// it won't accidentally recombine again with the previous cell!
+					$newCellDp->setTempFlag( TempData::NON_MERGEABLE_TABLE_CELL );
+					DOMDataUtils::setDataParsoid( $newCell, $newCellDp );
+
+					$origCell->parentNode->insertBefore( $newCell, $newCellInsertPosn );
+
 					if ( $hasSpanWrapper ) {
-						/**
-						 * $hasSpanWrapper above ensures $child is a span.
-						 *
-						 * @var Element $child
-						 */
-						'@phan-var Element $child';
-						// Fix up transclusion wrapping
+						// $hasSpanWrapper above ensures $child is a span.
+						'@phan-var Element $child'; // @var Element $child
 						$about = DOMCompat::getAttribute( $child, 'about' );
-						self::hoistTransclusionInfo( $dtState, [ $child ], $cell );
+						$needsTplInfoHoisted = true;
 					} else {
 						// Refetch the about attribute since 'reparseTemplatedAttributes'
 						// might have added one to it.
-						$about = DOMCompat::getAttribute( $cell, 'about' );
+						$about = DOMCompat::getAttribute( $origCell, 'about' );
 					}
 
 					// about may not be present if the cell was inside
@@ -989,25 +1021,22 @@ class TableFixups {
 					// of the outermost wrapper.
 					if ( $about !== null ) {
 						$newCell->setAttribute( 'about', $about );
-						if ( $dtState->tplInfo && $dtState->tplInfo->last === $cell ) {
+						// This update is necessary to prevent DOMTraverser
+						// from clearing dtState->tplInfo prematurely.
+						if ( $dtState->tplInfo?->last === $cell ) {
 							$dtState->tplInfo->last = $newCell;
 						}
 					}
-					$newCell->appendChild( $ownerDoc->createTextNode( $match[2] ?? '' ) );
-					$cell->parentNode->insertBefore( $newCell, $cell->nextSibling );
-
-					// Set data-parsoid noAttrs flag
-					$newCellDp = DOMDataUtils::getDataParsoid( $newCell );
-					// This new cell has 'row' stx (would be set if the tokenizer had parsed it)
-					$newCellDp->stx = 'row';
-					$newCellDp->setTempFlag( TempData::NO_ATTRS );
-					// It is important to set this so that when $newCell is processed by this pass,
-					// it won't accidentally recombine again with the previous cell!
-					$newCellDp->setTempFlag( TempData::MERGED_TABLE_CELL );
 				}
 			}
 
 			$child = $next;
+		}
+
+		// Fix up transclusion wrapping (but only if we created new cells)
+		if ( $needsTplInfoHoisted ) {
+			self::hoistTransclusionInfo( $dtState, $transclusions, $origCell );
+			$dtState->tplInfo->last = $newCell;
 		}
 
 		return true;

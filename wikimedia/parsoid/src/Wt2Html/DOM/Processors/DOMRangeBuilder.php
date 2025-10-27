@@ -10,6 +10,7 @@ use Wikimedia\Assert\UnreachableException;
 use Wikimedia\Parsoid\Config\Env;
 use Wikimedia\Parsoid\Core\DomSourceRange;
 use Wikimedia\Parsoid\Core\ElementRange;
+use Wikimedia\Parsoid\DOM\Comment;
 use Wikimedia\Parsoid\DOM\Document;
 use Wikimedia\Parsoid\DOM\Element;
 use Wikimedia\Parsoid\DOM\Node;
@@ -695,6 +696,61 @@ class DOMRangeBuilder {
 		return !empty( $dp->stx ) ? $nodeName . '_' . $dp->stx : $nodeName;
 	}
 
+	private function isDeletableNode( Node $n ): bool {
+		// NOTE: There cannot be any non-IEW text in fosterable position
+		// since the HTML tree builder would already have fostered it out.
+		// So, any non-element node found here is safe to delete since:
+		// (a) this has no rendering output impact, and
+		// (b) data-mw captures template output => we don't need
+		//     to preserve this for html2wt either. Removing this
+		//     lets us preserve DOM range continuity.
+		if ( DOMUtils::isFosterablePosition( $n ) ) {
+			return true;
+		}
+
+		if ( $n instanceof Comment ) {
+			// We only get here for standalone tests. The core preprocessor
+			// strips all comments, so we don't get here.
+			// We could return true here, but that is better as a separate
+			// patch since we will also need to update a bunch of tests.
+			return false;
+		}
+
+		'@phan-var Text $n'; // @var Text $n
+
+		// Bail if the text node is not newline only.
+		// From here on, we only deal with newlines.
+		if ( $n->textContent !== "\n" ) {
+			return false;
+		}
+
+		$prev = $n->previousSibling;
+		$next = $n->nextSibling;
+
+		if ( DOMUtils::isWikitextBlockNode( $prev ) &&
+			// Narrow set of sol-based wikitext constructs
+			in_array( DOMUtils::nodeName( $next ), [ 'ul', 'ol', 'table' ], true ) &&
+			!WTUtils::isLiteralHTMLNode( $next )
+		) {
+			// This is narrowly targeted hacky fix for T370751.
+			// Whitespace doesn't interfere with next-sibling CSS rules.
+			// But, if we span wrap them as below, those CSS rules break.
+			// Here, we strip such newlines instead of span-wrapping them
+			// in the narrow case where they show up between block tags and
+			// the following block tag is a wikitext list or a table since
+			// the template cannot be edited to strip those newlines - they are
+			// essential for the lists / tables to be rendered as such.
+			return true;
+		}
+
+		if ( WTUtils::isSolTransparentLink( $prev ) && WTUtils::isSolTransparentLink( $next ) ) {
+			// This is a narrowly targeted fix for T407798
+			return true;
+		}
+
+		return false;
+	}
+
 	/**
 	 * Encapsulation requires adding about attributes on the top-level
 	 * nodes of the range. This requires them to all be Elements.
@@ -707,31 +763,7 @@ class DOMRangeBuilder {
 			$next = $n->nextSibling;
 			if ( $n instanceof Element ) {
 				$n->setAttribute( 'about', $about );
-			} elseif ( DOMUtils::isFosterablePosition( $n ) ) {
-				// NOTE: There cannot be any non-IEW text in fosterable position
-				// since the HTML tree builder would already have fostered it out.
-				// So, any non-element node found here is safe to delete since:
-				// (a) this has no rendering output impact, and
-				// (b) data-mw captures template output => we don't need
-				//     to preserve this for html2wt either. Removing this
-				//     lets us preserve DOM range continuity.
-				$n->parentNode->removeChild( $n );
-			} elseif (
-				// This is narrowly targeted hacky fix for T370751.
-				// Whitespace doesn't interfere with next-sibling CSS rules.
-				// But, if we span wrap them as below, those CSS rules break.
-				// Here, we strip such newlines instead of span-wrapping them
-				// in the narrow case where they show up between block tags and
-				// the following block tag is a wikitext list or a table since
-				// the template cannot be edited to strip those newlines - they are
-				// essential for the lists / tables to be rendered as such.
-				$n instanceof Text &&
-				$n->textContent === "\n" &&
-				DOMUtils::isWikitextBlockNode( $n->previousSibling ) &&
-				// Narrow set of sol-based wikitext constructs
-				in_array( DOMUtils::nodeName( $n->nextSibling ), [ 'ul', 'ol', 'table' ], true ) &&
-				!WTUtils::isLiteralHTMLNode( $n->nextSibling )
-			) {
+			} elseif ( self::isDeletableNode( $n ) ) {
 				$n->parentNode->removeChild( $n );
 			} else {
 				// Add a span wrapper to let us add about-ids to represent
@@ -847,18 +879,22 @@ class DOMRangeBuilder {
 			$rangeStart = $range->start;
 			$newRangeStart = $elt;
 
-			$typeOf = DOMCompat::getAttribute( $rangeStart, 'typeof' );
+			DOMUtils::removeTypeOf( $rangeStart, 'mw:Transclusion' );
 			$rangeDmw = DOMDataUtils::getDataMw( $rangeStart );
 			$rangeDp = DOMDataUtils::getDataParsoid( $rangeStart );
 
 			$this->migrateElements( $elt, $rangeStart, $elt, $elt->firstChild );
 			$range->start = $newRangeStart;
 
-			$newRangeStart->setAttribute( 'typeof', $typeOf );
+			DOMUtils::addTypeOf( $newRangeStart, 'mw:Transclusion' );
+			$newRangeDmw = DOMDataUtils::getDataMw( $newRangeStart );
+			$newRangeDmw->parts = $rangeDmw->parts;
+			unset( $rangeDmw->parts );
 			$newRangeDp = DOMDataUtils::getDataParsoid( $newRangeStart );
 			$newRangeDp->pi = $rangeDp->pi;
+			unset( $rangeDp->pi );
 			$newRangeDp->dsr = $rangeDp->dsr;
-			DOMDataUtils::setDataMw( $newRangeStart, $rangeDmw );
+			unset( $rangeDp->dsr );
 		}
 
 		$elt = $range->end;
