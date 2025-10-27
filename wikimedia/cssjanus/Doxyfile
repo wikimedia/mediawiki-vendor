@@ -1,0 +1,19 @@
+# Doxyfile <https://www.doxygen.nl/manual/config.html>
+PROJECT_NAME           = "CSSJanus"
+PROJECT_BRIEF          = "Convert CSS stylesheets between left-to-right and right-to-left."
+OUTPUT_DIRECTORY       = doc
+JAVADOC_AUTOBRIEF      = YES
+QT_AUTOBRIEF           = YES
+QUIET                  = YES
+WARN_NO_PARAMDOC       = YES
+WARN_IF_DOC_ERROR      = NO
+WARN_IF_INCOMPLETE_DOC = NO
+INPUT                  = README.md src/
+FILE_PATTERNS          = *.php
+RECURSIVE              = YES
+USE_MDFILE_AS_MAINPAGE = README.md
+HTML_DYNAMIC_SECTIONS  = YES
+GENERATE_TREEVIEW      = YES
+TREEVIEW_WIDTH         = 250
+GENERATE_LATEX         = NO
+GENERATE_TAGFILE       = doc/html/tagfile.xml
