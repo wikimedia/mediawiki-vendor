@@ -12,5 +12,5 @@ return array(
     'Less' => array($vendorDir . '/wikimedia/less.php/lib'),
     'Console' => array($vendorDir . '/pear/console_getopt'),
     'CSSMin' => array($vendorDir . '/wikimedia/minify/src'),
-    '' => array($vendorDir . '/cssjanus/cssjanus/src'),
+    '' => array($vendorDir . '/wikimedia/cssjanus/src'),
 );
