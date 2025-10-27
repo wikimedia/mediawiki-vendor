@@ -9,7 +9,6 @@ class ComposerStaticInit_mediawiki_vendor
     public static $files = array (
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
-        'eccc0347283a01e62f5536bcf76b6e62' => __DIR__ . '/..' . '/wikimedia/at-ease/src/Wikimedia/Functions.php',
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         'c3f7f0e81464740a933532e81fa26cc7' => __DIR__ . '/..' . '/wikimedia/base-convert/src/Functions.php',
@@ -18,6 +17,7 @@ class ComposerStaticInit_mediawiki_vendor
         '23c18046f52bef3eea034657bafda50f' => __DIR__ . '/..' . '/symfony/polyfill-php81/bootstrap.php',
         '5897ea0ac4cccf14d323035e65887801' => __DIR__ . '/..' . '/symfony/polyfill-php82/bootstrap.php',
         '662a729f963d39afe703c9d9b7ab4a8c' => __DIR__ . '/..' . '/symfony/polyfill-php83/bootstrap.php',
+        'eccc0347283a01e62f5536bcf76b6e62' => __DIR__ . '/..' . '/wikimedia/at-ease/src/Wikimedia/Functions.php',
         '6513700b70192b7dfd0e5e9fc8082cf3' => __DIR__ . '/..' . '/wikimedia/relpath/src/Wikimedia/RelPath.php',
     );
 
@@ -188,13 +188,12 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'Wikimedia\\' => 
         array (
-            0 => __DIR__ . '/..' . '/wikimedia/ip-set/src',
-            1 => __DIR__ . '/..' . '/wikimedia/ip-utils/src',
-            2 => __DIR__ . '/..' . '/wikimedia/php-session-serializer/src',
-            3 => __DIR__ . '/..' . '/wikimedia/running-stat/src',
-            4 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
-            5 => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src',
-            6 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
+            0 => __DIR__ . '/..' . '/wikimedia/ip-utils/src',
+            1 => __DIR__ . '/..' . '/wikimedia/php-session-serializer/src',
+            2 => __DIR__ . '/..' . '/wikimedia/running-stat/src',
+            3 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
+            4 => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src',
+            5 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
         ),
         'WikiPEG\\' => 
         array (
@@ -1563,7 +1562,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\IDLeDOM\\XPathExpression' => __DIR__ . '/..' . '/wikimedia/idle-dom/src/XPathExpression.php',
         'Wikimedia\\IDLeDOM\\XPathNSResolver' => __DIR__ . '/..' . '/wikimedia/idle-dom/src/XPathNSResolver.php',
         'Wikimedia\\IDLeDOM\\XPathResult' => __DIR__ . '/..' . '/wikimedia/idle-dom/src/XPathResult.php',
-        'Wikimedia\\IPSet' => __DIR__ . '/..' . '/wikimedia/ip-set/src/IPSet.php',
+        'Wikimedia\\IPSet' => __DIR__ . '/..' . '/wikimedia/ip-utils/src/IPSet.php',
         'Wikimedia\\IPUtils' => __DIR__ . '/..' . '/wikimedia/ip-utils/src/IPUtils.php',
         'Wikimedia\\Minify\\CSSMin' => __DIR__ . '/..' . '/wikimedia/minify/src/CSSMin.php',
         'Wikimedia\\Minify\\Cli' => __DIR__ . '/..' . '/wikimedia/minify/src/Cli.php',
