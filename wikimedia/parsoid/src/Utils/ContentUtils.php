@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 namespace Wikimedia\Parsoid\Utils;
 
 use Closure;
+use Wikimedia\Assert\Assert;
 use Wikimedia\Assert\UnreachableException;
 use Wikimedia\Parsoid\Config\Env;
 use Wikimedia\Parsoid\Config\SiteConfig;
@@ -174,6 +175,33 @@ class ContentUtils {
 		};
 		self::processAttributeEmbeddedHTMLInternal( $siteConfig, $elt, $str2df2str );
 
+		// Language variant markup
+		if ( DOMUtils::matchTypeOf( $elt, '/^mw:LanguageVariant$/' ) ) {
+			$dmwv = DOMDataUtils::getDataMwVariant( $elt );
+			if ( $dmwv !== null ) {
+				if ( $dmwv->disabled instanceof DocumentFragment ) {
+					$proc( $dmwv->disabled );
+				}
+				if ( $dmwv->name instanceof DocumentFragment ) {
+					$proc( $dmwv->name );
+				}
+				if ( $dmwv->twoway !== null ) {
+					foreach ( $dmwv->twoway as $l ) {
+						$proc( $l->text );
+					}
+				}
+				if ( $dmwv->oneway !== null ) {
+					foreach ( $dmwv->oneway as $l ) {
+						$proc( $l->from );
+						$proc( $l->to );
+					}
+				}
+				if ( $dmwv->filter !== null ) {
+					$proc( $dmwv->filter->text );
+				}
+			}
+		}
+
 		if ( WTUtils::isInlineMedia( $elt ) ) {
 			$caption = DOMDataUtils::getDataMw( $elt )->caption ?? null;
 			if ( $caption !== null ) {
@@ -202,32 +230,6 @@ class ContentUtils {
 		}
 	}
 
-	/**
-	 * Extensions might be interested in examining their content embedded
-	 * in data-mw attributes that don't otherwise show up in the DOM.
-	 *
-	 * Ex: inline media captions that aren't rendered, language variant markup,
-	 *     attributes that are transcluded. More scenarios might be added later.
-	 *
-	 * @deprecated since 0.21.
-	 * Don't use this directly: use ::processAttributeEmbeddedDom().
-	 * This method may omit content which is embedded natively as
-	 * DocumentFragments instead of as HTML strings.
-	 *
-	 * @param ParsoidExtensionAPI $extAPI
-	 * @param Element $elt The node whose data attributes need to be examined
-	 * @param Closure $proc The processor that will process the embedded HTML
-	 *        Signature: (string) -> string
-	 *        This processor will be provided the HTML string as input
-	 *        and is expected to return a possibly modified string.
-	 */
-	public static function processAttributeEmbeddedHTML(
-		ParsoidExtensionAPI $extAPI, Element $elt, Closure $proc
-	): void {
-		$extAPI->getSiteConfig()->deprecated( __METHOD__, "0.21" );
-		self::processAttributeEmbeddedHTMLInternal( $extAPI->getSiteConfig(), $elt, $proc );
-	}
-
 	private static function processAttributeEmbeddedHTMLInternal(
 		SiteConfig $siteConfig, Element $elt, Closure $proc
 	): void {
@@ -247,31 +249,6 @@ class ContentUtils {
 						}
 					}
 				}
-			}
-		}
-
-		// Language variant markup
-		if ( DOMUtils::matchTypeOf( $elt, '/^mw:LanguageVariant$/' ) ) {
-			$dmwv = DOMDataUtils::getJSONAttribute( $elt, 'data-mw-variant', null );
-			if ( $dmwv ) {
-				if ( isset( $dmwv->disabled ) ) {
-					$dmwv->disabled->t = $proc( $dmwv->disabled->t );
-				}
-				if ( isset( $dmwv->twoway ) ) {
-					foreach ( $dmwv->twoway as $l ) {
-						$l->t = $proc( $l->t );
-					}
-				}
-				if ( isset( $dmwv->oneway ) ) {
-					foreach ( $dmwv->oneway as $l ) {
-						$l->f = $proc( $l->f );
-						$l->t = $proc( $l->t );
-					}
-				}
-				if ( isset( $dmwv->filter ) ) {
-					$dmwv->filter->t = $proc( $dmwv->filter->t );
-				}
-				DOMDataUtils::setJSONAttribute( $elt, 'data-mw-variant', $dmwv );
 			}
 		}
 
@@ -418,9 +395,10 @@ class ContentUtils {
 			// could/should collect a list of all the different $dsr
 			// sources and then run this multiple times, once for each
 			// source text.
-			if ( $dsr->source !== null && $dsr->source !== $source ) {
-				return $dsr;
-			}
+			Assert::invariant(
+				$dsr->source === null || $dsr->source === $source,
+				"Bad source in ::convertOffsets"
+			);
 			if ( $dsr->start !== null ) {
 				$collect( $dsr->start );
 				$collect( $dsr->innerStart() );
