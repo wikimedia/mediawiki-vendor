@@ -5483,7 +5483,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\LangConv\\ReplacementMachine' => __DIR__ . '/..' . '/wikimedia/langconv/src/ReplacementMachine.php',
         'Wikimedia\\LangConv\\ZhReplacementMachine' => __DIR__ . '/..' . '/wikimedia/langconv/src/ZhReplacementMachine.php',
         'Wikimedia\\MetricsPlatform\\ContextController' => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/src/ContextController.php',
-        'Wikimedia\\MetricsPlatform\\CurationController' => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/src/CurationController.php',
         'Wikimedia\\MetricsPlatform\\EventSubmitter' => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/src/EventSubmitter.php',
         'Wikimedia\\MetricsPlatform\\Integration' => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/src/Integration.php',
         'Wikimedia\\MetricsPlatform\\MetricsClient' => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/src/MetricsClient.php',

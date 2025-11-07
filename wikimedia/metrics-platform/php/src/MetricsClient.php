@@ -29,9 +29,6 @@ class MetricsClient implements LoggerAwareInterface {
 	/** @var ContextController */
 	private $contextController;
 
-	/** @var CurationController */
-	private $curationController;
-
 	/** @var StreamConfigFactory */
 	private $streamConfigFactory;
 
@@ -41,22 +38,19 @@ class MetricsClient implements LoggerAwareInterface {
 	 * @param StreamConfigFactory $streamConfigFactory
 	 * @param ?LoggerInterface $logger
 	 * @param ?ContextController $contextController
-	 * @param ?CurationController $curationController
 	 */
 	public function __construct(
 		EventSubmitter $eventSubmitter,
 		Integration $integration,
 		StreamConfigFactory $streamConfigFactory,
 		?LoggerInterface $logger = null,
-		?ContextController $contextController = null,
-		?CurationController $curationController = null
+		?ContextController $contextController = null
 	) {
 		$this->eventSubmitter = $eventSubmitter;
 		$this->integration = $integration;
 		$this->streamConfigFactory = $streamConfigFactory;
 		$this->setLogger( $logger ?? new NullLogger() );
 		$this->contextController = $contextController ?? new ContextController( $integration );
-		$this->curationController = $curationController ?? new CurationController();
 	}
 
 	/**

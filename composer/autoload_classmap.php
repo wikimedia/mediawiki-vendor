@@ -4774,7 +4774,6 @@ return array(
     'Wikimedia\\LangConv\\ReplacementMachine' => $vendorDir . '/wikimedia/langconv/src/ReplacementMachine.php',
     'Wikimedia\\LangConv\\ZhReplacementMachine' => $vendorDir . '/wikimedia/langconv/src/ZhReplacementMachine.php',
     'Wikimedia\\MetricsPlatform\\ContextController' => $vendorDir . '/wikimedia/metrics-platform/php/src/ContextController.php',
-    'Wikimedia\\MetricsPlatform\\CurationController' => $vendorDir . '/wikimedia/metrics-platform/php/src/CurationController.php',
     'Wikimedia\\MetricsPlatform\\EventSubmitter' => $vendorDir . '/wikimedia/metrics-platform/php/src/EventSubmitter.php',
     'Wikimedia\\MetricsPlatform\\Integration' => $vendorDir . '/wikimedia/metrics-platform/php/src/Integration.php',
     'Wikimedia\\MetricsPlatform\\MetricsClient' => $vendorDir . '/wikimedia/metrics-platform/php/src/MetricsClient.php',
