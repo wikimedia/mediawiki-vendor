@@ -23,7 +23,6 @@ abstract class AdyenAudit implements AuditParser {
 		'merchantpayout',
 		'refundedreversed',
 		'depositcorrection',
-		'invoicededuction',
 		'matchedstatement',
 		'manualcorrected',
 		'authorisationschemefee',
@@ -47,7 +46,8 @@ abstract class AdyenAudit implements AuditParser {
 		'sentforrefund',
 		'expired',
 		'error',
-		'capturefailed'
+		'capturefailed',
+		'refundfailed'
 	];
 
 	protected $fileData;
@@ -107,7 +107,7 @@ abstract class AdyenAudit implements AuditParser {
 	protected function parseLine( $line ) {
 		$row = array_combine( $this->columnHeaders, $line );
 		$type = strtolower( $row[$this->type] );
-		if ( $type === 'fee' ) {
+		if ( $type === 'fee' || $type === 'invoicededuction' ) {
 			$this->fileData[] = $this->getFeeTransaction( $row );
 			return;
 		}

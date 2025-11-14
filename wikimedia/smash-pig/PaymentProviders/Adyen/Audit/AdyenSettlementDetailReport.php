@@ -47,9 +47,9 @@ class AdyenSettlementDetailReport extends AdyenAudit {
 		$msg['original_net_amount'] = AdyenCurrencyRoundingHelper::round( $msg['original_total_amount'] + $msg['original_fee_amount'], $msg['original_currency'] );
 
 		// shouldn't this be settled_net or settled_amount?
-		$msg['settled_gross'] = $row['Net Credit (NC)'];
+		$msg['settled_gross'] = $row['Net Credit (NC)'] ?: -$row['Net Debit (NC)'];
 		// Settled amount is like settled gross but is negative where negative.
-		$msg['settled_net_amount'] = $row['Net Credit (NC)'];
+		$msg['settled_net_amount'] = $row['Net Credit (NC)'] ?: -$row['Net Debit (NC)'];
 		$msg['settled_total_amount'] = AdyenCurrencyRoundingHelper::round( $msg['settled_net_amount'] - $msg['settled_fee_amount'], $msg['settled_currency'] );
 		return $msg;
 	}

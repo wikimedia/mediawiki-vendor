@@ -283,6 +283,74 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 		$this->assertEquals( $expected, $actual, 'Did not parse chargeback correctly' );
 	}
 
+	/**
+	 * When fees are more than the donation amount
+	 */
+	public function testProcessSettlementDetailNegativeTransaction(): void {
+		$processor = new AdyenSettlementDetailReport();
+		$output = $processor->parseFile( __DIR__ . '/../Data/settlement_detail_report_emptynetcredit.csv' );
+		$actual = $output[0];
+		$expected = [
+			'gateway' => 'gravy',
+			'audit_file_gateway' => 'adyen',
+			'gateway_account' => 'WikimediaCOM',
+			'contribution_tracking_id' => 239460213,
+			'date' => 1761908739,
+			'gross' => '10',
+			'invoice_id' => '239460213.5',
+			'gateway_txn_id' => '922d7c4b-9181-4fe9-b5e8-cb3f8c0883c1',
+			'payment_method' => 'cc',
+			'payment_submethod' => 'mc',
+			'settlement_batch_reference' => '1136',
+			'exchange_rate' => '0.011',
+			'fee' => '12.73',
+			'settled_date' => 1761934195,
+			'settled_currency' => 'USD',
+			'original_currency' => 'INR',
+			'currency' => 'INR',
+			'original_fee_amount' => -12.73,
+			'original_net_amount' => '-2.73',
+			'settled_gross' => -0.03,
+			'original_total_amount' => 10.0,
+			'settled_fee_amount' => '-0.14',
+			'settled_net_amount' => -0.03,
+			'settled_total_amount' => 0.11,
+			'email' => 'test@test.com',
+			'modification_reference' => 'DVBVQ8KVWFFW7669',
+			'backend_processor_txn_id' => 'FVD6HH297FKD7K69',
+			'backend_processor' => 'adyen',
+			'payment_orchestrator_reconciliation_id' => '4RpfKjZxqXWKsUOeHaVteD'
+		];
+		$this->assertEquals( $expected, $actual, 'Fees do not match' );
+	}
+
+	/**
+	 * When an invoice deduction is recorded it is treated like a fee.
+	 *
+	 * These are both rare & trivial (e.g 6 cents)
+	 */
+	public function testProcessSettlementDetailInvoiceDeduction(): void {
+		$processor = new AdyenSettlementDetailReport();
+		$output = $processor->parseFile( __DIR__ . '/../Data/settlement_detail_report_invoice_deduction.csv' );
+		$actual = $output[0];
+		$expected = [
+			'gateway' => 'adyen',
+			'audit_file_gateway' => 'adyen',
+			'gateway_account' => 'WikimediaCOM',
+			'date' => 1761908739,
+			'invoice_id' => '',
+			'gateway_txn_id' => 'Invoice US202510000533 Discounts and additional costs (1/1)',
+			'settlement_batch_reference' => '1136',
+			'settled_date' => 1761908739,
+			'settled_currency' => 'USD',
+			'settled_fee_amount' => '-0.06',
+			'settled_net_amount' => '-0.06',
+			'settled_total_amount' => '0.00',
+			'type' => 'fee',
+		];
+		$this->assertEquals( $expected, $actual, 'Fees do not match' );
+	}
+
 	public function testProcessPaymentsAccountingNyce() {
 		$processor = new AdyenPaymentsAccountingReport();
 		$output = $processor->parseFile( __DIR__ . '/../Data/payments_accounting_report_nyce.csv' );
