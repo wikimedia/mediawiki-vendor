@@ -5061,6 +5061,7 @@ return array(
     'Wikimedia\\Parsoid\\Wt2Html\\DOM\\Handlers\\HandleLinkNeighbours' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/DOM/Handlers/HandleLinkNeighbours.php',
     'Wikimedia\\Parsoid\\Wt2Html\\DOM\\Handlers\\Headings' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/DOM/Handlers/Headings.php',
     'Wikimedia\\Parsoid\\Wt2Html\\DOM\\Handlers\\LiFixups' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/DOM/Handlers/LiFixups.php',
+    'Wikimedia\\Parsoid\\Wt2Html\\DOM\\Handlers\\ReparseScenario' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/DOM/Handlers/ReparseScenario.php',
     'Wikimedia\\Parsoid\\Wt2Html\\DOM\\Handlers\\TableFixups' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/DOM/Handlers/TableFixups.php',
     'Wikimedia\\Parsoid\\Wt2Html\\DOM\\Handlers\\UnpackDOMFragments' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/DOM/Handlers/UnpackDOMFragments.php',
     'Wikimedia\\Parsoid\\Wt2Html\\DOM\\Processors\\AddMediaInfo' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/DOM/Processors/AddMediaInfo.php',

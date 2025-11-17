@@ -5770,6 +5770,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Wt2Html\\DOM\\Handlers\\HandleLinkNeighbours' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/DOM/Handlers/HandleLinkNeighbours.php',
         'Wikimedia\\Parsoid\\Wt2Html\\DOM\\Handlers\\Headings' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/DOM/Handlers/Headings.php',
         'Wikimedia\\Parsoid\\Wt2Html\\DOM\\Handlers\\LiFixups' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/DOM/Handlers/LiFixups.php',
+        'Wikimedia\\Parsoid\\Wt2Html\\DOM\\Handlers\\ReparseScenario' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/DOM/Handlers/ReparseScenario.php',
         'Wikimedia\\Parsoid\\Wt2Html\\DOM\\Handlers\\TableFixups' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/DOM/Handlers/TableFixups.php',
         'Wikimedia\\Parsoid\\Wt2Html\\DOM\\Handlers\\UnpackDOMFragments' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/DOM/Handlers/UnpackDOMFragments.php',
         'Wikimedia\\Parsoid\\Wt2Html\\DOM\\Processors\\AddMediaInfo' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/DOM/Processors/AddMediaInfo.php',
