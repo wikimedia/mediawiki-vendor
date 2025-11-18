@@ -19,11 +19,11 @@ class ComposerStaticInit_mediawiki_vendor
     );
 
     public static $prefixLengthsPsr4 = array (
-        'j' => 
+        'j' =>
         array (
             'jakobo\\HOTP\\' => 12,
         ),
-        'W' => 
+        'W' =>
         array (
             'Wikimedia\\Zest\\' => 15,
             'Wikimedia\\XMPReader\\' => 20,
@@ -48,7 +48,7 @@ class ComposerStaticInit_mediawiki_vendor
             'Wikimedia\\Assert\\' => 17,
             'Wikimedia\\' => 10,
         ),
-        'S' => 
+        'S' =>
         array (
             'Symfony\\Polyfill\\Php85\\' => 23,
             'Symfony\\Polyfill\\Php84\\' => 23,
@@ -57,7 +57,7 @@ class ComposerStaticInit_mediawiki_vendor
             'Symfony\\Component\\Yaml\\' => 23,
             'Shellbox\\' => 9,
         ),
-        'P' => 
+        'P' =>
         array (
             'Psr\\Log\\' => 8,
             'Psr\\Http\\Message\\' => 17,
@@ -65,42 +65,42 @@ class ComposerStaticInit_mediawiki_vendor
             'Psr\\Container\\' => 14,
             'Peast\\' => 6,
         ),
-        'M' => 
+        'M' =>
         array (
             'Monolog\\' => 8,
         ),
-        'L' => 
+        'L' =>
         array (
             'LightnCandy\\' => 12,
         ),
-        'J' => 
+        'J' =>
         array (
             'JsonSchema\\' => 11,
         ),
-        'H' => 
+        'H' =>
         array (
             'HtmlFormatter\\' => 14,
         ),
-        'G' => 
+        'G' =>
         array (
             'GuzzleHttp\\Psr7\\' => 16,
             'GuzzleHttp\\Promise\\' => 19,
             'GuzzleHttp\\' => 11,
         ),
-        'E' => 
+        'E' =>
         array (
             'Endroid\\QrCode\\' => 15,
         ),
-        'D' => 
+        'D' =>
         array (
             'DASPRiD\\Enum\\' => 13,
         ),
-        'C' => 
+        'C' =>
         array (
             'Composer\\Semver\\' => 16,
             'CLDRPluralRuleParser\\' => 21,
         ),
-        'B' => 
+        'B' =>
         array (
             'Base32\\' => 7,
             'BaconQrCode\\' => 12,
@@ -108,238 +108,238 @@ class ComposerStaticInit_mediawiki_vendor
     );
 
     public static $prefixDirsPsr4 = array (
-        'jakobo\\HOTP\\' => 
+        'jakobo\\HOTP\\' =>
         array (
             0 => __DIR__ . '/..' . '/jakobo/hotp-php/src',
         ),
-        'Wikimedia\\Zest\\' => 
+        'Wikimedia\\Zest\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/zest-css/src',
         ),
-        'Wikimedia\\XMPReader\\' => 
+        'Wikimedia\\XMPReader\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/xmp-reader/src',
         ),
-        'Wikimedia\\WikiPEG\\' => 
+        'Wikimedia\\WikiPEG\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/wikipeg/src',
         ),
-        'Wikimedia\\Timestamp\\' => 
+        'Wikimedia\\Timestamp\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/timestamp/src',
         ),
-        'Wikimedia\\Services\\' => 
+        'Wikimedia\\Services\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/services/src',
         ),
-        'Wikimedia\\RequestTimeout\\' => 
+        'Wikimedia\\RequestTimeout\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/request-timeout/src',
         ),
-        'Wikimedia\\RemexHtml\\' => 
+        'Wikimedia\\RemexHtml\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/remex-html/src',
         ),
-        'Wikimedia\\Purtle\\Tests\\' => 
+        'Wikimedia\\Purtle\\Tests\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/purtle/tests/phpunit',
         ),
-        'Wikimedia\\Purtle\\' => 
+        'Wikimedia\\Purtle\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/purtle/src',
         ),
-        'Wikimedia\\Parsoid\\' => 
+        'Wikimedia\\Parsoid\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/parsoid/src',
         ),
-        'Wikimedia\\ObjectFactory\\' => 
+        'Wikimedia\\ObjectFactory\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/object-factory/src',
         ),
-        'Wikimedia\\NormalizedException\\' => 
+        'Wikimedia\\NormalizedException\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/normalized-exception/src',
         ),
-        'Wikimedia\\Minify\\' => 
+        'Wikimedia\\Minify\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/minify/src',
         ),
-        'Wikimedia\\JsonCodec\\' => 
+        'Wikimedia\\JsonCodec\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/json-codec/src',
         ),
-        'Wikimedia\\IDLeDOM\\' => 
+        'Wikimedia\\IDLeDOM\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/idle-dom/src',
         ),
-        'Wikimedia\\Equivset\\' => 
+        'Wikimedia\\Equivset\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/equivset/src',
         ),
-        'Wikimedia\\Composer\\Merge\\V2\\' => 
+        'Wikimedia\\Composer\\Merge\\V2\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/composer-merge-plugin/src',
         ),
-        'Wikimedia\\CommonPasswords\\' => 
+        'Wikimedia\\CommonPasswords\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/common-passwords/src',
         ),
-        'Wikimedia\\Bcp47Code\\' => 
+        'Wikimedia\\Bcp47Code\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/bcp-47-code/src',
         ),
-        'Wikimedia\\AtEase\\' => 
+        'Wikimedia\\AtEase\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/at-ease/src',
         ),
-        'Wikimedia\\Assert\\' => 
+        'Wikimedia\\Assert\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/assert/src',
         ),
-        'Wikimedia\\' => 
+        'Wikimedia\\' =>
         array (
-            0 => __DIR__ . '/..' . '/wikimedia/ip-utils/src',
-            1 => __DIR__ . '/..' . '/wikimedia/php-session-serializer/src',
-            2 => __DIR__ . '/..' . '/wikimedia/relpath/src',
-            3 => __DIR__ . '/..' . '/wikimedia/running-stat/src',
-            4 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
-            5 => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src',
-            6 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
+            0 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
+            1 => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src',
+            2 => __DIR__ . '/..' . '/wikimedia/running-stat/src',
+            3 => __DIR__ . '/..' . '/wikimedia/relpath/src',
+            4 => __DIR__ . '/..' . '/wikimedia/php-session-serializer/src',
+            5 => __DIR__ . '/..' . '/wikimedia/ip-utils/src',
+            6 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
         ),
-        'Symfony\\Polyfill\\Php85\\' => 
+        'Symfony\\Polyfill\\Php85\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php85',
         ),
-        'Symfony\\Polyfill\\Php84\\' => 
+        'Symfony\\Polyfill\\Php84\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php84',
         ),
-        'Symfony\\Polyfill\\Php83\\' => 
+        'Symfony\\Polyfill\\Php83\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php83',
         ),
-        'Symfony\\Polyfill\\Php82\\' => 
+        'Symfony\\Polyfill\\Php82\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php82',
         ),
-        'Symfony\\Component\\Yaml\\' => 
+        'Symfony\\Component\\Yaml\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/yaml',
         ),
-        'Shellbox\\' => 
+        'Shellbox\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/shellbox/src',
         ),
-        'Psr\\Log\\' => 
+        'Psr\\Log\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
         ),
-        'Psr\\Http\\Message\\' => 
+        'Psr\\Http\\Message\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/http-factory/src',
             1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
-        'Psr\\Http\\Client\\' => 
+        'Psr\\Http\\Client\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/http-client/src',
         ),
-        'Psr\\Container\\' => 
+        'Psr\\Container\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
         ),
-        'Peast\\' => 
+        'Peast\\' =>
         array (
             0 => __DIR__ . '/..' . '/mck89/peast/lib/Peast',
         ),
-        'Monolog\\' => 
+        'Monolog\\' =>
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
         ),
-        'LightnCandy\\' => 
+        'LightnCandy\\' =>
         array (
             0 => __DIR__ . '/..' . '/zordius/lightncandy/src',
         ),
-        'JsonSchema\\' => 
+        'JsonSchema\\' =>
         array (
             0 => __DIR__ . '/..' . '/justinrainbow/json-schema/src/JsonSchema',
         ),
-        'HtmlFormatter\\' => 
+        'HtmlFormatter\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/html-formatter/src',
         ),
-        'GuzzleHttp\\Psr7\\' => 
+        'GuzzleHttp\\Psr7\\' =>
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
         ),
-        'GuzzleHttp\\Promise\\' => 
+        'GuzzleHttp\\Promise\\' =>
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/promises/src',
         ),
-        'GuzzleHttp\\' => 
+        'GuzzleHttp\\' =>
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
         ),
-        'Endroid\\QrCode\\' => 
+        'Endroid\\QrCode\\' =>
         array (
             0 => __DIR__ . '/..' . '/endroid/qr-code/src',
         ),
-        'DASPRiD\\Enum\\' => 
+        'DASPRiD\\Enum\\' =>
         array (
             0 => __DIR__ . '/..' . '/dasprid/enum/src',
         ),
-        'Composer\\Semver\\' => 
+        'Composer\\Semver\\' =>
         array (
             0 => __DIR__ . '/..' . '/composer/semver/src',
         ),
-        'CLDRPluralRuleParser\\' => 
+        'CLDRPluralRuleParser\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/cldr-plural-rule-parser/src',
         ),
-        'Base32\\' => 
+        'Base32\\' =>
         array (
             0 => __DIR__ . '/..' . '/christian-riesen/base32/src',
         ),
-        'BaconQrCode\\' => 
+        'BaconQrCode\\' =>
         array (
             0 => __DIR__ . '/..' . '/bacon/bacon-qr-code/src',
         ),
     );
 
     public static $prefixesPsr0 = array (
-        'N' => 
+        'N' =>
         array (
-            'Net' => 
+            'Net' =>
             array (
                 0 => __DIR__ . '/..' . '/pear/net_smtp',
                 1 => __DIR__ . '/..' . '/pear/net_socket',
             ),
         ),
-        'M' => 
+        'M' =>
         array (
-            'Mail' => 
+            'Mail' =>
             array (
-                0 => __DIR__ . '/..' . '/pear/mail',
-                1 => __DIR__ . '/..' . '/pear/mail_mime',
+                0 => __DIR__ . '/..' . '/pear/mail_mime',
+                1 => __DIR__ . '/..' . '/pear/mail',
             ),
         ),
-        'L' => 
+        'L' =>
         array (
-            'Liuggio' => 
+            'Liuggio' =>
             array (
                 0 => __DIR__ . '/..' . '/liuggio/statsd-php-client/src',
             ),
-            'Less' => 
+            'Less' =>
             array (
                 0 => __DIR__ . '/..' . '/wikimedia/less.php/lib',
             ),
         ),
-        'C' => 
+        'C' =>
         array (
-            'Console' => 
+            'Console' =>
             array (
                 0 => __DIR__ . '/..' . '/pear/console_getopt',
             ),
-            'CSSMin' => 
+            'CSSMin' =>
             array (
                 0 => __DIR__ . '/..' . '/wikimedia/minify/src',
             ),
