@@ -47,9 +47,9 @@
             'dev_requirement' => false,
         ),
         'composer/ca-bundle' => array(
-            'pretty_version' => '1.5.8',
-            'version' => '1.5.8.0',
-            'reference' => '719026bb30813accb68271fee7e39552a58e9f65',
+            'pretty_version' => '1.5.9',
+            'version' => '1.5.9.0',
+            'reference' => '1905981ee626e6f852448b7aaa978f8666c5bc54',
             'type' => 'library',
             'install_path' => __DIR__ . '/./ca-bundle',
             'aliases' => array(),

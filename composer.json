@@ -18,7 +18,7 @@
 		"bacon/bacon-qr-code": "3.0.3",
 		"brick/math": "0.13.1",
 		"christian-riesen/base32": "1.6.0",
-		"composer/ca-bundle": "1.5.8",
+		"composer/ca-bundle": "1.5.9",
 		"composer/semver": "3.4.4",
 		"dasprid/enum": "1.0.7",
 		"data-values/common": "1.2.0",
