@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '7379ac3367ace16b5d94c56b864e9e1807fc09a3',
+        'reference' => 'e3e7d126ae06325938cb00e8000952cdfeebaa1a',
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '7379ac3367ace16b5d94c56b864e9e1807fc09a3',
+            'reference' => 'e3e7d126ae06325938cb00e8000952cdfeebaa1a',
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -274,8 +274,8 @@
         'psr/clock-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.0.0',
-                1 => '1.0',
+                0 => '1.0',
+                1 => '1.0.0',
             ),
         ),
         'psr/container' => array(
