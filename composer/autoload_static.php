@@ -27,11 +27,11 @@ class ComposerStaticInit_mediawiki_vendor
     );
 
     public static $prefixLengthsPsr4 = array (
-        'j' => 
+        'j' =>
         array (
             'jakobo\\HOTP\\' => 12,
         ),
-        'W' => 
+        'W' =>
         array (
             'Wikimedia\\Zest\\' => 15,
             'Wikimedia\\XMPReader\\' => 20,
@@ -63,13 +63,13 @@ class ComposerStaticInit_mediawiki_vendor
             'Webauthn\\' => 9,
             'WMDE\\VueJsTemplating\\' => 21,
         ),
-        'V' => 
+        'V' =>
         array (
             'ValueValidators\\' => 16,
             'ValueParsers\\' => 13,
             'ValueFormatters\\' => 16,
         ),
-        'S' => 
+        'S' =>
         array (
             'Symfony\\Polyfill\\Php85\\' => 23,
             'Symfony\\Polyfill\\Php84\\' => 23,
@@ -90,11 +90,11 @@ class ComposerStaticInit_mediawiki_vendor
             'Shellbox\\' => 9,
             'Serializers\\' => 12,
         ),
-        'R' => 
+        'R' =>
         array (
             'React\\Promise\\' => 14,
         ),
-        'P' => 
+        'P' =>
         array (
             'Psy\\' => 4,
             'Psr\\SimpleCache\\' => 16,
@@ -108,25 +108,25 @@ class ComposerStaticInit_mediawiki_vendor
             'Peast\\' => 6,
             'ParagonIE\\ConstantTime\\' => 23,
         ),
-        'O' => 
+        'O' =>
         array (
             'Opis\\Uri\\' => 9,
             'Opis\\String\\' => 12,
             'Opis\\JsonSchema\\' => 16,
             'Onoi\\MessageReporter\\' => 21,
         ),
-        'N' => 
+        'N' =>
         array (
             'Nyholm\\Dsn\\' => 11,
         ),
-        'M' => 
+        'M' =>
         array (
             'Monolog\\' => 8,
             'MaxMind\\WebService\\' => 19,
             'MaxMind\\Exception\\' => 18,
             'MaxMind\\Db\\' => 11,
         ),
-        'L' => 
+        'L' =>
         array (
             'LuceneExplain\\' => 14,
             'LightnCandy\\' => 12,
@@ -136,15 +136,15 @@ class ComposerStaticInit_mediawiki_vendor
             'Lcobucci\\JWT\\' => 13,
             'Lcobucci\\Clock\\' => 15,
         ),
-        'J' => 
+        'J' =>
         array (
             'JsonSchema\\' => 11,
         ),
-        'H' => 
+        'H' =>
         array (
             'HtmlFormatter\\' => 14,
         ),
-        'G' => 
+        'G' =>
         array (
             'GuzzleHttp\\Stream\\' => 18,
             'GuzzleHttp\\Ring\\' => 16,
@@ -153,17 +153,17 @@ class ComposerStaticInit_mediawiki_vendor
             'GuzzleHttp\\' => 11,
             'GeoIp2\\' => 7,
         ),
-        'F' => 
+        'F' =>
         array (
             'Firebase\\JWT\\' => 13,
         ),
-        'E' => 
+        'E' =>
         array (
             'Endroid\\QrCode\\' => 15,
             'Elasticsearch\\' => 14,
             'Elastica\\' => 9,
         ),
-        'D' => 
+        'D' =>
         array (
             'Diff\\' => 5,
             'Deserializers\\' => 14,
@@ -174,7 +174,7 @@ class ComposerStaticInit_mediawiki_vendor
             'DataValues\\' => 11,
             'DASPRiD\\Enum\\' => 13,
         ),
-        'C' => 
+        'C' =>
         array (
             'Cose\\' => 5,
             'Composer\\Semver\\' => 16,
@@ -182,7 +182,7 @@ class ComposerStaticInit_mediawiki_vendor
             'CLDRPluralRuleParser\\' => 21,
             'CBOR\\' => 5,
         ),
-        'B' => 
+        'B' =>
         array (
             'Brick\\Math\\' => 11,
             'Base32\\' => 7,
@@ -191,519 +191,519 @@ class ComposerStaticInit_mediawiki_vendor
     );
 
     public static $prefixDirsPsr4 = array (
-        'jakobo\\HOTP\\' => 
+        'jakobo\\HOTP\\' =>
         array (
             0 => __DIR__ . '/..' . '/jakobo/hotp-php/src',
         ),
-        'Wikimedia\\Zest\\' => 
+        'Wikimedia\\Zest\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/zest-css/src',
         ),
-        'Wikimedia\\XMPReader\\' => 
+        'Wikimedia\\XMPReader\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/xmp-reader/src',
         ),
-        'Wikimedia\\WikiPEG\\' => 
+        'Wikimedia\\WikiPEG\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/wikipeg/src',
         ),
-        'Wikimedia\\Timestamp\\' => 
+        'Wikimedia\\Timestamp\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/timestamp/src',
         ),
-        'Wikimedia\\Services\\' => 
+        'Wikimedia\\Services\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/services/src',
         ),
-        'Wikimedia\\RequestTimeout\\' => 
+        'Wikimedia\\RequestTimeout\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/request-timeout/src',
         ),
-        'Wikimedia\\RemexHtml\\' => 
+        'Wikimedia\\RemexHtml\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/remex-html/src',
         ),
-        'Wikimedia\\Purtle\\Tests\\' => 
+        'Wikimedia\\Purtle\\Tests\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/purtle/tests/phpunit',
         ),
-        'Wikimedia\\Purtle\\' => 
+        'Wikimedia\\Purtle\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/purtle/src',
         ),
-        'Wikimedia\\Parsoid\\' => 
+        'Wikimedia\\Parsoid\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/parsoid/src',
         ),
-        'Wikimedia\\ObjectFactory\\' => 
+        'Wikimedia\\ObjectFactory\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/object-factory/src',
         ),
-        'Wikimedia\\NormalizedException\\' => 
+        'Wikimedia\\NormalizedException\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/normalized-exception/src',
         ),
-        'Wikimedia\\Minify\\' => 
+        'Wikimedia\\Minify\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/minify/src',
         ),
-        'Wikimedia\\MetricsPlatform\\Tests\\' => 
+        'Wikimedia\\MetricsPlatform\\Tests\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/tests',
         ),
-        'Wikimedia\\MetricsPlatform\\' => 
+        'Wikimedia\\MetricsPlatform\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/src',
         ),
-        'Wikimedia\\LangConv\\' => 
+        'Wikimedia\\LangConv\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/langconv/src',
         ),
-        'Wikimedia\\JsonCodec\\' => 
+        'Wikimedia\\JsonCodec\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/json-codec/src',
         ),
-        'Wikimedia\\IDLeDOM\\' => 
+        'Wikimedia\\IDLeDOM\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/idle-dom/src',
         ),
-        'Wikimedia\\Equivset\\' => 
+        'Wikimedia\\Equivset\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/equivset/src',
         ),
-        'Wikimedia\\Composer\\Merge\\V2\\' => 
+        'Wikimedia\\Composer\\Merge\\V2\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/composer-merge-plugin/src',
         ),
-        'Wikimedia\\CommonPasswords\\' => 
+        'Wikimedia\\CommonPasswords\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/common-passwords/src',
         ),
-        'Wikimedia\\Codex\\' => 
+        'Wikimedia\\Codex\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/codex/src',
         ),
-        'Wikimedia\\CSS\\' => 
+        'Wikimedia\\CSS\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src',
         ),
-        'Wikimedia\\Bcp47Code\\' => 
+        'Wikimedia\\Bcp47Code\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/bcp-47-code/src',
         ),
-        'Wikimedia\\AtEase\\' => 
+        'Wikimedia\\AtEase\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/at-ease/src',
         ),
-        'Wikimedia\\Assert\\' => 
+        'Wikimedia\\Assert\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/assert/src',
         ),
-        'Wikimedia\\' => 
+        'Wikimedia\\' =>
         array (
-            0 => __DIR__ . '/..' . '/wikimedia/ip-utils/src',
-            1 => __DIR__ . '/..' . '/wikimedia/php-session-serializer/src',
-            2 => __DIR__ . '/..' . '/wikimedia/relpath/src',
+            0 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
+            1 => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src',
+            2 => __DIR__ . '/..' . '/wikimedia/testing-access-wrapper/src',
             3 => __DIR__ . '/..' . '/wikimedia/running-stat/src',
-            4 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
-            5 => __DIR__ . '/..' . '/wikimedia/testing-access-wrapper/src',
-            6 => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src',
-            7 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
+            4 => __DIR__ . '/..' . '/wikimedia/relpath/src',
+            5 => __DIR__ . '/..' . '/wikimedia/php-session-serializer/src',
+            6 => __DIR__ . '/..' . '/wikimedia/ip-utils/src',
+            7 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
         ),
-        'Webauthn\\' => 
+        'Webauthn\\' =>
         array (
             0 => __DIR__ . '/..' . '/web-auth/webauthn-lib/src',
         ),
-        'WMDE\\VueJsTemplating\\' => 
+        'WMDE\\VueJsTemplating\\' =>
         array (
             0 => __DIR__ . '/..' . '/wmde/php-vuejs-templating/src',
         ),
-        'ValueValidators\\' => 
+        'ValueValidators\\' =>
         array (
             0 => __DIR__ . '/..' . '/data-values/interfaces/src/ValueValidators',
         ),
-        'ValueParsers\\' => 
+        'ValueParsers\\' =>
         array (
             0 => __DIR__ . '/..' . '/data-values/common/src/ValueParsers',
             1 => __DIR__ . '/..' . '/data-values/interfaces/src/ValueParsers',
         ),
-        'ValueFormatters\\' => 
+        'ValueFormatters\\' =>
         array (
             0 => __DIR__ . '/..' . '/data-values/common/src/ValueFormatters',
             1 => __DIR__ . '/..' . '/data-values/interfaces/src/ValueFormatters',
         ),
-        'Symfony\\Polyfill\\Php85\\' => 
+        'Symfony\\Polyfill\\Php85\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php85',
         ),
-        'Symfony\\Polyfill\\Php84\\' => 
+        'Symfony\\Polyfill\\Php84\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php84',
         ),
-        'Symfony\\Polyfill\\Php83\\' => 
+        'Symfony\\Polyfill\\Php83\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php83',
         ),
-        'Symfony\\Polyfill\\Php82\\' => 
+        'Symfony\\Polyfill\\Php82\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php82',
         ),
-        'Symfony\\Contracts\\Translation\\' => 
+        'Symfony\\Contracts\\Translation\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/translation-contracts',
         ),
-        'Symfony\\Contracts\\Service\\' => 
+        'Symfony\\Contracts\\Service\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/service-contracts',
         ),
-        'Symfony\\Component\\Yaml\\' => 
+        'Symfony\\Component\\Yaml\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/yaml',
         ),
-        'Symfony\\Component\\VarDumper\\' => 
+        'Symfony\\Component\\VarDumper\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/var-dumper',
         ),
-        'Symfony\\Component\\Validator\\' => 
+        'Symfony\\Component\\Validator\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/validator',
         ),
-        'Symfony\\Component\\Uid\\' => 
+        'Symfony\\Component\\Uid\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/uid',
         ),
-        'Symfony\\Component\\Translation\\' => 
+        'Symfony\\Component\\Translation\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/translation',
         ),
-        'Symfony\\Component\\String\\' => 
+        'Symfony\\Component\\String\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/string',
         ),
-        'Symfony\\Component\\Process\\' => 
+        'Symfony\\Component\\Process\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/process',
         ),
-        'Symfony\\Component\\Console\\' => 
+        'Symfony\\Component\\Console\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/console',
         ),
-        'Swaggest\\JsonDiff\\' => 
+        'Swaggest\\JsonDiff\\' =>
         array (
             0 => __DIR__ . '/..' . '/swaggest/json-diff/src',
         ),
-        'SpomkyLabs\\Pki\\' => 
+        'SpomkyLabs\\Pki\\' =>
         array (
             0 => __DIR__ . '/..' . '/spomky-labs/pki-framework/src',
         ),
-        'Shellbox\\' => 
+        'Shellbox\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/shellbox/src',
         ),
-        'Serializers\\' => 
+        'Serializers\\' =>
         array (
             0 => __DIR__ . '/..' . '/serialization/serialization/src/Serializers',
         ),
-        'React\\Promise\\' => 
+        'React\\Promise\\' =>
         array (
             0 => __DIR__ . '/..' . '/react/promise/src',
         ),
-        'Psy\\' => 
+        'Psy\\' =>
         array (
             0 => __DIR__ . '/..' . '/psy/psysh/src',
         ),
-        'Psr\\SimpleCache\\' => 
+        'Psr\\SimpleCache\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/simple-cache/src',
         ),
-        'Psr\\Log\\' => 
+        'Psr\\Log\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
         ),
-        'Psr\\Http\\Message\\' => 
+        'Psr\\Http\\Message\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/http-factory/src',
             1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
-        'Psr\\Http\\Client\\' => 
+        'Psr\\Http\\Client\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/http-client/src',
         ),
-        'Psr\\EventDispatcher\\' => 
+        'Psr\\EventDispatcher\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/event-dispatcher/src',
         ),
-        'Psr\\Container\\' => 
+        'Psr\\Container\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
         ),
-        'Psr\\Clock\\' => 
+        'Psr\\Clock\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/clock/src',
         ),
-        'PhpParser\\' => 
+        'PhpParser\\' =>
         array (
             0 => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser',
         ),
-        'Peast\\' => 
+        'Peast\\' =>
         array (
             0 => __DIR__ . '/..' . '/mck89/peast/lib/Peast',
         ),
-        'ParagonIE\\ConstantTime\\' => 
+        'ParagonIE\\ConstantTime\\' =>
         array (
             0 => __DIR__ . '/..' . '/paragonie/constant_time_encoding/src',
         ),
-        'Opis\\Uri\\' => 
+        'Opis\\Uri\\' =>
         array (
             0 => __DIR__ . '/..' . '/opis/uri/src',
         ),
-        'Opis\\String\\' => 
+        'Opis\\String\\' =>
         array (
             0 => __DIR__ . '/..' . '/opis/string/src',
         ),
-        'Opis\\JsonSchema\\' => 
+        'Opis\\JsonSchema\\' =>
         array (
             0 => __DIR__ . '/..' . '/opis/json-schema/src',
         ),
-        'Onoi\\MessageReporter\\' => 
+        'Onoi\\MessageReporter\\' =>
         array (
             0 => __DIR__ . '/..' . '/onoi/message-reporter/src',
         ),
-        'Nyholm\\Dsn\\' => 
+        'Nyholm\\Dsn\\' =>
         array (
             0 => __DIR__ . '/..' . '/nyholm/dsn/src',
         ),
-        'Monolog\\' => 
+        'Monolog\\' =>
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
         ),
-        'MaxMind\\WebService\\' => 
+        'MaxMind\\WebService\\' =>
         array (
             0 => __DIR__ . '/..' . '/maxmind/web-service-common/src/WebService',
         ),
-        'MaxMind\\Exception\\' => 
+        'MaxMind\\Exception\\' =>
         array (
             0 => __DIR__ . '/..' . '/maxmind/web-service-common/src/Exception',
         ),
-        'MaxMind\\Db\\' => 
+        'MaxMind\\Db\\' =>
         array (
             0 => __DIR__ . '/..' . '/maxmind-db/reader/src/MaxMind/Db',
         ),
-        'LuceneExplain\\' => 
+        'LuceneExplain\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/lucene-explain-parser/src',
         ),
-        'LightnCandy\\' => 
+        'LightnCandy\\' =>
         array (
             0 => __DIR__ . '/..' . '/zordius/lightncandy/src',
         ),
-        'League\\Uri\\' => 
+        'League\\Uri\\' =>
         array (
-            0 => __DIR__ . '/..' . '/league/uri/src',
-            1 => __DIR__ . '/..' . '/league/uri-components/src',
+            0 => __DIR__ . '/..' . '/league/uri-components/src',
+            1 => __DIR__ . '/..' . '/league/uri/src',
             2 => __DIR__ . '/..' . '/league/uri-interfaces/src',
         ),
-        'League\\OAuth2\\Server\\' => 
+        'League\\OAuth2\\Server\\' =>
         array (
             0 => __DIR__ . '/..' . '/league/oauth2-server/src',
         ),
-        'League\\Event\\' => 
+        'League\\Event\\' =>
         array (
             0 => __DIR__ . '/..' . '/league/event/src',
         ),
-        'Lcobucci\\JWT\\' => 
+        'Lcobucci\\JWT\\' =>
         array (
             0 => __DIR__ . '/..' . '/lcobucci/jwt/src',
         ),
-        'Lcobucci\\Clock\\' => 
+        'Lcobucci\\Clock\\' =>
         array (
             0 => __DIR__ . '/..' . '/okvpn/clock-lts/src',
         ),
-        'JsonSchema\\' => 
+        'JsonSchema\\' =>
         array (
             0 => __DIR__ . '/..' . '/justinrainbow/json-schema/src/JsonSchema',
         ),
-        'HtmlFormatter\\' => 
+        'HtmlFormatter\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/html-formatter/src',
         ),
-        'GuzzleHttp\\Stream\\' => 
+        'GuzzleHttp\\Stream\\' =>
         array (
             0 => __DIR__ . '/..' . '/ezimuel/guzzlestreams/src',
         ),
-        'GuzzleHttp\\Ring\\' => 
+        'GuzzleHttp\\Ring\\' =>
         array (
             0 => __DIR__ . '/..' . '/ezimuel/ringphp/src',
         ),
-        'GuzzleHttp\\Psr7\\' => 
+        'GuzzleHttp\\Psr7\\' =>
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
         ),
-        'GuzzleHttp\\Promise\\' => 
+        'GuzzleHttp\\Promise\\' =>
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/promises/src',
         ),
-        'GuzzleHttp\\' => 
+        'GuzzleHttp\\' =>
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
         ),
-        'GeoIp2\\' => 
+        'GeoIp2\\' =>
         array (
             0 => __DIR__ . '/..' . '/geoip2/geoip2/src',
         ),
-        'Firebase\\JWT\\' => 
+        'Firebase\\JWT\\' =>
         array (
             0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
         ),
-        'Endroid\\QrCode\\' => 
+        'Endroid\\QrCode\\' =>
         array (
             0 => __DIR__ . '/..' . '/endroid/qr-code/src',
         ),
-        'Elasticsearch\\' => 
+        'Elasticsearch\\' =>
         array (
             0 => __DIR__ . '/..' . '/elasticsearch/elasticsearch/src/Elasticsearch',
         ),
-        'Elastica\\' => 
+        'Elastica\\' =>
         array (
             0 => __DIR__ . '/..' . '/ruflin/elastica/src',
         ),
-        'Diff\\' => 
+        'Diff\\' =>
         array (
             0 => __DIR__ . '/..' . '/diff/diff/src',
         ),
-        'Deserializers\\' => 
+        'Deserializers\\' =>
         array (
             0 => __DIR__ . '/..' . '/serialization/serialization/src/Deserializers',
         ),
-        'Defuse\\Crypto\\' => 
+        'Defuse\\Crypto\\' =>
         array (
             0 => __DIR__ . '/..' . '/defuse/php-encryption/src',
         ),
-        'DataValues\\Serializers\\' => 
+        'DataValues\\Serializers\\' =>
         array (
             0 => __DIR__ . '/..' . '/data-values/serialization/src/Serializers',
         ),
-        'DataValues\\Geo\\' => 
+        'DataValues\\Geo\\' =>
         array (
             0 => __DIR__ . '/..' . '/data-values/geo/src',
         ),
-        'DataValues\\Deserializers\\' => 
+        'DataValues\\Deserializers\\' =>
         array (
             0 => __DIR__ . '/..' . '/data-values/serialization/src/Deserializers',
         ),
-        'DataValues\\' => 
+        'DataValues\\' =>
         array (
             0 => __DIR__ . '/..' . '/data-values/common/src/DataValues',
             1 => __DIR__ . '/..' . '/data-values/data-values/src',
         ),
-        'DASPRiD\\Enum\\' => 
+        'DASPRiD\\Enum\\' =>
         array (
             0 => __DIR__ . '/..' . '/dasprid/enum/src',
         ),
-        'Cose\\' => 
+        'Cose\\' =>
         array (
             0 => __DIR__ . '/..' . '/web-auth/cose-lib/src',
         ),
-        'Composer\\Semver\\' => 
+        'Composer\\Semver\\' =>
         array (
             0 => __DIR__ . '/..' . '/composer/semver/src',
         ),
-        'Composer\\CaBundle\\' => 
+        'Composer\\CaBundle\\' =>
         array (
             0 => __DIR__ . '/..' . '/composer/ca-bundle/src',
         ),
-        'CLDRPluralRuleParser\\' => 
+        'CLDRPluralRuleParser\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/cldr-plural-rule-parser/src',
         ),
-        'CBOR\\' => 
+        'CBOR\\' =>
         array (
             0 => __DIR__ . '/..' . '/spomky-labs/cbor-php/src',
         ),
-        'Brick\\Math\\' => 
+        'Brick\\Math\\' =>
         array (
             0 => __DIR__ . '/..' . '/brick/math/src',
         ),
-        'Base32\\' => 
+        'Base32\\' =>
         array (
             0 => __DIR__ . '/..' . '/christian-riesen/base32/src',
         ),
-        'BaconQrCode\\' => 
+        'BaconQrCode\\' =>
         array (
             0 => __DIR__ . '/..' . '/bacon/bacon-qr-code/src',
         ),
     );
 
     public static $prefixesPsr0 = array (
-        'V' => 
+        'V' =>
         array (
-            'ValueParsers\\' => 
+            'ValueParsers\\' =>
             array (
-                0 => __DIR__ . '/..' . '/data-values/number/src',
-                1 => __DIR__ . '/..' . '/data-values/time/src',
+                0 => __DIR__ . '/..' . '/data-values/time/src',
+                1 => __DIR__ . '/..' . '/data-values/number/src',
             ),
-            'ValueFormatters\\' => 
+            'ValueFormatters\\' =>
             array (
-                0 => __DIR__ . '/..' . '/data-values/number/src',
-                1 => __DIR__ . '/..' . '/data-values/time/src',
+                0 => __DIR__ . '/..' . '/data-values/time/src',
+                1 => __DIR__ . '/..' . '/data-values/number/src',
             ),
         ),
-        'T' => 
+        'T' =>
         array (
-            'TextCat' => 
+            'TextCat' =>
             array (
                 0 => __DIR__ . '/..' . '/wikimedia/textcat/src',
             ),
         ),
-        'P' => 
+        'P' =>
         array (
-            'Pimple' => 
+            'Pimple' =>
             array (
                 0 => __DIR__ . '/..' . '/pimple/pimple/src',
             ),
         ),
-        'N' => 
+        'N' =>
         array (
-            'Net' => 
+            'Net' =>
             array (
                 0 => __DIR__ . '/..' . '/pear/net_smtp',
                 1 => __DIR__ . '/..' . '/pear/net_socket',
             ),
         ),
-        'M' => 
+        'M' =>
         array (
-            'Mail' => 
+            'Mail' =>
             array (
-                0 => __DIR__ . '/..' . '/pear/mail',
-                1 => __DIR__ . '/..' . '/pear/mail_mime',
+                0 => __DIR__ . '/..' . '/pear/mail_mime',
+                1 => __DIR__ . '/..' . '/pear/mail',
             ),
         ),
-        'L' => 
+        'L' =>
         array (
-            'Liuggio' => 
+            'Liuggio' =>
             array (
                 0 => __DIR__ . '/..' . '/liuggio/statsd-php-client/src',
             ),
-            'Less' => 
+            'Less' =>
             array (
                 0 => __DIR__ . '/..' . '/wikimedia/less.php/lib',
             ),
         ),
-        'D' => 
+        'D' =>
         array (
-            'DataValues\\' => 
+            'DataValues\\' =>
             array (
-                0 => __DIR__ . '/..' . '/data-values/number/src',
-                1 => __DIR__ . '/..' . '/data-values/time/src',
+                0 => __DIR__ . '/..' . '/data-values/time/src',
+                1 => __DIR__ . '/..' . '/data-values/number/src',
             ),
         ),
-        'C' => 
+        'C' =>
         array (
-            'Console' => 
+            'Console' =>
             array (
                 0 => __DIR__ . '/..' . '/pear/console_getopt',
             ),
-            'CSSMin' => 
+            'CSSMin' =>
             array (
                 0 => __DIR__ . '/..' . '/wikimedia/minify/src',
             ),
