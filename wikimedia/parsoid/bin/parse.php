@@ -14,15 +14,17 @@ use MediaWiki\Revision\MutableRevisionRecord;
 use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Title\Title as MWTitle;
 use Wikimedia\Bcp47Code\Bcp47CodeValue;
+use Wikimedia\JsonCodec\JsonCodec;
 use Wikimedia\Parsoid\Config\Api\ApiHelper;
 use Wikimedia\Parsoid\Config\Api\DataAccess;
 use Wikimedia\Parsoid\Config\Api\PageConfig;
 use Wikimedia\Parsoid\Config\Api\SiteConfig;
 use Wikimedia\Parsoid\Config\SiteConfig as ISiteConfig;
 use Wikimedia\Parsoid\Config\StubMetadataCollector;
+use Wikimedia\Parsoid\Core\BasePageBundle;
 use Wikimedia\Parsoid\Core\ClientError;
 use Wikimedia\Parsoid\Core\ContentMetadataCollector;
-use Wikimedia\Parsoid\Core\PageBundle;
+use Wikimedia\Parsoid\Core\HtmlPageBundle;
 use Wikimedia\Parsoid\Core\SelectiveUpdateData;
 use Wikimedia\Parsoid\Mocks\MockDataAccess;
 use Wikimedia\Parsoid\Mocks\MockMetrics;
@@ -420,7 +422,7 @@ class Parse extends \Wikimedia\Parsoid\Tools\Maintenance {
 	 * @param array $parsoidOpts
 	 * @param ?string $wt
 	 * @param ?SelectiveUpdateData $selparData
-	 * @return string|PageBundle
+	 * @return string|HtmlPageBundle
 	 */
 	public function wt2Html(
 		array $configOpts, array $parsoidOpts, ?string $wt,
@@ -471,13 +473,18 @@ class Parse extends \Wikimedia\Parsoid\Tools\Maintenance {
 	}
 
 	public function html2Wt(
-		array $configOpts, array $parsoidOpts, string $html,
+		array $configOpts, array $parsoidOpts, string|HtmlPageBundle $html,
 		?SelectiveUpdateData $selserData = null
 	): string {
 		$configOpts["pageContent"] = $selserData->revText ?? ''; // FIXME: T234549
 		$this->setupConfig( $configOpts );
 
 		try {
+			if ( $html instanceof HtmlPageBundle ) {
+				return $this->parsoid->dom2wikitext(
+					$this->pageConfig, $html, $parsoidOpts, $selserData
+				);
+			}
 			return $this->parsoid->html2wikitext(
 				$this->pageConfig, $html, $parsoidOpts, $selserData
 			);
@@ -795,6 +802,7 @@ class Parse extends \Wikimedia\Parsoid\Tools\Maintenance {
 	 * @param string $input
 	 */
 	private function transformFromHtml( $configOpts, $parsoidOpts, $input ) {
+		$this->setupConfig( $configOpts );
 		$input = $this->getPageBundleXML( $input ) ?? $input;
 
 		if ( $this->hasOption( 'selser' ) ) {
@@ -839,13 +847,10 @@ class Parse extends \Wikimedia\Parsoid\Tools\Maintenance {
 		} else {
 			$json = $this->getOption( 'pbin' );
 		}
-		$pb = PHPUtils::jsonDecode( $json );
-		$pb = new PageBundle(
-			$input,
-			$pb['parsoid'] ?? null,
-			[ 'ids' => [] ]  // FIXME: ^999.0.0
-		);
-		return $pb->toInlineAttributeHtml();
+		$pb = ( new JsonCodec )->newFromJsonString( $json, BasePageBundle::class );
+		$pb->mw ??= [ 'ids' => [] ];  // FIXME: ^999.0.0
+		$pb = $pb->withHtml( $input );
+		return $pb->toInlineAttributeHtml( siteConfig: $this->siteConfig );
 	}
 
 	/**
@@ -857,6 +862,7 @@ class Parse extends \Wikimedia\Parsoid\Tools\Maintenance {
 	 */
 	private function transformFromWt( $configOpts, $parsoidOpts, $input ) {
 		if ( $this->hasOption( 'selpar' ) ) {
+			$this->setupConfig( $configOpts );
 			$selparData = $this->setupSelectiveUpdateData( 'template' );
 			if ( $selparData === null ) {
 				return;
@@ -876,10 +882,10 @@ class Parse extends \Wikimedia\Parsoid\Tools\Maintenance {
 				$pb = $this->wt2Html( $configOpts, $parsoidOpts, $input );
 				file_put_contents(
 					$this->getOption( 'pboutfile' ),
-					PHPUtils::jsonEncode( [
-						'parsoid' => $pb->parsoid,
-						'mw' => $pb->mw,
-					] )
+					( new JsonCodec )->toJsonString(
+						$pb->toBasePageBundle(),
+						BasePageBundle::class
+					)
 				);
 				$html = $pb->html;
 			} elseif ( $this->hasOption( 'pageBundle' ) ) {

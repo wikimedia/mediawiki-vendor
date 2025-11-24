@@ -267,6 +267,7 @@ class AddMediaInfo implements Wt2HtmlDOMProcessor {
 		$size = self::handleSize( $env, $attrs, $info );
 		DOMDataUtils::addNormalizedAttribute( $audio, 'height', (string)$size['height'], null, true );
 		DOMDataUtils::addNormalizedAttribute( $audio, 'width', (string)$size['width'], null, true );
+		// T133673: Inline style matches TMH
 		$audio->setAttribute( 'style', "width: {$size['width']}px;" );
 
 		// Hardcoded until defined heights are respected.
@@ -628,9 +629,9 @@ class AddMediaInfo implements Wt2HtmlDOMProcessor {
 			$thumbtime = WTSUtils::getAttrFromDataMw( $dataMw, 'thumbtime', true );
 			$starttime = WTSUtils::getAttrFromDataMw( $dataMw, 'starttime', true );
 			if ( $thumbtime || $starttime ) {
-				$seek = $thumbtime && $thumbtime->value !== null
+				$seek = $thumbtime && ( $thumbtime->value['txt'] ?? false )
 					? $thumbtime->value['txt']
-					: ( $starttime && $starttime->value !== null ? $starttime->value['txt'] : '' );
+					: ( $starttime->value['txt'] ?? '' );
 				$seek = self::parseTimeString( $seek );
 				if ( $seek !== null ) {
 					$dims['seek'] = $seek;

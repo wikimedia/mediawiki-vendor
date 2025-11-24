@@ -24,6 +24,7 @@ use Wikimedia\Parsoid\DOM\Document;
 use Wikimedia\Parsoid\Ext\ParsoidExtensionAPI;
 use Wikimedia\Parsoid\Language\LanguageConverter;
 use Wikimedia\Parsoid\Logger\LintLogger;
+use Wikimedia\Parsoid\Mocks\MockSiteConfig;
 use Wikimedia\Parsoid\Utils\ComputeSelectiveStats;
 use Wikimedia\Parsoid\Utils\ContentUtils;
 use Wikimedia\Parsoid\Utils\DOMCompat;
@@ -487,10 +488,12 @@ class Parsoid {
 		PageConfig $pageConfig, $doc, array $options = [],
 		?SelectiveUpdateData $selserData = null
 	): string {
-		Assert::invariant(
-			!DOMDataUtils::isPrepared( $doc ),
-			"document should not be already prepared"
-		);
+		if ( $doc instanceof Document ) {
+			Assert::invariant(
+				!DOMDataUtils::isPrepared( $doc ),
+				"document should not be already prepared"
+			);
+		}
 		$envOptions = $this->setupCommonOptions( $options );
 		if ( isset( $options['inputContentVersion'] ) ) {
 			$envOptions['inputContentVersion'] = $options['inputContentVersion'];
@@ -723,11 +726,16 @@ class Parsoid {
 	 * @param HtmlPageBundle $pageBundle
 	 */
 	public static function downgrade(
-		array $dg, HtmlPageBundle $pageBundle
+		array $dg, HtmlPageBundle $pageBundle, ?SiteConfig $siteConfig = null
 	): void {
+		if ( $siteConfig === null ) {
+			// Will be deprecated in the future
+			// PHPUtils::deprecated( __METHOD__ . ' without siteConfig', '0.23' );
+			$siteConfig = new MockSiteConfig( [] );
+		}
 		foreach ( self::DOWNGRADES as [ 'from' => $dgFrom, 'to' => $dgTo, 'func' => $dgFunc ] ) {
 			if ( $dg['from'] === $dgFrom && $dg['to'] === $dgTo ) {
-				self::$dgFunc( $pageBundle );
+				self::$dgFunc( $pageBundle, $siteConfig );
 
 				// FIXME: Maybe this resolve should just be part of the $dg
 				$pageBundle->version = self::resolveContentVersion( $dg['to'] );
@@ -775,7 +783,7 @@ class Parsoid {
 	 *
 	 * @param HtmlPageBundle $pageBundle
 	 */
-	private static function downgrade999to2( HtmlPageBundle $pageBundle ): void {
+	private static function downgrade999to2( HtmlPageBundle $pageBundle, SiteConfig $siteConfig ): void {
 		// Effectively, skip applying data-parsoid.  Note that if we were to
 		// support a pb2html downgrade, we'd need to apply the full thing,
 		// but that would create complications where ids would be left behind.
@@ -785,7 +793,7 @@ class Parsoid {
 			null,
 			$pageBundle->mw
 		);
-		$pageBundle->html = $newHtmlPageBundle->toInlineAttributeHtml();
+		$pageBundle->html = $newHtmlPageBundle->toInlineAttributeHtml( siteConfig: $siteConfig );
 
 		// Now, modify the pagebundle to the expected form.  This is important
 		// since, at least in the serialization path, the original pb will be

@@ -148,6 +148,12 @@ class DOMDataUtils {
 		DOMCompat::getBody( $doc );
 	}
 
+	/** @internal */
+	public static function unprepareDoc( Document $doc ): void {
+		self::setExtensionData( $doc, "bag", null );
+		self::setExtensionData( $doc, "codec", null );
+	}
+
 	/**
 	 * @param Document $topLevelDoc
 	 * @param Document $childDoc
@@ -1256,11 +1262,7 @@ class DOMDataUtils {
 				if ( !( $a instanceof DataMwAttrib ) ) {
 					return true;
 				}
-				$key = $a->key;
-				if ( $key === $name ) {
-					return false; // Remove this entry
-				}
-				if ( is_array( $key ) && ( $key['txt'] ?? null ) == $name ) {
+				if ( $a->getKeyString() === $name ) {
 					return false; // Remove this entry
 				}
 				return true;
@@ -1413,9 +1415,9 @@ class DOMDataUtils {
 			if ( $dataMw->attribs ?? false ) {
 				$unused = [];
 				foreach ( $dataMw->attribs as $a ) {
-					if ( $a instanceof DataMwAttrib ) {
+					if ( $a instanceof DataMwAttrib && isset( $a->value['rich'] ) ) {
 						$key = $a->key;
-						$value = $a->value;
+						$value = $a->value['rich'];
 						// Attribute expander may use array values for
 						// key, since it supports rich key values.
 						// Ignore any entries created this way, since
@@ -1518,7 +1520,8 @@ class DOMDataUtils {
 						$node->removeAttribute( $attrName );
 					}
 					$dataMw = self::getDataMw( $node );
-					$dataMw->attribs[] = new DataMwAttrib( $attrName, $json );
+					$value = [ 'rich' => $json ];
+					$dataMw->attribs[] = new DataMwAttrib( $attrName, $value );
 					DOMUtils::addTypeOf( $node, 'mw:ExpandedAttrs' );
 				}
 				unset( $nodeData->$k );

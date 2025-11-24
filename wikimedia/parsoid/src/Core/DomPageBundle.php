@@ -4,11 +4,12 @@ declare( strict_types = 1 );
 namespace Wikimedia\Parsoid\Core;
 
 use Wikimedia\Assert\Assert;
+use Wikimedia\JsonCodec\Hint;
+use Wikimedia\JsonCodec\JsonCodec;
 use Wikimedia\Parsoid\Config\SiteConfig;
 use Wikimedia\Parsoid\DOM\Document;
 use Wikimedia\Parsoid\DOM\DocumentFragment;
 use Wikimedia\Parsoid\DOM\Element;
-use Wikimedia\Parsoid\DOM\Node;
 use Wikimedia\Parsoid\Mocks\MockSiteConfig;
 use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
@@ -129,9 +130,9 @@ class DomPageBundle extends BasePageBundle {
 	public function toDom( bool $load = true, ?array $options = null, ?array &$fragments = null ): Document {
 		Assert::invariant( !$this->invalid, "invalidated" );
 		$doc = $this->doc;
-		$fragments = [];
+		$options ??= [];
 		if ( $load ) {
-			$options ??= [];
+			$fragments = [];
 			DOMDataUtils::prepareDoc( $doc );
 			$body = DOMCompat::getBody( $doc );
 			'@phan-var Element $body'; // assert non-null
@@ -152,64 +153,14 @@ class DomPageBundle extends BasePageBundle {
 			}
 			DOMDataUtils::getBag( $doc )->loaded = true;
 		} else {
-			self::apply( $doc, $this->fragments, $this );
-			foreach ( $this->fragments as $name => $f ) {
-				$fragments[$name] = $f;
-			}
+			// This will be deprecated in the future.
+			// PHPUtils::deprecated( __METHOD__ . ' with $load=false', '0.23' );
+			$doc = $this->toInlineAttributeDocument(
+				$options, $fragments
+			);
 		}
 		$this->invalid = true;
 		return $doc;
-	}
-
-	/**
-	 * Applies the `data-*` attributes JSON structure to the document.
-	 * Leaves `id` attributes behind -- they are used by citation code to
-	 * extract `<ref>` body from the DOM.
-	 *
-	 * @param Document $doc doc
-	 * @param array<string,DocumentFragment> $fragments
-	 * @param DomPageBundle $pb page bundle
-	 */
-	private static function apply( Document $doc, array $fragments, DomPageBundle $pb ): void {
-		Assert::invariant(
-			!self::isSingleDocument( $doc ),
-			"conflicting page bundle found in document"
-		);
-		$apply = static function ( Node $node ) use ( $pb ): void {
-			if ( $node instanceof Element ) {
-				$id = DOMCompat::getAttribute( $node, 'id' );
-				if ( $id === null ) {
-					return;
-				}
-				if ( isset( $pb->parsoid['ids'][$id] ) ) {
-					DOMDataUtils::setJSONAttribute(
-						$node, 'data-parsoid', $pb->parsoid['ids'][$id]
-					);
-				}
-				if ( isset( $pb->mw['ids'][$id] ) ) {
-					// Only apply if it isn't already set.  This means
-					// earlier applications of the pagebundle have higher
-					// precedence, inline data being the highest.
-					if ( !$node->hasAttribute( 'data-mw' ) ) {
-						DOMDataUtils::setJSONAttribute(
-							$node, 'data-mw', $pb->mw['ids'][$id]
-						);
-					}
-				}
-			}
-		};
-		DOMUtils::visitDOM(
-			DOMCompat::getBody( $doc ), $apply
-		);
-		// For fragment bank representations, visit <template> nodes in the
-		// <head> as well.
-		DOMUtils::visitDOM(
-			DOMCompat::getHead( $doc ), $apply
-		);
-		// Visit all the other fragments
-		foreach ( $fragments as $name => $f ) {
-			DOMUtils::visitDOM( $f, $apply );
-		}
 	}
 
 	/**
@@ -323,14 +274,59 @@ class DomPageBundle extends BasePageBundle {
 	 * Convert this DomPageBundle to "inline attribute" form, where page bundle
 	 * information is represented as inline JSON-valued attributes.
 	 * @param array $options XHtmlSerializer options
+	 * @param array<string,DocumentFragment>|null &$fragments Additional fragments from the
+	 *  page bundle which will also be converted to "inline attribute" form.
+	 *  This is an output parameter.
+	 * @param ?SiteConfig $siteConfig
+	 * @return Document a standalone document with page bundle information
+	 *  represented as inline JSON-valued attributes.
+	 */
+	public function toInlineAttributeDocument(
+		array $options = [],
+		?array &$fragments = null,
+		?SiteConfig $siteConfig = null
+	): Document {
+		Assert::invariant( !$this->invalid, "invalidated" );
+		$doc = $this->toDom( true, null, $fragments );
+		$siteConfig ??= $options['siteConfig'] ?? null;
+		if ( $siteConfig === null ) {
+			// XXX This will be deprecated in the future
+			// PHPUtils::deprecated( __METHOD__ . ' without siteConfig', '0.23' );
+			$siteConfig = new MockSiteConfig( [] );
+		}
+		$options = [
+			'idIndex' => DOMDataUtils::usedIdIndex( $siteConfig, $doc, $fragments ),
+		] + $options;
+		DOMDataUtils::visitAndStoreDataAttribs(
+			DOMCompat::getBody( $doc ), $options
+		);
+		foreach ( $fragments as $name => $f ) {
+			DOMDataUtils::visitAndStoreDataAttribs(
+				$f, $options
+			);
+		}
+		DOMDataUtils::unprepareDoc( $doc );
+		return $doc;
+	}
+
+	/**
+	 * Convert this DomPageBundle to "inline attribute" form, where page bundle
+	 * information is represented as inline JSON-valued attributes.
+	 * @param array $options XHtmlSerializer options
 	 * @param array<string,string>|null &$fragments Additional fragments from the
 	 *  page bundle which will also be serialized to HTML strings.
 	 *  This is an output parameter.
+	 * @param ?SiteConfig $siteConfig
 	 * @return string an HTML string
 	 */
-	public function toInlineAttributeHtml( array $options = [], ?array &$fragments = null ): string {
-		Assert::invariant( !$this->invalid, "invalidated" );
-		$doc = $this->toDom( false, null, $fragments );
+	public function toInlineAttributeHtml(
+		array $options = [],
+		?array &$fragments = null,
+		?SiteConfig $siteConfig = null
+	): string {
+		$doc = $this->toInlineAttributeDocument(
+			$options, $fragments, $siteConfig
+		);
 		foreach ( $fragments as $name => $f ) {
 			$fragments[$name] = XHtmlSerializer::serialize( $f, $options )['html'];
 		}
@@ -349,7 +345,8 @@ class DomPageBundle extends BasePageBundle {
 	 */
 	private function encodeForHeadElement(): string {
 		// Note that $this->parsoid and $this->mw are already serialized arrays
-		// so a naive jsonEncode is sufficient.  We don't need a codec.
+		// so a naive jsonEncode is sufficient.  We use a JsonCodec to ensure
+		// that objects stay objects and arrays stay arrays, though.
 		$json = [ 'parsoid' => $this->parsoid ?? [], 'mw' => $this->mw ?? [] ];
 		if ( $this->fragments ) {
 			// Preserve fragments in the <head>
@@ -358,7 +355,8 @@ class DomPageBundle extends BasePageBundle {
 				$this->fragments
 			);
 		}
-		return PHPUtils::jsonEncode( $json );
+		$codec = new JsonCodec();
+		return $codec->toJsonString( $json, self::headElementHint() );
 	}
 
 	/**
@@ -368,7 +366,10 @@ class DomPageBundle extends BasePageBundle {
 	private static function decodeFromHeadElement( Document $doc, string $s, array $options = [] ): DomPageBundle {
 		// Note that only 'parsoid' and 'mw' are encoded, so these will be
 		// the only fields set in the decoded DomPageBundle
-		$decoded = PHPUtils::jsonDecode( $s );
+		// Even though 'parsoid' and 'mw' are encoded, use a JsonCodec so
+		// that objects stay objects and arrays stay arrays.
+		$codec = new JsonCodec();
+		$decoded = $codec->newFromJsonString( $s, self::headElementHint() );
 		$fragments = array_map(
 			static fn ( $html ) => DOMUtils::parseHTMLToFragment( $doc, $html ),
 			$decoded['fragments'] ?? []
@@ -382,6 +383,11 @@ class DomPageBundle extends BasePageBundle {
 			$options['contentmodel'] ?? null,
 			$fragments
 		);
+	}
+
+	private static function headElementHint(): Hint {
+		// @phan-suppress-next-line PhanUndeclaredClassReference array
+		return Hint::build( 'array', Hint::LIST, Hint::LIST, Hint::LIST );
 	}
 
 	// JsonCodecable -------------

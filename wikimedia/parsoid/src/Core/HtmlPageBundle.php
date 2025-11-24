@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 namespace Wikimedia\Parsoid\Core;
 
 use Composer\Semver\Semver;
+use Wikimedia\Parsoid\Config\SiteConfig;
 use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Wt2Html\XHtmlSerializer;
 
@@ -60,27 +61,6 @@ class HtmlPageBundle extends BasePageBundle {
 			$headers,
 			$contentmodel
 		);
-	}
-
-	/**
-	 * Check if this pagebundle is valid.
-	 * @param string $contentVersion Document content version to validate against.
-	 * @param ?string &$errorMessage Error message will be returned here.
-	 * @return bool
-	 */
-	public function validate(
-		string $contentVersion, ?string &$errorMessage = null
-	) {
-		if ( !$this->parsoid || !isset( $this->parsoid['ids'] ) ) {
-			$errorMessage = 'Invalid data-parsoid was provided.';
-			return false;
-		} elseif ( Semver::satisfies( $contentVersion, '^999.0.0' )
-			&& ( !$this->mw || !isset( $this->mw['ids'] ) )
-		) {
-			$errorMessage = 'Invalid data-mw was provided.';
-			return false;
-		}
-		return true;
 	}
 
 	/**
@@ -174,11 +154,19 @@ class HtmlPageBundle extends BasePageBundle {
 	 * Convert this HtmlPageBundle to "inline attribute" form, where page bundle
 	 * information is represented as inline JSON-valued attributes.
 	 * @param array $options XHtmlSerializer options
+	 * @param array<string,string>|null &$fragments Additional fragments from the
+	 *  page bundle which will also be serialized to HTML strings.
+	 *  This is an output parameter.
+	 * @param ?SiteConfig $siteConfig
 	 * @return string an HTML string
 	 */
-	public function toInlineAttributeHtml( array $options = [] ): string {
+	public function toInlineAttributeHtml(
+		array $options = [],
+		?array &$fragments = null,
+		?SiteConfig $siteConfig = null
+	): string {
 		return DomPageBundle::fromHtmlPageBundle( $this )
-			->toInlineAttributeHtml( $options );
+			->toInlineAttributeHtml( $options, $fragments, $siteConfig );
 	}
 
 	// JsonCodecable -------------
