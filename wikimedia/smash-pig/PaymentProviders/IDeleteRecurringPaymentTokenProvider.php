@@ -1,6 +1,6 @@
 <?php
 
-namespace smashpig\PaymentProviders;
+namespace SmashPig\PaymentProviders;
 
 interface IDeleteRecurringPaymentTokenProvider {
 	/**

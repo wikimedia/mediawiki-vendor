@@ -45,9 +45,9 @@ class AdyenPaymentsAccountingReport extends AdyenAudit {
 		$msg['settled_gross'] = $row['Payable (SC)'];
 		$msg['settled_net_amount'] = $msg['settled_gross'];
 		$msg['settled_currency'] = $row['Settlement Currency'];
-		$msg['settled_fee_amount'] = $fee;
+		$msg['settled_fee_amount'] = -$fee;
 		$msg['original_net_amount'] = AdyenCurrencyRoundingHelper::round( $msg['original_total_amount'] - $msg['original_fee_amount'], $msg['original_currency'] );
-		$msg['settled_total_amount'] = AdyenCurrencyRoundingHelper::round( $msg['settled_net_amount'] + $msg['settled_fee_amount'], $msg['settled_currency'] );
+		$msg['settled_total_amount'] = AdyenCurrencyRoundingHelper::round( $msg['settled_net_amount'] - $msg['settled_fee_amount'], $msg['settled_currency'] );
 		return $msg;
 	}
 

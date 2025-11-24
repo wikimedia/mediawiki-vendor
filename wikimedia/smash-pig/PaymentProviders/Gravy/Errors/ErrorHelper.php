@@ -54,6 +54,7 @@ class ErrorHelper {
 		$sampleTransactionId = $errorContext['sample_transaction_id'] ?? null;
 		$sampleSummary = $errorContext['sample_transaction_summary'] ?? null;
 		$timeWindowDisplay = static::formatTimeWindow( $timeWindow );
+		$summaryString = $sampleSummary ? self::formatSummaryAsString( $sampleSummary ) : '';
 
 		$alertData = [
 			'error_code' => $errorCode,
@@ -67,7 +68,7 @@ class ErrorHelper {
 			"ALERT: Gravy error threshold exceeded for error code '{$errorCode}'. " .
 			"Occurred {$currentCount} times in {$timeWindowDisplay} (threshold: {$threshold})" .
 			( $sampleTransactionId ? " - Sample transaction: {$sampleTransactionId}" : '' ) .
-			self::formatSummaryAsString( $sampleSummary ),
+			( $summaryString ? " - {$summaryString}" : '' ),
 			$alertData
 		);
 	}

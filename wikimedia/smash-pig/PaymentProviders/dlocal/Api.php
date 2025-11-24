@@ -270,6 +270,19 @@ class Api {
 	}
 
 	/**
+	 * Get the Balance
+	 *
+	 * https://docs.dlocal.com/reference/get-balance-payouts
+	 *
+	 * @return array
+	 * @throws ApiException
+	 */
+	public function getBalance(): array {
+		$route = 'payouts/balances';
+		return $this->makeApiCall( 'GET', $route );
+	}
+
+	/**
 	 * Set dLocal request headers
 	 * https://docs.dlocal.com/reference/payins-security#headers
 	 *

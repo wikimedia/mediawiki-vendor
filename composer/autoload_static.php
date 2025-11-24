@@ -210,13 +210,13 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'Wikimedia\\' => 
         array (
-            0 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
-            1 => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src',
-            2 => __DIR__ . '/..' . '/wikimedia/running-stat/src',
-            3 => __DIR__ . '/..' . '/wikimedia/relpath/src',
-            4 => __DIR__ . '/..' . '/wikimedia/php-session-serializer/src',
-            5 => __DIR__ . '/..' . '/wikimedia/ip-utils/src',
-            6 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
+            0 => __DIR__ . '/..' . '/wikimedia/ip-utils/src',
+            1 => __DIR__ . '/..' . '/wikimedia/php-session-serializer/src',
+            2 => __DIR__ . '/..' . '/wikimedia/relpath/src',
+            3 => __DIR__ . '/..' . '/wikimedia/running-stat/src',
+            4 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
+            5 => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src',
+            6 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
         ),
         'WhichBrowser\\' => 
         array (
@@ -413,8 +413,8 @@ class ComposerStaticInit_mediawiki_vendor
         array (
             'Mail' => 
             array (
-                0 => __DIR__ . '/..' . '/pear/mail_mime',
-                1 => __DIR__ . '/..' . '/pear/mail',
+                0 => __DIR__ . '/..' . '/pear/mail',
+                1 => __DIR__ . '/..' . '/pear/mail_mime',
             ),
         ),
         'L' => 
@@ -2389,6 +2389,7 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\Maintenance\\QueueJobRunner' => __DIR__ . '/..' . '/wikimedia/smash-pig/Maintenance/QueueJobRunner.php',
         'SmashPig\\Maintenance\\QueuePeek' => __DIR__ . '/..' . '/wikimedia/smash-pig/Maintenance/QueuePeek.php',
         'SmashPig\\Maintenance\\RequeueDelayedMessages' => __DIR__ . '/..' . '/wikimedia/smash-pig/Maintenance/RequeueDelayedMessages.php',
+        'SmashPig\\Maintenance\\RequeueInvalidRecurring' => __DIR__ . '/..' . '/wikimedia/smash-pig/Maintenance/RequeueInvalidRecurring.php',
         'SmashPig\\Maintenance\\ResolveExpiredPendingMessages' => __DIR__ . '/..' . '/wikimedia/smash-pig/Maintenance/ResolveExpiredPendingMessages.php',
         'SmashPig\\Maintenance\\TestFailMail' => __DIR__ . '/..' . '/wikimedia/smash-pig/Maintenance/TestFailMail.php',
         'SmashPig\\PaymentData\\Address' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentData/Address.php',
@@ -2639,8 +2640,10 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\PaymentProviders\\Gravy\\Validators\\RedirectPaymentProviderValidator' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Validators/RedirectPaymentProviderValidator.php',
         'SmashPig\\PaymentProviders\\Gravy\\Validators\\ValidatorTrait' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Validators/ValidatorTrait.php',
         'SmashPig\\PaymentProviders\\Gravy\\Validators\\VenmoPaymentProviderValidator' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Gravy/Validators/VenmoPaymentProviderValidator.php',
+        'SmashPig\\PaymentProviders\\ICancelAutoRescueProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/ICancelAutoRescueProvider.php',
         'SmashPig\\PaymentProviders\\ICancelablePaymentProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/ICancelablePaymentProvider.php',
         'SmashPig\\PaymentProviders\\IDeleteDataProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/IDeleteDataProvider.php',
+        'SmashPig\\PaymentProviders\\IDeleteRecurringPaymentTokenProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/IDeleteRecurringPaymentTokenProvider.php',
         'SmashPig\\PaymentProviders\\IGetLatestPaymentStatusProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/IGetLatestPaymentStatusProvider.php',
         'SmashPig\\PaymentProviders\\IPaymentProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/IPaymentProvider.php',
         'SmashPig\\PaymentProviders\\IRecurringPaymentProfileProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/IRecurringPaymentProfileProvider.php',
@@ -2747,6 +2750,7 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\PaymentProviders\\dlocal\\Maintenance\\CancelPayment' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/Maintenance/CancelPayment.php',
         'SmashPig\\PaymentProviders\\dlocal\\Maintenance\\ChargeRecurringIR' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/Maintenance/ChargeRecurringIR.php',
         'SmashPig\\PaymentProviders\\dlocal\\Maintenance\\CreateIRRecurringSubscription' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/Maintenance/CreateIRRecurringSubscription.php',
+        'SmashPig\\PaymentProviders\\dlocal\\Maintenance\\GetBalance' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/Maintenance/GetBalance.php',
         'SmashPig\\PaymentProviders\\dlocal\\Maintenance\\HealthCheck' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/Maintenance/HealthCheck.php',
         'SmashPig\\PaymentProviders\\dlocal\\Maintenance\\RefundPayments' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/Maintenance/RefundPayments.php',
         'SmashPig\\PaymentProviders\\dlocal\\Maintenance\\TestAuthorizeRedirectPayment' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/dlocal/Maintenance/TestAuthorizeRedirectPayment.php',
@@ -4283,8 +4287,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Zest\\ZestInst' => __DIR__ . '/..' . '/wikimedia/zest-css/src/ZestInst.php',
         'WmfFramework' => __DIR__ . '/../..' . '/extensions/DonationInterface/gateway_common/WmfFramework.php',
         'lessc' => __DIR__ . '/..' . '/wikimedia/less.php/lessc.inc.php',
-        'smashpig\\PaymentProviders\\ICancelAutoRescueProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/ICancelAutoRescueProvider.php',
-        'smashpig\\PaymentProviders\\IDeleteRecurringPaymentTokenProvider' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/IDeleteRecurringPaymentTokenProvider.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
