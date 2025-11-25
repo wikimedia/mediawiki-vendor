@@ -163,15 +163,10 @@ class Reader implements LoggerAwareInterface {
 	}
 
 	/**
-	 * free the XML parser.
-	 *
-	 * @note It is unclear to me if we really need to do this ourselves
-	 *  or if php garbage collection will automatically free the xmlParser
-	 *  when it is no longer needed.
+	 * Destroy the XML parser, usually after errors.
 	 */
 	private function destroyXMLParser(): void {
 		if ( $this->xmlParser ) {
-			xml_parser_free( $this->xmlParser );
 			$this->xmlParser = null;
 		}
 	}
@@ -325,26 +320,14 @@ class Reader implements LoggerAwareInterface {
 				if ( preg_match( '/\xEF\xBB\xBF|\xFE\xFF|\x00\x00\xFE\xFF|\xFF\xFE\x00\x00|\xFF\xFE/',
 					$content, $bom )
 				) {
-					switch ( $bom[0] ) {
-						case "\xFE\xFF":
-							$this->charset = 'UTF-16BE';
-							break;
-						case "\xFF\xFE":
-							$this->charset = 'UTF-16LE';
-							break;
-						case "\x00\x00\xFE\xFF":
-							$this->charset = 'UTF-32BE';
-							break;
-						case "\xFF\xFE\x00\x00":
-							$this->charset = 'UTF-32LE';
-							break;
-						case "\xEF\xBB\xBF":
-							$this->charset = 'UTF-8';
-							break;
-						default:
-							// this should be impossible to get to
-							throw new RuntimeException( "Invalid BOM" );
-					}
+					$this->charset = match ( $bom[0] ) {
+						"\xFE\xFF" => 'UTF-16BE',
+						"\xFF\xFE" => 'UTF-16LE',
+						"\x00\x00\xFE\xFF" => 'UTF-32BE',
+						"\xFF\xFE\x00\x00" => 'UTF-32LE',
+						"\xEF\xBB\xBF" => 'UTF-8',
+						default => throw new RuntimeException( "Invalid BOM" ),
+					};
 				} else {
 					// standard specifically says, if no bom assume utf-8
 					$this->charset = 'UTF-8';
@@ -858,13 +841,17 @@ class Reader implements LoggerAwareInterface {
 		if ( count( $this->mode ) === 0 ) {
 			// This should never ever happen and means
 			// there is a pretty major bug in this class.
+			// @codeCoverageIgnoreStart
 			throw new RuntimeException( 'Encountered end element with no mode' );
+			// @codeCoverageIgnoreEnd
 		}
 
 		if ( count( $this->curItem ) === 0 && $this->mode[0] !== self::MODE_INITIAL ) {
 			// just to be paranoid. Should always have a curItem, except for initially
 			// (aka during MODE_INITIAL).
+			// @codeCoverageIgnoreStart
 			throw new RuntimeException( "Hit end element </$elm> but no curItem" );
+			// @codeCoverageIgnoreEnd
 		}
 
 		switch ( $this->mode[0] ) {
@@ -885,7 +872,9 @@ class Reader implements LoggerAwareInterface {
 				if ( $elm === self::NS_RDF . ' Description' ) {
 					array_shift( $this->mode );
 				} else {
+					// @codeCoverageIgnoreStart
 					throw new RuntimeException( 'Element ended unexpectedly while in MODE_INITIAL' );
+					// @codeCoverageIgnoreEnd
 				}
 				break;
 			case self::MODE_LI:
@@ -896,11 +885,13 @@ class Reader implements LoggerAwareInterface {
 				$this->endElementModeQDesc( $elm );
 				break;
 			default:
+				// @codeCoverageIgnoreStart
 				$this->logger->info(
 					__METHOD__ . " no mode (elm = $elm)",
 					[ 'file' => $this->filename ]
 				);
 				break;
+				// @codeCoverageIgnoreEnd
 		}
 	}
 
@@ -1195,7 +1186,9 @@ class Reader implements LoggerAwareInterface {
 		if ( !isset( $this->mode[1] ) ) {
 			// This should never ever ever happen. Checking for it
 			// to be paranoid.
+			// @codeCoverageIgnoreStart
 			throw new RuntimeException( 'In mode Li, but no 2xPrevious mode!' );
+			// @codeCoverageIgnoreEnd
 		}
 
 		if ( $this->mode[1] === self::MODE_BAGSTRUCT ) {
@@ -1206,7 +1199,9 @@ class Reader implements LoggerAwareInterface {
 
 			if ( !isset( $this->curItem[1] ) ) {
 				// be paranoid.
+				// @codeCoverageIgnoreStart
 				throw new RuntimeException( 'Can not find parent of BAGSTRUCT.' );
+				// @codeCoverageIgnoreEnd
 			}
 			[ $curNS, $curTag ] = explode( ' ', $this->curItem[1] );
 			$this->ancestorStruct = $this->items[$curNS][$curTag]['map_name'] ?? $curTag;
@@ -1308,8 +1303,10 @@ class Reader implements LoggerAwareInterface {
 
 		if ( count( $this->mode ) === 0 ) {
 			// This should not happen.
+			// @codeCoverageIgnoreStart
 			throw new RuntimeException( 'Error extracting XMP, '
 				. "encountered <$elm> with no mode" );
+			// @codeCoverageIgnoreEnd
 		}
 
 		switch ( $this->mode[0] ) {
@@ -1345,7 +1342,9 @@ class Reader implements LoggerAwareInterface {
 				$this->startElementModeQDesc( $elm, $attribs );
 				break;
 			default:
+				// @codeCoverageIgnoreStart
 				throw new RuntimeException( 'StartElement in unknown mode: ' . $this->mode[0] );
+				// @codeCoverageIgnoreEnd
 		}
 	}
 
