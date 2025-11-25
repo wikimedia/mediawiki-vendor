@@ -6756,32 +6756,32 @@
         },
         {
             "name": "wikimedia/cldr-plural-rule-parser",
-            "version": "v2.0.0",
-            "version_normalized": "2.0.0.0",
+            "version": "v3.0.0",
+            "version_normalized": "3.0.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/CLDRPluralRuleParser.git",
-                "reference": "83d78cb8018d5c0f66fd6d0efff6a8ae2de92d36"
+                "reference": "c36903b9a05f52b1c4fa96301667539f3b58cf61"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/CLDRPluralRuleParser/zipball/83d78cb8018d5c0f66fd6d0efff6a8ae2de92d36",
-                "reference": "83d78cb8018d5c0f66fd6d0efff6a8ae2de92d36",
+                "url": "https://api.github.com/repos/wikimedia/CLDRPluralRuleParser/zipball/c36903b9a05f52b1c4fa96301667539f3b58cf61",
+                "reference": "c36903b9a05f52b1c4fa96301667539f3b58cf61",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.9"
+                "php": ">=8.1"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "35.0.0",
-                "mediawiki/mediawiki-phan-config": "0.10.6",
-                "mediawiki/minus-x": "1.1.1",
-                "ockcyp/covers-validator": "1.3.3",
-                "php-parallel-lint/php-console-highlighter": "0.5.0",
-                "php-parallel-lint/php-parallel-lint": "1.2.0",
-                "phpunit/phpunit": "^8.5"
+                "mediawiki/mediawiki-codesniffer": "48.0.0",
+                "mediawiki/mediawiki-phan-config": "0.17.0",
+                "mediawiki/minus-x": "1.1.3",
+                "ockcyp/covers-validator": "1.7.0",
+                "php-parallel-lint/php-console-highlighter": "1.0.0",
+                "php-parallel-lint/php-parallel-lint": "1.4.0",
+                "phpunit/phpunit": "10.5.58"
             },
-            "time": "2021-02-11T20:47:01+00:00",
+            "time": "2025-11-25T13:54:34+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -6806,7 +6806,7 @@
             "description": "Evaluates plural rules specified in the CLDR project notation.",
             "homepage": "https://www.mediawiki.org/wiki/CLDRPluralRuleParser",
             "support": {
-                "source": "https://github.com/wikimedia/CLDRPluralRuleParser/tree/v2.0.0"
+                "source": "https://github.com/wikimedia/CLDRPluralRuleParser/tree/v3.0.0"
             },
             "install-path": "../wikimedia/cldr-plural-rule-parser"
         },
