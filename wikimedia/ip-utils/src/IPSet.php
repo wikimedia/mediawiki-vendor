@@ -111,7 +111,7 @@ class IPSet implements JsonSerializable {
 	 */
 	private function addCidr( $cidr ): bool {
 		// v4 or v6 check
-		if ( strpos( $cidr, ':' ) === false ) {
+		if ( !str_contains( $cidr, ':' ) ) {
 			$node =& $this->root4;
 			$defMask = '32';
 		} else {
@@ -120,7 +120,7 @@ class IPSet implements JsonSerializable {
 		}
 
 		// Default to all-1's mask if no netmask in the input
-		if ( strpos( $cidr, '/' ) === false ) {
+		if ( !str_contains( $cidr, '/' ) ) {
 			$net = $cidr;
 			$mask = $defMask;
 		} else {
