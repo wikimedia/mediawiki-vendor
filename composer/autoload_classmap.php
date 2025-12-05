@@ -5260,6 +5260,7 @@ return array(
     'Wikimedia\\Timestamp\\Clock' => $vendorDir . '/wikimedia/timestamp/src/Clock.php',
     'Wikimedia\\Timestamp\\ConvertibleTimestamp' => $vendorDir . '/wikimedia/timestamp/src/ConvertibleTimestamp.php',
     'Wikimedia\\Timestamp\\TimestampException' => $vendorDir . '/wikimedia/timestamp/src/TimestampException.php',
+    'Wikimedia\\Timestamp\\TimestampFormat' => $vendorDir . '/wikimedia/timestamp/src/TimestampFormat.php',
     'Wikimedia\\WaitConditionLoop' => $vendorDir . '/wikimedia/wait-condition-loop/src/WaitConditionLoop.php',
     'Wikimedia\\WikiPEG\\DefaultTracer' => $vendorDir . '/wikimedia/wikipeg/src/DefaultTracer.php',
     'Wikimedia\\WikiPEG\\Expectation' => $vendorDir . '/wikimedia/wikipeg/src/Expectation.php',

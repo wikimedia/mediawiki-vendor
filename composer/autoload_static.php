@@ -5969,6 +5969,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Timestamp\\Clock' => __DIR__ . '/..' . '/wikimedia/timestamp/src/Clock.php',
         'Wikimedia\\Timestamp\\ConvertibleTimestamp' => __DIR__ . '/..' . '/wikimedia/timestamp/src/ConvertibleTimestamp.php',
         'Wikimedia\\Timestamp\\TimestampException' => __DIR__ . '/..' . '/wikimedia/timestamp/src/TimestampException.php',
+        'Wikimedia\\Timestamp\\TimestampFormat' => __DIR__ . '/..' . '/wikimedia/timestamp/src/TimestampFormat.php',
         'Wikimedia\\WaitConditionLoop' => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src/WaitConditionLoop.php',
         'Wikimedia\\WikiPEG\\DefaultTracer' => __DIR__ . '/..' . '/wikimedia/wikipeg/src/DefaultTracer.php',
         'Wikimedia\\WikiPEG\\Expectation' => __DIR__ . '/..' . '/wikimedia/wikipeg/src/Expectation.php',
