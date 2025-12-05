@@ -11,7 +11,7 @@ class ErrorMapper {
 	 * Core failures
 	 * Source: https://docs.gr4vy.com/guides/api/resources/transactions/error-codes#core-failures
 	 */
-	public static $transactionErrorCodesCore = [
+	public static array $transactionErrorCodesCore = [
 		'incomplete_buyer_approval' => ErrorCode::INVALID_REQUEST, // The shipping address is invalid.
 		'failed_buyer_approval' => ErrorCode::UNKNOWN, // The service could not create a resource due to a conflict.
 		'missing_redirect_url' => ErrorCode::ACCOUNT_MISCONFIGURATION, // The service is configured in an unexpected state.
@@ -25,7 +25,7 @@ class ErrorMapper {
 	 * Connector declines/Failures
 	 * Source: https://docs.gr4vy.com/guides/api/resources/transactions/error-codes#connector-declines
 	 */
-	public static $transactionErrorCodes = [
+	public static array $transactionErrorCodes = [
 			'canceled_payment_method' => ErrorCode::DECLINED_DO_NOT_RETRY, // The payment method reported lost, stolen, or otherwise canceled..
 			'disputed_transaction' => ErrorCode::UNKNOWN, // The transaction cannot be refunded due to chargeback.
 			'duplicate_transaction' => ErrorCode::DUPLICATE, // The transaction is a duplicate of a previous transaction.
@@ -53,7 +53,7 @@ class ErrorMapper {
 			'invalid_service_configuration' => ErrorCode::INVALID_REQUEST, // The service is incorrectly configured.
 			'invalid_service_credentials' => ErrorCode::INVALID_REQUEST, // The service credentials are not valid.
 			'invalid_service_response' => ErrorCode::INVALID_REQUEST, // The service response could not be parsed.
-			'invalid_tax_identifier' => ErrorCode::INVALID_REQUEST, // The tax identifier is invalid (e.g. GB VAT number is in an invalid format, or is of the wrong kind).
+			'invalid_tax_identifier' => ErrorCode::VALIDATION, // The tax identifier is invalid (e.g. GB VAT number is in an invalid format, or is of the wrong kind).
 			'missing_billing_address' => ErrorCode::VALIDATION, // The billing address is required.
 			'missing_cvv' => ErrorCode::VALIDATION, // The CVV is required.
 			'missing_shipping_address' => ErrorCode::VALIDATION, // The shipping address is required.
@@ -81,7 +81,7 @@ class ErrorMapper {
 	 * Error response code mapping
 	 * source: https://docs.gr4vy.com/reference/errors/server-errors, https://docs.gr4vy.com/reference/errors/client-errors
 	 */
-	public static $errorCodes = [
+	public static array $errorCodes = [
 		'400' => ErrorCode::VALIDATION, // Bad request.
 		'401' => ErrorCode::INVALID_REQUEST, // Unauthorized.
 		'403' => ErrorCode::DECLINED, // Forbidden.
@@ -99,10 +99,18 @@ class ErrorMapper {
 	 * Codes that indicate suspected fraud;
 	 * Source: https://docs.gr4vy.com/guides/api/resources/transactions/error-codes#connector-declines
 	 */
-	public static $suspectedFraudCodes = [
+	public static array $suspectedFraudCodes = [
 		'canceled_payment_method', // The payment method reported lost, stolen, or otherwise canceled..
 		'refused_transaction', // The transaction was refused due to legal reasons (e.g. watch list, embargo, sanctions).
 		'suspected_fraud', // The service flagged the transaction as suspected fraud.
+	];
+
+	public static $validationErrorFieldMap = [
+		'incorrect_cvv' => 'cvv',
+		'incorrect_expiry_date' => 'expiry_date',
+		'invalid_tax_identifier' => 'fiscal_number',
+		'missing_cvv' => 'cvv',
+		'missing_tax_identifier' => 'fiscal_number',
 	];
 
 	public static function getError( string $code ) {
@@ -117,7 +125,11 @@ class ErrorMapper {
 		return ErrorCode::UNKNOWN;
 	}
 
-	public static function isSuspectedFraud( string $code ) {
+	public static function isSuspectedFraud( string $code ): bool {
 		return in_array( $code, self::$suspectedFraudCodes );
+	}
+
+	public static function getValidationErrorField( ?string $errorCode ): ?string {
+		return self::$validationErrorFieldMap[$errorCode] ?? null;
 	}
 }

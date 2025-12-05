@@ -29,8 +29,15 @@ class BraintreeAudit implements AuditParser {
 		$msg = [];
 		// Common to all types, since we normalized already from the Maintenance Script SearchTransactions
 		$msg['date'] = UtcDate::getUtcTimestamp( $row['date'] );
-		$msg['gateway'] = 'braintree';
-		$msg['contribution_tracking_id'] = $row['contribution_tracking_id'];
+		$msg['gateway'] = $msg['audit_file_gateway'] = 'braintree';
+		if ( $this->isOrchestratorMerchantReference( $row ) ) {
+			$msg['payment_orchestrator_reconciliation_id'] = $row['invoice_id'];
+			$msg['backend_processor'] = $msg['gateway'];
+			$msg['backend_processor_txn_id'] = $row['gateway_txn_id'];
+			$msg['gateway'] = 'gravy';
+		} else {
+			$msg['contribution_tracking_id'] = $row['contribution_tracking_id'];
+		}
 		$msg['invoice_id'] = $row['invoice_id'];
 		$msg['payment_method'] = $row['payment_method'];
 		$msg['gross'] = $row['gross'];
@@ -52,6 +59,16 @@ class BraintreeAudit implements AuditParser {
 			}
 		}
 		$this->fileData[] = $msg;
+	}
+
+	/**
+	 * Is this a gravy Row.
+	 *
+	 */
+	protected function isOrchestratorMerchantReference( array $row ): bool {
+		$merchantReference = $row['contribution_tracking_id'];
+		// ignore gravy transactions, they have no period and contain letters
+		return ( !strpos( $merchantReference, '.' ) && !is_numeric( $merchantReference ) );
 	}
 
 	protected function parseRefund( array $row, array &$msg ) {

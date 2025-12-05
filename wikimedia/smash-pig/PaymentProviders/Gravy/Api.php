@@ -32,7 +32,7 @@ class Api {
 	 * @link https://docs.gr4vy.com/reference/checkout-sessions/new-checkout-session#create-checkout-session Gr4vy Documentation to create a new checkout session
 	 * @link https://docs.gr4vy.com/reference/digital-wallets/get-apple-pay-session Gr4vy Documentation to create a new apple pay session
 	 */
-	public function createPaymentSession( $params = [], string $method = 'card' ): array {
+	public function createPaymentSession( array $params = [], string $method = 'card' ): array {
 		$tl = new TaggedLogger( 'RawData' );
 		if ( $method === PaymentMethod::APPLE ) {
 			$tl->info( 'New Apple Pay Session request ' . json_encode( $params ) );

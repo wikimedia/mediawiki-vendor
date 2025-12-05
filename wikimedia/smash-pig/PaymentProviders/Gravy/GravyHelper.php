@@ -14,7 +14,7 @@ class GravyHelper {
 	 */
 	public static function extractProcessorNameFromServiceDefinitionId( string $paymentServiceDefinitionId ): string {
 		// Check if the hyphen exists in the payment service definition id
-		if ( strpos( $paymentServiceDefinitionId, '-' ) !== false ) {
+		if ( str_contains( $paymentServiceDefinitionId, '-' ) ) {
 			return explode( '-', $paymentServiceDefinitionId )[0];
 		}
 		// Return the input if no hyphen is found. We don't want to mess with it if it's not as expected.

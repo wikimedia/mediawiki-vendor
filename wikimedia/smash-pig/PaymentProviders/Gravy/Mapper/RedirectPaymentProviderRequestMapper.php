@@ -31,7 +31,7 @@ class RedirectPaymentProviderRequestMapper extends RequestMapper {
 			$request['payment_method'] = array_merge( $request['payment_method'], $payment_method );
 		}
 
-		if ( in_array( $request['payment_method']['method'], self::CAPTURE_ONLY_PAYMENT_METHOD ) ) {
+		if ( in_array( $paymentMethodEnum->toGravyValue(), self::CAPTURE_ONLY_PAYMENT_METHOD ) ) {
 			/**
 			 * Defines the intent of a Gravy API call
 			 *

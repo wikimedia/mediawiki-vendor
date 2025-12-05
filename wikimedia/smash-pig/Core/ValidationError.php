@@ -58,7 +58,7 @@ class ValidationError {
 		$this->messageKey = $key;
 	}
 
-	public function getDebugMessage(): string {
+	public function getDebugMessage(): ?string {
 		return $this->debugMessage;
 	}
 

@@ -7,6 +7,7 @@ use SmashPig\Core\PaymentError;
 use SmashPig\Core\ValidationError;
 use SmashPig\PaymentData\ErrorCode;
 use SmashPig\PaymentData\FinalStatus;
+use SmashPig\PaymentProviders\Gravy\Errors\ErrorMapper;
 use SmashPig\PaymentProviders\Responses\PaymentProviderExtendedResponse;
 use SmashPig\PaymentProviders\Responses\PaymentProviderResponse;
 
@@ -90,19 +91,34 @@ abstract class GravyPaymentResponseFactory {
 	/**
 	 * @param PaymentProviderResponse $paymentResponse
 	 * @param string|null $statusDetail
-	 * @param string|null $errorCode
+	 * @param int|null $errorCode
 	 * @param array $normalizedResponse
 	 * @return void
 	 */
-	protected static function addPaymentFailureError( PaymentProviderResponse $paymentResponse, ?string $statusDetail = 'Unknown error', ?string $errorCode = null, array $normalizedResponse = [] ): void {
+	protected static function addPaymentFailureError(
+		PaymentProviderResponse $paymentResponse,
+		?string $statusDetail = 'Unknown error',
+		?int $errorCode = null,
+		array $normalizedResponse = []
+	): void {
 		$paymentResponse->setSuccessful( false );
-		$paymentResponse->addErrors(
-			new PaymentError(
-				$errorCode ?? ErrorCode::UNKNOWN,
-				$statusDetail,
-				LogLevel::ERROR
-			)
-		);
+		// If the normalized code indicates a validation error, try to map the raw error code
+		// to a field name. If there's a match, add a ValidationError rather than a PaymentError
+		$field = null;
+		if ( $errorCode === ErrorCode::VALIDATION ) {
+			$field = ErrorMapper::getValidationErrorField( $normalizedResponse['raw_response']['error_code'] ?? null );
+		}
+		if ( $field ) {
+			$paymentResponse->addValidationError( new ValidationError( $field ) );
+		} else {
+			$paymentResponse->addErrors(
+				new PaymentError(
+					$errorCode ?? ErrorCode::UNKNOWN,
+					$statusDetail,
+					LogLevel::ERROR
+				)
+			);
+		}
 	}
 
 	/**

@@ -78,6 +78,26 @@ class PendingDatabaseTest extends BaseSmashPigUnitTestCase {
 			'Fetched record matches stored message.' );
 	}
 
+	public function testFetchMessageByGatewayOrderIdWithMultipleMessages() {
+		$message = self::getTestMessage();
+		$this->db->storeMessage( $message );
+
+		$message['gateway_txn_id'] = "txn-1234";
+		$message['message'] = 'I wuz here';
+		$this->db->storeMessage( $message );
+
+		$message['gateway_txn_id'] = "txn-1234";
+		$message['message'] = 'I waz here';
+		$this->db->storeMessage( $message );
+
+		$fetched = $this->db->fetchMessageByGatewayOrderId( 'test', $message['order_id'], 'txn-1234', 'wuz' );
+		$this->assertNotNull( $fetched,
+			'Record retrieved by fetchMessageByGatewayOrderId.' );
+
+		$this->assertEquals( 'I wuz here', $fetched['message'],
+			'Fetched record is the middle one that matches the sort criteria best.' );
+	}
+
 	public function testFetchMessageByGatewayOldest() {
 		$message1 = $this->getTestMessage();
 		$message2 = $this->getTestMessage();

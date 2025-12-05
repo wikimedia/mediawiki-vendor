@@ -91,6 +91,38 @@ class RecordCaptureJob implements Runnable {
 		if ( empty( $dbMessage['payment_orchestrator_reconciliation_id'] ) ) {
 			$dbMessage['payment_orchestrator_reconciliation_id'] = $transactionDetails->getPaymentOrchestratorReconciliationId();
 		}
+
+		$donorDetails = $transactionDetails->getDonorDetails();
+		if ( $donorDetails ) {
+			if ( empty( $dbMessage['first_name'] ) ) {
+				$dbMessage['first_name'] = $donorDetails->getFirstName();
+			}
+			if ( empty( $dbMessage['last_name'] ) ) {
+				$dbMessage['last_name'] = $donorDetails->getLastName();
+			}
+			if ( empty( $dbMessage['email'] ) ) {
+				$dbMessage['email'] = $donorDetails->getEmail();
+			}
+			$billingAddress = $donorDetails->getBillingAddress();
+			if ( $billingAddress ) {
+				if ( empty( $dbMessage['city'] ) ) {
+					$dbMessage['city'] = $billingAddress->getCity();
+				}
+				if ( empty( $dbMessage['country'] ) ) {
+					$dbMessage['country'] = $billingAddress->getCountryCode();
+				}
+				if ( empty( $dbMessage['postal_code'] ) ) {
+					$dbMessage['postal_code'] = $billingAddress->getPostalCode();
+				}
+				if ( empty( $dbMessage['state_province'] ) ) {
+					$dbMessage['state_province'] = $billingAddress->getStateOrProvinceCode();
+				}
+				if ( empty( $dbMessage['street_address'] ) ) {
+					$dbMessage['street_address'] = $billingAddress->getStreetAddress();
+				}
+			}
+		}
+
 		// Special handling for recurring donations
 		if ( !empty( $dbMessage['recurring'] ) ) {
 			if ( empty( $dbMessage['recurring_payment_token'] ) ) {

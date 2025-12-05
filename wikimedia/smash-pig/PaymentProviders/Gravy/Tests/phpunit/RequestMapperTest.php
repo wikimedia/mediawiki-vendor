@@ -1,6 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
+use SmashPig\PaymentProviders\Gravy\Mapper\BankPaymentProviderRequestMapper;
 use SmashPig\PaymentProviders\Gravy\Mapper\RequestMapper;
 
 /**
@@ -66,5 +67,63 @@ class RequestMapperTest extends TestCase {
 		$result = $mapper->mapToCreatePaymentRequest( $params );
 
 		$this->assertEquals( $expectedRequest, $result );
+	}
+
+	public function testMapToSepaRecurringCreatePaymentRequest() {
+		$params = [
+			'recurring_payment_token' => '0c53bb01-a00b-4627-8c5a-64d692a43291',
+			'amount' => 3,
+			'currency' => 'EUR',
+			'first_name' => 'Testy',
+			'last_name' => 'Testeroni',
+			'email' => 'ttesteroni@example.com',
+			'country' => 'NL',
+			'order_id' => '239381286.3',
+			'installment' => 'recurring',
+			'description' => 'Wikimedia Foundation',
+			'recurring' => 1,
+			'user_ip' => '11.22.33.44',
+			'processor_contact_id' => null,
+			'fiscal_number' => null,
+			'payment_submethod' => 'sepadirectdebit',
+		];
+		$mapper = new BankPaymentProviderRequestMapper();
+		$request = $mapper->mapToCreatePaymentRequest( $params );
+		$this->assertEquals( [
+			'amount' => 300,
+			'currency' => 'EUR',
+			'country' => 'NL',
+			'payment_method' => [
+				'method' => 'id',
+				'id' => '0c53bb01-a00b-4627-8c5a-64d692a43291'
+			],
+			'external_identifier' => '239381286.3',
+			'statement_descriptor' => [
+				'description' => 'Wikimedia Foundation'
+			],
+			'buyer' => [
+				'external_identifier' => 'ttesteroni@example.com',
+				'billing_details' => [
+					'first_name' => 'Testy',
+					'last_name' => 'Testeroni',
+					'email_address' => 'ttesteroni@example.com',
+					'phone_number' => null,
+					'address' => [
+						'city' => null,
+						'country' => 'NL',
+						'postal_code' => null,
+						'state' => null,
+						'line1' => null,
+						'line2' => null,
+						'organization' => null,
+					],
+				],
+			],
+			'intent' => 'capture',
+			'merchant_initiated' => true,
+			'is_subsequent_payment' => true,
+			'payment_source' => 'recurring',
+			'user_ip' => '11.22.33.44',
+		], $request );
 	}
 }

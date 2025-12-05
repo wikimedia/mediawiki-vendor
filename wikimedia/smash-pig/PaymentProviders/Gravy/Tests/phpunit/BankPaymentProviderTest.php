@@ -185,6 +185,21 @@ class BankPaymentProviderTest extends BaseGravyTestCase {
 		$this->assertEquals( 'stitch', $response->getPaymentSubmethod() );
 	}
 
+	public function testInvalidTaxId(): void {
+		$responseBody = json_decode(
+			file_get_contents( __DIR__ . '/../Data/create-payment-response-invalid-tax-id.json' ), true
+		);
+		$this->mockApi->expects( $this->once() )
+			->method( 'createPayment' )
+			->with( $this->anything() )
+			->willReturn( $responseBody );
+
+		$response = $this->provider->createPayment( $this->getCreateTrxnParams() );
+		$errors = $response->getValidationErrors();
+		$this->assertCount( 1, $errors );
+		$this->assertEquals( 'fiscal_number', $errors[0]->getField() );
+	}
+
 	private function getCreateTrxnParams( ?string $amount = '1299' ) {
 		$params = [];
 		$params['country'] = 'US';

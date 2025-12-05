@@ -54,10 +54,22 @@ class RecordCaptureJobTest extends BaseGravyTestCase {
 	public function testRecordCaptureWithSparsePendingMessage() {
 		$this->storePendingMessage( 'pending-sparse' );
 		[ $transactionDetails, $donationMessage ] = $this->runJobAndGetDonationMessage();
-		$this->assertEquals( $donationMessage['gateway_txn_id'], $transactionDetails->getGatewayTxnId() );
-		$this->assertEquals( $donationMessage['backend_processor'], $transactionDetails->getBackendProcessor() );
-		$this->assertEquals( $donationMessage['backend_processor_txn_id'], $transactionDetails->getBackendProcessorTransactionId() );
-		$this->assertEquals( $donationMessage['payment_submethod'], $transactionDetails->getPaymentSubmethod() );
+		$this->assertEquals( $transactionDetails->getGatewayTxnId(), $donationMessage['gateway_txn_id'] );
+		$this->assertEquals( $transactionDetails->getBackendProcessor(), $donationMessage['backend_processor'] );
+		$this->assertEquals( $transactionDetails->getBackendProcessorTransactionId(), $donationMessage['backend_processor_txn_id'] );
+		$this->assertEquals( $transactionDetails->getPaymentSubmethod(), $donationMessage['payment_submethod'] );
+
+		$donorDetails = $transactionDetails->getDonorDetails();
+		$this->assertEquals( $donorDetails->getFirstName(), $donationMessage['first_name'] );
+		$this->assertEquals( $donorDetails->getLastName(), $donationMessage['last_name'] );
+		$this->assertEquals( $donorDetails->getEmail(), $donationMessage['email'] );
+
+		$billingAddress = $donorDetails->getBillingAddress();
+		$this->assertEquals( $billingAddress->getCity(), $donationMessage['city'] );
+		$this->assertEquals( $billingAddress->getCountryCode(), $donationMessage['country'] );
+		$this->assertEquals( $billingAddress->getPostalCode(), $donationMessage['postal_code'] );
+		$this->assertEquals( $billingAddress->getStateOrProvinceCode(), $donationMessage['state_province'] );
+		$this->assertEquals( $billingAddress->getStreetAddress(), $donationMessage['street_address'] );
 	}
 
 	/**

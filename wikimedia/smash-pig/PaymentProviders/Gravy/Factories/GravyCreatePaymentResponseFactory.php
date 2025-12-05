@@ -111,11 +111,16 @@ class GravyCreatePaymentResponseFactory extends GravyPaymentResponseFactory {
 	/**
 	 * @param PaymentProviderResponse $paymentResponse
 	 * @param string|null $statusDetail
-	 * @param string|null $errorCode
+	 * @param int|null $errorCode
 	 * @param array $normalizedResponse
 	 * @return void
 	 */
-	protected static function addPaymentFailureError( PaymentProviderResponse $paymentResponse, ?string $statusDetail = 'Unknown error', ?string $errorCode = null, array $normalizedResponse = [] ): void {
+	protected static function addPaymentFailureError(
+		PaymentProviderResponse $paymentResponse,
+		?string $statusDetail = 'Unknown error',
+		?int $errorCode = null,
+		array $normalizedResponse = []
+	): void {
 		parent::addPaymentFailureError( $paymentResponse, $statusDetail, $errorCode, $normalizedResponse );
 		if ( !empty( $normalizedResponse['is_suspected_fraud'] ) ) {
 			$paymentResponse->setSuspectedFraud( true );

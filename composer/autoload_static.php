@@ -210,13 +210,13 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'Wikimedia\\' => 
         array (
-            0 => __DIR__ . '/..' . '/wikimedia/ip-utils/src',
-            1 => __DIR__ . '/..' . '/wikimedia/php-session-serializer/src',
-            2 => __DIR__ . '/..' . '/wikimedia/relpath/src',
-            3 => __DIR__ . '/..' . '/wikimedia/running-stat/src',
-            4 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
-            5 => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src',
-            6 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
+            0 => __DIR__ . '/..' . '/wikimedia/wrappedstring/src',
+            1 => __DIR__ . '/..' . '/wikimedia/wait-condition-loop/src',
+            2 => __DIR__ . '/..' . '/wikimedia/running-stat/src',
+            3 => __DIR__ . '/..' . '/wikimedia/relpath/src',
+            4 => __DIR__ . '/..' . '/wikimedia/php-session-serializer/src',
+            5 => __DIR__ . '/..' . '/wikimedia/ip-utils/src',
+            6 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
         ),
         'WhichBrowser\\' => 
         array (
@@ -413,8 +413,8 @@ class ComposerStaticInit_mediawiki_vendor
         array (
             'Mail' => 
             array (
-                0 => __DIR__ . '/..' . '/pear/mail',
-                1 => __DIR__ . '/..' . '/pear/mail_mime',
+                0 => __DIR__ . '/..' . '/pear/mail_mime',
+                1 => __DIR__ . '/..' . '/pear/mail',
             ),
         ),
         'L' => 

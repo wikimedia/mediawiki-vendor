@@ -75,20 +75,38 @@ class PendingDatabase extends SmashPigDatabase {
 	 *
 	 * @param string $gatewayName
 	 * @param string $orderId
+	 * @param ?string $gateway_txn_id_hint Preferred gateway txn ID. This prioritises matches but does not enforce them
+	 * @param ?string $message_hint String to look for in message field. If more than one match this is used to priorise.
 	 * @return array|null Record related to a transaction, or null if nothing matches
 	 * @throws DataStoreException
 	 */
-	public function fetchMessageByGatewayOrderId( string $gatewayName, string $orderId ) {
-		$sql = 'select * from pending
-			where gateway = :gateway
-				and order_id = :order_id
-				and is_resolved = 0
-			limit 1';
-
+	public function fetchMessageByGatewayOrderId( string $gatewayName, string $orderId, ?string $gateway_txn_id_hint = null, ?string $message_hint = null ) {
 		$params = [
 			'gateway' => $gatewayName,
 			'order_id' => $orderId,
 		];
+
+		$sql = 'select * from pending
+			where gateway = :gateway
+				and order_id = :order_id
+				and is_resolved = 0 ';
+		$orderBys = [];
+		if ( $gateway_txn_id_hint ) {
+			$orderBys[] = ' ( gateway_txn_id = :gateway_txn_id ) DESC';
+			$params['gateway_txn_id'] = $gateway_txn_id_hint;
+		}
+
+		if ( $message_hint ) {
+			$orderBys[] = ' ( message LIKE :message ) DESC';
+			$params['message'] = '%' . $message_hint . '%';
+		}
+
+		if ( $orderBys ) {
+			$sql .= ' ORDER BY ' . implode( ',', $orderBys );
+		}
+
+		$sql .= ' limit 1';
+
 		$executed = $this->prepareAndExecute( $sql, $params );
 		$row = $executed->fetch( PDO::FETCH_ASSOC );
 		if ( !$row ) {

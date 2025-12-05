@@ -32,11 +32,13 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'first_name' => 'f',
 			'last_name' => 'doner',
 			'payment_method' => 'paypal',
+			'audit_file_gateway' => 'braintree',
 		];
 		$this->assertEquals( $expectedPaypal, $actualPaypal, 'Did not parse paypal donation correctly' );
 		$actualVenmo = $output[1];
 		$expectedVenmo = [
 			'gateway' => 'braintree',
+			'audit_file_gateway' => 'braintree',
 			'date' => 1690227624,
 			'gross' => '10.00',
 			'contribution_tracking_id' => '68',
@@ -53,6 +55,34 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	}
 
 	/**
+	 * Normal donation
+	 */
+	public function testProcessOrchestratorDonation(): void {
+		$processor = new BraintreeAudit();
+		$output = $processor->parseFile( __DIR__ . '/../Data/settlement_batch_report_gravy_2022-06-27.json' );
+		$this->assertCount( 1, $output, 'Should have found two donations' );
+		$actual = $output[0];
+		$expected = [
+			'gateway' => 'gravy',
+			'audit_file_gateway' => 'braintree',
+			'backend_processor' => 'braintree',
+			'backend_processor_txn_id' => 'dHJhbnNhY3Rpb25fNDQ3ODQwcmM',
+			'payment_orchestrator_reconciliation_id' => '4dKvU4tsIv5DZRxK4jYbib',
+			'date' => 1656383927,
+			'gross' => '3.33',
+			'currency' => 'USD',
+			'email' => 'fr-tech+donor@wikimedia.org',
+			'gateway_txn_id' => 'dHJhbnNhY3Rpb25fNDQ3ODQwcmM',
+			'invoice_id' => '4dKvU4tsIv5DZRxK4jYbib',
+			'phone' => null,
+			'first_name' => 'f',
+			'last_name' => 'donor',
+			'payment_method' => 'venmo',
+		];
+		$this->assertEquals( $expected, $actual, 'Did not parse paypal donation correctly' );
+	}
+
+	/**
 	 * Now try a refund
 	 */
 	public function testProcessRefund() {
@@ -62,6 +92,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 		$actualPaypal = $output[0];
 		$expectedPaypal = [
 			'gateway' => 'braintree',
+			'audit_file_gateway' => 'braintree',
 			'date' => 1656390820,
 			'gross' => '10.00',
 			'contribution_tracking_id' => '34',
@@ -80,6 +111,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 		$actualVenmo = $output[1];
 		$expectedVenmo = [
 			'gateway' => 'braintree',
+			'audit_file_gateway' => 'braintree',
 			'date' => 1690485762,
 			'gross' => '5.00',
 			'contribution_tracking_id' => '61',
@@ -107,6 +139,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 		$actualPaypal = $output[0];
 		$expectedPaypal = [
 				'gateway' => 'braintree',
+				'audit_file_gateway' => 'braintree',
 				'date' => 1656381367,
 				'gross' => '3.33',
 				'contribution_tracking_id' => '17',
@@ -124,6 +157,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 		$actualVenmo = $output[1];
 		$expectedVenmo = [
 				'gateway' => 'braintree',
+				'audit_file_gateway' => 'braintree',
 				'date' => 1690485762,
 				'gross' => '5.00',
 				'contribution_tracking_id' => '61',
