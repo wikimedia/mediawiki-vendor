@@ -6987,17 +6987,17 @@
         },
         {
             "name": "wikimedia/css-sanitizer",
-            "version": "v6.1.0",
-            "version_normalized": "6.1.0.0",
+            "version": "v6.2.0",
+            "version_normalized": "6.2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/css-sanitizer.git",
-                "reference": "1e6b1494a2047f90f8951902d2da263860d508ce"
+                "reference": "0fd789f1ab5ab75e5daf44c8d871d4d5be218d88"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/css-sanitizer/zipball/1e6b1494a2047f90f8951902d2da263860d508ce",
-                "reference": "1e6b1494a2047f90f8951902d2da263860d508ce",
+                "url": "https://api.github.com/repos/wikimedia/css-sanitizer/zipball/0fd789f1ab5ab75e5daf44c8d871d4d5be218d88",
+                "reference": "0fd789f1ab5ab75e5daf44c8d871d4d5be218d88",
                 "shasum": ""
             },
             "require": {
@@ -7017,7 +7017,7 @@
                 "wikimedia/testing-access-wrapper": "~2.0.0 || ~3.0.0",
                 "wikimedia/update-history": "^1.0.1"
             },
-            "time": "2025-10-28T22:39:13+00:00",
+            "time": "2025-12-03T19:57:19+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -7038,7 +7038,7 @@
             "description": "Classes to parse and sanitize CSS",
             "homepage": "https://www.mediawiki.org/wiki/Css-sanitizer",
             "support": {
-                "source": "https://github.com/wikimedia/css-sanitizer/tree/v6.1.0"
+                "source": "https://github.com/wikimedia/css-sanitizer/tree/v6.2.0"
             },
             "install-path": "../wikimedia/css-sanitizer"
         },
