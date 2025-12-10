@@ -25,6 +25,7 @@ return array(
     'Wikimedia\\Equivset\\' => array($vendorDir . '/wikimedia/equivset/src'),
     'Wikimedia\\Composer\\Merge\\V2\\' => array($vendorDir . '/wikimedia/composer-merge-plugin/src'),
     'Wikimedia\\CommonPasswords\\' => array($vendorDir . '/wikimedia/common-passwords/src'),
+    'Wikimedia\\CSS\\' => array($vendorDir . '/wikimedia/css-sanitizer/src'),
     'Wikimedia\\Bcp47Code\\' => array($vendorDir . '/wikimedia/bcp-47-code/src'),
     'Wikimedia\\AtEase\\' => array($vendorDir . '/wikimedia/at-ease/src'),
     'Wikimedia\\Assert\\' => array($vendorDir . '/wikimedia/assert/src'),
