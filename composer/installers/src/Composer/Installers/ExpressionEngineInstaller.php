@@ -1,31 +1,29 @@
 <?php
-
 namespace Composer\Installers;
 
 use Composer\Package\PackageInterface;
 
 class ExpressionEngineInstaller extends BaseInstaller
 {
-    /** @var array<string, string> */
+
+    protected $locations = array();
+
     private $ee2Locations = array(
         'addon'   => 'system/expressionengine/third_party/{$name}/',
         'theme'   => 'themes/third_party/{$name}/',
     );
 
-    /** @var array<string, string> */
     private $ee3Locations = array(
         'addon'   => 'system/user/addons/{$name}/',
         'theme'   => 'themes/user/{$name}/',
     );
 
-    public function getLocations(string $frameworkType): array
+    public function getInstallPath(PackageInterface $package, $frameworkType = '')
     {
-        if ($frameworkType === 'ee2') {
-            $this->locations = $this->ee2Locations;
-        } else {
-            $this->locations = $this->ee3Locations;
-        }
 
-        return $this->locations;
+        $version = "{$frameworkType}Locations";
+        $this->locations = $this->$version;
+
+        return parent::getInstallPath($package, $frameworkType);
     }
 }

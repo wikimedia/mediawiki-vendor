@@ -1,10 +1,8 @@
 <?php
-
 namespace Composer\Installers;
 
 class DrupalInstaller extends BaseInstaller
 {
-    /** @var array<string, string> */
     protected $locations = array(
         'core'             => 'core/',
         'module'           => 'modules/{$name}/',
@@ -20,6 +18,5 @@ class DrupalInstaller extends BaseInstaller
         'console'          => 'console/{$name}/',
         'console-language' => 'console/language/{$name}/',
         'config'           => 'config/sync/',
-        'recipe'           => 'recipes/{$name}',
     );
 }

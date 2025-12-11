@@ -15,6 +15,8 @@ class ComposerStaticInit_mediawiki_vendor
         '662a729f963d39afe703c9d9b7ab4a8c' => __DIR__ . '/..' . '/symfony/polyfill-php83/bootstrap.php',
         'c50606d667a3fde2b80a955639479d3d' => __DIR__ . '/..' . '/wikimedia/timestamp/src/defines.php',
         '5897ea0ac4cccf14d323035e65887801' => __DIR__ . '/..' . '/symfony/polyfill-php82/bootstrap.php',
+        '9d2b9fc6db0f153a0a149fefb182415e' => __DIR__ . '/..' . '/symfony/polyfill-php84/bootstrap.php',
+        '606a39d89246991a373564698c2d8383' => __DIR__ . '/..' . '/symfony/polyfill-php85/bootstrap.php',
         '89efb1254ef2d1c5d80096acd12c4098' => __DIR__ . '/..' . '/twig/twig/src/Resources/core.php',
         'ffecb95d45175fd40f75be8a23b34f90' => __DIR__ . '/..' . '/twig/twig/src/Resources/debug.php',
         'c7baa00073ee9c61edf148c51917cfb4' => __DIR__ . '/..' . '/twig/twig/src/Resources/escaper.php',
@@ -22,6 +24,10 @@ class ComposerStaticInit_mediawiki_vendor
     );
 
     public static $prefixLengthsPsr4 = array (
+        'j' => 
+        array (
+            'jakobo\\HOTP\\' => 12,
+        ),
         'W' => 
         array (
             'Wikimedia\\Zest\\' => 15,
@@ -39,8 +45,10 @@ class ComposerStaticInit_mediawiki_vendor
             'Wikimedia\\Minify\\' => 17,
             'Wikimedia\\JsonCodec\\' => 20,
             'Wikimedia\\IDLeDOM\\' => 18,
+            'Wikimedia\\Equivset\\' => 19,
             'Wikimedia\\Composer\\Merge\\V2\\' => 28,
             'Wikimedia\\CommonPasswords\\' => 26,
+            'Wikimedia\\CSS\\' => 14,
             'Wikimedia\\Bcp47Code\\' => 20,
             'Wikimedia\\AtEase\\' => 17,
             'Wikimedia\\Assert\\' => 17,
@@ -53,6 +61,8 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'S' => 
         array (
+            'Symfony\\Polyfill\\Php85\\' => 23,
+            'Symfony\\Polyfill\\Php84\\' => 23,
             'Symfony\\Polyfill\\Php83\\' => 23,
             'Symfony\\Polyfill\\Php82\\' => 23,
             'Symfony\\Component\\Yaml\\' => 23,
@@ -114,12 +124,25 @@ class ComposerStaticInit_mediawiki_vendor
         array (
             'ForceUTF8\\' => 10,
         ),
+        'E' => 
+        array (
+            'Endroid\\QrCode\\' => 15,
+        ),
+        'D' => 
+        array (
+            'DASPRiD\\Enum\\' => 13,
+        ),
         'C' => 
         array (
             'Composer\\Semver\\' => 16,
             'Composer\\Installers\\' => 20,
             'Composer\\CaBundle\\' => 18,
             'CLDRPluralRuleParser\\' => 21,
+        ),
+        'B' => 
+        array (
+            'Base32\\' => 7,
+            'BaconQrCode\\' => 12,
         ),
         'A' => 
         array (
@@ -128,6 +151,10 @@ class ComposerStaticInit_mediawiki_vendor
     );
 
     public static $prefixDirsPsr4 = array (
+        'jakobo\\HOTP\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/jakobo/hotp-php/src',
+        ),
         'Wikimedia\\Zest\\' => 
         array (
             0 => __DIR__ . '/..' . '/wikimedia/zest-css/src',
@@ -188,6 +215,10 @@ class ComposerStaticInit_mediawiki_vendor
         array (
             0 => __DIR__ . '/..' . '/wikimedia/idle-dom/src',
         ),
+        'Wikimedia\\Equivset\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/wikimedia/equivset/src',
+        ),
         'Wikimedia\\Composer\\Merge\\V2\\' => 
         array (
             0 => __DIR__ . '/..' . '/wikimedia/composer-merge-plugin/src',
@@ -195,6 +226,10 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\CommonPasswords\\' => 
         array (
             0 => __DIR__ . '/..' . '/wikimedia/common-passwords/src',
+        ),
+        'Wikimedia\\CSS\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src',
         ),
         'Wikimedia\\Bcp47Code\\' => 
         array (
@@ -225,6 +260,14 @@ class ComposerStaticInit_mediawiki_vendor
         'Twig\\' => 
         array (
             0 => __DIR__ . '/..' . '/twig/twig/src',
+        ),
+        'Symfony\\Polyfill\\Php85\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-php85',
+        ),
+        'Symfony\\Polyfill\\Php84\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-php84',
         ),
         'Symfony\\Polyfill\\Php83\\' => 
         array (
@@ -371,6 +414,14 @@ class ComposerStaticInit_mediawiki_vendor
         array (
             0 => __DIR__ . '/..' . '/relisten/forceutf8/src/ForceUTF8',
         ),
+        'Endroid\\QrCode\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/endroid/qr-code/src',
+        ),
+        'DASPRiD\\Enum\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dasprid/enum/src',
+        ),
         'Composer\\Semver\\' => 
         array (
             0 => __DIR__ . '/..' . '/composer/semver/src',
@@ -386,6 +437,14 @@ class ComposerStaticInit_mediawiki_vendor
         'CLDRPluralRuleParser\\' => 
         array (
             0 => __DIR__ . '/..' . '/wikimedia/cldr-plural-rule-parser/src',
+        ),
+        'Base32\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/christian-riesen/base32/src',
+        ),
+        'BaconQrCode\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/bacon/bacon-qr-code/src',
         ),
         'Addshore\\Psr\\Cache\\MWBagOStuffAdapter\\' => 
         array (
@@ -446,7 +505,7 @@ class ComposerStaticInit_mediawiki_vendor
     );
 
     public static $fallbackDirsPsr0 = array (
-        0 => __DIR__ . '/..' . '/cssjanus/cssjanus/src',
+        0 => __DIR__ . '/..' . '/wikimedia/cssjanus/src',
     );
 
     public static $classMap = array (
@@ -470,6 +529,70 @@ class ComposerStaticInit_mediawiki_vendor
         'Amount' => __DIR__ . '/../..' . '/extensions/DonationInterface/gateway_common/Amount.php',
         'AmountInCents' => __DIR__ . '/../..' . '/extensions/DonationInterface/gateway_common/AmountInCents.php',
         'ArrayHelper' => __DIR__ . '/../..' . '/extensions/DonationInterface/gateway_common/ArrayHelper.php',
+        'BaconQrCode\\Common\\BitArray' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Common/BitArray.php',
+        'BaconQrCode\\Common\\BitMatrix' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Common/BitMatrix.php',
+        'BaconQrCode\\Common\\BitUtils' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Common/BitUtils.php',
+        'BaconQrCode\\Common\\CharacterSetEci' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Common/CharacterSetEci.php',
+        'BaconQrCode\\Common\\EcBlock' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Common/EcBlock.php',
+        'BaconQrCode\\Common\\EcBlocks' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Common/EcBlocks.php',
+        'BaconQrCode\\Common\\ErrorCorrectionLevel' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Common/ErrorCorrectionLevel.php',
+        'BaconQrCode\\Common\\FormatInformation' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Common/FormatInformation.php',
+        'BaconQrCode\\Common\\Mode' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Common/Mode.php',
+        'BaconQrCode\\Common\\ReedSolomonCodec' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Common/ReedSolomonCodec.php',
+        'BaconQrCode\\Common\\Version' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Common/Version.php',
+        'BaconQrCode\\Encoder\\BlockPair' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Encoder/BlockPair.php',
+        'BaconQrCode\\Encoder\\ByteMatrix' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Encoder/ByteMatrix.php',
+        'BaconQrCode\\Encoder\\Encoder' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Encoder/Encoder.php',
+        'BaconQrCode\\Encoder\\MaskUtil' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Encoder/MaskUtil.php',
+        'BaconQrCode\\Encoder\\MatrixUtil' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Encoder/MatrixUtil.php',
+        'BaconQrCode\\Encoder\\QrCode' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Encoder/QrCode.php',
+        'BaconQrCode\\Exception\\ExceptionInterface' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Exception/ExceptionInterface.php',
+        'BaconQrCode\\Exception\\InvalidArgumentException' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Exception/InvalidArgumentException.php',
+        'BaconQrCode\\Exception\\OutOfBoundsException' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Exception/OutOfBoundsException.php',
+        'BaconQrCode\\Exception\\RuntimeException' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Exception/RuntimeException.php',
+        'BaconQrCode\\Exception\\UnexpectedValueException' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Exception/UnexpectedValueException.php',
+        'BaconQrCode\\Exception\\WriterException' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Exception/WriterException.php',
+        'BaconQrCode\\Renderer\\Color\\Alpha' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/Color/Alpha.php',
+        'BaconQrCode\\Renderer\\Color\\Cmyk' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/Color/Cmyk.php',
+        'BaconQrCode\\Renderer\\Color\\ColorInterface' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/Color/ColorInterface.php',
+        'BaconQrCode\\Renderer\\Color\\Gray' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/Color/Gray.php',
+        'BaconQrCode\\Renderer\\Color\\Rgb' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/Color/Rgb.php',
+        'BaconQrCode\\Renderer\\Eye\\CompositeEye' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/Eye/CompositeEye.php',
+        'BaconQrCode\\Renderer\\Eye\\EyeInterface' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/Eye/EyeInterface.php',
+        'BaconQrCode\\Renderer\\Eye\\ModuleEye' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/Eye/ModuleEye.php',
+        'BaconQrCode\\Renderer\\Eye\\PointyEye' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/Eye/PointyEye.php',
+        'BaconQrCode\\Renderer\\Eye\\SimpleCircleEye' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/Eye/SimpleCircleEye.php',
+        'BaconQrCode\\Renderer\\Eye\\SquareEye' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/Eye/SquareEye.php',
+        'BaconQrCode\\Renderer\\GDLibRenderer' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/GDLibRenderer.php',
+        'BaconQrCode\\Renderer\\ImageRenderer' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/ImageRenderer.php',
+        'BaconQrCode\\Renderer\\Image\\EpsImageBackEnd' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/Image/EpsImageBackEnd.php',
+        'BaconQrCode\\Renderer\\Image\\ImageBackEndInterface' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/Image/ImageBackEndInterface.php',
+        'BaconQrCode\\Renderer\\Image\\ImagickImageBackEnd' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/Image/ImagickImageBackEnd.php',
+        'BaconQrCode\\Renderer\\Image\\SvgImageBackEnd' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/Image/SvgImageBackEnd.php',
+        'BaconQrCode\\Renderer\\Image\\TransformationMatrix' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/Image/TransformationMatrix.php',
+        'BaconQrCode\\Renderer\\Module\\DotsModule' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/Module/DotsModule.php',
+        'BaconQrCode\\Renderer\\Module\\EdgeIterator\\Edge' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/Module/EdgeIterator/Edge.php',
+        'BaconQrCode\\Renderer\\Module\\EdgeIterator\\EdgeIterator' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/Module/EdgeIterator/EdgeIterator.php',
+        'BaconQrCode\\Renderer\\Module\\ModuleInterface' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/Module/ModuleInterface.php',
+        'BaconQrCode\\Renderer\\Module\\RoundnessModule' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/Module/RoundnessModule.php',
+        'BaconQrCode\\Renderer\\Module\\SquareModule' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/Module/SquareModule.php',
+        'BaconQrCode\\Renderer\\Path\\Close' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/Path/Close.php',
+        'BaconQrCode\\Renderer\\Path\\Curve' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/Path/Curve.php',
+        'BaconQrCode\\Renderer\\Path\\EllipticArc' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/Path/EllipticArc.php',
+        'BaconQrCode\\Renderer\\Path\\Line' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/Path/Line.php',
+        'BaconQrCode\\Renderer\\Path\\Move' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/Path/Move.php',
+        'BaconQrCode\\Renderer\\Path\\OperationInterface' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/Path/OperationInterface.php',
+        'BaconQrCode\\Renderer\\Path\\Path' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/Path/Path.php',
+        'BaconQrCode\\Renderer\\PlainTextRenderer' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/PlainTextRenderer.php',
+        'BaconQrCode\\Renderer\\RendererInterface' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/RendererInterface.php',
+        'BaconQrCode\\Renderer\\RendererStyle\\EyeFill' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/RendererStyle/EyeFill.php',
+        'BaconQrCode\\Renderer\\RendererStyle\\Fill' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/RendererStyle/Fill.php',
+        'BaconQrCode\\Renderer\\RendererStyle\\Gradient' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/RendererStyle/Gradient.php',
+        'BaconQrCode\\Renderer\\RendererStyle\\GradientType' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/RendererStyle/GradientType.php',
+        'BaconQrCode\\Renderer\\RendererStyle\\RendererStyle' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Renderer/RendererStyle/RendererStyle.php',
+        'BaconQrCode\\Writer' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Writer.php',
+        'Base32\\Base32' => __DIR__ . '/..' . '/christian-riesen/base32/src/Base32.php',
+        'Base32\\Base32Hex' => __DIR__ . '/..' . '/christian-riesen/base32/src/Base32Hex.php',
         'BlankAddressFields' => __DIR__ . '/../..' . '/extensions/DonationInterface/adyen_gateway/BlankAddressFields.php',
         'CLDRPluralRuleParser\\Converter' => __DIR__ . '/..' . '/wikimedia/cldr-plural-rule-parser/src/Converter.php',
         'CLDRPluralRuleParser\\Converter\\Expression' => __DIR__ . '/..' . '/wikimedia/cldr-plural-rule-parser/src/Converter/Expression.php',
@@ -478,7 +601,7 @@ class ComposerStaticInit_mediawiki_vendor
         'CLDRPluralRuleParser\\Error' => __DIR__ . '/..' . '/wikimedia/cldr-plural-rule-parser/src/Error.php',
         'CLDRPluralRuleParser\\Evaluator' => __DIR__ . '/..' . '/wikimedia/cldr-plural-rule-parser/src/Evaluator.php',
         'CLDRPluralRuleParser\\Range' => __DIR__ . '/..' . '/wikimedia/cldr-plural-rule-parser/src/Range.php',
-        'CSSJanus' => __DIR__ . '/..' . '/cssjanus/cssjanus/src/CSSJanus.php',
+        'CSSJanus' => __DIR__ . '/..' . '/wikimedia/cssjanus/src/CSSJanus.php',
         'Cdb\\Cli' => __DIR__ . '/..' . '/wikimedia/cdb/src/Cli.php',
         'Cdb\\Exception' => __DIR__ . '/..' . '/wikimedia/cdb/src/Exception.php',
         'Cdb\\Reader' => __DIR__ . '/..' . '/wikimedia/cdb/src/Reader.php',
@@ -496,14 +619,13 @@ class ComposerStaticInit_mediawiki_vendor
         'Composer\\CaBundle\\CaBundle' => __DIR__ . '/..' . '/composer/ca-bundle/src/CaBundle.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Composer\\Installers\\AglInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/AglInstaller.php',
-        'Composer\\Installers\\AkauntingInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/AkauntingInstaller.php',
+        'Composer\\Installers\\AimeosInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/AimeosInstaller.php',
         'Composer\\Installers\\AnnotateCmsInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/AnnotateCmsInstaller.php',
         'Composer\\Installers\\AsgardInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/AsgardInstaller.php',
         'Composer\\Installers\\AttogramInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/AttogramInstaller.php',
         'Composer\\Installers\\BaseInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/BaseInstaller.php',
         'Composer\\Installers\\BitrixInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/BitrixInstaller.php',
         'Composer\\Installers\\BonefishInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/BonefishInstaller.php',
-        'Composer\\Installers\\BotbleInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/BotbleInstaller.php',
         'Composer\\Installers\\CakePHPInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/CakePHPInstaller.php',
         'Composer\\Installers\\ChefInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/ChefInstaller.php',
         'Composer\\Installers\\CiviCrmInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/CiviCrmInstaller.php',
@@ -511,7 +633,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Composer\\Installers\\CockpitInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/CockpitInstaller.php',
         'Composer\\Installers\\CodeIgniterInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/CodeIgniterInstaller.php',
         'Composer\\Installers\\Concrete5Installer' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/Concrete5Installer.php',
-        'Composer\\Installers\\ConcreteCMSInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/ConcreteCMSInstaller.php',
+        'Composer\\Installers\\CraftInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/CraftInstaller.php',
         'Composer\\Installers\\CroogoInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/CroogoInstaller.php',
         'Composer\\Installers\\DecibelInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/DecibelInstaller.php',
         'Composer\\Installers\\DframeInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/DframeInstaller.php',
@@ -522,7 +644,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Composer\\Installers\\EliasisInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/EliasisInstaller.php',
         'Composer\\Installers\\ExpressionEngineInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/ExpressionEngineInstaller.php',
         'Composer\\Installers\\EzPlatformInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/EzPlatformInstaller.php',
-        'Composer\\Installers\\ForkCMSInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/ForkCMSInstaller.php',
         'Composer\\Installers\\FuelInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/FuelInstaller.php',
         'Composer\\Installers\\FuelphpInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/FuelphpInstaller.php',
         'Composer\\Installers\\GravInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/GravInstaller.php',
@@ -530,7 +651,9 @@ class ComposerStaticInit_mediawiki_vendor
         'Composer\\Installers\\ImageCMSInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/ImageCMSInstaller.php',
         'Composer\\Installers\\Installer' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/Installer.php',
         'Composer\\Installers\\ItopInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/ItopInstaller.php',
+        'Composer\\Installers\\JoomlaInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/JoomlaInstaller.php',
         'Composer\\Installers\\KanboardInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/KanboardInstaller.php',
+        'Composer\\Installers\\KirbyInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/KirbyInstaller.php',
         'Composer\\Installers\\KnownInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/KnownInstaller.php',
         'Composer\\Installers\\KodiCMSInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/KodiCMSInstaller.php',
         'Composer\\Installers\\KohanaInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/KohanaInstaller.php',
@@ -544,7 +667,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Composer\\Installers\\MajimaInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/MajimaInstaller.php',
         'Composer\\Installers\\MakoInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/MakoInstaller.php',
         'Composer\\Installers\\MantisBTInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/MantisBTInstaller.php',
-        'Composer\\Installers\\MatomoInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/MatomoInstaller.php',
         'Composer\\Installers\\MauticInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/MauticInstaller.php',
         'Composer\\Installers\\MayaInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/MayaInstaller.php',
         'Composer\\Installers\\MediaWikiInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/MediaWikiInstaller.php',
@@ -560,6 +682,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Composer\\Installers\\PantheonInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/PantheonInstaller.php',
         'Composer\\Installers\\PhiftyInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/PhiftyInstaller.php',
         'Composer\\Installers\\PhpBBInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/PhpBBInstaller.php',
+        'Composer\\Installers\\PimcoreInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/PimcoreInstaller.php',
         'Composer\\Installers\\PiwikInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/PiwikInstaller.php',
         'Composer\\Installers\\PlentymarketsInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/PlentymarketsInstaller.php',
         'Composer\\Installers\\Plugin' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/Plugin.php',
@@ -580,6 +703,9 @@ class ComposerStaticInit_mediawiki_vendor
         'Composer\\Installers\\StarbugInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/StarbugInstaller.php',
         'Composer\\Installers\\SyDESInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/SyDESInstaller.php',
         'Composer\\Installers\\SyliusInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/SyliusInstaller.php',
+        'Composer\\Installers\\Symfony1Installer' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/Symfony1Installer.php',
+        'Composer\\Installers\\TYPO3CmsInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/TYPO3CmsInstaller.php',
+        'Composer\\Installers\\TYPO3FlowInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/TYPO3FlowInstaller.php',
         'Composer\\Installers\\TaoInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/TaoInstaller.php',
         'Composer\\Installers\\TastyIgniterInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/TastyIgniterInstaller.php',
         'Composer\\Installers\\TheliaInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/TheliaInstaller.php',
@@ -611,6 +737,16 @@ class ComposerStaticInit_mediawiki_vendor
         'ContributionTrackingPlusUnique' => __DIR__ . '/../..' . '/extensions/DonationInterface/gateway_common/ContributionTrackingPlusUnique.php',
         'CountryValidation' => __DIR__ . '/../..' . '/extensions/DonationInterface/gateway_common/CountryValidation.php',
         'CurrencyCountryRule' => __DIR__ . '/../..' . '/extensions/DonationInterface/gateway_common/CurrencyCountryRule.php',
+        'DASPRiD\\Enum\\AbstractEnum' => __DIR__ . '/..' . '/dasprid/enum/src/AbstractEnum.php',
+        'DASPRiD\\Enum\\EnumMap' => __DIR__ . '/..' . '/dasprid/enum/src/EnumMap.php',
+        'DASPRiD\\Enum\\Exception\\CloneNotSupportedException' => __DIR__ . '/..' . '/dasprid/enum/src/Exception/CloneNotSupportedException.php',
+        'DASPRiD\\Enum\\Exception\\ExceptionInterface' => __DIR__ . '/..' . '/dasprid/enum/src/Exception/ExceptionInterface.php',
+        'DASPRiD\\Enum\\Exception\\ExpectationException' => __DIR__ . '/..' . '/dasprid/enum/src/Exception/ExpectationException.php',
+        'DASPRiD\\Enum\\Exception\\IllegalArgumentException' => __DIR__ . '/..' . '/dasprid/enum/src/Exception/IllegalArgumentException.php',
+        'DASPRiD\\Enum\\Exception\\MismatchException' => __DIR__ . '/..' . '/dasprid/enum/src/Exception/MismatchException.php',
+        'DASPRiD\\Enum\\Exception\\SerializeNotSupportedException' => __DIR__ . '/..' . '/dasprid/enum/src/Exception/SerializeNotSupportedException.php',
+        'DASPRiD\\Enum\\Exception\\UnserializeNotSupportedException' => __DIR__ . '/..' . '/dasprid/enum/src/Exception/UnserializeNotSupportedException.php',
+        'DASPRiD\\Enum\\NullValue' => __DIR__ . '/..' . '/dasprid/enum/src/NullValue.php',
         'DataValidator' => __DIR__ . '/../..' . '/extensions/DonationInterface/gateway_common/DataValidator.php',
         'DateError' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateError.php',
         'DateException' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateException.php',
@@ -621,6 +757,7 @@ class ComposerStaticInit_mediawiki_vendor
         'DateMalformedStringException' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateMalformedStringException.php',
         'DateObjectError' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateObjectError.php',
         'DateRangeError' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateRangeError.php',
+        'Deprecated' => __DIR__ . '/..' . '/symfony/polyfill-php84/Resources/stubs/Deprecated.php',
         'DlocalAdapter' => __DIR__ . '/../..' . '/extensions/DonationInterface/dlocal_gateway/dlocal.adapter.php',
         'DlocalDonationApi' => __DIR__ . '/../..' . '/extensions/DonationInterface/dlocal_gateway/dlocal.api.php',
         'DlocalGateway' => __DIR__ . '/../..' . '/extensions/DonationInterface/dlocal_gateway/dlocal_gateway.body.php',
@@ -640,6 +777,61 @@ class ComposerStaticInit_mediawiki_vendor
         'EmployerSearchAPI' => __DIR__ . '/../..' . '/extensions/DonationInterface/gateway_common/employerSearch.api.php',
         'EncryptedCardParameters' => __DIR__ . '/../..' . '/extensions/DonationInterface/adyen_gateway/EncryptedCardParameters.php',
         'EndowmentHooks' => __DIR__ . '/../..' . '/extensions/DonationInterface/gateway_common/EndowmentHooks.php',
+        'Endroid\\QrCode\\Bacon\\ErrorCorrectionLevelConverter' => __DIR__ . '/..' . '/endroid/qr-code/src/Bacon/ErrorCorrectionLevelConverter.php',
+        'Endroid\\QrCode\\Bacon\\MatrixFactory' => __DIR__ . '/..' . '/endroid/qr-code/src/Bacon/MatrixFactory.php',
+        'Endroid\\QrCode\\Builder\\Builder' => __DIR__ . '/..' . '/endroid/qr-code/src/Builder/Builder.php',
+        'Endroid\\QrCode\\Builder\\BuilderInterface' => __DIR__ . '/..' . '/endroid/qr-code/src/Builder/BuilderInterface.php',
+        'Endroid\\QrCode\\Builder\\BuilderRegistry' => __DIR__ . '/..' . '/endroid/qr-code/src/Builder/BuilderRegistry.php',
+        'Endroid\\QrCode\\Builder\\BuilderRegistryInterface' => __DIR__ . '/..' . '/endroid/qr-code/src/Builder/BuilderRegistryInterface.php',
+        'Endroid\\QrCode\\Color\\Color' => __DIR__ . '/..' . '/endroid/qr-code/src/Color/Color.php',
+        'Endroid\\QrCode\\Color\\ColorInterface' => __DIR__ . '/..' . '/endroid/qr-code/src/Color/ColorInterface.php',
+        'Endroid\\QrCode\\Encoding\\Encoding' => __DIR__ . '/..' . '/endroid/qr-code/src/Encoding/Encoding.php',
+        'Endroid\\QrCode\\Encoding\\EncodingInterface' => __DIR__ . '/..' . '/endroid/qr-code/src/Encoding/EncodingInterface.php',
+        'Endroid\\QrCode\\ErrorCorrectionLevel' => __DIR__ . '/..' . '/endroid/qr-code/src/ErrorCorrectionLevel.php',
+        'Endroid\\QrCode\\Exception\\ValidationException' => __DIR__ . '/..' . '/endroid/qr-code/src/Exception/ValidationException.php',
+        'Endroid\\QrCode\\ImageData\\LabelImageData' => __DIR__ . '/..' . '/endroid/qr-code/src/ImageData/LabelImageData.php',
+        'Endroid\\QrCode\\ImageData\\LogoImageData' => __DIR__ . '/..' . '/endroid/qr-code/src/ImageData/LogoImageData.php',
+        'Endroid\\QrCode\\Label\\Font\\Font' => __DIR__ . '/..' . '/endroid/qr-code/src/Label/Font/Font.php',
+        'Endroid\\QrCode\\Label\\Font\\FontInterface' => __DIR__ . '/..' . '/endroid/qr-code/src/Label/Font/FontInterface.php',
+        'Endroid\\QrCode\\Label\\Font\\NotoSans' => __DIR__ . '/..' . '/endroid/qr-code/src/Label/Font/NotoSans.php',
+        'Endroid\\QrCode\\Label\\Font\\OpenSans' => __DIR__ . '/..' . '/endroid/qr-code/src/Label/Font/OpenSans.php',
+        'Endroid\\QrCode\\Label\\Label' => __DIR__ . '/..' . '/endroid/qr-code/src/Label/Label.php',
+        'Endroid\\QrCode\\Label\\LabelAlignment' => __DIR__ . '/..' . '/endroid/qr-code/src/Label/LabelAlignment.php',
+        'Endroid\\QrCode\\Label\\LabelInterface' => __DIR__ . '/..' . '/endroid/qr-code/src/Label/LabelInterface.php',
+        'Endroid\\QrCode\\Label\\Margin\\Margin' => __DIR__ . '/..' . '/endroid/qr-code/src/Label/Margin/Margin.php',
+        'Endroid\\QrCode\\Label\\Margin\\MarginInterface' => __DIR__ . '/..' . '/endroid/qr-code/src/Label/Margin/MarginInterface.php',
+        'Endroid\\QrCode\\Logo\\Logo' => __DIR__ . '/..' . '/endroid/qr-code/src/Logo/Logo.php',
+        'Endroid\\QrCode\\Logo\\LogoInterface' => __DIR__ . '/..' . '/endroid/qr-code/src/Logo/LogoInterface.php',
+        'Endroid\\QrCode\\Matrix\\Matrix' => __DIR__ . '/..' . '/endroid/qr-code/src/Matrix/Matrix.php',
+        'Endroid\\QrCode\\Matrix\\MatrixFactoryInterface' => __DIR__ . '/..' . '/endroid/qr-code/src/Matrix/MatrixFactoryInterface.php',
+        'Endroid\\QrCode\\Matrix\\MatrixInterface' => __DIR__ . '/..' . '/endroid/qr-code/src/Matrix/MatrixInterface.php',
+        'Endroid\\QrCode\\QrCode' => __DIR__ . '/..' . '/endroid/qr-code/src/QrCode.php',
+        'Endroid\\QrCode\\QrCodeInterface' => __DIR__ . '/..' . '/endroid/qr-code/src/QrCodeInterface.php',
+        'Endroid\\QrCode\\RoundBlockSizeMode' => __DIR__ . '/..' . '/endroid/qr-code/src/RoundBlockSizeMode.php',
+        'Endroid\\QrCode\\Writer\\AbstractGdWriter' => __DIR__ . '/..' . '/endroid/qr-code/src/Writer/AbstractGdWriter.php',
+        'Endroid\\QrCode\\Writer\\BinaryWriter' => __DIR__ . '/..' . '/endroid/qr-code/src/Writer/BinaryWriter.php',
+        'Endroid\\QrCode\\Writer\\ConsoleWriter' => __DIR__ . '/..' . '/endroid/qr-code/src/Writer/ConsoleWriter.php',
+        'Endroid\\QrCode\\Writer\\DebugWriter' => __DIR__ . '/..' . '/endroid/qr-code/src/Writer/DebugWriter.php',
+        'Endroid\\QrCode\\Writer\\EpsWriter' => __DIR__ . '/..' . '/endroid/qr-code/src/Writer/EpsWriter.php',
+        'Endroid\\QrCode\\Writer\\GifWriter' => __DIR__ . '/..' . '/endroid/qr-code/src/Writer/GifWriter.php',
+        'Endroid\\QrCode\\Writer\\PdfWriter' => __DIR__ . '/..' . '/endroid/qr-code/src/Writer/PdfWriter.php',
+        'Endroid\\QrCode\\Writer\\PngWriter' => __DIR__ . '/..' . '/endroid/qr-code/src/Writer/PngWriter.php',
+        'Endroid\\QrCode\\Writer\\Result\\AbstractResult' => __DIR__ . '/..' . '/endroid/qr-code/src/Writer/Result/AbstractResult.php',
+        'Endroid\\QrCode\\Writer\\Result\\BinaryResult' => __DIR__ . '/..' . '/endroid/qr-code/src/Writer/Result/BinaryResult.php',
+        'Endroid\\QrCode\\Writer\\Result\\ConsoleResult' => __DIR__ . '/..' . '/endroid/qr-code/src/Writer/Result/ConsoleResult.php',
+        'Endroid\\QrCode\\Writer\\Result\\DebugResult' => __DIR__ . '/..' . '/endroid/qr-code/src/Writer/Result/DebugResult.php',
+        'Endroid\\QrCode\\Writer\\Result\\EpsResult' => __DIR__ . '/..' . '/endroid/qr-code/src/Writer/Result/EpsResult.php',
+        'Endroid\\QrCode\\Writer\\Result\\GdResult' => __DIR__ . '/..' . '/endroid/qr-code/src/Writer/Result/GdResult.php',
+        'Endroid\\QrCode\\Writer\\Result\\GifResult' => __DIR__ . '/..' . '/endroid/qr-code/src/Writer/Result/GifResult.php',
+        'Endroid\\QrCode\\Writer\\Result\\PdfResult' => __DIR__ . '/..' . '/endroid/qr-code/src/Writer/Result/PdfResult.php',
+        'Endroid\\QrCode\\Writer\\Result\\PngResult' => __DIR__ . '/..' . '/endroid/qr-code/src/Writer/Result/PngResult.php',
+        'Endroid\\QrCode\\Writer\\Result\\ResultInterface' => __DIR__ . '/..' . '/endroid/qr-code/src/Writer/Result/ResultInterface.php',
+        'Endroid\\QrCode\\Writer\\Result\\SvgResult' => __DIR__ . '/..' . '/endroid/qr-code/src/Writer/Result/SvgResult.php',
+        'Endroid\\QrCode\\Writer\\Result\\WebPResult' => __DIR__ . '/..' . '/endroid/qr-code/src/Writer/Result/WebPResult.php',
+        'Endroid\\QrCode\\Writer\\SvgWriter' => __DIR__ . '/..' . '/endroid/qr-code/src/Writer/SvgWriter.php',
+        'Endroid\\QrCode\\Writer\\ValidatingWriterInterface' => __DIR__ . '/..' . '/endroid/qr-code/src/Writer/ValidatingWriterInterface.php',
+        'Endroid\\QrCode\\Writer\\WebPWriter' => __DIR__ . '/..' . '/endroid/qr-code/src/Writer/WebPWriter.php',
+        'Endroid\\QrCode\\Writer\\WriterInterface' => __DIR__ . '/..' . '/endroid/qr-code/src/Writer/WriterInterface.php',
         'ErrorState' => __DIR__ . '/../..' . '/extensions/DonationInterface/gateway_common/ErrorState.php',
         'FallbackLogPrefixer' => __DIR__ . '/../..' . '/extensions/DonationInterface/gateway_common/FallbackLogPrefixer.php',
         'FiscalNumber' => __DIR__ . '/../..' . '/extensions/DonationInterface/gateway_common/FiscalNumber.php',
@@ -1255,6 +1447,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Net_SMTP' => __DIR__ . '/..' . '/pear/net_smtp/Net/SMTP.php',
         'Net_Socket' => __DIR__ . '/..' . '/pear/net_socket/Net/Socket.php',
         'Net_URL2' => __DIR__ . '/..' . '/pear/net_url2/Net/URL2.php',
+        'NoDiscard' => __DIR__ . '/..' . '/symfony/polyfill-php85/Resources/stubs/NoDiscard.php',
         'OOUI\\AccessKeyedElement' => __DIR__ . '/..' . '/oojs/oojs-ui/php/mixins/AccessKeyedElement.php',
         'OOUI\\ActionFieldLayout' => __DIR__ . '/..' . '/oojs/oojs-ui/php/layouts/ActionFieldLayout.php',
         'OOUI\\ApexTheme' => __DIR__ . '/..' . '/oojs/oojs-ui/php/themes/ApexTheme.php',
@@ -2924,6 +3117,8 @@ class ComposerStaticInit_mediawiki_vendor
         'Symfony\\Polyfill\\Php82\\Random\\Engine\\Secure' => __DIR__ . '/..' . '/symfony/polyfill-php82/Random/Engine/Secure.php',
         'Symfony\\Polyfill\\Php82\\SensitiveParameterValue' => __DIR__ . '/..' . '/symfony/polyfill-php82/SensitiveParameterValue.php',
         'Symfony\\Polyfill\\Php83\\Php83' => __DIR__ . '/..' . '/symfony/polyfill-php83/Php83.php',
+        'Symfony\\Polyfill\\Php84\\Php84' => __DIR__ . '/..' . '/symfony/polyfill-php84/Php84.php',
+        'Symfony\\Polyfill\\Php85\\Php85' => __DIR__ . '/..' . '/symfony/polyfill-php85/Php85.php',
         'System' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/System.php',
         'Twig\\AbstractTwigCallable' => __DIR__ . '/..' . '/twig/twig/src/AbstractTwigCallable.php',
         'Twig\\Attribute\\AsTwigFilter' => __DIR__ . '/..' . '/twig/twig/src/Attribute/AsTwigFilter.php',
@@ -3257,6 +3452,67 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\AtEase\\AtEase' => __DIR__ . '/..' . '/wikimedia/at-ease/src/AtEase.php',
         'Wikimedia\\Bcp47Code\\Bcp47Code' => __DIR__ . '/..' . '/wikimedia/bcp-47-code/src/Bcp47Code.php',
         'Wikimedia\\Bcp47Code\\Bcp47CodeValue' => __DIR__ . '/..' . '/wikimedia/bcp-47-code/src/Bcp47CodeValue.php',
+        'Wikimedia\\CSS\\Grammar\\Alternative' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/Alternative.php',
+        'Wikimedia\\CSS\\Grammar\\AnythingMatcher' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/AnythingMatcher.php',
+        'Wikimedia\\CSS\\Grammar\\BlockMatcher' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/BlockMatcher.php',
+        'Wikimedia\\CSS\\Grammar\\CheckedMatcher' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/CheckedMatcher.php',
+        'Wikimedia\\CSS\\Grammar\\CustomPropertyMatcher' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/CustomPropertyMatcher.php',
+        'Wikimedia\\CSS\\Grammar\\DelimMatcher' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/DelimMatcher.php',
+        'Wikimedia\\CSS\\Grammar\\FunctionMatcher' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/FunctionMatcher.php',
+        'Wikimedia\\CSS\\Grammar\\GrammarMatch' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/GrammarMatch.php',
+        'Wikimedia\\CSS\\Grammar\\Juxtaposition' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/Juxtaposition.php',
+        'Wikimedia\\CSS\\Grammar\\KeywordMatcher' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/KeywordMatcher.php',
+        'Wikimedia\\CSS\\Grammar\\Matcher' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/Matcher.php',
+        'Wikimedia\\CSS\\Grammar\\MatcherFactory' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/MatcherFactory.php',
+        'Wikimedia\\CSS\\Grammar\\NoWhitespace' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/NoWhitespace.php',
+        'Wikimedia\\CSS\\Grammar\\NonEmpty' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/NonEmpty.php',
+        'Wikimedia\\CSS\\Grammar\\NothingMatcher' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/NothingMatcher.php',
+        'Wikimedia\\CSS\\Grammar\\Quantifier' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/Quantifier.php',
+        'Wikimedia\\CSS\\Grammar\\TokenMatcher' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/TokenMatcher.php',
+        'Wikimedia\\CSS\\Grammar\\UnorderedGroup' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/UnorderedGroup.php',
+        'Wikimedia\\CSS\\Grammar\\UrangeMatcher' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/UrangeMatcher.php',
+        'Wikimedia\\CSS\\Grammar\\UrlMatcher' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/UrlMatcher.php',
+        'Wikimedia\\CSS\\Grammar\\WhitespaceMatcher' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/WhitespaceMatcher.php',
+        'Wikimedia\\CSS\\Objects\\AtRule' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Objects/AtRule.php',
+        'Wikimedia\\CSS\\Objects\\CSSFunction' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Objects/CSSFunction.php',
+        'Wikimedia\\CSS\\Objects\\CSSObject' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Objects/CSSObject.php',
+        'Wikimedia\\CSS\\Objects\\CSSObjectList' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Objects/CSSObjectList.php',
+        'Wikimedia\\CSS\\Objects\\ComponentValue' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Objects/ComponentValue.php',
+        'Wikimedia\\CSS\\Objects\\ComponentValueList' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Objects/ComponentValueList.php',
+        'Wikimedia\\CSS\\Objects\\Declaration' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Objects/Declaration.php',
+        'Wikimedia\\CSS\\Objects\\DeclarationList' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Objects/DeclarationList.php',
+        'Wikimedia\\CSS\\Objects\\DeclarationOrAtRule' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Objects/DeclarationOrAtRule.php',
+        'Wikimedia\\CSS\\Objects\\DeclarationOrAtRuleList' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Objects/DeclarationOrAtRuleList.php',
+        'Wikimedia\\CSS\\Objects\\QualifiedRule' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Objects/QualifiedRule.php',
+        'Wikimedia\\CSS\\Objects\\Rule' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Objects/Rule.php',
+        'Wikimedia\\CSS\\Objects\\RuleList' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Objects/RuleList.php',
+        'Wikimedia\\CSS\\Objects\\SimpleBlock' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Objects/SimpleBlock.php',
+        'Wikimedia\\CSS\\Objects\\Stylesheet' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Objects/Stylesheet.php',
+        'Wikimedia\\CSS\\Objects\\Token' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Objects/Token.php',
+        'Wikimedia\\CSS\\Objects\\TokenList' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Objects/TokenList.php',
+        'Wikimedia\\CSS\\Parser\\DataSource' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Parser/DataSource.php',
+        'Wikimedia\\CSS\\Parser\\DataSourceTokenizer' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Parser/DataSourceTokenizer.php',
+        'Wikimedia\\CSS\\Parser\\Encoder' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Parser/Encoder.php',
+        'Wikimedia\\CSS\\Parser\\Parser' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Parser/Parser.php',
+        'Wikimedia\\CSS\\Parser\\StringDataSource' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Parser/StringDataSource.php',
+        'Wikimedia\\CSS\\Parser\\TokenListTokenizer' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Parser/TokenListTokenizer.php',
+        'Wikimedia\\CSS\\Parser\\Tokenizer' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Parser/Tokenizer.php',
+        'Wikimedia\\CSS\\Sanitizer\\FontFaceAtRuleSanitizer' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Sanitizer/FontFaceAtRuleSanitizer.php',
+        'Wikimedia\\CSS\\Sanitizer\\ImportAtRuleSanitizer' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Sanitizer/ImportAtRuleSanitizer.php',
+        'Wikimedia\\CSS\\Sanitizer\\KeyframesAtRuleSanitizer' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Sanitizer/KeyframesAtRuleSanitizer.php',
+        'Wikimedia\\CSS\\Sanitizer\\MarginAtRuleSanitizer' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Sanitizer/MarginAtRuleSanitizer.php',
+        'Wikimedia\\CSS\\Sanitizer\\MediaAtRuleSanitizer' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Sanitizer/MediaAtRuleSanitizer.php',
+        'Wikimedia\\CSS\\Sanitizer\\NamespaceAtRuleSanitizer' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Sanitizer/NamespaceAtRuleSanitizer.php',
+        'Wikimedia\\CSS\\Sanitizer\\PageAtRuleSanitizer' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Sanitizer/PageAtRuleSanitizer.php',
+        'Wikimedia\\CSS\\Sanitizer\\PropertySanitizer' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Sanitizer/PropertySanitizer.php',
+        'Wikimedia\\CSS\\Sanitizer\\RuleSanitizer' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Sanitizer/RuleSanitizer.php',
+        'Wikimedia\\CSS\\Sanitizer\\Sanitizer' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Sanitizer/Sanitizer.php',
+        'Wikimedia\\CSS\\Sanitizer\\StyleAttributeSanitizer' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Sanitizer/StyleAttributeSanitizer.php',
+        'Wikimedia\\CSS\\Sanitizer\\StylePropertySanitizer' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Sanitizer/StylePropertySanitizer.php',
+        'Wikimedia\\CSS\\Sanitizer\\StyleRuleSanitizer' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Sanitizer/StyleRuleSanitizer.php',
+        'Wikimedia\\CSS\\Sanitizer\\StylesheetSanitizer' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Sanitizer/StylesheetSanitizer.php',
+        'Wikimedia\\CSS\\Sanitizer\\SupportsAtRuleSanitizer' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Sanitizer/SupportsAtRuleSanitizer.php',
+        'Wikimedia\\CSS\\Util' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Util.php',
         'Wikimedia\\CommonPasswords\\CommonPasswords' => __DIR__ . '/..' . '/wikimedia/common-passwords/src/CommonPasswords.php',
         'Wikimedia\\Composer\\Merge\\V2\\ExtraPackage' => __DIR__ . '/..' . '/wikimedia/composer-merge-plugin/src/ExtraPackage.php',
         'Wikimedia\\Composer\\Merge\\V2\\Logger' => __DIR__ . '/..' . '/wikimedia/composer-merge-plugin/src/Logger.php',
@@ -3266,6 +3522,9 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Composer\\Merge\\V2\\NestedArray' => __DIR__ . '/..' . '/wikimedia/composer-merge-plugin/src/NestedArray.php',
         'Wikimedia\\Composer\\Merge\\V2\\PluginState' => __DIR__ . '/..' . '/wikimedia/composer-merge-plugin/src/PluginState.php',
         'Wikimedia\\Composer\\Merge\\V2\\StabilityFlags' => __DIR__ . '/..' . '/wikimedia/composer-merge-plugin/src/StabilityFlags.php',
+        'Wikimedia\\Equivset\\Command\\GenerateEquivset' => __DIR__ . '/..' . '/wikimedia/equivset/src/Command/GenerateEquivset.php',
+        'Wikimedia\\Equivset\\Equivset' => __DIR__ . '/..' . '/wikimedia/equivset/src/Equivset.php',
+        'Wikimedia\\Equivset\\EquivsetInterface' => __DIR__ . '/..' . '/wikimedia/equivset/src/EquivsetInterface.php',
         'Wikimedia\\IDLeDOM\\AbortController' => __DIR__ . '/..' . '/wikimedia/idle-dom/src/AbortController.php',
         'Wikimedia\\IDLeDOM\\AbortSignal' => __DIR__ . '/..' . '/wikimedia/idle-dom/src/AbortSignal.php',
         'Wikimedia\\IDLeDOM\\AbstractRange' => __DIR__ . '/..' . '/wikimedia/idle-dom/src/AbstractRange.php',
@@ -4286,6 +4545,8 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Zest\\ZestFunc' => __DIR__ . '/..' . '/wikimedia/zest-css/src/ZestFunc.php',
         'Wikimedia\\Zest\\ZestInst' => __DIR__ . '/..' . '/wikimedia/zest-css/src/ZestInst.php',
         'WmfFramework' => __DIR__ . '/../..' . '/extensions/DonationInterface/gateway_common/WmfFramework.php',
+        'jakobo\\HOTP\\HOTP' => __DIR__ . '/..' . '/jakobo/hotp-php/src/HOTP.php',
+        'jakobo\\HOTP\\HOTPResult' => __DIR__ . '/..' . '/jakobo/hotp-php/src/HOTPResult.php',
         'lessc' => __DIR__ . '/..' . '/wikimedia/less.php/lessc.inc.php',
     );
 

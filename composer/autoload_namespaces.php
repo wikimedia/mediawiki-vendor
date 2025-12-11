@@ -14,5 +14,5 @@ return array(
     'Console' => array($vendorDir . '/pear/console_getopt'),
     'Clio' => array($vendorDir . '/clio/clio/src'),
     'CSSMin' => array($vendorDir . '/wikimedia/minify/src'),
-    '' => array($vendorDir . '/cssjanus/cssjanus/src'),
+    '' => array($vendorDir . '/wikimedia/cssjanus/src'),
 );

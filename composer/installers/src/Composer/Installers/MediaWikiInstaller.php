@@ -1,10 +1,8 @@
 <?php
-
 namespace Composer\Installers;
 
 class MediaWikiInstaller extends BaseInstaller
 {
-    /** @var array<string, string> */
     protected $locations = array(
         'core' => 'core/',
         'extension' => 'extensions/{$name}/',
@@ -18,9 +16,11 @@ class MediaWikiInstaller extends BaseInstaller
      * to CamelCase keeping existing uppercase chars.
      *
      * For package type mediawiki-skin, cut off a trailing '-skin' if present.
+     *
      */
-    public function inflectPackageVars(array $vars): array
+    public function inflectPackageVars($vars)
     {
+
         if ($vars['type'] === 'mediawiki-extension') {
             return $this->inflectExtensionVars($vars);
         }
@@ -32,27 +32,20 @@ class MediaWikiInstaller extends BaseInstaller
         return $vars;
     }
 
-    /**
-     * @param array<string, string> $vars
-     * @return array<string, string>
-     */
-    protected function inflectExtensionVars(array $vars): array
+    protected function inflectExtensionVars($vars)
     {
-        $vars['name'] = $this->pregReplace('/-extension$/', '', $vars['name']);
+        $vars['name'] = preg_replace('/-extension$/', '', $vars['name']);
         $vars['name'] = str_replace('-', ' ', $vars['name']);
         $vars['name'] = str_replace(' ', '', ucwords($vars['name']));
 
         return $vars;
     }
 
-    /**
-     * @param array<string, string> $vars
-     * @return array<string, string>
-     */
-    protected function inflectSkinVars(array $vars): array
+    protected function inflectSkinVars($vars)
     {
-        $vars['name'] = $this->pregReplace('/-skin$/', '', $vars['name']);
+        $vars['name'] = preg_replace('/-skin$/', '', $vars['name']);
 
         return $vars;
     }
+
 }

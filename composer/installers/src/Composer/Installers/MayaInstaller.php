@@ -1,10 +1,8 @@
 <?php
-
 namespace Composer\Installers;
 
 class MayaInstaller extends BaseInstaller
 {
-    /** @var array<string, string> */
     protected $locations = array(
         'module' => 'modules/{$name}/',
     );
@@ -13,8 +11,9 @@ class MayaInstaller extends BaseInstaller
      * Format package name.
      *
      * For package type maya-module, cut off a trailing '-module' if present.
+     *
      */
-    public function inflectPackageVars(array $vars): array
+    public function inflectPackageVars($vars)
     {
         if ($vars['type'] === 'maya-module') {
             return $this->inflectModuleVars($vars);
@@ -23,13 +22,9 @@ class MayaInstaller extends BaseInstaller
         return $vars;
     }
 
-    /**
-     * @param array<string, string> $vars
-     * @return array<string, string>
-     */
-    protected function inflectModuleVars(array $vars): array
+    protected function inflectModuleVars($vars)
     {
-        $vars['name'] = $this->pregReplace('/-module$/', '', $vars['name']);
+        $vars['name'] = preg_replace('/-module$/', '', $vars['name']);
         $vars['name'] = str_replace(array('-', '_'), ' ', $vars['name']);
         $vars['name'] = str_replace(' ', '', ucwords($vars['name']));
 
