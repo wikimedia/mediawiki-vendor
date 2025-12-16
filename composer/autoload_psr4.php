@@ -60,6 +60,7 @@ return array(
     'Peast\\' => array($vendorDir . '/mck89/peast/lib/Peast'),
     'ParagonIE\\ConstantTime\\' => array($vendorDir . '/paragonie/constant_time_encoding/src'),
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
+    'MabeEnum\\' => array($vendorDir . '/marc-mabe/php-enum/src'),
     'LightnCandy\\' => array($vendorDir . '/zordius/lightncandy/src'),
     'Lcobucci\\JWT\\' => array($vendorDir . '/lcobucci/jwt/src'),
     'Lcobucci\\Clock\\' => array($vendorDir . '/okvpn/clock-lts/src'),
