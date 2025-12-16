@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'abb2be8b89a4297bb5478949b5f168297d1c5dba',
+        'reference' => '8c78c22cdcc7e765b20f1fbaafe60760cc9a2388',
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'abb2be8b89a4297bb5478949b5f168297d1c5dba',
+            'reference' => '8c78c22cdcc7e765b20f1fbaafe60760cc9a2388',
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -206,9 +206,9 @@
             'dev_requirement' => false,
         ),
         'pear/pear-core-minimal' => array(
-            'pretty_version' => 'v1.10.15',
-            'version' => '1.10.15.0',
-            'reference' => 'ce0adade8b97561656ace07cdaac4751c271ea8c',
+            'pretty_version' => 'v1.10.17',
+            'version' => '1.10.17.0',
+            'reference' => 'c7b55789d01de0ce090d289b73f1bbd6a2f113b1',
             'type' => 'library',
             'install_path' => __DIR__ . '/../pear/pear-core-minimal',
             'aliases' => array(),
@@ -310,7 +310,7 @@
         'rsky/pear-core-min' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v1.10.15',
+                0 => 'v1.10.17',
             ),
         ),
         'symfony/deprecation-contracts' => array(
