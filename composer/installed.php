@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'a2287f07094b3eeab7f0a3fadb0be46d6ad4e8ef',
+        'reference' => '111b2dd5d174ae609c9d09f73336355b0ad76000',
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'a2287f07094b3eeab7f0a3fadb0be46d6ad4e8ef',
+            'reference' => '111b2dd5d174ae609c9d09f73336355b0ad76000',
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -287,9 +287,9 @@
             'dev_requirement' => false,
         ),
         'justinrainbow/json-schema' => array(
-            'pretty_version' => '5.3.4',
-            'version' => '5.3.4.0',
-            'reference' => '7df70ffaf31d98726801b4bc099e1fbdbe2e5e54',
+            'pretty_version' => '6.8.2',
+            'version' => '6.8.2.0',
+            'reference' => '2c89ebb95ca9cedc9347f780333f7b25792dcb76',
             'type' => 'library',
             'install_path' => __DIR__ . '/../justinrainbow/json-schema',
             'aliases' => array(),
@@ -381,6 +381,15 @@
             'replaced' => array(
                 0 => '*',
             ),
+        ),
+        'marc-mabe/php-enum' => array(
+            'pretty_version' => 'v4.7.2',
+            'version' => '4.7.2.0',
+            'reference' => 'bb426fcdd65c60fb3638ef741e8782508fda7eef',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../marc-mabe/php-enum',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'maxmind-db/reader' => array(
             'pretty_version' => 'v1.13.1',

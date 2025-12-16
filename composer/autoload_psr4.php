@@ -87,6 +87,7 @@ return array(
     'MaxMind\\WebService\\' => array($vendorDir . '/maxmind/web-service-common/src/WebService'),
     'MaxMind\\Exception\\' => array($vendorDir . '/maxmind/web-service-common/src/Exception'),
     'MaxMind\\Db\\' => array($vendorDir . '/maxmind-db/reader/src/MaxMind/Db'),
+    'MabeEnum\\' => array($vendorDir . '/marc-mabe/php-enum/src'),
     'LuceneExplain\\' => array($vendorDir . '/wikimedia/lucene-explain-parser/src'),
     'LightnCandy\\' => array($vendorDir . '/zordius/lightncandy/src'),
     'League\\Uri\\' => array($vendorDir . '/league/uri-components', $vendorDir . '/league/uri', $vendorDir . '/league/uri-interfaces'),
