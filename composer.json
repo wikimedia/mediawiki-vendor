@@ -38,7 +38,7 @@
 		"pear/net_smtp": "1.12.1",
 		"pear/net_socket": "1.2.2",
 		"pear/net_url2": "2.2.3",
-		"pear/pear-core-minimal": "1.10.16",
+		"pear/pear-core-minimal": "1.10.17",
 		"pear/pear_exception": "1.0.2",
 		"psr/clock": "1.0.0",
 		"psr/container": "2.0.2",
