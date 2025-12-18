@@ -3054,31 +3054,32 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.53.0",
-            "version_normalized": "0.53.0.0",
+            "version": "v0.53.1",
+            "version_normalized": "0.53.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "f0c25397b8d6827fd52bd35f663475b92910e16e"
+                "reference": "c9509349696d769e249da7b64fd55d9e34436716"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/f0c25397b8d6827fd52bd35f663475b92910e16e",
-                "reference": "f0c25397b8d6827fd52bd35f663475b92910e16e",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/c9509349696d769e249da7b64fd55d9e34436716",
+                "reference": "c9509349696d769e249da7b64fd55d9e34436716",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.1"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "47.0.0",
+                "mediawiki/mediawiki-codesniffer": "48.0.0",
                 "mediawiki/mediawiki-phan-config": "0.17.0",
                 "mediawiki/minus-x": "1.1.3",
+                "ockcyp/covers-validator": "1.7.0",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
                 "php-parallel-lint/php-parallel-lint": "1.4.0",
-                "phpunit/phpunit": "10.5.46"
+                "phpunit/phpunit": "10.5.58"
             },
-            "time": "2025-09-03T21:41:21+00:00",
+            "time": "2025-12-17T07:58:53+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -3143,7 +3144,7 @@
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOUI",
             "support": {
-                "source": "https://github.com/wikimedia/oojs-ui/tree/v0.53.0"
+                "source": "https://github.com/wikimedia/oojs-ui/tree/v0.53.1"
             },
             "install-path": "../oojs/oojs-ui"
         },

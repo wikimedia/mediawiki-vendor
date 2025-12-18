@@ -58,7 +58,7 @@
 		"nyholm/dsn": "2.0.1",
 		"okvpn/clock-lts": "1.0.0",
 		"onoi/message-reporter": "1.4.2",
-		"oojs/oojs-ui": "0.53.0",
+		"oojs/oojs-ui": "0.53.1",
 		"opis/json-schema": "2.4.1",
 		"opis/string": "2.1.0",
 		"paragonie/constant_time_encoding": "3.0.0",

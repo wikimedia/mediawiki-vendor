@@ -446,9 +446,9 @@
             'dev_requirement' => false,
         ),
         'oojs/oojs-ui' => array(
-            'pretty_version' => 'v0.53.0',
-            'version' => '0.53.0.0',
-            'reference' => 'f0c25397b8d6827fd52bd35f663475b92910e16e',
+            'pretty_version' => 'v0.53.1',
+            'version' => '0.53.1.0',
+            'reference' => 'c9509349696d769e249da7b64fd55d9e34436716',
             'type' => 'library',
             'install_path' => __DIR__ . '/../oojs/oojs-ui',
             'aliases' => array(),
