@@ -46,7 +46,12 @@ class CurlWrapper {
 
 		// add stream filter to filter out extraneous curl verbose log lines
 		stream_filter_register( 'CurlDebugLogFilter', 'SmashPig\Core\Http\CurlDebugLogFilter' );
-		stream_filter_append( $curlDebugLog, "CurlDebugLogFilter", STREAM_FILTER_WRITE );
+		stream_filter_append(
+			$curlDebugLog,
+			"CurlDebugLogFilter",
+			STREAM_FILTER_WRITE,
+			[ 'SmashPig\Core\Logging\Logger', 'debug' ]
+		);
 
 		$curlOptions = $this->getCurlOptions(
 			$url, $method, $responseHeaders, $data, $curlDebugLog, $certPath, $certPassword
@@ -61,17 +66,15 @@ class CurlWrapper {
 			Logger::info(
 				"Preparing to send {$method} request to {$url}"
 			);
-
 			// Execute the cURL operation
 			$response = curl_exec( $ch );
 
-			// Always read the verbose output
+			// Rewind the log stream to flush it.
 			rewind( $curlDebugLog );
-			$logged = fread( $curlDebugLog, 8192 );
 
 			if ( $response !== false ) {
 				// The cURL operation was at least successful, what happened in it?
-				Logger::debug( "cURL verbose logging: $logged" );
+				Logger::debug( "cURL response completed" );
 
 				$curlInfo = curl_getinfo( $ch );
 				$parsed = $this->parseResponse( $response, $curlInfo );
@@ -92,8 +95,7 @@ class CurlWrapper {
 				$err = curl_error( $ch );
 
 				Logger::warning(
-					"cURL transaction to {$url} failed: ($errno) $err. " .
-					"cURL verbose logging: $logged"
+					"cURL transaction to {$url} failed: ($errno) $err. "
 				);
 			}
 			$tries++;
@@ -184,7 +186,8 @@ class CurlWrapper {
 		return [
 			'body' => $body,
 			'headers' => $responseHeaders,
-			'status' => (int)$curlInfo['http_code']
+			'status' => (int)$curlInfo['http_code'],
+			'elapsed' => $curlInfo['total_time'],
 		];
 	}
 }

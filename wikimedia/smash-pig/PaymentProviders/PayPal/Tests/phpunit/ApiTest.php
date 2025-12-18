@@ -53,6 +53,8 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 			)->willReturn( [
 				'status' => 200,
 				'body' => $testApiResponse,
+				'headers' => [],
+				'elapsed' => 2,
 		] );
 
 		$testApiParams = [

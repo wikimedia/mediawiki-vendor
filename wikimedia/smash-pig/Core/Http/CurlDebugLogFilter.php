@@ -14,6 +14,11 @@ class CurlDebugLogFilter extends \php_user_filter {
 	public function filter( $in, $out, &$consumed, $closing ): int {
 		while ( $bucket = stream_bucket_make_writeable( $in ) ) {
 			$bucket->data = $this->filterExpireLogLines( $bucket->data ) ?: $bucket->data;
+			if ( $bucket->data ) {
+				foreach ( preg_split( '/\\R+/', $bucket->data ) as $line ) {
+					call_user_func( $this->params, $line );
+				}
+			}
 			$consumed += $bucket->datalen;
 			stream_bucket_append( $out, $bucket );
 		}

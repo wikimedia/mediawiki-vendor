@@ -55,6 +55,8 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 			)->willReturn( [
 				'status' => 200,
 				'body' => '{"baz":"quux"}',
+				'headers' => [],
+				'elapsed' => 2,
 			] );
 
 		$this->api->makeApiCall( 'testPath', 'POST', [ 'foo' => 'bar' ] );
@@ -65,7 +67,8 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 			->willReturn( [
 				'body' => '{"errorId" : "460d9c9c-098c-4d84-b1e5-ee27ec601757","errors" : [ {   "code" : "9002",   "message" : "MISSING_OR_INVALID_AUTHORIZATION",   "httpStatusCode" : 403} ] }',
 				'headers' => [],
-				'status' => 403
+				'status' => 403,
+				'elapsed' => 2,
 			] );
 		$response = $this->api->makeApiCall( 'testPath', 'POST', [ 'foo' => 'bar' ] );
 		$this->assertEquals(

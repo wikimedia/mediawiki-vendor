@@ -11,9 +11,11 @@ class VenmoReportProvider extends PaymentProvider {
 	 * date must have YYYY-MM-DD format
 	 * @return string
 	 */
-	public function report(): string {
-		$today = date( "Y-m-d", strtotime( "-1 days" ) );
-		$response = $this->api->report( $today );
+	public function report( $date ): string {
+		if ( empty( $date ) ) {
+			$date = date( 'Y-m-t', strtotime( 'last day of previous month' ) );
+		}
+		$response = $this->api->report( $date );
 
 		if ( isset( $response['errors'] ) ) {
 			return $response['errors'][0]['message'];

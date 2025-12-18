@@ -1,6 +1,7 @@
 <?php
 namespace SmashPig\PaymentProviders\Gravy\Tests\phpunit;
 
+use Gr4vy\Gr4vyConfig;
 use PHPUnit\Framework\MockObject\Exception;
 use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentData\PaymentMethod;
@@ -149,9 +150,11 @@ class ApplePaymentProviderTest extends BaseGravyTestCase {
 		];
 		// Mock the Gravy SDK client to return a cURL error string
 		$api = $this->createApiInstance();
+
 		// Mock the Gravy SDK client to return a cURL error string
-		$mockGravyClient = $this->createMock( \Gr4vy\Gr4vyConfig::class );
+		$mockGravyClient = $this->createMock( Gr4vyConfig::class );
 		$this->setMockGravyClient( $mockGravyClient, $api );
+
 		$mockGravyClient->expects( $this->exactly( 2 ) )
 			->method( 'newApplePaySession' )
 			->with( $params )
@@ -164,7 +167,11 @@ class ApplePaymentProviderTest extends BaseGravyTestCase {
 		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\CreatePaymentSessionResponse',
 			$providerResult );
 		$this->assertFalse( $providerResult->isSuccessful() );
-		$this->assertEquals( "Create apple Payment Session response: (http://sample.com) {$stringSDKResponse}", $providerResult->getNormalizedResponse()['description'], 'Error message should normalized to string' );
+		$this->assertEquals(
+			"newApplePaySession response: (http://sample.com) {$stringSDKResponse}",
+			$providerResult->getNormalizedResponse()['description'],
+			'Error message should normalized to string'
+		);
 
 		// Also verify the API layer converts the string error correctly
 		$apiResult = $api->createPaymentSession( $params, PaymentMethod::APPLE );
@@ -172,7 +179,7 @@ class ApplePaymentProviderTest extends BaseGravyTestCase {
 		$this->assertArrayHasKey( 'type', $apiResult, 'API should convert unexpected error string to error array' );
 		$this->assertArrayHasKey( 'message', $apiResult, 'API should convert unexpected error string to error array' );
 		$this->assertEquals( 'error', $apiResult['type'], 'API should return error type' );
-		$this->assertEquals( "Create apple Payment Session response: (http://sample.com) {$stringSDKResponse}", $apiResult['message'], 'API should return string error message' );
+		$this->assertEquals( "newApplePaySession response: (http://sample.com) {$stringSDKResponse}", $apiResult['message'], 'API should return string error message' );
 	}
 
 	/**

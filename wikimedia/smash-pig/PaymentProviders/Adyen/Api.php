@@ -142,7 +142,7 @@ class Api {
 		if ( $isRecurring ) {
 			$restParams = array_merge( $restParams, $this->addRecurringParams( $params, true ) );
 		}
-		$result = $this->makeRestApiCall( $restParams, 'payments', 'POST' );
+		$result = $this->makeRestApiCall( $restParams, 'payments', 'POST', __FUNCTION__ );
 		return $result['body'];
 	}
 
@@ -228,7 +228,7 @@ class Api {
 				'maxDaysToRescue' => $this->maxDaysToRescue
 			];
 		}
-		$result = $this->makeRestApiCall( $restParams, 'payments', 'POST' );
+		$result = $this->makeRestApiCall( $restParams, 'payments', 'POST', __FUNCTION__ );
 		return $result['body'];
 	}
 
@@ -271,7 +271,7 @@ class Api {
 		}
 		$restParams = array_merge( $restParams, $this->getContactInfo( $params ) );
 
-		$result = $this->makeRestApiCall( $restParams, 'payments', 'POST' );
+		$result = $this->makeRestApiCall( $restParams, 'payments', 'POST', __FUNCTION__ );
 		return $result['body'];
 	}
 
@@ -303,7 +303,8 @@ class Api {
 		$result = $this->makeRestApiCall(
 			$restParams,
 			'payments',
-			'POST'
+			'POST',
+			__FUNCTION__
 		);
 
 		return $result['body'];
@@ -335,7 +336,8 @@ class Api {
 		$result = $this->makeRestApiCall(
 			$restParams,
 			'payments',
-			'POST'
+			'POST',
+			__FUNCTION__
 		);
 
 		return $result['body'];
@@ -363,7 +365,8 @@ class Api {
 		$result = $this->makeRestApiCall(
 			$restParams,
 			'payments',
-			'POST'
+			'POST',
+			__FUNCTION__
 		);
 
 		return $result['body'];
@@ -391,7 +394,8 @@ class Api {
 		$result = $this->makeRestApiCall(
 			$restParams,
 			'payments',
-			'POST'
+			'POST',
+			__FUNCTION__
 		);
 
 		return $result['body'];
@@ -416,9 +420,10 @@ class Api {
 			'initiative' => 'web',
 			// fully qualified domain name associated with your Apple Pay Merchant Identity Certificate
 			'initiativeContext' => $params['domain_name']
-		] ) );
-		$request->setCertPath( $params['certificate_path'] );
-		$request->setCertPassword( $params['certificate_password'] );
+		] ) )
+			->setCertPath( $params['certificate_path'] )
+			->setCertPassword( $params['certificate_password'] )
+			->setLogTag( __FUNCTION__ );
 		$response = $request->execute();
 		return json_decode( $response['body'], true );
 	}
@@ -437,7 +442,7 @@ class Api {
 		];
 		$path = "payments/{$params['gateway_txn_id']}/refunds";
 
-		$result = $this->makeRestApiCall( $restParams, $path, 'POST' );
+		$result = $this->makeRestApiCall( $restParams, $path, 'POST', __FUNCTION__ );
 		return $result['body'];
 	}
 
@@ -455,7 +460,7 @@ class Api {
 				'redirectResult' => $redirectResult
 			]
 		];
-		$result = $this->makeRestApiCall( $restParams, 'payments/details', 'POST' );
+		$result = $this->makeRestApiCall( $restParams, 'payments/details', 'POST', __FUNCTION__ );
 		return $result['body'];
 	}
 
@@ -483,7 +488,7 @@ class Api {
 			$restParams['shopperReference'] = $params['processor_contact_id'];
 		}
 
-		$result = $this->makeRestApiCall( $restParams, 'paymentMethods', 'POST' );
+		$result = $this->makeRestApiCall( $restParams, 'paymentMethods', 'POST', __FUNCTION__ );
 		return $result['body'];
 	}
 
@@ -507,7 +512,7 @@ class Api {
 		];
 
 		$result = $this->makeRestApiCall(
-			$restParams, 'listRecurringDetails', 'POST', $this->recurringBaseUrl
+			$restParams, 'listRecurringDetails', 'POST', __FUNCTION__, $this->recurringBaseUrl
 		);
 		return $result['body'];
 	}
@@ -526,7 +531,7 @@ class Api {
 			'forceErasure' => true
 		];
 		$result = $this->makeRestApiCall(
-			$restParams, 'requestSubjectErasure', 'POST', $this->dataProtectionBaseUrl
+			$restParams, 'requestSubjectErasure', 'POST', __FUNCTION__, $this->dataProtectionBaseUrl
 		);
 		return $result['body'];
 	}
@@ -541,14 +546,15 @@ class Api {
 	 * @throws \SmashPig\Core\ApiException
 	 */
 	protected function makeRestApiCall(
-		array $params, string $path, string $method, ?string $alternateBaseUrl = null
+		array $params, string $path, string $method, string $logTag, ?string $alternateBaseUrl = null
 	): array {
 		$basePath = $alternateBaseUrl ?? $this->restBaseUrl;
 		$url = $basePath . '/' . $path;
 		$request = new OutboundRequest( $url, $method );
-		$request->setBody( json_encode( $params ) );
-		$request->setHeader( 'x-API-key', $this->apiKey );
-		$request->setHeader( 'content-type', 'application/json' );
+		$request->setBody( json_encode( $params ) )
+			->setHeader( 'x-API-key', $this->apiKey )
+			->setHeader( 'content-type', 'application/json' )
+			->setLogTag( $logTag );
 		if ( $method === 'POST' ) {
 			// Set the idempotency header in case we retry on timeout
 			// https://docs.adyen.com/development-resources/api-idempotency
@@ -583,7 +589,7 @@ class Api {
 		$tl->info( "Launching REST capture request for {$params['gateway_txn_id']}", $restParams );
 
 		try {
-			$result = $this->makeRestApiCall( $restParams, $path, 'POST' );
+			$result = $this->makeRestApiCall( $restParams, $path, 'POST', __FUNCTION__ );
 		} catch ( \Exception $ex ) {
 			// FIXME shouldn't we let the ApiException bubble up?
 			Logger::error( 'REST capture request threw exception!', $params, $ex );
@@ -607,7 +613,7 @@ class Api {
 		// but we'll need to change our ICancelablePaymentProvider to
 		// support an array of parameters.
 		$path = "payments/$pspReference/cancels";
-		$result = $this->makeRestApiCall( $restParams, $path, 'POST' );
+		$result = $this->makeRestApiCall( $restParams, $path, 'POST', __FUNCTION__ );
 		return $result['body'];
 	}
 
@@ -628,7 +634,7 @@ class Api {
 		];
 
 		$result = $this->makeRestApiCall(
-			$restParams, 'cancel', 'POST', $this->paymentBaseUrl
+			$restParams, 'cancel', 'POST', __FUNCTION__, $this->paymentBaseUrl
 		);
 		return $result['body'];
 	}

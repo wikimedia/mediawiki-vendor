@@ -3,6 +3,7 @@
 namespace SmashPig\Core\Http;
 
 use SmashPig\Core\Context;
+use SmashPig\Core\Logging\TaggedLogger;
 use SmashPig\Core\ProviderConfiguration;
 
 /**
@@ -43,6 +44,11 @@ class OutboundRequest {
 	 * @var string password to decrypt certificate
 	 */
 	protected $certPassword;
+
+	/**
+	 * @var string|null Used to log timing for cURL calls
+	 */
+	protected ?string $logTag = null;
 
 	public function __construct( $url, $method = 'GET' ) {
 		$this->url = $url;
@@ -118,13 +124,22 @@ class OutboundRequest {
 		return $this;
 	}
 
+	public function setLogTag( string $logTag ): OutboundRequest {
+		$this->logTag = $logTag;
+		return $this;
+	}
+
+	public function getLogTag(): ?string {
+		return $this->logTag;
+	}
+
 	public function execute(): array {
 		$config = Context::get()->getProviderConfiguration();
 		/**
 		 * @var CurlWrapper
 		 */
 		$wrapper = $config->object( 'curl/wrapper' );
-		return $wrapper->execute(
+		$result = $wrapper->execute(
 			$this->url,
 			$this->method,
 			$this->getHeaders(),
@@ -132,5 +147,10 @@ class OutboundRequest {
 			$this->certPath,
 			$this->certPassword
 		);
+		if ( $this->getLogTag() ) {
+			$tl = new TaggedLogger( 'APITimings' );
+			$tl->info( "fn: {$this->getLogTag()}, elapsed: {$result['elapsed']} s" );
+		}
+		return $result;
 	}
 }

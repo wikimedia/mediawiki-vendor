@@ -9,7 +9,7 @@ use SmashPig\PaymentData\PaymentMethod;
 
 class Api {
 
-	private Gr4vyConfig $gravyApiClient;
+	private GravySDKWrapper $gravyApiClient;
 
 	public function __construct() {
 		$c = Context::get()->getProviderConfiguration();
@@ -19,7 +19,9 @@ class Api {
 		$apiPrefix = $c->val( 'api-prefix' );
 		$merchantAccountId = $c->val( 'merchantAccountId' );
 
-		$this->gravyApiClient = new Gr4vyConfig( $gravyId, $privateKeyLocation, true, $apiPrefix, $merchantAccountId );
+		$this->gravyApiClient = new GravySDKWrapper(
+			new Gr4vyConfig( $gravyId, $privateKeyLocation, true, $apiPrefix, $merchantAccountId )
+		);
 	}
 
 	/**
@@ -34,15 +36,14 @@ class Api {
 	 */
 	public function createPaymentSession( array $params = [], string $method = 'card' ): array {
 		$tl = new TaggedLogger( 'RawData' );
+		$uniqueID = $params['validation_url'] ?? null;
 		if ( $method === PaymentMethod::APPLE ) {
 			$tl->info( 'New Apple Pay Session request ' . json_encode( $params ) );
-			$response = $this->gravyApiClient->newApplePaySession( $params );
+			return $this->gravyApiClient->newApplePaySession( $uniqueID, $params );
 		} else {
 			$tl->info( 'New Checkout Session request ' . json_encode( $params ) );
-			$response = $this->gravyApiClient->newCheckoutSession( $params );
+			return $this->gravyApiClient->newCheckoutSession( $uniqueID, $params );
 		}
-
-		return self::handleGravySDKResponse( $params['validation_url'] ?? null, $response, 'Create ' . $method . ' Payment Session' );
 	}
 
 	/**
@@ -65,8 +66,9 @@ class Api {
 			$headers = [ 'X-Forwarded-For: ' . $params['user_ip'] ];
 			unset( $params['user_ip'] );
 		}
-		$response = $this->gravyApiClient->authorizeNewTransaction( $params, $headers );
-		return self::handleGravySDKResponse( $params['external_identifier'], $response, 'Create Payment Auth' );
+		return $this->gravyApiClient->authorizeNewTransaction(
+			$params['external_identifier'], $params, $headers
+		);
 	}
 
 	/**
@@ -82,9 +84,7 @@ class Api {
 	public function approvePayment( string $trxn_id, array $requestBody ): array {
 		$tl = new TaggedLogger( 'RawData' );
 		$tl->info( "Approve payment request params: {\"trxn_id\":" . $trxn_id . "} " . json_encode( $requestBody ) );
-		$response = $this->gravyApiClient->captureTransaction( $trxn_id, $requestBody );
-
-		return self::handleGravySDKResponse( $trxn_id, $response, 'Approve Payment' );
+		return $this->gravyApiClient->captureTransaction( $trxn_id, $trxn_id, $requestBody );
 	}
 
 	/**
@@ -96,9 +96,7 @@ class Api {
 	 */
 	public function deletePaymentToken( array $params ): array {
 		$payment_method_id = $params['payment_method_id'];
-		$response = $this->gravyApiClient->deletePaymentMethod( $payment_method_id );
-
-		return self::handleGravySDKResponse( $payment_method_id, $response, 'Delete Payment Token' );
+		return $this->gravyApiClient->deletePaymentMethod( $payment_method_id, $payment_method_id );
 	}
 
 	/**
@@ -110,9 +108,7 @@ class Api {
 	 */
 	public function getTransaction( array $params ): array {
 		$txn_id = $params['gateway_txn_id'];
-		$response = $this->gravyApiClient->getTransaction( $txn_id );
-
-		return self::handleGravySDKResponse( $txn_id, $response, 'Get Transaction' );
+		return $this->gravyApiClient->getTransaction( $txn_id, $txn_id );
 	}
 
 	/**
@@ -122,9 +118,7 @@ class Api {
 	 * @link https://docs.gr4vy.com/reference/transactions/void-transaction
 	 */
 	public function cancelTransaction( string $gatewayTxnId ): array {
-		$response = $this->gravyApiClient->voidTransaction( $gatewayTxnId, [] );
-
-		return self::handleGravySDKResponse( $gatewayTxnId, $response, 'Cancel Transaction' );
+		return $this->gravyApiClient->voidTransaction( $gatewayTxnId, $gatewayTxnId, [] );
 	}
 
 	/**
@@ -135,9 +129,7 @@ class Api {
 	 */
 	public function getRefund( array $params ): array {
 		$refund_id = $params['gateway_refund_id'];
-		$response = $this->gravyApiClient->getRefund( $refund_id );
-
-		return self::handleGravySDKResponse( $refund_id, $response, 'Get Refund' );
+		return $this->gravyApiClient->getRefund( $refund_id, $refund_id );
 	}
 
 	/**
@@ -150,9 +142,7 @@ class Api {
 		$gatewayTxnId = $params['gateway_txn_id'];
 		$requestBody = $params['body'];
 
-		$response = $this->gravyApiClient->refundTransaction( $gatewayTxnId, $requestBody );
-
-		return self::handleGravySDKResponse( $gatewayTxnId, $response, 'Refund Transaction' );
+		return $this->gravyApiClient->refundTransaction( $gatewayTxnId, $gatewayTxnId, $requestBody );
 	}
 
 	/**
@@ -163,9 +153,7 @@ class Api {
 	 */
 	public function getReportExecutionDetails( array $params ): array {
 		$report_execution_id = $params['report_execution_id'];
-		$response = $this->gravyApiClient->getReportExecution( $report_execution_id );
-
-		return self::handleGravySDKResponse( $report_execution_id, $response, 'Get Report Execution Details' );
+		return $this->gravyApiClient->getReportExecution( $report_execution_id, $report_execution_id );
 	}
 
 	/**
@@ -177,9 +165,9 @@ class Api {
 	public function generateReportDownloadUrl( array $params ): array {
 		$report_id = $params['report_id'];
 		$report_execution_id = $params['report_execution_id'];
-		$response = $this->gravyApiClient->generateReportDownloadUrl( $report_id, $report_execution_id );
-
-		return self::handleGravySDKResponse( $report_execution_id, $response, 'Generate Report Download URL' );
+		return $this->gravyApiClient->generateReportDownloadUrl(
+			$report_execution_id, $report_id, $report_execution_id
+		);
 	}
 
 	/**
@@ -189,43 +177,6 @@ class Api {
 	 * @link https://docs.gr4vy.com/reference/payment-service-definitions/get-payment-service-definition#parameter-payment-service-definition-id
 	 */
 	public function getPaymentServiceDefinition( string $method = '' ): array {
-		$response = $this->gravyApiClient->getPaymentServiceDefinition( $method );
-
-		return self::handleGravySDKResponse( $method, $response, 'Get Payment Service Definition' );
-	}
-
-	/**
-	 * Handle Gravy SDK error responses (null, string, or unexpected types)
-	 *
-	 * @param ?string $uniqueIdentifier
-	 * @param array|string|null $response
-	 * @param string $functionName
-	 * @return array|string[]
-	 */
-	public static function handleGravySDKResponse( ?string $uniqueIdentifier, null|array|string $response, string $functionName ): array {
-		$tl = new TaggedLogger( 'RawData' );
-		$preMessage = "{$functionName} response: " . ( $uniqueIdentifier ? "($uniqueIdentifier) " : "" );
-		// Handle Gravy SDK error responses (null, string, or unexpected types)
-		if ( $response === null ) {
-			$errorMessage = $preMessage . "No response";
-		} elseif ( is_string( $response ) ) {
-			$errorMessage = $preMessage . $response;
-		} elseif ( !is_array( $response ) ) {
-			$errorMessage = $preMessage . "Unexpected response";
-		}
-
-		if ( isset( $errorMessage ) ) {
-			$tl->info( $errorMessage );
-			// simulate a Gravy-style error for our error mapper
-			return [
-				'type' => 'error',
-				'message' => $errorMessage
-			];
-		}
-
-		// Handle successful array response
-		$formattedResponse = json_encode( $response );
-		$tl->info( $preMessage . $formattedResponse );
-		return $response;
+		return $this->gravyApiClient->getPaymentServiceDefinition( $method, $method );
 	}
 }

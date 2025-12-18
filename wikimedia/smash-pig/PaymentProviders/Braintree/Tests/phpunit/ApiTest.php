@@ -31,7 +31,7 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 		$contents = file_get_contents( __DIR__ . '/../Data/createClientToken.response' );
 		$header_size = strpos( $contents, "\r\n\r\n" ) + 4;
 		$parsed = CurlWrapper::parseResponse(
-			$contents, [ 'http_code' => 200, 'header_size' => $header_size ]
+			$contents, [ 'http_code' => 200, 'header_size' => $header_size, 'total_time' => 2 ]
 		);
 		$this->curlWrapper->expects( $this->once() )
 			->method( 'execute' )

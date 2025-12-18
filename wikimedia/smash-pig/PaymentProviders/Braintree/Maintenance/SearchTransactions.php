@@ -16,7 +16,8 @@ class SearchTransactions extends MaintenanceBase {
 		parent::__construct();
 		$this->addOption( 'hours', 'search transactions from how many hours till now', '24', 'r' );
 		$this->addOption( 'type', 'search what type of transactions (donation, refund, chargeback)', 'all', 't' );
-		$this->addOption( 'path', 'location to store the reports', './drupal/sites/default/files/wmf_audit/braintree/incoming', 'p' );
+		$this->addOption( 'path', 'location to store the reports', './private/wmf_audit/braintree/incoming', 'p' );
+		$this->addFlag( 'raw', 'log raw data', 'v' );
 		$this->desiredOptions['config-node']['default'] = 'braintree';
 	}
 
@@ -28,6 +29,7 @@ class SearchTransactions extends MaintenanceBase {
 		$hrs = $this->getOption( 'hours' );
 		$type = $this->getOption( 'type' );
 		$path = $this->getOption( 'path' );
+		$logRaw = $this->getOption( 'raw' );
 		$now = date( 'c' );
 		$greaterThan = date( 'c', strtotime( "-$hrs hours" ) );
 		$greaterThanDate = substr( $greaterThan, 0, 10 );
@@ -58,7 +60,7 @@ class SearchTransactions extends MaintenanceBase {
 				fclose( $disputes );
 			}
 		} else {
-			echo "drupal incoming dir is not exist\n";
+			echo "incoming dir is not exist\n";
 		}
 	}
 
@@ -108,8 +110,12 @@ class SearchTransactions extends MaintenanceBase {
 	 */
 	private function normalizeTransactions( array $data, string $type ): string {
 		$this->fileData = [];
+		$logRaw = $this->getOption( 'raw' );
 		if ( $type === 'donation' || $type === 'refund' ) {
 			foreach ( $data as $d ) {
+				if ( $logRaw ) {
+					Logger::info( "logging raw transaction " . json_encode( $d ) );
+				}
 				$row = $d['node'];
 				$msg                             = [];
 				$msg['contribution_tracking_id'] = $this->getContributionTrackingId( $row['orderId'] );
@@ -134,6 +140,9 @@ class SearchTransactions extends MaintenanceBase {
 		}
 		if ( $type === 'chargeback' ) {
 			foreach ( $data as $d ) {
+				if ( $logRaw ) {
+					Logger::info( "logging raw transaction " . json_encode( $d ) );
+				}
 				$row = $d['node'];
 				$msg = [];
 				// todo: find out what will dispute (chargeback) report looks like: need real case to see if really referenceNumber

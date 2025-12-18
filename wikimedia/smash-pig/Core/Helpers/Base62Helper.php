@@ -24,13 +24,26 @@ class Base62Helper {
 			$hex2 = str_pad( $hex2, 32, '0', STR_PAD_LEFT );
 			$bytes2 = hex2bin( $hex2 );
 			if ( self::isRfc4122Variant( $bytes2 ) && self::isVersion4or8( $bytes2 ) ) {
-				// (Optional) log normalization: $s -> $repaired
 				return self::hexToUuid( $hex2 );
 			}
 		}
 
-		// 3) fall back to strict result (or throw if you prefer strict-only behavior)
+		// 3) fall back to strict result
 		return self::hexToUuid( $hex );
+	}
+
+	private const BASE62_UUID_LENGTH = 22;
+
+	/**
+	 * Encode a UUID (canonical 8-4-4-4-12 or 32 hex chars) to Base62 using alphabet 0-9A-Za-z.
+	 *
+	 * NOTE: Base62 encoding is not unique if you allow leading '0' digits.
+	 * This returns the *canonical minimal* Base62 (no leading '0's),
+	 * unless $padToLength is provided, in which case it left-pads with '0' to that length.
+	 */
+	public static function fromUuid( string $uuid, int $padToLength = self::BASE62_UUID_LENGTH ): string {
+		$hex = self::uuidToHex( $uuid );
+		return self::fromHex( $hex, $padToLength );
 	}
 
 	/**
@@ -91,6 +104,76 @@ class Base62Helper {
 			$hex = '0' . $hex;
 		}
 		return $hex;
+	}
+
+	/**
+	 * Convert 32 hex chars to Base62 (alphabet 0-9A-Za-z).
+	 * Pure-PHP repeated division base conversion (base 16 -> base 62).
+	 */
+	private static function fromHex( string $hex, ?int $padToLength = null ): string {
+		$alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+		$fromBase = 16;
+		$toBase   = 62;
+
+		$hex = strtolower( $hex );
+		if ( !preg_match( '/^[0-9a-f]{32}$/', $hex ) ) {
+			throw new \InvalidArgumentException( "Expected 32 hex characters." );
+		}
+
+		// Trim redundant leading zero digits for canonical minimal representation.
+		$trimmed = ltrim( $hex, '0' );
+		if ( $trimmed === '' ) {
+			$out = '0';
+			return $padToLength !== null ? str_pad( $out, $padToLength, '0', STR_PAD_LEFT ) : $out;
+		}
+
+		// Map hex chars to digit array (base-16)
+		$digits = [];
+		for ( $i = 0, $n = strlen( $trimmed ); $i < $n; $i++ ) {
+			$digits[] = hexdec( $trimmed[$i] ); // 0..15
+		}
+
+		// Repeated division algorithm: convert from base 16 to base 62
+		$result = [];
+		while ( count( $digits ) > 0 ) {
+			$quotient = [];
+			$remainder = 0;
+			foreach ( $digits as $d ) {
+				$acc = $remainder * $fromBase + $d;
+				$q = intdiv( $acc, $toBase );
+				$remainder = $acc % $toBase;
+				if ( !empty( $quotient ) || $q !== 0 ) {
+					$quotient[] = $q;
+				}
+			}
+			$result[] = $remainder; // base-62 digit (least significant first)
+			$digits = $quotient;
+		}
+
+		// Map base-62 digits to chars (reverse to most-significant-first)
+		$out = '';
+		for ( $i = count( $result ) - 1; $i >= 0; $i-- ) {
+			$out .= $alphabet[$result[$i]];
+		}
+
+		return $padToLength !== null ? str_pad( $out, $padToLength, '0', STR_PAD_LEFT ) : $out;
+	}
+
+	/** Accept UUID with dashes or a raw 32-hex string; return 32 lowercase hex. */
+	private static function uuidToHex( string $uuid ): string {
+		$u = strtolower( trim( $uuid ) );
+
+		// Allow canonical UUID format
+		if ( preg_match( '/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/', $u ) ) {
+			return str_replace( '-', '', $u );
+		}
+
+		// Allow 32 hex characters
+		if ( preg_match( '/^[0-9a-f]{32}$/', $u ) ) {
+			return $u;
+		}
+
+		throw new \InvalidArgumentException( "Invalid UUID format." );
 	}
 
 	/** Format 32-char hex (lowercase) as UUID 8-4-4-4-12 */
