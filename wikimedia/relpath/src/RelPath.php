@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * Copyright (c) 2015 Ori Livneh <ori@wikimedia.org>
  *
@@ -37,7 +39,7 @@ class RelPath {
 	 * @param string $path File path.
 	 * @return string[] Array of path components.
 	 */
-	public static function splitPath( string $path ): array {
+	private static function splitPath( string $path ): array {
 		$fragments = [];
 		$countDots = 0;
 
@@ -91,14 +93,14 @@ class RelPath {
 	 *  working directory will be used.
 	 * @return string|false Relative path, or false if input was invalid.
 	 */
-	public static function getRelativePath( string $path, ?string $start = null ) {
+	public static function getRelativePath( string $path, ?string $start = null ): string|false {
 		if ( $start === null ) {
 			// @codeCoverageIgnoreStart
 			$start = getcwd();
 		}
 		// @codeCoverageIgnoreEnd
 
-		if ( strpos( $path, '/' ) !== 0 || strpos( $start, '/' ) !== 0 ) {
+		if ( !str_starts_with( $path, '/' ) || !str_starts_with( $start, '/' ) ) {
 			return false;
 		}
 
@@ -145,36 +147,37 @@ class RelPath {
 	 * @param string $path File $path to join to $base path.
 	 * @return string|false Combined path, or false if input was invalid.
 	 */
-	public static function joinPath( string $base, string $path ) {
-		if ( strpos( $path, '/' ) === 0 ) {
+	public static function joinPath( string $base, string $path ): string|false {
+		if ( str_starts_with( $path, '/' ) ) {
 			// $path is absolute.
 			return $path;
 		}
 
-		if ( strpos( $base, '/' ) !== 0 ) {
+		if ( !str_starts_with( $base, '/' ) ) {
 			// $base is relative.
 			return false;
 		}
 
-		$pathParts = self::splitPath( $path );
-		$resultParts = self::splitPath( $base );
+		$pathStr = $base . '/' . $path;
+		// Normalize backslashes to slashes, but only on Windows.
+		// On *nix, a backslash is a valid filename character and must be preserved.
+		if ( DIRECTORY_SEPARATOR === '\\' ) {
+			$pathStr = str_replace( '\\', '/', $pathStr );
+		}
+		$parts = explode( '/', $pathStr );
+		$stack = [];
 
-		// @phpcs:ignore Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
-		while ( ( $part = array_shift( $pathParts ) ) !== null ) {
-			switch ( $part ) {
-				case '.':
-					break;
-				case '..':
-					if ( count( $resultParts ) > 1 ) {
-						array_pop( $resultParts );
-					}
-					break;
-				default:
-					$resultParts[] = $part;
-					break;
+		foreach ( $parts as $part ) {
+			if ( $part === '..' ) {
+				if ( count( $stack ) > 0 ) {
+					array_pop( $stack );
+				}
+			} elseif ( $part !== '' && $part !== '.' ) {
+				$stack[] = $part;
 			}
 		}
 
-		return implode( '/', $resultParts );
+		// Since $base is absolute (checked above), the result must be absolute.
+		return '/' . implode( '/', $stack );
 	}
 }
