@@ -12,6 +12,6 @@ return array(
     $vendorDir . '/pear/net_smtp',
     $vendorDir . '/pear/net_socket',
     $vendorDir . '/pear/net_url2',
-    $vendorDir . '/pear/pear_exception',
     $vendorDir . '/pear/pear-core-minimal/src',
+    $vendorDir . '/pear/pear_exception',
 );

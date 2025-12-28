@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a2bf1da040cecb782f57be20495c2c8b",
+    "content-hash": "8ca3bea1bd529aa846d76612edabc1ee",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -3410,16 +3410,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.21.1",
+            "version": "v0.21.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
-                "reference": "73dd5f50537b9f72f70ca53c723124a2d26c1427"
+                "reference": "c9fbe409de431a5e2635debc81bafb13de39c0fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/73dd5f50537b9f72f70ca53c723124a2d26c1427",
-                "reference": "73dd5f50537b9f72f70ca53c723124a2d26c1427",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/c9fbe409de431a5e2635debc81bafb13de39c0fd",
+                "reference": "c9fbe409de431a5e2635debc81bafb13de39c0fd",
                 "shasum": ""
             },
             "require": {
@@ -3427,7 +3427,7 @@
                 "composer/semver": "^3.4.0",
                 "ext-dom": "*",
                 "ext-json": "*",
-                "justinrainbow/json-schema": "5.3.0",
+                "justinrainbow/json-schema": "^5.3.0 || ^6.4.2",
                 "liuggio/statsd-php-client": "^1.0.18",
                 "php": ">=8.1.0",
                 "psr/container": "~1.1.2 || ~2.0.2",
@@ -3440,7 +3440,6 @@
                 "wikimedia/json-codec": "^3.0.2",
                 "wikimedia/object-factory": "^5.0.1",
                 "wikimedia/remex-html": "^4.1.2",
-                "wikimedia/scoped-callback": "^4.0.0 || ^5.0.0",
                 "wikimedia/wikipeg": "^4.0.0 || ^5.0.0",
                 "wikimedia/zest-css": "^3.0.1"
             },
@@ -3490,10 +3489,10 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.21.1",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.21.2",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
-            "time": "2025-09-29T14:55:25+00:00"
+            "time": "2025-12-27T22:55:22+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",
