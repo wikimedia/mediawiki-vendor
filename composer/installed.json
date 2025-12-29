@@ -8228,33 +8228,33 @@
         },
         {
             "name": "wikimedia/running-stat",
-            "version": "v2.1.0",
-            "version_normalized": "2.1.0.0",
+            "version": "v2.2.0",
+            "version_normalized": "2.2.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/wikimedia/running-stat.git",
-                "reference": "0aa66cf58f98ca2de9972a8177cbec625c4c9969"
+                "url": "https://github.com/wikimedia/RunningStat.git",
+                "reference": "644c87162e01989cdff07aab3244e54c82a4cdb6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/running-stat/zipball/0aa66cf58f98ca2de9972a8177cbec625c4c9969",
-                "reference": "0aa66cf58f98ca2de9972a8177cbec625c4c9969",
+                "url": "https://api.github.com/repos/wikimedia/RunningStat/zipball/644c87162e01989cdff07aab3244e54c82a4cdb6",
+                "reference": "644c87162e01989cdff07aab3244e54c82a4cdb6",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.0"
+                "php": ">=8.1.0"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "39.0.0",
-                "mediawiki/mediawiki-phan-config": "0.11.1",
-                "mediawiki/minus-x": "1.1.1",
-                "ockcyp/covers-validator": "1.4.0",
+                "mediawiki/mediawiki-codesniffer": "48.0.0",
+                "mediawiki/mediawiki-phan-config": "0.17.0",
+                "mediawiki/minus-x": "1.1.3",
+                "ockcyp/covers-validator": "1.7.0",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
-                "php-parallel-lint/php-parallel-lint": "1.3.2",
-                "phpunit/phpunit": "^8.5",
-                "wikimedia/testing-access-wrapper": "^1.0.0"
+                "php-parallel-lint/php-parallel-lint": "1.4.0",
+                "phpunit/phpunit": "10.5.58",
+                "wikimedia/testing-access-wrapper": "^3.0.0"
             },
-            "time": "2022-07-20T12:56:10+00:00",
+            "time": "2025-11-04T21:25:28+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -8275,7 +8275,7 @@
             "description": "PHP implementations of online statistical algorithms",
             "homepage": "https://www.mediawiki.org/wiki/RunningStat",
             "support": {
-                "source": "https://github.com/wikimedia/running-stat/tree/v2.1.0"
+                "source": "https://github.com/wikimedia/RunningStat/tree/v2.2.0"
             },
             "install-path": "../wikimedia/running-stat"
         },
