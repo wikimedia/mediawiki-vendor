@@ -1,4 +1,5 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Wikimedia;
 
@@ -23,24 +24,18 @@ use ReflectionProperty;
  *
  * You can access private and protected constants:
  *    $value = TestingAccessWrapper::constant( Foo::class, 'FOO_CONSTANT' );
- *
  */
 class TestingAccessWrapper {
-	/** @var mixed The object, or the class name for static-only access */
-	public $object;
+	/** @var object|class-string The object, or the class name for static-only access */
+	public object|string $object;
 
 	/**
 	 * Return a proxy object which can be used the same way as the original,
 	 * except that access restrictions can be ignored (protected and private methods and properties
 	 * are available for any caller).
-	 * @param object $object
-	 * @return self
 	 * @throws InvalidArgumentException
 	 */
-	public static function newFromObject( $object ) {
-		if ( !is_object( $object ) ) {
-			throw new InvalidArgumentException( __METHOD__ . ' must be called with an object' );
-		}
+	public static function newFromObject( object $object ): self {
 		$wrapper = new self();
 		$wrapper->object = $object;
 		return $wrapper;
@@ -51,13 +46,9 @@ class TestingAccessWrapper {
 	 * Returns an object whose methods/properties will correspond to the
 	 * static methods/properties of the given class.
 	 * @param class-string $className
-	 * @return self
 	 * @throws InvalidArgumentException
 	 */
-	public static function newFromClass( $className ) {
-		if ( !is_string( $className ) ) {
-			throw new InvalidArgumentException( __METHOD__ . ' must be called with a class name' );
-		}
+	public static function newFromClass( string $className ): self {
 		$wrapper = new self();
 		$wrapper->object = $className;
 		return $wrapper;
@@ -67,9 +58,8 @@ class TestingAccessWrapper {
 	 * Allow access to non-public constants of the class.
 	 * @param class-string $className
 	 * @param string $constantName
-	 * @return mixed
 	 */
-	public static function constant( $className, $constantName ) {
+	public static function constant( string $className, string $constantName ): mixed {
 		$classReflection = new ReflectionClass( $className );
 		// getConstant() returns `false` if the constant is defined in
 		// a parent class; this works more like ReflectionClass::getMethod()
@@ -84,26 +74,22 @@ class TestingAccessWrapper {
 
 	/**
 	 * Allow constructing a class with a non-public constructor.
+	 *
+	 * @template T of object
 	 * @param class-string<T> $className
 	 * @param mixed ...$args
+	 * @phan-suppress-next-line PhanTypeMismatchDeclaredReturn
 	 * @return T
-	 * @phan-template T
 	 */
-	public static function construct( string $className, ...$args ) {
+	public static function construct( string $className, mixed ...$args ): object {
 		$classReflection = new ReflectionClass( $className );
 		$constructor = $classReflection->getConstructor();
-		$constructor->setAccessible( true );
 		$object = $classReflection->newInstanceWithoutConstructor();
 		$constructor->invokeArgs( $object, $args );
 		return $object;
 	}
 
-	/**
-	 * @param string $method
-	 * @param array $args
-	 * @return mixed
-	 */
-	public function __call( $method, $args ) {
+	public function __call( string $method, array $args ): mixed {
 		$methodReflection = $this->getMethod( $method );
 
 		if ( $this->isStatic() && !$methodReflection->isStatic() ) {
@@ -115,11 +101,7 @@ class TestingAccessWrapper {
 			$args );
 	}
 
-	/**
-	 * @param string $name
-	 * @param mixed $value
-	 */
-	public function __set( $name, $value ) {
+	public function __set( string $name, mixed $value ): void {
 		$propertyReflection = $this->getProperty( $name );
 
 		if ( $this->isStatic() && !$propertyReflection->isStatic() ) {
@@ -135,11 +117,7 @@ class TestingAccessWrapper {
 		}
 	}
 
-	/**
-	 * @param string $name Field name
-	 * @return mixed
-	 */
-	public function __get( $name ) {
+	public function __get( string $name ): mixed {
 		$propertyReflection = $this->getProperty( $name );
 
 		if ( $this->isStatic() && !$propertyReflection->isStatic() ) {
@@ -166,22 +144,18 @@ class TestingAccessWrapper {
 
 	/**
 	 * Tells whether this object was created for an object or a class.
-	 * @return bool
 	 */
-	private function isStatic() {
+	private function isStatic(): bool {
 		return is_string( $this->object );
 	}
 
 	/**
 	 * Return a method and make it accessible.
-	 * @param string $name
-	 * @return ReflectionMethod
 	 * @throws ReflectionException
 	 */
-	private function getMethod( $name ) {
+	private function getMethod( string $name ): ReflectionMethod {
 		$classReflection = new ReflectionClass( $this->object );
 		$methodReflection = $classReflection->getMethod( $name );
-		$methodReflection->setAccessible( true );
 		return $methodReflection;
 	}
 
@@ -191,11 +165,9 @@ class TestingAccessWrapper {
 	 * ReflectionClass::getProperty() fails if the private property is defined
 	 * in a parent class. This works more like ReflectionClass::getMethod().
 	 *
-	 * @param string $name
-	 * @return ReflectionProperty
 	 * @throws ReflectionException
 	 */
-	private function getProperty( $name ) {
+	private function getProperty( string $name ): ReflectionProperty {
 		$classReflection = new ReflectionClass( $this->object );
 		try {
 			$propertyReflection = $classReflection->getProperty( $name );
@@ -207,7 +179,7 @@ class TestingAccessWrapper {
 				}
 				try {
 					$propertyReflection = $classReflection->getProperty( $name );
-				} catch ( ReflectionException $ex2 ) {
+				} catch ( ReflectionException ) {
 					continue;
 				}
 				if ( $propertyReflection->isPrivate() ) {
@@ -219,7 +191,6 @@ class TestingAccessWrapper {
 				}
 			}
 		}
-		$propertyReflection->setAccessible( true );
 		return $propertyReflection;
 	}
 }
