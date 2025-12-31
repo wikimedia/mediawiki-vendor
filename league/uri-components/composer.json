@@ -14,7 +14,9 @@
         "authority",
         "path",
         "query",
-        "fragment"
+        "fragment",
+        "modifier",
+        "middleware"
     ],
     "license": "MIT",
     "homepage": "http://uri.thephpleague.com",
@@ -26,63 +28,36 @@
         }
     ],
     "require": {
-        "php": "^7.4 || ^8.0",
-        "ext-json": "*",
-        "league/uri-interfaces": "^2.3",
-        "psr/http-message": "^1.0"
-    },
-    "require-dev": {
-        "friendsofphp/php-cs-fixer": "^v3.22.0",
-        "guzzlehttp/psr7": "^2.2",
-        "league/uri": "^6.0",
-        "phpstan/phpstan": "^1.10.28",
-        "phpstan/phpstan-phpunit": "^1.3.13",
-        "phpstan/phpstan-strict-rules": "^1.5.1",
-        "phpstan/phpstan-deprecation-rules": "^1.1.4",
-        "phpunit/phpunit": "^9.6.10",
-        "laminas/laminas-diactoros": "^2.11"
+        "php": "^8.1",
+        "league/uri": "^7.7"
     },
     "suggest": {
-        "ext-intl": "to handle IDN host",
-        "ext-gmp": "to improve handle IPV4 parsing",
-        "ext-fileinfo": "Needed to create Data URI from a filepath",
-        "php-64bit": "to improve handle IPV4 parsing",
-        "jeremykendall/php-domain-parser": "Public Suffix and Top Level Domain parsing implemented in PHP",
-        "league/uri": "to allow manipulating URI objects",
-        "psr/http-message-implementation": "to allow manipulating PSR-7 Uri objects"
+        "ext-bcmath": "to improve IPV4 host parsing",
+        "ext-mbstring": "to use the sorting algorithm of URLSearchParams",
+        "ext-fileinfo": "to create Data URI from file contennts",
+        "ext-gmp": "to improve IPV4 host parsing",
+        "ext-intl": "to handle IDN host with the best performance",
+        "jeremykendall/php-domain-parser": "to resolve Public Suffix and Top Level Domain",
+        "league/uri-polyfill" : "Needed to backport the PHP URI extension for older versions of PHP",
+        "php-64bit": "to improve IPV4 host parsing",
+        "symfony/polyfill-intl-idn": "to handle IDN host via the Symfony polyfill if ext-intl is not present",
+        "rowbot/url": "to handle WHATWG URL",
+        "bakame/aide-uri": "A polyfill for PHP8.1 until PHP8.4 to add support to PHP Native URI parser"
     },
     "autoload": {
         "psr-4": {
-            "League\\Uri\\": "src"
+            "League\\Uri\\": ""
         }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "LeagueTest\\Uri\\": "tests"
-        }
-    },
-    "scripts": {
-        "phpcs": "php-cs-fixer fix -v --diff --dry-run --allow-risky=yes --ansi",
-        "phpcs:fix": "php-cs-fixer fix -vvv --allow-risky=yes --ansi",
-        "phpstan": "phpstan analyse -l max -c phpstan.neon src --memory-limit=256M --ansi",
-        "phpunit": "phpunit --coverage-text",
-        "test": [
-            "@phpunit",
-            "@phpstan",
-            "@phpcs:fix"
-        ]
-    },
-    "scripts-descriptions": {
-        "phpcs": "Runs coding style test suite",
-        "phpcs:fix": "Fix coding style",
-        "phpstan": "Runs complete codebase static analysis",
-        "phpunit": "Runs unit and functional testing",
-        "test": "Runs full test suite"
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.x-dev"
+            "dev-master": "7.x-dev"
         }
+    },
+    "support": {
+        "forum": "https://thephpleague.slack.com",
+        "docs": "https://uri.thephpleague.com",
+        "issues": "https://github.com/thephpleague/uri-src/issues"
     },
     "config": {
         "sort-packages": true

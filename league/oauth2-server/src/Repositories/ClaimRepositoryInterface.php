@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author      Sebastian Kroczek <me@xbug.de>
  * @copyright   Copyright (c) Alex Bilbie
@@ -6,6 +7,8 @@
  *
  * @link        https://github.com/thephpleague/oauth2-server
  */
+
+declare(strict_types=1);
 
 namespace League\OAuth2\Server\Repositories;
 
@@ -20,14 +23,11 @@ interface ClaimRepositoryInterface extends RepositoryInterface
     /**
      * Returns claims
      *
-     * @param string                $grantType
-     * @param ClientEntityInterface $clientEntity
-     * @param string|null           $userIdentifier
-     *
      * @return ClaimEntityInterface[]
      */
     public function getClaims(
         string $grantType,
         ClientEntityInterface $clientEntity,
-        $userIdentifier = null);
+        string|null $userIdentifier = null
+    ): array;
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author      Sebastian Kroczek <me@xbug.de>
  * @copyright   Copyright (c) Alex Bilbie
@@ -7,36 +8,28 @@
  * @link        https://github.com/thephpleague/oauth2-server
  */
 
+declare(strict_types=1);
+
 namespace League\OAuth2\Server\Entities\Traits;
 
 trait ClaimEntityTrait
 {
-    /**
-     * @var string
-     */
-    protected $name;
+    protected string $name;
 
-    /**
-     * @var mixed
-     */
-    protected $value;
+    protected mixed $value;
 
     /**
      * Returns the name of the claim
-     *
-     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
      * Returns the claims value
-     *
-     * @return mixed
      */
-    public function getValue()
+    public function getValue(): mixed
     {
         return $this->value;
     }

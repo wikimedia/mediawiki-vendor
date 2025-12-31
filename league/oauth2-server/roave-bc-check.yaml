@@ -1,0 +1,5 @@
+parameters:
+  ignoreErrors:
+    - '#\[BC\] ADDED: Method setClaimRepository\(\) was added to interface #'
+    - '#\[BC\] ADDED: Method getIssuer\(\) was added to interface #'
+    - '#\[BC\] ADDED: Method setIssuer\(\) was added to interface #'
