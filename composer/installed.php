@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'ad52beb9dcecae90436aef74aefe2b9d64929443',
+        'reference' => '3abedd5626d3abe63937dcfe703a004f48b87cdf',
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'ad52beb9dcecae90436aef74aefe2b9d64929443',
+            'reference' => '3abedd5626d3abe63937dcfe703a004f48b87cdf',
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -812,15 +812,6 @@
             'replaced' => array(
                 0 => '1.99',
             ),
-        ),
-        'symfony/polyfill-php82' => array(
-            'pretty_version' => 'v1.33.0',
-            'version' => '1.33.0.0',
-            'reference' => '5d2ed36f7734637dacc025f179698031951b1692',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../symfony/polyfill-php82',
-            'aliases' => array(),
-            'dev_requirement' => false,
         ),
         'symfony/polyfill-php83' => array(
             'pretty_version' => 'v1.33.0',

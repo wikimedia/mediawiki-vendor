@@ -89,7 +89,6 @@
 		"swaggest/json-diff": "3.12.1",
 		"symfony/console": "6.4.30",
 		"symfony/deprecation-contracts": "3.6.0",
-		"symfony/polyfill-php82": "1.33.0",
 		"symfony/polyfill-php83": "1.33.0",
 		"symfony/polyfill-php84": "1.33.0",
 		"symfony/polyfill-php85": "1.33.0",
