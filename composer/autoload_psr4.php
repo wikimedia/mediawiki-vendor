@@ -76,6 +76,8 @@ return array(
     'Composer\\Installers\\' => array($vendorDir . '/composer/installers/src/Composer/Installers'),
     'Composer\\CaBundle\\' => array($vendorDir . '/composer/ca-bundle/src'),
     'CLDRPluralRuleParser\\' => array($vendorDir . '/wikimedia/cldr-plural-rule-parser/src'),
+    'Brick\\Money\\' => array($vendorDir . '/brick/money/src'),
+    'Brick\\Math\\' => array($vendorDir . '/brick/math/src'),
     'Base32\\' => array($vendorDir . '/christian-riesen/base32/src'),
     'BaconQrCode\\' => array($vendorDir . '/bacon/bacon-qr-code/src'),
     'Addshore\\Psr\\Cache\\MWBagOStuffAdapter\\' => array($vendorDir . '/addshore/psr-6-mediawiki-bagostuff-adapter/src'),

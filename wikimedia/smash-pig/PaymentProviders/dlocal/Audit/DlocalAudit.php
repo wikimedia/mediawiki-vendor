@@ -76,6 +76,7 @@ class DlocalAudit implements AuditParser {
 		$msg['date'] = UtcDate::getUtcTimestamp( $row['Creation date'] );
 		$msg['gateway'] = 'dlocal';
 		$msg['gross'] = $row['Net Amount (local)'];
+		$msg['audit_file_gateway'] = 'dlocal';
 
 		switch ( $row['Type'] ) {
 			case 'Payment':
@@ -125,11 +126,18 @@ class DlocalAudit implements AuditParser {
 	protected function parseDonation( array $row, array &$msg ): void {
 		$msg['contribution_tracking_id'] = $this->getContributionTrackingId( $row['Invoice'] );
 		$msg['country'] = $row['Country'];
-		$msg['currency'] = $row['currency'];
+		$msg['currency'] = $row['original_currency'] = $row['currency'];
 		$msg['email'] = $row['User Mail'];
-		$msg['settled_fee_amount'] = $row['Fee']; // settled_fee since it's given in USD
+		// settled_fee since it's given in USD
+		$msg['settled_fee_amount'] = -$row['Fee'];
+		$msg['settled_total_amount'] = $row['Amount (USD)'];
+		$msg['settled_net_amount'] = $msg['settled_total_amount'] + $msg['settled_fee_amount'];
 		$msg['gateway_txn_id'] = $row['Reference'];
 		$msg['invoice_id'] = $row['Invoice'];
+		$msg['original_total_amount'] = $row['Net Amount (local)'];
+		$msg['original_amount'] = $row['Net Amount (local)'];
+		$msg['exchange_rate'] = $msg['settled_total_amount'] / $msg['original_amount'];
+
 		[ $method, $submethod ] = ReferenceData::decodePaymentMethod(
 			$row['Payment Method Type'],
 			$row['Payment Method']

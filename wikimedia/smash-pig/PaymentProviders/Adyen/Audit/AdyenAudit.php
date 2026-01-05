@@ -220,7 +220,7 @@ abstract class AdyenAudit implements AuditParser {
 			return null;
 		}
 		$parts = explode( '.', $invoiceId );
-		return $parts[ 0 ];
+		return ( !empty( $parts[ 0 ] ) && is_numeric( $parts[ 0 ] ) ) ? (int)$parts[ 0 ] : null;
 	}
 
 	/**

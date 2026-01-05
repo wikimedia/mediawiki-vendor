@@ -1,0 +1,92 @@
+[
+  {
+    "id": "cmVmd",
+    "legacyId": "c33",
+    "orderId": "240291412.2",
+    "createdAt": "2025-12-19T19:26:35.000000Z",
+    "merchantAccountId": "wikimediafoundation_instant",
+    "status": "SETTLED",
+    "disbursementDetails": {
+      "date": "2025-12-22",
+      "amount": {
+        "value": "-52.00",
+        "currencyCode": "USD"
+      },
+      "exchangeRate": "1",
+      "fundsHeld": false
+    },
+    "statusHistory": [
+      {
+        "timestamp": "2025-12-19T20:12:03.000000Z",
+        "amount": {
+          "value": "52.00",
+          "currencyCode": "USD"
+        },
+        "settlementBatchId": "2025-12-19_wikimediafoundation_instant_ax7wk0t5"
+      },
+      [],
+      []
+    ],
+    "refundedTransaction": {
+      "id": "dHJh",
+      "orderId": "2402.2",
+      "legacyId": "24v",
+      "createdAt": "2025-12-19T14:16:42.000000Z",
+      "source": "API"
+    },
+    "details": null,
+    "paymentMethodSnapshot": {
+      "username": "J",
+      "venmoUserId": "28"
+    },
+    "amount": {
+      "value": "52.00",
+      "currencyCode": "USD"
+    }
+  },
+  {
+    "id": "cmV",
+    "legacyId": "qa",
+    "orderId": "2427.1",
+    "createdAt": "2025-12-19T00:24:27.000000Z",
+    "merchantAccountId": "wikimediafoundation_instant",
+    "status": "SETTLED",
+    "disbursementDetails": {
+      "date": "2025-12-22",
+      "amount": {
+        "value": "-10.40",
+        "currencyCode": "USD"
+      },
+      "exchangeRate": "1",
+      "fundsHeld": false
+    },
+    "statusHistory": [
+      {
+        "timestamp": "2025-12-19T06:32:36.000000Z",
+        "amount": {
+          "value": "10.40",
+          "currencyCode": "USD"
+        },
+        "settlementBatchId": "2025-12-19_wikimediafoundation_instant_7p3qnk7p"
+      },
+      [],
+      []
+    ],
+    "refundedTransaction": {
+      "id": "dHJ",
+      "orderId": "2427.1",
+      "legacyId": "q7b",
+      "createdAt": "2025-12-18T04:03:49.000000Z",
+      "source": "API"
+    },
+    "details": null,
+    "paymentMethodSnapshot": {
+      "username": "M",
+      "venmoUserId": "32"
+    },
+    "amount": {
+      "value": "10.40",
+      "currencyCode": "USD"
+    }
+  }
+]

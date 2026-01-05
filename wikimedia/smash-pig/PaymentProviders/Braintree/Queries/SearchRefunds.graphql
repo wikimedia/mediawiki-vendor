@@ -10,6 +10,20 @@ query searchRefunds($input: RefundSearchInput!, $after: String){
             createdAt
             merchantAccountId
             status
+            disbursementDetails {
+            date
+              amount { value currencyCode }
+              exchangeRate
+              fundsHeld
+            }
+            statusHistory {
+              ... on SettledEvent {
+                timestamp
+                amount { value currencyCode }
+                settlementBatchId
+              }
+            }
+
             refundedTransaction {
               id
               orderId
@@ -20,6 +34,7 @@ query searchRefunds($input: RefundSearchInput!, $after: String){
             details {
               ... on PayPalRefundDetails {
                 refundId
+                refundedFee { value currencyCode }
               }
             }
             paymentMethodSnapshot {

@@ -1,0 +1,361 @@
+[
+  {
+    "id": "ZGlzcH",
+    "legacyId": "c22k",
+    "type": "CHARGEBACK",
+    "caseNumber": "VM-R-NUM",
+    "createdAt": "2025-12-19T02:02:11.000000Z",
+    "referenceNumber": null,
+    "receivedDate": "2025-12-19",
+    "status": "WON",
+    "replyByDate": "2025-12-27",
+    "transaction": {
+      "purchaseOrderNumber": null,
+      "id": "dHJhb",
+      "legacyId": "d9tn",
+      "status": "SETTLED",
+      "orderId": "2387.3",
+      "createdAt": "2025-12-18T13:03:53.000000Z",
+      "amount": {
+        "value": "5.35",
+        "currencyCode": "USD"
+      },
+      "paymentMethod": null,
+      "paymentMethodSnapshot": {
+        "username": "D",
+        "venmoUserId": "30"
+      }
+    },
+    "amountDisputed": {
+      "value": "5.35",
+      "currencyCode": "USD"
+    },
+    "amountWon": {
+      "value": "5.35",
+      "currencyCode": "USD"
+    },
+    "statusHistory": [
+      {
+        "__typename": "DisputeStatusEvent",
+        "timestamp": "2025-12-21T02:01:46.000000Z",
+        "disbursementDate": null,
+        "status": "WON",
+        "effectiveDate": "2025-12-21"
+      },
+      {
+        "__typename": "DisputeStatusEvent",
+        "timestamp": "2025-12-19T02:02:11.000000Z",
+        "disbursementDate": null,
+        "status": "OPEN",
+        "effectiveDate": "2025-12-19"
+      }
+    ]
+  },
+  {
+    "id": "ZGlzc",
+    "legacyId": "rz7q",
+    "type": "CHARGEBACK",
+    "caseNumber": "VM-R-EQE",
+    "createdAt": "2025-12-18T02:04:46.000000Z",
+    "referenceNumber": null,
+    "receivedDate": "2025-12-18",
+    "status": "WON",
+    "replyByDate": "2025-12-26",
+    "transaction": {
+      "purchaseOrderNumber": null,
+      "id": "dHJh",
+      "legacyId": "f35x",
+      "status": "SETTLED",
+      "orderId": "2426.1",
+      "createdAt": "2025-12-17T00:38:32.000000Z",
+      "amount": {
+        "value": "3.10",
+        "currencyCode": "USD"
+      },
+      "paymentMethod": null,
+      "paymentMethodSnapshot": {
+        "username": "V",
+        "venmoUserId": "30"
+      }
+    },
+    "amountDisputed": {
+      "value": "3.10",
+      "currencyCode": "USD"
+    },
+    "amountWon": {
+      "value": "3.10",
+      "currencyCode": "USD"
+    },
+    "statusHistory": [
+      {
+        "__typename": "DisputeStatusEvent",
+        "timestamp": "2025-12-20T02:00:50.000000Z",
+        "disbursementDate": null,
+        "status": "WON",
+        "effectiveDate": "2025-12-20"
+      },
+      {
+        "__typename": "DisputeStatusEvent",
+        "timestamp": "2025-12-18T02:04:46.000000Z",
+        "disbursementDate": null,
+        "status": "OPEN",
+        "effectiveDate": "2025-12-18"
+      }
+    ]
+  },
+  {
+    "id": "ZGlzcHV",
+    "legacyId": "3j8j",
+    "type": "CHARGEBACK",
+    "caseNumber": "VM-R-VVC",
+    "createdAt": "2025-12-16T20:21:53.000000Z",
+    "referenceNumber": null,
+    "receivedDate": "2025-12-16",
+    "status": "LOST",
+    "replyByDate": "2025-12-25",
+    "transaction": {
+      "purchaseOrderNumber": null,
+      "id": "dHJhb",
+      "legacyId": "g10z",
+      "status": "SETTLED",
+      "orderId": "2405.1",
+      "createdAt": "2025-11-25T18:11:09.000000Z",
+      "amount": {
+        "value": "50.00",
+        "currencyCode": "USD"
+      },
+      "paymentMethod": null,
+      "paymentMethodSnapshot": {
+        "username": "L",
+        "venmoUserId": "39"
+      }
+    },
+    "amountDisputed": {
+      "value": "50.00",
+      "currencyCode": "USD"
+    },
+    "amountWon": {
+      "value": "0.00",
+      "currencyCode": "USD"
+    },
+    "statusHistory": [
+      {
+        "__typename": "DisputeStatusEvent",
+        "timestamp": "2025-12-27T18:01:26.000000Z",
+        "disbursementDate": null,
+        "status": "LOST",
+        "effectiveDate": "2025-12-27"
+      },
+      {
+        "__typename": "DisputeStatusEvent",
+        "timestamp": "2025-12-25T08:15:06.000000Z",
+        "disbursementDate": "2025-12-29",
+        "status": "EXPIRED",
+        "effectiveDate": "2025-12-25"
+      },
+      {
+        "__typename": "DisputeStatusEvent",
+        "timestamp": "2025-12-16T20:21:53.000000Z",
+        "disbursementDate": null,
+        "status": "OPEN",
+        "effectiveDate": "2025-12-16"
+      }
+    ]
+  },
+  {
+  "id": "ZGl",
+  "legacyId": "4wt",
+  "type": "CHARGEBACK",
+  "caseNumber": "VM-R-XKF",
+  "createdAt": "2025-12-31T02:04:04.000000Z",
+  "referenceNumber": null,
+  "receivedDate": "2025-12-31",
+  "status": "OPEN",
+  "replyByDate": "2026-01-08",
+  "transaction": {
+    "purchaseOrderNumber": null,
+    "id": "dHJ",
+    "legacyId": "m3g",
+    "status": "SETTLED",
+    "orderId": "2361.4",
+    "createdAt": "2025-12-19T09:36:55.000000Z",
+    "amount": {
+      "value": "3.10",
+      "currencyCode": "USD"
+    },
+    "paymentMethod": {
+      "__typename": "PaymentMethod"
+    },
+    "paymentMethodSnapshot": {
+      "username": "P",
+      "venmoUserId": "28"
+    }
+  },
+  "amountDisputed": {
+    "value": "3.10",
+    "currencyCode": "USD"
+  },
+  "amountWon": {
+    "value": "0.00",
+    "currencyCode": "USD"
+  },
+  "statusHistory": [
+    {
+      "__typename": "DisputeStatusEvent",
+      "timestamp": "2025-12-31T02:04:04.000000Z",
+      "disbursementDate": null,
+      "status": "OPEN",
+      "effectiveDate": "2025-12-31"
+    }
+  ]
+},
+  {
+    "id": "ZGlzcH",
+    "legacyId": "8w4",
+    "type": "CHARGEBACK",
+    "caseNumber": "VM-R-JWL",
+    "createdAt": "2025-12-29T02:02:04.000000Z",
+    "referenceNumber": null,
+    "receivedDate": "2025-12-29",
+    "status": "UNDER_REVIEW",
+    "replyByDate": "2026-01-06",
+    "transaction": {
+      "purchaseOrderNumber": null,
+      "id": "dHJhb",
+      "legacyId": "qx8",
+      "status": "SETTLED",
+      "orderId": "2438.1",
+      "createdAt": "2025-12-28T19:08:29.000000Z",
+      "amount": {
+        "value": "15.60",
+        "currencyCode": "USD"
+      },
+      "paymentMethod": null,
+      "paymentMethodSnapshot": {
+        "username": "M",
+        "venmoUserId": "1778"
+      }
+    },
+    "amountDisputed": {
+      "value": "15.60",
+      "currencyCode": "USD"
+    },
+    "amountWon": {
+      "value": "0.00",
+      "currencyCode": "USD"
+    },
+    "statusHistory": [
+      {
+        "__typename": "DisputeStatusEvent",
+        "timestamp": "2026-01-01T02:01:20.000000Z",
+        "disbursementDate": null,
+        "status": "UNDER_REVIEW",
+        "effectiveDate": "2026-01-01"
+      },
+      {
+        "__typename": "DisputeStatusEvent",
+        "timestamp": "2025-12-29T02:02:04.000000Z",
+        "disbursementDate": null,
+        "status": "OPEN",
+        "effectiveDate": "2025-12-29"
+      }
+    ]
+  },
+  {
+    "id": "ZGlzcHV",
+    "legacyId": "3xk3",
+    "type": "CHARGEBACK",
+    "caseNumber": "VM-R-ANJ",
+    "createdAt": "2025-12-27T10:05:20.000000Z",
+    "referenceNumber": null,
+    "receivedDate": "2025-12-27",
+    "status": "OPEN",
+    "replyByDate": "2026-01-05",
+    "transaction": {
+      "purchaseOrderNumber": null,
+      "id": "dHJhbn",
+      "legacyId": "e3d",
+      "status": "SETTLED",
+      "orderId": "2433.1",
+      "createdAt": "2025-12-23T05:38:25.000000Z",
+      "amount": {
+        "value": "104.00",
+        "currencyCode": "USD"
+      },
+      "paymentMethod": null,
+      "paymentMethodSnapshot": {
+        "username": "Ch",
+        "venmoUserId": "20"
+      }
+    },
+    "amountDisputed": {
+      "value": "104.00",
+      "currencyCode": "USD"
+    },
+    "amountWon": {
+      "value": "0.00",
+      "currencyCode": "USD"
+    },
+    "statusHistory": [
+      {
+        "__typename": "DisputeStatusEvent",
+        "timestamp": "2025-12-27T10:05:20.000000Z",
+        "disbursementDate": null,
+        "status": "OPEN",
+        "effectiveDate": "2025-12-27"
+      }
+    ]
+  },
+  {
+    "id": "ZGlzcHV",
+    "legacyId": "f95wm",
+    "type": "CHARGEBACK",
+    "caseNumber": "VM-R-ESM",
+    "createdAt": "2025-12-24T02:03:01.000000Z",
+    "referenceNumber": null,
+    "receivedDate": "2025-12-24",
+    "status": "EXPIRED",
+    "replyByDate": "2026-01-01",
+    "transaction": {
+      "purchaseOrderNumber": null,
+      "id": "dHJhbn",
+      "legacyId": "33nv",
+      "status": "SETTLED",
+      "orderId": "240493170.1",
+      "createdAt": "2025-11-23T20:14:31.000000Z",
+      "amount": {
+        "value": "1.75",
+        "currencyCode": "USD"
+      },
+      "paymentMethod": null,
+      "paymentMethodSnapshot": {
+        "username": "A",
+        "venmoUserId": "306"
+      }
+    },
+    "amountDisputed": {
+      "value": "1.75",
+      "currencyCode": "USD"
+    },
+    "amountWon": {
+      "value": "0.00",
+      "currencyCode": "USD"
+    },
+    "statusHistory": [
+      {
+        "__typename": "DisputeStatusEvent",
+        "timestamp": "2026-01-01T08:14:14.000000Z",
+        "disbursementDate": null,
+        "status": "EXPIRED",
+        "effectiveDate": "2026-01-01"
+      },
+      {
+        "__typename": "DisputeStatusEvent",
+        "timestamp": "2025-12-24T02:03:01.000000Z",
+        "disbursementDate": null,
+        "status": "OPEN",
+        "effectiveDate": "2025-12-24"
+      }
+    ]
+  }
+]

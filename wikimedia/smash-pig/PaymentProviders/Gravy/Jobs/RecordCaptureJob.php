@@ -59,7 +59,7 @@ class RecordCaptureJob implements Runnable {
 
 			// Remove it from the pending database
 			$logger->debug( 'Removing donor details message from pending database' );
-			$db->deleteMessage( $dbMessage );
+			$db->markMessageResolved( $dbMessage );
 
 		} else {
 			$logger->warning(

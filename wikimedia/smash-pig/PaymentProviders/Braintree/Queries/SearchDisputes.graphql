@@ -12,11 +12,21 @@ query searchDisputes($input: DisputeSearchInput!, $after: String){
              referenceNumber
              receivedDate
              status
+             replyByDate
              transaction {
               purchaseOrderNumber
               id
+              legacyId
+              status
               orderId
               createdAt
+              amount {
+                value
+                currencyCode
+              }
+              paymentMethod {
+                __typename
+              }
               paymentMethodSnapshot {
                  ... on VenmoAccountDetails {
                       username
@@ -40,10 +50,20 @@ query searchDisputes($input: DisputeSearchInput!, $after: String){
               value
               currencyCode
             }
+            statusHistory {
+              __typename
+              timestamp
+              ... on DisputeStatusEvent {
+                disbursementDate
+                status
+                effectiveDate
+              }
+            }
           }
         }
         pageInfo {
 		  hasNextPage
+		  endCursor
 		}
 	}
   }

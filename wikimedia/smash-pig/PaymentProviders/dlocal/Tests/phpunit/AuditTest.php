@@ -21,6 +21,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'dlocal',
+			'audit_file_gateway' => 'dlocal',
 			'date' => 1686911383,
 			'gross' => '5.00',
 			'contribution_tracking_id' => '266221341',
@@ -33,8 +34,14 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'payment_submethod' => 'mc',
 			'settled_date' => 1686916832,
 			'settled_currency' => 'USD',
-			'settled_fee_amount' => '0.03',
+			'settled_fee_amount' => '-0.03',
+			'settled_net_amount' => 1.47,
+			'settled_total_amount' => 1.50,
+			'original_amount' => '5.00',
+			'original_total_amount' => '5.00',
+			'exchange_rate' => '.3',
 			'settled_gross' => '1.50',
+
 		];
 		$this->assertEquals( $expected, $actual, 'Did not parse donation correctly' );
 	}
@@ -52,6 +59,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'contribution_tracking_id' => '314159265',
 			'date' => 1687208709,
 			'gross' => '5.00',
+			'audit_file_gateway' => 'dlocal',
 			'gateway_parent_id' => '7654321',
 			'gateway_refund_id' => '12345',
 			'gross_currency' => 'BRL',
@@ -71,6 +79,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 		$actual = $output[0];
 		$expected = [
 			'gateway' => 'dlocal',
+			'audit_file_gateway' => 'dlocal',
 			'contribution_tracking_id' => '314159265',
 			'date' => 1687208709,
 			'gross' => '5.00',
