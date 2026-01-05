@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6f7c0c5a91578c0559c49d1fbeb533a8",
+    "content-hash": "973b4a398c26b3cf2e8786b01b54b0f3",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -7506,16 +7506,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.23.0-a9",
+            "version": "v0.23.0-a10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
-                "reference": "09d3da067bd346f41a1b1763e298b7d31b86985f"
+                "reference": "242a9236b7ce70333fe3402dab572cdd3d629d4b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/09d3da067bd346f41a1b1763e298b7d31b86985f",
-                "reference": "09d3da067bd346f41a1b1763e298b7d31b86985f",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/242a9236b7ce70333fe3402dab572cdd3d629d4b",
+                "reference": "242a9236b7ce70333fe3402dab572cdd3d629d4b",
                 "shasum": ""
             },
             "require": {
@@ -7525,20 +7525,18 @@
                 "ext-json": "*",
                 "justinrainbow/json-schema": "^5.3.0 || ^6.4.2",
                 "liuggio/statsd-php-client": "^1.0.18",
-                "php": ">=8.1.0",
+                "php": ">=8.2.0",
                 "psr/container": "~1.1.2 || ~2.0.2",
-                "psr/log": "^1.1.4",
-                "symfony/polyfill-php82": "^1.32.0",
+                "psr/log": "^1.1.4 || ^3.0.0",
                 "symfony/polyfill-php83": "^1.32.0",
                 "symfony/polyfill-php84": "^1.32.0",
                 "wikimedia/assert": "^0.5.1",
                 "wikimedia/bcp-47-code": "^2.0.0",
                 "wikimedia/idle-dom": "2.1.0",
-                "wikimedia/ip-utils": "^5.0.0 || ^6.0.0",
+                "wikimedia/ip-utils": "^6.0.0",
                 "wikimedia/json-codec": "^4.0.0",
                 "wikimedia/object-factory": "^5.0.1",
                 "wikimedia/remex-html": "^5.1.0",
-                "wikimedia/scoped-callback": "^4.0.0 || ^5.0.0",
                 "wikimedia/utfnormal": "^4.0",
                 "wikimedia/wikipeg": "^5.0.1 || ^6.0.0",
                 "wikimedia/zest-css": "^4.1.0"
@@ -7561,7 +7559,7 @@
                 "wikimedia/alea": "^1.0.0",
                 "wikimedia/dodo": "^0.7.0",
                 "wikimedia/langconv": "^0.4.2",
-                "wikimedia/testing-access-wrapper": "~3.0"
+                "wikimedia/testing-access-wrapper": "~3.0.0 || ~4.0.0"
             },
             "suggest": {
                 "wikimedia/langconv": "Provides script conversion support"
@@ -7590,10 +7588,10 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.23.0-a9",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.23.0-a10",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
-            "time": "2025-12-02T17:35:22+00:00"
+            "time": "2026-01-03T14:15:04+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",
