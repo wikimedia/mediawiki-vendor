@@ -1161,6 +1161,7 @@ return array(
     'GeoIp2\\ProviderInterface' => $vendorDir . '/geoip2/geoip2/src/ProviderInterface.php',
     'GeoIp2\\Record\\AbstractNamedRecord' => $vendorDir . '/geoip2/geoip2/src/Record/AbstractNamedRecord.php',
     'GeoIp2\\Record\\AbstractPlaceRecord' => $vendorDir . '/geoip2/geoip2/src/Record/AbstractPlaceRecord.php',
+    'GeoIp2\\Record\\Anonymizer' => $vendorDir . '/geoip2/geoip2/src/Record/Anonymizer.php',
     'GeoIp2\\Record\\City' => $vendorDir . '/geoip2/geoip2/src/Record/City.php',
     'GeoIp2\\Record\\Continent' => $vendorDir . '/geoip2/geoip2/src/Record/Continent.php',
     'GeoIp2\\Record\\Country' => $vendorDir . '/geoip2/geoip2/src/Record/Country.php',
