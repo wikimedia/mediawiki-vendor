@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
-        'reference' => '583bbcd98d2d8279a818e2ad5826490d17c34e6f',
+        'pretty_version' => '1.0.0+no-version-set',
+        'version' => '1.0.0.0',
+        'reference' => null,
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'reference' => '583bbcd98d2d8279a818e2ad5826490d17c34e6f',
+            'pretty_version' => '1.0.0+no-version-set',
+            'version' => '1.0.0.0',
+            'reference' => null,
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -1132,9 +1132,9 @@
             'dev_requirement' => false,
         ),
         'wikimedia/minify' => array(
-            'pretty_version' => '2.9.0',
-            'version' => '2.9.0.0',
-            'reference' => '244bbb0c0acf0c1679078cc87cbc95c79ad9f33f',
+            'pretty_version' => '2.10.0',
+            'version' => '2.10.0.0',
+            'reference' => '8868c9ec24688fe837ddce27e9fb30ad05cdda3a',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/minify',
             'aliases' => array(),
