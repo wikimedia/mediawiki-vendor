@@ -8,9 +8,6 @@ use stdClass;
 
 class ValidatingStreamConfigFactory extends StreamConfigFactory {
 
-	/** @var Validator */
-	private $validator;
-
 	/** @var stdClass */
 	private $schema;
 
@@ -18,10 +15,12 @@ class ValidatingStreamConfigFactory extends StreamConfigFactory {
 	 * @param array|false $rawStreamConfigs
 	 * @param Validator $validator
 	 */
-	public function __construct( $rawStreamConfigs, Validator $validator ) {
+	public function __construct(
+		$rawStreamConfigs,
+		private readonly Validator $validator
+	) {
 		parent::__construct( $rawStreamConfigs );
 
-		$this->validator = $validator;
 		$this->schema = (object)[ '$ref' => 'file://' . __DIR__ . '/data/metrics_platform_client.schema.json' ];
 	}
 

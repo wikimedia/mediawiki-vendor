@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => null,
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => 'e44f92eb6a56dae27bf5475ca35884c1a67c4400',
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => null,
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => 'e44f92eb6a56dae27bf5475ca35884c1a67c4400',
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -1123,9 +1123,9 @@
             'dev_requirement' => false,
         ),
         'wikimedia/metrics-platform' => array(
-            'pretty_version' => '4.3.0',
-            'version' => '4.3.0.0',
-            'reference' => '9745f85c924f8400c5227d9018d1f22d35e576cd',
+            'pretty_version' => '4.4.0',
+            'version' => '4.4.0.0',
+            'reference' => '759ce7203ad50776d1e29b1c0979ef3bb50c6a33',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/metrics-platform',
             'aliases' => array(),

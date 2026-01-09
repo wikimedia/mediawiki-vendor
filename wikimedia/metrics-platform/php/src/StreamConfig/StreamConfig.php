@@ -49,14 +49,12 @@ class StreamConfig {
 		'performer_registration_dt',
 	];
 
-	/** @var array */
-	private $streamConfig;
-
 	/**
 	 * @param array $streamConfig
 	 */
-	public function __construct( array $streamConfig ) {
-		$this->streamConfig = $streamConfig;
+	public function __construct(
+		private readonly array $streamConfig
+	) {
 	}
 
 	/**
@@ -72,8 +70,6 @@ class StreamConfig {
 
 	/**
 	 * Gets the curation rules that should be applied to an event before submission.
-	 *
-	 * @return array
 	 */
 	public function getCurationRules(): array {
 		return $this->streamConfig['producers']['metrics_platform_client']['curation'] ?? [];

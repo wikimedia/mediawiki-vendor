@@ -18,19 +18,10 @@ class MetricsClient implements LoggerAwareInterface {
 	 *
 	 * @var string
 	 */
-	public const BASE_SCHEMA = '/analytics/product_metrics/web/base/1.4.3';
-
-	/** @var EventSubmitter */
-	private $eventSubmitter;
-
-	/** @var Integration */
-	private $integration;
+	public const BASE_SCHEMA = '/analytics/product_metrics/web/base/1.5.0';
 
 	/** @var ContextController */
 	private $contextController;
-
-	/** @var StreamConfigFactory */
-	private $streamConfigFactory;
 
 	/**
 	 * @param EventSubmitter $eventSubmitter
@@ -40,24 +31,18 @@ class MetricsClient implements LoggerAwareInterface {
 	 * @param ?ContextController $contextController
 	 */
 	public function __construct(
-		EventSubmitter $eventSubmitter,
-		Integration $integration,
-		StreamConfigFactory $streamConfigFactory,
+		private readonly EventSubmitter $eventSubmitter,
+		private readonly Integration $integration,
+		private readonly StreamConfigFactory $streamConfigFactory,
 		?LoggerInterface $logger = null,
 		?ContextController $contextController = null
 	) {
-		$this->eventSubmitter = $eventSubmitter;
-		$this->integration = $integration;
-		$this->streamConfigFactory = $streamConfigFactory;
 		$this->setLogger( $logger ?? new NullLogger() );
 		$this->contextController = $contextController ?? new ContextController( $integration );
 	}
 
 	/**
 	 * Submit an event to a stream.
-	 *
-	 * @param string $streamName
-	 * @param array $eventData
 	 *
 	 * @stable
 	 */
@@ -67,11 +52,6 @@ class MetricsClient implements LoggerAwareInterface {
 
 	/**
 	 * Submit an interaction event to a stream.
-	 *
-	 * @param string $streamName
-	 * @param string $schemaId
-	 * @param string $action
-	 * @param array $interactionData
 	 *
 	 * @see https://wikitech.wikimedia.org/wiki/Metrics_Platform/PHP_API
 	 */
@@ -107,9 +87,6 @@ class MetricsClient implements LoggerAwareInterface {
 	/**
 	 * Submit a click event to a stream.
 	 *
-	 * @param string $streamName
-	 * @param array $interactionData
-	 *
 	 * @see https://wikitech.wikimedia.org/wiki/Metrics_Platform/PHP_API
 	 */
 	public function submitClick(
@@ -124,8 +101,6 @@ class MetricsClient implements LoggerAwareInterface {
 	 *
 	 * Note well that the timestamp contains milliseconds for consistency with other Metrics
 	 * Platform Client implementations.
-	 *
-	 * @return string
 	 */
 	private function getTimestamp(): string {
 		return ConvertibleTimeStamp::now( TS_ISO_8601 );

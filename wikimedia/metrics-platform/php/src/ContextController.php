@@ -6,23 +6,13 @@ use Wikimedia\MetricsPlatform\StreamConfig\StreamConfig;
 
 class ContextController {
 
-	/** @var Integration */
-	private $integration;
-
-	/**
-	 * ContextController constructor.
-	 * @param Integration $integration
-	 */
-	public function __construct( Integration $integration ) {
-		$this->integration = $integration;
+	public function __construct(
+		private readonly Integration $integration
+	) {
 	}
 
 	/**
 	 * Add context attributes configured in the stream configuration.
-	 *
-	 * @param array $event
-	 * @param StreamConfig $streamConfig
-	 * @return array
 	 *
 	 * @see https://wikitech.wikimedia.org/wiki/Metrics_Platform/Contextual_attributes
 	 */

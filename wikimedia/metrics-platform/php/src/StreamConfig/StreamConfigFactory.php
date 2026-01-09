@@ -23,8 +23,6 @@ class StreamConfigFactory {
 	 * Note well that if the raw stream configuration is falsy, then this will always return
 	 * an empty stream configuration.
 	 *
-	 * @param string $streamName
-	 * @return StreamConfig
 	 * @throws StreamConfigException If the given stream is not configured
 	 * @throws StreamConfigException If the given stream configuration is not an ordered dictionary
 	 */
@@ -43,15 +41,11 @@ class StreamConfigFactory {
 		return new StreamConfig( $this->rawStreamConfigs[$streamName] );
 	}
 
-	/**
-	 * @param string $eventName
-	 * @return array
-	 */
 	public function getStreamNamesForEvent( string $eventName ): array {
 		$result = [];
 
 		foreach ( $this->getEventToStreamNamesMap() as $key => $streamNames ) {
-			if ( strpos( $eventName, $key ) === 0 ) {
+			if ( str_starts_with( $eventName, $key ) ) {
 				$result = array_merge( $result, $streamNames );
 			}
 		}
@@ -59,9 +53,6 @@ class StreamConfigFactory {
 		return $result;
 	}
 
-	/**
-	 * @return array
-	 */
 	private function getEventToStreamNamesMap(): array {
 		if ( $this->rawStreamConfigs === false ) {
 			return [];
