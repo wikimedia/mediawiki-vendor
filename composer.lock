@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "302e216e5c08cdddbfc10c7d91b75c9b",
+    "content-hash": "261147ef49ef76e4394cf05fec52b0e7",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -7641,16 +7641,16 @@
         },
         {
             "name": "wikimedia/relpath",
-            "version": "4.1.0",
+            "version": "4.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/RelPath.git",
-                "reference": "ec89edd4191d9c47f607cc7328e943ea7d1fecca"
+                "reference": "ea26705e8245e5bad3d2a69edb9f466a2701bfed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/RelPath/zipball/ec89edd4191d9c47f607cc7328e943ea7d1fecca",
-                "reference": "ec89edd4191d9c47f607cc7328e943ea7d1fecca",
+                "url": "https://api.github.com/repos/wikimedia/RelPath/zipball/ea26705e8245e5bad3d2a69edb9f466a2701bfed",
+                "reference": "ea26705e8245e5bad3d2a69edb9f466a2701bfed",
                 "shasum": ""
             },
             "require": {
@@ -7694,9 +7694,9 @@
                 "system"
             ],
             "support": {
-                "source": "https://github.com/wikimedia/RelPath/tree/4.1.0"
+                "source": "https://github.com/wikimedia/RelPath/tree/4.1.1"
             },
-            "time": "2025-12-22T02:49:13+00:00"
+            "time": "2026-01-11T09:36:40+00:00"
         },
         {
             "name": "wikimedia/remex-html",

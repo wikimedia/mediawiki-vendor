@@ -7976,17 +7976,17 @@
         },
         {
             "name": "wikimedia/relpath",
-            "version": "4.1.0",
-            "version_normalized": "4.1.0.0",
+            "version": "4.1.1",
+            "version_normalized": "4.1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/RelPath.git",
-                "reference": "ec89edd4191d9c47f607cc7328e943ea7d1fecca"
+                "reference": "ea26705e8245e5bad3d2a69edb9f466a2701bfed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/RelPath/zipball/ec89edd4191d9c47f607cc7328e943ea7d1fecca",
-                "reference": "ec89edd4191d9c47f607cc7328e943ea7d1fecca",
+                "url": "https://api.github.com/repos/wikimedia/RelPath/zipball/ea26705e8245e5bad3d2a69edb9f466a2701bfed",
+                "reference": "ea26705e8245e5bad3d2a69edb9f466a2701bfed",
                 "shasum": ""
             },
             "require": {
@@ -8001,7 +8001,7 @@
                 "php-parallel-lint/php-parallel-lint": "1.4.0",
                 "phpunit/phpunit": "10.5.58"
             },
-            "time": "2025-12-22T02:49:13+00:00",
+            "time": "2026-01-11T09:36:40+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -8032,7 +8032,7 @@
                 "system"
             ],
             "support": {
-                "source": "https://github.com/wikimedia/RelPath/tree/4.1.0"
+                "source": "https://github.com/wikimedia/RelPath/tree/4.1.1"
             },
             "install-path": "../wikimedia/relpath"
         },
