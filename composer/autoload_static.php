@@ -796,6 +796,8 @@ class ComposerStaticInit_mediawiki_vendor
         'CBOR\\CBORObject' => __DIR__ . '/..' . '/spomky-labs/cbor-php/src/CBORObject.php',
         'CBOR\\Decoder' => __DIR__ . '/..' . '/spomky-labs/cbor-php/src/Decoder.php',
         'CBOR\\DecoderInterface' => __DIR__ . '/..' . '/spomky-labs/cbor-php/src/DecoderInterface.php',
+        'CBOR\\Encoder' => __DIR__ . '/..' . '/spomky-labs/cbor-php/src/Encoder.php',
+        'CBOR\\EncoderInterface' => __DIR__ . '/..' . '/spomky-labs/cbor-php/src/EncoderInterface.php',
         'CBOR\\IndefiniteLengthByteStringObject' => __DIR__ . '/..' . '/spomky-labs/cbor-php/src/IndefiniteLengthByteStringObject.php',
         'CBOR\\IndefiniteLengthListObject' => __DIR__ . '/..' . '/spomky-labs/cbor-php/src/IndefiniteLengthListObject.php',
         'CBOR\\IndefiniteLengthMapObject' => __DIR__ . '/..' . '/spomky-labs/cbor-php/src/IndefiniteLengthMapObject.php',
