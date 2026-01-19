@@ -609,7 +609,7 @@ class TokenUtils {
 	 * @param string|Token|array<Token|string> $tokens
 	 * @param bool $strict Whether to abort as soon as we find a token we
 	 *   can't stringify.
-	 * @param array<string,bool|Env> $opts
+	 * @param array<string,bool> $opts
 	 * @return string|list{string,array<Token|string>}
 	 *   The stringified tokens. If $strict is true, returns a two-element
 	 *   array containing string prefix and the remainder of the tokens as
@@ -638,9 +638,6 @@ class TokenUtils {
 				throw new UnreachableException( "No KVs expected." );
 			} elseif ( is_string( $token ) ) {
 				$out .= $token;
-			} elseif ( is_array( $token ) ) {
-				Assert::invariant( !$strict, "strict case handled above" );
-				$out .= self::tokensToString( $token, $strict, $opts );
 			} elseif ( $token instanceof PreprocTk ) {
 				$out .= $token->print( pretty: false );
 			} elseif (
@@ -653,9 +650,8 @@ class TokenUtils {
 			} elseif ( !empty( $opts['includeEntities'] ) && self::isEntitySpanToken( $token ) ) {
 				$out .= $token->dataParsoid->src;
 				$i += 2; // Skip child and end tag.
-			} elseif ( $strict ) {
-				// If strict, return accumulated string on encountering first non-text token
-				return [ $out, array_slice( $tokens, $i ) ];
+			} elseif ( $token instanceof TagTk && $token->getName() === 'listItem' ) {
+				$out .= $token->getAttributeKV( 'bullets' )->srcOffsets->value->substr();
 			} elseif (
 				// This option shouldn't be used if the tokens have been
 				// expanded to DOM
@@ -683,6 +679,12 @@ class TokenUtils {
 						"tag should be followed by endtag"
 					);
 				}
+			} elseif ( $strict ) {
+				// If strict, return accumulated string on encountering first non-text token
+				return [ $out, array_slice( $tokens, $i ) ];
+			} elseif ( is_array( $token ) ) {
+				Assert::invariant( !$strict, "strict case handled above" );
+				$out .= self::tokensToString( $token, $strict, $opts );
 			}
 		}
 		return $out;

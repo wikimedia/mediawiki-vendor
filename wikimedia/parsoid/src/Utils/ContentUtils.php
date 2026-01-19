@@ -77,8 +77,8 @@ class ContentUtils {
 	public static function createAndLoadDocument(
 		string $html, array $options = []
 	): Document {
-		$options += [ 'markNew' => true, 'validateXMLNames' => true ];
-		$doc = DOMUtils::parseHTML( $html, $options['validateXMLNames'] );
+		$options += [ 'markNew' => true ];
+		$doc = DOMUtils::parseHTML( $html, validateXMLNames: true );
 		DOMDataUtils::prepareDoc( $doc );
 		DOMDataUtils::visitAndLoadDataAttribs(
 			DOMCompat::getBody( $doc ), $options
@@ -90,13 +90,20 @@ class ContentUtils {
 	/**
 	 * @param Document $doc
 	 * @param string $html
-	 * @param array $options
+	 * @param ?array $options Not used
 	 * @return DocumentFragment
 	 */
 	public static function createAndLoadDocumentFragment(
-		Document $doc, string $html, array $options = []
+		Document $doc, string $html, ?array $options = null
 	): DocumentFragment {
+		if ( $options !== null ) {
+			// $options are deprecated and ignored
+			PHPUtils::deprecated( __METHOD__ . ' with $options', '0.23' );
+		}
 		$domFragment = $doc->createDocumentFragment();
+		// Ignore the provided options, and just use the options of the
+		// parent document.
+		$options = DOMDataUtils::getCodec( $doc )->options;
 		DOMUtils::setFragmentInnerHTML( $domFragment, $html );
 		DOMDataUtils::visitAndLoadDataAttribs( $domFragment, $options );
 		return $domFragment;
@@ -145,7 +152,7 @@ class ContentUtils {
 	 * Ex: inline media captions that aren't rendered, language variant markup,
 	 *     attributes that are transcluded. More scenarios might be added later.
 	 *
-	 * @param ParsoidExtensionAPI|SiteConfig $siteConfig
+	 * @param SiteConfig $siteConfig
 	 * @param Element $elt The node whose data attributes need to be examined
 	 * @param callable(DocumentFragment):bool $proc
 	 *        The processor that will process the embedded HTML.
@@ -153,15 +160,11 @@ class ContentUtils {
 	 *        and is expected to return true if that fragment was modified.
 	 */
 	public static function processAttributeEmbeddedDom(
-		$siteConfig, Element $elt, callable $proc
+		SiteConfig $siteConfig, Element $elt, callable $proc
 	): void {
-		if ( $siteConfig instanceof ParsoidExtensionAPI ) {
-			$siteConfig = $siteConfig->getSiteConfig();
-			$siteConfig->deprecated( __METHOD__ . ' with ParsoidExtensionAPI', '0.22' );
-		}
 		$str2df2str = static function ( string $html ) use ( $elt, $proc ): string {
 			$dom = ContentUtils::createAndLoadDocumentFragment(
-				$elt->ownerDocument, $html, [ 'markNew' => true ]
+				$elt->ownerDocument, $html
 			);
 			$ret = $proc( $dom );
 			if ( $ret ) {
@@ -281,16 +284,11 @@ class ContentUtils {
 	 * @param Env $env
 	 * @param Node $rootNode
 	 * @param callable $dsrFunc
-	 * @param ?ParsoidExtensionAPI $extAPI Deprecated (unused)
 	 */
 	public static function shiftDSR(
-		Env $env, Node $rootNode, callable $dsrFunc,
-		?ParsoidExtensionAPI $extAPI = null
+		Env $env, Node $rootNode, callable $dsrFunc
 	): void {
 		$siteConfig = $env->getSiteConfig();
-		if ( $extAPI !== null ) {
-			$siteConfig->deprecated( __METHOD__ . ' with ParsoidExtensionAPI', '0.22' );
-		}
 		$convertNode = static function ( Node $node ) use (
 			$siteConfig, $dsrFunc, &$convertNode
 		): void {

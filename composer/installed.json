@@ -7744,17 +7744,17 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.23.0-a11",
-            "version_normalized": "0.23.0.0-alpha11",
+            "version": "v0.23.0-a12",
+            "version_normalized": "0.23.0.0-alpha12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
-                "reference": "2db95b1337fb74ee2f61a2515b21e9745a96757f"
+                "reference": "a4d3c8cda22cb990117c3e8344993a3134682a68"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/2db95b1337fb74ee2f61a2515b21e9745a96757f",
-                "reference": "2db95b1337fb74ee2f61a2515b21e9745a96757f",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/a4d3c8cda22cb990117c3e8344993a3134682a68",
+                "reference": "a4d3c8cda22cb990117c3e8344993a3134682a68",
                 "shasum": ""
             },
             "require": {
@@ -7767,8 +7767,9 @@
                 "php": ">=8.2.0",
                 "psr/container": "~1.1.2 || ~2.0.2",
                 "psr/log": "^1.1.4 || ^3.0.0",
-                "symfony/polyfill-php83": "^1.32.0",
-                "symfony/polyfill-php84": "^1.32.0",
+                "symfony/polyfill-php83": "^1.33.0",
+                "symfony/polyfill-php84": "^1.33.0",
+                "symfony/polyfill-php85": "^1.33.0",
                 "wikimedia/assert": "^0.5.1",
                 "wikimedia/bcp-47-code": "^2.0.0",
                 "wikimedia/idle-dom": "2.1.0",
@@ -7786,7 +7787,7 @@
             "require-dev": {
                 "ext-curl": "*",
                 "mediawiki/mediawiki-codesniffer": "48.0.0",
-                "mediawiki/mediawiki-phan-config": "0.17.0",
+                "mediawiki/mediawiki-phan-config": "0.18.0",
                 "mediawiki/minus-x": "1.1.3",
                 "monolog/monolog": "^2.2.0",
                 "nikic/php-parser": "^5.5.0",
@@ -7803,7 +7804,7 @@
             "suggest": {
                 "wikimedia/langconv": "Provides script conversion support"
             },
-            "time": "2026-01-07T17:04:20+00:00",
+            "time": "2026-01-18T22:20:06+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -7829,7 +7830,7 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.23.0-a11",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.23.0-a12",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
             "install-path": "../wikimedia/parsoid"

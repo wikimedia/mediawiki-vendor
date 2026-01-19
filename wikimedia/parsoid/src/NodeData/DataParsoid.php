@@ -3,6 +3,7 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\NodeData;
 
+use stdclass;
 use Wikimedia\JsonCodec\Hint;
 use Wikimedia\JsonCodec\JsonCodecable;
 use Wikimedia\JsonCodec\JsonCodecableTrait;
@@ -11,6 +12,7 @@ use Wikimedia\Parsoid\DOM\DocumentFragment;
 use Wikimedia\Parsoid\Tokens\SourceRange;
 use Wikimedia\Parsoid\Tokens\Token;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
+use Wikimedia\Parsoid\Utils\RichCodecable;
 use Wikimedia\Parsoid\Utils\Utils;
 
 /**
@@ -117,10 +119,6 @@ use Wikimedia\Parsoid\Utils\Utils;
  * Temporarily present in data-parsoid, but not in final DOM output.
  * @property DomSourceRange|null $extTagOffsets
  *
- * This is true on the extension output wrapper if the extension input wikitext
- * was an empty string. Consumed by <references/>.
- * @property bool $empty
- *
  * The reference group. This is attached to the <ol> or its wrapper <div>,
  * redundantly with the data-mw-group attribute on the <ol>. It is produced by
  * the extension's sourceToDom() and consumed by wtPostprocess().
@@ -209,7 +207,7 @@ use Wikimedia\Parsoid\Utils\Utils;
  *  on the token.
  */
 #[\AllowDynamicProperties]
-class DataParsoid implements JsonCodecable {
+class DataParsoid implements JsonCodecable, RichCodecable {
 	use JsonCodecableTrait;
 
 	/**
@@ -245,8 +243,9 @@ class DataParsoid implements JsonCodecable {
 		}
 	}
 
-	public function isModified(): bool {
-		return $this->toJsonArray() !== [];
+	public function isEmpty(): bool {
+		// First two checks short-circuit for the common case (dsr for nodes & tsr for tokens)
+		return !isset( $this->dsr ) && !isset( $this->tsr ) && $this->toJsonArray() === [];
 	}
 
 	/**
@@ -305,6 +304,21 @@ class DataParsoid implements JsonCodecable {
 		return $result;
 	}
 
+	/** @return Hint<DataParsoid> */
+	public static function hint(): Hint {
+		return Hint::build( self::class, Hint::ALLOW_OBJECT );
+	}
+
+	/** @inheritDoc */
+	public static function defaultValue(): ?self {
+		return new DataParsoid;
+	}
+
+	/** @inheritDoc */
+	public function flatten(): ?string {
+		return null;
+	}
+
 	/** @inheritDoc */
 	public static function jsonClassHintFor( string $keyname ) {
 		static $hints = null;
@@ -319,6 +333,7 @@ class DataParsoid implements JsonCodecable {
 				'linkTk' => Token::class,
 				'html' => DocumentFragment::class,
 				'dmv' => DataMwVariant::hint(),
+				'optList' => Hint::build( stdclass::class, Hint::LIST, Hint::LIST )
 			];
 		}
 		return $hints[$keyname] ?? null;
