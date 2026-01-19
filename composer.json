@@ -143,7 +143,7 @@
 		"wikimedia/wrappedstring": "4.1.0",
 		"wikimedia/xmp-reader": "0.10.2",
 		"wikimedia/zest-css": "4.1.0",
-		"wmde/php-vuejs-templating": "2.2.0-beta.8",
+		"wmde/php-vuejs-templating": "2.2.0-beta.9",
 		"zordius/lightncandy": "1.2.6"
 	},
 	"replace": {

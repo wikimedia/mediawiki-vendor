@@ -4513,6 +4513,7 @@ class ComposerStaticInit_mediawiki_vendor
         'WMDE\\VueJsTemplating\\JsParsing\\JsExpressionParser' => __DIR__ . '/..' . '/wmde/php-vuejs-templating/src/JsParsing/JsExpressionParser.php',
         'WMDE\\VueJsTemplating\\JsParsing\\MethodCall' => __DIR__ . '/..' . '/wmde/php-vuejs-templating/src/JsParsing/MethodCall.php',
         'WMDE\\VueJsTemplating\\JsParsing\\NegationOperator' => __DIR__ . '/..' . '/wmde/php-vuejs-templating/src/JsParsing/NegationOperator.php',
+        'WMDE\\VueJsTemplating\\JsParsing\\NullLiteral' => __DIR__ . '/..' . '/wmde/php-vuejs-templating/src/JsParsing/NullLiteral.php',
         'WMDE\\VueJsTemplating\\JsParsing\\NumericLiteral' => __DIR__ . '/..' . '/wmde/php-vuejs-templating/src/JsParsing/NumericLiteral.php',
         'WMDE\\VueJsTemplating\\JsParsing\\ParsedExpression' => __DIR__ . '/..' . '/wmde/php-vuejs-templating/src/JsParsing/ParsedExpression.php',
         'WMDE\\VueJsTemplating\\JsParsing\\PeastExpressionConverter' => __DIR__ . '/..' . '/wmde/php-vuejs-templating/src/JsParsing/PeastExpressionConverter.php',

@@ -3810,6 +3810,7 @@ return array(
     'WMDE\\VueJsTemplating\\JsParsing\\JsExpressionParser' => $vendorDir . '/wmde/php-vuejs-templating/src/JsParsing/JsExpressionParser.php',
     'WMDE\\VueJsTemplating\\JsParsing\\MethodCall' => $vendorDir . '/wmde/php-vuejs-templating/src/JsParsing/MethodCall.php',
     'WMDE\\VueJsTemplating\\JsParsing\\NegationOperator' => $vendorDir . '/wmde/php-vuejs-templating/src/JsParsing/NegationOperator.php',
+    'WMDE\\VueJsTemplating\\JsParsing\\NullLiteral' => $vendorDir . '/wmde/php-vuejs-templating/src/JsParsing/NullLiteral.php',
     'WMDE\\VueJsTemplating\\JsParsing\\NumericLiteral' => $vendorDir . '/wmde/php-vuejs-templating/src/JsParsing/NumericLiteral.php',
     'WMDE\\VueJsTemplating\\JsParsing\\ParsedExpression' => $vendorDir . '/wmde/php-vuejs-templating/src/JsParsing/ParsedExpression.php',
     'WMDE\\VueJsTemplating\\JsParsing\\PeastExpressionConverter' => $vendorDir . '/wmde/php-vuejs-templating/src/JsParsing/PeastExpressionConverter.php',
