@@ -50,7 +50,7 @@
 		"league/uri-interfaces": "2.3.0",
 		"liuggio/statsd-php-client": "1.0.18",
 		"maxmind-db/reader": "1.13.1",
-		"maxmind/web-service-common": "0.11.0",
+		"maxmind/web-service-common": "0.11.1",
 		"mck89/peast": "1.17.4",
 		"monolog/monolog": "2.11.0",
 		"mustangostang/spyc": "0.6.3",
