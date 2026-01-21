@@ -70,7 +70,7 @@
 		"pear/net_url2": "2.2.3",
 		"pear/pear-core-minimal": "1.10.17",
 		"pear/pear_exception": "1.0.2",
-		"pimple/pimple": "3.5.0",
+		"pimple/pimple": "3.6.1",
 		"psr/clock": "1.0.0",
 		"psr/container": "2.0.2",
 		"psr/event-dispatcher": "1.0.0",

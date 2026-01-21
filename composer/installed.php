@@ -569,9 +569,9 @@
             'dev_requirement' => false,
         ),
         'pimple/pimple' => array(
-            'pretty_version' => 'v3.5.0',
-            'version' => '3.5.0.0',
-            'reference' => 'a94b3a4db7fb774b3d78dad2315ddc07629e1bed',
+            'pretty_version' => 'v3.6.1',
+            'version' => '3.6.1.0',
+            'reference' => '020029849cc55ad360066844df8ed880fb20c5bb',
             'type' => 'library',
             'install_path' => __DIR__ . '/../pimple/pimple',
             'aliases' => array(),
