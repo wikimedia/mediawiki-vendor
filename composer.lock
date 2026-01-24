@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "146864d728df5070f2407d2235b706dc",
+    "content-hash": "efaa53e92cf2a3f100e0f280b97508f9",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -947,16 +947,16 @@
         },
         {
             "name": "mck89/peast",
-            "version": "v1.17.2",
+            "version": "v1.17.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mck89/peast.git",
-                "reference": "465810689c477fbba17f4f949b75e4d0bdab13ea"
+                "reference": "c6a63f32410d2e4ee2cd20fe94b35af147fb852d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mck89/peast/zipball/465810689c477fbba17f4f949b75e4d0bdab13ea",
-                "reference": "465810689c477fbba17f4f949b75e4d0bdab13ea",
+                "url": "https://api.github.com/repos/mck89/peast/zipball/c6a63f32410d2e4ee2cd20fe94b35af147fb852d",
+                "reference": "c6a63f32410d2e4ee2cd20fe94b35af147fb852d",
                 "shasum": ""
             },
             "require": {
@@ -969,7 +969,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.17.2-dev"
+                    "dev-master": "1.17.4-dev"
                 }
             },
             "autoload": {
@@ -990,9 +990,9 @@
             "description": "Peast is PHP library that generates AST for JavaScript code",
             "support": {
                 "issues": "https://github.com/mck89/peast/issues",
-                "source": "https://github.com/mck89/peast/tree/v1.17.2"
+                "source": "https://github.com/mck89/peast/tree/v1.17.4"
             },
-            "time": "2025-07-01T09:30:45+00:00"
+            "time": "2025-10-10T12:53:17+00:00"
         },
         {
             "name": "monolog/monolog",
