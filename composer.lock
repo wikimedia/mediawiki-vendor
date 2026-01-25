@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4892cd90c962eff156f3f52d8f5b9a3c",
+    "content-hash": "c91b3656621471e6257041cf2733f6a1",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -3461,7 +3461,7 @@
         },
         {
             "name": "pear/pear-core-minimal",
-            "version": "v1.10.17",
+            "version": "v1.10.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear/pear-core-minimal.git",
