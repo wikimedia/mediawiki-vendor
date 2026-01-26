@@ -134,11 +134,13 @@ class DOMDataUtils {
 		return self::isPrepared( $doc ) && self::getBag( $doc )->loaded;
 	}
 
-	public static function prepareDoc( Document $doc ): void {
+	public static function prepareDoc( Document $doc, bool $serializeNewEmptyDp = false ): void {
 		$bag = new DataBag();
 		$codec = new DOMDataCodec( $doc, [] );
 		self::setExtensionData( $doc, "bag", $bag );
 		self::setExtensionData( $doc, "codec", $codec );
+
+		$bag->serializeNewEmptyDp = $serializeNewEmptyDp;
 
 		// Cache the head and body.
 		DOMCompat::getHead( $doc );
@@ -302,23 +304,7 @@ class DOMDataUtils {
 	 * @return DataParsoid
 	 */
 	public static function getDataParsoid( Element $node ): DataParsoid {
-		// Fast path
-		$data = self::getNodeData( $node );
-		$dp = $data->parsoid;
-		if ( $dp instanceof DataParsoid ) {
-			return $dp;
-		}
-		// Fall back to generic case; special handling for "new" data-parsoid
-		$dp = self::getAttributeObject( $node, 'data-parsoid', self::getCodecHints()['data-parsoid'] );
-		if ( $dp === null ) {
-			$dp = new DataParsoid;
-			$codec = self::getCodec( $node );
-			if ( !empty( $codec->options['markNew'] ) ) {
-				$dp->setTempFlag( TempData::IS_NEW, true );
-			}
-		}
-		$data->parsoid = $dp;
-		return $dp;
+		return self::getNodeData( $node )->getDataParsoid( $node );
 	}
 
 	/**
@@ -328,14 +314,7 @@ class DOMDataUtils {
 	 * @param DataParsoid $dp data-parsoid
 	 */
 	public static function setDataParsoid( Element $node, DataParsoid $dp ): void {
-		// Fast path
-		$data = self::getNodeData( $node );
-		if ( $data->parsoid instanceof DataParsoid ) {
-			$data->parsoid = $dp;
-			return;
-		}
-		// Generic case
-		self::setAttributeObject( $node, 'data-parsoid', $dp, self::getCodecHints()['data-parsoid'] );
+		self::getNodeData( $node )->setDataParsoid( $node, $dp );
 	}
 
 	/**
@@ -479,13 +458,7 @@ class DOMDataUtils {
 	 * @return DataMw
 	 */
 	public static function getDataMw( Element $node ): DataMw {
-		// Fast path
-		$dmw = self::getNodeData( $node )->mw;
-		if ( $dmw instanceof DataMw ) {
-			return $dmw;
-		}
-		// Fall back to generic case
-		return self::getAttributeObjectDefault( $node, 'data-mw', self::getCodecHints()['data-mw'] );
+		return self::getNodeData( $node )->getDataMw( $node );
 	}
 
 	/**
@@ -495,18 +468,7 @@ class DOMDataUtils {
 	 * @param ?DataMw $dmw data-mw
 	 */
 	public static function setDataMw( Element $node, ?DataMw $dmw ): void {
-		// Fast path
-		$data = self::getNodeData( $node );
-		if ( $data->mw instanceof DataMw ) {
-			$data->mw = $dmw;
-			return;
-		}
-		// Generic case
-		if ( $dmw === null ) {
-			self::removeAttributeObject( $node, 'data-mw' );
-		} else {
-			self::setAttributeObject( $node, 'data-mw', $dmw, self::getCodecHints()['data-mw'] );
-		}
+		self::getNodeData( $node )->setDataMw( $node, $dmw );
 	}
 
 	/**
@@ -671,21 +633,6 @@ class DOMDataUtils {
 	}
 
 	/**
-	 * Helper function to create static Hint objects for JsonCodec.
-	 * @return array<Hint>
-	 */
-	public static function getCodecHints(): array {
-		static $hints = null;
-		if ( $hints === null ) {
-			$hints = [
-				'data-parsoid' => DataParsoid::hint(),
-				'data-mw' => DataMw::hint()
-			];
-		}
-		return $hints;
-	}
-
-	/**
 	 * Walk DOM from node downward calling loadDataAttribs
 	 *
 	 * @param Node $node node
@@ -697,9 +644,6 @@ class DOMDataUtils {
 		if ( $node === DOMCompat::getBody( $doc ) ) {
 			Assert::invariant( !self::getBag( $doc )->loaded, "redundant load" );
 		}
-		// If the 'markNew' flag is passed, it needs to be recorded in the
-		// Document codec's options, so that we can use this flag when
-		// loading embedded document fragments.
 		self::getCodec( $node )->setOptions( $options );
 
 		DOMUtils::visitDOM( $node, function ( Node $node, array $options ) {
@@ -732,7 +676,7 @@ class DOMDataUtils {
 		// FIXME: This effectively makes data-mw an eagerly-loaded property.
 		// We will fix this in a followup patch by adding metadata about range ids
 		// to the page bundle.
-		self::getDataMw( $node );
+		$nodeData->getDataMw( $node );
 		if ( isset( $nodeData->mw->rangeId ) ) {
 			$bag->seenAnnotationId( $nodeData->mw->rangeId );
 		}
@@ -779,8 +723,8 @@ class DOMDataUtils {
 	 * @param array $options options
 	 */
 	public static function visitAndStoreDataAttribs( Node $node, array $options = [] ): void {
-		Assert::invariant( self::getBag( $node->ownerDocument ?? $node )->loaded,
-						  "store without load" );
+		$bag = self::getBag( $node->ownerDocument ?? $node );
+		Assert::invariant( $bag->loaded, "store without load" );
 		// PORT-FIXME: storeDataAttribs calls storeInPageBundle which calls getElementById.
 		// PHP's `getElementById` implementation is broken, and we work around that by
 		// using Zest which uses XPath. So, getElementById call can be O(n) and calling it
@@ -795,11 +739,12 @@ class DOMDataUtils {
 		Assert::invariant( empty( $options['discardDataParsoid'] ) || empty( $options['keepTmp'] ),
 			'Conflicting options: discardDataParsoid and keepTmp are both enabled.' );
 
+		$options['serializeNewEmptyDp'] = $bag->serializeNewEmptyDp;
+
 		// Set the "storage options" and save the "loading options"
 		$codec = self::getCodec( $node );
 		$oldOptions = $codec->setOptions( $options );
 
-		$options['hasNewNodesMarked'] = !empty( $oldOptions['markNew'] );
 		DOMUtils::visitDOM( $node, function ( Node $node, array $options ) {
 			self::storeDataAttribs( $node, $options );
 		}, $options );
@@ -1160,18 +1105,15 @@ class DOMDataUtils {
 	}
 
 	/**
-	 * Helper function for code clarity: test whether there is
-	 * an existing data-mw value on a node which has already had
-	 * loadDataAttribs called on it.
+	 * Helper function to only fetch node-data if it exists
 	 */
-	private static function nodeHasDataMw( Element $node ): bool {
+	private static function getNodeDataIfExists( Element $node ): ?NodeData {
 		// If data-mw were present, loadDataAttribs would have created
 		// the DATA_OBJECT_ATTR_NAME attribute for associated NodeData
 		if ( !$node->hasAttribute( self::DATA_OBJECT_ATTR_NAME ) ) {
-			return false;
+			return null;
 		}
-		$data = self::getNodeData( $node );
-		return $data->mw !== null;
+		return self::getNodeData( $node );
 	}
 
 	/**
@@ -1185,7 +1127,8 @@ class DOMDataUtils {
 		Element $node, string $name
 	): void {
 		// Don't create a new data-mw yet if we don't need one.
-		if ( !self::nodehasDataMw( $node ) ) {
+		$nodeData = self::getNodeDataIfExists( $node );
+		if ( ( $nodeData->mw ?? null ) === null ) {
 			return;
 		}
 		if ( !self::isHtmlAttributeWithSpecialSemantics( $node->tagName, $name ) ) {
@@ -1193,7 +1136,7 @@ class DOMDataUtils {
 		}
 		// If there was a data-mw.attribs for this attribute, remove it
 		// (it will be rewritten during serialization later)
-		$dataMw = self::getDataMw( $node );
+		$dataMw = $nodeData->getDataMw( $node );
 		$dataMw->attribs = array_values( array_filter(
 			$dataMw->attribs ?? [],
 			static function ( $a ) use ( $name ) {
@@ -1343,11 +1286,12 @@ class DOMDataUtils {
 
 		if ( self::isHtmlAttributeWithSpecialSemantics( $node->tagName, $name ) ) {
 			// Look aside at data-mw for attributes with special semantics
-			if ( !self::nodeHasDataMw( $node ) ) {
+			$nodeData = self::getNodeDataIfExists( $node );
+			if ( ( $nodeData->mw ?? null ) === null ) {
 				// No data-mw, so no rich value for this attribute
 				return;
 			}
-			$dataMw = self::getDataMw( $node );
+			$dataMw = $nodeData->getDataMw( $node );
 			// Load all attribute values from $dataMw->attribs to avoid O(N^2)
 			// loading of list
 			if ( $dataMw->attribs ?? false ) {
@@ -1510,16 +1454,12 @@ class DOMDataUtils {
 		// * Partially loaded as a decoded JSON blob in $nodeData->parsoid.
 		// * Not loaded at all and available via the HTML data-parsoid attribute (string).
 		$dp = $nodeData->parsoid;
-		$discardDataParsoid =
-			!empty( $options['discardDataParsoid'] ) ||
-			// This hack ensures that a loadDataAttribs + storeDataAttribs pair
-			// don't dirty the node by introducing an empty data-parsoid attribute
-			// where one didn't exist before.
-			// Ideally, we'll find a better solution for this edge case later.
-			( $dp instanceof DataParsoid && $dp->getTempFlag( TempData::IS_NEW ) && $dp->isEmpty() );
+		$discardDataParsoid = !empty( $options['discardDataParsoid'] ) ||
+			( $dp instanceof DataParsoid && $dp->getTempFlag( TempData::DISCARDABLE_DP ) ) ||
+			( $dp instanceof DataParsoid && !$options['serializeNewEmptyDp'] &&
+				$dp->getTempFlag( TempData::IS_NEW ) && $dp->isEmpty() );
 
 		$pbData = null;
-		$hints = self::getCodecHints();
 		if ( !$discardDataParsoid ) {
 			// Force a load of data-parsoid if:
 			// * we have to migrate it from an inline-attribute to the pagebundle.
@@ -1528,7 +1468,7 @@ class DOMDataUtils {
 			// In all other cases, if an inline attribute is not loaded,
 			// we avoid the overhead of loading it from the inline attribute
 			// just to store it back into the inline attribute unchanged.
-			if ( $dp === null && ( !empty( $options['storeInPageBundle'] ) || !$options['hasNewNodesMarked'] ) ) {
+			if ( $dp === null && ( !empty( $options['storeInPageBundle'] ) || $options['serializeNewEmptyDp'] ) ) {
 				self::loadRichAttributes( $node, "data-parsoid" );
 				$dp = $nodeData->parsoid[0] ?? null; // undecoded json blob
 				if ( $dp === [] ) {
@@ -1536,7 +1476,7 @@ class DOMDataUtils {
 					// But since it is empty, create a new object to prevent
 					// serialization to [].
 					$dp = new DataParsoid;
-				} elseif ( $dp === null && !$options['hasNewNodesMarked'] ) {
+				} elseif ( $dp === null && $options['serializeNewEmptyDp'] ) {
 					// NOTE: We always create an empty data-parsoid for all nodes in the DOM
 					// to distinguish "original HTML" from "newly added nodes in edited HTML"
 					// to aid selser. But, if we were marking new nodes, we would have
@@ -1564,7 +1504,7 @@ class DOMDataUtils {
 						// @phan-suppress-next-line PhanTypeObjectUnsetDeclaredProperty
 						unset( $dp->tmp );
 					}
-					$dp = $codec->toJsonArray( $dp, $hints['data-parsoid'] );
+					$dp = $codec->toJsonArray( $dp, DataParsoid::hint() );
 				}
 
 				if ( !empty( $options['storeInPageBundle'] ) ) {
@@ -1591,7 +1531,7 @@ class DOMDataUtils {
 		if ( $dmw !== null ) {
 			if ( $dmw instanceof DataMw ) {
 				// Strip empty data-mw attributes
-				$dmw = $dmw->isEmpty() ? null : $codec->toJsonArray( $dmw, $hints['data-mw'] );
+				$dmw = $dmw->isEmpty() ? null : $codec->toJsonArray( $dmw, DataMw::hint() );
 			} elseif ( is_array( $dmw ) ) {
 				// Unwrap the array wrapper added by getNodeData
 				$dmw = $dmw[0];

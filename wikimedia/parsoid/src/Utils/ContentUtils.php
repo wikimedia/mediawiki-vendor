@@ -77,12 +77,9 @@ class ContentUtils {
 	public static function createAndLoadDocument(
 		string $html, array $options = []
 	): Document {
-		$options += [ 'markNew' => true ];
 		$doc = DOMUtils::parseHTML( $html, validateXMLNames: true );
-		DOMDataUtils::prepareDoc( $doc );
-		DOMDataUtils::visitAndLoadDataAttribs(
-			DOMCompat::getBody( $doc ), $options
-		);
+		DOMDataUtils::prepareDoc( $doc, $options['serializeNewEmptyDp'] ?? false );
+		DOMDataUtils::visitAndLoadDataAttribs( DOMCompat::getBody( $doc ), $options );
 		DOMDataUtils::getBag( $doc )->loaded = true;
 		return $doc;
 	}
@@ -339,7 +336,6 @@ class ContentUtils {
 			// they want and so may be returned in subpipelines which could
 			// subsequently be shifted
 			if ( DOMUtils::matchTypeOf( $node, '#^mw:DOMFragment/sealed/\w+$#D' ) ) {
-				$dp = DOMDataUtils::getDataParsoid( $node );
 				if ( $dp->html ?? null ) {
 					DOMPostOrder::traverse( $dp->html, $convertNode );
 				}

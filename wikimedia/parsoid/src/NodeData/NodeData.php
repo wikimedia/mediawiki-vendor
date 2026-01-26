@@ -87,4 +87,61 @@ class NodeData {
 
 		return $nd;
 	}
+
+	/**
+	 * Get data meta wiki info from a node.
+	 */
+	public function getDataMw( Element $node ): DataMw {
+		// Fast path
+		$dmw = $this->mw;
+		if ( $dmw instanceof DataMw ) {
+			return $dmw;
+		}
+		// Fall back to generic case
+		return DOMDataUtils::getAttributeObjectDefault( $node, 'data-mw', DataMw::hint() );
+	}
+
+	/**
+	 * Set data meta wiki info from a node.
+	 */
+	public function setDataMw( Element $node, ?DataMw $dmw ): void {
+		// Fast path
+		if ( $dmw !== null && $this->mw instanceof DataMw ) {
+			$this->mw = $dmw;
+			return;
+		}
+		// Generic case
+		if ( $dmw === null ) {
+			DOMDataUtils::removeAttributeObject( $node, 'data-mw' );
+		} else {
+			DOMDataUtils::setAttributeObject( $node, 'data-mw', $dmw, DataMw::hint() );
+		}
+	}
+
+	/**
+	 * Get data parsoid info from a node.
+	 */
+	public function getDataParsoid( Element $node ): DataParsoid {
+		// Fast path
+		$dp = $this->parsoid;
+		if ( $dp instanceof DataParsoid ) {
+			return $dp;
+		}
+		// Fall back to generic case
+		return DOMDataUtils::getAttributeObjectDefault( $node, 'data-parsoid', DataParsoid::hint() );
+	}
+
+	/**
+	 * Set data parsoid info on a node.
+	 */
+	public function setDataParsoid( Element $node, DataParsoid $dp ): void {
+		// Fast path
+		if ( $this->parsoid instanceof DataParsoid ) {
+			$this->parsoid = $dp;
+			return;
+		}
+		// Generic case
+		DOMDataUtils::setAttributeObject( $node, 'data-parsoid', $dp, DataParsoid::hint() );
+	}
+
 }

@@ -85,6 +85,9 @@ use Wikimedia\Parsoid\Utils\Utils;
  * The complete text of a double-underscore behavior switch
  * @property string|null $magicSrc
  *
+ * Whether the first argument of a parser function was split on a colon
+ * @property true|null $colon
+ *
  * True if the input heading element had an id attribute, preventing automatic
  * assignment of a new id attribute.
  * @property bool|null $reusedId
@@ -306,12 +309,19 @@ class DataParsoid implements JsonCodecable, RichCodecable {
 
 	/** @return Hint<DataParsoid> */
 	public static function hint(): Hint {
-		return Hint::build( self::class, Hint::ALLOW_OBJECT );
+		static $hint = null;
+		if ( $hint === null ) {
+			$hint = Hint::build( self::class, Hint::ALLOW_OBJECT );
+		}
+		return $hint;
 	}
 
 	/** @inheritDoc */
 	public static function defaultValue(): ?self {
-		return new DataParsoid;
+		$dp = new DataParsoid;
+		// Mark data parsoid created as a default value.
+		$dp->setTempFlag( TempData::IS_NEW, true );
+		return $dp;
 	}
 
 	/** @inheritDoc */
