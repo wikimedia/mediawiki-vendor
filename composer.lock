@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f9d4a91eb56d6b7463d2a476943553d9",
+    "content-hash": "d4359ea1d459bb76d3211d415bb2279c",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -6697,16 +6697,16 @@
         },
         {
             "name": "wikimedia/ip-utils",
-            "version": "6.0.0",
+            "version": "6.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-IPUtils.git",
-                "reference": "99fccaed5677826c8a8e2fd85377824b6fd184d8"
+                "reference": "e101653082aa5aa608a449b155f9aedf35308172"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-IPUtils/zipball/99fccaed5677826c8a8e2fd85377824b6fd184d8",
-                "reference": "99fccaed5677826c8a8e2fd85377824b6fd184d8",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-IPUtils/zipball/e101653082aa5aa608a449b155f9aedf35308172",
+                "reference": "e101653082aa5aa608a449b155f9aedf35308172",
                 "shasum": ""
             },
             "require": {
@@ -6716,7 +6716,7 @@
             },
             "require-dev": {
                 "mediawiki/mediawiki-codesniffer": "48.0.0",
-                "mediawiki/mediawiki-phan-config": "0.17.0",
+                "mediawiki/mediawiki-phan-config": "0.18.0",
                 "mediawiki/minus-x": "1.1.3",
                 "ockcyp/covers-validator": "1.7.0",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
@@ -6742,9 +6742,9 @@
             "description": "Parse, match, and analyze IP addresses and CIDR ranges",
             "homepage": "https://www.mediawiki.org/wiki/IPUtils",
             "support": {
-                "source": "https://github.com/wikimedia/mediawiki-libs-IPUtils/tree/6.0.0"
+                "source": "https://github.com/wikimedia/mediawiki-libs-IPUtils/tree/6.0.1"
             },
-            "time": "2025-11-21T01:26:42+00:00"
+            "time": "2026-01-23T11:49:58+00:00"
         },
         {
             "name": "wikimedia/json-codec",

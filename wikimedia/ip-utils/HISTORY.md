@@ -1,28 +1,20 @@
 # Release History
 
+## 6.0.1
+
+* Optimize `IPSet::addCidr` by reducing allocations and `ord()` calls (Ori Livneh)
+* IPSet: Add some type hints (Sam Reed)
+
 ## 6.0.0
-* Add benchmark for IPUtils::isInRanges (Ori Livneh)
-* Add test coverage for trim operation in parseRange() (Ori Livneh)
-* Add tests for isInRange (Ori Livneh)
-* Avoid comparing IPs and ranges of different families (Ori Livneh)
-* [BREAKING CHANGE] Drop support for PHP < 8.1 (James D. Forrester)
-* composer.json: Add ext-json to require (Reedy)
-* Extract IPv4 logic from parseCIDR into parseCIDR4 helper (Ori Livneh)
-* Extract toHex4/toHex6 helpers from toHex (Ori Livneh)
-* .gitattributes: Add benchmarks folder and alphasort (Sam Reed)
-* IPUtils: Minor cleanup, mostly comments (Sam Reed)
-* IPUtils: Remove !== false check from parseCIDR6 (Sam Reed)
-* Optimize isInRanges by calling toHex() only once (Ori Livneh)
-* Optimize isIPAddress by removing combined regex (Ori Livneh)
-* Remove extra case for cidr /0 in parseCIDR (Umherirrender)
-* Remove redundant isIPAddress check in sanitizeIP (Ori Livneh)
-* Remove redundant sanitizeIPv6 call from parseRange6 (Ori Livneh)
-* Remove redundant sanitizeIPv6 call in convertIPv6ToRawHex (Ori Livneh)
-* Rename private function to match lowerCamelCase style (Umherirrender)
-* Simplify phan config (Reedy)
-* Split sanitizeIP into private IPv4/IPv6 helpers (Ori Livneh)
-* Use php8 functions str_contains and str_starts_with (Umherirrender)
-* Use str_split in hexToOctet/hexToQuad (Umherirrender)
+
+* Require PHP 8.1 or later (James D. Forrester)
+* Require `ext-json` in composer.json (Reedy)
+* Optimize `IPUtils::isInRanges` by removing redundant calls for a 3X speed-up (Ori Livneh)
+* Optimize `IPUtils::isInRanges` by removing redundant false check in `parseCIDR6` (Sam Reed)
+* Optimize `IPUtils::isInRanges` by removing extra case for CIDR /0 in `parseCIDR` (Umherirrender)
+* Optimize `IPUtils::isInRange` by removing redundant sanitize call (Ori Livneh)
+* Use PHP 8 functions str_contains and str_starts_with (Umherirrender)
+* Optimize `::getIPsInRange` by using str_split in hexToOctet/hexToQuad (Umherirrender)
 
 ## 5.0.0
 * Require PHP 7.4 or later (Timo Tijhof)
@@ -35,27 +27,25 @@
 * Several IPUtils constants are now explicitly private (Zabe)
 
 ## 3.0.2
-* Remove redundant strpos/substr code from canonicalize() (Reedy)
+* Optimize `IPUtils::canonicalize` by removing redundant strpos/substr call (Reedy)
 * Allow wikimedia/ip-set ^3.0.0 (Reedy)
 
 ## 3.0.1
-* Revert "Stop allowing invalid /0 subnet" (Reedy)
-* Update return type for IPUtils::parseCIDR6 (Reedy)
-* Allow spaces around hyphenated IP ranges (Reedy)
+* Revert "Stop allowing invalid /0 subnet" (Reedy) [T267997](https://phabricator.wikimedia.org/T267997)
+* Improve return type for IPUtils::parseCIDR6 (Reedy)
+* Add support for spaces around hyphenated IP ranges (Reedy)
 
 ## 3.0.0
-* Add method to retrieve all IPs in a given range (Ammar Abdulhamid)
-* Cast isValidIPv[46] return value to bool (Reedy)
+* Add `IPUtils::getIPsInRange` to retrieve all IPs in a range (Ammar Abdulhamid)
+* Fix `isValidIPv4` and `isValidIPv6` to cast return value to bool (Reedy)
 
 ## 2.0.0
+* Remove PHP 7.0/7.1 and HHVM support (James D. Forrester)
 * Add isValidIPv4 and isValidIPv6 (Reedy)
-* Allow explicit ranges in IPUtils::isValidRange() (Reedy)
-* Check for IPv4 before IPv6 in IPUtils::isValidRange (Reedy)
-* Combine hexToOctet and hexToQuad tests to cover formatHex (Reedy)
-* Drop PHP 7.0/7.1 and HHVM support (James D. Forrester)
-* Fix return values where function doesn't always return [string, string] (Reedy)
-* Make getSubnet actually not accept invalid IPv4 addresses (Reedy)
-* Remove unnecessary temporary variables (Reedy)
+* Add support for explicit ranges in IPUtils::isValidRange() (Reedy)
+* Optimize `IPUtils::isValidRange` by checking IPv4 before IPv6 (Reedy)
+* Fix return values where function doesn't always return `[string, string]` (Reedy)
+* Fix getSubnet to not accept invalid IPv4 addresses (Reedy)
 * Stop allowing invalid /0 subnet (Reedy)
 
 ## 1.0.0
