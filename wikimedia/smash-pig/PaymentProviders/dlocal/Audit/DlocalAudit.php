@@ -1,14 +1,17 @@
 <?php namespace SmashPig\PaymentProviders\dlocal\Audit;
 
-use OutOfBoundsException;
 use SmashPig\Core\DataFiles\AuditParser;
+use SmashPig\Core\Helpers\CurrencyRoundingHelper;
 use SmashPig\Core\Logging\Logger;
 use SmashPig\Core\NormalizationException;
-use SmashPig\Core\UtcDate;
-use SmashPig\PaymentProviders\dlocal\ReferenceData;
 
 class DlocalAudit implements AuditParser {
 
+	/**
+	 * This is overwritten for more recent types of report which get the columns from the csv.
+	 *
+	 * @var array|string[]
+	 */
 	protected array $columnHeaders = [
 		'Type', // 'Payment' or 'Refund'
 		'Creation date', // YYYY-MM-dd HH:mm:ss
@@ -31,25 +34,29 @@ class DlocalAudit implements AuditParser {
 		// The IOF is included in Dlocal's fee, but broken out by request
 	];
 
-	protected array $ignoredStatuses = [
-		'Cancelled', // User pressed cancel or async payment expired
-		'In process', // Chargeback is... charging back? 'Settled' means done
-		'Reimbursed', // Chargeback settled in our favor - not refunding
-		'Waiting Details', // Refund is in limbo; we'll wait for 'Completed'
-	];
-
 	protected $fileData;
+
+	private array $headerRow = [];
+
+	private $netTotal = 0;
 
 	public function parseFile( string $path ): array {
 		$this->fileData = [];
 		$file = fopen( $path, 'r' );
 
-		$ignoreLines = 1;
-		for ( $i = 0; $i < $ignoreLines; $i++ ) {
-			fgets( $file );
-		}
+		$firstLine = fgets( $file );
+		$delimiter = $this->getDelimiter( $firstLine );
 
-		while ( $line = fgetcsv( $file, 0, ';', '"', '\\' ) ) {
+		while ( $line = fgetcsv( $file, 0, $delimiter, '"', '\\' ) ) {
+			if ( $line[0] === 'HEADER' ) {
+				$headerColumns = explode( $delimiter, trim( $firstLine ) );
+				$this->headerRow = array_combine( $headerColumns, $line );
+				continue;
+			}
+			if ( $line[0] === 'ROW_TYPE' ) {
+				$this->columnHeaders = array_values( $line );
+				continue;
+			}
 			try {
 				$this->parseLine( $line );
 			} catch ( NormalizationException $ex ) {
@@ -59,107 +66,78 @@ class DlocalAudit implements AuditParser {
 		}
 		fclose( $file );
 
+		// The settlement files provide an amount that reflects the amount settled to the bank.
+		// However, it is the sum of the amounts at 6 decimal places. Because we need to round each
+		// amount to (for USD) 2 places the sum of these can differ so we record an extra 'fee'
+		// to get to an exact match.
+		$expectedNetTotal = $this->headerRow['NET_TOTAL_AMOUNT'] ?? 0;
+		if ( $expectedNetTotal ) {
+			$difference = CurrencyRoundingHelper::round( $expectedNetTotal - $this->netTotal, $this->headerRow['SETTLEMENT_CURRENCY'] );
+			if ( $difference !== '0.00' ) {
+				$values = [
+					'ROW_TYPE' => 'ADJUSTMENT',
+					'DLOCAL_TRANSACTION_ID' => $this->headerRow['TRANSFER_ID'] . '-rounding',
+					'NET_AMOUNT' => $difference,
+				];
+				$line = [];
+				foreach ( $this->columnHeaders as $index => $columnHeader ) {
+					$line[$index] = $values[$columnHeader] ?? null;
+				}
+				$this->parseLine( $line );
+			}
+		}
 		return $this->fileData;
 	}
 
 	protected function parseLine( array $line ): void {
 		$row = array_combine( $this->columnHeaders, $line );
 
-		// Ignore certain statuses
-		if ( in_array( $row['Status'], $this->ignoredStatuses ) ) {
-			return;
-		}
+		$parser = $this->getParser( $row );
 
-		$msg = [];
-
-		// Common to all types
-		$msg['date'] = UtcDate::getUtcTimestamp( $row['Creation date'] );
-		$msg['gateway'] = 'dlocal';
-		$msg['gross'] = $row['Net Amount (local)'];
-		$msg['audit_file_gateway'] = 'dlocal';
-
-		switch ( $row['Type'] ) {
-			case 'Payment':
-				if ( $this->isFromOrchestrator( $row['Invoice'] ) ) {
-					return;
-				}
-				$this->parseDonation( $row, $msg );
-				break;
-			case 'Refund':
-			case 'Chargeback':
-			case 'Chargebacks': // started seeing these with the 's'
-				if ( $this->isFromOrchestrator( $row['Transaction Invoice'] ) ) {
-					return;
-				}
-				$this->parseRefund( $row, $msg );
-				break;
-			case 'Credit Note':
-			case 'Debit Note':
-			case 'Chargeback Reversal':
-			case 'Refund processing fee':
-			case 'Chargeback processing fee':
-				// TODO these would have to update existing refunds
-				// If they show up in the same file as the associate refund or
-				// chargeback, we could just update those rows before returning
-				// the array of transactions.
-				return;
-			default:
-				throw new OutOfBoundsException( "Unknown audit line type {$row['Type']}." );
-		}
-
-		$this->fileData[] = $msg;
-	}
-
-	protected function parseRefund( array $row, array &$msg ): void {
-		$msg['contribution_tracking_id'] = $this->getContributionTrackingId( $row['Transaction Invoice'] );
-		$msg['gateway_parent_id'] = $row['Transaction Reference'];
-		$msg['gateway_refund_id'] = $row['Reference'];
-		$msg['gross_currency'] = $row['currency'];
-		$msg['invoice_id'] = $row['Transaction Invoice'];
-		$msg['type'] = strtolower( $row['Type'] );
-		if ( $msg['type'] === 'chargebacks' ) {
-			// deal with stray plural form, but don't break if they fix it
-			$msg['type'] = 'chargeback';
+		$line = $parser->parse();
+		if ( $line ) {
+			$this->fileData[] = $line;
+			$this->netTotal += ( $line['settled_net_amount'] ?? 0 );
 		}
 	}
 
-	protected function parseDonation( array $row, array &$msg ): void {
-		$msg['contribution_tracking_id'] = $this->getContributionTrackingId( $row['Invoice'] );
-		$msg['country'] = $row['Country'];
-		$msg['currency'] = $row['original_currency'] = $row['currency'];
-		$msg['email'] = $row['User Mail'];
-		// settled_fee since it's given in USD
-		$msg['settled_fee_amount'] = -$row['Fee'];
-		$msg['settled_total_amount'] = $row['Amount (USD)'];
-		$msg['settled_net_amount'] = $msg['settled_total_amount'] + $msg['settled_fee_amount'];
-		$msg['gateway_txn_id'] = $row['Reference'];
-		$msg['invoice_id'] = $row['Invoice'];
-		$msg['original_total_amount'] = $row['Net Amount (local)'];
-		$msg['original_amount'] = $row['Net Amount (local)'];
-		$msg['exchange_rate'] = $msg['settled_total_amount'] / $msg['original_amount'];
+	/**
+	 * @param string $firstLine
+	 *
+	 * @return string|null
+	 */
+	private function getDelimiter( string $firstLine ): ?string {
+		// Possible delimiters to test
+		$delimiters = [ ',', ';' ];
 
-		[ $method, $submethod ] = ReferenceData::decodePaymentMethod(
-			$row['Payment Method Type'],
-			$row['Payment Method']
-		);
-		$msg['payment_method'] = $method;
-		$msg['payment_submethod'] = $submethod;
-		if ( $row['Settlement date'] ) {
-			$msg['settled_date'] = UtcDate::getUtcTimestamp( $row['Settlement date'] );
+		$bestDelimiter = null;
+		$maxFields = 0;
+
+		foreach ( $delimiters as $delimiter ) {
+			// str_getcsv correctly handles quoted values
+			$fields = str_getcsv( $firstLine, $delimiter );
+
+			if ( count( $fields ) > $maxFields ) {
+				$maxFields = count( $fields );
+				$bestDelimiter = $delimiter;
+			}
 		}
-		if ( $row['Amount (USD)'] ) {
-			$msg['settled_currency'] = 'USD';
-			$msg['settled_gross'] = $row['Amount (USD)'];
+
+		return $bestDelimiter;
+	}
+
+	/**
+	 * @param array $row
+	 *
+	 * @return \SmashPig\PaymentProviders\dlocal\Audit\ReportFileParser|\SmashPig\PaymentProviders\dlocal\Audit\SettlementFileParser
+	 */
+	public function getParser( array $row ): SettlementFileParser|ReportFileParser {
+		if ( empty( $this->headerRow ) ) {
+			$parser = new ReportFileParser( $row, $this->headerRow );
+		} else {
+			$parser = new SettlementFileParser( $row, $this->headerRow );
 		}
+		return $parser;
 	}
 
-	protected function getContributionTrackingId( string $invoice ): string {
-		$parts = explode( '.', $invoice );
-		return $parts[0];
-	}
-
-	protected function isFromOrchestrator( $invoice ): bool {
-		// ignore gravy transactions, they have no period and contain letters
-		return ( !strpos( $invoice, '.' ) && !is_numeric( $invoice ) );
-	}
 }

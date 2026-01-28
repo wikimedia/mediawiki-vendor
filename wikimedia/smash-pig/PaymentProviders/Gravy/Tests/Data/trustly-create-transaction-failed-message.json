@@ -9,7 +9,7 @@
   "target": {
     "type": "transaction",
     "id": "943bec45-7cab-4555-8ea1-def34c34fae9",
-    "status": "authorization_declined",
+    "status": "authorization_failed",
     "payment_method": {
       "method": "trustly"
     },
@@ -23,7 +23,7 @@
     "payment_link_id": null,
     "has_gift_card_redemptions": false,
     "pending_review": false,
-    "error_code": null,
+    "error_code": "incomplete_buyer_approval",
     "metadata": {
       "profile": "profile-1234"
     },

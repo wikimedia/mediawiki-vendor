@@ -2,7 +2,7 @@
     "name": "wikimedia/smash-pig",
     "description": "The open source PHP flexible payments library and frontend/backend mediator.",
     "keywords": ["payments", "donations"],
-    "homepage": "http://smashpig.org",
+    "homepage": "https://www.mediawiki.org/wiki/Fundraising_Tech/SmashPig",
     "license": "GPL-2.0-or-later",
     "authors": [
         {
@@ -36,6 +36,18 @@
         {
             "name": "Andrew Russell Green",
             "email": "agreen@wikimedia.org"
+        },
+        {
+            "name": "Wenjun Fan",
+            "email": "wfan@wikimedia.org"
+        },
+        {
+            "name": "Damilare Adedoyin",
+            "email": "dadedoyin@wikimedia.org"
+        },
+        {
+            "name": "Eileen McNaughton",
+            "email": "emcnaughton@wikimedia.org"
         }
     ],
     "require": {
@@ -54,7 +66,8 @@
         "psr/container": "~1.0 || ~2.0",
         "corneltek/getoptionkit": "^2.5",
         "gr4vy/gr4vy-php": "0.27",
-        "brick/money": "^0.10.3"
+        "brick/money": "^0.10.3",
+        "phpseclib/phpseclib": "~3"
     },
     "require-dev": {
     	"php-parallel-lint/php-parallel-lint": "^1.2",

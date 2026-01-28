@@ -411,4 +411,8 @@ class PaymentProvider implements IPaymentProvider, IGetLatestPaymentStatusProvid
 	protected function createRedirectUrl( string $token ): string {
 		return $this->providerConfiguration->val( 'redirect-url' ) . $token . '&useraction=commit';
 	}
+
+	public function getApi(): Api {
+		return $this->api;
+	}
 }

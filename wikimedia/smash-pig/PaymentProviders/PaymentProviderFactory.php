@@ -15,6 +15,7 @@ class PaymentProviderFactory {
 
 	public static function getProviderForMethod( $paymentMethod ): IPaymentProvider {
 		$config = Context::get()->getProviderConfiguration();
+		$config->setPaymentMethod( $paymentMethod );
 		$node = "payment-provider/$paymentMethod";
 		return $config->object( $node );
 	}

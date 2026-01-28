@@ -18,6 +18,7 @@ use SmashPig\PaymentProviders\RiskScorer;
 class ResponseMapper {
 	// List of methods with username as identifiers
 	public const METHODS_WITH_USERNAME = [ 'venmo' ];
+	public const METHODS_WITH_PAYERID = [ 'paypal' ];
 
 	protected ErrorChecker $errorChecker;
 	protected ErrorTracker $errorTracker;
@@ -167,7 +168,9 @@ class ResponseMapper {
 			if ( in_array( $gravyPaymentMethod, self::METHODS_WITH_USERNAME ) ) {
 				$result['donor_details']['username'] = $response['payment_method']['label'];
 			}
-
+			if ( in_array( $gravyPaymentMethod, self::METHODS_WITH_PAYERID ) ) {
+				$result['donor_details']['processor_contact_id'] = $response['additional_identifiers']['payer_id'];
+			}
 			if ( !empty( $donorDetails['address'] ) ) {
 				$donorAddress = $donorDetails['address'];
 				$result['donor_details']['address'] = [
@@ -342,7 +345,8 @@ class ResponseMapper {
 
 	/**
 	 * Some payment method requires a chargeback message when it fails
-	 * because they are set to complete status before getting a successful response
+	 * because they are set to complete status before getting a successful response.
+	 *
 	 * @param array $response
 	 * @return bool
 	 */
@@ -356,7 +360,13 @@ class ResponseMapper {
 			$response['payment_method']['label'] ?? ''
 		);
 
-		return $normalizedPaymentMethod === 'dd' && $normalizedPaymentSubmethod === 'ach';
+		$isChargebackMethod = $normalizedPaymentMethod === 'dd' && $normalizedPaymentSubmethod === 'ach';
+
+		// Gravy trustly declines typically happen only on failed capture after successful authorization.
+		// Checking the status ensures we don't send unnecessary chargebacks to the queue.
+		$isValidStatus = $response['status'] == "authorization_declined";
+
+		return $isChargebackMethod && $isValidStatus;
 	}
 
 	/**

@@ -3,8 +3,12 @@
 namespace SmashPig\PaymentProviders\Braintree;
 
 use SmashPig\Core\Http\OutboundRequest;
+use SmashPig\Core\Logging\ApiOperation;
+use SmashPig\Core\Logging\ApiOperationAttribute;
+use SmashPig\Core\Logging\ApiTimingTrait;
 
 class Api {
+	use ApiTimingTrait;
 
 	/**
 	 * @var string
@@ -89,20 +93,23 @@ class Api {
 	 * https://graphql.braintreepayments.com/reference/#Mutation--refundTransaction
 	 * @return array
 	 */
+	#[ApiOperationAttribute( ApiOperation::REFUND )]
 	public function refundPayment( array $params ): array {
-		$query = $this->getQuery( 'RefundPayment' );
-		$input = [
-			'transactionId' => $params['gateway_txn_id'],
-			'refund' => [
-				'orderId' => $params['order_id']
-			]
-		];
-		// only if we want partial refund, or we can omit this para,
-		// we can also add reason of refund, but probably not important
-		if ( isset( $params['amount'] ) ) {
-			$input['refund']['amount'] = $params['amount'];
-		}
-		return $this->makeApiCall( $query, [ 'input' => $input ] );
+		return $this->timedCall( __FUNCTION__, function () use ( $params ) {
+			$query = $this->getQuery( 'RefundPayment' );
+			$input = [
+				'transactionId' => $params['gateway_txn_id'],
+				'refund' => [
+					'orderId' => $params['order_id']
+				]
+			];
+			// only if we want partial refund, or we can omit this para,
+			// we can also add reason of refund, but probably not important
+			if ( isset( $params['amount'] ) ) {
+				$input['refund']['amount'] = $params['amount'];
+			}
+			return $this->makeApiCall( $query, [ 'input' => $input ] );
+		} );
 	}
 
 	/**
@@ -119,9 +126,12 @@ class Api {
 	/**
 	 * @return array
 	 */
+	#[ApiOperationAttribute( ApiOperation::CREATE_SESSION )]
 	public function createClientToken(): array {
-		$query = $this->getQuery( 'createClientToken' );
-		return $this->makeApiCall( $query );
+		return $this->timedCall( __FUNCTION__, function () {
+			$query = $this->getQuery( 'createClientToken' );
+			return $this->makeApiCall( $query );
+		} );
 	}
 
 	/**
@@ -129,10 +139,13 @@ class Api {
 	 * @param array $input
 	 * @return array
 	 */
+	#[ApiOperationAttribute( ApiOperation::CAPTURE )]
 	public function captureTransaction( array $input ): array {
-		$query = $this->getQuery( 'CaptureTransaction' );
-		$variables = [ 'input' => $input ];
-		return $this->makeApiCall( $query, $variables );
+		return $this->timedCall( __FUNCTION__, function () use ( $input ) {
+			$query = $this->getQuery( 'CaptureTransaction' );
+			$variables = [ 'input' => $input ];
+			return $this->makeApiCall( $query, $variables );
+		} );
 	}
 
 	/**
@@ -166,16 +179,19 @@ class Api {
 	 * @param string $paymentTxnId
 	 * @return array
 	 */
+	#[ApiOperationAttribute( ApiOperation::DELETE_TOKEN )]
 	public function deletePaymentMethodFromVault( string $paymentTxnId ): array {
-		$query = $this->getQuery( 'DeletePaymentMethodFromVault' );
-		$variables = [ "input" => [
-			"clientMutationId" => $paymentTxnId,
-			"paymentMethodId" => $paymentTxnId,
-			"fraudRelated" => false,
-			"deleteRelatedPaymentMethods" => false,
-			"initiatedBy" => "MERCHANT"
-		] ];
-		return $this->makeApiCall( $query, $variables );
+		return $this->timedCall( __FUNCTION__, function () use ( $paymentTxnId ) {
+			$query = $this->getQuery( 'DeletePaymentMethodFromVault' );
+			$variables = [ "input" => [
+				"clientMutationId" => $paymentTxnId,
+				"paymentMethodId" => $paymentTxnId,
+				"fraudRelated" => false,
+				"deleteRelatedPaymentMethods" => false,
+				"initiatedBy" => "MERCHANT"
+			] ];
+			return $this->makeApiCall( $query, $variables );
+		} );
 	}
 
 	/**
@@ -183,13 +199,16 @@ class Api {
 	 * @param string $customerId
 	 * @return array
 	 */
+	#[ApiOperationAttribute( ApiOperation::DELETE_DATA )]
 	public function deleteCustomer( string $customerId ): array {
-		$query = $this->getQuery( 'DeleteCustomer' );
-		$variables = [ 'input' => [
-			'clientMutationId' => $customerId,
-			'customerId' => $customerId
-		] ];
-		return $this->makeApiCall( $query, $variables );
+		return $this->timedCall( __FUNCTION__, function () use ( $customerId ) {
+			$query = $this->getQuery( 'DeleteCustomer' );
+			$variables = [ 'input' => [
+				'clientMutationId' => $customerId,
+				'customerId' => $customerId
+			] ];
+			return $this->makeApiCall( $query, $variables );
+		} );
 	}
 
 	/**
@@ -197,10 +216,13 @@ class Api {
 	 * @param array $input
 	 * @return array
 	 */
+	#[ApiOperationAttribute( ApiOperation::AUTHORIZE )]
 	public function authorizePaymentMethod( array $input ): array {
-		$query = $this->getQuery( 'AuthorizePaymentMethod' );
-		$variables = [ 'input' => $input ];
-		return $this->makeApiCall( $query, $variables );
+		return $this->timedCall( __FUNCTION__, function () use ( $input ) {
+			$query = $this->getQuery( 'AuthorizePaymentMethod' );
+			$variables = [ 'input' => $input ];
+			return $this->makeApiCall( $query, $variables );
+		} );
 	}
 
 	/**

@@ -16,7 +16,7 @@ class SearchTransactionsProvider extends PaymentProvider {
 	public function searchTransactions( array $input, ?string $after ): array {
 		$response = $this->api->searchTransactions( $input, $after );
 		if ( isset( $response['errors'] ) ) {
-			return $response['errors'];
+			throw new \Exception( print_r( $response['errors'], true ) );
 		}
 		$result = $response['data']['search']['transactions']['edges'];
 		while ( $response['data']['search']['transactions']['pageInfo']['hasNextPage'] === true ) {
@@ -36,7 +36,7 @@ class SearchTransactionsProvider extends PaymentProvider {
 	public function searchRefunds( array $input, ?string $after ): array {
 		$response = $this->api->searchRefunds( $input, $after );
 		if ( isset( $response['errors'] ) ) {
-			return $response['errors'];
+			throw new \Exception( print_r( $response['errors'], true ) );
 		}
 		$result = $response['data']['search']['refunds']['edges'];
 		while ( $response['data']['search']['refunds']['pageInfo']['hasNextPage'] ) {
@@ -56,7 +56,7 @@ class SearchTransactionsProvider extends PaymentProvider {
 	public function searchDisputes( array $input, ?string $after ): array {
 		$response = $this->api->searchDisputes( $input, $after );
 		if ( isset( $response['errors'] ) ) {
-			return $response['errors'];
+			throw new \Exception( print_r( $response['errors'], true ) );
 		}
 		$result = $response['data']['search']['disputes']['edges'];
 		while ( $response['data']['search']['disputes']['pageInfo']['hasNextPage'] ) {

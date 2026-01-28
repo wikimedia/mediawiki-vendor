@@ -98,7 +98,7 @@ class PaymentProviderTest extends BaseGravyTestCase {
 		$this->assertArrayHasKey( 'type', $apiResult, 'API should convert cURL error string to error array' );
 		$this->assertArrayHasKey( 'message', $apiResult, 'API should convert cURL error string to error array' );
 		$this->assertEquals( 'error', $apiResult['type'], 'API should return error type' );
-		$this->assertEquals( 'deletePaymentMethod response: (test-payment-method-id) ' . $curlErrorMessage, $apiResult['message'], 'API should preserve the original cURL error message' );
+		$this->assertEquals( 'Delete Payment Token response: (test-payment-method-id) ' . $curlErrorMessage, $apiResult['message'], 'API should preserve the original cURL error message' );
 	}
 
 	public function testApiErrorDeletePaymentTokenApiCall() {

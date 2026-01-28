@@ -39,7 +39,7 @@ class BaseSmashPigUnitTestCase extends TestCase {
 		$contents = file_get_contents( $filepath );
 		$header_size = strpos( $contents, "\r\n\r\n" ) + 4;
 		return CurlWrapper::parseResponse(
-			$contents, [ 'http_code' => $statusCode, 'header_size' => $header_size, 'total_time' => 2 ]
+			$contents, [ 'http_code' => $statusCode, 'header_size' => $header_size ]
 		);
 	}
 

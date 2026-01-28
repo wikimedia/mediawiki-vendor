@@ -3,12 +3,16 @@
 use SmashPig\Core\Context;
 use SmashPig\Core\Helpers\UniqueId;
 use SmashPig\Core\Http\OutboundRequest;
+use SmashPig\Core\Logging\ApiOperation;
+use SmashPig\Core\Logging\ApiOperationAttribute;
+use SmashPig\Core\Logging\ApiTimingTrait;
 use SmashPig\Core\Logging\Logger;
 use SmashPig\Core\Logging\TaggedLogger;
 use SmashPig\PaymentData\RecurringModel;
 use UnexpectedValueException;
 
 class Api {
+	use ApiTimingTrait;
 
 	/**
 	 * Constants set inline with Adyens docs
@@ -96,54 +100,57 @@ class Api {
 	 * amount, currency, encrypted_payment_details (blob from front-end)
 	 * @throws \SmashPig\Core\ApiException
 	 */
+	#[ApiOperationAttribute( ApiOperation::AUTHORIZE )]
 	public function createPaymentFromEncryptedDetails( $params ) {
-		// TODO: use txn template / mapping a la Ingenico?
-		$restParams = [
-			'amount' => $this->getArrayAmount( $params ),
-			'reference' => $params['order_id'],
-			'paymentMethod' => $params['encrypted_payment_data'],
-			'merchantAccount' => $this->account,
-			'additionalData' => [
-				'manualCapture' => true,
-			],
-		];
-		// TODO: map this from $params['payment_method']
-		// 'scheme' corresponds to our 'cc' value
-		$restParams['paymentMethod']['type'] = 'scheme';
-		if ( !empty( $params['return_url'] ) ) {
-			$restParams['returnUrl'] = $params['return_url'];
-			$parsed = parse_url( $params['return_url'] );
-			$restParams['origin'] = $parsed['scheme'] . '://' . $parsed['host'];
-			if ( !empty( $parsed['port'] ) ) {
-				$restParams['origin'] .= ':' . $parsed['port'];
+		return $this->timedCall( __FUNCTION__, function () use ( $params ) {
+			// TODO: use txn template / mapping a la Ingenico?
+			$restParams = [
+				'amount' => $this->getArrayAmount( $params ),
+				'reference' => $params['order_id'],
+				'paymentMethod' => $params['encrypted_payment_data'],
+				'merchantAccount' => $this->account,
+				'additionalData' => [
+					'manualCapture' => true,
+				],
+			];
+			// TODO: map this from $params['payment_method']
+			// 'scheme' corresponds to our 'cc' value
+			$restParams['paymentMethod']['type'] = 'scheme';
+			if ( !empty( $params['return_url'] ) ) {
+				$restParams['returnUrl'] = $params['return_url'];
+				$parsed = parse_url( $params['return_url'] );
+				$restParams['origin'] = $parsed['scheme'] . '://' . $parsed['host'];
+				if ( !empty( $parsed['port'] ) ) {
+					$restParams['origin'] .= ':' . $parsed['port'];
+				}
+				// If there is a return URL we are definitely coming via the 'Web' channel
+				$restParams['channel'] = 'Web';
 			}
-			// If there is a return URL we are definitely coming via the 'Web' channel
-			$restParams['channel'] = 'Web';
-		}
-		if ( !empty( $params['browser_info'] ) ) {
-			$restParams['browserInfo'] = $params['browser_info'];
-		}
-		$restParams = array_merge( $restParams, $this->getContactInfo( $params ) );
-		// This is specifically for credit cards
-		if ( empty( $restParams['paymentMethod']['holderName'] ) ) {
-			// TODO: FullName staging helper
-			$nameParts = [];
-			if ( !empty( $params['first_name'] ) ) {
-				$nameParts[] = $params['first_name'];
+			if ( !empty( $params['browser_info'] ) ) {
+				$restParams['browserInfo'] = $params['browser_info'];
 			}
-			if ( !empty( $params['last_name'] ) ) {
-				$nameParts[] = $params['last_name'];
+			$restParams = array_merge( $restParams, $this->getContactInfo( $params ) );
+			// This is specifically for credit cards
+			if ( empty( $restParams['paymentMethod']['holderName'] ) ) {
+				// TODO: FullName staging helper
+				$nameParts = [];
+				if ( !empty( $params['first_name'] ) ) {
+					$nameParts[] = $params['first_name'];
+				}
+				if ( !empty( $params['last_name'] ) ) {
+					$nameParts[] = $params['last_name'];
+				}
+				$fullName = implode( ' ', $nameParts );
+				$restParams['paymentMethod']['holderName'] = $fullName;
 			}
-			$fullName = implode( ' ', $nameParts );
-			$restParams['paymentMethod']['holderName'] = $fullName;
-		}
-		$restParams['shopperStatement'] = $params['description'] ?? '';
-		$isRecurring = $params['recurring'] ?? '';
-		if ( $isRecurring ) {
-			$restParams = array_merge( $restParams, $this->addRecurringParams( $params, true ) );
-		}
-		$result = $this->makeRestApiCall( $restParams, 'payments', 'POST', __FUNCTION__ );
-		return $result['body'];
+			$restParams['shopperStatement'] = $params['description'] ?? '';
+			$isRecurring = $params['recurring'] ?? '';
+			if ( $isRecurring ) {
+				$restParams = array_merge( $restParams, $this->addRecurringParams( $params, true ) );
+			}
+			$result = $this->makeRestApiCall( $restParams, 'payments', 'POST' );
+			return $result['body'];
+		} );
 	}
 
 	protected function getBillingAddress( array $params ): array {
@@ -195,41 +202,44 @@ class Api {
 	 * amount, currency, payment_method, recurring_payment_token, processor_contact_id
 	 * @throws \SmashPig\Core\ApiException
 	 */
+	#[ApiOperationAttribute( ApiOperation::AUTHORIZE )]
 	public function createPaymentFromToken( array $params ) {
-		$restParams = [
-			'amount' => [
-				'currency' => $params['currency'],
-				'value' => AdyenCurrencyRoundingHelper::getAmountInMinorUnits(
-					$params['amount'], $params['currency']
-				)
-			],
-			'reference' => $params['order_id'],
-			'merchantAccount' => $this->account
-		];
-
-		$restParams['additionalData']['manualCapture'] = $params['manual_capture'];
-		$restParams['paymentMethod']['type'] = $params['payment_method'];
-		// storedPaymentMethodId - token adyen sends back on auth
-		$restParams['paymentMethod']['storedPaymentMethodId'] = $params['recurring_payment_token'];
-		$restParams['shopperReference'] = $params['processor_contact_id'];
-		$restParams['shopperInteraction'] = static::RECURRING_SHOPPER_INTERACTION;
-		$restParams['recurringProcessingModel'] = static::RECURRING_MODEL_SUBSCRIPTION;
-		$restParams = array_merge( $restParams, $this->getContactInfo( $params ) );
-		if ( $params['payment_method'] === 'ach' ) {
-			// ach billing address optional,
-			// if pass needs to pass country and state,
-			// for recurring token charge we have no state info, so do not pass
-			unset( $restParams['billingAddress'] );
-		}
-		// T351340 we will do credit card which have method scheme first and then add SEPA which use sepadirectdebit later
-		if ( $this->enableAutoRescue && $params['payment_method'] !== 'sepadirectdebit' ) {
-			$restParams['additionalData'] = [
-				'autoRescue' => true,
-				'maxDaysToRescue' => $this->maxDaysToRescue
+		return $this->timedCall( __FUNCTION__, function () use ( $params ) {
+			$restParams = [
+				'amount' => [
+					'currency' => $params['currency'],
+					'value' => AdyenCurrencyRoundingHelper::getAmountInMinorUnits(
+						$params['amount'], $params['currency']
+					)
+				],
+				'reference' => $params['order_id'],
+				'merchantAccount' => $this->account
 			];
-		}
-		$result = $this->makeRestApiCall( $restParams, 'payments', 'POST', __FUNCTION__ );
-		return $result['body'];
+
+			$restParams['additionalData']['manualCapture'] = $params['manual_capture'];
+			$restParams['paymentMethod']['type'] = $params['payment_method'];
+			// storedPaymentMethodId - token adyen sends back on auth
+			$restParams['paymentMethod']['storedPaymentMethodId'] = $params['recurring_payment_token'];
+			$restParams['shopperReference'] = $params['processor_contact_id'];
+			$restParams['shopperInteraction'] = static::RECURRING_SHOPPER_INTERACTION;
+			$restParams['recurringProcessingModel'] = static::RECURRING_MODEL_SUBSCRIPTION;
+			$restParams = array_merge( $restParams, $this->getContactInfo( $params ) );
+			if ( $params['payment_method'] === 'ach' ) {
+				// ach billing address optional,
+				// if pass needs to pass country and state,
+				// for recurring token charge we have no state info, so do not pass
+				unset( $restParams['billingAddress'] );
+			}
+			// T351340 we will do credit card which have method scheme first and then add SEPA which use sepadirectdebit later
+			if ( $this->enableAutoRescue && $params['payment_method'] !== 'sepadirectdebit' ) {
+				$restParams['additionalData'] = [
+					'autoRescue' => true,
+					'maxDaysToRescue' => $this->maxDaysToRescue
+				];
+			}
+			$result = $this->makeRestApiCall( $restParams, 'payments', 'POST' );
+			return $result['body'];
+		} );
 	}
 
 	/**
@@ -240,39 +250,42 @@ class Api {
 	 * amount, currency, value, issuer_id (for CZ), return_url
 	 * @throws \SmashPig\Core\ApiException
 	 */
+	#[ApiOperationAttribute( ApiOperation::AUTHORIZE )]
 	public function createBankTransferPaymentFromCheckout( $params ) {
-		$typesByCountry = [
-			'NL' => 'ideal',
-			'CZ' => 'onlineBanking_CZ'
-		];
-		if ( empty( $params['country'] ) || !array_key_exists( $params['country'], $typesByCountry ) ) {
-			throw new UnexpectedValueException(
-				'Needs supported country: (one of ' . implode( ', ', array_keys( $typesByCountry ) ) . ')'
-			);
-		}
-		$restParams = [
-			'amount' => $this->getArrayAmount( $params ),
-			'reference' => $params['order_id'],
-			'merchantAccount' => $this->account,
-			'paymentMethod' => [
-				'type' => $typesByCountry[$params['country']],
-			],
-			'returnUrl' => $params['return_url'],
-			'additionalData' => [
-				'manualCapture' => false,
-			],
-		];
-		if ( isset( $params['issuer_id'] ) ) {
-			$restParams['paymentMethod']['issuer'] = $params['issuer_id'];
-		}
-		$isRecurring = $params['recurring'] ?? '';
-		if ( $isRecurring ) {
-			$restParams = array_merge( $restParams, $this->addRecurringParams( $params, true ) );
-		}
-		$restParams = array_merge( $restParams, $this->getContactInfo( $params ) );
+		return $this->timedCall( __FUNCTION__, function () use ( $params ) {
+			$typesByCountry = [
+				'NL' => 'ideal',
+				'CZ' => 'onlineBanking_CZ'
+			];
+			if ( empty( $params['country'] ) || !array_key_exists( $params['country'], $typesByCountry ) ) {
+				throw new UnexpectedValueException(
+					'Needs supported country: (one of ' . implode( ', ', array_keys( $typesByCountry ) ) . ')'
+				);
+			}
+			$restParams = [
+				'amount' => $this->getArrayAmount( $params ),
+				'reference' => $params['order_id'],
+				'merchantAccount' => $this->account,
+				'paymentMethod' => [
+					'type' => $typesByCountry[$params['country']],
+				],
+				'returnUrl' => $params['return_url'],
+				'additionalData' => [
+					'manualCapture' => false,
+				],
+			];
+			if ( isset( $params['issuer_id'] ) ) {
+				$restParams['paymentMethod']['issuer'] = $params['issuer_id'];
+			}
+			$isRecurring = $params['recurring'] ?? '';
+			if ( $isRecurring ) {
+				$restParams = array_merge( $restParams, $this->addRecurringParams( $params, true ) );
+			}
+			$restParams = array_merge( $restParams, $this->getContactInfo( $params ) );
 
-		$result = $this->makeRestApiCall( $restParams, 'payments', 'POST', __FUNCTION__ );
-		return $result['body'];
+			$result = $this->makeRestApiCall( $restParams, 'payments', 'POST' );
+			return $result['body'];
+		} );
 	}
 
 	/**
@@ -282,123 +295,115 @@ class Api {
 	 * amount, currency, order_id, iban, full_name
 	 * @throws \SmashPig\Core\ApiException
 	 */
+	#[ApiOperationAttribute( ApiOperation::AUTHORIZE )]
 	public function createSEPABankTransferPayment( $params ) {
-		$restParams = [
-			'amount' => $this->getArrayAmount( $params ),
-			'reference' => $params['order_id'],
-			'merchantAccount' => $this->account,
-			'paymentMethod' => [
-				'type' => 'sepadirectdebit',
-				'sepa.ownerName' => $params['full_name'], // the name on the SEPA bank account.
-				'sepa.ibanNumber' => $params['iban'], // the IBAN of the bank account, (do not encrypt)
-			]
-		];
-		$isRecurring = $params['recurring'] ?? '';
-		if ( $isRecurring ) {
-			$restParams = array_merge( $restParams, $this->addRecurringParams( $params, true ) );
-		}
-		// billing address optional
-		$restParams = array_merge( $restParams, $this->getContactInfo( $params ) );
+		return $this->timedCall( __FUNCTION__, function () use ( $params ) {
+			$restParams = [
+				'amount' => $this->getArrayAmount( $params ),
+				'reference' => $params['order_id'],
+				'merchantAccount' => $this->account,
+				'paymentMethod' => [
+					'type' => 'sepadirectdebit',
+					'sepa.ownerName' => $params['full_name'], // the name on the SEPA bank account.
+					'sepa.ibanNumber' => $params['iban'], // the IBAN of the bank account, (do not encrypt)
+				]
+			];
+			$isRecurring = $params['recurring'] ?? '';
+			if ( $isRecurring ) {
+				$restParams = array_merge( $restParams, $this->addRecurringParams( $params, true ) );
+			}
+			// billing address optional
+			$restParams = array_merge( $restParams, $this->getContactInfo( $params ) );
 
-		$result = $this->makeRestApiCall(
-			$restParams,
-			'payments',
-			'POST',
-			__FUNCTION__
-		);
+			$result = $this->makeRestApiCall( $restParams, 'payments', 'POST' );
 
-		return $result['body'];
+			return $result['body'];
+		} );
 	}
 
+	#[ApiOperationAttribute( ApiOperation::AUTHORIZE )]
 	public function createACHDirectDebitPayment( $params ) {
-		$restParams = [
-			'amount' => $this->getArrayAmount( $params ),
-			'reference' => $params['order_id'],
-			'merchantAccount' => $this->account,
-			'paymentMethod' => [
-				'type' => 'ach',
-				'encryptedBankAccountNumber' => $params['encrypted_bank_account_number'], // encrypted account number
-				'bankAccountType' => $params['bank_account_type'], // checking or savings
-				'encryptedBankLocationId' => $params['encrypted_bank_location_id'], // encrypted ACH routing number of the account
-				'ownerName' => $params['full_name'] // the name on the bank account
-			]
-		];
-		$isRecurring = $params['recurring'] ?? '';
-		if ( $isRecurring ) {
-			$restParams = array_merge( $restParams, $this->addRecurringParams( $params, true ) );
-		}
-		$restParams = array_merge( $restParams, $this->getContactInfo( $params ) );
-		if ( $restParams['billingAddress']['stateOrProvince'] === 'NA' ) {
-			// ach billing address optional,
-			// if pass needs to pass country and state, for T360825 no need to pass
-			unset( $restParams['billingAddress'] );
-		}
-		$result = $this->makeRestApiCall(
-			$restParams,
-			'payments',
-			'POST',
-			__FUNCTION__
-		);
+		return $this->timedCall( __FUNCTION__, function () use ( $params ) {
+			$restParams = [
+				'amount' => $this->getArrayAmount( $params ),
+				'reference' => $params['order_id'],
+				'merchantAccount' => $this->account,
+				'paymentMethod' => [
+					'type' => 'ach',
+					'encryptedBankAccountNumber' => $params['encrypted_bank_account_number'], // encrypted account number
+					'bankAccountType' => $params['bank_account_type'], // checking or savings
+					'encryptedBankLocationId' => $params['encrypted_bank_location_id'], // encrypted ACH routing number of the account
+					'ownerName' => $params['full_name'] // the name on the bank account
+				]
+			];
+			$isRecurring = $params['recurring'] ?? '';
+			if ( $isRecurring ) {
+				$restParams = array_merge( $restParams, $this->addRecurringParams( $params, true ) );
+			}
+			$restParams = array_merge( $restParams, $this->getContactInfo( $params ) );
+			if ( $restParams['billingAddress']['stateOrProvince'] === 'NA' ) {
+				// ach billing address optional,
+				// if pass needs to pass country and state, for T360825 no need to pass
+				unset( $restParams['billingAddress'] );
+			}
+			$result = $this->makeRestApiCall( $restParams, 'payments', 'POST' );
 
-		return $result['body'];
+			return $result['body'];
+		} );
 	}
 
+	#[ApiOperationAttribute( ApiOperation::AUTHORIZE )]
 	public function createGooglePayPayment( $params ) {
-		$restParams = [
-			'amount' => $this->getArrayAmount( $params ),
-			'reference' => $params['order_id'],
-			'merchantAccount' => $this->account,
-			'paymentMethod' => [
-				'type' => 'googlepay',
-				'googlePayToken' => $params['payment_token']
-			],
-			'additionalData' => [
-				'manualCapture' => true,
-			],
-		];
-		$isRecurring = $params['recurring'] ?? '';
-		if ( $isRecurring ) {
-			$restParams = array_merge( $restParams, $this->addRecurringParams( $params, true ) );
-		}
-		$restParams = array_merge( $restParams, $this->getContactInfo( $params ) );
+		return $this->timedCall( __FUNCTION__, function () use ( $params ) {
+			$restParams = [
+				'amount' => $this->getArrayAmount( $params ),
+				'reference' => $params['order_id'],
+				'merchantAccount' => $this->account,
+				'paymentMethod' => [
+					'type' => 'googlepay',
+					'googlePayToken' => $params['payment_token']
+				],
+				'additionalData' => [
+					'manualCapture' => true,
+				],
+			];
+			$isRecurring = $params['recurring'] ?? '';
+			if ( $isRecurring ) {
+				$restParams = array_merge( $restParams, $this->addRecurringParams( $params, true ) );
+			}
+			$restParams = array_merge( $restParams, $this->getContactInfo( $params ) );
 
-		$result = $this->makeRestApiCall(
-			$restParams,
-			'payments',
-			'POST',
-			__FUNCTION__
-		);
+			$result = $this->makeRestApiCall( $restParams, 'payments', 'POST' );
 
-		return $result['body'];
+			return $result['body'];
+		} );
 	}
 
+	#[ApiOperationAttribute( ApiOperation::AUTHORIZE )]
 	public function createApplePayPayment( $params ) {
-		$restParams = [
-			'amount' => $this->getArrayAmount( $params ),
-			'reference' => $params['order_id'],
-			'merchantAccount' => $this->account,
-			'paymentMethod' => [
-				'type' => 'applepay',
-				'applePayToken' => $params['payment_token']
-			],
-			'additionalData' => [
-				'manualCapture' => true,
-			],
-		];
-		$isRecurring = $params['recurring'] ?? '';
-		if ( $isRecurring ) {
-			$restParams = array_merge( $restParams, $this->addRecurringParams( $params, true ) );
-		}
-		$restParams = array_merge( $restParams, $this->getContactInfo( $params ) );
+		return $this->timedCall( __FUNCTION__, function () use ( $params ) {
+			$restParams = [
+				'amount' => $this->getArrayAmount( $params ),
+				'reference' => $params['order_id'],
+				'merchantAccount' => $this->account,
+				'paymentMethod' => [
+					'type' => 'applepay',
+					'applePayToken' => $params['payment_token']
+				],
+				'additionalData' => [
+					'manualCapture' => true,
+				],
+			];
+			$isRecurring = $params['recurring'] ?? '';
+			if ( $isRecurring ) {
+				$restParams = array_merge( $restParams, $this->addRecurringParams( $params, true ) );
+			}
+			$restParams = array_merge( $restParams, $this->getContactInfo( $params ) );
 
-		$result = $this->makeRestApiCall(
-			$restParams,
-			'payments',
-			'POST',
-			__FUNCTION__
-		);
+			$result = $this->makeRestApiCall( $restParams, 'payments', 'POST' );
 
-		return $result['body'];
+			return $result['body'];
+		} );
 	}
 
 	/**
@@ -408,24 +413,26 @@ class Api {
 	 * handled for you in Adyen's code.
 	 * https://developer.apple.com/documentation/apple_pay_on_the_web/apple_pay_js_api/requesting_an_apple_pay_payment_session
 	 */
+	#[ApiOperationAttribute( ApiOperation::CREATE_SESSION )]
 	public function createApplePaySession( array $params ): array {
-		$request = new OutboundRequest( $params['validation_url'], 'POST' );
-		$request->setBody( json_encode( [
-			// Your Apple Pay merchant ID
-			'merchantIdentifier' => $params['merchant_identifier'],
-			// A string of 64 or fewer UTF-8 characters containing the canonical name
-			// for your store, suitable for display. Do not localize the name.
-			'displayName' => $params['display_name'],
-			// For Apple Pay JS this should always be 'web'
-			'initiative' => 'web',
-			// fully qualified domain name associated with your Apple Pay Merchant Identity Certificate
-			'initiativeContext' => $params['domain_name']
-		] ) )
-			->setCertPath( $params['certificate_path'] )
-			->setCertPassword( $params['certificate_password'] )
-			->setLogTag( __FUNCTION__ );
-		$response = $request->execute();
-		return json_decode( $response['body'], true );
+		return $this->timedCall( __FUNCTION__, static function () use ( $params ) {
+			$request = new OutboundRequest( $params['validation_url'], 'POST' );
+			$request->setBody( json_encode( [
+				// Your Apple Pay merchant ID
+				'merchantIdentifier' => $params['merchant_identifier'],
+				// A string of 64 or fewer UTF-8 characters containing the canonical name
+				// for your store, suitable for display. Do not localize the name.
+				'displayName' => $params['display_name'],
+				// For Apple Pay JS this should always be 'web'
+				'initiative' => 'web',
+				// fully qualified domain name associated with your Apple Pay Merchant Identity Certificate
+				'initiativeContext' => $params['domain_name']
+			] ) )
+				->setCertPath( $params['certificate_path'] )
+				->setCertPassword( $params['certificate_password'] );
+			$response = $request->execute();
+			return json_decode( $response['body'], true );
+		} );
 	}
 
 	/**
@@ -435,15 +442,18 @@ class Api {
 	 * @return array
 	 * @throws \SmashPig\Core\ApiException
 	 */
+	#[ApiOperationAttribute( ApiOperation::REFUND )]
 	public function refundPayment( array $params ) {
-		$restParams = [
-			'amount' => $this->getArrayAmount( $params ),
-			'merchantAccount' => $this->account,
-		];
-		$path = "payments/{$params['gateway_txn_id']}/refunds";
+		return $this->timedCall( __FUNCTION__, function () use ( $params ) {
+			$restParams = [
+				'amount' => $this->getArrayAmount( $params ),
+				'merchantAccount' => $this->account,
+			];
+			$path = "payments/{$params['gateway_txn_id']}/refunds";
 
-		$result = $this->makeRestApiCall( $restParams, $path, 'POST', __FUNCTION__ );
-		return $result['body'];
+			$result = $this->makeRestApiCall( $restParams, $path, 'POST' );
+			return $result['body'];
+		} );
 	}
 
 	/**
@@ -454,42 +464,48 @@ class Api {
 	 * @return array
 	 * @throws \SmashPig\Core\ApiException
 	 */
+	#[ApiOperationAttribute( ApiOperation::GET_PAYMENT_DETAILS )]
 	public function getPaymentDetails( $redirectResult ) {
-		$restParams = [
-			'details' => [
-				'redirectResult' => $redirectResult
-			]
-		];
-		$result = $this->makeRestApiCall( $restParams, 'payments/details', 'POST', __FUNCTION__ );
-		return $result['body'];
+		return $this->timedCall( __FUNCTION__, function () use ( $redirectResult ) {
+			$restParams = [
+				'details' => [
+					'redirectResult' => $redirectResult
+				]
+			];
+			$result = $this->makeRestApiCall( $restParams, 'payments/details', 'POST' );
+			return $result['body'];
+		} );
 	}
 
 	/**
 	 * @throws \SmashPig\Core\ApiException
 	 */
+	#[ApiOperationAttribute( ApiOperation::GET_PAYMENT_METHODS )]
 	public function getPaymentMethods( $params ) {
-		$restParams = [
-			'merchantAccount' => $this->account,
-			'channel' => $params['channel'] ?? 'Web',
-		];
+		return $this->timedCall( __FUNCTION__, function () use ( $params ) {
+			$restParams = [
+				'merchantAccount' => $this->account,
+				'channel' => $params['channel'] ?? 'Web',
+			];
 
-		if ( !empty( $params['amount'] ) && !empty( $params['currency'] ) ) {
-			$restParams['amount'] = $this->getArrayAmount( $params );
-		}
-		if ( !empty( $params['country'] ) ) {
-			$restParams['countryCode'] = $params['country'];
-		}
-		if ( !empty( $params['language'] ) ) {
-			// shopperLocale format needs to be language-country nl-NL en-NL
-			$restParams['shopperLocale'] = str_replace( '_', '-', $params['language'] );
-		}
-		if ( !empty( $params['processor_contact_id'] ) ) {
-			// We send processor_contact_id as the shopper reference from the front-end
-			$restParams['shopperReference'] = $params['processor_contact_id'];
-		}
+			if ( !empty( $params['amount'] ) && !empty( $params['currency'] ) ) {
+				$restParams['amount'] = $this->getArrayAmount( $params );
+			}
+			if ( !empty( $params['country'] ) ) {
+				$restParams['countryCode'] = $params['country'];
+			}
+			if ( !empty( $params['language'] ) ) {
+				// shopperLocale format needs to be language-country nl-NL en-NL
+				$restParams['shopperLocale'] = str_replace( '_', '-', $params['language'] );
+			}
+			if ( !empty( $params['processor_contact_id'] ) ) {
+				// We send processor_contact_id as the shopper reference from the front-end
+				$restParams['shopperReference'] = $params['processor_contact_id'];
+			}
 
-		$result = $this->makeRestApiCall( $restParams, 'paymentMethods', 'POST', __FUNCTION__ );
-		return $result['body'];
+			$result = $this->makeRestApiCall( $restParams, 'paymentMethods', 'POST' );
+			return $result['body'];
+		} );
 	}
 
 	/**
@@ -502,19 +518,22 @@ class Api {
 	 * @return array A list of saved payment methods with tokens and other details.
 	 * @throws \SmashPig\Core\ApiException
 	 */
+	#[ApiOperationAttribute( ApiOperation::GET_SAVED_PAYMENT_DETAILS )]
 	public function getSavedPaymentDetails( string $shopperReference ): array {
-		$restParams = [
-			'merchantAccount' => $this->account,
-			'shopperReference' => $shopperReference,
-			'recurring' => [
-				'contract' => self::RECURRING_CONTRACT,
-			],
-		];
+		return $this->timedCall( __FUNCTION__, function () use ( $shopperReference ) {
+			$restParams = [
+				'merchantAccount' => $this->account,
+				'shopperReference' => $shopperReference,
+				'recurring' => [
+					'contract' => self::RECURRING_CONTRACT,
+				],
+			];
 
-		$result = $this->makeRestApiCall(
-			$restParams, 'listRecurringDetails', 'POST', __FUNCTION__, $this->recurringBaseUrl
-		);
-		return $result['body'];
+			$result = $this->makeRestApiCall(
+				$restParams, 'listRecurringDetails', 'POST', $this->recurringBaseUrl
+			);
+			return $result['body'];
+		} );
 	}
 
 	/**
@@ -524,16 +543,19 @@ class Api {
 	 * @return array usually just [ 'result' => 'SUCCESS' ]
 	 * @throws \SmashPig\Core\ApiException
 	 */
+	#[ApiOperationAttribute( ApiOperation::DELETE_DATA )]
 	public function deleteDataForPayment( string $gatewayTransactionId ): array {
-		$restParams = [
-			'merchantAccount' => $this->account,
-			'pspReference' => $gatewayTransactionId,
-			'forceErasure' => true
-		];
-		$result = $this->makeRestApiCall(
-			$restParams, 'requestSubjectErasure', 'POST', __FUNCTION__, $this->dataProtectionBaseUrl
-		);
-		return $result['body'];
+		return $this->timedCall( __FUNCTION__, function () use ( $gatewayTransactionId ) {
+			$restParams = [
+				'merchantAccount' => $this->account,
+				'pspReference' => $gatewayTransactionId,
+				'forceErasure' => true
+			];
+			$result = $this->makeRestApiCall(
+				$restParams, 'requestSubjectErasure', 'POST', $this->dataProtectionBaseUrl
+			);
+			return $result['body'];
+		} );
 	}
 
 	/**
@@ -546,15 +568,14 @@ class Api {
 	 * @throws \SmashPig\Core\ApiException
 	 */
 	protected function makeRestApiCall(
-		array $params, string $path, string $method, string $logTag, ?string $alternateBaseUrl = null
+		array $params, string $path, string $method, ?string $alternateBaseUrl = null
 	): array {
 		$basePath = $alternateBaseUrl ?? $this->restBaseUrl;
 		$url = $basePath . '/' . $path;
 		$request = new OutboundRequest( $url, $method );
 		$request->setBody( json_encode( $params ) )
 			->setHeader( 'x-API-key', $this->apiKey )
-			->setHeader( 'content-type', 'application/json' )
-			->setLogTag( $logTag );
+			->setHeader( 'content-type', 'application/json' );
 		if ( $method === 'POST' ) {
 			// Set the idempotency header in case we retry on timeout
 			// https://docs.adyen.com/development-resources/api-idempotency
@@ -573,29 +594,32 @@ class Api {
 	 * @param array $params Needs keys 'gateway_txn_id', 'currency', and 'amount' set
 	 * @return bool|array
 	 */
+	#[ApiOperationAttribute( ApiOperation::CAPTURE )]
 	public function approvePayment( array $params ) {
-		$restParams = [
-			'amount' => [
-				'currency' => $params['currency'],
-				'value' => AdyenCurrencyRoundingHelper::getAmountInMinorUnits(
-					$params['amount'], $params['currency']
-				)
-			],
-			'merchantAccount' => $this->account
-		];
-		$path = "payments/{$params['gateway_txn_id']}/captures";
+		return $this->timedCall( __FUNCTION__, function () use ( $params ) {
+			$restParams = [
+				'amount' => [
+					'currency' => $params['currency'],
+					'value' => AdyenCurrencyRoundingHelper::getAmountInMinorUnits(
+						$params['amount'], $params['currency']
+					)
+				],
+				'merchantAccount' => $this->account
+			];
+			$path = "payments/{$params['gateway_txn_id']}/captures";
 
-		$tl = new TaggedLogger( 'RawData' );
-		$tl->info( "Launching REST capture request for {$params['gateway_txn_id']}", $restParams );
+			$tl = new TaggedLogger( 'RawData' );
+			$tl->info( "Launching REST capture request for {$params['gateway_txn_id']}", $restParams );
 
-		try {
-			$result = $this->makeRestApiCall( $restParams, $path, 'POST', __FUNCTION__ );
-		} catch ( \Exception $ex ) {
-			// FIXME shouldn't we let the ApiException bubble up?
-			Logger::error( 'REST capture request threw exception!', $params, $ex );
-			return false;
-		}
-		return $result['body'];
+			try {
+				$result = $this->makeRestApiCall( $restParams, $path, 'POST' );
+			} catch ( \Exception $ex ) {
+				// FIXME shouldn't we let the ApiException bubble up?
+				Logger::error( 'REST capture request threw exception!', $params, $ex );
+				return false;
+			}
+			return $result['body'];
+		} );
 	}
 
 	/**
@@ -605,16 +629,19 @@ class Api {
 	 * @return array
 	 * @throws \SmashPig\Core\ApiException
 	 */
+	#[ApiOperationAttribute( ApiOperation::CANCEL )]
 	public function cancel( string $pspReference ): array {
-		$restParams = [
-			'merchantAccount' => $this->account
-		];
-		// TODO: Adyen supports a merchant reference for the cancellation
-		// but we'll need to change our ICancelablePaymentProvider to
-		// support an array of parameters.
-		$path = "payments/$pspReference/cancels";
-		$result = $this->makeRestApiCall( $restParams, $path, 'POST', __FUNCTION__ );
-		return $result['body'];
+		return $this->timedCall( __FUNCTION__, function () use ( $pspReference ) {
+			$restParams = [
+				'merchantAccount' => $this->account
+			];
+			// TODO: Adyen supports a merchant reference for the cancellation
+			// but we'll need to change our ICancelablePaymentProvider to
+			// support an array of parameters.
+			$path = "payments/$pspReference/cancels";
+			$result = $this->makeRestApiCall( $restParams, $path, 'POST' );
+			return $result['body'];
+		} );
 	}
 
 	/**
@@ -624,19 +651,22 @@ class Api {
 	 * @return array
 	 * @throws \SmashPig\Core\ApiException
 	 */
+	#[ApiOperationAttribute( ApiOperation::CANCEL )]
 	public function cancelAutoRescue( string $rescueReference ) {
-		$restParams = [
-			'merchantAccount' => $this->account,
-			'originalReference' => $rescueReference,
-			'additionalData' => [
-				'cancellationType' => 'autoRescue',
-			]
-		];
+		return $this->timedCall( __FUNCTION__, function () use ( $rescueReference ) {
+			$restParams = [
+				'merchantAccount' => $this->account,
+				'originalReference' => $rescueReference,
+				'additionalData' => [
+					'cancellationType' => 'autoRescue',
+				]
+			];
 
-		$result = $this->makeRestApiCall(
-			$restParams, 'cancel', 'POST', __FUNCTION__, $this->paymentBaseUrl
-		);
-		return $result['body'];
+			$result = $this->makeRestApiCall(
+				$restParams, 'cancel', 'POST', $this->paymentBaseUrl
+			);
+			return $result['body'];
+		} );
 	}
 
 	/**

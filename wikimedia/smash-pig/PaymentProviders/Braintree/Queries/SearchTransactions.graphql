@@ -9,6 +9,13 @@ query searchTransactions($input: TransactionSearchInput!, $after: String){
 				createdAt
 				merchantAccountId
 				status
+				customer {
+				  email
+				}
+				customFields {
+				  name
+				  value
+				}
 				refunds {
 				  status
 				  amount {

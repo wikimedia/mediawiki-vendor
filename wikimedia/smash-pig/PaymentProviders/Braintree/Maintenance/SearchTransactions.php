@@ -12,6 +12,15 @@ class SearchTransactions extends MaintenanceBase {
 
 	protected array $fileData;
 
+	protected array $files = [];
+
+	/**
+	 * Now - we set this once so it doesn't move while running
+	 *
+	 * @var string
+	 */
+	protected string $now;
+
 	public function __construct() {
 		parent::__construct();
 		$this->addOption( 'hours', 'search transactions from how many hours till now', '24', 'r' );
@@ -22,7 +31,15 @@ class SearchTransactions extends MaintenanceBase {
 		$this->addOption( 'date-type', 'Type of date to query on - settled|created|disbursement|received', 'created', 'd' );
 		$this->addFlag( 'raw', 'log raw data', 'v' );
 		$this->addFlag( 'output-raw', 'output raw data', 'o' );
+		$this->addFlag( 'consolidate', 'output to one consolidated file', 'c' );
 		$this->desiredOptions['config-node']['default'] = 'braintree';
+		$this->now = date( 'c' );
+	}
+
+	public function __destruct() {
+		foreach ( $this->files  as $file ) {
+			fclose( $file );
+		}
 	}
 
 	/**
@@ -30,55 +47,44 @@ class SearchTransactions extends MaintenanceBase {
 	 * @return void
 	 */
 	public function execute(): void {
-		$hrs = $this->getOption( 'hours' );
-		$startDate = $this->getOption( 'start-date' );
-		$endDate = $this->getOption( 'end-date' );
 		$type = $this->getOption( 'type' );
 		$path = $this->getOption( 'path' );
-		$outputRaw = $this->getOption( 'output-raw' );
-		$now = date( 'c' );
-		if ( $startDate ) {
-			$greaterThan = date( 'c', strtotime( $startDate ) );
-		} else {
-			$greaterThan = date( 'c', strtotime( "-$hrs hours" ) );
-		}
+
+		$greaterThan = $this->getStartDate();
 		$greaterThanDate = substr( $greaterThan, 0, 10 );
-		if ( $endDate ) {
-			$endDate = date( 'c', strtotime( $endDate ) );
-		} else {
-			$endDate = substr( $now, 0, 10 );
-		}
+		$endDate = $this->getEndDate();
 		// get yesterday's or how many hrs from now's transaction, refunds and disputes
 		Logger::info( "Get $type report from $greaterThanDate to $endDate\n" );
 		if ( is_dir( $path ) ) {
 			$provider = PaymentProviderFactory::getProviderForMethod( 'search' );
 
-			$input = $this->getInput( $greaterThan, $now );
+			$input = $this->getInput( $greaterThan );
 			$after = null;
-			$pathPrefix = $outputRaw ? '/raw_batch_report_' : "/settlement_batch_report_";
 			if ( $this->isRunDonationSettlementReport() ) {
-				$response = $this->normalizeTransactions( $provider->searchTransactions( $input, $after ), 'donation' );
-				$transactions = fopen( $path . $pathPrefix . $greaterThanDate . ".json", "w" ) or die( "Unable to open file!" );
-				fwrite( $transactions, $response );
-				fclose( $transactions );
+				$this->normalizeTransactions( $provider->searchTransactions( $input, $after ), 'donation' );
 			}
 			if ( $this->isRunRefundReport() ) {
-				$refundResponse = $this->normalizeTransactions( $provider->searchRefunds( $input, $after ), 'refund' );
-				$refunds = fopen( $path . $pathPrefix . "refund_" . $greaterThanDate . ".json", "w" ) or die( "Unable to open file!" );
-				fwrite( $refunds, $refundResponse );
-				fclose( $refunds );
+				$this->normalizeTransactions( $provider->searchRefunds( $input, $after ), 'refund' );
 			}
 			if ( $this->isRunChargebackReport() ) {
-				// @todo - this would be disputes. The input date field is not respected because it's unclear we call this &
-				// if we do which date field to use.
-				$disputeInput = [ "receivedDate" => [ "greaterThanOrEqualTo" => $greaterThanDate, "lessThanOrEqualTo" => $endDate ] ];
-				$disputeResponse = $this->normalizeTransactions( $provider->searchDisputes( $disputeInput, $after ), 'chargeback' );
-				$disputes = fopen( $path . $pathPrefix . "dispute_" . $greaterThanDate . ".json", "w" ) or die( "Unable to open file!" );
-				fwrite( $disputes, $disputeResponse );
-				fclose( $disputes );
+				// For disputes we can use effectiveDate and receiveDate - the receiveDate is the date the
+				// dispute started and the effectiveDate is the change of status - so we are looking for
+				// things that changed status to lost. This is generally a day before the settlement date
+				// so we look at the day before the main query date.
+				$greaterThanDate = substr( $this->getDayBeforeStartDate(), 0, 10 );
+				$lessThanDate = gmdate( 'Y-m-d', strtotime( $this->getDayBeforeEndDate() ) );
+				$disputeInput = [
+					"effectiveDate" => [ "greaterThanOrEqualTo" => $greaterThanDate, "lessThanOrEqualTo" => $lessThanDate ],
+					"status" => [ "is" => "LOST" ],
+				];
+				$this->normalizeTransactions( $provider->searchDisputes( $disputeInput, $after ), 'chargeback' );
+			}
+
+			foreach ( array_keys( $this->fileData ) as $context ) {
+				$this->writeToFile( $context );
 			}
 		} else {
-			echo "incoming dir is not exist\n";
+			echo "incoming dir does not exist\n";
 		}
 	}
 
@@ -124,10 +130,12 @@ class SearchTransactions extends MaintenanceBase {
 	 * @param array $data
 	 * @param string $type
 	 * normalize transactions result from graphql to make the data more readable
-	 * @return string
 	 */
-	private function normalizeTransactions( array $data, string $type ): string {
-		$this->fileData = [];
+	private function normalizeTransactions( array $data, string $type ) {
+		$context = $this->isConsolidated() ? 'consolidated' : $type;
+		if ( !isset( $this->fileData[$context] ) ) {
+			$this->fileData[$context] = [];
+		}
 		$logRaw = $this->getOption( 'raw' );
 		$outputRaw = $this->getOption( 'output-raw' );
 		if ( $type === 'donation' || $type === 'refund' ) {
@@ -135,8 +143,12 @@ class SearchTransactions extends MaintenanceBase {
 				if ( $logRaw ) {
 					Logger::info( "logging raw transaction " . json_encode( $d ) );
 				}
+				if ( !isset( $d['node'] ) ) {
+					Logger::info( "no results found of type " . $type );
+					continue;
+				}
 				if ( $outputRaw ) {
-					$this->fileData[] = $d['node'];
+					$this->fileData[$context][] = $d['node'];
 					continue;
 				}
 				$row = $d['node'];
@@ -158,7 +170,7 @@ class SearchTransactions extends MaintenanceBase {
 					$msg['gateway_refund_id'] = $row['id'];
 					$msg['type']              = 'refund';
 				}
-				$this->fileData[] = $msg;
+				$this->fileData[$context][] = $msg;
 			}
 		}
 		if ( $type === 'chargeback' ) {
@@ -166,8 +178,12 @@ class SearchTransactions extends MaintenanceBase {
 				if ( $logRaw ) {
 					Logger::info( "logging raw transaction " . json_encode( $d ) );
 				}
+				if ( !isset( $d['node'] ) ) {
+					Logger::info( "no results found of type " . $type );
+					continue;
+				}
 				if ( $outputRaw ) {
-					$this->fileData[] = $d['node'];
+					$this->fileData[$context][] = $d['node'];
 					continue;
 				}
 				$row = $d['node'];
@@ -185,10 +201,9 @@ class SearchTransactions extends MaintenanceBase {
 				$msg['gateway_txn_id']           = $row['id'];
 				$msg['date']                     = $row['receivedDate'];
 				$msg['type']                     = 'chargeback';
-				$this->fileData[] = $msg;
+				$this->fileData[$context][] = $msg;
 			}
 		}
-		return json_encode( $this->fileData ) . "\n";
 	}
 
 	/**
@@ -209,10 +224,9 @@ class SearchTransactions extends MaintenanceBase {
 
 	/**
 	 * @param string $greaterThan
-	 * @param string $now
 	 * @return array[]
 	 */
-	public function getInput( string $greaterThan, string $now ): array {
+	public function getInput( string $greaterThan ): array {
 		$dateField = $this->getOption( 'date-type' );
 		if ( $dateField === 'disbursement' ) {
 			// The sum of disbursements adds up to the batch sum...
@@ -220,8 +234,8 @@ class SearchTransactions extends MaintenanceBase {
 			$endDate = $this->getOption( 'end-date' ) ?: $startDate;
 			return [
 				'disbursementDate' => [
-					'greaterThanOrEqualTo' => date( 'Y-m-d', strtotime( $startDate ) ),
-					'lessThanOrEqualTo' => date( 'Y-m-d', strtotime( $endDate ) ),
+					'greaterThanOrEqualTo' => gmdate( 'Y-m-d', strtotime( $startDate ) ),
+					'lessThanOrEqualTo' => gmdate( 'Y-m-d', strtotime( $endDate ) ),
 				]
 			];
 		}
@@ -231,14 +245,17 @@ class SearchTransactions extends MaintenanceBase {
 				'statusTransition' => [
 					'settledAt' => [
 						'greaterThanOrEqualTo' => $greaterThan,
-						'lessThan' => $now
+						'lessThan' => $this->now,
 					],
-				]
+				],
 			];
 		}
 
-		$input = [ $this->getDateField() => [ "greaterThanOrEqualTo" => $greaterThan, "lessThanOrEqualTo" => $now ] ];
-		return $input;
+		return [ $this->getDateField() => [ "greaterThanOrEqualTo" => $greaterThan, "lessThanOrEqualTo" => $this->now ] ];
+	}
+
+	private function isDisbursementReport(): bool {
+		return $this->getOption( 'report-type' ) === 'disbursement';
 	}
 
 	/**
@@ -263,6 +280,89 @@ class SearchTransactions extends MaintenanceBase {
 	private function isRunChargebackReport(): bool {
 		$type = $this->getOption( 'type' );
 		return !$type || $type === 'all' || $type === 'chargeback';
+	}
+
+	/**
+	 * @param string $context
+	 * @return resource
+	 */
+	private function getFile( string $context = '' ) {
+		if ( $this->isConsolidated() ) {
+			$context = 'consolidated';
+		}
+		if ( !isset( $this->files[$context] ) ) {
+			// Put disbursement in the title if the disbursement option is used because
+			// we will calculate totals if it is present.
+			$type = $this->isDisbursementReport() ? 'disbursement' : 'batch';
+			$pathPrefix = $this->getOption( 'output-raw' ) ? '/raw_' . $type . '_report_' : "/settlement_' . $type . '_report_";
+			$path = $this->getOption( 'path' );
+			if ( $context ) {
+				$pathPrefix .= $context . '_';
+			}
+			// Start and end but end first for recency sorting.
+			$mainFile = $path . $pathPrefix . gmdate( 'Y-m-d', strtotime( $this->getStartDate() ) ) . '_' . gmdate( 'Y-m-d', strtotime( $this->getEndDate() ) ) . ".json";
+			$this->files[$context] = fopen( $mainFile, "w" ) or die( "Unable to open file!" );
+		}
+		return $this->files[$context];
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getStartDate(): string {
+		$hrs = $this->getOption( 'hours' );
+		$startDate = $this->getOption( 'start-date' );
+		if ( $startDate ) {
+			$greaterThan = date( 'c', strtotime( $startDate ) );
+		} else {
+			$greaterThan = date( 'c', strtotime( "-$hrs hours" ) );
+		}
+		return $greaterThan;
+	}
+
+	private function getDayBeforeStartDate(): string {
+		return date( 'c', strtotime( '-1 day', strtotime( $this->getStartDate() ) ) );
+	}
+
+	/**
+	 * @return string
+	 */
+	private function getEndDate(): string {
+		$endDate = $this->getOption( 'end-date' );
+		if ( $endDate ) {
+			$endDate = gmdate( 'Y-m-d', strtotime( $endDate ) );
+		} elseif ( $this->getOption( 'date-type' ) === 'disbursement' ) {
+			// When disbursements are requested and only a single day is provided
+			// then we treat this as a single day request.
+			$endDate = $this->getOption( 'start-date' );
+		} else {
+			$endDate = substr( $this->now, 0, 10 );
+		}
+		return $endDate;
+	}
+
+	private function getDayBeforeEndDate(): string {
+		return date( 'c', strtotime( '-1 day', strtotime( $this->getEndDate() ) ) );
+	}
+
+	/**
+	 * @param mixed $context
+	 * @return void
+	 */
+	public function writeToFile( string $context ): void {
+		$file = $this->getFile( $context );
+		foreach ( $this->fileData[$context] as $item ) {
+			// Write each line individually so they wind up on separate lines - helpful when grepping
+			// as otherwise the 'found line' is the whole file.
+			fwrite( $file, json_encode( $item, JSON_UNESCAPED_SLASHES ) . "\n" );
+		}
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isConsolidated(): bool {
+		return (bool)$this->getOption( 'consolidate' );
 	}
 }
 

@@ -1,0 +1,11 @@
+"SH","2026/01/06 00:00:00 -0800","2026/01/06 23:59:59 -0800","EZ782AXEUJUW8"
+"CH","Transaction ID","Invoice ID","PayPal Reference ID","PayPal Reference ID Type","Transaction Event Code","Transaction Initiation Date","Transaction Completion Date",Transaction Debit or Credit,"Gross Transaction Amount","Gross Transaction Currency","Fee Debit or Credit","Fee Amount","Fee Currency","Custom Field","Consumer ID","Payment Tracking ID",Store ID,"Bank Reference ID","Credit Transactional Fee","Credit Promotional Fee","Credit Term"
+"SB",5678,2444.1,4H844,"TXN","T0006",2026/01/06 00:00:30 -0800,2026/01/06 00:00:30 -0800,"CR",5200,"AUD","DR",225,"AUD","",YM2C,"","","",,,
+"SB",6789,2443.1,4KF03,"TXN","T0006",2026/01/06 00:06:02 -0800,2026/01/06 00:06:02 -0800,"CR",535,"AUD","DR",75,"AUD","",SJRT,"","","",,,
+"SB",68C7,2213.15,64057,"TXN","T0003",2026/01/06 23:31:39 -0800,2026/01/06 23:31:39 -0800,"CR",834,"GBP","DR",87,"GBP","1BNiJizt4I507Sxkgn4DRX",AZVDZ,"","","",,,
+"SB",6899,2216.15,99900,"TXN",T1107,2026/01/06 23:31:39 -0800,2026/01/06 23:31:39 -0800,DR,134,"GBP",CR,47,"GBP","",AZVDZ,"","","",,,
+"SB",3MG88942N0662370U,,,,T0400,2026/01/06 23:31:39 -0800,2026/01/06 23:31:39 -0800,DR,100,"GBP",,,,,,,,1047428557493,,,
+"SF","GBP",834,134,87,47,"CR",547,"CR",5530,"CR",5530,"CR",5530,"CR",0,"CR",0,1
+"SF","AUD",5735,0,300,600,"CR",900,"CR",6000,"CR",6000,"CR",6000,"CR",0,"CR",0,2
+"RF","GBP",834,134,87,47,"CR",547,"CR",5530,"CR",5530,"CR",5530,"CR",0,"CR",0,1
+"RF","AUD",5735,0,300,600,"CR",900,"CR",6000,"CR",6000,"CR",6000,"CR",0,"CR",0,2

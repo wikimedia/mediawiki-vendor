@@ -215,3 +215,5 @@ requeue-max-age: 12000
 # global configuration files. Change this value to read provider configuration
 # files from an alternate directory.
 provider-configuration-directory: '/etc/smashpig'
+
+logs-archive-directory: '/srv/archive/frlog/logs'

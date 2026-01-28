@@ -5,6 +5,8 @@
     "createdAt": "2025-12-21T22:58:37.000000Z",
     "merchantAccountId": "wikimediafoundation_instant",
     "status": "SETTLED",
+    "customer":null,
+    "customFields":[{"name":"fullname","value":"Donald Duck"}],
     "refunds": null,
     "statusHistory": [
       {

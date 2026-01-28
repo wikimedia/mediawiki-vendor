@@ -186,8 +186,7 @@ class CurlWrapper {
 		return [
 			'body' => $body,
 			'headers' => $responseHeaders,
-			'status' => (int)$curlInfo['http_code'],
-			'elapsed' => $curlInfo['total_time'],
+			'status' => (int)$curlInfo['http_code']
 		];
 	}
 }

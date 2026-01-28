@@ -160,9 +160,23 @@ class NotificationsTest extends BaseGravyTestCase {
 		$this->assertNotNull( $jobsMessage, 'Deletion event should be queued to jobs queue' );
 	}
 
-	public function testTrustlyPaymentMFailedMessageIsSentToRefund(): void {
+	public function testTrustlyPaymentFailedMessageIsNotSentToRefund(): void {
 		[ $request, $response ] = $this->getValidRequestResponseObjects();
 		$message = json_decode( file_get_contents( __DIR__ . '/../Data/trustly-create-transaction-failed-message.json' ), true );
+		$request->method( 'getRawRequest' )->willReturn( json_encode( $message ) );
+		$this->mockApi->expects( $this->never() )
+			->method( 'getTransaction' );
+		$this->gravyListener->execute( $request, $response );
+		$refundMessage = $this->refundQueue->pop();
+		$jobsMessage = $this->jobsGravyQueue->pop();
+
+		$this->assertNull( $refundMessage, 'No message for the failed ACH payment shoud be queued to refund queue' );
+		$this->assertNull( $jobsMessage, 'No message shoud be queued to jobs queue' );
+	}
+
+	public function testTrustlyPaymentDeclinedMessageIsSentToRefundQueue(): void {
+		[ $request, $response ] = $this->getValidRequestResponseObjects();
+		$message = json_decode( file_get_contents( __DIR__ . '/../Data/trustly-create-transaction-declined-message.json' ), true );
 		$request->method( 'getRawRequest' )->willReturn( json_encode( $message ) );
 		$this->mockApi->expects( $this->never() )
 			->method( 'getTransaction' );

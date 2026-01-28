@@ -82,6 +82,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'payment_method' => 'venmo',
 			'external_identifier' => 'xyz',
 			'gateway_txn_id' => 'abcde',
+			'full_name' => 'Donald Duck',
 		];
 		$this->assertEquals( $expected, $output[0], 'Did not parse paypal donation correctly' );
 	}
@@ -199,6 +200,45 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	}
 
 	/**
+	 * Process raw refund
+	 */
+	public function testProcessRawGravyRefund(): void {
+		$processor = new BraintreeAudit();
+		$output = $processor->parseFile( __DIR__ . '/../Data/raw_batch_report_gravy_refund.json' );
+		$this->assertCount( 1, $output, 'Should have found two refunds' );
+		$expected = [
+			'gateway' => 'gravy',
+			'backend_processor' => 'braintree',
+			'audit_file_gateway' => 'braintree',
+			'date' => strtotime( '2025-12-23T20:11:52.000000Z' ),
+			'gross' => '1.03',
+			'original_total_amount' => -1.03,
+			'settled_net_amount' => -1.03,
+			'settled_total_amount' => -1.03,
+			'currency' => 'USD',
+			'email' => null,
+			'gateway_parent_id' => 'f8ee36ec-8e6a-490e-a9e8-6398e3e5e760',
+			'gateway_refund_id' => 'cmVmdW5kX2g3OWY5Yzdo',
+			'backend_processor_parent_id' => 'dHJhbnNhY3Rpb25fMHRjYzJ5cmo',
+			'backend_processor_refund_id' => 'cmVmdW5kX2g3OWY5Yzdo',
+			'invoice_id' => '7ZixbnFwSdg8h4IjcDPdTs',
+			'phone' => null,
+			'first_name' => null,
+			'last_name' => null,
+			'payment_method' => 'venmo',
+			'type' => 'refund',
+			'original_currency' => 'USD',
+			'external_identifier' => 'Christine-Train',
+			'settled_date' => strtotime( '2025-12-24 UTC' ),
+			'settlement_batch_reference' => '20251224',
+			'settled_fee_amount' => 0,
+			'exchange_rate' => '1',
+			'settled_currency' => 'USD',
+		];
+		$this->assertEquals( $expected, $output[0], 'Did not parse refund correctly' );
+	}
+
+	/**
 	 * And a dispute
 	 */
 	public function testProcessDispute(): void {
@@ -273,7 +313,48 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'original_currency' => 'USD',
 			'external_identifier' => 'D',
 			'settled_date' => strtotime( '2025-12-21 UTC' ),
-			'settlement_batch_reference' => '20251221',
+			'settlement_batch_reference' => '20251221_chargebacks',
+			'settled_fee_amount' => 0,
+			'exchange_rate' => 1,
+			'settled_currency' => 'USD',
+		];
+		$this->assertEquals( $expectedPaypal, $actualPaypal, 'Did not parse dispute correctly' );
+	}
+
+	/**
+	 * Process a dispute where the format is nd_json and there is only 1 row.
+	 *
+	 * For transitional reasons we handle full json and nd_json - in the latter
+	 * case every row is a separate json object but the file itself is not valid json.
+	 */
+	public function testProcessRawDisputeSingleRowNDJSON(): void {
+		$processor = new BraintreeAudit();
+		$output = $processor->parseFile( __DIR__ . '/../Data/raw_batch_report_dispute_single_nd_json.json' );
+		$this->assertCount( 1, $output, 'Should have found two disputes that are resolved, others ignored' );
+		$actualPaypal = $output[0];
+		$expectedPaypal = [
+			'gateway' => 'braintree',
+			'audit_file_gateway' => 'braintree',
+			'date' => strtotime( '2025-12-21 UTC' ),
+			'gross' => '5.35',
+			'original_total_amount' => '-5.35',
+			'settled_net_amount' => '-5.35',
+			'settled_total_amount' => '-5.35',
+			'contribution_tracking_id' => '2387',
+			'currency' => 'USD',
+			'email' => null,
+			'gateway_refund_id' => 'ZGlzcH',
+			'invoice_id' => '2387.3',
+			'phone' => null,
+			'first_name' => null,
+			'last_name' => null,
+			'payment_method' => 'venmo',
+			'type' => 'chargeback',
+			'gateway_parent_id' => 'dHJhb',
+			'original_currency' => 'USD',
+			'external_identifier' => 'D',
+			'settled_date' => strtotime( '2025-12-22 UTC' ),
+			'settlement_batch_reference' => '20251222_chargebacks',
 			'settled_fee_amount' => 0,
 			'exchange_rate' => 1,
 			'settled_currency' => 'USD',

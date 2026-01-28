@@ -1,0 +1,4 @@
+"CH","Transaction ID","Invoice ID","PayPal Reference ID","PayPal Reference ID Type","Transaction Event Code","Transaction Initiation Date","Transaction Completion Date",Transaction Debit or Credit,"Gross Transaction Amount","Gross Transaction Currency","Fee Debit or Credit","Fee Amount","Fee Currency","Custom Field","Consumer ID","Payment Tracking ID",Store ID,"Bank Reference ID","Credit Transactional Fee","Credit Promotional Fee","Credit Term"
+"SB",1DV3,7233.6,2N092,"TXN","T0003",2026/01/06 04:26:31 -0800,2026/01/06 04:26:31 -0800,"CR",2200,"BRL","DR",360,"BRL","5jImyEK1vFvvvmoxlWR7SO",49W9F,"","","",,,
+"SB",6MK2,7233.6,1DV3,"TXN","T0200",2026/01/06 04:26:31 -0800,2026/01/06 04:26:31 -0800,"DR",1840,"BRL","",,"","5jImyEK1vFvvvmoxlWR7SO","","","","",,,
+"SB",6L22,7233.6,1DV3,"TXN","T0200",2026/01/06 04:26:31 -0800,2026/01/06 04:26:31 -0800,"CR",327,"USD","",,"","5jImyEK1vFvvvmoxlWR7SO","","","","",,,

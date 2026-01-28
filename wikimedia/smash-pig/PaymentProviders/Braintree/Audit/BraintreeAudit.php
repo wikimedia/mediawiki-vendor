@@ -2,6 +2,7 @@
 
 use Brick\Money\Money;
 use SmashPig\Core\DataFiles\AuditParser;
+use SmashPig\Core\Helpers\Base62Helper;
 use SmashPig\Core\Logging\Logger;
 use SmashPig\Core\NormalizationException;
 use SmashPig\Core\UtcDate;
@@ -19,16 +20,59 @@ class BraintreeAudit implements AuditParser {
 	public function parseFile( string $path ): array {
 		$this->fileData = [];
 		$file = json_decode( file_get_contents( $path, 'r' ), true );
+		if ( $file && !isset( $file['id'] ) && !isset( $file['type'] ) ) {
+			// File is in the old format where the json is valid for the whole file.
+			// This format is harder to grep and has a higher risk of invalid json if it crashes
+			// while writing.
+			// @todo eliminate after transition period.
+			foreach ( $file as $line ) {
+				try {
+					$this->parseLine( $line );
+				} catch ( NormalizationException $ex ) {
+					Logger::error( $ex->getMessage() );
+				}
+			}
+			return $this->fileData;
 
-		foreach ( $file as $line ) {
+		}
+		foreach ( file( $path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES ) as $line ) {
+			// File is in new NDJSON format - each line is a valid json object.
+			$item = json_decode( $line, true );
 			try {
-				$this->parseLine( $line );
+				if ( !is_array( $item ) ) {
+					throw new NormalizationException( 'Invalid Item ' . $line );
+				}
+				$this->parseLine( $item );
 			} catch ( NormalizationException $ex ) {
 				Logger::error( $ex->getMessage() );
 			}
 		}
+		$result = $this->fileData;
+		if ( str_contains( $path, '_disbursement_' ) ) {
+			foreach ( $this->totals as $batchName => $total ) {
+				// Add batch aggregate row - we have split these into 2 batches - chargebacks
+				// and donations + refunds because that aligns with the Disbursement search UI
+				// and chargebacks seem a bit unpredictable since we can only query by 'effective date'
+				// and hope the disbursement date is reliable from there. Better to keep what is known
+				// reliable to be reliable.
+				$result[] = $this->getAggregateRow( $batchName, $total );
+			}
+		}
+		return $result;
+	}
 
-		return $this->fileData;
+	private function getAggregateRow( string $batchName, Money $total ): array {
+		return [
+			'settled_currency' => (string)$total->getCurrency(),
+			'settled_total_amount' => (string)$total->getAmount(),
+			'gateway' => 'braintree',
+			'type' => 'payout',
+			'gateway_txn_id' => $batchName,
+			'invoice_id' => $batchName,
+			'settlement_batch_reference' => $batchName,
+			'settled_date' => substr( $batchName, 0, 8 ),
+			'date' => substr( $batchName, 0, 8 ),
+		];
 	}
 
 	protected function parseLine( $line ): void {
@@ -36,10 +80,10 @@ class BraintreeAudit implements AuditParser {
 		// not create them until it does.
 		$isRaw = is_array( $line['amount'] ?? null ) || is_array( $line['statusHistory'] ?? null );
 		if ( $isRaw ) {
-			$isDispute = is_array( $line['amountWon'] ?? null );
+			$isDispute = is_array( $line['amountDisputed'] ?? null );
 			if ( $isDispute ) {
-				// As far as we know the only interesting one is 'WON' but tracking what we see while ignoring
-				if ( $line['status'] !== 'WON' ) {
+				// As far as we know the only interesting one is 'LOST' but tracking what we see while ignoring
+				if ( $line['status'] !== 'LOST' ) {
 					if ( !isset( $this->ignoredDisputeStatuses[$line['status']] ) ) {
 						$this->ignoredDisputeStatuses[$line['status']] = 0;
 					}
@@ -116,6 +160,7 @@ class BraintreeAudit implements AuditParser {
 		$msg['phone'] = $this->getPayerInfo( $row, 'phone' );
 		$msg['first_name'] = $this->getPayerInfo( $row, 'first_name' );
 		$msg['last_name'] = $this->getPayerInfo( $row, 'last_name' );
+		$msg['full_name'] = $this->getPayerInfo( $row, 'fullname' );
 		$msg['external_identifier'] = $this->getPayerInfo( $row, 'username' );
 		$msg['gateway_txn_id'] = $row['id'];
 		$msg['settled_date'] = UtcDate::getUtcTimestamp( $row['disbursementDetails']['date'] );
@@ -125,10 +170,10 @@ class BraintreeAudit implements AuditParser {
 		$msg['exchange_rate'] = $row['disbursementDetails']['exchangeRate'];
 		$msg['settled_currency'] = $row['disbursementDetails']['amount']['currencyCode'];
 
-		if ( !isset( $this->totals[$msg['settled_date']] ) ) {
-			$this->totals[$msg['settled_date']] = Money::zero( $msg['currency'] );
+		if ( !isset( $this->totals[$msg['settlement_batch_reference']] ) ) {
+			$this->totals[$msg['settlement_batch_reference']] = Money::zero( $msg['currency'] );
 		}
-		$this->totals[$msg['settled_date']] = $this->totals[$msg['settled_date']]->plus( $msg['settled_net_amount'] );
+		$this->totals[$msg['settlement_batch_reference']] = $this->totals[$msg['settlement_batch_reference']]->plus( $msg['settled_net_amount'] );
 		return $msg;
 	}
 
@@ -137,10 +182,13 @@ class BraintreeAudit implements AuditParser {
 		$msg['gateway'] = $msg['audit_file_gateway'] = 'braintree';
 		$msg['type'] = 'chargeback';
 		foreach ( $row['statusHistory'] as $history ) {
-			if ( $history['status'] === 'WON' ) {
+			if ( $history['status'] === 'LOST' ) {
 				// Using the date it was won both here & settled date, arguably should use initiated date here
 				// and this for settled date?
 				$msg['date'] = UtcDate::getUtcTimestamp( $history['effectiveDate'] );
+			}
+			if ( !empty( $history['disbursementDate'] ) ) {
+				$msg['settled_date'] = UtcDate::getUtcTimestamp( $history['disbursementDate'] );
 			}
 		}
 
@@ -158,24 +206,25 @@ class BraintreeAudit implements AuditParser {
 			$msg['gateway_refund_id'] = $row['id'];
 		}
 		$msg['payment_method'] = isset( $row['paymentMethodSnapshot']['payer'] ) ? 'paypal' : 'venmo';
-		$msg['gross'] = $row['amountWon']['value'];
-		$msg['currency'] = $msg['original_currency'] = $row['amountWon']['currencyCode'];
+		$msg['gross'] = $row['amountDisputed']['value'];
+		$msg['currency'] = $msg['original_currency'] = $row['amountDisputed']['currencyCode'];
 		$msg['email'] = $this->getPayerInfo( $parentTransaction, 'email' );
 		$msg['phone'] = $this->getPayerInfo( $parentTransaction, 'phone' );
 		$msg['first_name'] = $this->getPayerInfo( $parentTransaction, 'first_name' );
 		$msg['last_name'] = $this->getPayerInfo( $parentTransaction, 'last_name' );
 		$msg['external_identifier'] = $this->getPayerInfo( $parentTransaction, 'username' );
-		$msg['settled_date'] = $msg['date'];
-		$msg['settlement_batch_reference'] = gmdate( 'Ymd', $msg['date'] );
-		$msg['settled_total_amount'] = $msg['settled_net_amount'] = $msg['original_total_amount'] = -$row['amountWon']['value'];
+		$msg['settled_total_amount'] = $msg['settled_net_amount'] = $msg['original_total_amount'] = -$row['amountDisputed']['value'];
 		$msg['settled_fee_amount'] = 0;
 		$msg['exchange_rate'] = 1;
-		$msg['settled_currency'] = $row['amountWon']['currencyCode'];
+		$msg['settled_currency'] = $row['amountDisputed']['currencyCode'];
 
-		if ( !isset( $this->totals[$msg['settled_date']] ) ) {
-			$this->totals[$msg['settled_date']] = Money::zero( $msg['currency'] );
+		if ( !empty( $msg['settled_date'] ) ) {
+			$msg['settlement_batch_reference'] = gmdate( 'Ymd', $msg['settled_date'] ) . '_chargebacks';
 		}
-		$this->totals[$msg['settled_date']] = $this->totals[$msg['settled_date']]->plus( $msg['settled_net_amount'] );
+		if ( !isset( $this->totals[$msg['settlement_batch_reference']] ) ) {
+			$this->totals[$msg['settlement_batch_reference']] = Money::zero( $msg['currency'] );
+		}
+		$this->totals[$msg['settlement_batch_reference']] = $this->totals[$msg['settlement_batch_reference']]->plus( $msg['settled_net_amount'] );
 		return $msg;
 	}
 
@@ -191,6 +240,9 @@ class BraintreeAudit implements AuditParser {
 			$msg['backend_processor'] = 'braintree';
 			$msg['backend_processor_parent_id'] = $parentTransaction['id'];
 			$msg['backend_processor_refund_id'] = $row['id'];
+			$msg['gateway_parent_id'] = Base62Helper::toUuid( $row['orderId'] );
+			// We don't get the gravy refund ID at the moment and we have to have something so use the braintree one.
+			$msg['gateway_refund_id'] = $row['id'];
 			$msg['gateway'] = 'gravy';
 		} else {
 			$orderParts = explode( '.', $msg['invoice_id'] );
@@ -214,10 +266,10 @@ class BraintreeAudit implements AuditParser {
 		$msg['exchange_rate'] = $row['disbursementDetails']['exchangeRate'];
 		$msg['settled_currency'] = $row['disbursementDetails']['amount']['currencyCode'];
 
-		if ( !isset( $this->totals[$msg['settled_date']] ) ) {
-			$this->totals[$msg['settled_date']] = Money::zero( $msg['currency'] );
+		if ( !isset( $this->totals[$msg['settlement_batch_reference']] ) ) {
+			$this->totals[$msg['settlement_batch_reference']] = Money::zero( $msg['currency'] );
 		}
-		$this->totals[$msg['settled_date']] = $this->totals[$msg['settled_date']]->plus( $msg['settled_net_amount'] );
+		$this->totals[$msg['settlement_batch_reference']] = $this->totals[$msg['settlement_batch_reference']]->plus( $msg['settled_net_amount'] );
 		return $msg;
 	}
 
@@ -228,6 +280,10 @@ class BraintreeAudit implements AuditParser {
 	 * @return string|null
 	 */
 	private function getPayerInfo( array $row, string $fieldName, bool $isChargeBack = false ): ?string {
+		$customFieldValue = $this->getCustomFieldValue( $row, $fieldName );
+		if ( $customFieldValue ) {
+			return $customFieldValue;
+		}
 		if ( !$isChargeBack && $row['paymentMethodSnapshot'] ) {
 			$payerBlock = $row['paymentMethodSnapshot'];
 		} elseif ( $isChargeBack && $row['transaction']['paymentMethodSnapshot'] ) {
@@ -240,6 +296,18 @@ class BraintreeAudit implements AuditParser {
 		}
 		if ( isset( $payerBlock[$fieldName] ) ) {
 			return $payerBlock[$fieldName];
+		}
+		return null;
+	}
+
+	protected function getCustomFieldValue( array $row, string $fieldName ): ?string {
+		if ( !isset( $row['customFields'] ) ) {
+			return null;
+		}
+		foreach ( $row['customFields'] as $customField ) {
+			if ( $customField['name'] === $fieldName ) {
+				return $customField['value'];
+			}
 		}
 		return null;
 	}

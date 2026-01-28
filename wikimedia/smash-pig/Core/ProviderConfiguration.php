@@ -5,7 +5,9 @@ namespace SmashPig\Core;
 class ProviderConfiguration extends Configuration {
 
 	const NO_PROVIDER = 'no_provider';
+	const NO_PAYMENT_METHOD = 'no_payment_method';
 	protected $provider;
+	protected ?string $paymentMethod = null;
 	protected $machinewideBaseDirectory;
 
 	protected function __construct( GlobalConfiguration $globalConfig ) {
@@ -77,6 +79,7 @@ class ProviderConfiguration extends Configuration {
 	public static function createDefault( GlobalConfiguration $globalConfig ): ProviderConfiguration {
 		$config = new static( $globalConfig );
 		$config->provider = self::NO_PROVIDER;
+		$config->paymentMethod = self::NO_PAYMENT_METHOD;
 		$config->loadDefaultConfig();
 
 		return $config;
@@ -100,5 +103,13 @@ class ProviderConfiguration extends Configuration {
 
 	public function getProviderName(): string {
 		return $this->provider;
+	}
+
+	public function setPaymentMethod( string $paymentMethod ): void {
+		$this->paymentMethod = $paymentMethod;
+	}
+
+	public function getPaymentMethod(): ?string {
+		return $this->paymentMethod;
 	}
 }

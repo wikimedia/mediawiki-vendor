@@ -67,7 +67,6 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 				'status' => 200,
 				'body' => '{"result":"test"}',
 				'headers' => [],
-				'elapsed' => 2,
 			] );
 
 		// headers are generated during the call to makeApiCall
@@ -96,7 +95,6 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 				'status' => 200,
 				'body' => '{"result":"test"}',
 				'headers' => [],
-				'elapsed' => 2,
 			] );
 
 		// headers are generated during the call to makeApiCall
@@ -133,7 +131,6 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 				'status' => 200,
 				'body' => '{"result":"test"}',
 				'headers' => [],
-				'elapsed' => 2,
 			] );
 
 		// headers are generated during the call to makeApiCall
@@ -709,7 +706,6 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 			[
 				'http_code' => $statusCode,
 				'header_size' => $header_size,
-				'total_time' => 2,
 			]
 		);
 	}

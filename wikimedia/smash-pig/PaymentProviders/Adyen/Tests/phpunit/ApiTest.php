@@ -168,8 +168,7 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 			->willReturn( [
 				'body' => $responseBody,
 				'headers' => [], // This API doesn't care
-				'status' => 200,
-				'elapsed' => 2,
+				'status' => 200
 			] );
 		$response = $this->api->createPaymentFromEncryptedDetails( $params );
 		$this->assertEquals( json_decode( $responseBody, true ), $response );
@@ -182,8 +181,7 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 			->willReturn( [
 				'body' => $responseBody,
 				'headers' => [], // This API doesn't care
-				'status' => 500,
-				'elapsed' => 2,
+				'status' => 500
 			] );
 		$response = $this->api->createPaymentFromEncryptedDetails( $this->getCreatePaymentTestParams() );
 		$this->assertEquals( '905_1', $response['errorCode'] );
@@ -253,8 +251,7 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 			)->willReturn( [
 				'body' => '{}', // ignoring returned content for this test
 				'headers' => [], // This API doesn't care
-				'status' => 200,
-				'elapsed' => 2,
+				'status' => 200
 			] );
 		$this->api->createBankTransferPaymentFromCheckout( $params );
 	}
@@ -303,8 +300,7 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 			->willReturn( [
 				'body' => $responseBody,
 				'headers' => [], // This API doesn't care
-				'status' => 200,
-				'elapsed' => 2,
+				'status' => 200
 			] );
 		$this->api->createPaymentFromEncryptedDetails( $params );
 	}

@@ -1,0 +1,33 @@
+{
+  "type": "event",
+  "id": "943bec45-7cab-4555-8ea1-def34c34fae9",
+  "name": "transaction.declined",
+  "created_at": "2012-12-12T10:53:43+00:00",
+  "merchant_account_id": "default",
+  "gr4vy_id": "example",
+  "environment": "sandbox",
+  "target": {
+    "type": "transaction",
+    "id": "943bec45-7cab-4555-8ea1-def34c34fae9",
+    "status": "authorization_declined",
+    "payment_method": {
+      "method": "trustly"
+    },
+    "external_identifier": "order-1234",
+    "amount": 1299,
+    "currency": "USD",
+    "authorized_amount": 1299,
+    "captured_amount": 0,
+    "refunded_amount": 0,
+    "payment_service_transaction_id": "1025610947",
+    "payment_link_id": null,
+    "has_gift_card_redemptions": false,
+    "pending_review": false,
+    "error_code": "canceled_payment_method",
+    "metadata": {
+      "profile": "profile-1234"
+    },
+    "created_at": "2024-09-17T16:54:57.333316+00:00",
+    "updated_at": "2024-09-17T16:55:06.560721+00:00"
+  }
+}
