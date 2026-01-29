@@ -85,6 +85,7 @@
 		"spomky-labs/cbor-php": "3.2.2",
 		"spomky-labs/pki-framework": "1.4.1",
 		"swaggest/json-diff": "3.12.1",
+		"symfony/clock": "6.4.30",
 		"symfony/console": "6.4.32",
 		"symfony/deprecation-contracts": "3.6.0",
 		"symfony/polyfill-php83": "1.33.0",
@@ -103,7 +104,7 @@
 		"symfony/var-dumper": "6.4.32",
 		"symfony/yaml": "6.4.30",
 		"web-auth/cose-lib": "4.5.0",
-		"web-auth/webauthn-lib": "4.9.3",
+		"web-auth/webauthn-lib": "5.2.3",
 		"webonyx/graphql-php": "15.30.1",
 		"wikimedia/assert": "0.5.1",
 		"wikimedia/at-ease": "3.0.0",
@@ -151,6 +152,7 @@
 	"replace": {
 		"krinkle/intuition": "2.3.99",
 		"paragonie/random_compat": "9.99.99",
+		"phpdocumentor/reflection-docblock": "5.99",
 		"symfony/polyfill-ctype": "1.99",
 		"symfony/polyfill-intl-grapheme": "1.17.1",
 		"symfony/polyfill-intl-normalizer": "1.17.1",
@@ -171,3 +173,4 @@
 		}
 	]
 }
+
