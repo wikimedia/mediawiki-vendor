@@ -13,8 +13,8 @@ class DOMBuilder extends RemexDOMBuilder {
 	public function __construct() {
 		parent::__construct( [
 			'suppressHtmlNamespace' => true,
+			'domImplementationClass' => \DOMImplementation::class,
 			# 'suppressIdAttribute' => true,
-			#'domExceptionClass' => \Wikimdedia\Dodo\DOMException::class,
 		] );
 	}
 
@@ -29,6 +29,7 @@ class DOMBuilder extends RemexDOMBuilder {
 		?string $public = null,
 		?string $system = null
 	) {
+		$doctypeName ??= 'html';
 		// @phan-suppress-next-line PhanTypeMismatchReturn
 		return DOMCompat::newDocument( $doctypeName === 'html' );
 	}
