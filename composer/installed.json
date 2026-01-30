@@ -3566,17 +3566,17 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.21.2",
-            "version_normalized": "0.21.2.0",
+            "version": "v0.21.3",
+            "version_normalized": "0.21.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
-                "reference": "c9fbe409de431a5e2635debc81bafb13de39c0fd"
+                "reference": "80dcb6ffd2f3de83b9ae9cb508db958319aeb37c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/c9fbe409de431a5e2635debc81bafb13de39c0fd",
-                "reference": "c9fbe409de431a5e2635debc81bafb13de39c0fd",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/80dcb6ffd2f3de83b9ae9cb508db958319aeb37c",
+                "reference": "80dcb6ffd2f3de83b9ae9cb508db958319aeb37c",
                 "shasum": ""
             },
             "require": {
@@ -3588,17 +3588,16 @@
                 "liuggio/statsd-php-client": "^1.0.18",
                 "php": ">=8.1.0",
                 "psr/container": "~1.1.2 || ~2.0.2",
-                "psr/log": "^1.1.4",
-                "symfony/polyfill-php80": "^1.23.1",
+                "psr/log": "^1.1.4 || ^3.0.0",
                 "wikimedia/assert": "^0.5.1",
                 "wikimedia/bcp-47-code": "^2.0.0",
                 "wikimedia/idle-dom": "2.0.1",
                 "wikimedia/ip-utils": "^5.0.0",
                 "wikimedia/json-codec": "^3.0.2",
                 "wikimedia/object-factory": "^5.0.1",
-                "wikimedia/remex-html": "^4.1.2",
+                "wikimedia/remex-html": "^4.0.0 || ^5.0.0",
                 "wikimedia/wikipeg": "^4.0.0 || ^5.0.0",
-                "wikimedia/zest-css": "^3.0.1"
+                "wikimedia/zest-css": "^3.0.1 || ^4.0.0"
             },
             "conflict": {
                 "wikimedia/langconv": "<0.4.2"
@@ -3613,16 +3612,17 @@
                 "ockcyp/covers-validator": "1.6.0",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
                 "php-parallel-lint/php-parallel-lint": "1.4.0",
-                "phpunit/phpunit": "9.6.21",
+                "phpunit/phpunit": "9.6.34",
                 "sebastian/diff": "^4.0.3",
                 "wikimedia/alea": "^1.0.0",
+                "wikimedia/dodo": "^0.5.0 || ^0.6.0",
                 "wikimedia/langconv": "^0.4.2",
-                "wikimedia/testing-access-wrapper": "~3.0"
+                "wikimedia/testing-access-wrapper": "~3.0.0 || ~4.0.0"
             },
             "suggest": {
                 "wikimedia/langconv": "Provides script conversion support"
             },
-            "time": "2025-12-27T22:55:22+00:00",
+            "time": "2026-01-30T23:27:17+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -3648,7 +3648,7 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.21.2",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.21.3",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
             "install-path": "../wikimedia/parsoid"
