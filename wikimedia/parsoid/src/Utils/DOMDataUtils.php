@@ -462,6 +462,13 @@ class DOMDataUtils {
 	}
 
 	/**
+	 * Get data meta wiki info, but don't create it if it doesn't exist.
+	 */
+	public static function getDataMwIfExists( Element $node ): ?DataMw {
+		return self::getAttributeObject( $node, 'data-mw', DataMw::hint() );
+	}
+
+	/**
 	 * Set data meta wiki info from a node.
 	 *
 	 * @param Element $node node
@@ -478,8 +485,10 @@ class DOMDataUtils {
 	 * @param string $name name
 	 * @param mixed $defaultVal
 	 * @return mixed
+	 * @deprecated since 0.23; use getAttributeObject()
 	 */
 	public static function getJSONAttribute( Element $node, string $name, $defaultVal ) {
+		PHPUtils::deprecated( __METHOD__, '0.23' );
 		$attVal = DOMCompat::getAttribute( $node, $name );
 		if ( $attVal === null ) {
 			return $defaultVal;
@@ -500,8 +509,10 @@ class DOMDataUtils {
 	 * @param Element $node node
 	 * @param string $name Name of the attribute.
 	 * @param mixed $obj value of the attribute to
+	 * @deprecated since 0.23; use setAttributeObject()
 	 */
 	public static function setJSONAttribute( Element $node, string $name, $obj ): void {
+		PHPUtils::deprecated( __METHOD__, '0.23' );
 		$val = $obj === [] ? '{}' : PHPUtils::jsonEncode( $obj );
 		$node->setAttribute( $name, $val );
 	}
@@ -1109,18 +1120,6 @@ class DOMDataUtils {
 	}
 
 	/**
-	 * Helper function to only fetch node-data if it exists
-	 */
-	private static function getNodeDataIfExists( Element $node ): ?NodeData {
-		// If data-mw were present, loadDataAttribs would have created
-		// the DATA_OBJECT_ATTR_NAME attribute for associated NodeData
-		if ( !$node->hasAttribute( self::DATA_OBJECT_ATTR_NAME ) ) {
-			return null;
-		}
-		return self::getNodeData( $node );
-	}
-
-	/**
 	 * Helper function to remove any entries from data-mw.attribs which match
 	 * this attribute name.  They will be rewritten during rich attribute
 	 * serialization if necessary.
@@ -1130,17 +1129,16 @@ class DOMDataUtils {
 	private static function removeFromExpandedAttrs(
 		Element $node, string $name
 	): void {
-		// Don't create a new data-mw yet if we don't need one.
-		$nodeData = self::getNodeDataIfExists( $node );
-		if ( ( $nodeData->mw ?? null ) === null ) {
+		if ( !self::isHtmlAttributeWithSpecialSemantics( $node->tagName, $name ) ) {
 			return;
 		}
-		if ( !self::isHtmlAttributeWithSpecialSemantics( $node->tagName, $name ) ) {
+		// Don't create a new data-mw yet if we don't need one.
+		$dataMw = self::getDataMwIfExists( $node );
+		if ( $dataMw === null ) {
 			return;
 		}
 		// If there was a data-mw.attribs for this attribute, remove it
 		// (it will be rewritten during serialization later)
-		$dataMw = $nodeData->getDataMw( $node );
 		$dataMw->attribs = array_values( array_filter(
 			$dataMw->attribs ?? [],
 			static function ( $a ) use ( $name ) {
@@ -1290,16 +1288,16 @@ class DOMDataUtils {
 
 		if ( self::isHtmlAttributeWithSpecialSemantics( $node->tagName, $name ) ) {
 			// Look aside at data-mw for attributes with special semantics
-			$nodeData = self::getNodeDataIfExists( $node );
-			if ( ( $nodeData->mw ?? null ) === null ) {
+			$dataMw = self::getDataMwIfExists( $node );
+			if ( $dataMw === null ) {
 				// No data-mw, so no rich value for this attribute
 				return;
 			}
-			$dataMw = $nodeData->getDataMw( $node );
 			// Load all attribute values from $dataMw->attribs to avoid O(N^2)
 			// loading of list
 			if ( $dataMw->attribs ?? false ) {
 				$unused = [];
+				$nodeData = self::getNodeData( $node );
 				foreach ( $dataMw->attribs as $a ) {
 					if ( !( $a instanceof DataMwAttrib ) ) {
 						// This shouldn't happen!
@@ -1319,7 +1317,6 @@ class DOMDataUtils {
 					}
 					$propName = self::RICH_ATTR_DATA_PREFIX . $key;
 					$hintName = self::RICH_ATTR_HINT_PREFIX . $key;
-					$nodeData = self::getNodeData( $node );
 					if ( isset( $value['html'] ) ) {
 						// DocumentFragment has already been decoded.
 						$nodeData->$propName = $value['html'];

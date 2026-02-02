@@ -3,8 +3,8 @@ declare( strict_types = 1 );
 
 namespace Test\Utils;
 
-use Closure;
 use PHPUnit\Framework\TestCase;
+use Wikimedia\Parsoid\Core\DomPageBundle;
 use Wikimedia\Parsoid\DOM\Element;
 use Wikimedia\Parsoid\Ext\DOMDataUtils;
 use Wikimedia\Parsoid\Ext\ExtensionTagHandler;
@@ -31,10 +31,10 @@ class ContentUtilsTest extends TestCase {
 					"options" => [
 						"wt2html" =>
 							[
-								"embedsHTMLInAttributes" => true,
+								"embedsDomInAttributes" => true,
 							]
 					],
-					"handler" => [ "factory" => [ self::class, 'citeHtmlHandler' ] ]
+					"handler" => [ "factory" => [ self::class, 'citeDomHandler' ] ]
 				]
 			] ] );
 
@@ -44,23 +44,25 @@ class ContentUtilsTest extends TestCase {
 				return true;
 			}
 		);
-		$res = ContentUtils::ppToXML( $doc->body, [
-			'innerXML' => true,
-			'fragment' => true,
-		] );
+		$dpb = DomPageBundle::fromLoadedDocument( $doc, siteConfig: $siteConfig );
+		$res = $dpb->toInlineAttributeHtml( [ 'body_only' => true ], siteConfig: $siteConfig );
 
 		// Adding data-parsoid which didn't exist in the original can cause bugs, see T411238
 		self::assertEquals( $html, $res );
 	}
 
-	public static function citeHtmlHandler() {
+	public static function citeDomHandler() {
 		return new class extends ExtensionTagHandler {
-			public function processAttributeEmbeddedHTML(
-				ParsoidExtensionAPI $extApi, Element $elt, Closure $proc
+			public function processAttributeEmbeddedDom(
+				ParsoidExtensionAPI $extApi, Element $elt, callable $proc
 			): void {
 				$dataMw = DOMDataUtils::getDataMw( $elt );
-				if ( isset( $dataMw->body->html ) ) {
-					$dataMw->body->html = $proc( $dataMw->body->html );
+				if ( isset( $dataMw->body ) && $dataMw->body->hasHtml() ) {
+					$df = $dataMw->body->getHtml( $extApi );
+					$changed = $proc( $df );
+					if ( $changed ) {
+						$dataMw->body->setHtml( $extApi, $df );
+					}
 				}
 			}
 		};

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "59102d5e1f31b0b26b1955503e79a092",
+    "content-hash": "25ba99cf4d41e95f07cdac7a7d8e743d",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -7294,16 +7294,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.23.0-a13.1",
+            "version": "v0.23.0-a14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
-                "reference": "42f2c3daa884e31c6732475d96c4959b38627a87"
+                "reference": "2abae46b21a771181052c490e6edbbb26505dd72"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/42f2c3daa884e31c6732475d96c4959b38627a87",
-                "reference": "42f2c3daa884e31c6732475d96c4959b38627a87",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/2abae46b21a771181052c490e6edbbb26505dd72",
+                "reference": "2abae46b21a771181052c490e6edbbb26505dd72",
                 "shasum": ""
             },
             "require": {
@@ -7343,12 +7343,12 @@
                 "ockcyp/covers-validator": "1.7.0",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
                 "php-parallel-lint/php-parallel-lint": "1.4.0",
-                "phpunit/phpunit": "10.5.58",
+                "phpunit/phpunit": "10.5.62",
                 "sebastian/diff": "^5.1.1",
                 "wikimedia/alea": "^1.0.0",
                 "wikimedia/dodo": "^0.7.0",
                 "wikimedia/langconv": "^0.4.2",
-                "wikimedia/testing-access-wrapper": "~3.0.0 || ~4.0.0"
+                "wikimedia/testing-access-wrapper": "^4.0.0"
             },
             "suggest": {
                 "wikimedia/langconv": "Provides script conversion support"
@@ -7377,10 +7377,10 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.23.0-a13.1",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.23.0-a14",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
-            "time": "2026-01-30T16:18:02+00:00"
+            "time": "2026-01-30T22:05:56+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",
