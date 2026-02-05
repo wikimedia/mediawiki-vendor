@@ -6070,17 +6070,17 @@
         },
         {
             "name": "web-auth/webauthn-lib",
-            "version": "4.9.2",
-            "version_normalized": "4.9.2.0",
+            "version": "4.9.3",
+            "version_normalized": "4.9.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-auth/webauthn-lib.git",
-                "reference": "008b25171c27cf4813420d0de31cc059bcc71f1a"
+                "reference": "129fbaccd22163429a39bf85e320fb9eddad035c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-auth/webauthn-lib/zipball/008b25171c27cf4813420d0de31cc059bcc71f1a",
-                "reference": "008b25171c27cf4813420d0de31cc059bcc71f1a",
+                "url": "https://api.github.com/repos/web-auth/webauthn-lib/zipball/129fbaccd22163429a39bf85e320fb9eddad035c",
+                "reference": "129fbaccd22163429a39bf85e320fb9eddad035c",
                 "shasum": ""
             },
             "require": {
@@ -6111,7 +6111,7 @@
                 "symfony/serializer": "As of 4.5.x, the symfony/serializer component will become mandatory for converting objects such as the Metadata Statement",
                 "web-token/jwt-library": "Mandatory for fetching Metadata Statement from distant sources"
             },
-            "time": "2025-01-04T09:47:58+00:00",
+            "time": "2026-02-05T12:48:16+00:00",
             "type": "library",
             "extra": {
                 "thanks": {
@@ -6147,7 +6147,7 @@
                 "webauthn"
             ],
             "support": {
-                "source": "https://github.com/web-auth/webauthn-lib/tree/4.9.2"
+                "source": "https://github.com/web-auth/webauthn-lib/tree/4.9.3"
             },
             "funding": [
                 {

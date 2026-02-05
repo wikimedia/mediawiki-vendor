@@ -100,7 +100,7 @@
 		"symfony/var-dumper": "6.4.32",
 		"symfony/yaml": "6.4.30",
 		"web-auth/cose-lib": "4.5.0",
-		"web-auth/webauthn-lib": "4.9.2",
+		"web-auth/webauthn-lib": "4.9.3",
 		"webonyx/graphql-php": "15.30.1",
 		"wikimedia/assert": "0.5.1",
 		"wikimedia/at-ease": "3.0.0",
