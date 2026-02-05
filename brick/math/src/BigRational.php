@@ -12,6 +12,7 @@ use InvalidArgumentException;
 use LogicException;
 use Override;
 
+use function substr;
 use function trigger_error;
 
 use const E_USER_DEPRECATED;
@@ -20,6 +21,9 @@ use const E_USER_DEPRECATED;
  * An arbitrarily large rational number.
  *
  * This class is immutable.
+ *
+ * Fractions are automatically simplified to lowest terms. For example, `2/4` becomes `1/2`.
+ * The denominator is always strictly positive; the sign is carried by the numerator.
  */
 final readonly class BigRational extends BigNumber
 {
@@ -333,6 +337,10 @@ final readonly class BigRational extends BigNumber
     {
         $that = BigRational::of($that);
 
+        if ($that->isZero()) {
+            throw DivisionByZeroException::divisionByZero();
+        }
+
         $numerator = $this->numerator->multipliedBy($that->denominator);
         $denominator = $this->denominator->multipliedBy($that->numerator);
 
@@ -377,6 +385,8 @@ final readonly class BigRational extends BigNumber
      *
      * @throws MathException            If min/max are not convertible to a BigRational.
      * @throws InvalidArgumentException If min is greater than max.
+     *
+     * @pure
      */
     public function clamp(BigNumber|int|float|string $min, BigNumber|int|float|string $max): BigRational
     {
@@ -410,22 +420,7 @@ final readonly class BigRational extends BigNumber
         return new BigRational($this->denominator, $this->numerator, true);
     }
 
-    /**
-     * Returns the absolute value of this BigRational.
-     *
-     * @pure
-     */
-    public function abs(): BigRational
-    {
-        return new BigRational($this->numerator->abs(), $this->denominator, false);
-    }
-
-    /**
-     * Returns the negated value of this BigRational.
-     *
-     * @pure
-     */
-    public function negated(): BigRational
+    public function negated(): static
     {
         return new BigRational($this->numerator->negated(), $this->denominator, false);
     }
@@ -499,6 +494,66 @@ final readonly class BigRational extends BigNumber
         $simplified = $this->simplified();
 
         return $simplified->numerator->toFloat() / $simplified->denominator->toFloat();
+    }
+
+    /**
+     * Returns the decimal representation of this rational number, with repeating decimals in parentheses.
+     *
+     * Examples:
+     *
+     * - `10/3` returns `3.(3)`
+     * - `171/70` returns `2.4(428571)`
+     * - `1/2` returns `0.5`
+     *
+     * Warning: the length of the repeating decimal period can be as large as `denominator - 1`.
+     * For fractions with large denominators, this method may use excessive memory and time.
+     * For example, `1/100019` has a repeating period of 100,018 digits.
+     *
+     * @pure
+     */
+    public function toRepeatingDecimalString(): string
+    {
+        if ($this->numerator->isZero()) {
+            return '0';
+        }
+
+        $sign = $this->numerator->isNegative() ? '-' : '';
+        $numerator = $this->numerator->abs();
+        $denominator = $this->denominator;
+
+        $integral = $numerator->quotient($denominator);
+        $remainder = $numerator->remainder($denominator);
+
+        $integralString = (string) $integral;
+
+        if ($remainder->isZero()) {
+            return $sign . $integralString;
+        }
+
+        $digits = '';
+        $remainderPositions = [];
+        $index = 0;
+
+        while (! $remainder->isZero()) {
+            $remainderString = (string) $remainder;
+
+            if (isset($remainderPositions[$remainderString])) {
+                $repeatIndex = $remainderPositions[$remainderString];
+                $nonRepeating = substr($digits, 0, $repeatIndex);
+                $repeating = substr($digits, $repeatIndex);
+
+                return $sign . $integralString . '.' . $nonRepeating . '(' . $repeating . ')';
+            }
+
+            $remainderPositions[$remainderString] = $index;
+            $remainder = $remainder->multipliedBy(10);
+
+            $digits .= (string) $remainder->quotient($denominator);
+            $remainder = $remainder->remainder($denominator);
+            $index++;
+        }
+
+        return $sign . $integralString . '.' . $digits;
     }
 
     #[Override]

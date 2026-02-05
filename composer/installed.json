@@ -60,17 +60,17 @@
         },
         {
             "name": "brick/math",
-            "version": "0.14.2",
-            "version_normalized": "0.14.2.0",
+            "version": "0.14.5",
+            "version_normalized": "0.14.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/brick/math.git",
-                "reference": "55c950aa71a2cabc1d8f2bec1f8a7020bd244aa2"
+                "reference": "618a8077b3c326045e10d5788ed713b341fcfe40"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/brick/math/zipball/55c950aa71a2cabc1d8f2bec1f8a7020bd244aa2",
-                "reference": "55c950aa71a2cabc1d8f2bec1f8a7020bd244aa2",
+                "url": "https://api.github.com/repos/brick/math/zipball/618a8077b3c326045e10d5788ed713b341fcfe40",
+                "reference": "618a8077b3c326045e10d5788ed713b341fcfe40",
                 "shasum": ""
             },
             "require": {
@@ -81,7 +81,7 @@
                 "phpstan/phpstan": "2.1.22",
                 "phpunit/phpunit": "^11.5"
             },
-            "time": "2026-01-30T14:03:11+00:00",
+            "time": "2026-02-03T18:06:51+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -111,7 +111,7 @@
             ],
             "support": {
                 "issues": "https://github.com/brick/math/issues",
-                "source": "https://github.com/brick/math/tree/0.14.2"
+                "source": "https://github.com/brick/math/tree/0.14.5"
             },
             "funding": [
                 {

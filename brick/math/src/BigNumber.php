@@ -61,7 +61,7 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
         '/^' .
         '(?<sign>[\-\+])?' .
         '(?<numerator>[0-9]+)' .
-        '\/?' .
+        '\/' .
         '(?<denominator>[0-9]+)' .
         '$/';
 
@@ -110,6 +110,8 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
      * @throws NumberFormatException      If the format of the number is not valid.
      * @throws DivisionByZeroException    If the value represents a rational number with a denominator of zero.
      * @throws RoundingNecessaryException If the value cannot be converted to an instance of the subclass without rounding.
+     *
+     * @pure
      */
     public static function ofNullable(BigNumber|int|float|string|null $value): ?static
     {
@@ -315,6 +317,23 @@ abstract readonly class BigNumber implements JsonSerializable, Stringable
     {
         return $this->getSign() >= 0;
     }
+
+    /**
+     * Returns the absolute value of this number.
+     *
+     * @pure
+     */
+    final public function abs(): static
+    {
+        return $this->isNegative() ? $this->negated() : $this;
+    }
+
+    /**
+     * Returns the negated value of this number.
+     *
+     * @pure
+     */
+    abstract public function negated(): static;
 
     /**
      * Returns the sign of this number.
