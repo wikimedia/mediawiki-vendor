@@ -33,7 +33,7 @@ namespace Wikimedia\Parsoid\Wt2Html;
 	use Wikimedia\Parsoid\Tokens\PreprocTk;
 	use Wikimedia\Parsoid\Tokens\PreprocType;
 	use Wikimedia\Parsoid\Tokens\SelfclosingTagTk;
-	use Wikimedia\Parsoid\Tokens\SourceRange;
+	use Wikimedia\Parsoid\Core\SourceRange;
 	use Wikimedia\Parsoid\Tokens\TagTk;
 	use Wikimedia\Parsoid\Tokens\Token;
 	use Wikimedia\Parsoid\Tokens\VariantInfo;
@@ -1983,6 +1983,13 @@ private function a155($tagType, $start) {
 private function a156($tagType, $start, $attribs, $selfclose) {
 
 		list($end, $name) = $start;
+
+		// In HTML5, only the ASCII chars are lower cased
+		// See https://html.spec.whatwg.org/multipage/parsing.html#tag-name-state
+		// However, extension tags can be multibyte and there'll be less to think
+		// about if we always reach for mb functions.  This precludes having
+		// html custom elements that differ only the casing but that's probably
+		// for the best.
 		$lcName = mb_strtolower( $name );
 
 		// Extension tags don't necessarily have the same semantics as html tags,

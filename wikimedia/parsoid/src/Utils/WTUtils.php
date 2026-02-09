@@ -6,6 +6,7 @@ namespace Wikimedia\Parsoid\Utils;
 use Wikimedia\Assert\UnreachableException;
 use Wikimedia\Bcp47Code\Bcp47Code;
 use Wikimedia\Parsoid\Config\Env;
+use Wikimedia\Parsoid\Core\DOMCompat;
 use Wikimedia\Parsoid\DOM\Comment;
 use Wikimedia\Parsoid\DOM\Document;
 use Wikimedia\Parsoid\DOM\DocumentFragment;
@@ -277,7 +278,7 @@ class WTUtils {
 	public static function isEncapsulatedDOMForestRoot( Node $node ): bool {
 		$about = $node instanceof Element ? DOMCompat::getAttribute( $node, 'about' ) : null;
 		// FIXME: Ensure that our DOM spec clarifies this expectation
-		return $about !== null && Utils::isParsoidObjectId( $about );
+		return $about !== null && CounterType::TRANSCLUSION_ABOUT->matches( $about );
 	}
 
 	/**

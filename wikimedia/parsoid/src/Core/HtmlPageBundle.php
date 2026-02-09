@@ -5,7 +5,6 @@ namespace Wikimedia\Parsoid\Core;
 
 use Composer\Semver\Semver;
 use Wikimedia\Parsoid\Config\SiteConfig;
-use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Wt2Html\XHtmlSerializer;
 
 /**
@@ -184,13 +183,8 @@ class HtmlPageBundle extends BasePageBundle {
 
 	/** @inheritDoc */
 	public static function newFromJsonArray( array $json ): self {
-		return new self(
+		return parent::newFromJsonArray( $json )->withHtml(
 			html: $json['html'] ?? '',
-			parsoid: $json['parsoid'] ?? null,
-			mw: $json['mw'] ?? null,
-			version: $json['version'] ?? null,
-			headers: $json['headers'] ?? null,
-			contentmodel: $json['contentmodel'] ?? null,
 			fragments: $json['fragments'] ?? [],
 		);
 	}

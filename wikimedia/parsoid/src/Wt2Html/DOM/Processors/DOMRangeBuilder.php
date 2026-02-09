@@ -8,6 +8,7 @@ use SplObjectStorage;
 use Wikimedia\Assert\Assert;
 use Wikimedia\Assert\UnreachableException;
 use Wikimedia\Parsoid\Config\Env;
+use Wikimedia\Parsoid\Core\DOMCompat;
 use Wikimedia\Parsoid\Core\DomSourceRange;
 use Wikimedia\Parsoid\Core\ElementRange;
 use Wikimedia\Parsoid\DOM\Comment;
@@ -18,7 +19,6 @@ use Wikimedia\Parsoid\DOM\Text;
 use Wikimedia\Parsoid\NodeData\DataParsoid;
 use Wikimedia\Parsoid\NodeData\TempData;
 use Wikimedia\Parsoid\NodeData\TemplateInfo;
-use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\PHPUtils;
@@ -938,11 +938,11 @@ class DOMRangeBuilder {
 			// {{1x|<table>}}
 			// {{1x|<div>}}
 			//
-			// Here, #mwt1 leaves a table open and the end meta from #mwt2 is
-			// fostered, since it gets closed into the div.  The range for #mwt1
-			// is the entire table, which thankfully contains #mwt2, so we still
+			// Here, range-1 leaves a table open and the end meta from range-2 is
+			// fostered, since it gets closed into the div.  The range for range-1
+			// is the entire table, which thankfully contains range-2, so we still
 			// have the expected entire nesting.  Any tricks to extend the range
-			// of #mwt2 beyond the table (so that we have an overlapping range) will
+			// of range-2 beyond the table (so that we have an overlapping range) will
 			// inevitably result in the end meta not being fostered, and we avoid
 			// this situation altogether.
 			//

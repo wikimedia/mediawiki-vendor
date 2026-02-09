@@ -11,7 +11,6 @@ use Wikimedia\Parsoid\DOM\Document;
 use Wikimedia\Parsoid\DOM\DocumentFragment;
 use Wikimedia\Parsoid\DOM\Element;
 use Wikimedia\Parsoid\Mocks\MockSiteConfig;
-use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\PHPUtils;
@@ -362,6 +361,10 @@ class DomPageBundle extends BasePageBundle {
 			static fn ( $html ) => DOMUtils::parseHTMLToFragment( $doc, $html ),
 			$decoded['fragments'] ?? []
 		);
+		// Forward-compatibility with Parsoid 0.23
+		if ( isset( $decoded['counters']['nodedata'] ) ) {
+			$decoded['parsoid']['counter'] = $decoded['counters']['nodedata'];
+		}
 		return new DomPageBundle(
 			$doc,
 			$decoded['parsoid'] ?? null,
