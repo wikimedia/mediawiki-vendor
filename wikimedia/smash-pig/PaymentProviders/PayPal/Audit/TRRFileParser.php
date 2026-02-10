@@ -30,7 +30,7 @@ class TRRFileParser extends BaseParser {
 			throw new IgnoredException( 'Braintree transaction skipped' );
 		}
 		if ( $this->isDebitPaymentToSomeoneElse() ) {
-			throw new UnhandledException( 'Debit payment skipped' );
+			throw new IgnoredException( 'Debit payment skipped' );
 		}
 		if ( !empty( $this->row['Billing Address Line1'] ) ) {
 			$addr_prefix = 'Billing Address ';
@@ -71,6 +71,7 @@ class TRRFileParser extends BaseParser {
 			'payment_submethod' => $this->row['Card Type'] ?? null,
 			'order_id' => $this->getOrderID(),
 			'contribution_tracking_id' => $this->getContributionTrackingId(),
+			'grant_provider' => str_contains( $this->row['Transaction Subject'] ?? '', ' has sent you money' ) ? str_replace( ' has sent you money', '', $this->row['Transaction Subject'] ) : '',
 		];
 
 		return $msg + $this->getGravyFields() + $this->getRecurringFields() + $this->getReversalFields();

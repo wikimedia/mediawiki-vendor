@@ -101,17 +101,39 @@ class PayPalAudit implements AuditParser {
 			}
 			// We need to split out all the currency conversion rows before parsing the transactions.
 			$transactionType = BaseParser::getTransactionCodes()[$row['Transaction Event Code'] ?? ''] ?? null;
-			if ( $transactionType === 'currency_conversion' ) {
-				$this->conversionRows[$row['Invoice ID']][] = $row;
-			} elseif ( $transactionType === 'withdrawal' ) {
-				// This is a payout row. It should be added onto the aggregate row.
-				$this->payouts[$row['Gross Transaction Currency']][] = $row['Gross Transaction Amount'];
-			} elseif ( $transactionType === 'chargeback_fee' ) {
-				$this->feeRows[$row['PayPal Reference ID']] = $row;
-			} elseif ( $transactionType === 'fee_reversal' ) {
-				$this->feeRows[$row['Invoice ID']] = $row;
-			} else {
-				$this->rows[] = $row;
+			switch ( $transactionType ) {
+				case 'currency_conversion':
+					$this->conversionRows[$row['Invoice ID']][] = $row;
+					break;
+
+				case 'withdrawal':
+					// This is a payout row. It should be added onto the aggregate row.
+					$this->payouts[$row['Gross Transaction Currency']][] = $row['Gross Transaction Amount'];
+					break;
+
+				case 'payout_currency_conversion':
+					// This is a payout row. It should be added onto the aggregate row.
+					$this->payouts[$row['Gross Transaction Currency']][] =
+						( $row['Transaction Debit or Credit'] === 'CR' )
+							? -$row['Gross Transaction Amount']
+							: $row['Gross Transaction Amount'];
+					break;
+
+				case 'chargeback_fee':
+					$this->feeRows[$row['PayPal Reference ID']] = $row;
+					break;
+
+				case 'fee_reversal':
+					$this->feeRows[$row['Invoice ID']] = $row;
+					break;
+
+				case 'other':
+					// Something weird from the TRR file, skip.
+					break;
+
+				default:
+					$this->rows[] = $row;
+					break;
 			}
 
 		}

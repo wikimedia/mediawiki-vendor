@@ -255,7 +255,7 @@ class SearchTransactions extends MaintenanceBase {
 	}
 
 	private function isDisbursementReport(): bool {
-		return $this->getOption( 'report-type' ) === 'disbursement';
+		return $this->getOption( 'date-type' ) === 'disbursement';
 	}
 
 	/**

@@ -82,12 +82,17 @@ class RecordCaptureJob implements Runnable {
 		if ( empty( $dbMessage['backend_processor'] ) ) {
 			$dbMessage['backend_processor'] = $transactionDetails->getBackendProcessor();
 		}
-		if ( empty( $dbMessage['backend_processor_txn_id'] ) ) {
-			$dbMessage['backend_processor_txn_id'] = $transactionDetails->getBackendProcessorTransactionId();
-		}
 		if ( empty( $dbMessage['payment_submethod'] ) ) {
 			$dbMessage['payment_submethod'] = $transactionDetails->getPaymentSubmethod();
 		}
+
+		// For SEPA, always use fresh value - Gravy updates payment_service_transaction_id
+		// to payment_service_capture_id (Adyen's pspReference) after capture
+		$isSepa = ( $dbMessage['payment_submethod'] ?? '' ) === 'sepadirectdebit';
+		if ( $isSepa || empty( $dbMessage['backend_processor_txn_id'] ) ) {
+			$dbMessage['backend_processor_txn_id'] = $transactionDetails->getBackendProcessorTransactionId();
+		}
+
 		if ( empty( $dbMessage['payment_orchestrator_reconciliation_id'] ) ) {
 			$dbMessage['payment_orchestrator_reconciliation_id'] = $transactionDetails->getPaymentOrchestratorReconciliationId();
 		}

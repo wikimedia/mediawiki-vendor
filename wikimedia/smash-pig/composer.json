@@ -71,7 +71,7 @@
     },
     "require-dev": {
     	"php-parallel-lint/php-parallel-lint": "^1.2",
-    	"phpunit/phpunit": "^9.5",
+    	"phpunit/phpunit": "^9",
     	"ext-sqlite3": "*",
     	"mediawiki/mediawiki-codesniffer": "^46.0"
     },

@@ -73,6 +73,50 @@ class RecordCaptureJobTest extends BaseGravyTestCase {
 	}
 
 	/**
+	 * For SEPA payments, backend_processor_txn_id should always be updated
+	 * from the fresh API response, even if the pending message already has a value.
+	 * This is because Gravy updates payment_service_transaction_id to
+	 * payment_service_capture_id (Adyen's pspReference) after capture.
+	 */
+	public function testSepaOverwritesBackendProcessorTxnId(): void {
+		$contents = file_get_contents( __DIR__ . '/../Data/pending.json' );
+		$this->pendingMessage = json_decode( $contents, true );
+		$this->pendingMessage['captured'] = true;
+		$this->pendingMessage['payment_submethod'] = 'sepadirectdebit';
+		$this->pendingMessage['backend_processor_txn_id'] = 'OLD_SEPA_TXN_ID';
+		$this->pendingDatabase->storeMessage( $this->pendingMessage );
+
+		[ $transactionDetails, $donationMessage ] = $this->runJobAndGetDonationMessage();
+
+		$this->assertEquals(
+			$transactionDetails->getBackendProcessorTransactionId(),
+			$donationMessage['backend_processor_txn_id'],
+			'SEPA backend_processor_txn_id should be overwritten with fresh value from API'
+		);
+	}
+
+	/**
+	 * For non-SEPA payments, backend_processor_txn_id should be preserved
+	 * if the pending message already has a value.
+	 */
+	public function testNonSepaPreservesBackendProcessorTxnId(): void {
+		$contents = file_get_contents( __DIR__ . '/../Data/pending.json' );
+		$this->pendingMessage = json_decode( $contents, true );
+		$this->pendingMessage['captured'] = true;
+		$this->pendingMessage['payment_submethod'] = 'visa';
+		$this->pendingMessage['backend_processor_txn_id'] = 'OLD_CARD_TXN_ID';
+		$this->pendingDatabase->storeMessage( $this->pendingMessage );
+
+		[ $transactionDetails, $donationMessage ] = $this->runJobAndGetDonationMessage();
+
+		$this->assertEquals(
+			'OLD_CARD_TXN_ID',
+			$donationMessage['backend_processor_txn_id'],
+			'Non-SEPA backend_processor_txn_id should be preserved from pending message'
+		);
+	}
+
+	/**
 	 * @param string $fileName
 	 * @return void
 	 * @throws \SmashPig\Core\DataStores\DataStoreException

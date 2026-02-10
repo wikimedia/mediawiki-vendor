@@ -44,8 +44,14 @@ class BaseParser {
 	}
 
 	protected function isReversalType(): bool {
-		// @todo find out what refunds look like & add.
-		return $this->isChargeback();
+		return $this->isChargeback() || $this->isRefund();
+	}
+
+	/**
+	 * @return bool
+	 */
+	protected function isRefund(): bool {
+		return $this->row['ROW_TYPE'] === 'REFUND';
 	}
 
 	/**
@@ -54,8 +60,7 @@ class BaseParser {
 	protected function getReversalFields(): array {
 		$reversalFields = [];
 		if ( $this->isReversalType() ) {
-			// Only handling chargeback for now until we catch a refund to add in.
-			$reversalFields['type'] = 'chargeback';
+			$reversalFields['type'] = $this->isChargeback() ? 'chargeback' : 'refund';
 			// All we have to match it is the order ID, so we can't add parent_gateway_id
 			// this is the reference for the reversal transaction.
 			$reversalFields['gateway_refund_id'] = $this->row['Transaction ID'];

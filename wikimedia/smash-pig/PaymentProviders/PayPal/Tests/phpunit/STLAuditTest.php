@@ -127,6 +127,28 @@ class STLAuditTest extends AuditTest {
 		], $output[0] );
 	}
 
+	public function testProcessConvertedCurrencyPayout(): void {
+		$output = $this->processFile( 'stl_payout_currency_convert.csv' );
+		$this->assertCount( 3, $output, 'Should have found one row' );
+
+		// This row is the donation - $200.
+		$this->assertEquals( 200, $output[0]['settled_total_amount'] );
+		$this->assertEquals( 'AUD', $output[0]['currency'] );
+		$this->assertSame( '244.1', $output[0]['order_id'] );
+
+		// We have 2 payout rows - we are looking to make sure
+		// the payout rows take the currency convert transaction into account
+		// it the payout means the balance movement coming from
+		// donations and refunds - the 'batch' and it ignores transfers.
+		$this->assertSame( 0, $output[1]['settled_total_amount'] );
+		$this->assertSame( 'USD', $output[1]['settled_currency'] );
+		$this->assertSame( 'payout', $output[1]['type'] );
+
+		$this->assertEquals( 200, $output[2]['settled_total_amount'] );
+		$this->assertEquals( 'AUD', $output[2]['settled_currency'] );
+		$this->assertEquals( 'payout', $output[2]['type'] );
+	}
+
 	public function testProcessChargebackWithFee(): void {
 		$output = $this->processFile( 'stl_chargeback_with_fee.csv' );
 		$this->assertCount( 1, $output, 'Should have found one row' );

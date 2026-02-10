@@ -48,6 +48,7 @@ class TRRAuditTest extends AuditTest {
 			'settled_total_amount' => 150.0,
 			'exchange_rate' => 1,
 			'settled_currency' => 'JPY',
+			'grant_provider' => '',
 		];
 
 		$this->assertEquals( $expected, $output[0] );
@@ -88,6 +89,7 @@ class TRRAuditTest extends AuditTest {
 			'exchange_rate' => 1,
 			'settled_currency' => 'JPY',
 			'settlement_batch_reference' => '20170302',
+			'grant_provider' => '',
 		];
 
 		$this->assertEquals( $expected, $output[0] );
@@ -137,6 +139,7 @@ class TRRAuditTest extends AuditTest {
 			'exchange_rate' => 1,
 			'settled_currency' => 'JPY',
 			'settlement_batch_reference' => '20170304',
+			'grant_provider' => '',
 		];
 
 		$this->assertEquals( $expected, $output[0] );
@@ -182,6 +185,7 @@ class TRRAuditTest extends AuditTest {
 			'exchange_rate' => 1,
 			'settled_currency' => 'JPY',
 			'settlement_batch_reference' => '20170322',
+			'grant_provider' => '',
 		];
 
 		$this->assertEquals( $expected, $output[0] );
@@ -227,6 +231,7 @@ class TRRAuditTest extends AuditTest {
 			'exchange_rate' => 1,
 			'settled_currency' => 'JPY',
 			'settlement_batch_reference' => '20170322',
+			'grant_provider' => '',
 		];
 
 		$this->assertEquals( $expected, $output[0] );
@@ -267,6 +272,7 @@ class TRRAuditTest extends AuditTest {
 			'exchange_rate' => 1,
 			'settled_currency' => 'JPY',
 			'settlement_batch_reference' => '20170302',
+			'grant_provider' => '',
 		];
 
 		$this->assertEquals( $expected, $output[0] );
@@ -315,6 +321,7 @@ class TRRAuditTest extends AuditTest {
 			'exchange_rate' => 1,
 			'settled_currency' => 'JPY',
 			'settlement_batch_reference' => '20170302',
+			'grant_provider' => '',
 		];
 
 		$this->assertEquals( $expected, $output[0] );
@@ -356,9 +363,19 @@ class TRRAuditTest extends AuditTest {
 			'settlement_batch_reference' => '20250807',
 			'exchange_rate' => 1,
 			'settled_currency' => 'BRL',
+			'grant_provider' => '',
 		];
 
 		$this->assertEquals( $expected, $output[0] );
 	}
 
+	public function testProcessGrantDonation(): void {
+		$output = $this->processFile( 'trr_grant.csv' );
+		$this->assertEquals( 'Acme Endowment Program', $output[0]['grant_provider'] );
+	}
+
+	public function testProcessSkipVoid(): void {
+		$output = $this->processFile( 'trr_void.csv' );
+		$this->assertCount( 0, $output );
+	}
 }
