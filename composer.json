@@ -33,7 +33,7 @@
 		"elasticsearch/elasticsearch": "7.17.3",
 		"endroid/qr-code": "6.0.9",
 		"ezimuel/guzzlestreams": "4.1.0",
-		"ezimuel/ringphp": "1.4.0",
+		"ezimuel/ringphp": "1.4.1",
 		"firebase/php-jwt": "6.11.1",
 		"geoip2/geoip2": "3.3.0",
 		"guzzlehttp/guzzle": "7.10.0",
