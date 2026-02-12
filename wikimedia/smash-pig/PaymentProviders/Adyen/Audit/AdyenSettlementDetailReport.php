@@ -73,6 +73,15 @@ class AdyenSettlementDetailReport extends AdyenAudit {
 	}
 
 	protected function getFeeTransaction( array $row ): ?array {
+		$debit = $row['Net Debit (NC)'] ?? null;
+		$credit = $row['Net Credit (NC)'] ?? 0;
+
+		if ( $debit !== null && $debit !== '' ) {
+			$amount = (string)( -$debit );
+		} else {
+			$amount = (string)$credit;
+		}
+
 		return [
 			'settled_date' => UtcDate::getUtcTimestamp( $row[$this->date], $row['TimeZone'] ),
 			'date' => UtcDate::getUtcTimestamp( $row[$this->date], $row['TimeZone'] ),
@@ -85,8 +94,8 @@ class AdyenSettlementDetailReport extends AdyenAudit {
 			// In this context the total amount is what is paid by the donor - ie nothing.
 			// The net_amount is what is paid to us - ie a negative value equal to the fee_amount.
 			'settled_total_amount' => 0,
-			'settled_fee_amount' => '-' . $row['Net Debit (NC)'],
-			'settled_net_amount' => '-' . $row['Net Debit (NC)'],
+			'settled_fee_amount' => $amount,
+			'settled_net_amount' => $amount,
 			'audit_file_gateway' => 'adyen',
 			'settled_currency' => $row['Net Currency'],
 		];

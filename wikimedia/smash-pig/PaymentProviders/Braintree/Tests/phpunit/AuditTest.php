@@ -1,6 +1,7 @@
 <?php
 namespace SmashPig\PaymentProviders\Braintree\Test;
 
+use SmashPig\Core\UtcDate;
 use SmashPig\PaymentProviders\Braintree\Audit\BraintreeAudit;
 use SmashPig\Tests\BaseSmashPigUnitTestCase;
 
@@ -247,39 +248,39 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 		$this->assertCount( 2, $output, 'Should have found two dispute donations' );
 		$actualPaypal = $output[0];
 		$expectedPaypal = [
-				'gateway' => 'braintree',
-				'audit_file_gateway' => 'braintree',
-				'date' => 1656381367,
-				'gross' => '3.33',
-				'contribution_tracking_id' => '17',
-				'currency' => 'USD',
-				'email' => 'fr-tech+donor@wikimedia.org',
-				'gateway_txn_id' => 'dHJhbnNhY3Rpb25fa2F4eG1ycjE',
-				'invoice_id' => '17.1',
-				'phone' => null,
-				'first_name' => 'f',
-				'last_name' => 'doner',
-				'payment_method' => 'paypal',
-				'type' => 'chargeback',
-			];
+			'gateway' => 'braintree',
+			'audit_file_gateway' => 'braintree',
+			'date' => 1656381367,
+			'gross' => '3.33',
+			'contribution_tracking_id' => '17',
+			'currency' => 'USD',
+			'email' => 'fr-tech+donor@wikimedia.org',
+			'gateway_txn_id' => 'dHJhbnNhY3Rpb25fa2F4eG1ycjE',
+			'invoice_id' => '17.1',
+			'phone' => null,
+			'first_name' => 'f',
+			'last_name' => 'doner',
+			'payment_method' => 'paypal',
+			'type' => 'chargeback',
+		];
 		$this->assertEquals( $expectedPaypal, $actualPaypal, 'Did not parse dispute paypal correctly' );
 		$actualVenmo = $output[1];
 		$expectedVenmo = [
-				'gateway' => 'braintree',
-				'audit_file_gateway' => 'braintree',
-				'date' => 1690485762,
-				'gross' => '5.00',
-				'contribution_tracking_id' => '61',
-				'currency' => 'USD',
-				'email' => 'iannievan@gmail.com',
-				'gateway_txn_id' => 'dHJhbnNhY3Rpb25fY2EyMWdnNjk',
-				'invoice_id' => '61.1',
-				'phone' => null,
-				'first_name' => 'Ann',
-				'last_name' => 'Fan',
-				'payment_method' => 'venmo',
-				'type' => 'chargeback',
-			];
+			'gateway' => 'braintree',
+			'audit_file_gateway' => 'braintree',
+			'date' => 1690485762,
+			'gross' => '5.00',
+			'contribution_tracking_id' => '61',
+			'currency' => 'USD',
+			'email' => 'iannievan@gmail.com',
+			'gateway_txn_id' => 'dHJhbnNhY3Rpb25fY2EyMWdnNjk',
+			'invoice_id' => '61.1',
+			'phone' => null,
+			'first_name' => 'Ann',
+			'last_name' => 'Fan',
+			'payment_method' => 'venmo',
+			'type' => 'chargeback',
+		];
 		$this->assertEquals( $expectedVenmo, $actualVenmo, 'Did not parse dispute venmo correctly' );
 	}
 
@@ -360,5 +361,16 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'settled_currency' => 'USD',
 		];
 		$this->assertEquals( $expectedPaypal, $actualPaypal, 'Did not parse dispute correctly' );
+	}
+
+	/**
+	 * Parse a LOST chargeback with statusHistory but no settlement date
+	 */
+	public function testProcessUnSettledDispute(): void {
+		$processor = new BraintreeAudit();
+		$output = $processor->parseFile( __DIR__ . '/../Data/chargeback_lost.json' );
+		$actual = $output[0];
+		$this->assertEquals( UtcDate::getUtcTimestamp( '2026-01-27' ), $actual['date'], 'Did not parse dispute history' );
+		$this->assertArrayNotHasKey( 'settled_date', $actual );
 	}
 }

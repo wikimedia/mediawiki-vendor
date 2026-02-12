@@ -63,7 +63,7 @@ class BaseParser {
 			$reversalFields['type'] = $this->isChargeback() ? 'chargeback' : 'refund';
 			// All we have to match it is the order ID, so we can't add parent_gateway_id
 			// this is the reference for the reversal transaction.
-			$reversalFields['gateway_refund_id'] = $this->row['Transaction ID'];
+			$reversalFields['gateway_refund_id'] = $this->row['DLOCAL_TRANSACTION_ID'];
 		}
 		return $reversalFields;
 	}

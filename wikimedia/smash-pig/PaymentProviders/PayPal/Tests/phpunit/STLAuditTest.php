@@ -3,7 +3,7 @@ declare( strict_types=1 );
 
 namespace SmashPig\PaymentProviders\PayPal\Test;
 
-require_once 'AuditTest.php';
+require_once 'AuditTestBase.php';
 
 /**
  * Verify PayPal audit file normalization functions
@@ -11,7 +11,7 @@ require_once 'AuditTest.php';
  * @group PayPal
  * @group Audit
  */
-class STLAuditTest extends AuditTest {
+class STLAuditTest extends AuditTestBase {
 
 	public function testProcessFile(): void {
 		$output = $this->processFile( 'stl.csv' );
@@ -123,6 +123,41 @@ class STLAuditTest extends AuditTest {
 			'backend_processor_txn_id' => '1DV3',
 			'backend_processor' => 'paypal',
 			'payment_orchestrator_reconciliation_id' => '5jImyEK1vFvvvmoxlWR7SO',
+
+		], $output[0] );
+	}
+
+	public function testProcessConvertedCurrencyRefundTransaction(): void {
+		$output = $this->processFile( 'stl_brl_refund.csv' );
+		$this->assertCount( 1, $output, 'Should have found one row' );
+
+		$this->assertEquals( [
+			'payment_method' => 'paypal',
+			'currency' => 'BRL',
+			'original_currency' => 'BRL',
+			'settled_currency' => 'USD',
+			'exchange_rate' => 0.18158347676419967,
+			'date' => strtotime( '2025/12/23 08:57:17 -0800' ),
+			'gateway' => 'paypal_ec',
+			'audit_file_gateway' => 'paypal',
+			'settled_total_amount' => -2.72,
+			'settled_fee_amount' => '0.61',
+			'settled_net_amount' => '-2.11',
+			'gross' => 15.0,
+			'fee' => 3.38,
+			// Fee of 3.38 BRL refunded to us, we refund 15 BRL to the donor
+			'original_fee_amount' => 3.38,
+			'original_net_amount' => '-11.62',
+			'original_total_amount' => '-15',
+			'gateway_txn_id' => '451689',
+			'contribution_tracking_id' => 233490290,
+			'order_id' => '233490290.3',
+			'settlement_batch_reference' => '20251223',
+			'settled_date' => strtotime( '2025/12/23 08:57:17 -0800' ),
+			'type' => 'refund',
+			'gateway_refund_id' => '451689',
+			'gross_currency' => 'BRL',
+			'gateway_parent_id' => '3K905',
 
 		], $output[0] );
 	}

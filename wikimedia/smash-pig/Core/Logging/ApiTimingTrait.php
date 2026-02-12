@@ -29,7 +29,7 @@ use SmashPig\Core\Context;
  *     }
  *
  * This will emit a log line like:
- *     [processor|paymentMethod|authorize|request|time] 1.234567s
+ *     [|processor|paymentMethod|authorize|request|time] 1.234567s
  *
  * @see ApiOperationAttribute The attribute class used to annotate methods
  * @see ApiOperation The enum of canonical operation types

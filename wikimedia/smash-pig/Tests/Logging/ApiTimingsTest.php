@@ -13,13 +13,13 @@ class ApiTimingsTest extends TestCase {
 
 	public function testBuildTagLowerCaseAndFormatSegments(): void {
 		$this->assertSame(
-			'[adyen|cc|authorise|request|time]',
+			'[|adyen|cc|authorise|request|time]',
 			ApiTimings::buildTag( 'Adyen', 'cc', 'Authorise' )
 		);
 	}
 
 	public function testLogUsesInjectedLoggerAndFormatsMessage(): void {
-		$testLogTag = '[adyen|cc|authorise|request|time]';
+		$testLogTag = '[|adyen|cc|authorise|request|time]';
 		$testRequestTimeElapsed = 1.23456789;
 
 		$expectedMessage = $testLogTag . ' ' . number_format( $testRequestTimeElapsed, 6 ) . 's';

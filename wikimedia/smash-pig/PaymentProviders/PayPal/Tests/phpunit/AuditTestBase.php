@@ -12,7 +12,7 @@ use SmashPig\Tests\BaseSmashPigUnitTestCase;
  * @group PayPal
  * @group Audit
  */
-class AuditTest extends BaseSmashPigUnitTestCase {
+class AuditTestBase extends BaseSmashPigUnitTestCase {
 
 	/**
 	 * @param string $file

@@ -3,7 +3,7 @@ declare( strict_types=1 );
 
 namespace SmashPig\PaymentProviders\PayPal\Test;
 
-require_once 'AuditTest.php';
+require_once 'AuditTestBase.php';
 
 /**
  * Verify PayPal SAR audit file normalization functions
@@ -11,7 +11,7 @@ require_once 'AuditTest.php';
  * @group PayPal
  * @group Audit
  */
-class SARAuditTest extends AuditTest {
+class SARAuditTest extends AuditTestBase {
 
 	public function testSubscrSignupClassic(): void {
 		$output = $this->processFile( 'sar_classic_subscr_signup.csv' );

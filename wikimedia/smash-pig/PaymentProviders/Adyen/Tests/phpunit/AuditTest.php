@@ -339,7 +339,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'gateway_account' => 'WikimediaCOM',
 			'date' => 1761908739,
 			'invoice_id' => '',
-			'gateway_txn_id' => 'Invoice US202510000533 Discounts and additional costs (1/1)',
+			'gateway_txn_id' => 'Invoice US202510000533 Discounts and additional costs (1/2)',
 			'settlement_batch_reference' => '1136',
 			'settled_date' => 1761908739,
 			'settled_currency' => 'USD',
@@ -349,6 +349,22 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'type' => 'fee',
 		];
 		$this->assertEquals( $expected, $actual, 'Fees do not match' );
+
+		$this->assertEquals( [
+			'gateway' => 'adyen',
+			'audit_file_gateway' => 'adyen',
+			'gateway_account' => 'WikimediaCOM',
+			'date' => 1761908739,
+			'invoice_id' => '',
+			'gateway_txn_id' => 'Invoice US202510000533 Discounts and additional costs (2/2)',
+			'settlement_batch_reference' => '1136',
+			'settled_date' => 1761908739,
+			'settled_currency' => 'USD',
+			'settled_fee_amount' => '0.03',
+			'settled_net_amount' => '0.03',
+			'settled_total_amount' => '0.00',
+			'type' => 'fee',
+		], $output[1], 'Fees do not match' );
 	}
 
 	public function testProcessPaymentsAccountingNyce() {

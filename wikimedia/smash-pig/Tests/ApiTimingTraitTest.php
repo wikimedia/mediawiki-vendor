@@ -50,7 +50,7 @@ class ApiTimingTraitTest extends BaseSmashPigUnitTestCase {
 		$mockLogger->expects( $this->once() )
 			->method( 'info' )
 			->with(
-				$this->stringContains( '[gravy|cc|capture|request|time]' ),
+				$this->stringContains( '[|gravy|cc|capture|request|time]' ),
 				$this->anything()
 			);
 
@@ -82,7 +82,7 @@ class ApiTimingTraitTest extends BaseSmashPigUnitTestCase {
 		$mockLogger->expects( $this->once() )
 			->method( 'info' )
 			->with(
-				$this->stringContains( '[adyen|cc|authorize|request|time]' ),
+				$this->stringContains( '[|adyen|cc|authorize|request|time]' ),
 				$this->anything()
 			);
 

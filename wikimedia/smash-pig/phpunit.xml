@@ -28,5 +28,8 @@
       <testsuite name="gr4vy tests">
         <directory>PaymentProviders/Gravy/Tests/phpunit</directory>
       </testsuite>
+      <testsuite name="trustly tests">
+        <directory>PaymentProviders/Trustly/Tests/phpunit</directory>
+      </testsuite>
     </testsuites>
 </phpunit>

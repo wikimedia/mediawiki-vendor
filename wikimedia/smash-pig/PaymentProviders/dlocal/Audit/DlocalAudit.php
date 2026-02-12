@@ -85,6 +85,18 @@ class DlocalAudit implements AuditParser {
 				}
 				$this->parseLine( $line );
 			}
+			$batchName = str_replace( [ '/', '-' ], '', $this->headerRow['TRANSFER_DATE'] );
+			$this->fileData[] = [
+				'settled_currency' => $this->headerRow['SETTLEMENT_CURRENCY'],
+				'settled_total_amount' => (string)$expectedNetTotal,
+				'gateway' => 'dlocal',
+				'type' => 'payout',
+				'gateway_txn_id' => $batchName,
+				'invoice_id' => $batchName,
+				'settlement_batch_reference' => $batchName,
+				'settled_date' => substr( $batchName, 0, 8 ),
+				'date' => substr( $batchName, 0, 8 ),
+			];
 		}
 		return $this->fileData;
 	}

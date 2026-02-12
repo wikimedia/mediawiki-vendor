@@ -97,7 +97,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 	public function testProcessSettlementReport() {
 		$processor = new DlocalAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/Wikimedia_Settlement_Reports_20260110.csv' );
-		$this->assertCount( 7, $output, 'Should have found five donations' );
+		$this->assertCount( 8, $output, 'Should have found five donations, 1 real fee, 1 rounding "fee", and the payout row' );
 
 		$this->assertEquals( [
 			'gateway' => 'dlocal',

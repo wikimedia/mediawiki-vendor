@@ -220,11 +220,11 @@ class BraintreeAudit implements AuditParser {
 
 		if ( !empty( $msg['settled_date'] ) ) {
 			$msg['settlement_batch_reference'] = gmdate( 'Ymd', $msg['settled_date'] ) . '_chargebacks';
+			if ( !isset( $this->totals[$msg['settlement_batch_reference']] ) ) {
+				$this->totals[$msg['settlement_batch_reference']] = Money::zero( $msg['currency'] );
+			}
+			$this->totals[$msg['settlement_batch_reference']] = $this->totals[$msg['settlement_batch_reference']]->plus( $msg['settled_net_amount'] );
 		}
-		if ( !isset( $this->totals[$msg['settlement_batch_reference']] ) ) {
-			$this->totals[$msg['settlement_batch_reference']] = Money::zero( $msg['currency'] );
-		}
-		$this->totals[$msg['settlement_batch_reference']] = $this->totals[$msg['settlement_batch_reference']]->plus( $msg['settled_net_amount'] );
 		return $msg;
 	}
 

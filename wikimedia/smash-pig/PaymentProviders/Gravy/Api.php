@@ -6,12 +6,11 @@ use Gr4vy\Gr4vyConfig;
 use SmashPig\Core\Context;
 use SmashPig\Core\Logging\ApiOperation;
 use SmashPig\Core\Logging\ApiOperationAttribute;
-use SmashPig\Core\Logging\ApiTimingTrait;
 use SmashPig\Core\Logging\TaggedLogger;
 use SmashPig\PaymentData\PaymentMethod;
 
 class Api {
-	use ApiTimingTrait;
+	use GravyApiTimingTrait;
 
 	private Gr4vyConfig $gravyApiClient;
 

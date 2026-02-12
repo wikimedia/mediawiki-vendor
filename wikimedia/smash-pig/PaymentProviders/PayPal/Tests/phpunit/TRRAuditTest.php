@@ -3,7 +3,7 @@ declare( strict_types=1 );
 
 namespace SmashPig\PaymentProviders\PayPal\Test;
 
-require_once 'AuditTest.php';
+require_once 'AuditTestBase.php';
 
 /**
  * Verify PayPal audit file normalization functions
@@ -11,7 +11,7 @@ require_once 'AuditTest.php';
  * @group PayPal
  * @group Audit
  */
-class TRRAuditTest extends AuditTest {
+class TRRAuditTest extends AuditTestBase {
 
 	public function testProcessExpressCheckoutDonation(): void {
 		$output = $this->processFile( 'trr_express_checkout_donation.csv' );
@@ -376,6 +376,21 @@ class TRRAuditTest extends AuditTest {
 
 	public function testProcessSkipVoid(): void {
 		$output = $this->processFile( 'trr_void.csv' );
+		$this->assertCount( 0, $output );
+	}
+
+	/**
+	 * This test covers a sample of the debits that are ignored.
+	 *
+	 * The example found has a code of T0000 and represents
+	 * a reimbursement to a staff member in the finance Dept.
+	 *
+	 * It does not seem to otherwise be throwing out totals.
+	 *
+	 * @return void
+	 */
+	public function testProcessOtherPayment(): void {
+		$output = $this->processFile( 'trr_dr_payment.csv' );
 		$this->assertCount( 0, $output );
 	}
 }

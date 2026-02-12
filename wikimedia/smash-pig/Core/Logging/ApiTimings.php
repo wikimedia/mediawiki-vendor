@@ -16,7 +16,7 @@ final class ApiTimings {
 	 * @param string $processor The name of the processor. This should be a non-empty string.
 	 * @param string $paymentMethod The name of the payment method. This should be a non-empty string.
 	 * @param string $apiOperation The name of the API operation. This should be a non-empty string.
-	 * @return string The constructed tag in the format: [processor|paymentMethod|apiOperation|request|time].
+	 * @return string The constructed tag in the format: [|processor|paymentMethod|apiOperation|request|time].
 	 * @throws \InvalidArgumentException If any of the input parameters are empty.
 	 */
 	public static function buildTag( string $processor, string $paymentMethod, string $apiOperation ): string {
@@ -34,7 +34,10 @@ final class ApiTimings {
 			}
 		}
 
-		return '[' . implode( '|', [ $processor, $paymentMethod, $apiOperation, 'request', 'time' ] ) . ']';
+		// Empty first segment is a placeholder for the orchestrator layer (e.g. "gravy").
+		// This keeps the tag format consistent with gravy-related log lines
+		// where the full format is [orchestrator|backend|paymentMethod|operation|request|time].
+		return '[' . implode( '|', [ '', $processor, $paymentMethod, $apiOperation, 'request', 'time' ] ) . ']';
 	}
 
 	/**
