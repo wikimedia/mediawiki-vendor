@@ -1,0 +1,5 @@
+"SH","2026/01/06 00:00:00 -0800","2026/01/06 23:59:59 -0800","EZ782AXEUJUW8"
+"CH","Transaction ID","Invoice ID","PayPal Reference ID","PayPal Reference ID Type","Transaction Event Code","Transaction Initiation Date","Transaction Completion Date",Transaction Debit or Credit,"Gross Transaction Amount","Gross Transaction Currency","Fee Debit or Credit","Fee Amount","Fee Currency","Custom Field","Consumer ID","Payment Tracking ID",Store ID,"Bank Reference ID","Credit Transactional Fee","Credit Promotional Fee","Credit Term"
+"SB",5678,2444.1,4H844,"TXN","T0006",2026/01/06 00:00:30 -0800,2026/01/06 00:00:30 -0800,"CR",52000,"USD","DR",201,"USD","",YM2C,"","","",,,
+"SB","2L810","","","","T0000",2025/12/23 09:50:08 -0800,2025/12/23 09:50:08 -0800,"DR",15000,"USD","DR",499,"USD","S",,,0,"","","",""
+"RF",USD,52000,15000,0,700,"CR",547,"CR",36947,"CR",36947,"CR",5530,"CR",0,"CR",0,1

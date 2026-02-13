@@ -65,6 +65,7 @@ class BraintreeAudit implements AuditParser {
 		return [
 			'settled_currency' => (string)$total->getCurrency(),
 			'settled_total_amount' => (string)$total->getAmount(),
+			'audit_file_gateway' => 'braintree',
 			'gateway' => 'braintree',
 			'type' => 'payout',
 			'gateway_txn_id' => $batchName,

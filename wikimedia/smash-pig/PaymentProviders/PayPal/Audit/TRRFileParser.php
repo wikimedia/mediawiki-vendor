@@ -30,7 +30,7 @@ class TRRFileParser extends BaseParser {
 			throw new IgnoredException( 'Braintree transaction skipped' );
 		}
 		if ( $this->isDebitPaymentToSomeoneElse() ) {
-			throw new IgnoredException( 'Debit payment skipped' );
+			throw new UnhandledException( 'Debit payment skipped and it is of an unexpected type (T0000 Debits are handled) - warrants investigation' );
 		}
 		if ( !empty( $this->row['Billing Address Line1'] ) ) {
 			$addr_prefix = 'Billing Address ';

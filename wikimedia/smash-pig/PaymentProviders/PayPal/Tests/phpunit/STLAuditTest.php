@@ -74,6 +74,7 @@ class STLAuditTest extends AuditTestBase {
 			'settled_total_amount' => 8.40,
 			'gateway' => 'paypal',
 			'type' => 'payout',
+			'audit_file_gateway' => 'paypal',
 			'gateway_txn_id' => '',
 			'invoice_id' => '',
 			'settlement_batch_reference' => '20260106',
@@ -85,6 +86,7 @@ class STLAuditTest extends AuditTestBase {
 			'settled_currency' => 'AUD',
 			'settled_total_amount' => 54.35,
 			'gateway' => 'paypal',
+			'audit_file_gateway' => 'paypal',
 			'type' => 'payout',
 			'gateway_txn_id' => '',
 			'invoice_id' => '',
@@ -244,5 +246,25 @@ class STLAuditTest extends AuditTestBase {
 			'gross' => 26.0,
 			'fee' => 20.0,
 		], $output[0] );
+	}
+
+	/**
+	 * This test covers a sample of the debits that are ignored.
+	 *
+	 * The example found has a code of T0000 and represents
+	 * a reimbursement to a staff member in the finance Dept.
+	 *
+	 * This needs to be deducted from the 'payout' - it the aggregate that represents the batch total.
+	 *
+	 * @return void
+	 */
+	public function testProcessOtherPayment(): void {
+		$output = $this->processFile( 'stl_dr_payment.csv' );
+		$this->assertCount( 2, $output );
+
+		$this->assertSame( '517.99', $output[0]['settled_net_amount'] );
+		// The payout row should equal the one 'real' donation in the batch.
+		$this->assertEquals( 'payout', $output[1]['type'] );
+		$this->assertSame( 517.99, $output[1]['settled_total_amount'] );
 	}
 }

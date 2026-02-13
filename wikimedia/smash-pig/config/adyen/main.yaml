@@ -66,6 +66,9 @@ payment-provider:
   dd:
     class: SmashPig\PaymentProviders\Adyen\BankTransferPaymentProvider
     <<: *CACHE
+  ew:
+    class: SmashPig\PaymentProviders\Adyen\EWalletPaymentProvider
+    <<: *CACHE
   rtbt:
     class: SmashPig\PaymentProviders\Adyen\BankTransferPaymentProvider
     <<: *CACHE

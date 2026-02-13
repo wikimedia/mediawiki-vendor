@@ -21,7 +21,6 @@ class SettlementFileParser extends BaseParser {
 		$isGravy = $this->isGravy();
 
 		$message = [
-			'gateway_txn_id' => $isGravy ? Base62Helper::toUuid( $this->row['TRANSACTION_ID'] ) : $this->row['DLOCAL_TRANSACTION_ID'],
 			'gateway' => $isGravy ? 'gravy' : 'dlocal',
 			'audit_file_gateway' => 'dlocal',
 			'date' => UtcDate::getUtcTimestamp( $this->row['CREATION_DATE'] ),
@@ -43,6 +42,12 @@ class SettlementFileParser extends BaseParser {
 			'email' => $this->row['USER_EMAIL'],
 			'contribution_tracking_id' => $this->getContributionTrackingId(),
 		];
+		$gatewayTxnID = $isGravy ? Base62Helper::toUuid( $this->row['TRANSACTION_ID'] ) : $this->row['DLOCAL_TRANSACTION_ID'];
+		if ( !$this->isReversalType() || $this->isGravy() ) {
+			// For refunds, we get either the order ID (non gravy) or the original gateway_txn_id (gravy).
+			// The DLOCAL_TRANSACTION_ID is the refund transaction ID.
+			$message['gateway_txn_id'] = $gatewayTxnID;
+		}
 		return $message + $this->getGravyFields() + $this->getReversalFields();
 	}
 

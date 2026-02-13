@@ -90,6 +90,7 @@ class DlocalAudit implements AuditParser {
 				'settled_currency' => $this->headerRow['SETTLEMENT_CURRENCY'],
 				'settled_total_amount' => (string)$expectedNetTotal,
 				'gateway' => 'dlocal',
+				'audit_file_gateway' => 'dlocal',
 				'type' => 'payout',
 				'gateway_txn_id' => $batchName,
 				'invoice_id' => $batchName,

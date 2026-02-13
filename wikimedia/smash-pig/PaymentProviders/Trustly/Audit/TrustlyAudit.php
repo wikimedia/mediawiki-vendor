@@ -130,6 +130,7 @@ class TrustlyAudit implements AuditParser {
 					'settled_date' => strtotime( $line[6] ),
 					'date' => strtotime( $line[6] ),
 					'gateway' => 'trustly',
+					'audit_file_gateway' => 'trustly',
 					'type' => 'payout',
 					'gateway_txn_id' => '',
 					'invoice_id' => '',

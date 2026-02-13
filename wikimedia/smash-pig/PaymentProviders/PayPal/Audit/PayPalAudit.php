@@ -85,7 +85,7 @@ class PayPalAudit implements AuditParser {
 				if ( count( $line ) !== count( $columnHeaders ) ) {
 					Logger::warning(
 						'Skipping TRR line: column count mismatch. ' .
-						'Expected ' . count( $columnHeaders ) . ' got ' . count( $line )
+						'Expected ' . count( $columnHeaders ) . ' got ' . count( $line ) . print_r( $line, true )
 					);
 					continue;
 				}
@@ -106,9 +106,18 @@ class PayPalAudit implements AuditParser {
 					$this->conversionRows[$row['Invoice ID']][] = $row;
 					break;
 
+				case 'general_payment':
 				case 'withdrawal':
+					if ( $row['Transaction Debit or Credit'] !== 'DR' ) {
+						throw new UnhandledException( 'We expect these to always be debits - ie payouts' );
+					}
+					$fee = $row['Fee Amount'] ?? 0;
+					if ( $fee && $row['Fee Debit or Credit'] === 'CR' ) {
+						// Probably never true... always seems to be debit.
+						$fee = -$fee;
+					}
 					// This is a payout row. It should be added onto the aggregate row.
-					$this->payouts[$row['Gross Transaction Currency']][] = $row['Gross Transaction Amount'];
+					$this->payouts[$row['Gross Transaction Currency']][] = (float)$row['Gross Transaction Amount'] + (float)$fee;
 					break;
 
 				case 'payout_currency_conversion':

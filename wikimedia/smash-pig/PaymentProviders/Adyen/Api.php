@@ -289,6 +289,39 @@ class Api {
 	}
 
 	/**
+	 * Uses the rest API to initialize a redirect ewallet payment from the
+	 * Component web integration. Handles Vipps (Norway)
+	 *
+	 * @param array $params
+	 * order_id, payment_submethod, amount, currency, phone (for Vipps), return_url,
+	 *  description
+	 * @throws \SmashPig\Core\ApiException
+	 */
+	#[ApiOperationAttribute( ApiOperation::AUTHORIZE )]
+	public function createEWalletPaymentFromCheckout( $params ): array {
+		return $this->timedCall( __FUNCTION__, function () use ( $params ) {
+			$restParams = [
+				'amount' => $this->getArrayAmount( $params ),
+				'reference' => $params['order_id'],
+				'merchantAccount' => $this->account,
+				'paymentMethod' => [
+					'type' => $params['payment_submethod'],
+				],
+				'returnUrl' => $params['return_url'],
+				'channel' => 'Web',
+				'shopperStatement' => $params['description'] ?? ''
+			];
+			if ( isset( $params['phone'] ) ) {
+				$restParams['paymentMethod']['telephoneNumber'] = $params['phone'];
+			}
+			$restParams = array_merge( $restParams, $this->getContactInfo( $params ) );
+
+			$result = $this->makeRestApiCall( $restParams, 'payments', 'POST' );
+			return $result['body'];
+		} );
+	}
+
+	/**
 	 * Uses the rest API to create a SEPA direct deposit transfer
 	 *
 	 * @param array $params

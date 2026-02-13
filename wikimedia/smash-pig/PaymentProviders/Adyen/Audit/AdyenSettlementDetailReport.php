@@ -106,6 +106,7 @@ class AdyenSettlementDetailReport extends AdyenAudit {
 			'settled_date' => UtcDate::getUtcTimestamp( $row[$this->date], $row['TimeZone'] ),
 			'date' => UtcDate::getUtcTimestamp( $row[$this->date], $row['TimeZone'] ),
 			'gateway' => 'adyen',
+			'audit_file_gateway' => 'adyen',
 			'type' => 'payout',
 			'gateway_txn_id' => $row['Modification Reference'],
 			'gateway_account' => $row['Merchant Account'],

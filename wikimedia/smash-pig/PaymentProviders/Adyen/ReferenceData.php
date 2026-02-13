@@ -230,6 +230,10 @@ class ReferenceData {
 			'method' => 'obt',
 			'submethod' => 'trustly',
 		],
+		'vipps' => [
+			'method' => 'ew',
+			'submethod' => 'vipps',
+		],
 		'visa' => [
 			'method' => 'cc',
 			'submethod' => 'visa',

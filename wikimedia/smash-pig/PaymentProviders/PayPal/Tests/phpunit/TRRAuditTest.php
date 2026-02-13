@@ -385,8 +385,6 @@ class TRRAuditTest extends AuditTestBase {
 	 * The example found has a code of T0000 and represents
 	 * a reimbursement to a staff member in the finance Dept.
 	 *
-	 * It does not seem to otherwise be throwing out totals.
-	 *
 	 * @return void
 	 */
 	public function testProcessOtherPayment(): void {

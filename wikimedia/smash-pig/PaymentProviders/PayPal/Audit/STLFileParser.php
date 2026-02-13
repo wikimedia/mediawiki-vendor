@@ -81,6 +81,7 @@ class STLFileParser extends BaseParser {
 			'settled_total_amount' => ( $this->row[2] - $this->row[3] + $this->row[4] - $this->row[5] + $payouts ) / 100,
 			'gateway' => 'paypal',
 			'type' => 'payout',
+			'audit_file_gateway' => 'paypal',
 			'gateway_txn_id' => str_replace( $settlementDate, '/', '' ),
 			'invoice_id' => str_replace( $settlementDate, '/', '' ),
 			'settlement_batch_reference' => str_replace( '/', '', $settlementDate ),

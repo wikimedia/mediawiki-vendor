@@ -35,6 +35,7 @@ class BaseParser {
 	 */
 	public static function getTransactionCodes(): array {
 		return [
+			'T0000' => 'general_payment',
 			'T0002' => 'recurring_payment',
 			// In our case preapproved payment is braintree.
 			'T0003' => 'preapproved_payment',
