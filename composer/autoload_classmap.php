@@ -2762,6 +2762,7 @@ return array(
     'Psy\\Output\\PassthruPager' => $vendorDir . '/psy/psysh/src/Output/PassthruPager.php',
     'Psy\\Output\\ProcOutputPager' => $vendorDir . '/psy/psysh/src/Output/ProcOutputPager.php',
     'Psy\\Output\\ShellOutput' => $vendorDir . '/psy/psysh/src/Output/ShellOutput.php',
+    'Psy\\Output\\ShellOutputAdapter' => $vendorDir . '/psy/psysh/src/Output/ShellOutputAdapter.php',
     'Psy\\Output\\Theme' => $vendorDir . '/psy/psysh/src/Output/Theme.php',
     'Psy\\ParserFactory' => $vendorDir . '/psy/psysh/src/ParserFactory.php',
     'Psy\\ProjectTrust' => $vendorDir . '/psy/psysh/src/ProjectTrust.php',
