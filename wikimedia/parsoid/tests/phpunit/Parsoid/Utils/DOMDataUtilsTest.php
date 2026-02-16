@@ -304,10 +304,9 @@ class DOMDataUtilsTest extends \PHPUnit\Framework\TestCase {
 			$options = [
 				'useFragmentBank' => $useFragmentBank,
 				'discardDataParsoid' => true,
-				'siteConfig' => $siteConfig,
 			];
-			$html = DomPageBundle::fromLoadedDocument( $doc, $options )
-				->toInlineAttributeHtml( $options );
+			$html = DomPageBundle::fromLoadedDocument( $doc, siteConfig: $siteConfig, options: $options )
+				->toInlineAttributeHtml( siteConfig: $siteConfig, options: $options );
 			$this->assertSame(
 				$useFragmentBank ?
 				"<!DOCTYPE html>\n<html><head>" .
@@ -393,10 +392,9 @@ class DOMDataUtilsTest extends \PHPUnit\Framework\TestCase {
 			$options = [
 				'useFragmentBank' => $useFragmentBank,
 				'discardDataParsoid' => true,
-				'siteConfig' => $siteConfig,
 			];
-			$html = DomPageBundle::fromLoadedDocument( $doc, $options )
-				->toInlineAttributeHtml( $options );
+			$html = DomPageBundle::fromLoadedDocument( $doc, siteConfig: $siteConfig, options: $options )
+				->toInlineAttributeHtml( siteConfig: $siteConfig, options: $options );
 			$this->assertSame(
 				$useFragmentBank ?
 				"<!DOCTYPE html>\n<html><head>" .
@@ -477,20 +475,22 @@ class DOMDataUtilsTest extends \PHPUnit\Framework\TestCase {
 		$dp2->src = "test2";
 
 		// Serialize
-		$html = DomPageBundle::fromLoadedDocument( $doc, [
-			'useFragmentBank' => $useFragmentBank,
-			'siteConfig' => new MockSiteConfig( [] ),
-		] )->toSingleDocumentHtml();
+		$html = DomPageBundle::fromLoadedDocument(
+			$doc, siteConfig: new MockSiteConfig( [] ), options: [
+				'useFragmentBank' => $useFragmentBank,
+			] )->toSingleDocumentHtml();
 		$this->assertSame(
 			$useFragmentBank ?
 			"<!DOCTYPE html>\n<html><head>" .
 			'<template data-tid="uOo/VU3m"><b id="mwAQ">be bold</b></template>' .
 			'<script id="mw-pagebundle" type="application/x-mw-pagebundle">' .
-			'{"parsoid":{"counter":2,"ids":{' .
+			'{"parsoid":{"ids":{' .
 			'"mwAA":{"_type_":"stdClass"},' .
 			'"mwAQ":{"src":"test2"},' .
-			'"mwAg":{"src":"test1"}}' .
-			'},"mw":{"ids":[]}}</script></head>' .
+			'"mwAg":{"src":"test1"}},' .
+			'"counter":2' .
+			'},"mw":{"ids":[]},' .
+			'"counters":{"nodedata":2,"annotation":-1,"transclusion":-1}}</script></head>' .
 			'<body id="mwAA"><p ' .
 			'title="be bold" ' .
 			'typeof="mw:ExpandedAttrs" ' .
@@ -499,11 +499,13 @@ class DOMDataUtilsTest extends \PHPUnit\Framework\TestCase {
 			:
 			"<!DOCTYPE html>\n<html><head>" .
 			'<script id="mw-pagebundle" type="application/x-mw-pagebundle">' .
-			'{"parsoid":{"counter":2,"ids":{' .
+			'{"parsoid":{"ids":{' .
 			'"mwAA":{"_type_":"stdClass"},' .
 			'"mwAQ":{"src":"test2"},' .
-			'"mwAg":{"src":"test1"}}' .
-			'},"mw":{"ids":[]}}</script></head>' .
+			'"mwAg":{"src":"test1"}},' .
+			'"counter":2' .
+			'},"mw":{"ids":[]},' .
+			'"counters":{"nodedata":2,"annotation":-1,"transclusion":-1}}</script></head>' .
 			'<body id="mwAA"><p ' .
 			'title="be bold" ' .
 			'typeof="mw:ExpandedAttrs" ' .

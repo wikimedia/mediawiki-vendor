@@ -5291,6 +5291,7 @@ return array(
     'Wikimedia\\Parsoid\\Utils\\ContentUtils' => $vendorDir . '/wikimedia/parsoid/src/Utils/ContentUtils.php',
     'Wikimedia\\Parsoid\\Utils\\CounterType' => $vendorDir . '/wikimedia/parsoid/src/Utils/CounterType.php',
     'Wikimedia\\Parsoid\\Utils\\DOMCompat' => $vendorDir . '/wikimedia/parsoid/src/Utils/DOMCompat.php',
+    'Wikimedia\\Parsoid\\Utils\\DOMCompat\\TokenList' => $vendorDir . '/wikimedia/parsoid/src/Utils/DOMCompat/TokenList.php',
     'Wikimedia\\Parsoid\\Utils\\DOMDataCodec' => $vendorDir . '/wikimedia/parsoid/src/Utils/DOMDataCodec.php',
     'Wikimedia\\Parsoid\\Utils\\DOMDataUtils' => $vendorDir . '/wikimedia/parsoid/src/Utils/DOMDataUtils.php',
     'Wikimedia\\Parsoid\\Utils\\DOMPostOrder' => $vendorDir . '/wikimedia/parsoid/src/Utils/DOMPostOrder.php',
