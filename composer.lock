@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a88420d72680b63cf2b59f11ea29eb19",
+    "content-hash": "5b0328fb0461d1f3418574b9a35abc3d",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -2938,32 +2938,32 @@
         },
         {
             "name": "wikimedia/idle-dom",
-            "version": "v2.0.1",
+            "version": "v2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-IDLeDOM.git",
-                "reference": "48be2bc5f19c5b33b5ba671ea563ce507cc323b7"
+                "reference": "146fc79b4cc8e0f037f889c2c782b80fcb88d931"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-IDLeDOM/zipball/48be2bc5f19c5b33b5ba671ea563ce507cc323b7",
-                "reference": "48be2bc5f19c5b33b5ba671ea563ce507cc323b7",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-IDLeDOM/zipball/146fc79b4cc8e0f037f889c2c782b80fcb88d931",
+                "reference": "146fc79b4cc8e0f037f889c2c782b80fcb88d931",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.4.3"
+                "php": ">=8.1"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "45.0.0",
-                "mediawiki/mediawiki-phan-config": "0.14.0",
+                "mediawiki/mediawiki-codesniffer": "48.0.0",
+                "mediawiki/mediawiki-phan-config": "0.19.0",
                 "mediawiki/minus-x": "1.1.3",
-                "ockcyp/covers-validator": "1.6.0",
+                "ockcyp/covers-validator": "1.7.0",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
                 "php-parallel-lint/php-parallel-lint": "1.4.0",
-                "phpunit/phpunit": "9.6.16",
+                "phpunit/phpunit": "10.5.63",
                 "wikimedia/assert": "^0.5.0",
-                "wikimedia/update-history": "^1.0.1",
-                "wikimedia/webidl": "^1.0.4 || ^1.1.0"
+                "wikimedia/update-history": "^1.0.3",
+                "wikimedia/webidl": "^1.2.0"
             },
             "type": "library",
             "autoload": {
@@ -2985,9 +2985,9 @@
             "description": "DOM interfaces automatically generated from WebIDL",
             "homepage": "https://www.mediawiki.org/wiki/IDLeDOM",
             "support": {
-                "source": "https://github.com/wikimedia/mediawiki-libs-IDLeDOM/tree/v2.0.1"
+                "source": "https://github.com/wikimedia/mediawiki-libs-IDLeDOM/tree/v2.1.1"
             },
-            "time": "2024-11-09T05:58:33+00:00"
+            "time": "2026-02-14T17:59:57+00:00"
         },
         {
             "name": "wikimedia/ip-utils",
@@ -3346,16 +3346,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.20.6",
+            "version": "v0.20.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
-                "reference": "0d26d9853e84179874dbdd50812488d184d7e841"
+                "reference": "cb7853a5d8534c5209d5063ce028f05edbc13a69"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/0d26d9853e84179874dbdd50812488d184d7e841",
-                "reference": "0d26d9853e84179874dbdd50812488d184d7e841",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/cb7853a5d8534c5209d5063ce028f05edbc13a69",
+                "reference": "cb7853a5d8534c5209d5063ce028f05edbc13a69",
                 "shasum": ""
             },
             "require": {
@@ -3369,13 +3369,13 @@
                 "psr/log": "^1.1.4 || ^3.0.0",
                 "wikimedia/assert": "^0.5.1",
                 "wikimedia/bcp-47-code": "^2.0.0",
-                "wikimedia/idle-dom": "2.0.1",
+                "wikimedia/idle-dom": "2.0.1 || ^2.1.0",
                 "wikimedia/ip-utils": "^5.0.0",
-                "wikimedia/json-codec": "^3.0.1",
+                "wikimedia/json-codec": "^3.0.2 || ^4.0.0 || ^5.0.0",
                 "wikimedia/object-factory": "^5.0.1",
-                "wikimedia/remex-html": "4.1.1 || 4.1.2",
+                "wikimedia/remex-html": "^4.1.2 || ^5.1.0",
                 "wikimedia/wikipeg": "^4.0.0",
-                "wikimedia/zest-css": "^3.0.1"
+                "wikimedia/zest-css": "^3.0.1 || ^4.1.0"
             },
             "conflict": {
                 "wikimedia/langconv": "<0.4.2"
@@ -3423,10 +3423,10 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.20.6",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.20.7",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
-            "time": "2026-01-30T00:54:03+00:00"
+            "time": "2026-02-17T18:00:46+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",
