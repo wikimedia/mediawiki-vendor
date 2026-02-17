@@ -81,12 +81,6 @@ class EWalletPaymentProvider extends PaymentProvider {
 		$errors = [];
 		switch ( $submethod ) {
 			case 'vipps':
-				if ( empty( $params['phone'] ) ) {
-					$errors[] = new ValidationError(
-						'phone', null, [],
-						"Missing required field 'phone'"
-					);
-				}
 				if ( ( $params['currency'] ?? '' ) !== 'NOK' ) {
 					$errors[] = new ValidationError(
 						'currency', null, [],
