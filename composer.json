@@ -20,7 +20,7 @@
 		"composer/semver": "3.4.4",
 		"dasprid/enum": "1.0.7",
 		"endroid/qr-code": "6.0.9",
-		"firebase/php-jwt": "6.11.1",
+		"firebase/php-jwt": "7.0.2",
 		"guzzlehttp/guzzle": "7.10.0",
 		"guzzlehttp/promises": "2.3.0",
 		"guzzlehttp/psr7": "2.8.0",
