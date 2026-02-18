@@ -34,7 +34,7 @@
 		"endroid/qr-code": "6.0.9",
 		"ezimuel/guzzlestreams": "4.1.0",
 		"ezimuel/ringphp": "1.4.1",
-		"firebase/php-jwt": "6.11.1",
+		"firebase/php-jwt": "7.0.2",
 		"geoip2/geoip2": "3.3.0",
 		"guzzlehttp/guzzle": "7.10.0",
 		"guzzlehttp/promises": "2.3.0",
