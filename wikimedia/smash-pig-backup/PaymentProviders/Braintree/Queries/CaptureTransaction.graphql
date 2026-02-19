@@ -1,8 +1,0 @@
-mutation CaptureTransaction($input: CaptureTransactionInput!) {
-  captureTransaction(input: $input) {
-    transaction{
-      id
-      status
-    }
-  }
-}

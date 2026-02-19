@@ -1,7 +1,0 @@
-query GetReport ($date: Date!) {
-    report {
-    	paymentLevelFees (date: $date) {
-      		url
-    	}
- 	}
-}

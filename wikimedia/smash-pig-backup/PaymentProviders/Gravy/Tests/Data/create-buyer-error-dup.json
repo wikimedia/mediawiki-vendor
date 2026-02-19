@@ -1,7 +1,0 @@
-{
-    "type": "error",
-    "code": "duplicate_record",
-    "status": 409,
-    "message": "A duplicate record exists with this external_identifier value",
-    "details": []
-  }

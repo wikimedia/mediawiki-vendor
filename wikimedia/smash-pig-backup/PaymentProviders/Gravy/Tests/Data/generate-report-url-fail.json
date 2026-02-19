@@ -1,7 +1,0 @@
-{
-    "type": "error",
-    "code": "not_found",
-    "status": 404,
-    "message": "The resource could not be found",
-    "details": []
-  }

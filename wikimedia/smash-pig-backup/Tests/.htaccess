@@ -1,5 +1,0 @@
-#
-# Apache/PHP/SmashPig settings: ./Tests
-#
-# We never want to allow anything in this folder to run
-Order Allow,Deny
