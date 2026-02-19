@@ -14,7 +14,7 @@ use SmashPig\PaymentProviders\Adyen\Jobs\RecurringContractJob;
  * @package SmashPig\PaymentProviders\Adyen\Actions
  */
 class RecurringContractAction implements IListenerMessageAction {
-	use DropGravyInitiatedMessageTrait;
+	use GravyInitiatedMessageTrait;
 
 	public function execute( ListenerMessage $msg ): bool {
 		$tl = new TaggedLogger( 'RecurringContractAction' );

@@ -15,7 +15,7 @@ use SmashPig\PaymentProviders\Adyen\Jobs\RecordCaptureJob;
  * the transaction failed.
  */
 class PaymentCaptureAction implements IListenerMessageAction {
-	use DropGravyInitiatedMessageTrait;
+	use GravyInitiatedMessageTrait;
 
 	public const METHODS_RECORDED_ON_AUTHORISATION = [
 		'ideal', 'onlineBanking_CZ'

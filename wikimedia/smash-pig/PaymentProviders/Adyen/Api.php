@@ -309,7 +309,10 @@ class Api {
 				],
 				'returnUrl' => $params['return_url'],
 				'channel' => 'Web',
-				'shopperStatement' => $params['description'] ?? ''
+				'shopperStatement' => $params['description'] ?? '',
+				'additionalData' => [
+					'manualCapture' => false,
+				],
 			];
 			if ( isset( $params['phone'] ) ) {
 				$restParams['paymentMethod']['telephoneNumber'] = $params['phone'];

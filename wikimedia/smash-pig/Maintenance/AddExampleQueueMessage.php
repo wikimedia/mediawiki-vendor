@@ -30,6 +30,37 @@ class AddExampleQueueMessage extends MaintenanceBase {
 			$example['rescue_reference'] = "ZJ2HKCRVMB383Z59";
 			$example['is_autorescue'] = 'true';
 			$example['cancel_reason'] = 'Payment cannot be rescued: maximum failures reached';
+		} elseif ( $message == 'sms-optin' ) {
+			// AddExampleQueueMessage.php --message sms-optin
+			// Gravy adyen example
+			$queue = 'donations';
+			$random = rand( 200, 20000 );
+			$example['gateway_txn_id'] = '1234-ABCD-5678-EFGH-' . $random;
+			$example['response'] = false;
+			$example['gateway_account'] = 'Test';
+			$example['fee'] = 0;
+			$example['gross'] = "12.34";
+			$example['backend_processor'] = 'adyen';
+			$example['backend_processor_txn_id'] = $random . 'ABBCD';
+			$example['contribution_tracking_id'] = $random;
+			$example['country'] = 'US';
+			$example['city'] = 'Denver';
+			$example['postal_code'] = '80202';
+			$example['state_province'] = 'CO';
+			$example['street_address'] = '1234 Street St';
+			$example['currency'] = 'USD';
+			$example['email'] = 'newcontact@test' . $random . '.com';
+			$example['first_name'] = 'Phone';
+			$example['gateway'] = 'gravy';
+			$example['language'] = 'en';
+			$example['last_name'] = 'Name';
+			$example['order_id'] = $random . '.1';
+			$example['payment_method'] = 'cc';
+			$example['payment_submethod'] = 'visa';
+			$example['payment_orchestrator_reconciliation_id'] = '12345ABCD';
+			$example['phone'] = '1234567890';
+			$example['sms_opt_in'] = 1;
+			$example['date'] = time();
 		}
 
 		QueueWrapper::push( $queue, $example );

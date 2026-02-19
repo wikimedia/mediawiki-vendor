@@ -8,7 +8,7 @@ use SmashPig\Core\Messages\ListenerMessage;
 use SmashPig\PaymentProviders\Adyen\ExpatriatedMessages\Authorisation;
 
 class CancelRecurringAction implements IListenerMessageAction {
-	use DropGravyInitiatedMessageTrait;
+	use GravyInitiatedMessageTrait;
 
 	public function execute( ListenerMessage $msg ): bool {
 		// drop Gr4vy initiated message

@@ -160,7 +160,9 @@ class TrustlyAudit implements AuditParser {
 	 */
 	protected function parseLine( $row ): void {
 		try {
-			if ( ( $row['reason'] ?? '' ) === 'AC118' && $row['amount'] ) {
+			// When we get more confident we might permit anything with a non-zero amount
+			// but opting in what we see for now https://www.trustly.com/us/blog/a-merchants-guide-to-ach-returns-and-ach-return-codes
+			if ( in_array( $row['reason'] ?? '', [ 'AC118', 'R10', 'R08' ], true ) && $row['amount'] && $row['amount'] !== '0.00' ) {
 				if ( !empty( $row['batch_id'] ) && empty( $this->payouts[$row['trace_id']]['settlement_batch_reference'] ) ) {
 					$this->payouts[$row['trace_id']]['settlement_batch_reference'] = $row['batch_id'];
 				}

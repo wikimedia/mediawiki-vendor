@@ -11,7 +11,7 @@ use SmashPig\PaymentProviders\Adyen\ExpatriatedMessages\RefundWithData;
  * Action for a refund! whoo!
  */
 class RefundInitiatedAction extends BaseRefundAction implements IListenerMessageAction {
-	use DropGravyInitiatedMessageTrait;
+	use GravyInitiatedMessageTrait;
 
 	public function execute( ListenerMessage $msg ): bool {
 		$tl = new TaggedLogger( 'RefundInitiatedAction' );
