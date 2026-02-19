@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "abf692ddad4bf615e3c6ed1de26baa17",
+    "content-hash": "4aa81447a4609b43dcc6c4c5cc57d1eb",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -1987,7 +1987,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oauth2-server.git",
-                "reference": "b8b36aa0627c81093b77705b78d832d0a7ef2eec"
+                "reference": "a5181fb4d7356939567d4524a714f9a892ce66e3"
             },
             "require": {
                 "defuse/php-encryption": "^2.4",
@@ -2018,6 +2018,7 @@
                 "slevomat/coding-standard": "^8.14.1",
                 "squizlabs/php_codesniffer": "^3.8"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -2063,7 +2064,7 @@
                 "secure",
                 "server"
             ],
-            "time": "2025-12-31T19:02:51+00:00"
+            "time": "2026-02-19T01:40:07+00:00"
         },
         {
             "name": "league/uri",
