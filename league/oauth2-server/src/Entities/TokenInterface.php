@@ -75,14 +75,4 @@ interface TokenInterface
      * @return ScopeEntityInterface[]
      */
     public function getScopes(): array;
-
-    /**
-     * Return an issuer identifier for the token.
-     */
-    public function getIssuer(): ?string;
-
-    /**
-     * Set the issuer identifier for the token.
-     */
-    public function setIssuer(string $issuer): void;
 }

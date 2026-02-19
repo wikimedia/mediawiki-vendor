@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'e4b8e95947feb7a5795d9b40798a594088f2be18',
+        'reference' => '2f69b8a20af455b0b906eecc4bfe555523889848',
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'e4b8e95947feb7a5795d9b40798a594088f2be18',
+            'reference' => '2f69b8a20af455b0b906eecc4bfe555523889848',
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -299,15 +299,12 @@
             'dev_requirement' => false,
         ),
         'league/oauth2-server' => array(
-            'pretty_version' => 'dev-9.3.0-WMF',
-            'version' => 'dev-9.3.0-WMF',
-            'reference' => 'a5181fb4d7356939567d4524a714f9a892ce66e3',
+            'pretty_version' => '9.3.0',
+            'version' => '9.3.0.0',
+            'reference' => 'd8e2f39f645a82b207bbac441694d6e6079357cb',
             'type' => 'library',
             'install_path' => __DIR__ . '/../league/oauth2-server',
-            'aliases' => array(
-                0 => '9.3.0',
-                1 => '9999999-dev',
-            ),
+            'aliases' => array(),
             'dev_requirement' => false,
         ),
         'league/oauth2server' => array(

@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace League\OAuth2\Server\Entities\Traits;
 
 use DateTimeImmutable;
-use League\OAuth2\Server\Entities\ClaimEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
 
@@ -29,18 +28,11 @@ trait TokenEntityTrait
     protected DateTimeImmutable $expiryDateTime;
 
     /**
-     * @var ClaimEntityInterface[]
-     */
-    protected array $claims = [];
-
-    /**
      * @var non-empty-string|null
      */
     protected string|null $userIdentifier = null;
 
     protected ClientEntityInterface $client;
-
-    protected string|null $issuer;
 
     /**
      * Associate a scope with the token.
@@ -58,24 +50,6 @@ trait TokenEntityTrait
     public function getScopes(): array
     {
         return array_values($this->scopes);
-    }
-
-    /**
-     * Associate a claim with the token.
-     */
-    public function addClaim(ClaimEntityInterface $claim): void
-    {
-        $this->claims[] = $claim;
-    }
-
-    /**
-     * Return an array of claims associated with the token.
-     *
-     * @return ClaimEntityInterface[]
-     */
-    public function getClaims(): array
-    {
-        return $this->claims;
     }
 
     /**
@@ -128,21 +102,5 @@ trait TokenEntityTrait
     public function setClient(ClientEntityInterface $client): void
     {
         $this->client = $client;
-    }
-
-    /**
-     * Return an issuer identifier for the token.
-     */
-    public function getIssuer(): ?string
-    {
-        return $this->issuer;
-    }
-
-    /**
-     * Set the issuer identifier for the token.
-     */
-    public function setIssuer(string $issuer): void
-    {
-        $this->issuer = $issuer;
     }
 }

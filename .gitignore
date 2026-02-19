@@ -60,11 +60,6 @@ ezimuel/guzzlestreams/tests
 # Fixed upstream but then reverted in https://github.com/JamesHeinrich/getID3/commit/a24656a102853b85610acc00237b2e85f41007cf
 james-heinrich/getid3/demos/
 
-# Excluded in .gitattributes, but included by composer due to WMF fork
-league/oauth2-server/CONTRIBUTING.md
-league/oauth2-server/examples/
-league/oauth2-server/tests/
-
 # Re-added for ForeignResourcesManager, https://github.com/wikimedia/mediawiki-libs-metrics-platform/commit/d98c47371f6447f6549de9d1ffe798ef9bee18e1
 wikimedia/metrics-platform/js
 # Added in https://gerrit.wikimedia.org/r/c/mediawiki/libs/metrics-platform/+/964595

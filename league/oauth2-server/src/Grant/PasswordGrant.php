@@ -61,20 +61,8 @@ class PasswordGrant extends AbstractGrant
             $user->getIdentifier()
         );
 
-        $privateClaims = [];
-
-        if ($this->claimRepository !== null) {
-            $privateClaims = $this->claimRepository->getClaims($this->getIdentifier(), $client, $user->getIdentifier());
-        }
-
         // Issue and persist new access token
-        $accessToken = $this->issueAccessToken(
-            $accessTokenTTL,
-            $client,
-            $user->getIdentifier(),
-            $finalizedScopes,
-            $privateClaims
-        );
+        $accessToken = $this->issueAccessToken($accessTokenTTL, $client, $user->getIdentifier(), $finalizedScopes);
         $this->getEmitter()->emit(new RequestAccessTokenEvent(RequestEvent::ACCESS_TOKEN_ISSUED, $request, $accessToken));
         $responseType->setAccessToken($accessToken);
 
