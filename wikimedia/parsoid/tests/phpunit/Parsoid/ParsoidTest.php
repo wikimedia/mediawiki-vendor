@@ -64,6 +64,24 @@ class ParsoidTest extends \PHPUnit\Framework\TestCase {
 					'pageBundle' => true,
 				]
 			],
+			[
+				"<div id='test'>abc</div><div id='test'>123</div>",
+				'<div id="test">abc</div><div id="mwAQ" data-x-id="test">123</div>',
+				[
+					'body_only' => true,
+					'wrapSections' => false,
+					'pageBundle' => true,
+				]
+			],
+			[
+				"<div id='mwtest'>abc</div><div id='mwtest'>123</div>",
+				'<div id="mwtest">abc</div><div id="mwAQ" data-x-id="mwtest">123</div>',
+				[
+					'body_only' => true,
+					'wrapSections' => false,
+					'pageBundle' => true,
+				]
+			],
 		];
 	}
 
@@ -443,6 +461,56 @@ class ParsoidTest extends \PHPUnit\Framework\TestCase {
 			[ 'timing', 'entry.html2wt.size.output', 4.0 ],
 			$log[11]
 		);
+	}
+
+	/**
+	 * @covers ::wikitext2html
+	 * @covers ::html2wikitext
+	 * @covers ::dom2wikitext
+	 * @dataProvider provideWt2Wt
+	 */
+	public function testWt2Wt( string $wt, string $expected, array $parserOpts = [] ) {
+		$opts = [];
+
+		$siteConfig = new MockSiteConfig( $opts );
+		$dataAccess = new MockDataAccess( $siteConfig, $opts );
+		$parsoid = new Parsoid( $siteConfig, $dataAccess );
+
+		$pageContent = new MockPageContent( [ 'main' => $wt ] );
+		$pageConfig = new MockPageConfig( $siteConfig, $opts, $pageContent );
+
+		$out = $parsoid->wikitext2html( $pageConfig, $parserOpts );
+
+		if ( !empty( $parserOpts['pageBundle'] ) ) {
+			$wt = $parsoid->dom2wikitext( $pageConfig, $out, $parserOpts );
+		} else {
+			$wt = $parsoid->html2wikitext( $pageConfig, $out, $parserOpts );
+		}
+
+		$this->assertEquals( $expected, $wt );
+	}
+
+	public static function provideWt2Wt(): array {
+		return [
+			[
+				"<div id='mwtest'>abc</div><div id='mwtest'>123</div>",
+				'<div id="mwtest">abc</div><div id="mwtest">123</div>',
+				[
+					'body_only' => true,
+					'wrapSections' => false,
+					'pageBundle' => false,
+				]
+			],
+			[
+				"<div id='mwtest'>abc</div><div id='mwtest'>123</div>",
+				'<div id="mwtest">abc</div><div id="mwtest">123</div>',
+				[
+					'body_only' => true,
+					'wrapSections' => false,
+					'pageBundle' => true,
+				]
+			],
+		];
 	}
 
 }

@@ -894,7 +894,7 @@ ipv6urladdr =
  * and close as we find them.
  */
 tplarg_or_template =
-	&'{{#' t:template3 { return $t; }  /
+	&('{{' hash) t:template3 { return $t; }  /
 	&'{{'
 	@(
 		&('{{' &(triple_brace+ not_a_brace) tplarg) @(template/broken_template)
@@ -1327,7 +1327,8 @@ lang_variant_flags =
 lang_variant_flag =
 	f:[-+A-Z]           { return [ 'flag' => $f ]; }
 	/ v:lang_variant_name { return [ 'variant' => $v ]; }
-	/ b:$(!space_or_newline !nowiki [^{}|;])+ { return [ 'bogus' => $b ]; /* bad flag */}
+	// T417534: This production is overly complicated and should be dropped
+	/ b:$(!space_or_newline !nowiki [^{}|;\[\]])+ { return [ 'bogus' => $b ]; /* bad flag */}
 
 // language variant name, like zh, zh-cn, etc.
 lang_variant_name =
@@ -1953,7 +1954,7 @@ normalized_tag_name = name:$[^\t\n\v />\0#]+ &{
 }
 
 /* Supporting a hash part of extension tag is T393795 */
-hash_part = $( "#" $[^\t\n\v />\0]+ )
+hash_part = $( hash $[^\t\n\v />\0]+ )
 
 tag_trailing_context = space_or_newline / "/>" / ">"
 
@@ -3161,6 +3162,9 @@ table_attribute_preprocessor_text_double =
 	)* {
 		return TokenizerUtils::flattenString( $r );
 	}
+
+// Japanese uses "double wide hash" instead of `#` in localizations (T415405)
+hash = "#" / "＃"
 
 // Special-case support for those pipe templates
 pipe [inline] = "|" / "{{!}}"

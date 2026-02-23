@@ -5,10 +5,10 @@ namespace Wikimedia\Parsoid\Utils;
 
 use Composer\Semver\Semver;
 use InvalidArgumentException;
+use LogicException;
 use stdClass;
 use WeakMap;
 use Wikimedia\Assert\Assert;
-use Wikimedia\Assert\UnreachableException;
 use Wikimedia\JsonCodec\Hint;
 use Wikimedia\Parsoid\Config\SiteConfig;
 use Wikimedia\Parsoid\Core\BasePageBundle;
@@ -275,7 +275,7 @@ class DOMDataUtils {
 		$nodeData = self::getBag( $node->ownerDocument )->getObject( (int)$nodeId );
 		Assert::invariant( $nodeData !== null, 'Bogus nodeId given!' );
 		if ( isset( $nodeData->storedId ) ) {
-			throw new UnreachableException(
+			throw new LogicException(
 				'Trying to fetch node data without loading! ' .
 				// If this node's data-object id is different from storedId,
 				// it will indicate that the data-parsoid object was shared
@@ -611,13 +611,17 @@ class DOMDataUtils {
 		$uid = DOMCompat::getAttribute( $node, 'id' );
 		$codec = self::getCodec( $node );
 		$pbCounters = &$pb->counters;
-		$origId = $uid;
 		if ( $uid !== null && array_key_exists( $uid, $pb->parsoid['ids'] ) ) {
 			// Forcibly reset the ID if there's a conflict
+			// T415477: Preserve the original id as in TokenizerUtils::protectAttrs()
+			// so that it's still present in the HTML
+			$node->setAttribute( 'data-x-id', $uid );
 			$uid = null;
 		}
 		if ( $uid === '' ) {
 			// Forcibly reset the ID if it is invalid
+			// Don't bother with a data-x-id here, the sanitizer will have
+			// already stripped and shadowed an empty id coming from source
 			$uid = null;
 		}
 		if ( $uid === null ) {
@@ -632,7 +636,7 @@ class DOMDataUtils {
 				// other.
 				$uid = CounterType::NODE_DATA_ID->counterToId( $pbCounters['nodedata'] );
 			} while ( isset( $idIndex[$uid] ) );
-			self::addNormalizedAttribute( $node, 'id', $uid, $origId );
+			DOMCompat::setIdAttribute( $node, $uid );
 		}
 		$pb->parsoid['ids'][$uid] = $data->parsoid;
 		if ( isset( $data->mw ) ) {
@@ -782,17 +786,18 @@ class DOMDataUtils {
 
 		$pbData = self::storeRichAttributes( $node, $options );
 
-		// Store pagebundle
-		if ( $pbData !== null ) {
-			self::storeInPageBundle( $options['storeInPageBundle'], $node, $pbData, $options['idIndex'] );
-		}
-
 		// Indicate that this node's data has been stored so that if we try
 		// to access it after the fact we're aware and remove the attribute
 		// since it's no longer needed.
 		$nd = self::getNodeData( $node );
 		$id = DOMCompat::getAttribute( $node, self::DATA_OBJECT_ATTR_NAME );
 		$nd->storedId = $id !== null ? intval( $id ) : null;
+
+		// Store pagebundle
+		if ( $pbData !== null ) {
+			self::storeInPageBundle( $options['storeInPageBundle'], $node, $pbData, $options['idIndex'] );
+		}
+
 		$node->removeAttribute( self::DATA_OBJECT_ATTR_NAME );
 	}
 
