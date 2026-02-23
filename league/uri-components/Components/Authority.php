@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace League\Uri\Components;
 
+use BackedEnum;
 use Deprecated;
 use League\Uri\Contracts\AuthorityInterface;
 use League\Uri\Contracts\HostInterface;
@@ -38,9 +39,9 @@ final class Authority extends Component implements AuthorityInterface
     private readonly UserInfoInterface $userInfo;
 
     public function __construct(
-        Stringable|string|null $host,
-        Stringable|string|int|null $port = null,
-        #[SensitiveParameter] Stringable|string|null $userInfo = null
+        BackedEnum|Stringable|string|null $host,
+        BackedEnum|Stringable|string|int|null $port = null,
+        #[SensitiveParameter] BackedEnum|Stringable|string|null $userInfo = null
     ) {
         $this->host = !$host instanceof HostInterface ? Host::new($host) : $host;
         $this->port = !$port instanceof PortInterface ? Port::new($port) : $port;
@@ -53,7 +54,7 @@ final class Authority extends Component implements AuthorityInterface
     /**
      * @throws SyntaxError If the component contains invalid HostInterface part.
      */
-    public static function new(Stringable|string|null $value = null): self
+    public static function new(BackedEnum|Stringable|string|null $value = null): self
     {
         $components = UriString::parseAuthority(self::filterComponent($value));
 
@@ -70,7 +71,7 @@ final class Authority extends Component implements AuthorityInterface
     /**
      * Create a new instance from a string.or a stringable structure or returns null on failure.
      */
-    public static function tryNew(Stringable|string|null $uri = null): ?self
+    public static function tryNew(BackedEnum|Stringable|string|null $uri = null): ?self
     {
         try {
             return self::new($uri);
@@ -82,7 +83,7 @@ final class Authority extends Component implements AuthorityInterface
     /**
      * Create a new instance from a URI object.
      */
-    public static function fromUri(WhatwgUrl|Rfc3986Uri|Stringable|string $uri): self
+    public static function fromUri(WhatwgUrl|Rfc3986Uri|BackedEnum|Stringable|string $uri): self
     {
         $uri = self::filterUri($uri);
         if ($uri instanceof Rfc3986Uri) {
@@ -184,7 +185,7 @@ final class Authority extends Component implements AuthorityInterface
 
     public function equals(mixed $value): bool
     {
-        if (!$value instanceof Stringable && !is_string($value) && null !== $value) {
+        if (!$value instanceof BackedEnum && !$value instanceof Stringable && !is_string($value) && null !== $value) {
             return false;
         }
 
@@ -209,7 +210,7 @@ final class Authority extends Component implements AuthorityInterface
         ];
     }
 
-    public function withHost(Stringable|string|null $host): AuthorityInterface
+    public function withHost(BackedEnum|Stringable|string|null $host): AuthorityInterface
     {
         if (!$host instanceof HostInterface) {
             $host = Host::new($host);
@@ -221,7 +222,7 @@ final class Authority extends Component implements AuthorityInterface
         };
     }
 
-    public function withPort(Stringable|string|int|null $port): AuthorityInterface
+    public function withPort(BackedEnum|Stringable|string|int|null $port): AuthorityInterface
     {
         if (!$port instanceof PortInterface) {
             $port = Port::new($port);
@@ -233,8 +234,10 @@ final class Authority extends Component implements AuthorityInterface
         };
     }
 
-    public function withUserInfo(Stringable|string|null $user, #[SensitiveParameter] Stringable|string|null $password = null): AuthorityInterface
-    {
+    public function withUserInfo(
+        BackedEnum|Stringable|string|null $user,
+        #[SensitiveParameter] BackedEnum|Stringable|string|null $password = null
+    ): AuthorityInterface {
         $userInfo = new UserInfo($user, $password);
 
         return match ($this->userInfo->value()) {
