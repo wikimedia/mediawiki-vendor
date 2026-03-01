@@ -41,7 +41,7 @@
 		"guzzlehttp/psr7": "2.8.0",
 		"jakobo/hotp-php": "2.0.0",
 		"james-heinrich/getid3": "1.9.24",
-		"justinrainbow/json-schema": "5.3.1",
+		"justinrainbow/json-schema": "5.3.2",
 		"lcobucci/jwt": "5.6.0",
 		"league/event": "3.0.3",
 		"league/oauth2-server": "dev-9.3.0-WMF#a5181fb4d7356939567d4524a714f9a892ce66e3 as 9.3.0",
