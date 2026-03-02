@@ -8217,17 +8217,17 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "V0.23.0-a17",
-            "version_normalized": "0.23.0.0-alpha17",
+            "version": "v0.23.0-a19",
+            "version_normalized": "0.23.0.0-alpha19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
-                "reference": "df5ef6ee349125a128c7822c8fd001f29bb3f58e"
+                "reference": "a7d082128462b8ea9975187d72cce549d4f4015d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/df5ef6ee349125a128c7822c8fd001f29bb3f58e",
-                "reference": "df5ef6ee349125a128c7822c8fd001f29bb3f58e",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/a7d082128462b8ea9975187d72cce549d4f4015d",
+                "reference": "a7d082128462b8ea9975187d72cce549d4f4015d",
                 "shasum": ""
             },
             "require": {
@@ -8245,9 +8245,9 @@
                 "symfony/polyfill-php85": "^1.33.0",
                 "wikimedia/assert": "^0.5.1",
                 "wikimedia/bcp-47-code": "^2.0.0",
-                "wikimedia/idle-dom": "2.1.0",
+                "wikimedia/idle-dom": "^2.1.0",
                 "wikimedia/ip-utils": "^6.0.0",
-                "wikimedia/json-codec": "^4.0.0",
+                "wikimedia/json-codec": "^4.0.0 || ^5.0.0",
                 "wikimedia/object-factory": "^5.0.1",
                 "wikimedia/remex-html": "^5.1.0 || ^6.0.0",
                 "wikimedia/utfnormal": "^4.0",
@@ -8277,7 +8277,7 @@
             "suggest": {
                 "wikimedia/langconv": "Provides script conversion support"
             },
-            "time": "2026-02-20T16:32:47+00:00",
+            "time": "2026-02-27T00:16:39+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -8303,7 +8303,7 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/V0.23.0-a17",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.23.0-a19",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
             "install-path": "../wikimedia/parsoid"

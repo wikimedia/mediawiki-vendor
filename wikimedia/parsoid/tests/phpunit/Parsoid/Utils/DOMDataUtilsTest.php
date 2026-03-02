@@ -31,6 +31,7 @@ class DOMDataUtilsTest extends \PHPUnit\Framework\TestCase {
 			"<p>Hello, world</p>"
 		) );
 		DOMDataUtils::prepareDoc( $dpb->doc );
+		DOMDataUtils::visitAndLoadDataAttribs( DOMCompat::getBody( $dpb->doc ) );
 		$p = DOMCompat::querySelector( $dpb->doc, 'p' );
 		TestingAccessWrapper::newFromClass( DOMDataUtils::class )->storeInPageBundle( $dpb, $p, (object)[
 			'parsoid' => '{"go":"team"}',
@@ -490,7 +491,7 @@ class DOMDataUtilsTest extends \PHPUnit\Framework\TestCase {
 			'"mwAg":{"src":"test1"}},' .
 			'"counter":2' .
 			'},"mw":{"ids":[]},' .
-			'"counters":{"nodedata":2,"annotation":-1,"transclusion":-1}}</script></head>' .
+			'"counters":{"nodedata":2,"annotation":0,"transclusion":1}}</script></head>' .
 			'<body id="mwAA"><p ' .
 			'title="be bold" ' .
 			'typeof="mw:ExpandedAttrs" ' .
@@ -505,7 +506,7 @@ class DOMDataUtilsTest extends \PHPUnit\Framework\TestCase {
 			'"mwAg":{"src":"test1"}},' .
 			'"counter":2' .
 			'},"mw":{"ids":[]},' .
-			'"counters":{"nodedata":2,"annotation":-1,"transclusion":-1}}</script></head>' .
+			'"counters":{"nodedata":2,"annotation":0,"transclusion":1}}</script></head>' .
 			'<body id="mwAA"><p ' .
 			'title="be bold" ' .
 			'typeof="mw:ExpandedAttrs" ' .
