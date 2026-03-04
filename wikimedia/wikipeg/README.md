@@ -128,6 +128,11 @@ object to `PEG.buildParser`. The following options are supported:
     determine that a rule can not match.  This can affect failure
     reporting, since we might be able to fail on a parent rule before
     actually recursing into the child responsible.
+  * `optimizePureActions` = if `true`, defaults to enabling a rule
+    optimization which skips executing rule action blocks if the
+    result of that rule will not be used.  This can be enabled or
+    disabled for individual rules via the `[pure]` rule attribute
+    described below.
   * `cacheInitHook` and `cacheRuleHook` — functions to generate custom cache
     control code
   * `allowedStartRules` — rules the parser will be allowed to start parsing from
@@ -561,6 +566,19 @@ Marks a rule as unreachable. If the `allowUselessChoice` option is
 false, this attribute permits a reference to the rule in a choice even
 if a previous option in the choice appears to always match.
 
+#### [pure]
+
+Marks a rule as not having side effects in its action blocks.  This
+allows action blocks in rules which have this attribute set to be
+skipped (not executed) when the value of the rule is not needed.
+
+#### [pure=false]
+
+Marks a rule as having side effects in its action blocks.  If the
+`optimizePureActions` option is given to the parser, this ensures that
+the action blocks for this rule are executed even if the value of
+the rule is not needed.
+
 Rule parameter syntax
 ---------------------
 
@@ -571,11 +589,12 @@ All parameters referenced in the grammar have an initial value and can
 be used before their first assignment.
 
 Parameters have a type detected at compile time: boolean, integer,
-string or reference. Initial values for each type are:
+string, reference, or labeled expression. Initial values for each type are:
   - boolean: false
   - integer: 0
   - string: ""
   - reference: null
+  - labeled expression: null (or the integer or string default value)
 
 The parameter namespace is global, but the value of a parameter reverts
 to its previous value after termination of the assigning rule reference.
@@ -589,6 +608,15 @@ Assert that the parameter "x" is true or nonzero
 #### ! < *parameter* >
 
 Assert that the parameter "x" is false or zero
+
+#### & < *parameter* == *value* >
+
+Assert that the parameter "x" has the specified value.
+
+#### ! < *parameter* == *value* >
+#### & < *parameter* != *value* >
+
+Assert that the parameter "x" does not have the specified value.
 
 #### *rule* < *parameter* = true >
 
@@ -614,6 +642,14 @@ Assign x = x + 1.
 #### *rule* < *parameter* = "*literal*" >
 
 String assignment.
+
+#### *rule* < *parameter* = $*label* >
+
+Assign the value of the given labeled expression to the parameter.
+
+Labeled expression parameters can't be intermixed with boolean
+assignments to the same parameter, but they can co-exist with
+integer or string assignments to the parameter.
 
 #### *rule* < & *parameter* = 1 >
 
