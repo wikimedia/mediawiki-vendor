@@ -1339,6 +1339,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\AtEase\\AtEase' => __DIR__ . '/..' . '/wikimedia/at-ease/src/AtEase.php',
         'Wikimedia\\Bcp47Code\\Bcp47Code' => __DIR__ . '/..' . '/wikimedia/bcp-47-code/src/Bcp47Code.php',
         'Wikimedia\\Bcp47Code\\Bcp47CodeValue' => __DIR__ . '/..' . '/wikimedia/bcp-47-code/src/Bcp47CodeValue.php',
+        'Wikimedia\\CSS\\Exception\\ParseException' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Exception/ParseException.php',
         'Wikimedia\\CSS\\Grammar\\Alternative' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/Alternative.php',
         'Wikimedia\\CSS\\Grammar\\AnythingMatcher' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/AnythingMatcher.php',
         'Wikimedia\\CSS\\Grammar\\BlockMatcher' => __DIR__ . '/..' . '/wikimedia/css-sanitizer/src/Grammar/BlockMatcher.php',

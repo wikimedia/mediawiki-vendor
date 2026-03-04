@@ -961,6 +961,7 @@ return array(
     'Wikimedia\\AtEase\\AtEase' => $vendorDir . '/wikimedia/at-ease/src/AtEase.php',
     'Wikimedia\\Bcp47Code\\Bcp47Code' => $vendorDir . '/wikimedia/bcp-47-code/src/Bcp47Code.php',
     'Wikimedia\\Bcp47Code\\Bcp47CodeValue' => $vendorDir . '/wikimedia/bcp-47-code/src/Bcp47CodeValue.php',
+    'Wikimedia\\CSS\\Exception\\ParseException' => $vendorDir . '/wikimedia/css-sanitizer/src/Exception/ParseException.php',
     'Wikimedia\\CSS\\Grammar\\Alternative' => $vendorDir . '/wikimedia/css-sanitizer/src/Grammar/Alternative.php',
     'Wikimedia\\CSS\\Grammar\\AnythingMatcher' => $vendorDir . '/wikimedia/css-sanitizer/src/Grammar/AnythingMatcher.php',
     'Wikimedia\\CSS\\Grammar\\BlockMatcher' => $vendorDir . '/wikimedia/css-sanitizer/src/Grammar/BlockMatcher.php',
