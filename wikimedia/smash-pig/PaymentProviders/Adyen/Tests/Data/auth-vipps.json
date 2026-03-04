@@ -1,0 +1,43 @@
+{
+  "additionalData": {
+    "retry.attempt1.networkTokenOffered": "false",
+    "authCode": "171966",
+    "avsResult": "0 Unknown",
+    "cardSummary": "5555",
+    "isCardCommercial": "false",
+    "PaymentAccountReference": "500168XC6068IP8909KE17YNACY6I",
+    "retry.attempt1.acquirerAccount": "AdyenMasterCard_US_WF_98765_WikimediaDonations_US",
+    "retry.attempt1.acquirer": "AdyenMasterCard_US_WF_98765",
+    "networkTxReference": "MCSCMULEZ0112",
+    "refusalReasonRaw": "00 : Approved or completed successfully",
+    "authorisationMid": "230205555444466",
+    "checkout.cardAddedBrand": "mc_vipps",
+    "acquirerAccountCode": "AdyenMasterCard_US_WF_98765_WikimediaDonations_US",
+    "cvcResult": "0 Unknown",
+    "retry.attempt1.responseCode": "Approved",
+    "expiryDate": "",
+    "refusalCodeRaw": "00",
+    "retry.attempt1.rawResponse": "00 : Approved or completed successfully",
+    "retry.attempt1.shopperInteraction": "Ecommerce",
+    "cardFunction": "Consumer",
+    "acquirerCode": "AdyenMasterCard_US_WF_98765",
+    "acquirerReference": "605999991092"
+  },
+  "amount": {
+    "currency": "NOK",
+    "value": 1200
+  },
+  "eventCode": "AUTHORISATION",
+  "eventDate": "2026-02-23T09:39:16+01:00",
+  "merchantAccountCode": "WikimediaDonations",
+  "merchantReference": "119223.0",
+  "operations": [
+    "CANCEL",
+    "CAPTURE",
+    "REFUND"
+  ],
+  "paymentMethod": "mc",
+  "pspReference": "ABCDE77K777LCCB9",
+  "reason": "171966:3774:",
+  "success": "true"
+}

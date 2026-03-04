@@ -269,4 +269,57 @@ class CaptureJobTest extends BaseAdyenTestCase {
 		);
 	}
 
+	/**
+	 * E-wallet donations come back with '0 Unknown' results for AVS
+	 * and CVV, which in the tests would put them over the limit for
+	 * capture. Check that those are ignored for E-wallet types.
+	 */
+	public function testEWalletIgnoresAVSAndCVV() {
+		$auth = Authorisation::getInstanceFromJSON(
+			json_decode( file_get_contents( __DIR__ . '/../Data/auth-vipps.json' ), true )
+		);
+
+		$this->mockApi->expects( $this->once() )
+			->method( 'approvePayment' )
+			->with( [
+				'amount' => 12,
+				'currency' => 'NOK',
+				'gateway_txn_id' => 'ABCDE77K777LCCB9',
+			] )
+			->willReturn( AdyenTestConfiguration::getSuccessfulApproveResult() );
+
+		$job = new ProcessCaptureRequestJob();
+		$job->payload = ProcessCaptureRequestJob::factory( $auth )['payload'];
+		$this->assertTrue( $job->execute() );
+
+		$donorData = $this->pendingDatabase->fetchMessageByGatewayOrderId(
+			'adyen', $auth->merchantReference
+		);
+
+		$this->assertNotNull(
+			$donorData,
+			'RequestCaptureJob did not leave donor data on pending queue'
+		);
+		$this->assertTrue(
+			$donorData['captured'],
+			'RequestCaptureJob did not mark donor data as captured'
+		);
+
+		$antifraudMessage = $this->antifraudQueue->pop();
+		$this->assertNotNull(
+			$antifraudMessage,
+			'RequestCaptureJob did not send antifraud message'
+		);
+		$this->assertEquals(
+			'process',
+			$antifraudMessage['validation_action'],
+			'Successful capture should get "process" validation action'
+		);
+		$this->assertEquals(
+			[],
+			$antifraudMessage['score_breakdown'],
+			'Should not send AVS / CVV scores for e-wallet payment'
+		);
+	}
+
 }

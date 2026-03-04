@@ -14,6 +14,7 @@ enum PaymentMethod: string {
 	case CASH_RAPIPAGO = 'cash_rapipago';
 	case CASH_RED_PAGOS = 'cash_red_pagos';
 	case NETBANKING = 'netbanking';
+	case ONLINEBANKINGCZ = 'onlinebanking_cz';
 	case PAYPAL = 'paypal';
 	case PIX = 'pix';
 	case PSE = 'pse';
@@ -31,6 +32,7 @@ enum PaymentMethod: string {
 			self::CASH_PAGO_EFECTIVO => 'pagoefectivo',
 			self::CASH_RAPIPAGO => 'rapipago',
 			self::CASH_RED_PAGOS => 'redpagos',
+			self::ONLINEBANKINGCZ => 'onlinebankingcz',
 			self::SEPA => 'sepa',
 			default => $this->value, // For every other case, just return the enum's string value
 		};

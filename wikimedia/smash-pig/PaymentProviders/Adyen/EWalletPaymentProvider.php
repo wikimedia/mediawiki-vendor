@@ -70,11 +70,11 @@ class EWalletPaymentProvider extends PaymentProvider {
 	}
 
 	protected function getPaymentDetailsStatusNormalizer(): StatusNormalizer {
-		return new RedirectedPaymentStatus();
+		return new ApprovalNeededCreatePaymentStatus();
 	}
 
 	protected function getPaymentDetailsSuccessfulStatuses(): array {
-		return [ FinalStatus::PENDING, FinalStatus::PENDING_POKE, FinalStatus::COMPLETE ];
+		return [ FinalStatus::PENDING_POKE, FinalStatus::COMPLETE ];
 	}
 
 	protected function validateParams( ?string $submethod, array $params ): array {

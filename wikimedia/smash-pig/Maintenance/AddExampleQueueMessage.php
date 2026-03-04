@@ -58,7 +58,7 @@ class AddExampleQueueMessage extends MaintenanceBase {
 			$example['payment_method'] = 'cc';
 			$example['payment_submethod'] = 'visa';
 			$example['payment_orchestrator_reconciliation_id'] = '12345ABCD';
-			$example['phone'] = '1234567890';
+			$example['phone'] = '1' . rand( 200, 999 ) . '-' . rand( 100, 999 ) . '-' . rand( 1000, 9999 );
 			$example['sms_opt_in'] = 1;
 			$example['date'] = time();
 		}

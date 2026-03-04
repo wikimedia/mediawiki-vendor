@@ -19,6 +19,7 @@ class RequestMapper {
 		'bcp',
 		'boleto',
 		'netbanking',
+		'onlinebankingcz',
 		'oxxo',
 		'pagoefectivo',
 		'pix',

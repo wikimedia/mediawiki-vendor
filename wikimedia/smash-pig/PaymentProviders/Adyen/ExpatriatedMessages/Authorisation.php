@@ -79,6 +79,13 @@ class Authorisation extends AdyenMessage {
 				case 'retry.nextAttemptDate':
 					$this->retryNextAttemptDate = $value;
 					break;
+				case 'checkout.cardAddedBrand':
+					// Vipps card auth IPNs come in with a paymentMethod that looks
+					// like the credit card, e.g. 'mc'. The only way to tell it's
+					// Vipps is that the cardAddedBrand has it appended, e.g. 'mc_vipps'
+					if ( str_ends_with( $value, 'vipps' ) ) {
+						$this->paymentMethod = 'ew';
+					}
 			}
 		}
 	}

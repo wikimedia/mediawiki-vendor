@@ -9,6 +9,7 @@ use SmashPig\Core\Logging\TaggedLogger;
 use SmashPig\Core\RetryableException;
 use SmashPig\Core\Runnable;
 use SmashPig\CrmLink\Messages\DonationInterfaceAntifraudFactory;
+use SmashPig\PaymentData\PaymentMethod;
 use SmashPig\PaymentData\ValidationAction;
 use SmashPig\PaymentProviders\Adyen\CardPaymentProvider;
 use SmashPig\PaymentProviders\Adyen\ExpatriatedMessages\Authorisation;
@@ -217,24 +218,28 @@ class ProcessCaptureRequestJob implements Runnable {
 		$riskScore = isset( $dbMessage['risk_score'] ) ? $dbMessage['risk_score'] : 0;
 		$this->logger->debug( "Base risk score from payments site is $riskScore, " .
 			"raw CVV result is '{$this->payload['cvvResult']}' and raw AVS result is '{$this->payload['avsResult']}'." );
-		$cvvMap = $providerConfig->val( 'fraud-filters/cvv-map' );
-		$avsMap = $providerConfig->val( 'fraud-filters/avs-map' );
-		$scoreBreakdown = [];
-		if ( array_key_exists( $this->payload['cvvResult'], $cvvMap ) ) {
-			$scoreBreakdown['getCVVResult'] = $cvvScore = $cvvMap[$this->payload['cvvResult']];
-			$this->logger->debug( "CVV result '{$this->payload['cvvResult']}' adds risk score $cvvScore." );
-			$riskScore += $cvvScore;
-		} else {
-			$this->logger->warning( "CVV result '{$this->payload['cvvResult']}' not found in cvv-map.", $cvvMap );
-		}
-		if ( array_key_exists( $this->payload['avsResult'], $avsMap ) ) {
-			$scoreBreakdown['getAVSResult'] = $avsScore = $avsMap[$this->payload['avsResult']];
-			$this->logger->debug( "AVS result '{$this->payload['avsResult']}' adds risk score $avsScore." );
-			$riskScore += $avsScore;
-		} else {
-			$this->logger->warning( "AVS result '{$this->payload['avsResult']}' not found in avs-map.", $avsMap );
-		}
 		$action = ValidationAction::PROCESS;
+		$scoreBreakdown = []; // FIXME: should this be ['initial' => $riskScore] so the breakdown adds up?
+		if ( $this->payload['paymentMethod'] === PaymentMethod::EW ) {
+			$this->logger->debug( 'Ignoring CVV / AVS scores for e-wallet payment' );
+		} else {
+			$cvvMap = $providerConfig->val( 'fraud-filters/cvv-map' );
+			$avsMap = $providerConfig->val( 'fraud-filters/avs-map' );
+			if ( array_key_exists( $this->payload['cvvResult'], $cvvMap ) ) {
+				$scoreBreakdown['getCVVResult'] = $cvvScore = $cvvMap[$this->payload['cvvResult']];
+				$this->logger->debug( "CVV result '{$this->payload['cvvResult']}' adds risk score $cvvScore." );
+				$riskScore += $cvvScore;
+			} else {
+				$this->logger->warning( "CVV result '{$this->payload['cvvResult']}' not found in cvv-map.", $cvvMap );
+			}
+			if ( array_key_exists( $this->payload['avsResult'], $avsMap ) ) {
+				$scoreBreakdown['getAVSResult'] = $avsScore = $avsMap[$this->payload['avsResult']];
+				$this->logger->debug( "AVS result '{$this->payload['avsResult']}' adds risk score $avsScore." );
+				$riskScore += $avsScore;
+			} else {
+				$this->logger->warning( "AVS result '{$this->payload['avsResult']}' not found in avs-map.", $avsMap );
+			}
+		}
 		if ( $riskScore >= $providerConfig->val( 'fraud-filters/review-threshold' ) ) {
 			$action = ValidationAction::REVIEW;
 		}
