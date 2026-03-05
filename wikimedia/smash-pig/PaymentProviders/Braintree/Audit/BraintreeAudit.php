@@ -50,7 +50,7 @@ class BraintreeAudit implements AuditParser {
 		$result = $this->fileData;
 		if ( str_contains( $path, '_disbursement_' ) ) {
 			foreach ( $this->totals as $batchName => $total ) {
-				// Add batch aggregate row - we have split these into 2 batches - chargebacks
+				// Add batch aggregate row - we have split these into 2 batches - ch (chargebacks)
 				// and donations + refunds because that aligns with the Disbursement search UI
 				// and chargebacks seem a bit unpredictable since we can only query by 'effective date'
 				// and hope the disbursement date is reliable from there. Better to keep what is known
@@ -220,7 +220,7 @@ class BraintreeAudit implements AuditParser {
 		$msg['settled_currency'] = $row['amountDisputed']['currencyCode'];
 
 		if ( !empty( $msg['settled_date'] ) ) {
-			$msg['settlement_batch_reference'] = gmdate( 'Ymd', $msg['settled_date'] ) . '_chargebacks';
+			$msg['settlement_batch_reference'] = gmdate( 'Ymd', $msg['settled_date'] ) . '_ch';
 			if ( !isset( $this->totals[$msg['settlement_batch_reference']] ) ) {
 				$this->totals[$msg['settlement_batch_reference']] = Money::zero( $msg['currency'] );
 			}

@@ -26,6 +26,9 @@ class ApprovalNeededCreatePaymentStatus implements StatusNormalizer {
 			case 'Error':
 				$status = FinalStatus::FAILED;
 				break;
+			case 'Cancelled':
+				$status = FinalStatus::CANCELLED;
+				break;
 			default:
 				throw new UnexpectedValueException( "Unknown Adyen status $adyenStatus" );
 		}
