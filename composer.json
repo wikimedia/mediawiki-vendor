@@ -69,6 +69,7 @@
 		"pear/pear-core-minimal": "1.10.18",
 		"pear/pear_exception": "1.0.2",
 		"pimple/pimple": "3.6.2",
+		"pleonasm/bloom-filter": "1.0.4",
 		"psr/clock": "1.0.0",
 		"psr/container": "2.0.2",
 		"psr/event-dispatcher": "1.0.0",

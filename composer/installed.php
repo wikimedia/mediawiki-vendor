@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
-        'reference' => 'e5a7cbbe356e5f90857f2b10b59d05c0abb5d3ee',
+        'pretty_version' => '1.0.0+no-version-set',
+        'version' => '1.0.0.0',
+        'reference' => null,
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'reference' => 'e5a7cbbe356e5f90857f2b10b59d05c0abb5d3ee',
+            'pretty_version' => '1.0.0+no-version-set',
+            'version' => '1.0.0.0',
+            'reference' => null,
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -550,6 +550,15 @@
             'reference' => '8cfe7f74ac22a433d303914eba9ea4c2a834edce',
             'type' => 'library',
             'install_path' => __DIR__ . '/../pimple/pimple',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'pleonasm/bloom-filter' => array(
+            'pretty_version' => '1.0.4',
+            'version' => '1.0.4.0',
+            'reference' => '7130fb549ec12f9eca277c1f08adda50961cac77',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../pleonasm/bloom-filter',
             'aliases' => array(),
             'dev_requirement' => false,
         ),

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "19d0d23b9f950e0bcdc4afbef36105bf",
+    "content-hash": "8e74405b0a2360ec477f7fd562f6e4e9",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -3649,6 +3649,57 @@
                 "source": "https://github.com/silexphp/Pimple/tree/v3.6.2"
             },
             "time": "2026-02-26T08:23:44+00:00"
+        },
+        {
+            "name": "pleonasm/bloom-filter",
+            "version": "1.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pleonasm/bloom-filter.git",
+                "reference": "7130fb549ec12f9eca277c1f08adda50961cac77"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pleonasm/bloom-filter/zipball/7130fb549ec12f9eca277c1f08adda50961cac77",
+                "reference": "7130fb549ec12f9eca277c1f08adda50961cac77",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0"
+            },
+            "require-dev": {
+                "php-parallel-lint/php-parallel-lint": "^1.4",
+                "phpunit/phpunit": "^9.6.34"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Pleo\\BloomFilter\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Matthew Nagi",
+                    "email": "matthew.nagi@base-2.net"
+                }
+            ],
+            "description": "A pure PHP implementation of a Bloom Filter",
+            "keywords": [
+                "Bloom Filter",
+                "bloom",
+                "filter",
+                "sets"
+            ],
+            "support": {
+                "email": "matthew.nagi@base-2.net",
+                "issues": "https://github.com/pleonasm/bloom-filter/issues",
+                "source": "https://github.com/pleonasm/bloom-filter/tree/1.0.4"
+            },
+            "time": "2026-03-14T17:25:55+00:00"
         },
         {
             "name": "psr/clock",

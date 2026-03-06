@@ -109,6 +109,7 @@ class ComposerStaticInit_mediawiki_vendor
             'Psr\\EventDispatcher\\' => 20,
             'Psr\\Container\\' => 14,
             'Psr\\Clock\\' => 10,
+            'Pleo\\BloomFilter\\' => 17,
             'PhpParser\\' => 10,
             'Peast\\' => 6,
             'ParagonIE\\ConstantTime\\' => 23,
@@ -464,6 +465,10 @@ class ComposerStaticInit_mediawiki_vendor
         'Psr\\Clock\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/clock/src',
+        ),
+        'Pleo\\BloomFilter\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/pleonasm/bloom-filter/src',
         ),
         'PhpParser\\' =>
         array (
@@ -3333,6 +3338,9 @@ class ComposerStaticInit_mediawiki_vendor
         'Pimple\\Tests\\Psr11\\ContainerTest' => __DIR__ . '/..' . '/pimple/pimple/src/Pimple/Tests/Psr11/ContainerTest.php',
         'Pimple\\Tests\\Psr11\\ServiceLocatorTest' => __DIR__ . '/..' . '/pimple/pimple/src/Pimple/Tests/Psr11/ServiceLocatorTest.php',
         'Pimple\\Tests\\ServiceIteratorTest' => __DIR__ . '/..' . '/pimple/pimple/src/Pimple/Tests/ServiceIteratorTest.php',
+        'Pleo\\BloomFilter\\BitArray' => __DIR__ . '/..' . '/pleonasm/bloom-filter/src/BitArray.php',
+        'Pleo\\BloomFilter\\BloomFilter' => __DIR__ . '/..' . '/pleonasm/bloom-filter/src/BloomFilter.php',
+        'Pleo\\BloomFilter\\HasherList' => __DIR__ . '/..' . '/pleonasm/bloom-filter/src/HasherList.php',
         'Psr\\Clock\\ClockInterface' => __DIR__ . '/..' . '/psr/clock/src/ClockInterface.php',
         'Psr\\Container\\ContainerExceptionInterface' => __DIR__ . '/..' . '/psr/container/src/ContainerExceptionInterface.php',
         'Psr\\Container\\ContainerInterface' => __DIR__ . '/..' . '/psr/container/src/ContainerInterface.php',
