@@ -171,6 +171,9 @@ class ParsoidTest extends \PHPUnit\Framework\TestCase {
 		if ( isset( $input['mw'] ) ) {
 			$input['mw'] = PHPUtils::jsonDecode( $input['mw'] );
 		}
+		if ( isset( $input['counters'] ) ) {
+			$input['counters'] = PHPUtils::jsonDecode( $input['counters'] );
+		}
 		$codec = new JsonCodec();
 		$pb = $codec->newFromJsonArray( $input, HtmlPageBundle::class );
 		$this->assertTrue( $pb instanceof HtmlPageBundle );
@@ -180,6 +183,7 @@ class ParsoidTest extends \PHPUnit\Framework\TestCase {
 		$this->assertEquals( $expected['html'], $encoded['html'] );
 		$this->assertEquals( PHPUtils::jsonDecode( $expected['parsoid'] ?? 'null' ), $encoded['parsoid'] ?? null );
 		$this->assertEquals( PHPUtils::jsonDecode( $expected['mw'] ?? 'null' ), $encoded['mw'] ?? null );
+		$this->assertEquals( PHPUtils::jsonDecode( $expected['counters'] ?? 'null' ), $encoded['counters'] ?? null );
 		$this->assertEquals( $expected['version'] ?? null, $encoded['version'] );
 		if ( isset( $expected['headers'] ) ) {
 			$this->assertEquals( $expected['headers'] ?? null, $encoded['headers'] );
@@ -189,17 +193,19 @@ class ParsoidTest extends \PHPUnit\Framework\TestCase {
 	public static function providePb2Pb() {
 		// phpcs:disable Generic.Files.LineLength.TooLong
 		return [
-			[
+			"convertoffsets test 1" => [
 				'convertoffsets',
 				[
 					'html' => '<p id="mwAA">La Luna è l\'unico satellite naturale della Terra</p><p id="mwAQ">La Luna è l\'unico satellite naturale della Terra</p>',
-					'parsoid' => '{"counter":2,"ids":{"mwAA":{"dsr":[0,49,0,0]},"mwAQ":{"dsr":[51,100,0,0]}},"offsetType":"byte"}',
+					'parsoid' => '{"ids":{"mwAA":{"dsr":[0,49,0,0]},"mwAQ":{"dsr":[51,100,0,0]}},"offsetType":"byte"}',
 					'mw' => null,
+					'counters' => '{"nodedata":2,"annotation":0,"transclusion":1}',
 				],
 				[
 					'html' => '<p id="mwAA">La Luna è l\'unico satellite naturale della Terra</p><p id="mwAQ">La Luna è l\'unico satellite naturale della Terra</p>',
 					'parsoid' => '{"counter":2,"ids":{"mwAA":{"dsr":[0,48,0,0]},"mwAQ":{"dsr":[50,98,0,0]}},"offsetType":"ucs2"}',
 					'mw' => '{"ids":[]}',
+					'counters' => '{"nodedata":2,"annotation":0,"transclusion":1}',
 					'version' => self::$defaultContentVersion,
 				],
 				[
@@ -211,17 +217,19 @@ class ParsoidTest extends \PHPUnit\Framework\TestCase {
 					'body_only' => true
 				]
 			],
-			[
+			"convertoffsets test 2" => [
 				'convertoffsets',
 				[
 					'html' => '<p id="mwAA">La Luna è l\'unico satellite naturale della Terra</p><p id="mwAQ">La Luna è l\'unico satellite naturale della Terra</p>',
-					'parsoid' => '{"counter":2,"ids":{"mwAA":{"dsr":[0,48,0,0]},"mwAQ":{"dsr":[50,98,0,0]}},"offsetType":"ucs2"}',
+					'parsoid' => '{"ids":{"mwAA":{"dsr":[0,48,0,0]},"mwAQ":{"dsr":[50,98,0,0]}},"offsetType":"ucs2"}',
 					'mw' => null,
+					'counters' => '{"nodedata":2,"annotation":0,"transclusion":1}',
 				],
 				[
 					'html' => '<p id="mwAA">La Luna è l\'unico satellite naturale della Terra</p><p id="mwAQ">La Luna è l\'unico satellite naturale della Terra</p>',
 					'parsoid' => '{"counter":2,"ids":{"mwAA":{"dsr":[0,49,0,0]},"mwAQ":{"dsr":[51,100,0,0]}},"offsetType":"byte"}',
 					'mw' => '{"ids":[]}',
+					'counters' => '{"nodedata":2,"annotation":0,"transclusion":1}',
 					'version' => self::$defaultContentVersion,
 				],
 				[
@@ -231,34 +239,38 @@ class ParsoidTest extends \PHPUnit\Framework\TestCase {
 					'body_only' => true
 				]
 			],
-			[
+			"redlinks test 1" => [
 				'redlinks',
 				[
 					'html' => '<p><a rel="mw:WikiLink" href="./Special:Version" title="Special:Version">Special:Version</a> <a rel="mw:WikiLink" href="./Doesnotexist?action=edit&amp;redlink=1" typeof="mw:LocalizedAttrs" title="Doesnotexist" class="new" data-mw-i18n=\'{"title":{"lang":"x-page","key":"red-link-title","params":["Doesnotexist"]}}\'>Doesnotexist</a> <a rel="mw:WikiLink" href="./Redirected" title="Redirected">Redirected</a></p>',
 					'parsoid' => null,
 					'mw' => null,
+					'counters' => '{"nodedata":-1,"annotation":0,"transclusion":1}',
 				],
 				[
 					'html' => '<p><a rel="mw:WikiLink" href="./Special:Version" title="Special:Version">Special:Version</a> <a rel="mw:WikiLink" href="./Doesnotexist?action=edit&amp;redlink=1" typeof="mw:LocalizedAttrs" title="Doesnotexist" class="new" data-mw-i18n=\'{"title":{"lang":"x-page","key":"red-link-title","params":["Doesnotexist"]}}\'>Doesnotexist</a> <a rel="mw:WikiLink" href="./Redirected" title="Redirected" class="mw-redirect">Redirected</a></p>',
 					'parsoid' => '{"counter":-1,"ids":[],"offsetType":"byte"}',
 					'mw' => '{"ids":[]}',
+					'counters' => '{"nodedata":-1,"annotation":-1,"transclusion":-1}',
 					'version' => self::$defaultContentVersion,
 				],
 				[
 					'body_only' => true,
 				]
 			],
-			[
+			"redlinks test 2" => [
 				'redlinks',
 				[
 					'html' => '<body id="mwAA" lang="en" class="mw-content-ltr sitedir-ltr ltr mw-body-content parsoid-body mediawiki mw-parser-output" dir="ltr"><p id="mwAQ"><a rel="mw:WikiLink" href="./Not_an_article?action=edit&amp;redlink=1" id="mwAg" typeof="mw:LocalizedAttrs" class="new" title="Not an article" data-mw-i18n=\'{"title":{"lang":"x-page","key":"red-link-title","params":["Not an article"]}}\'>abcd</a></p>' . "\n" . '</body>',
-					'parsoid' => '{"counter":2,"ids":{"mwAA":{"dsr":[0,24,0,0]},"mwAQ":{"dsr":[0,23,0,0]},"mwAg":{"stx":"piped","a":{"href":"./Not_an_article"},"sa":{"href":"Not an article"},"dsr":[0,23,17,2]}},"offsetType":"byte"}',
+					'parsoid' => '{"ids":{"mwAA":{"dsr":[0,24,0,0]},"mwAQ":{"dsr":[0,23,0,0]},"mwAg":{"stx":"piped","a":{"href":"./Not_an_article"},"sa":{"href":"Not an article"},"dsr":[0,23,17,2]}},"offsetType":"byte"}',
 					'mw' => '{"ids":[]}',
+					'counters' => '{"nodedata":2,"annotation":0,"transclusion":1}',
 				],
 				[
 					'html' => '<p id="mwAQ"><a rel="mw:WikiLink" href="./Not_an_article?action=edit&amp;redlink=1" id="mwAg" typeof="mw:LocalizedAttrs" title="Not an article" class="new" data-mw-i18n=\'{"title":{"lang":"x-page","key":"red-link-title","params":["Not an article"]}}\'>abcd</a></p>' . "\n",
-					'parsoid' => '{"counter":-1,"ids":{"mwAA":{"dsr":[0,24,0,0]},"mwAQ":{"dsr":[0,23,0,0]},"mwAg":{"stx":"piped","a":{"href":"./Not_an_article"},"sa":{"href":"Not an article"},"dsr":[0,23,17,2]}},"offsetType":"byte"}',
+					'parsoid' => '{"counter":2,"ids":{"mwAA":{"dsr":[0,24,0,0]},"mwAQ":{"dsr":[0,23,0,0]},"mwAg":{"stx":"piped","a":{"href":"./Not_an_article"},"sa":{"href":"Not an article"},"dsr":[0,23,17,2]}},"offsetType":"byte"}',
 					'mw' => '{"ids":[]}',
+					'counters' => '{"nodedata":2,"annotation":0,"transclusion":1}',
 					'version' => self::$defaultContentVersion,
 				],
 				[
@@ -267,17 +279,19 @@ class ParsoidTest extends \PHPUnit\Framework\TestCase {
 			],
 			// Note that id attributes are preserved, even if no data-parsoid
 			// is provided.
-			[
+			"redlinks test 3" => [
 				'redlinks',
 				[
 					'html' => '<body id="mwAA" lang="en" class="mw-content-ltr sitedir-ltr ltr mw-body-content parsoid-body mediawiki mw-parser-output" dir="ltr"><p id="mwAQ"><a id="mwAg" href="./Not_an_article?action=edit&amp;redlink=1" title="Not an article">abcd</a></p></body>',
 					'parsoid' => null,
 					'mw' => null,
+					'counters' => '{"nodedata":-1,"annotation":0,"transclusion":1}',
 				],
 				[
 					'html' => '<p id="mwAQ"><a id="mwAg" href="./Not_an_article?action=edit&amp;redlink=1" title="Not an article">abcd</a></p>',
 					'parsoid' => '{"counter":-1,"ids":[],"offsetType":"byte"}',
 					'mw' => '{"ids":[]}',
+					'counters' => '{"nodedata":-1,"annotation":-1,"transclusion":-1}',
 					'version' => self::$defaultContentVersion,
 				],
 				[
@@ -285,17 +299,19 @@ class ParsoidTest extends \PHPUnit\Framework\TestCase {
 				],
 			],
 			// Language Variant conversion endpoint
-			[
+			"variant test 1" => [
 				'variant',
 				[
 					'html' => '<p>абвг abcd x</p>',
 					'parsoid' => null,
 					'mw' => null,
+					'counters' => '{"nodedata":-1,"annotation":0,"transclusion":1}',
 				],
 				[
 					'html' => '<p data-mw-variant-lang="sr-ec">abvg <span typeof="mw:LanguageVariant" data-mw-variant=\'{"rt":true,"twoway":[{"l":"sr-ec","t":"abcd"},{"l":"sr-el","t":"abcd"}]}\'>abcd</span> x</p>',
 					'parsoid' => '{"counter":-1,"ids":[],"offsetType":"byte"}',
 					'mw' => '{"ids":[]}',
+					'counters' => '{"nodedata":-1,"annotation":-1,"transclusion":-1}',
 					'version' => self::$defaultContentVersion,
 				],
 				[
@@ -307,17 +323,19 @@ class ParsoidTest extends \PHPUnit\Framework\TestCase {
 					]
 				]
 			],
-			[
+			"variant test 2" => [
 				'variant',
 				[
 					'html' => '<p>абвг abcd x</p>',
 					'parsoid' => null,
 					'mw' => null,
+					'counters' => '{"nodedata":-1,"annotation":0,"transclusion":1}',
 				],
 				[
 					'html' => '<p data-mw-variant-lang="sr-el"><span typeof="mw:LanguageVariant" data-mw-variant=\'{"rt":true,"twoway":[{"l":"sr-el","t":"абвг"},{"l":"sr-ec","t":"абвг"}]}\'>абвг</span> абцд x</p>',
 					'parsoid' => '{"counter":-1,"ids":[],"offsetType":"byte"}',
 					'mw' => '{"ids":[]}',
+					'counters' => '{"nodedata":-1,"annotation":-1,"transclusion":-1}',
 					'version' => self::$defaultContentVersion,
 				],
 				[
@@ -329,17 +347,19 @@ class ParsoidTest extends \PHPUnit\Framework\TestCase {
 					]
 				]
 			],
-			[
+			"variant test 3" => [
 				'variant',
 				[
 					'html' => '<body id="mwAA" lang="en" class="mw-content-ltr sitedir-ltr ltr mw-body-content parsoid-body mediawiki mw-parser-output" dir="ltr"><p id="mwAQ"><b id="mwAg">abcd</b></p></body>',
-					'parsoid' => '{"counter":2,"ids":{"mwAA":{"dsr":[0,11,0,0]},"mwAQ":{"dsr":[0,10,0,0]},"mwAg":{"dsr":[0,10,3,3]}},"offsetType":"byte"}',
+					'parsoid' => '{"ids":{"mwAA":{"dsr":[0,11,0,0]},"mwAQ":{"dsr":[0,10,0,0]},"mwAg":{"dsr":[0,10,3,3]}},"offsetType":"byte"}',
 					'mw' => '{"ids":[]}',
+					'counters' => '{"nodedata":2,"annotation":0,"transclusion":1}',
 				],
 				[
 					'html' => '<p id="mwAQ" data-mw-variant-lang="sr-el"><b id="mwAg">абцд</b></p>',
-					'parsoid' => '{"counter":-1,"ids":{"mwAA":{"dsr":[0,11,0,0]},"mwAQ":{"dsr":[0,10,0,0]},"mwAg":{"dsr":[0,10,3,3]}},"offsetType":"byte"}',
+					'parsoid' => '{"counter":2,"ids":{"mwAA":{"dsr":[0,11,0,0]},"mwAQ":{"dsr":[0,10,0,0]},"mwAg":{"dsr":[0,10,3,3]}},"offsetType":"byte"}',
 					'mw' => '{"ids":[]}',
+					'counters' => '{"nodedata":2,"annotation":0,"transclusion":1}',
 					'version' => self::$defaultContentVersion,
 				],
 				[
@@ -353,17 +373,19 @@ class ParsoidTest extends \PHPUnit\Framework\TestCase {
 			],
 			// Note that id attributes are preserved, even if no data-parsoid
 			// is provided.
-			[
+			"variant test 4" => [
 				'variant',
 				[
 					'html' => '<body id="mwAA" lang="en" class="mw-content-ltr sitedir-ltr ltr mw-body-content parsoid-body mediawiki mw-parser-output" dir="ltr"><p id="mwAQ"><b id="mwAg">abcd</b></p></body>',
 					'parsoid' => null,
 					'mw' => null,
+					'counters' => '{"nodedata":-1,"annotation":0,"transclusion":1}',
 				],
 				[
 					'html' => '<p id="mwAQ" data-mw-variant-lang="sr-el"><b id="mwAg">абцд</b></p>',
 					'parsoid' => '{"counter":-1,"ids":[],"offsetType":"byte"}',
 					'mw' => '{"ids":[]}',
+					'counters' => '{"nodedata":-1,"annotation":-1,"transclusion":-1}',
 					'version' => self::$defaultContentVersion,
 				],
 				[

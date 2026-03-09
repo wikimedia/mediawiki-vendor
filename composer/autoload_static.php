@@ -5919,6 +5919,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Ext\\DOMUtils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/DOMUtils.php',
         'Wikimedia\\Parsoid\\Ext\\DiffDOMUtils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/DiffDOMUtils.php',
         'Wikimedia\\Parsoid\\Ext\\DiffUtils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/DiffUtils.php',
+        'Wikimedia\\Parsoid\\Ext\\EmptyArguments' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/EmptyArguments.php',
         'Wikimedia\\Parsoid\\Ext\\ExtensionError' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/ExtensionError.php',
         'Wikimedia\\Parsoid\\Ext\\ExtensionModule' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/ExtensionModule.php',
         'Wikimedia\\Parsoid\\Ext\\ExtensionTag' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/ExtensionTag.php',

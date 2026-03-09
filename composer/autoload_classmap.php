@@ -5194,6 +5194,7 @@ return array(
     'Wikimedia\\Parsoid\\Ext\\DOMUtils' => $vendorDir . '/wikimedia/parsoid/src/Ext/DOMUtils.php',
     'Wikimedia\\Parsoid\\Ext\\DiffDOMUtils' => $vendorDir . '/wikimedia/parsoid/src/Ext/DiffDOMUtils.php',
     'Wikimedia\\Parsoid\\Ext\\DiffUtils' => $vendorDir . '/wikimedia/parsoid/src/Ext/DiffUtils.php',
+    'Wikimedia\\Parsoid\\Ext\\EmptyArguments' => $vendorDir . '/wikimedia/parsoid/src/Ext/EmptyArguments.php',
     'Wikimedia\\Parsoid\\Ext\\ExtensionError' => $vendorDir . '/wikimedia/parsoid/src/Ext/ExtensionError.php',
     'Wikimedia\\Parsoid\\Ext\\ExtensionModule' => $vendorDir . '/wikimedia/parsoid/src/Ext/ExtensionModule.php',
     'Wikimedia\\Parsoid\\Ext\\ExtensionTag' => $vendorDir . '/wikimedia/parsoid/src/Ext/ExtensionTag.php',
