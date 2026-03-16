@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "709a75083ea787674c42ce643ae6b9bb",
+    "content-hash": "bc403a9b3f06e3e66332503008e66950",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -3173,7 +3173,6 @@
                 "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Console_Getopt",
                 "source": "https://github.com/pear/Console_Getopt"
             },
-            "abandoned": true,
             "time": "2019-11-20T18:27:48+00:00"
         },
         {
@@ -7873,16 +7872,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.23.0-a21",
+            "version": "v0.23.0-a22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
-                "reference": "6a0b1fddd4f631795ca063e52ccc487338c33f66"
+                "reference": "9f9a9d320756dbaa9d1921bbbb4d7a2730c7b6a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/6a0b1fddd4f631795ca063e52ccc487338c33f66",
-                "reference": "6a0b1fddd4f631795ca063e52ccc487338c33f66",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/9f9a9d320756dbaa9d1921bbbb4d7a2730c7b6a3",
+                "reference": "9f9a9d320756dbaa9d1921bbbb4d7a2730c7b6a3",
                 "shasum": ""
             },
             "require": {
@@ -7914,9 +7913,9 @@
             },
             "require-dev": {
                 "ext-curl": "*",
-                "mediawiki/mediawiki-codesniffer": "48.0.0",
-                "mediawiki/mediawiki-phan-config": "0.19.0",
-                "mediawiki/minus-x": "1.1.3",
+                "mediawiki/mediawiki-codesniffer": "50.0.0",
+                "mediawiki/mediawiki-phan-config": "0.20.0",
+                "mediawiki/minus-x": "2.0.1",
                 "monolog/monolog": "^2.2.0",
                 "nikic/php-parser": "^5.5.0",
                 "ockcyp/covers-validator": "1.7.0",
@@ -7926,7 +7925,7 @@
                 "sebastian/diff": "^5.1.1",
                 "wikimedia/alea": "^1.0.0",
                 "wikimedia/dodo": "^0.7.0",
-                "wikimedia/langconv": "^0.4.2",
+                "wikimedia/langconv": "^0.5.0",
                 "wikimedia/testing-access-wrapper": "^4.0.0"
             },
             "suggest": {
@@ -7956,10 +7955,10 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.23.0-a21",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.23.0-a22",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
-            "time": "2026-03-06T10:34:40+00:00"
+            "time": "2026-03-13T20:04:41+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",
