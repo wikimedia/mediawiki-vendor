@@ -82,6 +82,89 @@ class RedirectPaymentProviderTest extends BaseGravyTestCase {
 		$this->assertNotEmpty( $response->getRedirectUrl() );
 	}
 
+	public function testSuccessfulPixSubscription(): void {
+		$params = $this->getCreateTrxnParams( 'debe4f63-1f9c-4737-a187-9e03aa6f43cb' );
+		$params['amount'] = '100';
+		$params['currency'] = 'BRL';
+		$params['country'] = 'BR';
+		$params['fiscal_number'] = '33294576609';
+		$params['payment_method'] = "cash";
+		$params['payment_submethod'] = "pix";
+		$params['recurring'] = 1;
+		$params['return_url'] = "https://localhost:9001/index.php?title=Special:GravyGatewayResult&order_id=683.2&wmf_token=73a4574f1dac4047cb008ff4c08accf8%2B%5C&amount=100.00&currency=BRL&payment_method=cash&payment_submethod=pix&wmf_source=..rcash&recurring=1";
+
+		$responseBody = json_decode(
+			file_get_contents( __DIR__ . '/../Data/pix-create-recurring-transaction-response.json' ),
+			true
+		);
+
+		$this->mockApi->expects( $this->once() )
+			->method( 'createPayment' )
+			->with( [
+					'amount' => 10000,
+					'currency' => 'BRL',
+					'country' => 'BR',
+					'payment_method' => [
+						'method' => 'pix',
+						'redirect_url' => 'https://localhost:9001/index.php?title=Special:GravyGatewayResult&order_id=683.2&wmf_token=73a4574f1dac4047cb008ff4c08accf8%2B%5C&amount=100.00&currency=BRL&payment_method=cash&payment_submethod=pix&wmf_source=..rcash&recurring=1',
+						'country' => 'BR',
+						'currency' => 'BRL',
+					],
+					'external_identifier' => $params['order_id'],
+					'buyer' => [
+						'external_identifier' => 'lorem@ipsum',
+						'billing_details' => [
+							'first_name' => 'Lorem',
+							'last_name' => 'Ipsum',
+							'email_address' => 'lorem@ipsum',
+							'phone_number' => null,
+							'address' => [
+								'city' => null,
+								'country' => 'BR',
+								'postal_code' => '1234',
+								'state' => null,
+								'line1' => '10 hopewell street',
+								'line2' => null,
+								'organization' => 'Wikimedia Foundation',
+							],
+							'tax_id' => [
+								'value' => '33294576609',
+								'kind' => 'br.cpf',
+							],
+						],
+					],
+					'store' => true,
+					'payment_source' => 'recurring',
+					'intent' => 'capture',
+					'connection_options' => [
+						'dlocal-pix' => [
+							'subscription' => [
+								'frequency' => 'MONTHLY',
+								'start_date' => date( 'Y-m-d' ),
+								'end_date' => null,
+								'amount' => [
+									'type' => 'FIXED',
+									'value' => "100",
+									'min_value' => null
+								]
+							]
+						]
+					],
+					"statement_descriptor" => [
+						"description" => "Wikimedia Foundation"
+					]
+				]
+			)
+			->willReturn( $responseBody );
+
+		$response = $this->provider->createPayment( $params );
+
+		$this->assertTrue( $response->isSuccessful() );
+		$this->assertEquals( 'cash', $response->getPaymentMethod() );
+		$this->assertEquals( 'pix', $response->getPaymentSubmethod() );
+		$this->assertNotEmpty( $response->getRedirectUrl() );
+	}
+
 	public function testSuccessfulOxxoRedirect(): void {
 		$params = $this->getCreateTrxnParams( 'ABC123-c067-4cd6-a3c8-aec67899d5af' );
 		$params['amount'] = '1000';

@@ -102,8 +102,8 @@ payment-provider:
     class: SmashPig\PaymentProviders\Gravy\RedirectPaymentProvider
     constructor-parameters:
       -
-        request-mapper: "mappers/redirect-request"
-        response-mapper: "mappers/redirect-response"
+        request-mapper: "mappers/cash-request"
+        response-mapper: "mappers/cash-response"
         validator: "validators/redirect"
         <<: *CACHE
 
@@ -111,8 +111,8 @@ payment-provider:
     class: SmashPig\PaymentProviders\Gravy\BankPaymentProvider
     constructor-parameters:
       -
-        request-mapper: "mappers/bt-request"
-        response-mapper: "mappers/bt-response"
+        request-mapper: "mappers/rtbt-request"
+        response-mapper: "mappers/rtbt-response"
         validator: "validators/redirect"
         <<: *CACHE
 
@@ -194,13 +194,13 @@ mappers:
   bt-response:
     class: SmashPig\PaymentProviders\Gravy\Mapper\BankPaymentProviderResponseMapper
   rtbt-request:
-    class: SmashPig\PaymentProviders\Gravy\Mapper\BankPaymentProviderRequestMapper
+    class: SmashPig\PaymentProviders\Gravy\Mapper\RTBTPaymentProviderRequestMapper
   rtbt-response:
-    class: SmashPig\PaymentProviders\Gravy\Mapper\BankPaymentProviderResponseMapper
+    class: SmashPig\PaymentProviders\Gravy\Mapper\RTBTPaymentProviderResponseMapper
   cash-request:
-    class: SmashPig\PaymentProviders\Gravy\Mapper\RedirectPaymentProviderRequestMapper
+    class: SmashPig\PaymentProviders\Gravy\Mapper\CashPaymentProviderRequestMapper
   cash-response:
-    class: SmashPig\PaymentProviders\Gravy\Mapper\RedirectPaymentProviderResponseMapper
+    class: SmashPig\PaymentProviders\Gravy\Mapper\CashPaymentProviderResponseMapper
   venmo-request:
     class: SmashPig\PaymentProviders\Gravy\Mapper\VenmoPaymentProviderRequestMapper
   venmo-response:

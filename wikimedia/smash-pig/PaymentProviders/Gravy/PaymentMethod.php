@@ -22,6 +22,7 @@ enum PaymentMethod: string {
 	case STITCH = 'stitch';
 	case VENMO = 'venmo';
 	case WEBPAY = 'webpay';
+	case RTBT_IDEAL = 'rtbt_ideal';
 
 	public function toGravyValue(): string {
 		return match ( $this ) {
@@ -34,6 +35,7 @@ enum PaymentMethod: string {
 			self::CASH_RED_PAGOS => 'redpagos',
 			self::ONLINEBANKINGCZ => 'onlinebankingcz',
 			self::SEPA => 'sepa',
+			self::RTBT_IDEAL => 'ideal',
 			default => $this->value, // For every other case, just return the enum's string value
 		};
 	}

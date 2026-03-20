@@ -27,6 +27,7 @@ class RequestMapper {
 		'rapipago',
 		'redpagos',
 		'sepa',
+		'ideal',
 		'stitch',
 		'webpay',
 	];
@@ -212,32 +213,6 @@ class RequestMapper {
 				'id' => $params['recurring_payment_token'],
 			];
 		}
-		// additional connection_options need for pix: https://docs.gr4vy.com/connections/payments/dlocal-pix
-		if ( isset( $params['payment_submethod'] ) && $params['payment_submethod'] == 'pix' ) {
-			$frequencyUnit = $this->frequencyUnitMapper( isset( $params['frequency_unit'] ) ? $params['frequency_unit'] : null );
-			if ( !$this->isRecurringCharge( $params ) ) {
-				$request['connection_options'] = [
-					'dlocal-pix' => [
-						'subscription' => [
-							'frequency' => $frequencyUnit,
-							'amount' => [
-								'type' => 'FIXED',
-								'value' => (string)$params['amount'],
-								'min_value' => null, // when FIXED, null provide (if not provide min_value error return)
-							],
-							'start_date' => date( 'Y-m-d' ),
-							'end_date' => null // null mean no end date (i.e. continue until cancelled)
-						]
-					]
-				];
-			} else {
-				$request['connection_options'] = [
-					'dlocal-pix' => [
-						'scheduled_date' => date( 'Y-m-d' ) // If you omit it, dLocal defaults to 2 days in the future.
-					]
-				];
-			}
-		}
 
 		// Default recurring model to 'Subscription' but allow for Card On File
 		// in case of speculative tokenization (e.g. for monthly convert).
@@ -290,32 +265,5 @@ class RequestMapper {
 			throw new \UnexpectedValueException( "Can't map fiscal number to Gravy Tax ID type.  ({$params['country']}:{$params['fiscal_number']})" );
 		}
 		return $request;
-	}
-
-	/**
-	 * Maps the frequency unit from the smashpig parameters to Gravy requirements for Pix recurring payments.
-	 *
-	 * @param string|null $frequencyUnit
-	 * @return string
-	 */
-	private function frequencyUnitMapper( ?string $frequencyUnit ): string {
-		if ( $frequencyUnit === null ) {
-			return 'MONTHLY';
-		} else {
-			switch ( strtolower( $frequencyUnit ) ) {
-				case 'month':
-					return 'MONTHLY';
-				case 'quarter':
-					return 'QUARTERLY';
-				case 'semiannual':
-					return 'SEMI_ANNUAL';
-				case 'year':
-					return 'ANNUAL';
-				case 'week':
-					return 'WEEKLY';
-				default:
-					throw new \UnexpectedValueException( "Unknown frequency unit $frequencyUnit" );
-			}
-		}
 	}
 }
