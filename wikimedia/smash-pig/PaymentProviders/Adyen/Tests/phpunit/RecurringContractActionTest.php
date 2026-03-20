@@ -15,6 +15,7 @@ class RecurringContractActionTest extends BaseAdyenTestCase {
 	public function testGr4vyInitiatedRecurringContract() {
 		$recurring = new RecurringContract();
 		$recurring->success = true;
+		$recurring->gateway = 'gravy';
 
 		$recurring->additionalData['metadata.gr4vy_intent'] = 'authorize';
 		$action = new RecurringContractAction();

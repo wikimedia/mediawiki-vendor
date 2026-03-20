@@ -3,6 +3,7 @@
 namespace SmashPig\PaymentProviders\Adyen\Tests\phpunit;
 
 use SmashPig\Core\Context;
+use SmashPig\Core\Helpers\Base62Helper;
 use SmashPig\Core\Http\Request;
 use SmashPig\PaymentProviders\Adyen\AdyenRestListener;
 use SmashPig\PaymentProviders\Adyen\Tests\BaseAdyenTestCase;
@@ -33,7 +34,7 @@ class NotificationRequestTest extends BaseAdyenTestCase {
 		$this->rest_listener = $this->config->object( 'endpoints/listener' );
 	}
 
-	public function testJSONAuthorisationMessageReceivedAndAcknowledged() {
+	public function testAuthorisationMessageReceivedAndAcknowledged() {
 		$request = $this->getMockBuilder( Request::class )->disableOriginalConstructor()
 		->getMock();
 		$response = $this->getMockBuilder( Response::class )->disableOriginalConstructor()
@@ -56,7 +57,7 @@ class NotificationRequestTest extends BaseAdyenTestCase {
 		$this->assertStringContainsString( "[accepted]", $getContent );
 	}
 
-	public function testJSONAuthorisationRecurringMessageReceivedAndAcknowledged() {
+	public function testAuthorisationRecurringMessageReceivedAndAcknowledged() {
 		$request = $this->getMockBuilder( Request::class )->disableOriginalConstructor()
 		->getMock();
 		$response = $this->getMockBuilder( Response::class )->disableOriginalConstructor()
@@ -72,7 +73,7 @@ class NotificationRequestTest extends BaseAdyenTestCase {
 		$this->assertStringContainsString( "[accepted]", $getContent );
 	}
 
-	public function testAutoRescueJSONMessageReceivedAndAcknowledged() {
+	public function testAutoRescueMessageReceivedAndAcknowledged() {
 		$request = $this->getMockBuilder( Request::class )->disableOriginalConstructor()
 		->getMock();
 		$response = $this->getMockBuilder( Response::class )->disableOriginalConstructor()
@@ -88,7 +89,7 @@ class NotificationRequestTest extends BaseAdyenTestCase {
 		$this->assertStringContainsString( "[accepted]", $getContent );
 	}
 
-	public function testCancelAutoRescueJSONMessageReceivedAndAcknowledged() {
+	public function testCancelAutoRescueMessageReceivedAndAcknowledged() {
 		$request = $this->getMockBuilder( Request::class )->disableOriginalConstructor()
 		->getMock();
 		$response = $this->getMockBuilder( Response::class )->disableOriginalConstructor()
@@ -105,7 +106,7 @@ class NotificationRequestTest extends BaseAdyenTestCase {
 		$this->assertStringContainsString( "[accepted]", $getContent );
 	}
 
-	public function testCancellationJSONMessageReceivedAndAcknowledged() {
+	public function testCancellationMessageReceivedAndAcknowledged() {
 		$request = $this->getMockBuilder( Request::class )->disableOriginalConstructor()
 		->getMock();
 		$response = $this->getMockBuilder( Response::class )->disableOriginalConstructor()
@@ -122,7 +123,7 @@ class NotificationRequestTest extends BaseAdyenTestCase {
 		$this->assertStringContainsString( "[accepted]", $getContent );
 	}
 
-	public function testCaptureJSONMessageReceivedAndAcknowledged() {
+	public function testCaptureMessageReceivedAndAcknowledged() {
 		$request = $this->getMockBuilder( Request::class )->disableOriginalConstructor()
 		->getMock();
 		$response = $this->getMockBuilder( Response::class )->disableOriginalConstructor()
@@ -145,7 +146,7 @@ class NotificationRequestTest extends BaseAdyenTestCase {
 		$this->assertStringContainsString( "[accepted]", $getContent );
 	}
 
-	public function testCaptureFailedJSONMessageReceivedAndAcknowledged() {
+	public function testCaptureFailedMessageReceivedAndAcknowledged() {
 		$request = $this->getMockBuilder( Request::class )->disableOriginalConstructor()
 		->getMock();
 		$response = $this->getMockBuilder( Response::class )->disableOriginalConstructor()
@@ -162,7 +163,7 @@ class NotificationRequestTest extends BaseAdyenTestCase {
 		$this->assertStringContainsString( "[accepted]", $getContent );
 	}
 
-	public function testChargeBackJSONMessageReceivedAndAcknowledged() {
+	public function testChargeBackMessageReceivedAndAcknowledged() {
 		$request = $this->getMockBuilder( Request::class )->disableOriginalConstructor()
 		->getMock();
 		$response = $this->getMockBuilder( Response::class )->disableOriginalConstructor()
@@ -185,7 +186,35 @@ class NotificationRequestTest extends BaseAdyenTestCase {
 		$this->assertStringContainsString( "[accepted]", $getContent );
 	}
 
-	public function testChargeBackReversedJSONMessageReceivedAndAcknowledged() {
+	public function testGravyChargeBackMessageReceivedAndAcknowledged() {
+		$request = $this->getMockBuilder( Request::class )->disableOriginalConstructor()
+			->getMock();
+		$response = $this->getMockBuilder( Response::class )->disableOriginalConstructor()
+			->getMock();
+		$request->method( 'getRawRequest' )
+			->willReturn( file_get_contents( __DIR__ . '/../Data/ipn_Chargeback_Gravy.json' ) );
+		$obj = json_decode( file_get_contents( __DIR__ . '/../Data/ipn_Chargeback_Gravy.json' ), true );
+		$chargeback = $obj['notificationItems'][0]['NotificationRequestItem'];
+		ob_start();
+		$this->rest_listener->execute( $request, $response );
+		$getContent = ob_get_contents();
+		ob_end_clean();
+		$message = $this->refundQueue->pop();
+		$this->assertEquals(
+			Base62Helper::toUuid( $chargeback['merchantReference'] ),
+			$message['gateway_parent_id']
+		);
+		$this->assertEquals( $chargeback['pspReference'], $message['backend_processor_refund_id'] );
+		$this->assertEquals( $chargeback['originalReference'], $message['backend_processor_parent_id'] );
+		$this->assertEquals( $chargeback['amount']['currency'], $message['gross_currency'] );
+		$this->assertEquals( $chargeback['amount']['value'] / 100, $message['gross'] );
+		$this->assertEquals( 'adyen', $message['backend_processor'] );
+		$this->assertEquals( 'gravy', $message['gateway'] );
+		$this->assertEquals( 'chargeback', $message['type'] );
+		$this->assertStringContainsString( "[accepted]", $getContent );
+	}
+
+	public function testChargeBackReversedMessageReceivedAndAcknowledged() {
 		$request = $this->getMockBuilder( Request::class )->disableOriginalConstructor()
 		->getMock();
 		$response = $this->getMockBuilder( Response::class )->disableOriginalConstructor()
@@ -201,7 +230,7 @@ class NotificationRequestTest extends BaseAdyenTestCase {
 		$this->assertStringContainsString( "[accepted]", $getContent );
 	}
 
-	public function testNotificationOfChargebackJSONMessageReceivedAndAcknowledged() {
+	public function testNotificationOfChargebackMessageReceivedAndAcknowledged() {
 		$request = $this->getMockBuilder( Request::class )->disableOriginalConstructor()
 		->getMock();
 		$response = $this->getMockBuilder( Response::class )->disableOriginalConstructor()
@@ -219,7 +248,7 @@ class NotificationRequestTest extends BaseAdyenTestCase {
 		$this->assertStringContainsString( "[accepted]", $getContent );
 	}
 
-	public function testNotificationOfFraudJSONMessageReceivedAndAcknowledged() {
+	public function testNotificationOfFraudMessageReceivedAndAcknowledged() {
 		$request = $this->getMockBuilder( Request::class )->disableOriginalConstructor()
 		->getMock();
 		$response = $this->getMockBuilder( Response::class )->disableOriginalConstructor()
@@ -237,7 +266,7 @@ class NotificationRequestTest extends BaseAdyenTestCase {
 		$this->assertStringContainsString( "[accepted]", $getContent );
 	}
 
-	public function testOrderClosedJSONMessageReceivedAndAcknowledged() {
+	public function testOrderClosedMessageReceivedAndAcknowledged() {
 		$request = $this->getMockBuilder( Request::class )->disableOriginalConstructor()
 		->getMock();
 		$response = $this->getMockBuilder( Response::class )->disableOriginalConstructor()
@@ -255,7 +284,7 @@ class NotificationRequestTest extends BaseAdyenTestCase {
 		$this->assertStringContainsString( "[accepted]", $getContent );
 	}
 
-	public function testOrderOpenedJSONMessageReceivedAndAcknowledged() {
+	public function testOrderOpenedMessageReceivedAndAcknowledged() {
 		$request = $this->getMockBuilder( Request::class )->disableOriginalConstructor()
 		->getMock();
 		$response = $this->getMockBuilder( Response::class )->disableOriginalConstructor()
@@ -273,7 +302,7 @@ class NotificationRequestTest extends BaseAdyenTestCase {
 		$this->assertStringContainsString( "[accepted]", $getContent );
 	}
 
-	public function testtPreabitrationLostJSONMessageReceivedAndAcknowledged() {
+	public function testtPreabitrationLostMessageReceivedAndAcknowledged() {
 		$request = $this->getMockBuilder( Request::class )->disableOriginalConstructor()
 		->getMock();
 		$response = $this->getMockBuilder( Response::class )->disableOriginalConstructor()
@@ -291,7 +320,7 @@ class NotificationRequestTest extends BaseAdyenTestCase {
 		$this->assertStringContainsString( "[accepted]", $getContent );
 	}
 
-	public function testPreabitrationWonJSONMessageReceivedAndAcknowledged() {
+	public function testPreabitrationWonMessageReceivedAndAcknowledged() {
 		$request = $this->getMockBuilder( Request::class )->disableOriginalConstructor()
 		->getMock();
 		$response = $this->getMockBuilder( Response::class )->disableOriginalConstructor()
@@ -309,7 +338,7 @@ class NotificationRequestTest extends BaseAdyenTestCase {
 		$this->assertStringContainsString( "[accepted]", $getContent );
 	}
 
-	public function testRecurringContractJSONMessageReceivedAndAcknowledged() {
+	public function testRecurringContractMessageReceivedAndAcknowledged() {
 		$request = $this->getMockBuilder( Request::class )->disableOriginalConstructor()
 		->getMock();
 		$response = $this->getMockBuilder( Response::class )->disableOriginalConstructor()
@@ -332,7 +361,7 @@ class NotificationRequestTest extends BaseAdyenTestCase {
 		$this->assertStringContainsString( "[accepted]", $getContent );
 	}
 
-	public function testRefundJSONMessageReceivedAndAcknowledged() {
+	public function testRefundMessageReceivedAndAcknowledged() {
 		$request = $this->getMockBuilder( Request::class )->disableOriginalConstructor()
 		->getMock();
 		$response = $this->getMockBuilder( Response::class )->disableOriginalConstructor()
@@ -355,7 +384,7 @@ class NotificationRequestTest extends BaseAdyenTestCase {
 		$this->assertStringContainsString( "[accepted]", $getContent );
 	}
 
-	public function testRefundedReversedJSONMessageReceivedAndAcknowledged() {
+	public function testRefundedReversedMessageReceivedAndAcknowledged() {
 		$request = $this->getMockBuilder( Request::class )->disableOriginalConstructor()
 		->getMock();
 		$response = $this->getMockBuilder( Response::class )->disableOriginalConstructor()
@@ -373,7 +402,7 @@ class NotificationRequestTest extends BaseAdyenTestCase {
 		$this->assertStringContainsString( "[accepted]", $getContent );
 	}
 
-	public function testReportAvailableJSONMessageReceivedAndAcknowledged() {
+	public function testReportAvailableMessageReceivedAndAcknowledged() {
 		$request = $this->getMockBuilder( Request::class )->disableOriginalConstructor()
 		->getMock();
 		$response = $this->getMockBuilder( Response::class )->disableOriginalConstructor()
@@ -393,7 +422,7 @@ class NotificationRequestTest extends BaseAdyenTestCase {
 		$this->assertStringContainsString( "[accepted]", $getContent );
 	}
 
-	public function testRequestForInformationJSONMessageReceivedAndAcknowledged() {
+	public function testRequestForInformationMessageReceivedAndAcknowledged() {
 		$request = $this->getMockBuilder( Request::class )->disableOriginalConstructor()
 		->getMock();
 		$response = $this->getMockBuilder( Response::class )->disableOriginalConstructor()
@@ -409,7 +438,7 @@ class NotificationRequestTest extends BaseAdyenTestCase {
 		$this->assertStringContainsString( "[accepted]", $getContent );
 	}
 
-	public function testSecondChargebackJSONMessageReceivedAndAcknowledged() {
+	public function testSecondChargebackMessageReceivedAndAcknowledged() {
 		$request = $this->getMockBuilder( Request::class )->disableOriginalConstructor()
 		->getMock();
 		$response = $this->getMockBuilder( Response::class )->disableOriginalConstructor()

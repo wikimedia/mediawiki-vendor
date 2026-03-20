@@ -15,7 +15,6 @@ use SmashPig\PaymentProviders\Adyen\Jobs\RecordCaptureJob;
  * the transaction failed.
  */
 class PaymentCaptureAction implements IListenerMessageAction {
-	use DropGravyInitiatedMessageTrait;
 
 	public const METHODS_RECORDED_ON_AUTHORISATION = [
 		'ideal', 'onlineBanking_CZ'
@@ -31,7 +30,7 @@ class PaymentCaptureAction implements IListenerMessageAction {
 					return true;
 				}
 				// drop Gr4vy initiated message
-				if ( $this->isGravyInitiatedMessage( $msg, 'authorisation' ) ) {
+				if ( $msg->gateway === 'gravy' ) {
 					return true;
 				}
 				// For iDEAL, treat this as the final notification of success. We don't

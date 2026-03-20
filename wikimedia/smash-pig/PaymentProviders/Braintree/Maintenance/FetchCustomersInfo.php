@@ -31,7 +31,7 @@ class FetchCustomersInfo extends MaintenanceBase {
 
 		$provider = PaymentProviderFactory::getProviderForMethod( $this->getOption( 'method' ) );
 
-		while ( $fetch = fgetcsv( $file ) ) {
+		while ( $fetch = fgetcsv( $file, 0, ',', '"', '\\' ) ) {
 			if ( count( $fetch ) !== 2 ) {
 				throw new \RuntimeException( count( $fetch ) . ' fields, but fetch lines must have 2 fields: order_id, gateway_session_id', true );
 			}

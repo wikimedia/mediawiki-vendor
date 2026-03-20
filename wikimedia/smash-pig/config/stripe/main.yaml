@@ -1,0 +1,16 @@
+# Settings for PayPal
+#
+# To override, create a file in:
+#   /etc/smashpig/stripe/main.yaml
+#   $HOME/.smashpig/stripe/main.yaml
+# The getReport script also supports option-based overrides.
+api_base_url: 'https://api.stripe.com/v1'
+default_report_start_date: 'yesterday'
+default_report_end_date: 'yesterday'
+poll_interval: 5
+poll_timeout: 300
+timezone: UTC
+report_type: settlement-report
+list_payouts: true
+add_payout_row: true
+write_empty_files: false

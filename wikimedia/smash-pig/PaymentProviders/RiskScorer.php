@@ -13,13 +13,23 @@ class RiskScorer {
 	/** @var array */
 	protected $cvvMap;
 
+	/** @var array */
+	protected $avsExemptCountries;
+
 	public function __construct() {
 		$config = Context::get()->getProviderConfiguration();
 		$this->avsMap = $config->val( 'fraud-filters/avs-map' );
 		$this->cvvMap = $config->val( 'fraud-filters/cvv-map' );
+		$rawExemptCountries = $config->nodeExists( 'fraud-filters/avs-exempt-countries' )
+			? $config->val( 'fraud-filters/avs-exempt-countries' )
+			: [];
+		$this->avsExemptCountries = array_map(
+			static fn ( string $code ): string => strtoupper( trim( $code ) ),
+			$rawExemptCountries
+		);
 	}
 
-	public function getRiskScores( ?string $avsResult, ?string $cvvResult ): array {
+	public function getRiskScores( ?string $avsResult, ?string $cvvResult, ?string $country = null ): array {
 		if ( ( $avsResult === '' || $avsResult === null ) && ( $cvvResult === '' || $cvvResult === null ) ) {
 			Logger::warning( 'Both AVS and CVV results are empty' );
 			return [];
@@ -38,7 +48,10 @@ class RiskScorer {
 
 		if ( $avsResult !== null ) {
 			$avsResult = $this->trim( $avsResult );
-			if ( array_key_exists( $avsResult, $this->avsMap ) ) {
+			$normalizedCountry = $country !== null ? strtoupper( trim( $country ) ) : null;
+			if ( $normalizedCountry !== null && in_array( $normalizedCountry, $this->avsExemptCountries, true ) ) {
+				Logger::debug( "Skipping AVS risk score for exempt card-issuing country '$country'." );
+			} elseif ( array_key_exists( $avsResult, $this->avsMap ) ) {
 				$scores['avs'] = $avsScore = $this->avsMap[$avsResult];
 				Logger::debug( "AVS result '$avsResult' adds risk score $avsScore." );
 			} else {

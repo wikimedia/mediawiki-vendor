@@ -1,0 +1,3 @@
+automatic_payout_effective_at,automatic_payout_id,available_on,balance_transaction_id,charge_id,created,currency,description,fee,gross,net,payment_intent_id,payment_metadata[external_identifier],payment_method_type,card_brand,card_country,card_funding,reporting_category,source_id,trace_id_status,gateway_account
+2026-01-31 00:00:00,po_123,2026-01-30 00:00:00,txn_001,ch_123,2026-01-30 10:11:12,USD,Donation,0.95,25.00,24.05,pi_123,24315.1,card,visa,US,credit,charge,ch_123,pending,acct_live
+2026-01-31 00:00:00,po_123,2026-01-31 00:00:00,txn_005,,2026-01-31 00:00:00,USD,Payout,0.00,14.05,14.05,,,,,,,payout,po_123,available,acct_live

@@ -81,7 +81,7 @@ class CsvReader implements \Iterator {
 	 * Load the next rows into memory
 	 */
 	public function next(): void {
-		$this->currentElement = fgetcsv( $this->filePointer, $this->maxRowLength, $this->delimiter );
+		$this->currentElement = fgetcsv( $this->filePointer, $this->maxRowLength, $this->delimiter, '"', '\\' );
 		$this->rowCounter++;
 	}
 

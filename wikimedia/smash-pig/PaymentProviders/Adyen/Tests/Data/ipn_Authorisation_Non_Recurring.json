@@ -11,7 +11,7 @@
         "eventCode": "AUTHORISATION",
         "eventDate": "2021-01-01T01:00:00+01:00",
         "merchantAccountCode": "YOUR_MERCHANT_ACCOUNT",
-        "merchantReference": "YOUR_MERCHANT_REFERENCE",
+        "merchantReference": "12345.1",
         "paymentMethod": "ideal",
         "operations": [
           "CANCEL",

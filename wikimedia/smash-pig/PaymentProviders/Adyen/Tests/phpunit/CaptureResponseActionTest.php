@@ -69,6 +69,7 @@ class CaptureResponseActionTest extends BaseAdyenTestCase {
 	public function testGr4vyInitiatedCapture() {
 		$capture = new Capture();
 		$capture->success = true;
+		$capture->gateway = 'gravy';
 
 		$capture->additionalData['metadata.gr4vy_intent'] = 'authorize';
 		$action = new CaptureResponseAction();

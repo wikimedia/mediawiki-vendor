@@ -21,10 +21,15 @@ abstract class BaseRefundAction {
 			'gross_currency' => $msg->currency,
 			'gross' => $msg->amount,
 			'date' => strtotime( $msg->eventDate ),
-			'gateway' => 'adyen',
+			'gateway' => $msg->gateway,
 			'reason' => $msg->reason,
 			'type' => $this->getTypeForQueueMessage(),
 		];
+		if ( $msg->gateway === 'gravy' ) {
+			$queueMsg['backend_processor'] = 'adyen';
+			$queueMsg['backend_processor_refund_id'] = $msg->backendProcessorTransactionID;
+			$queueMsg['backend_processor_parent_id'] = $msg->backendProcessorParentTransactionID;
+		}
 		return $queueMsg;
 	}
 
@@ -41,6 +46,9 @@ abstract class BaseRefundAction {
 	 * @return string The parent gateway ID for the refund or chargeback.
 	 */
 	private function getGatewayParentId( AdyenMessage $msg ): string {
+		if ( $msg->gateway === 'gravy' ) {
+			return $msg->orchestratorTransactionID;
+		}
 		return !empty( $msg->parentPspReference ) ? $msg->parentPspReference : $msg->pspReference;
 	}
 

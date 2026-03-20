@@ -276,13 +276,13 @@ class SFTPDownload extends MaintenanceBase {
 				continue;
 			}
 
-			// Skip anything already present locally (by exact name)
-			// AND if decompressing .gz, also skip if the decompressed target already exists.
-			if ( isset( $localBasenames[$name] ) ) {
+			// Skip anything already present locally (by exact name) or name + .gz
+			if ( isset( $localBasenames[$name] ) || isset( $localBasenames[$name . '.gz'] ) ) {
 				$skipped++;
 				continue;
 			}
 
+			// If decompressing .gz, also skip if the decompressed target already exists.
 			if ( $decompressGz && str_ends_with( $name, '.gz' ) ) {
 				$stripped = substr( $name, 0, -3 ); // remove ".gz"
 				if ( $stripped !== '' && $this->isSafeBasename( $stripped ) && isset( $localBasenames[$stripped] ) ) {

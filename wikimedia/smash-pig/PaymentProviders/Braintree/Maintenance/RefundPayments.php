@@ -31,7 +31,7 @@ class RefundPayments extends MaintenanceBase {
 
 		$provider = PaymentProviderFactory::getProviderForMethod( $this->getOption( 'method' ) );
 
-		while ( $refund = fgetcsv( $file ) ) {
+		while ( $refund = fgetcsv( $file, 0, ',', '"', '\\' ) ) {
 			if ( count( $refund ) > 3 || count( $refund ) < 2 ) {
 				throw new \RuntimeException( count( $refund ) . ' fields, but refund lines must have 2 or 3 fields: order_id, gateway_txn_id, amount (if partial, otherwise can leave it blank)', true );
 			}

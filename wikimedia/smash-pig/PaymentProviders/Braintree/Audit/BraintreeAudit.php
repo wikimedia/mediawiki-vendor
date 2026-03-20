@@ -71,7 +71,7 @@ class BraintreeAudit implements AuditParser {
 			'gateway_txn_id' => $batchName,
 			'invoice_id' => $batchName,
 			'settlement_batch_reference' => $batchName,
-			'settled_date' => substr( $batchName, 0, 8 ),
+			'settled_date' => UtcDate::getUtcTimestamp( substr( $batchName, 0, 8 ) ),
 			'date' => substr( $batchName, 0, 8 ),
 		];
 	}

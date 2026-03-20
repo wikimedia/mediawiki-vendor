@@ -37,7 +37,7 @@ class TrustlyAudit implements AuditParser {
 	 */
 	public function parseFile( string $path ): array {
 		$file = fopen( $path, 'r' );
-		while ( ( $line = fgetcsv( $file, 0 ) ) !== false ) {
+		while ( ( $line = fgetcsv( $file, 0, ',', '"', '\\' ) ) !== false ) {
 			// skip empty lines
 			if ( $line === [ null ] ) {
 				continue;

@@ -5,6 +5,18 @@ use OutOfBoundsException;
 class ReferenceData {
 
 	/**
+	 * Each of these top-level methods can wrap various credit card brands, but
+	 * is represented at Adyen with a suffix, e.g. mc_vipps, visa_applepay
+	 * This array's keys are the suffix used by Adyen and values are the
+	 * payment_method we normalize to internally
+	 */
+	protected static array $suffixMethods = [
+		'applepay' => 'apple',
+		'googlepay' => 'google',
+		'vipps' => 'vipps'
+	];
+
+	/**
 	 * @var array mapping from Adyen's method names to our method/submethod
 	 *
 	 * Example for adding a new Payment Method
@@ -20,7 +32,7 @@ class ReferenceData {
 	 *    ],
 	 *  ],
 	 */
-	protected static $methods = [
+	protected static array $methods = [
 		'ach' => [
 			'method' => 'dd',
 			'submethod' => 'ach',
@@ -31,14 +43,6 @@ class ReferenceData {
 		],
 		'amex' => [
 			'method' => 'cc',
-			'submethod' => 'amex',
-		],
-		'amex_applepay' => [
-			'method' => 'apple',
-			'submethod' => 'amex',
-		],
-		'amex_googlepay' => [
-			'method' => 'google',
 			'submethod' => 'amex',
 		],
 		'applepay' => [
@@ -56,10 +60,6 @@ class ReferenceData {
 		],
 		'cartebancaire' => [
 			'method' => 'cc',
-			'submethod' => 'cb',
-		],
-		'cartebancaire_applepay' => [
-			'method' => 'apple',
 			'submethod' => 'cb',
 		],
 		// China Union Pay
@@ -80,14 +80,6 @@ class ReferenceData {
 			'method' => 'cc',
 			'submethod' => 'discover',
 		],
-		'discover_applepay' => [
-			'method' => 'apple',
-			'submethod' => 'discover',
-		],
-		'discover_googlepay' => [
-			'method' => 'google',
-			'submethod' => 'discover',
-		],
 		'dotpay' => [
 			'method' => 'ew',
 			'submethod' => 'ew_dotpay',
@@ -102,12 +94,8 @@ class ReferenceData {
 				],
 			]
 		],
-		'electron_applepay' => [
-			'method' => 'apple',
-			'submethod' => 'visa-electron',
-		],
-		'electron_googlepay' => [
-			'method' => 'google',
+		'electron' => [
+			'method' => 'cc',
 			'submethod' => 'visa-electron',
 		],
 		'googlepay' => [
@@ -136,10 +124,6 @@ class ReferenceData {
 			'method' => 'cc',
 			'submethod' => 'jcb',
 		],
-		'jcb_applepay' => [
-			'method' => 'apple',
-			'submethod' => 'jcb',
-		],
 		'jcbprepaidanonymous' => [
 			'method' => 'cc',
 			'submethod' => 'jcb',
@@ -154,20 +138,8 @@ class ReferenceData {
 				],
 			],
 		],
-		'mc_applepay' => [
-			'method' => 'apple',
-			'submethod' => 'mc',
-		],
-		'mc_googlepay' => [
-			'method' => 'google',
-			'submethod' => 'mc',
-		],
 		'maestro' => [
 			'method' => 'cc',
-			'submethod' => 'maestro',
-		],
-		'maestro_googlepay' => [
-			'method' => 'google',
 			'submethod' => 'maestro',
 		],
 		'multibanco' => [
@@ -252,16 +224,8 @@ class ReferenceData {
 				],
 			]
 		],
-		'visa_applepay' => [
-			'method' => 'apple',
-			'submethod' => 'visa',
-		],
-		'visadebit_applepay' => [
-			'method' => 'apple',
-			'submethod' => 'visa',
-		],
-		'visa_googlepay' => [
-			'method' => 'google',
+		'visadebit' => [
+			'method' => 'cc',
 			'submethod' => 'visa',
 		],
 		// Debit card issued by Visa Europe
@@ -281,6 +245,15 @@ class ReferenceData {
 	 * @return array first entry is our payment_method, second is our payment_submethod
 	 */
 	public static function decodePaymentMethod( $method, $variant ): array {
+		// First check the suffixed methods
+		foreach ( self::$suffixMethods as $suffix => $ourMethod ) {
+			if ( str_ends_with( $method, '_' . $suffix ) ) {
+				$theirSubmethod = explode( '_', $method )[0];
+				if ( array_key_exists( $theirSubmethod, self::$methods ) ) {
+					return [ $ourMethod, self::$methods[ $theirSubmethod ]['submethod'] ];
+				}
+			}
+		}
 		if ( !array_key_exists( $method, self::$methods ) ) {
 			throw new OutOfBoundsException( "Unknown Payment Method '$method'" );
 		}

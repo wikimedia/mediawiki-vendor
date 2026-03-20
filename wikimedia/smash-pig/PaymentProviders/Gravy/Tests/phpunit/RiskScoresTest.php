@@ -115,6 +115,94 @@ class RiskScoresTest extends BaseGravyTestCase {
 		$this->assertSame( [], $riskScores );
 	}
 
+	public function testAvsScoreSkippedForExemptCountry(): void {
+		$this->config->override( [
+			'fraud-filters' => [
+				'avs-exempt-countries' => [ 'IT' ]
+			]
+		] );
+
+		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/create-transaction.json' ), true );
+		$responseBody['avs_response_code'] = 'no_match';
+		$responseBody['cvv_response_code'] = 'match';
+		$responseBody['payment_method']['country'] = 'IT';
+
+		$gravyResponseMapper = new ResponseMapper();
+		$normalizedResponse = $gravyResponseMapper->mapFromPaymentResponse( $responseBody );
+
+		$response = GravyCreatePaymentResponseFactory::fromNormalizedResponse( $normalizedResponse );
+		$riskScores = $response->getRiskScores();
+
+		$this->assertArrayNotHasKey( 'avs', $riskScores );
+		$this->assertArrayHasKey( 'cvv', $riskScores );
+		$this->assertSame( 0, $riskScores['cvv'] );
+	}
+
+	public function testAvsScoreAppliedForNonExemptCountry(): void {
+		$this->config->override( [
+			'fraud-filters' => [
+				'avs-exempt-countries' => [ 'IT' ]
+			]
+		] );
+
+		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/create-transaction.json' ), true );
+		$responseBody['avs_response_code'] = 'no_match';
+		$responseBody['cvv_response_code'] = 'match';
+		$responseBody['payment_method']['country'] = 'US';
+
+		$gravyResponseMapper = new ResponseMapper();
+		$normalizedResponse = $gravyResponseMapper->mapFromPaymentResponse( $responseBody );
+
+		$response = GravyCreatePaymentResponseFactory::fromNormalizedResponse( $normalizedResponse );
+		$riskScores = $response->getRiskScores();
+
+		$this->assertArrayHasKey( 'avs', $riskScores );
+		$this->assertSame( 100, $riskScores['avs'] );
+	}
+
+	public function testAvsScoreSkippedForExemptCountryLowercase(): void {
+		$this->config->override( [
+			'fraud-filters' => [
+				'avs-exempt-countries' => [ 'IT' ]
+			]
+		] );
+
+		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/create-transaction.json' ), true );
+		$responseBody['avs_response_code'] = 'no_match';
+		$responseBody['cvv_response_code'] = 'match';
+		$responseBody['payment_method']['country'] = 'it';
+
+		$gravyResponseMapper = new ResponseMapper();
+		$normalizedResponse = $gravyResponseMapper->mapFromPaymentResponse( $responseBody );
+
+		$response = GravyCreatePaymentResponseFactory::fromNormalizedResponse( $normalizedResponse );
+		$riskScores = $response->getRiskScores();
+
+		$this->assertArrayNotHasKey( 'avs', $riskScores );
+	}
+
+	public function testAvsScoreAppliedWhenNoCountryProvided(): void {
+		$this->config->override( [
+			'fraud-filters' => [
+				'avs-exempt-countries' => [ 'IT' ]
+			]
+		] );
+
+		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/create-transaction.json' ), true );
+		$responseBody['avs_response_code'] = 'no_match';
+		$responseBody['cvv_response_code'] = 'match';
+		unset( $responseBody['payment_method']['country'] );
+
+		$gravyResponseMapper = new ResponseMapper();
+		$normalizedResponse = $gravyResponseMapper->mapFromPaymentResponse( $responseBody );
+
+		$response = GravyCreatePaymentResponseFactory::fromNormalizedResponse( $normalizedResponse );
+		$riskScores = $response->getRiskScores();
+
+		$this->assertArrayHasKey( 'avs', $riskScores );
+		$this->assertSame( 100, $riskScores['avs'] );
+	}
+
 	/**
 	 * Data provider for AVS risk score testing
 	 */

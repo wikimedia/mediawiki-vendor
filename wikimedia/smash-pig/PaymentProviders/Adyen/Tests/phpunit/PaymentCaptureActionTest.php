@@ -69,6 +69,7 @@ class PaymentCaptureActionTest extends BaseAdyenTestCase {
 		$auth->amount = '10';
 		$auth->merchantReference = mt_rand();
 		$auth->pspReference = mt_rand();
+		$auth->gateway = 'adyen';
 
 		$action = new PaymentCaptureAction();
 		$action->execute( $auth );
@@ -111,6 +112,8 @@ class PaymentCaptureActionTest extends BaseAdyenTestCase {
 		$auth->success = true;
 
 		$auth->additionalData['metadata.gr4vy_intent'] = 'authorize';
+		$auth->gateway = 'gravy';
+
 		$action = new PaymentCaptureAction();
 		$action->execute( $auth );
 

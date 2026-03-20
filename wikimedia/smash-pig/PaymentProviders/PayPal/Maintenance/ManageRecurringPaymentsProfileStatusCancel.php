@@ -50,7 +50,7 @@ class ManageRecurringPaymentsProfileStatusCancel extends MaintenanceBase {
 
 		$provider = PaymentProviderFactory::getProviderForMethod( 'paypal' );
 
-		while ( $cancel = fgetcsv( $file ) ) {
+		while ( $cancel = fgetcsv( $file, 0, ',', '"', '\\' ) ) {
 			if ( count( $cancel ) !== 1 ) {
 				throw new \RuntimeException( 'Cancellation lines must have exactly 1 field, corresponding to subscr_id', true );
 			}

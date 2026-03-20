@@ -6,9 +6,6 @@ class Refund extends AdyenMessage {
 	/** @var string The payment method used in this transaction, eg visa, mc, ideal, ev, wallie, etc... */
 	public $paymentMethod = '';
 
-	/** @var string The merchant reference, as order id */
-	public $merchantReference = '';
-
 	/**
 	 * add payment method the Refund message
 	 *
@@ -17,7 +14,6 @@ class Refund extends AdyenMessage {
 	protected function constructFromJSON( array $notification ) {
 		parent::constructFromJSON( $notification );
 		$this->paymentMethod = $notification['paymentMethod'] ?? '';
-		$this->merchantReference = $notification['merchantReference'] ?? '';
 	}
 
 	/**

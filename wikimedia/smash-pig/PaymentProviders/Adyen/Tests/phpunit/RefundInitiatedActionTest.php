@@ -62,6 +62,8 @@ class RefundInitiatedActionTest extends BaseAdyenTestCase {
 		$refund->success = true;
 
 		$refund->additionalData['metadata.gr4vy_intent'] = 'authorize';
+		$refund->gateway = 'gravy';
+
 		$action = new RefundInitiatedAction();
 		$action->execute( $refund );
 

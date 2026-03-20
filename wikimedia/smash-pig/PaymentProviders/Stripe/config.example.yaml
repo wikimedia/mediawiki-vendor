@@ -1,0 +1,19 @@
+accounts:
+  WMF_ONLINE:
+    secret: sk_live_...
+
+  WMF_GRAVY:
+    secret: sk_live_...
+
+  WMF_EVERY_ORG:
+    secret: sk_live_...
+
+gateway_account: WMF_ONLINE
+report_type: settlement-report
+timezone: UTC
+list_payouts: true
+add_payout_row: true
+write_empty_files: false
+poll_interval: 5
+poll_timeout: 300
+reports_incoming_path: /srv/civi-sites/wmf/private/wmf_audit/stripe/incoming

@@ -73,12 +73,12 @@ class SettlementFileParser extends BaseParser {
 	 */
 	public function getFeeMessage(): array {
 		return [
-			'settled_date' => UtcDate::getUtcTimestamp( $this->headers['TRANSFER_DATE'] ),
-			'date' => UtcDate::getUtcTimestamp( $this->headers['TRANSFER_DATE'] ),
+			'settled_date' => $this->getSettledTimeStamp(),
+			'date' => $this->getSettledTimeStamp(),
 			'gateway' => 'dlocal',
 			'audit_file_gateway' => 'dlocal',
 			'type' => 'fee',
-			'gateway_txn_id' => $this->row['DLOCAL_TRANSACTION_ID'],
+			'gateway_txn_id' => 'transaction fee ' . $this->row['DLOCAL_TRANSACTION_ID'],
 			'invoice_id' => $this->row['DLOCAL_TRANSACTION_ID'],
 			'settlement_batch_reference' => $this->getBatchReference(),
 			// In this context the total amount is what is paid by the donor - ie nothing.
@@ -96,7 +96,7 @@ class SettlementFileParser extends BaseParser {
 	 * @return int
 	 */
 	protected function getSettledTimeStamp(): int {
-		return UtcDate::getUtcTimestamp( $this->row['APPROVED_DATE'] );
+		return UtcDate::getUtcTimestamp( $this->headers['TRANSFER_DATE'] );
 	}
 
 	/**

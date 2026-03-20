@@ -78,7 +78,7 @@ abstract class AdyenAudit implements AuditParser {
 		$this->fileData = [];
 		$file = fopen( $path, 'r' );
 
-		$this->columnHeaders = fgetcsv( $file, 0 );
+		$this->columnHeaders = fgetcsv( $file, 0, ',', '"', '\\' );
 
 		$missingColumns = [];
 		foreach ( $this->requiredColumns as $requiredColumn ) {
@@ -90,7 +90,7 @@ abstract class AdyenAudit implements AuditParser {
 			throw new \RuntimeException( 'Missing columns ' . implode( ',', $missingColumns ) );
 		}
 
-		while ( $line = fgetcsv( $file, 0 ) ) {
+		while ( $line = fgetcsv( $file, 0, ',', '"', '\\' ) ) {
 			try {
 				$this->parseLine( $line );
 			} catch ( NormalizationException $ex ) {

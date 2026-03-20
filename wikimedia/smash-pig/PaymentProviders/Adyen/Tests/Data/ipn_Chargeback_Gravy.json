@@ -1,0 +1,33 @@
+{
+  "live": "true",
+  "notificationItems": [
+    {
+      "NotificationRequestItem": {
+        "additionalData": {
+          "chargebackReasonCode": "SL01",
+          "defendable": "false",
+          "disputeStatus": "Lost",
+          "modificationMerchantReferences": "6oiAdapjXAtjS1dEgJZhsc",
+          "checkoutSessionId": "BB4AA2852A7A153523CC70392",
+          "chargebackSchemeCode": "sepadirectdebit",
+          "arn": "A6AA87A8AAA5A2A3",
+          "defensePeriodEndsAt": "2026-03-03T08:16:11+01:00"
+        },
+        "amount": {
+          "currency": "EUR",
+          "value": 5000
+        },
+        "eventCode": "CHARGEBACK",
+        "eventDate": "2026-03-03T08:16:12+01:00",
+        "merchantAccountCode": "WikimediaDonations",
+        "merchantReference": "6oiAdapjXAtjS1dEgJZhsc",
+        "originalReference": "A6AA87A8AAA5A2A3",
+        "paymentMethod": "sepadirectdebit",
+        "pspReference": "BB63BBBBBBBB4B24",
+        "reason": "SL01:SpecificServiceofferedbyDebtorAgent",
+        "success": "true"
+      }
+    }
+  ]
+}
+

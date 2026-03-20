@@ -4,6 +4,7 @@ declare( strict_types=1 );
 namespace SmashPig\PaymentProviders\PayPal\Audit;
 
 use SmashPig\Core\Helpers\Base62Helper;
+use SmashPig\Core\IgnoredException;
 use SmashPig\Core\NormalizationException;
 use SmashPig\Core\UnhandledException;
 use SmashPig\Core\UtcDate;
@@ -36,7 +37,7 @@ class STLFileParser extends BaseParser {
 			'audit_file_gateway' => 'paypal',
 			'date' => strtotime( $this->row['Transaction Initiation Date'] ),
 			'settled_date' => strtotime( $this->row['Transaction Completion Date'] ),
-			'settlement_batch_reference' => str_replace( '/', '', substr( $this->row['Transaction Completion Date'], 0, 10 ) ),
+			'settlement_batch_reference' => $this->getSettlementBatchReference(),
 			'original_total_amount' => $this->getOriginalTotalAmount(),
 			'original_fee_amount' => $this->getOriginalFeeAmount(),
 			'original_net_amount' => $this->getOriginalNetAmount(),
@@ -65,32 +66,72 @@ class STLFileParser extends BaseParser {
 	 * @see https://developer.paypal.com/docs/reports/sftp-reports/settlement-report/#report-data
 	 */
 	public function getAggregateRow(): array {
-		$settlementDate = $timezoneOffset = '';
-		foreach ( $this->headers as $header ) {
-			if ( $header[0] === 'SH' ) {
-				$settlementDate = substr( $header[1], 0, 10 );
-				$timezoneOffset = substr( $header[1], -5 );
-			}
-		}
 		$payouts = 0;
 		if ( array_key_exists( $this->row[1], $this->payouts ) ) {
 			$payouts = array_sum( $this->payouts[ $this->row[1] ] );
 		}
+		$settledTotalAmount = ( $this->row[2] - $this->row[3] + $this->row[4] - $this->row[5] + $payouts ) / 100;
+		if ( !$settledTotalAmount ) {
+			throw new IgnoredException( 'Payout is $0, ignore' );
+		}
+		$exchangeFields = [];
+		if ( $payouts / 100 === $settledTotalAmount ) {
+			// If we have a currency (e.g. BRL) that is fully converted to another currency in real time
+			// and that currency is (USD) then also include the exchange rate (average) as that has been finalised.
+			$exchangeRateToUSD = $this->getAverageExchangeRateForCurrency( $this->row[1], 'USD' );
+			if ( $exchangeRateToUSD ) {
+				$exchangeFields['exchange_rate'] = $exchangeRateToUSD;
+			}
+		}
 		return [
 			'settled_currency' => $this->row[1],
-			'settled_total_amount' => ( $this->row[2] - $this->row[3] + $this->row[4] - $this->row[5] + $payouts ) / 100,
+			'settled_total_amount' => $settledTotalAmount,
 			'gateway' => 'paypal',
 			'type' => 'payout',
 			'audit_file_gateway' => 'paypal',
-			'gateway_txn_id' => str_replace( $settlementDate, '/', '' ),
-			'invoice_id' => str_replace( $settlementDate, '/', '' ),
-			'settlement_batch_reference' => str_replace( '/', '', $settlementDate ),
+			'gateway_txn_id' => str_replace( $this->getBatchSettledDate(), '/', '' ),
+			'invoice_id' => str_replace( $this->getBatchSettledDate(), '/', '' ),
+			'settlement_batch_reference' => $this->getSettlementBatchReference(),
 			// @todo - do we want to convert these dates to UTC? For now we are doing so,
 			// even though using the non utc date in the batch ref seems right - this will
 			// be easy to see once we try with real data.
-			'settled_date' => UtcDate::getUtcTimestamp( $settlementDate, $timezoneOffset ),
-			'date' => UtcDate::getUtcTimestamp( $settlementDate, $timezoneOffset ),
-		];
+			'settled_date' => $this->getBatchSettledTimeStamp(),
+			'date' => $this->getBatchSettledTimeStamp(),
+		] + $exchangeFields;
+	}
+
+	private function getBatchSettledDate(): ?string {
+		foreach ( $this->headers as $header ) {
+			if ( $header[0] === 'SH' ) {
+				return substr( $header[1], 0, 10 );
+			}
+		}
+		// Maybe throw exception except would need some test clean up.
+		return null;
+	}
+
+	private function getBatchSettledTimeStamp(): ?int {
+		return UtcDate::getUtcTimestamp( $this->getBatchSettledDate(), $this->getTimezoneOffset() );
+	}
+
+	/**
+	 * @return string
+	 */
+	private function getTimezoneOffset(): string {
+		foreach ( $this->headers as $header ) {
+			if ( $header[0] === 'SH' ) {
+				return substr( $header[1], -5 );
+			}
+		}
+		// Maybe throw exception except would need some test clean up.
+		return '';
+	}
+
+	/**
+	 * @return string
+	 */
+	private function getSettlementBatchReference(): string {
+		return str_replace( '/', '', $this->getBatchSettledDate() );
 	}
 
 }

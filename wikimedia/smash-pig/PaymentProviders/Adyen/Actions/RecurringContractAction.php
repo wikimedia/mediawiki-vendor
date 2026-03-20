@@ -14,7 +14,6 @@ use SmashPig\PaymentProviders\Adyen\Jobs\RecurringContractJob;
  * @package SmashPig\PaymentProviders\Adyen\Actions
  */
 class RecurringContractAction implements IListenerMessageAction {
-	use DropGravyInitiatedMessageTrait;
 
 	public function execute( ListenerMessage $msg ): bool {
 		$tl = new TaggedLogger( 'RecurringContractAction' );
@@ -22,7 +21,7 @@ class RecurringContractAction implements IListenerMessageAction {
 		if ( $msg instanceof RecurringContract ) {
 			if ( $msg->success ) {
 				// drop Gr4vy initiated message
-				if ( $this->isGravyInitiatedMessage( $msg, 'recurringContract' ) ) {
+				if ( $msg->gateway === 'gravy' ) {
 					return true;
 				}
 				$tl->info(

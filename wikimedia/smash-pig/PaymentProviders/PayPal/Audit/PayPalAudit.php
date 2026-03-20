@@ -36,6 +36,7 @@ class PayPalAudit implements AuditParser {
 	private array $conversionRows = [];
 	private array $payouts = [];
 	private array $feeRows = [];
+	private array $footerRows = [];
 
 	public function parseFile( string $path ): array {
 		$file = fopen( $path, 'r' );
@@ -50,7 +51,7 @@ class PayPalAudit implements AuditParser {
 
 		$columnHeaders = null;
 
-		while ( ( $line = fgetcsv( $file, 0 ) ) !== false ) {
+		while ( ( $line = fgetcsv( $file, 0, ',', '"', '\\' ) ) !== false ) {
 			// skip empty lines
 			if ( $line === [ null ] ) {
 				continue;
@@ -94,6 +95,12 @@ class PayPalAudit implements AuditParser {
 			} else {
 				$row = $line;
 			}
+			if ( $recordType === 'RF' ) {
+				// We really just want to track which currencies have footer rows.
+				// If the currency is missing (e.g. BRL) and there are on-the-go
+				// conversions we add a payout to reflect this - as if there were a $0 row.
+				$this->footerRows[$row[1]] = $row;
+			}
 
 			if ( $row === false ) {
 				Logger::warning( 'Skipping TRR line: array_combine failed' );
@@ -104,6 +111,14 @@ class PayPalAudit implements AuditParser {
 			switch ( $transactionType ) {
 				case 'currency_conversion':
 					$this->conversionRows[$row['Invoice ID']][] = $row;
+					// Deliberate fall through ...
+
+				case 'payout_currency_conversion':
+					// This is a payout row. It should be added onto the aggregate row.
+					$this->payouts[$row['Gross Transaction Currency']][] =
+						( $row['Transaction Debit or Credit'] === 'CR' )
+							? -$row['Gross Transaction Amount']
+							: $row['Gross Transaction Amount'];
 					break;
 
 				case 'general_payment':
@@ -118,14 +133,6 @@ class PayPalAudit implements AuditParser {
 					}
 					// This is a payout row. It should be added onto the aggregate row.
 					$this->payouts[$row['Gross Transaction Currency']][] = (float)$row['Gross Transaction Amount'] + (float)$fee;
-					break;
-
-				case 'payout_currency_conversion':
-					// This is a payout row. It should be added onto the aggregate row.
-					$this->payouts[$row['Gross Transaction Currency']][] =
-						( $row['Transaction Debit or Credit'] === 'CR' )
-							? -$row['Gross Transaction Amount']
-							: $row['Gross Transaction Amount'];
 					break;
 
 				case 'chargeback_fee':
@@ -145,6 +152,15 @@ class PayPalAudit implements AuditParser {
 					break;
 			}
 
+		}
+
+		foreach ( $this->conversionRows as $rowSet ) {
+			foreach ( $rowSet as $row ) {
+				if ( in_array( 'RF', $this->lineTypesToParse ) && !isset( $this->footerRows[$row['Gross Transaction Currency']] ) ) {
+					// Add a $0 payout row to ensure a payout is calculated for the currency.
+					$this->rows[] = $this->footerRows[$row['Gross Transaction Currency']] = [ 'RF', $row['Gross Transaction Currency'], 0, 0, 0, 0, 'CR', 0, 'CR' ];
+				}
+			}
 		}
 
 		foreach ( $this->rows as $row ) {

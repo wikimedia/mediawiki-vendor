@@ -16,6 +16,7 @@ class CancelRecurringActionTest extends BaseAdyenTestCase {
 		$recurring = new Authorisation();
 		$recurring->success = true;
 		$recurring->additionalData['metadata.gr4vy_intent'] = 'authorize';
+		$recurring->gateway = 'gravy';
 		$action = new CancelRecurringAction();
 		$action->execute( $recurring );
 		$job = QueueWrapper::getQueue( 'recurring' )->pop();

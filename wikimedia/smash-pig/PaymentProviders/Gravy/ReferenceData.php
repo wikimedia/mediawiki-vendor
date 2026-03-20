@@ -80,6 +80,7 @@ class ReferenceData {
 		'oney_3x' => '',
 		'oney_4x' => '',
 		'oney_6x' => '',
+		'onlinebankingcz' => PaymentMethod::BT,
 		'other' => PaymentMethod::CC,
 		'ovo' => '',
 		'oxxo' => PaymentMethod::CASH,
@@ -176,7 +177,8 @@ class ReferenceData {
 		'netbanking' => 'netbanking',
 		'webpay' => 'webpay',
 		'stitch' => 'stitch',
-		'bancomer' => 'bancomer'
+		'bancomer' => 'bancomer',
+		'onlinebankingcz' => ''
 	];
 
 	protected static $cashSubmethods = [

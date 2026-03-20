@@ -229,6 +229,13 @@ validators:
     class: SmashPig\PaymentProviders\Gravy\Validators\PaymentProviderValidator
 
 fraud-filters:
+  # Card-issuing countries where AVS scoring is skipped because
+  # address fields (e.g. postal code) are often absent, leading
+  # to false-positive risk scores. Matched against the card's
+  # issuing country from the payment method, not the billing address.
+  avs-exempt-countries:
+    - IT
+
   # Authorization notifications include AVS and CVV result codes.
   # The following maps set a risk score for each result code, which
   # we combine with any risk score computed on the payment site to

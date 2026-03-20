@@ -3,7 +3,6 @@ declare( strict_types=1 );
 
 namespace SmashPig\PaymentProviders\PayPal\Audit;
 
-use SmashPig\Core\Helpers\CurrencyRoundingHelper;
 use SmashPig\Core\UnhandledException;
 
 class BaseParser {
@@ -259,41 +258,19 @@ class BaseParser {
 	 * @return mixed
 	 */
 	protected function getSettledCurrency(): mixed {
-		if ( $this->hasConversion() ) {
-			if ( $this->row['Transaction Debit or Credit'] === 'DR' ) {
-				// If we have a debit transaction (refund) then the first conversion row is the converted-to currency.
-				return $this->conversionRows[$this->row['Invoice ID']][0]['Gross Transaction Currency'];
-			}
-			// T0003/02/06 - row is CR
-			return $this->conversionRows[$this->row['Invoice ID']][1]['Gross Transaction Currency'];
-		}
 		return $this->row['Gross Transaction Currency'];
 	}
 
 	protected function getSettledTotalAmount(): string {
-		if ( !$this->hasConversion() ) {
-			return (string)$this->getOriginalTotalAmount();
-		}
-		return CurrencyRoundingHelper::round( $this->getOriginalTotalAmount() * $this->getExchangeRate(), $this->getSettledCurrency() );
+		return (string)$this->getOriginalTotalAmount();
 	}
 
 	protected function getSettledNetAmount(): string {
-		if ( !$this->hasConversion() ) {
-			return (string)( (float)$this->getSettledTotalAmount() + (float)$this->getSettledFeeAmount() );
-		}
-		if ( $this->row['Transaction Debit or Credit'] === 'DR' ) {
-			// If we have a debit transaction (refund) then the first conversion row is the converted-to currency.
-			return (string)( -$this->conversionRows[$this->row['Invoice ID']][0]['Gross Transaction Amount'] / 100 );
-		}
-		return (string)( $this->conversionRows[$this->row['Invoice ID']][1]['Gross Transaction Amount'] / 100 );
+		return (string)( (float)$this->getSettledTotalAmount() + (float)$this->getSettledFeeAmount() );
 	}
 
 	protected function getSettledFeeAmount(): string {
-		if ( !$this->hasConversion() ) {
-			return (string)$this->getOriginalFeeAmount();
-		}
-		// Rely on the conversion being done in getTotalAmount for rounding consistency.
-		return (string)( $this->getSettledNetAmount() - $this->getSettledTotalAmount() );
+		return (string)$this->getOriginalFeeAmount();
 	}
 
 	/**
@@ -352,6 +329,39 @@ class BaseParser {
 			throw new UnhandledException( 'Unhandled refundish transaction code: ' . $this->getTransactionCode() );
 		}
 		return $reversalFields;
+	}
+
+	/**
+	 * Get the conversions pairs that specifically relate to this currency.
+	 *
+	 * @return array
+	 */
+	protected function getAverageExchangeRateForCurrency( $currency, $toCurrency ): ?float {
+		$conversion = [];
+		foreach ( $this->conversionRows as $conversionRowSet ) {
+			foreach ( $conversionRowSet as $row ) {
+				if ( $row['Gross Transaction Currency'] === $currency ) {
+					$conversion = [];
+					foreach ( $conversionRowSet as $conversionRow ) {
+						if ( !isset( $conversion[$conversionRow['Gross Transaction Currency']] ) ) {
+							$conversion[$conversionRow['Gross Transaction Currency']] = 0;
+						}
+						$amount = (float)$conversionRow['Gross Transaction Amount'] / 100;
+						$conversion[$conversionRow['Gross Transaction Currency']] += $amount;
+					}
+				}
+			}
+		}
+		if ( !array_sum( $conversion ) ) {
+			return null;
+		}
+		if ( count( $conversion ) > 2 ) {
+			throw new UnhandledException( 'Not expecting to convert to multiple currencies' );
+		}
+		if ( !isset( $conversion[$toCurrency] ) ) {
+			throw new UnhandledException( 'unexpected currency conversion ' . print_r( $conversion, true ) );
+		}
+		return $conversion[$toCurrency] / $conversion[$currency];
 	}
 
 }

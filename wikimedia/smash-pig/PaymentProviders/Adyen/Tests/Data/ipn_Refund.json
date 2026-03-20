@@ -10,7 +10,7 @@
         "eventCode": "REFUND",
         "eventDate": "2021-01-01T01:00:00+01:00",
         "merchantAccountCode": "YOUR_MERCHANT_ACCOUNT",
-        "merchantReference": "YOUR_MERCHANT_REFERENCE",
+        "merchantReference": "23456.7",
         "originalReference": "9913140798220028",
         "paymentMethod": "visa",
         "pspReference": "YOUR_PSP_REFERENCE",

@@ -95,8 +95,8 @@ class DlocalAudit implements AuditParser {
 				'gateway_txn_id' => $batchName,
 				'invoice_id' => $batchName,
 				'settlement_batch_reference' => $batchName,
-				'settled_date' => substr( $batchName, 0, 8 ),
-				'date' => substr( $batchName, 0, 8 ),
+				'settled_date' => strtotime( substr( $batchName, 0, 8 ) ),
+				'date' => strtotime( substr( $batchName, 0, 8 ) ),
 			];
 		}
 		return $this->fileData;

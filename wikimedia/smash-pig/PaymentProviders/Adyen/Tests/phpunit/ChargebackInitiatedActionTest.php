@@ -85,9 +85,24 @@ class ChargebackInitiatedActionTest extends BaseAdyenTestCase {
 		$chargeback = new Chargeback();
 		$chargeback->success = true;
 		$chargeback->additionalData['metadata.gr4vy_intent'] = 'authorize';
+		$chargeback->gateway = 'gravy';
+		$chargeback->orchestratorTransactionID = 'e00422eb-e4b6-4998-8f61-031264126bbe';
+		$chargeback->merchantReference = 'testMerchantRef1';
+		$chargeback->merchantAccountCode = 'WikimediaTest';
+		$chargeback->currency = 'USD';
+		$chargeback->amount = 10.00;
+		$chargeback->eventDate = "2026-03-07 20:00:02";
+		$chargeback->backendProcessorTransactionID = '123123asdasd';
+		$chargeback->backendProcessorParentTransactionID = '0987987asdasd';
+
 		$action = new ChargebackInitiatedAction();
 		$action->execute( $chargeback );
 		$refund = $this->refundQueue->pop();
-		$this->assertNull( $refund, 'Should not have queued a chargeback' );
+		$this->assertNotNull( $refund, 'Should have queued a chargeback' );
+		$this->assertEquals( $chargeback->backendProcessorTransactionID, $refund['backend_processor_refund_id'] );
+		$this->assertEquals( $chargeback->backendProcessorParentTransactionID, $refund['backend_processor_parent_id'] );
+		$this->assertEquals( 'adyen', $refund['backend_processor'] );
+		$this->assertEquals( 'chargeback', $refund['type'] );
+		$this->assertEquals( 'gravy', $refund['gateway'] );
 	}
 }

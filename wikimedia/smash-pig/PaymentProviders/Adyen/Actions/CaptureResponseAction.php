@@ -13,7 +13,6 @@ use SmashPig\PaymentProviders\Adyen\Jobs\RecordCaptureJob;
  * @package SmashPig\PaymentProviders\Adyen\Actions
  */
 class CaptureResponseAction implements IListenerMessageAction {
-	use DropGravyInitiatedMessageTrait;
 
 	public function execute( ListenerMessage $msg ): bool {
 		$tl = new TaggedLogger( 'CaptureResponseAction' );
@@ -21,7 +20,7 @@ class CaptureResponseAction implements IListenerMessageAction {
 		if ( $msg instanceof Capture ) {
 			if ( $msg->success ) {
 				// drop Gr4vy initiated message
-				if ( $this->isGravyInitiatedMessage( $msg, 'capture' ) ) {
+				if ( $msg->gateway === 'gravy' ) {
 					return true;
 				}
 				$tl->info(

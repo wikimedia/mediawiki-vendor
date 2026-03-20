@@ -37,10 +37,11 @@ class ResponseMapper {
 		return $errorResponse ?? $this->mapSuccessfulPaymentResponse( $response );
 	}
 
-	public function getRiskScores( ?string $avs_response, ?string $cvv_response ): array {
+	public function getRiskScores( ?string $avs_response, ?string $cvv_response, ?string $country = null ): array {
 		return ( new RiskScorer() )->getRiskScores(
 			$avs_response,
-			$cvv_response
+			$cvv_response,
+			$country
 		);
 	}
 
@@ -207,6 +208,7 @@ class ResponseMapper {
 	 * @return array
 	 */
 	private function mapSuccessfulPaymentResponse( array $response ): array {
+		$cardCountry = $response['payment_method']['country'] ?? null;
 		$result = [
 			'is_successful' => true,
 			'gateway_txn_id' => $response['id'],
@@ -216,7 +218,7 @@ class ResponseMapper {
 			'raw_status' => $response['status'],
 			'status' => $this->normalizeStatus( $response['status'] ),
 			'raw_response' => $response,
-			'risk_scores' => $this->getRiskScores( $response['avs_response_code'] ?? null, $response['cvv_response_code'] ?? null )
+			'risk_scores' => $this->getRiskScores( $response['avs_response_code'] ?? null, $response['cvv_response_code'] ?? null, $cardCountry )
 		];
 
 		if ( $result['status'] == FinalStatus::FAILED ) {

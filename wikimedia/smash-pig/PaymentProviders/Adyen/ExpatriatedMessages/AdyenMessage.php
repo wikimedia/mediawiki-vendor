@@ -1,5 +1,6 @@
 <?php namespace SmashPig\PaymentProviders\Adyen\ExpatriatedMessages;
 
+use SmashPig\Core\Helpers\Base62Helper;
 use SmashPig\Core\Listeners\ListenerDataException;
 use SmashPig\Core\Logging\Logger;
 use SmashPig\Core\Messages\ListenerMessage;
@@ -39,6 +40,16 @@ abstract class AdyenMessage extends ListenerMessage {
 
 	/** @var string|null Reason for event */
 	public $reason;
+
+	public string $gateway = 'adyen'; // 'adyen' or 'gravy'
+
+	public ?string $backendProcessor; // NULL or 'adyen'
+
+	public ?string $backendProcessorTransactionID;
+
+	public ?string $backendProcessorParentTransactionID;
+
+	public ?string $orchestratorTransactionID;
 
 	/**
 	 * Creates an appropriate derived AdyenMessage instance from the object received
@@ -96,6 +107,20 @@ abstract class AdyenMessage extends ListenerMessage {
 		$this->additionalData = $notification['additionalData'] ?? [];
 		$this->success = ( $notification['success'] === 'true' );
 		$this->reason = $notification['reason'];
+
+		if (
+			isset( $this->additionalData['metadata.gr4vy_intent'] ) ||
+			$this->isOrchestratorMerchantReference( $notification )
+		) {
+			$this->gateway = 'gravy';
+			$this->backendProcessor = 'adyen';
+			$this->backendProcessorTransactionID = $notification['pspReference'];
+			$this->backendProcessorParentTransactionID = $notification['originalReference'] ?? null;
+			$this->orchestratorTransactionID = Base62Helper::toUuid( $notification['merchantReference'] );
+			if ( isset( $this->additionalData['metadata.gr4vy_tx_ref'] ) ) {
+				$this->merchantReference = $this->additionalData['metadata.gr4vy_tx_ref'];
+			}
+		}
 	}
 
 	/**
@@ -120,6 +145,15 @@ abstract class AdyenMessage extends ListenerMessage {
 	 * @return string
 	 */
 	public function getGatewayTxnId() {
+		if ( $this->gateway == 'gravy' ) {
+			return $this->orchestratorTransactionID;
+		}
 		return $this->pspReference;
+	}
+
+	protected function isOrchestratorMerchantReference( array $notification ): bool {
+		return !empty( $notification['merchantReference'] ) &&
+			!strpos( $notification['merchantReference'], '.' ) &&
+			!is_numeric( $notification['merchantReference'] );
 	}
 }

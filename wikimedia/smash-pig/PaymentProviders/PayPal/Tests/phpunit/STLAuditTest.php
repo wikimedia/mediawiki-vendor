@@ -98,20 +98,20 @@ class STLAuditTest extends AuditTestBase {
 
 	public function testProcessConvertedCurrencyTransaction(): void {
 		$output = $this->processFile( 'stl_currency_convert.csv' );
-		$this->assertCount( 1, $output, 'Should have found one row' );
+		$this->assertCount( 3, $output, 'Should have found one row' );
 
 		$this->assertEquals( [
 			'payment_method' => 'paypal',
 			'currency' => 'BRL',
 			'original_currency' => 'BRL',
-			'settled_currency' => 'USD',
+			'settled_currency' => 'BRL',
 			'exchange_rate' => 0.17771739130434783,
 			'date' => strtotime( '2026/01/06 04:26:31 -0800' ),
 			'gateway' => 'gravy',
 			'audit_file_gateway' => 'paypal',
-			'settled_total_amount' => '3.91',
-			'settled_fee_amount' => '-0.64',
-			'settled_net_amount' => '3.27',
+			'settled_total_amount' => 22,
+			'settled_fee_amount' => -3.60,
+			'settled_net_amount' => 18.40,
 			'gross' => 22,
 			'fee' => 3.6,
 			'original_total_amount' => 22,
@@ -127,24 +127,52 @@ class STLAuditTest extends AuditTestBase {
 			'payment_orchestrator_reconciliation_id' => '5jImyEK1vFvvvmoxlWR7SO',
 
 		], $output[0] );
+
+		$this->assertEquals( [
+			'settled_currency' => 'BRL',
+			'settled_total_amount' => 18.4,
+			'gateway' => 'paypal',
+			'type' => 'payout',
+			'audit_file_gateway' => 'paypal',
+			'gateway_txn_id' => '',
+			'invoice_id' => '',
+			'settlement_batch_reference' => '20260106',
+			'settled_date' => 1767686400,
+			'date' => 1767686400,
+			'exchange_rate' => 0.17771739130434783,
+		], $output[1] );
+
+		$this->assertEquals( [
+			'settled_currency' => 'USD',
+			'settled_total_amount' => -3.27,
+			'gateway' => 'paypal',
+			'type' => 'payout',
+			'audit_file_gateway' => 'paypal',
+			'gateway_txn_id' => '',
+			'invoice_id' => '',
+			'settlement_batch_reference' => '20260106',
+			'settled_date' => 1767686400,
+			'date' => 1767686400,
+			'exchange_rate' => 1.0,
+		], $output[2] );
 	}
 
 	public function testProcessConvertedCurrencyRefundTransaction(): void {
 		$output = $this->processFile( 'stl_brl_refund.csv' );
-		$this->assertCount( 1, $output, 'Should have found one row' );
+		$this->assertCount( 3, $output, 'Should have found one row' );
 
 		$this->assertEquals( [
 			'payment_method' => 'paypal',
 			'currency' => 'BRL',
 			'original_currency' => 'BRL',
-			'settled_currency' => 'USD',
+			'settled_currency' => 'BRL',
 			'exchange_rate' => 0.18158347676419967,
 			'date' => strtotime( '2025/12/23 08:57:17 -0800' ),
 			'gateway' => 'paypal_ec',
 			'audit_file_gateway' => 'paypal',
-			'settled_total_amount' => -2.72,
-			'settled_fee_amount' => '0.61',
-			'settled_net_amount' => '-2.11',
+			'settled_total_amount' => -15,
+			'settled_fee_amount' => 3.38,
+			'settled_net_amount' => -11.62,
 			'gross' => 15.0,
 			'fee' => 3.38,
 			// Fee of 3.38 BRL refunded to us, we refund 15 BRL to the donor
@@ -164,26 +192,30 @@ class STLAuditTest extends AuditTestBase {
 		], $output[0] );
 	}
 
+	/**
+	 * The batch has an AUD donation and a currency conversion.
+	 *
+	 * The currency conversion is used to calculate the payout / batch total (only).
+	 *
+	 * Since the USD batch is otherwise $0 it does not generate a payout row.
+	 *
+	 * @return void
+	 */
 	public function testProcessConvertedCurrencyPayout(): void {
 		$output = $this->processFile( 'stl_payout_currency_convert.csv' );
-		$this->assertCount( 3, $output, 'Should have found one row' );
+		$this->assertCount( 2, $output, 'Should have found one donation row and one payout row' );
 
 		// This row is the donation - $200.
 		$this->assertEquals( 200, $output[0]['settled_total_amount'] );
 		$this->assertEquals( 'AUD', $output[0]['currency'] );
 		$this->assertSame( '244.1', $output[0]['order_id'] );
 
-		// We have 2 payout rows - we are looking to make sure
+		// We have a USD payout row - we are looking to make sure
 		// the payout rows take the currency convert transaction into account
-		// it the payout means the balance movement coming from
-		// donations and refunds - the 'batch' and it ignores transfers.
-		$this->assertSame( 0, $output[1]['settled_total_amount'] );
-		$this->assertSame( 'USD', $output[1]['settled_currency'] );
-		$this->assertSame( 'payout', $output[1]['type'] );
-
-		$this->assertEquals( 200, $output[2]['settled_total_amount'] );
-		$this->assertEquals( 'AUD', $output[2]['settled_currency'] );
-		$this->assertEquals( 'payout', $output[2]['type'] );
+		// and the batch total excludes movements that are not salient (ie
+		// conversions)
+		$this->assertSame( 200, $output[1]['settled_total_amount'] );
+		$this->assertSame( 'AUD', $output[1]['settled_currency'] );
 	}
 
 	public function testProcessChargebackWithFee(): void {
@@ -202,7 +234,7 @@ class STLAuditTest extends AuditTestBase {
 			'settled_total_amount' => -3,
 			'settled_fee_amount' => -20,
 			'settled_net_amount' => -23,
-			'settlement_batch_reference' => '20260114',
+			'settlement_batch_reference' => '20260106',
 			'original_total_amount' => -3,
 			'original_net_amount' => -23,
 			'original_fee_amount' => -20,
@@ -234,7 +266,7 @@ class STLAuditTest extends AuditTestBase {
 			'settled_total_amount' => 26,
 			'settled_fee_amount' => 20,
 			'settled_net_amount' => 46,
-			'settlement_batch_reference' => '20260114',
+			'settlement_batch_reference' => '20260106',
 			'original_total_amount' => 26,
 			'original_net_amount' => '46',
 			'original_fee_amount' => '20',
