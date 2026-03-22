@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
-        'reference' => 'acfa1eb19b934d1aa37d91da7d4eda6e4c3b2388',
+        'pretty_version' => '1.0.0+no-version-set',
+        'version' => '1.0.0.0',
+        'reference' => null,
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -11,18 +11,18 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'reference' => 'acfa1eb19b934d1aa37d91da7d4eda6e4c3b2388',
+            'pretty_version' => '1.0.0+no-version-set',
+            'version' => '1.0.0.0',
+            'reference' => null,
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
         'bacon/bacon-qr-code' => array(
-            'pretty_version' => 'v3.0.3',
-            'version' => '3.0.3.0',
-            'reference' => '36a1cb2b81493fa5b82e50bf8068bf84d1542563',
+            'pretty_version' => 'v3.0.4',
+            'version' => '3.0.4.0',
+            'reference' => '3feed0e212b8412cc5d2612706744789b0615824',
             'type' => 'library',
             'install_path' => __DIR__ . '/../bacon/bacon-qr-code',
             'aliases' => array(),
