@@ -374,9 +374,9 @@
             'dev_requirement' => false,
         ),
         'mck89/peast' => array(
-            'pretty_version' => 'v1.17.4',
-            'version' => '1.17.4.0',
-            'reference' => 'c6a63f32410d2e4ee2cd20fe94b35af147fb852d',
+            'pretty_version' => 'v1.17.5',
+            'version' => '1.17.5.0',
+            'reference' => 'e19a8bd896b7f04941a38fd38a140c9a6531c84f',
             'type' => 'library',
             'install_path' => __DIR__ . '/../mck89/peast',
             'aliases' => array(),
