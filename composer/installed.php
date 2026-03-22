@@ -997,9 +997,9 @@
             'dev_requirement' => false,
         ),
         'webonyx/graphql-php' => array(
-            'pretty_version' => 'v15.30.2',
-            'version' => '15.30.2.0',
-            'reference' => 'abf6dc5f8b27915bfde26fdda0e92cebfb9aebf5',
+            'pretty_version' => 'v15.31.1',
+            'version' => '15.31.1.0',
+            'reference' => '8b446b55a30680f105eb5c4d25ccbc015926d398',
             'type' => 'library',
             'install_path' => __DIR__ . '/../webonyx/graphql-php',
             'aliases' => array(),

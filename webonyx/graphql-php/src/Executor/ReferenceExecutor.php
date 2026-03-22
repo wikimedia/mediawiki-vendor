@@ -911,11 +911,18 @@ class ReferenceExecutor implements ExecutorImplementation
         // Account for invalid schema definition when typeLoader returns different
         // instance than `resolveType` or $field->getType() or $arg->getType()
         assert(
-            $returnType === $this->exeContext->schema->getType($returnType->name),
+            $returnType === $this->exeContext->schema->getType($returnType->name)
+            || Type::isBuiltInScalar($returnType),
             SchemaValidationContext::duplicateType($this->exeContext->schema, "{$info->parentType}.{$info->fieldName}", $returnType->name)
         );
 
         if ($returnType instanceof LeafType) {
+            if (Type::isBuiltInScalar($returnType)) {
+                $schemaType = $this->exeContext->schema->getType($returnType->name);
+                assert($schemaType instanceof LeafType, "Schema must provide a LeafType for built-in scalar \"{$returnType->name}\".");
+                $returnType = $schemaType;
+            }
+
             return $this->completeLeafValue($returnType, $result);
         }
 
