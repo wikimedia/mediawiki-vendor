@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "16c339280e95426d1c98077b3f0713e0",
+    "content-hash": "084ec7e5ccb82974979b72acbdf22621",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -8952,16 +8952,16 @@
         },
         {
             "name": "wmde/php-vuejs-templating",
-            "version": "2.2.0-beta.10",
+            "version": "2.2.0-beta.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wmde/php-vuejs-templating.git",
-                "reference": "5dd7fecd185910af1f99ff3d1ed6a91c240dd374"
+                "reference": "384047615b010933e2a72d7188aa95eb958f7565"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wmde/php-vuejs-templating/zipball/5dd7fecd185910af1f99ff3d1ed6a91c240dd374",
-                "reference": "5dd7fecd185910af1f99ff3d1ed6a91c240dd374",
+                "url": "https://api.github.com/repos/wmde/php-vuejs-templating/zipball/384047615b010933e2a72d7188aa95eb958f7565",
+                "reference": "384047615b010933e2a72d7188aa95eb958f7565",
                 "shasum": ""
             },
             "require": {
@@ -8992,9 +8992,9 @@
             "description": "PHP implementation of Vue.js templating engine",
             "support": {
                 "issues": "https://github.com/wmde/php-vuejs-templating/issues",
-                "source": "https://github.com/wmde/php-vuejs-templating/tree/2.2.0-beta.10"
+                "source": "https://github.com/wmde/php-vuejs-templating/tree/2.2.0-beta.11"
             },
-            "time": "2026-03-02T16:06:47+00:00"
+            "time": "2026-03-16T09:08:42+00:00"
         },
         {
             "name": "zordius/lightncandy",
