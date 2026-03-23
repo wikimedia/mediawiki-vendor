@@ -1753,11 +1753,7 @@ private function a140($ref, $sp, $identifier) {
 		$dp = new DataParsoid;
 		$dp->tsr = $tsr;
 		$dp->stx = 'magiclink';
-		$this->env->getDataAccess()->addTrackingCategory(
-			$this->env->getPageConfig(),
-			$this->env->getMetadata(),
-			'magiclink-tracking-' . strtolower($ref)
-		);
+		$dp->getTemp()->ref = strtolower( $ref );
 		return [
 			new SelfclosingTagTk( 'extlink', [
 					new KV( 'href', sprintf( $base_urls[$ref], $identifier ) ),
@@ -1812,11 +1808,7 @@ private function a149($sp, $isbn, $isbncode) {
 		$dp = new DataParsoid;
 		$dp->stx = 'magiclink';
 		$dp->tsr = $tsr;
-		$this->env->getDataAccess()->addTrackingCategory(
-			$this->env->getPageConfig(),
-			$this->env->getMetadata(),
-			'magiclink-tracking-isbn'
-		);
+		$dp->getTemp()->ref = 'isbn';
 		return [
 			new SelfclosingTagTk( 'extlink', [
 					new KV( 'href', 'Special:BookSources/' . $isbncode ),
