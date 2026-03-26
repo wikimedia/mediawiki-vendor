@@ -29,6 +29,8 @@ class AdyenPaymentsAccountingReport extends AdyenAudit {
 
 	protected function parseDonation( array $row, array $msg ): array {
 		$msg['modification_reference'] = $row['Modification Psp Reference'];
+		$msg['capture_id'] = $row['Modification Psp Reference'];
+		$msg['auth_id'] = $row['Psp Reference'];
 		$msg['currency'] = $msg['original_currency'] = $row['Payment Currency'];
 		$msg['original_total_amount'] = $msg['gross'] = $row['Original Amount'];
 		// fee is given in settlement currency

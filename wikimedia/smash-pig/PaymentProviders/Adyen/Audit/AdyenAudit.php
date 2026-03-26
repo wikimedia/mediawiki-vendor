@@ -134,6 +134,9 @@ abstract class AdyenAudit implements AuditParser {
 			case 'settled':
 				// Amex has externally in the type name
 			case 'settledexternally':
+				if ( in_array( $type, [ 'settled', 'settledexternally' ] ) ) {
+					$msg['type'] = 'donation';
+				}
 				$msg = $this->parseDonation( $row, $msg );
 				break;
 			case 'chargeback':
@@ -160,6 +163,9 @@ abstract class AdyenAudit implements AuditParser {
 		} else {
 			$msg['type'] = 'refund';
 		}
+
+		// This is the most important of the transaction identifying IDs and is always the Adyen reference.
+		$msg['backend_processor_reversal_id'] = $modificationReference;
 
 		if ( $this->isOrchestratorMerchantReference( $row ) ) {
 			$msg['backend_processor_parent_id'] = $row['Psp Reference'];
@@ -254,10 +260,9 @@ abstract class AdyenAudit implements AuditParser {
 		// Both reports have the Creation Date in PDT, the payments accounting report does not
 		// send the timezone as a separate column
 		$msg['date'] = UtcDate::getUtcTimestamp( $row[$this->date], $row['TimeZone'] );
-
+		$msg['backend_processor_txn_id'] = $row['Psp Reference'];
+		$msg['backend_processor'] = 'adyen';
 		if ( $this->isOrchestratorMerchantReference( $row ) ) {
-			$msg['backend_processor_txn_id'] = $row['Psp Reference'];
-			$msg['backend_processor'] = 'adyen';
 			$msg['payment_orchestrator_reconciliation_id'] = $row[$this->merchantReference];
 		}
 

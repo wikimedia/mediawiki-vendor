@@ -265,6 +265,16 @@ class BaseParser {
 		return (string)$this->getOriginalTotalAmount();
 	}
 
+	protected function getAuthAndCaptureReferences(): array {
+		if ( !$this->isPaymentishPrefix() ) {
+			return [];
+		}
+		return [
+			'auth_id' => $this->row['PayPal Reference ID'],
+			'capture_id' => $this->row['Transaction ID'],
+		];
+	}
+
 	protected function getSettledNetAmount(): string {
 		return (string)( (float)$this->getSettledTotalAmount() + (float)$this->getSettledFeeAmount() );
 	}
@@ -279,7 +289,6 @@ class BaseParser {
 	protected function getGravyFields(): array {
 		$gravyFields = [];
 		if ( $this->isGravy() ) {
-			$gravyFields['backend_processor_txn_id'] = $this->row['Transaction ID'];
 			$gravyFields['backend_processor'] = $this->getGateway();
 			$gravyFields['payment_orchestrator_reconciliation_id'] = $this->row['Custom Field'];
 		}

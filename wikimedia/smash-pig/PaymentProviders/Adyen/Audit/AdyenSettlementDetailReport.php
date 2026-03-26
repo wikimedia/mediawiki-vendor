@@ -33,7 +33,12 @@ class AdyenSettlementDetailReport extends AdyenAudit {
 		// T306944
 		// We were saving the Capture ID for 2+ recurrings in civi which for settled payments is in the
 		// Modification reference. Adding this lets us match donations until the data is cleaned up
-		$msg['modification_reference'] = $row['Modification Reference'];
+		if ( $msg['type'] === 'donation' ) {
+			// Not adding to (e.g) chargeback_reversal for now as not really an auth/capture scenario.
+			$msg['modification_reference'] = $row['Modification Reference'];
+			$msg['capture_id'] = $row['Modification Reference'];
+			$msg['auth_id'] = $row['Psp Reference'];
+		}
 
 		$msg['currency'] = $msg['original_currency'] = $row['Gross Currency'];
 		$msg['settled_currency'] = $row['Net Currency'];
@@ -49,7 +54,7 @@ class AdyenSettlementDetailReport extends AdyenAudit {
 		// shouldn't this be settled_net or settled_amount?
 		$msg['settled_gross'] = $row['Net Credit (NC)'] ?: -$row['Net Debit (NC)'];
 		// Settled amount is like settled gross but is negative where negative.
-		$msg['settled_net_amount'] = $row['Net Credit (NC)'] ?: -$row['Net Debit (NC)'];
+		$msg['settled_net_amount'] = AdyenCurrencyRoundingHelper::round( $row['Net Credit (NC)'] ?: -$row['Net Debit (NC)'], $msg['settled_currency'] );
 		$msg['settled_total_amount'] = AdyenCurrencyRoundingHelper::round( $msg['settled_net_amount'] - $msg['settled_fee_amount'], $msg['settled_currency'] );
 		return $msg;
 	}
@@ -60,7 +65,7 @@ class AdyenSettlementDetailReport extends AdyenAudit {
 		$msg['settled_currency'] = $row['Net Currency'];
 		// 'Net Debit (NC)' is the amount we paid including fees
 		// 'Net Currency' is the currency we paid in
-		$msg['settled_net_amount'] = -( $row['Net Debit (NC)'] );
+		$msg['settled_net_amount'] = AdyenCurrencyRoundingHelper::round( -( $row['Net Debit (NC)'] ), $row['Net Currency'] );
 		$msg = $this->parseCommonRefundValues( $row, $msg, $row['Type'], $row['Modification Reference'] );
 		return $msg;
 	}

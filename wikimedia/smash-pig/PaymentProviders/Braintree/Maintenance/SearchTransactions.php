@@ -75,7 +75,7 @@ class SearchTransactions extends MaintenanceBase {
 				$lessThanDate = gmdate( 'Y-m-d', strtotime( $this->getDayBeforeEndDate() ) );
 				$disputeInput = [
 					"effectiveDate" => [ "greaterThanOrEqualTo" => $greaterThanDate, "lessThanOrEqualTo" => $lessThanDate ],
-					"status" => [ "is" => "LOST" ],
+					"status" => [ "in" => [ "WON", "LOST" ] ],
 				];
 				$this->normalizeTransactions( $provider->searchDisputes( $disputeInput, $after ), 'chargeback' );
 			}
@@ -132,7 +132,7 @@ class SearchTransactions extends MaintenanceBase {
 	 * normalize transactions result from graphql to make the data more readable
 	 */
 	private function normalizeTransactions( array $data, string $type ) {
-		$context = $this->isConsolidated() ? 'consolidated' : $type;
+		$context = ( $type !== 'chargeback' && $this->isConsolidated() ) ? 'consolidated' : $type;
 		if ( !isset( $this->fileData[$context] ) ) {
 			$this->fileData[$context] = [];
 		}
@@ -284,24 +284,28 @@ class SearchTransactions extends MaintenanceBase {
 
 	/**
 	 * @param string $context
+	 *
 	 * @return resource
 	 */
 	private function getFile( string $context = '' ) {
-		if ( $this->isConsolidated() ) {
-			$context = 'consolidated';
-		}
 		if ( !isset( $this->files[$context] ) ) {
 			// Put disbursement in the title if the disbursement option is used because
 			// we will calculate totals if it is present.
 			$type = $this->isDisbursementReport() ? 'disbursement' : 'batch';
-			$pathPrefix = $this->getOption( 'output-raw' ) ? '/raw_' . $type . '_report_' : "/settlement_' . $type . '_report_";
+			$pathPrefix = $this->getOption( 'output-raw' )
+				? '/raw_' . $type . '_report_'
+				: '/settlement_' . $type . '_report_';
 			$path = $this->getOption( 'path' );
+
 			if ( $context ) {
 				$pathPrefix .= $context . '_';
 			}
-			// Start and end but end first for recency sorting.
-			$mainFile = $path . $pathPrefix . gmdate( 'Y-m-d', strtotime( $this->getStartDate() ) ) . '_' . gmdate( 'Y-m-d', strtotime( $this->getEndDate() ) ) . ".json";
-			$this->files[$context] = fopen( $mainFile, "w" ) or die( "Unable to open file!" );
+
+			$mainFile = $path . $pathPrefix .
+				gmdate( 'Y-m-d', strtotime( $this->getStartDate() ) ) . '_' .
+				gmdate( 'Y-m-d', strtotime( $this->getEndDate() ) ) . '.json';
+
+			$this->files[$context] = fopen( $mainFile, 'w' ) or die( 'Unable to open file!' );
 		}
 		return $this->files[$context];
 	}

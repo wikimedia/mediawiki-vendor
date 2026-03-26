@@ -74,7 +74,7 @@ class TRRFileParser extends BaseParser {
 			'grant_provider' => str_contains( $this->row['Transaction Subject'] ?? '', ' has sent you money' ) ? str_replace( ' has sent you money', '', $this->row['Transaction Subject'] ) : '',
 		];
 
-		return $msg + $this->getGravyFields() + $this->getRecurringFields() + $this->getReversalFields();
+		return $msg + $this->getGravyFields() + $this->getRecurringFields() + $this->getReversalFields() + $this->getAuthAndCaptureReferences();
 	}
 
 }

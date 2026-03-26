@@ -55,7 +55,7 @@ class STLFileParser extends BaseParser {
 			'contribution_tracking_id' => $this->getContributionTrackingId(),
 		];
 
-		return $msg + $this->getGravyFields() + $this->getRecurringFields() + $this->getReversalFields();
+		return $msg + $this->getGravyFields() + $this->getRecurringFields() + $this->getReversalFields() + $this->getAuthAndCaptureReferences();
 	}
 
 	/**

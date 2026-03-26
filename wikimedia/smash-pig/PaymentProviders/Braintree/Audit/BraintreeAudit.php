@@ -3,6 +3,7 @@
 use Brick\Money\Money;
 use SmashPig\Core\DataFiles\AuditParser;
 use SmashPig\Core\Helpers\Base62Helper;
+use SmashPig\Core\IgnoredException;
 use SmashPig\Core\Logging\Logger;
 use SmashPig\Core\NormalizationException;
 use SmashPig\Core\UtcDate;
@@ -28,6 +29,8 @@ class BraintreeAudit implements AuditParser {
 			foreach ( $file as $line ) {
 				try {
 					$this->parseLine( $line );
+				} catch ( IgnoredException $ex ) {
+					continue;
 				} catch ( NormalizationException $ex ) {
 					Logger::error( $ex->getMessage() );
 				}
@@ -83,16 +86,22 @@ class BraintreeAudit implements AuditParser {
 		if ( $isRaw ) {
 			$isDispute = is_array( $line['amountDisputed'] ?? null );
 			if ( $isDispute ) {
-				// As far as we know the only interesting one is 'LOST' but tracking what we see while ignoring
-				if ( $line['status'] !== 'LOST' ) {
-					if ( !isset( $this->ignoredDisputeStatuses[$line['status']] ) ) {
-						$this->ignoredDisputeStatuses[$line['status']] = 0;
+				if ( $line['status'] === 'LOST' ) {
+					$this->fileData[] = $this->getMessageFromRawDispute( $line );
+					return;
+				} elseif ( $line['status'] === 'WON' ) {
+					if ( (float)$line['amountWon']['value'] > 0 ) {
+						foreach ( $line['statusHistory'] as $history ) {
+							if ( !empty( $history['disbursementDate'] ) && $history['__typename'] === 'DisputeStatusEvent' ) {
+								// We have a chargeback reversal on our hands.
+								$this->fileData[] = $this->getMessageFromRawReversedDispute( $line );
+								break;
+							}
+						}
 					}
-					$this->ignoredDisputeStatuses[$line['status']]++;
 					return;
 				}
-				$this->fileData[] = $this->getMessageFromRawDispute( $line );
-				return;
+				throw new IgnoredException( 'Unexpected status ' . $line['status'] );
 			}
 			$isRefund = is_array( $line['refundedTransaction'] ?? null );
 			if ( $isRefund ) {
@@ -195,6 +204,7 @@ class BraintreeAudit implements AuditParser {
 
 		$parentTransaction = $row['transaction'];
 		$msg['invoice_id'] = $parentTransaction['orderId'];
+		$msg['backend_processor_reversal_id'] = $row['id'];
 		if ( $this->isOrchestratorMerchantReference( $parentTransaction ) ) {
 			$msg['backend_processor'] = 'braintree';
 			$msg['backend_processor_parent_id'] = $parentTransaction['id'];
@@ -221,6 +231,47 @@ class BraintreeAudit implements AuditParser {
 
 		if ( !empty( $msg['settled_date'] ) ) {
 			$msg['settlement_batch_reference'] = gmdate( 'Ymd', $msg['settled_date'] ) . '_ch';
+			if ( !isset( $this->totals[$msg['settlement_batch_reference']] ) ) {
+				$this->totals[$msg['settlement_batch_reference']] = Money::zero( $msg['currency'] );
+			}
+			$this->totals[$msg['settlement_batch_reference']] = $this->totals[$msg['settlement_batch_reference']]->plus( $msg['settled_net_amount'] );
+		}
+		return $msg;
+	}
+
+	private function getMessageFromRawReversedDispute( array $row ): array {
+		$msg = [];
+		$msg['gateway'] = $msg['backend_processor'] = $msg['audit_file_gateway'] = 'braintree';
+		$msg['type'] = 'chargeback_reversal';
+		foreach ( $row['statusHistory'] as $history ) {
+			if ( !empty( $history['disbursementDate'] ) ) {
+				$msg['settled_date'] = $msg['date'] = UtcDate::getUtcTimestamp( $history['disbursementDate'] );
+			}
+		}
+
+		$parentTransaction = $row['transaction'];
+		$msg['backend_processor_gateway_txn_id'] = $row['id'];
+		$msg['gateway_txn_id'] = $row['id'];
+
+		if ( !$this->isOrchestratorMerchantReference( $parentTransaction ) ) {
+			$orderParts = explode( '.', $parentTransaction['orderId'] );
+			$msg['contribution_tracking_id'] = $orderParts[0];
+		}
+		$msg['payment_method'] = isset( $row['paymentMethodSnapshot']['payer'] ) ? 'paypal' : 'venmo';
+		$msg['gross'] = $row['amountWon']['value'];
+		$msg['currency'] = $msg['original_currency'] = $row['amountWon']['currencyCode'];
+		$msg['email'] = $this->getPayerInfo( $parentTransaction, 'email' );
+		$msg['phone'] = $this->getPayerInfo( $parentTransaction, 'phone' );
+		$msg['first_name'] = $this->getPayerInfo( $parentTransaction, 'first_name' );
+		$msg['last_name'] = $this->getPayerInfo( $parentTransaction, 'last_name' );
+		$msg['external_identifier'] = $this->getPayerInfo( $parentTransaction, 'username' );
+		$msg['settled_total_amount'] = $msg['settled_net_amount'] = $row['amountWon']['value'];
+		$msg['settled_fee_amount'] = 0;
+		$msg['exchange_rate'] = 1;
+		$msg['settled_currency'] = $row['amountWon']['currencyCode'];
+		$msg['settlement_batch_reference'] = gmdate( 'Ymd', $msg['settled_date'] ) . '_ch';
+
+		if ( !empty( $msg['settled_date'] ) ) {
 			if ( !isset( $this->totals[$msg['settlement_batch_reference']] ) ) {
 				$this->totals[$msg['settlement_batch_reference']] = Money::zero( $msg['currency'] );
 			}

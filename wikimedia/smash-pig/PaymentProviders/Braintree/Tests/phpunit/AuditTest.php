@@ -304,6 +304,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'currency' => 'USD',
 			'email' => null,
 			'gateway_refund_id' => 'ZGlzcH',
+			'backend_processor_reversal_id' => 'ZGlzcH',
 			'invoice_id' => '2387.3',
 			'phone' => null,
 			'first_name' => null,
@@ -345,6 +346,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'currency' => 'USD',
 			'email' => null,
 			'gateway_refund_id' => 'ZGlzcH',
+			'backend_processor_reversal_id' => 'ZGlzcH',
 			'invoice_id' => '2387.3',
 			'phone' => null,
 			'first_name' => null,
@@ -372,5 +374,235 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 		$actual = $output[0];
 		$this->assertEquals( UtcDate::getUtcTimestamp( '2026-01-27' ), $actual['date'], 'Did not parse dispute history' );
 		$this->assertArrayNotHasKey( 'settled_date', $actual );
+	}
+
+	public function reversalDisputeProvider(): array {
+		return [
+			'won top-level, disbursement on expired history event => reversal emitted' => [
+				'row' => [
+					'id' => 'ZGlzcHV0ZV81a3J6NDVyemN4cTh2NGt5',
+					'legacyId' => '5krz45rzcxq8v4ky',
+					'type' => 'CHARGEBACK',
+					'caseNumber' => 'VM-R-CXX-604348562',
+					'createdAt' => '2025-11-29T07:18:06.000000Z',
+					'referenceNumber' => null,
+					'receivedDate' => '2025-11-29',
+					'status' => 'WON',
+					'replyByDate' => '2025-12-08',
+					'transaction' => [
+						'purchaseOrderNumber' => null,
+						'id' => 'dHJhbnNhY3Rpb25faGd2cmNxYnM',
+						'legacyId' => 'hgvrcqbs',
+						'status' => 'SETTLED',
+						'orderId' => '233999167.5',
+						'createdAt' => '2025-11-14T11:34:46.000000Z',
+						'amount' => [
+							'value' => '3.10',
+							'currencyCode' => 'USD',
+						],
+						'paymentMethod' => null,
+						'paymentMethodSnapshot' => [
+							'username' => 'ZR',
+							'venmoUserId' => '3027',
+						],
+					],
+					'amountDisputed' => [
+						'value' => '3.10',
+						'currencyCode' => 'USD',
+					],
+					'amountWon' => [
+						'value' => '3.10',
+						'currencyCode' => 'USD',
+					],
+					'statusHistory' => [
+						[
+							'__typename' => 'DisputeStatusEvent',
+							'timestamp' => '2026-02-23T18:01:52.000000Z',
+							'disbursementDate' => null,
+							'status' => 'WON',
+							'effectiveDate' => '2026-02-23',
+						],
+						[
+							'__typename' => 'DisputeStatusEvent',
+							'timestamp' => '2025-12-08T08:15:21.000000Z',
+							'disbursementDate' => '2026-02-24',
+							'status' => 'EXPIRED',
+							'effectiveDate' => '2025-12-08',
+						],
+						[
+							'__typename' => 'DisputeStatusEvent',
+							'timestamp' => '2025-11-29T07:18:06.000000Z',
+							'disbursementDate' => null,
+							'status' => 'OPEN',
+							'effectiveDate' => '2025-11-29',
+						],
+					],
+				],
+				'expectedType' => 'chargeback_reversal',
+				'expectedGross' => '3.10',
+				'expectedCurrency' => 'USD',
+				'expectedBatchRef' => '20260224_ch',
+			],
+
+			'won top-level, no disbursement anywhere => no reversal emitted' => [
+				'row' => [
+					'id' => 'ZGlzcHV0ZV80d3R3ZGd3ZDlwcHY0Y3Fm',
+					'legacyId' => '4wtwdgwd9ppv4cqf',
+					'type' => 'CHARGEBACK',
+					'caseNumber' => 'VM-R-XKF-609365404',
+					'createdAt' => '2025-12-31T02:04:04.000000Z',
+					'referenceNumber' => null,
+					'receivedDate' => '2025-12-31',
+					'status' => 'WON',
+					'replyByDate' => '2026-01-08',
+					'transaction' => [
+						'purchaseOrderNumber' => null,
+						'id' => 'dHJhbnNhY3Rpb25fbTNndDJnNjQ',
+						'legacyId' => 'm3gt2g64',
+						'status' => 'SETTLED',
+						'orderId' => '236192290.4',
+						'createdAt' => '2025-12-19T09:36:55.000000Z',
+						'amount' => [
+							'value' => '3.10',
+							'currencyCode' => 'USD',
+						],
+						'paymentMethod' => null,
+						'paymentMethodSnapshot' => [
+							'username' => 'P-A',
+							'venmoUserId' => '2820',
+						],
+					],
+					'amountDisputed' => [
+						'value' => '3.10',
+						'currencyCode' => 'USD',
+					],
+					'amountWon' => [
+						'value' => '3.10',
+						'currencyCode' => 'USD',
+					],
+					'statusHistory' => [
+						[
+							'__typename' => 'DisputeStatusEvent',
+							'timestamp' => '2026-01-27T18:03:24.000000Z',
+							'disbursementDate' => null,
+							'status' => 'WON',
+							'effectiveDate' => '2026-01-27',
+						],
+						[
+							'__typename' => 'DisputeStatusEvent',
+							'timestamp' => '2026-01-08T08:13:49.000000Z',
+							'disbursementDate' => null,
+							'status' => 'EXPIRED',
+							'effectiveDate' => '2026-01-08',
+						],
+					],
+				],
+				'expectedType' => null,
+				'expectedGross' => null,
+				'expectedCurrency' => null,
+				'expectedBatchRef' => null,
+			],
+
+			'won top-level, disbursement exists but amountWon is zero => no reversal emitted' => [
+				'row' => [
+					'id' => 'ZGlzcHV0ZV9mczN2cG00aDV4OXE1Znpt',
+					'legacyId' => 'fs3vpm4h5x9q5fzm',
+					'type' => 'CHARGEBACK',
+					'caseNumber' => 'VM-R-KGR-611398929',
+					'createdAt' => '2026-01-13T10:04:37.000000Z',
+					'referenceNumber' => null,
+					'receivedDate' => '2026-01-13',
+					'status' => 'WON',
+					'replyByDate' => '2026-01-22',
+					'transaction' => [
+						'purchaseOrderNumber' => null,
+						'id' => 'dHJhbnNhY3Rpb25fNXJxZGVyaDQ',
+						'legacyId' => '5rqderh4',
+						'status' => 'SETTLED',
+						'orderId' => '244398411.1',
+						'createdAt' => '2026-01-04T21:47:03.000000Z',
+						'amount' => [
+							'value' => '10.40',
+							'currencyCode' => 'USD',
+						],
+						'paymentMethod' => null,
+						'paymentMethodSnapshot' => [
+							'username' => 'SK',
+							'venmoUserId' => '44049',
+						],
+					],
+					'amountDisputed' => [
+						'value' => '10.40',
+						'currencyCode' => 'USD',
+					],
+					'amountWon' => [
+						'value' => '0.00',
+						'currencyCode' => 'USD',
+					],
+					'statusHistory' => [
+						[
+							'__typename' => 'DisputeStatusEvent',
+							'timestamp' => '2026-02-19T10:03:00.000000Z',
+							'disbursementDate' => null,
+							'status' => 'WON',
+							'effectiveDate' => '2026-02-19',
+						],
+						[
+							'__typename' => 'DisputeStatusEvent',
+							'timestamp' => '2026-01-22T08:14:29.000000Z',
+							'disbursementDate' => '2026-01-26',
+							'status' => 'EXPIRED',
+							'effectiveDate' => '2026-01-22',
+						],
+					],
+				],
+				'expectedType' => null,
+				'expectedGross' => null,
+				'expectedCurrency' => null,
+				'expectedBatchRef' => null,
+			],
+		];
+	}
+
+	/**
+	 * @dataProvider reversalDisputeProvider
+	 */
+	public function testRawDisputeReversalDetection(
+		array $row,
+		?string $expectedType,
+		?string $expectedGross,
+		?string $expectedCurrency,
+		?string $expectedBatchRef
+	): void {
+		$audit = new BraintreeAudit();
+
+		$this->ingestRawLine( $audit, $row );
+
+		$fileData = $this->readProperty( $audit, 'fileData' );
+
+		if ( $expectedType === null ) {
+			$this->assertNull( $fileData );
+			return;
+		}
+
+		$this->assertCount( 1, $fileData );
+		$message = $fileData[0];
+
+		$this->assertSame( $expectedType, $message['type'] );
+		$this->assertSame( $expectedGross, $message['gross'] );
+		$this->assertSame( $expectedCurrency, $message['currency'] );
+		$this->assertSame( $expectedBatchRef, $message['settlement_batch_reference'] );
+	}
+
+	private function ingestRawLine( BraintreeAudit $audit, array $row ): void {
+		// Replace this with the real public entrypoint in your parser.
+		// Examples might be parseLine, addRow, ingestLine, processLine, etc.
+		$method = new \ReflectionMethod( $audit, 'parseLine' );
+		$method->invoke( $audit, $row, true );
+	}
+
+	private function readProperty( object $object, string $property ) {
+		$reflection = new \ReflectionProperty( $object, $property );
+		return $reflection->getValue( $object );
 	}
 }

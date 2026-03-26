@@ -8,9 +8,15 @@ CREATE TABLE IF NOT EXISTS pending (
   `payment_method` varchar(16) DEFAULT NULL,
   `message` text NOT NULL,
   `is_resolved` tinyint(1) NOT NULL DEFAULT 0,
+  `backend_processor` VARCHAR(255) NULL,
+  `backend_processor_txn_id` VARCHAR(255) NULL,
+  `payment_orchestrator_reconciliation_id` VARCHAR(255) NULL,
   INDEX `idx_pending_date` (`date`),
   INDEX `idx_pending_resolved_gateway_method_date` (`is_resolved`, `gateway`, `payment_method`, `date`),
   INDEX `idx_pending_order_id_gateway` (`order_id`, `gateway`),
   INDEX `idx_pending_gateway_txn_id_gateway` (`gateway_txn_id`, `gateway`),
+  INDEX `idx_backend_processor` (`backend_processor`),
+  INDEX `idx_backend_processor_txn_id` (`backend_processor_txn_id`),
+  INDEX `idx_payment_orchestrator_reconciliation_id` (`payment_orchestrator_reconciliation_id`),
   PRIMARY KEY `pk_pending_id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

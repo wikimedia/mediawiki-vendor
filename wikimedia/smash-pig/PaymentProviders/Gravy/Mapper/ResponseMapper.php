@@ -107,6 +107,36 @@ class ResponseMapper {
 	 * @param array $response
 	 * @return array
 	 */
+	public function mapFromGetPaymentServicesResponse( array $response ): array {
+		$errorResponse = $this->handleResponseErrorsIfPresent( $response );
+		if ( $errorResponse ) {
+			return $errorResponse;
+		}
+		$currencies = [];
+		$countries = [];
+
+		foreach ( $response['items'] as $item ) {
+			if ( isset( $item['accepted_currencies'] ) ) {
+				$currencies = array_merge( $currencies, $item['accepted_currencies'] );
+			}
+
+			if ( isset( $item['accepted_countries'] ) ) {
+				$countries = array_merge( $countries, $item['accepted_countries'] );
+			}
+		}
+		return [
+			'is_successful' => true,
+			'supported_countries' => array_unique( $countries ) ?? [],
+			'supported_currencies' => array_unique( $currencies ) ?? [],
+			'status' => FinalStatus::COMPLETE,
+			'raw_response' => $response,
+		];
+	}
+
+	/**
+	 * @param array $response
+	 * @return array
+	 */
 	public function mapFromGenerateReportUrlResponse( array $response ): array {
 		$errorResponse = $this->handleResponseErrorsIfPresent( $response );
 		if ( $errorResponse ) {
