@@ -15,4 +15,14 @@ interface IGetPaymentServicePaymentMethodDefinition {
 	 * @return PaymentMethodResponse
 	 */
 	public function getPaymentServiceDefinition(): PaymentMethodResponse;
+
+	/**
+	 * Fetches all the enabled services for a particular payment method on Gravy
+	 * with more configuration details.
+	 *
+	 * This method is the same for all payment methods on Gravy.
+	 *
+	 * @return PaymentMethodResponse
+	 */
+	public function getPaymentServicesForMethod(): PaymentMethodResponse;
 }

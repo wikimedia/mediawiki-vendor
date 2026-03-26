@@ -40,14 +40,14 @@ class AdyenPaymentsAccountingReport extends AdyenAudit {
 		if ( $exchange == "" ) {
 			$exchange = 1;
 		}
-		$fee = $msg['settled_fee_amount'] = $this->getFee( $row );
+		$fee = $this->getFee( $row );
 		$msg['original_fee_amount'] = $msg['fee'] = AdyenCurrencyRoundingHelper::round( $fee / $exchange, $msg['original_currency'] );
 
 		// shouldn't this be settled_net or settled_amount?
 		$msg['settled_gross'] = $row['Payable (SC)'];
 		$msg['settled_net_amount'] = $msg['settled_gross'];
 		$msg['settled_currency'] = $row['Settlement Currency'];
-		$msg['settled_fee_amount'] = -$fee;
+		$msg['settled_fee_amount'] = AdyenCurrencyRoundingHelper::round( -$fee, $row['Settlement Currency'] );
 		$msg['original_net_amount'] = AdyenCurrencyRoundingHelper::round( $msg['original_total_amount'] - $msg['original_fee_amount'], $msg['original_currency'] );
 		$msg['settled_total_amount'] = AdyenCurrencyRoundingHelper::round( $msg['settled_net_amount'] - $msg['settled_fee_amount'], $msg['settled_currency'] );
 		return $msg;

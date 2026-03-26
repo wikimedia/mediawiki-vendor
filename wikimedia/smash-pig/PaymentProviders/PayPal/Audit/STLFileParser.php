@@ -4,6 +4,7 @@ declare( strict_types=1 );
 namespace SmashPig\PaymentProviders\PayPal\Audit;
 
 use SmashPig\Core\Helpers\Base62Helper;
+use SmashPig\Core\Helpers\CurrencyRoundingHelper;
 use SmashPig\Core\IgnoredException;
 use SmashPig\Core\NormalizationException;
 use SmashPig\Core\UnhandledException;
@@ -85,7 +86,7 @@ class STLFileParser extends BaseParser {
 		}
 		return [
 			'settled_currency' => $this->row[1],
-			'settled_total_amount' => $settledTotalAmount,
+			'settled_total_amount' => CurrencyRoundingHelper::round( $settledTotalAmount, $this->row[1] ),
 			'gateway' => 'paypal',
 			'type' => 'payout',
 			'audit_file_gateway' => 'paypal',

@@ -2232,6 +2232,7 @@ return array(
     'SmashPig\\PaymentProviders\\Adyen\\Tests\\BaseAdyenTestCase' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Adyen/Tests/BaseAdyenTestCase.php',
     'SmashPig\\PaymentProviders\\Adyen\\Tests\\phpunit\\ACHPaymentProviderTest' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Adyen/Tests/phpunit/ACHPaymentProviderTest.php',
     'SmashPig\\PaymentProviders\\Adyen\\Tests\\phpunit\\BankTransferPaymentProviderTest' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Adyen/Tests/phpunit/BankTransferPaymentProviderTest.php',
+    'SmashPig\\PaymentProviders\\Adyen\\Tests\\phpunit\\EWalletPaymentProviderTest' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Adyen/Tests/phpunit/EWalletPaymentProviderTest.php',
     'SmashPig\\PaymentProviders\\Adyen\\Tests\\phpunit\\GooglePayPaymentProviderTest' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Adyen/Tests/phpunit/GooglePayPaymentProviderTest.php',
     'SmashPig\\PaymentProviders\\Adyen\\Tests\\phpunit\\NotificationRequestTest' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Adyen/Tests/phpunit/NotificationRequestTest.php',
     'SmashPig\\PaymentProviders\\Adyen\\Tests\\phpunit\\PaymentProviderTest' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Adyen/Tests/phpunit/PaymentProviderTest.php',

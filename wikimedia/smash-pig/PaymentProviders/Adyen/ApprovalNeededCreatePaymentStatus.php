@@ -22,6 +22,9 @@ class ApprovalNeededCreatePaymentStatus implements StatusNormalizer {
 			case 'RedirectShopper':
 				$status = FinalStatus::PENDING_POKE;
 				break;
+			case 'Received':
+				$status = FinalStatus::PENDING;
+				break;
 			case 'Refused':
 			case 'Error':
 				$status = FinalStatus::FAILED;

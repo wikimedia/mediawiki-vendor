@@ -3,6 +3,7 @@
 use Brick\Money\Money;
 use SmashPig\Core\DataFiles\AuditParser;
 use SmashPig\Core\Helpers\Base62Helper;
+use SmashPig\Core\Helpers\CurrencyRoundingHelper;
 use SmashPig\Core\IgnoredException;
 use SmashPig\Core\Logging\Logger;
 use SmashPig\Core\NormalizationException;
@@ -224,7 +225,7 @@ class BraintreeAudit implements AuditParser {
 		$msg['first_name'] = $this->getPayerInfo( $parentTransaction, 'first_name' );
 		$msg['last_name'] = $this->getPayerInfo( $parentTransaction, 'last_name' );
 		$msg['external_identifier'] = $this->getPayerInfo( $parentTransaction, 'username' );
-		$msg['settled_total_amount'] = $msg['settled_net_amount'] = $msg['original_total_amount'] = -$row['amountDisputed']['value'];
+		$msg['settled_total_amount'] = $msg['settled_net_amount'] = $msg['original_total_amount'] = CurrencyRoundingHelper::round( -$row['amountDisputed']['value'], $row['amountDisputed']['currencyCode'] );
 		$msg['settled_fee_amount'] = 0;
 		$msg['exchange_rate'] = 1;
 		$msg['settled_currency'] = $row['amountDisputed']['currencyCode'];

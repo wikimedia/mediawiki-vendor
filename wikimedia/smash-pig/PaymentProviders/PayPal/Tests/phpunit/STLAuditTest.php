@@ -208,7 +208,7 @@ class STLAuditTest extends AuditTestBase {
 		$this->assertCount( 2, $output, 'Should have found one donation row and one payout row' );
 
 		// This row is the donation - $200.
-		$this->assertEquals( 200, $output[0]['settled_total_amount'] );
+		$this->assertSame( '200.00', $output[0]['settled_total_amount'] );
 		$this->assertEquals( 'AUD', $output[0]['currency'] );
 		$this->assertSame( '244.1', $output[0]['order_id'] );
 
@@ -216,7 +216,7 @@ class STLAuditTest extends AuditTestBase {
 		// the payout rows take the currency convert transaction into account
 		// and the batch total excludes movements that are not salient (ie
 		// conversions)
-		$this->assertSame( 200, $output[1]['settled_total_amount'] );
+		$this->assertSame( '200.00', $output[1]['settled_total_amount'] );
 		$this->assertSame( 'AUD', $output[1]['settled_currency'] );
 	}
 
@@ -299,6 +299,6 @@ class STLAuditTest extends AuditTestBase {
 		$this->assertSame( '517.99', $output[0]['settled_net_amount'] );
 		// The payout row should equal the one 'real' donation in the batch.
 		$this->assertEquals( 'payout', $output[1]['type'] );
-		$this->assertSame( 517.99, $output[1]['settled_total_amount'] );
+		$this->assertSame( '517.99', $output[1]['settled_total_amount'] );
 	}
 }

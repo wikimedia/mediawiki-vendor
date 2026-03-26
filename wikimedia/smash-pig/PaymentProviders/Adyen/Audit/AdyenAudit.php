@@ -184,12 +184,16 @@ abstract class AdyenAudit implements AuditParser {
 		// We were charged $10.65 as a charge back penantly and
 		// $15.65 is charged to us in total. If it were not USD Gross Debit (GC) would be
 		// in the original currency.
-		$msg['settled_fee_amount'] = AdyenCurrencyRoundingHelper::round( -$this->getFee( $row ), $msg['settled_currency'] );
-		$msg['settled_total_amount'] = AdyenCurrencyRoundingHelper::round( $msg['settled_net_amount'] - $msg['settled_fee_amount'], $msg['settled_currency'] );
-		$msg['fee'] = $msg['settled_fee_amount'] ? AdyenCurrencyRoundingHelper::round( $msg['settled_fee_amount'] / $msg['exchange_rate'], $msg['settled_currency'] ) : 0;
-		$msg['original_total_amount'] = AdyenCurrencyRoundingHelper::round( -( (float)$msg['gross'] ), $msg['original_currency'] );
-		$msg['original_fee_amount'] = AdyenCurrencyRoundingHelper::round( $msg['fee'], $msg['original_currency'] );
-		$msg['original_net_amount'] = AdyenCurrencyRoundingHelper::round( $msg['original_total_amount'] + $msg['original_fee_amount'], $msg['original_currency'] );
+		$originalTotalAmount = -( (float)$msg['gross'] );
+		$settledFeeAmount = -$this->getFee( $row );
+		$originalFeeAmount = $settledFeeAmount / $msg['exchange_rate'];
+		$msg['settled_fee_amount'] = AdyenCurrencyRoundingHelper::round( $settledFeeAmount, $msg['settled_currency'] );
+		$msg['settled_total_amount'] = AdyenCurrencyRoundingHelper::round( $msg['settled_net_amount'] - $settledFeeAmount, $msg['settled_currency'] );
+		$msg['fee'] = $originalFeeAmount ? AdyenCurrencyRoundingHelper::round( $originalFeeAmount, $msg['settled_currency'] ) : 0;
+		$msg['original_total_amount'] = AdyenCurrencyRoundingHelper::round( $originalTotalAmount, $msg['original_currency'] );
+		$msg['original_fee_amount'] = AdyenCurrencyRoundingHelper::round( $originalFeeAmount, $msg['original_currency'] );
+		$msg['original_net_amount'] = AdyenCurrencyRoundingHelper::round( $originalTotalAmount + $originalFeeAmount, $msg['original_currency'] );
+		$msg['settled_net_amount'] = AdyenCurrencyRoundingHelper::round( $msg['settled_net_amount'], $msg['settled_currency'] );
 		return $msg;
 	}
 

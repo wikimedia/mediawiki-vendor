@@ -2759,6 +2759,7 @@ class ComposerStaticInit_mediawiki_vendor
         'SmashPig\\PaymentProviders\\Adyen\\Tests\\BaseAdyenTestCase' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/Tests/BaseAdyenTestCase.php',
         'SmashPig\\PaymentProviders\\Adyen\\Tests\\phpunit\\ACHPaymentProviderTest' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/Tests/phpunit/ACHPaymentProviderTest.php',
         'SmashPig\\PaymentProviders\\Adyen\\Tests\\phpunit\\BankTransferPaymentProviderTest' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/Tests/phpunit/BankTransferPaymentProviderTest.php',
+        'SmashPig\\PaymentProviders\\Adyen\\Tests\\phpunit\\EWalletPaymentProviderTest' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/Tests/phpunit/EWalletPaymentProviderTest.php',
         'SmashPig\\PaymentProviders\\Adyen\\Tests\\phpunit\\GooglePayPaymentProviderTest' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/Tests/phpunit/GooglePayPaymentProviderTest.php',
         'SmashPig\\PaymentProviders\\Adyen\\Tests\\phpunit\\NotificationRequestTest' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/Tests/phpunit/NotificationRequestTest.php',
         'SmashPig\\PaymentProviders\\Adyen\\Tests\\phpunit\\PaymentProviderTest' => __DIR__ . '/..' . '/wikimedia/smash-pig/PaymentProviders/Adyen/Tests/phpunit/PaymentProviderTest.php',

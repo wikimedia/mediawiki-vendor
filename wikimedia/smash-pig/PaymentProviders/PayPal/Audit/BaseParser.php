@@ -3,6 +3,7 @@ declare( strict_types=1 );
 
 namespace SmashPig\PaymentProviders\PayPal\Audit;
 
+use SmashPig\Core\Helpers\CurrencyRoundingHelper;
 use SmashPig\Core\UnhandledException;
 
 class BaseParser {
@@ -262,7 +263,7 @@ class BaseParser {
 	}
 
 	protected function getSettledTotalAmount(): string {
-		return (string)$this->getOriginalTotalAmount();
+		return CurrencyRoundingHelper::round( (float)$this->getOriginalTotalAmount(), $this->getSettledCurrency() );
 	}
 
 	protected function getAuthAndCaptureReferences(): array {
@@ -276,11 +277,11 @@ class BaseParser {
 	}
 
 	protected function getSettledNetAmount(): string {
-		return (string)( (float)$this->getSettledTotalAmount() + (float)$this->getSettledFeeAmount() );
+		return CurrencyRoundingHelper::round( ( (float)$this->getSettledTotalAmount() + (float)$this->getSettledFeeAmount() ), $this->getSettledCurrency() );
 	}
 
 	protected function getSettledFeeAmount(): string {
-		return (string)$this->getOriginalFeeAmount();
+		return CurrencyRoundingHelper::round( $this->getOriginalFeeAmount(), $this->getSettledCurrency() );
 	}
 
 	/**

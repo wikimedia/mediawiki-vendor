@@ -4,6 +4,7 @@ declare( strict_types=1 );
 namespace SmashPig\PaymentProviders\Trustly\Audit;
 
 use SmashPig\Core\Helpers\Base62Helper;
+use SmashPig\Core\Helpers\CurrencyRoundingHelper;
 use SmashPig\Core\NormalizationException;
 use SmashPig\Core\UnhandledException;
 
@@ -37,9 +38,9 @@ class SettlementFileParser extends BaseParser {
 			'settlement_batch_reference' => $this->row['batch_id'] ?? null,
 			'payment_orchestrator_reconciliation_id' => $this->isGravy() ? $this->row['original_merchant_reference'] : null,
 			'settled_date' => $this->row['processed_at'] ?? null,
-			'settled_fee_amount' => ( $this->row['fee'] ?? null ) ? $this->row['fee'] : 0,
-			'settled_net_amount' => ( $this->row['amount'] ?? 0 ) + ( ( $this->row['fee'] ?? null ) ? $this->row['fee'] : 0 ),
-			'settled_total_amount' => $this->row['amount'] ?? 0,
+			'settled_fee_amount' => CurrencyRoundingHelper::round( ( $this->row['fee'] ?? null ) ? (float)$this->row['fee'] : 0, $this->row['currency'] ),
+			'settled_net_amount' => CurrencyRoundingHelper::round( ( $this->row['amount'] ?? 0 ) + ( ( $this->row['fee'] ?? null ) ? (float)$this->row['fee'] : 0 ), $this->row['currency'] ),
+			'settled_total_amount' => CurrencyRoundingHelper::round( (float)( $this->row['amount'] ?? 0 ), $this->row['currency'] ),
 			'settled_currency' => $this->row['currency'],
 		];
 		if ( !empty( $msg['settled_date'] ) ) {

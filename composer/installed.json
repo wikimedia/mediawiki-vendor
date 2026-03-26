@@ -6090,17 +6090,17 @@
         },
         {
             "name": "wikimedia/smash-pig",
-            "version": "v1.2.3.5",
-            "version_normalized": "1.2.3.5",
+            "version": "v1.2.3.8",
+            "version_normalized": "1.2.3.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/wikimedia-fundraising-SmashPig.git",
-                "reference": "636483a252079e250bccd1d8ff43dcffb7b3dcf7"
+                "reference": "c25eaf2fd71062eb14e8db69a8835c65207f7a3b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/wikimedia-fundraising-SmashPig/zipball/636483a252079e250bccd1d8ff43dcffb7b3dcf7",
-                "reference": "636483a252079e250bccd1d8ff43dcffb7b3dcf7",
+                "url": "https://api.github.com/repos/wikimedia/wikimedia-fundraising-SmashPig/zipball/c25eaf2fd71062eb14e8db69a8835c65207f7a3b",
+                "reference": "c25eaf2fd71062eb14e8db69a8835c65207f7a3b",
                 "shasum": ""
             },
             "require": {
@@ -6112,7 +6112,7 @@
                 "ext-json": "*",
                 "ext-pdo": "*",
                 "gr4vy/gr4vy-php": "0.27",
-                "php": ">=8.0",
+                "php": ">=8.2",
                 "phpmailer/phpmailer": "^6",
                 "phpseclib/phpseclib": "~3",
                 "predis/predis": "^1.1",
@@ -6128,7 +6128,7 @@
                 "php-parallel-lint/php-parallel-lint": "^1.2",
                 "phpunit/phpunit": "^9"
             },
-            "time": "2026-03-25T21:03:33+00:00",
+            "time": "2026-03-26T18:26:58+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -6193,7 +6193,7 @@
                 "payments"
             ],
             "support": {
-                "source": "https://github.com/wikimedia/wikimedia-fundraising-SmashPig/tree/v1.2.3.5"
+                "source": "https://github.com/wikimedia/wikimedia-fundraising-SmashPig/tree/v1.2.3.8"
             },
             "install-path": "../wikimedia/smash-pig"
         },
