@@ -27,7 +27,7 @@ class ListPaymentServiceDefinitions extends MaintenanceBase {
 		$providerConfiguration = Context::get()->getProviderConfiguration();
 		$api = $providerConfiguration->object( 'api' );
 
-		$result = $api->getPaymentServicesForMethod( $method );
+		$result = $api->getPaymentServiceDefinition( $method );
 		print_r( json_encode( $result ) );
 	}
 }

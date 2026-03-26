@@ -22,7 +22,7 @@ class RedirectPaymentProviderRequestMapper extends RequestMapper {
 			throw new \UnexpectedValueException( "Invalid PaymentMethod passed in: {$paymentMethodString}" );
 		}
 
-		if ( !$this->isRecurringCharge( $params ) ) {
+		if ( !isset( $params['recurring_payment_token'] ) ) {
 			$payment_method = [
 				'method' => $paymentMethodEnum->toGravyValue(),
 				'country' => $params['country'],
