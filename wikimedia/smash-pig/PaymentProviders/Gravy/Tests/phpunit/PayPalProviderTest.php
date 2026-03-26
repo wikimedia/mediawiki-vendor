@@ -38,6 +38,25 @@ class PayPalProviderTest extends BaseGravyTestCase {
 		$this->assertTrue( $response->isSuccessful() );
 	}
 
+	public function testGetSuccessfulGetPaymentServicesRequest() {
+		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/get-payment-services-successful.json' ), true );
+		$params = [
+			'method' => 'paypal'
+		];
+		$this->mockApi->expects( $this->once() )
+			->method( 'getPaymentServicesForMethod' )
+			->with( $params )
+			->willReturn( $responseBody );
+
+		$response = $this->provider->getPaymentServicesForMethod();
+
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\PaymentMethodResponse',
+			$response );
+		$this->assertEquals( $responseBody['items'][0]['accepted_countries'], $response->getSupportedCountries() );
+		$this->assertEquals( $responseBody['items'][0]['accepted_currencies'], $response->getSupportedCurrencies() );
+		$this->assertTrue( $response->isSuccessful() );
+	}
+
 	public function testCachePaymentMethodSuccessfulResponse() {
 		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/payment-service-definition-successful.json' ), true );
 		$params = [

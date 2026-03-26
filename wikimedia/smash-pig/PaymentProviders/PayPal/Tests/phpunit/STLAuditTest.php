@@ -36,6 +36,8 @@ class STLAuditTest extends AuditTestBase {
 			'contribution_tracking_id' => '2444',
 			'order_id' => '2444.1',
 			'settlement_batch_reference' => '20260106',
+			'auth_id' => '4H844',
+			'capture_id' => '5678',
 			'original_total_amount' => '52',
 			'original_net_amount' => '49.75',
 			'original_currency' => 'AUD',
@@ -122,10 +124,10 @@ class STLAuditTest extends AuditTestBase {
 			'contribution_tracking_id' => 7233,
 			'order_id' => '7233.6',
 			'settlement_batch_reference' => '20260106',
-			'backend_processor_txn_id' => '1DV3',
 			'backend_processor' => 'paypal',
 			'payment_orchestrator_reconciliation_id' => '5jImyEK1vFvvvmoxlWR7SO',
-
+			'auth_id' => '2N092',
+			'capture_id' => '1DV3',
 		], $output[0] );
 
 		$this->assertEquals( [

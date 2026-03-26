@@ -231,6 +231,21 @@ class Api {
 	}
 
 	/**
+	 * Uses the rest API to fetch all the payment services for specified method
+	 * @param array $params
+	 * @return array
+	 * @link https://docs.gr4vy.com/reference/payment-services/list-payment-services
+	 */
+	#[ApiOperationAttribute( ApiOperation::GET_PAYMENT_SERVICE_DEFINITION )]
+	public function getPaymentServicesForMethod( array $params = [] ): array {
+		return $this->timedCall( __FUNCTION__, function () use ( $params ) {
+			$response = $this->gravyApiClient->listPaymentServices( $params );
+
+			return self::handleGravySDKResponse( $params['method'], $response, 'Get Payment Service Definition' );
+		} );
+	}
+
+	/**
 	 * Handle Gravy SDK error responses (null, string, or unexpected types)
 	 *
 	 * @param ?string $uniqueIdentifier

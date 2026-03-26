@@ -1,0 +1,54 @@
+{
+    "items": [
+        {
+            "type": "payment-service",
+            "id": "test_id",
+            "merchant_account_id": "default",
+            "payment_service_definition_id": "paypal-paypal",
+            "active": true,
+            "method": "paypal",
+            "display_name": "PayPal",
+            "position": -1,
+            "status": "pending",
+            "accepted_currencies": [
+                "BRL",
+                "MYR",
+                "USD"
+            ],
+            "accepted_countries": [
+                "AR",
+                "BR",
+                "US",
+                "ZA"
+            ],
+            "payment_method_tokenization_enabled": true,
+            "network_tokens_enabled": false,
+            "open_loop": false,
+            "settlement_reporting_enabled": false,
+            "three_d_secure_enabled": false,
+            "merchant_profile": null,
+            "webhook_url": "test_url",
+            "fields": [
+                {
+                    "key": "client_id",
+                    "value": "xyz"
+                },
+                {
+                    "key": "ingest_billing_details_enabled",
+                    "value": "true"
+                },
+                {
+                    "key": "webhook_id",
+                    "value": "8C321818UU332613J"
+                }
+            ],
+            "reporting_fields": [],
+            "is_deleted": false,
+            "created_at": "2024-09-27T15:53:45.906295+00:00",
+            "updated_at": "2026-03-10T16:06:23.478539+00:00"
+        }
+    ],
+    "limit": 20,
+    "next_cursor": null,
+    "previous_cursor": null
+}

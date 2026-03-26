@@ -7,7 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'phpseclib3\\' => array($vendorDir . '/phpseclib/phpseclib/phpseclib'),
-    'jakobo\\HOTP\\' => array($vendorDir . '/jakobo/hotp-php/src'),
     'Wikimedia\\Zest\\' => array($vendorDir . '/wikimedia/zest-css/src'),
     'Wikimedia\\XMPReader\\' => array($vendorDir . '/wikimedia/xmp-reader/src'),
     'Wikimedia\\WikiPEG\\' => array($vendorDir . '/wikimedia/wikipeg/src'),
@@ -23,7 +22,6 @@ return array(
     'Wikimedia\\Minify\\' => array($vendorDir . '/wikimedia/minify/src'),
     'Wikimedia\\JsonCodec\\' => array($vendorDir . '/wikimedia/json-codec/src'),
     'Wikimedia\\IDLeDOM\\' => array($vendorDir . '/wikimedia/idle-dom/src'),
-    'Wikimedia\\Equivset\\' => array($vendorDir . '/wikimedia/equivset/src'),
     'Wikimedia\\Composer\\Merge\\V2\\' => array($vendorDir . '/wikimedia/composer-merge-plugin/src'),
     'Wikimedia\\CommonPasswords\\' => array($vendorDir . '/wikimedia/common-passwords/src'),
     'Wikimedia\\CSS\\' => array($vendorDir . '/wikimedia/css-sanitizer/src'),
@@ -72,15 +70,11 @@ return array(
     'GetOptionKit\\' => array($vendorDir . '/corneltek/getoptionkit/src'),
     'GeoIp2\\' => array($vendorDir . '/geoip2/geoip2/src'),
     'ForceUTF8\\' => array($vendorDir . '/relisten/forceutf8/src/ForceUTF8'),
-    'Endroid\\QrCode\\' => array($vendorDir . '/endroid/qr-code/src'),
-    'DASPRiD\\Enum\\' => array($vendorDir . '/dasprid/enum/src'),
     'Composer\\Semver\\' => array($vendorDir . '/composer/semver/src'),
     'Composer\\Installers\\' => array($vendorDir . '/composer/installers/src/Composer/Installers'),
     'Composer\\CaBundle\\' => array($vendorDir . '/composer/ca-bundle/src'),
     'CLDRPluralRuleParser\\' => array($vendorDir . '/wikimedia/cldr-plural-rule-parser/src'),
     'Brick\\Money\\' => array($vendorDir . '/brick/money/src'),
     'Brick\\Math\\' => array($vendorDir . '/brick/math/src'),
-    'Base32\\' => array($vendorDir . '/christian-riesen/base32/src'),
-    'BaconQrCode\\' => array($vendorDir . '/bacon/bacon-qr-code/src'),
     'Addshore\\Psr\\Cache\\MWBagOStuffAdapter\\' => array($vendorDir . '/addshore/psr-6-mediawiki-bagostuff-adapter/src'),
 );

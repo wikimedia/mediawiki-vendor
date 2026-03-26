@@ -14,7 +14,7 @@ class PaypalPaymentProviderRequestMapper extends RequestMapper {
 		// getting the buyer details from Paypal and not from our form
 		unset( $request['buyer'] );
 
-		if ( !isset( $params['recurring_payment_token'] ) ) {
+		if ( !$this->isRecurringCharge( $params ) ) {
 			$payment_method = [
 				'method' => PaymentMethod::PAYPAL,
 				'country' => $params['country'],

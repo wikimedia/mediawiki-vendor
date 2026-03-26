@@ -14,8 +14,7 @@ class TestingDatabase {
 		foreach ( self::$classes as $className ) {
 			$klass = new \ReflectionClass( $className );
 			$dbProperty = $klass->getProperty( 'dbs' );
-			$dbProperty->setAccessible( true );
-			$dbProperty->setValue( [] );
+			$dbProperty->setValue( null, [] );
 		}
 	}
 

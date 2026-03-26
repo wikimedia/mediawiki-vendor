@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "210bfb8cd0db418907b3e0da80b8deb3",
+    "content-hash": "8cdf0fbd0f9668db70810382f5a2f512",
     "packages": [
         {
             "name": "amzn/login-and-pay-with-amazon-sdk-php",
@@ -4690,7 +4690,7 @@
         "ext-curl": "*",
         "ext-json": "*",
         "ext-pdo": "*",
-        "php": ">=8.0"
+        "php": ">=8.2"
     },
     "platform-dev": {
         "ext-sqlite3": "*"
@@ -4698,5 +4698,5 @@
     "platform-overrides": {
         "php": "8.2.26"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }

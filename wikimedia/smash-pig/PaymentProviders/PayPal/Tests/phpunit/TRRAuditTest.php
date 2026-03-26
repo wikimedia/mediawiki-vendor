@@ -49,6 +49,8 @@ class TRRAuditTest extends AuditTestBase {
 			'exchange_rate' => 1,
 			'settled_currency' => 'JPY',
 			'grant_provider' => '',
+			'auth_id' => 'ABCD',
+			'capture_id' => '1V551844CE5526421',
 		];
 
 		$this->assertEquals( $expected, $output[0] );
@@ -90,6 +92,8 @@ class TRRAuditTest extends AuditTestBase {
 			'settled_currency' => 'JPY',
 			'settlement_batch_reference' => '20170302',
 			'grant_provider' => '',
+			'auth_id' => 'ABCD',
+			'capture_id' => '1V551844CE5526421',
 		];
 
 		$this->assertEquals( $expected, $output[0] );
@@ -140,6 +144,8 @@ class TRRAuditTest extends AuditTestBase {
 			'settled_currency' => 'JPY',
 			'settlement_batch_reference' => '20170304',
 			'grant_provider' => '',
+			'auth_id' => 'I-SS5RD7POSD46',
+			'capture_id' => '4JH2438EE9876546W',
 		];
 
 		$this->assertEquals( $expected, $output[0] );
@@ -273,6 +279,8 @@ class TRRAuditTest extends AuditTestBase {
 			'settled_currency' => 'JPY',
 			'settlement_batch_reference' => '20170302',
 			'grant_provider' => '',
+			'auth_id' => '',
+			'capture_id' => '1V551844CE5526421',
 		];
 
 		$this->assertEquals( $expected, $output[0] );
@@ -322,6 +330,8 @@ class TRRAuditTest extends AuditTestBase {
 			'settled_currency' => 'JPY',
 			'settlement_batch_reference' => '20170302',
 			'grant_provider' => '',
+			'auth_id' => '',
+			'capture_id' => '1V551844CE5526421',
 		];
 
 		$this->assertEquals( $expected, $output[0] );
@@ -349,7 +359,8 @@ class TRRAuditTest extends AuditTestBase {
 			'settled_fee_amount' => -3.92,
 			'settled_net_amount' => '28.08',
 			'gateway_txn_id' => '12da3381-d52e-47ec-be26-49a81cb31dfe',
-			'backend_processor_txn_id' => '12345678JN486083U',
+			'auth_id' => '55V55555RX924960C',
+			'capture_id' => '12345678JN486083U',
 			'backend_processor' => 'paypal',
 			'payment_orchestrator_reconciliation_id' => '2ZZZxx7YYYYqqQysK53Fpm',
 			'country' => 'US',

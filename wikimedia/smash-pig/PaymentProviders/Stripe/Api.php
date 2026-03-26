@@ -3,6 +3,7 @@
 namespace SmashPig\PaymentProviders\Stripe;
 
 use SmashPig\Core\Context;
+use SmashPig\Core\Http\OutboundRequest;
 
 class Api {
 
@@ -121,8 +122,8 @@ class Api {
 	 */
 	public function getCharge( string $chargeId ): array {
 		return $this->requestJson( 'GET', '/charges/' . rawurlencode( $chargeId ) . '?' . http_build_query( [
-			'expand' => [ 'payment_intent' ],
-		] ) );
+				'expand' => [ 'payment_intent' ],
+			] ) );
 	}
 
 	/**
@@ -131,8 +132,8 @@ class Api {
 	 */
 	public function getRefund( string $refundId ): array {
 		return $this->requestJson( 'GET', '/refunds/' . rawurlencode( $refundId ) . '?' . http_build_query( [
-			'expand' => [ 'charge.payment_intent' ],
-		] ) );
+				'expand' => [ 'charge.payment_intent' ],
+			] ) );
 	}
 
 	/**
@@ -141,8 +142,8 @@ class Api {
 	 */
 	public function getDispute( string $disputeId ): array {
 		return $this->requestJson( 'GET', '/disputes/' . rawurlencode( $disputeId ) . '?' . http_build_query( [
-			'expand' => [ 'charge.payment_intent' ],
-		] ) );
+				'expand' => [ 'charge.payment_intent' ],
+			] ) );
 	}
 
 	public function downloadFile( string $downloadUrl ): string {
@@ -162,42 +163,24 @@ class Api {
 	}
 
 	private function requestRaw( string $method, string $url, array $body = [] ): string {
-		$ch = curl_init();
-		if ( $ch === false ) {
-			throw new \RuntimeException( 'Unable to initialise curl' );
-		}
-
-		$headers = [
-			'Authorization: Bearer ' . $this->secretKey,
-			'User-Agent: SmashPig Stripe report downloader',
-		];
-
-		curl_setopt( $ch, CURLOPT_URL, $url );
-		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
-		curl_setopt( $ch, CURLOPT_CUSTOMREQUEST, $method );
-		curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers );
-		curl_setopt( $ch, CURLOPT_TIMEOUT, 300 );
-
+		$req = new OutboundRequest( $url, $method );
+		$req->setHeader( 'Authorization', 'Bearer ' . $this->secretKey );
+		$req->setHeader( 'User-Agent', 'SmashPig Stripe report downloader' );
 		if ( $method !== 'GET' && $body ) {
-			$headers[] = 'Content-Type: application/x-www-form-urlencoded';
-			curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers );
-			curl_setopt( $ch, CURLOPT_POSTFIELDS, http_build_query( $body ) );
+			$req->setHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
+			$req->setBody( $body );
 		}
 
-		$response = curl_exec( $ch );
-		$statusCode = (int)curl_getinfo( $ch, CURLINFO_RESPONSE_CODE );
-		$error = curl_error( $ch );
-		curl_close( $ch );
-
-		if ( $response === false ) {
-			throw new \RuntimeException( 'Stripe request failed: ' . $error );
-		}
+		$response = $req->execute();
+		$statusCode = $response['status'];
 
 		if ( $statusCode < 200 || $statusCode >= 300 ) {
-			throw new \RuntimeException( sprintf( 'Stripe request failed with HTTP %d: %s', $statusCode, $response ) );
+			throw new \RuntimeException(
+				sprintf( 'Stripe request to %s failed with HTTP %d: %s', $url, $statusCode, $response['body'] )
+			);
 		}
 
-		return $response;
+		return $response['body'];
 	}
 
 	private function buildUrl( string $path ): string {

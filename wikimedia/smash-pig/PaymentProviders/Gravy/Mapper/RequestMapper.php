@@ -193,6 +193,20 @@ class RequestMapper {
 	}
 
 	/**
+	 * Maps the smashpig parameters to Gravy requirements for list payment services
+	 *
+	 * This method is the same for all payment methods on Gravy.
+	 *
+	 * @param string $method
+	 * @return array{ method: string }
+	 */
+	public function mapToListPaymentServicesRequest( string $method ): array {
+		return [
+			'method' => $method
+		];
+	}
+
+	/**
 	 * Populates the create payment request with Gravy's requirements for create payment
 	 *
 	 * This method is the same for all payment methods on Gravy.

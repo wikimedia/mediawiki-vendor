@@ -15,7 +15,7 @@ class DirectDepositPaymentProviderRequestMapper extends RequestMapper {
 		// in the gravy console even for incomplete transactions.
 		$request['buyer']['billing_details']['email_address'] = $params['email'];
 
-		if ( !isset( $params['recurring_payment_token'] ) ) {
+		if ( !$this->isRecurringCharge( $params ) ) {
 			$payment_method = [
 				'method' => 'trustly',
 				'country' => $params['country'],
