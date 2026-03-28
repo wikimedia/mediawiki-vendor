@@ -243,7 +243,7 @@ class BraintreeAudit implements AuditParser {
 	private function getMessageFromRawReversedDispute( array $row ): array {
 		$msg = [];
 		$msg['gateway'] = $msg['backend_processor'] = $msg['audit_file_gateway'] = 'braintree';
-		$msg['type'] = 'chargeback_reversal';
+		$msg['type'] = 'chargeback_reversed';
 		foreach ( $row['statusHistory'] as $history ) {
 			if ( !empty( $history['disbursementDate'] ) ) {
 				$msg['settled_date'] = $msg['date'] = UtcDate::getUtcTimestamp( $history['disbursementDate'] );
@@ -257,6 +257,7 @@ class BraintreeAudit implements AuditParser {
 		if ( !$this->isOrchestratorMerchantReference( $parentTransaction ) ) {
 			$orderParts = explode( '.', $parentTransaction['orderId'] );
 			$msg['contribution_tracking_id'] = $orderParts[0];
+			$msg['order_id'] = $parentTransaction['orderId'];
 		}
 		$msg['payment_method'] = isset( $row['paymentMethodSnapshot']['payer'] ) ? 'paypal' : 'venmo';
 		$msg['gross'] = $row['amountWon']['value'];

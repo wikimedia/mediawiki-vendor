@@ -64,12 +64,18 @@ abstract class GravyPaymentResponseFactory {
 		$paymentResponse->setSuccessful( false );
 	}
 
-	protected static function setBackendProcessorAndId(
+	protected static function setBackendProcessorAndIDs(
 		PaymentProviderExtendedResponse $paymentResponse, array $normalizedResponse
 	) {
 		$paymentResponse->setBackendProcessor( $normalizedResponse['backend_processor'] ?? null );
 		$paymentResponse->setBackendProcessorTransactionId(
 			$normalizedResponse['backend_processor_transaction_id'] ?? null
+		);
+		$paymentResponse->setBackendProcessorAuthID(
+			$normalizedResponse['backend_processor_auth_id'] ?? null
+		);
+		$paymentResponse->setBackendProcessorCaptureID(
+			$normalizedResponse['backend_processor_capture_id'] ?? null
 		);
 	}
 

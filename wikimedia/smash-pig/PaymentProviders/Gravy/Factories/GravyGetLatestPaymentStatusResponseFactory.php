@@ -26,7 +26,7 @@ class GravyGetLatestPaymentStatusResponseFactory extends GravyCreatePaymentRespo
 		self::setRecurringPaymentToken( $paymentResponse, $normalizedResponse );
 		self::setPaymentSubmethod( $paymentResponse, $normalizedResponse );
 		self::setDonorDetails( $paymentResponse, $normalizedResponse );
-		self::setBackendProcessorAndId( $paymentResponse, $normalizedResponse );
+		self::setBackendProcessorAndIDs( $paymentResponse, $normalizedResponse );
 		self::setPaymentOrchestrationReconciliationId( $paymentResponse, $normalizedResponse );
 		self::setSuspectedFraud( $paymentResponse, $normalizedResponse );
 	}

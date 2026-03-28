@@ -29,6 +29,7 @@ class RequestMapper {
 		'sepa',
 		'ideal',
 		'stitch',
+		'vipps',
 		'webpay',
 	];
 

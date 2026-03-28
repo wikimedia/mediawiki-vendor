@@ -438,7 +438,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 						],
 					],
 				],
-				'expectedType' => 'chargeback_reversal',
+				'expectedType' => 'chargeback_reversed',
 				'expectedGross' => '3.10',
 				'expectedCurrency' => 'USD',
 				'expectedBatchRef' => '20260224_ch',

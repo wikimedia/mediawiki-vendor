@@ -50,6 +50,27 @@ abstract class PaymentProviderResponse {
 	protected ?string $gateway_txn_id = null;
 
 	/**
+	 * Payment provider auth ID
+	 *
+	 * https://www.mediawiki.org/wiki/Fundraising_tech/Transaction_IDs
+	 * Processor-side ID of any authorization associated with this transaction
+	 * Note abbreviation of 'auth' to be consistent with column and avoid
+	 * british / american spelling inconsistencies.
+	 * @var string|null
+	 */
+	protected ?string $gatewayAuthID = null;
+
+	/**
+	 * Payment provider capture ID
+	 *
+	 * https://www.mediawiki.org/wiki/Fundraising_tech/Transaction_IDs
+	 * Processor-side ID of any capture associated with this transaction
+	 *
+	 * @var string|null
+	 */
+	protected ?string $gatewayCaptureID = null;
+
+	/**
 	 * mapped PaymentStatus status for the providers transaction status
 	 * @var string|null
 	 */
@@ -193,6 +214,38 @@ abstract class PaymentProviderResponse {
 	 */
 	public function setGatewayTxnId( string $gateway_txn_id ): self {
 		$this->gateway_txn_id = $gateway_txn_id;
+		return $this;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getGatewayAuthID(): ?string {
+		return $this->gatewayAuthID;
+	}
+
+	/**
+	 * @param string|null $gatewayAuthID
+	 * @return PaymentProviderResponse
+	 */
+	public function setGatewayAuthID( ?string $gatewayAuthID ): PaymentProviderResponse {
+		$this->gatewayAuthID = $gatewayAuthID;
+		return $this;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getGatewayCaptureID(): ?string {
+		return $this->gatewayCaptureID;
+	}
+
+	/**
+	 * @param string|null $gatewayCaptureID
+	 * @return PaymentProviderResponse
+	 */
+	public function setGatewayCaptureID( ?string $gatewayCaptureID ): PaymentProviderResponse {
+		$this->gatewayCaptureID = $gatewayCaptureID;
 		return $this;
 	}
 

@@ -74,7 +74,7 @@ abstract class BaseParser {
 		switch ( $reportingCategory ) {
 
 			case 'charge':
-				return 'donations';
+				return 'donation';
 
 			case 'refund':
 				return 'refund';

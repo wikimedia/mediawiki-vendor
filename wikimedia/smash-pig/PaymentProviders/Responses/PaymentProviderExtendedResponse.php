@@ -99,6 +99,20 @@ class PaymentProviderExtendedResponse extends PaymentProviderResponse {
 
 	/**
 	 * @var string|null
+	 * When the primary processor is a payment orchestrator, this field has the auth identifier
+	 * at the processor which the orchestrator used to process the payment.
+	 */
+	protected ?string $backendProcessorAuthID = null;
+
+	/**
+	 * @var string|null
+	 * When the primary processor is a payment orchestrator, this field has the capture identifier
+	 * at the processor which the orchestrator used to process the payment.
+	 */
+	protected ?string $backendProcessorCaptureID = null;
+
+	/**
+	 * @var string|null
 	 * When submitted via a payment orchestrator, this field contains the cross-system 'reconciliation' ID.
 	 */
 	protected ?string $paymentOrchestratorReconciliationId = null;
@@ -303,6 +317,39 @@ class PaymentProviderExtendedResponse extends PaymentProviderResponse {
 
 	public function getBackendProcessorTransactionId(): ?string {
 		return $this->backendProcessorTransactionId;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getBackendProcessorAuthID(): ?string {
+		return $this->backendProcessorAuthID;
+	}
+
+	/**
+	 * @param string|null $backendProcessorAuthID
+	 * @return PaymentProviderExtendedResponse
+	 */
+	public function setBackendProcessorAuthID( ?string $backendProcessorAuthID ): PaymentProviderExtendedResponse {
+		$this->backendProcessorAuthID = $backendProcessorAuthID;
+		return $this;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getBackendProcessorCaptureID(): ?string {
+		return $this->backendProcessorCaptureID;
+	}
+
+	/**
+	 * @param string|null $backendProcessorCaptureID
+	 * @return PaymentProviderExtendedResponse
+	 */
+	public function setBackendProcessorCaptureID( ?string $backendProcessorCaptureID
+	): PaymentProviderExtendedResponse {
+		$this->backendProcessorCaptureID = $backendProcessorCaptureID;
+		return $this;
 	}
 
 	public function getPaymentOrchestratorReconciliationId(): ?string {

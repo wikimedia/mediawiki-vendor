@@ -107,6 +107,14 @@ payment-provider:
         validator: "validators/redirect"
         <<: *CACHE
 
+  ew:
+    class: SmashPig\PaymentProviders\Gravy\RedirectPaymentProvider
+    constructor-parameters:
+      - request-mapper: "mappers/ew-request"
+        response-mapper: "mappers/ew-response"
+        validator: "validators/redirect"
+        <<: *CACHE
+
   rtbt:
     class: SmashPig\PaymentProviders\Gravy\BankPaymentProvider
     constructor-parameters:
@@ -172,6 +180,10 @@ mappers:
   redirect-request:
     class: SmashPig\PaymentProviders\Gravy\Mapper\RedirectPaymentProviderRequestMapper
   redirect-response:
+    class: SmashPig\PaymentProviders\Gravy\Mapper\RedirectPaymentProviderResponseMapper
+  ew-request:
+    class: SmashPig\PaymentProviders\Gravy\Mapper\RedirectPaymentProviderRequestMapper
+  ew-response:
     class: SmashPig\PaymentProviders\Gravy\Mapper\RedirectPaymentProviderResponseMapper
   apple-request:
     class: SmashPig\PaymentProviders\Gravy\Mapper\ApplePayPaymentProviderRequestMapper

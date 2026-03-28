@@ -21,6 +21,7 @@ enum PaymentMethod: string {
 	case SEPA = 'sepadirectdebit';
 	case STITCH = 'stitch';
 	case VENMO = 'venmo';
+	case VIPPS = 'vipps';
 	case WEBPAY = 'webpay';
 	case RTBT_IDEAL = 'rtbt_ideal';
 
