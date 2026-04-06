@@ -40,6 +40,8 @@ return array(
     'SmashPig\\' => array($vendorDir . '/wikimedia/smash-pig'),
     'Shellbox\\' => array($vendorDir . '/wikimedia/shellbox/src'),
     'Respect\\Validation\\' => array($vendorDir . '/respect/validation/library'),
+    'Respect\\Stringifier\\Test\\Unit\\' => array($vendorDir . '/respect/stringifier/tests/unit'),
+    'Respect\\Stringifier\\Test\\' => array($vendorDir . '/respect/stringifier/tests/src'),
     'Respect\\Stringifier\\' => array($vendorDir . '/respect/stringifier/src'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log/Psr/Log'),
     'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-factory/src', $vendorDir . '/psr/http-message/src'),
