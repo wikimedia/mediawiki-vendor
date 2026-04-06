@@ -1,10 +1,8 @@
 <?php
-
 namespace Composer\Installers;
 
 class AsgardInstaller extends BaseInstaller
 {
-    /** @var array<string, string> */
     protected $locations = array(
         'module' => 'Modules/{$name}/',
         'theme' => 'Themes/{$name}/'
@@ -16,8 +14,9 @@ class AsgardInstaller extends BaseInstaller
      * For package type asgard-module, cut off a trailing '-plugin' if present.
      *
      * For package type asgard-theme, cut off a trailing '-theme' if present.
+     *
      */
-    public function inflectPackageVars(array $vars): array
+    public function inflectPackageVars($vars)
     {
         if ($vars['type'] === 'asgard-module') {
             return $this->inflectPluginVars($vars);
@@ -30,26 +29,18 @@ class AsgardInstaller extends BaseInstaller
         return $vars;
     }
 
-    /**
-     * @param array<string, string> $vars
-     * @return array<string, string>
-     */
-    protected function inflectPluginVars(array $vars): array
+    protected function inflectPluginVars($vars)
     {
-        $vars['name'] = $this->pregReplace('/-module$/', '', $vars['name']);
+        $vars['name'] = preg_replace('/-module$/', '', $vars['name']);
         $vars['name'] = str_replace(array('-', '_'), ' ', $vars['name']);
         $vars['name'] = str_replace(' ', '', ucwords($vars['name']));
 
         return $vars;
     }
 
-    /**
-     * @param array<string, string> $vars
-     * @return array<string, string>
-     */
-    protected function inflectThemeVars(array $vars): array
+    protected function inflectThemeVars($vars)
     {
-        $vars['name'] = $this->pregReplace('/-theme$/', '', $vars['name']);
+        $vars['name'] = preg_replace('/-theme$/', '', $vars['name']);
         $vars['name'] = str_replace(array('-', '_'), ' ', $vars['name']);
         $vars['name'] = str_replace(' ', '', ucwords($vars['name']));
 

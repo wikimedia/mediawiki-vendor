@@ -53,7 +53,6 @@
     "require": {
         "coderkungfu/php-queue": "^1.0",
         "ext-curl": "*",
-        "ext-json": "*",
         "ext-pdo": "*",
         "php": ">=8.2",
         "phpmailer/phpmailer": "^6",

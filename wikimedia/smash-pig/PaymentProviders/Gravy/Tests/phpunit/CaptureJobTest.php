@@ -1,5 +1,7 @@
 <?php
 
+namespace SmashPig\PaymentProviders\Gravy\Tests\phpunit;
+
 use PHPQueue\Backend\PDO;
 use SmashPig\Core\DataStores\PaymentsFraudDatabase;
 use SmashPig\Core\DataStores\PendingDatabase;
@@ -31,7 +33,8 @@ class CaptureJobTest extends BaseGravyTestCase {
 
 		$this->pendingDatabase = PendingDatabase::get();
 		$pendingMessage = json_decode(
-			file_get_contents( __DIR__ . '/../Data/pending.json' ), true
+			file_get_contents( __DIR__ . '/../Data/pending.json' ),
+			true
 		);
 		$this->pendingDatabase->storeMessage( $pendingMessage );
 		$this->antifraudQueue = QueueWrapper::getQueue( 'payments-antifraud' );
@@ -44,10 +47,12 @@ class CaptureJobTest extends BaseGravyTestCase {
 	 */
 	public function testSuccessfulCapture() {
 		$authorizedTransaction = json_decode(
-			file_get_contents( __DIR__ . '/../Data/approve-transaction.json' ), true
+			file_get_contents( __DIR__ . '/../Data/approve-transaction.json' ),
+			true
 		);
 		$capturedTransaction = json_decode(
-			file_get_contents( __DIR__ . '/../Data/successful-transaction.json' ), true
+			file_get_contents( __DIR__ . '/../Data/successful-transaction.json' ),
+			true
 		);
 
 		$authorizedTransaction['avs_response_code'] = 'match';
@@ -66,8 +71,9 @@ class CaptureJobTest extends BaseGravyTestCase {
 		$job->payload = $normalizedResponse;
 		$this->assertTrue( $job->execute() );
 
-		$donorData = $this->pendingDatabase->fetchMessageByGatewayOrderId(
-			'gravy', $normalizedResponse['order_id']
+		$donorData = $this->pendingDatabase->fetchUnresolvedMessageByGatewayOrderId(
+			'gravy',
+			$normalizedResponse['order_id']
 		);
 
 		$this->assertNotNull(
@@ -97,7 +103,8 @@ class CaptureJobTest extends BaseGravyTestCase {
 	 */
 	public function testReviewThreshold() {
 		$authorizedTransaction = json_decode(
-			file_get_contents( __DIR__ . '/../Data/approve-transaction.json' ), true
+			file_get_contents( __DIR__ . '/../Data/approve-transaction.json' ),
+			true
 		);
 
 		$normalizedResponse = ( new ResponseMapper() )->mapFromPaymentResponse( $authorizedTransaction );
@@ -108,8 +115,9 @@ class CaptureJobTest extends BaseGravyTestCase {
 		$job = new ProcessCaptureRequestJob();
 		$job->payload = $normalizedResponse;
 		$this->assertTrue( $job->execute() );
-		$donorData = $this->pendingDatabase->fetchMessageByGatewayOrderId(
-			'gravy', $normalizedResponse['order_id']
+		$donorData = $this->pendingDatabase->fetchUnresolvedMessageByGatewayOrderId(
+			'gravy',
+			$normalizedResponse['order_id']
 		);
 
 		$this->assertNotNull(
@@ -118,9 +126,9 @@ class CaptureJobTest extends BaseGravyTestCase {
 		);
 
 		$this->assertArrayNotHasKey(
-		  'captured',
-		  $donorData,
-		  'RequestCaptureJob marked donor data above review threshold as captured'
+			'captured',
+			$donorData,
+			'RequestCaptureJob marked donor data above review threshold as captured'
 		);
 
 		$antifraudMessage = $this->antifraudQueue->pop();
@@ -141,10 +149,12 @@ class CaptureJobTest extends BaseGravyTestCase {
 	 */
 	public function testRejectThreshold() {
 		$authorizedTransaction = json_decode(
-			file_get_contents( __DIR__ . '/../Data/approve-transaction.json' ), true
+			file_get_contents( __DIR__ . '/../Data/approve-transaction.json' ),
+			true
 		);
 		$cancelledTransaction = json_decode(
-			file_get_contents( __DIR__ . '/../Data/cancelled-transaction.json' ), true
+			file_get_contents( __DIR__ . '/../Data/cancelled-transaction.json' ),
+			true
 		);
 
 		$authorizedTransaction['avs_response_code'] = 'no_match';
@@ -162,8 +172,9 @@ class CaptureJobTest extends BaseGravyTestCase {
 		$job->payload = $normalizedResponse;
 		$this->assertTrue( $job->execute() );
 
-		$donorData = $this->pendingDatabase->fetchMessageByGatewayOrderId(
-			'gravy', $normalizedResponse['order_id']
+		$donorData = $this->pendingDatabase->fetchUnresolvedMessageByGatewayOrderId(
+			'gravy',
+			$normalizedResponse['order_id']
 		);
 		$this->assertNull(
 			$donorData,
@@ -188,13 +199,16 @@ class CaptureJobTest extends BaseGravyTestCase {
 	 */
 	public function testDuplicateAuthorisation() {
 		$authorizedTransaction = json_decode(
-			file_get_contents( __DIR__ . '/../Data/approve-transaction.json' ), true
+			file_get_contents( __DIR__ . '/../Data/approve-transaction.json' ),
+			true
 		);
 		$capturedTransaction = json_decode(
-			file_get_contents( __DIR__ . '/../Data/successful-transaction.json' ), true
+			file_get_contents( __DIR__ . '/../Data/successful-transaction.json' ),
+			true
 		);
 		$cancelledTransaction = json_decode(
-			file_get_contents( __DIR__ . '/../Data/cancelled-transaction.json' ), true
+			file_get_contents( __DIR__ . '/../Data/cancelled-transaction.json' ),
+			true
 		);
 
 		$authorizedTransaction['avs_response_code'] = 'match';
@@ -211,7 +225,8 @@ class CaptureJobTest extends BaseGravyTestCase {
 		$job1->execute();
 
 		$authorizedTransaction_2 = json_decode(
-			file_get_contents( __DIR__ . '/../Data/approve-transaction.json' ), true
+			file_get_contents( __DIR__ . '/../Data/approve-transaction.json' ),
+			true
 		);
 		$authorizedTransaction_2['id'] = 'random-transaction-gr4vy';
 		$normalizedResponse_2 = ( new ResponseMapper() )->mapFromPaymentResponse( $authorizedTransaction_2 );
@@ -228,8 +243,9 @@ class CaptureJobTest extends BaseGravyTestCase {
 		);
 
 		$this->assertNotNull(
-			$this->pendingDatabase->fetchMessageByGatewayOrderId(
-				'gravy', $normalizedResponse['order_id']
+			$this->pendingDatabase->fetchUnresolvedMessageByGatewayOrderId(
+				'gravy',
+				$normalizedResponse['order_id']
 			),
 			'Capture job should leave donor details in database'
 		);
@@ -241,10 +257,12 @@ class CaptureJobTest extends BaseGravyTestCase {
 	 */
 	public function testFredgeFallback() {
 		$authorizedTransaction = json_decode(
-			file_get_contents( __DIR__ . '/../Data/approve-transaction.json' ), true
+			file_get_contents( __DIR__ . '/../Data/approve-transaction.json' ),
+			true
 		);
 		$capturedTransaction = json_decode(
-			file_get_contents( __DIR__ . '/../Data/successful-transaction.json' ), true
+			file_get_contents( __DIR__ . '/../Data/successful-transaction.json' ),
+			true
 		);
 
 		$authorizedTransaction['avs_response_code'] = 'match';

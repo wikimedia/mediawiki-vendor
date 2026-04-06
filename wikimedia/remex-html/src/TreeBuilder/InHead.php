@@ -10,7 +10,6 @@ use Wikimedia\RemexHtml\Tokenizer\Tokenizer;
  * The "in head" insertion mode
  */
 class InHead extends InsertionMode {
-	/** @inheritDoc */
 	public function characters( $text, $start, $length, $sourceStart, $sourceLength ) {
 		// Split and insert whitespace
 		[ $part1, $part2 ] = $this->splitInitialMatch(
@@ -36,7 +35,6 @@ class InHead extends InsertionMode {
 			->characters( $text, $start, $length, $sourceStart, $sourceLength );
 	}
 
-	/** @inheritDoc */
 	public function startTag( $name, Attributes $attrs, $selfClose, $sourceStart, $sourceLength ) {
 		$void = false;
 		$tokenizerState = null;
@@ -120,7 +118,6 @@ class InHead extends InsertionMode {
 		}
 	}
 
-	/** @inheritDoc */
 	public function endTag( $name, $sourceStart, $sourceLength ) {
 		$builder = $this->builder;
 		$stack = $builder->stack;
@@ -160,7 +157,6 @@ class InHead extends InsertionMode {
 		}
 	}
 
-	/** @inheritDoc */
 	public function endDocument( $pos ) {
 		$this->builder->pop( $pos, 0 );
 		$this->dispatcher->switchMode( Dispatcher::AFTER_HEAD )

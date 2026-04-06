@@ -13,7 +13,6 @@ namespace Twig\ExpressionParser\Infix;
 
 use Twig\Error\SyntaxError;
 use Twig\Node\Expression\ArrayExpression;
-use Twig\Node\Expression\Binary\SetBinary;
 use Twig\Node\Expression\Unary\SpreadUnary;
 use Twig\Node\Expression\Variable\ContextVariable;
 use Twig\Node\Expression\Variable\LocalVariable;
@@ -59,10 +58,7 @@ trait ArgumentsTrait
             }
 
             $name = null;
-            if ($value instanceof SetBinary) {
-                $name = $value->getNode('left')->getAttribute('name');
-                $value = $value->getNode('right');
-            } elseif (($token = $stream->nextIf(Token::OPERATOR_TYPE, '=')) || ($token = $stream->nextIf(Token::PUNCTUATION_TYPE, ':'))) {
+            if (($token = $stream->nextIf(Token::OPERATOR_TYPE, '=')) || ($token = $stream->nextIf(Token::PUNCTUATION_TYPE, ':'))) {
                 if (!$value instanceof ContextVariable) {
                     throw new SyntaxError(\sprintf('A parameter name must be a string, "%s" given.', $value::class), $token->getLine(), $stream->getSourceContext());
                 }

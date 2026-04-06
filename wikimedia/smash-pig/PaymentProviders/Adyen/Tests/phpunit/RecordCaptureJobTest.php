@@ -44,7 +44,7 @@ class RecordCaptureJobTest extends BaseAdyenTestCase {
 		$job->payload = RecordCaptureJob::factory( $capture )['payload'];
 		$this->assertTrue( $job->execute() );
 
-		$donorData = $this->pendingDatabase->fetchMessageByGatewayOrderId(
+		$donorData = $this->pendingDatabase->fetchUnresolvedMessageByGatewayOrderId(
 			'adyen', $capture->merchantReference
 		);
 

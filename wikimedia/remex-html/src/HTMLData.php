@@ -14,9 +14,7 @@ class HTMLData {
 	public const NS_XML = 'http://www.w3.org/XML/1998/namespace';
 	public const NS_XMLNS = 'http://www.w3.org/2000/xmlns/';
 
-	/** @deprecated Use HTMLData::SPECIAL instead */
-	public static $special = self::SPECIAL;
-	public const SPECIAL = [
+	public static $special = [
 		'http://www.w3.org/1999/xhtml' => [
 			'address' => true,
 			'applet' => true,
@@ -114,10 +112,7 @@ class HTMLData {
 			'title' => true,
 		],
 	];
-
-	/** @deprecated Use HTMLData::NAMED_ENTITY_REGEX instead */
-	public static $namedEntityRegex = self::NAMED_ENTITY_REGEX;
-	public const NAMED_ENTITY_REGEX = '
+	public static $namedEntityRegex = '
 		CounterClockwiseContourIntegral;|
 		ClockwiseContourIntegral;|
 		DoubleLongLeftRightArrow;|
@@ -2349,10 +2344,7 @@ class HTMLData {
 		LT|
 		gt|
 		lt';
-
-	/** @deprecated Use HTMLData::CHAR_REF_REGEX instead */
-	public static $charRefRegex = self::CHAR_REF_REGEX;
-	public const CHAR_REF_REGEX = '~
+	public static $charRefRegex = '~
 				( .*? )                      # 1. prefix
 				&
 				(?:
@@ -4606,10 +4598,7 @@ class HTMLData {
 				# S = study, for efficient knownNamed
 				# A = anchor, to avoid unnecessary movement of the whole pattern on failure
 				~xAsS';
-
-	/** @deprecated Use HTMLData::NAMED_ENTITY_TRANSLATION instead */
-	public static $namedEntityTranslations = self::NAMED_ENTITY_TRANSLATION;
-	public const NAMED_ENTITY_TRANSLATION = [
+	public static $namedEntityTranslations = [
 		'Aacute;' => 'Á',
 		'Aacute' => 'Á',
 		'aacute;' => 'á',
@@ -6843,10 +6832,7 @@ class HTMLData {
 		'zwj;' => '‍',
 		'zwnj;' => '‌',
 	];
-
-	/** @deprecated Use HTMLData::LEGACY_NUMERIC_ENTITIES instead */
-	public static $legacyNumericEntities = self::LEGACY_NUMERIC_ENTITIES;
-	public const LEGACY_NUMERIC_ENTITIES = [
+	public static $legacyNumericEntities = [
 		0 => '�',
 		128 => '€',
 		130 => '‚',
@@ -6876,10 +6862,7 @@ class HTMLData {
 		158 => 'ž',
 		159 => 'Ÿ',
 	];
-
-	/** @deprecated Use HTMLData::QUIRKY_PREFIX_REGEX instead */
-	public static $quirkyPrefixRegex = self::QUIRKY_PREFIX_REGEX;
-	public const QUIRKY_PREFIX_REGEX = '~
+	public static $quirkyPrefixRegex = '~
 		//Silmaril//dtd html Pro v0r11 19970101//|
 		//AS//DTD HTML 3\\.0 asWedit \\+ extensions//|
 		//AdvaSoft Ltd//DTD HTML 3\\.0 asWedit \\+ extensions//|
@@ -6935,10 +6918,7 @@ class HTMLData {
 		//W3O//DTD W3 HTML 3\\.0//|
 		//WebTechs//DTD Mozilla HTML 2\\.0//|
 		//WebTechs//DTD Mozilla HTML//~xAi';
-
-	/** @deprecated Use self::NAME_START_CHAR_CONV_TABLE instead */
-	public static $nameStartCharConvTable = self::NAME_START_CHAR_CONV_TABLE;
-	public const NAME_START_CHAR_CONV_TABLE = [
+	public static $nameStartCharConvTable = [
 		0, 64, 0, 16777215,
 		91, 94, 0, 16777215,
 		96, 96, 0, 16777215,
@@ -7145,10 +7125,7 @@ class HTMLData {
 		12589, 19967, 0, 16777215,
 		40870, 44031, 0, 16777215,
 		55204, 1114111, 0, 16777215 ];
-
-	/** @deprecated Use HTMLData::NAME_CHAR_CONV_TABLE instead */
-	public static $nameCharConvTable = self::NAME_CHAR_CONV_TABLE;
-	public const NAME_CHAR_CONV_TABLE = [
+	public static $nameCharConvTable = [
 		0, 44, 0, 16777215,
 		47, 47, 0, 16777215,
 		58, 64, 0, 16777215,

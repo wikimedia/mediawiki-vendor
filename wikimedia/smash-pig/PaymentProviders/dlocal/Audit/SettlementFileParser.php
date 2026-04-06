@@ -103,7 +103,7 @@ class SettlementFileParser extends BaseParser {
 	 * @return string
 	 */
 	protected function getBatchReference(): string {
-		return str_replace( [ '/', '-' ], '', $this->headers['TRANSFER_DATE'] );
+		return $this->headers['TRANSFER_ID'];
 	}
 
 	/**

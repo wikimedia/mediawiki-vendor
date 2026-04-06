@@ -1,27 +1,28 @@
 <?php
-
 namespace Composer\Installers;
 
 class PlentymarketsInstaller extends BaseInstaller
 {
-    /** @var array<string, string> */
     protected $locations = array(
         'plugin'   => '{$name}/'
     );
 
     /**
      * Remove hyphen, "plugin" and format to camelcase
+     * @param array $vars
+     *
+     * @return array
      */
-    public function inflectPackageVars(array $vars): array
+    public function inflectPackageVars($vars)
     {
-        $nameBits = explode("-", $vars['name']);
-        foreach ($nameBits as $key => $name) {
-            $nameBits[$key] = ucfirst($name);
+        $vars['name'] = explode("-", $vars['name']);
+        foreach ($vars['name'] as $key => $name) {
+            $vars['name'][$key] = ucfirst($vars['name'][$key]);
             if (strcasecmp($name, "Plugin") == 0) {
-                unset($nameBits[$key]);
+                unset($vars['name'][$key]);
             }
         }
-        $vars['name'] = implode('', $nameBits);
+        $vars['name'] = implode("",$vars['name']);
 
         return $vars;
     }

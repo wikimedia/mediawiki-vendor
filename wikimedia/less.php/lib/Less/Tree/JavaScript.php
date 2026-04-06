@@ -5,11 +5,8 @@
  */
 class Less_Tree_JavaScript extends Less_Tree {
 
-	/** @var bool */
 	public $escaped;
-	/** @var string */
 	public $expression;
-	/** @var int */
 	public $index;
 
 	/**

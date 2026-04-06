@@ -124,7 +124,7 @@ class RecordPaymentsJobTest extends AmazonTestCase {
 		SourceFields::removeFromMessage( $message );
 		SourceFields::removeFromMessage( $expected );
 		$this->assertEquals( $expected, $message );
-		$dbMessage = $db->fetchMessageByGatewayOrderId( 'amazon', '98765432-1' );
+		$dbMessage = $db->fetchUnresolvedMessageByGatewayOrderId( 'amazon', '98765432-1' );
 		$this->assertNull( $dbMessage, 'Should delete pending db message' );
 	}
 

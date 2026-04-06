@@ -13,10 +13,13 @@ use Wikimedia\RemexHtml\Tokenizer\Attributes;
  * @since 2.1.0
  */
 class RelayTreeHandler implements TreeHandler {
-	protected TreeHandler $nextHandler;
+	/** @var TreeHandler */
+	protected $nextHandler;
 
 	/**
 	 * Construct a RelayTreeHandler which will call $nextHandler on all events
+	 *
+	 * @param TreeHandler $nextHandler
 	 */
 	public function __construct( TreeHandler $nextHandler ) {
 		$this->nextHandler = $nextHandler;

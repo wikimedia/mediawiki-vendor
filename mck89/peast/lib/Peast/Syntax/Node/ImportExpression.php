@@ -22,23 +22,15 @@ class ImportExpression extends Node implements Expression
      * @var array 
      */
     protected $propertiesMap = array(
-        "source" => true,
-        "options" => true
+        "source" => true
     );
     
     /**
-     * The import source
+     * The catch clause parameter
      * 
      * @var Expression
      */
     protected $source;
-    
-    /**
-     * Optional import options
-     * 
-     * @var Expression|null
-     */
-    protected $options;
     
     /**
      * Returns the import source
@@ -60,30 +52,6 @@ class ImportExpression extends Node implements Expression
     public function setSource(Expression $source)
     {
         $this->source = $source;
-        return $this;
-    }
-    
-    /**
-     * Returns the import options
-     * 
-     * @return Expression|null
-     */
-    public function getOptions()
-    {
-        return $this->options;
-    }
-    
-    /**
-     * Sets the import options
-     * 
-     * @param Expression|null $options Import options
-     * 
-     * @return $this
-     */
-    public function setOptions($options)
-    {
-        $this->assertType($options, "Expression", true);
-        $this->options = $options;
         return $this;
     }
 }

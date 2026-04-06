@@ -76,9 +76,6 @@ class Parser
         return \sprintf('__internal_parse_%d', $this->varNameSalt++);
     }
 
-    /**
-     * @throws SyntaxError
-     */
     public function parse(TokenStream $stream, $test = null, bool $dropNeedle = false): ModuleNode
     {
         $vars = get_object_vars($this);
@@ -161,9 +158,6 @@ class Parser
         }
     }
 
-    /**
-     * @throws SyntaxError
-     */
     public function subparse($test, bool $dropNeedle = false): Node
     {
         $lineno = $this->getCurrentToken()->getLine();
@@ -416,10 +410,6 @@ class Parser
             trigger_deprecation('twig/twig', '3.12', 'Passing "null" to "%s()" is deprecated.', __METHOD__);
         }
 
-        if (null !== $parent && !$parent instanceof AbstractExpression) {
-            trigger_deprecation('twig/twig', '3.24', 'Passing a "%s" instance to "%s()" is deprecated, pass an "AbstractExpression" instance instead.', $parent::class, __METHOD__);
-        }
-
         if (null !== $this->parent) {
             throw new SyntaxError('Multiple extends tags are forbidden.', $parent->getTemplateLine(), $parent->getSourceContext());
         }
@@ -451,7 +441,7 @@ class Parser
 
         if (!$function) {
             if ($this->shouldIgnoreUnknownTwigCallables()) {
-                return new TwigFunction($name, static fn () => '');
+                return new TwigFunction($name, fn () => '');
             }
             $e = new SyntaxError(\sprintf('Unknown "%s" function.', $name), $line, $this->stream->getSourceContext());
             $e->addSuggestions($name, array_keys($this->env->getFunctions()));
@@ -480,7 +470,7 @@ class Parser
         }
         if (!$filter) {
             if ($this->shouldIgnoreUnknownTwigCallables()) {
-                return new TwigFilter($name, static fn () => '');
+                return new TwigFilter($name, fn () => '');
             }
             $e = new SyntaxError(\sprintf('Unknown "%s" filter.', $name), $line, $this->stream->getSourceContext());
             $e->addSuggestions($name, array_keys($this->env->getFilters()));
@@ -528,7 +518,7 @@ class Parser
 
         if (!$test) {
             if ($this->shouldIgnoreUnknownTwigCallables()) {
-                return new TwigTest($name, static fn () => '');
+                return new TwigTest($name, fn () => '');
             }
             $e = new SyntaxError(\sprintf('Unknown "%s" test.', $name), $line, $this->stream->getSourceContext());
             $e->addSuggestions($name, array_keys($this->env->getTests()));

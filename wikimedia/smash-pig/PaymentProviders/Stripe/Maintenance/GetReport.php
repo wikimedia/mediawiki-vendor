@@ -43,6 +43,10 @@ class GetReport extends MaintenanceBase {
 	private const SETTLEMENT_REPORT_COLUMNS = [
 		'balance_transaction_id',
 		'payment_metadata[external_identifier]',
+		'payment_metadata[orchestrator_tx_ref]',
+		'payment_metadata[orchestrator_tx_sid]',
+		'payment_metadata[gr4vy_tx_ref]',
+		'payment_metadata[gr4vy_tx_sid]',
 		'source_id',
 		'payment_intent_id',
 		'charge_id',
@@ -142,8 +146,6 @@ class GetReport extends MaintenanceBase {
 
 	public function __construct() {
 		parent::__construct();
-		$this->addOption( 'api-key', 'Stripe secret key. Overrides config / env lookup when set explicitly.', '', 'k' );
-		$this->addOption( 'config', 'Explicit path to config yaml' );
 		$this->addOption( 'payout-id', 'Stripe payout id for a single settlement file', '', 'p' );
 		$this->addFlag( 'list-payouts', 'List payouts in the requested date range and download one settlement file per payout', 'l' );
 		$this->addOption( 'status', 'Optional Stripe payout status filter when using --list-payouts', null );

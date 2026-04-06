@@ -169,7 +169,6 @@ abstract class AdyenAudit implements AuditParser {
 
 		if ( $this->isOrchestratorMerchantReference( $row ) ) {
 			$msg['backend_processor_parent_id'] = $row['Psp Reference'];
-			$msg['backend_processor_refund_id'] = $modificationReference;
 		} else {
 			$msg['gateway_parent_id'] = $row['Psp Reference'];
 			$msg['gateway_refund_id'] = $modificationReference;

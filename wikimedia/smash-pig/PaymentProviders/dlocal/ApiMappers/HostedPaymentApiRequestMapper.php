@@ -6,6 +6,7 @@ use DateTime;
 use DateTimeZone;
 use SmashPig\PaymentProviders\dlocal\Api;
 use SmashPig\PaymentProviders\dlocal\BankTransferPaymentProvider;
+use SmashPig\PaymentProviders\dlocal\HostedPaymentProvider;
 use UnexpectedValueException;
 
 class HostedPaymentApiRequestMapper extends PaymentApiRequestMapper {
@@ -15,6 +16,26 @@ class HostedPaymentApiRequestMapper extends PaymentApiRequestMapper {
 
 		// Set custom parameters
 		$mapperOutput['payment_method_flow'] = Api::PAYMENT_METHOD_FLOW_REDIRECT;
+
+		// For Pix recurring: https://docs.dlocal.com/docs/user-enrollment-pix
+		if ( HostedPaymentProvider::isPixRecurring( $params ) ) {
+			$mapperOutput['enrollment'] = [
+				'external_id' => $params['order_id'],
+				'type' => 'MERCHANT_SUBSCRIPTION',
+				"description" => $mapperOutput['description'],
+				"notification_url" => $mapperOutput['notification_url'],
+				"callback_url" => $mapperOutput['callback_url'],
+				"subscription" => [
+					"frequency" => ( isset( $params['frequency_unit'] ) && $params['frequency_unit'] == 'year' ) ? "YEARLY" : "MONTHLY",
+					"start_date" => date( 'Y-m-d' ),
+					"amount" => [
+						"type" => "FIXED",
+						"value" => $params['amount']
+					]
+				],
+			];
+			$mapperOutput['payment_method_id'] = 'XA'; // recurring pix is XA
+		}
 
 		// For India recurring, we need to create a monthly subscription with India time zone
 		if ( BankTransferPaymentProvider::isIndiaRecurring( $params ) ) {
@@ -30,6 +51,7 @@ class HostedPaymentApiRequestMapper extends PaymentApiRequestMapper {
 			$mapperOutput['wallet']['recurring_info']['subscription_max_amount'] = $params['amount']; // set the max recurring amount to init donation's amount
 			$this->validateAndMapSubscriptionEnd( $params, $mapperOutput );
 		}
+
 		return $mapperOutput;
 	}
 
@@ -61,5 +83,4 @@ class HostedPaymentApiRequestMapper extends PaymentApiRequestMapper {
 		}
 		$mapperOutput['wallet']['recurring_info']['subscription_end_at'] = $subscriptionEnd;
 	}
-
 }

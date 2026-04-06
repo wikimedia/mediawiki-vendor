@@ -41,7 +41,10 @@ class Element implements FormattingElement {
 	 */
 	public $htmlName;
 
-	public Attributes $attrs;
+	/**
+	 * @var Attributes
+	 */
+	public $attrs;
 
 	/**
 	 * This is true if the element was created by the TreeBuilder either as a
@@ -53,38 +56,32 @@ class Element implements FormattingElement {
 
 	/**
 	 * Internal to CachingStack. A link in the scope list.
-	 * @var self|null
 	 */
 	public $nextEltInScope;
 
 	/**
 	 * Internal to CachingStack and SimpleStack. The current stack index, or
 	 * null if the element is not in the stack.
-	 * @var int|null
 	 */
 	public $stackIndex;
 
 	/**
 	 * Internal to ActiveFormattingElements.
-	 * @var FormattingElement|null
 	 */
 	public $prevAFE;
 
 	/**
 	 * Internal to ActiveFormattingElements.
-	 * @var FormattingElement|null
 	 */
 	public $nextAFE;
 
 	/**
 	 * Internal to ActiveFormattingElements.
-	 * @var FormattingElement|null
 	 */
 	public $nextNoah;
 
 	/**
 	 * The cache for getNoahKey()
-	 * @var string|null
 	 */
 	private $noahKey;
 
@@ -92,7 +89,6 @@ class Element implements FormattingElement {
 	 * This member variable can be written to by the TreeHandler, to store any
 	 * state associated with the element (such as a DOM node). It is not used
 	 * by TreeBuilder.
-	 * @var mixed
 	 */
 	public $userData;
 
@@ -112,8 +108,9 @@ class Element implements FormattingElement {
 	/**
 	 * The element types in the MathML namespace which are MathML text
 	 * integration points.
+	 * @var array<string,bool>
 	 */
-	private const MATHML_INTEGRATION = [
+	private static $mathmlIntegration = [
 		'mi' => true,
 		'mo' => true,
 		'mn' => true,
@@ -124,8 +121,9 @@ class Element implements FormattingElement {
 	/**
 	 * The element types in the SVG namespace which are SVG text integration
 	 * points.
+	 * @var array<string,bool>
 	 */
-	private const SVG_HTML_INTEGRATION = [
+	private static $svgHtmlIntegration = [
 		'foreignObject' => true,
 		'desc' => true,
 		'title' => true
@@ -161,7 +159,7 @@ class Element implements FormattingElement {
 	 */
 	public function isMathmlTextIntegration() {
 		return $this->namespace === HTMLData::NS_MATHML
-			&& isset( self::MATHML_INTEGRATION[$this->name] );
+			&& isset( self::$mathmlIntegration[$this->name] );
 	}
 
 	/**
@@ -177,7 +175,7 @@ class Element implements FormattingElement {
 				return false;
 			}
 		} elseif ( $this->namespace === HTMLData::NS_SVG ) {
-			return isset( self::SVG_HTML_INTEGRATION[$this->name] );
+			return isset( self::$svgHtmlIntegration[$this->name] );
 		} else {
 			return false;
 		}

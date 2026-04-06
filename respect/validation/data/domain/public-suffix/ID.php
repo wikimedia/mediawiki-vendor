@@ -15,5 +15,4 @@ return [
     'PONPES.ID',
     'SCH.ID',
     'WEB.ID',
-    'XN--9TFKY.ID',
 ];

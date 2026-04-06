@@ -77,10 +77,17 @@ class PendingDatabase extends SmashPigDatabase {
 	 * @param string $orderId
 	 * @param ?string $gateway_txn_id_hint Preferred gateway txn ID. This prioritises matches but does not enforce them
 	 * @param ?string $message_hint String to look for in message field. If more than one match this is used to priorise.
+	 * @param bool $includeResolved whether to include resolved messages
 	 * @return array|null Record related to a transaction, or null if nothing matches
 	 * @throws DataStoreException
 	 */
-	public function fetchMessageByGatewayOrderId( string $gatewayName, string $orderId, ?string $gateway_txn_id_hint = null, ?string $message_hint = null ) {
+	public function fetchMessageByGatewayOrderId(
+		string $gatewayName,
+		string $orderId,
+		?string $gateway_txn_id_hint = null,
+		?string $message_hint = null,
+		bool $includeResolved = true
+	) {
 		$params = [
 			'gateway' => $gatewayName,
 			'order_id' => $orderId,
@@ -88,8 +95,10 @@ class PendingDatabase extends SmashPigDatabase {
 
 		$sql = 'select * from pending
 			where gateway = :gateway
-				and order_id = :order_id
-				and is_resolved = 0 ';
+				and order_id = :order_id';
+		if ( !$includeResolved ) {
+			$sql .= ' and is_resolved = 0 ';
+		}
 		$orderBys = [];
 		if ( $gateway_txn_id_hint ) {
 			$orderBys[] = ' ( gateway_txn_id = :gateway_txn_id ) DESC';
@@ -113,6 +122,14 @@ class PendingDatabase extends SmashPigDatabase {
 			return null;
 		}
 		return $this->messageFromDbRow( $row );
+	}
+
+	/**
+	 * Convenience method for code which only expects unresolved messages.
+	 * @throws DataStoreException
+	 */
+	public function fetchUnresolvedMessageByGatewayOrderId( string $gatewayName, string $orderId ): ?array {
+		return $this->fetchMessageByGatewayOrderId( $gatewayName, $orderId, null, null, false );
 	}
 
 	/**

@@ -77,8 +77,10 @@ class Tokenizer {
 
 	/**
 	 * A list of "common well-behaved entities", used to optimize fast paths
+	 *
+	 * @var array<string,string>
 	 */
-	private const COMMON_ENTITIES = [
+	private static $commonEntities = [
 		'&amp;' => '&',
 		'&apos;' => "'",
 		'&lt;' => '<',
@@ -87,30 +89,20 @@ class Tokenizer {
 		'&nbsp;' => "\u{00A0}",
 	];
 
-	protected bool $ignoreErrors;
-	protected bool $ignoreCharRefs;
-	protected bool $ignoreNulls;
-	protected bool $skipPreprocess;
-	protected bool $lazyAttributes;
-	protected bool $scriptingFlag;
-	/** @var string|null */
+	protected $ignoreErrors;
+	protected $ignoreCharRefs;
+	protected $ignoreNulls;
+	protected $skipPreprocess;
+	protected $scriptingFlag;
 	protected $appropriateEndTag;
-	protected TokenHandler $listener;
-	/** @var int */
+	protected $listener;
 	protected $state;
-	/** @var bool */
 	protected $preprocessed;
-	/** @var string */
 	protected $text;
-	/** @var int */
 	protected $pos;
-	/** @var int */
 	protected $length;
-	/** @var callable|null */
 	protected $enableCdataCallback;
-	/** @var string|null */
 	protected $fragmentNamespace;
-	/** @var string|null */
 	protected $fragmentName;
 
 	/**
@@ -133,9 +125,6 @@ class Tokenizer {
 	 *     stage, which normalizes line endings and raises errors on certain
 	 *     control characters. Advisable if the input stream is already
 	 *     appropriately normalized.
-	 *   - lazyAttributes: True to construct attributes lazily, saving
-	 *     processing time (at the expense of memory usage) if most attributes
-	 *     are not going to be accessed. Default false.
 	 *   - scriptingFlag: True if the scripting flag is enabled. Default true.
 	 *     Setting this to false cause the contents of <noscript> elements to be
 	 *     processed as normal content. The scriptingFlag option in the
@@ -151,13 +140,9 @@ class Tokenizer {
 		$this->ignoreCharRefs = !empty( $options['ignoreCharRefs'] );
 		$this->ignoreNulls = !empty( $options['ignoreNulls'] );
 		$this->skipPreprocess = !empty( $options['skipPreprocess'] );
-		$this->lazyAttributes = $options['lazyAttributes'] ?? false;
 		$this->scriptingFlag = $options['scriptingFlag'] ?? true;
 	}
 
-	/**
-	 * @param callable|null $cb
-	 */
 	public function setEnableCdataCallback( $cb ) {
 		$this->enableCdataCallback = $cb;
 	}
@@ -566,7 +551,7 @@ class Tokenizer {
 
 			if ( isset( $m[self::MD_CDATA] ) && $m[self::MD_CDATA][1] >= 0 ) {
 				if ( $this->enableCdataCallback ) {
-					$isCdata = ( $this->enableCdataCallback )();
+					$isCdata = call_user_func( $this->enableCdataCallback );
 				} else {
 					$isCdata = false;
 				}
@@ -626,7 +611,7 @@ class Tokenizer {
 			} elseif ( isset( $m[self::MD_CDATA] ) && $m[self::MD_CDATA][1] >= 0 ) {
 				// CDATA
 				if ( $this->enableCdataCallback
-					&& ( $this->enableCdataCallback )()
+					&& call_user_func( $this->enableCdataCallback )
 				) {
 					$this->pos += strlen( $m[self::MD_CDATA][0] ) + 1;
 					$endPos = strpos( $this->text, ']]>', $this->pos );
@@ -931,7 +916,7 @@ class Tokenizer {
 
 	// This string isn't used directly: it's input to GenerateDataFiles.php
 	// which will substitute in the named entities and create a
-	// compile-time constant string in HtmlData::CHAR_REF_REGEX
+	// compile-time constant string in HtmlData::$charRefRegex
 	// Only compile-time constants are handled efficiently in the
 	// regexp cache; otherwise we pay for a 26k strcmp each time we
 	// fetch the regexp from the cache.
@@ -980,7 +965,7 @@ class Tokenizer {
 		$pos = 0;
 		$length = strlen( $text );
 		$matches = [];
-		$count = preg_match_all( HTMLData::CHAR_REF_REGEX, $text, $matches, PREG_SET_ORDER );
+		$count = preg_match_all( HTMLData::$charRefRegex, $text, $matches, PREG_SET_ORDER );
 		if ( $count === false ) {
 			$this->throwPregError();
 		}
@@ -1036,7 +1021,7 @@ class Tokenizer {
 				}
 				$codepoint = intval( $m[self::MC_HEXDEC], 16 );
 			} elseif ( $knownNamed !== '' ) {
-				$out .= HTMLData::NAMED_ENTITY_TRANSLATION[$knownNamed] . $attributeSuffix;
+				$out .= HTMLData::$namedEntityTranslations[$knownNamed] . $attributeSuffix;
 				continue;
 			} elseif ( isset( $m[self::MC_INVALID] ) && strlen( $m[self::MC_INVALID] ) ) {
 				if ( !$this->ignoreErrors ) {
@@ -1059,11 +1044,11 @@ class Tokenizer {
 					$this->error( 'invalid numeric reference', $errorPos );
 				}
 				$out .= self::REPLACEMENT_CHAR;
-			} elseif ( isset( HTMLData::LEGACY_NUMERIC_ENTITIES[$codepoint] ) ) {
+			} elseif ( isset( HTMLData::$legacyNumericEntities[$codepoint] ) ) {
 				if ( !$this->ignoreErrors ) {
 					$this->error( 'invalid reference to non-ASCII control character', $errorPos );
 				}
-				$out .= HTMLData::LEGACY_NUMERIC_ENTITIES[$codepoint];
+				$out .= HTMLData::$legacyNumericEntities[$codepoint];
 			} else {
 				if ( !$this->ignoreErrors ) {
 					$disallowedCodepoints = [
@@ -1115,7 +1100,7 @@ class Tokenizer {
 	 * @param bool $isSimple True if you know that the data range does not
 	 *  contain < \0 or &; false is safe if you're not sure
 	 * @param bool $hasSimpleRefs True if you know that any character
-	 *  references are semicolon terminated and in the list of self::COMMON_ENTITIES;
+	 *  references are semicolon terminated and in the list of $commonEntities;
 	 *  false is safe if you're not sure
 	 */
 	protected function emitDataRange( $pos, $length, $isSimple = false, $hasSimpleRefs = false ) {
@@ -1138,7 +1123,7 @@ class Tokenizer {
 
 			$text = substr( $this->text, $pos, $length );
 			if ( $hasSimpleRefs ) {
-				$text = strtr( $text, self::COMMON_ENTITIES );
+				$text = strtr( $text, self::$commonEntities );
 			} else {
 				$text = $this->handleCharRefs( $text, $pos );
 			}
@@ -1321,11 +1306,9 @@ class Tokenizer {
 			$attribs = new PlainAttributes();
 		} elseif ( $count ) {
 			$this->pos = $m[$count - 1][0][1] + strlen( $m[$count - 1][0][0] );
-			$attribs = $this->lazyAttributes
-				? new LazyAttributes( $m, function ( $m ) {
-					return $this->interpretAttribMatches( $m );
-				} )
-				: new PlainAttributes( $this->interpretAttribMatches( $m ) );
+			$attribs = new LazyAttributes( $m, function ( $m ) {
+				return $this->interpretAttribMatches( $m );
+			} );
 		} else {
 			$attribs = new PlainAttributes();
 		}
@@ -1374,7 +1357,7 @@ class Tokenizer {
 				$isSimple = !strlen( $m[self::MA_DQUOTED_UNSIMPLE][0] );
 				if ( $isSimple && strlen( $m[self::MA_DQUOTED_CHARREF][0] ) && !$this->ignoreCharRefs ) {
 					// Efficiently handle well-behaved character references
-					$value = strtr( $value, self::COMMON_ENTITIES );
+					$value = strtr( $value, self::$commonEntities );
 				}
 			} elseif ( isset( $m[self::MA_SQUOTED] ) && $m[self::MA_SQUOTED][1] >= 0 ) {
 				// Single-quoted attribute value
@@ -1384,7 +1367,7 @@ class Tokenizer {
 				$isSimple = !strlen( $m[self::MA_SQUOTED_UNSIMPLE][0] );
 				if ( $isSimple && strlen( $m[self::MA_SQUOTED_CHARREF][0] ) && !$this->ignoreCharRefs ) {
 					// Efficiently handle well-behaved character references
-					$value = strtr( $value, self::COMMON_ENTITIES );
+					$value = strtr( $value, self::$commonEntities );
 				}
 			} elseif ( isset( $m[self::MA_UNQUOTED] ) && $m[self::MA_UNQUOTED][1] >= 0 ) {
 				// Unquoted attribute value

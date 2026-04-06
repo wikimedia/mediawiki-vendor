@@ -5,7 +5,6 @@ namespace Composer\Installers;
 class LanManagementSystemInstaller extends BaseInstaller
 {
 
-    /** @var array<string, string> */
     protected $locations = array(
         'plugin' => 'plugins/{$name}/',
         'template' => 'templates/{$name}/',
@@ -16,12 +15,13 @@ class LanManagementSystemInstaller extends BaseInstaller
     /**
      * Format package name to CamelCase
      */
-    public function inflectPackageVars(array $vars): array
+    public function inflectPackageVars($vars)
     {
-        $vars['name'] = strtolower($this->pregReplace('/(?<=\\w)([A-Z])/', '_\\1', $vars['name']));
+        $vars['name'] = strtolower(preg_replace('/(?<=\\w)([A-Z])/', '_\\1', $vars['name']));
         $vars['name'] = str_replace(array('-', '_'), ' ', $vars['name']);
         $vars['name'] = str_replace(' ', '', ucwords($vars['name']));
 
         return $vars;
     }
+
 }

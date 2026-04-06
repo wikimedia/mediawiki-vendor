@@ -39,6 +39,14 @@ class DlocalCreatePaymentResponseFactory extends DlocalPaymentResponseFactory im
 	}
 
 	/**
+	 * @param array $rawResponse
+	 * @return bool
+	 */
+	protected static function responseHasEnrollmentRecurringPaymentToken( array $rawResponse ): bool {
+		return array_key_exists( 'enrollment', $rawResponse ) && array_key_exists( 'id', $rawResponse['enrollment'] );
+	}
+
+	/**
 	 * @param PaymentProviderResponse $paymentResponse
 	 * @param array $rawResponse
 	 * @return void
@@ -51,6 +59,10 @@ class DlocalCreatePaymentResponseFactory extends DlocalPaymentResponseFactory im
 			$token = self::getCardRecurringPaymentTokenFromRawResponse( $rawResponse );
 			$paymentResponse->setRecurringPaymentToken( $token );
 		}
+		if ( self::responseHasEnrollmentRecurringPaymentToken( $rawResponse ) ) {
+			$token = self::getEnrollmentRecurringPaymentTokenFromRawResponse( $rawResponse );
+			$paymentResponse->setRecurringPaymentToken( $token );
+		}
 	}
 
 	/**
@@ -59,6 +71,14 @@ class DlocalCreatePaymentResponseFactory extends DlocalPaymentResponseFactory im
 	 */
 	protected static function getCardRecurringPaymentTokenFromRawResponse( array $rawResponse ): string {
 		return $rawResponse['card']['card_id'];
+	}
+
+	/**
+	 * @param array $rawResponse
+	 * @return string
+	 */
+	protected static function getEnrollmentRecurringPaymentTokenFromRawResponse( array $rawResponse ): string {
+		return $rawResponse['enrollment']['id'];
 	}
 
 	/**

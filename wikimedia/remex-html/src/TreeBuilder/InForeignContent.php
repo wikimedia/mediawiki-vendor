@@ -15,8 +15,9 @@ class InForeignContent extends InsertionMode {
 	/**
 	 * The list of tag names which unconditionally generate a parse error when
 	 * seen in foreign content.
+	 * @var array<string,bool>
 	 */
-	private const NOT_ALLOWED = [
+	private static $notAllowed = [
 		'b' => true,
 		'big' => true,
 		'blockquote' => true,
@@ -66,8 +67,9 @@ class InForeignContent extends InsertionMode {
 	/**
 	 * The table for correcting the tag names of SVG elements, given in the
 	 * "Any other start tag" section of the spec.
+	 * @var array<string,string>
 	 */
-	private const SVG_ELEMENT_CASE = [
+	private static $svgElementCase = [
 		'altglyph' => 'altGlyph',
 		'altglyphdef' => 'altGlyphDef',
 		'altglyphitem' => 'altGlyphItem',
@@ -107,7 +109,6 @@ class InForeignContent extends InsertionMode {
 		'textpath' => 'textPath',
 	];
 
-	/** @inheritDoc */
 	public function characters( $text, $start, $length, $sourceStart, $sourceLength ) {
 		$builder = $this->builder;
 
@@ -146,19 +147,18 @@ class InForeignContent extends InsertionMode {
 		}
 	}
 
-	private function isIntegrationPoint( Element $element ): bool {
+	private function isIntegrationPoint( Element $element ) {
 		return $element->namespace === HTMLData::NS_HTML
 			|| $element->isMathmlTextIntegration()
 			|| $element->isHtmlIntegration();
 	}
 
-	/** @inheritDoc */
 	public function startTag( $name, Attributes $attrs, $selfClose, $sourceStart, $sourceLength ) {
 		$builder = $this->builder;
 		$stack = $builder->stack;
 		$dispatcher = $this->dispatcher;
 
-		if ( isset( self::NOT_ALLOWED[$name] ) ) {
+		if ( isset( self::$notAllowed[$name] ) ) {
 			$allowed = false;
 		} elseif ( $name === 'font' && (
 			isset( $attrs['color'] ) || isset( $attrs['face'] ) || isset( $attrs['size'] ) )
@@ -184,7 +184,7 @@ class InForeignContent extends InsertionMode {
 			$attrs = new ForeignAttributes( $attrs, 'math' );
 		} elseif ( $acnNs === HTMLData::NS_SVG ) {
 			$attrs = new ForeignAttributes( $attrs, 'svg' );
-			$name = self::SVG_ELEMENT_CASE[$name] ?? $name;
+			$name = self::$svgElementCase[$name] ?? $name;
 		} else {
 			$attrs = new ForeignAttributes( $attrs, 'other' );
 		}
@@ -192,7 +192,6 @@ class InForeignContent extends InsertionMode {
 		$builder->insertForeign( $acnNs, $name, $attrs, $selfClose, $sourceStart, $sourceLength );
 	}
 
-	/** @inheritDoc */
 	public function endTag( $name, $sourceStart, $sourceLength ) {
 		$builder = $this->builder;
 		$stack = $builder->stack;
@@ -215,7 +214,6 @@ class InForeignContent extends InsertionMode {
 		}
 	}
 
-	/** @inheritDoc */
 	public function endDocument( $pos ) {
 		// @phan-suppress-previous-line PhanPluginNeverReturnMethod
 		throw new TreeBuilderError( "unspecified, presumed unreachable" );

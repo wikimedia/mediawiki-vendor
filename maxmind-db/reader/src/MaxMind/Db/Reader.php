@@ -94,13 +94,13 @@ class Reader
         }
         $this->fileHandle = $fileHandle;
 
-        $fstat = fstat($fileHandle);
-        if ($fstat === false) {
+        $fileSize = @filesize($database);
+        if ($fileSize === false) {
             throw new \UnexpectedValueException(
                 "Error determining the size of \"$database\"."
             );
         }
-        $this->fileSize = $fstat['size'];
+        $this->fileSize = $fileSize;
 
         $start = $this->findMetadataStart($database);
         $metadataDecoder = new Decoder($this->fileHandle, $start);
@@ -332,7 +332,13 @@ class Reader
     private function findMetadataStart(string $filename): int
     {
         $handle = $this->fileHandle;
-        $fileSize = $this->fileSize;
+        $fstat = fstat($handle);
+        if ($fstat === false) {
+            throw new InvalidDatabaseException(
+                "Error getting file information ($filename)."
+            );
+        }
+        $fileSize = $fstat['size'];
         $marker = self::$METADATA_START_MARKER;
         $markerLength = self::$METADATA_START_MARKER_LENGTH;
 

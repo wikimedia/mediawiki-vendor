@@ -7,5 +7,6 @@ return [
     'EDU.SN',
     'GOUV.SN',
     'ORG.SN',
+    'PERSO.SN',
     'UNIV.SN',
 ];

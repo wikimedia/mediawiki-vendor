@@ -4,13 +4,10 @@
  */
 class Less_Exception_Chunk extends Less_Exception_Parser {
 
-	/** @var int */
 	protected $parserCurrentIndex = 0;
 
-	/** @var int */
 	protected $emitFrom = 0;
 
-	/** @var int */
 	protected $input_len;
 
 	/**
@@ -32,7 +29,6 @@ class Less_Exception_Chunk extends Less_Exception_Parser {
 
 		$this->Chunks();
 		$this->genMessage();
-		$this->getFinalMessage();
 	}
 
 	/**

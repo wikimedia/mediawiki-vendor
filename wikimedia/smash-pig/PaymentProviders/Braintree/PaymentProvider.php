@@ -228,14 +228,20 @@ class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaymentTokenP
 			'82901' => ErrorCode::ACCOUNT_MISCONFIGURATION,
 			'82903' => ErrorCode::ACCOUNT_MISCONFIGURATION,
 			'82904' => ErrorCode::ACCOUNT_MISCONFIGURATION,
-			'92906' => ErrorCode::ACCOUNT_MISCONFIGURATION
+			'92906' => ErrorCode::ACCOUNT_MISCONFIGURATION,
+			// The following code comes back when a donor disconnects their funding source
+			// from the account they're paying with. Usually accompanied by the error
+			// "Multi-use payment method ID is invalid or could not be found."
+			'91518' => ErrorCode::CANCELLED_BY_DONOR
 		];
 		$mappedCode = $defaultCode;
 		$logLevel = LogLevel::ERROR;
-		if ( isset( $error['legacyCode'] ) && in_array( $error['legacyCode'], $errorMap ) ) {
+		if ( isset( $error['legacyCode'] ) && array_key_exists( $error['legacyCode'], $errorMap ) ) {
 			$mappedCode = $errorMap[$error['legacyCode']];
 		}
-		if ( isset( $error['errorClass'] ) ) {
+		// Don't overwrite the CANCELLED_BY_DONOR code with one mapped from the errorClass,
+		// as it will incorrectly show up as a validation error.
+		if ( isset( $error['errorClass'] ) && $mappedCode !== ErrorCode::CANCELLED_BY_DONOR ) {
 			$mappedCode = $this->getErrorCode( $error['errorClass'] );
 		}
 		if ( $mappedCode == ErrorCode::VALIDATION ) {

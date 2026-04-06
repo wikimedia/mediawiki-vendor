@@ -5,11 +5,8 @@
  */
 class Less_Tree_Unit extends Less_Tree {
 
-	/** @var string[] */
 	public $numerator = [];
-	/** @var string[] */
 	public $denominator = [];
-	/** @var string|null */
 	public $backupUnit;
 
 	public function __construct( $numerator = [], $denominator = [], $backupUnit = null ) {

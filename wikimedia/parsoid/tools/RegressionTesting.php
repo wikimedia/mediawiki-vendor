@@ -6,6 +6,7 @@ use Error;
 use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\ScriptUtils;
+use Wikimedia\ScopedCallback;
 
 require_once __DIR__ . '/Maintenance.php';
 
@@ -365,6 +366,7 @@ class RegressionTesting extends \Wikimedia\Parsoid\Tools\Maintenance {
 		if ( !$ch ) {
 			throw new \RuntimeException( "Failed to open curl handle to $url" );
 		}
+		$reset = new ScopedCallback( 'curl_close', [ $ch ] );
 
 		if ( !curl_setopt_array( $ch, $curlopt ) ) {
 			throw new \RuntimeException( "Error setting curl options: " . curl_error( $ch ) );
@@ -380,6 +382,8 @@ class RegressionTesting extends \Wikimedia\Parsoid\Tools\Maintenance {
 		if ( $code !== 200 ) {
 			throw new \RuntimeException( "HTTP request failed: HTTP code $code" );
 		}
+
+		ScopedCallback::consume( $reset );
 
 		if ( !$res ) {
 			throw new \RuntimeException( "HTTP request failed: Empty response" );

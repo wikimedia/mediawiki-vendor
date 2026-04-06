@@ -13,8 +13,10 @@ class Initial extends InsertionMode {
 	 * The doctypes listed in the spec which are allowed without generating a
 	 * parse error. A 2-d array where each row gives the doctype name, the
 	 * public identifier and the system identifier.
+	 *
+	 * @var array
 	 */
-	private const ALLOWED_DOCTYPES = [
+	private static $allowedDoctypes = [
 		[ 'html', '-//W3C//DTD HTML 4.0//EN', null ],
 		[ 'html', '-//W3C//DTD HTML 4.0//EN', 'http://www.w3.org/TR/REC-html40/strict.dtd' ],
 		[ 'html', '-//W3C//DTD HTML 4.01//EN', null ],
@@ -24,7 +26,6 @@ class Initial extends InsertionMode {
 		[ 'html', '-//W3C//DTD XHTML 1.1//EN', 'http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd' ]
 	];
 
-	/** @inheritDoc */
 	public function characters( $text, $start, $length, $sourceStart, $sourceLength ) {
 		// Ignore whitespace
 		[ $part1, $part2 ] = $this->splitInitialMatch(
@@ -41,7 +42,6 @@ class Initial extends InsertionMode {
 			->characters( $text, $start, $length, $sourceStart, $sourceLength );
 	}
 
-	/** @inheritDoc */
 	public function startTag( $name, Attributes $attrs, $selfClose, $sourceStart, $sourceLength ) {
 		if ( !$this->builder->isIframeSrcdoc ) {
 			$this->error( 'missing doctype', $sourceStart );
@@ -51,7 +51,6 @@ class Initial extends InsertionMode {
 			->startTag( $name, $attrs, $selfClose, $sourceStart, $sourceLength );
 	}
 
-	/** @inheritDoc */
 	public function endTag( $name, $sourceStart, $sourceLength ) {
 		if ( !$this->builder->isIframeSrcdoc ) {
 			$this->error( 'missing doctype', $sourceStart );
@@ -61,12 +60,11 @@ class Initial extends InsertionMode {
 			->endTag( $name, $sourceStart, $sourceLength );
 	}
 
-	/** @inheritDoc */
 	public function doctype( $name, $public, $system, $quirks, $sourceStart, $sourceLength ) {
 		if ( ( $name !== 'html' || $public !== null
 				|| ( $system !== null && $system !== 'about:legacy-compat' )
 			)
-			&& !in_array( [ $name, $public, $system ], self::ALLOWED_DOCTYPES, true )
+			&& !in_array( [ $name, $public, $system ], self::$allowedDoctypes, true )
 		) {
 			$this->error( 'invalid doctype', $sourceStart );
 		}
@@ -84,7 +82,7 @@ class Initial extends InsertionMode {
 			|| $public === 'HTML'
 			|| $system === 'http://www.ibm.com/data/dtd/v11/ibmxhtml1-transitional.dtd'
 			|| ( $system === null && preg_match( $quirksIfNoSystem, $public ?? '' ) )
-			|| preg_match( HTMLData::QUIRKY_PREFIX_REGEX, $public ?? '' )
+			|| preg_match( HTMLData::$quirkyPrefixRegex, $public ?? '' )
 		) {
 			$quirks = TreeBuilder::QUIRKS;
 		} elseif ( !$this->builder->isIframeSrcdoc
@@ -104,7 +102,6 @@ class Initial extends InsertionMode {
 		$this->dispatcher->switchMode( Dispatcher::BEFORE_HTML );
 	}
 
-	/** @inheritDoc */
 	public function endDocument( $pos ) {
 		if ( !$this->builder->isIframeSrcdoc ) {
 			$this->error( 'missing doctype', $pos );

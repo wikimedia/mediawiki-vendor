@@ -102,7 +102,6 @@ trait CustomEventInit {
 	 * @param mixed $offset
 	 * @return mixed
 	 */
-	#[\ReturnTypeWillChange]
 	public function offsetGet( $offset ) {
 		return $this->$offset;
 	}

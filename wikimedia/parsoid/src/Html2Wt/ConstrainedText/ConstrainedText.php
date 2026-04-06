@@ -170,7 +170,12 @@ class ConstrainedText {
 	public function matches( string $re, Env $env ): ?array {
 		$r = preg_match( $re, $this->text, $m );
 		if ( $r === false ) {
-			$env->log( 'error', preg_last_error_msg(), $re, $this->text );
+			if ( version_compare( PHP_VERSION, '8.0.0', '>' ) ) {
+				$error_msg = preg_last_error_msg();
+			} else {
+				$error_msg = "preg_last_error: " . preg_last_error();
+			}
+			$env->log( 'error', $error_msg, $re, $this->text );
 			throw new \Error( 'Bad regular expression' );
 		}
 		return $r === 0 ? null : $m;

@@ -180,7 +180,6 @@ trait CSSStyleDeclaration {
 	 * @param mixed $offset
 	 * @return mixed
 	 */
-	#[\ReturnTypeWillChange]
 	public function offsetGet( $offset ) {
 		'@phan-var \Wikimedia\IDLeDOM\CSSStyleDeclaration $this';
 		// @var \Wikimedia\IDLeDOM\CSSStyleDeclaration $this

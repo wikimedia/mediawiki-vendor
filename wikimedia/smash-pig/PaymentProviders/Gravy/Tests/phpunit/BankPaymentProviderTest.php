@@ -200,6 +200,44 @@ class BankPaymentProviderTest extends BaseGravyTestCase {
 		$this->assertEquals( 'fiscal_number', $errors[0]->getField() );
 	}
 
+	public function testInvalidBuyerId(): void {
+		$responseBody = json_decode(
+			file_get_contents( __DIR__ . '/../Data/create-payment-response-invalid-buyer-id.json' ), true
+		);
+		$this->mockApi->expects( $this->once() )
+			->method( 'createPayment' )
+			->with( $this->anything() )
+			->willReturn( $responseBody );
+
+		$response = $this->provider->createPayment( $this->getCreateTrxnParams() );
+		$errors = $response->getValidationErrors();
+		$this->assertCount( 1, $errors );
+		$this->assertEquals( 'processor_contact_id', $errors[0]->getField() );
+	}
+
+	public function testMultipleValidationErrors(): void {
+		$responseBody = json_decode(
+			file_get_contents( __DIR__ . '/../Data/create-payment-response-bad-requests.json' ), true
+		);
+		$this->mockApi->expects( $this->once() )
+			->method( 'createPayment' )
+			->with( $this->anything() )
+			->willReturn( $responseBody );
+
+		$response = $this->provider->createPayment( $this->getCreateTrxnParams() );
+		$errors = $response->getValidationErrors();
+		$this->assertCount( 8, $errors );
+		$this->assertEquals( 'amount', $errors[0]->getField() );
+		$this->assertEquals( 'currency', $errors[1]->getField() );
+		$this->assertEquals( 'session_id', $errors[2]->getField() );
+		$this->assertEquals( 'browser_info.color_depth', $errors[3]->getField() );
+		$this->assertEquals( 'browser_info.screen_height', $errors[4]->getField() );
+		$this->assertEquals( 'browser_info.screen_width', $errors[5]->getField() );
+		$this->assertEquals( 'browser_info.time_zone_offset', $errors[6]->getField() );
+		$this->assertEquals( 'payment_service', $errors[7]->getField() );
+		$this->assertEquals( 'There is no active payment service for this transaction.', $errors[7]->getDebugMessage() );
+	}
+
 	private function getCreateTrxnParams( ?string $amount = '1299' ) {
 		$params = [];
 		$params['country'] = 'US';

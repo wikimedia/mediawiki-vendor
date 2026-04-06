@@ -1,0 +1,56 @@
+{
+  "type": "error",
+  "code": "bad_request",
+  "status": 400,
+  "message": "Request failed validation",
+  "details": [
+    {
+      "location": "body",
+      "pointer": "\/amount",
+      "message": "Input should be less than or equal to 99999999",
+      "type": "less_than_equal"
+    },
+    {
+      "location": "body",
+      "pointer": "\/currency",
+      "message": "Value error, Unknown ISO 4217 currency code: STD",
+      "type": "value_error"
+    },
+    {
+      "location": "body",
+      "pointer": "\/body\/id",
+      "message": "Invalid checkout session ID. Session does not exist, is incomplete or has expired.",
+      "type": "value_error"
+    },
+    {
+      "location": "body",
+      "pointer": "\/browser_info\/color_depth",
+      "message": "Field required",
+      "type": "missing"
+    },
+    {
+      "location": "body",
+      "pointer": "\/browser_info\/screen_height",
+      "message": "Field required",
+      "type": "missing"
+    },
+    {
+      "location": "body",
+      "pointer": "\/browser_info\/screen_width",
+      "message": "Field required",
+      "type": "missing"
+    },
+    {
+      "location": "body",
+      "pointer": "\/browser_info\/time_zone_offset",
+      "message": "Field required",
+      "type": "missing"
+    },
+    {
+      "location": "body",
+      "pointer": "\/NA",
+      "message": "There is no active payment service for this transaction.",
+      "type": "assertion_error"
+    }
+  ]
+}

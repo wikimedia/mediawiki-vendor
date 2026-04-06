@@ -17,7 +17,6 @@ use Twig\ExpressionParser\ExpressionParserDescriptionInterface;
 use Twig\ExpressionParser\PrefixExpressionParserInterface;
 use Twig\Node\Expression\AbstractExpression;
 use Twig\Node\Expression\ListExpression;
-use Twig\Node\Expression\Variable\AssignContextVariable;
 use Twig\Node\Expression\Variable\ContextVariable;
 use Twig\Parser;
 use Twig\Token;
@@ -37,7 +36,7 @@ final class GroupingExpressionParser extends AbstractExpressionParser implements
                 return $expr->setExplicitParentheses();
             }
 
-            return new ListExpression([self::toAssignContextVariable($expr)], $token->getLine());
+            return new ListExpression([$expr], $token->getLine());
         }
 
         // determine if we are parsing an arrow function arguments
@@ -59,16 +58,7 @@ final class GroupingExpressionParser extends AbstractExpressionParser implements
             throw new SyntaxError('A list of variables must be followed by an arrow.', $stream->getCurrent()->getLine(), $stream->getSourceContext());
         }
 
-        return new ListExpression(array_map(self::toAssignContextVariable(...), $names), $token->getLine());
-    }
-
-    private static function toAssignContextVariable(AbstractExpression $expr): AssignContextVariable
-    {
-        if (!$expr instanceof ContextVariable) {
-            throw new SyntaxError('A list must only contain variables.', $expr->getTemplateLine(), $expr->getSourceContext());
-        }
-
-        return $expr instanceof AssignContextVariable ? $expr : new AssignContextVariable($expr->getAttribute('name'), $expr->getTemplateLine());
+        return new ListExpression($names, $token->getLine());
     }
 
     public function getName(): string

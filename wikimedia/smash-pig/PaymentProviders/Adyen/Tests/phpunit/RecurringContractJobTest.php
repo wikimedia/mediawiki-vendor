@@ -34,7 +34,7 @@ class RecurringContractJobTest extends BaseAdyenTestCase {
 		$job->payload = RecurringContractJob::factory( $contractMessage )['payload'];
 		$this->assertTrue( $job->execute() );
 
-		$donorData = PendingDatabase::get()->fetchMessageByGatewayOrderId(
+		$donorData = PendingDatabase::get()->fetchUnresolvedMessageByGatewayOrderId(
 			'adyen', $contractMessage->merchantReference
 		);
 

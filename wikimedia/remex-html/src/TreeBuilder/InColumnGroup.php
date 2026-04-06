@@ -8,7 +8,6 @@ use Wikimedia\RemexHtml\Tokenizer\Attributes;
  * The "in column group" insertion mode
  */
 class InColumnGroup extends InsertionMode {
-	/** @inheritDoc */
 	public function characters( $text, $start, $length, $sourceStart, $sourceLength ) {
 		[ $part1, $part2 ] = $this->splitInitialMatch(
 			true, "\t\n\f\r ", $text, $start, $length, $sourceStart, $sourceLength );
@@ -41,7 +40,6 @@ class InColumnGroup extends InsertionMode {
 			->characters( $text, $start, $length, $sourceStart, $sourceLength );
 	}
 
-	/** @inheritDoc */
 	public function startTag( $name, Attributes $attrs, $selfClose, $sourceStart, $sourceLength ) {
 		$dispatcher = $this->dispatcher;
 		$builder = $this->builder;
@@ -75,7 +73,6 @@ class InColumnGroup extends InsertionMode {
 		}
 	}
 
-	/** @inheritDoc */
 	public function endTag( $name, $sourceStart, $sourceLength ) {
 		$dispatcher = $this->dispatcher;
 		$builder = $this->builder;
@@ -114,7 +111,6 @@ class InColumnGroup extends InsertionMode {
 		}
 	}
 
-	/** @inheritDoc */
 	public function endDocument( $pos ) {
 		$this->dispatcher->inBody->endDocument( $pos );
 	}

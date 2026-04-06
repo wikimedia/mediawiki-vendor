@@ -4,9 +4,7 @@
  */
 class Less_Tree_DetachedRuleset extends Less_Tree {
 
-	/** @var Less_Tree_Ruleset */
 	public $ruleset;
-	/** @var array|null */
 	public $frames;
 
 	public function __construct( $ruleset, $frames = null ) {

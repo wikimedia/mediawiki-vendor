@@ -35,46 +35,38 @@ class TreeBuilder {
 	public const ROOT = 2;
 
 	// Configuration
-	/** @var bool */
 	public $isIframeSrcdoc;
-	/** @var bool */
 	public $scriptingFlag;
-	/** @var bool */
 	public $ignoreErrors;
-	/** @var bool */
 	public $ignoreNulls;
 
 	// Objects
 
-	public TreeHandler $handler;
+	/** @var TreeHandler */
+	public $handler;
 
 	/** @var SimpleStack */
 	public $stack;
 
-	public ActiveFormattingElements $afe;
+	/** @var ActiveFormattingElements */
+	public $afe;
 
 	/** @var Tokenizer */
 	public $tokenizer;
 
 	// State
-	/** @var bool */
 	public $isFragment = false;
-	/** @var Element|null */
 	public $fragmentContext;
 	/** @var Element|null */
 	public $headElement;
 	/** @var Element|null */
 	public $formElement;
-	/** @var bool */
 	public $framesetOK = true;
-	/** @var int */
 	public $quirks = self::NO_QUIRKS;
-	/** @var bool */
 	public $fosterParenting = false;
-	/** @var array[] */
 	public $pendingTableCharacters = [];
 
-	private const FOSTER_TRIGGERS = [
+	private static $fosterTriggers = [
 		'table' => true,
 		'tbody' => true,
 		'tfoot' => true,
@@ -82,7 +74,7 @@ class TreeBuilder {
 		'tr' => true
 	];
 
-	private const IMPLIED_END_TAGS = [
+	private static $impliedEndTags = [
 		'dd' => true,
 		'dt' => true,
 		'li' => true,
@@ -95,7 +87,7 @@ class TreeBuilder {
 		'rtc' => true,
 	];
 
-	private const THOROUGHLY_IMPLIED_END_TAGS = [
+	private static $thoroughlyImpliedEndTags = [
 		'caption' => true,
 		'colgroup' => true,
 		'dd' => true,
@@ -220,7 +212,7 @@ class TreeBuilder {
 		if ( !$this->fosterParenting ) {
 			return [ self::UNDER, $target ];
 		}
-		if ( !isset( self::FOSTER_TRIGGERS[$target->htmlName] ) ) {
+		if ( !isset( self::$fosterTriggers[$target->htmlName] ) ) {
 			return [ self::UNDER, $target ];
 		}
 		$node = null;
@@ -535,7 +527,7 @@ class TreeBuilder {
 
 			for ( $i = $fmtEltIndex + 1; $i < $stackLength; $i++ ) {
 				$item = $stack->item( $i );
-				if ( isset( HTMLData::SPECIAL[$item->namespace][$item->name] ) ) {
+				if ( isset( HTMLData::$special[$item->namespace][$item->name] ) ) {
 					$furthestBlock = $item;
 					$furthestBlockIndex = $i;
 					break;
@@ -728,7 +720,7 @@ class TreeBuilder {
 
 			// If node is in the special category, then this is a parse error;
 			// ignore the token, and abort these steps
-			if ( isset( HTMLData::SPECIAL[$node->namespace][$node->name] ) ) {
+			if ( isset( HTMLData::$special[$node->namespace][$node->name] ) ) {
 				$this->error( "cannot implicitly close a special element <{$node->htmlName}>",
 					$sourceStart );
 				return;
@@ -746,7 +738,7 @@ class TreeBuilder {
 		$stack = $this->stack;
 		$current = $stack->current;
 		while ( $current && $current->htmlName !== $name &&
-			isset( self::IMPLIED_END_TAGS[$current->htmlName] )
+			isset( self::$impliedEndTags[$current->htmlName] )
 		) {
 			$popped = $stack->pop();
 			$this->handler->endTag( $popped, $pos, 0 );
@@ -763,7 +755,7 @@ class TreeBuilder {
 	public function generateImpliedEndTagsThoroughly( $pos ) {
 		$stack = $this->stack;
 		$current = $stack->current;
-		while ( $current && isset( self::THOROUGHLY_IMPLIED_END_TAGS[$current->htmlName] ) ) {
+		while ( $current && isset( self::$thoroughlyImpliedEndTags[$current->htmlName] ) ) {
 			$popped = $stack->pop();
 			$this->handler->endTag( $popped, $pos, 0 );
 			$current = $stack->current;

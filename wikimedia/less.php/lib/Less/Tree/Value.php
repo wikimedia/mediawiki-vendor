@@ -6,9 +6,8 @@ class Less_Tree_Value extends Less_Tree implements Less_Tree_HasValueProperty {
 
 	/** @var Less_Tree[] */
 	public $value;
-	/** @var int|null */
+
 	public $index;
-	/** @var array */
 	public $currentFileInfo;
 
 	/**

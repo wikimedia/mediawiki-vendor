@@ -8,12 +8,10 @@ use Wikimedia\RemexHtml\Tokenizer\Attributes;
  * The "in frameset" insertion mode
  */
 class InFrameset extends InsertionMode {
-	/** @inheritDoc */
 	public function characters( $text, $start, $length, $sourceStart, $sourceLength ) {
 		$this->handleFramesetWhitespace( false, $text, $start, $length, $sourceStart, $sourceLength );
 	}
 
-	/** @inheritDoc */
 	public function startTag( $name, Attributes $attrs, $selfClose, $sourceStart, $sourceLength ) {
 		$builder = $this->builder;
 		$dispatcher = $this->dispatcher;
@@ -44,7 +42,6 @@ class InFrameset extends InsertionMode {
 		}
 	}
 
-	/** @inheritDoc */
 	public function endTag( $name, $sourceStart, $sourceLength ) {
 		$builder = $this->builder;
 		$stack = $builder->stack;
@@ -68,7 +65,6 @@ class InFrameset extends InsertionMode {
 		}
 	}
 
-	/** @inheritDoc */
 	public function endDocument( $pos ) {
 		$builder = $this->builder;
 		$stack = $builder->stack;

@@ -88,4 +88,9 @@ enum ApiOperation: string {
 	 * Verify the provided UPI ID
 	 */
 	case VERIFY_UPI_ID = 'verifyUpiId';
+
+	/**
+	 * Pix automatico recurring enrollment
+	 */
+	case PIX_ENROLLMENT = 'pixEnrollment';
 }

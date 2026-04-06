@@ -1,10 +1,14 @@
 <?php
-declare( strict_types = 1 );
 
 namespace Wikimedia\Zest;
 
+use DOMDocument;
+use DOMDocumentFragment;
+use DOMElement;
+use DOMNode;
+
 /**
- * Zest.php (https://github.com/wikimedia/mediawiki-libs-Zest)
+ * Zest.php (https://github.com/wikimedia/zest.php)
  * Copyright (c) 2019, C. Scott Ananian. (MIT licensed)
  * PHP port based on:
  *
@@ -14,16 +18,12 @@ namespace Wikimedia\Zest;
  * Domino version based on Zest v0.1.3 with bugfixes applied.
  */
 
-use DOMDocument;
-use DOMDocumentFragment;
-use DOMElement;
-use DOMNode;
-
 class Zest {
 
-	private static ?ZestInst $singleton = null;
+	/** @var ZestInst */
+	private static $singleton = null;
 
-	private static function singleton(): ZestInst {
+	private static function singleton() {
 		if ( !self::$singleton ) {
 			self::$singleton = new ZestInst();
 		}

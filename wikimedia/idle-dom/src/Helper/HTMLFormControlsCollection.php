@@ -92,7 +92,6 @@ trait HTMLFormControlsCollection {
 	 * @param mixed $offset
 	 * @return mixed
 	 */
-	#[\ReturnTypeWillChange]
 	public function offsetGet( $offset ) {
 		'@phan-var \Wikimedia\IDLeDOM\HTMLFormControlsCollection $this';
 		// @var \Wikimedia\IDLeDOM\HTMLFormControlsCollection $this
@@ -184,7 +183,7 @@ trait HTMLFormControlsCollection {
 	/**
 	 * @return \Iterator<Element> Value iterator returning Element items
 	 */
-	public function getIterator(): \Iterator {
+	public function getIterator() {
 		'@phan-var \Wikimedia\IDLeDOM\HTMLFormControlsCollection $this';
 		// @var \Wikimedia\IDLeDOM\HTMLFormControlsCollection $this
 		for ( $i = 0; $i < $this->getLength(); $i++ ) {

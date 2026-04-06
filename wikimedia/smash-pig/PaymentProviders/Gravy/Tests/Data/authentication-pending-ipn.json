@@ -1,0 +1,36 @@
+{
+  "type": "event",
+  "name": "transaction.authentication-pending",
+  "id": "c7670aea-72ef-4c96-ab91-b9d4f9e633a8",
+  "created_at": "2026-03-30T14:12:36.335995+00:00",
+  "target": {
+    "type": "transaction",
+    "id": "9a4231e6-1c27-4e85-a712-8fa857da2c64",
+    "external_identifier": "245859198.2",
+    "payment_service_transaction_id": "CSF93B46F4082A16720A5B384",
+    "status": "buyer_approval_pending",
+    "has_gift_card_redemptions": false,
+    "pending_review": false,
+    "amount": 1200,
+    "authorized_amount": 0,
+    "captured_amount": 0,
+    "refunded_amount": 0,
+    "currency": "NOK",
+    "metadata": null,
+    "created_at": "2026-03-30T14:12:36.158976+00:00",
+    "updated_at": "2026-03-30T14:12:36.318306+00:00",
+    "payment_method": {
+      "id": null,
+      "method": "vipps"
+    },
+    "payment_link_id": null,
+    "error_code": null,
+    "iso_response_code": null,
+    "payment_source": "ecommerce",
+    "merchant_initiated": false,
+    "is_subsequent_payment": false
+  },
+  "merchant_account_id": "default",
+  "gr4vy_id": "wikimedia",
+  "environment": "production"
+}

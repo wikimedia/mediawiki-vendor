@@ -4,9 +4,7 @@
  */
 class Less_Tree_DefaultFunc {
 
-	/** @var string|null */
 	private static $error_;
-	/** @var int|null */
 	private static $value_;
 
 	public static function compile() {

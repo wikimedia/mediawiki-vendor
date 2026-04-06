@@ -2,31 +2,58 @@
 
 /*
  * This file is part of Respect/Stringifier.
- * Copyright (c) Henrique Moody <henriquemoody@gmail.com>
- * SPDX-License-Identifier: MIT
+ *
+ * (c) Henrique Moody <henriquemoody@gmail.com>
+ *
+ * For the full copyright and license information, please view the "LICENSE.md"
+ * file that was distributed with this source code.
  */
 
 declare(strict_types=1);
 
 namespace Respect\Stringifier\Stringifiers;
 
+use function get_class;
+use function getcwd;
+use function sprintf;
+use function str_replace;
 use Respect\Stringifier\Quoter;
 use Respect\Stringifier\Stringifier;
 use Throwable;
 
-use function getcwd;
-use function sprintf;
-use function str_replace;
-
+/**
+ * Converts an instance of Throwable into a string.
+ *
+ * @author Henrique Moody <henriquemoody@gmail.com>
+ */
 final class ThrowableStringifier implements Stringifier
 {
-    public function __construct(
-        private readonly Stringifier $stringifier,
-        private readonly Quoter $quoter
-    ) {
+    /**
+     * @var Stringifier
+     */
+    private $stringifier;
+
+    /**
+     * @var Quoter
+     */
+    private $quoter;
+
+    /**
+     * Initializes the stringifier.
+     *
+     * @param Stringifier $stringifier
+     * @param Quoter $quoter
+     */
+    public function __construct(Stringifier $stringifier, Quoter $quoter)
+    {
+        $this->stringifier = $stringifier;
+        $this->quoter = $quoter;
     }
 
-    public function stringify(mixed $raw, int $depth): ?string
+    /**
+     * {@inheritdoc}
+     */
+    public function stringify($raw, int $depth): ?string
     {
         if (!$raw instanceof Throwable) {
             return null;
@@ -35,16 +62,13 @@ final class ThrowableStringifier implements Stringifier
         return $this->quoter->quote(
             sprintf(
                 '[throwable] (%s: %s)',
-                $raw::class,
+                get_class($raw),
                 $this->stringifier->stringify($this->getData($raw), $depth + 1)
             ),
             $depth
         );
     }
 
-    /**
-     * @return mixed[]
-     */
     private function getData(Throwable $throwable): array
     {
         return [
@@ -52,7 +76,7 @@ final class ThrowableStringifier implements Stringifier
             'code' => $throwable->getCode(),
             'file' => sprintf(
                 '%s:%d',
-                str_replace(getcwd() . '/', '', $throwable->getFile()),
+                str_replace(getcwd().'/', '', $throwable->getFile()),
                 $throwable->getLine()
             ),
         ];

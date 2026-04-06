@@ -211,10 +211,9 @@ class CardPaymentProviderTest extends BaseGravyTestCase {
 		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\CreatePaymentResponse',
 			$response );
 		$this->assertFalse( $response->isSuccessful() );
-		$errors = $response->getErrors();
+		$errors = $response->getValidationErrors();
 		$this->assertCount( 1, $errors );
-		$error_code = $validationErrorResponseBody['status'];
-		$this->assertEquals( ErrorMapper::$errorCodes[$error_code], $errors[0]->getErrorCode() );
+		$this->assertEquals( 'payment_method.number', $errors[0]->getField() );
 	}
 
 	public function testSuspectedFraud() {

@@ -23,8 +23,11 @@ class HostedPaymentProvider extends PaymentProvider implements IPaymentProvider 
 			// add placeholder params here for countries that need them
 			$this->addPlaceholderCreateHostedPaymentParams( $params );
 			$this->validateCreateHostedPaymentParams( $params );
-			// if upi_id exist, means direct UPI bank transfer needs to verify it first
-			if ( !empty( $params['upi_id'] ) ) {
+			// if recurring pix
+			if ( $this->isPixRecurring( $params ) ) {
+				$rawResponse = $this->api->pixEnrollment( $params );
+			} elseif ( !empty( $params['upi_id'] ) ) {
+				// if upi_id exist, means direct UPI bank transfer needs to verify it first
 				$rawResponse = $this->api->verifyUpiId( $params );
 				// if valid upi, then collect
 				if ( $rawResponse['status'] === BankTransferPaymentProvider::UPI_ID_VERIFY_STATUS_VERIFIED ) {
@@ -44,6 +47,12 @@ class HostedPaymentProvider extends PaymentProvider implements IPaymentProvider 
 		} catch ( ApiException $apiException ) {
 			return DlocalCreatePaymentResponseFactory::fromErrorResponse( $apiException->getRawErrors() );
 		}
+	}
+
+	public static function isPixRecurring( array $params ): bool {
+		$submethod = $params['payment_submethod'] ?? '';
+		$isRecurring = ( !empty( $params['recurring'] ) || !empty( $params['recurring_payment_token'] ) );
+		return $isRecurring && $submethod == 'pix';
 	}
 
 	/**

@@ -13,8 +13,9 @@ use Wikimedia\RemexHtml\Tokenizer\Tokenizer;
 class InBody extends InsertionMode {
 	/**
 	 * The tag names h1-h6, which are referred to at a couple of points.
+	 * @var array<string,bool>
 	 */
-	private const HEADING_NAMES = [
+	private static $headingNames = [
 		'h1' => true,
 		'h2' => true,
 		'h3' => true,
@@ -26,8 +27,10 @@ class InBody extends InsertionMode {
 	/**
 	 * The tag names which can be closed by </body> or </html> without causing
 	 * an error.
+	 *
+	 * @var array<string,bool>
 	 */
-	private const IMPLICIT_CLOSE = [
+	private static $implicitClose = [
 		'dd' => true,
 		'dt' => true,
 		'li' => true,
@@ -48,7 +51,6 @@ class InBody extends InsertionMode {
 		'html' => true,
 	];
 
-	/** @inheritDoc */
 	public function characters( $text, $start, $length, $sourceStart, $sourceLength ) {
 		$handleNonNull = function ( $text, $start, $length, $sourceStart, $sourceLength ) {
 			if ( strspn( $text, "\t\n\f\r ", $start, $length ) !== $length ) {
@@ -64,7 +66,6 @@ class InBody extends InsertionMode {
 		}
 	}
 
-	/** @inheritDoc */
 	public function startTag( $name, Attributes $attrs, $selfClose, $sourceStart, $sourceLength ) {
 		$mode = null;
 		$textMode = null;
@@ -170,7 +171,7 @@ class InBody extends InsertionMode {
 			case 'h5':
 			case 'h6':
 				$builder->closePInButtonScope( $sourceStart );
-				if ( isset( self::HEADING_NAMES[$stack->current->htmlName] ) ) {
+				if ( isset( self::$headingNames[$stack->current->htmlName] ) ) {
 					$builder->error( 'invalid nested heading, closing previous', $sourceStart );
 					$builder->pop( $sourceStart, 0 );
 				}
@@ -205,7 +206,7 @@ class InBody extends InsertionMode {
 						$builder->generateImpliedEndTagsAndPop( 'li', $sourceStart, 0 );
 						break;
 					}
-					if ( isset( HTMLData::SPECIAL[$node->namespace][$node->name] )
+					if ( isset( HTMLData::$special[$node->namespace][$node->name] )
 					&& $htmlName !== 'address' && $htmlName !== 'div' && $htmlName !== 'p'
 					) {
 						break;
@@ -224,7 +225,7 @@ class InBody extends InsertionMode {
 						$builder->generateImpliedEndTagsAndPop( $htmlName, $sourceStart, 0 );
 						break;
 					}
-					if ( isset( HTMLData::SPECIAL[$node->namespace][$node->name] )
+					if ( isset( HTMLData::$special[$node->namespace][$node->name] )
 					&& $htmlName !== 'address' && $htmlName !== 'div' && $htmlName !== 'p'
 					) {
 						break;
@@ -468,7 +469,6 @@ class InBody extends InsertionMode {
 		}
 	}
 
-	/** @inheritDoc */
 	public function endTag( $name, $sourceStart, $sourceLength ) {
 		$builder = $this->builder;
 		$stack = $builder->stack;
@@ -484,7 +484,7 @@ class InBody extends InsertionMode {
 					$builder->error( '</body> has no matching start tag in scope', $sourceStart );
 					break;
 				}
-				$builder->checkUnclosed( self::IMPLICIT_CLOSE, $sourceStart );
+				$builder->checkUnclosed( self::$implicitClose, $sourceStart );
 				$dispatcher->switchMode( Dispatcher::AFTER_BODY );
 				break;
 
@@ -494,7 +494,7 @@ class InBody extends InsertionMode {
 						$sourceStart );
 					break;
 				}
-				$builder->checkUnclosed( self::IMPLICIT_CLOSE, $sourceStart );
+				$builder->checkUnclosed( self::$implicitClose, $sourceStart );
 				$dispatcher->switchMode( Dispatcher::AFTER_BODY )
 					->endTag( $name, $sourceStart, $sourceLength );
 				break;
@@ -601,7 +601,7 @@ class InBody extends InsertionMode {
 			case 'h4':
 			case 'h5':
 			case 'h6':
-				if ( !$stack->isOneOfSetInScope( self::HEADING_NAMES ) ) {
+				if ( !$stack->isOneOfSetInScope( self::$headingNames ) ) {
 					$builder->error( "found </$name> when there is no heading tag in scope, ignoring",
 						$sourceStart );
 					break;
@@ -611,7 +611,7 @@ class InBody extends InsertionMode {
 					$builder->error( "end tag </$name> assumed to close non-matching heading tag",
 						$sourceStart );
 				}
-				$builder->popAllUpToNames( self::HEADING_NAMES, $sourceStart, $sourceLength );
+				$builder->popAllUpToNames( self::$headingNames, $sourceStart, $sourceLength );
 				break;
 
 			case 'a':
@@ -659,7 +659,6 @@ class InBody extends InsertionMode {
 		}
 	}
 
-	/** @inheritDoc */
 	public function endDocument( $pos ) {
 		$allowed = [
 			'dd' => true,

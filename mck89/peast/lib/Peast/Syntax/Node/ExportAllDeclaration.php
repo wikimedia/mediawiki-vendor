@@ -24,8 +24,7 @@ class ExportAllDeclaration extends Node implements ModuleDeclaration
      */
     protected $propertiesMap = array(
         "source" => true,
-        "exported" => true,
-        "attributes" => true
+        "exported" => true
     );
 
     /**
@@ -41,13 +40,6 @@ class ExportAllDeclaration extends Node implements ModuleDeclaration
      * @var Identifier|StringLiteral
      */
     protected $exported;
-    
-    /**
-     * Attributes array
-     * 
-     * @var array
-     */
-    protected $attributes = array();
 
     /**
      * Returns the export source
@@ -93,30 +85,6 @@ class ExportAllDeclaration extends Node implements ModuleDeclaration
     {
         $this->assertType($exported, array("Identifier", "StringLiteral"), true);
         $this->exported = $exported;
-        return $this;
-    }
-    
-    /**
-     * Returns the attributes array
-     * 
-     * @return array
-     */
-    public function getAttributes()
-    {
-        return $this->attributes;
-    }
-    
-    /**
-     * Sets the attributes array
-     * 
-     * @param array $attributes Attributes array
-     * 
-     * @return $this
-     */
-    public function setAttributes($attributes)
-    {
-        $this->assertArrayOf($attributes, "ImportAttribute");
-        $this->attributes = $attributes;
         return $this;
     }
 }

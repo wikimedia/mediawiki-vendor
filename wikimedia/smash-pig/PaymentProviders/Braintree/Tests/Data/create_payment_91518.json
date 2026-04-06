@@ -1,0 +1,31 @@
+{
+  "errors": [
+    {
+      "message": "Multi-use payment method ID is invalid or could not be found.",
+      "locations": [
+        {
+          "line": 2,
+          "column": 3
+        }
+      ],
+      "path": [
+        "authorizePaymentMethod"
+      ],
+      "extensions": {
+        "errorClass": "VALIDATION",
+        "errorType": "user_error",
+        "inputPath": [
+          "input",
+          "paymentMethodId"
+        ],
+        "legacyCode": "91518"
+      }
+    }
+  ],
+  "data": {
+    "authorizePaymentMethod": null
+  },
+  "extensions": {
+    "requestId": "43c60895-6a64-4179-86ba-333e047e91a6"
+  }
+}

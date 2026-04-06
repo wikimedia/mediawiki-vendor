@@ -80,7 +80,7 @@ trait URLSearchParams {
 	/**
 	 * @return \Iterator<string,string> Pair iterator: string => string
 	 */
-	public function getIterator(): \Iterator {
+	public function getIterator() {
 		throw self::_unimplemented();
 	}
 

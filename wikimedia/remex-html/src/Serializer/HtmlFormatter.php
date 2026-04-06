@@ -98,9 +98,7 @@ class HtmlFormatter implements Formatter, DOMFormatter {
 		HTMLData::NS_SVG => true,
 	];
 
-	/** @var bool */
 	protected $useSourceDoctype;
-	/** @var bool */
 	protected $reverseCoercion;
 
 	/**
@@ -126,12 +124,10 @@ class HtmlFormatter implements Formatter, DOMFormatter {
 		$this->reverseCoercion = $options['reverseCoercion'];
 	}
 
-	/** @inheritDoc */
 	public function startDocument( $fragmentNamespace, $fragmentName ) {
 		return "<!DOCTYPE html>";
 	}
 
-	/** @inheritDoc */
 	public function characters( SerializerNode $parent, $text, $start, $length ) {
 		$text = substr( $text, $start, $length );
 		if ( $parent->namespace !== HTMLData::NS_HTML
@@ -142,7 +138,6 @@ class HtmlFormatter implements Formatter, DOMFormatter {
 		return $text;
 	}
 
-	/** @inheritDoc */
 	public function element( SerializerNode $parent, SerializerNode $node, $contents ) {
 		$name = $node->name;
 		$s = "<$name";
@@ -165,12 +160,10 @@ class HtmlFormatter implements Formatter, DOMFormatter {
 		return $s;
 	}
 
-	/** @inheritDoc */
 	public function comment( SerializerNode $parent, $text ) {
 		return "<!--$text-->";
 	}
 
-	/** @inheritDoc */
 	public function doctype( $name, $public, $system ) {
 		return '';
 	}

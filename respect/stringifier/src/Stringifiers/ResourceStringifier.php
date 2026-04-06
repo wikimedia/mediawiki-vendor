@@ -2,29 +2,49 @@
 
 /*
  * This file is part of Respect/Stringifier.
- * Copyright (c) Henrique Moody <henriquemoody@gmail.com>
- * SPDX-License-Identifier: MIT
+ *
+ * (c) Henrique Moody <henriquemoody@gmail.com>
+ *
+ * For the full copyright and license information, please view the "LICENSE.md"
+ * file that was distributed with this source code.
  */
 
 declare(strict_types=1);
 
 namespace Respect\Stringifier\Stringifiers;
 
-use Respect\Stringifier\Quoter;
-use Respect\Stringifier\Stringifier;
-
 use function get_resource_type;
 use function is_resource;
 use function sprintf;
+use Respect\Stringifier\Quoter;
+use Respect\Stringifier\Stringifier;
 
+/**
+ * Converts a resource value into a string.
+ *
+ * @author Henrique Moody <henriquemoody@gmail.com>
+ */
 final class ResourceStringifier implements Stringifier
 {
-    public function __construct(
-        private readonly Quoter $quoter
-    ) {
+    /**
+     * @var Quoter
+     */
+    private $quoter;
+
+    /**
+     * Initializes the stringifier.
+     *
+     * @param Quoter $quoter
+     */
+    public function __construct(Quoter $quoter)
+    {
+        $this->quoter = $quoter;
     }
 
-    public function stringify(mixed $raw, int $depth): ?string
+    /**
+     * {@inheritdoc}
+     */
+    public function stringify($raw, int $depth): ?string
     {
         if (!is_resource($raw)) {
             return null;

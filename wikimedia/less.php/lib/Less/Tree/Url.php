@@ -4,11 +4,9 @@
  */
 class Less_Tree_Url extends Less_Tree implements Less_Tree_HasValueProperty {
 
-	/** @var Less_Tree_Variable|Less_Tree_Quoted|Less_Tree_Anonymous */
+	public $attrs;
 	public $value;
-	/** @var array|null */
 	public $currentFileInfo;
-	/** @var bool|null */
 	public $isEvald;
 
 	/**
@@ -61,7 +59,7 @@ class Less_Tree_Url extends Less_Tree implements Less_Tree_HasValueProperty {
 		// Add cache buster if enabled
 		if ( Less_Parser::$options['urlArgs'] ) {
 			if ( !preg_match( '/^\s*data:/', $val->value ) ) {
-				$delimiter = !str_contains( $val->value, '?' ) ? '?' : '&';
+				$delimiter = strpos( $val->value, '?' ) === false ? '?' : '&';
 				$urlArgs = $delimiter . Less_Parser::$options['urlArgs'];
 				$hash_pos = strpos( $val->value, '#' );
 				if ( $hash_pos !== false ) {

@@ -156,7 +156,7 @@ class CaptureJobTest extends BaseAdyenTestCase {
 		$job->payload = ProcessCaptureRequestJob::factory( $auth )['payload'];
 		$this->assertTrue( $job->execute() );
 
-		$donorData = $this->pendingDatabase->fetchMessageByGatewayOrderId(
+		$donorData = $this->pendingDatabase->fetchUnresolvedMessageByGatewayOrderId(
 			'adyen', $auth->merchantReference
 		);
 		$this->assertNull(

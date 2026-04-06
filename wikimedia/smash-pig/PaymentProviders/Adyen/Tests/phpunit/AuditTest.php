@@ -511,8 +511,6 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'payment_orchestrator_reconciliation_id' => '1w24hGOdCSFLtsgBQr2jKh',
 			'backend_processor_parent_id' => 'DASD76ASD7ASD4AS',
 			'backend_processor_reversal_id' => 'ASDF5ASDF4QWER3A',
-			// For now this is a duplicate but the reversal is intended to replace.
-			'backend_processor_refund_id' => 'ASDF5ASDF4QWER3A',
 			'settled_date' => 1697133875,
 		];
 		$this->assertEquals( $expected, $actual, 'Did not parse donation correctly' );

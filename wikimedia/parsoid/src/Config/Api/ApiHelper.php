@@ -4,6 +4,8 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Config\Api;
 
+use Wikimedia\ScopedCallback;
+
 class ApiHelper {
 
 	/** @var string */
@@ -107,6 +109,7 @@ class ApiHelper {
 		if ( !$ch ) {
 			throw new \RuntimeException( "Failed to open curl handle to $this->endpoint" );
 		}
+		$reset = new ScopedCallback( 'curl_close', [ $ch ] );
 
 		$params['format'] = 'json';
 		$params['formatversion'] ??= '2';
@@ -129,6 +132,8 @@ class ApiHelper {
 		if ( $code !== 200 ) {
 			throw new \RuntimeException( "HTTP request failed: HTTP code $code" );
 		}
+
+		ScopedCallback::consume( $reset );
 
 		if ( !$res ) {
 			throw new \RuntimeException( "HTTP request failed: Empty response" );

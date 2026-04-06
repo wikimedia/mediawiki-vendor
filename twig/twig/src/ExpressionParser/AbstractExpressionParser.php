@@ -27,9 +27,4 @@ abstract class AbstractExpressionParser implements ExpressionParserInterface
     {
         return [];
     }
-
-    public function getOperatorTokens(): array
-    {
-        return [$this->getName(), ...$this->getAliases()];
-    }
 }

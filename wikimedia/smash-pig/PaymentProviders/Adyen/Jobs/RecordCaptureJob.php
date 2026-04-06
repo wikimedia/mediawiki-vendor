@@ -44,7 +44,7 @@ class RecordCaptureJob implements Runnable {
 		$logger->debug( 'Attempting to locate associated message in pending database' );
 
 		$db = PendingDatabase::get();
-		$dbMessage = $db->fetchMessageByGatewayOrderId( 'adyen', $this->payload['merchantReference'] );
+		$dbMessage = $db->fetchMessageByGatewayOrderId( 'adyen', $this->payload['merchantReference'], $this->payload['gatewayTxnId'] );
 
 		if ( $dbMessage && ( isset( $dbMessage['order_id'] ) ) ) {
 			$logger->debug( 'A valid message was obtained from the pending queue' );
@@ -83,7 +83,7 @@ class RecordCaptureJob implements Runnable {
 
 			// Remove it from the pending database
 			$logger->debug( 'Removing donor details message from pending database' );
-			$db->deleteMessage( $dbMessage );
+			$db->markMessageResolved( $dbMessage );
 
 		} else {
 			// Sometimes we don't have a pending db row because the donor made

@@ -63,7 +63,8 @@ class Less_Output_Mapped extends Less_Output {
 		$sourceLines = [];
 		$sourceColumns = ' ';
 
-		if ( isset( $fileInfo['currentUri'] ) ) {
+		if ( $fileInfo ) {
+
 			$url = $fileInfo['currentUri'];
 
 			if ( isset( $this->contentsMap[$url] ) ) {

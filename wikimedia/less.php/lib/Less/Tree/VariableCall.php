@@ -6,9 +6,7 @@
  */
 class Less_Tree_VariableCall extends Less_Tree {
 
-	/** @var string */
 	public $variable;
-	/** @var string */
 	public $type = "VariableCall";
 	/**
 	 * @var int

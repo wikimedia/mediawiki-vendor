@@ -14,20 +14,13 @@ if ( !class_exists( 'Less_Parser' ) ) {
 
 class lessc {
 
-	/** @var string */
 	public static $VERSION = Less_Version::less_version;
 
-	/** @var string|string[] */
 	public $importDir = '';
-	/** @var array<string,int> */
 	protected $allParsedFiles = [];
-	/** @var array<string,callable> */
 	protected $libFunctions = [];
-	/** @var array */
 	protected $registeredVars = [];
-	/** @var string */
 	private $formatterName;
-	/** @var array<string,mixed> */
 	private $options = [];
 
 	public function __construct( $lessc = null, $sourceName = null ) {
@@ -110,11 +103,13 @@ class lessc {
 		return $options;
 	}
 
-	/**
-	 * @return array<string,string>
-	 */
 	protected function getImportDirs() {
-		return array_fill_keys( (array)$this->importDir, '' );
+		$dirs_ = (array)$this->importDir;
+		$dirs = [];
+		foreach ( $dirs_ as $dir ) {
+			$dirs[$dir] = '';
+		}
+		return $dirs;
 	}
 
 	public function compile( $string, $name = null ) {
@@ -238,26 +233,32 @@ class lessc {
 			return null;
 		}
 
-		if ( $root === null ) {
-			// No changes, pass back the structure we were given initially.
+		if ( $root !== null ) {
+			// If we have a root value which means we should rebuild.
+			$out = [];
+			$out['root'] = $root;
+			$out['compiled'] = $this->compileFile( $root );
+			$out['files'] = $this->allParsedFiles;
+			$out['updated'] = time();
+			return $out;
+		} else {
+			// No changes, pass back the structure
+			// we were given initially.
 			return $in;
 		}
-
-		return [
-			'root' => $root,
-			'compiled' => $this->compileFile( $root ),
-			'files' => $this->allParsedFiles,
-			'updated' => time(),
-		];
 	}
 
 	public function ccompile( $in, $out, $less = null ) {
-		$less ??= new self();
+		if ( $less === null ) {
+			$less = new self;
+		}
 		return $less->checkedCompile( $in, $out );
 	}
 
 	public static function cexecute( $in, $force = false, $less = null ) {
-		$less ??= new self();
+		if ( $less === null ) {
+			$less = new self;
+		}
 		return $less->cachedCompile( $in, $force );
 	}
 

@@ -24,6 +24,7 @@ return [
     'SA.AU',
     'SA.EDU.AU',
     'SA.GOV.AU',
+    'SCHOOLS.NSW.EDU.AU',
     'TAS.AU',
     'TAS.EDU.AU',
     'TAS.GOV.AU',

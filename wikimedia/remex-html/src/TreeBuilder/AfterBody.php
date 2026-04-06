@@ -8,7 +8,6 @@ use Wikimedia\RemexHtml\Tokenizer\Attributes;
  * The "after body" insertion mode
  */
 class AfterBody extends InsertionMode {
-	/** @inheritDoc */
 	public function characters( $text, $start, $length, $sourceStart, $sourceLength ) {
 		[ $part1, $part2 ] = $this->splitInitialMatch(
 			true, "\t\n\f\r ", $text, $start, $length, $sourceStart, $sourceLength );
@@ -24,7 +23,6 @@ class AfterBody extends InsertionMode {
 			->characters( $text, $start, $length, $sourceStart, $sourceLength );
 	}
 
-	/** @inheritDoc */
 	public function startTag( $name, Attributes $attrs, $selfClose, $sourceStart, $sourceLength ) {
 		$builder = $this->builder;
 		$dispatcher = $this->dispatcher;
@@ -42,7 +40,6 @@ class AfterBody extends InsertionMode {
 		}
 	}
 
-	/** @inheritDoc */
 	public function endTag( $name, $sourceStart, $sourceLength ) {
 		$builder = $this->builder;
 		$dispatcher = $this->dispatcher;
@@ -63,12 +60,10 @@ class AfterBody extends InsertionMode {
 		}
 	}
 
-	/** @inheritDoc */
 	public function endDocument( $pos ) {
 		$this->builder->stopParsing( $pos );
 	}
 
-	/** @inheritDoc */
 	public function comment( $text, $sourceStart, $sourceLength ) {
 		$this->builder->comment( [ TreeBuilder::UNDER, $this->builder->stack->item( 0 ) ],
 			$text, $sourceStart, $sourceLength );

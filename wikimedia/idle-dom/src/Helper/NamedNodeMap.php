@@ -123,7 +123,6 @@ trait NamedNodeMap {
 	 * @param mixed $offset
 	 * @return mixed
 	 */
-	#[\ReturnTypeWillChange]
 	public function offsetGet( $offset ) {
 		'@phan-var \Wikimedia\IDLeDOM\NamedNodeMap $this';
 		// @var \Wikimedia\IDLeDOM\NamedNodeMap $this
@@ -215,7 +214,7 @@ trait NamedNodeMap {
 	/**
 	 * @return \Iterator<Attr> Value iterator returning Attr items
 	 */
-	public function getIterator(): \Iterator {
+	public function getIterator() {
 		'@phan-var \Wikimedia\IDLeDOM\NamedNodeMap $this';
 		// @var \Wikimedia\IDLeDOM\NamedNodeMap $this
 		for ( $i = 0; $i < $this->getLength(); $i++ ) {

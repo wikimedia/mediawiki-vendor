@@ -108,23 +108,56 @@ abstract class GravyPaymentResponseFactory {
 		array $normalizedResponse = []
 	): void {
 		$paymentResponse->setSuccessful( false );
+		$raw = $normalizedResponse['raw_response'] ?? [];
 		// If the normalized code indicates a validation error, try to map the raw error code
 		// to a field name. If there's a match, add a ValidationError rather than a PaymentError
-		$field = null;
+
 		if ( $errorCode === ErrorCode::VALIDATION ) {
-			$field = ErrorMapper::getValidationErrorField( $normalizedResponse['raw_response']['error_code'] ?? null );
+			if ( !empty( $raw['error_code'] ) ) {
+				$field = ErrorMapper::getValidationErrorField( $raw['error_code'] );
+
+				if ( $field ) {
+					$paymentResponse->addValidationError(
+						new ValidationError( $field )
+					);
+					return;
+				}
+			}
+
+			if ( !empty( $raw['details'] ) ) {
+				$added = false;
+				foreach ( $raw['details'] as $detail ) {
+					if ( empty( $detail['pointer'] ) ) {
+						continue;
+					}
+					$pointer = ltrim(
+						str_replace( '\/', '/', $detail['pointer'] ),
+						'/'
+					);
+
+					$field = ErrorMapper::getDetailPointer( $pointer );
+
+					if ( !$field ) {
+						// we might not have all error pointer mapped fall back with pointer
+						$field = $pointer;
+					}
+					$paymentResponse->addValidationError(
+						new ValidationError( $field, null, [], $detail['message'] )
+					);
+					$added = true;
+				}
+				if ( $added ) {
+					return;
+				}
+			}
 		}
-		if ( $field ) {
-			$paymentResponse->addValidationError( new ValidationError( $field ) );
-		} else {
-			$paymentResponse->addErrors(
-				new PaymentError(
-					$errorCode ?? ErrorCode::UNKNOWN,
-					$statusDetail,
-					LogLevel::ERROR
-				)
-			);
-		}
+		$paymentResponse->addErrors(
+			new PaymentError(
+				$errorCode ?? ErrorCode::UNKNOWN,
+				$statusDetail,
+				LogLevel::ERROR
+			)
+		);
 	}
 
 	/**

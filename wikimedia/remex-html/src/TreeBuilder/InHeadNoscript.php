@@ -8,7 +8,6 @@ use Wikimedia\RemexHtml\Tokenizer\Attributes;
  * The "in head noscript" insertion mode
  */
 class InHeadNoscript extends InsertionMode {
-	/** @inheritDoc */
 	public function characters( $text, $start, $length, $sourceStart, $sourceLength ) {
 		$builder = $this->builder;
 		$dispatcher = $this->dispatcher;
@@ -33,7 +32,6 @@ class InHeadNoscript extends InsertionMode {
 		}
 	}
 
-	/** @inheritDoc */
 	public function startTag( $name, Attributes $attrs, $selfClose, $sourceStart, $sourceLength ) {
 		$builder = $this->builder;
 		$dispatcher = $this->dispatcher;
@@ -66,7 +64,6 @@ class InHeadNoscript extends InsertionMode {
 		}
 	}
 
-	/** @inheritDoc */
 	public function endTag( $name, $sourceStart, $sourceLength ) {
 		$builder = $this->builder;
 		$dispatcher = $this->dispatcher;
@@ -92,7 +89,6 @@ class InHeadNoscript extends InsertionMode {
 		}
 	}
 
-	/** @inheritDoc */
 	public function endDocument( $pos ) {
 		$this->builder->error( "unexpected end-of-file in head in noscript", $pos );
 		$this->builder->pop( $pos, 0 );

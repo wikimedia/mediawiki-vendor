@@ -123,7 +123,6 @@ trait HTMLCollection {
 	 * @param mixed $offset
 	 * @return mixed
 	 */
-	#[\ReturnTypeWillChange]
 	public function offsetGet( $offset ) {
 		'@phan-var \Wikimedia\IDLeDOM\HTMLCollection $this';
 		// @var \Wikimedia\IDLeDOM\HTMLCollection $this
@@ -215,7 +214,7 @@ trait HTMLCollection {
 	/**
 	 * @return \Iterator<Element> Value iterator returning Element items
 	 */
-	public function getIterator(): \Iterator {
+	public function getIterator() {
 		'@phan-var \Wikimedia\IDLeDOM\HTMLCollection $this';
 		// @var \Wikimedia\IDLeDOM\HTMLCollection $this
 		for ( $i = 0; $i < $this->getLength(); $i++ ) {

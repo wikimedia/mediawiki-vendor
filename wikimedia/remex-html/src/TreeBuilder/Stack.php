@@ -8,7 +8,6 @@ namespace Wikimedia\RemexHtml\TreeBuilder;
  * @see SimpleStack
  */
 abstract class Stack {
-	/** @var Element|null */
 	public $current;
 
 	/**

@@ -12,7 +12,6 @@ return [
     'FIRM.VE',
     'GOB.VE',
     'GOV.VE',
-    'IA.VE',
     'INFO.VE',
     'INT.VE',
     'MIL.VE',

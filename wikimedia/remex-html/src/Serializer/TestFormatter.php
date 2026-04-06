@@ -13,18 +13,16 @@ use Wikimedia\RemexHtml\Tokenizer\Attribute;
  * in the PHPUnit tests.
  */
 class TestFormatter implements Formatter, DOMFormatter {
-	private const ATTR_NAMESPACES = [
+	private static $attrNamespaces = [
 		HTMLData::NS_XML => 'xml',
 		HTMLData::NS_XLINK => 'xlink',
 		HTMLData::NS_XMLNS => 'xmlns',
 	];
 
-	/** @inheritDoc */
 	public function startDocument( $fragmentNamespace, $fragmentName ) {
 		return '';
 	}
 
-	/** @inheritDoc */
 	public function doctype( $name, $public, $system ) {
 		$ret = "<!DOCTYPE $name";
 		if ( $public !== '' || $system !== '' ) {
@@ -34,24 +32,22 @@ class TestFormatter implements Formatter, DOMFormatter {
 		return $ret;
 	}
 
-	/** @inheritDoc */
 	public function characters( SerializerNode $parent, $text, $start, $length ) {
 		return $this->formatCharacters( substr( $text, $start, $length ) );
 	}
 
-	private function formatCharacters( string $text ): string {
+	private function formatCharacters( $text ) {
 		return '"' .
 			str_replace( "\n", "<EOL>", $text ) .
 			"\"\n";
 	}
 
-	/** @inheritDoc */
 	public function element( SerializerNode $parent, SerializerNode $node, $contents ) {
 		return $this->formatElement( $node->namespace, $node->name,
 			$node->attrs->getObjects(), $contents );
 	}
 
-	private function formatElement( ?string $namespace, string $name, array $attrs, ?string $contents ): string {
+	private function formatElement( $namespace, $name, $attrs, $contents ) {
 		$name = DOMUtils::uncoerceName( $name );
 		if ( $namespace === HTMLData::NS_HTML ) {
 			$tagName = $name;
@@ -68,11 +64,12 @@ class TestFormatter implements Formatter, DOMFormatter {
 		foreach ( $sortedAttrs as $attrName => $attr ) {
 			$localName = DOMUtils::uncoerceName( $attr->localName );
 			if ( $attr->namespaceURI === null
+				// @phan-suppress-next-line PhanUndeclaredProperty
 				|| isset( $attr->reallyNoNamespace )
 			) {
 				$prefix = '';
-			} elseif ( isset( self::ATTR_NAMESPACES[$attr->namespaceURI] ) ) {
-				$prefix = self::ATTR_NAMESPACES[$attr->namespaceURI] . ' ';
+			} elseif ( isset( self::$attrNamespaces[$attr->namespaceURI] ) ) {
+				$prefix = self::$attrNamespaces[$attr->namespaceURI] . ' ';
 			} else {
 				$prefix = '';
 			}
@@ -94,16 +91,14 @@ class TestFormatter implements Formatter, DOMFormatter {
 		return $ret;
 	}
 
-	/** @inheritDoc */
 	public function comment( SerializerNode $parent, $text ) {
 		return $this->formatComment( $text );
 	}
 
-	private function formatComment( string $text ): string {
+	private function formatComment( $text ) {
 		return "<!-- $text -->\n";
 	}
 
-	/** @inheritDoc */
 	public function formatDOMNode( \DOMNode $node ) {
 		$contents = '';
 		if ( $node->firstChild ) {
@@ -140,7 +135,6 @@ class TestFormatter implements Formatter, DOMFormatter {
 		}
 	}
 
-	/** @inheritDoc */
 	public function formatDOMElement( \DOMElement $node, $content ) {
 		$attrs = [];
 		foreach ( $node->attributes as $attr ) {

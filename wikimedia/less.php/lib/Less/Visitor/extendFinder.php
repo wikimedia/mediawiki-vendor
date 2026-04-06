@@ -4,11 +4,8 @@
  */
 class Less_Visitor_extendFinder extends Less_Visitor {
 
-	/** @var Less_Tree_Selector[] */
 	public $contexts = [];
-	/** @var Less_Tree_Extend[][] */
 	public $allExtendsStack;
-	/** @var bool */
 	public $foundExtends;
 
 	public function __construct() {
@@ -83,7 +80,7 @@ class Less_Visitor_extendFinder extends Less_Visitor {
 	}
 
 	public function visitRulesetOut( $rulesetNode ) {
-		if ( !$rulesetNode instanceof Less_Tree_Ruleset || !$rulesetNode->root ) {
+		if ( !is_object( $rulesetNode ) || !$rulesetNode->root ) {
 			array_pop( $this->contexts );
 		}
 	}

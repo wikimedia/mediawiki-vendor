@@ -9,7 +9,7 @@ use SmashPig\Core\Logging\Logger;
 use SmashPig\Maintenance\MaintenanceBase;
 
 /**
- * Fetch Payment service definition details
+ * Fetches the default Payment service definition details
  * for gravy payment method
  */
 class ListPaymentServiceDefinitions extends MaintenanceBase {
@@ -27,7 +27,7 @@ class ListPaymentServiceDefinitions extends MaintenanceBase {
 		$providerConfiguration = Context::get()->getProviderConfiguration();
 		$api = $providerConfiguration->object( 'api' );
 
-		$result = $api->getPaymentServicesForMethod( $method );
+		$result = $api->getPaymentServiceDefinition( $method );
 		print_r( json_encode( $result ) );
 	}
 }

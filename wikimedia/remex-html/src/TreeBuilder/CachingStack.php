@@ -16,15 +16,15 @@ class CachingStack extends Stack {
 	private const SCOPE_TABLE = 3;
 	private const SCOPE_SELECT = 4;
 
-	private const ALL_SCOPES = [ self::SCOPE_DEFAULT, self::SCOPE_LIST, self::SCOPE_BUTTON,
+	private static $allScopes = [ self::SCOPE_DEFAULT, self::SCOPE_LIST, self::SCOPE_BUTTON,
 		self::SCOPE_TABLE, self::SCOPE_SELECT ];
-	private const NON_TABLE_SCOPES = [ self::SCOPE_DEFAULT, self::SCOPE_LIST, self::SCOPE_BUTTON,
+	private static $nonTableScopes = [ self::SCOPE_DEFAULT, self::SCOPE_LIST, self::SCOPE_BUTTON,
 		self::SCOPE_SELECT ];
-	private const LIST_SCOPES = [ self::SCOPE_LIST, self::SCOPE_SELECT ];
-	private const BUTTON_SCOPES = [ self::SCOPE_BUTTON, self::SCOPE_SELECT ];
-	private const SELECT_ONLY = [ self::SCOPE_SELECT ];
+	private static $listScopes = [ self::SCOPE_LIST, self::SCOPE_SELECT ];
+	private static $buttonScopes = [ self::SCOPE_BUTTON, self::SCOPE_SELECT ];
+	private static $selectOnly = [ self::SCOPE_SELECT ];
 
-	private const MATH_BREAKERS = [
+	private static $mathBreakers = [
 		'mi' => true,
 		'mo' => true,
 		'mn' => true,
@@ -33,7 +33,7 @@ class CachingStack extends Stack {
 		'annotation-xml' => true
 	];
 
-	private const SVG_BREAKERS = [
+	private static $svgBreakers = [
 		'foreignObject' => true,
 		'desc' => true,
 		'title' => true
@@ -49,8 +49,10 @@ class CachingStack extends Stack {
 	 * to. All formatting elements are included as SCOPE_DEFAULT since the AAA
 	 * involves pulling an item out of the AFE list and checking if it is in
 	 * scope.
+	 *
+	 * @var array
 	 */
-	private const PREDICATE_MAP = [
+	private static $predicateMap = [
 		'a' => self::SCOPE_DEFAULT,
 		'address' => self::SCOPE_DEFAULT,
 		'applet' => self::SCOPE_DEFAULT,
@@ -184,7 +186,7 @@ class CachingStack extends Stack {
 				case 'html':
 				case 'table':
 				case 'template':
-					return self::ALL_SCOPES;
+					return self::$allScopes;
 
 				case 'applet':
 				case 'caption':
@@ -192,40 +194,39 @@ class CachingStack extends Stack {
 				case 'th':
 				case 'marquee':
 				case 'object':
-					return self::NON_TABLE_SCOPES;
+					return self::$nonTableScopes;
 
 				case 'ol':
 				case 'ul':
-					return self::LIST_SCOPES;
+					return self::$listScopes;
 
 				case 'button':
-					return self::BUTTON_SCOPES;
+					return self::$buttonScopes;
 
 				case 'option':
 				case 'optgroup':
 					return [];
 
 				default:
-					return self::SELECT_ONLY;
+					return self::$selectOnly;
 			}
 		} elseif ( $ns === HTMLData::NS_MATHML ) {
-			if ( isset( self::MATH_BREAKERS[$name] ) ) {
-				return self::NON_TABLE_SCOPES;
+			if ( isset( self::$mathBreakers[$name] ) ) {
+				return self::$nonTableScopes;
 			} else {
-				return self::SELECT_ONLY;
+				return self::$selectOnly;
 			}
 		} elseif ( $ns === HTMLData::NS_SVG ) {
-			if ( isset( self::SVG_BREAKERS[$name] ) ) {
-				return self::NON_TABLE_SCOPES;
+			if ( isset( self::$svgBreakers[$name] ) ) {
+				return self::$nonTableScopes;
 			} else {
-				return self::SELECT_ONLY;
+				return self::$selectOnly;
 			}
 		} else {
-			return self::SELECT_ONLY;
+			return self::$selectOnly;
 		}
 	}
 
-	/** @inheritDoc */
 	public function push( Element $elt ) {
 		// Update the stack store
 		$n = count( $this->elements );
@@ -240,8 +241,8 @@ class CachingStack extends Stack {
 			$this->scopeStacks[$type][] = $this->scopes[$type];
 			$this->scopes[$type] = [];
 		}
-		if ( $ns === HTMLData::NS_HTML && isset( self::PREDICATE_MAP[$name] ) ) {
-			$type = self::PREDICATE_MAP[$name];
+		if ( $ns === HTMLData::NS_HTML && isset( self::$predicateMap[$name] ) ) {
+			$type = self::$predicateMap[$name];
 			$scope =& $this->scopes[$type];
 			$elt->nextEltInScope = $scope[$name] ?? null;
 			$scope[$name] = $elt;
@@ -253,7 +254,6 @@ class CachingStack extends Stack {
 		}
 	}
 
-	/** @inheritDoc */
 	public function pop() {
 		$n = count( $this->elements );
 		if ( !$n ) {
@@ -267,8 +267,8 @@ class CachingStack extends Stack {
 		$name = $elt->name;
 		$this->current = $n ? $this->elements[$n - 1] : null;
 		// Update the scope cache
-		if ( $ns === HTMLData::NS_HTML && isset( self::PREDICATE_MAP[$name] ) ) {
-			$scope = self::PREDICATE_MAP[$name];
+		if ( $ns === HTMLData::NS_HTML && isset( self::$predicateMap[$name] ) ) {
+			$scope = self::$predicateMap[$name];
 			$this->scopes[$scope][$name] = $elt->nextEltInScope;
 			$elt->nextEltInScope = null;
 		}
@@ -282,7 +282,6 @@ class CachingStack extends Stack {
 		return $elt;
 	}
 
-	/** @inheritDoc */
 	public function replace( Element $oldElt, Element $elt ) {
 		$idx = $oldElt->stackIndex;
 		// AAA calls this function only for elements with the same name, which
@@ -294,8 +293,8 @@ class CachingStack extends Stack {
 		$ns = $elt->namespace;
 		$name = $elt->name;
 		// Find the old element in its scope list and replace it
-		if ( $ns === HTMLData::NS_HTML && isset( self::PREDICATE_MAP[$name] ) ) {
-			$type = self::PREDICATE_MAP[$name];
+		if ( $ns === HTMLData::NS_HTML && isset( self::$predicateMap[$name] ) ) {
+			$type = self::$predicateMap[$name];
 			$scopeElt = $this->scopes[$type][$name];
 			if ( $scopeElt === $oldElt ) {
 				$this->scopes[$type][$name] = $elt;
@@ -327,7 +326,6 @@ class CachingStack extends Stack {
 		$elt->stackIndex = $idx;
 	}
 
-	/** @inheritDoc */
 	public function remove( Element $elt ) {
 		$tempStack = [];
 		$eltIndex = $elt->stackIndex;
@@ -344,18 +342,16 @@ class CachingStack extends Stack {
 		}
 	}
 
-	/** @inheritDoc */
 	public function isInScope( $name ) {
-		if ( self::PREDICATE_MAP[$name] !== self::SCOPE_DEFAULT ) {
+		if ( self::$predicateMap[$name] !== self::SCOPE_DEFAULT ) {
 			throw new TreeBuilderError( "Unexpected predicate: \"$name is in scope\"" );
 		}
 		return !empty( $this->scopes[self::SCOPE_DEFAULT][$name] );
 	}
 
-	/** @inheritDoc */
 	public function isElementInScope( Element $elt ) {
 		$name = $elt->name;
-		if ( self::PREDICATE_MAP[$name] !== self::SCOPE_DEFAULT ) {
+		if ( self::$predicateMap[$name] !== self::SCOPE_DEFAULT ) {
 			throw new TreeBuilderError( "Unexpected predicate: \"$name is in scope\"" );
 		}
 		if ( !empty( $this->scopes[self::SCOPE_DEFAULT][$name] ) ) {
@@ -370,7 +366,6 @@ class CachingStack extends Stack {
 		return false;
 	}
 
-	/** @inheritDoc */
 	public function isOneOfSetInScope( $names ) {
 		foreach ( $names as $name => $unused ) {
 			if ( $this->isInScope( $name ) ) {
@@ -380,54 +375,46 @@ class CachingStack extends Stack {
 		return false;
 	}
 
-	/** @inheritDoc */
 	public function isInListScope( $name ) {
-		if ( self::PREDICATE_MAP[$name] !== self::SCOPE_LIST ) {
+		if ( self::$predicateMap[$name] !== self::SCOPE_LIST ) {
 			throw new TreeBuilderError( "Unexpected predicate: \"$name is in list scope\"" );
 		}
 		return !empty( $this->scopes[self::SCOPE_LIST][$name] );
 	}
 
-	/** @inheritDoc */
 	public function isInButtonScope( $name ) {
-		if ( self::PREDICATE_MAP[$name] !== self::SCOPE_BUTTON ) {
+		if ( self::$predicateMap[$name] !== self::SCOPE_BUTTON ) {
 			throw new TreeBuilderError( "Unexpected predicate: \"$name is in button scope\"" );
 		}
 		return !empty( $this->scopes[self::SCOPE_BUTTON][$name] );
 	}
 
-	/** @inheritDoc */
 	public function isInTableScope( $name ) {
-		if ( self::PREDICATE_MAP[$name] !== self::SCOPE_TABLE ) {
+		if ( self::$predicateMap[$name] !== self::SCOPE_TABLE ) {
 			throw new TreeBuilderError( "Unexpected predicate: \"$name is in table scope\"" );
 		}
 		return !empty( $this->scopes[self::SCOPE_TABLE][$name] );
 	}
 
-	/** @inheritDoc */
 	public function isInSelectScope( $name ) {
-		if ( self::PREDICATE_MAP[$name] !== self::SCOPE_SELECT ) {
+		if ( self::$predicateMap[$name] !== self::SCOPE_SELECT ) {
 			throw new TreeBuilderError( "Unexpected predicate: \"$name is in select scope\"" );
 		}
 		return !empty( $this->scopes[self::SCOPE_SELECT][$name] );
 	}
 
-	/** @inheritDoc */
 	public function item( $idx ) {
 		return $this->elements[$idx];
 	}
 
-	/** @inheritDoc */
 	public function length() {
 		return count( $this->elements );
 	}
 
-	/** @inheritDoc */
 	public function hasTemplate() {
 		return (bool)$this->templateCount;
 	}
 
-	/** @inheritDoc */
 	public function dump() {
 		return parent::dump() .
 			$this->scopeDump( self::SCOPE_DEFAULT, 'In scope' ) .
@@ -437,7 +424,7 @@ class CachingStack extends Stack {
 			$this->scopeDump( self::SCOPE_SELECT, 'In select scope' ) . "\n";
 	}
 
-	private function scopeDump( int $type, string $scopeName ): string {
+	private function scopeDump( $type, $scopeName ) {
 		if ( count( $this->scopes[$type] ) ) {
 			return "$scopeName: " . implode( ', ', array_keys( $this->scopes[$type] ) ) . "\n";
 		} else {

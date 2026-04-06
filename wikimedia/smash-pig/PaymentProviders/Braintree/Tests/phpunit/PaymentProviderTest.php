@@ -5,6 +5,7 @@ namespace SmashPig\PaymentProviders\Braintree\Tests;
 use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentProviders\Braintree\PaymentProvider;
 use SmashPig\PaymentProviders\Braintree\ValidationErrorMapper;
+use SmashPig\PaymentProviders\Braintree\VenmoPaymentProvider;
 use SmashPig\Tests\BaseSmashPigUnitTestCase;
 
 /**
@@ -213,5 +214,41 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 		$response = $provider->refundPayment( $request );
 		$this->assertEquals( FinalStatus::COMPLETE, $response->getStatus() );
 		$this->assertCount( 0, array_merge( $response->getValidationErrors(), $response->getErrors() ) );
+	}
+
+	/**
+	 * Test we map "Multi-use payment method ID is invalid or could not be found."
+	 * failure to a payment decline and not a validation error
+	 *
+	 * @return void
+	 */
+	public function testCreatePaymentError() {
+		$request = [
+			'recurring_payment_token' => 'cGF5bWVudG1ldGhvZF92ZW5tb19rcHE0c3o2Yw',
+			'amount' => 1.75,
+			'currency' => 'USD',
+			'first_name' => 'Bubba',
+			'last_name' => 'Buttons',
+			'email' => 'bbuttons@example.com',
+			'country' => 'US',
+			'order_id' => '233355049.10',
+			'installment' => 'recurring',
+			'description' => 'Wikimedia 877 600 9454',
+			'recurring' => true,
+			'user_ip' => '111.22.33.44',
+			'processor_contact_id' => 'Y3VzdG9tZXJfMTM1NTcxOTcxNjY',
+			'fiscal_number' => null
+		];
+
+		$this->api->expects( $this->once() )
+			->method( 'authorizePaymentMethod' )
+			->willReturn(
+				json_decode( file_get_contents( __DIR__ . '/../Data/create_payment_91518.json' ), true )
+			);
+
+		$provider = new VenmoPaymentProvider();
+		$response = $provider->createPayment( $request );
+		$this->assertEquals( FinalStatus::FAILED, $response->getStatus() );
+		$this->assertCount( 0, $response->getValidationErrors() );
 	}
 }

@@ -4,7 +4,6 @@
  */
 class Less_Visitor_joinSelector extends Less_Visitor {
 
-	/** @var Less_Tree_Selector[][][] */
 	public $contexts = [ [] ];
 
 	/**
@@ -14,7 +13,7 @@ class Less_Visitor_joinSelector extends Less_Visitor {
 		return $this->visitObj( $root );
 	}
 
-	public function visitDeclaration( $declNode, &$visitDeeper ) {
+	public function visitDeclration( $declNode, &$visitDeeper ) {
 		$visitDeeper = false;
 	}
 
@@ -60,7 +59,7 @@ class Less_Visitor_joinSelector extends Less_Visitor {
 	public function visitMedia( $mediaNode ) {
 		$context = end( $this->contexts );
 
-		if ( count( $context ) === 0 || ( $context[0] instanceof Less_Tree_Ruleset && $context[0]->multiMedia ) ) {
+		if ( count( $context ) === 0 || ( is_object( $context[0] ) && $context[0]->multiMedia ) ) {
 			$mediaNode->rules[0]->root = true;
 		}
 	}

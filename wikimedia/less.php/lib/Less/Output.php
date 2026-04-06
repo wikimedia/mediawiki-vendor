@@ -26,6 +26,15 @@ class Less_Output {
 	}
 
 	/**
+	 * Is the output empty?
+	 *
+	 * @return bool
+	 */
+	public function isEmpty() {
+		return count( $this->strs ) === 0;
+	}
+
+	/**
 	 * Converts the output to string
 	 *
 	 * @return string

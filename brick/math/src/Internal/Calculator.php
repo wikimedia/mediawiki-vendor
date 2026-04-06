@@ -217,7 +217,7 @@ abstract readonly class Calculator
     /**
      * Raises a number into power with modulo.
      *
-     * @param string $base The base number.
+     * @param string $base The base number; must be positive or zero.
      * @param string $exp  The exponent; must be positive or zero.
      * @param string $mod  The modulus; must be strictly positive.
      *
@@ -246,25 +246,6 @@ abstract readonly class Calculator
         }
 
         return $this->gcd($b, $this->divR($a, $b));
-    }
-
-    /**
-     * Returns the least common multiple of the two numbers.
-     *
-     * This method can be overridden by the concrete implementation if the underlying library
-     * has built-in support for LCM calculations.
-     *
-     * @return string The LCM, always positive, or zero if at least one argument is zero.
-     *
-     * @pure
-     */
-    public function lcm(string $a, string $b): string
-    {
-        if ($a === '0' || $b === '0') {
-            return '0';
-        }
-
-        return $this->divQ($this->abs($this->mul($a, $b)), $this->gcd($a, $b));
     }
 
     /**
@@ -413,7 +394,7 @@ abstract readonly class Calculator
      * @param string       $b            The divisor, must not be zero.
      * @param RoundingMode $roundingMode The rounding mode.
      *
-     * @throws RoundingNecessaryException If RoundingMode::Unnecessary is provided but rounding is necessary.
+     * @throws RoundingNecessaryException If RoundingMode::UNNECESSARY is provided but rounding is necessary.
      *
      * @pure
      */
@@ -434,52 +415,52 @@ abstract readonly class Calculator
         $increment = false;
 
         switch ($roundingMode) {
-            case RoundingMode::Unnecessary:
+            case RoundingMode::UNNECESSARY:
                 if ($hasDiscardedFraction) {
                     throw RoundingNecessaryException::roundingNecessary();
                 }
 
                 break;
 
-            case RoundingMode::Up:
+            case RoundingMode::UP:
                 $increment = $hasDiscardedFraction;
 
                 break;
 
-            case RoundingMode::Down:
+            case RoundingMode::DOWN:
                 break;
 
-            case RoundingMode::Ceiling:
+            case RoundingMode::CEILING:
                 $increment = $hasDiscardedFraction && $isPositiveOrZero;
 
                 break;
 
-            case RoundingMode::Floor:
+            case RoundingMode::FLOOR:
                 $increment = $hasDiscardedFraction && ! $isPositiveOrZero;
 
                 break;
 
-            case RoundingMode::HalfUp:
+            case RoundingMode::HALF_UP:
                 $increment = $discardedFractionSign() >= 0;
 
                 break;
 
-            case RoundingMode::HalfDown:
+            case RoundingMode::HALF_DOWN:
                 $increment = $discardedFractionSign() > 0;
 
                 break;
 
-            case RoundingMode::HalfCeiling:
+            case RoundingMode::HALF_CEILING:
                 $increment = $isPositiveOrZero ? $discardedFractionSign() >= 0 : $discardedFractionSign() > 0;
 
                 break;
 
-            case RoundingMode::HalfFloor:
+            case RoundingMode::HALF_FLOOR:
                 $increment = $isPositiveOrZero ? $discardedFractionSign() > 0 : $discardedFractionSign() >= 0;
 
                 break;
 
-            case RoundingMode::HalfEven:
+            case RoundingMode::HALF_EVEN:
                 $lastDigit = (int) $quotient[-1];
                 $lastDigitIsEven = ($lastDigit % 2 === 0);
                 $increment = $lastDigitIsEven ? $discardedFractionSign() > 0 : $discardedFractionSign() >= 0;

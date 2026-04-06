@@ -32,29 +32,18 @@ final class NumberFormatException extends MathException
      */
     public static function charNotInAlphabet(string $char): self
     {
-        return new self(sprintf(
-            'Character %s is not valid in the given alphabet.',
-            self::charToString($char),
-        ));
-    }
-
-    /**
-     * @pure
-     */
-    private static function charToString(string $char): string
-    {
         $ord = ord($char);
 
         if ($ord < 32 || $ord > 126) {
             $char = strtoupper(dechex($ord));
 
-            if ($ord < 16) {
+            if ($ord < 10) {
                 $char = '0' . $char;
             }
-
-            return '0x' . $char;
+        } else {
+            $char = '"' . $char . '"';
         }
 
-        return '"' . $char . '"';
+        return new self(sprintf('Char %s is not a valid character in the given alphabet.', $char));
     }
 }

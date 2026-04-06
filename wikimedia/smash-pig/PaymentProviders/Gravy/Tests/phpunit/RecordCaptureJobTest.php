@@ -163,7 +163,7 @@ class RecordCaptureJobTest extends BaseGravyTestCase {
 
 		$this->assertTrue( $job->execute() );
 
-		$donorData = $this->pendingDatabase->fetchMessageByGatewayOrderId(
+		$donorData = $this->pendingDatabase->fetchUnresolvedMessageByGatewayOrderId(
 			'gravy',
 			$transactionDetails->getOrderId()
 		);

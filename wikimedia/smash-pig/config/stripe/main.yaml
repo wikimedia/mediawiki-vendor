@@ -1,4 +1,4 @@
-# Settings for PayPal
+# Settings for Stripe
 #
 # To override, create a file in:
 #   /etc/smashpig/stripe/main.yaml

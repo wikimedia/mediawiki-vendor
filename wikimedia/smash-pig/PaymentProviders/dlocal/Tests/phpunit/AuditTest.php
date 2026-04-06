@@ -110,7 +110,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'settled_fee_amount' => '-2.38',
 			'settled_net_amount' => '-2.38',
 			'settled_total_amount' => '0.0',
-			'settlement_batch_reference' => '20260109',
+			'settlement_batch_reference' => '642926',
 			'type' => 'fee',
 		], $output[0], 'Did not parse adjustment correctly' );
 
@@ -120,7 +120,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'audit_file_gateway' => 'dlocal',
 			'date' => 1766190909,
 			'settled_date' => strtotime( '2026-01-09 UTC' ),
-			'settlement_batch_reference' => '20260109',
+			'settlement_batch_reference' => '642926',
 			'original_total_amount' => '170.00',
 			'original_fee_amount' => '-0.37',
 			'original_net_amount' => '169.63',
@@ -147,7 +147,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'audit_file_gateway' => 'dlocal',
 			'date' => 1766379133,
 			'settled_date' => strtotime( '2026-01-09 UTC' ),
-			'settlement_batch_reference' => '20260109',
+			'settlement_batch_reference' => '642926',
 			'settled_total_amount' => '3.77',
 			'settled_fee_amount' => '-0.07',
 			'settled_net_amount' => '3.70',
@@ -176,7 +176,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'settled_fee_amount' => '-80.00',
 			'settled_net_amount' => '-80.00',
 			'settled_total_amount' => '0.0',
-			'settlement_batch_reference' => '20260109',
+			'settlement_batch_reference' => '642926',
 			'type' => 'fee',
 		], $output[5], 'Did not parse fee correctly' );
 
@@ -191,7 +191,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'settled_fee_amount' => '0.01',
 			'settled_net_amount' => '0.01',
 			'settled_total_amount' => '0.0',
-			'settlement_batch_reference' => '20260109',
+			'settlement_batch_reference' => '642926',
 			'type' => 'fee',
 		], $output[6], 'Did not parse rounding adjustment correctly' );
 	}

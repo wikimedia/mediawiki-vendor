@@ -41,6 +41,7 @@ final class CurrencyCode extends AbstractSearcher
             'BAM', // Convertible Mark
             'BBD', // Barbados Dollar
             'BDT', // Taka
+            'BGN', // Bulgarian Lev
             'BHD', // Bahraini Dinar
             'BIF', // Burundi Franc
             'BMD', // Bermudian Dollar

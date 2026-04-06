@@ -6,21 +6,15 @@
  */
 class Less_Tree_Declaration extends Less_Tree implements Less_Tree_HasValueProperty {
 
-	/** @var string|array<Less_Tree_Keyword|Less_Tree_Variable> */
 	public $name;
 	/** @var Less_Tree[]|Less_Tree_Anonymous */
 	public $value;
 	/** @var string */
 	public $important;
-	/** @var null|false|string */
 	public $merge;
-	/** @var int|null */
 	public $index;
-	/** @var bool */
 	public $inline;
-	/** @var bool */
 	public $variable;
-	/** @var array|null */
 	public $currentFileInfo;
 
 	/**
@@ -41,16 +35,8 @@ class Less_Tree_Declaration extends Less_Tree implements Less_Tree_HasValuePrope
 	 * @param bool $inline
 	 * @param bool|null $variable
 	 */
-	public function __construct(
-		$name,
-		$value = null,
-		$important = null,
-		$merge = null,
-		$index = null,
-		$currentFileInfo = null,
-		$inline = false,
-		$variable = null
-	) {
+	public function __construct( $name, $value = null, $important = null, $merge = null,
+		$index = null, $currentFileInfo = null, $inline = false, $variable = null ) {
 		$this->name = $name;
 		$this->value = ( $value instanceof Less_Tree )
 			? $value
@@ -80,11 +66,7 @@ class Less_Tree_Declaration extends Less_Tree implements Less_Tree_HasValuePrope
 			$e->currentFile = $this->currentFileInfo;
 			throw $e;
 		}
-		$output->add(
-			$this->important . ( ( $this->inline || ( Less_Environment::$lastRule && Less_Parser::$options['compress'] ) ) ? "" : ";" ),
-			$this->currentFileInfo,
-			$this->index
-		);
+		$output->add( $this->important . ( ( $this->inline || ( Less_Environment::$lastRule && Less_Parser::$options['compress'] ) ) ? "" : ";" ), $this->currentFileInfo, $this->index );
 	}
 
 	/**
@@ -128,8 +110,7 @@ class Less_Tree_Declaration extends Less_Tree implements Less_Tree_HasValuePrope
 				$important = $importantResult['important'];
 			}
 
-			$return = new Less_Tree_Declaration(
-				$name,
+			$return = new Less_Tree_Declaration( $name,
 				$evaldValue,
 				$important,
 				$this->merge,

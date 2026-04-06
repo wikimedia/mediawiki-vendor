@@ -14,8 +14,8 @@ use Wikimedia\RemexHtml\TreeBuilder\Element;
  * not required.
  */
 class DOMSerializer implements AbstractSerializer {
-	private DOMFormatter $formatter;
-	private DOMBuilder $builder;
+	private $formatter;
+	private $builder;
 
 	/**
 	 * @param DOMBuilder $builder

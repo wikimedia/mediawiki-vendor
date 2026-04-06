@@ -185,11 +185,4 @@ class Features
      * @var bool
      */
     public $hashbangComments = false;
-
-    /**
-     * Import attributes
-     *
-     * @var bool
-     */
-    public $importAttributes = false;
 }

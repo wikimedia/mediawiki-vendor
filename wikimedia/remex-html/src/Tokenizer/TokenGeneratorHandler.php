@@ -6,10 +6,8 @@ namespace Wikimedia\RemexHtml\Tokenizer;
  * The handler which converts events to tokens arrays for TokenGenerator
  */
 class TokenGeneratorHandler implements TokenHandler {
-	/** @var array[] */
 	public $tokens = [];
 
-	/** @inheritDoc */
 	public function startDocument( Tokenizer $tokenizer, $fragmentNamespace, $fragmentName ) {
 		$this->tokens[] = [
 			'type' => 'startDocument',
@@ -18,12 +16,10 @@ class TokenGeneratorHandler implements TokenHandler {
 		];
 	}
 
-	/** @inheritDoc */
 	public function endDocument( $pos ) {
 		$this->tokens[] = [ 'type' => 'endDocument' ];
 	}
 
-	/** @inheritDoc */
 	public function error( $text, $pos ) {
 		$this->tokens[] = [
 			'type' => 'error',
@@ -32,7 +28,6 @@ class TokenGeneratorHandler implements TokenHandler {
 		];
 	}
 
-	/** @inheritDoc */
 	public function characters( $text, $start, $length, $sourceStart, $sourceLength ) {
 		$this->tokens[] = [
 			'type' => 'text',
@@ -43,7 +38,6 @@ class TokenGeneratorHandler implements TokenHandler {
 			'sourceLength' => $sourceLength ];
 	}
 
-	/** @inheritDoc */
 	public function startTag( $name, Attributes $attrs, $selfClose, $sourceStart, $sourceLength ) {
 		$this->tokens[] = [
 			'type' => 'startTag',
@@ -54,7 +48,6 @@ class TokenGeneratorHandler implements TokenHandler {
 			'sourceLength' => $sourceLength ];
 	}
 
-	/** @inheritDoc */
 	public function endTag( $name, $sourceStart, $sourceLength ) {
 		$this->tokens[] = [
 			'type' => 'endTag',
@@ -63,7 +56,6 @@ class TokenGeneratorHandler implements TokenHandler {
 			'sourceLength' => $sourceLength ];
 	}
 
-	/** @inheritDoc */
 	public function doctype( $name, $public, $system, $quirks, $sourceStart, $sourceLength ) {
 		$this->tokens[] = [
 			'type' => 'doctype',
@@ -73,7 +65,6 @@ class TokenGeneratorHandler implements TokenHandler {
 			'quirks' => $quirks ];
 	}
 
-	/** @inheritDoc */
 	public function comment( $text, $sourceStart, $sourceLength ) {
 		$this->tokens[] = [
 			'type' => 'comment',

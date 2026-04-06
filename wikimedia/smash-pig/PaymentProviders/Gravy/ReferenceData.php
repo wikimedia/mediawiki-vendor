@@ -116,7 +116,7 @@ class ReferenceData {
 		'uatp' => PaymentMethod::CC,
 		'unionpay' => PaymentMethod::CC,
 		'venmo' => PaymentMethod::VENMO,
-		'vipps' => '',
+		'vipps' => PaymentMethod::EW,
 		'visa' => PaymentMethod::CC,
 		'waave' => '',
 		'wechat' => '',

@@ -68,6 +68,41 @@ class HostedPaymentApiRequestMapperTest extends TestCase {
 		$this->assertEquals( $expectedOutput, $apiRequestMapper->getAll() );
 	}
 
+	public function testHostedPaymentApiRequestMapperPixRecurring(): void {
+		$params = $this->getBaseParams();
+		$apiParams = $params['params'];
+		$apiParams['recurring'] = 1;
+		$apiParams['payment_submethod'] = 'pix';
+		$apiParams['description'] = 'Wikimedia Foundation';
+		$apiParams['notification_url'] = 'notification_url';
+		$apiParams['return_url'] = 'return_url';
+		$expectedOutput = $params['transformedParams'];
+
+		$apiRequestMapper = new HostedPaymentApiRequestMapper();
+		$apiRequestMapper->setInputParams( $apiParams );
+		$expectedOutput['description'] = $apiParams['description'];
+		$expectedOutput['notification_url'] = $apiParams['notification_url'];
+		$expectedOutput['callback_url'] = $apiParams['return_url'];
+		$expectedOutput['payment_method_id'] = 'XA';
+		$expectedOutput['enrollment'] = [
+			'external_id' => $apiParams['order_id'],
+			'type' => 'MERCHANT_SUBSCRIPTION',
+			"description" => $expectedOutput['description'],
+			"notification_url" => $expectedOutput['notification_url'],
+			"callback_url" => $expectedOutput['callback_url'],
+			"subscription" => [
+				"frequency" => "MONTHLY",
+				"start_date" => date( 'Y-m-d' ),
+				"amount" => [
+					"type" => "FIXED",
+					"value" => $apiParams['amount']
+				]
+			]
+		];
+
+		$this->assertEquals( $expectedOutput, $apiRequestMapper->getAll() );
+	}
+
 	private function getBaseParams(): array {
 		$input = [
 			'order_id' => '123.3',

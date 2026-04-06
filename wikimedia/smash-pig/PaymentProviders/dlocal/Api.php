@@ -133,6 +133,18 @@ class Api {
 	}
 
 	/**
+	 * @param array $params
+	 * @return array
+	 * @throws \SmashPig\Core\ApiException
+	 */
+	#[ApiOperationAttribute( ApiOperation::PIX_ENROLLMENT )]
+	public function pixEnrollment( $params ) {
+		return $this->timedCall( __FUNCTION__, function () use ( $params ) {
+			return $this->makePaymentApiCall( $params, new HostedPaymentApiRequestMapper() );
+		} );
+	}
+
+	/**
 	 * @param array $apiParams
 	 * @return array
 	 * @throws ApiException

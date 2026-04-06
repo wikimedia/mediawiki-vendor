@@ -216,13 +216,9 @@ class PEAR
     public function __call($method, $arguments)
     {
         if (!isset(self::$bivalentMethods[$method])) {
-           if (PHP_VERSION_ID < 70000) {
-                trigger_error(
-                    'Call to undefined method PEAR::' . $method . '()', E_USER_ERROR
-                );
-            } else {
-                throw new Error('Call to undefined method PEAR::' . $method . '()');
-            }
+            trigger_error(
+                'Call to undefined method PEAR::' . $method . '()', E_USER_ERROR
+            );
         }
         return call_user_func_array(
             array(__CLASS__, '_' . $method),
@@ -233,13 +229,9 @@ class PEAR
     public static function __callStatic($method, $arguments)
     {
         if (!isset(self::$bivalentMethods[$method])) {
-            if (PHP_VERSION_ID < 70000) {
-                trigger_error(
-                    'Call to undefined method PEAR::' . $method . '()', E_USER_ERROR
-                );
-            } else {
-                throw new Error('Call to undefined method PEAR::' . $method . '()');
-            }
+            trigger_error(
+                'Call to undefined method PEAR::' . $method . '()', E_USER_ERROR
+            );
         }
         return call_user_func_array(
             array(__CLASS__, '_' . $method),

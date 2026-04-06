@@ -33,12 +33,6 @@ class CashPaymentProviderRequestMapper extends RedirectPaymentProviderRequestMap
 						]
 					];
 				}
-			} else {
-				$request['connection_options'] = [
-					'dlocal-pix' => [
-						'scheduled_date' => date( 'Y-m-d' ) // If you omit it, dLocal defaults to 2 days in the future.
-					]
-				];
 			}
 		}
 

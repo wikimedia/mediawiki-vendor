@@ -152,7 +152,6 @@ trait AudioTrackList {
 	 * @param mixed $offset
 	 * @return mixed
 	 */
-	#[\ReturnTypeWillChange]
 	public function offsetGet( $offset ) {
 		'@phan-var \Wikimedia\IDLeDOM\AudioTrackList $this';
 		// @var \Wikimedia\IDLeDOM\AudioTrackList $this

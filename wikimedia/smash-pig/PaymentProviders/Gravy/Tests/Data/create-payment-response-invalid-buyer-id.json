@@ -1,0 +1,14 @@
+{
+  "type": "error",
+  "code": "bad_request",
+  "status": 400,
+  "message": "Request failed validation",
+  "details": [
+    {
+      "location": "body",
+      "pointer": "\/buyer_id",
+      "message": "Input should be a valid UUID, invalid character: expected an optional prefix of urn:uuid: followed by [0-9a-fA-F-], found Q at 5",
+      "type": "uuid_parsing"
+    }
+  ]
+}

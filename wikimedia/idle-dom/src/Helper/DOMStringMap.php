@@ -78,7 +78,6 @@ trait DOMStringMap {
 	 * @param mixed $offset
 	 * @return mixed
 	 */
-	#[\ReturnTypeWillChange]
 	public function offsetGet( $offset ) {
 		'@phan-var \Wikimedia\IDLeDOM\DOMStringMap $this';
 		// @var \Wikimedia\IDLeDOM\DOMStringMap $this

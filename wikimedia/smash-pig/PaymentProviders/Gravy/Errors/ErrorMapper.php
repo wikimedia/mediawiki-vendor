@@ -105,12 +105,25 @@ class ErrorMapper {
 		'suspected_fraud', // The service flagged the transaction as suspected fraud.
 	];
 
-	public static $validationErrorFieldMap = [
+	public static array $validationErrorFieldMap = [
 		'incorrect_cvv' => 'cvv',
 		'incorrect_expiry_date' => 'expiry_date',
 		'invalid_tax_identifier' => 'fiscal_number',
 		'missing_cvv' => 'cvv',
 		'missing_tax_identifier' => 'fiscal_number',
+	];
+
+	public static array $badRequestDetailMap = [
+		'browser_info/color_depth' => 'browser_info.color_depth',
+		'browser_info/screen_height' => 'browser_info.screen_height',
+		'browser_info/screen_width' => 'browser_info.screen_width',
+		'browser_info/time_zone_offset' => 'browser_info.time_zone_offset',
+		'payment_method/number' => 'payment_method.number',
+		'NA' => 'payment_service',
+		'body/id' => 'session_id',
+		'amount' => 'amount',
+		'currency' => 'currency',
+		'buyer_id' => 'processor_contact_id',
 	];
 
 	public static function getError( string $code ) {
@@ -131,5 +144,9 @@ class ErrorMapper {
 
 	public static function getValidationErrorField( ?string $errorCode ): ?string {
 		return self::$validationErrorFieldMap[$errorCode] ?? null;
+	}
+
+	public static function getDetailPointer( ?string $errorCode ): ?string {
+		return self::$badRequestDetailMap[$errorCode] ?? null;
 	}
 }
