@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e6b6a847c9229446c159313ab2a92b01",
+    "content-hash": "0c4dab8716225f431cbe107292186952",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -323,12 +323,12 @@
             "version": "v7.0.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/firebase/php-jwt.git",
+                "url": "https://github.com/googleapis/php-jwt.git",
                 "reference": "5645b43af647b6947daac1d0f659dd1fbe8d3b65"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/5645b43af647b6947daac1d0f659dd1fbe8d3b65",
+                "url": "https://api.github.com/repos/googleapis/php-jwt/zipball/5645b43af647b6947daac1d0f659dd1fbe8d3b65",
                 "reference": "5645b43af647b6947daac1d0f659dd1fbe8d3b65",
                 "shasum": ""
             },
@@ -376,8 +376,8 @@
                 "php"
             ],
             "support": {
-                "issues": "https://github.com/firebase/php-jwt/issues",
-                "source": "https://github.com/firebase/php-jwt/tree/v7.0.2"
+                "issues": "https://github.com/googleapis/php-jwt/issues",
+                "source": "https://github.com/googleapis/php-jwt/tree/v7.0.2"
             },
             "time": "2025-12-16T22:17:28+00:00"
         },
@@ -1297,7 +1297,6 @@
                 "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Console_Getopt",
                 "source": "https://github.com/pear/Console_Getopt"
             },
-            "abandoned": true,
             "time": "2019-11-20T18:27:48+00:00"
         },
         {
@@ -3667,16 +3666,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.22.2",
+            "version": "v0.22.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
-                "reference": "b57a5be364ffd233a3431c05bba89939ec305e90"
+                "reference": "94d252e27226bd0c663db69c5aab1c2a4d84f7f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/b57a5be364ffd233a3431c05bba89939ec305e90",
-                "reference": "b57a5be364ffd233a3431c05bba89939ec305e90",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/94d252e27226bd0c663db69c5aab1c2a4d84f7f2",
+                "reference": "94d252e27226bd0c663db69c5aab1c2a4d84f7f2",
                 "shasum": ""
             },
             "require": {
@@ -3750,10 +3749,10 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.22.2",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.22.3",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
-            "time": "2026-02-15T23:09:52+00:00"
+            "time": "2026-04-13T16:28:12+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",
