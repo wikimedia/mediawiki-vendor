@@ -1399,6 +1399,7 @@
                 "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Net_Socket",
                 "source": "https://github.com/pear/Net_Socket"
             },
+            "abandoned": true,
             "install-path": "../pear/net_socket"
         },
         {
@@ -3498,17 +3499,17 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.20.7",
-            "version_normalized": "0.20.7.0",
+            "version": "v0.20.8",
+            "version_normalized": "0.20.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
-                "reference": "cb7853a5d8534c5209d5063ce028f05edbc13a69"
+                "reference": "e1ad85b8253ea83c3bba86276cccaebbd0db094a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/cb7853a5d8534c5209d5063ce028f05edbc13a69",
-                "reference": "cb7853a5d8534c5209d5063ce028f05edbc13a69",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/e1ad85b8253ea83c3bba86276cccaebbd0db094a",
+                "reference": "e1ad85b8253ea83c3bba86276cccaebbd0db094a",
                 "shasum": ""
             },
             "require": {
@@ -3552,7 +3553,7 @@
             "suggest": {
                 "wikimedia/langconv": "Provides script conversion support"
             },
-            "time": "2026-02-17T18:00:46+00:00",
+            "time": "2026-04-13T16:23:34+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -3578,7 +3579,7 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.20.7",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.20.8",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
             "install-path": "../wikimedia/parsoid"
