@@ -115,7 +115,11 @@ class TestUtils {
 			'/^mw:Placeholder$/' :
 			'/^mw:(?:DisplaySpace|Placeholder|Nowiki|Transclusion|Entity)$/';
 		$domBody = self::unwrapSpansAndNormalizeIEW( $domBody, $stripTypeof, $parsoidOnly, $preserveIEW );
-		$out = ContentUtils::toXML( $domBody, [ 'innerXML' => true ] );
+		$out = ContentUtils::toXML( $domBody, [
+			'innerXML' => true,
+			# don't treat attribute order as significant
+			'sortAttrs' => true,
+		] );
 		// NOTE that we use a slightly restricted regexp for "attribute"
 		//  which works for the output of DOM serialization.  For example,
 		//  we know that attribute values will be surrounded with double quotes,
@@ -142,11 +146,6 @@ class TestUtils {
 			$out = preg_replace( $unnecessaryAttribs . '\\\\?"[^\"]*\\\\?"/u', '', $out );
 			$out = preg_replace( $unnecessaryAttribs . "\\\\?'[^\']*\\\\?'/u", '', $out ); // single-quoted variant
 			$out = preg_replace( $unnecessaryAttribs . '&apos;.*?&apos;/u', '', $out ); // apos variant
-			if ( !$options['externallinktarget'] ) {
-				$out = preg_replace( '/ nofollow/', '', $out );
-				$out = str_replace( ' rel="nofollow"', '', $out );
-				$out = preg_replace( '/ noreferrer noopener/', '', $out );
-			}
 
 			// strip self-closed <nowiki /> because we frequently test WTS
 			// <nowiki> insertion by providing an html/parsoid section with the
@@ -389,7 +388,11 @@ class TestUtils {
 		try {
 			$body = self::unwrapSpansAndNormalizeIEW( DOMCompat::getBody( DOMUtils::parseHTML( $source ) ) );
 			self::normalizePhpOutput( $body );
-			$html = ContentUtils::toXML( $body, [ 'innerXML' => true ] );
+			$html = ContentUtils::toXML( $body, [
+				'innerXML' => true,
+				# don't treat attribute order as significant
+				'sortAttrs' => true,
+			] );
 
 			// a few things we ignore for now..
 			//  .replace(/\/wiki\/Main_Page/g, 'Main Page')
@@ -465,15 +468,14 @@ class TestUtils {
 
 	/**
 	 * Removes DSR from data-parsoid for test normalization of a complete document. If
-	 * data-parsoid gets subsequently empty, removes it too.
-	 * @param string $raw
-	 * @return string
+	 * data-parsoid gets subsequently empty, or if it wasn't present in the first place,
+	 * removes it too.
 	 */
-	public static function filterDsr( string $raw ): string {
+	public static function filterDsr( string $raw, bool $removeDataParsoid = false ): string {
 		$doc = ContentUtils::createAndLoadDocument( $raw );
 		foreach ( DOMUtils::childNodes( $doc ) as $child ) {
 			if ( $child instanceof Element ) {
-				self::filterNodeDsr( $child );
+				self::filterNodeDsr( $child, $removeDataParsoid );
 			}
 		}
 		return ContentUtils::ppToXML( DOMCompat::getBody( $doc ), [ 'innerXML' => true ] );
@@ -482,16 +484,16 @@ class TestUtils {
 	/**
 	 * Removes DSR from data-parsoid for test normalization of an element.
 	 */
-	public static function filterNodeDsr( Element $el ): void {
+	public static function filterNodeDsr( Element $el, bool $removeDataParsoid = false ): void {
 		$dp = DOMDataUtils::getDataParsoid( $el );
 		unset( $dp->dsr );
-		if ( $dp->isEmpty() ) {
+		if ( $dp->isEmpty() || $removeDataParsoid ) {
 			$dp->getTemp()->setFlag( TempData::DISCARDABLE_DP );
 		}
 
 		foreach ( DOMUtils::childNodes( $el ) as $child ) {
 			if ( $child instanceof Element ) {
-				self::filterNodeDsr( $child );
+				self::filterNodeDsr( $child, $removeDataParsoid );
 			}
 		}
 	}
