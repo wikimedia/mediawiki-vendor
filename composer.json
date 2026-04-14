@@ -109,7 +109,7 @@
 		"symfony/yaml": "7.4.6",
 		"web-auth/cose-lib": "4.5.0",
 		"web-auth/webauthn-lib": "5.2.4",
-		"webonyx/graphql-php": "15.31.1",
+		"webonyx/graphql-php": "15.31.5",
 		"wikimedia/assert": "0.5.1",
 		"wikimedia/at-ease": "3.0.0",
 		"wikimedia/base-convert": "2.0.2",
