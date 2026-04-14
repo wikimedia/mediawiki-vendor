@@ -48,6 +48,7 @@ class ComposerStaticInit_mediawiki_vendor
             'Wikimedia\\Minify\\' => 17,
             'Wikimedia\\MetricsPlatform\\Tests\\' => 32,
             'Wikimedia\\MetricsPlatform\\' => 26,
+            'Wikimedia\\LanguageData\\' => 23,
             'Wikimedia\\LangConv\\' => 19,
             'Wikimedia\\JsonCodec\\' => 20,
             'Wikimedia\\IDLeDOM\\' => 18,
@@ -258,6 +259,10 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\MetricsPlatform\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/src',
+        ),
+        'Wikimedia\\LanguageData\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/wikimedia/language-data/src',
         ),
         'Wikimedia\\LangConv\\' =>
         array (
@@ -5839,6 +5844,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\LangConv\\NullReplacementMachine' => __DIR__ . '/..' . '/wikimedia/langconv/src/NullReplacementMachine.php',
         'Wikimedia\\LangConv\\ReplacementMachine' => __DIR__ . '/..' . '/wikimedia/langconv/src/ReplacementMachine.php',
         'Wikimedia\\LangConv\\ZhReplacementMachine' => __DIR__ . '/..' . '/wikimedia/langconv/src/ZhReplacementMachine.php',
+        'Wikimedia\\LanguageData\\LanguageUtil' => __DIR__ . '/..' . '/wikimedia/language-data/src/LanguageUtil.php',
         'Wikimedia\\MetricsPlatform\\ContextController' => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/src/ContextController.php',
         'Wikimedia\\MetricsPlatform\\EventSubmitter' => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/src/EventSubmitter.php',
         'Wikimedia\\MetricsPlatform\\Integration' => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/src/Integration.php',

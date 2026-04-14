@@ -7898,6 +7898,86 @@
             "install-path": "../wikimedia/langconv"
         },
         {
+            "name": "wikimedia/language-data",
+            "version": "1.1.12",
+            "version_normalized": "1.1.12.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wikimedia/language-data.git",
+                "reference": "20e58fe70102cb1bfd3bd3233b3f432482f5383a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wikimedia/language-data/zipball/20e58fe70102cb1bfd3bd3233b3f432482f5383a",
+                "reference": "20e58fe70102cb1bfd3bd3233b3f432482f5383a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "ext-curl": "*",
+                "mediawiki/mediawiki-codesniffer": "48.0.0",
+                "mediawiki/minus-x": "~1.1",
+                "mhujer/yaml-sort-checker": "^1.5",
+                "mustangostang/spyc": "0.6.3",
+                "ockcyp/covers-validator": "^1.7",
+                "php-parallel-lint/php-console-highlighter": "1.0.0",
+                "php-parallel-lint/php-parallel-lint": "1.4.0",
+                "phpunit/phpunit": "~10.5.63",
+                "psr/log": "^2.0",
+                "symfony/console": "^5.4"
+            },
+            "time": "2026-04-13T14:03:50+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Wikimedia\\LanguageData\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Amir E. Aharoni",
+                    "email": "amir.aharoni@mail.huji.ac.il"
+                },
+                {
+                    "name": "Kartik Mistry"
+                },
+                {
+                    "name": "Niklas Laxström",
+                    "email": "niklas.laxstrom@gmail.com"
+                },
+                {
+                    "name": "Santhosh Thottingal",
+                    "email": "santhosh.thottingal@gmail.com"
+                },
+                {
+                    "name": "Abijeet Patro",
+                    "email": "abijeetpatro@gmail.com"
+                }
+            ],
+            "description": "Language data and utilities.",
+            "keywords": [
+                "cldr",
+                "cldr-data",
+                "internationalization",
+                "l10n",
+                "localization"
+            ],
+            "support": {
+                "docs": "https://language-data.readthedocs.io/en/latest/index.html",
+                "irc": "irc://irc.freenode.net/mediawiki-i18n",
+                "issues": "https://github.com/wikimedia/language-data/issues",
+                "source": "https://github.com/wikimedia/language-data/tree/1.1.12"
+            },
+            "install-path": "../wikimedia/language-data"
+        },
+        {
             "name": "wikimedia/less.php",
             "version": "v5.5.1",
             "version_normalized": "5.5.1.0",

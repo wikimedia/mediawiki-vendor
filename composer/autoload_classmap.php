@@ -5109,6 +5109,7 @@ return array(
     'Wikimedia\\LangConv\\NullReplacementMachine' => $vendorDir . '/wikimedia/langconv/src/NullReplacementMachine.php',
     'Wikimedia\\LangConv\\ReplacementMachine' => $vendorDir . '/wikimedia/langconv/src/ReplacementMachine.php',
     'Wikimedia\\LangConv\\ZhReplacementMachine' => $vendorDir . '/wikimedia/langconv/src/ZhReplacementMachine.php',
+    'Wikimedia\\LanguageData\\LanguageUtil' => $vendorDir . '/wikimedia/language-data/src/LanguageUtil.php',
     'Wikimedia\\MetricsPlatform\\ContextController' => $vendorDir . '/wikimedia/metrics-platform/php/src/ContextController.php',
     'Wikimedia\\MetricsPlatform\\EventSubmitter' => $vendorDir . '/wikimedia/metrics-platform/php/src/EventSubmitter.php',
     'Wikimedia\\MetricsPlatform\\Integration' => $vendorDir . '/wikimedia/metrics-platform/php/src/Integration.php',

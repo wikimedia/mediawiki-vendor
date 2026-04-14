@@ -22,6 +22,7 @@ return array(
     'Wikimedia\\Minify\\' => array($vendorDir . '/wikimedia/minify/src'),
     'Wikimedia\\MetricsPlatform\\Tests\\' => array($vendorDir . '/wikimedia/metrics-platform/php/tests'),
     'Wikimedia\\MetricsPlatform\\' => array($vendorDir . '/wikimedia/metrics-platform/php/src'),
+    'Wikimedia\\LanguageData\\' => array($vendorDir . '/wikimedia/language-data/src'),
     'Wikimedia\\LangConv\\' => array($vendorDir . '/wikimedia/langconv/src'),
     'Wikimedia\\JsonCodec\\' => array($vendorDir . '/wikimedia/json-codec/src'),
     'Wikimedia\\IDLeDOM\\' => array($vendorDir . '/wikimedia/idle-dom/src'),
