@@ -7899,17 +7899,17 @@
         },
         {
             "name": "wikimedia/language-data",
-            "version": "1.1.12",
-            "version_normalized": "1.1.12.0",
+            "version": "1.1.13",
+            "version_normalized": "1.1.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/language-data.git",
-                "reference": "20e58fe70102cb1bfd3bd3233b3f432482f5383a"
+                "reference": "197ccd3da733b7d7ba4657a5014342815daeaa18"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/language-data/zipball/20e58fe70102cb1bfd3bd3233b3f432482f5383a",
-                "reference": "20e58fe70102cb1bfd3bd3233b3f432482f5383a",
+                "url": "https://api.github.com/repos/wikimedia/language-data/zipball/197ccd3da733b7d7ba4657a5014342815daeaa18",
+                "reference": "197ccd3da733b7d7ba4657a5014342815daeaa18",
                 "shasum": ""
             },
             "require": {
@@ -7928,7 +7928,7 @@
                 "psr/log": "^2.0",
                 "symfony/console": "^5.4"
             },
-            "time": "2026-04-13T14:03:50+00:00",
+            "time": "2026-04-15T15:55:15+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -7973,7 +7973,7 @@
                 "docs": "https://language-data.readthedocs.io/en/latest/index.html",
                 "irc": "irc://irc.freenode.net/mediawiki-i18n",
                 "issues": "https://github.com/wikimedia/language-data/issues",
-                "source": "https://github.com/wikimedia/language-data/tree/1.1.12"
+                "source": "https://github.com/wikimedia/language-data/tree/1.1.13"
             },
             "install-path": "../wikimedia/language-data"
         },
