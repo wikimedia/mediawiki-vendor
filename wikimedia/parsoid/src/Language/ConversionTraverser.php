@@ -45,11 +45,11 @@ class ConversionTraverser extends DOMTraverser {
 		$this->guesser = $guesser;
 		$this->machine = $machine;
 
-		// No conversion inside <code>, <script>, <pre>, <cite>
+		// No conversion inside <code>, <script>, <pre>, <cite>, or <style>
 		// (See adhoc regexps inside LanguageConverter.php::autoConvert)
 		// XXX: <cite> ought to probably be handled more generically
 		// as extension output, not special-cased as a HTML tag.
-		foreach ( [ 'code', 'script', 'pre', 'cite' ] as $el ) {
+		foreach ( [ 'code', 'script', 'pre', 'cite', 'style' ] as $el ) {
 			$this->addHandler( $el, function ( Element $el ) {
 				return $this->noConvertHandler( $el );
 			} );
