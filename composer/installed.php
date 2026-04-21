@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
-        'reference' => '5f2c23f1e76235025b2ce5937facd4ce0fdd8c1b',
+        'pretty_version' => '1.0.0+no-version-set',
+        'version' => '1.0.0.0',
+        'reference' => null,
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'reference' => '5f2c23f1e76235025b2ce5937facd4ce0fdd8c1b',
+            'pretty_version' => '1.0.0+no-version-set',
+            'version' => '1.0.0.0',
+            'reference' => null,
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -443,9 +443,9 @@
             'dev_requirement' => false,
         ),
         'oojs/oojs-ui' => array(
-            'pretty_version' => 'v0.53.1',
-            'version' => '0.53.1.0',
-            'reference' => 'c9509349696d769e249da7b64fd55d9e34436716',
+            'pretty_version' => 'v0.53.2',
+            'version' => '0.53.2.0',
+            'reference' => '360097bdf5ade6b6ba622882de8b7625f1094868',
             'type' => 'library',
             'install_path' => __DIR__ . '/../oojs/oojs-ui',
             'aliases' => array(),
