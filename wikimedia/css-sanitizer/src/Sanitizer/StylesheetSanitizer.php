@@ -14,7 +14,7 @@ use Wikimedia\CSS\Util;
 
 /**
  * Sanitizes a CSS stylesheet or rule list
- * @see https://www.w3.org/TR/2019/CR-css-syntax-3-20190716/#css-stylesheets
+ * @see https://www.w3.org/TR/2021/CRD-css-syntax-3-20211224/#css-stylesheets
  */
 class StylesheetSanitizer extends Sanitizer {
 
@@ -101,6 +101,7 @@ class StylesheetSanitizer extends Sanitizer {
 			$object = $object->getRuleList();
 		}
 		if ( !$object instanceof RuleList ) {
+			'@phan-var CSSObject $object';
 			$this->sanitizationError( 'expected-stylesheet', $object );
 			return null;
 		}
@@ -110,6 +111,7 @@ class StylesheetSanitizer extends Sanitizer {
 			$ret = new Stylesheet( $ret );
 		}
 
+		// @phan-suppress-next-line PhanTypeMismatchReturn generics weakness
 		return $ret;
 	}
 }

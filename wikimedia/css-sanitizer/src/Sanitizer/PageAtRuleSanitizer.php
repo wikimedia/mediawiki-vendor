@@ -17,6 +17,7 @@ use Wikimedia\CSS\Grammar\UnorderedGroup;
 use Wikimedia\CSS\Objects\AtRule;
 use Wikimedia\CSS\Objects\CSSObject;
 use Wikimedia\CSS\Objects\Declaration;
+use Wikimedia\CSS\Objects\DeclarationOrAtRule;
 use Wikimedia\CSS\Objects\DeclarationOrAtRuleList;
 use Wikimedia\CSS\Objects\Rule;
 use Wikimedia\CSS\Objects\Token;
@@ -25,7 +26,7 @@ use Wikimedia\CSS\Util;
 
 /**
  * Sanitizes a CSS \@page rule
- * @see https://www.w3.org/TR/2018/WD-css-page-3-20181018/
+ * @see https://www.w3.org/TR/2023/WD-css-page-3-20230914/
  */
 class PageAtRuleSanitizer extends RuleSanitizer {
 
@@ -76,6 +77,7 @@ class PageAtRuleSanitizer extends RuleSanitizer {
 					new KeywordMatcher( [ 'portrait', 'landscape' ] ),
 				] ),
 			] ),
+			'page-orientation' => new KeywordMatcher( [ 'upright', 'rotate-left', 'rotate-right' ] ),
 			'marks' => new Alternative( [
 				new KeywordMatcher( 'none' ),
 				UnorderedGroup::someOf( [
@@ -138,6 +140,7 @@ class PageAtRuleSanitizer extends RuleSanitizer {
 				$this->sanitizationError( 'invalid-page-rule-content', $thing );
 				$thing = null;
 			}
+			'@phan-var DeclarationOrAtRule $thing';
 			if ( $thing ) {
 				$newList->add( $thing );
 			}
@@ -145,6 +148,7 @@ class PageAtRuleSanitizer extends RuleSanitizer {
 		$blockContents->clear();
 		$blockContents->add( $newList->toComponentValueArray() );
 
+		// @phan-suppress-next-line PhanTypeMismatchReturn generics weakness
 		return $ret;
 	}
 }
