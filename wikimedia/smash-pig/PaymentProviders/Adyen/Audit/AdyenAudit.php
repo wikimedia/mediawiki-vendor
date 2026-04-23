@@ -90,9 +90,14 @@ abstract class AdyenAudit implements AuditParser {
 			throw new \RuntimeException( 'Missing columns ' . implode( ',', $missingColumns ) );
 		}
 
+		// For fee transactions they might be identical except for the row number.
+		// We only parse fee transactions from settlement files so that should ensure
+		// the rowNumber is meaningful.
+		$rowNumber = 0;
 		while ( $line = fgetcsv( $file, 0, ',', '"', '\\' ) ) {
 			try {
-				$this->parseLine( $line );
+				$rowNumber++;
+				$this->parseLine( $line, $rowNumber );
 			} catch ( NormalizationException $ex ) {
 				// TODO: actually throw these below
 				Logger::error( $ex->getMessage() );
@@ -103,11 +108,11 @@ abstract class AdyenAudit implements AuditParser {
 		return $this->fileData;
 	}
 
-	protected function parseLine( $line ) {
+	protected function parseLine( $line, int $rowNumber ) {
 		$row = array_combine( $this->columnHeaders, $line );
 		$type = strtolower( $row[$this->type] );
-		if ( $type === 'fee' || $type === 'invoicededuction' ) {
-			$this->fileData[] = $this->getFeeTransaction( $row );
+		if ( $type === 'fee' || $type === 'invoicededuction' || $type === 'misccosts' ) {
+			$this->fileData[] = $this->getFeeTransaction( $row, $rowNumber );
 			return;
 		}
 		if ( $type === 'merchantpayout' ) {
@@ -283,7 +288,7 @@ abstract class AdyenAudit implements AuditParser {
 		return ( !strpos( $merchantReference, '.' ) && !is_numeric( $merchantReference ) );
 	}
 
-	protected function getFeeTransaction( array $row ): ?array {
+	protected function getFeeTransaction( array $row, int $rowNumber ): ?array {
 		return null;
 	}
 

@@ -12,11 +12,12 @@ use SmashPig\PaymentProviders\Responses\CreatePaymentResponse;
 class BankTransferPaymentProvider extends PaymentProvider {
 
 	/**
-	 * Create a Bank Transfer payment onlineBanking_CZ for one-time, with Adyen Checkout
-	 * OR initial payments will be type SEPA Direct Debit or iDEAL, which ideal use
-	 * SEPA Direct Debit for subsequent recurring
+	 * Create a Bank Transfer payment for blik or onlineBanking_CZ for one-time, with
+	 * Adyen Checkout OR initial payments will be type SEPA Direct Debit or iDEAL. iDEAL
+	 * is coded as SEPA Direct Debit for subsequent recurring
 	 * https://docs.adyen.com/payment-methods/ideal/web-component
 	 * https://docs.adyen.com/payment-methods/online-banking-czech-republic/web-component
+	 * https://docs.adyen.com/payment-methods/blik/web-component
 	 *
 	 * @param array $params
 	 * @return CreatePaymentResponse

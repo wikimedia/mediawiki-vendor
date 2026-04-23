@@ -80,7 +80,7 @@ class ReportFileParser extends BaseParser {
 	protected function parseDonation( array &$msg ): void {
 		$msg['contribution_tracking_id'] = $this->getContributionTrackingId( $this->row['Invoice'] );
 		$msg['country'] = $this->row['Country'];
-		$msg['currency'] = $this->row['original_currency'] = $this->row['currency'];
+		$msg['original_currency'] = $msg['currency'] = $this->row['original_currency'] = $this->row['currency'];
 		$msg['email'] = $this->row['User Mail'];
 		// settled_fee since it's given in USD
 		$msg['settled_fee_amount'] = -$this->row['Fee'];

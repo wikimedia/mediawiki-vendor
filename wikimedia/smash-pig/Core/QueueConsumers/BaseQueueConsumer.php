@@ -148,7 +148,7 @@ abstract class BaseQueueConsumer {
 			// in case of memory exceed, log the message before processing
 			Logger::info( "Message: " . json_encode( $message ) );
 			$this->processMessage( $message );
-		} catch ( Exception $ex ) {
+		} catch ( \Throwable $ex ) {
 			$this->handleError( $message, $ex );
 		}
 	}
@@ -158,10 +158,10 @@ abstract class BaseQueueConsumer {
 	 * if this throws an exception, the message will remain on the queue.
 	 *
 	 * @param array $message
-	 * @param Exception $ex
+	 * @param \Throwable $ex
 	 * @throws \SmashPig\Core\ConfigurationKeyException
 	 */
-	protected function handleError( array $message, Exception $ex ) {
+	protected function handleError( array $message, \Throwable $ex ) {
 		if ( $ex instanceof RetryableException ) {
 			$now = UtcDate::getUtcTimestamp();
 
@@ -182,13 +182,13 @@ abstract class BaseQueueConsumer {
 
 	/**
 	 * @param array $message The data
-	 * @param Exception $ex The problem
+	 * @param \Throwable $ex The problem
 	 * @param int|null $retryDate If provided, retry after this timestamp
 	 * @return int ID of message in damaged database
 	 * @throws \SmashPig\Core\DataStores\DataStoreException
 	 */
 	protected function sendToDamagedStore(
-		array $message, Exception $ex, $retryDate = null
+		array $message, \Throwable $ex, $retryDate = null
 	) {
 		if ( $retryDate ) {
 			Logger::notice(

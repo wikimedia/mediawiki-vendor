@@ -38,7 +38,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 
 		$this->assertSame( 'donation', $output[0]['type'] );
 		$this->assertSame( 'po_test123', $output[0]['settlement_batch_reference'] );
-		$this->assertSame( '0.95', $output[0]['settled_fee_amount'] );
+		$this->assertSame( '-0.95', $output[0]['settled_fee_amount'] );
 		$this->assertSame( '24.05', $output[0]['settled_net_amount'] );
 		$this->assertSame( 'USD', $output[0]['settled_currency'] );
 		$this->assertArrayNotHasKey( 'balance_transaction_id', $output[0] );

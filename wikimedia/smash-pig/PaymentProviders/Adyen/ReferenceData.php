@@ -58,6 +58,10 @@ class ReferenceData {
 			'method' => 'bt',
 			'submethod' => 'iban',
 		],
+		'blik' => [
+			'method' => 'bt',
+			'submethod' => 'blik',
+		],
 		'cartebancaire' => [
 			'method' => 'cc',
 			'submethod' => 'cb',

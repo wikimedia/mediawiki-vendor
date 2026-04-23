@@ -19,7 +19,7 @@ class DownloadReportJob implements Runnable {
 
 	protected string $downloadLoc;
 
-	public static function factory( $message ): array {
+	public static function factory( array $message ): array {
 		return [
 			'class' => 'SmashPig\PaymentProviders\Gravy\Jobs\DownloadReportJob',
 			'payload' => $message

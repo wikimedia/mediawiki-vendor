@@ -121,6 +121,7 @@ class ReferenceData {
 		'VD' => 'visa-debit',
 		'VI' => 'visa',
 		'WP' => 'webpay',
+		'XA' => 'pix',
 		'ZT' => 'stitch', // South Africa bank transfer
 	];
 

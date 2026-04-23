@@ -86,7 +86,11 @@ class PaymentProvider implements IGetLatestPaymentStatusProvider, ICancelablePay
 			}
 
 			$result = $this->api->refundPayment( $apiParams );
-			return DlocalRefundPaymentResponseFactory::fromRawResponse( $result );
+			$response = DlocalRefundPaymentResponseFactory::fromRawResponse( $result );
+			if ( $response->getGatewayTxnId() ) {
+				$response->setGatewayRefundId( $response->getGatewayTxnId() );
+			}
+			return $response;
 		} catch ( ApiException $apiException ) {
 			return DlocalRefundPaymentResponseFactory::fromErrorResponse( $apiException->getRawErrors() );
 		}

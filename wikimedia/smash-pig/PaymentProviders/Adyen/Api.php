@@ -255,7 +255,8 @@ class Api {
 		return $this->timedCall( __FUNCTION__, function () use ( $params ) {
 			$typesByCountry = [
 				'NL' => 'ideal',
-				'CZ' => 'onlineBanking_CZ'
+				'CZ' => 'onlineBanking_CZ',
+				'PL' => 'blik',
 			];
 			if ( empty( $params['country'] ) || !array_key_exists( $params['country'], $typesByCountry ) ) {
 				throw new UnexpectedValueException(

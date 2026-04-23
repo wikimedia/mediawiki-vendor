@@ -61,7 +61,9 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 		$this->assertCount( 3, $output, 'Should have found two donations' );
 		$expected = [
 			'gateway' => 'braintree',
+			'type' => 'donation',
 			'audit_file_gateway' => 'braintree',
+			'backend_processor' => 'braintree',
 			'date' => strtotime( '2025-12-21T22:58:37.000000Z' ),
 			'gross' => '3.10',
 			'original_total_amount' => '3.10',
@@ -83,6 +85,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'payment_method' => 'venmo',
 			'external_identifier' => 'xyz',
 			'gateway_txn_id' => 'abcde',
+			'backend_processor_txn_id' => 'abcde',
 			'full_name' => 'Donald Duck',
 		];
 		$this->assertEquals( $expected, $output[0], 'Did not parse paypal donation correctly' );
@@ -221,7 +224,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'gateway_parent_id' => 'f8ee36ec-8e6a-490e-a9e8-6398e3e5e760',
 			'gateway_refund_id' => 'cmVmdW5kX2g3OWY5Yzdo',
 			'backend_processor_parent_id' => 'dHJhbnNhY3Rpb25fMHRjYzJ5cmo',
-			'backend_processor_refund_id' => 'cmVmdW5kX2g3OWY5Yzdo',
+			'backend_processor_reversal_id' => 'cmVmdW5kX2g3OWY5Yzdo',
 			'invoice_id' => '7ZixbnFwSdg8h4IjcDPdTs',
 			'phone' => null,
 			'first_name' => null,

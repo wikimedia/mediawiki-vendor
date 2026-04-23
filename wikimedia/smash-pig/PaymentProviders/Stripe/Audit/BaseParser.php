@@ -42,6 +42,9 @@ abstract class BaseParser {
 	 * @return mixed
 	 */
 	public function getPaymentOrchestratorReconciliationID(): mixed {
+		if ( !isset( $this->row['payment_metadata[orchestrator_tx_sid]'] ) && !isset( $this->row['payment_metadata[gr4vy_tx_sid]'] ) ) {
+			return null;
+		}
 		return $this->row['payment_metadata[orchestrator_tx_sid]'] ?: $this->row['payment_metadata[gr4vy_tx_sid]'];
 	}
 

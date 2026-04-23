@@ -77,7 +77,7 @@ class SettlementFileParser extends BaseParser {
 			} else {
 				$reversalFields['backend_processor_parent_id'] = $this->row['original_transaction_id'];
 				// Doesn't seem to be anything better than this, but it's not 100% clear whose it is.
-				$reversalFields['backend_processor_refund_id'] = $this->row['payment_provider_transaction_id'];
+				$reversalFields['backend_processor_reversal_id'] = $this->row['payment_provider_transaction_id'];
 			}
 		}
 		return $reversalFields;

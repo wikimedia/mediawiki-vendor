@@ -323,7 +323,7 @@ class BaseParser {
 				// Let's just bubble up these are 'reversal' which is already mushy
 				$reversalFields['type'] = 'reversal';
 			}
-			$reversalFields['gateway_refund_id'] = $this->row['Transaction ID'];
+			$reversalFields['gateway_refund_id'] = $reversalFields['backend_processor_reversal_id'] = $this->row['Transaction ID'];
 			$reversalFields['gross_currency'] = $this->row['Gross Transaction Currency'];
 
 			if ( ( $this->row['PayPal Reference ID Type'] ?? '' ) === 'TXN' ) {
@@ -336,6 +336,7 @@ class BaseParser {
 				$reversalFields['type'] = 'reversal_reversed';
 			}
 			$reversalFields['gateway_parent_id'] = $this->row['PayPal Reference ID'];
+			$reversalFields['backend_processor_txn_id'] = $this->row['Transaction ID'];
 
 		} elseif ( $this->isReversalPrefix() ) {
 			// Prefix says refund/chargeback, but code isn't one we handle -> skip (Python: "-Unknown (Refundish type)")

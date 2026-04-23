@@ -494,11 +494,19 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 				'currency' => 'USD',
 				'amount' => 25
 			] )
-			->willReturn(
-				[
-					'status' => 'SUCCESS'
-				]
-			);
+			->willReturn( [
+				'id' => 'REF-2486-x1ksvms9-02i79154s541he-k9vut3buvg8c',
+				'payment_id' => 'T-2486-x1krhd2l-1jem2evef12iv1-2reqico3lbmc',
+				'status' => 'SUCCESS',
+				'currency' => 'MXN',
+				'created_date' => '2026-04-03T15:23:53.000+0000',
+				'amount' => 100,
+				'status_code' => 200,
+				'status_detail' => 'The refund was paid.',
+				'amount_refunded' => 100,
+				'id_payment' => 'T-2486-x1krhd2l-1jem2evef12iv1-2reqico3lbmc',
+				'refund_reference_number' => '9269113462'
+			] );
 
 		$paymentProvider = new PaymentProvider();
 		$response = $paymentProvider->refundPayment( [

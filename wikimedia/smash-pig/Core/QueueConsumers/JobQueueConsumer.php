@@ -32,7 +32,7 @@ class JobQueueConsumer extends BaseQueueConsumer {
 	 * @return Runnable
 	 */
 	public static function createJobObject( $jobMessage ): Runnable {
-		if ( isset( $jobMessage['payload'] ) && isset( $jobMessage['class'] ) ) {
+		if ( isset( $jobMessage['payload'] ) && is_array( $jobMessage['payload'] ) && isset( $jobMessage['class'] ) ) {
 			// TODO: or they could specify factory functions?
 			$className = $jobMessage['class'];
 			Logger::info( "Hydrating a message with class $className" );

@@ -7,6 +7,7 @@ enum PaymentMethod: string {
 	case APPLE_PAY = 'apple';
 	case BANCOMER = 'bancomer';
 	case BCP = 'bcp';
+	case BLIK = 'blik';
 	case CASH_ABITAB = 'cash_abitab';
 	case CASH_BOLETO = 'cash_boleto';
 	case CASH_OXXO = 'cash_oxxo';

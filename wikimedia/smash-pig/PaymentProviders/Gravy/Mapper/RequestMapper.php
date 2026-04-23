@@ -17,6 +17,7 @@ class RequestMapper {
 		'abitab',
 		'bancomer',
 		'bcp',
+		'blik',
 		'boleto',
 		'netbanking',
 		'onlinebankingcz',

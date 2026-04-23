@@ -26,6 +26,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'gross' => '5.00',
 			'contribution_tracking_id' => '266221341',
 			'country' => 'BR',
+			'original_currency' => 'BRL',
 			'currency' => 'BRL',
 			'email' => 'donoriffic@example.org',
 			'gateway_txn_id' => '5432123',

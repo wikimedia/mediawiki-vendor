@@ -17,7 +17,7 @@ use SmashPig\PaymentProviders\Adyen\Jobs\RecordCaptureJob;
 class PaymentCaptureAction implements IListenerMessageAction {
 
 	public const METHODS_RECORDED_ON_AUTHORISATION = [
-		'ideal', 'onlineBanking_CZ'
+		'blik', 'ideal', 'onlineBanking_CZ'
 	];
 
 	public function execute( ListenerMessage $msg ): bool {

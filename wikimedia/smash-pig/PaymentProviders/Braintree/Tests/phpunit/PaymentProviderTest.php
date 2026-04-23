@@ -200,8 +200,18 @@ class PaymentProviderTest extends BaseSmashPigUnitTestCase {
 				'data' => [
 					'refundTransaction' => [
 						'refund' => [
+							'id' => 'cmVmdW5kX2I2bm0ydGE3',
+							'legacyId' => 'b6nm2ta7',
+							'createdAt' => '2026-04-03T14:59:47.000000Z',
+							'amount' => [
+								'value' => '12.23',
+								'currencyCode' => 'USD'
+							],
 							'orderId' => '81',
-							'status' => 'SUBMITTED_FOR_SETTLEMENT'
+							'status' => 'SUBMITTED_FOR_SETTLEMENT',
+							'statusHistory' => [
+								[]
+							]
 						]
 					],
 				],

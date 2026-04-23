@@ -2262,6 +2262,7 @@ return array(
     'SmashPig\\PaymentProviders\\Gravy\\Tests\\phpunit\\PaymentProviderTest' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/Tests/phpunit/PaymentProviderTest.php',
     'SmashPig\\PaymentProviders\\Gravy\\Tests\\phpunit\\PaymentProviderValidatorTest' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/Tests/phpunit/PaymentProviderValidatorTest.php',
     'SmashPig\\PaymentProviders\\Gravy\\Tests\\phpunit\\RecurringCancellationJobTest' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/Tests/phpunit/RecurringCancellationJobTest.php',
+    'SmashPig\\PaymentProviders\\Gravy\\Tests\\phpunit\\ResponseMapperTest' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/Tests/phpunit/ResponseMapperTest.php',
     'SmashPig\\PaymentProviders\\Gravy\\Tests\\phpunit\\TransactionDetailsNormalizerTest' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/Tests/phpunit/TransactionDetailsNormalizerTest.php',
     'SmashPig\\PaymentProviders\\Gravy\\TransactionDetailsNormalizer' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/TransactionDetailsNormalizer.php',
     'SmashPig\\PaymentProviders\\Gravy\\Validators\\ApplePayPaymentProviderValidator' => $vendorDir . '/wikimedia/smash-pig/PaymentProviders/Gravy/Validators/ApplePayPaymentProviderValidator.php',

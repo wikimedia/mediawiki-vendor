@@ -22,6 +22,9 @@
       <testsuite name="PayPal tests">
         <directory>PaymentProviders/PayPal/Tests/phpunit</directory>
       </testsuite>
+      <testsuite name="stripe tests">
+        <directory>PaymentProviders/Stripe/Tests/phpunit</directory>
+      </testsuite>
       <testsuite name="dLocal tests">
         <directory>PaymentProviders/dlocal/Tests/phpunit</directory>
       </testsuite>

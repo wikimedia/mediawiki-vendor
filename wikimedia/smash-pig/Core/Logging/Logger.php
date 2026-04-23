@@ -107,7 +107,7 @@ class Logger {
 	 *
 	 * @param string $msg Message string to log
 	 * @param null|object $data Serializable data object relevant to the event, if any
-	 * @param null|\Exception $ex Exception object relevant to the event, if any
+	 * @param null|\Throwable $ex Exception object relevant to the event, if any
 	 */
 	public static function error( $msg, $data = null, $ex = null ) {
 		self::$context->addEventToContext( new LogEvent( LOG_ERR, $msg, null, $data, $ex ) );

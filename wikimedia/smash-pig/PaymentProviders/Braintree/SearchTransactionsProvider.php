@@ -21,6 +21,11 @@ class SearchTransactionsProvider extends PaymentProvider {
 		$result = $response['data']['search']['transactions']['edges'];
 		while ( $response['data']['search']['transactions']['pageInfo']['hasNextPage'] === true ) {
 			$length = count( $result );
+			if ( $length === 0 || !isset( $result[$length - 1]['cursor'] ) ) {
+				throw new \Exception(
+					'Braintree transactions search indicated another page, but no cursor was available'
+				);
+			}
 			$newAfter = $result[$length - 1]['cursor'];
 			$response = $this->api->searchTransactions( $input, $newAfter );
 			$result = array_merge( $result, $response['data']['search']['transactions']['edges'] );
@@ -41,6 +46,11 @@ class SearchTransactionsProvider extends PaymentProvider {
 		$result = $response['data']['search']['refunds']['edges'];
 		while ( $response['data']['search']['refunds']['pageInfo']['hasNextPage'] ) {
 			$length = count( $result );
+			if ( $length === 0 || !isset( $result[$length - 1]['cursor'] ) ) {
+				throw new \Exception(
+					'Braintree transactions search indicated another page, but no cursor was available'
+				);
+			}
 			$newAfter = $result[$length - 1]['cursor'];
 			$response = $this->api->searchRefunds( $input, $newAfter );
 			$result = array_merge( $result, $response['data']['search']['refunds']['edges'] );
@@ -61,6 +71,11 @@ class SearchTransactionsProvider extends PaymentProvider {
 		$result = $response['data']['search']['disputes']['edges'];
 		while ( $response['data']['search']['disputes']['pageInfo']['hasNextPage'] ) {
 			$length = count( $result );
+			if ( $length === 0 || !isset( $result[$length - 1]['cursor'] ) ) {
+				throw new \Exception(
+					'Braintree transactions search indicated another page, but no cursor was available'
+				);
+			}
 			$newAfter = $result[$length - 1]['cursor'];
 			$response = $this->api->searchDisputes( $input, $newAfter );
 			$result = array_merge( $result, $response['data']['search']['disputes']['edges'] );

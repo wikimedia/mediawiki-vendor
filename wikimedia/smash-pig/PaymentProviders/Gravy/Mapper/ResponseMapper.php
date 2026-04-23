@@ -325,6 +325,7 @@ class ResponseMapper {
 		// Ensure error details are mapped for failed transaction details coming in through listener
 		|| ( isset( $error['status'] ) && $this->normalizeStatus( $error['status'] ) === FinalStatus::FAILED ) ) {
 			$errorParameters['code'] = $error['error_code'] ?? '';
+			$errorParameters['description'] = $error['error_code'] ?? '';
 			$errorParameters['message'] = $error['status'] ?? '';
 
 			// Only chargeback for specific payment methods

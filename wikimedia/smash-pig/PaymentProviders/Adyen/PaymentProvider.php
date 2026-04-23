@@ -292,6 +292,9 @@ abstract class PaymentProvider implements
 			);
 		}
 		$this->mapGatewayTxnIdAndErrors( $response, $rawResponse );
+		if ( isset( $rawResponse['pspReference'] ) ) {
+			$response->setGatewayRefundId( $rawResponse['pspReference'] );
+		}
 		return $response;
 	}
 

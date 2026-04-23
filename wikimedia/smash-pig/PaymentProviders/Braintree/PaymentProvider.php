@@ -11,13 +11,18 @@ use SmashPig\PaymentData\ErrorCode;
 use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentProviders\IDeleteRecurringPaymentTokenProvider;
 use SmashPig\PaymentProviders\IPaymentProvider;
+use SmashPig\PaymentProviders\IRefundablePaymentProvider;
 use SmashPig\PaymentProviders\Responses\ApprovePaymentResponse;
 use SmashPig\PaymentProviders\Responses\CreatePaymentResponse;
 use SmashPig\PaymentProviders\Responses\CreatePaymentSessionResponse;
 use SmashPig\PaymentProviders\Responses\PaymentProviderResponse;
 use SmashPig\PaymentProviders\Responses\RefundPaymentResponse;
 
-class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaymentTokenProvider {
+class PaymentProvider implements
+	IPaymentProvider,
+	IDeleteRecurringPaymentTokenProvider,
+	IRefundablePaymentProvider
+{
 
 	/**
 	 * @var Api
@@ -397,12 +402,16 @@ class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaymentTokenP
 		if ( !empty( $rawResponse['errors'] ) ) {
 			$this->setResponseFailedWithErrors( $response, $rawResponse['errors'] );
 		} else {
-			$detail = $rawResponse['data']['refundTransaction'][ 'refund' ];
-			$response->setRawStatus( $detail[ 'status' ] );
+			$detail = $rawResponse['data']['refundTransaction']['refund'];
+			$response->setRawStatus( $detail['status'] );
 			$mappedStatus = ( new PaymentStatus() )->normalizeStatus( $detail['status'] );
 			$response->setStatus( $mappedStatus );
 			$response->setSuccessful( $response->getStatus() === FinalStatus::COMPLETE );
-			if ( !$response->isSuccessful() ) {
+			if ( $response->isSuccessful() ) {
+				if ( isset( $detail['id'] ) ) {
+					$response->setGatewayRefundId( $detail['id'] );
+				}
+			} else {
 				// look message from status history and add to error message
 				if ( isset( $detail['statusHistory'] ) && !empty( $detail['statusHistory'][0]['processorResponse']['message'] ) ) {
 					$response->addErrors( $this->mapErrors( [], $detail['statusHistory'][0]['processorResponse']['message'] ) );

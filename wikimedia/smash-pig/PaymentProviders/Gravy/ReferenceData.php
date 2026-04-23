@@ -28,6 +28,7 @@ class ReferenceData {
 		'bcp' => PaymentMethod::BT,
 		'becs' => PaymentMethod::DD,
 		'bitpay' => '', // Crypto payment service
+		'blik' => PaymentMethod::BT,
 		'boleto' => PaymentMethod::CASH,
 		'boost' => '',
 		'card' => PaymentMethod::CC,
@@ -173,6 +174,7 @@ class ReferenceData {
 
 	protected static $btSubmethods = [
 		'bcp' => 'bcp',
+		'blik' => 'blik',
 		'pse' => 'pse',
 		'netbanking' => 'netbanking',
 		'webpay' => 'webpay',
