@@ -21,7 +21,7 @@ use Wikimedia\CSS\Util;
 
 /**
  * Sanitizes a CSS style rule
- * @see https://www.w3.org/TR/2019/CR-css-syntax-3-20190716/#style-rules
+ * @see https://www.w3.org/TR/2021/CRD-css-syntax-3-20211224/#style-rules
  */
 class StyleRuleSanitizer extends RuleSanitizer {
 
@@ -117,6 +117,7 @@ class StyleRuleSanitizer extends RuleSanitizer {
 	/** @inheritDoc */
 	protected function doSanitize( CSSObject $object ) {
 		if ( !$object instanceof QualifiedRule ) {
+			'@phan-var CSSObject $object';
 			$this->sanitizationError( 'expected-qualified-rule', $object );
 			return null;
 		}
@@ -173,6 +174,7 @@ class StyleRuleSanitizer extends RuleSanitizer {
 
 		$this->sanitizeDeclarationBlock( $ret->getBlock(), $this->propertySanitizer );
 
+		// @phan-suppress-next-line PhanTypeMismatchReturn generics weakness
 		return $ret;
 	}
 

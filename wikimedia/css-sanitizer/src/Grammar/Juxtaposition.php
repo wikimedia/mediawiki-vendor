@@ -13,8 +13,8 @@ use Wikimedia\CSS\Util;
 
 /**
  * Matcher that groups other matchers (juxtaposition)
- * @see https://www.w3.org/TR/2019/CR-css-values-3-20190606/#component-combinators
- * @see https://www.w3.org/TR/2019/CR-css-values-3-20190606/#comb-comma
+ * @see https://www.w3.org/TR/2024/WD-css-values-4-20240312/#component-combinators
+ * @see https://www.w3.org/TR/2024/WD-css-values-4-20240312/#comb-comma
  */
 class Juxtaposition extends Matcher {
 	/** @var Matcher[] */
@@ -85,8 +85,9 @@ class Juxtaposition extends Matcher {
 			if ( $this->commas ) {
 				if ( $match->getLength() === 0 ) {
 					$thisEnd = $lastEnd;
+					// @phan-suppress-next-line PhanRedundantConditionInLoop https://github.com/phan/phan/issues/5441
 				} elseif ( isset( $values[$nextFrom] ) && $values[$nextFrom] instanceof Token &&
-					// @phan-suppress-next-line PhanNonClassMethodCall False positive
+					// @phan-suppress-next-line PhanUndeclaredMethod False positive
 					$values[$nextFrom]->type() === Token::T_COMMA
 				) {
 					$nextFrom = $this->next( $values, $nextFrom, $options );
