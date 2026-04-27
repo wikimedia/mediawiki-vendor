@@ -16,6 +16,14 @@ abstract class PageContent {
 	abstract public function getLinkTarget(): LinkTarget;
 
 	/**
+	 * Return the revision ID of this page, or null if it is unknown.
+	 */
+	public function getRevisionId(): ?int {
+		// Temporary stub until 1.46-wmf.26 includes an implementation.
+		return null;
+	}
+
+	/**
 	 * Return the roles available in this page
 	 * @return string[]
 	 */
