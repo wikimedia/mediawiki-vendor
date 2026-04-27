@@ -31,7 +31,7 @@ Adding or updating libraries
    We strongly recommend you this through Docker, both to avoid running
    untrusted code, and to exactly align with continous integration, via:
    ```
-   docker run --rm -it -u "$(id -u):$(id -g)" -v "$PWD/.git:/src/.git:ro" -v "$PWD:/src" -w /src docker-registry.wikimedia.org/releng/composer-php82:8.2.30-s1 update --no-dev
+   docker run --rm -it -u "$(id -u):$(id -g)" -v "$PWD/.git:/src/.git:ro" -v "$PWD:/src" -w /src docker-registry.wikimedia.org/releng/composer-php83:8.3.30-s2 update --no-dev
    ```
 4. Add all the new dependencies that got installed to composer.json as well,
    so that everything has their version pinned. You can look at the changes

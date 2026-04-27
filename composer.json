@@ -13,7 +13,7 @@
 	},
 	"prefer-stable": true,
 	"require": {
-		"php": ">=8.2.0",
+		"php": ">=8.3.0",
 		"composer-plugin-api": "^2.0",
 		"bacon/bacon-qr-code": "3.0.4",
 		"brick/math": "0.14.8",
@@ -91,7 +91,6 @@
 		"symfony/clock": "7.4.0",
 		"symfony/console": "7.4.7",
 		"symfony/deprecation-contracts": "3.6.0",
-		"symfony/polyfill-php83": "1.36.0",
 		"symfony/polyfill-php84": "1.36.0",
 		"symfony/polyfill-php85": "1.36.0",
 		"symfony/process": "7.4.5",
@@ -165,6 +164,7 @@
 		"symfony/polyfill-intl-normalizer": "1.17.1",
 		"symfony/polyfill-mbstring": "1.99",
 		"symfony/polyfill-php73": "1.99",
+		"symfony/polyfill-php83": "1.99",
 		"symfony/polyfill-uuid": "1.99"
 	},
 	"require-dev": {
