@@ -258,6 +258,12 @@ abstract class PaymentProvider implements
 			);
 		}
 		$this->mapGatewayTxnIdAndErrors( $response, $rawResponse );
+		if ( !empty( $rawResponse['pspReference'] ) ) {
+			$response->setCaptureID( $rawResponse['pspReference'] );
+		}
+		if ( !empty( $rawResponse['originalReference'] ) ) {
+			$response->setAuthID( $rawResponse['originalReference'] );
+		}
 		return $response;
 	}
 
@@ -661,6 +667,7 @@ abstract class PaymentProvider implements
 		}
 
 		$this->mapGatewayTxnIdAndErrors( $response, $rawResponse );
+		$this->setAuthIDFromPspReference( $response, $rawResponse );
 		return $response;
 	}
 
@@ -678,6 +685,12 @@ abstract class PaymentProvider implements
 			] ) ) {
 				$response->setSuspectedFraud( true );
 			}
+		}
+	}
+
+	protected function setAuthIDFromPspReference( PaymentProviderExtendedResponse $response, array $rawResponse ) {
+		if ( !empty( $rawResponse['pspReference'] ) ) {
+			$response->setAuthID( $rawResponse['pspReference'] );
 		}
 	}
 }

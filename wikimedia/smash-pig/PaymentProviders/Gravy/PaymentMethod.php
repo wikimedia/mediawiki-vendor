@@ -8,6 +8,7 @@ enum PaymentMethod: string {
 	case BANCOMER = 'bancomer';
 	case BCP = 'bcp';
 	case BLIK = 'blik';
+	case BREB = 'breb';
 	case CASH_ABITAB = 'cash_abitab';
 	case CASH_BOLETO = 'cash_boleto';
 	case CASH_OXXO = 'cash_oxxo';
@@ -24,6 +25,7 @@ enum PaymentMethod: string {
 	case VENMO = 'venmo';
 	case VIPPS = 'vipps';
 	case WEBPAY = 'webpay';
+	case YAPE = 'yape';
 	case RTBT_IDEAL = 'rtbt_ideal';
 
 	public function toGravyValue(): string {

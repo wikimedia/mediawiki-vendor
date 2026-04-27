@@ -42,6 +42,7 @@ class ApplePayPaymentProvider extends PaymentProvider {
 			$rawResponse['resultCode'] ?? null
 		);
 		$this->mapGatewayTxnIdAndErrors( $response, $rawResponse );
+		$this->setAuthIDFromPspReference( $response, $rawResponse );
 		// additionalData has the recurring details
 		if ( isset( $rawResponse['additionalData'] ) ) {
 			$this->mapAdditionalData( $rawResponse['additionalData'], $response );

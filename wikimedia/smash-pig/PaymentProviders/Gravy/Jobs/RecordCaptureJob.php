@@ -45,7 +45,12 @@ class RecordCaptureJob implements Runnable {
 		$logger->debug( 'Attempting to locate associated message in pending database' );
 
 		$db = PendingDatabase::get();
-		$dbMessage = $db->fetchMessageByGatewayOrderId( 'gravy', $transactionDetails->getOrderId(), $transactionDetails->getGatewayTxnId() );
+		$dbMessage = $db->fetchMessageByGatewayOrderId(
+			'gravy',
+			$transactionDetails->getOrderId(),
+			$transactionDetails->getGatewayTxnId(),
+			'backend_processor_txn_id'
+		);
 
 		if ( $dbMessage && ( isset( $dbMessage['order_id'] ) ) ) {
 			$logger->debug( 'A valid message was obtained from the pending queue' );

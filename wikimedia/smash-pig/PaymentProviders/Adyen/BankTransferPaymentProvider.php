@@ -82,6 +82,7 @@ class BankTransferPaymentProvider extends PaymentProvider {
 				$response->setRedirectUrl( $rawResponse['action']['url'] );
 			}
 			$this->mapGatewayTxnIdAndErrors( $response, $rawResponse );
+			$this->setAuthIDFromPspReference( $response, $rawResponse );
 		} catch ( \Exception $ex ) {
 			$response->setSuccessful( false );
 			$response->setStatus( FinalStatus::FAILED );
@@ -113,6 +114,7 @@ class BankTransferPaymentProvider extends PaymentProvider {
 			$rawResponse['resultCode'] ?? null
 		);
 		$this->mapGatewayTxnIdAndErrors( $response, $rawResponse );
+		$this->setAuthIDFromPspReference( $response, $rawResponse );
 		// additionalData has the recurring details
 		if ( isset( $rawResponse['additionalData'] ) ) {
 			$this->mapAdditionalData( $rawResponse['additionalData'], $response );

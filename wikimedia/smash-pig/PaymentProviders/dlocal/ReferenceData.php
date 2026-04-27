@@ -33,6 +33,17 @@ class ReferenceData {
 		],
 	];
 
+	/**
+	 * Some methods are classified as e.g. 'TICKET' and would
+	 * be mapped to payment_method=cash but it just seems
+	 * wrong. Override those mappings here.
+	 * @var array
+	 */
+	protected static $localMethodOverrides = [
+		'breb' => 'bt',
+		'yape' => 'ew',
+	];
+
 	protected static $simpleSubmethods = [
 		'AA' => 'alia',
 		'AG' => 'argen',
@@ -70,6 +81,7 @@ class ReferenceData {
 		'EL' => 'elo',
 		'EQ' => 'quindio',
 		'EX' => 'almancenes',
+		'EV' => 'breb',
 		'EY' => 'cash_efecty',
 		'H' => 'hsbc',
 		'HI' => 'hiper',
@@ -122,6 +134,7 @@ class ReferenceData {
 		'VI' => 'visa',
 		'WP' => 'webpay',
 		'XA' => 'pix',
+		'YP' => 'yape',
 		'ZT' => 'stitch', // South Africa bank transfer
 	];
 
@@ -136,6 +149,9 @@ class ReferenceData {
 
 		$method = self::$methods[$type];
 		$submethod = self::decodePaymentSubmethod( $method, $bankCode );
+		if ( array_key_exists( $submethod, self::$localMethodOverrides ) ) {
+			$method = self::$localMethodOverrides[$submethod];
+		}
 
 		return [ $method, $submethod ];
 	}

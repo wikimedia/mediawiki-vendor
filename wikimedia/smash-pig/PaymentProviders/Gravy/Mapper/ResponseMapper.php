@@ -234,8 +234,9 @@ class ResponseMapper {
 		if ( isset( $response['additional_identifiers']['payment_service_capture_id'] ) ) {
 			$result['backend_processor_capture_id'] = $response['additional_identifiers']['payment_service_capture_id'];
 		}
+		$processorsUsingAuthID = [ 'paypal', 'adyen' ];
 		if (
-			$result['backend_processor'] === 'paypal' &&
+			in_array( $result['backend_processor'], $processorsUsingAuthID ) &&
 			isset( $response['additional_identifiers']['payment_service_authorization_id'] )
 		) {
 			$result['backend_processor_transaction_id'] = $response['additional_identifiers']['payment_service_authorization_id'];

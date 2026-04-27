@@ -71,10 +71,10 @@ abstract class GravyPaymentResponseFactory {
 		$paymentResponse->setBackendProcessorTransactionId(
 			$normalizedResponse['backend_processor_transaction_id'] ?? null
 		);
-		$paymentResponse->setBackendProcessorAuthID(
+		$paymentResponse->setAuthID(
 			$normalizedResponse['backend_processor_auth_id'] ?? null
 		);
-		$paymentResponse->setBackendProcessorCaptureID(
+		$paymentResponse->setCaptureID(
 			$normalizedResponse['backend_processor_capture_id'] ?? null
 		);
 	}

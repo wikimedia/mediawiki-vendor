@@ -18,6 +18,7 @@ class RequestMapper {
 		'bancomer',
 		'bcp',
 		'blik',
+		'breb',
 		'boleto',
 		'netbanking',
 		'onlinebankingcz',
@@ -32,6 +33,7 @@ class RequestMapper {
 		'stitch',
 		'vipps',
 		'webpay',
+		'yape',
 	];
 
 	/**

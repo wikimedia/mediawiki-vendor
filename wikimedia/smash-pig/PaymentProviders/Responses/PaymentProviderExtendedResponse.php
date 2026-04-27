@@ -99,17 +99,15 @@ class PaymentProviderExtendedResponse extends PaymentProviderResponse {
 
 	/**
 	 * @var string|null
-	 * When the primary processor is a payment orchestrator, this field has the auth identifier
-	 * at the processor which the orchestrator used to process the payment.
+	 * The authorization identifier at the processor which ultimately processed the payment.
 	 */
-	protected ?string $backendProcessorAuthID = null;
+	protected ?string $authID = null;
 
 	/**
 	 * @var string|null
-	 * When the primary processor is a payment orchestrator, this field has the capture identifier
-	 * at the processor which the orchestrator used to process the payment.
+	 * The capture identifier at the processor which ultimately processed the payment.
 	 */
-	protected ?string $backendProcessorCaptureID = null;
+	protected ?string $captureID = null;
 
 	/**
 	 * @var string|null
@@ -322,33 +320,32 @@ class PaymentProviderExtendedResponse extends PaymentProviderResponse {
 	/**
 	 * @return string|null
 	 */
-	public function getBackendProcessorAuthID(): ?string {
-		return $this->backendProcessorAuthID;
+	public function getAuthID(): ?string {
+		return $this->authID;
 	}
 
 	/**
-	 * @param string|null $backendProcessorAuthID
+	 * @param string|null $authID
 	 * @return PaymentProviderExtendedResponse
 	 */
-	public function setBackendProcessorAuthID( ?string $backendProcessorAuthID ): PaymentProviderExtendedResponse {
-		$this->backendProcessorAuthID = $backendProcessorAuthID;
+	public function setAuthID( ?string $authID ): PaymentProviderExtendedResponse {
+		$this->authID = $authID;
 		return $this;
 	}
 
 	/**
 	 * @return string|null
 	 */
-	public function getBackendProcessorCaptureID(): ?string {
-		return $this->backendProcessorCaptureID;
+	public function getCaptureID(): ?string {
+		return $this->captureID;
 	}
 
 	/**
-	 * @param string|null $backendProcessorCaptureID
+	 * @param string|null $captureID
 	 * @return PaymentProviderExtendedResponse
 	 */
-	public function setBackendProcessorCaptureID( ?string $backendProcessorCaptureID
-	): PaymentProviderExtendedResponse {
-		$this->backendProcessorCaptureID = $backendProcessorCaptureID;
+	public function setCaptureID( ?string $captureID ): PaymentProviderExtendedResponse {
+		$this->captureID = $captureID;
 		return $this;
 	}
 

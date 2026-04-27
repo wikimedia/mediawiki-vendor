@@ -52,6 +52,7 @@ class EWalletPaymentProvider extends PaymentProvider {
 				$response->setRedirectUrl( $rawResponse['action']['url'] );
 			}
 			$this->mapGatewayTxnIdAndErrors( $response, $rawResponse );
+			$this->setAuthIDFromPspReference( $response, $rawResponse );
 			if ( isset( $rawResponse['additionalData'] ) ) {
 				$this->mapAdditionalData( $rawResponse['additionalData'], $response );
 			}

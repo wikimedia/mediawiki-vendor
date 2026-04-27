@@ -29,6 +29,7 @@ class ReferenceData {
 		'becs' => PaymentMethod::DD,
 		'bitpay' => '', // Crypto payment service
 		'blik' => PaymentMethod::BT,
+		'breb' => PaymentMethod::BT,
 		'boleto' => PaymentMethod::CASH,
 		'boost' => '',
 		'card' => PaymentMethod::CC,
@@ -122,6 +123,7 @@ class ReferenceData {
 		'waave' => '',
 		'wechat' => '',
 		'webpay' => PaymentMethod::BT,
+		'yape' => PaymentMethod::EW,
 		'zippay' => '',
 		'stripetoken' => PaymentMethod::STRIPETOKEN
 	];
@@ -156,6 +158,8 @@ class ReferenceData {
 	protected static $ewSubmethods = [
 		'alipay' => 'ew_alipay',
 		'alipayhk' => 'ew_alipay',
+		'vipps' => 'vipps',
+		'yape' => 'yape',
 	];
 
 	protected static $rtbtSubmethods = [
@@ -175,12 +179,13 @@ class ReferenceData {
 	protected static $btSubmethods = [
 		'bcp' => 'bcp',
 		'blik' => 'blik',
+		'breb' => 'breb',
 		'pse' => 'pse',
 		'netbanking' => 'netbanking',
 		'webpay' => 'webpay',
 		'stitch' => 'stitch',
 		'bancomer' => 'bancomer',
-		'onlinebankingcz' => ''
+		'onlinebankingcz' => '',
 	];
 
 	protected static $cashSubmethods = [
