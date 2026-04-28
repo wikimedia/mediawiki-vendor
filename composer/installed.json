@@ -8273,17 +8273,17 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.23.0-a29",
-            "version_normalized": "0.23.0.0-alpha29",
+            "version": "v0.24.0-a1",
+            "version_normalized": "0.24.0.0-alpha1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
-                "reference": "0c35826b24e1fdab292a9ae2d84e9effc1f71f11"
+                "reference": "cd70ec077118b7eb959056e40d0d281f16678cf1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/0c35826b24e1fdab292a9ae2d84e9effc1f71f11",
-                "reference": "0c35826b24e1fdab292a9ae2d84e9effc1f71f11",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/cd70ec077118b7eb959056e40d0d281f16678cf1",
+                "reference": "cd70ec077118b7eb959056e40d0d281f16678cf1",
                 "shasum": ""
             },
             "require": {
@@ -8295,7 +8295,6 @@
                 "php": ">=8.3.0",
                 "psr/container": "~1.1.2 || ~2.0.2",
                 "psr/log": "^1.1.4 || ^3.0.0",
-                "symfony/polyfill-php83": "^1.33.0",
                 "symfony/polyfill-php84": "^1.33.0",
                 "symfony/polyfill-php85": "^1.33.0",
                 "wikimedia/assert": "^0.5.1",
@@ -8332,7 +8331,7 @@
             "suggest": {
                 "wikimedia/langconv": "Provides script conversion support"
             },
-            "time": "2026-04-27T17:38:08+00:00",
+            "time": "2026-04-28T19:56:58+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -8358,7 +8357,7 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.23.0-a29",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.24.0-a1",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
             "install-path": "../wikimedia/parsoid"
