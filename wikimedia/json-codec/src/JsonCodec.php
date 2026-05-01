@@ -2,21 +2,7 @@
 declare( strict_types=1 );
 
 /**
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- * http://www.gnu.org/copyleft/gpl.html
- *
+ * @license GPL-2.0-or-later
  * @file
  */
 
@@ -28,16 +14,17 @@ use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use ReflectionClass;
 use stdClass;
+use UnitEnum;
 
 /**
  * Helper class to serialize/unserialize things to/from JSON.
  */
 class JsonCodec implements JsonCodecInterface {
 	/** @var ContainerInterface Service container */
-	protected ContainerInterface $serviceContainer;
+	protected readonly ContainerInterface $serviceContainer;
 
 	/** @var array<class-string,JsonClassCodec> Class codecs */
-	protected array $codecs;
+	protected array $codecs = [];
 
 	/**
 	 * Name of the property where class information is stored; it also
@@ -45,6 +32,26 @@ class JsonCodec implements JsonCodecInterface {
 	 * of any pre-existing array property that happened to have the same name.
 	 */
 	protected const TYPE_ANNOTATION = '_type_';
+
+	/**
+	 * Prefix used to distinguish abbreviations from class names.
+	 */
+	protected const ABBREV_PREFIX = '@';
+
+	/**
+	 * Maps abbreviation names to hint abbreviations.  Keys are prefixed
+	 * with self::ABBREV_PREFIX for faster lookup.
+	 * @see ::addAbbrev()
+	 * @var array<string,Abbrev>
+	 */
+	protected array $abbrevToHintMap = [];
+
+	/**
+	 * Maps PHP class names to abbreviations
+	 * @see ::addAbbrev()
+	 * @var array<class-string,Abbrev>
+	 */
+	protected array $classToAbbrevMap = [];
 
 	/**
 	 * @param ?ContainerInterface $serviceContainer
@@ -83,7 +90,7 @@ class JsonCodec implements JsonCodecInterface {
 	 * guide deserialization.
 	 *
 	 * @param mixed|null $value
-	 * @param class-string|Hint|null $classHint An optional hint to
+	 * @param class-string|Hint|Abbrev|null $classHint An optional hint to
 	 *   the type of the encoded object.  If this is provided and matches
 	 *   the type of $value, then explicit type information will be omitted
 	 *   from the generated JSON, which saves some space.
@@ -107,7 +114,7 @@ class JsonCodec implements JsonCodecInterface {
 	 * objects serialized with explicit classes.
 	 *
 	 * @param string $json A JSON-encoded string
-	 * @param class-string|Hint|null $classHint An optional hint to
+	 * @param class-string|Hint|Abbrev|null $classHint An optional hint to
 	 *   the type of the encoded object.  In the absence of explicit
 	 *   type information in the JSON, this will be used as the type of
 	 *   the created object.
@@ -147,6 +154,9 @@ class JsonCodec implements JsonCodecInterface {
 		if ( is_a( $className, JsonCodecable::class, true ) ) {
 			$codec = $className::jsonClassCodec( $this, $this->serviceContainer );
 			$this->codecs[$className] = $codec;
+		} elseif ( is_a( $className, UnitEnum::class, true ) ) {
+			$codec = JsonEnumClassCodec::getInstance();
+			$this->codecs[$className] = $codec;
 		}
 		return $codec;
 	}
@@ -172,6 +182,64 @@ class JsonCodec implements JsonCodecInterface {
 	}
 
 	/**
+	 * This supports cross-platform schemas by decoupling a hint from
+	 * the actual PHP class name.  If the `_type_` specified in the
+	 * JSON starts with `self::ABBREV_PREFIX` it is looked up in the
+	 * abbreviation map to obtain a hint.
+	 *
+	 * Only abbreviations that map to `class-string` are used for encoding.
+	 * If you wish to add an `class-string` abbreviation that is only for
+	 * decode, then building a simple Hint with ONLY_FOR_DECODE is sufficient:
+	 * ```
+	 * $codec->addAbbrev($name, Hint::build($className, HintType::ONLY_FOR_DECODE));
+	 * ```
+	 * This allows for forward-compatibility with a future encoding which
+	 * uses abbreviations (as usual for the ONLY_FOR_DECODE hint), but it
+	 * can also be used to allow multiple abbreviations for the same class
+	 * name, as long at most one of them is registered without
+	 * ONLY_FOR_DECODE.
+	 * @param string $name The abbreviation name (unprefixed)
+	 * @param class-string|Hint $hint The PHP class name or hint
+	 *  to be abbreviated
+	 */
+	public function addAbbrev( string $name, string|Hint $hint ): Abbrev {
+		$abbrev = new Abbrev( $name, $hint );
+		// Each abbreviation must map to a single class name for decode,
+		// although we can have a class map to multiple abbreviations for
+		// encode (only the last registered is used).
+		$key = self::ABBREV_PREFIX . $name;
+		$existing = $this->abbrevToHintMap[$key] ?? null;
+		if (
+			$existing !== null &&
+			!$abbrev->isSameAs( $existing )
+		) {
+			throw new InvalidArgumentException(
+				"conflicting abbreviation for {$name}: {$existing->hint} != {$abbrev->hint}"
+			);
+		}
+		$this->abbrevToHintMap[$key] = $abbrev;
+		// Only abbreviations for bare class names (not hints) are serialized.
+		if ( is_string( $hint ) ) {
+			$existing = $this->classToAbbrevMap[$hint] ?? null;
+			if ( $existing !== null && !$abbrev->isSameAs( $existing ) ) {
+				throw new InvalidArgumentException(
+					"too many abbreviations for {$hint}: {$existing->name}, {$abbrev->name}"
+				);
+			}
+			$this->classToAbbrevMap[$hint] = $abbrev;
+		}
+		return $abbrev;
+	}
+
+	/**
+	 * Return an abbreviation registered for the given abbrevation name.
+	 */
+	public function getAbbrev( string $name ): ?Abbrev {
+		$key = self::ABBREV_PREFIX . $name;
+		return $this->abbrevToHintMap[$key] ?? null;
+	}
+
+	/**
 	 * Recursively converts a given object to an associative array
 	 * which can be json-encoded.  (When embedding an object into
 	 * another context it is sometimes useful to have the array
@@ -187,7 +255,7 @@ class JsonCodec implements JsonCodecInterface {
 	 * guide deserialization.
 	 *
 	 * @param mixed|null $value
-	 * @param class-string|Hint|null $classHint An optional hint to
+	 * @param class-string|Hint|Abbrev|null $classHint An optional hint to
 	 *   the type of the encoded object.  If this is provided and matches
 	 *   the type of $value, then explicit type information will be omitted
 	 *   from the generated JSON, which saves some space.
@@ -202,39 +270,38 @@ class JsonCodec implements JsonCodecInterface {
 		$arrayClassHint = null;
 		$forceBraces = null;
 		$allowInherited = false;
-		if ( is_string( $classHint ) && str_ends_with( $classHint, '[]' ) ) {
-			// back-compat
-			$classHint = new Hint( substr( $classHint, 0, -2 ), Hint::LIST );
+		if ( $classHint instanceof Abbrev ) {
+			$classHint = $classHint->hint;
 		}
 		while ( $classHint instanceof Hint ) {
-			if ( $classHint->modifier === Hint::USE_SQUARE ) {
+			if ( $classHint->modifier === HintType::USE_SQUARE ) {
 				// Allow list-like serializations to use []
 				$classHint = $classHint->parent;
 				$forceBraces = false;
-			} elseif ( $classHint->modifier === Hint::ALLOW_OBJECT ) {
+			} elseif ( $classHint->modifier === HintType::ALLOW_OBJECT ) {
 				// Force empty arrays to serialize as {}
 				$classHint = $classHint->parent;
 				$forceBraces = true;
-			} elseif ( $classHint->modifier === Hint::LIST ) {
+			} elseif ( $classHint->modifier === HintType::LIST ) {
 				// Array whose values are the hinted type
 				$arrayClassHint = $classHint->parent;
 				$classHint = 'array';
-			} elseif ( $classHint->modifier === Hint::STDCLASS ) {
+			} elseif ( $classHint->modifier === HintType::STDCLASS ) {
 				// stdClass whose values are the hinted type
 				$arrayClassHint = $classHint->parent;
 				$classHint = stdClass::class;
-			} elseif ( $classHint->modifier === Hint::INHERITED ) {
+			} elseif ( $classHint->modifier === HintType::INHERITED ) {
 				// Allow the hint to match subclasses of the hinted class
 				$classHint = $classHint->parent;
 				$allowInherited = true;
-			} elseif ( $classHint->modifier === Hint::ONLY_FOR_DECODE ) {
+			} elseif ( $classHint->modifier === HintType::ONLY_FOR_DECODE ) {
 				// Don't use this hint for serialization.
 				$classHint = null;
-			} elseif ( $classHint->modifier === Hint::DEFAULT ) {
+			} elseif ( $classHint->modifier === HintType::DEFAULT ) {
 				// No-op, included for completeness
 				$classHint = $classHint->parent;
 			} else {
-				throw new InvalidArgumentException( 'bad hint modifier: ' . $classHint->modifier );
+				throw new InvalidArgumentException( 'bad hint modifier: ' . $classHint->modifier->name );
 			}
 		}
 		if ( is_object( $value ) ) {
@@ -267,8 +334,6 @@ class JsonCodec implements JsonCodecInterface {
 				if ( is_object( $v ) || is_array( $v ) ) {
 					$propClassHint = $arrayClassHint;
 					$propClassHint ??= ( $codec === null ? null :
-						// phan can't tell that $codec is null when $className is 'array'
-						// @phan-suppress-next-line PhanUndeclaredClassReference
 						$codec->jsonClassHintFor( $className, (string)$key )
 					);
 					$v = $this->toJsonArray( $v, $propClassHint );
@@ -301,7 +366,6 @@ class JsonCodec implements JsonCodecInterface {
 				// Even if $className === $classHint we may need to record this
 				// array as "complex" (ie, requires recursion to process
 				// individual values during deserialization)
-				// @phan-suppress-next-line PhanUndeclaredClassReference 'array'
 				$this->markArray(
 					$value, $className, $classHint
 				);
@@ -331,7 +395,7 @@ class JsonCodec implements JsonCodecInterface {
 	 * objects serialized with explicit classes.
 	 *
 	 * @param mixed|null $json
-	 * @param class-string|Hint|null $classHint An optional hint to
+	 * @param class-string|Hint|Abbrev|null $classHint An optional hint to
 	 *   the type of the encoded object.  In the absence of explicit
 	 *   type information in the JSON, this will be used as the type of
 	 *   the created object.
@@ -345,15 +409,14 @@ class JsonCodec implements JsonCodecInterface {
 
 		// Process class hints
 		$arrayClassHint = null;
-		if ( is_string( $classHint ) && str_ends_with( $classHint, '[]' ) ) {
-			// back-compat
-			$classHint = new Hint( substr( $classHint, 0, -2 ), Hint::LIST );
+		if ( $classHint instanceof Abbrev ) {
+			$classHint = $classHint->hint;
 		}
 		while ( $classHint instanceof Hint ) {
-			if ( $classHint->modifier === Hint::LIST ) {
+			if ( $classHint->modifier === HintType::LIST ) {
 				$arrayClassHint = $classHint->parent;
 				$classHint = 'array';
-			} elseif ( $classHint->modifier === Hint::STDCLASS ) {
+			} elseif ( $classHint->modifier === HintType::STDCLASS ) {
 				$arrayClassHint = $classHint->parent;
 				$classHint = stdClass::class;
 			} else {
@@ -368,7 +431,6 @@ class JsonCodec implements JsonCodecInterface {
 			)
 		) {
 			// Read out our metadata
-			// @phan-suppress-next-line PhanUndeclaredClassReference 'array'
 			$className = $this->unmarkArray( $json, $classHint );
 			// Create appropriate codec
 			$codec = null;
@@ -475,9 +537,11 @@ class JsonCodec implements JsonCodecInterface {
 		// was already present in the array we've been given, in which case
 		// we need to escape it (by hoisting into a child array).
 		if ( array_key_exists( self::TYPE_ANNOTATION, $value ) ) {
-			// @phan-suppress-next-line PhanUndeclaredClassReference 'array'
 			if ( !self::classEquals( $className, $classHint ) ) {
-				$value[self::TYPE_ANNOTATION] = [ $value[self::TYPE_ANNOTATION], $className ];
+				$abbrev = $this->classToAbbrevMap[$className] ?? null;
+				$type = ( $abbrev === null ) ? $className :
+					  ( self::ABBREV_PREFIX . $abbrev->name );
+				$value[self::TYPE_ANNOTATION] = [ $value[self::TYPE_ANNOTATION], $type ];
 			} else {
 				// Omit $className since it matches the $classHint, but we still
 				// need to escape the field to make it clear it was marked.
@@ -487,11 +551,13 @@ class JsonCodec implements JsonCodecInterface {
 				$value[self::TYPE_ANNOTATION] = [ $value[self::TYPE_ANNOTATION] ];
 			}
 		} elseif (
-			// @phan-suppress-next-line PhanUndeclaredClassReference 'array'
 			!self::classEquals( $className, $classHint )
 		) {
 			// Include the type annotation if it doesn't match the hint
-			$value[self::TYPE_ANNOTATION] = $className;
+			$abbrev = $this->classToAbbrevMap[$className] ?? null;
+			$type = ( $abbrev === null ) ? $className :
+				  ( self::ABBREV_PREFIX . $abbrev->name );
+			$value[self::TYPE_ANNOTATION] = $type;
 		}
 	}
 
@@ -513,14 +579,33 @@ class JsonCodec implements JsonCodecInterface {
 	 *  'array' if the value was a "complex" or "false mark" array.
 	 */
 	protected function unmarkArray( array &$value, ?string $classHint ): string {
-		$className = $value[self::TYPE_ANNOTATION] ?? $classHint;
+		$abbrevOrClass = $value[self::TYPE_ANNOTATION] ?? null;
 		// Remove our marker and restore the previous state of the
 		// json array (restoring a pre-existing field if needed)
-		if ( is_array( $className ) ) {
-			$value[self::TYPE_ANNOTATION] = $className[0];
-			$className = $className[1] ?? $classHint;
+		if ( is_array( $abbrevOrClass ) ) {
+			[ $oldValue, $abbrevOrClass ] = array_pad( $abbrevOrClass, 2, null );
+			$value[self::TYPE_ANNOTATION] = $oldValue;
 		} else {
 			unset( $value[self::TYPE_ANNOTATION] );
+		}
+		if ( str_starts_with( $abbrevOrClass ?? '', self::ABBREV_PREFIX ) ) {
+			$abbrev = $this->abbrevToHintMap[$abbrevOrClass] ?? null;
+			if ( $abbrev === null ) {
+				throw new InvalidArgumentException(
+					"Unknown abbreviation: $abbrevOrClass"
+				);
+			}
+			$className = $abbrev->hint;
+			while ( $className instanceof Hint && $className->modifier === HintType::ONLY_FOR_DECODE ) {
+				$className = $className->parent;
+			}
+			if ( !is_string( $className ) ) {
+				throw new InvalidArgumentException(
+					"Abbreviation used to encode a hint, not a class"
+				);
+			}
+		} else {
+			$className = $abbrevOrClass ?? $classHint;
 		}
 		return $className;
 	}

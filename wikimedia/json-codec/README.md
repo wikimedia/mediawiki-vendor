@@ -18,6 +18,7 @@ methods in your class, `toJsonArray()` and the static method
 `newFromJsonArray()`:
 ```php
 use Wikimedia\JsonCodec\JsonCodecable;
+use Wikimedia\JsonCodec\JsonCodecableTrait;
 
 class SampleObject implements JsonCodecable {
 	use JsonCodecableTrait;
@@ -49,6 +50,7 @@ If your class requires explicit management -- for example, object
 instances need to be created using a factory service, you can
 implement `JsonCodecable` directly:
 ```php
+use Psr\Container\ContainerInterface;
 use Wikimedia\JsonCodec\JsonCodecable;
 
 class ManagedObject implements JsonCodecable {
@@ -122,6 +124,9 @@ alternate serialization interface, you can subclass `JsonCodec` and
 override the protected `JsonCodec::codecFor()` method to return
 an appropriate codec.  Your code should look like this:
 ```php
+use Wikimedia\JsonCodec\JsonCodec;
+use Wikimedia\JsonCodec\JsonClassCodec;
+
 class MyCustomJsonCodec extends JsonCodec {
    protected function codecFor( string $className ): ?JsonClassCodec {
       $codec = parent::codecFor( $className );
@@ -137,6 +142,18 @@ class MyCustomJsonCodec extends JsonCodec {
 A full example can be found in
 [`tests/AlternateCodec.php`](./tests/AlternateCodec.php).
 
+### Enumerations
+
+PHP 8.1 enum types are codecable by default.  `BackedEnum` types
+serialize as `[ 'value' => ... ]` using their backing value, and
+other enum types serialize as `[ 'name' => ... ]` using their case
+name.  You can customize the serialization of the enum either by
+having your `Enum` type implement `JsonCodecable`, or by
+using the `::addCodecFor()` mechanism used for "non-codecable"
+objects.  Either of these is used in preference to the default
+[`JsonEnumClassCodec`](./src/JsonEnumClassCodec.php) which handles
+enums.
+
 ### More concise output
 
 By default JsonCodec embeds the class name of the appropriate object
@@ -149,6 +166,11 @@ information in the JSON when your provided hint matches what would
 have been added.  For example:
 
 ```
+use Wikimedia\JsonCodec\Hint;
+use Wikimedia\JsonCodec\HintType;
+use Wikimedia\JsonCodec\JsonCodecable;
+use Wikimedia\JsonCodec\JsonCodecableTrait;
+
 class SampleContainerObject implements JsonCodecable {
 	use JsonCodecableTrait;
 
@@ -178,7 +200,7 @@ class SampleContainerObject implements JsonCodecable {
 			return SampleObject::class;
 		} elseif ( $keyName === 'foos' ) {
 			// A hint with a modifier
-			return Hint::build( Foo::class, Hint::LIST );
+			return Hint::build( Foo::class, HintType::LIST );
 		}
 		return null;
 	}
@@ -210,19 +232,19 @@ break serialization/deserialization.
 
 As illustrated with the `foos` property, to indicate a homogenous list
 or array of the given type, you can pass `Hint::build(....,
-Hint::LIST)` as the class hint.  A `stdClass` object where properties
+HintType::LIST)` as the class hint.  A `stdClass` object where properties
 are values of the given type can be hinted with `Hint::build(....,
-Hint::STDCLASS)`.
+HintType::STDCLASS)`.
 
 A full example can be found in
 [`tests/SampleContainerObject.php`](./tests/SampleContainerObject.php).
 
-The `Hint::USE_SQUARE` modifier allows `::toJsonArray()` to
+The `HintType::USE_SQUARE` modifier allows `::toJsonArray()` to
 return a list (see
 [`array_is_list`](https://www.php.net/manual/en/function.array-is-list.php))
 and have that list encoded as a JSON array, with square `[]` brackets.
 
-The `Hint::ALLOW_OBJECT` modifier ensures that empty objects are
+The `HintType::ALLOW_OBJECT` modifier ensures that empty objects are
 serialized as `{}`.  It has the side effect that `::toJsonArray()` may
 in some cases return an _object_ value instead of the _array_ value
 implied from the method name.
@@ -241,7 +263,7 @@ An example with hint modifiers can be found in
 test cases.
 
 Where a superclass codec can be used to instantiate objects of
-various subclasses the `Hint::INHERITED` modifier can be used.
+various subclasses the `HintType::INHERITED` modifier can be used.
 An example of this can be found in
 [`tests/Pet.php`](./tests/Pet.php),
 [`tests/Dog.php`](./tests/Dog.php), and
@@ -250,7 +272,7 @@ and their associated test cases in
 [`tests/JsonCodecTest.php`](./tests/JsonCodecTest.php).
 
 For forward-compatibility with JSON serialized with hints, you
-may specify `Hint::ONLY_FOR_DECODE` to indicate that serialization
+may specify `HintType::ONLY_FOR_DECODE` to indicate that serialization
 should ignore the hint (encoding full class information) but that
 deserialization should take the hint into account, so that it is
 possible to read encodings produced either with or without a
@@ -273,6 +295,56 @@ is available using the protected methods `JsonCodec::isArrayMarked()`,
 `JsonCodec::markArray()` and `JsonCodec::unmarkArray()`.  A full
 example can be found in
 [`tests/ReservedKeyCodec.php`](./tests/ReservedKeyCodec.php).
+
+### Type abbreviations
+The hint mechanism allows encodings to omit explicit type information
+in many cases, but generic container types may not be able to fully
+hint their contents.  Further, for cross-platform use it is useful to
+have a way to explicitly encode class types *without* using the
+literal name of a PHP class.  The type abbreviation mechanism allows
+the codec to define a standard set of abbreviations for PHP classes.
+Without hinting, the encoded JSON output might look like:
+```
+{"_type_":"\\My\\PHP\\Namespace\\ClassName", ...}
+```
+Calling `JsonCodec::addAbbrev()` allows you to define an abbreviation:
+```
+$codec->addAbbrev( 'my-type-abbreviation', ClassName::class );
+```
+and subsequently you can encode/decode:
+```
+{"_type_":"@my-type-abbreviation",...}
+```
+A cross-platform encoder can recognize `@my-type-abbreviation` and
+substitute an appropriate class implementation in a non-PHP language.
+
+Although JsonCodec supports PHP's `class_alias`, abbreviations also
+provide another way to allow the PHP implementation class to be
+renamed or renamespaced without breaking decode.
+
+For forward-compatibility, abbreviations added using
+`HintType::ONLY_FOR_DECODE` won't be used in the encoded string:
+```
+$codec->addAbbrev(
+  'my-type-abbreviation',
+  Hint::build(ClassName::class, HintType::ONLY_FOR_DECODE)
+);
+```
+
+Finally, the codec abbreviation registry provides a mechanism to
+generically provide hints for encode/decode. For example, a JSON-valued
+attribute mechanism for HTML might use the attribute name as the
+default hint to allow a generic getter:
+```
+public function getJsonAttribute(Element $element, string $name) {
+  $value = $element->getAttribute($name);
+  $hint = $this->codec->getAbbrev("attr-$name");
+  return $this->codec->newFromJsonString($value, $hint);
+}
+```
+Abbreviations can be added to the codec using
+`JsonCodec::addAbbrev()`, and registered abbreviations can be
+retrieved from the codec using `JsonCodec::getAbbrev()` as shown above.
 
 Running tests
 -------------

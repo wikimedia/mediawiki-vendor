@@ -1,5 +1,20 @@
 # Release History
 
+## 5.0.0 (2026-02-12)
+* Allow a Hint to be the first argument to Hint::build().
+* Make `Hint::*` constants into a `HintType` enumeration.
+* Remove old hint back-compatibility that allowed suffixing `[]` to a
+  class-name string.  Use `Hint::build(Foo::class, HintType::LIST)`
+  instead.
+* JsonCodec::$serviceContainer is now readonly
+* Enum types are codecable by default, although you can still
+  have them implement JsonCodecable to customize their serialization.
+* Added JsonCodec::addAbbrev() and ::getAbbrev() and a new Abbrev
+  wrapper type to allow abbreviating types in JSON encodings.  This
+  will allow generating encodings which are usable cross-platform
+  without including explicit PHP class names in the string.
+* Dependency updates.
+
 ## 4.0.0 (2025-08-04)
 * Add `Hint::ONLY_FOR_DECODE` to support forward-compatibility of
   serialized data.

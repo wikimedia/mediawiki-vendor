@@ -2,21 +2,7 @@
 declare( strict_types=1 );
 
 /**
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- * http://www.gnu.org/copyleft/gpl.html
- *
+ * @license GPL-2.0-or-later
  * @file
  * @ingroup Json
  */
@@ -27,6 +13,8 @@ namespace Wikimedia\JsonCodec;
  * This is a simple class codec which proxies to methods on the object for
  * serialization and a static method on the class for deserialization.
  * It is intended for use as a singleton helper to JsonCodecableTrait.
+ *
+ * @implements JsonClassCodec<JsonCodecableTrait>
  */
 class JsonStaticClassCodec implements JsonClassCodec {
 
@@ -49,11 +37,8 @@ class JsonStaticClassCodec implements JsonClassCodec {
 	/**
 	 * Creates a new instance of the given class and initializes it from the
 	 * $json array, using a static method on $className.
-	 * @param class-string<T> $className
-	 * @param array $json
-	 * @return T
+	 *
 	 * @inheritDoc
-	 * @phan-template T
 	 * @see JsonCodecableTrait
 	 */
 	public function newFromJsonArray( string $className, array $json ) {
