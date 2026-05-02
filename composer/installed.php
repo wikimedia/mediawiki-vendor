@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => null,
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => '2501e40e2631f951e40576fbe24c7e9560e5f78d',
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => null,
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => '2501e40e2631f951e40576fbe24c7e9560e5f78d',
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -985,9 +985,9 @@
             'dev_requirement' => false,
         ),
         'web-auth/cose-lib' => array(
-            'pretty_version' => '4.5.0',
-            'version' => '4.5.0.0',
-            'reference' => '5adac6fe126994a3ee17ed9950efb4947ab132a9',
+            'pretty_version' => '4.5.1',
+            'version' => '4.5.1.0',
+            'reference' => '3185af4df10dc537b65c140c315b88d15ae15b80',
             'type' => 'library',
             'install_path' => __DIR__ . '/../web-auth/cose-lib',
             'aliases' => array(),
