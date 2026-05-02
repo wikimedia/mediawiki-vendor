@@ -5801,17 +5801,17 @@
         },
         {
             "name": "wikimedia/xmp-reader",
-            "version": "0.10.2",
-            "version_normalized": "0.10.2.0",
+            "version": "0.10.3",
+            "version_normalized": "0.10.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-XMPReader.git",
-                "reference": "b3cb5fae3ec105bab4c59aa594f74f6f11117285"
+                "reference": "cdd2bf3cc4947f67f9a8e738e55652d7c6517ba8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-XMPReader/zipball/b3cb5fae3ec105bab4c59aa594f74f6f11117285",
-                "reference": "b3cb5fae3ec105bab4c59aa594f74f6f11117285",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-XMPReader/zipball/cdd2bf3cc4947f67f9a8e738e55652d7c6517ba8",
+                "reference": "cdd2bf3cc4947f67f9a8e738e55652d7c6517ba8",
                 "shasum": ""
             },
             "require": {
@@ -5820,21 +5820,21 @@
                 "ext-xml": "*",
                 "ext-xmlreader": "*",
                 "php": ">=8.1",
-                "psr/log": "^1.0",
+                "psr/log": "^1.0 || ^3.0.0",
                 "wikimedia/scoped-callback": "^1.0 || ^2.0 || ^3.0 || ^4.0 || ^5.0",
-                "wikimedia/timestamp": "^1.0 || ^2.0 || ^3.0 || ^4.0 || ^5.0"
+                "wikimedia/timestamp": "^5.1"
             },
             "require-dev": {
-                "colinodell/psr-testlogger": "1.3.0",
-                "mediawiki/mediawiki-codesniffer": "48.0.0",
-                "mediawiki/mediawiki-phan-config": "0.17.0",
-                "mediawiki/minus-x": "1.1.3",
+                "colinodell/psr-testlogger": "1.3.1",
+                "mediawiki/mediawiki-codesniffer": "50.0.0",
+                "mediawiki/mediawiki-phan-config": "0.20.0",
+                "mediawiki/minus-x": "2.0.1",
                 "ockcyp/covers-validator": "1.7.0",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
                 "php-parallel-lint/php-parallel-lint": "1.4.0",
-                "phpunit/phpunit": "10.5.58"
+                "phpunit/phpunit": "10.5.63"
             },
-            "time": "2025-11-25T03:48:10+00:00",
+            "time": "2026-04-27T09:47:09+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -5859,7 +5859,7 @@
                 "xmp"
             ],
             "support": {
-                "source": "https://github.com/wikimedia/mediawiki-libs-XMPReader/tree/0.10.2"
+                "source": "https://github.com/wikimedia/mediawiki-libs-XMPReader/tree/0.10.3"
             },
             "install-path": "../wikimedia/xmp-reader"
         },
