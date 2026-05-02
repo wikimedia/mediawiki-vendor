@@ -93,6 +93,7 @@
 		"symfony/deprecation-contracts": "3.6.0",
 		"symfony/polyfill-php84": "1.36.0",
 		"symfony/polyfill-php85": "1.36.0",
+		"symfony/polyfill-php86": "1.37.0",
 		"symfony/process": "7.4.8",
 		"symfony/property-access": "7.4.8",
 		"symfony/property-info": "7.4.8",
