@@ -107,7 +107,7 @@
 		"symfony/validator": "7.4.8",
 		"symfony/var-dumper": "7.4.8",
 		"symfony/yaml": "7.4.8",
-		"web-auth/cose-lib": "4.5.1",
+		"web-auth/cose-lib": "4.5.2",
 		"web-auth/webauthn-lib": "5.2.4",
 		"webonyx/graphql-php": "15.32.3",
 		"wikimedia/assert": "0.5.1",
