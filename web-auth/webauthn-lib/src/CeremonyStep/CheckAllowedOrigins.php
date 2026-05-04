@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace Webauthn\CeremonyStep;
 
+use function count;
+use function in_array;
 use InvalidArgumentException;
+use function is_array;
+use function is_string;
+use function sprintf;
+use function trigger_deprecation;
 use Webauthn\AuthenticationExtensions\AuthenticationExtensions;
 use Webauthn\AuthenticatorAssertionResponse;
 use Webauthn\AuthenticatorAttestationResponse;
+use Webauthn\CredentialRecord;
 use Webauthn\Exception\AuthenticatorResponseVerificationException;
 use Webauthn\PublicKeyCredentialCreationOptions;
 use Webauthn\PublicKeyCredentialRequestOptions;
 use Webauthn\PublicKeyCredentialSource;
-use function count;
-use function in_array;
-use function is_array;
-use function is_string;
-use function sprintf;
-use function strlen;
-use function substr;
 
 final readonly class CheckAllowedOrigins implements CeremonyStep
 {
@@ -55,12 +55,20 @@ final readonly class CheckAllowedOrigins implements CeremonyStep
     }
 
     public function process(
-        PublicKeyCredentialSource $publicKeyCredentialSource,
+        CredentialRecord $credentialRecord,
         AuthenticatorAssertionResponse|AuthenticatorAttestationResponse $authenticatorResponse,
         PublicKeyCredentialRequestOptions|PublicKeyCredentialCreationOptions $publicKeyCredentialOptions,
         ?string $userHandle,
         string $host
     ): void {
+        if ($credentialRecord instanceof PublicKeyCredentialSource) {
+            trigger_deprecation(
+                'web-auth/webauthn-lib',
+                '5.3',
+                'Passing a PublicKeyCredentialSource to "%s::process()" is deprecated, pass a CredentialRecord instead.',
+                self::class
+            );
+        }
         $authData = $authenticatorResponse instanceof AuthenticatorAssertionResponse ? $authenticatorResponse->authenticatorData : $authenticatorResponse->attestationObject->authData;
         $C = $authenticatorResponse->clientDataJSON;
 
@@ -179,7 +187,7 @@ final readonly class CheckAllowedOrigins implements CeremonyStep
 
     private function isSubdomainOf(string $subdomain, string $domain): bool
     {
-        return substr('.' . $subdomain, -strlen('.' . $domain)) === '.' . $domain;
+        return str_ends_with('.' . $subdomain, '.' . $domain);
     }
 
     private function getFacetId(
