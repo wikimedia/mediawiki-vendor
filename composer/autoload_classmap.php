@@ -1194,6 +1194,7 @@ return array(
     'GraphQL\\Executor\\Executor' => $vendorDir . '/webonyx/graphql-php/src/Executor/Executor.php',
     'GraphQL\\Executor\\ExecutorImplementation' => $vendorDir . '/webonyx/graphql-php/src/Executor/ExecutorImplementation.php',
     'GraphQL\\Executor\\PromiseExecutor' => $vendorDir . '/webonyx/graphql-php/src/Executor/PromiseExecutor.php',
+    'GraphQL\\Executor\\Promise\\Adapter\\AmpFutureAdapter' => $vendorDir . '/webonyx/graphql-php/src/Executor/Promise/Adapter/AmpFutureAdapter.php',
     'GraphQL\\Executor\\Promise\\Adapter\\AmpPromiseAdapter' => $vendorDir . '/webonyx/graphql-php/src/Executor/Promise/Adapter/AmpPromiseAdapter.php',
     'GraphQL\\Executor\\Promise\\Adapter\\ReactPromiseAdapter' => $vendorDir . '/webonyx/graphql-php/src/Executor/Promise/Adapter/ReactPromiseAdapter.php',
     'GraphQL\\Executor\\Promise\\Adapter\\SyncPromise' => $vendorDir . '/webonyx/graphql-php/src/Executor/Promise/Adapter/SyncPromise.php',
