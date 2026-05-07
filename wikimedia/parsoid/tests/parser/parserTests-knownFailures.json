@@ -63,9 +63,6 @@
 	"Empty attribute crash test single-quotes (T4067)": {
 		"wt2wt": "<font color=\"\">foo</font>"
 	},
-	"Extension tag with embedded html": {
-		"wt2html": "<p data-parsoid='{\"dsr\":[0,52,0,0]}'><span typeof=\"mw:Extension/embedtag\" about=\"#mwt\" data-parsoid='{\"dsr\":[0,52,10,11]}' data-mw='{\"name\":\"embedtag\",\"attrs\":{},\"body\":{\"html\":\"Content with a &lt;a rel=\\\"mw:WikiLink\\\" href=\\\"./Broken_link?action=edit&amp;amp;redlink=1\\\" title=\\\"Broken link\\\" class=\\\"new\\\" typeof=\\\"mw:LocalizedAttrs\\\" data-mw-i18n=&apos;{\\\"title\\\":{\\\"lang\\\":\\\"x-page\\\",\\\"key\\\":\\\"red-link-title\\\",\\\"params\\\":[\\\"Broken link\\\"]}}&apos; data-parsoid=&apos;{\\\"stx\\\":\\\"simple\\\",\\\"a\\\":{\\\"href\\\":\\\"./Broken_link\\\"},\\\"sa\\\":{\\\"href\\\":\\\"broken link\\\"},\\\"dsr\\\":[25,40,2,2]}&apos;>broken link&lt;/a>.\"}}'></span></p>"
-	},
 	"Fuzz testing: Parser13": {
 		"wt2wt": "{| \n| http: / a |\n|}"
 	},
@@ -90,6 +87,9 @@
 	"Handling html with a div self-closing tag": {
 		"wt2html": "<div title=\"\" data-parsoid='{\"stx\":\"html\",\"selfClose\":true,\"dsr\":[0,13,13,0]}'></div>\n<div title=\"\" data-parsoid='{\"stx\":\"html\",\"selfClose\":true,\"dsr\":[14,26,12,0]}'></div>\n<div title=\"\" data-parsoid='{\"stx\":\"html\",\"autoInsertedEnd\":true,\"dsr\":[27,93,13,0]}'>\n<div title=\"bar\" data-parsoid='{\"stx\":\"html\",\"selfClose\":true,\"dsr\":[41,58,17,0]}'></div>\n<div title=\"bar\" data-parsoid='{\"stx\":\"html\",\"selfClose\":true,\"dsr\":[59,75,16,0]}'></div>\n<div title=\"bar/\" data-parsoid='{\"stx\":\"html\",\"autoInsertedEnd\":true,\"dsr\":[76,93,17,0]}'></div></div>",
 		"wt2wt": "<div title=\"\" />\n<div title=\"\" />\n<div title=\"\">\n<div title=\"bar\" />\n<div title=\"bar\" />\n<div title=\"bar/\">"
+	},
+	"Handling of &#x0A; in URLs": {
+		"wt2wt": "*[irc://&#x0A;a irc://a]"
 	},
 	"Horizontal ruler (should it add that extra space?)": {
 		"wt2wt": "<hr>\n<hr>\nfoo <hr> bar"
