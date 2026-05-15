@@ -31,6 +31,9 @@
       <testsuite name="gr4vy tests">
         <directory>PaymentProviders/Gravy/Tests/phpunit</directory>
       </testsuite>
+      <testsuite name="chariot tests">
+        <directory>PaymentProviders/Chariot/Tests/phpunit</directory>
+      </testsuite>
       <testsuite name="trustly tests">
         <directory>PaymentProviders/Trustly/Tests/phpunit</directory>
       </testsuite>

@@ -50,7 +50,7 @@ class RecurringCancellationJobTest extends BaseGravyTestCase {
 		$this->assertEquals( 'subscr_cancel', $recurringMessage['txn_type'] );
 		$this->assertEquals( 'paypal', $recurringMessage['payment_method'] );
 		$this->assertSame( '1', $recurringMessage['recurring'] );
-		$this->assertEquals( $paymentMethodData['target']['id'], $recurringMessage['subscr_id'] );
+		$this->assertEquals( $paymentMethodData['target']['id'], $recurringMessage['recurring_payment_token'] );
 
 		$expectedMessageDate = strtotime( $paymentMethodData['created_at'] );
 		$this->assertEquals( $expectedMessageDate, $recurringMessage['date'] );
@@ -84,7 +84,7 @@ class RecurringCancellationJobTest extends BaseGravyTestCase {
 			'txn_type' => 'subscr_cancel',
 			'payment_method' => 'paypal',
 			'recurring' => '1',
-			'subscr_id' => $payload['subscr_id'],
+			'recurring_payment_token' => $payload['recurring_payment_token'],
 			'date' => $payload['date'],
 			'cancel_date' => $payload['cancel_date'],
 		];

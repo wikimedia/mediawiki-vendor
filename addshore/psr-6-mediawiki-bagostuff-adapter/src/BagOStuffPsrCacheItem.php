@@ -12,7 +12,7 @@ class BagOStuffPsrCacheItem implements CacheItemInterface {
 	/**
 	 * @var string
 	 */
-	private $key;
+	private string $key;
 
 	/**
 	 * @var mixed
@@ -22,17 +22,17 @@ class BagOStuffPsrCacheItem implements CacheItemInterface {
 	/**
 	 * @var bool
 	 */
-	private $isHit = false;
+	private bool $isHit = false;
 
 	/**
 	 * @var DateTimeInterface|null
 	 */
-	private $expiration = null;
+	private ?DateTimeInterface $expiration = null;
 
 	/**
 	 * @var bool Has the value been changed since construction / wakeup
 	 */
-	private $changed = false;
+	private bool $changed = false;
 
 	/**
 	 * @todo The spec says that calling libraries MUST NOT instantiate this directly, but how to
@@ -42,7 +42,7 @@ class BagOStuffPsrCacheItem implements CacheItemInterface {
 	 * @param mixed $value
 	 * @param bool $isHit
 	 */
-	public function __construct( $key, $value, $isHit ) {
+	public function __construct( string $key, mixed $value, bool $isHit ) {
 		$this->key = $key;
 		$this->value = $isHit ? $value : null;
 		$this->isHit = $isHit;
@@ -57,7 +57,7 @@ class BagOStuffPsrCacheItem implements CacheItemInterface {
 	 * @return string
 	 *   The key string for this cache item.
 	 */
-	public function getKey() {
+	public function getKey(): string {
 		return $this->key;
 	}
 
@@ -73,7 +73,7 @@ class BagOStuffPsrCacheItem implements CacheItemInterface {
 	 * @return mixed
 	 *   The value corresponding to this cache item's key, or null if not found.
 	 */
-	public function get() {
+	public function get(): mixed {
 		return $this->value;
 	}
 
@@ -86,7 +86,7 @@ class BagOStuffPsrCacheItem implements CacheItemInterface {
 	 * @return bool
 	 *   True if the request resulted in a cache hit. False otherwise.
 	 */
-	public function isHit() {
+	public function isHit(): bool {
 		return $this->isHit;
 	}
 
@@ -103,7 +103,7 @@ class BagOStuffPsrCacheItem implements CacheItemInterface {
 	 * @return static
 	 *   The invoked object.
 	 */
-	public function set( $value ) {
+	public function set( mixed $value ): static {
 		$this->value = $value;
 		$this->changed = true;
 		return $this;
@@ -112,7 +112,7 @@ class BagOStuffPsrCacheItem implements CacheItemInterface {
 	/**
 	 * Sets the expiration time for this cache item.
 	 *
-	 * @param \DateTimeInterface $expiration
+	 * @param DateTimeInterface|null $expiration
 	 *   The point in time after which the item MUST be considered expired.
 	 *   If null is passed explicitly, a default value MAY be used. If none is set,
 	 *   the value should be stored permanently or for as long as the
@@ -121,7 +121,7 @@ class BagOStuffPsrCacheItem implements CacheItemInterface {
 	 * @return static
 	 *   The called object.
 	 */
-	public function expiresAt( $expiration ) {
+	public function expiresAt( ?DateTimeInterface $expiration ): static {
 		$this->expiration = $expiration;
 
 		return $this;
@@ -140,10 +140,16 @@ class BagOStuffPsrCacheItem implements CacheItemInterface {
 	 * @return static
 	 *   The called object.
 	 */
-	public function expiresAfter( $time ) {
+	public function expiresAfter( int|DateInterval|null $time ): static {
+		if ( $time === null ) {
+			$this->expiration = null;
+
+			return $this;
+		}
+
 		if ( $time instanceof DateInterval ) {
 			$interval = $time;
-		} elseif ( (int)$time == $time ) {
+		} elseif ( is_int( $time ) ) {
 			$interval = new DateInterval( 'PT' . $time . 'S' );
 		} else {
 			throw new BagOStuffPsrCacheInvalidArgumentException(
@@ -163,7 +169,7 @@ class BagOStuffPsrCacheItem implements CacheItemInterface {
 	 *
 	 * @return DateTimeInterface|null
 	 */
-	public function getExpiration() {
+	public function getExpiration(): ?DateTimeInterface {
 		return $this->expiration;
 	}
 

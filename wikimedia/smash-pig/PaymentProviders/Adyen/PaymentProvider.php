@@ -16,6 +16,9 @@ use SmashPig\PaymentData\ReferenceData\CurrencyRates;
 use SmashPig\PaymentData\ReferenceData\NationalCurrencies;
 use SmashPig\PaymentData\SavedPaymentDetails;
 use SmashPig\PaymentData\StatusNormalizer;
+use SmashPig\PaymentProviders\Adyen\Mapper\ApprovePaymentResponseMapper;
+use SmashPig\PaymentProviders\Adyen\Mapper\CreatePaymentResponseMapper;
+use SmashPig\PaymentProviders\Adyen\Mapper\RefundPaymentResponseMapper;
 use SmashPig\PaymentProviders\ICancelablePaymentProvider;
 use SmashPig\PaymentProviders\ICancelAutoRescueProvider;
 use SmashPig\PaymentProviders\IDeleteDataProvider;
@@ -160,7 +163,7 @@ abstract class PaymentProvider implements
 		if ( isset( $rawResponse['additionalData'] ) ) {
 			$this->mapAdditionalData( $rawResponse['additionalData'], $response );
 		}
-		$this->mapGatewayTxnIdAndErrors( $response, $rawResponse );
+		( new CreatePaymentResponseMapper() )->mapGatewayTxnIdAndErrors( $response, $rawResponse );
 		$this->mapSuspectedFraud( $response, $rawResponse );
 		return $response;
 	}
@@ -257,13 +260,7 @@ abstract class PaymentProvider implements
 				[ FinalStatus::COMPLETE ]
 			);
 		}
-		$this->mapGatewayTxnIdAndErrors( $response, $rawResponse );
-		if ( !empty( $rawResponse['pspReference'] ) ) {
-			$response->setCaptureID( $rawResponse['pspReference'] );
-		}
-		if ( !empty( $rawResponse['originalReference'] ) ) {
-			$response->setAuthID( $rawResponse['originalReference'] );
-		}
+		( new ApprovePaymentResponseMapper() )->mapGatewayTxnIdAndErrors( $response, $rawResponse );
 		return $response;
 	}
 
@@ -297,10 +294,7 @@ abstract class PaymentProvider implements
 				[ FinalStatus::COMPLETE ]
 			);
 		}
-		$this->mapGatewayTxnIdAndErrors( $response, $rawResponse );
-		if ( isset( $rawResponse['pspReference'] ) ) {
-			$response->setGatewayRefundId( $rawResponse['pspReference'] );
-		}
+		( new RefundPaymentResponseMapper() )->mapGatewayTxnIdAndErrors( $response, $rawResponse );
 		return $response;
 	}
 
@@ -336,7 +330,7 @@ abstract class PaymentProvider implements
 				[ FinalStatus::CANCELLED ]
 			);
 		}
-		$this->mapGatewayTxnIdAndErrors(
+		( new CreatePaymentResponseMapper() )->mapGatewayTxnIdAndErrors(
 			$response,
 			$rawResponse
 		);
@@ -429,58 +423,6 @@ abstract class PaymentProvider implements
 	}
 
 	/**
-	 * Maps a couple of common properties of Adyen Checkout API responses to our
-	 * standardized PaymentProviderResponse.
-	 * Their pspReference is mapped to our GatewayTxnId and their refusalReason
-	 * is mapped to a PaymentError with a normalized ErrorCode
-	 * TODO: some refusalReasons should get ValidationError not PaymentError
-	 *
-	 * @param PaymentProviderResponse $response
-	 * @param array|bool|null $rawResponse
-	 */
-	protected function mapGatewayTxnIdAndErrors(
-		PaymentProviderResponse $response,
-		array|null|bool $rawResponse
-	): void {
-		if ( !is_array( $rawResponse ) ) {
-			$responseError = 'Adyen response was null or invalid JSON.';
-			$response->addErrors( new PaymentError(
-				ErrorCode::NO_RESPONSE,
-				$responseError,
-				LogLevel::ERROR
-			) );
-			Logger::debug( $responseError, $rawResponse );
-		} else {
-			// Map trxn id if present. Redirect responses won't have this
-			// yet, so no need to throw an error when this is empty.
-			if ( !empty( $rawResponse['pspReference'] ) ) {
-				$response->setGatewayTxnId( $rawResponse['pspReference'] );
-			}
-			if ( !empty( $rawResponse['errorCode'] ) ) {
-				$badField = ValidationErrorMapper::getValidationErrorField( $rawResponse['errorCode'] );
-				if ( $badField !== null ) {
-					$response->addValidationError( new ValidationError( $badField ) );
-				}
-			}
-			// Map refusal reason to PaymentError
-			if ( !empty( $rawResponse['refusalReason'] ) ) {
-				if ( $this->canRetryRefusalReason( $rawResponse['refusalReason'] ) ) {
-					$errorCode = ErrorCode::DECLINED;
-				} else {
-					$errorCode = ErrorCode::DECLINED_DO_NOT_RETRY;
-				}
-				$response->addErrors(
-					new PaymentError(
-						$errorCode,
-						$rawResponse['refusalReason'],
-						LogLevel::INFO
-					)
-				);
-			}
-		}
-	}
-
-	/**
 	 * Normalize the raw status or add appropriate errors to our response object. We have a group of classes
 	 * whose function is normalizing raw status codes for specific API calls. We expect SOME status code back
 	 * from any API call, so when that is missing we always add a MISSING_REQUIRED_DATA error. Otherwise we
@@ -547,27 +489,7 @@ abstract class PaymentProvider implements
 	 * @return bool
 	 */
 	private function canRetryRefusalReason( $refusalReason ): bool {
-		// They may prefix the refusal reason with a numeric code
-		$trimmedReason = preg_replace( '/^[0-9:]+ /', '', $refusalReason );
-		$noRetryReasons = [
-			'Acquirer Fraud',
-			'Blocked Card',
-			'FRAUD',
-			'FRAUD-CANCELLED',
-			'Invalid Amount',
-			'Invalid Card Number',
-			'Invalid Pin',
-			'No Contract Found',
-			'Pin validation not possible',
-			'Referral',
-			'Restricted Card',
-			'Revocation Of Auth',
-			'Issuer Suspected Fraud',
-		];
-		if ( in_array( $trimmedReason, $noRetryReasons ) ) {
-			return false;
-		}
-		return true;
+		return $this->responseMapper->canRetryRefusalReason( $refusalReason );
 	}
 
 	protected function mapAdditionalData( array $additionalData, PaymentProviderExtendedResponse $response ) {
@@ -666,8 +588,7 @@ abstract class PaymentProvider implements
 			);
 		}
 
-		$this->mapGatewayTxnIdAndErrors( $response, $rawResponse );
-		$this->setAuthIDFromPspReference( $response, $rawResponse );
+		( new CreatePaymentResponseMapper() )->mapGatewayTxnIdAndErrors( $response, $rawResponse );
 		return $response;
 	}
 
@@ -685,12 +606,6 @@ abstract class PaymentProvider implements
 			] ) ) {
 				$response->setSuspectedFraud( true );
 			}
-		}
-	}
-
-	protected function setAuthIDFromPspReference( PaymentProviderExtendedResponse $response, array $rawResponse ) {
-		if ( !empty( $rawResponse['pspReference'] ) ) {
-			$response->setAuthID( $rawResponse['pspReference'] );
 		}
 	}
 }

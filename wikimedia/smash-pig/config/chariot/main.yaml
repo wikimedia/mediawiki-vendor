@@ -1,0 +1,7 @@
+# Settings for Chariot
+#
+# To override, create a file in:
+#   /etc/smashpig/chariot/main.yaml
+#   $HOME/.smashpig/chariot/main.yaml
+# The getReport script also supports option-based overrides.
+api_base_url: 'https://api.givechariot.com'

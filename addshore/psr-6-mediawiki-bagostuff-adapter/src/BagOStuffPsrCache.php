@@ -5,7 +5,7 @@ namespace Addshore\Psr\Cache\MWBagOStuffAdapter;
 use DateTimeInterface;
 use Psr\Cache\CacheItemInterface;
 use Psr\Cache\CacheItemPoolInterface;
-use BagOStuff;
+use Wikimedia\ObjectCache\BagOStuff;
 
 class BagOStuffPsrCache implements CacheItemPoolInterface {
 
@@ -28,14 +28,14 @@ class BagOStuffPsrCache implements CacheItemPoolInterface {
 	/**
 	 * @return string The cache key used to store a list of all cached keys
 	 */
-	private function getKeyListKey() {
+	private function getKeyListKey(): string {
 		return $this->bagOStuff->makeKey( __CLASS__, 'keylist' );
 	}
 
 	/**
 	 * @return array Keys stored in this cache
 	 */
-	private function getKeyList() {
+	private function getKeyList(): array {
 		$value = $this->bagOStuff->get( $this->getKeyListKey() );
 		if ( !$value ) {
 			return [];
@@ -47,7 +47,7 @@ class BagOStuffPsrCache implements CacheItemPoolInterface {
 	/**
 	 * @param string $key Adds a key to the list of stored keys
 	 */
-	private function addToKeyList( $key ) {
+	private function addToKeyList( string $key ): void {
 		$storedKeys = $this->getKeyList();
 		$storedKeys[$key] = $key;
 		$this->bagOStuff->set( $this->getKeyListKey(), $storedKeys );
@@ -56,7 +56,7 @@ class BagOStuffPsrCache implements CacheItemPoolInterface {
 	/**
 	 * Clears all stored keys from the list
 	 */
-	private function clearKeyList() {
+	private function clearKeyList(): void {
 		$this->bagOStuff->delete( $this->getKeyListKey() );
 	}
 
@@ -65,7 +65,7 @@ class BagOStuffPsrCache implements CacheItemPoolInterface {
 	 *
 	 * @throws BagOStuffPsrCacheInvalidArgumentException
 	 */
-	private function throwExceptionOnBadKey( $key ) {
+	private function throwExceptionOnBadKey( string $key ): void {
 		if ( !is_string( $key ) ) {
 			throw new BagOStuffPsrCacheInvalidArgumentException( '$key must be a string' );
 		}
@@ -99,7 +99,7 @@ class BagOStuffPsrCache implements CacheItemPoolInterface {
 	 * @return CacheItemInterface
 	 *   The corresponding Cache Item.
 	 */
-	public function getItem( $key ) {
+	public function getItem( string $key ): CacheItemInterface {
 		$this->throwExceptionOnBadKey( $key );
 
 		$item = $this->bagOStuff->get( $key );
@@ -120,13 +120,13 @@ class BagOStuffPsrCache implements CacheItemPoolInterface {
 	 *   If any of the keys in $keys are not a legal value a \Psr\Cache\InvalidArgumentException
 	 *   MUST be thrown.
 	 *
-	 * @return array|\Traversable
+	 * @return iterable
 	 *   A traversable collection of Cache Items keyed by the cache keys of
 	 *   each item. A Cache item will be returned for each key, even if that
 	 *   key is not found. However, if no keys are specified then an empty
 	 *   traversable MUST be returned instead.
 	 */
-	public function getItems( array $keys = [] ) {
+	public function getItems( array $keys = [] ): iterable {
 		$items = [];
 		foreach ( $keys as $key ) {
 			$items[$key] = $this->getItem( $key );
@@ -152,7 +152,7 @@ class BagOStuffPsrCache implements CacheItemPoolInterface {
 	 * @return bool
 	 *  True if item exists in the cache, false otherwise.
 	 */
-	public function hasItem( $key ) {
+	public function hasItem( string $key ): bool {
 		$this->throwExceptionOnBadKey( $key );
 
 		return $this->bagOStuff->get( $key ) !== false;
@@ -164,7 +164,7 @@ class BagOStuffPsrCache implements CacheItemPoolInterface {
 	 * @return bool
 	 *   True if the pool was successfully cleared. False if there was an error.
 	 */
-	public function clear() {
+	public function clear(): bool {
 		$this->deleteItems( $this->getKeyList() );
 		$this->clearKeyList();
 
@@ -184,7 +184,7 @@ class BagOStuffPsrCache implements CacheItemPoolInterface {
 	 * @return bool
 	 *   True if the item was successfully removed. False if there was an error.
 	 */
-	public function deleteItem( $key ) {
+	public function deleteItem( string $key ): bool {
 		$this->throwExceptionOnBadKey( $key );
 
 		return $this->bagOStuff->delete( $key );
@@ -203,7 +203,7 @@ class BagOStuffPsrCache implements CacheItemPoolInterface {
 	 * @return bool
 	 *   True if the items were successfully removed. False if there was an error.
 	 */
-	public function deleteItems( array $keys ) {
+	public function deleteItems( array $keys ): bool {
 		$totalReturn = true;
 		foreach ( $keys as $key ) {
 			$innerReturn = $this->deleteItem( $key );
@@ -226,7 +226,7 @@ class BagOStuffPsrCache implements CacheItemPoolInterface {
 	 * @throws BagOStuffPsrCacheException as BagOStuffs can not differentiate between a false
 	 * value and an un-cached value
 	 */
-	public function save( CacheItemInterface $item ) {
+	public function save( CacheItemInterface $item ): bool {
 		if ( !$item instanceof BagOStuffPsrCacheItem ) {
 			throw new BagOStuffPsrCacheInvalidArgumentException(
 				__CLASS__ . ' can only save BagOStuffPsrCacheItem objects'
@@ -265,7 +265,7 @@ class BagOStuffPsrCache implements CacheItemPoolInterface {
 	 *   False if the item could not be queued or if a commit was attempted and failed. True
 	 *     otherwise.
 	 */
-	public function saveDeferred( CacheItemInterface $item ) {
+	public function saveDeferred( CacheItemInterface $item ): bool {
 		return $this->save( $item );
 	}
 
@@ -276,7 +276,7 @@ class BagOStuffPsrCache implements CacheItemPoolInterface {
 	 *   True if all not-yet-saved items were successfully saved or there were none. False
 	 *     otherwise.
 	 */
-	public function commit() {
+	public function commit(): bool {
 		return true;
 	}
 

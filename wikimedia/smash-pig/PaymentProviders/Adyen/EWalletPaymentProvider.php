@@ -8,6 +8,7 @@ use SmashPig\Core\ValidationError;
 use SmashPig\PaymentData\ErrorCode;
 use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentData\StatusNormalizer;
+use SmashPig\PaymentProviders\Adyen\Mapper\CreatePaymentResponseMapper;
 use SmashPig\PaymentProviders\Responses\CreatePaymentResponse;
 
 class EWalletPaymentProvider extends PaymentProvider {
@@ -51,8 +52,7 @@ class EWalletPaymentProvider extends PaymentProvider {
 			if ( $rawStatus === 'RedirectShopper' ) {
 				$response->setRedirectUrl( $rawResponse['action']['url'] );
 			}
-			$this->mapGatewayTxnIdAndErrors( $response, $rawResponse );
-			$this->setAuthIDFromPspReference( $response, $rawResponse );
+			( new CreatePaymentResponseMapper() )->mapGatewayTxnIdAndErrors( $response, $rawResponse );
 			if ( isset( $rawResponse['additionalData'] ) ) {
 				$this->mapAdditionalData( $rawResponse['additionalData'], $response );
 			}

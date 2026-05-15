@@ -146,6 +146,17 @@ class NotificationsTest extends BaseGravyTestCase {
 		$this->assertNull( $jobsMessage, 'No message shoud be queued to jobs queue' );
 	}
 
+	public function testMonitoringIncidentMessageIsDropped(): void {
+		[ $request, $response ] = $this->getValidRequestResponseObjects();
+		$responseBody = file_get_contents( __DIR__ . '/../Data/monitoring-incident-closed.json' );
+		$request->method( 'getRawRequest' )->willReturn( $responseBody );
+		$result = $this->gravyListener->execute( $request, $response );
+
+		$this->assertTrue( $result );
+		$jobsMessage = $this->jobsGravyQueue->pop();
+		$this->assertNull( $jobsMessage, 'No message should be queued to jobs queue' );
+	}
+
 	public function testPaymentMethodDeletedMessageIsQueued(): void {
 		[ $request, $response ] = $this->getValidRequestResponseObjects();
 		$responseBody = file_get_contents( __DIR__ . '/../Data/payment-method-deleted-paypal.json' );

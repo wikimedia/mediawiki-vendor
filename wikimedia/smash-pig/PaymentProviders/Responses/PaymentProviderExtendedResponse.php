@@ -46,6 +46,11 @@ class PaymentProviderExtendedResponse extends PaymentProviderResponse {
 	protected ?string $processorContactID = null;
 
 	/**
+	 * @var string|null
+	 */
+	protected ?string $backendProcessorContactID = null;
+
+	/**
 	 * FIXME: unaccessed, should probably just return $this->donorDetails !== null
 	 * @var bool
 	 */
@@ -315,6 +320,22 @@ class PaymentProviderExtendedResponse extends PaymentProviderResponse {
 
 	public function getBackendProcessorTransactionId(): ?string {
 		return $this->backendProcessorTransactionId;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getBackendProcessorContactID(): ?string {
+		return $this->backendProcessorContactID;
+	}
+
+	/**
+	 * @param string|null $backendProcessorContactID
+	 * @return static
+	 */
+	public function setBackendProcessorContactID( ?string $backendProcessorContactID ): PaymentProviderExtendedResponse {
+		$this->backendProcessorContactID = $backendProcessorContactID;
+		return $this;
 	}
 
 	/**

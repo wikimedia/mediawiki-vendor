@@ -21,7 +21,7 @@ class CacheHelper {
 	 * @throws \ReflectionException
 	 * @throws \SmashPig\Core\ConfigurationKeyException
 	 */
-	public static function getWithSetCallback( string $key, int $duration, callable $callback ) {
+	public static function getWithSetCallback( string $key, int $duration, callable $callback ): mixed {
 		/** @var CacheItemPoolInterface $cache */
 		$cache = Context::get()->getGlobalConfiguration()->object( 'cache' );
 		$cacheItem = $cache->getItem( $key );

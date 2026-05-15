@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<ruleset>
+    <rule ref="./vendor/mediawiki/mediawiki-codesniffer/MediaWiki">
+        <exclude name="MediaWiki.Files.ClassMatchesFilename.NotMatch" />
+        <exclude name="MediaWiki.NamingConventions.LowerCamelFunctionsName.FunctionName" />
+        <exclude name="MediaWiki.WhiteSpace.SpaceBeforeSingleLineComment.NewLineComment" />
+        <exclude name="PSR12.Properties.ConstantVisibility.NotFound" />
+        <exclude name="Squiz.Classes.ValidClassName.NotCamelCaps" />
+    </rule>
+
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="100" />
+        </properties>
+    </rule>
+
+    <file>src</file>
+    <arg name="extensions" value="php" />
+    <arg name="encoding" value="UTF-8" />
+</ruleset>

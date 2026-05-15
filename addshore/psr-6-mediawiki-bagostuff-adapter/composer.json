@@ -3,27 +3,25 @@
   "type": "library",
   "description": "A MediaWiki BagOStuff PSR-6 adapter library",
   "keywords": ["Mediawiki", "Cache"],
-  "license": "GPL-2.0+",
+  "license": "GPL-2.0-or-later",
   "authors": [
     {
       "name": "Addshore"
     }
   ],
   "require": {
-    "psr/cache": "^1.0.0"
+    "psr/cache": "^3.0",
+    "php": "^8.2"
   },
   "require-dev": {
-    "jakub-onderka/php-parallel-lint": "^0.9.2",
-    "mediawiki/mediawiki-codesniffer": "^0.7.2",
-    "phpunit/phpunit": "~4.8.0|~5.3.0",
-    "cache/integration-tests": "~0.9.1"
+    "php-parallel-lint/php-parallel-lint": "^1.4",
+    "mediawiki/mediawiki-codesniffer": "47.0",
+    "phpunit/phpunit": "^11.5"
   },
   "scripts": {
     "lint": "parallel-lint . --exclude vendor",
-    "sniff": "phpcs -ps",
-    "phpunit": "phpunit",
-    "phpunit-unit": "phpunit --testsuite unit",
-    "phpunit-integration": "phpunit --testsuite integration",
+    "sniff": "phpcs -ps --runtime-set installed_paths vendor/mediawiki/mediawiki-codesniffer,vendor/phpcsstandards/phpcsextra",
+    "phpunit": "phpunit -c phpunit.xml.dist",
     "test": [
       "@lint",
       "@sniff",
@@ -32,7 +30,7 @@
     "ci": [
       "@lint",
       "@sniff",
-      "phpunit --coverage-clover=coverage.clover"
+      "@phpunit"
     ]
   },
   "autoload": {
@@ -42,7 +40,13 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Mediawiki\\Api\\Test\\": ["tests/integration", "tests/unit"]
+      "Addshore\\Psr\\Cache\\MWBagOStuffAdapter\\Tests\\": "tests/unit/",
+      "Wikimedia\\ObjectCache\\": "tests/stubs/ObjectCache/"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
     }
   }
 }

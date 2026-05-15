@@ -56,12 +56,11 @@
         "ext-pdo": "*",
         "php": ">=8.2",
         "phpmailer/phpmailer": "^6",
-        "predis/predis": "^1.1",
+        "predis/predis": "^1|^2|^3",
         "symfony/http-foundation": "^5|^6",
         "symfony/yaml": "^4|^5|^6|^7",
-        "amzn/login-and-pay-with-amazon-sdk-php": "^2.5",
-        "psr/cache": "^1.0",
-        "psr/log": "^1.0",
+        "psr/cache": "^3.0",
+        "psr/log": "^1|^2|^3",
         "psr/container": "~1.0 || ~2.0",
         "corneltek/getoptionkit": "^2.5",
         "gr4vy/gr4vy-php": "0.27",
@@ -87,12 +86,6 @@
             "SmashPig\\": "./"
         }
     },
-    "repositories": [
-        {
-            "type": "git",
-            "url": "https://github.com/ejegg/login-and-pay-with-amazon-sdk-php"
-        }
-    ],
     "config": {
       "platform": {
         "php": "8.2.26"

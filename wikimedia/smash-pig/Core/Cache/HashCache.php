@@ -28,7 +28,7 @@ class HashCache implements CacheItemPoolInterface {
 	 * @return CacheItemInterface
 	 *   The corresponding Cache Item.
 	 */
-	public function getItem( $key ) {
+	public function getItem( string $key ): CacheItemInterface {
 		if ( isset( $this->items[$key] ) ) {
 			return new SimpleCacheItem( $key, $this->items[$key], true );
 		}
@@ -45,13 +45,13 @@ class HashCache implements CacheItemPoolInterface {
 	 *   If any of the keys in $keys are not a legal value a \Psr\Cache\InvalidArgumentException
 	 *   MUST be thrown.
 	 *
-	 * @return array|\Traversable
+	 * @return iterable
 	 *   A traversable collection of Cache Items keyed by the cache keys of
 	 *   each item. A Cache item will be returned for each key, even if that
 	 *   key is not found. However, if no keys are specified then an empty
 	 *   traversable MUST be returned instead.
 	 */
-	public function getItems( array $keys = [] ) {
+	public function getItems( array $keys = [] ): iterable {
 		return array_map( [ $this, 'getItem' ], $keys );
 	}
 
@@ -72,7 +72,7 @@ class HashCache implements CacheItemPoolInterface {
 	 * @return bool
 	 *   True if item exists in the cache, false otherwise.
 	 */
-	public function hasItem( $key ) {
+	public function hasItem( string $key ): bool {
 		return isset( $this->items[$key] );
 	}
 
@@ -82,7 +82,7 @@ class HashCache implements CacheItemPoolInterface {
 	 * @return bool
 	 *   True if the pool was successfully cleared. False if there was an error.
 	 */
-	public function clear() {
+	public function clear(): bool {
 		$this->items = [];
 		return true;
 	}
@@ -100,7 +100,7 @@ class HashCache implements CacheItemPoolInterface {
 	 * @return bool
 	 *   True if the item was successfully removed. False if there was an error.
 	 */
-	public function deleteItem( $key ) {
+	public function deleteItem( string $key ): bool {
 		unset( $this->items[$key] );
 		return true;
 	}
@@ -117,7 +117,7 @@ class HashCache implements CacheItemPoolInterface {
 	 * @return bool
 	 *   True if the items were successfully removed. False if there was an error.
 	 */
-	public function deleteItems( array $keys ) {
+	public function deleteItems( array $keys ): bool {
 		array_walk( $keys, [ $this, 'deleteItem' ] );
 		return true;
 	}
@@ -131,7 +131,7 @@ class HashCache implements CacheItemPoolInterface {
 	 * @return bool
 	 *   True if the item was successfully persisted. False if there was an error.
 	 */
-	public function save( CacheItemInterface $item ) {
+	public function save( CacheItemInterface $item ): bool {
 		$this->items[$item->getKey()] = $item->get();
 		return true;
 	}
@@ -145,7 +145,7 @@ class HashCache implements CacheItemPoolInterface {
 	 * @return bool
 	 *   False if the item could not be queued or if a commit was attempted and failed. True otherwise.
 	 */
-	public function saveDeferred( CacheItemInterface $item ) {
+	public function saveDeferred( CacheItemInterface $item ): bool {
 		$this->deferredQueue[] = $item;
 		return true;
 	}
@@ -156,7 +156,7 @@ class HashCache implements CacheItemPoolInterface {
 	 * @return bool
 	 *   True if all not-yet-saved items were successfully saved or there were none. False otherwise.
 	 */
-	public function commit() {
+	public function commit(): bool {
 		$success = true;
 		while ( $deferredItem = array_shift( $this->deferredQueue ) ) {
 			$success = $success && $this->save( $deferredItem );

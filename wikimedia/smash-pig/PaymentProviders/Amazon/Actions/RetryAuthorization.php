@@ -1,7 +1,6 @@
 <?php namespace SmashPig\PaymentProviders\Amazon\Actions;
 
 use Exception;
-use PayWithAmazon\PaymentsClientInterface;
 use SmashPig\Core\Actions\IListenerMessageAction;
 use SmashPig\Core\Context;
 use SmashPig\Core\Logging\Logger;

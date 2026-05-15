@@ -149,7 +149,10 @@ class PaymentProviderTest extends BaseAdyenTestCase {
 		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\ApprovePaymentResponse',
 			$approvePaymentResponse );
 		$this->assertEquals( 'received', $approvePaymentResponse->getRawStatus() );
-		$this->assertSame( '00000000000000AB', $approvePaymentResponse->getGatewayTxnId() );
+		$this->assertEquals( 'WNS7WQ756L2GWR82', $approvePaymentResponse->getGatewayTxnId() );
+		$this->assertEquals( 'WNS7WQ756L2GWR82', $approvePaymentResponse->getAuthID() );
+		$this->assertEquals( 'WNS7WQ756L2GWR82', $approvePaymentResponse->getBackendProcessorTransactionId() );
+		$this->assertEquals( 'JDD6LKT8MBLZNN84', $approvePaymentResponse->getCaptureID() );
 		$this->assertTrue( $approvePaymentResponse->isSuccessful() );
 		$this->assertTrue( count( $approvePaymentResponse->getErrors() ) == 0 );
 	}

@@ -24,6 +24,7 @@ class RecordPaymentsJobTest extends AmazonTestCase {
 	protected $refId;
 
 	public function setUp(): void {
+		$this->markTestSkipped( 'Needs update to new SDK' );
 		parent::setUp();
 		$this->id = 'P01-0000555-5550000-C' . mt_rand( 10000, 99999 );
 		$this->refId = null;

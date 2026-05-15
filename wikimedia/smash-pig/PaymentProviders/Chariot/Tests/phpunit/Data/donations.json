@@ -1,0 +1,74 @@
+{
+  "count": 100,
+  "results": [
+    {
+      "amount_fee": 0,
+      "amount_gross": 20000,
+      "amount_net": 20000,
+      "artifacts": [],
+      "attribution": {
+        "primary_donor": {
+          "address": {
+            "city": "Knoxville",
+            "country": "US",
+            "line1": "66 Daffy Lane",
+            "postal_code": "90210",
+            "state": "TN"
+          },
+          "full_name": "Daffy and Daisy Duck"
+        }
+      },
+      "created_at": "2026-03-31T12:17:33.861283Z",
+      "currency": "USD",
+      "donor_advised_fund_grant": {
+        "donor_fund_name": "Daffy and Daisy Duck Charitable Fund",
+        "organization_name": "Fidelity Charitable",
+        "program_name": "",
+        "sponsor_grant_id": "12345"
+      },
+      "id": "donation_bcdefg000wsk4fabcdefg",
+      "note": "",
+      "payment_source_id": "payment_source_bcdefg4k982jr08x5bcdefg",
+      "platform": {
+        "acceptance": {
+          "accepted": false
+        },
+        "metadata": {
+          "Payable To": "WIKIMEDIA FOUNDATION ORG",
+          "Recommended By": "Online at FC"
+        },
+        "name": "Fidelity Charitable",
+        "platform_grant_id": "12345"
+      },
+      "properties": [
+        {
+          "property_id": "prop_6pb4y264ps97y95abcdefg",
+          "value": {
+            "text_value": "Daisy Duck",
+            "type": "text"
+          }
+        },
+        {
+          "property_id": "prop_2jtd6279fv94var0nabcdefg",
+          "value": {
+            "enum_value_id": "enum_575pwkd3kz8kssxmtqgqnv1r3m",
+            "type": "enum"
+          }
+        },
+        {
+          "property_id": "prop_158yn38s0h9aqb2f2yz0546p6c",
+          "value": {
+            "enum_value_id": "enum_7amwngmr3b9hzt5v7fj3q3a06s",
+            "type": "enum"
+          }
+        }
+      ],
+      "purpose": "Contact Name: Uncle Scrooge\nDesignation: Where it's needed most",
+      "settlement": {
+        "deposit_id": "deposit_01kn2754abcdeg",
+        "received_at": null
+      },
+      "updated_at": "2026-03-31T12:17:33.861283Z"
+    }
+  ]
+}

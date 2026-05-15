@@ -1,0 +1,35 @@
+{
+  "type": "event",
+  "name": "monitoring.incident.closed",
+  "id": "a131ff0f-e51d-4245-a340-f8397de316a6",
+  "created_at": "2026-05-14T15:17:03.333451+00:00",
+  "target": {
+    "type": "monitoring.incident",
+    "id": "af0e6f33-4323-4d65-af6f-6c9010e64866",
+    "merchant_account_id": "default",
+    "metric_id": "fe94172b-d4ea-47f9-8f19-4ee9a41f4ec6",
+    "display_name": "Jack test",
+    "spec_model": "auth_rate",
+    "spec_params": {
+      "filters": {
+        "method": ["card"],
+        "datetime_range": "PT60M/now"
+      }
+    },
+    "alerting_policy": {
+      "params": {"alert_lt": 80},
+      "strategy": "threshold"
+    },
+    "incident_policy": {
+      "params": {"close_after_n": 1, "create_after_n": 1},
+      "strategy": "debouncing"
+    },
+    "notes": null,
+    "created_at": "2026-05-14T11:33:00.504715+00:00",
+    "updated_at": "2026-05-14T15:17:03.326276+00:00",
+    "closed_at": "2026-05-14T15:17:03.326276+00:00"
+  },
+  "merchant_account_id": "default",
+  "gr4vy_id": "wikimedia",
+  "environment": "production"
+}

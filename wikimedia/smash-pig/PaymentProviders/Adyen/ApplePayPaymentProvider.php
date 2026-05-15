@@ -3,6 +3,7 @@
 namespace SmashPig\PaymentProviders\Adyen;
 
 use SmashPig\PaymentData\StatusNormalizer;
+use SmashPig\PaymentProviders\Adyen\Mapper\CreatePaymentResponseMapper;
 use SmashPig\PaymentProviders\Responses\CreatePaymentResponse;
 
 class ApplePayPaymentProvider extends PaymentProvider {
@@ -41,8 +42,7 @@ class ApplePayPaymentProvider extends PaymentProvider {
 			new ApprovalNeededCreatePaymentStatus(),
 			$rawResponse['resultCode'] ?? null
 		);
-		$this->mapGatewayTxnIdAndErrors( $response, $rawResponse );
-		$this->setAuthIDFromPspReference( $response, $rawResponse );
+		( new CreatePaymentResponseMapper() )->mapGatewayTxnIdAndErrors( $response, $rawResponse );
 		// additionalData has the recurring details
 		if ( isset( $rawResponse['additionalData'] ) ) {
 			$this->mapAdditionalData( $rawResponse['additionalData'], $response );

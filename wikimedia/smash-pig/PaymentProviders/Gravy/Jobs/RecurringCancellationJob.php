@@ -17,7 +17,7 @@ class RecurringCancellationJob implements Runnable {
 			'payload' => [
 				'gateway' => 'gravy',
 				'txn_type' => 'subscr_cancel',
-				'subscr_id' => $message->getPaymentMethodId(), // PayPal Job expects this field
+				'recurring_payment_token' => $message->getPaymentMethodId(),
 				'payment_method' => $message->getPaymentMethod(),
 				'date' => strtotime( $message->getMessageDate() ),
 				'cancel_date' => strtotime( $message->getPaymentMethodUpdateDate() ),
@@ -29,13 +29,13 @@ class RecurringCancellationJob implements Runnable {
 	public function execute(): bool {
 		$logger = Logger::getTaggedLogger( 'RecurringCancellationJob' );
 
-		if ( empty( $this->payload['subscr_id'] ) ) {
-			$logger->error( 'Missing subscription ID in cancellation job' );
+		if ( empty( $this->payload['recurring_payment_token'] ) ) {
+			$logger->error( 'Missing recurring payment token in cancellation job' );
 			return false;
 		}
 
 		$logger->info(
-			"Processing recurring cancellation for payment method: {$this->payload['subscr_id']}"
+			"Processing recurring cancellation for payment method: {$this->payload['recurring_payment_token']}"
 		);
 
 		// Now push the normalized message to the recurring queue

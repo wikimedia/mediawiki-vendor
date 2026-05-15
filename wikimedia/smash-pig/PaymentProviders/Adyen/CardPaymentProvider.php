@@ -5,6 +5,7 @@ namespace SmashPig\PaymentProviders\Adyen;
 use SmashPig\Core\Logging\Logger;
 use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentData\StatusNormalizer;
+use SmashPig\PaymentProviders\Adyen\Mapper\CreatePaymentResponseMapper;
 use SmashPig\PaymentProviders\Responses\CreatePaymentResponse;
 
 class CardPaymentProvider extends PaymentProvider {
@@ -61,8 +62,7 @@ class CardPaymentProvider extends PaymentProvider {
 		);
 		$response = new CreatePaymentResponse();
 		$response->setRawResponse( $rawResponse );
-		$this->mapGatewayTxnIdAndErrors( $response, $rawResponse );
-		$this->setAuthIDFromPspReference( $response, $rawResponse );
+		( new CreatePaymentResponseMapper() )->mapGatewayTxnIdAndErrors( $response, $rawResponse );
 
 		$rawStatus = $rawResponse['resultCode'] ?? null;
 		$this->mapStatus(

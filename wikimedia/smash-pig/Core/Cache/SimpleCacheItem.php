@@ -6,11 +6,8 @@ use Psr\Cache\CacheItemInterface;
 
 class SimpleCacheItem implements CacheItemInterface {
 
-	protected $key;
-	protected $value;
-	protected $hit;
 	/** @var int|null time to live in seconds */
-	protected $ttl = null;
+	protected ?int $ttl = null;
 
 	/**
 	 * SimpleCacheItem constructor.
@@ -18,10 +15,7 @@ class SimpleCacheItem implements CacheItemInterface {
 	 * @param mixed $value
 	 * @param bool $hit
 	 */
-	public function __construct( $key, $value, $hit ) {
-		$this->key = $key;
-		$this->value = $value;
-		$this->hit = $hit;
+	public function __construct( protected string $key, protected mixed $value, protected bool $hit ) {
 	}
 
 	/**
@@ -33,7 +27,7 @@ class SimpleCacheItem implements CacheItemInterface {
 	 * @return string
 	 *   The key string for this cache item.
 	 */
-	public function getKey() {
+	public function getKey(): string {
 		return $this->key;
 	}
 
@@ -49,7 +43,7 @@ class SimpleCacheItem implements CacheItemInterface {
 	 * @return mixed
 	 *   The value corresponding to this cache item's key, or null if not found.
 	 */
-	public function get() {
+	public function get(): mixed {
 		return $this->value;
 	}
 
@@ -62,7 +56,7 @@ class SimpleCacheItem implements CacheItemInterface {
 	 * @return bool
 	 *   True if the request resulted in a cache hit. False otherwise.
 	 */
-	public function isHit() {
+	public function isHit(): bool {
 		return $this->hit;
 	}
 
@@ -71,7 +65,7 @@ class SimpleCacheItem implements CacheItemInterface {
 	 *
 	 * @return int|null
 	 */
-	public function getTtl() {
+	public function getTtl(): ?int {
 		return $this->ttl;
 	}
 
@@ -88,7 +82,7 @@ class SimpleCacheItem implements CacheItemInterface {
 	 * @return static
 	 *   The invoked object.
 	 */
-	public function set( $value ) {
+	public function set( mixed $value ): static {
 		$this->value = $value;
 		return $this;
 	}
@@ -105,7 +99,7 @@ class SimpleCacheItem implements CacheItemInterface {
 	 * @return static
 	 *   The called object.
 	 */
-	public function expiresAt( $expiration ) {
+	public function expiresAt( ?\DateTimeInterface $expiration ): static {
 		$this->ttl = $expiration->getTimestamp() - time();
 		return $this;
 	}
@@ -123,11 +117,11 @@ class SimpleCacheItem implements CacheItemInterface {
 	 * @return static
 	 *   The called object.
 	 */
-	public function expiresAfter( $time ) {
+	public function expiresAfter( int|\DateInterval|null $time ): static {
 		if ( is_int( $time ) ) {
 			$this->ttl = $time;
 		} else {
-			$this->expiresAt( new \DateTime( 'now' ) + $time );
+			$this->expiresAt( ( new \DateTimeImmutable( 'now' ) )->add( $time ) );
 		}
 		return $this;
 	}

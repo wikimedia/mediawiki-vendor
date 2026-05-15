@@ -1,7 +1,5 @@
 <?php namespace SmashPig\PaymentProviders\Amazon;
 
-use PayWithAmazon\IpnHandlerInterface;
-use PayWithAmazon\PaymentsClientInterface;
 use SmashPig\Core\Context;
 use SmashPig\Core\SmashPigException;
 

@@ -5,6 +5,7 @@ namespace SmashPig\Maintenance;
 use SmashPig\PaymentProviders\Adyen\Audit\AdyenPaymentsAccountingReport;
 use SmashPig\PaymentProviders\Adyen\Audit\AdyenSettlementDetailReport;
 use SmashPig\PaymentProviders\Braintree\Audit\BraintreeAudit;
+use SmashPig\PaymentProviders\Chariot\Audit\DonationsAudit;
 use SmashPig\PaymentProviders\dlocal\Audit\DlocalAudit;
 use SmashPig\PaymentProviders\Gravy\Audit\GravyAudit;
 use SmashPig\PaymentProviders\PayPal\Audit\PayPalAudit;
@@ -27,6 +28,7 @@ class ParseAuditFile extends MaintenanceBase {
 				new AdyenSettlementDetailReport() :
 				new AdyenPaymentsAccountingReport(),
 			'braintree' => new BraintreeAudit(),
+			'chariot' => new DonationsAudit(),
 			'dlocal' => new DlocalAudit(),
 			'gravy' => new GravyAudit(),
 			'paypal' => new PayPalAudit(),

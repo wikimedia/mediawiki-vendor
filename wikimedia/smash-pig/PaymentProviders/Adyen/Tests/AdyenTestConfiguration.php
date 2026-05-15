@@ -13,8 +13,15 @@ class AdyenTestConfiguration extends TestingProviderConfiguration {
 
 	public static function getSuccessfulApproveResult() {
 		return [
-			'pspReference' => '00000000000000AB',
+			'merchantAccount' => 'Wikimedia',
+			'paymentPspReference' => 'WNS7WQ756L2GWR82',
+			'pspReference' => 'JDD6LKT8MBLZNN84',
+			'reference' => '1234567.8',
 			'status' => 'received',
+			'amount' => [
+				'currency' => 'EUR',
+				'value' => 2500
+			]
 		];
 	}
 

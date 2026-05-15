@@ -23,14 +23,14 @@ class StripeAudit implements AuditParser {
 			throw new \RuntimeException( 'Unable to open file ' . $path );
 		}
 
-		$headers = fgetcsv( $handle );
+		$headers = fgetcsv( $handle, 0, ',', '"', '\\' );
 		if ( !$headers ) {
 			fclose( $handle );
 			return [];
 		}
 
 		$output = [];
-		while ( ( $row = fgetcsv( $handle ) ) !== false ) {
+		while ( ( $row = fgetcsv( $handle, 0, ',', '"', '\\' ) ) !== false ) {
 			if ( count( $row ) === 1 && trim( (string)$row[0] ) === '' ) {
 				continue;
 			}
@@ -79,7 +79,7 @@ class StripeAudit implements AuditParser {
 			throw new \RuntimeException( 'Unable to open file ' . $this->sourceFilePath );
 		}
 
-		$headers = fgetcsv( $handle ) ?: [];
+		$headers = fgetcsv( $handle, 0, ',', '"', '\\' ) ?: [];
 		fclose( $handle );
 		return $headers;
 	}
