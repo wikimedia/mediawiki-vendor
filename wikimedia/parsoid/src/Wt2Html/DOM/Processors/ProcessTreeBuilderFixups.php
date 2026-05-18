@@ -8,13 +8,13 @@ use Wikimedia\Parsoid\DOM\Element;
 use Wikimedia\Parsoid\DOM\Node;
 use Wikimedia\Parsoid\Utils\DiffDOMUtils;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
+use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\WTUtils;
-use Wikimedia\Parsoid\Wt2Html\Frame;
 use Wikimedia\Parsoid\Wt2Html\Wt2HtmlDOMProcessor;
 
 class ProcessTreeBuilderFixups implements Wt2HtmlDOMProcessor {
 
-	private static function removeAutoInsertedEmptyTags( Frame $frame, Node $node ): void {
+	private static function removeAutoInsertedEmptyTags( Node $node ): void {
 		$c = $node->firstChild;
 		while ( $c !== null ) {
 			// FIXME: Encapsulation only happens after this phase, so you'd think
@@ -27,7 +27,7 @@ class ProcessTreeBuilderFixups implements Wt2HtmlDOMProcessor {
 			}
 
 			if ( $c instanceof Element ) {
-				self::removeAutoInsertedEmptyTags( $frame, $c );
+				self::removeAutoInsertedEmptyTags( $c );
 				$dp = DOMDataUtils::getDataParsoid( $c );
 
 				// We do this down here for all elements since the quote transformer
@@ -38,6 +38,7 @@ class ProcessTreeBuilderFixups implements Wt2HtmlDOMProcessor {
 
 				// Delete empty auto-inserted elements
 				if ( !empty( $dp->autoInsertedStart ) && !empty( $dp->autoInsertedEnd ) &&
+					!DOMUtils::hasTypeOf( $c, "mw:DOMFragment" ) &&
 					( !$c->hasChildNodes() ||
 						( DiffDOMUtils::hasNChildren( $c, 1 ) &&
 							!( $c->firstChild instanceof Element ) &&
@@ -66,6 +67,6 @@ class ProcessTreeBuilderFixups implements Wt2HtmlDOMProcessor {
 	public function run(
 		Env $env, Node $root, array $options = [], bool $atTopLevel = false
 	): void {
-		self::removeAutoInsertedEmptyTags( $options['frame'], $root );
+		self::removeAutoInsertedEmptyTags( $root );
 	}
 }
