@@ -1,7 +1,7 @@
 <?php
 declare( strict_types = 1 );
 
-namespace Test\Utils;
+namespace Test\Parsoid\Utils;
 
 use PHPUnit\Framework\TestCase;
 use Wikimedia\Parsoid\Core\DOMCompat;
@@ -38,7 +38,7 @@ class ContentUtilsTest extends TestCase {
 				]
 			] ] );
 
-		$doc = ContentUtils::createAndLoadDocument( $html );
+		$doc = ContentUtils::createAndLoadDocument( $html, siteConfig: $siteConfig );
 		ContentUtils::processAttributeEmbeddedDom( $siteConfig, DOMCompat::getBody( $doc )->firstChild,
 			static function () {
 				return true;

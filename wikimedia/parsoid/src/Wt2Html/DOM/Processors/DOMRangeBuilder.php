@@ -1372,7 +1372,7 @@ class DOMRangeBuilder {
 	 * @return \DOMNode|true|null
 	 */
 	public function handleFirstRenderingTransparentNode( Node $node, DOMRangeInfo $range ) {
-		if ( !$node instanceof Element || !$this->isStashableNode( $node ) ) {
+		if ( !$node instanceof Element || !$this->isStashableElt( $node ) ) {
 			return true;
 		}
 
@@ -1383,7 +1383,7 @@ class DOMRangeBuilder {
 		if ( $next === $rangeExitSentinel ) {
 			$next = null;
 		}
-		while ( $next !== null && $next !== $rangeExitSentinel && $this->isStashableNode( $next ) ) {
+		while ( $next !== null && $next !== $rangeExitSentinel && $this->isStashableElt( $next ) ) {
 			$last = $next;
 			$next = DOMCompat::getNextElementSibling( $next );
 		}
@@ -1398,24 +1398,25 @@ class DOMRangeBuilder {
 		$targetDp = DOMDataUtils::getDataParsoid( $target );
 		$targetDp->autoInsertedStart = true;
 		$targetDp->autoInsertedEnd = true;
-		$before = null;
+		$targetDp->setTempFlag( TempData::WRAPPER );
+
+		$tplType = WTUtils::matchTplType( $start );
+
 		$start->parentNode->insertBefore( $target, $start );
 		if ( $start->hasAttribute( 'about' ) ) {
 			$target->setAttribute( 'about', DOMCompat::getAttribute( $start, 'about' ) );
 		}
+		$this->migrateElements( $target, $start, $last->nextSibling, null );
 
-		$tplType = WTUtils::matchTplType( $start );
 		if ( $tplType !== null ) {
-			$newRangeStart = $target;
+			Assert::invariant(
+				$range->start === $start,
+				"start should match range start since we got a non-null $tplType"
+			);
+			// Transfer data-mw because we moved $range->start
+			$range->start = $newRangeStart = $target;
+
 			DOMUtils::removeTypeOf( $start, $tplType );
-			$rangeDmw = DOMDataUtils::getDataMw( $start );
-			$rangeDp = DOMDataUtils::getDataParsoid( $start );
-
-			$this->migrateElements( $target, $start, $last->nextSibling, $before );
-			if ( $range->start === $start ) {
-				$range->start = $newRangeStart;
-			}
-
 			DOMUtils::addTypeOf( $newRangeStart, $tplType );
 
 			$pfkey = WTUtils::getPFragmentHandlerKey( $start );
@@ -1424,16 +1425,18 @@ class DOMRangeBuilder {
 				DOMUtils::removeTypeOf( $start, "mw:ParserFunction/$pfkey" );
 			}
 
+			$rangeDmw = DOMDataUtils::getDataMw( $start );
 			$newRangeDmw = DOMDataUtils::getDataMw( $newRangeStart );
 			$newRangeDmw->parts = $rangeDmw->parts;
 			unset( $rangeDmw->parts );
+
+			$rangeDp = DOMDataUtils::getDataParsoid( $start );
 			$newRangeDp = DOMDataUtils::getDataParsoid( $newRangeStart );
 			$newRangeDp->pi = $rangeDp->pi;
-			unset( $rangeDp->pi );
 			$newRangeDp->dsr = $rangeDp->dsr;
+			unset( $rangeDp->pi );
 			unset( $rangeDp->dsr );
 		} else {
-			$this->migrateElements( $target, $start, $last->nextSibling, $before );
 			if ( $range->end === $last ) {
 				$range->end = $target;
 			}
@@ -1459,26 +1462,32 @@ class DOMRangeBuilder {
 			 );
 	}
 
-	private function isStashableNode( Node $node ): bool {
+	private function isStashableElt( Element $elt ): bool {
 		return (
 			(
-				WTUtils::isRenderingTransparentNode( $node ) &&
-				// These metas count as rendering transparent, but let's not touch them
-				// They're probably irrelevant for our case, and require fiddling with
-				// pre handling more than necessary.
-				!DOMUtils::hasTypeOf( $node, 'mw:IndentPreWS' ) &&
-				!(
-					$node instanceof Element &&
-					DOMUtils::nodeName( $node ) === 'meta' &&
-					DOMCompat::getAttribute( $node, 'property' ) === 'mw:PageProp/toc'
+				WTUtils::isRenderingTransparentNode( $elt ) &&
+				(
+					/**
+					 * Accepts the following metas:
+					 * - Non-toc mw:Pageprop
+					 * - <*include*> tags
+					 * - mw:Placeholder/StrippedTag
+					 * Skips the following metas:
+					 * - IndentPreWS (which have not yet been cleaned up at this stage)
+					 * - mw:LanguageVariant
+					 * - mw:Param (if they leaked through for whatever reason)
+					 */
+					DOMUtils::nodeName( $elt ) !== 'meta' ||
+					preg_match( "#^mw:PageProp/(?!toc)#", DOMCompat::getAttribute( $elt, "property" ) ?? '' ) ||
+					DOMUtils::matchTypeOf( $elt, "#^(mw:Includes/|mw:Placeholder/StrippedTag$)#" )
 				)
 			) ||
-			DOMUtils::isNewlineWrappingSpan( $node ) ||
-			DOMUtils::nodeName( $node ) === 'style'
+			DOMUtils::isNewlineWrappingSpan( $elt ) ||
+			DOMUtils::nodeName( $elt ) === 'style'
 		) &&
 		// This is conservative because we could restrict it to just
 		// <style> tags above, but this broader check is easier to
 		// reason about and verify that there aren't edge cases.
-		!DOMUtils::isFosterablePosition( $node );
+		!DOMUtils::isFosterablePosition( $elt );
 	}
 }
