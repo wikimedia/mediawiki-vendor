@@ -260,7 +260,7 @@ abstract class PaymentProvider implements
 				[ FinalStatus::COMPLETE ]
 			);
 		}
-		( new ApprovePaymentResponseMapper() )->mapGatewayTxnIdAndErrors( $response, $rawResponse );
+		( new ApprovePaymentResponseMapper( $params['gateway_txn_id'] ) )->mapGatewayTxnIdAndErrors( $response, $rawResponse );
 		return $response;
 	}
 

@@ -77,6 +77,9 @@ abstract class GravyPaymentResponseFactory {
 		$paymentResponse->setCaptureID(
 			$normalizedResponse['backend_processor_capture_id'] ?? null
 		);
+		$paymentResponse->setPaymentServiceID(
+			$normalizedResponse['payment_service_id'] ?? null
+		);
 	}
 
 	protected static function setPaymentOrchestrationReconciliationId(

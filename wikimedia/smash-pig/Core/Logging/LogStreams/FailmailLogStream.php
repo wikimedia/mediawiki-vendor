@@ -43,13 +43,6 @@ class FailmailLogStream implements ILogStream {
 		} else {
 			$this->from = 'smashpig-failmail@' . gethostname();
 		}
-		if ( $minSecondsBetweenEmails > 0 ) {
-			try {
-				$this->cacheObject = Context::get()->getGlobalConfiguration()->object( 'cache' );
-			} catch ( Exception $ex ) {
-				// Don't let cache problems stop us sending failmail
-			}
-		}
 	}
 
 	/**
@@ -194,24 +187,24 @@ class FailmailLogStream implements ILogStream {
 	}
 
 	protected function shouldSendEmail( string $cacheKeyPrefix ): bool {
-		if ( !$this->cacheObject ) {
+		if ( !$this->getCache() ) {
 			return true;
 		}
 		$cacheKeyTime = $cacheKeyPrefix . '-time';
 		// If the key is set and not yet expired, we should not send email yet
-		return !$this->cacheObject->hasItem( $cacheKeyTime );
+		return !$this->getCache()->hasItem( $cacheKeyTime );
 	}
 
 	protected function cacheLastSentTimeAndResetSkippedCount( string $cacheKeyPrefix ): void {
-		if ( !$this->cacheObject ) {
+		if ( !$this->getCache() ) {
 			return;
 		}
 		$cacheKeyTime = $cacheKeyPrefix . '-time';
 		$cacheKeyCount = $cacheKeyPrefix . '-count';
 		// PSR-6 says this is the way to create a new cache item, even if we
 		// don't expect the item to exist.
-		$cacheItemTime = $this->cacheObject->getItem( $cacheKeyTime );
-		$cacheItemCount = $this->cacheObject->getItem( $cacheKeyCount );
+		$cacheItemTime = $this->getCache()->getItem( $cacheKeyTime );
+		$cacheItemCount = $this->getCache()->getItem( $cacheKeyCount );
 
 		// Value doesn't actually matter to the checking code, but this might
 		// be useful information to anyone looking at the raw redis values
@@ -220,30 +213,41 @@ class FailmailLogStream implements ILogStream {
 
 		// Set the item to expire when we are ready to send more email.
 		$cacheItemTime->expiresAfter( $this->minSecondsBetweenEmails );
-		$this->cacheObject->save( $cacheItemTime );
-		$this->cacheObject->save( $cacheItemCount );
+		$this->getCache()->save( $cacheItemTime );
+		$this->getCache()->save( $cacheItemCount );
 	}
 
 	protected function incrementCachedSkippedCount( string $cacheKeyPrefix ): void {
-		if ( !$this->cacheObject ) {
+		if ( !$this->getCache() ) {
 			return;
 		}
 		$cacheKey = $cacheKeyPrefix . '-count';
-		$cacheItem = $this->cacheObject->getItem( $cacheKey );
+		$cacheItem = $this->getCache()->getItem( $cacheKey );
 
 		$currentValue = $cacheItem->get();
 
 		$cacheItem->set( $currentValue + 1 );
-		$this->cacheObject->save( $cacheItem );
+		$this->getCache()->save( $cacheItem );
 	}
 
 	protected function getSkippedCount( string $cacheKeyPrefix ): int {
-		if ( !$this->cacheObject ) {
+		if ( !$this->getCache() ) {
 			return 0;
 		}
 		$cacheKey = $cacheKeyPrefix . '-count';
-		$cacheItem = $this->cacheObject->getItem( $cacheKey );
+		$cacheItem = $this->getCache()->getItem( $cacheKey );
 
 		return $cacheItem->get() ?? 0;
+	}
+
+	protected function getCache(): ?CacheItemPoolInterface {
+		if ( !$this->cacheObject && $this->minSecondsBetweenEmails > 0 ) {
+			try {
+				$this->cacheObject = Context::get()->getGlobalConfiguration()->object( 'cache' );
+			} catch ( Exception $ex ) {
+				// Don't let cache problems stop us sending failmail
+			}
+		}
+		return $this->cacheObject;
 	}
 }

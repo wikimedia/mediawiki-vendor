@@ -228,6 +228,7 @@ class ResponseMapper {
 	 */
 	private function mapPaymentResponsePaymentService( array &$result, array $response ): void {
 		$result['backend_processor'] = $this->getBackendProcessor( $response );
+		$result['payment_service_id'] = $response['payment_service']['id'] ?? null;
 		if ( isset( $response['additional_identifiers']['payment_service_authorization_id'] ) ) {
 			$result['backend_processor_auth_id'] = $response['additional_identifiers']['payment_service_authorization_id'];
 		}

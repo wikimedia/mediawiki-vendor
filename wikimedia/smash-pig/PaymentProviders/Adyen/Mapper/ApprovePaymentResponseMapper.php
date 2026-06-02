@@ -7,6 +7,9 @@ use SmashPig\PaymentProviders\Responses\PaymentProviderResponse;
 
 class ApprovePaymentResponseMapper extends ResponseMapper {
 
+	public function __construct( protected string $paymentPspReference ) {
+	}
+
 	protected function mapIDs( PaymentProviderResponse $response, array $rawResponse ): void {
 		if ( !( $response instanceof PaymentProviderExtendedResponse ) ) {
 			throw new \InvalidArgumentException(
@@ -16,6 +19,6 @@ class ApprovePaymentResponseMapper extends ResponseMapper {
 		if ( isset( $rawResponse['pspReference'] ) ) {
 			$response->setCaptureID( $rawResponse['pspReference'] );
 		}
-		$this->mapPaymentPspReference( $response, $rawResponse );
+		$this->mapPaymentPspReference( $response, $rawResponse['paymentPspReference'] ?? $this->paymentPspReference );
 	}
 }

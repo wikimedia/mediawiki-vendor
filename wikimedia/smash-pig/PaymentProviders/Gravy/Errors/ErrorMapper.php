@@ -37,11 +37,11 @@ class ErrorMapper {
 			'incorrect_cvv' => ErrorCode::VALIDATION, // The CVV was incorrect.
 			'incorrect_expiry_date' => ErrorCode::VALIDATION, // The expiry date is incorrect or the payment method has expired.
 			'insufficient_funds' => ErrorCode::UNKNOWN, // The amount exceeds the available balance on the payment method.
-			'issuer_decline' => ErrorCode::DECLINED_DO_NOT_RETRY, // The payment was declined by the issuer.
+			'issuer_decline' => ErrorCode::UNKNOWN, // The payment was declined by the issuer.
 			'other_decline' => ErrorCode::UNKNOWN, // The transaction failed for an unknown reason but may succeed if retried.
 			'requires_buyer_authentication' => ErrorCode::VALIDATION, // Additional credentials were requested by the issuer, for example, the security code (CVV).
 			'refused_transaction' => ErrorCode::DECLINED_DO_NOT_RETRY, // The transaction was refused due to legal reasons (e.g. watch list, embargo, sanctions).
-			'service_decline' => ErrorCode::DECLINED_DO_NOT_RETRY, // The payment was declined by service.
+			'service_decline' => ErrorCode::UNKNOWN, // The payment was declined by service.
 			'suspected_fraud' => ErrorCode::DECLINED_DO_NOT_RETRY, // The service flagged the transaction as suspected fraud.
 			'unavailable_payment_method' => ErrorCode::DECLINED_DO_NOT_RETRY, // The payment method is temporarily frozen or otherwise unavailable.
 			'unknown_payment_method' => ErrorCode::METHOD_NOT_FOUND, // The account is unknown.

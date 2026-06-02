@@ -101,6 +101,9 @@ class RecordCaptureJob implements Runnable {
 		if ( empty( $dbMessage['payment_orchestrator_reconciliation_id'] ) ) {
 			$dbMessage['payment_orchestrator_reconciliation_id'] = $transactionDetails->getPaymentOrchestratorReconciliationId();
 		}
+		if ( empty( $dbMessage['payment_service_id'] ) ) {
+			$dbMessage['payment_service_id'] = $transactionDetails->getPaymentServiceID();
+		}
 
 		$donorDetails = $transactionDetails->getDonorDetails();
 		if ( $donorDetails ) {

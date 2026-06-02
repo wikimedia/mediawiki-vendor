@@ -102,17 +102,17 @@ abstract class ResponseMapper {
 	 * be stored for later references to the payment, so we assign it to the
 	 * gateway txn ID property.
 	 * @param PaymentProviderResponse $response
-	 * @param array $rawResponse
+	 * @param string|null $paymentPspReference
 	 * @return void
 	 */
 	protected function mapPaymentPspReference(
-		PaymentProviderResponse $response, array $rawResponse
+		PaymentProviderResponse $response, ?string $paymentPspReference
 	): void {
-		if ( isset( $rawResponse['paymentPspReference'] ) ) {
-			$response->setGatewayTxnId( $rawResponse['paymentPspReference'] );
+		if ( $paymentPspReference ) {
+			$response->setGatewayTxnId( $paymentPspReference );
 			if ( $response instanceof PaymentProviderExtendedResponse ) {
-				$response->setAuthID( $rawResponse['paymentPspReference'] );
-				$response->setBackendProcessorTransactionId( $rawResponse['paymentPspReference'] );
+				$response->setAuthID( $paymentPspReference );
+				$response->setBackendProcessorTransactionId( $paymentPspReference );
 			}
 		}
 	}

@@ -230,6 +230,11 @@ class RequestMapper {
 				'method' => 'id',
 				'id' => $params['recurring_payment_token'],
 			];
+			// Use the payment service connection from the initial authorization
+			// so the subsequent charge goes through the same processor. See T422416.
+			if ( !empty( $params['payment_service_id'] ) ) {
+				$request['payment_service_id'] = $params['payment_service_id'];
+			}
 		}
 
 		// Default recurring model to 'Subscription' but allow for Card On File

@@ -121,6 +121,14 @@ class PaymentProviderExtendedResponse extends PaymentProviderResponse {
 	protected ?string $paymentOrchestratorReconciliationId = null;
 
 	/**
+	 * @var string|null
+	 * UUID identifying the specific payment service connection used by the orchestrator
+	 * (e.g. a specific Adyen or dLocal connection). Persisted so subsequent recurring
+	 * charges can be sent through the same connection. See T422416.
+	 */
+	protected ?string $paymentServiceID = null;
+
+	/**
 	 * @var bool True when created payment has been flagged as suspected fraud by the payment processor
 	 */
 	protected bool $isSuspectedFraud = false;
@@ -376,6 +384,15 @@ class PaymentProviderExtendedResponse extends PaymentProviderResponse {
 
 	public function setPaymentOrchestratorReconciliationId( ?string $paymentOrchestratorReconciliationId ): PaymentProviderExtendedResponse {
 		$this->paymentOrchestratorReconciliationId = $paymentOrchestratorReconciliationId;
+		return $this;
+	}
+
+	public function getPaymentServiceID(): ?string {
+		return $this->paymentServiceID;
+	}
+
+	public function setPaymentServiceID( ?string $paymentServiceID ): PaymentProviderExtendedResponse {
+		$this->paymentServiceID = $paymentServiceID;
 		return $this;
 	}
 

@@ -92,6 +92,20 @@ class AddExampleQueueMessage extends MaintenanceBase {
 			$example['recurring'] = 1;
 			$example['recurring_payment_token'] = $random . 'broken';
 			$example['date'] = time();
+		} elseif ( $message == 'paypal-recurring-payment' ) {
+			// AddExampleQueueMessage.php --message failed-recurring
+			$random = rand( 200, 20000 );
+			$queue = 'recurring';
+			// match this to a contribution_recur processor_id
+			$example['subscr_id'] = 'NMVZBPC6GS38QFV5';
+			$example['date'] = 1771933733;
+			$example['txn_type'] = 'subscr_payment';
+			$example['gateway_txn_id'] = '1T812438N5128361C' . $random;
+			$example['currency'] = "GBP";
+			$example['order_id'] = "40396322" . $random;
+			$example['gateway'] = 'paypal';
+			$example['gross'] = "2.00";
+			$example['fee'] = "0.45";
 		}
 
 		QueueWrapper::push( $queue, $example );

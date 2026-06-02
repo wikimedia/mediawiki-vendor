@@ -16,6 +16,6 @@ class RefundPaymentResponseMapper extends ResponseMapper {
 		if ( isset( $rawResponse['pspReference'] ) ) {
 			$response->setGatewayRefundId( $rawResponse['pspReference'] );
 		}
-		$this->mapPaymentPspReference( $response, $rawResponse );
+		$this->mapPaymentPspReference( $response, $rawResponse['paymentPspReference'] ?? null );
 	}
 }

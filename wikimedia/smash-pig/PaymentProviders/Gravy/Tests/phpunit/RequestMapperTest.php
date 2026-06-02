@@ -126,4 +126,5 @@ class RequestMapperTest extends TestCase {
 			'user_ip' => '11.22.33.44',
 		], $request );
 	}
+
 }

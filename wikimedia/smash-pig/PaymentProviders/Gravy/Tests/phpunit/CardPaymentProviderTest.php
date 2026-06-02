@@ -55,11 +55,50 @@ class CardPaymentProviderTest extends BaseGravyTestCase {
 		$this->assertEquals( $responseBody['id'], $response->getGatewayTxnId() );
 		$this->assertEquals( $responseBody['buyer']['billing_details']['first_name'], $response->getDonorDetails()->getFirstName() );
 		$this->assertEquals( $responseBody['payment_service_transaction_id'], $response->getBackendProcessorTransactionId() );
+		$this->assertEquals( $responseBody['payment_service']['id'], $response->getPaymentServiceID() );
 		$this->assertEquals( $responseBody['buyer']['billing_details']['last_name'], $response->getDonorDetails()->getLastName() );
 		$this->assertEquals( $responseBody['buyer']['billing_details']['email_address'], $response->getDonorDetails()->getEmail() );
 		$this->assertEquals( $responseBody['buyer']['id'], $response->getDonorDetails()->getCustomerId() );
 		$this->assertEquals( $responseBody['buyer']['billing_details']['address']['line1'], $response->getDonorDetails()->getBillingAddress()->getStreetAddress() );
 		$this->assertTrue( $response->isSuccessful() );
+	}
+
+	public function testRecurringChargeSendsPaymentServiceIdAndExposesItOnResponse() {
+		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/create-transaction.json' ), true );
+		// Use different UUIDs for the request and response so the assertion
+		// proves we read the value from the response, not echo back the input.
+		$sentPaymentServiceId = '3c90c3cc-0d44-4b50-8888-8dd25736052a';
+		$responseBody['payment_service']['id'] = 'adc9f2e8-48c7-4cf7-9a68-7c77f3cd7cfa';
+
+		$params = $this->getCreateTrxnFromTokenParams( $responseBody['amount'] / 100 );
+		$params['payment_service_id'] = $sentPaymentServiceId;
+
+		$this->mockApi->expects( $this->once() )
+			->method( 'createPayment' )
+			->with( [
+				'amount' => $params['amount'] * 100,
+				'currency' => $params['currency'],
+				'country' => $params['country'],
+				'payment_method' => [
+					'method' => 'id',
+					'id' => $params['recurring_payment_token']
+				],
+				'payment_source' => 'recurring',
+				'is_subsequent_payment' => true,
+				'merchant_initiated' => true,
+				'payment_service_id' => $sentPaymentServiceId,
+				'external_identifier' => $params['order_id'],
+				'buyer_id' => $params['processor_contact_id'],
+				"statement_descriptor" => [
+					"description" => "Wikimedia Foundation"
+				]
+			] )
+			->willReturn( $responseBody );
+
+		$response = $this->provider->createPayment( $params );
+
+		$this->assertTrue( $response->isSuccessful() );
+		$this->assertEquals( 'adc9f2e8-48c7-4cf7-9a68-7c77f3cd7cfa', $response->getPaymentServiceID() );
 	}
 
 	public function testSuccessfulCreatePaymentFromTokenGuestCheckout() {
