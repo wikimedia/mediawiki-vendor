@@ -54,7 +54,7 @@
 		"maxmind-db/reader": "1.13.1",
 		"maxmind/web-service-common": "0.11.1",
 		"mck89/peast": "1.17.5",
-		"monolog/monolog": "2.11.0",
+		"monolog/monolog": "3.10.0",
 		"mustangostang/spyc": "0.6.3",
 		"nikic/php-parser": "5.7.0",
 		"nyholm/dsn": "2.0.1",
