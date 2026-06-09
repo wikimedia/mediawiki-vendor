@@ -5213,6 +5213,7 @@ return array(
     'Wikimedia\\Parsoid\\Ext\\AnnotationStripper' => $vendorDir . '/wikimedia/parsoid/src/Ext/AnnotationStripper.php',
     'Wikimedia\\Parsoid\\Ext\\Arguments' => $vendorDir . '/wikimedia/parsoid/src/Ext/Arguments.php',
     'Wikimedia\\Parsoid\\Ext\\AsyncResult' => $vendorDir . '/wikimedia/parsoid/src/Ext/AsyncResult.php',
+    'Wikimedia\\Parsoid\\Ext\\BuiltInAttributes' => $vendorDir . '/wikimedia/parsoid/src/Ext/BuiltInAttributes.php',
     'Wikimedia\\Parsoid\\Ext\\ContentUtils' => $vendorDir . '/wikimedia/parsoid/src/Ext/ContentUtils.php',
     'Wikimedia\\Parsoid\\Ext\\DOMDataUtils' => $vendorDir . '/wikimedia/parsoid/src/Ext/DOMDataUtils.php',
     'Wikimedia\\Parsoid\\Ext\\DOMProcessor' => $vendorDir . '/wikimedia/parsoid/src/Ext/DOMProcessor.php',

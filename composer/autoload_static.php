@@ -5948,6 +5948,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Ext\\AnnotationStripper' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/AnnotationStripper.php',
         'Wikimedia\\Parsoid\\Ext\\Arguments' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/Arguments.php',
         'Wikimedia\\Parsoid\\Ext\\AsyncResult' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/AsyncResult.php',
+        'Wikimedia\\Parsoid\\Ext\\BuiltInAttributes' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/BuiltInAttributes.php',
         'Wikimedia\\Parsoid\\Ext\\ContentUtils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/ContentUtils.php',
         'Wikimedia\\Parsoid\\Ext\\DOMDataUtils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/DOMDataUtils.php',
         'Wikimedia\\Parsoid\\Ext\\DOMProcessor' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/DOMProcessor.php',
