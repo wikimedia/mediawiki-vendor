@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "87fcbbf9bcf4bb4af34635f23c464a84",
+    "content-hash": "135ede3dabd91ee3a05f29848a7ddb36",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -3109,23 +3109,23 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.53.2",
+            "version": "v0.54.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "360097bdf5ade6b6ba622882de8b7625f1094868"
+                "reference": "b24073615e212250a6d8ee2f4e54eff79944c994"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/360097bdf5ade6b6ba622882de8b7625f1094868",
-                "reference": "360097bdf5ade6b6ba622882de8b7625f1094868",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/b24073615e212250a6d8ee2f4e54eff79944c994",
+                "reference": "b24073615e212250a6d8ee2f4e54eff79944c994",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.1"
+                "php": ">=8.3"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "50.0.0",
+                "mediawiki/mediawiki-codesniffer": "51.0.0",
                 "mediawiki/mediawiki-phan-config": "0.20.0",
                 "mediawiki/minus-x": "2.0.1",
                 "ockcyp/covers-validator": "1.7.0",
@@ -3196,9 +3196,9 @@
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOUI",
             "support": {
-                "source": "https://github.com/wikimedia/oojs-ui/tree/v0.53.2"
+                "source": "https://github.com/wikimedia/oojs-ui/tree/v0.54.0"
             },
-            "time": "2026-04-20T15:15:00+00:00"
+            "time": "2026-06-11T19:46:48+00:00"
         },
         {
             "name": "paragonie/constant_time_encoding",
