@@ -40,7 +40,7 @@
 		"geoip2/geoip2": "3.3.0",
 		"guzzlehttp/guzzle": "7.10.0",
 		"guzzlehttp/promises": "2.3.0",
-		"guzzlehttp/psr7": "2.9.0",
+		"guzzlehttp/psr7": "2.11",
 		"jakobo/hotp-php": "2.0.0",
 		"james-heinrich/getid3": "1.9.25",
 		"justinrainbow/json-schema": "5.3.4",
@@ -165,6 +165,7 @@
 		"symfony/polyfill-intl-normalizer": "1.17.1",
 		"symfony/polyfill-mbstring": "1.99",
 		"symfony/polyfill-php73": "1.99",
+		"symfony/polyfill-php80": "1.99",
 		"symfony/polyfill-php83": "1.99",
 		"symfony/polyfill-uuid": "1.99"
 	},
