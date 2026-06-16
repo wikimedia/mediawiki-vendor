@@ -1183,7 +1183,7 @@ class ZestInst {
 		'simple' => '/^(?:([.#]cssid)|pseudo|attr)/',
 		'ref' => '/^ *\/(cssid)\/ */',
 		'combinator' => '/^(?: +([^ \w*.#\\\]) +|( )+|([^ \w*.#\\\]))(?! *$)/',
-		'attr' => '/^\[(cssid)(?:([^\w]?=)(inside))?\]/',
+		'attr' => '/^\[(cssid)(?:([^\w]?=|\/)(inside))?\]/',
 		'pseudo' => '/^(:cssid)(?:\((inside)\))?/',
 		'inside' => "/(?:\"(?:\\\\\"|[^\"])*\"|'(?:\\\\'|[^'])*'|<[^\"'>]*>|\\\\[\"'>]|[^\"'>])*/",
 		'ident' => '/^(cssid)$/',
@@ -1652,7 +1652,6 @@ class ZestInst {
 			$this->initCombinators();
 			self::$singleton = $this;
 			// Now create another instance so that backing arrays are cloned
-			// @phan-suppress-next-line PhanPossiblyInfiniteRecursionSameParams
 			self::$singleton = new ZestInst;
 		}
 	}

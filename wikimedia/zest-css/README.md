@@ -10,7 +10,7 @@ selector library.  Since that project hasn't been updated in a while,
 bugfixes have been taken from the copy of zest included in the
 [domino](https://github.com/fgnass/domino/pulls) DOM library.
 
-Report issues on [Phabricator](https://phabricator.wikimedia.org/maniphest/task/edit/form/1/?projects=Parsoid&title=Zest:%20).
+Report issues on [Phabricator](https://phabricator.wikimedia.org/maniphest/task/edit/form/1/?projects=MediaWiki-libs-Zest).
 
 ## Usage
 
@@ -169,6 +169,48 @@ The `$test` function tests whatever simple selectors it needs to look for, but
 it isn't important what it does. The most important part is that you return
 the relevant element once it's found.
 
+## Extension: JSON-valued attribute operators
+
+One CSS extension included in Zest allows operating on JSON-valued
+attributes using [JQ](https://jqlang.org) syntax.  This is useful for
+documents that embed structured data in attributes, such as the
+[MediaWiki DOM Spec](https://www.mediawiki.org/wiki/Specs/HTML).
+
+You will need to require the `wikimedia/zest-jq` package in order
+to use this extension; this is a
+[suggested package](https://getcomposer.org/doc/04-schema.md#suggest)
+and a
+[dev requirement](https://getcomposer.org/doc/04-schema.md#require-dev)
+but not a runtime dependency of `wikimedia/zest-css` itself.
+
+To enable the extension:
+```php
+use Wikimedia\Zest\ZestJQ;
+
+$z = ZestJQ::register(new ZestInst);
+```
+You can also use the `ZestJQ` singleton, as shown below.
+
+The syntax `[attr/jq]` parses the contents of the attribute `attr` as
+a JSON string and evaluates the JQ expression `jq` against it. The
+element matches if the expression evaluates to a non-empty or true
+result.
+
+```php
+use Wikimedia\Zest\ZestJQ;
+
+// Match all {{Citation needed}} transclusion markers in a MediaWiki document
+$els = ZestJQ::find(
+    '[typeof="mw:Transclusion"]' .
+    '[data-mw/.parts[].template?.target.href == "./Template:Citation_needed"]',
+    $doc
+);
+
+// Match elements whose data-mw JSON contains a `parserfunction` key anywhere
+// in the parts array (path-only query: matches if the path yields any value)
+// https://www.mediawiki.org/wiki/Parsoid/MediaWiki_DOM_spec/Parser_Functions
+$els = ZestJQ::find( '[data-mw/.parts[].parserfunction?]', $doc );
+```
 
 ## Tests
 
