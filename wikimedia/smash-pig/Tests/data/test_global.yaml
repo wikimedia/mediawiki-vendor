@@ -99,13 +99,6 @@ data-store:
         connection_string: 'sqlite::memory:'
         queue: jobs_adyen
 
-  jobs-amazon:
-    class: PHPQueue\Backend\PDO
-    constructor-parameters:
-      -
-        connection_string: 'sqlite::memory:'
-        queue: jobs_amazon
-
   jobs-dlocal:
     class: PHPQueue\Backend\PDO
     constructor-parameters:

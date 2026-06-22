@@ -116,7 +116,7 @@ abstract class AdyenMessage extends ListenerMessage {
 			$this->backendProcessor = 'adyen';
 			$this->backendProcessorTransactionID = $notification['pspReference'];
 			$this->backendProcessorParentTransactionID = $notification['originalReference'] ?? null;
-			$this->orchestratorTransactionID = Base62Helper::toUuid( $notification['merchantReference'] );
+			$this->orchestratorTransactionID = $this->getTransactionIdFromBase62MerchantReference( $notification['merchantReference'] );
 			if ( isset( $this->additionalData['metadata.gr4vy_tx_ref'] ) ) {
 				$this->merchantReference = $this->additionalData['metadata.gr4vy_tx_ref'];
 			}
@@ -149,6 +149,15 @@ abstract class AdyenMessage extends ListenerMessage {
 			return $this->orchestratorTransactionID;
 		}
 		return $this->pspReference;
+	}
+
+	/**
+	 * Convert the Gravy-related merchantReference into a UUID for
+	 * orchestratorTransactionID. Subclasses may override to return null when the
+	 * raw reference isn't a Base62 value (e.g. Capture webhooks).
+	 */
+	protected function getTransactionIdFromBase62MerchantReference( string $merchantReference ): ?string {
+		return Base62Helper::toUuid( $merchantReference );
 	}
 
 	protected function isOrchestratorMerchantReference( array $notification ): bool {

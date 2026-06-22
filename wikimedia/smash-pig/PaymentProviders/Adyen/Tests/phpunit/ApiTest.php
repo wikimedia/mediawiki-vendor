@@ -35,7 +35,6 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 		// open up access to the private getAmount method
 		$reflectionClass = new \ReflectionClass( Api::class );
 		$reflectionMethod = $reflectionClass->getMethod( 'getArrayAmount' );
-		$reflectionMethod->setAccessible( true );
 
 		// mock the Api class to skip constructor call
 		$apiMock = $this->getMockBuilder( Api::class )
@@ -62,7 +61,6 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 		// open up access to the private getAmount method
 		$reflectionClass = new \ReflectionClass( Api::class );
 		$reflectionMethod = $reflectionClass->getMethod( 'getArrayAmount' );
-		$reflectionMethod->setAccessible( true );
 
 		// mock the Api class to skip constructor call
 		$apiMock = $this->getMockBuilder( Api::class )
@@ -89,7 +87,6 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 		// open up access to the private getAmount method
 		$reflectionClass = new \ReflectionClass( Api::class );
 		$reflectionMethod = $reflectionClass->getMethod( 'getArrayAmount' );
-		$reflectionMethod->setAccessible( true );
 
 		// mock the Api class to skip constructor call
 		$apiMock = $this->getMockBuilder( Api::class )

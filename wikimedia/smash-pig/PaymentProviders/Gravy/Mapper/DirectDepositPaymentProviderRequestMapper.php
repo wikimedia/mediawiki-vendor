@@ -2,7 +2,7 @@
 
 namespace SmashPig\PaymentProviders\Gravy\Mapper;
 
-class DirectDepositPaymentProviderRequestMapper extends RequestMapper {
+class DirectDepositPaymentProviderRequestMapper extends RedirectPaymentProviderRequestMapper {
 	/**
 	 * @return array
 	 */

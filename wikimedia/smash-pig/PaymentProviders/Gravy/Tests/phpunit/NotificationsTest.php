@@ -231,6 +231,27 @@ class NotificationsTest extends BaseGravyTestCase {
 		$this->assertTrue( $result );
 	}
 
+	public function testRefundMessageCompleteThreeDecimalCurrency() {
+		[ $request, $response ] = $this->getValidRequestResponseObjects();
+		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/successful-three-decimal-refund.json' ), true );
+		$message = json_decode( $this->getValidGravyRefundMessage(), true );
+		$request->method( 'getRawRequest' )->willReturn( json_encode( $message ) );
+
+		$this->mockApi->expects( $this->once() )
+			->method( 'getRefund' )
+			->willReturn( $responseBody );
+
+		$result = $this->gravyListener->execute( $request, $response );
+		$queued_message = $this->refundQueue->pop();
+
+		$normalized_details = ( new ResponseMapper() )->mapFromRefundPaymentResponse( $responseBody );
+		unset( $normalized_details['raw_response'] );
+
+		// Check the three decimals
+		$this->assertEquals( $normalized_details['amount'], $responseBody['amount'] / 1000 );
+		$this->assertTrue( $result );
+	}
+
 	public function testRefundMessageFailed(): void {
 		[ $request, $response ] = $this->getValidRequestResponseObjects();
 

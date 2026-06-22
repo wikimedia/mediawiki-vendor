@@ -62,4 +62,17 @@ class Capture extends AdyenMessage {
 	public function getGatewayTxnId() {
 		return $this->originalReference;
 	}
+
+	/**
+	 * Some Adyen capture webhooks for Gravy-orchestrated payments arrive with a
+	 * colon-separated merchantReference. The colon isn't a Base62 character so
+	 * toUuid() would fail. CaptureResponseAction drops Gravy-tagged captures
+	 * before anything reads orchestratorTransactionID, so leave it null.
+	 */
+	protected function getTransactionIdFromBase62MerchantReference( string $merchantReference ): ?string {
+		if ( str_contains( $merchantReference, ':' ) ) {
+			return null;
+		}
+		return parent::getTransactionIdFromBase62MerchantReference( $merchantReference );
+	}
 }

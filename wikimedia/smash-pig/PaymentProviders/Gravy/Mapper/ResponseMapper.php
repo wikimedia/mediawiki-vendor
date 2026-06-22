@@ -3,6 +3,7 @@
 namespace SmashPig\PaymentProviders\Gravy\Mapper;
 
 use SmashPig\Core\Context;
+use SmashPig\Core\Helpers\CurrencyRoundingHelper;
 use SmashPig\PaymentData\ErrorCode;
 use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentProviders\Gravy\Errors\ErrorChecker;
@@ -257,7 +258,7 @@ class ResponseMapper {
 		$result = [
 			'is_successful' => true,
 			'gateway_txn_id' => $response['id'],
-			'amount' => $response['amount'] / 100,
+			'amount' => CurrencyRoundingHelper::getAmountInMajorUnits( $response['amount'], $response['currency'] ),
 			'currency' => $response['currency'],
 			'order_id' => $response['external_identifier'],
 			'raw_status' => $response['status'],
@@ -290,7 +291,7 @@ class ResponseMapper {
 			'gateway_parent_id' => $response['transaction_id'] ?? $response['id'],
 			'gateway_refund_id' => $response['id'],
 			'currency' => $response['currency'],
-			'amount' => $response['amount'] / 100,
+			'amount' => CurrencyRoundingHelper::getAmountInMajorUnits( $response['amount'], $response['currency'] ),
 			'reason' => $response['reason'] ?? '',
 			'status' => $this->normalizeStatus( $response['status'] ),
 			'raw_status' => $response['status'],

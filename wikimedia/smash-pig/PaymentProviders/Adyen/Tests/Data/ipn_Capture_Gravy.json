@@ -1,0 +1,31 @@
+{
+  "live": "true",
+  "notificationItems": [
+    {
+      "NotificationRequestItem": {
+        "additionalData": {
+          "metadata.gr4vy_intent": "authorize",
+          "metadata.gr4vy_tx_sid": "61SCO9jPrV41AIP8Wl5xkm",
+          "metadata.gr4vy_tx_ref": "248155057.1",
+          "metadata.gr4vy_buy_ref": "donor@example.org",
+          "metadata.gr4vy_pm_sid": "6hBcpYzdQHgryNXWvcbqEX",
+          "metadata.gr4vy_ps_sid": "3Tj7KgdfvF8ZNlccmtERbc",
+          "bookingDate": "2026-06-03T08:11:22Z"
+        },
+        "amount": {
+          "currency": "JPY",
+          "value": 3120
+        },
+        "eventCode": "CAPTURE",
+        "eventDate": "2026-06-03T10:10:43+02:00",
+        "merchantAccountCode": "WikimediaDonations",
+        "merchantReference": "61SCO9jPrV41AIP8Wl5xkm",
+        "originalReference": "DZNHPGSHZ5V5SQ69",
+        "paymentMethod": "diners",
+        "pspReference": "WWGPB37S2XSHXJ35",
+        "reason": "",
+        "success": "true"
+      }
+    }
+  ]
+}

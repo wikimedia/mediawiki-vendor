@@ -2,10 +2,12 @@
   "amount": 100000,
   "currency": "USD",
   "country": "US",
+  "intent": "capture",
   "payment_method": {
     "method": "trustly",
     "country": "US",
-    "currency": "USD"
+    "currency": "USD",
+    "redirect_url": "localhost"
   },
   "external_identifier": "907184.1",
   "buyer": {

@@ -1,0 +1,18 @@
+{
+  "id": "59768919-afbc-473a-914a-ea34e916ce8f",
+  "type": "event",
+  "name": "payment-method.deleted",
+  "created_at": "2026-05-30T18:53:41Z",
+  "merchant_account_id": "default",
+  "gr4vy_id": "example",
+  "environment": "sandbox",
+  "target": {
+    "type": "payment-method",
+    "id": "59768919-afbc-473a-914a-ea34e916ce8f",
+    "method": "pix",
+    "status": "succeeded",
+    "created_at": "2026-05-30T18:51:10Z",
+    "updated_at": "2026-05-30T18:53:41Z",
+    "external_identifier": null
+  }
+}

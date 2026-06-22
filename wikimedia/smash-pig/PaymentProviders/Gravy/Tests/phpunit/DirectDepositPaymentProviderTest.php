@@ -24,8 +24,8 @@ class DirectDepositPaymentProviderTest extends BaseGravyTestCase {
 		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/trustly-create-transaction-success.json' ), true );
 		$requestBody = json_decode( file_get_contents( __DIR__ . '/../Data/trustly-create-payment-request.json' ), true );
 		$params = $this->getCreateTrxnParams( $responseBody['amount'] );
+		$params['return_url'] = "localhost";
 		$requestBody['external_identifier'] = $params['order_id'];
-
 		$this->mockApi->expects( $this->once() )
 			->method( 'createPayment' )
 			->with( $requestBody )
@@ -86,6 +86,7 @@ class DirectDepositPaymentProviderTest extends BaseGravyTestCase {
 				'amount' => $params['amount'] * 100,
 				'currency' => $params['currency'],
 				'country' => $params['country'],
+				'intent' => 'capture',
 				'payment_method' => [
 					'method' => 'id',
 					'id' => $params['recurring_payment_token']

@@ -59,6 +59,41 @@ class RecurringCancellationJobTest extends BaseGravyTestCase {
 	}
 
 	/**
+	 * For a Pix payment method deletion, RecurringCancellationJob should
+	 * push a properly formatted message to the recurring queue and return true.
+	 */
+	public function testSuccessfulCancellationPix(): void {
+		$paymentMethodData = json_decode(
+			file_get_contents( __DIR__ . '/../Data/payment-method-deleted-pix.json' ), true
+		);
+
+		// Create a test PaymentMethodMessage from the webhook notification fixture data
+		$normalizedPaymentMethodData = ( new GravyListener )->mapFromWebhookMessage( $paymentMethodData );
+		$paymentMethodMessage = $this->createTestPaymentMethodMessage( $normalizedPaymentMethodData );
+		$job = new RecurringCancellationJob();
+		$jobData = RecurringCancellationJob::factory( $paymentMethodMessage );
+		$job->payload = $jobData['payload'];
+
+		$this->assertTrue( $job->execute() );
+
+		$recurringMessage = $this->recurringQueue->pop();
+		$this->assertNotNull(
+			$recurringMessage,
+			'RecurringCancellationJob did not send message to recurring queue for pix'
+		);
+		$this->assertEquals( 'gravy', $recurringMessage['gateway'] );
+		$this->assertEquals( 'subscr_cancel', $recurringMessage['txn_type'] );
+		$this->assertEquals( 'pix', $recurringMessage['payment_method'] );
+		$this->assertSame( '1', $recurringMessage['recurring'] );
+		$this->assertEquals( $paymentMethodData['target']['id'], $recurringMessage['recurring_payment_token'] );
+
+		$expectedMessageDate = strtotime( $paymentMethodData['created_at'] );
+		$this->assertEquals( $expectedMessageDate, $recurringMessage['date'] );
+		$expectedCancelDate = strtotime( $paymentMethodData['created_at'] );
+		$this->assertEquals( $expectedCancelDate, $recurringMessage['cancel_date'] );
+	}
+
+	/**
 	 * Test that the factory method creates the correct payload format
 	 */
 	public function testFactoryMethod(): void {

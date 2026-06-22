@@ -998,17 +998,17 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "2.12.0",
-            "version_normalized": "2.12.0.0",
+            "version": "2.12.1",
+            "version_normalized": "2.12.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "9b38012e7b54f594707e6db52c684dc0a74b3a43"
+                "reference": "172ef2f4e9824c1e058b7f30be8ae25a02c0f2b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/9b38012e7b54f594707e6db52c684dc0a74b3a43",
-                "reference": "9b38012e7b54f594707e6db52c684dc0a74b3a43",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/172ef2f4e9824c1e058b7f30be8ae25a02c0f2b7",
+                "reference": "172ef2f4e9824c1e058b7f30be8ae25a02c0f2b7",
                 "shasum": ""
             },
             "require": {
@@ -1032,7 +1032,7 @@
             "suggest": {
                 "laminas/laminas-httphandlerrunner": "Emit PSR-7 responses"
             },
-            "time": "2026-06-16T21:50:11+00:00",
+            "time": "2026-06-18T09:49:37+00:00",
             "type": "library",
             "extra": {
                 "bamarni-bin": {
@@ -1100,7 +1100,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/psr7/issues",
-                "source": "https://github.com/guzzle/psr7/tree/2.12.0"
+                "source": "https://github.com/guzzle/psr7/tree/2.12.1"
             },
             "funding": [
                 {
@@ -5686,17 +5686,17 @@
         },
         {
             "name": "wikimedia/smash-pig",
-            "version": "v1.2.4.11",
-            "version_normalized": "1.2.4.11",
+            "version": "v1.2.4.14",
+            "version_normalized": "1.2.4.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/wikimedia-fundraising-SmashPig.git",
-                "reference": "871acfae613c40fae5bb56014d51f55a58a34275"
+                "reference": "d8658f9331afe530f19b837f279eefef873ae397"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/wikimedia-fundraising-SmashPig/zipball/871acfae613c40fae5bb56014d51f55a58a34275",
-                "reference": "871acfae613c40fae5bb56014d51f55a58a34275",
+                "url": "https://api.github.com/repos/wikimedia/wikimedia-fundraising-SmashPig/zipball/d8658f9331afe530f19b837f279eefef873ae397",
+                "reference": "d8658f9331afe530f19b837f279eefef873ae397",
                 "shasum": ""
             },
             "require": {
@@ -5722,7 +5722,7 @@
                 "php-parallel-lint/php-parallel-lint": "^1.2",
                 "phpunit/phpunit": "^9"
             },
-            "time": "2026-05-28T16:39:09+00:00",
+            "time": "2026-06-22T15:18:36+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -5787,7 +5787,7 @@
                 "payments"
             ],
             "support": {
-                "source": "https://github.com/wikimedia/wikimedia-fundraising-SmashPig/tree/v1.2.4.11"
+                "source": "https://github.com/wikimedia/wikimedia-fundraising-SmashPig/tree/v1.2.4.14"
             },
             "install-path": "../wikimedia/smash-pig"
         },

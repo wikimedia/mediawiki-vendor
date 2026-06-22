@@ -4,8 +4,8 @@ namespace SmashPig\PaymentProviders\Gravy\Tests\phpunit;
 use Gr4vy\Gr4vyConfig;
 use PHPUnit\Framework\MockObject\Exception;
 use SmashPig\PaymentData\FinalStatus;
-use SmashPig\PaymentData\PaymentMethod;
 use SmashPig\PaymentProviders\Gravy\ApplePayPaymentProvider;
+use SmashPig\PaymentProviders\Gravy\PaymentMethod;
 use SmashPig\PaymentProviders\Gravy\Tests\BaseGravyTestCase;
 
 /**
@@ -170,7 +170,7 @@ class ApplePaymentProviderTest extends BaseGravyTestCase {
 		$this->assertEquals( "Create apple Payment Session response: (http://sample.com) {$stringSDKResponse}", $providerResult->getNormalizedResponse()['description'], 'Error message should normalized to string' );
 
 		// Also verify the API layer converts the string error correctly
-		$apiResult = $api->createPaymentSession( $params, PaymentMethod::APPLE );
+		$apiResult = $api->createPaymentSession( $params, PaymentMethod::APPLE_PAY->toGravyValue() );
 		$this->assertIsArray( $apiResult, 'API should convert unexpected error string to error array' );
 		$this->assertArrayHasKey( 'type', $apiResult, 'API should convert unexpected error string to error array' );
 		$this->assertArrayHasKey( 'message', $apiResult, 'API should convert unexpected error string to error array' );

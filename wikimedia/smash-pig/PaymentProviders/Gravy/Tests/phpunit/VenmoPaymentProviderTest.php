@@ -155,6 +155,7 @@ class VenmoPaymentProviderTest extends BaseGravyTestCase {
 				'merchant_initiated' => true,
 				'external_identifier' => $params['order_id'],
 				'buyer_id' => $params['processor_contact_id'],
+				'intent' => 'capture',
 				"statement_descriptor" => [
 					"description" => "Wikimedia Foundation"
 				]

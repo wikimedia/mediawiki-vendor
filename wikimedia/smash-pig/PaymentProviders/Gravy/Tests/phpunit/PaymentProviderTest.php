@@ -38,6 +38,7 @@ class PaymentProviderTest extends BaseGravyTestCase {
 
 		$this->mockApi->expects( $this->once() )
 			->method( 'deletePaymentToken' )
+			->with( [ 'payment_method_id' => 'random-payment-token' ] )
 			->willReturn( [] );
 
 		$response = $this->provider->deleteRecurringPaymentToken( $params );

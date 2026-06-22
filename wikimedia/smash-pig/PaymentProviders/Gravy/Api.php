@@ -7,7 +7,6 @@ use SmashPig\Core\Context;
 use SmashPig\Core\Logging\ApiOperation;
 use SmashPig\Core\Logging\ApiOperationAttribute;
 use SmashPig\Core\Logging\TaggedLogger;
-use SmashPig\PaymentData\PaymentMethod;
 
 class Api {
 	use GravyApiTimingTrait;
@@ -39,7 +38,7 @@ class Api {
 	public function createPaymentSession( array $params = [], string $method = 'card' ): array {
 		return $this->timedCall( __FUNCTION__, function () use ( $params, $method ) {
 			$tl = new TaggedLogger( 'RawData' );
-			if ( $method === PaymentMethod::APPLE ) {
+			if ( $method === PaymentMethod::APPLE_PAY->toGravyValue() ) {
 				$tl->info( 'New Apple Pay Session request ' . json_encode( $params ) );
 				$response = $this->gravyApiClient->newApplePaySession( $params );
 			} else {
