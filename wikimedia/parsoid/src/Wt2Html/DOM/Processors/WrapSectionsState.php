@@ -98,6 +98,10 @@ class WrapSectionsState {
 			$metadata->fromTitle = null;
 			$metadata->index = '';
 			$metadata->codepointOffset = null;
+		} elseif ( isset( $dp->tmp->headingData ) ) {
+			$metadata->fromTitle = $dp->tmp->headingData[0]->getPrefixedDBKey();
+			$metadata->index = 'T-' . $dp->tmp->headingData[1];
+			$metadata->codepointOffset = null;
 		} elseif ( $this->tplInfo !== null ) {
 			$dmw = DOMDataUtils::getDataMw( $this->tplInfo->first );
 			$metadata->index = ''; // Match legacy parser
@@ -144,7 +148,7 @@ class WrapSectionsState {
 			// Note that our DSR counts *are* byte counts, while this core
 			// interface expects *codepoint* counts.  We are going to convert
 			// these in a batch (for efficiency) in ::convertTOCOffsets() below
-			$metadata->codepointOffset = $dp->dsr->start ?? -1;
+			$metadata->codepointOffset = $dp->dsr->start ?? null;
 		}
 
 		$metadata->anchor = DOMCompat::getAttribute( $heading, 'id' );
@@ -382,7 +386,9 @@ class WrapSectionsState {
 				$level = (int)DOMUtils::nodeName( $node )[1];
 
 				$dp = DOMDataUtils::getDataParsoid( $node );
-				if ( isset( $dp->tmp->headingIndex ) ) {
+				if ( isset( $dp->tmp->headingData ) ) {
+					$this->sectionNumber = $dp->tmp->headingData[1];
+				} elseif ( isset( $dp->tmp->headingIndex ) ) {
 					// This could be just `$this->sectionNumber++` without the
 					// complicated if-guard if T214538 were fixed in core;
 					// see T213468 where this more-complicated behavior was
