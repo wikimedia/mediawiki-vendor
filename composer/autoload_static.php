@@ -6213,6 +6213,8 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Ext\\WTSUtils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/WTSUtils.php',
         'Wikimedia\\Parsoid\\Ext\\WTUtils' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Ext/WTUtils.php',
         'Wikimedia\\Parsoid\\Fragments\\DomPFragment' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Fragments/DomPFragment.php',
+        'Wikimedia\\Parsoid\\Fragments\\ExtTagPFragment' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Fragments/ExtTagPFragment.php',
+        'Wikimedia\\Parsoid\\Fragments\\HeadingPFragment' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Fragments/HeadingPFragment.php',
         'Wikimedia\\Parsoid\\Fragments\\HtmlPFragment' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Fragments/HtmlPFragment.php',
         'Wikimedia\\Parsoid\\Fragments\\LiteralStringPFragment' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Fragments/LiteralStringPFragment.php',
         'Wikimedia\\Parsoid\\Fragments\\PFragment' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Fragments/PFragment.php',

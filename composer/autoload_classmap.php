@@ -5468,6 +5468,8 @@ return array(
     'Wikimedia\\Parsoid\\Ext\\WTSUtils' => $vendorDir . '/wikimedia/parsoid/src/Ext/WTSUtils.php',
     'Wikimedia\\Parsoid\\Ext\\WTUtils' => $vendorDir . '/wikimedia/parsoid/src/Ext/WTUtils.php',
     'Wikimedia\\Parsoid\\Fragments\\DomPFragment' => $vendorDir . '/wikimedia/parsoid/src/Fragments/DomPFragment.php',
+    'Wikimedia\\Parsoid\\Fragments\\ExtTagPFragment' => $vendorDir . '/wikimedia/parsoid/src/Fragments/ExtTagPFragment.php',
+    'Wikimedia\\Parsoid\\Fragments\\HeadingPFragment' => $vendorDir . '/wikimedia/parsoid/src/Fragments/HeadingPFragment.php',
     'Wikimedia\\Parsoid\\Fragments\\HtmlPFragment' => $vendorDir . '/wikimedia/parsoid/src/Fragments/HtmlPFragment.php',
     'Wikimedia\\Parsoid\\Fragments\\LiteralStringPFragment' => $vendorDir . '/wikimedia/parsoid/src/Fragments/LiteralStringPFragment.php',
     'Wikimedia\\Parsoid\\Fragments\\PFragment' => $vendorDir . '/wikimedia/parsoid/src/Fragments/PFragment.php',
