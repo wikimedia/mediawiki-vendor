@@ -1,8 +1,25 @@
 # Changelog
 
+## 2.11.0 (2026-06-26)
+
+Fixed:
+
+* JavaScriptMinifier: Fix state bug after `if (foo.async)` (Timo Tijhof) [T429402](https://phabricator.wikimedia.org/T429402)
+
+Added:
+
+* JavaScriptMinifier: Minify space after exponent and implied zero fraction (Timo Tijhof) [T386530](https://phabricator.wikimedia.org/T386530)
+* JavaScriptMinifier: Support ES2020 BigInt literals (Siddharth VP) [T386530](https://phabricator.wikimedia.org/T386530)
+* JavaScriptMinifier: Support ES2020 new forms of import/export (Siddharth VP) [T386530](https://phabricator.wikimedia.org/T386530)
+* JavaScriptMinifier: Support ES2020 optional chaining operator (Siddharth VP) [T386530](https://phabricator.wikimedia.org/T386530)
+* JavaScriptMinifier: Support ES2021 logical assignment operators (Siddharth VP) [T425099](https://phabricator.wikimedia.org/T425099)
+* JavaScriptMinifier: Support ES2021 numeric separators (Siddharth VP) [T425099](https://phabricator.wikimedia.org/T425099)
+* JavaScriptMinifier: Update class documentation for ES2021 support (Siddharth VP) [T425099](https://phabricator.wikimedia.org/T425099)
+
 ## 2.10.0 (2026-01-08)
 
 Fixed:
+
 * JavaScriptMinifier: Optimize static property access with local variables (Ori Livneh)
 * JavaScriptMinifier: Optimize operator parsing with direct lookahead (Ori Livneh)
 * Cli: Fix jsdebug labels for states in generator functions (Timo Tijhof)
@@ -19,7 +36,7 @@ Changed:
 
 Fixed:
 
-* Fix compat with PCRE 10.45, e.g. on Debian 13 or Ubuntu 25, and likely PHP 8.3+. (Reedy) [T388335](https://phabricator.wikimedia.org/T388335)
+* Fix compat with PCRE 10.45, e.g. on Debian 13 or Ubuntu 25, and likely PHP 8.3+ (Reedy) [T388335](https://phabricator.wikimedia.org/T388335)
 
 Added:
 

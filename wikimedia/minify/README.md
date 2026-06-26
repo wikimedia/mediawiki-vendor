@@ -53,11 +53,9 @@ The following trade-offs were made for improved runtime performance and code
 simplicity. If they cause problems in real-world applications without trivial
 workarounds, please let us know!
 
-* [T37492](https://phabricator.wikimedia.org/T37492): In CSS, content within quoted
-  strings that looks like source code are sometimes minified.
-
-* [T287631](https://phabricator.wikimedia.org/T287631): In CSS, writing a URL
-  over multiple lines with escaped line-breaks is not supported.
+* In CSS, content within quoted strings that looks like source code is sometimes minified ([T37492](https://phabricator.wikimedia.org/T37492)).
+* In CSS, writing a URL over multiple lines with escaped line-breaks is not supported ([T287631](https://phabricator.wikimedia.org/T287631)).
+* In JS, certain multibyte spaces are not supported as whitespace in source code (including U+00A0 No Break Space NBSP, U+2028 Line Separator, and U+2029 Paragraph Separator) and may produce invalid output. Note that these and other Unicode multibyte characters are fully supported in strings, identifiers,  and regexes ([change 1278715](https://gerrit.wikimedia.org/r/c/mediawiki/libs/Minify/+/1278715)).
 
 ## Contribute
 

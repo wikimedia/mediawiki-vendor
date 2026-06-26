@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4420cf20b02b3e326cc2f4fbfef8e266",
+    "content-hash": "49f3ba23fc47d8a2ea91187da4675f46",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -7920,35 +7920,34 @@
         },
         {
             "name": "wikimedia/minify",
-            "version": "2.10.0",
+            "version": "2.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-Minify.git",
-                "reference": "8868c9ec24688fe837ddce27e9fb30ad05cdda3a"
+                "reference": "4497c20518dcf2a4b253bcf6ca81a3f04e80f84c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Minify/zipball/8868c9ec24688fe837ddce27e9fb30ad05cdda3a",
-                "reference": "8868c9ec24688fe837ddce27e9fb30ad05cdda3a",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Minify/zipball/4497c20518dcf2a4b253bcf6ca81a3f04e80f84c",
+                "reference": "4497c20518dcf2a4b253bcf6ca81a3f04e80f84c",
                 "shasum": ""
             },
             "require": {
                 "ext-fileinfo": "*",
-                "ext-json": "*",
                 "ext-mbstring": "*",
                 "pear/net_url2": "~2.2.2",
                 "php": ">=8.1"
             },
             "require-dev": {
                 "mck89/peast": "^1.16",
-                "mediawiki/mediawiki-codesniffer": "48.0.0",
-                "mediawiki/mediawiki-phan-config": "0.17.0",
-                "mediawiki/minus-x": "1.1.3",
+                "mediawiki/mediawiki-codesniffer": "51.0.0",
+                "mediawiki/mediawiki-phan-config": "0.20.0",
+                "mediawiki/minus-x": "2.0.1",
                 "ockcyp/covers-validator": "1.7.0",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
                 "php-parallel-lint/php-parallel-lint": "1.4.0",
-                "phpunit/phpunit": "10.5.58",
-                "wikimedia/testing-access-wrapper": "~3.0.0 || ~4.0.0"
+                "phpunit/phpunit": "10.5.63",
+                "wikimedia/testing-access-wrapper": "~4.0.0"
             },
             "type": "library",
             "autoload": {
@@ -7984,9 +7983,9 @@
             "description": "Minification of JavaScript code and CSS stylesheets.",
             "homepage": "https://gerrit.wikimedia.org/g/mediawiki/libs/Minify",
             "support": {
-                "source": "https://github.com/wikimedia/mediawiki-libs-Minify/tree/2.10.0"
+                "source": "https://github.com/wikimedia/mediawiki-libs-Minify/tree/2.11.0"
             },
-            "time": "2026-01-08T10:32:24+00:00"
+            "time": "2026-06-26T16:30:20+00:00"
         },
         {
             "name": "wikimedia/normalized-exception",
