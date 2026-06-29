@@ -107,15 +107,24 @@ abstract class Command extends BaseCommand
     }
 
     /**
+     * Render help text for the current input context.
+     */
+    public function asTextForInput(InputInterface $input): string
+    {
+        return $this->asText();
+    }
+
+    /**
      * {@inheritdoc}
      */
     private function getArguments(): array
     {
         $hidden = $this->getHiddenArguments();
 
-        return \array_filter($this->getNativeDefinition()->getArguments(), function ($argument) use ($hidden) {
-            return !\in_array($argument->getName(), $hidden);
-        });
+        return \array_filter(
+            $this->getNativeDefinition()->getArguments(),
+            fn ($argument) => !\in_array($argument->getName(), $hidden)
+        );
     }
 
     /**
@@ -135,9 +144,10 @@ abstract class Command extends BaseCommand
     {
         $hidden = $this->getHiddenOptions();
 
-        return \array_filter($this->getNativeDefinition()->getOptions(), function ($option) use ($hidden) {
-            return !\in_array($option->getName(), $hidden);
-        });
+        return \array_filter(
+            $this->getNativeDefinition()->getOptions(),
+            fn ($option) => !\in_array($option->getName(), $hidden)
+        );
     }
 
     /**
