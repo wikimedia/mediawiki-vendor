@@ -1,4 +1,5 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Shellbox\Command;
 
@@ -10,9 +11,9 @@ namespace Shellbox\Command;
  */
 class ServerBoxedResult extends BoxedResult {
 	/** @var string[] */
-	private $fileNames = [];
+	private array $fileNames = [];
 	/** @var string[] */
-	private $sentFileNames = [];
+	private array $sentFileNames = [];
 
 	public function getFileNames() {
 		return $this->fileNames;

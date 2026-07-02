@@ -1,4 +1,5 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Shellbox\Action;
 
@@ -49,10 +50,7 @@ class ShellAction extends MultipartAction {
 		return 'shell';
 	}
 
-	/**
-	 * @return ServerBoxedExecutor
-	 */
-	private function createExecutor() {
+	private function createExecutor(): ServerBoxedExecutor {
 		$unboxedExecutor = new ServerUnboxedExecutor( $this->tempDirManager );
 		$unboxedExecutor->setLogger( $this->logger );
 		$unboxedExecutor->addWrappersFromConfiguration( [
@@ -88,11 +86,7 @@ class ShellAction extends MultipartAction {
 		return $executor;
 	}
 
-	/**
-	 * @param array $commandData
-	 * @return BoxedCommand
-	 */
-	private function createCommand( $commandData ) {
+	private function createCommand( array $commandData ): BoxedCommand {
 		$executor = $this->createExecutor();
 		$command = $executor->createCommand();
 		$command->setClientData( $commandData );
@@ -111,7 +105,7 @@ class ShellAction extends MultipartAction {
 	 * @param InputFile[] $clientDataFiles
 	 * @throws ShellboxError
 	 */
-	private function validateInputFiles( $clientDataFiles ) {
+	private function validateInputFiles( array $clientDataFiles ): void {
 		$allowUrlFiles = $this->getConfig( 'allowUrlFiles' );
 		$sent = [];
 		foreach ( $clientDataFiles as $path => $file ) {
@@ -142,7 +136,7 @@ class ShellAction extends MultipartAction {
 	 * @param string[] $pathParts
 	 * @throws ShellboxError
 	 */
-	private function validateRoute( $commandRoute, $pathParts ) {
+	private function validateRoute( string $commandRoute, array $pathParts ) {
 		if ( count( $pathParts ) !== 1 || $pathParts[0] !== $commandRoute ) {
 			throw new ShellboxError(
 				"The request path does not match the route in the command" );
@@ -159,7 +153,7 @@ class ShellAction extends MultipartAction {
 	 * @param OutputFile[] $files
 	 * @param OutputGlob[] $globs
 	 */
-	private function validateOutputs( $files, $globs ) {
+	private function validateOutputs( array $files, array $globs ): void {
 		if ( !$this->getConfig( 'allowUrlFiles' ) ) {
 			foreach ( $files as $file ) {
 				if ( $file instanceof OutputFileToUrl ) {

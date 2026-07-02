@@ -1,4 +1,5 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Shellbox\Command;
 
@@ -13,22 +14,16 @@ use Shellbox\TempDirManager;
  * A concrete class for executing UnboxedCommand objects
  */
 class UnboxedExecutor {
-	/** @var LoggerInterface */
-	protected $logger;
+	protected LoggerInterface $logger;
 	/** @var Wrapper[] */
-	private $wrappers = [];
+	private array $wrappers = [];
 
-	/** @var string|null */
-	private $stdoutPath;
+	private ?string $stdoutPath = null;
 
-	/** @var string|null */
-	private $stderrPath;
+	private ?string $stderrPath = null;
+	private ?string $tempDirBase = null;
 
-	/** @var string|null */
-	private $tempDirBase;
-
-	/** @var TempDirManager|null */
-	private $tempDirManager;
+	private ?TempDirManager $tempDirManager = null;
 
 	/**
 	 * @param string|null $tempDirBase The parent directory of the temporary
@@ -36,7 +31,7 @@ class UnboxedExecutor {
 	 *   If this is null, sys_get_temp_dir() will be used. The temporary
 	 *   directory may also be overridden later using setTempDirManager().
 	 */
-	public function __construct( $tempDirBase = null ) {
+	public function __construct( ?string $tempDirBase = null ) {
 		$this->logger = new NullLogger;
 		$this->tempDirBase = $tempDirBase;
 	}
@@ -250,6 +245,11 @@ class UnboxedExecutor {
 			$this->logger->error( "proc_open() failed: {command}", [ 'command' => $cmd ] );
 			throw new ShellboxError( 'proc_open() failed' );
 		}
+
+		$this->logger->info( "Started process {pid} for {cmd}", [
+			'pid' => proc_get_status( $proc )['pid'],
+			'cmd' => $cmd
+		] );
 
 		$buffers = [
 			0 => $command->getStdin(), // input

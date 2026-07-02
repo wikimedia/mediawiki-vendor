@@ -1,4 +1,5 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Shellbox\Command;
 
@@ -13,26 +14,17 @@ class FirejailWrapper extends Wrapper {
 	 * but outside BashWrapper, since it inherits and preserves most aspects of
 	 * the system.
 	 */
-	public const PRIORITY = 40;
-
-	/**
-	 * @var string The path to firejail
-	 */
-	private $binaryPath;
-
-	/**
-	 * @var string The path to the profile file
-	 */
-	private $profilePath;
+	public const int PRIORITY = 40;
 
 	/**
 	 * @param string $binaryPath The path to firejail
 	 * @param string $profilePath The path to the profile file
 	 */
-	public function __construct( $binaryPath, $profilePath ) {
+	public function __construct(
+		private readonly string $binaryPath,
+		private readonly string $profilePath,
+	) {
 		parent::__construct();
-		$this->binaryPath = $binaryPath;
-		$this->profilePath = $profilePath;
 	}
 
 	public function wrap( Command $command ) {

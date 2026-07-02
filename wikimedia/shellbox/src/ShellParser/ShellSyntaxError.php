@@ -1,4 +1,5 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Shellbox\ShellParser;
 
@@ -10,14 +11,8 @@ use Wikimedia\WikiPEG\Location;
  * multiple lines to show the exact location of the syntax error.
  */
 class ShellSyntaxError extends ShellboxError {
-	/** @var string */
-	private $originalMessage;
-	/** @var Location */
-	private $location;
-	/** @var string */
-	private $input;
-	/** @var bool */
-	private $contextEnabled;
+	private string $originalMessage;
+	private bool $contextEnabled;
 
 	/**
 	 * @internal
@@ -25,11 +20,13 @@ class ShellSyntaxError extends ShellboxError {
 	 * @param Location $location The error location
 	 * @param string $input The complete input text
 	 */
-	public function __construct( $message, Location $location, $input ) {
+	public function __construct(
+		string $message,
+		private readonly Location $location,
+		private readonly string $input,
+	) {
 		parent::__construct( $message );
 		$this->originalMessage = $message;
-		$this->location = $location;
-		$this->input = $input;
 		$this->contextEnabled = true;
 		$this->updateMessage();
 	}

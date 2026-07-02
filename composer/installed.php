@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => null,
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => '3d8e2f0b5e5029aec3a262521dabddb5f233e886',
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => null,
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => '3d8e2f0b5e5029aec3a262521dabddb5f233e886',
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -1321,9 +1321,9 @@
             'dev_requirement' => false,
         ),
         'wikimedia/shellbox' => array(
-            'pretty_version' => '4.4.0',
-            'version' => '4.4.0.0',
-            'reference' => 'c0605da24ce803a34d6151d0a507b0964ed310d0',
+            'pretty_version' => '4.5.2',
+            'version' => '4.5.2.0',
+            'reference' => 'f29652fab7c7f7bb1c9a1fd6102d921ed38dc601',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/shellbox',
             'aliases' => array(),

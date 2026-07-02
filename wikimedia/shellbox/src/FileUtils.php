@@ -1,4 +1,5 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Shellbox;
 
@@ -11,16 +12,14 @@ use Psr\Http\Message\StreamInterface;
  * @internal
  */
 class FileUtils {
-	private const COPY_BUFFER_SIZE = 65536;
+	private const int COPY_BUFFER_SIZE = 65536;
 
 	/**
 	 * Copy file
 	 *
-	 * @param string $source
-	 * @param string $dest
 	 * @throws ShellboxError
 	 */
-	public static function copy( $source, $dest ) {
+	public static function copy( string $source, string $dest ): void {
 		if ( !copy( $source, $dest ) ) {
 			throw new ShellboxError( "Error while copying " .
 				basename( $source ) . ' to ' . basename( $dest ) );
@@ -30,11 +29,9 @@ class FileUtils {
 	/**
 	 * Get contents
 	 *
-	 * @param string $path
-	 * @return string
 	 * @throws ShellboxError
 	 */
-	public static function getContents( $path ) {
+	public static function getContents( string $path ): string {
 		$contents = file_get_contents( $path );
 		if ( $contents === false ) {
 			throw new ShellboxError( "Unable to read " . basename( $path ) );
@@ -45,11 +42,9 @@ class FileUtils {
 	/**
 	 * Put contents
 	 *
-	 * @param string $path
-	 * @param string $contents
 	 * @throws ShellboxError
 	 */
-	public static function putContents( $path, $contents ) {
+	public static function putContents( string $path, string $contents ): void {
 		if ( !file_put_contents( $path, $contents ) ) {
 			throw new ShellboxError( "Unable to write " . basename( $path ) );
 		}
@@ -58,11 +53,10 @@ class FileUtils {
 	/**
 	 * Open a file in read mode
 	 *
-	 * @param string $path
 	 * @return resource
 	 * @throws ShellboxError
 	 */
-	public static function openInputFile( $path ) {
+	public static function openInputFile( string $path ) {
 		$file = fopen( $path, 'r' );
 		if ( !$file ) {
 			throw new ShellboxError( "Error opening input file " . basename( $path ) );
@@ -73,11 +67,10 @@ class FileUtils {
 	/**
 	 * Open a file in write mode
 	 *
-	 * @param string $path
 	 * @return resource
 	 * @throws ShellboxError
 	 */
-	public static function openOutputFile( $path ) {
+	public static function openOutputFile( string $path ) {
 		$file = fopen( $path, 'w' );
 		if ( !$file ) {
 			throw new ShellboxError( "Error opening output file " . basename( $path ) );
@@ -88,33 +81,27 @@ class FileUtils {
 	/**
 	 * Open a file in read mode and convert it to a StreamInterface
 	 *
-	 * @param string $path
-	 * @return StreamInterface
 	 * @throws ShellboxError
 	 */
-	public static function openInputFileStream( $path ) {
+	public static function openInputFileStream( string $path ): StreamInterface {
 		return Utils::streamFor( self::openInputFile( $path ) );
 	}
 
 	/**
 	 * Open a file in write mode and convert it to a StreamInterface
 	 *
-	 * @param string $path
-	 * @return StreamInterface
 	 * @throws ShellboxError
 	 */
-	public static function openOutputFileStream( $path ) {
+	public static function openOutputFileStream( string $path ): StreamInterface {
 		return Utils::streamFor( self::openOutputFile( $path ) );
 	}
 
 	/**
 	 * Copy a stream to a file
 	 *
-	 * @param StreamInterface $stream
-	 * @param string $path
 	 * @throws ShellboxError
 	 */
-	public static function copyStreamToFile( StreamInterface $stream, string $path ) {
+	public static function copyStreamToFile( StreamInterface $stream, string $path ): void {
 		$file = self::openOutputFile( $path );
 		while ( !$stream->eof() ) {
 			$buf = $stream->read( self::COPY_BUFFER_SIZE );
@@ -133,7 +120,7 @@ class FileUtils {
 	 * @param string $path
 	 * @throws ShellboxError
 	 */
-	public static function mkdir( $path ) {
+	public static function mkdir( string $path ): void {
 		if ( !mkdir( $path, 0700 ) ) {
 			throw new ShellboxError( "Error creating directory " . basename( $path ) );
 		}
@@ -142,11 +129,9 @@ class FileUtils {
 	/**
 	 * Get content hash headers for MediaWiki from a stream
 	 *
-	 * @param StreamInterface $stream
-	 * @return array
 	 * @throws ShellboxError
 	 */
-	public static function getMwHashes( StreamInterface $stream ) {
+	public static function getMwHashes( StreamInterface $stream ): array {
 		$srcSize = $stream->getSize();
 		$md5Context = hash_init( 'md5' );
 		$sha1Context = hash_init( 'sha1' );

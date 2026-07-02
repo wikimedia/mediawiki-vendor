@@ -1,4 +1,5 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Shellbox;
 
@@ -22,16 +23,8 @@ use Shellbox\RPC\RpcClient;
  * A generic client which executes actions on the Shellbox server
  */
 class Client implements RPCClient {
-	/** @var ClientInterface */
-	private $httpClient;
-	/** @var UriInterface */
-	private $uri;
-	/** @var string */
-	private $key;
-	/** @var LoggerInterface */
-	private $logger;
-	/** @var bool */
-	private $allowUrlFiles;
+	private LoggerInterface $logger;
+	private bool $allowUrlFiles;
 
 	/**
 	 * @param ClientInterface $httpClient An object which requests an HTTP resource.
@@ -50,14 +43,11 @@ class Client implements RPCClient {
 	 *     the server configuration variable allowUrlFiles must also be set to true.
 	 */
 	public function __construct(
-		ClientInterface $httpClient,
-		UriInterface $uri,
-		string $key,
-		array $options = []
+		private readonly ClientInterface $httpClient,
+		private readonly UriInterface $uri,
+		private readonly string $key,
+		array $options = [],
 	) {
-		$this->httpClient = $httpClient;
-		$this->uri = $uri;
-		$this->key = $key;
 		$this->logger = new NullLogger;
 		$this->allowUrlFiles = $options['allowUrlFiles'] ?? false;
 	}
@@ -179,15 +169,17 @@ class Client implements RPCClient {
 		$response = $this->httpClient->sendRequest( $request );
 		$contentType = $response->getHeaderLine( 'Content-Type' );
 		if ( $response->getStatusCode() !== 200 ) {
+			$bodyContent = $response->getBody()->getContents();
 			if ( $contentType === 'application/json' ) {
-				$data = Shellbox::jsonDecode( $response->getBody()->getContents() );
+				$data = Shellbox::jsonDecode( $bodyContent );
 				if ( isset( $data['message'] ) && isset( $data['log'] ) ) {
 					$this->forwardLog( $data['log'] );
 					throw new ShellboxError( 'Shellbox server error: ' . $data['message'] );
 				}
 			}
+			$truncatedBody = substr( strip_tags( $bodyContent ), 0, 100 );
 			throw new ShellboxError( "Shellbox server returned status code " .
-				$response->getStatusCode() );
+				$response->getStatusCode() . ( $truncatedBody !== '' ? ' (' . $truncatedBody . ')' : '' ) );
 		}
 
 		$boundary = MultipartUtils::extractBoundary( $contentType );

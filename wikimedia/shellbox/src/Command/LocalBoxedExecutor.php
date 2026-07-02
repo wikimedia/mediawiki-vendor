@@ -1,9 +1,10 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Shellbox\Command;
 
 use GuzzleHttp\ClientInterface as GuzzleClientInterface;
-use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\TransferException;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
@@ -25,18 +26,10 @@ use Shellbox\TempDirManager;
  * context of a Server.
  */
 class LocalBoxedExecutor extends BoxedExecutor {
-	/** @var UnboxedExecutor */
-	protected $unboxedExecutor;
-	/** @var TempDirManager */
-	protected $tempDirManager;
-	/** @var LoggerInterface */
-	protected $logger;
-	/** @var ClientInterface|null */
-	private $urlFileClient;
-	/** @var int */
-	private $urlFileConcurrency = 1;
-	/** @var int */
-	private $uploadAttempts = 3;
+	protected LoggerInterface $logger;
+	private ?ClientInterface $urlFileClient;
+	private int $urlFileConcurrency = 1;
+	private int $uploadAttempts = 3;
 	/** @var int|float */
 	private $retryDelay = 1.0;
 
@@ -47,11 +40,9 @@ class LocalBoxedExecutor extends BoxedExecutor {
 	 * @param TempDirManager $tempDirManager
 	 */
 	public function __construct(
-		UnboxedExecutor $unboxedExecutor,
-		TempDirManager $tempDirManager
+		protected readonly UnboxedExecutor $unboxedExecutor,
+		protected readonly TempDirManager $tempDirManager,
 	) {
-		$this->unboxedExecutor = $unboxedExecutor;
-		$this->tempDirManager = $tempDirManager;
 		$this->logger = new NullLogger;
 	}
 
@@ -213,7 +204,7 @@ class LocalBoxedExecutor extends BoxedExecutor {
 							'Failed to download input file' );
 					}
 				},
-				'rejected' => static function ( RequestException $reason, $boxedName ) {
+				'rejected' => static function ( TransferException $reason, $boxedName ) {
 					// @phan-suppress-previous-line PhanPluginNeverReturnFunction
 					throw new ShellboxError(
 						"Failed to download input file \"$boxedName\": " .
@@ -386,7 +377,7 @@ class LocalBoxedExecutor extends BoxedExecutor {
 		];
 
 		$shouldRetry = function ( $retries, Request $request, ?Response $response,
-			?RequestException $exception ) use ( $likelyPermanent )
+			?TransferException $exception ) use ( $likelyPermanent )
 		{
 			if ( $retries + 1 >= $this->uploadAttempts ) {
 				return false;
@@ -424,7 +415,7 @@ class LocalBoxedExecutor extends BoxedExecutor {
 							'Failed to upload output file' );
 					}
 				},
-				'rejected' => static function ( RequestException $ex, $boxedName ) {
+				'rejected' => static function ( TransferException $ex, $boxedName ) {
 					// @phan-suppress-previous-line PhanPluginNeverReturnFunction
 					throw new ShellboxError(
 						"Failed to upload output file \"$boxedName\": " .

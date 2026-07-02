@@ -1,4 +1,5 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Shellbox\Command;
 
@@ -16,12 +17,10 @@ use Shellbox\ShellboxError;
 abstract class OutputFile {
 	use UserDataTrait;
 
-	/** @var bool */
-	protected $received = false;
+	protected bool $received = false;
 	/** @var callable[] */
-	private $receivedListeners = [];
-	/** @var int|null */
-	private $requiredExitCode;
+	private array $receivedListeners = [];
+	private ?int $requiredExitCode = null;
 
 	/**
 	 * Add a callback to call after the file is received

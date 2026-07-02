@@ -1,7 +1,9 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Shellbox\Multipart;
 
+use HashContext;
 use Psr\Http\Message\StreamInterface;
 use Shellbox\Shellbox;
 
@@ -17,51 +19,38 @@ use Shellbox\Shellbox;
  *    $reader->readEpilogue();
  */
 class MultipartReader {
-	/** @var StreamInterface */
-	private $stream;
-	/** @var string */
-	private $boundary;
-	/** @var string */
-	private $startBoundary;
-	/** @var string */
-	private $encapsulationBoundary;
-	/** @var string */
-	private $closingBoundary;
-	/** @var string */
-	private $buffer;
-	/** @var \HashContext|null */
-	private $hashContext;
-	/** @var string|null */
-	private $hash;
+	private string $startBoundary;
+	private string $encapsulationBoundary;
+	private string $closingBoundary;
+	private string $buffer;
+	private ?HashContext $hashContext = null;
+	private ?string $hash = null;
 	/**
 	 * @var bool True when the body is complete and it is time to read the
 	 *   headers of the next part
 	 */
-	private $atPartEnd = false;
+	private bool $atPartEnd = false;
 	/** @var bool True when we are reading the epilogue */
-	private $inEpilogue = false;
+	private bool $inEpilogue = false;
 	/** @var bool True when we are at the start of the stream */
-	private $atStreamStart = true;
+	private bool $atStreamStart = true;
 	/** @var bool True when EOF has been reached */
-	private $atStreamEnd = false;
+	private bool $atStreamEnd = false;
 
 	/**
 	 * @var int The number of bytes available in the buffer below which the
 	 *   buffer is refilled.
 	 */
-	private const MIN_BUFFER_SIZE = 16384;
+	private const int MIN_BUFFER_SIZE = 16384;
 
 	/** @var int The maximum number of bytes withdrawn from the buffer each time */
-	public const CHUNK_SIZE = 8192;
+	public const int CHUNK_SIZE = 8192;
 
-	/**
-	 * @param StreamInterface $stream
-	 * @param string $boundary
-	 * @param string|false $hmacKey
-	 */
-	public function __construct( StreamInterface $stream, string $boundary, $hmacKey = false ) {
-		$this->stream = $stream;
-		$this->boundary = $boundary;
+	public function __construct(
+		private readonly StreamInterface $stream,
+		string $boundary,
+		string|false $hmacKey = false,
+	) {
 		$this->startBoundary = "--$boundary\r\n";
 		$this->encapsulationBoundary = "\r\n--$boundary\r\n";
 		$this->closingBoundary = "\r\n--$boundary--\r\n";
@@ -89,7 +78,6 @@ class MultipartReader {
 		do {
 			$this->buffer = '';
 			$this->refillBuffer();
-			// @phan-suppress-next-line PhanSuspiciousValueComparison
 		} while ( $this->buffer !== '' );
 		$this->atStreamEnd = true;
 	}

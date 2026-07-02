@@ -1,4 +1,5 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Shellbox\Command;
 
@@ -11,22 +12,21 @@ use Shellbox\ShellboxError;
 abstract class OutputGlob {
 	use UserDataTrait;
 
-	/** @var string */
-	protected $prefix;
-	/** @var string */
-	protected $extension;
+	protected string $prefix;
 	/** @var OutputFile[] */
-	protected $files = [];
+	protected array $files = [];
 
 	/**
 	 * @internal
 	 * @param string $prefix
 	 * @param string $extension
 	 */
-	public function __construct( $prefix, $extension ) {
+	public function __construct(
+		string $prefix,
+		protected readonly string $extension,
+	) {
 		$this->prefix = Shellbox::normalizePath( $prefix );
 		Shellbox::checkExtension( $extension );
-		$this->extension = $extension;
 	}
 
 	/**

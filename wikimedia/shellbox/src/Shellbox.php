@@ -1,7 +1,9 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Shellbox;
 
+use Exception;
 use Psr\Http\Client\ClientInterface;
 use Psr\Log\LoggerInterface;
 use Shellbox\Command\LocalBoxedExecutor;
@@ -38,7 +40,7 @@ class Shellbox {
 		$config = [],
 		?LoggerInterface $logger = null,
 		?ClientInterface $urlFileClient = null
-	) {
+	): LocalBoxedExecutor {
 		$tempDirManager = self::createTempDirManager( $config['tempDir'] ?? null );
 		$unboxedExecutor = new UnboxedExecutor;
 		$unboxedExecutor->setTempDirManager( $tempDirManager );
@@ -79,7 +81,7 @@ class Shellbox {
 	 * @param LoggerInterface|null $logger
 	 * @return UnboxedExecutor
 	 */
-	public static function createUnboxedExecutor( $config = [], ?LoggerInterface $logger = null ) {
+	public static function createUnboxedExecutor( $config = [], ?LoggerInterface $logger = null ): UnboxedExecutor {
 		$executor = new UnboxedExecutor( $config['tempDir'] ?? null );
 		$executor->addWrappersFromConfiguration( $config );
 		if ( $logger ) {
@@ -90,11 +92,8 @@ class Shellbox {
 
 	/**
 	 * Create a TempDirManager from a shared base path (e.g. /tmp)
-	 *
-	 * @param string|null $tempDirBase
-	 * @return TempDirManager
 	 */
-	public static function createTempDirManager( $tempDirBase = null ) {
+	public static function createTempDirManager( ?string $tempDirBase = null ): TempDirManager {
 		if ( $tempDirBase === null ) {
 			$tempDirBase = sys_get_temp_dir();
 		}
@@ -179,10 +178,8 @@ class Shellbox {
 
 	/**
 	 * Get the platform's maximum command length in bytes, minus a safety margin.
-	 *
-	 * @return int
 	 */
-	public static function getMaxCmdLength() {
+	public static function getMaxCmdLength(): int {
 		if ( PHP_OS_FAMILY === 'Windows' ) {
 			// phpcs:ignore Generic.Files.LineLength.TooLong
 			// Ref: https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessa
@@ -199,10 +196,9 @@ class Shellbox {
 	/**
 	 * Get a random string from a CSPRNG.
 	 *
-	 * @return string
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public static function getUniqueString() {
+	public static function getUniqueString(): string {
 		return bin2hex( random_bytes( 8 ) );
 	}
 
@@ -211,7 +207,7 @@ class Shellbox {
 	 * @param mixed $value
 	 * @return string
 	 */
-	public static function jsonEncode( $value ) {
+	public static function jsonEncode( $value ): string {
 		$json = json_encode( $value,
 			JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES |
 			JSON_UNESCAPED_UNICODE );
@@ -229,7 +225,7 @@ class Shellbox {
 	 * @param string $json
 	 * @return mixed
 	 */
-	public static function jsonDecode( $json ) {
+	public static function jsonDecode( string $json ) {
 		// phpcs:ignore Generic.PHP.NoSilencedErrors
 		$value = @json_decode( $json, true, 512 );
 		if ( $value === null ) {
@@ -244,11 +240,9 @@ class Shellbox {
 	 * file name compliance. Under Windows, the path may contain backslashes,
 	 * which will be replaced with slashes.
 	 *
-	 * @param string $path
-	 * @return string
 	 * @throws ShellboxError
 	 */
-	public static function normalizePath( $path ) {
+	public static function normalizePath( string $path ): string {
 		$windowsReservedNames = [
 			'CON', 'PRN', 'AUX', 'NUL', 'COM1', 'COM2', 'COM3', 'COM4',
 			'COM5', 'COM6', 'COM7', 'COM8', 'COM9', 'LPT1', 'LPT2', 'LPT3',
@@ -282,10 +276,9 @@ class Shellbox {
 	 * name compliance. Throw an exception if it is not acceptable.
 	 *
 	 * @since 4.1.0
-	 * @param string $extension
 	 * @throws ShellboxError
 	 */
-	public static function checkExtension( $extension ) {
+	public static function checkExtension( string $extension ): void {
 		if ( !preg_match( '/^[0-9a-zA-Z\-_]*$/', $extension ) ) {
 			throw new ShellboxError( "invalid extension \"$extension\"" );
 		}

@@ -1,4 +1,5 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Shellbox\Command;
 
@@ -11,19 +12,13 @@ use Psr\Http\Message\UriInterface;
  * @since 4.1.0
  */
 class OutputFileToUrl extends OutputFile {
-	/** @var string|UriInterface */
-	private $url;
-	/** @var array */
-	private $headers = [];
-	/** @var bool */
-	private $mwContentHash = false;
+	private array $headers = [];
+	private bool $mwContentHash = false;
 
 	/**
 	 * @internal
-	 * @param string|UriInterface $url
 	 */
-	public function __construct( $url ) {
-		$this->url = $url;
+	public function __construct( private readonly UriInterface|string $url ) {
 	}
 
 	/**

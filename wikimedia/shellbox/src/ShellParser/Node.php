@@ -1,4 +1,5 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Shellbox\ShellParser;
 
@@ -6,16 +7,16 @@ use Wikimedia\WikiPEG\InternalError;
 
 class Node {
 	/** @var string The node type */
-	public $type;
+	public string $type;
 	/** @var array The node contents (children) */
-	public $contents;
+	public array $contents;
 
 	/**
 	 * @param string $type
 	 * @param array|Node|string $contents
 	 * @throws InternalError
 	 */
-	public function __construct( $type, $contents ) {
+	public function __construct( string $type, $contents ) {
 		$this->type = $type;
 		if ( !is_array( $contents ) ) {
 			$contents = [ $contents ];

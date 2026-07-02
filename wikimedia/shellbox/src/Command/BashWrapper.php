@@ -1,4 +1,5 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Shellbox\Command;
 
@@ -8,14 +9,13 @@ use Shellbox\Shellbox;
  * A ulimit/cgroup wrapper implemented as a bash script
  */
 class BashWrapper extends Wrapper {
-	/** @var bool|string */
-	private $cgroup;
+	private bool|string $cgroup;
 
 	/**
 	 * Needs to be outside of firejail so that it can set up a cgroup. Also,
 	 * firejail may disable syscalls, breaking the bash wrapper.
 	 */
-	public const PRIORITY = 60;
+	public const int PRIORITY = 60;
 
 	/**
 	 * @param string|false $cgroup Under Linux: a cgroup directory used to constrain

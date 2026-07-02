@@ -1,4 +1,5 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Shellbox\Multipart;
 
@@ -12,11 +13,8 @@ class MultipartUtils {
 	 *
 	 * This can be used to get a boundary when constructing a MultipartReader
 	 * from a request.
-	 *
-	 * @param string $contentType
-	 * @return bool|string
 	 */
-	public static function extractBoundary( $contentType ) {
+	public static function extractBoundary( string $contentType ): bool|string {
 		if ( !preg_match( '!^multipart/[a-z]+ *; *(.*)$!i', $contentType, $m ) ) {
 			return false;
 		}
@@ -29,11 +27,9 @@ class MultipartUtils {
 	 * values may be quoted or unquoted. We try to follow the "parameter"
 	 * production in RFC 1341.
 	 *
-	 * @param string $input
-	 * @return array
 	 * @throws MultipartError
 	 */
-	public static function decodeParameters( $input ) {
+	public static function decodeParameters( string $input ): array {
 		$params = [];
 		$parts = explode( ';', $input );
 		foreach ( $parts as $paramString ) {
@@ -53,11 +49,9 @@ class MultipartUtils {
 	 * Parse the "value" production from RFC 1341, which is either an unquoted
 	 * "token" or a quoted string with peculiar backslash escaping.
 	 *
-	 * @param string $input
-	 * @return string
 	 * @throws MultipartError
 	 */
-	public static function decodeTokenOrQuotedString( $input ) {
+	public static function decodeTokenOrQuotedString( string $input ): string {
 		$input = trim( $input );
 		if ( $input === '' ) {
 			return '';

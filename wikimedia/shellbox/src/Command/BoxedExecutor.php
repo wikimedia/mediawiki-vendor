@@ -1,4 +1,5 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Shellbox\Command;
 
@@ -6,8 +7,7 @@ namespace Shellbox\Command;
  * Base class for things that execute BoxedCommands
  */
 abstract class BoxedExecutor {
-	/** @var Validator|null */
-	protected $validator;
+	protected ?Validator $validator = null;
 
 	/**
 	 * Execute a boxed command.

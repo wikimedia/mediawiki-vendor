@@ -8991,40 +8991,39 @@
         },
         {
             "name": "wikimedia/shellbox",
-            "version": "4.4.0",
-            "version_normalized": "4.4.0.0",
+            "version": "4.5.2",
+            "version_normalized": "4.5.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-Shellbox.git",
-                "reference": "c0605da24ce803a34d6151d0a507b0964ed310d0"
+                "reference": "f29652fab7c7f7bb1c9a1fd6102d921ed38dc601"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Shellbox/zipball/c0605da24ce803a34d6151d0a507b0964ed310d0",
-                "reference": "c0605da24ce803a34d6151d0a507b0964ed310d0",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Shellbox/zipball/f29652fab7c7f7bb1c9a1fd6102d921ed38dc601",
+                "reference": "f29652fab7c7f7bb1c9a1fd6102d921ed38dc601",
                 "shasum": ""
             },
             "require": {
                 "ext-hash": "*",
-                "ext-json": "*",
-                "guzzlehttp/guzzle": "^7.9.2",
-                "monolog/monolog": "^2.0.0 || ^3.0.0",
-                "php": ">=8.1",
+                "guzzlehttp/guzzle": "^7.10.0",
+                "monolog/monolog": "^3.0.0",
+                "php": ">=8.3",
                 "psr/log": "~1.1.3 || ^3.0.0",
                 "wikimedia/base-convert": "2.0.2",
                 "wikimedia/wikipeg": "^6.0.0"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "48.0.0",
-                "mediawiki/mediawiki-phan-config": "0.17.0",
-                "mediawiki/minus-x": "1.1.3",
+                "mediawiki/mediawiki-codesniffer": "51.0.0",
+                "mediawiki/mediawiki-phan-config": "0.20.0",
+                "mediawiki/minus-x": "2.0.1",
                 "ockcyp/covers-validator": "1.7.0",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
                 "php-parallel-lint/php-parallel-lint": "1.4.0",
-                "phpunit/phpunit": "9.6.21",
-                "psy/psysh": "~0.10.4"
+                "phpunit/phpunit": "10.5.63",
+                "psy/psysh": "~0.12.19"
             },
-            "time": "2025-12-18T14:03:43+00:00",
+            "time": "2026-07-03T21:14:35+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -9050,7 +9049,7 @@
             "description": "Library and server for containerized shell execution",
             "homepage": "https://www.mediawiki.org/wiki/Shellbox",
             "support": {
-                "source": "https://github.com/wikimedia/mediawiki-libs-Shellbox/tree/4.4.0"
+                "source": "https://github.com/wikimedia/mediawiki-libs-Shellbox/tree/4.5.2"
             },
             "install-path": "../wikimedia/shellbox"
         },

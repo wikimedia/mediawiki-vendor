@@ -1,4 +1,5 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Shellbox\Command;
 
@@ -10,16 +11,16 @@ use Psr\Http\Message\UriInterface;
  * @since 4.1.0
  */
 class OutputGlobToUrl extends OutputGlob {
-	/** @var UriInterface */
-	private $destUri;
+	private UriInterface $destUri;
 
 	/**
 	 * @internal
-	 * @param string $prefix
-	 * @param string $extension
-	 * @param string|UriInterface $destUrl
 	 */
-	public function __construct( string $prefix, string $extension, $destUrl ) {
+	public function __construct(
+		string $prefix,
+		string $extension,
+		UriInterface|string $destUrl,
+	) {
 		parent::__construct( $prefix, $extension );
 		if ( $destUrl instanceof UriInterface ) {
 			$this->destUri = $destUrl;

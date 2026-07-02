@@ -1,4 +1,5 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Shellbox;
 
@@ -13,20 +14,11 @@ use Psr\Log\NullLogger;
  * are deleted when teardown() is called or when the object is destroyed.
  */
 class TempDirManager {
-	/** @var string */
-	private $path;
-	/** @var bool */
-	private $baseSetupDone = false;
-	/** @var bool[] */
-	private $subdirSetupDone = [];
-	/** @var LoggerInterface */
-	private $logger;
+	private bool $baseSetupDone = false;
+	private array $subdirSetupDone = [];
+	private LoggerInterface $logger;
 
-	/**
-	 * @param string $path
-	 */
-	public function __construct( $path ) {
-		$this->path = $path;
+	public function __construct( private readonly string $path ) {
 		$this->logger = new NullLogger;
 	}
 
@@ -36,8 +28,6 @@ class TempDirManager {
 
 	/**
 	 * Set the logger.
-	 *
-	 * @param LoggerInterface $logger
 	 */
 	public function setLogger( LoggerInterface $logger ): void {
 		$this->logger = $logger;
@@ -58,10 +48,8 @@ class TempDirManager {
 	 * Recursively delete a specified directory. Note that this may fail in
 	 * adversarial situations. For example, a subdirectory with mode 000 cannot
 	 * be read and so files within it cannot be unlinked.
-	 *
-	 * @param string $path
 	 */
-	private function deleteDirectory( $path ) {
+	private function deleteDirectory( string $path ): void {
 		foreach ( new DirectoryIterator( $path ) as $fileInfo ) {
 			if ( $fileInfo->isDot() ) {
 				continue;
@@ -110,10 +98,9 @@ class TempDirManager {
 	 * Make sure the specified filename is acceptable. Throw an exception if it
 	 * is not.
 	 *
-	 * @param string $name
 	 * @throws ShellboxError
 	 */
-	private function checkTraversal( $name ) {
+	private function checkTraversal( string $name ) {
 		// Backslashes should have been normalized to slashes
 		if ( strlen( $name ) === 0
 			|| strcspn( $name, "\0\\" ) !== strlen( $name )
@@ -158,7 +145,7 @@ class TempDirManager {
 	 *
 	 * @throws ShellboxError
 	 */
-	private function setupBase() {
+	private function setupBase(): void {
 		if ( !$this->baseSetupDone ) {
 			$this->logger->debug( "Creating base path {$this->path}" );
 			FileUtils::mkdir( $this->path );
@@ -172,7 +159,7 @@ class TempDirManager {
 	 * @param string $subdir The relative path
 	 * @throws ShellboxError
 	 */
-	private function setupSubdirectory( $subdir ) {
+	private function setupSubdirectory( string $subdir ): void {
 		if ( !isset( $this->subdirSetupDone[$subdir] ) ) {
 			$this->setupBase();
 			$this->logger->debug( "Creating subdirectory $subdir" );

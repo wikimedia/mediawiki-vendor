@@ -1,4 +1,5 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Shellbox\Command;
 
@@ -15,7 +16,7 @@ class BoxedResult extends UnboxedResult {
 	 *
 	 * @var OutputFile[]
 	 */
-	private $files = [];
+	private array $files = [];
 
 	/**
 	 * Add an output file to the result

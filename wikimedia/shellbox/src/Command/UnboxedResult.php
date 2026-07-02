@@ -1,16 +1,14 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Shellbox\Command;
 
 class UnboxedResult {
-	/** @var int|null */
-	private $exitCode;
+	private ?int $exitCode = null;
 
-	/** @var string|null */
-	private $stdout;
+	private ?string $stdout = null;
 
-	/** @var string|null */
-	private $stderr;
+	private ?string $stderr = null;
 
 	/**
 	 * Set the exit code

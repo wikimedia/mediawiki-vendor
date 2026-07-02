@@ -1,4 +1,5 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Shellbox\Command;
 
@@ -8,15 +9,10 @@ use Shellbox\FileUtils;
  * Encapsulation of an input file that comes from a string
  */
 class InputFileFromString extends InputFileWithContents {
-	/** @var string */
-	private $contents;
-
 	/**
 	 * @internal
-	 * @param string $contents
 	 */
-	public function __construct( string $contents ) {
-		$this->contents = $contents;
+	public function __construct( private readonly string $contents ) {
 	}
 
 	public function copyTo( $destPath ) {

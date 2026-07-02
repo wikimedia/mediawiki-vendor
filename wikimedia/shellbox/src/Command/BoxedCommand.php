@@ -1,4 +1,5 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Shellbox\Command;
 
@@ -11,23 +12,20 @@ use Shellbox\ShellboxError;
  * A command with input and output files in an otherwise empty working directory.
  */
 class BoxedCommand extends Command {
-	/** @var string|null */
-	private $routeName;
+	private ?string $routeName;
 	/** @var InputFile[] */
-	private $inputFiles = [];
+	private array $inputFiles = [];
 	/** @var OutputFile[] */
-	private $outputFiles = [];
+	private array $outputFiles = [];
 	/** @var OutputGlob[] */
-	private $outputGlobs = [];
-	/** @var BoxedExecutor */
-	private $executor;
+	private array $outputGlobs = [];
 
 	/**
 	 * @internal Use BoxedExecutor::createCommand()
-	 * @param BoxedExecutor $boxedExecutor
 	 */
-	public function __construct( BoxedExecutor $boxedExecutor ) {
-		$this->executor = $boxedExecutor;
+	public function __construct(
+		private readonly BoxedExecutor $executor
+	) {
 	}
 
 	/**

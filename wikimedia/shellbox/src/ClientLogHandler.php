@@ -1,28 +1,27 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Shellbox;
 
 use Monolog\Handler\AbstractHandler;
+use Monolog\LogRecord;
 
 class ClientLogHandler extends AbstractHandler {
-	/** @var array */
-	private $records = [];
+	private array $records = [];
 
-	public function handle( array $record ): bool {
+	public function handle( LogRecord $record ): bool {
 		$this->records[] = [
-			'level' => $record['level'],
-			'message' => $record['message'],
-			'context' => $record['context']
+			'level' => $record->level->getName(),
+			'message' => $record->message,
+			'context' => $record->context,
 		];
 		return false;
 	}
 
 	/**
 	 * Remove and return the accumulated log entries
-	 *
-	 * @return array
 	 */
-	public function flush() {
+	public function flush(): array {
 		$records = $this->records;
 		$this->records = [];
 		return $records;

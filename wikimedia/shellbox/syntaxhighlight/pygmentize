@@ -1,9 +1,12 @@
 #!/bin/sh
 # Wrapper for calling `pygmentize` via Shellbox.
 #
-# Blubber places Python libraries in a non-standard location which requires
-# adjusting the PYTHONPATH environment variable to access.
+# Recent versions of Blubber install Python packages to a virtual environment
+# located at /opt/lib/venv.
+#
+# Although Blubber updates the resulting image environment to reflect this, we
+# cannot rely on that in Shellbox, and instead use this wrapper as a canonical
+# path to target via wgPygmentizePath, as well as inject environment variables.
 export PYTHONUNBUFFERED=1
 export PYTHONDONTWRITEBYTECODE=1
-export PYTHONPATH=/opt/lib/python/site-packages
-exec /opt/lib/python/site-packages/bin/pygmentize "$@"
+exec /opt/lib/venv/bin/pygmentize "$@"
