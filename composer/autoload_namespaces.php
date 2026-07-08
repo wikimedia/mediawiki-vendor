@@ -11,7 +11,6 @@ return array(
     'Mail' => array($vendorDir . '/pear/mail_mime', $vendorDir . '/pear/mail'),
     'Liuggio' => array($vendorDir . '/liuggio/statsd-php-client/src'),
     'Less' => array($vendorDir . '/wikimedia/less.php/lib'),
-    'JsonMapper' => array($vendorDir . '/netresearch/jsonmapper/src'),
     'Console' => array($vendorDir . '/pear/console_getopt'),
     'Clio' => array($vendorDir . '/clio/clio/src'),
     'CSSMin' => array($vendorDir . '/wikimedia/minify/src'),
