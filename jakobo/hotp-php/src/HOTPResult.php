@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace jakobo\HOTP;
 
 /**
@@ -9,63 +11,59 @@ namespace jakobo\HOTP;
  * @author Jakob Heuser (firstname)@felocity.com
  * @copyright 2011-2020
  * @license BSD-3-Clause
- * @version 1.0
  */
-class HOTPResult {
-    protected $hash;
-    protected $decimal;
-    protected $hex;
+class HOTPResult
+{
+    private ?int $decimal = null;
+    private ?string $hex = null;
 
-    /**
-     * Build an HOTP Result
-     * @param string $value the value to construct with
-     * @codeCoverageIgnore
-     */
-    public function __construct( string $value ) {
-        // store raw
-        $this->hash = $value;
+    public function __construct(private string $hash)
+    {
     }
 
     /**
      * Returns the string version of the HOTP
-     * @return string
      */
-    public function toString(): string {
+    public function toString(): string
+    {
         return $this->hash;
     }
 
     /**
      * Returns the hex version of the HOTP
-     * @return string
      */
-    public function toHex(): string {
-        if( !$this->hex ) {
-            $this->hex = dechex( $this->toDec() );
+    public function toHex(): string
+    {
+        if (!$this->hex) {
+            $this->hex = dechex($this->toDec());
         }
         return $this->hex;
     }
 
     /**
      * Returns the decimal version of the HOTP
-     * @return int
      */
-    public function toDec(): int {
-        if( !$this->decimal ) {
+    public function toDec(): int
+    {
+        if (!$this->decimal) {
             // store calculate decimal
-            $hmac_result = [];
+            $hmacResult = [];
 
             // Convert to decimal
-            foreach ( str_split( $this->hash,2 ) as $hex ) {
-               $hmac_result[] = hexdec($hex);
+            foreach (str_split($this->hash, 2) as $hex) {
+                $hmacResult[] = hexdec($hex);
             }
 
-            $offset = $hmac_result[19] & 0xf;
+            // RFC 4226 dynamic truncation uses the low nibble of the digest's
+            // final byte as the offset. SHA-1 digests are 20 bytes (index 19),
+            // but wider digests (SHA-256/512) place that byte at a higher index.
+            $offset = $hmacResult[array_key_last($hmacResult)] & 0xf;
 
             $this->decimal = (
-                ( ( $hmac_result[$offset+0] & 0x7f ) << 24 ) |
-                ( ( $hmac_result[$offset+1] & 0xff ) << 16 ) |
-                ( ( $hmac_result[$offset+2] & 0xff ) << 8 ) |
-                ( $hmac_result[$offset+3] & 0xff )
+                (($hmacResult[$offset + 0] & 0x7f) << 24) |
+                (($hmacResult[$offset + 1] & 0xff) << 16) |
+                (($hmacResult[$offset + 2] & 0xff) << 8) |
+                ($hmacResult[$offset + 3] & 0xff)
             );
         }
         return $this->decimal;
@@ -76,9 +74,9 @@ class HOTPResult {
      * @param int $length the length of the HOTP to return
      * @return string
      */
-    public function toHOTP( int $length ): string {
-        $str = str_pad( $this->toDec(), $length, "0", STR_PAD_LEFT );
-        return substr( $str, ( -1 * $length ) );
+    public function toHOTP(int $length): string
+    {
+        $str = str_pad((string)$this->toDec(), $length, "0", STR_PAD_LEFT);
+        return substr($str, (-1 * $length));
     }
-
 }
