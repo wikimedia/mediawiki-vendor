@@ -60,17 +60,22 @@ class Evaluator {
 	public static function evaluateCompiled( $number, array $rules ): int {
 		// Calculate the values of the operand symbols
 		$number = strval( $number );
-		if ( !preg_match( '/^ -? ( ([0-9]+) (?: \. ([0-9]+) )? )$/x', $number, $m ) ) {
+		if ( !preg_match( '/^ -? ( ([0-9]+) (?: \. ([0-9]+) )? ) (?: [ce] ([0-9]+) )? $/xi', $number, $m ) ) {
 			return count( $rules );
 		}
-		if ( !isset( $m[3] ) ) {
+
+		$exponent = isset( $m[4] ) && $m[4] !== '' ? intval( $m[4] ) : 0;
+
+		if ( !isset( $m[3] ) || $m[3] === '' ) {
 			$operandSymbols = [
 				'n' => intval( $m[1] ),
 				'i' => intval( $m[1] ),
 				'v' => 0,
 				'w' => 0,
 				'f' => 0,
-				't' => 0
+				't' => 0,
+				'c' => $exponent,
+				'e' => $exponent,
 			];
 		} else {
 			$absValStr = $m[1];
@@ -83,6 +88,8 @@ class Evaluator {
 				'w' => strlen( rtrim( $fracStr, '0' ) ),
 				'f' => intval( $fracStr ),
 				't' => intval( rtrim( $fracStr, '0' ) ),
+				'c' => $exponent,
+				'e' => $exponent,
 			];
 		}
 

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0e1ae0327d33856b97d7f747deb07d36",
+    "content-hash": "a7b11733d6ec939bfc0f8ddff6c0dbcb",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -6988,16 +6988,16 @@
         },
         {
             "name": "wikimedia/cldr-plural-rule-parser",
-            "version": "v3.0.1",
+            "version": "v3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/CLDRPluralRuleParser.git",
-                "reference": "8c225fdf7c2a0bcd1dbae907cd3354838670cfd6"
+                "reference": "108d56942df0caaf175804e0525c9a188b65e94f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/CLDRPluralRuleParser/zipball/8c225fdf7c2a0bcd1dbae907cd3354838670cfd6",
-                "reference": "8c225fdf7c2a0bcd1dbae907cd3354838670cfd6",
+                "url": "https://api.github.com/repos/wikimedia/CLDRPluralRuleParser/zipball/108d56942df0caaf175804e0525c9a188b65e94f",
+                "reference": "108d56942df0caaf175804e0525c9a188b65e94f",
                 "shasum": ""
             },
             "require": {
@@ -7035,9 +7035,9 @@
             "description": "Evaluates plural rules specified in the CLDR project notation.",
             "homepage": "https://www.mediawiki.org/wiki/CLDRPluralRuleParser",
             "support": {
-                "source": "https://github.com/wikimedia/CLDRPluralRuleParser/tree/v3.0.1"
+                "source": "https://github.com/wikimedia/CLDRPluralRuleParser/tree/v3.0.2"
             },
-            "time": "2026-05-06T00:04:37+00:00"
+            "time": "2026-06-21T02:39:20+00:00"
         },
         {
             "name": "wikimedia/codex",
