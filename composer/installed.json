@@ -3244,17 +3244,17 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.54.0",
-            "version_normalized": "0.54.0.0",
+            "version": "v0.54.1",
+            "version_normalized": "0.54.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "b24073615e212250a6d8ee2f4e54eff79944c994"
+                "reference": "aae9f53c3156a2ae076cb3f1fcae6c23618b20e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/b24073615e212250a6d8ee2f4e54eff79944c994",
-                "reference": "b24073615e212250a6d8ee2f4e54eff79944c994",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/aae9f53c3156a2ae076cb3f1fcae6c23618b20e8",
+                "reference": "aae9f53c3156a2ae076cb3f1fcae6c23618b20e8",
                 "shasum": ""
             },
             "require": {
@@ -3269,7 +3269,7 @@
                 "php-parallel-lint/php-parallel-lint": "1.4.0",
                 "phpunit/phpunit": "10.5.63"
             },
-            "time": "2026-06-11T19:46:48+00:00",
+            "time": "2026-07-21T16:20:12+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -3334,7 +3334,7 @@
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOUI",
             "support": {
-                "source": "https://github.com/wikimedia/oojs-ui/tree/v0.54.0"
+                "source": "https://github.com/wikimedia/oojs-ui/tree/v0.54.1"
             },
             "install-path": "../oojs/oojs-ui"
         },

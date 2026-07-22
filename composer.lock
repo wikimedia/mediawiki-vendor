@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5aae1261c08839aaca4b99e4374b98d6",
+    "content-hash": "90a1459c473e512f5c42aaea8cdb7e48",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -3115,16 +3115,16 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.54.0",
+            "version": "v0.54.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "b24073615e212250a6d8ee2f4e54eff79944c994"
+                "reference": "aae9f53c3156a2ae076cb3f1fcae6c23618b20e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/b24073615e212250a6d8ee2f4e54eff79944c994",
-                "reference": "b24073615e212250a6d8ee2f4e54eff79944c994",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/aae9f53c3156a2ae076cb3f1fcae6c23618b20e8",
+                "reference": "aae9f53c3156a2ae076cb3f1fcae6c23618b20e8",
                 "shasum": ""
             },
             "require": {
@@ -3202,9 +3202,9 @@
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOUI",
             "support": {
-                "source": "https://github.com/wikimedia/oojs-ui/tree/v0.54.0"
+                "source": "https://github.com/wikimedia/oojs-ui/tree/v0.54.1"
             },
-            "time": "2026-06-11T19:46:48+00:00"
+            "time": "2026-07-21T16:20:12+00:00"
         },
         {
             "name": "paragonie/constant_time_encoding",
