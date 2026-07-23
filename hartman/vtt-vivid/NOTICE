@@ -1,0 +1,20 @@
+vtt-vivid
+Copyright (c) 2026 Derk-Jan Hartman
+
+This product includes heavily modified software developed by Mozilla Foundation
+and contributors (https://github.com/mozilla/vtt.js/blob/master/AUTHORS), copyright 2013-2019.
+These are mostly elements of the parser, the testcases and testdata as sourced from:
+https://github.com/mozilla/vtt.js/blob/master
+This code was translated to PHP, where required, updated to align with the latest
+specification and heavily modified to fit the needs of this project.
+
+Licensed under the Apache License, Version 2.0 (the "License") and the MIT License (the "MIT License").
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+and a copy of the MIT License at
+
+    https://opensource.org/licenses/MIT
+
+Both licenses are included in the LICENSE file.

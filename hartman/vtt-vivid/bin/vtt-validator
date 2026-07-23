@@ -1,0 +1,117 @@
+#!/usr/bin/env php
+<?php
+
+$files = [
+	__DIR__ . '/../src/CommandLine.php',
+	__DIR__ . '/../vendor/autoload.php',
+	__DIR__ . '/../../../autoload.php'
+];
+
+foreach ( $files as $file ) {
+	if ( file_exists( $file ) ) {
+		require_once $file;
+		// If we found the autoloader, we can break.
+		if ( str_ends_with( $file, 'autoload.php' ) ) {
+			break;
+		}
+	}
+}
+
+use WebVTT\CommandLine;
+use WebVTT\Parser\CueTextParser;
+use WebVTT\Validation\CallbackValidationReporter;
+use WebVTT\VttReader;
+
+$strict = false;
+$subtitles = false;
+$args = [];
+for ( $i = 1; $i < $argc; $i++ ) {
+	if ( $argv[$i] === '--strict' ) {
+		$strict = true;
+	} elseif ( $argv[$i] === '--subtitles' ) {
+		$subtitles = true;
+	} else {
+		$args[] = $argv[$i];
+	}
+}
+
+if ( count( $args ) < 1 ) {
+	CommandLine::usage( 'Usage: vtt-validator [--strict] <input-file> [output-file]' );
+}
+
+$inputFile = $args[0];
+$outputFile = $args[1] ?? null;
+
+CommandLine::checkInputFile( $inputFile );
+
+try {
+	$reader = VttReader::fromFile( $inputFile );
+	$reader->setStrict( $strict );
+	$reader->parse();
+
+	$errors = $reader->errors;
+
+	if ( count( $errors ) > 0 ) {
+		echo 'Validation issues found:' . "\n";
+		foreach ( $errors as $error ) {
+			$label = 'Warning';
+			$message = (string)$error;
+			if ( $error instanceof \Throwable || $strict ) {
+				$label = 'Error';
+				if ( $error instanceof \Throwable ) {
+					$message = $error->getMessage();
+					if ( method_exists( $error, 'getSourceLine' ) ) {
+						// @phan-suppress-next-line PhanUndeclaredMethod
+						$message = "Line " . $error->getSourceLine() . ": " . $message;
+					}
+				}
+			}
+			echo "- [$label] $message\n";
+		}
+	} else {
+		echo 'No validation issues found.' . "\n";
+	}
+
+	// If there are two arguments, the second is for output to file,
+	// so that we get non-strict to strict converter.
+	if ( $outputFile ) {
+		$vttFile = $reader->getVTTFile();
+		$vttContent = $vttFile->toVtt();
+		file_put_contents( $outputFile, $vttContent );
+		echo "\n" . "Converted VTT saved to '" . $outputFile . "'." . "\n";
+	}
+
+	if ( count( $errors ) > 0 ) {
+		exit( 1 );
+	}
+} catch ( Exception $e ) {
+	echo 'Fatal Error: ' . $e->getMessage() . "\n";
+	exit( 1 );
+}
+
+if ( $subtitles ) {
+	$reader = VttReader::fromFile( $inputFile );
+	$reader->parse();
+	$cues = $reader->getVTTFile()->getCues();
+
+	$cueTextParser = new CueTextParser();
+	$hasWarnings = false;
+	foreach ( $cues as $cue ) {
+		$warnings = [];
+		$cueTextParser->setReporter( new CallbackValidationReporter( static function ( $message ) use ( &$warnings ) {
+			$warnings[] = $message;
+		} ) );
+		$cueTextParser->parse( $cue->getText() );
+		if ( count( $warnings ) > 0 ) {
+			$hasWarnings = true;
+			echo "Validation warnings for cue starting at {$cue->getStartTime()}s:\n";
+			foreach ( $warnings as $warning ) {
+				echo "- $warning\n";
+			}
+		}
+	}
+	if ( !$hasWarnings ) {
+		echo "No subtitle validation warnings found.\n";
+	}
+	exit( $hasWarnings ? 1 : 0 );
+}

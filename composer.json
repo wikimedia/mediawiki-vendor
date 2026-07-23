@@ -41,6 +41,7 @@
 		"guzzlehttp/guzzle": "7.15.1",
 		"guzzlehttp/promises": "2.5.1",
 		"guzzlehttp/psr7": "2.13.0",
+		"hartman/vtt-vivid": "1.0.3",
 		"jakobo/hotp-php": "2.0.0",
 		"james-heinrich/getid3": "1.9.25",
 		"justinrainbow/json-schema": "5.3.4",

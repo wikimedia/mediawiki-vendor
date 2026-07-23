@@ -1,0 +1,74 @@
+#!/usr/bin/env php
+<?php
+
+$files = [
+	__DIR__ . '/../src/CommandLine.php',
+	__DIR__ . '/../vendor/autoload.php',
+	__DIR__ . '/../../../autoload.php'
+];
+
+foreach ( $files as $file ) {
+	if ( file_exists( $file ) ) {
+		require_once $file;
+		// If we found the autoloader, we can break.
+		if ( str_ends_with( $file, 'autoload.php' ) ) {
+			break;
+		}
+	}
+}
+
+use WebVTT\CommandLine;
+use WebVTT\Parser\Parser;
+
+if ( $argc < 2 ) {
+	CommandLine::usage( 'Usage: vtt-to-json <input.vtt> [output.json] [--pretty]' );
+}
+
+$input = $argv[1];
+$output = isset( $argv[2] ) && !str_starts_with( $argv[2], '--' ) ? $argv[2] : str_replace( '.vtt', '.json', $input );
+$pretty = in_array( '--pretty', $argv );
+
+CommandLine::checkInputFile( $input );
+
+$vttContent = file_get_contents( $input );
+
+$cues = [];
+$regions = [];
+$notes = [];
+$stylesheets = [];
+
+$parser = new Parser();
+$parser->onCue( static function ( $cue ) use ( &$cues ) {
+	$cues[] = $cue;
+} );
+$parser->onRegion( static function ( $region ) use ( &$regions ) {
+	$regions[] = $region;
+} );
+$parser->onNote( static function ( $note ) use ( &$notes ) {
+	$notes[] = $note;
+} );
+$parser->onStylesheet( static function ( $stylesheet ) use ( &$stylesheets ) {
+	$stylesheets[] = $stylesheet;
+} );
+
+$parser->parse( $vttContent );
+$parser->flush();
+
+$data = [
+	'regions' => $regions,
+	'stylesheets' => $stylesheets,
+	'notes' => $notes,
+	'cues' => $cues,
+];
+
+$jsonOptions = $pretty ? JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES : JSON_UNESCAPED_SLASHES;
+$json = json_encode( $data, $jsonOptions );
+
+if ( $json === false ) {
+	echo 'Error: Failed to encode JSON: ' . json_last_error_msg() . "\n";
+	exit( 1 );
+}
+
+file_put_contents( $output, $json );
+
+echo 'Generated ' . $output . "\n";

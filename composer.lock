@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "834c9e1e19541946fc8ea9c2dc3022d4",
+    "content-hash": "f13d5ff28856d6d547a6bf5a53ec8c30",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -1820,6 +1820,70 @@
                 }
             ],
             "time": "2026-07-16T22:23:49+00:00"
+        },
+        {
+            "name": "hartman/vtt-vivid",
+            "version": "v1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hartman/vtt-vivid.git",
+                "reference": "81f6ebac2e34425909a3c047bb9b43bbefb136e3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hartman/vtt-vivid/zipball/81f6ebac2e34425909a3c047bb9b43bbefb136e3",
+                "reference": "81f6ebac2e34425909a3c047bb9b43bbefb136e3",
+                "shasum": ""
+            },
+            "require": {
+                "ext-dom": "*",
+                "ext-json": "*",
+                "ext-libxml": "*",
+                "php": ">=8.2.0"
+            },
+            "require-dev": {
+                "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+                "mediawiki/mediawiki-codesniffer": "^50.0.0",
+                "mediawiki/mediawiki-phan-config": "^0.18.0",
+                "mediawiki/minus-x": "^2.0.1",
+                "php-parallel-lint/php-console-highlighter": "^1.0.0",
+                "php-parallel-lint/php-parallel-lint": "^1.4.0",
+                "phpunit/phpunit": "^11.0"
+            },
+            "bin": [
+                "bin/vtt-to-json",
+                "bin/vtt-validator"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "WebVTT\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0",
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Derk-Jan Hartman <hartman.wiki@gmail.com>"
+                }
+            ],
+            "description": "Parser and validator for WebVTT files",
+            "homepage": "https://gitlab.wikimedia.org/hartman/vtt-vivid",
+            "keywords": [
+                "captions",
+                "parser",
+                "subtitles",
+                "validator",
+                "vtt",
+                "webvtt"
+            ],
+            "support": {
+                "source": "https://github.com/hartman/vtt-vivid/tree/v1.0.3"
+            },
+            "time": "2026-07-23T14:01:19+00:00"
         },
         {
             "name": "jakobo/hotp-php",

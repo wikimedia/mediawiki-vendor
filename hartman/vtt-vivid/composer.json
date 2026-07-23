@@ -1,0 +1,72 @@
+{
+  "name": "hartman/vtt-vivid",
+  "description": "Parser and validator for WebVTT files",
+  "keywords": [
+    "vtt",
+    "webvtt",
+    "parser",
+    "validator",
+    "subtitles",
+    "captions"
+  ],
+  "homepage": "https://gitlab.wikimedia.org/hartman/vtt-vivid",
+  "authors": [
+    {
+      "name": "Derk-Jan Hartman <hartman.wiki@gmail.com>"
+    }
+  ],
+  "license": ["Apache-2.0", "MIT"],
+  "bin": [
+        "bin/vtt-to-json",
+        "bin/vtt-validator"
+    ],
+  "prefer-stable": true,
+  "require": {
+    "php": ">=8.2.0",
+    "ext-dom": "*",
+    "ext-json": "*",
+    "ext-libxml": "*"
+  },
+  "scripts": {
+    "lint": "parallel-lint . bin/vtt-to-json bin/vtt-validator --exclude node_modules --exclude vendor",
+    "phan": "phan -d . --long-progress-bar",
+    "phpcs": "phpcs -p -s --cache",
+    "fix": [
+      "phpcbf",
+      "minus-x fix ."
+    ],
+    "phpunit": "phpunit",
+    "phpunit:unit": "@phpunit --colors=always --testsuite=unit,integration",
+    "test": [
+      "@lint .",
+      "@phpcs .",
+      "minus-x check ."
+    ]
+  },
+  "require-dev": {
+    "mediawiki/mediawiki-codesniffer": "^50.0.0",
+    "mediawiki/mediawiki-phan-config": "^0.18.0",
+    "mediawiki/minus-x": "^2.0.1",
+    "php-parallel-lint/php-console-highlighter": "^1.0.0",
+    "php-parallel-lint/php-parallel-lint": "^1.4.0",
+    "phpunit/phpunit": "^11.0",
+    "dealerdirect/phpcodesniffer-composer-installer": "^1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "WebVTT\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "WebVTT\\Tests\\Unit\\": "tests/unit",
+      "WebVTT\\Tests\\Integration\\": "tests/integration",
+      "WebVTT\\Tests\\Bin\\": "tests/bin"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  }
+}

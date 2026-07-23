@@ -36,6 +36,7 @@ return array(
     'Wikimedia\\Assert\\' => array($vendorDir . '/wikimedia/assert/src'),
     'Wikimedia\\' => array($vendorDir . '/wikimedia/wrappedstring/src', $vendorDir . '/wikimedia/wait-condition-loop/src', $vendorDir . '/wikimedia/testing-access-wrapper/src', $vendorDir . '/wikimedia/running-stat/src', $vendorDir . '/wikimedia/relpath/src', $vendorDir . '/wikimedia/php-session-serializer/src', $vendorDir . '/wikimedia/ip-utils/src', $vendorDir . '/wikimedia/scoped-callback/src'),
     'Webauthn\\' => array($vendorDir . '/web-auth/webauthn-lib/src'),
+    'WebVTT\\' => array($vendorDir . '/hartman/vtt-vivid/src'),
     'WMDE\\VueJsTemplating\\' => array($vendorDir . '/wmde/php-vuejs-templating/src'),
     'ValueValidators\\' => array($vendorDir . '/data-values/interfaces/src/ValueValidators'),
     'ValueParsers\\' => array($vendorDir . '/data-values/common/src/ValueParsers', $vendorDir . '/data-values/interfaces/src/ValueParsers'),
