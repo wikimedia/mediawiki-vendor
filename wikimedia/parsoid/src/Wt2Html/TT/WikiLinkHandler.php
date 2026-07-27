@@ -109,12 +109,12 @@ class WikiLinkHandler extends XMLTagBasedHandler {
 		// Capture the title to resolve before handling colon escape
 		$title = Utils::decodeURIComponent( $info->href );
 
-		if ( ( ltrim( $info->href )[0] ?? '' ) === ':' ) {
+		if ( str_starts_with( ltrim( $info->href ), ':' ) ) {
 			$info->fromColonEscapedText = true;
 			// Remove the colon escape
 			$info->href = substr( ltrim( $info->href ), 1 );
 		}
-		if ( ( $info->href[0] ?? '' ) === ':' ) {
+		if ( str_starts_with( $info->href, ':' ) ) {
 			if ( $env->linting( 'multi-colon-escape' ) ) {
 				$lint = [
 					'dsr' => DomSourceRange::fromTsr( $token->dataParsoid->tsr ),
@@ -176,7 +176,7 @@ class WikiLinkHandler extends XMLTagBasedHandler {
 					// An interwiki link.
 					$info->interwiki = $interwikiInfo;
 					// Remove the colon escape after an interwiki prefix
-					if ( ( ltrim( $info->href )[0] ?? '' ) === ':' ) {
+					if ( str_starts_with( ltrim( $info->href ), ':' ) ) {
 						$info->href = substr( ltrim( $info->href ), 1 );
 					}
 				} else {
@@ -637,9 +637,12 @@ class WikiLinkHandler extends XMLTagBasedHandler {
 			$morecontent = Utils::decodeURIComponent( $target->href );
 
 			// Try to match labeling in core
-			if ( $env->getSiteConfig()->namespaceHasSubpages(
-				$env->getContextTitle()->getNamespace()
-			) ) {
+			if (
+				!$target->fromColonEscapedText &&
+				$env->getSiteConfig()->namespaceHasSubpages(
+					$env->getContextTitle()->getNamespace()
+				)
+			) {
 				// subpage links with a trailing slash get the trailing slashes stripped.
 				// See https://gerrit.wikimedia.org/r/173431
 				if ( preg_match( '#^((\.\./)+|/)(?!\.\./)(.*?[^/])/+$#D', $morecontent, $match ) ) {

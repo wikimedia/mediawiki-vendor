@@ -95,7 +95,7 @@ class TestUtils {
 			//     If possible, get rid of it and diff-mark dependency
 			//     on the env object.
 			$mockEnv = new MockEnv( [] );
-			$mockSerializer = new WikitextSerializer( $mockEnv, [] );
+			$mockSerializer = new WikitextSerializer( $mockEnv );
 			$mockState = new SerializerState( $mockSerializer, [ 'selserMode' => false ] );
 			if ( is_string( $domBody ) ) {
 				// Careful about the lifetime of this document
@@ -141,7 +141,7 @@ class TestUtils {
 		$out = preg_replace( '/\s?data-overlays=\'[^\']*\'/u', '', $out );
 
 		// unnecessary attributes, we don't need to check these.
-		$unnecessaryAttribs = 'data-parsoid|prefix|about|rev|datatype|inlist|usemap|vocab';
+		$unnecessaryAttribs = 'data-mw-original-href|data-parsoid|prefix|about|rev|datatype|inlist|usemap|vocab';
 		if ( $parsoidOnly ) {
 			$unnecessaryAttribs = "/ ($unnecessaryAttribs)=";
 			$out = preg_replace( $unnecessaryAttribs . '\\\\?"[^\"]*\\\\?"/u', '', $out );
