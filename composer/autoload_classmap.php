@@ -2445,6 +2445,7 @@ return array(
     'PhpParser\\Lexer\\TokenEmulator\\AttributeEmulator' => $vendorDir . '/nikic/php-parser/lib/PhpParser/Lexer/TokenEmulator/AttributeEmulator.php',
     'PhpParser\\Lexer\\TokenEmulator\\EnumTokenEmulator' => $vendorDir . '/nikic/php-parser/lib/PhpParser/Lexer/TokenEmulator/EnumTokenEmulator.php',
     'PhpParser\\Lexer\\TokenEmulator\\ExplicitOctalEmulator' => $vendorDir . '/nikic/php-parser/lib/PhpParser/Lexer/TokenEmulator/ExplicitOctalEmulator.php',
+    'PhpParser\\Lexer\\TokenEmulator\\FnTokenEmulator' => $vendorDir . '/nikic/php-parser/lib/PhpParser/Lexer/TokenEmulator/FnTokenEmulator.php',
     'PhpParser\\Lexer\\TokenEmulator\\KeywordEmulator' => $vendorDir . '/nikic/php-parser/lib/PhpParser/Lexer/TokenEmulator/KeywordEmulator.php',
     'PhpParser\\Lexer\\TokenEmulator\\MatchTokenEmulator' => $vendorDir . '/nikic/php-parser/lib/PhpParser/Lexer/TokenEmulator/MatchTokenEmulator.php',
     'PhpParser\\Lexer\\TokenEmulator\\NullsafeTokenEmulator' => $vendorDir . '/nikic/php-parser/lib/PhpParser/Lexer/TokenEmulator/NullsafeTokenEmulator.php',

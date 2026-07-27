@@ -57,7 +57,7 @@
 		"mck89/peast": "1.17.5",
 		"monolog/monolog": "3.10.0",
 		"mustangostang/spyc": "0.6.3",
-		"nikic/php-parser": "5.7.0",
+		"nikic/php-parser": "5.8.0",
 		"nyholm/dsn": "2.0.1",
 		"okvpn/clock-lts": "1.0.0",
 		"onoi/message-reporter": "1.4.2",
