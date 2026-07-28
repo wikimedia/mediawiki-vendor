@@ -16,7 +16,7 @@
 		"php": ">=8.3.0",
 		"composer-plugin-api": "^2.0",
 		"bacon/bacon-qr-code": "3.0.4",
-		"brick/math": "0.14.8",
+		"brick/math": "0.18.0",
 		"christian-riesen/base32": "2.0.1",
 		"composer/ca-bundle": "1.5.12",
 		"composer/semver": "3.4.4",
