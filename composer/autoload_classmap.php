@@ -136,6 +136,7 @@ return array(
     'CBOR\\Tag\\GenericTag' => $vendorDir . '/spomky-labs/cbor-php/src/Tag/GenericTag.php',
     'CBOR\\Tag\\MimeTag' => $vendorDir . '/spomky-labs/cbor-php/src/Tag/MimeTag.php',
     'CBOR\\Tag\\NegativeBigIntegerTag' => $vendorDir . '/spomky-labs/cbor-php/src/Tag/NegativeBigIntegerTag.php',
+    'CBOR\\Tag\\SelfDescribeCBORTag' => $vendorDir . '/spomky-labs/cbor-php/src/Tag/SelfDescribeCBORTag.php',
     'CBOR\\Tag\\TagInterface' => $vendorDir . '/spomky-labs/cbor-php/src/Tag/TagInterface.php',
     'CBOR\\Tag\\TagManager' => $vendorDir . '/spomky-labs/cbor-php/src/Tag/TagManager.php',
     'CBOR\\Tag\\TagManagerInterface' => $vendorDir . '/spomky-labs/cbor-php/src/Tag/TagManagerInterface.php',

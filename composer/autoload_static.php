@@ -886,6 +886,7 @@ class ComposerStaticInit_mediawiki_vendor
         'CBOR\\Tag\\GenericTag' => __DIR__ . '/..' . '/spomky-labs/cbor-php/src/Tag/GenericTag.php',
         'CBOR\\Tag\\MimeTag' => __DIR__ . '/..' . '/spomky-labs/cbor-php/src/Tag/MimeTag.php',
         'CBOR\\Tag\\NegativeBigIntegerTag' => __DIR__ . '/..' . '/spomky-labs/cbor-php/src/Tag/NegativeBigIntegerTag.php',
+        'CBOR\\Tag\\SelfDescribeCBORTag' => __DIR__ . '/..' . '/spomky-labs/cbor-php/src/Tag/SelfDescribeCBORTag.php',
         'CBOR\\Tag\\TagInterface' => __DIR__ . '/..' . '/spomky-labs/cbor-php/src/Tag/TagInterface.php',
         'CBOR\\Tag\\TagManager' => __DIR__ . '/..' . '/spomky-labs/cbor-php/src/Tag/TagManager.php',
         'CBOR\\Tag\\TagManagerInterface' => __DIR__ . '/..' . '/spomky-labs/cbor-php/src/Tag/TagManagerInterface.php',
