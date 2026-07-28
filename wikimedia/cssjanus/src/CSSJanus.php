@@ -1,9 +1,11 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * PHP port of CSSJanus. https://www.mediawiki.org/wiki/CSSJanus
  *
  * Copyright 2020 Timo Tijhof
- * Copyright 2014 Trevor Parscal
+ * Copyright 2012 Trevor Parscal
  * Copyright 2010 Roan Kattouw
  * Copyright 2008 Google Inc.
  *
@@ -89,7 +91,7 @@ class CSSJanus {
 			'suffix' => '(\s*(?:!important\s*)?[;}])'
 		];
 
-		// @codingStandardsIgnoreStart Generic.Files.LineLength.TooLong
+		// phpcs:disable Generic.Files.LineLength.TooLong
 		$patterns['escape'] = "(?:{$patterns['unicode']}|\\\\[^\\r\\n\\f0-9a-f])";
 		$patterns['nmstart'] = "(?:[_a-z]|{$patterns['nonAscii']}|{$patterns['escape']})";
 		$patterns['nmchar'] = "(?:[_a-z0-9-]|{$patterns['nonAscii']}|{$patterns['escape']})";
@@ -137,7 +139,7 @@ class CSSJanus {
 		$patterns['bg_horizontal_percentage_x'] = "/(background-position-x\s*:\s*)(-?{$patterns['num']}%)/i";
 		$patterns['translate_x'] = "/(transform\s*:[^;}]*)(translateX\s*\(\s*){$patterns['possibly_negative_quantity']}(\s*\))/i";
 		$patterns['translate'] = "/(transform\s*:[^;}]*)(translate\s*\(\s*){$patterns['possibly_negative_quantity']}((?:\s*,\s*{$patterns['possibly_negative_quantity']}){0,2}\s*\))/i";
-		// @codingStandardsIgnoreEnd
+		// phpcs:enable
 
 		self::$patterns = $patterns;
 	}
@@ -322,30 +324,23 @@ class CSSJanus {
 	private static function fixBorderRadius( $css ) {
 		return preg_replace_callback(
 			self::$patterns['border_radius'],
-			[ self::class, 'calculateBorderRadius' ],
+			static function ( $matches ) {
+				$pre = $matches[1];
+				$firstGroup = array_filter( array_slice( $matches, 2, 4 ), 'strlen' );
+				$secondGroup = array_filter( array_slice( $matches, 6, 4 ), 'strlen' );
+				$post = $matches[10] ?: '';
+
+				if ( $secondGroup ) {
+					$values = self::flipBorderRadiusValues( $firstGroup )
+						. ' / ' . self::flipBorderRadiusValues( $secondGroup );
+				} else {
+					$values = self::flipBorderRadiusValues( $firstGroup );
+				}
+
+				return $pre . $values . $post;
+			},
 			$css
 		);
-	}
-
-	/**
-	 * Callback for fixBorderRadius()
-	 * @param array $matches
-	 * @return string
-	 */
-	private static function calculateBorderRadius( $matches ) {
-		$pre = $matches[1];
-		$firstGroup = array_filter( array_slice( $matches, 2, 4 ), 'strlen' );
-		$secondGroup = array_filter( array_slice( $matches, 6, 4 ), 'strlen' );
-		$post = $matches[10] ?: '';
-
-		if ( $secondGroup ) {
-			$values = self::flipBorderRadiusValues( $firstGroup )
-				. ' / ' . self::flipBorderRadiusValues( $secondGroup );
-		} else {
-			$values = self::flipBorderRadiusValues( $firstGroup );
-		}
-
-		return $pre . $values . $post;
 	}
 
 	/**
@@ -440,9 +435,25 @@ class CSSJanus {
 	 * @return string
 	 */
 	private static function fixBackgroundPosition( $css ) {
+		$callback = static function ( $matches ) {
+			[ $match, $pre, $value ] = $matches;
+			if ( substr_count( $pre, '(' ) > substr_count( $pre, ')' ) ) {
+				return $match;
+			}
+			if ( str_ends_with( $value, '%' ) ) {
+				$idx = strpos( $value, '.' );
+				if ( $idx !== false ) {
+					$len = strlen( $value ) - $idx - 2;
+					$value = number_format( 100 - (float)$value, $len ) . '%';
+				} else {
+					$value = ( 100 - (float)$value ) . '%';
+				}
+			}
+			return $matches[1] . $value;
+		};
 		$replaced = preg_replace_callback(
 			self::$patterns['bg_horizontal_percentage'],
-			[ self::class, 'calculateNewBackgroundPosition' ],
+			$callback,
 			$css
 		);
 		if ( $replaced !== null ) {
@@ -451,7 +462,7 @@ class CSSJanus {
 		}
 		$replaced = preg_replace_callback(
 			self::$patterns['bg_horizontal_percentage_x'],
-			[ self::class, 'calculateNewBackgroundPosition' ],
+			$callback,
 			$css
 		);
 		if ( $replaced !== null ) {
@@ -459,25 +470,6 @@ class CSSJanus {
 		}
 
 		return $css;
-	}
-
-	/**
-	 * Callback for fixBackgroundPosition()
-	 * @param array $matches
-	 * @return string
-	 */
-	private static function calculateNewBackgroundPosition( $matches ) {
-		$value = $matches[2];
-		if ( substr( $value, -1 ) === '%' ) {
-			$idx = strpos( $value, '.' );
-			if ( $idx !== false ) {
-				$len = strlen( $value ) - $idx - 2;
-				$value = number_format( 100 - (float)$value, $len ) . '%';
-			} else {
-				$value = ( 100 - (float)$value ) . '%';
-			}
-		}
-		return $matches[1] . $value;
 	}
 }
 
@@ -508,16 +500,14 @@ class CSSJanusTokenizer {
 	 * @return string Tokenized string
 	 */
 	public function tokenize( $str ) {
-		return preg_replace_callback( $this->regex, [ $this, 'tokenizeCallback' ], $str );
-	}
-
-	/**
-	 * @param array $matches
-	 * @return string
-	 */
-	private function tokenizeCallback( $matches ) {
-		$this->originals[] = $matches[0];
-		return $this->token;
+		return preg_replace_callback(
+			$this->regex,
+			function ( $matches ) {
+				$this->originals[] = $matches[0];
+				return $this->token;
+			},
+			$str
+		);
 	}
 
 	/**
@@ -532,19 +522,13 @@ class CSSJanusTokenizer {
 		// so we use preg_replace_callback() even though we don't really need a regex
 		return preg_replace_callback(
 			'/' . preg_quote( $this->token, '/' ) . '/',
-			[ $this, 'detokenizeCallback' ],
+			function ( $matches ) {
+				$retval = current( $this->originals );
+				next( $this->originals );
+
+				return $retval;
+			},
 			$str
 		);
-	}
-
-	/**
-	 * @param array $matches
-	 * @return mixed
-	 */
-	private function detokenizeCallback( $matches ) {
-		$retval = current( $this->originals );
-		next( $this->originals );
-
-		return $retval;
 	}
 }

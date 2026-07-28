@@ -1,4 +1,4 @@
-[![Packagist](https://img.shields.io/packagist/v/cssjanus/cssjanus.svg?style=flat)](https://packagist.org/packages/cssjanus/cssjanus)
+[![Packagist](https://img.shields.io/packagist/v/wikimedia/cssjanus.svg?style=flat)](https://packagist.org/packages/wikimedia/cssjanus)
 
 # CSSJanus
 
@@ -38,13 +38,18 @@ If a rule is not meant to be flipped by CSSJanus, use a `/* @noflip */` comment 
 }
 ```
 
+## CSS Logical Properties
+
+We encourage and recommend use of [CSS logical properties](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_logical_properties_and_values) for the subset of CSS features where a native direction-aware version of a CSS property exists (be sure to check [browser support](https://caniuse.com/) for specific properties).
+You can, for example, set properties like `margin-inline-start` instead of `margin-left`, which the browser flips based on content direction, and work seamlessly alongside other CSS properties that CSSJanus flips instead.
+
+Note that CSS logical properties flip based on nearest content direction and content language, whereas CSSJanus is generally configured to flip by user language and UI direction.
+
 ## Port
 
-This is a PHP port of the Node.js implementation of CSSJanus. Feature requests and bugs related
-to the actual CSS transformation logic or test cases of it, should be submitted upstream
-at <https://github.com/cssjanus/cssjanus>.
+CSSJanus was originally a [Google project](http://code.google.com/p/cssjanus/) created by Lindsey Simon in 2008, written in Python. It was ported to PHP by Roan Kattouw in 2010 for use in MediaWiki, and ported to Node.js by Trevor Parscal in 2012.
 
-CSSJanus was originally a [Google project](http://code.google.com/p/cssjanus/).
+As of 2014, the canonical specification and reference implementation is [node-cssjanus](https://gerrit.wikimedia.org/g/mediawiki/libs/node-cssjanus), which is then ported to PHP after each release.
 
 ## Contribute
 

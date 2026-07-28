@@ -1,7 +1,7 @@
 PHP port of CSSJanus. https://www.mediawiki.org/wiki/CSSJanus
 
 Copyright 2020 Timo Tijhof
-Copyright 2014 Trevor Parscal
+Copyright 2012 Trevor Parscal
 Copyright 2010 Roan Kattouw
 Copyright 2008 Google Inc.
 

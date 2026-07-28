@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => null,
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => 'ea769d0c67c2fb8783de5bc15232f0f8f0fa57a4',
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => null,
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => 'ea769d0c67c2fb8783de5bc15232f0f8f0fa57a4',
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -1123,9 +1123,9 @@
             'dev_requirement' => false,
         ),
         'wikimedia/cssjanus' => array(
-            'pretty_version' => 'v2.3.0',
-            'version' => '2.3.0.0',
-            'reference' => 'c5868a543c466c994ba5bf9b3297e150105ab803',
+            'pretty_version' => 'v2.3.1',
+            'version' => '2.3.1.0',
+            'reference' => 'cf9bcb64add5970c35d71e6d799482116f83d390',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/cssjanus',
             'aliases' => array(),
