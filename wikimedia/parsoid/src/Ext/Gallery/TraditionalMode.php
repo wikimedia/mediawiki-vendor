@@ -176,6 +176,18 @@ class TraditionalMode extends Mode {
 		$thumb->setAttribute( 'style', $this->thumbStyle( $width, $height, $o->hasError ) );
 
 		$wrapper = $doc->createElement( 'span' );
+		if ( $o->thumb->hasAttribute( 'class' ) ) {
+			$classList = explode( ' ', DOMCompat::getAttribute( $o->thumb, 'class' ) );
+			// FIXME: ParsoidExtensionAPI::renderMedia could supply an option
+			// to suppress horizontal alignment
+			$classList = array_filter(
+				$classList,
+				static fn ( $c ) => !str_starts_with( $c, 'mw-halign-' )
+			);
+			if ( $classList ) {
+				$wrapper->setAttribute( 'class', implode( ' ', $classList ) );
+			}
+		}
 		$wrapper->setAttribute( 'typeof', $o->rdfaType );
 		ParsoidExtensionAPI::migrateChildrenAndTransferWrapperDataAttribs(
 			$o->thumb, $wrapper
