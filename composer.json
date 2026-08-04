@@ -23,7 +23,7 @@
 		"dasprid/enum": "1.0.7",
 		"endroid/qr-code": "6.0.9",
 		"firebase/php-jwt": "7.0.3",
-		"guzzlehttp/guzzle": "7.15.1",
+		"guzzlehttp/guzzle": "7.15.2",
 		"guzzlehttp/promises": "2.5.1",
 		"guzzlehttp/psr7": "2.13.0",
 		"jakobo/hotp-php": "2.0.0",
