@@ -13,13 +13,15 @@
 			"selserWrappingParserTests.txt": {},
 			"separatorTests.txt": {},
 			"tableFixupsParserTests.txt": {},
+			"tokenStreamPatcher.txt": {},
 			"treeBuilder.txt": {},
+			"wtsTests.txt": {},
 			"v3ParserFunctions.txt": {}
 		}
 	},
 	"core": {
 		"project": "mediawiki/core",
-		"latestCommit": "1292e156ce9da48f90e23b6a22b634d47b748034",
+		"latestCommit": "5fc8506faeb1ab12298d0737f1bdeb5eea28627d",
 		"targets": {
 			"comments.txt": {
 				"path": "tests/parser/comments.txt",
@@ -40,6 +42,10 @@
 			"extLinks.txt": {
 				"path": "tests/parser/extLinks.txt",
 				"expectedSHA1": "cd96e52664abe7ea22686cddf2a3d1f3d5ad3bd3"
+			},
+			"fuzzTests.txt": {
+				"path": "tests/parser/fuzzTests.txt",
+				"expectedSHA1": "781dec506deb2082736eaf4b76d0dcb69cb6cd14"
 			},
 			"headings.txt": {
 				"path": "tests/parser/headings.txt",
@@ -79,11 +85,15 @@
 			},
 			"media.txt": {
 				"path": "tests/parser/media.txt",
-				"expectedSHA1": "73a0ab0b4447f2dcaa6cb5c40323ff748723c045"
+				"expectedSHA1": "cd98b019ac7e59240465ff778092556ff6531ada"
+			},
+			"mediaLinks.txt": {
+				"path": "tests/parser/mediaLinks.txt",
+				"expectedSHA1": "bc3326939d21e87d67c1ae8ccf7fd8006375f833"
 			},
 			"parserTests.txt": {
 				"path": "tests/parser/parserTests.txt",
-				"expectedSHA1": "4423b11cd2d3085e54c25ed8d3dc269a9fdcf99d"
+				"expectedSHA1": "727c2fbd4030819ddefe50ffdbc04584d5c67d98"
 			},
 			"preTags.txt": {
 				"path": "tests/parser/preTags.txt",
@@ -95,7 +105,7 @@
 			},
 			"pWrapping.txt": {
 				"path": "tests/parser/pWrapping.txt",
-				"expectedSHA1": "faa4bffc3010e9ba7c94f8ccd3e540cf35a94c71"
+				"expectedSHA1": "8fff1919318df61203fefab5a64e0d6908ea832e"
 			},
 			"preprocessor.txt": {
 				"path": "tests/parser/preprocessor.txt",
@@ -109,13 +119,17 @@
 				"path": "tests/parser/redirects.txt",
 				"expectedSHA1": "3181215937c83ccf2b804124ae4d1e9e0a698677"
 			},
+			"sanitizer.txt": {
+				"path": "tests/parser/sanitizer.txt",
+				"expectedSHA1": "de6d5be1f5ec5e3a9a29dc647062a863031246a1"
+			},
 			"tables.txt": {
 				"path": "tests/parser/tables.txt",
 				"expectedSHA1": "282022cbef995f6823328902606e5c45c57ccd07"
 			},
 			"wikiLinks.txt": {
 				"path": "tests/parser/wikiLinks.txt",
-				"expectedSHA1": "73a09c317cbec671d42164768c37362808f10a7b"
+				"expectedSHA1": "b8b856a389564321cbb4b4cb0c625cb83f62cc8e"
 			},
 			"wtEscaping.txt": {
 				"path": "tests/parser/wtEscaping.txt",

@@ -1,7 +1,4 @@
 {
-	"1. Table tag in SOL posn. should get reparsed correctly with valid TSR": {
-		"wt2wt": "{{1x|}}\n{| width=\"100%\"\n|foo\n|}"
-	},
 	"1. Template wrapping shouldn't ignore fostered content": {
 		"wt2wt": "\nhiho\n{|\n{{tr}}\n{{1x|\n}}\n\nhiho\n|}"
 	},
@@ -20,9 +17,6 @@
 	},
 	"4. includeonly in table attributes": {
 		"wt2html": "<table data-parsoid='{\"dsr\":[0,77,2,2]}'>\n<tbody data-parsoid='{\"dsr\":[3,75,0,0]}'><tr about=\"#mwt\" typeof=\"mw:ExpandedAttrs\" class=\"mw-empty-elt\" data-parsoid='{\"startTagSrc\":\"|-\",\"a\":{\"&lt;noinclude>\":null},\"sa\":{\"&lt;noinclude>\":\"\"},\"dsr\":[3,17,14,0]}' data-mw='{\"attribs\":[[{\"txt\":\"\",\"html\":\"&lt;meta typeof=\\\"mw:Includes/NoInclude\\\" data-parsoid=&apos;{\\\"src\\\":\\\"&amp;lt;noinclude>\\\",\\\"dsr\\\":[6,17,null,null]}&apos;/>\"},{\"html\":\"\"}]]}'></tr>\n<tr data-parsoid='{\"startTagSrc\":\"|-\",\"dsr\":[18,36,2,0]}'>\n<td data-parsoid='{\"dsr\":[21,36,1,0]}'>a\n<meta typeof=\"mw:Includes/NoInclude/End\" data-parsoid='{\"src\":\"&lt;/noinclude>\",\"dsr\":[24,36,null,null]}'/></td></tr>\n<tr about=\"#mwt\" typeof=\"mw:ExpandedAttrs\" class=\"mw-empty-elt\" data-parsoid='{\"startTagSrc\":\"|-\",\"a\":{\"&lt;includeonly>\\n|-\\n|b\\n&lt;/includeonly>\":null},\"sa\":{\"&lt;includeonly>\\n|-\\n|b\\n&lt;/includeonly>\":\"\"},\"dsr\":[37,74,37,0]}' data-mw='{\"attribs\":[[{\"txt\":\"\",\"html\":\"&lt;meta typeof=\\\"mw:Includes/IncludeOnly\\\" data-parsoid=&apos;{\\\"dsr\\\":[40,74,null,null]}&apos; data-mw=&apos;{\\\"src\\\":\\\"&amp;lt;includeonly>\\\\n|-\\\\n|b\\\\n&amp;lt;/includeonly>\\\"}&apos;/>&lt;meta typeof=\\\"mw:Includes/IncludeOnly/End\\\" data-parsoid=&apos;{\\\"src\\\":\\\"\\\",\\\"dsr\\\":[74,74,null,null]}&apos;/>\"},{\"html\":\"\"}]]}'></tr>\n</tbody></table>"
-	},
-	"7. Unsupported token gluing scenario when includeonly tags show up": {
-		"wt2wt": "<includeonly>\n|+foo</includeonly>\n{|\n{{1x|{{!}}-}}<includeonly>\n|+foo</includeonly>\n|bar\n|}"
 	},
 	"8. Encapsulate foster-parented transclusion content": {
 		"wt2wt": "{{1x|a\n}}\n{|{{1x|style='color:red'}}\n|-\n|b\n|}"
@@ -47,21 +41,6 @@
 	},
 	"Empty attribute crash test single-quotes (T4067)": {
 		"wt2wt": "<font color=\"\">foo</font>"
-	},
-	"Fuzz testing: Parser13": {
-		"wt2wt": "{| \n| http: / a |\n|}"
-	},
-	"Fuzz testing: Parser16": {
-		"wt2wt": "{|\n!https://|| || ||\n|}"
-	},
-	"Fuzz testing: Parser21": {
-		"wt2wt": "{|\n!irc://{{ftp://a\" onmouseover=\"alert('hello world');\"\n|\n|}"
-	},
-	"Fuzz testing: Parser22": {
-		"wt2wt": "http://===r:::https://b\n\n{|\n|}"
-	},
-	"Fuzz testing: Parser25 (T8055)": {
-		"wt2wt": "{{{| \n<LI CLASS=||\n >\n}}}blah\" onmouseover=\"alert('hello world');\" align=\"left\"'''MOVE MOUSE CURSOR OVER HERE"
 	},
 	"HTML multiple attributes correction": {
 		"wt2wt": "<p class=\"awesome\">Awesome!</p>"
@@ -88,12 +67,6 @@
 	"Inline wiki vs wiki block nesting": {
 		"wt2wt": "'''Bold paragraph'''\n\nNew wiki paragraph"
 	},
-	"Media link redirect": {
-		"wt2html": "<p data-parsoid='{\"dsr\":[0,32,0,0]}'><a rel=\"mw:MediaLink\" href=\"http://example.com/images/3/3a/Foobar.jpg\" resource=\"./Media:Redirect_to_foobar.jpg\" title=\"Foobar.jpg\" data-parsoid='{\"stx\":\"simple\",\"a\":{\"href\":\"http://example.com/images/3/3a/Foobar.jpg\",\"resource\":\"./Media:Redirect_to_foobar.jpg\"},\"sa\":{\"href\":\"Media:Redirect to foobar.jpg\",\"resource\":\"Media:Redirect to foobar.jpg\"},\"dsr\":[0,32,2,2]}'>Media:Redirect to foobar.jpg</a></p>"
-	},
-	"Media link with nested wikilinks": {
-		"wt2wt": "[[Media:Foobar.jpg|[[Test]]<nowiki>]]</nowiki>\n[[Media:Foobar.jpg|[[File:Foobar.jpg]]<nowiki>]]</nowiki>"
-	},
 	"Mixing markup for italics and bold": {
 		"wt2wt": "'<nowiki/>''bold'<nowiki/>'''''bold''bolditalics'''''"
 	},
@@ -102,9 +75,6 @@
 	},
 	"Nested lists 6 (both elements empty)": {
 		"wt2wt": "\n**\n"
-	},
-	"Non-word characters don't terminate tag names (T19663, T42670, T54022)": {
-		"wt2wt": "<blockquote|>a\n\n<b→> doesn't terminate </b→>\n\n<bä> doesn't terminate </bä>\n\n<boo> doesn't terminate </boo>\n\n<s.foo> doesn't terminate </s.foo>\n\n<sub-ID#1>"
 	},
 	"Parsing of overlapping (improperly nested) inline html tags": {
 		"wt2wt": "<span><s>x</span>"
@@ -117,9 +87,6 @@
 	},
 	"Self-closed tag with broken attribute value quoting": {
 		"wt2html": "<div title=\"Hello world \" data-parsoid='{\"stx\":\"html\",\"selfClose\":true,\"dsr\":[0,26,26,0]}'></div><p data-parsoid='{\"dsr\":[26,29,0,0]}'>Foo</p>"
-	},
-	"T192913 Regression test: 2. html2wt of links should not trip on parser functions found in target (2)": {
-		"wt2wt": "[[Category:Bugs-{{#if:blah|Regression|None}}|<nowiki>Category:Bugs-{{#if:blah|Regression|None}}</nowiki>]]\n[[Category:Bugs-{{#if:blah|Regression|None}}-{{#if:blah|2020|None}}|<nowiki>Category:Bugs-{{#if:blah|Regression|None}}-{{#if:blah|2020|None}}</nowiki>]]"
 	},
 	"T21052 U+3000 IDEOGRAPHIC SPACE should terminate bracketed external links": {
 		"wt2wt": "[http://www.example.org/ ideograms]"
@@ -141,15 +108,6 @@
 	},
 	"T73074: More fostering fun": {
 		"wt2wt": "[[Category:Two]]\n<table><td></td>{{1x|<tr>}}<!--c-->"
-	},
-	"T88318: p-wrapped dash in table.": {
-		"wt2wt": "{|\n!-\n!-\n|-\n|<nowiki>-</nowiki>\n|<nowiki>- </nowiki>\n|-\n|<small>-</small>\n|<br />\n-\n|<br />-\n|}"
-	},
-	"Table attribute legitimate extension": {
-		"wt2wt": "{|\n! style=\"<nowiki>color:blue</nowiki>\" + |status\n|}"
-	},
-	"Table attribute safety": {
-		"wt2wt": "{|\n! style=\"<nowiki>border-width:expression(0+alert(document.cookie))</nowiki>\" + |status\n|}"
 	},
 	"Table multiple attributes correction": {
 		"wt2wt": "{|\n! class=\"awesome\" + |status\n|}"

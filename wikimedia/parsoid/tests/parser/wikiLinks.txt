@@ -196,6 +196,14 @@ Foobarbaz
 Dummy article to suppress redlinks in tests
 !! end
 
+!! article
+אַ
+!! text
+Test for unicode normalization
+
+The page's name is U+05d0 U+05b7, with non-canonical form U+FB2E
+!! endarticle
+
 # -----------
 # Tests below
 # -----------
@@ -396,6 +404,38 @@ parsoid=wt2html
 </p>
 !! html/parsoid
 <p><a rel="mw:WikiLink" href="./Main_Page" title="Main Page"> </a> - empty space</p>
+!! end
+
+!! test
+Character reference normalization in link text (T3938)
+!! wikitext
+[[Main Page|this&that]]
+!! html
+<p><a href="/wiki/Main_Page" title="Main Page">this&amp;that</a>
+</p>
+!! end
+
+!! test
+(T21451) Links should refer to the normalized form.
+!! wikitext
+[[&#xFB2E;]]
+[[&#x5d0;&#x5b7;]]
+[[&#x5d0;ַ]]
+[[א&#x5b7;]]
+[[אַ]]
+!! html/php
+<p><a href="/wiki/%D7%90%D6%B7" title="אַ">&#xfb2e;</a>
+<a href="/wiki/%D7%90%D6%B7" title="אַ">&#x5d0;&#x5b7;</a>
+<a href="/wiki/%D7%90%D6%B7" title="אַ">&#x5d0;ַ</a>
+<a href="/wiki/%D7%90%D6%B7" title="אַ">א&#x5b7;</a>
+<a href="/wiki/%D7%90%D6%B7" title="אַ">אַ</a>
+</p>
+!! html/parsoid
+<p><a rel="mw:WikiLink" href="./אַ" title="אַ" data-parsoid='{"stx":"simple","a":{"href":"./אַ"},"sa":{"href":"&amp;#xFB2E;"}}'>אַ</a>
+<a rel="mw:WikiLink" href="./אַ" title="אַ" data-parsoid='{"stx":"simple","a":{"href":"./אַ"},"sa":{"href":"&amp;#x5d0;&amp;#x5b7;"}}'>אַ</a>
+<a rel="mw:WikiLink" href="./אַ" title="אַ" data-parsoid='{"stx":"simple","a":{"href":"./אַ"},"sa":{"href":"&amp;#x5d0;ַ"}}'>אַ</a>
+<a rel="mw:WikiLink" href="./אַ" title="אַ" data-parsoid='{"stx":"simple","a":{"href":"./אַ"},"sa":{"href":"א&amp;#x5b7;"}}'>אַ</a>
+<a rel="mw:WikiLink" href="./אַ" title="אַ" data-parsoid='{"stx":"simple","a":{"href":"./אַ"},"sa":{"href":"אַ"}}'>אַ</a></p>
 !! end
 
 !! test
@@ -2006,6 +2046,23 @@ subpage title=[[Subpage test/L1/L2/L3]]
 !! end
 
 !! test
+Fragment in a parent (or grandparent) of a subpage
+!! options
+subpage title=[[Subpage test/L1/L2/L3]]
+parsoid=wt2html
+!! wikitext
+[[../#foo]]
+[[../../#foo]]
+!! html/php
+<p><a href="/wiki/Subpage_test/L1/L2#foo" title="Subpage test/L1/L2">Subpage test/L1/L2#foo</a>
+<a href="/wiki/Subpage_test/L1#foo" title="Subpage test/L1">Subpage test/L1#foo</a>
+</p>
+!! html/parsoid
+<p><a rel="mw:WikiLink" href="./Subpage_test/L1/L2#foo" title="Subpage test/L1/L2">Subpage test/L1/L2#foo</a>
+<a rel="mw:WikiLink" href="./Subpage_test/L1#foo" title="Subpage test/L1">Subpage test/L1#foo</a></p>
+!! end
+
+!! test
 T4095: link with three closing brackets
 !! wikitext
 [[Main Page]]]
@@ -2216,4 +2273,14 @@ Wikilink extlink precedence
 </p>
 !! html/parsoid
 <p><a rel="mw:WikiLink" href="./Test" title="Test">[http://google.com test</a></p>
+!! end
+
+!! test
+Catch regression when unpacking misnested links
+!! options
+parsoid=wt2html
+!! wikitext
+{{1x|hi}}[http://example.com [[ho]]]
+!! html/parsoid
+<p><span about="#mwt1" typeof="mw:Transclusion" data-parsoid='{"pi":[[{"k":"1"}]]}' data-mw='{"parts":[{"template":{"target":{"wt":"1x","href":"./Template:1x"},"params":{"1":{"wt":"hi"}},"i":0}}]}'>hi</span><a rel="mw:ExtLink nofollow" href="http://example.com" class="external text"></a><a rel="mw:WikiLink" href="./Ho" title="Ho" data-parsoid='{"stx":"simple","a":{"href":"./Ho"},"sa":{"href":"ho"},"misnested":true}'>ho</a></p>
 !! end

@@ -396,14 +396,37 @@ class AddMediaInfo implements Wt2HtmlDOMProcessor {
 		$doc = $span->ownerDocument;
 		$img = $doc->createElement( 'img' );
 
-		if ( $alt !== null ) {
-			$img->setAttribute( 'alt', $alt );
-		}
-
 		self::copyOverAttribute( $img, $span, 'resource' );
 
-		$img->setAttribute( 'src', self::getPath( $info ) );
-		$img->setAttribute( 'decoding', 'async' );
+		$imgAttribs = $info['thumbattribs'] ?? [
+			'decoding' => 'async',
+		];
+		// For attributes we copy over or use addNormalizedAttribute for,
+		// don't use the version from $imgAttribs
+		foreach ( [ 'width', 'height', 'resource', 'lang' ] as $name ) {
+			unset( $imgAttribs[$name] );
+		}
+		// override 'alt'
+		if ( $alt !== null ) {
+			$imgAttribs['alt'] = $alt;
+		}
+		// override 'src'
+		$imgAttribs['src'] = self::getPath( $info );
+		// Fill in srcset for "responsive" images if it is missing.
+		if ( empty( $imgAttribs['srcset'] ) && !empty( $info['responsiveUrls'] ) ) {
+			$candidates = [];
+			foreach ( $info['responsiveUrls'] as $density => $url ) {
+				$candidates[] = $url . ' ' . $density . 'x';
+			}
+			if ( $candidates ) {
+				$imgAttribs['srcset'] = implode( ', ', $candidates );
+			}
+		}
+
+		// Set image attributes
+		foreach ( $imgAttribs as $name => $value ) {
+			$img->setAttribute( $name, $value );
+		}
 
 		if ( $span->hasAttribute( 'lang' ) ) {
 			self::copyOverAttribute( $img, $span, 'lang' );
@@ -417,17 +440,6 @@ class AddMediaInfo implements Wt2HtmlDOMProcessor {
 		$size = self::handleSize( $env, $attrs, $info );
 		DOMDataUtils::addNormalizedAttribute( $img, 'height', (string)$size['height'], null, true );
 		DOMDataUtils::addNormalizedAttribute( $img, 'width', (string)$size['width'], null, true );
-
-		// Handle "responsive" images, i.e. srcset
-		if ( !empty( $info['responsiveUrls'] ) ) {
-			$candidates = [];
-			foreach ( $info['responsiveUrls'] as $density => $url ) {
-				$candidates[] = $url . ' ' . $density . 'x';
-			}
-			if ( $candidates ) {
-				$img->setAttribute( 'srcset', implode( ', ', $candidates ) );
-			}
-		}
 
 		return $img;
 	}
@@ -477,14 +489,16 @@ class AddMediaInfo implements Wt2HtmlDOMProcessor {
 	private static function replaceAnchor(
 		Env $env, PegTokenizer $urlParser, array $errs,
 		Element $oldAnchor, array $attrs, DataMw $dataMw, bool $isImage,
-		?string $captionText, int $page, string $lang
+		?string $captionText, int $page, string $lang, bool $isManualThumb
 	): Element {
 		$doc = $oldAnchor->ownerDocument;
 		$attr = WTSUtils::getAttrFromDataMw( $dataMw, 'link', true );
 
 		if ( $isImage || $errs ) {
 			$anchor = $doc->createElement( 'a' );
-			$addDescriptionLink = static function ( Title $title ) use ( $env, $anchor, $page, $lang ): void {
+			$addDescriptionLink = static function ( Title $title ) use (
+				$env, $anchor, $page, $lang, $isManualThumb
+			): void {
 				$href = $env->makeLink( $title );
 				$qs = [];
 				if ( $page > 0 ) {
@@ -497,7 +511,11 @@ class AddMediaInfo implements Wt2HtmlDOMProcessor {
 					$href .= '?' . http_build_query( $qs );
 				}
 				$anchor->setAttribute( 'href', $href );
-				$anchor->setAttribute( 'class', 'mw-file-description' );
+				// The file description class is omitted to prevent MultimediaViewer
+				// from launching and instead direct to the file description page
+				if ( !$isManualThumb ) {
+					$anchor->setAttribute( 'class', 'mw-file-description' );
+				}
 			};
 			if ( $attr !== null ) {
 				$discard = !$errs;
@@ -829,6 +847,7 @@ class AddMediaInfo implements Wt2HtmlDOMProcessor {
 			}
 
 			$info = $files[$c['infoKey']] ?? null;
+			$isManualThumb = false;
 
 			if ( $c['manualKey'] === false ) {
 				$env->getDataAccess()->addTrackingCategory(
@@ -850,6 +869,7 @@ class AddMediaInfo implements Wt2HtmlDOMProcessor {
 					$errs[] = self::makeErr( 'apierror-unknownerror', $manualinfo['thumberror'] );
 				} else {
 					$info = $manualinfo;
+					$isManualThumb = true;
 				}
 			}
 
@@ -931,7 +951,8 @@ class AddMediaInfo implements Wt2HtmlDOMProcessor {
 			$anchor = self::replaceAnchor(
 				$env, $urlParser, $errs, $anchor, $attrs, $dataMw, $isImage, $captionText,
 				(int)( $attrs['dims']['page'] ?? 0 ),
-				$attrs['dims']['lang'] ?? ''
+				$attrs['dims']['lang'] ?? '',
+				$isManualThumb
 			);
 			$anchor->appendChild( $elt );
 
