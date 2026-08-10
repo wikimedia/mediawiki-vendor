@@ -322,9 +322,8 @@ class ComposerStaticInit_mediawiki_vendor
             2 => __DIR__ . '/..' . '/wikimedia/testing-access-wrapper/src',
             3 => __DIR__ . '/..' . '/wikimedia/running-stat/src',
             4 => __DIR__ . '/..' . '/wikimedia/relpath/src',
-            5 => __DIR__ . '/..' . '/wikimedia/php-session-serializer/src',
-            6 => __DIR__ . '/..' . '/wikimedia/ip-utils/src',
-            7 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
+            5 => __DIR__ . '/..' . '/wikimedia/ip-utils/src',
+            6 => __DIR__ . '/..' . '/wikimedia/scoped-callback/src',
         ),
         'Webauthn\\' =>
         array (
@@ -6685,7 +6684,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Wt2Html\\Wt2HtmlDOMProcessor' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/Wt2HtmlDOMProcessor.php',
         'Wikimedia\\Parsoid\\Wt2Html\\XHtmlSerializer' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/XHtmlSerializer.php',
         'Wikimedia\\Parsoid\\Wt2Html\\XMLSerializer' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/XMLSerializer.php',
-        'Wikimedia\\PhpSessionSerializer' => __DIR__ . '/..' . '/wikimedia/php-session-serializer/src/PhpSessionSerializer.php',
         'Wikimedia\\Purtle\\BNodeLabeler' => __DIR__ . '/..' . '/wikimedia/purtle/src/BNodeLabeler.php',
         'Wikimedia\\Purtle\\JsonLdRdfWriter' => __DIR__ . '/..' . '/wikimedia/purtle/src/JsonLdRdfWriter.php',
         'Wikimedia\\Purtle\\N3Quoter' => __DIR__ . '/..' . '/wikimedia/purtle/src/N3Quoter.php',
