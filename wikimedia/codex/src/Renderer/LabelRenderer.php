@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * LabelRenderer.php
  *
@@ -20,9 +22,10 @@ namespace Wikimedia\Codex\Renderer;
 
 use InvalidArgumentException;
 use Wikimedia\Codex\Component\Label;
-use Wikimedia\Codex\Contract\Renderer\IRenderer;
+use Wikimedia\Codex\Contract\Component;
+use Wikimedia\Codex\Contract\ILocalizer;
+use Wikimedia\Codex\Contract\Renderer;
 use Wikimedia\Codex\Parser\TemplateParser;
-use Wikimedia\Codex\Traits\AttributeResolver;
 use Wikimedia\Codex\Utility\Sanitizer;
 
 /**
@@ -40,22 +43,7 @@ use Wikimedia\Codex\Utility\Sanitizer;
  * @license  https://www.gnu.org/copyleft/gpl.html GPL-2.0-or-later
  * @link     https://doc.wikimedia.org/codex/main/ Codex Documentation
  */
-class LabelRenderer implements IRenderer {
-
-	/**
-	 * Use the AttributeResolver trait
-	 */
-	use AttributeResolver;
-
-	/**
-	 * The sanitizer instance used for content sanitization.
-	 */
-	private Sanitizer $sanitizer;
-
-	/**
-	 * The template parser instance.
-	 */
-	private TemplateParser $templateParser;
+class LabelRenderer extends Renderer {
 
 	/**
 	 * Constructor to initialize the LabelRenderer with a sanitizer and a template parser.
@@ -63,10 +51,14 @@ class LabelRenderer implements IRenderer {
 	 * @since 0.1.0
 	 * @param Sanitizer $sanitizer The sanitizer instance used for content sanitization.
 	 * @param TemplateParser $templateParser The template parser instance.
+	 * @param ILocalizer $localizer The localizer instance used for i18n messages.
 	 */
-	public function __construct( Sanitizer $sanitizer, TemplateParser $templateParser ) {
-		$this->sanitizer = $sanitizer;
-		$this->templateParser = $templateParser;
+	public function __construct(
+		Sanitizer $sanitizer,
+		private readonly TemplateParser $templateParser,
+		private readonly ILocalizer $localizer
+	) {
+		parent::__construct( $sanitizer );
 	}
 
 	/**
@@ -75,10 +67,10 @@ class LabelRenderer implements IRenderer {
 	 * Uses the provided Label component to generate HTML markup adhering to the Codex design system.
 	 *
 	 * @since 0.1.0
-	 * @param Label $component The Label component to render.
+	 * @param Component $component The Label component to render.
 	 * @return string The rendered HTML string for the component.
 	 */
-	public function render( $component ): string {
+	public function render( Component $component ): string {
 		if ( !$component instanceof Label ) {
 			throw new InvalidArgumentException( "Expected instance of Label, got " . get_class( $component ) );
 		}
@@ -86,15 +78,18 @@ class LabelRenderer implements IRenderer {
 		$labelData = [
 			'id' => $component->getId(),
 			'isLegend' => $component->isLegend(),
-			'inputId' => $this->sanitizer->sanitizeText( $component->getInputId() ),
-			'labelText' => $component->getLabelText(),
-			'optionalFlag' => $component->isOptional(),
-			'description' => $this->sanitizer->sanitizeText( $component->getDescription() ),
+			'inputId' => $component->getInputId(),
+			'labelText-html' => $this->sanitizer->sanitizeText( $component->getLabelText() ),
+			'optionalFlag' => $component->isOptional() ?
+				$this->localizer->msg( 'cdx-label-optional-flag' ) :
+				null,
+			'description-html' => $this->sanitizer->sanitizeText( $component->getDescription() ),
 			'descriptionId' => $component->getDescriptionId(),
-			'icon' => $this->sanitizer->sanitizeText( $component->getIconClass() ?? '' ),
+			'icon' => $component->getIconClass() ?? '',
 			'isVisuallyHidden' => $component->isVisuallyHidden(),
 			'isDisabled' => $component->isDisabled(),
-			'attributes' => $this->resolve( $this->sanitizer->sanitizeAttributes( $component->getAttributes() ) ),
+			'extraClasses' => $this->getExtraClasses( $component->getAttributes() ),
+			'attributes' => $this->getOtherAttributes( $component->getAttributes() ),
 		];
 
 		return $this->templateParser->processTemplate( 'label', $labelData );

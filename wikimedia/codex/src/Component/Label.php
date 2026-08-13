@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * Label.php
  *
@@ -16,14 +18,11 @@
 
 namespace Wikimedia\Codex\Component;
 
+use Wikimedia\Codex\Contract\Component;
 use Wikimedia\Codex\Renderer\LabelRenderer;
 
 /**
  * Label
- *
- * This class is part of the Codex PHP library and is responsible for
- * representing an immutable object. It is primarily intended for use
- * with a builder class to construct its instances.
  *
  * @category Component
  * @package  Codex\Component
@@ -32,125 +31,45 @@ use Wikimedia\Codex\Renderer\LabelRenderer;
  * @license  https://www.gnu.org/copyleft/gpl.html GPL-2.0-or-later
  * @link     https://doc.wikimedia.org/codex/main/ Codex Documentation
  */
-class Label {
+class Label extends Component {
+	private ?string $id = null;
 
-	/**
-	 * The text displayed inside the label.
-	 */
-	protected string $labelText;
-
-	/**
-	 * The ID of the input/control this label is associated with.
-	 */
-	protected string $inputId;
-
-	/**
-	 * Whether the associated input field is optional.
-	 */
-	protected bool $optional;
-
-	/**
-	 * Whether the label should be visually hidden but accessible to screen readers.
-	 */
-	protected bool $visuallyHidden;
-
-	/**
-	 * Whether the label should be rendered as a `<legend>` element, typically used within a `<fieldset>`.
-	 */
-	protected bool $isLegend;
-
-	/**
-	 * The description text that provides additional information about the input field.
-	 */
-	protected string $description;
-
-	/**
-	 * The ID of the description element, useful for the `aria-describedby` attribute.
-	 */
-	protected ?string $descriptionId;
-
-	/**
-	 * Whether the label is for a disabled field or input.
-	 */
-	protected bool $disabled;
-
-	/**
-	 * The CSS class for an icon displayed before the label text.
-	 */
-	protected ?string $iconClass;
-
-	/**
-	 * Additional HTML attributes for the label element.
-	 */
-	protected array $attributes;
-
-	/**
-	 * The ID attribute for the label.
-	 */
-	protected ?string $id;
-
-	/**
-	 * The renderer instance used to render the label.
-	 */
-	protected LabelRenderer $renderer;
-
-	/**
-	 * Constructor for the Label component.
-	 *
-	 * Initializes a Label instance with the specified properties.
-	 *
-	 * @param string $labelText The text displayed inside the label.
-	 * @param-taint $labelText exec_html Callers are responsible for escaping
-	 * @param string $inputId The ID of the input/control this label is associated with.
-	 * @param bool $optional Indicates whether the associated input field is optional.
-	 * @param bool $visuallyHidden Indicates whether the label should be visually hidden.
-	 * @param bool $isLegend Indicates if the label should be rendered as a `<legend>` element.
-	 * @param string $description The description text for the label.
-	 * @param string|null $descriptionId The ID of the description element.
-	 * @param bool $disabled Indicates whether the label is for a disabled input.
-	 * @param string|null $iconClass The CSS class for an icon before the label text.
-	 * @param array $attributes Additional HTML attributes for the label element.
-	 * @param string|null $id The ID attribute for the label.
-	 * @param LabelRenderer $renderer The renderer to use for rendering the label.
-	 */
 	public function __construct(
-		string $labelText,
-		string $inputId,
-		bool $optional,
-		bool $visuallyHidden,
-		bool $isLegend,
-		string $description,
-		?string $descriptionId,
-		bool $disabled,
-		?string $iconClass,
-		array $attributes,
-		?string $id,
-		LabelRenderer $renderer
+		LabelRenderer $renderer,
+		private string|HtmlSnippet $labelText,
+		private string $inputId,
+		private bool $optional,
+		private bool $visuallyHidden,
+		private bool $isLegend,
+		private string|HtmlSnippet $description,
+		private ?string $descriptionId,
+		private bool $disabled,
+		private ?string $iconClass,
+		private array $attributes
 	) {
-		$this->labelText = $labelText;
-		$this->inputId = $inputId;
-		$this->optional = $optional;
-		$this->visuallyHidden = $visuallyHidden;
-		$this->isLegend = $isLegend;
-		$this->description = $description;
-		$this->descriptionId = $descriptionId;
-		$this->disabled = $disabled;
-		$this->iconClass = $iconClass;
-		$this->attributes = $attributes;
-		$this->id = $id;
-		$this->renderer = $renderer;
+		parent::__construct( $renderer );
+	}
+
+	/**
+	 * Get the ID of the label element.
+	 *
+	 * @since 0.1.0
+	 * @return string|null The ID of the label, or null if not set.
+	 */
+	public function getId(): ?string {
+		return $this->id;
 	}
 
 	/**
 	 * Get the text displayed inside the label.
 	 *
-	 * This method returns the text that is displayed inside the label. The label text provides
+	 * This method returns the text displayed inside the label. The label text provides
 	 * a descriptive title for the associated input field.
 	 *
 	 * @since 0.1.0
-	 * @return string The text of the label.
+	 * @return string|HtmlSnippet The text of the label.
 	 */
-	public function getLabelText(): string {
+	public function getLabelText(): string|HtmlSnippet {
 		return $this->labelText;
 	}
 
@@ -214,9 +133,9 @@ class Label {
 	 * input field. The description is linked to the input via the `aria-describedby` attribute.
 	 *
 	 * @since 0.1.0
-	 * @return string The description text for the label.
+	 * @return string|HtmlSnippet The description text for the label.
 	 */
-	public function getDescription(): string {
+	public function getDescription(): string|HtmlSnippet {
 		return $this->description;
 	}
 
@@ -273,26 +192,213 @@ class Label {
 	}
 
 	/**
-	 * Get the ID of the label element.
+	 * Set the label's HTML ID attribute.
 	 *
+	 * @deprecated Use setAttributes() to set the ID
 	 * @since 0.1.0
-	 * @return string|null The ID of the label, or null if not set.
+	 * @param string $id The ID for the label element.
+	 * @return $this
 	 */
-	public function getId(): ?string {
-		return $this->id;
+	public function setId( string $id ): self {
+		$this->id = $id;
+
+		return $this;
 	}
 
 	/**
-	 * Get the component's HTML representation.
+	 * Set the label text.
 	 *
-	 * This method generates the HTML markup for the component, incorporating relevant properties
-	 * and any additional attributes. The component is structured using appropriate HTML elements
-	 * as defined by the implementation.
+	 * This method specifies the text that will be displayed inside the label.
+	 * The label text provides a descriptive title for the associated input field.
 	 *
 	 * @since 0.1.0
-	 * @return string The generated HTML string for the component.
+	 * @param string|HtmlSnippet $labelText The text of the label.
+	 * @return $this Returns the Label instance for method chaining.
 	 */
-	public function getHtml(): string {
-		return $this->renderer->render( $this );
+	public function setLabelText( string|HtmlSnippet $labelText ): self {
+		$this->labelText = $labelText;
+
+		return $this;
+	}
+
+	/**
+	 * Set the ID of the input/control this label is associated with.
+	 *
+	 * This method sets the 'for' attribute of the label, linking it to an input element.
+	 * This connection is important for accessibility and ensures that clicking the label focuses the input.
+	 *
+	 * Example usage:
+	 *
+	 *     $label->setInputId('username');
+	 *
+	 * @since 0.1.0
+	 * @param string $inputId The ID of the input element.
+	 * @return $this Returns the Label instance for method chaining.
+	 */
+	public function setInputId( string $inputId ): self {
+		$this->inputId = $inputId;
+
+		return $this;
+	}
+
+	/**
+	 * Set the optional flag.
+	 *
+	 * This method indicates whether the associated input field is optional.
+	 * If true, an "(optional)" flag will be displayed next to the label text.
+	 *
+	 * Example usage:
+	 *
+	 *     $label->setOptionalFlag(true);
+	 *
+	 * @since 0.1.0
+	 * @param bool $optional Whether the label is for an optional input.
+	 * @return $this Returns the Label instance for method chaining.
+	 */
+	public function setOptional( bool $optional ): self {
+		$this->optional = $optional;
+
+		return $this;
+	}
+
+	/**
+	 * Set whether the label should be visually hidden.
+	 *
+	 * This method determines whether the label should be visually hidden while still being accessible to screen
+	 * readers. Useful for forms where labels need to be read by assistive technologies but not displayed.
+	 *
+	 * Example usage:
+	 *
+	 *     $label->setVisuallyHidden(true);
+	 *
+	 * @since 0.1.0
+	 * @param bool $visuallyHidden Whether the label should be visually hidden.
+	 * @return $this Returns the Label instance for method chaining.
+	 */
+	public function setVisuallyHidden( bool $visuallyHidden ): self {
+		$this->visuallyHidden = $visuallyHidden;
+
+		return $this;
+	}
+
+	/**
+	 * Set whether this component should output a `<legend>` element.
+	 *
+	 * This method determines whether the label should be rendered as a `<legend>` element,
+	 * typically used within a `<fieldset>` for grouping related inputs.
+	 *
+	 * Example usage:
+	 *
+	 *     $label->setIsLegend(true);
+	 *
+	 * @since 0.1.0
+	 * @param bool $isLegend Whether to render the label as a `<legend>`.
+	 * @return $this Returns the Label instance for method chaining.
+	 */
+	public function setIsLegend( bool $isLegend ): self {
+		$this->isLegend = $isLegend;
+
+		return $this;
+	}
+
+	/**
+	 * Set the description text for the label.
+	 *
+	 * This method adds a short description below the label, providing additional information about the input field.
+	 * The description is linked to the input via the `aria-describedby` attribute for accessibility.
+	 *
+	 * Example usage:
+	 *
+	 *     $label->setDescriptionText('Please enter a valid email.');
+	 *
+	 * @since 0.1.0
+	 * @param string|HtmlSnippet $description The description text for the label.
+	 * @return $this Returns the Label instance for method chaining.
+	 */
+	public function setDescription( string|HtmlSnippet $description ): self {
+		$this->description = $description;
+
+		return $this;
+	}
+
+	/**
+	 * Set the ID of the description element.
+	 *
+	 * This method sets the ID attribute for the description element, which is useful for associating
+	 * the description with an input via the `aria-describedby` attribute.
+	 *
+	 * Example usage:
+	 *
+	 *     $label->setDescriptionId('username-desc');
+	 *
+	 * @since 0.1.0
+	 * @param string|null $descriptionId The ID for the description element.
+	 * @return $this Returns the Label instance for method chaining.
+	 */
+	public function setDescriptionId( ?string $descriptionId ): self {
+		$this->descriptionId = $descriptionId ?: null;
+
+		return $this;
+	}
+
+	/**
+	 * Set whether the label is for a disabled field or input.
+	 *
+	 * This method marks the label as associated with a disabled input, applying the appropriate styles.
+	 *
+	 * Example usage:
+	 *
+	 *     $label->setDisabled(true);
+	 *
+	 * @since 0.1.0
+	 * @param bool $disabled Whether the label is for a disabled input.
+	 * @return $this Returns the Label instance for method chaining.
+	 */
+	public function setDisabled( bool $disabled ): self {
+		$this->disabled = $disabled;
+
+		return $this;
+	}
+
+	/**
+	 * Set an icon before the label text.
+	 *
+	 * This method allows for an icon to be displayed before the label text, specified by a CSS class.
+	 * The icon enhances the visual appearance of the label.
+	 *
+	 * Example usage:
+	 *
+	 *     $label->setIcon('icon-class-name');
+	 *
+	 * @since 0.1.0
+	 * @param string|null $iconClass The CSS class for the icon.
+	 * @return $this Returns the Label instance for method chaining.
+	 */
+	public function setIconClass( ?string $iconClass ): self {
+		$this->iconClass = $iconClass;
+
+		return $this;
+	}
+
+	/**
+	 * Set additional HTML attributes for the label element.
+	 *
+	 * This method allows custom HTML attributes to be added to the label element, such as `id`, `class`, or `data-*`
+	 * attributes. These attributes are automatically escaped to prevent XSS vulnerabilities.
+	 *
+	 * Example usage:
+	 *
+	 *     $label->setAttributes(['class' => 'custom-label-class', 'data-info' => 'additional-info']);
+	 *
+	 * @since 0.1.0
+	 * @param array $attributes An associative array of HTML attributes.
+	 * @return $this Returns the Label instance for method chaining.
+	 */
+	public function setAttributes( array $attributes ): self {
+		foreach ( $attributes as $key => $value ) {
+			$this->attributes[$key] = $value;
+		}
+
+		return $this;
 	}
 }

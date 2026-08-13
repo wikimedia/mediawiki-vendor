@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * Select.php
  *
@@ -16,14 +18,11 @@
 
 namespace Wikimedia\Codex\Component;
 
+use Wikimedia\Codex\Contract\Component;
 use Wikimedia\Codex\Renderer\SelectRenderer;
 
 /**
  * Select
- *
- * This class is part of the Codex PHP library and is responsible for
- * representing an immutable object. It is primarily intended for use
- * with a builder class to construct its instances.
  *
  * @category Component
  * @package  Codex\Component
@@ -32,70 +31,18 @@ use Wikimedia\Codex\Renderer\SelectRenderer;
  * @license  https://www.gnu.org/copyleft/gpl.html GPL-2.0-or-later
  * @link     https://doc.wikimedia.org/codex/main/ Codex Documentation
  */
-class Select {
+class Select extends Component {
+	private string $id = '';
 
-	/**
-	 * The ID for the select element.
-	 */
-	private string $id;
-
-	/**
-	 * The options available in the select dropdown.
-	 */
-	private array $options;
-
-	/**
-	 * The optGroups that group options under labels in the select dropdown.
-	 */
-	private array $optGroups;
-
-	/**
-	 * The selected option value.
-	 */
-	private ?string $selectedOption;
-
-	/**
-	 * Additional HTML attributes for the `<select>` element.
-	 */
-	private array $attributes;
-
-	/**
-	 * Indicates if the select element is disabled.
-	 */
-	private bool $disabled;
-
-	/**
-	 * The renderer instance used to render the select.
-	 */
-	private SelectRenderer $renderer;
-
-	/**
-	 * Constructor for the Select component.
-	 *
-	 * @param string $id The ID for the select element.
-	 * @param array $options An array of options for the select element.
-	 * @param array $optGroups An array of optGroups for grouping options.
-	 * @param string|null $selectedOption The value of the selected option, if any.
-	 * @param array $attributes Additional HTML attributes for the select element.
-	 * @param bool $disabled Indicates whether the select element is disabled.
-	 * @param SelectRenderer $renderer The renderer to use for rendering the select element.
-	 */
 	public function __construct(
-		string $id,
-		array $options,
-		array $optGroups,
-		?string $selectedOption,
-		array $attributes,
-		bool $disabled,
-		SelectRenderer $renderer
+		SelectRenderer $renderer,
+		private array $options,
+		private array $optGroups,
+		private ?string $selectedOption,
+		private bool $disabled,
+		private array $attributes
 	) {
-		$this->id = $id;
-		$this->options = $options;
-		$this->optGroups = $optGroups;
-		$this->selectedOption = $selectedOption;
-		$this->attributes = $attributes;
-		$this->disabled = $disabled;
-		$this->renderer = $renderer;
+		parent::__construct( $renderer );
 	}
 
 	/**
@@ -176,16 +123,137 @@ class Select {
 	}
 
 	/**
-	 * Get the component's HTML representation.
+	 * Set the Selects HTML ID attribute.
 	 *
-	 * This method generates the HTML markup for the component, incorporating relevant properties
-	 * and any additional attributes. The component is structured using appropriate HTML elements
-	 * as defined by the implementation.
+	 * @deprecated Use setAttributes() to set the ID
+	 * @since 0.1.0
+	 * @param string $id The ID for the Select element.
+	 * @return $this
+	 */
+	public function setId( string $id ): self {
+		$this->id = $id;
+
+		return $this;
+	}
+
+	/**
+	 * Set one or more options for the select element.
+	 *
+	 * This method allows one or more options to be added to the select dropdown.
+	 * Each option can be provided as a simple key-value pair, or as an array with `value`, `text`,
+	 * and `selected` keys for more complex options.
+	 *
+	 * Example usage:
+	 *
+	 *     // Using key-value pairs:
+	 *     $select->setOptions([
+	 *         'value1' => 'Label 1',
+	 *         'value2' => 'Label 2'
+	 *     ]);
+	 *
+	 *     // Using an array for more complex options:
+	 *     $select->setOptions([
+	 *         ['value' => 'value1', 'text' => 'Label 1', 'selected' => true],
+	 *         ['value' => 'value2', 'text' => 'Label 2']
+	 *     ]);
 	 *
 	 * @since 0.1.0
-	 * @return string The generated HTML string for the component.
+	 * @param array $options An array of options, either as key-value pairs or
+	 *                       arrays with `value`, `text`, and `selected` keys.
+	 * @return $this Returns the Select instance for method chaining.
 	 */
-	public function getHtml(): string {
-		return $this->renderer->render( $this );
+	public function setOptions( array $options ): self {
+		$this->options = array_merge( $this->options, $options );
+
+		return $this;
+	}
+
+	/**
+	 * Set the optGroups for the select element.
+	 *
+	 * This method allows options to be grouped under labels in the select dropdown.
+	 * Each optGroup can contain options that are either key-value pairs or arrays with `value`,
+	 * `text`, and `selected` keys for more complex options.
+	 *
+	 * Example usage:
+	 *
+	 *     $select->setOptGroups([
+	 *         'Group 1' => [
+	 *             'value1' => 'Option 1',
+	 *             ['value' => 'value2', 'text' => 'Option 2', 'selected' => true]
+	 *         ],
+	 *         'Group 2' => [
+	 *             'value3' => 'Option 3',
+	 *             'value4' => 'Option 4'
+	 *         ]
+	 *     ]);
+	 *
+	 * @since 0.1.0
+	 * @param array $optGroups An associative array of optGroups where keys are labels and values are arrays of options.
+	 * @return $this Returns the Select instance for method chaining.
+	 */
+	public function setOptGroups( array $optGroups ): self {
+		$this->optGroups = array_merge( $this->optGroups, $optGroups );
+		return $this;
+	}
+
+	/**
+	 * Set additional HTML attributes for the `<select>` element.
+	 *
+	 * This method allows custom HTML attributes to be added to the `<select>` element,
+	 * such as `id`, `data-*`, `aria-*`, or any other valid attributes. These attributes can be used
+	 * to enhance accessibility or integrate with JavaScript.
+	 *
+	 * Example usage:
+	 *
+	 *     $select->setAttributes([
+	 *         'id' => 'select-example',
+	 *         'data-category' => 'selection',
+	 *     ]);
+	 *
+	 * @since 0.1.0
+	 * @param array $attributes An associative array of HTML attributes.
+	 * @return $this Returns the Select instance for method chaining.
+	 */
+	public function setAttributes( array $attributes ): self {
+		foreach ( $attributes as $key => $value ) {
+			$this->attributes[$key] = $value;
+		}
+		return $this;
+	}
+
+	/**
+	 * Set whether the select element should be disabled.
+	 *
+	 * This method disables the select element, preventing user interaction.
+	 * When called with `true`, the `disabled` attribute is added to the `<select>` element.
+	 *
+	 * Example usage:
+	 *
+	 *     $select->setDisabled(true);
+	 *
+	 * @since 0.1.0
+	 * @param bool $disabled Indicates whether the select element should be disabled.
+	 * @return $this Returns the Select instance for method chaining.
+	 */
+	public function setDisabled( bool $disabled ): self {
+		$this->disabled = $disabled;
+
+		return $this;
+	}
+
+	/**
+	 * Set the selected option for the select element.
+	 *
+	 * This method specifies which option should be selected by default when the select element is rendered.
+	 *
+	 * @since 0.1.0
+	 * @param string|null $value The value of the option to be selected, or null to unset the selection.
+	 * @return $this Returns the Select instance for method chaining.
+	 */
+	public function setSelectedOption( ?string $value ): self {
+		$this->selectedOption = $value;
+
+		return $this;
 	}
 }

@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * TableRenderer.php
  *
@@ -20,13 +22,15 @@ namespace Wikimedia\Codex\Renderer;
 
 use InvalidArgumentException;
 use UnexpectedValueException;
+use Wikimedia\Codex\Component\HtmlSnippet;
 use Wikimedia\Codex\Component\Table;
-use Wikimedia\Codex\Contract\Renderer\IRenderer;
+use Wikimedia\Codex\Contract\Component;
+use Wikimedia\Codex\Contract\ILocalizer;
+use Wikimedia\Codex\Contract\Renderer;
 use Wikimedia\Codex\ParamValidator\ParamDefinitions;
 use Wikimedia\Codex\ParamValidator\ParamValidator;
 use Wikimedia\Codex\ParamValidator\ParamValidatorCallbacks;
 use Wikimedia\Codex\Parser\TemplateParser;
-use Wikimedia\Codex\Traits\AttributeResolver;
 use Wikimedia\Codex\Utility\Sanitizer;
 
 /**
@@ -44,32 +48,7 @@ use Wikimedia\Codex\Utility\Sanitizer;
  * @license  https://www.gnu.org/copyleft/gpl.html GPL-2.0-or-later
  * @link     https://doc.wikimedia.org/codex/main/ Codex Documentation
  */
-class TableRenderer implements IRenderer {
-
-	/**
-	 * Use the AttributeResolver trait
-	 */
-	use AttributeResolver;
-
-	/**
-	 * The sanitizer instance used for content sanitization.
-	 */
-	private Sanitizer $sanitizer;
-
-	/**
-	 * The template parser instance.
-	 */
-	private TemplateParser $templateParser;
-
-	/**
-	 * The param validator.
-	 */
-	protected ParamValidator $paramValidator;
-
-	/**
-	 * The param validator callbacks.
-	 */
-	protected ParamValidatorCallbacks $paramValidatorCallbacks;
+class TableRenderer extends Renderer {
 
 	/**
 	 * Constructor to initialize the TableRenderer with necessary dependencies.
@@ -77,31 +56,30 @@ class TableRenderer implements IRenderer {
 	 * @since 0.1.0
 	 * @param Sanitizer $sanitizer The sanitizer instance for cleaning user-provided data and HTML attributes.
 	 * @param TemplateParser $templateParser The template parser instance for rendering Mustache templates.
+	 * @param ILocalizer $localizer The localizer instance for i18n messages.
 	 * @param ParamValidator $paramValidator The parameter validator instance to validate query parameters.
 	 * @param ParamValidatorCallbacks $paramValidatorCallbacks The callbacks instance for fetching validated parameters.
 	 */
 	public function __construct(
 		Sanitizer $sanitizer,
-		TemplateParser $templateParser,
-		ParamValidator $paramValidator,
-		ParamValidatorCallbacks $paramValidatorCallbacks
+		private readonly TemplateParser $templateParser,
+		private readonly ILocalizer $localizer,
+		private readonly ParamValidator $paramValidator,
+		private readonly ParamValidatorCallbacks $paramValidatorCallbacks
 	) {
-		$this->sanitizer = $sanitizer;
-		$this->templateParser = $templateParser;
-		$this->paramValidator = $paramValidator;
-		$this->paramValidatorCallbacks = $paramValidatorCallbacks;
+		parent::__construct( $sanitizer );
 	}
 
 	/**
-	 * Renders the HTML for an table component.
+	 * Renders the HTML for a table component.
 	 *
 	 * Uses the provided Table component to generate HTML markup adhering to the Codex design system.
 	 *
 	 * @since 0.1.0
-	 * @param Table $component The Table object to render.
+	 * @param Component $component The Table object to render.
 	 * @return string The rendered HTML string for the component.
 	 */
-	public function render( $component ): string {
+	public function render( Component $component ): string {
 		if ( !$component instanceof Table ) {
 			throw new InvalidArgumentException( "Expected instance of Table, got " . get_class( $component ) );
 		}
@@ -113,15 +91,18 @@ class TableRenderer implements IRenderer {
 			'useRowHeaders' => $component->getUseRowHeaders(),
 			'paginationPosition' => $component->getPaginationPosition(),
 			'totalRows' => $component->getTotalRows(),
-			'caption' => $this->sanitizer->sanitizeText( $component->getCaption() ),
+			'caption' => $component->getCaption(),
 			'columns' => $this->prepareColumns( $component ),
 			'rows' => $this->prepareRows( $component ),
 			'hideCaption' => $component->getHideCaption(),
-			'headerContent' => $component->getHeaderContent(),
+			'headerContent-html' => $this->sanitizer->sanitizeText( $component->getHeaderContent() ?? '' ),
 			'hasData' => (bool)count( $component->getData() ),
+			'noDataMessage' => count( $component->getData() ) === 0 ?
+				$this->localizer->msg( 'cdx-table-no-data-message' ) : '',
 			'pager' => $pager ? $pager->getHtml() : '',
-			'attributes' => $this->resolve( $this->sanitizer->sanitizeAttributes( $component->getAttributes() ) ),
-			'footer' => $this->sanitizer->sanitizeText( $component->getFooter() ?? '' ),
+			'extraClasses' => $this->getExtraClasses( $component->getAttributes() ),
+			'attributes' => $this->getOtherAttributes( $component->getAttributes() ),
+			'footer-html' => $this->sanitizer->sanitizeText( $component->getFooter() ?? '' ),
 		];
 		return $this->templateParser->processTemplate( 'table', $tableData );
 	}
@@ -142,9 +123,9 @@ class TableRenderer implements IRenderer {
 		foreach ( $table->getColumns() as $column ) {
 			$isCurrentSortColumn = $table->getCurrentSortColumn() === $column['id'];
 			$columns[] = [
-				'id' => $this->sanitizer->sanitizeText( $column['id'] ),
-				'label' => $this->sanitizer->sanitizeText( $column['label'] ),
-				'align' => isset( $column['align'] ) ? $this->sanitizer->sanitizeText( $column['align'] ) : '',
+				'id' => $column['id'],
+				'label-html' => $this->sanitizer->sanitizeText( $column['label'] ),
+				'align' => $column['align'] ?? '',
 				'sortable' => !empty( $column['sortable'] ),
 				'isCurrentSort' => $isCurrentSortColumn,
 				'sortUrl' => $this->buildSortUrl( $table, $column['id'] ),
@@ -170,10 +151,14 @@ class TableRenderer implements IRenderer {
 		foreach ( $table->getData() as $row ) {
 			$rowData = [];
 			foreach ( $table->getColumns() as $column ) {
-				$cellData = $row[$column['id']] ?? '';
-				$align = isset( $column['align'] ) ? $this->sanitizer->sanitizeText( $column['align'] ) : '';
+				$id = $row[$column['id']] ?? '';
+				if ( !$id instanceof HtmlSnippet ) {
+					$id = (string)$id;
+				}
+				$cellData = $this->sanitizer->sanitizeText( $id );
+				$align = $column['align'] ?? '';
 				$rowData[] = [
-					'cellData' => $cellData,
+					'cellData-html' => $cellData,
 					'align' => $align,
 				];
 			}
@@ -233,16 +218,16 @@ class TableRenderer implements IRenderer {
 			}
 		}
 
-		$queryParams = [];
-		$queryParams['offset'] = $this->paramValidatorCallbacks->getValue( 'offset', '', [] );
-		$queryParams['limit'] = $this->paramValidatorCallbacks->getValue( 'limit', 5, [] );
-
-		$queryParams['sort'] = $columnId;
-
-		$oppositeDirection = $table->oppositeSort( $table->getCurrentSortDirection() );
-		$queryParams['asc'] = ( $oppositeDirection === Table::SORT_ASCENDING ) ? 1 : '';
-		$queryParams['desc'] = ( $oppositeDirection === Table::SORT_DESCENDING ) ? 1 : '';
-
-		return '?' . http_build_query( $queryParams );
+		$isAscending = $table->getCurrentSortDirection() === Table::SORT_ASCENDING;
+		return '?' . http_build_query( [
+			// Start with all current URL parameters to preserve them
+			...$this->paramValidatorCallbacks->getAllParams(),
+			// Override only the sort-specific parameters
+			'offset' => $this->paramValidatorCallbacks->getValue( 'offset', '', [] ),
+			'limit' => $this->paramValidatorCallbacks->getValue( 'limit', 5, [] ),
+			'sort' => $columnId,
+			'asc' => $isAscending ? '' : 1,
+			'desc' => $isAscending ? 1 : '',
+		] );
 	}
 }

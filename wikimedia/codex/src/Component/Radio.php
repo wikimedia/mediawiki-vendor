@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * Radio.php
  *
@@ -16,14 +18,11 @@
 
 namespace Wikimedia\Codex\Component;
 
+use Wikimedia\Codex\Contract\Component;
 use Wikimedia\Codex\Renderer\RadioRenderer;
 
 /**
  * Radio
- *
- * This class is part of the Codex PHP library and is responsible for
- * representing an immutable object. It is primarily intended for use
- * with a builder class to construct its instances.
  *
  * @category Component
  * @package  Codex\Component
@@ -32,96 +31,20 @@ use Wikimedia\Codex\Renderer\RadioRenderer;
  * @license  https://www.gnu.org/copyleft/gpl.html GPL-2.0-or-later
  * @link     https://doc.wikimedia.org/codex/main/ Codex Documentation
  */
-class Radio {
-
-	/**
-	 * The ID for the Radio input.
-	 */
-	protected string $inputId;
-
-	/**
-	 * The name attribute for the radio input.
-	 */
-	protected string $name;
-
-	/**
-	 * The label object for the radio.
-	 */
-	protected Label $label;
-
-	/**
-	 * The value associated with the radio input.
-	 */
-	protected string $value;
-
-	/**
-	 * Indicates if the radio is selected by default.
-	 */
-	protected bool $checked;
-
-	/**
-	 * Indicates if the radio is disabled.
-	 */
-	protected bool $disabled;
-
-	/**
-	 * Indicates if the radio should be displayed inline.
-	 */
-	protected bool $inline;
-
-	/**
-	 * Additional HTML attributes for the input.
-	 */
-	private array $inputAttributes;
-
-	/**
-	 * Additional attributes for the wrapper element.
-	 */
-	private array $wrapperAttributes;
-
-	/**
-	 * The renderer instance used to render the radio.
-	 */
-	protected RadioRenderer $renderer;
-
-	/**
-	 * Constructor for the Radio component.
-	 *
-	 * Initializes a Radio instance with the specified properties.
-	 *
-	 * @param string $id The ID for the radio input.
-	 * @param string $name The name attribute for the radio input.
-	 * @param Label $label The Label object associated with the radio.
-	 * @param string $value The value associated with the radio input.
-	 * @param bool $checked Indicates if the radio is selected by default.
-	 * @param bool $disabled Indicates if the radio is disabled.
-	 * @param bool $inline Indicates if the radio should be displayed inline.
-	 * @param array $inputAttributes Additional HTML attributes for the input element.
-	 * @param array $wrapperAttributes Additional HTML attributes for the wrapper element.
-	 * @param RadioRenderer $renderer The renderer to use for rendering the radio.
-	 */
+class Radio extends Component {
 	public function __construct(
-		string $id,
-		string $name,
-		Label $label,
-		string $value,
-		bool $checked,
-		bool $disabled,
-		bool $inline,
-		array $inputAttributes,
-		array $wrapperAttributes,
-		RadioRenderer $renderer
+		RadioRenderer $renderer,
+		private string $inputId,
+		private string $name,
+		private ?Label $label,
+		private string $value,
+		private bool $checked,
+		private bool $disabled,
+		private bool $inline,
+		private array $inputAttributes,
+		private array $wrapperAttributes
 	) {
-		$this->inputId = $id;
-		$this->name = $name;
-		$this->label = $label;
-		$this->value = $value;
-		$this->checked = $checked;
-		$this->disabled = $disabled;
-		$this->inline = $inline;
-		$this->inputAttributes = $inputAttributes;
-		$this->wrapperAttributes = $wrapperAttributes;
-		$this->renderer = $renderer;
+		parent::__construct( $renderer );
 	}
 
 	/**
@@ -130,7 +53,7 @@ class Radio {
 	 * This method returns the unique identifier for the radio input element. The ID is used to associate the input
 	 * with its corresponding label and for any JavaScript or CSS targeting.
 	 *
-	 * @since 0.1.0
+	 * @since 0.7.1
 	 * @return string The ID for the radio input.
 	 */
 	public function getInputId(): string {
@@ -157,20 +80,20 @@ class Radio {
 	 * The label is crucial for accessibility and usability.
 	 *
 	 * @since 0.1.0
-	 * @return Label The label object for the radio button.
+	 * @return ?Label The label object for the radio button.
 	 */
-	public function getLabel(): Label {
+	public function getLabel(): ?Label {
 		return $this->label;
 	}
 
 	/**
 	 * Get the value associated with the radio input.
 	 *
-	 * This method returns the value that is submitted when the radio button is selected and the form is submitted.
+	 * This method returns the value submitted when the radio button is selected and the form is submitted.
 	 * This is particularly important when dealing with groups of radio buttons where each needs a distinct value.
 	 *
 	 * @since 0.1.0
-	 * @return string The value for the radio input.
+	 * @return string The value of the radio input.
 	 */
 	public function getValue(): string {
 		return $this->value;
@@ -243,16 +166,164 @@ class Radio {
 	}
 
 	/**
-	 * Get the component's HTML representation.
+	 * Set the ID for the radio input.
 	 *
-	 * This method generates the HTML markup for the component, incorporating relevant properties
-	 * and any additional attributes. The component is structured using appropriate HTML elements
-	 * as defined by the implementation.
+	 * The ID is a unique identifier for the radio input element. It is used to associate the input
+	 * with its corresponding label and for any JavaScript or CSS targeting.
+	 *
+	 * @since 0.7.1
+	 * @param string $inputId The ID for the radio input.
+	 * @return $this Returns the Radio instance for method chaining.
+	 */
+	public function setInputId( string $inputId ): self {
+		$this->inputId = $inputId;
+
+		return $this;
+	}
+
+	/**
+	 * Set the name for the radio input.
+	 *
+	 * The name attribute is used to identify form data after the form is submitted. It is crucial when
+	 * handling groups of radio buttons where only one option can be selected at a time.
 	 *
 	 * @since 0.1.0
-	 * @return string The generated HTML string for the component.
+	 * @param string $name The name attribute for the radio input.
+	 * @return $this Returns the Radio instance for method chaining.
 	 */
-	public function getHtml(): string {
-		return $this->renderer->render( $this );
+	public function setName( string $name ): self {
+		$this->name = $name;
+
+		return $this;
+	}
+
+	/**
+	 * Set the label for the radio input.
+	 *
+	 * This method accepts a Label object which provides a descriptive label for the radio.
+	 *
+	 * @since 0.1.0
+	 * @param Label $label The Label object for the radio.
+	 * @return $this Returns the Radio instance for method chaining.
+	 */
+	public function setLabel( Label $label ): self {
+		$this->label = $label;
+
+		return $this;
+	}
+
+	/**
+	 * Set the value for the radio input.
+	 *
+	 * The value is the data submitted when the radio button is selected and the form is submitted.
+	 * This is particularly important when dealing with groups of radio buttons where each needs a distinct value.
+	 *
+	 * @since 0.1.0
+	 * @param string $value The value for the radio input.
+	 * @return $this Returns the Radio instance for method chaining.
+	 */
+	public function setValue( string $value ): self {
+		$this->value = $value;
+
+		return $this;
+	}
+
+	/**
+	 * Set whether the radio should be checked.
+	 *
+	 * This method determines whether the radio button is selected by default. If set to `true`,
+	 * the radio button will be rendered in a checked state, otherwise, it will be unchecked.
+	 *
+	 * @since 0.1.0
+	 * @param bool $checked Whether the radio button should be checked.
+	 * @return $this Returns the Radio instance for method chaining.
+	 */
+	public function setChecked( bool $checked ): self {
+		$this->checked = $checked;
+
+		return $this;
+	}
+
+	/**
+	 * Set whether the radio should be disabled.
+	 *
+	 * This method determines whether the radio button is disabled, preventing user interaction.
+	 * A disabled radio button cannot be selected or deselected by the user and is typically styled to appear inactive.
+	 *
+	 * @since 0.1.0
+	 * @param bool $disabled Whether the radio button should be disabled.
+	 * @return $this Returns the Radio instance for method chaining.
+	 */
+	public function setDisabled( bool $disabled ): self {
+		$this->disabled = $disabled;
+
+		return $this;
+	}
+
+	/**
+	 * Set whether the radio button should be displayed inline.
+	 *
+	 * This method determines whether the radio button and its label should be displayed inline with other elements.
+	 * Inline radio buttons are typically used when multiple radio buttons need to appear on the same line.
+	 *
+	 * @since 0.1.0
+	 * @param bool $inline Indicates whether the radio button should be displayed inline.
+	 * @return $this Returns the Radio instance for method chaining.
+	 */
+	public function setInline( bool $inline ): self {
+		$this->inline = $inline;
+
+		return $this;
+	}
+
+	/**
+	 * Set additional HTML attributes for the radio input.
+	 *
+	 * This method allows custom HTML attributes to be added to the radio input element, such as `id`, `data-*`,
+	 * `aria-*`, or any other valid attributes. These attributes can be used to integrate the radio button with
+	 * JavaScript, enhance accessibility, or provide additional metadata.
+	 *
+	 * The values of these attributes are automatically escaped to prevent XSS vulnerabilities.
+	 *
+	 * Example usage:
+	 *
+	 *     $radio->setInputAttributes([
+	 *         'id' => 'radio-button-1',
+	 *         'data-toggle' => 'radio-toggle',
+	 *         'aria-label' => 'Radio Button 1'
+	 *     ]);
+	 *
+	 * @since 0.1.0
+	 * @param array $inputAttributes An associative array of HTML attributes for the input element.
+	 * @return $this Returns the Radio instance for method chaining.
+	 */
+	public function setInputAttributes( array $inputAttributes ): self {
+		foreach ( $inputAttributes as $key => $value ) {
+			$this->inputAttributes[$key] = $value;
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Set additional HTML attributes for the outer wrapper element.
+	 *
+	 * This method allows custom HTML attributes to be added to the outer wrapper element,
+	 * enhancing its behavior or styling.
+	 *
+	 * Example usage:
+	 *
+	 *     $textInput->setWrapperAttributes(['id' => 'custom-wrapper']);
+	 *
+	 * @since 0.1.0
+	 * @param array $wrapperAttributes An associative array of HTML attributes for the wrapper element.
+	 * @return $this Returns the Radio instance for method chaining.
+	 */
+	public function setWrapperAttributes( array $wrapperAttributes ): self {
+		foreach ( $wrapperAttributes as $key => $value ) {
+			$this->wrapperAttributes[$key] = $value;
+		}
+
+		return $this;
 	}
 }

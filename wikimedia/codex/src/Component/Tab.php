@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * Tab.php
  *
@@ -16,12 +18,11 @@
 
 namespace Wikimedia\Codex\Component;
 
+use InvalidArgumentException;
+use Wikimedia\Codex\Traits\ContentSetter;
+
 /**
  * Tab
- *
- * This class is part of the Codex PHP library and is responsible for
- * representing an immutable object. It is primarily intended for use
- * with a builder class to construct its instances.
  *
  * @category Component
  * @package  Codex\Component
@@ -31,63 +32,17 @@ namespace Wikimedia\Codex\Component;
  * @link     https://doc.wikimedia.org/codex/main/ Codex Documentation
  */
 class Tab {
+	use ContentSetter;
 
-	/**
-	 * The ID for the tab.
-	 */
-	private string $id;
+	private string $id = '';
 
-	/**
-	 * The unique name of the tab, used for programmatic selection.
-	 */
-	private string $name;
-
-	/**
-	 * The text label displayed for the tab in the Tabs component's header.
-	 */
-	private string $label;
-
-	/**
-	 * The HTML content associated with the tab, displayed when the tab is selected.
-	 */
-	private string $content;
-
-	/**
-	 * Indicates whether the tab is selected by default.
-	 */
-	private bool $selected;
-
-	/**
-	 * Indicates whether the tab is disabled, preventing interaction and navigation.
-	 */
-	private bool $disabled;
-
-	/**
-	 * Constructor for the Tab component.
-	 *
-	 * Initializes a Tab instance with the specified properties.
-	 *
-	 * @param string $id The ID for the tab.
-	 * @param string $name The unique name of the tab.
-	 * @param string $label The label of the tab.
-	 * @param string $content The content of the tab.
-	 * @param bool $selected Whether the tab is selected by default.
-	 * @param bool $disabled Whether the tab is disabled.
-	 */
 	public function __construct(
-		string $id,
-		string $name,
-		string $label,
-		string $content,
-		bool $selected,
-		bool $disabled
+		private string $name,
+		private string $label,
+		private string|HtmlSnippet $content,
+		private bool $selected,
+		private bool $disabled
 	) {
-		$this->id = $id;
-		$this->name = $name;
-		$this->label = $label;
-		$this->content = $content;
-		$this->selected = $selected;
-		$this->disabled = $disabled;
 	}
 
 	/**
@@ -127,9 +82,9 @@ class Tab {
 	 * Get the tab's content.
 	 *
 	 * @since 0.1.0
-	 * @return string The content of the tab.
+	 * @return string|HtmlSnippet The content of the tab.
 	 */
-	public function getContent(): string {
+	public function getContent(): string|HtmlSnippet {
 		return $this->content;
 	}
 
@@ -151,5 +106,104 @@ class Tab {
 	 */
 	public function isDisabled(): bool {
 		return $this->disabled;
+	}
+
+	/**
+	 * Set the tab HTML ID attribute.
+	 *
+	 * @deprecated Use setAttributes() to set the ID
+	 * @since 0.1.0
+	 * @param string $id The ID for the tab element.
+	 * @return $this
+	 */
+	public function setId( string $id ): self {
+		$this->id = $id;
+
+		return $this;
+	}
+
+	/**
+	 * Set the name for the tab.
+	 *
+	 * The name is used for programmatic selection, and it also serves as the default label if none is provided.
+	 *
+	 * @since 0.1.0
+	 * @param string $name The unique name of the tab, used for programmatic selection.
+	 * @return $this Returns the Tab instance for method chaining.
+	 */
+	public function setName( string $name ): self {
+		if ( trim( $name ) === '' ) {
+			throw new InvalidArgumentException( 'Tab name cannot be empty.' );
+		}
+		$this->name = $name;
+
+		return $this;
+	}
+
+	/**
+	 * Set the label for the tab.
+	 *
+	 * The label corresponds to the text displayed in the Tabs component's header for this tab.
+	 * If not set, the label will default to the name of the tab.
+	 *
+	 * @since 0.1.0
+	 * @param string $label The label text to be displayed in the Tabs component's header.
+	 * @return $this Returns the Tab instance for method chaining.
+	 */
+	public function setLabel( string $label ): self {
+		if ( trim( $label ) === '' ) {
+			throw new InvalidArgumentException( 'Tab label cannot be empty.' );
+		}
+		$this->label = $label;
+
+		return $this;
+	}
+
+	/**
+	 * Set whether the tab should be selected by default.
+	 *
+	 * @since 0.1.0
+	 * @param bool $selected Whether this tab should be selected by default.
+	 * @return $this Returns the Tab instance for method chaining.
+	 */
+	public function setSelected( bool $selected ): self {
+		$this->selected = $selected;
+
+		return $this;
+	}
+
+	/**
+	 * Set the disabled state for the tab.
+	 *
+	 * Disabled tabs cannot be accessed via label clicks or keyboard navigation.
+	 *
+	 * @since 0.1.0
+	 * @param bool $disabled Whether or not the tab is disabled.
+	 * @return $this Returns the Tab instance for method chaining.
+	 */
+	public function setDisabled( bool $disabled ): self {
+		$this->disabled = $disabled;
+
+		return $this;
+	}
+
+	/**
+	 * Set the content of the tab.
+	 *
+	 * @param string|HtmlSnippet $content Text or HTML to be displayed when this tab is selected.
+	 * @return $this Returns the Tab instance for method chaining.
+	 */
+	public function setContent( string|HtmlSnippet $content ): self {
+		$this->content = $content;
+
+		return $this;
+	}
+
+	/**
+	 * Backwards compatibility for the pre-0.8 API.
+	 * @return static
+	 */
+	public function build() {
+		return $this;
 	}
 }

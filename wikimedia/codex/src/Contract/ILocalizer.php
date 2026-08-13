@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * ILocalizer.php
  *
@@ -47,7 +49,7 @@ interface ILocalizer {
 	 *
 	 * @since 0.1.0
 	 * @param string $key The message key.
-	 * @param string ...$params Optional parameters for placeholders in the message.
+	 * @param mixed ...$params Optional parameters for placeholders in the message.
 	 * @return string The localized message.
 	 */
 	public function msg( string $key, ...$params ): string;

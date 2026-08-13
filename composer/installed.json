@@ -7419,38 +7419,37 @@
         },
         {
             "name": "wikimedia/codex",
-            "version": "v0.7.2",
-            "version_normalized": "0.7.2.0",
+            "version": "v0.8.0",
+            "version_normalized": "0.8.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/design-codex-php.git",
-                "reference": "db7e03ecee5d1daa4cbf868556d3db7af4c53b78"
+                "reference": "2daa4ea65cef28926a73da7ea8d5fc6cf2d20954"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/design-codex-php/zipball/db7e03ecee5d1daa4cbf868556d3db7af4c53b78",
-                "reference": "db7e03ecee5d1daa4cbf868556d3db7af4c53b78",
+                "url": "https://api.github.com/repos/wikimedia/design-codex-php/zipball/2daa4ea65cef28926a73da7ea8d5fc6cf2d20954",
+                "reference": "2daa4ea65cef28926a73da7ea8d5fc6cf2d20954",
                 "shasum": ""
             },
             "require": {
                 "ext-intl": "*",
-                "ext-json": "*",
                 "guzzlehttp/psr7": "^2.7",
                 "krinkle/intuition": "^2.3",
-                "php": "^7.4 || ^8.0",
+                "php": ">=8.2.0",
                 "wikimedia/services": "^4.0",
                 "zordius/lightncandy": "1.2.6"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "47.0.0",
-                "mediawiki/mediawiki-phan-config": "0.16.0",
-                "mediawiki/minus-x": "1.1.3",
-                "ockcyp/covers-validator": "1.6.0",
+                "mediawiki/mediawiki-codesniffer": "50.0.0",
+                "mediawiki/mediawiki-phan-config": "0.20.0",
+                "mediawiki/minus-x": "2.0.1",
+                "ockcyp/covers-validator": "1.7.0",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
                 "php-parallel-lint/php-parallel-lint": "1.4.0",
-                "phpunit/phpunit": "9.6.21"
+                "phpunit/phpunit": "10.5.63"
             },
-            "time": "2026-08-26T18:10:20+00:00",
+            "time": "2026-04-28T00:48:39+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -7476,7 +7475,7 @@
             ],
             "support": {
                 "issues": "https://phabricator.wikimedia.org/tag/codex/",
-                "source": "https://github.com/wikimedia/design-codex-php/tree/v0.7.2"
+                "source": "https://github.com/wikimedia/design-codex-php/tree/v0.8.0"
             },
             "install-path": "../wikimedia/codex"
         },

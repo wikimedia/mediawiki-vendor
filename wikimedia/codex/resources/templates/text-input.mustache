@@ -1,5 +1,5 @@
-<div class="cdx-text-input cdx-text-input--status-{{status}}{{#hasStartIcon}} cdx-text-input--has-start-icon{{/hasStartIcon}}{{#hasEndIcon}} cdx-text-input--has-end-icon{{/hasEndIcon}}{{#renderClasses}}{{wrapperAttributes}}{{/renderClasses}}"{{#renderAttributes}}{{{ wrapperAttributes }}}{{/renderAttributes}}>
-  <input class="cdx-text-input__input{{#renderClasses}} {{inputAttributes}}{{/renderClasses}}" type="{{ type }}"{{#inputId}} id="{{ inputId }}"{{/inputId}} name="{{ name }}" value="{{ value }}" {{#placeholder }}placeholder="{{ placeholder }}"{{/placeholder }}{{#isDisabled}} disabled{{/isDisabled}}{{#renderAttributes}}{{{ inputAttributes }}}{{/renderAttributes}}/>
+<div class="cdx-text-input cdx-text-input--status-{{status}}{{#hasStartIcon}} cdx-text-input--has-start-icon{{/hasStartIcon}}{{#hasEndIcon}} cdx-text-input--has-end-icon{{/hasEndIcon}}{{{ wrapperExtraClasses }}}"{{{ wrapperAttributes }}}>
+  <input class="cdx-text-input__input{{{inputExtraClasses}}}" type="{{ type }}"{{#inputId}} id="{{ inputId }}"{{/inputId}} name="{{ name }}" value="{{ value }}" {{#placeholder }}placeholder="{{ placeholder }}"{{/placeholder }}{{#isDisabled}} disabled{{/isDisabled}}{{{ inputAttributes }}}/>
   {{#hasStartIcon}}
     <span class="cdx-text-input__icon cdx-text-input__start-icon {{ startIconClass }}"></span>
   {{/hasStartIcon}}

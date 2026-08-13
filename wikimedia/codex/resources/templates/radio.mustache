@@ -1,12 +1,11 @@
 <div class="cdx-radio{{!
-  }}{{#isInline}} cdx-radio--inline{{/isInline}}{{#renderClasses}}{{wrapperAttributes}}{{/renderClasses}}"{{!
-  }}{{#wrapperId}} id="{{ wrapperId }}"{{/wrapperId}}{{!
-  }}{{#renderAttributes}}{{{ wrapperAttributes }}}{{/renderAttributes}}>
-  <input class="cdx-radio__input{{#renderClasses}}{{inputAttributes}}{{/renderClasses}}" type="radio"{{#inputId}} id="{{ inputId }}"{{/inputId}} name="{{name}}" value="{{value}}"{{!
+  }}{{#isInline}} cdx-radio--inline{{/isInline}}{{{ wrapperExtraClasses }}}"{{!
+  }}{{{ wrapperAttributes }}}>
+  <input class="cdx-radio__input{{{ inputExtraClasses }}}" type="radio"{{#inputId}} id="{{ inputId }}"{{/inputId}} name="{{name}}" value="{{value}}"{{!
     }}{{#isChecked}} checked{{/isChecked}}{{!
     }}{{#isDisabled}} disabled{{/isDisabled}}{{!
     }}{{#ariaDescribedby}} aria-describedby="{{ ariaDescribedby }}"{{/ariaDescribedby}}{{!
-    }}{{#renderAttributes}}{{{ inputAttributes }}}{{/renderAttributes}}>
+    }}{{{ inputAttributes }}}>
   <span class="cdx-radio__icon"></span>
   {{#label}}
     {{> label}}

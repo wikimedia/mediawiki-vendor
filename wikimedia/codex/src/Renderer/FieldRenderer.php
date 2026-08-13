@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * FieldRenderer.php
  *
@@ -20,9 +22,11 @@ namespace Wikimedia\Codex\Renderer;
 
 use InvalidArgumentException;
 use Wikimedia\Codex\Component\Field;
-use Wikimedia\Codex\Contract\Renderer\IRenderer;
+use Wikimedia\Codex\Component\HtmlSnippet;
+use Wikimedia\Codex\Contract\Component;
+use Wikimedia\Codex\Contract\ILocalizer;
+use Wikimedia\Codex\Contract\Renderer;
 use Wikimedia\Codex\Parser\TemplateParser;
-use Wikimedia\Codex\Traits\AttributeResolver;
 use Wikimedia\Codex\Utility\Codex;
 use Wikimedia\Codex\Utility\Sanitizer;
 
@@ -41,26 +45,7 @@ use Wikimedia\Codex\Utility\Sanitizer;
  * @license  https://www.gnu.org/copyleft/gpl.html GPL-2.0-or-later
  * @link     https://doc.wikimedia.org/codex/main/ Codex Documentation
  */
-class FieldRenderer implements IRenderer {
-	/**
-	 * Use the AttributeResolver trait
-	 */
-	use AttributeResolver;
-
-	/**
-	 * The sanitizer instance used for content sanitization.
-	 */
-	private Sanitizer $sanitizer;
-
-	/**
-	 * The template parser instance.
-	 */
-	private TemplateParser $templateParser;
-
-	/**
-	 * The codex instance.
-	 */
-	private Codex $codex;
+class FieldRenderer extends Renderer {
 
 	/**
 	 * Constructor to initialize the FieldRenderer with a sanitizer and a template parser.
@@ -68,11 +53,16 @@ class FieldRenderer implements IRenderer {
 	 * @since 0.1.0
 	 * @param Sanitizer $sanitizer The sanitizer instance used for content sanitization.
 	 * @param TemplateParser $templateParser The template parser instance.
+	 * @param ILocalizer $localizer The localizer instance used for i18n messages.
+	 * @param Codex $codex The Codex instance for creating other components.
 	 */
-	public function __construct( Sanitizer $sanitizer, TemplateParser $templateParser ) {
-		$this->sanitizer = $sanitizer;
-		$this->templateParser = $templateParser;
-		$this->codex = new Codex();
+	public function __construct(
+		Sanitizer $sanitizer,
+		private readonly TemplateParser $templateParser,
+		private readonly ILocalizer $localizer,
+		private readonly Codex $codex
+	) {
+		parent::__construct( $sanitizer );
 	}
 
 	/**
@@ -81,37 +71,51 @@ class FieldRenderer implements IRenderer {
 	 * Uses the provided Field component to generate HTML markup adhering to the Codex design system.
 	 *
 	 * @since 0.1.0
-	 * @param Field $component The Field component to render.
+	 * @param Component $component The Field component to render.
 	 * @return string The rendered HTML string for the component.
 	 */
-	public function render( $component ): string {
+	public function render( Component $component ): string {
 		if ( !$component instanceof Field ) {
 			throw new InvalidArgumentException( "Expected instance of Field, got " . get_class( $component ) );
 		}
 
 		$label = $component->getLabel();
+		$labelData = null;
 
-		$labelData = [
-			'id' => $this->sanitizer->sanitizeText( $label->getId() ),
-			'isLegend' => $component->isFieldset(),
-			'inputId' => $this->sanitizer->sanitizeText( $label->getInputId() ),
-			'labelText' => $label->getLabelText(),
-			'optionalFlag' => $label->isOptional(),
-			'isVisuallyHidden' => $label->isVisuallyHidden(),
-			'description' => $this->sanitizer->sanitizeText( $label->getDescription() ),
-			'descriptionId' => $this->sanitizer->sanitizeText( $label->getDescriptionId() ),
-			'icon' => $this->sanitizer->sanitizeText( $label->getIconClass() ),
-			'isDisabled' => $label->isDisabled(),
-			'attributes' =>
-				$this->resolve( $this->sanitizer->sanitizeAttributes( $label->getAttributes() )
-				),
-		];
+		if ( $label ) {
+			$labelData = [
+				'id' => $label->getId(),
+				'isLegend' => $component->isFieldset(),
+				'inputId' => $label->getInputId(),
+				'labelText-html' => $this->sanitizer->sanitizeText( $label->getLabelText() ),
+				'optionalFlag' => $label->isOptional() ?
+					$this->localizer->msg( 'cdx-label-optional-flag' ) :
+					null,
+				'isVisuallyHidden' => $label->isVisuallyHidden(),
+				'description-html' => $this->sanitizer->sanitizeText( $label->getDescription() ),
+				'descriptionId' => $label->getDescriptionId(),
+				'icon' => $label->getIconClass(),
+				'isDisabled' => $label->isDisabled(),
+				'extraClasses' => $this->getExtraClasses( $label->getAttributes() ),
+				'attributes' => $this->getOtherAttributes( $label->getAttributes() ),
+			];
+		}
 
 		$fieldData = [
-			'id' => $this->sanitizer->sanitizeText( $component->getId() ),
+			'id' => $component->getId(),
 			'isFieldset' => $component->isFieldset(),
-			'fields' => $component->getFields(),
-			'attributes' => $this->resolve( $this->sanitizer->sanitizeAttributes( $component->getAttributes() ) ),
+			'fields-html' => array_map( static function ( $field ) {
+				if ( $field instanceof Component ) {
+					return $field->getHtml();
+				}
+				if ( $field instanceof HtmlSnippet ) {
+					return $field->getContent();
+				}
+				// Raw strings are deprecated; deprecation warning is thrown in Field.php
+				return $field;
+			}, $component->getFields() ),
+			'extraClasses' => $this->getExtraClasses( $component->getAttributes() ),
+			'attributes' => $this->getOtherAttributes( $component->getAttributes() ),
 			'label' => $labelData,
 		];
 

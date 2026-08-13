@@ -1,4 +1,4 @@
-<div class="cdx-info-chip{{#status}} cdx-info-chip--{{ status }}{{/status}}{{#renderClasses}}{{{attributes}}}{{/renderClasses}}"{{#id}} id="{{ id }}"{{/id}}{{#renderAttributes}}{{{attributes}}}{{/renderAttributes}}>
+<div class="cdx-info-chip{{#status}} cdx-info-chip--{{ status }}{{/status}}{{{ extraClasses }}}"{{#id}} id="{{ id }}"{{/id}}{{{ attributes }}}>
   {{#status}}
   {{#icon}}
   <span class="{{ icon }}" aria-hidden="true"></span>
@@ -9,5 +9,5 @@
   {{/showStatusIcon}}
   {{/icon}}
   {{/status}}
-  <span class="cdx-info-chip--text">{{ text }}</span>
+  <span class="cdx-info-chip__text">{{{ text-html }}}</span>
 </div>

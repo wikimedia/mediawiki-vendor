@@ -19,7 +19,7 @@ To generate a simple list of changes since the last release, use a command like
 this one:
 
 ```bash
-git log --pretty=oneline v0.1.0..HEAD | sort | uniq
+git log --reverse v0.8.0.. --format="* %s"
 ```
 
 Related changes can be grouped under headings like `Added`, `Changed`,

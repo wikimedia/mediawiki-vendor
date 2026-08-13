@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * Table.php
  *
@@ -16,14 +18,11 @@
 
 namespace Wikimedia\Codex\Component;
 
+use Wikimedia\Codex\Contract\Component;
 use Wikimedia\Codex\Renderer\TableRenderer;
 
 /**
  * Table
- *
- * This class is part of the Codex PHP library and is responsible for
- * representing an immutable object. It is primarily intended for use
- * with a builder class to construct its instances.
  *
  * @category Component
  * @package  Codex\Component
@@ -32,7 +31,8 @@ use Wikimedia\Codex\Renderer\TableRenderer;
  * @license  https://www.gnu.org/copyleft/gpl.html GPL-2.0-or-later
  * @link     https://doc.wikimedia.org/codex/main/ Codex Documentation
  */
-class Table {
+class Table extends Component {
+	private string $id = '';
 
 	/**
 	 * Sort direction for ascending order.
@@ -44,160 +44,26 @@ class Table {
 	 */
 	public const SORT_DESCENDING = 'desc';
 
-	/**
-	 * The ID for the table.
-	 */
-	protected string $id;
-
-	/**
-	 * The caption for the table.
-	 */
-	protected string $caption;
-
-	/**
-	 * Whether the caption is hidden.
-	 */
-	protected bool $hideCaption;
-
-	/**
-	 * The content for the table header.
-	 */
-	protected ?string $headerContent;
-
-	/**
-	 * Array of columns for the table.
-	 */
-	protected array $columns;
-
-	/**
-	 * Array of data for the table rows.
-	 */
-	protected array $data;
-
-	/**
-	 * Whether row headers are used.
-	 */
-	protected bool $useRowHeaders;
-
-	/**
-	 * Array of sorting configurations.
-	 */
-	protected array $sort;
-
-	/**
-	 * The current sorted column.
-	 */
-	protected ?string $currentSortColumn;
-
-	/**
-	 * The current sort direction.
-	 */
-	protected string $currentSortDirection;
-
-	/**
-	 * Whether to show vertical borders.
-	 */
-	protected bool $showVerticalBorders;
-
-	/**
-	 * Additional HTML attributes for the table.
-	 */
-	protected array $attributes;
-
-	/**
-	 * Whether pagination is enabled.
-	 */
-	protected bool $paginate;
-
-	/**
-	 * The total number of rows in the table.
-	 */
-	protected int $totalRows;
-
-	/**
-	 * The pagination position ('top', 'bottom', or 'both').
-	 */
-	protected string $paginationPosition;
-
-	/**
-	 * The pager for handling pagination.
-	 */
-	protected ?Pager $pager;
-
-	/**
-	 * The footer content of the table.
-	 */
-	protected ?string $footer;
-
-	/**
-	 * The renderer instance used to render the table.
-	 */
-	protected TableRenderer $renderer;
-
-	/**
-	 * Constructor for the Table class.
-	 *
-	 * Initializes the Table with the necessary properties.
-	 *
-	 * @param string $id The ID for the table.
-	 * @param string $caption The caption for the table.
-	 * @param bool $hideCaption Whether the caption is hidden.
-	 * @param array $columns Array of columns.
-	 * @param-taint $columns exec_html Callers are responsible for escaping
-	 * @param array $data Array of row data.
-	 * @param bool $useRowHeaders Whether to use row headers.
-	 * @param ?string $headerContent The header content.
-	 * @param-taint $headerContent exec_html Callers are responsible for escaping
-	 * @param array $sort Array of sorting configurations.
-	 * @param ?string $currentSortColumn The current sorted column.
-	 * @param string $currentSortDirection The current sort direction.
-	 * @param bool $showVerticalBorders Whether to show vertical borders.
-	 * @param array $attributes Additional HTML attributes.
-	 * @param bool $paginate Whether pagination is enabled.
-	 * @param int $totalRows The total number of rows.
-	 * @param string $paginationPosition The pagination position.
-	 * @param ?Pager $pager The pager for handling pagination.
-	 * @param ?string $footer The footer content.
-	 * @param TableRenderer $renderer The renderer instance.
-	 */
 	public function __construct(
-		string $id,
-		string $caption,
-		bool $hideCaption,
-		array $columns,
-		array $data,
-		bool $useRowHeaders,
-		?string $headerContent,
-		array $sort,
-		?string $currentSortColumn,
-		string $currentSortDirection,
-		bool $showVerticalBorders,
-		array $attributes,
-		bool $paginate,
-		int $totalRows,
-		string $paginationPosition,
-		?Pager $pager,
-		?string $footer,
-		TableRenderer $renderer
+		TableRenderer $renderer,
+		private string $caption,
+		private bool $hideCaption,
+		private array $columns,
+		private array $data,
+		private bool $useRowHeaders,
+		private string|HtmlSnippet|null $headerContent,
+		private array $sort,
+		private ?string $currentSortColumn,
+		private string $currentSortDirection,
+		private bool $showVerticalBorders,
+		private bool $paginate,
+		private int $totalRows,
+		private string $paginationPosition,
+		private ?Pager $pager,
+		private string|HtmlSnippet|null $footer,
+		private array $attributes
 	) {
-		$this->id = $id;
-		$this->caption = $caption;
-		$this->hideCaption = $hideCaption;
-		$this->columns = $columns;
-		$this->data = $data;
-		$this->useRowHeaders = $useRowHeaders;
-		$this->headerContent = $headerContent;
-		$this->sort = $sort;
-		$this->currentSortColumn = $currentSortColumn;
-		$this->currentSortDirection = $currentSortDirection;
-		$this->showVerticalBorders = $showVerticalBorders;
-		$this->attributes = $attributes;
-		$this->paginate = $paginate;
-		$this->totalRows = $totalRows;
-		$this->paginationPosition = $paginationPosition;
-		$this->pager = $pager;
-		$this->footer = $footer;
-		$this->renderer = $renderer;
+		parent::__construct( $renderer );
 	}
 
 	/**
@@ -294,9 +160,9 @@ class Table {
 	 * to the table.
 	 *
 	 * @since 0.1.0
-	 * @return string|null The footer content or null if not set.
+	 * @return string|HtmlSnippet|null The footer content or null if not set.
 	 */
-	public function getFooter(): ?string {
+	public function getFooter(): string|HtmlSnippet|null {
 		return $this->footer;
 	}
 
@@ -306,9 +172,9 @@ class Table {
 	 * This method returns the custom content for the table's header if it is set, such as actions or additional text.
 	 *
 	 * @since 0.1.0
-	 * @return string|null The header content or null if not set.
+	 * @return string|HtmlSnippet|null The header content or null if not set.
 	 */
-	public function getHeaderContent(): ?string {
+	public function getHeaderContent(): string|HtmlSnippet|null {
 		return $this->headerContent;
 	}
 
@@ -400,16 +266,317 @@ class Table {
 	}
 
 	/**
-	 * Get the component's HTML representation.
+	 * Set the Table HTML ID attribute.
 	 *
-	 * This method generates the HTML markup for the component, incorporating relevant properties
-	 * and any additional attributes. The component is structured using appropriate HTML elements
-	 * as defined by the implementation.
+	 * @deprecated Use setAttributes() to set the ID
+	 * @since 0.1.0
+	 * @param string $id The ID for the Table element.
+	 * @return $this
+	 */
+	public function setId( string $id ): self {
+		$this->id = $id;
+
+		return $this;
+	}
+
+	/**
+	 * Set the caption for the table.
+	 *
+	 * The caption provides a description of the table's contents and purpose. It is essential for accessibility
+	 * as it helps screen readers convey the context of the table to users. To visually hide the caption while
+	 * keeping it accessible, use the `setHideCaption()` method.
+	 *
+	 * Example usage:
+	 *
+	 *     $table->setCaption('Article List');
 	 *
 	 * @since 0.1.0
-	 * @return string The generated HTML string for the component.
+	 * @param string $caption The caption text to be displayed above the table.
+	 * @return $this Returns the Table instance for method chaining.
 	 */
-	public function getHtml(): string {
-		return $this->renderer->render( $this );
+	public function setCaption( string $caption ): self {
+		$this->caption = $caption;
+
+		return $this;
+	}
+
+	/**
+	 * Set whether to hide the caption.
+	 *
+	 * If set to true, the caption will be visually hidden but still accessible to screen readers.
+	 *
+	 * @since 0.1.0
+	 * @param bool $hideCaption Indicates if the caption should be visually hidden.
+	 * @return $this Returns the Table instance for method chaining.
+	 */
+	public function setHideCaption( bool $hideCaption ): self {
+		$this->hideCaption = $hideCaption;
+
+		return $this;
+	}
+
+	/**
+	 * Set the columns for the table.
+	 *
+	 * Each column is defined by an associative array with attributes such as 'id', 'label', 'sortable', etc.
+	 * The 'label' can be a string (plain text) or an HtmlSnippet object (raw HTML).
+	 *
+	 * Example usage:
+	 *
+	 *     $table->setColumns([
+	 *         ['id' => 'title', 'label' => 'Title', 'sortable' => true],
+	 *         ['id' => 'creation_date', 'label' => 'Creation Date', 'sortable' => false]
+	 *     ]);
+	 *
+	 * @since 0.1.0
+	 * @param array $columns An array of columns, where each column is an associative array containing column
+	 *                       attributes.
+	 * @return $this Returns the Table instance for method chaining.
+	 */
+	public function setColumns( array $columns ): self {
+		$this->columns = $columns;
+
+		return $this;
+	}
+
+	/**
+	 * Set the data for the table.
+	 *
+	 * The data array should correspond to the columns defined. Each row is an associative array where keys match
+	 * column IDs. The values can be strings (plain text) or HtmlSnippet objects (raw HTML).
+	 *
+	 * Example usage:
+	 *
+	 *     $table->setData([
+	 *         ['title' => 'Mercury', 'creation_date' => '2024-01-01'],
+	 *         ['title' => 'Venus', 'creation_date' => '2024-01-02'],
+	 *     ]);
+	 *
+	 * @since 0.1.0
+	 * @param array $data An array of data to be displayed in the table, where each row is an associative array with
+	 *                    keys matching column IDs.
+	 * @return $this Returns the Table instance for method chaining.
+	 */
+	public function setData( array $data ): self {
+		$this->data = $data;
+
+		return $this;
+	}
+
+	/**
+	 * Set whether to use row headers.
+	 *
+	 * If enabled, the first column of the table will be treated as row headers. This is useful for accessibility
+	 * and to provide additional context for each row.
+	 *
+	 * @since 0.1.0
+	 * @param bool $useRowHeaders Indicates if row headers should be used.
+	 * @return $this Returns the Table instance for method chaining.
+	 */
+	public function setUseRowHeaders( bool $useRowHeaders ): self {
+		$this->useRowHeaders = $useRowHeaders;
+
+		return $this;
+	}
+
+	/**
+	 * Set whether to show vertical borders between columns.
+	 *
+	 * Vertical borders can help distinguish between columns, especially in tables with many columns.
+	 *
+	 * @since 0.1.0
+	 * @param bool $showVerticalBorders Indicates if vertical borders should be displayed between columns.
+	 * @return $this Returns the Table instance for method chaining.
+	 */
+	public function setShowVerticalBorders( bool $showVerticalBorders ): self {
+		$this->showVerticalBorders = $showVerticalBorders;
+
+		return $this;
+	}
+
+	/**
+	 * Set the sort order for the table.
+	 *
+	 * This method defines the initial sort order for the table. The array should contain
+	 * column IDs as keys and sort directions ('asc' or 'desc') as values.
+	 *
+	 * Example usage:
+	 *
+	 *     $table->setSort([
+	 *         'column1' => 'asc',
+	 *         'column2' => 'desc'
+	 *     ]);
+	 *
+	 * @since 0.1.0
+	 * @param array $sort An associative array of column IDs and their respective sort directions ('asc' or 'desc').
+	 * @return $this Returns the Table instance for method chaining.
+	 */
+	public function setSort( array $sort ): self {
+		$this->sort = $sort;
+
+		return $this;
+	}
+
+	/**
+	 * Set whether the table should be paginated.
+	 *
+	 * If enabled, pagination controls will be added to the table, allowing users to navigate through multiple pages of
+	 * data.
+	 *
+	 * @since 0.1.0
+	 * @param bool $paginate Indicates if the table should be paginated.
+	 * @return $this Returns the Table instance for method chaining.
+	 */
+	public function setPaginate( bool $paginate ): self {
+		$this->paginate = $paginate;
+
+		return $this;
+	}
+
+	/**
+	 * Set the total number of rows in the table.
+	 *
+	 * This value is used in conjunction with pagination to calculate the total number of pages and to display the
+	 * current range of rows.
+	 *
+	 * @since 0.1.0
+	 * @param int $totalRows The total number of rows in the table.
+	 * @return $this Returns the Table instance for method chaining.
+	 */
+	public function setTotalRows( int $totalRows ): self {
+		$this->totalRows = $totalRows;
+
+		return $this;
+	}
+
+	/**
+	 * Set the position of the pagination controls.
+	 *
+	 * The pagination controls can be displayed at the top, bottom, or both top and bottom of the table.
+	 *
+	 * @since 0.1.0
+	 * @param string $paginationPosition The position of the pagination controls ('top', 'bottom', 'both').
+	 * @return $this Returns the Table instance for method chaining.
+	 */
+	public function setPaginationPosition( string $paginationPosition ): self {
+		$this->paginationPosition = $paginationPosition;
+
+		return $this;
+	}
+
+	/**
+	 * Set additional HTML attributes for the table element.
+	 *
+	 * This method allows custom HTML attributes to be added to the `<table>` element, such as `id`, `class`,
+	 * or `data-*` attributes. These attributes are automatically escaped to prevent XSS vulnerabilities.
+	 *
+	 * Example usage:
+	 *
+	 *     $table->setAttributes(['class' => 'custom-table-class', 'data-info' => 'additional-info']);
+	 *
+	 * @since 0.1.0
+	 * @param array $attributes An associative array of HTML attributes to be added to the `<table>` element.
+	 *
+	 * @return $this Returns the Table instance for method chaining.
+	 */
+	public function setAttributes( array $attributes ): self {
+		foreach ( $attributes as $key => $value ) {
+			$this->attributes[$key] = $value;
+		}
+		return $this;
+	}
+
+	/**
+	 * Set the Pager instance for the table.
+	 *
+	 * The Pager instance provides pagination controls for the table. If set, pagination controls will be rendered
+	 * according to the settings.
+	 *
+	 * @since 0.1.0
+	 * @param Pager $pager The Pager instance.
+	 * @return $this Returns the Table instance for method chaining.
+	 */
+	public function setPager( Pager $pager ): self {
+		$this->pager = $pager;
+
+		return $this;
+	}
+
+	/**
+	 * Set the footer content for the table.
+	 *
+	 * The footer is an optional section that can contain additional information or actions related to the table.
+	 *
+	 * @since 0.1.0
+	 * @param string|HtmlSnippet $footer The footer content.
+	 * @return $this Returns the Table instance for method chaining.
+	 */
+	public function setFooter( string|HtmlSnippet $footer ): self {
+		$this->footer = $footer;
+
+		return $this;
+	}
+
+	/**
+	 * Set the header content for the table.
+	 *
+	 * This method allows custom content to be added to the table's header, such as actions or additional text.
+	 *
+	 * Example usage:
+	 *
+	 *     $table->setHeaderContent('Custom Actions');
+	 *
+	 * @since 0.1.0
+	 * @param string|HtmlSnippet $headerContent The content to be displayed in the table header.
+	 * @return $this Returns the Table instance for method chaining.
+	 */
+	public function setHeaderContent( string|HtmlSnippet $headerContent ): self {
+		$this->headerContent = $headerContent;
+
+		return $this;
+	}
+
+	/**
+	 * Set the current sort column.
+	 *
+	 * This method specifies which column is currently being used for sorting the table data.
+	 * The column with this ID will be marked as sorted in the table header.
+	 *
+	 * Example usage:
+	 *
+	 *     $table->setCurrentSortColumn('title');
+	 *
+	 * @since 0.1.0
+	 * @param string $currentSortColumn The ID of the column used for sorting.
+	 *
+	 * @return $this Returns the Table instance for method chaining.
+	 */
+	public function setCurrentSortColumn( string $currentSortColumn ): self {
+		$this->currentSortColumn = $currentSortColumn;
+
+		return $this;
+	}
+
+	/**
+	 * Set the current sort direction.
+	 *
+	 * This method specifies the direction for sorting the table data. Acceptable values are 'asc' for ascending
+	 * and 'desc' for descending. The method validates these values to ensure they are correct.
+	 *
+	 * Example usage:
+	 *
+	 *     $table->setCurrentSortDirection('asc');
+	 *
+	 * @since 0.1.0
+	 * @param string $currentSortDirection The sort direction ('asc' or 'desc').
+	 *
+	 * @return $this Returns the Table instance for method chaining.
+	 */
+	public function setCurrentSortDirection( string $currentSortDirection ): self {
+		if ( $currentSortDirection === self::SORT_ASCENDING || $currentSortDirection === self::SORT_DESCENDING ) {
+			$this->currentSortDirection = $currentSortDirection;
+		}
+
+		return $this;
 	}
 }

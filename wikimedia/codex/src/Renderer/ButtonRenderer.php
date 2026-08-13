@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * ButtonRenderer.php
  *
@@ -20,9 +22,9 @@ namespace Wikimedia\Codex\Renderer;
 
 use InvalidArgumentException;
 use Wikimedia\Codex\Component\Button;
-use Wikimedia\Codex\Contract\Renderer\IRenderer;
+use Wikimedia\Codex\Contract\Component;
+use Wikimedia\Codex\Contract\Renderer;
 use Wikimedia\Codex\Parser\TemplateParser;
-use Wikimedia\Codex\Traits\AttributeResolver;
 use Wikimedia\Codex\Utility\Sanitizer;
 
 /**
@@ -40,17 +42,7 @@ use Wikimedia\Codex\Utility\Sanitizer;
  * @license  https://www.gnu.org/copyleft/gpl.html GPL-2.0-or-later
  * @link     https://doc.wikimedia.org/codex/main/ Codex Documentation
  */
-class ButtonRenderer implements IRenderer {
-
-	/**
-	 * Use the AttributeResolver trait
-	 */
-	use AttributeResolver;
-
-	/**
-	 * The sanitizer instance used for content sanitization.
-	 */
-	private Sanitizer $sanitizer;
+class ButtonRenderer extends Renderer {
 
 	/**
 	 * The template parser instance.
@@ -65,7 +57,7 @@ class ButtonRenderer implements IRenderer {
 	 * @param TemplateParser $templateParser The template parser instance used for rendering templates.
 	 */
 	public function __construct( Sanitizer $sanitizer, TemplateParser $templateParser ) {
-		$this->sanitizer = $sanitizer;
+		parent::__construct( $sanitizer );
 		$this->templateParser = $templateParser;
 	}
 
@@ -75,30 +67,38 @@ class ButtonRenderer implements IRenderer {
 	 * Uses the provided Button component to generate HTML markup adhering to the Codex design system.
 	 *
 	 * @since 0.1.0
-	 * @param Button $component The Button object to render.
+	 * @param Component $component The Button object to render.
 	 * @return string The rendered HTML string for the component.
 	 */
-	public function render( $component ): string {
+	public function render( Component $component ): string {
 		if ( !$component instanceof Button ) {
 			throw new InvalidArgumentException(
 				"Expected instance of Button, got " . get_class( $component )
 			);
 		}
-
+		$isLink = $component->getHref() !== null;
 		$buttonData = [
-			'id' => $this->sanitizer->sanitizeText( $component->getId() ),
-			'label' => $this->sanitizer->sanitizeText( $component->getLabel() ),
-			'action' => $this->sanitizer->sanitizeText( $component->getAction() ),
+			'id' => $component->getId(),
+			'label-html' => $this->sanitizer->sanitizeText( $component->getLabel() ),
+			'action' => $component->getAction(),
 			'defaultAction' => $component->getAction() === 'default',
-			'weight' => $this->sanitizer->sanitizeText( $component->getWeight() ),
-			'type' => $this->sanitizer->sanitizeText( $component->getType() ),
+			'weight' => $component->getWeight(),
+			'type' => $component->getType(),
 			'defaultWeight' => $component->getWeight() === 'normal',
-			'size' => $this->sanitizer->sanitizeText( $component->getSize() ),
+			'size' => $component->getSize(),
 			'defaultSize' => $component->getSize() === 'medium',
-			'iconClass' => $this->sanitizer->sanitizeText( $component->getIconClass() ),
+			'iconClass' => $component->getIconClass(),
 			'isDisabled' => $component->isDisabled(),
 			'iconOnly' => $component->isIconOnly(),
-			'attributes' => $this->resolve( $this->sanitizer->sanitizeAttributes( $component->getAttributes() ) ),
+			'isLink' => $isLink,
+			'href' => $component->getHref(),
+			'fakeButtonClass' => $isLink ? (
+				$component->isDisabled()
+					? 'cdx-button--fake-button--disabled'
+					: 'cdx-button--fake-button--enabled'
+			) : '',
+			'extraClasses' => $this->getExtraClasses( $component->getAttributes() ),
+			'attributes' => $this->getOtherAttributes( $component->getAttributes() ),
 		];
 
 		return $this->templateParser->processTemplate( 'button', $buttonData );

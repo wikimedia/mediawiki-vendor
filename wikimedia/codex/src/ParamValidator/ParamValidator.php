@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * ParamValidator.php
  *
@@ -115,9 +117,7 @@ class ParamValidator {
 			$settings = [ self::PARAM_DEFAULT => $settings ];
 		}
 
-		if ( !isset( $settings[self::PARAM_TYPE] ) ) {
-			$settings[self::PARAM_TYPE] = gettype( $settings[self::PARAM_DEFAULT] ?? null );
-		}
+		$settings[self::PARAM_TYPE] ??= gettype( $settings[self::PARAM_DEFAULT] ?? null );
 
 		return $settings;
 	}
@@ -149,7 +149,7 @@ class ParamValidator {
 				throw new UnexpectedValueException( "Multi-value parameter '$name' must be an array." );
 			}
 
-			$limit = $options['useHighLimits'] ?? false ? $this->ismultiLimit2 : $this->ismultiLimit1;
+			$limit = ( $options['useHighLimits'] ?? false ) ? $this->ismultiLimit2 : $this->ismultiLimit1;
 
 			if ( count( $value ) > $limit ) {
 				throw new UnexpectedValueException( "Too many values for parameter '$name'. Limit: $limit" );

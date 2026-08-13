@@ -47,23 +47,16 @@ use Wikimedia\Codex\Utility\Codex;
 
 $codex = new Codex();
 
-$accordion = $codex
-            ->accordion()
-            ->setTitle( "Accordion Example" )
-            ->setDescription( "This is an example of an accordion." )
-            ->setContentHtml(
-                $codex
-                    ->htmlSnippet()
-                    ->setContent( "<p>This is the content.</p>" )
-                    ->build()
-            )
-            ->setOpen( false )
-            ->setAttributes( [
-                "class" => "foo",
-                "bar" => "baz",
-            ] )
-            ->build()
-            ->getHtml();
+$accordion = $codex->Accordion(
+    title: "Accordion Example",
+    description: $codex->htmlSnippet( "This is an example of an accordion." ),
+    content: $codex->htmlSnippet( "<p>This is the content.</p>" ),
+    open: false,
+    attributes: [
+        "class" => "foo",
+        "bar" => "baz",
+    ],
+);
 
 echo $accordion;
 ?>
@@ -78,6 +71,8 @@ The following scripts are defined for testing and code fixing purposes:
 - `phan`: Run the Phan static analyzer.
 - `phpcs`: Run the PHP Code Sniffer.
 - `start-sandbox`: Start the sandbox environment for testing.
+- `update-snapshots`: Update the snapshot tests. Run this if the snapshot
+  tests fail but the change in output was intentional.
 
 Example usage:
 

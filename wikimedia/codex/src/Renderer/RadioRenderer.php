@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * RadioRenderer.php
  *
@@ -20,9 +22,10 @@ namespace Wikimedia\Codex\Renderer;
 
 use InvalidArgumentException;
 use Wikimedia\Codex\Component\Radio;
-use Wikimedia\Codex\Contract\Renderer\IRenderer;
+use Wikimedia\Codex\Contract\Component;
+use Wikimedia\Codex\Contract\ILocalizer;
+use Wikimedia\Codex\Contract\Renderer;
 use Wikimedia\Codex\Parser\TemplateParser;
-use Wikimedia\Codex\Traits\AttributeResolver;
 use Wikimedia\Codex\Utility\Sanitizer;
 
 /**
@@ -40,22 +43,7 @@ use Wikimedia\Codex\Utility\Sanitizer;
  * @license  https://www.gnu.org/copyleft/gpl.html GPL-2.0-or-later
  * @link     https://doc.wikimedia.org/codex/main/ Codex Documentation
  */
-class RadioRenderer implements IRenderer {
-
-	/**
-	 * Use the AttributeResolver trait
-	 */
-	use AttributeResolver;
-
-	/**
-	 * The sanitizer instance used for content sanitization.
-	 */
-	private Sanitizer $sanitizer;
-
-	/**
-	 * The template parser instance.
-	 */
-	private TemplateParser $templateParser;
+class RadioRenderer extends Renderer {
 
 	/**
 	 * Constructor to initialize the RadioBarRenderer with a sanitizer and a template parser.
@@ -63,10 +51,14 @@ class RadioRenderer implements IRenderer {
 	 * @since 0.1.0
 	 * @param Sanitizer $sanitizer The sanitizer instance used for content sanitization.
 	 * @param TemplateParser $templateParser The template parser instance.
+	 * @param ILocalizer $localizer The localizer instance used for i18n messages.
 	 */
-	public function __construct( Sanitizer $sanitizer, TemplateParser $templateParser ) {
-		$this->sanitizer = $sanitizer;
-		$this->templateParser = $templateParser;
+	public function __construct(
+		Sanitizer $sanitizer,
+		private readonly TemplateParser $templateParser,
+		private readonly ILocalizer $localizer
+	) {
+		parent::__construct( $sanitizer );
 	}
 
 	/**
@@ -75,45 +67,48 @@ class RadioRenderer implements IRenderer {
 	 * Uses the provided Radio component to generate HTML markup adhering to the Codex design system.
 	 *
 	 * @since 0.1.0
-	 * @param Radio $component The Radio component to render.
+	 * @param Component $component The Radio component to render.
 	 * @return string The rendered HTML string for the component.
 	 */
-	public function render( $component ): string {
+	public function render( Component $component ): string {
 		if ( !$component instanceof Radio ) {
 			throw new InvalidArgumentException( "Expected instance of Radio, got " . get_class( $component ) );
 		}
 
 		$label = $component->getLabel();
+		$labelData = null;
 
-		$labelData = [
-			'id' => $this->sanitizer->sanitizeText( $label->getId() ),
-			'coreClass' => 'cdx-radio__label',
-			'labelText' => $label->getLabelText(),
-			'optionalFlag' => $label->isOptional(),
-			'isVisuallyHidden' => $label->isVisuallyHidden(),
-			'inputId' => $component->getInputId(),
-			'description' => $this->sanitizer->sanitizeText( $label->getDescription() ),
-			'descriptionId' => $this->sanitizer->sanitizeText( $label->getDescriptionId() ?? '' ),
-			'isDisabled' => $label->isDisabled(),
-			'iconClass' => $this->sanitizer->sanitizeText( $label->getIconClass() ?? '' ),
-			'attributes' => $this->resolve(
-				$this->sanitizer->sanitizeAttributes( $label->getAttributes() )
-			),
-		];
+		if ( $label ) {
+			$labelData = [
+				'id' => $label->getId(),
+				'coreClass' => 'cdx-radio__label',
+				'labelText-html' => $this->sanitizer->sanitizeText( $label->getLabelText() ),
+				'optionalFlag' => $label->isOptional() ?
+					$this->localizer->msg( 'cdx-label-optional-flag' ) :
+					null,
+				'isVisuallyHidden' => $label->isVisuallyHidden(),
+				'inputId' => $component->getInputId(),
+				'description-html' => $this->sanitizer->sanitizeText( $label->getDescription() ),
+				'descriptionId' => $label->getDescriptionId(),
+				'isDisabled' => $label->isDisabled(),
+				'iconClass' => $label->getIconClass(),
+				'extraClasses' => $this->getExtraClasses( $label->getAttributes() ),
+				'attributes' => $this->getOtherAttributes( $label->getAttributes() ),
+			];
+		}
 
 		$radioData = [
-			'id' => $this->sanitizer->sanitizeText( $component->getInputId() ),
-			'name' => $this->sanitizer->sanitizeText( $component->getName() ),
-			'value' => $this->sanitizer->sanitizeText( $component->getValue() ),
+			'name' => $component->getName(),
+			'value' => $component->getValue(),
 			'inputId' => $component->getInputId(),
 			'isChecked' => $component->isChecked(),
 			'isDisabled' => $component->isDisabled(),
 			'isInline' => $component->isInline(),
-			'ariaDescribedby' => $this->sanitizer->sanitizeText( $label->getDescriptionId() ?? '' ),
-			'inputAttributes' =>
-				$this->resolve( $this->sanitizer->sanitizeAttributes( $component->getInputAttributes() ) ),
-			'wrapperAttributes' =>
-				$this->resolve( $this->sanitizer->sanitizeAttributes( $component->getWrapperAttributes() ) ),
+			'ariaDescribedby' => $label?->getDescriptionId(),
+			'inputExtraClasses' => $this->getExtraClasses( $component->getInputAttributes() ),
+			'inputAttributes' => $this->getOtherAttributes( $component->getInputAttributes() ),
+			'wrapperExtraClasses' => $this->getExtraClasses( $component->getWrapperAttributes() ),
+			'wrapperAttributes' => $this->getOtherAttributes( $component->getWrapperAttributes() ),
 			'label' => $labelData,
 		];
 

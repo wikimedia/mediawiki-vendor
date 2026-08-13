@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * Sanitizer.php
  *
@@ -20,6 +22,8 @@
  */
 
 namespace Wikimedia\Codex\Utility;
+
+use Wikimedia\Codex\Component\HtmlSnippet;
 
 /**
  * Sanitizer is a class responsible for sanitizing data before rendering.
@@ -45,40 +49,64 @@ class Sanitizer {
 	 * to be treated strictly as text.
 	 *
 	 * @since 0.1.0
-	 * @param string|null $text The plain text to sanitize.
+	 * @param string|HtmlSnippet|null $textOrSnippet The plain text to sanitize.
 	 * @return string The sanitized text.
 	 */
-	public function sanitizeText( ?string $text ): string {
-		return htmlspecialchars( $text ?? '', ENT_QUOTES, 'UTF-8' );
+	public function sanitizeText( $textOrSnippet ): string {
+		if ( $textOrSnippet instanceof HtmlSnippet ) {
+			return $textOrSnippet->getContent();
+		}
+		return htmlspecialchars( $textOrSnippet ?? '', ENT_QUOTES, 'UTF-8' );
 	}
 
 	/**
-	 * Sanitize an array of HTML attributes.
-	 *
-	 * This method escapes both the keys and values of an associative array of attributes
-	 * to prevent XSS attacks. It should be used for any attributes that will be rendered
-	 * in HTML elements.
+	 * Resolves an associative array of HTML attributes into a string for an HTML tag.
+	 * Boolean attributes (like `disabled`) are rendered without a value.
+	 * Array-based attributes (like `class`) are concatenated into a single string, separated by
+	 * spaces. This method also handles escaping.
 	 *
 	 * @since 0.1.0
-	 * @param array $attributes The associative array of attributes to sanitize.
-	 * @return array The sanitized attributes array.
+	 * @param array $attributes Key-value pairs of HTML attributes.
+	 * @return string The attributes as a string, ready to be included in an HTML tag.
 	 */
-	public function sanitizeAttributes( array $attributes ): array {
-		$sanitized = [];
+	public function resolveAttributes( array $attributes ): string {
+		$resolvedAttributes = [];
+
 		foreach ( $attributes as $key => $value ) {
-			$sanitizedKey = htmlspecialchars( $key, ENT_QUOTES, 'UTF-8' );
-			$sanitizedValue = htmlspecialchars( $value, ENT_QUOTES, 'UTF-8' );
-			$sanitized[$sanitizedKey] = $sanitizedValue;
+			$escKey = $this->sanitizeText( $key );
+
+			// If the value is true, include the key as an attribute without a value.
+			if ( $value === true ) {
+				$resolvedAttributes[] = $escKey;
+			} else {
+				$escValue = $this->sanitizeAttributeValue( $value );
+				$resolvedAttributes[] = "$escKey=\"$escValue\"";
+			}
 		}
 
-		return $sanitized;
+		return implode( ' ', $resolvedAttributes );
+	}
+
+	/**
+	 * Sanitize a single attribute value. Most code should not use this, but should use
+	 * resolveAttributes() instead.
+	 * @param string|string[] $attrValue Plain text attribute value, or array of plain text values
+	 * @return string Escaped attribute value, safe for use in an HTML attribute string.
+	 *   This does NOT include the attribute name, or quotes.
+	 */
+	public function sanitizeAttributeValue( string|array $attrValue ): string {
+		if ( is_array( $attrValue ) ) {
+			$attrValue = implode( ' ', $attrValue );
+		}
+		return $this->sanitizeText( $attrValue );
 	}
 
 	/**
 	 * Sanitize a URL.
 	 *
 	 * This method ensures the URL is safe by validating it, removing illegal characters,
-	 * ensuring it uses an allowed scheme, and properly escaping it for HTML output.
+	 * and ensuring it uses an allowed scheme. This function does not escape it for HTML output,
+	 * to do that either use sanitizeText() or use Mustache's built-in escaping with `{{ url }}`.
 	 *
 	 * @since 0.1.0
 	 * @param string|null $url The URL to sanitize.
@@ -105,9 +133,7 @@ class Sanitizer {
 			return '';
 		}
 
-		$reconstructedUrl = $this->unparseUrl( $parsedUrl );
-
-		return htmlspecialchars( $reconstructedUrl, ENT_QUOTES, 'UTF-8' );
+		return $this->unparseUrl( $parsedUrl );
 	}
 
 	/**

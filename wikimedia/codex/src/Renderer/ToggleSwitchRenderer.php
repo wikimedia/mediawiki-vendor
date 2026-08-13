@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * ToggleSwitchRenderer.php
  *
@@ -20,9 +22,10 @@ namespace Wikimedia\Codex\Renderer;
 
 use InvalidArgumentException;
 use Wikimedia\Codex\Component\ToggleSwitch;
-use Wikimedia\Codex\Contract\Renderer\IRenderer;
+use Wikimedia\Codex\Contract\Component;
+use Wikimedia\Codex\Contract\ILocalizer;
+use Wikimedia\Codex\Contract\Renderer;
 use Wikimedia\Codex\Parser\TemplateParser;
-use Wikimedia\Codex\Traits\AttributeResolver;
 use Wikimedia\Codex\Utility\Sanitizer;
 
 /**
@@ -40,19 +43,7 @@ use Wikimedia\Codex\Utility\Sanitizer;
  * @license  https://www.gnu.org/copyleft/gpl.html GPL-2.0-or-later
  * @link     https://doc.wikimedia.org/codex/main/ Codex Documentation
  */
-class ToggleSwitchRenderer implements IRenderer {
-
-	use AttributeResolver;
-
-	/**
-	 * The sanitizer instance used for content sanitization.
-	 */
-	private Sanitizer $sanitizer;
-
-	/**
-	 * The template parser instance.
-	 */
-	private TemplateParser $templateParser;
+class ToggleSwitchRenderer extends Renderer {
 
 	/**
 	 * Constructor to initialize the ToggleSwitchRenderer with a sanitizer and a template parser.
@@ -60,56 +51,61 @@ class ToggleSwitchRenderer implements IRenderer {
 	 * @since 0.1.0
 	 * @param Sanitizer $sanitizer The sanitizer instance used for content sanitization.
 	 * @param TemplateParser $templateParser The template parser instance.
+	 * @param ILocalizer $localizer The localizer instance used for i18n messages.
 	 */
-	public function __construct( Sanitizer $sanitizer, TemplateParser $templateParser ) {
-		$this->sanitizer = $sanitizer;
-		$this->templateParser = $templateParser;
+	public function __construct(
+		Sanitizer $sanitizer,
+		private readonly TemplateParser $templateParser,
+		private readonly ILocalizer $localizer
+	) {
+		parent::__construct( $sanitizer );
 	}
 
 	/**
 	 * Renders the HTML for a ToggleSwitch component.
 	 *
 	 * @since 0.1.0
-	 * @param ToggleSwitch $component The ToggleSwitch component to render.
+	 * @param Component $component The ToggleSwitch component to render.
 	 * @return string The rendered HTML string for the component.
 	 */
-	public function render( $component ): string {
+	public function render( Component $component ): string {
 		if ( !$component instanceof ToggleSwitch ) {
 			throw new InvalidArgumentException( "Expected instance of ToggleSwitch, got " . get_class( $component ) );
 		}
 
 		$label = $component->getLabel();
+		$labelData = null;
 
-		$labelData = [
-			'id' => $this->sanitizer->sanitizeText( $label->getId() ),
-			'coreClass' => 'cdx-toggle-switch__label',
-			'labelText' => $label->getLabelText(),
-			'optionalFlag' => $label->isOptional(),
-			'isVisuallyHidden' => $label->isVisuallyHidden(),
-			'inputId' => $component->getInputId(),
-			'description' => $this->sanitizer->sanitizeText( $label->getDescription() ),
-			'descriptionId' => $this->sanitizer->sanitizeText( $label->getDescriptionId() ?? '' ),
-			'isDisabled' => $label->isDisabled(),
-			'iconClass' => $this->sanitizer->sanitizeText( $label->getIconClass() ?? '' ),
-			'attributes' => $this->resolve(
-				$this->sanitizer->sanitizeAttributes( $label->getAttributes() )
-			),
-		];
+		if ( $label ) {
+			$labelData = [
+				'id' => $label->getId(),
+				'coreClass' => 'cdx-toggle-switch__label',
+				'labelText-html' => $this->sanitizer->sanitizeText( $label->getLabelText() ),
+				'optionalFlag' => $label->isOptional() ?
+					$this->localizer->msg( 'cdx-label-optional-flag' ) :
+					null,
+				'isVisuallyHidden' => $label->isVisuallyHidden(),
+				'inputId' => $component->getInputId(),
+				'description-html' => $this->sanitizer->sanitizeText( $label->getDescription() ),
+				'descriptionId' => $label->getDescriptionId() ?? '',
+				'isDisabled' => $label->isDisabled(),
+				'iconClass' => $label->getIconClass() ?? '',
+				'extraClasses' => $this->getExtraClasses( $label->getAttributes() ),
+				'attributes' => $this->getOtherAttributes( $label->getAttributes() ),
+			];
+		}
 
 		$toggleData = [
-			'id' => $this->sanitizer->sanitizeText( $component->getInputId() ),
-			'name' => $this->sanitizer->sanitizeText( $component->getName() ),
-			'value' => $this->sanitizer->sanitizeText( $component->getValue() ),
+			'name' => $component->getName(),
+			'value' => $component->getValue(),
 			'inputId' => $component->getInputId(),
 			'isChecked' => $component->isChecked(),
 			'isDisabled' => $component->isDisabled(),
-			'ariaDescribedby' => $this->sanitizer->sanitizeText( $label->getDescriptionId() ?? '' ),
-			'inputAttributes' => $this->resolve(
-				$this->sanitizer->sanitizeAttributes( $component->getInputAttributes() )
-			),
-			'wrapperAttributes' => $this->resolve(
-				$this->sanitizer->sanitizeAttributes( $component->getWrapperAttributes() )
-			),
+			'ariaDescribedby' => $label?->getDescriptionId() ?? '',
+			'inputExtraClasses' => $this->getExtraClasses( $component->getInputAttributes() ),
+			'inputAttributes' => $this->getOtherAttributes( $component->getInputAttributes() ),
+			'wrapperExtraClasses' => $this->getExtraClasses( $component->getWrapperAttributes() ),
+			'wrapperAttributes' => $this->getOtherAttributes( $component->getWrapperAttributes() ),
 			'label' => $labelData,
 		];
 

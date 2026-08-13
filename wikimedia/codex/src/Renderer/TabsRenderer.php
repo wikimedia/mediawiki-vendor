@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * TabsRenderer.php
  *
@@ -22,12 +24,12 @@ use InvalidArgumentException;
 use UnexpectedValueException;
 use Wikimedia\Codex\Component\Tab;
 use Wikimedia\Codex\Component\Tabs;
-use Wikimedia\Codex\Contract\Renderer\IRenderer;
+use Wikimedia\Codex\Contract\Component;
+use Wikimedia\Codex\Contract\Renderer;
 use Wikimedia\Codex\ParamValidator\ParamDefinitions;
 use Wikimedia\Codex\ParamValidator\ParamValidator;
 use Wikimedia\Codex\ParamValidator\ParamValidatorCallbacks;
 use Wikimedia\Codex\Parser\TemplateParser;
-use Wikimedia\Codex\Traits\AttributeResolver;
 use Wikimedia\Codex\Utility\Sanitizer;
 
 /**
@@ -45,17 +47,7 @@ use Wikimedia\Codex\Utility\Sanitizer;
  * @license  https://www.gnu.org/copyleft/gpl.html GPL-2.0-or-later
  * @link     https://doc.wikimedia.org/codex/main/ Codex Documentation
  */
-class TabsRenderer implements IRenderer {
-
-	/**
-	 * Use the AttributeResolver trait
-	 */
-	use AttributeResolver;
-
-	/**
-	 * The sanitizer instance used for content sanitization.
-	 */
-	private Sanitizer $sanitizer;
+class TabsRenderer extends Renderer {
 
 	/**
 	 * The template parser instance.
@@ -87,7 +79,7 @@ class TabsRenderer implements IRenderer {
 		ParamValidator $paramValidator,
 		ParamValidatorCallbacks $paramValidatorCallbacks
 	) {
-		$this->sanitizer = $sanitizer;
+		parent::__construct( $sanitizer );
 		$this->templateParser = $templateParser;
 		$this->paramValidator = $paramValidator;
 		$this->paramValidatorCallbacks = $paramValidatorCallbacks;
@@ -99,10 +91,10 @@ class TabsRenderer implements IRenderer {
 	 * Uses the provided Tabs component to generate HTML markup adhering to the Codex design system.
 	 *
 	 * @since 0.1.0
-	 * @param Tabs $component The Tabs object to render.
+	 * @param Component $component The Tabs object to render.
 	 * @return string The rendered HTML string for the component.
 	 */
-	public function render( $component ): string {
+	public function render( Component $component ): string {
 		if ( !$component instanceof Tabs ) {
 			throw new InvalidArgumentException( "Expected instance of Tabs, got " . get_class( $component ) );
 		}
@@ -142,10 +134,10 @@ class TabsRenderer implements IRenderer {
 			$isHidden = !$isSelected;
 
 			$tabsData[] = [
-				'id' => $this->sanitizer->sanitizeText( $tab->getId() ),
-				'name' => $this->sanitizer->sanitizeText( $tab->getName() ),
-				'label' => $this->sanitizer->sanitizeText( $tab->getLabel() ),
-				'content-html' => $tab->getContent(),
+				'id' => $tab->getId(),
+				'name' => $tab->getName(),
+				'label' => $tab->getLabel(),
+				'content-html' => $this->sanitizer->sanitizeText( $tab->getContent() ),
 				'isSelected' => $isSelected,
 				'isHidden' => $isHidden,
 				'disabled' => $tab->isDisabled(),
@@ -153,11 +145,10 @@ class TabsRenderer implements IRenderer {
 		}
 
 		$data = [
-			'id' => $this->sanitizer->sanitizeText( $component->getId() ),
+			'id' => $component->getId(),
 			'tabs' => $tabsData,
-			'attributes' => $this->resolve(
-				$this->sanitizer->sanitizeAttributes( $component->getAttributes() )
-			),
+			'extraClasses' => $this->getExtraClasses( $component->getAttributes() ),
+			'attributes' => $this->getOtherAttributes( $component->getAttributes() ),
 		];
 
 		return $this->templateParser->processTemplate( 'tabs', $data );

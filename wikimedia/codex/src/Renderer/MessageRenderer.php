@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * MessageRenderer.php
  *
@@ -20,9 +22,9 @@ namespace Wikimedia\Codex\Renderer;
 
 use InvalidArgumentException;
 use Wikimedia\Codex\Component\Message;
-use Wikimedia\Codex\Contract\Renderer\IRenderer;
+use Wikimedia\Codex\Contract\Component;
+use Wikimedia\Codex\Contract\Renderer;
 use Wikimedia\Codex\Parser\TemplateParser;
-use Wikimedia\Codex\Traits\AttributeResolver;
 use Wikimedia\Codex\Utility\Sanitizer;
 
 /**
@@ -40,17 +42,7 @@ use Wikimedia\Codex\Utility\Sanitizer;
  * @license  https://www.gnu.org/copyleft/gpl.html GPL-2.0-or-later
  * @link     https://doc.wikimedia.org/codex/main/ Codex Documentation
  */
-class MessageRenderer implements IRenderer {
-
-	/**
-	 * Use the AttributeResolver trait
-	 */
-	use AttributeResolver;
-
-	/**
-	 * The sanitizer instance used for content sanitization.
-	 */
-	private Sanitizer $sanitizer;
+class MessageRenderer extends Renderer {
 
 	/**
 	 * The template parser instance.
@@ -65,7 +57,7 @@ class MessageRenderer implements IRenderer {
 	 * @param TemplateParser $templateParser The template parser instance.
 	 */
 	public function __construct( Sanitizer $sanitizer, TemplateParser $templateParser ) {
-		$this->sanitizer = $sanitizer;
+		parent::__construct( $sanitizer );
 		$this->templateParser = $templateParser;
 	}
 
@@ -75,24 +67,25 @@ class MessageRenderer implements IRenderer {
 	 * Uses the provided Message component to generate HTML markup adhering to the Codex design system.
 	 *
 	 * @since 0.1.0
-	 * @param Message $component The Message object to render.
+	 * @param Component $component The Message object to render.
 	 * @return string The rendered HTML string for the component.
 	 */
-	public function render( $component ): string {
+	public function render( Component $component ): string {
 		if ( !$component instanceof Message ) {
 			throw new InvalidArgumentException( "Expected instance of Message, got " . get_class( $component ) );
 		}
 
 		$messageData = [
-			'id' => $this->sanitizer->sanitizeText( $component->getId() ),
-			'type' => $this->sanitizer->sanitizeText( $component->getType() ),
+			'id' => $component->getId(),
+			'type' => $component->getType(),
 			'isInline' => $component->isInline(),
-			'iconClass' => $this->sanitizer->sanitizeText( $component->getIconClass() ),
-			'content-html' => $component->getContent(),
-			'heading' => $this->sanitizer->sanitizeText( $component->getHeading() ),
+			'iconClass' => $component->getIconClass(),
+			'content-html' => $this->sanitizer->sanitizeText( $component->getContent() ),
+			'heading-html' => $this->sanitizer->sanitizeText( $component->getHeading() ),
 			'isPolite' => $component->getType() !== 'error',
 			'isAlert' => $component->getType() === 'error',
-			'attributes' => $this->resolve( $this->sanitizer->sanitizeAttributes( $component->getAttributes() ) ),
+			'extraClasses' => $this->getExtraClasses( $component->getAttributes() ),
+			'attributes' => $this->getOtherAttributes( $component->getAttributes() ),
 		];
 
 		return $this->templateParser->processTemplate( 'message', $messageData );

@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * TextAreaRenderer.php
  *
@@ -20,9 +22,9 @@ namespace Wikimedia\Codex\Renderer;
 
 use InvalidArgumentException;
 use Wikimedia\Codex\Component\TextArea;
-use Wikimedia\Codex\Contract\Renderer\IRenderer;
+use Wikimedia\Codex\Contract\Component;
+use Wikimedia\Codex\Contract\Renderer;
 use Wikimedia\Codex\Parser\TemplateParser;
-use Wikimedia\Codex\Traits\AttributeResolver;
 use Wikimedia\Codex\Utility\Sanitizer;
 
 /**
@@ -40,17 +42,7 @@ use Wikimedia\Codex\Utility\Sanitizer;
  * @license  https://www.gnu.org/copyleft/gpl.html GPL-2.0-or-later
  * @link     https://doc.wikimedia.org/codex/main/ Codex Documentation
  */
-class TextAreaRenderer implements IRenderer {
-
-	/**
-	 * Use the AttributeResolver trait
-	 */
-	use AttributeResolver;
-
-	/**
-	 * The sanitizer instance used for content sanitization.
-	 */
-	private Sanitizer $sanitizer;
+class TextAreaRenderer extends Renderer {
 
 	/**
 	 * The template parser instance.
@@ -65,7 +57,7 @@ class TextAreaRenderer implements IRenderer {
 	 * @param TemplateParser $templateParser The template parser instance.
 	 */
 	public function __construct( Sanitizer $sanitizer, TemplateParser $templateParser ) {
-		$this->sanitizer = $sanitizer;
+		parent::__construct( $sanitizer );
 		$this->templateParser = $templateParser;
 	}
 
@@ -75,32 +67,30 @@ class TextAreaRenderer implements IRenderer {
 	 * Uses the provided TextArea component to generate HTML markup adhering to the Codex design system.
 	 *
 	 * @since 0.1.0
-	 * @param TextArea $component The TextArea component to render.
+	 * @param Component $component The TextArea component to render.
 	 * @return string The rendered HTML string for the component.
 	 */
-	public function render( $component ): string {
+	public function render( Component $component ): string {
 		if ( !$component instanceof TextArea ) {
 			throw new InvalidArgumentException( "Expected instance of TextArea, got " . get_class( $component ) );
 		}
 
 		$textareaData = [
-			'id' => $this->sanitizer->sanitizeText( $component->getId() ),
-			'name' => $this->sanitizer->sanitizeText( $component->getName() ),
-			'placeholder' => $this->sanitizer->sanitizeText( $component->getPlaceholder() ),
-			'value' => $this->sanitizer->sanitizeText( $component->getValue() ),
+			'id' => $component->getInputId(),
+			'name' => $component->getName(),
+			'placeholder' => $component->getPlaceholder(),
+			'value' => $component->getValue(),
 			'isDisabled' => $component->isDisabled(),
 			'isReadonly' => $component->isReadonly(),
 			'hasStartIcon' => $component->hasStartIcon(),
 			'hasEndIcon' => $component->hasEndIcon(),
-			'startIconClass' => $this->sanitizer->sanitizeText( $component->getStartIconClass() ),
-			'endIconClass' => $this->sanitizer->sanitizeText( $component->getEndIconClass() ),
+			'startIconClass' => $component->getStartIconClass(),
+			'endIconClass' => $component->getEndIconClass(),
 			'status' => $component->getStatus(),
-			'textAreaAttributes' => $this->resolve(
-				$this->sanitizer->sanitizeAttributes( $component->getTextareaAttributes() )
-			),
-			'wrapperAttributes' => $this->resolve(
-				$this->sanitizer->sanitizeAttributes( $component->getWrapperAttributes() )
-			),
+			'inputExtraClasses' => $this->getExtraClasses( $component->getInputAttributes() ),
+			'inputAttributes' => $this->getOtherAttributes( $component->getInputAttributes() ),
+			'wrapperExtraClasses' => $this->getExtraClasses( $component->getWrapperAttributes() ),
+			'wrapperAttributes' => $this->getOtherAttributes( $component->getWrapperAttributes() ),
 		];
 
 		return $this->templateParser->processTemplate( 'text-area', $textareaData );

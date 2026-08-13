@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * InfoChip.php
  *
@@ -16,14 +18,12 @@
 
 namespace Wikimedia\Codex\Component;
 
+use InvalidArgumentException;
+use Wikimedia\Codex\Contract\Component;
 use Wikimedia\Codex\Renderer\InfoChipRenderer;
 
 /**
  * InfoChip
- *
- * This class is part of the Codex PHP library and is responsible for
- * representing an immutable object. It is primarily intended for use
- * with a builder class to construct its instances.
  *
  * @category Component
  * @package  Codex\Component
@@ -32,70 +32,32 @@ use Wikimedia\Codex\Renderer\InfoChipRenderer;
  * @license  https://www.gnu.org/copyleft/gpl.html GPL-2.0-or-later
  * @link     https://doc.wikimedia.org/codex/main/ Codex Documentation
  */
-class InfoChip {
-
+class InfoChip extends Component {
+	private string $id = '';
 	/**
-	 * The ID for the InfoChip.
+	 * Allowed values for the status type.
 	 */
-	protected string $id;
+	public const ALLOWED_STATUS_TYPES = [
+		'notice',
+		'warning',
+		'error',
+		'success',
+	];
 
-	/**
-	 * The text displayed inside the InfoChip.
-	 */
-	protected string $text;
-
-	/**
-	 * The status type, determines chip's visual style. Options include 'notice', 'warning', 'error', and 'success'.
-	 */
-	protected string $status;
-
-	/**
-	 * The CSS class for a custom icon used in the InfoChip, applicable only for the 'notice' status.
-	 */
-	protected ?string $icon;
-
-	/**
-	 * Additional HTML attributes for the outer `<div>` element of the InfoChip.
-	 */
-	protected array $attributes;
-
-	/**
-	 * The renderer instance used to render the infoChip.
-	 */
-	protected InfoChipRenderer $renderer;
-
-	/**
-	 * Constructor for the InfoChip component.
-	 *
-	 * Initializes an InfoChip instance with the specified properties.
-	 *
-	 * @param string $id The ID for the InfoChip.
-	 * @param string $text The text displayed inside the InfoChip.
-	 * @param string $status The status type of the InfoChip.
-	 * @param string|null $icon The CSS class for a custom icon, if any.
-	 * @param array $attributes Additional HTML attributes for the InfoChip element.
-	 * @param InfoChipRenderer $renderer The renderer to use for rendering the InfoChip.
-	 */
 	public function __construct(
-		string $id,
-		string $text,
-		string $status,
-		?string $icon,
-		array $attributes,
-		InfoChipRenderer $renderer
+		InfoChipRenderer $renderer,
+		private string|HtmlSnippet $text,
+		private string $status,
+		private ?string $icon,
+		private array $attributes
 	) {
-		$this->id = $id;
-		$this->text = $text;
-		$this->status = $status;
-		$this->icon = $icon;
-		$this->attributes = $attributes;
-		$this->renderer = $renderer;
+		parent::__construct( $renderer );
 	}
 
 	/**
 	 * Get the InfoChip's HTML ID attribute.
 	 *
-	 * This method returns the ID that is assigned to the InfoChip element.
+	 * This method returns the ID assigned to the InfoChip element.
 	 * The ID can be used for targeting the chip with JavaScript, CSS, or for accessibility purposes.
 	 *
 	 * @since 0.1.0
@@ -108,13 +70,13 @@ class InfoChip {
 	/**
 	 * Get the text content of the info chip.
 	 *
-	 * This method returns the text that is displayed inside the info chip.
+	 * This method returns the text displayed inside the info chip.
 	 * The text provides the primary information that the chip conveys.
 	 *
 	 * @since 0.1.0
-	 * @return string The text content of the info chip.
+	 * @return string|HtmlSnippet The text content of the info chip.
 	 */
-	public function getText(): string {
+	public function getText(): string|HtmlSnippet {
 		return $this->text;
 	}
 
@@ -159,16 +121,104 @@ class InfoChip {
 	}
 
 	/**
-	 * Get the component's HTML representation.
+	 * Set the InfoChip's HTML ID attribute.
 	 *
-	 * This method generates the HTML markup for the component, incorporating relevant properties
-	 * and any additional attributes. The component is structured using appropriate HTML elements
-	 * as defined by the implementation.
+	 * @deprecated Use setAttributes() to set the ID
+	 * @since 0.1.0
+	 * @param string $id The ID for the InfoChip element.
+	 * @return $this
+	 */
+	public function setId( string $id ): self {
+		$this->id = $id;
+
+		return $this;
+	}
+
+	/**
+	 * Set the text content for the info chip.
+	 *
+	 * This method specifies the text that will be displayed inside the info chip.
+	 * The text provides the primary information that the chip conveys.
 	 *
 	 * @since 0.1.0
-	 * @return string The generated HTML string for the component.
+	 * @param string|HtmlSnippet $text The text to be displayed inside the info chip.
+	 * @return $this Returns the InfoChip instance for method chaining.
 	 */
-	public function getHtml(): string {
-		return $this->renderer->render( $this );
+	public function setText( string|HtmlSnippet $text ): self {
+		$this->text = $text;
+
+		return $this;
+	}
+
+	/**
+	 * Set the status type for the info chip.
+	 *
+	 * This method sets the visual style of the info chip based on its status.
+	 * The status can be one of the following:
+	 * - 'notice': For general information.
+	 * - 'warning': For cautionary information.
+	 * - 'error': For error messages.
+	 * - 'success': For success messages.
+	 *
+	 * The status type is applied as a CSS class (`cdx-info-chip--{status}`) to the chip element.
+	 *
+	 * @since 0.1.0
+	 * @param string $status The status type (e.g., 'notice', 'warning', 'error', 'success').
+	 * @return $this Returns the InfoChip instance for method chaining.
+	 */
+	public function setStatus( string $status ): self {
+		if ( !in_array( $status, self::ALLOWED_STATUS_TYPES, true ) ) {
+			throw new InvalidArgumentException( "Invalid status: $status" );
+		}
+		$this->status = $status;
+
+		return $this;
+	}
+
+	/**
+	 * Set a custom icon for the "notice" status chip.
+	 *
+	 * This method specifies a CSS class for a custom icon to be displayed inside the chip.
+	 * This option is applicable only for chips with the "notice" status.
+	 * Chips with other status types (warning, error, success) do not support custom icons and will ignore this setting.
+	 *
+	 * @since 0.1.0
+	 * @param string|null $icon The CSS class for the custom icon, or null to remove the icon.
+	 * @return $this Returns the InfoChip instance for method chaining.
+	 */
+	public function setIcon( ?string $icon ): self {
+		if ( $this->status === 'notice' && ( $icon !== null && trim( $icon ) === '' ) ) {
+			throw new InvalidArgumentException( 'Custom icons are only allowed for "notice" status.' );
+		}
+		$this->icon = $icon;
+
+		return $this;
+	}
+
+	/**
+	 * Set additional HTML attributes for the outer `<div>` element.
+	 *
+	 * This method allows custom HTML attributes to be added to the outer `<div>` element of the info chip,
+	 * such as `id`, `data-*`, `aria-*`, or any other valid attributes. These attributes can be used to
+	 * enhance accessibility or integrate with JavaScript.
+	 *
+	 * The values of these attributes are automatically escaped to prevent XSS vulnerabilities.
+	 *
+	 * Example usage:
+	 *
+	 *     $infoChip->setAttributes([
+	 *         'id' => 'info-chip-example',
+	 *         'data-category' => 'info',
+	 *     ]);
+	 *
+	 * @since 0.1.0
+	 * @param array $attributes An associative array of HTML attributes.
+	 * @return $this Returns the InfoChip instance for method chaining.
+	 */
+	public function setAttributes( array $attributes ): self {
+		foreach ( $attributes as $key => $value ) {
+			$this->attributes[$key] = $value;
+		}
+		return $this;
 	}
 }

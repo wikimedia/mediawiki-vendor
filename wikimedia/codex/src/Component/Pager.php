@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * Pager.php
  *
@@ -16,14 +18,12 @@
 
 namespace Wikimedia\Codex\Component;
 
+use InvalidArgumentException;
+use Wikimedia\Codex\Contract\Component;
 use Wikimedia\Codex\Renderer\PagerRenderer;
 
 /**
  * Pager
- *
- * This class is part of the Codex PHP library and is responsible for
- * representing an immutable object. It is primarily intended for use
- * with a builder class to construct its instances.
  *
  * @category Component
  * @package  Codex\Component
@@ -32,144 +32,35 @@ use Wikimedia\Codex\Renderer\PagerRenderer;
  * @license  https://www.gnu.org/copyleft/gpl.html GPL-2.0-or-later
  * @link     https://doc.wikimedia.org/codex/main/ Codex Documentation
  */
-class Pager {
-
+class Pager extends Component {
+	private string $id = '';
 	/**
-	 * The ID for the pager.
+	 * Valid positions for pagination controls ('top', 'bottom', or 'both').
 	 */
-	protected string $id;
+	private const TABLE_PAGINATION_POSITIONS = [
+		'top',
+		'bottom',
+		'both',
+	];
 
-	/**
-	 * Available options for the number of results displayed per page.
-	 */
-	protected array $paginationSizeOptions;
-
-	/**
-	 * Default pagination size.
-	 */
-	protected int $paginationSizeDefault;
-
-	/**
-	 * Total number of pages in the dataset.
-	 */
-	protected int $totalPages;
-
-	/**
-	 * Total number of results in the dataset.
-	 */
-	protected int $totalResults;
-
-	/**
-	 * Position of the pagination controls ('top', 'bottom', or 'both').
-	 */
-	protected string $position;
-
-	/**
-	 * Array of additional attributes for the pager.
-	 */
-	protected array $attributes;
-
-	/**
-	 * Number of results to display per page.
-	 */
-	protected int $limit;
-
-	/**
-	 * Offset of the current page.
-	 */
-	protected ?int $currentOffset;
-
-	/**
-	 * Offset for the next page.
-	 */
-	protected ?int $nextOffset;
-
-	/**
-	 * Offset for the previous page.
-	 */
-	protected ?int $prevOffset;
-
-	/**
-	 * Offset for the first page.
-	 */
-	protected ?int $firstOffset;
-
-	/**
-	 * Offset for the last page.
-	 */
-	protected ?int $lastOffset;
-
-	/**
-	 * Start ordinal for the current page.
-	 */
-	protected int $startOrdinal;
-
-	/**
-	 * End ordinal for the current page.
-	 */
-	protected int $endOrdinal;
-
-	/**
-	 * The renderer instance used to render the pager.
-	 */
-	protected PagerRenderer $renderer;
-
-	/**
-	 * Constructor for the Pager class.
-	 *
-	 * Initializes the Pager with the necessary properties.
-	 *
-	 * @param string $id The ID for the pager.
-	 * @param array $paginationSizeOptions Available pagination size options.
-	 * @param int $paginationSizeDefault Default pagination size.
-	 * @param int $totalPages Total number of pages in the dataset.
-	 * @param int $totalResults Total number of results in the dataset.
-	 * @param string $position Position of the pagination controls.
-	 * @param array $attributes Additional HTML attributes for the pager.
-	 * @param int $limit Number of results per page.
-	 * @param int|null $currentOffset Offset of the current page.
-	 * @param int|null $nextOffset Offset for the next page.
-	 * @param int|null $prevOffset Offset for the previous page.
-	 * @param int|null $firstOffset Offset for the first page.
-	 * @param int|null $lastOffset Offset for the last page.
-	 * @param int $startOrdinal Start ordinal for the current page.
-	 * @param int $endOrdinal End ordinal for the current page.
-	 * @param PagerRenderer $renderer Instance of the renderer for rendering the pager.
-	 */
 	public function __construct(
-		string $id,
-		array $paginationSizeOptions,
-		int $paginationSizeDefault,
-		int $totalPages,
-		int $totalResults,
-		string $position,
-		array $attributes,
-		int $limit,
-		?int $currentOffset,
-		?int $nextOffset,
-		?int $prevOffset,
-		?int $firstOffset,
-		?int $lastOffset,
-		int $startOrdinal,
-		int $endOrdinal,
-		PagerRenderer $renderer
+		PagerRenderer $renderer,
+		private array $paginationSizeOptions,
+		private int $paginationSizeDefault,
+		private int $totalPages,
+		private int $totalResults,
+		private string $position,
+		private int $limit,
+		private ?int $currentOffset,
+		private ?int $nextOffset,
+		private ?int $prevOffset,
+		private ?int $firstOffset,
+		private ?int $lastOffset,
+		private int $startOrdinal,
+		private int $endOrdinal,
+		private array $attributes,
 	) {
-		$this->id = $id;
-		$this->paginationSizeOptions = $paginationSizeOptions;
-		$this->paginationSizeDefault = $paginationSizeDefault;
-		$this->totalPages = $totalPages;
-		$this->totalResults = $totalResults;
-		$this->position = $position;
-		$this->attributes = $attributes;
-		$this->limit = $limit;
-		$this->currentOffset = $currentOffset;
-		$this->nextOffset = $nextOffset;
-		$this->prevOffset = $prevOffset;
-		$this->firstOffset = $firstOffset;
-		$this->lastOffset = $lastOffset;
-		$this->startOrdinal = $startOrdinal;
-		$this->endOrdinal = $endOrdinal;
-		$this->renderer = $renderer;
+		parent::__construct( $renderer );
 	}
 
 	/**
@@ -398,16 +289,308 @@ class Pager {
 	}
 
 	/**
-	 * Get the component's HTML representation.
+	 * Get the additional HTML attributes for the outer `<div>` element.
 	 *
-	 * This method generates the HTML markup for the component, incorporating relevant properties
-	 * and any additional attributes. The component is structured using appropriate HTML elements
-	 * as defined by the implementation.
+	 * This method returns an associative array of HTML attributes that are applied to the outer `<div>` element of the
+	 * progress bar. These attributes can include `id`, `data-*`, `aria-*`, or any other valid HTML attributes.
 	 *
 	 * @since 0.1.0
-	 * @return string The generated HTML string for the component.
+	 * @return array The additional attributes as an array.
 	 */
-	public function getHtml(): string {
-		return $this->renderer->render( $this );
+	public function getAttributes(): array {
+		return $this->attributes;
+	}
+
+	/**
+	 * Set the Pager's HTML ID attribute.
+	 *
+	 * @deprecated Use setAttributes() to set the ID
+	 * @since 0.1.0
+	 * @param string $id The ID for the Pager element.
+	 * @return $this
+	 */
+	public function setId( string $id ): self {
+		$this->id = $id;
+
+		return $this;
+	}
+
+	/**
+	 * Set the total number of pages.
+	 *
+	 * The total number of pages available based on the dataset.
+	 *
+	 * @since 0.1.0
+	 * @param int $totalPages The total number of pages.
+	 * @return $this Returns the Pager instance for method chaining.
+	 */
+	public function setTotalPages( int $totalPages ): self {
+		$this->totalPages = $totalPages;
+
+		return $this;
+	}
+
+	/**
+	 * Set the total number of results.
+	 *
+	 * The total number of results in the dataset.
+	 *
+	 * @since 0.1.0
+	 * @param int $totalResults The total number of results.
+	 * @return $this Returns the Pager instance for method chaining.
+	 */
+	public function setTotalResults( int $totalResults ): self {
+		$this->totalResults = $totalResults;
+
+		return $this;
+	}
+
+	/**
+	 * Set the limit for the pager.
+	 *
+	 * The number of results to be displayed per page. The limit must be at least 1.
+	 *
+	 * @since 0.1.0
+	 * @param int $limit The number of results per page.
+	 * @return $this Returns the Pager instance for method chaining.
+	 */
+	public function setLimit( int $limit ): self {
+		if ( $limit < 1 ) {
+			throw new InvalidArgumentException( 'The limit must be at least 1.' );
+		}
+
+		$this->limit = $limit;
+
+		return $this;
+	}
+
+	/**
+	 * Set the current offset for the pager.
+	 *
+	 * This method sets the current offset, typically a timestamp or unique
+	 * identifier, for cursor-based pagination. The offset represents the
+	 * position in the dataset from which to start fetching the next page
+	 * of results.
+	 *
+	 * Example usage:
+	 *
+	 *     $pager->setCurrentOffset('20240918135942');
+	 *
+	 * @since 0.1.0
+	 * @param ?int $currentOffset The offset value (usually a timestamp).
+	 * @return $this Returns the Pager instance for method chaining.
+	 */
+	public function setCurrentOffset( ?int $currentOffset ): self {
+		$this->currentOffset = $currentOffset;
+
+		return $this;
+	}
+
+	/**
+	 * Set the offset for the first page.
+	 *
+	 * This method sets the offset for the first page in cursor-based
+	 * pagination. It usually represents the earliest timestamp in the
+	 * dataset.
+	 *
+	 * Example usage:
+	 *
+	 *     $pager->setFirstOffset('20240918135942');
+	 *
+	 * @since 0.1.0
+	 * @param ?int $firstOffset The offset for the first page.
+	 * @return $this Returns the Pager instance for method chaining.
+	 */
+	public function setFirstOffset( ?int $firstOffset ): self {
+		$this->firstOffset = $firstOffset;
+
+		return $this;
+	}
+
+	/**
+	 * Set the offset for the previous page.
+	 *
+	 * This method sets the offset for the previous page in cursor-based
+	 * pagination. The offset is typically the timestamp of the first
+	 * item in the current page.
+	 *
+	 * Example usage:
+	 *
+	 *     $pager->setPrevOffset('20240918135942');
+	 *
+	 * @since 0.1.0
+	 * @param ?int $prevOffset The offset for the previous page.
+	 * @return $this Returns the Pager instance for method chaining.
+	 */
+	public function setPrevOffset( ?int $prevOffset ): self {
+		$this->prevOffset = $prevOffset;
+
+		return $this;
+	}
+
+	/**
+	 * Set the offset for the next page.
+	 *
+	 * This method sets the offset for the next page in cursor-based
+	 * pagination. It is typically the timestamp of the last item on the
+	 * current page.
+	 *
+	 * Example usage:
+	 *
+	 *     $pager->setNextOffset('20240918135942');
+	 *
+	 * @since 0.1.0
+	 * @param ?int $nextOffset The offset for the next page.
+	 * @return $this Returns the Pager instance for method chaining.
+	 */
+	public function setNextOffset( ?int $nextOffset ): self {
+		$this->nextOffset = $nextOffset;
+
+		return $this;
+	}
+
+	/**
+	 * Set the offset for the last page.
+	 *
+	 * This method sets the offset for the last page in cursor-based
+	 * pagination. It typically represents the timestamp of the last
+	 * item in the dataset.
+	 *
+	 * Example usage:
+	 *
+	 *     $pager->setLastOffset('20240918135942');
+	 *
+	 * @since 0.1.0
+	 * @param ?int $lastOffset The offset for the last page.
+	 * @return $this Returns the Pager instance for method chaining.
+	 */
+	public function setLastOffset( ?int $lastOffset ): self {
+		$this->lastOffset = $lastOffset;
+
+		return $this;
+	}
+
+	/**
+	 * Set the start and end ordinals for the current page.
+	 *
+	 * This method defines the range of items (ordinals) displayed on the
+	 * current page of results. The ordinals represent the 1-based index
+	 * of the first and last items shown on the page.
+	 *
+	 * Ordinals are typically determined based on the current page number
+	 * and the limit, which is the number of items per page. The `startOrdinal`
+	 * specifies the index of the first item on the page, while `endOrdinal`
+	 * specifies the index of the last item. This ensures accurate display
+	 * of the current page's item range.
+	 *
+	 * **Tip**: When working with cursor-based pagination (e.g., based on
+	 * timestamps), ordinals can be calculated by determining the position
+	 * of the current offset within the dataset. By tracking the relative
+	 * position of items using their timestamps, the starting and ending
+	 * ordinal values for each page can be derived.
+	 *
+	 * Example usage:
+	 *
+	 *     $pager->setOrdinals(6, 10);
+	 *
+	 * @since 0.1.0
+	 * @param int $startOrdinal The 1-based index of the first item displayed.
+	 * @param int $endOrdinal The 1-based index of the last item displayed.
+	 * @return $this Returns the Pager instance for method chaining.
+	 */
+	public function setOrdinals( int $startOrdinal, int $endOrdinal ): self {
+		$this->startOrdinal = $startOrdinal;
+		$this->endOrdinal = $endOrdinal;
+
+		return $this;
+	}
+
+	/**
+	 * Set the position for the pager.
+	 *
+	 * This method specifies where the pagination controls should appear.
+	 * Valid positions are 'top', 'bottom', or 'both'.
+	 *
+	 * Example usage:
+	 *
+	 *     $pager->setPosition('top');
+	 *
+	 * @since 0.1.0
+	 * @param string $position The position of the pagination controls ('top', 'bottom', or 'both').
+	 * @return $this Returns the Pager instance for method chaining.
+	 */
+	public function setPosition( string $position ): self {
+		if ( !in_array( $position, self::TABLE_PAGINATION_POSITIONS, true ) ) {
+			throw new InvalidArgumentException( "Invalid pagination position: $position" );
+		}
+		$this->position = $position;
+
+		return $this;
+	}
+
+	/**
+	 * Set the pagination size options.
+	 *
+	 * This method defines the available options for the number of results displayed per page.
+	 * Users can select from these options in a dropdown, and the selected value will control
+	 * how many items are displayed on each page.
+	 *
+	 * Example usage:
+	 *
+	 *     $pager->setPaginationSizeOptions([10, 20, 50]);
+	 *
+	 * @since 0.1.0
+	 * @param array $paginationSizeOptions The array of pagination size options.
+	 * @return $this Returns the Pager instance for method chaining.
+	 */
+	public function setPaginationSizeOptions( array $paginationSizeOptions ): self {
+		if ( !$paginationSizeOptions ) {
+			throw new InvalidArgumentException( 'Pagination size options cannot be empty.' );
+		}
+		$this->paginationSizeOptions = $paginationSizeOptions;
+
+		return $this;
+	}
+
+	/**
+	 * Set the default pagination size.
+	 *
+	 * This method specifies the default number of rows displayed per page.
+	 *
+	 * @since 0.1.0
+	 * @param int $paginationSizeDefault The default number of rows per page.
+	 * @return $this Returns the Pager instance for method chaining.
+	 */
+	public function setPaginationSizeDefault( int $paginationSizeDefault ): self {
+		if ( !in_array( $paginationSizeDefault, $this->paginationSizeOptions, true ) ) {
+			throw new InvalidArgumentException( 'Default pagination size must be one of the pagination size options.' );
+		}
+		$this->paginationSizeDefault = $paginationSizeDefault;
+
+		return $this;
+	}
+
+	/**
+	 * Set additional HTML attributes for the outer `<div>` element.
+	 *
+	 * This method allows custom HTML attributes to be added to the outer `<div>` element of the pager
+	 * such as `id`, `data-*`, `aria-*`, or any other valid attributes. These attributes can be used to
+	 * enhance accessibility or integrate with JavaScript.
+	 *
+	 * The values of these attributes are automatically escaped to prevent XSS vulnerabilities.
+	 *
+	 * Example usage:
+	 *
+	 *     $pager->setAttributes( [ 'class' => 'my-pager' ] );
+	 *
+	 * @since 0.8.0
+	 * @param array $attributes An associative array of HTML attributes.
+	 * @return $this Returns the Pager instance for method chaining.
+	 */
+	public function setAttributes( array $attributes ): self {
+		foreach ( $attributes as $key => $value ) {
+			$this->attributes[$key] = $value;
+		}
+		return $this;
 	}
 }

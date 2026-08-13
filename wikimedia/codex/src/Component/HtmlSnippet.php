@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * HtmlSnippet.php
  *
@@ -17,11 +19,7 @@
 namespace Wikimedia\Codex\Component;
 
 /**
- * HtmlSnippet
- *
- * This class is part of the Codex PHP library and is responsible for
- * representing an immutable object. It is primarily intended for use
- * with a builder class to construct its instances.
+ * Wrapper class for raw HTML strings.
  *
  * @category Component
  * @package  Codex\Component
@@ -38,22 +36,15 @@ class HtmlSnippet {
 	private string $content;
 
 	/**
-	 * Additional HTML attributes for the container element.
-	 */
-	private array $attributes;
-
-	/**
 	 * Constructor for the HtmlSnippet component.
 	 *
-	 * Initializes a HtmlSnippet instance with the specified content and attributes.
+	 * Initializes an instance of HtmlSnippet with the specified content and attributes.
 	 *
 	 * @param string $content The safe HTML content to be rendered.
 	 * @param-taint $content exec_html Callers are responsible for escaping.
-	 * @param array $attributes Additional HTML attributes for the container element.
 	 */
-	public function __construct( string $content, array $attributes = []  ) {
+	public function __construct( string $content ) {
 		$this->content = $content;
-		$this->attributes = $attributes;
 	}
 
 	/**
@@ -69,30 +60,22 @@ class HtmlSnippet {
 	}
 
 	/**
-	 * Retrieve additional HTML attributes for the the html snippet element.
-	 *
-	 * This method returns an associative array of additional HTML attributes that will be applied
-	 * to the html snippet element. These attributes can be used to enhance the appearance, accessibility,
-	 *  or functionality of the html snippet element.
-	 *
-	 * @since 0.1.0
-	 * @return array The additional attributes as an array.
+	 * Backwards compatibility for the pre-0.8.0 API.
+	 * @deprecated
+	 * @param string $content
+	 * @return HtmlSnippet
 	 */
-	public function getAttributes(): array {
-		return $this->attributes;
+	public function setContent( string $content ): self {
+		$this->content = $content;
+		return $this;
 	}
 
 	/**
-	 * Get the component's HTML representation.
-	 *
-	 * This method generates the HTML markup for the component, incorporating relevant properties
-	 * and any additional attributes. The component is structured using appropriate HTML elements
-	 * as defined by the implementation.
-	 *
-	 * @since 0.1.0
-	 * @return string The generated HTML string for the component.
+	 * Backwards compatibility for the pre-0.8.0 API.
+	 * @deprecated
+	 * @return HtmlSnippet
 	 */
-	public function __toString(): string {
-		return $this->content;
+	public function build(): self {
+		return $this;
 	}
 }

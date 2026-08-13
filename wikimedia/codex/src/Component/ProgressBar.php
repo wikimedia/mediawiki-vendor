@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * ProgressBar.php
  *
@@ -16,14 +18,11 @@
 
 namespace Wikimedia\Codex\Component;
 
+use Wikimedia\Codex\Contract\Component;
 use Wikimedia\Codex\Renderer\ProgressBarRenderer;
 
 /**
  * ProgressBar
- *
- * This class is part of the Codex PHP library and is responsible for
- * representing an immutable object. It is primarily intended for use
- * with a builder class to construct its instances.
  *
  * @category Component
  * @package  Codex\Component
@@ -32,64 +31,17 @@ use Wikimedia\Codex\Renderer\ProgressBarRenderer;
  * @license  https://www.gnu.org/copyleft/gpl.html GPL-2.0-or-later
  * @link     https://doc.wikimedia.org/codex/main/ Codex Documentation
  */
-class ProgressBar {
+class ProgressBar extends Component {
+	private string $id = '';
 
-	/**
-	 * The ID for the progress bar.
-	 */
-	private string $id;
-
-	/**
-	 * The ARIA label for the progress bar, important for accessibility.
-	 */
-	private string $label;
-
-	/**
-	 * Whether the progress bar is a smaller, inline variant.
-	 */
-	private bool $inline;
-
-	/**
-	 * Whether the progress bar is disabled.
-	 */
-	private bool $disabled;
-
-	/**
-	 * Additional HTML attributes for the outer `<div>` element of the progress bar.
-	 */
-	private array $attributes;
-
-	/**
-	 * The renderer instance used to render the progress bar.
-	 */
-	private ProgressBarRenderer $renderer;
-
-	/**
-	 * Constructor for the ProgressBar component.
-	 *
-	 * Initializes a ProgressBar instance with the specified properties.
-	 *
-	 * @param string $id The ID for the progress bar.
-	 * @param string $label The ARIA label for the progress bar.
-	 * @param bool $inline Whether the progress bar is inline.
-	 * @param bool $disabled Whether the progress bar is disabled.
-	 * @param array $attributes Additional HTML attributes for the progress bar.
-	 * @param ProgressBarRenderer $renderer The renderer to use for rendering the progress bar.
-	 */
 	public function __construct(
-		string $id,
-		string $label,
-		bool $inline,
-		bool $disabled,
-		array $attributes,
-		ProgressBarRenderer $renderer
+		ProgressBarRenderer $renderer,
+		private string $label,
+		private bool $inline,
+		private bool $disabled,
+		private array $attributes
 	) {
-		$this->id = $id;
-		$this->label = $label;
-		$this->inline = $inline;
-		$this->disabled = $disabled;
-		$this->attributes = $attributes;
-		$this->renderer = $renderer;
+		parent::__construct( $renderer );
 	}
 
 	/**
@@ -108,7 +60,7 @@ class ProgressBar {
 	/**
 	 * Get the ARIA label for the progress bar.
 	 *
-	 * This method returns the ARIA label that is used for the progress bar, which is important for accessibility.
+	 * This method returns the ARIA label used for the progress bar, which is important for accessibility.
 	 * The label provides a descriptive name for the progress bar, helping users with assistive technologies
 	 * to understand its purpose.
 	 *
@@ -157,16 +109,104 @@ class ProgressBar {
 	}
 
 	/**
-	 * Get the component's HTML representation.
+	 * Set the ProgressBar's HTML ID attribute.
 	 *
-	 * This method generates the HTML markup for the component, incorporating relevant properties
-	 * and any additional attributes. The component is structured using appropriate HTML elements
-	 * as defined by the implementation.
+	 * @deprecated Use setAttributes() to set the ID
+	 * @since 0.1.0
+	 * @param string $id The ID for the ProgressBar element.
+	 * @return $this
+	 */
+	public function setId( string $id ): self {
+		$this->id = $id;
+
+		return $this;
+	}
+
+	/**
+	 * Set the ARIA label for the progress bar.
+	 *
+	 * This method sets the ARIA label for the progress bar, which is important for accessibility.
+	 * The label provides a descriptive name for the progress bar, helping users with assistive technologies
+	 * to understand its purpose.
+	 *
+	 * Example usage:
+	 *
+	 *     $progressBar->setLabel('File upload progress');
 	 *
 	 * @since 0.1.0
-	 * @return string The generated HTML string for the component.
+	 * @param string $label The ARIA label for the progress bar.
+	 * @return $this Returns the ProgressBar instance for method chaining.
 	 */
-	public function getHtml(): string {
-		return $this->renderer->render( $this );
+	public function setLabel( string $label ): self {
+		$this->label = $label;
+
+		return $this;
+	}
+
+	/**
+	 * Set whether the progress bar should be displayed inline.
+	 *
+	 * This method sets the `inline` property, which controls whether the progress bar should be
+	 * displayed as a smaller, inline variant. The inline variant is typically used in compact spaces.
+	 *
+	 * Example usage:
+	 *
+	 *     $progressBar->setInline(true);
+	 *
+	 * @since 0.1.0
+	 * @param bool $inline Whether the progress bar should be displayed inline.
+	 * @return $this Returns the ProgressBar instance for method chaining.
+	 */
+	public function setInline( bool $inline ): self {
+		$this->inline = $inline;
+
+		return $this;
+	}
+
+	/**
+	 * Set whether the progress bar is disabled.
+	 *
+	 * This method sets the `disabled` property, which controls whether the progress bar is disabled.
+	 * A disabled progress bar may be visually different and indicate to the user that it is inactive.
+	 *
+	 * Example usage:
+	 *
+	 *     $progressBar->setDisabled(true);
+	 *
+	 * @since 0.1.0
+	 * @param bool $disabled Whether the progress bar is disabled.
+	 * @return $this Returns the ProgressBar instance for method chaining.
+	 */
+	public function setDisabled( bool $disabled ): self {
+		$this->disabled = $disabled;
+
+		return $this;
+	}
+
+	/**
+	 * Set additional HTML attributes for the outer `<div>` element.
+	 *
+	 * This method allows custom HTML attributes to be added to the outer `<div>` element of the progress bar,
+	 * such as `id`, `data-*`, `aria-*`, or any other valid attributes. These attributes can be used to
+	 * enhance accessibility or integrate with JavaScript.
+	 *
+	 * The values of these attributes are automatically escaped to prevent XSS vulnerabilities.
+	 *
+	 * Example usage:
+	 *
+	 *     $progressBar->setAttributes([
+	 *         'id' => 'file-upload-progress',
+	 *         'data-upload' => 'true',
+	 *     ]);
+	 *
+	 * @since 0.1.0
+	 * @param array $attributes An associative array of HTML attributes.
+	 * @return $this Returns the ProgressBar instance for method chaining.
+	 */
+	public function setAttributes( array $attributes ): self {
+		foreach ( $attributes as $key => $value ) {
+			$this->attributes[$key] = $value;
+		}
+		return $this;
 	}
 }

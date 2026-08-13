@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * ParamValidatorCallbacks.php
  *
@@ -97,5 +99,18 @@ class ParamValidatorCallbacks implements IParamValidatorCallbacks {
 	 */
 	public function getValue( string $name, $default, array $options ) {
 		return $this->params[$name] ?? $default;
+	}
+
+	/**
+	 * Get all parameters from the request.
+	 *
+	 * This method returns all parameters that were provided in the request
+	 * as an associative array.
+	 *
+	 * @since 0.3.0
+	 * @return array<string, mixed> All request parameters.
+	 */
+	public function getAllParams(): array {
+		return $this->params;
 	}
 }

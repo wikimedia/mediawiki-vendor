@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * Field.php
  *
@@ -16,14 +18,11 @@
 
 namespace Wikimedia\Codex\Component;
 
+use Wikimedia\Codex\Contract\Component;
 use Wikimedia\Codex\Renderer\FieldRenderer;
 
 /**
  * Field
- *
- * This class is part of the Codex PHP library and is responsible for
- * representing an immutable object. It is primarily intended for use
- * with a builder class to construct its instances.
  *
  * @category Component
  * @package  Codex\Component
@@ -32,70 +31,32 @@ use Wikimedia\Codex\Renderer\FieldRenderer;
  * @license  https://www.gnu.org/copyleft/gpl.html GPL-2.0-or-later
  * @link     https://doc.wikimedia.org/codex/main/ Codex Documentation
  */
-class Field {
+class Field extends Component {
+	private string $id = '';
 
-	/**
-	 * The ID for the fieldset.
-	 */
-	protected string $id;
-
-	/**
-	 * The label for the fieldset.
-	 */
-	protected Label $label;
-
-	/**
-	 * Indicates if the fields should be wrapped in a fieldset with a legend.
-	 */
-	protected bool $isFieldset;
-
-	/**
-	 * An array of fields (as HTML strings) included within the fieldset or div.
-	 */
-	protected array $fields;
-
-	/**
-	 * Additional HTML attributes for the fieldset or div element.
-	 */
-	protected array $attributes;
-
-	/**
-	 * The renderer instance used to render the field.
-	 */
-	protected FieldRenderer $renderer;
-
-	/**
-	 * Constructor for the Field component.
-	 *
-	 * Initializes a Field instance with the specified properties.
-	 *
-	 * @param string $id The ID for the fieldset or div.
-	 * @param Label $label The label for the fieldset.
-	 * @param bool $isFieldset Indicates if fields are wrapped in a fieldset.
-	 * @param array $fields An array of fields (HTML strings).
-	 * @param array $attributes Additional HTML attributes for the fieldset or div.
-	 * @param FieldRenderer $renderer The renderer to use for rendering the field.
-	 */
 	public function __construct(
-		string $id,
-		Label $label,
-		bool $isFieldset,
-		array $fields,
-		array $attributes,
-		FieldRenderer $renderer
+		FieldRenderer $renderer,
+		private ?Label $label,
+		private bool $isFieldset,
+		private array $fields,
+		private array $attributes
 	) {
-		$this->id = $id;
-		$this->label = $label;
-		$this->isFieldset = $isFieldset;
-		$this->fields = $fields;
-		$this->attributes = $attributes;
-		$this->renderer = $renderer;
+		foreach ( $this->fields as $field ) {
+			if ( is_string( $field ) ) {
+				trigger_error(
+					"Passing raw HTML strings to setFields() is deprecated and will be removed in 1.0.0. " .
+					"Please use HtmlSnippet objects instead.",
+					E_USER_DEPRECATED
+				);
+			}
+		}
+		parent::__construct( $renderer );
 	}
 
 	/**
 	 * Get the fieldset or div's HTML ID attribute.
 	 *
-	 * This method returns the ID that is assigned to the fieldset or div element. The ID is useful for targeting
+	 * This method returns the ID assigned to the fieldset or div element. The ID is useful for targeting
 	 * the field with JavaScript, CSS, or for accessibility purposes.
 	 *
 	 * @since 0.1.0
@@ -112,9 +73,9 @@ class Field {
 	 * name that helps users understand the purpose of the field.
 	 *
 	 * @since 0.1.0
-	 * @return Label The label of the field.
+	 * @return ?Label The label of the field.
 	 */
-	public function getLabel(): Label {
+	public function getLabel(): ?Label {
 		return $this->label;
 	}
 
@@ -138,7 +99,7 @@ class Field {
 	 * within the fieldset or div.
 	 *
 	 * @since 0.1.0
-	 * @return array The fields included in the fieldset or div.
+	 * @return array<Component|HtmlSnippet|string> The fields included in the fieldset or div.
 	 */
 	public function getFields(): array {
 		return $this->fields;
@@ -158,16 +119,104 @@ class Field {
 	}
 
 	/**
-	 * Get the component's HTML representation.
+	 * Set the label's HTML ID attribute.
 	 *
-	 * This method generates the HTML markup for the component, incorporating relevant properties
-	 * and any additional attributes. The component is structured using appropriate HTML elements
-	 * as defined by the implementation.
+	 * @deprecated Use setAttributes() to set the ID
+	 * @since 0.1.0
+	 * @param string $id The ID for the field element.
+	 * @return $this
+	 */
+	public function setId( string $id ): self {
+		$this->id = $id;
+
+		return $this;
+	}
+
+	/**
+	 * Set the label for the field.
+	 *
+	 * This method accepts a Label object which provides a descriptive label for the field.
 	 *
 	 * @since 0.1.0
-	 * @return string The generated HTML string for the component.
+	 * @param Label $label The Label object for the field.
+	 * @return $this Returns the Checkbox instance for method chaining.
 	 */
-	public function getHtml(): string {
-		return $this->renderer->render( $this );
+	public function setLabel( Label $label ): self {
+		$this->label = $label;
+
+		return $this;
+	}
+
+	/**
+	 * Set whether the fields should be wrapped in a fieldset with a legend.
+	 *
+	 * When set to `true`, this method wraps the fields in a `<fieldset>` element with a `<legend>`.
+	 * If set to `false`, the fields are wrapped in a `<div>` with a `<label>` instead.
+	 *
+	 * @since 0.1.0
+	 * @param bool $isFieldset Whether to wrap fields in a fieldset.
+	 * @return $this Returns the Field instance for method chaining.
+	 */
+	public function setIsFieldset( bool $isFieldset ): self {
+		$this->isFieldset = $isFieldset;
+
+		return $this;
+	}
+
+	/**
+	 * Set the fields within the fieldset.
+	 *
+	 * This method accepts an array of fields to be included within the fieldset or a `<div>`.
+	 * It allows grouping of related fields together under a common legend or label for better organization.
+	 *
+	 * Fields may be Component objects, HtmlSnippet objects, or raw HTML strings. Passing in strings
+	 * is deprecated and will be removed in 1.0.0.
+	 *
+	 * @since 0.1.0
+	 * @param array<Component|HtmlSnippet|string> $fields The array of fields to include in the fieldset.
+	 * @return $this Returns the Field instance for method chaining.
+	 */
+	public function setFields( array $fields ): self {
+		foreach ( $fields as $field ) {
+			if ( is_string( $field ) ) {
+				trigger_error(
+					"Passing raw HTML strings to setFields() is deprecated and will be removed in 1.0.0. " .
+					"Please use HtmlSnippet objects instead.",
+					E_USER_DEPRECATED
+				);
+			}
+		}
+		$this->fields = $fields;
+
+		return $this;
+	}
+
+	/**
+	 * Set additional HTML attributes for the fieldset or div element.
+	 *
+	 * This method allows custom HTML attributes to be added to the fieldset or div element, such as `id`, `data-*`,
+	 * `aria-*`, or any other valid attributes. These attributes can be used to further customize the fieldset or div,
+	 * enhance accessibility, or provide additional metadata.
+	 *
+	 * The values of these attributes are automatically escaped to prevent XSS vulnerabilities.
+	 *
+	 * Example usage:
+	 *
+	 *     $field->setAttributes([
+	 *         'id' => 'user-info-fieldset',
+	 *         'data-category' => 'user-data',
+	 *         'aria-labelledby' => 'legend-user-info'
+	 *     ]);
+	 *
+	 * @since 0.1.0
+	 * @param array $attributes An associative array of HTML attributes.
+	 * @return $this Returns the Field instance for method chaining.
+	 */
+	public function setAttributes( array $attributes ): self {
+		foreach ( $attributes as $key => $value ) {
+			$this->attributes[$key] = $value;
+		}
+
+		return $this;
 	}
 }

@@ -1,21 +1,22 @@
-<button class="cdx-button{{!
+{{#isLink}}<a{{/isLink}}{{^isLink}}<button{{/isLink}} class="cdx-button{{!
+  }}{{#isLink}} cdx-button--fake-button {{ fakeButtonClass }}{{/isLink}}{{!
   }}{{#action}}{{^defaultAction}} cdx-button--action-{{ action }}{{/defaultAction}}{{/action}}{{!
   }}{{#weight}}{{^defaultWeight}} cdx-button--weight-{{ weight }}{{/defaultWeight}}{{/weight}}{{!
   }}{{#size}}{{^defaultSize}} cdx-button--size-{{ size }}{{/defaultSize}}{{/size}}{{!
   }}{{#iconOnly}} cdx-button--icon-only{{/iconOnly}}{{!
-  }}{{#renderClasses}}{{{attributes}}}{{/renderClasses}}"{{!
+  }}{{{ extraClasses }}}"{{!
   }}{{#id}} id="{{ id }}"{{/id}}{{!
-  }}{{#type}} type="{{ type }}"{{/type}}{{!
-  }}{{#name}} name="{{ name }}"{{/name}}{{!
-  }}{{#value}} value="{{ value }}"{{/value}}{{!
-  }}{{#ariaLabelKey}} aria-label="{{#i18n}}{{ ariaLabelKey }}{{/i18n}}"{{/ariaLabelKey}}{{!
-  }}{{^ariaLabelKey}}{{#ariaLabel}} aria-label="{{ ariaLabel }}"{{/ariaLabel}}{{/ariaLabelKey}}{{!
-  }}{{#renderAttributes}}{{{attributes}}}{{/renderAttributes}}{{!
-  }}{{#isDisabled}} disabled{{/isDisabled}}>
+  }}{{#isLink}} href="{{ href }}"{{/isLink}}{{!
+  }}{{^isLink}}{{#type}} type="{{ type }}"{{/type}}{{/isLink}}{{!
+  }}{{^isLink}}{{#name}} name="{{ name }}"{{/name}}{{/isLink}}{{!
+  }}{{^isLink}}{{#value}} value="{{ value }}"{{/value}}{{/isLink}}{{!
+  }}{{#isLink}}{{#isDisabled}} aria-disabled="true"{{/isDisabled}}{{/isLink}}{{!
+  }}{{^isLink}}{{#isDisabled}} disabled{{/isDisabled}}{{/isLink}}{{!
+  }}{{{ attributes }}}>
   {{#iconClass}}
     <span class="cdx-button__icon {{ iconClass }}" aria-hidden="true"></span>
   {{/iconClass}}
   {{^iconOnly}}
-    {{ label }}
+    {{{ label-html }}}
   {{/iconOnly}}
-</button>
+{{#isLink}}</a>{{/isLink}}{{^isLink}}</button>{{/isLink}}

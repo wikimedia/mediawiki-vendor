@@ -1,14 +1,15 @@
 <details class="cdx-accordion{{!
-  }}{{#renderClasses}}{{{attributes}}}{{/renderClasses}}"{{!
+  }}{{#separation}} cdx-accordion--separation-{{ separation }}{{/separation}}{{!
+  }}{{{ extraClasses }}}"{{!
   }}{{#id}} id="{{ id }}"{{/id}}{{!
-  }}{{#renderAttributes}}{{{attributes}}}{{/renderAttributes}}{{!
+  }}{{{ attributes }}}{{!
   }}{{#isOpen}} open{{/isOpen}}>
   <summary>
     <h3 class="cdx-accordion__header">
-      <span class="cdx-accordion__header__title">{{ title }}</span>
-      {{#description}}{{!
-      }}<span class="cdx-accordion__header__description">{{ description }}</span>
-      {{/description}}
+      <span class="cdx-accordion__header__title">{{{ title-html }}}</span>
+      {{#description-html}}{{!
+      }}<span class="cdx-accordion__header__description">{{{ description-html }}}</span>
+      {{/description-html}}
     </h3>
   </summary>
   <div class="cdx-accordion__content">

@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * ToggleSwitch.php
  *
@@ -16,14 +18,11 @@
 
 namespace Wikimedia\Codex\Component;
 
+use Wikimedia\Codex\Contract\Component;
 use Wikimedia\Codex\Renderer\ToggleSwitchRenderer;
 
 /**
  * ToggleSwitch
- *
- * This class is part of the Codex PHP library and is responsible for
- * representing an immutable object. It is primarily intended for use
- * with a builder class to construct its instances.
  *
  * @category Component
  * @package  Codex\Component
@@ -32,86 +31,19 @@ use Wikimedia\Codex\Renderer\ToggleSwitchRenderer;
  * @license  https://www.gnu.org/copyleft/gpl.html GPL-2.0-or-later
  * @link     https://doc.wikimedia.org/codex/main/ Codex Documentation
  */
-class ToggleSwitch {
-
-	/**
-	 * The ID for the toggle switch input.
-	 */
-	protected string $inputId;
-
-	/**
-	 * The name attribute for the toggle switch input.
-	 */
-	protected string $name;
-
-	/**
-	 * The value associated with the toggle switch input.
-	 */
-	protected string $value;
-
-	/**
-	 * The label object for the toggle switch.
-	 */
-	protected Label $label;
-
-	/**
-	 * Whether the toggle is checked by default.
-	 */
-	protected bool $checked;
-
-	/**
-	 * Whether the toggle is disabled.
-	 */
-	protected bool $disabled;
-
-	/**
-	 * Additional HTML attributes for the input element.
-	 */
-	protected array $inputAttributes;
-
-	/**
-	 * Additional HTML attributes for the wrapper element.
-	 */
-	protected array $wrapperAttributes;
-
-	/**
-	 * The renderer instance used to render the toggle switch.
-	 */
-	protected ToggleSwitchRenderer $renderer;
-
-	/**
-	 * Constructor for the ToggleSwitch component.
-	 *
-	 * @param string $inputId The ID for the toggle switch input.
-	 * @param string $name The name attribute for the toggle switch input.
-	 * @param string $value The value associated with the toggle switch input.
-	 * @param Label $label The label object for the toggle switch.
-	 * @param bool $checked Whether the toggle switch is checked by default.
-	 * @param bool $disabled Whether the toggle switch is disabled.
-	 * @param array $inputAttributes Additional HTML attributes for the input element.
-	 * @param array $wrapperAttributes Additional HTML attributes for the wrapper element.
-	 * @param ToggleSwitchRenderer $renderer The renderer to use for rendering the toggle switch.
-	 */
+class ToggleSwitch extends Component {
 	public function __construct(
-		string $inputId,
-		string $name,
-		string $value,
-		Label $label,
-		bool $checked,
-		bool $disabled,
-		array $inputAttributes,
-		array $wrapperAttributes,
-		ToggleSwitchRenderer $renderer
+		ToggleSwitchRenderer $renderer,
+		private string $inputId,
+		private string $name,
+		private ?Label $label,
+		private string $value,
+		private bool $checked,
+		private bool $disabled,
+		private array $inputAttributes,
+		private array $wrapperAttributes
 	) {
-		$this->inputId = $inputId;
-		$this->name = $name;
-		$this->value = $value;
-		$this->label = $label;
-		$this->checked = $checked;
-		$this->disabled = $disabled;
-		$this->inputAttributes = $inputAttributes;
-		$this->wrapperAttributes = $wrapperAttributes;
-		$this->renderer = $renderer;
+		parent::__construct( $renderer );
 	}
 
 	/**
@@ -142,7 +74,7 @@ class ToggleSwitch {
 	/**
 	 * Get the value associated with the toggle switch input.
 	 *
-	 * This method returns the value that is submitted when the toggle switch is checked and the form is submitted.
+	 * This method returns the value submitted when the toggle switch is checked and the form is submitted.
 	 *
 	 * @since 0.1.0
 	 * @return string The value of the toggle switch input.
@@ -158,9 +90,9 @@ class ToggleSwitch {
 	 * The label is crucial for accessibility and usability.
 	 *
 	 * @since 0.1.0
-	 * @return Label The label object for the toggle switch.
+	 * @return ?Label The label object for the toggle switch.
 	 */
-	public function getLabel(): Label {
+	public function getLabel(): ?Label {
 		return $this->label;
 	}
 
@@ -217,16 +149,90 @@ class ToggleSwitch {
 	}
 
 	/**
-	 * Get the component's HTML representation.
+	 * Set the ID for the toggle switch input.
 	 *
-	 * This method generates the HTML markup for the component, incorporating relevant properties
-	 * and any additional attributes. The component is structured using appropriate HTML elements
-	 * as defined by the implementation.
-	 *
-	 * @since 0.1.0
-	 * @return string The generated HTML string for the component.
+	 * @param string $inputId The ID for the toggle switch input.
+	 * @return $this Returns the ToggleSwitch instance for method chaining.
 	 */
-	public function getHtml(): string {
-		return $this->renderer->render( $this );
+	public function setInputId( string $inputId ): self {
+		$this->inputId = $inputId;
+		return $this;
+	}
+
+	/**
+	 * Set the name for the toggle switch input.
+	 *
+	 * @param string $name The name attribute for the toggle switch input.
+	 * @return $this Returns the ToggleSwitch instance for method chaining.
+	 */
+	public function setName( string $name ): self {
+		$this->name = $name;
+		return $this;
+	}
+
+	/**
+	 * Set the value for the toggle switch input.
+	 *
+	 * @param string $value The value associated with the toggle switch input.
+	 * @return $this Returns the ToggleSwitch instance for method chaining.
+	 */
+	public function setValue( string $value ): self {
+		$this->value = $value;
+		return $this;
+	}
+
+	/**
+	 * Set the label for the toggle switch.
+	 *
+	 * @param Label $label The label object for the toggle switch.
+	 * @return $this Returns the ToggleSwitch instance for method chaining.
+	 */
+	public function setLabel( Label $label ): self {
+		$this->label = $label;
+		return $this;
+	}
+
+	/**
+	 * Set whether the toggle switch should be checked by default.
+	 *
+	 * @param bool $checked Whether the toggle switch should be checked by default.
+	 * @return $this Returns the ToggleSwitch instance for method chaining.
+	 */
+	public function setChecked( bool $checked ): self {
+		$this->checked = $checked;
+		return $this;
+	}
+
+	/**
+	 * Set whether the toggle switch should be disabled.
+	 *
+	 * @param bool $disabled Whether the toggle switch should be disabled.
+	 * @return $this Returns the ToggleSwitch instance for method chaining.
+	 */
+	public function setDisabled( bool $disabled ): self {
+		$this->disabled = $disabled;
+		return $this;
+	}
+
+	/**
+	 * Set additional HTML attributes for the input element.
+	 *
+	 * @param array $inputAttributes An associative array of HTML attributes for the input element.
+	 * @return $this Returns the ToggleSwitch instance for method chaining.
+	 */
+	public function setInputAttributes( array $inputAttributes ): self {
+		$this->inputAttributes = $inputAttributes;
+		return $this;
+	}
+
+	/**
+	 * Set additional HTML attributes for the wrapper element.
+	 *
+	 * @param array $wrapperAttributes An associative array of HTML attributes for the wrapper element.
+	 * @return $this Returns the ToggleSwitch instance for method chaining.
+	 */
+	public function setWrapperAttributes( array $wrapperAttributes ): self {
+		$this->wrapperAttributes = $wrapperAttributes;
+		return $this;
 	}
 }

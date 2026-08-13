@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * Message.php
  *
@@ -16,14 +18,13 @@
 
 namespace Wikimedia\Codex\Component;
 
+use InvalidArgumentException;
+use Wikimedia\Codex\Contract\Component;
 use Wikimedia\Codex\Renderer\MessageRenderer;
+use Wikimedia\Codex\Traits\ContentSetter;
 
 /**
  * Message
- *
- * This class is part of the Codex PHP library and is responsible for
- * representing an immutable object. It is primarily intended for use
- * with a builder class to construct its instances.
  *
  * @category Component
  * @package  Codex\Component
@@ -32,86 +33,37 @@ use Wikimedia\Codex\Renderer\MessageRenderer;
  * @license  https://www.gnu.org/copyleft/gpl.html GPL-2.0-or-later
  * @link     https://doc.wikimedia.org/codex/main/ Codex Documentation
  */
-class Message {
+class Message extends Component {
+	use ContentSetter;
+
+	private string $id = '';
 
 	/**
-	 * The ID for the Message.
+	 * The valid status types for messages.
 	 */
-	private string $id;
+	public const STATUS_TYPES = [
+		'notice',
+		'warning',
+		'error',
+		'success',
+	];
 
-	/**
-	 * The content displayed inside the message box.
-	 */
-	private string $content;
-
-	/**
-	 * The type of the message (e.g., 'notice', 'warning', 'error', 'success').
-	 */
-	private string $type;
-
-	/**
-	 * Whether the message box should be displayed inline.
-	 */
-	private bool $inline;
-
-	/**
-	 * The heading displayed at the top of the message content.
-	 */
-	private string $heading;
-
-	/**
-	 * The CSS class name for the icon.
-	 */
-	private string $iconClass;
-
-	/**
-	 * Additional HTML attributes for the message box.
-	 */
-	private array $attributes;
-
-	/**
-	 * The renderer instance used to render the message.
-	 */
-	private MessageRenderer $renderer;
-
-	/**
-	 * Constructor for the Message component.
-	 *
-	 * Initializes a Message instance with the specified properties.
-	 *
-	 * @param string $id The ID for the Message.
-	 * @param string $content The content displayed inside the message box.
-	 * @param string $type The type of the message.
-	 * @param bool $inline Whether the message box should be displayed inline.
-	 * @param string $heading The heading displayed at the top of the message content.
-	 * @param string $iconClass The CSS class name for the icon.
-	 * @param array $attributes Additional HTML attributes for the message box.
-	 * @param MessageRenderer $renderer The renderer to use for rendering the message.
-	 */
 	public function __construct(
-		string $id,
-		string $content,
-		string $type,
-		bool $inline,
-		string $heading,
-		string $iconClass,
-		array $attributes,
-		MessageRenderer $renderer
+		MessageRenderer $renderer,
+		private string|HtmlSnippet $content,
+		private string $type,
+		private bool $inline,
+		private string|HtmlSnippet $heading,
+		private string $iconClass,
+		private array $attributes
 	) {
-		$this->id = $id;
-		$this->content = $content;
-		$this->type = $type;
-		$this->inline = $inline;
-		$this->heading = $heading;
-		$this->iconClass = $iconClass;
-		$this->attributes = $attributes;
-		$this->renderer = $renderer;
+		parent::__construct( $renderer );
 	}
 
 	/**
 	 * Get the Message's HTML ID attribute.
 	 *
-	 * This method returns the ID that is assigned to the Message element.
+	 * This method returns the ID assigned to the Message element.
 	 * The ID can be used for targeting the message with JavaScript, CSS, or for accessibility purposes.
 	 *
 	 * @since 0.1.0
@@ -124,13 +76,13 @@ class Message {
 	/**
 	 * Get the content of the message box.
 	 *
-	 * This method returns the text or HTML content that is displayed inside the message box.
+	 * This method returns the text or HTML content displayed inside the message box.
 	 * The content provides the primary feedback or information that the message conveys to the user.
 	 *
 	 * @since 0.1.0
-	 * @return string The content of the message box.
+	 * @return string|HtmlSnippet The content of the message box.
 	 */
-	public function getContent(): string {
+	public function getContent(): string|HtmlSnippet {
 		return $this->content;
 	}
 
@@ -163,13 +115,13 @@ class Message {
 	/**
 	 * Get the heading of the message box.
 	 *
-	 * This method returns the heading text that is prominently displayed at the top of the message content.
+	 * This method returns the heading text prominently displayed at the top of the message content.
 	 * The heading helps to quickly convey the primary purpose or topic of the message.
 	 *
 	 * @since 0.1.0
-	 * @return string The heading text of the message box.
+	 * @return string|HtmlSnippet The heading text of the message box.
 	 */
-	public function getHeading(): string {
+	public function getHeading(): string|HtmlSnippet {
 		return $this->heading;
 	}
 
@@ -201,16 +153,117 @@ class Message {
 	}
 
 	/**
-	 * Get the component's HTML representation.
+	 * Set the Message's HTML ID attribute.
 	 *
-	 * This method generates the HTML markup for the component, incorporating relevant properties
-	 * and any additional attributes. The component is structured using appropriate HTML elements
-	 * as defined by the implementation.
+	 * @deprecated Use setAttributes() to set the ID
+	 * @since 0.1.0
+	 * @param string $id The ID for the Message element.
+	 * @return $this
+	 */
+	public function setId( string $id ): self {
+		$this->id = $id;
+
+		return $this;
+	}
+
+	/**
+	 * Set the content of the message.
+	 *
+	 * @param string|HtmlSnippet $content Text or HTML to be displayed inside the message box.
+	 * @return $this Returns the Message instance for method chaining.
+	 */
+	public function setContent( string|HtmlSnippet $content ): self {
+		$this->content = $content;
+
+		return $this;
+	}
+
+	/**
+	 * Set the type of the message box.
+	 *
+	 * This method sets the visual style of the message box based on its type.
+	 * The type can be one of the following:
+	 * - 'notice': For general information.
+	 * - 'warning': For cautionary information.
+	 * - 'error': For error messages.
+	 * - 'success': For success messages.
+	 *
+	 * The type is applied as a CSS class (`cdx-message--{type}`) to the message element.
 	 *
 	 * @since 0.1.0
-	 * @return string The generated HTML string for the component.
+	 * @param string $type The type of message (e.g., 'notice', 'warning', 'error', 'success').
+	 * @return $this Returns the Message instance for method chaining.
 	 */
-	public function getHtml(): string {
-		return $this->renderer->render( $this );
+	public function setType( string $type ): self {
+		if ( !in_array( $type, self::STATUS_TYPES, true ) ) {
+			throw new InvalidArgumentException( "Invalid message type: $type" );
+		}
+		$this->type = $type;
+
+		return $this;
+	}
+
+	/**
+	 * Set the inline display of the message box.
+	 *
+	 * This method determines whether the message box should be displayed inline,
+	 * without padding, background color, or border. Inline messages are typically used for
+	 * validation feedback or brief notifications within the flow of content.
+	 *
+	 * @since 0.1.0
+	 * @param bool $inline Whether the message box should be displayed inline.
+	 * @return $this Returns the Message instance for method chaining.
+	 */
+	public function setInline( bool $inline ): self {
+		$this->inline = $inline;
+
+		return $this;
+	}
+
+	/**
+	 * Set the heading of the message box.
+	 *
+	 * This method sets a heading for the message box, which will be displayed prominently at the top of the message
+	 * content. The heading helps to quickly convey the primary purpose or topic of the message.
+	 *
+	 * Example usage:
+	 *
+	 *     $message->setHeading('Error: Invalid Input');
+	 *
+	 * @since 0.1.0
+	 * @param string|HtmlSnippet $heading The heading text to be displayed inside the message box.
+	 * @return $this Returns the Message instance for method chaining.
+	 */
+	public function setHeading( string|HtmlSnippet $heading ): self {
+		$this->heading = $heading;
+
+		return $this;
+	}
+
+	/**
+	 * Set additional HTML attributes for the message box.
+	 *
+	 * This method allows custom HTML attributes to be added to the outer `<div>` element of the message box,
+	 * such as `id`, `data-*`, `aria-*`, or any other valid attributes. These attributes can be used to
+	 * enhance accessibility or integrate with JavaScript.
+	 *
+	 * The values of these attributes are automatically escaped to prevent XSS vulnerabilities.
+	 *
+	 * Example usage:
+	 *
+	 *     $message->setAttributes([
+	 *         'id' => 'error-message',
+	 *         'data-type' => 'error',
+	 *     ]);
+	 *
+	 * @since 0.1.0
+	 * @param array $attributes An associative array of HTML attributes.
+	 * @return $this Returns the Message instance for method chaining.
+	 */
+	public function setAttributes( array $attributes ): self {
+		foreach ( $attributes as $key => $value ) {
+			$this->attributes[$key] = $value;
+		}
+		return $this;
 	}
 }
