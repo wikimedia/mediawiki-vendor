@@ -53,11 +53,11 @@ abstract class PaymentProviderValidator {
 	/**
 	 * Resolves the type of validation for the create payment input depending on the transaction type.
 	 *
-	 * @param array $params
+	 * @param array &$params
 	 * @throws ValidationException
 	 * @return void
 	 */
-	public function validateCreatePaymentInput( array $params ): void {
+	public function validateCreatePaymentInput( array &$params ): void {
 		// recurring charge is same across all methods
 		if ( isset( $params['recurring_payment_token'] ) ) {
 			$this->validateRecurringCreatePaymentInput( $params );
@@ -66,16 +66,66 @@ abstract class PaymentProviderValidator {
 		}
 	}
 
+	public function validateProcessorContactId( array &$params ): void {
+		// avoid processor_contact_id if not uuid
+		if ( !empty( $params['processor_contact_id'] ) &&
+			!preg_match(
+				'/^[0-9a-f]{8}-?[0-9a-f]{4}-?4[0-9a-f]{3}-?[89ab][0-9a-f]{3}-?[0-9a-f]{12}$/i',
+				$params['processor_contact_id']
+			)
+		) {
+			$params['processor_contact_id'] = null;
+		}
+	}
+
+	/**
+	 *
+	 * Fixes missing first or last name by splitting multi-word strings.
+	 *
+	 * @param array &$params
+	 * @return void
+	 * @throws ValidationException
+	 */
+	public function recurringNameCheck( array &$params ): void {
+		if ( empty( $params['first_name'] ) || empty( $params['last_name'] ) ) {
+			// Find which field has the data we might split
+			$sourceField = !empty( $params['last_name'] ) ? 'last_name' : 'first_name';
+
+			if ( !empty( $params[$sourceField] ) ) {
+				$raw = trim( $params[$sourceField] );
+				if ( str_contains( $raw, ' ' ) ) {
+					$parts = explode( ' ', $raw, 2 );
+				} elseif ( str_contains( $raw, '.' ) ) {
+					$parts = explode( '.', $raw, 2 );
+				} else {
+					$parts = [ $raw ];
+				}
+
+				if ( count( $parts ) > 1 ) {
+					$params['first_name'] = $parts[0];
+					$params['last_name']  = $parts[1];
+				} elseif ( count( $parts ) === 1 ) {
+					// Only one part of name exists; use it as first_name and drop last_name
+					$params['first_name'] = $parts[0]; // use firstname for ty email
+					unset( $params['last_name'] );
+				}
+			} else {
+				$params['first_name'] = null;
+				unset( $params['last_name'] );
+			}
+		}
+	}
+
 	/**
 	 * Checks the recurring create payment input parameters for correctness and completeness.
 	 *
 	 * This method is the same for all payment methods on Gravy.
 	 *
-	 * @param array $params
+	 * @param array &$params
 	 * @throws ValidationException
 	 * @return void
 	 */
-	public function validateRecurringCreatePaymentInput( array $params ): void {
+	public function validateRecurringCreatePaymentInput( array &$params ): void {
 		$defaultRequiredFields = [
 			'recurring_payment_token',
 			'amount',
@@ -91,6 +141,10 @@ abstract class PaymentProviderValidator {
 		);
 
 		$this->validateFields( $required, $params );
+		// T424766 recurring from third party might have missing first name or last name
+		$this->recurringNameCheck( $params );
+		// T431327 uuid should be the only format for processor_contact_id
+		$this->validateProcessorContactId( $params );
 	}
 
 	/**

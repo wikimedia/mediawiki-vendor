@@ -185,12 +185,39 @@ class ErrorHelper {
 		$to = $config->val( 'notifications/fraud-alerts/to' );
 		$from = $config->val( 'email/from-address' );
 		$subject = 'ALERT: Gravy Suspected Fraud Transactions List - ' . date( 'Y-m-d H:i' );
-		$body = "Suspected fraud transactions (" . count( $fraudTransactions ) . ")" . PHP_EOL . PHP_EOL;
+		$textBody = "Suspected fraud transactions (" . count( $fraudTransactions ) . ")" . PHP_EOL . PHP_EOL;
+		$htmlBody = $textBody;
 		foreach ( $fraudTransactions as $trxn ) {
-			$body .= "https://wikimedia.gr4vy.app/merchants/default/transactions/{$trxn['id']}/overview " .
-				self::formatSummaryAsString( $trxn['summary'] ) . PHP_EOL;
+			$gravyLink = self::getGravyLink( $trxn );
+			$civiCRMLink = self::getCiviCRMLink( $trxn );
+			$summary = self::formatSummaryAsString( $trxn['summary'] );
+			$textBody .= implode( ' ', [ $summary, $gravyLink['text'], $civiCRMLink['text'] ] ) . PHP_EOL;
+			$htmlBody .= implode( ' ', [ $summary, $gravyLink['html'], $civiCRMLink['html'] ] ) . '<br>' . PHP_EOL;
 		}
 
-		return MailHandler::sendEmail( $to, $subject, $body, $from );
+		return MailHandler::sendEmail( $to, $subject, $textBody, $from, null, $htmlBody );
+	}
+
+	protected static function getGravyLink( array $trxn ): array {
+		$url = "https://wikimedia.gr4vy.app/merchants/default/transactions/{$trxn['id']}/overview";
+		return [
+			'html' => "<a href=\"{$url}\">Gravy console</a>",
+			'text' => "Gravy: $url",
+		];
+	}
+
+	protected static function getCiviCRMLink( array $trxn ) {
+		$orderID = $trxn['summary']['external_identifier'] ?? null;
+		if ( $orderID ) {
+			$url = "https://civicrm.wikimedia.org/civicrm/payment_attempts#?order_id=$orderID";
+			return [
+				'html' => "<a href=\"{$url}\">CiviCRM</a>",
+				'text' => "CiviCRM: $url",
+			];
+		}
+		return [
+			'html' => 'Missing external_identifier',
+			'text' => 'Missing external_identifier',
+		];
 	}
 }

@@ -5,6 +5,7 @@ namespace SmashPig\PaymentProviders\Gravy\Actions;
 use SmashPig\Core\Context;
 use SmashPig\Core\DataStores\QueueWrapper;
 use SmashPig\Core\Logging\TaggedLogger;
+use SmashPig\Core\MailHandler;
 use SmashPig\Core\Messages\ListenerMessage;
 use SmashPig\PaymentData\FinalStatus;
 use SmashPig\PaymentProviders\Gravy\ExpatriatedMessages\RefundMessage;
@@ -13,9 +14,11 @@ use SmashPig\PaymentProviders\Responses\RefundPaymentResponse;
 class RefundAction extends GravyAction {
 	use RefundTrait;
 
+	const ERROR_CODE_REFUND_ALREADY_SATISFIED = 'refund_already_satisfied';
+
 	private const ERROR_CODE_UNEXPECTED_STATE = 'unexpected_state';
 	private const RAW_RESPONSE_CODE_CAPTURE_FULLY_REFUNDED = 'CAPTURE_FULLY_REFUNDED';
-	const ERROR_CODE_REFUND_ALREADY_SATISFIED = 'refund_already_satisfied';
+	private const RAW_STATUS_DECLINED = 'declined';
 
 	public function execute( ListenerMessage $msg ): bool {
 		$tl = new TaggedLogger( 'RefundAction' );
@@ -42,6 +45,9 @@ class RefundAction extends GravyAction {
 
 			if ( $this->isAlreadyFullyRefundedError( $errorCode, $rawResponseCode ) ) {
 				$tl->info( "Refund {$refundId} failed - transaction already fully refunded" );
+			} elseif ( ( $rawResponse['status'] ?? null ) === self::RAW_STATUS_DECLINED ) {
+				$tl->info( "Refund {$refundId} was declined - notifying admins" );
+				$this->sendDeclinedRefundAlert( $refundDetails );
 			} else {
 				$tl->info( "Problem locating refund with refund id {$refundId}. Error: {$errorCode}" );
 			}
@@ -68,5 +74,35 @@ class RefundAction extends GravyAction {
 	private function isAlreadyFullyRefundedError( ?string $errorCode, ?string $rawResponseCode ): bool {
 		return ( $errorCode === self::ERROR_CODE_UNEXPECTED_STATE || $errorCode === self::ERROR_CODE_REFUND_ALREADY_SATISFIED )
 		&& $rawResponseCode === self::RAW_RESPONSE_CODE_CAPTURE_FULLY_REFUNDED;
+	}
+
+	/**
+	 * Notify admins by email that a donation's refund was declined by Gravy
+	 * and so will need to be handled manually.
+	 */
+	private function sendDeclinedRefundAlert( RefundPaymentResponse $refundDetails ): void {
+		$rawResponse = $refundDetails->getRawResponse();
+		$normalizedResponse = $refundDetails->getNormalizedResponse();
+		$refundId = $refundDetails->getGatewayRefundId() ?? $rawResponse['id'] ?? '';
+
+		$config = Context::get()->getProviderConfiguration();
+		$to = $config->val( 'notifications/declined-refund-alerts/to' );
+		$from = $config->val( 'email/from-address' );
+		$subject = 'ALERT: Gravy refund declined';
+		$body = "A refund for a donation was declined by Gravy." .
+			PHP_EOL . PHP_EOL .
+			"Refund ID: {$refundId}" . PHP_EOL .
+			"Parent transaction ID: " . ( $rawResponse['transaction_id'] ?? 'unknown' ) . PHP_EOL .
+			"Payment Service Refund ID: " . ( $normalizedResponse['payment_service_refund_id'] ?? 'unknown' ) . PHP_EOL .
+			"Refund Currency: " . ( $rawResponse['currency'] ?? 'unknown' ) . PHP_EOL .
+			"Refund Amount: " . ( $rawResponse['amount'] ?? 'unknown' ) . PHP_EOL .
+			"Reason: " . ( $rawResponse['raw_response_description'] ?? $rawResponse['reason'] ?? 'unknown' );
+
+		try {
+			MailHandler::sendEmail( $to, $subject, $body, $from );
+		} catch ( \Throwable $e ) {
+			$tl = new TaggedLogger( 'RefundAction' );
+			$tl->error( "Failed to send declined refund alert email for refund {$refundId}: " . $e->getMessage() );
+		}
 	}
 }

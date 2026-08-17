@@ -3,6 +3,7 @@ namespace SmashPig\PaymentProviders\Adyen\Tests;
 
 use PHPQueue\Interfaces\FifoQueueStore;
 use SmashPig\Core\Context;
+use SmashPig\CrmLink\Messages\SourceFields;
 use SmashPig\PaymentProviders\Adyen\Actions\ChargebackInitiatedAction;
 use SmashPig\PaymentProviders\Adyen\ExpatriatedMessages\Chargeback;
 use SmashPig\PaymentProviders\Adyen\ExpatriatedMessages\SecondChargeback;
@@ -44,6 +45,34 @@ class ChargebackInitiatedActionTest extends BaseAdyenTestCase {
 		$this->assertEquals( $chargeback->merchantReference, $refund['order_id'] );
 		$this->assertEquals( $chargeback->pspReference, $refund['gateway_refund_id'] );
 		$this->assertEquals( 'chargeback', $refund['type'] );
+	}
+
+	/**
+	 * Not really a chargeback - it should
+	 */
+	public function testACHChargeback() {
+		$chargeback = Chargeback::getInstanceFromJSON(
+			json_decode( file_get_contents( __DIR__ . '/../Data/ipn_Chargeback_ACH.json' ), true )
+		);
+		$action = new ChargebackInitiatedAction();
+		$action->execute( $chargeback );
+		$message = Context::get()->getGlobalConfiguration()
+			->object( 'data-store/donations-modify' )->pop();
+		SourceFields::removeFromMessage( $message );
+		$this->assertEquals( [
+			'contribution_status_id:name' => 'Cancelled',
+			'gateway_txn_id' => 'ABCD9XH3TW43B769',
+			'payment_method' => 'ach',
+			'order_id' => '2345678.20',
+			'gross_currency' => 'USD',
+			'gross' => 5.35,
+			'backend_processor' => 'adyen',
+			'backend_processor_txn_id' => 'ABCD9XH3TW43B769',
+			'date' => 1785266452,
+			'gateway' => 'adyen',
+			'reason' => 'R01 Insufficient Funds',
+			'can_retry' => true,
+		], $message );
 	}
 
 	public function testFailedChargeback() {

@@ -129,6 +129,9 @@ abstract class BaseParser {
 			case 'dispute':
 				return 'chargeback';
 
+			case 'dispute_reversal':
+				return 'chargeback_reversed';
+
 			case 'adjustment':
 			case 'fee':
 			case 'stripe_fee':

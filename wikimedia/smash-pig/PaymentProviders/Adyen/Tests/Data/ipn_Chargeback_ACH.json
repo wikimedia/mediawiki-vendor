@@ -1,0 +1,23 @@
+{
+  "additionalData": {
+    "chargebackReasonCode": "R01",
+    "defendable": "false",
+    "disputeStatus": "Lost",
+    "modificationMerchantReferences": "",
+    "chargebackSchemeCode": "ach",
+    "defensePeriodEndsAt": "2026-07-28T21:28:33+02:00"
+  },
+  "amount": {
+    "currency": "USD",
+    "value": 535
+  },
+  "eventCode": "CHARGEBACK",
+  "eventDate": "2026-07-28T21:20:52+02:00",
+  "merchantAccountCode": "WikimediaDonations",
+  "merchantReference": "2345678.20",
+  "originalReference": "ABCD9XH3TW43B769",
+  "paymentMethod": "ach",
+  "pspReference": "A64BCD9EFG6HIJ35",
+  "reason": "R01 Insufficient Funds",
+  "success": "true"
+}

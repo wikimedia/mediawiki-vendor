@@ -14,8 +14,8 @@ class CashPaymentProviderRequestMapper extends RedirectPaymentProviderRequestMap
 		// additional connection_options need for pix: https://docs.gr4vy.com/connections/payments/dlocal-pix
 		if ( $params['payment_submethod'] == 'pix' ) {
 			$frequencyUnit = $this->frequencyUnitMapper(
-				isset( $params['frequency_unit'] ) ? $params['frequency_unit'] : null,
-				isset( $params['frequency_interval'] ) ? $params['frequency_interval'] : null );
+				$params['frequency_unit'] ?? null,
+				$params['frequency_interval'] ?? null );
 			if ( !$this->isRecurringCharge( $params ) ) {
 				if ( !empty( $params['recurring'] ) ) {
 					$request['connection_options'] = [
@@ -47,27 +47,18 @@ class CashPaymentProviderRequestMapper extends RedirectPaymentProviderRequestMap
 		$frequencyUnit = strtolower( $frequencyUnit );
 		$frequencyInterval = $frequencyInterval ?? 1;
 
-		switch ( $frequencyUnit ) {
-			case 'month':
-				switch ( $frequencyInterval ) {
-					case 1:
-						return 'MONTHLY';
-					case 3:
-						return 'QUARTERLY';
-					case 6:
-					default:
-						throw new \UnexpectedValueException(
-							"Unsupported month interval: $frequencyInterval"
-						);
-				}
-
-			case 'year':
-				return 'ANNUAL';
-
-			default:
-				throw new \UnexpectedValueException(
-					"Unknown frequency unit $frequencyUnit"
-				);
-		}
+		return match ( $frequencyUnit ) {
+			'month' => match ( $frequencyInterval ) {
+				1 => 'MONTHLY',
+				3 => 'QUARTERLY',
+				default => throw new \UnexpectedValueException(
+					"Unsupported month interval: $frequencyInterval"
+				),
+			},
+			'year' => 'ANNUAL',
+			default => throw new \UnexpectedValueException(
+				"Unknown frequency unit $frequencyUnit"
+			),
+		};
 	}
 }

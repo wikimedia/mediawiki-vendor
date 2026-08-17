@@ -2,11 +2,14 @@
 
 namespace SmashPig\PaymentProviders\Gravy\Actions;
 
+use RuntimeException;
 use SmashPig\Core\Context;
 use SmashPig\Core\DataStores\QueueWrapper;
+use SmashPig\Core\Helpers\CurrencyRoundingHelper;
 use SmashPig\Core\Logging\TaggedLogger;
 use SmashPig\Core\Messages\ListenerMessage;
 use SmashPig\PaymentData\FinalStatus;
+use SmashPig\PaymentProviders\Gravy\Errors\ErrorMapper;
 use SmashPig\PaymentProviders\Gravy\ExpatriatedMessages\TransactionMessage;
 use SmashPig\PaymentProviders\Gravy\Jobs\ProcessCaptureRequestJob;
 use SmashPig\PaymentProviders\Gravy\Jobs\RecordCaptureJob;
@@ -17,6 +20,9 @@ class TransactionAction extends GravyAction {
 	use RefundTrait;
 
 	public function execute( ListenerMessage $msg ): bool {
+		if ( !$msg instanceof TransactionMessage ) {
+			throw new RuntimeException( 'Needs a TransactionMessage' );
+		}
 		$tl = new TaggedLogger( 'TransactionAction' );
 		$transactionDetails = $this->getTransactionDetails( $msg );
 
@@ -48,8 +54,8 @@ class TransactionAction extends GravyAction {
 			$message = 'Skipping unsuccessful transaction';
 			if ( !empty( $id ) ) {
 				if ( $this->requiresChargeback( $transactionDetails ) ) {
-					$message = "Pushing failed trustly transaction with id: {$id} to refund queue for chargeback.";
-					$this->pushFailedAuthAsChargebackToRefundQueue( strtotime( $msg->getMessageDate() ), $transactionDetails );
+					$message = "Pushing failed transaction with id: {$id} to donations-modify queue.";
+					$this->pushFailedAuthToDonationsModify( $msg );
 				} else {
 					$message = "Skipping unsuccessful transaction with transaction id {$id}";
 				}
@@ -65,6 +71,9 @@ class TransactionAction extends GravyAction {
 		$paymentMethod = $msg->getTransactionPaymentMethod();
 		$transactionDetails = $msg->getTransactionDetails();
 
+		// FIXME: this doesn't seem to create a fully useful PaymentProviderResponse object
+		// For example, it has gateway_txn_id in the normalizedResponse property,
+		// but it returns null from getGatewayTxnId()
 		return $transactionDetailsNormalizer->normalizeTransactionDetails(
 			$paymentMethod,
 			$transactionDetails
@@ -83,15 +92,38 @@ class TransactionAction extends GravyAction {
 	}
 
 	/**
-	 * Cancel saved contributions in civi using a chargeback
-	 * @param string $ipnMessageDate
-	 * @param \SmashPig\PaymentProviders\Responses\PaymentProviderExtendedResponse $transaction
+	 * Send donation modification message to Civi
+	 * @param TransactionMessage $msg
 	 * @return void
 	 */
-	public function pushFailedAuthAsChargebackToRefundQueue( string $ipnMessageDate, PaymentProviderExtendedResponse $transaction ) {
-		$refundMessage = $this->buildRefundQueueMessage( $ipnMessageDate, $transaction->getNormalizedResponse() );
-		$refundMessage['backend_processor'] = 'trustly';
-		$refundMessage['status'] = FinalStatus::COMPLETE;
-		QueueWrapper::push( 'refund', $refundMessage );
+	public function pushFailedAuthToDonationsModify( TransactionMessage $msg ): void {
+		$details = $msg->getTransactionDetails();
+		$reason = $details['error_code'] ?? '';
+		$refundMessage = [
+			'contribution_status_id:name' => 'Cancelled',
+			'gateway_txn_id' => $details['id'],
+			'payment_method' => 'ach',
+			'order_id' => $details['external_identifier'],
+			'gross_currency' => $details['currency'],
+			'gross' => CurrencyRoundingHelper::getAmountInMajorUnits(
+				$details['amount'], $details['currency']
+			),
+			'backend_processor' => 'trustly',
+			'backend_processor_txn_id' => $details['payment_service_transaction_id'],
+			'date' => strtotime( $msg->getMessageDate() ),
+			'gateway' => 'gravy',
+			'reason' => $reason,
+			'can_retry' => $this->isRetryableErrorCode( $reason ),
+			'is_suspected_fraud' => ErrorMapper::isSuspectedFraud( $reason )
+		];
+		QueueWrapper::push( 'donations-modify', $refundMessage );
+	}
+
+	protected function isRetryableErrorCode( string $errorCode ): bool {
+		// Seen so far:
+		// * canceled_payment_method
+		// * insufficient_funds
+		// * suspected_fraud
+		return $errorCode === 'insufficient_funds';
 	}
 }

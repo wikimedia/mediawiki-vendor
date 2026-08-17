@@ -394,6 +394,44 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 		], $output[1], 'Fees do not match' );
 	}
 
+	public function testProcessSettlementDetailDepositCorrection(): void {
+		$processor = new AdyenSettlementDetailReport();
+		$output = $processor->parseFile( __DIR__ . '/../Data/settlement_detail_report_deposit_correction.csv' );
+		$actual = $output[0];
+		$expected = [
+			'gateway' => 'adyen',
+			'audit_file_gateway' => 'adyen',
+			'gateway_account' => 'WikimediaCOM',
+			'date' => 1761908739,
+			'invoice_id' => '',
+			'gateway_txn_id' => 'adjustment-1191-DepositCorrection--500',
+			'settlement_batch_reference' => '1191',
+			'settled_date' => 1761908739,
+			'settled_currency' => 'USD',
+			'settled_fee_amount' => '-500',
+			'settled_net_amount' => '-500',
+			'settled_total_amount' => 0,
+			'type' => 'adjustment',
+		];
+		$this->assertEquals( $expected, $actual, 'Correction does not match' );
+
+		$this->assertEquals( [
+			'gateway' => 'adyen',
+			'audit_file_gateway' => 'adyen',
+			'gateway_account' => 'WikimediaCOM',
+			'date' => 1761908739,
+			'invoice_id' => '',
+			'gateway_txn_id' => 'adjustment-1191-Deposit-Correction-300',
+			'settlement_batch_reference' => '1191',
+			'settled_date' => 1761908739,
+			'settled_currency' => 'USD',
+			'settled_fee_amount' => '300',
+			'settled_net_amount' => '300',
+			'settled_total_amount' => '0.00',
+			'type' => 'adjustment',
+		], $output[1], 'Correction does not match' );
+	}
+
 	public function testProcessPaymentsAccountingNyce() {
 		$processor = new AdyenPaymentsAccountingReport();
 		$output = $processor->parseFile( __DIR__ . '/../Data/payments_accounting_report_nyce.csv' );

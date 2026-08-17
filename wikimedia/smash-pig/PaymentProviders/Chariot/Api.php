@@ -139,6 +139,32 @@ class Api {
 	}
 
 	/**
+	 * Assign a Chariot property value to one or more resources.
+	 *
+	 * Resource IDs may be donation IDs or deposit IDs, depending on the
+	 * resource type configured for the property.
+	 *
+	 * @param string $propertyId
+	 * @param string[] $resourceIds
+	 * @param array<string,mixed> $value
+	 *
+	 * @return array
+	 */
+	public function assignProperty( string $propertyId, array $resourceIds, array $value ): array {
+		return $this->requestJson(
+			'POST',
+			'/v1/properties/' . rawurlencode( $propertyId ) . '/assign',
+			[],
+			[
+				'value' => $value,
+				'resources' => [
+					'ids' => array_values( $resourceIds ),
+				],
+			]
+		);
+	}
+
+	/**
 	 * Replace Chariot property payloads with:
 	 * [
 	 *   'Campaign' => 'Spring Appeal',
@@ -306,8 +332,12 @@ class Api {
 		$req->setHeader( 'User-Agent', 'SmashPig Chariot report downloader' );
 
 		if ( $method !== 'GET' && $body ) {
-			$req->setHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
-			$req->setBody( $body );
+			$jsonBody = json_encode( $body );
+			if ( $jsonBody === false ) {
+				throw new \RuntimeException( 'Unable to encode Chariot request body as JSON' );
+			}
+			$req->setHeader( 'Content-Type', 'application/json' );
+			$req->setBody( $jsonBody );
 		}
 
 		$response = $req->execute();
@@ -328,5 +358,45 @@ class Api {
 			$url .= '?' . http_build_query( $query );
 		}
 		return $url;
+	}
+
+	/**
+	 * @return array<string,mixed>|null
+	 */
+	public function getPropertyByName( string $resourceType, string $propertyName ): ?array {
+		$result = $this->listProperties( [
+			'resource_type' => $resourceType,
+		] );
+
+		foreach ( $result['results'] ?? [] as $property ) {
+			if (
+				is_array( $property )
+				&& isset( $property['name'] )
+				&& strcasecmp( (string)$property['name'], $propertyName ) === 0
+			) {
+				return $property;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * @param array<string,mixed> $property
+	 *
+	 * @return array<string,mixed>|null
+	 */
+	public function getPropertyOptionByName( array $property, string $optionName ): ?array {
+		foreach ( $property['options'] ?? [] as $option ) {
+			if (
+				is_array( $option )
+				&& isset( $option['name'] )
+				&& strcasecmp( (string)$option['name'], $optionName ) === 0
+			) {
+				return $option;
+			}
+		}
+
+		return null;
 	}
 }

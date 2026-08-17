@@ -31,6 +31,9 @@
       <testsuite name="chariot tests">
         <directory>PaymentProviders/Chariot/Tests/phpunit</directory>
       </testsuite>
+      <testsuite name="checkout_com tests">
+        <directory>PaymentProviders/CheckoutCom/Tests/phpunit</directory>
+      </testsuite>
       <testsuite name="trustly tests">
         <directory>PaymentProviders/Trustly/Tests/phpunit</directory>
       </testsuite>

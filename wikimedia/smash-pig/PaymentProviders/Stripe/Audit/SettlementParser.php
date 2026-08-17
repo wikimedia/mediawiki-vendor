@@ -38,4 +38,18 @@ class SettlementParser extends BaseParser {
 		return $values;
 	}
 
+	protected function getOriginalCurrencyFields(): array {
+		if ( !isset( $this->row['customer_facing_currency'] ) ) {
+			// File was downloaded without original currency fields (we fixed this
+			// in late June 2026) so they cannot be processed.
+			return [];
+		}
+		return [
+			'currency' => $this->normalizeCurrency( $this->row['customer_facing_currency'] ),
+			'gross' => $this->row['customer_facing_amount'],
+			'original_total_amount' => $this->row['customer_facing_amount'],
+			'original_currency' => $this->normalizeCurrency( $this->row['customer_facing_currency'] ),
+		];
+	}
+
 }

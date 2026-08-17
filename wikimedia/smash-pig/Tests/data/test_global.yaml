@@ -28,6 +28,13 @@ data-store:
         connection_string: 'sqlite::memory:'
         queue: payments_init
 
+  payment-attempts:
+    class: PHPQueue\Backend\PDO
+    constructor-parameters:
+      -
+        connection_string: 'sqlite::memory:'
+        queue: payment_attempts
+
   pending:
     <<: *QUEUE
 
@@ -70,6 +77,13 @@ data-store:
       -
         connection_string: 'sqlite::memory:'
         queue: recurring_modify
+
+  lead-generation:
+    class: PHPQueue\Backend\PDO
+    constructor-parameters:
+      -
+        connection_string: 'sqlite::memory:'
+        queue: lead_generation
 
   jobs-paypal:
     class: PHPQueue\Backend\PDO
@@ -122,6 +136,13 @@ data-store:
 
   donations:
     <<: *QUEUE
+
+  donations-modify:
+    class: PHPQueue\Backend\PDO
+    constructor-parameters:
+      -
+        connection_string: 'sqlite::memory:'
+        queue: donations_modify
 
   upi-donations:
     class: PHPQueue\Backend\PDO

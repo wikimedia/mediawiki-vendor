@@ -1,0 +1,22 @@
+{
+    "type": "refund",
+    "id": "SAMPLE-REFUND-ID",
+    "transaction_id": "SAMPLE-TRXN-ID",
+    "payment_service_refund_id": "SAMPLE-PAYMENT-SERVICE-REFUND-ID",
+    "status": "declined",
+    "currency": "COP",
+    "amount": 385300,
+    "reason": "Refunded due to user request",
+    "target_type": "payment-method",
+    "target_id": null,
+    "reconciliation_id": "SAMPLE-RECON-ID",
+    "external_identifier": null,
+    "transaction_reconciliation_id": "SAMPLE-TRXN-RECON-ID",
+    "transaction_external_identifier": "SAMPLE-ORDER-ID",
+    "created_at": "2026-06-19T09:03:02.797987+00:00",
+    "updated_at": "2026-06-19T09:03:04.333357+00:00",
+    "creator": null,
+    "error_code": "service_decline",
+    "raw_response_code": "300",
+    "raw_response_description": "The refund was rejected."
+}

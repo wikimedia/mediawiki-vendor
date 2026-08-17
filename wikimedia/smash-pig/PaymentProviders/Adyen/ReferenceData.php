@@ -33,6 +33,10 @@ class ReferenceData {
 	 *  ],
 	 */
 	protected static array $methods = [
+		'accel' => [
+			'method' => 'cc',
+			'submethod' => 'accel',
+		],
 		'ach' => [
 			'method' => 'dd',
 			'submethod' => 'ach',
@@ -146,13 +150,17 @@ class ReferenceData {
 			'method' => 'cc',
 			'submethod' => 'maestro',
 		],
+		'maestro_usa' => [
+			'method' => 'cc',
+			'submethod' => 'maestro',
+		],
 		'multibanco' => [
 			'method' => 'rtbt',
 			'submethod' => 'rtbt_multibanco',
 		],
 		'nyce' => [
 			'method' => 'cc',
-			'submethod' => 'mc',
+			'submethod' => 'nyce',
 			'variants' => [
 				'mc_googlepay' => [
 					'method' => 'google',
@@ -166,7 +174,7 @@ class ReferenceData {
 		],
 		'pulse' => [
 			'method' => 'cc',
-			'submethod' => 'visa',
+			'submethod' => 'pulse',
 			'variants' => [
 				'visa_applepay' => [
 					'method' => 'apple',
@@ -190,7 +198,7 @@ class ReferenceData {
 		],
 		'star' => [
 			'method' => 'cc',
-			'submethod' => 'visa',
+			'submethod' => 'star',
 			'variants' => [
 				'visa_applepay' => [
 					'method' => 'apple',

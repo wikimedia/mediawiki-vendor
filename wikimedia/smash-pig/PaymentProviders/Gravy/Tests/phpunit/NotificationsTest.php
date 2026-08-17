@@ -1,8 +1,9 @@
 <?php
 
+use PHPQueue\Interfaces\FifoQueueStore;
 use SmashPig\Core\Context;
 use SmashPig\Core\Http\Request;
-use SmashPig\PaymentData\FinalStatus;
+use SmashPig\CrmLink\Messages\SourceFields;
 use SmashPig\PaymentProviders\Gravy\GravyListener;
 use SmashPig\PaymentProviders\Gravy\Jobs\DownloadReportJob;
 use SmashPig\PaymentProviders\Gravy\Jobs\ProcessCaptureRequestJob;
@@ -16,9 +17,12 @@ use Symfony\Component\HttpFoundation\ServerBag;
  * @group Gravy
  */
 class NotificationsTest extends BaseGravyTestCase {
-	private $jobsGravyQueue;
+	private FifoQueueStore $jobsGravyQueue;
 
-	private $refundQueue;
+	private FifoQueueStore $refundQueue;
+
+	private FifoQueueStore $donationsModifyQueue;
+
 	/**
 	 * @var GravyListener
 	 */
@@ -30,6 +34,8 @@ class NotificationsTest extends BaseGravyTestCase {
 			->object( 'data-store/jobs-gravy' );
 		$this->refundQueue = Context::get()->getGlobalConfiguration()
 			->object( 'data-store/refund' );
+		$this->donationsModifyQueue = Context::get()->getGlobalConfiguration()
+			->object( 'data-store/donations-modify' );
 		$this->gravyListener = $this->config->object( 'endpoints/listener' );
 	}
 
@@ -180,12 +186,14 @@ class NotificationsTest extends BaseGravyTestCase {
 		$this->gravyListener->execute( $request, $response );
 		$refundMessage = $this->refundQueue->pop();
 		$jobsMessage = $this->jobsGravyQueue->pop();
+		$modifyMessage = $this->donationsModifyQueue->pop();
 
-		$this->assertNull( $refundMessage, 'No message for the failed ACH payment shoud be queued to refund queue' );
-		$this->assertNull( $jobsMessage, 'No message shoud be queued to jobs queue' );
+		$this->assertNull( $refundMessage, 'No message for the failed ACH payment should be queued to refund queue' );
+		$this->assertNull( $jobsMessage, 'No message should be queued to jobs queue' );
+		$this->assertNull( $modifyMessage, 'No message should be queued to donations-modify queue' );
 	}
 
-	public function testTrustlyPaymentDeclinedMessageIsSentToRefundQueue(): void {
+	public function testTrustlyPaymentDeclinedMessageIsSentToDonationsModifyQueue(): void {
 		[ $request, $response ] = $this->getValidRequestResponseObjects();
 		$message = json_decode( file_get_contents( __DIR__ . '/../Data/trustly-create-transaction-declined-message.json' ), true );
 		$request->method( 'getRawRequest' )->willReturn( json_encode( $message ) );
@@ -194,16 +202,59 @@ class NotificationsTest extends BaseGravyTestCase {
 		$this->gravyListener->execute( $request, $response );
 		$refundMessage = $this->refundQueue->pop();
 		$jobsMessage = $this->jobsGravyQueue->pop();
-		$normalized_details = ( new ResponseMapper() )->mapFromPaymentResponse( $message['target'] );
+		$modifyMessage = $this->donationsModifyQueue->pop();
 
-		$this->assertNotNull( $refundMessage, '1 message for the failed ACH payment shoud be queued to refund queue' );
-		$this->assertNull( $jobsMessage, 'No message shoud be queued to jobs queue' );
-		$this->assertEquals( $normalized_details['gateway_parent_id'], $refundMessage['gateway_parent_id'] );
-		$this->assertEquals( $normalized_details['gateway_refund_id'], $refundMessage['gateway_refund_id'] );
-		$this->assertEquals( $normalized_details['currency'], $refundMessage['currency'] );
-		$this->assertEquals( $normalized_details['amount'], $refundMessage['amount'] );
-		$this->assertEquals( 'chargeback', $refundMessage['type'] );
-		$this->assertEquals( FinalStatus::COMPLETE, $refundMessage['status'] );
+		$this->assertNull( $refundMessage, 'ACH declines should not go to the refund queue' );
+		$this->assertNull( $jobsMessage, 'No message should be queued to jobs queue' );
+		$this->assertNotNull( $modifyMessage );
+		SourceFields::removeFromMessage( $modifyMessage );
+		$this->assertEquals( [
+			'contribution_status_id:name' => 'Cancelled',
+			'gateway_txn_id' => '943bec45-7cab-4555-8ea1-def34c34fae9',
+			'payment_method' => 'ach',
+			'order_id' => 'order-1234',
+			'gross_currency' => 'USD',
+			'gross' => 12.99,
+			'backend_processor' => 'trustly',
+			'backend_processor_txn_id' => '1025610947',
+			'date' => 1355309623,
+			'gateway' => 'gravy',
+			'reason' => 'canceled_payment_method',
+			'can_retry' => false,
+			'is_suspected_fraud' => true,
+		], $modifyMessage );
+	}
+
+	public function testTrustlyPaymentInsufficientFundsMessageIsSentToDonationsModifyQueue(): void {
+		[ $request, $response ] = $this->getValidRequestResponseObjects();
+		$message = json_decode( file_get_contents( __DIR__ . '/../Data/trustly-create-transaction-declined-retryable-message.json' ), true );
+		$request->method( 'getRawRequest' )->willReturn( json_encode( $message ) );
+		$this->mockApi->expects( $this->never() )
+			->method( 'getTransaction' );
+		$this->gravyListener->execute( $request, $response );
+		$refundMessage = $this->refundQueue->pop();
+		$jobsMessage = $this->jobsGravyQueue->pop();
+		$modifyMessage = $this->donationsModifyQueue->pop();
+
+		$this->assertNull( $refundMessage, 'ACH declines should not go to the refund queue' );
+		$this->assertNull( $jobsMessage, 'No message should be queued to jobs queue' );
+		$this->assertNotNull( $modifyMessage );
+		SourceFields::removeFromMessage( $modifyMessage );
+		$this->assertEquals( [
+			'contribution_status_id:name' => 'Cancelled',
+			'gateway_txn_id' => '338b9bc1-ff9f-48b9-a66c-742380770e96',
+			'payment_method' => 'ach',
+			'order_id' => '1234.1',
+			'gross_currency' => 'USD',
+			'gross' => 25.00,
+			'backend_processor' => 'trustly',
+			'backend_processor_txn_id' => '567890',
+			'date' => 1784939264,
+			'gateway' => 'gravy',
+			'reason' => 'insufficient_funds',
+			'can_retry' => true,
+			'is_suspected_fraud' => false,
+		], $modifyMessage );
 	}
 
 	public function testRefundMessageComplete(): void {
@@ -276,6 +327,32 @@ class NotificationsTest extends BaseGravyTestCase {
 
 		$this->assertNull( $queued_message, 'Failed refunds should not be queued' );
 		$this->assertTrue( $result, 'Listener should still return true for handled failed refunds' );
+	}
+
+	public function testRefundMessageDeclined(): void {
+		[ $request, $response ] = $this->getValidRequestResponseObjects();
+
+		// Create a declined refund webhook message by modifying the default one
+		$testGravyWebhook = json_decode( $this->getValidGravyRefundMessage(), true );
+		$testGravyWebhook['target']['id'] = '3e5ff669-54eb-5ecf-0b7e-d58ee142c9ce';
+		$testGravyWebhook['target']['transaction_id'] = 'e0fd9aac-1064-56b7-b3e3-8a559882a3aa';
+		$testGravyWebhook['target']['status'] = 'declined';
+
+		$request->method( 'getRawRequest' )->willReturn( json_encode( $testGravyWebhook ) );
+
+		$testGetRefundApiCallResponse = json_decode( file_get_contents( __DIR__ . '/../Data/declined-refund.json' ), true );
+
+		$this->mockApi->expects( $this->once() )
+		->method( 'getRefund' )
+		->willReturn( $testGetRefundApiCallResponse );
+
+		$result = $this->gravyListener->execute( $request, $response );
+
+		// Declined refunds should not be queued - admins are notified by email instead
+		$queued_message = $this->refundQueue->pop();
+
+		$this->assertNull( $queued_message, 'Declined refunds should not be queued' );
+		$this->assertTrue( $result, 'Listener should still return true for handled declined refunds' );
 	}
 
 	public function testReportExecutionMessage(): void {

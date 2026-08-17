@@ -29,4 +29,62 @@ class DepositTest extends TestCase {
 		$this->assertSame( 'payment_source_7yec8861', $deposit->getPaymentSourceId() );
 	}
 
+	public function testGetCheckNumber(): void {
+		$deposit = new Deposit( [
+			'transfer' => [
+				'check_deposit' => [
+					'auxiliary_on_us' => '123456',
+				],
+			],
+		] );
+
+		$this->assertSame( '123456', $deposit->getCheckNumber() );
+	}
+
+	public function testGetCheckNumberReturnsEmptyStringWhenMissing(): void {
+		$deposit = new Deposit( [
+			'transfer' => [],
+		] );
+
+		$this->assertSame( '', $deposit->getCheckNumber() );
+	}
+
+	public function testGetSettledAmountInMinorUnits(): void {
+		$deposit = new Deposit( [
+			'transfer' => [
+				'amount' => 124605,
+				'currency' => 'USD',
+			],
+		] );
+
+		$this->assertSame( 124605, $deposit->getSettledAmountInMinorUnits() );
+	}
+
+	public function testGetSettledAmountInMinorUnitsReturnsZeroWhenMissing(): void {
+		$deposit = new Deposit( [] );
+
+		$this->assertSame( 0, $deposit->getSettledAmountInMinorUnits() );
+	}
+
+	public function testGetSettledAmountRounded(): void {
+		$deposit = new Deposit( [
+			'transfer' => [
+				'amount' => 124605,
+				'currency' => 'USD',
+			],
+		] );
+
+		$this->assertSame( '1246.05', $deposit->getSettledAmount() );
+	}
+
+	public function testGetZeroAmountRounded(): void {
+		$deposit = new Deposit( [
+			'transfer' => [
+				'currency' => 'USD',
+			],
+		] );
+
+		$this->assertSame( '0.00', $deposit->getZeroAmountRounded() );
+	}
+
 }

@@ -19,16 +19,12 @@ use SmashPig\PaymentProviders\Adyen\ReferenceData;
 abstract class AdyenAudit implements AuditParser {
 
 	protected static $ignoredTypes = [
-		'misccosts',
-		'merchantpayout',
-		'depositcorrection',
 		'matchedstatement',
 		'manualcorrected',
 		'authorisationschemefee',
 		'bankinstructionreturned',
 		'internalcompanypayout',
 		'epapaid',
-		'balancetransfer',
 		'paymentcost',
 		'settlecost',
 		'paidout',
@@ -69,6 +65,16 @@ abstract class AdyenAudit implements AuditParser {
 		'Payment Method Variant',
 		'TimeZone',
 	];
+
+	/**
+	 * @var array|string[]
+	 */
+	protected array $feeTypes;
+
+	/**
+	 * @var array|string[]
+	 */
+	protected array $adjustmentTypes;
 
 	abstract protected function parseDonation( array $row, array $msg );
 
@@ -111,8 +117,10 @@ abstract class AdyenAudit implements AuditParser {
 	protected function parseLine( $line, int $rowNumber ) {
 		$row = array_combine( $this->columnHeaders, $line );
 		$type = strtolower( $row[$this->type] );
-		if ( $type === 'fee' || $type === 'invoicededuction' || $type === 'misccosts' ) {
-			$this->fileData[] = $this->getFeeTransaction( $row, $rowNumber );
+		$this->feeTypes = [ 'fee', 'invoicededuction', 'misccosts' ];
+		$this->adjustmentTypes = [ 'balancetransfer', 'depositcorrection' ];
+		if ( in_array( $type, $this->feeTypes, true ) || in_array( $type, $this->adjustmentTypes, true ) ) {
+			$this->fileData[] = $this->getAccountLevelTransaction( $row, $rowNumber );
 			return;
 		}
 		if ( $type === 'merchantpayout' ) {
@@ -288,7 +296,7 @@ abstract class AdyenAudit implements AuditParser {
 		return ( !strpos( $merchantReference, '.' ) && !is_numeric( $merchantReference ) );
 	}
 
-	protected function getFeeTransaction( array $row, int $rowNumber ): ?array {
+	protected function getAccountLevelTransaction( array $row, int $rowNumber ): ?array {
 		return null;
 	}
 

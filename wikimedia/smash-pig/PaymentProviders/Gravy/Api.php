@@ -230,6 +230,21 @@ class Api {
 	}
 
 	/**
+	 * Uses the rest API to list payment methods, optionally filtered by status
+	 * @param array $params
+	 * @return array
+	 * @link https://docs.gr4vy.com/reference/payment-methods/list-payment-methods
+	 */
+	#[ApiOperationAttribute( ApiOperation::GET_PAYMENT_METHODS )]
+	public function listPaymentMethods( array $params = [] ): array {
+		return $this->timedCall( __FUNCTION__, function () use ( $params ) {
+			$response = $this->gravyApiClient->listPaymentMethods( $params );
+
+			return self::handleGravySDKResponse( null, $response, 'List Payment Methods' );
+		} );
+	}
+
+	/**
 	 * Uses the rest API to fetch all the payment services for specified method
 	 * @param array $params
 	 * @return array

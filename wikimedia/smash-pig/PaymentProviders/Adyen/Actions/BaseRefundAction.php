@@ -45,7 +45,7 @@ abstract class BaseRefundAction {
 	 *
 	 * @return string The parent gateway ID for the refund or chargeback.
 	 */
-	private function getGatewayParentId( AdyenMessage $msg ): string {
+	protected function getGatewayParentId( AdyenMessage $msg ): string {
 		if ( $msg->gateway === 'gravy' ) {
 			return $msg->orchestratorTransactionID;
 		}
@@ -58,7 +58,7 @@ abstract class BaseRefundAction {
 	 * @param AdyenMessage $msg
 	 * @return string
 	 */
-	private function getPaymentMethod( AdyenMessage $msg ): string {
+	protected function getPaymentMethod( AdyenMessage $msg ): string {
 		return !empty( $msg->paymentMethod ) ? $msg->paymentMethod : '';
 	}
 
@@ -68,7 +68,7 @@ abstract class BaseRefundAction {
 	 * @param AdyenMessage $msg
 	 * @return string
 	 */
-	private function getOrderID( AdyenMessage $msg ): string {
+	protected function getOrderID( AdyenMessage $msg ): string {
 		return !empty( $msg->merchantReference ) ? $msg->merchantReference : '';
 	}
 

@@ -1,0 +1,36 @@
+{
+  "type": "event",
+  "name": "transaction.declined",
+  "id": "8a7a7b8c-f296-4d68-a207-cf904e723a86",
+  "created_at": "2026-07-25T00:27:44.901293+00:00",
+  "target": {
+    "type": "transaction",
+    "id": "338b9bc1-ff9f-48b9-a66c-742380770e96",
+    "external_identifier": "1234.1",
+    "payment_service_transaction_id": "567890",
+    "status": "authorization_declined",
+    "has_gift_card_redemptions": false,
+    "pending_review": false,
+    "amount": 2500,
+    "authorized_amount": 0,
+    "captured_amount": 0,
+    "refunded_amount": 0,
+    "currency": "USD",
+    "metadata": null,
+    "created_at": "2026-07-25T00:25:01.028544+00:00",
+    "updated_at": "2026-07-25T00:27:44.866788+00:00",
+    "payment_method": {
+      "id": "55666e17-d9eb-4cda-9c05-da5678f28350",
+      "method": "trustly"
+    },
+    "payment_link_id": null,
+    "error_code": "insufficient_funds",
+    "iso_response_code": null,
+    "payment_source": "recurring",
+    "merchant_initiated": false,
+    "is_subsequent_payment": false
+  },
+  "merchant_account_id": "default",
+  "gr4vy_id": "wikimedia",
+  "environment": "production"
+}

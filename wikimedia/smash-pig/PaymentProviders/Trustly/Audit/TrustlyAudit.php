@@ -48,8 +48,12 @@ class TrustlyAudit implements AuditParser {
 			$recordType = preg_replace( '/^\xEF\xBB\xBF/', '', $recordType );
 			$line[0] = $recordType;
 
+			if ( $recordType === 'record_type' ) {
+				// Per https://phabricator.wikimedia.org/T434472 this is the norm now.
+				continue;
+			}
 			if ( $recordType === 'H' ) {
-				// Header row - imagine - they could have put headers in it...
+				// Header row (probably only older files now).
 				$numberOfFiles = explode( 'of', $line[6] );
 				// Setting these here for reference as to what data we can get from
 				// them, rather than usefulness.
@@ -162,7 +166,8 @@ class TrustlyAudit implements AuditParser {
 		try {
 			// When we get more confident we might permit anything with a non-zero amount
 			// but opting in what we see for now https://www.trustly.com/us/blog/a-merchants-guide-to-ach-returns-and-ach-return-codes
-			if ( in_array( $row['reason'] ?? '', [ 'AC118', 'R10', 'R08' ], true ) && $row['amount'] && $row['amount'] !== '0.00' ) {
+			$reasonCode = $row['reason'] ?? '';
+			if ( ( str_starts_with( $reasonCode, 'R' ) || in_array( $reasonCode, [ 'AC118' ], true ) ) && $row['amount'] && $row['amount'] !== '0.00' ) {
 				if ( !empty( $row['batch_id'] ) && empty( $this->payouts[$row['trace_id']]['settlement_batch_reference'] ) ) {
 					$this->payouts[$row['trace_id']]['settlement_batch_reference'] = $row['batch_id'];
 				}

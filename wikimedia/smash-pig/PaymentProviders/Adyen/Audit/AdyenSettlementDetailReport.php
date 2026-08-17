@@ -77,9 +77,10 @@ class AdyenSettlementDetailReport extends AdyenAudit {
 			floatval( $row['Interchange (NC)'] );
 	}
 
-	protected function getFeeTransaction( array $row, int $rowNumber ): ?array {
+	protected function getAccountLevelTransaction( array $row, int $rowNumber ): ?array {
 		$debit = $row['Net Debit (NC)'] ?? null;
 		$credit = $row['Net Credit (NC)'] ?? 0;
+		$type = strtolower( $row['Type'] );
 
 		if ( $debit !== null && $debit !== '' ) {
 			$amount = (string)( -$debit );
@@ -88,15 +89,16 @@ class AdyenSettlementDetailReport extends AdyenAudit {
 		}
 		$reference = str_replace( ' ', '-', $row['Modification Reference'] ?: ( $row['Type'] . '-' . $row['Booking Date'] ) );
 
-		if ( $row['Type'] === 'MiscCosts' ) {
-			$reference .= '-' . $rowNumber;
+		if ( $type === 'misccosts' || $type === 'depositcorrection' ) {
+			$reference .= '-' . $amount;
 		}
+		$prefix = in_array( $type, $this->adjustmentTypes, true ) ? 'adjustment-' . $row['Batch Number'] . '-' : 'fee-';
 		return [
 			'settled_date' => UtcDate::getUtcTimestamp( $row[$this->date], $row['TimeZone'] ),
 			'date' => UtcDate::getUtcTimestamp( $row[$this->date], $row['TimeZone'] ),
 			'gateway' => 'adyen',
-			'type' => 'fee',
-			'gateway_txn_id' => 'fee-' . $reference,
+			'type' => $type === 'depositcorrection' ? 'adjustment' : 'fee',
+			'gateway_txn_id' => $prefix . $reference,
 			'gateway_account' => $row['Merchant Account'],
 			'invoice_id' => $row['Merchant Reference'],
 			'settlement_batch_reference' => $row['Batch Number'] ?? null,

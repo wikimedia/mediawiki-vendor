@@ -1,12 +1,13 @@
 <?php
 namespace SmashPig\PaymentProviders\Gravy\Factories;
 
+use SmashPig\PaymentProviders\Gravy\Responses\RefundResponse;
 use SmashPig\PaymentProviders\Responses\PaymentProviderResponse;
 use SmashPig\PaymentProviders\Responses\RefundPaymentResponse;
 
 class GravyRefundResponseFactory extends GravyPaymentResponseFactory {
 	protected static function createBasicResponse(): RefundPaymentResponse {
-		return new RefundPaymentResponse();
+		return new RefundResponse();
 	}
 
 	/**
@@ -14,7 +15,7 @@ class GravyRefundResponseFactory extends GravyPaymentResponseFactory {
 	 * @param array $normalizedResponse
 	 */
 	protected static function decorateResponse( PaymentProviderResponse $paymentResponse, array $normalizedResponse ): void {
-		if ( !$paymentResponse instanceof RefundPaymentResponse ) {
+		if ( !$paymentResponse instanceof RefundResponse ) {
 			return;
 		}
 		self::setRefundReason( $paymentResponse, $normalizedResponse );
@@ -22,6 +23,7 @@ class GravyRefundResponseFactory extends GravyPaymentResponseFactory {
 		self::setRefundCurrency( $paymentResponse, $normalizedResponse );
 		self::setRefundId( $paymentResponse, $normalizedResponse );
 		self::setParentId( $paymentResponse, $normalizedResponse );
+		self::setPaymentServiceRefundId( $paymentResponse, $normalizedResponse );
 	}
 
 	protected static function setRefundReason( RefundPaymentResponse $refundResponse, array $normalizedResponse ): void {
@@ -44,6 +46,10 @@ class GravyRefundResponseFactory extends GravyPaymentResponseFactory {
 
 	protected static function setParentId( RefundPaymentResponse $refundResponse, array $normalizedResponse ): void {
 		$refundResponse->setGatewayParentId( $normalizedResponse['gateway_parent_id'] );
+	}
+
+	protected static function setPaymentServiceRefundId( RefundResponse $refundResponse, array $normalizedResponse ): void {
+		$refundResponse->setPaymentServiceRefundId( $normalizedResponse['payment_service_refund_id'] );
 	}
 
 }

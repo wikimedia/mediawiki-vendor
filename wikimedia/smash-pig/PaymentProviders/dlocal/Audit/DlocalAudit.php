@@ -129,7 +129,7 @@ class DlocalAudit implements AuditParser {
 
 		foreach ( $delimiters as $delimiter ) {
 			// str_getcsv correctly handles quoted values
-			$fields = str_getcsv( $firstLine, $delimiter );
+			$fields = str_getcsv( $firstLine, $delimiter, '"', "\\" );
 
 			if ( count( $fields ) > $maxFields ) {
 				$maxFields = count( $fields );

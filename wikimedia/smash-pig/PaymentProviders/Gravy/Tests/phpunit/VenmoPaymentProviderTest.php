@@ -154,7 +154,7 @@ class VenmoPaymentProviderTest extends BaseGravyTestCase {
 				'is_subsequent_payment' => true,
 				'merchant_initiated' => true,
 				'external_identifier' => $params['order_id'],
-				'buyer_id' => $params['processor_contact_id'],
+				// buyer_id should be filtered out as it's not valid
 				'intent' => 'capture',
 				"statement_descriptor" => [
 					"description" => "Wikimedia Foundation"
@@ -202,7 +202,7 @@ class VenmoPaymentProviderTest extends BaseGravyTestCase {
 
 		$params['recurring'] = 1;
 		$params['recurring_payment_token'] = "random_token";
-		$params['processor_contact_id'] = "random_contact_id";
+		$params['processor_contact_id'] = "not_a_uuid";
 		$params['description'] = "Wikimedia Foundation";
 		return $params;
 	}

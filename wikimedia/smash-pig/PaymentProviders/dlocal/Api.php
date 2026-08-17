@@ -27,7 +27,7 @@ class Api {
 	/**
 	 * @var string
 	 */
-	public const INDIA_TIME_ZONE = 'Asia/Calcutta';
+	public const INDIA_TIME_ZONE = 'Asia/Kolkata';
 
 	/**
 	 * @var string

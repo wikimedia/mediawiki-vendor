@@ -171,6 +171,9 @@ notifications:
   fraud-alerts:
     to:
       - 'fr-tech@wikimedia.org'
+  declined-refund-alerts:
+    to:
+      - 'fr-tech@wikimedia.org'
 
 mappers:
   cc-request:

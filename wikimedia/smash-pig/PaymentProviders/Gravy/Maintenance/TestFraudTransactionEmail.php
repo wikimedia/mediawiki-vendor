@@ -4,7 +4,6 @@ namespace SmashPig\PaymentProviders\Gravy\Maintenance;
 
 require __DIR__ . '/../../../Maintenance/MaintenanceBase.php';
 
-use SmashPig\Core\Helpers\CurrencyRoundingHelper;
 use SmashPig\Core\Logging\Logger;
 use SmashPig\Maintenance\MaintenanceBase;
 use SmashPig\PaymentProviders\Gravy\Errors\ErrorHelper;
@@ -46,23 +45,55 @@ class TestFraudTransactionEmail extends MaintenanceBase {
 		return [
 			[
 				'id' => '12345678-1234-5678-9abc-def012345678',
-				'summary' => ' - Adyen, 166.3, USD ' . CurrencyRoundingHelper::getAmountInMajorUnits( 1299, 'USD' ) . ', via card, from US'
+				'summary' => [
+					'backend_processor' => 'Adyen',
+					'external_identifier' => '166.3',
+					'amount' => 'USD 12.99',
+					'method' => 'card',
+					'bin' => '41111',
+					'country' => 'US'
+				],
 			],
 			[
 				'id' => 'abcdef12-3456-7890-1234-567890abcdef',
-				'summary' => ' - PayPal, 166.3, USD ' . CurrencyRoundingHelper::getAmountInMajorUnits( 1299, 'USD' ) . ', via paypal, from US'
+				'summary' => [
+					'backend_processor' => 'PayPal',
+					'external_identifier' => '166.3',
+					'amount' => 'USD 12.99',
+					'method' => 'paypal',
+					'country' => 'US'
+				],
 			],
 			[
 				'id' => '98765432-dcba-4321-8765-432109876543',
-				'summary' => ' - Trustly, 166.3, USD ' . CurrencyRoundingHelper::getAmountInMajorUnits( 1299, 'USD' ) . ', via rtbt, from US'
+				'summary' => [
+					'backend_processor' => 'Trustly',
+					'external_identifier' => '168.1',
+					'amount' => 'USD 12.99',
+					'method' => 'rtbt',
+					'country' => 'US'
+				],
 			],
 			[
 				'id' => 'fedcba98-7654-3210-9876-543210fedcba',
-				'summary' => ' - Braintree, 166.3, USD ' . CurrencyRoundingHelper::getAmountInMajorUnits( 1299, 'USD' ) . ', via venmo, from US'
+				'summary' => [
+					'backend_processor' => 'Braintree',
+					'external_identifier' => '169.1',
+					'amount' => 'USD 12.99',
+					'method' => 'venmo',
+					'country' => 'US'
+				],
 			],
 			[
 				'id' => 'a1b2c3d4-e5f6-7890-1234-567890123456',
-				'summary' => ' - dLocal, 166.3, USD ' . CurrencyRoundingHelper::getAmountInMajorUnits( 1299, 'USD' ) . ', via card, from US'
+				'summary' => [
+					'backend_processor' => 'dLocal',
+					'external_identifier' => '170.1',
+					'amount' => 'USD 12.99',
+					'method' => 'card',
+					'bin' => '41111',
+					'country' => 'US'
+				],
 			]
 		];
 	}

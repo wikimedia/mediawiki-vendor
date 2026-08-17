@@ -93,7 +93,9 @@ class AddExampleQueueMessage extends MaintenanceBase {
 			$example['recurring_payment_token'] = $random . 'broken';
 			$example['date'] = time();
 		} elseif ( $message == 'paypal-recurring-payment' ) {
-			// AddExampleQueueMessage.php --message failed-recurring
+			// AddExampleQueueMessage.php --message paypal-recurring-payment
+			// Add to contribution_recur
+			// trxn_id = RECURRING paypal NMVZBPC6GS38QFV5
 			$random = rand( 200, 20000 );
 			$queue = 'recurring';
 			// match this to a contribution_recur processor_id

@@ -745,7 +745,7 @@ class CardPaymentProviderTest extends BaseGravyTestCase {
 		$params['recurring'] = 1;
 		$params['recurring_payment_token'] = "random_token";
 		if ( !$guest ) {
-			$params['processor_contact_id'] = "random_contact_id";
+			$params['processor_contact_id'] = "1234abcd-1234-4234-8234-abcd1234abcd";
 		}
 
 		return $params;

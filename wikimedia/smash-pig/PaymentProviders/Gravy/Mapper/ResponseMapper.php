@@ -297,7 +297,8 @@ class ResponseMapper {
 			'raw_status' => $response['status'],
 			'type' => $type,
 			'raw_response' => $response,
-			'backend_processor' => $this->getBackendProcessor( $response ) ?? ''
+			'backend_processor' => $this->getBackendProcessor( $response ) ?? '',
+			'payment_service_refund_id' => $response['payment_service_refund_id'] ?? ''
 		];
 	}
 
@@ -358,6 +359,7 @@ class ResponseMapper {
 			'description' => $errorParameters['description'],
 			'raw_response' => $error,
 			'is_suspected_fraud' => ErrorMapper::isSuspectedFraud( $errorParameters['code'] ),
+			'payment_service_refund_id' => $error['payment_service_refund_id'] ?? '',
 		];
 		if ( !isset( $errorParameters['normalized_response'] ) ) {
 			return $errorResponse;

@@ -204,12 +204,17 @@ class BraintreeAudit implements AuditParser {
 		}
 
 		$parentTransaction = $row['transaction'];
-		$msg['invoice_id'] = $parentTransaction['orderId'];
+		if ( !$this->isOrchestratorReference( $parentTransaction['orderId'] ) ) {
+			$msg['invoice_id'] = $parentTransaction['orderId'];
+		}
 		$msg['backend_processor_reversal_id'] = $row['id'];
 		if ( $this->isOrchestratorMerchantReference( $parentTransaction ) ) {
 			$msg['backend_processor'] = 'braintree';
 			$msg['backend_processor_parent_id'] = $parentTransaction['id'];
+			$msg['backend_processor_txn_id'] = $parentTransaction['id'];
 			$msg['backend_processor_reversal_id'] = $row['id'];
+			$msg['gateway_refund_id'] = Base62Helper::toUuid( $parentTransaction['orderId'] );
+			$msg['gateway_parent_id'] = Base62Helper::toUuid( $parentTransaction['orderId'] );
 			$msg['gateway'] = 'gravy';
 		} else {
 			$orderParts = explode( '.', $msg['invoice_id'] );
@@ -373,6 +378,10 @@ class BraintreeAudit implements AuditParser {
 	protected function isOrchestratorMerchantReference( array $row ): bool {
 		$merchantReference = $row['contribution_tracking_id'] ?? $row['orderId'];
 		// ignore gravy transactions, they have no period and contain letters
+		return $this->isOrchestratorReference( $merchantReference );
+	}
+
+	protected function isOrchestratorReference( string $merchantReference ): bool {
 		return ( !strpos( $merchantReference, '.' ) && !is_numeric( $merchantReference ) );
 	}
 

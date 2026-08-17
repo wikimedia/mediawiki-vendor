@@ -249,16 +249,4 @@ class RedirectPaymentProviderTest extends BaseGravyTestCase {
 
 		return $params;
 	}
-
-	private function getCreateTrxnFromTokenParams( $amount ) {
-		$params = $this->getCreateTrxnParams( $amount );
-
-		unset( $params['gateway_session_id'] );
-
-		$params['recurring'] = 1;
-		$params['recurring_payment_token'] = "random_token";
-		$params['processor_contact_id'] = "random_contact_id";
-		$params['description'] = "Wikimedia Foundation";
-		return $params;
-	}
 }
