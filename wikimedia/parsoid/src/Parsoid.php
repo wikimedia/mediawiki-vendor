@@ -182,7 +182,7 @@ class Parsoid {
 			$envOptions['linterOverrides'] = $options['linterOverrides'];
 		}
 		$envOptions['skipLanguageConversionPass'] =
-			$options['skipLanguageConversionPass'] ?? false;
+			$options['skipLanguageConversionPass'] ?? true;
 		$envOptions['nativeTemplateExpansion'] =
 			$options['nativeTemplateExpansion'] ?? false;
 		$env = new Env(
@@ -645,6 +645,7 @@ class Parsoid {
 				break;
 
 			case 'variant':
+				PHPUtils::deprecated( __METHOD__ . ' with variant', '0.24' );
 				ContentUtils::convertOffsets(
 					$env, $doc, $env->getRequestOffsetType(), 'byte'
 				);
