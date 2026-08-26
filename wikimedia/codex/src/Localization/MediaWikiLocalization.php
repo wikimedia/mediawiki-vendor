@@ -20,13 +20,13 @@
 
 namespace Wikimedia\Codex\Localization;
 
-use MediaWiki\Context\RequestContext;
+use MediaWiki\Language\MessageLocalizer;
 use Wikimedia\Codex\Contract\ILocalizer;
 
 /**
  * Localization class for MediaWiki environment.
  *
- * The `MediaWikiLocalization` class uses the MediaWiki `RequestContext` to retrieve
+ * The `MediaWikiLocalization` class uses a MediaWiki `MessageLocalizer` to retrieve
  * localized messages based on a message key and optional parameters. By implementing
  * the `ILocalizer` interface, this class ensures consistent access to localized messages
  * for Codex components within a MediaWiki environment.
@@ -40,32 +40,13 @@ use Wikimedia\Codex\Contract\ILocalizer;
  */
 class MediaWikiLocalization implements ILocalizer {
 
-	/**
-	 * The request context from which localized messages are retrieved.
-	 */
-	private RequestContext $context;
-
-	/**
-	 * Constructor for the MediaWikiLocalization class.
-	 *
-	 * @param RequestContext $context The MediaWiki request context.
-	 */
-	public function __construct( RequestContext $context ) {
-		$this->context = $context;
+	public function __construct(
+		private readonly MessageLocalizer $messageLocalizer
+	) {
 	}
 
-	/**
-	 * Retrieve a localized message using MediaWiki’s RequestContext.
-	 *
-	 * This method fetches a translated message from MediaWiki using the provided message key
-	 * and optional parameters. The message key identifies the message, while the parameters
-	 * allow dynamic values to be inserted into the message.
-	 *
-	 * @param string $key The message key.
-	 * @param string ...$params Parameters for message replacements.
-	 * @return string The localized message.
-	 */
+	/** @inheritDoc */
 	public function msg( string $key, ...$params ): string {
-		return $this->context->msg( $key, ...$params )->text();
+		return $this->messageLocalizer->msg( $key, ...$params )->text();
 	}
 }

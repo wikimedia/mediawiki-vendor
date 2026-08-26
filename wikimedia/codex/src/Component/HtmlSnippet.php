@@ -51,7 +51,7 @@ class HtmlSnippet {
 	 * @param-taint $content exec_html Callers are responsible for escaping.
 	 * @param array $attributes Additional HTML attributes for the container element.
 	 */
-	public function __construct( string $content, array $attributes ) {
+	public function __construct( string $content, array $attributes = []  ) {
 		$this->content = $content;
 		$this->attributes = $attributes;
 	}

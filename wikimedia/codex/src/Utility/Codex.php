@@ -40,6 +40,7 @@ use Wikimedia\Codex\Builder\TextAreaBuilder;
 use Wikimedia\Codex\Builder\TextInputBuilder;
 use Wikimedia\Codex\Builder\ThumbnailBuilder;
 use Wikimedia\Codex\Builder\ToggleSwitchBuilder;
+use Wikimedia\Codex\Contract\ILocalizer;
 use Wikimedia\Codex\Infrastructure\CodexServices;
 
 /**
@@ -68,7 +69,7 @@ class Codex {
 	 *
 	 * @since 0.1.0
 	 */
-	public function __construct() {
+	public function __construct( ?ILocalizer $localizer = null ) {
 		$this->services = CodexServices::getInstance();
 	}
 

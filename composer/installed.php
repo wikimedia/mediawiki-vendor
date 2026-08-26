@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => null,
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => 'cabc4ed4a7a2096373f6b88b6aeb19cc17f56124',
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => null,
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => 'cabc4ed4a7a2096373f6b88b6aeb19cc17f56124',
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -1087,9 +1087,9 @@
             'dev_requirement' => false,
         ),
         'wikimedia/codex' => array(
-            'pretty_version' => 'v0.7.1',
-            'version' => '0.7.1.0',
-            'reference' => '3f70e3184fa1708398780748efeea6a6f5de56b8',
+            'pretty_version' => 'v0.7.2',
+            'version' => '0.7.2.0',
+            'reference' => 'db7e03ecee5d1daa4cbf868556d3db7af4c53b78',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/codex',
             'aliases' => array(),
