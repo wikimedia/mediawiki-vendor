@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0a582522c0692e65c0c4232638995cd3",
+    "content-hash": "3c8f49746b88cd5f2f14be69b8e71c5d",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -7738,16 +7738,16 @@
         },
         {
             "name": "wikimedia/language-data",
-            "version": "1.1.13",
+            "version": "1.1.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/language-data.git",
-                "reference": "197ccd3da733b7d7ba4657a5014342815daeaa18"
+                "reference": "146e46817e35ab3ae9dae701526bf85ead35627f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/language-data/zipball/197ccd3da733b7d7ba4657a5014342815daeaa18",
-                "reference": "197ccd3da733b7d7ba4657a5014342815daeaa18",
+                "url": "https://api.github.com/repos/wikimedia/language-data/zipball/146e46817e35ab3ae9dae701526bf85ead35627f",
+                "reference": "146e46817e35ab3ae9dae701526bf85ead35627f",
                 "shasum": ""
             },
             "require": {
@@ -7809,9 +7809,9 @@
                 "docs": "https://language-data.readthedocs.io/en/latest/index.html",
                 "irc": "irc://irc.freenode.net/mediawiki-i18n",
                 "issues": "https://github.com/wikimedia/language-data/issues",
-                "source": "https://github.com/wikimedia/language-data/tree/1.1.13"
+                "source": "https://github.com/wikimedia/language-data/tree/1.1.14"
             },
-            "time": "2026-04-15T15:55:15+00:00"
+            "time": "2026-08-26T10:46:31+00:00"
         },
         {
             "name": "wikimedia/less.php",
