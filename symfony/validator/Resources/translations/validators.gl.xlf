@@ -372,7 +372,7 @@
             </trans-unit>
             <trans-unit id="96">
                 <source>The number of elements in this collection should be a multiple of {{ compared_value }}.</source>
-                <target>O número de elementos desta colección debería ser múltiplo de {{compare_value}}.</target>
+                <target>O número de elementos desta colección debería ser múltiplo de {{ compared_value }}.</target>
             </trans-unit>
             <trans-unit id="97">
                 <source>This value should satisfy at least one of the following constraints:</source>
@@ -569,6 +569,14 @@
             <trans-unit id="146">
                 <source>This value is not a valid cron expression.</source>
                 <target state="needs-review-translation">Este valor non é unha expresión cron válida.</target>
+            </trans-unit>
+            <trans-unit id="147">
+                <source>The referenced entity does not exist.</source>
+                <target state="needs-review-translation">A entidade referenciada non existe.</target>
+            </trans-unit>
+            <trans-unit id="148" resname="This is not a valid ULID.">
+                <source>This value is not a valid ULID.</source>
+                <target state="needs-review-translation">Este valor non é un ULID válido.</target>
             </trans-unit>
         </body>
     </file>

@@ -116,8 +116,9 @@ class ReflectionExtractor implements PropertyListExtractorInterface, PropertyTyp
             \ReflectionFunctionAbstract::class => new ReflectionReturnTypeResolver($reflectionTypeResolver, $typeContextFactory),
         ]);
 
-        $this->arrayMutatorPrefixesFirst = array_merge($this->arrayMutatorPrefixes, array_diff($this->mutatorPrefixes, $this->arrayMutatorPrefixes));
-        $this->arrayMutatorPrefixesLast = array_reverse($this->arrayMutatorPrefixesFirst);
+        $nonArrayMutatorPrefixes = array_diff($this->mutatorPrefixes, $this->arrayMutatorPrefixes);
+        $this->arrayMutatorPrefixesFirst = array_merge($this->arrayMutatorPrefixes, $nonArrayMutatorPrefixes);
+        $this->arrayMutatorPrefixesLast = array_merge($nonArrayMutatorPrefixes, $this->arrayMutatorPrefixes);
     }
 
     public function getProperties(string $class, array $context = []): ?array
@@ -392,16 +393,17 @@ class ReflectionExtractor implements PropertyListExtractorInterface, PropertyTyp
         $camelProp = $this->camelize($property);
         $getsetter = lcfirst($camelProp); // jQuery style, e.g. read: last(), write: last($item)
 
-        foreach ($this->accessorPrefixes as $prefix) {
-            $methodName = $prefix.$camelProp;
+        $accessorMethods = array_map(static fn ($prefix) => $prefix.$camelProp, $this->accessorPrefixes);
 
+        if ($allowGetterSetter) {
+            $getterPosition = array_search('get'.$camelProp, $accessorMethods, true);
+            array_splice($accessorMethods, false === $getterPosition ? \count($accessorMethods) : $getterPosition + 1, 0, [$getsetter]);
+        }
+
+        foreach ($accessorMethods as $methodName) {
             if ($reflClass->hasMethod($methodName) && ($m = $reflClass->getMethod($methodName))->getModifiers() & $this->methodReflectionFlags && !$m->getNumberOfRequiredParameters() && !\in_array((string) $m->getReturnType(), ['void', 'never'], true)) {
                 return new PropertyReadInfo(PropertyReadInfo::TYPE_METHOD, $methodName, $this->getReadVisibilityForMethod($m), $m->isStatic(), false);
             }
-        }
-
-        if ($allowGetterSetter && $reflClass->hasMethod($getsetter) && ($m = $reflClass->getMethod($getsetter))->getModifiers() & $this->methodReflectionFlags && !$m->getNumberOfRequiredParameters() && !\in_array((string) $m->getReturnType(), ['void', 'never'], true)) {
-            return new PropertyReadInfo(PropertyReadInfo::TYPE_METHOD, $getsetter, $this->getReadVisibilityForMethod($m), $m->isStatic(), false);
         }
 
         if ($allowMagicGet && $reflClass->hasMethod('__get') && (($r = $reflClass->getMethod('__get'))->getModifiers() & $this->methodReflectionFlags)) {
@@ -838,12 +840,13 @@ class ReflectionExtractor implements PropertyListExtractorInterface, PropertyTyp
             foreach ($names as $name) {
                 try {
                     $reflectionMethod = new \ReflectionMethod($class, $prefix.$name);
-                    if ($reflectionMethod->isStatic()) {
+                    if ($reflectionMethod->isStatic() || !($reflectionMethod->getModifiers() & $this->methodReflectionFlags)) {
                         continue;
                     }
 
-                    // Parameter can be optional to allow things like: method(?array $foo = null)
-                    if ($reflectionMethod->getNumberOfParameters() >= 1) {
+                    // Parameter can be optional to allow things like: method(?array $foo = null),
+                    // but at most one parameter may be required, matching the write-access rules
+                    if ($reflectionMethod->getNumberOfParameters() >= 1 && $reflectionMethod->getNumberOfRequiredParameters() <= 1) {
                         return [$reflectionMethod, $prefix];
                     }
                 } catch (\ReflectionException) {
@@ -860,6 +863,12 @@ class ReflectionExtractor implements PropertyListExtractorInterface, PropertyTyp
         $pattern = implode('|', array_merge($this->accessorPrefixes, $this->mutatorPrefixes));
 
         if ('' !== $pattern && preg_match('/^('.$pattern.')(.+)$/i', $methodName, $matches)) {
+            // a lowercase first letter means the prefix is part of a longer word rather than a
+            // prefix, e.g. "hash" or "cancel", so the method is not an accessor at all
+            if (ctype_lower($matches[2][0])) {
+                return null;
+            }
+
             if (!\in_array($matches[1], $this->arrayMutatorPrefixes, true)) {
                 return $matches[2];
             }

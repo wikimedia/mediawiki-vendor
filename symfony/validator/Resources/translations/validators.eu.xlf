@@ -328,7 +328,7 @@
             </trans-unit>
             <trans-unit id="85">
                 <source>This Business Identifier Code (BIC) is not associated with IBAN {{ iban }}.</source>
-                <target>Banku Identifikazioko Kode hau ez dago lotuta {{ IBAN }} IBAN-rekin.</target>
+                <target>Banku Identifikazioko Kode hau ez dago lotuta {{ iban }} IBAN-rekin.</target>
             </trans-unit>
             <trans-unit id="86">
                 <source>This value should be valid JSON.</source>
@@ -569,6 +569,14 @@
             <trans-unit id="146">
                 <source>This value is not a valid cron expression.</source>
                 <target state="needs-review-translation">Balio hau ez da baliozko cron adierazpena.</target>
+            </trans-unit>
+            <trans-unit id="147">
+                <source>The referenced entity does not exist.</source>
+                <target state="needs-review-translation">Erreferentziatutako entitatea ez da existitzen.</target>
+            </trans-unit>
+            <trans-unit id="148" resname="This is not a valid ULID.">
+                <source>This value is not a valid ULID.</source>
+                <target state="needs-review-translation">Balio hau ez da ULID baliozko bat.</target>
             </trans-unit>
         </body>
     </file>

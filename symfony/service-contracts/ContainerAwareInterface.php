@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Contracts\Service\Test;
+namespace Symfony\Contracts\Service;
 
 /**
- * @deprecated since PHPUnit 9.6
+ * @deprecated use ContainerProviderInterface instead
  */
-class ServiceLocatorTest extends ServiceLocatorTestCase
+interface ContainerAwareInterface extends ContainerProviderInterface
 {
 }

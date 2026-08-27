@@ -164,7 +164,7 @@
             </trans-unit>
             <trans-unit id="44">
                 <source>The image width is too small ({{ width }}px). Minimum width expected is {{ min_width }}px.</source>
-                <target>Նկարի լայնությունը չափազանց փոքր է ({{ width }}px). Մինիմալ չափն է {{ min_ width }}px։</target>
+                <target>Նկարի լայնությունը չափազանց փոքր է ({{ width }}px). Մինիմալ չափն է {{ min_width }}px։</target>
             </trans-unit>
             <trans-unit id="45">
                 <source>The image height is too big ({{ height }}px). Allowed maximum height is {{ max_height }}px.</source>
@@ -569,6 +569,14 @@
             <trans-unit id="146">
                 <source>This value is not a valid cron expression.</source>
                 <target state="needs-review-translation">Այս արժեքը վավեր cron արտահայտություն չէ։</target>
+            </trans-unit>
+            <trans-unit id="147">
+                <source>The referenced entity does not exist.</source>
+                <target state="needs-review-translation">Հղված էությունը գոյություն չունի։</target>
+            </trans-unit>
+            <trans-unit id="148" resname="This is not a valid ULID.">
+                <source>This value is not a valid ULID.</source>
+                <target state="needs-review-translation">Այս արժեքը վավեր ULID չէ։</target>
             </trans-unit>
         </body>
     </file>
