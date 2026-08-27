@@ -69,3 +69,6 @@ wikimedia/metrics-platform/tests/
 
 # Only for non-MW usage, not used by us
 wikimedia/codex/i18n/
+
+# DBSC package
+report-uri/dbsc-php/_test/

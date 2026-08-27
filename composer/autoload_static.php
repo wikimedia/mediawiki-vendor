@@ -101,6 +101,7 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'R' =>
         array (
+            'ReportUri\\Dbsc\\' => 15,
             'React\\Promise\\' => 14,
         ),
         'P' =>
@@ -450,6 +451,10 @@ class ComposerStaticInit_mediawiki_vendor
         'Serializers\\' =>
         array (
             0 => __DIR__ . '/..' . '/serialization/serialization/src/Serializers',
+        ),
+        'ReportUri\\Dbsc\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/report-uri/dbsc-php/src',
         ),
         'React\\Promise\\' =>
         array (
@@ -4099,6 +4104,28 @@ class ComposerStaticInit_mediawiki_vendor
         'React\\Promise\\Promise' => __DIR__ . '/..' . '/react/promise/src/Promise.php',
         'React\\Promise\\PromiseInterface' => __DIR__ . '/..' . '/react/promise/src/PromiseInterface.php',
         'ReflectionConstant' => __DIR__ . '/..' . '/symfony/polyfill-php84/Resources/stubs/ReflectionConstant.php',
+        'ReportUri\\Dbsc\\AuditLoggerInterface' => __DIR__ . '/..' . '/report-uri/dbsc-php/src/AuditLoggerInterface.php',
+        'ReportUri\\Dbsc\\Binding' => __DIR__ . '/..' . '/report-uri/dbsc-php/src/Binding.php',
+        'ReportUri\\Dbsc\\Config' => __DIR__ . '/..' . '/report-uri/dbsc-php/src/Config.php',
+        'ReportUri\\Dbsc\\Cookie' => __DIR__ . '/..' . '/report-uri/dbsc-php/src/Cookie.php',
+        'ReportUri\\Dbsc\\DbscResponse' => __DIR__ . '/..' . '/report-uri/dbsc-php/src/DbscResponse.php',
+        'ReportUri\\Dbsc\\DbscServer' => __DIR__ . '/..' . '/report-uri/dbsc-php/src/DbscServer.php',
+        'ReportUri\\Dbsc\\Exception\\ChallengeExpiredException' => __DIR__ . '/..' . '/report-uri/dbsc-php/src/Exception/ChallengeExpiredException.php',
+        'ReportUri\\Dbsc\\Exception\\ChallengeMismatchException' => __DIR__ . '/..' . '/report-uri/dbsc-php/src/Exception/ChallengeMismatchException.php',
+        'ReportUri\\Dbsc\\Exception\\CorruptStateException' => __DIR__ . '/..' . '/report-uri/dbsc-php/src/Exception/CorruptStateException.php',
+        'ReportUri\\Dbsc\\Exception\\DbscException' => __DIR__ . '/..' . '/report-uri/dbsc-php/src/Exception/DbscException.php',
+        'ReportUri\\Dbsc\\Exception\\JwtInvalidException' => __DIR__ . '/..' . '/report-uri/dbsc-php/src/Exception/JwtInvalidException.php',
+        'ReportUri\\Dbsc\\Exception\\MissingChallengeException' => __DIR__ . '/..' . '/report-uri/dbsc-php/src/Exception/MissingChallengeException.php',
+        'ReportUri\\Dbsc\\Exception\\RetryableRefreshException' => __DIR__ . '/..' . '/report-uri/dbsc-php/src/Exception/RetryableRefreshException.php',
+        'ReportUri\\Dbsc\\Exception\\SessionNotFoundException' => __DIR__ . '/..' . '/report-uri/dbsc-php/src/Exception/SessionNotFoundException.php',
+        'ReportUri\\Dbsc\\InMemoryStore' => __DIR__ . '/..' . '/report-uri/dbsc-php/src/InMemoryStore.php',
+        'ReportUri\\Dbsc\\JwtVerifier' => __DIR__ . '/..' . '/report-uri/dbsc-php/src/JwtVerifier.php',
+        'ReportUri\\Dbsc\\NullAuditLogger' => __DIR__ . '/..' . '/report-uri/dbsc-php/src/NullAuditLogger.php',
+        'ReportUri\\Dbsc\\PendingRegistration' => __DIR__ . '/..' . '/report-uri/dbsc-php/src/PendingRegistration.php',
+        'ReportUri\\Dbsc\\RegistrationResult' => __DIR__ . '/..' . '/report-uri/dbsc-php/src/RegistrationResult.php',
+        'ReportUri\\Dbsc\\RequestContext' => __DIR__ . '/..' . '/report-uri/dbsc-php/src/RequestContext.php',
+        'ReportUri\\Dbsc\\ScopeRule' => __DIR__ . '/..' . '/report-uri/dbsc-php/src/ScopeRule.php',
+        'ReportUri\\Dbsc\\StoreInterface' => __DIR__ . '/..' . '/report-uri/dbsc-php/src/StoreInterface.php',
         'RoundingMode' => __DIR__ . '/..' . '/symfony/polyfill-php84/Resources/stubs/RoundingMode.php',
         'Serializers\\DispatchableSerializer' => __DIR__ . '/..' . '/serialization/serialization/src/Serializers/DispatchableSerializer.php',
         'Serializers\\DispatchingSerializer' => __DIR__ . '/..' . '/serialization/serialization/src/Serializers/DispatchingSerializer.php',

@@ -1,0 +1,29 @@
+{
+    "name": "report-uri/dbsc-php",
+    "description": "A small, framework-agnostic PHP server library for Device Bound Session Credentials (DBSC)",
+    "keywords": [
+        "dbsc", "device-bound-session-credentials", "session", "authentication", "security", "cookie-theft"
+    ],
+    "homepage": "https://github.com/report-uri/dbsc-php",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Report URI",
+            "homepage": "https://report-uri.com"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/report-uri/dbsc-php/issues",
+        "source": "https://github.com/report-uri/dbsc-php"
+    },
+    "require": {
+        "php": ">=8.1.0",
+        "ext-openssl": "*",
+        "ext-json": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "ReportUri\\Dbsc\\": "src"
+        }
+    }
+}

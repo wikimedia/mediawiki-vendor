@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "948cdd8338a5afb19fb3c2db5a8af039",
+    "content-hash": "d63ff11a26bd98c6fdf951b073b8cad6",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -4323,6 +4323,57 @@
                 }
             ],
             "time": "2025-08-19T18:57:03+00:00"
+        },
+        {
+            "name": "report-uri/dbsc-php",
+            "version": "v0.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/report-uri/dbsc-php.git",
+                "reference": "b373198fbc02e936a9cb8a0238e0c38b38f17041"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/report-uri/dbsc-php/zipball/b373198fbc02e936a9cb8a0238e0c38b38f17041",
+                "reference": "b373198fbc02e936a9cb8a0238e0c38b38f17041",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-openssl": "*",
+                "php": ">=8.1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ReportUri\\Dbsc\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Report URI",
+                    "homepage": "https://report-uri.com"
+                }
+            ],
+            "description": "A small, framework-agnostic PHP server library for Device Bound Session Credentials (DBSC)",
+            "homepage": "https://github.com/report-uri/dbsc-php",
+            "keywords": [
+                "Authentication",
+                "cookie-theft",
+                "dbsc",
+                "device-bound-session-credentials",
+                "security",
+                "session"
+            ],
+            "support": {
+                "issues": "https://github.com/report-uri/dbsc-php/issues",
+                "source": "https://github.com/report-uri/dbsc-php"
+            },
+            "time": "2026-08-20T18:27:08+00:00"
         },
         {
             "name": "ruflin/elastica",

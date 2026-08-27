@@ -66,6 +66,7 @@ return array(
     'SpomkyLabs\\Pki\\' => array($vendorDir . '/spomky-labs/pki-framework/src'),
     'Shellbox\\' => array($vendorDir . '/wikimedia/shellbox/src'),
     'Serializers\\' => array($vendorDir . '/serialization/serialization/src/Serializers'),
+    'ReportUri\\Dbsc\\' => array($vendorDir . '/report-uri/dbsc-php/src'),
     'React\\Promise\\' => array($vendorDir . '/react/promise/src'),
     'Psy\\' => array($vendorDir . '/psy/psysh/src'),
     'Psr\\SimpleCache\\' => array($vendorDir . '/psr/simple-cache/src'),

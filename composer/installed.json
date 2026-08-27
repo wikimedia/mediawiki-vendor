@@ -4514,6 +4514,60 @@
             "install-path": "../react/promise"
         },
         {
+            "name": "report-uri/dbsc-php",
+            "version": "v0.2.1",
+            "version_normalized": "0.2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/report-uri/dbsc-php.git",
+                "reference": "b373198fbc02e936a9cb8a0238e0c38b38f17041"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/report-uri/dbsc-php/zipball/b373198fbc02e936a9cb8a0238e0c38b38f17041",
+                "reference": "b373198fbc02e936a9cb8a0238e0c38b38f17041",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-openssl": "*",
+                "php": ">=8.1.0"
+            },
+            "time": "2026-08-20T18:27:08+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "ReportUri\\Dbsc\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Report URI",
+                    "homepage": "https://report-uri.com"
+                }
+            ],
+            "description": "A small, framework-agnostic PHP server library for Device Bound Session Credentials (DBSC)",
+            "homepage": "https://github.com/report-uri/dbsc-php",
+            "keywords": [
+                "Authentication",
+                "cookie-theft",
+                "dbsc",
+                "device-bound-session-credentials",
+                "security",
+                "session"
+            ],
+            "support": {
+                "issues": "https://github.com/report-uri/dbsc-php/issues",
+                "source": "https://github.com/report-uri/dbsc-php"
+            },
+            "install-path": "../report-uri/dbsc-php"
+        },
+        {
             "name": "ruflin/elastica",
             "version": "7.3.2",
             "version_normalized": "7.3.2.0",
