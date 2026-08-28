@@ -140,8 +140,12 @@ class Parser extends ParserAbstract
             "allowIn" => false,
             "allowYield" => false,
             "allowAwait" => false,
+            "allowPattern" => false,
+            // Not standard
             "inSwitch" => false,
-            "inIteration" => false
+            "inIteration" => false,
+            "inBlock" => false,
+            "inForLexDeclaration" => false
         );
         //If async/await is not enabled remove the
         //relative context properties
@@ -435,7 +439,7 @@ class Parser extends ParserAbstract
         } elseif ($val === "class" && $declaration = $this->parseClassDeclaration()) {
             return $declaration;
         } elseif (
-            ($val === "let" || $val === "const") &&
+            ($val === "let" || $val === "const"  || $val === "using"  || $val === "await") &&
             $declaration = $this->isolateContext(
                 array("allowIn" => true), "parseLexicalDeclaration"
             )
@@ -469,7 +473,9 @@ class Parser extends ParserAbstract
     {
         if ($token = $this->scanner->consume("{")) {
             
-            $statements = $this->parseStatementList();
+            $statements = $this->isolateContext(
+                array("inBlock" => true), "parseStatementList"
+            );
             if ($this->scanner->consume("}")) {
                 $node = $this->createNode("BlockStatement", $token);
                 if ($statements) {
@@ -1077,10 +1083,11 @@ class Parser extends ParserAbstract
      * Parses a for(var ...) statement
      * 
      * @param Token $forToken Token that corresponds to the "for" keyword
+     * @param bool  $hasAwait True if "for" is followed by "await"
      * 
      * @return Node\Node|null
      */
-    protected function parseForVarStatement($forToken)
+    protected function parseForVarStatement($forToken, $hasAwait)
     {
         if (!($varToken = $this->scanner->consume("var"))) {
             return null;
@@ -1088,8 +1095,10 @@ class Parser extends ParserAbstract
 
         $state = $this->scanner->getState();
 
-        if (($decl = $this->isolateContext(
-                array("allowIn" => false), "parseVariableDeclarationList"
+        if (!$hasAwait &&
+            ($decl = $this->isolateContext(
+                array("allowIn" => false, "allowPattern" => true),
+                "parseVariableDeclarationList"
             )) &&
             ($varEndPosition = $this->scanner->getPosition()) &&
             $this->scanner->consume(";")
@@ -1129,8 +1138,11 @@ class Parser extends ParserAbstract
         } else {
 
             $this->scanner->setState($state);
-
-            if ($decl = $this->parseForBinding()) {
+            $decl = $this->isolateContext(
+                array("allowPattern" => true),
+                "parseForBinding"
+            );
+            if ($decl) {
 
                 $init = null;
                 if ($this->features->forInInitializer &&
@@ -1148,7 +1160,7 @@ class Parser extends ParserAbstract
                 $left->setDeclarations(array($decl));
                 $left = $this->completeNode($left);
 
-                if ($this->scanner->consume("in")) {
+                if (!$hasAwait && $this->scanner->consume("in")) {
 
                     if ($init && $this->scanner->getStrictMode()) {
                         $this->error(
@@ -1204,17 +1216,30 @@ class Parser extends ParserAbstract
      * Parses a for(let ...) or for(const ...) statement
      * 
      * @param Token $forToken Token that corresponds to the "for" keyword
+     * @param bool  $hasAwait True if "for" is followed by "await"
      * 
      * @return Node\Node|null
      */
-    protected function parseForLetConstStatement($forToken)
+    protected function parseForWithForDeclarationStatement($forToken, $hasAwait)
     {
         $afterBracketState = $this->scanner->getState();
         if (!($init = $this->parseForDeclaration())) {
             return null;
         }
+        
+        if (!$hasAwait && $this->scanner->consume("in")) {
             
-        if ($this->scanner->consume("in")) {
+            //For performance reasons we avoid scanning the ForDeclaration at the
+            //beginning of this function in a different way for the "for...in" case,
+            //since this case doesn't allow the "using" or "await using" declarators.
+            //So we encountered the "in" and we have a "using" or "await using" declarator,
+            //we stop parsing this case here
+            $initKind = $init->getKind();
+            if ($initKind == $init::KIND_USING || $initKind == $init::KIND_AWAIT_USING) {
+                $this->scanner->setState($afterBracketState);
+                return null;
+            }
+
             if (($right = $this->isolateContext(
                     array("allowIn" => true), "parseExpression"
                 )) &&
@@ -1246,11 +1271,12 @@ class Parser extends ParserAbstract
                 $node->setBody($body);
                 return $this->completeNode($node);
             }
-        } else {
+        } elseif (!$hasAwait) {
             
             $this->scanner->setState($afterBracketState);
             if ($init = $this->isolateContext(
-                    array("allowIn" => false), "parseLexicalDeclaration"
+                    array("allowIn" => false, "inForLexDeclaration" => true),
+                    "parseLexicalDeclaration"
                 )
             ) {
                 
@@ -1284,19 +1310,20 @@ class Parser extends ParserAbstract
     }
     
     /**
-     * Parses a for statement that does not start with var, let or const
+     * Parses a for statement that does not start with a declaration
      * 
      * @param Token $forToken Token that corresponds to the "for" keyword
      * @param bool  $hasAwait True if "for" is followed by "await"
      * 
      * @return Node\Node|null
      */
-    protected function parseForNotVarLetConstStatement($forToken, $hasAwait)
+    protected function parseForNoDeclarationStatement($forToken, $hasAwait)
     {
         $state = $this->scanner->getState();
         $notBeforeSB = !$this->scanner->isBefore(array(array("let", "[")), true);
         
-        if ($notBeforeSB &&
+        if (!$hasAwait &&
+            $notBeforeSB &&
             (($init = $this->isolateContext(
                 array("allowIn" => false), "parseExpression"
             )) || true) &&
@@ -1341,7 +1368,7 @@ class Parser extends ParserAbstract
 
             $left = $this->expressionToPattern($left);
             
-            if ($notBeforeSB && $left && $this->scanner->consume("in")) {
+            if (!$hasAwait && $notBeforeSB && $left && $this->scanner->consume("in")) {
                 
                 if (($right = $this->isolateContext(
                         array("allowIn" => true), "parseExpression"
@@ -1406,9 +1433,9 @@ class Parser extends ParserAbstract
             }
 
             if ($this->scanner->consume("(") && (
-                ($node = $this->parseForVarStatement($startForToken)) ||
-                ($node = $this->parseForLetConstStatement($startForToken)) ||
-                ($node = $this->parseForNotVarLetConstStatement($startForToken, $forAwait)))
+                ($node = $this->parseForVarStatement($startForToken, $forAwait)) ||
+                ($node = $this->parseForWithForDeclarationStatement($startForToken, $forAwait)) ||
+                ($node = $this->parseForNoDeclarationStatement($startForToken, $forAwait)))
             ) {
                 if ($forAwait) {
                     if (!$node instanceof Node\ForOfStatement) {
@@ -1667,7 +1694,8 @@ class Parser extends ParserAbstract
             array(
                 "allowReturn" => true,
                 "inSwitch" => false,
-                "inIteration" => false
+                "inIteration" => false,
+                "inBlock" => true
             ),
             "parseStatementList",
             array(true)
@@ -1867,6 +1895,22 @@ class Parser extends ParserAbstract
         
         return null;
     }
+
+    /**
+     * Throws an error if at least one of the given declarations has no
+     * initalizer
+     *
+     * @param Node\VariableDeclarator[]  $declarations  Declarations to check
+     * @param string  $varType  Variable type to include in the error message
+     */
+    protected function checkMandatoryInitializers($declarations, $varType)
+    {
+        foreach ($declarations as $dec) {
+            if (!$dec->getInit()) {
+                $this->error("Missing initializer in $varType declaration");
+            }
+        }
+    }
     
     /**
      * Parses a let or const declaration
@@ -1878,18 +1922,14 @@ class Parser extends ParserAbstract
         $state = $this->scanner->getState();
         if ($token = $this->scanner->consumeOneOf(array("let", "const"))) {
             
-            $declarations = $this->charSeparatedListOf(
-                "parseVariableDeclaration"
+            $declarations = $this->isolateContext(
+                array("allowPattern" => true), "parseVariableDeclarationList"
             );
             
             if ($declarations) {
                 // "const" requires that all declarations have an initializer
                 if ($token->value === "const") {
-                    foreach ($declarations as $dec) {
-                        if (!$dec->getInit()) {
-                            $this->error("Missing initializer in const declaration");
-                        }
-                    }
+                    $this->checkMandatoryInitializers($declarations, "const");
                 }
 
                 $this->assertEndOfStatement();
@@ -1905,6 +1945,50 @@ class Parser extends ParserAbstract
             } else {
                 $this->scanner->setState($state);
             }
+        } elseif ($declaration = $this->parseUsingOrAwaitUsingDeclaration()) {
+            return $declaration;
+        }
+        return null;
+    }
+
+    /**
+     * Parses a "using" or "await using" declaration
+     * 
+     * @return Node\VariableDeclaration|null
+     */
+    protected function parseUsingOrAwaitUsingDeclaration()
+    {
+        $state = $this->scanner->getState();
+        $token = $this->scanner->getToken();
+        if ($this->features->explicitResourceManagement &&
+            $token &&
+            ($token->value == "using" || ($this->context->allowAwait && $token->value == "await"))) {
+            
+            $this->scanner->consumeToken();
+            if ($this->scanner->noLineTerminators() &&
+                ($token->value == "using" || ($this->scanner->consume("using") && $this->scanner->noLineTerminators()))) {
+
+                $declarations = $this->isolateContext(
+                    array("allowPattern" => false), "parseVariableDeclarationList"
+                );
+
+                if ($declarations) {
+                    $this->checkMandatoryInitializers($declarations, "using");
+
+                    if ($this->sourceType === \Peast\Peast::SOURCE_TYPE_SCRIPT &&
+                        !$this->context->inBlock &&
+                        !$this->context->inForLexDeclaration) {
+                        $this->error("A using declaration can appear only inside blocks in script code");
+                    }
+
+                    $this->assertEndOfStatement();
+                    $node = $this->createNode("VariableDeclaration", $token);
+                    $node->setKind($token->value == "using" ? $node::KIND_USING : $node::KIND_AWAIT_USING);
+                    $node->setDeclarations($declarations);
+                    return $this->completeNode($node);
+                }
+            }
+            $this->scanner->setState($state);
         }
         return null;
     }
@@ -1919,7 +2003,7 @@ class Parser extends ParserAbstract
         if ($token = $this->scanner->consume("var")) {
             
             $declarations = $this->isolateContext(
-                array("allowIn" => true), "parseVariableDeclarationList"
+                array("allowIn" => true, "allowPattern" => true), "parseVariableDeclarationList"
             );
             if ($declarations) {
                 $this->assertEndOfStatement();
@@ -1962,7 +2046,8 @@ class Parser extends ParserAbstract
             }
             return $this->completeNode($node);
             
-        } elseif ($id = $this->parseBindingPattern()) {
+        } elseif ($this->context->allowPattern &&
+            ($id = $this->parseBindingPattern())) {
             
             if ($init = $this->parseInitializer()) {
                 $node = $this->createNode("VariableDeclarator", $id);
@@ -1983,9 +2068,15 @@ class Parser extends ParserAbstract
     protected function parseForDeclaration()
     {
         $state = $this->scanner->getState();
-        if ($token = $this->scanner->consumeOneOf(array("let", "const"))) {
-            
-            if ($declaration = $this->parseForBinding()) {
+        $token = $this->scanner->getToken();
+        if ($token->value == "let" || $token->value == "const") {
+            $this->scanner->consumeToken();
+
+            $declaration = $this->isolateContext(
+                array("allowPattern" => true), "parseForBinding"
+            );
+
+            if ($declaration) {
 
                 $node = $this->createNode("VariableDeclaration", $token);
                 $node->setKind($token->value);
@@ -2000,6 +2091,29 @@ class Parser extends ParserAbstract
                 $this->scanner->setState($state);
             }
         }
+        elseif (
+            $this->features->explicitResourceManagement &&
+            ($token->value == "using" ||
+            ($this->context->allowAwait && $token->value == "await"))) {
+            $this->scanner->consumeToken();
+
+            if ($this->scanner->noLineTerminators() &&
+                ($token->value == "using" || ($this->scanner->consume("using") && $this->scanner->noLineTerminators()))) {
+                
+                $declaration = $this->isolateContext(
+                    array("allowPattern" => false), "parseForBinding"
+                );
+                
+                if ($declaration) {
+
+                    $node = $this->createNode("VariableDeclaration", $token);
+                    $node->setKind($token->value == "using" ? $node::KIND_USING : $node::KIND_AWAIT_USING);
+                    $node->setDeclarations(array($declaration));
+                    return $this->completeNode($node);
+                }
+            }
+            $this->scanner->setState($state);
+        }
         return null;
     }
     
@@ -2012,7 +2126,7 @@ class Parser extends ParserAbstract
     protected function parseForBinding()
     {
         if (($id = $this->parseIdentifier(static::$bindingIdentifier)) ||
-            ($id = $this->parseBindingPattern())
+            ($this->context->allowPattern && ($id = $this->parseBindingPattern()))
         ) {
             
             $node = $this->createNode("VariableDeclarator", $id);
@@ -2150,20 +2264,25 @@ class Parser extends ParserAbstract
                 $this->assertEndOfStatement();
                 return $this->completeNode($node);
 
-            } elseif (
-                ($dec = $this->isolateContext(
-                    array("allowAwait" => $this->features->topLevelAwait),
-                    "parseVariableStatement"
-                )) ||
+            } else {
+
                 $dec = $this->isolateContext(
                     array("allowAwait" => $this->features->topLevelAwait),
-                    "parseDeclaration"
-                )
-            ) {
+                    "parseVariableStatement"
+                );
 
-                $node = $this->createNode("ExportNamedDeclaration", $token);
-                $node->setDeclaration($dec);
-                return $this->completeNode($node);
+                if (!$dec && !$this->scanner->isBefore(array("using", "await"))) {
+                    $dec = $this->isolateContext(
+                        array("allowAwait" => $this->features->topLevelAwait),
+                        "parseDeclaration"
+                    );
+                }
+                
+                if ($dec) {
+                    $node = $this->createNode("ExportNamedDeclaration", $token);
+                    $node->setDeclaration($dec);
+                    return $this->completeNode($node);
+                }
             }
             
             $this->error();
@@ -2426,12 +2545,14 @@ class Parser extends ParserAbstract
             } else {
                 $list = array();
                 while (true) {
-                    if ($entry = $this->parseWithEntries()) {
-                        $list[] = $entry;
-                        if (!$this->scanner->consume(",")) {
-                            break;
-                        }
-                    } else {
+                    $entry = $this->isolateContext(
+                        array("inBlock" => true), "parseWithEntries"
+                    );
+                    if (!$entry) {
+                        break;
+                    }
+                    $list[] = $entry;
+                    if (!$this->scanner->consume(",")) {
                         break;
                     }
                 }
@@ -2662,7 +2783,7 @@ class Parser extends ParserAbstract
         $staticToken = $this->scanner->consume("static");
         $this->scanner->consume("{");
         $statements = $this->isolateContext(
-            array("allowAwait" => true), "parseStatementList"
+            array("allowAwait" => true, "inBlock" => true), "parseStatementList"
         );
         if ($this->scanner->consume("}")) {
             $node = $this->createNode("StaticBlock", $staticToken);

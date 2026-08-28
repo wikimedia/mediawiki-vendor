@@ -3051,6 +3051,8 @@ class ComposerStaticInit_mediawiki_vendor
         'Peast\\Syntax\\ES2023\\Features' => __DIR__ . '/..' . '/mck89/peast/lib/Peast/Syntax/ES2023/Features.php',
         'Peast\\Syntax\\ES2024\\Features' => __DIR__ . '/..' . '/mck89/peast/lib/Peast/Syntax/ES2024/Features.php',
         'Peast\\Syntax\\ES2025\\Features' => __DIR__ . '/..' . '/mck89/peast/lib/Peast/Syntax/ES2025/Features.php',
+        'Peast\\Syntax\\ES2026\\Features' => __DIR__ . '/..' . '/mck89/peast/lib/Peast/Syntax/ES2026/Features.php',
+        'Peast\\Syntax\\ES2027\\Features' => __DIR__ . '/..' . '/mck89/peast/lib/Peast/Syntax/ES2027/Features.php',
         'Peast\\Syntax\\EncodingException' => __DIR__ . '/..' . '/mck89/peast/lib/Peast/Syntax/EncodingException.php',
         'Peast\\Syntax\\EventsEmitter' => __DIR__ . '/..' . '/mck89/peast/lib/Peast/Syntax/EventsEmitter.php',
         'Peast\\Syntax\\Exception' => __DIR__ . '/..' . '/mck89/peast/lib/Peast/Syntax/Exception.php',

@@ -44,6 +44,16 @@ class VariableDeclaration extends Node implements Declaration
     const KIND_CONST = "const";
     
     /**
+     * "using" kind
+     */
+    const KIND_USING = "using";
+    
+    /**
+     * "await using" kind
+     */
+    const KIND_AWAIT_USING = "await using";
+    
+    /**
      * Declarations array
      * 
      * @var VariableDeclarator[] 

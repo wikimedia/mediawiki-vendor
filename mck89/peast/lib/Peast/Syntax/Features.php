@@ -192,4 +192,11 @@ class Features
      * @var bool
      */
     public $importAttributes = false;
+
+    /**
+     * Explicit resource management
+     *
+     * @var bool
+     */
+    public $explicitResourceManagement = false;
 }

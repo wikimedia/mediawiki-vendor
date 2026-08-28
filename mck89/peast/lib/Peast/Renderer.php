@@ -51,7 +51,8 @@ class Renderer
         "TryStatement",
         "WhileStatement",
         "WithStatement",
-        "MethodDefinition"
+        "MethodDefinition",
+        "BlockStatement"
     );
     
     /**
@@ -200,6 +201,10 @@ class Renderer
                 $code .= $codeRight;
             break;
             case "BlockStatement":
+                $code .= trim($this->renderStatementBlock(
+                    $node, $node->getBody(), true, false, true, true
+                ));
+            break;
             case "ClassBody":
             case "Program":
                 $code .= $this->renderStatementBlock(
@@ -1070,6 +1075,12 @@ class Renderer
         }
         if (!is_array($node)) {
             $node = array($node);
+        }
+        //"using" and "await using" declarations must always be inside blocks
+        if (count($node) === 1 &&
+            $node[0]->getType() === "VariableDeclaration" &&
+            ($node[0]->getKind() === $node[0]::KIND_USING || $node[0]->getKind() === $node[0]::KIND_AWAIT_USING)) {
+            return true;
         }
         $addBrackets = false;
         $optBracketNodes = array(
