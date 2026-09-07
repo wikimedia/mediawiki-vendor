@@ -346,9 +346,14 @@ class WikitextSerializer {
 	 * @param ?array $attrs Optional attributes array to serialize in the
 	 *   context of $node instead of using the default DOMCompat::attributes
 	 *   call on $node.
+	 * @param bool $extensionTag
+	 *   If true, empty attributes emit: foo (preferred by extensions - see T101841)
+	 *   If false, empty attributes emit: foo=""
 	 * @return string
 	 */
-	public function serializeAttributes( Element $node, ?array $attrs = null ): string {
+	public function serializeAttributes(
+		Element $node, ?array $attrs = null, bool $extensionTag = false
+	): string {
 		$out = [];
 		$attrs ??= DOMCompat::attributes( $node );
 		foreach ( $attrs as $k => $v ) {
@@ -449,6 +454,7 @@ class WikitextSerializer {
 								$vsi = Utils::escapeWtEntities( $vsi );
 								$vsi = str_replace( '>', '&gt;', $vsi );
 								$vsi = str_replace( '"', '&quot;', $vsi );
+								$vsi = str_replace( "\u{00A0}", '&nbsp;', $vsi );
 								$vv .= $vsi;
 							} else {
 								// Don't escape annotation tags
@@ -463,7 +469,7 @@ class WikitextSerializer {
 					// Templated, <*include*>, or <ext-tag> generated
 					$out[] = $kk;
 				} else {
-					$out[] = $kk . '=""';
+					$out[] = $kk . ( $extensionTag ? '' : '=""' );
 				}
 				continue;
 			} elseif ( strlen( $v ) ) {
@@ -997,7 +1003,7 @@ class WikitextSerializer {
 		// because attribute parsing is more lenient than setting and
 		// the keys from getExtAttribs can come directly from parsing.
 		// See the parser test, "Less than in attribute position"
-		$attrStr = $this->serializeAttributes( $extTag, $attrs );
+		$attrStr = $this->serializeAttributes( $extTag, $attrs, true /* extensionTag */ );
 		$src = '<' . $extTagName;
 		if ( $attrStr ) {
 			$src .= ' ' . $attrStr;

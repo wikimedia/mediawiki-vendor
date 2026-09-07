@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ec54690c01bcf5107a7d6ff77068f0b3",
+    "content-hash": "e8e8989cb8cfc593b9b3bf62754d9771",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -8173,16 +8173,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.24.0-a21",
+            "version": "v0.24.0-a22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
-                "reference": "97bb5b62b2ff722c2548b577a7d9623c998edc37"
+                "reference": "d79c17f03af7423c7c2dcc73d25a6f63a4b805e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/97bb5b62b2ff722c2548b577a7d9623c998edc37",
-                "reference": "97bb5b62b2ff722c2548b577a7d9623c998edc37",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/d79c17f03af7423c7c2dcc73d25a6f63a4b805e2",
+                "reference": "d79c17f03af7423c7c2dcc73d25a6f63a4b805e2",
                 "shasum": ""
             },
             "require": {
@@ -8256,10 +8256,10 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.24.0-a21",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.24.0-a22",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
-            "time": "2026-08-24T16:14:50+00:00"
+            "time": "2026-09-04T08:40:13+00:00"
         },
         {
             "name": "wikimedia/purtle",
