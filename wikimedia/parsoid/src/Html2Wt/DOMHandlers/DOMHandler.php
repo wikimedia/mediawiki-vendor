@@ -4,7 +4,6 @@ declare( strict_types = 1 );
 namespace Wikimedia\Parsoid\Html2Wt\DOMHandlers;
 
 use LogicException;
-use Wikimedia\Parsoid\Core\DOMCompat;
 use Wikimedia\Parsoid\DOM\DocumentFragment;
 use Wikimedia\Parsoid\DOM\Element;
 use Wikimedia\Parsoid\DOM\Node;
@@ -137,8 +136,11 @@ class DOMHandler {
 	 *  [ 'min' => <int>, 'max' => <int> ] or an empty array.
 	 */
 	protected function wtListEOL( Element $node, Node $otherNode ): array {
-		if ( !( $otherNode instanceof Element ) || DOMUtils::atTheTop( $otherNode ) ) {
+		if ( DOMUtils::atTheTop( $otherNode ) ) {
 			return [ 'min' => 0, 'max' => 2 ];
+		}
+		if ( !( $otherNode instanceof Element ) ) {
+			return [ 'min' => 1, 'max' => 2 ];
 		}
 		'@phan-var Element $otherNode';/** @var Element $otherNode */
 
@@ -226,10 +228,11 @@ class DOMHandler {
 							$res = $parentTypes[DOMUtils::nodeName( $parentNode )] . $res;
 						}
 					} else {
-						$state->getEnv()->log( 'error/html2wt', 'Input DOM is not well-formed.',
-							"Top-level <li> found that is not nested in <ol>/<ul>\n LI-node:",
-							DOMCompat::getOuterHTML( $node )
-						);
+						// Top-level <li> found that is not nested in <ol>/<ul>\n LI-node
+						if ( !WTUtils::hasLiteralHTMLMarker( $dp ) ) {
+							// Default to UL if not a HTML <li>  tag
+							$res = $parentTypes['ul'] . $res;
+						}
 					}
 				} elseif ( !WTUtils::isLiteralHTMLNode( $node ) ) {
 					$res = $listTypes[$nodeName] . $res;

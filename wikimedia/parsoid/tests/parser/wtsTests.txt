@@ -2441,6 +2441,46 @@ Newly inserted noinclude tags do not need newlines before/after
 a<noinclude>b</noinclude>c
 !! end
 
+!! test
+List edge case: bare text after list on same line
+!! options
+parsoid=html2wt
+!! html/parsoid
+<ul><li>x</li></ul> y
+!! wikitext
+* x
+y
+!! end
+
+!! test
+List edge case: list items without explicit list tag followed by bare text on same line
+!! options
+parsoid=html2wt
+!! html/parsoid
+<li>a</li> <!--x-->
+<li>a</li> b
+<li>a</li> <!--x--> b
+!! wikitext
+* a <!--x-->
+* a
+b
+* a <!--x-->
+b
+!! end
+
+# As seen on a ptwiki page
+!! test
+List edge case: Unclosed HTML bare list item should RT properly
+!! options
+parsoid=wt2html,wt2wt
+!! wikitext
+<li>a
+#b
+!! html/parsoid
+<li data-parsoid='{"stx":"html"}'>a
+<ol><li>b</li></ol></li>
+!! end
+
 # ---------------------------------------------------
 # End of tests spec'ing wikitext serialization norms |
 # ---------------------------------------------------
