@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e8e8989cb8cfc593b9b3bf62754d9771",
+    "content-hash": "d71425b72a1eb459583a0433994af1fa",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -3196,23 +3196,23 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.54.1",
+            "version": "v0.54.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "aae9f53c3156a2ae076cb3f1fcae6c23618b20e8"
+                "reference": "c4eca46a453f654786aba6b9d99ab508249e9be2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/aae9f53c3156a2ae076cb3f1fcae6c23618b20e8",
-                "reference": "aae9f53c3156a2ae076cb3f1fcae6c23618b20e8",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/c4eca46a453f654786aba6b9d99ab508249e9be2",
+                "reference": "c4eca46a453f654786aba6b9d99ab508249e9be2",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.3"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "51.0.0",
+                "mediawiki/mediawiki-codesniffer": "52.0.0",
                 "mediawiki/mediawiki-phan-config": "0.20.0",
                 "mediawiki/minus-x": "2.0.1",
                 "ockcyp/covers-validator": "1.7.0",
@@ -3283,9 +3283,9 @@
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOUI",
             "support": {
-                "source": "https://github.com/wikimedia/oojs-ui/tree/v0.54.1"
+                "source": "https://github.com/wikimedia/oojs-ui/tree/v0.54.2"
             },
-            "time": "2026-07-21T16:20:12+00:00"
+            "time": "2026-09-14T15:44:01+00:00"
         },
         {
             "name": "paragonie/constant_time_encoding",
