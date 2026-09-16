@@ -46,8 +46,74 @@ class SampleObject implements JsonCodecable {
 A slightly more complicated version of this example can be found in
 [`tests/SampleObject.php`](./tests/SampleObject.php).
 
-If your class requires explicit management -- for example, object
-instances need to be created using a factory service, you can
+If you are using the [Dependency Injection] pattern, you can make
+services available to your de/serialization code using the
+`JsonCodecableWithServicesTrait`:
+```php
+use Wikimedia\JsonCodec\CodecService;
+use Wikimedia\JsonCodec\JsonCodecable;
+use Wikimedia\JsonCodec\JsonCodecableWithServicesTrait;
+
+class SampleObject implements JsonCodecable {
+	use JsonCodecableWithServicesTrait;
+
+	/** @var string */
+	public string $property;
+
+	// ....
+
+	// Implement JsonCodecable using the JsonCodecableWithServicesTrait
+
+	public function toJsonArray(
+		#[CodecService( 'MyFirstService' )] MyFirstService $myService,
+	): array {
+		// ...you could use $myService here...
+		return [
+			'property' => $this->property,
+		];
+	}
+
+	public static function newFromJsonArray(
+		array $json,
+		#[CodecService( 'MySecondService' )] MySecondService $myService,
+		#[CodecService( 'AnotherService' )] AnotherService $anotherService,
+		#[CodecService( 'OptionalService', optional: true )] ?OptionalService $optionalService,
+	): SampleObject {
+		// ...you could use $anotherService and $optionalService here...
+		return new SampleObject( $myService, $json['property'] );
+	}
+}
+```
+Full code can be found in
+[`tests/ServicesObject.php`](./tests/ServicesObject.php).
+
+You can verify that a class correctly declares `toJsonArray()` and
+`newFromJsonArray()` for use with `JsonCodecableWithServicesTrait` by using
+`JsonCodecableWithServicesTestTrait` in a PHPUnit test:
+```php
+use Wikimedia\JsonCodec\JsonCodecableWithServicesTestTrait;
+
+class SampleObjectTest extends \PHPUnit\Framework\TestCase {
+	use JsonCodecableWithServicesTestTrait;
+
+	protected static function getCodecableClass(): string {
+		return SampleObject::class;
+	}
+}
+```
+This verifies the method signatures and that every service parameter is
+annotated with a `#[CodecService]` attribute, but not that the named
+services actually exist or match the declared parameter types (there's no
+general way to look up the PHP type of an arbitrary service name). If
+you're willing to run this as an integration test instead, you can also
+override `::getServiceContainer()` to return a (live or mocked)
+service container, in which case each named service will additionally be
+resolved from that container and checked against its parameter's type
+hint. Full code, including the integration-test variant, can be found in
+[`tests/ServicesObjectTest.php`](./tests/ServicesObjectTest.php) and
+[`tests/ServicesObjectIntegrationTest.php`](./tests/ServicesObjectIntegrationTest.php).
+
+If your class requires explicit management, you can
 implement `JsonCodecable` directly:
 ```php
 use Psr\Container\ContainerInterface;
@@ -363,3 +429,4 @@ during the MediaWiki 1.41 development cycle, with changes to the API.
 ---
 [Latest Stable Version]: https://poser.pugx.org/wikimedia/json-codec/v/stable.svg
 [License]: https://poser.pugx.org/wikimedia/json-codec/license.svg
+[Dependency Injection]: https://en.wikipedia.org/wiki/Dependency_injection

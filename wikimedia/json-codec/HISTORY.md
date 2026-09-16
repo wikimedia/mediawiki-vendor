@@ -1,5 +1,12 @@
 # Release History
 
+## 5.1.0 (2026-09-16)
+* Add JsonCodecableWithServicesTrait to make it easier to deserialize
+  objects using the Dependency Injection pattern.
+* Add JsonCodecableWithServicesTestTrait, a PHPUnit test trait to verify
+  that a class correctly implements JsonCodecableWithServicesTrait.
+* Add Hint::hasModifier() helper function.
+
 ## 5.0.0 (2026-02-12)
 * Allow a Hint to be the first argument to Hint::build().
 * Make `Hint::*` constants into a `HintType` enumeration.

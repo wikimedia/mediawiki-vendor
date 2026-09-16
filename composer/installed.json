@@ -7941,17 +7941,17 @@
         },
         {
             "name": "wikimedia/json-codec",
-            "version": "v5.0.0",
-            "version_normalized": "5.0.0.0",
+            "version": "v5.1.0",
+            "version_normalized": "5.1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-JsonCodec.git",
-                "reference": "08d391396110802c0a1de7cc86cd123f2ad0cd83"
+                "reference": "591d2fa34e7e11047df50f518aa97a934ad322c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-JsonCodec/zipball/08d391396110802c0a1de7cc86cd123f2ad0cd83",
-                "reference": "08d391396110802c0a1de7cc86cd123f2ad0cd83",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-JsonCodec/zipball/591d2fa34e7e11047df50f518aa97a934ad322c8",
+                "reference": "591d2fa34e7e11047df50f518aa97a934ad322c8",
                 "shasum": ""
             },
             "require": {
@@ -7959,9 +7959,9 @@
                 "psr/container": "^1.1.2|^2.0.2"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "48.0.0",
-                "mediawiki/mediawiki-phan-config": "0.19.0",
-                "mediawiki/minus-x": "1.1.3",
+                "mediawiki/mediawiki-codesniffer": "52.0.0",
+                "mediawiki/mediawiki-phan-config": "0.20.0",
+                "mediawiki/minus-x": "2.0.1",
                 "ockcyp/covers-validator": "1.7.0",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
                 "php-parallel-lint/php-parallel-lint": "1.4.0",
@@ -7969,7 +7969,7 @@
                 "wikimedia/assert": "^0.5.1",
                 "wikimedia/update-history": "1.0.3"
             },
-            "time": "2026-02-14T17:50:20+00:00",
+            "time": "2026-09-16T19:22:03+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -7999,7 +7999,7 @@
             "description": "Interfaces to serialize and deserialize PHP objects to/from JSON",
             "homepage": "https://www.mediawiki.org/wiki/JsonCodec",
             "support": {
-                "source": "https://github.com/wikimedia/mediawiki-libs-JsonCodec/tree/v5.0.0"
+                "source": "https://github.com/wikimedia/mediawiki-libs-JsonCodec/tree/v5.1.0"
             },
             "install-path": "../wikimedia/json-codec"
         },

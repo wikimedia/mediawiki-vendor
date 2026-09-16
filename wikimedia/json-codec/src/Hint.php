@@ -67,6 +67,31 @@ class Hint implements Stringable {
 	}
 
 	/**
+	 * Return true if the hint has the given modifier.
+	 *
+	 * This only applies to the outermost type: if this hint
+	 * is a list or stdclass, it doesn't look inside the container
+	 * at the modifiers on its item type.
+	 */
+	public static function hasModifier( string|Hint $classNameOrHint, HintType $modifier ): bool {
+		if ( is_string( $classNameOrHint ) ) {
+			return false;
+		}
+		return $classNameOrHint->instanceHasModifier( $modifier );
+	}
+
+	private function instanceHasModifier( HintType $modifier ): bool {
+		if ( $this->modifier === $modifier ) {
+			return true;
+		}
+		if ( $this->modifier === HintType::LIST ||
+			$this->modifier === HintType::STDCLASS ) {
+			return false;
+		}
+		return self::hasModifier( $this->parent, $modifier );
+	}
+
+	/**
 	 * Return true if the hint $a is the same as the hint $b.
 	 * @param class-string|Hint $a
 	 * @param class-string|Hint $b
