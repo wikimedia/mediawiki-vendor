@@ -8524,17 +8524,17 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.24.0-a23",
-            "version_normalized": "0.24.0.0-alpha23",
+            "version": "v0.24.0-a24",
+            "version_normalized": "0.24.0.0-alpha24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
-                "reference": "885dd6380298592bda3a3a1de753b5dac39c18f9"
+                "reference": "e204c3f69d9fc6bd225dfd9a317ea2e85b3ff997"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/885dd6380298592bda3a3a1de753b5dac39c18f9",
-                "reference": "885dd6380298592bda3a3a1de753b5dac39c18f9",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/e204c3f69d9fc6bd225dfd9a317ea2e85b3ff997",
+                "reference": "e204c3f69d9fc6bd225dfd9a317ea2e85b3ff997",
                 "shasum": ""
             },
             "require": {
@@ -8553,7 +8553,7 @@
                 "wikimedia/idle-dom": "^2.1.0",
                 "wikimedia/ip-utils": "^6.0.0",
                 "wikimedia/json-codec": "^5.0.0",
-                "wikimedia/object-factory": "^5.0.1 || ^6.0.0",
+                "wikimedia/object-factory": "^6.0.0 || ^7.0.0",
                 "wikimedia/remex-html": "^5.1.0 || ^6.0.0",
                 "wikimedia/utfnormal": "^4.0",
                 "wikimedia/wikipeg": "^6.0.0",
@@ -8584,7 +8584,7 @@
                 "ext-readline": "Needed to support repl.php",
                 "wikimedia/langconv": "Provides script conversion support"
             },
-            "time": "2026-09-11T14:48:05+00:00",
+            "time": "2026-09-20T14:40:46+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -8610,7 +8610,7 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.24.0-a23",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.24.0-a24",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
             "install-path": "../wikimedia/parsoid"

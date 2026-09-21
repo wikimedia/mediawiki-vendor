@@ -651,7 +651,9 @@ class WikiLinkHandler extends XMLTagBasedHandler {
 				} elseif ( str_starts_with( $morecontent, '../' ) ) {
 					// Subpages on interwiki / language links aren't valid,
 					// so $target->title should always be present here
-					$morecontent = $target->title->getFullText();
+					$hash = strpos( $morecontent, '#' );
+					$suffix = ( $hash !== false ) ? substr( $morecontent, $hash ) : '';
+					$morecontent = $target->title->getPrefixedText() . $suffix;
 				}
 			}
 
@@ -1559,6 +1561,10 @@ class WikiLinkHandler extends XMLTagBasedHandler {
 			$container->addSpaceSeparatedAttribute( 'typeof', 'mw:ExpandedAttrs' );
 		} elseif ( preg_match( '/\bmw:ExpandedAttrs\b/', $token->getAttributeV( 'typeof' ) ?? '' ) ) {
 			$container->addSpaceSeparatedAttribute( 'typeof', 'mw:ExpandedAttrs' );
+		}
+
+		if ( !$this->env->bumpWt2HtmlResourceUse( 'image' ) ) {
+			$container->dataParsoid->getTemp()->setFlag( TempData::MEDIA_OVER_LIMIT );
 		}
 
 		// Start off as broken media since we don't know if the file exists.
