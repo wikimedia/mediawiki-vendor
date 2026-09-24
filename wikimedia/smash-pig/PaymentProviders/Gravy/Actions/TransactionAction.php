@@ -13,6 +13,7 @@ use SmashPig\PaymentProviders\Gravy\Errors\ErrorMapper;
 use SmashPig\PaymentProviders\Gravy\ExpatriatedMessages\TransactionMessage;
 use SmashPig\PaymentProviders\Gravy\Jobs\ProcessCaptureRequestJob;
 use SmashPig\PaymentProviders\Gravy\Jobs\RecordCaptureJob;
+use SmashPig\PaymentProviders\Gravy\Jobs\RecordFailureJob;
 use SmashPig\PaymentProviders\Gravy\TransactionDetailsNormalizer;
 use SmashPig\PaymentProviders\Responses\PaymentProviderExtendedResponse;
 
@@ -53,9 +54,9 @@ class TransactionAction extends GravyAction {
 			$id = $transactionDetails->getRawResponse()['id'] ?? null;
 			$message = 'Skipping unsuccessful transaction';
 			if ( !empty( $id ) ) {
-				if ( $this->requiresChargeback( $transactionDetails ) ) {
-					$message = "Pushing failed transaction with id: {$id} to donations-modify queue.";
-					$this->pushFailedAuthToDonationsModify( $msg );
+				if ( $this->requiresCancel( $transactionDetails ) ) {
+					$message = "Pushing failed transaction with id: {$id} as a cancellation to donations queue.";
+					$this->pushFailedAuthToJobsQueue( $msg );
 				} else {
 					$message = "Skipping unsuccessful transaction with transaction id {$id}";
 				}
@@ -81,25 +82,27 @@ class TransactionAction extends GravyAction {
 	}
 
 	/**
-	 * Some payment method requires a chargeback message when it fails
+	 * Some payment method requires a cancellation message when it fails
 	 * because they are set to complete status before getting a successful response
 	 * @param PaymentProviderExtendedResponse $transaction
 	 * @return bool
 	 */
-	public function requiresChargeback( PaymentProviderExtendedResponse $transaction ): bool {
+	public function requiresCancel( PaymentProviderExtendedResponse $transaction ): bool {
 		$normalizedResponse = $transaction->getNormalizedResponse();
 		return isset( $normalizedResponse['type'] ) && $normalizedResponse['type'] == "chargeback";
 	}
 
 	/**
-	 * Send donation modification message to Civi
+	 * Send donation modification message to Civi. Needs to go through the
+	 * jobs-gravy queue first to make sure it arrives after the original
+	 * donation.
 	 * @param TransactionMessage $msg
 	 * @return void
 	 */
-	public function pushFailedAuthToDonationsModify( TransactionMessage $msg ): void {
+	public function pushFailedAuthToJobsQueue( TransactionMessage $msg ): void {
 		$details = $msg->getTransactionDetails();
 		$reason = $details['error_code'] ?? '';
-		$refundMessage = [
+		$failureMessage = [
 			'contribution_status_id:name' => 'Cancelled',
 			'gateway_txn_id' => $details['id'],
 			'payment_method' => 'ach',
@@ -116,7 +119,8 @@ class TransactionAction extends GravyAction {
 			'can_retry' => $this->isRetryableErrorCode( $reason ),
 			'is_suspected_fraud' => ErrorMapper::isSuspectedFraud( $reason )
 		];
-		QueueWrapper::push( 'donations-modify', $refundMessage );
+		$job = RecordFailureJob::factory( $failureMessage );
+		QueueWrapper::push( 'jobs-gravy', $job );
 	}
 
 	protected function isRetryableErrorCode( string $errorCode ): bool {

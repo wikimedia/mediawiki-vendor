@@ -1,0 +1,8 @@
+# Settings for Overflow
+#
+# To override, create a file in:
+#   /etc/smashpig/overflow/main.yaml
+#   $HOME/.smashpig/overflow/main.yaml
+# The getReport script also supports option-based overrides.
+api_base_url: 'https://server.overflow.co/api/v3'
+

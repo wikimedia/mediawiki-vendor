@@ -15,7 +15,7 @@ class RecordCaptureJobTest extends BaseGravyTestCase {
 	 * @var PendingDatabase
 	 */
 	protected $pendingDatabase;
-	protected array $pendingMessage;
+	protected array $pendingMessage = [];
 
 	public function setUp(): void {
 		parent::setUp();
@@ -23,7 +23,9 @@ class RecordCaptureJobTest extends BaseGravyTestCase {
 	}
 
 	public function tearDown(): void {
-		$this->pendingDatabase->deleteMessage( $this->pendingMessage );
+		if ( $this->pendingMessage ) {
+			$this->pendingDatabase->deleteMessage( $this->pendingMessage );
+		}
 		parent::tearDown();
 	}
 
@@ -95,6 +97,101 @@ class RecordCaptureJobTest extends BaseGravyTestCase {
 			$donationMessage['backend_processor_txn_id'],
 			'SEPA backend_processor_txn_id should be overwritten with fresh value from API'
 		);
+	}
+
+	/**
+	 * Moto gifts have no pending record, so the job has to build the donation
+	 * message from the webhook and a fresh look at the transaction instead.
+	 */
+	public function testRecordCaptureMotoTransaction(): void {
+		$donationsQueue = QueueWrapper::getQueue( 'donations' );
+		$motoMessage = json_decode(
+			file_get_contents( __DIR__ . '/../Data/moto-transaction-capture-message.json' ),
+			true
+		);
+		$capturedTransaction = json_decode(
+			file_get_contents( __DIR__ . '/../Data/successful-transaction.json' ),
+			true
+		);
+		$normalizedMessage = ( new ResponseMapper() )->mapFromPaymentResponse( $motoMessage['target'] );
+		$job = $this->getMotoJob( $motoMessage, $normalizedMessage );
+
+		$this->mockApi->expects( $this->once() )
+			->method( 'getTransaction' )
+			->willReturn( $capturedTransaction );
+
+		$this->assertTrue( $job->execute() );
+
+		$donationMessage = $donationsQueue->pop();
+		$this->assertNotNull(
+			$donationMessage,
+			'RecordCaptureJob did not send a donation message for the moto transaction'
+		);
+
+		// Identity of the gift comes from the webhook.
+		$this->assertEquals( 'gravy', $donationMessage['gateway'] );
+		$this->assertEquals( $motoMessage['target']['id'], $donationMessage['gateway_txn_id'] );
+		$this->assertEquals(
+			$motoMessage['target']['external_identifier'], $donationMessage['order_id']
+		);
+		$this->assertEquals(
+			strtotime( $motoMessage['created_at'] ), $donationMessage['date']
+		);
+
+		// The donor is identified by the CiviCRM contact ID in the metadata,
+		// since a moto gift carries no donor details at all.
+		$this->assertEquals(
+			$motoMessage['target']['metadata']['cid'], $donationMessage['contact_id']
+		);
+
+		// Gravy sends minor units. The mapper converts them and the queue
+		// round-trips the message through JSON, so gross arrives as a number
+		// rather than the formatted string a pending record would carry.
+		$this->assertEquals( $normalizedMessage['amount'], $donationMessage['gross'] );
+		$this->assertEquals( $normalizedMessage['currency'], $donationMessage['currency'] );
+		$this->assertEquals( $normalizedMessage['payment_method'], $donationMessage['payment_method'] );
+
+		// Gift details that a donation form would normally have supplied.
+		$metadata = $motoMessage['target']['metadata'];
+		$this->assertEquals( $metadata['appeal'], $donationMessage['direct_mail_appeal'] );
+		$this->assertEquals( $metadata['fund'], $donationMessage['restrictions'] );
+		$this->assertEquals( $metadata['channel'], $donationMessage['channel'] );
+		$this->assertEquals( $metadata['package'], $donationMessage['Gift_Data.Package'] );
+
+		// Nothing upstream minted a contribution tracking ID, so the job does it.
+		$this->assertIsNumeric( $donationMessage['contribution_tracking_id'] );
+		$this->assertNotEmpty( $donationMessage['contribution_tracking_id'] );
+
+		// Details the thin webhook body does not carry come from the API.
+		$transactionDetails = GravyGetLatestPaymentStatusResponseFactory::fromNormalizedResponse(
+			( new ResponseMapper() )->mapFromPaymentResponse( $capturedTransaction )
+		);
+		$this->assertEquals(
+			$transactionDetails->getBackendProcessor(), $donationMessage['backend_processor']
+		);
+		$this->assertEquals(
+			$transactionDetails->getPaymentSubmethod(), $donationMessage['payment_submethod']
+		);
+		$this->assertEquals(
+			$transactionDetails->getPaymentServiceID(), $donationMessage['payment_service_id']
+		);
+	}
+
+	/**
+	 * Builds the job the way RecordCaptureJob::factory does for a moto capture.
+	 *
+	 * @param array $motoMessage
+	 * @param array $normalizedMessage
+	 * @return RecordCaptureJob
+	 */
+	protected function getMotoJob( array $motoMessage, array $normalizedMessage ): RecordCaptureJob {
+		$job = new RecordCaptureJob();
+		$job->payload = array_merge(
+			[ 'eventDate' => $motoMessage['created_at'] ],
+			$normalizedMessage
+		);
+
+		return $job;
 	}
 
 	/**

@@ -60,6 +60,20 @@ class AuditTest extends TestCase {
 		$this->assertEquals( 'The Bart & Lisa Giving Account', $donation['donor_advised_fund_name'] );
 	}
 
+	/**
+	 * The 'flag' column is a free text field set by user defined policy on the
+	 * Chariot side - we pass its content straight through as manual_review,
+	 * agnostic to what it says, so a person can decide what to do with it.
+	 */
+	public function testFlagColumnIsPassedThroughAsManualReview(): void {
+		$rows = $this->parseFile();
+		$flagged = $rows[0];
+		$unflagged = $rows[1];
+
+		$this->assertSame( 'Needs desk review', $flagged['manual_review'] );
+		$this->assertArrayNotHasKey( 'manual_review', $unflagged );
+	}
+
 	public static function provideAuditCsvFiles(): array {
 		$dir = __DIR__ . '/Data';
 		$files = glob( $dir . '/*.csv' ) ?: [];

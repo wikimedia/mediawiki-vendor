@@ -310,4 +310,28 @@ class STLAuditTest extends AuditTestBase {
 		$this->assertEquals( 'payout', $output[1]['type'] );
 		$this->assertSame( '517.99', $output[1]['settled_total_amount'] );
 	}
+
+	/**
+	 * A credit T0000 row with no Invoice ID / PayPal Reference ID / Custom Field
+	 * is an unsolicited donation made via PayPal's 'Send Money' feature, rather
+	 * than the usual debit-only reimbursement style general_payment. It should
+	 * be treated as a normal donation instead of throwing.
+	 *
+	 * @see https://phabricator.wikimedia.org/T437215
+	 */
+	public function testProcessUnsolicitedDonation(): void {
+		$output = $this->processFile( 'stl_unsolicited_donation.csv' );
+		$this->assertCount( 2, $output, 'Should have found one donation row and one payout row' );
+
+		$this->assertSame( 'donation', $output[0]['type'] );
+		$this->assertSame( '6WE406841H3050743', $output[0]['gateway_txn_id'] );
+		$this->assertSame( '', $output[0]['order_id'] );
+		$this->assertNull( $output[0]['contribution_tracking_id'] );
+		$this->assertSame( '10.40', $output[0]['settled_total_amount'] );
+		$this->assertSame( '-0.31', $output[0]['settled_fee_amount'] );
+		$this->assertSame( '10.09', $output[0]['settled_net_amount'] );
+
+		$this->assertSame( 'payout', $output[1]['type'] );
+		$this->assertSame( '10.09', $output[1]['settled_total_amount'] );
+	}
 }

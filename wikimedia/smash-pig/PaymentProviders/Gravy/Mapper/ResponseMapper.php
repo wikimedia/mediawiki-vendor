@@ -200,7 +200,7 @@ class ResponseMapper {
 			if ( in_array( $gravyPaymentMethod, self::METHODS_WITH_USERNAME ) ) {
 				$result['donor_details']['username'] = $response['payment_method']['label'];
 			}
-			if ( in_array( $gravyPaymentMethod, self::METHODS_WITH_PAYERID ) ) {
+			if ( !empty( $response['additional_identifiers'] ) && in_array( $gravyPaymentMethod, self::METHODS_WITH_PAYERID ) ) {
 				$result['donor_details']['backend_processor_contact_id'] = $response['additional_identifiers']['payer_id'];
 			}
 			if ( !empty( $donorDetails['address'] ) ) {
@@ -222,7 +222,7 @@ class ResponseMapper {
 	}
 
 	/**
-	 * Maps from gravy payment response payment service details
+	 * Maps from gravy payment response payment service details to set various transaction identifiers
 	 * @param array &$result
 	 * @param array $response
 	 * @return void
@@ -236,6 +236,8 @@ class ResponseMapper {
 		if ( isset( $response['additional_identifiers']['payment_service_capture_id'] ) ) {
 			$result['backend_processor_capture_id'] = $response['additional_identifiers']['payment_service_capture_id'];
 		}
+		$result['payment_orchestrator_reconciliation_id'] = $reconciliationID = $response['reconciliation_id'] ?? null;
+
 		$processorsUsingAuthID = [ 'paypal', 'adyen' ];
 		if (
 			in_array( $result['backend_processor'], $processorsUsingAuthID ) &&
@@ -243,9 +245,13 @@ class ResponseMapper {
 		) {
 			$result['backend_processor_transaction_id'] = $response['additional_identifiers']['payment_service_authorization_id'];
 		} else {
-			$result['backend_processor_transaction_id'] = $response['payment_service_transaction_id'] ?? null;
+			$supposedBackendProcessorTransactionID = $response['payment_service_transaction_id'] ?? null;
+			// Sometimes they stuff their own reconciliation ID in the payment_service_transaction_id.
+			// That's worse than useless to us. Discard it.
+			if ( $supposedBackendProcessorTransactionID !== $reconciliationID ) {
+				$result['backend_processor_transaction_id'] = $supposedBackendProcessorTransactionID;
+			}
 		}
-		$result['payment_orchestrator_reconciliation_id'] = $response['reconciliation_id'] ?? null;
 	}
 
 	/**
@@ -276,7 +282,25 @@ class ResponseMapper {
 
 		$this->mapPaymentResponsePaymentService( $result, $response );
 
+		if ( ( $response['payment_source'] ?? null ) === 'moto' ) {
+			$this->mapPaymentResponseMotoDetails( $result, $response );
+		}
+
 		return $result;
+	}
+
+	/**
+	 * Maps the metadata that comes with a moto transaction.
+	 *
+	 * Moto = mail order / telephone order: staff key these in from a mailed form or a phone call.
+	 *
+	 * @param array &$result
+	 * @param array $response
+	 * @return void
+	 */
+	protected function mapPaymentResponseMotoDetails( array &$result, array $response ): void {
+		$result['is_moto'] = true;
+		$result['moto_metadata'] = $response['metadata'] ?? [];
 	}
 
 	/**

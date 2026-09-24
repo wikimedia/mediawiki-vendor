@@ -1,0 +1,158 @@
+{
+  "gateway_account": "Foundation",
+  "deposit": {
+    "id": "6979657fe656249c2dd8f016",
+    "status": "PAID",
+    "type": "AUTOMATED",
+    "amountInCents": 118406,
+    "arrivalAt": "2026-01-27T06:07:54.000Z",
+    "startingBalanceInCents": 0,
+    "endingBalanceInCents": 0,
+    "bankName": "321171184 CHK",
+    "bankLast4": "9753",
+    "statementDescriptor": "OVRFLW-S322222224LSBQJ",
+    "paymentMethodType": [
+      "brokerage_account"
+    ],
+    "name": null,
+    "reconciledAt": null,
+    "createdAt": "2026-01-28T01:25:19.380Z",
+    "updatedAt": "2026-01-28T01:25:19.477Z",
+    "lineItems": [
+      {
+        "type": "transfer",
+        "grossValueInCents": 84812,
+        "referenceId": "tr_ad_696ad9f2a029c704116fd716",
+        "description": "tr_ad_696ad9f2a029c704116fd716"
+      },
+      {
+        "type": "transfer",
+        "grossValueInCents": 33594,
+        "referenceId": "tr_ad_6953242bfff27593b36a7620",
+        "description": "tr_ad_6953242bfff27593b36a7620"
+      }
+    ]
+  },
+  "summary": {
+    "data": {
+      "contributions": {
+        "count": 2,
+        "feesInCents": 1455,
+        "grossInCents": 119861,
+        "totalInCents": 118406
+      },
+      "refunds": [],
+      "chargebacks": {
+        "count": 0,
+        "feesInCents": 0,
+        "grossInCents": 0,
+        "totalInCents": 0
+      },
+      "adjustments": {
+        "count": 0,
+        "feesInCents": 0,
+        "grossInCents": 0,
+        "totalInCents": 0
+      }
+    }
+  },
+  "contributions": [
+    {
+      "lineItem": {
+        "type": "transfer",
+        "grossValueInCents": 84812,
+        "referenceId": "tr_ad_696ad9f2a029c704116fd716",
+        "description": "tr_ad_696ad9f2a029c704116fd716"
+      },
+      "contribution": {
+        "id": "696ad9f2a029c704116fd716",
+        "createdAt": "2025-12-02T00:37:23.000Z",
+        "updatedAt": "2026-01-30T01:10:38.179Z",
+        "type": "STOCK",
+        "donorCoveredFees": false,
+        "contributionDate": "2025-12-02T00:37:23.000Z",
+        "status": "CANCELED",
+        "paymentMethod": {
+          "logoUrl": "https://cdn.overflow.co/payment-assets/fallback-bank-v2.svg",
+          "type": "Stock"
+        },
+        "metadata": null,
+        "anonymous": false,
+        "locationId": "689f763dd92d63b72e999a80",
+        "donor": {
+          "id": "692d3b3c1ae07504834eb2e8",
+          "firstName": "A",
+          "lastName": "L",
+          "email": "a@example.com",
+          "phone": "+16123",
+          "address": {
+            "city": "Big City",
+            "country": "US",
+            "line1": "123 Seasame Street",
+            "state": "CA",
+            "zip": "94306"
+          }
+        },
+        "contributionReceivedAt": "2025-12-01T20:00:00.000Z",
+        "stocks": {
+          "quantity": 1,
+          "tickers": [
+            "AAPL"
+          ]
+        },
+        "givingLinkId": null,
+        "pledgeId": null
+      }
+    },
+    {
+      "lineItem": {
+        "type": "transfer",
+        "grossValueInCents": 33594,
+        "referenceId": "tr_ad_6953242bfff27593b36a7620",
+        "description": "tr_ad_6953242bfff27593b36a7620"
+      },
+      "contribution": {
+        "id": "6953242bfff27593b36a7620",
+        "createdAt": "2025-12-30T01:00:27.557Z",
+        "updatedAt": "2026-01-28T01:25:19.446Z",
+        "type": "STOCK",
+        "amount": 341.92,
+        "donorCoveredFees": false,
+        "contributionDate": "2025-12-30T01:00:27.557Z",
+        "status": "PAID_OUT",
+        "paymentMethod": {
+          "last4": "3749",
+          "logoUrl": "https://cdn.overflow.co/payment-assets/fallback-bank-v2.svg",
+          "type": "Stock"
+        },
+        "metadata": null,
+        "anonymous": true,
+        "locationId": "689f763dd92d63b72e999a80",
+        "donor": {
+          "id": "6953242bfff27593b36a7634",
+          "firstName": "F",
+          "lastName": "P",
+          "email": "p@example.org",
+          "phone": "+14123",
+          "address": {
+            "city": "Pleasantville",
+            "country": "US",
+            "line1": "12 Seasame Ave",
+            "line2": "",
+            "state": "NY",
+            "zip": "14604"
+          }
+        },
+        "contributionReceivedAt": "2026-01-08T20:00:00.000Z",
+        "stocks": {
+          "quantity": 1,
+          "tickers": [
+            "VTI"
+          ]
+        },
+        "givingLinkId": null,
+        "pledgeId": null
+      }
+    }
+  ]
+}

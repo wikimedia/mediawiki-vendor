@@ -2,10 +2,8 @@
 
 namespace SmashPig\PaymentProviders\Chariot\Maintenance;
 
-use SmashPig\Core\Context;
 use SmashPig\Core\Helpers\CurrencyRoundingHelper;
 use SmashPig\Core\Logging\Logger;
-use SmashPig\Core\ProviderConfiguration;
 use SmashPig\Maintenance\MaintenanceBase;
 use SmashPig\PaymentProviders\Chariot\Api;
 use SmashPig\PaymentProviders\Chariot\ChariotObjectMetadata;
@@ -42,7 +40,7 @@ class GetReport extends MaintenanceBase {
 		'banking_institution',
 		'is_matching_gift',
 		'is_daf',
-		'is_endowment',
+		'manual_review',
 		'donor_advised_fund_name',
 		'matching_gift_organization',
 		'original_total_amount',
@@ -95,7 +93,6 @@ class GetReport extends MaintenanceBase {
 		'check_number',
 	];
 
-	private ProviderConfiguration $config;
 	private PendingDepositTracker $pendingDepositTracker;
 	private Api $api;
 
@@ -115,13 +112,13 @@ class GetReport extends MaintenanceBase {
 		$this->addOption( 'end-date', 'Filter deposits by settled_at.before; accepts any strtotime()-parseable date/time', '' );
 		$this->addOption( 'limit', 'Optional maximum results per deposits/donations list call', '', 'l' );
 		$this->addOption( 'max-pages', 'Optional maximum pages to fetch for list calls', '', 'm' );
+		$this->addOption( 'path', 'Optional output directory; overrides reports_incoming_path config' );
 		$this->addFlag( 'stdout', 'Print summary JSON payload to stdout for list mode', 's' );
 		$this->addFlag( 'include-json', 'Always write per-deposit JSON payloads even when there are no unknowns', '' );
 		$this->desiredOptions['config-node']['default'] = 'chariot';
 	}
 
 	public function execute(): void {
-		$this->config = Context::get()->getProviderConfiguration();
 		$path = $this->getIncomingPath();
 		if ( !is_dir( $path ) ) {
 			throw new \RuntimeException( 'Output directory does not exist: ' . $path );
@@ -250,7 +247,7 @@ class GetReport extends MaintenanceBase {
 	private function fetchDepositsPage( ?string $token ): array {
 		$params = [];
 
-		$limit = $this->getLimitOption();
+		$limit = $this->getPositiveIntOption( 'limit' );
 		if ( $limit !== null ) {
 			$params['limit'] = $limit;
 		}
@@ -303,7 +300,7 @@ class GetReport extends MaintenanceBase {
 					'deposit_id' => $depositId,
 				];
 
-				$limit = $this->getLimitOption();
+				$limit = $this->getPositiveIntOption( 'limit' );
 				if ( $limit !== null ) {
 					$params['limit'] = $limit;
 				}
@@ -430,14 +427,14 @@ class GetReport extends MaintenanceBase {
 	private function flattenDonationForAuditCsv( Deposit $depositObject, Donation $donationObject, array $donation, float $exchangeRate ): array {
 		$properties = $donation['properties'] ?? [];
 		$settledCurrency = $depositObject->getCurrency();
-		$paymentMethod = $this->getPaymentMethod( $depositObject, $donation );
+		$paymentMethod = $this->getPaymentMethod( $depositObject, $donationObject );
 
 		return [
 			'gateway' => 'Chariot Disbursements',
 			'audit_file_gateway' => 'Chariot Disbursements',
 			'backend_processor' => $donationObject->getPlatformName(),
 			'gateway_txn_id' => $donation['id'],
-			'backend_processor_txn_id' => (string)$donation['external_id'],
+			'backend_processor_txn_id' => $donationObject->getBackendProcessorTxnId(),
 			'banking_institution' => $donationObject->getBankingInstitution(),
 			'donor_advised_fund_name' => $donationObject->getDonorAdvisedFundName(),
 			'original_currency' => $donationObject->getOriginalCurrency(),
@@ -468,7 +465,7 @@ class GetReport extends MaintenanceBase {
 			'is_daf' => $donationObject->isDonorAdvisedFundGrant(),
 			'is_matching_gift' => $donationObject->isMatchingGift(),
 			'matching_gift_organization' => $donationObject->getMatchingGiftOrganization(),
-			'is_endowment' => !empty( $properties['Endowment flag?'] ) && $properties['Endowment flag?'] === 'Y',
+			'manual_review' => $properties['Flag'] ?? '',
 			'first_name' => $donationObject->getFirstName(),
 			'last_name' => $donationObject->getLastName(),
 			'full_name' => $donationObject->getFullName(),
@@ -658,13 +655,15 @@ class GetReport extends MaintenanceBase {
 			if ( $type === 'deposit' ) {
 				if ( !isset( $this->allUnknownDepositPaths[$path] ) ) {
 					$this->allUnknownDepositPaths[$path] = $unknown;
+				} else {
+					$this->allUnknownDepositPaths[$path]['count'] += $unknown['count'];
 				}
-				$this->allUnknownDepositPaths[$path] += $unknown['count'];
 			} elseif ( $type === 'donation' ) {
 				if ( !isset( $this->allUnknownDonationPaths[$path] ) ) {
 					$this->allUnknownDonationPaths[$path] = $unknown;
+				} else {
+					$this->allUnknownDonationPaths[$path]['count'] += $unknown['count'];
 				}
-				$this->allUnknownDonationPaths[$path]['count'] += $unknown['count'];
 			}
 		}
 	}
@@ -678,7 +677,7 @@ class GetReport extends MaintenanceBase {
 	 */
 	private function collectPagedResults( callable $loadPage, string ...$tokenKeys ): array {
 		$results = [];
-		$maxPages = $this->getMaxPagesOption();
+		$maxPages = $this->getPositiveIntOption( 'max-pages' );
 		$token = null;
 		$nextTokens = [];
 		$page = 0;
@@ -740,72 +739,8 @@ class GetReport extends MaintenanceBase {
 		return array_values( array_unique( $requested ) );
 	}
 
-	/**
-	 * Get the optional list-call limit.
-	 *
-	 * @return int|null
-	 */
-	private function getLimitOption(): ?int {
-		$value = trim( (string)$this->getOption( 'limit' ) );
-		if ( $value === '' ) {
-			return null;
-		}
-
-		$intValue = (int)$value;
-		return $intValue > 0 ? $intValue : null;
-	}
-
-	/**
-	 * Get the optional max-pages value.
-	 *
-	 * @return int|null
-	 */
-	private function getMaxPagesOption(): ?int {
-		$value = trim( (string)$this->getOption( 'max-pages' ) );
-		if ( $value === '' ) {
-			return null;
-		}
-
-		$intValue = (int)$value;
-		return $intValue > 0 ? $intValue : null;
-	}
-
-	/**
-	 * Get a normalized UTC ISO-8601 timestamp for a CLI option.
-	 *
-	 * @param string $name
-	 * @return string|null
-	 */
-	private function getNormalizedDateOption( string $name ): ?string {
-		$value = trim( (string)$this->getOption( $name ) );
-		if ( $value === '' ) {
-			return null;
-		}
-
-		$timestamp = strtotime( $value );
-		if ( $timestamp === false ) {
-			throw new \InvalidArgumentException( sprintf( 'Invalid date for --%s: %s', $name, $value ) );
-		}
-
-		return gmdate( 'Y-m-d\TH:i:s\Z', $timestamp );
-	}
-
-	/**
-	 * Require an option value.
-	 *
-	 * @param string $name
-	 * @return string
-	 */
-	private function requireOption( string $name ): string {
-		$value = trim( (string)$this->getOption( $name ) );
-		if ( $value === '' ) {
-			throw new \InvalidArgumentException( sprintf( 'Missing required --%s option', $name ) );
-		}
-		return $value;
-	}
-
-	public function getPaymentMethod( Deposit $deposit, array $donation = [] ): string {
-		if ( !empty( $donation['dafpay_url'] ) ) {
+	public function getPaymentMethod( Deposit $deposit, ?Donation $donationObject = null ): string {
+		if ( $donationObject && $donationObject->getDafPayUrl() ) {
 			return 'DAFpay';
 		}
 		return $deposit->getPaymentMethod();
@@ -906,15 +841,6 @@ class GetReport extends MaintenanceBase {
 				$depositObject->getDeposit()
 			);
 		}
-	}
-
-	/**
-	 * @return array|mixed
-	 * @throws \Psr\Container\ContainerExceptionInterface
-	 * @throws \Psr\Container\NotFoundExceptionInterface
-	 */
-	private function getIncomingPath(): mixed {
-		return $this->config->get( 'reports_incoming_path' );
 	}
 
 	private function auditFileExists( Deposit $depositObject ): bool {

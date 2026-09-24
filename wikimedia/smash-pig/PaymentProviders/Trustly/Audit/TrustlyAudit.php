@@ -96,6 +96,12 @@ class TrustlyAudit implements AuditParser {
 				$row = array_combine( $columnHeaders, $line );
 				$this->rows[] = $row;
 			} elseif ( $recordType === 'I' ) {
+				// transaction_id identifies one capture (and its own reversal, if any -
+				// reversal rows repeat the same transaction_id with a negated amount).
+				// original_transaction_id is the auth id, reused across every capture in a
+				// recurring series - it is not unique per donation. Real example: series
+				// original_transaction_id=8151961049 has two independently-reversed captures,
+				// transaction_id 8173746620 (R10) and 8192199701 (R08).
 				$columnHeaders = [
 					'record_type',
 					'transaction_id',

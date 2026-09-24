@@ -302,6 +302,129 @@ abstract class MaintenanceBase {
 	}
 
 	/**
+	 * Use a CLI option if one was given, otherwise fall back to a value from
+	 * the current provider's configuration (the config node set via
+	 * --config-node, e.g. 'chariot', 'stripe', 'overflow'), otherwise
+	 * $default.
+	 *
+	 * Unlike getOptionOrConfig(), which reads the global configuration, this
+	 * reads provider configuration - the tree most maintenance scripts for a
+	 * specific payment provider actually need (e.g. reports_incoming_path).
+	 *
+	 * @param string $optName Name of the CLI option to check first
+	 * @param string $configPath Provider config node to fall back to
+	 * @param mixed $default Value to use if neither option nor config is set
+	 *
+	 * @return mixed
+	 */
+	protected function chooseOptionOrConfig( string $optName, string $configPath, $default = null ) {
+		$opt = $this->getOption( $optName );
+		if ( $opt !== null && $opt !== '' && $opt !== false ) {
+			return $opt;
+		}
+		$config = Context::get()->getProviderConfiguration();
+		if ( $config->has( $configPath ) ) {
+			$value = $config->get( $configPath );
+			if ( $value !== null && $value !== '' ) {
+				return $value;
+			}
+		}
+		return $default;
+	}
+
+	/**
+	 * Use --path if given, otherwise fall back to the reports_incoming_path
+	 * config value. Scripts that write audit files to an incoming directory
+	 * (Chariot/Overflow's GetReport, and others in future) share this rather
+	 * than each maintaining their own copy - they just need to addOption()
+	 * 'path' themselves, for their own --help description.
+	 *
+	 * @return string
+	 * @throws \InvalidArgumentException if neither --path nor config is set
+	 */
+	protected function getIncomingPath(): string {
+		$path = trim( (string)$this->chooseOptionOrConfig( 'path', 'reports_incoming_path', '' ) );
+		if ( $path === '' ) {
+			throw new \InvalidArgumentException(
+				'--path is required (or set reports_incoming_path in config).'
+			);
+		}
+		return $path;
+	}
+
+	/**
+	 * Get a positive integer CLI option (e.g. --limit, --max-pages), or null
+	 * if it wasn't given or isn't a positive integer.
+	 *
+	 * @param string $name
+	 *
+	 * @return int|null
+	 */
+	protected function getPositiveIntOption( string $name ): ?int {
+		$value = trim( (string)$this->getOption( $name ) );
+		if ( $value === '' ) {
+			return null;
+		}
+		$intValue = (int)$value;
+		return $intValue > 0 ? $intValue : null;
+	}
+
+	/**
+	 * Get a normalized UTC ISO-8601 timestamp for a CLI option that accepts
+	 * any strtotime()-parseable date/time, or null if it wasn't given.
+	 *
+	 * @param string $name
+	 *
+	 * @return string|null
+	 * @throws \InvalidArgumentException if the value isn't a parseable date
+	 */
+	protected function getNormalizedDateOption( string $name ): ?string {
+		$value = trim( (string)$this->getOption( $name ) );
+		if ( $value === '' ) {
+			return null;
+		}
+		$timestamp = strtotime( $value );
+		if ( $timestamp === false ) {
+			throw new \InvalidArgumentException( sprintf( 'Invalid date for --%s: %s', $name, $value ) );
+		}
+		return gmdate( 'Y-m-d\TH:i:s\Z', $timestamp );
+	}
+
+	/**
+	 * Require a CLI option to be set, throwing if it's missing/empty.
+	 *
+	 * @param string $name
+	 *
+	 * @return string
+	 * @throws \InvalidArgumentException if the option is missing/empty
+	 */
+	protected function requireOption( string $name ): string {
+		$value = trim( (string)$this->getOption( $name ) );
+		if ( $value === '' ) {
+			throw new \InvalidArgumentException( sprintf( 'Missing required --%s option', $name ) );
+		}
+		return $value;
+	}
+
+	/**
+	 * Coerce a CLI option or config value to a boolean, accepting the usual
+	 * truthy strings ('1', 'true', 'yes', 'y', 'on') case-insensitively.
+	 *
+	 * @param mixed $value
+	 *
+	 * @return bool
+	 */
+	protected function asBool( mixed $value ): bool {
+		if ( is_bool( $value ) ) {
+			return $value;
+		}
+		if ( $value === null ) {
+			return false;
+		}
+		return in_array( strtolower( trim( (string)$value ) ), [ '1', 'true', 'yes', 'y', 'on' ], true );
+	}
+
+	/**
 	 * Adds a numbered argument that can be parsed out of the command line string.
 	 *
 	 * @param string $arg Name of the argument, like 'start'

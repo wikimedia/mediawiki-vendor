@@ -1,0 +1,103 @@
+{
+  "gateway_account": "Foundation",
+  "deposit": {
+    "id": "6a8508f7cdc7f0c4c50d9182",
+    "status": "PAID",
+    "type": "AUTOMATED",
+    "amountInCents": 715874,
+    "arrivalAt": "2026-08-18T05:00:06.000Z",
+    "startingBalanceInCents": 0,
+    "endingBalanceInCents": 0,
+    "bankName": "321171184 CHK",
+    "bankLast4": "9753",
+    "statementDescriptor": "OVRFLW-S322222226JMLQ2",
+    "paymentMethodType": [
+      "brokerage_account"
+    ],
+    "name": null,
+    "reconciledAt": null,
+    "createdAt": "2026-08-19T01:37:59.787Z",
+    "updatedAt": "2026-08-19T01:37:59.869Z",
+    "lineItems": [
+      {
+        "type": "transfer",
+        "grossValueInCents": 715874,
+        "referenceId": "tr_ad_6a7c9a6e7027ca16774e6f76",
+        "description": "tr_ad_6a7c9a6e7027ca16774e6f76"
+      }
+    ]
+  },
+  "summary": {
+    "data": {
+      "contributions": {
+        "count": 1,
+        "feesInCents": 7231,
+        "grossInCents": 723105,
+        "totalInCents": 715874
+      },
+      "refunds": [],
+      "chargebacks": {
+        "count": 0,
+        "feesInCents": 0,
+        "grossInCents": 0,
+        "totalInCents": 0
+      },
+      "adjustments": {
+        "count": 0,
+        "feesInCents": 0,
+        "grossInCents": 0,
+        "totalInCents": 0
+      }
+    }
+  },
+  "contributions": [
+    {
+      "lineItem": {
+        "type": "transfer",
+        "grossValueInCents": 715874,
+        "referenceId": "tr_ad_6a7c9a6e7027ca16774e6f76",
+        "description": "tr_ad_6a7c9a6e7027ca16774e6f76"
+      },
+      "contribution": {
+        "id": "6a7c9a6e7027ca16774e6f76",
+        "createdAt": "2025-02-14T17:07:23.000Z",
+        "updatedAt": "2026-08-19T01:37:59.817Z",
+        "type": "STOCK",
+        "amount": 7231.05,
+        "donorCoveredFees": false,
+        "contributionDate": "2025-02-14T17:07:23.000Z",
+        "status": "PAID_OUT",
+        "paymentMethod": {
+          "logoUrl": "https://cdn.overflow.co/payment-assets/fallback-bank-v2.svg",
+          "type": "Stock"
+        },
+        "metadata": null,
+        "anonymous": false,
+        "locationId": "689f763dd92d63b72e999a80",
+        "donor": {
+          "id": "672bc50de8518d94c6547352",
+          "firstName": "Jane",
+          "lastName": "Mouse",
+          "email": "jane.mouse@example.org",
+          "phone": "+15555550123",
+          "address": {
+            "city": "Minneapolis",
+            "country": "US",
+            "line1": "123 Example Street",
+            "state": "MN",
+            "zip": "55404"
+          }
+        },
+        "contributionReceivedAt": "2025-02-18T20:00:00.000Z",
+        "stocks": {
+          "quantity": 1,
+          "tickers": [
+            "TSLA"
+          ]
+        },
+        "givingLinkId": null,
+        "pledgeId": null
+      }
+    }
+  ]
+}

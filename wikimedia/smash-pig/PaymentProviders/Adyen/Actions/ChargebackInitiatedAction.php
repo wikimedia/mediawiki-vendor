@@ -23,7 +23,7 @@ class ChargebackInitiatedAction extends BaseRefundAction implements IListenerMes
 						"Adding donation modify for {$msg->currency} {$msg->amount} with psp reference {$msg->pspReference} and originalReference {$msg->parentPspReference}."
 					);
 					$queueMessage = $this->normalizeACHMessageForQueue( $msg );
-					QueueWrapper::push( 'donations-modify', $queueMessage );
+					QueueWrapper::push( 'donations', $queueMessage );
 				} else {
 					$tl->info(
 						"Adding chargeback for {$msg->currency} {$msg->amount} with psp reference {$msg->pspReference} and originalReference {$msg->parentPspReference}."

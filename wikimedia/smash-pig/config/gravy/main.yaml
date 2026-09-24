@@ -166,6 +166,10 @@ error-tracker:
       # List of error codes to ignore from tracking and alerting
       ignore_list:
         - 'unwanted_payment_status'
+      # List of error codes to ignore from tracking and alerting on recurring charges only
+      recurring_ignore_list:
+        - 'invalid_payment_method'
+        - 'expired_payment_method'
 
 notifications:
   fraud-alerts:

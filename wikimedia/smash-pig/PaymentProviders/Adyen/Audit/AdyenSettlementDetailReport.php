@@ -89,7 +89,7 @@ class AdyenSettlementDetailReport extends AdyenAudit {
 		}
 		$reference = str_replace( ' ', '-', $row['Modification Reference'] ?: ( $row['Type'] . '-' . $row['Booking Date'] ) );
 
-		if ( $type === 'misccosts' || $type === 'depositcorrection' ) {
+		if ( $type === 'misccosts' || $type === 'depositcorrection' || $type === 'manualcorrected' ) {
 			$reference .= '-' . $amount;
 		}
 		$prefix = in_array( $type, $this->adjustmentTypes, true ) ? 'adjustment-' . $row['Batch Number'] . '-' : 'fee-';
@@ -97,9 +97,8 @@ class AdyenSettlementDetailReport extends AdyenAudit {
 			'settled_date' => UtcDate::getUtcTimestamp( $row[$this->date], $row['TimeZone'] ),
 			'date' => UtcDate::getUtcTimestamp( $row[$this->date], $row['TimeZone'] ),
 			'gateway' => 'adyen',
-			'type' => $type === 'depositcorrection' ? 'adjustment' : 'fee',
+			'type' => in_array( $type, [ 'depositcorrection', 'manualcorrected' ], true ) ? 'adjustment' : 'fee',
 			'gateway_txn_id' => $prefix . $reference,
-			'gateway_account' => $row['Merchant Account'],
 			'invoice_id' => $row['Merchant Reference'],
 			'settlement_batch_reference' => $row['Batch Number'] ?? null,
 			// In this context the total amount is what is paid by the donor - ie nothing.
@@ -120,7 +119,6 @@ class AdyenSettlementDetailReport extends AdyenAudit {
 			'audit_file_gateway' => 'adyen',
 			'type' => 'payout',
 			'gateway_txn_id' => $row['Modification Reference'],
-			'gateway_account' => $row['Merchant Account'],
 			'invoice_id' => $row['Merchant Reference'],
 			'settlement_batch_reference' => $row['Batch Number'] ?? null,
 			'settled_total_amount' => $row['Net Debit (NC)'],

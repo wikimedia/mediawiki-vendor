@@ -10,26 +10,37 @@ class Base62Helper {
 	 */
 	public static function toUuid( string $s ): string {
 		// 1) strict decode
-		$hex = self::toHex( $s );
-		$hex = str_pad( $hex, 32, '0', STR_PAD_LEFT );
-		$bytes = hex2bin( $hex );
-		if ( self::isRfc4122Variant( $bytes ) && self::isVersion4or8( $bytes ) ) {
+		$hex = str_pad( self::toHex( $s ), 32, '0', STR_PAD_LEFT );
+		if ( self::isValidHexUuid( $hex ) ) {
 			return self::hexToUuid( $hex );
 		}
 
 		// 2) lenient repair: drop exactly one leading non-zero digit (after any zeros) and retry
 		$repaired = self::dropFirstNonZeroDigit( $s );
 		if ( $repaired !== null ) {
-			$hex2 = self::toHex( $repaired );
-			$hex2 = str_pad( $hex2, 32, '0', STR_PAD_LEFT );
-			$bytes2 = hex2bin( $hex2 );
-			if ( self::isRfc4122Variant( $bytes2 ) && self::isVersion4or8( $bytes2 ) ) {
+			$hex2 = str_pad( self::toHex( $repaired ), 32, '0', STR_PAD_LEFT );
+			if ( self::isValidHexUuid( $hex2 ) ) {
 				return self::hexToUuid( $hex2 );
 			}
 		}
 
 		// 3) fall back to strict result
 		return self::hexToUuid( $hex );
+	}
+
+	/**
+	 * Is this a syntactically valid 32-char hex representation of an RFC 4122
+	 * v4/v8 UUID - i.e. exactly 16 bytes, with the variant and version bits
+	 * set correctly? Used to check whether a decoded value is actually
+	 * plausible as a UUID, rather than e.g. wildly too long (as happens when
+	 * a non-UUID reference is mistakenly run through toHex()/toUuid()).
+	 */
+	public static function isValidHexUuid( string $hex ): bool {
+		if ( !preg_match( '/^[0-9a-f]{32}$/i', $hex ) ) {
+			return false;
+		}
+		$bytes = hex2bin( strtolower( $hex ) );
+		return self::isRfc4122Variant( $bytes ) && self::isVersion4or8( $bytes );
 	}
 
 	private const BASE62_UUID_LENGTH = 22;
@@ -49,8 +60,13 @@ class Base62Helper {
 	/**
 	 * Convert Base62 (alphabet 0-9A-Za-z) to lowercase hex string (no 0x, no dashes).
 	 * Pure-PHP (no GMP/BCMath): repeated division base conversion.
+	 *
+	 * Unlike toUuid(), this doesn't pad/truncate to 16 bytes or validate the
+	 * result - callers that want to know whether a base62 string decodes to
+	 * a plausible UUID should pad the result to 32 chars and check it with
+	 * isValidHexUuid().
 	 */
-	private static function toHex( string $s ): string {
+	public static function toHex( string $s ): string {
 		$alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 		$fromBase = 62;
 		$toBase   = 16;

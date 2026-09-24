@@ -232,7 +232,7 @@ class SetProperty extends MaintenanceBase {
 		$result = $this->api->listDonations(
 			array_filter( [
 				'deposit_id' => $depositId,
-				'limit' => $this->getLimitOption(),
+				'limit' => $this->getPositiveIntOption( 'limit' ),
 			] )
 		);
 
@@ -250,23 +250,6 @@ class SetProperty extends MaintenanceBase {
 		return $donationIds;
 	}
 
-	private function getLimitOption(): ?int {
-		$value = trim( (string)$this->getOption( 'limit' ) );
-		if ( $value === '' ) {
-			return null;
-		}
-
-		$intValue = (int)$value;
-		return $intValue > 0 ? $intValue : null;
-	}
-
-	private function requireOption( string $name ): string {
-		$value = trim( (string)$this->getOption( $name ) );
-		if ( $value === '' ) {
-			throw new \InvalidArgumentException( sprintf( 'Missing required --%s option', $name ) );
-		}
-		return $value;
-	}
 }
 
 $maintClass = SetProperty::class;

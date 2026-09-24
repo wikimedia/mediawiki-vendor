@@ -20,7 +20,6 @@ abstract class AdyenAudit implements AuditParser {
 
 	protected static $ignoredTypes = [
 		'matchedstatement',
-		'manualcorrected',
 		'authorisationschemefee',
 		'bankinstructionreturned',
 		'internalcompanypayout',
@@ -118,7 +117,7 @@ abstract class AdyenAudit implements AuditParser {
 		$row = array_combine( $this->columnHeaders, $line );
 		$type = strtolower( $row[$this->type] );
 		$this->feeTypes = [ 'fee', 'invoicededuction', 'misccosts' ];
-		$this->adjustmentTypes = [ 'balancetransfer', 'depositcorrection' ];
+		$this->adjustmentTypes = [ 'balancetransfer', 'depositcorrection', 'manualcorrected' ];
 		if ( in_array( $type, $this->feeTypes, true ) || in_array( $type, $this->adjustmentTypes, true ) ) {
 			$this->fileData[] = $this->getAccountLevelTransaction( $row, $rowNumber );
 			return;
@@ -252,7 +251,6 @@ abstract class AdyenAudit implements AuditParser {
 		$msg = [
 			'gateway' => $this->isOrchestratorMerchantReference( $row ) ? 'gravy' : 'adyen',
 			'audit_file_gateway' => 'adyen',
-			'gateway_account' => $row['Merchant Account'],
 			'invoice_id' => $this->getInvoiceId( $row ),
 			'gateway_txn_id' => $this->getGatewayTransactionId( $row ),
 			'settlement_batch_reference' => $row['Batch Number'] ?? $row['Payable Batch'] ?? null,

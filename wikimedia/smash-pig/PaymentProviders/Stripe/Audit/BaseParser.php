@@ -4,6 +4,7 @@ namespace SmashPig\PaymentProviders\Stripe\Audit;
 
 use SmashPig\Core\Helpers\Base62Helper;
 use SmashPig\Core\UtcDate;
+use SmashPig\PaymentProviders\Stripe\ReferenceData;
 
 // Shared parser logic for Stripe settlement and activity files.
 // Stripe field references:
@@ -84,8 +85,8 @@ abstract class BaseParser {
 			'order_id' => $this->getOrderId(),
 			'contribution_tracking_id' => $this->getContributionTrackingId(),
 			'backend_processor_txn_id' => $this->getBackendProcessorTxnId(),
-			'payment_method' => $this->row['payment_method_type'] ?: null,
-		] + $this->getOriginalCurrencyFields() + $this->getSettlementFields() + $this->getGravyFields();
+			'payment_method' => $this->getPaymentMethod(),
+		] + $this->getOriginalCurrencyFields() + $this->getSettlementFields() + $this->getGravyFields() + $this->getContactFields();
 
 		if ( $type === 'refund' || $type === 'chargeback' ) {
 			$msg['gateway_parent_id'] = $this->row['payment_intent_id'];
@@ -106,6 +107,72 @@ abstract class BaseParser {
 	 */
 	protected function getGravyFields(): array {
 		return [ 'payment_orchestrator_reconciliation_id' => $this->getPaymentOrchestratorReconciliationID() ];
+	}
+
+	/**
+	 * Decode Stripe's payment_method_type via ReferenceData, matching the
+	 * pattern used by the other gateways' ReferenceData classes (e.g.
+	 * PaymentProviders/Adyen/ReferenceData.php::decodePaymentMethod()).
+	 *
+	 * @return string|null
+	 */
+	protected function getPaymentMethod(): ?string {
+		$paymentMethodType = (string)( $this->row['payment_method_type'] ?? '' );
+		if ( $paymentMethodType === '' ) {
+			return null;
+		}
+		[ $paymentMethod ] = ReferenceData::decodePaymentMethod( $paymentMethodType );
+		return $paymentMethod;
+	}
+
+	/**
+	 * Bubble up the customer_* columns added by GetReport.php's
+	 * --include-customer-data option, if present in the CSV. Older audit
+	 * files, and report types the flag doesn't apply to, won't have these
+	 * columns, so we only add the normalized fields when the source data
+	 * is there.
+	 *
+	 * @return array
+	 */
+	protected function getContactFields(): array {
+		if ( !isset( $this->row['customer_name'] ) && !isset( $this->row['customer_email'] ) ) {
+			return [];
+		}
+
+		return array_filter( [
+			'full_name' => (string)$this->row['customer_name'],
+			'email' => (string)( $this->row['customer_email'] ?? '' ),
+			'phone' => (string)( $this->row['customer_phone'] ?? '' ),
+			'street_address' => (string)( $this->row['customer_address_line1'] ?? '' ),
+			'supplemental_address_1' => (string)( $this->row['customer_address_line2'] ?? '' ),
+			'city' => (string)( $this->row['customer_address_city'] ?? '' ),
+			'state_province' => (string)( $this->row['customer_address_state'] ?? '' ),
+			'postal_code' => (string)( $this->row['customer_address_postal_code'] ?? '' ),
+			'country' => (string)( $this->row['customer_address_country'] ?? '' ),
+		] + $this->getOrganizationFields() );
+	}
+
+	/**
+	 * Give Lively's "Giving Basket" feature aggregates many small gifts into
+	 * a single Stripe Connect transfer per charity (source_id prefixed py_,
+	 * see GetReport.php's getSourceData). Those transfers have no per-donor
+	 * billing details at all, so instead we surface the sending
+	 * organization's name for the CRM layer to link the gift to a known
+	 * organization contact rather than creating a blank individual.
+	 *
+	 * Note: "Give Lively" alone is not a safe signal - ordinary card
+	 * donations processed through their platform also carry descriptions
+	 * like "Give Lively / Smart Donations" and do have full billing
+	 * details, so only the specific "Giving Basket" phrase is matched.
+	 *
+	 * @return array
+	 */
+	protected function getOrganizationFields(): array {
+		$description = (string)( $this->row['description'] ?? '' );
+		if ( stripos( $description, 'Giving Basket' ) === false ) {
+			return [];
+		}
+		return [ 'organization_name' => 'Give Lively' ];
 	}
 
 	/**

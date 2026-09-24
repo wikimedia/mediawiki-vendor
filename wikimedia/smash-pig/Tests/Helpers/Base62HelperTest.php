@@ -41,6 +41,29 @@ class Base62HelperTest extends BaseSmashPigUnitTestCase {
 		$this->assertSame( $canonical1, $canonical2 );
 	}
 
+	/**
+	 * @dataProvider hexUuidExamples
+	 */
+	public function testIsValidHexUuid( string $hex, bool $expected ) {
+		$this->assertSame( $expected, Base62Helper::isValidHexUuid( $hex ) );
+	}
+
+	public function hexUuidExamples(): array {
+		return [
+			'valid v4' => [ '3f9c958cee574121a79e408946b27077', true ],
+			'valid v8' => [ '00000000000080008000000000000000', true ],
+			'invalid version (v1, not 4 or 8)' => [ '00000000000010008000000000000000', false ],
+			'invalid variant (top bits not 10xxxxxx)' => [ '00000000000040000000000000000000', false ],
+			'too short (31 chars)' => [ '3f9c958cee574121a79e408946b2707', false ],
+			'too long (e.g. a decoded 64-char hash)' => [
+				str_repeat( 'a1cf6d99d2fe92487ed8e89428fbb44', 3 ),
+				false,
+			],
+			'non-hex characters' => [ 'zf9c958cee574121a79e408946b27077', false ],
+			'empty string' => [ '', false ],
+		];
+	}
+
 	public function uuidExamples(): array {
 		return [
 			[ '3f9c958c-ee57-4121-a79e-408946b27077' ],

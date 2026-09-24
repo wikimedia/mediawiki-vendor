@@ -170,13 +170,6 @@ data-store:
         <<: *REDIS
         queue: donations
 
-  donations-modify:
-    class: PHPQueue\Backend\Predis
-    constructor-parameters:
-      -
-        <<: *REDIS
-        queue: donations-modify
-
   # A special queue for recurring donations via India's UPI system,
   # which need pre-processing due to local regulations.
   upi-donations:

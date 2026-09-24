@@ -2,7 +2,6 @@
 
 namespace SmashPig\PaymentProviders\Stripe\Maintenance;
 
-use SmashPig\Core\Context;
 use SmashPig\Core\Logging\Logger;
 use SmashPig\Maintenance\MaintenanceBase;
 use SmashPig\PaymentProviders\Stripe\Api;
@@ -94,6 +93,28 @@ class GetReport extends MaintenanceBase {
 		'trace_id_status',
 	];
 
+	// Additional columns appended to API_SETTLEMENT_COLUMNS, and to a
+	// settlement-report CSV after download, when --include-customer-data
+	// is set. Sourced from the Charge object's billing_details (falling
+	// back to receipt_email for email). For settlement-api this is
+	// already fetched per-row for
+	// card_brand/card_country/card_funding, so it adds no extra API calls.
+	// For settlement-report the Stripe-generated CSV has no per-row Charge
+	// lookups otherwise, so enabling this flag adds one Charge/Refund/
+	// Dispute API call per unique source_id in the report.
+	// Docs: https://docs.stripe.com/api/charges/object
+	private const CUSTOMER_DATA_COLUMNS = [
+		'customer_name',
+		'customer_email',
+		'customer_phone',
+		'customer_address_line1',
+		'customer_address_line2',
+		'customer_address_city',
+		'customer_address_state',
+		'customer_address_postal_code',
+		'customer_address_country',
+	];
+
 	// Column order for payments activity exports.
 	// Docs: https://docs.stripe.com/reports/report-types/balance-change-from-activity
 	private const PAYMENTS_COLUMNS = [
@@ -144,8 +165,6 @@ class GetReport extends MaintenanceBase {
 
 	private array $sourceCache = [];
 
-	private \SmashPig\Core\ProviderConfiguration $config;
-
 	public function __construct() {
 		parent::__construct();
 		$this->addOption( 'payout-id', 'Stripe payout id for a single settlement file', '', 'p' );
@@ -162,11 +181,11 @@ class GetReport extends MaintenanceBase {
 		$this->addOption( 'poll-interval', 'Seconds between report status checks', 10, 'i' );
 		$this->addOption( 'poll-timeout', 'Maximum seconds to wait for Stripe to finish the report', 1800, 'w' );
 		$this->addFlag( 'compress-file', 'Ask Stripe to ZIP the report file', 'z' );
+		$this->addFlag( 'include-customer-data', 'Include billing name/email/phone/address columns in settlement-api and settlement-report output, pulled from the Charge object.', 'c' );
 		$this->desiredOptions['config-node']['default'] = 'stripe';
 	}
 
 	public function execute(): void {
-		$this->config = Context::get()->getProviderConfiguration();
 		$path = rtrim( $this->getOutputPath(), '/' );
 		if ( !is_dir( $path ) ) {
 			throw new \RuntimeException( 'Output directory does not exist: ' . $path );
@@ -237,7 +256,7 @@ class GetReport extends MaintenanceBase {
 	}
 
 	private function getRequestedReportTypes(): array {
-		$value = trim( (string)$this->chooseOptionOrConfig( 'report-type', [ 'default_report_type' ], self::TYPE_SETTLEMENT_REPORT ) );
+		$value = trim( (string)$this->chooseOptionOrConfig( 'report-type', 'default_report_type', self::TYPE_SETTLEMENT_REPORT ) );
 		$requested = array_values( array_filter( array_map( 'trim', explode( ',', $value ) ) ) );
 		if ( !$requested ) {
 			return [ self::TYPE_SETTLEMENT_REPORT ];
@@ -320,6 +339,9 @@ class GetReport extends MaintenanceBase {
 			throw new \RuntimeException( 'Stripe returned no download URL for the finished report' );
 		}
 		$fileContents = $api->downloadFile( $downloadUrl );
+		if ( $this->shouldIncludeCustomerData() ) {
+			$fileContents = $this->appendCustomerDataColumns( $api, $fileContents );
+		}
 		if ( $this->shouldAddPayoutRow() ) {
 			$fileContents = $this->appendPayoutRow( $fileContents, $payout );
 		}
@@ -346,6 +368,7 @@ class GetReport extends MaintenanceBase {
 	private function downloadApiSettlementForPayout( Api $api, string $path, array $payout ): void {
 		$payoutId = $this->requirePayoutId( $payout );
 		Logger::info( 'Creating Stripe API settlement CSV for payout ' . $payoutId );
+		$columns = $this->getApiSettlementColumns();
 		$rows = [];
 		$startingAfter = null;
 		do {
@@ -362,7 +385,7 @@ class GetReport extends MaintenanceBase {
 		} while ( $startingAfter );
 
 		if ( $this->shouldAddPayoutRow() ) {
-			$rows[] = $this->buildSyntheticPayoutRow( $payout, self::API_SETTLEMENT_COLUMNS );
+			$rows[] = $this->buildSyntheticPayoutRow( $payout, $columns );
 		}
 
 		$filename = $this->buildPayoutFilename( self::TYPE_SETTLEMENT_API, $payout );
@@ -374,8 +397,22 @@ class GetReport extends MaintenanceBase {
 		$this->writeFile(
 			$path,
 			$filename,
-			$this->rowsToCsv( self::API_SETTLEMENT_COLUMNS, $rows )
+			$this->rowsToCsv( $columns, $rows )
 		);
+	}
+
+	/**
+	 * @return string[]
+	 */
+	private function getApiSettlementColumns(): array {
+		if ( $this->shouldIncludeCustomerData() ) {
+			return array_merge( self::API_SETTLEMENT_COLUMNS, self::CUSTOMER_DATA_COLUMNS );
+		}
+		return self::API_SETTLEMENT_COLUMNS;
+	}
+
+	private function shouldIncludeCustomerData(): bool {
+		return $this->asBool( $this->chooseOptionOrConfig( 'include-customer-data', 'include_customer_data', false ) );
 	}
 
 	private function downloadIntervalReport(
@@ -431,8 +468,7 @@ class GetReport extends MaintenanceBase {
 		if ( $paymentMethodType === '' && isset( $sourceData['payment_method_details']['card'] ) ) {
 			$paymentMethodType = 'card';
 		}
-
-		return [
+		return array_merge( [
 			'automatic_payout_effective_at' => $this->formatUtcTimestamp( $payout['arrival_date'] ?? null ),
 			'automatic_payout_id' => $payout['id'] ?? '',
 			'available_on' => $this->formatUtcTimestamp( $transaction['available_on'] ?? null ),
@@ -454,7 +490,34 @@ class GetReport extends MaintenanceBase {
 			'source_id' => $sourceId,
 			'trace_id_status' => (string)( $payout['trace_id_status'] ?? '' ),
 			'gateway_account' => $this->getGatewayAccount(),
+		], $this->extractCustomerData( $sourceData ) );
+	}
+
+	/**
+	 * @return array<string,string> Keyed by the CUSTOMER_DATA_COLUMNS names.
+	 */
+	private function extractCustomerData( array $sourceData ): array {
+		$billingDetails = is_array( $sourceData['billing_details'] ?? null ) ? $sourceData['billing_details'] : [];
+		$billingAddress = is_array( $billingDetails['address'] ?? null ) ? $billingDetails['address'] : [];
+
+		return [
+			'customer_name' => (string)( $billingDetails['name'] ?? '' ),
+			'customer_email' => $this->firstNonEmptyString( $billingDetails['email'] ?? null, $sourceData['receipt_email'] ?? null ),
+			'customer_phone' => (string)( $billingDetails['phone'] ?? '' ),
+			'customer_address_line1' => (string)( $billingAddress['line1'] ?? '' ),
+			'customer_address_line2' => (string)( $billingAddress['line2'] ?? '' ),
+			'customer_address_city' => (string)( $billingAddress['city'] ?? '' ),
+			'customer_address_state' => (string)( $billingAddress['state'] ?? '' ),
+			'customer_address_postal_code' => (string)( $billingAddress['postal_code'] ?? '' ),
+			'customer_address_country' => (string)( $billingAddress['country'] ?? '' ),
 		];
+	}
+
+	private function firstNonEmptyString( ?string $first, ?string $second ): string {
+		if ( $first !== null && trim( $first ) !== '' ) {
+			return $first;
+		}
+		return $second ?? '';
 	}
 
 	private function getSourceData( Api $api, string $sourceId ): array {
@@ -462,7 +525,11 @@ class GetReport extends MaintenanceBase {
 			return $this->sourceCache[$sourceId];
 		}
 
-		if ( str_starts_with( $sourceId, 'ch_' ) ) {
+		// ch_ prefixes card charges; py_ prefixes all other charge types
+		// (e.g. the Stripe-Connect-style transfers Give Lively's "Giving
+		// Basket" feature produces). Both are Charge objects, fetched the
+		// same way. https://docs.stripe.com/api/charges/object
+		if ( str_starts_with( $sourceId, 'ch_' ) || str_starts_with( $sourceId, 'py_' ) ) {
 			$result = $api->getCharge( $sourceId );
 			$this->sourceCache[$sourceId] = $result;
 			return $result;
@@ -477,6 +544,8 @@ class GetReport extends MaintenanceBase {
 				: [];
 
 			$refund['payment_method_details'] = $charge['payment_method_details'] ?? [];
+			$refund['billing_details'] = $charge['billing_details'] ?? [];
+			$refund['receipt_email'] = $charge['receipt_email'] ?? null;
 
 			$this->sourceCache[$sourceId] = $refund;
 			return $refund;
@@ -491,6 +560,8 @@ class GetReport extends MaintenanceBase {
 				: [];
 
 			$dispute['payment_method_details'] = $charge['payment_method_details'] ?? [];
+			$dispute['billing_details'] = $charge['billing_details'] ?? [];
+			$dispute['receipt_email'] = $charge['receipt_email'] ?? null;
 
 			$this->sourceCache[$sourceId] = $dispute;
 			return $dispute;
@@ -501,7 +572,7 @@ class GetReport extends MaintenanceBase {
 	}
 
 	private function deriveChargeId( string $sourceId, array $sourceData ): string {
-		if ( str_starts_with( $sourceId, 'ch_' ) ) {
+		if ( str_starts_with( $sourceId, 'ch_' ) || str_starts_with( $sourceId, 'py_' ) ) {
 			return $sourceId;
 		}
 		if ( is_string( $sourceData['charge'] ?? null ) ) {
@@ -514,7 +585,7 @@ class GetReport extends MaintenanceBase {
 	}
 
 	private function getGatewayAccount(): string {
-		$gatewayAccount = trim( (string)$this->chooseOptionOrConfig( 'gateway-account', [ 'gateway_account' ], '' ) );
+		$gatewayAccount = trim( (string)$this->chooseOptionOrConfig( 'gateway-account', 'gateway_account', '' ) );
 		if ( $gatewayAccount === '' ) {
 			throw new \InvalidArgumentException( '--gateway-account is required.' );
 		}
@@ -522,7 +593,7 @@ class GetReport extends MaintenanceBase {
 	}
 
 	private function shouldWriteEmptyFiles(): bool {
-		return $this->asBool( $this->chooseOptionOrConfig( 'write-empty-files', [ 'write_empty_files' ], false ) );
+		return $this->asBool( $this->chooseOptionOrConfig( 'write-empty-files', 'write_empty_files', false ) );
 	}
 
 	private function hasDataRows( array $rows ): bool {
@@ -554,7 +625,7 @@ class GetReport extends MaintenanceBase {
 	}
 
 	private function shouldAddPayoutRow(): bool {
-		$value = (string)$this->chooseOptionOrConfig( 'add-payout-row', [ 'add_payout_row' ], true );
+		$value = (string)$this->chooseOptionOrConfig( 'add-payout-row', 'add_payout_row', true );
 		return !in_array( strtolower( $value ), [ '0', 'false', 'no', 'off' ], true );
 	}
 
@@ -654,8 +725,51 @@ class GetReport extends MaintenanceBase {
 		return $contents;
 	}
 
+	/**
+	 * Append CUSTOMER_DATA_COLUMNS to a settlement-report CSV downloaded
+	 * from Stripe's Reports API. Unlike settlement-api, that report is
+	 * generated entirely server-side, so the source_id column is used to
+	 * fetch billing details per row via the Charge/Refund/Dispute APIs.
+	 */
+	private function appendCustomerDataColumns( Api $api, string $csvContents ): string {
+		$trimmed = rtrim( $csvContents, "\r\n" );
+		$lines = preg_split( '/\r\n|\n|\r/', $trimmed );
+		if ( !$lines || !isset( $lines[0] ) ) {
+			return $csvContents;
+		}
+
+		$headers = str_getcsv( $lines[0], ',', '"', "\\" );
+		$sourceIdIndex = array_search( 'source_id', $headers, true );
+
+		$handle = fopen( 'php://temp', 'r+' );
+		if ( !$handle ) {
+			throw new \RuntimeException( 'Unable to open temporary stream for customer data columns.' );
+		}
+
+		foreach ( $lines as $index => $line ) {
+			$row = str_getcsv( $line, ',', '"', "\\" );
+			if ( $index === 0 ) {
+				$row = array_merge( $row, self::CUSTOMER_DATA_COLUMNS );
+			} else {
+				$sourceId = $sourceIdIndex !== false ? (string)( $row[$sourceIdIndex] ?? '' ) : '';
+				$sourceData = $sourceId !== '' ? $this->getSourceData( $api, $sourceId ) : [];
+				$customerData = $this->extractCustomerData( $sourceData );
+				$row = array_merge(
+					$row,
+					array_map( static fn ( string $column ) => $customerData[$column] ?? '', self::CUSTOMER_DATA_COLUMNS )
+				);
+			}
+			fputcsv( $handle, $row, ",", '"', "\\" );
+		}
+
+		rewind( $handle );
+		$contents = (string)stream_get_contents( $handle );
+		fclose( $handle );
+		return $contents;
+	}
+
 	private function getOutputPath(): string {
-		$path = $this->chooseOptionOrConfig( 'path', [ 'reports_incoming_path' ], '' );
+		$path = $this->chooseOptionOrConfig( 'path', 'reports_incoming_path', '' );
 		if ( !is_string( $path ) || trim( $path ) === '' ) {
 			throw new \InvalidArgumentException( 'path is required (or set reports_incoming_path in config).' );
 		}
@@ -663,17 +777,17 @@ class GetReport extends MaintenanceBase {
 	}
 
 	private function getEffectiveStartDate(): string {
-		$startDate = trim( (string)$this->chooseOptionOrConfig( 'start-date', [ 'default_report_start_date' ], '' ) );
+		$startDate = trim( (string)$this->chooseOptionOrConfig( 'start-date', 'default_report_start_date', '' ) );
 		return $startDate !== '' ? $startDate : gmdate( 'Y-m-d', strtotime( 'yesterday UTC' ) );
 	}
 
 	private function getEffectiveEndDate(): string {
-		$endDate = trim( (string)$this->chooseOptionOrConfig( 'end-date', [ 'default_report_end_date' ], '' ) );
+		$endDate = trim( (string)$this->chooseOptionOrConfig( 'end-date', 'default_report_end_date', '' ) );
 		return $endDate !== '' ? $endDate : $this->getEffectiveStartDate();
 	}
 
 	private function getEffectiveTimezone(): string {
-		$timezone = trim( (string)$this->chooseOptionOrConfig( 'timezone', [ 'timezone' ], 'UTC' ) );
+		$timezone = trim( (string)$this->chooseOptionOrConfig( 'timezone', 'timezone', 'UTC' ) );
 		return $timezone !== '' ? $timezone : 'UTC';
 	}
 
@@ -688,34 +802,6 @@ class GetReport extends MaintenanceBase {
 			return false;
 		}
 		return $this->asBool( $this->getOption( 'list-payouts', true ) );
-	}
-
-	private function getFromConfig( string $path, mixed $default = null ): mixed {
-		return $this->config->get( $path ) ?: $default;
-	}
-
-	private function chooseOptionOrConfig( string $optName, array $configPaths, mixed $default = null ): mixed {
-		$opt = $this->getOption( $optName );
-		if ( $opt !== null && $opt !== '' && $opt !== false ) {
-			return $opt;
-		}
-		foreach ( $configPaths as $path ) {
-			$value = $this->getFromConfig( $path, null );
-			if ( $value !== null && $value !== '' ) {
-				return $value;
-			}
-		}
-		return $default;
-	}
-
-	private function asBool( mixed $value ): bool {
-		if ( is_bool( $value ) ) {
-			return $value;
-		}
-		if ( $value === null ) {
-			return false;
-		}
-		return in_array( strtolower( trim( (string)$value ) ), [ '1', 'true', 'yes', 'y', 'on' ], true );
 	}
 
 	private function formatAmount( int $amount, string $currency ): string {
@@ -734,8 +820,8 @@ class GetReport extends MaintenanceBase {
 
 	private function waitForCompletion( Api $api, string $reportRunId ): array {
 		Logger::info( 'Waiting for completion of ' . $reportRunId );
-		$pollInterval = max( 1, (int)$this->chooseOptionOrConfig( 'poll-interval', [ 'poll_interval' ], 5 ) );
-		$timeout = max( $pollInterval, (int)$this->chooseOptionOrConfig( 'poll-timeout', [ 'poll_timeout' ], 300 ) );
+		$pollInterval = max( 1, (int)$this->chooseOptionOrConfig( 'poll-interval', 'poll_interval', 5 ) );
+		$timeout = max( $pollInterval, (int)$this->chooseOptionOrConfig( 'poll-timeout', 'poll_timeout', 300 ) );
 		$deadline = time() + $timeout;
 		do {
 			$reportRun = $api->getReportRun( $reportRunId );

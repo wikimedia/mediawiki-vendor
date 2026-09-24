@@ -92,12 +92,24 @@ class DonationsAudit implements AuditParser {
 			'state_province' => $row['state_province'],
 			'postal_code' => $row['postal_code'],
 			'country' => $row['country'],
-			'manual_review' => $row['is_endowment'] ? 'endowment' : false,
+			'manual_review' => $this->getManualReview( $row ),
 			'check_number' => $row['check_number'],
 		];
 		$this->validateAmounts( $msg );
 
 		return array_filter( $msg, static fn ( $value ) => $value !== null && $value !== '' );
+	}
+
+	/**
+	 * Reads the free text manual_review column, falling back to the older
+	 * boolean is_endowment column for audit files already sitting on disk
+	 * from before the Chariot 'Endowment flag?' property became 'Flag'.
+	 */
+	private function getManualReview( array $row ): string {
+		if ( array_key_exists( 'manual_review', $row ) ) {
+			return (string)$row['manual_review'];
+		}
+		return !empty( $row['is_endowment'] ) ? 'endowment' : '';
 	}
 
 	private function validateAmounts( array $msg ): void {

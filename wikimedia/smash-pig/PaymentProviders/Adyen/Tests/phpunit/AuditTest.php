@@ -25,7 +25,6 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'backend_processor' => 'adyen',
 			'audit_file_gateway' => 'adyen',
 			'type' => 'donation',
-			'gateway_account' => 'WikimediaCOM',
 			'gross' => '1.00',
 			'contribution_tracking_id' => 33992337,
 			'currency' => 'USD',
@@ -68,7 +67,6 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'audit_file_gateway' => 'adyen',
 			'backend_processor' => 'adyen',
 			'type' => 'donation',
-			'gateway_account' => 'WikimediaCOM',
 			'gross' => '1.00',
 			'contribution_tracking_id' => 33992337,
 			'currency' => 'USD',
@@ -111,7 +109,6 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'audit_file_gateway' => 'adyen',
 			'backend_processor' => 'adyen',
 			'type' => 'donation',
-			'gateway_account' => 'WikimediaCOM',
 			'gross' => '5.35',
 			'contribution_tracking_id' => '80188432',
 			'currency' => 'EUR',
@@ -153,7 +150,6 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'gateway' => 'adyen',
 			'audit_file_gateway' => 'adyen',
 			'backend_processor' => 'adyen',
-			'gateway_account' => 'WikimediaCOM',
 			'type' => 'donation',
 			'gross' => '1.00',
 			'contribution_tracking_id' => '206543313',
@@ -196,7 +192,6 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'gateway' => 'adyen',
 			'audit_file_gateway' => 'adyen',
 			'backend_processor' => 'adyen',
-			'gateway_account' => 'WikimediaCOM',
 			'contribution_tracking_id' => '92598312',
 			'date' => 1455128736,
 			'gross' => '1.00',
@@ -238,7 +233,6 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'gateway' => 'adyen',
 			'audit_file_gateway' => 'adyen',
 			'backend_processor' => 'adyen',
-			'gateway_account' => 'WikimediaCOM',
 			'contribution_tracking_id' => 92598318,
 			'date' => 1455128736,
 			'gross' => '1.00',
@@ -279,7 +273,6 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'gateway' => 'adyen',
 			'audit_file_gateway' => 'adyen',
 			'backend_processor' => 'adyen',
-			'gateway_account' => 'WikimediaCOM',
 			'contribution_tracking_id' => 92598312,
 			'date' => 1455128736,
 			'gross' => '52',
@@ -317,7 +310,6 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 		$expected = [
 			'gateway' => 'gravy',
 			'audit_file_gateway' => 'adyen',
-			'gateway_account' => 'WikimediaCOM',
 			'contribution_tracking_id' => 239460213,
 			'type' => 'donation',
 			'date' => 1761908739,
@@ -363,7 +355,6 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 		$expected = [
 			'gateway' => 'adyen',
 			'audit_file_gateway' => 'adyen',
-			'gateway_account' => 'WikimediaCOM',
 			'date' => 1761908739,
 			'invoice_id' => '',
 			'gateway_txn_id' => 'fee-Invoice-US202510000533-Discounts-and-additional-costs-(1/2)',
@@ -380,7 +371,6 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 		$this->assertEquals( [
 			'gateway' => 'adyen',
 			'audit_file_gateway' => 'adyen',
-			'gateway_account' => 'WikimediaCOM',
 			'date' => 1761908739,
 			'invoice_id' => '',
 			'gateway_txn_id' => 'fee-Invoice-US202510000533-Discounts-and-additional-costs-(2/2)',
@@ -401,7 +391,6 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 		$expected = [
 			'gateway' => 'adyen',
 			'audit_file_gateway' => 'adyen',
-			'gateway_account' => 'WikimediaCOM',
 			'date' => 1761908739,
 			'invoice_id' => '',
 			'gateway_txn_id' => 'adjustment-1191-DepositCorrection--500',
@@ -418,7 +407,6 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 		$this->assertEquals( [
 			'gateway' => 'adyen',
 			'audit_file_gateway' => 'adyen',
-			'gateway_account' => 'WikimediaCOM',
 			'date' => 1761908739,
 			'invoice_id' => '',
 			'gateway_txn_id' => 'adjustment-1191-Deposit-Correction-300',
@@ -432,6 +420,45 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 		], $output[1], 'Correction does not match' );
 	}
 
+	/**
+	 * ManualCorrected rows represent Adyen manually correcting a deposit (e.g. reversing
+	 * an erroneous bank-side refund) and are always paired with an offsetting MerchantPayout.
+	 * They must be booked as an adjustment (T438105) rather than ignored, or the batch total
+	 * will not reconcile against the payout.
+	 */
+	public function testProcessSettlementDetailManualCorrected(): void {
+		$processor = new AdyenSettlementDetailReport();
+		$output = $processor->parseFile( __DIR__ . '/../Data/settlement_detail_report_manual_corrected.csv' );
+		$this->assertCount( 2, $output, 'Should have found one adjustment and one payout row' );
+		$this->assertEquals( [
+			'gateway' => 'adyen',
+			'audit_file_gateway' => 'adyen',
+			'date' => 1789475269,
+			'invoice_id' => '',
+			'gateway_txn_id' => 'adjustment-1285-/MERGED/2TRF/REF--5201AQS20400701BENE-D-REFUND-X1007-MAY+JUN-2026-OUR-CASE-BML260720-000007-BANK-OF-AMERICA-N.A.-SYDNEY-210.00',
+			'settlement_batch_reference' => '1285',
+			'settled_date' => 1789475269,
+			'settled_currency' => 'AUD',
+			'settled_fee_amount' => '210.00',
+			'settled_net_amount' => '210.00',
+			'settled_total_amount' => 0,
+			'type' => 'adjustment',
+		], $output[0], 'ManualCorrected row should be booked as an adjustment' );
+
+		$this->assertEquals( [
+			'settled_date' => 1789510558,
+			'date' => 1789510558,
+			'gateway' => 'adyen',
+			'audit_file_gateway' => 'adyen',
+			'type' => 'payout',
+			'gateway_txn_id' => 'TX61333044700XT batch 1285, WikimediaDonations',
+			'invoice_id' => '',
+			'settlement_batch_reference' => '1285',
+			'settled_total_amount' => '210.00',
+			'settled_currency' => 'AUD',
+		], $output[1], 'MerchantPayout row should still be booked as a payout' );
+	}
+
 	public function testProcessPaymentsAccountingNyce() {
 		$processor = new AdyenPaymentsAccountingReport();
 		$output = $processor->parseFile( __DIR__ . '/../Data/payments_accounting_report_nyce.csv' );
@@ -442,7 +469,6 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'audit_file_gateway' => 'adyen',
 			'backend_processor' => 'adyen',
 			'type' => 'donation',
-			'gateway_account' => 'WikimediaDonations',
 			'gross' => '10.40',
 			'contribution_tracking_id' => '191638898',
 			'currency' => 'USD',
@@ -481,7 +507,6 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 			'gateway' => 'adyen',
 			'audit_file_gateway' => 'adyen',
 			'backend_processor' => 'adyen',
-			'gateway_account' => 'WikimediaDonations',
 			// We are looking at a 'Main Amount' (net_amount) of 23.87
 			// this is what was deducted from 'us'
 			// less $10.65 + .21 fees (10.86) fee_amount
@@ -522,7 +547,6 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 		$expected = [
 			'gateway' => 'gravy',
 			'audit_file_gateway' => 'adyen',
-			'gateway_account' => 'WikimediaDonations',
 			// We refunded 1.75 and paid a fee of $7.99 making our net 9.74
 			'gross' => 1.75,
 			'original_net_amount' => -9.74,

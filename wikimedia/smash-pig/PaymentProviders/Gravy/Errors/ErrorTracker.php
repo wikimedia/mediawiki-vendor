@@ -24,6 +24,7 @@ class ErrorTracker {
 	protected int $keyExpiryPeriod;
 	protected int $alertSuppressionPeriod;
 	protected array $ignoreList;
+	protected array $recurringIgnoreList;
 	protected ?Client $connection = null;
 
 	/**
@@ -37,6 +38,7 @@ class ErrorTracker {
 	 *                       - 'key_expiry_period' (int): The expiry period for redis keys in seconds.
 	 *                       - 'alert_suppression_period' (int): The period in seconds to suppress duplicate alerts.
 	 *                       - 'ignore_list' (array): List of error codes to ignore from tracking and alerting.
+	 *                       - 'recurring_ignore_list' (array): List of error codes to ignore from tracking and alerting on recurring charges only.
 	 *
 	 * @return void
 	 */
@@ -61,6 +63,7 @@ class ErrorTracker {
 		$this->keyExpiryPeriod = $options['key_expiry_period'];
 		$this->alertSuppressionPeriod = $options['alert_suppression_period'];
 		$this->ignoreList = $options['ignore_list'] ?? [];
+		$this->recurringIgnoreList = $options['recurring_ignore_list'] ?? [];
 	}
 
 	public function trackErrorAndCheckThreshold( array $error ): bool {
@@ -75,9 +78,22 @@ class ErrorTracker {
 			return false;
 		}
 		// Skip tracking if error code is in the ignore list
-		if ( in_array( strtolower( $error['error_code'] ), array_map( 'strtolower', $this->ignoreList ), true ) ) {
+		if ( $this->isInIgnoreList( $error['error_code'] ) ) {
 			Logger::info( 'Skipping error tracking - error code is in ignore list', [
-				'error_code' => $error['error_code']
+				'error_code' => $error['error_code'],
+				'transaction_id' => $error['sample_transaction_id'] ?? null,
+				'raw_response_code' => $error['raw_response_code'] ?? null,
+				'raw_response_description' => $error['raw_response_description'] ?? null,
+			] );
+			return false;
+		}
+		// Skip tracking if this is a recurring charge and the error code is in the recurring ignore list
+		if ( $this->isRecurringCharge( $error ) && $this->isInRecurringIgnoreList( $error['error_code'] ) ) {
+			Logger::info( 'Skipping error tracking - error code is in recurring ignore list', [
+				'error_code' => $error['error_code'],
+				'transaction_id' => $error['sample_transaction_id'] ?? null,
+				'raw_response_code' => $error['raw_response_code'] ?? null,
+				'raw_response_description' => $error['raw_response_description'] ?? null,
 			] );
 			return false;
 		}
@@ -280,5 +296,29 @@ class ErrorTracker {
 	 */
 	protected function isFraudAlert( string $error_code ): bool {
 		return $error_code === self::SUSPECTED_FRAUD_ERROR_CODE;
+	}
+
+	/**
+	 * @param string $error_code
+	 * @return bool
+	 */
+	protected function isInIgnoreList( string $error_code ): bool {
+		return in_array( strtolower( $error_code ), array_map( 'strtolower', $this->ignoreList ), true );
+	}
+
+	/**
+	 * @param string $error_code
+	 * @return bool
+	 */
+	protected function isInRecurringIgnoreList( string $error_code ): bool {
+		return in_array( strtolower( $error_code ), array_map( 'strtolower', $this->recurringIgnoreList ), true );
+	}
+
+	/**
+	 * @param array $error
+	 * @return bool
+	 */
+	protected function isRecurringCharge( array $error ): bool {
+		return !empty( $error['merchant_initiated'] ) && !empty( $error['is_subsequent_payment'] );
 	}
 }

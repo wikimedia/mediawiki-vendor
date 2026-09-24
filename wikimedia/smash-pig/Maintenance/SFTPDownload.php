@@ -126,7 +126,7 @@ class SFTPDownload extends MaintenanceBase {
 	public function execute(): void {
 		$this->config = $this->loadYamlConfig();
 
-		$incomingOptOrConfig = $this->chooseOptionOrConfig( 'incoming-directory', 'incoming_path', '' );
+		$incomingOptOrConfig = $this->chooseOptionOrYamlConfig( 'incoming-directory', 'incoming_path', '' );
 		if ( !is_string( $incomingOptOrConfig ) || trim( $incomingOptOrConfig ) === '' ) {
 			$this->error( 'incoming-directory is required (or set incoming_path in config).' );
 		}
@@ -151,7 +151,7 @@ class SFTPDownload extends MaintenanceBase {
 			$ignoredDir = $this->maybeRealpath( $ignoredDir );
 		}
 
-		$remoteDirOptOrConfig = $this->chooseOptionOrConfig( 'remote-directory', 'sftp.remote_root', '' );
+		$remoteDirOptOrConfig = $this->chooseOptionOrYamlConfig( 'remote-directory', 'sftp.remote_root', '' );
 		if ( !is_string( $remoteDirOptOrConfig ) || trim( $remoteDirOptOrConfig ) === '' ) {
 			$this->error( 'remote-directory is required (or set sftp.remote_root in config).' );
 		}
@@ -795,7 +795,7 @@ class SFTPDownload extends MaintenanceBase {
 	}
 
 	/**
-	 * Use CLI option if present; otherwise fall back to config.
+	 * Use CLI option if present; otherwise fall back to the --config/--config-name YAML.
 	 *
 	 * @param string $optName
 	 * @param string $configPath
@@ -803,7 +803,7 @@ class SFTPDownload extends MaintenanceBase {
 	 *
 	 * @return mixed
 	 */
-	private function chooseOptionOrConfig( string $optName, string $configPath, mixed $default = null ): mixed {
+	private function chooseOptionOrYamlConfig( string $optName, string $configPath, mixed $default = null ): mixed {
 		$opt = $this->getOption( $optName );
 		if ( $opt !== null && $opt !== '' ) {
 			return $opt;
@@ -922,20 +922,6 @@ class SFTPDownload extends MaintenanceBase {
 			throw new \RuntimeException( "Invalid host key format: $s" );
 		}
 		return $parts[1]; // [algo, base64]
-	}
-
-	/**
-	 * Convert CLI option values to boolean.
-	 */
-	private function asBool( string|bool|null|int $val ): bool {
-		if ( is_bool( $val ) ) {
-			return $val;
-		}
-		if ( $val === null ) {
-			return false;
-		}
-		$stringValue = strtolower( trim( (string)$val ) );
-		return in_array( $stringValue, [ '1', 'true', 'yes', 'y', 'on' ], true );
 	}
 
 	/**

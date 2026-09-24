@@ -1,0 +1,148 @@
+{
+    "gateway_account": "Foundation",
+    "deposit": {
+        "id": "691bc9e0f8be59262e7d5ad4",
+        "status": "PAID",
+        "type": "AUTOMATED",
+        "amountInCents": 753956,
+        "arrivalAt": "2025-11-17T06:05:11.000Z",
+        "startingBalanceInCents": 0,
+        "endingBalanceInCents": 0,
+        "bankName": "321171184 CHK",
+        "bankLast4": "9753",
+        "statementDescriptor": "OVRFLW-S3222222242WVTG",
+        "paymentMethodType": [
+            "daf",
+            "brokerage_account"
+        ],
+        "name": null,
+        "reconciledAt": null,
+        "createdAt": "2025-11-18T13:34:08.424Z",
+        "updatedAt": "2025-11-18T13:34:08.499Z",
+        "lineItems": [
+            {
+                "type": "transfer",
+                "grossValueInCents": 749106,
+                "referenceId": "tr_ad_690d7771b34a381eeb60a62c",
+                "description": "tr_ad_690d7771b34a381eeb60a62c"
+            },
+            {
+                "type": "transfer",
+                "grossValueInCents": 4850,
+                "referenceId": "tr_ad_68fdac53b253cab814a8c9af",
+                "description": "tr_ad_68fdac53b253cab814a8c9af"
+            }
+        ]
+    },
+    "summary": {
+        "data": {
+            "contributions": {
+                "count": 2,
+                "feesInCents": 13493,
+                "grossInCents": 767449,
+                "totalInCents": 753956
+            },
+            "refunds": [],
+            "chargebacks": {
+                "count": 0,
+                "feesInCents": 0,
+                "grossInCents": 0,
+                "totalInCents": 0
+            },
+            "adjustments": {
+                "count": 0,
+                "feesInCents": 0,
+                "grossInCents": 0,
+                "totalInCents": 0
+            }
+        }
+    },
+    "contributions": [
+        {
+            "lineItem": {
+                "type": "transfer",
+                "grossValueInCents": 749106,
+                "referenceId": "tr_ad_690d7771b34a381eeb60a62c",
+                "description": "tr_ad_690d7771b34a381eeb60a62c"
+            },
+            "contribution": {
+                "id": "690d7771b34a381eeb60a62c",
+                "createdAt": "2025-11-07T04:37:05.843Z",
+                "updatedAt": "2025-11-18T13:34:08.447Z",
+                "type": "STOCK",
+                "amount": 7624.49,
+                "donorCoveredFees": false,
+                "contributionDate": "2025-11-07T04:37:05.843Z",
+                "status": "PAID_OUT",
+                "paymentMethod": {
+                    "last4": "0100",
+                    "logoUrl": "https://cdn.overflow.co/payment-assets/fallback-bank-v2.svg",
+                    "type": "Stock"
+                },
+                "metadata": null,
+                "anonymous": false,
+                "locationId": "689f763dd92d63b72e999a80",
+                "donor": {
+                    "id": "690d7771b34a381eeb60a640",
+                    "firstName": "K",
+                    "lastName": "S",
+                    "email": "k@example.org",
+                    "phone": "+16123",
+                    "address": {
+                        "city": "Big City",
+                        "country": "US",
+                        "line1": "123 Seasame St",
+                        "line2": null,
+                        "state": "NV",
+                        "zip": "89703"
+                    }
+                },
+                "contributionReceivedAt": "2025-11-10T20:00:00.000Z",
+                "stocks": {
+                    "quantity": 1,
+                    "tickers": [
+                        "A"
+                    ]
+                },
+                "givingLinkId": null,
+                "pledgeId": null
+            }
+        },
+        {
+            "lineItem": {
+                "type": "transfer",
+                "grossValueInCents": 4850,
+                "referenceId": "tr_ad_68fdac53b253cab814a8c9af",
+                "description": "tr_ad_68fdac53b253cab814a8c9af"
+            },
+            "contribution": {
+                "id": "68fdac53b253cab814a8c9af",
+                "createdAt": "2025-10-26T05:06:27.768Z",
+                "updatedAt": "2025-11-18T13:34:08.468Z",
+                "type": "DAF",
+                "amount": 50,
+                "donorCoveredFees": false,
+                "contributionDate": "2025-10-26T05:06:27.768Z",
+                "status": "PAID_OUT",
+                "paymentMethod": {
+                    "last4": "c9db",
+                    "logoUrl": "https://cdn.overflow.co/payment-assets/dafpay.svg",
+                    "type": "DAF"
+                },
+                "donorNotes": null,
+                "metadata": null,
+                "anonymous": false,
+                "locationId": "689f763dd92d63b72e999a80",
+                "donor": {
+                    "id": "68fdacc0b253cab814a8c9f6",
+                    "firstName": "B",
+                    "lastName": "D",
+                    "phone": "+141123",
+                    "address": null
+                },
+                "givingLinkId": null,
+                "pledgeId": null
+            }
+        }
+    ]
+}

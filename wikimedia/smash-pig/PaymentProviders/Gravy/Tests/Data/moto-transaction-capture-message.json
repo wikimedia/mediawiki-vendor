@@ -1,0 +1,48 @@
+{
+    "type": "event",
+    "name": "transaction.captured",
+    "id": "c38fc153-166d-4459-b1a3-7266c6baf404",
+    "created_at": "2026-06-15T14:43:48.780746+00:00",
+    "target": {
+        "type": "transaction",
+        "id": "e8a27515-05a6-4429-adfa-6f1cb7865372",
+        "external_identifier": "32427985",
+        "payment_service_transaction_id": "VQHJTQH8P43X8PB9",
+        "status": "capture_succeeded",
+        "has_gift_card_redemptions": false,
+        "pending_review": false,
+        "amount": 2500,
+        "authorized_amount": 2500,
+        "captured_amount": 2500,
+        "refunded_amount": 0,
+        "currency": "USD",
+        "metadata": {
+            "cid": "32427985",
+            "fund": "Major Gifts - CC104",
+            "batch": "100085",
+            "appeal": "DMDA1",
+            "channel": "Direct Mail Upload",
+            "package": "H72526MAY",
+            "frequency": "One-time",
+            "gift_type": "Individual",
+            "received_date": "06/11/2026",
+            "contribution_type": "Cash",
+            "payment_instrument": "Credit Card"
+        },
+        "created_at": "2026-06-15T14:42:27.820868+00:00",
+        "updated_at": "2026-06-15T14:43:48.761716+00:00",
+        "payment_method": {
+            "id": null,
+            "method": "card"
+        },
+        "payment_link_id": null,
+        "error_code": null,
+        "iso_response_code": null,
+        "payment_source": "moto",
+        "merchant_initiated": false,
+        "is_subsequent_payment": false
+    },
+    "merchant_account_id": "default",
+    "gr4vy_id": "wikimedia",
+    "environment": "production"
+}

@@ -8,6 +8,7 @@ use SmashPig\PaymentProviders\Gravy\GravyListener;
 use SmashPig\PaymentProviders\Gravy\Jobs\DownloadReportJob;
 use SmashPig\PaymentProviders\Gravy\Jobs\ProcessCaptureRequestJob;
 use SmashPig\PaymentProviders\Gravy\Jobs\RecordCaptureJob;
+use SmashPig\PaymentProviders\Gravy\Jobs\RecordFailureJob;
 use SmashPig\PaymentProviders\Gravy\Mapper\ResponseMapper;
 use SmashPig\PaymentProviders\Gravy\Tests\BaseGravyTestCase;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +22,7 @@ class NotificationsTest extends BaseGravyTestCase {
 
 	private FifoQueueStore $refundQueue;
 
-	private FifoQueueStore $donationsModifyQueue;
+	private FifoQueueStore $donationsQueue;
 
 	/**
 	 * @var GravyListener
@@ -34,8 +35,8 @@ class NotificationsTest extends BaseGravyTestCase {
 			->object( 'data-store/jobs-gravy' );
 		$this->refundQueue = Context::get()->getGlobalConfiguration()
 			->object( 'data-store/refund' );
-		$this->donationsModifyQueue = Context::get()->getGlobalConfiguration()
-			->object( 'data-store/donations-modify' );
+		$this->donationsQueue = Context::get()->getGlobalConfiguration()
+			->object( 'data-store/donations' );
 		$this->gravyListener = $this->config->object( 'endpoints/listener' );
 	}
 
@@ -91,6 +92,26 @@ class NotificationsTest extends BaseGravyTestCase {
 				], ( new ResponseMapper() )->mapFromPaymentResponse( $message['target'] )
 			);
 		$this->assertSame( $payload, $queued_message['payload'] );
+		$this->assertTrue( $result );
+	}
+
+	public function testMotoCapturedTransactionMessage(): void {
+		[ $request, $response ] = $this->getValidRequestResponseObjects();
+		$message = json_decode( file_get_contents( __DIR__ . '/../Data/moto-transaction-capture-message.json' ), true );
+		$request->method( 'getRawRequest' )->willReturn( json_encode( $message ) );
+		$this->mockApi->expects( $this->never() )
+			->method( 'getTransaction' );
+		$result = $this->gravyListener->execute( $request, $response );
+		$queued_message = $this->jobsGravyQueue->pop();
+		$this->assertEquals( RecordCaptureJob::class, $queued_message['class'] );
+		$payload = array_merge(
+				[
+					"eventDate" => $message["created_at"]
+				], ( new ResponseMapper() )->mapFromPaymentResponse( $message['target'] )
+			);
+		$this->assertSame( $payload, $queued_message['payload'] );
+		$this->assertTrue( $queued_message['payload']['is_moto'] );
+		$this->assertSame( $message['target']['metadata'], $queued_message['payload']['moto_metadata'] );
 		$this->assertTrue( $result );
 	}
 
@@ -186,23 +207,31 @@ class NotificationsTest extends BaseGravyTestCase {
 		$this->gravyListener->execute( $request, $response );
 		$refundMessage = $this->refundQueue->pop();
 		$jobsMessage = $this->jobsGravyQueue->pop();
-		$modifyMessage = $this->donationsModifyQueue->pop();
+		$modifyMessage = $this->donationsQueue->pop();
 
 		$this->assertNull( $refundMessage, 'No message for the failed ACH payment should be queued to refund queue' );
 		$this->assertNull( $jobsMessage, 'No message should be queued to jobs queue' );
-		$this->assertNull( $modifyMessage, 'No message should be queued to donations-modify queue' );
+		$this->assertNull( $modifyMessage, 'No message should be queued to donations queue' );
 	}
 
-	public function testTrustlyPaymentDeclinedMessageIsSentToDonationsModifyQueue(): void {
+	public function testTrustlyPaymentDeclinedMessageIsSentToDonationsQueue(): void {
 		[ $request, $response ] = $this->getValidRequestResponseObjects();
 		$message = json_decode( file_get_contents( __DIR__ . '/../Data/trustly-create-transaction-declined-message.json' ), true );
 		$request->method( 'getRawRequest' )->willReturn( json_encode( $message ) );
 		$this->mockApi->expects( $this->never() )
 			->method( 'getTransaction' );
 		$this->gravyListener->execute( $request, $response );
+
+		$jobsMessage = $this->jobsGravyQueue->pop();
+		$this->assertEquals( RecordFailureJob::class, $jobsMessage['class'] );
+
+		$failJob = new RecordFailureJob();
+		$failJob->payload = $jobsMessage['payload'];
+		$failJob->execute();
+
 		$refundMessage = $this->refundQueue->pop();
 		$jobsMessage = $this->jobsGravyQueue->pop();
-		$modifyMessage = $this->donationsModifyQueue->pop();
+		$modifyMessage = $this->donationsQueue->pop();
 
 		$this->assertNull( $refundMessage, 'ACH declines should not go to the refund queue' );
 		$this->assertNull( $jobsMessage, 'No message should be queued to jobs queue' );
@@ -225,16 +254,24 @@ class NotificationsTest extends BaseGravyTestCase {
 		], $modifyMessage );
 	}
 
-	public function testTrustlyPaymentInsufficientFundsMessageIsSentToDonationsModifyQueue(): void {
+	public function testTrustlyPaymentInsufficientFundsMessageIsSentToDonationsQueue(): void {
 		[ $request, $response ] = $this->getValidRequestResponseObjects();
 		$message = json_decode( file_get_contents( __DIR__ . '/../Data/trustly-create-transaction-declined-retryable-message.json' ), true );
 		$request->method( 'getRawRequest' )->willReturn( json_encode( $message ) );
 		$this->mockApi->expects( $this->never() )
 			->method( 'getTransaction' );
 		$this->gravyListener->execute( $request, $response );
+
+		$jobsMessage = $this->jobsGravyQueue->pop();
+		$this->assertEquals( RecordFailureJob::class, $jobsMessage['class'] );
+
+		$failJob = new RecordFailureJob();
+		$failJob->payload = $jobsMessage['payload'];
+		$failJob->execute();
+
 		$refundMessage = $this->refundQueue->pop();
 		$jobsMessage = $this->jobsGravyQueue->pop();
-		$modifyMessage = $this->donationsModifyQueue->pop();
+		$modifyMessage = $this->donationsQueue->pop();
 
 		$this->assertNull( $refundMessage, 'ACH declines should not go to the refund queue' );
 		$this->assertNull( $jobsMessage, 'No message should be queued to jobs queue' );

@@ -5,8 +5,10 @@ use SmashPig\Core\Context;
 use SmashPig\Core\DataStores\PendingDatabase;
 use SmashPig\Core\DataStores\QueueWrapper;
 use SmashPig\Core\Logging\Logger;
+use SmashPig\Core\Logging\TaggedLogger;
 use SmashPig\Core\RetryableException;
 use SmashPig\Core\Runnable;
+use SmashPig\Core\SequenceGenerators\Factory as SequenceGeneratorFactory;
 use SmashPig\PaymentProviders\Gravy\ExpatriatedMessages\GravyMessage;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyGetLatestPaymentStatusResponseFactory;
 use SmashPig\PaymentProviders\Responses\PaymentProviderExtendedResponse;
@@ -40,6 +42,10 @@ class RecordCaptureJob implements Runnable {
 			'Processing captured Gravy payment with authorization reference ' .
 				"'{$transactionDetails->getGatewayTxnId()}' and order ID '{$transactionDetails->getOrderId()}'."
 		);
+
+		if ( !empty( $this->payload['is_moto'] ) ) {
+			return $this->recordMotoDonation( $transactionDetails, $logger );
+		}
 
 		// Find the details from the payment site in the pending database.
 		$logger->debug( 'Attempting to locate associated message in pending database' );
@@ -75,6 +81,93 @@ class RecordCaptureJob implements Runnable {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Sends a moto donation to the donations queue.
+	 *
+	 * Moto gifts are keyed in by staff and uploaded through Gravy rather than
+	 * made on a donation form, so there is no pending database record holding
+	 * the donor details. The donor is identified instead by the CiviCRM contact
+	 * ID carried in the transaction metadata.
+	 *
+	 * @param PaymentProviderExtendedResponse $partialTransactionDetails
+	 * @param TaggedLogger $logger
+	 * @return bool
+	 */
+	protected function recordMotoDonation(
+		PaymentProviderExtendedResponse $partialTransactionDetails,
+		TaggedLogger $logger
+	): bool {
+		$logger->debug( 'Moto transaction - skipping the pending database lookup' );
+
+		$transactionDetails = $this->getFullTransactionDetails( $partialTransactionDetails->getGatewayTxnId() );
+
+		// Unlike the pending path we have no donor record to fall back on, so a
+		// failed lookup would leave us pushing a donation with no processor
+		// details at all. Requeue instead of recording a half-built donation.
+		if ( !$transactionDetails->isSuccessful() ) {
+			throw new RetryableException(
+				'Could not fetch transaction details for moto donation with authorization ' .
+					"reference '{$partialTransactionDetails->getGatewayTxnId()}' and order ID " .
+					"'{$partialTransactionDetails->getOrderId()}'. Requeuing job."
+			);
+		}
+
+		$motoMetadata = $this->payload['moto_metadata'] ?? [];
+
+		$donationMessage = [
+			'gateway' => 'gravy',
+			'gateway_txn_id' => $partialTransactionDetails->getGatewayTxnId(),
+			'order_id' => $partialTransactionDetails->getOrderId(),
+			'contribution_tracking_id' => $this->generateContributionTrackingId(),
+			'contact_id' => $motoMetadata['cid'] ?? null,
+			'date' => strtotime( $this->payload['eventDate'] ),
+			'gross' => $partialTransactionDetails->getAmount(),
+			'currency' => $partialTransactionDetails->getCurrency(),
+			'payment_method' => $this->payload['payment_method'] ?? null,
+			'payment_submethod' => $transactionDetails->getPaymentSubmethod(),
+			'backend_processor' => $transactionDetails->getBackendProcessor(),
+			'backend_processor_txn_id' => $transactionDetails->getBackendProcessorTransactionId()
+				?: $partialTransactionDetails->getBackendProcessorTransactionId(),
+			'payment_orchestrator_reconciliation_id' => $transactionDetails->getPaymentOrchestratorReconciliationId(),
+			'payment_service_id' => $transactionDetails->getPaymentServiceID(),
+		];
+
+		// Gift details from the transaction metadata, which a donation form would
+		// otherwise have supplied. Empty values are dropped rather than sent as
+		// nulls, so that CiviCRM falls back to its own defaults rather than
+		// storing a blank.
+		$donationMessage += array_filter( [
+			'direct_mail_appeal' => $motoMetadata['appeal'] ?? null,
+			'restrictions' => $motoMetadata['fund'] ?? null,
+			'channel' => $motoMetadata['channel'] ?? null,
+			'Gift_Data.Package' => $motoMetadata['package'] ?? null,
+		] );
+
+		$logger->debug(
+			"Pushing moto donation for contact '{$donationMessage['contact_id']}' with " .
+				"contribution tracking ID '{$donationMessage['contribution_tracking_id']}'."
+		);
+
+		QueueWrapper::push( 'donations', $donationMessage );
+
+		return true;
+	}
+
+	/**
+	 * Mints a new contribution tracking ID.
+	 *
+	 * Donations made on a payments form are given one by DonationInterface
+	 * before the payment is attempted. Moto gifts never touch a form, so there
+	 * is nothing upstream to take the ID from and we mint it here instead.
+	 *
+	 * @return string
+	 */
+	protected function generateContributionTrackingId(): string {
+		$generator = SequenceGeneratorFactory::getSequenceGenerator( 'contribution-tracking' );
+
+		return (string)$generator->getNext();
 	}
 
 	protected function addMissingFieldsToPendingRecord( array &$dbMessage, PaymentProviderExtendedResponse $partialTransactionDetails ): void {

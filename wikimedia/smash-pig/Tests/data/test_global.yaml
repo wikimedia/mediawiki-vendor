@@ -137,13 +137,6 @@ data-store:
   donations:
     <<: *QUEUE
 
-  donations-modify:
-    class: PHPQueue\Backend\PDO
-    constructor-parameters:
-      -
-        connection_string: 'sqlite::memory:'
-        queue: donations_modify
-
   upi-donations:
     class: PHPQueue\Backend\PDO
     constructor-parameters:

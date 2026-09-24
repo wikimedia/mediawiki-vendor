@@ -121,7 +121,7 @@ abstract class GravyPaymentResponseFactory {
 
 				if ( $field ) {
 					$paymentResponse->addValidationError(
-						new ValidationError( $field )
+						new ValidationError( $field, null, [], 'Validation error: ' . $field )
 					);
 					return;
 				}

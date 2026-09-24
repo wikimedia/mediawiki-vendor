@@ -122,6 +122,16 @@ class PayPalAudit implements AuditParser {
 					break;
 
 				case 'general_payment':
+					if ( $row['Transaction Debit or Credit'] !== 'DR' ) {
+						// A credit T0000 is a genuine incoming payment - e.g. an unsolicited
+						// donation made via PayPal's 'Send Money' feature - rather than a
+						// reimbursement-style payout. Let it flow through as an ordinary
+						// transaction row instead of throwing. See T437215.
+						$this->rows[] = $row;
+						break;
+					}
+					// Deliberate fall through - a debit general_payment is a payout, same as withdrawal.
+
 				case 'withdrawal':
 					if ( $row['Transaction Debit or Credit'] !== 'DR' ) {
 						throw new UnhandledException( 'We expect these to always be debits - ie payouts' );

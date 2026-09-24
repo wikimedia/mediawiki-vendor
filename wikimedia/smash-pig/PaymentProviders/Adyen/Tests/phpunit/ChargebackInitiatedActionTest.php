@@ -57,7 +57,7 @@ class ChargebackInitiatedActionTest extends BaseAdyenTestCase {
 		$action = new ChargebackInitiatedAction();
 		$action->execute( $chargeback );
 		$message = Context::get()->getGlobalConfiguration()
-			->object( 'data-store/donations-modify' )->pop();
+			->object( 'data-store/donations' )->pop();
 		SourceFields::removeFromMessage( $message );
 		$this->assertEquals( [
 			'contribution_status_id:name' => 'Cancelled',

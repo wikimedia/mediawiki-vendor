@@ -110,6 +110,55 @@ class DonationTest extends TestCase {
 		];
 	}
 
+	/**
+	 * @param array $donation
+	 * @param string $expected
+	 *
+	 * @dataProvider dafPayUrlDataProvider
+	 *
+	 * @return void
+	 */
+	public function testGetDafPayUrl( array $donation, string $expected ): void {
+		$this->assertSame( $expected, ( new Donation( $donation ) )->getDafPayUrl() );
+	}
+
+	public function dafPayUrlDataProvider(): array {
+		return [
+			'dafpay_url_set' => [
+				'donation' => [
+					'dafpay_url' => 'https://example.org/dafpay/123',
+				],
+				'expected' => 'https://example.org/dafpay/123',
+			],
+			// Regression test: some donations (e.g. DAFFY) only report their
+			// DAFpay URL via initiation.web_location_url, not dafpay_url -
+			// GetReport::getPaymentMethod() must see this fallback too, which
+			// requires it to be passed a real Donation object rather than the
+			// raw donation array (which has no equivalent fallback).
+			'falls_back_to_initiation_web_location_url' => [
+				'donation' => [
+					'initiation' => [
+						'web_location_url' => 'https://example.org/daffy/456',
+					],
+				],
+				'expected' => 'https://example.org/daffy/456',
+			],
+			'dafpay_url_takes_precedence' => [
+				'donation' => [
+					'dafpay_url' => 'https://example.org/dafpay/123',
+					'initiation' => [
+						'web_location_url' => 'https://example.org/daffy/456',
+					],
+				],
+				'expected' => 'https://example.org/dafpay/123',
+			],
+			'neither_set' => [
+				'donation' => [],
+				'expected' => '',
+			],
+		];
+	}
+
 	public function testGetsDonorAdvisedFundValues(): void {
 		$donation = new Donation( [
 			'donor_advised_fund_grant' => [
@@ -153,7 +202,7 @@ class DonationTest extends TestCase {
 			],
 		] );
 
-		$this->assertTrue( $donation->isFullNameFundName() );
+		$this->assertTrue( $donation->isFullNameFundOrFamilyName() );
 
 		$this->assertSame( '', $donation->getFullName() );
 		$this->assertSame( '', $donation->getFirstName() );
@@ -175,6 +224,10 @@ class DonationTest extends TestCase {
 				'John Smith Account',
 				'Fidelity Charitable',
 			],
+			'family_suffix' => [
+				'John Smith Family',
+				'Fidelity Charitable',
+			],
 		];
 	}
 
@@ -193,7 +246,7 @@ class DonationTest extends TestCase {
 			],
 		] );
 
-		$this->assertFalse( $donation->isFullNameFundName() );
+		$this->assertFalse( $donation->isFullNameFundOrFamilyName() );
 
 		$this->assertSame( 'Jane Smith', $donation->getFullName() );
 		$this->assertSame( 'Jane', $donation->getFirstName() );

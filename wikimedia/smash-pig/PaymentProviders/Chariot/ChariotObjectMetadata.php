@@ -46,6 +46,7 @@ class ChariotObjectMetadata {
 		'transfer.inbound_ach_transfer' => [ 'status' => self::STATUS_USED ],
 		'transfer.inbound_ach_transfer.standard_entry_class_code' => [],
 		'transfer.inbound_ach_transfer.company_entry_description' => [],
+		'transfer.inbound_ach_transfer.company_discretionary_data' => [],
 		'transfer.inbound_ach_transfer.originator_routing_number' => [],
 		'transfer.inbound_ach_transfer.originator_company_name' => [ 'status' => self::STATUS_USED ],
 		'transfer.inbound_ach_transfer.trace_number' => [],
@@ -92,6 +93,22 @@ class ChariotObjectMetadata {
 		'note' => [ 'status' => self::STATUS_USED ],
 		'purpose' => [ 'status' => self::STATUS_USED, 'note' => 'used for note' ],
 		'artifacts' => [],
+		'artifacts[].id' => [
+			'status' => self::STATUS_IGNORED,
+			'note' => 'Attached artifact/document metadata (e.g. a scanned check or mail item file). Not important for us',
+		],
+		'artifacts[].file_id' => [
+			'status' => self::STATUS_IGNORED,
+			'note' => 'Attached artifact/document metadata (e.g. a scanned check or mail item file). Not important for us',
+		],
+		'artifacts[].name' => [
+			'status' => self::STATUS_IGNORED,
+			'note' => 'Attached artifact/document metadata (e.g. a scanned check or mail item file). Not important for us',
+		],
+		'artifacts[].created_at' => [
+			'status' => self::STATUS_IGNORED,
+			'note' => 'Attached artifact/document metadata (e.g. a scanned check or mail item file). Not important for us',
+		],
 		'attribution.primary_donor' => [],
 		'attribution.primary_donor.full_name' => [ 'status' => self::STATUS_USED ],
 		'attribution.primary_donor.first_name' => [ 'status' => self::STATUS_USED ],
@@ -219,7 +236,10 @@ class ChariotObjectMetadata {
 		'properties.Journaled in Sage' => [],
 		'properties.Groundswell Company Name' => [],
 		'properties.Marked for export' => [],
-		'properties.Endowment flag?' => [ 'status' => self::STATUS_USED ],
+		'properties.Flag' => [
+			'status' => self::STATUS_USED,
+			'note' => 'Free text flag for manual review. Used to be a boolean endowment flag, now a string set by user defined policy.',
+		],
 		'properties.CRM status' => [],
 		'properties.Check Number' => [
 			'status' => self::STATUS_USED,

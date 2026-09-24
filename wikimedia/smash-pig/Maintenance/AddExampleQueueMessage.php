@@ -14,6 +14,7 @@ class AddExampleQueueMessage extends MaintenanceBase {
 	public function __construct() {
 		parent::__construct();
 		$this->addOption( 'message', 'what queue message to add', 'test' );
+		$this->addOption( 'phone', 'phone number to use for the sms-optin message (default: random)', '' );
 	}
 
 	/**
@@ -58,7 +59,8 @@ class AddExampleQueueMessage extends MaintenanceBase {
 			$example['payment_method'] = 'cc';
 			$example['payment_submethod'] = 'visa';
 			$example['payment_orchestrator_reconciliation_id'] = '12345ABCD';
-			$example['phone'] = '1' . rand( 200, 999 ) . '-' . rand( 100, 999 ) . '-' . rand( 1000, 9999 );
+			$phone = $this->getOption( 'phone' );
+			$example['phone'] = $phone !== '' ? $phone : '1' . rand( 200, 999 ) . '-' . rand( 100, 999 ) . '-' . rand( 1000, 9999 );
 			$example['sms_opt_in'] = 1;
 			$example['date'] = time();
 		} elseif ( $message == 'failed-recurring' ) {
