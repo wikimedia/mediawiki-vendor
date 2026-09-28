@@ -14,9 +14,17 @@ class SelectiveUpdateData {
 	public ?string $revHTML;
 
 	/**
-	 * DOM document corresponding to $revHTML
+	 * DOM document corresponding to $revHTML.
+	 *
+	 * If this is set, it must be prepared and loaded (for example, by
+	 * DomPageBundle::toDom()), and $revHTML is not needed. If it is null,
+	 * Parsoid builds it from $revHTML. In both cases, it is prepared and
+	 * loaded when Parsoid uses it.
+	 *
+	 * Parsoid changes this DOM and takes ownership of it. Callers must
+	 * not use it again.
 	 */
-	public Document $revDOM;
+	public ?Document $revDOM = null;
 
 	/**
 	 * If we are doing selective updates for a template edit,
