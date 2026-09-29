@@ -3006,6 +3006,7 @@ return array(
     'Twig\\Node\\Expression\\EmptyExpression' => $vendorDir . '/twig/twig/src/Node/Expression/EmptyExpression.php',
     'Twig\\Node\\Expression\\FilterExpression' => $vendorDir . '/twig/twig/src/Node/Expression/FilterExpression.php',
     'Twig\\Node\\Expression\\Filter\\DefaultFilter' => $vendorDir . '/twig/twig/src/Node/Expression/Filter/DefaultFilter.php',
+    'Twig\\Node\\Expression\\Filter\\EscapeFilter' => $vendorDir . '/twig/twig/src/Node/Expression/Filter/EscapeFilter.php',
     'Twig\\Node\\Expression\\Filter\\RawFilter' => $vendorDir . '/twig/twig/src/Node/Expression/Filter/RawFilter.php',
     'Twig\\Node\\Expression\\FunctionExpression' => $vendorDir . '/twig/twig/src/Node/Expression/FunctionExpression.php',
     'Twig\\Node\\Expression\\FunctionNode\\EnumCasesFunction' => $vendorDir . '/twig/twig/src/Node/Expression/FunctionNode/EnumCasesFunction.php',
