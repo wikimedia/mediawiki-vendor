@@ -3,6 +3,8 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Wt2Html\DOM\Processors;
 
+/** @phan-file-suppress PhanTypeMismatchArgumentSuperType */
+
 use Error;
 use SplObjectStorage;
 use Wikimedia\Assert\Assert;
@@ -99,7 +101,8 @@ class DOMRangeBuilder {
 		// template handler, all computed dsr values for template content
 		// is always inferred from top-level content values and is safe.
 		// So, do not overwrite a bigger end-dsr value.
-		if ( isset( $srcDP->dsr->end ) && isset( $tgtDP->dsr->end ) &&
+		if ( isset( $srcDP->dsr ) && $srcDP->dsr->end !== null &&
+			isset( $tgtDP->dsr ) && $tgtDP->dsr->end !== null &&
 			$tgtDP->dsr->end > $srcDP->dsr->end
 		) {
 			$tgtDP->dsr->start = $srcDP->dsr->start ?? null;
@@ -577,7 +580,7 @@ class DOMRangeBuilder {
 
 			$this->verifyTplInfoExpectation( $templateInfo, $tmp );
 
-			$this->env->log( "trace/{$this->traceType}/merge", static function () use ( &$DOMDataUtils, &$r ) {
+			$this->env->log( "trace/{$this->traceType}/merge", static function () use ( &$r ) {
 				$msg = '';
 				$dp1 = DOMDataUtils::getDataParsoid( $r->start );
 				$dp2 = DOMDataUtils::getDataParsoid( $r->end );
@@ -1202,8 +1205,8 @@ class DOMRangeBuilder {
 							if ( $tbl && DOMCompat::nodeName( $tbl ) === 'table' && !empty( $dp->fostered ) ) {
 								'@phan-var Element $tbl';  /** @var Element $tbl */
 								$tblDP = DOMDataUtils::getDataParsoid( $tbl );
-								if ( isset( $dp->tsr->start ) && $dp->tsr->start !== null &&
-									isset( $tblDP->dsr->start ) && $tblDP->dsr->start === null
+								if ( isset( $dp->tsr ) && $dp->tsr->start !== null && $dp->tsr->start !== null &&
+									isset( $tblDP->dsr ) && $tblDP->dsr->start !== null && $tblDP->dsr->start === null
 								) {
 									$tblDP->dsr->start = $dp->tsr->start;
 								}

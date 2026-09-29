@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bbf6761431f9a3c4979e8b89b0d8fbd9",
+    "content-hash": "d40a6da8b229ebf0d2431431736f7d60",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -1354,7 +1354,6 @@
                 "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Net_Socket",
                 "source": "https://github.com/pear/Net_Socket"
             },
-            "abandoned": true,
             "time": "2015-03-22T15:48:19+00:00"
         },
         {
@@ -3368,16 +3367,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.20.8",
+            "version": "v0.20.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
-                "reference": "e1ad85b8253ea83c3bba86276cccaebbd0db094a"
+                "reference": "e3c8b483a0682c87f7ffec7a2684ecc4ddbf91eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/e1ad85b8253ea83c3bba86276cccaebbd0db094a",
-                "reference": "e1ad85b8253ea83c3bba86276cccaebbd0db094a",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/e3c8b483a0682c87f7ffec7a2684ecc4ddbf91eb",
+                "reference": "e3c8b483a0682c87f7ffec7a2684ecc4ddbf91eb",
                 "shasum": ""
             },
             "require": {
@@ -3404,8 +3403,8 @@
             },
             "require-dev": {
                 "ext-curl": "*",
-                "mediawiki/mediawiki-codesniffer": "45.0.0",
-                "mediawiki/mediawiki-phan-config": "0.14.0",
+                "mediawiki/mediawiki-codesniffer": "48.0.1",
+                "mediawiki/mediawiki-phan-config": "0.20.0",
                 "mediawiki/minus-x": "1.1.3",
                 "monolog/monolog": "^2.2.0",
                 "nikic/php-parser": "^4.10.2",
@@ -3445,10 +3444,10 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.20.8",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.20.10",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
-            "time": "2026-04-13T16:23:34+00:00"
+            "time": "2026-10-01T09:53:39+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",
