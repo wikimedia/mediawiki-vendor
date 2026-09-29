@@ -31,6 +31,8 @@ class GravyApprovePaymentResponseFactory extends GravyPaymentResponseFactory {
 	 * @return void
 	 */
 	protected static function setPaymentDetails( ApprovePaymentResponse $paymentResponse, array $normalizedResponse ): void {
-		$paymentResponse->setGatewayTxnId( $normalizedResponse['gateway_txn_id'] );
+		if ( !empty( $normalizedResponse['gateway_txn_id'] ) ) {
+			$paymentResponse->setGatewayTxnId( $normalizedResponse['gateway_txn_id'] );
+		}
 	}
 }

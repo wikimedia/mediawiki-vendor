@@ -19,6 +19,8 @@ class GravyCreatePaymentSessionResponseFactory extends GravyPaymentResponseFacto
 		if ( !$paymentResponse instanceof CreatePaymentSessionResponse ) {
 			return;
 		}
-		$paymentResponse->setPaymentSession( $normalizedResponse['gateway_session_id'] );
+		if ( !empty( $normalizedResponse['gateway_session_id'] ) ) {
+			$paymentResponse->setPaymentSession( $normalizedResponse['gateway_session_id'] );
+		}
 	}
 }

@@ -50,9 +50,15 @@ class GravyCreatePaymentResponseFactory extends GravyPaymentResponseFactory {
 	 * @return void
 	 */
 	protected static function setPaymentDetails( PaymentProviderResponse $paymentResponse, array $normalizedResponse ): void {
-		$paymentResponse->setGatewayTxnId( $normalizedResponse['gateway_txn_id'] );
-		$paymentResponse->setAmount( $normalizedResponse['amount'] );
-		$paymentResponse->setCurrency( $normalizedResponse['currency'] );
+		if ( !empty( $normalizedResponse['gateway_txn_id'] ) ) {
+			$paymentResponse->setGatewayTxnId( $normalizedResponse['gateway_txn_id'] );
+		}
+		if ( !empty( $normalizedResponse['amount'] ) ) {
+			$paymentResponse->setAmount( $normalizedResponse['amount'] );
+		}
+		if ( !empty( $normalizedResponse['currency'] ) ) {
+			$paymentResponse->setCurrency( $normalizedResponse['currency'] );
+		}
 	}
 
 	/**
@@ -72,8 +78,8 @@ class GravyCreatePaymentResponseFactory extends GravyPaymentResponseFactory {
 	 * @return void
 	 */
 	protected static function setPaymentSubmethod( PaymentProviderResponse $paymentResponse, array $normalizedResponse ): void {
-		$paymentResponse->setPaymentMethod( $normalizedResponse['payment_method'] );
-		$paymentResponse->setPaymentSubmethod( $normalizedResponse['payment_submethod'] );
+		$paymentResponse->setPaymentMethod( $normalizedResponse['payment_method'] ?? null );
+		$paymentResponse->setPaymentSubmethod( $normalizedResponse['payment_submethod'] ?? null );
 	}
 
 	protected static function setDonorDetails( PaymentProviderResponse $paymentResponse, array $normalizedResponse ) {
@@ -100,7 +106,9 @@ class GravyCreatePaymentResponseFactory extends GravyPaymentResponseFactory {
 	}
 
 	protected static function setRiskScores( PaymentProviderResponse $paymentResponse, array $normalizedResponse ) {
-		$paymentResponse->setRiskScores( $normalizedResponse['risk_scores'] );
+		if ( !empty( $normalizedResponse['risk_scores'] ) ) {
+			$paymentResponse->setRiskScores( $normalizedResponse['risk_scores'] );
+		}
 	}
 
 	protected static function setSuspectedFraud( CreatePaymentResponse $paymentResponse, array $normalizedResponse ): void {

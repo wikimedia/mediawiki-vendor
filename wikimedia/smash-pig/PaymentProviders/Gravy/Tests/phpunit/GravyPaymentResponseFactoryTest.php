@@ -3,6 +3,7 @@
 namespace SmashPig\PaymentProviders\Gravy\Tests\phpunit;
 
 use PHPUnit\Framework\TestCase;
+use SmashPig\PaymentData\ErrorCode;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyCreatePaymentResponseFactory;
 use SmashPig\PaymentProviders\Responses\PaymentProviderResponse;
 
@@ -28,6 +29,151 @@ class GravyPaymentResponseFactoryTest extends TestCase {
 		$this->assertEquals( $testNormalizedResponseData['raw_response'], $gravyPaymentProviderResponse->getRawResponse() );
 		$this->assertEquals( $testNormalizedResponseData['risk_scores'], $gravyPaymentProviderResponse->getRiskScores() );
 		$this->assertCount( 0, $gravyPaymentProviderResponse->getErrors() );
+	}
+
+	/**
+	 * A failed transaction should still populate donor / backend processor / payment method
+	 * details, in addition to the error, so we know what backend processor was used even
+	 * when the authorization failed.
+	 *
+	 * @return void
+	 */
+	public function testBuildPaymentResponseFromNormalizedFailedCreatePaymentResponseData(): void {
+		$testNormalizedResponseData = $this->getTestFailedNormalizedResponseData();
+		$gravyPaymentProviderResponse = GravyCreatePaymentResponseFactory::fromNormalizedResponse( $testNormalizedResponseData );
+
+		$this->assertFalse( $gravyPaymentProviderResponse->isSuccessful() );
+		$this->assertEquals( 'failed', $gravyPaymentProviderResponse->getStatus() );
+		$this->assertEquals( 'authorization_declined', $gravyPaymentProviderResponse->getRawStatus() );
+		$this->assertCount( 1, $gravyPaymentProviderResponse->getErrors() );
+
+		$this->assertEquals( 'fe26475d-ec3e-4884-9553-f7356683f7f9', $gravyPaymentProviderResponse->getGatewayTxnId() );
+		$this->assertEquals( 'trustly', $gravyPaymentProviderResponse->getBackendProcessor() );
+		$this->assertEquals( '7jZXl4gBUNl0CnaLEnfXbt', $gravyPaymentProviderResponse->getPaymentOrchestratorReconciliationId() );
+		$this->assertEquals( 'John', $gravyPaymentProviderResponse->getDonorDetails()->getFirstName() );
+	}
+
+	/**
+	 * When the error happens before Gravy ever collected buyer / payment method / payment
+	 * service data (eg. a request-level error), those fields should come back empty rather
+	 * than throwing or getting populated with placeholder data.
+	 *
+	 * @return void
+	 */
+	public function testBuildPaymentResponseFromNormalizedFailedResponseWithNoCollectedDetails(): void {
+		$testNormalizedResponseData = $this->getTestFailedNormalizedResponseDataWithNoCollectedDetails();
+		$gravyPaymentProviderResponse = GravyCreatePaymentResponseFactory::fromNormalizedResponse( $testNormalizedResponseData );
+
+		$this->assertFalse( $gravyPaymentProviderResponse->isSuccessful() );
+		$this->assertEquals( 'failed', $gravyPaymentProviderResponse->getStatus() );
+		$this->assertCount( 1, $gravyPaymentProviderResponse->getErrors() );
+
+		$this->assertNull( $gravyPaymentProviderResponse->getGatewayTxnId() );
+		$this->assertNull( $gravyPaymentProviderResponse->getAmount() );
+		$this->assertNull( $gravyPaymentProviderResponse->getCurrency() );
+		$this->assertNull( $gravyPaymentProviderResponse->getPaymentMethod() );
+		$this->assertNull( $gravyPaymentProviderResponse->getPaymentSubmethod() );
+		$this->assertNull( $gravyPaymentProviderResponse->getBackendProcessor() );
+
+		// setDonorDetails always builds a DonorDetails, but with empty fields when none were collected.
+		$this->assertSame( '', $gravyPaymentProviderResponse->getDonorDetails()->getFirstName() );
+		$this->assertSame( '', $gravyPaymentProviderResponse->getDonorDetails()->getEmail() );
+	}
+
+	/**
+	 * @return array
+	 */
+	private function getTestFailedNormalizedResponseDataWithNoCollectedDetails(): array {
+		return [
+			'is_successful' => false,
+			'status' => 'failed',
+			'raw_status' => 429,
+			'message' => 'Too many requests',
+			'description' => 'too_many_requests',
+			'code' => 1,
+			'raw_response' => [ 'type' => 'error', 'status' => 429 ],
+		];
+	}
+
+	/**
+	 * A validation error can point at a specific field (via a JSON pointer in the raw
+	 * response's `details`) with no buyer/payment_method/payment_service context at all,
+	 * eg. a stored payment method that failed before a transaction was ever attempted.
+	 * The field-level detail should still surface as a validation error.
+	 *
+	 * @return void
+	 */
+	public function testBuildPaymentResponseFromNormalizedValidationErrorWithNoOtherContext(): void {
+		$testNormalizedResponseData = $this->getTestValidationErrorNormalizedResponseData();
+		$gravyPaymentProviderResponse = GravyCreatePaymentResponseFactory::fromNormalizedResponse( $testNormalizedResponseData );
+
+		$this->assertFalse( $gravyPaymentProviderResponse->isSuccessful() );
+		$this->assertEquals( 'failed', $gravyPaymentProviderResponse->getStatus() );
+		$this->assertCount( 0, $gravyPaymentProviderResponse->getErrors() );
+		$this->assertCount( 1, $gravyPaymentProviderResponse->getValidationErrors() );
+
+		$validationError = $gravyPaymentProviderResponse->getValidationErrors()[0];
+		$this->assertEquals( 'payment_method/id', $validationError->getField() );
+		$this->assertEquals(
+			'Payment method has not been successfully stored. Current status: failed.',
+			$validationError->getDebugMessage()
+		);
+
+		$this->assertNull( $gravyPaymentProviderResponse->getGatewayTxnId() );
+		$this->assertNull( $gravyPaymentProviderResponse->getBackendProcessor() );
+	}
+
+	/**
+	 * @return array
+	 */
+	private function getTestValidationErrorNormalizedResponseData(): array {
+		return [
+			'is_successful' => false,
+			'status' => 'failed',
+			'raw_status' => 400,
+			'message' => 'bad_request',
+			'description' => 'Request failed validation',
+			'code' => ErrorCode::VALIDATION,
+			'raw_response' => [
+				'type' => 'error',
+				'code' => 'bad_request',
+				'status' => 400,
+				'message' => 'Request failed validation',
+				'details' => [
+					[
+						'location' => 'body',
+						'pointer' => '/payment_method/id',
+						'message' => 'Payment method has not been successfully stored. Current status: failed.',
+						'type' => 'value_error',
+					],
+				],
+			],
+		];
+	}
+
+	/**
+	 * @return array
+	 */
+	private function getTestFailedNormalizedResponseData(): array {
+		return [
+			'is_successful' => false,
+			'gateway_txn_id' => 'fe26475d-ec3e-4884-9553-f7356683f7f9',
+			'payment_orchestrator_reconciliation_id' => '7jZXl4gBUNl0CnaLEnfXbt',
+			'order_id' => 'user-789123',
+			'raw_status' => 'authorization_declined',
+			'status' => 'failed',
+			'message' => 'authorization_declined',
+			'description' => 'insufficient_funds',
+			'code' => 1,
+			'backend_processor' => 'trustly',
+			'donor_details' => [
+				'first_name' => 'John',
+				'last_name' => 'Lunn',
+				'email_address' => 'john@example.com',
+				'phone_number' => '+1234567890',
+			],
+			'raw_response' => [ 'status' => 'authorization_declined' ],
+		];
 	}
 
 	/**

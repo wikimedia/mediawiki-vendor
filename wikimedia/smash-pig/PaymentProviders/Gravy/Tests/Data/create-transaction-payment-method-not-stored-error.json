@@ -1,0 +1,14 @@
+{
+  "type": "error",
+  "code": "bad_request",
+  "status": 400,
+  "message": "Request failed validation",
+  "details": [
+    {
+      "location": "body",
+      "pointer": "/payment_method/id",
+      "message": "Payment method has not been successfully stored. Current status: failed.",
+      "type": "value_error"
+    }
+  ]
+}

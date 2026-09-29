@@ -282,6 +282,7 @@ class ResponseMapper {
 
 		$this->mapPaymentResponsePaymentService( $result, $response );
 
+		// FIXME: put this in a MotoResponseMapper subclass
 		if ( ( $response['payment_source'] ?? null ) === 'moto' ) {
 			$this->mapPaymentResponseMotoDetails( $result, $response );
 		}
@@ -377,6 +378,8 @@ class ResponseMapper {
 
 		$errorResponse = [
 			'is_successful' => false,
+			'gateway_txn_id' => $error['id'] ?? null,
+			'order_id' => $error['external_identifier'] ?? null,
 			'status' => $errorCode == ErrorCode::CANCELLED_BY_DONOR ? FinalStatus::CANCELLED : FinalStatus::FAILED,
 			'code' => $errorCode,
 			'message' => $errorParameters['message'],
@@ -385,6 +388,18 @@ class ResponseMapper {
 			'is_suspected_fraud' => ErrorMapper::isSuspectedFraud( $errorParameters['code'] ),
 			'payment_service_refund_id' => $error['payment_service_refund_id'] ?? '',
 		];
+
+		if ( !empty( $error['amount'] ) && !empty( $error['currency'] ) ) {
+			$errorResponse['currency'] = $error['currency'];
+			$errorResponse['amount'] = CurrencyRoundingHelper::getAmountInMajorUnits(
+				$error['amount'], $error['currency']
+			);
+		}
+
+		$this->mapPaymentResponsePaymentMethodDetails( $errorResponse, $error );
+		$this->mapPaymentResponseDonorDetails( $errorResponse, $error );
+		$this->mapPaymentResponsePaymentService( $errorResponse, $error );
+
 		if ( !isset( $errorParameters['normalized_response'] ) ) {
 			return $errorResponse;
 		}

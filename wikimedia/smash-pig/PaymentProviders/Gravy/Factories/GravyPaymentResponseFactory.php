@@ -29,15 +29,15 @@ abstract class GravyPaymentResponseFactory {
 		$paymentProviderResponse->setNormalizedResponse( $response );
 		$paymentProviderResponse->setStatus( $response['status'] );
 		$paymentProviderResponse->setSuccessful( $isSuccessful );
+		$paymentProviderResponse->setRawStatus( $response['raw_status'] ?? '' );
+
 		if ( static::isFailedTransaction( $paymentProviderResponse->getStatus() ) ) {
 			$response['message'] ??= 'Unknown error';
 			$response['description'] ??= 'Unknown error';
 			$response['code'] ??= ErrorCode::UNKNOWN;
 
 			static::addPaymentFailureError( $paymentProviderResponse, $response['message'] . ':' . $response['description'], $response['code'], $response );
-			return $paymentProviderResponse;
 		}
-		$paymentProviderResponse->setRawStatus( $response['raw_status'] ?? '' );
 		static::decorateResponse( $paymentProviderResponse, $response );
 		return $paymentProviderResponse;
 	}
@@ -86,7 +86,9 @@ abstract class GravyPaymentResponseFactory {
 		PaymentProviderExtendedResponse $paymentResponse,
 		array $normalizedResponse
 	): void {
-		$paymentResponse->setPaymentOrchestratorReconciliationId( $normalizedResponse['payment_orchestrator_reconciliation_id'] );
+		$paymentResponse->setPaymentOrchestratorReconciliationId(
+			$normalizedResponse['payment_orchestrator_reconciliation_id'] ?? null
+		);
 	}
 
 	/**

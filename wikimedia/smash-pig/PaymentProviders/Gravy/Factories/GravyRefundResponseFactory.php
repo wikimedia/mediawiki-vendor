@@ -33,23 +33,33 @@ class GravyRefundResponseFactory extends GravyPaymentResponseFactory {
 	}
 
 	protected static function setRefundAmount( RefundPaymentResponse $refundResponse, array $normalizedResponse ): void {
-		$refundResponse->setAmount( $normalizedResponse['amount'] );
+		if ( !empty( $normalizedResponse['amount'] ) ) {
+			$refundResponse->setAmount( $normalizedResponse['amount'] );
+		}
 	}
 
 	protected static function setRefundCurrency( RefundPaymentResponse $refundResponse, array $normalizedResponse ): void {
-		$refundResponse->setCurrency( $normalizedResponse['currency'] );
+		if ( !empty( $normalizedResponse['currency'] ) ) {
+			$refundResponse->setCurrency( $normalizedResponse['currency'] );
+		}
 	}
 
 	protected static function setRefundId( RefundPaymentResponse $refundResponse, array $normalizedResponse ): void {
-		$refundResponse->setGatewayRefundId( $normalizedResponse['gateway_refund_id'] );
+		if ( !empty( $normalizedResponse['gateway_refund_id'] ) ) {
+			$refundResponse->setGatewayRefundId( $normalizedResponse['gateway_refund_id'] );
+		}
 	}
 
 	protected static function setParentId( RefundPaymentResponse $refundResponse, array $normalizedResponse ): void {
-		$refundResponse->setGatewayParentId( $normalizedResponse['gateway_parent_id'] );
+		if ( !empty( $normalizedResponse['gateway_parent_id'] ) ) {
+			$refundResponse->setGatewayParentId( $normalizedResponse['gateway_parent_id'] );
+		}
 	}
 
 	protected static function setPaymentServiceRefundId( RefundResponse $refundResponse, array $normalizedResponse ): void {
-		$refundResponse->setPaymentServiceRefundId( $normalizedResponse['payment_service_refund_id'] );
+		if ( !empty( $normalizedResponse['gateway_service_refund_id'] ) ) {
+			$refundResponse->setPaymentServiceRefundId( $normalizedResponse['payment_service_refund_id'] );
+		}
 	}
 
 }

@@ -62,6 +62,91 @@ class ResponseMapperTest extends BaseGravyTestCase {
 		$this->assertSame( [], $result['moto_metadata'] );
 	}
 
+	public function testMapToCreatePaymentResponseAuthDeclinePopulatesDonorAndProcessorDetails() {
+		$rawResponse = $this->loadTestData( 'trustly-create-transaction-failed.json' );
+		$mapper = new ResponseMapper();
+		$result = $mapper->mapFromPaymentResponse( $rawResponse );
+
+		$this->assertFalse( $result['is_successful'] );
+		$this->assertEquals( FinalStatus::FAILED, $result['status'] );
+		$this->assertEquals( $rawResponse['id'], $result['gateway_txn_id'] );
+		$this->assertEquals( $rawResponse['external_identifier'], $result['order_id'] );
+		$this->assertEquals( $rawResponse['currency'], $result['currency'] );
+		$this->assertEquals( 12.23, $result['amount'] );
+
+		$this->assertEquals( 'dd', $result['payment_method'] );
+		$this->assertEquals( 'ach', $result['payment_submethod'] );
+
+		$this->assertEquals( 'Jimmy', $result['donor_details']['first_name'] );
+		$this->assertEquals( 'Wales', $result['donor_details']['last_name'] );
+		$this->assertEquals( 'jwales@example.com', $result['donor_details']['email_address'] );
+
+		$this->assertEquals( 'trustly', $result['backend_processor'] );
+		$this->assertEquals( $rawResponse['reconciliation_id'], $result['payment_orchestrator_reconciliation_id'] );
+		$this->assertEquals(
+			$rawResponse['additional_identifiers']['payment_service_authorization_id'],
+			$result['backend_processor_auth_id']
+		);
+	}
+
+	public function testMapToCreatePaymentResponseAuthDeclineOmitsAmountWhenMissing() {
+		$rawResponse = $this->loadTestData( 'create-payment-response-insufficient-funds.json' );
+		unset( $rawResponse['amount'], $rawResponse['currency'] );
+		$mapper = new ResponseMapper();
+		$result = $mapper->mapFromPaymentResponse( $rawResponse );
+
+		$this->assertArrayNotHasKey( 'amount', $result );
+		$this->assertArrayNotHasKey( 'currency', $result );
+	}
+
+	/**
+	 * A request-level error (eg. rate limiting, an API-side validation failure) can come back
+	 * before Gravy ever creates a transaction, so there's no buyer, payment_method, or
+	 * payment_service data to map. These fields should be omitted or left null rather than
+	 * causing a notice or getting populated with placeholder data.
+	 */
+	public function testMapErrorResponseOmitsDonorAndPaymentMethodDetailsWhenNeverCollected() {
+		$rawResponse = $this->loadTestData( 'create-transaction-request-fail.json' );
+		$mapper = new ResponseMapper();
+		$result = $mapper->mapFromPaymentResponse( $rawResponse );
+
+		$this->assertFalse( $result['is_successful'] );
+		$this->assertEquals( FinalStatus::FAILED, $result['status'] );
+
+		$this->assertArrayNotHasKey( 'donor_details', $result );
+		$this->assertArrayNotHasKey( 'payment_method', $result );
+		$this->assertArrayNotHasKey( 'payment_submethod', $result );
+		$this->assertArrayNotHasKey( 'redirect_url', $result );
+		$this->assertArrayNotHasKey( 'amount', $result );
+		$this->assertArrayNotHasKey( 'currency', $result );
+
+		$this->assertNull( $result['gateway_txn_id'] );
+		$this->assertNull( $result['order_id'] );
+		$this->assertNull( $result['backend_processor'] );
+		$this->assertNull( $result['payment_orchestrator_reconciliation_id'] );
+	}
+
+	/**
+	 * A validation error can come back with a JSON-pointer to the offending field but no
+	 * buyer/payment_method/payment_service data at all (eg. a stored payment method that
+	 * failed before a transaction was attempted). The field-level detail should still get
+	 * captured even though the rest of the transaction context was never collected.
+	 */
+	public function testMapErrorResponseWithValidationDetailAndNoOtherContext() {
+		$rawResponse = $this->loadTestData( 'create-transaction-payment-method-not-stored-error.json' );
+		$mapper = new ResponseMapper();
+		$result = $mapper->mapFromPaymentResponse( $rawResponse );
+
+		$this->assertFalse( $result['is_successful'] );
+		$this->assertEquals( FinalStatus::FAILED, $result['status'] );
+		$this->assertEquals( 'bad_request', $result['message'] );
+		$this->assertEquals( 'Request failed validation', $result['description'] );
+
+		$this->assertArrayNotHasKey( 'donor_details', $result );
+		$this->assertArrayNotHasKey( 'payment_method', $result );
+		$this->assertNull( $result['backend_processor'] );
+	}
+
 	public function testMapPaymentResponseSetsBackendProcessorContactIdWhenAdditionalIdentifiersPresent() {
 		$rawResponse = $this->buildPaypalPaymentResponse();
 		$rawResponse['additional_identifiers'] = [ 'payer_id' => 'PAYER123' ];
