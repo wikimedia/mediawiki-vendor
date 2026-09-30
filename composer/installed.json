@@ -8349,17 +8349,17 @@
         },
         {
             "name": "wikimedia/minify",
-            "version": "2.11.0",
-            "version_normalized": "2.11.0.0",
+            "version": "2.12.0",
+            "version_normalized": "2.12.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-Minify.git",
-                "reference": "4497c20518dcf2a4b253bcf6ca81a3f04e80f84c"
+                "reference": "fdf9a3f31f21e17fddfbe079a9c62bafb96f3265"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Minify/zipball/4497c20518dcf2a4b253bcf6ca81a3f04e80f84c",
-                "reference": "4497c20518dcf2a4b253bcf6ca81a3f04e80f84c",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-Minify/zipball/fdf9a3f31f21e17fddfbe079a9c62bafb96f3265",
+                "reference": "fdf9a3f31f21e17fddfbe079a9c62bafb96f3265",
                 "shasum": ""
             },
             "require": {
@@ -8370,7 +8370,7 @@
             },
             "require-dev": {
                 "mck89/peast": "^1.16",
-                "mediawiki/mediawiki-codesniffer": "51.0.0",
+                "mediawiki/mediawiki-codesniffer": "52.0.0",
                 "mediawiki/mediawiki-phan-config": "0.20.0",
                 "mediawiki/minus-x": "2.0.1",
                 "ockcyp/covers-validator": "1.7.0",
@@ -8379,7 +8379,7 @@
                 "phpunit/phpunit": "10.5.63",
                 "wikimedia/testing-access-wrapper": "~4.0.0"
             },
-            "time": "2026-06-26T16:30:20+00:00",
+            "time": "2026-09-22T14:28:26+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -8415,7 +8415,7 @@
             "description": "Minification of JavaScript code and CSS stylesheets.",
             "homepage": "https://gerrit.wikimedia.org/g/mediawiki/libs/Minify",
             "support": {
-                "source": "https://github.com/wikimedia/mediawiki-libs-Minify/tree/2.11.0"
+                "source": "https://github.com/wikimedia/mediawiki-libs-Minify/tree/2.12.0"
             },
             "install-path": "../wikimedia/minify"
         },

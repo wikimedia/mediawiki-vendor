@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.12.0 (2026-09-21)
+
+Added:
+
+* JavaScriptMinifier: Support ES2022 class fields (Siddharth VP) [T317502](https://phabricator.wikimedia.org/T317502)
+* JavaScriptMinifier: Update class documentation for ES2022 support (Siddharth VP) [T425100](https://phabricator.wikimedia.org/T425100)
+
 ## 2.11.0 (2026-06-26)
 
 Fixed:
