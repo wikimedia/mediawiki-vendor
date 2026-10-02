@@ -61,7 +61,6 @@ use Wikimedia\Parsoid\Wikitext\Consts;
  * - add a generic 'can this HTML node be serialized to wikitext in this
  *   context' detection method and use that to adaptively switch between
  *   wikitext and HTML serialization.
- *
  */
 class WikitextSerializer {
 
@@ -477,11 +476,15 @@ class WikitextSerializer {
 				// Attrib not present -- sanitized away!
 				if ( !KV::lookupKV( $attribs, (string)$k ) ) {
 					$v = $dataParsoid->sa[$k] ?? null;
-					// PORT-FIXME check type
+					// FIXME: The tokenizer and attribute shadowing currently
+					// don't make much effort towards distinguishing the use
+					// of HTML empty attribute syntax.  We can derive whether
+					// empty attribute syntax was used from the attributes
+					// srcOffsets in the Sanitizer, from the key end position
+					// and value start position being different.
 					if ( $v !== null && $v !== '' ) {
 						$out[] = $k . '="' . str_replace( '"', '&quot;', $v ) . '"';
 					} else {
-						// at least preserve the key
 						$out[] = $k;
 					}
 				}
@@ -690,7 +693,7 @@ class WikitextSerializer {
 		$buf .= $this->formatStringSubst( $formatStart, $part->targetWt, $forceTrim );
 
 		// Short-circuit transclusions without params
-		$paramKeys = array_map( fn ( ParamInfo $pi ) => $pi->k, $part->paramInfos );
+		$paramKeys = array_map( static fn ( ParamInfo $pi ) => $pi->k, $part->paramInfos );
 		if ( !$paramKeys ) {
 			if ( substr( $formatEnd, 0, 1 ) === "\n" ) {
 				$formatEnd = substr( $formatEnd, 1 );
@@ -710,7 +713,7 @@ class WikitextSerializer {
 		// Per-parameter info from data-parsoid for pre-existing parameters
 		$dp = DOMDataUtils::getDataParsoid( $node );
 		// Account for clients not setting the `i`, see T238721
-		$dpArgInfo = isset( $part->i ) ? ( $dp->pi[$part->i] ?? [] ) : [];
+		$dpArgInfo = $part->i !== null ? ( $dp->pi[$part->i] ?? [] ) : [];
 
 		// Build a key -> arg info map
 		$dpArgInfoMap = [];
@@ -919,7 +922,7 @@ class WikitextSerializer {
 			$prevPart = $srcParts[$i - 1] ?? null;
 			$nextPart = $srcParts[$i + 1] ?? null;
 
-			if ( !isset( $part->targetWt ) ) {
+			if ( $part->targetWt === null ) {
 				// Maybe we should just raise a ClientError
 				$this->env->log( 'error', 'data-mw.parts array is malformed: ',
 					DOMCompat::getOuterHTML( $node ), PHPUtils::jsonEncode( $srcParts ) );
@@ -948,7 +951,7 @@ class WikitextSerializer {
 			// Fetch template data for the template
 			$tplData = null;
 			$apiResp = null;
-			if ( isset( $part->href ) && $useTplData ) {
+			if ( $part->href !== null && $useTplData ) {
 				// Not a parser function
 				try {
 					$title = Title::newFromText(
@@ -1252,6 +1255,7 @@ class WikitextSerializer {
 		$domHandler = $method = null;
 		$domHandlerFactory = new DOMHandlerFactory();
 		$state = $this->state;
+		// @phan-suppress-next-line PhanTypeMismatchProperty
 		$state->currNode = $node;
 
 		if ( $state->selserMode ) {
