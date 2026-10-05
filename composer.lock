@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a6a2a6013ab85e24ff46db3932e30729",
+    "content-hash": "768e7c2e176cb46f3ace0eeda86b955e",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -8175,16 +8175,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.24.0-a25",
+            "version": "v0.24.0-a26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
-                "reference": "783ff02123527980c9ad9c9e0eed5b816cf970c8"
+                "reference": "3b99760f34de7408ab4e1ebdaa9a03f4dd5c6752"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/783ff02123527980c9ad9c9e0eed5b816cf970c8",
-                "reference": "783ff02123527980c9ad9c9e0eed5b816cf970c8",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/3b99760f34de7408ab4e1ebdaa9a03f4dd5c6752",
+                "reference": "3b99760f34de7408ab4e1ebdaa9a03f4dd5c6752",
                 "shasum": ""
             },
             "require": {
@@ -8209,9 +8209,6 @@
                 "wikimedia/wikipeg": "^6.0.0",
                 "wikimedia/zest-css": "^4.1.0"
             },
-            "conflict": {
-                "wikimedia/langconv": "<0.4.2"
-            },
             "require-dev": {
                 "ext-curl": "*",
                 "mediawiki/mediawiki-codesniffer": "52.0.0",
@@ -8226,13 +8223,11 @@
                 "sebastian/diff": "^5.1.1",
                 "wikimedia/alea": "^1.0.0",
                 "wikimedia/dodo": "^0.7.0",
-                "wikimedia/langconv": "^0.5.0",
                 "wikimedia/testing-access-wrapper": "^4.0.0"
             },
             "suggest": {
                 "ext-excimer": "Needed to support flamegraphs in parse.php",
-                "ext-readline": "Needed to support repl.php",
-                "wikimedia/langconv": "Provides script conversion support"
+                "ext-readline": "Needed to support repl.php"
             },
             "type": "library",
             "autoload": {
@@ -8258,10 +8253,10 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.24.0-a25",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.24.0-a26",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
-            "time": "2026-09-28T19:20:20+00:00"
+            "time": "2026-10-01T19:34:58+00:00"
         },
         {
             "name": "wikimedia/purtle",
