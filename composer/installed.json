@@ -8473,17 +8473,17 @@
         },
         {
             "name": "wikimedia/object-factory",
-            "version": "v6.0.0",
-            "version_normalized": "6.0.0.0",
+            "version": "v7.0.0",
+            "version_normalized": "7.0.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-libs-ObjectFactory.git",
-                "reference": "a7bcfcbfea2304f1e5f29d3253bebc0dd49d3dee"
+                "reference": "180aa507750a8b5ba7d363f78357621fddb3cc51"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-ObjectFactory/zipball/a7bcfcbfea2304f1e5f29d3253bebc0dd49d3dee",
-                "reference": "a7bcfcbfea2304f1e5f29d3253bebc0dd49d3dee",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-libs-ObjectFactory/zipball/180aa507750a8b5ba7d363f78357621fddb3cc51",
+                "reference": "180aa507750a8b5ba7d363f78357621fddb3cc51",
                 "shasum": ""
             },
             "require": {
@@ -8491,15 +8491,15 @@
                 "psr/container": "~2.0.2"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "50.0.0",
-                "mediawiki/mediawiki-phan-config": "0.19.0",
+                "mediawiki/mediawiki-codesniffer": "52.0.0",
+                "mediawiki/mediawiki-phan-config": "0.20.0",
                 "mediawiki/minus-x": "2.0.1",
                 "ockcyp/covers-validator": "1.7.0",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
                 "php-parallel-lint/php-parallel-lint": "1.4.0",
                 "phpunit/phpunit": "10.5.63"
             },
-            "time": "2026-03-02T14:21:30+00:00",
+            "time": "2026-09-16T14:48:18+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -8520,7 +8520,7 @@
             "description": "Construct objects from configuration instructions",
             "homepage": "https://www.mediawiki.org/wiki/ObjectFactory",
             "support": {
-                "source": "https://github.com/wikimedia/mediawiki-libs-ObjectFactory/tree/v6.0.0"
+                "source": "https://github.com/wikimedia/mediawiki-libs-ObjectFactory/tree/v7.0.0"
             },
             "install-path": "../wikimedia/object-factory"
         },

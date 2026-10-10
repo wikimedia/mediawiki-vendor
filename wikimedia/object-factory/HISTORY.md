@@ -1,5 +1,10 @@
 # Release History
 
+## v7.0.0
+* BREAKING CHANGE: use `strict_types` during object construction
+  (Umherirrender)
+* Restrict `extraArgs` to list (no named arguments) (Umherirrender)
+
 ## v6.0.0
 * BREAKING CHANGE: Drop support for PHP < 8.1 (James D. Forrester)
 * Use unprefixed `@template` annotations so IDEs can read them (Daimona)

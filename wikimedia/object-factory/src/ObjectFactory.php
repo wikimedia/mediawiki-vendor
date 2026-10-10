@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * @license GPL-2.0-or-later
  * @file
@@ -88,7 +90,7 @@ class ObjectFactory {
 	 * @template T of object
 	 *
 	 * @phpcs:ignore Generic.Files.LineLength
-	 * @param class-string<T>|callable(mixed ...$args):T|array{class?:class-string<T>,factory?:callable(mixed ...$args):T,args?:array,services?:array<string|null>,optional_services?:array<string|null>,calls?:string[],closure_expansion?:bool,spec_is_arg?:bool} $spec
+	 * @param class-string<T>|callable(mixed ...$args):T|array{class?:class-string<T>,factory?:callable(mixed ...$args):T,args?:list,services?:array<string|null>,optional_services?:array<string|null>,calls?:string[],closure_expansion?:bool,spec_is_arg?:bool} $spec
 	 *   Specification array, or (when the respective $options flag is set) a class name or callable. Allowed fields
 	 *   (see class documentation for more details):
 	 *   - 'class': (string) Class of the object to create. If 'factory' is also specified,
@@ -110,7 +112,7 @@ class ObjectFactory {
 	 *   - 'spec_is_arg': (bool, default false) When true, 'args' is ignored and the entire
 	 *     specification array is passed as an argument.
 	 *   One of 'class' and 'factory' is required.
-	 * @param array{allowClassName?:bool,allowCallable?:bool,extraArgs?:array,assertClass?:class-string<T>} $options
+	 * @param array{allowClassName?:bool,allowCallable?:bool,extraArgs?:list,assertClass?:class-string<T>} $options
 	 *  Allowed keys are:
 	 *  - 'allowClassName': (bool) If set and truthy, $spec may be a string class name.
 	 *    In this case, it will be treated as if it were `[ 'class' => $spec ]`.
@@ -136,9 +138,9 @@ class ObjectFactory {
 	 * @template T of object
 	 *
 	 * @phpcs:disable Generic.Files.LineLength
-	 * @param class-string<T>|callable(mixed ...$args):T|array{class?:class-string<T>,factory?:callable(mixed ...$args):T,args?:array,services?:array<string|null>,optional_services?:array<string|null>,calls?:string[],closure_expansion?:bool,spec_is_arg?:bool} $spec
+	 * @param class-string<T>|callable(mixed ...$args):T|array{class?:class-string<T>,factory?:callable(mixed ...$args):T,args?:list,services?:array<string|null>,optional_services?:array<string|null>,calls?:string[],closure_expansion?:bool,spec_is_arg?:bool} $spec
 	 *  As for createObject().
-	 * @param array{allowClassName?:bool,allowCallable?:bool,extraArgs?:array,assertClass?:class-string<T>,serviceContainer?:ContainerInterface} $options
+	 * @param array{allowClassName?:bool,allowCallable?:bool,extraArgs?:list,assertClass?:class-string<T>,serviceContainer?:ContainerInterface} $options
 	 *  As for createObject(). Additionally:
 	 *  - 'serviceContainer': (ContainerInterface) PSR-11 service container to use
 	 *    to handle 'services'.
@@ -161,8 +163,8 @@ class ObjectFactory {
 			$args = $spec['args'] ?? [];
 
 			// $args should be a non-associative array; show nice error if that's not the case
-			if ( !array_is_list( $args ) ) {
-				throw new InvalidArgumentException( '\'args\' cannot be an associative array' );
+			if ( !is_array( $args ) || !array_is_list( $args ) ) {
+				throw new InvalidArgumentException( '\'args\' must be a list' );
 			}
 
 			if ( $expandArgs ) {
@@ -197,8 +199,14 @@ class ObjectFactory {
 			}
 		}
 
+		$extraArgs = $options['extraArgs'] ?? [];
+		// $extraArgs should be a non-associative array; show nice error if that's not the case
+		if ( !is_array( $extraArgs ) || !array_is_list( $extraArgs ) ) {
+			throw new InvalidArgumentException( '\'extraArgs\' must be a list' );
+		}
+
 		$args = array_merge(
-			$options['extraArgs'] ?? [],
+			$extraArgs,
 			$services,
 			$args
 		);
