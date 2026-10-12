@@ -275,6 +275,22 @@ abstract class PaymentProviderValidator {
 	}
 
 	/**
+	 * Checks the get payment methods request input parameters for correctness and completeness.
+	 * The only required param is country.
+	 *
+	 * @param array $params
+	 * @throws ValidationException
+	 * @return void
+	 */
+	public function validateGetPaymentMethodsInput( array $params ): void {
+		$required = [
+			'country'
+		];
+
+		$this->validateFields( $required, $params );
+	}
+
+	/**
 	 * Adds country-specific required fields based on the country code.
 	 *
 	 * @param array $params

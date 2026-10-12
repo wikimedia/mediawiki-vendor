@@ -1,0 +1,127 @@
+{
+    "items": [
+        {
+            "type": "payment-option",
+            "method": "card",
+            "icon_url": "https://example.com/card.svg",
+            "mode": "card",
+            "label": "Card",
+            "can_store_payment_method": "",
+            "can_delay_capture": "",
+            "context": {
+                "approval_ui": {
+                    "height": "589px",
+                    "width": "500px"
+                },
+                "required_fields": {
+                    "address": {
+                        "city": "",
+                        "country": "",
+                        "line1": "",
+                        "postal_code": ""
+                    }
+                }
+            }
+        },
+        {
+            "type": "payment-option",
+            "method": "venmo",
+            "icon_url": "https://example.com/venmo.svg",
+            "mode": "redirect",
+            "label": "Venmo",
+            "can_store_payment_method": "",
+            "can_delay_capture": "",
+            "context": {
+                "approval_ui": {
+                    "height": "589px",
+                    "width": "500px"
+                },
+                "required_fields": [],
+                "redirect_requires_popup": ""
+            }
+        },
+        {
+            "type": "payment-option",
+            "method": "trustly",
+            "icon_url": "https://example.com/trustly.svg",
+            "mode": "redirect",
+            "label": "Online Banking",
+            "can_store_payment_method": "",
+            "can_delay_capture": "",
+            "context": {
+                "approval_ui": {
+                    "height": "500px",
+                    "width": "600px"
+                },
+                "required_fields": [],
+                "redirect_requires_popup": ""
+            }
+        },
+        {
+            "type": "payment-option",
+            "method": "paypal",
+            "icon_url": "https://example.com/paypal.svg",
+            "mode": "redirect",
+            "label": "PayPal",
+            "can_store_payment_method": "",
+            "can_delay_capture": "",
+            "context": {
+                "approval_ui": {
+                    "height": "589px",
+                    "width": "500px"
+                },
+                "required_fields": [],
+                "redirect_requires_popup": ""
+            }
+        },
+        {
+            "type": "payment-option",
+            "method": "googlepay",
+            "icon_url": "https://example.com/googlepay.svg",
+            "mode": "googlepay",
+            "label": "Google Pay",
+            "can_store_payment_method": "",
+            "can_delay_capture": "",
+            "context": {
+                "merchant_name": "sqsqsqsq",
+                "supported_schemes": [
+                    "AMEX",
+                    "DISCOVER",
+                    "INTERAC",
+                    "JCB",
+                    "MASTERCARD",
+                    "VISA"
+                ],
+                "gateway": "gr4vy",
+                "gateway_merchant_id": "example.com.default"
+            }
+        },
+        {
+            "type": "payment-option",
+            "method": "applepay",
+            "icon_url": "https://example.com/applepay.svg",
+            "mode": "applepay",
+            "label": "Apple Pay",
+            "can_store_payment_method": "",
+            "can_delay_capture": "",
+            "context": {
+                "merchant_name": "ssqwqs",
+                "supported_schemes": [
+                    "amex",
+                    "cartesBancaires",
+                    "discover",
+                    "electron",
+                    "elo",
+                    "interac",
+                    "jcb",
+                    "mada",
+                    "maestro",
+                    "masterCard",
+                    "privateLabel",
+                    "visa",
+                    "vPay"
+                ]
+            }
+        }
+    ]
+}

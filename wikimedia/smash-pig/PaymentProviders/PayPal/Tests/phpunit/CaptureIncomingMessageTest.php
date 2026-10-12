@@ -53,6 +53,7 @@ class CaptureIncomingMessageTest extends BaseSmashPigUnitTestCase {
 		'refund_unauthorized_spoof.json' => 'refund',
 		'refund_admin_fraud_reversal.json' => 'refund',
 		'recurring_payment_suspended_due_to_max_failed_payment.json' => 'recurring',
+		'chargeback_reversed.json' => 'refund',
 	];
 
 	public function setUp(): void {

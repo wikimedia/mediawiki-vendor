@@ -69,6 +69,43 @@ class RequestMapperTest extends TestCase {
 		$this->assertEquals( $expectedRequest, $result );
 	}
 
+	public function testMapToGetPaymentMethodsRequestCountryOnly() {
+		$mapper = new RequestMapper();
+
+		$result = $mapper->mapToGetPaymentMethodsRequest( [ 'country' => 'US' ] );
+
+		$this->assertSame( [ 'country' => 'US' ], $result );
+	}
+
+	public function testMapToGetPaymentMethodsRequestWithAmount() {
+		$mapper = new RequestMapper();
+
+		$result = $mapper->mapToGetPaymentMethodsRequest( [
+			'country' => 'JP',
+			'currency' => 'JPY',
+			'amount' => '1500',
+			'order_id' => '12345',
+		] );
+
+		// JPY has no minor units, and unrelated params are dropped
+		$this->assertSame( [
+			'country' => 'JP',
+			'currency' => 'JPY',
+			'amount' => 1500,
+		], $result );
+	}
+
+	public function testMapToGetPaymentMethodsRequestIgnoresAmountWithoutCurrency() {
+		$mapper = new RequestMapper();
+
+		$result = $mapper->mapToGetPaymentMethodsRequest( [
+			'country' => 'US',
+			'amount' => '10.00',
+		] );
+
+		$this->assertSame( [ 'country' => 'US' ], $result );
+	}
+
 	public function testMapToSepaRecurringCreatePaymentRequest() {
 		$params = [
 			'recurring_payment_token' => '0c53bb01-a00b-4627-8c5a-64d692a43291',

@@ -26,6 +26,18 @@ class GravyPaymentMethodDefinitionResponseFactory extends GravyPaymentResponseFa
 		self::setSupportedCountries( $paymentMethodDefinitionResponse, $normalizedResponse );
 		self::setSupportedCurrencies( $paymentMethodDefinitionResponse, $normalizedResponse );
 		self::setRequiredFields( $paymentMethodDefinitionResponse, $normalizedResponse );
+		self::setPaymentMethods( $paymentMethodDefinitionResponse, $normalizedResponse );
+	}
+
+	/**
+	 * @param PaymentMethodResponse $paymentMethodDefinitionResponse
+	 * @param array $normalizedResponse
+	 * @return void
+	 */
+	protected static function setPaymentMethods( PaymentMethodResponse $paymentMethodDefinitionResponse, array $normalizedResponse ): void {
+		if ( !empty( $normalizedResponse['payment_methods'] ) ) {
+			$paymentMethodDefinitionResponse->setPaymentMethods( $normalizedResponse['payment_methods'] );
+		}
 	}
 
 	/**

@@ -155,6 +155,51 @@ class ResponseMapper {
 	}
 
 	/**
+	 * Maps from gravy payment options
+	 * @param array $response
+	 * @param array $additional_values extra config not returned by Gravy, e.g. google_merchant_id
+	 * @return array
+	 */
+	public function mapFromPaymentMethodResponse( array $response, array $additional_values ): array {
+		$errorResponse = $this->handleResponseErrorsIfPresent( $response );
+		if ( $errorResponse ) {
+			return $errorResponse;
+		}
+		$payment_methods = [];
+
+		foreach ( $response['items'] ?? [] as $item ) {
+			$config = [
+				'brands' => $item['context']['supported_schemes'] ?? [],
+				'configuration' => [
+					'merchantName' => $item['context']['merchant_name'] ?? ''
+				],
+				'name' => $item['label'] ?? '',
+				'type' => $item['method'] ?? ''
+			];
+
+			if ( $config['type'] === 'googlepay' ) {
+				$config['type'] = "paywithgoogle";
+				$config['configuration'] = [
+					'merchantId' => $additional_values['google_merchant_id'] ?? '',
+					'gatewayMerchantId' => $item['context']['gateway_merchant_id'] ?? ''
+				];
+			}
+
+			$payment_methods[] = $config;
+		}
+
+		$result = [
+			'is_successful' => true,
+			'raw_response' => $response,
+			'payment_methods' => $payment_methods,
+			'status' => $this->normalizeStatus( 'succeeded' ),
+			'raw_status' => 'succeeded'
+		];
+
+		return $result;
+	}
+
+	/**
 	 * Maps from gravy payment response payment method details
 	 * @param array &$result
 	 * @param array $response

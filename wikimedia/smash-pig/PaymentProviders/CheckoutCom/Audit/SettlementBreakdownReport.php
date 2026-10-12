@@ -37,7 +37,7 @@ class SettlementBreakdownReport extends CheckoutComAudit {
 			RoundingMode::HalfUp
 		);
 		foreach ( $this->feeRows as $feeRow ) {
-			$reported = $reported->plus( $feeRow['Net In Holding Currency'] );
+			$reported = $reported->plus( $feeRow['Net In Holding Currency'], RoundingMode::HalfUp );
 		}
 
 		$difference = $reported->minus( $netAmount )->getMinorAmount()->toInt();

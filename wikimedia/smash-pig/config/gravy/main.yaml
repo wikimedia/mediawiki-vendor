@@ -35,6 +35,11 @@ common-cache-parameters: &CACHE
     duration: 300
     key-base: SMASHPIG_GRAVY_METHODS
 
+apps-payment-method-config:
+  # Google merchant id for payment processor
+  # Should be overwritten in private config
+  google_merchant_id: "50"
+
 payment-provider:
   cc:
     class: SmashPig\PaymentProviders\Gravy\CardPaymentProvider

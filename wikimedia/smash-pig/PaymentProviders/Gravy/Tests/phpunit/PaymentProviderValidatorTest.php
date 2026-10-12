@@ -242,6 +242,20 @@ class PaymentProviderValidatorTest extends TestCase {
 		}
 	}
 
+	public function testValidateGetPaymentMethodsInputSuccess(): void {
+		$this->validator->validateGetPaymentMethodsInput( [ 'country' => 'US' ] );
+		$this->assertTrue( true );
+	}
+
+	public function testValidateGetPaymentMethodsInputMissingCountry(): void {
+		try {
+			$this->validator->validateGetPaymentMethodsInput( [ 'currency' => 'USD' ] );
+			$this->fail( 'Expected ValidationException' );
+		} catch ( ValidationException $e ) {
+			$this->assertArrayHasKey( 'country', $e->getData() );
+		}
+	}
+
 	/**
 	 * PaymentProviderValidator is abstract, so we use an anonymous class to test it directly.
 	 */

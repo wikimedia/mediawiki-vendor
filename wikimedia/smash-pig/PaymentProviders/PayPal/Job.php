@@ -48,9 +48,10 @@ class Job implements Runnable {
 		} elseif (
 			isset( $request['payment_status'] ) &&
 			// TODO can these go in config? --------------v-----------v
-			in_array( $request['payment_status'], [ 'Reversed', 'Refunded' ] )
+			in_array( $request['payment_status'], [ 'Reversed', 'Refunded', 'Canceled_Reversal' ] )
 		) {
 			// refund, chargeback, or reversal
+			// Canceled_Reversal means PayPal canceled the reversal and restored funds
 			$txn_type = 'refund';
 		} else {
 			throw new Exception( 'Invalid PayPal message: ' . json_encode( $request ) );

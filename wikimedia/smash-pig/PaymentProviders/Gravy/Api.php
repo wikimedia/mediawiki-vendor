@@ -260,6 +260,21 @@ class Api {
 	}
 
 	/**
+	 * Uses the rest API to fetch all the payment methods in a specific country
+	 * @param array $params
+	 * @return array
+	 * @link https://docs.gr4vy.com/reference/payment-options/list-payment-options
+	 */
+	#[ApiOperationAttribute( ApiOperation::GET_PAYMENT_OPTIONS )]
+	public function getPaymentMethods( array $params = [] ): array {
+		return $this->timedCall( __FUNCTION__, function () use ( $params ) {
+			$response = $this->gravyApiClient->listPaymentOptions( $params );
+
+			return self::handleGravySDKResponse( $params['country'], $response, 'Get Payment options' );
+		} );
+	}
+
+	/**
 	 * Handle Gravy SDK error responses (null, string, or unexpected types)
 	 *
 	 * @param ?string $uniqueIdentifier

@@ -331,6 +331,121 @@ class PaymentProviderTest extends BaseGravyTestCase {
 		$this->assertCount( 1, $errors );
 	}
 
+	public function testGetPaymentMethodsMapsGravyResponseToAdyenStylePaymentMethods() {
+		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/get-payment-methods-successful.json' ), true );
+
+		$this->mockApi->expects( $this->once() )
+			->method( 'getPaymentMethods' )
+			->with( [ 'country' => 'US' ] )
+			->willReturn( $responseBody );
+
+		$response = $this->provider->getPaymentMethods( [ 'country' => 'US' ] );
+
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\PaymentMethodResponse',
+			$response );
+		$this->assertTrue( $response->isSuccessful() );
+
+		$paymentMethods = $response->getPaymentMethods();
+		$this->assertSameSize( $responseBody['items'], $paymentMethods );
+
+		$card = $paymentMethods[0];
+		$this->assertSame( 'card', $card['type'] );
+		$this->assertSame( 'Card', $card['name'] );
+
+		$googlePay = $paymentMethods[4];
+		$this->assertSame( 'paywithgoogle', $googlePay['type'] );
+		$this->assertSame( 'Google Pay', $googlePay['name'] );
+		$this->assertSame( '50', $googlePay['configuration']['merchantId'] );
+		$this->assertSame(
+			$responseBody['items'][4]['context']['gateway_merchant_id'],
+			$googlePay['configuration']['gatewayMerchantId']
+		);
+
+		$applePay = $paymentMethods[5];
+		$this->assertSame( 'applepay', $applePay['type'] );
+		$this->assertSame( 'Apple Pay', $applePay['name'] );
+		$this->assertSame(
+			$responseBody['items'][5]['context']['supported_schemes'],
+			$applePay['brands']
+		);
+		$this->assertSame(
+			$responseBody['items'][5]['context']['merchant_name'],
+			$applePay['configuration']['merchantName']
+		);
+	}
+
+	public function testGetPaymentMethodsMapsAmountToMinorUnits() {
+		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/get-payment-methods-successful.json' ), true );
+
+		$this->mockApi->expects( $this->once() )
+			->method( 'getPaymentMethods' )
+			->with( [
+				'country' => 'US',
+				'currency' => 'USD',
+				'amount' => 1050,
+			] )
+			->willReturn( $responseBody );
+
+		$response = $this->provider->getPaymentMethods( [
+			'country' => 'US',
+			'currency' => 'USD',
+			'amount' => '10.50',
+			'order_id' => 'not-sent-to-gravy',
+		] );
+
+		$this->assertTrue( $response->isSuccessful() );
+	}
+
+	public function testGetPaymentMethodsValidationErrorMissingCountry() {
+		$this->mockApi->expects( $this->never() )
+			->method( 'getPaymentMethods' );
+
+		$response = $this->provider->getPaymentMethods( [ 'currency' => 'USD' ] );
+
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\PaymentMethodResponse',
+			$response );
+		$this->assertFalse( $response->isSuccessful() );
+		$this->assertSame( FinalStatus::FAILED, $response->getStatus() );
+		$validationErrors = $response->getValidationErrors();
+		$this->assertCount( 1, $validationErrors );
+		$this->assertSame( 'country', $validationErrors[0]->getField() );
+		$this->assertSame( [], $response->getPaymentMethods() );
+	}
+
+	public function testGetPaymentMethodsApiErrorResponse() {
+		$this->mockApi->expects( $this->once() )
+			->method( 'getPaymentMethods' )
+			->willReturn( [
+				'type' => 'error',
+				'code' => 'bad_request',
+				'status' => 400,
+				'message' => 'Request failed validation',
+			] );
+
+		$response = $this->provider->getPaymentMethods( [ 'country' => 'US' ] );
+
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\PaymentMethodResponse',
+			$response );
+		$this->assertFalse( $response->isSuccessful() );
+		$this->assertSame( FinalStatus::FAILED, $response->getStatus() );
+		$this->assertCount( 1, $response->getErrors() );
+		$this->assertSame( [], $response->getPaymentMethods() );
+	}
+
+	public function testGetPaymentMethodsApiException() {
+		$this->mockApi->expects( $this->once() )
+			->method( 'getPaymentMethods' )
+			->willThrowException( new \UnexpectedValueException( 'Connection timed out' ) );
+
+		$response = $this->provider->getPaymentMethods( [ 'country' => 'US' ] );
+
+		$this->assertInstanceOf( '\SmashPig\PaymentProviders\Responses\PaymentMethodResponse',
+			$response );
+		$this->assertFalse( $response->isSuccessful() );
+		$this->assertSame( FinalStatus::FAILED, $response->getStatus() );
+		$this->assertCount( 1, $response->getErrors() );
+	}
+
 	public function testSuccessfulApprovePayment() {
 		$responseBody = json_decode( file_get_contents( __DIR__ . '/../Data/capture-transaction.json' ), true );
 		$params = $this->getApproveTrxnParams();

@@ -1,0 +1,18 @@
+{
+  "date": 1785404957,
+  "gateway_parent_id": "2AL64068TL6280147",
+  "gateway_txn_id": "4MC63425UG160501J",
+  "currency": "EUR",
+  "type": "reversal_reversed",
+  "contribution_tracking_id": "229094727",
+  "email": "xx.xxx@outlook.com",
+  "first_name": "xx",
+  "last_name": "xxx",
+  "gross": "0.59",
+  "fee": "0.41",
+  "order_id": "229094727.1",
+  "gateway_refund_id": "4MC63425UG160501J",
+  "gross_currency": "EUR",
+  "country": "IT",
+  "gateway": "paypal_ec"
+}

@@ -8,6 +8,7 @@ use SmashPig\PaymentProviders\Gravy\Factories\GravyApprovePaymentResponseFactory
 use SmashPig\PaymentProviders\Gravy\Factories\GravyCancelPaymentResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyCreatePaymentResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyGetLatestPaymentStatusResponseFactory;
+use SmashPig\PaymentProviders\Gravy\Factories\GravyPaymentMethodDefinitionResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyRefundResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Factories\GravyReportResponseFactory;
 use SmashPig\PaymentProviders\Gravy\Mapper\RequestMapper;
@@ -22,6 +23,7 @@ use SmashPig\PaymentProviders\IRefundablePaymentProvider;
 use SmashPig\PaymentProviders\Responses\ApprovePaymentResponse;
 use SmashPig\PaymentProviders\Responses\CancelPaymentResponse;
 use SmashPig\PaymentProviders\Responses\CreatePaymentResponse;
+use SmashPig\PaymentProviders\Responses\PaymentMethodResponse;
 use SmashPig\PaymentProviders\Responses\PaymentProviderExtendedResponse;
 use SmashPig\PaymentProviders\Responses\RefundPaymentResponse;
 use SmashPig\PaymentProviders\ValidationException;
@@ -202,6 +204,28 @@ abstract class PaymentProvider implements IPaymentProvider, IDeleteRecurringPaym
 			GravyReportResponseFactory::handleException( $reportResponse, $e->getMessage(), $e->getCode() );
 		}
 		return $reportResponse;
+	}
+
+	public function getPaymentMethods( array $params ): PaymentMethodResponse {
+		$getPaymentMethodsResponse = new PaymentMethodResponse();
+		try {
+			$this->getValidator()->validateGetPaymentMethodsInput( $params );
+			$gravyGetPaymentMethodsRequest = $this->getRequestMapper()->mapToGetPaymentMethodsRequest( $params );
+			// dispatch api call to external API using mapped params
+			$rawGravyGetPaymentMethodsResponse = $this->api->getPaymentMethods( $gravyGetPaymentMethodsRequest );
+			$additionalPaymentMethodConfig = $this->providerConfiguration->val( 'apps-payment-method-config' );
+			// map the response from the external format back to our normalized structure.
+			$normalizedResponse = $this->getResponseMapper()->mapFromPaymentMethodResponse( $rawGravyGetPaymentMethodsResponse, $additionalPaymentMethodConfig );
+			$getPaymentMethodsResponse = GravyPaymentMethodDefinitionResponseFactory::fromNormalizedResponse( $normalizedResponse );
+		} catch ( ValidationException $e ) {
+			// it threw an exception!
+			GravyPaymentMethodDefinitionResponseFactory::handleValidationException( $getPaymentMethodsResponse, $e->getData() );
+		} catch ( \UnexpectedValueException $e ) {
+			// it threw an API exception!
+			Logger::error( "Processor failed to fetch payment methods for country {$params['country']}. returned response:" . $e->getMessage() );
+			GravyPaymentMethodDefinitionResponseFactory::handleException( $getPaymentMethodsResponse, $e->getMessage(), $e->getCode() );
+		}
+		return $getPaymentMethodsResponse;
 	}
 
 	public function createPayment( array $params ): CreatePaymentResponse {

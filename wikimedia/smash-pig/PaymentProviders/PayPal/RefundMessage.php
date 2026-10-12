@@ -20,6 +20,10 @@ class RefundMessage extends Message {
 		if ( isset( $message['txn_type'] ) && $message['txn_type'] === 'adjustment' ) {
 			$message['type'] = 'chargeback';
 
+		} elseif ( isset( $ipnMessage['payment_status'] ) && $ipnMessage['payment_status'] === 'Canceled_Reversal' ) {
+			// PayPal canceled the reversal and restored funds to the account
+			$message['type'] = 'reversal_reversed';
+
 		} elseif ( isset( $ipnMessage['reason_code'] ) && in_array( $ipnMessage['reason_code'], $reasonCodes ) ) {
 			$message['type'] = 'refund';
 

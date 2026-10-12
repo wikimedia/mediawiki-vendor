@@ -80,6 +80,11 @@ enum ApiOperation: string {
 	case GET_PAYMENT_SERVICE_DEFINITION = 'getPaymentServiceDefinition';
 
 	/**
+	 * Get payment options
+	 */
+	case GET_PAYMENT_OPTIONS = 'getPaymentOptions';
+
+	/**
 	 * Delete data for GDPR compliance
 	 */
 	case DELETE_DATA = 'deleteData';

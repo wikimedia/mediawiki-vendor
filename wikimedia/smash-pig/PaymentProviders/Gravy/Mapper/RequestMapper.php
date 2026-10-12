@@ -213,6 +213,31 @@ class RequestMapper {
 	}
 
 	/**
+	 * Maps the smashpig parameters to Gravy requirements for list payment options
+	 *
+	 * This method is the same for all payment methods on Gravy.
+	 *
+	 * @param array $params
+	 * @return array{country: string, currency?: string, amount?: int}
+	 * @link https://docs.gr4vy.com/reference/payment-options/list-payment-options
+	 */
+	public function mapToGetPaymentMethodsRequest( array $params ): array {
+		$request = [
+			'country' => $params['country'],
+		];
+
+		if ( !empty( $params['currency'] ) ) {
+			$request['currency'] = $params['currency'];
+			// Gravy requires amount to be sent in the smallest unit for the given currency
+			if ( !empty( $params['amount'] ) ) {
+				$request['amount'] = CurrencyRoundingHelper::getAmountInMinorUnits( (float)$params['amount'], $params['currency'] );
+			}
+		}
+
+		return $request;
+	}
+
+	/**
 	 * Populates the create payment request with Gravy's requirements for create payment
 	 *
 	 * This method is the same for all payment methods on Gravy.
