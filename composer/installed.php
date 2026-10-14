@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '4dd42196e9eed7141145bc8640f5885511bbf569',
+        'reference' => '29c1783234ac2583b1cce84224f330fc6016755c',
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '4dd42196e9eed7141145bc8640f5885511bbf569',
+            'reference' => '29c1783234ac2583b1cce84224f330fc6016755c',
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -706,18 +706,18 @@
             'dev_requirement' => false,
         ),
         'spomky-labs/cbor-php' => array(
-            'pretty_version' => '3.3.1',
-            'version' => '3.3.1.0',
-            'reference' => 'b5a453e1dbae9594fa7eb778993d177d2e580d84',
+            'pretty_version' => '3.3.5',
+            'version' => '3.3.5.0',
+            'reference' => 'e2208b2afb71123d95b62891f87befb14fcedc46',
             'type' => 'library',
             'install_path' => __DIR__ . '/../spomky-labs/cbor-php',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
         'spomky-labs/pki-framework' => array(
-            'pretty_version' => '1.6.0',
-            'version' => '1.6.0.0',
-            'reference' => '80778a25426288acd2e3a7cde2def41a3d59cddf',
+            'pretty_version' => '1.6.3',
+            'version' => '1.6.3.0',
+            'reference' => '792e909d4e387adffe3c4f404451c7d57a3d2022',
             'type' => 'library',
             'install_path' => __DIR__ . '/../spomky-labs/pki-framework',
             'aliases' => array(),
@@ -838,6 +838,12 @@
             ),
         ),
         'symfony/polyfill-php80' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => '1.99',
+            ),
+        ),
+        'symfony/polyfill-php81' => array(
             'dev_requirement' => false,
             'replaced' => array(
                 0 => '1.99',
