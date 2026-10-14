@@ -6,13 +6,8 @@ $vendorDir = dirname(__DIR__);
 $baseDir = $vendorDir;
 
 return array(
-    'ValueParsers\\' => array($vendorDir . '/data-values/time/src', $vendorDir . '/data-values/number/src'),
-    'ValueFormatters\\' => array($vendorDir . '/data-values/time/src', $vendorDir . '/data-values/number/src'),
-    'TextCat' => array($vendorDir . '/wikimedia/textcat/src'),
-    'Pimple' => array($vendorDir . '/pimple/pimple/src'),
     'Liuggio' => array($vendorDir . '/liuggio/statsd-php-client/src'),
     'Less' => array($vendorDir . '/wikimedia/less.php/lib'),
-    'DataValues\\' => array($vendorDir . '/data-values/time/src', $vendorDir . '/data-values/number/src'),
     'CSSMin' => array($vendorDir . '/wikimedia/minify/src'),
     '' => array($vendorDir . '/wikimedia/cssjanus/src'),
 );
