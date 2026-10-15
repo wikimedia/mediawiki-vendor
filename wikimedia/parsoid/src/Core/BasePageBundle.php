@@ -219,7 +219,7 @@ class BasePageBundle implements JsonCodecable {
 			parsoid: $json['parsoid'] ?? null,
 			mw: $json['mw'] ?? null,
 			counters: $json['counters'] ?? null,
-			version: $json['version'] ?? null,
+			version: $json['version'] ?? $json['contentVersion'] ?? null,
 			headers: $json['headers'] ?? null,
 			contentmodel: $json['contentmodel'] ?? null
 		);
