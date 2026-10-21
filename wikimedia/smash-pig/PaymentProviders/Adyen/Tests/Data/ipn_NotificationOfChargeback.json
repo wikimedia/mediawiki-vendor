@@ -23,7 +23,7 @@
         },
         "eventCode": "NOTIFICATION_OF_CHARGEBACK",
         "eventDate": "2021-01-01T01:00:00+01:00",
-        "merchantAccountCode": "YOUR_MERCHANT_ACCOUNT",
+        "merchantAccountCode": "WikimediaDonations",
         "merchantReference": "12345.6",
         "originalReference": "9913140798220028",
         "paymentMethod": "mc",

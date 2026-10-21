@@ -79,7 +79,6 @@ abstract class PaymentProviderValidator {
 	}
 
 	/**
-	 *
 	 * Fixes missing first or last name by splitting multi-word strings.
 	 *
 	 * @param array &$params
@@ -87,12 +86,18 @@ abstract class PaymentProviderValidator {
 	 * @throws ValidationException
 	 */
 	public function recurringNameCheck( array &$params ): void {
-		if ( empty( $params['first_name'] ) || empty( $params['last_name'] ) ) {
-			// Find which field has the data we might split
-			$sourceField = !empty( $params['last_name'] ) ? 'last_name' : 'first_name';
+		// HelperFunction: checks if a value contains at least one letter or number
+		$isValidName = static fn ( $val ) => is_string( $val ) && preg_match( '/[\p{L}\p{N}]/u', $val );
 
-			if ( !empty( $params[$sourceField] ) ) {
-				$raw = trim( $params[$sourceField] );
+		$first = $params['first_name'] ?? null;
+		$last  = $params['last_name'] ?? null;
+
+		// If either name is missing or invalid, try to split from the available data
+		if ( !$isValidName( $first ) || !$isValidName( $last ) ) {
+			$sourceField = !empty( $params['last_name'] ) ? 'last_name' : 'first_name';
+			$raw = trim( (string)( $params[$sourceField] ?? '' ) );
+
+			if ( $isValidName( $raw ) ) {
 				if ( str_contains( $raw, ' ' ) ) {
 					$parts = explode( ' ', $raw, 2 );
 				} elseif ( str_contains( $raw, '.' ) ) {
@@ -101,18 +106,22 @@ abstract class PaymentProviderValidator {
 					$parts = [ $raw ];
 				}
 
-				if ( count( $parts ) > 1 ) {
-					$params['first_name'] = $parts[0];
-					$params['last_name']  = $parts[1];
-				} elseif ( count( $parts ) === 1 ) {
-					// Only one part of name exists; use it as first_name and drop last_name
-					$params['first_name'] = $parts[0]; // use firstname for ty email
-					unset( $params['last_name'] );
-				}
-			} else {
-				$params['first_name'] = null;
-				unset( $params['last_name'] );
+				$first = $parts[0] ?? null;
+				$last  = $parts[1] ?? null;
 			}
+		}
+
+		// Final cleanup: Keep valid names or null firstname, unset invalid/empty last name
+		if ( $isValidName( $first ) ) {
+			$params['first_name'] = trim( $first );
+		} else {
+			$params['first_name'] = null;
+		}
+
+		if ( $isValidName( $last ) ) {
+			$params['last_name'] = trim( $last );
+		} else {
+			unset( $params['last_name'] );
 		}
 	}
 

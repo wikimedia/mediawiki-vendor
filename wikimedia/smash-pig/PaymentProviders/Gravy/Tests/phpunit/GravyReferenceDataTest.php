@@ -55,6 +55,27 @@ class GravyReferenceDataTest extends BaseSmashPigUnitTestCase {
 		$this->assertEquals( 'ach', $paymentSubmethodTrustlyUS );
 	}
 
+	/**
+	 * SEPA transactions through the Adyen bank connector are identified by
+	 * the payment_method label and normalised to the same rtbt/rtbt pair
+	 * used for the dedicated 'sepa' Gravy method.
+	 */
+	public function testDecodeBankSepaByLabelMapsToRtbt(): void {
+		[ $paymentMethod, $paymentSubmethod ] = ReferenceData::decodePaymentMethod( 'bank', null, 'SEPA DE89 **** 3000' );
+		$this->assertEquals( PaymentMethod::RTBT, $paymentMethod );
+		$this->assertEquals( 'rtbt', $paymentSubmethod );
+
+		[ $paymentMethodSepa, $paymentSubmethodSepa ] = ReferenceData::decodePaymentMethod( 'sepa', 'sepa' );
+		$this->assertEquals( $paymentMethodSepa, $paymentMethod );
+		$this->assertEquals( $paymentSubmethodSepa, $paymentSubmethod );
+	}
+
+	public function testDecodeBankNonSepaLabelStaysBankTransfer(): void {
+		[ $paymentMethod, $paymentSubmethod ] = ReferenceData::decodePaymentMethod( 'bank', null, 'ACH ********89' );
+		$this->assertEquals( PaymentMethod::BT, $paymentMethod );
+		$this->assertEquals( 'ach', $paymentSubmethod );
+	}
+
 	public function testGetShorthandPaymentMethodReturnsExpectedValues(): void {
 		$this->assertSame( PaymentMethod::GOOGLE, ReferenceData::getShorthandPaymentMethod( 'googlepay_pan_only' ) );
 		$this->assertSame( PaymentMethod::PAYPAL, ReferenceData::getShorthandPaymentMethod( 'paypal' ) );

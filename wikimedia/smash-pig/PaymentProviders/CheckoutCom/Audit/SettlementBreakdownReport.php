@@ -149,7 +149,7 @@ class SettlementBreakdownReport extends CheckoutComAudit {
 		$msg['original_fee_amount'] = $this->getOriginalFeeAmountRounded();
 		$msg['original_net_amount'] = $this->getOriginalNetAmountRounded();
 		$msg['settled_fee_amount'] = $this->getSettledFeeAmountRounded();
-		$msg['settled_net_amount'] = $this->amount( $row['Net In Holding Currency'], $this->getSettledCurrency() );
+		$msg['settled_net_amount'] = $this->getSettledNetAmountRounded();
 		$msg['settled_total_amount'] = $this->getSettledTotalAmountRounded();
 		$msg['settled_currency'] = $this->getSettledCurrency();
 

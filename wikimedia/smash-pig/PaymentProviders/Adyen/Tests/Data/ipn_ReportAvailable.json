@@ -12,7 +12,7 @@
         },
         "eventCode": "REPORT_AVAILABLE",
         "eventDate": "2021-01-01T01:00:00+01:00",
-        "merchantAccountCode": "YOUR_MERCHANT_ACCOUNT",
+        "merchantAccountCode": "WikimediaDonations",
         "merchantReference": "",
         "pspReference": "settlement_detail_report",
         "reason": "URL_TO_DOWNLOAD_REPORT",

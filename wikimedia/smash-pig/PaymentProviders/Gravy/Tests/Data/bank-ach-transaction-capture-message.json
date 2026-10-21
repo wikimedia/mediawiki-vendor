@@ -1,0 +1,62 @@
+{
+    "type": "event",
+    "name": "transaction.captured",
+    "id": "6bca8092-8d66-4f37-9f1f-ac144809a4e5",
+    "created_at": "2026-10-02T11:27:32.628470+00:00",
+    "target": {
+        "type": "transaction",
+        "id": "0a6ae40c-3ed0-4600-8b65-be136eafcf47",
+        "external_identifier": "1095.1",
+        "payment_service_transaction_id": "JSC7T8TWFPF28DV5",
+        "status": "capture_succeeded",
+        "has_gift_card_redemptions": false,
+        "pending_review": false,
+        "amount": 3500,
+        "authorized_amount": 3500,
+        "captured_amount": 3500,
+        "refunded_amount": 0,
+        "currency": "USD",
+        "metadata": null,
+        "created_at": "2026-10-02T11:27:30.620346+00:00",
+        "updated_at": "2026-10-02T11:27:32.482593+00:00",
+        "payment_method": {
+            "id": "8a11e2ec-b716-4fe5-85b7-5e3f6e9eee4d",
+            "method": "bank",
+            "label": "ACH ******7890",
+            "scheme": null
+        },
+        "payment_link_id": null,
+        "error_code": null,
+        "iso_response_code": null,
+        "payment_source": "recurring",
+        "merchant_initiated": false,
+        "is_subsequent_payment": false,
+        "buyer": {
+            "id": null,
+            "display_name": null,
+            "external_identifier": "jwales@example.com",
+            "account_number": null,
+            "billing_details": {
+                "first_name": "Jimmy",
+                "last_name": "Wales",
+                "email_address": "jwales@example.com",
+                "phone_number": null,
+                "address": {
+                    "city": "San Francisco",
+                    "country": "US",
+                    "postal_code": "94104",
+                    "state": "CA",
+                    "state_code": "US-CA",
+                    "house_number_or_name": null,
+                    "line1": "1 Montgomery Street",
+                    "line2": null,
+                    "organization": null
+                },
+                "tax_id": null
+            }
+        }
+    },
+    "merchant_account_id": "default",
+    "gr4vy_id": "wikimedia",
+    "environment": "sandbox"
+}

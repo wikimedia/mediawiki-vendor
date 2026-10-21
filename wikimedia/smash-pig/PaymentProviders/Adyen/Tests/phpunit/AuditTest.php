@@ -459,6 +459,44 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 		], $output[1], 'MerchantPayout row should still be booked as a payout' );
 	}
 
+	/**
+	 * PaymentCost rows are costs Adyen books against an earlier payment, and they can be
+	 * credits as well as debits. They must be booked as a fee rather than ignored, or the
+	 * batch total will not reconcile against the payout.
+	 */
+	public function testProcessSettlementDetailPaymentCost(): void {
+		$processor = new AdyenSettlementDetailReport();
+		$output = $processor->parseFile( __DIR__ . '/../Data/settlement_detail_report_payment_cost.csv' );
+		$this->assertCount( 2, $output, 'Should have found one fee and one payout row' );
+		$this->assertEquals( [
+			'gateway' => 'adyen',
+			'audit_file_gateway' => 'adyen',
+			'date' => 1779260803,
+			'invoice_id' => '12345678.1',
+			'gateway_txn_id' => 'fee-PAYMENTCOSTMOD01',
+			'settlement_batch_reference' => '1300',
+			'settled_date' => 1779260803,
+			'settled_currency' => 'USD',
+			'settled_fee_amount' => '1.75',
+			'settled_net_amount' => '1.75',
+			'settled_total_amount' => 0,
+			'type' => 'fee',
+		], $output[0], 'PaymentCost row should be booked as a fee' );
+
+		$this->assertEquals( [
+			'settled_date' => 1791324946,
+			'date' => 1791324946,
+			'gateway' => 'adyen',
+			'audit_file_gateway' => 'adyen',
+			'type' => 'payout',
+			'gateway_txn_id' => 'TX00000000000XT batch 1300, WikimediaDonations',
+			'invoice_id' => '',
+			'settlement_batch_reference' => '1300',
+			'settled_total_amount' => '1.75',
+			'settled_currency' => 'USD',
+		], $output[1], 'MerchantPayout row should still be booked as a payout' );
+	}
+
 	public function testProcessPaymentsAccountingNyce() {
 		$processor = new AdyenPaymentsAccountingReport();
 		$output = $processor->parseFile( __DIR__ . '/../Data/payments_accounting_report_nyce.csv' );

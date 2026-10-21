@@ -1,0 +1,62 @@
+{
+    "type": "event",
+    "name": "transaction.captured",
+    "id": "7cdb9103-9e77-4a48-a020-bd255910b5f6",
+    "created_at": "2026-10-02T11:27:32.628470+00:00",
+    "target": {
+        "type": "transaction",
+        "id": "1b7bf51d-4fe7-4711-9c76-cf247fbfd058",
+        "external_identifier": "1096.1",
+        "payment_service_transaction_id": "KTD8U9UXGQG39EW6",
+        "status": "capture_succeeded",
+        "has_gift_card_redemptions": false,
+        "pending_review": false,
+        "amount": 3500,
+        "authorized_amount": 3500,
+        "captured_amount": 3500,
+        "refunded_amount": 0,
+        "currency": "EUR",
+        "metadata": null,
+        "created_at": "2026-10-02T11:27:30.620346+00:00",
+        "updated_at": "2026-10-02T11:27:32.482593+00:00",
+        "payment_method": {
+            "id": "9b22f3fd-c827-4af6-96c8-6f4f7f0fff5e",
+            "method": "bank",
+            "label": "SEPA ******3000",
+            "scheme": null
+        },
+        "payment_link_id": null,
+        "error_code": null,
+        "iso_response_code": null,
+        "payment_source": "recurring",
+        "merchant_initiated": false,
+        "is_subsequent_payment": false,
+        "buyer": {
+            "id": null,
+            "display_name": null,
+            "external_identifier": "jwales@example.com",
+            "account_number": null,
+            "billing_details": {
+                "first_name": "Jimmy",
+                "last_name": "Wales",
+                "email_address": "jwales@example.com",
+                "phone_number": null,
+                "address": {
+                    "city": "Berlin",
+                    "country": "DE",
+                    "postal_code": "10115",
+                    "state": null,
+                    "state_code": null,
+                    "house_number_or_name": null,
+                    "line1": "Unter den Linden 1",
+                    "line2": null,
+                    "organization": null
+                },
+                "tax_id": null
+            }
+        }
+    },
+    "merchant_account_id": "default",
+    "gr4vy_id": "wikimedia",
+    "environment": "sandbox"
+}

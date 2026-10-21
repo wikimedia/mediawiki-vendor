@@ -115,6 +115,47 @@ class NotificationsTest extends BaseGravyTestCase {
 		$this->assertTrue( $result );
 	}
 
+	/**
+	 * Adyen bank connector capture messages arrive with method 'bank' and a
+	 * null scheme, so the submethod has to be read from the label prefix.
+	 */
+	public function testBankAchCapturedTransactionMessage(): void {
+		$queuedMessage = $this->processBankCaptureMessage( 'bank-ach-transaction-capture-message.json' );
+		$this->assertSame( 'bt', $queuedMessage['payload']['payment_method'] );
+		$this->assertSame( 'ach', $queuedMessage['payload']['payment_submethod'] );
+	}
+
+	public function testBankSepaCapturedTransactionMessage(): void {
+		$queuedMessage = $this->processBankCaptureMessage( 'bank-sepa-transaction-capture-message.json' );
+		$this->assertSame( 'rtbt', $queuedMessage['payload']['payment_method'] );
+		$this->assertSame( 'rtbt', $queuedMessage['payload']['payment_submethod'] );
+		$this->assertSame( 'EUR', $queuedMessage['payload']['currency'] );
+	}
+
+	private function processBankCaptureMessage( string $file ): array {
+		[ $request, $response ] = $this->getValidRequestResponseObjects();
+		$message = json_decode( file_get_contents( __DIR__ . '/../Data/' . $file ), true );
+		$request->method( 'getRawRequest' )->willReturn( json_encode( $message ) );
+		$this->mockApi->expects( $this->never() )
+			->method( 'getTransaction' );
+		$result = $this->gravyListener->execute( $request, $response );
+		$this->assertTrue( $result );
+
+		$queuedMessage = $this->jobsGravyQueue->pop();
+		$this->assertEquals( RecordCaptureJob::class, $queuedMessage['class'] );
+		$payload = array_merge(
+			[
+				"eventDate" => $message["created_at"]
+			], ( new ResponseMapper() )->mapFromPaymentResponse( $message['target'] )
+		);
+		$this->assertSame( $payload, $queuedMessage['payload'] );
+		$this->assertSame( $message['target']['id'], $queuedMessage['payload']['gateway_txn_id'] );
+		$this->assertSame( $message['target']['external_identifier'], $queuedMessage['payload']['order_id'] );
+		$this->assertEquals( 35, $queuedMessage['payload']['amount'] );
+		$this->assertSame( $message['target']['payment_method']['id'], $queuedMessage['payload']['recurring_payment_token'] );
+		return $queuedMessage;
+	}
+
 	public function testAuthorizedTransactionMessage(): void {
 		$providerConfig = Context::get()->getProviderConfiguration();
 		$providerConfig->override(

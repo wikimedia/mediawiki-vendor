@@ -36,6 +36,7 @@ class RequestMapper {
 		'webpay',
 		'trustly',
 		'yape',
+		'bank'
 	];
 
 	/**

@@ -29,6 +29,10 @@ abstract class ResponseMapper {
 		PaymentProviderResponse $response,
 		array|null|bool $rawResponse
 	): void {
+		// Only extended responses carry a backend processor (e.g. not CancelPaymentResponse)
+		if ( $response instanceof PaymentProviderExtendedResponse ) {
+			$response->setBackendProcessor( 'adyen' );
+		}
 		if ( !is_array( $rawResponse ) ) {
 			$responseError = 'Adyen response was null or invalid JSON.';
 			$response->addErrors(

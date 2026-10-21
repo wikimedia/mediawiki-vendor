@@ -196,6 +196,11 @@ class PaymentProviderValidatorTest extends TestCase {
 				null, // No exception expected
 				[ 'first_name' => 'xxxx', 'last_name' => 'yyy.' ] // Expected outcome
 			],
+			'Punctuation-only first name unsets field and throws validation exception' => [
+				array_merge( $baseParams, [ 'first_name' => '.', 'last_name' => null ] ),
+				null, // No exception expected
+				[ 'first_name' => null ] // Expected outcome
+			],
 		];
 	}
 

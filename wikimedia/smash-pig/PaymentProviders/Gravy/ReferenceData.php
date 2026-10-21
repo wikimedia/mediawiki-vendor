@@ -23,6 +23,7 @@ class ReferenceData {
 		'applepay' => PaymentMethod::APPLE,
 		'bacs' => PaymentMethod::DD,
 		'bancomer' => PaymentMethod::BT,
+		'bank' => PaymentMethod::BT,
 		'bancontact' => PaymentMethod::CC,
 		'banked' => PaymentMethod::BT,
 		'bcp' => PaymentMethod::BT,
@@ -178,6 +179,7 @@ class ReferenceData {
 	];
 
 	protected static $btSubmethods = [
+		'ach' => 'ach',
 		'bcp' => 'bcp',
 		'blik' => 'blik',
 		'breb' => 'breb',
@@ -223,7 +225,21 @@ class ReferenceData {
 				$payment_submethod = self::$ddSubmethods[$method];
 				break;
 			case PaymentMethod::BT:
-				$payment_submethod = self::$btSubmethods[$method];
+				// The Adyen "bank" method covers ACH/SEPA/BACS raw account payments,
+				// distinguished by scheme rather than by a dedicated Gravy method name.
+				// https://docs.gr4vy.com/connections/payments/bank
+				if ( $method === 'bank' ) {
+					// Ensure consistency with the payment method mapping for SEPA
+					$submethod = strtolower( explode( " ", $label )[0] ?? "" );
+					if ( $submethod == 'sepa' ) {
+						$payment_method = PaymentMethod::RTBT;
+						$payment_submethod = self::$rtbtSubmethods['sepa'];
+					} else {
+						$payment_submethod = self::$btSubmethods[$submethod] ?? "";
+					}
+				} else {
+					$payment_submethod = self::$btSubmethods[$method];
+				}
 				break;
 			case PaymentMethod::CASH:
 				$payment_submethod = self::$cashSubmethods[$method];

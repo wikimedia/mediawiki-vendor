@@ -5,6 +5,11 @@ use SmashPig\Tests\TestingProviderConfiguration;
 
 class AdyenTestConfiguration extends TestingProviderConfiguration {
 
+	/**
+	 * Webhook HMAC key for tests that send notifications through the listener
+	 */
+	public const WEBHOOK_HMAC_KEY = 'E28C5CEB881384798E760400C8C2D8E3F679F49A3C7876EE285B78D8A83B1893';
+
 	public static function instance( $mockApi, GlobalConfiguration $globalConfig ) {
 		$config = static::createForProvider( 'adyen', $globalConfig );
 		$config->objects['api'] = $mockApi;

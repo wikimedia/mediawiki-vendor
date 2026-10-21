@@ -15,7 +15,6 @@ class FailmailLogStream implements ILogStream {
 	protected $context;
 	protected $contextName = '';
 
-	protected $errorSeen = false;
 	protected $sendMailCalled = false;
 
 	protected $to;
@@ -61,12 +60,8 @@ class FailmailLogStream implements ILogStream {
 	 * @param LogEvent $event Event to process
 	 */
 	public function processEvent( LogEvent $event ) {
-		if ( $event->level == LOG_ERR ) {
-			$this->errorSeen = true;
-
-		} elseif ( $event->level == LOG_ALERT ) {
-			$this->errorSeen = true;
-
+		// Trigger email immediately on LOG_ALERT or LOG_ERR so context stays centered around the error
+		if ( $event->level <= LOG_ERR ) {
 			$this->sendMail( $event->level, $this->context->getContextEntries( 0 ) );
 		}
 	}
@@ -99,19 +94,12 @@ class FailmailLogStream implements ILogStream {
 	 *                               the new name of the current context
 	 */
 	public function leaveContext( $contextNames ) {
-		if ( $this->errorSeen ) {
-			$this->sendMail( LOG_ERR, $this->context->getContextEntries( 0 ) );
-		}
-		$this->errorSeen = false;
 	}
 
 	/**
 	 * Notification callback that the logging infrastructure is shutting down
 	 */
 	public function shutdown() {
-		if ( $this->errorSeen ) {
-			$this->sendMail( LOG_ERR, $this->context->getContextEntries( 0 ) );
-		}
 	}
 
 	/**
@@ -130,10 +118,13 @@ class FailmailLogStream implements ILogStream {
 			. "NOTE: Additional errors may have occurred this session, but this email will only be sent "
 			. "once. Check log streams for additional errors in this session.\n" ];
 
+		// Truncate context to at most 30 lines before the error
+		// Build the event lines first, then keep only the last ones up to 30 lines
+		$eventLines = [];
 		foreach ( $events as $event ) {
 			$name = $this->levels[ $event->level ];
 			if ( $event->tag ) {
-				$body[] = sprintf(
+				$eventLines[] = sprintf(
 					"%s %-9s (%s) %s",
 					$event->datestring,
 					$name,
@@ -141,7 +132,7 @@ class FailmailLogStream implements ILogStream {
 					$event->message
 				);
 			} else {
-				$body[] = sprintf(
+				$eventLines[] = sprintf(
 					"%s %-9s %s",
 					$event->datestring,
 					$name,
@@ -151,9 +142,32 @@ class FailmailLogStream implements ILogStream {
 
 			$exp = implode( "\n\t", $event->getExceptionBlob() );
 			if ( $exp ) {
-				$body[] = $exp;
+				$eventLines[] = $exp;
 			}
 		}
+
+		// Count total lines and truncate if needed
+		$totalLines = 0;
+		$maxContextLines = 30;
+		$linesToInclude = [];
+		$skipped = 0;
+
+		for ( $i = count( $eventLines ) - 1; $i >= 0; $i-- ) {
+			$lineCount = 1 + substr_count( $eventLines[$i], "\n" );
+			if ( $totalLines + $lineCount <= $maxContextLines ) {
+				array_unshift( $linesToInclude, $eventLines[$i] );
+				$totalLines += $lineCount;
+			} else {
+				$skipped = $i + 1;
+				break;
+			}
+		}
+
+		if ( $skipped > 0 ) {
+			$body[] = "... (truncated " . $skipped . " earlier log entries)";
+		}
+
+		$body = array_merge( $body, $linesToInclude );
 
 		if ( $level == LOG_ALERT ) {
 			$level = 'ALERT';

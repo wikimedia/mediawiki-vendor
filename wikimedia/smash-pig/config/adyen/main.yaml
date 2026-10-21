@@ -37,6 +37,11 @@ accounts: {}
   # authorized to download reports. Reports will be
   # downloaded to the location specified in report-location.
   #
+  # The webhook-hmac-key is the HMAC key generated for the
+  # merchant account webhooks in the Adyen Console. Notifications for an
+  # account with no key fail the HMAC check (see
+  # reject-notifications-without-hmac below).
+  #
   # At least one account and all subkeys are required.
   #
   # example-account-name:
@@ -44,6 +49,7 @@ accounts: {}
   #   report-username: ""
   #   report-password: ""
   #   report-location: "/tmp"
+  #   webhook-hmac-key: ""
 
 # By default, cache payment method lookups for 15 minutes
 common-cache-parameters: &CACHE
@@ -107,6 +113,14 @@ payment-provider:
 #           - apple-pay-gateway-pr-pod5.apple.com
 # See other possible Apple Pay session domains here:
 # https://developer.apple.com/documentation/apple_pay_on_the_web/setting_up_your_server
+
+# What to do with webhook notifications that don't have a valid HMAC
+# signature (see webhook-hmac-key under accounts).
+# true: reject them with a 403. Adyen will retry them later.
+# false: process them as normal and log a warning.
+# Use false while setting up a key, and switch to true once real
+# notifications stop producing warnings.
+reject-notifications-without-hmac: false
 
 # Whether the IPN listener should initiate a payment capture when it receives
 # notification of a successful authorization.
@@ -211,3 +225,9 @@ fraud-filters:
 curl:
   validator:
     class: SmashPig\PaymentProviders\Adyen\RestResponseValidator
+  redact-fields:
+    - 'sepa.ibanNumber'
+    - 'encryptedCardNumber'
+    - 'encryptedExpiryMonth'
+    - 'encryptedExpiryYear'
+    - 'encryptedSecurityCode'

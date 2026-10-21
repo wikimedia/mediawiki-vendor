@@ -13,8 +13,14 @@ class CurlWrapper {
 	 */
 	protected $providerConfiguration;
 
+	/**
+	 * @var array Fields to omit from log-outbound
+	 */
+	protected array $redactFields;
+
 	public function __construct() {
 		$this->providerConfiguration = Context::get()->getProviderConfiguration();
+		$this->redactFields = $this->providerConfiguration->get( 'curl/redact-fields' ) ?? [];
 	}
 
 	/**
@@ -31,6 +37,20 @@ class CurlWrapper {
 	public function execute(
 		string $url, string $method, array $responseHeaders, $data, $certPath = null, $certPassword = null
 	) {
+		if ( $this->providerConfiguration->val( 'curl/log-outbound' ) ) {
+			$decoded = is_string( $data ) ? json_decode( $data, true ) : null;
+			if ( is_array( $data ) ) {
+				$sanitized = json_encode( $this->sanitizeOutboundData( $data ) );
+			} elseif ( is_array( $decoded ) ) {
+				$sanitized = json_encode( $this->sanitizeOutboundData( $decoded ) );
+			} elseif ( is_string( $data ) && str_contains( $data, '=' ) ) {
+				$sanitized = $this->sanitizeQueryString( $data );
+			} else {
+				$sanitized = $data;
+			}
+			Logger::debug( "Outbound data: '$sanitized'" );
+		}
+
 		if ( is_array( $data ) ) {
 			$data = http_build_query( $data );
 		}
@@ -38,9 +58,6 @@ class CurlWrapper {
 		Logger::info( "Initiating cURL" );
 		$ch = curl_init();
 
-		if ( $this->providerConfiguration->val( 'curl/log-outbound' ) ) {
-			Logger::debug( "Outbound data: '$data'" );
-		}
 		// Always capture the cURL output
 		$curlDebugLog = fopen( 'php://temp', 'r+' );
 
@@ -188,5 +205,43 @@ class CurlWrapper {
 			'headers' => $responseHeaders,
 			'status' => (int)$curlInfo['http_code']
 		];
+	}
+
+	protected function sanitizeOutboundData( array $data ): array {
+		foreach ( $data as $key => $value ) {
+			if ( is_array( $value ) ) {
+				$data[$key] = $this->sanitizeOutboundData( $value );
+			} elseif ( array_search( $key, $this->redactFields ) !== false ) {
+				if ( !$value ) {
+					return $data;
+				}
+				$data[$key] = str_repeat( '*', strlen( $value ) );
+			}
+		}
+		return $data;
+	}
+
+	/**
+	 * Masks redacted fields in a query string such as http_build_query() output.
+	 * parse_str() is avoided because it turns dots in keys into underscores
+	 * (sepa.ibanNumber => sepa_ibanNumber), so the raw pairs are matched instead.
+	 *
+	 * @param string $data
+	 * @return string
+	 */
+	protected function sanitizeQueryString( string $data ): string {
+		$pairs = explode( '&', $data );
+		foreach ( $pairs as $i => $pair ) {
+			[ $key, $value ] = array_pad( explode( '=', $pair, 2 ), 2, '' );
+			$fieldName = urldecode( $key );
+			// For nested keys like paymentMethod[sepa.ibanNumber], match on the innermost name
+			if ( preg_match( '/\[([^\[\]]*)\]$/', $fieldName, $matches ) ) {
+				$fieldName = $matches[1];
+			}
+			if ( in_array( $fieldName, $this->redactFields, true ) ) {
+				$pairs[$i] = $key . '=' . str_repeat( '*', strlen( urldecode( $value ) ) );
+			}
+		}
+		return implode( '&', $pairs );
 	}
 }

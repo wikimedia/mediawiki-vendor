@@ -24,7 +24,6 @@ abstract class AdyenAudit implements AuditParser {
 		'bankinstructionreturned',
 		'internalcompanypayout',
 		'epapaid',
-		'paymentcost',
 		'settlecost',
 		'paidout',
 		'paidoutreversed',
@@ -116,7 +115,7 @@ abstract class AdyenAudit implements AuditParser {
 	protected function parseLine( $line, int $rowNumber ) {
 		$row = array_combine( $this->columnHeaders, $line );
 		$type = strtolower( $row[$this->type] );
-		$this->feeTypes = [ 'fee', 'invoicededuction', 'misccosts' ];
+		$this->feeTypes = [ 'fee', 'invoicededuction', 'misccosts', 'paymentcost' ];
 		$this->adjustmentTypes = [ 'balancetransfer', 'depositcorrection', 'manualcorrected' ];
 		if ( in_array( $type, $this->feeTypes, true ) || in_array( $type, $this->adjustmentTypes, true ) ) {
 			$this->fileData[] = $this->getAccountLevelTransaction( $row, $rowNumber );
