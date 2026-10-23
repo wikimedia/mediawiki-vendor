@@ -48,7 +48,7 @@ class CurlWrapper {
 			} else {
 				$sanitized = $data;
 			}
-			Logger::debug( "Outbound data: '$sanitized'" );
+			Logger::info( "Outbound data: '$sanitized'" );
 		}
 
 		if ( is_array( $data ) ) {

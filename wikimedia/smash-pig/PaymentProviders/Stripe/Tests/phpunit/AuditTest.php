@@ -15,7 +15,7 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 		$processor = new StripeAudit();
 		$output = $processor->parseFile( __DIR__ . '/../Data/settlement_report.csv' );
 
-		$this->assertCount( 7, $output );
+		$this->assertCount( 9, $output );
 
 		// Some generic ones.
 		$this->assertSame( 'stripe', $output[0]['audit_file_gateway'] );
@@ -58,8 +58,21 @@ class AuditTest extends BaseSmashPigUnitTestCase {
 		$this->assertSame( 'txn_fee_01', $output[3]['backend_processor_txn_id'] );
 		$this->assertSame( 'po_test123', $output[3]['settlement_batch_reference'] );
 		$this->assertSame( 'fee', $output[4]['type'] );
-		$this->assertSame( 'chargeback_reversed', $output[5]['type'] );
-		$this->assertSame( 'payout', $output[6]['type'] );
+
+		// Payout minimum balance hold/release: booked as adjustments, with
+		// the sign carried straight through from gross (negative on hold,
+		// positive on release), unlike regular fee rows.
+		$this->assertSame( 'adjustment', $output[5]['type'] );
+		$this->assertSame( '-1000', $output[5]['settled_fee_amount'] );
+		$this->assertSame( '0.0', $output[5]['settled_total_amount'] );
+		$this->assertSame( 'stripe', $output[5]['gateway'] );
+		$this->assertSame( 'adjustment', $output[6]['type'] );
+		$this->assertSame( '1000', $output[6]['settled_fee_amount'] );
+		$this->assertSame( '0.0', $output[6]['settled_total_amount'] );
+		$this->assertSame( 'stripe', $output[6]['gateway'] );
+
+		$this->assertSame( 'chargeback_reversed', $output[7]['type'] );
+		$this->assertSame( 'payout', $output[8]['type'] );
 
 		// customer_* columns are absent from this fixture, so no contact
 		// fields should be bubbled up.

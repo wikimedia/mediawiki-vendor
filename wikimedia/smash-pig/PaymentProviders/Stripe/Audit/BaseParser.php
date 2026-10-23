@@ -205,6 +205,14 @@ abstract class BaseParser {
 			case 'network_cost':
 				return 'fee';
 
+			// Stripe holds back part of a payout to maintain the account's
+			// minimum reserve balance, then releases it in a later payout.
+			// Book these as adjustments (not plain fees) so they land with
+			// financial_type Adjustment rather than Cash.
+			case 'payout_minimum_balance_hold':
+			case 'payout_minimum_balance_release':
+				return 'adjustment';
+
 			case 'payout':
 				return 'payout';
 
@@ -217,7 +225,8 @@ abstract class BaseParser {
 	 * @return bool
 	 */
 	public function isFee(): bool {
-		return $this->mapType( $this->row['reporting_category'] ) === 'fee';
+		$type = $this->mapType( $this->row['reporting_category'] );
+		return $type === 'fee' || $type === 'adjustment';
 	}
 
 	protected function firstNonEmpty( ?string ...$values ): ?string {
