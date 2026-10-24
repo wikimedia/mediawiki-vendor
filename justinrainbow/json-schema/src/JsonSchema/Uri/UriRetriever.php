@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace JsonSchema\Uri;
 
+use JsonSchema\DraftIdentifiers;
 use JsonSchema\Exception\InvalidSchemaMediaTypeException;
 use JsonSchema\Exception\JsonDecodingException;
 use JsonSchema\Exception\ResourceNotFoundException;
@@ -26,12 +27,15 @@ use JsonSchema\Validator;
  */
 class UriRetriever implements BaseUriRetrieverInterface
 {
+    private const PACKAGE_SCHEME = 'package://';
+
     /**
      * @var array Map of URL translations
      */
     protected $translationMap = [
         // use local copies of the spec schemas
-        '|^https?://json-schema.org/draft-(0[3467])/schema#?|' => 'package://dist/schema/json-schema-draft-$1.json'
+        '|^https?://json-schema.org/draft-(0[3467])/schema#?|' => 'package://dist/schema/json-schema-draft-$1.json',
+        '|^https://json-schema.org/draft/2019-09/schema#?|' => 'package://dist/schema/json-schema-draft-2019-09.json'
     ];
 
     /**
@@ -182,11 +186,17 @@ class UriRetriever implements BaseUriRetrieverInterface
 
         $jsonSchema = $this->loadSchema($fetchUri);
 
+        // Detect dialect from the root schema's $schema keyword before
+        // resolvePointer() may walk into a sub-schema.
+        $dialect = isset($jsonSchema->{'$schema'}) ? rtrim($jsonSchema->{'$schema'}, '#') : null;
+        $usesDollarId = !in_array($dialect, [DraftIdentifiers::DRAFT_3()->withoutFragment(), DraftIdentifiers::DRAFT_4()->withoutFragment()], true);
+
         // Use the JSON pointer if specified
         $jsonSchema = $this->resolvePointer($jsonSchema, $resolvedUri);
 
         if ($jsonSchema instanceof \stdClass) {
-            $jsonSchema->id = $resolvedUri;
+            $idKeyword = $usesDollarId ? '$id' : 'id';
+            $jsonSchema->{$idKeyword} = $resolvedUri;
         }
 
         return $jsonSchema;
@@ -344,7 +354,11 @@ class UriRetriever implements BaseUriRetrieverInterface
         }
 
         // translate references to local files within the json-schema package
-        $uri = preg_replace('|^package://|', sprintf('file://%s/', realpath(__DIR__ . '/../../..')), $uri);
+        // a plain replacement, because the package path is data: a Windows path such as
+        // C:\Users\4223627 would otherwise have its \4 read as a backreference
+        if (0 === strpos($uri, self::PACKAGE_SCHEME)) {
+            $uri = sprintf('file://%s/', realpath(__DIR__ . '/../../..')) . substr($uri, strlen(self::PACKAGE_SCHEME));
+        }
 
         return $uri;
     }

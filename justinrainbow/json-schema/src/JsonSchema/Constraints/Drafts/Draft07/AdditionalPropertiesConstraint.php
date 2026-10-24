@@ -8,6 +8,7 @@ use JsonSchema\ConstraintError;
 use JsonSchema\Constraints\ConstraintInterface;
 use JsonSchema\Entity\ErrorBagProxy;
 use JsonSchema\Entity\JsonPointer;
+use JsonSchema\Tool\EcmaPatternConverter;
 
 class AdditionalPropertiesConstraint implements ConstraintInterface
 {
@@ -47,7 +48,7 @@ class AdditionalPropertiesConstraint implements ConstraintInterface
 
             foreach ($additionalProperties as $key => $_) {
                 foreach ($patterns as $pattern) {
-                    if (preg_match($this->createPregMatchPattern($pattern), (string) $key)) {
+                    if (preg_match(EcmaPatternConverter::toPcre($pattern), (string) $key)) {
                         unset($additionalProperties[$key]);
                         break;
                     }
@@ -58,36 +59,20 @@ class AdditionalPropertiesConstraint implements ConstraintInterface
         if (is_object($schema->additionalProperties)) {
             foreach ($additionalProperties as $key => $additionalPropertiesValue) {
                 $schemaConstraint = $this->factory->createInstanceFor('schema');
-                $schemaConstraint->check($additionalPropertiesValue, $schema->additionalProperties, $path, $i); // @todo increment path
-                if ($schemaConstraint->isValid()) {
-                    unset($additionalProperties[$key]);
+                $schemaConstraint->check($additionalPropertiesValue, $schema->additionalProperties, ($path ?? new JsonPointer(''))->withAppendedPath($key), $i);
+
+                // The property is permitted by the schema, so it is never an "additional property"
+                // error; what it failed is the sub-schema, and those errors carry the reason.
+                if (!$schemaConstraint->isValid()) {
+                    $this->addErrors($schemaConstraint->getErrors());
                 }
+
+                unset($additionalProperties[$key]);
             }
         }
 
         foreach ($additionalProperties as $key => $additionalPropertiesValue) {
-            $this->addError(ConstraintError::ADDITIONAL_PROPERTIES(), $path, ['found' => $additionalPropertiesValue]);
+            $this->addError(ConstraintError::ADDITIONAL_PROPERTIES(), ($path ?? new JsonPointer(''))->withAppendedPath($key), ['found' => $key]);
         }
-    }
-
-    private function createPregMatchPattern(string $pattern): string
-    {
-        $replacements = [
-//            '\D' => '[^0-9]',
-//            '\d' => '[0-9]',
-            '\p{digit}' => '\p{Nd}',
-//            '\w' => '[A-Za-z0-9_]',
-//            '\W' => '[^A-Za-z0-9_]',
-//            '\s' => '[\s\x{200B}]' // Explicitly include zero width white space,
-            '\p{Letter}' => '\p{L}', // Map ECMA long property name to PHP (PCRE) Unicode property abbreviations
-        ];
-
-        $pattern = str_replace(
-            array_keys($replacements),
-            array_values($replacements),
-            $pattern
-        );
-
-        return '/' . str_replace('/', '\/', $pattern) . '/u';
     }
 }
