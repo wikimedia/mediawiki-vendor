@@ -49,7 +49,6 @@ class ComposerStaticInit_mediawiki_vendor
             'Wikimedia\\MetricsPlatform\\Tests\\' => 32,
             'Wikimedia\\MetricsPlatform\\' => 26,
             'Wikimedia\\LanguageData\\' => 23,
-            'Wikimedia\\LangConv\\' => 19,
             'Wikimedia\\JsonCodec\\' => 20,
             'Wikimedia\\IDLeDOM\\' => 18,
             'Wikimedia\\Equivset\\' => 19,
@@ -271,10 +270,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\LanguageData\\' =>
         array (
             0 => __DIR__ . '/..' . '/wikimedia/language-data/src',
-        ),
-        'Wikimedia\\LangConv\\' =>
-        array (
-            0 => __DIR__ . '/..' . '/wikimedia/langconv/src',
         ),
         'Wikimedia\\JsonCodec\\' =>
         array (
@@ -6503,17 +6498,6 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\JsonCodec\\JsonServicesClassCodec' => __DIR__ . '/..' . '/wikimedia/json-codec/src/JsonServicesClassCodec.php',
         'Wikimedia\\JsonCodec\\JsonStaticClassCodec' => __DIR__ . '/..' . '/wikimedia/json-codec/src/JsonStaticClassCodec.php',
         'Wikimedia\\JsonCodec\\JsonStdClassCodec' => __DIR__ . '/..' . '/wikimedia/json-codec/src/JsonStdClassCodec.php',
-        'Wikimedia\\LangConv\\BacktrackState' => __DIR__ . '/..' . '/wikimedia/langconv/src/BacktrackState.php',
-        'Wikimedia\\LangConv\\BracketResult' => __DIR__ . '/..' . '/wikimedia/langconv/src/BracketResult.php',
-        'Wikimedia\\LangConv\\Construct\\Edge' => __DIR__ . '/..' . '/wikimedia/langconv/src/Construct/Edge.php',
-        'Wikimedia\\LangConv\\Construct\\GenReplFst' => __DIR__ . '/..' . '/wikimedia/langconv/src/Construct/GenReplFst.php',
-        'Wikimedia\\LangConv\\Construct\\MutableFST' => __DIR__ . '/..' . '/wikimedia/langconv/src/Construct/MutableFST.php',
-        'Wikimedia\\LangConv\\Construct\\State' => __DIR__ . '/..' . '/wikimedia/langconv/src/Construct/State.php',
-        'Wikimedia\\LangConv\\FST' => __DIR__ . '/..' . '/wikimedia/langconv/src/FST.php',
-        'Wikimedia\\LangConv\\FstReplacementMachine' => __DIR__ . '/..' . '/wikimedia/langconv/src/FstReplacementMachine.php',
-        'Wikimedia\\LangConv\\NullReplacementMachine' => __DIR__ . '/..' . '/wikimedia/langconv/src/NullReplacementMachine.php',
-        'Wikimedia\\LangConv\\ReplacementMachine' => __DIR__ . '/..' . '/wikimedia/langconv/src/ReplacementMachine.php',
-        'Wikimedia\\LangConv\\ZhReplacementMachine' => __DIR__ . '/..' . '/wikimedia/langconv/src/ZhReplacementMachine.php',
         'Wikimedia\\LanguageData\\LanguageUtil' => __DIR__ . '/..' . '/wikimedia/language-data/src/LanguageUtil.php',
         'Wikimedia\\MetricsPlatform\\ContextController' => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/src/ContextController.php',
         'Wikimedia\\MetricsPlatform\\EventSubmitter' => __DIR__ . '/..' . '/wikimedia/metrics-platform/php/src/EventSubmitter.php',
