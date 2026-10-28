@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * @file
  * @license https://opensource.org/licenses/Apache-2.0 Apache-2.0
@@ -16,7 +18,6 @@ class NoWhitespace extends Matcher {
 
 	/** @inheritDoc */
 	protected function generateMatches( ComponentValueList $values, $start, array $options ) {
-		// @phan-suppress-next-line PhanCoalescingNeverNull
 		$cv = $values[$start - 1] ?? null;
 		if ( !$cv instanceof Token || $cv->type() !== Token::T_WHITESPACE ) {
 			yield $this->makeMatch( $values, $start, $start );

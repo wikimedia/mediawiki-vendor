@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * @file
  * @license https://opensource.org/licenses/Apache-2.0 Apache-2.0
@@ -41,7 +43,6 @@ class DelimMatcher extends Matcher {
 
 	/** @inheritDoc */
 	protected function generateMatches( ComponentValueList $values, $start, array $options ) {
-		// @phan-suppress-next-line PhanCoalescingNeverNull
 		$cv = $values[$start] ?? null;
 		if ( $cv instanceof Token && $cv->type() === $this->type &&
 			in_array( $cv->value(), $this->values, true )

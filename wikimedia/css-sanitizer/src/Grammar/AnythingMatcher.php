@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * @file
  * @license https://opensource.org/licenses/Apache-2.0 Apache-2.0
@@ -63,7 +65,6 @@ class AnythingMatcher extends Matcher {
 		$lastMatch = $this->quantifier === '*' ? $this->makeMatch( $values, $start, $start ) : null;
 		do {
 			$newMatch = null;
-			// @phan-suppress-next-line PhanCoalescingNeverNullInLoop
 			$cv = $values[$start] ?? null;
 			if ( $cv instanceof Token ) {
 				switch ( $cv->type() ) {

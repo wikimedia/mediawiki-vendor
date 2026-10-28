@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * @file
  * @license https://opensource.org/licenses/Apache-2.0 Apache-2.0
@@ -20,7 +22,6 @@ class CustomPropertyMatcher extends Matcher {
 
 	/** @inheritDoc */
 	protected function generateMatches( ComponentValueList $values, $start, array $options ) {
-		// @phan-suppress-next-line PhanCoalescingNeverNull
 		$cv = $values[$start] ?? null;
 		if ( $cv instanceof Token && $cv->type() === Token::T_IDENT
 			&& preg_match( '/^\-\-[a-zA-Z][a-zA-Z0-9-]*$/', $cv->value() ) ) {

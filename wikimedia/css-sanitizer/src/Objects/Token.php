@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * @file
  * @license https://opensource.org/licenses/Apache-2.0 Apache-2.0
@@ -137,7 +139,7 @@ class Token extends ComponentValue {
 			case self::T_PERCENTAGE:
 			case self::T_DIMENSION:
 				if ( !isset( $value['value'] ) ||
-					!is_numeric( $value['value'] ) || !is_finite( $value['value'] )
+					!is_numeric( $value['value'] ) || ( is_float( $value['value'] ) && !is_finite( $value['value'] ) )
 				) {
 					throw new InvalidArgumentException( "Token type $this->type requires a numeric value" );
 				}

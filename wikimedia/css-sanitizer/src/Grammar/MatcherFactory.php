@@ -1,4 +1,6 @@
 <?php
+declare( strict_types = 1 );
+
 /**
  * @file
  * @license https://opensource.org/licenses/Apache-2.0 Apache-2.0
@@ -258,8 +260,7 @@ class MatcherFactory {
 			'sign' => 1,
 		];
 		return static function ( $name ) use ( $funcArgs, $argType ) {
-			// phpcs:ignore Generic.ControlStructures.DisallowYodaConditions
-			return $funcArgs[ strtolower( $name ) ] ?? null === $argType;
+			return ( $funcArgs[ strtolower( $name ) ] ?? null ) === $argType;
 		};
 	}
 

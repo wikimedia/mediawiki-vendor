@@ -7681,29 +7681,29 @@
         },
         {
             "name": "wikimedia/css-sanitizer",
-            "version": "v6.2.1",
-            "version_normalized": "6.2.1.0",
+            "version": "v6.2.2",
+            "version_normalized": "6.2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/css-sanitizer.git",
-                "reference": "60973b8355c72a4acdddca3dcaa93bc901e0ccf2"
+                "reference": "f2cf5dfe3bbd17418ec65b4c44924e7e161c4185"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/css-sanitizer/zipball/60973b8355c72a4acdddca3dcaa93bc901e0ccf2",
-                "reference": "60973b8355c72a4acdddca3dcaa93bc901e0ccf2",
+                "url": "https://api.github.com/repos/wikimedia/css-sanitizer/zipball/f2cf5dfe3bbd17418ec65b4c44924e7e161c4185",
+                "reference": "f2cf5dfe3bbd17418ec65b4c44924e7e161c4185",
                 "shasum": ""
             },
             "require": {
                 "ext-iconv": "*",
                 "ext-mbstring": "*",
                 "php": ">=8.1",
-                "wikimedia/scoped-callback": "3.0.0 || 4.0.0 || 5.0.0",
+                "wikimedia/scoped-callback": "^5.0.0 || ^6.0.0",
                 "wikimedia/utfnormal": "^3.0.1 || ^4.0.0"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "50.0.0",
-                "mediawiki/mediawiki-phan-config": "0.19.0",
+                "mediawiki/mediawiki-codesniffer": "52.0.0",
+                "mediawiki/mediawiki-phan-config": "0.20.0",
                 "mediawiki/minus-x": "2.0.1",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
                 "php-parallel-lint/php-parallel-lint": "1.4.0",
@@ -7711,7 +7711,7 @@
                 "wikimedia/testing-access-wrapper": "^4.0.0",
                 "wikimedia/update-history": "^1.0.3"
             },
-            "time": "2026-03-04T17:00:28+00:00",
+            "time": "2026-10-28T00:44:29+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -7732,7 +7732,7 @@
             "description": "Classes to parse and sanitize CSS",
             "homepage": "https://www.mediawiki.org/wiki/Css-sanitizer",
             "support": {
-                "source": "https://github.com/wikimedia/css-sanitizer/tree/v6.2.1"
+                "source": "https://github.com/wikimedia/css-sanitizer/tree/v6.2.2"
             },
             "install-path": "../wikimedia/css-sanitizer"
         },
