@@ -43,6 +43,17 @@ query searchRefunds($input: RefundSearchInput!, $after: String){
                 venmoUserId
               }
               ... on PayPalTransactionDetails {
+                authorizationId
+                captureId
+                paymentId
+                customField
+                origin {
+                  type
+                }
+                transactionFee {
+                  value
+                  currencyCode
+                }
                 payer {
                   email
                   phone

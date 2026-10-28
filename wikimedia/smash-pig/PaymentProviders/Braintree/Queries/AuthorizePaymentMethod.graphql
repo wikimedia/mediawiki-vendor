@@ -24,6 +24,17 @@ mutation AuthorizePaymentMethod($input: AuthorizePaymentMethodInput!){
       }
       paymentMethodSnapshot {
         ... on PayPalTransactionDetails {
+          authorizationId
+          captureId
+          paymentId
+          customField
+          origin {
+            type
+          }
+          transactionFee {
+            value
+            currencyCode
+          }
           payer {
             firstName
             lastName

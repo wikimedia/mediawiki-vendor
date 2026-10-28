@@ -45,13 +45,7 @@ class PayPalPaymentProviderTest extends BaseBraintreeTest {
 
 	public function testAuthorizePaymentPaypal() {
 		$txn_id = "dHJhbnNhY3Rpb25fYXIxMTNuZzQ";
-		$payer = [
-			'firstName' => "Jimmy",
-			'lastName' => "Wales",
-			'email' => "mockjwales@wikimedia.org",
-			'payerId' => "123",
-			'phone' => "1-800-wikimedia"
-		];
+		$payer = $this->getPayer();
 		$request = [
 			"payment_token" => "fake-valid-nonce",
 			"order_id" => '123.3',
@@ -71,8 +65,16 @@ class PayPalPaymentProviderTest extends BaseBraintreeTest {
 							'id' => $txn_id,
 							'status' => "AUTHORIZED",
 							'paymentMethodSnapshot' => [
-								'payer' => $payer
-							]
+								'payer' => $payer,
+								'authorizationId' => 'BlahDeDah',
+								'captureId' => null,
+								'paymentId' => 'NotBlahDeDah',
+								'customField' => 'SomethingElse',
+								'transactionFee' => [
+									'value' => 0.25,
+									'currencyCode' => 'USD',
+								]
+							],
 						]
 					] ],
 				'extensions' => [
@@ -90,6 +92,12 @@ class PayPalPaymentProviderTest extends BaseBraintreeTest {
 		$this->assertEquals( $payer[ 'email' ], $donor_details->getEmail() );
 		$this->assertEquals( $payer[ 'phone' ], $donor_details->getPhone() );
 		$this->assertEquals( $payer[ 'payerId' ], $donor_details->getCustomerId() );
+		$this->assertEquals( 'BlahDeDah', $response->getAuthID() );
+		$this->assertNull( $response->getCaptureID() );
+		$this->assertEquals( 'paypal', $response->getBackendProcessor() );
+		// Shouldn't set this one till capture
+		$this->assertNull( $response->getBackendProcessorTransactionId() );
+		$this->assertEquals( $payer[ 'payerId' ], $response->getBackendProcessorContactID() );
 	}
 
 	public function testApprovePaymentThrowsExceptionWhenCalledWithoutRequiredFields() {
@@ -104,6 +112,7 @@ class PayPalPaymentProviderTest extends BaseBraintreeTest {
 		$request = [
 			"gateway_txn_id" => $txn_id,
 		];
+		$payer = $this->getPayer();
 		$this->api->expects( $this->once() )
 			->method( 'captureTransaction' )
 			->willReturn( [
@@ -112,6 +121,17 @@ class PayPalPaymentProviderTest extends BaseBraintreeTest {
 						'transaction' => [
 							'id' => $txn_id,
 							'status' => "SUBMITTED_FOR_SETTLEMENT",
+							'paymentMethodSnapshot' => [
+								'payer' => $payer,
+								'authorizationId' => 'BlahDeDah',
+								'captureId' => 'Toodles',
+								'paymentId' => 'NotBlahDeDah',
+								'customField' => 'SomethingElse',
+								'transactionFee' => [
+									'value' => 0.25,
+									'currencyCode' => 'USD',
+								]
+							],
 						]
 					] ],
 				'extensions' => [
@@ -123,17 +143,16 @@ class PayPalPaymentProviderTest extends BaseBraintreeTest {
 		$response = $provider->approvePayment( $request );
 		$this->assertEquals( FinalStatus::COMPLETE, $response->getStatus() );
 		$this->assertEquals( $txn_id, $response->getGatewayTxnId() );
+		$this->assertEquals( 'BlahDeDah', $response->getAuthID() );
+		$this->assertEquals( 'Toodles', $response->getCaptureID() );
+		$this->assertEquals( 'paypal', $response->getBackendProcessor() );
+		$this->assertEquals( 'Toodles', $response->getBackendProcessorTransactionId() );
+		$this->assertEquals( $payer[ 'payerId' ], $response->getBackendProcessorContactID() );
 	}
 
 	public function testCreatePayment() {
 		$txn_id = "dHJhbnNhY3Rpb25fYXIxMTNuZzQ";
-		$payer = [
-			'firstName' => "Jimmy",
-			'lastName' => "Wales",
-			'email' => "mockjwales@wikimedia.org",
-			'payerId' => "123",
-			'phone' => "1-800-wikimedia"
-		];
+		$payer = $this->getPayer();
 		$request = [
 			"payment_token" => "fake-valid-nonce",
 			"order_id" => '123.3',
@@ -227,5 +246,15 @@ class PayPalPaymentProviderTest extends BaseBraintreeTest {
 		$response = $provider->createPayment( $requestWithoutOrderId );
 		$validationError = $response->getValidationErrors();
 		$this->assertEquals( 'order_id', $validationError[0]->getField() );
+	}
+
+	protected function getPayer(): array {
+		return [
+			'firstName' => "Jimmy",
+			'lastName' => "Wales",
+			'email' => "mockjwales@wikimedia.org",
+			'payerId' => "123",
+			'phone' => "1-800-wikimedia"
+		];
 	}
 }

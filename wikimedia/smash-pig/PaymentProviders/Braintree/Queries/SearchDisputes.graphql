@@ -33,13 +33,24 @@ query searchDisputes($input: DisputeSearchInput!, $after: String){
                       venmoUserId
                     }
                       ... on PayPalTransactionDetails {
-                      payer {
-                        email
-                        phone
-                        lastName
-                        firstName
+                        authorizationId
+                        captureId
+                        paymentId
+                        customField
+                        origin {
+                          type
+                        }
+                        transactionFee {
+                          value
+                          currencyCode
+                        }
+                        payer {
+                          email
+                          phone
+                          lastName
+                          firstName
+                        }
                       }
-                    }
               }
             }
             amountDisputed {

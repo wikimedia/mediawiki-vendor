@@ -3,6 +3,28 @@ mutation CaptureTransaction($input: CaptureTransactionInput!) {
     transaction{
       id
       status
+      paymentMethodSnapshot {
+        ... on PayPalTransactionDetails {
+          authorizationId
+          captureId
+          paymentId
+          customField
+          origin {
+            type
+          }
+          transactionFee {
+            value
+            currencyCode
+          }
+          payer {
+            firstName
+            lastName
+            phone
+            email
+            payerId
+          }
+        }
+      }
     }
   }
 }

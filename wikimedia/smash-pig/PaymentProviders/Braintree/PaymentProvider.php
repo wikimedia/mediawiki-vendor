@@ -15,6 +15,7 @@ use SmashPig\PaymentProviders\IRefundablePaymentProvider;
 use SmashPig\PaymentProviders\Responses\ApprovePaymentResponse;
 use SmashPig\PaymentProviders\Responses\CreatePaymentResponse;
 use SmashPig\PaymentProviders\Responses\CreatePaymentSessionResponse;
+use SmashPig\PaymentProviders\Responses\PaymentProviderExtendedResponse;
 use SmashPig\PaymentProviders\Responses\PaymentProviderResponse;
 use SmashPig\PaymentProviders\Responses\RefundPaymentResponse;
 
@@ -335,20 +336,19 @@ class PaymentProvider implements
 		$mappedStatus = ( new PaymentStatus() )->normalizeStatus( $transaction['status'] );
 		$response->setSuccessful( in_array( $mappedStatus, $successfulStatuses ) );
 		$response->setGatewayTxnId( $transaction['id'] );
-		$donorDetails = new DonorDetails();
-		// if paypal, could get info from paymentMethodSnapshot payer, otherwise get from params
-		$donorDetails->setFirstName( $transaction['paymentMethodSnapshot']['payer']['firstName'] ?? $params['first_name'] );
-		$donorDetails->setLastName( $transaction['paymentMethodSnapshot']['payer']['lastName'] ?? $params['last_name'] );
-		$donorDetails->setEmail( $transaction['paymentMethodSnapshot']['payer']['email'] ?? $params['email'] );
-		$donorDetails->setPhone( $transaction['paymentMethodSnapshot']['payer']['phone'] ?? $params['phone'] ?? null );
-		$donorDetails->setFullName( $donorDetails->getFirstName() . ' ' . $donorDetails->getLastName() );
-		$donorDetails->setCustomerId( $transaction['paymentMethodSnapshot']['payer']['payerId'] ?? $transaction['customer']['id'] ?? null );
-		// additional data for venmo
-		$donorDetails->setUserName( $transaction['paymentMethodSnapshot']['username'] ?? null );
+
+		$donorDetails = $this->getDonorDetailsFromParams( $params );
+		$donorDetails->setCustomerId(
+			$transaction['paymentMethodSnapshot']['payer']['payerId'] ?? $transaction['customer']['id'] ?? null
+		);
 		$response->setDonorDetails( $donorDetails );
+
+		$this->setMethodSpecificResponseFields( $transaction, $response );
+
 		// The recurring token (vault) is the id of paymentMethod
 		if ( isset( $transaction['recurring'] ) && isset( $transaction['paymentMethod']['id'] ) ) {
 			$response->setRecurringPaymentToken( $transaction['paymentMethod']['id'] );
+			// FIXME: this should be the Braintree customer ID but for paypal we're setting it to the PayPal Payer ID
 			$response->setProcessorContactID( $donorDetails->getCustomerId() );
 		}
 		$response->setStatus( $mappedStatus );
@@ -360,6 +360,7 @@ class PaymentProvider implements
 		$response->setSuccessful( in_array( $mappedStatus, $successfulStatuses ) );
 		$response->setGatewayTxnId( $transaction['id'] );
 		$response->setStatus( $mappedStatus );
+		$this->setMethodSpecificResponseFields( $transaction, $response );
 	}
 
 	/**
@@ -420,5 +421,20 @@ class PaymentProvider implements
 		}
 
 		return $response;
+	}
+
+	protected function setMethodSpecificResponseFields(
+		array $transaction, PaymentProviderExtendedResponse $response
+	): void {
+		// Do nothing by default
+	}
+
+	protected function getDonorDetailsFromParams( array $params ): DonorDetails {
+		$donorDetails = new DonorDetails();
+		$donorDetails->setFirstName( $params['first_name'] ?? null )
+			->setLastName( $params['last_name'] ?? null )
+			->setEmail( $params['email'] ?? null )
+			->setPhone( $params['phone'] ?? null );
+		return $donorDetails;
 	}
 }

@@ -4,6 +4,7 @@ namespace SmashPig\PaymentProviders\Braintree;
 
 use SmashPig\Core\Logging\Logger;
 use SmashPig\PaymentData\DonorDetails;
+use SmashPig\PaymentProviders\Responses\PaymentProviderExtendedResponse;
 
 class VenmoPaymentProvider extends PaymentProvider {
 	/**
@@ -78,5 +79,18 @@ class VenmoPaymentProvider extends PaymentProvider {
 			$invalidParams[] = 'gateway_session_id';
 		}
 		return $invalidParams;
+	}
+
+	protected function setMethodSpecificResponseFields(
+		array $transaction, PaymentProviderExtendedResponse $response
+	): void {
+		if (
+			isset( $transaction[ 'paymentMethodSnapshot'] ) &&
+			$response->getDonorDetails() !== null
+		) {
+			$response->getDonorDetails()->setUserName(
+				$transaction['paymentMethodSnapshot']['username'] ?? null
+			);
+		}
 	}
 }
