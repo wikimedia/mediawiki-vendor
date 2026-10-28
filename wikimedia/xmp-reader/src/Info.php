@@ -20,15 +20,7 @@ namespace Wikimedia\XMPReader;
  */
 class Info {
 	/**
-	 * Get the item array
-	 * @return array XMP item configuration array.
-	 */
-	public static function getItems(): array {
-		return self::$items;
-	}
-
-	/**
-	 * XMPInfo::$items keeps a list of all the items
+	 * Info::ITEMS keeps a list of all the items
 	 * we are interested to extract, as well as
 	 * information about the item like what type
 	 * it is.
@@ -55,7 +47,7 @@ class Info {
 	 * Currently, this just has a bunch of EXIF values as this class is only half-done.
 	 * @var array
 	 */
-	private static array $items = [
+	public const ITEMS = [
 		'http://ns.adobe.com/exif/1.0/' => [
 			'ApertureValue' => [
 				'map_group' => 'exif',

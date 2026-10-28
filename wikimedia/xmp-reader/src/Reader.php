@@ -141,7 +141,7 @@ class Reader implements LoggerAwareInterface {
 		$this->setLogger( $logger ?? new NullLogger() );
 		$this->filename = $filename;
 
-		$this->items = Info::getItems();
+		$this->items = Info::ITEMS;
 
 		$this->resetXMLParser();
 	}
@@ -167,10 +167,10 @@ class Reader implements LoggerAwareInterface {
 		xml_parser_set_option( $this->xmlParser, XML_OPTION_SKIP_WHITE, 1 );
 
 		xml_set_element_handler( $this->xmlParser,
-			[ $this, 'startElement' ],
-			[ $this, 'endElement' ] );
+			$this->startElement( ... ),
+			$this->endElement( ... ) );
 
-		xml_set_character_data_handler( $this->xmlParser, [ $this, 'char' ] );
+		xml_set_character_data_handler( $this->xmlParser, $this->char( ... ) );
 
 		$this->parsable = self::PARSABLE_UNKNOWN;
 		$this->xmlParsableBuffer = '';
@@ -485,11 +485,11 @@ class Reader implements LoggerAwareInterface {
 	 * <exif:DigitalZoomRatio>0/10</exif:DigitalZoomRatio>
 	 * and are processing the 0/10 bit.
 	 *
-	 * @param XMLParser $parser XMLParser reference to the xml parser
+	 * @param XMLParser $parser XMLParser reference to the xml parser @phan-unused-param
 	 * @param string $data Character data
 	 * @throws RuntimeException On invalid data
 	 */
-	public function char( $parser, $data ): void {
+	private function char( $parser, $data ): void {
 		$data = trim( $data );
 		if ( trim( $data ) === "" ) {
 			return;
@@ -787,11 +787,11 @@ class Reader implements LoggerAwareInterface {
 	 * Ignores the outer wrapping elements that are optional in
 	 * xmp and have no meaning.
 	 *
-	 * @param XMLParser $parser
+	 * @param XMLParser $parser @phan-unused-param
 	 * @param string $elm Namespace . ' ' . element name
 	 * @throws RuntimeException
 	 */
-	public function endElement( $parser, $elm ): void {
+	private function endElement( $parser, $elm ): void {
 		if ( $elm === ( self::NS_RDF . ' RDF' )
 			|| $elm === 'adobe:ns:meta/ xmpmeta'
 			|| $elm === 'adobe:ns:meta/ xapmeta'
@@ -1241,12 +1241,12 @@ class Reader implements LoggerAwareInterface {
 	 * Generally just calls a helper based on what MODE we're in.
 	 * Also does some initial set up for the wrapper element
 	 *
-	 * @param XMLParser $parser
+	 * @param XMLParser $parser @phan-unused-param
 	 * @param string $elm Namespace "<space>" element
 	 * @param array $attribs Attribute name => value
 	 * @throws RuntimeException
 	 */
-	public function startElement( $parser, $elm, $attribs ): void {
+	private function startElement( $parser, $elm, $attribs ): void {
 		if ( $elm === self::NS_RDF . ' RDF'
 			|| $elm === 'adobe:ns:meta/ xmpmeta'
 			|| $elm === 'adobe:ns:meta/ xapmeta'

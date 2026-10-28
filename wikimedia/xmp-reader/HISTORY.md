@@ -1,5 +1,15 @@
 # Release History
 
+## 0.11.0
+* [BREAKING CHANGE] Remove support for PHP < 8.3 (Alexander Vorwerk)
+* [BREAKING CHANGE] Remove `Info::getItems()`, use the new `Info::ITEMS` constant instead (Umherirrender)
+* Use first class callable on xml functions (Umherirrender)
+
+* build: Allow wikimedia/scoped-callback 6.0.0 (Alexander Vorwerk)
+* build: Drop support for wikimedia/scoped-callback < 5.0 (Alexander Vorwerk)
+* build: Updating mediawiki/mediawiki-codesniffer to 51.0.0 (libraryupgrader)
+* build: Updating mediawiki/mediawiki-codesniffer to 52.0.0 (libraryupgrader)
+
 ## 0.10.3
 * Check string type before running `preg_match()` (Umherirrender)
 * Raise wikimedia/timestamp to 5.1, use `TS::…` instead of global constants (James D. Forrester)
