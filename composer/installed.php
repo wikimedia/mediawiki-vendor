@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '8e7c555fa41fbce10e74e07d0310028b59bf3536',
+        'reference' => '12aff0e4aabb41190965a5389ce3af910ea33bf9',
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '8e7c555fa41fbce10e74e07d0310028b59bf3536',
+            'reference' => '12aff0e4aabb41190965a5389ce3af910ea33bf9',
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -801,8 +801,8 @@
             'dev_requirement' => false,
         ),
         'wikimedia/parsoid' => array(
-            'pretty_version' => 'v0.24.0-a27',
-            'version' => '0.24.0.0-alpha27',
+            'pretty_version' => 'v0.24.0',
+            'version' => '0.24.0.0',
             'reference' => '3c2d11f27e4277751acce87d9ace02a21c9b97f6',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wikimedia/parsoid',
