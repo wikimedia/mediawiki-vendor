@@ -1,0 +1,55 @@
+{
+    "name": "spatie/icalendar-generator",
+    "description": "Build calendars in the iCalendar format",
+    "keywords": [
+        "spatie",
+        "calendar",
+        "ics",
+        "ical",
+        "icalendar"
+    ],
+    "homepage": "https://github.com/spatie/icalendar-generator",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ruben Van Assche",
+            "email": "ruben@spatie.be",
+            "homepage": "https://spatie.be",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "ext-mbstring": "*"
+    },
+    "require-dev": {
+        "ext-json": "*",
+        "nesbot/carbon": "^3.5",
+        "larapack/dd": "^1.1",
+        "pestphp/pest": "^2.34 || ^3.0 || ^4.0",
+        "spatie/pest-plugin-snapshots": "^2.1",
+        "phpstan/phpstan" : "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Spatie\\IcalendarGenerator\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Spatie\\IcalendarGenerator\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/pest",
+        "analyse": "vendor/bin/phpstan analyse",
+        "baseline": "vendor/bin/phpstan analyse --generate-baseline",
+        "test-coverage": "vendor/bin/pest --coverage-html coverage"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
+}

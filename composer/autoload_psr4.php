@@ -64,6 +64,7 @@ return array(
     'Symfony\\Component\\Clock\\' => array($vendorDir . '/symfony/clock'),
     'Swaggest\\JsonDiff\\' => array($vendorDir . '/swaggest/json-diff/src'),
     'SpomkyLabs\\Pki\\' => array($vendorDir . '/spomky-labs/pki-framework/src'),
+    'Spatie\\IcalendarGenerator\\' => array($vendorDir . '/spatie/icalendar-generator/src'),
     'Shellbox\\' => array($vendorDir . '/wikimedia/shellbox/src'),
     'Serializers\\' => array($vendorDir . '/serialization/serialization/src/Serializers'),
     'ReportUri\\Dbsc\\' => array($vendorDir . '/report-uri/dbsc-php/src'),
