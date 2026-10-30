@@ -1888,6 +1888,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Symfony\\Component\\Serializer\\Debug\\TraceableNormalizer' => __DIR__ . '/..' . '/symfony/serializer/Debug/TraceableNormalizer.php',
         'Symfony\\Component\\Serializer\\Debug\\TraceableSerializer' => __DIR__ . '/..' . '/symfony/serializer/Debug/TraceableSerializer.php',
         'Symfony\\Component\\Serializer\\DependencyInjection\\AttributeMetadataPass' => __DIR__ . '/..' . '/symfony/serializer/DependencyInjection/AttributeMetadataPass.php',
+        'Symfony\\Component\\Serializer\\DependencyInjection\\NamedSerializerNestedNormalizersPass' => __DIR__ . '/..' . '/symfony/serializer/DependencyInjection/NamedSerializerNestedNormalizersPass.php',
         'Symfony\\Component\\Serializer\\DependencyInjection\\SerializerPass' => __DIR__ . '/..' . '/symfony/serializer/DependencyInjection/SerializerPass.php',
         'Symfony\\Component\\Serializer\\Encoder\\ChainDecoder' => __DIR__ . '/..' . '/symfony/serializer/Encoder/ChainDecoder.php',
         'Symfony\\Component\\Serializer\\Encoder\\ChainEncoder' => __DIR__ . '/..' . '/symfony/serializer/Encoder/ChainEncoder.php',

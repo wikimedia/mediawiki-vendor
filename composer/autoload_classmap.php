@@ -1445,6 +1445,7 @@ return array(
     'Symfony\\Component\\Serializer\\Debug\\TraceableNormalizer' => $vendorDir . '/symfony/serializer/Debug/TraceableNormalizer.php',
     'Symfony\\Component\\Serializer\\Debug\\TraceableSerializer' => $vendorDir . '/symfony/serializer/Debug/TraceableSerializer.php',
     'Symfony\\Component\\Serializer\\DependencyInjection\\AttributeMetadataPass' => $vendorDir . '/symfony/serializer/DependencyInjection/AttributeMetadataPass.php',
+    'Symfony\\Component\\Serializer\\DependencyInjection\\NamedSerializerNestedNormalizersPass' => $vendorDir . '/symfony/serializer/DependencyInjection/NamedSerializerNestedNormalizersPass.php',
     'Symfony\\Component\\Serializer\\DependencyInjection\\SerializerPass' => $vendorDir . '/symfony/serializer/DependencyInjection/SerializerPass.php',
     'Symfony\\Component\\Serializer\\Encoder\\ChainDecoder' => $vendorDir . '/symfony/serializer/Encoder/ChainDecoder.php',
     'Symfony\\Component\\Serializer\\Encoder\\ChainEncoder' => $vendorDir . '/symfony/serializer/Encoder/ChainEncoder.php',
