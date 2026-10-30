@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'd665cd7e7771aa96cf92f04286835a00ea11cb02',
+        'reference' => '98a15140d4c126cef7c441b130b77a84e0fed519',
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'd665cd7e7771aa96cf92f04286835a00ea11cb02',
+            'reference' => '98a15140d4c126cef7c441b130b77a84e0fed519',
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
@@ -402,9 +402,9 @@
             ),
         ),
         'spomky-labs/cbor-php' => array(
-            'pretty_version' => '3.2.2',
-            'version' => '3.2.2.0',
-            'reference' => '2a5fb86aacfe1004611370ead6caa2bfc88435d0',
+            'pretty_version' => '3.4.2',
+            'version' => '3.4.2.0',
+            'reference' => '8f5ea00a07ad529d20886505cdbeb2b9ac7bb2d6',
             'type' => 'library',
             'install_path' => __DIR__ . '/../spomky-labs/cbor-php',
             'aliases' => array(),
@@ -468,6 +468,12 @@
             ),
         ),
         'symfony/polyfill-php80' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => '1.99',
+            ),
+        ),
+        'symfony/polyfill-php81' => array(
             'dev_requirement' => false,
             'replaced' => array(
                 0 => '1.99',
@@ -567,18 +573,18 @@
             'dev_requirement' => false,
         ),
         'web-auth/cose-lib' => array(
-            'pretty_version' => '4.5.2',
-            'version' => '4.5.2.0',
-            'reference' => '5b38660f90070a8e45f3dbc9528ade3b608dd77d',
+            'pretty_version' => '4.8.2',
+            'version' => '4.8.2.0',
+            'reference' => '8849e8bf043a2d42d0bec5bda5db2469ad376148',
             'type' => 'library',
             'install_path' => __DIR__ . '/../web-auth/cose-lib',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
         'web-auth/webauthn-lib' => array(
-            'pretty_version' => '5.3.2',
-            'version' => '5.3.2.0',
-            'reference' => 'a272f254c056fb3d6c80a4801d3c7c5fedc6a08d',
+            'pretty_version' => '5.3.9',
+            'version' => '5.3.9.0',
+            'reference' => '727e378fb7a36c26be5c911e4a0120c146741ce7',
             'type' => 'library',
             'install_path' => __DIR__ . '/../web-auth/webauthn-lib',
             'aliases' => array(),
