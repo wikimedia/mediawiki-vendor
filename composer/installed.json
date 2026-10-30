@@ -1707,6 +1707,7 @@
                 "phpunit/phpunit": "*"
             },
             "time": "2015-03-22T15:48:19+00:00",
+            "published-time": "2018-09-09T07:18:18+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -1743,7 +1744,6 @@
                 "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Net_Socket",
                 "source": "https://github.com/pear/Net_Socket"
             },
-            "abandoned": true,
             "install-path": "../pear/net_socket"
         },
         {
