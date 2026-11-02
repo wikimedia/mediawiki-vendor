@@ -922,6 +922,7 @@ class TableFixups {
 	 * @return mixed
 	 */
 	public static function handleTableCellTemplates( Element $tableOrCell, DTState $dtState ) {
+		$env = $dtState->env;
 		$cellName = $nodeName = DOMUtils::nodeName( $tableOrCell );
 		$isTemplatedCell = $isTemplatedNode = DOMUtils::hasTypeOf( $tableOrCell, 'mw:Transclusion' );
 		if ( $nodeName === 'table' ) {
@@ -929,6 +930,7 @@ class TableFixups {
 			// had been expanded in the preprocessor and there is no need to examine individual
 			// cells for reparsing. Skip the entire table.
 			if ( $isTemplatedNode && DOMDataUtils::getDataMw( $tableOrCell )->fromWellBalancedTemplate() ) {
+				$env->trace( "tablefixups", "Skipping table produced by a well-balanced template" );
 				return $tableOrCell->nextSibling;
 			}
 			return true;
@@ -947,7 +949,9 @@ class TableFixups {
 			// for additional processing.
 			return $cell;
 		}
+
 		$reparseType = self::getReparseType( $cell, $dtState );
+		$env->trace( "tablefixups", static fn () => "RPT: " . $reparseType->value . "; for ", $cell );
 
 		// Deal with <th> special case where "!! foo" is parsed as <th>! foo</th>
 		// but should have been parsed as <th>foo</th>.
@@ -1040,12 +1044,12 @@ class TableFixups {
 				$match1 = $match2 = null;
 
 				// Find the first match of ||
-				preg_match( '/^((?:[^|]*(?:\|[^|])?)*)\|\|(.*)$/D', $child->textContent, $match1 );
+				preg_match( '/^((?:[^|]*(?:\|[^|])?)*)\|\|(.*)$/sD', $child->textContent, $match1 );
 				if ( $isTd ) {
 					$match = $match1;
 				} else {
 					// Find the first match !!
-					preg_match( '/^((?:[^!]*(?:\![^!])?)*)\!\!(.*)$/D', $child->textContent, $match2 );
+					preg_match( '/^((?:[^!]*(?:\![^!])?)*)\!\!(.*)$/sD', $child->textContent, $match2 );
 
 					// Pick the shortest match
 					if ( $match1 && $match2 ) {
