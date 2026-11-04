@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "486a590be90717423401784cff7d895c",
+    "content-hash": "2422a5919ea15cccf6a54028247fc6cf",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -1978,16 +1978,16 @@
         },
         {
             "name": "james-heinrich/getid3",
-            "version": "v1.9.25",
+            "version": "v1.9.28",
             "source": {
                 "type": "git",
                 "url": "https://github.com/JamesHeinrich/getID3.git",
-                "reference": "fefffe762b02be155dcc32eec57feff8a49bc4b5"
+                "reference": "be83ea6ffbdac0301d83bee0d42f09e2a41bd0dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/fefffe762b02be155dcc32eec57feff8a49bc4b5",
-                "reference": "fefffe762b02be155dcc32eec57feff8a49bc4b5",
+                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/be83ea6ffbdac0301d83bee0d42f09e2a41bd0dd",
+                "reference": "be83ea6ffbdac0301d83bee0d42f09e2a41bd0dd",
                 "shasum": ""
             },
             "require": {
@@ -2039,10 +2039,10 @@
             ],
             "support": {
                 "issues": "https://github.com/JamesHeinrich/getID3/issues",
-                "source": "https://github.com/JamesHeinrich/getID3/tree/v1.9.25"
+                "source": "https://github.com/JamesHeinrich/getID3/tree/v1.9.28"
             },
-            "time": "2026-03-10T11:56:47+00:00",
-            "published-time": "2026-03-10T12:00:43+00:00"
+            "time": "2026-10-30T21:48:34+00:00",
+            "published-time": "2026-10-30T21:49:44+00:00"
         },
         {
             "name": "justinrainbow/json-schema",

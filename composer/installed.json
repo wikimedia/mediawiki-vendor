@@ -2030,17 +2030,17 @@
         },
         {
             "name": "james-heinrich/getid3",
-            "version": "v1.9.25",
-            "version_normalized": "1.9.25.0",
+            "version": "v1.9.28",
+            "version_normalized": "1.9.28.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/JamesHeinrich/getID3.git",
-                "reference": "fefffe762b02be155dcc32eec57feff8a49bc4b5"
+                "reference": "be83ea6ffbdac0301d83bee0d42f09e2a41bd0dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/fefffe762b02be155dcc32eec57feff8a49bc4b5",
-                "reference": "fefffe762b02be155dcc32eec57feff8a49bc4b5",
+                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/be83ea6ffbdac0301d83bee0d42f09e2a41bd0dd",
+                "reference": "be83ea6ffbdac0301d83bee0d42f09e2a41bd0dd",
                 "shasum": ""
             },
             "require": {
@@ -2066,7 +2066,8 @@
                 "ext-xml": "XML extension is required for graphic modules to analyze the XML metadata.",
                 "ext-zlib": "Zlib extension is required for archive modules and compressed metadata."
             },
-            "time": "2026-03-10T11:56:47+00:00",
+            "time": "2026-10-30T21:48:34+00:00",
+            "published-time": "2026-10-30T21:49:44+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -2094,7 +2095,7 @@
             ],
             "support": {
                 "issues": "https://github.com/JamesHeinrich/getID3/issues",
-                "source": "https://github.com/JamesHeinrich/getID3/tree/v1.9.25"
+                "source": "https://github.com/JamesHeinrich/getID3/tree/v1.9.28"
             },
             "install-path": "../james-heinrich/getid3"
         },

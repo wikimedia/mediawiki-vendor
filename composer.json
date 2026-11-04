@@ -43,7 +43,7 @@
 		"guzzlehttp/psr7": "2.13.2",
 		"hartman/vtt-vivid": "1.0.3",
 		"jakobo/hotp-php": "2.2.0",
-		"james-heinrich/getid3": "1.9.25",
+		"james-heinrich/getid3": "1.9.28",
 		"justinrainbow/json-schema": "6.14.0",
 		"lcobucci/jwt": "5.6.0",
 		"league/event": "3.0.3",
