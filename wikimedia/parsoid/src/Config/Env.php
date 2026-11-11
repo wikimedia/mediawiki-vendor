@@ -133,6 +133,7 @@ class Env {
 	 * attributes.
 	 */
 	public ?DomPageBundle $pageBundle = null;
+
 	private ?Document $domDiff = null;
 	public bool $hasAnnotations = false;
 

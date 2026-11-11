@@ -316,6 +316,8 @@ class DOMDataUtils {
 
 		$nodeData = new NodeData;
 		// See if there is data-parsoid or data-mw in the page bundle
+		// The pagebundle will have a null value for data-parsoid for where
+		// there was no data-parsoid associated with it.
 		if ( isset( $pb->parsoid['ids'][$id] ) ) {
 			$nodeData->parsoid = [ $pb->parsoid['ids'][$id] ]; // Undecoded JSON blob
 		}
@@ -740,12 +742,15 @@ class DOMDataUtils {
 				// construction, none of our new UIDs will conflict with each
 				// other.
 				$uid = CounterType::NODE_DATA_ID->counterToId( $pbCounters['nodedata'] );
-			} while ( isset( $idIndex[$uid] ) );
+			} while ( array_key_exists( $uid, $idIndex ) );
 			DOMCompat::setIdAttribute( $node, $uid );
 		}
-		if ( isset( $data->parsoid ) ) {
-			$pb->parsoid['ids'][$uid] = $data->parsoid;
-		}
+		// If $data-parsoid is not set, set the pagebundle value for it to null.
+		// This ensures that for all nodes with an id attribute set, there is an
+		// entry for it in the pagebundle data-parsoid blob. This then lets us
+		// use array_keys($PAGE_BUNDLE->parsoid['ids']) to get all ids used in the
+		// DOM without needing to walk the DOM
+		$pb->parsoid['ids'][$uid] = $data->parsoid ?? null;
 		if ( isset( $data->mw ) ) {
 			$pb->mw['ids'][$uid] = $data->mw;
 		}
@@ -796,15 +801,28 @@ class DOMDataUtils {
 	}
 
 	/**
-	 * Builds an index of id attributes seen in the DOM
+	 * Builds an index of id attributes seen in the DOM.
+	 *
+	 * If the document was loaded from a page bundle with used ids
+	 * (see BasePageBundle::hasUsedIds()), return the ids of that page
+	 * bundle instead, which avoids a walk of the DOM.
 	 *
 	 * @param SiteConfig $siteConfig A SiteConfig is required to properly
 	 *   traverse document fragments embedded in extension DOM.
-	 * @param Document $doc
+	 * @param Document $doc Should be "prepared and loaded"
 	 * @param array<string,DocumentFragment> $fragments
-	 * @return array<string, true>
+	 * @return array<string,mixed> Only the keys are meaningful
 	 */
 	public static function usedIdIndex( SiteConfig $siteConfig, Document $doc, array $fragments = [] ): array {
+		// DOMTraverser needs a prepared and loaded document in order to
+		// decode the rich attributes holding embedded HTML (data-mw, for
+		// example) and traverse the ids inside them.
+		Assert::invariant( self::isPreparedAndLoaded( $doc ),
+			"usedIdIndex requires a prepared and loaded document" );
+		$inputPb = self::getBag( $doc )->inputPageBundle;
+		if ( $inputPb?->hasUsedIds() ) {
+			return $inputPb->parsoid['ids'] ?? [];
+		}
 		$index = [];
 		$t = new DOMTraverser( false, true );
 		$t->addHandler( null, static function ( $n, $state ) use ( &$index ) {
@@ -842,6 +860,8 @@ class DOMDataUtils {
 		if ( !empty( $options['storeInPageBundle'] ) ) {
 			Assert::invariant( isset( $options['idIndex'] ),
 							  "Page bundle requires idIndex to avoid conflicts" );
+			// We store an entry for each id attribute we visit
+			$options['storeInPageBundle']->pbVersion = BasePageBundle::VERSION_WITH_USEDID;
 		}
 
 		Assert::invariant( empty( $options['discardDataParsoid'] ) || empty( $options['keepTmp'] ),
@@ -886,7 +906,13 @@ class DOMDataUtils {
 		$nd->storedId = $id !== null ? intval( $id ) : null;
 
 		// Store pagebundle
-		if ( $pbData !== null ) {
+		if ( DOMCompat::getAttribute( $node, 'id' ) !== null ) {
+			// If the node has an id, store an entry in the pagebundle,
+			// even if the node has no nodedata, so that a later node
+			// with the same id gets a new id.
+			$pbData ??= new stdClass;
+		}
+		if ( ( $options['storeInPageBundle'] ?? false ) && $pbData !== null ) {
 			self::storeInPageBundle( $options['storeInPageBundle'], $node, $pbData, $options['idIndex'] );
 		}
 
