@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "eb1b627f0c6c2cf6cffe65469ebb9343",
+    "content-hash": "34138a0e0c17bc7a9f94a917e878d29f",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -1132,61 +1132,6 @@
             ],
             "time": "2025-10-17T11:30:53+00:00",
             "published-time": "2025-10-17T11:32:06+00:00"
-        },
-        {
-            "name": "liuggio/statsd-php-client",
-            "version": "v1.0.18",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/liuggio/statsd-php-client.git",
-                "reference": "c42e6d6687b7b2d7683186ec7f4f03351cc3dbca"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/liuggio/statsd-php-client/zipball/c42e6d6687b7b2d7683186ec7f4f03351cc3dbca",
-                "reference": "c42e6d6687b7b2d7683186ec7f4f03351cc3dbca",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.2"
-            },
-            "require-dev": {
-                "monolog/monolog": ">=1.2.0",
-                "phpunit/phpunit": "^4.7"
-            },
-            "suggest": {
-                "monolog/monolog": "Monolog, in order to do generate statistic from log >=1.2.0)"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Liuggio": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Giulio De Donato",
-                    "email": "liuggio@gmail.com"
-                }
-            ],
-            "description": "Statsd (Object Oriented) client library for PHP",
-            "homepage": "https://github.com/liuggio/statsd-php-client/",
-            "keywords": [
-                "etsy",
-                "monitoring",
-                "php",
-                "statsd"
-            ],
-            "support": {
-                "issues": "https://github.com/liuggio/statsd-php-client/issues",
-                "source": "https://github.com/liuggio/statsd-php-client/tree/v1.0.18"
-            },
-            "time": "2015-07-23T23:12:45+00:00",
-            "published-time": "2015-07-23T23:17:05+00:00"
         },
         {
             "name": "mck89/peast",

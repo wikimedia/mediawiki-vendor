@@ -6,7 +6,6 @@ $vendorDir = dirname(__DIR__);
 $baseDir = $vendorDir;
 
 return array(
-    'Liuggio' => array($vendorDir . '/liuggio/statsd-php-client/src'),
     'Less' => array($vendorDir . '/wikimedia/less.php/lib'),
     'CSSMin' => array($vendorDir . '/wikimedia/minify/src'),
     '' => array($vendorDir . '/wikimedia/cssjanus/src'),

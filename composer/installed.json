@@ -31,6 +31,7 @@
                 "ext-imagick": "to generate QR code images"
             },
             "time": "2026-03-16T01:01:30+00:00",
+            "published-time": "2026-03-16T01:02:26+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -81,6 +82,7 @@
                 "phpunit/phpunit": "^11.5"
             },
             "time": "2026-06-14T18:21:03+00:00",
+            "published-time": "2026-06-14T18:50:35+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -144,6 +146,7 @@
                 "phpunit/phpunit": "^10.5"
             },
             "time": "2026-07-11T21:00:30+00:00",
+            "published-time": "2026-07-11T21:10:14+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -205,6 +208,7 @@
                 "symfony/phpunit-bridge": "^3 || ^7"
             },
             "time": "2026-10-05T13:12:12+00:00",
+            "published-time": "2026-10-05T13:12:50+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -285,6 +289,7 @@
                 "squizlabs/php_codesniffer": "*"
             },
             "time": "2025-09-16T12:23:56+00:00",
+            "published-time": "2025-09-16T12:25:04+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -341,6 +346,7 @@
                 "vimeo/psalm": "^5.21"
             },
             "time": "2024-02-05T11:56:58+00:00",
+            "published-time": "2024-02-05T12:00:34+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -423,6 +429,7 @@
                 "ext-intl": "PHP Internationalization Libraries are required to use the SpoofChecking validation"
             },
             "time": "2025-03-06T22:45:56+00:00",
+            "published-time": "2025-03-20T21:39:03+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -497,6 +504,7 @@
                 "setasign/fpdf": "Enables you to use the PDF writer"
             },
             "time": "2025-07-13T19:59:45+00:00",
+            "published-time": "2025-07-13T20:00:07+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -571,6 +579,7 @@
                 "paragonie/sodium_compat": "Support EdDSA (Ed25519) signatures when libsodium is not present"
             },
             "time": "2026-02-25T22:16:40+00:00",
+            "published-time": "2026-02-25T22:17:00+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -648,6 +657,7 @@
                 "psr/log": "Required for using the Log middleware"
             },
             "time": "2026-08-24T09:21:06+00:00",
+            "published-time": "2026-08-24T09:22:02+00:00",
             "type": "library",
             "extra": {
                 "bamarni-bin": {
@@ -761,6 +771,7 @@
                 "phpunit/phpunit": "^8.5.52 || ^9.6.34"
             },
             "time": "2026-08-24T09:11:28+00:00",
+            "published-time": "2026-08-24T09:12:17+00:00",
             "type": "library",
             "extra": {
                 "bamarni-bin": {
@@ -861,6 +872,7 @@
                 "laminas/laminas-httphandlerrunner": "Emit PSR-7 responses"
             },
             "time": "2026-08-24T09:13:11+00:00",
+            "published-time": "2026-08-24T09:13:36+00:00",
             "type": "library",
             "extra": {
                 "bamarni-bin": {
@@ -973,6 +985,7 @@
                 "phpunit/phpunit": "^9.6.34"
             },
             "time": "2026-07-14T22:49:03+00:00",
+            "published-time": "2026-07-14T22:49:30+00:00",
             "type": "library",
             "extra": {
                 "hooks": {
@@ -1037,6 +1050,7 @@
                 "phpunit/phpunit": "^4.8.35"
             },
             "time": "2026-05-04T18:54:58+00:00",
+            "published-time": "2026-05-04T18:58:37+00:00",
             "bin": [
                 "bin/validate-json"
             ],
@@ -1118,6 +1132,7 @@
                 "lcobucci/clock": ">= 3.2"
             },
             "time": "2025-10-17T11:30:53+00:00",
+            "published-time": "2025-10-17T11:32:06+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -1158,63 +1173,6 @@
             "install-path": "../lcobucci/jwt"
         },
         {
-            "name": "liuggio/statsd-php-client",
-            "version": "v1.0.18",
-            "version_normalized": "1.0.18.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/liuggio/statsd-php-client.git",
-                "reference": "c42e6d6687b7b2d7683186ec7f4f03351cc3dbca"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/liuggio/statsd-php-client/zipball/c42e6d6687b7b2d7683186ec7f4f03351cc3dbca",
-                "reference": "c42e6d6687b7b2d7683186ec7f4f03351cc3dbca",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.2"
-            },
-            "require-dev": {
-                "monolog/monolog": ">=1.2.0",
-                "phpunit/phpunit": "^4.7"
-            },
-            "suggest": {
-                "monolog/monolog": "Monolog, in order to do generate statistic from log >=1.2.0)"
-            },
-            "time": "2015-07-23T23:12:45+00:00",
-            "type": "library",
-            "installation-source": "dist",
-            "autoload": {
-                "psr-0": {
-                    "Liuggio": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Giulio De Donato",
-                    "email": "liuggio@gmail.com"
-                }
-            ],
-            "description": "Statsd (Object Oriented) client library for PHP",
-            "homepage": "https://github.com/liuggio/statsd-php-client/",
-            "keywords": [
-                "etsy",
-                "monitoring",
-                "php",
-                "statsd"
-            ],
-            "support": {
-                "issues": "https://github.com/liuggio/statsd-php-client/issues",
-                "source": "https://github.com/liuggio/statsd-php-client/tree/v1.0.18"
-            },
-            "install-path": "../liuggio/statsd-php-client"
-        },
-        {
             "name": "mck89/peast",
             "version": "v1.18.0",
             "version_normalized": "1.18.0.0",
@@ -1237,6 +1195,7 @@
                 "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0 || ^8.0 || ^9.0"
             },
             "time": "2026-08-19T09:36:10+00:00",
+            "published-time": "2026-08-19T09:45:52+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1328,6 +1287,7 @@
                 "ruflin/elastica": "Allow sending log messages to an Elastic Search server"
             },
             "time": "2026-09-09T08:34:20+00:00",
+            "published-time": "2026-09-09T08:46:13+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1410,6 +1370,7 @@
                 "phpunit/phpunit": "^10.2.3"
             },
             "time": "2023-09-26T11:13:49+00:00",
+            "published-time": "2023-09-26T11:18:49+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -1465,6 +1426,7 @@
                 "phpunit/phpunit": "10.5.63"
             },
             "time": "2026-09-14T15:44:01+00:00",
+            "published-time": "2026-09-14T16:25:19+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -1558,6 +1520,7 @@
                 "vimeo/psalm": "^4|^5|^6"
             },
             "time": "2025-09-24T15:06:41+00:00",
+            "published-time": "2025-09-24T15:07:11+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -1627,6 +1590,7 @@
                 "phpunit/phpunit": ">=3.3.0"
             },
             "time": "2025-03-24T08:03:00+00:00",
+            "published-time": "2025-03-26T10:43:16+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1695,6 +1659,7 @@
                 "php": "^7.0 || ^8.0"
             },
             "time": "2022-11-25T14:36:26+00:00",
+            "published-time": "2022-11-25T14:59:22+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -1746,6 +1711,7 @@
                 "php": ">=7.4.0"
             },
             "time": "2021-11-05T16:47:00+00:00",
+            "published-time": "2021-11-05T16:53:27+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1802,6 +1768,7 @@
                 "php": ">=7.2.0"
             },
             "time": "2019-01-08T18:20:26+00:00",
+            "published-time": "2019-03-25T15:31:44+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1856,6 +1823,7 @@
                 "psr/http-message": "^1.0 || ^2.0"
             },
             "time": "2023-09-23T14:17:50+00:00",
+            "published-time": "2023-09-23T14:18:12+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1911,6 +1879,7 @@
                 "psr/http-message": "^1.0 || ^2.0"
             },
             "time": "2024-04-15T12:06:14+00:00",
+            "published-time": "2024-05-10T07:32:19+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1968,6 +1937,7 @@
                 "php": "^7.2 || ^8.0"
             },
             "time": "2023-04-04T09:54:51+00:00",
+            "published-time": "2023-04-04T09:55:35+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -2024,6 +1994,7 @@
                 "php": ">=8.0.0"
             },
             "time": "2024-09-11T13:17:53+00:00",
+            "published-time": "2024-09-11T13:21:14+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -2081,6 +2052,7 @@
                 "phpunit/phpunit": "^5 || ^6.5"
             },
             "time": "2019-03-08T08:55:37+00:00",
+            "published-time": "2019-03-08T09:01:32+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -2137,6 +2109,7 @@
                 "ext-gmp": "Strongly recommended when decoding untrusted input: without it, converting the byte string of a Big Number Tag (2 and 3) is quadratic in its length. Also improves the library performance overall"
             },
             "time": "2026-09-15T06:55:29+00:00",
+            "published-time": "2026-09-15T06:57:54+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -2224,6 +2197,7 @@
                 "ext-openssl": "For OpenSSL based cyphering"
             },
             "time": "2026-08-06T16:21:11+00:00",
+            "published-time": "2026-08-06T16:22:44+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -2393,6 +2367,7 @@
                 "php": ">=8.1"
             },
             "time": "2026-06-05T06:23:12+00:00",
+            "published-time": "2026-06-27T21:46:34+00:00",
             "type": "library",
             "extra": {
                 "thanks": {
@@ -2487,6 +2462,7 @@
                 "symfony/stopwatch": "^6.4|^7.0|^8.0"
             },
             "time": "2026-08-21T17:40:08+00:00",
+            "published-time": "2026-08-22T13:44:01+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -2556,6 +2532,7 @@
                 "psr/event-dispatcher": "^1"
             },
             "time": "2026-06-05T06:23:12+00:00",
+            "published-time": "2026-06-27T21:46:35+00:00",
             "type": "library",
             "extra": {
                 "thanks": {
@@ -2657,6 +2634,7 @@
                 "symfony/twig-bridge": "^6.4|^7.0|^8.0"
             },
             "time": "2026-10-23T16:51:52+00:00",
+            "published-time": "2026-10-28T18:19:49+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -2745,6 +2723,7 @@
                 "symfony/serializer": "^6.4.44|^7.4.17|^8.1.5"
             },
             "time": "2026-10-28T17:57:58+00:00",
+            "published-time": "2026-10-28T18:20:24+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -2817,6 +2796,7 @@
                 "php": ">=7.2"
             },
             "time": "2026-09-23T22:01:09+00:00",
+            "published-time": "2026-09-30T10:23:33+00:00",
             "type": "library",
             "extra": {
                 "thanks": {
@@ -2900,6 +2880,7 @@
                 "php": ">=7.2"
             },
             "time": "2026-09-25T15:46:47+00:00",
+            "published-time": "2026-09-30T10:23:32+00:00",
             "type": "library",
             "extra": {
                 "thanks": {
@@ -2983,6 +2964,7 @@
                 "php": ">=7.2"
             },
             "time": "2026-09-25T15:46:47+00:00",
+            "published-time": "2026-09-30T10:23:43+00:00",
             "type": "library",
             "extra": {
                 "thanks": {
@@ -3358,6 +3340,7 @@
                 "ext-psr": "<1.1|>=2"
             },
             "time": "2026-07-27T15:39:01+00:00",
+            "published-time": "2026-08-30T19:56:37+00:00",
             "type": "library",
             "extra": {
                 "thanks": {
@@ -3803,6 +3786,7 @@
                 "spomky-labs/cbor-php": "Required by the RFC 9052 header reader and cryptographic structures. 3.4.0 or later: it ships the six COSE message classes (CBOR\\Tag\\CoseSign1Tag and its siblings) that replace the deprecated Cose\\...Tag classes, and its decoder is what enforces the RFC 9052 label uniqueness and nesting bounds this library relies on"
             },
             "time": "2026-09-15T17:30:33+00:00",
+            "published-time": "2026-09-15T17:39:51+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -3963,6 +3947,7 @@
                 "phpunit/phpunit": "^8.5"
             },
             "time": "2021-12-21T11:46:59+00:00",
+            "published-time": "2021-12-21T11:49:41+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -4025,6 +4010,7 @@
                 "phpunit/phpunit": "9.6.16"
             },
             "time": "2024-10-15T12:55:13+00:00",
+            "published-time": "2024-10-15T13:16:05+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -4081,6 +4067,7 @@
                 "phpunit/phpunit": "^8.5"
             },
             "time": "2022-05-20T20:43:12+00:00",
+            "published-time": "2022-07-08T22:29:28+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -4138,6 +4125,7 @@
                 "wikimedia/update-history": "1.0.3"
             },
             "time": "2026-02-13T05:50:58+00:00",
+            "published-time": "2026-02-13T05:53:53+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -4194,6 +4182,7 @@
                 "ext-dba": "PHP extension for DBA access. Would be quicker than the PHP based fallback"
             },
             "time": "2023-07-24T18:27:07+00:00",
+            "published-time": "2023-07-24T18:35:23+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -4257,6 +4246,7 @@
                 "phpunit/phpunit": "10.5.63"
             },
             "time": "2026-06-21T02:39:20+00:00",
+            "published-time": "2026-07-15T16:12:46+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -4318,6 +4308,7 @@
                 "phpunit/phpunit": "10.5.63"
             },
             "time": "2026-04-28T00:48:39+00:00",
+            "published-time": "2026-04-28T18:03:38+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -4375,6 +4366,7 @@
                 "phpunit/phpunit": "9.6.21"
             },
             "time": "2025-05-03T08:52:11+00:00",
+            "published-time": "2025-05-04T11:23:24+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -4429,6 +4421,7 @@
                 "squizlabs/php_codesniffer": "~3.7.1"
             },
             "time": "2023-04-15T19:07:00+00:00",
+            "published-time": "2023-04-15T19:09:06+00:00",
             "type": "composer-plugin",
             "extra": {
                 "class": "Wikimedia\\Composer\\Merge\\V2\\MergePlugin",
@@ -4492,6 +4485,7 @@
                 "wikimedia/update-history": "^1.0.3"
             },
             "time": "2026-03-04T17:00:28+00:00",
+            "published-time": "2026-03-04T17:25:17+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -4541,6 +4535,7 @@
                 "phpunit/phpunit": "10.5.63"
             },
             "time": "2026-07-28T19:54:16+00:00",
+            "published-time": "2026-07-28T20:02:13+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -4603,6 +4598,7 @@
                 "symfony/var-dumper": "^3.3 || ^4 || ^5 || ^6"
             },
             "time": "2025-03-07T19:59:51+00:00",
+            "published-time": "2025-03-07T20:11:42+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -4670,6 +4666,7 @@
                 "phpunit/phpunit": "9.6.16"
             },
             "time": "2024-03-13T16:33:19+00:00",
+            "published-time": "2024-03-13T17:24:36+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -4724,6 +4721,7 @@
                 "wikimedia/webidl": "^1.2.0"
             },
             "time": "2026-02-14T17:59:57+00:00",
+            "published-time": "2026-02-14T21:48:42+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -4779,6 +4777,7 @@
                 "phpunit/phpunit": "10.5.58"
             },
             "time": "2026-01-23T11:49:58+00:00",
+            "published-time": "2026-01-24T01:59:36+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -4834,6 +4833,7 @@
                 "wikimedia/update-history": "1.0.3"
             },
             "time": "2026-09-16T19:22:03+00:00",
+            "published-time": "2026-09-16T19:27:11+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -4899,6 +4899,7 @@
                 "symfony/console": "^5.4"
             },
             "time": "2026-08-26T10:46:31+00:00",
+            "published-time": "2026-08-26T11:21:12+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -4974,6 +4975,7 @@
                 "phpunit/phpunit": "10.5.63"
             },
             "time": "2026-02-14T00:12:28+00:00",
+            "published-time": "2026-02-14T00:15:20+00:00",
             "bin": [
                 "bin/lessc"
             ],
@@ -5058,6 +5060,7 @@
                 "wikimedia/testing-access-wrapper": "~4.0.0"
             },
             "time": "2026-09-22T14:28:26+00:00",
+            "published-time": "2026-09-22T14:44:03+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -5125,6 +5128,7 @@
                 "phpunit/phpunit": "9.6.21"
             },
             "time": "2025-01-25T20:25:45+00:00",
+            "published-time": "2025-01-27T20:54:37+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -5178,6 +5182,7 @@
                 "phpunit/phpunit": "10.5.63"
             },
             "time": "2026-09-16T14:48:18+00:00",
+            "published-time": "2026-09-16T14:56:49+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -5320,6 +5325,7 @@
                 "phpunit/phpunit": "9.6.16"
             },
             "time": "2024-11-10T02:02:15+00:00",
+            "published-time": "2024-11-11T01:56:20+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -5393,6 +5399,7 @@
                 "phpunit/phpunit": "10.5.58"
             },
             "time": "2026-01-11T09:36:40+00:00",
+            "published-time": "2026-01-11T11:44:34+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -5460,6 +5467,7 @@
                 "wikimedia/update-history": "1.0.3"
             },
             "time": "2026-02-13T03:56:43+00:00",
+            "published-time": "2026-02-13T04:03:47+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -5513,6 +5521,7 @@
                 "phpunit/phpunit": "9.6.21"
             },
             "time": "2025-06-15T22:29:15+00:00",
+            "published-time": "2025-06-16T12:58:09+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -5565,6 +5574,7 @@
                 "wikimedia/testing-access-wrapper": "^3.0.0"
             },
             "time": "2025-11-04T21:25:28+00:00",
+            "published-time": "2025-11-05T03:51:26+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -5617,6 +5627,7 @@
                 "phpunit/phpunit": "9.6.16"
             },
             "time": "2024-10-29T19:36:38+00:00",
+            "published-time": "2024-10-29T21:08:12+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -5674,6 +5685,7 @@
                 "phpunit/phpunit": "9.6.21"
             },
             "time": "2024-11-08T15:57:49+00:00",
+            "published-time": "2024-11-09T14:25:19+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -5733,6 +5745,7 @@
                 "psy/psysh": "~0.12.19"
             },
             "time": "2026-07-03T21:14:35+00:00",
+            "published-time": "2026-07-03T21:22:28+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -5795,6 +5808,7 @@
                 "wikimedia/update-history": "1.0.1"
             },
             "time": "2025-12-05T18:14:34+00:00",
+            "published-time": "2025-12-05T18:16:42+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -5855,6 +5869,7 @@
                 "ext-intl": "Optional extension, for improved performance. PHP code fallback is used instead if ext-intl is not present."
             },
             "time": "2023-04-17T20:37:19+00:00",
+            "published-time": "2023-08-29T11:47:53+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -5907,6 +5922,7 @@
                 "phpunit/phpunit": "^8.5"
             },
             "time": "2021-08-23T19:25:32+00:00",
+            "published-time": "2021-08-23T22:06:25+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -5962,6 +5978,7 @@
                 "wikimedia/update-history": "^1.0"
             },
             "time": "2026-02-14T20:36:39+00:00",
+            "published-time": "2026-02-14T20:43:31+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -6007,6 +6024,7 @@
                 "phpunit/phpunit": "10.5.58"
             },
             "time": "2025-11-04T21:35:06+00:00",
+            "published-time": "2025-11-05T03:52:04+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -6067,6 +6085,7 @@
                 "phpunit/phpunit": "10.5.63"
             },
             "time": "2026-04-27T09:47:09+00:00",
+            "published-time": "2026-05-02T20:13:17+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -6131,6 +6150,7 @@
                 "ext-intl": "*"
             },
             "time": "2026-02-13T05:28:55+00:00",
+            "published-time": "2026-02-13T05:32:35+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -6186,6 +6206,7 @@
                 "phpunit/phpunit": ">=7"
             },
             "time": "2021-07-11T04:52:41+00:00",
+            "published-time": "2021-07-11T04:56:07+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
