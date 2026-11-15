@@ -734,10 +734,6 @@ class ComposerStaticInit_mediawiki_vendor
         ),
         'L' =>
         array (
-            'Liuggio' =>
-            array (
-                0 => __DIR__ . '/..' . '/liuggio/statsd-php-client/src',
-            ),
             'Less' =>
             array (
                 0 => __DIR__ . '/..' . '/wikimedia/less.php/lib',
@@ -2963,20 +2959,6 @@ class ComposerStaticInit_mediawiki_vendor
         'LightnCandy\\SafeString' => __DIR__ . '/..' . '/zordius/lightncandy/src/SafeString.php',
         'LightnCandy\\Token' => __DIR__ . '/..' . '/zordius/lightncandy/src/Token.php',
         'LightnCandy\\Validator' => __DIR__ . '/..' . '/zordius/lightncandy/src/Validator.php',
-        'Liuggio\\StatsdClient\\Entity\\StatsdData' => __DIR__ . '/..' . '/liuggio/statsd-php-client/src/Liuggio/StatsdClient/Entity/StatsdData.php',
-        'Liuggio\\StatsdClient\\Entity\\StatsdDataInterface' => __DIR__ . '/..' . '/liuggio/statsd-php-client/src/Liuggio/StatsdClient/Entity/StatsdDataInterface.php',
-        'Liuggio\\StatsdClient\\Exception\\InvalidArgumentException' => __DIR__ . '/..' . '/liuggio/statsd-php-client/src/Liuggio/StatsdClient/Exception/InvalidArgumentException.php',
-        'Liuggio\\StatsdClient\\Factory\\StatsdDataFactory' => __DIR__ . '/..' . '/liuggio/statsd-php-client/src/Liuggio/StatsdClient/Factory/StatsdDataFactory.php',
-        'Liuggio\\StatsdClient\\Factory\\StatsdDataFactoryInterface' => __DIR__ . '/..' . '/liuggio/statsd-php-client/src/Liuggio/StatsdClient/Factory/StatsdDataFactoryInterface.php',
-        'Liuggio\\StatsdClient\\Monolog\\Formatter\\StatsDFormatter' => __DIR__ . '/..' . '/liuggio/statsd-php-client/src/Liuggio/StatsdClient/Monolog/Formatter/StatsDFormatter.php',
-        'Liuggio\\StatsdClient\\Monolog\\Handler\\StatsDHandler' => __DIR__ . '/..' . '/liuggio/statsd-php-client/src/Liuggio/StatsdClient/Monolog/Handler/StatsDHandler.php',
-        'Liuggio\\StatsdClient\\Sender\\EchoSender' => __DIR__ . '/..' . '/liuggio/statsd-php-client/src/Liuggio/StatsdClient/Sender/EchoSender.php',
-        'Liuggio\\StatsdClient\\Sender\\SenderInterface' => __DIR__ . '/..' . '/liuggio/statsd-php-client/src/Liuggio/StatsdClient/Sender/SenderInterface.php',
-        'Liuggio\\StatsdClient\\Sender\\SocketSender' => __DIR__ . '/..' . '/liuggio/statsd-php-client/src/Liuggio/StatsdClient/Sender/SocketSender.php',
-        'Liuggio\\StatsdClient\\Sender\\SysLogSender' => __DIR__ . '/..' . '/liuggio/statsd-php-client/src/Liuggio/StatsdClient/Sender/SysLogSender.php',
-        'Liuggio\\StatsdClient\\Service\\StatsdService' => __DIR__ . '/..' . '/liuggio/statsd-php-client/src/Liuggio/StatsdClient/Service/StatsdService.php',
-        'Liuggio\\StatsdClient\\StatsdClient' => __DIR__ . '/..' . '/liuggio/statsd-php-client/src/Liuggio/StatsdClient/StatsdClient.php',
-        'Liuggio\\StatsdClient\\StatsdClientInterface' => __DIR__ . '/..' . '/liuggio/statsd-php-client/src/Liuggio/StatsdClient/StatsdClientInterface.php',
         'LuceneExplain\\ConstantScoreExplain' => __DIR__ . '/..' . '/wikimedia/lucene-explain-parser/src/ConstantScoreExplain.php',
         'LuceneExplain\\CoordExplain' => __DIR__ . '/..' . '/wikimedia/lucene-explain-parser/src/CoordExplain.php',
         'LuceneExplain\\DefaultSimIdfExplain' => __DIR__ . '/..' . '/wikimedia/lucene-explain-parser/src/DefaultSimIdfExplain.php',
