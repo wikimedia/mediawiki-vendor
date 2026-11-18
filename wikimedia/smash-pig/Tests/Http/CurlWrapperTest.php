@@ -347,6 +347,8 @@ class CurlWrapperTest extends BaseSmashPigUnitTestCase {
 				'encryptedExpiryMonth',
 				'encryptedExpiryYear',
 				'encryptedSecurityCode',
+				'bankAccountNumber',
+				'bankLocationId',
 			],
 			$config->val( 'curl/redact-fields' )
 		);
@@ -369,6 +371,32 @@ class CurlWrapperTest extends BaseSmashPigUnitTestCase {
 		] );
 
 		$this->assertStringNotContainsString( self::IBAN, $this->getSingleOutboundLine() );
+	}
+
+	/**
+	 * Same JSON shape Adyen createACHDirectDebitPayment sends
+	 */
+	public function testAdyenConfigMasksAchBankDetails(): void {
+		$this->configure( 'adyen', [], false );
+
+		$this->runExecute( new CurlWrapper(), json_encode( [
+			'reference' => self::ORDER_ID,
+			'paymentMethod' => [
+				'type' => 'ach',
+				'bankAccountNumber' => '987654321',
+				'bankAccountType' => 'checking',
+				'bankLocationId' => '121000358',
+				'ownerName' => 'Jane Donor',
+				'accountHolderType' => 'personal',
+			],
+		] ) );
+
+		$line = $this->getSingleOutboundLine();
+		$this->assertStringNotContainsString( '987654321', $line );
+		$this->assertStringNotContainsString( '121000358', $line );
+		$this->assertStringContainsString( 'checking', $line );
+		$this->assertStringContainsString( 'Jane Donor', $line );
+		$this->assertStringContainsString( 'personal', $line );
 	}
 
 	// === Helpers ===

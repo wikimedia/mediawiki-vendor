@@ -20,9 +20,9 @@ trait RedirectResponseTrait {
 
 	/**
 	 * @param string $redirectUrl
-	 * @return self
+	 * @return static
 	 */
-	public function setRedirectUrl( string $redirectUrl ): self {
+	public function setRedirectUrl( string $redirectUrl ): static {
 		$this->redirectUrl = $redirectUrl;
 		return $this;
 	}
@@ -50,9 +50,9 @@ trait RedirectResponseTrait {
 
 	/**
 	 * @param array $redirectData
-	 * @return self
+	 * @return static
 	 */
-	public function setRedirectData( array $redirectData ): self {
+	public function setRedirectData( array $redirectData ): static {
 		$this->redirectData = $redirectData;
 		return $this;
 	}

@@ -77,7 +77,16 @@ if test $PHP_MAXMINDDB != "no"; then
         CFLAGS="$CFLAGS -fvisibility=hidden -UHAVE_CONFIG_H -DHAVE_CONFIG_H=0 -DMMDB_UINT128_USING_MODE=0 -DMMDB_UINT128_IS_BYTE_ARRAY=1"
 
         maxminddb_sources="$maxminddb_sources libmaxminddb/src/maxminddb.c libmaxminddb/src/data-pool.c"
+
+        dnl phpinfo() reports this. It is 1 here and 0 in the system branch,
+        dnl never absent, so maxminddb.c can tell a system build from a
+        dnl definition that never arrived and refuse to compile. config.w32
+        dnl says why that is a real risk on Windows.
+        AC_DEFINE([HAVE_LIBMAXMINDDB_BUNDLED], [1], [1 if the bundled libmaxminddb is compiled into the extension, 0 if a system libmaxminddb is linked])
     else
+        dnl See the bundled branch above for why this is 0 rather than absent.
+        AC_DEFINE([HAVE_LIBMAXMINDDB_BUNDLED], [0], [1 if the bundled libmaxminddb is compiled into the extension, 0 if a system libmaxminddb is linked])
+
         AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
 
         AC_MSG_CHECKING(for libmaxminddb)

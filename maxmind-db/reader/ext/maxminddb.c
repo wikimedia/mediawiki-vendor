@@ -26,6 +26,15 @@
 #include "ext/standard/info.h"
 #include <maxminddb.h>
 
+/* Both build files define this as 1 or 0 on every path, so a missing
+ * definition is a build-file mistake, not a system build. Fail rather than
+ * report "system" for a bundled object. Unlike php-src's HAVE_GD_BUNDLED,
+ * which is absent in a system build, this must be tested with #if: #ifdef
+ * is true for the 0 too. */
+#ifndef HAVE_LIBMAXMINDDB_BUNDLED
+#error "HAVE_LIBMAXMINDDB_BUNDLED must be defined by the build files"
+#endif
+
 #ifdef ZTS
 #include <TSRM.h>
 #endif
@@ -519,11 +528,11 @@ static void handle_uint32(const MMDB_entry_data_list_s *entry_data_list,
                           zval *z_value TSRMLS_DC) {
     uint32_t val = entry_data_list->entry_data.uint32;
 
-#if LONG_MAX >= UINT32_MAX
+#if ZEND_LONG_MAX >= UINT32_MAX
     ZVAL_LONG(z_value, val);
     return;
 #else
-    if (val <= LONG_MAX) {
+    if (val <= ZEND_LONG_MAX) {
         ZVAL_LONG(z_value, val);
         return;
     }
@@ -541,11 +550,7 @@ static void handle_uint64(const MMDB_entry_data_list_s *entry_data_list,
                           zval *z_value TSRMLS_DC) {
     uint64_t val = entry_data_list->entry_data.uint64;
 
-#if LONG_MAX >= UINT64_MAX
-    ZVAL_LONG(z_value, val);
-    return;
-#else
-    if (val <= LONG_MAX) {
+    if (val <= ZEND_LONG_MAX) {
         ZVAL_LONG(z_value, val);
         return;
     }
@@ -556,7 +561,6 @@ static void handle_uint64(const MMDB_entry_data_list_s *entry_data_list,
 
     ZVAL_STRING(z_value, int_str);
     efree(int_str);
-#endif
 }
 
 static void maxminddb_free_storage(free_obj_t *object TSRMLS_DC) {
@@ -792,13 +796,23 @@ PHP_MINIT_FUNCTION(maxminddb) {
 }
 
 static PHP_MINFO_FUNCTION(maxminddb) {
+#if HAVE_LIBMAXMINDDB_BUNDLED
+    const char *lib_source = "bundled";
+#else
+    const char *lib_source = "system";
+#endif
+    char *lib_version;
+
     php_info_print_table_start();
 
     php_info_print_table_row(2, "MaxMind DB Reader", "enabled");
     php_info_print_table_row(
         2, "maxminddb extension version", PHP_MAXMINDDB_VERSION);
-    php_info_print_table_row(
-        2, "libmaxminddb library version", MMDB_lib_version());
+
+    spprintf(&lib_version, 0, "%s (%s)", MMDB_lib_version(), lib_source);
+    CHECK_ALLOCATED(lib_version);
+    php_info_print_table_row(2, "libmaxminddb library version", lib_version);
+    efree(lib_version);
 
     php_info_print_table_end();
 }

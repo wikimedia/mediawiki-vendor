@@ -904,6 +904,9 @@ class ZestInst {
 
 	/** @return callable(DOMNode,array):bool */
 	private function selectorsAttr( string $key, string $op, string $val, bool $i ): callable {
+		if ( !isset( $this->operators[ $op ] ) ) {
+			throw $this->newBadSelectorException( "Unknown attribute operator: $op" );
+		}
 		$op = $this->operators[ $op ];
 		return static function ( $el, $opts ) use ( $key, $i, $op, $val ): bool {
 			/* XXX: the below all assumes a more complete PHP DOM than we have
@@ -996,8 +999,11 @@ class ZestInst {
 		$this->addOperator( '=', static function ( string $attr, string $val ): bool {
 			return $attr === $val;
 		} );
+		// https://drafts.csswg.org/selectors-4/#attribute-substrings
+		// For *=, ^=, and $=, if "val" is the empty string the selector
+		// does not represent anything.
 		$this->addOperator( '*=', static function ( string $attr, string $val ): bool {
-			return str_contains( $attr, $val );
+			return $val !== '' && str_contains( $attr, $val );
 		} );
 		$this->addOperator( '~=', static function ( string $attr, string $val ): bool {
 			// https://drafts.csswg.org/selectors-4/#attribute-representation
@@ -1042,9 +1048,12 @@ class ZestInst {
 			return $l === '-';
 		} );
 		$this->addOperator( '^=', static function ( string $attr, string $val ): bool {
-			return str_starts_with( $attr, $val );
+			return $val !== '' && str_starts_with( $attr, $val );
 		} );
 		$this->addOperator( '$=', static function ( string $attr, string $val ): bool {
+			if ( $val === '' ) {
+				return false;
+			}
 			$i = strrpos( $attr, $val );
 			return $i !== false && $i + strlen( $val ) === strlen( $attr );
 		} );
@@ -1524,7 +1533,9 @@ class ZestInst {
 	 */
 	public function find( string $sel, $context, array $opts = [] ): array {
 		$opts['this'] = $this;
-		$opts['scope'] = $context;
+		// 'scope' as an option overrides the argument, for consistency with
+		// ::matches()
+		$opts['scope'] ??= $context;
 
 		/* when context isn't a DocumentFragment and the selector is simple: */
 		if ( $context->nodeType !== 11 && !str_contains( $sel, ' ' ) ) {
@@ -1566,7 +1577,9 @@ class ZestInst {
 	 */
 	public function matches( $el, string $sel, array $opts = [] ): bool {
 		$opts['this'] = $this;
-		$opts['scope'] = $el;
+		// Allow the caller to override scope, for example when implementing
+		// ::closest() when the ':scope' should be the original node.
+		$opts['scope'] ??= $el;
 
 		$test = new ZestFunc( static function ( $el, $opts ): bool {
 			return true;

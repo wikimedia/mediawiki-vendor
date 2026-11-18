@@ -15,6 +15,7 @@ class ValidationErrorMapper {
 		'101' => 'card_num', // Invalid card number
 		'102' => 'card_num', // Unable to determine variant
 		'103' => 'cvv',
+		'2_020' => 'postal_code', // Invalid postal code
 		'905' => 'payment_submethod', // Unsupported card type
 		'905_1' => 'payment_submethod', // Unsupported card type
 		'905_3' => 'payment_submethod', // Unsupported card type

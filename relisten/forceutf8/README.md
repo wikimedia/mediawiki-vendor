@@ -1,5 +1,8 @@
 # ForceUTF8
 
+> [!WARNING]
+> This package is abandoned in favor of fork [Fylax/forceutf8](https://github.com/Fylax/forceutf8). Please use that package instead.
+
 PHP Class Encoding featuring popular \ForceUTF8\Encoding::toUTF8() function --formerly known as forceUTF8()-- that fixes mixed encoded strings.
 
 ## Fork

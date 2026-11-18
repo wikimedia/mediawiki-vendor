@@ -20,7 +20,7 @@ class CreateRecurringPaymentsProfileResponse extends PaymentProviderExtendedResp
 	 * @param string $profileId
 	 * @return static
 	 */
-	public function setProfileId( string $profileId ): self {
+	public function setProfileId( string $profileId ): static {
 		$this->profileId = $profileId;
 		return $this;
 	}

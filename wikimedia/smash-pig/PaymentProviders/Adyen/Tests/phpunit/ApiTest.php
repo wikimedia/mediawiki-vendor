@@ -253,6 +253,59 @@ class ApiTest extends BaseSmashPigUnitTestCase {
 		$this->api->createBankTransferPaymentFromCheckout( $params );
 	}
 
+	public function testCreateACHDirectDebitPaymentSendsPlainBankDetails() {
+		$params = $this->getACHTestParams();
+		$this->curlWrapper->expects( $this->once() )
+			->method( 'execute' )
+			->with(
+				$this->callback( function ( $url ) {
+					$this->assertStringEndsWith( '/payments', $url );
+					return true;
+				} ),
+				'POST',
+				$this->anything(),
+				$this->callback( function ( $encodedParams ) {
+					$decodedParams = json_decode( $encodedParams, true );
+					$this->assertSame( [
+						'type' => 'ach',
+						'bankAccountNumber' => '123456789',
+						'bankAccountType' => 'checking',
+						'bankLocationId' => '121000358',
+						'ownerName' => 'wfan test',
+						'accountHolderType' => 'personal',
+					], $decodedParams['paymentMethod'] );
+					// The old client-side encrypted fields must no longer be sent
+					$this->assertStringNotContainsString( 'encryptedBank', $encodedParams );
+					return true;
+				} )
+			)->willReturn( [
+				'body' => '{}', // ignoring returned content for this test
+				'headers' => [], // This API doesn't care
+				'status' => 200
+			] );
+		$this->api->createACHDirectDebitPayment( $params );
+	}
+
+	protected function getACHTestParams(): array {
+		return [
+			'amount' => '85.00',
+			'city' => 'Mountain View',
+			'country' => 'US',
+			'currency' => 'USD',
+			'email' => 'wfan@wikimedia.org',
+			'full_name' => 'wfan test',
+			'order_id' => '105.1',
+			'postal_code' => '94043',
+			'state_province' => 'CA',
+			'street_address' => 'Amphitheatre Parkway',
+			'bank_account_number' => '123456789',
+			'bank_location_id' => '121000358',
+			'bank_account_type' => 'checking',
+			'account_holder_type' => 'personal',
+			'user_ip' => '172.21.0.1'
+		];
+	}
+
 	protected function getCreatePaymentTestParams() {
 		return [
 			'currency' => 'EUR',

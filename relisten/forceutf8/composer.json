@@ -23,6 +23,7 @@
             "ForceUTF8\\": "src/ForceUTF8/"
         }
     },
+    "abandoned": "fylax/forceutf8",
     "extra": {
         "thanks": {
             "name": "neitanod/forceutf8",

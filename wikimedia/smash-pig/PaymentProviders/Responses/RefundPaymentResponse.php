@@ -46,13 +46,13 @@ class RefundPaymentResponse extends PaymentProviderExtendedResponse {
 	 * @param string $refund_id
 	 * @return static
 	 */
-	public function setGatewayRefundId( string $refund_id ): self {
+	public function setGatewayRefundId( string $refund_id ): static {
 		$this->gateway_refund_id = $refund_id;
 		return $this;
 	}
 
 	/**
-	 * @return string
+	 * @return string|null
 	 */
 	public function getGatewayParentId(): ?string {
 		return $this->gateway_parent_id;
@@ -62,13 +62,13 @@ class RefundPaymentResponse extends PaymentProviderExtendedResponse {
 	 * @param string $parent_id
 	 * @return static
 	 */
-	public function setGatewayParentId( string $parent_id ): self {
+	public function setGatewayParentId( string $parent_id ): static {
 		$this->gateway_parent_id = $parent_id;
 		return $this;
 	}
 
 	/**
-	 * @return string
+	 * @return string|null
 	 */
 	public function getGateway(): ?string {
 		return $this->gateway;
@@ -78,13 +78,13 @@ class RefundPaymentResponse extends PaymentProviderExtendedResponse {
 	 * @param string $gateway
 	 * @return static
 	 */
-	public function setGateway( string $gateway ): self {
+	public function setGateway( string $gateway ): static {
 		$this->gateway = $gateway;
 		return $this;
 	}
 
 	/**
-	 * @return string
+	 * @return string|null
 	 */
 	public function getReason(): ?string {
 		return $this->reason;
@@ -94,7 +94,7 @@ class RefundPaymentResponse extends PaymentProviderExtendedResponse {
 	 * @param string $reason
 	 * @return static
 	 */
-	public function setReason( string $reason ): self {
+	public function setReason( string $reason ): static {
 		$this->reason = $reason;
 		return $this;
 	}

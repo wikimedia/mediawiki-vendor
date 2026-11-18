@@ -10,6 +10,8 @@ use SmashPig\Core\ProviderConfiguration;
 class TestingContext extends Context {
 	public $providerConfigurationOverride;
 
+	protected array $providerConfigurationOverridesByName = [];
+
 	public static function init(
 		GlobalConfiguration $config, $providerConfig = null
 	): void {
@@ -22,6 +24,10 @@ class TestingContext extends Context {
 		Context::$instance->setGlobalConfiguration( $config );
 		TestingDatabase::createTables();
 		self::initializeQueues( $config );
+	}
+
+	public function overrideConfigurationForProvider( ProviderConfiguration $providerConfig ): void {
+		$this->providerConfigurationOverridesByName[ $providerConfig->getProviderName() ] = $providerConfig;
 	}
 
 	protected static function initializeQueues( GlobalConfiguration $config ): void {
@@ -43,6 +49,15 @@ class TestingContext extends Context {
 	}
 
 	public function getProviderConfiguration(): ProviderConfiguration {
+		// First check if we have a specific override for the current non-overridden config
+		if ( $this->providerConfiguration ) {
+			if ( array_key_exists(
+				$this->providerConfiguration->getProviderName(), $this->providerConfigurationOverridesByName
+			) ) {
+				return $this->providerConfigurationOverridesByName[ $this->providerConfiguration->getProviderName() ];
+			}
+		}
+		// Then return any default override
 		if ( $this->providerConfigurationOverride ) {
 			return $this->providerConfigurationOverride;
 		}

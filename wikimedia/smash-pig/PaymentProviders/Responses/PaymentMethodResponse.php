@@ -16,24 +16,27 @@ class PaymentMethodResponse extends PaymentProviderResponse {
 
 	private array $paymentMethods = [];
 
-	public function setSupportedCurrencies( array $currencies ): void {
+	public function setSupportedCurrencies( array $currencies ): static {
 		$this->supportedCurrencies = $currencies;
+		return $this;
 	}
 
 	public function getSupportedCurrencies(): array {
 		return $this->supportedCurrencies;
 	}
 
-	public function setSupportedCountries( array $countries ): void {
+	public function setSupportedCountries( array $countries ): static {
 		$this->supportedCountries = $countries;
+		return $this;
 	}
 
 	public function getSupportedCountries(): array {
 		return $this->supportedCountries;
 	}
 
-	public function setRequiredFields( array $requiredFields ): void {
+	public function setRequiredFields( array $requiredFields ): static {
 		$this->requiredFields = $requiredFields;
+		return $this;
 	}
 
 	public function getRequiredFields(): array {
@@ -44,7 +47,8 @@ class PaymentMethodResponse extends PaymentProviderResponse {
 		return $this->paymentMethods;
 	}
 
-	public function setPaymentMethods( array $paymentMethods ): void {
+	public function setPaymentMethods( array $paymentMethods ): static {
 		$this->paymentMethods = $paymentMethods;
+		return $this;
 	}
 }

@@ -14,7 +14,7 @@ endpoints:
 api:
   class: SmashPig\PaymentProviders\Adyen\Api
 
-rest-base-url: https://checkout-test.adyen.com/v68
+rest-base-url: https://checkout-test.adyen.com/v72
 
 recurring-base-url: https://pal-test.adyen.com/pal/servlet/Recurring/v68
 
@@ -60,9 +60,6 @@ common-cache-parameters: &CACHE
         key-base: SMASHPIG_ADYEN_METHODS
 
 payment-provider:
-  ach:
-    class: SmashPig\PaymentProviders\Adyen\ACHDirectDebitPaymentProvider
-    <<: *CACHE
   bt:
     class: SmashPig\PaymentProviders\Adyen\BankTransferPaymentProvider
     <<: *CACHE
@@ -231,3 +228,5 @@ curl:
     - 'encryptedExpiryMonth'
     - 'encryptedExpiryYear'
     - 'encryptedSecurityCode'
+    - 'bankAccountNumber'
+    - 'bankLocationId'

@@ -35,7 +35,7 @@ class CreatePaymentWithProcessorRetryResponse extends CreatePaymentResponse {
 	 */
 	public function setIsProcessorRetryScheduled(
 		bool $isProcessorRetryScheduled
-	): CreatePaymentWithProcessorRetryResponse {
+	): static {
 		$this->isProcessorRetryScheduled = $isProcessorRetryScheduled;
 		return $this;
 	}
@@ -52,7 +52,7 @@ class CreatePaymentWithProcessorRetryResponse extends CreatePaymentResponse {
 	 * @return $this
 	 */
 	public function setProcessorRetryRescueReference(
-		?string $processorRetryRescueReference ): CreatePaymentWithProcessorRetryResponse {
+		?string $processorRetryRescueReference ): static {
 		$this->processorRetryRescueReference = $processorRetryRescueReference;
 		return $this;
 	}
@@ -70,7 +70,7 @@ class CreatePaymentWithProcessorRetryResponse extends CreatePaymentResponse {
 	 */
 	public function setProcessorRetryRefusalReason(
 		?string $processorRetryRefusalReason
-	): CreatePaymentWithProcessorRetryResponse {
+	): static {
 		$this->processorRetryRefusalReason = $processorRetryRefusalReason;
 		return $this;
 	}

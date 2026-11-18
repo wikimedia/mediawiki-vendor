@@ -24,7 +24,7 @@ class CreatePaymentSessionResponse extends PaymentProviderResponse {
 	 * @param string $paymentSession
 	 * @return CreatePaymentSessionResponse
 	 */
-	public function setPaymentSession( string $paymentSession ): CreatePaymentSessionResponse {
+	public function setPaymentSession( string $paymentSession ): static {
 		$this->paymentSession = $paymentSession;
 		return $this;
 	}

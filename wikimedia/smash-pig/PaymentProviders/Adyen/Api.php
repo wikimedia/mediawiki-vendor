@@ -146,7 +146,7 @@ class Api {
 			$restParams['shopperStatement'] = $params['description'] ?? '';
 			$isRecurring = $params['recurring'] ?? '';
 			if ( $isRecurring ) {
-				$restParams = array_merge( $restParams, $this->addRecurringParams( $params, true ) );
+				$restParams = array_merge( $restParams, $this->addRecurringParams( $params ) );
 			}
 			$result = $this->makeRestApiCall( $restParams, 'payments', 'POST' );
 			return $result['body'];
@@ -280,7 +280,7 @@ class Api {
 			}
 			$isRecurring = $params['recurring'] ?? '';
 			if ( $isRecurring ) {
-				$restParams = array_merge( $restParams, $this->addRecurringParams( $params, true ) );
+				$restParams = array_merge( $restParams, $this->addRecurringParams( $params ) );
 			}
 			$restParams = array_merge( $restParams, $this->getContactInfo( $params ) );
 
@@ -347,7 +347,7 @@ class Api {
 			];
 			$isRecurring = $params['recurring'] ?? '';
 			if ( $isRecurring ) {
-				$restParams = array_merge( $restParams, $this->addRecurringParams( $params, true ) );
+				$restParams = array_merge( $restParams, $this->addRecurringParams( $params ) );
 			}
 			// billing address optional
 			$restParams = array_merge( $restParams, $this->getContactInfo( $params ) );
@@ -367,15 +367,16 @@ class Api {
 				'merchantAccount' => $this->account,
 				'paymentMethod' => [
 					'type' => 'ach',
-					'encryptedBankAccountNumber' => $params['encrypted_bank_account_number'], // encrypted account number
+					'bankAccountNumber' => $params['bank_account_number'], // account number
 					'bankAccountType' => $params['bank_account_type'], // checking or savings
-					'encryptedBankLocationId' => $params['encrypted_bank_location_id'], // encrypted ACH routing number of the account
-					'ownerName' => $params['full_name'] // the name on the bank account
+					'bankLocationId' => $params['bank_location_id'], // ACH routing number of the account
+					'ownerName' => $params['full_name'], // the name on the bank account
+					'accountHolderType' => $params['account_holder_type'] ?? 'personal' // The type of account holder (personal or business)
 				]
 			];
 			$isRecurring = $params['recurring'] ?? '';
 			if ( $isRecurring ) {
-				$restParams = array_merge( $restParams, $this->addRecurringParams( $params, true ) );
+				$restParams = array_merge( $restParams, $this->addRecurringParams( $params ) );
 			}
 			$restParams = array_merge( $restParams, $this->getContactInfo( $params ) );
 			if ( $restParams['billingAddress']['stateOrProvince'] === 'NA' ) {
@@ -406,7 +407,7 @@ class Api {
 			];
 			$isRecurring = $params['recurring'] ?? '';
 			if ( $isRecurring ) {
-				$restParams = array_merge( $restParams, $this->addRecurringParams( $params, true ) );
+				$restParams = array_merge( $restParams, $this->addRecurringParams( $params ) );
 			}
 			$restParams = array_merge( $restParams, $this->getContactInfo( $params ) );
 
@@ -433,7 +434,7 @@ class Api {
 			];
 			$isRecurring = $params['recurring'] ?? '';
 			if ( $isRecurring ) {
-				$restParams = array_merge( $restParams, $this->addRecurringParams( $params, true ) );
+				$restParams = array_merge( $restParams, $this->addRecurringParams( $params ) );
 			}
 			$restParams = array_merge( $restParams, $this->getContactInfo( $params ) );
 
@@ -725,36 +726,31 @@ class Api {
 	 * Adds the parameters to set up a recurring payment.
 	 *
 	 * @param array $params
-	 * @param bool $needInteractionAndModel Set to 'true' for card or Apple Pay transactions
-	 *  which need the shopperInteraction and recurringProcessModel parameters set.
 	 * @return array
 	 */
-	private function addRecurringParams( $params, bool $needInteractionAndModel ) {
+	private function addRecurringParams( $params ) {
 		// credit card, apple pay, and iDeal all need shopperReference and storePaymentMethod
 		$recurringParams['shopperReference'] = $params['order_id'];
 		$recurringParams['storePaymentMethod'] = true;
 
-		if ( $needInteractionAndModel ) {
-			// credit card and apple pay also need shopperInteraction and recurringProcessingModel
-			$recurringParams['shopperInteraction'] = static::RECURRING_SHOPPER_INTERACTION_SETUP;
+		$recurringParams['shopperInteraction'] = static::RECURRING_SHOPPER_INTERACTION_SETUP;
 
-			// By default make recurring charges as 'Subscription' but allow for Card On File
-			// in case of speculative tokenization (e.g. for monthly convert).
-			$recurringModel = $params['recurring_model'] ?? RecurringModel::SUBSCRIPTION;
-			switch ( $recurringModel ) {
-				case RecurringModel::SUBSCRIPTION:
-					$recurringParams['recurringProcessingModel'] = static::RECURRING_MODEL_SUBSCRIPTION;
-					break;
-				case RecurringModel::CARD_ON_FILE:
-					$recurringParams['recurringProcessingModel'] = static::RECURRING_MODEL_CARD_ON_FILE;
-					break;
-				default:
-					throw new UnexpectedValueException(
-						"Unknown recurring processing model $recurringModel"
-					);
-			}
-
+		// By default make recurring charges as 'Subscription' but allow for Card On File
+		// in case of speculative tokenization (e.g. for monthly convert).
+		$recurringModel = $params['recurring_model'] ?? RecurringModel::SUBSCRIPTION;
+		switch ( $recurringModel ) {
+			case RecurringModel::SUBSCRIPTION:
+				$recurringParams['recurringProcessingModel'] = static::RECURRING_MODEL_SUBSCRIPTION;
+				break;
+			case RecurringModel::CARD_ON_FILE:
+				$recurringParams['recurringProcessingModel'] = static::RECURRING_MODEL_CARD_ON_FILE;
+				break;
+			default:
+				throw new UnexpectedValueException(
+					"Unknown recurring processing model $recurringModel"
+				);
 		}
+
 		return $recurringParams;
 	}
 }

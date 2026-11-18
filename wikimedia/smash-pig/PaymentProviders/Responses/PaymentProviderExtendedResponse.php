@@ -155,7 +155,7 @@ class PaymentProviderExtendedResponse extends PaymentProviderResponse {
 	 * @param array $riskScores
 	 * @return static
 	 */
-	public function setRiskScores( array $riskScores ): PaymentProviderExtendedResponse {
+	public function setRiskScores( array $riskScores ): static {
 		$this->riskScores = $riskScores;
 		return $this;
 	}
@@ -171,7 +171,7 @@ class PaymentProviderExtendedResponse extends PaymentProviderResponse {
 	 * @param string $recurringPaymentToken
 	 * @return static
 	 */
-	public function setRecurringPaymentToken( string $recurringPaymentToken ): PaymentProviderExtendedResponse {
+	public function setRecurringPaymentToken( string $recurringPaymentToken ): static {
 		$this->recurringPaymentToken = $recurringPaymentToken;
 		return $this;
 	}
@@ -185,9 +185,9 @@ class PaymentProviderExtendedResponse extends PaymentProviderResponse {
 
 	/**
 	 * @param string|null $schemeTransactionId
-	 * @return PaymentProviderExtendedResponse
+	 * @return static
 	 */
-	public function setInitialSchemeTransactionId( ?string $schemeTransactionId ): PaymentProviderExtendedResponse {
+	public function setInitialSchemeTransactionId( ?string $schemeTransactionId ): static {
 		$this->initialSchemeTransactionId = $schemeTransactionId;
 		return $this;
 	}
@@ -203,16 +203,16 @@ class PaymentProviderExtendedResponse extends PaymentProviderResponse {
 	 * @param string|null $processorContactID
 	 * @return static
 	 */
-	public function setProcessorContactID( ?string $processorContactID ): PaymentProviderExtendedResponse {
+	public function setProcessorContactID( ?string $processorContactID ): static {
 		$this->processorContactID = $processorContactID;
 		return $this;
 	}
 
 	/**
 	 * @param DonorDetails $donorDetails
-	 * @return PaymentProviderExtendedResponse
+	 * @return static
 	 */
-	public function setDonorDetails( DonorDetails $donorDetails ): PaymentProviderExtendedResponse {
+	public function setDonorDetails( DonorDetails $donorDetails ): static {
 		$this->hasDonorDetails = true;
 		$this->donorDetails = $donorDetails;
 		return $this;
@@ -234,9 +234,9 @@ class PaymentProviderExtendedResponse extends PaymentProviderResponse {
 
 	/**
 	 * @param float|null $amount
-	 * @return PaymentProviderExtendedResponse
+	 * @return static
 	 */
-	public function setAmount( $amount ): PaymentProviderExtendedResponse {
+	public function setAmount( $amount ): static {
 		$this->amount = $amount;
 		return $this;
 	}
@@ -250,9 +250,9 @@ class PaymentProviderExtendedResponse extends PaymentProviderResponse {
 
 	/**
 	 * @param string|null $currency
-	 * @return PaymentProviderExtendedResponse
+	 * @return static
 	 */
-	public function setCurrency( ?string $currency ): PaymentProviderExtendedResponse {
+	public function setCurrency( ?string $currency ): static {
 		$this->currency = $currency;
 		return $this;
 	}
@@ -266,9 +266,9 @@ class PaymentProviderExtendedResponse extends PaymentProviderResponse {
 
 	/**
 	 * @param string|null $paymentSubmethod
-	 * @return PaymentProviderExtendedResponse
+	 * @return static
 	 */
-	public function setPaymentSubmethod( ?string $paymentSubmethod ): PaymentProviderExtendedResponse {
+	public function setPaymentSubmethod( ?string $paymentSubmethod ): static {
 		$this->paymentSubmethod = $paymentSubmethod;
 		return $this;
 	}
@@ -282,9 +282,9 @@ class PaymentProviderExtendedResponse extends PaymentProviderResponse {
 
 	/**
 	 * @param string|null $paymentMethod
-	 * @return PaymentProviderExtendedResponse
+	 * @return static
 	 */
-	public function setPaymentMethod( ?string $paymentMethod ): PaymentProviderExtendedResponse {
+	public function setPaymentMethod( ?string $paymentMethod ): static {
 		$this->paymentMethod = $paymentMethod;
 		return $this;
 	}
@@ -300,7 +300,7 @@ class PaymentProviderExtendedResponse extends PaymentProviderResponse {
 	 * @param string|null $orderId
 	 * @return static
 	 */
-	public function setOrderId( ?string $orderId ): PaymentProviderExtendedResponse {
+	public function setOrderId( ?string $orderId ): static {
 		$this->orderId = $orderId;
 		return $this;
 	}
@@ -309,7 +309,7 @@ class PaymentProviderExtendedResponse extends PaymentProviderResponse {
 	 * @param string|null $backendProcessor
 	 * @return static
 	 */
-	public function setBackendProcessor( ?string $backendProcessor ): PaymentProviderExtendedResponse {
+	public function setBackendProcessor( ?string $backendProcessor ): static {
 		$this->backendProcessor = $backendProcessor;
 		return $this;
 	}
@@ -321,7 +321,7 @@ class PaymentProviderExtendedResponse extends PaymentProviderResponse {
 		return $this->backendProcessor;
 	}
 
-	public function setBackendProcessorTransactionId( ?string $backendProcessorTransactionId ): PaymentProviderExtendedResponse {
+	public function setBackendProcessorTransactionId( ?string $backendProcessorTransactionId ): static {
 		$this->backendProcessorTransactionId = $backendProcessorTransactionId;
 		return $this;
 	}
@@ -341,7 +341,7 @@ class PaymentProviderExtendedResponse extends PaymentProviderResponse {
 	 * @param string|null $backendProcessorContactID
 	 * @return static
 	 */
-	public function setBackendProcessorContactID( ?string $backendProcessorContactID ): PaymentProviderExtendedResponse {
+	public function setBackendProcessorContactID( ?string $backendProcessorContactID ): static {
 		$this->backendProcessorContactID = $backendProcessorContactID;
 		return $this;
 	}
@@ -355,9 +355,9 @@ class PaymentProviderExtendedResponse extends PaymentProviderResponse {
 
 	/**
 	 * @param string|null $authID
-	 * @return PaymentProviderExtendedResponse
+	 * @return static
 	 */
-	public function setAuthID( ?string $authID ): PaymentProviderExtendedResponse {
+	public function setAuthID( ?string $authID ): static {
 		$this->authID = $authID;
 		return $this;
 	}
@@ -371,9 +371,9 @@ class PaymentProviderExtendedResponse extends PaymentProviderResponse {
 
 	/**
 	 * @param string|null $captureID
-	 * @return PaymentProviderExtendedResponse
+	 * @return static
 	 */
-	public function setCaptureID( ?string $captureID ): PaymentProviderExtendedResponse {
+	public function setCaptureID( ?string $captureID ): static {
 		$this->captureID = $captureID;
 		return $this;
 	}
@@ -382,7 +382,7 @@ class PaymentProviderExtendedResponse extends PaymentProviderResponse {
 		return $this->paymentOrchestratorReconciliationId;
 	}
 
-	public function setPaymentOrchestratorReconciliationId( ?string $paymentOrchestratorReconciliationId ): PaymentProviderExtendedResponse {
+	public function setPaymentOrchestratorReconciliationId( ?string $paymentOrchestratorReconciliationId ): static {
 		$this->paymentOrchestratorReconciliationId = $paymentOrchestratorReconciliationId;
 		return $this;
 	}
@@ -391,7 +391,7 @@ class PaymentProviderExtendedResponse extends PaymentProviderResponse {
 		return $this->paymentServiceID;
 	}
 
-	public function setPaymentServiceID( ?string $paymentServiceID ): PaymentProviderExtendedResponse {
+	public function setPaymentServiceID( ?string $paymentServiceID ): static {
 		$this->paymentServiceID = $paymentServiceID;
 		return $this;
 	}

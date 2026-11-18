@@ -31,7 +31,7 @@ class ApprovePaymentResponse extends PaymentProviderExtendedResponse {
 	 */
 	protected ?string $feeCurrency = null;
 
-	public function setSettledAmount( ?float $settledAmount ): ApprovePaymentResponse {
+	public function setSettledAmount( ?float $settledAmount ): static {
 		$this->settledAmount = $settledAmount;
 		return $this;
 	}
@@ -40,7 +40,7 @@ class ApprovePaymentResponse extends PaymentProviderExtendedResponse {
 		return $this->settledAmount;
 	}
 
-	public function setSettledCurrency( ?string $settledCurrency ): ApprovePaymentResponse {
+	public function setSettledCurrency( ?string $settledCurrency ): static {
 		$this->settledCurrency = $settledCurrency;
 		return $this;
 	}
@@ -49,7 +49,7 @@ class ApprovePaymentResponse extends PaymentProviderExtendedResponse {
 		return $this->settledCurrency;
 	}
 
-	public function setFee( ?float $fee ): ApprovePaymentResponse {
+	public function setFee( ?float $fee ): static {
 		$this->fee = $fee;
 		return $this;
 	}
@@ -58,7 +58,7 @@ class ApprovePaymentResponse extends PaymentProviderExtendedResponse {
 		return $this->fee;
 	}
 
-	public function setFeeCurrency( ?string $feeCurrency ): ApprovePaymentResponse {
+	public function setFeeCurrency( ?string $feeCurrency ): static {
 		$this->feeCurrency = $feeCurrency;
 		return $this;
 	}

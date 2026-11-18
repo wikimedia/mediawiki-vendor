@@ -109,18 +109,18 @@ abstract class PaymentProviderResponse {
 
 	/**
 	 * @param mixed $rawResponse
-	 * @return $this
+	 * @return static
 	 */
-	public function setRawResponse( $rawResponse ): self {
+	public function setRawResponse( $rawResponse ): static {
 		$this->rawResponse = $rawResponse;
 		return $this;
 	}
 
 	/**
 	 * @param array $normalizedResponse
-	 * @return $this
+	 * @return static
 	 */
-	public function setNormalizedResponse( array $normalizedResponse ): self {
+	public function setNormalizedResponse( array $normalizedResponse ): static {
 		$this->normalizedResponse = $normalizedResponse;
 		return $this;
 	}
@@ -141,9 +141,9 @@ abstract class PaymentProviderResponse {
 
 	/**
 	 * @param PaymentError[] $errors
-	 * @return $this
+	 * @return static
 	 */
-	public function setErrors( array $errors ): self {
+	public function setErrors( array $errors ): static {
 		$this->errors = $errors;
 		return $this;
 	}
@@ -177,9 +177,9 @@ abstract class PaymentProviderResponse {
 	 * Add error(s) to the stack
 	 *
 	 * @param PaymentError[]|PaymentError $errors
-	 * @return $this
+	 * @return static
 	 */
-	public function addErrors( $errors ): self {
+	public function addErrors( $errors ): static {
 		if ( !is_array( $errors ) ) {
 			$errors = [ $errors ];
 		}
@@ -194,9 +194,9 @@ abstract class PaymentProviderResponse {
 	/**
 	 * Adds a validation error to the stack
 	 * @param ValidationError $error
-	 * @return $this
+	 * @return static
 	 */
-	public function addValidationError( ValidationError $error ): self {
+	public function addValidationError( ValidationError $error ): static {
 		array_push( $this->validationErrors, $error );
 		return $this;
 	}
@@ -212,7 +212,7 @@ abstract class PaymentProviderResponse {
 	 * @param string $gateway_txn_id
 	 * @return static
 	 */
-	public function setGatewayTxnId( string $gateway_txn_id ): self {
+	public function setGatewayTxnId( string $gateway_txn_id ): static {
 		$this->gateway_txn_id = $gateway_txn_id;
 		return $this;
 	}
@@ -226,9 +226,9 @@ abstract class PaymentProviderResponse {
 
 	/**
 	 * @param string|null $gatewayAuthID
-	 * @return PaymentProviderResponse
+	 * @return static
 	 */
-	public function setGatewayAuthID( ?string $gatewayAuthID ): PaymentProviderResponse {
+	public function setGatewayAuthID( ?string $gatewayAuthID ): static {
 		$this->gatewayAuthID = $gatewayAuthID;
 		return $this;
 	}
@@ -242,9 +242,9 @@ abstract class PaymentProviderResponse {
 
 	/**
 	 * @param string|null $gatewayCaptureID
-	 * @return PaymentProviderResponse
+	 * @return static
 	 */
-	public function setGatewayCaptureID( ?string $gatewayCaptureID ): PaymentProviderResponse {
+	public function setGatewayCaptureID( ?string $gatewayCaptureID ): static {
 		$this->gatewayCaptureID = $gatewayCaptureID;
 		return $this;
 	}
@@ -260,7 +260,7 @@ abstract class PaymentProviderResponse {
 	 * @param string $status
 	 * @return static
 	 */
-	public function setStatus( string $status ): self {
+	public function setStatus( string $status ): static {
 		$this->status = $status;
 		return $this;
 	}
@@ -274,9 +274,9 @@ abstract class PaymentProviderResponse {
 
 	/**
 	 * @param bool $successful
-	 * @return $this
+	 * @return static
 	 */
-	public function setSuccessful( bool $successful ): self {
+	public function setSuccessful( bool $successful ): static {
 		$this->successful = $successful;
 		return $this;
 	}
@@ -292,7 +292,7 @@ abstract class PaymentProviderResponse {
 	 * @param string $rawStatus
 	 * @return static
 	 */
-	public function setRawStatus( string $rawStatus ): self {
+	public function setRawStatus( string $rawStatus ): static {
 		$this->rawStatus = $rawStatus;
 		return $this;
 	}
@@ -308,7 +308,7 @@ abstract class PaymentProviderResponse {
 	 * @param int $timeTaken
 	 * @return static
 	 */
-	public function setTimeTaken( int $timeTaken ): self {
+	public function setTimeTaken( int $timeTaken ): static {
 		$this->timeTaken = $timeTaken;
 		return $this;
 	}

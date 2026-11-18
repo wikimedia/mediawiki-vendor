@@ -227,7 +227,7 @@ The port to PHP was initially done by C. Scott Ananian and is
 (c) Copyright 2019 Wikimedia Foundation.
 
 Additional code and functionality is
-(c) Copyright 2020-2021 Wikimedia Foundation.
+(c) Copyright 2020-2026 Wikimedia Foundation.
 
 Both the original zest codebase and this port are distributed under
 the MIT license; see LICENSE for more info.

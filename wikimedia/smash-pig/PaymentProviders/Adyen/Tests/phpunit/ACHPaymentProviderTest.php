@@ -24,10 +24,6 @@ class ACHPaymentProviderTest extends BaseAdyenTestCase {
 	public function testCreateACHPayment() {
 		$ref = rand( 0, 100 );
 
-		$this->mockApi->expects( $this->once() )
-			->method( 'createACHDirectDebitPayment' )
-			->willReturn( AdyenTestConfiguration::getSuccessfulACHResult( $ref ) );
-
 		// test params
 		$params = [
 			'amount' => '85.00',
@@ -42,12 +38,19 @@ class ACHPaymentProviderTest extends BaseAdyenTestCase {
 			'state_province' => 'CA',
 			'street_address' => 'Amphitheatre Parkway',
 			'payment_submethod' => 'ach',
-			'encrypted_bank_account_number' => '123456789',
-			'encrypted_bank_location_id' => '121000358',
+			'bank_account_number' => '123456789',
+			'bank_location_id' => '121000358',
 			'supplemental_address_1' => '1600',
 			'bank_account_type' => 'checking',
+			'account_holder_type' => 'personal',
 			'user_ip' => '172.21.0.1'
 		];
+
+		// The plain bank details reach the Api unchanged
+		$this->mockApi->expects( $this->once() )
+			->method( 'createACHDirectDebitPayment' )
+			->with( $params )
+			->willReturn( AdyenTestConfiguration::getSuccessfulACHResult( $ref ) );
 
 		$approvePaymentResponse = $this->provider->createPayment( $params );
 		$rawResponse = $approvePaymentResponse->getRawResponse();

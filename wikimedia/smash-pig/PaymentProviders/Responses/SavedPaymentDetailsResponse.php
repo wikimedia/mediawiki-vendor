@@ -20,9 +20,9 @@ class SavedPaymentDetailsResponse extends PaymentProviderResponse {
 
 	/**
 	 * @param SavedPaymentDetails[] $detailsList
-	 * @return SavedPaymentDetailsResponse
+	 * @return static
 	 */
-	public function setDetailsList( array $detailsList ): SavedPaymentDetailsResponse {
+	public function setDetailsList( array $detailsList ): static {
 		$this->detailsList = $detailsList;
 		return $this;
 	}
