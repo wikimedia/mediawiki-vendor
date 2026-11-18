@@ -51,7 +51,18 @@ class BasePageBundle implements JsonCodecable {
 		public ?array $headers = null,
 		/** @var ?string */
 		public ?string $contentmodel = null,
+		/** Forward-compatibility with MW 1.47 */
+		?string $contentVersion = null,
 	) {
+		$this->version ??= $contentVersion;
+	}
+
+	public function getContentVersion(): ?string {
+		return $this->version;
+	}
+
+	public function setContentVersion( string $contentVersion ): void {
+		$this->version = $contentVersion;
 	}
 
 	/**
@@ -149,7 +160,8 @@ class BasePageBundle implements JsonCodecable {
 			// @phan-suppress-next-line PhanTypeMismatchArgument
 			parsoid: $json['parsoid'] ?? null,
 			mw: $json['mw'] ?? null,
-			version: $json['version'] ?? null,
+			// Forward compatibility with Parsoid >= 0.24
+			version: $json['version'] ?? $json['contentVersion'] ?? null,
 			headers: $json['headers'] ?? null,
 			contentmodel: $json['contentmodel'] ?? null
 		);
