@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "412a92a1e6f6705cdf83e04c74859dfa",
+    "content-hash": "12bfc823e54629ea659e13781fa672d4",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -5057,16 +5057,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.24.0",
+            "version": "v0.24.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
-                "reference": "3c2d11f27e4277751acce87d9ace02a21c9b97f6"
+                "reference": "7d55e20cd2ada3d174131fa8bda54d9846977152"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/3c2d11f27e4277751acce87d9ace02a21c9b97f6",
-                "reference": "3c2d11f27e4277751acce87d9ace02a21c9b97f6",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/7d55e20cd2ada3d174131fa8bda54d9846977152",
+                "reference": "7d55e20cd2ada3d174131fa8bda54d9846977152",
                 "shasum": ""
             },
             "require": {
@@ -5135,11 +5135,11 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.24.0",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.24.1",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
-            "time": "2026-10-11T14:17:29+00:00",
-            "published-time": "2026-10-29T20:27:20+00:00"
+            "time": "2026-11-19T16:34:22+00:00",
+            "published-time": "2026-11-19T22:53:12+00:00"
         },
         {
             "name": "wikimedia/purtle",
