@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8d2193b5ba97818b444e9ef43b4fbebf",
+    "content-hash": "367a3cafb2b66e68f78119ff3d56ea26",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -3420,16 +3420,16 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.20.11",
+            "version": "v0.20.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
-                "reference": "9dd0687bc7472248000b1e5bb4930cce0380629c"
+                "reference": "19ed91c480c09163da17579acd721ba1d958ef8f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/9dd0687bc7472248000b1e5bb4930cce0380629c",
-                "reference": "9dd0687bc7472248000b1e5bb4930cce0380629c",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/19ed91c480c09163da17579acd721ba1d958ef8f",
+                "reference": "19ed91c480c09163da17579acd721ba1d958ef8f",
                 "shasum": ""
             },
             "require": {
@@ -3497,11 +3497,11 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.20.11",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.20.12",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
-            "time": "2026-11-07T01:54:04+00:00",
-            "published-time": "2026-11-18T19:59:57+00:00"
+            "time": "2026-11-19T16:34:22+00:00",
+            "published-time": "2026-11-19T21:21:57+00:00"
         },
         {
             "name": "wikimedia/php-session-serializer",

@@ -3522,17 +3522,17 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.20.11",
-            "version_normalized": "0.20.11.0",
+            "version": "v0.20.12",
+            "version_normalized": "0.20.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
-                "reference": "9dd0687bc7472248000b1e5bb4930cce0380629c"
+                "reference": "19ed91c480c09163da17579acd721ba1d958ef8f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/9dd0687bc7472248000b1e5bb4930cce0380629c",
-                "reference": "9dd0687bc7472248000b1e5bb4930cce0380629c",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/19ed91c480c09163da17579acd721ba1d958ef8f",
+                "reference": "19ed91c480c09163da17579acd721ba1d958ef8f",
                 "shasum": ""
             },
             "require": {
@@ -3576,8 +3576,8 @@
             "suggest": {
                 "wikimedia/langconv": "Provides script conversion support"
             },
-            "time": "2026-11-07T01:54:04+00:00",
-            "published-time": "2026-11-18T19:59:57+00:00",
+            "time": "2026-11-19T16:34:22+00:00",
+            "published-time": "2026-11-19T21:21:57+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -3603,7 +3603,7 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.20.11",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.20.12",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
             "install-path": "../wikimedia/parsoid"
