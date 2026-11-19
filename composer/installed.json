@@ -31,7 +31,6 @@
                 "ext-imagick": "to generate QR code images"
             },
             "time": "2026-04-05T21:06:35+00:00",
-            "published-time": "2026-04-05T21:07:28+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -210,7 +209,6 @@
                 "symfony/process": "^4.0 || ^5.0 || ^6.0 || ^7.0"
             },
             "time": "2026-10-29T14:10:42+00:00",
-            "published-time": "2026-10-29T14:45:12+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -282,7 +280,6 @@
                 "symfony/phpunit-bridge": "^3 || ^7"
             },
             "time": "2026-10-29T09:13:34+00:00",
-            "published-time": "2026-10-29T09:14:11+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -2068,7 +2065,6 @@
                 "ext-zlib": "Zlib extension is required for archive modules and compressed metadata."
             },
             "time": "2026-10-30T21:48:34+00:00",
-            "published-time": "2026-10-30T21:49:44+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -3410,17 +3406,17 @@
         },
         {
             "name": "oojs/oojs-ui",
-            "version": "v0.54.2",
-            "version_normalized": "0.54.2.0",
+            "version": "v0.54.3",
+            "version_normalized": "0.54.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/oojs-ui.git",
-                "reference": "c4eca46a453f654786aba6b9d99ab508249e9be2"
+                "reference": "56b1c704916fb734c95214fe52a97fb270197296"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/c4eca46a453f654786aba6b9d99ab508249e9be2",
-                "reference": "c4eca46a453f654786aba6b9d99ab508249e9be2",
+                "url": "https://api.github.com/repos/wikimedia/oojs-ui/zipball/56b1c704916fb734c95214fe52a97fb270197296",
+                "reference": "56b1c704916fb734c95214fe52a97fb270197296",
                 "shasum": ""
             },
             "require": {
@@ -3435,7 +3431,7 @@
                 "php-parallel-lint/php-parallel-lint": "1.4.0",
                 "phpunit/phpunit": "10.5.63"
             },
-            "time": "2026-09-14T15:44:01+00:00",
+            "time": "2026-11-19T00:37:22+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -3500,7 +3496,7 @@
             "description": "Provides library of common widgets, layouts, and windows.",
             "homepage": "https://www.mediawiki.org/wiki/OOUI",
             "support": {
-                "source": "https://github.com/wikimedia/oojs-ui/tree/v0.54.2"
+                "source": "https://github.com/wikimedia/oojs-ui/tree/v0.54.3"
             },
             "install-path": "../oojs/oojs-ui"
         },
@@ -4277,7 +4273,6 @@
                 "php": ">=8.0.0"
             },
             "time": "2021-10-29T13:26:27+00:00",
-            "published-time": "2021-10-29T13:27:19+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -4736,7 +4731,6 @@
                 "spatie/pest-plugin-snapshots": "^2.1"
             },
             "time": "2026-03-18T09:51:41+00:00",
-            "published-time": "2026-03-18T09:53:17+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -5030,7 +5024,6 @@
                 "psr/clock-implementation": "1.0"
             },
             "time": "2026-10-12T14:31:36+00:00",
-            "published-time": "2026-10-14T06:45:48+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -5134,7 +5127,6 @@
                 "symfony/var-dumper": "^6.4|^7.0|^8.0"
             },
             "time": "2026-11-03T21:47:07+00:00",
-            "published-time": "2026-11-04T11:27:31+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -5882,7 +5874,6 @@
                 "php": ">=8.2"
             },
             "time": "2026-10-25T14:40:16+00:00",
-            "published-time": "2026-10-28T18:21:18+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -5956,7 +5947,6 @@
                 "symfony/var-exporter": "^6.4.1|^7.0.1|^8.0"
             },
             "time": "2026-11-01T19:17:22+00:00",
-            "published-time": "2026-11-04T11:28:09+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -6053,7 +6043,6 @@
                 "symfony/serializer": "^6.4|^7.0|^8.0"
             },
             "time": "2026-11-02T10:56:49+00:00",
-            "published-time": "2026-11-04T11:28:19+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -6169,7 +6158,6 @@
                 "symfony/yaml": "^6.4|^7.0|^8.0"
             },
             "time": "2026-11-04T08:27:22+00:00",
-            "published-time": "2026-11-04T11:28:28+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -6343,7 +6331,6 @@
                 "symfony/var-exporter": "^6.4|^7.0|^8.0"
             },
             "time": "2026-10-23T16:51:52+00:00",
-            "published-time": "2026-10-28T18:21:18+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -6455,7 +6442,6 @@
                 "symfony/yaml": "^6.4|^7.0|^8.0"
             },
             "time": "2026-11-01T22:26:51+00:00",
-            "published-time": "2026-11-04T11:28:50+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -6620,7 +6606,6 @@
                 "phpstan/phpdoc-parser": "^1.30|^2.0"
             },
             "time": "2026-11-02T09:31:16+00:00",
-            "published-time": "2026-11-04T11:27:49+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -6703,7 +6688,6 @@
                 "symfony/console": "^6.4|^7.0|^8.0"
             },
             "time": "2026-10-12T14:31:36+00:00",
-            "published-time": "2026-10-14T06:45:54+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -6819,7 +6803,6 @@
                 "symfony/yaml": "^6.4|^7.0|^8.0"
             },
             "time": "2026-11-04T08:27:22+00:00",
-            "published-time": "2026-11-04T11:28:46+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -6901,7 +6884,6 @@
                 "twig/twig": "^3.12|^4.0"
             },
             "time": "2026-10-25T21:04:04+00:00",
-            "published-time": "2026-10-28T18:20:00+00:00",
             "bin": [
                 "Resources/bin/var-dump-server"
             ],
@@ -6988,7 +6970,6 @@
                 "symfony/console": "^6.4|^7.0|^8.0"
             },
             "time": "2026-11-04T08:27:22+00:00",
-            "published-time": "2026-11-04T11:28:41+00:00",
             "bin": [
                 "Resources/bin/yaml-lint"
             ],
@@ -7159,7 +7140,6 @@
                 "web-token/jwt-library": "Mandatory for fetching Metadata Statement from distant sources"
             },
             "time": "2026-11-18T16:46:55+00:00",
-            "published-time": "2026-11-18T16:56:49+00:00",
             "type": "library",
             "extra": {
                 "thanks": {
@@ -8736,7 +8716,6 @@
                 "ext-readline": "Needed to support repl.php"
             },
             "time": "2026-11-13T21:33:00+00:00",
-            "published-time": "2026-11-15T17:03:10+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
