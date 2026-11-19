@@ -23,6 +23,7 @@ use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\PHPUtils;
 use Wikimedia\Parsoid\Utils\TokenUtils;
+use Wikimedia\Parsoid\Wt2Html\TokenizerUtils;
 use Wikimedia\RemexHtml\HTMLData;
 
 class Sanitizer {
@@ -914,7 +915,15 @@ class Sanitizer {
 			$a->v ??= '';
 
 			// Convert attributes to string, if necessary.
-			$a->k = TokenUtils::tokensToString( $a->k );
+			if ( is_array( $a->k ) ) {
+				// The tokenizer only protects string-valued names, so a
+				// name containing an entity, comment, or template, ex.
+				// typ&#101;of, only reveals itself after flattening.
+				// Protect it here as well. (T440942)
+				$a->k = TokenizerUtils::protectAttrs(
+					TokenUtils::tokensToString( $a->k )
+				);
+			}
 
 			if ( is_array( $a->v ) ) {
 				// Use the expanded attr instead of trying to unpackDOMFragments
@@ -1097,7 +1106,7 @@ class Sanitizer {
 			|| str_contains( $text, self::UTF8_REPLACEMENT )
 		) {
 			return '/* invalid control char */';
-		} elseif ( preg_match( self::INSECURE_RE, $text ) ) {
+		} elseif ( preg_match( self::INSECURE_RE, $text ) || preg_last_error() !== PREG_NO_ERROR ) {
 			return '/* insecure input */';
 		} else {
 			return $text;
