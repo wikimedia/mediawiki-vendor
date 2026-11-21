@@ -87,9 +87,13 @@ class ASTDefinitionBuilder
     /** @var array<string, array<int, Node&TypeExtensionNode>> */
     private array $typeExtensionsMap;
 
+    /** @var array<string, Type&NamedType> */
+    private array $typeOverrides;
+
     /**
      * @param array<string, Node&TypeDefinitionNode> $typeDefinitionsMap
      * @param array<string, array<int, Node&TypeExtensionNode>> $typeExtensionsMap
+     * @param array<string, Type&NamedType> $typeOverrides
      *
      * @phpstan-param ResolveType $resolveType
      * @phpstan-param TypeConfigDecorator|null $typeConfigDecorator
@@ -101,13 +105,15 @@ class ASTDefinitionBuilder
         array $typeExtensionsMap,
         callable $resolveType,
         ?callable $typeConfigDecorator = null,
-        ?callable $fieldConfigDecorator = null
+        ?callable $fieldConfigDecorator = null,
+        array $typeOverrides = []
     ) {
         $this->typeDefinitionsMap = $typeDefinitionsMap;
         $this->typeExtensionsMap = $typeExtensionsMap;
         $this->resolveType = $resolveType;
         $this->typeConfigDecorator = $typeConfigDecorator;
         $this->fieldConfigDecorator = $fieldConfigDecorator;
+        $this->typeOverrides = $typeOverrides;
 
         $this->cache = Type::builtInTypes();
     }
@@ -264,6 +270,10 @@ class ASTDefinitionBuilder
             return $this->cache[$typeName];
         }
 
+        if (isset($this->typeOverrides[$typeName])) {
+            return $this->cache[$typeName] = $this->typeOverrides[$typeName];
+        }
+
         if (isset($this->typeDefinitionsMap[$typeName])) {
             $type = $this->makeSchemaDef($this->typeDefinitionsMap[$typeName]);
 
@@ -391,7 +401,7 @@ class ASTDefinitionBuilder
         ];
 
         if ($this->fieldConfigDecorator !== null) {
-            $config = ($this->fieldConfigDecorator)($config, $field, $node);
+            return ($this->fieldConfigDecorator)($config, $field, $node);
         }
 
         return $config;
