@@ -6089,6 +6089,7 @@ return array(
     'Wikimedia\\Parsoid\\Wikitext\\ContentModelHandler' => $vendorDir . '/wikimedia/parsoid/src/Wikitext/ContentModelHandler.php',
     'Wikimedia\\Parsoid\\Wikitext\\Wikitext' => $vendorDir . '/wikimedia/parsoid/src/Wikitext/Wikitext.php',
     'Wikimedia\\Parsoid\\Wt2Html\\DOMProcessorPipeline' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/DOMProcessorPipeline.php',
+    'Wikimedia\\Parsoid\\Wt2Html\\DOMProcessorPipelineFilter' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/DOMProcessorPipelineFilter.php',
     'Wikimedia\\Parsoid\\Wt2Html\\DOM\\Handlers\\AddAnnotationIds' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/DOM/Handlers/AddAnnotationIds.php',
     'Wikimedia\\Parsoid\\Wt2Html\\DOM\\Handlers\\AddLinkAttributes' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/DOM/Handlers/AddLinkAttributes.php',
     'Wikimedia\\Parsoid\\Wt2Html\\DOM\\Handlers\\CleanUp' => $vendorDir . '/wikimedia/parsoid/src/Wt2Html/DOM/Handlers/CleanUp.php',

@@ -135,7 +135,6 @@ class Env {
 	public ?DomPageBundle $pageBundle = null;
 
 	private ?Document $domDiff = null;
-	public bool $hasAnnotations = false;
 
 	/**
 	 * Cache of wikitext source for a title; only used for ParserTests.
@@ -160,11 +159,20 @@ class Env {
 	private Document $topLevelDoc;
 
 	/**
+	 * Properties Parsoid records during transformation to help with
+	 * performance optimization.
+	 */
+	private array $pagePerfFlags = [];
+
+	/**
 	 * The RemexPipeline used during a wt2html operation.
 	 */
 	private ?RemexPipeline $remexPipeline;
 	private WikitextContentModelHandler $wikitextContentModelHandler;
 	private ?Title $cachedContextTitle = null;
+
+	public const HAS_ENCAPSULATED_TEMPLATES = 'hasEncapsulatedTemplates';
+	public const HAS_ANNOTATIONS = 'hasAnnotations';
 
 	/**
 	 * @param SiteConfig $siteConfig
@@ -1043,5 +1051,13 @@ class Env {
 		}
 		// No specific configuration
 		return true;
+	}
+
+	public function setPagePerfFlag( string $name ): void {
+		$this->pagePerfFlags[$name] = true;
+	}
+
+	public function getPagePerfFlag( string $name ): bool {
+		return $this->pagePerfFlags[$name] ?? false;
 	}
 }

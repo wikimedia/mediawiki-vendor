@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0bae4a6460ae7b78641d0e4b4fe208c7",
+    "content-hash": "4231a8f8c6b0edea85025ca5c7edf3e2",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -8370,21 +8370,21 @@
         },
         {
             "name": "wikimedia/parsoid",
-            "version": "v0.25.0-a3",
+            "version": "v0.25.0-a4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/mediawiki-services-parsoid.git",
-                "reference": "b59dd7f3d5140007a350e34013e24ebdd7f3bc6b"
+                "reference": "f6ed6eb983b852477cf384474676777ad0e48453"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/b59dd7f3d5140007a350e34013e24ebdd7f3bc6b",
-                "reference": "b59dd7f3d5140007a350e34013e24ebdd7f3bc6b",
+                "url": "https://api.github.com/repos/wikimedia/mediawiki-services-parsoid/zipball/f6ed6eb983b852477cf384474676777ad0e48453",
+                "reference": "f6ed6eb983b852477cf384474676777ad0e48453",
                 "shasum": ""
             },
             "require": {
                 "composer-runtime-api": "^2.0",
-                "composer/semver": "^3.4.0",
+                "composer/semver": "^3.6.0",
                 "ext-dom": "*",
                 "justinrainbow/json-schema": "^5.3.0 || ^6.4.2",
                 "php": ">=8.3.0",
@@ -8447,11 +8447,11 @@
             ],
             "support": {
                 "irc": "irc://irc.libera.chat/mediawiki-parsoid",
-                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.25.0-a3",
+                "source": "https://github.com/wikimedia/mediawiki-services-parsoid/tree/v0.25.0-a4",
                 "wiki": "https://www.mediawiki.org/wiki/Parsoid"
             },
-            "time": "2026-11-13T21:33:00+00:00",
-            "published-time": "2026-11-15T17:03:10+00:00"
+            "time": "2026-11-23T14:36:58+00:00",
+            "published-time": "2026-11-23T20:39:29+00:00"
         },
         {
             "name": "wikimedia/purtle",

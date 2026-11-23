@@ -6844,6 +6844,7 @@ class ComposerStaticInit_mediawiki_vendor
         'Wikimedia\\Parsoid\\Wikitext\\ContentModelHandler' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wikitext/ContentModelHandler.php',
         'Wikimedia\\Parsoid\\Wikitext\\Wikitext' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wikitext/Wikitext.php',
         'Wikimedia\\Parsoid\\Wt2Html\\DOMProcessorPipeline' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/DOMProcessorPipeline.php',
+        'Wikimedia\\Parsoid\\Wt2Html\\DOMProcessorPipelineFilter' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/DOMProcessorPipelineFilter.php',
         'Wikimedia\\Parsoid\\Wt2Html\\DOM\\Handlers\\AddAnnotationIds' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/DOM/Handlers/AddAnnotationIds.php',
         'Wikimedia\\Parsoid\\Wt2Html\\DOM\\Handlers\\AddLinkAttributes' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/DOM/Handlers/AddLinkAttributes.php',
         'Wikimedia\\Parsoid\\Wt2Html\\DOM\\Handlers\\CleanUp' => __DIR__ . '/..' . '/wikimedia/parsoid/src/Wt2Html/DOM/Handlers/CleanUp.php',
