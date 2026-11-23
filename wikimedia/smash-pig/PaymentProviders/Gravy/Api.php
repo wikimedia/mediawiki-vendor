@@ -63,7 +63,9 @@ class Api {
 	public function createPayment( array $params ): array {
 		return $this->timedCall( __FUNCTION__, function () use ( $params ) {
 			$tl = new TaggedLogger( 'RawData' );
-			$tl->info( 'Create payment request params: ' . json_encode( $params ) );
+			$logparams = $params;
+			unset( $logparams['payment_method']['token'] );
+			$tl->info( 'Create payment request params: ' . json_encode( $logparams ) );
 			// This one parameter needs to be mapped here, as it is sent as a header rather than as
 			// a POST request parameter.
 			if ( empty( $params['user_ip'] ) ) {

@@ -132,16 +132,28 @@ class Contribution {
 		return (string)( $this->contribution['paymentMethod']['last4'] ?? '' );
 	}
 
-	public function getStockQuantity(): ?float {
-		if ( !isset( $this->contribution['stocks']['quantity'] ) ) {
-			return null;
+	/**
+	 * Per-ticker share counts, e.g. [['ticker' => 'NEE', 'quantity' => 5.0]].
+	 *
+	 * Note stocks.quantity is the number of tickers, not shares. Responses
+	 * from before Overflow added stocks.holdings only have tickers, so the
+	 * quantity is null for those.
+	 */
+	public function getStockHoldings(): array {
+		$holdings = [];
+		if ( isset( $this->contribution['stocks']['holdings'] ) ) {
+			foreach ( $this->contribution['stocks']['holdings'] as $holding ) {
+				$holdings[] = [
+					'ticker' => $holding['ticker'],
+					'quantity' => isset( $holding['quantity'] ) ? (float)$holding['quantity'] : null,
+				];
+			}
+			return $holdings;
 		}
-
-		return (float)$this->contribution['stocks']['quantity'];
-	}
-
-	public function getStockTickers(): array {
-		return $this->contribution['stocks']['tickers'] ?? [];
+		foreach ( $this->contribution['stocks']['tickers'] ?? [] as $ticker ) {
+			$holdings[] = [ 'ticker' => $ticker, 'quantity' => null ];
+		}
+		return $holdings;
 	}
 
 	public function getGivingLinkId(): ?string {

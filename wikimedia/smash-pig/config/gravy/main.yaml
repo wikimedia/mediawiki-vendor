@@ -175,6 +175,7 @@ error-tracker:
       recurring_ignore_list:
         - 'invalid_payment_method'
         - 'expired_payment_method'
+        - 'issuer_decline'
 
 notifications:
   fraud-alerts:

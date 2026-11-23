@@ -3,7 +3,7 @@
   "gateway_parent_id": "8SB83047469211841",
   "gateway_txn_id": "4XG14513BS068321S",
   "currency": "USD",
-  "type": "refund",
+  "type": "chargeback",
   "contribution_tracking_id": "48295084",
   "email": "fakeperson@nowhere.com",
   "first_name": "Tricky",

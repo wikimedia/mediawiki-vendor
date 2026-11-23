@@ -226,6 +226,19 @@ class Api {
 	}
 
 	/**
+	 * @param array $input
+	 * @return array
+	 */
+	#[ApiOperationAttribute( ApiOperation::AUTHORIZE )]
+	public function authorizePayPalAccount( array $input ): array {
+		return $this->timedCall( __FUNCTION__, function () use ( $input ) {
+			$query = $this->getQuery( 'AuthorizePayPalAccount' );
+			$variables = [ 'input' => $input ];
+			return $this->makeApiCall( $query, $variables );
+		} );
+	}
+
+	/**
 	 * Submit query/mutation GraphQL calls to Braintree
 	 *
 	 * @param string $query graphql query/mutation string

@@ -93,6 +93,12 @@
           "quantity": 1,
           "tickers": [
             "TSLA"
+          ],
+          "holdings": [
+            {
+              "ticker": "TSLA",
+              "quantity": 17
+            }
           ]
         },
         "givingLinkId": null,

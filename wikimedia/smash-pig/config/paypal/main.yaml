@@ -31,6 +31,11 @@ default-method: paypal
 ipn-validator:
   class: SmashPig\PaymentProviders\PayPal\PayPalIpnValidator
 
+# WMF PayPal receiver ids and emails. IPNs that name any other receiver are
+# dropped. While this is empty, IPNs that name a receiver go to the damaged
+# queue, so they can be replayed after the list is set.
+receiver-allowlist: []
+
 endpoints:
   listener:
     class: SmashPig\PaymentProviders\PayPal\Listener

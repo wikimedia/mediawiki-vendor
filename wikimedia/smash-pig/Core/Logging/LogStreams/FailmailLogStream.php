@@ -175,7 +175,8 @@ class FailmailLogStream implements ILogStream {
 			$level = 'ERROR';
 		}
 
-		$currentView = Context::get()->getProviderConfiguration()->getProviderName();
+		$context = Context::get();
+		$currentView = $context->getProviderConfiguration()->getProviderName();
 		$hostName = gethostname();
 
 		$cacheKeyPrefix = "last-failmail-$hostName-$currentView";
@@ -188,7 +189,7 @@ class FailmailLogStream implements ILogStream {
 			}
 			MailHandler::sendEmail(
 				$this->to,
-				"FAILMAIL - {$level}: {$hostName} ({$currentView}) {$this->contextName}",
+				"FAILMAIL - {$level}: {$context->getSourceType()} ({$currentView}) {$this->contextName} {$hostName}",
 				implode( "\n", $body ),
 				$this->from
 			);

@@ -102,8 +102,7 @@ class DepositsAudit implements AuditParser {
 			'state_province' => $contribution->getStateProvince(),
 			'postal_code' => $contribution->getPostalCode(),
 			'country' => $contribution->getCountry(),
-			'stock_ticker' => implode( ',', $contribution->getStockTickers() ),
-			'stock_quantity' => $contribution->getStockQuantity(),
+			'stock_holdings' => $contribution->getStockHoldings() ?: null,
 		];
 
 		return array_filter( $msg, static fn ( $value ) => $value !== null && $value !== '' );

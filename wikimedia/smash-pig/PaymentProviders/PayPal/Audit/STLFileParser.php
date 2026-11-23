@@ -31,6 +31,9 @@ class STLFileParser extends BaseParser {
 		if ( ( $this->row[0] ?? null ) === 'RF' ) {
 			return $this->getAggregateRow();
 		}
+		if ( in_array( $this->getTransactionType(), [ 'chargeback_fee', 'fee_reversal' ], true ) ) {
+			return $this->getFeeMessage();
+		}
 		$isGravy = $this->isGravy();
 		$msg = [
 			'gateway_txn_id' => $isGravy ? Base62Helper::toUuid( $this->row['Custom Field'] ) : $this->row['Transaction ID'],
@@ -133,6 +136,31 @@ class STLFileParser extends BaseParser {
 	 */
 	private function getSettlementBatchReference(): string {
 		return str_replace( '/', '', $this->getBatchSettledDate() );
+	}
+
+	/**
+	 * Chargeback fee / fee reversal row with no transaction in this file to merge into.
+	 */
+	private function getFeeMessage(): array {
+		$fee = (float)$this->row['Gross Transaction Amount'] / 100;
+		if ( $this->row['Transaction Debit or Credit'] === 'DR' ) {
+			$fee = -$fee;
+		}
+		$fee = CurrencyRoundingHelper::round( $fee, $this->getSettledCurrency() );
+		return [
+			'gateway' => 'paypal',
+			'audit_file_gateway' => 'paypal',
+			'type' => 'fee',
+			'gateway_txn_id' => 'fee-' . $this->row['Transaction ID'],
+			'invoice_id' => $this->row['Invoice ID'],
+			'date' => strtotime( $this->row['Transaction Initiation Date'] ),
+			'settled_date' => strtotime( $this->row['Transaction Completion Date'] ),
+			'settlement_batch_reference' => $this->getSettlementBatchReference(),
+			'settled_currency' => $this->getSettledCurrency(),
+			'settled_total_amount' => 0,
+			'settled_fee_amount' => $fee,
+			'settled_net_amount' => $fee,
+		];
 	}
 
 }

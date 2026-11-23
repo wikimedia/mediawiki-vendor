@@ -51,7 +51,10 @@ class CaptureIncomingMessageTest extends BaseSmashPigUnitTestCase {
 		'buyer_complaint.json' => 'refund',
 		'refund_other.json' => 'refund',
 		'refund_unauthorized_spoof.json' => 'refund',
+		'refund_unauthorized_claim.json' => 'refund',
 		'refund_admin_fraud_reversal.json' => 'refund',
+		'refund_chargeback.json' => 'refund',
+		'refund_admin_reversal.json' => 'refund',
 		'recurring_payment_suspended_due_to_max_failed_payment.json' => 'recurring',
 		'chargeback_reversed.json' => 'refund',
 	];
@@ -60,6 +63,10 @@ class CaptureIncomingMessageTest extends BaseSmashPigUnitTestCase {
 		parent::setUp();
 		$this->config = Context::get()->getGlobalConfiguration();
 		$this->providerConfig = $this->setProviderConfiguration( 'paypal' );
+		$this->providerConfig->override( [ 'receiver-allowlist' => [
+			'7777777777777', 'EEEEEEEEEEEEE', 'EZ744555UJUW8', 'EZ782AXEUJUW8', 'TWDK67ASD2XXY',
+			'DD555ASDFGASW8', '1234567', 'receiver@organization.org', 'nobody@wikimedia.org',
+		] ] );
 	}
 
 	public function tearDown(): void {
@@ -301,6 +308,56 @@ class CaptureIncomingMessageTest extends BaseSmashPigUnitTestCase {
 			$msg = $this->config->object( "data-store/$queue" )->pop();
 			$this->assertNull( $msg );
 		}
+	}
+
+	private function runExpressCheckoutIpn( array $changes ): ?array {
+		$this->getCurlMock( 'VERIFIED' );
+		$payload = json_decode( file_get_contents( __DIR__ . '/../Data/express_checkout.json' ), true );
+		$this->capture( array_merge( $payload, $changes ) );
+		$job = new Job();
+		$job->payload = $this->config->object( 'data-store/jobs-paypal' )->pop()['payload'];
+		$this->assertTrue( $job->execute() );
+		return $this->config->object( 'data-store/donations' )->pop();
+	}
+
+	public function testDropIpnForOtherReceiver() {
+		$this->assertNull( $this->runExpressCheckoutIpn( [
+			'business' => 'shop@example.com',
+			'receiver_email' => 'shop@example.com',
+			'receiver_id' => 'OTHERMERCHANT1',
+		] ) );
+	}
+
+	public function testEmptyReceiverAllowlistKeepsIpn() {
+		// A fresh config has the default empty list; override() would merge into the setUp() list.
+		$this->providerConfig = $this->setProviderConfiguration( 'paypal' );
+		$this->getCurlMock( 'VERIFIED' );
+		$payload = json_decode( file_get_contents( __DIR__ . '/../Data/express_checkout.json' ), true );
+		$this->capture( $payload );
+		$job = new Job();
+		$job->payload = $this->config->object( 'data-store/jobs-paypal' )->pop()['payload'];
+		$this->assertFalse( $job->execute() );
+		$this->assertNull( $this->config->object( 'data-store/donations' )->pop() );
+	}
+
+	public function testPendingContactIdOnlyCopiedForSameEmail() {
+		$pending = [
+			'gateway' => 'paypal_ec',
+			'order_id' => '123456.1',
+			'date' => 12345678,
+			'email' => 'nobody@wikimedia.org',
+			'contact_id' => 42,
+			'checksum' => 'abc',
+		];
+		SourceFields::addToMessage( $pending );
+		PendingDatabase::get()->storeMessage( $pending );
+
+		$other = $this->runExpressCheckoutIpn( [ 'payer_email' => 'someone-else@example.org' ] );
+		$this->assertArrayNotHasKey( 'contact_id', $other );
+		$this->assertArrayNotHasKey( 'checksum', $other );
+
+		$same = $this->runExpressCheckoutIpn( [ 'payer_email' => 'Nobody@wikimedia.org' ] );
+		$this->assertSame( 42, $same['contact_id'] );
 	}
 
 	/**

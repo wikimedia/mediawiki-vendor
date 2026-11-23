@@ -3,6 +3,7 @@
 namespace SmashPig\PaymentProviders\Gravy\Tests\phpunit;
 
 use SmashPig\PaymentData\FinalStatus;
+use SmashPig\PaymentProviders\Gravy\Mapper\DirectDepositPaymentProviderResponseMapper;
 use SmashPig\PaymentProviders\Gravy\Mapper\ResponseMapper;
 use SmashPig\PaymentProviders\Gravy\Tests\BaseGravyTestCase;
 
@@ -172,6 +173,45 @@ class ResponseMapperTest extends BaseGravyTestCase {
 		$result = $mapper->mapFromPaymentResponse( $rawResponse );
 
 		$this->assertArrayNotHasKey( 'backend_processor_contact_id', $result['donor_details'] );
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testMapDirectDepositPaymentResponseIgnoresNullExternalIdentifier() {
+		$rawResponse = [
+			'id' => 'txn-123',
+			'status' => 'succeeded',
+			'amount' => 1000,
+			'currency' => 'USD',
+			'external_identifier' => '231257601.1',
+			'payment_method' => [
+				'method' => 'trustly'
+			],
+			'buyer' => [
+				'id' => null,
+				'external_identifier' => null,
+				'billing_details' => [
+					'email_address' => 'abcd@gmail.com',
+					'first_name' => 'abcd',
+					'last_name' => 'McTest',
+					'address' => [
+						'country' => 'US',
+						'line1' => '6181 Amaya Dr',
+						'postal_code' => '91942',
+						'city' => 'La Mesa',
+					],
+				],
+			],
+		];
+
+		$mapper = new DirectDepositPaymentProviderResponseMapper();
+		$result = $mapper->mapFromPaymentResponse( $rawResponse );
+
+		$this->assertTrue( $result['is_successful'] );
+		$this->assertSame( '', $result['donor_details']['email_address'] );
+		$this->assertSame( 'abcd@gmail.com', $result['donor_details']['billing_email'] );
+		$this->assertSame( 'abcd', $result['donor_details']['first_name'] );
 	}
 
 	/**

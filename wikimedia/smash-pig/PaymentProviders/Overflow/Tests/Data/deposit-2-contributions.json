@@ -101,7 +101,18 @@
                 "stocks": {
                     "quantity": 1,
                     "tickers": [
-                        "A"
+                        "A",
+                        "NVDA"
+                    ],
+                    "holdings": [
+                        {
+                            "ticker": "A",
+                            "quantity": 3
+                        },
+                        {
+                            "ticker": "NVDA",
+                            "quantity": 60
+                        }
                     ]
                 },
                 "givingLinkId": null,

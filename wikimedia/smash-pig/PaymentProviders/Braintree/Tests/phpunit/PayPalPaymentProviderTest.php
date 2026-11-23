@@ -57,10 +57,10 @@ class PayPalPaymentProviderTest extends BaseBraintreeTest {
 			"currency" => 'USD'
 		];
 		$this->api->expects( $this->once() )
-			->method( 'authorizePaymentMethod' )
+			->method( 'authorizePayPalAccount' )
 			->willReturn( [
 				'data' => [
-					'authorizePaymentMethod' => [
+					'authorizePayPalAccount' => [
 						'transaction' => [
 							'id' => $txn_id,
 							'status' => "AUTHORIZED",
@@ -164,7 +164,7 @@ class PayPalPaymentProviderTest extends BaseBraintreeTest {
 			"currency" => "GBP"
 		];
 		$this->api->expects( $this->once() )
-			->method( 'authorizePaymentMethod' )
+			->method( 'authorizePayPalAccount' )
 			->with( [
 				'transaction' => [
 					'merchantAccountId' => 'WMF-GBP',
@@ -185,11 +185,14 @@ class PayPalPaymentProviderTest extends BaseBraintreeTest {
 						'name' => 'WMF*Wikimedia'
 					]
 				],
+				'options' => [
+					'customField' => 'B-123.3',
+				],
 				'paymentMethodId' => 'fake-valid-nonce'
 			] )
 			->willReturn( [
 				'data' => [
-					'authorizePaymentMethod' => [
+					'authorizePayPalAccount' => [
 						'transaction' => [
 							'id' => $txn_id,
 							'status' => "SUBMITTED_FOR_SETTLEMENT",

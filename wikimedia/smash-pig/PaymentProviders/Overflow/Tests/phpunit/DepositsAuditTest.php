@@ -25,6 +25,8 @@ class DepositsAuditTest extends TestCase {
 		// 'DAF' payment method should come through as CiviCRM's 'DAFpay'.
 		$this->assertSame( 'Stock', $rows[0]['payment_method'] );
 		$this->assertSame( 'DAFpay', $rows[1]['payment_method'] );
+		$this->assertSame( [ [ 'ticker' => 'A', 'quantity' => 3.0 ], [ 'ticker' => 'NVDA', 'quantity' => 60.0 ] ], $rows[0]['stock_holdings'] );
+		$this->assertArrayNotHasKey( 'stock_holdings', $rows[1] );
 
 		$payoutRow = $rows[2];
 		$this->assertSame( 'payout', $payoutRow['type'] );
@@ -51,8 +53,8 @@ class DepositsAuditTest extends TestCase {
 		$this->assertSame( 'Mouse', $row['last_name'] );
 		$this->assertSame( 'jane.mouse@example.org', $row['email'] );
 		$this->assertSame( 'Minneapolis', $row['city'] );
-		$this->assertSame( 'TSLA', $row['stock_ticker'] );
-		$this->assertSame( 1.0, $row['stock_quantity'] );
+		// From stocks.holdings - stocks.quantity is the ticker count.
+		$this->assertSame( [ [ 'ticker' => 'TSLA', 'quantity' => 17.0 ] ], $row['stock_holdings'] );
 	}
 
 	/**

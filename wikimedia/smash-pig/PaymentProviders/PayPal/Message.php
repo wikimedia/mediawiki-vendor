@@ -66,6 +66,10 @@ abstract class Message {
 				Logger::debug( 'Found pending message' );
 				SourceFields::removeFromMessage( $pendingMessage );
 				unset( $pendingMessage['pending_id'] );
+				// The IPN order id is payer-controlled. Copy the donor's CRM identity only for the same email.
+				if ( strtolower( $message['email'] ?? '' ) !== strtolower( $pendingMessage['email'] ?? '' ) ) {
+					unset( $pendingMessage['contact_id'], $pendingMessage['checksum'], $pendingMessage['contact_hash'] );
+				}
 				foreach ( $pendingMessage as $pendingField => $pendingValue ) {
 					if ( !isset( $message[$pendingField] ) ) {
 						$message[$pendingField] = $pendingValue;

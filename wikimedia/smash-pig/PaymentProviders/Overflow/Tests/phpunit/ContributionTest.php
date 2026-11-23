@@ -120,31 +120,33 @@ class ContributionTest extends TestCase {
 	}
 
 	/**
-	 * @dataProvider provideContributions
+	 * @dataProvider provideStocks
 	 */
-	public function testStockData( array $data ): void {
-		$object = new Contribution(
-			$data['contribution'],
-			$data['lineItem']
-		);
+	public function testStockHoldings( ?array $stocks, array $expected ): void {
+		$object = new Contribution( $stocks === null ? [] : [ 'stocks' => $stocks ], [] );
+		$this->assertSame( $expected, $object->getStockHoldings() );
+	}
 
-		$stocks = $data['contribution']['stocks'] ?? null;
-
-		if ( $stocks === null ) {
-			$this->assertNull( $object->getStockQuantity() );
-			$this->assertSame( [], $object->getStockTickers() );
-			return;
-		}
-
-		$this->assertSame(
-			(float)$stocks['quantity'],
-			$object->getStockQuantity()
-		);
-
-		$this->assertSame(
-			$stocks['tickers'],
-			$object->getStockTickers()
-		);
+	public static function provideStocks(): array {
+		return [
+			'no stocks' => [ null, [] ],
+			'single holding' => [
+				[ 'quantity' => 1, 'tickers' => [ 'NEE' ], 'holdings' => [ [ 'ticker' => 'NEE', 'quantity' => 5 ] ] ],
+				[ [ 'ticker' => 'NEE', 'quantity' => 5.0 ] ],
+			],
+			'multiple holdings' => [
+				[
+					'quantity' => 2,
+					'tickers' => [ 'NEE', 'NVDA' ],
+					'holdings' => [ [ 'ticker' => 'NEE', 'quantity' => 5 ], [ 'ticker' => 'NVDA', 'quantity' => 60 ] ],
+				],
+				[ [ 'ticker' => 'NEE', 'quantity' => 5.0 ], [ 'ticker' => 'NVDA', 'quantity' => 60.0 ] ],
+			],
+			'pre-holdings response' => [
+				[ 'quantity' => 1, 'tickers' => [ 'TSLA' ] ],
+				[ [ 'ticker' => 'TSLA', 'quantity' => null ] ],
+			],
+		];
 	}
 
 	public static function provideContributions(): array {

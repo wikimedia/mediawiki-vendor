@@ -146,11 +146,21 @@ class PayPalAudit implements AuditParser {
 					break;
 
 				case 'chargeback_fee':
-					$this->feeRows[$row['PayPal Reference ID']] = $row;
-					break;
-
 				case 'fee_reversal':
-					$this->feeRows[$row['Invoice ID']] = $row;
+					// Invoice ID can be blank - fall back so blank-keyed rows don't overwrite each other.
+					$key = ( $transactionType === 'fee_reversal' ? $row['Invoice ID'] : '' ) ?: ( $row['PayPal Reference ID'] ?: $row['Transaction ID'] );
+					$this->feeRows[$key] = $row;
+					if ( in_array( 'RF', $this->lineTypesToParse, true ) ) {
+						// Also book it as a standalone fee (PayPal counts it in the footer totals),
+						// unless a transaction merges it in - one read later unsets this in the default case.
+						$this->rows['fee-' . $key] = $row;
+						foreach ( $this->rows as $index => $transaction ) {
+							if ( is_int( $index ) && empty( $transaction['Fee Amount'] ) && in_array( $key, [ $transaction['Transaction ID'] ?? null, $transaction['Invoice ID'] ?? null ], true ) ) {
+								unset( $this->rows['fee-' . $key] );
+								break;
+							}
+						}
+					}
 					break;
 
 				case 'other':
@@ -159,6 +169,10 @@ class PayPalAudit implements AuditParser {
 
 				default:
 					$this->rows[] = $row;
+					if ( isset( $row['Transaction ID'] ) && empty( $row['Fee Amount'] ) ) {
+						// This transaction merges in any fee row held for it.
+						unset( $this->rows['fee-' . $row['Transaction ID']], $this->rows['fee-' . $row['Invoice ID']] );
+					}
 					break;
 			}
 

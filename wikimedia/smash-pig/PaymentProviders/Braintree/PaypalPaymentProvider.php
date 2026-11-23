@@ -66,4 +66,26 @@ class PaypalPaymentProvider extends PaymentProvider {
 			$response->setBackendProcessorContactID( $paymentMethodSnapshot['payer']['payerId'] ?? null );
 		}
 	}
+
+	/**
+	 * @param array $params
+	 * Add paypal-specific custom_field option with a B- prefix to distinguish these from
+	 * Paypal_EC payments.
+	 *
+	 * @param string|null $type
+	 *
+	 * @return array
+	 */
+	protected function transformToApiParams( array $params, ?string $type = null ): array {
+		$apiParams = parent::transformToApiParams( $params, $type );
+		if ( $type === TransactionType::CAPTURE ) {
+			return $apiParams;
+		}
+		$apiParams['options']['customField'] = 'B-' . $params['order_id'];
+		return $apiParams;
+	}
+
+	protected function callAuthorizeApi( array $transformedParams ): array {
+		return $this->api->authorizePayPalAccount( $transformedParams );
+	}
 }

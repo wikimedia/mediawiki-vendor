@@ -112,21 +112,27 @@ class PaymentProvider implements
 			}
 		} else {
 			$this->getMissingParams( $params );
-			$transformParams = $this->transformToApiParams( $params );
-			$rawResponse = $this->api->authorizePaymentMethod( $transformParams );
+			$transformedParams = $this->transformToApiParams( $params );
+			$rawResponse = $this->callAuthorizeApi( $transformedParams );
 			$response->setRawResponse( $rawResponse );
 			if ( !empty( $rawResponse['errors'] ) ) {
 				$this->setResponseFailedWithErrors( $response, $rawResponse['errors'] );
 			} else {
-				$transaction = $rawResponse['data']['authorizePaymentMethod']['transaction'];
+				$data = $rawResponse['data'];
+				$firstKey = array_keys( $data )[0];
+				$transaction = $rawResponse['data'][$firstKey]['transaction'];
 				// If it's recurring need to know when to set the token in setCreatePaymentSuccessfulResponseDetails
-				if ( isset( $transformParams['transaction']['vaultPaymentMethodAfterTransacting'] ) ) {
+				if ( isset( $transformedParams['transaction']['vaultPaymentMethodAfterTransacting'] ) ) {
 					$transaction['recurring'] = true;
 				}
 				$this->setCreatePaymentSuccessfulResponseDetails( $transaction, $response, $params );
 			}
 		}
 		return $response;
+	}
+
+	protected function callAuthorizeApi( array $transformedParams ): array {
+		return $this->api->authorizePaymentMethod( $transformedParams );
 	}
 
 	/**

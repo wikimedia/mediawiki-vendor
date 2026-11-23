@@ -328,6 +328,11 @@ class BaseParser {
 
 			if ( ( $this->row['PayPal Reference ID Type'] ?? '' ) === 'TXN' ) {
 				$reversalFields['gateway_parent_id'] = $this->row['PayPal Reference ID'];
+				// The reference is the original PayPal capture - expose it as the backend
+				// processor parent so contributions where PayPal is the backend rather
+				// than the gateway (e.g. Braintree PayPal) can be matched.
+				$reversalFields['backend_processor'] = 'paypal';
+				$reversalFields['backend_processor_parent_id'] = $this->row['PayPal Reference ID'];
 			}
 		} elseif ( $this->isReversalReversalType() ) {
 			$reversalFields['type'] = $this->getTransactionType();
